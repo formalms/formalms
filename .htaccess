@@ -1,0 +1,29 @@
+Options -Indexes
+Options +FollowSymLinks
+DirectoryIndex index.php index.html index.htm
+
+<Files favicon.ico>
+	ErrorDocument 404 "The requested file favicon.ico was not found.
+</Files>
+
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+	
+	# hide directories that starts with a . (dot)
+	RewriteRule "(^|/)\." - [F]
+	
+	# Redirect to the www version of the site
+	#RewriteCond %{HTTP_HOST} !^www\. [NC]
+	#RewriteRule ^ http://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+
+<FilesMatch "\.(htaccess|htpasswd|ini|php|fla|psd|log|sh)$">
+	Order Allow,Deny
+	Deny from all
+</FilesMatch>
+
+<FilesMatch "(index\.php|ajax\.adm_server\.php|ajax\.server\.php|paypal\.php|tasks\.php|tiny_mce_gzip\.php|index_tiny\.php|scormXmlTree\.php|soaplms\.php|scorm_page_body\.php)$">
+	Order Allow,Deny
+	Allow from all
+</FilesMatch>

@@ -1,0 +1,198 @@
+/* ======================================================================== \
+| 	DOCEBO - The E-Learning Suite											|
+| 																			|
+| 	Copyright (c) 2010 (Docebo)												|
+| 	http://www.docebo.com													|
+|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+\ ======================================================================== */
+
+		App. Skeleton
+
+/
+ |- index.php								Web application entry script file
+ |- admin.php								Web application backend entry script file
+ |- config.php								Main configuration file
+ |- base.php								File used only in order to calculate relative and absolute path to others part
+ |- addons/									External classes and widget
+ |	 |- calendar/							Calendar
+ | 	 |- feeds/								Reading and generatin rss files
+ |	 |- htmlpurifier/						Filtering html input
+ | 	 |- kses/								Filtering html input
+ |	 |- nusoap/								Soap and wsdl classess
+ |	 |- pclzip/								Zip files
+ |	 |- phpmailer/							Mail sender
+ |	 |- shadowbox/							Lightbox
+ |	 |- tiny_mce/							wyswyg editor
+ |	 |- utf8/								string manipulation function utf8-safe
+ |	 '- yui/								JS Framework
+ |
+ |-	api/									api servers
+ |	 |- rest/								rest api files
+ |	 |	 '- ...
+ |	 |- soap/								soap api files
+ |	 |	 '- ...
+ |	 |- lib.api.php							lib for api operations
+ |	 |- rest.php							rest server
+ |	 |- soap.php							soap server
+ |	 '- wsdl.php							wsdl server
+ |
+ |-	cron/									"server" for automatic tasks
+ |	 |- cron.task.php						IO Task
+ |	 |- cron.report.php						Sending of scheduled reports
+ |	 '- cron.alerts.php						Sending of automatic mail alerts
+ |
+ |-	i18n/									Internationalization functions
+ |	 |-	lib.regset.php						Main class for date/currenct/number formatting
+ |	 '-	lib.lang.php						Main class for multilanguage phrases / content
+ |
+ |-	adodb/									Database functionalities
+ |	 |- ar/									Active records
+ |	 |	 '-	...
+ |	 |-	schema/								Evolutive tables files
+ |	 |	 |- ...
+ |	 |	 |- ...
+ |	 |	 |-	core_user.php					Evolutive history for the core_user table
+ |	 |	 |- ...
+ |	 |	 '- ...
+ |	 |- driver.dbms.php						Main driver
+ |	 |- driver.mysql.php					Connection driver for mysql
+ |	 |- driver.mysqli.php					Connection driver for mysqli
+ |	 '- driver.postgresql.php				Connection driver for postgresql
+ |
+ |-	widget/									Common interface widget
+ |	 |-	combined/							Combined widget for tree + table
+ |	 |	 |-	views/							View for the widget
+ |	 |	 |	 |-	tree_over.php				Tree over the table
+ |	 |	 |	 '-	tree_lateral.php			Tree on the table side (25/75)
+ |	 |	 |-	class.tree_table.php			Main class for the widget
+ |	 |	 '-	class.tree_table.php			Main js for the widget
+ |	 |-	table/								Table widget
+ |	 |	 |-	views/							View for the widget
+ |	 |	 |	 '-	table.php					Standard table view
+ |	 |	 |-	class.table.php					Main class for the widget
+ |	 |	 '-	table.js						Main js for the widget
+ |	 |-	tree/								Tree widget
+ |	 |	 |-	views/							View for the widget
+ |	 |	 |	 |-	tree.php					Standard tree view
+ |	 |	 |	 '-	explorer.php				Tree explorer view (path and content for a single)
+ |	 |	 |-	class.tree.php					Main class for the widget
+ |	 |	 '-	tree.js							Main js for the widget
+ |	 '-	dialog/								Dialog widget
+ |		 |-	views/							View for the widget
+ |		 |	 '-	dialog.php					View for the dialog
+ |		 |-	class.dialog.php				Main class for the widget
+ |		 '-	dialog.js						Main js for the widget
+ |-	lib/									containing general application files
+ |	 |-	special_tag/						containing special tag and function for the views
+ |	 |-	form/								form rendering and management files
+ | 	 |- connectors/							Connectors for the iotask module
+ | 	 '- ...
+ |
+ ---------------------------------------------------------------------------------------------------
+ |-	doceboCore/								Core
+ |	 |- class/
+ |	 |	 |- class.menu.php					Menu file
+ |	 |	 '- class.dashboard.php				Dashboard blocks
+ |	 |
+ |	 |- lib/								Specific lib
+ | 	 |	|- ...
+ | 	 |	'- ...
+ |	 |
+ |	 |- models/								Models for the admin
+ |	 |	 |-	AdminManager.php
+ |	 |	 |-	Code.php
+ |	 |	 |-	Configuration.php
+ |	 |	 |-	Dashboard.php
+ |	 |	 |-	DEvent.php
+ |	 |	 |-	Field.php
+ |	 |	 |-	Iotask.php
+ |	 |	 |-	Lang.php
+ |	 |	 |-	Newsletter.php
+ |	 |	 |-	User.php
+ |	 |	 '-	PublicAdmin.php
+ |	 |
+ |	 |- controllers/						Controllers for the admin
+ |	 |	 |-	AdminManagerController.php
+ |	 |	 |-	CodeController.php
+ |	 |	 |-	ConfigurationController.php
+ |	 |	 |-	DashboardController.php
+ |	 |	 |-	DEventController.php
+ |	 |	 |-	FieldController.php
+ |	 |	 |-	IotaskController.php
+ |	 |	 |-	LangController.php
+ |	 |	 |-	NewsletterController.php
+ |	 |	 |-	UserController.php
+ |	 |	 '-	PublicAdminController.php
+ |	 |
+ |	 '- views/								Views for the admin module
+ |		 |-	adminmanager/					sub-admin management view
+ |		 |	 '-	list.php
+ |		 |-	code/							code module view
+ |		 |	 '-	list.php
+ |		 |-	configuration/					configuration view
+ |		 |	 '-	list.php
+ |		 |-	dashboard/						dashboard view
+ |		 |	 '-	list.php
+ |		 |-	devent/							events view
+ |		 |	 '-	list.php
+ |		 |-	field/							extra field view
+ |		 |	 '-	list.php
+ |		 |-	iotask/							iotask view
+ |		 |	 '-	list.php
+ |		 |-	lang/							lang management view
+ |		 |	 '-	list.php
+ |		 |-	newsletter/						newsletter view
+ |		 |	 '-	list.php
+ |		 |- configuration/					configuration view
+ |		 |	 '-	list.php
+ |		 |- user/							user view
+ |		 |	 |-	_form.php
+ |		 |	 |-	add.php
+ |		 |	 |-	mod.php
+ |		 |	 |-	del.php
+ |		 |	 |-	detail.php
+ |		 |	 '-	list.php
+ |		 '-	publicadmin/					public admin view
+ |			 '-	list.php
+ |
+ ---------------------------------------------------------------------------------------------------
+ |-	doceboLms/								lms
+ |	 |- class/
+ |	 |	 |- class.menu.php					Menu file
+ |	 |	 '- calss.dashboard.php				Dashboard blocks
+ |	 |
+ |	 |- lib/								Specific lib
+ | 	 |	|- ...
+ | 	 |	'- ...
+ |	 |
+ |	 |- models/								Models for
+ |	 |	 |-	.php
+ |	 |	 '-	.php
+ |	 |
+ |	 |- controllers/						Controllers for
+ |	 |	 |-	Controller.php
+ |	 |	 '-	Controller.php
+ |	 |
+ |	 '- views/								Views for
+ |		 |-	/
+ |		 |	 '-	list.php
+ |		 '-	/
+ |			 '-	list.php
+ |
+ ---------------------------------------------------------------------------------------------------
+ |-	scs/							vecchia doceboScs
+ |
+ |-	files/							containing user uploaded or runtime generated files
+ |	 |-	...							multiples fodlers
+ |	 |-	...
+ |	 |-	...
+ |	 '-	...
+ |
+ '-	templates/						containing themes for the app
+ 	 '- standard/					"standard" theme
+ 	 		|-	images/				images
+ 	 		|	 '- ...
+ 	 		|-	style/				stylesheets
+ 	 		|	 '- ...
+ 	 		'-	yui-skin/			yui-skin files
+ 	 			 '- ...

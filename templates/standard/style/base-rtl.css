@@ -1,0 +1,191 @@
+/*
+DOCEBO - The E-Learning Suite
+http://www.docebo.com
+license: http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+*/
+body{direction:rtl;}
+/*base.css*/
+.container-back{text-align:left;}
+.inline_block .actions{text-align:left;}
+.inline_block_big .actions{text-align:left;}
+.list_block .actions{margin:6px 0 2px;padding:0;text-align:left;}
+.floating_box{float:left;}
+.quick_search_form{text-align:left;}
+.publish-date{padding:0 0 0 8px;}
+.table-actions{text-align:right;float:right;}
+.add_yuibutton span{text-align:right;}
+.up_dashboard .content,.up_dashboard .actions{text-align:left;}
+.up_dashboard .content .logo{float:right;}
+.yui-skin-docebo .table-container-over .yui-pg-container, .yui-skin-docebo .table-container-below .yui-pg-container{float:left;}
+.lang-sprite span{padding:0 25px 0 0;}
+.lang-sprite span, .ico-wt-sprite span, .ico-sprite span{padding:0 20px 2px 0;text-indent:20px;}
+
+.subs_add{background-position:100% -20px;}
+.subs_mod{background-position:100% -40px;}
+.subs_del{background-position:100% -60px;}
+.subs_elem{background-position:100% -80px;}
+.subs_users{background-position:100% -100px;}
+.subs_up{background-position:100% -120px;}
+.subs_down{background-position:100% -140px;}
+.subs_date{background-position:100% -160px;}
+.subs_dup{background-position:100% -180px;}
+.subs_actv{background-position:100% -200px;}
+.subs_noac{background-position:100% -220px;}
+.subs_info, .fd_info{background-position:100% -240px;}
+.subs_notice, .fd_notice{background-position:100% -260px;}
+.subs_error, .fd_error{background-position:100% -280px;}
+.subs_import{background-position:100% -300px;}
+.subs_unlocked{background-position:100% -320px;}
+.subs_locked{background-position:100% -340px;}
+.subs_user{background-position:100% -360px;}
+.subs_unassoc{background-position:100% -380px;}
+.subs_play{background-position:100% -400px;}
+.subs_unread{background-position:100% -420px;}
+.subs_read{background-position:100% -440px;}
+.subs_close{background-position:100% -460px;}
+.subs_categorize{background-position:100% -480px;}
+.subs_course{background-position:100% -500px;}
+.subs_competence{background-position:100% -520px;}
+.subs_newfolder{background-position:100% -540px;}
+.subs_download{background-position:100% -560px;}
+.subs_csv{background-position:100% -580px;}
+.subs_xls{background-position:100% -600px;}
+.subs_htm{background-position:100% -620px;}
+.subs_view{background-position:100% -640px;}
+.subs_conf{background-position:100% -660px;}
+.subs_lang{background-position:100% -680px;}
+.subs_pdf{background-position:100% -700px;}
+.subs_blank{background-position:100% -720px;}
+.subs_confirm{background-position:100% -740px;}
+.subs_cancel{background-position:100% -760px;}
+.subs_admin{background-position:100% -780px;}
+.subs_chart{background-position:100% -800px;}
+.subs_plus{background-position:100% -820px;}
+.subs_wait{background-position:100% -840px;}
+.subs_left{background-position:100% -860px;}
+.subs_right{background-position:100% -880px;}
+.subs_menu{background-position:100% -900px;}
+.subs_users_grey{background-position:100% -920px;}
+.subs_elem_grey{background-position:100% -940px;}
+.subs_pdf_grey{background-position:100% -960px;}
+.subs_competence_grey{background-position:100% -980px;}
+.subs_location{background-position:100% -1000px;}
+.subs_print{background-position:100% -1020px;}
+
+.lang_arabic{background-position:100% -20px;}
+.lang_bosnian{background-position:100% -40px;}
+.lang_bulgarian{background-position:100% -660px;}
+.lang_croatian{background-position:100% -60px;}
+.lang_czech{background-position:100% -80px;}
+.lang_danish{background-position:100% -100px;}
+.lang_dutch{background-position:100% -120px;}
+.lang_english{background-position:100% -140px;}
+.lang_farsi{background-position:100% -160px;}
+.lang_french{background-position:100% -180px;}
+.lang_german{background-position:100% -200px;}
+.lang_greek{background-position:100% -220px;}
+.lang_hindi{background-position:100% -240px;}
+.lang_hungarian{background-position:100% -260px;}
+.lang_indonesian{background-position:100% -280px;}
+.lang_italian{background-position:100% -300px;}
+.lang_japanese{background-position:100% -320px;}
+.lang_korean{background-position:100% -340px;}
+.lang_malay{background-position:100% -360px;}
+.lang_norwegian{background-position:100% -380px;}
+.lang_polish{background-position:100% -400px;}
+.lang_portuguese{background-position:100% -420px;}
+.lang_portuguese-br{background-position:100% -440px;}
+.lang_romanian{background-position:100% -460px;}
+.lang_russian{background-position:100% -480px;}
+.lang_simplified_chinese{background-position:100% -500px;}
+.lang_slovak{background-position:100% -520px;}
+.lang_spanish{background-position:100% -540px;}
+.lang_swedish{background-position:100% -560px;}
+.lang_finnish{background-position:100% -580px;}
+.lang_thai{background-position:100% -600px;}
+.lang_turkish{background-position:100% -620px;}
+.lang_ukrainian{background-position:100% -640px;}
+
+/*lms.css*/
+div.logo_container{float:right;margin: 0 0 .6em 1em;}
+div.info_container{padding-right:116px;padding-left:0;}
+.edition_container, .dash-course{padding: 0 0 1em 110px;}
+.user_panel{float:left;text-align:right;}
+.user_panel p{float:right;border-left:2px solid #cccccc;border-right:0px none;text-align:left;padding:0 0 0 5%;}
+.user_panel ul{}
+.user_panel span.select-language{padding-right:0;font-size:90%;}
+.user_panel a.identity{background-position:100% 50%;}
+.user_panel a.logout{background-position:100% 50%;}
+.user_panel a.identity span,.user_panel a.logout span{padding-left:0;padding-right:20px;}
+
+/*lms-menu.css*/
+.yui-skin-docebo div.nested_tab .yui-navset .yui-nav li,.yui-skin-docebo div.nested_tab .yui-navset .yui-navset-top .yui-nav li{border-left:0px none;border-right:1px solid #808080;}
+li.main-v a.main-av{padding:2px 10px 2px 0;}
+li.main-open a.main-av{background:url(../yui-skin/menubaritem_submenuindicator_rtl.png) no-repeat scroll right center;}
+li.main-close a.main-av{background:url(../yui-skin/menuitem_submenuindicator_rtl.png) no-repeat scroll right center;}
+
+/*menu.css*/
+.yui-skin-docebo .yuimenuitemlabel,.yui-skin-docebo .yuimenubaritemlabel{text-align:right;}
+.yui-skin-docebo .yuimenubaritem{float:right;}
+.yui-skin-docebo .yuimenubaritem .yuimenubaritem{float:left;}
+.yui-skin-sam li.yuimenuitem-hassubmenu{background: url(../yui-skin/menuitem_submenuindicator_rtl.png) 0 50% no-repeat;}
+
+/*datatable.css*/
+.yui-skin-sam .yui-dt-editor .yui-dt-button{text-align:left;}
+
+/*containe.css*/
+.yui-skin-sam a.container-close{right:auto;left:10px;}
+
+/*base-folder-tree.css*/
+.yui-skin-docebo .folder_tree .ygtvtn{background:url(../images/tree_rtl/tn.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtm{background:url(../images/tree_rtl/tm.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtmh{background:url(../images/tree_rtl/tmh.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtp{background:url(../images/tree_rtl/tp.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtph{background:url(../images/tree_rtl/tph.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvln{background:url(../images/tree_rtl/ln.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvlm{background:url(../images/tree_rtl/lm.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvlmh{background:url(../images/tree_rtl/lmh.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvlp{background:url(../images/tree_rtl/lp.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvlph{background:url(../images/tree_rtl/lph.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvdepthcell{background:url(../images/tree_rtl/vline.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtn_disabled{background:url(../images/tree_rtl/disable/tn.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtm_disabled{background:url(../images/tree_rtl/disable/tm.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtmh_disabled{background:url(../images/tree_rtl/disable/tmh.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtp_disabled{background:url(../images/tree_rtl/disable/tp.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtph_disabled{background:url(../images/tree_rtl/disable/tph.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvln_disabled{background:url(../images/tree_rtl/disable/ln.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvlm_disabled{background:url(../images/tree_rtl/disable/lm.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvlmh_disabled{background:url(../images/tree_rtl/disable/lmh.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvlp_disabled{background:url(../images/tree_rtl/disable/lp.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvlph_disabled{background:url(../images/tree_rtl/disable/lph.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvdepthcell_disabled{background:url(../images/tree_rtl/vline.png)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtn_page{background:url(../images/tree_rtl/page/tn.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtm_page{background:url(../images/tree_rtl/page/tm.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtmh_page{background:url(../images/tree_rtl/page/tmh.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtp_page{background:url(../images/tree_rtl/page/tp.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtph_page{background:url(../images/tree_rtl/page/tph.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvln_page{background:url(../images/tree_rtl/page/ln.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvlm_page{background:url(../images/tree_rtl/page/lm.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvlmh_page{background:url(../images/tree_rtl/page/lmh.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvlp_page{background:url(../images/tree_rtl/page/lp.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvlph_page{background:url(../images/tree_rtl/page/lph.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvdepthcell_page{background:url(../images/tree_rtl/vline.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtn_link{background:url(../images/tree_rtl/link/tn.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtm_link{background:url(../images/tree_rtl/link/tm.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtmh_link{background:url(../images/tree_rtl/link/tmh.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtp_link{background:url(../images/tree_rtl/link/tp.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvtph_link{background:url(../images/tree_rtl/link/tph.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvln_link{background:url(../images/tree_rtl/link/ln.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvlm_link{background:url(../images/tree_rtl/link/lm.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvlmh_link{background:url(../images/tree_rtl/link/lmh.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvlp_link{background:url(../images/tree_rtl/link/lp.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvlph_link{background:url(../images/tree_rtl/link/lph.gif)100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvdepthcell_link{background:url(../images/tree_rtl/vline.gif)100% 0 no-repeat;}
+
+.yui-skin-docebo .folder_tree .yui-skin-docebo .folder_tree-checknode{margin-left:0;margin-right:4px;}
+.yui-skin-docebo .folder_tree .ygtvitem td{border:none;padding:0 4px 0 0;}
+.yui-skin-docebo .folder_tree .ygtvlabel, .yui-skin-docebo .folder_tree .ygtvlabel:link, .yui-skin-docebo .folder_tree .ygtvlabel:visited, .yui-skin-docebo .folder_tree .ygtvlabel:hover{margin-right:2px;margin-left:0;}
+.yui-skin-docebo .folder_tree .icon-file{padding-left:0;padding-right:20px;background:transparent url(../images/tree_rtl/file.png) 0 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvitem .ygtvroot{padding-left:0;padding-right:52px;background:transparent url(../images/tree_rtl/root.png) 100% 0 no-repeat;}
+.yui-skin-docebo .folder_tree .ygtvoptions{text-align:left;}
+.yui-skin-docebo .folder_tree .ygtvradio{text-align:left;}

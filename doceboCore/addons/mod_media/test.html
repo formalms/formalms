@@ -1,0 +1,61 @@
+<html>
+<head>
+<title>test</title>
+
+
+
+<script language="javascript"><!--
+
+	function GetE( elementId )
+	{
+		return document.getElementById( elementId )  ;
+	}
+
+	function test() {
+
+		dialogArguments = window.opener.FCKLastDialogInfo ;
+		var oEditor		= dialogArguments.Editor ;
+		var FCK			= oEditor.FCK ;
+/*		var FCKLang		= oEditor.FCKLang ;
+		var FCKConfig	= oEditor.FCKConfig ; */
+
+		// Get the selected image (if available).
+		var oImage = FCK.Selection.GetSelectedElement() ;
+
+		var bHasImage = ( oImage != null ) ;
+
+		if ( !bHasImage ) {
+			oImage = FCK.CreateElement( 'IMG' ) ;
+		}
+
+		//oImage.src="http://www.fckeditor.net/images/logos.gif" ;
+		oImage.src="http://www.docebo.com/templates/docebo.com/images/logo_sx.gif" ;
+
+/*		//var sLnkUrl = GetE('txtLnkUrl').value.trim() ;
+		//var sLnkUrl = "http://www.fckeditor.net/images/logos.gif" ;
+
+		oLink = oEditor.FCK.CreateLink( sLnkUrl ) ;
+
+		oEditor.FCKSelection.SelectNode( oLink ) ;
+		oEditor.FCKSelection.Collapse( false ) ;
+
+		//SetAttribute( oLink, 'target', GetE('cmbLnkTarget').value ) ;
+		SetAttribute( oLink, 'target', "http://www.fckeditor.net/images/logos.gif" ) ; */
+
+		window.close();
+	}
+
+--></script>
+
+</head>
+<body>
+
+
+ciao
+
+<a href="#" onclick="test();">cliccami</a>
+<a href="#" onclick="Ok();">ghghgh</a>
+
+
+</body>
+</html>
