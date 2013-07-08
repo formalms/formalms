@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!-- for this examplo to work properly you must define the following
+	custom fields:
+	FieldText type=text
+	FieldCombo type=combo values=Value1,Value2,Value3
+-->
+<tree>
+	<folder name="folder_1">
+		<fields>
+			<field mandatory="no">
+				<name>FieldText</name>
+				<value>New value for field text</value>
+			</field>
+		</fields>
+		<folder name="folder_1_1">
+		</folder>
+		<folder name="folder_1_2">
+		</folder>
+	</folder>
+	<folder name="folder_2">
+		<fields>
+			<field mandatory="yes">
+				<name>FieldCombo</name>
+				<value>Value2</value>
+			</field>
+		</fields>
+		<folder name="folder_2_1"/>
+	</folder>
+</tree>

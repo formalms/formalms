@@ -1,0 +1,1 @@
+<script type="text/javascript">function yuiLogAutoReset() {} function yuiLogMsg(msg, type) {}</script>

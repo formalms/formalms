@@ -1,0 +1,4 @@
+<FilesMatch "(api_test\.php|rest\.php|soap\.php|wsdl\.php)$">
+ Order Allow,Deny
+ Allow from all
+</FilesMatch>

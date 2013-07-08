@@ -1,0 +1,85 @@
+/*
+DOCEBO - The E-Learning Suite
+http://www.docebo.com
+license: http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+*/
+html,body{height:100%;}
+body{font:13px/1.231 arial,sans-serif;color:#333333;background:url(../images/login/bk_body.png) repeat-x 0 0 #F0ECE9;*font-size:small;*font:x-small;}
+
+.header,
+.content,
+.footer,
+.webcontent{position:relative;width:98%;margin:0 auto;padding:0;}
+
+.header{height:89px;}
+.header .select-language{position:absolute;bottom:12px;right:20px;font-size:90%;letter-spacing:1px;color:#322C2C;}
+.header #main_title{position:absolute;top:20px;left:15px;width:271px;height:60px;background:url(../images/company_logo.png) no-repeat 0 0;overflow:hidden;}
+.header #main_title a{display:block;width:221px;height:53px;padding:0 300px 0;}
+
+.content{width:806px;height:409px;background:url(../images/login/image.jpg) no-repeat 0 0;margin-top:10px;}
+.content h2 {position:relative;top:342px;left:20px;color:#322C2C;font-size:140%;font-weight:normal;margin:0;padding:0 14px;text-align:left;z-index:1000;display:inline;}
+.content #login-line p{}
+.content #login_confirm{position:relative;top:290px;width:776px;background:url(../images/login/bg_login.png) repeat-x 0 0;padding:5px 0 30px 7px;text-align:left;margin-left:11px;}
+.content #login_confirm p,.content #login_confirm div {display:inline;}
+.content #login_confirm label {font-size:90%;font-weight:bold;margin:0 11px 0 18px;}
+.content #login_confirm input.textfield {font-size:90%;font-weight:normal;margin:0;padding:2px 0;width:200px;border:1px solid #848387;}
+.content #login_confirm input#login{background:#322C2C;border:0px none;color:#ffffff;font-size:90%;font-weight:bold;padding:1px 8px 2px 120px;margin-left:11px;}
+
+.content #social_login{position:relative;float:left;top:-70px;left:3px;padding:4px 8px;border-radius: 5px 5px 0 0; -moz-border-radius: 5px 5px 0 0; -webkit-border-radius: 5px 5px 0 0;}
+.content #social_login span{ font-weight: bold; }
+.content #social_login a{ margin: 0 4px;}
+.content #social_login img{ height: 22px; }
+
+.content #service_msg{font-size:90%;position:relative;top:290px;width:783px;margin-left:11px;}
+.content .logout{display:block;padding:3px 24px;background:#ffffff;color:#322C2C;}
+.content .login_failed{display:block;color:#ffffff;background:#EE1111;padding:3px 24px;-khtml-opacity:.80; -moz-opacity:.80; -ms-filter:"alpha(opacity=80)"; filter:alpha(opacity=80); opacity:.80; }
+
+
+
+.footer{background:#322C2C;height:21px;font-size:90%;}
+.footer #link{margin-top:8px;padding:3px 16px 4px;}
+.footer a{text-decoration:none;color:#ffffff;}
+.footer a:hover{text-decoration:underline;}
+.footer #link a.first{font-weight:bold;padding:0 6px 0 0;margin:0 3px 0 0;border-right:1px solid #ffffff;}
+
+.footer .copyright{position:absolute;bottom:2px;right:16px;color:#ffffff;}
+
+.password {position:absolute;top:340px;left:513px;z-index:50000;}
+.password a{color:#807F83;}
+
+.catalog {position:absolute;top:340px;left:596px;background:#FF9900;border:0px none;color:#322C2C;font-size:90%;font-weight:bold;padding:1px 8px 2px 64px;margin-left:11px;}
+.catalog a{color:#807F83;}
+
+
+.webcontent .box {margin:10px 5px;}
+.webcontent h3 {margin:0 0 10px;padding:0;font-size:140%;color:#322C2C;}
+.webcontent p {margin:0 0 6px;}
+
+/* XXX:register class ======================================*/
+.reg_note{font-weight:bold;margin:1em 0 0;padding:0.20em;}
+.reg_form{padding:0.40em;}
+.reg_title_privacy{margin:24px auto 4px;padding:0.20em;width:70%;color:#ffffff;;font-weight:bold;}
+.privacy_box{margin:0 auto;padding:0.40em;width:90%;max-height:150px;overflow:auto;background:#ffffff;border:1px solid #2F763B;}
+.reg_form_button{text-align:right;margin:0 auto;padding:0.40em;}
+.reg_button{cursor:pointer;font-weight:bold;}
+ul.reg_instruction{margin:0.20em 0.20em 1em;padding:4px 12px 4px 24px;}
+ul.reg_instruction li{list-style-type:square;margin:2px;}
+.reg_err_data{margin:0.40em;padding:0.40em;color:#ff0000;font-weight:bold;border:1px solid #ff0000;}
+.reg_success{margin:0.40em;padding:0.40em;;border:1px solid #ffffff;}
+.lostpwd_box{margin:1em;padding:0.60em 0.60em 0 0.60em;}
+.lostpwd_logo{margin:0 0.40em;padding:0;}
+.lostpwd_box span{font-weight:bold;}
+.form_right{margin:0.60em 0 0 0;padding:0.40em;text-align:right;color:#322C2C;font-weight:bold;background:#EFEBE8;}
+.form_right .textfield{margin:0 14px; width:auto; padding:0; border:1px solid #848387;}
+
+/* XXX:text box ======================================*/
+.yui-gb {width:808px;margin:8px auto;padding:0;}
+.yui-u, first text-box{background:#ffffff;}
+.yui-u h2 {margin:0 auto;padding:0 0 6px 0; font-weight:bold;}
+.yui-u, text-box{}
+.yui-u, news-box{}
+
+.content-text{padding:6px;border:solid 2px #F1EDEB;}
+
+div.home_cat_back{text-align:right;border-top:1px solid #cccccc;margin-top:25px;padding-top:10px;font-size:90%;}
+a.home_cat_link{color:#2F763B;text-decoration:none;}

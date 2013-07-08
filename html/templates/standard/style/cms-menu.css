@@ -1,0 +1,31 @@
+/*
+DOCEBO - The E-Learning Suite
+http://www.docebo.com
+license: http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+*/
+.menu_block {}
+ul.menu_macroarea{background:#eeeeee;padding:8px 0 8px;margin:0; border-bottom:solid 1px #cccccc; border-top:solid 1px #cccccc;}
+*ul.menu_macroarea{padding:7px 0 8px}
+ul.menu_macroarea li{display:inline;padding:8px 0;}
+ul.menu_macroarea li a{padding:8px 12px;color:#6A87BE;text-decoration:none; font-size:100%;font-weight: bold;border-right: 1px solid #ffffff;}
+ul.menu_macroarea li a:hover{background: #abcbf4; color:#ffffff;}
+
+ul.menu_onlycurrent{background:#6a87be;padding:8px 0 8px;margin:0;}
+*ul.menu_onlycurrent{padding:7px 0 8px}
+ul.menu_onlycurrent li{display:inline;padding:8px 0;}
+ul.menu_onlycurrent li a{padding:8px 12px;color: #ffffff;text-decoration:none; font-size:115%;font-weight: bold;border-right: 1px solid #ffffff;}
+ul.menu_onlycurrent li a:hover{background: #abcbf4;}
+
+ul.header_son{background:#eeeeee;padding:6px 0;margin:0; border-bottom:solid 1px #808080;}
+*ul.header_son{padding:5px 0 6px}
+ul.header_son li{display:inline;padding:0px 0;margin:0px;}
+ul.header_son li a{padding:6px 12px;color: #666666;text-decoration:none; font-size:90%;border-right: 1px solid #ffffff;}
+ul.header_son li a:hover{}
+ul.header_son li a.header_link_selected {}
+
+ul.header_son_second{background:#ffffff;padding:8px 0 8px;margin:0;}
+*ul.header_son_second{padding:7px 0 8px}
+ul.header_son_second li{display:inline;padding:8px 0;margin:0;}
+ul.header_son_second li a{padding:8px 12px;color: #003d6b;text-decoration:none; font-size:90%;}
+ul.header_son_second li a:hover{text-decoration: underline;}
+ul.header_son_second li a.header_son_link_selected{font-weight:bold; color: #003d6b;}

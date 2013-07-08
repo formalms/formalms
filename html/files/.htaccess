@@ -1,0 +1,2 @@
+AddType text/html .php .php3 .ph3 .ph4 .php4 .ph5 .php5 .pl .py .cgi .rb .asp .aspx
+Options -Indexes
