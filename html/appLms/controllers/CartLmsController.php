@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 class CartLmsController extends LmsController {
@@ -29,7 +32,7 @@ class CartLmsController extends LmsController {
 	{
 		YuiLib::load('base,tabview');
 		Lang::init('course');
-		$this->path_course = $GLOBALS['where_files_relative'].'/doceboLms/'.Get::sett('pathcourse').'/';
+		$this->path_course = $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathcourse').'/';
 		$this->model = new CartLms();
 
 		require_once(_base_.'/lib/lib.json.php');
@@ -37,7 +40,7 @@ class CartLmsController extends LmsController {
 
 		$this->acl_man =& Docebo::user()->getAclManager();
 
-		Util::get_css(Get::rel_path(_base_).'/doceboLms/views/cart/cart.css', true, true);
+		Util::get_css(Get::rel_path(_base_).'/appLms/views/cart/cart.css', true, true);
 	}
 
 

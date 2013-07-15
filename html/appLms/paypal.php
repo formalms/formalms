@@ -1,7 +1,7 @@
 <?php
 
 define("IS_PAYPAL", true);
-define("IN_DOCEBO", true);
+define("IN_FORMA", true);
 define("_deeppath_", '../');
 require(dirname(__FILE__).'/../base.php');
 

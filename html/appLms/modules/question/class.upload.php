@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 require_once( dirname(__FILE__).'/class.question.php' );
@@ -220,7 +223,7 @@ class Upload_Question extends Question {
 		
 		sl_open_fileoperations();
 		while(list($file_path) = sql_fetch_row($re_path)) {
-			$path = '/doceboLms/'.Get::sett('pathtest');
+			$path = '/appLms/'.Get::sett('pathtest');
 			sl_unlink($path.$file_path);
 		}
 		sl_close_fileoperations();
@@ -320,7 +323,7 @@ class Upload_Question extends Question {
 		//save file--------------------------------------------------------
 		if(isset($_FILES['quest']['name'][$this->id]) && ($_FILES['quest']['name'][$this->id] != '')) {
 			
-			$path = '/doceboLms/'.Get::sett('pathtest');
+			$path = '/appLms/'.Get::sett('pathtest');
 			
 			$savefile = $_SESSION['idCourse'].'_'.$this->id.'_'.mt_rand(0, 100).time().'_'.$_FILES['quest']['name'][$this->id];
 			if(!file_exists($GLOBALS['where_files_relative'].$path.$savefile )) {
@@ -389,7 +392,7 @@ class Upload_Question extends Question {
 		FROM ".$GLOBALS['prefix_lms']."_testtrack_answer 
 		WHERE idTrack = '".(int)$id_track."' AND 
 			idQuest = '".$this->id."'"));
-		$path = '/doceboLms/'.Get::sett('pathtest');
+		$path = '/appLms/'.Get::sett('pathtest');
 		sl_open_fileoperations();
 		sl_unlink($path.$file_path);
 		sl_close_fileoperations();
@@ -444,7 +447,7 @@ class Upload_Question extends Question {
 		FROM ".$GLOBALS['prefix_lms']."_testquest 
 		WHERE idQuest = '".$this->id."'"));
 		
-		$path = '/doceboLms/'.Get::sett('pathtest');
+		$path = '/appLms/'.Get::sett('pathtest');
 		
 		//recover previous information
 		$recover_answer = "
@@ -475,7 +478,7 @@ class Upload_Question extends Question {
 		
 		require_once(_base_.'/lib/lib.download.php' );
 		
-		$path = '/doceboLms/'.Get::sett('pathtest');
+		$path = '/appLms/'.Get::sett('pathtest');
 		
 		//recover previous information
 		$recover_answer = "

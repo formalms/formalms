@@ -60,7 +60,7 @@ tinyMCE.init
 function myFileBrowser (field_name, url, type, win)
 {
 	tinyMCE.activeEditor.windowManager.open({
-        file : '../doceboCore/addons/mod_media/index_tiny.php' + "?type=" + type,
+        file : '../appCore/addons/mod_media/index_tiny.php' + "?type=" + type,
         title : 'File Browser',
         width : 800, 
         height : 600,

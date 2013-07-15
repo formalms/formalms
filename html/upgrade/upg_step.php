@@ -87,7 +87,7 @@ switch($step) {
 		$result = mysql_query($query);
 
 		while(list($photo) = mysql_fetch_row($result)) {
-			@unlink('../files/doceboCore/photo/'.$photo);
+			@unlink('../files/appCore/photo/'.$photo);
 		}
 	} break;
 	case "8": { // --- Kb --------------------------------------------------------

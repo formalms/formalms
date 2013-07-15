@@ -1,27 +1,17 @@
 <?php
 
-/* ========================================================================	\
-|	DOCEBO - The E-Learning Suite											|
-| 																			|
-|	Copyright (c) 2010 (Docebo)												|
-| 	http://www.docebo.com													|
-| =========================================================================	|
-| 																			|
-| Docebo is free software. You can redistribute it and/or modify			|
-| it under the terms of the GNU General Public License as published by		|
-| the Free Software Foundation, either version 2 of the License, or			|
-| (at your option) any later version.										|
-| 																			|
-| Docebo is distributed in the hope that it will be useful,					|
-| but WITHOUT ANY WARRANTY; without even the implied warranty of			|
-| MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the				|
-| GNU General Public License for more details.								|
-| 																			|
-| You should have received a copy of the GNU General Public License			|
-| along with Docebo. If not, see: http://www.gnu.org/licenses/.				|
+/* ======================================================================== \
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-define("IN_DOCEBO", true);
+define("IN_FORMA", true);
 define("_deeppath_", '');
 require(dirname(__FILE__).'/base.php');
 

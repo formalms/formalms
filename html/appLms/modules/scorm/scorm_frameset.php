@@ -1,15 +1,19 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
+
 /*
 define("LMS", true);
-define("IN_DOCEBO", true);
+define("IN_FORMA", true);
 define("_deeppath_", '../../../');
 //require(dirname(__FILE__).'/../base.php');
 
@@ -95,14 +99,14 @@ if(!empty($GLOBALS['chapter'])) {
 //$lms_base_url = Get::rel_path('lms').'/';
 //$lms_base_url = preg_replace("/:\/\/([A-Za-z0-9_:.]+)\//","://".$_SERVER['HTTP_HOST']."/",Get::sett('url'));
 $lms_base_url = preg_replace("/http[s]*:\/\/([A-Za-z0-9_:.]+)\//", 'http' . ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 's' : '' )."://".$_SERVER['HTTP_HOST']."/",Get::sett('url'));
-$lms_base_url .= 'doceboLms/';
+$lms_base_url .= 'appLms/';
 $lms_base_url = Get::rel_path('lms').'/';
 
 $lms_base_url = 'http' . ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 's' : '' ).'://'.$_SERVER['HTTP_HOST']
 	    	.( strlen(dirname($_SERVER['SCRIPT_NAME'])) != 1 ? dirname($_SERVER['SCRIPT_NAME']) : '' ).'/';
 /*
- lms_url: 'http://localhost/docebo_36/doceboLms/modules/scorm/soaplms.php',
- lms_base_url: 'http://localhost/docebo_36/doceboLms/',
+ lms_url: 'http://localhost/docebo_36/appLms/modules/scorm/soaplms.php',
+ lms_base_url: 'http://localhost/docebo_36/appLms/',
 */
 $lms_url = $lms_base_url.$scormws;
 $xmlTreeUrl = $lms_base_url.$scormxmltree.'?idscorm_organization='.$idscorm_organization.'&idReference='.$idReference.'&environment='.$environment;

@@ -57,18 +57,18 @@ function checkFolderPerm() {
 
 				case "lms": {
 					$specific_dir_to_check = array(
-						'files/doceboLms/course',
-						'files/doceboLms/forum',
-						'files/doceboLms/item',
-						'files/doceboLms/message',
-						'files/doceboLms/project',
-						'files/doceboLms/scorm',
-						'files/doceboLms/test' );
-					$empty_specific_dir_to_check = array('files/doceboLms/course', 'files/doceboLms/scorm');
+						'files/appLms/course',
+						'files/appLms/forum',
+						'files/appLms/item',
+						'files/appLms/message',
+						'files/appLms/project',
+						'files/appLms/scorm',
+						'files/appLms/test' );
+					$empty_specific_dir_to_check = array('files/appLms/course', 'files/appLms/scorm');
 				} break;
 
 				case "framework": {
-					$specific_dir_to_check = array("files/doceboCore/photo", "files/common/users");
+					$specific_dir_to_check = array("files/appCore/photo", "files/common/users");
 				} break;
 
 			}

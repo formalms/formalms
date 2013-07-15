@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2010 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 require_once( dirname( __FILE__ ).'/learning.object.php' );
@@ -67,7 +70,7 @@ class Learning_Item extends Learning_Object {
 		
 		require_once(_base_.'/lib/lib.upload.php');
 		
-		$path_to_file = '/doceboLms/'.Get::sett('pathlesson');
+		$path_to_file = '/appLms/'.Get::sett('pathlesson');
 		
 		list($old_file) = sql_fetch_row(sql_query("
 		SELECT path 
@@ -114,7 +117,7 @@ class Learning_Item extends Learning_Object {
 		WHERE idLesson = '".(int)$id."'"));
 		
 		//create the copy filename 
-		$path_to_file = '/doceboLms/'.Get::sett('pathlesson');
+		$path_to_file = '/appLms/'.Get::sett('pathlesson');
 		$savefile = $_SESSION['idCourse'].'_'.mt_rand(0, 100).'_'.time().'_'
 			.implode('_', array_slice(explode('_', $file), 3));
 		

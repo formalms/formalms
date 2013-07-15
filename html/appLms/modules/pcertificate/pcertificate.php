@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 define('IS_META', 0);
@@ -424,7 +427,7 @@ function del_report_certificate()
 	{
 		require_once(_base_.'/lib/lib.upload.php');
 
-		$path = '/doceboLms/certificate/';
+		$path = '/appLms/certificate/';
 		$deletion_result = true;
 		if($certificate_info[CERT_NAME] != '')
 			$deletion_result = sl_unlink($path.$certificate_info[ASSIGN_CERT_FILE]);
@@ -482,7 +485,7 @@ function send_certificate() {
 	$totPart = count($expFileName) - 1;
 
 	//send file
-	sendFile('/doceboLms/certificate/', $file, $expFileName[$totPart]);
+	sendFile('/appLms/certificate/', $file, $expFileName[$totPart]);
 }
 
 function print_certificate() {

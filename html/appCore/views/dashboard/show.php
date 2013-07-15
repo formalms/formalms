@@ -255,18 +255,18 @@
 						<h3><?php echo Lang::t('_SUPPORT_SITE', 'dashboard'); ?></h3>
 						<ul class="link_list">
 							<li>
-								<a href="http://www.docebo.com/"
+								<a href="http://www.formalms.org/"
 									 onclick="window.open(this.href); return false;"
 									 onkeypress="window.open(this.href); return false;"
-									 title="Docebo <?php echo Lang::t('_OPEN_IN_NEW_WINDOW', 'dashboard'); ?>">
+									 title="Forma <?php echo Lang::t('_OPEN_IN_NEW_WINDOW', 'dashboard'); ?>">
 									<?php echo Lang::t('_URL_COMPANY', 'dashboard'); ?>
 								</a>
 							</li>
 							<li>
-								<a href="http://www.docebo.org/"
+								<a href="http://www.elearningcommunity.net/forum/index.php"
 									 onclick="window.open(this.href); return false;"
 									 onkeypress="window.open(this.href); return false;"
-									 title="Docebo Community <?php echo Lang::t('_OPEN_IN_NEW_WINDOW', 'dashboard'); ?>">
+									 title="Forma Community <?php echo Lang::t('_OPEN_IN_NEW_WINDOW', 'dashboard'); ?>">
 									<?php echo Lang::t('_URL_SUPPORTLMS', 'dashboard'); ?>
 								</a>
 							</li>

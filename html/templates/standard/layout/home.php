@@ -33,7 +33,7 @@
 		</div>
 		<div class="footer">
 			<span class="copyright">
-				Powered by <a href="http://www.docebo.com/?versions" onclick="window.open(this.href); return false;">Docebo <sup>&reg;</sup> Community Edition</a>
+				Powered by <a href="http://www.formalms.org/?version" onclick="window.open(this.href); return false;">Forma</a>
 			</span>
 		</div>
 		<!-- def lang -->

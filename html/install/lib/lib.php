@@ -45,9 +45,9 @@ function generateConfig($tpl_fn) {
 
 function getPlatformArray() {
 	return array(
-		'framework'=>'doceboCore',
-		'lms'=>'doceboLms',
-		'scs'=>'doceboScs',
+		'framework'=>'appCore',
+		'lms'=>'appLms',
+		'scs'=>'appScs',
 	);
 }
 

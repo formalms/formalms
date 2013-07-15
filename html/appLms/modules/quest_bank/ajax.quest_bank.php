@@ -1,16 +1,15 @@
 <?php
 
-/************************************************************************/
-/* DOCEBO CORE - Framework												*/
-/* ============================================							*/
-/*																		*/
-/* Copyright (c) 2006													*/
-/* http://www.docebo.com												*/
-/*																		*/
-/* This program is free software. You can redistribute it and/or modify	*/
-/* it under the terms of the GNU General Public License as published by	*/
-/* the Free Software Foundation; either version 2 of the License.		*/
-/************************************************************************/
+/* ======================================================================== \
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+\ ======================================================================== */
 
 /**
  * @package course management
@@ -20,7 +19,7 @@
  *
  */
 
-if(!defined("IN_DOCEBO") && !defined("IN_AJAX")) die('You can\'t access directly');
+if(!defined("IN_FORMA") && !defined("IN_AJAX")) die('You can\'t access directly');
 if($GLOBALS['current_user']->isAnonymous()) die('You can\'t access');
 
 $op = Get::gReq('op', DOTY_ALPHANUM, '');

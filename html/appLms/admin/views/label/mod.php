@@ -9,7 +9,7 @@ echo Form::openForm('mod_label_form', 'index.php?r=alms/label/mod&amp;id_common_
 	.Form::openElementSpace()
 	.Form::getFilefield(Lang::t('_IMAGE', 'label'), 'label_image', 'label_image')
 	.($model->getLabelFile($id_common_label) !== ''
-		?	'<img style="height: 48px;" src="'.$GLOBALS['where_files_relative'].'/doceboLms/label/'.$model->getLabelFile($id_common_label).'" />'
+		?	'<img style="height: 48px;" src="'.$GLOBALS['where_files_relative'].'/appLms/label/'.$model->getLabelFile($id_common_label).'" />'
 			.Form::getCheckbox(Lang::t('_DEL_LABEL_IMAGE', 'label'), 'del_label_image', 'del_label_image', false)
 		: '');
 ?>

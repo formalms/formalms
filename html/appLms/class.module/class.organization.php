@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 class Module_Organization extends LmsModule {
@@ -213,7 +216,7 @@ class Module_Organization extends LmsModule {
 		}
 		
 		if($GLOBALS['op'] == 'scorm_interactions') {
-			require_once(_lms_.'/modules/organization/orgresults.php');//__FILE__.'/doceboLms/modules/organization/orgresults.php');
+			require_once(_lms_.'/modules/organization/orgresults.php');//__FILE__.'/appLms/modules/organization/orgresults.php');
 			$user  = Get::req('id_user', DOTY_INT, false);
 			$track = Get::req('id_track', DOTY_INT, false);
 			getInteractionsTable($user, $track);

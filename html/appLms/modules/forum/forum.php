@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 if(Docebo::user()->isAnonymous()) die("You can't access");
@@ -1199,7 +1202,7 @@ function addthread() {
 function save_file($file) {
 	require_once(_base_.'/lib/lib.upload.php');
 
-	$path = '/doceboLms/'.Get::sett('pathforum');
+	$path = '/appLms/'.Get::sett('pathforum');
 
 	if($file['name'] != '') {
 
@@ -1221,7 +1224,7 @@ function save_file($file) {
 function delete_file( $name ) {
 	require_once(_base_.'/lib/lib.upload.php');
 
-	$path = '/doceboLms/'.Get::sett('pathforum');
+	$path = '/appLms/'.Get::sett('pathforum');
 	if($name != '') return sl_unlink($path.$name);
 }
 
@@ -1786,7 +1789,7 @@ function message() {
 	$tb->addHead($cont_h);
 
 	// Compose messagges display
-	$path = $GLOBALS['where_files_relative'].'/doceboCore/'.Get::sett('pathphoto');
+	$path = $GLOBALS['where_files_relative'].'/appCore/'.Get::sett('pathphoto');
 	$counter = 0;
 	while(list($id_message, $message_info) = each($messages)) {
 		$counter++;
@@ -2138,7 +2141,7 @@ function showMessageForAdd($id_thread, $how_much) {
 	$tb->addHead($cont_h);
 
 	// Compose messagges display
-	$path = $GLOBALS['where_files_relative'].'/doceboCore/'.Get::sett('pathphoto');
+	$path = $GLOBALS['where_files_relative'].'/appCore/'.Get::sett('pathphoto');
 	while(list($id_message, $message_info) = each($messages)) {
 
 		// sender info
@@ -3082,7 +3085,7 @@ function forumsearchmessage() {
 	$tb->addHead($cont_h);
 
 	// Compose messagges display
-	$path = $GLOBALS['where_files_relative'].'/doceboCore/'.Get::sett('pathphoto');
+	$path = $GLOBALS['where_files_relative'].'/appCore/'.Get::sett('pathphoto');
 	while(list($id_message, $message_info) = each($messages)) {
 
 		// sender info
@@ -3918,7 +3921,7 @@ function forumDispatch($op) {
 			$expFileName = explode('.', $attach);
 			$totPart = count($expFileName) - 1;
 
-			$path = '/doceboLms/'.Get::sett('pathforum');
+			$path = '/appLms/'.Get::sett('pathforum');
 			//send file
 			sendFile($path, $attach, $expFileName[$totPart]);
 		};break;

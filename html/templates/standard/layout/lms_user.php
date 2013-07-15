@@ -65,7 +65,7 @@
 		<div id="footer" class="layout_footer">
 			<?php echo Layout::zone('footer'); ?>
 			<p class="powered_by">
-				Powered by <a href="http://www.docebo.com/?versions" onclick="window.open(this.href); return false;">Docebo <sup>&reg;</sup> Community Edition</a>
+				Powered by <a href="http://www.formalms.org/?version" onclick="window.open(this.href); return false;">Forma</a>
 			</p>
 			<div class="nofloat"></div>
 		</div>

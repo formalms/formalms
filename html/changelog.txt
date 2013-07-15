@@ -59,7 +59,7 @@ Docebo 4.0.4
 
 - Fixed: get/set last_enter of the user according to setupUser
 
-- Fixed: Fatal error: Call to undefined function def() in /doceboCore/modules/field/class.cf.php on line 447
+- Fixed: Fatal error: Call to undefined function def() in /appCore/modules/field/class.cf.php on line 447
 
 - Fixed bugs: 371, 370, 369, 367, 366, 365, 364, 363, 361, 360, 356, 355, 354, 352, 350 and others
 

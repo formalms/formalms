@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   license 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 define("_TREE_COLUMNS_TYPE_CHECK", "checkbox");
@@ -61,7 +64,7 @@ class CourseCategoryTree extends ClientTree {
 			'assets/skins/sam' => 'skin.css'
 		));
 		cout(Util::get_css( 'base-folder-tree.css'), 'page_head');
-		cout(Util::get_js( 'doceboLms/lib/category/lib.categorytree.js' ), 'page_head');
+		cout(Util::get_js( 'appLms/lib/category/lib.categorytree.js' ), 'page_head');
 		Util::get_js(Get::rel_path('base').'/lib/lib.elem_selector.js', true, true);
 	}
 

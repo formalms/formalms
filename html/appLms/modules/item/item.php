@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 if(!Docebo::user()->isAnonymous()) {
@@ -63,7 +66,7 @@ function insitem() {
 				Util::jump_to( $back_url.'&create_result=0' );
 			}
 		}
-		$path = '/doceboLms/'.Get::sett('pathlesson');
+		$path = '/appLms/'.Get::sett('pathlesson');
 		$savefile = ( isset($_SESSION['idCourse']) ? $_SESSION['idCourse'] : '0' ).'_'.mt_rand(0,100).'_'.time().'_'.$_FILES['attach']['name'];
 		if(!file_exists( $GLOBALS['where_files_relative'].$path.$savefile )) {
 			sl_open_fileoperations();
@@ -146,7 +149,7 @@ function upitem() {
 	//save file
 	if($_FILES['attach']['name'] != '') {
 		
-		$path = '/doceboLms/'.Get::sett('pathlesson');
+		$path = '/appLms/'.Get::sett('pathlesson');
 		
 		// retrive and delte ld file --------------------------------------------------
 		

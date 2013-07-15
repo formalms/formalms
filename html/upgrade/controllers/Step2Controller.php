@@ -1,11 +1,14 @@
 <?php
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2010 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 require_once(dirname(__FILE__).'/StepController.php');
@@ -155,18 +158,18 @@ Class Step2Controller extends StepController {
 
 					case "lms": {
 						$specific_dir_to_check = array(
-							'files/doceboLms/course',
-							'files/doceboLms/forum',
-							'files/doceboLms/item',
-							'files/doceboLms/message',
-							'files/doceboLms/project',
-							'files/doceboLms/scorm',
-							'files/doceboLms/test' );
-						$empty_specific_dir_to_check = array('files/doceboLms/course', 'files/doceboLms/scorm');
+							'files/appLms/course',
+							'files/appLms/forum',
+							'files/appLms/item',
+							'files/appLms/message',
+							'files/appLms/project',
+							'files/appLms/scorm',
+							'files/appLms/test' );
+						$empty_specific_dir_to_check = array('files/appLms/course', 'files/appLms/scorm');
 					} break;
 
 					case "framework": {
-						$specific_dir_to_check = array("files/doceboCore/photo", "files/common/users");
+						$specific_dir_to_check = array("files/appCore/photo", "files/common/users");
 					} break;
 
 				}

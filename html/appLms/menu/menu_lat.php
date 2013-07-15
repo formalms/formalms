@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
@@ -109,7 +112,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 	$info_panel = '';
 	if(isset($_SESSION['idCourse'])) {
 		
-		$path = $GLOBALS['where_files_relative'].'/doceboLms/'.Get::sett('pathcourse');
+		$path = $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathcourse');
 		$GLOBALS['page']->add('<li><a href="#your_info">'.Lang::t('_BLIND_YOUR_INFO', 'menu_over').'</a></li>', 'blind_navigation');
 	
 		$userid 		= Docebo::user()->getUserId();

@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 if(Docebo::user()->isAnonymous()) die("You can't access");
@@ -1265,7 +1268,7 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index) {
 	
 	if($cinfo['use_logo_in_courselist'] == '1' && $cinfo['img_course'] != '') {
 		$html .= '<ul class="course_score"><li>';
-	 	$html .= '<img height="70" src="'.$GLOBALS['where_files_relative'].'/doceboLms/'.Get::sett('pathcourse')
+	 	$html .= '<img height="70" src="'.$GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathcourse')
 	 			.$cinfo['img_course'].'" alt="'.$lang->def('_COURSE_LOGO').'" />';
 		$html .= '</li></ul>';
 	} 
@@ -1469,7 +1472,7 @@ function downloadMaterials()
 	}
 	require_once(_base_.'/lib/lib.download.php' );
 	$ext = end(explode('.', $file));
-	sendFile('/doceboLms/'.Get::sett('pathcourse'), $file, $ext);
+	sendFile('/appLms/'.Get::sett('pathcourse'), $file, $ext);
 }
 
 ?>

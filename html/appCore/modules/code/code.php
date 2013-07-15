@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 require_once(_adm_.'/lib/lib.code.php');
@@ -540,7 +543,7 @@ function importCode_step2() {
 	if ($_FILES['file_import']['name'] == '')
 		Util::jump_to('index.php?modname=code&amp;op=list&result=err');
 	else {
-		$path = '/doceboCore/';
+		$path = '/appCore/';
 
 		$savefile = mt_rand(0, 100).'_'.time().'_'.$_FILES['file_import']['name'];
 
