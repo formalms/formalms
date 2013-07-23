@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Docebo 4.0 - インストール");
+define("_INSTALLER_TITLE", "Forma - インストール");
 define("_NEXT", "進む");
 define("_BACK", "戻る");
 define("_LOADING", "ローディング");
@@ -100,7 +100,7 @@ define("_DOWNLOAD_CONFIG", "configをダウンロード");
 define("_CHECKED_DIRECTORIES","ファイルが保存されるディレクトリが存在しないか必要なパーミッションがありません");
 define("_CHECKED_FILES","一部のファイルに適切なパーミッションがありません");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Docebo 4.0 - アップグレード");
+define("_UPGRADER_TITLE", "Forma - アップグレード");
 define("_UPGRADE_CONFIG","config.phpをアップグレード中");
 define("_UPG_CONFIG_OK","config.phpは無事アップデートされました");
 define("_UPG_CONFIG_NOT_SAVED", "config.phpのアップデートに失敗しました。");

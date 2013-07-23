@@ -28,7 +28,7 @@ class Admin {
 	
 	/**
 	 * class constructor
-	 * @param 	DoceboUser 	$user				the object of the Docebo User, for permission control
+	 * @param 	FormaUser 	$user				the object of the Forma User, for permission control
 	 * @param 	string 		$table_level_one	table of level one menu
 	 * @param 	string 		$table_level_two	table of level two menu
 	 *

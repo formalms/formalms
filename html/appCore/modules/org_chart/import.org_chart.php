@@ -12,7 +12,7 @@
 \ ======================================================================== */
 
 /**
- * @package		Docebo
+ * @package		Forma
  * @subpackage	ImportExport
  * @version 	$Id: import.org_chart.php 977 2007-02-23 10:40:19Z fabio $
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
@@ -40,7 +40,7 @@ class ImportUser extends DoceboImport_Destination {
 	public $pwd_force_change_policy = "do_nothing";
 
 	/**
-	 * constructor for docebo users destination connection
+	 * constructor for forma users destination connection
 	 * @param array $params
 	 *			- 'dbconn' => connection to database (required)
 	 *			- 'tree' => The id of the destination folder on tree (required)
@@ -359,7 +359,7 @@ class ImportGroupUser extends DoceboImport_Destination {
 	var $user_cache = array();
 
 	/**
-	 * constructor for docebo users destination connection
+	 * constructor for forma users destination connection
 	 * @param array $params
 	 *			- 'dbconn' => connection to database (required)
 	 *			- 'tree' => The id of the destination folder on tree (required)

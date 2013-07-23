@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Docebo 4.0 - Telepítés");
+define("_INSTALLER_TITLE", "Forma - Telepítés");
 define("_NEXT", "Következő lépés");
 define("_BACK", "Vissza");
 define("_LOADING", "Betöltés");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Próbáld újra");
 //--------------------------------------
 define("_TITLE_STEP1", "1. lépés: nyelv választás");
 define("_LANGUAGE", "Nyelv");
-define("_INSTALLER_INTRO_TEXT", "A Docebo egy cég, amely kifejlesztette a saját, nyílt forráskódú e-tanulási keretrendszerét, a DoceboLMS-t, összetett szervezetek, vállalatok, valamint a közigazgatás és egészségügy számára.
+define("_INSTALLER_INTRO_TEXT", "A Forma egy cég, amely kifejlesztette a saját, nyílt forráskódú e-tanulási keretrendszerét, a FormaLMS-t, összetett szervezetek, vállalatok, valamint a közigazgatás és egészségügy számára.
 	<p><b>A legfontosabb jellemzői</b></p>
 	<ul>
 		<li>Scorm 1.2 és 2004 támogatás</li>
@@ -43,7 +43,7 @@ define("_MAX_EXECUTION_TIME","max_execution_time: ");
 define("_ON","ON ");
 define("_OFF","OFF ");
 
-define("_VERSION","Docebo verzió");
+define("_VERSION","Forma verzió");
 define("_START","Kezdés");
 define("_END","Vége");
 // -----------------------------------------
@@ -99,7 +99,7 @@ define("_DOWNLOAD_CONFIG", "Konfig letöltése");
 define("_CHECKED_DIRECTORIES","Néhány mappa, ahol a fájlok tárolódnak, nem létezik, vagy nem rendelkezik megfelelő engedéllyel");
 define("_CHECKED_FILES","Bizonyos fájlok nem rendelkeznek megfelelő engedéllyel");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Docebo 4.0 - Frissítés");
+define("_UPGRADER_TITLE", "Forma - Frissítés");
 define("_UPGRADE_CONFIG","Config.php fájl frissítése");
 define("_UPG_CONFIG_OK","Config.php fájl sikeresen frissítve");
 define("_UPG_CONFIG_NOT_SAVED", "Config.php fájl frissítése nem sikerült.");

@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Docebo 4.0 - نصب");
+define("_INSTALLER_TITLE", "Forma - نصب");
 define("_NEXT", "مرحله بعدی");
 define("_BACK", "Back");
 define("_LOADING", "در حال بارگیری");
@@ -99,7 +99,7 @@ define("_DOWNLOAD_CONFIG", "بارگیری config");
 define("_CHECKED_DIRECTORIES","یکی از پوشه های ذخیره پرونده ها وجود ندارد یا فاقد مجوز صحیح است");
 define("_CHECKED_FILES","برخی پرونده ها فاقد مجوز درست اند");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Docebo 4.0 - به روز رسانی");
+define("_UPGRADER_TITLE", "Forma - به روز رسانی");
 define("_UPGRADE_CONFIG","به روز رسانی پرونده config.php");
 define("_UPG_CONFIG_OK","به روز رسانی پرونده config.php با موفقیت انجام شد");
 define("_UPG_CONFIG_NOT_SAVED", "به روز رسانی config.php انجام نشد");

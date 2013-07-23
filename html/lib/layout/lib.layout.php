@@ -64,8 +64,8 @@ class Layout {
 	public static function meta() {
 
 		return '<meta http-equiv="Content-Type" content="text/html; charset='.self::charset().'" />'."\n"
-			."\t\t".'<meta name="Copyright" content="Docebo srl" />'."\n"
-			."\t\t".'<link rel="Copyright" href="http://www.docebo.com/" title="Copyright Notice" />'."\n"
+			."\t\t".'<meta name="Copyright" content="Forma srl" />'."\n"
+			."\t\t".'<link rel="Copyright" href="http://www.forma.com/" title="Copyright Notice" />'."\n"
 			."\t\t".'<link rel="shortcut icon" href="'.self::path().'images/favicon.gif" type="image/gif" />'."\n"
 			."\t\t".'<link rel="icon" href="'.self::path().'images/favicon.gif" type="image/gif" />'."\n";
 

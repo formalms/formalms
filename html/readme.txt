@@ -61,7 +61,7 @@ Note: The system will load XML file languages, this operation can take some time
 
 - Make a full backup db and files
 - Make sure that you have a full backup that you can trust and recover if needed
-- Overwrite all the old files, do not overwrite the config.php file (or if you prefer delete all the docebo files and dir excluding the files/ dir and the config.php file and upload the new files)
+- Overwrite all the old files, do not overwrite the config.php file (or if you prefer delete all the forma files and dir excluding the files/ dir and the config.php file and upload the new files)
 - Launch www.yourwebsite.com/upgrade
 - Follow instructions
 
@@ -96,5 +96,5 @@ http://www.docebokms.org
 
 If you need to be a developer please go on
 
-http://www.docebo.org
+http://www.formalms.org
 

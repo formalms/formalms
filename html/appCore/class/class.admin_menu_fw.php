@@ -23,7 +23,7 @@ class Admin_Framework extends Admin {
 
 	/**
 	 * class constructor
-	 * @param 	DoceboUser 	$user	the object of the Docebo User, for permission control
+	 * @param 	FormaUser 	$user	the object of the Forma User, for permission control
 	 *
 	 * @return	nothing
 	 * @access public

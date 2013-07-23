@@ -85,7 +85,7 @@ class Log {
 	}
 	
 	/**
-	 * Print all the logs, the following code is from yii Framework, changed in order to work for docebo
+	 * Print all the logs, the following code is from yii Framework, changed in order to work for forma
 	 * @param filter $str 
 	 */
 	public static function bp($filter = false) {
@@ -114,7 +114,7 @@ class Log {
 		<html>
 		<head>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-			<title>Docebo</title>
+			<title>Forma</title>
 			<style type="text/css">
 			/*<![CDATA[*/
 			body {font-family:"Verdana";font-weight:normal;color:black;background-color:white;}

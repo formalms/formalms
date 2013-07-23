@@ -41,7 +41,7 @@ $page = ''
 .'	http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">'."\n"
 .'<html xmlns="http://www.w3.org/1999/xhtml">'."\n"
 .'<head>'."\n"
-.'	<title>Docebo Chat</title>'."\n"
+.'	<title>Forma Chat</title>'."\n"
 .'</head>'."\n"
 	.'<frameset rows="0%,80%,20%" border="0">'."\n"
 		.'<frame src="check.php?sn='.$sn.'" id="chatCtl" name="chatCtl" />'."\n"

@@ -463,7 +463,7 @@ class User_API extends API {
 	
 	
 	/**
-	 * Count the users of this Docebo installation
+	 * Count the users of this Forma installation
 	 * @param array $params parameters:
 	 *  - status: filter by "active", "suspended", "all"
 	 * @return array 

@@ -12,7 +12,7 @@ Lang::setLanguage();
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Docebo installer</title> 
+		<title>Forma installer</title> 
 		<!-- 
 		<link rel="stylesheet" type="text/css" href="../templates/standard/yui-skin/button.css" />
 		<script type="text/javascript" src=".././lib/js_utils.js"></script> 
@@ -33,7 +33,7 @@ Lang::setLanguage();
 				</div>
 				<div class="install_bd">
 					<div class="install_shoulder">
-						<img class="logo" src="../templates/standard/images/company_logo.png" alt="Docebo e-learning logo" />
+						<img class="logo" src="../templates/standard/images/company_logo.png" alt="Forma e-learning logo" />
 						<img class="flux" src="./templates/standard/images/left_shoulder.jpg" alt="Flux" />
 					</div>
 					<div class="install_content">

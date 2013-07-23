@@ -57,7 +57,7 @@ class LmsPageWriter extends PageWriter {
 			'page_head' );
 		$this->addContent( '' 
 			.'	<meta http-equiv="Content-Type" content="text/html; charset='.getUnicode().'" />'."\n"
-			.'	<meta name="Copyright" content="Docebo srl" />'."\n"
+			.'	<meta name="Copyright" content="Forma srl" />'."\n"
 			.'	<link rel="Copyright" href="http://www.formalms.org" title="Copyright Notice" />'."\n"
 			.'	<link href="'.getPathTemplate().'images/favicon.ico" rel="shortcut icon" />'."\n",
 			'page_head' );
