@@ -1,6 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo Layout::lang_code(); ?>">
 	<head>
+	    <!--PURPLE : Fix funzionamento scorm su IE9-->
+        <meta http-equiv="x-ua-compatible" content="IE=8"></meta>
+        <!--END PURPLE -->
+        
 		<title><?php echo Layout::title(); ?></title>
 		<?php echo Layout::zone('meta'); ?>
 		<link rel="shortcut icon" href="<?php echo Layout::path(); ?>images/favicon.png" type="image/png" />
