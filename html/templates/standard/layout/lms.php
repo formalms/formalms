@@ -5,7 +5,7 @@
 	    <!--PURPLE : Fix funzionamento scorm su IE9-->
         <meta http-equiv="x-ua-compatible" content="IE=8"></meta>
         <!--END PURPLE -->
-        
+
 		<title><?php echo Layout::title(); ?></title>
 		<?php echo Layout::zone('meta'); ?>
 		<link rel="shortcut icon" href="<?php echo Layout::path(); ?>images/favicon.png" type="image/png" />
@@ -19,7 +19,7 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms-menu.css" />
 		<?php echo Layout::rtl(); ?>
 		<!-- specific stylesheet -->
-		
+
 		<!-- printer stylesheet-->
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/print.css" media="print" />
 		<?php echo Layout::accessibility(); ?>
@@ -65,10 +65,10 @@
 				<?php echo Layout::zone('menu'); ?>
 			</div>
 			<div id="yui-main">
-				<?php 
+				<?php
 				if(!isset($_SESSION['direct_play']))
 					echo '<div class="yui-b">'.Layout::zone('content').'</div>';
-				else 
+				else
 					echo Layout::zone('content');
 				?>
 			</div>
@@ -77,9 +77,7 @@
 		<!-- footer -->
 		<div id="footer" class="layout_footer">
 			<?php echo Layout::zone('footer'); ?>
-			<p class="powered_by">
-				Powered by <a href="http://www.formalms.org/?version" onclick="window.open(this.href); return false;">Forma</a>
-			</p>
+			<?php echo Layout::copyright(); ?>
 		</div>
 		<!-- scripts -->
 		<?php echo Layout::zone('scripts'); ?>

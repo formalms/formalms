@@ -4,7 +4,7 @@
 	    <!--PURPLE : Fix funzionamento scorm su IE9-->
         <meta http-equiv="x-ua-compatible" content="IE=8"></meta>
         <!--END PURPLE -->
-        
+
 		<title><?php echo Layout::title(); ?></title>
 		<?php echo Layout::zone('meta'); ?>
 		<link rel="shortcut icon" href="<?php echo Layout::path(); ?>images/favicon.png" type="image/png" />
@@ -63,10 +63,7 @@
 		<!-- footer -->
 		<div id="footer" class="layout_footer">
 			<?php echo Layout::zone('footer'); ?>
-			<p class="powered_by">
-				Powered by <a href="http://www.formalms.org/?version" onclick="window.open(this.href); return false;">Forma</a>
-			</p>
-			<div class="nofloat"></div>
+			<?php echo Layout::copyright(); ?>
 		</div>
 		<!-- scripts -->
 		<?php echo Layout::zone('scripts'); ?>
