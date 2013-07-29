@@ -258,8 +258,9 @@ YAHOO.util.Event.addListener(window, "load", function() {
 			{key:"difficult", 		label:QB_DEF.difficult, 		formatter:this.formatDifficultQuest }
 		];
 		if(use_mod_action) {
-			var t1 = {key:"mod_quest", 		label:QB_DEF.mod_quest_img, 	formatter:this.formatModQuest}
-			var t2 = {key:"del_quest", 		label:QB_DEF.del_quest_img, 	formatter:this.formatDelQuest}
+			var t1 = {key:"mod_quest", 		label:QB_DEF.mod_quest_img, 	formatter:this.formatModQuest};
+			var t2 = {key:"del_quest", 		label:QB_DEF.del_quest_img, 	formatter:this.formatDelQuest};
+			myColumnDefs.push(t1, t2);
 		}
 		var buildQueryString = function (state,dt) {
 			
@@ -347,7 +348,6 @@ YAHOO.util.Event.addListener(window, "load", function() {
 			oDt.refresh();
 		}, this, true);
 		
-		q
 /*
 		// data source (XHR)
 		this.myDataSource = new YAHOO.util.DataSource("ajax.server.php?plf=lms&mn=quest_bank&");
