@@ -213,11 +213,9 @@ switch($op) {
 			$query="UPDATE %lms_report_filter SET is_public=$value ".
 				"WHERE id_filter=$id_rep";
 			$success=sql_query($query);
-			$message=sql_error();
 		}
-		$output['success']=$success;
-		$output['message']=$message;
-		$json = new Services_JSON();
+                $output['success']=$success;
+                $json = new Services_JSON();
 		aout($json->encode($output));
 	} break;
 
