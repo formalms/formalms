@@ -1249,7 +1249,9 @@ class UserManagerRenderer {
 				.'</div>'
 				.'<div class="login-line">'
 				.'<p><label for="login_pwd">'.$lang->def('_PASSWORD').'</label></p>'
-				.'<input class="textfield" type="password" id="login_pwd" name="login_pwd" maxlength="255" tabindex="'.$GLOBALS['login_tabindex']++.'" autocomplete="off" />'
+				//.'<input class="textfield" type="password" id="login_pwd" name="login_pwd" maxlength="255" tabindex="'.$GLOBALS['login_tabindex']++.'" autocomplete="off" />'
+				// TOLTO AUTOCOMPLETE (BUG 403)
+				.'<input class="textfield" type="password" id="login_pwd" name="login_pwd" maxlength="255" tabindex="'.$GLOBALS['login_tabindex']++.'" />'
 				.'</div>'
 				.'<div class="login-line">'
 				.'<input class="button" type="submit" id="login" name="log_button" value="'.$lang->def('_LOGIN').'" tabindex="'.$GLOBALS['login_tabindex']++.'" />'
