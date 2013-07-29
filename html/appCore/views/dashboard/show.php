@@ -251,62 +251,14 @@
 						));
 						?>
 					</div>
-					<div class="block_spacer">
-						<h3><?php echo Lang::t('_SUPPORT_SITE', 'dashboard'); ?></h3>
-						<ul class="link_list">
-							<li>
-								<a href="http://www.formalms.org/"
-									 onclick="window.open(this.href); return false;"
-									 onkeypress="window.open(this.href); return false;"
-									 title="Forma <?php echo Lang::t('_OPEN_IN_NEW_WINDOW', 'dashboard'); ?>">
-									<?php echo Lang::t('_URL_COMPANY', 'dashboard'); ?>
-								</a>
-							</li>
-							<li>
-								<a href="http://www.elearningcommunity.net/forum/index.php"
-									 onclick="window.open(this.href); return false;"
-									 onkeypress="window.open(this.href); return false;"
-									 title="Forma Community <?php echo Lang::t('_OPEN_IN_NEW_WINDOW', 'dashboard'); ?>">
-									<?php echo Lang::t('_URL_SUPPORTLMS', 'dashboard'); ?>
-								</a>
-							</li>
-						</ul>
-					</div>
 				</div>
 				<div class="nofloat"></div>
+				<div class="block_spacer">
+					<h3><?php echo Lang::t('_SUPPORT_SITE', 'dashboard'); ?></h3>
+				</div>
 				<!-- Social list -->
 				<div class="block_spacer">
 					<h3><?php echo Lang::t('_FOLLOW_US', 'dashboard'); ?></h3>
-					<ul class="link_list_inline align-center">
-						<li>
-							<a href="http://www.facebook.com/pages/Docebo/204396855124?v=info"
-								 onclick="window.open(this.href); return false;"
-								 title="Facebook">
-								<?php echo Get::img('social/facebook.png', Lang::t('_FACEBOOK', 'standard')).' '.Lang::t('_FACEBOOK', 'standard'); ?>
-							</a>
-						</li>
-						<li>
-							<a href="http://www.linkedin.com/groupInvitation?groupID=35592&sharedKey=46E02D0F9DBB"
-								 onclick="window.open(this.href); return false;"
-								 title="Linkedin">
-								<?php echo Get::img('social/linkedin.png', Lang::t('_LINKEDIN', 'standard')).' '.Lang::t('_LINKEDIN', 'standard'); ?>
-							</a>
-						</li>
-						<li>
-							<a href="http://www.twitter.com/@docebo"
-								 onclick="window.open(this.href); return false;"
-								 title="Twitter">
-								<?php echo Get::img('social/twitter.png', Lang::t('_TWITTER', 'standard')).' '.Lang::t('_TWITTER', 'standard'); ?>
-							</a>
-						</li>
-						<li>
-							<a href="http://www.docebo.com/blog/"
-								 onclick="window.open(this.href); return false;"
-								 title="Company Blog">
-								<?php echo Get::img('social/blogspot.png', Lang::t('_COMPANY_BLOG', 'standard')).' '.Lang::t('_COMPANY_BLOG', 'standard'); ?>
-							</a>
-						</li>
-					</ul>
 				</div>
 			</div>
 		</div>
