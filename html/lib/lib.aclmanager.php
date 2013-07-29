@@ -729,7 +729,11 @@ class DoceboACLManager {
 					." WHERE idst = '".$idst."'";
 
 			$result = $this->_executeQuery( $query );
-
+                       
+            $query1 = "DELETE FROM ".$GLOBALS['prefix_lms']."_courseuser where idUser =".$idst;
+                        
+            $result = $this->_executeQuery( $query1 );
+                        
 			// --- mod. 06-09-2010
 			if ($result) {
 				require_once(_adm_.'/lib/lib.field.php');
@@ -902,10 +906,16 @@ class DoceboACLManager {
 	 *				- FALSE if user is not found
 	 */
 	function getUser( $idst, $userid ) {
+		// ha tanti parametri in più rispetto alla vecchia installazione... (3)
 		$query = "SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,"
 				." level, lastenter, valid, pwd_expire_at, register_date, lastenter, force_change,
 					 facebook_id, twitter_id, linkedin_id, google_id, privacy_policy "
 				." FROM ".$this->_getTableUser();
+                
+		$query = "SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,"
+				." level, lastenter, valid, pwd_expire_at, register_date, lastenter "
+				." FROM ".$this->_getTableUser();
+				
 		if( $idst !== FALSE )
 				$query .= " WHERE idst = '".$idst."'";
 		elseif( $userid !== FALSE )
