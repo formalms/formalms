@@ -965,7 +965,7 @@ class Report_User extends Report {
 
 			//filter courses
 			$admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
-			if ($filter_allcourses)
+			if (!$filter_allcourses)
 			{
 				$rs = sql_query("SELECT idCourse FROM %lms_course");
 				$course_selected = array();
