@@ -33,7 +33,7 @@ class DashboardAdm extends Model {
 
 			$adminManager = new AdminPreference();
 			$this->users_filter = $adminManager->getAdminUsers(Docebo::user()->getIdST());
-			
+
 			$all_courses = false;
 			$array_courses = array();
 			$admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
@@ -136,7 +136,7 @@ class DashboardAdm extends Model {
 	}
 
 	public function updateVersion($old_version, $new_version) {
-		
+
 		if($this->db->query("UPDATE %adm_setting SET param_value = '".$new_version."' WHERE param_name = 'core_version'")) {
 
 			return $new_version;
@@ -160,20 +160,20 @@ class DashboardAdm extends Model {
 
 				switch($version['db_version']) {
 					case "3.6.0.3" :
-					case "3.6.0.4" : 
+					case "3.6.0.4" :
 					case "4.0.0" :
 					case "4.0.5" : ;break;
 					case "4.0.1" :
-					case "4.0.2" : 
-					case "4.0.3" : 
+					case "4.0.2" :
+					case "4.0.3" :
 					case "4.0.4" : $version['db_version'] = $this->updateVersion($version['db_version'], $version['file_version']);
 						break;
 				}
 			}
-			
+
 			require_once(_base_.'/lib/lib.fsock_wrapper.php');
 			$fp = new Fsock();
-			$_online_version = $fp->send_request('http://www.docebo.org/release.txt');
+			$_online_version = $fp->send_request('http://www.formalms.org/downloads/release.txt');
 
 			if(!$fp || !$_online_version) {
 
@@ -181,7 +181,7 @@ class DashboardAdm extends Model {
 			} elseif(version_compare($_online_version, $version['file_version']) == 1) {
 
 				$version['string'] .= '<br/>'
-					.'<a href="http://www.docebo.com/?versions" class="red">'.Lang::t('_NEW_RELEASE_AVAILABLE', 'dashboard').': <b>'.$_online_version.'</b></a>';
+					.'<a href="http://www.formalms.org/downloads/?versions" class="red">'.Lang::t('_NEW_RELEASE_AVAILABLE', 'dashboard').': <b>'.$_online_version.'</b></a>';
 			}
 		}
 		return $version;
@@ -195,7 +195,7 @@ class DashboardAdm extends Model {
 	 * @return array
 	 */
 	public function getUsersStats($stats_required = false, $arr_users = false) {
-		
+
 		$aclManager = Docebo::user()->getACLManager();
 		$users = array();
 		if($stats_required == false || empty($stats_required) || !is_array($stats_required)) {
@@ -207,7 +207,7 @@ class DashboardAdm extends Model {
 		$data = new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
 
 		if (!empty($this->users_filter)) $data->setUserFilter($this->users_filter);
-		
+
 		if(isset($stats_required['all'])) {
 			$users['all'] 	= $data->getTotalRows();
 		}

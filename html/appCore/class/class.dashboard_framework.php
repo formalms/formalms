@@ -37,13 +37,13 @@ class Dashboard_Framework extends Dashboard {
 
 			require_once(_base_.'/lib/lib.fsock_wrapper.php');
 			$fp = new Fsock();
-			$released_version = $fp->send_request('http://www.docebo.org/release.txt');
-			
+			$released_version = $fp->send_request('http://www.formalms.org/downloads/release.txt');
+
 			if(!$fp) {
 
 				$released_version = '<strong class="old_release">'.$lang->def('_UNKNOWN_RELEASE').'</strong>';
-			} else {			
-				
+			} else {
+
 				if($released_version == false) {
 
 					$released_version = '<strong class="ok_release">'.$lang->def('_UNKNOWN_RELEASE').'</strong>';
