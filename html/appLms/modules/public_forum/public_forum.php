@@ -162,7 +162,7 @@ function forum() {
 
 		// show forum list in a table -----------------------------------------
 		// table header
-		$type_h = array('image', 'image', 'forumTitle', '', 'align_center', 'align_center', 'align_center');
+		$type_h = array('image', 'image', 'forumTitle', 'align_center', 'align_center', 'align_center', 'image');
 		if($mod_perm) {
 			$type_h[] = 'image'; $type_h[] = 'image'; $type_h[] = 'image'; $type_h[] = 'image'; $type_h[] = 'image'; $type_h[] = 'image';
 		}

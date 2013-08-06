@@ -1,25 +1,40 @@
 /* ======================================================================== \
+
 |   FORMA - The E-Learning Suite                                            |
+
 |                                                                           |
+
 |   Copyright (c) 2013 (Forma)                                              |
+
 |   http://www.formalms.org                                                 |
+
 |   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+
 |                                                                           |
+
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+
 \ ======================================================================== */
 
+
 /* == Menu over for the lms == */
-body.yui-skin-sam .lms_menu_over{background:transparent;border:0px none;border-top:1px solid #cccccc;border-bottom:1px solid #cccccc;}
+body.yui-skin-sam .lms_menu_over{background:transparent;border:0px none;border-bottom:1px solid #cccccc; margin:0 0 5px 0;}
 body.yui-skin-sam .lms_menu_over .yuimenubaritem{border-right:0px none;}
 body.yui-skin-sam .lms_menu_over .yuimenubaritemlabel{padding: 0 10px;text-decoration:underline;cursor:pointer;}
 body.yui-skin-sam .lms_menu_over .yuimenubaritem-selected{background:transparent;}
 body.yui-skin-sam .lms_menu_over .yuimenubaritemlabel-selected{margin:-1px 0;}
 body.yui-skin-sam .yuimenuitem .yuimenubaritemlabel-hassubmenu {padding-right:20px;}
 
+#lms_menu_container>.bd>ul.first-of-type li {background:#666; border: 1px solid #999; border-radius: 5px 5px 5px 5px; box-shadow: 0 1px 0 #eaeaea inset; margin: 10px 8px;}
+#lms_menu_container>.bd>ul.first-of-type li.first-of-type {margin-left:0}
+#lms_menu_container>.bd>ul.first-of-type li a {color:#ffffff; padding: 5px 20px;}
+
+
 /* == Nested tab == */
 .yui-nav{font-size:90%;}
-.yui-skin-sam div.nested_tab .yui-navset .yui-nav,.yui-skin-sam div.nested_tab .yui-navset .yui-navset-top .yui-nav {border:none transparent;border-width:0;position:relative;zoom:1;background: #cccccc;padding: 4px 12px;}
+.yui-skin-sam div.nested_tab .yui-navset .yui-nav,.yui-skin-sam div.nested_tab .yui-navset .yui-navset-top .yui-nav {border:none transparent;border-width:0;position:relative;zoom:1;background: #cccccc;padding: 6px 12px;}
 .yui-skin-sam div.nested_tab .yui-navset .yui-nav li.first {border: 0px none;}
 .yui-skin-sam div.nested_tab .yui-navset .yui-nav li,.yui-skin-sam div.nested_tab .yui-navset .yui-navset-top .yui-nav li {zoom:1;border-left: 1px solid #808080;}
 .yui-skin-sam div.nested_tab .yui-navset .yui-nav .selected,.yui-skin-sam div.nested_tab .yui-navset .yui-navset-top .yui-nav .selected {margin:0 0.16em -1px 0;}
@@ -33,7 +48,7 @@ body.yui-skin-sam .yuimenuitem .yuimenubaritemlabel-hassubmenu {padding-right:20
 
 /* == Lateral menu == */
 .lmsmenu_block,
-.lmsmenu_block{margin:0 1em 1em;padding:.6em;background:#FFFFFF;border:1px solid #cccccc;}
+.lmsmenu_block{margin:0 10px 10px 0;padding:.6em;background:#FFFFFF;border:1px solid #cccccc;}
 
 ul.main-v-ul{margin:0;padding:0;}
 li.main-v{list-style:none;margin:0;padding:0;}

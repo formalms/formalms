@@ -1,13 +1,23 @@
 /* ======================================================================== \
+
 |   FORMA - The E-Learning Suite                                            |
+
 |                                                                           |
+
 |   Copyright (c) 2013 (Forma)                                              |
+
 |   http://www.formalms.org                                                 |
+
 |   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+
 |                                                                           |
+
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+
 \ ======================================================================== */
+
 div.TreeViewContainer {
 	vertical-align:middle;
 	background-color: #ffffff;
@@ -35,19 +45,24 @@ input.TreeViewAction {
 	text-decoration: underline;
 	background-color: #ffffff;
 }
-div.TreeViewRowOdd {
-	padding: 0 4px;
+
+div.TreeViewRowBase {
+	float:left;
+	clear:left;
 	margin: 0;
 	height: 26px;
+}
+
+div.TreeViewRowOdd, div.TreeViewRowEven {
+	padding: 2px 4px;
+	margin: 0;
+	height: 26px;
+	vertical-align: middle;
 }
 div.TreeViewRowOdd:hover {
 	background-color: #EAEEF9;
 }
 div.TreeViewRowEven {
-	padding: 0 4px;
-	margin: 0;
-	height: 26px;
-	vertical-align: middle;
 	background-color: #efefef;
 }
 div.TreeViewRowEven:hover {
@@ -57,20 +72,15 @@ div.TreeViewRowEven input,
 div.TreeViewRowOdd input {
 	vertical-align:middle;
 }
-div.TreeViewRowBase {
-	float:left;
-	clear:left;
-	margin: 0;
-	height: 26px;
-}
+
 input.Treeview_checkbox {
 	margin: 0 0px 0 8px;
 }
 img.TreeViewImage {
+	width: 24px;
+	height: 24px;
 	padding: 0;
-	margin: 2px 0 0;
-	width: 22px;
-	height: 22px;
+	margin: 0 0 0 8px;
 	vertical-align:middle;
 }
 input.TreeViewOpExpandCorner {
@@ -92,9 +102,9 @@ input.OrgPlay {
 	overflow: hidden;
 	border: 0px none;
 	padding: 0;
-	margin: 4px 0 0 0 ;
-	width: 22px;
-	height: 22px;
+	margin: 2px 0 0 0 ;
+	width: 24px;
+	height: 24px;
 	vertical-align: middle;
 	cursor: pointer;
 }
@@ -156,10 +166,10 @@ input.TreeItemSelected {
 }
 
 .tree_view_image {
-	margin: 4px 4px 0;
+	margin: 0 0 0 4px;
 	float: right;
-	width: 16px;
-	height: 16px;
+	width: 24px;
+	height: 24px;
 }
 label.tree_view_image,
 input.tree_view_image {width:auto;}
@@ -295,11 +305,11 @@ input.LVAction {
 }
 
 img.OrgStatus {
-	margin: 0;
+	margin: 0 0 0 4px;
 	padding:0;
 	float: right;
-	width: 22px;
-	height: 22px;
+	width: 24px;
+	height: 24px;
 }
 
 /*= NOTE: report status on tree =*/

@@ -1,0 +1,85 @@
+/*
+DOCEBO - The E-Learning Suite
+http://www.docebo.com
+license: http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+*/
+.layout_header{padding:.4em 1em;background:#ffffff;}
+.layout_header .left_logo{margin-top:5px;margin-left:10px;vertical-align:middle;}
+.layout_menu_over{zoom:1;}
+#lms_main_container{background:#ffffff;padding-top:1em;}
+.layout_colum_container{padding-top:1em;}
+.layout_footer{padding:.4em 1em;/*background:url('../images/back_footer.png') repeat-x 0 0 #ffffff;*/background:#eeeeee;}
+.layout_footer img{vertical-align:middle;}
+.powered_by{text-align:right;}
+/* Lms interface management components styles */
+.lms_management{}
+.lms_management .area{border:dashed 1px #666; background-color:#e9e9e9; margin:3px; padding:0px;}
+.lms_management .area .area_block{border:1px solid #000; background-color:#F4FAFF;}
+#middlearea .yui-nav li{position:relative;margin-right:0.6em;}
+.admmenu{position:relative;}
+#middlearea .yui-nav li b,.num_notify{position:absolute;color:#fff;font-size:normal;text-align:center;font-size:0.9em;padding-top:1px;line-height:1.2em;text-decoration:none;
+top:-10px;right:-8px;height:13px;width:12px;background:#ee1111;border:0px none;
+-webkit-border-radius: 4px 4px 4px 0;-moz-border-radius: 4px 4px 4px 0;border-radius: 4px 4px 4px 0;
+-webkit-box-shadow: #666 0px 2px 3px;-moz-box-shadow: #666 0px 2px 3px;box-shadow: #666 0px 2px 3px;
+/*for the crappy browser we use a background image*/
+_top:-11px;_right:-10px;_height:18px;_width:16px;
+_background:url(../images/standard/updates.png) 0 0 no-repeat transparent;}
+#middlearea .yui-nav li.selected b{_background-position:-16px 0;}
+/* Course home list */
+.edition_container, .dash-course{position:relative;clear:none;margin:.6em 1em;padding:0 110px 1em 0;border-bottom:1px solid #cccccc; min-height: 72px; }
+.dash-course img.clogo{display:inline-block;border:2px solid #cccccc;max-width:100px;max-height:70px;padding:2px;margin:0px;}
+.dash-course img.cnologo{padding:5px 20px;background:#ffffff;}
+.dash-course h2{color:#003d6b;}
+.dash-course h2 a{color:#003d6b;}
+.course_support_info {padding:.2em .4em;}
+.status_subscribed h2{background:#efefef;}
+.status_subscribed h2 a{}
+.status_begin h2{}
+.status_begin h2 a{}
+div.logo_container{width:100px; text-align:center; padding:0px; margin:0 1em .6em 0;float:left;/*position:absolute;*/}
+div.info_container{padding-left:116px;}
+/* Kb navigation interface */
+#kb_folder_nav{margin:0 0 1em;}
+div.kb_folder_box{margin:1em 0em;padding:0.4em;background:#efefef;}
+div.kb_folder_box ul{padding:0; margin:0;}
+div.kb_folder_box ul li{float:left;margin:0 2em;}
+div.kb_folder_box ul li a{font-weight:bold;}
+div.kb_folder_box ul li div{line-height:1.8em;padding-top:8px;}
+div.kb_folder_box ul li ul.subfolders{padding:0 0 0 1em;line-height:1.4em;}
+div.kb_folder_box ul li ul.subfolders li{float:none;font-size:83%; margin:0; padding:0;}
+div.kb_folder_box ul li ul.subfolders li a{font-weight:normal;}
+div.kb_folder_box ul li span{font-size:83%;padding-left:0.3em;}
+p.section_title{margin-top:0.8em;margin-bottom:1em;border-bottom:1px solid #cccccc;padding-bottom:0.2em;padding-right:0.2em;font-weight:bold;}
+.brd_right{border-right:1px solid #cccccc;}
+div.kb_res_list{}
+div.kb_res_list p{padding-left:1em;margin-top:0.4em;}
+div.kb_res_list div.line{margin-top:1em;margin-bottom:2em;padding-bottom:0.5em;border-bottom:1px solid #cccccc;}
+div.kb_res_list a{font-weight:bold;font-size:108%;}
+div.kb_res_list div.line div.tags{font-size:90%;margin-top:0.6em;}
+.games_chart{float:right;text-align:center;}
+.games_chart #standings_chart{width:400px;height:250px;}
+.edition_container .edition_subscribe, .catalog_action{min-width:90px;position:absolute;right:5px;top:10px;text-align:center;background:#ffffff;font-size:90%;max-width: 100px;}
+.subscribed{padding:2px 4px;background:#eeeeee;border:1px solid #666666;}
+.edition_container .edition_subscribe a p,  .can_subscribe{padding:2px 4px;background:#ddffdd;border:1px solid #009900;}
+.cannot_subscribe{padding:2px 4px;background:#ffffcc;border:1px solid #ffcc33;}
+#statistic_chart{width:80%;height:250px;margin:0 auto;}
+#tag_cloud{margin:0 1em 1em;}
+#tag_cloud .yui-content{background:#ffffff;}
+div.label_container{border:1px solid #9a9a9a;display:inline;float:left;font-weight:normal;height:80px;margin:10px 2% 0px 2%;position:relative;text-decoration:none;width:29%;overflow:hidden;}
+span.label_image_cont{width:72px;height:98%;position:absolute;text-align:center;}
+span.label_info_con{display:block;padding:4px 4px 4px 76px;}
+img.label_image{max-width:64px;padding:4px;}
+span.label_title{font-size:108%;font-weight:bold;margin:0.83em 0px;}
+span.label_description{border-top:2px solid #446dd6;display:block;margin-top:5px;padding-top:5px;font-size:90%;}
+div.coursepath_container{margin-bottom:15px;}
+span.expand_path_info{font-weight:bold;color:#003d6b;padding:5px;}
+span.coursepath_percentage{font-weight:bold;color:#003d6b;}
+td.course_type{padding-left:15px;padding-right:15px;text-align:right;width:80px;color:#003d6b;}
+div.coursepath_description{background-color:#efefef;font-size:90%;}
+div.coursepath_description  div.textof{padding:10px;}
+div.coursepath_action{float:left;margin-top:5px;margin-bottom:5px;}
+div.percentage_cont{border:1px solid #cccccc;padding:5px;}
+div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;border-left:1px solid #d1d1d1;border-right:1px solid #d1d1d1;border-bottom:1px solid #d1d1d1;padding:8px 4px;}
+.yui-skin-sam .yui-dt .forum_action td {text-align:right;}
+
+.tabs_filter {float:right; top:-15px; z-index: 1; position: relative;}

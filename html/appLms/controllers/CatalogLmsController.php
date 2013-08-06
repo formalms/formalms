@@ -66,7 +66,7 @@ class CatalogLmsController extends LmsController {
 
 		$ma = new Man_MiddleArea();
 
-		echo '<div style="margin:1em;">';
+		echo '<div class="middlearea_container">';
 
 		$lmstab = $this->widget('lms_tab', array(
 								'active' => 'catalog',

@@ -9,7 +9,7 @@
 		_MOD: "<?php echo Lang::t('_MOD', 'kb'); ?>"
 	}
 </script>
-<div style="margin:1em;">
+<div class="middlearea_container">
 	<?php
 	$lmstab = $this->widget('lms_tab', array(
 				'active' => 'kb',

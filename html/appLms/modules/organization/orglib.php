@@ -1569,7 +1569,7 @@ class Org_TreeView extends RepoTreeView {
 		if( $currLev > 0 && $currLev == $maxLev ) {
 			$arrData = $stack[$currLev]['folder']->otherValues;
 			if( is_array($arrData) && $arrData[REPOFIELDOBJECTTYPE] != '' )
-				return array( 'TreeViewImage', 'lobject/'.$arrData[REPOFIELDOBJECTTYPE].'.gif', $arrData[REPOFIELDOBJECTTYPE]);
+				return array( 'TreeViewImage', 'lobject/'.$arrData[REPOFIELDOBJECTTYPE].'.png', $arrData[REPOFIELDOBJECTTYPE]);
 		}	
 		return parent::getImage( $stack, $currLev, $maxLev );
 	}

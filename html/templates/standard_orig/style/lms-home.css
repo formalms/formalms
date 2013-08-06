@@ -1,0 +1,58 @@
+/*
+DOCEBO - The E-Learning Suite
+http://www.docebo.com
+license: http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+*/
+html,body{height:100%;}
+body{font:13px/1.231 arial,sans-serif;color:#333333;background:#eeeeee;*font-size:small;*font:x-small;}
+.header,.content,.footer,.webcontent{position:relative;width:900px;margin:0 auto;padding:0;}
+.header{height:89px;}
+.header .cat_link{text-decoration:none;color:#003d6b;}
+.header .catalogue{position:absolute;bottom:10px;right:215px;font-size:90%;letter-spacing:1px;}
+.header .select-language{position:absolute;bottom:10px;right:15px;font-size:90%;letter-spacing:1px;}
+.header #main_title{position:absolute;bottom:10px;left:0px;width:221px;height:53px;background:url(../images/company_logo.png) no-repeat 0 100%;overflow:hidden;}
+.header #main_title a{display:block;width:221px;height:53px;padding:0 300px 0;}
+.content{width:898px;height:372px;background:url(../images/login/image.jpg) no-repeat 0 0;border:1px solid #003d6b;}
+.content h2 {position:relative;top:260px;color:#fff;font-size:180%;font-weight:normal;margin:0;padding:0 14px;}
+.content .login-box{position:relative;top:260px;width:62%;white-space:nowrap;background:url(../images/login/bg_login.png) repeat-x 0 0;padding:10px 0;}
+.content .login-box-social{position:relative;top:260px;width:85%;background:url(../images/login/bg_login.png) repeat-x 0 0;padding:10px 0;}
+.content #login_confirm{margin:0;padding:0;}
+.content #login_confirm p,.content #login_confirm div {display:inline;}
+.content #login_confirm label {font-size:90%;font-weight:bold;margin:0 11px 0 18px;}
+.content #login_confirm input.textfield {font-size:90%;font-weight:normal;margin:0;padding:2px 0;width:132px;border:1px solid #003d6b;}
+.content #login_confirm input#login{background:#003d6b;border:0px none;color:#ffffff;font-size:90%;font-weight:bold;padding:3px 18px;margin-left:11px;}
+.content #social_login{float:right;zoom:1;margin-right:10px;}
+.content #social_login span{ font-weight: bold; }
+.content #social_login a{ margin: 0 4px;}
+.content #social_login img{ height: 22px; }
+.content #service_msg{font-size:90%;position:relative;top:270px;width:62%;}
+.content .logout{display:block;padding:3px 18px;background:url(../images/login/bg_login.png) repeat-x 0 0;}
+.content .login_failed{display:block;color:#ffffff;background:#EE1111;padding:3px 18px;-khtml-opacity:.80; -moz-opacity:.80; -ms-filter:"alpha(opacity=80)"; filter:alpha(opacity=80); opacity:.80; }
+.content .homecatalogue{position:absolute;top:15px;left:25px;font-size:90%;letter-spacing:1px;padding:5px;background-color:#003d6b}
+.content .homecatalogue a{text-decoration:none;color:#ffffff}
+.content .homecatalogue a:hover{text-decoration:underline;}
+.footer{background:#003d6b;height:21px;font-size:90%;}
+.footer #link{margin-top:3px;padding:3px 16px 4px;}
+.footer a{text-decoration:none;color:#fff;}
+.footer a:hover{text-decoration:underline;}
+.footer #link a.first{font-weight:bold;padding:0 6px 0 0;margin:0 3px 0 0;border-right:1px solid #ffffff;}
+.footer .copyright{position:absolute;bottom:4px;right:16px;color:#fff;}
+.webcontent .box {margin:10px 5px;}
+.webcontent h3 {margin:0 0 10px;padding:0;font-size:140%;color:#003d6b;}
+.webcontent p {margin:0 0 6px;}
+/* XXX:register class ======================================*/
+.reg_note{font-weight:bold;margin:1em 0 0;padding:0.20em;}
+.reg_form{padding:0.40em;}
+.reg_title_privacy{margin:24px auto 4px;padding:0.20em;width:70%;color:#ffffff;;font-weight:bold;}
+.privacy_box{margin:0 auto;padding:0.40em;width:90%;max-height:150px;overflow:auto;background:#ffffff;border:1px solid #003d6b;}
+.reg_form_button{text-align:right;margin:0 auto;padding:0.40em;}
+.reg_button{cursor:pointer;font-weight:bold;}
+ul.reg_instruction{margin:0.20em 0.20em 1em;padding:4px 12px 4px 24px;}
+ul.reg_instruction li{list-style-type:square;margin:2px;}
+.reg_err_data{margin:0.40em;padding:0.40em;color:#ff0000;font-weight:bold;border:1px solid #ff0000;}
+.reg_success{margin:0.40em;padding:0.40em;;border:1px solid #ffffff;}
+.lostpwd_box{margin:1em;padding:0.60em 0.60em 0 0.60em;}
+.lostpwd_logo{margin:0 0.40em;padding:0;}
+.lostpwd_box span{font-weight:bold;}
+.form_right{margin:0.60em 0 0 0;padding:0.40em;text-align:right;color:#ffffff;font-weight:bold;background:#003d6b;}
+.form_right .textfield{margin:0 14px; width:auto; padding:0; border:1px solid #4180ac;}

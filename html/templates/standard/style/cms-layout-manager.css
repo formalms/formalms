@@ -1,13 +1,23 @@
 /* ======================================================================== \
+
 |   FORMA - The E-Learning Suite                                            |
+
 |                                                                           |
+
 |   Copyright (c) 2013 (Forma)                                              |
+
 |   http://www.formalms.org                                                 |
+
 |   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+
 |                                                                           |
+
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+
 \ ======================================================================== */
+
 body{position:relative;}
 #hd, #bd, #ft{}
 #bd p{background-color:#f8f8f8; border:1px dashed #cecece; min-height:200px; height:auto !important; height:200px; padding:.75em; margin-bottom:15px;}

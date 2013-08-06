@@ -15,6 +15,7 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms-to-review.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms-menu.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/custom.css" />
 		<!-- specific stylesheet -->
 
 		<!-- printer stylesheet-->
@@ -30,6 +31,8 @@
 		<?php echo Layout::zone('blind_navigation'); ?>
 		<!-- feedback -->
 		<?php echo Layout::zone('feedback'); ?>
+		<!-- container -->
+		<div id="container">
 		<!-- header -->
 		<div id="header" class="layout_header">
 
@@ -69,6 +72,7 @@
 		<div id="footer" class="layout_footer">
 			<?php echo Layout::zone('footer'); ?>
 			<?php echo Layout::copyright(); ?>
+		</div>
 		</div>
 		<!-- scripts -->
 		<?php echo Layout::zone('scripts'); ?>

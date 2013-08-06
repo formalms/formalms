@@ -1,0 +1,431 @@
+/* XXX:forum ================================================================ */
+.forum_table{margin:0.40em 0 2.00em 0;padding:0;border-spacing:0;width:100%;border-bottom:1px solid #000000;}
+.forum_table tr.forum_header th{padding:0.20em 0.40em;text-align:left;font-weight:normal;background:#efefef;font-size:100%;}
+.forum_table .forum_title{}
+.forum_table .forum_title img{vertical-align:middle;}
+.forum_table .forum_title a{font-size:108%;font-weight:bold;text-decoration:none;}
+.forum_table .forum_title a:hover{text-decoration:underline;}
+.forum_table td{vertical-align:top;}
+.forum_notread{color:#cccccc;font-size:90%;font-weight:bold;}
+.forum_table .image{text-align:center;vertical-align:middle;width:1%;}
+.forum_table .forum_lastpost{font-size:90%;font-style:italic;}
+.forum_table .forum_manag{text-align:right;padding:0.20em 0 0 0;}
+.forum_action_top{margin:0.80em 0 0.80em 0;padding:0.20em;text-align:left;background:#efefef;border:1px solid #cccccc;}
+.forum_action_bottom{margin:0.80em 0 0.80em 0;padding:0.20em;text-align:right;background:#efefef;border:1px solid #cccccc;}
+.mess_author{font-weight:bold;font-size:83%;}
+.forum_sender{width:20%;vertical-align:top;}
+.forum_text{width:auto;vertical-align:top;}
+div.forum_author{font-weight:bold;font-size:108%;margin:0.40em 0.6em 0.20em;}
+div.forum_level{margin:0 1.6em;font-size:83%;}
+img.forum_avatar{margin:0.6em 0.6em;max-width:100px;max-height:100px;}
+div.forum_numpost{margin:0 0.6em;}
+.forum_sender .list_user_actions{list-style-type:none;margin:0 0 10px 0;padding:0;float:right;}
+ul.forum-list{margin:8px 0 8px;padding:0;line-height:1.6em;}
+ul.forum-list li{display:-moz-inline-box;display:inline-block;padding:0px 4px;margin:4px;border:1px solid #cccccc;}
+ul.forum-list li span{vertical-align:middle;}
+option.option_with_image{padding: 4px 2px 4px 26px;background-position: top left;background-repeat: no-repeat;}
+/* XXX:forum post */
+.forum_post_posted{font-size:90%;margin:0.40em 2em 0.60em;}
+.forum_post_locked{font-size:108%;color:#ff0000;margin:1em;}
+.forum_post_title{font-size:108%;font-weight:bold;}
+.forum_post_attach{text-align:right;}
+.forum_post_text{margin:1.00em 0.60em 0.60em 0.60em;}
+.forum_post_modified_by{font-weight:bold;margin:1.4em 0em 0.20em 0.2em;}
+.forum_post_sign_separator{border-top:1px solid #000000;width:40%;margin:2em 0 0.60em 0;}
+.forum_post_sign{margin:0.40em 0.40em 0.60em 0.60em;}
+.forum_action{text-align:right;}
+.forum_action a{margin:0 0.2em 0 0.4em;}
+.forum_quote{background:#efefef;border:1px solid #cccccc;padding:0.40em;margin:0.20em;}
+.search_mask{text-align:right;margin:0.20em 3em 2em 1em;}
+/*XXX:Wiki*/
+div.wiki_box .wiki_description{margin:4px 0 12px; padding:0; font-size:90%; }
+div.wiki_box .wiki_description p{margin:0; padding:0; font-size:100%; }
+ul.wiki_related_actions{margin:10px 0px; padding:0; list-style:none; }
+ul.wiki_related_actions li{margin:0 6px; padding:0; display:inline; font-size:83%; }
+ul.wiki_related_actions li a{padding:2px 0 2px 20px; background:0 50% no-repeat; }
+ul.wiki_related_actions li a span{white-space:nowrap; }
+ul.wiki_related_actions li.wiki_perm a{background-image:url('../images/wiki/moduser.png'); }
+ul.wiki_related_actions li.edit_wiki a{background-image:url('../images/wiki/mod.png'); }
+ul.wiki_related_actions li.delete_wiki a{background-image:url('../images/wiki/del.png'); }
+ul.wiki_related_actions li.wiki_add a{background-image:url('../images/wiki/add.png'); }
+ul.wiki_related_actions li.wiki_select a{background-image:url('../images/wiki/select_wiki.png'); }
+div.wiki_actions_box{margin-top:1em;border-top:1px solid #369;padding:0em;}
+div.wiki_box{margin-bottom:1.8em;}
+div.wiki_box h2{margin:0 0 4px 0;padding:0;font-size:108%;color:#003d6b;}
+/* XXX:project ============================================================== */
+.pagebox{margin:0.00em 0.00em 0.20em;padding:0.30em;color:#033000;background:#ffffff;border:1px solid #cccccc;}
+img.prjprogbar{height:12px;margin:0px;padding:0px;border:1px solid #0049ad;}
+img.prjprogbar_g{height:12px;margin:0px;padding:0px;border:1px solid #006409;}
+img.prjprogbar_r{height:12px;margin:0px;padding:0px;border:1px solid #7a0000;}
+.container_elem{margin:1px 0.00em 1.00em 0.00em;padding:0.20em;background:#efefef;border-width:0px 1px 1px 1px;border-style:dashed;border-color:#cccccc;}
+table.prjcontainer{border-spacing:0;width:100%;}
+table.prjcontainer td{vertical-align:top;padding:0.00em 0.20em;}
+.prjaddrow{margin:0.60em 0 0 0;padding:0.20em 0.20em;background:#efefef;}
+.descr_prj{margin:1.00em;padding:0.60em;border:1px solid #cccccc;}
+.titleBlu{margin:0.00em;padding:0.10em;font-weight:bold;background:#efefef;;border:1px solid #cccccc;}
+td.image_td{width:22px;}
+td.progress_td{width:15%;}
+/* XXX:sysforum ============================================================= */
+.forumAction{text-align:right;}
+/* XXX:repository section =================================================== */
+/*.repository_container{margin:12px 0;padding:0 0 14px 0;border:2px solid #cccccc;}
+.repository_container h2{margin:0;padding:2px 12px 4px;font-size:108%;background:#efefef;}
+.repository_container div, .repository_container .descr{margin:4px 10px;padding:0;font-size:83%;}
+.certificate_list{margin:10px;padding:6px;border-bottom:1px solid #cccccc;}
+.certificate_list h3{margin:0;padding:0;font-size:100%;}
+.certificate_list .certificate_description{margin:4px 16px;padding:0;}
+.certificate_list .cert_action{margin-top:10px;font-size:83%;}
+.coursereport-div{width:98%;padding:10px;}
+.coursereport-title{border-bottom:2px solid #cccccc;padding:10px 0 10px 0;}
+.coursereport-table{width:100%;margin:0;padding:0;border-collapse:collapse;}
+.coursereport-table td{border-bottom:2px solid #cccccc;padding:10px 0 10px 0;margin:0;}
+.coursereport-graph{width:650px;padding:10px;}
+.coursereport-bar{margin:0 0 0px 0;}
+.coursereport-position{position:relative;width:48px;height:48px;}
+.coursereport-bartitle{font-family:Georgia, serif;font-size:120%;color:#000;font-weight:bold;margin:10px;padding:0;}*/
+/* XXX: profile ============================================================ */
+.mini_block{line-height: 1.6em;}
+.avatar_photo{text-align: center;}
+.avatar_photo p{display:-moz-inline-box;display:inline-block;padding:0px 4px;margin:4px;}
+
+/* profile intestation =====================*/
+.up_main{margin:10px;padding:2px;background:#fff;border:1px solid #cccccc;}
+.up_main h1{margin:0;padding:1px 4px;color:#fff;font-size:100%;background:#cccccc;}
+/* user info box ==========================*/
+.up_user_info{position:relative;margin:0;padding:4px;line-height:1.5em;}
+ul.list_user_actions{list-style-type:none;margin:0 0 10px 0;padding:0;text-align:right;}
+ul.list_user_actions li{margin:0 6px;padding:0;display:inline;}
+/* avatar and photo container */
+.up_user_info .up_img_container{margin:5px 2px 0;padding:0;float:right;text-align:center;font-size:83%;}
+.up_img_container img{margin:15px 0 0;padding:0;background:#fff;border:1px solid #cccccc;}
+img.image_limit_micro{height:28px; }
+img.image_limit_micro_width{width:28px; }
+img.image_limit_micro_height{height:28px; }
+img.image_limit_small{height:50px; }
+img.image_limit_small_width{width:50px; }
+img.image_limit_small_height{height:50px; }
+img.image_limit_normal{height:100px; }
+img.image_limit_normal_width{width:100px; }
+img.image_limit_normal_height{height:100px; }
+img.image_limit_medium{height:150px; }
+img.image_limit_medium_width{width:150px; }
+img.image_limit_medium_height{height:150px; }
+img.image_limit_big{height:250px; }
+img.image_limit_big_width{width:250px; }
+img.image_limit_big_height{height:250px; }
+.up_img_container a{}
+/* contacts header */
+th#up_type2{margin:10px; padding:0 24px 0 6px;color:#fff;letter-spacing:0.2em;background:#cccccc;}
+.up_user_info p{padding:0 4px;margin:8px 4px;}
+.up_user_info form p{padding:0;margin:0;}
+#up_signature_b{font-size:83%;}
+#up_signature{font-size:83%;padding:4px;margin:0 4px 15px;line-height:1.3em;background:#fff;border:1px solid #cccccc;}
+.up_quota_bar{width:200px;}
+.up_user_info b{padding:4px;margin:0 4px 0px;}
+th#up_email{padding-left:20px;}
+th#up_urlsite{padding-left:20px;;}
+/* display the username ==========================*/
+.up_name{margin:2px 4px;padding:15px 0 2px 30px;font-weight:bold;font-size:100%;letter-spacing:0.2em;text-align:left;border-bottom:1px solid #cccccc;white-space:nowrap;}
+.up_user_info table.up_user_field,.up_user_info table.mod_policy_table{margin:0 4px 10px;line-height:1.5em;width:74%;font-size:83%;}
+.up_user_info table.mod_policy_table{width:94%;}
+.up_user_info table.mod_policy_table thead tr th{color:#fff;padding:0 4px;background:#cccccc;}
+.up_user_info table.up_user_field tr th,.up_user_info table.mod_policy_table tr th{text-align:left;padding:2px 4px 2px 0;vertical-align:top;color:#000;border:0px none;background:transparent;}
+table.type-one .up_user_info table.up_user_field tr td,table.type-one .up_user_info table.mod_policy_table tr td, .up_user_info table.up_user_field tr td,.up_user_info table.mod_policy_table tr td{text-align:left;padding:2px 4px 2px 0;vertical-align:top;color:#000;border:0px none;background:transparent;}
+/* status indicator ===============================*/
+.up_icq{vertical-align:middle;border:0px none;}
+.up_skype{height:16px;width:16px;vertical-align:middle;border:0px none;}
+.nofloat{clear:both;}
+ul.up_profile_action{list-style:none;margin:0 0 0.4em 0;padding:0;text-align:right;font-size:83%;}
+ul.up_profile_action li{display:inline;margin:0.2em 1em 0.3em 0.3em;padding:0;}
+li#up_modify_profile a{padding:3px 0 7px 28px;background:url('../images/standard/edit.png') 2px 50% no-repeat;}
+li#up_modify_pwd a{padding:3px 0 7px 3px;}
+li#up_modify_policy a{padding:3px 0 7px 3px;}
+/* header with level 2 =======================================*/
+h2.up_type1{margin:0;padding:1px 4px;color:#fff;font-size:100%;letter-spacing:0.2em;background:#cccccc;}
+.up_left_block{float:left;width:48%;margin:4px 0 0 0;padding:1px 4px;font-size:83%;line-height:1.5em;}
+.up_left_block h3{margin:8px 4px 4px;padding:0;border-bottom:1px solid #cccccc;}
+.up_left_block span.up_offline{}
+.up_left_block span.up_online{}
+.up_right_block{float:right;width:48%;margin:4px 0 0;padding:1px 4px;font-size:83%;}
+.up_right_block h3{margin:8px 4px 4px;padding:0;border-bottom:1px solid #cccccc;}
+.up_right_block ul{margin:0;padding:0;list-style-type:none;}
+.up_right_block ul li{margin:0 0 4px;padding:1px;float:left;width:45%;overflow:hidden;}
+.up_right_block ul li img{margin:0 4px 0 0;padding:1px;height:30px;background:#fff;vertical-align:middle;border:1px solid #cccccc;}
+.up_right_block ul li a{font-weight:bold;text-decoration:none;}
+.up_right_block ul li a:hover{text-decoration:none;}
+/* action,first line ===============================*/
+p.up_middle_other_action{padding-top:10px;clear:both;font-size:83%;}
+a#up_goblog{float:left;width:48%;margin:4px 0;padding:0px 4px;color:#fff;font-weight:bold;text-align:right;text-decoration:none;letter-spacing:0.1em;}
+a#up_goblog:hover{text-decoration:underline; }
+a#up_gofriend{float:right;width:48%;margin:4px 0;padding:0px 4px;color:#fff;font-weight:bold;text-align:right;text-decoration:none;letter-spacing:0.1em;}
+a#up_gofriend:hover{text-decoration:underline; }
+p.up_last_view{clear:both;margin:12px 0;padding:4px 1px;font-size:83%;background:#fff;border-top:1px solid #cccccc;border-bottom:1px solid #cccccc;}
+p.up_last_view a.last_visit{color:#0c0;}
+/* user file =============================*/
+.up_box_files{margin:0px 8px 8px;padding:4px;font-size:83%;}
+.up_description{margin:8px;padding:4px;font-size:83%;background:#e3e9eb;border:1px solid #cccccc;}
+h3#up_image{margin:0;padding:4px 2px 2px 30px;font-size:108%;text-align:left;}
+h3#up_video{margin:0;padding:4px 2px 2px 30px;font-size:108%;text-align:left;}
+h3#up_audio{margin:0;padding:4px 2px 2px 30px;font-size:108%;text-align:left;}
+h3#up_file{margin:0;padding:4px 2px 2px 30px;font-size:108%;text-align:left;}
+/* link to the full element*/
+a#up_otherimg{margin:0 4px;padding:0px 8px;color:#fff;font-weight:bold;text-decoration:none;background:#cccccc;}
+a#up_othervideo{margin:0 4px;padding:0px 8px;color:#fff;font-weight:bold;text-decoration:none;background:#cccccc;}
+a#up_otheraudio{margin:0 4px;padding:0px 8px;color:#fff;font-weight:bold;text-decoration:none;background:#cccccc;}
+a#up_otherfile{margin:0 4px;padding:0px 8px;color:#fff;font-weight:bold;text-decoration:none;background:#cccccc;}
+/* container of video and images ========================*/
+.up_box_details{margin:0px 8px 8px;padding:4px;font-size:83%;text-align:center;}
+.up_box_files_left p, .up_box_files_right p, .up_box_files p{text-align:left;font-weight:bold;}
+ul.image_list{margin:auto 0;padding:0;list-style-type:none;}
+ul.image_list li{float:left;width:220px;margin:12px 12px;padding:10px 0;text-align:center;background:#e3e9eb;border:2px solid #cccccc;}
+ul.image_list li a{}
+ul.image_list li img.user_image{}
+ul.image_list img.image_limit_width{width:200px;}
+ul.image_list img.image_limit_height{height:200px;}
+/* video */
+ul.video_list{margin:auto 0;padding:0;list-style-type:none;}
+ul.video_list li{float:left;width:270px;margin:12px 12px;padding:10px 0;text-align:center;background:#e3e9eb;border:2px solid #cccccc;}
+/* other */
+.other_list{margin:auto 0;padding:0;list-style-type:none;}
+.other_list{margin:auto 0;padding:0;list-style-type:none;}
+ul.other_list li{margin:12px 12px;padding:5px 10px;text-align:left;font-size:108%;background:#e3e9eb;border:1px solid #cccccc;}
+ul.other_list li a{margin:0 8px;padding:4px auto;}
+/* left box,container of audio file ====================*/
+.up_box_files_left{float:left;width:48%;margin:6px 0;padding:0px 4px;font-size:83%;text-align:right;border-right:1px solid #cccccc;}
+.up_box_files_left ul{margin:6px 6px 6px 16px;padding:0;list-style-type:none;text-align:left;}
+.up_box_files_left ul li{margin:3px 0;padding:0;}
+/* right box,container of other file ===================*/
+.up_box_files_right{float:left;width:48%;margin:6px 0 6px -1px;padding:0px 4px;font-size:83%;text-align:right;border-left:1px solid #cccccc;}
+.up_box_files_right ul{margin:6px 6px 6px 16px;padding:0;list-style-type:none;text-align:left;}
+.up_box_files_right ul li{margin:2px 0;padding:0;}
+.up_delete_current{margin:0em 1em 1em;padding:0 0 0 24px;height:22px;font-weight:bold;background:url('../images/standard/del.png') no-repeat 0 0 transparent;border:0px none;cursor:pointer;width:auto;overflow:visible;}
+.up_user_panel{float:left;margin:0 0.40em 0;padding:0.20em;font-size:83%;text-align:center;}
+/* user course statistics =============================*/
+h2.up_coursestat{margin:0 0 6px 0;padding:0px 4px;color:#fff;font-size:100%;letter-spacing:0.2em;background:#cccccc;}
+table.up_coursestat{width:95%;margin:0 auto;padding:0;empty-cells:show;border-spacing:0;font-size:83%;border-top:1px solid #000000;border-left:0px none;border-bottom:0px none;border-right:1px solid #000000;}
+table.up_coursestat tr th{color:#fff;background:url('../images/profile/bg_type2.gif') 100% 100% repeat-x #cccccc;border-left:1px solid #000000;border-bottom:1px solid #000000;}
+table.type-one table.up_coursestat tr td, table.up_coursestat tr td{color:#000;background:transparent;border-left:1px solid #000000;border-bottom:1px solid #000000;}
+/* theacher profile statistics =========================*/
+li#tp_mod_curriculum{}
+li#tp_mod_curriculum a{padding:6px 2px 6px 26px;background:url('../images/profile/curriculum.gif') 0 50% no-repeat;}
+li#tp_del_curriculum{}
+li#tp_del_curriculum a{padding:6px 2px 6px 26px;background:url('../images/profile/del_curriculum.gif') 0 50% no-repeat;}
+li#tp_mod_publications{}
+li#tp_mod_publications a{padding:6px 2px 6px 26px;background:url('../images/profile/publications.gif') 0 50% no-repeat;}
+.up_teacher_course h3, .up_teacher_curriculum h3, .up_teacher_publications h3{margin:12px 10px 3px; padding:0 24px 0 6px;color:#fff;font-size:83%;letter-spacing:0.2em;background:url('../images/profile/bg_type2.gif') 0 0 repeat-x #cccccc;}
+.up_teacher_course ul{padding:0;margin:1px 40px;font-size:83%;}
+.up_teacher_course ul li{padding-bottom:3px;}
+.up_teacher_curriculum_text,.up_teacher_publications_text{font-size:83%;margin:0;padding:1px 20px;}
+.form_a_message{line-height:2.5em;}
+.form_a_message label{font-weight:bold;font-size:83%;}
+
+ul.wiki_toolbar{margin:0;margin-top:1em;padding:0 23px 3px 0;list-style:none;border-bottom:1px solid #cccccc;text-align:right;}
+ul.wiki_toolbar li{display:inline;margin:0;padding:0;line-height:1.3em;font-size:90%;}
+ul.wiki_toolbar li a{margin:0;padding:4px 0 4px 4px;text-decoration:none;background:url('../images/wiki/flat_tab_left.png') 0 0 no-repeat;}
+ul.wiki_toolbar li a span{margin:0;  padding:4px 12px 4px 8px;  color:#cccccc;  cursor:pointer;  white-space:nowrap;  background:url('../images/wiki/flat_tab_right.png') 100% 0 no-repeat;}
+ul.wiki_toolbar li a:hover{background-position:0 -42px; }
+ul.wiki_toolbar li a:hover span{background-position:100% -42px; }
+ul.wiki_toolbar li.selected a{background-position:0 -42px; }
+ul.wiki_toolbar li.selected a span{background-position:100% -42px; }
+ul.wiki_toolbar li.selected a:hover{background-position:0 0; }
+ul.wiki_toolbar li.selected a:hover span{background-position:100% 0; }
+ul.wiki_toolbar li div{color:#000;font-size:108%;font-weight:bold;display:inline;margin:0;padding:4px 0 6px 4px;background:url('../images/wiki/flat_tab_left.png') 0 0 no-repeat;}
+ul.wiki_toolbar li div span{margin:0;  padding:4px 12px 6px 8px;  color:#000;  white-space:nowrap;  background:url('../images/wiki/flat_tab_right.png') 100% 0 no-repeat;}
+ul.wiki_toolbar li a span img,ul.wiki_toolbar li div span img{padding:0px;margin:0px;padding-right:6px;}
+a.wiki_new_link{color:#A00;text-decoration:none;font-weight:normal;border-bottom:1px dashed #FAA;background:url('../images/wiki/new_page.png') no-repeat;padding-left:18px;}
+a.wiki_new_link:hover{text-decoration:none;font-weight:normal;border-bottom:1px dashed #EE1111;}
+a.wiki_link{color:#00A;text-decoration:none;font-weight:normal;border-bottom:1px dashed #cccccc;background:url('../images/wiki/page.png') no-repeat;padding-left:18px;}
+a.wiki_link:hover{text-decoration:none;font-weight:normal;border-bottom:1px dashed #cccccc;}
+img.tree_action{border:0px none;text-align:right;float:right;}
+div.wiki_lang_flags{margin:8px 0;padding:0em;text-align:right;}
+ul.wiki_lang_flags{list-style:none;padding:0px;margin:0em;vertical-align:top;}
+ul.wiki_lang_flags li{display:inline;padding:0px;margin:0px;line-height:1.3em;}
+ul.wiki_lang_flags li img{border:1px solid #cccccc;background:#EEE;padding:1px;vertical-align:middle;}
+ul.wiki_lang_flags li.selected img{border:1px solid #cccccc;background:#FFF;}
+div.wiki_page_content{border:1px solid #cccccc;background:#efefef;padding:0.5em;margin:0px;min-height:200px;color:#000;}
+div.wiki_page_content table tr th{text-align:left;}
+div.wiki_navbar{width:98%;margin-left:auto;margin-right:auto;background:#f8f8f8;height:24px;}
+div.wiki_navbar_head{border-left:1px solid #cccccc;border-right:1px solid #cccccc;border-top:1px solid #cccccc;}
+div.wiki_navbar_bottom{border-left:1px solid #cccccc;border-right:1px solid #cccccc;border-bottom:1px solid #cccccc;}
+ul.wiki_history{margin:0;padding:0em;padding-left:0.2em;padding-right:0.2em;height:100%;vertical-align:middle;list-style:none;clear:left;float:right;}
+ul.wiki_history li{display:inline;margin:1px;line-height:1.3em;font-size:83%;border:1px solid #9aafe5;padding:0em;font-family:arial,helvetica,verdana;}
+ul.wiki_history li.label{background:#FFF;border:0px none;}
+ul.wiki_history li.label:hover{background:#FFF;}
+ul.wiki_history li.selected{background:#edf1f7;border:1px solid #5979c8;}
+ul.wiki_history li a{color:#cccccc;padding:0.1em;padding-left:0.4em;padding-right:0.4em;text-decoration:none;}
+ul.wiki_history li:hover{background:#efefef;}
+ul.wiki_history li div{color:#000;font-size:108%;font-weight:bold;display:inline;padding:0.1em;padding-left:0.4em;padding-right:0.4em;}
+ul.wiki_nav_box{margin:0;padding:0em;padding-left:0.2em;height:100%;vertical-align:middle;list-style:none;clear:left;}
+ul.wiki_nav_box li{display:inline;margin:1px;line-height:1.3em;font-size:90%;
+/* border:1px solid #9aafe5; */
+padding:0em;font-family:arial,helvetica,verdana;}
+ul.wiki_nav_box li a{color:#226;padding:0.2em;padding-left:0.4em;padding-right:0.4em;}
+ul.wiki_nav_box li div{color:#888;display:inline;padding:0.1em;padding-left:0.4em;padding-right:0.4em;}
+ul.wiki_nav_box li a span img,ul.wiki_nav_box li div span img{padding:0px;margin:0px;padding-right:4px;padding-left:4px;}
+div.wiki_search_box{width:90%;margin-left:auto;margin-right:auto;margin-bottom:1.4em;background:#edf1f7;border:1px solid #d1e1fa;padding:0.8em;}
+div.wiki_title{color:#000;font-weight:bold;font-size:115%;margin-bottom:0.8em;padding-left:0.4em;}
+div.wiki_search_line{color:#000;margin:0px;padding:0px;margin-left:auto;margin-right:auto;}
+div.wiki_search_line label{font-weight:bold;}
+div.wiki_search_line .button_nowh{margin-left:0.6em;border:1px solid #888;background:#FFF;color:#800;font-weight:bold;}
+div.wiki_search_line .textfield_nowh{width:50%;}
+div.wiki_search_title{font-size:140%;}
+p.wiki_search_txt_preview{margin:0px;padding:0.2em;margin-bottom:1em;color:#444;font-size:90%;}
+
+/* XXX:test ================================================================= */
+.test_answer{width:100% !important;width:90%;margin:0 0 2.00em 0;padding:0;empty-cells:show;border-spacing:0;background:#ffffff;border-top:1px solid #cccccc;border-right:1px solid #cccccc;}
+.test_answer caption{font-weight:bold;text-align:left;padding:0.40em 0.80em 0.20em;}
+.test_answer th{padding:4px 4px;color:#000000;background:url("../yui-skin/sprite.png") repeat-x scroll 0 -1500px #EAEEF9;border-left:1px solid #cccccc;border-bottom:1px solid #cccccc;}
+.test_answer tr.line_answer td{padding:0.10em 0.20em;border-left:1px solid #cccccc;border-bottom:1px solid #cccccc;}
+.test_answer .test_text_answer{border:1px solid #cccccc;width:95%;}
+.test_answer .test_comment{margin:0 2%;vertical-align:top;border:1px solid #cccccc;width:95%;}
+.test_answer .test_area_answer{margin:0 0 0 0.40em;vertical-align:top;border:1px solid #cccccc;}
+.test_answer .test_point{border:1px solid #cccccc;text-align:right;}
+.test_answer .test_ifcorrect{font-weight:bold;font-style:italic;}
+ul.test_info_list{margin:0 0 0 0.60em;padding:0.50em 2.00em;list-style:disc;}
+ul.test_info_list li{margin:0 0 0.20em 0;padding:0;}
+/* NOTE:play test */
+.test_title_play{margin:0;padding:0;font-weight:bold;font-size:108%;color:#003d6b;text-align:center;}
+.test_time_left{text-align:center;background:#E1EBF7;padding:0.50em;border:1px solid #003d6b;}
+.test_time_left span{font-weight:bold;color:#ff0000;}
+.test_answer_space{margin:0.40em;padding:0.00em;background:#ffffff;line-height:1.3em;}
+/*= NOTE:this is for the question type 'title'=*/
+.test_answer_space .quest_title, .test_answer_space .quest_title_review{font-style:italic;display:block;margin:0.40em 0 1.00em 0;padding:0.30em;background:#E1EBF7;border:1px solid #E1EBF4;}
+.test_answer_space .quest_title_review{margin:0.40em 0 2.00em 0;}
+/*= NOTE:container for one question=*/
+.test_answer_space .play_question{margin:1.00em 0 0 0;padding:0.2em;background:#efefef;border:1px solid #efefef;}
+/*= NOTE:container of the question's title=*/
+.test_answer_space .title_question{margin:0;padding:4px;font-weight:bold;}
+.test_answer_space .associate_colum_float{float:left;width:40%;}
+/*= NOTE:answers of the question=*/
+.test_answer_space .answer_question{margin:3px 0 0 20px;padding:5px;background:#ffffff;}
+.test_answer_space .answer_question p{display:inline;}
+.test_answer_space .text_answer{}
+.test_answer_space .text_answer_none{}
+.test_answer_space .text_answer_ht{font-weight:bold;}
+.test_answer_space .text_answer_ht_none{font-weight:bold;}
+.test_answer_space .test_inline_select{margin:0 0.20em;vertical-align:middle;}
+.test_answer_space .test_te_input{margin:0 0.20em;vertical-align:middle;font-weight:bold;}
+.test_answer_space .test_as_select{clear:both;vertical-align:middle;}
+.set_time_row{margin:0 5.00em 0 0;text-align:right;}
+.set_time_row input.button_nowh{margin:0 0 0 3em;}
+.test_button_space{text-align:right;}
+.test_message{margin:1.00em 3.00em 2.00em;}
+.test_score_note{font-weight:bold;margin:0 0 0.40em 0;}
+.test_quest_review_container{margin:1.0em 0 0;padding:0;}
+.test_quest_review_container div.test_answer_comment_nomargin, .test_quest_review_container div.test_answer_comment{margin:0.0em 0 2.0em;padding:0.4em;border-right:1px solid #E1EBF4;border-bottom:1px solid #E1EBF4;border-left:1px solid #E1EBF4;}
+.test_quest_review_container div.test_answer_comment_nomargin{margin:0;}
+.test_quest_review_container .test_answer_correct{margin:0 0.5em;color:#0022ff;font-weight:bold;}
+.test_quest_review_container .test_answer_incorrect{color:#ff0000;font-weight:bold;}
+.test_quest_review_container .test_score_positive{color:#0022ff;}
+.test_quest_review_container .test_score_negative{color:#ff0000;}
+.test_edit_scores{margin:0.20em 0 2em;}
+table.category_score{padding:0;empty-cells:show;}
+table.category_score tr th{margin:0 auto;padding:2px 8px;empty-cells:show;border-bottom:1px solid #ccc;}
+table.category_score tr td{margin:0 auto;padding:0px 8px;}
+table.category_score tr td.number{text-align:center;}
+
+/*  XXX:Info box =================================================*/
+div.boxinfo_title{margin:0;padding: 3px 4px;font-weight:bold;color:#000000; border:1px solid #cccccc; border-bottom: 0px none; background:#efefef;}
+div.boxinfo_container{margin:0;padding:0.40em;border:1px solid #cccccc;border-top:0px none;}
+/* XXX: Tags ===================================================================*/
+.tags{font-size:83%;font-weight:normal;margin:16px 4px 8px;}
+.tags a{color:#111111;text-decoration:none;}
+.tags a:hover{text-decoration:underline;}
+.tags a.update_tags{background:url('../images/standard/tags.png') 0 50% no-repeat;padding:6px 2px 6px 24px;text-decoration:none;color:#003d6b;}
+.tags .yui-overlay { text-align: left; }
+.tags a.update_tags:hover{text-decoration:none;}
+.tags p { margin-top: 1.4em; }
+.tags_block{margin:5px;padding:12px;background:#fff;border:2px solid #808080;}
+.tags_block .newtags{zoom:1;}
+label.newtags{position:absolute;font-weight:bold;}
+.tags_block .yui-ac{margin-left:70px;}
+.error_frame {max-height:250px;overflow:auto;background:#ffffff;}
+.error_frame p {padding:1px;margin:1px;font-weight:bold;}
+.error_frame p.red {color:#ee4444}
+.error_frame p.green {color:#44ee44}
+.highlight{background-color:#ffff66;}
+/* emoticons ----------------- */
+.emoticon span { display: inline-block; width: 22px; height:22px; background: url('../images/emoticons/emoticon_sprite.png') no-repeat top left;padding: 0px; vertical-align: middle; margin: 2px; margin-right: 4px;}
+.yui-button .emoticon span { display: inline-block; width: 22px; height:22px; padding: 0px; margin: 0px; margin-right: 4px;}
+.emo-access span { background-position: 0 0;  }
+.emo-agent span { background-position: 0 -44px;  }
+.emo-amor span { background-position: 0 -88px;  }
+.emo-angel_smile span { background-position: 0 -132px;  }
+.emo-angry_smile span { background-position: 0 -173px;  }
+.emo-arts span { background-position: 0 -214px;  }
+.emo-atlantik span { background-position: 0 -258px;  }
+.emo-background span { background-position: 0 -302px;  }
+.emo-bell span { background-position: 0 -346px;  }
+.emo-blank span { background-position: 0 -390px;  }
+.emo-broken_heart span { background-position: 0 -434px;  }
+.emo-browser span { background-position: 0 -475px;  }
+.emo-bug span { background-position: 0 -519px;  }
+.emo-cache span { background-position: 0 -563px;  }
+.emo-cake span { background-position: 0 -607px;  }
+.emo-clanbomber span { background-position: 0 -648px;  }
+.emo-colors span { background-position: 0 -692px;  }
+.emo-confused_smile span { background-position: 0 -736px;  }
+.emo-cookie span { background-position: 0 -777px;  }
+.emo-cry_smile span { background-position: 0 -821px;  }
+.emo-date span { background-position: 0 -862px;  }
+.emo-designer span { background-position: 0 -906px;  }
+.emo-devil_smile span { background-position: 0 -950px;  }
+.emo-edu_languages span { background-position: 0 -991px;  }
+.emo-edu_mathematics span { background-position: 0 -1035px;  }
+.emo-edu_miscellaneous span { background-position: 0 -1079px;  }
+.emo-edu_science span { background-position: 0 -1123px;  }
+.emo-email span { background-position: 0 -1167px;  }
+.emo-embaressed_smile span { background-position: 0 -1211px;  }
+.emo-envelope span { background-position: 0 -1252px;  }
+.emo-error span { background-position: 0 -1293px;  }
+.emo-filetypes span { background-position: 0 -1337px;  }
+.emo-heart span { background-position: 0 -1381px;  }
+.emo-important span { background-position: 0 -1422px;  }
+.emo-irkick span { background-position: 0 -1466px;  }
+.emo-kalarm span { background-position: 0 -1510px;  }
+.emo-kalzium span { background-position: 0 -1554px;  }
+.emo-kasteroids span { background-position: 0 -1598px;  }
+.emo-kate span { background-position: 0 -1642px;  }
+.emo-kbrunch span { background-position: 0 -1686px;  }
+.emo-kcalc span { background-position: 0 -1730px;  }
+.emo-kchart span { background-position: 0 -1774px;  }
+.emo-kcoloredit span { background-position: 0 -1818px;  }
+.emo-kdict span { background-position: 0 -1862px;  }
+.emo-kdmconfig span { background-position: 0 -1906px;  }
+.emo-kfm_home span { background-position: 0 -1950px;  }
+.emo-kiss span { background-position: -44px 0;  }
+.emo-kjobviewer span { background-position: -44px -41px;  }
+.emo-knewsticker span { background-position: -44px -85px;  }
+.emo-knotes span { background-position: -44px -129px;  }
+.emo-kopete span { background-position: -44px -173px;  }
+.emo-kopete_offline span { background-position: -44px -217px;  }
+.emo-kopete_some_online span { background-position: -44px -261px;  }
+.emo-korganizer span { background-position: -44px -305px;  }
+.emo-korn span { background-position: -44px -349px;  }
+.emo-ktip span { background-position: -44px -393px;  }
+.emo-kweather span { background-position: -44px -437px;  }
+.emo-laptop_pcmcia span { background-position: -44px -481px;  }
+.emo-licq span { background-position: -44px -525px;  }
+.emo-lightbulb span { background-position: -44px -569px;  }
+.emo-locale span { background-position: -44px -610px;  }
+.emo-mycomputer span { background-position: -44px -654px;  }
+.emo-omg_smile span { background-position: -44px -698px;  }
+.emo-package_favorite span { background-position: -44px -739px;  }
+.emo-package_games_strategy span { background-position: -44px -783px;  }
+.emo-package_toys span { background-position: -44px -827px;  }
+.emo-personal span { background-position: -44px -871px;  }
+.emo-regular_smile span { background-position: -44px -915px;  }
+.emo-sad_smile span { background-position: -44px -956px;  }
+.emo-shades_smile span { background-position: -44px -997px;  }
+.emo-teeth_smile span { background-position: -44px -1038px;  }
+.emo-thumbs_down span { background-position: -44px -1079px;  }
+.emo-thumbs_up span { background-position: -44px -1120px;  }
+.emo-tounge_smile span { background-position: -44px -1161px;  }
+.emo-whatchutalkingabout_smile span { background-position: -44px -1202px;  }
+.emo-wink_smile span { background-position: -44px -1243px;  }
+
+/* XXX:poll ================================================================= */
+table.poll_report{width:100% !important;margin:0 auto;padding:0;font-size:1.00em;empty-cells:show;border-spacing:0;border:0px none;}
+table.poll_report th{text-align:left;}
+table.poll_report th.text_answer{width:30%;}
+div.colored_row{height:16px;text-align:center;background:#E1EBF4;border:1px solid #000000;}

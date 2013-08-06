@@ -1,0 +1,97 @@
+/*
+Copyright (c) 2008, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 2.6.0
+*/
+.folder_tree {border: 1px solid #cccccc;color:#333333;background:#ffffff;/*height:100%;*/overflow:auto;}
+.folder_tree a {text-decoration:none;}
+.folder_tree .ygtvitem table{width:100%;}
+.folder_tree .ygtvtn{background:url(../images/tree/tn.png) 0 0 no-repeat;width:46px;height:26px;}
+.folder_tree .ygtvtm{background:url(../images/tree/tm.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvtmh{background:url(../images/tree/tmh.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvtp{background:url(../images/tree/tp.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvtph{background:url(../images/tree/tph.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvln{background:url(../images/tree/ln.png) 0 0 no-repeat;width:46px;height:26px;}
+.folder_tree .ygtvlm{background:url(../images/tree/lm.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvlmh{background:url(../images/tree/lmh.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvlp{background:url(../images/tree/lp.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvlph{background:url(../images/tree/lph.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvloading{background:url(../images/tree/loading.gif) 0 0 no-repeat #ffffff;width:22px;height:26px;}
+.folder_tree .ygtvdepthcell{background:url(../images/tree/vline.gif) 0 0 no-repeat;width:22px;height:26px;}
+/*
+DOCEBO - The E-Learning Suite
+http://www.docebo.com
+license: http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+*/
+.folder_tree .ygtvtn_disabled{background:url(../images/tree/disable/tn.png) 0 0 no-repeat;width:46px;height:26px;}
+.folder_tree .ygtvtm_disabled{background:url(../images/tree/disable/tm.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvtmh_disabled{background:url(../images/tree/disable/tmh.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvtp_disabled{background:url(../images/tree/disable/tp.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvtph_disabled{background:url(../images/tree/disable/tph.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvln_disabled{background:url(../images/tree/disable/ln.png) 0 0 no-repeat;width:46px;height:26px;}
+.folder_tree .ygtvlm_disabled{background:url(../images/tree/disable/lm.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvlmh_disabled{background:url(../images/tree/disable/lmh.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvlp_disabled{background:url(../images/tree/disable/lp.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvlph_disabled{background:url(../images/tree/disable/lph.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvloading_disabled{background:url(../images/tree/loading.png) 0 0 no-repeat #ffffff;width:22px;height:26px;}
+.folder_tree .ygtvdepthcell_disabled{background:url(../images/tree/vline.png) 0 0 no-repeat;width:22px;height:26px;}
+.folder_tree .ygtvtn_page{background:url(../images/tree/page/tn.gif) 0 0 no-repeat;width:46px;height:26px;}
+.folder_tree .ygtvtm_page{background:url(../images/tree/page/tm.gif) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvtmh_page{background:url(../images/tree/page/tmh.gif) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvtp_page{background:url(../images/tree/page/tp.gif) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvtph_page{background:url(../images/tree/page/tph.gif) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvln_page{background:url(../images/tree/page/ln.gif) 0 0 no-repeat;width:46px;height:26px;}
+.folder_tree .ygtvlm_page{background:url(../images/tree/page/lm.gif) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvlmh_page{background:url(../images/tree/page/lmh.gif) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvlp_page{background:url(../images/tree/page/lp.gif) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvlph_page{background:url(../images/tree/page/lph.gif) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvloading_page{background:url(../images/tree/loading.gif) 0 0 no-repeat #ffffff;width:22px;height:26px;}
+.folder_tree .ygtvdepthcell_page{background:url(../images/tree/vline.gif) 0 0 no-repeat;width:22px;height:26px;}
+.folder_tree .ygtvtn_link{background:url(../images/tree/link/tn.gif) 0 0 no-repeat;width:46px;height:26px;}
+.folder_tree .ygtvtm_link{background:url(../images/tree/link/tm.gif) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvtmh_link{background:url(../images/tree/link/tmh.gif) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvtp_link{background:url(../images/tree/link/tp.gif) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvtph_link{background:url(../images/tree/link/tph.gif) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvln_link{background:url(../images/tree/link/ln.gif) 0 0 no-repeat;width:46px;height:26px;}
+.folder_tree .ygtvlm_link{background:url(../images/tree/link/lm.gif) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvlmh_link{background:url(../images/tree/link/lmh.gif) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvlp_link{background:url(../images/tree/link/lp.gif) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvlph_link{background:url(../images/tree/link/lph.gif) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
+.folder_tree .ygtvloading_link{background:url(../images/tree/loading.gif) 0 0 no-repeat #ffffff;width:22px;height:26px;}
+.folder_tree .ygtvdepthcell_link{background:url(../images/tree/vline.gif) 0 0 no-repeat;width:22px;height:26px;}
+
+.folder_tree .folder_tree-checknode{vertical-align:middle;margin-left:4px;}
+* html .ygtvchildren{height:1%;}
+.folder_tree .ygtvblankdepthcell{width:22px;height:26px;}
+.folder_tree .ygtvitem{}
+.folder_tree .ygtvitem table{margin-bottom:0;}
+.folder_tree .ygtvitem td{border:none;padding:0 0 0 4px;cursor:pointer;}
+.folder_tree .ygtvchildren{}
+.folder_tree .ygtvhtml{cursor:default;}
+.folder_tree .ygtvlabel, .folder_tree .ygtvlabel:link, .folder_tree .ygtvlabel:visited, .folder_tree .ygtvlabel:hover{font-size:83%;margin-left:2px;text-decoration:none;}
+.folder_tree .ygtvlabel{color:#000000;font-size:90%;}
+.folder_tree .icon-file{display:block;height:22px;padding-left:20px;background:transparent url(../images/tree/file.png) 0 0px no-repeat;}
+.folder_tree .ygtvitem .ygtvroot{margin:0px;}
+.folder_tree .ygtvitem .ygtvroot{display:block;height:26px;padding-left:52px;background:transparent url(../images/tree/root.png) 22px 0px no-repeat;vertical-align:middle;}
+.folder_tree .ygtvitem .ygtvroot span{display:block;padding-top:2px;cursor:pointer;*padding-top:0px;}
+.folder_tree .label_selected{font-weight:bold;}
+.folder_tree .table_odd td {background-color:#efefef;}
+.folder_tree table:hover tr td{background-color:#EAEEF9; color:#000000;}
+.folder_tree table:hover tr td.ygtvroot{background-color:#EAEEF9; color:#000000;cursor:pointer;}
+.folder_tree ul.selectionlist{list-style-type:none;list-style-image:none;margin:0;padding:0;}
+.folder_tree ul.selectionlist li{display:inline;margin:0;padding:0 3px;}
+.folder_tree ul.selectionlist li .radiosel{}
+.folder_tree .table_odd{background:#efefef;}
+.folder_tree .ygtvcheck0, .ygtvcheck1, .ygtvcheck2{width:1%}
+.folder_tree .ygtvoptions{text-align:right}
+.folder_tree .ygtvradio{text-align:right;}
+.folder_tree .ygtvoptions a {padding: 4px 6px;}
+.folder_tree input{vertical-align:middle}
+.folder_action_space {border-color:#cccccc;border-style:solid;border-width:0 1px 1px;padding: 2px 4px;}
+.folder_status_message{height:20px; }
+.folder_status_message div{text-align:center; }
+.folder_status_message div span{background:#efefef;padding:2px 10px;font-weight:bold;font-size:83%;}
+.tree_over_action{font-size: 90%;text-align: right;padding: 4px 10px;}
+.yui-skin-sam .yui-navset .folder_tree {border:0px none;}
+.yui-skin-sam .yui-navset .folder_action_space {border:0px none;padding: 6px 4px; 2px; 4px;}

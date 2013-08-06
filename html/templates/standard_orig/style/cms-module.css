@@ -1,0 +1,47 @@
+/*
+DOCEBO - The E-Learning Suite
+http://www.docebo.com
+license: http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+*/
+
+/*--- News/Feed list ---*/
+.news_list{margin:0;padding:0;}
+.news_list li{list-style:none;margin:0 0 18px;padding:0;}
+.news_list .news_title{font-size:100%;margin: 2px 0 4px;}
+.news_list .news_date{font-size:83%;margin: 0 2px 2px;}
+.news_list .news_text{margin: 0;}
+.news_list .news_more{font-size:90%;margin: 4px 0px 2px;}
+
+/*--- Docs list ---*/
+.docs_list_item{margin:0 0 18px;padding:0;}
+.docs_list_item .docs_title{font-size:100%;margin: 2px 0 4px;}
+.docs_list_item .docs_download{font-size:90%;margin: 0 2px 2px;}
+.docs_list_item .docs_download a{vertical-align:middle;}
+.docs_list_item .docs_download img{margin:0 6px;vertical-align:middle;}
+.docs_list_item .docs_text{margin: 0;}
+
+/*--- Docs navigation ---*/
+.docs_nav_navbar{margin:0 0 6px;padding:0px 8px 4px 8px;font-size:90%;}
+.docs_nav_folders{margin:0 0 10px;padding:0;}
+.docs_nav_folders ul.docs_nav_list{list-style-type:none;margin:8px;padding:0;}
+.docs_nav_folders ul.docs_nav_list li{display:inline-block;margin:8px;}
+.docs_nav_folders ul.docs_nav_list li a{display:inline-block;height:40px;margin:1px;padding:2px 7px 0px 45px;vertical-align:text-bottom;background: url(../images/standard/folder32.png) 2px 50% no-repeat;}
+.docs_nav_folders ul.docs_nav_list li a:hover{background-color:#efefef;border:1px solid #aaaaaa;margin:0px;}
+.docs_nav_folders ul.docs_nav_list li a span,
+.docs_nav_folders ul.docs_nav_list li a i{text-decoration:none;font-size:83%;font-style:italic;}
+.docs_nav_table{margin:0 0 10px;padding:0;}
+
+/*--- Gallery ---*/
+.docs_gallery{position:relative;}
+.docs_gallery .preview_loading{position:absolute;padding:150px 0 0 150px; font-size:140%;font-weight:bold;color:#eeeeee;}
+.docs_gallery .preview_show{position:relative;float:left;margin:0;text-align:left;width: 74.2%;*width: 73.5%;_width: 65.5%;height:420px;*height:1%;}
+.docs_gallery .show_image_preview{max-width: 100%;max-height:400px;padding:2px;border:1px solid #333333;*height:1%;}
+.docs_gallery .preview_details{float:right;margin:0;text-align:left;width: 24%;*width: 24%;_width: 20%;}
+.docs_gallery .preview_description{margin:4px 0px;}
+
+.gallery_paginator{clear:both;}
+
+ul.gallery_list{list-style-type:none;margin:8px;padding:0;}
+ul.gallery_list li{display:inline-block;width:77px;height:77px;margin:8px;padding:0px;vertical-align:text-bottom;}
+ul.gallery_list li a{display:inline-block;width:75px;height:75px;}
+ul.gallery_list li a img{border:1px solid #333333;padding:1px;}

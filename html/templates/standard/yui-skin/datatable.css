@@ -24,7 +24,7 @@ th.yui-dt-hidden .yui-dt-liner, td.yui-dt-hidden .yui-dt-liner, th.yui-dt-hidden
 .yui-skin-sam .yui-dt caption{color:#000;font-size:85%;font-weight:normal;font-style:italic;line-height:1;padding:1em 0;text-align:center;}
 .yui-skin-sam .yui-dt th{background:#EAEEF9 url(sprite.png) repeat-x 0 -1500px;}
 .yui-skin-sam .yui-dt th, .yui-skin-sam .yui-dt th a{font-weight:normal;text-decoration:none;color:#000;vertical-align:bottom;}
-.yui-skin-sam .yui-dt th{margin:0;padding:0;border:none;border-top:1px solid #aaaaaa; border-right:1px solid #aaaaaa; border-bottom:1px solid #aaaaaa;}
+.yui-skin-sam .yui-dt th{margin:0;padding:0;border:none;border-top:1px solid #aaaaaa; border-right:1px solid #aaaaaa; border-bottom:1px solid #aaaaaa;vertical-align:middle;}
 .yui-skin-sam .yui-dt tr.yui-dt-first td{border-top:1px solid #aaaaaa;}
 .yui-skin-sam .yui-dt th .yui-dt-liner{white-space:nowrap;}
 .yui-skin-sam .yui-dt-liner{margin:0;padding:0;padding:4px 10px 4px 10px;}

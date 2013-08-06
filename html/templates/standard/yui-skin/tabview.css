@@ -35,12 +35,12 @@ version: 2.8.0rc4
 .yui-skin-sam .yui-navset .yui-nav .selected, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav .selected{margin:0 .36em -1px 0;}
 .yui-skin-sam .yui-navset .yui-nav a, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav a{background:url(sprite.png) repeat-x left 0 #eeeeee;border:solid #cccccc;border-width:0 1px;color:#000;position:relative;text-decoration:none;}
 .yui-skin-sam .yui-navset .yui-nav a em, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav a em{border:solid #cccccc;border-width:1px 0 0;cursor:hand;padding: 2px 6px;left:0;right:0;bottom:0;top:-1px;position:relative;font-size:90%;}
-.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a:focus, .yui-skin-sam .yui-navset .yui-nav .selected a:hover{background:#003d6b/* url(sprite.png) repeat-x left -1400px*/;color:#fff;font-weight:bold;}
+.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a:focus, .yui-skin-sam .yui-navset .yui-nav .selected a:hover{background:#993300/* url(sprite.png) repeat-x left -1400px*/;color:#fff;font-weight:bold;}
 .yui-skin-sam .yui-navset .yui-nav a:hover, .yui-skin-sam .yui-navset .yui-nav a:focus{background:#bfdaff url(sprite.png) repeat-x left -1300px;outline:0;}
 .yui-skin-sam .yui-navset .yui-nav .selected a em{padding:3px 6px;}
-.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a em{border-color:#003d6b;}
+.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a em{border-color:#993300;}
 .yui-skin-sam .yui-navset .yui-content{}
-.yui-skin-sam .yui-navset .yui-content, .yui-skin-sam .yui-navset .yui-navset-top .yui-content{border:1px solid #cccccc;border-top:0px none;padding:.6em 1.0em;}
+.yui-skin-sam .yui-navset .yui-content, .yui-skin-sam .yui-navset .yui-navset-top .yui-content{border:1px solid #cccccc;border-top:0px none;padding:0em;}
 .yui-skin-sam .yui-navset-left .yui-nav, .yui-skin-sam .yui-navset .yui-navset-left .yui-nav, .yui-skin-sam .yui-navset .yui-navset-right .yui-nav, .yui-skin-sam .yui-navset-right .yui-nav{border-width:0 1px 0 0;Xposition:absolute;top:0;bottom:0;}
 .yui-skin-sam .yui-navset .yui-navset-right .yui-nav, .yui-skin-sam .yui-navset-right .yui-nav{border-width:0 0 0 1px;}
 .yui-skin-sam .yui-navset-left .yui-nav li, .yui-skin-sam .yui-navset .yui-navset-left .yui-nav li, .yui-skin-sam .yui-navset-right .yui-nav li{margin:0 0 .46em;padding:0 0 0 1px;}

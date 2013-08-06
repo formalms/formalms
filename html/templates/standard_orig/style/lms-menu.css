@@ -1,0 +1,45 @@
+/*
+DOCEBO - The E-Learning Suite
+http://www.docebo.com
+license: http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+*/
+
+/* == Menu over for the lms == */
+body.yui-skin-sam .lms_menu_over{background:transparent;border:0px none;border-top:1px solid #cccccc;border-bottom:1px solid #cccccc;}
+body.yui-skin-sam .lms_menu_over .yuimenubaritem{border-right:0px none;}
+body.yui-skin-sam .lms_menu_over .yuimenubaritemlabel{padding: 0 10px;text-decoration:underline;cursor:pointer;}
+body.yui-skin-sam .lms_menu_over .yuimenubaritem-selected{background:transparent;}
+body.yui-skin-sam .lms_menu_over .yuimenubaritemlabel-selected{margin:-1px 0;}
+body.yui-skin-sam .yuimenuitem .yuimenubaritemlabel-hassubmenu {padding-right:20px;}
+
+/* == Nested tab == */
+.yui-nav{font-size:90%;}
+.yui-skin-sam div.nested_tab .yui-navset .yui-nav,.yui-skin-sam div.nested_tab .yui-navset .yui-navset-top .yui-nav {border:none transparent;border-width:0;position:relative;zoom:1;background: #cccccc;padding: 4px 12px;}
+.yui-skin-sam div.nested_tab .yui-navset .yui-nav li.first {border: 0px none;}
+.yui-skin-sam div.nested_tab .yui-navset .yui-nav li,.yui-skin-sam div.nested_tab .yui-navset .yui-navset-top .yui-nav li {zoom:1;border-left: 1px solid #808080;}
+.yui-skin-sam div.nested_tab .yui-navset .yui-nav .selected,.yui-skin-sam div.nested_tab .yui-navset .yui-navset-top .yui-nav .selected {margin:0 0.16em -1px 0;}
+.yui-skin-sam div.nested_tab .yui-navset .yui-nav a,.yui-skin-sam div.nested_tab .yui-navset .yui-navset-top .yui-nav a {background: transparent;border:none #cccccc;border-width:0;color:#000;text-decoration:none;}
+.yui-skin-sam div.nested_tab .yui-navset .yui-nav a em,.yui-skin-sam div.nested_tab .yui-navset .yui-navset-top .yui-nav a em {border:solid #cccccc;border-width:0px 0 0;cursor:hand;padding:0.10em .75em;left:0;right:0;bottom:0;top:-1px;position:relative;}
+.yui-skin-sam div.nested_tab .yui-navset .yui-nav .selected a,.yui-skin-sam div.nested_tab .yui-navset .yui-nav .selected a:focus,.yui-skin-sam div.nested_tab .yui-navset .yui-nav .selected a:hover {background:transparent;color:#000000;font-weight: bold;text-decoration: underline;}
+.yui-skin-sam div.nested_tab .yui-navset .yui-nav a:hover,.yui-skin-sam div.nested_tab .yui-navset .yui-nav a:focus {background:transparent;outline:0;text-decoration: underline;}
+.yui-skin-sam div.nested_tab .yui-navset .yui-nav .selected a em {padding:0.10em 0.75em;}
+.yui-skin-sam div.nested_tab .yui-navset .yui-nav .selected a,.yui-skin-sam div.nested_tab .yui-navset .yui-nav .selected a em {border-color:#003d6b;}
+.yui-skin-sam div.nested_tab .yui-navset .yui-content,.yui-skin-sam div.nested_tab .yui-navset .yui-navset-top .yui-content {border:0px none;border-top-color:transparent;padding:0.5em 0.5em 0.25em;}
+
+/* == Lateral menu == */
+.lmsmenu_block,
+.lmsmenu_block{margin:0 1em 1em;padding:.6em;background:#FFFFFF;border:1px solid #cccccc;}
+
+ul.main-v-ul{margin:0;padding:0;}
+li.main-v{list-style:none;margin:0;padding:0;}
+li.main-v a.main-av{font-size:108%;font-weight:bold;display:block;padding:2px 0 2px 10px;text-decoration:none;}
+
+li.main-open a.main-av{background:url(../yui-skin/menubaritem_submenuindicator.png) no-repeat scroll left center transparent;}
+li.main-close a.main-av{background:url(../yui-skin/menuitem_submenuindicator.png) no-repeat scroll left center transparent;}
+
+li.main-v ul{padding: 4px 0 8px;margin:0;line-height:1.5em;}
+li.main-close ul{display:none;}
+
+li.sub-v{list-style:none;margin:0 0 4px;padding:0;}
+li.sub-v a{text-decoration:none;display:block;padding:0 24px;}
+li.sub-v a:hover{}

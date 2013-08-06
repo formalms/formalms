@@ -1,0 +1,29 @@
+/*
+DOCEBO - The E-Learning Suite
+http://www.docebo.com
+license: http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+*/
+html, body {}
+.layout_header {padding: 8px 1em;background:#ffffff;}
+.layout_header .left_logo {margin-top: 5px;margin-left: 10px;vertical-align:middle;}
+.layout_colum_container{padding-top:1em;}
+.layout_footer {padding:.4em 1em;background:#efefef;}
+.layout_footer img  {vertical-align:middle;}
+.directory_order_image {vertical-align:middle;margin-left:2px;}
+#main_menu_container {border-top: 1px solid #cccccc;border-bottom: 1px solid #cccccc;}
+#admin_box_login{margin:10em auto;width:40em;border:1px solid #cccccc;}
+#admin_box_login div.form_login_ext{margin:1em 1em;}
+#admin_box_login legend{display:none;}
+/* dashboard */
+.block_spacer{margin-bottom:20px;}
+.block_spacer h3 {color:#003d6b; padding-bottom:6px; margin-bottom:10px;border-bottom:3px solid #eeeeee;text-transform:uppercase;}
+.chart {margin:0 auto;width:80%;height:250px;}
+/* admin menu */
+/*
+.admmenu_dash{background:url(../images/ico_menu.png) 0 0 no-repeat;padding:0px 0px 1px 20px;}
+.admmenu_framework{background:url(../images/ico_menu.png) 0 -20px no-repeat;padding:0px 0px 1px 20px;}
+.admmenu_lms{background:url(../images/ico_menu.png) 0 -40px no-repeat;padding:0px 0px 1px 20px;}
+.admmenu_cms{background:url(../images/ico_menu.png) 0 -60px no-repeat;padding:0px 0px 1px 20px;}
+.admmenu_goto{background:url(../images/ico_menu.png) 0 -120px no-repeat;padding:0px 0px 1px 20px;}
+.admmenu_logout{background:url(../images/ico_menu.png) 0 -140px no-repeat;padding:0px 0px 1px 20px;}
+*/
