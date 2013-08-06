@@ -27,7 +27,7 @@ body.yui-skin-sam .lms_menu_over .yuimenubaritem-selected{background:transparent
 body.yui-skin-sam .lms_menu_over .yuimenubaritemlabel-selected{margin:-1px 0;}
 body.yui-skin-sam .yuimenuitem .yuimenubaritemlabel-hassubmenu {padding-right:20px;}
 
-#lms_menu_container>.bd>ul.first-of-type li {background:#666; border: 1px solid #999; border-radius: 5px 5px 5px 5px; box-shadow: 0 1px 0 #eaeaea inset; margin: 10px 8px;}
+#lms_menu_container>.bd>ul.first-of-type li {background:#666; border: 1px solid #999; border-radius: 8px 8px 8px 8px; box-shadow: 0 1px 0 #eaeaea inset; margin: 10px 7px;}
 #lms_menu_container>.bd>ul.first-of-type li.first-of-type {margin-left:0}
 #lms_menu_container>.bd>ul.first-of-type li a {color:#ffffff; padding: 5px 20px;}
 
