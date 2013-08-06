@@ -11,6 +11,8 @@ tinyMCE.init({
 	// General options
 	mode : "textareas",
 	theme : "advanced",
+	skin : "o2k7",
+  skin_variant : "silver",
 	editor_selector : "tinymce_complex",
 	forced_root_block : false,
 	force_p_newlines : false,
