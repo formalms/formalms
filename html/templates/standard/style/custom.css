@@ -1,0 +1,13 @@
+﻿
+body {background:url(../images/body_background.png) repeat-x 0 120px;}
+
+div#container {width:960px; margin:0 auto; padding:0 10px; background:#fff; border:1px solid #ddd; border-top:0; border-bottom:0;}
+
+.layout_header {
+	padding:5px 0;
+}
+
+.layout_header .left_logo {
+	margin:0;
+}
+
