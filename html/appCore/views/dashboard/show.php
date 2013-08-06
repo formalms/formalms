@@ -255,6 +255,24 @@
 				<div class="nofloat"></div>
 				<div class="block_spacer">
 					<h3><?php echo Lang::t('_SUPPORT_SITE', 'dashboard'); ?></h3>
+					<ul class="link_list">
+							<li>
+								<a href="http://www.forma.org/"
+									 onclick="window.open(this.href); return false;"
+									 onkeypress="window.open(this.href); return false;"
+									 title="Forma <?php echo Lang::t('_OPEN_IN_NEW_WINDOW', 'dashboard'); ?>">
+									<?php echo Lang::t('_URL_COMPANY', 'dashboard'); ?>
+								</a>
+							</li>
+							<li>
+								<a href="http://www.forma.org/community/"
+									 onclick="window.open(this.href); return false;"
+									 onkeypress="window.open(this.href); return false;"
+									 title="Forma Community <?php echo Lang::t('_OPEN_IN_NEW_WINDOW', 'dashboard'); ?>">
+									<?php echo Lang::t('_URL_SUPPORTLMS', 'dashboard'); ?>
+								</a>
+							</li>
+						</ul>
 				</div>
 				<!-- Social list -->
 				<div class="block_spacer">
