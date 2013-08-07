@@ -195,12 +195,23 @@ class CatalogLms extends Model
 								.'</a>';
 						} else {
 							//$action .= '<p class="cannot_subscribe">'.Lang::t('_NO_EDITIONS', 'catalogue').'</p>';
+/* FORMA - INSERITO BOTTONE ENTRA
 							if (count($user_classroom) > 0) {
 								$action .= '<p class="subscribed">'.Lang::t('_USER_STATUS_SUBS', 'catalogue').'</p>';
 							} else {
 								$action .= '<p class="cannot_subscribe">'.Lang::t('_NO_AVAILABLE_EDITIONS', 'catalogue').'</p>';
 							}
-						}
+*/
+							if (count($user_classroom) > 0) {
+								$action .= '<a href="index.php?modname=course&op=aula&idCourse='.$row['idCourse'].' "'
+									.' title="'.$_text.'"><p class="subscribed">'
+									.Lang::t('_USER_STATUS_ENTER', 'catalogue').'</p>'
+									.'</a>';
+							} else {
+								$action .= '<p class="cannot_subscribe">'.Lang::t('_NO_AVAILABLE_EDITIONS', 'catalogue').'</p>';
+							}
+						}			
+						
 					}
 					else
 					{
@@ -286,9 +297,17 @@ class CatalogLms extends Model
 
 					if($waiting)
 						$action .= '<p class="subscribed">'.Lang::t('_WAITING', 'catalogue').'</p>';
-					else
-						$action .= '<p class="subscribed">'.Lang::t('_USER_STATUS_SUBS', 'catalogue').'</p>';
+					else {
+						// FORMA - MODIFICA TASTO ENTRA
+						//$action .= '<p class="subscribed">'.Lang::t('_USER_STATUS_SUBS', 'catalogue').'</p>';
+						$action .= '<a href="index.php?modname=course&op=aula&idCourse='.$row['idCourse'].' "'
+								.' title="'.$_text.'"><p class="subscribed">'
+								.Lang::t('_USER_STATUS_ENTER', 'catalogue').'</p>'
+								.'</a>';
+					}
 
+                                           
+                                           
 				}
 				else
 				{
