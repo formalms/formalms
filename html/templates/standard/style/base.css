@@ -465,3 +465,45 @@ div.cart_box a .num_notify { font-size: 0.80em; }
 .cart_right { float: right; margin-right: 2em; }
 p.total_price { margin-bottom: 1em; }
 /* ---------- */
+
+/* Categories */
+
+.yui-t2 .yui-b {
+  margin-left: -4px;
+  width: 14em;
+}
+
+ul.flat-categories{margin:20px 0;padding:0;}
+ul.flat-categories li{
+	margin:2px 0;
+	padding:4px 4px 4px 10px;
+	list-style:none;
+	background:#666 url('../images/treeview/arrow-right-circle.png') no-repeat 7px 4px ;
+	border-radius:5px;
+	border:1px solid #999;
+	}
+
+ul.flat-categories li.expanded {background:#993300 url('../images/treeview/arrow-down-circle.png')no-repeat 7px 4px;}
+
+ul.flat-categories li a{
+	padding:2px 2px 2px 20px;
+	color: #FFF;
+	font-weight:bold;
+	text-decoration: none;
+	}
+ul.flat-categories li.selected a{ text-decoration:none;}
+
+ul.flat-categories ul{padding:0;}
+ul.flat-categories ul li, ul.flat-categories ul li ul li{background-color:#CCC; border-color: #AAAAAA !important; box-shadow: 0 1px #DDDDDD inset;}
+ul.flat-categories > ul > li > a {color:#333 !important;}
+ul.flat-categories ul li.expanded {background:#CCC url('../images/treeview/arrow-down-circle.png')no-repeat 7px 4px;}
+
+ul.flat-categories ul ul li{background-color:#EAEAEA; border-color: #cccccc !important; box-shadow: 0 1px #fefefe inset;}
+ul.flat-categories ul ul li a {color:#666;}
+ul.flat-categories ul ul li.expanded {background:#EAEAEA url('../images/treeview/arrow-down-circle.png')no-repeat 3px 4px;}
+
+ul.flat-categories ul ul ul li{background-color:#FFF;}
+ul.flat-categories ul ul ul li a {color:#666;}
+ul.flat-categories ul ul ul li.expanded {background:#FFF url('../images/treeview/arrow-down-circle.png')no-repeat 3px 4px;}
+
+ul.style_none li {list-style:none; }

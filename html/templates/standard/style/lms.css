@@ -22,7 +22,7 @@
 .layout_header .left_logo{margin-top:5px;margin-left:10px;vertical-align:middle;}
 .layout_menu_over{zoom:1;}
 #lms_main_container{background:#ffffff;padding-top:1em;}
-.layout_colum_container{padding-top:1em;}
+.layout_colum_container{padding-top:1em; min-height:350px;}
 .layout_footer{padding:.4em 1em;/*background:url('../images/back_footer.png') repeat-x 0 0 #ffffff;*/background:#eeeeee;}
 .layout_footer img{vertical-align:middle;}
 .powered_by{text-align:right;}
