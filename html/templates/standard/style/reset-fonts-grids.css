@@ -36,7 +36,7 @@ pre, code, kbd, samp, tt{font-family:monospace;*font-size:108%;line-height:100%;
 .yui-t2 .yui-b{float:left;width:13.8461em;*width:13.50em;}
 .yui-t2 #yui-main .yui-b{margin-left:14.8461em;*margin-left:14.55em;}
 .yui-t3 .yui-b{float:left;width:21em;*width:22.50em;}
-.yui-t3 #yui-main .yui-b{margin-left:21em;*margin-left:23.62em;}
+.yui-t3 #yui-main .yui-b{margin-left:0;*margin-left:23.62em;}
 .yui-t4 .yui-b{float:right;width:13.8456em;*width:13.50em;}
 .yui-t4 #yui-main .yui-b{margin-right:14.8456em;*margin-right:14.55em;}
 .yui-t5 .yui-b{float:right;width:18.4615em;*width:18.00em;}

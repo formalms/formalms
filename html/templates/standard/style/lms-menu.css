@@ -63,3 +63,176 @@ li.main-close ul{display:none;}
 li.sub-v{list-style:none;margin:0 0 4px;padding:0;}
 li.sub-v a{text-decoration:none;display:block;padding:0 24px;}
 li.sub-v a:hover{}
+
+/* -------------  PURPLE ---------------------*/
+
+#course-info {
+	width: 100%;
+	text-shadow: none;
+}
+
+.yui-t3 #yui-main.yui-main-purple {
+	width: 100%;
+	margin-left: 1px;
+}
+
+#course-info #arrow {
+	width: 16px;
+	height: 16px;
+	background: url(../images/course/down.png) 0 0 no-repeat transparent;
+	float: left;
+	margin-top: 3px;
+margin-left: 5px;
+}
+
+#course-info .tempo {
+	color: #000000;
+font-family: HelveticaNeue, Open Sans Condensed, 'PT Sans', verdana, helvetica, sans-serif;
+font-weight: normal;
+text-transform: uppercase;
+text-shadow: white 1px 1px 0px;
+font-size: 16px;
+float: left;
+}
+
+.yui-t3 #yui-main.yui-main-purple .yui-b {
+	margin-left: 0px;
+}
+
+#yui-main.yui-main-purple .yui-b .tab_block{
+	margin: 0px;
+}
+
+.yui-t3 #course-info h1 {
+	float: left;
+	margin: 0 0 .6em .6em;
+	width:70%;
+}
+
+.yui-t3 #course-info #menu-oriz {
+	height: 65px;
+	padding:0.6em;
+	margin:0 1em 1em;
+	background-color: #FFFFFF;
+	border: 1px solid #CCCCCC;
+}
+
+.yui-t3 #course-info .clear {
+  clear: both;
+}
+
+.yui-t3 #course-info #accordion {
+    cursor: pointer;
+    float: right;
+    margin-top: -10px;
+    outline: none;
+	margin-right:1em;
+	width:25%;
+}
+
+.yui-t3 #course-info #accordion h3 .tempo {
+	font-size:14px;
+}
+
+#course-info ul.float-left{
+	float: left;
+	padding: 2px 0px 0px 0px;
+	margin-top:40px;
+	margin-left:10px
+}
+
+#course-info ul.sub_hide{
+	display: none;
+}
+
+#course-info ul.float-left li{
+	float: left;
+	list-style-type: none;
+	margin-right: 2px;
+	font-size: 13px;
+}
+
+#course-info ul.float-left li a {
+	padding:5px;
+}
+
+#course-info ul.float-left li a:hover{
+	color: #CC0000;
+}
+
+
+#course-info ul#float-right{
+	height: 15px;
+	padding: 0;
+	position: absolute;
+	left:0;
+	margin-left:30px;
+	margin-top:8px;
+}
+
+#course-info ul#float-right li{
+	float: left;
+	list-style-type: none;
+	margin-right: 2px;
+	font-size: 13px;
+}
+
+#course-info ul#float-right .menu-area:hover{
+	background-color:#9c0000; 
+	background: -webkit-gradient(linear, left top, left bottom, from(#D9DCDF), to(#F1F2F4)); 
+	background: -moz-linear-gradient(top,  #D9DCDF,  #F1F2F4); 
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#D9DCDF', endColorstr='#F1F2F4',GradientType=0 ); /* IE6-9 */
+	border: 1px solid #cccccc;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+#course-info ul#float-right a:hover, #course-info ul#float-left a:hover{  
+	text-decoration:none;
+}
+
+#course-info ul#float-right .menu-area {
+    padding: 5px 10px 3px;
+    text-decoration: none;
+	text-align: center;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	margin-right: 2px;
+    font: 16px HelveticaNeue,Open Sans Condensed,'PT Sans',verdana,helvetica,sans-serif;
+    background-color: #f1f2f4;
+    border: 1px solid #CCCCCC;
+	background: -webkit-gradient(linear, left top, left bottom, from(#F1F2F4 ), to(#D9DCDF )); 
+	background: -moz-linear-gradient(center top , #F1F2F4, #D9DCDF ) repeat scroll 0 0 transparent;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F1F2F4', endColorstr='#D9DCDF ',GradientType=0 ); /* IE6-9 */
+    box-shadow: 0 1px 0 #fff inset;
+}
+
+#course-info ul#float-right .menu-area a {
+	color:#000;
+	text-shadow:1px 1px 0 #fff;
+}
+
+#course-info ul#float-right .menu-selected {
+	background-color:#9c0000; 
+	border: 1px solid #9c0000;
+	background: -webkit-gradient(linear, left top, left bottom, from(#CC0000), to(#9c0000)); 
+	background: -moz-linear-gradient(top,  #CC0000,  #9c0000); 
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#CC0000', endColorstr='#9c0000',GradientType=0 ); /* IE6-9 */
+	box-shadow:0 1px 0 #DD5860 inset;
+}
+
+#course-info ul#float-right .menu-selected:hover{
+    background-color: #9c0000;
+    border: 1px solid #9c0000;
+	background: -webkit-gradient(linear, left top, left bottom, from(#9c0000), to(#CC0000)); 
+	background: -moz-linear-gradient(top,  #9c0000,  #CC0000); 
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9c0000', endColorstr='#CC0000',GradientType=0 ); /* IE6-9 */
+    box-shadow: 0 1px 0 #DD5860 inset;
+}
+
+#course-info ul#float-right .menu-selected a {
+	color:#fff;
+	text-shadow:-1px -1px 0 #292929;
+}

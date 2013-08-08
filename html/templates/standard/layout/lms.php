@@ -64,7 +64,7 @@
 		<?php echo Layout::zone('menu_over'); ?>
 		<!-- content -->
 		<div id="lms_main_container" class="yui-t3">
-			<div class="yui-b">
+			<div id="course-info" class="yui-b">
 				<?php echo Layout::zone('menu'); ?>
 			</div>
 			<div id="yui-main">
