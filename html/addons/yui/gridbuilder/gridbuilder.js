@@ -24,10 +24,10 @@
 			Event.on('splitBody0', 'change', YAHOO.CSSGridBuilder.splitBody, YAHOO.CSSGridBuilder, true);
 			Event.on('which_doc', 'change', YAHOO.CSSGridBuilder.changeDoc, YAHOO.CSSGridBuilder, true);
 
-			var reset_button = new YAHOO.widget.Button('resetBuilder');
+			var reset_button = new YAHOO.widget.Button('resetBuilder', {CSS_CLASS_NAME: "btn"});
 			reset_button.on('click', YAHOO.CSSGridBuilder.reset, YAHOO.CSSGridBuilder, true);
 
-			var add_button = new YAHOO.widget.Button('addRow');
+			var add_button = new YAHOO.widget.Button('addRow',{CSS_CLASS_NAME: "btn"});
 			add_button.on('click', YAHOO.CSSGridBuilder.addRow, YAHOO.CSSGridBuilder, true);
 
 			//this.tooltip = new YAHOO.widget.Tooltip('classPath', { context: 'bd', showDelay:500 } );
