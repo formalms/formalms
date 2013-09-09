@@ -67,8 +67,12 @@ else {
 
 			//buttons
 			echo Form::openButtonSpace();
-			echo Form::getButton('set_advanced_filter', false, Lang::t('_SEARCH', 'standard'));
-			echo Form::getButton('reset_advanced_filter', false, Lang::t('_UNDO', 'standard'));
+			// INIZIO MODIFICA ROBYKIRK
+			//echo Form::getButton('set_advanced_filter', false, Lang::t('_SEARCH', 'standard'));
+			//echo Form::getButton('reset_advanced_filter', false, Lang::t('_UNDO', 'standard'));
+			echo Form::getButton("set_advanced_filter", "set_advanced_filter", Lang::t('_SEARCH', 'standard'), false, '', false);
+			echo Form::getButton("reset_advanced_filter", "reset_advanced_filter", Lang::t('_UNDO', 'standard'), false, '', false);
+			// FINE MODIFICA ROBYKIRK			
 			echo Form::closeButtonSpace();
 		?>
 	</div>

@@ -202,12 +202,20 @@ class CourseSubscribe_Manager
 				if (!empty($ulist)) $arr_idst = $ulist;
 				unset($ulist);
 			}
-			if (!empty($arr_idst)) $conditions[] = " AND u.idst IN (".implode(",", $arr_idst).") ";
-
+			
+			// INIZIO MODIFICA ROBYKIRK
+			//if (!empty($arr_idst)) $conditions[] = " AND u.idst IN (".implode(",", $arr_idst).") ";
+			if (!empty($arr_idst)) $query .= " AND u.idst IN (".implode(",", $arr_idst).") ";
+			
 			if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-				$query .= " AND (s.date_begin_validity <= '".$filter['date_valid']."' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-				$query .= " AND (s.date_expire_validity >= '".$filter['date_valid']."' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+				//$query .= " AND (s.date_begin_validity <= '".$filter['date_valid']."' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
+				//$query .= " AND (s.date_expire_validity >= '".$filter['date_valid']."' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+				$time_validity_date = strtotime($filter['date_valid']);
+				$validity_date = date('Y-m-d H:i:s', $time_validity_date);
+				$query .= " AND (s.date_begin_validity <= '".$validity_date."' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
+				$query .= " AND (s.date_expire_validity >= '".$validity_date."' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
 			}
+			// FINE MODIFICA ROBYKIRK
 
 			if (isset($filter['show'])) {
 				//validate values
