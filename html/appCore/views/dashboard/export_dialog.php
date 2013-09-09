@@ -10,10 +10,11 @@ $_body .= Form::getRadioSet(
 	'report_format',
 	'dl',
 	array(
-		Lang::t('_EXPORT_CSV', 'report') => 'csv',
-		Lang::t('_EXPORT_XLS', 'report') => 'xls'
+		Lang::t('_EXPORT_HTML', 'report') => 'htm',
+	    Lang::t('_EXPORT_CSV', 'report') => 'csv',
+	    Lang::t('_EXPORT_XLS', 'report') => 'xls'
 	),
-	'csv'
+   'htm'
 );
 $_body .= Form::closeForm();
 

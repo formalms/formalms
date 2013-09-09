@@ -136,8 +136,12 @@
 						echo Form::openForm('show_report_created_form', 'index.php?modname=report&amp;op=show_results&amp;of_platform=lms');
 						echo '<p><label for="report_created_sel">'.Lang::t('_SELECT', 'report').'</label></p>';
 						echo Form::getInputDropdown('dropdown', 'report_created_sel', 'idrep', $reports, false, '').'<br />';
-						echo Form::getButton('show_report_created', false, Lang::t('_VIEW', 'standard'));
-						echo Form::getButton('export_report_created', false, Lang::t('_EXPORT', 'standard'), false, '', true, false);
+						// INIZIO MODIFICA ROBYKIRK
+						//echo Form::getButton('show_report_created', false, Lang::t('_VIEW', 'standard'));
+						echo Form::getButton('show_report_created', 'show_report_created', Lang::t('_VIEW', 'standard'), true, '', false);
+						//echo Form::getButton('export_report_created', false, Lang::t('_EXPORT', 'standard'), false, '', true, false);
+						echo Form::getButton('export_report_created', 'export_report_created', Lang::t('_EXPORT', 'standard'), true, '', false);
+						// FINE MODIFICA ROBYKIRK
 						echo Form::closeform();
 
 						$this->widget('dialog', array(
