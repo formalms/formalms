@@ -94,7 +94,8 @@ function mycertificate(&$url) {
 		$lang->def('_YEAR', 'standard'),
 		$lang->def('_COURSE_CODE', 'course'),
 		$lang->def('_COURSE', 'course'),
-		$lang->def('_DATE_BEGIN', 'course'),
+		//$lang->def('_DATE_BEGIN', 'course'),
+		$lang->def('_CERTIFICATE_NAME', 'course'),
 		$lang->def('_DATE_END', 'course'),
 		$lang->def('_SCORE_INIT', 'profile', 'framework'),
 		$lang->def('_SCORE_FINAL', 'profile', 'framework')
@@ -170,6 +171,7 @@ function mycertificate(&$url) {
 			." AND idCourse IN (".implode(",", $arr_courses_ids).") "
 			.($period_start != '' ? " AND date_complete >= '".$period_start."' " : "")
 			.($period_end != '' ? " AND date_complete <= '".$period_end."' " : "");
+
 		$res = sql_query($query);
 		while (list($id_course, $date_inscr, $date_begin, $date_end, $status) = sql_fetch_row($res)) {
 			$arr_certificate_details[$id_course] = array($date_inscr, $date_begin, $date_end, $status);
@@ -192,7 +194,7 @@ function mycertificate(&$url) {
 
 			//filter and organize data to display
 			$display_data = array();
-			foreach ($course_data as $value) {
+			foreach ($course_data as $k => $value) {
 				list($id_course, $code, $name, $user_status, $perm_close_lo) = $value;
 
 				if(isset($available_cert[$id_course]))
@@ -200,6 +202,9 @@ function mycertificate(&$url) {
 					$can_rel_exceptional = false;
 
 					while(list($id_cert, $certificate) = each($available_cert[$id_course]))
+					//purple        
+					if($cert->certificateAvailableForUser($id_cert, $id_course, getLogUserId()) ) {
+					//end purple
 						if($certificate[CERT_AV_POINT_REQUIRED] > 0)
 						{
 							$course_score_final = false;
@@ -234,45 +239,62 @@ function mycertificate(&$url) {
 							if($course_score_final >= $certificate[CERT_AV_POINT_REQUIRED])
 								$can_rel_exceptional = true;
 						}
-
+					}
 					reset($available_cert[$id_course]);
 
 					//count years for rowspans
-					while(list($id_cert, $certificate) = each($available_cert[$id_course]))
-					{
-						$value[4] = $id_cert;
-						list($available_for_status) = $arr_certificates_availability[$id_course][$id_cert];
-						list($date_inscr, $date_begin, $date_end, $status) = $arr_certificate_details[$id_course];
-						if(($available_for_status == 3 && $status == 2) || ($available_for_status == 2 && $status == 1) || $available_for_status == 1) {
-							//$year = substr($date_end, 0, 4);
-							switch ($available_for_status) {
-								case 3: $cur_year = substr($date_end, 0, 4); break;
-								case 2: $cur_year = substr($date_begin, 0, 4); break;
-								case 1: $cur_year = substr($date_inscr, 0, 4); break;
-								default: $cur_year = '-';
-							}
+					while(list($id_cert, $certificate) = each($available_cert[$id_course])) {
+                                                //purple (aggiunto if prima dell'or)
+                                                if($cert->certificateAvailableForUser($id_cert, $id_course, getLogUserId()) ) {
+                                                        //$value[4] = $id_cert;
+                                                        //end purple
 
-							if($can_rel_exceptional && $certificate[CERT_AV_POINT_REQUIRED] > 0)
-							{
-								if (isset($years[$course_type][$cur_year]))
-									$years[$course_type][$cur_year]++;
-								else
-									$years[$course_type][$cur_year] = 1;
+                                                        list($available_for_status) = $arr_certificates_availability[$id_course][$id_cert];
+                                                        list($date_inscr, $date_begin, $date_end, $status) = $arr_certificate_details[$id_course];
+                                                        if(($available_for_status == 3 && $status == 2) || ($available_for_status == 2 && $status == 1) || $available_for_status == 1) {
+                                                                //$year = substr($date_end, 0, 4);
+                                                                switch ($available_for_status) {
+                                                                        case 3: $cur_year = substr($date_end, 0, 4); break;
+                                                                        case 2: $cur_year = substr($date_begin, 0, 4); break;
+                                                                        case 1: $cur_year = substr($date_inscr, 0, 4); break;
+                                                                        default: $cur_year = '-';
+                                                                }
 
-								$display_data[$cur_year][] = $value;
-							}
-							elseif(!$can_rel_exceptional && $certificate[CERT_AV_POINT_REQUIRED] == 0)
-							{
-								if (isset($years[$course_type][$cur_year]))
-									$years[$course_type][$cur_year]++;
-								else
-									$years[$course_type][$cur_year] = 1;
+																// purple (mi ricreo l'array value perchè manca di date_* BUG FIX)
+                                                                $value = array($id_course, $code, $name, $date_begin, $date_end, $user_status, $perm_close_lo);
+                                                                $value[6] = $id_cert;
 
-								$display_data[$cur_year][] = $value;
-							}
-						}
-					}
-				}
+																$query = "SELECT name "
+																	." FROM ".$GLOBALS['prefix_lms']."_certificate"." WHERE id_certificate = ".$id_cert;
+
+																$res = sql_query($query);
+																list($cname) = sql_fetch_row($res);
+																$value[7] = $cname;
+																// end purple
+																
+                                                                if($can_rel_exceptional && $certificate[CERT_AV_POINT_REQUIRED] > 0)
+                                                                {
+                                                                        if (isset($years[$course_type][$cur_year]))
+                                                                                $years[$course_type][$cur_year]++;
+                                                                        else
+                                                                                $years[$course_type][$cur_year] = 1;
+
+                                                                        $display_data[$cur_year][] = $value;
+                                                                }
+                                                                elseif(!$can_rel_exceptional && $certificate[CERT_AV_POINT_REQUIRED] == 0)
+                                                                {
+                                                                        if (isset($years[$course_type][$cur_year]))
+                                                                                $years[$course_type][$cur_year]++;
+                                                                        else
+                                                                                $years[$course_type][$cur_year] = 1;
+
+                                                                        $display_data[$cur_year][] = $value;
+                                                                }
+                                                        }
+                                                }
+					
+                                        }
+                                }
 			}
 
 			if (count($display_data) > 0)
@@ -289,7 +311,11 @@ function mycertificate(&$url) {
 				$first = true;
 				foreach ($rows as $row) {
 
-					list($id_course, $code, $name, $user_status, $id_cert) = $row;
+					// PURPLE: era senza date_* e quindi sbarellava con le date
+					// list($id_course, $code, $name, $user_status, $id_cert) = $row;
+					list($id_course, $code, $name, $date_begin, $date_end, $user_status, $id_cert, $cname) = $row;
+					// end purple
+					
 					$cont = array();
 
 					if ($first) {
@@ -314,11 +340,19 @@ function mycertificate(&$url) {
 						'style' => $type_h[2]
 					);
 
+
+					// PURPLE sostituito date_begin con certificate name
 					// 4 - starting date
+//					$cont[] = array(
+//						'value' => Format::date($date_begin, 'datetime'),
+//						'style' => $type_h[3]
+//					);
+
 					$cont[] = array(
-						'value' => Format::date($date_begin, 'datetime'),
+						'value' => $cname,
 						'style' => $type_h[3]
 					);
+
 
 					// 5 - complete date
 					$cont[] = array(
