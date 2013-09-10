@@ -850,7 +850,7 @@ class Man_Course {
 		if(isset($course['prerequisites_satisfied']) && $course['prerequisites_satisfied'] == false) return array('can' => false, 'reason' => 'prerequisites', 'expiring_in' => $expiring);
 		if(isset($course['waiting']) && $course['waiting'] >= 1) return array('can' => false, 'reason' => 'waiting', 'expiring_in' => $expiring);
 		// control if the course is elapsed
-		/*if($course['date_begin'] != '0000-00-00') {
+		if($course['date_begin'] != '0000-00-00') {
 
 			$time_begin = fromDatetimeToTimestamp($course['date_begin']);
 
@@ -867,7 +867,7 @@ class Man_Course {
 			$time_first_access = fromDatetimeToTimestamp($course['date_first_access']);
 
 			if($now > ( $time_first_access + ($course['valid_time'] * 24 * 3600 ) )) return array('can' => true, 'reason' => 'course_valid_time', 'expiring_in' => $expiring);
-		}*/
+		}
 		if( $course['userStatusOp'] & (1 << $course['user_status']) ) return array('can' => false, 'reason' => 'user_status', 'expiring_in' => $expiring);
 
 		//Control user coursepath prerequisite
