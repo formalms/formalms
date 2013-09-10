@@ -71,6 +71,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 
 	} // end while
 	
+	/*
 	// NUOVO MENU
 	if(isset($_SESSION['idCourse'])) {
         $path = $GLOBALS['where_files_relative'].'/doceboLms/'.Get::sett('pathcourse');
@@ -246,10 +247,10 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 	$menu_reborn .= $all_stats.'<div class="clear"></div>'.$menu_bottom;
 
     cout($menu_reborn,'menu');
-	
+	*/
 	// Vecchio menu (FINO ALLA FINE DEL CODICE)
 	// Print of the menu
-/*
+
 	cout('<div class="title_block">'
 			.'<h1>'.Docebo::course()->getValue('name').'</h1>'
 		.'</div>'
@@ -495,6 +496,6 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 			.'</script>'."\n"
 		, 'scripts');
 	}
-*/
+
 	
 }
