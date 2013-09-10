@@ -170,10 +170,20 @@ class KbRes {
 
 
 		if ($res > 0 && !empty($json_tags)) {
-			require_once(_base_.'/lib/lib.json.php');
+
+			//INIZIO MODIFICA ROBYKIRK
+			/*
+			 require_once(_base_.'/lib/lib.json.php');
 			$json = new Services_JSON();
 			$tags_arr = $json->decode($json_tags);
-
+			*/
+			$json_tags = str_replace("[", "", $json_tags);
+			$json_tags = str_replace("]", "", $json_tags);
+			$json_tags = str_replace('"', "", $json_tags);
+			$json_tags = str_replace("\\", "", $json_tags);
+			$tags_arr = explode(",", $json_tags);
+			//FINE MODIFICA ROBYKIRK
+			
 			$this->setResourceTags($res_id, $tags_arr);			
 		}
 
@@ -578,11 +588,16 @@ class KbRes {
 
 		foreach($tags_arr as $tag_name) {
 			if (!in_array($tag_name, $current_tags)) {
-				$to_add[]=$tag_name;
+      			// INIZIO MODIFICA ROBYKIRK  
+        		if ($tag_name == "") {
+          			$tags_not_to_rem[]=$tag_name;
+   				} else {
+          			$to_add[]=$tag_name;
+   				}
+			}else {
+   				$tags_not_to_rem[]=$tag_name;
 			}
-			else {
-				$tags_not_to_rem[]=$tag_name;
-			}
+     	    // FINE MODIFICA ROBYKIRK
 		}
 
 		$this->addResourceTag($res_id, $to_add);

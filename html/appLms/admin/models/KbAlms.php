@@ -910,11 +910,15 @@ class KbAlms extends Model {
 				$games_arr = array(0);
 			}
 
-			$where.="( " .
+			$where.="( " . 
 					"(kr.r_env = 'course_lo' AND kr.r_env_parent_id IN (" . implode(',', $courses_arr) . ")) OR " .
-					"(kr.r_env = 'communication' AND kr.r_env_parent_id IN (" . implode(',', $comm_arr) . ")) OR " .
-					"(kr.r_env = 'games' AND kr.r_env_parent_id IN (" . implode(',', $games_arr) . ")) " .
-					")";
+   					"(kr.r_env = 'communication' AND kr.r_env_parent_id IN (" . implode(',', $comm_arr) . ")) OR " .
+   					// INIZIO MODIFICA ROBYKIRK
+        			//"(kr.r_env = 'games' AND kr.r_env_parent_id IN (" . implode(',', $games_arr) . ")) " .
+        			"(kr.r_env = 'games' AND kr.r_env_parent_id IN (" . implode(',', $games_arr) . ")) OR " .
+       				"(kr.force_visible='1') " .
+        			// FINE MODIFICA ROBYKIRK
+			")";
 		}
 		if ($course_filter > 0) {  // --- Course filter: -----------------------
 			$where.= ( !empty($where) ? " AND " : "") .

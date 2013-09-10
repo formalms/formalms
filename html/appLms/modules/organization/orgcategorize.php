@@ -119,8 +119,17 @@ function organization_categorize_save(&$treeView, $idItem) {
 		$type, $env, $env_parent_id, $param, $alt_desc, $lang, $force_visible, $is_mobile
 	);
 
-	$json = new Services_JSON();
+	//INIZIO MODIFICA ROBYKIRK
+	/*
+  $json = new Services_JSON();
 	$tags_arr = $json->decode($json_tags);
+  */ 
+  $json_tags = str_replace("[", "", $json_tags);
+  $json_tags = str_replace("]", "", $json_tags);
+  $json_tags = str_replace('"', "", $json_tags);
+  $json_tags = str_replace("\\", "", $json_tags);
+  $tags_arr = explode(",", $json_tags);
+  //FINE MODIFICA ROBYKIRK
 
 	if ($res_id > 0) {
 		$kbres->setResourceTags($res_id, $tags_arr);
