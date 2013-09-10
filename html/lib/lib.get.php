@@ -140,11 +140,13 @@ class Get {
 	 */
 	public static function cfg($cfg_name, $default = false) {
 
-		if(!isset($GLOBALS['cfg'][$cfg_name])) $value = $default;
-		$value = $GLOBALS['cfg'][$cfg_name];
-
-		return $value;
-	}
+        if(!isset($GLOBALS['cfg'][$cfg_name])) 
+                    $value = $default;
+                else {
+                    $value = $GLOBALS['cfg'][$cfg_name];
+                }
+        return $value;
+    }
 	
 	/**
 	 * Return the value of a plugin configuration
