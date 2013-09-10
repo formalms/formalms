@@ -1150,17 +1150,28 @@ class AdminPreference
 		return $admin_userlist;
 	}
 
-	public function getAdminUsersQuery($id_admin, $idst_field_name) {
-
-		$acl_man = $this->acl_man;
-		$admin_tree		= $this->getAdminTree( $id_admin );
-		$admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
-		$query = '';
-		if(!empty($admin_users)) $query = " $idst_field_name IN (".implode(',', $admin_users).") ";
-		if($query !== '')
-			return $query;
-		else
-			return " 0 ";
+  public function getAdminUsersQuery($id_admin, $idst_field_name) {
+ 
+        $acl_man = Docebo::aclm();
+        $admin_tree     = $this->getAdminTree( $id_admin );
+        // separate the users and the groups
+        $admin_users    = $acl_man->getUsersFromMixedIdst($admin_tree);
+        $admin_groups   = $acl_man->getGroupsFromMixedIdst($admin_tree);
+ 
+        // retrive parent groups
+        $tmp_admin_groups = array();
+        foreach($admin_groups as $id_group) {
+            $tmp_admin_groups = array_merge( $tmp_admin_groups, $acl_man->getGroupGDescendants($id_group) );
+        }
+        $admin_groups = $tmp_admin_groups;
+ 
+        $arr_query = array();
+        if(!empty($admin_users)) $arr_query[] = " $idst_field_name IN (".implode(',', $admin_users).") ";
+        if(!empty($admin_groups))  $arr_query[] = " $idst_field_name IN ( SELECT idstMember FROM %adm_group_members WHERE idst IN (".implode(',', $admin_groups).") ) ";
+         
+        if(!empty($arr_query)) $query = "( ".implode($arr_query, 'OR')." )";
+        else $query = " 0 ";
+        return $query;
 	}
 	
 	public function getAdminAllSett($id_admin, $idst_field_name) {
