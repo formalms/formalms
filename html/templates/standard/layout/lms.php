@@ -27,6 +27,28 @@
 		<!-- Page Head area -->
 		<script type="text/javascript" src="<?php echo Get::rel_path('base')?>/lib/js_utils.js"></script>
 		<?php echo Layout::zone('page_head'); ?>
+        <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+        <script>
+            $('document').ready(function() {
+                $('div.menu-area a').bind('click',function(event){
+                	event.preventDefault();
+                    id = $(this).attr('rel');
+                    $('ul.float-left').hide();
+                    $('ul#'+id).show();
+                    $('div.menu-area').removeClass('menu-selected');
+                    $(this).parent().addClass('menu-selected');
+                });
+                
+                 $( "#accordion" ).accordion({
+                    collapsible: true,
+                    active:false,
+                    icons:false
+                });
+                
+                
+            });
+        </script>
 		<?php echo Layout::rtl(); ?>
 	</head>
 	<body class="yui-skin-docebo yui-skin-sam">
