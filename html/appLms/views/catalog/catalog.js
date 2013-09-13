@@ -16,16 +16,52 @@ function initialize(undo_name)
 	dialog = new YAHOO.widget.Dialog('pop_up_container',
 				{
 					width : "600px",
-					fixedcenter : false,
+					//height : "500px",
+
+					fixedcenter : true,
+
 					visible : true,
 					dragdrop: true,
 					modal: true,
 					close: true,
 					visible: false,
-					constraintoviewport : false
+
+					constraintoviewport : true
+
 					//buttons : [{ text:undo_name, handler:function(){this.hide();} } ]
 				 });
 	dialog.render(document.body);
+}
+
+function subscriptionCoursePathPopUp(id_path) {
+
+	var course_info = '&id_path=' + id_path;
+
+	YAHOO.util.Connect.asyncRequest("POST", glob_serverUrl + 'subscribeCoursePathInfo&',
+									{
+										success: function(o)
+										{
+											var res = YAHOO.lang.JSON.parse(o.responseText);
+											if (res.success)
+											{
+												dialog.setHeader(res.title);
+												dialog.setBody(res.body);
+												if(res.footer) dialog.setFooter('<div class="align-right">'+res.footer+'</div>');
+												else dialog.setFooter('');
+
+												dialog.center();
+												dialog.show();
+											}
+											else
+											{
+
+											}
+										},
+										failure: function()
+										{
+
+										}
+									}, course_info);
 }
 
 function subscriptionPopUp(id_course, id_date, id_edition, selling)
@@ -58,6 +94,50 @@ function subscriptionPopUp(id_course, id_date, id_edition, selling)
 											else
 											{
 
+											}
+										},
+										failure: function()
+										{
+
+										}
+									}, course_info);
+}
+
+function subscribeToCoursePath(id_path) {
+	var course_info = '&id_path=' + id_path;
+	
+	var div_course = YAHOO.util.Dom.get('action_'+id_path);
+
+	var div_feedback = YAHOO.util.Dom.get('feedback');
+	if(!div_feedback)
+	{
+		div_feedback = document.createElement('feedback');
+
+		div_feedback.id = 'feedback';
+		div_feedback.className = 'container-feedback';
+
+		document.body.appendChild(div_feedback);
+	}
+	
+	YAHOO.util.Connect.asyncRequest("POST", glob_serverUrl + 'subscribeToCoursePath&',
+									{
+										success: function(o)
+										{
+											var res = YAHOO.lang.JSON.parse(o.responseText);
+											if (res.success)
+											{
+												if(res.new_status != '')
+													div_course.innerHTML = res.new_status;
+
+												div_feedback.innerHTML = res.message;
+
+												dialog.hide();
+											}
+											else
+											{
+												div_feedback.innerHTML = res.message;
+
+												dialog.hide();
 											}
 										},
 										failure: function()
