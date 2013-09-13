@@ -2,7 +2,7 @@
 
 /* PURPLE */
 
-	define("IN_DOCEBO", "ok");
+	define("IN_FORMA", "ok");
 	include('../config.php');
 	error_reporting(0);
 	$db = mysql_connect($cfg['db_host'], $cfg['db_user'], $cfg['db_pass']);
