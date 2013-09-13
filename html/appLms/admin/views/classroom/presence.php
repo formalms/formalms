@@ -6,8 +6,21 @@
 <div class="std_block">
 
 <?php
-	YuiLib::load();
+	
 
+	YuiLib::load();
+        /* PURPLE Start -> Inserimento pulsante per esportazione della lista in excel */
+        
+            $id_date = $_GET['id_date'];
+            $id_course = $_GET['id_course'];
+            echo "<form action='excel.php' method='post'>
+            <input type='submit' value='".Lang::t('_EXPORT_XLS', 'report')."'/>
+            <input type='hidden' name='id_date' value='".$id_date."'/>
+            <input type='hidden' name='id_course' value='".$id_course."'/>
+            </form><br/>"; 	
+        
+	/* END PURPLE */
+	
 	echo	Form::openForm('presence_form', 'index.php?r='.$base_link_classroom.'/presence&id_course='.$model->getIdCourse().'&amp;id_date='.$model->getIdDate())
 			.Form::openElementSpace()
 			.($model->getTestType() == 1 ? Form::getTextfield(Lang::t('_MIN_SCORE', 'course'), 'score_min', 'score_min', 255, '') : '')
