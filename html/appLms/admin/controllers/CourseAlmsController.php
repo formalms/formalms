@@ -66,6 +66,30 @@ Class CourseAlmsController extends AlmsController
 		}
 		return $message;
 	}
+	
+	// funzione PURPLE (ajax)
+	public function getlolist($p=0, $sk = '') {
+		if (isset($_GET['idCourse'])) {
+			$query_list = "SELECT * FROM %lms_organization WHERE idCourse = '".(int)$_GET['idCourse']."' AND idParent = ".$p." ORDER BY path ASC";
+			$result_list = sql_query($query_list);
+			if (mysql_num_rows($result_list) > 0) {
+				if ($p == 0)
+					echo "<div id='treeDiv' class='ygtv-checkbox'>";
+				echo "<ul>";
+				while($lo = sql_fetch_array($result_list)) {
+					echo "<li class=\"expanded\"> <input onclick='cascade(\"".$lo['idOrg']."\")' class='".$sk."' type='checkbox' id='".$lo['idOrg']."' name='lo_list[]' value='".$lo['idOrg']."' checked='checked' /> <label for='".$lo['idOrg']."'>".$lo['title']."</label>";
+					$this->getlolist($lo['idOrg'], $sk." ".$lo['idOrg']);
+					echo "</li>";
+				}
+				echo "</ul>";
+				if ($p == 0) {
+					echo "</div>";
+				}
+			}
+		} else
+			echo "Error";
+	}
+	
 
 	public function show()
 	{
