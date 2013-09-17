@@ -1,0 +1,1 @@
+INSERT INTO `core_field_type` (`type_field`, `type_file`, `type_class`) VALUES ('textlabel', 'class.label.php', 'Field_Textlabel');
