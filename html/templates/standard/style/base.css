@@ -84,7 +84,7 @@ a.no_decoration{text-decoration:none;}
 .title_block h1 a{text-decoration:none;margin-right:6px;}
 .title_block h1 a:hover{text-decoration:underline;}
 .title_block ul{display:inline;}
-.std_block{margin:0;padding:10px 0;background:#ffffff;border:0;}
+.std_block{margin:0;padding:10px 20px;background:#ffffff;border:0;}
 .tab_block{margin:0 0 1em 0;}
 .tab_block .yui-content{background:#ffffff;}
 .inline_block{margin:0;padding:0;}
