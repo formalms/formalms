@@ -105,16 +105,17 @@ float: left;
 
 .yui-t3 #course-info h1 {
 	float: left;
-	margin: 0 0 .6em .6em;
+	margin: 0 0 .6em 0;
 	width:70%;
 }
 
 .yui-t3 #course-info #menu-oriz {
 	height: 65px;
-	padding:0.6em;
-	margin:0 1em 1em;
+	padding:0.6em 0 0 0;
+	margin:0;
 	background-color: #FFFFFF;
-	border: 1px solid #CCCCCC;
+	border: 0;
+	border-top:1px solid #CCC;
 }
 
 .yui-t3 #course-info .clear {
@@ -138,7 +139,7 @@ float: left;
 	float: left;
 	padding: 2px 0px 0px 0px;
 	margin-top:40px;
-	margin-left:10px
+	margin-left:0px
 }
 
 #course-info ul.sub_hide{
@@ -154,10 +155,17 @@ float: left;
 
 #course-info ul.float-left li a {
 	padding:5px;
+	text-decoration:none;
 }
 
 #course-info ul.float-left li a:hover{
 	color: #CC0000;
+	text-decoration:underline;
+}
+
+#course-info ul.float-left li a.active {
+	font-weight:bold;
+	text-decoration:underline;
 }
 
 
@@ -166,7 +174,7 @@ float: left;
 	padding: 0;
 	position: absolute;
 	left:0;
-	margin-left:30px;
+	margin-left:0px;
 	margin-top:8px;
 }
 
@@ -218,7 +226,7 @@ float: left;
 	background-color:#9c0000; 
 	border: 1px solid #9c0000;
 	background: -webkit-gradient(linear, left top, left bottom, from(#CC0000), to(#9c0000)); 
-	background: -moz-linear-gradient(top,  #CC0000,  #9c0000); 
+	background: -moz-linear-gradient(top,  #C84000, #993300); 
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#CC0000', endColorstr='#9c0000',GradientType=0 ); /* IE6-9 */
 	box-shadow:0 1px 0 #DD5860 inset;
 }
@@ -227,7 +235,7 @@ float: left;
     background-color: #9c0000;
     border: 1px solid #9c0000;
 	background: -webkit-gradient(linear, left top, left bottom, from(#9c0000), to(#CC0000)); 
-	background: -moz-linear-gradient(top,  #9c0000,  #CC0000); 
+	background: -moz-linear-gradient(top,  #C84000,  #C84000); 
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9c0000', endColorstr='#CC0000',GradientType=0 ); /* IE6-9 */
     box-shadow: 0 1px 0 #DD5860 inset;
 }

@@ -97,8 +97,10 @@ function mycertificate(&$url) {
 		//$lang->def('_DATE_BEGIN', 'course'),
 		$lang->def('_CERTIFICATE_NAME', 'course'),
 		$lang->def('_DATE_END', 'course'),
+		/* hide course scores - remove comment to show
 		$lang->def('_SCORE_INIT', 'profile', 'framework'),
 		$lang->def('_SCORE_FINAL', 'profile', 'framework')
+		*/
 	);
 	//if ($show_preview) $cont_h[] = '<img src="'.getPathImage('lms').'certificate/preview.gif" alt="'.$lang->def('_PREVIEW').'" />';
 	//$cont_h[] = '<img src="'.getPathImage('lms').'certificate/certificate.gif" alt="'.$lang->def('_ALT_TAKE_A_COPY').'" />';
@@ -113,8 +115,10 @@ function mycertificate(&$url) {
 		'align-center',
 		'img-cell',
 		'img-cell',
+		/* hide course scores - remove comment to show
 		'img-cell',
 		'img-cell'
+		*/
 	);
 	if ($show_preview) $type_h[] = 'nowarp';
 	$type_h[] = 'nowarp';
@@ -371,6 +375,7 @@ function mycertificate(&$url) {
 								? $score_final[$id_course][Docebo::user()->getIdST()]['score'].' / '.$score_final[$id_course][Docebo::user()->getIdST()]['max_score']
 								: '' );
 
+					/* hide course scores - remove comment to show
 					// 6 - init score
 					$cont[] = array(
 						'value' => $_value1,
@@ -382,6 +387,7 @@ function mycertificate(&$url) {
 						'value' => $_value2,
 						'style' => $type_h[6]
 					);
+					*/
 
 					if (isset($released[$id_course][$id_cert])) {
 						$av_cert++;

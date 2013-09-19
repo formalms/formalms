@@ -88,7 +88,7 @@ version: 2.6.0
 .folder_tree .ygtvlabel{color:#000000;font-size:90%;}
 .folder_tree .icon-file{display:block;height:22px;padding-left:20px;background:transparent url(../images/tree/file.png) 0 0px no-repeat;}
 .folder_tree .ygtvitem .ygtvroot{margin:0px;}
-.folder_tree .ygtvitem .ygtvroot{display:block;height:26px;padding-left:52px;background:transparent url(../images/tree/root.png) 22px 0px no-repeat;vertical-align:middle;}
+.folder_tree .ygtvitem .ygtvroot{display:block;height:26px;padding-left:52px;background:transparent url(../images/tree/root.png) 22px 4px no-repeat;vertical-align:middle;}
 .folder_tree .ygtvitem .ygtvroot span{display:block;padding-top:2px;cursor:pointer;*padding-top:0px;}
 .folder_tree .label_selected{font-weight:bold;}
 .folder_tree .table_odd td {background-color:#efefef;}
