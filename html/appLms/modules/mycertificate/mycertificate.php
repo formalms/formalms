@@ -96,7 +96,7 @@ function mycertificate(&$url) {
 		$lang->def('_COURSE', 'course'),
 		//$lang->def('_DATE_BEGIN', 'course'),
 		$lang->def('_CERTIFICATE_NAME', 'course'),
-		$lang->def('_DATE_END', 'course'),
+		$lang->def('_DATE_END', 'course')
 		/* hide course scores - remove comment to show
 		$lang->def('_SCORE_INIT', 'profile', 'framework'),
 		$lang->def('_SCORE_FINAL', 'profile', 'framework')
@@ -114,7 +114,7 @@ function mycertificate(&$url) {
 		'align-center',
 		'align-center',
 		'img-cell',
-		'img-cell',
+		'img-cell'
 		/* hide course scores - remove comment to show
 		'img-cell',
 		'img-cell'

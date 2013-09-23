@@ -101,7 +101,7 @@ a.no_decoration{text-decoration:none;}
 .list_block .content{margin:2px;padding:4px;}
 .list_block .actions{margin:6px 0 2px;padding:0;text-align:right;}
 .floating_box{float:right;width:25%;padding:12px;}
-.middle_colum{margin:0;padding:0 2em;border-left:1px solid #cccccc;border-right:1px solid #cccccc;}
+.middle_colum{margin:0;padding:0 1.2em;border-left:1px solid #cccccc;border-right:1px solid #cccccc;}
 /* actions containers */
 .yui-skin-docebo .table-container-over, .yui-skin-docebo .table-container-below{margin:12px 0;padding:8px 4px 4px;border-top:3px solid #eeeeee;border-bottom:3px solid #eeeeee;font-size:90%;zoom:1;}
 .yui-skin-docebo .table-container-over{}
