@@ -75,10 +75,12 @@ class ReportTablePrinter {
 		$content_csv  = $temp.': '.$date;
 		
 		switch ($this->type) {
-			
-			case _HTML: {
-				$this->buffer .= '<p id="report_info">'.$content_html.'</p><br />';
-			} break;
+			case _HTML :
+				{
+					$head = '<head><meta http-equiv="content-type" content="text/html; charset=utf-8"></head>';
+					$this->buffer .= $head . '<p id="report_info">' . $content_html . '</p><br />';
+				}
+				break;
 			
 			case _CSV: {
 				$this->buffer .= $content_csv._CSV_ENDLINE._CSV_ENDLINE;
