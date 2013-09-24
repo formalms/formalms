@@ -69,6 +69,22 @@ class Form {
 	public static function openElementSpace( $css_class = 'form_elem' ) {
 		return '<div class="'.$css_class.'">'."\n";
 	}
+	
+	//purple
+	
+	/**
+	 * public static function getTextLabel($label, $css_class = '')
+	 *
+	 * @param string    $label              the text of the label
+	 * @param string    $css_class 		the css of the container element
+	 */
+	
+	public static function getTextLabel($label, $css_class = 'textLabel') {
+		//check if the label
+		return '<div><label class="'.$css_class.'">'.$label.'</label></div>';
+	}
+	
+	//end purple
 
 	/**
 	 * public static function getTextBox( $text , $css_line = '')
