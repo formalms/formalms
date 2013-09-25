@@ -860,9 +860,8 @@ $filler="<br>";
 			.'<span>'
 			.$lang->def('_ADD_SCORM_RESULTS').'</span></a></li>'
 
-				.'<li><a class="ico-wt-sprite subs_xls" href="index.php?modname=coursereport&amp;op=export&amp;type_filter='.$lev.'" title="'.$lang->def('_EXPORT_XLS').'" onclick="window.open(this.href); return false;">'
-			.'<span>'
-      .$lang->def('_EXPORT_XLS').'</span></a></li>
+			.'<li><a class="ico-wt-sprite subs_csv" href="index.php?modname=coursereport&amp;op=export&amp;type_filter='.$lev.'" title="'.$lang->def('_EXPORT_CSV').'" onclick="window.open(this.href); return false;">'
+				.'<span>'.$lang->def('_EXPORT_CSV').'</span></a></li>
 			</ul>'
 			.'</div>'
 		);
@@ -2697,6 +2696,8 @@ function testQuestion()
 
 	$out->add('<script type="text/javascript">'
 			.' setup_coursereport(\''.$GLOBALS['where_lms_relative'].'/modules/coursereport/ajax.coursereport.php\'); '
+// // 			.' setup_coursereport(\''.$GLOBALS['where_lms_relative'].'/ajax.server.php?id_quest=3&id_test=3\'); '
+// 			.' setup_coursereport(\''.$GLOBALS['where_lms_relative'].'/ajax.server.php?mn=coursereport&\'); '
 			.'</script>', 'page_head');
 
 	$id_test = importVar('id_test', true, 0);
