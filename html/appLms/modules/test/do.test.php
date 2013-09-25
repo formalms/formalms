@@ -658,6 +658,11 @@ function play($object_test, $id_param) {
 		Form::getHidden('page_to_save', 'page_to_save', $page_to_display)
 		.Form::getHidden('previous_page', 'previous_page', $page_to_display), 'content');
 	
+	// FIX PURPLE sugli ordinamenti random e le risposte a tempo
+	if ($idQuest)
+		$query_question = str_replace("WHERE","WHERE q.idQuest = ".$idQuest." AND", $query_question);
+	// END FIX PURPLE
+	
 	// Get question from database
 	$re_question = sql_query($query_question);
 	
