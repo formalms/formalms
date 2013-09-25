@@ -476,8 +476,8 @@ var initDataTable = function(oConfig) {
 					},
 					onFailure: function(eventType, args) {
 						YAHOO.util.Dom.get('lo_list').innerHTML = '';
-					},
- 
+					}
+
 				}
 			};
 			if (YAHOO.util.Dom.get('lo_list').innerHTML == '')
