@@ -1,8 +1,10 @@
 <?php
+/*
 @error_reporting(E_ALL);
 @ini_set('display_errors', true);
 @ini_set('html_errors', true);
 @ini_set('error_reporting', E_ALL);
+*/
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -24,21 +26,26 @@
  *
  */
 
+/*
 if(isset($_REQUEST['GLOBALS'])) die('GLOBALS overwrite attempt detected');
 
 if(!defined("IN_FORMA")) define("IN_FORMA", true);
+*/
 
 $path_to_root = '../../..';
 
 // prepare refer ------------------------------------------------------------------
 
+/*
 require_once(dirname(__FILE__).'/'.$path_to_root.'/config.php');
 require_once(dirname(__FILE__).'/'.$path_to_root.'/base.php');
+*/
 //require_once(dirname(__FILE__).'/'.$path_to_root.'/doceboLms/config.php');
 
 
 ob_start();
 
+/*
 
 // connect to database -------------------------------------------------------------------
 $GLOBALS['dbConn'] = mysql_connect($cfg['db_host'], $cfg['db_user'], $cfg['db_pass']);
@@ -47,13 +54,16 @@ if( !$GLOBALS['dbConn'] )
 
 if( !mysql_select_db($cfg['db_name'], $GLOBALS['dbConn']) )
 	die( "Database not found. Check configurations" );
+*/
 
 //@sql_query("SET NAMES '".$GLOBALS['db_conn_names']."'", $GLOBALS['dbConn']);
 //@sql_query("SET CHARACTER SET '".$GLOBALS['db_conn_char_set']."'", $GLOBALS['dbConn']);
 
 // load lms setting ------------------------------------------------------------------
+/*
 session_name("docebo_session");
 session_start();
+*/
 
 // load regional setting --------------------------------------------------------------
 
@@ -69,11 +79,13 @@ session_start();
 //chkInput($_POST);
 //chkInput($_COOKIE);
 
+/*
 $GLOBALS['operation_result'] = '';
 function aout($string)
 {
 	$GLOBALS['operation_result'] .= $string;
 }
+*/
 
 // here all the specific code ==========================================================
 
@@ -162,7 +174,7 @@ switch($op) {
 
 // close database connection
 
-mysql_close($GLOBALS['dbConn']);
+/* mysql_close($GLOBALS['dbConn']); */
 
 ob_clean();
 echo $GLOBALS['operation_result'];
