@@ -27,7 +27,7 @@ function getQuestDetail(id_quest, id_test, type) {
 		YAHOO.util.Dom.get('less_quest_' + id_quest).style.display = 'inline';
 		YAHOO.util.Dom.get('more_quest_' + id_quest).style.display = 'none';
 		
-		var objAjax = YAHOO.util.Connect.asyncRequest('POST', '../' + fw_d_server_url + '?' + data, {success : getQuestDetail_complete, failure : ajax_failure});
+		var objAjax = YAHOO.util.Connect.asyncRequest('POST', '../' + fw_d_server_url + data, {success : getQuestDetail_complete, failure : ajax_failure});
     }
 }
 
