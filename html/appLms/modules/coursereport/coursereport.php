@@ -2697,7 +2697,7 @@ function testQuestion()
 	$out->add('<script type="text/javascript">'
 // 			.' setup_coursereport(\''.$GLOBALS['where_lms_relative'].'/modules/coursereport/ajax.coursereport.php\'); '
 // // 			.' setup_coursereport(\''.$GLOBALS['where_lms_relative'].'/ajax.server.php?id_quest=3&id_test=3\'); '
-			.' setup_coursereport(\''.$GLOBALS['where_lms_relative'].'/ajax.server.php?plf=lms&\'); '
+			.' setup_coursereport(\''.$GLOBALS['where_lms_relative'].'/ajax.server.php?plf=lms&r=coursereport&\'); '
 			.'</script>', 'page_head');
 
 	$id_test = importVar('id_test', true, 0);
