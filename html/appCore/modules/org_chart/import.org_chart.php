@@ -18,6 +18,7 @@
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
 **/
 require_once(_adm_.'/lib/lib.import.php');
+require_once(_lms_.'/admin/models/EnrollrulesAlms.php');
 
 class ImportUser extends DoceboImport_Destination {
 
@@ -274,6 +275,11 @@ class ImportUser extends DoceboImport_Destination {
 					$f = $this->orgchart[$row['tree_name']];
 					$acl_manager->addToGroup($f->idst_oc, $idst);
 					$acl_manager->addToGroup($f->idst_ocd, $idst);
+					
+					// ALE PURPLE - apply enroll rules
+					$enrollrules = new EnrollrulesAlms();
+					$enrollrules->newRules('_NEW_IMPORTED_USER', array($idst), 'all', $f->idOrg);
+					// END ALE PURPLE
 				}
 			} elseif ($this->idst_group != $this->idst_oc) {
 				
