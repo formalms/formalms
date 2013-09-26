@@ -30,10 +30,42 @@ if(!Docebo::user()->isAnonymous() && (!isset($_GET['modname']) || $_GET['modname
 	Util::jump_to(_folder_lms_.'/index.php');
 }
 
+
+
+
+
 // instanciate the page-writer that we want (maybe we can rewrite it in a
 // different way with the introduction of the layout manager)
 emptyPageWriter::createInstance();
 $db =& DbConn::getInstance();
+
+$query = "SELECT param_value FROM core_setting
+		WHERE param_name = 'maintenance'
+		ORDER BY pack, sequence";
+
+$mode = $db->fetch_row($db->query($query));
+
+$query = "SELECT param_value FROM core_setting
+		WHERE param_name = 'maintenance_pw'
+		ORDER BY pack, sequence";
+$passwd = $db->fetch_row($db->query($query));
+
+// Se siamo in modalita' manutenzione
+if($mode[0] == "on"){
+	// Se e' stata chiamata l'URL manualmente con la password
+	if(isset($_GET["passwd"])){
+		// Se la password non corrisponde lo mando alla pagina di manutenzione
+		if($passwd[0] != $_GET["passwd"]){
+			Util::jump_to('maintenance.html');
+		}
+	}else{
+		Util::jump_to('maintenance.html');
+	}
+}
+
+
+
+
 
 // redirect if the main page is the cms
 $query_platform = "SELECT platform
