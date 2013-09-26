@@ -29,7 +29,7 @@ body.yui-skin-sam .yuimenuitem .yuimenubaritemlabel-hassubmenu {padding-right:20
 
 #lms_menu_container>.bd>ul.first-of-type li {background:#666; border: 1px solid #999; border-radius: 8px 8px 8px 8px; margin: 10px 7px;}
 #lms_menu_container>.bd>ul.first-of-type li.first-of-type {margin-left:0}
-#lms_menu_container>.bd>ul.first-of-type li a {color:#ffffff; padding: 5px 20px;}
+#lms_menu_container>.bd>ul.first-of-type li a {color:#ffffff; padding: 5px 20px; font-weight:bold;}
 
 
 /* == Nested tab == */

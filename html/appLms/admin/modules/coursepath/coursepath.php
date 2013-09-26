@@ -140,7 +140,7 @@ function pathlist() {
 	$type_h[] = 'image';
 
 	if($subscribe_perm) {
-		$cont_h[] = '<img src="'.getPathImage().'standard/cancel.png" alt="'.$lang->def('_ALT_REM_SUB').'" />';
+		$cont_h[] = '<img src="'.getPathImage().'standard/del_user.png" alt="'.$lang->def('_ALT_REM_SUB').'" />';
 		$type_h[] = 'image';
 	}
 	if($mod_perm) {
@@ -178,7 +178,7 @@ function pathlist() {
 						.'<img src="'.getPathImage().'standard/modelem.png" alt="'.$lang->def('_COURSES').' : '.$path_name.'" /></a>';
 			$cont[] = '<a href="index.php?modname=coursepath&amp;op=delsubscription&amp;id_path='.$id_path.'" '
 						.'title="'.$lang->def('_ALT_REM_SUB').' : '.$path_name.'">'
-					.'<img src="'.getPathImage().'standard/cancel.png" alt="'.$lang->def('_ALT_REM_SUB').' : '.$path_name.'" /></a>';
+					.'<img src="'.getPathImage().'standard/del_user.png" alt="'.$lang->def('_ALT_REM_SUB').' : '.$path_name.'" /></a>';
 		}
 		else
 		{

@@ -473,7 +473,7 @@ p.total_price { margin-bottom: 1em; }
   width: 14em;
 }
 
-ul.flat-categories{margin:20px 0;padding:0;}
+ul.flat-categories{margin:20px 0 0 5px;padding:0;}
 ul.flat-categories li{
 	margin:2px 0;
 	padding:4px 4px 4px 10px;
@@ -488,7 +488,7 @@ ul.flat-categories li.expanded {background:#C84000 url('../images/treeview/arrow
 ul.flat-categories li a{
 	padding:2px 2px 2px 20px;
 	color: #FFF;
-	font-weight:bold;
+	font-weight:normal;
 	text-decoration: none;
 	}
 ul.flat-categories li.selected a{ text-decoration:none;}

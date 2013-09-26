@@ -77,7 +77,7 @@ if ($permissions['subscribe'])//if(checkPerm('subscribe', true, 'course', 'lms')
 	$columns_arr[] = array('key' => 'user', 'label' =>  Get::sprite('subs_users', Lang::t('_USER_STATUS_SUBS', 'course') ), 'className' => 'img-cell');
 
 if ($permissions['view'])
-	$columns_arr[] = array('key' => 'edition', 'label' =>  Get::sprite('subs_elem', Lang::t('_CLASSROOM_EDITION', 'course') ), 'className' => 'img-cell');
+	$columns_arr[] = array('key' => 'edition', 'label' =>  Get::sprite('subs_date', Lang::t('_CLASSROOM_EDITION', 'course') ), 'className' => 'img-cell');
 
 if ($permissions['mod']) {
 	$columns_arr[] = array('key' => 'certificate', 'label' => Get::sprite('subs_pdf', Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')), 'className' => 'img-cell');

@@ -19,3 +19,7 @@ div#container {width:960px; margin:0 auto; padding:0 10px; background:#fff; /*bo
 
 #lms_main_container .std_block {padding: 1em 0;}
 
+
+/* Menu principale*/
+.yui-skin-sam .yuimenubar {font-size:95%;}
+
