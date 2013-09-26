@@ -31,6 +31,10 @@ body.yui-skin-sam .yuimenuitem .yuimenubaritemlabel-hassubmenu {padding-right:20
 #lms_menu_container>.bd>ul.first-of-type li.first-of-type {margin-left:0}
 #lms_menu_container>.bd>ul.first-of-type li a {color:#ffffff; padding: 5px 20px; font-weight:bold;}
 
+#lms_menu_container>.bd>ul.first-of-type li ul li{background:#FFF; border: 0; border-bottom:1px solid gray; border-radius: 0; margin: 10px 7px;}
+#lms_menu_container>.bd>ul.first-of-type li.first-of-type ul li{margin-left:0}
+#lms_menu_container>.bd>ul.first-of-type li ul li a {color:#ffffff; padding: 5px 20px; font-weight:normal; color:#333}
+
 
 /* == Nested tab == */
 .yui-nav{font-size:90%;}
@@ -213,7 +217,7 @@ float: left;
     border: 1px solid #CCCCCC;
 	background: -webkit-gradient(linear, left top, left bottom, from(#F1F2F4 ), to(#D9DCDF )); 
 	background: -moz-linear-gradient(center top , #F1F2F4, #D9DCDF ) repeat scroll 0 0 transparent;
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F1F2F4', endColorstr='#D9DCDF ',GradientType=0 ); /* IE6-9 */
+	/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F1F2F4', endColorstr='#D9DCDF ',GradientType=0 ); /* IE6-9 */
     box-shadow: 0 1px 0 #fff inset;
 }
 

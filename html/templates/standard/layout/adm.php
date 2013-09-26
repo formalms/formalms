@@ -28,6 +28,8 @@
 		<?php echo Layout::zone('blind_navigation'); ?>
 		<!-- feedback -->
 		<?php echo Layout::zone('feedback'); ?>
+		<!-- container -->
+		<div id="admcontainer">
 		<!-- header -->
 		<div id="header" class="layout_header">
 			<?php if(!Docebo::user()->isAnonymous()) : ?>
@@ -59,6 +61,7 @@
 		<div class="layout_colum_container">
 			<?php echo Layout::zone('content'); ?>
 			<div class="nofloat"></div>
+		</div>
 		</div>
 		<!-- footer -->
 		<div id="footer" class="layout_footer">

@@ -50,13 +50,13 @@ div.TreeViewRowBase {
 	float:left;
 	clear:left;
 	margin: 0;
-	height: 26px;
+	height: 20px;
 }
 
 div.TreeViewRowOdd, div.TreeViewRowEven {
-	padding: 2px 4px;
+	padding: 4px 4px 0 2px;
 	margin: 0;
-	height: 26px;
+	height: 22px;
 	vertical-align: middle;
 }
 div.TreeViewRowOdd:hover {
@@ -308,8 +308,8 @@ img.OrgStatus {
 	margin: 0 0 0 4px;
 	padding:0;
 	float: right;
-	width: 24px;
-	height: 24px;
+	width: 16px;
+	height: 16px;
 }
 
 /*= NOTE: report status on tree =*/
