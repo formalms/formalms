@@ -63,10 +63,6 @@ if($mode[0] == "on"){
 	}
 }
 
-
-
-
-
 // redirect if the main page is the cms
 $query_platform = "SELECT platform
 FROM ".$GLOBALS['prefix_fw']."_platform
