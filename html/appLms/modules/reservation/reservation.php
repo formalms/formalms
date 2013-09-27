@@ -1001,8 +1001,33 @@ function viewUserEvent()
 			if($confirm)
 			{
 				$result = $man_res->delSubscription(getLogUserId(), $id_event);
+				// invia mail agli amministratori
+
+				$query = 'SELECT u.email FROM core_user as u, learning_courseuser as cu, learning_reservation_events as re WHERE re.idEvent = "'.$id_event.'" AND cu. idCOurse = re.idCourse AND cu.idUser = u.idst AND cu.level > 3';
+				$result = sql_query($query);				
+				$re = array();
+				while(list($subscribed) = sql_fetch_row($result))
+				{
+					$re[] = $subscribed;
+				}
+				$lang =& DoceboLanguage::createInstance('reservation');
+
+				$subject = $lang->def('_SUBJECT_DELSUBSCRIPTION');
+				$body = $lang->def('_BODY_DELSUBSCRIPTION');
+										
+				$acl_man =& Docebo::user()->getAclManager();
+
+				$info_user = $acl_man->getUser(getLogUserId());
+				$sender = $info_user[ACL_INFO_EMAIL];
+
+				require_once(_base_.'/lib/lib.mailer.php');
+				$mailer = DoceboMailer::getInstance();
+				$mailer->SendMail($sender, $re, $subject, $body, array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
+		
+				// end invio mail
+		
 			}
-			
+
 			Util::jump_to('index.php?modname=reservation&op=reservation');
 		}
 		
