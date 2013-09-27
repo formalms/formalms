@@ -88,7 +88,7 @@ class Lms_BlockWidget extends Widget {
 		require_once (_base_ . '/lib/lib.form.php');
 		
 		$form = new Form ();
-		$op = $form->openForm ( 'course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=course_info' );
+		$op = $form->openForm ( 'course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=subscribe' );
 		$it = $form->getTextfield ( 'Codice:', 'course_autoregistration_code', 'course_autoregistration_code', '255', '' );
 		$sb = $form->getButton ( 'subscribe_info', 'subscribe_info', 'INVIA' );
 		$cf = $form->closeForm ();
