@@ -924,7 +924,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 						if(isset($course_cache[$id])) {
 							$html .= '<li>'.$course_cache[$id].'</li>';
 						} else {
-// 							$html .= '<li>'.dashAcourse($id, 4).'</li>';
+							$html .= '<li>'.dashAcourse($id, 4).'</li>';
 						}
 						
 					}

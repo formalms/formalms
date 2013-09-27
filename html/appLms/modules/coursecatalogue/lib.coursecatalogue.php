@@ -992,8 +992,8 @@ function searchForm(&$url, &$lang) {
  */
 function relationWithCourse($id_course, &$course, $uc_details, $edition_id = false) {
 
-	require_once($GLOBALS['where_ecom'].'/lib/lib.cart.php');
-	$cart =& Cart::createInstance();
+// 	require_once($GLOBALS['where_ecom'].'/lib/lib.cart.php');
+// 	$cart =& Cart::createInstance();
 	
 	list($enrolled) = sql_fetch_row(sql_query("SELECT COUNT(*) FROM ".$GLOBALS['prefix_lms']."_courseuser WHERE idCourse = '".$id_course."' AND edition_id = '0'"));
 	
