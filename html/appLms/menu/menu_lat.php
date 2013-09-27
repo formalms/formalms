@@ -152,6 +152,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
             if(Docebo::course()->getValue('show_who_online') == _SHOW_INSTMSG) {
 
                 addCss('instmsg');
+                addJs('addons/yui/my_window/','windows.js');
                 addJs($GLOBALS['where_lms_relative'].'/modules/instmsg/','instmsg.js');
 
                 $GLOBALS['page']->add(
