@@ -34,9 +34,9 @@ function field_list() {
 
 	//find available field type
 	$re_field = sql_query("
-	SELECT type_field
-	FROM ".$GLOBALS['prefix_fw']."_field_type
-	 WHERE type_field != \"textfield\" ORDER BY type_field");
+	SELECT type_field FROM "
+	.$GLOBALS['prefix_fw']
+	."_field_type ORDER BY type_field");
 	$field_av = array();
 	$field_select = array('all_field' => $lang->def('_ALL_FIELD_TYPE'));
 	while(list($type_field) = sql_fetch_row($re_field)) {
