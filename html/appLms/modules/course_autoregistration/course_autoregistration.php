@@ -38,6 +38,67 @@ function courseAutoregistration()
 	$out->add('</div>');
 }
 
+function courseInfo() {
+	//checkPerm('view');
+
+	require_once(_base_.'/lib/lib.form.php');
+	require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
+
+	$out =& $GLOBALS['page'];
+	$out->setWorkingZone('content');
+
+	$lang =& DoceboLanguage::CreateInstance('course_autoregistration', 'lms');
+
+	$form = new Form();
+
+	$code = $_POST['course_autoregistration_code'];
+	$code = strtoupper($code);
+	$code = str_replace('-', '', $code);
+
+	$out->add(getTitleArea($lang->def('_AUTOREGISTRATION'))
+			.'<div class="std_block">');
+
+	$man_course_user = new Man_CourseUser();
+
+	// PURPLE
+	if (!$man_course_user->checkPacByCourseCode($code, getLogUserId())) {
+		$out->add($lang->def('_NOREG_PAC'));
+		return;
+	}
+	// END PURPLE
+
+	$descr = $man_course_user->subscribeUserWithCodeInfo($code, getLogUserId());
+
+	$testo = 'Il corso è liberamente fruibile, ma i crediti ECM saranno erogati unicamente ai medici che dispongano delle seguenti discipline:';
+	$testo . "<br/><br/>";
+	$testo .= $descr;
+
+	if ($descr != -1) {
+		$out->add($form->openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=course_autoregistration')
+				.$form->openElementSpace()
+				.$testo
+				.$form->getHidden('course_autoregistration_code', 'course_autoregistration_code', $_POST['course_autoregistration_code'])
+				.$form->closeElementSpace()
+				.$form->openButtonSpace()
+				.$form->getButton('subscribe', 'subscribe', 'ACCETTO LE REGOLE E VOGLIO ISCRIVERMI')
+				."&nbsp;&nbsp;<a href=\"index.php\">Annulla</a>"
+				.$form->closeButtonSpace());
+	} else {
+		$out->add(getErrorUi($lang->def('_ERROE_OR_INCORRECT_CODE')));
+		$out->add($form->openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=course_info')
+				.$form->openElementSpace()
+				.$form->getTextfield($lang->def('_COURSE_AUTOREGISTRATION_CODE'), 'course_autoregistration_code', 'course_autoregistration_code', '255', '')
+				.$form->closeElementSpace()
+				.$form->openButtonSpace()
+				.$form->getButton('course_info', 'course_info', $lang->def('_SEND'))
+				.$form->closeButtonSpace());
+
+	}
+
+	$out->add('</div>');
+}
+// END PURPLE
+
 function subscribe()
 {
 	checkPerm('view');
@@ -190,6 +251,13 @@ function courseAutoregistrationDispatch($op)
 		case 'subscribe':
 			subscribe();
 		break;
+
+		// PURPLE
+		case 'course_info':
+			courseInfo();
+		break;
+		// END PURPLE
+
 		default:
 			courseAutoregistration();
 		break;
