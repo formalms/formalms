@@ -1046,6 +1046,7 @@ function viewUserEvent()
 		);
 	}
 	
+	
 	function switchSubscription()
 	{
 		checkPerm('view');
@@ -2139,7 +2140,7 @@ function reservationSendMail()
 		//sendMail($recipients, $subject, $body, $sender);
 		require_once(_base_.'/lib/lib.mailer.php');
 		$mailer = DoceboMailer::getInstance();
-		$mailer->SendMail($sender, $recipients, $subject, $body, array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
+		$mailer->SendMail($sender, $recipients, Lang::t('_MAIL_OBJECT', 'register'), $body, array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
 				
 		Util::jump_to('index.php?modname=reservation&op=reservation&active_tab=events');
 	}
