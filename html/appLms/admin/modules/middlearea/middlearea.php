@@ -55,6 +55,13 @@ function view_area() {
 			.' <a class="ico-sprite subs_users" href="'.$base_url.'mo_help'.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
 			.' <a class="ico-sprite subs_'.( isset($disabled_list['mo_help']) ? 'noac' : 'actv' ).'" href="'.$second_url.'mo_help'.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
 			.'</li>';
+    //PURPLE inserimento biblioteca in menu
+    $main_menu .= '<li>'
+			.'<span>'.Lang::t('_LIBRARY', 'menu_over').'</span>'
+			.' <a class="ico-sprite subs_users" href="'.$base_url.'mo_library'.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
+			.' <a class="ico-sprite subs_'.( isset($disabled_list['mo_library']) ? 'noac' : 'actv' ).'" href="'.$second_url.'mo_library'.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
+			.'</li>';
+    // END PURPLE
 	
 	// Tab list
 	$tab_list = '';
@@ -62,7 +69,9 @@ function view_area() {
 		'tb_elearning' => Lang::t('_ELEARNING', 'middlearea'),
 		'tb_label' => Lang::t('_LABELS', 'label'),
 		'tb_classroom' => Lang::t('_CLASSROOM', 'middlearea'),
-		'tb_catalog' => Lang::t('_CATALOGUE', 'middlearea'),
+		'tb_calendar' => Lang::t('_CALENDAR', 'middlearea'),
+        'tb_catalog' => Lang::t('_CATALOGUE', 'middlearea'),
+        'tb_library' => Lang::t('_LIBRARY', 'middlearea'),
 		'tb_assessment' => Lang::t('_ASSESSMENT', 'middlearea'),
 		'tb_coursepath' => Lang::t('_COURSEPATH', 'coursepath'),
 		'tb_games' => Lang::t('_CONTEST', 'middlearea'),
@@ -84,6 +93,10 @@ function view_area() {
 		//'user_details_short' => Lang::t('_SIMPLE_USER_PROFILE', 'middlearea'),
 		'user_details_full' => Lang::t('_PROFILE', 'profile'),
 		'credits' => Lang::t('_CREDITS', 'middlearea'),
+        //purple aggiunto box carriera e box iscrizione corso
+		'career' => Lang::t('_CAREER', 'middlearea'),
+        'course' => Lang::t('_SUBSCRIBE_COURSE', 'middlearea'),
+        //end purple
 		'news' => Lang::t('_NEWS', 'middlearea')
 	);
 	while(list($id, $name) = each($block)) {
@@ -135,6 +148,7 @@ function switch_active() {
 	$man_ma->setObjIdstList($obj_index, $selected);
 	
 	$re = $man_ma->changeDisableStatus($obj_index);
+        
 	
 	Util::jump_to('index.php?modname=middlearea&amp;op=view_area&amp;result='.($re ? 'ok' : 'err' ));
 }
