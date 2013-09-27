@@ -570,7 +570,7 @@ if(!Docebo::user()->isAnonymous())
 		}
 	}
 	
-	function viewUserEvent()
+function viewUserEvent()
 	{
 		checkPerm('view');
 		
@@ -621,14 +621,31 @@ if(!Docebo::user()->isAnonymous())
 			
 			$ini = $tb->getSelectedElement();
 			
-			$cont_h = array
-			(
-				$lang->def('_USERNAME'),
-				$lang->def('_FIRSTNAME'),
-				$lang->def('_LASTNAME'),
-				$lang->def('_EMAIL'),
-			);
-			$type_h = array('', '', '', '');
+			if ($GLOBALS['cfg']['reservation_exportcell_id']) {
+				$cont_h = array
+				(
+					$lang->def('_USERNAME'),
+					$lang->def('_FIRSTNAME'),
+					$lang->def('_LASTNAME'),
+					$lang->def('_EMAIL'),
+					$lang->def('_CELLULARE'),
+					$lang->def('_SEND_EMAIL'),
+				);
+				$type_h = array('', '', '', '', '','','');
+
+			} else {
+				$cont_h = array
+				(
+					$lang->def('_USERNAME'),
+					$lang->def('_FIRSTNAME'),
+					$lang->def('_LASTNAME'),
+					$lang->def('_EMAIL'),
+					$lang->def('_SEND_EMAIL'),
+				);
+
+				$type_h = array('', '', '', '', '','','');
+			}
+
 			
 			$tb->setColsStyle($type_h);
 			$tb->addHead($cont_h);
@@ -638,11 +655,20 @@ if(!Docebo::user()->isAnonymous())
 				$count = array();
 				if ($counter >= $ini && $counter < ($ini + 10))
 				{
+					if ($GLOBALS['cfg']['reservation_exportcell_id']) {
+						// id_common = 13 => cellulare
+						$sql = "SELECT user_entry FROM core_field_userentry WHERE id_user = '".$info_user[0]."' AND id_common = 13";
+						$res = mysql_query($sql);
+	                    list($cell) = mysql_fetch_row($res);
+	                }
 					$count[] = $acl_man->relativeId($info_user[ACL_INFO_USERID]);
 					$count[] = $info_user[ACL_INFO_FIRSTNAME];
 					$count[] = $info_user[ACL_INFO_LASTNAME];
 					$count[] = $info_user[ACL_INFO_EMAIL];
-					
+					if ($GLOBALS['cfg']['reservation_exportcell_id']) {
+						$count[] = $cell;
+					}
+					$count[] = '<a href="index.php?modname=reservation&op=send_user_event&id_user='.$info_user[0].'&id_event='.$id_event.'">'.$lang->def('_SEND_EMAIL').'</a>';
 					$tb->addBody($count);
 				}
 				$counter++;
@@ -662,6 +688,77 @@ if(!Docebo::user()->isAnonymous())
 		
 		$out->add(getBackUi('index.php?modname=reservation&amp;op=reservation&amp;active_tab=subscribed_user', $lang->def('_BACK')), 'content');
 		$out->add('</div>', 'content');
+	}
+	
+	function sendUserEvent()
+	{
+		checkPerm('view');
+	
+		$lang =& DoceboLanguage::createInstance('reservation');
+			
+		$mod_perm 	= checkPerm('mod', true);
+	
+		$id_course = $_SESSION['idCourse'];
+		$id_event = importVar('id_event', true, 0);
+		$id_user = importVar('id_user', true, 0);
+	
+		$out = $GLOBALS['page'];
+		$out->setWorkingZone('content');
+	
+		$man_res = new Man_Reservation();
+	
+		$acl_man =& Docebo::user()->getAclManager();
+	
+		if (isset($_POST['send_mail']))
+		{
+			$recipients = $man_res->getEventUserMail($id_event);
+			$query = 'SELECT email FROM core_user WHERE idst = '.$id_user;
+			$result = sql_query($query);
+			$re = array();
+			while(list($subscribed) = sql_fetch_row($result))
+			{
+				$re[] = $subscribed;
+			}
+	
+	
+			$subject = importVar('mail_object', false, '[Nessun Oggetto]');
+			$body = importVar('mail_body', false, '');
+	
+			$info_user = $acl_man->getUser(getLogUserId());
+			$sender = $info_user[ACL_INFO_EMAIL];
+	
+			//sendMail($recipients, $subject, $body, $sender);
+			require_once(_base_.'/lib/lib.mailer.php');
+			$mailer = DoceboMailer::getInstance();
+			$mailer->SendMail($sender, $re, $subject, $body, array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
+				
+			//Util::jump_to('index.php?modname=reservation&op=reservation&active_tab=events');
+			Util::jump_to('index.php?modname=reservation&op=view_user_event&id_event='.$id_event);
+	
+		}
+		else
+		{
+			require_once(_base_.'/lib/lib.form.php');
+				
+			$out->add(getTitleArea('_RESERVATION_MAIL_SEND').'<div class="std_block">', 'content');
+				
+			$out->add
+			(
+					Form::openForm('form_event', 'index.php?modname=reservation&amp;op=send_user_event')
+					.Form::openElementSpace()
+					.Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
+					.Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
+					.Form::getHidden('id_event', 'id_event', $id_event)
+					.Form::getHidden('id_user', 'id_user', $id_user)
+					.Form::closeElementSpace()
+					.Form::openButtonSpace()
+					.Form::getButton('send_mail', 'send_mail', $lang->def('_SEND_MAIL'))
+					.Form::getButton('undo_mail', 'undo_mail', $lang->def('_UNDO'))
+					.Form::closeButtonSpace()
+					.Form::closeForm()
+					.'</div>'
+			);
+		}
 	}
 	
 	function getExcelFile()
@@ -2167,6 +2264,10 @@ function reservationDispatch($op)
 		case 'view_user_event':
 			viewUserEvent();
 		break;
+		
+		case 'send_user_event':
+			sendUserEvent();
+			break;
 		
 		case 'excel':
 			getExcelFile();
