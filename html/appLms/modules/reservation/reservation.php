@@ -76,7 +76,7 @@ if(!Docebo::user()->isAnonymous())
 		
 		$out->add(getTitleArea(Lang::t('_RESERVATION', 'reservation')).'<div class="std_block">', 'content');
 		
-		$out->add(Form::openForm('tab_reservation', 'index.php?modname=reservation&amp;op=reservation')
+		$out->add(Form::openForm('tab_reservation', 'index.php?modname=reservation&amp;op=reservation&amp;confirm=1&amp;ap=mod_profile&amp;from=2')
 				.$tab_man->printTabView_Begin('', false), 'content'
 			);
 		
@@ -207,7 +207,7 @@ if(!Docebo::user()->isAnonymous())
 						if ($event[EVENT_AVAILABLE_PLACES] > 0)
 						{
 							if ($man_res->controlMaxSubscriptionForCategory($event[EVENT_ID_CATEGORY], getLogUserId()))
-								$count[] = '<a href="index.php?modname=reservation&amp;op=add_subscription&amp;id_event='.$event[EVENT_ID].'">'.$lang->def('_REGISTER').'</a>';
+								$count[] = '<a href="index.php?modname=reservation&amp;op=add_subscription&amp;id_event='.$event[EVENT_ID].'&amp;confirm=1&amp;ap=mod_profile&amp;from=2">'.$lang->def('_REGISTER').'</a>';
 							else
 							{
 								if ($man_res->controlSwitchPossibility($event[EVENT_ID_COURSE], $event[EVENT_ID_CATEGORY], getLogUserId()))
