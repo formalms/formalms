@@ -504,10 +504,10 @@ if(!Docebo::user()->isAnonymous())
 					(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, e.deadLine' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, e.deadLine DESC">'.$lang->def('_DEADLINE').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, e.deadLine">'.$lang->def('_DEADLINE').'</a>'),
 					'<img src="'.getPathImage().'/standard/identity.png" title="'.$lang->def('_VIEW_USER_SUBSCRIBED').'" alt="'.$lang->def('_ENROL_COUNT').'" />',
 					''.$lang->def('_ADD_USER').'',
-					'<img src="'.getPathImage().'/standard/reply.png" title="'.$lang->def('_ALT_SEND_MAIL').'" alt="'.$lang->def('_ALT_SEND_MAIL').'" />',
+					'<img src="'.getPathImage().'/standard/msg_unread.png" title="'.$lang->def('_ALT_SEND_MAIL').'" alt="'.$lang->def('_ALT_SEND_MAIL').'" />',
 					'<img src="'.getPathImage().'/standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" />',
 					'<img src="'.getPathImage().'/standard/delete.png" title="'.$lang->def('ALT_DEL').'" alt="'.$lang->def('_DEL').'" />',
-					''
+					'<img src="'.getPathImage().'/standard/moduser.png" title="'.$lang->def('_SET_ROOM_VIEW_PERM').'" alt="'.$lang->def('_SET_ROOM_VIEW_PERM').'" />'
 				);
 			}
 			
@@ -553,7 +553,7 @@ if(!Docebo::user()->isAnonymous())
 				{
 					$count[] = '<a href="index.php?modname=reservation&amp;op=view_user_event&amp;id_event='.$event[EVENT_ID].'"><img src="'.getPathImage().'/standard/identity.png" title="'.$lang->def('_VIEW_USER_SUBSCRIBED').'" alt="'.$lang->def('_ENROL_COUNT').'" /></a>';
 					$count[] = '<a href="index.php?modname=reservation&amp;op=add_registration&amp;id_event='.$event[EVENT_ID].'&amp;id_course='.$event[EVENT_ID_COURSE].'">'.$lang->def('_ADD_USER').'</a>';
-					$count[] = '<a href="index.php?modname=reservation&amp;op=send_mail&amp;id_event='.$event[EVENT_ID].'&amp;id_course='.$event[EVENT_ID_COURSE].'"><img src="'.getPathImage().'/standard/reply.png" title="'.$lang->def('_ALT_SEND_MAIL').'" alt="'.$lang->def('_ALT_SEND_MAIL').'" /></a>';
+					$count[] = '<a href="index.php?modname=reservation&amp;op=send_mail&amp;id_event='.$event[EVENT_ID].'&amp;id_course='.$event[EVENT_ID_COURSE].'"><img src="'.getPathImage().'/standard/msg_unread.png" title="'.$lang->def('_ALT_SEND_MAIL').'" alt="'.$lang->def('_ALT_SEND_MAIL').'" /></a>';
 					$count[] = '<a href="index.php?modname=reservation&amp;op=mod_event&amp;id_event='.$event[EVENT_ID].'"><img src="'.getPathImage().'/standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" /></a>';
 					$count[] = '<a href="index.php?modname=reservation&amp;op=del_event&amp;id_event='.$event[EVENT_ID].'"><img src="'.getPathImage().'/standard/delete.png" title="'.$lang->def('_DEL').'" alt="'.$lang->def('_DEL').'" /></a>';
 					$count[] = '<a href="index.php?modname=reservation&amp;op=set_room_view_perm&amp;id_event='.$event[EVENT_ID].'"><img src="'.getPathImage().'standard/moduser.png" alt="'.$lang->def('_SET_ROOM_VIEW_PERM').'" title="'.$lang->def('_SET_ROOM_VIEW_PERM').'" /></a>';
@@ -945,9 +945,12 @@ function viewUserEvent()
 			{
 				require_once($GLOBALS['where_lms'].'/lib/lib.lms_user_profile.php');
 				
-				$out->add(getTitleArea('_RESERVATION_PROFILE_MODIFY').'<div class="std_block">', 'content');
+				$out->add
+				(
+					getTitleArea($lang->def('_RESERVATION_PROFILE_MODIFY')).'<div class="std_block">', 'content');
 				
-				$out->add('<br/>'.$lang->def('_CONFIRM_DATA').'<br/>');
+				$out->add
+				($lang->def('_CONFIRM_DATA').'<br/>');
 				
 				$profile = new LmsUserProfile(getLogUserId(), true);
 				$profile->init('subscription', 'lms', 'modname=reservation&op=add_subscription&id_event='.$id_event.'&confirm=1&from=2&id_user='.getLogUserId(), 'ap');
@@ -2148,7 +2151,9 @@ function reservationSendMail()
 	{
 		require_once(_base_.'/lib/lib.form.php');
 		
-		$out->add(getTitleArea('_RESERVATION_MAIL_SEND').'<div class="std_block">', 'content');
+		$out->add
+		(
+		getTitleArea($lang->def('_RESERVATION_MAIL_SEND').'<div class="std_block">', 'content'));
 		
 		$out->add
 		(

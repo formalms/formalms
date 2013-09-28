@@ -426,7 +426,7 @@ div.panel_right_big div.table-container-below{}
 .def_lang a{text-decoration:none;}
 /* deprecated */
 /* Olds Tabs and Table for backward compatibility */
-.TabView_container{margin:1em 1em;}
+.TabView_container{margin:0;}
 .TabView_container img {margin-top:2px;}
 .TabView_container form{margin:0;padding:0;}
 .TabView_container ul.TabView_tabspace{border-color:#C84000;border-style:solid;border-width:0 0 5px;margin:0;padding:0;zoom:1;}

@@ -168,8 +168,8 @@ input.TreeItemSelected {
 .tree_view_image {
 	margin: 0 0 0 4px;
 	float: right;
-	width: 24px;
-	height: 24px;
+	width: 16px;
+	height: 16px;
 }
 label.tree_view_image,
 input.tree_view_image {width:auto;}
