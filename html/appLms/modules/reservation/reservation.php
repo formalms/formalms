@@ -740,7 +740,7 @@ function viewUserEvent()
 		{
 			require_once(_base_.'/lib/lib.form.php');
 				
-			$out->add(getTitleArea('_RESERVATION_MAIL_SEND').'<div class="std_block">', 'content');
+			$out->add(getTitleArea($lang->def('_RESERVATION_MAIL_SEND')).'<div class="std_block">', 'content');
 				
 			$out->add
 			(
