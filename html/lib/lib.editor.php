@@ -45,7 +45,7 @@ function loadHeaderHTMLEditor() {
 									debug : false
 									});
 								</script>', 'page_head');
-			Util::get_js(Get::rel_path('base').'/addons/tiny_mce/docebo.js', true, true);
+			Util::get_js(Get::rel_path('base').'/addons/tiny_mce/forma.js', true, true);
 		break;
 
 		case 'yui':

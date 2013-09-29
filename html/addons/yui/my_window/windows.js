@@ -1,40 +1,39 @@
-/************************************************************************/
-/* DOCEBO CORE - Framework												*/
-/* ============================================							*/
-/*																		*/
-/* Copyright (c) 2006													*/
-/* http://www.docebo.com												*/
-/*																		*/
-/* This program is free software. You can redistribute it and/or modify	*/
-/* it under the terms of the GNU General Public License as published by	*/
-/* the Free Software Foundation; either version 2 of the License.		*/
-/************************************************************************/
+/* ======================================================================== \
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+\ ======================================================================== */
 
 var wObjList= new Array();
 
 Window = function(win_id, params) {
 
 	if(wObjList[this.id] != undefined) return wObjList[this.id];
-	
+
 	this.id=win_id;
 	if(params == null) params = {};
-	function param_default(pname, def, o) { 
-		if (typeof params[pname] == "undefined") { o[pname] = def; } 
-		else { o[pname] = params[pname]; } 
+	function param_default(pname, def, o) {
+		if (typeof params[pname] == "undefined") { o[pname] = def; }
+		else { o[pname] = params[pname]; }
 	};
 
 	param_default("title", 		null, this);
 	param_default("content",	null, this);
-	
+
 	param_default("width", 		"500px", this);
 	param_default("height", 	null, this);
 	param_default("close_button", true, this);
 	param_default("modal", true, this);
-	
+
 	param_default("form",		null, this);
 	param_default("buttons",	'', this);
 	param_default("oButtons",	null, this);
-	
+
 	param_default("ajax_req",	null, this);
 	param_default("onSuccess",	null, this);
 	param_default("onFailure",	null, this);
@@ -49,7 +48,7 @@ Window.prototype.handleSubmit = function() {
 	this.submit();
 }
 Window.prototype.show = function() {
-	
+
 	if(!this.form && this.ajax_req) {
 		this.form = document.createElement('form');
 		this.form.method = 'post';
@@ -66,25 +65,25 @@ Window.prototype.show = function() {
 		};
 		if(this.width) params.width = this.width+(YAHOO.lang.isNumber(this.width)?'px':'');
 		if(this.height) params.height = this.height+(YAHOO.lang.isNumber(this.height)?'px':'');
-		
+
 		if(this.form && !this.dosubmit) {
-		
+
 			wObjList[this.id] = new YAHOO.widget.Dialog("simpledialog_"+this.id, params);
 		}else {
-			
-			wObjList[this.id] = new YAHOO.widget.Panel("simpledialog_"+this.id, params);	
+
+			wObjList[this.id] = new YAHOO.widget.Panel("simpledialog_"+this.id, params);
 		}
 	}
-	
+
 	new_div = document.createElement('div');
 	if(this.form != null) new_div.appendChild(this.form);
 	mainc = document.createElement('div');
-	
+
 	if(this.buttons && !this.oButtons) mainc.innerHTML = this.content + '<div class="align_right">' + this.buttons + '</div>';
 	else mainc.innerHTML = this.content;
 	if(this.form != null) this.form.appendChild(mainc);
 	else new_div.appendChild(mainc);
-	
+
 	wObjList[this.id].setHeader(this.title);
 	wObjList[this.id].setBody(new_div.innerHTML);
 	if(this.oButtons) {
@@ -160,17 +159,17 @@ function getTop() {
 
 }
 
-function showMsg(str) {	
-	
+function showMsg(str) {
+
 	if (wObjList['wMsg']!=null) {
 		var w0=$('wMsg');
 		var el=document.getElementsByClassName("w_content",w0.parentNode);
 		el[0].innerHTML=str;
 	} else {
-		
+
 			var name="wMsg";
 			var title="";
-		
+
    			var w=new Window();
 			w.top=getTop();
 			w.id=name;
@@ -179,7 +178,7 @@ function showMsg(str) {
 			w.title=title;
 			w.content=str;
 			w.show();
-		
+
 	}
 
 }

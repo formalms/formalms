@@ -56,10 +56,10 @@ $GLOBALS['page']->add(
 define("_USER_FPATH_INTERNAL", "/common/users/");
 define("_USER_FPATH", $GLOBALS["where_files_relative"]._USER_FPATH_INTERNAL);
 
-define("_FPATH_INTERNAL", "/doceboCms/media/");
+define("_FPATH_INTERNAL", "/appCms/media/");
 define("_FPATH", $GLOBALS["where_files_relative"]._FPATH_INTERNAL);
 
-define("_PPATH_INTERNAL", "/doceboCms/media/preview/");
+define("_PPATH_INTERNAL", "/appCms/media/preview/");
 define("_PPATH", $GLOBALS["where_files_relative"]._PPATH_INTERNAL);
 
 
@@ -93,7 +93,7 @@ switch ($op) {
 	case "select": {
 		select_media($out, $lang);
 	} break;
-	
+
 
 	default: {
 		show_personal_media($out, $lang);
@@ -171,7 +171,7 @@ function show_personal_media(& $out, & $lang) {
 		$GLOBALS['page']->add(''.
 				'<script type="text/javascript" type="text/javascript" src="'.Get::rel_path('base').'/addons/tiny_mce/tiny_mce_popup.js"></script>',
 			'page_head');
-	
+
 		$GLOBALS['page']->add('<script type="text/javascript">'
 		.'var FileBrowserDialogue = {
 		    init : function () {
@@ -182,10 +182,10 @@ function show_personal_media(& $out, & $lang) {
 		    mySubmit : function (url) {
 		        var URL = url;
 		        var win = tinyMCEPopup.getWindowArg("window");
-		
+
 		        // insert information now
 		        win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = URL;
-		
+
 		        // for image browsers: update image dimensions
 		        if(win.ImageDialog) {
 			        if (win.ImageDialog.getImageData) win.ImageDialog.getImageData();
@@ -200,7 +200,7 @@ function show_personal_media(& $out, & $lang) {
 
 		.'</script>', 'page_head');
 	//}
-	
+
 	$head = array($lang->def("_PREVIEW"), $lang->def("_TYPE"), $lang->def("_FILENAME"));
 	$head[] = "<img src=\"".getPathImage()."standard/download.png\" alt=\"".$lang->def("_ATTACHMENT")."\" title=\"".$lang->def("_ATTACHMENT")."\" />";
 	$head[] = "<img src=\"".getPathImage()."standard/delete.png\" alt=\"".$lang->def("_DEL")."\" title=\"".$lang->def("_DEL")."\" />";
@@ -212,7 +212,7 @@ function show_personal_media(& $out, & $lang) {
 	$path =(strlen(dirname($_SERVER['PHP_SELF'])) != 1 ? dirname($_SERVER['PHP_SELF']) : '' ).'/';
 	$path.=$GLOBALS["where_files_relative"];
 	$site_url="http://".$_SERVER['HTTP_HOST'].$path.'/common/users/';
-	
+
 	$qtxt = "
 	SELECT *
 	FROM ".$GLOBALS["prefix_fw"]."_user_file

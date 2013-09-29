@@ -55,10 +55,10 @@ $GLOBALS['page']->add(
 define("_USER_FPATH_INTERNAL", "/common/users/");
 define("_USER_FPATH", $GLOBALS["where_files_relative"]._USER_FPATH_INTERNAL);
 
-define("_FPATH_INTERNAL", "/doceboCms/media/");
+define("_FPATH_INTERNAL", "/appCms/media/");
 define("_FPATH", $GLOBALS["where_files_relative"]._FPATH_INTERNAL);
 
-define("_PPATH_INTERNAL", "/doceboCms/media/preview/");
+define("_PPATH_INTERNAL", "/appCms/media/preview/");
 define("_PPATH", $GLOBALS["where_files_relative"]._PPATH_INTERNAL);
 
 
