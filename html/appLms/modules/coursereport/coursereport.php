@@ -3003,7 +3003,6 @@ $total_play += $total_play2;
 					}
 
 					$percentage = ($answer_correct / $total_play) * 100;
-echo "risp corrette: ".$answer_correct." totale: ".$total_play;
 
 					$percentage = number_format($percentage, 2);
 
@@ -3173,5 +3172,4 @@ function coursereportDispatch($op) {
 
 }
 
-?>
 ?>
