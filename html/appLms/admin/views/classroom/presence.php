@@ -9,15 +9,9 @@
 	YuiLib::load();
 	
 	/* PURPLE Start -> Inserimento pulsante per esportazione della lista in excel */
-	
-	$id_date = $_GET['id_date'];
-	$id_course = $_GET['id_course'];
-	echo "<form action='excel.php' method='post'>
-            <input type='submit' value='".Lang::t('_EXPORT_XLS', 'report')."'/>
-            <input type='hidden' name='id_date' value='".$id_date."'/>
-            <input type='hidden' name='id_course' value='".$id_course."'/>
-            </form><br/>";
-	
+	echo	Form::openForm('excel_form', 'index.php?r='.$base_link_classroom.'/export&id_course='.$model->getIdCourse().'&amp;id_date='.$model->getIdDate())
+			.Form::getButton('save', 'save', Lang::t('_EXPORT_XLS', 'report'))
+			.Form::closeForm();
 	/* END PURPLE */
 
 	echo	Form::openForm('presence_form', 'index.php?r='.$base_link_classroom.'/presence&id_course='.$model->getIdCourse().'&amp;id_date='.$model->getIdDate())
