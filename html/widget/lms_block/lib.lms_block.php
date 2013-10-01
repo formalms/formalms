@@ -89,15 +89,15 @@ class Lms_BlockWidget extends Widget {
 		
 		$form = new Form ();
 		$op = $form->openForm ( 'course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=subscribe' );
-		$it = $form->getTextfield ( 'Codice:', 'course_autoregistration_code', 'course_autoregistration_code', '255', '' );
-		$sb = $form->getButton ( 'subscribe_info', 'subscribe_info', 'INVIA' );
+		$it = $form->getTextfield ( Lang::t('_LBL_CODE', 'standard'), 'course_autoregistration_code', 'course_autoregistration_code', '255', '' );
+		$sb = $form->getButton ( 'subscribe_info', 'subscribe_info', Lang::t('_LBL_SEND', 'standard') );
 		$cf = $form->closeForm ();
 		
-		$html .= '<h2 class="heading">Iscrizione con codice</h2>
+		$html .= '<h2 class="heading">'.Lang::t('_TIT_SUBSCRIPTION_BY_CODE', 'standard').'</h2>
                             <div class="content">
                                     <div>
                                             <div class="form_line_l">
-                                                    <p><div class="course_stat">Hai ricevuto un codice per l\'iscrizione ad un corso? Inseriscilo qui e verrai automaticamente iscritto al corso corrispondente.' . $op . $it . '<br />' . $sb . $cf . '</div></p>
+                                                    <p><div class="course_stat">'.Lang::t('_TXT_SUBSCRIPTION_BY_CODE', 'standard'). $op . $it . '<br />' . $sb . $cf . '</div></p>
                                             </div>
                                     </div>
                             </div>';
