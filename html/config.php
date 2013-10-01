@@ -25,7 +25,7 @@ $cfg['db_type'] = 'mysql';
 $cfg['db_host'] = 'localhost';
 $cfg['db_user'] = 'root';
 $cfg['db_pass'] = '';
-$cfg['db_name'] = '';
+$cfg['db_name'] = 'forma';
 $cfg['db_charset'] = 'utf8';
 
 /**
