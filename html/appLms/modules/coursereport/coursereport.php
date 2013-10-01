@@ -315,6 +315,9 @@ function coursereport() {
 	$fields = $fman->getFlatAllFields(array('framework', 'lms'));
 	
 	$f_list = array(
+            'userid'                 => Lang::t('_USERNAME', 'standard'),
+            'firstname'                 => Lang::t('_FIRSTNAME', 'standard'),
+            'lastname'                 => Lang::t('_LASTNAME', 'standard'),
 			'email'                 => Lang::t('_EMAIL', 'standard'),
 			'lastenter'             => Lang::t('_DATE_LAST_ACCESS', 'profile'),
 			'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
@@ -346,7 +349,7 @@ function coursereport() {
 	}
 	$label .= '</form>';
 	
-	$field_selected = ($_GET['_dyn_field_selector_0']) ? $_GET['_dyn_field_selector_0'] : 'email';
+	$field_selected = ($_GET['_dyn_field_selector_0']) ? $_GET['_dyn_field_selector_0'] : 'userid';
 	$_SESSION['field_selected'] = $field_selected;
 	// aggiungo un elemento in posizione 1
 	$index = 1;
@@ -475,7 +478,14 @@ function coursereport() {
 		if (is_numeric($field_selected)) {
 			$cont[] = $field_entries[$user_info[0]][$field_selected];
 		} else {
-			$cont[] = $user[$field_selected];
+          if ($field_selected=="userid"){
+            $pos = strrpos($user[$field_selected], "/");
+            if ($pos==0){
+              $cont[] = substr($user[$field_selected], 1);
+            }
+          }else{
+            $cont[] = $user[$field_selected];
+          }
 		}
 					//'<a href="index.php?modname=coursereport&amp;op=userscore&amp;id_user='.$idst_user.'" '
 					//	.'title="'.$lang->def('_MOD_USER_SCORE').' : '.strip_tags($user_name).'">'
@@ -2879,7 +2889,7 @@ function testQuestion()
 								." FROM ".$GLOBALS['prefix_lms']."_testtrack_answer"
 								." WHERE idTrack = '".$id_track."'";
 // PurpLE
-// COMMENTATO MA NON é CHIARO COME MAI C'E'????
+// COMMENTATO MA NON ï¿½ CHIARO COME MAI C'E'????
 								//." AND user_answer = 1";
 //print_r($query_track_answer.'<br />');
 		$result_track_answer = sql_query($query_track_answer);
