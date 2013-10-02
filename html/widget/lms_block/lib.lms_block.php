@@ -93,11 +93,11 @@ class Lms_BlockWidget extends Widget {
 		$sb = $form->getButton ( 'subscribe_info', 'subscribe_info', Lang::t('_LBL_SEND', 'standard') );
 		$cf = $form->closeForm ();
 		
-		$html .= '<h2 class="heading">'.Lang::t('_TIT_SUBSCRIPTION_BY_CODE', 'standard').'</h2>
+		$html .= '<h2 class="heading">'.Lang::t('_TIT_SUBSCRIPTION_BY_CODE', 'catalogue').'</h2>
                             <div class="content">
                                     <div>
                                             <div class="form_line_l">
-                                                    <p><div class="course_stat">'.Lang::t('_TXT_SUBSCRIPTION_BY_CODE', 'standard'). $op . $it . '<br />' . $sb . $cf . '</div></p>
+                                                    <p><div class="course_stat">'.Lang::t('_TXT_SUBSCRIPTION_BY_CODE', 'catalogue'). $op . $it . '<br />' . $sb . $cf . '</div></p>
                                             </div>
                                     </div>
                             </div>';
