@@ -10,7 +10,7 @@
 	
 	/* PURPLE Start -> Inserimento pulsante per esportazione della lista in excel */
 	echo	Form::openForm('excel_form', 'index.php?r='.$base_link_classroom.'/export&id_course='.$model->getIdCourse().'&amp;id_date='.$model->getIdDate())
-			.Form::getButton('save', 'save', Lang::t('_EXPORT_XLS', 'report'))
+			.Form::getButton('export', 'export', Lang::t('_EXPORT_XLS', 'report'))
 			.Form::closeForm();
 	/* END PURPLE */
 

@@ -566,14 +566,15 @@ Class ClassroomAlmsController extends AlmsController {
       $course_code = $row[0];
       $edition_name = $row[1];
 
-      header("Content-type: text/html; charset=UTF-8");
       header("Content-type: application/x-msdownload");
       header("Content-Disposition: attachment; filename=export_presenze_[" . $course_code . "]_" . $file_parameters . ".xls");
       header("Pragma: no-cache");
       header("Expires: 0");
-
+      
+      ob_end_clean();
+		
       $array_date = array();
-
+      print "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"></head><body>";
       print $edition_name;
       print "<table border=1><tr><td><b>Username</b></td><td><b>".Lang::t('_FULLNAME', 'standard')."</b></td>";
       $query = "SELECT DISTINCT day FROM learning_course_date_presence WHERE day<>'0000-00-00' AND id_date=" . $id_date . " ORDER BY day";
@@ -604,8 +605,8 @@ Class ClassroomAlmsController extends AlmsController {
         print "<td>" . $row3[0] . "</td></tr>";
       }
 
-      print "</table>";
-      exit();
+      print "</table></body>";
+      exit(0);
 
       /* END PURPLE */
     }
