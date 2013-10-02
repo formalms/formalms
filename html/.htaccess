@@ -23,7 +23,7 @@ DirectoryIndex index.php index.html index.htm
 	Deny from all
 </FilesMatch>
 
-<FilesMatch "(index\.php|ajax\.adm_server\.php|ajax\.server\.php|paypal\.php|tasks\.php|tiny_mce_gzip\.php|index_tiny\.php|scormXmlTree\.php|soaplms\.php|scorm_page_body\.php|text\.php|users\.php|write\.php)$">
+<FilesMatch "(index\.php|ajax\.adm_server\.php|ajax\.server\.php|paypal\.php|tasks\.php|tiny_mce_gzip\.php|index_tiny\.php|scormXmlTree\.php|soaplms\.php|scorm_page_body\.php|text\.php|users\.php|write\.php|check\.php)$">
 	Order Allow,Deny
 	Allow from all
 </FilesMatch>
