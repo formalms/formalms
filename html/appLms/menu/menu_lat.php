@@ -177,7 +177,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
             }
 
         $all_stats = '<div id="accordion"><h3>';
-        $all_stats .='<span class="tempo">'.Lang::t('_TOTAL_TIME', 'course').' : '.$tot_time.' ';
+        $all_stats .='<span class="tempo">'.Lang::t('_TOTAL_TIME', 'course').': '.$tot_time.' ';
         // print progress bar -------------------------------------------------
         if(Docebo::course()->getValue('show_progress') == 1) {
 

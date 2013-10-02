@@ -93,9 +93,7 @@ margin-left: 5px;
 	color: #000000;
 font-family: HelveticaNeue, Open Sans Condensed, 'PT Sans', verdana, helvetica, sans-serif;
 font-weight: normal;
-text-transform: uppercase;
-text-shadow: white 1px 1px 0px;
-font-size: 16px;
+font-size: 12px;
 float: left;
 }
 
@@ -107,10 +105,16 @@ float: left;
 	margin: 0px;
 }
 
+img.course_logo {
+	float:left;
+	width:12%;
+	margin-right:10px;
+	}
+
 .yui-t3 #course-info h1 {
 	float: left;
 	margin: 0 0 .6em 0;
-	width:70%;
+	width:60%;
 }
 
 .yui-t3 #course-info #menu-oriz {
@@ -129,15 +133,16 @@ float: left;
 .yui-t3 #course-info #accordion {
     cursor: pointer;
     float: right;
-    margin-top: -10px;
+    margin: 0;
     outline: none;
-	margin-right:1em;
 	width:25%;
 }
 
 .yui-t3 #course-info #accordion h3 .tempo {
 	font-size:14px;
 }
+
+#ui-accordion-accordion-header-0 {padding:0;}
 
 #course-info ul.float-left{
 	float: left;
@@ -248,3 +253,4 @@ float: left;
 	color:#fff;
 	text-shadow:-1px -1px 0 #292929;
 }
+
