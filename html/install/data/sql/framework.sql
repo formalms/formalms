@@ -2317,7 +2317,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('on_usercourse_empty', 'off', 'enum', 3, '0', 4, 4, 1, 0, '');
 
 INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
-VALUES ('file_upload_whitelist', 'zip,doc,xls,ppt,jpg,gif,png,txt,docx,pptx,xlsx,pdf', 'string', 65535, 'security', 8, 25, 1, 0, '');
+VALUES ('file_upload_whitelist', 'zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv', 'string', 65535, 'security', 8, 25, 1, 0, '');
 
 -- --------------------------------------------------------
 
@@ -2768,18 +2768,18 @@ CREATE TABLE IF NOT EXISTS `core_wiki_revision` (
 -- Dump dei dati per la tabella `core_wiki_revision`
 --
 
-  
-  
-  
-  
-  
-  
-  
 
- 
+
+
+
+
+
+
+
+
 -- --------------------------------------------------------
-  
-  
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

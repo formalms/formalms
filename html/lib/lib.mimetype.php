@@ -145,18 +145,24 @@ function mimetype($ext) {
 			return 'application/mac-binhex40';
 		case "cpt" :
 			return 'application/mac-compactpro';
-		case "pot" : 	case "pps" : 	case "ppt" : 	case "ppz" :
-			return 'application/mspowerpoint';
-		case "bin" : 	case "class" : 	case "dms" : 	case "exe" : 	case "jar" : 	case "sea" :
+		case "bin" : 	case "class" : 	case "dms" : 	case "exe" : 	case "sea" :
 			return 'application/octet-stream';
+		case "jar" : 	case "war" :
+			return 'application/x-java-archive';
+		case "jnlp" :
+			return 'application/x-java-jnlp-file';
 		case "oda" :
 			return 'application/oda';
+
 		case "pdf" :
 			return 'application/pdf';
 		case "ai" : 	case "eps" : 	case "ps" :
 			return 'application/postscript';
 		case "rtf" :
 			return 'application/rtf';
+		case "xps" :
+			return 'application/vnd.ms-xpsdocument';
+
 		case "smi" :
 			return 'application/smil';
 		case "svi" :
@@ -237,7 +243,7 @@ function mimetype($ext) {
 			return 'application/x-sv4cpio';
 		case "sv4crc" :
 			return 'application/x-sv4crc';
-		case "tar" : 	case "tgz" :
+		case "tar" : 	case "tgz" :	 case "tz" :
 			return 'application/x-tar';
 		case "tcl" :
 			return 'application/x-tcl';
@@ -264,6 +270,10 @@ function mimetype($ext) {
 			return 'application/zip';
 		case "7z" :
 			return 'application/x-7z-compressed';
+
+		// AUDIO
+		case "aac" :
+			return 'audio/aac';
 		case "au" : 	case "snd" :
 			return 'audio/basic';
 		case "es" :
@@ -286,7 +296,7 @@ function mimetype($ext) {
 			return 'audio/x-chacha';
 		case "mio" :
 			return 'audio/x-mio';
-		case "ogg" :
+		case "ogg" :	case "oga" :
 			return 'audio/ogg';
 		case "ram" : 	case "rm" :
 			return 'audio/x-pn-realaudio';
@@ -296,8 +306,16 @@ function mimetype($ext) {
 			return 'audio/x-twinvq';
 		case "vqe" :
 			return 'audio/x-twinvq-plugin';
+		case "wma" :
+			return 'audio/x-ms-wma';
 		case "wav" :
 			return 'audio/x-wav';
+		case "flac" :
+			return 'audio/flac';
+
+		case "ogx" :
+			return 'application/ogg';
+
 		case "csm" :
 			return 'chemical/x-csml';
 		case "emb" :
@@ -384,6 +402,8 @@ function mimetype($ext) {
 			return 'text/xml';
 		case "xsl" :
 			return 'text/xsl';
+
+		// VIDEO
 		case "mpe" : 	case "mpeg" : 	case "mpg" :
 			return 'video/mpeg';
 		case "mov" : 	case "qt" :
@@ -406,19 +426,21 @@ function mimetype($ext) {
 			return 'video/x-tango';
 		case "vif" :
 			return 'video/x-vif';
-		case "flv";
+		case "flv" :
 			return 'video/x-flv';
-		case "wmv";
+		case "wmv" :
 			return 'video/x-ms-wmv';
-		case "mp4";
+		case "webm" :
+			return 'video/webm';
+		case "mp4" :
 			return 'video/mp4';
-		case "ogv";
+		case "ogv" :
 			return 'video/ogg';
-		case "3gp";
+		case "3gp" :
 			return 'video/3gpp';
-		case "m3u8";
+		case "m3u8" :
 			return 'application/x-mpegURL';
-		case "ts";
+		case "ts" :
 			return 'video/MP2T';
 		case "vts" :
 			return 'workbook/formulaone';
@@ -438,36 +460,36 @@ function mimetype($ext) {
 		// ms document
 		case "doc" : case "dot" :
 			return 'application/msword';
-		case "docx" :
+		case "docx" :	case "dotx":
 			return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-		case "xls";
+		case "xls":
 			return 'application/vnd.ms-excel';
-		case "xlsx";
+		case "xlsx":	case "xltx":
 			return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-		case "ppt";
+		case "ppt" : 	case "pot" : 	case "pps" : 	case "ppz" :
 			return 'application/vnd.ms-powerpoint';
-		case "pptx";
+		case "pptx": 	case "potx" :	case "sldx":
 			return 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
 		//
 
 		// opendocument
 		case "odt" :
 			return 'application/vnd.oasis.opendocument.text';
-		case "ods";
+		case "ods" :
 			return 'application/vnd.oasis.opendocument.spreadsheet';
-		case "odp";
+		case "odp" :
 			return 'application/vnd.oasis.opendocument.presentation';
-		case "odg";
+		case "odg" :
 			return 'application/vnd.oasis.opendocument.graphics';
-		case "odc";
+		case "odc" :
 			return 'application/vnd.oasis.opendocument.chart';
-		case "odf";
+		case "odf" :
 			return 'application/vnd.oasis.opendocument.formula';
-		case "odi";
+		case "odi" :
 			return 'application/vnd.oasis.opendocument.image';
-		case "odm";
+		case "odm" :
 			return 'application/vnd.oasis.opendocument.text-master';
-		case "odb";
+		case "odb" :
 			return 'application/vnd.oasis.opendocument.database';
 
 		default:
