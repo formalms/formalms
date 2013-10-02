@@ -10,7 +10,7 @@ DirectoryIndex index.php index.html index.htm
 	RewriteEngine on
 	
 	# hide directories that starts with a . (dot)
-	RewriteRule "(^|/)\." - [F]
+	#RewriteRule "(^|/)\." - [F]
 	
 	# Redirect to the www version of the site
 	#RewriteCond %{HTTP_HOST} !^www\. [NC]
