@@ -2679,7 +2679,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 
 
 INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
-VALUES ('file_upload_whitelist', 'zip,doc,xls,ppt,jpg,gif,png,txt,docx,pptx,xlsx,pdf', 'string', 65535, 'security', 8, 25, 1, 0, '');
+VALUES ('file_upload_whitelist', 'zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv', 'string', 65535, 'security', 8, 25, 1, 0, '');
 
 -- --------------------------------------------------------
 
@@ -6600,18 +6600,18 @@ ALTER TABLE `core_lang_translation`
   ADD CONSTRAINT `core_lang_translation_ibfk_1` FOREIGN KEY (`lang_code`) REFERENCES `core_lang_language` (`lang_code`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `core_lang_translation_ibfk_2` FOREIGN KEY (`id_text`) REFERENCES `core_lang_text` (`id_text`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-  
-  
-  
-  
-  
-  
-  
 
- 
+
+
+
+
+
+
+
+
 -- --------------------------------------------------------
-  
-  
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
