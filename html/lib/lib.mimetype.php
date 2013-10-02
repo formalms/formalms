@@ -159,7 +159,7 @@ function mimetype($ext) {
 		case "ai" : 	case "eps" : 	case "ps" :
 			return 'application/postscript';
 		case "rtf" :
-			return 'application/rtf';
+			return 'text/rtf';
 		case "xps" :
 			return 'application/vnd.ms-xpsdocument';
 
@@ -500,5 +500,80 @@ function mimetype($ext) {
 	return false;
 }
 
+/**
+ * Return array with extra mime type for given extension
+ * The mime_type param is also modified by reference
+ *
+ * @param string $ext
+ * @param array $mime_array (by reference)
+ */
+function getOtherMime($ext, & $mime_array) {
+	switch(strtolower($ext)) {
+		case "rtf" : {
+			$mime_array[]='text/rtf';
+			$mime_array[]='application/x-rtf';
+			$mime_array[]='text/richtext';
+			$mime_array[]='application/rtf';
+			$mime_array[]='text/richtext';
+		} break;
+		case "doc" :
+		case "docx": {
+			$mime_array[]='application/msword';
+			$mime_array[]='application/zip';
+		} break;
+		case "xls":
+		case "xlsx":  {
+			$mime_array[]='application/msword';
+			$mime_array[]='application/vnd.ms-excel';
+			$mime_array[]='application/vnd.ms-office';
+			$mime_array[]='application/zip';
+		} break;
+		case "ppt":
+		case "pptx": {
+			$mime_array[]='application/msword';
+			$mime_array[]='application/vnd.ms-powerpoint';
+			$mime_array[]='application/vnd.ms-office';
+			$mime_array[]='application/zip';
+		} break;
+		case "xml" : {
+			$mime_array[]='application/xml';
+		} break;
+		case "aac" : {
+			$mime_array[]='audio/x-hx-aac-adts';
+			$mime_array[]='audio/x-hx-aac-adif';
+			$mime_array[]='audio/mp4a-latm';
+			$mime_array[]='audio/mp4a-latm';
+		} break;
+		case "flac" : {
+			$mime_array[]='audio/x-flac';
+		} break;
+		case "wma" : {
+			$mime_array[]='video/x-ms-asf';
+		} break;
+		case "ra" : {
+			$mime_array[]='audio/x-pn-realaudio';
+			$mime_array[]='audio/x-realaudio';
+			$mime_array[]='audio/x-pm-realaudio-plugin';
+			$mime_array[]='video/x-pn-realvideo';
+		} break;
+		case "ogg" : {
+			$mime_array[]='application/ogg';
+			$mime_array[]='audio/x-ogg';
+			$mime_array[]='application/x-ogg';
+		} break;
+		case "ogg" : {
+			$mime_array[]='video/x-ms-asf';
+			$mime_array[]='video/x-ms-wm';
+			$mime_array[]='video/x-ms-wmx';
+			$mime_array[]='application/x-ms-wmz';
+			$mime_array[]='application/x-ms-wmd';
+			$mime_array[]='video/x-ms-wvx';
+			$mime_array[]='audio/x-ms-wax';
+		} break;
+
+	}
+
+	return $mime_array;
+}
 
 ?>
