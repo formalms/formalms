@@ -261,7 +261,7 @@
 					<h3><?php echo Lang::t('_SUPPORT_SITE', 'dashboard'); ?></h3>
 					<ul class="link_list">
 							<li>
-								<a href="http://www.forma.org/"
+								<a href="http://www.formalms.org/"
 									 onclick="window.open(this.href); return false;"
 									 onkeypress="window.open(this.href); return false;"
 									 title="Forma <?php echo Lang::t('_OPEN_IN_NEW_WINDOW', 'dashboard'); ?>">
@@ -269,7 +269,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="http://www.forma.org/community/"
+								<a href="http://www.formalms.org/community/"
 									 onclick="window.open(this.href); return false;"
 									 onkeypress="window.open(this.href); return false;"
 									 title="Forma Community <?php echo Lang::t('_OPEN_IN_NEW_WINDOW', 'dashboard'); ?>">
@@ -279,9 +279,11 @@
 						</ul>
 				</div>
 				<!-- Social list -->
+				<!-- hiding social links
 				<div class="block_spacer">
 					<h3><?php echo Lang::t('_FOLLOW_US', 'dashboard'); ?></h3>
 				</div>
+				-->
 			</div>
 		</div>
 	</div>
