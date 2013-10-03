@@ -1,4 +1,4 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+    <?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -580,7 +580,7 @@ class CatalogLms extends Model
 			if(isset($user_coursepath[$id_path]))
 				$action = '<div class="catalog_action"><p class="subscribed">'.Lang::t('_USER_STATUS_SUBS', 'catalogue').'</p></div>';
 			elseif ($subscribe_method != 0)
-				$action = "<div class=\"catalog_action\" id=\"action_".$id_path."\"><a href=\"javascript:;\" onclick=\"subscriptionCoursePathPopUp('".$id_path."')\" title=\"Subscribe\"><p class=\"can_subscribe\">Subscribe</p></a></div>";
+				$action = "<div class=\"catalog_action\" id=\"action_".$id_path."\"><a href=\"javascript:;\" onclick=\"subscriptionCoursePathPopUp('".$id_path."')\" title=\"Subscribe\"><p class=\"can_subscribe\">".Lang::t('_SUBSCRIBE', 'catalogue')."</p></a></div>";
 			elseif ($subscribe_method == 0)
 				$action .= '<div class="catalog_action"><p class="cannot_subscribe">'.Lang::t('_COURSE_S_GODADMIN', 'catalogue').'</p></div>';
 
