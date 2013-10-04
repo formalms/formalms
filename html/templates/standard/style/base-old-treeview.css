@@ -166,7 +166,7 @@ input.TreeItemSelected {
 }
 
 .tree_view_image {
-	margin: 0 0 0 4px;
+	margin: 0 4px;
 	float: right;
 	width: 16px;
 	height: 16px;

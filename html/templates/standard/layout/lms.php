@@ -17,7 +17,6 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms-to-review.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms-menu.css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/custom.css" />
 		<?php echo Layout::rtl(); ?>
 		<!-- specific stylesheet -->
 
