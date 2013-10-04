@@ -32,7 +32,8 @@ class MessageModule {
 
 	// private functions
 	private function decodePriority($prio) {
-		switch($priority) {
+
+		switch($prio) {
 			case 5 :
 				$img_priority = "veryimportant.png";
 				$text_priority = Lang::t('_VERYHIGH', 'message');
