@@ -19,15 +19,15 @@ require_once( $GLOBALS['where_lms'].'/class.module/track.object.php');
 //	define('_track_scorm_basepath',$GLOBALS['where_lms'].'/modules/scorm5/');
 //}
 class Track_ScormOrg extends Track_Object {
-	
+
 	var $idTrack;
 	var $idReference;
 	var $idUser;
 	var $dateAttempt;
 	var $status;
 	var $objectType;
-	
-	/** 
+
+	/**
 	 * object constructor
 	 * Table : learning_commontrack
 	 * idReference | idUser | idTrack | objectType | date_attempt  | status |
@@ -35,18 +35,18 @@ class Track_ScormOrg extends Track_Object {
 	function Track_ScormOrg( $idTrack, $idResource = false, $idParams = false, $back_url = NULL, $environment = false ) {
 		$this->objectType = 'scormorg';
 		parent::Track_Object($idTrack, $environment);
-		
+
 		$this->idResource = $idResource;
 		$this->idParams = $idParams;
 		if($back_url === NULL) $this->back_url = array();
 		else $this->back_url = $back_url;
 	}
-	
+
 	/**
-	 * print in standard output 
+	 * print in standard output
 	 **/
 	function loadReport( $idUser = FALSE, $mvc = false ) {
-		
+
 		require_once( _track_scorm_basepath.'scorm_stats.php' );
 		require_once( $GLOBALS['where_lms'].'/lib/lib.param.php' );
 		if($idUser !== false) {
@@ -54,14 +54,24 @@ class Track_ScormOrg extends Track_Object {
 			return scorm_userstat( $this->idResource, $idUser, $this->idReference, $mvc );
 		}
 	}
-	
+
 	/**
-	 * print in standard output the details of a track 
+	 * print in standard output the details of a track
 	 **/
-	function loadReportDetail( $idUser, $idItemDetail ) {
+	function loadReportDetail( $idUser, $idItemDetail, $idItem ) {
 		require_once( _track_scorm_basepath.'scorm_stats.php' );
 		if($idUser !== false) {
-			return scorm_userstat_detail( $this->idResource, $idUser, $idItemDetail );
+			return scorm_userstat_detail( $this->idResource, $idUser, $idItemDetail, $idItem );
+		}
+	}
+
+	/**
+	 * print in standard output the details of a track
+	 **/
+	function loadReportDetailHistory( $idUser, $idItemDetail, $idItem ) {
+		require_once( _track_scorm_basepath.'scorm_stats.php' );
+		if($idUser !== false) {
+			return scorm_userstat_detailhist( $this->idResource, $idUser, $idItemDetail, $idItem );
 		}
 	}
 /**
