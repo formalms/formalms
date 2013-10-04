@@ -54,6 +54,14 @@ a.nounder{text-decoration:none;}
 a.nounder:hover{text-decoration:underline;}
 a img{vertical-align:middle;}
 h1 img,h2 img,h3 img,h4 img,h5 img,h6 img{vertical-align:middle;}
+
+/* Main Page Container */
+div#container {width:960px; margin:0 auto; padding:0 10px; background:#fff; /*border:1px solid #ddd*/; border-top:0; border-bottom:0;}
+.layout_header {	padding:5px 0;}
+
+.layout_header .left_logo {margin:0;
+}
+
 /* utility */
 .container-hide{display:none;}
 .align-center{text-align:center;}
@@ -109,8 +117,6 @@ a.no_decoration{text-decoration:none;}
 .yui-skin-docebo .table-container-over a, .yui-skin-docebo .table-container-below a{padding:2px 4px;}
 .yui-skin-docebo .table-container-over .table-actions, .yui-skin-docebo .table-container-below .table-actions{display:inline-block;}
 .yui-skin-docebo .table-container-over .yui-pg-container, .yui-skin-docebo .table-container-below .yui-pg-container{display:inline-block;margin:0;float:right;vertical-align:middle;}
-
-
 #container .layout_colum_container th.yui-dt0-col-_dyn_field_1, #container td.yui-dt0-col-_dyn_field_1, #container th.yui-dt0-col-_dyn_field_2, #container td.yui-dt0-col-_dyn_field_2 {display:none;}
 
 .yui-skin-docebo .little_table .yui-dt{font-size:83%;overflow:auto;}
