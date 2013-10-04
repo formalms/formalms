@@ -608,8 +608,8 @@ class CatalogLms extends Model
 		$res = array();
 
 		$res['success'] = true;
-		$res['title'] = Lang::t('_CONFIRM_SUBSCRIPTION', 'catalogue');
-		$res['body'] = Lang::t('_CONFIRM_SUBSCRIPTION', 'catalogue');
+		$res['title'] = Lang::t('_COURSEPATH_SUBSCRIBE_WIN_TIT', 'catalogue');
+		$res['body'] = Lang::t('_COURSEPATH_SUBSCRIBE_WIN_TXT', 'catalogue');
 		$res['footer'] = '<a href="javascript:;" onclick="subscribeToCoursePath(\''.$id_path.'\');"><span class="close_dialog">'.Lang::t('_SUBSCRIBE', 'catalogue').'</span></a>'
 							.'&nbsp;&nbsp;<a href="javascript:;" onclick="hideDialog();"><span class="close_dialog">'.Lang::t('_UNDO', 'catalogue').'</span></a>';
 		return $res;
