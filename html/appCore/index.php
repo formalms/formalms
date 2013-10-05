@@ -16,7 +16,7 @@ define("IN_FORMA", true);
 define("_deeppath_", '../');
 require(dirname(__FILE__).'/../base.php');
 
-define('_file_version_', '4.0.5');
+define('_file_version_', '1.0');
 
 // start buffer
 ob_start();
@@ -82,7 +82,7 @@ if(isset($GLOBALS['r']) && $GLOBALS['r'] != '') {
 	ob_clean();
 
 } elseif($GLOBALS['modname'] != '') {
-	
+
 	$module_cfg->loadBody();
 }
 

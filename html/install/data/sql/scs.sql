@@ -1,8 +1,8 @@
 -- MySQL dump 10.9
 --
--- Host: localhost    Database: docebo40
+-- Host: localhost    Database: formalms
 -- ------------------------------------------------------
--- Server version	4.1.11-Debian_4sarge7-log
+-- Server version
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -373,18 +373,18 @@ CREATE TABLE IF NOT EXISTS `conference_teleskill_room` (
 
 
 
-  
-  
-  
-  
-  
-  
-  
 
- 
+
+
+
+
+
+
+
+
 -- --------------------------------------------------------
-  
-  
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
