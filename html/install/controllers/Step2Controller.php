@@ -6,7 +6,7 @@ Class Step2Controller extends StepController {
 
 	var $step=2;
 
-	
+
 	public function validate() {
 		return true;
 	}
@@ -26,7 +26,7 @@ function checkRequirements() {
 	$res['xml']=(extension_loaded('domxml') ? 'ok' : 'err');
 	$res['mbstring']=(extension_loaded('mbstring') ? 'ok' : 'err');
 	$res['ldap']=(extension_loaded('ldap') ? 'ok' : 'err');
-	$res['mime_ct']=(function_exists('mime_content_type') || method_exists('finfo', 'file') ? 'ok' : 'err');
+	$res['mime_ct']=(function_exists('mime_content_type') || (class_exists('file') && method_exists('finfo', 'file')) ? 'ok' : 'err');
 
 	return $res;
 }
@@ -39,6 +39,14 @@ function checkFolderPerm() {
 	$file_to_check=array("config.php");
 	$dir_to_check=array();
 	$empty_dir_to_check=array();
+
+	// common dir to check
+	$dir_to_check = array(
+		'files/tmp',
+		'files/common/comment',
+		'files/common/iofiles',
+		'files/common/users'
+		);
 
 	foreach($platform_folders as $platform_code=>$dir_name) {
 
@@ -57,18 +65,28 @@ function checkFolderPerm() {
 
 				case "lms": {
 					$specific_dir_to_check = array(
-						'files/appLms/course',
+						'files/appLms/certificate',
+						'files/appLms/chat',
 						'files/appLms/forum',
+						'files/appLms/htmlpages',
 						'files/appLms/item',
+						'files/appLms/label',
 						'files/appLms/message',
 						'files/appLms/project',
-						'files/appLms/scorm',
-						'files/appLms/test' );
+						'files/appLms/repo_light',
+						'files/appLms/sponsor',
+						'files/appLms/test'
+						);
 					$empty_specific_dir_to_check = array('files/appLms/course', 'files/appLms/scorm');
 				} break;
 
 				case "framework": {
-					$specific_dir_to_check = array("files/appCore/photo", "files/common/users");
+					$specific_dir_to_check = array(
+						'files/appCore/field',
+						'files/appCore/photo',
+						'files/appCore/newsletter',
+						'files/common/users'
+						);
 				} break;
 
 			}

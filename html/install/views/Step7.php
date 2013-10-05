@@ -27,7 +27,7 @@
 <p><a href="http://www.formalms.org/freetraining" target="_blank">http://www.formalms.org/freetraining</a></p>
 
 <h3><?php echo Lang::t('_COMMERCIAL_SERVICES'); ?>:</h3>
-<p><a href="http://www.formalms.com" target="_blank">http://www.formalms.com</a></p>
+<p><a href="http://www.formalms.org/services" target="_blank">http://www.formalms.org/services</a></p>
 
 <script type="text/javascript">
 YAHOO.util.Event.onDOMReady(function() {
