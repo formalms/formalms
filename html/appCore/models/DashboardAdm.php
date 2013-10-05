@@ -147,33 +147,47 @@ class DashboardAdm extends Model {
 	}
 
 	public function getVersionExternalInfo() {
-		if (Get::sett('welcome_use_feed') == 'on') {
+		$version = array(
+			'db_version' => Get::sett('core_version'),
+			'file_version' => _file_version_,
+			'string' => ''
+		);
 
-			$version = array(
-				'db_version' => Get::sett('core_version'),
-				'file_version' => _file_version_,
-				'string' => ''
-			);
+		// check for differences beetween files and database version
+		if(version_compare($version['file_version'], $version['db_version']) == 1) {
 
-			// check for differences beetween files and database version
-			if(version_compare($version['file_version'], $version['db_version']) == 1) {
-
-				switch($version['db_version']) {
-					case "3.6.0.3" :
-					case "3.6.0.4" :
-					case "4.0.0" :
-					case "4.0.5" : ;break;
-					case "4.0.1" :
-					case "4.0.2" :
-					case "4.0.3" :
-					case "4.0.4" : $version['db_version'] = $this->updateVersion($version['db_version'], $version['file_version']);
-						break;
-				}
+			switch($version['db_version']) {
+				// handling old docebo ce version
+				case "3.6.0.3" :
+				case "3.6.0.4" :
+				case "4.0.0" :
+				case "4.0.5" :
+					break;
+				case "4.0.1" :
+				case "4.0.2" :
+				case "4.0.3" :
+				case "4.0.4" :
+					$version['db_version'] = $this->updateVersion($version['db_version'], "4.0.5");
+					break;
+				// new formalms versions
+				case "1.0" :
+					break;
 			}
+		}
+
+		// check for differences beetween files and database version
+		if ( version_compare($version['file_version'], $version['db_version']) <> 0) {
+			$version['string'] .= '<br/>'
+					. 'Different from core file version:' . '<span class="red"><b>' . $version['file_version'] . '</b></span>'
+					. '<br/>'
+					.'<a href="../upgrade" class="red"><b>' . 'You need database upgrade' .'</b></a>';
+		}
+
+		if (Get::sett('welcome_use_feed') == 'on') {
 
 			require_once(_base_.'/lib/lib.fsock_wrapper.php');
 			$fp = new Fsock();
-			$_online_version = $fp->send_request('http://www.formalms.org/downloads/release.txt');
+			$_online_version = $fp->send_request('http://www.formalms.org/versions/release.txt');
 
 			if(!$fp || !$_online_version) {
 
@@ -184,6 +198,9 @@ class DashboardAdm extends Model {
 					.'<a href="http://www.formalms.org/downloads/?versions" class="red">'.Lang::t('_NEW_RELEASE_AVAILABLE', 'dashboard').': <b>'.$_online_version.'</b></a>';
 			}
 		}
+//print_r('welcome_use_feed : ' . Get::sett('welcome_use_feed') . '<br>');
+//print_r('_online_version : ' . $_online_version . '<br>');
+//print_r('VERSION : ' ); print_r($version); print_r('<br>');
 		return $version;
 	}
 

@@ -37,7 +37,7 @@ class Dashboard_Framework extends Dashboard {
 
 			require_once(_base_.'/lib/lib.fsock_wrapper.php');
 			$fp = new Fsock();
-			$released_version = $fp->send_request('http://www.formalms.org/downloads/release.txt');
+			$released_version = $fp->send_request('http://www.formalms.org/versions/release.txt');
 
 			if(!$fp) {
 

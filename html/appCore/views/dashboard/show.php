@@ -269,7 +269,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="http://www.formalms.org/community/"
+								<a href="http://www.formalms.org/community"
 									 onclick="window.open(this.href); return false;"
 									 onkeypress="window.open(this.href); return false;"
 									 title="Forma Community <?php echo Lang::t('_OPEN_IN_NEW_WINDOW', 'dashboard'); ?>">
