@@ -783,7 +783,8 @@ INSERT INTO `core_field_type` (`type_field`, `type_file`, `type_class`, `type_ca
 ('textfield', 'class.textfield.php', 'Field_Textfield', 'standard'),
 ('upload', 'class.upload.php', 'Field_Upload', 'standard'),
 ('yesno', 'class.yesno.php', 'Field_Yesno', 'standard'),
-('country',  'class.country.php',  'Field_Country',  'standard');
+('country',  'class.country.php',  'Field_Country',  'standard'),
+('textlabel', 'class.label.php', 'Field_Textlabel', 'standard');
 
 -- --------------------------------------------------------
 
@@ -2230,6 +2231,8 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('ldap_used', 'off', 'enum', 3, '0', 7, 1, 1, 0, ''),
 ('ldap_user_string', '$user@domain2.domain1', 'string', 255, '0', 7, 4, 1, 0, ''),
 ('mail_sender', 'sample@localhost', 'string', 255, 'register', 3, 12, 0, 0, ''),
+('maintenance', 'off', 'enum', 3, 'security', 8, 25, 0, 0, ''),
+('maintenance_pw', 'manutenzione', 'string', 3, 'security', 8, 25, 0, 0, ''),
 ('mandatory_code', 'off', 'enum', 3, 'register', 3, 18, 1, 0, ''),
 ('max_log_attempt', '0', 'int', 3, '0', 3, 4, 0, 0, ''),
 ('nl_sendpause', '20', 'int', 3, 'newsletter', 8, 10, 1, 0, ''),
