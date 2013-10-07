@@ -102,10 +102,7 @@ var Subscription = {
 			E.addListener("reset_advanced_filter", "click", function(e) {
 				D.get("filter_orgchart").value = 0;
 				D.get("filter_descendants").checked = false;
-				/* INIZIO MODIFICA ROBYKIRK */
-				/* D.get("filter_date_valid").value = 0; */
 				D.get("filter_date_valid").value = "";
-				/* FINE MODIFICA ROBYKIRK */
 				D.get("filter_show").selectedIndex = 0;
 
 				S.filterOrgChart = 0;
@@ -183,7 +180,7 @@ var Subscription = {
 				}).call(this, e);
 			});
 
-			
+
 
 			//multi delete
 			var multidel_links = YAHOO.util.Dom.getElementsByClassName('ico-wt-sprite subs_del');
@@ -386,19 +383,11 @@ var Subscription = {
 
 
 	selectAllAdditionalFilter: function() {
-		/* INIZIO MODIFICA ROBYKIRK */
-		/*
-		return "&filter_text=" + Subscription.filterText
-		   "&filter_orgchart=" + Subscription.filterOrgChart +
-		   "&filter_descendants=" + (Subscription.filterDescendants ? '1' : '0') +
-		   "&filter_date_valid=" + Subscription.filterDateValid;
-		*/
 		return "&filter_text=" + Subscription.filterText +
 		   "&filter_orgchart=" + Subscription.filterOrgChart +
 		   "&filter_descendants=" + (Subscription.filterDescendants ? '1' : '0') +
-		   "&filter_date_valid=" + Subscription.filterDateValid + 
+		   "&filter_date_valid=" + Subscription.filterDateValid +
 		        "&filter_show=" + Subscription.filterShow;
-		/* FINE MODIFICA ROBYKIRK */
 	},
 
 	requestBuilder: function (oState, oSelf) {

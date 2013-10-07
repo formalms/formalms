@@ -78,7 +78,7 @@ class KbRes {
 			AND r_type='".$type."' AND r_env='".$env."' AND is_categorized=1";
 		$q =$this->db->query($qtxt);
 
-		
+
 		if(!$q) return false;
 		$res_id_arr =array();
 		while($row = $this->db->fetch_array($q)) {
@@ -171,20 +171,13 @@ class KbRes {
 
 		if ($res > 0 && !empty($json_tags)) {
 
-			//INIZIO MODIFICA ROBYKIRK
-			/*
-			 require_once(_base_.'/lib/lib.json.php');
-			$json = new Services_JSON();
-			$tags_arr = $json->decode($json_tags);
-			*/
 			$json_tags = str_replace("[", "", $json_tags);
 			$json_tags = str_replace("]", "", $json_tags);
 			$json_tags = str_replace('"', "", $json_tags);
 			$json_tags = str_replace("\\", "", $json_tags);
 			$tags_arr = explode(",", $json_tags);
-			//FINE MODIFICA ROBYKIRK
-			
-			$this->setResourceTags($res_id, $tags_arr);			
+
+			$this->setResourceTags($res_id, $tags_arr);
 		}
 
 		if ($res > 0 && !empty($folders)) {
@@ -223,7 +216,7 @@ class KbRes {
 
 			$q =$this->db->query($qtxt); if (!$q) {echo $qtxt; die(); }
 			$res =(!$q ? false : true);
-			
+
 			//}
 		}
 
@@ -324,7 +317,7 @@ class KbRes {
 
 
 	public function deleteResourceFromItem($item_id, $type, $env, $only_relations=false) {
-		$r_type =$this->getResourceTypeName($type);		
+		$r_type =$this->getResourceTypeName($type);
 
 		// we quit if the resource doesn't have to be categorized
 		if (in_array($type, $this->getNotToCategorizeArr())) return true;
@@ -335,7 +328,7 @@ class KbRes {
 		if ($r_type == 'scorm' && $r_data['sub_categorize'] == 1) {
 			$this->deleteResourcesByParent($env, 'scoitem', $r_data['r_env_parent_id']);
 		}
-		
+
 		// normal resource
 		$this->deleteResource($r_data['res_id'], $only_relations);
 	}
@@ -357,7 +350,7 @@ class KbRes {
 
 	public function deleteScoResource($idscorm_org, $env) {
 		//return false;
-	
+
 		$qtxt ="SELECT idscorm_item, title, item_identifier FROM %lms_scorm_items
 			WHERE idscorm_organization='".(int)$idscorm_org."'";
 
@@ -378,7 +371,7 @@ class KbRes {
 		require_once($GLOBALS['where_lms'].'/lib/lib.module.php');
 
 		$data =$this->getResource($res_id);
-		
+
 		$idResource =$data['r_item_id'];
 		$env =$data['r_env'];
 		$objectType =$this->getObjectTypeName($data['r_type'], $env);
@@ -423,7 +416,7 @@ class KbRes {
 		return $row['idResource'];
 	}
 
-	
+
 	public function getResourceTags($res_id) {
 		$res =array();
 
@@ -462,8 +455,8 @@ class KbRes {
 		}
 		return $res;
 	}
-	
-	
+
+
 	public function addResourceTag($res_id, $tag) {
 		$res =false;
 		if (!is_array($tag)) {
@@ -516,7 +509,7 @@ class KbRes {
 			}
 		}
 
-		
+
 		return $current_tags;
 	}
 
@@ -588,7 +581,6 @@ class KbRes {
 
 		foreach($tags_arr as $tag_name) {
 			if (!in_array($tag_name, $current_tags)) {
-      			// INIZIO MODIFICA ROBYKIRK  
         		if ($tag_name == "") {
           			$tags_not_to_rem[]=$tag_name;
    				} else {
@@ -597,7 +589,6 @@ class KbRes {
 			}else {
    				$tags_not_to_rem[]=$tag_name;
 			}
-     	    // FINE MODIFICA ROBYKIRK
 		}
 
 		$this->addResourceTag($res_id, $to_add);
@@ -611,8 +602,8 @@ class KbRes {
 //print_r($tags_arr); print_r($current_tags); print_r($tags_not_to_rem); print_r($to_rem); die();
 		$this->remResourceTag($res_id, $to_rem);
 	}
-	
-	
+
+
 	public function remResourceTag($res_id, $tag) {
 		if (!is_array($tag)) {
 			$tag =array($tag);
@@ -626,8 +617,8 @@ class KbRes {
 			$q =$this->db->query($qtxt);
 		}
 	}
-	
-	
+
+
 	public function getResourceFolders($res_id) {
 		$res =array();
 
@@ -645,8 +636,8 @@ class KbRes {
 
 		return $res;
 	}
-	
-	
+
+
 	public function assignToFolders($res_id, $folder_arr) {
 		$res =false;
 
@@ -683,12 +674,12 @@ class KbRes {
 		return $data;
 	}
 
-	
+
 	public function getRawResources() {
 
 		$res =false;
 		$qtxt_arr =array();
-		
+
 		$qtxt_arr['course_lo'] ="SELECT title, objectType as type
 			,idResource as item_id, idResource as scorm_org_id FROM %lms_organization";
 
@@ -734,7 +725,7 @@ class KbRes {
 
 
 		// Retrive sco chapters
-		
+
 		$qtxt ="SELECT * FROM %lms_scorm_items
 			WHERE idscorm_organization
 			IN (".implode(',', array_unique($org_id_arr)).")
@@ -882,7 +873,7 @@ class KbRes {
 
 
 		$q =$this->db->query($qtxt);
-		
+
 		if ($q) {
 			$prev_lev =$folder['lev']+1;
 			$res =$this->_fillFolders($q, $prev_lev);
@@ -929,7 +920,7 @@ class KbRes {
         // if we are coming back from a recursion then we should have
         // the last item that has a fewer level than our childs; we
         // should then add the last retrived item as a new item in the
-        // current level.. 
+        // current level..
         $i++;
         if (isset($tmp['last'])) {
           $arr['folders'][$i]=$tmp['last'];

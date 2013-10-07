@@ -19,7 +19,7 @@ function organization_categorize(&$treeView, $idItem) {
 	$data = $folder->otherValues;
 
 	$type =$data[REPOFIELDOBJECTTYPE];
-	
+
 
 	require_once(_lms_.'/lib/lib.kbres.php');
 	$kbres =new KbRes();
@@ -84,8 +84,8 @@ $form_url ='index.php?modname=storage&amp;op=display';
 			//'stay_on_categorize'=>1,
 			'idItem'=>$idItem,
 		),
-	));	
-	
+	));
+
 }
 
 
@@ -119,17 +119,11 @@ function organization_categorize_save(&$treeView, $idItem) {
 		$type, $env, $env_parent_id, $param, $alt_desc, $lang, $force_visible, $is_mobile
 	);
 
-	//INIZIO MODIFICA ROBYKIRK
-	/*
-  $json = new Services_JSON();
-	$tags_arr = $json->decode($json_tags);
-  */ 
   $json_tags = str_replace("[", "", $json_tags);
   $json_tags = str_replace("]", "", $json_tags);
   $json_tags = str_replace('"', "", $json_tags);
   $json_tags = str_replace("\\", "", $json_tags);
   $tags_arr = explode(",", $json_tags);
-  //FINE MODIFICA ROBYKIRK
 
 	if ($res_id > 0) {
 		$kbres->setResourceTags($res_id, $tags_arr);
@@ -237,7 +231,7 @@ function getScoItemsTable($id_org, $scormorg_title, $idItem) {
 
 		$data[$i]["idscorm_item"]=$sco_id;
 		$data[$i]["title"]=$row['title'];
-		
+
 		$url ='index.php?modname=storage&amp;op=org_categorize_sco&amp;idItem='.$idItem.'
 			&amp;idResource='.$id_org.'&amp;sco_id='.$sco_id.'&amp;scormorg_title='.$scormorg_title;
 		$data[$i]["url"] =$url;
@@ -310,7 +304,7 @@ function organization_categorize_switch_subcat(&$treeView, $idItem) {
 		organization_jump_select_sco(&$treeView, $idItem, $folder, $data, $type);
 		die();
 	} else {
-		organization_categorize(&$treeView, $idItem);		
+		organization_categorize(&$treeView, $idItem);
 	}
 }
 

@@ -202,11 +202,9 @@ class CourseSubscribe_Manager
 				if (!empty($ulist)) $arr_idst = $ulist;
 				unset($ulist);
 			}
-			
-			// INIZIO MODIFICA ROBYKIRK
-			//if (!empty($arr_idst)) $conditions[] = " AND u.idst IN (".implode(",", $arr_idst).") ";
+
 			if (!empty($arr_idst)) $query .= " AND u.idst IN (".implode(",", $arr_idst).") ";
-			
+
 			if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
 				//$query .= " AND (s.date_begin_validity <= '".$filter['date_valid']."' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
 				//$query .= " AND (s.date_expire_validity >= '".$filter['date_valid']."' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
@@ -215,7 +213,6 @@ class CourseSubscribe_Manager
 				$query .= " AND (s.date_begin_validity <= '".$validity_date."' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
 				$query .= " AND (s.date_expire_validity >= '".$validity_date."' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
 			}
-			// FINE MODIFICA ROBYKIRK
 
 			if (isset($filter['show'])) {
 				//validate values
@@ -404,7 +401,7 @@ class CourseSubscribe_Manager
 					." FROM ".$this->subscribe_table
 					." WHERE idCourse = ".(int)$id_course
 					." AND idUser ";
-		
+
 		$query =	"UPDATE ".$this->subscribe_table
 					." SET level = ".(int)$new_level
 					." WHERE idCourse = ".(int)$id_course
@@ -418,15 +415,15 @@ class CourseSubscribe_Manager
 			$query_lvl .= " = ".(int)$id_user;
 			$id_user = array($id_user);
 		}
-		
+
 		$result = $this->db->query($query);
 		$old_level = array();
-		
+
 		while(list($id_user_t, $level) = $this->db->fetch_row($result))
 			   $old_level[$id_user_t] = $level;
-		
+
 		$res = $this->db->query($query);
-		
+
 		if($res)
 		{
 			require_once(_lms_ . '/lib/lib.course.php');
@@ -436,14 +433,14 @@ class CourseSubscribe_Manager
 			$level_idst = & $docebo_course->getCourseLevel($id_course);
 			if(count($level_idst) == 0 || $level_idst[1] == '')
 				$level_idst = & $docebo_course->createCourseLevel($id_course);
-			
+
 			foreach($id_user as $id_user_t)
 			{
 				$this->acl_man->removeFromGroup($level_idst[$old_level[$id_user]], $id_user_t);
 				$this->acl_man->addToGroup($level_idst[$new_level], $id_user_t);
 			}
 		}
-		
+
 		return $res;
 	}
 
