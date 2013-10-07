@@ -557,7 +557,7 @@ class DoceboImport {
 			return $source->get_error();
 		} elseif( $result === DOCEBO_IMPORT_NOTHINGTOPROCESS ) {
 			$connMgr->set_execution_time($name);
-			return $lang->def('_DOCEBO_IMPORT_NOTHINGTOPROCESS');
+			return $lang->def('_IMPORT_NOTHINGTOPROCESS');
 		}
 		if( $destination->connect() === FALSE )
 			return FALSE;
