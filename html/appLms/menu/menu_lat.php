@@ -205,7 +205,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
             .'</tr></tbody>'
             .'</table>';
 
-            $all_stats .="- Progress : </span>".renderProgress($tot_complete, $tot_failed, $total, false);
+            $all_stats .="</br>Progress:</span>".renderProgress($tot_complete, $tot_failed, $total, false);
         }
         if(Docebo::course()->getValue('show_progress') == 1) {
 
