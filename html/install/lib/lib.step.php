@@ -12,7 +12,7 @@
 \ ======================================================================== */
 
 define('_INSTALL_TOTAL_STEP', 7);
-define('_UPDATE_TOTAL_STEP', 6);
+define('_UPDATE_TOTAL_STEP', 7);
 
 class StepManager {
 

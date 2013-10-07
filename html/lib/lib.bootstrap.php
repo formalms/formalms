@@ -260,7 +260,7 @@ class Boot {
 		DbConn::getInstance();
 		if(!DbConn::$connected && file_exists(_base_.'/install')) {
 
-			Header("Location: ./install/");
+			Header("Location: ". Get::rel_path('base') ."/install/");
 		}
 	}
 

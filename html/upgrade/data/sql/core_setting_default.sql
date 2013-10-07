@@ -12,7 +12,7 @@
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `docebo_devel`
+-- Database: `formalsm`
 --
 
 -- --------------------------------------------------------
@@ -44,7 +44,7 @@ INSERT INTO `core_setting_default` (`param_name`, `param_value`, `value_type`, `
 ('code_teleskill', '', 'string', 255, 'teleskill', 6, 3, 1, 0, ''),
 ('common_admin_session', 'on', 'enum', 3, 'security', 8, 24, 1, 0, ''),
 ('conference_creation_limit_per_user', '99999999999', 'string', 255, '0', 6, 0, 1, 0, ''),
-('core_version', '4.0.5', 'string', 255, '0', 1, 0, 1, 1, ''),
+('core_version', '1.0', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('course_quota', '0', 'string', 255, '0', 4, 5, 1, 0, ''),
 ('currency_symbol', '&euro;', 'string', 10, '0', 5, 2, 1, 0, ''),
 ('customer_help_email', '', 'string', 255, '0', 3, 19, 1, 0, ''),

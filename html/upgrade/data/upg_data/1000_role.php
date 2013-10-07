@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('IN_FORMA')) { die('You can\'t access!'); }
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -11,32 +11,27 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-$GLOBALS['cfg']['versions'] = array(
-	'3603' => '3.6.0.3  - Docebo CE',
-	'3604' => '3.6.0.4 - Docebo CE',
-	'3605' => '3.6.0.5 - Docebo CE',
-	'4000' => '4.0.0 - Docebo CE',
-	'4010' => '4.0.1 - Docebo CE',
-	'4020' => '4.0.2 - Docebo CE',
-	'4030' => '4.0.3 - Docebo CE',
-	'4040' => '4.0.4 - Docebo CE',
-	'4050' => '4.0.5 - Docebo CE',
-	'1000' => '1.0',
-);
+// if this file is not needed for a specific version,
+// just don't create it.
 
-// for reference old docebo ce versions
-$GLOBALS['cfg']['docebo_versions'] = array(
-	'3603' => '3.6.0.3',
-	'3604' => '3.6.0.4',
-	'3605' => '3.6.0.5',
-	'4000' => '4.0.0',
-	'4010' => '4.0.1',
-	'4020' => '4.0.2',
-	'4030' => '4.0.3',
-	'4040' => '4.0.4',
-	'4050' => '4.0.5',
-);
 
-$GLOBALS['cfg']['endversion'] = '1.0';
+// Create this function only if needed, else you can remove it
+// (we check it with function_exists)
+function upgradeUsersRoles1000() {
+	// echo " upgradeUsersRoles 1000 ";
 
-?>
+	$res ='';
+
+	return $res;
+}
+
+
+// Create this function only if needed, else you can remove it
+// (we check it with function_exists)
+function upgradeGodAdminRoles1000() {
+	//echo " upgradeGodAdminRoles 1000 ";
+
+	$res ='';
+
+	return $res;
+}
