@@ -260,7 +260,7 @@ ul.social-accounts li span{vertical-align:middle;}
 .container-loadbox img{vertical-align:middle;}
 .container-loadbox span{margin-left:8px;font-size:90%;vertical-align:middle;}
 div.container-feedback{}
-p.container-feedback{position:absolute;top:0;width:30%;left:35%;padding:.6em 3em;border-top:0px none;font-weight:bold;font-size:90%;text-align:center;border-radius:0 0 10px 10px;-moz-border-radius:0 0 10px 10px;-webkit-border-radius:0 0 10px 10px;background:#ffffcc;border:1px solid #ffcc33;}
+p.container-feedback{position:absolute;top:0;width:30%;left:35%;padding:.6em 3em;border-top:0px none;font-weight:bold;font-size:90%;text-align:center;border-radius:0 0 10px 10px;-moz-border-radius:0 0 10px 10px;-webkit-border-radius:0 0 10px 10px;background:#ffffcc;border:1px solid #ffcc33;z-index=1;}
 .pcontainer-feedback{position:relative;width:30%;left:35%;padding:.6em 3em;border-top:0px none;font-weight:bold;font-size:90%;text-align:center;border-radius:0 0 3px 3px;-moz-border-radius:0 0 3px 3px;-webkit-border-radius:0 0 3px 3px;background:#ffffcc;border:1px solid #ffcc33;}
 .dialog_loading_msg{background:url(../images/standard/loading.gif) 0 -4px no-repeat;padding-left:24px;height:18px;}
 .dialog_loading_msg span{vertical-align:middle;}
