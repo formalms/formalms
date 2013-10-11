@@ -36,8 +36,8 @@ Index
 
 Server specs: Linux, Windows, MacOs, Unix, Sun with
 - Apache 2.0.x or above
-- PHP 5.2.x or above
-- Mysql 4.1 or higher with transaction support
+- PHP 5.2.x or 5.3.x (known issues with 5.4)
+- Mysql 5.0 or higher with transaction support
 - Doesn't matter if safe mode or register global are on or off
 - If you need to test on your windows home pc we suggest easyphp or xampp
 
@@ -61,6 +61,7 @@ Note: The system will load XML file languages, this operation can take some time
 
 - Make a full backup db and files
 - Make sure that you have a full backup that you can trust and recover if needed
+- Export language file (if you did any customization)
 - Overwrite all the old files, do not overwrite the config.php file (or if you prefer delete all the forma files and dir excluding the files/ dir and the config.php file and upload the new files)
 - Launch www.yourwebsite.com/upgrade
 - Follow instructions
@@ -68,8 +69,9 @@ Note: The system will load XML file languages, this operation can take some time
 
 
 
-3.1 Upgrade from 3.x to 4.x
+3.1 Upgrade from docebo 3.x to Forma 1.x
 
+You can directly upgrade your old docebo installations to Forma 1.x
 The config.php file is completly changed from the previous release to the new one, in this case you will need to manually compile the new config.php file (you can found the new one inside the folder of the new version)
 
 
@@ -86,15 +88,4 @@ The config.php file is completly changed from the previous release to the new on
 
 
 
-5. Others
-
-More info on installation on manuals:
-
-http://www.docebolms.org
-http://www.docebocms.org
-http://www.docebokms.org
-
-If you need to be a developer please go on
-
-http://www.formalms.org
 
