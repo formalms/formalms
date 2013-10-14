@@ -23,8 +23,8 @@ define("_CROATIAN", "Croato");
 define("_BOSNIAN", "Bosniaco");
 
 define("_TITLE_STEP1", "Step 1: Seleziona la lingua");
-define("_TITLE_STEP2", "Step 2: Licenza");
-define("_TITLE_STEP3", "Step 3: Scelta applicativi da installare");
+define("_TITLE_STEP2", "Step 2: Verifica informazioni di sistema");
+define("_TITLE_STEP3", "Step 3: Licenza");
 define("_TITLE_STEP4", "Step 4: Configurazione");
 define("_TITLE_STEP5", "Step 5: Personalizzazione dell'installazione");
 define("_TITLE_STEP6", "Step 6: Importazione database");
@@ -186,7 +186,7 @@ define("_CRITICAL_ERROR","Errore critico ");
 define("_MBSTRING","Supporto Multibyte");
 
 
-define("_INSTALLER_INTRO_TEXT", "Forma &egrave; una realt&agrave; italiana che ha sviluppato, in collaborazione con le pi&ugrave; grandi societ&agrave; e universit&agrave; il suo sistema open-source per l'e-learning (LMS e LCMS) per la formazione in ambiente enterprise ed universitario.
+define("_INSTALLER_INTRO_TEXT", "Forma &egrave; un Learning Management System open source mantenuto da un gruppo di aziende italiane, già utilizzato da centinaia di grandi aziende ed universit&agrave; in tutto il mondo. 
 <p><strong>Key Features</strong></p>
 <ul>
 <li>Supporto a <em>Scorm 1.2 e 2004&nbsp;</em></li>

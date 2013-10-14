@@ -6,9 +6,11 @@ define("_BACK", "Back");
 define("_LOADING", "Loading");
 define("_TRY_AGAIN", "Try again");
 //--------------------------------------
+define("_INTRODUCTION", "Introduction");
 define("_TITLE_STEP1", "Step 1: Select language");
 define("_LANGUAGE", "Language");
-define("_INSTALLER_INTRO_TEXT", "Forma is a company that has developed its own open-source e-learning framework called FormaLMS suitable for complex organizations, corporate market, government and healthcare.
+define("_INSTALLER_INTRO_TEXT", "
+Forma is a free open source Learning Management System mantained by an italian group of companies, already used by hundreds of companies and universities all over the world.
 	<p><b>Key Features</b></p>
 	<ul>
 		<li>Scorm 1.2 and 2004 support</li>
@@ -25,7 +27,7 @@ define("_INSTALLER_INTRO_TEXT", "Forma is a company that has developed its own o
 		<li>Mobile devices support</li>
 	</ul>");
 // ---------------------------------------
-define("_TITLE_STEP2", "Step 2: Information");
+define("_TITLE_STEP2", "Step 2: System Check");
 define("_SERVERINFO","Server information");
 define("_SERVER_SOFTWARE","Server software : ");
 define("_PHPVERSION","PHP Version : ");
