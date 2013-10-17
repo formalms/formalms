@@ -97,6 +97,13 @@ class Learning_Htmlpage extends Learning_Object {
 			$_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE', 'htmlpage');
 			return false;
 		}
+		$delete_query = "
+		DELETE FROM ".$GLOBALS['prefix_lms']."_htmlpage_attachment
+		WHERE idpage = '".$id."'";
+		if(!sql_query( $delete_query )) {
+			$_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE', 'htmlpage');
+			return false;
+		}	
 		return $id;
 	}
 	
@@ -148,6 +155,21 @@ class Learning_Htmlpage extends Learning_Object {
 		FROM ".$GLOBALS['prefix_lms']."_htmlpage 
 		WHERE idPage = '".(int)$id."'"));
 		
+		// recuper gli allegati 
+		$path = '/appLms/htmlpages/';
+		$query = "SELECT * FROM ".$GLOBALS['prefix_lms']."_htmlpage_attachment WHERE idpage = ".$id;
+		$res = mysql_query($query);
+		$attachments = array();
+		if ($res) {
+			while ($row = mysql_fetch_assoc($res)) {
+				$attachments[] = array(
+					'id' => $row['id'],
+					'title' => $row['title'],
+					'file' => $GLOBALS['where_files_relative'].$path.$row['file']
+				);
+			}
+		}
+			
 		require_once( $GLOBALS['where_lms'].'/lib/lib.param.php' );
 		$idReference = getLOParam($id_param, 'idReference');
 		// NOTE: Track only if $idReference is present 
@@ -166,11 +188,22 @@ class Learning_Htmlpage extends Learning_Object {
 			}
 		}
 		
+		$atts = '';
+		foreach($attachments as $attachment) {
+			$atts .= "<a id=\"".$attachment['id']."\" href=\"".$attachment['file']."\" target=\"_blank\">".$attachment['title']."</a><br/>";
+		}
+		
 		$GLOBALS['page']->add('<div id="top" class="std_block">'
 			.getBackUi( str_replace( '&', '&amp;', $this->back_url ), Lang::t('_BACK'))
 			.'<div class="title">'.$title.'</div>'
-			.'<div class="textof">'.$textof.'</div>'
-			.'<br /><br />'
+			.'<div class="textof">'.$textof, 'content');
+
+		if ($atts != '')
+			$GLOBALS['page']->add('<br/><br/></div><div class="attach">'.Lang::t('_ATTACH_TITLE', 'htmlpage', 'lms').'<br/>'.$atts.'</div>', 'content');
+		else
+			$GLOBALS['page']->add('</div>', 'content');
+			
+		$GLOBALS['page']->add('<br /><br />'
 			/*.'<a href="#top" title="'. Lang::t('_BACKTOTOP', 'htmlpage', 'lms').'">'
 				.'<img src="'.getPathImage().'standard/upcheck.gif" alt="'. Lang::t('_BACKTOTOP', 'htmlpage', 'lms').'" />'
 				. Lang::t('_BACKTOTOP', 'htmlpage', 'lms').'</a>'*/
