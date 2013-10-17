@@ -2888,8 +2888,7 @@ function testQuestion()
 		$query_track_answer =	"SELECT idQuest, idAnswer, more_info"
 								." FROM ".$GLOBALS['prefix_lms']."_testtrack_answer"
 								." WHERE idTrack = '".$id_track."'";
-// PurpLE
-// COMMENTATO MA NON � CHIARO COME MAI C'E'????
+// COMMENTATO MA NON E' CHIARO COME MAI C'E'????
 								//." AND user_answer = 1";
 //print_r($query_track_answer.'<br />');
 		$result_track_answer = sql_query($query_track_answer);

@@ -1,5 +1,4 @@
 <?php
-//purple
 require_once(dirname(__FILE__).'/class.field.php');
 
 

@@ -1881,7 +1881,7 @@ class UserProfileViewer {
 
 		$html .= '</div></div>';
 		
-		// PURPLE box carriera
+		// box carriera
 		require_once($GLOBALS['where_lms'].'/lib/lib.middlearea.php');
 		require_once($GLOBALS['where_lms'].'/modules/course/course.php');
 		$ma = new Man_MiddleArea();
@@ -2006,8 +2006,6 @@ class UserProfileViewer {
 		
 		}
 		
-		// END PURPLE
-
 		/*
 		$html = '<div class="user_presentation">'."\n"
 

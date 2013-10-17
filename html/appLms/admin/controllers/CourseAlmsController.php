@@ -67,7 +67,7 @@ Class CourseAlmsController extends AlmsController
 		return $message;
 	}
 	
-	// funzione PURPLE (ajax)
+	// funzione (ajax)
 	public function getlolist($p=0, $sk = '') {
 		if (isset($_GET['idCourse'])) {
 			$query_list = "SELECT * FROM %lms_organization WHERE idCourse = '".(int)$_GET['idCourse']."' AND idParent = ".$p." ORDER BY path ASC";

@@ -2,9 +2,9 @@
 	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo Layout::lang_code(); ?>">
 	<head>
-	    <!--PURPLE : Fix funzionamento scorm su IE9-->
+	    <!--Fix funzionamento scorm su IE9-->
         <meta http-equiv="x-ua-compatible" content="IE=8"></meta>
-        <!--END PURPLE -->
+        <!--END -->
 
 		<title><?php echo Layout::title(); ?></title>
 		<link rel="shortcut icon" href="<?php echo Layout::path(); ?>images/favicon.ico" />

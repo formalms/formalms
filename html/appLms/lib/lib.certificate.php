@@ -64,8 +64,6 @@ class Certificate {
 
 		return $cert;
 	}
-
-// PURPLE
 		
         function getCourseCertificateObj($id_course) {
 
@@ -133,7 +131,6 @@ class Certificate {
 
                 return true;
         }
-        // END PURPLE
 
 
 	function getCourseCertificate($id_course) {

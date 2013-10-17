@@ -433,7 +433,6 @@ var initDataTable = function(oConfig) {
 						+'<input class="check" onclick="getLoList(\''+this.href.split("=")[2]+'\')" type="checkbox" id="lo" name="lo" value="1">'
 						+'<label class="label_normal" for="lo"> <?php echo addslashes(Lang::t('_LEARNING_OBJECTS', 'standard')); ?></label>'
 
-						// PURPLE
 						+'<br/>'
 						+'<div id="lo_list"></div>'
 						+'<input class="check" type="checkbox" id="advice" name="advice" value="1">'

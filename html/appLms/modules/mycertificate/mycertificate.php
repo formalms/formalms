@@ -206,9 +206,8 @@ function mycertificate(&$url) {
 					$can_rel_exceptional = false;
 
 					while(list($id_cert, $certificate) = each($available_cert[$id_course]))
-					//purple        
+     
 					if($cert->certificateAvailableForUser($id_cert, $id_course, getLogUserId()) ) {
-					//end purple
 						if($certificate[CERT_AV_POINT_REQUIRED] > 0)
 						{
 							$course_score_final = false;
@@ -248,10 +247,9 @@ function mycertificate(&$url) {
 
 					//count years for rowspans
 					while(list($id_cert, $certificate) = each($available_cert[$id_course])) {
-                                                //purple (aggiunto if prima dell'or)
+                                                //(aggiunto if prima dell'or)
                                                 if($cert->certificateAvailableForUser($id_cert, $id_course, getLogUserId()) ) {
                                                         //$value[4] = $id_cert;
-                                                        //end purple
 
                                                         list($available_for_status) = $arr_certificates_availability[$id_course][$id_cert];
                                                         list($date_inscr, $date_begin, $date_end, $status) = $arr_certificate_details[$id_course];
@@ -264,7 +262,7 @@ function mycertificate(&$url) {
                                                                         default: $cur_year = '-';
                                                                 }
 
-																// purple (mi ricreo l'array value perchè manca di date_* BUG FIX)
+																// (mi ricreo l'array value perchè manca di date_* BUG FIX)
                                                                 $value = array($id_course, $code, $name, $date_begin, $date_end, $user_status, $perm_close_lo);
                                                                 $value[6] = $id_cert;
 
@@ -274,8 +272,7 @@ function mycertificate(&$url) {
 																$res = sql_query($query);
 																list($cname) = sql_fetch_row($res);
 																$value[7] = $cname;
-																// end purple
-																
+
                                                                 if($can_rel_exceptional && $certificate[CERT_AV_POINT_REQUIRED] > 0)
                                                                 {
                                                                         if (isset($years[$course_type][$cur_year]))
@@ -315,10 +312,8 @@ function mycertificate(&$url) {
 				$first = true;
 				foreach ($rows as $row) {
 
-					// PURPLE: era senza date_* e quindi sbarellava con le date
 					// list($id_course, $code, $name, $user_status, $id_cert) = $row;
 					list($id_course, $code, $name, $date_begin, $date_end, $user_status, $id_cert, $cname) = $row;
-					// end purple
 					
 					$cont = array();
 
@@ -345,7 +340,7 @@ function mycertificate(&$url) {
 					);
 
 
-					// PURPLE sostituito date_begin con certificate name
+					// sostituito date_begin con certificate name
 					// 4 - starting date
 //					$cont[] = array(
 //						'value' => Format::date($date_begin, 'datetime'),

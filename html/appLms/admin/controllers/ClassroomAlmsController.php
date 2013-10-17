@@ -531,8 +531,6 @@ Class ClassroomAlmsController extends AlmsController {
 	}
     
     protected function export() {
-      /* PURPLE */
-
 //      define("IN_FORMA", "ok");
 //      include('../config.php');
 //      error_reporting(0);
@@ -607,8 +605,6 @@ Class ClassroomAlmsController extends AlmsController {
 
       print "</table></body>";
       exit(0);
-
-      /* END PURPLE */
     }
 
 	protected function presence()

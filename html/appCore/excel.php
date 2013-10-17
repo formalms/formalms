@@ -1,7 +1,5 @@
 <?php
 
-/* PURPLE */
-
 	define("IN_FORMA", "ok");
 	include('../config.php');
 	error_reporting(0);
@@ -71,7 +69,5 @@
 	}
 	
 	print "</table>";
-
-/* END PURPLE */
 
 ?>

@@ -62,28 +62,28 @@ class Lms_BlockWidget extends Widget {
 			$this->news ( $this->link );
 			echo '</div>';
 		}
-		// PURPLE modifica box carriera
+		// modifica box carriera
 		if (isset ( $this->block_list ['career'] )) {
 			
 			echo '<div class="inline_block">';
 			$this->career ();
 			echo '</div>';
 		}
-		// PURPLE modifica box iscrizione corso
+		// modifica box iscrizione corso
 		if (isset ( $this->block_list ['course'] )) {
 			
 			echo '<div class="inline_block">';
 			$this->subscribe_course ();
 			echo '</div>';
 		}
-		// END PURPLE
+		// END
 	}
 	
 	public function career() {
 
 	}
 	
-	// PURPLE box iscrizione corso
+	// box iscrizione corso
 	public function subscribe_course() {
 		require_once (_base_ . '/lib/lib.form.php');
 		
@@ -103,7 +103,7 @@ class Lms_BlockWidget extends Widget {
                             </div>';
 		echo $html;
 	}
-	// END PURPLE
+	// END
 	
 	public function news($link) {
 		echo '<h2 class="heading">' . Lang::t ( '_NEWS', 'catalogue' ) . '</h2>' . '<div class="content">';

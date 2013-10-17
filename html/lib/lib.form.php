@@ -70,7 +70,6 @@ class Form {
 		return '<div class="'.$css_class.'">'."\n";
 	}
 	
-	//purple
 	
 	/**
 	 * public static function getTextLabel($label, $css_class = '')
@@ -84,7 +83,6 @@ class Form {
 		return '<div><label class="'.$css_class.'">'.$label.'</label></div>';
 	}
 	
-	//end purple
 
 	/**
 	 * public static function getTextBox( $text , $css_line = '')

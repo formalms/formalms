@@ -109,7 +109,6 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
         }
 		$menu_right .= '</ul>';
 
-        //PURPLE STATS
         $user_stats = array('head'=>array(),'body'=>array());
             if(!isset($_SESSION['is_ghost']) || $_SESSION['is_ghost'] !== true) {
 

@@ -276,10 +276,9 @@ class ImportUser extends DoceboImport_Destination {
 					$acl_manager->addToGroup($f->idst_oc, $idst);
 					$acl_manager->addToGroup($f->idst_ocd, $idst);
 					
-					// ALE PURPLE - apply enroll rules
+					// apply enroll rules
 					$enrollrules = new EnrollrulesAlms();
 					$enrollrules->newRules('_NEW_IMPORTED_USER', array($idst), 'all', $f->idOrg);
-					// END ALE PURPLE
 				}
 			} elseif ($this->idst_group != $this->idst_oc) {
 				
