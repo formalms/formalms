@@ -111,7 +111,7 @@ class Util  {
 		}
 
 		if($ext === NULL || $ext === false) {
-			$ext = array_pop(explode('.', $filename), 1);
+			$ext = array_pop(explode('.', $filename));
 
 		}
 		if(substr($sendname, - strlen($ext)) != $ext) $sendname .= '.'.$ext;
