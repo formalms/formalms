@@ -162,7 +162,7 @@ class FieldList {
 
 		$query = "SELECT id_common, type_field, translation"
 				."  FROM ".$this->getFieldTable()
-				." WHERE lang_code = '".$lang_code."'";
+				." WHERE lang_code = '".getLanguage()."'";
 		if($type_field != false) {
 			$query .= " AND type_field = '".$type_field."'";
 		}
