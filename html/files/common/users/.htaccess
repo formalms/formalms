@@ -1,4 +1,2 @@
-#Options -Indexes
-Order Deny,Allow
-deny from all
-allow from 127.0.0.1
+Options -Indexes
+#deny from all
