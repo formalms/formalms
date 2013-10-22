@@ -1,1 +1,4 @@
+#Options -Indexes
+Order Deny,Allow
 deny from all
+allow from localhost
