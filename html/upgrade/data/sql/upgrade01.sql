@@ -314,6 +314,9 @@ INSERT INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`) VALUES
 ('tb_label', 1, 'a:0:{}'),
 ('tb_videoconference', 1, 'a:0:{}');
 
+INSERT INTO `learning_report` (`id_report`, `report_name`, `class_name`, `file_name`, `use_user_selection`, `enabled`) VALUES
+(5, 'aggregate_report', 'Report_Aggregate', 'class.report_aggregate.php', 'true', 1);
+
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
