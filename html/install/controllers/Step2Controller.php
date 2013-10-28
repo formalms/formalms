@@ -18,7 +18,7 @@ function checkRequirements() {
 	$res =array();
 
 	// phpversion();
-	$res['php']=(version_compare(PHP_VERSION, '5.2.0') >= 0 ? 'ok' : 'err');
+	$res['php']=((version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '5.4.0', '<')) >= 0 ? 'ok' : 'err');
 	// mysql version, in easyphp the version number is ina string regcut it
 	preg_match( '/([0-9]+\.[\.0-9]+)/', mysql_get_client_info(), $version );
 	if(empty($version[1])) $res['mysql']='ok';
