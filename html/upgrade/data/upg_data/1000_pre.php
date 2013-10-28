@@ -26,6 +26,9 @@ require_once('../config.php');
 function preUpgrade1000() {
 
 	$sts = upgrade_folders();
+	if ( $sts ) {
+		$sts = create_folders();
+	}
 
 	return $sts;
 }
@@ -44,13 +47,34 @@ function upgrade_folders() {
 		);
 
 	foreach($dirs_to_move as $move_dir) {
-		   $GLOBALS['debug'] .=  "<br/>" . "Check Old folder '". $move_dir['old'] ;
+		   $GLOBALS['debug'] .=  "<br/>" . "Check Old folder '". $move_dir['old'] ."'";
 
 		if ( is_dir(_base_.'/'.$move_dir['old'].'/') &&
 		     ! is_dir(_base_.'/'.$move_dir['new'].'/')	) {
 		   $GLOBALS['debug'] .=  "<br/>" . "Move folder from: '". _base_.'/'.$move_dir['old']
 		                                 . "' to '" . _base_.'/'.$move_dir['new'] ."'";
-		   rename(_base_.'/'.$move_dir['old'],_base_.'/'.$move_dir['new']);
+		    @rename(_base_.'/'.$move_dir['old'],_base_.'/'.$move_dir['new']);
+		}
+	}
+
+	return true;
+
+}
+
+function create_folders() {
+
+	$dirs_to_create=array();
+
+	// common dir to check
+	$dirs_to_create = array(
+		'files/appLms/htmlpages'
+		);
+
+	foreach($dirs_to_create as $new_dir) {
+
+		if ( ! is_dir(_base_.'/'.$new_dir .'/')	) {
+		   $GLOBALS['debug'] .=  "<br/>" . "Create new folder '". $new_dir  ."'";
+		   @create_dir(_base_.'/'.$new_dir);
 		}
 	}
 

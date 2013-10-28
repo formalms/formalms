@@ -30,10 +30,16 @@ Class Step2Controller extends StepController {
 		$version = Get::req('start_version', DOTY_ALPHANUM, '3603');
 		if ( version_compare($version, '3600','>=')  &&
 		     version_compare($version, '4000','<') ) {
+			//docebo ce v 3.x.x => go to step 3 (config upgrade )
+			$next_step = $current_step + 1;
+		}
+		else if ( version_compare($version, '4000','>=') ) {
+			//docebo ce v 4.x.x => go to step 3 (config upgrade )
 			$next_step = $current_step + 1;
 		}
 		else {
-			$next_step = $current_step + 3;  // skip step 3 and 4 (config upgrade, upgrade from 3 to 4)
+			// forma v1.x => skip step 3 and 4 (config upgrade, db upgrade from 3 to 4)
+			$next_step = $current_step + 3;  //
 		}
 		return ($next_step);
 	}
@@ -165,7 +171,7 @@ Class Step2Controller extends StepController {
 
 		$current_version =$this->getCurrentVersion();
 		if ( version_compare($current_version, '3600','>=')  &&
-		     version_compare($current_version, '4000','<') ) {
+		     version_compare($current_version, '5000','<') ) {
 			$dirprefix = 'docebo';
 		} else {
 			$dirprefix = 'app';
@@ -191,7 +197,6 @@ Class Step2Controller extends StepController {
 							'files/' . $dirprefix .'Lms/certificate',
 							'files/' . $dirprefix .'Lms/chat',
 							'files/' . $dirprefix .'Lms/forum',
-							'files/' . $dirprefix .'Lms/htmlpages',
 							'files/' . $dirprefix .'Lms/item',
 							'files/' . $dirprefix .'Lms/label',
 							'files/' . $dirprefix .'Lms/message',
@@ -200,6 +205,11 @@ Class Step2Controller extends StepController {
 							'files/' . $dirprefix .'Lms/sponsor',
 							'files/' . $dirprefix .'Lms/test'
 							 );
+
+						if ( $dirprefix == 'app' ) {
+							// new folders in formalms
+							$specific_dir_to_check[] = 'files/' . $dirprefix .'Lms/htmlpages';
+						}
 						$empty_specific_dir_to_check = array(
 							'files/' . $dirprefix .'/course',
 							'files/' . $dirprefix .'/scorm'

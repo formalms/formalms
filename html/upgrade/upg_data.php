@@ -117,7 +117,7 @@ if ($_SESSION['upgrade_ok']) {
 	$q =mysql_query($qtxt);
 }
 
-$GLOBALS['debug'] = $msg .
+$GLOBALS['debug'] = $upgrade_msg
 					. '<br/>' . 'Result: ' . ( $_SESSION['upgrade_ok'] ? 'OK ' : 'ERROR !!! ' )
 					. '<br/>' . $GLOBALS['debug'];
 

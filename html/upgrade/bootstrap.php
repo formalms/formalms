@@ -17,6 +17,7 @@ session_name("docebo_session");
 session_start();
 
 define('IN_FORMA', true);
+define('IN_DOCEBO', true);			// need for upgrade from doceboce
 define('INSTALL_ENV', 'upgrade');
 
 define("_deeppath_", "../");
