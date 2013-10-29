@@ -59,13 +59,12 @@ Note: The system will load XML file languages, this operation can take some time
 
 3. Upgrade procedure
 
-- Make a full backup db and files
+- Make a full backup of db and files
 - Make sure that you have a full backup that you can trust and recover if needed
-- Export language file (if you did any customization)
-- Overwrite all the old files, do not overwrite the config.php file (or if you prefer delete all the forma files and dir excluding the files/ dir and the config.php file and upload the new files)
+- Export the language files (if you did any customization), to import them again after the upgrade
+- Delete all the files and dir excluding the files/ dir and the config.php file, and upload the new files
 - Launch www.yourwebsite.com/upgrade
 - Follow instructions
-
 
 
 
