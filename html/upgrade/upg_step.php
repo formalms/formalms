@@ -96,6 +96,10 @@ switch($upg_step) {
 		while(list($photo) = mysql_fetch_row($result)) {
 			@unlink('../files/doceboCore/photo/'.$photo);
 		}
+
+		// create missining upload folders
+		mkdir('../files/doceboLms/label');
+
 	} break;
 	case "8": { // --- Kb --------------------------------------------------------
 		kbUpgrade();
