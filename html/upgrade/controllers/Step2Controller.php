@@ -100,8 +100,8 @@ Class Step2Controller extends StepController {
 	function checkRequirements() {
 		$res =array();
 
-		phpversion();
-		$res['php']=((version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '5.4.0', '<')) >= 0 ? 'ok' : 'err');
+		// phpversion();
+		$res['php']=((version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '5.4.0', '<')) ? 'ok' : 'err');
 		$res['mysql']=(version_compare(mysql_get_client_info(), '5.1') >= 0 ? 'ok' : 'err');
 		$res['xml']=(extension_loaded('domxml') ? 'ok' : 'err');
 		$res['ldap']=(extension_loaded('ldap') ? 'ok' : 'err');
