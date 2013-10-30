@@ -23,27 +23,18 @@
 require_once('bootstrap.php');
 require_once('../config.php');
 
-//print_r('END: ' .$sts . '<br>');
-//$sts = preUpgrade1000();
-//print_r('END: ' .$sts . '<br>');
-//die();
-
 function preUpgrade1000() {
-print_r('BEGIN pre upgrade : '  . '<br>');
 
 	$sts = upgrade_folders();
 	if ( $sts ) {
-print_r('CALL  create_folders: '  . '<br>');
 		$sts = create_folders();
 	}
 
-print_r('RESULT : ' .  $GLOBALS['debug'] . '<br>');
 	return $sts;
 }
 
 
 function upgrade_folders() {
-print_r('INTO   upgrade_folders: '  . '<br>');
 
 	$dirs_to_move=array();
 
@@ -79,15 +70,11 @@ function create_folders() {
 		'files/appLms/htmlpages'
 		);
 
-print_r('DIR to be creadetd ' );print_r($dirs_to_create) ; print_r('<br>');
-
 	foreach($dirs_to_create as $new_dir) {
 
 		if ( ! is_dir(_base_.'/'.$new_dir .'/')	) {
-print_r('DIR to be creadetd = ' );print_r(_base_.'/'.$new_dir .'/') ; print_r('<br>');
 		   $GLOBALS['debug'] .=  "<br/>" . "Create new folder '". $new_dir  ."'";
 		   $sts = mkdir(_base_.'/'.$new_dir);
-print_r('DIR crea_dir sts = ' );print_r($sts) ; print_r('<br>');
 		}
 	}
 
