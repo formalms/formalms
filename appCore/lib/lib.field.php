@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-|   DOCEBO - The E-Learning Suite                                           |
+|   FORMA - The E-Learning Suite                                            |
 |                                                                           |
-|   Copyright (c) 2008 (Docebo)                                             |
-|   http://www.docebo.com                                                   |
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt          |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
@@ -159,7 +162,7 @@ class FieldList {
 
 		$query = "SELECT id_common, type_field, translation"
 				."  FROM ".$this->getFieldTable()
-				." WHERE lang_code = '".getLanguage()."' ";
+				." WHERE lang_code = '".getLanguage()."'";
 		if($type_field != false) {
 			$query .= " AND type_field = '".$type_field."'";
 		}
@@ -179,7 +182,7 @@ class FieldList {
 			$lang_code = getLanguage();
 		$query = "SELECT id_common, type_field, translation"
 				." FROM ".$this->getFieldTable()
-				." WHERE lang_code = '".$lang_code."' ";
+				." WHERE lang_code = '".$lang_code."' AND type_field != 'textlabel' ";
 		if($type_field != false) {
 			$query .= " AND type_field = '".$type_field."'";
 		}

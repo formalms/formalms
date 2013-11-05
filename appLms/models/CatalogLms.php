@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+    <?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 class CatalogLms extends Model
@@ -147,7 +150,7 @@ class CatalogLms extends Model
 		$result = sql_query($query);
 
 		$html = '';
-		$path_course = $GLOBALS['where_files_relative'].'/doceboLms/'.Get::sett('pathcourse').'/';
+		$path_course = $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathcourse').'/';
 
 		while($row = sql_fetch_assoc($result))
 		{
@@ -192,12 +195,23 @@ class CatalogLms extends Model
 								.'</a>';
 						} else {
 							//$action .= '<p class="cannot_subscribe">'.Lang::t('_NO_EDITIONS', 'catalogue').'</p>';
+/* FORMA - INSERITO BOTTONE ENTRA
 							if (count($user_classroom) > 0) {
 								$action .= '<p class="subscribed">'.Lang::t('_USER_STATUS_SUBS', 'catalogue').'</p>';
 							} else {
 								$action .= '<p class="cannot_subscribe">'.Lang::t('_NO_AVAILABLE_EDITIONS', 'catalogue').'</p>';
 							}
-						}
+*/
+							if (count($user_classroom) > 0) {
+								$action .= '<a href="index.php?modname=course&op=aula&idCourse='.$row['idCourse'].' "'
+									.' title="'.$_text.'"><p class="subscribed">'
+									.Lang::t('_USER_STATUS_ENTER', 'catalogue').'</p>'
+									.'</a>';
+							} else {
+								$action .= '<p class="cannot_subscribe">'.Lang::t('_NO_AVAILABLE_EDITIONS', 'catalogue').'</p>';
+							}
+						}			
+						
 					}
 					else
 					{
@@ -283,9 +297,17 @@ class CatalogLms extends Model
 
 					if($waiting)
 						$action .= '<p class="subscribed">'.Lang::t('_WAITING', 'catalogue').'</p>';
-					else
-						$action .= '<p class="subscribed">'.Lang::t('_USER_STATUS_SUBS', 'catalogue').'</p>';
+					else {
+						// FORMA - MODIFICA TASTO ENTRA
+						//$action .= '<p class="subscribed">'.Lang::t('_USER_STATUS_SUBS', 'catalogue').'</p>';
+						$action .= '<a href="index.php?modname=course&op=aula&idCourse='.$row['idCourse'].' "'
+								.' title="'.$_text.'"><p class="subscribed">'
+								.Lang::t('_USER_STATUS_ENTER', 'catalogue').'</p>'
+								.'</a>';
+					}
 
+                                           
+                                           
 				}
 				else
 				{
@@ -545,18 +567,22 @@ class CatalogLms extends Model
 		$user_coursepath = $this->getUserCoursepathSubscription($id_user);
 		$limit = ($page - 1) * Get::sett('visuItem');
 
-		$query =	"SELECT id_path, path_name, path_code, path_descr"
+		$query =	"SELECT id_path, path_name, path_code, path_descr, subscribe_method"
 					." FROM %lms_coursepath"
 					." WHERE id_path IN (".implode(',', $coursepath).")"
 					." LIMIT ".$limit.", ".Get::sett('visuItem');
 
 		$result = sql_query($query);
 
-		while(list($id_path, $name, $code, $descr) = sql_fetch_row($result))
+		while(list($id_path, $name, $code, $descr, $subscribe_method) = sql_fetch_row($result))
 		{
 			$action = '';
 			if(isset($user_coursepath[$id_path]))
-				$action = '<p class="subscribed">'.Lang::t('_USER_STATUS_SUBS', 'catalogue').'</p>';
+				$action = '<div class="catalog_action"><p class="subscribed">'.Lang::t('_USER_STATUS_SUBS', 'catalogue').'</p></div>';
+			elseif ($subscribe_method != 0)
+				$action = "<div class=\"catalog_action\" id=\"action_".$id_path."\"><a href=\"javascript:;\" onclick=\"subscriptionCoursePathPopUp('".$id_path."')\" title=\"Subscribe\"><p class=\"can_subscribe\">".Lang::t('_SUBSCRIBE', 'catalogue')."</p></a></div>";
+			elseif ($subscribe_method == 0)
+				$action .= '<div class="catalog_action"><p class="cannot_subscribe">'.Lang::t('_COURSE_S_GODADMIN', 'catalogue').'</p></div>';
 
 			$html .=	'<div style="position:relative;clear: none;margin: .4em 1em 1em;padding-bottom:1em;border-bottom:1px solid #BAC2CF;">'
 						.'<h2>'
@@ -576,6 +602,20 @@ class CatalogLms extends Model
 		return $html;
 	}
 
+	public function subscribeCoursePathInfo($id_path)
+	{
+
+		$res = array();
+
+		$res['success'] = true;
+		$res['title'] = Lang::t('_COURSEPATH_SUBSCRIBE_WIN_TIT', 'catalogue');
+		$res['body'] = Lang::t('_COURSEPATH_SUBSCRIBE_WIN_TXT', 'catalogue');
+		$res['footer'] = '<a href="javascript:;" onclick="subscribeToCoursePath(\''.$id_path.'\');"><span class="close_dialog">'.Lang::t('_SUBSCRIBE', 'catalogue').'</span></a>'
+							.'&nbsp;&nbsp;<a href="javascript:;" onclick="hideDialog();"><span class="close_dialog">'.Lang::t('_UNDO', 'catalogue').'</span></a>';
+		return $res;
+	}
+	
+	
 	public function subscribeInfo($id_course, $id_date, $id_edition, $selling)
 	{
 		$res = array();

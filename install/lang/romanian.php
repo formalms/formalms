@@ -1,6 +1,6 @@
 <?php
 
-define("_INSTALLER_TITLE", "Instalare Docebo 4.0 ");
+define("_INSTALLER_TITLE", "Instalare Forma ");
 define("_NEXT", "Pasul urmator");
 define("_BACK", "Inapoi");
 define("_LOADING", "Incarcare");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Incearca din nou");
 //--------------------------------------
 define("_TITLE_STEP1", "Pasul 1: Selecteaza limba");
 define("_LANGUAGE", "Limba");
-define("_INSTALLER_INTRO_TEXT", "Docebo este o companie care a dezvoltat propria platforma de e-learning open-source numita DoceboLMS potrivita pentru organizatiile complexe, piata corporativa, guvern si sanatate.
+define("_INSTALLER_INTRO_TEXT", "Forma este o companie care a dezvoltat propria platforma de e-learning open-source numita FormaLMS potrivita pentru organizatiile complexe, piata corporativa, guvern si sanatate.
 	<p><b>Trasaturi cheie</b></p>
 	<ul>
 		<li>Suport Scorm 1.2 and 2004 </li>
@@ -95,7 +95,7 @@ define("_DOWNLOAD_CONFIG", "Configurare Download");
 define("_CHECKED_DIRECTORIES","Unele directoare unde sunt stocate fisiere nu exista sau nu au permisiunile corecte");
 define("_CHECKED_FILES","Fisiere certe nu au permisiuni adecvate");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Upgrade Docebo 4.0 ");
+define("_UPGRADER_TITLE", "Upgrade Forma ");
 define("_UPGRADE_CONFIG","Upgradare fisier config.php ");
 define("_UPG_CONFIG_OK","Fisierul Config.php updatat cu succes");
 define("_UPG_CONFIG_NOT_SAVED", "Updatarea fisierului config.php a esuat.");

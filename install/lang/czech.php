@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Docebo 4.0 - Instalace");
+define("_INSTALLER_TITLE", "Forma - Instalace");
 define("_NEXT", "Další krok");
 define("_BACK", "Zpět");
 define("_LOADING", "Načítám");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Zkuste to znovu");
 //--------------------------------------
 define("_TITLE_STEP1", "Krok 1: Zvolte jazyk");
 define("_LANGUAGE", "Jazyk");
-define("_INSTALLER_INTRO_TEXT", "Docebo je společnost vyvíjejicí svůj vlastní open-source e-vzdělávací systém nazvaný DoceboLMS vhodný pro komplexní organizace, firemní trh, vládu a zdravotnictví.
+define("_INSTALLER_INTRO_TEXT", "Forma je společnost vyvíjejicí svůj vlastní open-source e-vzdělávací systém nazvaný FormaLMS vhodný pro komplexní organizace, firemní trh, vládu a zdravotnictví.
 	<p><b>Hlavní charakteristiky</b></p>
 	<ul>
 		<li>Podpora pro Scorm 1.2 a 2004</li>
@@ -43,7 +43,7 @@ define("_MAX_EXECUTION_TIME","max_execution_time : ");
 define("_ON","Zapnuto ");
 define("_OFF","Vypnuto ");
 
-define("_VERSION","Verze Docebo");
+define("_VERSION","Verze Forma");
 define("_START","Start");
 define("_END","Konec");
 // -----------------------------------------
@@ -99,7 +99,7 @@ define("_DOWNLOAD_CONFIG", "Stáhnout soubor s konfigurací");
 define("_CHECKED_DIRECTORIES","Některé složky s uloženými soubory neexistují nebo nemají správná oprávnění");
 define("_CHECKED_FILES","Některé soubory nemají adekvátní oprávnění");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Docebo 4.0 - Aktualizace");
+define("_UPGRADER_TITLE", "Forma - Aktualizace");
 define("_UPGRADE_CONFIG","Aktualizuji config.php");
 define("_UPG_CONFIG_OK","Config.php byl úspěšně aktualizován");
 define("_UPG_CONFIG_NOT_SAVED", " Aktualizace pro config.php byla neúspěšná.");

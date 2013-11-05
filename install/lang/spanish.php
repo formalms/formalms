@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Docebo 4.0 - Instalacion");
+define("_INSTALLER_TITLE", "Forma - Instalacion");
 define("_NEXT", "Proximo paso");
 define("_BACK", "Atras");
 define("_LOADING", "Cargando");
@@ -9,7 +9,7 @@ define("_TRY_AGAIN", "Intente nuevamente");
 define("_TITLE_STEP1", "Paso 1: Seleccione idioma");
 define("_LANGUAGE", "Idioma");
 
-define("_INSTALLER_INTRO_TEXT", "	Docebo es una compañia que ha desarrollado su propio open source e-learning framework llamado DoceboLMS, apropiado para organizaciones complejas, mercado corporativo, para el gobierno y para la salud.
+define("_INSTALLER_INTRO_TEXT", "	Forma es una compañia que ha desarrollado su propio open source e-learning framework llamado FormaLMS, apropiado para organizaciones complejas, mercado corporativo, para el gobierno y para la salud.
 	<p><b>Principales caracteristicas:</b></p>
 	<ul>
 		<li>Soporte para Scorm 1.2 y 2004</li>
@@ -96,7 +96,7 @@ define("_DOWNLOAD_CONFIG", "Descargar configuracion");
 define("_CHECKED_DIRECTORIES","Algunos directorios donde los archivos estan guardados no existen o no tienen los permisos correctos");
 define("_CHECKED_FILES","Ciertos archivos no tienen el permiso adecuado");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Docebo 4.0 - Actualizacion");
+define("_UPGRADER_TITLE", "Forma - Actualizacion");
 define("_UPGRADE_CONFIG","Actualizando el archivo config.php");
 define("_UPG_CONFIG_OK","El archivo Config.php fue actualizado satisfactoriamente");
 define("_UPG_CONFIG_NOT_SAVED", "El proceso de actualizacion del archivo config.php fallo.");

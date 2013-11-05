@@ -1,4 +1,4 @@
-<div style="margin:1em;">
+<div >
 	<?php
 	$lmstab = $this->widget('lms_tab', array(
 		'active' => 'games',

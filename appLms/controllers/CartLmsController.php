@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 class CartLmsController extends LmsController {
@@ -29,7 +32,7 @@ class CartLmsController extends LmsController {
 	{
 		YuiLib::load('base,tabview');
 		Lang::init('course');
-		$this->path_course = $GLOBALS['where_files_relative'].'/doceboLms/'.Get::sett('pathcourse').'/';
+		$this->path_course = $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathcourse').'/';
 		$this->model = new CartLms();
 
 		require_once(_base_.'/lib/lib.json.php');
@@ -37,7 +40,7 @@ class CartLmsController extends LmsController {
 
 		$this->acl_man =& Docebo::user()->getAclManager();
 
-		Util::get_css(Get::rel_path(_base_).'/doceboLms/views/cart/cart.css', true, true);
+		Util::get_css(Get::rel_path(_base_).'/appLms/views/cart/cart.css', true, true);
 	}
 
 
@@ -68,9 +71,9 @@ class CartLmsController extends LmsController {
 
 		$id_trans = Get::req('id_transaction', DOTY_INT, 0);
 		$cart_id = Get::gReq('cart', DOTY_MIXED, 0);
-		
+
 		require_once(_lms_.'/admin/models/TransactionAlms.php');
-		$trman = new TransactionAlms();		
+		$trman = new TransactionAlms();
 
 		if (!empty($_GET['cancel'])) {
 			$new =false;
@@ -79,7 +82,7 @@ class CartLmsController extends LmsController {
 		if (!$new && !$this->checkCartTransaction($id_trans, $cart_id)) {
 			UIFeedback::error(Lang::t('_INVALID_TRANSACTION', 'cart'));
 		}
-		else if(isset($_GET['cancel']) && $_GET['cancel'] == 1) {			
+		else if(isset($_GET['cancel']) && $_GET['cancel'] == 1) {
 
 			$trman->deleteTransaction($id_trans, true);
 
@@ -103,10 +106,10 @@ class CartLmsController extends LmsController {
 		$this->render('show', array('total_price' => $total_price, 'paypal_url'=>$this->getPaypalUrl()));
 	}
 
-	
+
 	public function paypalNotifyTask() {
 		$debug =false; $log ='';
-		
+
 		if (!isset($GLOBALS['orig_post'])) { return false; }
 
 		if ($debug) { file_put_contents('paypal.txt', print_r($_POST, true).print_r($_GET, true), FILE_APPEND); }
@@ -123,9 +126,12 @@ class CartLmsController extends LmsController {
 		unset($GLOBALS['orig_post']);
 
 		// post back to PayPal system to validate
-		$header .= "POST /cgi-bin/webscr HTTP/1.0\r\n";
+		// use of HTTP/1.1 protocol as requested by paypal since 13-10-2013
+		$header .= "POST /cgi-bin/webscr HTTP/1.1\r\n";
 		$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-		$header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
+		$header .= "Host: ".$url_parsed['host']."\r\n";
+		$header .= "Content-Length: " . strlen($req) . "\r\n";
+		$header .= "Connection: close\r\n\r\n";
 		$fp = fsockopen('ssl://'.$url_parsed['host'], 443, $errno, $errstr, 30);
 
 		// assign posted variables to local variables
@@ -169,7 +175,7 @@ class CartLmsController extends LmsController {
 					// check that payment_amount/payment_currency are correct
 					$ok =($payment_amount == $total_price ? $ok : false);
 					$ok =($payment_currency == Get::sett('paypal_currency', 'EUR') ? $ok : false);
-					
+
 
 					if ($ok) { // process payment
 
@@ -189,7 +195,7 @@ class CartLmsController extends LmsController {
 							$trman->saveTransaction($to_activate, $item_number, $id_user, true);
 						}
 					}
-					else if ($debug) {						
+					else if ($debug) {
 						$log.=($receiver_email == Get::sett('paypal_mail', '') ? '' : "wrong receiver_email (".$receiver_email." != ".Get::sett('paypal_mail', '').")\n");
 						$log.=($payment_status == 'Completed' ? '' : "wrong payment status (".$payment_status.")\n");
 						$log.=($payment_amount == $transaction_info['price'] ? '' : "wrong price (".$payment_amount." != ".$total_price.")\n");
@@ -329,7 +335,7 @@ class CartLmsController extends LmsController {
 										." SET status = '-2'"
 										." WHERE idUser = ".Docebo::user()->getIdSt()
 										." AND idCourse = ".$id_course;
-							
+
 							sql_query($query);
 
 							$total_price += $course_info[$id_course.'_'.$id_date.'_0']['price'];

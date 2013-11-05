@@ -1,20 +1,24 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
- * @package		Docebo
+ * @package		Forma
  * @subpackage	ImportExport
  * @version 	$Id: import.org_chart.php 977 2007-02-23 10:40:19Z fabio $
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
 **/
 require_once(_adm_.'/lib/lib.import.php');
+require_once(_lms_.'/admin/models/EnrollrulesAlms.php');
 
 class ImportUser extends DoceboImport_Destination {
 
@@ -37,7 +41,7 @@ class ImportUser extends DoceboImport_Destination {
 	public $pwd_force_change_policy = "do_nothing";
 
 	/**
-	 * constructor for docebo users destination connection
+	 * constructor for forma users destination connection
 	 * @param array $params
 	 *			- 'dbconn' => connection to database (required)
 	 *			- 'tree' => The id of the destination folder on tree (required)
@@ -271,6 +275,10 @@ class ImportUser extends DoceboImport_Destination {
 					$f = $this->orgchart[$row['tree_name']];
 					$acl_manager->addToGroup($f->idst_oc, $idst);
 					$acl_manager->addToGroup($f->idst_ocd, $idst);
+					
+					// apply enroll rules
+					$enrollrules = new EnrollrulesAlms();
+					$enrollrules->newRules('_NEW_IMPORTED_USER', array($idst), 'all', $f->idOrg);
 				}
 			} elseif ($this->idst_group != $this->idst_oc) {
 				
@@ -356,7 +364,7 @@ class ImportGroupUser extends DoceboImport_Destination {
 	var $user_cache = array();
 
 	/**
-	 * constructor for docebo users destination connection
+	 * constructor for forma users destination connection
 	 * @param array $params
 	 *			- 'dbconn' => connection to database (required)
 	 *			- 'tree' => The id of the destination folder on tree (required)

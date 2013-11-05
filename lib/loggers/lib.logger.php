@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 class Log {
@@ -82,7 +85,7 @@ class Log {
 	}
 	
 	/**
-	 * Print all the logs, the following code is from yii Framework, changed in order to work for docebo
+	 * Print all the logs, the following code is from yii Framework, changed in order to work for forma
 	 * @param filter $str 
 	 */
 	public static function bp($filter = false) {
@@ -111,7 +114,7 @@ class Log {
 		<html>
 		<head>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-			<title>Docebo</title>
+			<title>Forma</title>
 			<style type="text/css">
 			/*<![CDATA[*/
 			body {font-family:"Verdana";font-weight:normal;color:black;background-color:white;}

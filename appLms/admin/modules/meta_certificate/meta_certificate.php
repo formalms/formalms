@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 define('IS_META', 1);
@@ -279,7 +282,7 @@ function saveMetaCertificate()
 
 	if(isset($_POST['structure_certificate']))
 	{
-		$path 	= '/doceboLms/certificate/';
+		$path 	= '/appLms/certificate/';
 		$path 	= $path.( substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
 		$bgimage = manageCertificateFile(	'bgimage',
@@ -1781,7 +1784,7 @@ function delReleased()
 
 		list($cert_file) = sql_fetch_row(sql_query($query));
 
-		$path = '/doceboLms/certificate/';
+		$path = '/appLms/certificate/';
 
 		sl_open_fileoperations();
 		$res = sl_unlink($path.$cert_file);

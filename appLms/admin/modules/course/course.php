@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
@@ -758,7 +761,7 @@ function insCourse() {
 	$quota = $quota * 1024 * 1024;
 
 	$path = Get::sett('pathcourse');
-	$path = '/doceboLms/'.Get::sett('pathcourse').( substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
+	$path = '/appLms/'.Get::sett('pathcourse').( substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
 	if($_POST['course_name'] == '') $_POST['course_name'] = Lang::t('_NO_NAME', 'course', 'lms');
 
@@ -1197,7 +1200,7 @@ function courseUpdate() {
 	$quota_exceeded = false;
 
 	$path = Get::sett('pathcourse');
-	$path = '/doceboLms/'.Get::sett('pathcourse').( substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
+	$path = '/appLms/'.Get::sett('pathcourse').( substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
 	$old_file_size 	= 0;
 	if ((is_array($_FILES) && !empty($_FILES)) || (is_array($_POST["file_to_del"]))) sl_open_fileoperations();
@@ -1493,7 +1496,7 @@ function removeCourse($id_course) {
 
 	require_once(_base_.'/lib/lib.upload.php');
 
-	$path = '/doceboLms/'.Get::sett('pathcourse');
+	$path = '/appLms/'.Get::sett('pathcourse');
 	if( substr($path, -1) != '/' && substr($path, -1) != '\\') $path .= '/';
 	sl_open_fileoperations();
 	if($file_sponsor != '') 	sl_unlink($path.$file_sponsor);
@@ -1722,7 +1725,7 @@ function insCourseEdition() {
 	if($_POST['course_edition_name'] == '')
 		 $_POST['course_edition_name'] = Lang::t('_NO_NAME', 'course', 'lms');
 
-	$path = '/doceboLms/'.Get::sett('pathcourse');
+	$path = '/appLms/'.Get::sett('pathcourse');
 	if(substr($path, -1) != '/' && substr($path, -1) != '\\') $path = $path.'/';
 
 	$file_sponsor 	= '';
@@ -2065,7 +2068,7 @@ function confirmModCourseEdition () {
 	$array_lang[] = 'none';
 	list($id_course_edition) =  each($_POST['mod_course_edition']);
 
-	$path = '/doceboLms/'.Get::sett('pathcourse');
+	$path = '/appLms/'.Get::sett('pathcourse');
 	if(substr($path, -1) != '/' && substr($path, -1) != '\\') { $path = $path.'/'; }
 
 	$error 					= 0;
@@ -2267,7 +2270,7 @@ function removeCourseEdition($id_course_edition) {
 
 	require_once(_base_.'/lib/lib.upload.php');
 
-	$path = '/doceboLms/'.Get::sett('pathcourse');
+	$path = '/appLms/'.Get::sett('pathcourse');
 	if(substr($path, -1) != '/' && substr($path, -1) != '\\') {
 		$path = $path.'/';
 	}

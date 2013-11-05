@@ -1,14 +1,16 @@
 <?php
 
-define("_INSTALLER_TITLE", "Docebo 4.0 - Installation");
+define("_INSTALLER_TITLE", "Forma - Installation");
 define("_NEXT", "Next step");
 define("_BACK", "Back");
 define("_LOADING", "Loading");
 define("_TRY_AGAIN", "Try again");
 //--------------------------------------
+define("_INTRODUCTION", "Introduction");
 define("_TITLE_STEP1", "Step 1: Select language");
 define("_LANGUAGE", "Language");
-define("_INSTALLER_INTRO_TEXT", "Docebo is a company that has developed its own open-source e-learning framework called DoceboLMS suitable for complex organizations, corporate market, government and healthcare.
+define("_INSTALLER_INTRO_TEXT", "
+Forma is a free open source Learning Management System mantained by an italian group of companies, already used by hundreds of companies and universities all over the world.
 	<p><b>Key Features</b></p>
 	<ul>
 		<li>Scorm 1.2 and 2004 support</li>
@@ -25,7 +27,7 @@ define("_INSTALLER_INTRO_TEXT", "Docebo is a company that has developed its own 
 		<li>Mobile devices support</li>
 	</ul>");
 // ---------------------------------------
-define("_TITLE_STEP2", "Step 2: Information");
+define("_TITLE_STEP2", "Step 2: System Check");
 define("_SERVERINFO","Server information");
 define("_SERVER_SOFTWARE","Server software : ");
 define("_PHPVERSION","PHP Version : ");
@@ -69,7 +71,7 @@ define("_FTP_PATH", "FTP path (is the root where are stored file, ex. /htdocs/ /
 define("_CANT_CONNECT_WITH_DB", "Can't connect to DB, please check inserted data");
 define("_CANT_SELECT_DB", "Can't select DB, please check inserted data");
 define("_CANT_CONNECT_WITH_FTP","Can't connect in ftp to the specified server, please check inserted parameters");
-define("_SQL_STRICT_MODE_WARN", "You have MySQL <a href=\"http://dev.mysql.com/doc/en/server-sql-mode.html\" target=\"_blank\">strict mode</a> enabled; Docebo LMS doesn't support it, so please turn it off");
+define("_SQL_STRICT_MODE_WARN", "You have MySQL <a href=\"http://dev.mysql.com/doc/en/server-sql-mode.html\" target=\"_blank\">strict mode</a> enabled; Forma LMS doesn't support it, so please turn it off");
 define("_SQL_STRICT_MODE", "MySQL <a href=\"http://dev.mysql.com/doc/en/server-sql-mode.html\" target=\"_blank\">strict mode</a>");
 // -----------------------------------------
 define("_TITLE_STEP5", "Step 5: Configuration");
@@ -99,18 +101,18 @@ define("_DOWNLOAD_CONFIG", "Download config");
 define("_CHECKED_DIRECTORIES","Some directory where files are stored does not exist or does not have correct permission");
 define("_CHECKED_FILES","Certain files does not have adequate permission");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Docebo 4.0 - Upgrade");
+define("_UPGRADER_TITLE", "Forma - Upgrade");
 define("_UPGRADE_CONFIG","Upgrading config.php file");
 define("_UPG_CONFIG_OK","Config.php file updated successfully");
 define("_UPG_CONFIG_NOT_SAVED", "The update process for the config.php failed.");
 define("_UPGRADING", "Upgrade in progress");
 define("_UPGRADING_LANGUAGES", "Upgrade languages");
 define("_UPGRADE_COMPLETE", "Upgrade completed");
-define("_VERSION","Docebo version");
+define("_VERSION","Forma version");
 define("_START","Start");
 define("_END","Final");
 define("_INVALID_CONFIG_FILE", "Invalid config.php file; please make sure it is from a release matching the version specified in the \"Start\" field");
-define("_UPGRADE_NOT_NEEDED","You already have the latest version of Docebo, no need to upgrade.");
+define("_UPGRADE_NOT_NEEDED","You already have the latest version of Forma, no need to upgrade.");
 
 define("_COMMUNITY", "Community");
 define("_COMMERCIAL_SERVICES", "Commercial services");

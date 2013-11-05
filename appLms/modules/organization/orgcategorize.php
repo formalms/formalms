@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 function organization_categorize(&$treeView, $idItem) {
@@ -16,7 +19,7 @@ function organization_categorize(&$treeView, $idItem) {
 	$data = $folder->otherValues;
 
 	$type =$data[REPOFIELDOBJECTTYPE];
-	
+
 
 	require_once(_lms_.'/lib/lib.kbres.php');
 	$kbres =new KbRes();
@@ -81,8 +84,8 @@ $form_url ='index.php?modname=storage&amp;op=display';
 			//'stay_on_categorize'=>1,
 			'idItem'=>$idItem,
 		),
-	));	
-	
+	));
+
 }
 
 
@@ -116,8 +119,11 @@ function organization_categorize_save(&$treeView, $idItem) {
 		$type, $env, $env_parent_id, $param, $alt_desc, $lang, $force_visible, $is_mobile
 	);
 
-	$json = new Services_JSON();
-	$tags_arr = $json->decode($json_tags);
+  $json_tags = str_replace("[", "", $json_tags);
+  $json_tags = str_replace("]", "", $json_tags);
+  $json_tags = str_replace('"', "", $json_tags);
+  $json_tags = str_replace("\\", "", $json_tags);
+  $tags_arr = explode(",", $json_tags);
 
 	if ($res_id > 0) {
 		$kbres->setResourceTags($res_id, $tags_arr);
@@ -225,7 +231,7 @@ function getScoItemsTable($id_org, $scormorg_title, $idItem) {
 
 		$data[$i]["idscorm_item"]=$sco_id;
 		$data[$i]["title"]=$row['title'];
-		
+
 		$url ='index.php?modname=storage&amp;op=org_categorize_sco&amp;idItem='.$idItem.'
 			&amp;idResource='.$id_org.'&amp;sco_id='.$sco_id.'&amp;scormorg_title='.$scormorg_title;
 		$data[$i]["url"] =$url;
@@ -298,7 +304,7 @@ function organization_categorize_switch_subcat(&$treeView, $idItem) {
 		organization_jump_select_sco(&$treeView, $idItem, $folder, $data, $type);
 		die();
 	} else {
-		organization_categorize(&$treeView, $idItem);		
+		organization_categorize(&$treeView, $idItem);
 	}
 }
 

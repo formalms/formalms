@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
@@ -71,7 +74,7 @@ function sl_upload( $srcFile, $dstFile ) {
 	// check if the mime type is allowed by the whitelist
 	// if the whitelist is empty all types are accepted
 	require_once(_lib_.'/lib.mimetype.php');
-	$upload_whitelist =Get::sett('file_upload_whitelist', 'zip,doc,xls,ppt,jpg,gif,png,txt,docx,pptx,xlsx,pdf');
+	$upload_whitelist =Get::sett('file_upload_whitelist', 'zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv');
 	$upload_whitelist_arr =explode(',', trim($upload_whitelist, ','));
 	if (!empty($upload_whitelist_arr)) {
 		$valid_ext = false;
@@ -80,9 +83,13 @@ function sl_upload( $srcFile, $dstFile ) {
 			$ext =trim(strtolower($v));
 			$mt =mimetype($ext);
 			if ($mt) { $mimetype_arr[]=$mt; }
-			if ($ext == $file_ext) { $valid_ext =true; }
+			getOtherMime($ext, $mimetype_arr);
+			if ($ext == $file_ext) {
+				$valid_ext =true;
+			}
 		}
-		if (method_exists('finfo', 'file')) {
+		$mimetype_arr = array_unique($mimetype_arr);
+		if ( class_exists('file') && method_exists('finfo', 'file')) {
 			$finfo =new finfo(FILEINFO_MIME_TYPE);
 			$file_mime_type =$finfo->file($srcFile);
 		}

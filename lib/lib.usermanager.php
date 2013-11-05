@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
@@ -1246,7 +1249,9 @@ class UserManagerRenderer {
 				.'</div>'
 				.'<div class="login-line">'
 				.'<p><label for="login_pwd">'.$lang->def('_PASSWORD').'</label></p>'
-				.'<input class="textfield" type="password" id="login_pwd" name="login_pwd" maxlength="255" tabindex="'.$GLOBALS['login_tabindex']++.'" autocomplete="off" />'
+				//.'<input class="textfield" type="password" id="login_pwd" name="login_pwd" maxlength="255" tabindex="'.$GLOBALS['login_tabindex']++.'" autocomplete="off" />'
+				// TOLTO AUTOCOMPLETE (BUG 403)
+				.'<input class="textfield" type="password" id="login_pwd" name="login_pwd" maxlength="255" tabindex="'.$GLOBALS['login_tabindex']++.'" />'
 				.'</div>'
 				.'<div class="login-line">'
 				.'<input class="button" type="submit" id="login" name="log_button" value="'.$lang->def('_LOGIN').'" tabindex="'.$GLOBALS['login_tabindex']++.'" />'
@@ -1549,7 +1554,11 @@ class UserManagerRenderer {
 
 		// Send mail
 		$admin_mail = $options['mail_sender'];
-		$link = str_replace('&amp;', '&', $opt_link.( strpos($opt_link, '?') === false ? '?' : '&' ).'random_code='.$random_code);
+		
+		// FIX BUG 399
+		//$link = str_replace('&amp;', '&', $opt_link.( strpos($opt_link, '?') === false ? '?' : '&' ).'random_code='.$random_code);
+		$link = Get::sett('url', '').'index.php?modname=login&op=register_opt&random_code='.$random_code;
+		// END FIX BUG 399
 
 		$text = $lang->def('_REG_MAIL_TEXT');
 		$text = str_replace('[userid]', 	$_POST['register']['userid'], $text);
@@ -2232,7 +2241,7 @@ class UserManagerRenderer {
 		require_once(_base_.'/lib/lib.form.php');
 		$lang 		=& DoceboLanguage::createInstance('profile', 'framework');
 
-		$path = Get::sett('url').$GLOBALS['where_files_relative'].'/doceboCore/'.Get::sett('pathphoto');
+		$path = Get::sett('url').$GLOBALS['where_files_relative'].'/appCore/'.Get::sett('pathphoto');
 
 		$txt = '<div>'
 				.'<div class="boxinfo_title">'.$lang->def('_USERPARAM').'</div>'

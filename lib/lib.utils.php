@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
@@ -108,7 +111,7 @@ class Util  {
 		}
 
 		if($ext === NULL || $ext === false) {
-			$ext = array_pop(explode('.', $filename), 1);
+			$ext = array_pop(explode('.', $filename));
 
 		}
 		if(substr($sendname, - strlen($ext)) != $ext) $sendname .= '.'.$ext;
@@ -455,7 +458,7 @@ class UIFeedback {
 /**
  * Returns the site base url of a website that means the full website
  * url without the platform-specific folder
- * example: browsing "www.mysite.com/test/doceboCore" you'll get
+ * example: browsing "www.mysite.com/test/appCore" you'll get
  * "www.mysite.com/test"
  */
 function getSiteBaseUrl() {
@@ -483,7 +486,7 @@ function fillSiteBaseUrlTag($text) {
 /**
  * Replaces any site base url (see the getSiteBaseUrl function)
  * with the {site_base_url} tag.
- * example: www.mysite.com/test/doceboCore -> {site_base_url}/doceboCore
+ * example: www.mysite.com/test/appCore -> {site_base_url}/appCore
  */
 function putSiteBaseUrlTag($text) {
 

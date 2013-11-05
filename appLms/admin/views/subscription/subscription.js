@@ -1,9 +1,12 @@
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 var Subscription = {
@@ -99,7 +102,7 @@ var Subscription = {
 			E.addListener("reset_advanced_filter", "click", function(e) {
 				D.get("filter_orgchart").value = 0;
 				D.get("filter_descendants").checked = false;
-				D.get("filter_date_valid").value = 0;
+				D.get("filter_date_valid").value = "";
 				D.get("filter_show").selectedIndex = 0;
 
 				S.filterOrgChart = 0;
@@ -177,7 +180,7 @@ var Subscription = {
 				}).call(this, e);
 			});
 
-			
+
 
 			//multi delete
 			var multidel_links = YAHOO.util.Dom.getElementsByClassName('ico-wt-sprite subs_del');
@@ -380,10 +383,11 @@ var Subscription = {
 
 
 	selectAllAdditionalFilter: function() {
-		return "&filter_text=" + Subscription.filterText
-				"&filter_orgchart=" + Subscription.filterOrgChart +
-				"&filter_descendants=" + (Subscription.filterDescendants ? '1' : '0') +
-				"&filter_date_valid=" + Subscription.filterDateValid;
+		return "&filter_text=" + Subscription.filterText +
+		   "&filter_orgchart=" + Subscription.filterOrgChart +
+		   "&filter_descendants=" + (Subscription.filterDescendants ? '1' : '0') +
+		   "&filter_date_valid=" + Subscription.filterDateValid +
+		        "&filter_show=" + Subscription.filterShow;
 	},
 
 	requestBuilder: function (oState, oSelf) {

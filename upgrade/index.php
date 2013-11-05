@@ -1,11 +1,14 @@
 <?php
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2010 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 ob_start();
@@ -20,7 +23,7 @@ Lang::setLanguage();
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Docebo upgrader</title>
+		<title>Forma upgrader</title>
 
 		<?php echo getZoneContent('page_head'); ?>
 		<link rel="stylesheet" type="text/css" href="../templates/standard/style/reset-fonts-grids.css" />
@@ -45,7 +48,7 @@ Lang::setLanguage();
 				</div>
 				<div class="install_bd">
 					<div class="install_shoulder">
-						<img class="logo" src="../templates/standard/images/company_logo.png" alt="Docebo e-learning logo" />
+						<img class="logo" src="../templates/standard/images/company_logo.png" alt="Forma e-learning logo" />
 						<img class="flux" src="templates/standard/images/left_shoulder.jpg" alt="Flux" />
 					</div>
 					<div class="install_content">

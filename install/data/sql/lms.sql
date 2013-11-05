@@ -1,8 +1,8 @@
 -- MySQL dump 10.9
 --
--- Host: localhost    Database: docebo40
+-- Host: localhost    Database: formalms
 -- ------------------------------------------------------
--- Server version	4.1.11-Debian_4sarge7-log
+-- Server version
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -3476,20 +3476,20 @@ CREATE TABLE IF NOT EXISTS `learning_wiki_course` (
 ALTER TABLE `core_lang_translation`
   ADD CONSTRAINT `core_lang_translation_ibfk_1` FOREIGN KEY (`lang_code`) REFERENCES `core_lang_language` (`lang_code`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `core_lang_translation_ibfk_2` FOREIGN KEY (`id_text`) REFERENCES `core_lang_text` (`id_text`) ON DELETE CASCADE ON UPDATE CASCADE;
-  
 
-  
-  
-  
-  
-  
-  
-  
 
- 
+
+
+
+
+
+
+
+
+
 -- --------------------------------------------------------
-  
-  
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

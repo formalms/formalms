@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 require_once(_base_.'/lib/lib.treedb.php' );
@@ -823,7 +826,7 @@ class RepoTreeView extends TreeView {
 		if( $currLev > 0 && $currLev == $maxLev ) {
 			$arrData = $stack[$currLev]['folder']->otherValues;
 			if( is_array($arrData) && $arrData[REPOFIELDOBJECTTYPE] != '' ) 
-				return array( 'TreeViewImage', 'lobject/'.$arrData[REPOFIELDOBJECTTYPE].'.gif', $arrData[REPOFIELDOBJECTTYPE]);
+				return array( 'TreeViewImage', 'lobject/'.$arrData[REPOFIELDOBJECTTYPE].'.png', $arrData[REPOFIELDOBJECTTYPE]);
 		}	
 		return parent::getImage( $stack, $currLev, $maxLev );
 	}
@@ -843,7 +846,7 @@ class RepoTreeView extends TreeView {
 			.'<input type="hidden" id="authentic_request_lo" name="authentic_request" value="'.Util::getSignature().'" />';
 		$first = TRUE;
 		while( list($objectType) = sql_fetch_row($rs) ) {
-			$out .=  '<label for="'.$objectType.'"><img src="'.getPathImage().'lobject/'.$objectType.'.gif" alt="'.$objectType.'" '
+			$out .=  '<label for="'.$objectType.'"><img src="'.getPathImage().'lobject/'.$objectType.'.png" alt="'.$objectType.'" '
 				.'title="'.$objectType.'" /></label> ';
 			if( $first ) 
 				$out .=  '<input type="radio" name="radiolo" value="'.$objectType.'" id="'.$objectType.'" checked="true"/>';

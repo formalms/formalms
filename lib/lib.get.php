@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2011 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
@@ -137,11 +140,13 @@ class Get {
 	 */
 	public static function cfg($cfg_name, $default = false) {
 
-		if(!isset($GLOBALS['cfg'][$cfg_name])) $value = $default;
-		$value = $GLOBALS['cfg'][$cfg_name];
-
-		return $value;
-	}
+        if(!isset($GLOBALS['cfg'][$cfg_name])) 
+                    $value = $default;
+                else {
+                    $value = $GLOBALS['cfg'][$cfg_name];
+                }
+        return $value;
+    }
 	
 	/**
 	 * Return the value of a plugin configuration

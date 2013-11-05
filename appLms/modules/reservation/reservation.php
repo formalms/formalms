@@ -1,15 +1,18 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
- * @package doceboLms
+ * @package appLms
  * @subpackage reservation 
  * @author Marco Valloni
  */
@@ -73,7 +76,7 @@ if(!Docebo::user()->isAnonymous())
 		
 		$out->add(getTitleArea(Lang::t('_RESERVATION', 'reservation')).'<div class="std_block">', 'content');
 		
-		$out->add(Form::openForm('tab_reservation', 'index.php?modname=reservation&amp;op=reservation')
+		$out->add(Form::openForm('tab_reservation', 'index.php?modname=reservation&amp;op=reservation&amp;confirm=1&amp;ap=mod_profile&amp;from=2')
 				.$tab_man->printTabView_Begin('', false), 'content'
 			);
 		
@@ -204,7 +207,7 @@ if(!Docebo::user()->isAnonymous())
 						if ($event[EVENT_AVAILABLE_PLACES] > 0)
 						{
 							if ($man_res->controlMaxSubscriptionForCategory($event[EVENT_ID_CATEGORY], getLogUserId()))
-								$count[] = '<a href="index.php?modname=reservation&amp;op=add_subscription&amp;id_event='.$event[EVENT_ID].'">'.$lang->def('_REGISTER').'</a>';
+								$count[] = '<a href="index.php?modname=reservation&amp;op=add_subscription&amp;id_event='.$event[EVENT_ID].'&amp;confirm=1&amp;ap=mod_profile&amp;from=2">'.$lang->def('_REGISTER').'</a>';
 							else
 							{
 								if ($man_res->controlSwitchPossibility($event[EVENT_ID_COURSE], $event[EVENT_ID_CATEGORY], getLogUserId()))
@@ -501,10 +504,10 @@ if(!Docebo::user()->isAnonymous())
 					(isset($_GET['order_by']) && $_GET['order_by'] == 'c.name, e.deadLine' ? '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, e.deadLine DESC">'.$lang->def('_DEADLINE').'</a>' : '<a href="index.php?modname=reservation&op=reservation&amp;active_tab=subscribed_user&amp;order_by=c.name, e.deadLine">'.$lang->def('_DEADLINE').'</a>'),
 					'<img src="'.getPathImage().'/standard/identity.png" title="'.$lang->def('_VIEW_USER_SUBSCRIBED').'" alt="'.$lang->def('_ENROL_COUNT').'" />',
 					''.$lang->def('_ADD_USER').'',
-					'<img src="'.getPathImage().'/standard/reply.png" title="'.$lang->def('_ALT_SEND_MAIL').'" alt="'.$lang->def('_ALT_SEND_MAIL').'" />',
+					'<img src="'.getPathImage().'/standard/msg_unread.png" title="'.$lang->def('_ALT_SEND_MAIL').'" alt="'.$lang->def('_ALT_SEND_MAIL').'" />',
 					'<img src="'.getPathImage().'/standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" />',
 					'<img src="'.getPathImage().'/standard/delete.png" title="'.$lang->def('ALT_DEL').'" alt="'.$lang->def('_DEL').'" />',
-					''
+					'<img src="'.getPathImage().'/standard/moduser.png" title="'.$lang->def('_SET_ROOM_VIEW_PERM').'" alt="'.$lang->def('_SET_ROOM_VIEW_PERM').'" />'
 				);
 			}
 			
@@ -550,7 +553,7 @@ if(!Docebo::user()->isAnonymous())
 				{
 					$count[] = '<a href="index.php?modname=reservation&amp;op=view_user_event&amp;id_event='.$event[EVENT_ID].'"><img src="'.getPathImage().'/standard/identity.png" title="'.$lang->def('_VIEW_USER_SUBSCRIBED').'" alt="'.$lang->def('_ENROL_COUNT').'" /></a>';
 					$count[] = '<a href="index.php?modname=reservation&amp;op=add_registration&amp;id_event='.$event[EVENT_ID].'&amp;id_course='.$event[EVENT_ID_COURSE].'">'.$lang->def('_ADD_USER').'</a>';
-					$count[] = '<a href="index.php?modname=reservation&amp;op=send_mail&amp;id_event='.$event[EVENT_ID].'&amp;id_course='.$event[EVENT_ID_COURSE].'"><img src="'.getPathImage().'/standard/reply.png" title="'.$lang->def('_ALT_SEND_MAIL').'" alt="'.$lang->def('_ALT_SEND_MAIL').'" /></a>';
+					$count[] = '<a href="index.php?modname=reservation&amp;op=send_mail&amp;id_event='.$event[EVENT_ID].'&amp;id_course='.$event[EVENT_ID_COURSE].'"><img src="'.getPathImage().'/standard/msg_unread.png" title="'.$lang->def('_ALT_SEND_MAIL').'" alt="'.$lang->def('_ALT_SEND_MAIL').'" /></a>';
 					$count[] = '<a href="index.php?modname=reservation&amp;op=mod_event&amp;id_event='.$event[EVENT_ID].'"><img src="'.getPathImage().'/standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" /></a>';
 					$count[] = '<a href="index.php?modname=reservation&amp;op=del_event&amp;id_event='.$event[EVENT_ID].'"><img src="'.getPathImage().'/standard/delete.png" title="'.$lang->def('_DEL').'" alt="'.$lang->def('_DEL').'" /></a>';
 					$count[] = '<a href="index.php?modname=reservation&amp;op=set_room_view_perm&amp;id_event='.$event[EVENT_ID].'"><img src="'.getPathImage().'standard/moduser.png" alt="'.$lang->def('_SET_ROOM_VIEW_PERM').'" title="'.$lang->def('_SET_ROOM_VIEW_PERM').'" /></a>';
@@ -567,7 +570,7 @@ if(!Docebo::user()->isAnonymous())
 		}
 	}
 	
-	function viewUserEvent()
+function viewUserEvent()
 	{
 		checkPerm('view');
 		
@@ -618,14 +621,31 @@ if(!Docebo::user()->isAnonymous())
 			
 			$ini = $tb->getSelectedElement();
 			
-			$cont_h = array
-			(
-				$lang->def('_USERNAME'),
-				$lang->def('_FIRSTNAME'),
-				$lang->def('_LASTNAME'),
-				$lang->def('_EMAIL'),
-			);
-			$type_h = array('', '', '', '');
+			if ($GLOBALS['cfg']['reservation_exportcell_id']) {
+				$cont_h = array
+				(
+					$lang->def('_USERNAME'),
+					$lang->def('_FIRSTNAME'),
+					$lang->def('_LASTNAME'),
+					$lang->def('_EMAIL'),
+					$lang->def('_CELLULARE'),
+					$lang->def('_SEND_EMAIL'),
+				);
+				$type_h = array('', '', '', '', '','','');
+
+			} else {
+				$cont_h = array
+				(
+					$lang->def('_USERNAME'),
+					$lang->def('_FIRSTNAME'),
+					$lang->def('_LASTNAME'),
+					$lang->def('_EMAIL'),
+					$lang->def('_SEND_EMAIL'),
+				);
+
+				$type_h = array('', '', '', '', '','','');
+			}
+
 			
 			$tb->setColsStyle($type_h);
 			$tb->addHead($cont_h);
@@ -635,11 +655,20 @@ if(!Docebo::user()->isAnonymous())
 				$count = array();
 				if ($counter >= $ini && $counter < ($ini + 10))
 				{
+					if ($GLOBALS['cfg']['reservation_exportcell_id']) {
+						// id_common = 13 => cellulare
+						$sql = "SELECT user_entry FROM core_field_userentry WHERE id_user = '".$info_user[0]."' AND id_common = 13";
+						$res = mysql_query($sql);
+	                    list($cell) = mysql_fetch_row($res);
+	                }
 					$count[] = $acl_man->relativeId($info_user[ACL_INFO_USERID]);
 					$count[] = $info_user[ACL_INFO_FIRSTNAME];
 					$count[] = $info_user[ACL_INFO_LASTNAME];
 					$count[] = $info_user[ACL_INFO_EMAIL];
-					
+					if ($GLOBALS['cfg']['reservation_exportcell_id']) {
+						$count[] = $cell;
+					}
+					$count[] = '<a href="index.php?modname=reservation&op=send_user_event&id_user='.$info_user[0].'&id_event='.$id_event.'">'.$lang->def('_SEND_EMAIL').'</a>';
 					$tb->addBody($count);
 				}
 				$counter++;
@@ -659,6 +688,77 @@ if(!Docebo::user()->isAnonymous())
 		
 		$out->add(getBackUi('index.php?modname=reservation&amp;op=reservation&amp;active_tab=subscribed_user', $lang->def('_BACK')), 'content');
 		$out->add('</div>', 'content');
+	}
+	
+	function sendUserEvent()
+	{
+		checkPerm('view');
+	
+		$lang =& DoceboLanguage::createInstance('reservation');
+			
+		$mod_perm 	= checkPerm('mod', true);
+	
+		$id_course = $_SESSION['idCourse'];
+		$id_event = importVar('id_event', true, 0);
+		$id_user = importVar('id_user', true, 0);
+	
+		$out = $GLOBALS['page'];
+		$out->setWorkingZone('content');
+	
+		$man_res = new Man_Reservation();
+	
+		$acl_man =& Docebo::user()->getAclManager();
+	
+		if (isset($_POST['send_mail']))
+		{
+			$recipients = $man_res->getEventUserMail($id_event);
+			$query = 'SELECT email FROM core_user WHERE idst = '.$id_user;
+			$result = sql_query($query);
+			$re = array();
+			while(list($subscribed) = sql_fetch_row($result))
+			{
+				$re[] = $subscribed;
+			}
+	
+	
+			$subject = importVar('mail_object', false, '[Nessun Oggetto]');
+			$body = importVar('mail_body', false, '');
+	
+			$info_user = $acl_man->getUser(getLogUserId());
+			$sender = $info_user[ACL_INFO_EMAIL];
+	
+			//sendMail($recipients, $subject, $body, $sender);
+			require_once(_base_.'/lib/lib.mailer.php');
+			$mailer = DoceboMailer::getInstance();
+			$mailer->SendMail($sender, $re, $subject, $body, array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
+				
+			//Util::jump_to('index.php?modname=reservation&op=reservation&active_tab=events');
+			Util::jump_to('index.php?modname=reservation&op=view_user_event&id_event='.$id_event);
+	
+		}
+		else
+		{
+			require_once(_base_.'/lib/lib.form.php');
+				
+			$out->add(getTitleArea($lang->def('_RESERVATION_MAIL_SEND')).'<div class="std_block">', 'content');
+				
+			$out->add
+			(
+					Form::openForm('form_event', 'index.php?modname=reservation&amp;op=send_user_event')
+					.Form::openElementSpace()
+					.Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
+					.Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
+					.Form::getHidden('id_event', 'id_event', $id_event)
+					.Form::getHidden('id_user', 'id_user', $id_user)
+					.Form::closeElementSpace()
+					.Form::openButtonSpace()
+					.Form::getButton('send_mail', 'send_mail', $lang->def('_SEND_MAIL'))
+					.Form::getButton('undo_mail', 'undo_mail', $lang->def('_UNDO'))
+					.Form::closeButtonSpace()
+					.Form::closeForm()
+					.'</div>'
+			);
+		}
 	}
 	
 	function getExcelFile()
@@ -845,9 +945,12 @@ if(!Docebo::user()->isAnonymous())
 			{
 				require_once($GLOBALS['where_lms'].'/lib/lib.lms_user_profile.php');
 				
-				$out->add(getTitleArea('_RESERVATION_PROFILE_MODIFY').'<div class="std_block">', 'content');
+				$out->add
+				(
+					getTitleArea($lang->def('_RESERVATION_PROFILE_MODIFY')).'<div class="std_block">', 'content');
 				
-				$out->add('<br/>'.$lang->def('_CONFIRM_DATA').'<br/>');
+				$out->add
+				($lang->def('_CONFIRM_DATA').'<br/>');
 				
 				$profile = new LmsUserProfile(getLogUserId(), true);
 				$profile->init('subscription', 'lms', 'modname=reservation&op=add_subscription&id_event='.$id_event.'&confirm=1&from=2&id_user='.getLogUserId(), 'ap');
@@ -901,8 +1004,33 @@ if(!Docebo::user()->isAnonymous())
 			if($confirm)
 			{
 				$result = $man_res->delSubscription(getLogUserId(), $id_event);
+				// invia mail agli amministratori
+
+				$query = 'SELECT u.email FROM core_user as u, learning_courseuser as cu, learning_reservation_events as re WHERE re.idEvent = "'.$id_event.'" AND cu. idCOurse = re.idCourse AND cu.idUser = u.idst AND cu.level > 3';
+				$result = sql_query($query);				
+				$re = array();
+				while(list($subscribed) = sql_fetch_row($result))
+				{
+					$re[] = $subscribed;
+				}
+				$lang =& DoceboLanguage::createInstance('reservation');
+
+				$subject = $lang->def('_SUBJECT_DELSUBSCRIPTION');
+				$body = $lang->def('_BODY_DELSUBSCRIPTION');
+										
+				$acl_man =& Docebo::user()->getAclManager();
+
+				$info_user = $acl_man->getUser(getLogUserId());
+				$sender = $info_user[ACL_INFO_EMAIL];
+
+				require_once(_base_.'/lib/lib.mailer.php');
+				$mailer = DoceboMailer::getInstance();
+				$mailer->SendMail($sender, $re, $subject, $body, array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
+		
+				// end invio mail
+		
 			}
-			
+
 			Util::jump_to('index.php?modname=reservation&op=reservation');
 		}
 		
@@ -920,6 +1048,7 @@ if(!Docebo::user()->isAnonymous())
 			.'</div>', 'content'
 		);
 	}
+	
 	
 	function switchSubscription()
 	{
@@ -2014,7 +2143,7 @@ function reservationSendMail()
 		//sendMail($recipients, $subject, $body, $sender);
 		require_once(_base_.'/lib/lib.mailer.php');
 		$mailer = DoceboMailer::getInstance();
-		$mailer->SendMail($sender, $recipients, $subject, $body, array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
+		$mailer->SendMail($sender, $recipients, Lang::t('_MAIL_OBJECT', 'register'), $body, array(MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false));
 				
 		Util::jump_to('index.php?modname=reservation&op=reservation&active_tab=events');
 	}
@@ -2022,7 +2151,9 @@ function reservationSendMail()
 	{
 		require_once(_base_.'/lib/lib.form.php');
 		
-		$out->add(getTitleArea('_RESERVATION_MAIL_SEND').'<div class="std_block">', 'content');
+		$out->add
+		(
+		getTitleArea($lang->def('_RESERVATION_MAIL_SEND').'<div class="std_block">', 'content'));
 		
 		$out->add
 		(
@@ -2164,6 +2295,10 @@ function reservationDispatch($op)
 		case 'view_user_event':
 			viewUserEvent();
 		break;
+		
+		case 'send_user_event':
+			sendUserEvent();
+			break;
 		
 		case 'excel':
 			getExcelFile();

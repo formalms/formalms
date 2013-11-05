@@ -1,4 +1,4 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 // --------------------------------------------------------------------------------
 // PhpConcept Library - Zip Module 2.8.2
 // --------------------------------------------------------------------------------

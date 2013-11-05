@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 define("_ANY_LANG_CODE", "-any-");
@@ -89,7 +92,7 @@ function send_newsletter($send_id) {
 	
 	$json = new Services_JSON();
 	
-	$path = '/doceboCore/newsletter/';
+	$path = '/appCore/newsletter/';
 
 	//access control
 	$nl_sendpercycle = Get::sett("nl_sendpercycle", 1);
@@ -343,7 +346,7 @@ function init_send() {
 			//$savefile = rand(0,100).'_'.time().'_'.$_FILES['file']['name'];
 			$savefile[] = $_FILES['file_'.$i]['name'];
 			
-			$path = '/doceboCore/newsletter/';
+			$path = '/appCore/newsletter/';
 			
 			sl_open_fileoperations();
 
@@ -527,7 +530,7 @@ function selSendTo() {
 		
 		$file = $info['file'];
 		
-		$path = '/doceboCore/newsletter/';
+		$path = '/appCore/newsletter/';
 		
 		require_once(_base_.'/lib/lib.upload.php');
 		if($file != '')

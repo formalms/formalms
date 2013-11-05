@@ -1,4 +1,4 @@
-<?php if (!defined('IN_DOCEBO')) { die('You can\'t access!'); }
+<?php if (!defined('IN_FORMA')) { die('You can\'t access!'); }
 
 // if this file is not needed for a specific version,
 // just don't create it.

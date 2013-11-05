@@ -1,6 +1,6 @@
 <?php
 
-define("_INSTALLER_TITLE", "Docebo 4.0 - Instalacija");
+define("_INSTALLER_TITLE", "Forma - Instalacija");
 define("_NEXT", "Sljedeći korak");
 define("_BACK", "Nazad");
 define("_LOADING", "Učitavanje");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Pokušajte ponovo");
 //--------------------------------------
 define("_TITLE_STEP1", "Korak 1: Odaberite jezik");
 define("_LANGUAGE", "Jezik");
-define("_INSTALLER_INTRO_TEXT", "Docebo je tvrtka koja je razvila open-source e-learning softver nazvan DoceboLMS koji je prigodan velikom organizacijama, korporativnom tržištu, vladama and zdravstvu.
+define("_INSTALLER_INTRO_TEXT", "Forma je tvrtka koja je razvila open-source e-learning softver nazvan FormaLMS koji je prigodan velikom organizacijama, korporativnom tržištu, vladama and zdravstvu.
 	<p><b>Osnovne karakteristike</b></p>
 	<ul>
 		<li>Podrška za Scorm 1.2 i 2004</li>
@@ -43,7 +43,7 @@ define("_MAX_EXECUTION_TIME","max_execution_time : ");
 define("_ON","ON ");
 define("_OFF","OFF ");
 
-define("_VERSION","Inačica Docebo-a");
+define("_VERSION","Inačica Forma-a");
 define("_START","Početak");
 define("_END","Kraj");
 // -----------------------------------------
@@ -99,7 +99,7 @@ define("_DOWNLOAD_CONFIG", "Download config-a");
 define("_CHECKED_DIRECTORIES","Neki direktorijumi za snimanje fajlova ne postoje ili nemaju odgovarajuća prava pristupa");
 define("_CHECKED_FILES","Neki fajlovi nemaju adekvatna prava pristupa");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Docebo 4.0 - Nadogradnja");
+define("_UPGRADER_TITLE", "Forma - Nadogradnja");
 define("_UPGRADE_CONFIG","Nadogradnja fajla config.php");
 define("_UPG_CONFIG_OK","Config.php je nadograđen uspješno");
 define("_UPG_CONFIG_NOT_SAVED", "Nadogradnja fajla config.php nije uspjela.");

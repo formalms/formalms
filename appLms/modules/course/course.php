@@ -1,12 +1,16 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
+
 
 if(Docebo::user()->isAnonymous()) die("You can't access");
 
@@ -323,7 +327,7 @@ function mycourses(&$url) {
 	}
 }
 
-function userCourseList(&$url, $use_tab = true) {
+function userCourseList(&$url, $use_tab = true, $page_add = true) {
 
 
 
@@ -338,7 +342,8 @@ function userCourseList(&$url, $use_tab = true) {
 		'button/assets/skins/sam' => 'button.css'
 	));
 	
-	addJs($GLOBALS['where_lms_relative'].'/modules/coursecatalogue/', 'ajax.coursecatalogue.js');
+	if ($page_add)
+		addJs($GLOBALS['where_lms_relative'].'/modules/coursecatalogue/', 'ajax.coursecatalogue.js');
 	
 	require_once(_base_.'/lib/lib.form.php');
 	require_once(_base_.'/lib/lib.user_profile.php');
@@ -400,7 +405,7 @@ function userCourseList(&$url, $use_tab = true) {
 	
 	$current_tab = importVar('current_tab', false, 'lo_plan');
 
-	if($use_tab) {
+	if($use_tab && $page_add) {
 
 		addCss('style_tab');
 
@@ -411,7 +416,7 @@ function userCourseList(&$url, $use_tab = true) {
 		if($lo_history != 0)$current_tab = 'lo_history';
 	}
 	
-	if($use_tab) {
+	if($use_tab && $page_add) {
 		
 		addCss('style_tab');
 		
@@ -616,23 +621,25 @@ function userCourseList(&$url, $use_tab = true) {
 	$i = 0;
 	if(mysql_num_rows($preass_list) && $current_tab == 'lo_plan') {
 		
-		$GLOBALS['page']->add(
-			'<div id="mycourse_asses">'
-			.'<h1>'.$lang_c->def('_ASSESSMENT_LIST').'</h1>'
-		, 'content');
+		if ($page_add)
+			$GLOBALS['page']->add(
+				'<div id="mycourse_asses">'
+				.'<h1>'.$lang_c->def('_ASSESSMENT_LIST').'</h1>'
+			, 'content');
 		while($cinfo = mysql_fetch_assoc($preass_list)) {
 			
 			
 			$cinfo['user_score'] = ( isset($user_score[$cinfo['idCourse']]) ? $user_score[$cinfo['idCourse']] : NULL );
 			
 			if(isset($comment_count[$cinfo['idCourse']])) $cinfo['comment_count'] = $comment_count[$cinfo['idCourse']];
-			
-			$GLOBALS['page']->add(dashmyassess(	$url, 
+			if ($page_add)
+				$GLOBALS['page']->add(dashmyassess(	$url, 
 												$lang_c, 
 												$cinfo, 
 												$i++), 'content');
 		}
-		$GLOBALS['page']->add('</div>', 'content');
+		if ($page_add)
+			$GLOBALS['page']->add('</div>', 'content');
 	}
 	
 	// page intest ------------------------------------------------------------
@@ -648,10 +655,11 @@ function userCourseList(&$url, $use_tab = true) {
 		case "end" : 		{ $title = $lang->def('_COURSE_END'); };break;
 		case "level" : 		{ $title = str_replace('[level]', $lvl[$_GET['filter_on']], $lang->def('_COURSE_AS') ); };break;
 	}
-	$GLOBALS['page']->add(
-		'<div id="mycourse_list">'
-		.'<h1>'.$title.'</h1>'
-	, 'content');
+	if ($page_add)
+		$GLOBALS['page']->add(
+			'<div id="mycourse_list">'
+			.'<h1>'.$title.'</h1>'
+		, 'content');
 	
 	$i = 0;
 	$direct_play = false;
@@ -745,34 +753,34 @@ function userCourseList(&$url, $use_tab = true) {
 				
 				if($current_tab == 'lo_history') {
 					
-					if($cinfo['user_status'] == _CUS_END)  $GLOBALS['page']->add($dash, 'content');
+					if($cinfo['user_status'] == _CUS_END && $page_add)  $GLOBALS['page']->add($dash, 'content');
 				} else {
 				
-					if($cinfo['user_status'] != _CUS_END || $cinfo['level']>=4)  $GLOBALS['page']->add($dash, 'content');
+					if(($cinfo['user_status'] != _CUS_END || $cinfo['level']>=4) && $page_add)  $GLOBALS['page']->add($dash, 'content');
 				}
 			
 			} else {
 					
 				switch($filter) {
 					case "access" : { 
-						if($access['can']) $GLOBALS['page']->add($dash, 'content'); 
+						if($access['can'] && $page_add) $GLOBALS['page']->add($dash, 'content'); 
 					};break;
 					case "expiring" : {
-						if($expiring) $GLOBALS['page']->add($dash, 'content');
+						if($expiring && $page_add) $GLOBALS['page']->add($dash, 'content');
 					};break;
 					case "subscribed" : {
-						if($cinfo['user_status'] == _CUS_SUBSCRIBED) $GLOBALS['page']->add($dash, 'content');
+						if($cinfo['user_status'] == _CUS_SUBSCRIBED && $page_add) $GLOBALS['page']->add($dash, 'content');
 					};break;
 					case "begin" : {
-						if($cinfo['user_status'] == _CUS_BEGIN) $GLOBALS['page']->add($dash, 'content');
+						if($cinfo['user_status'] == _CUS_BEGIN && $page_add) $GLOBALS['page']->add($dash, 'content');
 					};break;
 					case "end" : {
-						if($cinfo['user_status'] == _CUS_END) $GLOBALS['page']->add($dash, 'content');
+						if($cinfo['user_status'] == _CUS_END && $page_add) $GLOBALS['page']->add($dash, 'content');
 					};break;
 					case "level" : {
-						if($_GET['filter_on'] == $cinfo['level']) $GLOBALS['page']->add($dash, 'content');
+						if($_GET['filter_on'] == $cinfo['level'] && $page_add) $GLOBALS['page']->add($dash, 'content');
 					};break;
-					default: $GLOBALS['page']->add($dash, 'content');
+					default: if ($page_add) $GLOBALS['page']->add($dash, 'content');
 				}
 			}
 			
@@ -815,7 +823,7 @@ function userCourseList(&$url, $use_tab = true) {
 		
 	} //  end while ------------------------------------------------------------
 	
-	if($direct_play) {
+	if($direct_play && $page_add) {
 		$GLOBALS['page']->add( ''
 		
 		.'	<link href="'.getPathTemplate().'/style/shadowbox.css" rel="stylesheet" type="text/css" />'
@@ -839,14 +847,14 @@ function userCourseList(&$url, $use_tab = true) {
 		</script>' );
 	}
 	
-	if($course_stats['total'] == 0) {
+	if($course_stats['total'] == 0 && $page_add) {
 
 		$GLOBALS['page']->add(''
 			.'<b>'.$lang->def('_NO_COURSE').'</b> '.'<br />'
 		, 'content');
 	}
-	
-	$GLOBALS['page']->add('</div>', 'content');
+	if ($page_add)
+		$GLOBALS['page']->add('</div>', 'content');
 
 	// Coursepath --------------------------------------------------------------
 
@@ -857,10 +865,11 @@ function userCourseList(&$url, $use_tab = true) {
 
 		// coursepath list -----------------------------------------------------
 				
-		$GLOBALS['page']->add(
-			'<div id="mycoursepath_list">'
-			.'<h1>'.$lang->def('_COURSEPATH_LIST').'</h1>'
-		, 'content');
+		if ($page_add)
+			$GLOBALS['page']->add(
+				'<div id="mycoursepath_list">'
+				.'<h1>'.$lang->def('_COURSEPATH_LIST').'</h1>'
+			, 'content');
 		
 		$i = 0;
 		
@@ -917,15 +926,18 @@ function userCourseList(&$url, $use_tab = true) {
 						} else {
 							$html .= '<li>'.dashAcourse($id, 4).'</li>';
 						}
+						
 					}
 					
 					if(!empty($path_courses[$id_path][$id_slot])) $html .= '</ul>';
 				}
 			}
 			$html .= '</div>';
-			$GLOBALS['page']->add($html, 'content');
+			if ($page_add)
+				$GLOBALS['page']->add($html, 'content');
 		}
-		$GLOBALS['page']->add('</div>', 'content');
+		if ($page_add)
+			$GLOBALS['page']->add('</div>', 'content');
 	}
 	if($course_stats['cert_relesable'] < 0) $course_stats['cert_relesable'] = 0;
 	return $course_stats;

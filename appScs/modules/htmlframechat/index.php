@@ -1,11 +1,14 @@
-<?php //defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php //defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 error_reporting(E_ALL ^ E_NOTICE);
@@ -38,7 +41,7 @@ $page = ''
 .'	http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">'."\n"
 .'<html xmlns="http://www.w3.org/1999/xhtml">'."\n"
 .'<head>'."\n"
-.'	<title>Docebo Chat</title>'."\n"
+.'	<title>Forma Chat</title>'."\n"
 .'</head>'."\n"
 	.'<frameset rows="0%,80%,20%" border="0">'."\n"
 		.'<frame src="check.php?sn='.$sn.'" id="chatCtl" name="chatCtl" />'."\n"

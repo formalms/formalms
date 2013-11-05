@@ -27,7 +27,7 @@
 		pb.set('value',cur_upg_step);
 		disableBtnNext(true);
 
-		var sUrl ='upg_step.php?step='+cur_upg_step;
+		var sUrl ='upg_step.php?cur_step=4&upg_step='+cur_upg_step;
 		YAHOO.util.Connect.asyncRequest('GET', sUrl, callback_db);
 	}
 </script>

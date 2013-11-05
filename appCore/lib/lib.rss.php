@@ -1,11 +1,14 @@
 <?php
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
@@ -16,7 +19,7 @@
  */
 
 if(isset($_REQUEST['GLOBALS'])) die('GLOBALS overwrite attempt detected');
-if(!defined("IN_DOCEBO")) define("IN_DOCEBO", true);
+if(!defined("IN_FORMA")) define("IN_FORMA", true);
 
 
 class FeedReader {
@@ -262,11 +265,11 @@ class FeedReaderManager {
 		$feed_list["feed_arr"] = array();
 
 		$fields = "t1.feed_id, t1.title, t1.url, t1.content, t1.active, t1.refresh_time, t1.last_update, t1.show_on_platform ";
-		
+
 		$q_head1 = "SELECT ".$fields." ";
 		$q_head2 = "SELECT COUNT(*) ";
 		$q_body = "FROM ".$this->_getFeedsTable()." as t1 WHERE zone = 'public' ";
-	
+
 		$q = $this->_executeQuery($q_head2.$q_body);
 		if ($q) list($row_count) = sql_fetch_row($q);
 		else $rowcount = 0;
@@ -377,7 +380,7 @@ class FeedReaderManager {
 
 			return ($q ? true : false);
 		}
-		
+
 		return false;
 	}
 
@@ -811,7 +814,7 @@ class FeedGenerator {
 		$feed->link=$url;
 		$feed->description=" ";
 //		$feed->language = 'en-us';
-		$feed->generator="Docebo ".$GLOBALS["framework"]["core_version"];
+		$feed->generator="FormaLms ".$GLOBALS["framework"]["core_version"];
 //		$feed->managingEditor = 'editor@mysite.com';
 //		$feed->webMaster='webmaster@mysite.com';
 

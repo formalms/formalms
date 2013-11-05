@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die("Direct access is forbidden");
+<?php defined("IN_FORMA") or die("Direct access is forbidden");
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 Class ClassroomAlmsController extends AlmsController {
@@ -526,6 +529,83 @@ Class ClassroomAlmsController extends AlmsController {
 
 		echo $this->data;
 	}
+    
+    protected function export() {
+//      define("IN_FORMA", "ok");
+//      include('../config.php');
+//      error_reporting(0);
+//      $db = mysql_connect($cfg['db_host'], $cfg['db_user'], $cfg['db_pass']);
+//      mysql_select_db($cfg['db_name']);
+
+      $today = getdate();
+      $mday = $today['mday'];
+      if ($mday < 10)
+        $mday = "0" . $mday;
+      $month = $today['mon'];
+      if ($month < 10)
+        $month = "0" . $month;
+      $year = $today['year'];
+      $ore = $today['hours'];
+      if ($ore < 10)
+        $ore = "0" . $ore;
+      $min = $today['minutes'];
+      if ($min < 10)
+        $min = "0" . $min;
+      $sec = $today['seconds'];
+      if ($sec < 10)
+        $sec = "0" . $sec;
+      $file_parameters = $mday . "-" . $month . "-" . $year . "_h" . $ore . "_" . $min . "_" . $sec;
+		//Course info
+		$id_course = Get::req('id_course', DOTY_INT, 0);
+		$id_date = Get::req('id_date', DOTY_INT, 0);
+      $query = "SELECT code, name FROM learning_course_date WHERE id_course=" . $id_course . " AND id_date=" . $id_date;
+      $res = mysql_query($query);
+      $row = mysql_fetch_array($res);
+      $course_code = $row[0];
+      $edition_name = $row[1];
+
+      header("Content-type: application/x-msdownload");
+      header("Content-Disposition: attachment; filename=export_presenze_[" . $course_code . "]_" . $file_parameters . ".xls");
+      header("Pragma: no-cache");
+      header("Expires: 0");
+      
+      ob_end_clean();
+		
+      $array_date = array();
+      print "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"></head><body>";
+      print $edition_name;
+      print "<table border=1><tr><td><b>Username</b></td><td><b>".Lang::t('_FULLNAME', 'standard')."</b></td>";
+      $query = "SELECT DISTINCT day FROM learning_course_date_presence WHERE day<>'0000-00-00' AND id_date=" . $id_date . " ORDER BY day";
+      $res = mysql_query($query);
+      while ($row = mysql_fetch_array($res)) {
+        print "<td><b>" . substr($row[0], 8, 2) . "-" . substr($row[0], 5, 2) . "-" . substr($row[0], 0, 4) . "</b></td>";
+        array_push($array_date, $row[0]);
+      }
+      print "<td><b>".Lang::t('_NOTES', 'standard')."</b></td></tr>";
+
+      $query = "SELECT U.userid, U.firstname, U.lastname, U.idst FROM learning_course_date_user L, core_user U WHERE L.id_user=U.idst AND L.id_date=" . $id_date . " ORDER BY id_user";
+      $res = mysql_query($query);
+      while ($row = mysql_fetch_array($res)) {
+        print "<tr><td>" . substr($row[0], 1, strlen($row[0])) . "</td><td>" . $row[2] . " " . $row[1] . "</td>";
+
+        for ($i = 0; $i < count($array_date); $i++) {
+          $query = "SELECT presence FROM learning_course_date_presence WHERE id_date=" . $id_date . " AND id_user=" . $row[3] . " AND day='" . $array_date[$i] . "'";
+          $res2 = mysql_query($query);
+          $row2 = mysql_fetch_array($res2);
+          if ($row2[0] == 0)
+            print "<td>&nbsp;</td>";
+          else
+            print "<td>X</td>";
+        }
+        $query = "SELECT note FROM learning_course_date_presence WHERE id_date=" . $id_date . " AND id_user=" . $row[3] . " AND day='0000-00-00'";
+        $res3 = mysql_query($query);
+        $row3 = mysql_fetch_array($res3);
+        print "<td>" . $row3[0] . "</td></tr>";
+      }
+
+      print "</table></body>";
+      exit(0);
+    }
 
 	protected function presence()
 	{

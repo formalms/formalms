@@ -1,17 +1,20 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 class Layout {
 
 	static protected $_lang = false;
-	
+
 	public static function templateList() {
 		$templ_array = array();
 		$templ = dir(_base_.'/templates/');
@@ -28,15 +31,15 @@ class Layout {
 	}
 
 	public static function charset() {
-		
+
 		return 'utf-8';
 	}
 
 	public static function lang_code() {
-		
+
 		if(!self::$_lang) self::$_lang = Docebo::langManager()->getLanguageInfo(Lang::get());
 		if(!isset(self::$_lang->lang_browsercode)) return 'en';
-		
+
 		$browser_code = self::$_lang->lang_browsercode;
 		$pos = strpos($browser_code, ';');
 		if($pos !== false) $browser_code = substr($browser_code, 0, $pos);
@@ -48,23 +51,23 @@ class Layout {
 		if(isset($GLOBALS['page_title'])) return $GLOBALS['page_title'];
 		return Get::sett('page_title', 'No title');
 	}
-	
+
 	public static function description() { return ''; }
 
 	public static function keyword() { return ''; }
 
 	public static function path() {
-		
+
 		return Get::tmpl_path('base');
 	}
 
 	public static function meta() {
 
 		return '<meta http-equiv="Content-Type" content="text/html; charset='.self::charset().'" />'."\n"
-			."\t\t".'<meta name="Copyright" content="Docebo srl" />'."\n"
-			."\t\t".'<link rel="Copyright" href="http://www.docebo.com/" title="Copyright Notice" />'."\n"
-			."\t\t".'<link rel="shortcut icon" href="'.self::path().'images/favicon.gif" type="image/gif" />'."\n"
-			."\t\t".'<link rel="icon" href="'.self::path().'images/favicon.gif" type="image/gif" />'."\n";
+			."\t\t".'<meta name="Copyright" content="Forma srl" />'."\n"
+			."\t\t".'<link rel="Copyright" href="http://www.forma.com/" title="Copyright Notice" />'."\n"
+			."\t\t".'<link rel="shortcut icon" href="'.self::path().'images/favicon.png" type="image/png" />'."\n"
+			."\t\t".'<link rel="icon" href="'.self::path().'images/favicon.ico" />'."\n";
 
 	}
 
@@ -74,7 +77,7 @@ class Layout {
 		if(!self::$_lang) self::$_lang = Docebo::langManager()->getLanguageInfo(Lang::get());
 		if(isset(self::$_lang->lang_direction) && self::$_lang->lang_direction == 'rtl') echo '<link rel="stylesheet" type="text/css" href="'.Layout::path().'style/reset-fonts-grids-rtl.css" />';
 	}
-	
+
 	public static function rtl() {
 
 		if(!self::$_lang) self::$_lang = Docebo::langManager()->getLanguageInfo(Lang::get());
@@ -94,7 +97,7 @@ class Layout {
 	}
 
 	public static function zone($zone_name) {
-		
+
 		return $GLOBALS['page']->getContent($zone_name);
 	}
 
@@ -196,12 +199,12 @@ class Layout {
 
 		return $html;
 	}
-	
+
 	public static function lang_dropdown() {
 
 		$lang_sel = Lang::get();
 		$langs_var = Docebo::langManager()->getAllLanguages();
-		
+
 		$html = Form::openForm('language_selection', '?special=changelang')
 			.'<select id="new_lang" name="new_lang" onchange="submit();">';
 		foreach($langs_var as $k => $v) {
@@ -217,7 +220,7 @@ class Layout {
 	}
 
 	public static function render($layout) {
-		
+
 		$browser = Get::user_agent();
 		header("Content-Type: text/html; charset=".self::charset()."");
 		if($browser["browser"] !== 'msie') {
@@ -225,7 +228,20 @@ class Layout {
 		}
 		include(_base_.'/templates/'.getTemplate().'/layout/'.$layout.'.php');
 	}
-	
+
+
+	public static function copyright() {
+
+		$html = "";
+		$html .= '<p class="powered_by">';
+		$html .= '<span class="copyright">';
+		$html .= 'Powered by <a href="http://www.formalms.org/" onclick="window.open(this.href); return false;">Forma LMS</a>';
+		$html .= '</span>';
+		$html .= '</p>';
+		return $html;
+	}
+
+
 	/**
 	 * function highlight
 	 *	Highlight parts of text strings with HTML tags
@@ -243,9 +259,9 @@ class Layout {
 
 	public static function analytics() {
 		if(Get::sett('google_stat_in_lms', '0') == '1' && Get::sett('google_stat_code', '') != '') {
-			
+
 			echo Get::sett('google_stat_code');
 		}
 	}
-	
+
 }

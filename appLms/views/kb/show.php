@@ -9,7 +9,7 @@
 		_MOD: "<?php echo Lang::t('_MOD', 'kb'); ?>"
 	}
 </script>
-<div style="margin:1em;">
+<div class="middlearea_container">
 	<?php
 	$lmstab = $this->widget('lms_tab', array(
 				'active' => 'kb',
@@ -36,11 +36,13 @@
 								</div>
 							</div>
 							<!-- categories navigation -->
+							<!-- Hiding Horizontal Cat navigation
 							<ul id="kb_folder_nav" class="navigation"></ul>
 							<div class="kb_folder_box"  id="folder_box">
 								<ul id="kb_folder_box_ul" class="style_none"></ul>
 								<div class="nofloat"></div>
 							</div>
+							-->
 							<!-- content table -->
 							<?php
 									$this->widget('table', array(
@@ -58,7 +60,7 @@
 										'columns' => array(
 											array('key' => 'r_name', 'label' => Lang::t('_NAME', 'kb'), 'sortable' => true),
 											array('key' => 'r_type', 'label' => Lang::t('_TYPE', 'kb'), 'sortable' => true),
-											array('key' => 'r_env', 'label' => Lang::t('_ENVIRONMENT', 'kb'), 'sortable' => true),
+											//array('key' => 'r_env', 'label' => Lang::t('_ENVIRONMENT', 'kb'), 'sortable' => true),
 											array('key' => 'r_env_parent', 'label' => Lang::t('_CONTAINED_IN', 'kb'), 'sortable' => false),
 											array('key' => 'r_lang', 'label' => Lang::t('_LANGUAGE', 'kb'), 'sortable' => true),
 											array('key' => 'tags', 'label' => Lang::t('_TAGS', 'kb'), 'sortable' => false),

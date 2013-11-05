@@ -7,23 +7,30 @@
 	var other_error =<?php echo ($cl['strict_mode'] == 'err' || $cl['mbstring'] == 'err' || $cl['mime_ct'] == 'err' ? 'true' : 'false'); ?>;
 	var config_ok ={
 		'v3': <?php echo ($cl['config_v3'] == 'err' ? 'false' : 'true'); ?>,
-		'v4': <?php echo ($cl['config_v4'] == 'err' ? 'false' : 'true'); ?>
+		'v4': <?php echo ($cl['config_v4'] == 'err' ? 'false' : 'true'); ?>,
+		'v1': <?php echo ($cl['config_v1'] == 'err' ? 'false' : 'true'); ?>
 	}
 	YAHOO.util.Event.onDOMReady(function() {
 		YAHOO.util.Event.addListener("start_version", "change", startVersionChange);
 	});
-	
+
 	function startVersionChange(e) {
 		var version =e.target.value;
 		var show_err =false;
-		
-		if (version < 4000 && !config_ok.v3) {
+
+		if (version > 3000 && version < 4000 && !config_ok.v3) {
+			// docebo ce versions series 3.x.x.x
 			show_err =true;
 		}
 		else if (version >= 4000 && !config_ok.v4) {
+			// docebo ce versions series 4.x.x.x
 			show_err =true;
 		}
-		
+		else if (version >= 1000 && version < 3000 && !config_ok.v1) {
+			// forma versions serie 1.x
+			show_err =true;
+		}
+
 		var err_box =YAHOO.util.Dom.get('config_err_box');
 		if (!other_error) {
 			disableBtnNext(show_err);
@@ -38,23 +45,24 @@
 	<b><?php echo Lang::t('_END'); ?> : </b><?php echo $GLOBALS['cfg']['endversion']; ?>
 </p>
 
-<?php if ( ($cl['config_v3'] == 'err' && $cl['config_v4'] == 'err') || $cl['strict_mode'] == 'err' || $cl['mbstring'] == 'err'): ?>
-<script type="text/javascript">	
+<?php if ( ($cl['config_v3'] == 'err' && $cl['config_v4'] == 'err' && $cl['config_v1'] == 'err') ||
+           $cl['strict_mode'] == 'err' || $cl['mbstring'] == 'err'): ?>
+<script type="text/javascript">
 	YAHOO.util.Event.onDOMReady(function() {
 		disableBtnNext(true);
 	});
 </script>
 <?php endif; ?>
-<?php if ($cl['config_v3'] == 'err' && $cl['config_v4'] == 'err') {
-	$config_err_style ='style="display: block;"';	
+<?php if ($cl['config_v3'] == 'err' && $cl['config_v4'] == 'err' && $cl['config_v1'] == 'err') {
+	$config_err_style ='style="display: block;"';
 }
 else {
-	$config_err_style ='style="display: none;"';	
+	$config_err_style ='style="display: none;"';
 }
 ?>
 
 <?php if (!empty($cl['upg_not_needed'])): ?>
-<script type="text/javascript">	
+<script type="text/javascript">
 	YAHOO.util.Event.onDOMReady(function() {
 		YAHOO.util.Dom.get('start_version').disabled =true;
 		disableBtnNext(true);
@@ -78,7 +86,7 @@ else {
 	<li class="<?php echo $cl['strict_mode']; ?>"><?php echo Lang::t('_SQL_STRICT_MODE'); ?>: <span><?php echo ($cl['strict_mode'] == 'ok' ? _OFF : _ON); ?></span></li>
 	<li class="<?php echo $cl['mbstring']; ?>"><?php echo Lang::t('_MBSTRING'); ?>: <span><?php echo (extension_loaded('mbstring') ? _ON : _OFF); ?></span></li>
 	<li class="<?php echo $cl['mime_ct']; ?>"><?php echo Lang::t('_MIME_CONTENT_TYPE'); ?>: <span><?php echo ($cl['mime_ct'] == 'ok' ? _ON : _OFF); ?></span></li>
-	<li class="<?php echo $cl['ldap']; ?>"><?php echo Lang::t('_LDAP'); ?>: <span><?php echo (extension_loaded('ldap') ? _ON : _OFF.' '._ONLY_IF_YU_WANT_TO_USE_IT); ?></span></li>	
+	<li class="<?php echo $cl['ldap']; ?>"><?php echo Lang::t('_LDAP'); ?>: <span><?php echo (extension_loaded('ldap') ? _ON : _OFF.' '._ONLY_IF_YU_WANT_TO_USE_IT); ?></span></li>
 </ul>
 
 

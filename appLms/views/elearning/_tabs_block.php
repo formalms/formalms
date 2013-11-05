@@ -11,7 +11,7 @@
 	<div id="yui-main">
 		<div class="yui-b">
 
-			<div style="margin:1em;">
+			<div class="middlearea_container">
 				<?php
 
 				$w = $this->widget('lms_tab', array(

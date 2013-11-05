@@ -1,6 +1,6 @@
 <?php
 
-define("_INSTALLER_TITLE", "Docebo 4.0 - Installatie.");
+define("_INSTALLER_TITLE", "Forma - Installatie.");
 define("_NEXT", "Volgende stap.");
 define("_BACK", "Terug.");
 define("_LOADING", "Laden.");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Probeer opnieuw.");
 //--------------------------------------
 define("_TITLE_STEP1", "Step 1: Selecteerr een taal.");
 define("_LANGUAGE", "Taal.");
-define("_INSTALLER_INTRO_TEXT", "Docebo is een bedrijf dat zijn eigen open-source e-learning framework wat Docebo heet ontwikkeld. Toepasbaar in de bedrijfs wereld, de zakelijke markt, overheid en zorg.
+define("_INSTALLER_INTRO_TEXT", "Forma is een bedrijf dat zijn eigen open-source e-learning framework wat Forma heet ontwikkeld. Toepasbaar in de bedrijfs wereld, de zakelijke markt, overheid en zorg.
 	<p><b>Eigenschappen</b></p>
 	<ul>
 		<li>Scorm 1.2 en 2004 ondersteuning</li>
@@ -95,7 +95,7 @@ define("_DOWNLOAD_CONFIG", "Download config");
 define("_CHECKED_DIRECTORIES","Een map waar bestanden worden opgeslagen besataat niet om heefft gen schrijf rechten.");
 define("_CHECKED_FILES","Bepaalde bestanden hebben niet genoeg schrijf rechten.");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Docebo 4.0 - Upgrade");
+define("_UPGRADER_TITLE", "Forma - Upgrade");
 define("_UPGRADE_CONFIG","Upgrading config.php bestand");
 define("_UPG_CONFIG_OK","Config.php file Succesvol ge-update.");
 define("_UPG_CONFIG_NOT_SAVED", "Het update process is gefaald.");

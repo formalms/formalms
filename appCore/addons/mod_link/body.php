@@ -1,16 +1,15 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
-/*************************************************************************/
-/* DOCEBO FRAMEWORK                                                      */
-/* ============================================                          */
-/*                                                                       */
-/* Copyright (c) 2007 by Giovanni Derks <giovanni[AT]docebo-com>         */
-/* http://www.docebo.com                                                 */
-/*                                                                       */
-/* This program is free software. You can redistribute it and/or modify  */
-/* it under the terms of the GNU General Public License as published by  */
-/* the Free Software Foundation; either version 2 of the License.        */
-/*************************************************************************/
+/* ======================================================================== \
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+\ ======================================================================== */
 
 require_once(_base_.'/lib/lib.utils.php');
 
@@ -56,10 +55,10 @@ $GLOBALS['page']->add(
 define("_USER_FPATH_INTERNAL", "/common/users/");
 define("_USER_FPATH", $GLOBALS["where_files_relative"]._USER_FPATH_INTERNAL);
 
-define("_FPATH_INTERNAL", "/doceboCms/media/");
+define("_FPATH_INTERNAL", "/appCms/media/");
 define("_FPATH", $GLOBALS["where_files_relative"]._FPATH_INTERNAL);
 
-define("_PPATH_INTERNAL", "/doceboCms/media/preview/");
+define("_PPATH_INTERNAL", "/appCms/media/preview/");
 define("_PPATH", $GLOBALS["where_files_relative"]._PPATH_INTERNAL);
 
 
@@ -294,7 +293,7 @@ function addLinkPopupJS() {
 	$path.=$GLOBALS["where_files_relative"]; //."/";
 
 	//-- test : //
-	//echo(cleanUrlPath("http://127.0.0.1:88/folder/folder/doceboCore//addons/./mod_media/../../../files/common/")); return 0;
+	//echo(cleanUrlPath("http://127.0.0.1:88/folder/folder/appCore//addons/./mod_media/../../../files/common/")); return 0;
 
 
 	//$site_url="http://".$_SERVER['HTTP_HOST'].$path;

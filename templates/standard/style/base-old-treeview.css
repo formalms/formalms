@@ -1,0 +1,347 @@
+/* ======================================================================== \
+
+|   FORMA - The E-Learning Suite                                            |
+
+|                                                                           |
+
+|   Copyright (c) 2013 (Forma)                                              |
+
+|   http://www.formalms.org                                                 |
+
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+
+|                                                                           |
+
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+
+\ ======================================================================== */
+
+div.TreeViewContainer {
+	vertical-align:middle;
+	background-color: #ffffff;
+	border: 1px solid #cccccc;
+}
+div.TreeViewActionContainer {
+	border: 1px solid #cccccc;
+	border-top-width: 0px;
+	padding:4px 8px;
+}
+div.TreeViewActionContainer img {
+	vertical-align: middle;
+	cursor: pointer;
+}
+input.TreeViewAction {
+	text-align: left;
+	border-style: none;
+	font-weight: normal;
+	padding: 0;
+	margin: 0 10px 0 0;
+	width: auto;
+	cursor: pointer;
+	overflow: visible;
+	vertical-align: middle;
+	text-decoration: underline;
+	background-color: #ffffff;
+}
+
+div.TreeViewRowBase {
+	float:left;
+	clear:left;
+	margin: 0;
+	height: 20px;
+}
+
+div.TreeViewRowOdd, div.TreeViewRowEven {
+	padding: 4px 4px 0 2px;
+	margin: 0;
+	height: 22px;
+	vertical-align: middle;
+}
+div.TreeViewRowOdd:hover {
+	background-color: #EAEEF9;
+}
+div.TreeViewRowEven {
+	background-color: #efefef;
+}
+div.TreeViewRowEven:hover {
+	background-color: #EAEEF9;
+}
+div.TreeViewRowEven input,
+div.TreeViewRowOdd input {
+	vertical-align:middle;
+}
+
+input.Treeview_checkbox {
+	margin: 0 0px 0 8px;
+}
+img.TreeViewImage {
+	width: 16px;
+	height: 16px;
+	padding: 0;
+	margin: 0 0 0 8px;
+	vertical-align:middle;
+}
+input.TreeViewOpExpandCorner {
+	background: url("../images/treeview/menu_corner_plus.gif") no-repeat 0 0 transparent;
+	overflow: hidden;
+	border: 0px none;
+	padding: 0;
+	margin: 0;
+	width: 22px;
+	height: 22px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+
+input.OrgPlay {
+	float:right;
+	background: url("../images/standard/view.png") no-repeat 0 0 transparent;
+	overflow: hidden;
+	border: 0px none;
+	padding: 0;
+	margin: 2px 0 0 0 ;
+	width: 24px;
+	height: 24px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+input.TreeViewOpCollapseCorner {
+	background: url("../images/treeview/menu_corner_minus.gif") no-repeat 0 0 transparent;
+	overflow: hidden;
+	border: 0px none;
+	padding: 0;
+	margin: 0;
+	width: 22px;
+	height: 22px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+input.TreeViewOpExpandInter {
+	background: url("../images/treeview/menu_tee_plus.gif") no-repeat 0 0 transparent;
+	overflow: hidden;
+	border: 0px none;
+	padding: 0;
+	margin: 0;
+	width: 22px;
+	height: 22px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+input.TreeViewOpCollapseInter {
+	background: url("../images/treeview/menu_tee_minus.gif") no-repeat 0 0 transparent;
+	overflow: hidden;
+	border: 0px none;
+	padding: 0;
+	margin: 0;
+	width: 22px;
+	height: 22px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+input.TreeItem {
+	text-align: left;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	border-style:none;
+	padding: 0 0 0 5px;
+	margin: 0;
+	width: auto;
+	overflow: visible;
+	vertical-align: middle;
+}
+input.TreeItemSelected {
+	text-align: left;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	border: 0px none;
+	font-weight: bold;
+	padding: 0 0 0 5px;
+	margin: 0;
+	width: auto;
+	overflow: visible;
+	vertical-align: middle;
+}
+
+.tree_view_image {
+	margin: 0 4px;
+	float: right;
+	width: 16px;
+	height: 16px;
+}
+label.tree_view_image,
+input.tree_view_image {width:auto;}
+
+input.TVActionDelete {
+	float:right;
+	background: url("../images/standard/delete.png") no-repeat center;
+	border: 0px none;
+	padding: 0;
+	margin: 0;
+	width: 22px;
+	height: 26px;
+	cursor: pointer;
+}
+input.TVActionMove {
+	float:right;
+	background: url("../images/treeview/move.png") no-repeat center;
+	border: 0px none;
+	padding: 0;
+	margin: 0;
+	width: 22px;
+	height: 26px;
+	cursor: pointer;
+}
+input.TVActionRename {
+	float:right;
+	background: url("../images/standard/edit.png") no-repeat center;
+	border: 0px none;
+	padding: 0;
+	margin: 0;
+	width: 22px;
+	height: 26px;
+	cursor: pointer;
+}
+input.TVActionPlay {
+	float:right;
+	background: url("../images/standard/view.png") no-repeat center;
+	border: 0px none;
+	padding: 0;
+	margin: 0;
+	width: 22px;
+	height: 26px;
+	cursor: pointer;
+}
+input.TVActionEdit {
+	float:right;
+	background: url("../images/standard/edit.png") no-repeat center;
+	border: 0px none;
+	padding: 0;
+	margin: 0;
+	width: 22px;
+	height: 26px;
+	cursor: pointer;
+}
+input.TVActionCopy {
+	float:right;
+	background: url("../images/standard/dup.png") no-repeat center;
+	border: 0px none;
+	padding: 0;
+	margin: 0;
+	width: 22px;
+	height: 26px;
+	cursor: pointer;
+}
+div.tree_view_spacer {
+	float:right;
+	border: 0px none;
+	padding: 0;
+	margin: 0;
+	width: 22px;
+	height: 26px;
+}
+div.TVActionEmpty {
+	float:right;
+	border: 0px none;
+	padding: 4px 4px 0;
+	margin: 0;
+	width: 16px;
+	height: 16px;
+}
+div.LVShowItem {
+	background-color: transparent;
+	overflow: hidden;
+	border: 0px none;
+	padding: 0;
+	margin: 0;
+	width: 22px;
+	height: 26px;
+}
+input.LVShowItem {
+	background: url("../images/treeview/showitem.gif") no-repeat 0 0 transparent;
+	overflow: hidden;
+	border: 0px none;
+	left:0;
+	top:0;
+	padding: 0;
+	margin: 0;
+	width: 22px;
+	height: 26px;
+}
+input.LVDeleteItem {
+	background: url("../images/standard/delete.png") no-repeat 0 0 transparent;
+	background-color: transparent;
+	overflow: hidden;
+	border: 0px none;
+	left:0;
+	top:0;
+	padding: 0;
+	margin: 0;
+	width: 22px;
+	height: 26px;
+}
+input.LVMoveItem {
+	background: url("../images/standard/move.png") no-repeat 0 0 transparent;
+	overflow: hidden;
+	border: 0px none;
+	left:0;
+	top:0;
+	padding: 0;
+	margin: 0;
+	width: 22px;
+	height: 26px;
+}
+input.LVAction {
+	text-decoration: underline;
+	text-align: left;
+	background-color: #ffffff;
+	border: 0px none;
+	font-weight: bold;
+	padding: 3px;
+	margin: 0;
+	cursor: pointer;
+}
+
+img.OrgStatus {
+	margin: 0 0 0 4px;
+	padding:0;
+	float: right;
+	width: 16px;
+	height: 16px;
+}
+
+/*= NOTE: report status on tree =*/
+div.report_on_tree {
+  float: right;
+  margin-top: 4px;
+  height: 14px;
+  width: 130px;
+  font-size: 83%;
+  font-family: Verdana, Arial, sans-serif;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #000;
+}
+
+div.reportcomplete {
+  background: #efefef;
+}
+
+div.reportfailed {
+  background-color: #FFCF31;
+}
+
+div.reportincomplete {
+  background-color: #FFFFFF;
+}
+
+/* data summary */
+
+div.datasummary {
+	margin: 3em 0.3em 1em;
+	padding: 0.4em;
+	font-size: 83%;
+	border: 1px solid #000000;
+}

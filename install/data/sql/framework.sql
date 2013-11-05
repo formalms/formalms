@@ -1,8 +1,9 @@
--- MySQL dump 10.9
+-- MySQL dump 10.13
 --
--- Host: localhost    Database: docebo40
+-- Host: localhost    Database: formalms
 -- ------------------------------------------------------
--- Server version	4.1.11-Debian_4sarge7-log
+-- Server version       5.1.66
+
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -782,7 +783,8 @@ INSERT INTO `core_field_type` (`type_field`, `type_file`, `type_class`, `type_ca
 ('textfield', 'class.textfield.php', 'Field_Textfield', 'standard'),
 ('upload', 'class.upload.php', 'Field_Upload', 'standard'),
 ('yesno', 'class.yesno.php', 'Field_Yesno', 'standard'),
-('country',  'class.country.php',  'Field_Country',  'standard');
+('country',  'class.country.php',  'Field_Country',  'standard'),
+('textlabel', 'class.label.php', 'Field_Textlabel', 'standard');
 
 -- --------------------------------------------------------
 
@@ -2196,7 +2198,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('code_teleskill', '', 'string', 255, 'teleskill', 6, 3, 1, 0, ''),
 ('common_admin_session', 'on', 'enum', 3, 'security', 8, 24, 1, 0, ''),
 ('conference_creation_limit_per_user', '99999999999', 'string', 255, '0', 6, 0, 1, 0, ''),
-('core_version', '4.0.5', 'string', 255, '0', 1, 0, 1, 1, ''),
+('core_version', '1.0', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('course_quota', '0', 'string', 255, '0', 4, 5, 1, 0, ''),
 ('currency_symbol', '&euro;', 'string', 10, '0', 5, 2, 1, 0, ''),
 ('customer_help_email', '', 'string', 255, '0', 3, 19, 1, 0, ''),
@@ -2229,6 +2231,8 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('ldap_used', 'off', 'enum', 3, '0', 7, 1, 1, 0, ''),
 ('ldap_user_string', '$user@domain2.domain1', 'string', 255, '0', 7, 4, 1, 0, ''),
 ('mail_sender', 'sample@localhost', 'string', 255, 'register', 3, 12, 0, 0, ''),
+('maintenance', 'off', 'enum', 3, 'security', 8, 25, 0, 0, ''),
+('maintenance_pw', 'manutenzione', 'string', 3, 'security', 8, 25, 0, 0, ''),
 ('mandatory_code', 'off', 'enum', 3, 'register', 3, 18, 1, 0, ''),
 ('max_log_attempt', '0', 'int', 3, '0', 3, 4, 0, 0, ''),
 ('nl_sendpause', '20', 'int', 3, 'newsletter', 8, 10, 1, 0, ''),
@@ -2237,7 +2241,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('no_answer_in_test', 'off', 'enum', 3, '0', 4, 6, 1, 0, ''),
 ('on_catalogue_empty', 'on', 'enum', 3, '0', 4, 3, 1, 0, ''),
 ('org_name_teleskill', '', 'string', 255, 'teleskill', 6, 4, 1, 0, ''),
-('page_title', 'Docebo E-learning', 'string', 255, '0', 1, 1, 1, 0, ''),
+('page_title', 'Forma E-learning', 'string', 255, '0', 1, 1, 1, 0, ''),
 ('pass_alfanumeric', 'off', 'enum', 3, 'password', 3, 6, 1, 0, ''),
 ('pass_change_first_login', 'off', 'enum', 3, 'password', 3, 8, 1, 0, ''),
 ('pass_max_time_valid', '0', 'int', 4, 'password', 3, 9, 1, 0, ''),
@@ -2298,7 +2302,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('teleskill_max_participant', '300', 'string', 255, 'teleskill', 6, 6, 1, 0, ''),
 ('teleskill_max_room', '99999999999', 'string', 255, 'teleskill', 6, 5, 1, 0, ''),
 ('templ_use_field', '0', 'id_field', 11, '0', 1, 0, 1, 1, ''),
-('title_organigram_chart', 'Docebo', 'string', 255, '0', 1, 0, 1, 1, ''),
+('title_organigram_chart', 'Forma', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('tracking', 'on', 'enum', 3, '0', 4, 8, 1, 0, ''),
 ('ttlSession', '4000', 'int', 5, '0', 1, 6, 1, 0, ''),
 ('url', 'http://localhost/', 'string', 255, '0', 1, 2, 1, 0, ''),
@@ -2317,7 +2321,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('on_usercourse_empty', 'off', 'enum', 3, '0', 4, 4, 1, 0, '');
 
 INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
-VALUES ('file_upload_whitelist', 'zip,doc,xls,ppt,jpg,gif,png,txt,docx,pptx,xlsx,pdf', 'string', 65535, 'security', 8, 25, 1, 0, '');
+VALUES ('file_upload_whitelist', 'zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv', 'string', 65535, 'security', 8, 25, 1, 0, '');
 
 -- --------------------------------------------------------
 
@@ -2768,18 +2772,18 @@ CREATE TABLE IF NOT EXISTS `core_wiki_revision` (
 -- Dump dei dati per la tabella `core_wiki_revision`
 --
 
-  
-  
-  
-  
-  
-  
-  
 
- 
+
+
+
+
+
+
+
+
 -- --------------------------------------------------------
-  
-  
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

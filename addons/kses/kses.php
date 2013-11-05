@@ -28,7 +28,7 @@
 
 // i prefer to define myself the array of the allowable tag here 
 
-if(!defined('IN_DOCEBO')) die('You cannot access this file directly!');
+if(!defined('IN_FORMA')) die('You cannot access this file directly!');
 
 
 

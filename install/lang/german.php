@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Docebo 4.0 - Installation");
+define("_INSTALLER_TITLE", "Forma - Installation");
 define("_NEXT", "N&auml;chster Schritt");
 define("_BACK", "Zur&uuml;ck");
 define("_LOADING", "Lade");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Erneut versuchen");
 //--------------------------------------
 define("_TITLE_STEP1", "Schritt 1: Sprache w&auml;hlen");
 define("_LANGUAGE", "Sprache");
-define("_INSTALLER_INTRO_TEXT", "Docebo ist eine Firma, die ihre eigene open-source e-learning Umgebung namens DoceboLMS f&uuml;r komplexe Organisationen, den Wirtschaftssektor, staatliche Unternehmen und den Gesundheitssektor entwickelt hat.
+define("_INSTALLER_INTRO_TEXT", "Forma ist eine Firma, die ihre eigene open-source e-learning Umgebung namens FormaLMS f&uuml;r komplexe Organisationen, den Wirtschaftssektor, staatliche Unternehmen und den Gesundheitssektor entwickelt hat.
 	<p><b>Schl&uuml;sselfunktionen</b></p>
 	<ul>
 		<li>Scorm 1.2 und 2004 Unterst&uuml;tzung</li>
@@ -95,7 +95,7 @@ define("_DOWNLOAD_CONFIG", "Konfiguration herunterladen");
 define("_CHECKED_DIRECTORIES","Einige Verzeichnisse, in denen Dateien gespeichert werden sollen, existieren nicht, oder haben falsche Berechtigungen");
 define("_CHECKED_FILES","Einige Dateien haben keine angemessenen Berechtigungen");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Docebo 4.0 - Aktualisierung");
+define("_UPGRADER_TITLE", "Forma - Aktualisierung");
 define("_UPGRADE_CONFIG","Aktualisiere config.php Datei");
 define("_UPG_CONFIG_OK","Config.php erfolgreich aktualisiert");
 define("_UPG_CONFIG_NOT_SAVED", "Die Aktualisierung der config.php Datei ist fehlgeschlagen.");

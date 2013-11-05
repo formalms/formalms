@@ -136,8 +136,8 @@
 						echo Form::openForm('show_report_created_form', 'index.php?modname=report&amp;op=show_results&amp;of_platform=lms');
 						echo '<p><label for="report_created_sel">'.Lang::t('_SELECT', 'report').'</label></p>';
 						echo Form::getInputDropdown('dropdown', 'report_created_sel', 'idrep', $reports, false, '').'<br />';
-						echo Form::getButton('show_report_created', false, Lang::t('_VIEW', 'standard'));
-						echo Form::getButton('export_report_created', false, Lang::t('_EXPORT', 'standard'), false, '', true, false);
+						echo Form::getButton('show_report_created', 'show_report_created', Lang::t('_VIEW', 'standard'), true, '', false);
+						echo Form::getButton('export_report_created', 'export_report_created', Lang::t('_EXPORT', 'standard'), true, '', false);
 						echo Form::closeform();
 
 						$this->widget('dialog', array(
@@ -251,63 +251,35 @@
 						));
 						?>
 					</div>
-					<div class="block_spacer">
-						<h3><?php echo Lang::t('_SUPPORT_SITE', 'dashboard'); ?></h3>
-						<ul class="link_list">
+				</div>
+				<div class="nofloat"></div>
+				<div class="block_spacer">
+					<h3><?php echo Lang::t('_SUPPORT_SITE', 'dashboard'); ?></h3>
+					<ul class="link_list">
 							<li>
-								<a href="http://www.docebo.com/"
+								<a href="http://www.formalms.org/"
 									 onclick="window.open(this.href); return false;"
 									 onkeypress="window.open(this.href); return false;"
-									 title="Docebo <?php echo Lang::t('_OPEN_IN_NEW_WINDOW', 'dashboard'); ?>">
+									 title="Forma <?php echo Lang::t('_OPEN_IN_NEW_WINDOW', 'dashboard'); ?>">
 									<?php echo Lang::t('_URL_COMPANY', 'dashboard'); ?>
 								</a>
 							</li>
 							<li>
-								<a href="http://www.docebo.org/"
+								<a href="http://www.formalms.org/community"
 									 onclick="window.open(this.href); return false;"
 									 onkeypress="window.open(this.href); return false;"
-									 title="Docebo Community <?php echo Lang::t('_OPEN_IN_NEW_WINDOW', 'dashboard'); ?>">
+									 title="Forma Community <?php echo Lang::t('_OPEN_IN_NEW_WINDOW', 'dashboard'); ?>">
 									<?php echo Lang::t('_URL_SUPPORTLMS', 'dashboard'); ?>
 								</a>
 							</li>
 						</ul>
-					</div>
 				</div>
-				<div class="nofloat"></div>
 				<!-- Social list -->
+				<!-- hiding social links
 				<div class="block_spacer">
 					<h3><?php echo Lang::t('_FOLLOW_US', 'dashboard'); ?></h3>
-					<ul class="link_list_inline align-center">
-						<li>
-							<a href="http://www.facebook.com/pages/Docebo/204396855124?v=info"
-								 onclick="window.open(this.href); return false;"
-								 title="Facebook">
-								<?php echo Get::img('social/facebook.png', Lang::t('_FACEBOOK', 'standard')).' '.Lang::t('_FACEBOOK', 'standard'); ?>
-							</a>
-						</li>
-						<li>
-							<a href="http://www.linkedin.com/groupInvitation?groupID=35592&sharedKey=46E02D0F9DBB"
-								 onclick="window.open(this.href); return false;"
-								 title="Linkedin">
-								<?php echo Get::img('social/linkedin.png', Lang::t('_LINKEDIN', 'standard')).' '.Lang::t('_LINKEDIN', 'standard'); ?>
-							</a>
-						</li>
-						<li>
-							<a href="http://www.twitter.com/@docebo"
-								 onclick="window.open(this.href); return false;"
-								 title="Twitter">
-								<?php echo Get::img('social/twitter.png', Lang::t('_TWITTER', 'standard')).' '.Lang::t('_TWITTER', 'standard'); ?>
-							</a>
-						</li>
-						<li>
-							<a href="http://www.docebo.com/blog/"
-								 onclick="window.open(this.href); return false;"
-								 title="Company Blog">
-								<?php echo Get::img('social/blogspot.png', Lang::t('_COMPANY_BLOG', 'standard')).' '.Lang::t('_COMPANY_BLOG', 'standard'); ?>
-							</a>
-						</li>
-					</ul>
 				</div>
+				-->
 			</div>
 		</div>
 	</div>

@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Docebo 4.0 - Встановлення");
+define("_INSTALLER_TITLE", "Forma - Встановлення");
 define("_NEXT", "Наступний крок");
 define("_BACK", "Назад");
 define("_LOADING", "Завантаження");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Спробувати знову");
 //--------------------------------------
 define("_TITLE_STEP1", "Крок 1: Оберіть мову");
 define("_LANGUAGE", "Мова");
-define("_INSTALLER_INTRO_TEXT", "Docebo - це компанія, що розробила систему електронного навчання з відкритим кодом яка називається DoceboLMS і найкраще підходить для великих організацій, корпоративної, держвної галузі та галузі охорони здоров’я.
+define("_INSTALLER_INTRO_TEXT", "Forma - це компанія, що розробила систему електронного навчання з відкритим кодом яка називається FormaLMS і найкраще підходить для великих організацій, корпоративної, держвної галузі та галузі охорони здоров’я.
 	<p><b>Основні властивості</b></p>
 	<ul>
 		<li>Підтримка Scorm 1.2 та 2004</li>
@@ -43,7 +43,7 @@ define("_MAX_EXECUTION_TIME","max_execution_time : ");
 define("_ON","ON ");
 define("_OFF","OFF ");
 
-define("_VERSION","Версія Docebo");
+define("_VERSION","Версія Forma");
 define("_START","Початок");
 define("_END","Кінець");
 // -----------------------------------------
@@ -99,7 +99,7 @@ define("_DOWNLOAD_CONFIG", "Завантажити конфіг");
 define("_CHECKED_DIRECTORIES","Деякі директорії для збереження файлів не існують або мають не вірні параметри доступу");
 define("_CHECKED_FILES","Деякі файли мають невірні права доступу");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Docebo 4.0 - Оновлення");
+define("_UPGRADER_TITLE", "Forma - Оновлення");
 define("_UPGRADE_CONFIG","Оновлення файлу config.php");
 define("_UPG_CONFIG_OK","Файл Config.php повністю оновлено");
 define("_UPG_CONFIG_NOT_SAVED", "Процесс оновлення файлу config.php провалився.");

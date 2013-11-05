@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
@@ -80,7 +83,7 @@ function insitem() {
 		$_SESSION['last_error'] = _FILEUNSPECIFIED;
 		Util::jump_to( ''.$back_url.'&create_result=0' );
 	}
-	$path = str_replace ( '\\', '/', '/doceboLms/'.Get::sett('pathscorm'));
+	$path = str_replace ( '\\', '/', '/appLms/'.Get::sett('pathscorm'));
 	$savefile = getLogUserId().'_'.rand(0,100).'_'.time().'_'.$_FILES['attach']['name'];
 	if(!file_exists ($GLOBALS['where_files_relative'].$path.$savefile)) {
 		sl_open_fileoperations();
@@ -292,7 +295,7 @@ function _scorm_deleteitem( $idscorm_package, $idscorm_organization, $erasetrack
 			or die(mysql_error());
 	
 		list($path) = sql_fetch_row($rs);
-		$scopath = str_replace ( '\\', '/', $GLOBALS['where_files_relative'].'/doceboLms/'.Get::sett('pathscorm'));
+		$scopath = str_replace ( '\\', '/', $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathscorm'));
 		/* remove all zip directory */
 		if(file_exists($scopath.$path)) {
 			
@@ -337,7 +340,7 @@ function _scorm_copyitem( $idscorm_package, $idscorm_organization ) {
 	}
 
 	list($path) = sql_fetch_row($rs);
-	$scopath = str_replace ( '\\', '/', $GLOBALS['where_files_relative'].'/doceboLms/'.Get::sett('pathscorm'));
+	$scopath = str_replace ( '\\', '/', $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathscorm'));
 	
 	/* copy all zip directory */
 	/* remove copy - use same files 

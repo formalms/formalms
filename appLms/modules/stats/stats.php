@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 if(!Docebo::user()->isLoggedIn() || !isset($_SESSION['idCourse'])) die( "You can't access to oragnization");
@@ -930,14 +933,62 @@ function statoneuseroneitemdetails() {
 		.$lang->def('_STATSFORITEM').' <img src="'.getPathImage().'lobject/'.$objectType.'.gif"'
 		.' alt="'.$objectType.'" />'.$titleLO
 		. '</div>');
-
 	$loTrack = createLOTrackShort( 	$idItem,
 									$idst_user,
 									'index.php?modname=stats&op=statitem&idItem='.$idItem);
 	if( $loTrack === FALSE )
 		$out->add( $lang->def('_STATNOTRACKFORUSER') );
 	else
-		$out->add( $loTrack->loadReportDetail($idst_user,$idItemDetail) );
+		$out->add( $loTrack->loadReportDetail($idst_user,$idItemDetail, $idItem) );
+	$out->add( '</div>' );
+}
+
+/**
+ * Print statistics history for one user and one item
+ *  $_GET['idUser']
+ *  $_GET['idItem']
+ **/
+function statoneuseroneitemhistory() {
+	require_once(_lms_.'/class.module/track.object.php' );
+
+	require_once(_base_.'/lib/lib.form.php');
+	require_once(_base_.'/lib/lib.table.php');
+
+	$lang =& DoceboLanguage::createInstance('stats', 'lms');
+	$out  =& $GLOBALS['page'];
+	$form =  new Form();
+	$aclManager =& Docebo::user()->getACLManager();
+	$acl =& Docebo::user()->getACL();
+
+	$backto = $_GET['backto'];
+	$idItem = (int)$_GET['idItem'];
+	$idst_user = (int)$_GET['idUser'];
+	$idItemDetail = (int)$_GET['idItemDetail'];
+
+	$out->setWorkingZone('content');
+	$out->add(getTitleArea($lang->def('_STATSUSERITEM'), 'stats'));
+	$out->add('<div class="std_block">'
+			.getBackUi('index.php?modname=stats&amp;op='.$backto.'&amp;idUser='.$idst_user.'&amp;idItem='.$idItem, $lang->def('_BACK')));
+	//$out->add( $form->openForm( 'orgshow', 'index.php?modname=stats&amp;op=statitem&amp;idItem='.$idItem ) );
+
+	list($titleLO, $objectType) = sql_fetch_row(sql_query("SELECT title, objectType FROM "
+												 				.$GLOBALS['prefix_lms']."_organization"
+												 				." WHERE idOrg='".(int)$_GET['idItem']."'"));
+
+	$user_info = $aclManager->getUser( $idst_user, FALSE );
+
+	$out->add( '<div class="title">'
+		.$lang->def('_STATFORUSER').' '.$user_info[ACL_INFO_FIRSTNAME].' '.$user_info[ACL_INFO_LASTNAME].' '
+		.$lang->def('_STATSFORITEM').' <img src="'.getPathImage().'lobject/'.$objectType.'.gif"'
+		.' alt="'.$objectType.'" />'.$titleLO
+		. '</div>');
+	$loTrack = createLOTrackShort( 	$idItem,
+									$idst_user,
+									'index.php?modname=stats&op=statitem&idItem='.$idItem);
+	if( $loTrack === FALSE )
+		$out->add( $lang->def('_STATNOTRACKFORUSER') );
+	else
+		$out->add( $loTrack->loadReportDetailHistory($idst_user,$idItemDetail, $idItem) );
 	$out->add( '</div>' );
 }
 
@@ -1043,6 +1094,9 @@ switch( $GLOBALS['op'] ) {  // -------------------------------------------------
 	break;
 	case "statoneuseroneitemdetail":
 		statoneuseroneitemdetails();
+	break;
+	case "statoneuseroneitemhistory":
+		statoneuseroneitemhistory();
 	break;
 	case "modstatus":
 		modstatus();

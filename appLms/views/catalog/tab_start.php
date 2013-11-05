@@ -64,6 +64,7 @@ $ma = new Man_MiddleArea();
 				$category = $this->model->getMinorCategory($std_link, true);
 				if(!empty($category)) {
 
+/* FORMA - LEVATE CATEGORIE ORIZZONTALI
 					echo '<div class="kb_folder_box"  id="folder_box">'
 						.'<ul id="kb_folder_box_ul" class="style_none">';
 					foreach ($category as $id_cat => $data) {
@@ -81,6 +82,7 @@ $ma = new Man_MiddleArea();
 					echo '</ul>'
 						.'<div class="nofloat"></div>'
 						. '</div>';
+*/
 				} else {
 
 					echo '<br />';

@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die("Direct access is forbidden");
+<?php defined("IN_FORMA") or die("Direct access is forbidden");
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 class LabelAlmsController extends AlmsController
@@ -153,7 +156,7 @@ class LabelAlmsController extends AlmsController
 				$extension = end(explode('.', $_FILES['label_image']['name']));
 				$file_name = 'label_image_'.$id_common_label.'.'.$extension;
 
-				$path = '/doceboLms/label/';
+				$path = '/appLms/label/';
 
 				sl_open_fileoperations();
 
@@ -211,7 +214,7 @@ class LabelAlmsController extends AlmsController
 		if(isset($_POST['update']))
 		{
 			require_once(_base_.'/lib/lib.upload.php');
-			$path = '/doceboLms/label/';
+			$path = '/appLms/label/';
 
 			if(isset($_POST['del_label_image']))
 			{

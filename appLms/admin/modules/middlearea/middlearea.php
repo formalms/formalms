@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 function view_area() {
@@ -52,6 +55,11 @@ function view_area() {
 			.' <a class="ico-sprite subs_users" href="'.$base_url.'mo_help'.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
 			.' <a class="ico-sprite subs_'.( isset($disabled_list['mo_help']) ? 'noac' : 'actv' ).'" href="'.$second_url.'mo_help'.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
 			.'</li>';
+    $main_menu .= '<li>'
+			.'<span>'.Lang::t('_LIBRARY', 'menu_over').'</span>'
+			.' <a class="ico-sprite subs_users" href="'.$base_url.'mo_library'.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
+			.' <a class="ico-sprite subs_'.( isset($disabled_list['mo_library']) ? 'noac' : 'actv' ).'" href="'.$second_url.'mo_library'.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
+			.'</li>';
 	
 	// Tab list
 	$tab_list = '';
@@ -59,7 +67,9 @@ function view_area() {
 		'tb_elearning' => Lang::t('_ELEARNING', 'middlearea'),
 		'tb_label' => Lang::t('_LABELS', 'label'),
 		'tb_classroom' => Lang::t('_CLASSROOM', 'middlearea'),
-		'tb_catalog' => Lang::t('_CATALOGUE', 'middlearea'),
+		'tb_calendar' => Lang::t('_CALENDAR', 'middlearea'),
+        'tb_catalog' => Lang::t('_CATALOGUE', 'middlearea'),
+        'tb_library' => Lang::t('_LIBRARY', 'middlearea'),
 		'tb_assessment' => Lang::t('_ASSESSMENT', 'middlearea'),
 		'tb_coursepath' => Lang::t('_COURSEPATH', 'coursepath'),
 		'tb_games' => Lang::t('_CONTEST', 'middlearea'),
@@ -81,6 +91,10 @@ function view_area() {
 		//'user_details_short' => Lang::t('_SIMPLE_USER_PROFILE', 'middlearea'),
 		'user_details_full' => Lang::t('_PROFILE', 'profile'),
 		'credits' => Lang::t('_CREDITS', 'middlearea'),
+        //aggiunto box carriera
+		'career' => Lang::t('_CAREER', 'middlearea'),
+        //aggiunto box iscrizione corso
+        'course' => Lang::t('_SUBSCRIBE_COURSE', 'middlearea'),
 		'news' => Lang::t('_NEWS', 'middlearea')
 	);
 	while(list($id, $name) = each($block)) {
@@ -132,6 +146,7 @@ function switch_active() {
 	$man_ma->setObjIdstList($obj_index, $selected);
 	
 	$re = $man_ma->changeDisableStatus($obj_index);
+        
 	
 	Util::jump_to('index.php?modname=middlearea&amp;op=view_area&amp;result='.($re ? 'ok' : 'err' ));
 }

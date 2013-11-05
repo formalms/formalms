@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 class CatalogLmsController extends LmsController {
@@ -29,7 +32,7 @@ class CatalogLmsController extends LmsController {
 	{
 		YuiLib::load('base,tabview');
 		Lang::init('course');
-		$this->path_course = $GLOBALS['where_files_relative'].'/doceboLms/'.Get::sett('pathcourse').'/';
+		$this->path_course = $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathcourse').'/';
 		$this->model = new CatalogLms();
 
 		require_once(_base_.'/lib/lib.json.php');
@@ -63,7 +66,7 @@ class CatalogLmsController extends LmsController {
 
 		$ma = new Man_MiddleArea();
 
-		echo '<div style="margin:1em;">';
+		echo '<div class="middlearea_container">';
 
 		$lmstab = $this->widget('lms_tab', array(
 								'active' => 'catalog',
@@ -295,6 +298,14 @@ class CatalogLmsController extends LmsController {
 		echo $this->json->encode($res);
 	}
 
+	public function subscribeCoursePathInfo() {
+		$id_path = Get::req('id_path', DOTY_INT, 0);
+
+		$res = $this->model->subscribeCoursePathInfo($id_path);
+
+		echo $this->json->encode($res);
+	}
+
 	public function courseSelection()
 	{
 		$id_course = Get::req('id_course', DOTY_INT, 0);
@@ -459,6 +470,92 @@ class CatalogLmsController extends LmsController {
 		echo $this->json->encode($res);
 	}
 
+	public function subscribeToCoursePath()
+	{
+		$id_path = Get::req('id_path', DOTY_INT, 0);
+
+		$id_user = Docebo::user()->getIdSt();
+
+		$query_pathlist = "
+		SELECT path_name, subscribe_method
+		FROM ".$GLOBALS['prefix_lms']."_coursepath
+		WHERE id_path = '".$id_path."'
+		ORDER BY path_name ";
+		list($path_name, $subscribe_method) = sql_fetch_row(sql_query($query_pathlist));
+
+
+		if($subscribe_method == 1) $waiting = 1;
+		else $waiting = 0;
+		$text_query = "
+			INSERT INTO ".$GLOBALS['prefix_lms']."_coursepath_user
+			( id_path, idUser, waiting, subscribed_by ) VALUES
+			( '".$id_path."', '".$id_user."', '".$waiting."', '".getLogUserId()."' )";
+		$re_s = sql_query($text_query);
+
+		/////////////////////////
+
+		if($waiting == 0) {
+			require_once(_lms_.'/lib/lib.subscribe.php');
+			require_once(_lms_.'/lib/lib.coursepath.php');
+
+			$cpath_man = new CoursePath_Manager();
+			$subs_man = new CourseSubscribe_Management();
+
+			$id_path = Get::req('id_path', DOTY_INT, 0);
+			$user_selected = unserialize(urldecode(Get::req('users', DOTY_MIXED, array())));
+
+			$courses = $cpath_man->getAllCourses(array($id_path));
+
+			$users_subsc = array($id_user);
+
+			$re &= $subs_man->multipleSubscribe($users_subsc, $courses, 3);
+		}
+/*
+		qui non posso intervenire, si devono scegliere gli assesment e le edizioni... da admin ci sono form
+
+		$course_man = new Man_Course();
+		$assessment = $course_man->getAllCourses(false, 'assessment', $courses);
+		$classroom = $course_man->getAllCourses(false, 'classroom', $courses);
+		$edition = $course_man->getAllCourses(false, 'edition', $courses);
+
+
+		if(!empty($assessment))
+		{
+			foreach($assessment as $id_assessment => $assessment_info)
+				sql_query("INSERT INTO %lms_assessment_user (id_assessment, id_user, type_of) VALUES ('".$id_assessment."', '".$id_user."', 'user')");
+
+			reset($assessment);
+		}
+
+		if(!empty($array_id_date))
+		{
+			foreach($array_id_date as $id_date)
+				$date_man->addUserToDate($id_date, $id_user, Docebo::user()->getIdSt());
+
+			reset($array_id_date);
+		}
+
+		if(!empty($array_id_edition))
+		{
+			foreach($array_id_edition as $id_edition)
+				$edition_man->addUserToEdition($id_edition, $id_user, Docebo::user()->getIdSt());
+
+			reset($array_id_edition);
+		}
+
+*/
+
+		$res['success'] = true;
+		if($waiting == 1)
+			$res['new_status'] = '<p class="cannot_subscribe">'.Lang::t('_WAITING', 'catalogue').'</p>';
+		else
+			$res['new_status'] = '<p class="cannot_subscribe">'.Lang::t('_USER_STATUS_SUBS', 'catalogue').'</p>';
+
+		$res['message'] = $res['message'] = UIFeedback::info(Lang::t('_SUBSCRIPTION_CORRECT', 'catalogue'), true);
+
+		echo $this->json->encode($res);
+	}
+
 	public function addToCart()
 	{
 		$id_course = Get::req('id_course', DOTY_INT, 0);
@@ -508,7 +605,7 @@ class CatalogLmsController extends LmsController {
 		list($fname) =$db->fetch_row($q);
 
 		if (!empty($fname)) {
-			sendFile('/doceboLms/course/', $fname);
+			sendFile('/appLms/course/', $fname);
 		}
 		else {
 			echo "nothing found";

@@ -12,7 +12,7 @@ function generateConfig($tpl_fn) {
 			$config = fread($handle, filesize($tpl_fn));
 			fclose($handle);
 		}
-		
+
 		$config=str_replace("[%-DB_HOST-%]", $_SESSION['db_info']["db_host"], $config);
 		$config=str_replace("[%-DB_USER-%]", $_SESSION['db_info']["db_user"], $config);
 		$config=str_replace("[%-DB_PASS-%]", $_SESSION['db_info']["db_pass"], $config);
@@ -45,9 +45,9 @@ function generateConfig($tpl_fn) {
 
 function getPlatformArray() {
 	return array(
-		'framework'=>'doceboCore',
-		'lms'=>'doceboLms',
-		'scs'=>'doceboScs',
+		'framework'=>'appCore',
+		'lms'=>'appLms',
+		'scs'=>'appScs',
 	);
 }
 
@@ -90,15 +90,20 @@ function getToUpgradeArray() {
 			$to_upgrade_arr[]=$ver;
 		}
 	}
-	
+
 	$to_upgrade_arr[]=getVersionIntNumber($GLOBALS['cfg']['endversion']);
-	
+
 	return $to_upgrade_arr;
 }
 
 
 function getVersionIntNumber($ver) {
 	$res =str_pad(str_replace('.', '', $ver), 4, '0', STR_PAD_RIGHT);
+
+	if ( version_compare($ver, '3.6.0','>=') && version_compare($ver, '4.0.5','<=') ) {
+		// docebo ce versions series
+	}
+
 	return $res;
 }
 

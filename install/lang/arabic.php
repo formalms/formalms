@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Docebo 4.0 - Installation");
+define("_INSTALLER_TITLE", "Forma - Installation");
 define("_NEXT", "Next step");
 define("_BACK", "Back");
 define("_LOADING", "Loading");
@@ -95,7 +95,7 @@ define("_DOWNLOAD_CONFIG", "تحميل التهيئة");
 define("_CHECKED_DIRECTORIES","بعض الدليل حيث يتم تخزين الملفات غير موجود أو ليس لديه الإذن الصحيح");
 define("_CHECKED_FILES","ملفات معينة لا تملك الصلاحيات الكافية");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Docebo 4.0 - ترقية");
+define("_UPGRADER_TITLE", "Forma - ترقية");
 define("_UPGRADE_CONFIG","ترقية config.php ملف");
 define("_UPG_CONFIG_OK","Config.php تحديث ملف بنجاح");
 define("_UPG_CONFIG_NOT_SAVED", "عملية التحديث ل config.php فشلت.");

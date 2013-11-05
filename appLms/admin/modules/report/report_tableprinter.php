@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 define('_HTML', 'html');
@@ -72,10 +75,12 @@ class ReportTablePrinter {
 		$content_csv  = $temp.': '.$date;
 		
 		switch ($this->type) {
-			
-			case _HTML: {
-				$this->buffer .= '<p id="report_info">'.$content_html.'</p><br />';
-			} break;
+			case _HTML :
+				{
+					$head = '<head><meta http-equiv="content-type" content="text/html; charset=utf-8"></head>';
+					$this->buffer .= $head . '<p id="report_info">' . $content_html . '</p><br />';
+				}
+				break;
 			
 			case _CSV: {
 				$this->buffer .= $content_csv._CSV_ENDLINE._CSV_ENDLINE;

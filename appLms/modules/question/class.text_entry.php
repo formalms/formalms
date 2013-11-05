@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 require_once( dirname(__FILE__).'/class.question.php' );
@@ -426,7 +429,7 @@ class TextEntry_Question extends Question {
 		list($id_answer, $answer) = sql_fetch_row($re_answer);
 		$num_char = strlen($answer);
 		$text = '<input class="test_te_input" type="text" id="quest_'.$id_quest.'" name="quest['.$id_quest.']" '
-				.'maxlength="'.strlen($answer).'" '
+				.'maxlength="'.strlen($answer).'" '.'autocomplete="off" '
 				.'value="'.( $find_prev ? $answer_do : str_repeat($lang->def('_QUEST_TE_ANSWERHERE'), $num_char) ).'"'
 				.( $find_prev && $freeze ? ' disabled="disabled"' : '' )
 				.' />';

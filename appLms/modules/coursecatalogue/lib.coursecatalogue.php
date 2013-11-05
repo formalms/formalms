@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
@@ -785,7 +788,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
 
 			require_once(_base_.'/lib/lib.multimedia.php');
 			$ext = end(explode('.', $cinfo['course_demo']));
-			if(isPossibleEmbedPlay('/doceboLms/'.Get::sett('pathcourse'), $cinfo['course_demo'], $ext)) {
+			if(isPossibleEmbedPlay('/appLms/'.Get::sett('pathcourse'), $cinfo['course_demo'], $ext)) {
 
 				// play demo in popup ---------------------------------------------------------
 				$html .= '<li class="course_demo">'
@@ -989,8 +992,8 @@ function searchForm(&$url, &$lang) {
  */
 function relationWithCourse($id_course, &$course, $uc_details, $edition_id = false) {
 
-	require_once($GLOBALS['where_ecom'].'/lib/lib.cart.php');
-	$cart =& Cart::createInstance();
+// 	require_once($GLOBALS['where_ecom'].'/lib/lib.cart.php');
+// 	$cart =& Cart::createInstance();
 	
 	list($enrolled) = sql_fetch_row(sql_query("SELECT COUNT(*) FROM ".$GLOBALS['prefix_lms']."_courseuser WHERE idCourse = '".$id_course."' AND edition_id = '0'"));
 	

@@ -1,4 +1,85 @@
+
+---------------------------------------------------------------------------------------
+FORMA 1.0
+---------------------------------------------------------------------------------------
+
+Bug #391: Force IE9 compatibility
+Bug #392: Deleted users remain in course subscription count
+Bug #393: Javascript Errors on report publishing
+Bug #394: Missing or wrong dates in " My Certificates" Area
+Bug #395: Report publicadmin con filtro sui corsi (405)
+Bug #396: Advanced search in course subscription
+Bug #397: Content library tags
+Bug #398: Export report in admin welcome page
+Bug #399: Broken subscription confirmation link
+Bug #400: Error 500 for administrators and publicadmin
+Bug #401: Missing mime types
+Bug #402: Bugs in course report
+Bug #403: Password non salvata in login
+Bug #404: Bugs e mod in catalogo corsi
+Bug #405: Fix communications admin page
+Bug #406: End Course date not working
+Bug #407: Installer/Upgrader
+Bug #408: Question Bank
+Bug #409: Missing subscribe button for curricula in catalog
+Bug #412: Text Label fields hidden in usertable dropdown
+Bug #413: course subscription - notification event not working
+Bug #414: Announcements - email notification sent only to admin
+Bug #415: Wrong question timing using randomization in temporized tests
+Bug #416: File upload error in communications
+Bug #511: fixed IM not working
+Bug #516: Upgrader - Missing db inserts upgrading from docebo 3.6
+Bug #523: Charset error in report export
+Bug #525: Editing existing csv connection
+Bug #537: Rebranding - Logo e favicon
+Bug #538: Rebranding - Set e controllo versione Forma
+Bug #539: Verifiche controllo versione PHP
+Bug #803: JSON Error when closing subscribe dialog
+Bug #806: Blank page on course stats filtering with editions
+Bug #808: Enrollment Rules - user folder assignement bug
+Bug #967: wrong xls icon in gradebook
+Bug #1010: Code error on course copy (generates problems on IE)
+Bug #1033: Updated mime types list
+Bug #1083: Course projects - missing download icon for files
+Bug #1088: 404 error in chat window
+Bug #1106: New styles for install/upgrade wizard
+Bug #1143: Announcements - missing title and description in sent email
+Bug #1235: Commenti purple da levare
+Bug #1253: Communications - error on downloaded files extensions
+Change Request #470: Course Copy - single LO selection
+Change Request #471: Reservation Management - delete and email single registered users
+Change Request #472: Reservation Management - Simplifieduser registration
+Change Request #473: Reservation Management - Email notification on user un-subscription
+Change Request #475: Custom Fields - Html Label
+Change Request #477: Course Catalogue - Vertical category list & various fixes
+Change Request #478: Added new maintenance mode feature
+Change Request #480: Dynamic dropdown list in gradebook user table
+Change Request #481: Attendance list - xls export function
+Change Request #483: Reintroduced missing career box module
+Change Request #490: New horizontal menu in courses
+Change Request #494: New code subscription module (side)
+Change Request #495: Scorm stats for admins
+Change Request #502: TinyMCE - Updated to ver. 3.5.8
+Change Request #503: Code Rebranding
+Change Request #504: File System: doceboLms/doceboCore folders renamed
+Change Request #505: New Forma Credits
+Change Request #507: Removed hidden call to old docebo servers
+Change Request #513: Added and fixed many translation keys (IT & EN)
+Change Request #518: Updated platform upgrade wizard
+Change Request #521: Updated YUI library (2.9)
+Change Request #524: Set autocomplete=off for fill-in (TE) questions in tests
+Change Request #526: error in event translation
+Change Request #527: Message priority (completed missing features)
+Change Request #575: Restyling Template
+Change Request #805: New paypal procedures
+Change Request #1032: Updated file extension whitelist
+Change Request #1076: New links to Forma sites in admin dashboard
+
+
+---------------------------------------------------------------------------------------
 Docebo 4.0.5
+---------------------------------------------------------------------------------------
+
 
 Security fix:
 	Fixed sql injection with iotask connectors; thanks to mr_me (net-ninja.net) for reporting this.
@@ -59,7 +140,7 @@ Docebo 4.0.4
 
 - Fixed: get/set last_enter of the user according to setupUser
 
-- Fixed: Fatal error: Call to undefined function def() in /doceboCore/modules/field/class.cf.php on line 447
+- Fixed: Fatal error: Call to undefined function def() in /appCore/modules/field/class.cf.php on line 447
 
 - Fixed bugs: 371, 370, 369, 367, 366, 365, 364, 363, 361, 360, 356, 355, 354, 352, 350 and others
 

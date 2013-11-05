@@ -1,15 +1,19 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
+
 /*
 define("LMS", true);
-define("IN_DOCEBO", true);
+define("IN_FORMA", true);
 define("_deeppath_", '../../../');
 //require(dirname(__FILE__).'/../base.php');
 
@@ -26,7 +30,7 @@ require_once(dirname(__FILE__) . '/config.scorm.php');
 require_once(dirname(__FILE__) . '/scorm_utils.php');
 require_once(dirname(__FILE__) . '/scorm_items_track.php');
 
-$idReference 	= $GLOBALS['idReference']; 
+$idReference 	= $GLOBALS['idReference'];
 $idResource 	= $GLOBALS['idResource'];
 $back_url 		= $GLOBALS['back_url'];
 $autoplay 		= $GLOBALS['autoplay'];
@@ -61,7 +65,7 @@ $scormVersion = getScormVersion( 'idscorm_organization', $idscorm_organization);
 /* get object title */
 list($lo_title) = sql_fetch_row(sql_query(	"SELECT title"
 												." FROM ".$GLOBALS['prefix_lms']."_organization"
-											  	." WHERE idResource = '$idResource'" 
+											  	." WHERE idResource = '$idResource'"
 											  	."   AND objectType = 'scormorg'"));
 
 $itemtrack = new Scorm_ItemsTrack(null, $GLOBALS['prefix_lms']);
@@ -95,14 +99,14 @@ if(!empty($GLOBALS['chapter'])) {
 //$lms_base_url = Get::rel_path('lms').'/';
 //$lms_base_url = preg_replace("/:\/\/([A-Za-z0-9_:.]+)\//","://".$_SERVER['HTTP_HOST']."/",Get::sett('url'));
 $lms_base_url = preg_replace("/http[s]*:\/\/([A-Za-z0-9_:.]+)\//", 'http' . ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 's' : '' )."://".$_SERVER['HTTP_HOST']."/",Get::sett('url'));
-$lms_base_url .= 'doceboLms/';
+$lms_base_url .= 'appLms/';
 $lms_base_url = Get::rel_path('lms').'/';
 
 $lms_base_url = 'http' . ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 's' : '' ).'://'.$_SERVER['HTTP_HOST']
 	    	.( strlen(dirname($_SERVER['SCRIPT_NAME'])) != 1 ? dirname($_SERVER['SCRIPT_NAME']) : '' ).'/';
 /*
- lms_url: 'http://localhost/docebo_36/doceboLms/modules/scorm/soaplms.php',
- lms_base_url: 'http://localhost/docebo_36/doceboLms/',
+ lms_url: 'http://server/appLms/modules/scorm/soaplms.php',
+ lms_base_url: 'http://server/appLms/',
 */
 $lms_url = $lms_base_url.$scormws;
 $xmlTreeUrl = $lms_base_url.$scormxmltree.'?idscorm_organization='.$idscorm_organization.'&idReference='.$idReference.'&environment='.$environment;
@@ -143,7 +147,7 @@ if(trim($playertemplate) != '') echo '	<link href="'.Get::tmpl_path().'/player_s
 	echo " imagesPath: '$imagesPath',\n";
 	echo " idElemTree: 'treecontent',\n";
 	echo " idElemSco: 'scormbody',\n";
-	echo " idElemScoContent: 'scocontent',\n";	
+	echo " idElemScoContent: 'scocontent',\n";
 	echo " idElemSeparator: 'separator',\n ";
 	echo " showTree: '$isshow_tree',\n ";
 	echo " playertemplate: '$playertemplate',\n";
@@ -155,12 +159,12 @@ if(trim($playertemplate) != '') echo '	<link href="'.Get::tmpl_path().'/player_s
 	echo " startFromChapter: ".( $start_from_chapter ? "'".$start_from_chapter."'" : "false" )."\n";
 
 	echo "};\n";
-		
-	echo 'window.onload = StdUIPlayer.initialize;'."\n";	
+
+	echo 'window.onload = StdUIPlayer.initialize;'."\n";
 	echo ' // -->'."\n";
 	echo '</SCRIPT>'."\n";
-	
-	
+
+
 	echo '
 		<script type="text/javascript" src=".././addons/yui/utilities/utilities.js"></script>
 		<script type="text/javascript" src=".././addons/yui/json/json-min.js"></script>
@@ -168,7 +172,7 @@ if(trim($playertemplate) != '') echo '	<link href="'.Get::tmpl_path().'/player_s
 		<script type="text/javascript" src=".././addons/yui/logger/logger-min.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="../templates/standard/yui-skin/logger.css" />';
-	
+
 echo '</head>'."\n";
 
 echo '<body class="yui-skin-sam" id="page_head" class="'.$playertemplate.'" onunload="trackUnloadOnLms()">
@@ -231,5 +235,5 @@ echo '</body>
 
 ob_end_flush();
 exit;	// to avoid index.php to add additional and unuseful html
-} 
+}
 ?>

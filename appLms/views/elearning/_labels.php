@@ -24,7 +24,7 @@
 					echo	'<div class="label_container">'
 								.'<a class="no_decoration" href="index.php?r=elearning/show&amp;id_common_label='.$id_common_label.'">'
 									.'<span class="label_image_cont">'
-										.'<img class="label_image" src="'.($label_info['image'] !== '' ? $GLOBALS['where_files_relative'].'/doceboLms/label/'.$label_info['image'] : Get::tmpl_path('base').'images/course/label_image.png').'" />'
+										.'<img class="label_image" src="'.($label_info['image'] !== '' ? $GLOBALS['where_files_relative'].'/appLms/label/'.$label_info['image'] : Get::tmpl_path('base').'images/course/label_image.png').'" />'
 									.'</span>'
 									.'<span class="label_info_con">'
 										.'<span class="label_title">'.$label_info['title'].'</span>'

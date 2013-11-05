@@ -8,7 +8,7 @@ body{font:13px/1.231 arial, sans-serif;*font-size:small;*font:x-small;background
 .install_hd b{font-size:90%;font-weight:normal;position:absolute;right:5px;top:8px;}
 .install_bd{position:relative;height:510px;}
 .install_shoulder{width:250px;position:absolute;height:490px;top:10px;left:0px;border-right:1px solid #cccccc;}
-.install_shoulder .logo{margin:15px 20px;}
+.install_shoulder .logo{margin:15px 15px 15px 20px; width:208px;}
 .install_shoulder .flux{margin:0 20px;width:210px;padding:2px;border:1px solid #ccc;}
 .install_content{margin:0 10px 0 250px;height:500px;overflow:auto;}
 .install_content .ibd{padding:6px 12px 0;}

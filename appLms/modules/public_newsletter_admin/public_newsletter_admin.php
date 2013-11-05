@@ -1,11 +1,14 @@
 <?php
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 define("_ANY_LANG_CODE", "-any-");
@@ -89,7 +92,7 @@ function send_newsletter($send_id) {
 	
 	$json = new Services_JSON();
 	
-	$path = '/doceboCore/newsletter/';
+	$path = '/appCore/newsletter/';
 
 	//access control
 	$nl_sendpercycle=$GLOBALS["framework"]["nl_sendpercycle"];
@@ -344,7 +347,7 @@ function init_send() {
 			//$savefile = rand(0,100).'_'.time().'_'.$_FILES['file']['name'];
 			$savefile[] = $_FILES['file_'.$i]['name'];
 			
-			$path = '/doceboCore/newsletter/';
+			$path = '/appCore/newsletter/';
 			
 			sl_open_fileoperations();
 			
@@ -447,7 +450,7 @@ function selSendTo() {
 	checkPerm('view');
 
 // [TODO] check write or mod. permissions
-// http://127.0.0.1:82/claudio/lms_cvs/doceboCore/index.php?modname=public_newsletter_admin&op=selsendto&id_send=1
+// http://127.0.0.1:82/claudio/lms_cvs/appCore/index.php?modname=public_newsletter_admin&op=selsendto&id_send=1
 	if ((isset($_GET["id_send"])) && ($_GET["id_send"] > 0)) {
 		$id_send=$_GET["id_send"];
 	}
@@ -519,7 +522,7 @@ function selSendTo() {
 		
 		$file = $info['file'];
 		
-		$path = '/doceboCore/newsletter/';
+		$path = '/appCore/newsletter/';
 		
 		require_once(_base_.'/lib/lib.upload.php');
 		if($file != '')

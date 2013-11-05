@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die("Direct access is forbidden");
+<?php defined("IN_FORMA") or die("Direct access is forbidden");
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 Class CourseAlmsController extends AlmsController
@@ -63,6 +66,30 @@ Class CourseAlmsController extends AlmsController
 		}
 		return $message;
 	}
+	
+	// funzione (ajax)
+	public function getlolist($p=0, $sk = '') {
+		if (isset($_GET['idCourse'])) {
+			$query_list = "SELECT * FROM %lms_organization WHERE idCourse = '".(int)$_GET['idCourse']."' AND idParent = ".$p." ORDER BY path ASC";
+			$result_list = sql_query($query_list);
+			if (mysql_num_rows($result_list) > 0) {
+				if ($p == 0)
+					echo "<div id='treeDiv' class='ygtv-checkbox'>";
+				echo "<ul>";
+				while($lo = sql_fetch_array($result_list)) {
+					echo "<li class=\"expanded\"> <input onclick='cascade(\"".$lo['idOrg']."\")' class='".$sk."' type='checkbox' id='".$lo['idOrg']."' name='lo_list[]' value='".$lo['idOrg']."' checked='checked' /> <label for='".$lo['idOrg']."'>".$lo['title']."</label>";
+					$this->getlolist($lo['idOrg'], $sk." ".$lo['idOrg']);
+					echo "</li>";
+				}
+				echo "</ul>";
+				if ($p == 0) {
+					echo "</div>";
+				}
+			}
+		} else
+			echo "Error";
+	}
+	
 
 	public function show()
 	{
@@ -624,7 +651,7 @@ Class CourseAlmsController extends AlmsController
 			if(isset($_POST['image']))
 			{
 				$path = Get::sett('pathcourse');
-				$path = '/doceboLms/'.Get::sett('pathcourse').( substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
+				$path = '/appLms/'.Get::sett('pathcourse').( substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
 				require_once(_base_.'/lib/lib.upload.php');
 
@@ -1053,6 +1080,8 @@ Class CourseAlmsController extends AlmsController
 		if(isset($_POST['assign']))
 		{
 			$point_required = Get::req('point_required', DOTY_INT, 0);
+			
+			// , $list_of_assign_obj, $list_of_who
 			
 			if(!$cert->updateCertificateCourseAssign($id_course, $_POST['certificate_assign'], $_POST['certificate_ex_assign'], $point_required))
 				Util::jump_to('index.php?r='.$this->base_link_course.'/show&err=_up_cert_err');

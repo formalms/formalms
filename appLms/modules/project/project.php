@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
@@ -15,7 +18,7 @@
 if((Docebo::user()->isAnonymous()) || (!checkPerm('view', true))) die("You can't access!");
 
 
-define("_FPATH_INTERNAL", "/doceboLms/".Get::sett('pathprj'));
+define("_FPATH_INTERNAL", "/appLms/".Get::sett('pathprj'));
 define("_FPATH", $GLOBALS["where_files_relative"]._FPATH_INTERNAL);
 
 require_once($GLOBALS["where_lms"].'/lib/lib.stats.php');
@@ -108,7 +111,7 @@ function project() {
 		$tab->addBody($content);
 	}
 	if($del_perm) {
-		
+
 		require_once(_base_.'/lib/lib.dialog.php');
 		setupHrefDialogBox('a[href*=delprj]');
 	}
@@ -434,7 +437,7 @@ function show_task( $id, $row, $modimg ) {
 	$query = sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj WHERE id='$id' LIMIT 1;");
 	$data = mysql_fetch_array($query);
 	$progtot = $row["pprog"];
-	
+
 	$out->add('<div class="content">'
 		.'<table width="100%">'
 		.'<tr><td>'
@@ -486,7 +489,7 @@ function show_task( $id, $row, $modimg ) {
 			.'<a href="index.php?modname=project&amp;op=prjadditem&amp;type=task&amp;id='.$id.'">'
 			.'<img src="'.getPathImage().'standard/add.png" alt="'.$lang->def("_NEW").'" /> '.$lang->def("_NEW").'</a>'
 			.'</div>'."\n");
-		
+
 	}
 	$out->add('</div>');
 }
@@ -1550,7 +1553,7 @@ function sel_prj($goto) { /*
 	if(//-TP// funAccess("progetti","OP")) {
 
 
-	
+
 	$out->add("<div class=\"contentBox\">\n");
 	$out->add("<div class=\"titleSection\">\n");
 
@@ -2001,7 +2004,7 @@ function read_item() {
 		$out->add("</div>\n");
 
 		if ($_GET["type"] == "file") {
-			$img ='<img src="'.getPathImage().'/standard/down.gif" alt="'.$lang->def("_DOWNLOAD").'" title="'.$lang->def("_DOWNLOAD").'" />';
+			$img ='<img src="'.getPathImage().'/standard/download.png" alt="'.$lang->def("_DOWNLOAD").'" title="'.$lang->def("_DOWNLOAD").'" />';
 			$url ="index.php?modname=project&amp;op=download&amp;type=file&amp;id=".(int)$_GET["itemid"];
 			$out->add('<a href="'.$url.'">'.$img." ".$lang->def("_DOWNLOAD")."</a>\n");
 		}

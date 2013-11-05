@@ -1,0 +1,53 @@
+#displayCalendar{margin:0pt auto;}
+div.calendar{position:relative; border:1px solid #808080;}
+.calendar, .calendar table{background:#F2F2F2 none repeat scroll 0% 50%;color:#000000;cursor:default;font-family:tahoma,verdana,sans-serif;font-size:100%;margin:0pt auto;width:100%;}
+.calendar .button{padding:2px;text-align:center;}
+.calendar .nav{background:#F2F2F2 none repeat scroll 0% 50%; color: #808080;}
+.calendar thead .title{background:#F2F2F2 none repeat scroll 0% 50%;color:#000000;font-size:108%;font-weight:bold;padding:2px;text-align:center;}
+.calendar thead .headrow{background:#F2F2F2 none repeat scroll 0% 50%;color:#808080;}
+.calendar thead .daynames{background:#eeeeee none repeat scroll 0% 50%;}
+.calendar thead .name{border-bottom:1px solid #555566;color:#000000;padding:2px;text-align:center;}
+.calendar thead .weekend{color:#B00;}
+.calendar thead .hilite{background-color:#B3D4FF;border:1px solid #426FD9;color:#000000;padding:1px;}
+.calendar thead .active{background-color:#F2F2F2;padding:2px 0px 0px 2px;}
+.calendar tbody .day{background-color: #FFF; color:#0066CC;height:100px;padding:2px 4px 2px 2px;text-align:right;vertical-align:top;width:14%;}
+.calendar tbody .day .event{display:block;font-size:100%;font-weight:normal;text-align:left;}
+.calendar tbody .events_inside{color:#000099;font-weight:bold;}
+.calendar tbody .day .othermonth{color:#BBBBBB;font-size:80%;}
+.calendar tbody .day .othermonth .oweekend{color:#FF6622;}
+.calendar table .wn{background:#F2F2F2 none repeat scroll 0% 50%;border-right:1px solid #000000;padding:2px 3px 2px 2px;}
+.calendar tbody .rowhilite td{background:#eeeeee none repeat scroll 0%;}
+.calendar tbody .rowhilite td.wn{background:#EEEEFF none repeat scroll 0%;}
+.calendar tbody .addEvent{font-weight:normal;visibility:hidden;}
+a.addEventLink{margin-left:3px;float:right;display:block;width:22px;height:22px;background:url('../images/standard/edit.png') 0 0 no-repeat;}
+a.addEventLink span{display:none;}
+.clear{clear:both;}
+.calendar tbody td.hilite{background:#B3D4FF none repeat scroll 0%;border:1px solid #426FD9;padding:1px 3px 1px 1px;}
+.calendar tbody td.active{background:#B3D4FF none repeat scroll 0%;padding:2px 2px 0px;}
+.calendar tbody td.selected{background:#FFFFFF none repeat scroll 0%;border:1px solid #000000;color:#000000;font-weight:bold;padding:1px 3px 1px 1px;}
+.calendar tbody td.weekend{color:#B00;}
+.calendar tbody td.today{color:#0066CC;font-weight:bold;}
+.calendar tbody .disabled{color:#999999;}
+.calendar tbody .emptycell{visibility:hidden;}
+.calendar tbody .emptyrow{display:none;}
+.calendar tfoot{display:none;}
+.calendar tfoot .footrow{background:#555566 none repeat scroll 0%;color:#FFFFFF;text-align:center;}
+.calendar tfoot .ttip{background:#FFFFFF none repeat scroll 0%;border-top:1px solid #555566;color:#444455;padding:1px;}
+.calendar tfoot .hilite{background:#AAAAFF none repeat scroll 0%;border:1px solid #0044FF;color:#000000;padding:1px;}
+.calendar tfoot .active{background:#7777CC none repeat scroll 0%;padding:2px 0px 0px 2px;}
+.calendar .combo{background:#CCCCFF none repeat scroll 0%;border:1px solid #665555;color:#000000;cursor:default;display:none;font-size:90%;left:0px;position:absolute;top:0px;width:4em;z-index:100;}
+.calendar .combo .label, .calendar .combo .label-IEfix{padding:1px;text-align:center;}
+.calendar .combo .label-IEfix{width:4em;}
+.calendar .combo .hilite{background:#AACCFF none repeat scroll 0%;}
+.calendar .combo .active{background:#EEEEFF none repeat scroll 0%;border-bottom:1px solid #4466AA;border-top:1px solid #4466AA;font-weight:bold;}
+.calendar td.time{background-color:#F4F0E8;border-top:1px solid #000000;padding:1px 0px;text-align:center;}
+.calendar td.time .hour, .calendar td.time .minute, .calendar td.time .ampm{background-color:#FFFFFF;border:1px solid #888899;font-weight:bold;padding:0px 3px 0px 4px;}
+.calendar td.time .ampm{text-align:center;}
+.calendar td.time .colon{font-weight:bold;padding:0px 2px 0px 3px;}
+.calendar td.time span.hilite{background-color:#666677;border-color:#000000;color:#FFFFFF;}
+.calendar td.time span.active{background-color:#000000;border-color:#FF0000;color:#00FF00;}
+.eventForm .label{font-weight:bold;text-align:right;vertical-align:top;}
+.eventForm .field{text-align:left;vertical-align:top;}
+.eventForm textarea{font-size:90%;height:100px;width:300px;}
+.eventForm input, .eventForm select{font-size:100%;}
+#progress_msg{font-family:tahoma,verdana,sans-serif;font-size:90%;height:20px;}

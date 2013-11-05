@@ -1,0 +1,52 @@
+/* ======================================================================== \
+
+|   FORMA - The E-Learning Suite                                            |
+
+|                                                                           |
+
+|   Copyright (c) 2013 (Forma)                                              |
+
+|   http://www.formalms.org                                                 |
+
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+
+|                                                                           |
+
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+
+\ ======================================================================== */
+
+#hd{position:relative;margin-bottom:10px;}
+#hd h1 {height:110px}
+#ft{margin:10px 0 0 0;height:50px;border-top:2px solid #cccccc;background:url('../images/back_footer.png') repeat-x 0 0 #ffffff;}
+.contentblock_1{margin:6px 0;padding:0;}
+.contentblock_1 .title_block{margin:0;padding:18px 18px 4px;font-size:115%;font-weight:bold;color:#578ABF;border-bottom:1px dashed #808080;}
+.contentblock_1 .body_block{margin:0;padding:12px 0;color:#003d6b;}
+.contentblock_2{margin:0;padding:0;color:#000;position:relative;background:#ffffff;border:1px solid #e7e7e7;}
+.contentblock_2 .title_block{margin:1px;padding:8px;font-weight:bold;color:#003d6b;font-size:140%;}
+.contentblock_2 .body_block{margin:2px;padding:8px 8px 40px;color:#003d6b;background:#eeeeee;font-size:90%;}
+.contentblock_3{margin:0;padding:0;color:#fff;background:#6a87be;}
+.contentblock_3 .title_block{padding:8px;font-weight:bold;font-size:140%;}
+.contentblock_3 .body_block{padding:8px 8px 35px;font-size:90%;}
+.contentblock_4{margin:12px 0;padding:10px 8px;color:#003d6b;background:#eeeeee;border:1px solid #e7e7e7;}
+.contentblock_4 .title_block{font-size:108%;color:#000;font-weight:bold; letter-spacing:1px;}
+.contentblock_4 .body_block{font-size:90%;}
+.contentblock_5{padding:6px;margin-right:5px;background:#eeeeee;border:solid 1px #cccccc;}
+.contentblock_5 .title_block{}
+.contentblock_5 .body_block{color:#000;font-size:90%;height:86px;}
+.contentblock_6{margin:0;padding:0;}
+.contentblock_6 .title_block{}
+.contentblock_6 .body_block{color:#000;font-size:90%;height:86px;}
+.contentblock_7{font-size:90%;}
+.contentblock_7 .title_block{color:#003d6b;padding-top:17px;padding-left:25px;}
+.contentblock_8{padding:0;margin:6px 0 0 8px;background-repeat:no-repeat;height:107px;width:258px;line-height:26px;}
+.contentblock_8 .title_block{color:#003d6b;font-weight:bold;}
+.contentblock_8 .body_block{margin:0.40em 0;color:#395B81;font-size:90%;}
+.contentblock_9{background:#fff;}
+.contentblock_9 .title_block{color:#003d6b;padding-top:17px;padding-left:25px;font-size:108%;}
+.contentblock_9 .body_block{border-top:solid 3px #69A5D0;font-size:90%;font-weight:bold;}
+.contentblock_10{color:#74848e;font-size:90%;margin:0px 10px}
+.contentblock_10 .title_block{}
+.contentblock_10 .body_block{}

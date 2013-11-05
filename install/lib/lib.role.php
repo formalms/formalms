@@ -1,11 +1,14 @@
 <?php
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2010 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 
@@ -33,17 +36,22 @@ function addRoles($roles, $group_id) {
 				$q=mysql_query($qtxt);
 				if (!$q) { $GLOBALS['debug'].=mysql_error()."\n"; }
 
-				$qtxt="INSERT INTO core_role_members (idst, idstMember) VALUES ( LAST_INSERT_ID(), '".$group_id."')";
-				$q=mysql_query($qtxt);
-				if (!$q) { $GLOBALS['debug'].=mysql_error()."\n"; }
+				if ( !empty($group_id) ) {
+
+					$qtxt="INSERT INTO core_role_members (idst, idstMember) VALUES ( LAST_INSERT_ID(), '".$group_id."')";
+					$q=mysql_query($qtxt);
+					if (!$q) { $GLOBALS['debug'].=mysql_error()."\n"; }
+				}
 
 			} else {
 
-				$obj = mysql_fetch_object($q);
+				if ( !empty($group_id) ) {
+					$obj = mysql_fetch_object($q);
 
-				$qtxt="INSERT IGNORE INTO core_role_members (idst, idstMember) VALUES ( '".$obj->idst."', '".$group_id."')";
-				$q=mysql_query($qtxt);
-				if (!$q) { $GLOBALS['debug'].=mysql_error()."\n"; }
+					$qtxt="INSERT IGNORE INTO core_role_members (idst, idstMember) VALUES ( '".$obj->idst."', '".$group_id."')";
+					$q=mysql_query($qtxt);
+					if (!$q) { $GLOBALS['debug'].=mysql_error()."\n"; }
+				}
 			}
 
 		}

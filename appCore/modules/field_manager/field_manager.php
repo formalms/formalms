@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
@@ -31,9 +34,9 @@ function field_list() {
 
 	//find available field type
 	$re_field = sql_query("
-	SELECT type_field
-	FROM ".$GLOBALS['prefix_fw']."_field_type
-	ORDER BY type_field");
+	SELECT type_field FROM "
+	.$GLOBALS['prefix_fw']
+	."_field_type ORDER BY type_field");
 	$field_av = array();
 	$field_select = array('all_field' => $lang->def('_ALL_FIELD_TYPE'));
 	while(list($type_field) = sql_fetch_row($re_field)) {

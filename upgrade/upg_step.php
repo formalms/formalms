@@ -9,14 +9,21 @@ mysql_select_db($cfg['db_name']);
 mysql_query("SET NAMES 'utf8'");
 mysql_query("SET CHARACTER SET 'utf8'");
 
-$step =Get::gReq('step', DOTY_INT);
+$enabled_step = 4;
+$current_step = Get::gReq('cur_step', DOTY_INT);
+$upg_step = Get::gReq('upg_step', DOTY_INT);
 
-if ($_SESSION['start_version'] >= 4000) {
-	echo 'error: v4';
+if ($_SESSION['start_version'] < 3000 || $_SESSION['start_version'] >= 4000 ) {
+	echo 'error: version (' . $_SESSION['start_version'] . ') not supported for upgrade: too new (v4)';
 	die();
 }
 
-switch($step) {
+if ( $current_step != $enabled_step ) {
+	echo 'error: procedure must be called from upgrade step ' . $enabled_step . ' only!!';
+	die();
+}
+
+switch($upg_step) {
 	case "1": { // --- Upgrade db structure --------------------------------------
 		$fn = _upgrader_.'/data/sql/pre_upgrade.sql';
 		importSqlFile($fn);
@@ -45,7 +52,7 @@ switch($step) {
 		$re = mysql_query("SELECT id_category, lang_code, text_name, text_desc
 			FROM learning_competence_category_text
 			WHERE 1");
-		
+
 		while(list($id_cat, $lang_code, $name, $description) = mysql_fetch_row($re))
 			mysql_query("INSERT INTO learning_competence_category_lang
 				VALUES (".$id_category.", '".$lang_code."', '".$name."', '".$description."')");
@@ -53,7 +60,7 @@ switch($step) {
 		$re = mysql_query("SELECT id_category, lang_code, text_name, text_desc
 			FROM learning_competence_text
 			WHERE 1");
-		
+
 		while(list($id_cat, $lang_code, $name, $description) = mysql_fetch_row($re))
 			mysql_query("INSERT INTO learning_competence_lang
 				VALUES (".$id_category.", '".$lang_code."', '".$name."', '".$description."')");
@@ -89,6 +96,10 @@ switch($step) {
 		while(list($photo) = mysql_fetch_row($result)) {
 			@unlink('../files/doceboCore/photo/'.$photo);
 		}
+
+		// create missining upload folders
+		mkdir('../files/doceboLms/label');
+
 	} break;
 	case "8": { // --- Kb --------------------------------------------------------
 		kbUpgrade();
@@ -100,8 +111,11 @@ switch($step) {
 	} break;
 }
 
+$GLOBALS['debug'] = 'Execution step ' .$current_step . '.' . $upg_step . '<br/>Result: '
+					. ( $GLOBALS['debug'] == '' ? 'OK' : $GLOBALS['debug'] );
 
 echo $GLOBALS['debug'];
+
 mysql_close($db);
 
 
@@ -272,8 +286,57 @@ function addUpgraderRoles() {
 	$fn = _installer_."/data/role/rolelist_oc0.txt";
 	$roles=explode("\n", file_get_contents($fn));
 	addRoles($roles, $oc0);
+
+	addMissingRoles();
+
 }
 
+function addMissingRoles() {
+	require_once(_installer_.'/lib/lib.role.php');
+
+	$role_nogroup = array(
+					'/lms/course/public/pusermanagement/view',
+					'/lms/course/public/pusermanagement/add',
+					'/lms/course/public/pusermanagement/mod',
+					'/lms/course/public/pusermanagement/del',
+					'/lms/course/public/pusermanagement/approve_waiting_user',
+					'/lms/course/public/pcourse/view',
+					'/lms/course/public/pcourse/add',
+					'/lms/course/public/pcourse/mod',
+					'/lms/course/public/pcourse/del',
+					'/lms/course/public/pcourse/moderate',
+					'/lms/course/public/pcourse/subscribe',
+					'/lms/course/public/public_report_admin/view',
+					'/lms/course/public/public_newsletter_admin/view',
+					'/lms/course/private/quest_bank/mod',
+					'/lms/course/private/quest_bank/view',
+					'/lms/course/private/reservation/mod',
+					'/lms/course/private/reservation/view'
+					);
+	addRoles($role_nogroup);
+
+
+	$role_group = array(
+ 					'/lms/course/private/coursecharts/view',
+					'/lms/course/private/coursestats/view'
+					);
+	addRoles($role_group);
+
+	$role_group = array(
+					'/lms/course/private/presence/view'
+					);
+	addRoles($role_group);
+
+	// group '/framework/level/godadmin'
+	$groupId = getGroupIdst('/framework/level/godadmin');
+	$role_godadmin = array(
+					'/lms/course/public/pcertificate/view',
+					'/lms/course/public/pcertificate/mod'
+					);
+	addRoles($role_godadmin, $groupId);
+
+
+}
 
 // -----------------------------------------------------------------------------
 
@@ -292,11 +355,11 @@ function updateSettings() {
 	$learning_cfg	= getSettingsArr('learning_setting');
 	$conference_cfg = getSettingsArr('conference_setting');
 	$old_cfg		= array_merge($core_cfg, $learning_cfg, $conference_cfg);
-	
+
 	// Update the platform url
 	$https=(isset($_SERVER["HTTPS"]) ? $_SERVER["HTTPS"] : FALSE);
 	$base_url=($https ? "https://" : "http://").$_SERVER["HTTP_HOST"].dirname($_SERVER['PHP_SELF'])."/";
-	$base_url=preg_replace("/upgrade\\/$/", "", $base_url);	
+	$base_url=preg_replace("/upgrade\\/$/", "", $base_url);
 	$default_cfg['url']['param_value']=$base_url;
 
 
@@ -350,7 +413,7 @@ function updateConfVal($param_name, & $from_arr, & $to_arr) {
 	else if (isset($to_arr[$param_name])) {
 		$to_arr[$param_name]['param_value']=$from_arr[$param_name]['param_value'];
 	}
-	
+
 }
 
 function kbUpgrade() {

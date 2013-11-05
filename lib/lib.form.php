@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-|   DOCEBO - The E-Learning Suite                                           |
+|   FORMA - The E-Learning Suite                                            |
 |                                                                           |
-|   Copyright (c) 2008 (Docebo)                                             |
-|   http://www.docebo.com                                                   |
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt          |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
@@ -66,6 +69,20 @@ class Form {
 	public static function openElementSpace( $css_class = 'form_elem' ) {
 		return '<div class="'.$css_class.'">'."\n";
 	}
+	
+	
+	/**
+	 * public static function getTextLabel($label, $css_class = '')
+	 *
+	 * @param string    $label              the text of the label
+	 * @param string    $css_class 		the css of the container element
+	 */
+	
+	public static function getTextLabel($label, $css_class = 'textLabel') {
+		//check if the label
+		return '<div><label class="'.$css_class.'">'.$label.'</label></div>';
+	}
+	
 
 	/**
 	 * public static function getTextBox( $text , $css_line = '')

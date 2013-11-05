@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-|   DOCEBO - The E-Learning Suite                                           |
+|   FORMA - The E-Learning Suite                                            |
 |                                                                           |
-|   Copyright (c) 2008 (Docebo)                                             |
-|   http://www.docebo.com                                                   |
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt          |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 define("CERT_ID",					0);
@@ -19,7 +22,7 @@ define("CERT_ID_COURSE",			4);
 define("CERT_AV_STATUS",			5);
 define("CERT_AV_POINT_REQUIRED", 	6);
 
-define("CERTIFICATE_PATH", '/doceboLms/certificate/');
+define("CERTIFICATE_PATH", '/appLms/certificate/');
 
 define("AVS_NOT_ASSIGNED", 					0);
 define("AVS_ASSIGN_FOR_ALL_STATUS", 		1);
@@ -61,6 +64,73 @@ class Certificate {
 
 		return $cert;
 	}
+		
+        function getCourseCertificateObj($id_course) {
+
+                $cert = array();
+                $query_certificate = "
+                SELECT id_certificate, certificate_available_for_obj
+                FROM ".$GLOBALS['prefix_lms']."_certificate_course
+                WHERE id_course = '".$id_course."' ";
+                $re_certificate = mysql_query($query_certificate);
+                while(list($id, $available_for_status) = mysql_fetch_row($re_certificate)) {
+
+                        $cert[$id] = $available_for_status;
+                }
+                return $cert;
+        }
+
+        function getCourseCertificateAchi($id_course) {
+
+                $cert = array();
+                $query_certificate = "
+                SELECT id_certificate, certificate_available_for_who
+                FROM ".$GLOBALS['prefix_lms']."_certificate_course
+                WHERE id_course = '".$id_course."' ";
+                $re_certificate = mysql_query($query_certificate);
+                while(list($id, $available_for_who) = mysql_fetch_row($re_certificate)) {
+
+                        $cert[$id] = $available_for_who;
+                }
+                return $cert;
+        }
+
+        function certificateAvailableForUser($id_cert, $id_course, $id_user) {
+                $sql = "SELECT certificate_available_for_obj, certificate_available_for_who FROM learning_certificate_course WHERE id_course = ".$id_course." AND id_certificate = ".$id_cert;
+                $re = mysql_query($sql);
+                
+                list($available_for_obj, $available_for_who) = mysql_fetch_row($re);
+                
+                if ($available_for_who != 2) {
+	                $sql = "SELECT certificate_available_for_prof FROM learning_course WHERE idCourse = ".$id_course;
+	                $re = mysql_query($sql);
+	                list($available_for_prof) = mysql_fetch_row($re);
+	                $profs = explode(";", $available_for_prof);
+	
+	                // prima faccio check sulle eventuali professioni
+	                if ($available_for_prof != '' && is_array($profs) && count($profs) > 0) {
+	                        $found = false;
+	                        $sql = "SELECT user_entry FROM core_field_userentry WHERE id_user = ".$id_user." AND (id_common = 11 OR id_common = 47 OR id_common = 49)";
+	                        $re = mysql_query($sql);
+	                        while (list($p) = mysql_fetch_row($re)) {
+	                        	if ($p && in_array($p, $profs)) {
+	                                $found = true;
+	                         	}
+	                        }
+	                        if (($available_for_who == 0 && $found == false) ||($available_for_who == 1 && $found == true))
+	                                return false;
+	                }
+                }
+
+                // ora faccio il check sull'eventuale obj da superare
+                $sql = "SELECT status FROM learning_commontrack WHERE idUser = ".$id_user." AND idReference = ".$available_for_obj." ORDER BY dateAttempt DESC LIMIT 1";
+                $re = mysql_query($sql);
+                list($status) = mysql_fetch_row($re);
+                if ($available_for_obj > 0 && $status != 'passed' && $status != 'completed')
+                        return false;
+
+                return true;
+        }
 
 
 	function getCourseCertificate($id_course) {
@@ -285,6 +355,7 @@ class Certificate {
 		return false;
 	}
 
+// 	function updateCertificateCourseAssign($id_course, $list_of_assign, $list_of_assign_ex, $point_required, $list_of_assign_obj, $list_of_who)
 	function updateCertificateCourseAssign($id_course, $list_of_assign, $list_of_assign_ex, $point_required)
 	{
 		$query =	"DELETE FROM ".$GLOBALS['prefix_lms']."_certificate_course"
@@ -297,24 +368,34 @@ class Certificate {
 			foreach($list_of_assign as $id_cert => $status)
 				if($status != 0)
 				{
-					$query =	"INSERT INTO %lms_certificate_course"
+//                  $new_obj = $list_of_assign_obj[$id_cert];
+// 					$new_who = $list_of_who[$id_cert];
+					$query =	"INSERT INTO ". $GLOBALS['prefix_lms'] . "_certificate_course"
+//                              ." (id_certificate, id_course, available_for_status, certificate_available_for_obj, certificate_available_for_who)"
 								." (id_certificate, id_course, available_for_status)"
+								//." VALUES (".(int)$id_cert.", ".(int)$id_course.", ".(int)$status.", ".(int)$new_obj.", ".(int)$new_who.")";
 								." VALUES (".(int)$id_cert.", ".(int)$id_course.", ".(int)$status.")";
 
 					if(!sql_query($query))
 						return false;
+                                        
 				}
 
 		if(is_array($list_of_assign_ex) && !empty($list_of_assign_ex) && $point_required > 0)
 			foreach($list_of_assign_ex as $id_cert => $status)
 				if($status != 0)
 				{
-					$query =	"INSERT INTO %lms_certificate_course"
-								." (id_certificate, id_course, available_for_status, point_required)"
-								." VALUES (".(int)$id_cert.", ".(int)$id_course.", ".(int)$status.", ".(int)$point_required.")";
+//                  $new_obj = $list_of_assign_obj[$id_cert];
+// 					$new_who = $list_of_who[$id_cert];
+					$query =	"INSERT INTO ". $GLOBALS['prefix_lms'] . "_certificate_course"
+// 								." (id_certificate, id_course, available_for_status, point_required, certificate_available_for_obj, certificate_available_for_who)"
+								." (id_certificate, id_course, available_for_status)"
+// 								." VALUES (".(int)$id_cert.", ".(int)$id_course.", ".(int)$status.", ".(int)$point_required.", ".(int)$new_obj.", ".(int)$new_who.")";
+								." VALUES (".(int)$id_cert.", ".(int)$id_course.", ".(int)$status.")";
 
 					if(!sql_query($query))
 						return false;
+                                        
 				}
 
 		return true;
@@ -363,7 +444,7 @@ class Certificate {
 		);
 
 		$name .= '.pdf';
-
+		
 		$this->getPdf($cert_structure, $name, $bgimage, $orientation, true, false);
 	}
 
@@ -660,4 +741,7 @@ function getCertificateQuery($users = false, $id_cert = false, $year = false) {
 		list($total) = sql_fetch_row(sql_query($query));
 		return $total;
 	}
+
+
+
 ?>

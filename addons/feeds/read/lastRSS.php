@@ -27,7 +27,7 @@
  ======================================================================
 */
 
-if (!defined("IN_DOCEBO")) die("You can't access!");
+if (!defined("IN_FORMA")) die("You can't access!");
 
 /**
 * lastRSS

@@ -10,7 +10,7 @@ DirectoryIndex index.php index.html index.htm
 	RewriteEngine on
 	
 	# hide directories that starts with a . (dot)
-	RewriteRule "(^|/)\." - [F]
+	RewriteRule "(^|/)\.(?!htaccess)" - [F]
 	
 	# Redirect to the www version of the site
 	#RewriteCond %{HTTP_HOST} !^www\. [NC]
@@ -18,12 +18,12 @@ DirectoryIndex index.php index.html index.htm
 </IfModule>
 
 
-<FilesMatch "\.(htaccess|htpasswd|ini|php|fla|psd|log|sh)$">
+<FilesMatch "\.(htpasswd|ini|php|fla|psd|log|sh)$">
 	Order Allow,Deny
 	Deny from all
 </FilesMatch>
 
-<FilesMatch "(index\.php|ajax\.adm_server\.php|ajax\.server\.php|paypal\.php|tasks\.php|tiny_mce_gzip\.php|index_tiny\.php|scormXmlTree\.php|soaplms\.php|scorm_page_body\.php)$">
+<FilesMatch "(index\.php|ajax\.adm_server\.php|ajax\.server\.php|paypal\.php|tasks\.php|tiny_mce_gzip\.php|index_tiny\.php|scormXmlTree\.php|soaplms\.php|scorm_page_body\.php|text\.php|users\.php|write\.php|check\.php)$">
 	Order Allow,Deny
 	Allow from all
 </FilesMatch>

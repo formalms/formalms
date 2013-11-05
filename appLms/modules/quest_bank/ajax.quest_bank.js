@@ -1,15 +1,14 @@
 
-/************************************************************************/
-/* DOCEBO LMS - Learning Managment System                               */
-/* ============================================                         */
-/*                                                                      */
-/* Copyright (c) 2008                                                   */
-/* http://www.docebo.com                                                */
-/*                                                                      */
-/* This program is free software. You can redistribute it and/or modify */
-/* it under the terms of the GNU General Public License as published by */
-/* the Free Software Foundation; either version 2 of the License.       */
-/************************************************************************/
+/* ======================================================================== \
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+\ ======================================================================== */
 
 var quest_selection = null;
 var do_not_submit =false;
@@ -259,8 +258,9 @@ YAHOO.util.Event.addListener(window, "load", function() {
 			{key:"difficult", 		label:QB_DEF.difficult, 		formatter:this.formatDifficultQuest }
 		];
 		if(use_mod_action) {
-			var t1 = {key:"mod_quest", 		label:QB_DEF.mod_quest_img, 	formatter:this.formatModQuest}
-			var t2 = {key:"del_quest", 		label:QB_DEF.del_quest_img, 	formatter:this.formatDelQuest}
+			var t1 = {key:"mod_quest", 		label:QB_DEF.mod_quest_img, 	formatter:this.formatModQuest};
+			var t2 = {key:"del_quest", 		label:QB_DEF.del_quest_img, 	formatter:this.formatDelQuest};
+			myColumnDefs.push(t1, t2);
 		}
 		var buildQueryString = function (state,dt) {
 			
@@ -348,7 +348,6 @@ YAHOO.util.Event.addListener(window, "load", function() {
 			oDt.refresh();
 		}, this, true);
 		
-		q
 /*
 		// data source (XHR)
 		this.myDataSource = new YAHOO.util.DataSource("ajax.server.php?plf=lms&mn=quest_bank&");

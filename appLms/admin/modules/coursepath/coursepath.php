@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
@@ -137,7 +140,7 @@ function pathlist() {
 	$type_h[] = 'image';
 
 	if($subscribe_perm) {
-		$cont_h[] = '<img src="'.getPathImage().'standard/cancel.png" alt="'.$lang->def('_ALT_REM_SUB').'" />';
+		$cont_h[] = '<img src="'.getPathImage().'standard/del_user.png" alt="'.$lang->def('_ALT_REM_SUB').'" />';
 		$type_h[] = 'image';
 	}
 	if($mod_perm) {
@@ -175,7 +178,7 @@ function pathlist() {
 						.'<img src="'.getPathImage().'standard/modelem.png" alt="'.$lang->def('_COURSES').' : '.$path_name.'" /></a>';
 			$cont[] = '<a href="index.php?modname=coursepath&amp;op=delsubscription&amp;id_path='.$id_path.'" '
 						.'title="'.$lang->def('_ALT_REM_SUB').' : '.$path_name.'">'
-					.'<img src="'.getPathImage().'standard/cancel.png" alt="'.$lang->def('_ALT_REM_SUB').' : '.$path_name.'" /></a>';
+					.'<img src="'.getPathImage().'standard/del_user.png" alt="'.$lang->def('_ALT_REM_SUB').' : '.$path_name.'" /></a>';
 		}
 		else
 		{

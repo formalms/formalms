@@ -430,10 +430,11 @@ var initDataTable = function(oConfig) {
 						+'<label class="label_normal" for="certificate"> <?php echo addslashes(Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')); ?></label>'
 
 						+'<br/>'
-						+'<input class="check" type="checkbox" id="lo" name="lo" value="1">'
+						+'<input class="check" onclick="getLoList(\''+this.href.split("=")[2]+'\')" type="checkbox" id="lo" name="lo" value="1">'
 						+'<label class="label_normal" for="lo"> <?php echo addslashes(Lang::t('_LEARNING_OBJECTS', 'standard')); ?></label>'
 
 						+'<br/>'
+						+'<div id="lo_list"></div>'
 						+'<input class="check" type="checkbox" id="advice" name="advice" value="1">'
 						+'<label class="label_normal" for="advice"> <?php echo addslashes(Lang::t('_ADVICE', 'advice')); ?></label>'
 
@@ -446,6 +447,43 @@ var initDataTable = function(oConfig) {
 				}).call(this, e);
 			});
 		});
+
+		cascade = function(id) {
+			a = YAHOO.util.Dom.get(id);
+			var elements = YAHOO.util.Dom.getElementsByClassName(id);
+			for (var e in elements) {  
+				if (a.checked) {
+					elements[e].disabled = false;
+					elements[e].checked = true;
+				} else {
+					elements[e].disabled = true;
+					elements[e].checked = false;
+				}
+			}
+		};
+
+		getLoList = function(id) {
+			var callback = {
+				customevents:{
+					onStart: function(eventType, args) {
+						YAHOO.util.Dom.get('lo_list').innerHTML = 'loading';
+					},
+					onComplete: function(eventType, args) {
+					},
+					onSuccess: function(eventType, args) {
+						YAHOO.util.Dom.get('lo_list').innerHTML = args[0].responseText;
+					},
+					onFailure: function(eventType, args) {
+						YAHOO.util.Dom.get('lo_list').innerHTML = '';
+					}
+
+				}
+			};
+			if (YAHOO.util.Dom.get('lo_list').innerHTML == '')
+				var cObj = YAHOO.util.Connect.asyncRequest('POST', '../appCore/ajax.adm_server.php?r=alms/course/getLoList&idCourse='+id, callback);
+			else
+				YAHOO.util.Dom.get('lo_list').innerHTML = '';
+		};
 
 
 	<?php } ?>

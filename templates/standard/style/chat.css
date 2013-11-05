@@ -1,0 +1,47 @@
+/* ======================================================================== \
+
+|   FORMA - The E-Learning Suite                                            |
+
+|                                                                           |
+
+|   Copyright (c) 2013 (Forma)                                              |
+
+|   http://www.formalms.org                                                 |
+
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+
+|                                                                           |
+
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+
+\ ======================================================================== */
+
+html, body{height:100%;}
+body{font:13px/1.231 arial, sans-serif;*font-size:small;*font:x-small;min-width:960px;margin:0;padding:0;color:#000;background:#F5F5F5;}
+a{color:#808080;text-decoration:none;}
+a:hover{text-decoration:underline;}
+img{vertical-align:middle;border:0px none;margin:0;padding:0;}
+form{margin:0;padding:0;}
+.layout_colum_left{display:none;}
+.layout_colum_container{}
+.layout_colum_right{}
+.intestation{font-weight:bold;font-size:108%;color:#ffffff;padding:0.10em;background-color:#003d6b;background-image:url('../images/chat/back_chat_users_intest.gif');background-repeat:repeat-y;background-position:top right;}
+.intestation img{margin:0 0.20em;}
+.chatText{margin:0;padding:0.20em;background:#ffffff;}
+.intestation_2{margin:0.40em;padding:0.10em;color:#003d6b;background:#ffffff;font-weight:bold;font-size:1.10em;}
+.chatText div.chat_line-0{background:#003d6b;}
+.chatText div.chat_line-1{background:#eeeeee;}
+.chatText div.chat_line-2{color:#808080;}
+.chatText span.user_name{font-weight:bold;}
+.chatRooms, .chatUsers{color:#036;margin:0.20em;padding:0.20em;background:#fff;border:1px solid #003d6b;}
+.chatUsers div.user_row{padding-left:26px;padding-top:4px;height:22px;background:url('../images/chat/user4.gif') no-repeat;}
+.chatRooms ul{margin:0;padding:0.2em;list-style-type:none;}
+.chatRooms ul li{margin:0;padding:0;}
+.msg_form{margin:0 0 0.60em 0;}
+.msg_form label{margin:0 0.40em;color:#808080;font-weight:bold;vertical-align:top;}
+.msg_form .msgtext{width:50%;border:1px solid #808080;}
+.msg_form .button_send{padding:0px 0px 0px 26px;height:22px;color:#003d6b;font-weight:bold;vertical-align:top;border:1px solid #808080;background:#ffffff;background-repeat:no-repeat;background-position:left center;background-image:url('../images/chat/button_send.gif');}
+.msg_form .button_save{padding:0px 0px 0px 26px;height:22px;color:#003d6b;font-weight:bold;vertical-align:top;border:1px solid #808080;background:#ffffff;background-repeat:no-repeat;background-position:left center;background-image:url('../images/chat/button_save.gif');}
+.emoticons_container{margin:0.3em 2.0em;}

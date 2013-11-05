@@ -1,27 +1,17 @@
 <?php
 
-/* ========================================================================	\
-|	DOCEBO - The E-Learning Suite											|
-| 																			|
-|	Copyright (c) 2010 (Docebo)												|
-| 	http://www.docebo.com													|
-| =========================================================================	|
-| 																			|
-| Docebo is free software. You can redistribute it and/or modify			|
-| it under the terms of the GNU General Public License as published by		|
-| the Free Software Foundation, either version 2 of the License, or			|
-| (at your option) any later version.										|
-| 																			|
-| Docebo is distributed in the hope that it will be useful,					|
-| but WITHOUT ANY WARRANTY; without even the implied warranty of			|
-| MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the				|
-| GNU General Public License for more details.								|
-| 																			|
-| You should have received a copy of the GNU General Public License			|
-| along with Docebo. If not, see: http://www.gnu.org/licenses/.				|
+/* ======================================================================== \
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-define("IN_DOCEBO", true);
+define("IN_FORMA", true);
 define("_deeppath_", '');
 require(dirname(__FILE__).'/base.php');
 
@@ -40,10 +30,38 @@ if(!Docebo::user()->isAnonymous() && (!isset($_GET['modname']) || $_GET['modname
 	Util::jump_to(_folder_lms_.'/index.php');
 }
 
+
+
+
+
 // instanciate the page-writer that we want (maybe we can rewrite it in a
 // different way with the introduction of the layout manager)
 emptyPageWriter::createInstance();
 $db =& DbConn::getInstance();
+
+$query = "SELECT param_value FROM core_setting
+		WHERE param_name = 'maintenance'
+		ORDER BY pack, sequence";
+
+$mode = $db->fetch_row($db->query($query));
+
+$query = "SELECT param_value FROM core_setting
+		WHERE param_name = 'maintenance_pw'
+		ORDER BY pack, sequence";
+$passwd = $db->fetch_row($db->query($query));
+
+// Se siamo in modalita' manutenzione
+if($mode[0] == "on"){
+	// Se e' stata chiamata l'URL manualmente con la password
+	if(isset($_GET["passwd"])){
+		// Se la password non corrisponde lo mando alla pagina di manutenzione
+		if($passwd[0] != $_GET["passwd"]){
+			Util::jump_to('maintenance.html');
+		}
+	}else{
+		Util::jump_to('maintenance.html');
+	}
+}
 
 // redirect if the main page is the cms
 $query_platform = "SELECT platform

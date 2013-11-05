@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2010 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
@@ -22,7 +25,7 @@ $cfg['db_type'] = 'mysql';
 $cfg['db_host'] = 'localhost';
 $cfg['db_user'] = 'root';
 $cfg['db_pass'] = '';
-$cfg['db_name'] = '';
+$cfg['db_name'] = 'forma';
 $cfg['db_charset'] = 'utf8';
 
 /**
@@ -35,12 +38,12 @@ $cfg['db_charset'] = 'utf8';
  * prefix for the ecom tables
  * prefix for the ecom tables
  */
-$cfg['prefix_fw']	= 'core';
-$cfg['prefix_lms']	= 'learning';
-$cfg['prefix_cms'] 	= 'cms';
-$cfg['prefix_scs']	= 'conference';
-$cfg['prefix_ecom']	= 'ecom';
-$cfg['prefix_crm']	= 'crm';
+$cfg['prefix_fw'] = 'core';
+$cfg['prefix_lms'] = 'learning';
+$cfg['prefix_cms']  = 'cms';
+$cfg['prefix_scs'] = 'conference';
+$cfg['prefix_ecom'] = 'ecom';
+$cfg['prefix_crm'] = 'crm';
 
 /**
  * File upload
@@ -54,11 +57,11 @@ $cfg['prefix_crm']	= 'crm';
  */
 $cfg['uploadType'] = 'fs';
 
-$cfg['ftphost'] 	= 'localhost';
-$cfg['ftpport'] 	= '21';
-$cfg['ftpuser'] 	= '';
-$cfg['ftppass'] 	= '';
-$cfg['ftppath'] 	= '/';
+$cfg['ftphost']  = 'localhost';
+$cfg['ftpport']  = '21';
+$cfg['ftpuser']  = '';
+$cfg['ftppass']  = '';
+$cfg['ftppath']  = '/';
 
 /**
  * External smtp config
@@ -76,10 +79,10 @@ $cfg['smtp_pwd'] ='';
  * session must survive at least X seconds
  * session save_path if specified will be used instead of the defaul one
  */
-$cfg['do_debug'] 			= false;
-$cfg['session_lenght'] 		= (120 * 60);
-$cfg['session_save_path'] 	= false;
-$cfg['demo_mode']			= false;
+$cfg['do_debug']    = false;
+$cfg['session_lenght']   = (120 * 60);
+$cfg['session_save_path']  = false;
+$cfg['demo_mode']   = false;
 
 /**
  * Technical preferences
@@ -88,4 +91,4 @@ $cfg['demo_mode']			= false;
  * mail_br: used in mail composition (no longer needed?)
  */
 $cfg['filter_tool'] = 'htmlpurifier';
-$cfg['mail_br'] 	= "\r\n";
+$cfg['mail_br']  = "\r\n";

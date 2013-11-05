@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 define("ACL_SEPARATOR","/");
@@ -727,6 +730,10 @@ class DoceboACLManager {
 
 			$result = $this->_executeQuery( $query );
 
+            $query1 = "DELETE FROM ".$GLOBALS['prefix_lms']."_courseuser where idUser =".$idst;
+
+            $result = $this->_executeQuery( $query1 );
+
 			// --- mod. 06-09-2010
 			if ($result) {
 				require_once(_adm_.'/lib/lib.field.php');
@@ -899,10 +906,17 @@ class DoceboACLManager {
 	 *				- FALSE if user is not found
 	 */
 	function getUser( $idst, $userid ) {
+		// ha tanti parametri in più rispetto alla vecchia installazione... (3)
+		/*** dupplicate ***
 		$query = "SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,"
 				." level, lastenter, valid, pwd_expire_at, register_date, lastenter, force_change,
 					 facebook_id, twitter_id, linkedin_id, google_id, privacy_policy "
 				." FROM ".$this->_getTableUser();
+		***/
+		$query = "SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,"
+				." level, lastenter, valid, pwd_expire_at, register_date, lastenter "
+				." FROM ".$this->_getTableUser();
+
 		if( $idst !== FALSE )
 				$query .= " WHERE idst = '".$idst."'";
 		elseif( $userid !== FALSE )
@@ -1845,9 +1859,14 @@ class DoceboACLManager {
 			$count++;
 		}
 		return $arrST;*/
+		if ( !is_array($idst) ) {
+			$arrST = array($idst);
+			$new_st = array($idst);
+		} else {
+			$arrST = $idst;
+			$new_st = $idst;
+		}
 
-		$arrST = array($idst);
-		$new_st = array($idst);
 		$loop_check = 0;
 		do {
 			$loop_check++;
@@ -1950,7 +1969,11 @@ class DoceboACLManager {
 	 **/
 	function getGroupAllUser( $idst, $filter = '' ) {
 
-		return array_merge( $this->getGroupUMembers($idst,$filter), $this->getGroupUDescendants($idst,$filter) );
+//		return array_merge( $this->getGroupUMembers($idst,$filter),  $this->getGroupUDescendants($idst,$filter) );
+
+		$arr_umembers = $this->getGroupUMembers($idst,$filter);
+		$arr_udescend = $this->getGroupUDescendants($idst,$filter);
+		return array_merge( $arr_umembers,  array_diff($arr_udescend, $arr_umembers) );
 	}
 
 
@@ -1999,6 +2022,7 @@ class DoceboACLManager {
 		}
 		return $arrUsers;
 */
+/**** removed ***
 		if (is_numeric($idst)) $idst = array($idst);
 		if (!is_array($idst)) return false;
 		if (empty($idst)) return array();
@@ -2012,7 +2036,12 @@ class DoceboACLManager {
 
         	if(!empty($new_st)) $arrUsers = array_merge( $arrUsers, array_diff($new_st, $arrUsers ));
 		} while(!empty($new_st) && ($loop_check < 50));
+*** removed ***/
+		$arrST = $this->getGroupGDescendants( $idst, $filter );
 
+		if (empty($arrST)) return array();
+
+		$arrUsers = $this->getGroupUMembers( $arrST, $filter );
 		return $arrUsers;
 	}
 
@@ -2161,7 +2190,7 @@ class DoceboACLManager {
 	 * @return 	array 	the idst corresponding to a group
 	 */
 	function getAllUsersFromIdst($arr_idst) {
-		
+
 		return $this->getAllUsersFromSelection($arr_idst);
 		/*
 		if (is_numeric($arr_idst)) $arr_idst = array((int)$arr_idst);

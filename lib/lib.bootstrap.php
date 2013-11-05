@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 define("BOOT_CONFIG", 	0);
@@ -163,20 +166,29 @@ class Boot {
 
 		// todo: backward compatibility
 		$GLOBALS['where_framework_relative'] = ( !defined("CORE") ? _deeppath_ : '' )._folder_adm_;
-		$GLOBALS['where_lms_relative']		= ( !defined("LMS") ? _deeppath_ : '' )._folder_lms_;
-		$GLOBALS['where_cms_relative']		= ( !defined("CMS") ? _deeppath_ : '' )._folder_cms_;
-		//$GLOBALS['where_ecom_relative']		= ( !defined("ECOM") ? _deeppath_ : '' )._folder_ecom_;
-		//$GLOBALS['where_crm_relative']		= _deeppath_._folder_crm_;
-		$GLOBALS['where_scs_relative']		= _deeppath_._folder_scs_;
-		$GLOBALS['where_files_relative']	= _deeppath_._folder_files_;
+		$GLOBALS['where_lms_relative']		 = ( !defined("LMS") ? _deeppath_ : '' )._folder_lms_;
+		$GLOBALS['where_cms_relative']		 = ( !defined("CMS") ? _deeppath_ : '' )._folder_cms_;
+		//$GLOBALS['where_ecom_relative']	 = ( !defined("ECOM") ? _deeppath_ : '' )._folder_ecom_;
+		//$GLOBALS['where_crm_relative']	 = _deeppath_._folder_crm_;
+		$GLOBALS['where_scs_relative']		 = _deeppath_._folder_scs_;
+		$GLOBALS['where_files_relative']	 = _deeppath_._folder_files_;
+
+		$GLOBALS['where_files_lms_relative'] = _deeppath_._folder_files_lms_;
+		$GLOBALS['where_files_app_relative'] = _deeppath_._folder_files_app_;
+		$GLOBALS['where_files_com_relative'] = _deeppath_._folder_files_com_;
+
 
 		$GLOBALS['where_framework'] = _adm_;
 		$GLOBALS['where_lms']		= _lms_;
 		$GLOBALS['where_cms']		= _cms_;
 		//$GLOBALS['where_crm']		= _crm_;
-		//$GLOBALS['where_ecom']		= _ecom_;
+		//$GLOBALS['where_ecom']	= _ecom_;
 		$GLOBALS['where_scs']		= _scs_;
 		$GLOBALS['where_files']		= _files_;
+
+		$GLOBALS['where_files_lms']	= _files_lms_;
+		$GLOBALS['where_files_app']	= _files_app_;
+		$GLOBALS['where_files_com']	= _files_com_;
 
 		/*
 		self::log( "Register error handler." );
@@ -190,7 +202,7 @@ class Boot {
 	 * @return array
 	 */
 	private static function utility() {
-		
+
 		self::log( "Include autoload file." );
 		require_once _base_.'/lib/lib.autoload.php';
 
@@ -221,9 +233,9 @@ class Boot {
 		// mimetype
 		self::log( "Load mimetype library." );
 		require_once(_base_.'/lib/lib.mimetype.php');
-		
+
 		require_once(_lib_.'/lib.acl.php');
-		
+
 		self::log( "Prepare plugin's autoload." );
 		if(Get::cfg('enable_plugins', false)) {
 			PluginManager::autoload();
@@ -248,7 +260,7 @@ class Boot {
 		DbConn::getInstance();
 		if(!DbConn::$connected && file_exists(_base_.'/install')) {
 
-			Header("Location: ./install/");
+			Header("Location: ". Get::rel_path('base') ."/install/");
 		}
 	}
 
@@ -355,9 +367,9 @@ class Boot {
 		}
 
 		$filter_input->sanitize();
-		
+
 	}
-	
+
 	private static function filteringInput() {
 
 		$step_report = array();
@@ -400,7 +412,7 @@ class Boot {
 					),
 				));
 			}
-			
+
 			$filter_input->sanitize();
 		}
 		if( ($ldap_used == 'on') && isset($_POST['modname']) && ($_POST['modname'] == 'login') && isset($_POST['passIns'])) {

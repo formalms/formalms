@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die("Direct access is forbidden");
+<?php defined("IN_FORMA") or die("Direct access is forbidden");
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 Class CourseAlms extends Model
@@ -415,7 +418,7 @@ Class CourseAlms extends Model
 		$quota = $quota * 1024 * 1024;
 
 		$path = Get::sett('pathcourse');
-		$path = '/doceboLms/'.Get::sett('pathcourse').( substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
+		$path = '/appLms/'.Get::sett('pathcourse').( substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
 		if($_POST['course_name'] == '')
 			$_POST['course_name'] = Lang::t('_NO_NAME', 'course');
@@ -747,7 +750,7 @@ Class CourseAlms extends Model
 		$quota_exceeded = false;
 
 		$path = Get::sett('pathcourse');
-		$path = '/doceboLms/'.Get::sett('pathcourse').( substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
+		$path = '/appLms/'.Get::sett('pathcourse').( substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
 		$old_file_size 	= 0;
 		if ((is_array($_FILES) && !empty($_FILES)) || (is_array($_POST["file_to_del"])))
@@ -1103,7 +1106,7 @@ Class CourseAlms extends Model
 
 		require_once(_base_.'/lib/lib.upload.php');
 
-		$path = '/doceboLms/'.Get::sett('pathcourse');
+		$path = '/appLms/'.Get::sett('pathcourse');
 		if( substr($path, -1) != '/' && substr($path, -1) != '\\') $path .= '/';
 		sl_open_fileoperations();
 		if($file_sponsor != '') 	sl_unlink($path.$file_sponsor);

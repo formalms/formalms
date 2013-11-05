@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
@@ -470,7 +473,7 @@ class Field_Upload extends Field {
 
 		require_once(_base_.'/lib/lib.upload.php');
 
-		$path = '/doceboCore/field/';
+		$path = '/appCore/field/';
 
 		$file = '';
 		sl_open_fileoperations();
@@ -538,7 +541,7 @@ class Field_Upload extends Field {
 
 		list($file) = sql_fetch_row($re_entry);
 
-		$path = $GLOBALS['where_files_relative'].'/doceboCore/field/';
+		$path = $GLOBALS['where_files_relative'].'/appCore/field/';
 
 		sendFile($path, $file);
 		

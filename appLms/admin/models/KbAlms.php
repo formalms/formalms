@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2010 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 
@@ -14,7 +17,7 @@ class KbAlms extends Model {
 	protected $db;
 	protected $json;
 	private $_root_id=0;
-	
+
 
 	public function  __construct() {
 		require_once(_base_.'/lib/lib.json.php');
@@ -220,7 +223,7 @@ class KbAlms extends Model {
 			}
 			$res[]=$key.$caop."'".$val."'";
 		}
-		
+
 		return $res;
 	}
 
@@ -260,7 +263,7 @@ class KbAlms extends Model {
 		return $output;
 	}
 
-	
+
 	public function getKbNodes($id_node, $recursive = false, $language = false, $userFilter = false) {
 		$is_subadmin = false;
 /*		if ($userFilter) {
@@ -292,7 +295,7 @@ class KbAlms extends Model {
 
 					//forbidden with no visible subnodes:don't show it
 					$is_node_visible = false;
-					
+
 				} else {
 
 					if ($is_forbidden) {
@@ -325,7 +328,7 @@ class KbAlms extends Model {
 		return array_values($output);
 	}
 
-	
+
 	public function getKbInitialNodes($node_id, $userFilter = false) {
 		$results = array();
 
@@ -364,7 +367,7 @@ class KbAlms extends Model {
 					$is_forbidden = false; //!in_array($node_id, $orgTree);
 					$count_subnodes = $this->_checkSubnodesVisibility($node_id, $left, $right, $orgTree);
 					$has_visible_subnodes = ($count_subnodes > 0);
-					
+
 					if ($is_forbidden && !$has_visible_subnodes) {
 
 						//forbidden with no visible subnodes:don't show it
@@ -389,7 +392,7 @@ class KbAlms extends Model {
 						}
 
 					}
-					
+
 				} else {
 
 					$is_leaf = ($right-$left) == 1;
@@ -417,7 +420,7 @@ class KbAlms extends Model {
 		return $results;
 	}
 
-	
+
 	/*
 	 * returns iLeft and iRight of a node
 	 */
@@ -456,11 +459,11 @@ class KbAlms extends Model {
 				$res[$row['node_id']]=$row['node_title'];
 			}
 		}
-		
+
 		return $res;
 	}
 
-	
+
 	/*
 	 * returns an ordered list of ids (like a path)
 	 */
@@ -477,7 +480,7 @@ class KbAlms extends Model {
 			return false;
 	}
 
-	
+
 	/*
 	 * return a list of subfolders given a node id (node_id)
 	 */
@@ -501,14 +504,14 @@ class KbAlms extends Model {
 		while(list($id, $parent, $level, $ileft, $iright, $node_title) = $this->db->fetch_row($re)) {
 			$output[] = array(
 				$id,
-				$parent, 
+				$parent,
 				$level,
 				$ileft,
 				$iright,
 				$node_title,
 			);
 		}
-		
+
 		return $output;
 	}
 
@@ -549,7 +552,7 @@ class KbAlms extends Model {
 			return false;
 	}
 
-	
+
 	/*
 	 * returns the code of a org branch
 	 */
@@ -557,7 +560,7 @@ class KbAlms extends Model {
 		return "";
 	}
 
-	
+
 	/*
 	 * returns a set of folder name translations indexed by lang code
 	 */
@@ -699,7 +702,7 @@ class KbAlms extends Model {
 	public function renameFolder($node_id, $langs) {
 		if ($node_id <= 0) return false;
 		$output = false;
-		
+
 		$qtxt ="SELECT lang_code FROM %lms_kb_tree_info WHERE id_dir=".(int)$node_id;
 		$q =$this->db->query($qtxt);
 
@@ -811,7 +814,7 @@ class KbAlms extends Model {
 			WHERE t1.idCourse = t2.idCourse AND
 			t1.idUser = ".(int)$user_id." AND t1.status IN (".implode(',', $allowed_status).")
 			ORDER BY t2.name ASC";
-		
+
 		$q =$this->db->query($qtxt);
 		while($row=$this->db->fetch_assoc($q)) {
 			$id =$row['idCourse'];
@@ -887,7 +890,7 @@ class KbAlms extends Model {
 			$course_filter =-1;
 		}
 
-		
+
 		$where = false;
 		if ($res['show_only_visible_by_user']) {  // --- Access filters: ------------------
 			$where.= ( !empty($where) ? " AND " : "");
@@ -909,16 +912,17 @@ class KbAlms extends Model {
 
 			$where.="( " .
 					"(kr.r_env = 'course_lo' AND kr.r_env_parent_id IN (" . implode(',', $courses_arr) . ")) OR " .
-					"(kr.r_env = 'communication' AND kr.r_env_parent_id IN (" . implode(',', $comm_arr) . ")) OR " .
-					"(kr.r_env = 'games' AND kr.r_env_parent_id IN (" . implode(',', $games_arr) . ")) " .
-					")";
+   					"(kr.r_env = 'communication' AND kr.r_env_parent_id IN (" . implode(',', $comm_arr) . ")) OR " .
+        			"(kr.r_env = 'games' AND kr.r_env_parent_id IN (" . implode(',', $games_arr) . ")) OR " .
+       				"(kr.force_visible='1') " .
+			")";
 		}
 		if ($course_filter > 0) {  // --- Course filter: -----------------------
 			$where.= ( !empty($where) ? " AND " : "") .
 					"kr.r_env = 'course_lo' AND kr.r_env_parent_id = " . (int) $course_filter;
 		}
-		
-		
+
+
 		if ($res_id > 0) { // used to check perm on single item
 			$where.= ( !empty($where) ? " AND " : "") .
 					"kr.res_id = " . (int) $res_id;
@@ -930,19 +934,19 @@ class KbAlms extends Model {
 
 		return $res;
 	}
-	
-	
+
+
 	public function checkResourcePerm($res_id, $user_id=false, $course_filter=false) {
 		$user_id =(empty($user_id) ? Docebo::user()->getIdSt() : $user_id);
-	
+
 		$filter =$this->getSearchFilter(false, false, $course_filter, $res_id);
-		
+
 		$fields ="COUNT(*) as tot";
 		$qtxt ="SELECT ".$fields." FROM %lms_kb_res as kr WHERE ".$filter['where'];
-		
+
 		$q =Docebo::db()->query($qtxt);
 		$row =Docebo::db()->fetch_assoc($q);
-		
+
 		return ($row['tot'] > 0 ? true : false);
 	}
 

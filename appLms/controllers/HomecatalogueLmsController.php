@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 class HomecatalogueLmsController extends LmsController
@@ -29,7 +32,7 @@ class HomecatalogueLmsController extends LmsController
 	{
 		YuiLib::load('base,tabview');
 		Lang::init('course');
-		$this->path_course = $GLOBALS['where_files_relative'].'/doceboLms/'.Get::sett('pathcourse').'/';
+		$this->path_course = $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathcourse').'/';
 		$this->model = new HomecatalogueLms();
 		$this->model_catalog = new CatalogLms();
 
@@ -194,7 +197,7 @@ class HomecatalogueLmsController extends LmsController
 		list($fname) =$db->fetch_row($q);
 
 		if (!empty($fname)) {
-			sendFile('/doceboLms/course/', $fname);
+			sendFile('/appLms/course/', $fname);
 		}
 		else {
 			echo "nothing found";

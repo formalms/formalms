@@ -1,0 +1,53 @@
+/* ======================================================================== \
+
+|   FORMA - The E-Learning Suite                                            |
+
+|                                                                           |
+
+|   Copyright (c) 2013 (Forma)                                              |
+
+|   http://www.formalms.org                                                 |
+
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+
+|                                                                           |
+
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+
+\ ======================================================================== */
+
+body{position:relative;}
+#hd, #bd, #ft{}
+#bd p{background-color:#f8f8f8; border:1px dashed #cecece; min-height:200px; height:auto !important; height:200px; padding:.75em; margin-bottom:15px;}
+#bd p.nav{background-color:#efefef; border:1px dashed #cecece;}
+.bd{text-align:left;}
+.mask{z-index:6000;}
+#toolBoxHolder{visibility:hidden;}
+#toolBoxHolder fieldset{border:1px solid #ccc;padding:.5em;margin:.5em 0;}
+#toolBoxHolder p{padding-bottom:.25em}
+#showSlider{position:relative;}
+#sliderbg{background-image:url( bg-fader.gif );background-repeat:repeat-x;position:relative;top:10px;height:40px;width:209px;}
+#sliderthumb{position:absolute;}
+#custom-doc{margin:auto;text-align:left;}
+#sliderValue{border:1px solid #ccc;}
+.yui-skin-sam .yui-button{margin:.25em 0;}
+#showCode .bd{height:310px;overflow:scroll;}
+#showCode .ft{text-align:left;}
+a.rowDel{background-image:url(../images/standard/delete.png);display:block;float:left;height:16px;overflow:hidden;text-indent:999px;width:16px;margin:4px 2px;}
+#gridRowDel0{background-image:none;}
+.list_blocks{padding:10px; background:#f8f8f8; border:1px solid #E7E7E7;}
+ul.draglist{background-color:#f8f8f8; border:1px dashed #cecece; min-height:200px; height:auto !important; height:200px; padding:.75em; margin-bottom:15px;}
+ul.draglist_nav{background-color:#efefef; border:1px dashed #cecece; min-height:200px; height:auto !important; height:200px; padding:.75em;}
+ul.draglist_hd{background-color:#efefef; border:1px dashed #cecece; min-height:50px; height:auto !important; height:50px; padding:.75em; margin-bottom:15px;}
+ul.draglist_ft{background-color:#efefef; border:1px dashed #cecece; min-height:50px; height:auto !important; height:50px; padding:.75em;}
+li.draggable{background:url(../images/cms-block/puzzle.png) 4px 50% no-repeat #d6e7ff;border:1px solid #ffffff;padding:2px 4px 2px 24px;margin:1px 3px;cursor:move;list-style-type:none;}
+li.new_draggable{background:#d6e7ff;border:1px solid #ffffff;padding:2px 4px;margin:1px 3px;cursor:move;position:relative;list-style-type:none;}
+li.new_notdraggable{background:#dddddd;border:1px solid #ffffff;padding:2px 4px;margin:1px 3px;list-style-type:none;}
+.block_assign{zoom:1;min-width:820px;}
+.layout_block{position:relative;float:left;margin:0;padding:0;width:24%;min-width:150px;}
+.layout_container{float:right;position:relative;margin:0;padding:0;width:74.2%;min-width:650px;}
+.layout_container #doc3{}
+.lists_block{margin:4px; background-color:#f8f8f8; border:1px solid #cecece;}
+.cms_block_actions{position:absolute;right:3px;top:2px;}

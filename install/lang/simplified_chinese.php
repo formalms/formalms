@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Docebo 4.0 - 安装");
+define("_INSTALLER_TITLE", "Forma - 安装");
 define("_NEXT", "下一步");
 define("_BACK", "返回");
 define("_LOADING", "载入中");
@@ -95,7 +95,7 @@ define("_DOWNLOAD_CONFIG", "下载配置文件");
 define("_CHECKED_DIRECTORIES","文件存储的某些目录不存在或没有相应的权限");
 define("_CHECKED_FILES","某些文件没有足够的权限");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Docebo 4.0 - 升级");
+define("_UPGRADER_TITLE", "Forma - 升级");
 define("_UPGRADE_CONFIG","正在升级 config.php file 文件");
 define("_UPG_CONFIG_OK","Config.php 已经成功升级");
 define("_UPG_CONFIG_NOT_SAVED", "升级config.php失败。");

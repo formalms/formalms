@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 define("_MESSAGE_UNREADED", 0);
@@ -27,16 +30,49 @@ class MessageModule {
 	}
 
 
+	// private functions
+	private function decodePriority($prio) {
+
+		switch($prio) {
+			case 5 :
+				$img_priority = "veryimportant.png";
+				$text_priority = Lang::t('_VERYHIGH', 'message');
+				break;
+			case 4 :
+				$img_priority = "important.png";
+				$text_priority = Lang::t('_HIGH', 'message');
+				break;
+			case 3 :
+				$img_priority = "notimportant.png";
+				$text_priority = Lang::t('_NORMAL', 'message');
+				break;
+			case 2 :
+				$img_priority = "lowmessage.png";
+				$text_priority = Lang::t('_LOW', 'message');
+				break;
+			case 1 :
+				$img_priority = "verylowmessage.png";
+				$text_priority = Lang::t('_VERYLOW', 'message');
+				break;
+			default :
+				$img_priority = "notimportant.png";
+				$text_priority = Lang::t('_NORMAL', 'message');
+				break;
+		}
+
+		return(array($img_priority,$text_priority));
+	}
+
 	//operations functions
 
 	function saveMessageAttach($attach) {
 		require_once(_base_.'/lib/lib.upload.php');
-	
+
 		$path = _PATH_MESSAGE;
 		$file = '';
 		sl_open_fileoperations();
 		if(isset($attach['tmp_name']['attach']) && $attach['tmp_name']['attach'] != '') {
-	
+
 			$file = getLogUserId().'_'.mt_rand(0, 100).'_'.time().'_'.$attach['name']['attach'];
 			if(!sl_upload($attach['tmp_name']['attach'], $path.$file)) {
 				$error = 1;
@@ -47,10 +83,10 @@ class MessageModule {
 		if(!$error) return $file;
 		return false;
 	}
-	
+
 	function deleteAttach($attach) {
 		require_once(_base_.'/lib/lib.upload.php');
-	
+
 		$path = _PATH_MESSAGE;
 		sl_open_fileoperations();
 		$re = sl_unlink($path.$attach);
@@ -128,7 +164,7 @@ class MessageModule {
 				.Form::getBreakRow();
 		}
 		else {
-			$form_filter_inbox = $form_filter_outbox = 
+			$form_filter_inbox = $form_filter_outbox =
 				Form::getHidden("msg_course_filter_outbox", "msg_course_filter_outbox", 0)
 				.Form::getHidden("msg_course_filter_inbox", "msg_course_filter_inbox", 0);
 		}
@@ -173,18 +209,18 @@ class MessageModule {
 
 	function inbox(&$course_list, $noprint = false) {
 		require_once(_base_.'/lib/lib.table.php');
-	
+
 		$lang 		=& DoceboLanguage::createInstance('message', 'lms');
 		$send_perm 	= true;//checkPerm('send_all', true) || checkPerm('send_upper', true);
 		$out		= $GLOBALS['page'];
 		$out->setWorkingZone('content');
 		$um =& UrlManager::getInstance("message");
-	
+
 		$tb = new Table(Get::sett('visuItem', 25));
 		$tb->initNavBar('ini', 'button');
 		$ini = $tb->getSelectedElement();
 		$acl_man =& Docebo::user()->getAclManager();
-	
+
 		$query = "
 		SELECT m.idMessage, m.idCourse, m.sender, m.posted, m.attach, m.title, m.priority, user.read
 		FROM %adm_message AS m JOIN
@@ -194,7 +230,7 @@ class MessageModule {
 			user.idUser = '".getLogUserId()."' AND
 			user.deleted = '"._MESSAGE_VALID."'";
 		$_filter = Get::req('msg_course_filter_inbox', DOTY_INT, 0);
-		
+
 		if(($_filter != '') && ($_filter != 0))
 		{
 			$res = $acl_man->getGroupsIdstFromBasePath('/lms/course/'.$_filter.'/subscribed/');
@@ -224,7 +260,7 @@ class MessageModule {
 		}
 		$query .= "m.posted DESC LIMIT $ini,".Get::sett('visuItem', 25);
 		$re_message = $this->db->query($query);
-	
+
 		// -----------------------------------------------------
 		$query = "
 		SELECT COUNT(*)
@@ -236,10 +272,11 @@ class MessageModule {
 		if(($_filter != '') && ($_filter != '0')) {
 			$query .= " AND m.idCourse = '".$_filter."'";
 		}
-		
+
 		list($tot_message) = $this->db->fetch_row($this->db->query($query));
-	
+
 		$cont_h = array(
+			'<img src="'.getPathImage('fw').'standard/notimportant.png" title="'.Lang::t('_PRIORITY', 'message').'" alt="'.Lang::t('_PRIORITY', 'message').'" />',
 			'<img src="'.getPathImage('fw').'standard/msg_unread.png" title="'.Lang::t('_UNREAD', 'message').'" alt="'.Lang::t('_UNREAD', 'message').'" />',
 			Lang::t('_TITLE', 'message'),
 			'<img src="'.getPathImage().'standard/attach.png" title="'.Lang::t('_ATTACH_TITLE', 'message').'" alt="'.Lang::t('_ATTACHMENT', 'message').'" />',
@@ -247,22 +284,24 @@ class MessageModule {
 			Lang::t('_DATE', 'message'),
 			'<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>'
 		);
-		$type_h = array('image', '', 'image', '', 'message_posted', 'image');
+		$type_h = array('image', 'image', '', 'image', '', 'message_posted', 'image');
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
-	
+
 		while( list($id_mess, $id_course, $sender, $posted, $attach, $title, $priority, $read) = $this->db->fetch_row($re_message) ) {
-	
+
 			$sender_info = $acl_man->getUser($sender, false);
 			$author = ( $sender_info[ACL_INFO_LASTNAME].$sender_info[ACL_INFO_FIRSTNAME] == '' ?
 						$acl_man->relativeId($sender_info[ACL_INFO_USERID]) :
 						$sender_info[ACL_INFO_LASTNAME].' '.$sender_info[ACL_INFO_FIRSTNAME] );
+
+			list($img_priority,$text_priority) = self::decodePriority($priority);
+
 			$cont = array();
-			/*
-			$cont[] = '<img src="'.getPathImage().'message/priority'.($priority - 1).'.gif" '
-				.'title="'.Lang::t('_TITLE_PRY_'.($priority - 1)).'" '
-				.'alt="'.Lang::t('_ALT_PRY_'.($priority - 1)).'" />';
-			*/
+			$cont[] = '<img src="'.getPathImage().'standard/'.$img_priority.'" '
+				.'title="'.$text_priority.'" '
+				.'alt="'.$text_priority.'" />';
+
 			if($read == _MESSAGE_READED) {
 				$cont[] = '<img src="'.getPathImage('fw').'standard/msg_read.png" title="'.Lang::t('_TITLE_READ').'" '
 								.'alt="'.Lang::t('_READ').'" />';
@@ -276,7 +315,7 @@ class MessageModule {
 				: $um->getUrl("op=readmessage&from=out&id_message=".$id_mess);
 			$cont[] = '<a id="_title_inbox_'.$id_mess.'" href="'.$read_url.'" '
 							.'title="'.Lang::t('_READ_MESS').'">'.$title.'</a>';
-	
+
 			if($attach != '') {
 				$cont[] = '<img src="'.getPathImage('fw').mimeDetect($attach).'" alt="'.Lang::t('_MIME').'" />';
 			} else {
@@ -287,7 +326,7 @@ class MessageModule {
 						? '['.$course_list[$id_course].']'
 						: '' );
 			$cont[] = Format::date($posted);
-	
+
 			//$cont[] = '<a href="'.$um->getUrl("op=delmessage&from=out&id_message=".$id_mess).'">'
 			$add_filter = '';
 			if (($_filter != '') && ($_filter != '0')) $add_filter = "&msg_course_filter=".$_filter;
@@ -296,7 +335,7 @@ class MessageModule {
 						.'<img src="'.getPathImage().'/standard/rem.gif"  '
 							.'title="'.Lang::t('_DEL').' : '.strip_tags($title).'" '
 							.'alt="'.Lang::t('_DEL').' : '.strip_tags($title).'" /></a>';*/
-			$del_url = $this->mvc_urls 
+			$del_url = $this->mvc_urls
 				? "ajax.server.php?r=message/delete_message&id=".$id_mess
 				: $um->getUrl("op=delmessage&from=out&id_message=".$id_mess.$add_filter);
 			$cont[] = '<a id="_del_inbox_'.$id_mess.'" href="'.$del_url.'" class="ico-sprite subs_del" title=""><span></span></a>';
@@ -328,12 +367,12 @@ class MessageModule {
 		else
 			cout($output, 'content');
 	}
-	
+
 	function outbox(&$course_list, $noprint = false) {
 		require_once(_base_.'/lib/lib.table.php');
-	
+
 		//if(!checkPerm('send_all', true) && !checkPerm('send_upper', true)) die("You can't access");
-	
+
 		$lang 		=& DoceboLanguage::createInstance('message', 'lms');
 		$out		= $GLOBALS['page'];
 		$out->setWorkingZone('content');
@@ -343,8 +382,8 @@ class MessageModule {
 		$tb->initNavBar('ini', 'button');
 		$ini = $tb->getSelectedElement();
 		$acl_man =& Docebo::user()->getAclManager();
-	
-	
+
+
 		$query = "
 		SELECT m.idMessage, m.posted, m.attach, m.title, m.priority
 		FROM %adm_message AS m JOIN
@@ -357,7 +396,7 @@ class MessageModule {
 			$query .= " AND m.idCourse = '".$_POST['msg_course_filter']."'";
 		}*/
 		$_filter = Get::req('msg_course_filter_outbox', DOTY_INT, 0);
-	
+
 		if(($_filter != '') && ($_filter != 0))
 		{
 			$res = $acl_man->getGroupsIdstFromBasePath('/lms/course/'.$_filter.'/subscribed/');
@@ -385,7 +424,7 @@ class MessageModule {
 		}
 		$query .= "m.posted DESC LIMIT $ini,".Get::sett('visuItem', 25);
 		$re_message = $this->db->query($query);
-		
+
 		$query = "
 		SELECT COUNT(*)
 		FROM %adm_message AS m JOIN
@@ -398,21 +437,28 @@ class MessageModule {
 			$query .= " AND m.idCourse = '".$_filter."'";
 		}
 		list($tot_message) = $this->db->fetch_row($this->db->query($query));
-	
+
 		$cont_h = array(
+			'<img src="'.getPathImage().'standard/notimportant.png" title="'.Lang::t('_PRIORITY', 'message').'" alt="'.Lang::t('_PRIORITY', 'message').'" />',
 			Lang::t('_TITLE'),
 			'<img src="'.getPathImage().'standard/attach.png" title="'.Lang::t('_ATTACH_TITLE').'" alt="'.Lang::t('_ATTACHMENT').'" />',
 			Lang::t('_DATE'),
 			Lang::t('_RECIPIENTS'),
 			'<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>'
 		);
-		$type_h = array('', 'image', 'message_posted', 'message_posted', 'image');
+		$type_h = array('image', '', 'image', 'message_posted', 'message_posted', 'image');
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
-	
+
 		while( list($id_mess, $posted, $attach, $title, $priority) = $this->db->fetch_row($re_message) ) {
-	
+
+			list($img_priority,$text_priority) = self::decodePriority($priority);
+
 			$cont = array();
+			$cont[] = '<img src="'.getPathImage().'standard/'.$img_priority.'" '
+				.'title="'.$text_priority.'" '
+				.'alt="'.$text_priority.'" />';
+
 			$read_url = $this->mvc_urls
 				? "index.php?r=message/read&id_message=".$id_mess
 				: $um->getUrl("op=readmessage&id_message=".$id_mess);
@@ -424,7 +470,7 @@ class MessageModule {
 				$cont[] = '&nbsp;';
 			}
 			$cont[] = Format::date($posted);
-			
+
 			$sql_receiver = "
 				SELECT user.idUser
 				FROM %adm_message_user AS user
@@ -451,7 +497,7 @@ class MessageModule {
 				$counter_receiver++;
 			}
 			$cont[] = $cont_temp;
-			
+
 			//$cont[] = '<a href="'.$um->getUrl("op=delmessage&id_message=".$id_mess.'&out=out').'">'
 			$add_filter = '';
 			if (($_filter != '') && ($_filter != false)) $add_filter = "&msg_course_filter=".$_filter;
@@ -483,7 +529,7 @@ class MessageModule {
 				case "err": $output .= getErrorUi(Lang::t('_SEND_FAIL')); break;
 			}
 		}
-	
+
 		$output .=
 			Form::getHidden('active_tab','active_tab', 'outbox')
 			.$tb->getTable()
@@ -495,45 +541,45 @@ class MessageModule {
 		else
 			cout($output, 'content');
 	}
-	
+
 	function addmessage() {
 		$send_all 		=true;// checkPerm('send_all', true);
 		$send_upper 	=true;// checkPerm('send_upper', true);
 		if(!$send_all && !$send_upper) die("You can't access");
-	
+
 		require_once(_base_.'/lib/lib.userselector.php');
-		
+
 		require_once(_lms_.'/lib/lib.course.php');
-	
+
 		$lang 		=& DoceboLanguage::createInstance('message', 'lms');
 		$out		= $GLOBALS['page'];
 		$out->setWorkingZone('content');
 		$from = importVar('out');
 		$um =& UrlManager::getInstance("message");
-	
+
 		$aclManager 	= new DoceboACLManager();
 		$user_select 	= new UserSelector();
-	
+
 		$user_select->show_user_selector = TRUE;
 		$user_select->show_group_selector = FALSE;
 		$user_select->show_orgchart_selector = FALSE;
 		$user_select->show_fncrole_selector = FALSE;
-	
+
 		$user_select->nFields = 0;
-	
+
 		if(isset($_POST['message']['recipients'])) {
-	
+
 			$recipients = unserialize(urldecode($_POST['message']['recipients']));
 			$user_select->resetSelection($recipients);
 		}
-	
+
 		$me = array(getLogUserId());
-	
+
 		$course_man = new Man_Course();
 		$all_value = array(0 => Lang::t('_ALL_COURSES'));
 		$all_courses = $course_man->getUserCourses( getLogUserId() );
 		$all_value = $all_value + $all_courses;
-	
+
 		if (count($all_value) > 0) {
 			$drop = Form::getLineDropdown(	'form_line_right',
 										'label_padded',
@@ -563,7 +609,7 @@ class MessageModule {
 		else {
 			$user_select->addFormInfo(Form::getHidden("msg_course_filter", "msg_course_filter", 0));
 		}
-	
+
 		$user_select->setUserFilter('exclude', $me);
 		if(isset($_POST['msg_course_filter'])) $filter = $_POST['msg_course_filter'];
 		elseif(isset($_GET['set_course_filter'])) $filter = $_GET['set_course_filter'];
@@ -571,7 +617,7 @@ class MessageModule {
 
 		$_SESSION['message_filter'] = $filter;
 		$user_select->learning_filter = 'message';
-		
+
 		//$user_select->requested_tab = PEOPLEVIEW_TAB;
 		$id_forward=importVar('id_forward',true,0);
 
@@ -591,24 +637,24 @@ class MessageModule {
 				false,
 				Lang::t('_RECIPIENTS'),
 				true);
-		
+
 	}
 
 	function writemessage() {
 		$send_all 		=true;// checkPerm('send_all', true);
 		$send_upper 	=true;// checkPerm('send_upper', true);
 		if(!$send_all && !$send_upper) die("You can't access");
-	
+
 		require_once(_base_.'/lib/lib.userselector.php');
-		
+
 		$out		= $GLOBALS['page'];
 		$out->setWorkingZone('content');
 		$from 		= importVar('out');
 		$acl_man 	=& Docebo::user()->getAclManager();
 		$um =& UrlManager::getInstance("message");
-	
+
 		if(!isset($_POST['message']['recipients'])) {
-	
+
 			if(isset($_GET['reply_recipients'])) {
 				$user_selected = unserialize(stripslashes(urldecode($_GET['reply_recipients'])));
 				$recipients = urlencode(serialize($user_selected));
@@ -631,9 +677,9 @@ class MessageModule {
 			$this->messageGetTitleArea(array($title_url => Lang::t('_MESSAGES'),
 				Lang::t('_SEND')) ,'message')
 			.'<div class="std_block">';
-	
+
 		if(isset($_POST['send'])) {
-	
+
 			if($_POST['message']['subject'] == '') {
 				$output .= getErrorUi(Lang::t('_MUST_INS_SUBJECT'));
 			} else {
@@ -642,7 +688,7 @@ class MessageModule {
 				if($_FILES['message']['tmp_name']['attach'] != '') {
 					$attach = $this->saveMessageAttach($_FILES['message']);
 				}
-	
+
 				$query_mess = "
 				INSERT INTO %adm_message
 				( idCourse, sender, posted, title, textof, attach, priority ) VALUES
@@ -655,9 +701,9 @@ class MessageModule {
 					'".addslashes($attach)."',
 					'".$_POST['message']['priority']."'
 				)";
-	
+
 				if(!$this->db->query($query_mess)) {
-	
+
 					if($attach) deleteAttach($attach);
 
 					$jump_url = $this->mvc_urls
@@ -666,17 +712,17 @@ class MessageModule {
 					Util::jump_to($jump_url);
 				}
 				list($id_message) = $this->db->fetch_row($this->db->query("SELECT LAST_INSERT_ID()"));
-	
+
 				if(!in_array(getLogUserId(), $user_selected)) $user_selected[] = getLogUserId();
 				$send_to_idst =& $acl_man->getAllUsersFromIdst($user_selected);
-	
+
 				$re = true;
 				$recip_alert = array();
 				if(is_array($send_to_idst)) {
-	
+
 					$logged_user =  getLogUserId();
 					while(list(, $id_recipient) = each($send_to_idst)) {
-	
+
 						$query_recipients = "
 						INSERT INTO %adm_message_user
 						( idMessage, idUser, idCourse, `read` ) VALUES
@@ -693,27 +739,49 @@ class MessageModule {
 						$re &= $re_single;
 					}
 					if(!empty($recip_alert)) {
-	
+
 						require_once(_lms_.'/lib/lib.course.php');
 						require_once(_base_.'/lib/lib.eventmanager.php');
-						if ((isset($_SESSION['idCourse'])) && (isset($GLOBALS['course_descriptor'])))
+
+						$is_course = false;
+						if ((isset($_SESSION['idCourse'])) && (isset($GLOBALS['course_descriptor']))) {
 							$course_name = $GLOBALS['course_descriptor']->getValue('name');
-						else $course_name = Lang::t('_NOTIN_COURSE');
+							$is_course = true;
+						} elseif ($_POST['msg_course_filter'] != 0 ) {
+							$query_course = "SELECT name FROM %lms_course WHERE idCourse = ".$_POST['msg_course_filter'];
+							$course_result = $this->db->fetch_row($this->db->query($query_course));
+							list($name) = $course_result;
+							$course_name = $name;
+							$is_course = true;
+						} else {
+							 $course_name = '';
+						}
+
 						// message to user that is odified
 						$msg_composer = new EventMessageComposer();
-	
+
 						$msg_composer->setSubjectLangText('email', '_YOU_RECIVE_MSG_SUBJECT', false);
-						$msg_composer->setBodyLangText('email', '_YOU_RECIVE_MSG_TEXT', array(	'[url]' => _MESSAGE_PL_URL,
+						if ( !$is_course ) {
+							$msg_composer->setBodyLangText('email', '_YOU_RECIVE_MSG_TEXT', array(	'[url]' => _MESSAGE_PL_URL,
 																									'[course]' => $course_name,
 																									'[from]' => Docebo::user()->getUsername() ) );
-	
-						$msg_composer->setBodyLangText('sms', '_YOU_RECIVE_MSG_TEXT_SMS', array(	'[url]' => _MESSAGE_PL_URL,
-																									'[course]' => $course_name,
-																									'[from]' => Docebo::user()->getUsername() ) );
-	
+
+							$msg_composer->setBodyLangText('sms', '_YOU_RECIVE_MSG_TEXT_SMS', array( '[url]' => _MESSAGE_PL_URL,
+																									 '[course]' => $course_name,
+																									 '[from]' => Docebo::user()->getUsername() ) );
+						} else {
+							$msg_composer->setBodyLangText('email', '_YOU_RECIVE_MSG_TEXT_COURSE', array(	'[url]' => _MESSAGE_PL_URL,
+																											'[course]' => $course_name,
+																											'[from]' => Docebo::user()->getUsername() ) );
+
+							$msg_composer->setBodyLangText('sms', '_YOU_RECIVE_MSG_TEXT_SMS_COURSE', array(	'[url]' => _MESSAGE_PL_URL,
+																											'[course]' => $course_name,
+																											'[from]' => Docebo::user()->getUsername() ) );
+						}
+
 						createNewAlert(	'MsgNewReceived', 'directory', 'moderate', '1', 'User group subscription to moderate',
 									$recip_alert, $msg_composer );
-	
+
 					}
 				}
 				$jump_url = $this->mvc_urls
@@ -723,16 +791,16 @@ class MessageModule {
 			}
 		}
 		$prio_arr = array(
-			'5' => Lang::t('_VERYHIGH'),
-			'4' => Lang::t('_HIGH'),
-			'3' => Lang::t('_NORMAL'),
-			'2' => Lang::t('_LOW'),
-			'1' => Lang::t('_VERYLOW')
+			'5' => Lang::t('_VERYHIGH', 'message'),
+			'4' => Lang::t('_HIGH', 'message'),
+			'3' => Lang::t('_NORMAL', 'message'),
+			'2' => Lang::t('_LOW', 'message'),
+			'1' => Lang::t('_VERYLOW', 'message')
 		);
-	
+
 		$first = true;
 		$attach = '';
-	
+
 		if(!is_array($user_selected) || empty($user_selected)) {
 
 			$write_url = $this->mvc_urls
@@ -750,25 +818,25 @@ class MessageModule {
 				.Form::closeForm();
 			return;
 		}
-	
+
 		$only_users =& $acl_man->getUsers($user_selected);
 		$only_groups = $acl_man->getGroups($user_selected);
-	
+
 		$output .=
 			'<span class="text_bold">'.Lang::t('_RECIPIENTS').'</span>'
 			.'<div class="recipients">';
-	
-	
+
+
 		if(is_array($only_groups) && !empty($only_groups)) {
-	
+
 			$output .= '<strong>';
 			while(list(, $group_info) = each($only_groups)) {
 				if($first) $first = false;
 				else $attach = ', ';
-	
+
 				$groupid = substr($group_info[ACL_INFO_GROUPID], strrpos($group_info[ACL_INFO_GROUPID], '/')+1);
 				$output .=  $attach.$groupid;
-	
+
 				// find user of group
 				$members = $acl_man->getGroupAllUser($group_info[ACL_INFO_IDST]);
 				$group_users =& $acl_man->getUsers($members);
@@ -783,7 +851,7 @@ class MessageModule {
 									: $acl_man->relativeId($user_info[ACL_INFO_USERID]) );
 				}
 				$output .= ' )</span> ';
-	
+
 			}
 			$output .= '</strong>';
 		}
@@ -818,20 +886,20 @@ class MessageModule {
 			.Form::getHidden('out', 'out', $from)
 			.Form::getHidden('msg_course_filter', 'msg_course_filter', $_POST['msg_course_filter'])
 			.Form::getHidden('message_recipients', 'message[recipients]', $recipients)
-	
+
 			.Form::getTextfield(Lang::t('_SUBJECT'), 'message_subject', 'message[subject]', 255,
 				( isset($_POST['message']['subject']) ? $_POST['message']['subject'] : "$title" ) )
-	
+
 			.Form::getDropdown(Lang::t('_PRIORITY'), 'message_priority', 'message[priority]', $prio_arr,
 				( isset($_POST['message']['priority']) ? $_POST['message']['priority'] : 3 ) )
-	
+
 			.Form::getTextarea(Lang::t('_TEXTOF'), 'message_textof', 'message_textof',
 				( isset($_POST['message_textof']) ? $_POST['message_textof'] : "$text_message" ) )
-	
+
 			.Form::getFilefield(Lang::t('_ATTACHMENT'), 'message_attach', 'message[attach]', 255 )
 			.Form::openButtonSpace()
 			.Form::getButton('back_recipients', 'back_recipients', Lang::t('_BACK'))
-	
+
 			.Form::getButton('send', 'send', Lang::t('_SEND'))
 			.Form::getButton('undo', 'undo', Lang::t('_UNDO'))
 			.Form::closeButtonSpace()
@@ -840,19 +908,19 @@ class MessageModule {
 
 		cout($output, 'content');
 	}
-	
+
 	function delmessage() {
 		//checkPerm('view');
-	
+
 		$lang 		=& DoceboLanguage::createInstance('message', 'lms');
 		$out		= $GLOBALS['page'];
 		$out->setWorkingZone('content');
 		$um =& UrlManager::getInstance("message");
-	
+
 		$from = importVar('out');
-	
+
 		if(isset($_GET['confirm'])) {
-	
+
 			$re = true;
 			$del_query = "
 			UPDATE %adm_message_user
@@ -864,19 +932,19 @@ class MessageModule {
 				Util::jump_to($um->getUrl('&active_tab=inbox&result=err'));
 				//Util::jump_to($um->getUrl(( $from == 'out' ? '&active_tab=outbox' : '').'&result=err'));
 			}
-	
+
 			$query = "
 			SELECT idMessage
 			FROM %adm_message_user
 			WHERE idMessage = '".(int)$_GET['id_message']."'";
 			if(!$this->db->num_rows($this->db->query($query))) {
-	
+
 				list($attach) = $this->db->fetch_row($this->db->query("
 				SELECT attach
 				FROM %adm_message
 				WHERE idMessage = '".$_GET['id_message']."'"));
 				if($attach != '' ) {
-	
+
 					if(!deleteAttach($attach)) {
 						if ($from === 'out')
 							Util::jump_to($um->getUrl('&active_tab=outbox&result=err'));
@@ -901,11 +969,11 @@ class MessageModule {
 					//Util::jump_to($um->getUrl(( $from == 'out' ? '&active_tab=outbox' : '').'&result=err'));
 				}
 			}
-			
+
       $_filter = importVar('msg_course_filter');
 			if (($_filter != '') && ($_filter != false)) { $add_filter = "&msg_course_filter=".$_filter; }
 			else $add_filter = '';
-			
+
 			if ($from === 'out')
 				Util::jump_to($um->getUrl('&active_tab=outbox&result=ok_del'.$add_filter));
 			Util::jump_to($um->getUrl('&active_tab=inbox&result=ok_del'.$add_filter));
@@ -915,12 +983,12 @@ class MessageModule {
 			SELECT title
 			FROM %adm_message
 			WHERE idMessage = '".$_GET['id_message']."'"));
-	
+
 			$page_title = array(
 				$um->getUrl(( $from == 'out' ? '&active_tab=outbox' : '' )) => Lang::t('_MESSAGES'),
 				Lang::t('_DEL')
 			);
-			
+
 			$_filter = importVar('msg_course_filter');
 			$add_filter = '';
 			if (($_filter != '') && ($_filter != false)) $add_filter = "&msg_course_filter=".$_filter;
@@ -942,16 +1010,16 @@ class MessageModule {
 			cout($output, 'content');
 		}
 	}
-	
+
 	//-----------------------------------------------------------------//
-	
+
 	function readmessage() {
 		//checkPerm('view');
-	
+
 		$out		= $GLOBALS['page'];
 		$out->setWorkingZone('content');
 		$um=& UrlManager::getInstance("message");
-	
+
 		$acl_man =& Docebo::user()->getAclManager();
 		$from = importVar('out');
 
@@ -970,14 +1038,14 @@ class MessageModule {
 		UPDATE %adm_message_user AS user
 		SET user.read = '"._MESSAGE_READED."'
 		WHERE user.idMessage = '".$_GET['id_message']."' AND user.idUser = '".getLogUserId()."' AND user.read = '"._MESSAGE_UNREADED."' ");
-	
+
 		list($sender, $posted, $title, $textof, $attach, $priority) = $this->db->fetch_row($this->db->query("
 		SELECT sender, posted, title, textof, attach, priority
 		FROM %adm_message
 		WHERE idMessage = '".$_GET['id_message']."'"));
-	
+
 		$sender_info = $acl_man->getUser($sender, false);
-	
+
 		$author = ( $sender_info[ACL_INFO_LASTNAME].$sender_info[ACL_INFO_FIRSTNAME] == '' ?
 						$acl_man->relativeId($sender_info[ACL_INFO_USERID]) :
 						$sender_info[ACL_INFO_LASTNAME].' '.$sender_info[ACL_INFO_FIRSTNAME] );
@@ -998,8 +1066,8 @@ class MessageModule {
 		$output .=
 			$this->messageGetTitleArea($page_title, 'message')
 			.'<div class="std_block">'
-			
-			
+
+
 			.'<h2 class="message_title"><b>'.Lang::t('_TITLE').': </b>'.$title.'</h2>'
 			.'<br/>'
 			.'<p><b>'.Lang::t('_SENDER').' : </b>'.$author.'</p>'
@@ -1020,7 +1088,7 @@ class MessageModule {
 					? "index.php?r=message/add&id_forward=".$_GET['id_message'].""
 					: $um->getUrl("op=addmessage&id_forward=".$_GET['id_message']."");
 				$output .= '<p class="message_reply"><a href="'.$reply_url.'">'.Lang::t('_NEXT').'</a></p>';
-			} 
+			}
 			else
 			{
 				$reply_url = $this->mvc_urls
@@ -1032,19 +1100,19 @@ class MessageModule {
 
 		cout($output, 'content');
 	}
-	
+
 	function download() {
 		//checkPerm('view');
-	
+
 		require_once(_base_.'/lib/lib.download.php');
-	
+
 		//find selected file
-	
+
 		list($filename) = $this->db->fetch_row($this->db->query("
 		SELECT attach
 		FROM %adm_message
 		WHERE idMessage = '".$_GET['id_message']."'"));
-	
+
 		if(!$filename) {
 			$output = getErrorUi('Sorry, such file does not exist!');
 			cout($output, 'content');
@@ -1055,25 +1123,25 @@ class MessageModule {
 		$extens = array_pop(explode('.', $filename));
 		sendFile(_PATH_MESSAGE, $filename, $extens);
 	}
-	
-	
+
+
 	function messageGetTitleArea($text, $image = '', $alt_image = '') {
 		$res="";
-	
+
 		if (Get::cur_plat() == "cms") {
 			$res = getCmsTitleArea($text, $image = '', $alt_image = '');
 		}
 		else {
 			$res = getTitleArea($text, $image = '', $alt_image = '');
 		}
-	
+
 		return $res;
 	}
-	
+
 	function quickSendMessage($sender, $recipients, $subject, $textof) {
-	
+
 		if(!is_array($recipients)) $recipients = array($recipients);
-		
+
 		$query_mess = "
 		INSERT INTO %adm_message
 		( idCourse, sender, posted, title, textof, attach, priority ) VALUES
@@ -1088,7 +1156,7 @@ class MessageModule {
 		)";
 		if(!$this->db->query($query_mess)) return false;
 		list($id_message) = $this->db->fetch_row($this->db->query("SELECT LAST_INSERT_ID()"));
-	
+
 		$re = true;
 		$recipients[] = getLogUserId();
 		$logged_user =  getLogUserId();
@@ -1107,7 +1175,7 @@ class MessageModule {
 		}
 		return $re;
 	}
-	
+
 }
 
 

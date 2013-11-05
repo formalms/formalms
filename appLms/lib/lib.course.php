@@ -1,11 +1,14 @@
-<?php defined("IN_DOCEBO") or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 /**
@@ -847,7 +850,7 @@ class Man_Course {
 		if(isset($course['prerequisites_satisfied']) && $course['prerequisites_satisfied'] == false) return array('can' => false, 'reason' => 'prerequisites', 'expiring_in' => $expiring);
 		if(isset($course['waiting']) && $course['waiting'] >= 1) return array('can' => false, 'reason' => 'waiting', 'expiring_in' => $expiring);
 		// control if the course is elapsed
-		/*if($course['date_begin'] != '0000-00-00') {
+		if($course['date_begin'] != '0000-00-00') {
 
 			$time_begin = fromDatetimeToTimestamp($course['date_begin']);
 
@@ -864,7 +867,7 @@ class Man_Course {
 			$time_first_access = fromDatetimeToTimestamp($course['date_first_access']);
 
 			if($now > ( $time_first_access + ($course['valid_time'] * 24 * 3600 ) )) return array('can' => true, 'reason' => 'course_valid_time', 'expiring_in' => $expiring);
-		}*/
+		}
 		if( $course['userStatusOp'] & (1 << $course['user_status']) ) return array('can' => false, 'reason' => 'user_status', 'expiring_in' => $expiring);
 
 		//Control user coursepath prerequisite
@@ -2132,7 +2135,7 @@ function getSubscribedInfo($id_course, $subdived_for_level = false, $id_level = 
 		$query_courseuser .= " AND c.idUser IN (".implode(',', $group_all_members).")";
 	if($edition_id !== false && $edition_id > 0) {
 		require_once(_lms_.'/lib/lib.edition.php');
-		$ed_man = EditionManager();
+		$ed_man = new EditionManager();
 		$ed_users = $ed_man->getEditionSubscribed($edition_id);
 		if (!empty($ed_users))
 			$query_courseuser .= " AND c.idUser IN (".implode(",", $ed_users).")";
