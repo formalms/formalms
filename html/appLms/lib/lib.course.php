@@ -810,7 +810,11 @@ class Man_Course {
 			$time_first_access = fromDatetimeToTimestamp($course['date_first_access']);
 
 			$exp_time = ( $time_first_access + ($course['valid_time'] * 24 * 3600 ) ) - $now;
-			if($exp_time > 0) $expiring = round($exp_time / (24*60*60));
+      $expiring = round($exp_time / (24*60*60));
+      $expiring = $expiring ==-0?0:$expiring;			
+			if($exp_time < 0) {
+                return array('can' => false, 'reason' => 'time_elapsed', 'expiring_in' => $expiring);
+      }
 		}
 		
 		$query =	"SELECT date_begin_validity, date_expire_validity, status, level"

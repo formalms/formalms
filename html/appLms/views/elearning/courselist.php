@@ -65,6 +65,12 @@
 				<?php echo Lang::t('_EXPIRING_IN', 'course', array('[expiring_in]' => $access['expiring_in'])); ?>
 			</p>
 		<?php endif; ?>
+         <?php 
+         if((!empty($course['can_enter']['expiring_in']) && $course['can_enter']['can']==false && $course['can_enter']['expiring_in'] <= 0) || ($course['can_enter']['expiring_in'] == 0 && $course['can_enter']['can']==false)) : ?>
+            <p class="course_support_info">
+                <?php echo Lang::t('_EXPIRED', 'course'); ?>
+            </p>
+        <?php endif; ?>    				
 		<p class="course_support_info">
 			<?php if($course['code']) { ?><i style="font-size:.88em">[<?php echo $keyword != "" ? Layout::highlight($course['code'], $keyword) : $course['code']; ?>]</i><?php } ?>
 		</p>
