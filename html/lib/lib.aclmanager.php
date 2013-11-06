@@ -839,7 +839,7 @@ class DoceboACLManager {
 		$result = false;
 		$query = "DELETE FROM ".$this->_getTableTempUser()
 			." WHERE idst IN (".implode(",", $arr_idst).")";
-		$result &= $this->_executeQuery( $query );
+		$result = $this->_executeQuery( $query );
 
 		return $result ? true : false;
 	}
