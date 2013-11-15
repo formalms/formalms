@@ -8,7 +8,7 @@ html{color:#000;background:#FFF;}
 html, body, h1, h2, h3, h4, h5, h6, p, div, form, input, button, textarea{margin:0;padding:0;}
 table{border-collapse:collapse;border-spacing:0;}
 fieldset, img{border:0;}
-address, caption, cite, code, dfn, em, strong, th, var, optgroup{font-style:inherit;font-weight:inherit;}
+address, caption, cite, code, dfn, strong, th, var, optgroup{font-style:inherit;font-weight:inherit;}
 del, ins{text-decoration:none;}
 caption, th{text-align:left;}
 h1, h2, h3, h4, h5, h6{font-size:100%;font-weight:normal;}
