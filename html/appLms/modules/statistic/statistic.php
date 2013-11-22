@@ -447,8 +447,8 @@ function sessiondetails() {
 	
 	$type_h = array('', '', '');
 	$cont_h = array(
+		$lang->def('_DATE'),
 		$lang->def('_TYPE_OF_OPERATION'), 
-		$lang->def('_DATE'), 
 		$lang->def('_TIME_IN'), 
 	);
 	$tb->setColsStyle($type_h);
