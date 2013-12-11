@@ -130,7 +130,11 @@ LightBox.prototype = {
 	overlay_light: null,
 	max_width: false,
 	max_height: false,
-	init: function() {
+    oLangs: new LanguageManager(),
+	init: function(oConfig) {
+        if (typeof oConfig !== 'undefined'){
+                this.oLangs.set(oConfig.langs || {_CLOSE: 'Close'});
+        }
 		if(this.overlay_light == null) {
 			if  (YAHOO.env.ua.ipad == 0 ||  typeof YAHOO.env.ua.ipad == "undefined" || !YAHOO.env.ua.ipad) {
 			this.overlay_light = new YAHOO.widget.Panel("overlay_lightbox", {
@@ -159,7 +163,7 @@ LightBox.prototype = {
 			}
 
 			this.overlay_light.setHeader('<h1 class="title_handler" id="title_handler">Title</h1>'
-				+'<a class="close_handler" id="close_handler" href="#"><span>Close</span></a>');
+				+'<a class="close_handler" id="close_handler" href="#"><span>'+this.oLangs.get('_CLOSE')+'</span></a>');
 			this.overlay_light.setBody('<iframe id="overlay_iframe" name="overlay_iframe" src="" height="100%" width="100%" frameborder="0"></iframe>');
 
 			YAHOO.util.Event.on(window, "resize", function(e, obj) {
