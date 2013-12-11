@@ -47,31 +47,31 @@ else {
 			echo Form::getButton("filter_reset", "filter_reset", Lang::t('_RESET', 'standard'), "reset_b");
 		?>
 	</div>
-	<a id="advanced_search" class="advanced_search" href="javascript:;"><?php echo Lang::t("_ADVANCED_SEARCH", 'standard'); ?></a>
-	<div id="advanced_search_options" class="advanced_search_options" style="display: <?php echo $is_active_advanced_filter ? 'block' : 'none'; ?>">
-		<?php
-			//filter inputs
+        <a id="advanced_search" class="advanced_search" href="javascript:;"><?php echo Lang::t("_ADVANCED_SEARCH", 'standard'); ?></a>
+        <div id="advanced_search_options" class="advanced_search_options" style="display: <?php echo $is_active_advanced_filter ? 'block' : 'none'; ?>">
+            <?php
+                //filter inputs
 
-			$_orgchart_after = '<br />'.Form::getInputCheckbox('filter_descendants', 'filter_descendants', 1, $filter_descendants ? true : false, "")
-				.'&nbsp;<label for="filter_descendants">'.Lang::t('_ORG_CHART_INHERIT', 'organization_chart').'</label>';
-			echo Form::getDropdown(Lang::t('_DIRECTORY_MEMBERTYPETREE', 'admin_directory'), 'filter_orgchart', 'filter_orgchart', $orgchart_list, (int)$filter_orgchart, $_orgchart_after);
-			echo Form::getDatefield(Lang::t('_VALID_AT_DATE', 'subscribe'), 'filter_date_valid', 'filter_date_valid', $filter_date_valid);
+                $_orgchart_after = '<br />'.Form::getInputCheckbox('filter_descendants', 'filter_descendants', 1, $filter_descendants ? true : false, "")
+                    .'&nbsp;<label for="filter_descendants">'.Lang::t('_ORG_CHART_INHERIT', 'organization_chart').'</label>';
+                echo Form::getDropdown(Lang::t('_DIRECTORY_MEMBERTYPETREE', 'admin_directory'), 'filter_orgchart', 'filter_orgchart', $orgchart_list, (int)$filter_orgchart, $_orgchart_after);
+                echo Form::getDatefield(Lang::t('_VALID_AT_DATE', 'subscribe'), 'filter_date_valid', 'filter_date_valid', $filter_date_valid);
 
-			$arr_filter = array(
-				0 => Lang::t('_ALL', 'standard'),
-				1 => Lang::t('_ONLY_EXPIRED', 'subscribe'),
-				2 => Lang::t('_NOT_EXPIRED_WITH_DATE', 'subscribe'),
-				3 => Lang::t('_NOT_EXPIRED_WITHOUT_DATE', 'subscribe')
-			);
-			echo Form::getDropdown(Lang::t('_SHOW_ONLY', 'subscribe'), 'filter_show', 'filter_show', $arr_filter, $filter_show);
+                $arr_filter = array(
+                    0 => Lang::t('_ALL', 'standard'),
+                    1 => Lang::t('_ONLY_EXPIRED', 'subscribe'),
+                    2 => Lang::t('_NOT_EXPIRED_WITH_DATE', 'subscribe'),
+                    3 => Lang::t('_NOT_EXPIRED_WITHOUT_DATE', 'subscribe')
+                );
+                echo Form::getDropdown(Lang::t('_SHOW_ONLY', 'subscribe'), 'filter_show', 'filter_show', $arr_filter, $filter_show);
 
-			//buttons
-			echo Form::openButtonSpace();
-			echo Form::getButton("set_advanced_filter", "set_advanced_filter", Lang::t('_SEARCH', 'standard'), false, '', false);
-			echo Form::getButton("reset_advanced_filter", "reset_advanced_filter", Lang::t('_UNDO', 'standard'), false, '', false);
-			echo Form::closeButtonSpace();
-		?>
-	</div>
+                //buttons
+                echo Form::openButtonSpace();
+                echo Form::getButton("set_advanced_filter", "set_advanced_filter", Lang::t('_SEARCH', 'standard'), false, '', false);
+                echo Form::getButton("reset_advanced_filter", "reset_advanced_filter", Lang::t('_UNDO', 'standard'), false, '', false);
+                echo Form::closeButtonSpace();
+            ?>
+        </div>
 </div>
 <div class="nofloat"></div>
 <?php

@@ -55,11 +55,11 @@ function view_area() {
 			.' <a class="ico-sprite subs_users" href="'.$base_url.'mo_help'.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
 			.' <a class="ico-sprite subs_'.( isset($disabled_list['mo_help']) ? 'noac' : 'actv' ).'" href="'.$second_url.'mo_help'.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
 			.'</li>';
-    $main_menu .= '<li>'
-			.'<span>'.Lang::t('_LIBRARY', 'menu_over').'</span>'
-			.' <a class="ico-sprite subs_users" href="'.$base_url.'mo_library'.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
-			.' <a class="ico-sprite subs_'.( isset($disabled_list['mo_library']) ? 'noac' : 'actv' ).'" href="'.$second_url.'mo_library'.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
-			.'</li>';
+//    $main_menu .= '<li>'
+//			.'<span>'.Lang::t('_LIBRARY', 'menu_over').'</span>'
+//			.' <a class="ico-sprite subs_users" href="'.$base_url.'mo_library'.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
+//			.' <a class="ico-sprite subs_'.( isset($disabled_list['mo_library']) ? 'noac' : 'actv' ).'" href="'.$second_url.'mo_library'.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
+//			.'</li>';
 	
 	// Tab list
 	$tab_list = '';
@@ -69,7 +69,7 @@ function view_area() {
 		'tb_classroom' => Lang::t('_CLASSROOM', 'middlearea'),
 		'tb_calendar' => Lang::t('_CALENDAR', 'middlearea'),
         'tb_catalog' => Lang::t('_CATALOGUE', 'middlearea'),
-        'tb_library' => Lang::t('_LIBRARY', 'middlearea'),
+        //'tb_library' => Lang::t('_LIBRARY', 'middlearea'),
 		'tb_assessment' => Lang::t('_ASSESSMENT', 'middlearea'),
 		'tb_coursepath' => Lang::t('_COURSEPATH', 'coursepath'),
 		'tb_games' => Lang::t('_CONTEST', 'middlearea'),
