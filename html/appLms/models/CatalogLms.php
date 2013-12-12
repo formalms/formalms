@@ -772,8 +772,8 @@ class CatalogLms extends Model
 				$res['body'] .=	'<div class="edition_container">'
 								.'<b>'.Lang::t('_NAME', 'catalogue').'</b>: '.$edition_info['name'].'<br/>'
 								.($edition_info['code'] !== '' ? '<b>'.Lang::t('_CODE', 'catalogue').'</b>: '.$edition_info['code'].'<br/>' : '')
-								.($edition_info['date_begin'] !== '0000-00-00 00:00:00' ? '<b>'.Lang::t('_DATE_BEGIN', 'course').'</b>: '.Format::date($edition_info['date_begin'], 'datetime').'<br/>' : '')
-								.($edition_info['date_end'] !== '0000-00-00 00:00:00' ? '<b>'.Lang::t('_DATE_END', 'course').'</b>: '.Format::date($edition_info['date_end'], 'datetime').'<br/>' : '')
+								.($edition_info['date_begin'] !== '0000-00-00 00:00:00' ? '<b>'.Lang::t('_DATE_BEGIN', 'course').'</b>: '.Format::date($edition_info['date_begin'], 'date').'<br/>' : '')
+								.($edition_info['date_end'] !== '0000-00-00 00:00:00' ? '<b>'.Lang::t('_DATE_END', 'course').'</b>: '.Format::date($edition_info['date_end'], 'date').'<br/>' : '')
 								.'<div class="edition_subscribe">'
 								.$action
 								.'</div>'
