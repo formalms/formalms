@@ -1655,7 +1655,7 @@ class UsermanagementAdmController extends AdmController {
 		switch ($step) {
 
 			case 1: {
-				$params['orgchart_list'] = $this->model->getOrgChartDropdownList();
+				$params['orgchart_list'] = $this->model->getOrgChartDropdownList(Docebo::user()->getIdSt());
 			} break;
 
 			case 2: {
