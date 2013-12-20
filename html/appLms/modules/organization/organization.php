@@ -162,7 +162,7 @@ function organization_display( &$treeView ) {
 	$GLOBALS['page']->add( '<script type="text/javascript">'
 	."var lb = new LightBox();
         var Config = {};
-        Config.langs = {_CLOSE: 'Chiudi'};
+        Config.langs = {_CLOSE: '".Lang::t('_CLOSE', 'standard')."'};
         lb.init(Config);"
 	.'</script>' );
 }
