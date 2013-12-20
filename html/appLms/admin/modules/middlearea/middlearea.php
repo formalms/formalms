@@ -62,7 +62,6 @@ function view_area() {
 		'tb_elearning' => Lang::t('_ELEARNING', 'middlearea'),
 		'tb_label' => Lang::t('_LABELS', 'label'),
 		'tb_classroom' => Lang::t('_CLASSROOM', 'middlearea'),
-		'tb_calendar' => Lang::t('_CALENDAR', 'middlearea'),
         'tb_catalog' => Lang::t('_CATALOGUE', 'middlearea'),
 		'tb_assessment' => Lang::t('_ASSESSMENT', 'middlearea'),
 		'tb_coursepath' => Lang::t('_COURSEPATH', 'coursepath'),
