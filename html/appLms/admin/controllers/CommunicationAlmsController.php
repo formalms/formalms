@@ -263,11 +263,10 @@ class CommunicationAlmsController extends AlmsController {
 					);
 				}
 				Util::jump_to('index.php?r=alms/communication/show&success=1');
-			} else {
-				// destroy the empty game
-				$this->model->delByPk($data['id_comm']);
 			}
 		}
+        // destroy the empty game
+        $this->model->delByPk($data['id_comm']);
 		Util::jump_to('index.php?r=alms/communication/show&error=1');
 	}
 
