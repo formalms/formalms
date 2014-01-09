@@ -82,11 +82,18 @@ $del_url = 'ajax.adm_server.php?r='.$this->link.'/multidel&amp;id_course='.$id_c
 $imp_csv = 'index.php?r='.$this->link.'/import_csv&amp;id_course='.$id_course.'&amp;id_edition='.$id_edition.'&amp;id_date='.$id_date.'';
 $imp_course = 'index.php?r='.$this->link.'/import_course&amp;load=1&amp;id_course='.$id_course.'&amp;id_edition='.$id_edition.'&amp;id_date='.$id_date.'';
 
+$copy_course = 'index.php?r='.$this->link.'/copy_course&amp;load=1&amp;id_course='.$id_course.'&amp;id_edition='.$id_edition.'&amp;id_date='.$id_date.'';
+$move_course = 'index.php?r='.$this->link.'/copy_course&amp;load=1&amp;move=1&amp;id_course='.$id_course.'&amp;id_edition='.$id_edition.'&amp;id_date='.$id_date.'';
+
 $rel_action = '<a class="ico-wt-sprite subs_add" href="'.$add_url.'"><span>'.Lang::t('_ADD', 'subscribe').'</span></a>'
 	.'<a class="ico-wt-sprite subs_mod" href="'.$mod_url.'"><span>'.Lang::t('_MOD_SELECTED', 'subscribe').'</span></a>'
 	.'<a class="ico-wt-sprite subs_del" href="'.$del_url.'"><span>'.Lang::t('_DEL_SELECTED', 'subscribe').'</span></a>'
 	.($id_edition != 0 || $id_date != 0 ? '' : '<a class="ico-wt-sprite subs_dup" href="'.$imp_course.'"><span>'.Lang::t('_IMPORT_FROM_COURSE', 'subscribe').'</span></a>')
 	.'<a class="ico-wt-sprite subs_import" href="'.$imp_csv.'"><span>'.Lang::t('_IMPORT', 'subscribe').'</span></a>'
+
+	.($id_edition != 0 || $id_date != 0 ? '' : '<a class="ico-wt-sprite subs_copy" href="'.$copy_course.'"><span>'.Lang::t('_COPY_TO_COURSE', 'subscribe').'</span></a>')
+	.($id_edition != 0 || $id_date != 0 ? '' : '<a class="ico-wt-sprite subs_move" href="'.$move_course.'"><span>'.Lang::t('_MOVE_TO_COURSE', 'subscribe').'</span></a>')
+
 	.'&nbsp;&nbsp;&nbsp;&nbsp;';
 
 $count_selected_over = '<span>'
