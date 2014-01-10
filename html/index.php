@@ -140,7 +140,7 @@ else
 // -----------------------------------------------------------------------------
 
 #// finalize
-// Boot::finalize();
+# Boot::finalize();
 
 // remove all the echo and put them in the debug zone
 $GLOBALS['page']->add(ob_get_contents(), 'debug');
