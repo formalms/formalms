@@ -263,6 +263,7 @@ class Get {
 
 		return '<img src="'.$src.'" '
 					.'alt="'.( $alt ? $alt : substr($src, 0 , -4) ).'" '
+                    .'title="'.( $alt ? $alt : substr($src, 0 , -4) ).'" '
 					.( $class_name != false ? 'class="'.$class_name.'" ' : '' )
 					.( $extra != false ? $extra.' ' : '' )
 					.'/>';
