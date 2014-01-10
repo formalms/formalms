@@ -17,12 +17,13 @@ class CoursepathLms extends Model {
 
 	public function  __construct() {}
 
-	public function getUserStartedCoursepath($id_user) {
+	public function getUserStartedCoursepath($id_user, $conditions = '') {
 		
 		$query = "SELECT cp.id_path, cp.path_code, cp.path_name, cp.path_descr, cpu.course_completed"
 			." FROM %lms_coursepath AS cp"
 			." JOIN %lms_coursepath_user AS cpu ON cpu.id_path = cp.id_path"
 			." WHERE idUser = ".(int)$id_user
+			." ".$conditions
 			." ORDER BY cp.path_name";
 		$result = sql_query($query);
 
@@ -36,7 +37,7 @@ class CoursepathLms extends Model {
 			." FROM %lms_coursepath AS cp JOIN %lms_coursepath_courses AS cpc "
 			." JOIN %lms_coursepath_user AS cpu JOIN %lms_courseuser AS cu "
 			." ON (cp.id_path = cpc.id_path AND cpc.id_item = cu.idCourse "
-			." AND cpu.id_path = cp.id_path AND cpu.idUser = cu.idUser) "
+			." AND cpu.id_path = cp.id_path AND cpu.idUser = cu.idUser ".$conditions.") "
 			." WHERE cu.status = '"._CUS_END."' AND cu.idUser = ".(int)$id_user." "
 			." GROUP BY cp.id_path";
 		$qres = sql_query($query);
@@ -62,21 +63,79 @@ class CoursepathLms extends Model {
 		return $res;
 	}
 
-	public function getUserFinishedCoursepath($id_user) {
+	public function getAllCoursepath($id_user, $conditions = '') {
 		
 		$query = "SELECT cp.id_path, cp.path_code, cp.path_name, cp.path_descr, cpu.course_completed"
-			." FROM %lms_coursepath AS cp"
+			." FROM %lms_coursepath AS cp "
 			." JOIN %lms_coursepath_user AS cpu ON cpu.id_path = cp.id_path"
 			." WHERE idUser = ".(int)$id_user
+			." ".$conditions
 			." ORDER BY cp.path_name";
 		$result = sql_query($query);
 
 		$res = array();
 		while($row = sql_fetch_assoc($result)) {
+			$res[$row['id_path']] = $row;
+		}
 
+		require_once(_lms_.'/lib/lib.course.php');
+		$query = "SELECT cp.id_path, COUNT(*) "
+			." FROM %lms_coursepath AS cp JOIN %lms_coursepath_courses AS cpc "
+			." JOIN %lms_coursepath_user AS cpu JOIN %lms_courseuser AS cu "
+			." ON (cp.id_path = cpc.id_path AND cpc.id_item = cu.idCourse "
+			." AND cpu.id_path = cp.id_path AND cpu.idUser = cu.idUser ".$conditions.") "
+			." WHERE cu.status = '"._CUS_END."' AND cu.idUser = ".(int)$id_user." "
+			." GROUP BY cp.id_path";
+		$qres = sql_query($query);
+		while (list($id_path, $count) = sql_fetch_row($qres)) {
+			if (isset($res[$id_path])) {
+				$res[$id_path]['course_completed'] = $count;
+			}
+		}
+
+		$query_num_coursepath =	"SELECT id_path, COUNT(*) as courses"
+			." FROM %lms_coursepath_courses"
+			." WHERE id_path IN (".  implode(',', array_keys($res)).")"
+			." GROUP BY id_path";
+		$result = sql_query($query_num_coursepath);
+		while($o = sql_fetch_object($result)) {
+			
+			$res[$o->id_path]['coursepath_courses'] = $o->courses;
+			$res[$o->id_path]['percentage'] = ($res[$o->id_path]['course_completed'] == 0 ? 0 : round(($res[$o->id_path]['course_completed'] / $o->courses) * 100, 0));
+		}
+		return $res;
+	}
+	
+	public function getUserFinishedCoursepath($id_user, $conditions = '') {
+		
+		$query = "SELECT cp.id_path, cp.path_code, cp.path_name, cp.path_descr, cpu.course_completed"
+			." FROM %lms_coursepath AS cp"
+			." JOIN %lms_coursepath_user AS cpu ON cpu.id_path = cp.id_path"
+			." WHERE idUser = ".(int)$id_user
+			." ".$conditions
+			." ORDER BY cp.path_name";
+		$result = sql_query($query);
+
+		$res = array();
+		while($row = sql_fetch_assoc($result)) {
 			$res[$row['id_path']] = $row;
 		}
 		
+		require_once(_lms_.'/lib/lib.course.php');
+		$query = "SELECT cp.id_path, COUNT(*) "
+			." FROM %lms_coursepath AS cp JOIN %lms_coursepath_courses AS cpc "
+			." JOIN %lms_coursepath_user AS cpu JOIN %lms_courseuser AS cu "
+			." ON (cp.id_path = cpc.id_path AND cpc.id_item = cu.idCourse "
+			." AND cpu.id_path = cp.id_path AND cpu.idUser = cu.idUser ".$conditions.") "
+			." WHERE cu.status = '"._CUS_END."' AND cu.idUser = ".(int)$id_user." "
+			." GROUP BY cp.id_path";
+		$qres = sql_query($query);
+		while (list($id_path, $count) = sql_fetch_row($qres)) {
+			if (isset($res[$id_path])) {
+				$res[$id_path]['course_completed'] = $count;
+			}
+		}
+
 		$query_num_coursepath =	"SELECT id_path, COUNT(*) as courses"
 			." FROM %lms_coursepath_courses"
 			." WHERE id_path IN (".  implode(',', array_keys($res)).")"
@@ -84,12 +143,11 @@ class CoursepathLms extends Model {
 		$result = sql_query($query_num_coursepath);
 		while($o = sql_fetch_object($result)) {
 
-			if($o->courses > $res[$o->id_path]['course_completed']) unset($res[$o->id_path]);
-			else {
 				$res[$o->id_path]['coursepath_courses'] = $o->courses;
 				$res[$o->id_path]['percentage'] = ($res[$o->id_path]['course_completed'] == 0 ? 0 : round(($res[$o->id_path]['course_completed'] / $o->courses) * 100, 0));
+			if ($res[$o->id_path]['percentage'] < 100)
+				unset($res[$o->id_path]);
 			}
-		}
 		return $res;
 	}
 
