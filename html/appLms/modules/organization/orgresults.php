@@ -33,7 +33,11 @@ function getCompilationTable($id_user, $id_test)
 		$back = getBackUi( 'index.php?modname=course&amp;op=mycourses&amp;sop=unregistercourse' , Lang::t('_BACK', 'standard', 'framework') );
 	else
 		$back = getBackUi( 'index.php?modname=organization' , Lang::t('_BACK', 'standard', 'framework') );
-
+	
+	// Parch per link in reportcard
+	if(isset($_GET['back']) && $_GET['back'] && $_GET['back'] == "gradebook" )
+		$back = getBackUi( 'index.php?modname=gradebook&op=showgrade' , Lang::t('_BACK', 'standard', 'framework') );
+	
 	$query =	"SELECT *"
 				." FROM %lms_testtrack"
 				." WHERE idTest = ".(int)$id_test

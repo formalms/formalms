@@ -180,7 +180,7 @@ function showgrade() {
 						};break;
 					}
 				}
-				$link_result = '<a href="index.php?modname=organization&op=test_track&id_user='.$id_user.'&id_org='.$id_source.'">'.'<img src="'.getPathImage().'standard/report.png" /></a>';
+				$link_result = '<a href="index.php?modname=organization&op=test_track&id_user='.$id_user.'&id_org='.$id_source.'&back=gradebook">'.'<img src="'.getPathImage().'standard/report.png" /></a>';
 			};break;
 			case "activity" : {
 
