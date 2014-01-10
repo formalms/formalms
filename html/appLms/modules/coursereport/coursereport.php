@@ -2178,10 +2178,7 @@ function modactivityscore() {
 			} else {
                 $query_upd_report = "
 				UPDATE ".$GLOBALS['prefix_lms']."_coursereport
-				SET title = '".$info_report['title']."',
-					weight = '".$info_report['weight']."',
-					max_score = '".$info_report['max_score']."',
-					required_score = '".$info_report['required_score']."',
+				SET weight = '".$info_report['weight']."',
 					use_for_final = '".$info_report['use_for_final']."',
 					show_to_user = '".$info_report['show_to_user']."'
 				WHERE id_course = '".$_SESSION['idCourse']."' AND id_report = '".$id_report."'";
