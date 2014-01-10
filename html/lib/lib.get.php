@@ -52,14 +52,18 @@ class Get {
 
 		$value = $default_value;
 		if (empty($only_from)) {
-			if(isset($_POST[$var_name])) 	$value = $_POST[$var_name];
+			if(isset($_POST[$var_name])) $value = $_POST[$var_name];
 			elseif(isset($_GET[$var_name])) $value = $_GET[$var_name];
+			elseif(isset($_REQUEST[$var_name])) $value = $_REQUEST[$var_name];
 		}
 		else if ($only_from == 'post' && isset($_POST[$var_name])) {
 			$value = $_POST[$var_name];
 		}
 		else if ($only_from == 'get' && isset($_GET[$var_name])) {
 			$value = $_GET[$var_name];
+		}
+		else if ($only_from == 'request' && isset($_REQUEST[$var_name])) {
+			$value = $_REQUEST[$var_name];
 		}
 		
 		return self::filter($value, $typeof);
