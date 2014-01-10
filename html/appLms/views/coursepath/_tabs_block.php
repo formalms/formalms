@@ -49,7 +49,7 @@
     var tabView = new YAHOO.widget.TabView();
     
 	var mytab = new YAHOO.widget.Tab({
-	    label: '<?php echo Lang::t('_ALL_OPEN', 'coursepath'); ?>',
+	    label: '<?php echo Lang::t('_ALL_OPEN', 'course'); ?>',
 	    dataSrc: 'ajax.server.php?r=coursepath/all&rnd=<?php echo time(); ?>',
 	    cacheData: true,
 	    loadMethod: "POST"
