@@ -238,7 +238,7 @@ FolderTree.prototype = {
 				"initial": scope._initialRequest
 			},
 
-			timeout: 20000
+			timeout: 80000
 		};
 		if (scope._initialRequest) scope._initialRequest = false;
 
