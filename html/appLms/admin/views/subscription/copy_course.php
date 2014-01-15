@@ -16,9 +16,9 @@
 			.Form::openButtonSpace();
 
 	if($move)
-		echo Form::getButton('copy', 'copy', Lang::t('_MOVE', 'subscription'));
+		echo Form::getButton('copy', 'copy', Lang::t('_MOVE', 'subscribe'));
 	else
-		echo Form::getButton('copy', 'copy', Lang::t('_COPY', 'subscription'));
+		echo Form::getButton('copy', 'copy', Lang::t('_COPY', 'subscribe'));
 		
 	echo     Form::getButton('undo', 'undo', Lang::t('_UNDO', 'standard'))
 			.Form::closeButtonSpace()
