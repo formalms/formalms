@@ -13,7 +13,7 @@
                 'tb_classroom' => Lang::t('_CLASSROOM', 'middlearea'),
                 'tb_calendar' => Lang::t('_CALENDAR', 'middlearea'),
                 'tb_catalog' => Lang::t('_CATALOGUE', 'middlearea'),
-                'tb_library' => Lang::t('_LIBRARY', 'middlearea'),
+//                'tb_library' => Lang::t('_LIBRARY', 'middlearea'),
                 'tb_assessment' => Lang::t('_ASSESSMENT', 'middlearea'),
                 'tb_coursepath' => Lang::t('_COURSEPATH', 'coursepath'),
                 'tb_games' => Lang::t('_CONTEST', 'middlearea'),
