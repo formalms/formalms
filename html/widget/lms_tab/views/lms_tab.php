@@ -2,7 +2,7 @@
     <?php
 // Ale - non mi viene in mente modo più elegante :((
 // la questione è di nascondere tutto il menu in quanto il catalog è stato tirato fuori...
-    if (!strpos($_GET['r'], 'atalog/')) {
+   // if (!strpos($_GET['r'], 'atalog/')) {
         ?>
         <ul class="yui-nav">
             <?php
@@ -43,7 +43,7 @@
 
         </ul>
         <?php
-    }
+    //}
     ?>
     <div class="yui-content">
         <div id="tab_content" class="nested_tab">
