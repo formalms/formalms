@@ -119,8 +119,8 @@ if(!empty($GLOBALS['req'])) {
 
 // -----------------------------------------------------------------------------
 
-// finalize
-Boot::finalize();
+#// finalize TEST_COMPATIBILITA_PHP54
+//Boot::finalize();
 
 // remove all the echo and put them in the debug zone
 $GLOBALS['page']->add(ob_get_contents(), 'debug');
@@ -128,6 +128,9 @@ ob_clean();
 
 // layout
 Layout::render( ( isset($_SESSION['idCourse']) ? 'lms' : 'lms_user' ) );
+
+#// finalize TEST_COMPATIBILITA_PHP54
+Boot::finalize();
 
 // flush buffer
 ob_end_flush();

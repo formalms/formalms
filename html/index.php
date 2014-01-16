@@ -139,7 +139,7 @@ else
 
 // -----------------------------------------------------------------------------
 
-#// finalize
+#// finalize TEST_COMPATIBILITA_PHP54
 // Boot::finalize();
 
 // remove all the echo and put them in the debug zone
@@ -149,7 +149,7 @@ ob_clean();
 // layout
 Layout::render($layout);
 
-// finalize
+#// finalize TEST_COMPATIBILITA_PHP54
 Boot::finalize();
 
 // flush buffer
