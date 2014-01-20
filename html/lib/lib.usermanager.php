@@ -1707,7 +1707,7 @@ class UserManagerRenderer {
 				.Form::getHidden('register_pwd_retype', 'register[pwd_retype]', $_POST['register']['pwd_retype'])
 				.Form::getHidden('register_privacy', 'register[privacy]', 'ok');
 
-		if (!empty($_POST['group_sel']) && !empty($_POST['group_sel_implode'])) {
+		if (!empty($_POST['group_sel'])){//&& !empty($_POST['group_sel_implode'])) {
 			$out .= Form::getHidden('group_sel_implode', 'group_sel_implode', ( isset($_POST['group_sel'])
 					? implode(',', $_POST['group_sel'])
 					: ( isset($_POST['group_sel_implode']) ? $_POST['group_sel_implode'] : '' ) ) );
@@ -1882,7 +1882,7 @@ class UserManagerRenderer {
 
 					$cont = array(
 						Form::getInputCheckbox(	'group_sel_'.$id,
-													'group_sel['.$id.']',
+													'group_sel[]',
 													$id,
 													isset($_POST['group_sel'][$id]),
 													'' ),
