@@ -38,7 +38,9 @@ class UsermanagementAdm extends Model {
 			'mod'					=> 'standard/edit.png',
 			'del'					=> 'standard/delete.png',
 			'approve_waiting_user'	=> 'standard/wait_alarm.png',
-			'associate_user'		=> 'standard/moduser.png'
+			'associate_user'		=> 'standard/moduser.png',
+			// Enable orgchart nodes creation and edit permission for admins
+			//'mod_org'            => 'standard/modadmin.png'
 		);
 	}
 
