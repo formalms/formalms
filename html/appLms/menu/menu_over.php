@@ -33,8 +33,6 @@ if(!Docebo::user()->isAnonymous()) {
 
 		
         if($ma->currentCanAccessObj('mo_'.$id_m) && checkPerm($token, true, $module_name,  true)) {
-			if($module_name === 'course' && Get::sett('first_catalogue') === 'on')
-				$mvc_path = 'lms/catalog/show';
 
             // if e-learning tab disabled, show classroom courses
             if ($module_name ==='course' && !$ma->currentCanAccessObj('tb_elearning'))
