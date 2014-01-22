@@ -101,8 +101,11 @@ Class Step2Controller extends StepController {
 		$res =array();
 
 		// phpversion();
-		$res['php']=((version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '5.4.0', '<')) ? 'ok' : 'err');
-		$res['mysql']=(version_compare(mysql_get_client_info(), '5.1') >= 0 ? 'ok' : 'err');
+		$res['php']=((version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '5.4.0', '<=')) ? 'ok' : 'err');
+		// mysql client version, in php the version number is a string regcut it
+		preg_match( '/([0-9]+\.[\.0-9]+)/', mysql_get_client_info(), $version );
+		if(empty($version[1])) $res['mysql']='ok';
+		else $res['mysql']=(version_compare($version[1], '5.0') >= 0 ? 'ok' : 'err');
 		$res['xml']=(extension_loaded('domxml') ? 'ok' : 'err');
 		$res['ldap']=(extension_loaded('ldap') ? 'ok' : 'err');
 		$res['mbstring']=(extension_loaded('mbstring') ? 'ok' : 'err');

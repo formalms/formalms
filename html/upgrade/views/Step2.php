@@ -42,7 +42,7 @@
 <h3><?php echo Lang::t('_VERSION'); ?></h3>
 <p class="microform">
 	<b><label for="start_version"><?php echo Lang::t('_START'); ?> : </label></b><?php echo $this->versionList(); ?><br />
-	<b><?php echo Lang::t('_END'); ?> : </b><?php echo $GLOBALS['cfg']['endversion']; ?>
+	<b><?php echo Lang::t('_END'); ?> : </b><?php echo $GLOBALS['cfg']['versions'][$GLOBALS['cfg']['endversion']]; ?>
 </p>
 
 <?php if ( ($cl['config_v3'] == 'err' && $cl['config_v4'] == 'err' && $cl['config_v1'] == 'err') ||
@@ -82,7 +82,9 @@ else {
 <ul class="info">
 	<li><?php echo Lang::t('_SERVER_SOFTWARE'); ?>: <span><?php echo $_SERVER['SERVER_SOFTWARE']; ?></span></li>
 	<li class="<?php echo $cl['php']; ?>"><?php echo Lang::t('_PHPVERSION'); ?>: <span><?php echo phpversion(); ?></span></li>
-	<li class="<?php echo $cl['mysql']; ?>"><?php echo Lang::t('_MYSQLCLIENT_VERSION'); ?>: <span><?php echo mysql_get_client_info(); ?></span></li>
+	<li class="<?php echo $cl['mysql']; ?>"><?php echo Lang::t('_MYSQLCLIENT_VERSION'); ?>: <span><?php
+	preg_match( '/([0-9]+\.[\.0-9]+)/', mysql_get_client_info(), $version );
+	echo ( empty($version[1]) ? 'unknow' : $version[1] ); ?></span></li>
 	<li class="<?php echo $cl['strict_mode']; ?>"><?php echo Lang::t('_SQL_STRICT_MODE'); ?>: <span><?php echo ($cl['strict_mode'] == 'ok' ? _OFF : _ON); ?></span></li>
 	<li class="<?php echo $cl['mbstring']; ?>"><?php echo Lang::t('_MBSTRING'); ?>: <span><?php echo (extension_loaded('mbstring') ? _ON : _OFF); ?></span></li>
 	<li class="<?php echo $cl['mime_ct']; ?>"><?php echo Lang::t('_MIME_CONTENT_TYPE'); ?>: <span><?php echo ($cl['mime_ct'] == 'ok' ? _ON : _OFF); ?></span></li>
