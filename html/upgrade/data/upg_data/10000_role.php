@@ -17,8 +17,8 @@
 
 // Create this function only if needed, else you can remove it
 // (we check it with function_exists)
-function upgradeUsersRoles1000() {
-	// echo " upgradeUsersRoles 1000 ";
+function upgradeUsersRoles10000() {
+	// echo " upgradeUsersRoles 10000 ";
 
 	$res ='';
 
@@ -28,8 +28,8 @@ function upgradeUsersRoles1000() {
 
 // Create this function only if needed, else you can remove it
 // (we check it with function_exists)
-function upgradeGodAdminRoles1000() {
-	//echo " upgradeGodAdminRoles 1000 ";
+function upgradeGodAdminRoles10000() {
+	//echo " upgradeGodAdminRoles 10000 ";
 
 	$res ='';
 

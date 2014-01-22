@@ -19,8 +19,8 @@
  * This function must always return a boolean value
  * Error message can be appended to $GLOBALS['debug']
  */
-function postUpgrade1000() {
-	// echo "post-upgrade 1000";
+function postUpgrade10000() {
+	// echo "post-upgrade 10000";
 
 	return true;
 }
