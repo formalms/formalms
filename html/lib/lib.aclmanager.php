@@ -1389,11 +1389,11 @@ class DoceboACLManager {
 			$arrGroups[$idst]['groupid'] = $this->relativeId($groupid);
 			$arrGroups[$idst]['description'] = $description;
 			$arrGroups[$idst]['type'] = $type;
-			if($also_image) {
+			/*if($also_image) {
 				$arrGroups[$idst]['type_ico'] = '<img src="'.getPathImage('fw').'/directory/group_'.$type.'.gif"'
 					.' alt="'.$lang->def('_DIRECTORY_GROUPTYPE_'.strtoupper($type).'_ALT').'"'
 					.' title="'.$lang->def('_DIRECTORY_GROUPTYPE_'.strtoupper($type)).'" />';
-			}
+			}*/
 		}
 		return $arrGroups;
 	}
