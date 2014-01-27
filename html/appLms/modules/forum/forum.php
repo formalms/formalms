@@ -2280,7 +2280,7 @@ function addmessage() {
 		.Form::getHidden('idThread', 'idThread', $id_thread)
 		.Form::getHidden('idMessage', 'idMessage', $id_message)
 		.Form::getHidden('ini', 'ini', $ini)
-		.Form::getTextfield($lang->def('_SUBJECT'), 'title', 'title', 255, ($id_message != '' ? $lang->def('_RE').' '.$m_title : '' ))
+		.Form::getTextfield($lang->def('_SUBJECT'), 'title', 'title', 255, ($id_message != '' ? $lang->def('_RE').' '.$m_title : $thread_title ))
 		.Form::getTextarea($lang->def('_TEXTOF'), 'textof', 'textof', ($id_message != '' ? '<em>'.$lang->def('_WRITTED_BY').': '.$userName.'</em><br /><br />[quote]'.$m_textof.'[/quote]' : '' ))
 	, 'content');
 	if(checkPerm('upload', true)) {
