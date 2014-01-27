@@ -785,7 +785,7 @@ class RepoTreeView extends TreeView {
 			$arrData = $stack[$level]['folder']->otherValues;
 			$isFolder = ($arrData[REPOFIELDOBJECTTYPE] === '');
 			if( is_array($arrData) ) {
-				if( funAccess('moditem','MOD', TRUE, $this->mod_name ) ) {
+				if( funAccess('moditem','MOD', TRUE, $this->mod_name ) && ( $stack[1]['folder']->otherValues[5] == $_SESSION['public_area_idst'] || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN ) ) {
 					/*$elem .= '<input type="image" class="tree_view_image" '
 						.' src="'.$this->_getOpPropertiesImg().'"'
 						.' id="'.$this->id.'_'.$this->_getOpPropertiesId().'_'.$stack[$level]['folder']->id.'" '

@@ -659,7 +659,7 @@ class TreeView {
 	function printActions( &$stack, $level ) {
 		$tree = '';
 		if( $this->canInlineDelete() ) {
-			if( $this->canInlineDeleteItem($stack, $level) && !Get::cfg('demo_mode')) {
+			if( ( $this->canInlineDeleteItem($stack, $level) && !Get::cfg('demo_mode') ) && ( $stack[1]['folder']->otherValues[5] == $_SESSION['public_area_idst'] || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN )  ) {
 				$tree .= '<input type="image"'
 						.' class="tree_view_image" '
 						.' src="'.$this->_getDeleteImage().'"'
@@ -675,7 +675,7 @@ class TreeView {
 			}
 		}
 		if( $this->canInlineMove() ) {
-			if( $this->canInlineMoveItem($stack, $level) ) {
+			if( ( $this->canInlineMoveItem($stack, $level) ) && ( $stack[1]['folder']->otherValues[5] == $_SESSION['public_area_idst'] ||  Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN ) ) {
 				$tree .= '<input type="image"'
 						.' class="tree_view_image" '
 						.' src="'.$this->_getMoveImage().'"'
@@ -691,7 +691,7 @@ class TreeView {
 			}
 		}
 		if( $this->canInlineRename() ) {
-			if( $this->canInlineRenameItem($stack, $level) )
+			if( ( $this->canInlineRenameItem($stack, $level) ) && ( $stack[1]['folder']->otherValues[5] == $_SESSION['public_area_idst'] ||  Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN ) )
 				$tree .= '<input type="image"'
 						.' class="tree_view_image" '
 						.' src="'.$this->_getRenameImage().'"'
