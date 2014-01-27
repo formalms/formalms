@@ -50,6 +50,30 @@
 				.Lang::t('_USER_LVL', 'course', array('[level]' => '<b>'.$this->levels[ $course['level'] ].'</b>'));
 			?>
 		</p>
+		<?php 
+			$acl_man = Docebo::user()->getAclManager();
+			$levels = CourseLevel::getLevels();
+			
+			while(list($num_lv, $name_level) = each($levels)) {
+				if(CourseLevel::isTeacher($num_lv)) {
+					echo "&nbsp;" . $name_level . ":&nbsp;";
+				}
+				if($course['level_show_user'] & (1 << $num_lv)) {
+					if(CourseLevel::isTeacher($num_lv)) {
+						$users =& $acl_man->getUsers( Man_Course::getIdUserOfLevel($course['idCourse'], $num_lv, $course['course_edition']) );
+						if(!empty($users)) {
+							$first = true;
+							while(list($id_user, $user_info) = each($users)) {
+								if($first) $first = false;
+								else echo(', ');
+//								echo '<a href="index.php?modname=course&amp;op=viewprofile&amp;id_user='.$id_user.'">' . $acl_man->getConvertedUserName($user_info) . '</a>';
+								echo '<b>'.$acl_man->getConvertedUserName($user_info).'</b>';
+							} // end while
+						} // end if
+					}
+				} // end if
+			} // end while
+		?>
 		<p class="course_support_info">
 			<?php
 			echo Lang::t('_COURSE_INTRO', 'course', array(
