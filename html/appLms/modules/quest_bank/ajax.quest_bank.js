@@ -257,7 +257,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
 				{key:"type_quest", 		label:QB_DEF.type_quest, 		formatter:this.formatTypeQuest },
 				{key:"title_quest", 	label:QB_DEF.title_quest, 		formatter:this.formatTextQuest },
 				{key:"difficult", 		label:QB_DEF.difficult, 		formatter:this.formatDifficultQuest },
-				{key:"stat_quest", 		label:QB_DEF.stat_quest_img, 	formatter:this.formatStatQuest},
+				//{key:"stat_quest", 		label:QB_DEF.stat_quest_img, 	formatter:this.formatStatQuest},
 				{key:"mod_quest", 		label:QB_DEF.mod_quest_img, 	formatter:this.formatModQuest},
 				{key:"del_quest", 		label:QB_DEF.del_quest_img, 	title: 'Delete', formatter:this.formatDelQuest}
 			];
@@ -268,7 +268,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
 				{key:"type_quest", 		label:QB_DEF.type_quest, 		formatter:this.formatTypeQuest },
 				{key:"title_quest", 	label:QB_DEF.title_quest, 		formatter:this.formatTextQuest },
 				{key:"difficult", 		label:QB_DEF.difficult, 		formatter:this.formatDifficultQuest },
-				{key:"stat_quest", 		label:QB_DEF.stat_quest_img, 	formatter:this.formatStatQuest}
+				//{key:"stat_quest", 		label:QB_DEF.stat_quest_img, 	formatter:this.formatStatQuest}
 			];
 		}
 		
