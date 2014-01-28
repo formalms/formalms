@@ -1096,6 +1096,7 @@ class FunctionalrolesAdm extends Model {
 				case 'score_req': $_sort = 'fnc.score '; break;
 				case 'gap': $_sort = 'gap '.$_dir.', competence_name '.$_dir.', usr.userid '; break;
 				//case 'date_expire': $_sort = 'date_expire '; break;
+                default: $_sort = $pagination['sort'].' '.$_dir.', competence_name '.$_dir.', usr.userid '; break;            
 			}
 		}
 
@@ -1139,14 +1140,31 @@ class FunctionalrolesAdm extends Model {
 			$_users = array($filter['user']);
 		else
 			$_users = $this->getAllUsers($id_fncrole);
+        $dynFilter = isset($filter['dyn_filter']) ? $filter['dyn_filter'] : false;
+        
+        if ($dynFilter) {
+            require_once(_adm_.'/lib/lib.field.php');
+            //retrieve custom fields definitions data
+            $fman = new FieldList();
+            $fields = $fman->getAllFields();
 
-		if (!empty($_users)) {
+            //retrieve which fields are required
+            $custom_fields = array_keys($fields);
+        }
+
+        if (!empty($_users)) {
 			$query = "SELECT usr.idst, usr.userid, usr.firstname, usr.lastname, cmu.last_assign_date, fnc.score as score_requested, "
 				." fnc.id_competence, cml.name as competence_name, cmu.score_got, fnc.score, fnc.expiration, cmp.type "
-				.", (fnc.score-IF(cmu.score_got,cmu.score_got,0)) as gap "
+				.", (fnc.score-IF(cmu.score_got,cmu.score_got,0)) as gap ";
 				//.", (DATE_ADD(cmu.last_assign_date,INTERVAL fnc.expiration DAY)) as date_expire "
+            if ($dynFilter) {
+                $query .= ", usr.level, usr.email, usr.lastenter, usr.register_date, (SELECT su.value FROM %adm_setting_user AS su WHERE usr.idst = su.id_user AND su.path_name = 'ui.language' ) as language ";
+                foreach ($fields as $field) {
+                    $query .= ", (SELECT fu.user_entry FROM %adm_field_userentry AS fu JOIN %adm_field AS f ON fu.id_common=f.id_common WHERE fu.id_user=usr.idst AND fu.id_common=".$field[0]." LIMIT 1 ) as _custom_".$field[0];
+                }
+            }
 
-				." FROM ( "
+            $query .= " FROM ( "
 				." ((".$fnccm_table." as fnc "
 				." JOIN ".$comps_table." as cmp ON (cmp.id_competence = fnc.id_competence AND fnc.id_fncrole=".(int)$id_fncrole.") ) "
 				." JOIN ".$users_table." as usr ON (usr.idst IN (".implode(",", $_users).")) ) "
@@ -1168,7 +1186,113 @@ class FunctionalrolesAdm extends Model {
 				$output[] = $obj;
 			}
 		}
-
+        
+//        //retrieve custom fields definitions data
+//		$fman = new FieldList();
+//		$fields = $fman->getAllFields();
+//        
+//		//retrieve which fields are required
+//		$custom_fields = array_keys($fields);
+//
+//		if (count($users_rows) > 0 && !empty($custom_fields)) {
+//			//fields
+//			$query_fields = "SELECT f.id_common, f.type_field, fu.id_user, fu.user_entry ".
+//				" FROM %adm_field_userentry AS fu JOIN %adm_field AS f ON (fu.id_common=f.id_common) ".
+//				" WHERE id_user IN (".implode(",", array_keys($users_rows)).") AND fu.id_common IN (".implode(",", $custom_fields).") ";
+//			$res_fields = $this->db->query($query_fields);
+//
+//			$field_sons = false;
+//			$countries = false;
+//
+//			//get values to add in the row
+//			$custom_values = array();
+//			while ($frow = $this->db->fetch_obj($res_fields)) {
+//				if (!in_array($frow->id_common, $custom_fields)) $custom_fields[] = $frow->id_common;
+//
+//				$field_value = "";
+//				switch ($frow->type_field) {
+//					case "yesno": {
+//						switch($frow->user_entry) {
+//							case 1 : $field_value = Lang::t('_YES', 'field');break;
+//							case 2 : $field_value = Lang::t('_NO', 'field');break;
+//							default: $field_value = '';break;
+//						}
+//					} break;
+//					case "dropdown": {
+//						if ($field_sons === false) {
+//							//retrieve translations for dropdowns fields
+//							$query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '".getLanguage()."' ORDER BY idField, sequence";
+//							$res_fields_sons = $this->db->query($query_fields_sons);
+//							$field_sons = array();
+//							while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
+//								$field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
+//							}
+//						}
+//						if (isset($field_sons[$frow->id_common][$frow->user_entry]))
+//							$field_value = $field_sons[$frow->id_common][$frow->user_entry];
+//						else
+//							$field_value = "";
+//					} break;
+//					case "country": {
+//						if ($countries === false) {
+//							//retrieve countries names
+//							$query_countries = "SELECT id_country, name_country FROM %adm_country ORDER BY name_country";
+//							$res_countries = $this->db->query($query_countries);
+//							$countries = array();
+//							while ($crow = $this->db->fetch_obj($res_countries)) {
+//								$countries[$crow->id_country] = $crow->name_country;
+//							}
+//						}
+//						if (isset($countries[$frow->user_entry]))
+//							$field_value = $countries[$frow->user_entry];
+//						else
+//							$field_value = "";
+//					} break;
+//					default: $field_value = $frow->user_entry; break;
+//				}
+//				$custom_values[$frow->id_user][ '_custom_'.$frow->id_common ] = $field_value; //$frow->user_entry;
+//			}
+//
+//			foreach ($users_rows as $idst=>$value) {
+//				foreach ($custom_fields as $id_field) {
+//					$users_rows[$idst]['_custom_'.$id_field] = (isset($custom_values[$idst]['_custom_'.$id_field]) ? $custom_values[$idst]['_custom_'.$id_field] : '');
+//				}
+//			}
+//
+//			if ($descendants) {
+//				//check which users are descendants, if option is selected
+//				$idst_org = $acl_man->getGroupST('oc_'.$idOrg);
+//				$query = "SELECT idstMember FROM %adm_group_members WHERE idst = ".$idst_org." AND idstMember IN (".implode(",", array_keys($users_rows)).")";
+//				$res = $this->db->query($query);
+//				$arr_no_descendants = array();
+//				while (list($idst_user) = $this->db->fetch_row($res))
+//					$arr_no_descendants[] = $idst_user;
+//				foreach ($users_rows as $idst=>$value)
+//					$users_rows[$idst]['is_descendant'] = !in_array($idst, $arr_no_descendants);
+//			} else {
+//				//no descendants selected => the condition is always false
+//				foreach ($users_rows as $idst=>$value) $users_rows[$idst]['is_descendant'] = false;
+//			}
+//
+//			//retrieve language and level for extracted users
+//			$query_others = "(SELECT u.idst, su.value, 'language' AS type ".
+//				" FROM %adm_user as u JOIN %adm_setting_user AS su ".
+//				" ON (u.idst = su.id_user AND su.path_name = 'ui.language') ".
+//				" WHERE u.idst IN (".implode(",", array_keys($users_rows)).") ) ".
+//				" UNION ".
+//				" (SELECT u.idst, gm.idst AS value, 'level' AS type ".
+//				" FROM %adm_user AS u JOIN %adm_group_members AS gm ".
+//				" ON (u.idst = gm.idstMember AND gm.idst IN (".implode(",", array_values($levels_idst))."))".
+//				" WHERE u.idst IN (".implode(",", array_keys($users_rows)).") )";
+//			$res_others = $this->db->query($query_others);
+//			while (list($idst, $value, $type) = $this->db->fetch_row($res_others)) {
+//				switch ($type) {
+//					case 'language': $users_rows[$idst]['language'] = $value; break;
+//					case 'level': $users_rows[$idst]['level'] = $levels_flip[$value]; break;
+//				}
+//			}
+//		}
+        
 		return $output;
 	}
 
