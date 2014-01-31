@@ -56,10 +56,11 @@
 			
 			while(list($num_lv, $name_level) = each($levels)) {
 				if(CourseLevel::isTeacher($num_lv)) {
-					echo "&nbsp;" . $name_level . ":&nbsp;";
+					
 				}
 				if($course['level_show_user'] & (1 << $num_lv)) {
 					if(CourseLevel::isTeacher($num_lv)) {
+						echo "&nbsp;" . $name_level . ":&nbsp;";
 						$users =& $acl_man->getUsers( Man_Course::getIdUserOfLevel($course['idCourse'], $num_lv, $course['course_edition']) );
 						if(!empty($users)) {
 							$first = true;
