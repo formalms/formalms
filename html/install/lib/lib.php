@@ -114,11 +114,12 @@ function getVersionIntNumber($ver) {
 		foreach( $arr_v as $key => $val ) {
 			if ( $first ) {
 				$res = $val;
+				$first = false;
 			} else {
 				$res = $res . str_pad($val , 2, '0' , STR_PAD_LEFT );
 			}
 		}
-		$rest = str_pad($res, 5 , '0' , STR_PAD_RIGHT);
+		$res = str_pad($res, 5 , '0' , STR_PAD_RIGHT);
 
 	}
 

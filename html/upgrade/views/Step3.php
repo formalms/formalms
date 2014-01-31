@@ -50,7 +50,8 @@
 </script>
 
 <?php
-	} else {
+	} else if ( version_compare($version, '4000','>=')  &&
+	            version_compare($version, '5000','<' ) ) {
 ?>
 <div id="upg_config_download" style="display: none;">
 	<p><?php echo Lang::t('_UPG_CONFIG_NOT_SAVED'); ?></p>
@@ -96,5 +97,24 @@
 </script>
 
 <?php
-	}
+	} else {
+		// version_compare($version, '10000','>=')
+		// FORMA Version: 1.x
 ?>
+<div id="upg_config_download" style="display: none;">
+	<p><?php echo Lang::t('_UPG_CONFIG_OK'); ?></p>
+</div>
+
+<div id="upg_config_ok" style="display: block;">
+	<p><?php echo Lang::t('_UPG_CONFIG_OK'); ?></p>
+</div>
+
+<script type="text/javascript">
+
+	YAHOO.util.Event.onDOMReady(function() {
+		disableBtnNext(false);
+	});
+
+</script>
+
+

@@ -22,11 +22,11 @@
 			// docebo ce versions series 3.x.x.x
 			show_err =true;
 		}
-		else if (version >= 4000 && !config_ok.v4) {
+		else if (version >= 4000 && version < 5000 && !config_ok.v4) {
 			// docebo ce versions series 4.x.x.x
 			show_err =true;
 		}
-		else if (version >= 1000 && version < 3000 && !config_ok.v1) {
+		else if (version >= 10000 && !config_ok.v1) {
 			// forma versions serie 1.x
 			show_err =true;
 		}
