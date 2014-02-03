@@ -1619,13 +1619,16 @@ Class FunctionalrolesAdmController extends AdmController {
 
  		//prepare csv file
 		require_once(_base_.'/lib/lib.download.php');
-		$format = Get::req('format', DOTY_INT, 'csv');
+		$format = Get::req('format', DOTY_STRING, 'csv');
 
 		$buffer = "";
-		$filename = preg_replace('/[\W]/i', '_', $this->model->getFunctionalRoleName($id_fncrole)).'_'.$id_user.'_'.date("Y_m_d").'.csv';
+		$filename = preg_replace('/[\W]/i', '_', $this->model->getFunctionalRoleName($id_fncrole)).'_'.$id_user.'_'.date("Y_m_d").'.'.$format;
 
 		$_CSV_SEPARATOR = ',';
 		$_CSV_ENDLINE = "\r\n";
+        $_XLS_STARTLINE = '<tr><td>';
+        $_XLS_SEPARATOR = '</td><td>';
+		$_XLS_ENDLINE = "</td></tr>";        
        
 		//retrieve data to export
 		$filter =  array('user' => $id_user);
@@ -1641,6 +1644,9 @@ Class FunctionalrolesAdmController extends AdmController {
 		$acl_man = Docebo::user()->getAclManager();
 		$output_results = array();
 		if (is_array($list) && count($list)>0) {
+            if ($format=='xls'){
+                $buffer .= "<head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"></head><style>td, th { border:solid 1px black; } </style><body><table>";
+            }            
 			foreach ($list as $idst=>$record) {
 
 				$_not_obtained = $record->last_assign_date == "";
@@ -1655,9 +1661,17 @@ Class FunctionalrolesAdmController extends AdmController {
 					($_not_obtained ? "" : $this->json->encode(Format::date($record->last_assign_date, 'datetime'))),
 					($_not_obtained ? "" : $this->json->encode($record->expiration > 0 ? Format::date($_date_expire, 'datetime') : Lang::t('_NEVER', 'standard')))
 				);
-                
-				$buffer .= implode($_CSV_SEPARATOR, $line).$_CSV_ENDLINE;
+
+                if ($format == 'xls') {
+                    $buffer .= $_XLS_STARTLINE;
+                    $buffer .= str_replace('"', '', implode($_XLS_SEPARATOR, $line)) . $_CSV_ENDLINE;
+                } else {
+                    $buffer .= implode($_CSV_SEPARATOR, $line) . $_CSV_ENDLINE;
+                }
 			}
+            if ($format=='xls'){
+                $buffer .= "</table></body>";
+            }            
 		}
 
 		$charset = false;

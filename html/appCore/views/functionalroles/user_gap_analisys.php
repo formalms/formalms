@@ -50,6 +50,10 @@ var UserGapAnalisys = {
         YAHOO.util.Event.preventDefault(e);
         window.open("index.php?r=adm/functionalroles/export_user_gap&id_fncrole=" + <?php echo (int)$id_fncrole; ?> +"&id_user=" + <?php echo (int)$id_user; ?>+"&format=csv&sort=" + UserGapAnalisys.sort + "&dir=" + UserGapAnalisys.dir);
     },
+    exportXLS: function(e) {
+        YAHOO.util.Event.preventDefault(e);
+        window.open("index.php?r=adm/functionalroles/export_user_gap&id_fncrole=" + <?php echo (int)$id_fncrole; ?> +"&id_user=" + <?php echo (int)$id_user; ?>+"&format=xls&sort=" + UserGapAnalisys.sort + "&dir=" + UserGapAnalisys.dir);
+   },
 
 	oChart: null,
 	initChart: function(oTable) {
@@ -186,7 +190,9 @@ $columns[] = array('key' => 'date_expire', 'label' => Lang::t('_EXPIRATION_DATE'
 $rel_actions = '<a class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'" '
 	.'href="javascript: UserGapAnalisys.exportCSV(this);">'
 	.'<span>'.Lang::t('_EXPORT_CSV', 'report').'</span></a>'
-
+    .'<a class="ico-wt-sprite subs_xls" title="'.Lang::t('_EXPORT_XLS', 'report').'" '
+	.'href="javascript: UserGapAnalisys.exportXLS(this);">'
+	.'<span>'.Lang::t('_EXPORT_XLS', 'report').'</span></a>'
 /*$rel_actions = '<a class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'" '
 	.'href="index.php?r=adm/functionalroles/export_gap&id_fncrole='.(int)$id_fncrole.'&format=csv">'
 	.'<span>'.Lang::t('_EXPORT_CSV', 'report').'</span></a>'
