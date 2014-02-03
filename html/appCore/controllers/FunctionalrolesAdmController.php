@@ -1621,8 +1621,10 @@ Class FunctionalrolesAdmController extends AdmController {
 		require_once(_base_.'/lib/lib.download.php');
 		$format = Get::req('format', DOTY_STRING, 'csv');
 
+        $acl_man = Docebo::user()->getAclManager();
+        $user_info = $acl_man->getUser($id_user, false);
 		$buffer = "";
-		$filename = preg_replace('/[\W]/i', '_', $this->model->getFunctionalRoleName($id_fncrole)).'_'.$id_user.'_'.date("Y_m_d").'.'.$format;
+		$filename = preg_replace('/[\W]/i', '_', $this->model->getFunctionalRoleName($id_fncrole)).'_'.$user_info[1].'_'.date("Y_m_d").'.'.$format;
 
 		$_CSV_SEPARATOR = ',';
 		$_CSV_ENDLINE = "\r\n";
@@ -1641,7 +1643,7 @@ Class FunctionalrolesAdmController extends AdmController {
 		$list = $this->model->getGapList($id_fncrole, $pagination, $filter);
 
 		//prepare the data for exporting
-		$acl_man = Docebo::user()->getAclManager();
+
 		$output_results = array();
 		if (is_array($list) && count($list)>0) {
             if ($format=='xls'){
