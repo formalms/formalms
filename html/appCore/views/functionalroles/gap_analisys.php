@@ -148,6 +148,16 @@ var GapAnalisys = {
         dyn_field += "&sort=" + GapAnalisys.sort;
         dyn_field += "&dir=" + GapAnalisys.dir;
         window.open("index.php?r=adm/functionalroles/export_gap&id_fncrole="+this.idFncrole+"&format=csv&dyn_filter= true"+dyn_field);
+    },
+    exportXLS: function(e) {
+        YAHOO.util.Event.preventDefault(e);
+        var dyn_field = '';
+        for (i=0; i<GapAnalisys.numVarFields; i++) {
+            dyn_field += "&_dyn_field["+i+"]=" + YAHOO.util.Dom.get("_dyn_field_selector_"+i).value
+        }
+        dyn_field += "&sort=" + GapAnalisys.sort;
+        dyn_field += "&dir=" + GapAnalisys.dir;
+        window.open("index.php?r=adm/functionalroles/export_gap&id_fncrole="+this.idFncrole+"&format=xls&dyn_filter= true"+dyn_field);
     }
 };
 
@@ -294,6 +304,9 @@ $columns[] = array('key' => 'gap_user', 'label' => $icon_chart, 'formatter' => '
 $rel_actions = '<a class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'" '
 	.'href="javascript: GapAnalisys.exportCSV(this);">'
 	.'<span>'.Lang::t('_EXPORT_CSV', 'report').'</span></a>'
+    .'<a class="ico-wt-sprite subs_xls" title="'.Lang::t('_EXPORT_XLS', 'report').'" '
+	.'href="javascript: GapAnalisys.exportXLS(this);">'
+	.'<span>'.Lang::t('_EXPORT_XLS', 'report').'</span></a>'
 	/*.'<a class="ico-wt-sprite subs_xls" title="'.Lang::t('_EXPORT_XLS', 'report').'" '
 	.'href="index.php?r=adm/functionalroles/export_gap&id_fncrole='.(int)$id_fncrole.'&format=xls">'
 	.'<span>'.Lang::t('_EXPORT_XLS', 'report').'</span></a>'*/;
