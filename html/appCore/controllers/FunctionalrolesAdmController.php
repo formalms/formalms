@@ -1624,7 +1624,7 @@ Class FunctionalrolesAdmController extends AdmController {
         $acl_man = Docebo::user()->getAclManager();
         $user_info = $acl_man->getUser($id_user, false);
 		$buffer = "";
-		$filename = preg_replace('/[\W]/i', '_', $this->model->getFunctionalRoleName($id_fncrole)).'_'.$user_info[1].'_'.date("Y_m_d").'.'.$format;
+		$filename = preg_replace('/[\W]/i', '_', $this->model->getFunctionalRoleName($id_fncrole)).'_'.preg_replace('/\//i', '',$user_info[1]).'_'.date("Y_m_d").'.'.$format;
 
 		$_CSV_SEPARATOR = ',';
 		$_CSV_ENDLINE = "\r\n";
