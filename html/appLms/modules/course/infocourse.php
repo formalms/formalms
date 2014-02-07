@@ -105,9 +105,11 @@ function infocourse() {
 	$levels 	= CourseLevel::getLevels();
 	
 	$status_lang = array( 
-		0 => $lang->def('_NOACTIVE'), 
+		0 =>$lang->def('_NOACTIVE'), 
 		1 =>$lang->def('_ACTIVE'), 
-		2 =>$lang->def('_DEACTIVATE'));
+		2 =>$lang->def('_CST_CONFIRMED'),
+		3 =>$lang->def('_CST_CONCLUDED'),
+		4 =>$lang->def('_CST_CANCELLED'));
 	
 	$difficult_lang = array(
 		'veryeasy' => $lang->def('_DIFFICULT_VERYEASY'),
