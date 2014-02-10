@@ -5,6 +5,18 @@
 -- Update db script from forma 1.0 to forma 1.1
 --
 
+-- ------------------------------------------------------------------
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+-- ------------------------------------------------------------------
+
 -- for missing update from dce 405  to forma 1.0
 
 -- maintenance mode settings
@@ -36,7 +48,9 @@ CREATE TABLE IF NOT EXISTS `learning_htmlpage_attachment` (
 --
 -- -----------
 
-ALTER TABLE `learning_middlearea` ADD `sequence` INT( 5 ) NOT NULL;
+-- ALTER TABLE `learning_middlearea` ADD `sequence` INT( 5 ) NOT NULL;
+-- executed in 10100_pre.php to check if already applied
+
 
 INSERT IGNORE INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequence`) VALUES
 ('tb_elearning', 0, 'a:0:{}', 0);
@@ -75,10 +89,20 @@ OR     groupid like "/framework/adminrules%"
 OR     groupid like "/framework/publicadminrules%" );
 
 
-INSERT IGNOREINTO core_role_members (idst, idstMember)
+INSERT IGNORE INTO core_role_members (idst, idstMember)
 SELECT 230 as idst, idst as idstMember
 FROM core_group
 WHERE (groupid like "/framework/level/godadmin%"
 OR     groupid like "/framework/level/publicadmin%"
 OR     groupid like "/framework/adminrules%"
 OR     groupid like "/framework/publicadminrules%" );
+
+
+
+-- ------------------------------------------------------------------
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- ------------------------------------------------------------------

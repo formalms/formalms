@@ -5,6 +5,18 @@
 -- Update db script from docebo ce 4.0.5 to forma 1.0
 --
 
+-- ------------------------------------------------------------------
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+-- ------------------------------------------------------------------
+
 -- maintenance mode settings
 INSERT IGNORE INTO `core_setting`
 (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`) VALUES
@@ -41,3 +53,12 @@ CREATE TABLE IF NOT EXISTS `learning_htmlpage_attachment` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 --
+
+
+-- ------------------------------------------------------------------
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- ------------------------------------------------------------------
