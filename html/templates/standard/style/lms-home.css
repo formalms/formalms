@@ -29,8 +29,7 @@ body{font:13px/1.231 arial,sans-serif;color:#333333;background:#fff;*font-size:s
 .header #main_title a{display:block;width:221px;height:53px;padding:0 300px 0;}
 .content{width:898px;height:372px;background:url(../images/login/image.jpg) no-repeat 0 0;border:1px solid #C84000;}
 .content h2 {position:relative;color:#fff;font-size:180%;font-weight:normal;margin:0;padding:0 14px;}
-.content .login-box{float:right;width:31%;height:342px;background:url(../images/login/bg_login.png) repeat 0 0;padding:15px 0; margin:0 20px;}
-.content .login-box-social{position:relative;top:260px;width:85%;background:url(../images/login/bg_login.png) repeat-x 0 0;padding:10px 0;}
+.content .login-box, .content .login-box-social{float:right;width:31%;height:342px;background:url(../images/login/bg_login.png) repeat 0 0;padding:15px 0; margin:0 20px;}
 .content #login_confirm{margin:20px 28px;padding:0;}
 .content #login_confirm p,.content #login_confirm div {}
 .content #login_confirm label {font-size:90%;font-weight:bold;margin:0 10px 4px 0;}
