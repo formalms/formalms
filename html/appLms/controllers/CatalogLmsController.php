@@ -103,7 +103,7 @@ class CatalogLmsController extends LmsController {
 		$user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
 		$user_coursepath = $this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
-		echo '<div class="layout_colum_container"><div style="margin:1em">';
+		echo '<div class="middlearea_container">';
 
 		$lmstab = $this->widget('lms_tab', array(
 								'active' => 'catalog',
@@ -139,7 +139,7 @@ class CatalogLmsController extends LmsController {
 		$user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
 		$user_coursepath = $this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
-		echo '<div class="layout_colum_container"><div style="margin:1em">';
+		echo '<div class="middlearea_container">';
 
 		$lmstab = $this->widget('lms_tab', array(
 								'active' => 'catalog',
@@ -175,7 +175,7 @@ class CatalogLmsController extends LmsController {
 		$user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
 		$user_coursepath = $this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
-		echo '<div class="layout_colum_container"><div style="margin:1em">';
+		echo '<div class="middlearea_container">';
 
 		$lmstab = $this->widget('lms_tab', array(
 								'active' => 'catalog',
@@ -212,7 +212,7 @@ class CatalogLmsController extends LmsController {
 		$user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
 		$user_coursepath = $this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
-		echo '<div class="layout_colum_container"><div style="margin:1em">';
+		echo '<div class="middlearea_container">';
 
 		$lmstab = $this->widget('lms_tab', array(
 								'active' => 'catalog',
@@ -247,7 +247,7 @@ class CatalogLmsController extends LmsController {
 		$user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
 		$user_coursepath = $this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
-		echo '<div class="layout_colum_container"><div style="margin:1em">';
+		echo '<div class="layout_colum_container">';
 
 		$lmstab = $this->widget('lms_tab', array(
 								'active' => 'catalog',
@@ -270,7 +270,7 @@ class CatalogLmsController extends LmsController {
 		$user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
 		$user_coursepath = $this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
-		echo '<div class="layout_colum_container"><div style="margin:1em">';
+		echo '<div class="layout_colum_container">';
 
 		$lmstab = $this->widget('lms_tab', array(
 								'active' => 'catalog',
