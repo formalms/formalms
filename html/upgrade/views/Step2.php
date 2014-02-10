@@ -4,7 +4,7 @@
 <?php $cl = $this->checkRequirements(); ?>
 
 <script type="text/javascript">
-	var other_error =<?php echo ($cl['strict_mode'] == 'err' || $cl['mbstring'] == 'err' || $cl['mime_ct'] == 'err' ? 'true' : 'false'); ?>;
+	var other_error =<?php echo ($cl['php'] == 'err' || $cl['strict_mode'] == 'err' || $cl['mbstring'] == 'err' || $cl['mime_ct'] == 'err' ? 'true' : 'false'); ?>;
 	var config_ok ={
 		'v3': <?php echo ($cl['config_v3'] == 'err' ? 'false' : 'true'); ?>,
 		'v4': <?php echo ($cl['config_v4'] == 'err' ? 'false' : 'true'); ?>,
@@ -46,7 +46,7 @@
 </p>
 
 <?php if ( ($cl['config_v3'] == 'err' && $cl['config_v4'] == 'err' && $cl['config_v1'] == 'err') ||
-           $cl['strict_mode'] == 'err' || $cl['mbstring'] == 'err'): ?>
+           $cl['php'] == 'err' || $cl['strict_mode'] == 'err' || $cl['mbstring'] == 'err'): ?>
 <script type="text/javascript">
 	YAHOO.util.Event.onDOMReady(function() {
 		disableBtnNext(true);
