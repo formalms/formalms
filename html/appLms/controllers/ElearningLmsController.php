@@ -320,10 +320,10 @@ class ElearningLmsController extends LmsController {
 			$params[':year'] = $filter_year;
 		}
 
-		$cp_courses = $model->getUserCoursePathCourses( Docebo::user()->getIdst() );
-		if (!empty($cp_courses)) {
-			$conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
-		}
+//		$cp_courses = $model->getUserCoursePathCourses( Docebo::user()->getIdst() );
+//		if (!empty($cp_courses)) {
+//			$conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
+//		}
 
 		$courselist = $model->findAll($conditions, $params);
 
