@@ -171,6 +171,7 @@ class DashboardAdm extends Model {
 					break;
 				// new formalms versions
 				case "1.0" :
+				case "1.1" :
 					break;
 			}
 		}
@@ -198,9 +199,6 @@ class DashboardAdm extends Model {
 					.'<a href="http://www.formalms.org/downloads/?versions" class="red">'.Lang::t('_NEW_RELEASE_AVAILABLE', 'dashboard').': <b>'.$_online_version.'</b></a>';
 			}
 		}
-//print_r('welcome_use_feed : ' . Get::sett('welcome_use_feed') . '<br>');
-//print_r('_online_version : ' . $_online_version . '<br>');
-//print_r('VERSION : ' ); print_r($version); print_r('<br>');
 		return $version;
 	}
 
