@@ -248,6 +248,11 @@ YAHOO.util.Event.addListener(window, "load", function() {
 
 			elCell.appendChild(click);
 		}
+		
+		this.refresh = function() {
+			oDt.refresh();
+		}
+		
 		// --------------------------------------
 		
 		if(use_mod_action) {
