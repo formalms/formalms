@@ -55,6 +55,14 @@ CREATE TABLE IF NOT EXISTS `learning_htmlpage_attachment` (
 INSERT IGNORE INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequence`) VALUES
 ('tb_elearning', 0, 'a:0:{}', 0);
 
+-- Handle missing values in upgrade from D3.6.x
+INSERT IGNORE INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequence`) VALUES
+('tb_assessment', 0, 'a:0:{}', 0),
+('tb_catalog', 0, 'a:0:{}', 0),
+('tb_classroom', 0, 'a:0:{}', 0),
+('tb_coursepath', 0, 'a:0:{}', 0);
+
+
 -- -----------
 
 INSERT IGNORE INTO `learning_menu_under`
