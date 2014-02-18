@@ -267,6 +267,12 @@ switch($GLOBALS['op']) {
 
 					if ($pwd_elapsed <= 0) {
 						if(Get::sett('first_catalogue') == 'on') Util::jump_to('index.php?r=lms/catalog/show');
+                        
+                        // if elearning tab disabled, jump to classroom courses
+                        require_once(_lms_.'/lib/lib.middlearea.php');                        
+                        $ma = new Man_MiddleArea();
+                        if (!$ma->currentCanAccessObj('tb_elearning'))  Util::jump_to('index.php?r=lms/classroom/show'); 
+                        
 						Util::jump_to( 'index.php?r='._after_login_ );
 					}
 

@@ -2147,10 +2147,10 @@ function modactivityscore() {
 	} else {
 		// retirive activity info
 		$query_report = "
-		SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final
+		SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, id_source
 		FROM ".$GLOBALS['prefix_lms']."_coursereport
 		WHERE id_course = '".$_SESSION['idCourse']."' AND id_report = '".$id_report."'
-				AND source_of = 'activity' AND id_source = '0'";
+				AND source_of = 'scoitem'"; // TBD AND id_source = '0'";
 		$info_report = sql_fetch_assoc(sql_query($query_report));
 
 		// XXX: retrive scores
@@ -2176,6 +2176,13 @@ function modactivityscore() {
 			if(!$report_man->updateActivity($id_report, $_SESSION['idCourse'], $_POST)) {
 				$out->add(getErrorUi($lang->def('_OPERATION_FAILURE')));
 			} else {
+                $query_upd_report = "
+				UPDATE ".$GLOBALS['prefix_lms']."_coursereport
+				SET weight = '".$info_report['weight']."',
+					use_for_final = '".$info_report['use_for_final']."',
+					show_to_user = '".$info_report['show_to_user']."'
+				WHERE id_course = '".$_SESSION['idCourse']."' AND id_report = '".$id_report."'";
+				$re = sql_query($query_upd_report);
 				// save user score modification
 				$re = $report_man->saveReportScore($id_report, $_POST['user_score'], $_POST['date_attempt'], $_POST['comment']);
 				Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&result='.( $re ? 'ok' : 'err' ));
@@ -2190,21 +2197,13 @@ function modactivityscore() {
 		Form::openElementSpace()
 		.Form::getOpenFieldSet($lang->def('_ACTIVITY_INFO'))
 		.Form::getHidden('id_report', 'id_report', $id_report)
-		.Form::getTextfield(	$lang->def('_TITLE_ACT'),
-								'title',
-								'title',
-								'255',
-								$info_report['title'] )
-		.Form::getTextfield(	$lang->def('_MAX_SCORE'),
-								'max_score',
-								'max_score',
-								'11',
-								$info_report['max_score'] )
-		.Form::getTextfield(	$lang->def('_REQUIRED_SCORE'),
-								'required_score',
-								'required_score',
-								'11',
-								$info_report['required_score'] )
+        .Form::getHidden('id_source', 'id_source', $info_report['id_source'])
+        .Form::getLinebox(	$lang->def('_TITLE_ACT'),
+                        strip_tags($info_report['title']) )
+        .Form::getLinebox(	$lang->def('_MAX_SCORE'),
+                        strip_tags($info_report['max_score']) )  
+        .Form::getLinebox(	$lang->def('_REQUIRED_SCORE'),
+                        strip_tags($info_report['required_score']) )    
 		.Form::getTextfield(	$lang->def('_WEIGHT'),
 								'weight',
 								'weight',
@@ -3177,6 +3176,7 @@ function coursereportDispatch($op) {
 		case "addscorm" :{
 			modscorm();
 		};break;
+    
 	}
 
 }

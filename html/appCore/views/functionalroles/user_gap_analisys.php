@@ -37,13 +37,23 @@ var UserGapAnalisys = {
 		results = (oState.pagination) ? oState.pagination.rowsPerPage : null;
 		sort = (oState.sortedBy) ? oState.sortedBy.key : oSelf.getColumnSet().keys[0].getKey();
 		dir = (oState.sortedBy && oState.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "asc";
-		return "&results=" + results +
+		UserGapAnalisys.sort = sort;
+        UserGapAnalisys.dir = dir;
+        return "&results=" + results +
 				"&startIndex=" + startIndex +
 				"&sort=" + sort +
 				"&dir=" + dir+
 				"&id_fncrole=" + <?php echo (int)$id_fncrole; ?> +
 				"&id_user=" + <?php echo (int)$id_user; ?>;
 	},
+    exportCSV: function(e) {
+        YAHOO.util.Event.preventDefault(e);
+        window.open("index.php?r=adm/functionalroles/export_user_gap&id_fncrole=" + <?php echo (int)$id_fncrole; ?> +"&id_user=" + <?php echo (int)$id_user; ?>+"&format=csv&sort=" + UserGapAnalisys.sort + "&dir=" + UserGapAnalisys.dir);
+    },
+    exportXLS: function(e) {
+        YAHOO.util.Event.preventDefault(e);
+        window.open("index.php?r=adm/functionalroles/export_user_gap&id_fncrole=" + <?php echo (int)$id_fncrole; ?> +"&id_user=" + <?php echo (int)$id_user; ?>+"&format=xls&sort=" + UserGapAnalisys.sort + "&dir=" + UserGapAnalisys.dir);
+   },
 
 	oChart: null,
 	initChart: function(oTable) {
@@ -151,6 +161,8 @@ var UserGapAnalisys = {
 };
 
 YAHOO.util.Event.onDOMReady(function(e) {
+    UserGapAnalisys.sort = 'competence';
+    UserGapAnalisys.dir = 'ASC';
 	UserGapAnalisys.initChart();
 });
 </script>
@@ -175,7 +187,12 @@ $columns[] = array('key' => 'gap', 'label' => Lang::t('_GAP', 'fncroles'), 'sort
 $columns[] = array('key' => 'last_assign_date', 'label' => Lang::t('_DATE_OBTAINED', 'competences'), 'sortable' => true, 'className' => 'img-cell');
 $columns[] = array('key' => 'date_expire', 'label' => Lang::t('_EXPIRATION_DATE', 'competences')/*, 'sortable' => true*/, 'formatter'=>'UserGapAnalisys.expireFormatter', 'className' => 'img-cell');
 
-
+$rel_actions = '<a class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'" '
+	.'href="javascript: UserGapAnalisys.exportCSV(this);">'
+	.'<span>'.Lang::t('_EXPORT_CSV', 'report').'</span></a>'
+    .'<a class="ico-wt-sprite subs_xls" title="'.Lang::t('_EXPORT_XLS', 'report').'" '
+	.'href="javascript: UserGapAnalisys.exportXLS(this);">'
+	.'<span>'.Lang::t('_EXPORT_XLS', 'report').'</span></a>'
 /*$rel_actions = '<a class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'" '
 	.'href="index.php?r=adm/functionalroles/export_gap&id_fncrole='.(int)$id_fncrole.'&format=csv">'
 	.'<span>'.Lang::t('_EXPORT_CSV', 'report').'</span></a>'
@@ -193,6 +210,7 @@ $this->widget('table', array(
 	'dir'			=> 'asc',
 	'generateRequest' => 'UserGapAnalisys.requestBuilder',
 	'columns'		=> $columns,
+	'rel_actions' => $rel_actions,    
 	'fields'		=> array('last_assign_date', 'date_expire', 'score_req', 'score_got', 'gap', 'competence', 'id_competence', 'is_expired', 'type')
 ));
 

@@ -23,7 +23,7 @@
 require_once('bootstrap.php');
 require_once('../config.php');
 
-function preUpgrade1000() {
+function preUpgrade10000() {
 
 	$sts = upgrade_folders();
 	if ( $sts ) {

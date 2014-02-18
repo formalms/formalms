@@ -131,6 +131,9 @@ class AdminrulesAdm extends Model
 		$adm_old_perm = $this->preference->getAdminPerm($idst);
 
 		$array_image = array(
+			'add_category' => 'ico-sprite subs_view',
+			'mod_category' => 'ico-sprite subs_view',
+			'del_category' => 'ico-sprite subs_view',
 			'view' => 'ico-sprite subs_view',
 			'add' => 'ico-sprite subs_add',
 			'mod' => 'ico-sprite subs_mod',

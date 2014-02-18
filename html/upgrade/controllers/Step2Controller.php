@@ -29,11 +29,12 @@ Class Step2Controller extends StepController {
 	public function getNextStep($current_step) {
 		$version = Get::req('start_version', DOTY_ALPHANUM, '3603');
 		if ( version_compare($version, '3600','>=')  &&
-		     version_compare($version, '4000','<') ) {
+		     version_compare($version, '4000','<' ) ) {
 			//docebo ce v 3.x.x => go to step 3 (config upgrade )
 			$next_step = $current_step + 1;
 		}
-		else if ( version_compare($version, '4000','>=') ) {
+		else if ( version_compare($version, '4000','>=') &&
+		          version_compare($version, '5000','<' )) {
 			//docebo ce v 4.x.x => go to step 3 (config upgrade )
 			$next_step = $current_step + 1;
 		}
@@ -101,8 +102,12 @@ Class Step2Controller extends StepController {
 		$res =array();
 
 		// phpversion();
-		$res['php']=((version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '5.4.0', '<')) ? 'ok' : 'err');
-		$res['mysql']=(version_compare(mysql_get_client_info(), '5.1') >= 0 ? 'ok' : 'err');
+		// PHP_VERSION version allowed 5.2.x 5.3.x 5.4.x
+		$res['php']=((version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '5.5.0', '<')) ? 'ok' : 'err');
+		// mysql client version, in php the version number is a string regcut it
+		preg_match( '/([0-9]+\.[\.0-9]+)/', mysql_get_client_info(), $version );
+		if(empty($version[1])) $res['mysql']='ok';
+		else $res['mysql']=(version_compare($version[1], '5.0') >= 0 ? 'ok' : 'err');
 		$res['xml']=(extension_loaded('domxml') ? 'ok' : 'err');
 		$res['ldap']=(extension_loaded('ldap') ? 'ok' : 'err');
 		$res['mbstring']=(extension_loaded('mbstring') ? 'ok' : 'err');

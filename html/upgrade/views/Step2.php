@@ -4,7 +4,7 @@
 <?php $cl = $this->checkRequirements(); ?>
 
 <script type="text/javascript">
-	var other_error =<?php echo ($cl['strict_mode'] == 'err' || $cl['mbstring'] == 'err' || $cl['mime_ct'] == 'err' ? 'true' : 'false'); ?>;
+	var other_error =<?php echo ($cl['php'] == 'err' || $cl['strict_mode'] == 'err' || $cl['mbstring'] == 'err' || $cl['mime_ct'] == 'err' ? 'true' : 'false'); ?>;
 	var config_ok ={
 		'v3': <?php echo ($cl['config_v3'] == 'err' ? 'false' : 'true'); ?>,
 		'v4': <?php echo ($cl['config_v4'] == 'err' ? 'false' : 'true'); ?>,
@@ -22,11 +22,11 @@
 			// docebo ce versions series 3.x.x.x
 			show_err =true;
 		}
-		else if (version >= 4000 && !config_ok.v4) {
+		else if (version >= 4000 && version < 5000 && !config_ok.v4) {
 			// docebo ce versions series 4.x.x.x
 			show_err =true;
 		}
-		else if (version >= 1000 && version < 3000 && !config_ok.v1) {
+		else if (version >= 10000 && !config_ok.v1) {
 			// forma versions serie 1.x
 			show_err =true;
 		}
@@ -42,11 +42,11 @@
 <h3><?php echo Lang::t('_VERSION'); ?></h3>
 <p class="microform">
 	<b><label for="start_version"><?php echo Lang::t('_START'); ?> : </label></b><?php echo $this->versionList(); ?><br />
-	<b><?php echo Lang::t('_END'); ?> : </b><?php echo $GLOBALS['cfg']['endversion']; ?>
+	<b><?php echo Lang::t('_END'); ?> : </b><?php echo $GLOBALS['cfg']['versions'][$GLOBALS['cfg']['endversion']]; ?>
 </p>
 
 <?php if ( ($cl['config_v3'] == 'err' && $cl['config_v4'] == 'err' && $cl['config_v1'] == 'err') ||
-           $cl['strict_mode'] == 'err' || $cl['mbstring'] == 'err'): ?>
+           $cl['php'] == 'err' || $cl['strict_mode'] == 'err' || $cl['mbstring'] == 'err'): ?>
 <script type="text/javascript">
 	YAHOO.util.Event.onDOMReady(function() {
 		disableBtnNext(true);
@@ -82,7 +82,9 @@ else {
 <ul class="info">
 	<li><?php echo Lang::t('_SERVER_SOFTWARE'); ?>: <span><?php echo $_SERVER['SERVER_SOFTWARE']; ?></span></li>
 	<li class="<?php echo $cl['php']; ?>"><?php echo Lang::t('_PHPVERSION'); ?>: <span><?php echo phpversion(); ?></span></li>
-	<li class="<?php echo $cl['mysql']; ?>"><?php echo Lang::t('_MYSQLCLIENT_VERSION'); ?>: <span><?php echo mysql_get_client_info(); ?></span></li>
+	<li class="<?php echo $cl['mysql']; ?>"><?php echo Lang::t('_MYSQLCLIENT_VERSION'); ?>: <span><?php
+	preg_match( '/([0-9]+\.[\.0-9]+)/', mysql_get_client_info(), $version );
+	echo ( empty($version[1]) ? 'unknow' : $version[1] ); ?></span></li>
 	<li class="<?php echo $cl['strict_mode']; ?>"><?php echo Lang::t('_SQL_STRICT_MODE'); ?>: <span><?php echo ($cl['strict_mode'] == 'ok' ? _OFF : _ON); ?></span></li>
 	<li class="<?php echo $cl['mbstring']; ?>"><?php echo Lang::t('_MBSTRING'); ?>: <span><?php echo (extension_loaded('mbstring') ? _ON : _OFF); ?></span></li>
 	<li class="<?php echo $cl['mime_ct']; ?>"><?php echo Lang::t('_MIME_CONTENT_TYPE'); ?>: <span><?php echo ($cl['mime_ct'] == 'ok' ? _ON : _OFF); ?></span></li>

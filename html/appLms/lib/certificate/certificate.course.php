@@ -1,14 +1,11 @@
 <?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
-|   FORMA - The E-Learning Suite                                            |
-|                                                                           |
-|   Copyright (c) 2013 (Forma)                                              |
-|   http://www.formalms.org                                                 |
-|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
-|                                                                           |
-|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
-|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+| 	DOCEBO - The E-Learning Suite											|
+| 																			|
+| 	Copyright (c) 2008 (Docebo)												|
+| 	http://www.docebo.com													|
+|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
 \ ======================================================================== */
 
 require_once(dirname(__FILE__).'/certificate.base.php');
@@ -32,6 +29,7 @@ class CertificateSubs_Course extends CertificateSubstitution {
 			$subs['[date_begin]'] 			= $lang->def('_COURSE_BEGIN');
 			$subs['[date_end]'] 			= $lang->def('_COURSE_END');
 			$subs['[medium_time]'] 			= $lang->def('_COURSE_MEDIUM_TIME');
+            
 			$subs['[ed_date_begin]']		= $lang->def('_ED_DATE_BEGIN');
 			$subs['[ed_classroom]'] 		= $lang->def('_ED_CLASSROOM');
 
@@ -106,7 +104,7 @@ class CertificateSubs_Course extends CertificateSubstitution {
 			$subs['[course_credits]']		= $man_course->getValue('credits');
 
 			$subs['[ed_date_begin]'] = '';
-			$subs['[ed_classroom]'] = '';
+			$subs['[ed_classroom]'] =  ''; 
 
 			$subs['[cl_date_begin]'] = '';
 			$subs['[cl_date_end]'] = '';
@@ -123,9 +121,13 @@ class CertificateSubs_Course extends CertificateSubstitution {
 						." LIMIT 0, 1";
 				$result = sql_query($query);
 
-				if(sql_num_rows($result) > 0) {
-					list($edition_id, $date_begin, $classroom) = sql_fetch_row($result);
+                           
+                
+				if(sql_num_rows($result) > 0) {  
+				
+                    list($edition_id, $date_begin, $classroom) = sql_fetch_row($result);
 
+                    
 					if($edition_id !== 0) {
 
 						$query = "SELECT name"
@@ -135,24 +137,57 @@ class CertificateSubs_Course extends CertificateSubstitution {
 						$subs['[ed_date_begin]'] = Format::date($date_begin, 'date');
 						$subs['[ed_classroom]'] = $name;
 					}
+                      
+                    
 				}
 			} // end session
+            
+            
+            
 			if( $man_course->getValue('course_type') == 'classroom') {
 
 				$date_arr =array();
-				$qtxt = "SELECT d.id_date, MIN( dd.date_begin ) AS date_begin, MAX( dd.date_end ) AS date_end, c.name AS class_name
-				FROM learning_course_date_day AS dd
-					JOIN learning_course_date AS d
-					JOIN learning_classroom AS c
-					ON ( dd.classroom = c.idClassroom AND d.id_date = dd.id_date )
-				WHERE d.id_course = ".(int)$this->id_course."
-				GROUP BY dd.id_date";
-				$q = sql_query($qtxt);
-				list($id_date, $subs['[cl_date_begin]'], $subs['[cl_date_end]'], $subs['[cl_classroom]']) = sql_fetch_row($q);
-				
-				$subs['[cl_date_begin]'] = Format::date($subs['[cl_date_begin]'], 'date');
-				$subs['[cl_date_end]'] = Format::date($subs['[cl_date_end]'], 'date');
-				
+                
+                $qtxt = "SELECT d.id_date, MIN( dd.date_begin ) AS date_begin, MAX( dd.date_end ) AS date_end, d.name
+												 FROM ".$GLOBALS['prefix_lms']."_course_date_day AS dd
+												 JOIN ".$GLOBALS['prefix_lms']."_course_date AS d
+												 JOIN ".$GLOBALS['prefix_lms']."_classroom AS c
+												 ON ( dd.classroom = c.idClassroom AND d.id_date = dd.id_date )
+				              	 LEFT JOIN ".$GLOBALS['prefix_lms']."_course_date_user ON ".$GLOBALS['prefix_lms']."_course_date_user.id_date = d.id_date
+                				 WHERE d.id_course = ".(int)$this->id_course."  and ".$GLOBALS['prefix_lms']."_course_date_user.id_user=".$this->id_user."
+                				 GROUP BY dd.id_date";
+
+                
+                list($id_date, $subs['[cl_date_begin]'], $subs['[cl_date_end]'], $subs['[ed_classroom]']) = sql_fetch_row(sql_query($qtxt)) ;
+                
+                
+                $qtxt = "SELECT distinct c.name AS class_name
+                             FROM ".$GLOBALS['prefix_lms']."_course_date_day AS dd
+                             JOIN ".$GLOBALS['prefix_lms']."_course_date AS d
+                             JOIN ".$GLOBALS['prefix_lms']."_classroom AS c
+                             ON ( dd.classroom = c.idClassroom AND d.id_date = dd.id_date )
+                             LEFT JOIN ".$GLOBALS['prefix_lms']."_course_date_user ON ".$GLOBALS['prefix_lms']."_course_date_user.id_date = d.id_date
+                             WHERE d.id_course = ".(int)$this->id_course."  and ".$GLOBALS['prefix_lms']."_course_date_user.id_user=".$this->id_user; 
+
+                $result = sql_query($qtxt);
+                $num_pv = 0;
+                while(list($classroom) = sql_fetch_row($result)){
+                     if ($num_pv > 0)  $subs['[cl_classroom]'] .= "; ";
+                     $subs['[cl_classroom]'] .= $classroom;
+                     $num_pv++;           
+                }
+                
+                
+                
+         
+                $subs['[course_description]']  = html_entity_decode(strip_tags($man_course->getValue('description')), ENT_QUOTES, "UTF-8");
+                $subs['[cl_date_begin]'] = Format::date($subs['[cl_date_begin]'], 'date');
+                $subs['[cl_date_end]'] =  Format::date($subs['[cl_date_end]'], 'date');
+
+                
+                
+                
+                
 				$query =	"SELECT idUser"
 							." FROM ".$GLOBALS['prefix_lms']."_courseuser"
 							." WHERE idCourse = '".$this->id_course."'"
@@ -166,6 +201,7 @@ class CertificateSubs_Course extends CertificateSubstitution {
 
 				$result = sql_query($query);
 
+                
 				$first = true;
 
 				while(list($id_user) = sql_fetch_row($result))

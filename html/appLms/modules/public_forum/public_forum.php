@@ -1376,9 +1376,9 @@ function addthread() {
 
 		$GLOBALS['page']->add(Form::getFilefield($lang->def('_UPLOAD'), 'attach', 'attach'), 'content');
 	}
-	$is_important = array('No', 'Si');
+	$is_important = 1;//array($lang->def('_NO'), $lang->def('_YES'));
 	if (checkPerm('mod', true) || checkPublicForumPerm('moderate', (int)$_GET['idForum']))
-		$GLOBALS['page']->add(Form::getDropdown($lang->def('_IMPORTANT_THREAD'), 'important', 'important', $is_important), 'content');
+		$GLOBALS['page']->add(Form::getCheckbox($lang->def('_IMPORTANT_THREAD'), 'important', 'important', $is_important), 'content');
 	$GLOBALS['page']->add(
 		Form::closeElementSpace()
 		.Form::openButtonSpace()
@@ -1613,9 +1613,9 @@ function modthread() {
 
 		$GLOBALS['page']->add(Form::getFilefield($lang->def('_UPLOAD'), 'attach', 'attach'), 'content');
 	}
-	$is_important = array('No', 'Si');
+	$is_important = 1;//array($lang->def('_NO'), $lang->def('_YES'));
 	if (checkPublicForumPerm('moderate', $id_forum) || checkPerm('mod', true))
-		$GLOBALS['page']->add(Form::getDropdown($lang->def('_IMPORTANT_THREAD'), 'important', 'important', $is_important), 'content');
+		$GLOBALS['page']->add(Form::getCheckbox($lang->def('_IMPORTANT_THREAD'), 'important', 'important', $is_important), 'content');
 	$GLOBALS['page']->add(
 		Form::closeElementSpace()
 		.Form::openButtonSpace()
@@ -2476,7 +2476,7 @@ function addmessage() {
 		.Form::getHidden('idThread', 'idThread', $id_thread)
 		.Form::getHidden('idMessage', 'idMessage', $id_message)
 		.Form::getHidden('ini', 'ini', $ini)
-		.Form::getTextfield($lang->def('_SUBJECT'), 'title', 'title', 255, ($id_message != '' ? $lang->def('_RE').' '.$m_title : '' ))
+		.Form::getTextfield($lang->def('_SUBJECT'), 'title', 'title', 255, ($id_message != '' ? $lang->def('_RE').' '.$m_title : $thread_title ))
 		.Form::getTextarea($lang->def('_TEXTOF'), 'textof', 'textof', ($id_message != '' ? '<em>'.$lang->def('_WRITTED_BY').': '.$acl_man->getUserName($author).'</em><br /><br />[quote]'.$m_textof.'[/quote]' : '' ))
 	, 'content');
 	if(checkPublicForumPerm('upload', $id_forum)) {

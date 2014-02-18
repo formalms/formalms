@@ -69,13 +69,41 @@ class CoursepathLmsController extends LmsController
 			$this->render('_tabs', array());
 	}
 
-	public function startPath()
+	public function all()
 	{
-		$user_coursepath = $this->model->getUserStartedCoursepath(Docebo::user()->getIdSt());
+		$filter_text = Get::req('filter_text', DOTY_STRING, "");
+		
+		$conditions = '';
+		if (!empty($filter_text)) {
+			$conditions = "AND cp.path_name LIKE '%".addslashes($filter_text)."%'";
+		}
+		
+		$user_coursepath = $this->model->getAllCoursepath(Docebo::user()->getIdSt(), $conditions);
 		$coursepath_courses = $this->model->getCoursepathCourseDetails(array_keys($user_coursepath));
 
 		if(count($user_coursepath) > 0)
-			$this->render('coursepath', array(	'user_coursepath' => $user_coursepath,
+			$this->render('coursepath', array(	'type' => 'all',
+												'user_coursepath' => $user_coursepath,
+												'coursepath_courses' => $coursepath_courses));
+		else
+			echo Lang::t('_NO_COURSEPATH_IN_SECTION', 'coursepath');
+	}
+	
+	public function startPath()
+	{
+		$filter_text = Get::req('filter_text', DOTY_STRING, "");
+		
+		$conditions = '';
+		if (!empty($filter_text)) {
+			$conditions = "AND cp.path_name LIKE '%".addslashes($filter_text)."%'";
+		}
+
+		$user_coursepath = $this->model->getUserStartedCoursepath(Docebo::user()->getIdSt(), $conditions);
+		$coursepath_courses = $this->model->getCoursepathCourseDetails(array_keys($user_coursepath));
+
+		if(count($user_coursepath) > 0)
+			$this->render('coursepath', array(	'type' => 'itinere',
+												'user_coursepath' => $user_coursepath,
 												'coursepath_courses' => $coursepath_courses));
 		else
 			echo Lang::t('_NO_COURSEPATH_IN_SECTION', 'coursepath');
@@ -83,11 +111,19 @@ class CoursepathLmsController extends LmsController
 
 	public function endPath()
 	{
-		$user_coursepath = $this->model->getUserFinishedCoursepath(Docebo::user()->getIdSt());
+		$filter_text = Get::req('filter_text', DOTY_STRING, "");
+		
+		$conditions = '';
+		if (!empty($filter_text)) {
+			$conditions = "AND cp.path_name LIKE '%".addslashes($filter_text)."%'";
+		}
+
+		$user_coursepath = $this->model->getUserFinishedCoursepath(Docebo::user()->getIdSt(), $conditions);
 		$coursepath_courses = $this->model->getCoursepathCourseDetails(array_keys($user_coursepath));
 
 		if(count($user_coursepath) > 0)
-			$this->render('coursepath', array(	'user_coursepath' => $user_coursepath,
+			$this->render('coursepath', array(	'type' => 'completed',
+												'user_coursepath' => $user_coursepath,
 												'coursepath_courses' => $coursepath_courses));
 		else
 			echo Lang::t('_NO_COURSEPATH_IN_SECTION', 'coursepath');

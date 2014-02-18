@@ -29,9 +29,9 @@ switch($op) {
 		require_once(_lms_.'/lib/lib.quest_bank.php');
 		$qbm = new QuestBankMan();
 
-		$quest_category 	= Get::pReq('quest_category', DOTY_INT);
-		$quest_difficult 	= Get::pReq('quest_difficult', DOTY_INT);
-		$quest_type 		= Get::pReq('quest_type', DOTY_ALPHANUM);
+		$quest_category 	= Get::req('quest_category', DOTY_INT);
+		$quest_difficult 	= Get::req('quest_difficult', DOTY_INT);
+		$quest_type 		= Get::req('quest_type', DOTY_ALPHANUM);
 
 		$re_quest = $qbm->resQuestList($quest_category, $quest_difficult, $quest_type);
 

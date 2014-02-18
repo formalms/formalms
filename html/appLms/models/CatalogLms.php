@@ -216,7 +216,23 @@ class CatalogLms extends Model
 					else
 					{
 						if($row['selling'] == 0)
-							$action .= '<a href="javascript:;" onclick="courseSelection(\''.$row['idCourse'].'\', \'0\')" title="'.Lang::t('_SUBSCRIBE', 'catalogue').'"><p class="can_subscribe">'.Lang::t('_SUBSCRIBE', 'catalogue').'</p></a>';
+
+                           switch ($row['subscribe_method']) {
+                                case 2:
+                                    // free
+                                    $action .= '<a href="javascript:;" onclick="subscriptionPopUp(\''.$row['idCourse'].'\', \'0\', \'0\', \'0\')" title="'.Lang::t('_SUBSCRIBE', 'catalogue').'"><p class="can_subscribe">'.Lang::t('_SUBSCRIBE', 'catalogue').'</p></a>';
+                                break;
+                                case 1:
+                                    // moderate
+                                     $action .=  '<a href="javascript:;" onclick="courseSelection(\''.$row['idCourse'].'\', \'0\')" title="'.Lang::t('_SUBSCRIBE', 'catalogue').'"><p class="can_subscribe">'.Lang::t('_COURSE_S_MODERATE', 'catalogue').'</p></a>';
+                                break;
+                                case 0:
+                                    // only admin
+                                    $action .= '<p class="cannot_subscribe">'.Lang::t('_COURSE_S_GODADMIN', 'catalogue').'</p>';
+                                break; 
+                            }                               
+                            
+                            
 						else
 						{
 							$classroom_in_chart = array();
@@ -772,8 +788,8 @@ class CatalogLms extends Model
 				$res['body'] .=	'<div class="edition_container">'
 								.'<b>'.Lang::t('_NAME', 'catalogue').'</b>: '.$edition_info['name'].'<br/>'
 								.($edition_info['code'] !== '' ? '<b>'.Lang::t('_CODE', 'catalogue').'</b>: '.$edition_info['code'].'<br/>' : '')
-								.($edition_info['date_begin'] !== '0000-00-00 00:00:00' ? '<b>'.Lang::t('_DATE_BEGIN', 'course').'</b>: '.Format::date($edition_info['date_begin'], 'datetime').'<br/>' : '')
-								.($edition_info['date_end'] !== '0000-00-00 00:00:00' ? '<b>'.Lang::t('_DATE_END', 'course').'</b>: '.Format::date($edition_info['date_end'], 'datetime').'<br/>' : '')
+								.($edition_info['date_begin'] !== '0000-00-00 00:00:00' ? '<b>'.Lang::t('_DATE_BEGIN', 'course').'</b>: '.Format::date($edition_info['date_begin'], 'date').'<br/>' : '')
+								.($edition_info['date_end'] !== '0000-00-00 00:00:00' ? '<b>'.Lang::t('_DATE_END', 'course').'</b>: '.Format::date($edition_info['date_end'], 'date').'<br/>' : '')
 								.'<div class="edition_subscribe">'
 								.$action
 								.'</div>'

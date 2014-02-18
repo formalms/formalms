@@ -113,6 +113,18 @@ var Subscription = {
 			});
 
 
+			var copy_links = D.getElementsByClassName('ico-wt-sprite subs_copy');
+			E.addListener(copy_links, "click", function(e) {
+				var count_sel = oDtS.num_selected;
+				this.href = this.href + '&users=' + oDtS.toString();
+			});
+			
+			var move_links = D.getElementsByClassName('ico-wt-sprite subs_move');
+			E.addListener(move_links, "click", function(e) {
+				var count_sel = oDtS.num_selected;
+				this.href = this.href + '&users=' + oDtS.toString();
+			});	
+			
 			//multi mod
 			var multimod_links = D.getElementsByClassName('ico-wt-sprite subs_mod');
 			E.addListener(multimod_links, "click", function(e) {

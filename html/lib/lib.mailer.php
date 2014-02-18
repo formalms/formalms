@@ -12,7 +12,7 @@
 \ ======================================================================== */
 
 require_once(_base_.'/addons/phpmailer/class.phpmailer.php');
-require_once(_base_.'/addons/phpmailer/language/phpmailer.lang-en.php');
+//require_once(_base_.'/addons/phpmailer/language/phpmailer.lang-en.php'); // Non ci vuole con PHP mailer 5.2.7
 require_once(_base_.'/addons/kses/kses.php');
 
 //property name: multisending mode

@@ -1310,8 +1310,40 @@ Class FunctionalrolesAdmController extends AdmController {
 			case "err_gap": $result_message = Lang::t('_RESULT_GAP_ERR', 'fncroles'); break;
 		}
 */
-		$this->render('gap_analisys', array(
+  
+        require_once(_adm_ . '/lib/user_selector/lib.dynamicuserfilter.php');
+        $dyn_filter = new DynamicUserFilter("user_dyn_filter");
+        $dyn_filter->init();
+        
+        require_once(_adm_ . '/lib/lib.field.php');
+
+        $fman = new FieldList();
+        $fields = $fman->getFlatAllFields(array('framework', 'lms'));
+
+        $f_list = array(
+            'email' => Lang::t('_EMAIL', 'standard'),
+            'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
+            'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
+            'language' => Lang::t('_LANGUAGE', 'standard'),
+            'level' => Lang::t('_LEVEL', 'standard')
+        );
+        $f_list = $f_list + $fields;
+        $f_selected = $this->json->decode(Docebo::user()->getPreference('ui.directory.custom_columns'));
+        if ($f_selected == false) {
+            $f_selected = array('email', 'lastenter', 'register_date');
+        }
+
+        $js_arr = array();
+        foreach ($f_list as $key => $value)
+            $js_arr[] = $key . ': ' . $this->json->encode($value);
+        $f_list_js = '{' . implode(',', $js_arr) . '}';
+
+        $this->render('gap_analisys', array(
 			'id_fncrole' => $id_fncrole,
+			'num_var_fields' => 1,
+			'fieldlist' => $f_list,
+			'fieldlist_js' => $f_list_js,
+			'selected' => $f_selected,            
 			'title_arr' => $title_arr,
 			'filter_text' => "",
 			'result_message' => $result_message,
@@ -1343,8 +1375,8 @@ Class FunctionalrolesAdmController extends AdmController {
 			'show_gap' => $show_gap,
 			'show_expired' => $show_expired
 		);
-
-		//get total from database and validate the results count
+        
+        //get total from database and validate the results count
 		$total = $this->model->getGapTotal($id_fncrole, $searchFilter);
 		if ($startIndex >= $total) {
 			if ($total<$results) {
@@ -1354,6 +1386,17 @@ Class FunctionalrolesAdmController extends AdmController {
 			}
 		}
 
+        $dyn_filter = $this->_getDynamicFilter(Get::req('dyn_filter', DOTY_STRING, ''));
+		if ($dyn_filter !== false) {
+			$searchFilter['dyn_filter'] = $dyn_filter;
+		}        
+
+        $var_fields = Get::req('_dyn_field', DOTY_MIXED, array());
+		if (stristr($sort, '_dyn_field_') !== false) {
+			$index = str_replace('_dyn_field_', '', $sort);
+			$sort = $var_fields[(int)$index];
+		}
+        
 		//set pagination argument
 		$pagination = array(
 			'startIndex' => $startIndex,
@@ -1375,7 +1418,7 @@ Class FunctionalrolesAdmController extends AdmController {
 				$_not_obtained = $record->last_assign_date == "";
 				$_date_expire = $_not_obtained ? "" : date("Y-m-d H:i:s", fromDatetimeToTimestamp($record->last_assign_date) + $record->expiration * 86400);
 
-				$output_results[] = array(
+				$base_output_results = array(
 					'idst' => $record->idst,
 					'userid' => Layout::highlight($acl_man->relativeId($record->userid), $filter_text),
 					'firstname' => Layout::highlight($record->firstname, $filter_text),
@@ -1392,6 +1435,17 @@ Class FunctionalrolesAdmController extends AdmController {
 					'date_expire' => $_not_obtained ? '' : ($record->expiration > 0 ? Format::date($_date_expire, 'datetime') : Lang::t('_NEVER', 'standard')),
 					'gap' => $record->gap,
 				);
+
+                $dynamic_fields_value = $this->getDynamicFieldsValue($record, $var_fields);
+                     
+                // merge head, dynamic fields and tail part of the line
+                $temp_output_results = $base_output_results;
+                foreach ($dynamic_fields_value as $dynamic_field_value) {
+                    $temp_output_results = array_merge($temp_output_results, $dynamic_field_value);
+                }
+                
+                $output_results[] = $temp_output_results;
+    
 			}
 		}
 
@@ -1407,10 +1461,46 @@ Class FunctionalrolesAdmController extends AdmController {
 
 		echo $this->json->encode($output);
 	}
+    
+    protected function _getDynamicFilter($input) {
+		$output = false;
+		if (is_string($input) && $input != "") {
+			$dyn_data = $this->json->decode(urldecode(stripslashes($input))); //decode the filter json string
+			$output = $dyn_data;
+		}
+		return $output;
+	}
 
+    private function getDynamicFieldsValue($obj, $var_fields) {
+        $toReturn = array();
+        foreach ($var_fields as $i => $value) {
+            if (is_numeric($value)) {
+                $name = '_custom_' . $value;
+            } else {
+                $name = $value;
+            }
 
-	public function export_gap() {
+            //check if we must perform some post-format on retrieved field values
+            $content = (isset($obj->$name) ? $obj->$name : '');
+            if ($name == 'register_date')
+                $content = Format::date($content, 'datetime');
+            if ($name == 'lastenter')
+                $content = Format::date($content, 'datetime');
+            if ($name == 'level' && $content != '')
+                $content = Lang::t('_DIRECTORY_' . $content, 'admin_directory');
+            if (!empty($date_fields) && in_array($value, $date_fields))
+                $content = Format::date(substr($content, 0, 10), 'date');
+
+            $toReturn[] = array('_dyn_field_' . $i => $content);
+        }
+        return $toReturn;
+    }
+
+    public function export_gap() {
 		$id_fncrole = Get::req('id_fncrole', DOTY_INT, 0);
+		$sort = Get::req('sort', DOTY_STRING, "");
+		$dir = Get::req('dir', DOTY_STRING, "asc");
+        
 		if ($id_fncrole <= 0) {
 			$this->render('invalid', array(
 				'message' => $this->_getErrorMessage('invalid fncrole'),
@@ -1419,30 +1509,146 @@ Class FunctionalrolesAdmController extends AdmController {
 			return;
 		}
 
+        // manage dynamic filter
+        $dyn_filter = $this->_getDynamicFilter(Get::req('dyn_filter', DOTY_STRING, ''));
+		if ($dyn_filter !== false) {
+			$searchFilter['dyn_filter'] = $dyn_filter;
+		}        
+
+        $var_fields = Get::req('_dyn_field', DOTY_MIXED, array());
+		if (stristr($sort, '_dyn_field_') !== false) {
+			$index = str_replace('_dyn_field_', '', $sort);
+			$sort = $var_fields[(int)$index];
+		}
+        
 		//prepare csv file
 		require_once(_base_.'/lib/lib.download.php');
-		$format = Get::req('format', DOTY_INT, 'csv');
+		$format = Get::req('format', DOTY_STRING, 'csv');
 
 		$buffer = "";
-		$filename = preg_replace('/[\W]/i', '_', $this->model->getFunctionalRoleName($id_fncrole)).'_'.date("Y_m_d").'.csv';
+		$filename = preg_replace('/[\W]/i', '_', $this->model->getFunctionalRoleName($id_fncrole)).'_'.date("Y_m_d").'.'.$format;
 
 		$_CSV_SEPARATOR = ',';
 		$_CSV_ENDLINE = "\r\n";
+        $_XLS_STARTLINE = '<tr><td>';
+        $_XLS_SEPARATOR = '</td><td>';
+		$_XLS_ENDLINE = "</td></tr>";
 
 		//retrieve data to export
 		$filter = false;
 		$pagination = array(
 			'startIndex' => 0,
 			'results' => $this->model->getGapTotal($id_fncrole, $filter),
-			'sort' => 'competence',
-			'dir' => 'ASC'
+			'sort' => $sort,
+			'dir' => $dir
+		);
+		$list = $this->model->getGapList($id_fncrole, $pagination, $searchFilter);
+
+		//prepare the data for exporting
+		$acl_man = Docebo::user()->getAclManager();
+
+		if (is_array($list) && count($list)>0) {
+            if ($format=='xls'){
+                $buffer .= "<head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"></head><style>td, th { border:solid 1px black; } </style><body><table>";
+            }
+			foreach ($list as $idst=>$record) {
+
+				$_not_obtained = $record->last_assign_date == "";
+				$_date_expire = $_not_obtained ? "" : date("Y-m-d H:i:s", fromDatetimeToTimestamp($record->last_assign_date) + $record->expiration * 86400);
+
+				//json encoding used for string formatting with double quotes ""
+				$line_head = array(
+					$this->json->encode($record->competence_name),
+					$this->json->encode($acl_man->relativeId($record->userid)),
+					$this->json->encode($record->firstname),
+					$this->json->encode($record->lastname)
+                );
+                $line_tail = array(
+					(int)$record->score_got,
+					(int)$record->score_requested,
+					(int)$record->gap*(-1),
+					($_not_obtained ? "" : $this->json->encode(Format::date($record->last_assign_date, 'datetime'))),
+					($_not_obtained ? "" : $this->json->encode($record->expiration > 0 ? Format::date($_date_expire, 'datetime') : Lang::t('_NEVER', 'standard')))
+				);
+                
+                $dynamic_fields_value = $this->getDynamicFieldsValue($record, $var_fields);
+                     
+                // merge head, dynamic fields and tail part of the line
+                $line = $line_head;
+                foreach ($dynamic_fields_value as $dynamic_field_value) {
+                    $line = array_merge($line, $dynamic_field_value);
+                }
+                $line = array_merge($line, $line_tail);   
+                
+                if ($format=='xls'){
+                    $buffer .= $_XLS_STARTLINE;
+                    $buffer .= str_replace('"', '', implode($_XLS_SEPARATOR, $line)).$_CSV_ENDLINE;
+                }else{
+                    $buffer .= implode($_CSV_SEPARATOR, $line).$_CSV_ENDLINE;
+                }
+			}
+            if ($format=='xls'){
+                $buffer .= "</table></body>";
+            }
+		}
+
+		$charset = false;
+            sendStrAsFile($buffer, $filename, $charset);
+        }
+    
+    public function export_user_gap() {
+		$id_fncrole = Get::req('id_fncrole', DOTY_INT, 0);
+        $id_user = Get::req('id_user', DOTY_INT, 0);
+		$sort = Get::req('sort', DOTY_STRING, "");
+		$dir = Get::req('dir', DOTY_STRING, "asc");        
+        
+		if ($id_fncrole <= 0) {
+			$this->render('invalid', array(
+				'message' => $this->_getErrorMessage('invalid fncrole'),
+				'back_url' => $back_url
+			));
+			return;
+		}
+		if ($id_user <= 0) {
+			$this->render('invalid', array(
+				'message' => $this->_getErrorMessage('invalid user'),
+				'back_url' => $back_url
+			));
+			return;
+		}        
+
+ 		//prepare csv file
+		require_once(_base_.'/lib/lib.download.php');
+		$format = Get::req('format', DOTY_STRING, 'csv');
+
+        $acl_man = Docebo::user()->getAclManager();
+        $user_info = $acl_man->getUser($id_user, false);
+		$buffer = "";
+		$filename = preg_replace('/[\W]/i', '_', $this->model->getFunctionalRoleName($id_fncrole)).'_'.preg_replace('/\//i', '',$user_info[1]).'_'.date("Y_m_d").'.'.$format;
+
+		$_CSV_SEPARATOR = ',';
+		$_CSV_ENDLINE = "\r\n";
+        $_XLS_STARTLINE = '<tr><td>';
+        $_XLS_SEPARATOR = '</td><td>';
+		$_XLS_ENDLINE = "</td></tr>";        
+       
+		//retrieve data to export
+		$filter =  array('user' => $id_user);
+		$pagination = array(
+			'startIndex' => 0,
+			'results' => $this->model->getGapTotal($id_fncrole, $filter),
+			'sort' => $sort,
+			'dir' => $dir
 		);
 		$list = $this->model->getGapList($id_fncrole, $pagination, $filter);
 
 		//prepare the data for exporting
-		$acl_man = Docebo::user()->getAclManager();
+
 		$output_results = array();
 		if (is_array($list) && count($list)>0) {
+            if ($format=='xls'){
+                $buffer .= "<head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"></head><style>td, th { border:solid 1px black; } </style><body><table>";
+            }            
 			foreach ($list as $idst=>$record) {
 
 				$_not_obtained = $record->last_assign_date == "";
@@ -1451,9 +1657,6 @@ Class FunctionalrolesAdmController extends AdmController {
 				//json encoding used for string formatting with double quotes ""
 				$line = array(
 					$this->json->encode($record->competence_name),
-					$this->json->encode($acl_man->relativeId($record->userid)),
-					$this->json->encode($record->firstname),
-					$this->json->encode($record->lastname),
 					(int)$record->score_got,
 					(int)$record->score_requested,
 					(int)$record->gap*(-1),
@@ -1461,13 +1664,21 @@ Class FunctionalrolesAdmController extends AdmController {
 					($_not_obtained ? "" : $this->json->encode($record->expiration > 0 ? Format::date($_date_expire, 'datetime') : Lang::t('_NEVER', 'standard')))
 				);
 
-				$buffer .= implode($_CSV_SEPARATOR, $line).$_CSV_ENDLINE;
+                if ($format == 'xls') {
+                    $buffer .= $_XLS_STARTLINE;
+                    $buffer .= str_replace('"', '', implode($_XLS_SEPARATOR, $line)) . $_CSV_ENDLINE;
+                } else {
+                    $buffer .= implode($_CSV_SEPARATOR, $line) . $_CSV_ENDLINE;
+                }
 			}
+            if ($format=='xls'){
+                $buffer .= "</table></body>";
+            }            
 		}
 
 		$charset = false;
 		sendStrAsFile($buffer, $filename, $charset);
-	}
+	}    
 
 
 

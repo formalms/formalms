@@ -396,6 +396,10 @@ div.panel_left_small div.folder_action_space{border-top:1px solid #DDD;}
 div.panel_left_small span.title,div.panel_right_big span.title{font-weight:bold;margin-bottom:1.4em;display:block;padding-left:1em;top:-20px;position:absolute;}
 div.panel_right_big div.table-container-over{}
 div.panel_right_big div.table-container-below{}
+/* Old Progress bar ***************************************************/
+div.progress_bar {	margin: 0.2em;padding: 0px;background: #ffffff;border: 1px solid #222222;height: 15px;overflow: hidden;line-height: 1.3em;}
+div.bar_fill {background: #3972a9;border: 0px none;border-top: 3px solid #7ba7da;height: 14px;margin: 0px;z-index: 50;}
+div.bar_text {float: left;width: 100%;text-align: center;z-index: 100;margin: 0px;padding: 0px;border: 0px none;}
 /* progress bar */
 .box_progress_bar{clear:both;position:relative;height:14px;margin:0;padding:0;border:1px solid #000000;background:#ffffff;overflow:hidden;line-height:1.3em;}
 .box_progress_complete{clear:both;position:relative;height:16px;margin:0;padding:0;border:1px solid #000000;background:url('../images/standard/back_green.png') 0 0 repeat-x #0caa0c;}
@@ -458,8 +462,8 @@ input.nav-bar-prev,a.nav-bar-prev{padding-left:20px; background:url('../images/s
 input.nav-bar-next, a.nav-bar-next{padding-right:20px; background:url('../images/standard/next.png') 98% 0 no-repeat #ffffff; }
 span.nav-current{background:#e3e9eb;}
 a.nav-bar-prev{padding-left:20px; background:url('../images/standard/prev.png') 2px 0 no-repeat #ffffff; }
-a.nav-bar-next{padding-right:20px; background:url('../images/standard/next.png') 98% 0 no-repeat #ffffff; }
-span.nav-bar-prev_disabled{color:#aaa;padding-left:20px;border:1px solid #aaa;background:url('../images/standard/prev_disabled.png') 2px 0 no-repeat #eeeeee; }
+a.nav-bar-next{padding-right:20px; background:url('../images/standard/next.png') 98% 5px no-repeat #ffffff; }
+span.nav-bar-prev_disabled{color:#aaa;padding-left:20px;border:1px solid #aaa;background:url('../images/standard/prev_disabled.png') 2px 5px no-repeat #eeeeee; }
 span.nav-bar-next_disabled{color:#aaa;padding-right:20px;}
 /* old add link*/
 .add_link{display:-moz-inline-box;display:inline-block;vertical-align:middle;border:none;margin:0;padding:4px;}

@@ -52,9 +52,9 @@ Class CourseAlmsController extends AlmsController
 			'del'			=> checkPerm('del', true, 'course', 'lms'),
 			'moderate'		=> checkPerm('moderate', true, 'course', 'lms'),
 			'subscribe'		=> checkPerm('subscribe', true, 'course', 'lms'),
-			'add_category'	=> checkPerm('add', true, 'course', 'lms'),
-			'mod_category'	=> checkPerm('mod', true, 'course', 'lms'),
-			'del_category'	=> checkPerm('del', true, 'course', 'lms')
+			'add_category'	=> checkPerm('add', true, 'coursecategory', 'lms'),
+			'mod_category'	=> checkPerm('mod', true, 'coursecategory', 'lms'),
+			'del_category'	=> checkPerm('del', true, 'coursecategory', 'lms')
 		);
 	}
 

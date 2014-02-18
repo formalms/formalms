@@ -171,7 +171,7 @@ function modpage( $object_page ) {
 		.Form::getButton('addhtmlpage', 'addhtmlpage', $lang->def('_SAVE'))
 		.Form::closeButtonSpace()
 		.Form::closeForm()
-		.'</div>', 'content');
+		.'', 'content');
 }
 
 // XXX:uppage

@@ -279,7 +279,7 @@ class QuestBank_Selector {
 				.' - '.$this->lang->def('_QUEST_'.strtoupper($type_quest));
 		}
 
-		$this->mod_action = true;		//TODO: check user permissions
+		$this->mod_action = checkPerm('mod', true);		//TODO: check user permissions
 	}
 
 	function get_header() {

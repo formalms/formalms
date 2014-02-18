@@ -154,6 +154,7 @@ class Boot {
 		ini_set('session.use_trans_sid',    0);
 		ini_set('url_rewriter.tags',        '');
 		if($cfg['session_save_path'] !== false) ini_set("session.save_path", $cfg['session_save_path']);
+date_default_timezone_set('Europe/Rome'); 
 
 		// debugging ?
 		self::log( ( $cfg['do_debug'] ? 'Enable (set: E_ALL) ' : 'Disable (set: E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR)' )." error reporting." );

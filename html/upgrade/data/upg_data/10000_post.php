@@ -15,23 +15,12 @@
 // just don't create it.
 
 
-// Create this function only if needed, else you can remove it
-// (we check it with function_exists)
-function upgradeUsersRoles1000() {
-	// echo " upgradeUsersRoles 1000 ";
+/**
+ * This function must always return a boolean value
+ * Error message can be appended to $GLOBALS['debug']
+ */
+function postUpgrade10000() {
+	// echo "post-upgrade 10000";
 
-	$res ='';
-
-	return $res;
-}
-
-
-// Create this function only if needed, else you can remove it
-// (we check it with function_exists)
-function upgradeGodAdminRoles1000() {
-	//echo " upgradeGodAdminRoles 1000 ";
-
-	$res ='';
-
-	return $res;
+	return true;
 }

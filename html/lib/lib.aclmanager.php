@@ -839,7 +839,7 @@ class DoceboACLManager {
 		$result = false;
 		$query = "DELETE FROM ".$this->_getTableTempUser()
 			." WHERE idst IN (".implode(",", $arr_idst).")";
-		$result &= $this->_executeQuery( $query );
+		$result = $this->_executeQuery( $query );
 
 		return $result ? true : false;
 	}
@@ -1389,11 +1389,11 @@ class DoceboACLManager {
 			$arrGroups[$idst]['groupid'] = $this->relativeId($groupid);
 			$arrGroups[$idst]['description'] = $description;
 			$arrGroups[$idst]['type'] = $type;
-			if($also_image) {
+			/*if($also_image) {
 				$arrGroups[$idst]['type_ico'] = '<img src="'.getPathImage('fw').'/directory/group_'.$type.'.gif"'
 					.' alt="'.$lang->def('_DIRECTORY_GROUPTYPE_'.strtoupper($type).'_ALT').'"'
 					.' title="'.$lang->def('_DIRECTORY_GROUPTYPE_'.strtoupper($type)).'" />';
-			}
+			}*/
 		}
 		return $arrGroups;
 	}

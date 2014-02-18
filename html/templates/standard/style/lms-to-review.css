@@ -431,4 +431,5 @@ table.poll_report th.text_answer{width:30%;}
 div.colored_row{height:16px;text-align:center;background:#E1EBF4;border:1px solid #000000;}
 
 /* HTML Page*/
+.std_block div.title {font-size:150%;padding:6px 0;color:#C84000;}
 .attach {padding:10px; border:1px solid #EFEFEF;} 

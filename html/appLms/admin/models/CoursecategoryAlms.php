@@ -41,4 +41,12 @@ Class CoursecategoryAlms extends TreeModel {
 				." WHERE path LIKE '".$src_path."%'";
 		$this->db->query($query);
 	}
+	
+	public function getPerm() {
+		return array(
+			'add'		=> 'standard/add.png',
+			'mod'		=> 'standard/edit.png',
+			'del'		=> 'standard/rem.png'
+		);
+	}
 }

@@ -1,4 +1,4 @@
-<?php if (!defined('IN_FORMA')) { die('You can\'t access!'); }
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -11,16 +11,31 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-// if this file is not needed for a specific version,
-// just don't create it.
+class MiddleareaAdmController extends AdmController {
 
+	protected $db;
+	protected $table;
 
-/**
- * This function must always return a boolean value
- * Error message can be appended to $GLOBALS['debug']
- */
-function postUpgrade1000() {
-	// echo "post-upgrade 1000";
+    public function  __construct() {
+            $this->db = DbConn::getInstance();
+            $this->table = 'learning_middlearea';
+    }
+        
+	public function order() {
+		$list = $_GET['list'];
+	
+		$elements = explode(",", $list);
+		$order = 1;
+		foreach($elements as $element) {
+			if(!sql_query("UPDATE ".$this->table." SET sequence = '$order' WHERE obj_index = '$element'")) {
+                        	echo "false";
+			}
+			$order = $order + 1;
+		}
+		echo "true";
 
-	return true;
+	}
+
 }
+
+?>

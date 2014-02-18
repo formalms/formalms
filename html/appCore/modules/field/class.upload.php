@@ -377,9 +377,9 @@ class Field_Upload extends Field {
 			$entry_link = '<a href="'.Get::rel_path('adm').'/index.php?modname=field&amp;op=manage&amp;fo=special&amp;type_field='.$this->getFieldType().'&amp;id_user='.$id_user.'&amp;id_common='.$this->id_common.'">'
 			.'<img src="'.getPathImage().mimeDetect($user_entry).'" alt="'. Lang::t('_MIME_TYPE').'" />'
 			.'&nbsp;'. Lang::t('_DOWNLOAD')
-			.'</a>';
+			.'</a> <a id="4upLLoad" href="javascript:void();" onclick="document.getElementById(\'upLLoad\').style.display = \'inline\';document.getElementById(\'4upLLoad\').style.display=\'none\'">'.Lang::t('_MOD', 'standard', 'framework').'</a>';
 		} else {
-			$entry_link = Lang::t('_NO_FILE_UPLOADED', 'field', 'framework');
+			$entry_link = Lang::t('_NO_FILE_UPLOADED', 'field', 'framework').' <a id="4upLLoad" href="javascript:void();" onclick="document.getElementById(\'upLLoad\').style.display = \'inline\';document.getElementById(\'4upLLoad\').style.display=\'none\'">'.Lang::t('_MODIFY', 'field', 'framework').'</a>';
 		}
 
 		if ($value !== NULL) $user_entry = $value;
@@ -391,6 +391,8 @@ class Field_Upload extends Field {
 								'field_'.$this->getFieldType().'['.$this->id_common.']',
 								'',
 								$translation,
+								'',
+								'',
 								$entry_link );
 	}
 

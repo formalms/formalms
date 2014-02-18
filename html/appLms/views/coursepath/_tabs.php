@@ -29,21 +29,21 @@ $this->widget('lms_tab', array(
 	tabView.appendTo('tab_content');
 	tabView.getTab(0).addClass('first')
 
-	function expandCourses(id_path)
+	function expandCourses(id_path, type)
 	{
 		var div = YAHOO.util.Dom.get('courses_' + id_path);
-		var link = YAHOO.util.Dom.get('courses_link_' + id_path);
+		var link = YAHOO.util.Dom.get('courses_link_' + type + '_' + id_path);
 
 		div.style.display = 'block';
-		link.innerHTML = '<a class="no_decoration" href="javascript:;" onclick="collapseCourses(\'' + id_path + '\');"><span class="expand_path_info"><?php echo Lang::t('_COLLAPSE', 'coursepath'); ?></span> <?php echo Get::img('course/close.png', Lang::t('_COLLAPSE', 'coursepath')); ?></a>';
+		link.innerHTML = '<a class="no_decoration" href="javascript:;" onclick="collapseCourses(\'' + id_path + '\',\'' + type + '\');"><span class="expand_path_info"><?php echo Lang::t('_COLLAPSE', 'coursepath'); ?></span> <?php echo Get::img('course/close.png', Lang::t('_COLLAPSE', 'coursepath')); ?></a>';
 	}
 
-	function collapseCourses(id_path)
+	function collapseCourses(id_path, type)
 	{
 		var div = YAHOO.util.Dom.get('courses_' + id_path);
-		var link = YAHOO.util.Dom.get('courses_link_' + id_path);
+		var link = YAHOO.util.Dom.get('courses_link_' + type + '_' + id_path);
 
 		div.style.display = 'none';
-		link.innerHTML = '<a class="no_decoration" href="javascript:;" onclick="expandCourses(\'' + id_path + '\');"><span class="expand_path_info"><?php echo Lang::t('_EXPAND', 'coursepath'); ?></span> <?php echo Get::img('course/expand.png', Lang::t('_EXPAND', 'coursepath')); ?></a>';
+		link.innerHTML = '<a class="no_decoration" href="javascript:;" onclick="expandCourses(\'' + id_path + '\',\'' + type + '\');"><span class="expand_path_info"><?php echo Lang::t('_EXPAND', 'coursepath'); ?></span> <?php echo Get::img('course/expand.png', Lang::t('_EXPAND', 'coursepath')); ?></a>';
 	}
 </script>

@@ -16,7 +16,7 @@ define("IN_FORMA", true);
 define("_deeppath_", '../');
 require(dirname(__FILE__).'/../base.php');
 
-define('_file_version_', '1.0');
+define('_file_version_', '1.1');
 
 // start buffer
 ob_start();
@@ -88,8 +88,8 @@ if(isset($GLOBALS['r']) && $GLOBALS['r'] != '') {
 
 // -----------------------------------------------------------------------------
 
-// finalize
-Boot::finalize();
+#// finalize TEST_COMPATIBILITA_PHP54
+//Boot::finalize();
 
 // remove all the echo and put them in the debug zone
 $GLOBALS['page']->add(ob_get_contents(), 'debug');
@@ -97,6 +97,9 @@ ob_clean();
 
 // layout
 Layout::render('adm');
+
+#// finalize TEST_COMPATIBILITA_PHP54
+Boot::finalize();
 
 // flush buffer
 ob_end_flush();

@@ -1456,6 +1456,26 @@ CREATE TABLE IF NOT EXISTS `learning_htmlpage` (
 -- --------------------------------------------------------
 
 --
+-- Struttura della tabella `learning_htmlpage_attachment`
+--
+
+CREATE TABLE IF NOT EXISTS `learning_htmlpage_attachment` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `idpage` int(11) unsigned NOT NULL,
+  `file` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
+-- Dump dei dati per la tabella `learning_htmlpage_attachment`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `learning_instmsg`
 --
 
@@ -2040,6 +2060,7 @@ INSERT INTO `learning_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_
 (5, 6, 'webpages', '_WEBPAGES', 'webpages', 'view', NULL, 1, 'class.webpages.php', 'Module_Webpages', ''),
 (6, 6, 'news', '_NEWS', 'news', 'view', NULL, 2, 'class.news.php', 'Module_News', ''),
 (7, 9, 'questcategory', '_QUESTCATEGORY', '', 'view', NULL, 4, '', '', 'alms/questcategory/show'),
+(8, 1, 'coursecategory', '_COURSECATEGORY', '', 'view', NULL, 4, '', '', 'alms/coursecategory/show'),
 (9, 11, 'report', '_REPORT', 'reportlist', 'view', NULL, 1, 'class.report.php', 'Module_Report', ''),
 (10, 3, 'preassessment', '_ASSESSMENT', 'assesmentlist', 'view', NULL, 1, 'class.preassessment.php', 'Module_PreAssessment', ''),
 (14, 7, 'certificate', '_CERTIFICATE', 'certificate', 'view', NULL, 1, 'class.certificate.php', 'Module_Certificate', ''),
@@ -2068,6 +2089,7 @@ CREATE TABLE IF NOT EXISTS `learning_middlearea` (
   `obj_index` varchar(255) NOT NULL DEFAULT '',
   `disabled` tinyint(1) NOT NULL DEFAULT '0',
   `idst_list` text NOT NULL,
+  `sequence` INT( 5 ) NOT NULL,
   PRIMARY KEY (`obj_index`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -2075,20 +2097,21 @@ CREATE TABLE IF NOT EXISTS `learning_middlearea` (
 -- Dump dei dati per la tabella `learning_middlearea`
 --
 
-INSERT INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`) VALUES
-('credits', 1, 'a:0:{}'),
-('mo_32', 1, 'a:0:{}'),
-('mo_33', 1, 'a:0:{}'),
-('mo_34', 1, 'a:0:{}'),
-('mo_help', 1, 'a:0:{}'),
-('tb_assessment', 1, 'a:0:{}'),
-('tb_catalog', 1, 'a:0:{}'),
-('tb_classroom', 1, 'a:0:{}'),
-('tb_communication', 1, 'a:0:{}'),
-('tb_coursepath', 1, 'a:0:{}'),
-('tb_games', 1, 'a:0:{}'),
-('tb_label', 1, 'a:0:{}'),
-('tb_videoconference', 1, 'a:0:{}');
+INSERT INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequence`) VALUES
+('credits', 1, 'a:0:{}',0),
+('mo_32', 1, 'a:0:{}',0),
+('mo_33', 1, 'a:0:{}',0),
+('mo_34', 1, 'a:0:{}',0),
+('mo_help', 1, 'a:0:{}',0),
+('tb_assessment', 1, 'a:0:{}',0),
+('tb_catalog', 1, 'a:0:{}',0),
+('tb_classroom', 1, 'a:0:{}',0),
+('tb_communication', 1, 'a:0:{}',0),
+('tb_coursepath', 1, 'a:0:{}',0),
+('tb_games', 1, 'a:0:{}',0),
+('tb_label', 1, 'a:0:{}',0),
+('tb_videoconference', 1, 'a:0:{}',0),
+('tb_elearning', 0, 'a:0:{}', 0);
 
 -- --------------------------------------------------------
 

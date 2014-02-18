@@ -23,8 +23,8 @@
 				.'</div>'
 				.'</div>'
 
-				.'<div id="courses_link_'.$id_path.'" class="coursepath_action">'
-				.'<a class="no_decoration" href="javascript:;" onclick="expandCourses(\''.$id_path.'\');">'
+				.'<div id="courses_link_'.$type.'_'.$id_path.'" class="coursepath_action">'
+				.'<a class="no_decoration" href="javascript:;" onclick="expandCourses(\''.$id_path.'\',\''.$type.'\');">'
 				.'<span class="expand_path_info">'.Lang::t('_EXPAND', 'coursepath').'</span> '
 				.Get::img('course/expand.png', Lang::t('_EXPAND', 'course'))
 				.'</a>'

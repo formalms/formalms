@@ -1138,13 +1138,6 @@ class AdminPreference
 		// separate the users and the groups
 		$admin_users	= $acl_man->getUsersFromMixedIdst($admin_tree);
 		$admin_groups	= $acl_man->getGroupsFromMixedIdst($admin_tree);
-
-		// retrive parent groups
-		$tmp_admin_groups = array();
-		foreach($admin_groups as $id_group) {
-			$tmp_admin_groups = array_merge( $tmp_admin_groups, $acl_man->getGroupGDescendants($id_group) );
-		}
-		$admin_groups = $tmp_admin_groups;
 		
 		$admin_userlist = array_merge($admin_users, $acl_man->getAllUsersFromIdst($admin_groups));
 		return $admin_userlist;

@@ -106,13 +106,14 @@ function showgrade() {
 	// XXX: create table
 	$table = new Table(0, $lang->def('_GRADEBOOK_CAPTION'), $lang->def('_GRADEBOOK_SUMMARY'));
 
-	$type_h = array('', 'align_center', 'align_center', '');
+	$type_h = array('', 'align_center', 'align_center', '', '');
 	$cont_h = array(
 		$lang->def('_TITLE'),
 		$lang->def('_SCORE'),
 		$lang->def('_REQUIRED_SCORE'),
 		$lang->def('_DATE'),
-		$lang->def('_COMMENTS')
+		$lang->def('_COMMENTS'),
+		$lang->def('_SHOW_RESULTS')
 	);
 
 	$table->setColsStyle($type_h);
@@ -179,6 +180,7 @@ function showgrade() {
 						};break;
 					}
 				}
+				$link_result = '<a href="index.php?modname=organization&op=test_track&id_user='.$id_user.'&id_org='.$id_source.'&back=gradebook">'.'<img src="'.getPathImage().'standard/report.png" /></a>';
 			};break;
 			case "activity" : {
 
@@ -211,7 +213,8 @@ function showgrade() {
 			( $score == '' ? $lang->def('_NOT_ASSIGNED') : $score.' '.$lang->def('_MAX_DIVISOR').' '.$maxscore ),
 			($report_info['source_of'] === 'scorm_item' ? "-" : $required),
 			$date,
-			$comment));
+			$comment, 
+			$link_result));
 	}
 	$out->add(
 		getTitleArea($lang->def('_GRADEBOOK_AREATITLE'), 'gradebook')

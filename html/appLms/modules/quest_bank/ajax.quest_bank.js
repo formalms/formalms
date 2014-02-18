@@ -248,19 +248,39 @@ YAHOO.util.Event.addListener(window, "load", function() {
 
 			elCell.appendChild(click);
 		}
+		
+		this.refresh = function() {
+			oDt.refresh();
+		}
+		
 		// --------------------------------------
-
-		var myColumnDefs = [
-			{key:"checkbox_sel",	label:QB_DEF.checkbox_sel,		formatter:this.formatCheckboxQuest },
-			{key:"category_quest",	label:QB_DEF.quest_category, 	formatter:this.formatCategoryQuest },
-			{key:"type_quest", 		label:QB_DEF.type_quest, 		formatter:this.formatTypeQuest },
-			{key:"title_quest", 	label:QB_DEF.title_quest, 		formatter:this.formatTextQuest },
-			{key:"difficult", 		label:QB_DEF.difficult, 		formatter:this.formatDifficultQuest }
-		];
+		
+		if(use_mod_action) {
+			var myColumnDefs = [
+				{key:"checkbox_sel",	label:QB_DEF.checkbox_sel,		formatter:this.formatCheckboxQuest },
+				{key:"category_quest",	label:QB_DEF.quest_category, 	formatter:this.formatCategoryQuest },
+				{key:"type_quest", 		label:QB_DEF.type_quest, 		formatter:this.formatTypeQuest },
+				{key:"title_quest", 	label:QB_DEF.title_quest, 		formatter:this.formatTextQuest },
+				{key:"difficult", 		label:QB_DEF.difficult, 		formatter:this.formatDifficultQuest },
+				//{key:"stat_quest", 		label:QB_DEF.stat_quest_img, 	formatter:this.formatStatQuest},
+				{key:"mod_quest", 		label:QB_DEF.mod_quest_img, 	formatter:this.formatModQuest},
+				{key:"del_quest", 		label:QB_DEF.del_quest_img, 	title: 'Delete', formatter:this.formatDelQuest}
+			];
+		} else {
+			var myColumnDefs = [
+				{key:"checkbox_sel",	label:QB_DEF.checkbox_sel,		formatter:this.formatCheckboxQuest },
+				{key:"category_quest",	label:QB_DEF.quest_category, 	formatter:this.formatCategoryQuest },
+				{key:"type_quest", 		label:QB_DEF.type_quest, 		formatter:this.formatTypeQuest },
+				{key:"title_quest", 	label:QB_DEF.title_quest, 		formatter:this.formatTextQuest },
+				{key:"difficult", 		label:QB_DEF.difficult, 		formatter:this.formatDifficultQuest },
+				//{key:"stat_quest", 		label:QB_DEF.stat_quest_img, 	formatter:this.formatStatQuest}
+			];
+		}
+		
 		if(use_mod_action) {
 			var t1 = {key:"mod_quest", 		label:QB_DEF.mod_quest_img, 	formatter:this.formatModQuest};
 			var t2 = {key:"del_quest", 		label:QB_DEF.del_quest_img, 	formatter:this.formatDelQuest};
-			myColumnDefs.push(t1, t2);
+			// myColumnDefs.push(t1, t2);
 		}
 		var buildQueryString = function (state,dt) {
 			

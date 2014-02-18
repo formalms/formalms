@@ -525,9 +525,17 @@ class EnrollrulesAlmsController extends AlmsController {
 		$prev_entities = $this->model->getBaseEntityRule($id_rule, false, true);
 
 		$re = true;
-		while(list($id_entity, $courses) = each($_POST['entity_course'])) {
-
+        $all_entities = $this->model->getBaseEntityRule($id_rule, false, false);
+        
+        foreach ($all_entities as $curr_entity) {
+            $curr_entity = $curr_entity;
+            $id_entity = $curr_entity->id_entity;
+        
 			$course_list = array();
+            $courses = array();
+            if (isset($_POST['entity_course'][$id_entity])){
+                $courses = $_POST['entity_course'][$id_entity];
+            }
 			while(list($id_c, ) = each($courses)) $course_list[] = (int)str_replace('course_', '', $id_c);
 
 			if(isset($prev_entities[$id_entity])) $re &= $this->model->saveEntityRule($id_rule, $id_entity, $course_list);

@@ -260,6 +260,11 @@ StdUIPlayer.prototype.showhidetree = function() {
 }
 
 StdUIPlayer.prototype.closePlayer = function() {
+	
+	// Forzo LMSFinish per bug Lectora
+	if(playerConfig.scormVersion == '1.3')  window.API_1484_11.LMSFinish("");
+	else window.API.LMSFinish("");
+	
 	this.scormPlayer.play( null, this.cntSco );
 //	window.location.href = playerConfig.backurl;
 	window.close_player = true;

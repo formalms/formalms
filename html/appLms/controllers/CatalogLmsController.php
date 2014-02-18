@@ -103,7 +103,7 @@ class CatalogLmsController extends LmsController {
 		$user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
 		$user_coursepath = $this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
-		echo '<div class="layout_colum_container"><div style="margin:1em">';
+		echo '<div class="middlearea_container">';
 
 		$lmstab = $this->widget('lms_tab', array(
 								'active' => 'catalog',
@@ -139,7 +139,7 @@ class CatalogLmsController extends LmsController {
 		$user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
 		$user_coursepath = $this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
-		echo '<div class="layout_colum_container"><div style="margin:1em">';
+		echo '<div class="middlearea_container">';
 
 		$lmstab = $this->widget('lms_tab', array(
 								'active' => 'catalog',
@@ -175,7 +175,7 @@ class CatalogLmsController extends LmsController {
 		$user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
 		$user_coursepath = $this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
-		echo '<div class="layout_colum_container"><div style="margin:1em">';
+		echo '<div class="middlearea_container">';
 
 		$lmstab = $this->widget('lms_tab', array(
 								'active' => 'catalog',
@@ -212,7 +212,7 @@ class CatalogLmsController extends LmsController {
 		$user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
 		$user_coursepath = $this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
-		echo '<div class="layout_colum_container"><div style="margin:1em">';
+		echo '<div class="middlearea_container">';
 
 		$lmstab = $this->widget('lms_tab', array(
 								'active' => 'catalog',
@@ -247,7 +247,7 @@ class CatalogLmsController extends LmsController {
 		$user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
 		$user_coursepath = $this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
-		echo '<div class="layout_colum_container"><div style="margin:1em">';
+		echo '<div class="layout_colum_container">';
 
 		$lmstab = $this->widget('lms_tab', array(
 								'active' => 'catalog',
@@ -270,7 +270,7 @@ class CatalogLmsController extends LmsController {
 		$user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
 		$user_coursepath = $this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
-		echo '<div class="layout_colum_container"><div style="margin:1em">';
+		echo '<div class="layout_colum_container">';
 
 		$lmstab = $this->widget('lms_tab', array(
 								'active' => 'catalog',
@@ -316,6 +316,24 @@ class CatalogLmsController extends LmsController {
 		echo $this->json->encode($res);
 	}
 
+	//UG  select a user subscription level
+	function get_userlevel_subscription($idu ) {
+
+		$level = 3;		// default subscription level = Student
+		$reg_code = '';
+		$reg_code = Get::cfg('registration_code_gu','');
+		if ( Get::cfg('register_type_guestuser') && $reg_code != '' ) {
+			$uma = new UsermanagementAdm();
+			$array_folder = $uma->getFoldersFromCode($reg_code);
+		  	$userfolders = $uma->getUserFoldersCode($idu);
+			if ( in_array($reg_code,$userfolders) ) {
+				// it's a guest user , register to guest level
+				$level = 1;			// Guest user level subscription = Guest
+			}
+		}
+	  	return($level);
+	}
+
 	public function subscribeToCourse()
 	{
 		$id_course = Get::req('id_course', DOTY_INT, 0);
@@ -342,11 +360,17 @@ class CatalogLmsController extends LmsController {
 		if($course_info['subscribe_method'] != 2)
 			$waiting = 1;
 
-		$this->acl_man->addToGroup($level_idst[3], $id_user);
+		$userlevel_subscrip = $this->get_userlevel_subscription($id_user);	//UG
+		
+//UG		$this->acl_man->addToGroup($level_idst[3], $id_user);
+		$this->acl_man->addToGroup($level_idst[$userlevel_subscrip], $id_user);	//UG
 
-		if($model->subscribeUser($id_user, 3, $waiting))
+//UG		if($model->subscribeUser($id_user, 3, $waiting))
+		if($model->subscribeUser($id_user, $userlevel_subscrip, $waiting))		//UG
 		{
 			$res['success'] = true;
+			$res['new_status_code'] = '';
+
 			if($id_edition != 0 || $id_date != 0)
 			{
 				$must_change_status = $this->model->controlSubscriptionRemaining($id_course);
@@ -357,10 +381,13 @@ class CatalogLmsController extends LmsController {
 			}
 			else
 			{
-				if($waiting == 1)
+				if($waiting == 1) {
 					$res['new_status'] = '<p class="cannot_subscribe">'.Lang::t('_WAITING', 'catalogue').'</p>';
-				else
-					$res['new_status'] = '<p class="cannot_subscribe">'.Lang::t('_USER_STATUS_SUBS', 'catalogue').'</p>';
+					$res['new_status_code'] = 'waiting';
+				} else {
+					$res['new_status'] = '<p class="subscribed">'.Lang::t('_USER_STATUS_ENTER', 'catalogue').'</p>';
+					$res['new_status_code'] = 'subscribed';
+                }
 			}
 			
 			
@@ -379,8 +406,6 @@ class CatalogLmsController extends LmsController {
 			$msg_composer->setSubjectLangText('sms', '_NEW_USER_SUBS_WAITING_SUBJECT_SMS', false);
 			$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBS_WAITING_TEXT_SMS', $array_subst);
 
-
-
 			$acl =& Docebo::user()->getAcl();
 			$acl_man =& $this->acl_man;
 
@@ -392,8 +417,7 @@ class CatalogLmsController extends LmsController {
 			$idst_admin = $acl_man->getGroupMembers($idst_group_admin);
 
 			require_once(_adm_.'/lib/lib.adminmanager.php');
-			foreach($idst_admin as $id_user)
-			{
+				foreach($idst_admin as $id_user) {
 				$adminManager = new AdminManager();
 				$acl_manager = & $acl_man;
 

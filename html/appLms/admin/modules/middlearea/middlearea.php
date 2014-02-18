@@ -55,11 +55,6 @@ function view_area() {
 			.' <a class="ico-sprite subs_users" href="'.$base_url.'mo_help'.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
 			.' <a class="ico-sprite subs_'.( isset($disabled_list['mo_help']) ? 'noac' : 'actv' ).'" href="'.$second_url.'mo_help'.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
 			.'</li>';
-    $main_menu .= '<li>'
-			.'<span>'.Lang::t('_LIBRARY', 'menu_over').'</span>'
-			.' <a class="ico-sprite subs_users" href="'.$base_url.'mo_library'.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
-			.' <a class="ico-sprite subs_'.( isset($disabled_list['mo_library']) ? 'noac' : 'actv' ).'" href="'.$second_url.'mo_library'.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
-			.'</li>';
 	
 	// Tab list
 	$tab_list = '';
@@ -67,9 +62,7 @@ function view_area() {
 		'tb_elearning' => Lang::t('_ELEARNING', 'middlearea'),
 		'tb_label' => Lang::t('_LABELS', 'label'),
 		'tb_classroom' => Lang::t('_CLASSROOM', 'middlearea'),
-		'tb_calendar' => Lang::t('_CALENDAR', 'middlearea'),
         'tb_catalog' => Lang::t('_CATALOGUE', 'middlearea'),
-        'tb_library' => Lang::t('_LIBRARY', 'middlearea'),
 		'tb_assessment' => Lang::t('_ASSESSMENT', 'middlearea'),
 		'tb_coursepath' => Lang::t('_COURSEPATH', 'coursepath'),
 		'tb_games' => Lang::t('_CONTEST', 'middlearea'),
@@ -77,9 +70,15 @@ function view_area() {
 		'tb_videoconference' => Lang::t('_VIDEOCONFERENCE', 'middlearea'),
 		'tb_kb' => Lang::t('_CONTENT_LIBRARY', 'middlearea')
 	);
-	while(list($id, $name) = each($tab)) {
 
-		$tab_list .= '<li>'
+	$query_menu = "SELECT obj_index from %lms_middlearea where obj_index like 'tb_%' ORDER BY sequence";
+	$re_tablist = sql_query($query_menu);
+	
+	while(list($obj_index) = sql_fetch_row($re_tablist)) {
+		$id = $obj_index;
+		$name = $tab[$id];
+
+		$tab_list .= '<li id="'.$id.'">'
 			.'<span>'.$name.'</span>'
 			.' <a class="ico-sprite subs_users" href="'.$base_url.$name.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
 			.' <a class="ico-sprite subs_'.( isset($disabled_list[$id]) ? 'noac' : 'actv' ).'" href="'.$second_url.$id.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
@@ -121,7 +120,7 @@ function view_area() {
 			.$block_list
 			.'</div>'
 			.'<div id="yui-main">'
-				.'<div class="yui-b">'
+				.'<div class="yui-b" id="tablist">'
 				.'<h2>'.Lang::t('_TABS', 'middlearea').'</h2>'
 				.'<ul class="action-list">'
 				.$tab_list
@@ -131,6 +130,49 @@ function view_area() {
 			.'<div class="nofloat"></div>'
 		.'</div>');
 	cout('</div>');
+	$js = "
+	<script src=\"http://yui.yahooapis.com/3.9.1/build/yui/yui-min.js\"></script>
+	<script>
+	YUI().use('sortable', function (Y) {
+	    var sortable;
+	    sortable = new Y.Sortable({
+	        container: '#tablist ul',
+	        nodes    : 'li',
+	        opacity  : '0.1'
+	    });
+
+        sortable.delegate.after('drag:end', function (e) {
+	        var node = sortable.delegate.get('currentNode');
+	        
+	            // rewind
+	            while(node.previous()) {
+	            	node = node.previous();
+}
+	            // ciclo
+	            a = node.get('id');
+	            while(node.next()) {
+	            	node = node.next();
+	            	a += ','+node.get('id');
+	            }
+
+	            sUrl = 'ajax.adm_server.php?r=middlearea/order&list='+a;
+
+		        var callback = {
+		                success: function(o) {
+		                },
+		                failure:function(o) {
+		                }
+		        };
+		        YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
+		        
+		        
+	    });
+    });
+    
+
+    </script>";
+
+	cout($js);
 }
 
 function switch_active() {

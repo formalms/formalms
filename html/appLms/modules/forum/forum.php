@@ -1183,9 +1183,9 @@ function addthread() {
 
 		$GLOBALS['page']->add(Form::getFilefield($lang->def('_UPLOAD'), 'attach', 'attach'), 'content');
 	}
-	$is_important = array('No', 'Si');
+	$is_important = 1;//array($lang->def('_NO'), $lang->def('_YES'));
 	if (checkPerm('moderate', true) || checkPerm('mod', true))
-		$GLOBALS['page']->add(Form::getDropdown($lang->def('_IMPORTANT_THREAD'), 'important', 'important', $is_important), 'content');
+		$GLOBALS['page']->add(Form::getCheckbox($lang->def('_IMPORTANT_THREAD'), 'important', 'important', $is_important), 'content');
 	$GLOBALS['page']->add(
 		Form::closeElementSpace()
 		.Form::openButtonSpace()
@@ -2015,9 +2015,9 @@ function message() {
 	}
 	if (checkPerm('moderate', true) || checkPerm('mod', true))
 		if ($is_important)
-			$text_inner .=' <a href="index.php?modname=forum&op=message&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'&amp;important=2">'.$lang->def('_SET_NOT_IMPORTANT_THREAD').'</a>';
+			$text_inner .=' <a href="index.php?modname=forum&op=message&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'&amp;important=2"><img src="'.getPathImage().'standard/notimportant.png" alt="'.$lang->def('_SET_NOT_IMPORTANT_THREAD').'" /> '.$lang->def('_SET_NOT_IMPORTANT_THREAD').'</a>';
 		else
-			$text_inner .=' <a href="index.php?modname=forum&op=message&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'&amp;important=1">'.$lang->def('_MARK_AS_IMPORTANT').'</a>';
+			$text_inner .=' <a href="index.php?modname=forum&op=message&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'&amp;important=1"><img src="'.getPathImage().'standard/important.png" alt="'.$lang->def('_MARK_AS_IMPORTANT').'" /> '.$lang->def('_MARK_AS_IMPORTANT').'</a>';
 	
 	if($text_inner != '') $tb->addActionAdd($text_inner);
 	
@@ -2280,7 +2280,7 @@ function addmessage() {
 		.Form::getHidden('idThread', 'idThread', $id_thread)
 		.Form::getHidden('idMessage', 'idMessage', $id_message)
 		.Form::getHidden('ini', 'ini', $ini)
-		.Form::getTextfield($lang->def('_SUBJECT'), 'title', 'title', 255, ($id_message != '' ? $lang->def('_RE').' '.$m_title : '' ))
+		.Form::getTextfield($lang->def('_SUBJECT'), 'title', 'title', 255, ($id_message != '' ? $lang->def('_RE').' '.$m_title : $thread_title ))
 		.Form::getTextarea($lang->def('_TEXTOF'), 'textof', 'textof', ($id_message != '' ? '<em>'.$lang->def('_WRITTED_BY').': '.$userName.'</em><br /><br />[quote]'.$m_textof.'[/quote]' : '' ))
 	, 'content');
 	if(checkPerm('upload', true)) {

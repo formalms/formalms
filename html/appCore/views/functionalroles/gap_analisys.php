@@ -9,11 +9,17 @@ var GapAnalisys = {
 	showGap: <?php echo $advanced_filter['gap_filter']; ?>, //0 = all, 1 = only gaps, 2 = only non-gap
 	showExpired: <?php echo $advanced_filter['expire_filter']; ?>, //0 = all, 1 = only expired, 2 = only active
 	showCompetences: [],
+    templatePath: "<?php echo Get::tmpl_path(); ?>",            
+	dynSelection: {},
+	fieldList: <?php echo $fieldlist_js; ?>,
+	numVarFields: <?php echo $num_var_fields; ?>,
+    sort: null,
+    dir: null,
 
 	oLangs: new LanguageManager({
 		_GAP_ANALYSIS: "<?php echo Lang::t('_GAP_ANALYSIS', 'fncroles'); ?>"
 	}),
-
+  
 	gapFormatter: function(elLiner, oRecord, oColumn, oData) {
 		elLiner.innerHTML = oData <= 0
 			? '<b class=green>'+Math.abs(oData)+'</b>'//'<span class="ico-sprite subs_actv"><span><?php ?></span></span>'
@@ -43,17 +49,116 @@ var GapAnalisys = {
 		sort = (oState.sortedBy) ? oState.sortedBy.key : oSelf.getColumnSet().keys[0].getKey();
 		dir = (oState.sortedBy && oState.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "asc";
 
+        GapAnalisys.sort = sort;
+        GapAnalisys.dir = dir;
+            
 		var G = GapAnalisys;
-		return "&results=" + results +
+		var output = "&results=" + results +
 				"&startIndex=" + startIndex +
 				"&sort=" + sort +
 				"&dir=" + dir+
-				"&id_fncrole=" + GapAnalisys.idFncrole +
-				"&filter_text=" + GapAnalisys.filterText +
+				"&id_fncrole=" + G.idFncrole +
+				"&filter_text=" + G.filterText +
 				"&gap=" + G.showGap +
 				"&expired=" + G.showExpired +
+                "&dyn_filter= true" +
 				(G.showCompetences.length > 0 ? "&competences="+G.showCompetences.join(",") : "");
-	}
+                for (i=0; i<G.numVarFields; i++) {
+                    output += "&_dyn_field["+i+"]=" + YAHOO.util.Dom.get("_dyn_field_selector_"+i).value
+                }
+        return output;
+	},
+	beforeRenderEvent: function() {
+        var slist = YAHOO.util.Selector.query('select[id^=_dyn_field_selector_]');
+		var blist = YAHOO.util.Selector.query('a[id^=_dyn_field_sort_]');
+		var i;
+
+		for (i=0; i<slist.length; i++) {
+			slist[i].disabled = true;
+			YAHOO.util.Event.purgeElement(slist[i]);
+		}
+		for (i=0; i<blist.length; i++) {
+			YAHOO.util.Event.purgeElement(blist[i]);
+		}
+    },
+
+	postRenderEvent: function() {
+        var slist = YAHOO.util.Selector.query('select[id^=_dyn_field_selector_]');
+		var blist = YAHOO.util.Selector.query('a[id^=_dyn_field_sort_]');
+		var i;
+
+		for (i=0; i<slist.length; i++) {
+			slist[i].disabled = false;
+			GapAnalisys.setDropDownRefreshEvent.call(slist[i]);
+		}
+		for (i=0; i<blist.length; i++) {
+			GapAnalisys.setSortButtonRefreshEvent.call(blist[i]);
+		}
+	},            
+    setDropDownRefreshEvent: function() {
+            YAHOO.util.Event.addListener(this, "change", function() {
+                GapAnalisys.dynSelection[this.id] = this.selectedIndex;
+                DataTable_fncroles_gap_table.refresh();
+            });
+    },
+	setSortButtonRefreshEvent: function() {
+		var oDt = DataTable_fncroles_gap_table;
+		YAHOO.util.Event.addListener(this, "click", function(e) {
+			YAHOO.util.Event.preventDefault(e);
+
+			var oColumn = oDt.getColumn(this);
+
+			//load adjusted <select> into column label
+			var index = this.id.replace('_dyn_field_sort_', '');
+			var selected = YAHOO.util.Dom.get('_dyn_field_selector_'+index).value;
+			oColumn.label = GapAnalisys.getDynLabelMarkup(index, selected);
+
+			var oSortedBy = oDt.get("sortedBy"), sDir = oDt.CLASS_ASC;
+			if (oSortedBy.key == oColumn.getKey()) {
+				sDir = (oSortedBy.dir == oDt.CLASS_ASC ? oDt.CLASS_DESC : oDt.CLASS_ASC);
+			}
+
+			oDt.sortColumn(oColumn, sDir);
+		});
+	},
+	getDynLabelMarkup: function(index, selected) {
+		var x, id = '_dyn_field_selector_'+index, sort_str = GapAnalisys.oLangs.get('_SORT');
+		var output = '<select id="'+id+'" name="_dyn_field_selector['+index+']">';
+		for (x in GapAnalisys.fieldList) {
+			output += '<option value="'+x+'"'
+			+( selected == x ? ' selected="selected"' : '' )
+			+'>'+GapAnalisys.fieldList[x]+'</option>';
+		}
+		output += '</select>';
+
+		output += '<a id="_dyn_field_sort_'+index+'" href="javascript:;">';
+		output += '<img src="'+GapAnalisys.templatePath+'images/standard/sort.png" ';
+		output += 'title="'+sort_str+'" alt="'+sort_str+'" />';
+		output += '</a>';
+
+		GapAnalisys.dynSelection[id] = selected;
+		return output;
+	},
+    exportCSV: function(e) {
+        YAHOO.util.Event.preventDefault(e);
+        var dyn_field = '';
+        for (i=0; i<GapAnalisys.numVarFields; i++) {
+            dyn_field += "&_dyn_field["+i+"]=" + YAHOO.util.Dom.get("_dyn_field_selector_"+i).value
+        }
+        dyn_field += "&sort=" + GapAnalisys.sort;
+        dyn_field += "&dir=" + GapAnalisys.dir;
+        window.open("index.php?r=adm/functionalroles/export_gap&id_fncrole="+this.idFncrole+"&format=csv&dyn_filter= true"+dyn_field);
+    },
+    exportXLS: function(e) {
+        YAHOO.util.Event.preventDefault(e);
+        var dyn_field = '';
+        for (i=0; i<GapAnalisys.numVarFields; i++) {
+            dyn_field += "&_dyn_field["+i+"]=" + YAHOO.util.Dom.get("_dyn_field_selector_"+i).value
+        }
+        dyn_field += "&sort=" + GapAnalisys.sort;
+        dyn_field += "&dir=" + GapAnalisys.dir;
+        window.open("index.php?r=adm/functionalroles/export_gap&id_fncrole="+this.idFncrole+"&format=xls&dyn_filter= true"+dyn_field);
+    }
 };
 
 YAHOO.util.Event.onDOMReady(function() {
@@ -63,7 +168,7 @@ YAHOO.util.Event.onDOMReady(function() {
 	//D.get("show_expire_"+G.showExpired).checked = true;
 
 
-	YAHOO.util.Event.addListener('filter_text', "keypress", function(e) {
+	E.addListener('filter_text', "keypress", function(e) {
 		switch (YAHOO.util.Event.getCharCode(e)) {
 			case 13: {
 				YAHOO.util.Event.preventDefault(e);
@@ -163,11 +268,32 @@ $icon_history = '<span class="ico-sprite subs_elem"><span>'.Lang::t('_HISTORY', 
 //$icon_del = '<span class="ico-sprite subs_del"><span>'.Lang::t('_UNASSIGN', 'competences').'</span></span>';
 $icon_chart = '<span class="ico-sprite subs_chart"><span>'.Lang::t('_GAP_ANALYSIS', 'fncroles').'</span></span>';
 
+$dyn_labels = array();
+$dyn_filter = array();
+
+for ($i=0; $i<$num_var_fields; $i++) {
+	$label = '<select id="_dyn_field_selector_'.$i.'" name="_dyn_field_selector['.$i.']">';
+	foreach ($fieldlist as $key => $value) {
+		 $label .= '<option value="'.$key.'"'
+			.( $selected[$i] == $key ? ' selected="selected"' : '' )
+			.'>'.$value.'</option>';
+	}
+	$label .= '</select>';
+	$label .= '<a id="_dyn_field_sort_'.$i.'" href="javascript:;">';
+	$label .= '<img src="'.Get::tmpl_path().'images/standard/sort.png" title="'.Lang::t('_SORT', 'standard').'" alt="'.Lang::t('_SORT', 'standard').'" />';
+	$label .= '</a>';
+	$dyn_filter[$i] = $selected[$i];
+	$dyn_labels[$i] = $label;
+}
+
 $columns = array();
 $columns[] = array('key' => 'competence', 'label' => Lang::t('_COMPETENCE', 'competences'), 'sortable' => true);
 $columns[] = array('key' => 'userid', 'label' => Lang::t('_USER', 'standard'), 'sortable' => true);
 $columns[] = array('key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true);
 $columns[] = array('key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true);
+for ($i=0; $i<$num_var_fields; $i++) {
+	$columns[] = array('key' => '_dyn_field_'.$i, 'label' => $dyn_labels[$i]);
+}
 $columns[] = array('key' => 'score_got', 'label' => Lang::t('_SCORE', 'competences'), 'sortable' => true, 'className' => 'img-cell');
 $columns[] = array('key' => 'score_req', 'label' => Lang::t('_REQUIRED_SCORE', 'competences'), 'sortable' => true, 'className' => 'img-cell');
 $columns[] = array('key' => 'gap', 'label' => Lang::t('_GAP', 'fncroles'), 'sortable' => true, 'formatter'=>'GapAnalisys.gapFormatter', 'className' => 'img-cell');
@@ -176,11 +302,19 @@ $columns[] = array('key' => 'date_expire', 'label' => Lang::t('_EXPIRATION_DATE'
 $columns[] = array('key' => 'gap_user', 'label' => $icon_chart, 'formatter' => 'GapAnalisys.userGapAnalisysFormatter', 'className' => 'img-cell');
 
 $rel_actions = '<a class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'" '
-	.'href="index.php?r=adm/functionalroles/export_gap&id_fncrole='.(int)$id_fncrole.'&format=csv">'
+	.'href="javascript: GapAnalisys.exportCSV(this);">'
 	.'<span>'.Lang::t('_EXPORT_CSV', 'report').'</span></a>'
+    .'<a class="ico-wt-sprite subs_xls" title="'.Lang::t('_EXPORT_XLS', 'report').'" '
+	.'href="javascript: GapAnalisys.exportXLS(this);">'
+	.'<span>'.Lang::t('_EXPORT_XLS', 'report').'</span></a>'
 	/*.'<a class="ico-wt-sprite subs_xls" title="'.Lang::t('_EXPORT_XLS', 'report').'" '
 	.'href="index.php?r=adm/functionalroles/export_gap&id_fncrole='.(int)$id_fncrole.'&format=xls">'
 	.'<span>'.Lang::t('_EXPORT_XLS', 'report').'</span></a>'*/;
+
+$arr_fields = array('idst', 'userid', 'firstname', 'lastname', 'last_assign_date', 'date_expire', 'score_req', 'score_got', 'gap', 'competence', 'id_competence', 'is_expired');
+for ($i=0; $i<$num_var_fields; $i++) {
+	$arr_fields[] = '_dyn_field_'.$i;
+}
 
 $this->widget('table', array(
 	'id'			=> 'fncroles_gap_table',
@@ -192,8 +326,12 @@ $this->widget('table', array(
 	'dir'			=> 'asc',
 	'generateRequest' => 'GapAnalisys.requestBuilder',
 	'columns'		=> $columns,
-	'fields'		=> array('idst', 'userid', 'firstname', 'lastname', 'last_assign_date', 'date_expire', 'score_req', 'score_got', 'gap', 'competence', 'id_competence', 'is_expired'),
-	'rel_actions' => $rel_actions
+	'fields'		=> $arr_fields,
+	'rel_actions' => $rel_actions,
+    'events' => array(
+		'beforeRenderEvent' => 'GapAnalisys.beforeRenderEvent',
+		'postRenderEvent' => 'GapAnalisys.postRenderEvent'
+	)    
 ));
 
 ?>

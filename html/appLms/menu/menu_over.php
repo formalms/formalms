@@ -31,10 +31,13 @@ if(!Docebo::user()->isAnonymous()) {
 	$re_menu_voice = sql_query($query_menu);
 	while(list($id_m, $module_name, $def_op, $mvc_path, $default_name, $token, $m_info) = sql_fetch_row($re_menu_voice)) {
 
-		if($ma->currentCanAccessObj('mo_'.$id_m) && checkPerm($token, true, $module_name,  true)) {
-			if($module_name === 'course' && Get::sett('first_catalogue') === 'on')
-				$mvc_path = 'lms/catalog/show';
+		
+        if($ma->currentCanAccessObj('mo_'.$id_m) && checkPerm($token, true, $module_name,  true)) {
 
+            // if e-learning tab disabled, show classroom courses
+            if ($module_name ==='course' && !$ma->currentCanAccessObj('tb_elearning'))
+                $mvc_path = 'lms/classroom/show';
+            
 			$menu[$m_info][$id_m] = array(
 				'index.php?'.( $mvc_path ? 'r='.$mvc_path : 'modname='.$module_name.'&amp;op='.$def_op ).'&amp;sop=unregistercourse',
 				Lang::t($default_name, 'menu_over'),

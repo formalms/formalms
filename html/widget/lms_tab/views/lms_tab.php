@@ -1,49 +1,49 @@
 <div id="middlearea" class="yui-navset">
-	<ul class="yui-nav">
-		<?php if($this->isActive('elearning')) : ?>
-		<li<?php echo $this->selected('elearning'); ?>>
-			<a href="index.php?r=lms/elearning/show&sop=unregistercourse"><em><?php echo Lang::t('_ELEARNING', 'middlearea'); ?></em><?php echo ( $elearning ? '<b>'.$elearning.'</b>' : '' ); ?></a></li>
-		<?php endif; ?>
+    <?php
+// Ale - non mi viene in mente modo più elegante :((
+// la questione è di nascondere tutto il menu in quanto il catalog è stato tirato fuori...
+   // if (!strpos($_GET['r'], 'atalog/')) {
+        ?>
+        <ul class="yui-nav">
+            <?php
+            $tab = array(
+                'tb_elearning' => Lang::t('_ELEARNING', 'middlearea'),
+                'tb_home' => Lang::t('_HOME', 'middlearea'),
+                'tb_label' => Lang::t('_LABELS', 'label'),
+                'tb_classroom' => Lang::t('_CLASSROOM', 'middlearea'),
+                'tb_calendar' => Lang::t('_CALENDAR', 'middlearea'),
+                'tb_catalog' => Lang::t('_CATALOGUE', 'middlearea'),
+//                'tb_library' => Lang::t('_LIBRARY', 'middlearea'),
+                'tb_assessment' => Lang::t('_ASSESSMENT', 'middlearea'),
+                'tb_coursepath' => Lang::t('_COURSEPATH', 'coursepath'),
+                'tb_games' => Lang::t('_CONTEST', 'middlearea'),
+                'tb_communication' => Lang::t('_COMMUNICATIONS', 'middlearea'),
+                'tb_videoconference' => Lang::t('_VIDEOCONFERENCE', 'middlearea'),
+                'tb_kb' => Lang::t('_CONTENT_LIBRARY', 'middlearea')
+            );
 
-		<?php if($this->isActive('classroom')) : ?>
-		<li<?php echo $this->selected('classroom'); ?>>
-			<a href="index.php?r=lms/classroom/show&sop=unregistercourse"><em><?php echo Lang::t('_CLASSROOM', 'middlearea'); ?></em><?php echo ( $classroom ? '<b>'.$classroom.'</b>' : '' ); ?></a></li>
-		<?php endif; ?>
+            $query_menu = "SELECT obj_index from %lms_middlearea where obj_index like 'tb_%' ORDER BY sequence";
+            $re_tablist = sql_query($query_menu);
 
-		<?php if($this->isActive('catalog')) : ?>
-		<li<?php echo $this->selected('catalog'); ?>>
-			<a href="index.php?r=lms/catalog/show&sop=unregistercourse"><em><?php echo Lang::t('_CATALOGUE', 'middlearea'); ?></em><?php echo ( $catalog ? '<b>'.$catalog.'</b>' : '' ); ?></a></li>
-		<?php endif; ?>
+            while (list($obj_index) = sql_fetch_row($re_tablist)) {
+                $id = $obj_index;
+                $cid = substr($obj_index, 3);
+                $name = $tab[$id];
+                ?>
 
-		<?php if($this->isActive('assessment')) : ?>
-		<li<?php echo $this->selected('assessment'); ?>>
-			<a href="index.php?r=lms/assessment/show&sop=unregistercourse"><em><?php echo Lang::t('_ASSESSMENT', 'menu'); ?></em><?php echo ( $assessment ? '<b>'.$assessment.'</b>' : '' ); ?></a></li>
-		<?php endif; ?>
+                <?php if ($this->isActive($cid)) : ?>
+                    <li<?php echo $this->selected($cid); ?>>
+                        <a href="index.php?r=lms/<?php echo $cid; ?>/show&sop=unregistercourse"><em><?php echo $name ?></em><?php //echo ( isset(${$name}) ? '<b>'.${$name}.'</b>' : '' );  ?></a></li>
+                <?php endif; ?>
 
-		<?php if($this->isActive('coursepath')) : ?>
-		<li<?php echo $this->selected('coursepath'); ?>>
-			<a href="index.php?r=lms/coursepath/show&sop=unregistercourse"><em><?php echo Lang::t('_COURSEPATH', 'coursepath'); ?></em><?php echo ( $coursepath ? '<b>'.$coursepath.'</b>' : '' ); ?></a></li>
-		<?php endif; ?>
 
-		<?php if($this->isActive('games')) : ?>
-		<li<?php echo $this->selected('games'); ?>>
-			<a href="index.php?r=lms/games/show&sop=unregistercourse"><em><?php echo Lang::t('_CONTEST', 'middlearea'); ?></em><?php echo ( $games ? '<b>'.$games.'</b>' : '' ); ?></a></li>
-		<?php endif; ?>
+                <?php
+            }
+            ?>
 
-		<?php if($this->isActive('communication')) : ?>
-		<li<?php echo $this->selected('communication'); ?>>
-			<a href="index.php?r=lms/communication/show&sop=unregistercourse"><em><?php echo Lang::t('_COMMUNICATIONS', 'middlearea'); ?></em><?php echo ( $communication ? '<b>'.$communication.'</b>' : '' ); ?></a></li>
-		<?php endif; ?>
-
-		<?php if($this->isActive('videoconference')) : ?>
-		<li<?php echo $this->selected('videoconference'); ?>>
-			<a href="index.php?r=lms/videoconference/show&sop=unregistercourse"><em><?php echo Lang::t('_VIDEOCONFERENCE', 'middlearea'); ?></em><?php echo ( $videoconference ? '<b>'.$videoconference.'</b>' : '' ); ?></a></li>
-		<?php endif; ?>
-
-		<?php if($this->isActive('kb')) : ?>
-		<li<?php echo $this->selected('kb'); ?>>
-			<a href="index.php?r=lms/kb/show&sop=unregistercourse"><em><?php echo Lang::t('_CONTENT_LIBRARY', 'middlearea'); ?></em></a></li>
-		<?php endif; ?>
-	</ul>
-	<div class="yui-content">
-		<div id="tab_content" class="nested_tab">
+        </ul>
+        <?php
+    //}
+    ?>
+    <div class="yui-content">
+        <div id="tab_content" class="nested_tab">

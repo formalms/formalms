@@ -38,7 +38,9 @@ class UsermanagementAdm extends Model {
 			'mod'					=> 'standard/edit.png',
 			'del'					=> 'standard/delete.png',
 			'approve_waiting_user'	=> 'standard/wait_alarm.png',
-			'associate_user'		=> 'standard/moduser.png'
+			'associate_user'		=> 'standard/moduser.png',
+			// Enable orgchart nodes creation and edit permission for admins
+			//'mod_org'            => 'standard/modadmin.png'
 		);
 	}
 
@@ -2389,8 +2391,17 @@ class UsermanagementAdm extends Model {
 
 
 
-	public function getOrgChartDropdownList() {
-		$output = array('0' => '('.Lang::t('_ALL', 'standard').')');
+	public function getOrgChartDropdownList($idstUser=null) {
+        $output = array();
+        if($idstUser==null){
+            $output = array('0' => '('.Lang::t('_ROOT', 'standard').')');
+        }else{
+            $queryRoot = "SELECT count(G.idst) FROM %adm_admin_tree T JOIN %adm_group G WHERE T.idst = G.idst AND idstAdmin =".$idstUser." AND G.groupid = '/ocd_0'"; 
+            list($control) = $this->db->fetch_row($this->db->query($queryRoot));
+            if($control > 0) {
+                $output = array('0' => '('.Lang::t('_ROOT', 'standard').')');
+            }
+        }
 
 		$org_lang = array();
 		$query = "SELECT * FROM %adm_org_chart WHERE lang_code = '".getLanguage()."'";
@@ -2398,8 +2409,14 @@ class UsermanagementAdm extends Model {
 		while ($obj = $this->db->fetch_obj($res)) {
 			$org_lang[$obj->id_dir] = $obj->translation;
 		}
-
-		$query = "SELECT * FROM %adm_org_chart_tree ORDER BY path";
+        
+        $query = "SELECT * FROM %adm_org_chart_tree ORDER BY path";
+        if($idstUser!=null){
+            $org_groups = $this->_getAdminOrgTree($idstUser);
+            if (!empty($org_groups)){
+                $query = "SELECT * FROM %adm_org_chart_tree where idOrg in (".  implode(",", $org_groups).") ORDER BY path";
+            }
+        }
 		$res = $this->db->query($query);
 		if ($res) {
 			while ($obj = $this->db->fetch_obj($res)) {

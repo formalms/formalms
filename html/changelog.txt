@@ -1,3 +1,56 @@
+---------------------------------------------------------------------------------------
+FORMA 1.1
+---------------------------------------------------------------------------------------
+498 | Bug | Improved PHP5.4 compatibility
+1456 | Bug | Removed empty tabs from middlearea (authoring, biblioteca, calendar)
+1517 | Bug | Bug with SNAP scorm lo tracking
+1518 | Bug | Italic text shown as normal
+1548 | Bug | Inverted column titles in session details table
+1736 | Bug | Menu manager: Question Bank "Edit" Option not working
+1932 | Bug | Missing grouptype img in advanced user registration
+1965 | Bug | Subscription to entire catalog not setting user group
+1976 | Bug | Editions don't inherit subscription mode setting
+2037 | Bug | Advanced Registration - user non added to selected groups
+2084 | Bug | Can't edit default enrollment policy
+1101 | Bug | Missing translation key in Privacypolicies
+1440 | Bug | Fixed course "Days of validity" feature
+971 | Bug | Admins can see all the orgchart nodes during user import from csv (not only the assigned ones)
+1139 | Bug | Date not displayed on catalog subscribe to course editions (00/00/0000)
+1059 | Bug | Allow edit of scorm objects info in gradebook
+1499 | Bug | Missing images in catalog pagination
+1737 | Bug | Question Bank - "Select All" option ignores filters on export
+1738 | Bug | Back button in report card now takes user to the right page
+1323 | Bug | Communications were saved even with non-allowed files attached
+2210 | Bug | Template - Login box breaks is social functions are active
+2211 | Bug | Catalog - Wrong div class and inline styling for labels view
+2242 | Bug | My courses - Elearning Tab - Courses assigned to a curricula were hidden under "All open courses" filter 
+2209 | Bug | Page footer position error in html page edit
+1188 | Bug | Question Bank - Added page autorefresh on question delete
+2182 | Bug | Wrong/missing label for course status in infocourse module
+1405 | Change Request | Shared objects - Edit/delete actions only for owners
+1407 | Change Request | Show teacher name in course list
+1408 | Change Request | Added course category permissions for administrator profiles
+1428 | Change Request | Close button on organization js alerts
+1790 | Change Request | Forum - Threads answers inherit discussion title
+1909 | Change Request | Performance and code optimization for user orgchart
+1974 | Change Request | "My courses" pointing to elearning/class tab if default page set to catalog
+2005 | Change Request | Added orgchart nodes create/edit permission for admins
+2045 | Change Request | Updated Htmlpurifier to v. 4.6 (Major Security fixes)
+2046 | Change Request | Updated phpmailer addon (v 5.2.7)
+2047 | Change Request | Updated tcpdf addon (v. 6.0)
+2085 | Change Request | Roles - Added dynamic column in gap analysis
+2168 | Change Request | Roles - Added XLS export in gap analysis
+1432 | Change Request | Added percentage progress bar in gradebook stats
+1406 | Change Request | Added link to test results in gradebook
+474 | Change Request | User Profile - better visualization for uploaded files
+476 | Change Request | New Copy/Move subscription function for courses
+488 | Change Request | Added drag'n'drop ordering for frontend tabs in middlearea configuration
+492 | Change Request | Curricula - Added filter and search in curricula tab
+485 | Change Request | Forum - Relevant Threads dropdown select changed into checkbox
+809 | Change Request | Catalog buttons autorefresh after subscribing
+810 | Change Request | Added alt text description for locked courses
+1429 | Change Request | Template - Added styles for title and attach box in html pages
+
 
 ---------------------------------------------------------------------------------------
 FORMA 1.0

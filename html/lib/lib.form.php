@@ -521,13 +521,18 @@ class Form {
 	 * @param string $other_before 	html code added before the label element
 	 * @return string with the html code for a line with the input type="text" element
 	 */
-	public static function getLineFilefield( $css_line, $css_label, $label_name, $css_text, $id, $name, $value, $alt_name, $other_param, $other_after, $other_before ) {
-		return '<div class="'.$css_line.'">'
+	public static function getLineFilefield( $css_line, $css_label, $label_name, $css_text, $id, $name, $value, $alt_name, $other_param, $other_after, $other_before, $other_afterbefore = '') {
+		$ret = '<div class="'.$css_line.'">'
 			.$other_before
-			.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
-			.Form::getInputFilefield( $css_text, $id, $name, $value, $alt_name, $other_param )
-			.$other_after
+			.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>';
+			if ($other_afterbefore)
+				$ret .= ' '.$other_afterbefore.' <span id="upLLoad" style="display:none;">';
+			$ret .= Form::getInputFilefield( $css_text, $id, $name, $value, $alt_name, $other_param );
+			if ($other_afterbefore)
+				$ret .= '</span>';
+			$ret .= $other_after
 			.'</div>';
+		return $ret;
 	}
 
 	/**
@@ -542,7 +547,7 @@ class Form {
 	 * @param string $other_before 	optional html code added before the label element
 	 * @return string with the html code for the input type="text" element
 	 */
-	public static function getFilefield( $label_name, $id, $name, $value = '', $alt_name = '', $other_after = '', $other_before = '' ) {
+	public static function getFilefield( $label_name, $id, $name, $value = '', $alt_name = '', $other_after = '', $other_before = '', $other_afterbefore = '' ) {
 
 		if( $alt_name == '' ) $alt_name = strip_tags($label_name);
 
@@ -550,7 +555,7 @@ class Form {
 		$u_size = intval(ini_get('upload_max_filesize'));
 		$max_kb = ( $p_size < $u_size ? $p_size : $u_size );
 		$other_after = ' (Max. '.$max_kb.' Mb) '.$other_after;
-		return Form::getLineFilefield( 'form_line_l', 'floating', $label_name, 'fileupload', $id, $name, $value, $alt_name, '', $other_after, $other_before );
+		return Form::getLineFilefield( 'form_line_l', 'floating', $label_name, 'fileupload', $id, $name, $value, $alt_name, '', $other_after, $other_before, $other_afterbefore );
 	}
 
 

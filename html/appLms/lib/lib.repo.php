@@ -785,7 +785,7 @@ class RepoTreeView extends TreeView {
 			$arrData = $stack[$level]['folder']->otherValues;
 			$isFolder = ($arrData[REPOFIELDOBJECTTYPE] === '');
 			if( is_array($arrData) ) {
-				if( funAccess('moditem','MOD', TRUE, $this->mod_name ) ) {
+				if( funAccess('moditem','MOD', TRUE, $this->mod_name )  ) {
 					/*$elem .= '<input type="image" class="tree_view_image" '
 						.' src="'.$this->_getOpPropertiesImg().'"'
 						.' id="'.$this->id.'_'.$this->_getOpPropertiesId().'_'.$stack[$level]['folder']->id.'" '
@@ -799,12 +799,17 @@ class RepoTreeView extends TreeView {
 							.' name="'.$this->id.'['.$this->_getOpCopyLOId().']['.$stack[$level]['folder']->id.']" '
 							.' title="'.$this->_getOpCopyTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" '
 							.' alt="'.$this->_getOpCopyTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
+						if ( $stack[1]['folder']->otherValues[5] == $_SESSION['public_area_idst'] ||
+						     Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN ) {
 						$elem .= '<input type="image" class="tree_view_image" ' 
 							.' src="'.$this->_getEditImage().'"'
 							.' id="'.$this->id.'_'.$this->_getOpEditLOId().'_'.$stack[$level]['folder']->id.'" '
 							.' name="'.$this->id.'['.$this->_getOpEditLOId().']['.$stack[$level]['folder']->id.']" '
 							.' title="'.$this->_getOpEditTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" '
 							.' alt="'.$this->_getOpEditTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
+						} else {
+							$elem .= '<div class="TVActionEmpty"></div>';
+						}
 						$elem .= '<input type="image" class="tree_view_image" ' 
 							.' src="'.$this->_getOpPlayItemImg().'"'
 							.' id="'.$this->id.'_'.$this->_getOpPlayItemId().'_'.$stack[$level]['folder']->id.'" '

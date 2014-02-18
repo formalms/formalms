@@ -91,17 +91,36 @@ function getToUpgradeArray() {
 		}
 	}
 
-	$to_upgrade_arr[]=getVersionIntNumber($GLOBALS['cfg']['endversion']);
+	// $to_upgrade_arr[]=getVersionIntNumber($GLOBALS['cfg']['endversion']);
 
 	return $to_upgrade_arr;
 }
 
+//  3xxx : docebo ce versions series 3.x.x
+//  4xxx : docebo ce versions series 4.x.x
+// 1xxxx : forma     versions series 1.x  (formely 1.xx.xx )
 
 function getVersionIntNumber($ver) {
-	$res =str_pad(str_replace('.', '', $ver), 4, '0', STR_PAD_RIGHT);
 
 	if ( version_compare($ver, '3.6.0','>=') && version_compare($ver, '4.0.5','<=') ) {
 		// docebo ce versions series
+		$res =str_pad(str_replace('.', '', $ver), 4, '0', STR_PAD_RIGHT);
+	} else {
+		// forma     versions series 1.x   (formely 1.xx.nn ) =>  1xxnn
+		// forma versions series 1:  1.0 - 1.1 - 1.2 - .. - 1.9 .. => 10900
+		$arr_v = explode(".",$ver) ;
+		$res = "";
+		$first = true;
+		foreach( $arr_v as $key => $val ) {
+			if ( $first ) {
+				$res = $val;
+				$first = false;
+			} else {
+				$res = $res . str_pad($val , 2, '0' , STR_PAD_LEFT );
+			}
+		}
+		$res = str_pad($res, 5 , '0' , STR_PAD_RIGHT);
+
 	}
 
 	return $res;
