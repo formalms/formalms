@@ -444,7 +444,8 @@ class EnrollrulesAlms extends Model {
 	 * @param int $id_entity a generic entity, will not be resolved
 	 * @return bool
 	 */
-	public function applyRulesMultiLang($log_action, $arr_users, $id_org, $id_entity = false) {
+	// FORMA: Added param user_temp to use the user_temp table when the user is not confirmed (double optin)
+	public function applyRulesMultiLang($log_action, $arr_users, $id_org, $id_entity = false, $user_temp = false) {
 
 		$ent = array();
 		if($id_org != false) {
@@ -461,11 +462,18 @@ class EnrollrulesAlms extends Model {
 		if($id_entity != false) $ent[] = $id_entity;
 		if(empty($ent)) return false;
 
+		// FORMA: if we have the user_temp param we have to use user_temp table
+		$user_table = "%adm_user";
+		if ($user_temp)
+			$user_table = "%adm_user_temp";
+                        
 		$query = "SELECT DISTINCT u.idst, us.value "
-			." FROM %adm_user AS u "
+			." FROM ".$user_table." AS u "
 			." LEFT JOIN %adm_setting_user AS us "
 			." ON ( u.idst = us.id_user AND us.path_name = 'ui.language' ) "
 			." WHERE u.idst IN ( ".implode(",", $arr_users)." )";
+		// END FORMA
+		
 		$re_query = $this->db->query($query);
 
 		if(!$re_query) return false;

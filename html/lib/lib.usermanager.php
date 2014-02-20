@@ -1523,6 +1523,10 @@ class UserManagerRenderer {
 			while(list(, $idst) = each($groups)) {
 
 				$acl_man->addToGroup($idst, $iduser);
+				// FORMA: added the inscription policy
+				$enrollrules = new EnrollrulesAlms();
+				$enrollrules->applyRulesMultiLang('_LOG_USERS_TO_GROUP', array((string)$iduser), false,(int)$idst, true);
+				// END FORMA
 			}
 		}
 
