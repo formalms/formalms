@@ -496,7 +496,7 @@ function statoneuser() {
 						$arrBack_Url);
 
 		if($lo !== false) {
-			$GLOBALS['wrong_way_to_pass_parameter'] = $values[REPOFIELDIDRESOURCE];
+			$GLOBALS['wrong_way_to_pass_parameter'] = $lo->idReference;//$values[REPOFIELDIDRESOURCE];
 			$out->add($lo->loadReport( $treeView->stat_idUser ));
 		}
 	}
