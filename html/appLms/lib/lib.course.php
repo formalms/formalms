@@ -2118,7 +2118,7 @@ function getSubscribed($id_course, $subdived_for_level = false, $id_level = fals
  *
  * @return array	contains the id_user of the user subscribed, the structure is dependent of the other param
  */
-function getSubscribedInfo($id_course, $subdived_for_level = false, $id_level = false, $exclude_waiting = false, $status = false, $edition_id = false, $sort = false, $user_filter = '', $group_all_members = false, $limit = false) {
+function getSubscribedInfo($id_course, $subdived_for_level = false, $id_level = false, $exclude_waiting = false, $status = false, $edition_id = false, $sort = false, $user_filter = '', $group_all_members = false, $limit = false, $date_id = false) {
 
 	$acl_man	=& Docebo::user()->getAclManager();
 	$id_users 	= array();
@@ -2143,6 +2143,18 @@ function getSubscribedInfo($id_course, $subdived_for_level = false, $id_level = 
 		$ed_users = $ed_man->getEditionSubscribed($edition_id);
 		if (!empty($ed_users))
 			$query_courseuser .= " AND c.idUser IN (".implode(",", $ed_users).")";
+	}
+	if($date_id !== false && $date_id > 0) {
+                require_once(_lms_.'/lib/lib.date.php');
+		$date_man = new DateManager();
+		$dt_users_arr = $date_man->getUserForPresence($date_id);
+                $dt_users = array_keys ($dt_users_arr);
+		if (!empty($dt_users)){
+			$query_courseuser .= " AND c.idUser IN (".implode(",", $dt_users).")";
+                } else {
+                    // se per quella data o edizione non è iscritto nessun utente
+                    $query_courseuser .= " AND c.idUser IN (-1)";
+                }
 	}
 	if($user_filter !== '')
 		$query_courseuser .= " AND (u.firstname LIKE '%".$user_filter."%' OR u.lastname LIKE '%".$user_filter."%' OR u.userid LIKE '%".$user_filter."%')";
