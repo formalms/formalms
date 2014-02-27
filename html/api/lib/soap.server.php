@@ -19,7 +19,7 @@ function getSOAPServer() {
 
 	$server = new soap_server();
 	$server->debug_flag = false;
-	$server->configureWSDL("DoceboSOAP", $namespace);
+	$server->configureWSDL("FormaSOAP", $namespace);
 	$server->wsdl->schemaTargetNamespace = $namespace;
 	
 	//----------------------------------------------------------------------------
@@ -173,13 +173,13 @@ function getSOAPServer() {
 	
 	$server->register(
 		'authenticate', // method name
-		array('username' => 'xsd:string', 'password' => 'xsd:string'), // input parameters
-		array('success' => 'xsd:boolean', 'token' => 'xsd:string'), // output parameters
-		$namespace, // namespace
-		$namespace . '#authenticate', // soapaction
-		'rpc', // style
-		'encoded', // use
-		'...' // documentation
+		array('username' => 'xsd:string', 'password' => 'xsd:string', 'third_party' => 'xsd:string'), // input parameters
+		array('success' => 'xsd:boolean', 'message' => 'xsd:string',   'token' => 'xsd:string', 'expire_at' => 'xsd:string'), // output parameters
+        $namespace, // namespace
+        $namespace . '#authenticate', // soapaction
+        'rpc', // style
+        'encoded', // use
+        '...' // documentation
 	);
 
 	$server->register(
@@ -271,12 +271,13 @@ function getSOAPServer() {
 // ----------------------------------------------------------------------------------
 // functions list (wrapping classes)
 
-function authenticate($username, $password) {
+function authenticate($username, $password , $third_party) {
 	$module = 'auth';
 	$function = 'authenticate';
 	$params = array(
 		'username' => $username,
-		'password' => $password
+		'password' => $password, 
+        'third_party' => $third_party
 	);
 
 	$output = API::Execute(false, $module, $function, $params);
