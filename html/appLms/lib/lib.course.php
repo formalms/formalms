@@ -535,6 +535,22 @@ class Man_Course {
 	 */
 	function &getWaitingSubscribed($id_course, $edition_id = 0) {
 
+        
+        
+        $userlevelid = Docebo::user()->getUserLevelId();
+        if($userlevelid != ADMIN_GROUP_GODADMIN)
+        {
+            // BUG FIX 2469: GETTING THE USERS OF THE ADMIN
+            require_once(_base_.'/lib/lib.preference.php');
+            $adminManager = new AdminPreference();
+            $acl_man =& Docebo::user()->getAclManager();
+            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
+        }
+        
+        
+
 		$users['users_info'] 	= array();
 		$users['all_users_id'] 	= array();
 
@@ -546,6 +562,14 @@ class Man_Course {
 				." JOIN %lms_course_date_user AS cdu ON (cd.id_course = cu.idCourse AND "
 				." cd.id_date = cdu.id_date AND cu.idUser=cdu.id_user) "
 				." WHERE cd.id_course = ".(int)$id_course." AND (cu.waiting = 1 OR cdu.overbooking = 1)";
+            
+            // BUG FIX 2469: SELECT ONLY THE USER BELONGING TO THE ADMIN                
+            $query .= ($userlevelid != ADMIN_GROUP_GODADMIN
+                    ? ( !empty($admin_users) ? " AND cu.idUser IN (".implode(',', $admin_users).")" : " AND cu.idUser IN (0)" )
+                    : '' );
+        
+
+                
 			$res = sql_query($query);
 			while ($obj = sql_fetch_object($res)) {
 				$users['users_info'][$obj->idUser] = array(
@@ -568,6 +592,10 @@ class Man_Course {
 			SELECT idUser, level, subscribed_by, status
 			FROM ".$GLOBALS['prefix_lms']."_courseuser
 			WHERE idCourse = '".$id_course."' AND waiting = '1' AND  edition_id = '".$edition_id."'";
+            $query_courseuser .= ($userlevelid != ADMIN_GROUP_GODADMIN
+                ? ( !empty($admin_users) ? " AND idUser IN (".implode(',', $admin_users).")" : " AND idUser IN (0)" )
+                : '' );
+            
 			$re_courseuser = sql_query($query_courseuser);
 			while(list($id_user, $lv, $subscribed_by, $status) = sql_fetch_row($re_courseuser)) {
 
