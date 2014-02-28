@@ -313,7 +313,7 @@ class UserManager {
 
 		if($max_log_attempt != 0) {
 
-			if($this->_getLoginResult() == false) {
+			if($this->_getLoginResult() == true) {
 
 				$last_attempt = $this->getLastAttemptTime();
 				$actual_attempt = $this->getAttemptNumber();
@@ -328,6 +328,8 @@ class UserManager {
 						$advice = str_replace('[time]', $wait_for, $advice);
 						$disable = true;
 						if($save_log_attempt == 'after_max') $this->_saveLoginFailure($actual_attempt);
+                        $extra['content']= Lang::t('_ACCESS_LOCK', 'login');                        
+                        
 					} else {
 
 						$this->resetAttemptNumber();
