@@ -81,7 +81,7 @@ class TreeModel extends Model {
 		// update parent of source and level for descendants
 		$lvl_gap = $lvl_dest - $lvl_src + 1;
 		$query1 = "UPDATE ".$this->tree_table." SET idParent = ".(int) $dest_folder." WHERE ".$this->t_id." = ".(int) $src_folder;
-		$query2 = "UPDATE ".$this->tree_table." SET lev = lev + ".$lvl_gap." WHERE iLeft > ".$src_left." AND iRight < ".$src_right;
+		$query2 = "UPDATE ".$this->tree_table." SET lev = lev + ".$lvl_gap." WHERE ".$this->t_id." = ".(int) $src_folder;
 		$res1 = $this->db->query($query1);
 		$res2 = $this->db->query($query2);
 
