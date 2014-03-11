@@ -47,7 +47,10 @@ class User_API extends API {
 		if (defined("_API_DEBUG") && _API_DEBUG) { file_put_contents('create_user.txt', "\n\n----------------\n\n".print_r($params, true)." || ".print_r($userdata, true), FILE_APPEND); }
 
 		$set_idst =(isset($params['idst']) ? $params['idst'] : false);
-
+		
+		//fix grifomultimedia soap	argument [auth a.b.]
+		$userdata = (!isset($userdata['userid'])&&isset($params)) ?$params:$userdata;
+		
 		if (!isset($userdata['userid'])) return false;
 
 		$id_user = $this->aclManager->registerUser(
