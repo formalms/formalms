@@ -44,7 +44,7 @@ function getSOAPServer() {
 		'',
 		array(
 			'id' => array('name' => 'id', 'type' => 'xsd:int'),
-			'value' => array('name' => 'value', 'type' => 'xsd:mixed')
+			'value' => array('name' => 'value', 'mixed' => 'true', 'type'=>'xsd:string')
 		)
 	);
 
@@ -57,7 +57,7 @@ function getSOAPServer() {
 		array(
 			'id' => array('name' => 'id', 'type' => 'xsd:int'),
 			'name' => array('name' => 'name', 'type' => 'xsd:string'),
-			'value' => array('name' => 'value', 'type' => 'xsd:mixed')
+			'value' => array('name' => 'value', 'mixed' => 'true', 'type'=>'xsd:string')
 		)
 	);
 
@@ -107,7 +107,7 @@ function getSOAPServer() {
 			'lastenter' => array('name' => 'lastenter', 'type' => 'xsd:date'),
 			'pwd_expire_at' => array('name' => 'pwd_expire_at', 'type' => 'xsd:date'),
 			'valid' => array('name' => 'valid', 'type' => 'xsd:boolean'),
-			'custom_fields' => array('name' => '_customfields', 'type' => 'customFieldValuesArray')
+			'custom_fields' => array('name' => '_customfields', 'type' => 'tns:customFieldValuesArray')
 		)
 	);
 
