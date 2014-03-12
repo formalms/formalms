@@ -42,14 +42,16 @@ require(_base_.'/api/lib/soap.server.php');
 //create server object
 $SOAP_server =& getSOAPServer();
 
-// finalize
-Boot::finalize();
-
 //clear debug messages and clean buffer for output
 $debug = ob_get_contents();
 ob_clean();
 
 $result = $SOAP_server->service($request);
+
+// fix finalize db connection [auth a.b.]
+// finalize
+Boot::finalize();
+
 // flush buffer
 ob_end_flush();
 
