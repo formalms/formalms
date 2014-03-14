@@ -579,7 +579,7 @@ class OrgDirDb extends RepoDirDb {
 		$arrData['publish_from'] = Format::dateDb($arrData['publish_from'], 'date');
 		$arrData['publish_to'] = Format::dateDb($arrData['publish_to'], 'date');
 		
-		if($arrData['publish_from'] > $arrData['publish_to']) {
+		if($arrData['publish_from'] > $arrData['publish_to'] && $arrData['publish_to'] != "") {
 			$temp = $arrData['publish_from'];
 			$arrData['publish_from'] = $arrData['publish_to'];
 			$arrData['publish_to'] = $temp;
