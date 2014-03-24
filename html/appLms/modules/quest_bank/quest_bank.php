@@ -178,7 +178,7 @@ function doimportquest(&$url) {
 
 	addCss('style_yui_docebo');
 
-	$title = array($url->getUrl() => $lang->def('_QUEST_BANK', 'menu_course'), $lang_t->def('_IMPORT'));
+	$title = array($url->getUrl() => $lang_t->def('_QUEST_BANK', 'menu_course'), $lang_t->def('_IMPORT'));
 	cout( getTitleArea($title, 'quest_bank')
 		.'<div class="std_block">'
 		.getBackUi($url->getUrl(), $lang_t->def('_BACK')), 'content' );
