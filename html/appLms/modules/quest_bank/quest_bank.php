@@ -52,6 +52,7 @@ function questbank(&$url) {
 
 			<input type="submit" id="export_quest" name="export_quest" value="'.$lang->def('_EXPORT').'">
 			<select id="export_quest_select" name="export_quest_select">', 'content');
+			cout('<option value="-1">'.Lang::t('_NEW_TEST', 'test').'</option>', 'content');
 		foreach($export_f as $id_exp => $def) {
 			cout('<option value="'.$id_exp.'">'.$def.'</option>', 'content');
 		}

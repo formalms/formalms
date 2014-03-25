@@ -394,6 +394,7 @@ function modtestgui( $object_test ) {
 			
 			cout('<option value="'.$id_exp.'">'.$def.'</option>', 'content');
 		}           
+		cout('<option value="5">'.Lang::t('_QUEST_BANK', 'menu_course').'</option>', 'content');
 		cout('</select>'
 	
 			//.'<input type="submit" id="import_quest" name="import_quest" value="'.$lang->def('_IMPORT').'">'
@@ -1815,6 +1816,101 @@ function exportquest() {
 	
 }
 
+function exportquestqb() {
+	checkPerm('view', false, 'storage');
+	$lang =& DoceboLanguage::createInstance('test');
+
+	$idTest = importVar('idTest', true, 0);
+	$back_url = urldecode(importVar('back_url'));
+	$back_coded = htmlentities(urlencode($back_url));
+
+	require_once(_base_.'/lib/lib.form.php');
+
+	$form = new Form();
+	require_once($GLOBALS['where_lms'].'/lib/lib.quest_bank.php');
+	$qb_man 	= new QuestBankMan();
+	$supported_format = $qb_man->supported_format();
+
+	unset($supported_format[-1]);
+        
+        require_once(_lms_.'/lib/lib.questcategory.php');
+	$quest_categories = array(
+		0 => $lang->def('_NONE')
+	);
+	$cman = new Questcategory();
+	$arr = $cman->getCategory();
+	foreach ($arr as $id_category => $name_category) {
+		$quest_categories[$id_category] = $name_category;
+	}
+	unset($arr);
+        
+        
+	$title = array('index.php?modname=test&op=modtestgui&idTest='.$idTest.'&back_url='.$back_coded => $lang->def('_TEST_SECTION'), $lang->def('_EXPORT'));
+	cout(
+		getTitleArea($title, 'quest_bank')
+		.'<div class="std_block">'
+
+		.$form->openForm('import_form', 'index.php?modname=test&op=doexportquestqb', false, false, 'multipart/form-data')
+
+		.$form->openElementSpace()
+		.'<input type="hidden" name="idTest" value="'.$idTest.'" />'
+		.'<input type="hidden" name="back_url" value="'.$back_coded.'" />'
+                .$lang->def('_EXPORT_TO_QUESTION_BANK')
+                //.$form->getDropdown($lang->def('_QUEST_CATEGORY'), 'quest_category', 'quest_category', $quest_categories)
+		.$form->closeElementSpace()
+
+		.$form->openButtonSpace()
+		.$form->getButton('save','save',$lang->def('_EXPORT') )
+		.$form->getButton('undo','undo',$lang->def('_UNDO'))
+		.$form->closeButtonSpace()
+		.$form->closeForm()
+
+		.'</div>'
+	,'content');
+}
+
+
+function doexportquestqb() {
+
+	require_once(_lms_.'/lib/lib.quest_bank.php');
+
+	$lang =& DoceboLanguage::createInstance('test');
+	$back_url = urldecode(importVar('back_url'));
+	$back_coded = htmlentities(urlencode($back_url));
+	$qb_man = new QuestBankMan();
+        
+        $quest_category = Get::req('quest_category', DOTY_INT, 0);
+        $id_test 	        = Get::pReq('idTest', DOTY_INT);
+        
+        if(isset($_POST['undo'])) Util::jump_to('index.php?modname=test&op=modtestgui&idTest='.$id_test.'&back_url='.$back_coded);
+        
+        // Get quest from id test
+        $reQuest = sql_query(" SELECT q.idQuest FROM ".$GLOBALS['prefix_lms']."_testquest AS q WHERE q.idTest = ".$id_test);
+
+        while( list($idQuest) = sql_fetch_row($reQuest) )
+        {
+              $quest_selection[] =  $idQuest;
+        }
+
+        if(is_array($quest_selection) && !empty($quest_selection))
+        {
+                        //Insert the question for the test
+                        $reQuest = sql_query("
+                        SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
+                        FROM ".$GLOBALS['prefix_lms']."_testquest AS q JOIN ".$GLOBALS['prefix_lms']."_quest_type AS t
+                        WHERE q.idQuest IN (".implode(',', $quest_selection).") AND q.type_quest = t.type_quest");
+
+                        while( list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest) )
+                        {
+                                require_once(_lms_.'/modules/question/'.$type_file);
+                                $quest_obj = new $type_class( $idQuest );
+                                $new_id = $quest_obj->copy(0);
+                        }
+        }
+        
+        Util::jump_to('index.php?modname=test&op=modtestgui&idTest='.$id_test.'&back_url='.$back_coded);
+}
+
 function _getTestMaxScore($idTest) {
 	if ($idTest <= 0) return false;
 
@@ -2076,6 +2172,7 @@ function delfbkrule() {
 
 if(isset($_POST['import_quest'])) $GLOBALS['op'] = 'importquest';
 if(isset($_POST['export_quest'])) $GLOBALS['op'] = 'exportquest';
+if($_POST['export_quest_select'] == 5) $GLOBALS['op'] = 'exportquestqb';
 
 switch($GLOBALS['op']) {
 	case "instest" : {
@@ -2174,7 +2271,14 @@ switch($GLOBALS['op']) {
 	case "exportquest" : {
 		exportquest();
 	};break;
+  
+  case "exportquestqb" : {
+		exportquestqb();
+	};break;
 
+  case "doexportquestqb" : {
+		doexportquestqb();
+	};break;
 
 	case "feedbackman": {
 		feedbackman();

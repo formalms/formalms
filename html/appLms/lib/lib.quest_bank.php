@@ -235,7 +235,7 @@ class QuestBankMan {
 	function supported_format() {
 
 		$formats = array(
-		   -1 => Lang::t('_NEW_TEST', 'test'),
+		   //-1 => Lang::t('_NEW_TEST', 'test'),
 		   0 => Lang::t('_GIFT', 'test')//,
 		   //1 => Lang::t('_MOODLE_XML', 'test')
 		);
