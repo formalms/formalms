@@ -72,6 +72,7 @@ function coursereport() {
 	$out 			=& $GLOBALS['page'];
 	$out->setWorkingZone('content');
 	$included_test 	= array();
+	$view_perm = checkPerm('view', true);
 	$mod_perm = checkPerm('mod', true);
 
 	// XXX: Instance management
@@ -183,8 +184,13 @@ function coursereport() {
 				$title = strip_tags($tests_info[$info_report['id_source']]['title']);
 
 				if(!$mod_perm) {
+					if(!$view_perm) {
 						$my_action = '';
 						$a_line_2[] = '';
+					} else {
+						$my_action =	'<a class="ico-sprite subs_chart" href="index.php?modname=coursereport&amp;op=testQuestion&amp;id_test='.$id.'"><span><span>'.$lang->def('_TQ_LINK').'</span></a>';
+						$a_line_2[] = '';
+					}
 				} else {
 					$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=testvote&amp;id_test='.$id.'"><span><span>'.$lang->def('_EDIT_SCORE').'</span></a>'
 									.' <a class="ico-sprite subs_chart" href="index.php?modname=coursereport&amp;op=testQuestion&amp;id_test='.$id.'"><span><span>'.$lang->def('_TQ_LINK').'</span></a>';
@@ -2794,7 +2800,7 @@ function export()
 
 function testQuestion()
 {
-	checkPerm('mod');
+	checkPerm('view');
 
 	YuiLib::load(array('animation' => 'my_animation.js'));
 	addJs($GLOBALS['where_lms_relative'].'/modules/coursereport/', 'ajax.coursereport.js');
