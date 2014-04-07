@@ -59,7 +59,7 @@
 										),
 										'columns' => array(
 											array('key' => 'r_name', 'label' => Lang::t('_NAME', 'kb'), 'sortable' => true),
-											array('key' => 'r_type', 'label' => Lang::t('_TYPE', 'kb'), 'sortable' => true),
+											array('key' => 'r_type', 'label' => Lang::t('_TYPE', 'kb'), 'sortable' => true, 'className' => 'img-cell'),
 											//array('key' => 'r_env', 'label' => Lang::t('_ENVIRONMENT', 'kb'), 'sortable' => true),
 											array('key' => 'r_env_parent', 'label' => Lang::t('_CONTAINED_IN', 'kb'), 'sortable' => false),
 											array('key' => 'r_lang', 'label' => Lang::t('_LANGUAGE', 'kb'), 'sortable' => true),
