@@ -557,7 +557,7 @@ class TreeDb {
 		$folder->path = $oldFolder->getParentPath() . "/" . $newName;
 		$query = "UPDATE ". $this->table
 				." SET "
-				. $this->fields['path']	." = '". $folder->path ."'"
+				. $this->fields['path']	." = '". addslashes($folder->path) ."'"
 				." WHERE ((". $this->fields['id'] ." = '". $folder->id ."')"
 				.$this->_getFilter() .")";
 		$res = $this->_executeQuery( $query );
