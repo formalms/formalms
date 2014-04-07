@@ -360,7 +360,7 @@ Class CourseAlmsController extends AlmsController
 					if ($success)
 						$result['node'] = array(
 							'id' => $new_node_id,
-							'label' => $node_name,
+							'label' => stripslashes($node_name),
 							'is_leaf' => true,
 							'count_content' => 0,
 							'options' => $this->_getNodeActions($new_node_id, true));
