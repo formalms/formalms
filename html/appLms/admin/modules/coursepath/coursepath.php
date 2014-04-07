@@ -265,7 +265,7 @@ function mancoursepath($load_id = false) {
 
 		.Form::getOpenCombo($lang->def('_COURSE_PATH_SUBSCRIBE'))
 		.Form::getRadio($lang->def('_COURSE_S_GODADMIN'), 'course_subs_godadmin', 'subscribe_method', '0', ($subscribe_method == 0) )
-		.Form::getRadio($lang->def('_COURSE_S_MODERATE'), 'course_subs_moderate', 'subscribe_method', '1', ($subscribe_method == 1))
+		//.Form::getRadio($lang->def('_COURSE_S_MODERATE'), 'course_subs_moderate', 'subscribe_method', '1', ($subscribe_method == 1))
 		.Form::getRadio($lang->def('_COURSE_S_FREE'), 'course_subs_free', 'subscribe_method', '2', ($subscribe_method == 2))
 		.Form::getCloseCombo()
 
