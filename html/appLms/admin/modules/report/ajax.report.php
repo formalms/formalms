@@ -195,10 +195,8 @@ switch($op) {
 			$query="UPDATE %lms_report_schedule SET enabled=$value ".
 				"WHERE id_report_schedule=$id_sched";
 			$success=sql_query($query);
-			$message=sql_error();
 		}
 		$output['success']=$success;
-		$output['message']=$message;
 		$json = new Services_JSON();
 		aout($json->encode($output));
 	} break;
@@ -215,8 +213,8 @@ switch($op) {
 			$success=sql_query($query);
 		}
                 $output['success']=$success;
-                $json = new Services_JSON();
-		aout($json->encode($output));
+        $json = new Services_JSON();
+        aout($json->encode($output));
 	} break;
 
 }

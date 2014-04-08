@@ -751,6 +751,9 @@ function schedulelist() {
 	require_once(_lms_.'/admin/modules/report/report_schedule.php');
 	require_once(_base_.'/lib/lib.form.php');
 	require_once(_lms_.'/lib/lib.report.php');
+    
+    //import yui pop-up stuff
+	setup_report_js();
 
 	if ($action = Get::req('action', DOTY_STRING, false)) {
 		switch ($action) {
