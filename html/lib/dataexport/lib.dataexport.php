@@ -711,7 +711,7 @@ protected $delimiter;
 			$headRows = array();
 			for ($i=0; $i<$depth; $i++) { $headRows[] = array();	}
 
-			$this->_renderColumns($headRows, 0, &$columnSet);
+			$this->_renderColumns($headRows, 0, $columnSet);
 
 			$rowsOutput = array();
 			for ($i=0; $i<count($headRows); $i++) {

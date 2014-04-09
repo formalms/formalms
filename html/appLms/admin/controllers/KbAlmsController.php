@@ -283,7 +283,7 @@ class KbAlmsController extends AlmsController {
 		}
 
 
-		$this->model->getParentInfo($parent_id, & $array_comm, array('course_lo', 'communication', 'games'));
+		$this->model->getParentInfo($parent_id, $array_comm, array('course_lo', 'communication', 'games'));
 
 
 		$result = array(
