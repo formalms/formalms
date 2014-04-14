@@ -12,7 +12,7 @@
 \ ======================================================================== */
 
 define('_REST_PARAM_NAME', 'q');
-define('_REST_VALIDATOR_PARAM', 'restAPI');
+define('_REST_VALIDATOR_PARAM', 'api');
 define('_REST_MINIMUM_PARAMS', 3);
 define('_REST_APINAME_INDEX', 2);
 define('_REST_APIMETHOD_INDEX', 3);

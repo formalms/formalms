@@ -146,12 +146,11 @@ class API {
 	 * @return boolean
 	 */
 	public function checkKeys($params) { // ---- new auth method (alpha) 20110610 ---- [
-
 		// retive the hash recived with the api call
 		if(!isset($_SERVER['HTTP_X_AUTHORIZATION'])) return false;
 
 		// calculate the same hash locally
-		$auth =  base64_decode(str_replace('Docebo ', '', $_SERVER['HTTP_X_AUTHORIZATION']) );
+		$auth =  base64_decode(str_replace('FormaLMS ', '', $_SERVER['HTTP_X_AUTHORIZATION']) );
 		$params_to_check =array();
 		foreach($params as $val) {
 			if (is_array($val)) {
@@ -164,10 +163,14 @@ class API {
 			}
 		}
 		$hash_sha1 = sha1( implode(',', $params_to_check). ',' . Get::cfg('api_secret') );
-
+		
 		// check if the two hashes match each other
-		if($auth != Get::cfg('api_key').':'.$hash_sha1) return false;
-		else return true;
+		if(strtolower($auth) != strtolower(Get::cfg('api_key').':'.$hash_sha1)){
+			return false;
+		}
+		else{
+			return true;
+		}
 	} // ]----
 
 
