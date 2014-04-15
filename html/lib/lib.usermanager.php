@@ -1517,6 +1517,10 @@ class UserManagerRenderer {
 			}
 		}
 		// ----
+        
+        // add base inscription policy
+        $enrollrules = new EnrollrulesAlms();
+        $enrollrules->newRules('_NEW_USER', array($iduser), Lang::get());
 
 		// subscribe to groups -----------------------------------------
 		if(isset($_POST['group_sel_implode'])) {
