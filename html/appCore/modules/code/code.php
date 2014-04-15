@@ -312,11 +312,11 @@ function codeList() {
 				. '<img src="'.getPathImage().'standard/add.png" alt="'.$lang->def('_ADD').'" />'.$lang->def('_ADD').'</a>');
         
         $tb->addActionAdd('<a class="ico-wt-sprite subs_xls" title="'.Lang::t('_EXPORT_XLS', 'report').'" '
-                .'href="index.php?modname=code&amp;op=export&amp;id_code_group='.$id_code_group.'&amp;format=xls" target="_blank">'
+                .'href="index.php?modname=code&amp;op=export&amp;id_code_group='.$id_code_group.'&amp;format=xls">'
                 .'<span>'.Lang::t('_EXPORT_XLS', 'report').'</span></a>');
         
         $tb->addActionAdd('<a class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'" '
-                .'href="index.php?modname=code&amp;op=export&amp;id_code_group='.$id_code_group.'&amp;format=csv" target="_blank">'
+                .'href="index.php?modname=code&amp;op=export&amp;id_code_group='.$id_code_group.'&amp;format=csv">'
                 .'<span>'.Lang::t('_EXPORT_CSV', 'report').'</span></a>');        
 
 		cout($tb->getTable()
