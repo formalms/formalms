@@ -253,7 +253,10 @@ class QuestBank_Selector {
 		$this->qb_man = new QuestBankMan();
 
 		$this->all_category = $this->qb_man->getCategoryList(getLogUserId());
-		array_unshift($this->all_category, $this->lang->def('_ALL_QUEST_CATEGORY'));
+		//#2269 see it2.php.net/array_unshift#78238
+		//array_unshift($this->all_category, $this->lang->def('_ALL_QUEST_CATEGORY'));
+		$aany_cat=array(0=>$this->lang->def('_ALL_QUEST_CATEGORY'));
+		$this->all_category = $aany_cat + $this->all_category;
 
 		$this->all_difficult = array(
 			0 => $this->lang->def('_ALL_DIFFICULT'),
