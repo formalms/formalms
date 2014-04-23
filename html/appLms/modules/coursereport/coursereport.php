@@ -60,6 +60,44 @@ function testreport($idTrack, $idTest, $testName, $studentName) {
 
 }
 
+function scormreport($idTest) {
+	checkPerm('view');
+	require_once($GLOBALS['where_lms'].'/lib/lib.coursereport.php');
+	require_once($GLOBALS['where_lms'].'/lib/lib.test.php');
+
+	$lang =& DoceboLanguage::createInstance('coursereport', 'lms');
+	$out =& $GLOBALS['page'];
+	$out->setWorkingZone('content');
+	$query_testreport = "
+        SELECT DATE_FORMAT(date_action, '%d/%m/%Y %H:%i'), score_raw
+        FROM ".$GLOBALS['prefix_lms']."_scorm_tracking_history
+        WHERE idscorm_tracking = ".$idTest. " ORDER BY date_action";
+	$re_testreport = sql_query($query_testreport);
+
+	$test_man = new GroupTestManagement();
+	$report_man = new CourseReportManager();
+	$org_tests =& $report_man->getTest();
+	$tests_info =& $test_man->getTestInfo($org_tests);
+
+	$page_title = array(
+			'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_TH_TEST_REPORT'),
+			strip_tags($testName)
+	);
+	$out->add(getTitleArea($page_title, 'coursereport').'<div class="std_block">'.getBackUi("javascript:history.go(-1)", Lang::t('_BACK','standard')));
+	$tb = new Table(0, $testName.' : '.$studentName);
+	$tb->addHead(array(
+			'N.',
+			$lang->def('_DATE'),
+			$lang->def('_SCORE'),
+	), array('min-cell', '', ''));
+
+	$i = 1;
+	while(list($date_attempt, $score) = sql_fetch_row($re_testreport)) {
+		$tb->addBody(array($i++, $date_attempt, $score));
+	}
+	$out->add($tb->getTable().'</div>', 'content');
+}
+
 function coursereport() {
 	checkPerm('view');
 	require_once($GLOBALS['where_lms'].'/lib/lib.coursereport.php');
@@ -3175,6 +3213,9 @@ function coursereportDispatch($op) {
 		};break;
 		case "testreport" : {
             testreport($_GET['idTrack'],$_GET['idTest'],$_GET['testName'],$_GET['studentName']);
+        };break;
+        case "scormreport" : {
+        	scormreport($_GET['idTest']);
         };break;
 		case "showchart": {
 			showchart();
