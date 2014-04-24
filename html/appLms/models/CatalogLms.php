@@ -137,10 +137,10 @@ class CatalogLms extends Model
 					." FROM %lms_course"
 					." WHERE status NOT IN (".CST_PREPARATION.", ".CST_CONCLUDED.", ".CST_CANCELLED.")"
 					." AND course_type <> 'assessment'"
-					." AND (
-						((sub_end_date != '0000-00-00' OR sub_end_date IS NOT NULL) AND sub_end_date > '".date('Y-m-d')."') OR
-						((sub_end_date = '0000-00-00' OR sub_end_date IS NULL) AND date_begin = '0000-00-00' ) OR
-						((sub_end_date = '0000-00-00' OR sub_end_date IS NULL) AND date_begin > '".date('Y-m-d')."')
+					." AND (                       
+						(can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '".date('Y-m-d')."') AND (sub_start_date = '0000-00-00' OR '".date('Y-m-d')."' >= sub_start_date)) OR
+                        (can_subscribe=1 AND date_begin = '0000-00-00' ) OR
+						(can_subscribe=1 AND date_begin > '".date('Y-m-d')."')
 					) "
 					.$filter
 					.($id_cat > 0 ? " AND idCategory = ".(int)$id_cat : '')
