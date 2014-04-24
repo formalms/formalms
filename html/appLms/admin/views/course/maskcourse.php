@@ -163,6 +163,7 @@ echo Form::getDropdown(Lang::t('_STATUS', 'course'), 'course_status', 'course_st
 	. Form::getCloseFieldset()
 	. Form::closeElementSpace()
 	. Form::openButtonSpace()
+    .((($GLOBALS['cfg']['course_autosubscription'] && $_REQUEST['r'] == 'alms/course/newcourse')  || ($GLOBALS['cfg']['course_autosubscription'] && $_REQUEST['r'] == 'alms/course/modcourse' && $row[0] == 0))? Form::getCheckbox(Lang::t('_AUTO_SUBSCRIPTION'), 	'auto_subscription', 	'auto_subscription', 	'1', true ) : '' )            
 	. Form::getButton('save', 'save', Lang::t('_SAVE'))
 	. Form::getButton('undo', 'undo', Lang::t('_UNDO'))
 	. Form::closeButtonSpace()
