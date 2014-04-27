@@ -97,4 +97,5 @@ $cfg['mail_br']  = "\r\n";
  * Admin autosubscribe on new course
  * -------------------------------------------------------------------------
  */
-$cfg['course_autosubscription'] = true;
+$cfg['course_autosubscription'] = true; 
+
