@@ -1869,10 +1869,24 @@ class Man_CourseUser {
 						." AND autoregistration_code <> ''";
 
 		$result_course = sql_query($query_course);
+        
+		$query_course_active = "SELECT idCourse" .
+						" FROM ".$GLOBALS['prefix_lms']."_course" .
+						" WHERE autoregistration_code = '".$code."'"
+						." AND autoregistration_code <> ''"
+                        ." AND (                       
+                                (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '".date('Y-m-d')."') AND (sub_start_date = '0000-00-00' OR '".date('Y-m-d')."' >= sub_start_date)) OR
+                                (can_subscribe=1 AND date_begin = '0000-00-00' ) OR
+                                (can_subscribe=1 AND date_begin > '".date('Y-m-d')."')
+                            ) ";
+
+		$result_course_active = sql_query($query_course_active);        
 
 		$counter = 0;
 		$subs = $this->getUserSubscriptionsInfo($id_user);
 
+        // return -2 if course subscription is not allowed
+        if(!mysql_num_rows($result_course_active)) return -2;
 		if(!mysql_num_rows($result_course)) return 0;
 		while (list($id_course) = sql_fetch_row($result_course))
 		{
