@@ -1003,7 +1003,19 @@ Class CourseAlms extends Model
 
 		if($quota_exceeded)
 			$res['limit_reach'] = 1;
+        
+        //AUTO SUBSCRIPTION
+        $userId = Docebo::user()->getIdSt();
+        $userSubscribed = $this->isUserSubscribedInCourse($userId, $id_course);
+        if (intval($userSubscribed[0]) <= 0) {
+            if (isset($_POST['auto_subscription']) && $_POST['auto_subscription'] == 1) {
 
+
+                if (!$this->autoUserRegister($userId, $id_course)) {
+                    die('Error during autosubscription');
+                }
+            }
+        }
 		$res['res'] = '_ok_course';
 
 		return $res;
