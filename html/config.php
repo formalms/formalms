@@ -93,9 +93,3 @@ $cfg['demo_mode']   = false;
 $cfg['filter_tool'] = 'htmlpurifier';
 $cfg['mail_br']  = "\r\n";
 
-/**
- * Admin autosubscribe on new course
- * -------------------------------------------------------------------------
- */
-$cfg['course_autosubscription'] = true; 
-

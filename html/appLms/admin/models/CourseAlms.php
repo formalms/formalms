@@ -693,7 +693,7 @@ Class CourseAlms extends Model
             $res['err'] = '_err_course';
         else {
             //AUTO SUBSCRIPTION
-            if ($GLOBALS['cfg']['course_autosubscription'] && isset($_POST['auto_subscription']) && $_POST['auto_subscription'] == 1) {
+            if (isset($_POST['auto_subscription']) && $_POST['auto_subscription'] == 1) {
                 $userId = Docebo::user()->getIdSt();
 
                 if (!$this->autoUserRegister($userId, $id_course)) {
