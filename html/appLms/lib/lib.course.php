@@ -1875,10 +1875,9 @@ class Man_CourseUser {
 						" WHERE autoregistration_code = '".$code."'"
 						." AND autoregistration_code <> ''"
                         ." AND (                       
-                                (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '".date('Y-m-d')."') AND (sub_start_date = '0000-00-00' OR '".date('Y-m-d')."' >= sub_start_date)) OR
-                                (can_subscribe=1 AND date_begin = '0000-00-00' ) OR
-                                (can_subscribe=1 AND date_begin > '".date('Y-m-d')."')
-                            ) ";
+                            (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '".date('Y-m-d')."') AND (sub_start_date = '0000-00-00' OR '".date('Y-m-d')."' >= sub_start_date)) OR
+                            (can_subscribe=1)
+                         ) ";
 
 		$result_course_active = sql_query($query_course_active);        
 
