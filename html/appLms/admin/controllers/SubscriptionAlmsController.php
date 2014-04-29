@@ -2711,8 +2711,8 @@ class SubscriptionAlmsController extends AlmsController {
 				'fullname' => Layout::highlight($record->lastname, $filter['text']) . ' ' . Layout::highlight($record->firstname, $filter['text']),
 				'date_begin' => Format::date($record->date_begin_validity, 'date'),
 				'date_expire' => Format::date($record->date_expire_validity, 'date'),
-				'date_begin_timestamp' => Format::toTimestamp($record->date_begin_validity),
-				'date_expire_timestamp' => Format::toTimestamp($record->date_expire_validity),
+				'date_begin_timestamp' => Format::toTimestamp($record->date_begin_validity == null ? date("U") : $record->date_begin_validity ),
+				'date_expire_timestamp' => Format::toTimestamp($record->date_expire_validity == null ? date("U") : $record->date_expire_validity ),
 				'del' => 'ajax.adm_server.php?r='.$this->link.'/del_coursepath&id_user=' . $record->idst . '&id_path=' . $id_path
 			);
 		}

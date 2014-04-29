@@ -320,16 +320,28 @@ var Subscription = {
 
 		this.doBeforeShowCellEditor = function(oEditor) {
 			var key = oEditor.getColumn().getKey();
+			var dt = "";
 			switch (key) {
-
-				case "date_begin": {
-					oEditor.value = new Date( oEditor.getRecord().getData("date_begin_timestamp") );
-				}break;
-
-				case "date_expire": {
-					oEditor.value = new Date( oEditor.getRecord().getData("date_expire_timestamp") );
-				}break;
-
+				case "date_begin":   
+					var dt=oEditor.getRecord().getData("date_begin_timestamp")
+					if (dt==0){
+						oEditor.value = new Date();
+					}
+					else{
+						dt = dt*1000
+						oEditor.value = new Date( dt );
+					}					
+					break;
+				case "date_expire":    
+					var dt=oEditor.getRecord().getData("date_expire_timestamp")
+					if (dt==0){
+						oEditor.value = new Date();
+					}
+					else{
+						dt = dt*1000
+						oEditor.value = new Date( dt );
+					}	
+					break;
 			}
 			return true;
 		};
