@@ -1580,7 +1580,7 @@ class UserManagerRenderer {
 		$text = stripslashes( $text );
 
         //check register_type = self_optin
-        if(strcmp($this->_option->getOption('register_type'),'self_optin') == 0) {
+        if(strcmp($options['register_type'],'self_optin') == 0) {
                     
                     
             require_once(_base_.'/lib/lib.mailer.php');
@@ -1612,22 +1612,11 @@ class UserManagerRenderer {
 		$_GET['random_code'] = $random_code;
 		$_GET['idst'] = $iduser;
         //check register_type = self
-        if(strcmp($this->_option->getOption('register_type'),'self') == 0) {
-            $options = array(
-                    'lastfirst_mandatory' => $this->_option->getOption('lastfirst_mandatory'),
-                    'register_type' 		=> $this->_option->getOption('register_type'),
-                    'use_advanced_form' 	=> $this->_option->getOption('use_advanced_form'),
-                    'pass_alfanumeric' 		=> $this->_option->getOption('pass_alfanumeric'),
-                    'pass_min_char' 		=> $this->_option->getOption('pass_min_char'),
-                    'hour_request_limit' 	=> $this->_option->getOption('hour_request_limit'),
-                    'privacy_policy' 		=> $this->_option->getOption('privacy_policy'),
-                    'field_tree'			=> $this->_option->getOption('field_tree')
-            );
-
+        if(strcmp($options['register_type'],'self') == 0) {
 
             $text_self = $lang->def('_REG_MAIL_TEXT_SELF');
             $text_self = str_replace('[userid]', 	$_POST['register']['userid'], $text_self);
-            $text_self = str_replace('[firstname]', 	$_POST['register']['firstname'], $text_self);
+            $text_self = str_replace('[firstname]', $_POST['register']['firstname'], $text_self);
             $text_self = str_replace('[lastname]', 	$_POST['register']['lastname'], $text_self);
             $text_self = str_replace('[password]', 	$_POST['register']['pwd'], $text_self);
 
