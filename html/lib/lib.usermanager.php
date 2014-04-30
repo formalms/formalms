@@ -1285,7 +1285,7 @@ class UserManagerRenderer {
 
 		$lang =& DoceboLanguage::createInstance('register', $platform);
 
-		if($options['register_type'] != "self" && $options['register_type'] != "moderate") {
+		if($options['register_type'] != "self" && $options['register_type'] != "self_optin" && $options['register_type'] != "moderate") {
 
 			return '<div class="register_noactive">'. Lang::t('_REG_NOT_ACTIVE', 'register', $platform).'</div>';
 		}
@@ -1579,29 +1579,77 @@ class UserManagerRenderer {
 		$text = str_replace('[hour]', $options['hour_request_limit'], $text);
 		$text = stripslashes( $text );
 
-		require_once(_base_.'/lib/lib.mailer.php');
-		$mailer = DoceboMailer::getInstance();
+        //check register_type = self_optin
+        if(strcmp($this->_option->getOption('register_type'),'self_optin') == 0) {
+                    
+                    
+            require_once(_base_.'/lib/lib.mailer.php');
+            $mailer = DoceboMailer::getInstance();
 
-		if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT', 'register'), $text, false, array(MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => false)) ) {
+            if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT', 'register'), $text, false, array(MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => false)) ) {
 
 
-			if($registration_code_type == 'code_module') {
-				// ok, the registration has failed, let's remove the user association form the code
-				$code_manager = new CodeManager();
-				$code_manager->resetUserAssociation($code, $iduser);
-			}
-			$acl_man->deleteTempUser($iduser);
+                if($registration_code_type == 'code_module') {
+                    // ok, the registration has failed, let's remove the user association form the code
+                    $code_manager = new CodeManager();
+                    $code_manager->resetUserAssociation($code, $iduser);
+                }
+                $acl_man->deleteTempUser($iduser);
 
-			$this->error = true;
-			$out .= '<div class="reg_err_data">'
-				.$lang->def('_OPERATION_FAILURE')
-				.'</div>';
-		} else {
+                $this->error = true;
+                $out .= '<div class="reg_err_data">'
+                    .$lang->def('_OPERATION_FAILURE')
+                    .'</div>';
+            } else {
 
-			$out .= '<div class="reg_success">'
-				.$lang->def('_REG_SUCCESS')
-				.'</div>';
-		}
+                $out .= '<div class="reg_success">'
+                    .$lang->def('_REG_SUCCESS')
+                    .'</div>';
+            }
+        }
+        //end
+		
+		$_GET['random_code'] = $random_code;
+		$_GET['idst'] = $iduser;
+        //check register_type = self
+        if(strcmp($this->_option->getOption('register_type'),'self') == 0) {
+            $options = array(
+                    'lastfirst_mandatory' => $this->_option->getOption('lastfirst_mandatory'),
+                    'register_type' 		=> $this->_option->getOption('register_type'),
+                    'use_advanced_form' 	=> $this->_option->getOption('use_advanced_form'),
+                    'pass_alfanumeric' 		=> $this->_option->getOption('pass_alfanumeric'),
+                    'pass_min_char' 		=> $this->_option->getOption('pass_min_char'),
+                    'hour_request_limit' 	=> $this->_option->getOption('hour_request_limit'),
+                    'privacy_policy' 		=> $this->_option->getOption('privacy_policy'),
+                    'field_tree'			=> $this->_option->getOption('field_tree')
+            );
+
+
+            $text_self = $lang->def('_REG_MAIL_TEXT_SELF');
+            $text_self = str_replace('[userid]', 	$_POST['register']['userid'], $text_self);
+            $text_self = str_replace('[firstname]', 	$_POST['register']['firstname'], $text_self);
+            $text_self = str_replace('[lastname]', 	$_POST['register']['lastname'], $text_self);
+            $text_self = str_replace('[password]', 	$_POST['register']['pwd'], $text_self);
+
+            require_once(_base_.'/lib/lib.mailer.php');
+
+            $mailer = DoceboMailer::getInstance();
+
+            if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, false, false) ) {
+
+                $out .= '<div class="reg_err_data">'
+                            .$lang->def('_OPERATION_FAILURE')
+                            .'</div>';
+            }
+            else { 
+                $this->confirmRegister($this->_platform, $options);
+                $out .= '<div class="reg_success">'
+                                .$lang->def('_REG_SUCCESS')
+                                .'</div>';
+            }
+
+        }
+        //end
 		return $out;
 	}
 
@@ -1940,8 +1988,9 @@ class UserManagerRenderer {
 			$acl_man->deleteTempUser(false, false, $time_limit, true);
 			return $out;
 		}
-		if($options['register_type'] == 'self') {
 
+		if($options['register_type'] == 'self' || $options['register_type'] == 'self_optin') {
+            
 			if($acl_man->registerUser(
 				addslashes($request['userid']),			// $userid
 				addslashes($request['firstname']),		// $firstname
@@ -1978,6 +2027,27 @@ class UserManagerRenderer {
 					$acl_man->addToGroup($idst_oc, $request['idst']);
 					$acl_man->addToGroup($idst_ocd, $request['idst']);
 					
+					
+					//  aggiunta notifica usernew2
+					require_once(_base_."/lib/lib.eventmanager.php");
+
+					// set as recipients all who can approve a waiting user
+					$msg_c_new = new EventMessageComposer();
+
+					$msg_c_new->setSubjectLangText('email', '_TO_NEW_USER_SBJ', false);
+					$msg_c_new->setBodyLangText('email', '_TO_NEW_USER_TEXT', array(	'[url]' => Get::sett('url')) );
+
+					$msg_c_new->setBodyLangText('sms', '_TO_NEW_USER_TEXT_SMS', array(	'[url]' => Get::sett('url')) );
+					$idst_approve = $acl->getRoleST('/framework/admin/directory/approve_waiting_user');
+
+					$recipients = $acl_man->getAllRoleMembers($idst_approve);
+
+					if(!empty($recipients)) {
+						createNewAlert(	'UserNew2', 'directory', 'edit', '1', 'User waiting for approvation',
+									$recipients, $msg_c_new  );
+					}
+					// end
+                                        
 					$out = '<div class="reg_success">'.$lang->def('_REG_YOUR_ABI_TO_ACCESS', 'register').'</div>';
 					return $out;
 			} else {
@@ -2521,6 +2591,8 @@ class UserManagerOption {
 					$html .= Form::getOpenCombo( $lang->def('_'.strtoupper($var_name)) )
 							.Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_SELF'), $var_name.'_self', 'option['.$var_name.']',
 								'self', ($var_value == 'self'))
+                                                        .Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_SELF_OPTIN'), $var_name.'_self_optin', 'option['.$var_name.']',
+								'self_optin', ($var_value == 'self_optin'))
 							.Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_MODERATE'), $var_name.'_moderate', 'option['.$var_name.']',
 								'moderate', ($var_value == 'moderate'))
 							.Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_ADMIN'), $var_name.'_admin', 'option['.$var_name.']',

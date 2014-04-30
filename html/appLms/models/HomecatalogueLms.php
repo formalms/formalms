@@ -203,7 +203,8 @@ class HomecatalogueLms extends Model
 
 				$action =	'<div class="catalog_action" style="top:5px;" id="action_'.$row['idCourse'].'">'
 							.'<p class="can_subscribe">'
-							.str_replace(array('[login]', '[signin]'), array($login_link, $signin_link), ($register_type === 'self' || $register_type === 'moderate' ? Lang::t('_REGISTER_FOR_COURSE', 'login') : Lang::t('_REGISTER_FOR_COURSE_NO_REG', 'login')))
+                            // add self_optin
+							.str_replace(array('[login]', '[signin]'), array($login_link, $signin_link), ($register_type === 'self' || $register_type === 'self_optin' || $register_type === 'moderate' ? Lang::t('_REGISTER_FOR_COURSE', 'login') : Lang::t('_REGISTER_FOR_COURSE_NO_REG', 'login')))
 							.'</p>'
 							.'</div>';
 			}
@@ -257,7 +258,8 @@ class HomecatalogueLms extends Model
 		$register_type = $option->getOption('register_type');
 
 		$action =	'<p class="can_subscribe">'
-					.str_replace(array('[login]', '[signin]'), array($login_link, $signin_link), ($register_type === 'self' || $register_type === 'moderate' ? Lang::t('_REGISTER_FOR_COURSE', 'login') : Lang::t('_REGISTER_FOR_COURSE_NO_REG', 'login')))
+                    // add self_optin
+					.str_replace(array('[login]', '[signin]'), array($login_link, $signin_link), ($register_type === 'self' || $register_type === 'self_optin' || $register_type === 'moderate' ? Lang::t('_REGISTER_FOR_COURSE', 'login') : Lang::t('_REGISTER_FOR_COURSE_NO_REG', 'login')))
 					.'</p>';
 
 		if($type === 'classroom')
