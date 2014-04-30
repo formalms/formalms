@@ -1633,7 +1633,7 @@ class UserManagerRenderer {
             else { 
                 $this->confirmRegister($this->_platform, $options);
                 $out .= '<div class="reg_success">'
-                                .$lang->def('_REG_SUCCESS')
+                                .$lang->def('_REG_SUCCESS_SELF')
                                 .'</div>';
             }
 
