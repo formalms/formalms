@@ -30,7 +30,8 @@ if ($course['course_type'] == 'classroom' && $has_editions_or_classrooms) {
 }
 echo Form::getDropdown(Lang::t('_STATUS', 'course'), 'course_status', 'course_status', $status, $course['status'])
 	. Form::getCheckbox(Lang::t('_DIRECT_PLAY', 'course'), 'direct_play', 'direct_play', '1', $course['direct_play'] == 1)
-	. Form::getCheckbox(Lang::t('_SHOW_RESULTS', 'course'), 'show_result', 'show_result', '1', $course['show_result'] == 1)
+	// hiding the "show results" option - is not used (missing functions)
+	//. Form::getCheckbox(Lang::t('_SHOW_RESULTS', 'course'), 'show_result', 'show_result', '1', $course['show_result'] == 1)
 	. Form::getTextarea(Lang::t('_DESCRIPTION', 'course'), 'course_descr', 'course_descr', $course['description'])
 	. ( $id_course !== false && $course['course_type'] != 'elearning' ? Form::getCheckbox(Lang::t('_CASCADE_MOD_ON_EDITION', 'course'), 'cascade_on_ed', 'cascade_on_ed', 1) : '' )
 	. Form::closeElementSpace()
