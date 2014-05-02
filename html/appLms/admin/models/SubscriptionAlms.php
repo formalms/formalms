@@ -888,8 +888,8 @@ Class SubscriptionAlms extends Model
 			$array_subst = array('[url]' => Get::sett('url'),
 				'[course]' => $cinfo['name'],
 				'[firstname]' => $userinfo[ACL_INFO_FIRSTNAME],
-				'[lastname]' => $userinfo[ACL_INFO_LASTNAME]
-				'[userid]' => $this->acl_man->relativeId($userinfo[ACL_INFO_USERID]),
+				'[lastname]' => $userinfo[ACL_INFO_LASTNAME],
+				'[userid]' => $this->acl_man->relativeId($userinfo[ACL_INFO_USERID])
 				);
 
 
