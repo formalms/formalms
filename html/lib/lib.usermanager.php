@@ -328,8 +328,8 @@ class UserManager {
 						$advice = str_replace('[time]', $wait_for, $advice);
 						$disable = true;
 						if($save_log_attempt == 'after_max') $this->_saveLoginFailure($actual_attempt);
-                        $extra['content']= Lang::t('_ACCESS_LOCK', 'login');                        
-                        
+                        $extra['content']= Lang::t('_ACCESS_LOCK', 'login');
+
 					} else {
 
 						$this->resetAttemptNumber();
@@ -527,13 +527,13 @@ class UserManager {
 				{
 					// remove code from core_pwd_recover:
 					$this->deletePwdRandomCode($user_info[ACL_INFO_IDST], $random_code);
-				
+
 					// update the password:
 					if(!$acl_man->updateUser($user_info[ACL_INFO_IDST], FALSE, FALSE, FALSE, $_POST['new_password'], FALSE, FALSE, FALSE))
 						$out->add(getErrorUi($lang->def('_OPERATION_FAILURE')), 'content');
 					else
 						return $lang->def('_OPERATION_SUCCESSFUL')
-						.'<br/><a href="./index.php">'.$lang->def('_LOGIN').'</a>';					
+						.'<br/><a href="./index.php">'.$lang->def('_LOGIN').'</a>';
 				}
 				else
 				{
@@ -707,7 +707,7 @@ class UserManager {
 	function getPwdRandomCode($idst_user = false, $code = false) {
 
 		$code =sha1($code);
-		
+
 		$query = "
 		SELECT idst_user, random_code, request_date
 		FROM ".$this->prefix ."_pwd_recover
@@ -723,9 +723,9 @@ class UserManager {
 	}
 
 	function insertPwdRandomCode($idst_user, $code) {
-		
+
 		$code =sha1($code);
-		
+
 		$query = "
 		INSERT INTO ".$this->prefix ."_pwd_recover
 		( idst_user, random_code, request_date ) VALUES ( '".$idst_user."', '".$code."', '".date("Y-m-d H:i:s")."' )";
@@ -738,7 +738,7 @@ class UserManager {
 	function savePwdRandomCode($idst_user, $code) {
 
 		$code =sha1($code);
-		
+
 		$query = "
 		UPDATE ".$this->prefix ."_pwd_recover
 		SET random_code = '".$code."',
@@ -753,7 +753,7 @@ class UserManager {
 	function deletePwdRandomCode($idst_user = false, $code = false) {
 
 		$code =sha1($code);
-		
+
 		$query = "
 		DELETE FROM ".$this->prefix ."_pwd_recover
 		WHERE ";
@@ -782,20 +782,20 @@ class UserManager {
 	}
 	// XXX: END function for a correct profle
 	// ---------------------------------------
-	
-	
+
+
 	/**
 	 * Check if a given registration code is valid
 	 * @param string $reg_code
 	 * @param string $registration_code_type
-	 * @return boolean 
+	 * @return boolean
 	 */
 	public function checkRegistrationCode($reg_code, $registration_code_type) {
 		$res =true;
-		
+
 		$uma = new UsermanagementAdm();
 		$code_is_mandatory = (Get::sett('mandatory_code', 'off') == 'on');
-		
+
 		if($reg_code != '') {
 			switch($registration_code_type) {
 				case "0" : { //nothin to do
@@ -811,13 +811,13 @@ class UserManager {
 					$man_course_user = new Man_CourseUser();
 					$jolly_code = Get::sett('jolly_course_code', '');
 					if($jolly_code == '' || $jolly_code != $course_code) {
-						
+
 						$course_registration_result	= $man_course_user->checkCode($course_code);
 						if($course_registration_result <= 0 && $code_is_mandatory) {
 							$res =false; // invalid code
 						}
 					}
-					
+
 				} //procced with tree_man
 				case "tree_man" : {
 					// resolving the tree_man
@@ -836,7 +836,7 @@ class UserManager {
 						$res =false; // invalid code
 					}
 				};break;
-				case "tree_drop" : {					
+				case "tree_drop" : {
 					// from the dropdown we will recive the id of the folder
 					$array_folder = array($reg_code => $reg_code);
 					$oc_folders = $uma->getOcFolders($array_folder);
@@ -874,10 +874,10 @@ class UserManager {
 		else {
 			$res =false;
 		}
-		
+
 		return $res;
-	}	
-	
+	}
+
 }
 
 class UserManagerAction {
@@ -1323,8 +1323,8 @@ class UserManagerRenderer {
 		}
 		return $out;
 	}
-	
-	
+
+
 	// TODO: move this function in UserManager ?
 	/**
 	 * processRegistrationCode
@@ -1337,10 +1337,10 @@ class UserManagerRenderer {
 	 */
 	public function processRegistrationCode(&$acl_man, &$uma, $iduser, $reg_code, $registration_code_type) {
 		$res =array('success'=>true, 'msg'=>'');
-		
+
 		$lang =& DoceboLanguage::createInstance('register', 'lms');
 		$code_is_mandatory = (Get::sett('mandatory_code', 'off') == 'on');
-		
+
 		if($reg_code != '') {
 			switch($registration_code_type) {
 				case "0" : { //nothin to do
@@ -1356,22 +1356,22 @@ class UserManagerRenderer {
 					$man_course_user = new Man_CourseUser();
 					$jolly_code = Get::sett('jolly_course_code', '');
 					if($jolly_code == '' || $jolly_code != $course_code) {
-						
+
 						$course_registration_result	= $man_course_user->subscribeUserWithCode($course_code, $iduser);
 						if($course_registration_result <= 0 && $code_is_mandatory) {
-							
+
 							$res['success']=false;
 							$res['msg']=$lang->def('_INVALID_CODE');
 							return $res;
 						}
 					}
-					
+
 				} //procced with tree_man
 				case "tree_man" : {
 					// resolving the tree_man
 					$array_folder = $uma->getFoldersFromCode($reg_code);
 					if(empty($array_folder) && $code_is_mandatory) {
-						
+
 						//invalid code
 						$res['success']=false;
 						$res['msg']=$lang->def('_INVALID_CODE');
@@ -1403,7 +1403,7 @@ class UserManagerRenderer {
 					}
 				};break;
 				case "tree_drop" : {
-					
+
 					// from the dropdown we will recive the id of the folder
 					$array_folder = array($reg_code => $reg_code);
 					//is a valid id ?
@@ -1448,15 +1448,15 @@ class UserManagerRenderer {
 			//let's find the oc and ocd
 			$oc_folders = $uma->getOcFolders($array_folder);
 			while(list($id, $ocs) = each($oc_folders)) {
-				
+
 				$acl_man->addToGroup($ocs[0], $iduser);
 				$acl_man->addToGroup($ocs[1], $iduser);
 			}
-			
+
 			$enrollrules = new EnrollrulesAlms();
 			$enrollrules->newRules('_NEW_USER', array($iduser), Lang::get(), current($array_folder));
 		}
-		// and in array_course the courses 
+		// and in array_course the courses
 		if(!empty($array_course)) {
 
 			foreach ($array_course as $id_course) {
@@ -1466,10 +1466,10 @@ class UserManagerRenderer {
 				$subscriber->subscribeUser($iduser, $id_course, '3');
 			}
 		}
-		
+
 		return $res;
 	}
-	
+
 
 	function _opt_in($options, $platform, $opt_link) {
 
@@ -1517,7 +1517,7 @@ class UserManagerRenderer {
 			}
 		}
 		// ----
-        
+
         // add base inscription policy
         $enrollrules = new EnrollrulesAlms();
         $enrollrules->newRules('_NEW_USER', array($iduser), Lang::get());
@@ -1564,7 +1564,7 @@ class UserManagerRenderer {
 
 		// Send mail
 		$admin_mail = $options['mail_sender'];
-		
+
 		// FIX BUG 399
 		//$link = str_replace('&amp;', '&', $opt_link.( strpos($opt_link, '?') === false ? '?' : '&' ).'random_code='.$random_code);
 		$link = Get::sett('url', '').'index.php?modname=login&op=register_opt&random_code='.$random_code;
@@ -1581,8 +1581,8 @@ class UserManagerRenderer {
 
         //check register_type = self_optin
         if(strcmp($options['register_type'],'self_optin') == 0) {
-                    
-                    
+
+
             require_once(_base_.'/lib/lib.mailer.php');
             $mailer = DoceboMailer::getInstance();
 
@@ -1608,7 +1608,7 @@ class UserManagerRenderer {
             }
         }
         //end
-		
+
 		$_GET['random_code'] = $random_code;
 		$_GET['idst'] = $iduser;
         //check register_type = self
@@ -1630,7 +1630,7 @@ class UserManagerRenderer {
                             .$lang->def('_OPERATION_FAILURE')
                             .'</div>';
             }
-            else { 
+            else {
                 $this->confirmRegister($this->_platform, $options);
                 $out .= '<div class="reg_success">'
                                 .$lang->def('_REG_SUCCESS_SELF')
@@ -1763,7 +1763,7 @@ class UserManagerRenderer {
 		$out .= ( $reg_code != ''
 					?  Form::getHidden('reg_code', 'reg_code', $reg_code)
 					: '' )
-				
+
 				// show ohter field
 				.$play_field
 
@@ -1872,19 +1872,19 @@ class UserManagerRenderer {
 									'',
 									'',
 									' onchange="submit();"');
-		
+
 		$out .= Form::getPassword($lang->def('_PASSWORD').' '.$mand_sym, 'register_pwd', 'register[pwd]', 255,
 					$lang->def('_PASSWORD'))
 				.Form::getPassword($lang->def('_RETYPE_PASSWORD').' '.$mand_sym, 'register_pwd_retype', 'register[pwd_retype]', 255,
 					$lang->def('_RETYPE_PASSWORD'));
-		
+
 		$registration_code_type = Get::sett('registration_code_type', '0');
 		$code_is_mandatory = Get::sett('mandatory_code', 'off');
 		switch($registration_code_type) {
 			case "0" : {
 				//nothin to do
 			};break;
-			case "tree_course" : 
+			case "tree_course" :
 			case "code_module" :
 			case "tree_man" : {
 				// we must ask the user to insert a manual code
@@ -1968,7 +1968,7 @@ class UserManagerRenderer {
 			$time_limit = time() - 3600*((int)$options['hour_request_limit'] );
 
 			if(Get::sett('registration_code_type', '0') == 'code_module') {
-				
+
 				// free the code from the old association
 				require_once(_adm_.'/lib/lib.code.php');
 				$code_manager = new CodeManager();
@@ -1979,7 +1979,7 @@ class UserManagerRenderer {
 		}
 
 		if($options['register_type'] == 'self' || $options['register_type'] == 'self_optin') {
-            
+
 			if($acl_man->registerUser(
 				addslashes($request['userid']),			// $userid
 				addslashes($request['firstname']),		// $firstname
@@ -2015,9 +2015,9 @@ class UserManagerRenderer {
 					$acl_man->addToGroup($idst_usergroup, $request['idst']);
 					$acl_man->addToGroup($idst_oc, $request['idst']);
 					$acl_man->addToGroup($idst_ocd, $request['idst']);
-					
-					
-					//  aggiunta notifica usernew2
+
+
+					//  aggiunta notifica UserNewWaiting
 					require_once(_base_."/lib/lib.eventmanager.php");
 
 					// set as recipients all who can approve a waiting user
@@ -2032,11 +2032,11 @@ class UserManagerRenderer {
 					$recipients = $acl_man->getAllRoleMembers($idst_approve);
 
 					if(!empty($recipients)) {
-						createNewAlert(	'UserNew2', 'directory', 'edit', '1', 'User waiting for approvation',
+						createNewAlert(	'UserNewWaiting', 'directory', 'edit', '1', 'User waiting for approvation',
 									$recipients, $msg_c_new  );
 					}
 					// end
-                                        
+
 					$out = '<div class="reg_success">'.$lang->def('_REG_YOUR_ABI_TO_ACCESS', 'register').'</div>';
 					return $out;
 			} else {
@@ -2211,7 +2211,7 @@ class UserManagerRenderer {
 								'msg' => $lang->def('_SOME_MANDATORY_EMPTY') );
 			}
 		}
-		
+
 		if($control_extra_field) {
 			$extra_field = new FieldList();
 			$re_filled = $extra_field->isFilledFieldsForUser(0, ( isset($_POST['group_sel_implode']) ? explode(',', $_POST['group_sel_implode']) : false ));
