@@ -73,6 +73,14 @@ $cfg['smtp_user'] ='';
 $cfg['smtp_pwd'] ='';
 
 /**
+ * Other params
+ * -------------------------------------------------------------------------
+ * Timezone = default site timezone , if not specified get default from php.ini date.timezone
+ *            for valid timezone see http://www.php.net/manual/en/timezones.php
+ */
+//$cfg['timezone'] = 'Europe/Rome';		//define if different from php.ini setting
+
+/**
  * Session custom param
  * -------------------------------------------------------------------------
  * debug is enabled ?
