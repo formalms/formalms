@@ -1579,8 +1579,8 @@ class UserManagerRenderer {
 		$text = str_replace('[hour]', $options['hour_request_limit'], $text);
 		$text = stripslashes( $text );
 
-        //check register_type = self_optin
-        if(strcmp($options['register_type'],'self_optin') == 0) {
+        //check register_type != self (include all previous cases except the new one "self without opt-in")
+        if(strcmp($options['register_type'],'self') != 0) {
 
 
             require_once(_base_.'/lib/lib.mailer.php');
