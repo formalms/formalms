@@ -80,7 +80,7 @@ function view_area() {
 
 		$tab_list .= '<li id="'.$id.'">'
 			.'<span>'.$name.'</span>'
-			.' <a class="ico-sprite subs_users" href="'.$base_url.$name.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
+			.' <a class="ico-sprite subs_users" href="'.$base_url.$id.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
 			.' <a class="ico-sprite subs_'.( isset($disabled_list[$id]) ? 'noac' : 'actv' ).'" href="'.$second_url.$id.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
 			.'</li>';
 	}
@@ -100,7 +100,7 @@ function view_area() {
 
 		$block_list .= '<div class="direct_block">'
 			.'<span>'.$name.'</span>'
-			.' <a class="ico-sprite subs_users" href="'.$base_url.$name.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
+			.' <a class="ico-sprite subs_users" href="'.$base_url.$id.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
 			.' <a class="ico-sprite subs_'.( isset($disabled_list[$id]) ? 'noac' : 'actv' ).'" href="'.$second_url.$id.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
 			.'</div><br/>';
 	}
