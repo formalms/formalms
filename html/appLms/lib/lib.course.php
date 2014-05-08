@@ -851,7 +851,7 @@ class Man_Course {
                 return array('can' => false, 'reason' => 'subscription_expired');
             }            
             if (!$canStart){
-                return array('can' => false, 'reason' => 'subscription_not_started');
+                return array('can' => false, 'reason' => 'subscription_not_started', 'expiring_in' => 1);
             }                
         }
         
