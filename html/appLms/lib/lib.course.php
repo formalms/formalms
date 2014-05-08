@@ -848,10 +848,10 @@ class Man_Course {
                 }                    
             }
             if (!$canEnd){
-                return array('can' => false, 'reason' => 'subscription_expired');
+                return array('can' => false, 'reason' => 'course_date');
             }            
             if (!$canStart){
-                return array('can' => false, 'reason' => 'subscription_not_started', 'expiring_in' => 1);
+                return array('can' => false, 'reason' => 'course_date', 'expiring_in' => 1);
             }                
         }
         
