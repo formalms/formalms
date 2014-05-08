@@ -13,7 +13,7 @@
 
 /**
  * The language model class
- * 
+ *
  * This class can be used in order to retrive and manipulate all kind of
  * information about the languages of the platforma nd the string
  * localization maded and uploadaded inside the system.
@@ -85,7 +85,7 @@ class LangAdm extends Model {
 		if($sort && $dir) $query .= " ORDER BY $sort $dir ";
 		if($startIndex && $results) $query .= " LIMIT ".(int)$startIndex.", ".(int)$results;
 		$rs = $this->db->query($query);
-		
+
 		$result = array();
 		while( $lang = $this->db->fetch_obj($rs) ) {
 			$diff = $text->lang_max - $lang->lang_stats;
@@ -138,7 +138,7 @@ class LangAdm extends Model {
 	 * @param <type> $lang_code
 	 * @param <type> $lang_description
 	 * @param <type> $lang_direction
-	 * @param <type> $lang_browsercode 
+	 * @param <type> $lang_browsercode
 	 */
 	public function newLanguage($lang_code, $lang_description, $lang_direction, $lang_browsercode) {
 
@@ -194,7 +194,7 @@ class LangAdm extends Model {
 		$rs = $this->db->query($query);
 		$result = array();
 		while( list($lang_code, $lang_description, $lang_direction) = $this->db->fetch_row($rs) ) {
-			
+
 			$result[$lang_code] = $lang_code;
 		}
 		return $result;
@@ -205,14 +205,14 @@ class LangAdm extends Model {
 	 * @return array an array of module names
 	 */
 	public function getModuleList() {
-		
+
 		$qtxt = "SELECT DISTINCT text_module "
 		."FROM %adm_lang_text "
 		."ORDER BY text_module";
 		$re = $this->db->query($qtxt);
 		$module_list = array();
 		while(list($module) = $this->db->fetch_row($re)) {
-			
+
 			$module_list[$module] = $module;
 		}
 		return $module_list;
@@ -270,11 +270,11 @@ class LangAdm extends Model {
 			default : $qtxt .= " ORDER BY lt.text_module ".$dir.", ta.translation_text ASC";break;
 		}
 		if($ini !== false && $rows !== false)$qtxt .= " LIMIT $ini, $rows";
-		
+
 		$data = array();
 		$result = $this->db->query($qtxt);
 		while($obj = $this->db->fetch_obj($result)) {
-			
+
 			//if($text != false) $obj->translation_text = Util::highlight($obj->translation_text, $text);
 			//if($main_dir == 'rtl') $obj->translation_text = '<div style="direction:rtl;">'.$obj->translation_text.'</div>';
 			//if($lang_code_diff != false && $diff_dir == 'rtl') $obj->translation_text_diff = '<div style="direction:rtl;">'.$obj->translation_text_diff.'</div>';
@@ -351,7 +351,7 @@ class LangAdm extends Model {
 		return $data;
 	}
 
-	
+
 	/**
 	 * Return all the translation according to the passed filters
 	 * @param string $module translations only for this module
@@ -375,7 +375,7 @@ class LangAdm extends Model {
 		}
 		return $data;
 	}
-	
+
 	/**
 	 * Insert a new key for a module
 	 * @param string $text_key the key to add
@@ -504,7 +504,7 @@ class LangAdm extends Model {
 		$elemText = $doc->createTextNode($lang_info->lang_direction);
 		$elem->appendChild($elemText);
 		$lang->appendChild($elem);
-		
+
 		$elemPlatform = $doc->createElement("platform");
 		$elemPlatform->setAttribute( "id", 'all' );
 		$lang->appendChild( $elemPlatform );
@@ -527,10 +527,11 @@ class LangAdm extends Model {
 			}
 		}
 
+		$doc->formatOutput = true;		// save XML in formatted style
 		$out = $doc->saveXML();
 		require_once(_lib_.'/lib.download.php');
 		sendStrAsFile($out, 'lang['.$lang_info->lang_code.'].xml');
-		
+
 		exit();
 	}
 
@@ -545,19 +546,19 @@ class LangAdm extends Model {
 		}
 		$xpath = new DOMXPath($doc);
 		$root = $doc->documentElement;
-		
+
 		$langs = $xpath->query('//LANGUAGES/LANG');
 		foreach($langs as $lang) {
 
 			$lang_code = addslashes($lang->getAttribute('id'));
-			
+
 			$elem = $xpath->query('lang_description/text()',$lang);
 			$lang_description = addslashes(urldecode($elem->item(0)->textContent));
 
 			$elem = $xpath->query('lang_direction/text()',$lang);
 			if($elem->length > 0) $lang_direction = addslashes($elem->item(0)->textContent);
 			else $lang_direction = 'ltr';
-			
+
 			$elem = $xpath->query('lang_browsercode/text()',$lang);
 			$lang_browsercode = addslashes($elem->item(0)->textContent);
 
@@ -607,12 +608,12 @@ class LangAdm extends Model {
 	}
 
 	protected function cleanImport($text) {
-		
+
 		if (preg_match("/^<!\\[CDATA\\[/i", $text))
 			$translation= addslashes(trim(preg_replace("/<!\\[CDATA\\[(.*?)\\]\\]>/si", "\$1", $text)));
 		else
 			$translation = addslashes(trim(urldecode($text)));
 		return $translation;
 	}
-	
+
 }
