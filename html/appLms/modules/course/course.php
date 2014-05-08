@@ -523,9 +523,9 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 	// retrive editions ----------------------------------------------------------------
 	
 	$select_edition = " SELECT e.* ";
-	$from_edition 	= " FROM ".$GLOBALS["prefix_lms"]."_course_edition AS e "
+	$from_edition 	= " FROM ".$GLOBALS["prefix_lms"]."_course_editions AS e "
 		." JOIN ".$GLOBALS["prefix_lms"]."_courseuser AS u ";
-	$where_edition 	= " WHERE e.status <> '".CST_PREPARATION."' AND e.idCourseEdition = u.edition_id ";
+	$where_edition 	= " WHERE e.status <> '".CST_PREPARATION."' AND e.id_edition = u.edition_id ";
 	
 	$re_edition = sql_query($select_edition
 		.$from_edition
@@ -538,7 +538,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 	while($edition_elem = mysql_fetch_assoc($re_edition)) {
 		
 		$edition_elem['classrooms'] = ( isset($classrooms[$edition_elem['classrooms']]) ? $classrooms[$edition_elem['classrooms']] : '' );
-		$editions[$edition_elem["idCourse"]][$edition_elem["idCourseEdition"]] = $edition_elem;
+		$editions[$edition_elem["id_course"]][$edition_elem["id_course"]] = $edition_elem;
 	}
 	
 	$man_courseuser = new Man_CourseUser();

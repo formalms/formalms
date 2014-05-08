@@ -827,6 +827,34 @@ class Man_Course {
 		$now = time();
 		$expiring = false;
 
+        // if course has editions, evaluate these first of all
+        if ($course['course_edition']=="1"){
+            // retrieve editions 
+            $select_edition  = " SELECT e.date_begin, e.date_end ";
+            $select_edition .= " FROM ".$GLOBALS["prefix_lms"]."_course_editions AS e "
+                ." JOIN ".$GLOBALS["prefix_lms"]."_course_editions_user AS u ";
+            $select_edition .= " WHERE e.status IN ('".CST_AVAILABLE."','".CST_EFFECTIVE."') AND e.id_course = '".$course['idCourse']."' AND e.id_edition = u.id_edition AND u.id_user = '".getLogUserId()."'";
+            $re_edition = sql_query($select_edition);
+            $canEnd   = false;
+            $canStart = false;
+            // evaluate date_begin and date_end only for active editions
+            // if no editions is active returns subscription_expired
+            while ($edition_elem = mysql_fetch_assoc($re_edition)) {
+                if (is_null($edition_elem['date_end']) || $edition_elem['date_end'] == '0000-00-00' || strcmp(date('Y-m-d'), $edition_elem['date_end']) <= 0) {
+                    $canEnd = $canEnd || true;
+                }
+                if ($canEnd && (is_null($edition_elem['date_begin']) || $edition_elem['date_begin'] == '0000-00-00' || strcmp(date('Y-m-d'), $edition_elem['date_begin']) >= 0)) {
+                    $canStart = $canStart || true;
+                }                    
+            }
+            if (!$canEnd){
+                return array('can' => false, 'reason' => 'subscription_expired');
+            }            
+            if (!$canStart){
+                return array('can' => false, 'reason' => 'subscription_not_started');
+            }                
+        }
+        
 		if($course['date_end'] != '0000-00-00') {
 
 			$time_end = fromDatetimeToTimestamp($course['date_end']);
@@ -838,11 +866,11 @@ class Man_Course {
 			$time_first_access = fromDatetimeToTimestamp($course['date_first_access']);
 
 			$exp_time = ( $time_first_access + ($course['valid_time'] * 24 * 3600 ) ) - $now;
-      $expiring = round($exp_time / (24*60*60));
-      $expiring = $expiring ==-0?0:$expiring;			
+            $expiring = round($exp_time / (24*60*60));
+            $expiring = $expiring ==-0?0:$expiring;			
 			if($exp_time < 0) {
                 return array('can' => false, 'reason' => 'time_elapsed', 'expiring_in' => $expiring);
-      }
+            }
 		}
 		
 		$query =	"SELECT date_begin_validity, date_expire_validity, status, level"
