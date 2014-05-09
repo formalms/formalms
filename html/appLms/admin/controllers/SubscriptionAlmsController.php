@@ -1132,8 +1132,8 @@ class SubscriptionAlmsController extends AlmsController {
 				}
 
 				$user_selector->show_user_selector = TRUE;
-				$user_selector->show_group_selector = FALSE;
-				$user_selector->show_orgchart_selector = FALSE;
+				$user_selector->show_group_selector = TRUE;
+				$user_selector->show_orgchart_selector = TRUE;
 				$user_selector->show_orgchart_simple_selector = TRUE;
 
 				if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
