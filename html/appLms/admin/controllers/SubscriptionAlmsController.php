@@ -1161,7 +1161,10 @@ class SubscriptionAlmsController extends AlmsController {
 				$id_cat = Get::req('id_cat', DOTY_INT, 0);
 
 				if (isset($_POST['okselector'])) {
-					$user_selected = $user_selector->getSelection($_POST);
+					$_selection = $user_selector->getSelection($_POST);
+					$acl_man = Docebo::user()->getAclManager();
+					$user_selected = $acl_man->getAllUsersFromSelection($_selection);//$acl_man->getAllUsersFromIdst($_selection);
+					//$user_selected = $user_selector->getSelection($_POST);
 
 					if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 						require_once(_base_ . '/lib/lib.preference.php');
@@ -1208,7 +1211,7 @@ class SubscriptionAlmsController extends AlmsController {
 				break;
 
 			case '3':
-				$user_selection = $_POST['user_selection'];
+                            $user_selection = $_POST['user_selection'];
 
 				if(isset($_POST['course_selection']))
 					$course_selection = $_POST['course_selection'];
