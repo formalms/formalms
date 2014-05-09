@@ -79,6 +79,7 @@ $cfg['smtp_pwd'] ='';
  *            for valid timezone see http://www.php.net/manual/en/timezones.php
  */
 //$cfg['timezone'] = 'Europe/Rome';		//define if different from php.ini setting
+//$cfg['set_mysql_tz'] = false;			//set mysql timezone same as php timezone , default false
 
 /**
  * Session custom param
