@@ -42,7 +42,7 @@ class SettingAdm extends Model {
 		FROM ".$this->table."
 		WHERE hide_in_modify = '0'
 		ORDER BY regroup ");
-		
+
 		$names = array(
 			1	=> 'Main_options',
 			3	=> 'User',
@@ -105,7 +105,8 @@ class SettingAdm extends Model {
 			.config_line($lang->def('_MAX_EXECUTION_TIME'), $php_conf['max_execution_time']['local_value'].'s' )
 			.config_line($lang->def('_LDAP'), ( extension_loaded('ldap')
 				? $lang->def('_ON')
-				: '<span class="font_red">'.$lang->def('_OFF').' '.$lang->def('_USEFULL_ONLY_IF').'</span>') );
+				: '<span class="font_red">'.$lang->def('_OFF').' '.$lang->def('_USEFULL_ONLY_IF').'</span>') )
+			.config_line($lang->def('_PHP_TIMEZONE'), @date_default_timezone_get() );
 
 		if(version_compare(phpversion(), "5.0.0") == -1) {
 
@@ -529,7 +530,7 @@ class SettingAdm extends Model {
 					);
 					echo Form::getRadioSet($lang->def('_REST_AUTH_METHOD'), $var_name, 'option['.$var_name.']', $value_set, $var_value, $i_after);
 				} break;
-				
+
 				// Common types
 				case "password" : {
 					echo Form::getPassword( $lang->def('_'.strtoupper($var_name)),
@@ -550,7 +551,7 @@ class SettingAdm extends Model {
 												5,
 												22,
 												$i_after );
-											
+
 				} break;
 				case "menuvoice" :
 				case "menuvoice_course_public" :
@@ -702,7 +703,7 @@ class SettingAdm extends Model {
 
 		return $re;
 	}
-	
+
 }
 
 ?>
