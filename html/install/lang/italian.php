@@ -184,9 +184,10 @@ define("_NOTSCORM","Questo server non supporta domXML per php4 e non è php 5, n
 define("_YOU_DONT_HAVE_FUNCTION_OVERLOAD","la funzione overload non è attiva, per farla funzionare devi avere installato una versione di PHP uguale maggiore alla 4.3.0. Linux mandriva non è compilata con la funzione overload, cerca un file con un nome simile a php4-overload-xxxxx.mdk e installa tu il modulo, fedora core4 ha invece un bug <a href=\"http://download.fedora.redhat.com/pub/fedora/linux/core/updates/4/\" target=\"_blank\">che va patchato</a>. Se sei su windows ti consigliamo di installare <a href=\"http://www.easyphp.org\" target=\"_blank\">easyphp 1.8</a>.");
 define("_CRITICAL_ERROR","Errore critico ");
 define("_MBSTRING","Supporto Multibyte");
+define("_PHP_TIMEZONE","Timezone Installazione");
 
 
-define("_INSTALLER_INTRO_TEXT", "Forma &egrave; un Learning Management System open source mantenuto da un gruppo di aziende italiane, già utilizzato da centinaia di grandi aziende ed universit&agrave; in tutto il mondo. 
+define("_INSTALLER_INTRO_TEXT", "Forma &egrave; un Learning Management System open source mantenuto da un gruppo di aziende italiane, già utilizzato da centinaia di grandi aziende ed universit&agrave; in tutto il mondo.
 <p><strong>Key Features</strong></p>
 <ul>
 <li>Supporto a <em>Scorm 1.2 e 2004&nbsp;</em></li>

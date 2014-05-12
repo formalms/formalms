@@ -21,7 +21,7 @@ define("_INSTALLER_INTRO_TEXT", "Forma; karmaşık organizasyonlar, şirketler p
 		<li>Sosyal özellikler ile <b>Google Apps</b>, <b>Facebook</b>, <b>Twitter</b> ve <b>Linkedin</b> desteği</li>
 		<li>Tamamen özelleştirilebilen Raporlama sistemi ve İş Zekası çözümü</li>
 		<li>Adanmış alt-yöneticiler özelliği, saha ve ülke yöneticisi özellikleri</li>
-		<li>Çoklu-dil desteği ve LTR(Soldan Sağa) ve RTL (Sağdan Sola) desteği. 18 farklı dil destekli</li>
+		<li>Çoklu-dil desteği ve LTR(Soldan Sağa) ve RTL (Sağdan Sola) desteği. 25 farklı dil destekli</li>
 		<li>Mobil cihaz desteği</li>
 	</ul>");
 // ---------------------------------------

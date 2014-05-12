@@ -21,7 +21,7 @@ define("_INSTALLER_INTRO_TEXT", "Forma ist eine Firma, die ihre eigene open-sour
 		<li>Unterst&ouml;tzung f&uuml;r soziale Anwendungen wie <b>Google Apps</b>, <b>Facebook</b>, <b>Twitter</b> und <b>Linkedin</b></li>
 		<li>Komplett konfigurierbares Benachrichtigungssystem und Firmen-Nachrichtendienst</li>
 		<li>Spezielle Sub-Administratoren Funktionen, Bereiche und L&auml;nderverwaltungsfunktionen</li>
-		<li>Unterst&uuml;tzung f&uuml;r mehrere Sprachen und LTR(links-nach-rechts) bzw. RTL (rechts-nach-links) Schriften. 18 Sprachen werden unterst&uuml;tzt.</li>
+		<li>Unterst&uuml;tzung f&uuml;r mehrere Sprachen und LTR(links-nach-rechts) bzw. RTL (rechts-nach-links) Schriften. 25 Sprachen werden unterst&uuml;tzt.</li>
 		<li>Unterst&uuml;tzung f&uuml;r Mobilger&auml;te</li>
 	</ul>");
 // ---------------------------------------

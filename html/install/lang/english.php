@@ -23,7 +23,7 @@ Forma is a free open source Learning Management System mantained by an italian g
 		<li>Social features support like <b>Google Apps</b>, <b>Facebook</b>, <b>Twitter</b> e <b>Linkedin</b></li>
 		<li>Fully customizable Reporting system and business intelligence</li>
 		<li>Dedicated sub-administrators features, area and country manager features</li>
-		<li>Multi-language support and LTR(left-to-right) and RTL (right-to-left) support. 18 languages supported</li>
+		<li>Multi-language support and LTR(left-to-right) and RTL (right-to-left) support. 25 languages supported</li>
 		<li>Mobile devices support</li>
 	</ul>");
 // ---------------------------------------
@@ -35,6 +35,7 @@ define("_MYSQLCLIENT_VERSION","Mysql Client Version : ");
 define("_LDAP","Ldap : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Consider this warning only if you need to use LDAP ");
 define("_MBSTRING","Multibyte Support");
+define("_PHP_TIMEZONE","Site Timezone");
 
 define("_PHPINFO","PHP Information : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");

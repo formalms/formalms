@@ -21,7 +21,7 @@ define("_INSTALLER_INTRO_TEXT", "Forma é uma companhia que desenvolveu uma plat
 		<li>Características sociais tais como <b>Google Apps</b>, <b>Facebook</b>, <b>Twitter</b> e <b>Linkedin</b></li>
 		<li>Sistema totalmente customizável e relatórios de inteligência comercial</li>
 		<li>Características dedicadas de sub-administradores, área e caraterísticas de gestão</li>
-		<li>Suporte multi-idioma EPD(esquerda-para-direita) e DPE(direita-para-esquerda). 18 idiomas suportados</li>
+		<li>Suporte multi-idioma EPD(esquerda-para-direita) e DPE(direita-para-esquerda). 25 idiomas suportados</li>
 		<li>Suporta dispositivos móveis</li>
 	</ul>");
 // ---------------------------------------

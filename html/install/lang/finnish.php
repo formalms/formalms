@@ -21,7 +21,7 @@ define("_INSTALLER_INTRO_TEXT", "Forma on yhtiö joka on kehittänyt omat avoime
 		<li>Sosiaaliset ominaisuudet kuten <b>Google Apps</b>, <b>Facebook</b>, <b>Twitter</b> e <b>Linkedin</b></li>
 		<li>Täysin mukautettavat raportointijärjestelmät ja business intelligence</li>
 		<li>Erilliset ali-hallinnon ominaisuudet, alue- ja maajohtaja ominaisuudet</li>
-		<li>Monikielinen tuki ja LTR(vassemmalta-oikealle) ja RTL (oikealta-vasemmalle) tuki. 18 kieltä tuettu</li>
+		<li>Monikielinen tuki ja LTR(vassemmalta-oikealle) ja RTL (oikealta-vasemmalle) tuki. 25 kieltä tuettu</li>
 		<li>Mobiililaitteiden tuki</li>
 	</ul>");
 // ---------------------------------------
