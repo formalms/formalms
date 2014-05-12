@@ -40,7 +40,8 @@ Class Step2Controller extends StepController {
 		}
 		else {
 			// forma v1.x => skip step 3 and 4 (config upgrade, db upgrade from 3 to 4)
-			$next_step = $current_step + 3;  //
+
+			$next_step = $current_step + 1;  // upgrade config via plugin
 		}
 		return ($next_step);
 	}

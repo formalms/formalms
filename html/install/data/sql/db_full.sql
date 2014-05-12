@@ -922,9 +922,11 @@ INSERT INTO `core_event_class` (`idClass`, `class`, `platform`, `description`) V
 (16, 'ForumNewCategory', 'lms', ''),
 (17, 'ForumNewThread', 'lms', ''),
 (18, 'ForumNewResponse', 'lms', ''),
+(19, 'UserCourseRemovedModerate', 'lms-a', ''),
 (38, 'UserApproved', 'framework', ''),
 (39, 'UserCourseBuy', 'lms', ''),
-(40, 'SettingUpdate', 'framework', '');
+(40, 'SettingUpdate', 'framework', ''),
+(41, 'UserNewWaiting', 'framework', '');
 
 -- --------------------------------------------------------
 
@@ -985,8 +987,10 @@ INSERT INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES
 (1, 16),
 (1, 17),
 (1, 18),
+(1, 19),
 (1, 38),
 (1, 39),
+(1, 41),
 (2, 3),
 (3, 3),
 (5, 40);
@@ -1031,8 +1035,10 @@ INSERT INTO `core_event_manager` (`idEventMgr`, `idClass`, `permission`, `channe
 (16, 16, 'not_used', 'email', '_ALL', 'godadmin,admin,user'),
 (17, 17, 'not_used', 'email', '_ALL', 'godadmin,admin,user'),
 (18, 18, 'not_used', 'email', '_ALL', 'godadmin,admin,user'),
+(19, 19, 'not_used', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin,admin'),
 (38, 38, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
-(39, 39, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user');
+(39, 39, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
+(41, 41, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin,admin');
 
 -- --------------------------------------------------------
 
@@ -2563,7 +2569,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('code_teleskill', '', 'string', 255, 'teleskill', 6, 3, 1, 0, ''),
 ('common_admin_session', 'on', 'enum', 3, 'security', 8, 24, 1, 0, ''),
 ('conference_creation_limit_per_user', '99999999999', 'string', 255, '0', 6, 0, 1, 0, ''),
-('core_version', '1.1', 'string', 255, '0', 1, 0, 1, 1, ''),
+('core_version', '1.2', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('course_quota', '0', 'string', 255, '0', 4, 5, 1, 0, ''),
 ('currency_symbol', '&euro;', 'string', 10, '0', 5, 2, 1, 0, ''),
 ('customer_help_email', '', 'string', 255, '0', 3, 19, 1, 0, ''),
@@ -5243,7 +5249,9 @@ INSERT INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequen
 ('tb_games', 1, 'a:0:{}',0),
 ('tb_label', 1, 'a:0:{}',0),
 ('tb_videoconference', 1, 'a:0:{}',0),
-('tb_elearning', 0, 'a:0:{}', 0);
+('tb_elearning', 0, 'a:0:{}', 0),
+('tb_kb', 0, 'a:0:{}', 0);
+
 
 -- --------------------------------------------------------
 
