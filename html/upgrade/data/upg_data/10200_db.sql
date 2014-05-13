@@ -1,7 +1,7 @@
 -- bug #491
 INSERT IGNORE INTO core_event_class (idClass, class, platform, description) VALUES (19, 'UserCourseRemovedModerate', 'lms-a', '');
 INSERT IGNORE INTO core_event_consumer_class (idConsumer, idClass) VALUES (1, 19);
-INSERT IGNORE INTO core_event_manager (idEventMgr, idClass, permission, channel, recipients, show_level) VALUES ('19', '19', 'not_used', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin,admin');
+INSERT IGNORE INTO core_event_manager (idEventMgr, idClass, permission, channel, recipients, show_level) VALUES (19, 19, 'not_used', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin,admin');
 
 -- User waiting to be unsubscribed from a course
 INSERT IGNORE INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_EVENT_CLASS_UserCourseRemovedModerate', 'event_manager', '');
