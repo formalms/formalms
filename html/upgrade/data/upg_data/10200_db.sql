@@ -1,32 +1,32 @@
---- bug #491
-INSERT IGNORE INTO core_event_class (idClass, class, platform, description) VALUES ('19', 'UserCourseRemovedModerate', 'lms-a', '');
-INSERT IGNORE INTO core_event_consumer_class (idConsumer, idClass) VALUES ('1', '19');
+-- bug #491
+INSERT IGNORE INTO core_event_class (idClass, class, platform, description) VALUES (19, 'UserCourseRemovedModerate', 'lms-a', '');
+INSERT IGNORE INTO core_event_consumer_class (idConsumer, idClass) VALUES (1, 19);
 INSERT IGNORE INTO core_event_manager (idEventMgr, idClass, permission, channel, recipients, show_level) VALUES ('19', '19', 'not_used', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin,admin');
 
 -- User waiting to be unsubscribed from a course
 INSERT IGNORE INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_EVENT_CLASS_UserCourseRemovedModerate', 'event_manager', '');
 INSERT IGNORE INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES
-( (SELECT lt.id_text from core_lang_text lt where t.text_key = '_EVENT_CLASS_UserCourseRemovedModerate' AND lt.text_module = 'event_manager'), 'english', 'User waiting to be unsubscribed from a course', now());
+( (SELECT lt.id_text from core_lang_text lt where lt.text_key = '_EVENT_CLASS_UserCourseRemovedModerate' AND lt.text_module = 'event_manager'), 'english', 'User waiting to be unsubscribed from a course', now());
 
 -- User is waiting for course unsubscription approval
 INSERT IGNORE INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_NEW_USER_UNSUBS_WAITING_SUBJECT', 'email', '');
 INSERT IGNORE INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES
-( (SELECT lt.id_text from core_lang_text lt where t.text_key = '_NEW_USER_UNSUBS_WAITING_SUBJECT' AND lt.text_module = 'email'), 'english','User is waiting for course unsubscription approval', now());
+( (SELECT lt.id_text from core_lang_text lt where lt.text_key = '_NEW_USER_UNSUBS_WAITING_SUBJECT' AND lt.text_module = 'email'), 'english','User is waiting for course unsubscription approval', now());
 
 -- New user unsubscribed to the '[course]' course and is waiting to be approved. <a href="[url]">[url]</a>
 INSERT IGNORE INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_NEW_USER_UNSUBS_WAITING_TEXT', 'email', '');
 INSERT IGNORE INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES
-((SELECT lt.id_text from core_lang_text lt where t.text_key = '_NEW_USER_UNSUBS_WAITING_TEXT' AND lt.text_module = 'email'), 'english','New user unsubscribed to the \'[course]\' course and is waiting to be approved.
+((SELECT lt.id_text from core_lang_text lt where lt.text_key = '_NEW_USER_UNSUBS_WAITING_TEXT' AND lt.text_module = 'email'), 'english','New user unsubscribed to the \'[course]\' course and is waiting to be approved.
 
 <a href="[url]">[url]</a>', now());
 
 INSERT IGNORE INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_NEW_USER_UNSUBS_WAITING_SUBJECT_SMS', 'email', '');
 INSERT IGNORE INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES
-( (SELECT lt.id_text from core_lang_text lt where t.text_key = '_NEW_USER_UNSUBS_WAITING_SUBJECT_SMS' AND lt.text_module = 'email'), 'english','', now());
+( (SELECT lt.id_text from core_lang_text lt where lt.text_key = '_NEW_USER_UNSUBS_WAITING_SUBJECT_SMS' AND lt.text_module = 'email'), 'english','', now());
 
 INSERT IGNORE INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_NEW_USER_UNSUBS_WAITING_TEXT_SMS', 'email', '');
 INSERT IGNORE INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES
-( (SELECT lt.id_text from core_lang_text lt where t.text_key = '_NEW_USER_UNSUBS_WAITING_TEXT_SMS' AND lt.text_module = 'email'), 'english','', now() );
+( (SELECT lt.id_text from core_lang_text lt where lt.text_key = '_NEW_USER_UNSUBS_WAITING_TEXT_SMS' AND lt.text_module = 'email'), 'english','', now() );
 
 
 -- bug #2555
