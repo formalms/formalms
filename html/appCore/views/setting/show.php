@@ -61,7 +61,7 @@ YAHOO.util.Event.onDOMReady(function(){
     var myEl = document.getElementById('register_type_self');
 
     YAHOO.util.Event.addListener("register_type_self", "click", function(e){
-        if (!confirm('<?php echo Lang::t('_CONFIRM_REGISTER_TYPE_SELF', 'configuration') ?>')){
+        if (!confirm('<?php echo addslashes(Lang::t('_CONFIRM_REGISTER_TYPE_SELF', 'configuration')) ?>')){
             e.preventDefault();
             e.stopPropagation();
         }
