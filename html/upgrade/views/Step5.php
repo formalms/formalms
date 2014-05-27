@@ -24,7 +24,7 @@
 					}
 				} else {
 					YAHOO.util.Dom.get('error').style.display ='block';
-					YAHOO.util.Dom.get('error_text').html = arr['res'];
+					YAHOO.util.Dom.get('error_text').innerHTML = arr['msg'];
 
 				}
 
@@ -49,5 +49,5 @@
 
 <div id="error" style="display: none;">
 	<p>Upgrade database error</p>
-	<div id="error_text"></div>
+	<div id="error_text">dummy error</div>
 </div>
