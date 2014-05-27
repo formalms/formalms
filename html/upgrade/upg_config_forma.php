@@ -52,14 +52,14 @@ $_SESSION['upgrade_ok'] = true;
 $config_changed = false;
 
 if ($_SESSION['upgrade_ok']) {
-	$upgrade_msg .="<br/>" . "Upgrading config ";
+	$GLOBALS['debug'] .="<br/>" . "Upgrading config ";
 
 	// for all upgrade step required
 	foreach ($to_upgrade_arr as $upg_step => $current_ver) {
 
 		$msg_version =$GLOBALS['cfg']['versions'][$current_ver];
 
-		$upgrade_msg .="<br/>" . "Upgrading config to version: ".$msg_version;
+		$GLOBALS['debug'] .="<br/>" . "Upgrading config to version: ".$msg_version;
 
 		// --- config upgrade -----------------------------------------------------------
 		$fn =_upgrader_.'/data/upg_conf/'.$current_ver.'_conf.php';
@@ -93,25 +93,25 @@ if ($_SESSION['upgrade_ok']) {
 			// download new configuration
 			downloadConfig($config);
 		} else {
-			$upgrade_msg .="<br/>" . "save new config file" ;
 			$fn_new =_base_.'/config.php';
 			$config_saved =saveConfig($fn_new, $config);
+			$GLOBALS['debug'] .="<br/>" . "Save new config file: " .$fn_new ;
 		}
 	} else  {
-		$upgrade_msg .="<br/>" . "NO CHANGE";
+		$GLOBALS['debug'] .="<br/>" . "NO CHANGE required to config file";
 	}
 } else {
-		$upgrade_msg .="<br/>" . "CAI CAI";
+		$GLOBALS['debug'] .="<br/>" . "Upgrade error!!";
 }
 
-$GLOBALS['debug'] = $upgrade_msg
+$GLOBALS['debug'] = ""
 					//. '<br/>' . 'Result: ' . ( $_SESSION['upgrade_ok'] ? 'OK ' : 'ERROR !!! ' )
 					. '<br/>' . $GLOBALS['debug']
 					.'<br>------' ;
 
-if ( ! $config_changed ) {
+if ( ! $config_changed || $config_saved ) {
 		$res =array('res'=>'ok', 'msg' => $GLOBALS['debug']);
-} else if ( $config_saved ) {
+} else if ( ! $config_saved ) {
 		$res =array('res'=>'not_saved', 'msg' => $GLOBALS['debug']);
 } else {
 		$res =array('res'=>'Error', 'msg' => $GLOBALS['debug']);
@@ -119,10 +119,12 @@ if ( ! $config_changed ) {
 
 /*******************
 echo $GLOBALS['debug'];
-
+print_r($res);
 *********************/
 
-/**/
+
+
+/* */
 require_once(_base_.'/lib/lib.json.php');
 $json = new Services_JSON();
 echo $json->encode($res);
@@ -137,6 +139,9 @@ die();
 
 function saveConfig($fn, $config) {
 	$saved =file_put_contents($fn, $config);
+	if ( ! $saved ) {
+		$GLOBALS['debug'] .= "<br/>" . "Error saving config: file read-only or not accesisble: " . $fn ;
+	}
 	return($saved);
 }
 
