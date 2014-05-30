@@ -54,6 +54,7 @@ FORMA 1.2
 2390 | Change Request | Export test questions to question bank
 2693 | Change Request | Added m4a mime-type
 2845 | Change Request | Export list of subscription codes
+3057 | Change Request | BigBlueButton integration
 
 ---------------------------------------------------------------------------------------
 FORMA 1.1
