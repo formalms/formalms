@@ -52,6 +52,7 @@ function questbank(&$url) {
 
 			<input type="submit" id="export_quest" name="export_quest" value="'.$lang->def('_EXPORT').'">
 			<select id="export_quest_select" name="export_quest_select">', 'content');
+			cout('<option value="-1">'.Lang::t('_NEW_TEST', 'test').'</option>', 'content');
 		foreach($export_f as $id_exp => $def) {
 			cout('<option value="'.$id_exp.'">'.$def.'</option>', 'content');
 		}
@@ -178,7 +179,7 @@ function doimportquest(&$url) {
 
 	addCss('style_yui_docebo');
 
-	$title = array($url->getUrl() => $lang->def('_QUEST_BANK', 'menu_course'), $lang_t->def('_IMPORT'));
+	$title = array($url->getUrl() => $lang_t->def('_QUEST_BANK', 'menu_course'), $lang_t->def('_IMPORT'));
 	cout( getTitleArea($title, 'quest_bank')
 		.'<div class="std_block">'
 		.getBackUi($url->getUrl(), $lang_t->def('_BACK')), 'content' );

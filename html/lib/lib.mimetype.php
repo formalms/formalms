@@ -80,7 +80,7 @@ function mimeDetect($fileName, $path = true, $big = false) {
 		//stream
 		case "asf" :	case "nsv" :	case "smi" :	case "ram" :
 		//audio
-		case "au" :	case "wav" :	case "mid" :	case "ogg" :	case "mp3" :
+		case "au" :	case "wav" :	case "mid" :	case "ogg" :	case "mp3" :	case "m4a" :
 			return $basepath.'mp3'.$extension;
 
 		//real
@@ -282,6 +282,8 @@ function mimetype($ext) {
 			return 'audio/midi';
 		case "mp2" : 	case "mp3" : 	case "mpga" :
 			return 'audio/mpeg';
+		case "m4a" :
+			return 'audio/mp4';
 		case "tsi" :
 			return 'audio/tsplayer';
 		case "ra" :
@@ -546,6 +548,13 @@ function getOtherMime($ext, & $mime_array) {
 		} break;
 		case "flac" : {
 			$mime_array[]='audio/x-flac';
+		} break;
+		case "m4a" : {
+			$mime_array[]='audio/m4a';
+			$mime_array[]='audio/x-m4a';
+			$mime_array[]='audio/mp4a-latm';
+			$mime_array[]='video/3gpp';
+			$mime_array[]='audio/mpeg';
 		} break;
 		case "wma" : {
 			$mime_array[]='video/x-ms-asf';

@@ -236,6 +236,7 @@ function statuserfilter() {
 	$group_filter = Get::req('group_filter', DOTY_INT, STATFILTER_ALL_GROUP);
 	$status_filter = Get::req('status_filter', DOTY_INT, STATFILTER_ALL_STATUS);
 	$editions_filter = Get::req('editions_filter', DOTY_INT, STATFILTER_ALL_EDITION);
+        $date_filter = Get::req('date_filter', DOTY_INT, STATFILTER_ALL_EDITION);
 	$user_filter = Get::req('user_filter', DOTY_MIXED, '');
 
 	$cs = new CourseSubscribe_Manager();
@@ -282,7 +283,7 @@ function statuserfilter() {
 
 	//--- filter on edition ------------------------------------------------------
 
-	//retrieve editioins
+	//retrieve edition
 	$query = "SELECT * FROM %lms_course_editions WHERE id_course = ".(int)$_SESSION['idCourse'];
 	$res = sql_query($query);
 
@@ -316,7 +317,50 @@ function statuserfilter() {
 										$arr_editions ,
 										$editions_filter ) );
 	}
-	//------------------------------------------------------------------------------
+	//--- filter on class ------------------------------------------------------
+
+	//retrieve class (date)
+	//$query = "SELECT * FROM %lms_course_date WHERE id_course = ".(int)$_SESSION['idCourse'];
+	$query = "SELECT dt.id_date, dt.code, dt.name, MIN( dy.date_begin ) AS sub_start_date, MAX( dy.date_end ) AS sub_end_date
+		FROM %lms_course_date AS dt
+		JOIN %lms_course_date_day AS dy ON dy.id_date = dt.id_date
+		WHERE dt.id_course = ".(int)$_SESSION['idCourse']."
+		GROUP BY dt.id_date
+		ORDER BY dy.date_begin";
+	$res = sql_query($query);
+
+	//is there more any edition ?
+	if (sql_num_rows($res) > 0) {
+		$arr_date = array(STATFILTER_ALL_EDITION => $lang->def('_FILTEREDITIONSELECTONEOPTION'));
+
+		//list of editions for the dropdown, in the format: "[code] name (date_begin - date_end)"
+		while ($einfo = sql_fetch_object($res)) {
+			$_label = '';
+			if ($einfo->code != '') {
+				$_label .= '['.$einfo->code.'] ';
+			}
+			if ($einfo->name != '') {
+				$_label .= $einfo->neme;
+			}
+			if (($einfo->sub_start_date != '' || $einfo->sub_start_date != '0000-00-00') && ($einfo->sub_end_date != '' || $einfo->sub_end_date != '0000-00-00')) {
+				$_label .= ' ('.Format::date($einfo->sub_start_date, 'date')
+					.' - '.Format::date($einfo->sub_end_date, 'date').')';
+			}
+			if ($_label == '') {
+				//...
+			}
+			$arr_date[$einfo->id_date] = $_label;
+		}
+
+		//draw editions dropdown
+		$out->add( $form->getDropdown( 	$lang->def('_FILTEREDITIONSELECTTITLE'),
+										'date_filter',
+										'date_filter',
+										$arr_date ,
+										$date_filter ) );
+	}
+        
+//------------------------------------------------------------------------------
 
 	if(isset($_POST['start_filter']) && $_POST['start_filter'] = 1)
 		$out->add($form->getCheckBox($lang->def('_FILTEROBJECTFINISHED'), 'start_filter', 'start_filter', '1', true));
@@ -351,9 +395,11 @@ function statuserfilter() {
 		true,
 		$user_filter,
 		$group_all_members,
-		$limit);
+		$limit,
+                ( $date_filter != STATFILTER_ALL_EDITION ? $date_filter : false)
+                );
 
-	$query =	"SELECT COUNT(*)"
+                $query =	"SELECT COUNT(*)"
 			." FROM %lms_courseuser AS cu"
 			.($user_filter !== '' ? " JOIN ".$GLOBALS['prefix_fw']."_user AS u ON u.idst = cu.idUser" : '')
 			." WHERE cu.idCourse = ".(int)$_SESSION['idCourse']
@@ -496,7 +542,7 @@ function statoneuser() {
 						$arrBack_Url);
 
 		if($lo !== false) {
-			$GLOBALS['wrong_way_to_pass_parameter'] = $values[REPOFIELDIDRESOURCE];
+			$GLOBALS['wrong_way_to_pass_parameter'] = $lo->idReference;//$values[REPOFIELDIDRESOURCE];
 			$out->add($lo->loadReport( $treeView->stat_idUser ));
 		}
 	}

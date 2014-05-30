@@ -57,5 +57,14 @@ YAHOO.util.Event.onDOMReady(function(){
 		effect:{effect:YAHOO.widget.ContainerEffect.FADE, duration:0.20}
 	});
 	new YAHOO.widget.TabView('global_conf', {orientation:'left'});
+    
+    var myEl = document.getElementById('register_type_self');
+
+    YAHOO.util.Event.addListener("register_type_self", "click", function(e){
+        if (!confirm('<?php echo addslashes(Lang::t('_CONFIRM_REGISTER_TYPE_SELF', 'configuration')) ?>')){
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    });
 });
 </script>

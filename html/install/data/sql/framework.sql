@@ -563,9 +563,11 @@ INSERT INTO `core_event_class` (`idClass`, `class`, `platform`, `description`) V
 (16, 'ForumNewCategory', 'lms', ''),
 (17, 'ForumNewThread', 'lms', ''),
 (18, 'ForumNewResponse', 'lms', ''),
+(19, 'UserCourseRemovedModerate', 'lms-a', ''),
 (38, 'UserApproved', 'framework', ''),
 (39, 'UserCourseBuy', 'lms', ''),
-(40, 'SettingUpdate', 'framework', '');
+(40, 'SettingUpdate', 'framework', ''),
+(41, 'UserNewWaiting', 'framework', '');
 
 -- --------------------------------------------------------
 
@@ -626,8 +628,10 @@ INSERT INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES
 (1, 16),
 (1, 17),
 (1, 18),
+(1, 19),
 (1, 38),
 (1, 39),
+(1, 41),
 (2, 3),
 (3, 3),
 (5, 40);
@@ -672,8 +676,10 @@ INSERT INTO `core_event_manager` (`idEventMgr`, `idClass`, `permission`, `channe
 (16, 16, 'not_used', 'email', '_ALL', 'godadmin,admin,user'),
 (17, 17, 'not_used', 'email', '_ALL', 'godadmin,admin,user'),
 (18, 18, 'not_used', 'email', '_ALL', 'godadmin,admin,user'),
+(19, 19, 'not_used', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin,admin'),
 (38, 38, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
-(39, 39, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user');
+(39, 39, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
+(41, 41, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin,admin');
 
 -- --------------------------------------------------------
 
@@ -2201,10 +2207,18 @@ CREATE TABLE IF NOT EXISTS `core_setting` (
 
 INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES
 ('accessibility', 'off', 'enum', 255, '0', 8, 5, 1, 0, ''),
+('bbb_server', 'http://test-install.blindsidenetworks.com/bigbluebutton/', 'string', 255, 'bbb', 6, 1, 1, 0, ''),
+('bbb_user', '', 'string', 255, 'bbb', 6, 2, 1, 0, ''),
+('bbb_salt', 'to be changed with a complex string', 'string', 255, 'bbb', 6, 3, 1, 0, ''),
+('bbb_password_moderator', 'password.moderator', 'string', 255, 'bbb', 6, 4, 1, 0, ''),
+('bbb_password_viewer', 'password.viewer', 'string', 255, 'bbb', 6, 5, 1, 0, ''),
+('bbb_max_mikes', '2', 'string', 255, 'bbb', 6, 6, 1, 0, ''),
+('bbb_max_participant', '300', 'string', 255, 'bbb', 6, 7, 1, 0, ''),
+('bbb_max_room', '999', 'string', 255, 'bbb', 6, 8, 1, 0, ''),
 ('code_teleskill', '', 'string', 255, 'teleskill', 6, 3, 1, 0, ''),
 ('common_admin_session', 'on', 'enum', 3, 'security', 8, 24, 1, 0, ''),
 ('conference_creation_limit_per_user', '99999999999', 'string', 255, '0', 6, 0, 1, 0, ''),
-('core_version', '1.1', 'string', 255, '0', 1, 0, 1, 1, ''),
+('core_version', '1.2', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('course_quota', '0', 'string', 255, '0', 4, 5, 1, 0, ''),
 ('currency_symbol', '&euro;', 'string', 10, '0', 5, 2, 1, 0, ''),
 ('customer_help_email', '', 'string', 255, '0', 3, 19, 1, 0, ''),

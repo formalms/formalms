@@ -310,6 +310,14 @@ function codeList() {
 
 		$tb->addActionAdd('<a href="index.php?modname=code&amp;op=add_code&amp;id_code_group='.$id_code_group.'">'
 				. '<img src="'.getPathImage().'standard/add.png" alt="'.$lang->def('_ADD').'" />'.$lang->def('_ADD').'</a>');
+        
+        $tb->addActionAdd('<a class="ico-wt-sprite subs_xls" title="'.Lang::t('_EXPORT_XLS', 'report').'" '
+                .'href="index.php?modname=code&amp;op=export&amp;id_code_group='.$id_code_group.'&amp;format=xls">'
+                .'<span>'.Lang::t('_EXPORT_XLS', 'report').'</span></a>');
+        
+        $tb->addActionAdd('<a class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'" '
+                .'href="index.php?modname=code&amp;op=export&amp;id_code_group='.$id_code_group.'&amp;format=csv">'
+                .'<span>'.Lang::t('_EXPORT_CSV', 'report').'</span></a>');        
 
 		cout($tb->getTable()
 				. $tb->getNavBar($ini, $tot_code));
@@ -817,6 +825,93 @@ function generateCode() {
 	cout('</div>');
 }
 
+function export() {
+    $id_code_group = Get::req('id_code_group', DOTY_INT, 0);
+
+    if ($id_code_group <= 0) {
+        $this->render('invalid', array(
+            'message' => Lang::t('_INVALID_ID_CODE_GROUP', 'code')
+        ));
+        return;
+    }
+    
+    //retrieve data to export
+    $code_manager = new CodeManager();
+    $acl_man = Docebo::user()->getAclManager();
+    $codeGroupInfo = $code_manager->getCodeGroupInfo($id_code_group);
+    $array_code = $code_manager->getCodeList($id_code_group, 0, false);
+
+    //prepare csv file
+    require_once(_base_ . '/lib/lib.download.php');
+    $format = Get::req('format', DOTY_STRING, 'csv');
+
+    $buffer = "";
+    $filename = preg_replace('/[\W]/i', '_', $codeGroupInfo['title']) . '_' . date("Y_m_d") . '.' . $format;
+
+    $_CSV_SEPARATOR = ',';
+    $_CSV_ENDLINE = "\r\n";
+    $_XLS_STARTLINE = '<tr><td>';
+    $_XLS_SEPARATOR = '</td><td>';
+    $_XLS_ENDLINE = "</td></tr>";
+
+    //prepare the data for exporting
+    if (is_array($array_code) && count($array_code) > 0) {
+        if ($format == 'xls') {
+            $buffer .= "<head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"></head><style>td, th { border:solid 1px black; } </style><body><table>";
+            $buffer .= "<thead>".$_XLS_STARTLINE.Lang::t('_CODE', 'code').$_XLS_SEPARATOR.Lang::t('_USED', 'code').$_XLS_SEPARATOR.Lang::t('_USERNAME', 'code').$_XLS_SEPARATOR.Lang::t('_UNLIMITED_USE', 'code').$_XLS_ENDLINE."</thead>";
+        } else{
+            $buffer .= Lang::t('_CODE', 'code').$_CSV_SEPARATOR.Lang::t('_USED', 'code').$_CSV_SEPARATOR.Lang::t('_USERNAME', 'code').$_CSV_SEPARATOR.Lang::t('_UNLIMITED_USE', 'code').$_CSV_ENDLINE;            
+        }
+			
+        foreach ($array_code as $code_info) {
+
+            $line = array();
+
+			$line[] = $code_info['code'];
+
+			if ($code_info['used']) {
+				$line[] = '1';
+
+				$user_info = $acl_man->getUser($code_info['id_user'], false);
+				if ($user_info)
+					$line[] = $acl_man->relativeId($user_info[ACL_INFO_USERID]);
+				else {
+					$user_info = $acl_man->getTempUserInfo($code_info['id_user'], false);
+					$line[] = $acl_man->relativeId($user_info['userid']);
+				}
+
+				if ($code_info['unlimited_use'] == '1')
+					$line[] = '1';
+				else
+					$line[] = '0';
+			}
+			else {
+				$line[] = '0';
+
+				$line[] = Lang::t('_NONE', 'code');
+
+				if ($code_info['unlimited_use'] == '1')
+					$line[] = '1';
+				else
+					$line[] = '0';
+
+			}
+
+            if ($format == 'xls') {
+                $buffer .= $_XLS_STARTLINE;
+                $buffer .= str_replace('"', '', implode($_XLS_SEPARATOR, $line)) . $_CSV_ENDLINE;
+            } else {
+                $buffer .= implode($_CSV_SEPARATOR, $line) . $_CSV_ENDLINE;
+            }
+        }
+        if ($format == 'xls') {
+            $buffer .= "</table></body>";
+        }
+    }
+
+    sendStrAsFile($buffer, $filename);
+}
+
 function codeDispatch($op) {
 	checkPerm('view');
 
@@ -863,6 +958,9 @@ function codeDispatch($op) {
 		case 'import_code_2':
 			importCode_step2();
 			break;
+        case 'export':
+			export();
+			break;        
 		default:
 		case 'list':
 			groupCodeList();

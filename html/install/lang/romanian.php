@@ -21,7 +21,7 @@ define("_INSTALLER_INTRO_TEXT", "Forma este o companie care a dezvoltat propria 
 		<li>Caracteristici de socializare ca <b>Google Apps</b>, <b>Facebook</b>, <b>Twitter</b> e <b>Linkedin</b></li>
 		<li>Sistem complet de raportare si intelligence privat</li>
 		<li>Caracteristici de dicate de sub-administrator, caracteristici de management locale si zonale</li>
-		<li>Suport multi-lingvistic si suport LTR(de la stanga la dreapta) si RTL (de la dreapta la stanga) . Suporta 18 limbi straine</li>
+		<li>Suport multi-lingvistic si suport LTR(de la stanga la dreapta) si RTL (de la dreapta la stanga) . Suporta 25 limbi straine</li>
 		<li>Suporta dispozitive mobile</li>
 	</ul>");
 // ---------------------------------------

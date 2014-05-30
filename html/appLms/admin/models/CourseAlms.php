@@ -689,11 +689,20 @@ Class CourseAlms extends Model
 		if($quota_exceeded)
 			$res['limit_reach'] = 1;
 
-		if($error)
-			$res['err'] = '_err_course';
-		else
-			$res['res'] = '_ok_course';
+        if ($error)
+            $res['err'] = '_err_course';
+        else {
+            //AUTO SUBSCRIPTION
+            if (isset($_POST['auto_subscription']) && $_POST['auto_subscription'] == 1) {
+                $userId = Docebo::user()->getIdSt();
 
+                if (!$this->autoUserRegister($userId, $id_course)) {
+                    die('Error during autosubscription');
+                }
+            }
+            $res['res'] = '_ok_course';
+        }
+        
 		return $res;
 	}
 
@@ -994,7 +1003,19 @@ Class CourseAlms extends Model
 
 		if($quota_exceeded)
 			$res['limit_reach'] = 1;
+        
+        //AUTO SUBSCRIPTION
+        $userId = Docebo::user()->getIdSt();
+        $userSubscribed = $this->isUserSubscribedInCourse($userId, $id_course);
+        if (intval($userSubscribed[0]) <= 0) {
+            if (isset($_POST['auto_subscription']) && $_POST['auto_subscription'] == 1) {
 
+
+                if (!$this->autoUserRegister($userId, $id_course)) {
+                    die('Error during autosubscription');
+                }
+            }
+        }
 		$res['res'] = '_ok_course';
 
 		return $res;
@@ -1362,6 +1383,47 @@ Class CourseAlms extends Model
 
 		return $output;
 	}
+    
+    private function autoUserRegister($idMember, $idCourse) {
+        
+        $query = "SELECT idst FROM %adm_group WHERE groupid = ('/lms/course/".$idCourse."/subscribed/7')";
+        $res = sql_query($query);
+        
+        $idst = sql_fetch_row($res);
+
+        sql_query('START TRANSACTION');
+        
+        $query = "INSERT INTO %adm_group_members (idst, idstMember, filter) VALUES ('".$idst[0]."','".$idMember."','')";
+
+        if(sql_query($query)){
+
+           $row = $this->isUserSubscribedInCourse($idMember, $idCourse);
+
+           if($row[0] == 0){
+               $query = "INSERT INTO %lms_courseuser (idUser, idCourse, level, waiting, subscribed_by, date_inscr) VALUES ('".$idMember."', '".$idCourse."', '7', '0', '".$idMember."', 'now()')";
+           
+               if(sql_query($query)) {
+                   sql_query('COMMIT');
+                   return true;
+               }
+           }
+           else{
+               sql_query('ROLLBACK');
+               return false;
+           }
+        }
+        return false;
+    }
+    
+    public function isUserSubscribedInCourse($idMember,$idCourse) {
+        $query = "SELECT COUNT(*) FROM %lms_courseuser WHERE idUser = ".$idMember." AND idCourse = ".$idCourse;
+           
+        $res = sql_query($query);
+           
+        $row = sql_fetch_row($res);
+        
+        return $row;
+    }    
 
 }
 ?>

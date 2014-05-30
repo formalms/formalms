@@ -880,6 +880,100 @@ Class SubscriptionAlms extends Model
 		}
 
 		$res = $this->db->query($query);
+
+		// check and send message for unsibscription moderated
+		if ( ($res) && (int)$cinfo['auto_unsubscribe'] == 1 ) {
+			//moderated self unsubscribe
+			$userinfo = $this->acl_man->getUser($id_user);
+			$array_subst = array('[url]' => Get::sett('url'),
+				'[course]' => $cinfo['name'],
+				'[firstname]' => $userinfo[ACL_INFO_FIRSTNAME],
+				'[lastname]' => $userinfo[ACL_INFO_LASTNAME],
+				'[userid]' => $this->acl_man->relativeId($userinfo[ACL_INFO_USERID])
+				);
+
+
+			// message to user that is waiting
+			require_once(_base_.'/lib/lib.eventmanager.php');
+			$msg_composer = new EventMessageComposer('subscribe', 'lms');
+
+			$msg_composer->setSubjectLangText('email', '_NEW_USER_UNSUBS_WAITING_SUBJECT', false);
+			$msg_composer->setBodyLangText('email', '_NEW_USER_UNSUBS_WAITING_TEXT', $array_subst);
+
+			$msg_composer->setSubjectLangText('sms', '_NEW_USER_UNSUBS_WAITING_SUBJECT_SMS', false);
+			$msg_composer->setBodyLangText('sms', '_NEW_USER_UNSUBS_WAITING_TEXT_SMS', $array_subst);
+
+			$acl =& Docebo::user()->getAcl();
+			$acl_man =& $this->acl_man;
+
+			$recipients = array();
+
+			$idst_group_god_admin = $acl->getGroupST(ADMIN_GROUP_GODADMIN);
+			$recipients = $acl_man->getGroupMembers($idst_group_god_admin);
+			$idst_group_admin = $acl->getGroupST(ADMIN_GROUP_ADMIN);
+			$idst_admin = $acl_man->getGroupMembers($idst_group_admin);
+
+			require_once(_adm_.'/lib/lib.adminmanager.php');
+			foreach($idst_admin as $id_user) {
+				$adminManager = new AdminManager();
+				$acl_manager = & $acl_man;
+
+				$idst_associated = $adminManager->getAdminTree($id_user);
+
+				$array_user =& $acl_manager->getAllUsersFromIdst($idst_associated);
+
+				$array_user = array_unique($array_user);
+
+				$array_user[] = $array_user[0];
+				unset($array_user[0]);
+
+				$control_user = array_search(getLogUserId(), $array_user);
+
+				$query =	"SELECT COUNT(*)"
+							." FROM ".Get::cfg('prefix_fw')."_admin_course"
+							." WHERE idst_user = '".$id_user."'"
+							." AND type_of_entry = 'course'"
+							." AND id_entry = '".$id_course."'";
+
+				list($control_course) = mysql_fetch_row(mysql_query($query));
+
+				$query =	"SELECT COUNT(*)"
+							." FROM ".Get::cfg('prefix_fw')."_admin_course"
+							." WHERE idst_user = '".$id_user."'"
+							." AND type_of_entry = 'coursepath'"
+							." AND id_entry IN"
+							." ("
+							." SELECT id_path"
+							." FROM ".Get::cfg('prefix_lms')."_coursepath_courses"
+							." WHERE id_item = '".$id_course."'"
+							." )";
+
+				list($control_coursepath) = mysql_fetch_row(mysql_query($query));
+
+				$query =	"SELECT COUNT(*)"
+							." FROM ".Get::cfg('prefix_fw')."_admin_course"
+							." WHERE idst_user = '".$id_user."'"
+							." AND type_of_entry = 'catalogue'"
+							." AND id_entry IN"
+							." ("
+							." SELECT idCatalogue"
+							." FROM ".Get::cfg('prefix_lms')."_catalogue_entry"
+							." WHERE idEntry = '".$id_course."'"
+							." )";
+
+				list($control_catalogue) = mysql_fetch_row(mysql_query($query));
+
+				if($control_user && ($control_course || $control_coursepath || $control_catalogue))
+					$recipients[] = $id_user;
+			}
+
+			$recipients = array_unique($recipients);
+
+			createNewAlert(	'UserCourseRemovedModerate', 'unsubscribe', 'insert', '1', 'User unsubscribed with moderation',
+						$recipients, $msg_composer  );
+
+		}
+
 		return $res ? TRUE : FALSE;
 	}
 

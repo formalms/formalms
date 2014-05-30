@@ -21,7 +21,7 @@ define("_INSTALLER_INTRO_TEXT", "Forma je tvrtka koja je razvila open-source e-l
 		<li>Društvene mreže kao npr. <b>Google Apps</b>, <b>Facebook</b>, <b>Twitter</b> e <b>Linkedin</b></li>
 		<li>Potpuno prilagodljiv sustav izvješća i poslovnog obavještavanja</li>
 		<li>Namjenske podadministratorske mogućnosti. Mogućnosti menadžmenta na regionalnom i državnom nivou</li>
-		<li>Multijezička podrška i LTR(slijeva nadesno) i RTL (zdesna ulijevo) mogućnosti čitanja/pisanja. Podržano je 18 jezika</li>
+		<li>Multijezička podrška i LTR(slijeva nadesno) i RTL (zdesna ulijevo) mogućnosti čitanja/pisanja. Podržano je 25 jezika</li>
 		<li>Podrška za mobilne uređaje</li>
 	</ul>");
 // ---------------------------------------

@@ -76,9 +76,20 @@ function subscribe()
 		}
 		else
 		{
-			if($course_registration_result < 0)
+			if($course_registration_result == -1)
 			{
 				$out->add(getErrorUi(Lang::t('_CODE_ALREDY_USED', 'course_autoregistration')));
+
+				$out->add(	$form->openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=course_autoregistration')
+							.$form->openElementSpace()
+							.$form->getTextfield(Lang::t('_COURSE_AUTOREGISTRATION_CODE', 'course_autoregistration'), 'course_autoregistration_code', 'course_autoregistration_code', '255', '')
+							.$form->closeElementSpace()
+							.$form->openButtonSpace()
+							.$form->getButton('subscribe', 'subscribe', Lang::t('_SEND', 'course_autoregistration'))
+							.$form->closeButtonSpace());
+			}else if($course_registration_result == -2)
+			{
+				$out->add(getErrorUi(Lang::t('_SUBSCRIPTION_NOT_ALLOWED_YET', 'course_autoregistration')));
 
 				$out->add(	$form->openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=course_autoregistration')
 							.$form->openElementSpace()

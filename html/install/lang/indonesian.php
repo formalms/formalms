@@ -21,7 +21,7 @@ define("_INSTALLER_INTRO_TEXT", "Forma ialah sebuah perusahaan yang telah mengem
 		<li>Mendukung jejaring sosial seperti <b>Google Apps</b>, <b>Facebook</b>, <b>Twitter</b> e <b>Linkedin</b></li>
 		<li>Sistem laporan dan inteligen bisnis yang sepenuhnya custom</li>
 		<li>Fitur-fitur sub-administrator yang khusus, serta fitur pengelolaan area dan country</li>
-		<li>Mendukung Multi-language serta LTR(left-to-right) dan RTL (right-to-left). Tersedia dalam 18 bahasa</li>
+		<li>Mendukung Multi-language serta LTR(left-to-right) dan RTL (right-to-left). Tersedia dalam 25 bahasa</li>
 		<li>Mendukung Peralatan Mobile</li>
 	</ul>");
 // ---------------------------------------

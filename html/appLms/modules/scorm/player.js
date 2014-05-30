@@ -1,10 +1,10 @@
 
-/** 
+/**
  * ScormPlayer l'oggetto che gestisce le informazioni dello stato
  * del player: tree, LO successivo, LO precedente etc...
  **/
 function ScormPlayer() {
-	this.xmlTree = null; 			// xml dell'albero		
+	this.xmlTree = null; 			// xml dell'albero
 	this.api = null;				// api scorm
 	this.listeners = new Object();	// lista dei listeners
 	this.actionQueue = new Array(); // lista delle actions -- non usato ora
@@ -46,7 +46,7 @@ ScormPlayer.prototype.setPath = function( basePath, lmsBase ) {
 
 ScormPlayer.prototype.setAPI = function( api ) {
 	this.api = api;
-	
+
 	// set call backs
 	window._sp = this;
 	this.api.initialize_cb = function() { window._sp.onInitialize(); };
@@ -69,7 +69,7 @@ ScormPlayer.prototype.getPackage = function() {
 	return sco_package.nodeValue;
 }
 
-// return the discplay name of 'scoid' 
+// return the discplay name of 'scoid'
 ScormPlayer.prototype.getScoName = function( scoid ) {
 
 	var item = this.xmlTree.selectSingleNode('//item[@id="'+scoid+'"]');
@@ -104,11 +104,11 @@ ScormPlayer.prototype.getFirstScoId = function() {
 ScormPlayer.prototype.getPrevScoId = function( scoid ) {
 	var item = this.xmlTree.selectSingleNode('//item[@id="'+scoid+'"]');
 	item = item.selectNodes('preceding::item[@isLeaf="1"]');
-	if( item.length > 0 ) { 
+	if( item.length > 0 ) {
 		return item[item.length-1].getAttribute('id');
-	} else { 
+	} else {
 		return null;
-	} 
+	}
 }
 
 // find the first sco after the 'scoid' one
@@ -125,7 +125,7 @@ ScormPlayer.prototype.getNextScoId = function( scoid ) {
 // find the first incomplete or neverstarted sco after the 'scoid' one
 ScormPlayer.prototype.getNextIncompleteScoId = function( scoid ) {
 	var item = this.xmlTree.selectSingleNode('//item[@resource!="" and (@status="incomplete" or @status="neverstarted" or @status="not attempted" or @status="failed")]');
-	if( item == null ) 
+	if( item == null )
 		item = this.xmlTree.selectSingleNode('//item[@resource!=""]');
 	if( item != null ) {
 		return item.getAttribute('id');
@@ -142,7 +142,7 @@ ScormPlayer.prototype.prevScoExists = function () {
 	if(!this.nextScoId) var cur_sco = this.getCurrScoId();
 	else var cur_sco = this.nextScoId;
 	if(!cur_sco) return false;
-	
+
 	var prev_sco = this.getPrevScoId(cur_sco);
 	if(prev_sco != null) return true;
 	else return false;
@@ -150,14 +150,14 @@ ScormPlayer.prototype.prevScoExists = function () {
 
 // find the name of the sco that follow the current played
 ScormPlayer.prototype.getPrevScoName = function( ) {
-	
+
 	if(!this.nextScoId) var cur_sco = this.getCurrScoId();
 	else var cur_sco = this.nextScoId;
 	if(!cur_sco) return false;
-	
+
 	var prev_sco = this.getPrevScoId(cur_sco);
 	if(prev_sco == null) return false;
-	
+
 	return this.getScoName(prev_sco);
 }
 
@@ -178,7 +178,7 @@ ScormPlayer.prototype.nextScoExists = function () {
 	if(!this.nextScoId) var cur_sco = this.getCurrScoId();
 	else var cur_sco = this.nextScoId;
 	if(!cur_sco) return true;
-	
+
 	var next_sco = this.getNextScoId(cur_sco);
 	if(next_sco != null) return true;
 	else return false;
@@ -189,7 +189,7 @@ ScormPlayer.prototype.getNextScoName = function( ) {
 
 	if(!this.nextScoId) var cur_sco = this.getCurrScoId();
 	else var cur_sco = this.nextScoId;
-	
+
 	if(!cur_sco) var next_sco = this.getFirstScoId();
 	else {
 		var next_sco = this.getNextScoId(cur_sco);
@@ -217,7 +217,7 @@ ScormPlayer.prototype.getProgress = function() {
 	var icompleted 	= this.xmlTree.selectNodes('//item[@status="completed" and @isLeaf="1"]');
 	var ipassed 	= this.xmlTree.selectNodes('//item[@status="passed" and @isLeaf="1"]');
 	var iall 		= this.xmlTree.selectNodes('//item[@isLeaf="1"]');
-	return 	{	completed: (icompleted.length + ipassed.length), 
+	return 	{	completed: (icompleted.length + ipassed.length),
 				all: iall.length
 			};
 }
@@ -231,8 +231,8 @@ ScormPlayer.prototype.parseTree = function( obj ) {
 	this._parseTree( this.xmlTree, 0, obj );
 }
 
-/** 
- * Funzione interna per il parsing dell'albero 
+/**
+ * Funzione interna per il parsing dell'albero
  * ricorsiva!
  **/
 ScormPlayer.prototype._parseTree = function( node, level, obj ) {
@@ -277,7 +277,7 @@ ScormPlayer.prototype.removeListener = function( id ) {
 	this.listeners[id] = null;
 }
 
-/** 
+/**
  * _fireEvent e' il metodo privato utilizzato per lanciare degli eventi
  * ai listeners
  **/
@@ -294,7 +294,7 @@ ScormPlayer.prototype._fireEvent = function( evType, evValue ) {
  *  e che ha fatto l'initialize.Deve attendere che il precedente sco sia stato
  *  scaricato. Crea quindi una action e la pone nella coda delle actions. Tale
  *  coda viene elaborata quando arriva un evento di finish.
- * 
+ *
  * @param String id id del LO da mandare in play
  * @param Object win window in cui caricare lo sco
  **/
@@ -323,7 +323,7 @@ ScormPlayer.prototype.playNext = function() {
 		var item = this.xmlTree.selectSingleNode('//item[@id="'+this.nextScoId+'"]');
 		var prerequisites = item.getAttribute('prerequisites');
 		if( prerequisites == "" ) {
-			if( this.cntWin.msgPrereqNotSatisfied ) 
+			if( this.cntWin.msgPrereqNotSatisfied )
 				this.cntWin.msgPrereqNotSatisfied(this.getScoName(this.nextScoId));
 			return;
 		}
@@ -337,7 +337,7 @@ ScormPlayer.prototype.playNext = function() {
 								+ '&idscorm_item=' + item.getAttribute('uniqueid')
 								+ '&idscorm_organization=' + playerConfig.idscorm_organization
 								+ '&idscorm_package=' + this.getPackage() );
-		
+
 		this._fireEvent( 'BeforeScoLoad', this.nextScoId );
 		this.nextScoId = null;
 	}
@@ -381,9 +381,9 @@ ScormPlayer.prototype.processActionQueue = function() {
 }
 
 /* Special xpath */
-if( document.implementation.hasFeature("XPath", "3.0") ) { 
-	// prototying the XMLDocument 
-	XMLDocument.prototype.selectNodes = function(cXPathString, xNode) { 
+if( document.implementation.hasFeature("XPath", "3.0") ) {
+	// prototying the XMLDocument
+	XMLDocument.prototype.selectNodes = function(cXPathString, xNode) {
 		if( !xNode ) { xNode = this; }
 		try {
 
@@ -392,39 +392,74 @@ if( document.implementation.hasFeature("XPath", "3.0") ) {
 			alert( "Property not found: "+e);
 		}
 		var aItems = this.evaluate(	cXPathString, xNode, oNSResolver,
-									XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null) 
+									XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null)
 		var aResult = [];
-		for( var i = 0; i < aItems.snapshotLength; i++) { 
+		for( var i = 0; i < aItems.snapshotLength; i++) {
 			aResult[i] = aItems.snapshotItem(i);
 		}
 		aResult.item = function( index ) {
 			return this[index];
 		}
 		return aResult;
-	} 
-	XMLDocument.prototype.selectSingleNode = function(cXPathString, xNode) { 
+	}
+	XMLDocument.prototype.selectSingleNode = function(cXPathString, xNode) {
 		if( !xNode ) { xNode = this; }
 		var xItems = this.selectNodes(cXPathString, xNode);
-		if( xItems.length > 0 ) { 
+		if( xItems.length > 0 ) {
 			return xItems[0];
-		} else { 
+		} else {
 			return null;
-		} 
+		}
 	}
 
-	// prototying the Element 
-	Element.prototype.selectNodes = function(cXPathString) { 
-		if(this.ownerDocument.selectNodes) { 
+	// define the previous functions 'selectNodes' and 'selectSingleNode'  as part of the document model
+	// because with some browser ( IE >= 9.0  and CHROME 34.x ) the xml data tree is loaded
+	// as a Document and not an XMLDocument
+	// Verify if it's possible to cast the xml data tree returned by the ajax.Request as an XMLDocument
+
+	Document.prototype.selectNodes = function(cXPathString, xNode) {
+		if( !xNode ) { xNode = this; }
+		try {
+
+			var oNSResolver = this.createNSResolver(this.documentElement)
+		} catch(e) {
+			alert( "Property not found: "+e);
+		}
+		var aItems = this.evaluate(	cXPathString, xNode, oNSResolver,
+									XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null)
+		var aResult = [];
+		for( var i = 0; i < aItems.snapshotLength; i++) {
+			aResult[i] = aItems.snapshotItem(i);
+		}
+		aResult.item = function( index ) {
+			return this[index];
+		}
+		return aResult;
+	}
+
+	Document.prototype.selectSingleNode = function(cXPathString, xNode) {
+		if( !xNode ) { xNode = this; }
+		var xItems = this.selectNodes(cXPathString, xNode);
+		if( xItems.length > 0 ) {
+			return xItems[0];
+		} else {
+			return null;
+		}
+	}
+
+	// prototying the Element
+	Element.prototype.selectNodes = function(cXPathString) {
+		if(this.ownerDocument.selectNodes) {
 			return this.ownerDocument.selectNodes(cXPathString, this);
-		} else { 
-			throw "For XML Elements Only"; 
-		} 
+		} else {
+			throw "For XML Elements Only";
+		}
 	}
 	Element.prototype.selectSingleNode = function(cXPathString) {
-		if(this.ownerDocument.selectSingleNode) { 
+		if(this.ownerDocument.selectSingleNode) {
 			return this.ownerDocument.selectSingleNode(cXPathString, this);
 		} else{
 			throw "For XML Elements Only";
-		} 
-	} 
-} 
+		}
+	}
+}

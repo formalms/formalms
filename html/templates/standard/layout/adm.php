@@ -22,6 +22,27 @@
 		<?php echo Layout::accessibility(); ?>
 		<!-- Page Head area -->
 		<?php echo Layout::zone('page_head'); ?>
+        <script type="text/javascript">
+            YAHOO.util.Event.onDOMReady(function(){
+                checkSelect(document.getElementById('course_type').value);         
+
+                YAHOO.util.Event.on(
+                    YAHOO.util.Selector.query('select#course_type'), 'change', function (e) {
+                        checkSelect(this.value);
+                });
+
+            });
+
+            function checkSelect(val) {
+                if(val == 'elearning') {
+                    document.getElementById("auto_subscription").removeAttribute("disabled");
+                }
+                else {
+                    document.getElementById("auto_subscription").disabled = "disabled";
+                    document.getElementById("auto_subscription").checked = false;
+                }
+            }
+        </script>       
 	</head>
 	<body class="yui-skin-docebo yui-skin-sam">
 		<!-- blind nav -->

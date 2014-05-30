@@ -70,7 +70,8 @@ class LoginLayout {
 
 		$user_manager = new UserManager();
 		$html = '<div id="link">';
-		if($user_manager->_option->getOption('register_type') == 'self' || $user_manager->_option->getOption('register_type') == 'moderate') {
+        //add self_optin to enable registration
+		if($user_manager->_option->getOption('register_type') == 'self_optin' || $user_manager->_option->getOption('register_type') == 'self' || $user_manager->_option->getOption('register_type') == 'moderate') {
 
 			$html .= '<a class="first" href="index.php?modname=login&amp;op=register">'.Lang::t('_REGISTER', 'login').'</a> ';
 		}

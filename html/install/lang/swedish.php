@@ -21,7 +21,7 @@ define("_INSTALLER_INTRO_TEXT", "Forma är ett företag som har utvecklat en ege
 		<li>Stöd för sociala funktioner såsom <b>Google Apps</b>, <b>Facebook</b>, <b>Twitter</b> e <b>Linkedin</b></li>
 		<li>Fullt anpassningbara rapporteringssystem och businessintelligens</li>
 		<li>Dedikerade lägre administratör-funktioner, region- och lands-chef funktioner</li>
-		<li>Stöd för flera språk och stöd för LTR(vänster-till-höger) och RTL (höger-till-vänster). Stöd för 18 språk</li>
+		<li>Stöd för flera språk och stöd för LTR(vänster-till-höger) och RTL (höger-till-vänster). Stöd för 25 språk</li>
 		<li>Stöd för mobila anordningar</li>
 	</ul>");
 // ---------------------------------------

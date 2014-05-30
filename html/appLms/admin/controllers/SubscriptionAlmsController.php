@@ -1132,8 +1132,8 @@ class SubscriptionAlmsController extends AlmsController {
 				}
 
 				$user_selector->show_user_selector = TRUE;
-				$user_selector->show_group_selector = FALSE;
-				$user_selector->show_orgchart_selector = FALSE;
+				$user_selector->show_group_selector = TRUE;
+				$user_selector->show_orgchart_selector = TRUE;
 				$user_selector->show_orgchart_simple_selector = TRUE;
 
 				if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
@@ -1161,7 +1161,10 @@ class SubscriptionAlmsController extends AlmsController {
 				$id_cat = Get::req('id_cat', DOTY_INT, 0);
 
 				if (isset($_POST['okselector'])) {
-					$user_selected = $user_selector->getSelection($_POST);
+					$_selection = $user_selector->getSelection($_POST);
+					$acl_man = Docebo::user()->getAclManager();
+					$user_selected = $acl_man->getAllUsersFromSelection($_selection);//$acl_man->getAllUsersFromIdst($_selection);
+					//$user_selected = $user_selector->getSelection($_POST);
 
 					if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 						require_once(_base_ . '/lib/lib.preference.php');
@@ -1208,7 +1211,7 @@ class SubscriptionAlmsController extends AlmsController {
 				break;
 
 			case '3':
-				$user_selection = $_POST['user_selection'];
+                            $user_selection = $_POST['user_selection'];
 
 				if(isset($_POST['course_selection']))
 					$course_selection = $_POST['course_selection'];
@@ -2711,8 +2714,8 @@ class SubscriptionAlmsController extends AlmsController {
 				'fullname' => Layout::highlight($record->lastname, $filter['text']) . ' ' . Layout::highlight($record->firstname, $filter['text']),
 				'date_begin' => Format::date($record->date_begin_validity, 'date'),
 				'date_expire' => Format::date($record->date_expire_validity, 'date'),
-				'date_begin_timestamp' => Format::toTimestamp($record->date_begin_validity),
-				'date_expire_timestamp' => Format::toTimestamp($record->date_expire_validity),
+				'date_begin_timestamp' => Format::toTimestamp($record->date_begin_validity == null ? date("U") : $record->date_begin_validity ),
+				'date_expire_timestamp' => Format::toTimestamp($record->date_expire_validity == null ? date("U") : $record->date_expire_validity ),
 				'del' => 'ajax.adm_server.php?r='.$this->link.'/del_coursepath&id_user=' . $record->idst . '&id_path=' . $id_path
 			);
 		}

@@ -6,7 +6,7 @@ version: 2.8.0r4
 */
 .yui-overlay, .yui-panel-container{visibility:hidden;position:absolute;z-index:2;}
 .yui-panel{position:relative;}
-.yui-panel-container form{margin:0;}
+.yui-panel-container form{margin:0; max-height: 540px; overflow: auto;}
 .mask{z-index:1;display:none;position:absolute;top:0;left:0;right:0;bottom:0;}
 .mask.block-scrollbars{overflow:auto;}
 .masked select, .drag select, .hide-select select{_visibility:hidden;}

@@ -321,10 +321,10 @@ class CoursestatsLmsController extends LmsController {
 					'last_access' => Format::date($record->last_access, 'datetime'),
 					'first_complete' => Format::date($record->first_complete, 'datetime'),
 					'last_complete' => Format::date($record->last_complete, 'datetime'),
-					'first_access_timestamp' => Format::toTimestamp($record->first_access),
-					'last_access_timestamp' => Format::toTimestamp($record->last_access),
-					'first_complete_timestamp' => Format::toTimestamp($record->first_complete),
-					'last_complete_timestamp' => Format::toTimestamp($record->last_complete)
+					'first_access_timestamp' => Format::toTimestamp($record->first_access == null ? date("U") : $record->first_access ),
+					'last_access_timestamp' => Format::toTimestamp($record->last_access == null ? date("U") : $record->last_access ),
+					'first_complete_timestamp' => Format::toTimestamp($record->first_complete == null ? date("U") : $record->first_complete ),
+					'last_complete_timestamp' => Format::toTimestamp($record->last_complete == null ? date("U") : $record->last_complete )
 				);
 
 				$records[] = $row;

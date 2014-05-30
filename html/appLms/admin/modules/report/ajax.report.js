@@ -99,11 +99,20 @@ function enable_schedulation(o, id_sched) {
 	var data = "&op=sched_enable&id="+id_sched+'&val='+value;
 	var objAjax = YAHOO.util.Connect.asyncRequest('POST', ajax_path+data, {
   	success:function(t) {
-  		var temp=o.src;
-  		if (value==1)	{ o.src=temp.replace('unpublish.png', 'publish.png'); val_el.value=0; }
-  		if (value==0)	{ o.src=temp.replace('publish.png', 'unpublish.png'); val_el.value=1; }
+        var result = YAHOO.lang.JSON.parse(t.responseText);
+        if (result.success){
+            var temp=o.src;
+            if (value==1)	{ o.src=temp.replace('unpublish.png', 'publish.png'); val_el.value=0; }
+            if (value==0)	{ o.src=temp.replace('publish.png', 'unpublish.png'); val_el.value=1; }
 			o.disabled=false;
-		}, 
+		}else{
+            var temp=o.src;
+            if (value==0)	{ o.src=temp.replace('unpublish.png', 'publish.png'); val_el.value=0; }
+            if (value==1)	{ o.src=temp.replace('publish.png', 'unpublish.png'); val_el.value=1; }
+			o.disabled=false;
+			alert(_FAILURE);
+        }
+    }, 
     failure:function(t) { 
 			o.disabled=false;
 			alert(_FAILURE); //... 

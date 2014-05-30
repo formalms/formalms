@@ -14,12 +14,22 @@
 	function goNextStep() {
 		var callback_db = {
 			success: function(o) {
-				if (cur_upg_step < max_upg_step) {
-					goNextStep();
+				var arr =YAHOO.lang.JSON.parse(o.responseText);
+				if (arr['res'] == 'ok') {
+					if (cur_upg_step < max_upg_step) {
+						goNextStep();
+					}
+					else {
+						disableBtnNext(false);
+					}
+				} else {
+					YAHOO.util.Dom.get('error').style.display ='block';
+					YAHOO.util.Dom.get('error_text').innerHTML = arr['msg'];
+
 				}
-				else {
-					disableBtnNext(false);
-				}
+
+
+
 			}
 		};
 
@@ -35,4 +45,9 @@
 
 <div style="text-align: center; margin-top: 150px;">
 <div id="prog_bar"></div>
+</div>
+
+<div id="error" style="display: none;">
+	<p>Upgrade database error</p>
+	<div id="error_text">dummy error</div>
 </div>

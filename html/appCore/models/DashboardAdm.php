@@ -128,10 +128,16 @@ class DashboardAdm extends Model {
 			$info_collation[$name] = $value;
 		}
 
+		$query = "SELECT @@time_zone";
+		$res = $this->db->query($query);
+		list($sql_timezone) = $this->db->fetch_row($res);
+
 		return array(
 			'sql_mode' => $sql_mode,
 			'character_info' => $info_character,
-			'collation_info' => $info_collation
+			'collation_info' => $info_collation,
+			'sql_timezone' => $sql_timezone
+
 		);
 	}
 
@@ -172,6 +178,7 @@ class DashboardAdm extends Model {
 				// new formalms versions
 				case "1.0" :
 				case "1.1" :
+				case "1.2" :
 					break;
 			}
 		}

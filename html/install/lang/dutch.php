@@ -21,7 +21,7 @@ define("_INSTALLER_INTRO_TEXT", "Forma is een bedrijf dat zijn eigen open-source
 		<li>Ondersteund sociale kenmerken zoals <b>Google apps</b>, <b>Facebook</b>, <b>Twitter</b> and <b>LinkedIn</b></li>
 		<li>Volledig instelbaar Verslag systeem en zakelijke intelligentie.</li>
 		<li>Toegewijdde sub-administrator eigenschappen, provincie en land manager.</li>
-		<li>Meercoudige taal-ondersteuning en LTR ( links-naar-rechts ) ondersteuning. 18 talen worden ondersteund.</li>
+		<li>Meercoudige taal-ondersteuning en LTR ( links-naar-rechts ) ondersteuning. 25 talen worden ondersteund.</li>
 		<li></li>Ondersteuning voor mobiele apparaten.</li>
 	</ul>");
 // ---------------------------------------

@@ -233,7 +233,7 @@ class CartLms extends Model
 	public function addTransactionCourse($id_trans, $id_course, $id_date, $id_edition, $course_info)
 	{
 		$query =	"INSERT INTO %adm_transaction_info (id_trans, id_course, id_date, id_edition, code, name, price)"
-					." VALUES ('".$id_trans."', '".$id_course."', '".$id_date."', '".$id_edition."', '".$course_info['code']."', '".$course_info['name']."', '".$course_info['price']."')";
+					." VALUES ('".$id_trans."', '".$id_course."', '".$id_date."', '".$id_edition."', '".$course_info['code']."', '".str_replace ("'","''",$course_info['name'])."', '".$course_info['price']."')";
 
 		return sql_query($query);
 	}

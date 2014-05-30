@@ -11,9 +11,10 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once(_base_.'/addons/phpmailer/class.phpmailer.php');
-//require_once(_base_.'/addons/phpmailer/language/phpmailer.lang-en.php'); // Non ci vuole con PHP mailer 5.2.7
+require_once(_base_.'/addons/phpmailer/PHPMailerAutoload.php');	// for phpmailer 5.2.7
+//require_once(_base_.'/addons/phpmailer/language/phpmailer.lang-en.php'); // not need for phpmailer 5.2.7
 require_once(_base_.'/addons/kses/kses.php');
+
 
 //property name: multisending mode
 define("MAIL_MULTIMODE", "multimode");

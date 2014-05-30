@@ -21,7 +21,7 @@ define("_INSTALLER_INTRO_TEXT", "Forma to firma która stworzyła własny framew
 		<li>Wparcie dla społecznościowych opcji takich jak <b>Google Apps</b>, <b>Facebook</b>, <b>Twitter</b>,  <b>Linkedin</b></li>
 		<li>Całkowicie konfigurowalny system Raportujący oraz business intelligence</li>
 		<li>Opcja dedykowanych dodatkowych administratorów, opcja managera terenu i kraju</li>
-		<li>Wsparcie dla wielu języków oraz LTR(lewa-do-prawej) i RTL (prawa-do-lewej). Wspieranych jest 18 języków</li>
+		<li>Wsparcie dla wielu języków oraz LTR(lewa-do-prawej) i RTL (prawa-do-lewej). Wspieranych jest 25 języków</li>
 		<li>Wsparcie dla urządzeń mobilnych</li>
 	</ul>");
 // ---------------------------------------

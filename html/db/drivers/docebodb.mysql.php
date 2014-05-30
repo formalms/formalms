@@ -34,6 +34,9 @@ class Mysql_DbConn extends DbConn {
 		$GLOBALS['dbConn'] = $this->conn;
 
 		$this->log( 'mysql connected to : '.$host );
+
+		$this->set_timezone();	// set connection tz
+
 		if($dbname !== false) return $this->select_db($dbname);
 		return $this->conn;
 	}
@@ -52,6 +55,19 @@ class Mysql_DbConn extends DbConn {
 		$charset = Get::cfg('db_charset', 'utf8');
 		$this->query("SET NAMES '".$charset."'");
 		$this->query("SET CHARACTER SET '".$charset."'");
+
+		return true;
+	}
+
+	public function set_timezone() {
+		// set connection timezone according to php settings
+
+		if ( Get::cfg('set_mysql_tz', false) ) {
+			$dt = new DateTime();
+			$offset = $dt->format("P");		// get current timezone offeset
+			$this->query("SET time_zone='".$offset."'");
+			$this->log( 'mysql set connection timezone offset to : '.$offset );
+		}
 
 		return true;
 	}
@@ -187,7 +203,7 @@ class Mysql_DbConn extends DbConn {
 	}
 
 	function query_log($qtxt, $time_used = false) {
-		
+
 		if(Get::sett('do_debug', 'off') == 'off') return;
 		$time_used = number_format($time_used, 6);
 		if($this->errno()) {

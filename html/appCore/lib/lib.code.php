@@ -186,7 +186,7 @@ class CodeManager
 		return $res;
 	}
 
-	public function getCodeList($id_code_group, $ini = '0')
+	public function getCodeList($id_code_group, $ini = '0', $apply_limit = true)
 	{
 		$query =	"SELECT code, used, idUser, unlimitedUse"
 					." FROM ".$this->_getCodeTable()
@@ -194,7 +194,7 @@ class CodeManager
 					.((isset($_POST['filter']) && $_POST['code_filter'] !== ''
 						? " AND code LIKE '%".$_POST['code_filter']."%'"
 						: ''))
-					." LIMIT ".$ini.', 20';
+					.($apply_limit?" LIMIT ".$ini.", 20":"");
 
 		$result = sql_query($query);
 

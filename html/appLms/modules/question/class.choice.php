@@ -615,7 +615,7 @@ class Choice_Question extends Question {
 			SELECT idAnswer 
 			FROM ".$GLOBALS['prefix_lms']."_testtrack_answer 
 			WHERE idQuest = '".(int)$this->id."' AND 
-				idTrack = '".(int)$id_track."'";
+				idTrack = '".(int)$id_track."' AND ( user_answer = 1 OR user_answer = NULL ) ";
 			$re_answer_do = sql_query($recover_answer);
 			if(mysql_num_rows($re_answer_do)) {
 				

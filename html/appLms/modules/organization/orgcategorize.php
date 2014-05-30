@@ -26,7 +26,7 @@ function organization_categorize(&$treeView, $idItem) {
 	$r_data =$kbres->getResourceFromItem($data[REPOFIELDIDRESOURCE], $type, 'course_lo');
 
 	if ($type == "scormorg" && $r_data['sub_categorize'] == 1) {
-		organization_jump_select_sco(&$treeView, $idItem, $folder, $data, $type);
+		organization_jump_select_sco($treeView, $idItem, $folder, $data, $type);
 	}
 	else {
 		Util::widget('kbcategorize', array(
@@ -301,10 +301,10 @@ function organization_categorize_switch_subcat(&$treeView, $idItem) {
 	$kbres->saveResourceSubCategorizePref($res_id, $cat_sub_items);
 
 	if ($cat_sub_items == 1) {
-		organization_jump_select_sco(&$treeView, $idItem, $folder, $data, $type);
+		organization_jump_select_sco($treeView, $idItem, $folder, $data, $type);
 		die();
 	} else {
-		organization_categorize(&$treeView, $idItem);
+		organization_categorize($treeView, $idItem);
 	}
 }
 

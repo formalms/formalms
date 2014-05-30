@@ -12,7 +12,8 @@
 	echo ( empty($version[1]) ? 'unknow' : $version[1] ); ?></span></li>
 	<li class="<?php echo $cl['mbstring']; ?>"><?php echo Lang::t('_MBSTRING'); ?>: <span><?php echo (extension_loaded('mbstring') ? _ON : _OFF); ?></span></li>
 	<li class="<?php echo $cl['mime_ct']; ?>"><?php echo Lang::t('_MIME_CONTENT_TYPE'); ?>: <span><?php echo ($cl['mime_ct'] == 'ok' ? _ON : _OFF); ?></span></li>
-	<li class="<?php echo $cl['ldap']; ?>"><?php echo Lang::t('_LDAP'); ?>: <span><?php echo (extension_loaded('ldap') ? _ON : _OFF.' '._ONLY_IF_YU_WANT_TO_USE_IT); ?></span></li>	
+	<li class="<?php echo $cl['ldap']; ?>"><?php echo Lang::t('_LDAP'); ?>: <span><?php echo (extension_loaded('ldap') ? _ON : _OFF.' '._ONLY_IF_YU_WANT_TO_USE_IT); ?></span></li>
+	<li class="ok"><?php echo Lang::t('_PHP_TIMEZONE'); ?>: <span><?php echo @date_default_timezone_get(); ?></span></li>
 </ul>
 
 <?php if ($cl['php'] == 'err' || $cl['mysql'] == 'err' || $cl['mime_ct'] == 'err' || $cl['mbstring'] == 'err'): ?>

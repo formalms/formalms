@@ -74,11 +74,48 @@
 		tableInitEvent: function() {
 			this.doBeforeShowCellEditor = function(oEditor) {
 				var key = oEditor.getColumn().getKey();
+				var dt = "";
 				switch (key) {
-					case "first_access":   oEditor.value = new Date( oEditor.getRecord().getData("first_access_timestamp") ); break;
-					case "last_access":    oEditor.value = new Date( oEditor.getRecord().getData("last_access_timestamp") ); break;
-					case "first_complete": oEditor.value = new Date( oEditor.getRecord().getData("first_complete_timestamp") ); break;
-					case "last_complete":  oEditor.value = new Date( oEditor.getRecord().getData("last_complete_timestamp") ); break;
+					case "first_access":   
+						var dt=oEditor.getRecord().getData("first_access_timestamp")
+						if (dt==0){
+							oEditor.value = new Date();
+						}
+						else{
+							dt = dt*1000
+							oEditor.value = new Date( dt );
+						}					
+						break;
+					case "last_access":    
+						var dt=oEditor.getRecord().getData("last_access_timestamp")
+						if (dt==0){
+							oEditor.value = new Date();
+						}
+						else{
+							dt = dt*1000
+							oEditor.value = new Date( dt );
+						}	
+						break;
+					case "first_complete": 
+						var dt=oEditor.getRecord().getData("first_complete_timestamp")
+						if (dt==0){
+							oEditor.value = new Date();
+						}
+						else{
+							dt = dt*1000
+							oEditor.value = new Date( dt );
+						}	
+						break;
+					case "last_complete":  
+						var dt=oEditor.getRecord().getData("last_complete_timestamp")
+						if (dt==0){
+							oEditor.value = new Date();
+						}
+						else{
+							dt = dt*1000
+							oEditor.value = new Date( dt );
+						}	
+						break;
 				}
 				return true;
 			};

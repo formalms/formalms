@@ -1,4 +1,13 @@
-<FilesMatch "(api_test\.php|rest\.php|soap\.php|wsdl\.php)$">
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !=/favicon.ico
+  RewriteRule (.*) rest.php?q=/api/$1 [L]
+</IfModule>
+
+<FilesMatch "(rest\.php|soap\.php|wsdl\.php)$">
  Order Allow,Deny
  Allow from all
 </FilesMatch>

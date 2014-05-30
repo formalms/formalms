@@ -19,12 +19,14 @@
 	$html .= '<li>'.Lang::t('_MYSQL_MODE', 'configuration').':&nbsp;'.($sql_additional_info['sql_mode'] ? '<b>'.$sql_additional_info['sql_mode'].'</b>' : '<i>""</i>');
 	$html .= '<li>'.Lang::t('_MYSQL_ENCODING', 'configuration').':&nbsp;<b>'.$sql_additional_info['character_info']['character_set_connection'].'</b>';
 	$html .= '<li>'.Lang::t('_MYSQL_COLLATION', 'configuration').':&nbsp;<b>'.$sql_additional_info['collation_info']['collation_connection'].'</b>';
+	$html .= '<li>'.Lang::t('_MYSQL_TIMEZONE', 'configuration').':&nbsp;<b>'.$sql_additional_info['sql_timezone'].'</b>';
 
 	$html .= '</ul><br />';
 
 	$html .= '<h3>'.Lang::t('_PHPINFO', 'configuration').'</h3><ul class="link_list">';
 
 	$html .= '<li>'.Lang::t('_PHPVERSION', 'configuration').':&nbsp;<b>'.phpversion().'</b>';
+	$html .= '<li>'.Lang::t('_PHP_TIMEZONE', 'configuration').':&nbsp;<b>'.@date_default_timezone_get().'</b>';
 	$html .= '<li>'.Lang::t('_SAFEMODE', 'configuration').':&nbsp;<b>'.( $php_conf['safe_mode']['local_value']
 			? Lang::t('_ON', 'standard')
 			: '<span class="red">'.Lang::t('_OFF', 'standard') ).'</span></b>';
@@ -40,6 +42,7 @@
 	$html .= '<li>'.Lang::t('_LDAP', 'configuration').':&nbsp;<b>'.( extension_loaded('ldap')
 			? Lang::t('_ON', 'standard')
 			: '<span class="red">'.Lang::t('_OFF', 'standard').' '.Lang::t('_USEFULL_ONLY_IF', 'configuration').'</span>').'</b>';
+
 
 	if(version_compare(phpversion(), "5.0.0") == -1) {
 		$html .= '<li>'.Lang::t('_DOMXML', 'configuration').':&nbsp;<b>'.(extension_loaded('domxml')

@@ -126,15 +126,32 @@ if ($_SESSION['upgrade_ok']) {
 	$q =mysql_query($qtxt);
 }
 
-$GLOBALS['debug'] = $upgrade_msg
-					. '<br/>' . 'Result: ' . ( $_SESSION['upgrade_ok'] ? 'OK ' : 'ERROR !!! ' )
-					. '<br/>' . $GLOBALS['debug'];
-
-echo $GLOBALS['debug'];
-
 mysql_close($db);
 
 
+
+
+$GLOBALS['debug'] = $upgrade_msg
+					. '<br/>' . 'Result: ' . ( $_SESSION['upgrade_ok'] ? 'OK ' : 'ERROR !!! ' )
+					. '<br/>' . $GLOBALS['debug']
+					.'<br>------' ;
+
+
+//echo $GLOBALS['debug'];
+
+if ( $_SESSION['upgrade_ok'] ) {
+		$res =array('res'=>'ok', 'msg' => $GLOBALS['debug']);
+} else {
+		$res =array('res'=>'Error', 'msg' => $GLOBALS['debug']);
+}
+
+
+/**/
+require_once(_base_.'/lib/lib.json.php');
+$json = new Services_JSON();
+echo $json->encode($res);
+session_write_close();
+die();
 
 
 // -----------------------------------------------------------------------------

@@ -19,6 +19,8 @@
  * ( editor = Eclipse 3.2.0 [phpeclipse,subclipse,WTP], tabwidth = 4 )
  */
 
+// TODO : support for BBB is experimental - must be refined
+require_once($GLOBALS['where_scs'].'/lib/lib.bbb.php');
 require_once($GLOBALS['where_scs'].'/lib/lib.dimdim.php');
 //require_once($GLOBALS['where_scs'].'/lib/lib.intelligere.php');
 require_once($GLOBALS['where_scs'].'/lib/lib.teleskill.php');
@@ -136,6 +138,48 @@ class Conference_Manager {
 
 		if ($ok) {
 			switch($room_type) {
+				case "bbb":
+// TODO : support for BBB is experimental - must be refined
+					$acl_manager =& Docebo::user()->getAclManager();
+					$bbb = new Bbb_Manager();
+					$display_name = Docebo::user()->getUserName();
+					$u_info = $acl_manager->getUser(getLogUserId(), false);
+					$user_email=$u_info[ACL_INFO_EMAIL];
+					$confkey = $bbb->generateConfKey();
+					$audiovideosettings=1;
+					$maxmikes=(int)Get::sett("dimdim_max_mikes");
+					$extra_conf = array();
+					(isset($_POST['lobbyEnabled']) ? $extra_conf['lobbyEnabled'] = true : $extra_conf['lobbyEnabled'] = false);
+					//(isset($_POST['display_phone_info']) ? $extra_conf['display_phone_info'] = true : $extra_conf['display_phone_info'] = false);
+					//(isset($_POST['show_part_list']) ? $extra_conf['show_part_list'] = true : $extra_conf['show_part_list'] = false);
+					(isset($_POST['privateChatEnabled']) ? $extra_conf['privateChatEnabled'] = true : $extra_conf['privateChatEnabled'] = false);
+					(isset($_POST['publicChatEnabled']) ? $extra_conf['publicChatEnabled'] = true : $extra_conf['publicChatEnabled'] = false);
+					(isset($_POST['screenShareEnabled']) ? $extra_conf['screenShareEnabled'] = true : $extra_conf['screenShareEnabled'] = false);
+					//(isset($_POST['meeting_assistant_visibility']) ? $extra_conf['meeting_assistant_visibility'] = true : $extra_conf['meeting_assistant_visibility'] = false);
+					(isset($_POST['autoAssignMikeOnJoin']) ? $extra_conf['autoAssignMikeOnJoin'] = true : $extra_conf['autoAssignMikeOnJoin'] = false);
+					(isset($_POST['whiteboardEnabled']) ? $extra_conf['whiteboardEnabled'] = true : $extra_conf['whiteboardEnabled'] = false);
+					(isset($_POST['enable_documents_sharing']) ? $extra_conf['documentSharingEnabled'] = true : $extra_conf['documentSharingEnabled'] = false);
+					//(isset($_POST['enable_web_sharing']) ? $extra_conf['enable_web_sharing'] = true : $extra_conf['enable_web_sharing'] = false);
+					(isset($_POST['recordingEnabled']) ? $extra_conf['recordingEnabled'] = true : $extra_conf['recordingEnabled'] = false);
+					//(isset($_POST['allow_attendees_invitation']) ? $extra_conf['allow_attendees_invitation'] = true : $extra_conf['allow_attendees_invitation'] = false);
+					(isset($_POST['autoHandsFreeOnAVLoad']) ? $extra_conf['autoHandsFreeOnAVLoad'] = true : $extra_conf['autoHandsFreeOnAVLoad'] = false);
+					(isset($_POST['joinEmailRequired']) ? $extra_conf['joinEmailRequired'] = true : $extra_conf['joinEmailRequired'] = false);
+
+					//$extra_conf['recording_code'] = Get::req('recording_code', DOTY_MIXED, '');
+
+					$success = $bbb->insert_room($idConference,$user_email,$display_name,$confkey,$audiovideosettings,$maxmikes,$maxparticipants,
+						$startdate,
+						$starthour,
+						$startminute,
+						$meetinghours*60, //we need it in minutes for dimdim
+						$extra_conf //Extra configuration added for the new dimdim API
+					);
+					if (!$success) {
+						sql_query("DELETE FROM ".$this->_getRoomTable()." WHERE id=".(int)$idConference);
+						$idConference = false;
+					}
+					break;
+
 				case "dimdim":
 					$acl_manager =& Docebo::user()->getAclManager();
 					$dimdim = new DimDim_Manager();
@@ -315,12 +359,18 @@ class Conference_Manager {
 		$conference = $this->roomInfo($idConference);
 
 		switch($room_type) {
+			case "bbb":
+// TODO : support for BBB is experimental - must be refined
+				$dimdim=new Bbb_Manager();
+				$url=$dimdim->getUrl($idConference,$room_type);
+				break;
+
 			case "dimdim":
 				$dimdim=new DimDim_Manager();
 				$url=$dimdim->getUrl($idConference,$room_type);
 				break;
 
-			case "teleskill":
+				case "teleskill":
 				$teleskill = new Teleskill_Management();
 				$url=$teleskill->getUrl($idConference,$room_type);
 				break;

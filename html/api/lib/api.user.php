@@ -47,7 +47,10 @@ class User_API extends API {
 		if (defined("_API_DEBUG") && _API_DEBUG) { file_put_contents('create_user.txt', "\n\n----------------\n\n".print_r($params, true)." || ".print_r($userdata, true), FILE_APPEND); }
 
 		$set_idst =(isset($params['idst']) ? $params['idst'] : false);
-
+		
+		//fix grifomultimedia soap	argument [auth a.b.]
+		$userdata = (!isset($userdata['userid'])&&isset($params)) ?$params:$userdata;
+		
 		if (!isset($userdata['userid'])) return false;
 
 		$id_user = $this->aclManager->registerUser(
@@ -63,7 +66,11 @@ class User_API extends API {
 			(isset($userdata['pwd_expire_at']) ? $userdata['pwd_expire_at'] : '')
 		);
 		
-		
+		// suspend
+                if (isset($userdata['valid']) && $userdata['valid'] == '0'){
+			$res = $this->aclManager->suspendUser($id_user);
+		}
+                
 		// registration code:
 		if ($id_user && !empty($userdata['reg_code']) && !empty($userdata['reg_code_type'])) {
 			require_once(_base_.'/lib/lib.usermanager.php');
@@ -90,9 +97,18 @@ class User_API extends API {
 				$level = ADMIN_GROUP_USER;
 			} else {
 				switch ($userdata['role']) {
-					case 'godadmin': $level = ADMIN_GROUP_GODADMIN;
-					case 'admin': $level = ADMIN_GROUP_ADMIN;
-					default: $level = ADMIN_GROUP_USER;
+					case 'godadmin': 
+                                            $level = ADMIN_GROUP_GODADMIN;
+                                            break;
+					case 'admin': 
+                                            $level = ADMIN_GROUP_ADMIN;
+                                            break;
+					case 'pubadmin': 
+                                            $level = ADMIN_GROUP_PUBLICADMIN;
+                                            break;
+					default:
+                                            $level = ADMIN_GROUP_USER;
+                                            break;
 				}
 			}
 
@@ -170,10 +186,24 @@ class User_API extends API {
 		return $id_user;
 	}
 
-	public function updateUser($id_user, &$userdata) {
+	public function updateUser($id_user, $userdata) {
 		
 		$acl_man = new DoceboACLManager();
 		$output = array();
+		
+		$user_data = $this->aclManager->getUser($id_user, false);
+
+		if (!$user_data) {
+			return -1;
+			
+		}
+		
+		if (isset($userdata['valid']) && $userdata['valid'] == '1'){
+			$res = $this->aclManager->recoverUser($id_user);
+		} elseif (isset($userdata['valid']) && $userdata['valid'] == '0'){
+			$res = $this->aclManager->suspendUser($id_user);
+		}
+		
 		$res = $this->aclManager->updateUser(
 			$id_user,
 			(isset($userdata['userid']) ? $userdata['userid'] :  false),
@@ -184,7 +214,7 @@ class User_API extends API {
 			false,
 			(isset($userdata['signature']) ? $userdata['signature'] :  false),
 			(isset($userdata['lastenter']) ? $userdata['lastenter'] :  false),
-			(isset($userdata['valid']) ? $userdata['valid'] :  false)
+			false
 		);
 
 		//additional fields
@@ -583,6 +613,7 @@ class User_API extends API {
 		}
 
 		switch ($name) {
+			case 'listUsers':
 			case 'userslist': {
 				$list = $this->getUsersList();
 				if ($list['success'])
@@ -620,6 +651,7 @@ class User_API extends API {
 				}
 			} break;
 
+			case 'create':
 			case 'createuser': {
 				$res = $this->createUser($params, $_POST);
 				if (is_array($res)) {
@@ -632,15 +664,22 @@ class User_API extends API {
 				}
 			} break;
 
+			case 'edit':
 			case 'updateuser': {
 				if (count($params)>0 && !isset($params['ext_not_found'])) { //params[0] should contain user id
 					$res = $this->updateUser($params['idst'], $_POST);
-					$output = array('success'=>true);
+					
+					if ($res > 0) {
+						$output = array('success'=>true);
+					} elseif ($res < 0) {
+						$output = array('success'=>false, 'message'=>'Error: incorrect param idst.');
+					}
 				} else {
 					$output = array('success'=>false, 'message'=>'Error: user id to update has not been specified.');
 				}
 			} break;
 
+			case 'delete':
 			case 'deleteuser': {
 				if (count($params)>0 && !isset($params['ext_not_found'])) { //params[0] should contain user id
 					$output = $this->deleteUser($params['idst'], $_POST);
@@ -681,6 +720,7 @@ class User_API extends API {
 			} break;
 
 
+			case 'userCourses':
 			case 'mycourses': {
 				if (!isset($params['ext_not_found'])) {
 					$output = $this->getMyCourses($params['idst'], $_POST);
@@ -714,6 +754,7 @@ class User_API extends API {
 			} break;
 		
 		
+			case 'checkUsername':
 			case 'checkusername': {
 				$output = $this->checkUsername($_POST);
 			} break;

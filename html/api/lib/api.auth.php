@@ -33,7 +33,7 @@ class Auth_API extends API {
 			case _AUTH_UCODE: { $result = _AUTH_UCODE_DESC; } break;
 			case _AUTH_TOKEN: { $result = _AUTH_TOKEN_DESC; } break;
 		}
-		$mode = array( 'success'=>($result != ''), 'auth_mode'=>$result );
+		$mode = array( 'success'=>($result != ''), 'method'=>$result );
 		return $mode;
 	}
 
@@ -108,11 +108,18 @@ class Auth_API extends API {
 		
 			return array('success'=>false, 'message'=>'Error: Tokens are not used on this installation.');
 		}
-		$username = Get::req('username', DOTY_STRING, false);
-		$password = Get::req('password', DOTY_STRING, false);
-		$third_party = Get::req('third_party', DOTY_STRING, false);
-
-
+        
+    //** BUG 2466 FIXED - SOAP  AUTHENTICATION ERROR WITH GENERATED TOKEN **
+    if (isset($params['username']) && isset($params['password']) ) {
+        $username = $params['username']; //params[0] should contain username
+        $password = $params['password'];
+        $third_party = $params['third_party'];
+    }else{
+        $username = Get::req('username', DOTY_STRING, false);
+        $password = Get::req('password', DOTY_STRING, false);
+        $third_party = Get::req('third_party', DOTY_STRING, false);            
+    }       
+               
 		if ($username == false || $password === false) {
 			//error: no login data provided
 			return array('success'=>false, 'message'=>'Error: invalid login data provided.');

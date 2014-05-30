@@ -28,7 +28,6 @@ function pathlist() {
 	$acl_man 	=& Docebo::user()->getAclManager();
 
 	$subscribe_perm = checkPerm('subscribe', true);
-	$moderate_perm 	= checkPerm('moderate', true);
 	$mod_perm 		= checkPerm('mod', true);
 	$del_perm 		= checkPerm('mod', true);
 
@@ -127,22 +126,14 @@ function pathlist() {
 					$lang->def('_NAME'),
 					$lang->def('_DESCRIPTION'));
 	$type_h = array('course_code', '', '');
-	if($moderate_perm) {
-
-		$cont_h[] = $lang->def('_WAITING_USERS');
-		$type_h[] = 'image';
-	}
-
+   
+   // $subscribe_perm = false;
 	$cont_h[] = '<img src="'.getPathImage().'standard/moduser.png" alt="'.$lang->def('_SUBSCRIBE').'" />';
 	$type_h[] = 'image';
 
 	$cont_h[] = '<img src="'.getPathImage().'standard/modelem.png" alt="'.$lang->def('_COURSES').'" />';
 	$type_h[] = 'image';
 
-	if($subscribe_perm) {
-		$cont_h[] = '<img src="'.getPathImage().'standard/del_user.png" alt="'.$lang->def('_ALT_REM_SUB').'" />';
-		$type_h[] = 'image';
-	}
 	if($mod_perm) {
 		$cont_h[] = '<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').'" />';
 		$type_h[] = 'image';
@@ -150,23 +141,13 @@ function pathlist() {
 	if($del_perm) {
 		$cont_h[] = '<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" />';
 		$type_h[] = 'image';
-	}
+	} 
 
 	$tb_path->setColsStyle($type_h);
 	$tb_path->addHead($cont_h);
 	while(list($id_path, $path_code, $path_name, $path_descr) = sql_fetch_row($re_pathlist)) {
 
 		$cont = array($path_code, $path_name, $path_descr);
-		if($moderate_perm) {
-			if(isset($subscriptions[$id_path]['waiting']) && $subscriptions[$id_path]['waiting']!= false) {
-
-				$cont[] = '<a href="index.php?modname=coursepath&amp;op=waitingsubscription&amp;id_path='.$id_path.'" '
-							.'title="'.$lang->def('_WAITING_USERS').' : '.$path_name.'">'
-						.'<img src="'.getPathImage().'subscribe/waiting.gif" alt="'.$lang->def('_WAITING_USERS').' : '.$path_name.'" /></a>';
-			} else {
-				$cont[] = '';
-			}
-		}
 		if($subscribe_perm) {
 			$url_subscribe = 'index.php?r=alms/subscription/show_coursepath&id_path='.(int)$id_path;
 			$cont[] = '<a href="'.$url_subscribe.'" ' //index.php?modname=coursepath&amp;op=addsubscription&amp;id_path='.$id_path.'&amp;load=1
@@ -176,9 +157,6 @@ function pathlist() {
 			$cont[] =	'<a href="index.php?modname=coursepath&amp;op=pathelem&amp;id_path='.$id_path.'" '
 						.'title="'.$lang->def('_MOD').' : '.$path_name.'">'
 						.'<img src="'.getPathImage().'standard/modelem.png" alt="'.$lang->def('_COURSES').' : '.$path_name.'" /></a>';
-			$cont[] = '<a href="index.php?modname=coursepath&amp;op=delsubscription&amp;id_path='.$id_path.'" '
-						.'title="'.$lang->def('_ALT_REM_SUB').' : '.$path_name.'">'
-					.'<img src="'.getPathImage().'standard/del_user.png" alt="'.$lang->def('_ALT_REM_SUB').' : '.$path_name.'" /></a>';
 		}
 		else
 		{
@@ -265,7 +243,7 @@ function mancoursepath($load_id = false) {
 
 		.Form::getOpenCombo($lang->def('_COURSE_PATH_SUBSCRIBE'))
 		.Form::getRadio($lang->def('_COURSE_S_GODADMIN'), 'course_subs_godadmin', 'subscribe_method', '0', ($subscribe_method == 0) )
-		.Form::getRadio($lang->def('_COURSE_S_MODERATE'), 'course_subs_moderate', 'subscribe_method', '1', ($subscribe_method == 1))
+		//.Form::getRadio($lang->def('_COURSE_S_MODERATE'), 'course_subs_moderate', 'subscribe_method', '1', ($subscribe_method == 1))
 		.Form::getRadio($lang->def('_COURSE_S_FREE'), 'course_subs_free', 'subscribe_method', '2', ($subscribe_method == 2))
 		.Form::getCloseCombo()
 
@@ -1284,168 +1262,6 @@ function addsubscriptionedition()
 	Util::jump_to('index.php?modname=coursepath&amp;op=pathlist&result='.( $re ? 'ok' : 'err' ));
 }
 
-function delsubscription() {
-	checkPerm('subscribe');
-
-	require_once(_base_.'/lib/lib.table.php');
-	require_once(_base_.'/lib/lib.form.php');
-	require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
-	require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
-	require_once($GLOBALS['where_lms'].'/lib/lib.subscribe.php');
-
-	$id_path 	= importVar('id_path', true, 0);
-	$lang		=& DoceboLanguage::createInstance('coursepath', 'lms');
-	$acl_man 	=& Docebo::user()->getAclManager();
-
-	if(isset($_POST['save'])) {
-
-		$cpath_man = new CoursePath_Manager();
-		$courses = $cpath_man->getAllCourses(array($id_path));
-
-		$subs_man = new CourseSubscribe_Management();
-
-		$re = true;
-		if(isset($_POST['delete_user'])) {
-
-			$deleted = array();
-
-			require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
-			$course_man = new Man_Course();
-			$assessment = $course_man->getAllCourses(false, 'assessment', $courses);
-			/*$classroom = $course_man->getAllCourses(false, 'classroom', $courses);
-			$edition = $course_man->getAllCourses(false, 'edition', $courses);
-
-			$array_id_date = array();
-			$array_id_edition = array();
-
-			if(!empty($classroom))
-				foreach($classroom as $id_course => $info)
-					if(Get::req('classroom_'.$id_course, DOTY_INT, 0) != 0)
-						$array_id_date[Get::req('classroom_'.$id_course, DOTY_INT, 0)] = $id_course;
-
-			if(!empty($edition))
-				foreach($edition as $id_course => $info)
-					if(Get::req('edition_'.$id_course, DOTY_INT, 0) != 0)
-						$array_id_edition[Get::req('edition_'.$id_course, DOTY_INT, 0)] = $id_course;
-
-			require_once(_lms_.'/lib/lib.date.php');
-			$date_man = new DateManager();
-
-			require_once(_lms_.'/lib/lib.edition.php');
-			$edition_man = new EditionManager();*/
-
-			foreach($_POST['delete_user'] as $i => $id_user) {
-
-				$text_query = "
-				DELETE FROM ".$GLOBALS['prefix_lms']."_coursepath_user
-				WHERE id_path = '".$id_path."' AND idUser = '".$id_user."' ";
-				if($resingle = sql_query($text_query)) { $deleted[$id_user] = $id_user; }
-				$re &= $resingle;
-
-				if(!empty($assessment))
-				{
-					foreach($assessment as $id_assessment => $assessment_info)
-						sql_query("DELETE FROM %lms_assessment_user WHERE id_assessment = '".$id_assessment."' AND id_user = '".$id_user."'");
-
-					reset($assessment);
-				}
-
-				/*if(!empty($array_id_date))
-				{
-					foreach($array_id_date as $id_date => $id_course)
-						$date_man->delUserFromDate($id_user, $id_course, $id_date);
-
-					reset($array_id_date);
-				}
-
-				if(!empty($array_id_edition))
-				{
-					foreach($array_id_edition as $id_edition => $id_course)
-						$edition_man->delUserFromEdition($id_user, $id_edition, $id_course);
-
-					reset($array_id_edition);
-				}*/
-			}
-
-			$re &= $subs_man->multipleUnsubscribe($deleted, $courses);
-		}
-		Util::jump_to('index.php?modname=coursepath&amp;op=pathlist&result='.( $re ? 'ok' : 'err' ));
-	}
-
-	$subscriptions = array();
-	$query_subcription = "
-	SELECT idUser
-	FROM ".$GLOBALS['prefix_lms']."_coursepath_user
-	WHERE id_path = '".$id_path."' AND waiting = '0'";
-
-	$all_user = true;
-
-	if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN)
-	{
-		require_once(_base_.'/lib/lib.preference.php');
-		$adminManager = new AdminPreference();
-		$admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
-		$admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
-
-		$all_user = false;
-	}
-
-	$re_subscription = sql_query($query_subcription);
-	while(list($id_user) = sql_fetch_row($re_subscription)) {
-
-		$users[$id_user] = $id_user;
-	}
-	if(!empty($users)) $users_info = $acl_man->getUsers($users);
-
-	$tb = new Table(0, $lang->def('_SUBSCRIBED_CAPTION'), $lang->def('_SUBSCRIBED_CAPTION'));
-
-	$type_h = array('', '', 'image');
-	$cont_h = array($lang->def('_USERNAME'), $lang->def('_FULLNAME'),
-		'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" />'
-	);
-	$tb->setColsStyle($type_h);
-	$tb->addHead($cont_h);
-
-	if(!empty($users))
-	while(list($id_user, $user_info) = each($users_info)) {
-
-		$cont = array( $acl_man->relativeId($user_info[ACL_INFO_USERID]),
-						$user_info[ACL_INFO_LASTNAME].' '.$user_info[ACL_INFO_FIRSTNAME] );
-		if(array_search($id_user, $admin_users) !== false || $all_user)
-			$cont[] = Form::getInputCheckbox(
-					'delete_user_'.$id_user,
-					'delete_user['.$id_user.']',
-					$id_user,
-					false,
-					'' ).'<label class="access-only" for="delete_user_'.$id_user.'">'.$user_info[ACL_INFO_USERID].'</label>';
-		else
-			$cont[] = '';
-
-		$tb->addBody($cont);
-	}
-
-	$query_pathlist = "
-	SELECT path_name
-	FROM ".$GLOBALS['prefix_lms']."_coursepath
-	WHERE id_path = '".$id_path."'
-	ORDER BY path_name ";
-	list($path_name) = sql_fetch_row(sql_query($query_pathlist));
-
-	$GLOBALS['page']->add(
-		getTitleArea( array('index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH'), $path_name)
-			, 'coursepath')
-		.'<div class="std_block">'
-		.Form::openForm('deletesubscription', 'index.php?modname=coursepath&amp;op=delsubscription')
-		.Form::getHidden('id_path', 'id_path', $id_path)
-		.$tb->getTable()
-		.Form::openButtonSpace()
-		.Form::getButton('save', 'save', $lang->def('_SAVE'))
-		.Form::getButton('undo', 'undo', $lang->def('_UNDO'))
-		.Form::closeButtonSpace()
-		.Form::closeForm()
-		.'</div>', 'content');
-}
-
 function modslot() {
 	checkPerm('mod');
 
@@ -1615,10 +1431,6 @@ function coursepathDispatch($op) {
 		case "addsubscriptionedition" : {
 			addsubscriptionedition();
 		};break;
-		case "delsubscription" : {
-			delsubscription();
-		};break;
-
 		case "modslot" : {
 			modslot();
 		};break;

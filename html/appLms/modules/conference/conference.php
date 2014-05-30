@@ -12,7 +12,7 @@
 \ ======================================================================== */
 
 /**
- * @package DoceboLms
+ * @package appLms
  * @subpackage conference
  * @category driver with external
  * @author Fabio Pirovano
@@ -38,7 +38,7 @@ function conference_list(&$url) {
 	$conference = new Conference_Manager();
 	$re_room 		= $conference->roomActive($_SESSION['idCourse'], fromDatetimeToTimestamp(date("Y-m-d H:i:s")));
 	$room_number 	= $conference->totalRoom($re_room);
-	
+
 	if(checkPerm('mod', true)) {
 		cout('<div class="yui-navset yui-navset-top tab_block">
 			<ul class="yui-nav">
@@ -162,11 +162,18 @@ function conference_list(&$url) {
 
 		$GLOBALS['page']->add($tb->getTable(), 'content');
 	}
-	
+
+// TODO : support for BBB is experimental - must be refined
+
 	if(checkPerm('mod', true)) {
 		cout('<br/><div class="table-container-below">', 'content');
-		if(Get::sett('code_teleskill') or (Get::sett('dimdim_server') and Get::sett('dimdim_user') and Get::sett('dimdim_password'))) {
-
+		if(
+		  Get::sett('code_teleskill')
+		  or
+		  (Get::sett('dimdim_server') and Get::sett('dimdim_user') and Get::sett('dimdim_password'))
+		  or
+		  (Get::sett('bbb_server') and Get::sett('bbb_user') and Get::sett('bbb_salt') and Get::sett('bbb_password_moderator') and Get::sett('bbb_password_viewer'))
+		  ) {
 			if ($conference->can_create_user_limit(getLogUserId(),$idCourse,time())) {
 				cout('<a class="ico-wt-sprite subs_add" href="'.$url->getUrl('op=startnewconf').'"><span>'.$lang->def('_CREATE').'</span></a>', 'content');
 			} else {
@@ -247,14 +254,15 @@ function conference_startnewconf($url) {
 	$default="";
 	$default_maxp=30;
 	if (Get::sett('code_teleskill')) $conf_system["teleskill"]="teleskill";
-	if (Get::sett('dimdim_server') and Get::sett('dimdim_user') and Get::sett('dimdim_password')) {
-		$conf_system["dimdim"]="dimdim";
-		$default="dimdim";
-		$default_maxp=Get::sett('dimdim_max_participant');
+	if (Get::sett('dimdim_server') and Get::sett('dimdim_user') and Get::sett('dimdim_password')) $conf_system["dimdim"]="dimdim";
+	if (Get::sett('bbb_server') and Get::sett('bbb_user') and Get::sett('bbb_salt') and Get::sett('bbb_password_moderator') and Get::sett('bbb_password_viewer')){
+	  $conf_system["bbb"]="Big Blue Button";
+	  $default="bbb";
+	  $default_maxp=Get::sett('bbb_max_participant');
 	}
 
 	YuiLib::load();
-	
+
 	//addJs($GLOBALS['where_lms_relative'].'/modules/conference/', 'ajax_conference.js');
 
 	$GLOBALS['page']->add(

@@ -189,7 +189,11 @@ function jump_to($relative_url, $anchor = false) {
 	$relative_url = trim(str_replace('&amp;', '&', $relative_url));
 
 	session_write_close();
-	Header('Location: http' . ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 's' : '' ).'://'.$_SERVER['HTTP_HOST']
+		//Header('Location: http' . ( ((isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' )  ) ? 's' : '' ).'://'.$_SERVER['HTTP_HOST']
+		Header('Location: http' . ( ((isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' ) 
+		                          or (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https') 
+		                          or (isset($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) == 'on') ) ? 's' : '' ).'://'
+		     .( (isset($_SERVER['HTTP_X_FORWARDED_HOST']) ) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : $_SERVER['HTTP_HOST'] )
     	.( strlen(dirname($_SERVER['SCRIPT_NAME'])) != 1 ? dirname($_SERVER['SCRIPT_NAME']) : '' )
 		.'/'.$relative_url
 		//.( strpos($relative_url, '?') === false ? '?' : '&' ).session_name().'='.session_id()

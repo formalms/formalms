@@ -9,7 +9,10 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-
+-----------------------------------------------------------------------------
+FORMALMS 1.2
+Relase date: 2014 May 30
+-----------------------------------------------------------------------------
 
 
 Index
@@ -21,7 +24,7 @@ Index
 
 3. Upgrade procedure
 
-3.1 Upgrade from 3.x to 4.x
+3.1 Upgrade from docebo ce 3.x to 4.x
 
 4. Loading a new language
 
@@ -36,7 +39,7 @@ Index
 
 Server specs: Linux, Windows, MacOs, Unix, Sun with
 - Apache 2.0.x or above
-- PHP 5.2.x or 5.3.x (known issues with 5.4)
+- PHP 5.2.x or 5.3.x 5.4.x
 - Mysql 5.0 or higher with transaction support
 - Doesn't matter if safe mode or register global are on or off
 - If you need to test on your windows home pc we suggest easyphp or xampp
@@ -68,7 +71,7 @@ Note: The system will load XML file languages, this operation can take some time
 
 
 
-3.1 Upgrade from docebo 3.x to Forma 1.x
+3.1 Upgrade from docebo ce 3.x and docebo ce 4.x  to FormaLMS 1.x
 
 You can directly upgrade your old docebo installations to Forma 1.x
 The config.php file is completly changed from the previous release to the new one, in this case you will need to manually compile the new config.php file (you can found the new one inside the folder of the new version)
@@ -83,8 +86,5 @@ The config.php file is completly changed from the previous release to the new on
 - Select the xml file
 - Choose if you want to overwrite previous translation or not
 - Click Import
-
-
-
 
 

@@ -21,7 +21,7 @@ define("_INSTALLER_INTRO_TEXT", "Forma je společnost vyvíjejicí svůj vlastn�
 		<li>Podpora sociálních sítí: <b>Google Apps</b>, <b>Facebook</b>, <b>Twitter</b> e <b>Linkedin</b></li>
 		<li>Kompletně přizpůsobitelný zpravodajský systém a obchodní informační systém</li>
 		<li>Výhradní funkce pro sub-administrátora, správce oblasti a země</li>
-		<li>Podpora více jazyků, včetne podpory jazyků psaných jak 'zleva doprava' tak 'zprava doleva'. 18 podporovaných jazyků</li>
+		<li>Podpora více jazyků, včetne podpory jazyků psaných jak 'zleva doprava' tak 'zprava doleva'. 25 podporovaných jazyků</li>
 		<li>Podpora mobilních zařízení</li>
 	</ul>");
 // ---------------------------------------

@@ -26,7 +26,7 @@ function config() {
 	//instance class-------------------------------------------
 	$conf = new Config_Framework();
 	$groups = $conf->getRegroupUnit();
-	
+
 	cout(getTitleArea($lang->def('_CONFIGURATION'))
 		.'<div class="std_block">'
 	);
@@ -146,7 +146,8 @@ function server_info() {
 		.config_line($lang->def('_MAX_EXECUTION_TIME'), $php_conf['max_execution_time']['local_value'].'s' )
 		.config_line($lang->def('_LDAP'), ( extension_loaded('ldap')
 			? $lang->def('_ON')
-			: '<span class="font_red">'.$lang->def('_OFF').' '.$lang->def('_USEFULL_ONLY_IF').'</span>') );
+			: '<span class="font_red">'.$lang->def('_OFF').' '.$lang->def('_USEFULL_ONLY_IF').'</span>') )
+		.config_line($lang->def('_PHP_TIMEZONE'), @date_default_timezone_get() );
 
 	if(version_compare(phpversion(), "5.0.0") == -1) {
 

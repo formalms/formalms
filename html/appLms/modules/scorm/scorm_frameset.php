@@ -98,12 +98,19 @@ if(!empty($GLOBALS['chapter'])) {
 
 //$lms_base_url = Get::rel_path('lms').'/';
 //$lms_base_url = preg_replace("/:\/\/([A-Za-z0-9_:.]+)\//","://".$_SERVER['HTTP_HOST']."/",Get::sett('url'));
-$lms_base_url = preg_replace("/http[s]*:\/\/([A-Za-z0-9_:.]+)\//", 'http' . ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 's' : '' )."://".$_SERVER['HTTP_HOST']."/",Get::sett('url'));
-$lms_base_url .= 'appLms/';
-$lms_base_url = Get::rel_path('lms').'/';
-
-$lms_base_url = 'http' . ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 's' : '' ).'://'.$_SERVER['HTTP_HOST']
+//$lms_base_url = preg_replace("/http[s]*:\/\/([A-Za-z0-9_:.]+)\//", 'http' . ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 's' : '' )."://".$_SERVER['HTTP_HOST']."/",Get::sett('url'));
+//$lms_base_url .= 'appLms/';
+//$lms_base_url = Get::rel_path('lms').'/';
+//
+//$lms_base_url = 'http' . ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 's' : '' ).'://'.$_SERVER['HTTP_HOST']
+//	    	.( strlen(dirname($_SERVER['SCRIPT_NAME'])) != 1 ? dirname($_SERVER['SCRIPT_NAME']) : '' ).'/';
+	    	
+$lms_base_url = 'http' . ( ((isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' ) 
+		                          or (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https') 
+		                          or (isset($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) == 'on') ) ? 's' : '' ).'://'
+		    .( (isset($_SERVER['HTTP_X_FORWARDED_HOST']) ) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : $_SERVER['HTTP_HOST'] )
 	    	.( strlen(dirname($_SERVER['SCRIPT_NAME'])) != 1 ? dirname($_SERVER['SCRIPT_NAME']) : '' ).'/';
+	    		
 /*
  lms_url: 'http://server/appLms/modules/scorm/soaplms.php',
  lms_base_url: 'http://server/appLms/',

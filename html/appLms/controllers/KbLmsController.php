@@ -164,6 +164,22 @@ class KbLmsController extends LmsController {
 			}
 
 			$array_comm[$key]['tags'] = (isset($tags[$id]) ? implode(', ', $tags[$id]) : '');
+            
+            $img_type = $array_comm[$key]['r_type'];
+            switch ($img_type) {
+                case 'scorm':
+                    $img_type = 'scormorg';
+                    break;
+                case 'file':
+                    $img_type = 'item';
+                    break;                
+                default:
+                    break;
+            }
+            $image = '<img src="'.getPathImage().'lobject/'.$img_type.'.png'.'" '
+						.'width="16px" alt="'.$img_type.'" '
+						.'title="'.$img_type.'" />';
+            $array_comm[$key]['r_type'] = $image;            
 		}
 
 		$kb_model->getParentInfo($parent_id, $array_comm, array('course_lo', 'communication', 'games'));

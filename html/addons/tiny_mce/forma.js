@@ -12,12 +12,12 @@ tinyMCE.init({
 	mode : "textareas",
 	theme : "advanced",
 	skin : "o2k7",
-  skin_variant : "silver",
+	skin_variant : "silver",
 	editor_selector : "tinymce_complex",
 	forced_root_block : false,
 	force_p_newlines : false,
 	force_br_newlines : true,
-	relative_urls : false,
+	relative_urls : true,
 	remove_script_host: false,
 	plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
 
@@ -45,6 +45,8 @@ tinyMCE.init({
 	file_browser_callback : 'myFileBrowser'
 });
 
+/***************
+// very old configuration - to be discontinued
 tinyMCE.init
 ({
 	theme : "advanced",
@@ -70,6 +72,7 @@ tinyMCE.init
 	width:"100%",
 	file_browser_callback : 'myFileBrowser'
 });
+***********/
 
 function myFileBrowser (field_name, url, type, win)
 {

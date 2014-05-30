@@ -29,7 +29,7 @@ class Course_API extends API {
 
 		
 		foreach($course_list as $key=>$course_info) {
-			$output[]['course_info']=array(
+			$output['course_info'][]=array(
 				'course_id'=>$course_info['idCourse'],
 				'code'=>str_replace('&', '&amp;', $course_info['code']),
 				'course_name'=>str_replace('&', '&amp;', $course_info['name']),
@@ -600,6 +600,7 @@ class Course_API extends API {
 		
 		switch ($name) {
 
+			case 'listCourses':
 			case 'courses': {
 				$output = $this->getCourses($params);
 			} break;
@@ -615,27 +616,28 @@ class Course_API extends API {
 			} break;
 
 
+			case 'addUserSubscription':
 			case 'addusersubscription': {
 				if (!isset($params['ext_not_found'])) {
 					$output = $this->addUserSubscription($params);
 				}
 			} break;
 
-
+			case 'updateUserSubscription':
 			case 'updateusersubscription': {
 				if (!isset($params['ext_not_found'])) {
 					$output = $this->updateUserSubscription($params);
 				}
 			} break;
 
-
+			case 'deleteUserSubscription':
 			case 'deleteusersubscription': {
 				if (!isset($params['ext_not_found'])) {
 					$output = $this->deleteUserSubscription($params);
 				}
 			} break;
 			
-			
+			case 'subscribeUserWithCode':
 			case 'subscribeuserwithcode': {
 				if (!isset($params['ext_not_found'])) {
 					$output = $this->subscribeUserWithCode($params);

@@ -305,6 +305,8 @@ class Config_Framework {
 					$html .= Form::getOpenCombo( $lang->def('_'.strtoupper($var_name)) )
 							.Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_SELF'), $var_name.'_self', 'option['.$var_name.']',
 								'self', ($var_value == 'self'))
+                            .Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_SELF_OPTIN'), $var_name.'_self_optin', 'option['.$var_name.']',
+								'self_optin', ($var_value == 'self_optin'))
 							.Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_MODERATE'), $var_name.'_moderate', 'option['.$var_name.']',
 								'moderate', ($var_value == 'moderate'))
 							.Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_ADMIN'), $var_name.'_admin', 'option['.$var_name.']',

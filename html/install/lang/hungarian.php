@@ -21,7 +21,7 @@ define("_INSTALLER_INTRO_TEXT", "A Forma egy cég, amely kifejlesztette a saját
 		<li>Közösségi szolgáltatások támogatása, mint <b>Google Alkalmazások</b>, <b>Facebook</b>, <b>Twitter</b> és <b>Linkedin</b></li>
 		<li>Teljes mértékben testreszabható Jelentés készítő rendszer és üzleti intelligencia</li>
 		<li>Egyedi (al-)adminisztrátor szolgáltatás, terület és ország kezelés</li>
-		<li>Több nyelvű, valamint LTR (balról jobbra) és RTL (jobbról balra) támogatás. 18 támogatott nyelv</li>
+		<li>Több nyelvű, valamint LTR (balról jobbra) és RTL (jobbról balra) támogatás. 25 támogatott nyelv</li>
 		<li>Mobil eszközök támogatása</li>
 	</ul>");
 // ---------------------------------------

@@ -535,6 +535,22 @@ class Man_Course {
 	 */
 	function &getWaitingSubscribed($id_course, $edition_id = 0) {
 
+        
+        
+        $userlevelid = Docebo::user()->getUserLevelId();
+        if($userlevelid != ADMIN_GROUP_GODADMIN)
+        {
+            // BUG FIX 2469: GETTING THE USERS OF THE ADMIN
+            require_once(_base_.'/lib/lib.preference.php');
+            $adminManager = new AdminPreference();
+            $acl_man =& Docebo::user()->getAclManager();
+            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
+        }
+        
+        
+
 		$users['users_info'] 	= array();
 		$users['all_users_id'] 	= array();
 
@@ -546,6 +562,14 @@ class Man_Course {
 				." JOIN %lms_course_date_user AS cdu ON (cd.id_course = cu.idCourse AND "
 				." cd.id_date = cdu.id_date AND cu.idUser=cdu.id_user) "
 				." WHERE cd.id_course = ".(int)$id_course." AND (cu.waiting = 1 OR cdu.overbooking = 1)";
+            
+            // BUG FIX 2469: SELECT ONLY THE USER BELONGING TO THE ADMIN                
+            $query .= ($userlevelid != ADMIN_GROUP_GODADMIN
+                    ? ( !empty($admin_users) ? " AND cu.idUser IN (".implode(',', $admin_users).")" : " AND cu.idUser IN (0)" )
+                    : '' );
+        
+
+                
 			$res = sql_query($query);
 			while ($obj = sql_fetch_object($res)) {
 				$users['users_info'][$obj->idUser] = array(
@@ -568,6 +592,10 @@ class Man_Course {
 			SELECT idUser, level, subscribed_by, status
 			FROM ".$GLOBALS['prefix_lms']."_courseuser
 			WHERE idCourse = '".$id_course."' AND waiting = '1' AND  edition_id = '".$edition_id."'";
+            $query_courseuser .= ($userlevelid != ADMIN_GROUP_GODADMIN
+                ? ( !empty($admin_users) ? " AND idUser IN (".implode(',', $admin_users).")" : " AND idUser IN (0)" )
+                : '' );
+            
 			$re_courseuser = sql_query($query_courseuser);
 			while(list($id_user, $lv, $subscribed_by, $status) = sql_fetch_row($re_courseuser)) {
 
@@ -799,6 +827,34 @@ class Man_Course {
 		$now = time();
 		$expiring = false;
 
+        // if course has editions, evaluate these first of all
+        if ($course['course_edition']=="1"){
+            // retrieve editions 
+            $select_edition  = " SELECT e.date_begin, e.date_end ";
+            $select_edition .= " FROM ".$GLOBALS["prefix_lms"]."_course_editions AS e "
+                ." JOIN ".$GLOBALS["prefix_lms"]."_course_editions_user AS u ";
+            $select_edition .= " WHERE e.status IN ('".CST_AVAILABLE."','".CST_EFFECTIVE."') AND e.id_course = '".$course['idCourse']."' AND e.id_edition = u.id_edition AND u.id_user = '".getLogUserId()."'";
+            $re_edition = sql_query($select_edition);
+            $canEnd   = false;
+            $canStart = false;
+            // evaluate date_begin and date_end only for active editions
+            // if no editions is active returns subscription_expired
+            while ($edition_elem = mysql_fetch_assoc($re_edition)) {
+                if (is_null($edition_elem['date_end']) || $edition_elem['date_end'] == '0000-00-00' || strcmp(date('Y-m-d'), $edition_elem['date_end']) <= 0) {
+                    $canEnd = $canEnd || true;
+                }
+                if ($canEnd && (is_null($edition_elem['date_begin']) || $edition_elem['date_begin'] == '0000-00-00' || strcmp(date('Y-m-d'), $edition_elem['date_begin']) >= 0)) {
+                    $canStart = $canStart || true;
+                }                    
+            }
+            if (!$canEnd){
+                return array('can' => false, 'reason' => 'course_edition_date_end');
+            }            
+            if (!$canStart){
+                return array('can' => false, 'reason' => 'course_edition_date_begin', 'expiring_in' => 1);
+            }                
+        }
+        
 		if($course['date_end'] != '0000-00-00') {
 
 			$time_end = fromDatetimeToTimestamp($course['date_end']);
@@ -810,11 +866,11 @@ class Man_Course {
 			$time_first_access = fromDatetimeToTimestamp($course['date_first_access']);
 
 			$exp_time = ( $time_first_access + ($course['valid_time'] * 24 * 3600 ) ) - $now;
-      $expiring = round($exp_time / (24*60*60));
-      $expiring = $expiring ==-0?0:$expiring;			
+            $expiring = round($exp_time / (24*60*60));
+            $expiring = $expiring ==-0?0:$expiring;			
 			if($exp_time < 0) {
                 return array('can' => false, 'reason' => 'time_elapsed', 'expiring_in' => $expiring);
-      }
+            }
 		}
 		
 		$query =	"SELECT date_begin_validity, date_expire_validity, status, level"
@@ -1841,10 +1897,23 @@ class Man_CourseUser {
 						." AND autoregistration_code <> ''";
 
 		$result_course = sql_query($query_course);
+        
+		$query_course_active = "SELECT idCourse" .
+						" FROM ".$GLOBALS['prefix_lms']."_course" .
+						" WHERE autoregistration_code = '".$code."'"
+						." AND autoregistration_code <> ''"
+                        ." AND (                       
+                            (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '".date('Y-m-d')."') AND (sub_start_date = '0000-00-00' OR '".date('Y-m-d')."' >= sub_start_date)) OR
+                            (can_subscribe=1)
+                         ) ";
+
+		$result_course_active = sql_query($query_course_active);        
 
 		$counter = 0;
 		$subs = $this->getUserSubscriptionsInfo($id_user);
 
+        // return -2 if course subscription is not allowed
+        if(!mysql_num_rows($result_course_active)) return -2;
 		if(!mysql_num_rows($result_course)) return 0;
 		while (list($id_course) = sql_fetch_row($result_course))
 		{
@@ -2118,7 +2187,7 @@ function getSubscribed($id_course, $subdived_for_level = false, $id_level = fals
  *
  * @return array	contains the id_user of the user subscribed, the structure is dependent of the other param
  */
-function getSubscribedInfo($id_course, $subdived_for_level = false, $id_level = false, $exclude_waiting = false, $status = false, $edition_id = false, $sort = false, $user_filter = '', $group_all_members = false, $limit = false) {
+function getSubscribedInfo($id_course, $subdived_for_level = false, $id_level = false, $exclude_waiting = false, $status = false, $edition_id = false, $sort = false, $user_filter = '', $group_all_members = false, $limit = false, $date_id = false) {
 
 	$acl_man	=& Docebo::user()->getAclManager();
 	$id_users 	= array();
@@ -2143,6 +2212,18 @@ function getSubscribedInfo($id_course, $subdived_for_level = false, $id_level = 
 		$ed_users = $ed_man->getEditionSubscribed($edition_id);
 		if (!empty($ed_users))
 			$query_courseuser .= " AND c.idUser IN (".implode(",", $ed_users).")";
+	}
+	if($date_id !== false && $date_id > 0) {
+                require_once(_lms_.'/lib/lib.date.php');
+		$date_man = new DateManager();
+		$dt_users_arr = $date_man->getUserForPresence($date_id);
+                $dt_users = array_keys ($dt_users_arr);
+		if (!empty($dt_users)){
+			$query_courseuser .= " AND c.idUser IN (".implode(",", $dt_users).")";
+                } else {
+                    // se per quella data o edizione non è iscritto nessun utente
+                    $query_courseuser .= " AND c.idUser IN (-1)";
+                }
 	}
 	if($user_filter !== '')
 		$query_courseuser .= " AND (u.firstname LIKE '%".$user_filter."%' OR u.lastname LIKE '%".$user_filter."%' OR u.userid LIKE '%".$user_filter."%')";

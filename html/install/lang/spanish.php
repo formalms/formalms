@@ -22,10 +22,10 @@ define("_INSTALLER_INTRO_TEXT", "	Forma es una compañia que ha desarrollado su 
 		<li>Soporte de redes sociales como <b>Google Apps</b>, <b>Facebook</b>, <b>Twitter</b> e <b>Linkedin</b></li>
 		<li>Sistema de reportes e inteligencia de negocios completamente personalizable</li>
 		<li>Caracteristicas de sub-administradores y gestor de area y pais.</li>
-		<li>Soporte multi-lenguaje y soporte LTR (izquierda a derecha) y RTL (derecha a izquierda). 18 lenguajes soportados</li>
+		<li>Soporte multi-lenguaje y soporte LTR (izquierda a derecha) y RTL (derecha a izquierda). 25 lenguajes soportados</li>
 		<li>Soporte para dispositivos moviles</li>
 	</ul>");
-	
+
 define("_TITLE_STEP2", "Paso 2: Informacion");
 define("_SERVERINFO","Informacion del servidor");
 define("_SERVER_SOFTWARE","Servidor del software : ");

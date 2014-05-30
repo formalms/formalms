@@ -1,4 +1,62 @@
 ---------------------------------------------------------------------------------------
+FORMA 1.2
+---------------------------------------------------------------------------------------
+
+1102 | Bug | Subscribing by code ignores course subscr dates and state
+1141 | Bug | Missing coursepath type info in catalog elements list
+1579 | Bug | "Hiding ""show result"" option in course config (unused and not working since Docebo 4)"
+1681 | Bug | Date selection calendar starting from 1970
+1770 | Bug | Edition courses available before/after the configured start-end dates
+1771 | Bug | Fatal error su importazione file GIFT nella question bank
+1773 | Bug | Scorm - XML error with selectSingleNode
+1788 | Bug | Report - schedule activation button not working
+1994 | Bug | Missing scorm stats for copied objects in stats area
+2151 | Bug | Course listed in catalog even if supscriptions are closed or expired
+2269 | Bug | Question Bank - error in question category display
+2323 | Bug | Temporized test with % scores marked complete when time is elapsed
+2408 | Bug | Template - trunked logo in user registration page
+2464 | Bug | Can't edit course subcategories if main category has apostrophe
+2466 | Bug | Autenicazione con token variabile mediante protocollo SOAP
+2469 | Bug | Administrators can see all user waiting for approval (not only his own)
+2480 | Bug | Added and fixed tranlation keys
+2481 | Bug | Fixed maximum number of login attempts
+2510 | Bug | Enrollment rules by groups not working with advanced registration
+2550 | Bug | Catalog - Course categories appearing twice  when moved inside another category
+2555 | Bug | Missing content library in new 1.1 installations
+2563 | Bug | Error in WSDL generation
+2565 | Bug | Catalog - wrong popup on edition courses subscribe
+2566 | Bug | Error in createUser SOAP
+2568 | Bug | SOAP protocol with PHP > 5.2
+2587 | Bug | LO Properties - error saving publish date
+2646 | Bug | TEST - Preselected answers when browsing back in multipage tests
+2671 | Bug | Group enrollment policy not working with advanced registration
+2696 | Bug | Error sending a notification via SMTP
+2736 | Bug | Gradebook - History of scorm scores not shown
+2786 | Bug | Fixed PHP 5.4 issues (Call-time pass-by-reference)
+2828 | Bug | Template - fixed size and overflow for course duplication popup
+2847 | Bug | Enrollment rules - Base policy now working for user self-registering in orgchart root
+2868 | Bug | API - Fixed user and course REST api library
+2901 | Bug | Errors running the lms under HTTPS and proxy
+2948 | Bug | Timezone - removed from bootstrap/added to config file
+2958 | Bug | User permissions not working for middlearea modules
+2961 | Bug | Session Time and Total time not correct (mysql timezone problem)
+2965 | Bug | Multiple Subscription - Fixed role and added organization/groups select
+2966 | Bug | PayPal - price not sent if apostrophe in course title
+484 | Change Request | Auto-subscribe option for course creator
+491 | Change Request | New Event - user course unsubscribe
+493 | Change Request | Curricula - hide moderated subscribe in config
+811 | Change Request | New edition filter in classroom courses stats
+1011 | Change Request | Removed unused and duplicate columns in list of curricula
+1056 | Change Request | Content Library - Display object type icons
+1075 | Change Request | Free self-subscription option (no double opt-in)
+1104 | Change Request | Improved course stats panel (added failed items count)
+2203 | Change Request | GradeBook - Link to test stats available with view permission
+2390 | Change Request | Export test questions to question bank
+2693 | Change Request | Added m4a mime-type
+2845 | Change Request | Export list of subscription codes
+3057 | Change Request | BigBlueButton integration
+
+---------------------------------------------------------------------------------------
 FORMA 1.1
 ---------------------------------------------------------------------------------------
 498 | Bug | Improved PHP5.4 compatibility

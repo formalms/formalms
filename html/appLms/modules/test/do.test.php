@@ -950,6 +950,12 @@ function showResult( $object_test, $id_param ) {
 	WHERE q.idTest = '".$id_test."' AND q.type_quest = t.type_quest AND q.idQuest IN (".implode($quest_see, ',').") 
 	ORDER BY q.sequence");
 	
+	//#2093: Conto le domande
+	$tot_questions=0;
+	$tot_answers=0;
+	$tot_rightanswers=0;
+	$tot_questions= $test_man->getNumberOfQuestion();
+
 	while(list($id_quest, $type_quest, $type_file, $type_class, $id_cat) = sql_fetch_row($reQuest)) {
 		
 		require_once($GLOBALS['where_lms'].'/modules/question/'.$type_file);
@@ -963,6 +969,11 @@ function showResult( $object_test, $id_param ) {
 			++$num_manual;
 			$manual_score = round($manual_score + $quest_max_score, 2);
 		}
+		
+		//#2093: Conto le risposte, conto le risposte corrette
+		$tot_answers++;
+		if($quest_point_do == $quest_max_score) $tot_rightanswers++;
+
 		$point_do = round($point_do + $quest_point_do, 2);
 		$max_score = round($max_score + $quest_max_score, 2);
 		if(isset($point_do_cat[$id_cat])) {
@@ -974,7 +985,13 @@ function showResult( $object_test, $id_param ) {
 
 	if($test_info['point_type'] == '1') { // percentage score (%)
 		// x:100=$point_do:$max_score
-		$point_do =round(100*$point_do/$max_score);
+		//#2093: calcolo effettivo solo se ho tutte le risposte
+		if ($tot_questions==$tot_answers){
+			$point_do =round(100*$point_do/$max_score);//$max_score$test_info['point_required']
+		}
+		else{
+			$point_do =round(100*$tot_rightanswers/$tot_questions);//$max_score$test_info['point_required']
+		}
 	}
 	$save_score = $point_do;
 
@@ -1077,7 +1094,8 @@ function showResult( $object_test, $id_param ) {
 	
 	if($test_info['show_score'] && $test_info['point_type'] != '1') {
 		
-		$GLOBALS['page']->add('<span class="test_score_note">'.$lang->def('_TEST_TOTAL_SCORE').'</span> '.($point_do + $bonus_score).' / '.$max_score.'<br />', 'content');
+		//$GLOBALS['page']->add('<span class="test_score_note">'.$lang->def('_TEST_TOTAL_SCORE').'</span> '.($point_do + $bonus_score).' / '.$max_score.'<br />', 'content');
+		$GLOBALS['page']->add('<span class="test_score_note">'.$lang->def('_TEST_TOTAL_SCORE').'</span> '.($point_do + $bonus_score).' / 100<br />', 'content');
 		if($num_manual != 0 && $score_status != 'valid') {
 			$GLOBALS['page']->add('<br />'
 				.'<span class="test_score_note">'.$lang->def('_TEST_MANUAL_SCORE').'</span> '.$manual_score.' '.$lang->def('_TEST_SCORES').'<br />', 'content');

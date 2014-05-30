@@ -456,8 +456,14 @@ function entrylist() {
 	}
 	if(is_array($coursespath_name)) {
 		while(list($id, $coursepath) = each($coursespath_name)) {
-
-			$cont = array($coursepath, $lang->def('_COURSEPATH'));
+            
+            $cont = array($coursepath, $lang->def('_COURSEPATH'));
+            // #bugfix 1141
+            $tmp_code = $coursepath_man->getCoursepathInfo($id);
+            $path_code =  $tmp_code['path_code'];
+            array_unshift($cont, $path_code);
+            // end bugfix
+            
 			if($mod_perm) {
 				if(isset($admin_courses['coursepath'][$id]) || $all_courses)
 					$cont[] = '<a href="index.php?modname=catalogue&amp;op=delentry&amp;id_cat='.$id_cat.'&amp;type=coursepath&amp;id_entry='.$id.'" '
