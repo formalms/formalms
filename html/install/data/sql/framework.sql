@@ -2207,6 +2207,14 @@ CREATE TABLE IF NOT EXISTS `core_setting` (
 
 INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES
 ('accessibility', 'off', 'enum', 255, '0', 8, 5, 1, 0, ''),
+('bbb_server', 'http://test-install.blindsidenetworks.com/bigbluebutton/', 'string', 255, 'bbb', 6, 1, 1, 0, ''),
+('bbb_user', '', 'string', 255, 'bbb', 6, 2, 1, 0, ''),
+('bbb_salt', 'to be changed with a complex string', 'string', 255, 'bbb', 6, 3, 1, 0, ''),
+('bbb_password_moderator', 'password.moderator', 'string', 255, 'bbb', 6, 4, 1, 0, ''),
+('bbb_password_viewer', 'password.viewer', 'string', 255, 'bbb', 6, 5, 1, 0, ''),
+('bbb_max_mikes', '2', 'string', 255, 'bbb', 6, 6, 1, 0, ''),
+('bbb_max_participant', '300', 'string', 255, 'bbb', 6, 7, 1, 0, ''),
+('bbb_max_room', '999', 'string', 255, 'bbb', 6, 8, 1, 0, ''),
 ('code_teleskill', '', 'string', 255, 'teleskill', 6, 3, 1, 0, ''),
 ('common_admin_session', 'on', 'enum', 3, 'security', 8, 24, 1, 0, ''),
 ('conference_creation_limit_per_user', '99999999999', 'string', 255, '0', 6, 0, 1, 0, ''),
