@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20140510</DATE>
+  <DATE>20140530</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -395,6 +395,14 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:27"><![CDATA[Chiedi un codice di accesso all'organigramma, il codice sarà scelto da un menu a tendina]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:27"><![CDATA[Chiedi un codice di accesso all'organigramma che deve essere inserito manualmente dall'utente]]></key>
         <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2014-05-10 12:43:27"><![CDATA[Chiedi un codice di accesso che è una combinazione tra codice organigramma e codice corso. Ogni porzione di codice deve essere formata da 10 caratteri per un totale di 20]]></key>
+        <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Massimo utenti Audio]]></key>
+        <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Massimo utenti per stanza]]></key>
+        <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Numero massimo di stanze]]></key>
+        <key id="configuration&amp;_BBB_PASSWORD_MODERATOR" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Password Moderatore BigBlueButton]]></key>
+        <key id="configuration&amp;_BBB_PASSWORD_VIEWER" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Password Partecipante BigBlueButton]]></key>
+        <key id="configuration&amp;_BBB_SALT" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Salt BigBlueButton]]></key>
+        <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Indirizzo server BigBlueButton]]></key>
+        <key id="configuration&amp;_BBB_USER" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Nome Utente BigBlueButton]]></key>
         <key id="configuration&amp;_CODE_TELESKILL" attributes="" save_date="2014-05-10 12:43:27"><![CDATA[Codice cliente]]></key>
         <key id="configuration&amp;_COMMON_ADMIN_SESSION" attributes="" save_date="2014-05-10 12:43:27"><![CDATA[Condividi la sessione pubblica con quella di amministrazione]]></key>
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2014-05-10 12:43:27"><![CDATA[Limita il numero di conferenze che possono essere pianificate da un singolo utente]]></key>
@@ -446,7 +454,7 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2014-05-10 12:43:27"><![CDATA[Mysql Collation]]></key>
         <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2014-05-10 12:43:27"><![CDATA[Mysql Encoding]]></key>
         <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2014-05-10 12:43:27"><![CDATA[Sql mode]]></key>
-        <key id="configuration&amp;_MYSQL_TIMEZONE" attributes="" save_date="2014-05-10 13:28:15"><![CDATA[Mysql Timezone]]></key>
+        <key id="configuration&amp;_MYSQL_TIMEZONE" attributes="" save_date="2014-05-10 15:45:12"><![CDATA[Mysql Timezone]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2014-05-10 12:43:27"><![CDATA[Versione di mysql]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2014-05-10 12:43:27"><![CDATA[Pausa tra un blocco e l'altro (secondi)]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2014-05-10 12:43:27"><![CDATA[Invia i messaggi a blocchi di (messaggi)]]></key>
@@ -2007,6 +2015,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-05-10 12:43:28"><![CDATA[Media]]></key>
         <key id="standard&amp;_BACK" attributes="" save_date="2014-05-10 12:43:28"><![CDATA[&lt;&lt; Indietro]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-05-10 12:43:28"><![CDATA[Ricerca standard]]></key>
+        <key id="standard&amp;_BBB" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Big Blue Button]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-05-10 12:43:28"><![CDATA[da]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-05-10 12:43:28"><![CDATA[Calendario]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-05-10 12:43:28"><![CDATA[Annulla]]></key>

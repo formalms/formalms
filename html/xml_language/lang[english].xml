@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20140512</DATE>
+  <DATE>20140530</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -393,6 +393,14 @@
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:10"><![CDATA[Ask for a tree code chosen by the user from a list in a dropdown menu]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:10"><![CDATA[Ask for a tree code that must be entered manually by the user]]></key>
         <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2014-05-10 12:43:10"><![CDATA[Ask for a combination of tree code and course code that must be entered manually by the user. Tree and course code must be composed of 10 characters each, in order to obtain a 20 characters code.]]></key>
+        <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Max Audio users]]></key>
+        <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Max users per room]]></key>
+        <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Max rooms]]></key>
+        <key id="configuration&amp;_BBB_PASSWORD_MODERATOR" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Moderator Password BigBlueButton]]></key>
+        <key id="configuration&amp;_BBB_PASSWORD_VIEWER" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Viewer Password BigBlueButton]]></key>
+        <key id="configuration&amp;_BBB_SALT" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Salt BigBlueButton]]></key>
+        <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Server address BigBlueButton]]></key>
+        <key id="configuration&amp;_BBB_USER" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Username BigBlueButton]]></key>
         <key id="configuration&amp;_CODE_TELESKILL" attributes="" save_date="2014-05-10 12:43:10"><![CDATA[Customer code]]></key>
         <key id="configuration&amp;_COMMON_ADMIN_SESSION" attributes="" save_date="2014-05-10 12:43:10"><![CDATA[Unify admin and public sessions]]></key>
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2014-05-10 12:43:10"><![CDATA[Limit for the number of conferences that can be planned by a single user]]></key>
@@ -2021,6 +2029,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-05-10 12:43:10"><![CDATA[Average]]></key>
         <key id="standard&amp;_BACK" attributes="" save_date="2014-05-10 12:43:10"><![CDATA[&lt;&lt; Back]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-05-10 12:43:10"><![CDATA[Basic search]]></key>
+        <key id="standard&amp;_BBB" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Big Blue Button]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-05-10 12:43:10"><![CDATA[by]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-05-10 12:43:10"><![CDATA[Calendar]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-05-10 12:43:10"><![CDATA[Cancel]]></key>
