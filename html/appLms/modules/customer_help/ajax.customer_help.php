@@ -12,9 +12,6 @@
 \ ======================================================================== */
 
 require_once(_base_.'/lib/lib.json.php');
-// Loads the class
-require_once('Browscap.php');
-
 
 
 function chelpCheckField($val) {
@@ -102,30 +99,10 @@ switch ($op) {
 		$msg .= $br_char."----------------------------------".$br_char;
         
         /** Getting client info */
-        $current_browser = null;
-//        try {
-//            // Create a new Browscap object (loads or creates the cache)
-//            $bc = new Browscap(_base_ . '/files');
-//            $bc->updateMethod = Browscap::UPDATE_LOCAL;
-//            $bc->localFile = realpath(dirname(__FILE__))."/browscap.ini";
-//            // Get information about the current browser's user agent
-//            $current_browser = $bc->getBrowser();
-//        } catch (Exception $e) {
-//            // if can't connect or get another exception
-//            $current_browser = null;
-//        }
 
         $msg .= $br_char . "---------- CLIENT INFO -----------" . $br_char;
         $msg .= "IP: " . $_SERVER['REMOTE_ADDR'] . $br_char;
-        if ($current_browser != null) {
-            $msg .= "BROWSER: " . $current_browser->Browser . " - " . $current_browser->Version . $br_char;
-            $msg .= "OS: " . $current_browser->Platform . " - " . $current_browser->Platform_Description . $br_char;
-            $msg .= "JS: " . ($current_browser->JavaScript == 1 ? "true" : "false") . $br_char;
-            $msg .= "COOKIES: " . ($current_browser->Cookies == 1 ? "true" : "false") . $br_char;
-        } else {
-            // print simple USER_AGENT string
-            $msg .= "USER AGENT: " . $_SERVER['HTTP_USER_AGENT'] . $br_char;
-        }
+        $msg .= "USER AGENT: " . $_SERVER['HTTP_USER_AGENT'] . $br_char;
         $msg .= "RESOLUTION: ".Get::req("help_req_resolution", DOTY_STRING, "") . $br_char;
         $msg .= "FLASH: ".Get::req("help_req_flash_installed", DOTY_STRING, "") . $br_char;
 
