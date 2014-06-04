@@ -64,11 +64,49 @@ var CustomerHelpShowPopUp = function() {
 				this.setBody(res.body);
 				this.center();
 				is_loaded = true;
+                /** Client info **/
+                
+                flash_installed = ((typeof navigator.plugins != "undefined" && typeof navigator.plugins["Shockwave Flash"] == "object") || (window.ActiveXObject && (new ActiveXObject("ShockwaveFlash.ShockwaveFlash")) != false));
+                if (flash_installed){
+                    var version = getFlashVersion(); 
+                    var vArr = version.split(',');
+                    flash_installed = vArr[0];
+                }
+                document.getElementById('help_req_resolution').value = 'width: '+screen.width+' height: '+screen.height;
+                document.getElementById('help_req_flash_installed').value = flash_installed;
 			}
 		},
 		failure: function() {},
 		scope: dialog
 	}, '');
+    
+    var getFlashVersion = function() {
+        try {
+            try {
+                var axo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash.6');
+                try {
+                    axo.AllowScriptAccess = 'always';
+                }
+                catch (e) {
+                    return '6,0,0';
+                }
+            }
+
+            catch (e) {
+            }
+
+            return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version').replace(/\D+/g, ',').match(/^,?(.+),?$/)[1];
+
+        } catch (e) {
+            try {
+                if (navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin) {
+                    return (navigator.plugins["Shockwave Flash 2.0"] || navigator.plugins["Shockwave Flash"]).description.replace(/\D+/g, ",").match(/^,?(.+),?$/)[1];
+                }
+            } catch (e) {
+            }
+        }
+        return '0,0,0';
+    }
 
 }
 

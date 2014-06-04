@@ -12,6 +12,10 @@
 \ ======================================================================== */
 
 require_once(_base_.'/lib/lib.json.php');
+// Loads the class
+require_once('Browscap.php');
+
+
 
 function chelpCheckField($val) {
 	$res = $val;
@@ -45,6 +49,8 @@ switch ($op) {
 		$body .= Form::getTextfield(Lang::t('_EMAIL', 'menu').':', 'help_req_email', 'help_req_email', 255, $user_email);
 		$body .= Form::getTextfield(Lang::t('_PHONE', 'classroom').':', 'help_req_tel', 'help_req_tel', 255, '');
 		$body .= Form::getSimpleTextarea(Lang::t('_TEXTOF', 'menu').':', 'help_req_text', 'help_req_text', '', false, false, 'textarea_full', 8,40);
+        $body .= Form::getHidden('help_req_resolution', 'help_req_resolution', '');
+        $body .= Form::getHidden('help_req_flash_installed', 'help_req_flash_installed', '');
 		$body .= Form::closeForm();
 
 		$output = array(
@@ -94,8 +100,33 @@ switch ($op) {
 		//$msg .= chelpCheckField(Get::req("help_req_txt", DOTY_STRING, ""));
 		$msg .= Get::req("help_req_text", DOTY_STRING, "");
 		$msg .= $br_char."----------------------------------".$br_char;
+        
+        /** Getting client info */
+        try {
+            // Create a new Browscap object (loads or creates the cache)
+            $bc = new Browscap(_base_ . '/files');
+            // Get information about the current browser's user agent
+            $current_browser = $bc->getBrowser();
+        } catch (Exception $e) {
+            // if can't connect or get another exception
+            $current_browser = null;
+        }
 
-		$mailer = new DoceboMailer();
+        $msg .= $br_char . "---------- CLIENT INFO -----------" . $br_char;
+        $msg .= "IP: " . $_SERVER['REMOTE_ADDR'] . $br_char;
+        if ($current_browser != null) {
+            $msg .= "BROWSER: " . $current_browser->Browser . " - " . $current_browser->Version . $br_char;
+            $msg .= "OS: " . $current_browser->Platform . " - " . $current_browser->Platform_Description . $br_char;
+            $msg .= "JS: " . ($current_browser->JavaScript == 1 ? "true" : "false") . $br_char;
+            $msg .= "COOKIES: " . ($current_browser->Cookies == 1 ? "true" : "false") . $br_char;
+        } else {
+            // print simple USER_AGENT string
+            $msg .= "USER AGENT: " . $_SERVER['HTTP_USER_AGENT'] . $br_char;
+        }
+        $msg .= "RESOLUTION: ".Get::req("help_req_resolution", DOTY_STRING, "") . $br_char;
+        $msg .= "FLASH: ".Get::req("help_req_flash_installed", DOTY_STRING, "") . $br_char;
+
+        $mailer = new DoceboMailer();
 		$mailer->IsHTML(true);
 		$res = $mailer->SendMail($user_email, $help_email, $subject, $msg);
 		
