@@ -102,17 +102,18 @@ switch ($op) {
 		$msg .= $br_char."----------------------------------".$br_char;
         
         /** Getting client info */
-        try {
-            // Create a new Browscap object (loads or creates the cache)
-            $bc = new Browscap(_base_ . '/files');
-            $bc->updateMethod = Browscap::UPDATE_LOCAL;
-            $bc->localFile = realpath(dirname(__FILE__))."/browscap.ini";
-            // Get information about the current browser's user agent
-            $current_browser = $bc->getBrowser();
-        } catch (Exception $e) {
-            // if can't connect or get another exception
-            $current_browser = null;
-        }
+        $current_browser = null;
+//        try {
+//            // Create a new Browscap object (loads or creates the cache)
+//            $bc = new Browscap(_base_ . '/files');
+//            $bc->updateMethod = Browscap::UPDATE_LOCAL;
+//            $bc->localFile = realpath(dirname(__FILE__))."/browscap.ini";
+//            // Get information about the current browser's user agent
+//            $current_browser = $bc->getBrowser();
+//        } catch (Exception $e) {
+//            // if can't connect or get another exception
+//            $current_browser = null;
+//        }
 
         $msg .= $br_char . "---------- CLIENT INFO -----------" . $br_char;
         $msg .= "IP: " . $_SERVER['REMOTE_ADDR'] . $br_char;
