@@ -105,6 +105,8 @@ switch ($op) {
         try {
             // Create a new Browscap object (loads or creates the cache)
             $bc = new Browscap(_base_ . '/files');
+            $bc->updateMethod = Browscap::UPDATE_LOCAL;
+            $bc->localFile = realpath(dirname(__FILE__))."/browscap.ini";
             // Get information about the current browser's user agent
             $current_browser = $bc->getBrowser();
         } catch (Exception $e) {
