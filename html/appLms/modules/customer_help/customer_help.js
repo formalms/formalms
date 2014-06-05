@@ -72,13 +72,34 @@ var CustomerHelpShowPopUp = function() {
                     var vArr = version.split(',');
                     flash_installed = vArr[0];
                 }
-                document.getElementById('help_req_resolution').value = 'width: '+screen.width+' height: '+screen.height;
+                screen_size = getScreenSize();
+                document.getElementById('help_req_resolution').value = 'width: '+screen_size.width+' height: '+screen_size.height;
                 document.getElementById('help_req_flash_installed').value = flash_installed;
 			}
 		},
 		failure: function() {},
 		scope: dialog
 	}, '');
+    
+    var getScreenSize = function() {
+        //IE
+        if (!window.innerWidth) {
+            if (!(document.documentElement.clientWidth == 0)) {
+                //strict mode
+                w = document.documentElement.clientWidth;
+                h = document.documentElement.clientHeight;
+            } else {
+                //quirks mode
+                w = document.body.clientWidth;
+                h = document.body.clientHeight;
+            }
+        } else {
+            //w3c
+            w = window.innerWidth;
+            h = window.innerHeight;
+        }
+        return {width: w, height: h};
+    }
     
     var getFlashVersion = function() {
         try {
