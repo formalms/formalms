@@ -5,6 +5,7 @@
 	    <!--Fix funzionamento scorm su IE9-->
         <meta http-equiv="x-ua-compatible" content="IE=8"></meta>
         <!--END -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
 		<title><?php echo Layout::title(); ?></title>
 		<?php echo Layout::zone('meta'); ?>
