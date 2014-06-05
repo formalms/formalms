@@ -82,31 +82,15 @@ var CustomerHelpShowPopUp = function() {
 	}, '');
     
     var getScreenSize = function() {
-        //IE
-        if (!window.innerWidth) {
-            if (!(document.documentElement.clientWidth == 0)) {
-                //strict mode
-                w = document.documentElement.clientWidth;
-                h = document.documentElement.clientHeight;
-            } else {
-                //quirks mode
-                w = document.body.clientWidth;
-                h = document.body.clientHeight;
-            }
-        } else {
-            //w3c
-            w = window.innerWidth;
-            h = window.innerHeight;
-        }
         var mql = window.matchMedia("(orientation: portrait)");
 
         // If there are matches, we're in portrait
         if(mql.matches) {  
           // Portrait orientation
-         return {width: h, height: w};
+         return {width: screen.width, height: screen.height};
         } else {  
           // Landscape orientation
-          return {width: w, height: h};
+          return {width: screen.height, height: screen.width};
         }        
         
     }
