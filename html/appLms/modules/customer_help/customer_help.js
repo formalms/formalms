@@ -98,7 +98,17 @@ var CustomerHelpShowPopUp = function() {
             w = window.innerWidth;
             h = window.innerHeight;
         }
-        return {width: w, height: h};
+        var mql = window.matchMedia("(orientation: portrait)");
+
+        // If there are matches, we're in portrait
+        if(mql.matches) {  
+          // Portrait orientation
+         return {width: h, height: w};
+        } else {  
+          // Landscape orientation
+          return {width: w, height: h};
+        }        
+        
     }
     
     var getFlashVersion = function() {
