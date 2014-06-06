@@ -109,6 +109,12 @@ img.course_logo {
 	margin-right:10px;
 	}
 
+img.course_logo.sponsor {
+  float: left;
+  margin: -200px -720px;
+  width: auto;
+}
+
 .yui-t3 #course-info h1 {
 	float: left;
 	margin: 0 0 .6em 0;
