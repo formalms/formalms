@@ -69,11 +69,10 @@ INSERT IGNORE INTO `learning_menu_under`
 (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES
 (8, 1, 'coursecategory', '_COURSECATEGORY', '', 'view', NULL, 4, '', '', 'alms/coursecategory/show');
 
-INSERT IGNORE INTO `core_lang_text` (`id_text` ,`text_key` ,`text_module` ,`text_attributes`) VALUES
-(NULL , '_COURSECATEGORY', 'standard', '');
+INSERT IGNORE INTO `core_lang_text` (`id_text` ,`text_key` ,`text_module` ,`text_attributes`) VALUES (NULL , '_COURSECATEGORY', 'standard', '');
 
-INSERT IGNORE INTO `core_lang_translation` ( `id_text`, `lang_code`,  `translation_text`, `save_date` ) VALUES
-(LAST_INSERT_ID(), 'english', 'Course categories', now());
+-- INSERT IGNORE INTO `core_lang_translation` ( `id_text`, `lang_code`,  `translation_text`, `save_date` ) VALUES
+-- ((SELECT lt.id_text from core_lang_text lt where lt.text_key = '_COURSECATEGORY' AND lt.text_module = 'standard'), 'english', 'Course categories', now());
 
 INSERT IGNORE INTO `core_role` (`idst`, `roleid`, `description`) VALUES (228, '/lms/admin/coursecategory/add', NULL);
 INSERT IGNORE INTO `core_role` (`idst`, `roleid`, `description`) VALUES (229, '/lms/admin/coursecategory/mod', NULL);
