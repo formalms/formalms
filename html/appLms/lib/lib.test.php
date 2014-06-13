@@ -1037,7 +1037,7 @@ class PlayTestManagement {
 						}
 					}
 
-					if (count($queries)>0)  {echo "(".implode(") UNION (", $queries).") ORDER BY RAND() LIMIT 0,1";
+					if (count($queries)>0)  {//NODEBUG echo "(".implode(") UNION (", $queries).") ORDER BY RAND() LIMIT 0,1";
 						return "(".implode(") UNION (", $queries).") ORDER BY RAND() LIMIT 0,1";}
 					else
 						return "";
