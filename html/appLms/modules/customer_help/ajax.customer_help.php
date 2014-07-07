@@ -174,7 +174,7 @@ switch ($op) {
             $platform = 'Chrome OS';
         }
 
-        preg_match_all('%(?P<browser>Camino|Kindle(\ Fire\ Build)?|Firefox|Iceweasel|Safari|MSIE|Trident/.*rv|AppleWebKit|Chrome|IEMobile|Opera|OPR|Silk|Lynx|Midori|Version|Wget|curl|NintendoBrowser|PLAYSTATION\ (\d|Vita)+)
+        preg_match_all('%(?P<browser>Camino|Kindle(\ Fire\ Build)?|Firefox|Iceweasel|Safari|MSIE|Trident/.*rv|AppleWebKit|Chrome|CriOS|IEMobile|Opera|OPR|Silk|Lynx|Midori|Version|Wget|curl|NintendoBrowser|PLAYSTATION\ (\d|Vita)+)
     (?:\)?;?)
     (?:(?:[:/ ])(?P<version>[0-9A-Z.]+)|/(?:[A-Z]*))%ix', $u_agent, $result, PREG_PATTERN_ORDER);
 
@@ -227,7 +227,7 @@ switch ($op) {
         } elseif ($find('Midori', $key)) {
             $browser = 'Midori';
             $version = $result['version'][$key];
-        } elseif ($find('Chrome', $key)) {
+        } elseif ($find('Chrome', $key) || $find('CriOS', $key)) {
             $browser = 'Chrome';
             $version = $result['version'][$key];
         } elseif ($browser == 'AppleWebKit') {
