@@ -148,7 +148,7 @@ function editcustom($load = false) {
 		}
 	} else {
 		
-		$id_custom = importVar('id_custom');
+		$id_custom = importVar('id_custom', true);
 		$query_custom = "
 		SELECT title, description 
 		FROM ".$GLOBALS['prefix_lms']."_menucustom

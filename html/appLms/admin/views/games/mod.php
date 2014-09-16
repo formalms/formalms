@@ -7,7 +7,7 @@ echo getTitleArea(array(
 <div class="std_block">
 	<?php
 	echo Form::openForm('add_comm', 'index.php?r=alms/games/update', false, false, 'multipart/form-data')
-	. Form::getHidden('id_game', 'id_game', Get::req('id_game', DOTY_MIXED, $data['id_game']))
+	. Form::getHidden('id_game', 'id_game', Get::req('id_game', DOTY_INT, $data['id_game']))
 	. Form::openElementSpace()
 	. Form::getTextfield(Lang::t('_TITLE', 'games'), 'title', 'title', 255, Get::req('title', DOTY_MIXED, $data['title']))
 	. Form::getDatefield(Lang::t('_START_DATE', 'games'), 'start_date', 'start_date', Get::req('start_date', DOTY_MIXED, $data['start_date']))
