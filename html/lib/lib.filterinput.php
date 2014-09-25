@@ -55,8 +55,8 @@ class FilterInput {
 		}
 
 	}
-	
-	
+
+
 	protected function loadTool() {
 		// load the tool that we want to use in the xss filtering process
 		switch($this->tool) {
@@ -80,7 +80,7 @@ class FilterInput {
 					if (in_array('object', $this->getWhitelist('tag'))) {
 						$config->set('HTML.SafeObject', true);
 						$config->set('Output.FlashCompat', true);
-					}					
+					}
 				}
 
 				if (count($this->getWhitelist('attrib')) > 0) {
@@ -90,7 +90,7 @@ class FilterInput {
 				}
 
 				$config->set('HTML.TidyLevel', 'none');
-				$this->html_purifier = new HTMLPurifier($config);				
+				$this->html_purifier = new HTMLPurifier($config);
 			};break;
 			case 'htmlawed' : {
 
@@ -146,14 +146,14 @@ class FilterInput {
 		return $res;
 	}
 
-	
+
 	protected function getHtmlPurifierDefaultElements() {
-		$temp = HTMLPurifier_Config::createDefault();		
+		$temp = HTMLPurifier_Config::createDefault();
 		$def =$temp->getHTMLDefinition();
 		ksort($def->info);
 		$res =array_keys($def->info);
 		unset($temp);
-		
+
 		return $res;
 	}
 
@@ -173,18 +173,18 @@ class FilterInput {
 		return $res;
 	}
 
-	
+
 	/**
 	 * @param array $data
-	 * @return array 
+	 * @return array
 	 */
 	public function clean($data) {
 		// load the tool that we want to use in the xss filtering process
 		$this->loadTool();
-		
+
 		return $this->clean_input_data($data);
 	}
-	
+
 
 	/**
 	 * This is a helper function. It escapes data and standardizes newline characters to '\n'.
@@ -226,7 +226,7 @@ class FilterInput {
 	 * @return  string
 	 */
 	protected function clean_input_keys($str) {
-		if ( ! preg_match('#^[&a-zA-Z0-9\.:_/-\s]+$#uD', $str)) {
+		if ( ! preg_match('#^[&a-zA-Z0-9\.\/\\:_\s-]+$#uD', $str)) {
 			exit('Disallowed key characters in global data.');
 		}
 
