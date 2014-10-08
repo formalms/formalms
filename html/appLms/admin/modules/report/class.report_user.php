@@ -964,6 +964,7 @@ class Report_User extends Report {
 			unset($admin_users);
 
 			//filter courses
+			$admin_allcourses = false;
 			$admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
 			if (!$filter_allcourses)
 			{
@@ -975,6 +976,7 @@ class Report_User extends Report {
 			if(isset($admin_courses['course'][0]))
 			{
 				//No filter
+				$admin_allcourses = true;
 			}
 			elseif(isset($admin_courses['course'][-1]))
 			{
@@ -1004,6 +1006,9 @@ class Report_User extends Report {
 
 				if(!empty($admin_courses['course']))
 				{
+					$rs = sql_query("SELECT idCourse FROM %lms_course");
+					$course_selected = array();
+					while (list($id_course) = sql_fetch_row($rs)) { $course_selected[] = $id_course; }		
 					$_clist = array_values($admin_courses['course']);
 					$course_selected = array_intersect($course_selected, $_clist);
 				}
@@ -1036,6 +1041,9 @@ class Report_User extends Report {
 
 				if(!empty($admin_courses['course']))
 				{
+					$rs = sql_query("SELECT idCourse FROM %lms_course");
+					$course_selected = array();
+					while (list($id_course) = sql_fetch_row($rs)) { $course_selected[] = $id_course; }	
 					$_clist = array_values($admin_courses['course']);
 					$course_selected = array_intersect($course_selected, $_clist);
 				}
@@ -1047,6 +1055,9 @@ class Report_User extends Report {
 			
 			if(!$filter_allcourses) $filter_courseselection = array_intersect($filter_courseselection, $course_selected);
 			else $filter_courseselection = $course_selected;
+			if ($filter_allcourses && $admin_allcourses)
+				$filter_allcourses = true;
+			else
 			$filter_allcourses = false;
 		}
 		$show_classrooms_editions = isset($filter_columns['show_classrooms_editions']) ? (bool)$filter_columns['show_classrooms_editions'] : false;
