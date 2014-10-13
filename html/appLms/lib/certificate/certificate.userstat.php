@@ -239,8 +239,8 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 				? $score_final[$this->id_course][$this->id_user]['max_score']
 				: '100' );
 
-			$subs['[course_score_final]'] 	= ( isset($score_course[$this->id_course][$this->id_user]) ? $score_course[$this->id_course][$this->id_user]['score'] : '' );
-			$subs['[course_score_final_max]'] = ( isset($score_course[$this->id_course][$this->id_user]) ? $score_course[$this->id_course][$this->id_user]['max_score'] : '' );
+			$subs['[course_score_final]'] 	= ( isset($score_course[$this->id_user][$this->id_course]) ? $score_course[$this->id_user][$this->id_course]['score'] : '' );
+			$subs['[course_score_final_max]'] = ( isset($score_course[$this->id_user][$this->id_course]) ? $score_course[$this->id_user][$this->id_course]['max_score'] : '' );
 
 			require_once($GLOBALS['where_lms'].'/lib/lib.track_user.php');
 			$time_in = TrackUser::getUserTotalCourseTime($this->id_user, $this->id_course);
