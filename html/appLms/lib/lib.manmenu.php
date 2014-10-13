@@ -34,7 +34,7 @@ function cerateCourseMenuFromCustom($id_custom, $id_course, $group_idst) {
 	INSERT INTO %lms_menucourse_main (idCourse, sequence, name, image ) VALUES";
 	while(list($id_main, $seq, $name, $image) = sql_fetch_row($re_main)) {
 		
-		if(!sql_query($query_ins_main." ( '".$id_course."','".$seq."', '".$name."', '".$image."')") ) {
+		if(!sql_query($query_ins_main." ( '".$id_course."','".$seq."', '".addslashes($name)."', '".$image."')") ) {
 			
 			$map_main_id[$id_main] = false;
 		} else {
