@@ -244,17 +244,7 @@ function coursereport() {
 						$my_action = '';
 						$a_line_2[] = '';
 				} else {
-					$my_action = '<li><a href="index.php?modname=coursereport&amp;op=modactivityscore&amp;id_report='.$info_report['id_report'].'" '
-						.'title="'.$lang->def('_CHANGE_ACTIVITY_VOTE').'">'
-						.'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').'" /> '
-						.$title.'</a></li>'
-
-						.'<li><a href="index.php?modname=coursereport&amp;op=delactivity&amp;id_report='.$info_report['id_report'].'" '
-						.'title="'.$lang->def('_DELETE_ACTIVITY_VOTE').' : '.$title.'">'
-						.'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').' : '.$title.'" />'
-						.'</a></li>';
-
-					$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=modactivityscore&amp;id_report='.$info_report['id_report'].'"><span><span>'.$lang->def('_CHANGE_ACTIVITY_VOTE').'</span></a>'
+					$my_action =	$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=modactivityscore&amp;id_report='.$info_report['id_report'].'&amp;source_of='.$info_report['source_of'].'&amp;id_source='.$info_report['id_source'].'"><span><span>'.$lang->def('_CHANGE_ACTIVITY_VOTE').'</span></a>'
 									.' <a class="ico-sprite subs_del" href="index.php?modname=coursereport&amp;op=delactivity&amp;id_report='.$info_report['id_report'].'"><span><span>'.$lang->def('_DELETE_ACTIVITY_VOTE').'</span></a>';
 
 					$a_line_2[] = '<a href="index.php?modname=coursereport&amp;op=roundreport&amp;id_report='.$info_report['id_report'].'" '
@@ -268,17 +258,7 @@ function coursereport() {
 						$my_action = '';
 						$a_line_2[] = '';
 				} else {
-					$my_action = '<li><a href="index.php?modname=coursereport&amp;op=modactivityscore&amp;id_report='.$info_report['id_report'].'" '
-						.'title="'.$lang->def('_EDIT_SCORE').'">'
-						.'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').'" /> '
-						.$title.'</a></li>'
-
-						.'<li><a href="index.php?modname=coursereport&amp;op=delactivity&amp;id_report='.$info_report['id_report'].'" '
-						.'title="'.$lang->def('_DEL').' : '.$title.'">'
-						.'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').' : '.$title.'" />'
-						.'</a></li>';
-
-					$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=modactivityscore&amp;id_report='.$info_report['id_report'].'"><span><span>'.$lang->def('_CHANGE_ACTIVITY_VOTE').'</span></a>'
+					$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=modactivityscore&amp;id_report='.$info_report['id_report'].'&amp;source_of='.$info_report['source_of'].'&amp;id_source='.$info_report['id_source'].'"><span><span>'.$lang->def('_CHANGE_ACTIVITY_VOTE').'</span></a>'
 									.' <a class="ico-sprite subs_del" href="index.php?modname=coursereport&amp;op=delactivity&amp;id_report='.$info_report['id_report'].'"><span><span>'.$lang->def('_DELETE_ACTIVITY_VOTE').'</span></a>';
 
 					$a_line_2[] = '<a href="index.php?modname=coursereport&amp;op=roundreport&amp;id_report='.$info_report['id_report'].'" '
@@ -294,12 +274,7 @@ function coursereport() {
 						$my_action = '';
 						$a_line_2[] = '';
 				} else {
-					$my_action = '<li><a href="index.php?modname=coursereport&amp;op=finalvote&amp;id_report='.$info_report['id_report'].'" '
-						.'title="'.$lang->def('_EDIT_SCORE').' : '.$title.'">'
-						.'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').'" /> '
-						.$title.'</a></li>';
-
-					$my_action = '<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=finalvote&amp;id_report='.$info_report['id_report'].'"><span><span>'.$lang->def('_EDIT_SCORE').'</span></a>';
+                    $my_action = '<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=finalvote&amp;id_report='.$info_report['id_report'].'"><span><span>'.$lang->def('_EDIT_SCORE').'</span></a>';
 
 					$a_line_2[] = ''
 							.'<a href="index.php?modname=coursereport&amp;op=redofinal&amp;id_report='.$info_report['id_report'].'" '
@@ -1883,8 +1858,8 @@ function modscorm()
 	{
 		$report_man = new CourseReportManager();
 		// check input
-		if($_POST['title'] == '')
-			$_POST['title'] = $lang->def('_NOTITLE');
+		if($_POST['titolo'] == '')
+            $_POST['titolo'] = $lang->def('_NOTITLE');
 		//MODIFICHE NUOVISSIMISSIME
 		$query_report = "
 		SELECT  *
@@ -1893,7 +1868,11 @@ function modscorm()
 		//echo $query_report;
 		$risultato=sql_query($query_report);
 		$titolo2=sql_fetch_assoc($risultato);
-		$_POST['titolo']=$_POST['titolo']." - ".$titolo2['title'];
+        
+        // if module title is equals to main title don't append it
+        if ($titolo2['title']!=$_POST['titolo']){
+            $_POST['titolo']=$_POST['titolo']." - ".$titolo2['title'];
+        }
 
 		$_POST['title']=$_POST['titolo'];
 		$re_check = $report_man->checkActivityData($_POST);
@@ -2183,6 +2162,7 @@ function modactivityscore() {
 			'title' => importVar('title'),
 			'max_score' => importVar('max_score', true),
 			'required_score' => importVar('required_score', true),
+            'source_of' => importVar('source_of'),
 			'weight' => importVar('weight', true),
 			'show_to_user' => importVar('show_to_user', false, 'true'),
 			'use_for_final' => importVar('use_for_final', false, 'true')
@@ -2191,10 +2171,10 @@ function modactivityscore() {
 	} else {
 		// retirive activity info
 		$query_report = "
-		SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, id_source
+		SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, id_source, source_of
 		FROM ".$GLOBALS['prefix_lms']."_coursereport
 		WHERE id_course = '".$_SESSION['idCourse']."' AND id_report = '".$id_report."'
-				AND source_of = 'scoitem'"; // TBD AND id_source = '0'";
+				AND (source_of = 'scoitem' OR source_of = 'activity')"; // TBD AND id_source = '0'";
 		$info_report = sql_fetch_assoc(sql_query($query_report));
 
 		// XXX: retrive scores
@@ -2217,16 +2197,9 @@ function modactivityscore() {
 		if($_POST['title'] == '') $_POST['title'] = $lang->def('_NOTITLE');
 		$re_check = $report_man->checkActivityData($_POST);
 		if(!$re_check['error']) {
-			if(!$report_man->updateActivity($id_report, $_SESSION['idCourse'], $_POST)) {
+			if(!$report_man->updateActivity($id_report, $_SESSION['idCourse'], $info_report)) {
 				$out->add(getErrorUi($lang->def('_OPERATION_FAILURE')));
 			} else {
-                $query_upd_report = "
-				UPDATE ".$GLOBALS['prefix_lms']."_coursereport
-				SET weight = '".$info_report['weight']."',
-					use_for_final = '".$info_report['use_for_final']."',
-					show_to_user = '".$info_report['show_to_user']."'
-				WHERE id_course = '".$_SESSION['idCourse']."' AND id_report = '".$id_report."'";
-				$re = sql_query($query_upd_report);
 				// save user score modification
 				$re = $report_man->saveReportScore($id_report, $_POST['user_score'], $_POST['date_attempt'], $_POST['comment']);
 				Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&result='.( $re ? 'ok' : 'err' ));
@@ -2236,36 +2209,74 @@ function modactivityscore() {
 		}
 	}
 
-	$out->add(
-		// main form
-		Form::openElementSpace()
-		.Form::getOpenFieldSet($lang->def('_ACTIVITY_INFO'))
-		.Form::getHidden('id_report', 'id_report', $id_report)
-        .Form::getHidden('id_source', 'id_source', $info_report['id_source'])
-        .Form::getLinebox(	$lang->def('_TITLE_ACT'),
-                        strip_tags($info_report['title']) )
-        .Form::getLinebox(	$lang->def('_MAX_SCORE'),
-                        strip_tags($info_report['max_score']) )  
-        .Form::getLinebox(	$lang->def('_REQUIRED_SCORE'),
-                        strip_tags($info_report['required_score']) )    
-		.Form::getTextfield(	$lang->def('_WEIGHT'),
-								'weight',
-								'weight',
-								'11',
-								$info_report['weight'] )
-		.Form::getDropdown(		$lang->def('_SHOW_TO_USER'),
-								'show_to_user',
-								'show_to_user',
-								array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
-								$info_report['show_to_user'] )
-		.Form::getDropdown(		$lang->def('_USE_FOR_FINAL'),
-								'use_for_final',
-								'use_for_final',
-								array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
-								$info_report['use_for_final'] )
-		.Form::getCloseFieldSet()
-		.Form::closeElementSpace()
-	);
+	// main form
+    $out->add(
+            Form::openElementSpace()
+            . Form::getOpenFieldSet($lang->def('_ACTIVITY_INFO'))
+            . Form::getHidden('id_report', 'id_report', $id_report)
+            . Form::getHidden('id_source', 'id_source', $info_report['id_source'])
+            . Form::getHidden('source_of', 'source_of', $info_report['source_of'])
+    );
+    // for scorm object changing title, maxScore and requiredScore is not allowed
+    switch ($info_report['source_of']) {
+        case 'scoitem':
+            $out->add(
+                    Form::getLinebox(
+                            $lang->def('_TITLE_ACT'), 
+                            strip_tags($info_report['title']))
+                    . Form::getLinebox(
+                            $lang->def('_MAX_SCORE'), 
+                            strip_tags($info_report['max_score']))
+                    . Form::getLinebox(
+                            $lang->def('_REQUIRED_SCORE'), 
+                            strip_tags($info_report['required_score']))
+            );
+            break;
+        case 'activity':
+            $out->add(
+                    Form::getTextfield(
+                            $lang->def('_TITLE_ACT'), 
+                            'title', 
+                            'title', 
+                            '255', 
+                            $info_report['title'])
+                    . Form::getTextfield(
+                            $lang->def('_MAX_SCORE'), 
+                            'max_score', 
+                            'max_score', 
+                            '11', 
+                            $info_report['max_score'])
+                    . Form::getTextfield(
+                            $lang->def('_REQUIRED_SCORE'), 
+                            'required_score', 
+                            'required_score', 
+                            '11', 
+                            $info_report['required_score'])
+            );
+            break;
+    }
+    $out->add(
+            Form::getTextfield(
+                    $lang->def('_WEIGHT'), 
+                    'weight', 
+                    'weight', 
+                    '11', 
+                    $info_report['weight'])
+            . Form::getDropdown(
+                    $lang->def('_SHOW_TO_USER'), 
+                    'show_to_user', 
+                    'show_to_user', 
+                    array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')), 
+                    $info_report['show_to_user'])
+            . Form::getDropdown(
+                    $lang->def('_USE_FOR_FINAL'), 
+                    'use_for_final', 
+                    'use_for_final', 
+                    array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')), 
+                    $info_report['use_for_final'])
+            . Form::getCloseFieldSet()
+            . Form::closeElementSpace()
+    );
 
 	/* XXX: scores */
 	$tb = new Table(0, $lang->def('_STUDENTS_VOTE'), $lang->def('_STUDENTS_VOTE'));
