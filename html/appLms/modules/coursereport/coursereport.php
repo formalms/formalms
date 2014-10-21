@@ -663,7 +663,7 @@ function coursereport() {
                             array_push($results_activity, $score * $info_report['weight']);
                         }break;
                     case "final_vote" : {
-                            $divid = (count($results_test)) + (count($results_scorm_test)) + (count($results_activity));
+//                            $divid = (count($results_test)) + (count($results_scorm_test)) + (count($results_activity));
                             $first_value = 0;
                             foreach ($results_test as $value) {
                                 if (!is_numeric($value)) {
@@ -689,7 +689,7 @@ function coursereport() {
                             $results_scorm_test = array();
                             $results_test = array();
                             $results_activity = array();
-                            $media = (($first_value + $second_value + $third_value ) / $divid);
+                            $media = (($first_value + $second_value + $third_value ) / $total_weight);
                             $media = sprintf("%01.2f", round($media,2));
                             $cont[] = $media>0?$media:'<span class="cr_not_passed">-</span>';
                         };
