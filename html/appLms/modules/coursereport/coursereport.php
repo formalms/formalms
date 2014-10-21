@@ -591,7 +591,7 @@ function coursereport() {
                                 }
                             } else
                                 $cont[] = '-';
-                            if ($info_report['use_for_final']){
+                            if ($info_report['use_for_final']=='true'){
                                 array_push($results_test, $score * $info_report['weight']);
                             }
                         };
@@ -607,7 +607,7 @@ function coursereport() {
                             if ($report['score_raw'] == NULL)
                                 $report['score_raw'] = "-";
                             //$cont[] = '<span class="cr_passed">'.$report['score_max'].'</span>';
-                            if ($info_report['use_for_final']){
+                            if ($info_report['use_for_final']=='true'){
                                 array_push($results_scorm_test, $report['score_raw'] * $info_report['weight']);
                             }
                             $id_track = (isset($report['idscorm_tracking']) ? $report['idscorm_tracking'] : 0);
@@ -663,7 +663,7 @@ function coursereport() {
                             }else{
                                 $cont[] = '<span class="cr_not_passed">-</span>';
                             }
-                            if ($info_report['use_for_final']){
+                            if ($info_report['use_for_final']=='true'){
                                 array_push($results_activity, $score * $info_report['weight']);
                             }
                         }break;
