@@ -192,6 +192,7 @@ class DoceboMailer extends PHPMailer {
 				$this->SMTPAuth = false;
 			}
 			$this->SMTPSecure = Get::cfg('smtp_secure','');	// secure: '' , 'ssl', 'tsl'
+			$this->SMTPDebug = Get::cfg('smtp_debug',0);	// debug level 0,1,2,3,...
 		} else {
 			$this->IsMail();
 		}
