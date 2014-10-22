@@ -180,6 +180,9 @@ class DoceboMailer extends PHPMailer {
 			$this->IsSMTP();
 			$this->Hostname = Get::cfg('smtp_host');
 			$this->Host = Get::cfg('smtp_host');
+			if ( Get::cfg('smtp_port','') != '' ) {
+				$this->Port = Get::cfg('smtp_port');
+			}
 			$smtp_user =Get::cfg('smtp_user');
 			if (!empty($smtp_user)) {
 				$this->Username = $smtp_user;
@@ -188,6 +191,7 @@ class DoceboMailer extends PHPMailer {
 			} else {
 				$this->SMTPAuth = false;
 			}
+			$this->SMTPSecure = Get::cfg('smtp_secure','');	// secure: '' , 'ssl', 'tsl'
 		} else {
 			$this->IsMail();
 		}
