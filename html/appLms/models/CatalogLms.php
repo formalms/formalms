@@ -313,12 +313,22 @@ class CatalogLms extends Model
 					if($waiting)
 						$action .= '<p class="subscribed">'.Lang::t('_WAITING', 'catalogue').'</p>';
 					else {
-						// FORMA - MODIFICA TASTO ENTRA
-						//$action .= '<p class="subscribed">'.Lang::t('_USER_STATUS_SUBS', 'catalogue').'</p>';
-						$action .= '<a href="index.php?modname=course&op=aula&idCourse='.$row['idCourse'].' "'
-								.' title="'.$_text.'"><p class="subscribed">'
-								.Lang::t('_USER_STATUS_ENTER', 'catalogue').'</p>'
-								.'</a>';
+						
+						// #1995 Grifo multimedia LR								
+          	$query_lo =    "select org.idOrg, org.idCourse, org.objectType from (SELECT o.idOrg, o.idCourse, o.objectType 
+          	FROM %lms_organization AS o WHERE o.objectType != '' AND o.idCourse IN (".$row['idCourse'].") ORDER BY o.path) as org 
+          	GROUP BY org.idCourse";
+	         	$result_lo = sql_query($query_lo);            
+	         	list($id_org, $id_course, $obj_type) = sql_fetch_row($result_lo);
+           	$str_rel = "";
+           	if($obj_type == "scormorg" && $level<=3 && $row['direct_play']==1) $str_rel = " rel='lightbox'";
+			      $action .= '<a href="index.php?modname=course&op=aula&idCourse='.$row['idCourse'].' "'
+			        .' title="'.$_text.'"   '.$str_rel.'><p class="subscribed">'
+			        .Lang::t('_USER_STATUS_ENTER', 'catalogue').'</p>'
+			        .'</a><br>';
+								
+								
+								
 					}
 
                                            

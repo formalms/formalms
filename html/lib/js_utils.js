@@ -165,7 +165,8 @@ LightBox.prototype = {
 				} );
 			}
 
-			this.overlay_light.setHeader('<h1 class="title_handler" id="title_handler">Title</h1>'
+			//this.overlay_light.setHeader('<h1 class="title_handler" id="title_handler">Title</h1>'
+			this.overlay_light.setHeader(''
 				+'<a class="close_handler" id="close_handler" href="#"><span>'+this.oLangs.get('_CLOSE')+'</span></a>');
 			this.overlay_light.setBody('<iframe id="overlay_iframe" name="overlay_iframe" src="" height="100%" width="100%" frameborder="0"></iframe>');
 
