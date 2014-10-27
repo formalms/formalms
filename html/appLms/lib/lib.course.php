@@ -1912,9 +1912,9 @@ class Man_CourseUser {
 		$counter = 0;
 		$subs = $this->getUserSubscriptionsInfo($id_user);
 
+		if(!mysql_num_rows($result_course)) return 0;
         // return -2 if course subscription is not allowed
         if(!mysql_num_rows($result_course_active)) return -2;
-		if(!mysql_num_rows($result_course)) return 0;
 		while (list($id_course) = sql_fetch_row($result_course))
 		{
 			if(!isset($subs[$id_course])) {
