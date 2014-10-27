@@ -9,7 +9,7 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-/** 
+/**
  * Costruttore del ui player standard
  * cioe' dell'oggetto che gestisce l'interfaccia del player
  **/
@@ -24,9 +24,9 @@ function StdUIPlayer() {
 	this.cntScoContent = null;		// elemento contenente la window con lo sco
 	this.cntSco = null;				// window che contiene gli sco
 	this.cntSeparator = null;		// elemento che comanda il show/hide dell'albero
-	
+
 	this.scormPlayer = null;		// scorm player
-	
+
 	this.showTree = true;
 }
 
@@ -58,7 +58,7 @@ StdUIPlayer.prototype.scormPlayerActionPerformer = function( evType, evValue) {
 				var currScoId = this.scormPlayer.getCurrScoId();
 				var nextScoid = this.scormPlayer.getNextScoId(currScoId);
 				this.scormPlayer.setNextToPlay(nextScoid, this.cntSco);
-			} 
+			}
 		break;
 		case 'Finish':
 			StdUIPlayer.refresh();
@@ -67,7 +67,7 @@ StdUIPlayer.prototype.scormPlayerActionPerformer = function( evType, evValue) {
 		break;
 		case 'BeforeScoLoad':
 			var elem = this.cntTree.ownerDocument.getElementById(evValue);
-			
+
 			if(elem.className.indexOf('RunningSco') == -1) { elem.className += ' RunningSco' };
 		break;
 	}
@@ -107,7 +107,7 @@ StdUIPlayer.prototype.drawProgressBar = function() {
 		brick.className = 'scorm_incomplete';
 		brick.style.width = w + 'px';
 		brick.style.left = posrel + 'px';
-		divProgress.appendChild(brick);		
+		divProgress.appendChild(brick);
 	}
 }
 
@@ -129,7 +129,7 @@ StdUIPlayer.prototype.drawNavigation = function() {
 	return;
 	var navi = "";
 	if(prevExist()) {
-		
+
 		navi +="<div id=\"prevblocklink\" style=\"display:block; float: left;\">\n"
 			+"			<a id=\"prevsco\" href=\"#\" onClick=\"playprevclick(); return false;\">"
 			+"				<img class=\"imgnav\" id=\"imgprev\" src=\""+playerConfig.imagesPath+"../scorm/bt_sx.gif\" width=\"32\" alt=\"Back\" />"
@@ -137,16 +137,16 @@ StdUIPlayer.prototype.drawNavigation = function() {
 			+"			<span id=\"prevlink\"></span>"
 			+"		</div>\n";
 	} else {
-		
+
 		navi +="<div id=\"prevblocklink\" style=\"display:block; float: left;\">\n"
 			+"			"
 			+"				<img class=\"imgnav\" id=\"imgprev\" src=\""+playerConfig.imagesPath+"../blank.png\" width=\"32\" alt=\"Back\" />"
 			+"			\n"
 			+"			<span id=\"prevlink\"></span>"
 			+"		</div>\n";
-	} 
+	}
 	if(nextExist()) {
-		
+
 		navi +="		<div id=\"nextblocklink\" style=\"display:block; float: left;\">\n"
 			+"			<a id=\"nextsco\" href=\"#\" onClick=\"playnextclick(); return false;\">"
 			+"				<img class=\"imgnav\" id=\"imgnext\" src=\""+playerConfig.imagesPath+"../scorm/bt_dx.gif\" width=\"32\" alt=\"Next\" />"
@@ -154,7 +154,7 @@ StdUIPlayer.prototype.drawNavigation = function() {
 			+"			<span id=\"nextlink\"></span>\n"
 			+"		</div>\n";
 	} else {
-		
+
 		navi +="<div id=\"prevblocklink\" style=\"display:block; float: left;\">\n"
 			+"			"
 			+"				<img class=\"imgnav\" id=\"imgprev\" src=\""+playerConfig.imagesPath+"../blank.png\" width=\"32\" alt=\"Next\" />"
@@ -176,14 +176,14 @@ StdUIPlayer.prototype.drawPrevBtn = function() {
 StdUIPlayer.prototype.drawTree = function() {
 	var doc = this.cntTree.ownerDocument;
 	var tc = document.getElementById('TreeContainer');
-	
+
 	if(!tc) {
-		
+
 		this.cntTree.divContainer = doc.createElement('div');
 		this.cntTree.divContainer.id = "TreeContainer";
 		this.cntTree.appendChild(this.cntTree.divContainer);
 	} else {
-		
+
 		this._removeContents( tc );
 	}
 	this.scormPlayer.parseTree(this);
@@ -195,10 +195,10 @@ StdUIPlayer.prototype.startItem = function( objItem, level ) {
 	var doc = this.cntTree.ownerDocument;
 	var div = doc.createElement('div');
 	div.className = objItem.isLeaf?'TreeRowClass':'TreeRowFolder';
-	
+
 	if( objItem.resource) var elem = doc.createElement('a');
 	else  var elem = doc.createElement('span');
-	
+
 	if( objItem.resource && (objItem.status == 'completed' || objItem.status == 'passed') ) {
 		var imgStatus = doc.createElement('img');
 		imgStatus.className = 'icoStatus icoCompleted';
@@ -219,7 +219,7 @@ StdUIPlayer.prototype.startItem = function( objItem, level ) {
 		imgStatus.title = 'locked';
 		imgStatus.alt = 'locked';
 		imgStatus.src = playerConfig.imagesPath + 'loked.gif';
-		elem.appendChild(imgStatus);		
+		elem.appendChild(imgStatus);
 	}
 	//elem.appendChild(doc.createTextNode(objItem.title));
 	elem.innerHTML = elem.innerHTML + objItem.title;
@@ -236,7 +236,7 @@ StdUIPlayer.prototype.stopItem = function( objItem, level ) {
 }
 
 StdUIPlayer.prototype.treeonclick = function( id ) {
-	
+
 	if(disable_chapter_change) return;
 	this.scormPlayer.play( id, this.cntSco );
 }
@@ -260,11 +260,11 @@ StdUIPlayer.prototype.showhidetree = function() {
 }
 
 StdUIPlayer.prototype.closePlayer = function() {
-	
+
 	// Forzo LMSFinish per bug Lectora
 	if(playerConfig.scormVersion == '1.3')  window.API_1484_11.LMSFinish("");
 	else window.API.LMSFinish("");
-	
+
 	this.scormPlayer.play( null, this.cntSco );
 //	window.location.href = playerConfig.backurl;
 	window.close_player = true;
@@ -275,9 +275,9 @@ StdUIPlayer.prototype.closePlayer = function() {
  **/
 StdUIPlayer.initialize = function() {
 	/* create UI Player */
-	
+
 	window.close_player = false;
-	
+
 	window.uiPlayer = new StdUIPlayer();
 	window.uiPlayer.setContainer('Tree', document.getElementById(playerConfig.idElemTree));
 	//window.uiPlayer.setContainer('TitleCP', document.getElementById(playerConfig.idElemTitleCP));
@@ -288,7 +288,7 @@ StdUIPlayer.initialize = function() {
 	window.uiPlayer.setContainer('Separator', document.getElementById(playerConfig.idElemSeparator));
 
 	/* create Scorm API */
-	var scormapi = new ScormApiUI( 	playerConfig.host, 
+	var scormapi = new ScormApiUI( 	playerConfig.host,
 									playerConfig.lms_url,
 									playerConfig.scormserviceid,
 									playerConfig.idUser,
@@ -299,16 +299,16 @@ StdUIPlayer.initialize = function() {
 	/* hook for scorm 1.3 */
 	if(playerConfig.scormVersion == '1.3')  window.API_1484_11 = scormapi;
 	else window.API = scormapi;
-	
+
 	scormapi.useWaitDialog( !(playerConfig.useWaitDialog=='off') );
 	/* create ScormPlayer */
 	window.scormPlayer = new ScormPlayer();
 	window.scormPlayer.setPath( playerConfig.lms_url.substring(0, playerConfig.lms_url.lastIndexOf( "/" )),
 								playerConfig.lms_base_url );
 	window.scormPlayer.setAPI( scormapi );
-	
+
 	StdUIPlayer.refresh();
-	
+
 	if( playerConfig.startFromChapter != false ) {
 
 		if(window.scormPlayer.getScoName(playerConfig.startFromChapter) != null)
@@ -324,18 +324,20 @@ StdUIPlayer.initialize = function() {
 	this.showTree = playerConfig.showTree;
 	if(!this.showTree) this.showhidetree();
 
-	setTimeout("keepalive()", 15*60*1000);
+//	setTimeout("keepalive()", 15*60*1000);
+	idtmo = window.setTimeout("keepalive()", playerConfig.keepalivetmo*1000); // 15*60*1000
 }
 
 keepalive = function () {
 	new Ajax.Request('./modules/scorm/keep_alive.php?sessonly=1', {method: 'get', requestHeaders: {
 		"X-Signature":playerConfig.auth_request
 	}});
-	setTimeout("keepalive()",  15*60*1000);
+//	setTimeout("keepalive()",  15*60*1000);
+	idtmo = window.setTimeout("keepalive()",  playerConfig.keepalivetmo*1000); // 15*60*1000
 }
 
 trackUnloadOnLms = function() {
-	
+
 	var ajax = new Ajax.Request('./modules/scorm/keep_alive.php', {method: 'get', requestHeaders: {
 		"X-Signature":playerConfig.auth_request
 	}});
@@ -348,9 +350,9 @@ StdUIPlayer.refresh = function() {
 
 StdUIPlayer.initialize2 = function(xtree) {
 	window.scormPlayer.setTree( xtree );
-	
+
 	window.uiPlayer.setScormPlayer( window.scormPlayer );
-	window.uiPlayer.drawTree();	
+	window.uiPlayer.drawTree();
 	//window.uiPlayer.drawProgressBar();
 	//window.uiPlayer.drawTitleCP();
 	//window.uiPlayer.drawNavigation();
