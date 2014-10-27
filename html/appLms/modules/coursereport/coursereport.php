@@ -47,7 +47,7 @@ function testreport($idTrack, $idTest, $testName, $studentName) {
 			$lang->def('_DATE'),
 			$lang->def('_SCORE'),
 		), array('min-cell','',''));
-		
+
 		$i = 1;
 		while(list($date_attempt, $score) = sql_fetch_row($re_testreport)) {
 
@@ -144,7 +144,7 @@ function coursereport() {
 	$id_students = array_keys($students);
 	$students_info 	=& $acl_man->getUsers($id_students);
 	$i=0;
-	
+
 	/*$students_info=array();
 	foreach( $students as $idst => $user_course_info )
 		$students_info[$idst] =& $acl_man->getUser( $idst, FALSE );
@@ -326,13 +326,13 @@ function coursereport() {
 	$tb_score->setColsStyle($type_h);
 	$cont_h[0] = $lang->def('_STUDENTS');
 	$cont_old = $cont_h;
-	
+
 	// ALE aggiungo menu a tendina con valori utente:
 	require_once(_adm_.'/lib/lib.field.php');
-	
+
 	$fman = new FieldList();
 	$fields = $fman->getFlatAllFields(array('framework', 'lms'));
-	
+
 	$f_list = array(
             'userid'                 => Lang::t('_USERNAME', 'standard'),
             'firstname'                 => Lang::t('_FIRSTNAME', 'standard'),
@@ -344,12 +344,12 @@ function coursereport() {
 			'level' => Lang::t('_LEVEL', 'standard')
 	);
 	$f_list = $f_list + $fields;
-	
+
 	$js_arr = array();
 	foreach ($f_list as $key=>$value)
 		$js_arr[] = $key.': '.json_encode($value);
 	$f_list_js = '{'.implode(',', $js_arr).'}';
-	
+
 	$fieldlist = $f_list;
 	$dyn_labels = array();
 	$dyn_filter = array();
@@ -367,7 +367,7 @@ function coursereport() {
 		$label .= '</select>';
 	}
 	$label .= '</form>';
-	
+
 	$field_selected = ($_GET['_dyn_field_selector_0']) ? $_GET['_dyn_field_selector_0'] : 'userid';
 	$_SESSION['field_selected'] = $field_selected;
 	// aggiungo un elemento in posizione 1
@@ -377,13 +377,13 @@ function coursereport() {
 	$start[] = $label;
 	$cont_h = array_merge($start, $end);
 	// fine inserimento
-	
+
 	// END ALE
-	
+
 	$tb_score->addHead($cont_h);
-	
+
 	$cont_h = $cont_old; // ripristino il vecchio array di intestazioni
-	
+
 // 	$tb_score->addHead($cont_h);
 
 	// XXX: Retrive Test info and scores
@@ -480,11 +480,11 @@ function coursereport() {
 						? $user_info[ACL_INFO_LASTNAME].' '.$user_info[ACL_INFO_FIRSTNAME]
 						: $acl_man->relativeId($user_info[ACL_INFO_USERID]) );
 	$cont = array($user_name);
-		
+
 		$fman = new FieldList();
 		$field_entries = $fman->getUsersFieldEntryData($user_info[0],$field_selected,true);
 
-		$user = array(		
+		$user = array(
 			'id'            => $user_info[ACL_INFO_IDST],
 			'userid'        => $user_info[ACL_INFO_USERID],
 			'firstname' => $user_info[ACL_INFO_FIRSTNAME],
@@ -493,7 +493,7 @@ function coursereport() {
 			'register_date' => $user_info[ACL_INFO_REGISTER_DATE],
 			'lastenter' => $user_info[ACL_INFO_LASTENTER]
 		);
-			
+
 		if (is_numeric($field_selected)) {
 			$cont[] = $field_entries[$user_info[0]][$field_selected];
 		} else {
@@ -569,7 +569,7 @@ function coursereport() {
                                             } else {
                                                 if ($score == $test_details[$id_test]['max_score'])
                                                     $cont[] = '<span class="cr_max_score cr_not_passed">' . $score . " " . $tt . '</span>';
-                                                
+
                                                     else$cont[] = '<span class="cr_not_passed">' . $score . " " . $tt . '</span>';
 
                                                 // Count not passed
@@ -1898,10 +1898,10 @@ function modscorm()
 		//echo $query_report;
 		$risultato=sql_query($query_report);
 		$titolo2=sql_fetch_assoc($risultato);
-        
+
         // if module title is equals to main title don't append it
         if ($titolo2['title']!=$_POST['titolo']){
-            $_POST['titolo']=$_POST['titolo']." - ".$titolo2['title'];
+			$_POST['titolo']=$_POST['titolo']." - ".addslashes($titolo2['title']);
         }
 
 		$_POST['title']=$_POST['titolo'];
@@ -2252,57 +2252,57 @@ function modactivityscore() {
         case 'scoitem':
             $out->add(
                     Form::getLinebox(
-                            $lang->def('_TITLE_ACT'), 
+                            $lang->def('_TITLE_ACT'),
                             strip_tags($info_report['title']))
                     . Form::getLinebox(
-                            $lang->def('_MAX_SCORE'), 
+                            $lang->def('_MAX_SCORE'),
                             strip_tags($info_report['max_score']))
                     . Form::getLinebox(
-                            $lang->def('_REQUIRED_SCORE'), 
+                            $lang->def('_REQUIRED_SCORE'),
                             strip_tags($info_report['required_score']))
             );
             break;
         case 'activity':
             $out->add(
                     Form::getTextfield(
-                            $lang->def('_TITLE_ACT'), 
-                            'title', 
-                            'title', 
-                            '255', 
+                            $lang->def('_TITLE_ACT'),
+                            'title',
+                            'title',
+                            '255',
                             $info_report['title'])
                     . Form::getTextfield(
-                            $lang->def('_MAX_SCORE'), 
-                            'max_score', 
-                            'max_score', 
-                            '11', 
+                            $lang->def('_MAX_SCORE'),
+                            'max_score',
+                            'max_score',
+                            '11',
                             $info_report['max_score'])
                     . Form::getTextfield(
-                            $lang->def('_REQUIRED_SCORE'), 
-                            'required_score', 
-                            'required_score', 
-                            '11', 
+                            $lang->def('_REQUIRED_SCORE'),
+                            'required_score',
+                            'required_score',
+                            '11',
                             $info_report['required_score'])
             );
             break;
     }
     $out->add(
             Form::getTextfield(
-                    $lang->def('_WEIGHT'), 
-                    'weight', 
-                    'weight', 
-                    '11', 
+                    $lang->def('_WEIGHT'),
+                    'weight',
+                    'weight',
+                    '11',
                     $info_report['weight'])
             . Form::getDropdown(
-                    $lang->def('_SHOW_TO_USER'), 
-                    'show_to_user', 
-                    'show_to_user', 
-                    array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')), 
+                    $lang->def('_SHOW_TO_USER'),
+                    'show_to_user',
+                    'show_to_user',
+                    array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
                     $info_report['show_to_user'])
             . Form::getDropdown(
-                    $lang->def('_USE_FOR_FINAL'), 
-                    'use_for_final', 
-                    'use_for_final', 
-                    array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')), 
+                    $lang->def('_USE_FOR_FINAL'),
+                    'use_for_final',
+                    'use_for_final',
+                    array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
                     $info_report['use_for_final'])
             . Form::getCloseFieldSet()
             . Form::closeElementSpace()
@@ -3264,7 +3264,7 @@ function coursereportDispatch($op) {
 		case "addscorm" :{
 			modscorm();
 		};break;
-    
+
 	}
 
 }
