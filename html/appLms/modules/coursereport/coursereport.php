@@ -2238,6 +2238,13 @@ function modactivityscore() {
 				$out->add(getErrorUi($lang->def('_OPERATION_FAILURE')));
 			} else {
 				// save user score modification
+                $query_upd_report = "
+				UPDATE ".$GLOBALS['prefix_lms']."_coursereport
+				SET weight = '".$info_report['weight']."',
+					use_for_final = '".$info_report['use_for_final']."',
+					show_to_user = '".$info_report['show_to_user']."'
+				WHERE id_course = '".$_SESSION['idCourse']."' AND id_report = '".$id_report."'";
+				$re = sql_query($query_upd_report);
 				$re = $report_man->saveReportScore($id_report, $_POST['user_score'], $_POST['date_attempt'], $_POST['comment']);
 				Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&result='.( $re ? 'ok' : 'err' ));
 			}
@@ -2315,64 +2322,73 @@ function modactivityscore() {
             . Form::closeElementSpace()
     );
 
-	/* XXX: scores */
-	$tb = new Table(0, $lang->def('_STUDENTS_VOTE'), $lang->def('_STUDENTS_VOTE'));
-	$type_h = array('', 'align-center', 'align-center', '');
-	$tb->setColsStyle($type_h);
-	$cont_h = array( 	$lang->def('_STUDENTS'),
-						$lang->def('_SCORE'),
-						$lang->def('_DATE'),
-						$lang->def('_COMMENTS') );
-	$tb->addHead($cont_h);
+    if ($info_report['source_of']!='scoitem'){
+        /* XXX: scores */
+        $tb = new Table(0, $lang->def('_STUDENTS_VOTE'), $lang->def('_STUDENTS_VOTE'));
+        $type_h = array('', 'align-center', 'align-center', '');
+        $tb->setColsStyle($type_h);
+        $cont_h = array( 	$lang->def('_STUDENTS'),
+                            $lang->def('_SCORE'),
+                            $lang->def('_DATE'),
+                            $lang->def('_COMMENTS') );
+        $tb->addHead($cont_h);
 
-	// XXX: Display user scores
-	$i = 0;
-	while(list($idst_user, $user_info) = each($students_info)) {
-		$user_name = ( $user_info[ACL_INFO_LASTNAME].$user_info[ACL_INFO_FIRSTNAME]
-						? $user_info[ACL_INFO_LASTNAME].' '.$user_info[ACL_INFO_FIRSTNAME]
-						: $acl_man->relativeId($user_info[ACL_INFO_USERID]) );
-		$cont = array(Form::getLabel('user_score_'.$idst_user, $user_name));
+        // XXX: Display user scores
+        $i = 0;
+        while(list($idst_user, $user_info) = each($students_info)) {
+            $user_name = ( $user_info[ACL_INFO_LASTNAME].$user_info[ACL_INFO_FIRSTNAME]
+                            ? $user_info[ACL_INFO_LASTNAME].' '.$user_info[ACL_INFO_FIRSTNAME]
+                            : $acl_man->relativeId($user_info[ACL_INFO_USERID]) );
+            $cont = array(Form::getLabel('user_score_'.$idst_user, $user_name));
 
-		$cont[] = Form::getInputTextfield(	'textfield_nowh',
-													'user_score_'.$idst_user,
-													'user_score['.$idst_user.']',
-													( isset($report_score[$id_report][$idst_user]['score'])
-														? $report_score[$id_report][$idst_user]['score']
-														: (isset($_POST['user_score'][$idst_user]) ? $_POST['user_score'][$idst_user] : '') ),
-													strip_tags($lang->def('_SCORE')),
-													'8',
-													' tabindex="'.$i++.'" ' );
-		$cont[] = Form::getInputDatefield(	'textfield_nowh',
-													'date_attempt_'.$idst_user,
-													'date_attempt['.$idst_user.']',
-													Format::date(
-														( isset($report_score[$id_report][$idst_user]['date_attempt'])
-															? $report_score[$id_report][$idst_user]['date_attempt']
-															: (isset($_POST['date_attempt'][$idst_user]) ? $_POST['date_attempt'][$idst_user] : '') ), 'date'));
-		$cont[] = Form::getInputTextarea(	'comment_'.$idst_user,
-											'comment['.$idst_user.']',
-											( isset($report_score[$id_report][$idst_user]['comment'])
-															? $report_score[$id_report][$idst_user]['comment']
-															: (isset($_POST['comment'][$idst_user]) ? stripslashes($_POST['comment'][$idst_user]) : '') ),
-											'textarea_wh_full',
-											2);
+            $cont[] = Form::getInputTextfield(	'textfield_nowh',
+                                                        'user_score_'.$idst_user,
+                                                        'user_score['.$idst_user.']',
+                                                        ( isset($report_score[$id_report][$idst_user]['score'])
+                                                            ? $report_score[$id_report][$idst_user]['score']
+                                                            : (isset($_POST['user_score'][$idst_user]) ? $_POST['user_score'][$idst_user] : '') ),
+                                                        strip_tags($lang->def('_SCORE')),
+                                                        '8',
+                                                        ' tabindex="'.$i++.'" ' );
+            $cont[] = Form::getInputDatefield(	'textfield_nowh',
+                                                        'date_attempt_'.$idst_user,
+                                                        'date_attempt['.$idst_user.']',
+                                                        Format::date(
+                                                            ( isset($report_score[$id_report][$idst_user]['date_attempt'])
+                                                                ? $report_score[$id_report][$idst_user]['date_attempt']
+                                                                : (isset($_POST['date_attempt'][$idst_user]) ? $_POST['date_attempt'][$idst_user] : '') ), 'date'));
+            $cont[] = Form::getInputTextarea(	'comment_'.$idst_user,
+                                                'comment['.$idst_user.']',
+                                                ( isset($report_score[$id_report][$idst_user]['comment'])
+                                                                ? $report_score[$id_report][$idst_user]['comment']
+                                                                : (isset($_POST['comment'][$idst_user]) ? stripslashes($_POST['comment'][$idst_user]) : '') ),
+                                                'textarea_wh_full',
+                                                2);
 
-		$tb->addBody($cont);
-	}
+            $tb->addBody($cont);
+        }
+    }
 
-	$out->add(
-		Form::openButtonSpace()
-		.Form::getButton('save', 'save', $lang->def('_SAVE'))
-		.Form::getButton('undo', 'undo', $lang->def('_UNDO'))
-		.Form::closeButtonSpace()
-
-		.$tb->getTable()
-		.Form::openButtonSpace()
-		.Form::getButton('save', 'save', $lang->def('_SAVE'))
-		.Form::getButton('undo', 'undo', $lang->def('_UNDO'))
-		.Form::closeButtonSpace()
-		.Form::closeForm()
-		.'</div>');
+    $out->add(
+        Form::openButtonSpace()
+        .Form::getButton('save', 'save', $lang->def('_SAVE'))
+        .Form::getButton('undo', 'undo', $lang->def('_UNDO'))
+        .Form::closeButtonSpace()
+    );
+    if ($info_report['source_of']!='scoitem'){
+        $out->add(
+            $tb->getTable()
+            .Form::openButtonSpace()
+            .Form::getButton('save', 'save', $lang->def('_SAVE'))
+            .Form::getButton('undo', 'undo', $lang->def('_UNDO'))
+            .Form::closeButtonSpace()
+        );
+    }
+    $out->add(
+        Form::closeForm()
+        .'</div>'
+    );
+   
 }
 
 function delactivity() {
