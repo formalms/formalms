@@ -225,7 +225,9 @@ CREATE TABLE IF NOT EXISTS `learning_certificate_assign` (
   `id_user` int(11) NOT NULL DEFAULT '0',
   `on_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `cert_file` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id_certificate`,`id_course`,`id_user`)
+  PRIMARY KEY (`id_certificate`,`id_course`,`id_user`),
+  KEY `id_course` (`id_course`),
+  KEY `id_user` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -261,8 +263,8 @@ CREATE TABLE IF NOT EXISTS `learning_certificate_course` (
 CREATE TABLE IF NOT EXISTS `learning_certificate_meta` (
   `idMetaCertificate` int(11) NOT NULL AUTO_INCREMENT,
   `idCertificate` int(11) NOT NULL DEFAULT '0',
-  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `description` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `description` longtext NOT NULL,
   PRIMARY KEY (`idMetaCertificate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
@@ -282,7 +284,7 @@ CREATE TABLE IF NOT EXISTS `learning_certificate_meta_assign` (
   `idMetaCertificate` int(11) NOT NULL DEFAULT '0',
   `idCertificate` int(11) NOT NULL DEFAULT '0',
   `on_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `cert_file` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `cert_file` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`idUser`,`idMetaCertificate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -940,11 +942,11 @@ CREATE TABLE IF NOT EXISTS `learning_courseuser` (
 CREATE TABLE IF NOT EXISTS `learning_course_date` (
   `id_date` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_course` int(10) unsigned NOT NULL DEFAULT '0',
-  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `code` varchar(255) NOT NULL DEFAULT '',
   `name` varchar(255) NOT NULL DEFAULT '',
   `description` text NOT NULL,
   `max_par` int(11) NOT NULL DEFAULT '0',
-  `price` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `price` varchar(255) NOT NULL DEFAULT '0',
   `overbooking` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `test_type` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `status` int(10) unsigned NOT NULL DEFAULT '0',
@@ -996,7 +998,7 @@ CREATE TABLE IF NOT EXISTS `learning_course_date_presence` (
   `id_user` int(11) unsigned NOT NULL DEFAULT '0',
   `id_day` int(11) unsigned NOT NULL DEFAULT '0',
   `presence` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `score` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `score` varchar(255) DEFAULT NULL,
   `note` text NOT NULL,
   PRIMARY KEY (`day`,`id_date`,`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1017,7 +1019,7 @@ CREATE TABLE IF NOT EXISTS `learning_course_date_user` (
   `id_user` int(11) NOT NULL DEFAULT '0',
   `date_subscription` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `date_complete` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `presence` mediumtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `presence` mediumtext,
   `subscribed_by` int(10) unsigned NOT NULL DEFAULT '0',
   `overbooking` int(10) DEFAULT '0',
   `requesting_unsubscribe` tinyint(1) unsigned DEFAULT NULL,
@@ -3420,9 +3422,9 @@ CREATE TABLE IF NOT EXISTS `learning_transaction` (
   `price` int(11) NOT NULL DEFAULT '0',
   `payment_status` tinyint(1) NOT NULL DEFAULT '0',
   `course_status` tinyint(1) NOT NULL DEFAULT '0',
-  `method` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `payment_note` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `course_note` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `method` varchar(255) NULL DEFAULT '',
+  `payment_note` text NOT NULL,
+  `course_note` text NOT NULL,
   PRIMARY KEY (`id_transaction`),
   KEY `id_user` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
