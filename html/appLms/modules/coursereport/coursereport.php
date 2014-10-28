@@ -230,7 +230,7 @@ function coursereport() {
 						$a_line_2[] = '';
 					}
 				} else {
-					$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=testvote&amp;id_test='.$id.'"><span><span>'.$lang->def('_EDIT_SCORE').'</span></a>'
+					$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=testvote&type_filter='.$type_filter.'&amp;id_test='.$id.'"><span><span>'.$lang->def('_EDIT_SCORE').'</span></a>'
 									.' <a class="ico-sprite subs_chart" href="index.php?modname=coursereport&amp;op=testQuestion&amp;id_test='.$id.'"><span><span>'.$lang->def('_TQ_LINK').'</span></a>';
 					$a_line_2[] = '<a href="index.php?modname=coursereport&amp;op=roundtest&amp;id_test='.$id.'" '
 								.'title="'.$lang->def('_ROUND_TEST_VOTE').'">'.$lang->def('_ROUND_VOTE').'</a>';
@@ -1082,8 +1082,15 @@ function testvote() {
 	$report_man 	= new CourseReportManager();
 
 	// XXX: Find students
-	$id_students	=& $report_man->getStudentId();
-	$students_info 	=& $acl_man->getUsers($id_students);
+    $type_filter = false;
+    if (isset($_GET['type_filter']) && $_GET['type_filter']!=null) {
+		$type_filter = $_GET['type_filter'];
+    }
+
+	$lev = $type_filter;
+    $students = getSubscribed((int)$_SESSION['idCourse'], FALSE, $lev, TRUE, false, false, true);
+    $id_students = array_keys($students);
+	$students_info 	=& $acl_man->getUsers($id_students);    
 
 	// XXX: Find test
 	$test_info		=& $test_man->getTestInfo(array($id_test));
