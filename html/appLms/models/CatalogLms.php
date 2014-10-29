@@ -298,7 +298,7 @@ class CatalogLms extends Model
 										'[course_status]'	=> Lang::t($this->cstatus[$row['status']], 'course')))
 									.'</p>';
 
-				$query =	"SELECT status, waiting"
+				$query =	"SELECT status, waiting, level"
 							." FROM %lms_courseuser"
 							." WHERE idCourse = ".$row['idCourse']
 							." AND idUser = ".Docebo::user()->getIdSt();
@@ -308,7 +308,7 @@ class CatalogLms extends Model
 				if(sql_num_rows($result_control) > 0)
 				{
 					// the user is enrolled in some way
-					list($status, $waiting) = sql_fetch_row($result_control);
+					list($status, $waiting, $level) = sql_fetch_row($result_control);
 
 					if($waiting)
 						$action .= '<p class="subscribed">'.Lang::t('_WAITING', 'catalogue').'</p>';
@@ -321,7 +321,8 @@ class CatalogLms extends Model
 	         	$result_lo = sql_query($query_lo);            
 	         	list($id_org, $id_course, $obj_type) = sql_fetch_row($result_lo);
            	$str_rel = "";
-           	if($obj_type == "scormorg" && $level<=3 && $row['direct_play']==1) $str_rel = " rel='lightbox'";
+           
+           	if($obj_type == "scormorg" && $level<=3 && $row['direct_play']==1 ) $str_rel = " rel='lightbox'";
 			      $action .= '<a href="index.php?modname=course&op=aula&idCourse='.$row['idCourse'].' "'
 			        .' title="'.$_text.'"   '.$str_rel.'><p class="subscribed">'
 			        .Lang::t('_USER_STATUS_ENTER', 'catalogue').'</p>'
