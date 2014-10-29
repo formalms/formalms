@@ -20,14 +20,13 @@
 </ul>
 
 <h3><?php echo Lang::t('_COMMUNITY'); ?>:</h3>
-<p><a href="http://www.formalms.org" target="_blank">http://www.formalms.org</a></p>
-<p><a href="http://www.formalms.org/manuals" target="_blank">http://www.formalms.org/manuals</a></p>
-<p><a href="http://www.formalms.org/forum" target="_blank">http://www.formalms.org/forum</a></p>
-<p><a href="http://www.formalms.org/wiki" target="_blank">http://www.formalms.org/wiki</a></p>
-<p><a href="http://www.formalms.org/freetraining" target="_blank">http://www.formalms.org/freetraining</a></p>
-
-<h3><?php echo Lang::t('_COMMERCIAL_SERVICES'); ?>:</h3>
-<p><a href="http://www.formalms.org/services" target="_blank">http://www.formalms.org/services</a></p>
+<p><a href="http://www.formalms.org" target="_blank">Official Website</a></p>
+<p><a href="http://www.formalms.org/about/partners.html" target="_blank">Partners</a></p>
+<p><a href="http://www.elearningcommunity.net" target="_blank">Community</a></p>
+<br />
+<p><a href="http://sourceforge.net/projects/forma/" target="_blank">SourceForge Project</a></p>
+<p><a href="https://www.linkedin.com/company/formalms" target="_blank">Linkedin Company Page</a></p>
+<br />
 
 <script type="text/javascript">
 YAHOO.util.Event.onDOMReady(function() {
