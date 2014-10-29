@@ -53,9 +53,9 @@ function webpages() {
 	//-Table---------------------------------------------------------
 	$cont_h = array(
 		$lang->def('_TITLE'), 
-		//'<img src="'.getPathImage().'webpages/home.png" alt="'.$lang->def('_ALT_HOME').'" title="'.$lang->def('_TITLE_HOME').'" />',
+		'<img src="'.getPathImage().'webpages/home.png" alt="'.$lang->def('_ALT_HOME').'" title="'.$lang->def('_TITLE_HOME').'" />',
 		'<img src="'.getPathImage().'standard/publish.png" alt="'.$lang->def('_PUBLISH').'" title="'.$lang->def('_STATUS').'" />'	);
-	$type_h = array('', 'image', 'image');
+	$type_h = array('', 'image', 'image', 'image');
 	if($mod_perm) {
 		
 		$cont_h[] = '<img src="'.getPathImage().'standard/down.png" alt="'.$lang->def('_DOWN').'" title="'.$lang->def('_MOVE_DOWN').'" />';
@@ -75,8 +75,8 @@ function webpages() {
 	while(list($id, $title, $publish, $in_home) = sql_fetch_row($re_pages)) {
 		
 		$cont = array(
-			$title//, 
-			//( $in_home ? '<img src="'.getPathImage().'webpages/home.png" alt="'.$lang->def('_ALT_HOME').'" title="'.$lang->def('_TITLE_HOME').'" />' : '')
+			$title, 
+			( $in_home ? '<img src="'.getPathImage().'webpages/home.png" alt="'.$lang->def('_ALT_HOME').'" title="'.$lang->def('_TITLE_HOME').'" />' : '')
 		);
 		if($publish) {
 			$cont[] = '<a href="index.php?modname=webpages&amp;op=unpublish&amp;id_page='.$id.'" title="'.$lang->def('_PUBLISH').' : '.$title.'">'
@@ -183,7 +183,7 @@ function editpages($load = false) {
 		.Form::getDropdown($lang->def('_LANGUAGE'), 'language', 'language', $all_languages, array_search($language, $all_languages))
 		
 		.Form::getCheckbox($lang->def('_PUBLISH'), 'publish', 'publish', 1, $publish)
-		
+		.Form::getCheckbox($lang->def('_TITLE_HOME'), 'in_home', 'in_home', 1, $in_home)
 		.Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $description)
 		.Form::closeElementSpace()
 		
@@ -215,13 +215,13 @@ function savepages() {
 				AND language = '".$all_languages[$lang_sel]."'")) unset($_POST['in_home']);
 	}
 	if(isset($_POST['load'])) {
-		/*
-			in_home = '".( isset($_POST['in_home']) ? 1 : 0 )."',*/
+
 		$query_insert = "
 		UPDATE ".$GLOBALS['prefix_lms']."_webpages
 		SET title = '".$_POST['title']."',
 			description = '".$_POST['description']."',
 			language = '".$all_languages[$lang_sel]."',
+			in_home = '".( isset($_POST['in_home']) ? 1 : 0 )."',
 			publish = '".( isset($_POST['publish']) ? 1 : 0 )."'
 		WHERE idPages = '".$id_page."'";
 	} else {
