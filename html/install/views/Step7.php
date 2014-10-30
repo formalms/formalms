@@ -22,10 +22,10 @@
 <h3><?php echo Lang::t('_COMMUNITY'); ?>:</h3>
 <p><a href="http://www.formalms.org" target="_blank">Official Website</a></p>
 <p><a href="http://www.formalms.org/about/partners.html" target="_blank">Partners</a></p>
-<p><a href="http://www.elearningcommunity.net" target="_blank">Community</a></p>
+<p><a href="http://www.formalms.org/community" target="_blank">Community</a></p>
 <br />
 <p><a href="http://sourceforge.net/projects/forma/" target="_blank">SourceForge Project</a></p>
-<p><a href="https://www.linkedin.com/company/formalms" target="_blank">Linkedin Company Page</a></p>
+<p><a href="https://www.linkedin.com/company/formalms" target="_blank">Linkedin Project Page</a></p>
 <br />
 
 <script type="text/javascript">
