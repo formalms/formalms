@@ -657,7 +657,7 @@ class qformat_gift {
 				$expout .= "::".$this->repchar($question->prompt)."::".$qtext_format.$this->repchar( $question->quest_text )."{\n";
 				
 				foreach($question->answers as $answer) {
-					if ($answer->score_correct == 1) {
+					if (($answer->score_correct == 1) || ($answer->score_correct == 0 && $answer->is_correct == 1) ) {
 						$answertext = '=';
 					}
 					elseif ($answer->score_correct > 1) {
