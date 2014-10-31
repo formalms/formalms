@@ -23,6 +23,9 @@ define("MAIL_SINGLE", "single");
 define("MAIL_CC", "cc");
 define("MAIL_BCC", "bcc");
 
+define("MAIL_RECIPIENTSCC", "recipientscc");
+define("MAIL_RECIPIENTSBCC", "recipientsbcc");
+
 define("MAIL_WORDWRAP", "wordwrap");
 define("MAIL_CHARSET", "charset");
 define("MAIL_HTML", "is_html");
@@ -169,6 +172,9 @@ class DoceboMailer extends PHPMailer {
 		if (isset($params[MAIL_CHARSET])) $conf_arr[MAIL_CHARSET] = $params[MAIL_CHARSET];
 		if (isset($params[MAIL_REPLYTO])) $conf_arr[MAIL_REPLYTO] = $params[MAIL_REPLYTO];
 
+		if (isset($params[MAIL_RECIPIENTSCC]))  $conf_arr[MAIL_RECIPIENTSCC] = $params[MAIL_RECIPIENTSCC];
+		if (isset($params[MAIL_RECIPIENTSBCC])) $conf_arr[MAIL_RECIPIENTSBCC] = $params[MAIL_RECIPIENTSBCC];
+
 		$_sender = '';
 		$_recipients = array();
 		$_replyto = array();
@@ -303,6 +309,7 @@ class DoceboMailer extends PHPMailer {
 
 			switch($conf_arr[MAIL_MULTIMODE]) {
 				//case MAIL_CC     : if ($this->isValidAddress(Get::sett('send_cc_for_system_emails', ''))) $this->addCC(Get::sett('send_cc_for_system_emails')); break;//$this->AddCC($value,$name); break; //not supported yet
+                                case MAIL_CC     : $this->AddCC($value,$name); break;
 				case MAIL_BCC    : $this->AddBCC($value,$name); break;
 				case MAIL_SINGLE : $this->AddAddress($value,$name); break;
 				default: $this->AddAddress($value,$name); break;
@@ -310,6 +317,28 @@ class DoceboMailer extends PHPMailer {
 
 			if(Get::sett('send_cc_for_system_emails', '') !== '' && filter_var(Get::sett('send_cc_for_system_emails'), FILTER_VALIDATE_EMAIL) !== false)
 				$this->addCC(Get::sett('send_cc_for_system_emails'));
+                            $arr_mail_recipientscc = explode(' ',$conf_arr[MAIL_RECIPIENTSCC]);
+                            foreach ($arr_mail_recipientscc as &$user_mail_recipientscc) {
+                            	$this->addCC($user_mail_recipientscc);
+                            }
+                        }
+                        
+                        // MAIL_RECIPIENTSBCC
+                        if (isset($conf_arr[MAIL_RECIPIENTSBCC])){
+                            $arr_mail_recipientsbcc = explode(' ',$conf_arr[MAIL_RECIPIENTSBCC]);
+                            foreach ($arr_mail_recipientsbcc as &$user_mail_recipientsbcc) {
+                            	$this->addBCC($user_mail_recipientsbcc);
+                            }
+                        }
+                        
+                        // if(Get::sett('send_cc_for_system_emails', '') !== '' && filter_var(Get::sett('send_cc_for_system_emails'), FILTER_VALIDATE_EMAIL) !== false){
+                        if(Get::sett('send_cc_for_system_emails', '') !== ''){
+                            $arr_cc_for_system_emails = explode(' ',Get::sett('send_cc_for_system_emails'));
+                            foreach ($arr_cc_for_system_emails as &$user_cc_for_system_emails) {
+                            	$this->addCC($user_cc_for_system_emails);
+                            }
+                        }
+			
 		}
 		//----------------------------------------------------------------------------
 
