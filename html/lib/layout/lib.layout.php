@@ -64,8 +64,8 @@ class Layout {
 	public static function meta() {
 
 		return '<meta http-equiv="Content-Type" content="text/html; charset='.self::charset().'" />'."\n"
-			."\t\t".'<meta name="Copyright" content="Forma srl" />'."\n"
-			."\t\t".'<link rel="Copyright" href="http://www.forma.com/" title="Copyright Notice" />'."\n"
+			."\t\t".'<meta name="Copyright" content="FormaLMS.org" />'."\n"
+			."\t\t".'<link rel="Copyright" href="http://formalms.org/" title="Copyright Notice" />'."\n"
 			."\t\t".'<link rel="shortcut icon" href="'.self::path().'images/favicon.png" type="image/png" />'."\n"
 			."\t\t".'<link rel="icon" href="'.self::path().'images/favicon.ico" />'."\n";
 
@@ -235,7 +235,7 @@ class Layout {
 		$html = "";
 		$html .= '<p class="powered_by">';
 		$html .= '<span class="copyright">';
-		$html .= 'Powered by <a href="http://www.formalms.org/" onclick="window.open(this.href); return false;">Forma LMS</a>';
+		$html .= 'Powered by '.Get::sett('powered_by', 'FormaLMS.org').' Copyright &copy; FormaLMS.org';
 		$html .= '</span>';
 		$html .= '</p>';
 		return $html;
