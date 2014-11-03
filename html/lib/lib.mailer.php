@@ -309,36 +309,36 @@ class DoceboMailer extends PHPMailer {
 
 			switch($conf_arr[MAIL_MULTIMODE]) {
 				//case MAIL_CC     : if ($this->isValidAddress(Get::sett('send_cc_for_system_emails', ''))) $this->addCC(Get::sett('send_cc_for_system_emails')); break;//$this->AddCC($value,$name); break; //not supported yet
-                                case MAIL_CC     : $this->AddCC($value,$name); break;
+				case MAIL_CC     : $this->AddCC($value,$name); break;
 				case MAIL_BCC    : $this->AddBCC($value,$name); break;
 				case MAIL_SINGLE : $this->AddAddress($value,$name); break;
 				default: $this->AddAddress($value,$name); break;
 			}
 
-			if(Get::sett('send_cc_for_system_emails', '') !== '' && filter_var(Get::sett('send_cc_for_system_emails'), FILTER_VALIDATE_EMAIL) !== false)
-				$this->addCC(Get::sett('send_cc_for_system_emails'));
-                            $arr_mail_recipientscc = explode(' ',$conf_arr[MAIL_RECIPIENTSCC]);
-                            foreach ($arr_mail_recipientscc as &$user_mail_recipientscc) {
-                            	$this->addCC($user_mail_recipientscc);
-                            }
-                        }
-                        
-                        // MAIL_RECIPIENTSBCC
-                        if (isset($conf_arr[MAIL_RECIPIENTSBCC])){
-                            $arr_mail_recipientsbcc = explode(' ',$conf_arr[MAIL_RECIPIENTSBCC]);
-                            foreach ($arr_mail_recipientsbcc as &$user_mail_recipientsbcc) {
-                            	$this->addBCC($user_mail_recipientsbcc);
-                            }
-                        }
-                        
-                        // if(Get::sett('send_cc_for_system_emails', '') !== '' && filter_var(Get::sett('send_cc_for_system_emails'), FILTER_VALIDATE_EMAIL) !== false){
-                        if(Get::sett('send_cc_for_system_emails', '') !== ''){
-                            $arr_cc_for_system_emails = explode(' ',Get::sett('send_cc_for_system_emails'));
-                            foreach ($arr_cc_for_system_emails as &$user_cc_for_system_emails) {
-                            	$this->addCC($user_cc_for_system_emails);
-                            }
-                        }
-			
+      // MAIL_RECIPIENTSCC
+      if (isset($conf_arr[MAIL_RECIPIENTSCC])){
+          $arr_mail_recipientscc = explode(' ',$conf_arr[MAIL_RECIPIENTSCC]);
+          foreach ($arr_mail_recipientscc as &$user_mail_recipientscc) {
+          	$this->addCC($user_mail_recipientscc);
+          }
+      }
+      
+      // MAIL_RECIPIENTSBCC
+      if (isset($conf_arr[MAIL_RECIPIENTSBCC])){
+          $arr_mail_recipientsbcc = explode(' ',$conf_arr[MAIL_RECIPIENTSBCC]);
+          foreach ($arr_mail_recipientsbcc as &$user_mail_recipientsbcc) {
+          	$this->addBCC($user_mail_recipientsbcc);
+          }
+      }
+      
+      // if(Get::sett('send_cc_for_system_emails', '') !== '' && filter_var(Get::sett('send_cc_for_system_emails'), FILTER_VALIDATE_EMAIL) !== false){
+      if(Get::sett('send_cc_for_system_emails', '') !== ''){
+          $arr_cc_for_system_emails = explode(' ',Get::sett('send_cc_for_system_emails'));
+          foreach ($arr_cc_for_system_emails as &$user_cc_for_system_emails) {
+          	$this->addCC($user_cc_for_system_emails);
+          }
+      }
+
 		}
 		//----------------------------------------------------------------------------
 
