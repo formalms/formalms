@@ -239,6 +239,11 @@ class Boot {
 		// template
 		self::log( "Load template library." );
 		require_once(_base_.'/lib/lib.template.php');
+        
+        // twig template engine
+        self::log( "Load twig template engine." );
+        require_once(_base_.'/addons/twig/lib/Twig/Autoloader.php');
+        Twig_Autoloader::register();
 
 		// mimetype
 		self::log( "Load mimetype library." );

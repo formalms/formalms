@@ -83,23 +83,25 @@ class Controller {
 	 */
 	public function render($view_name, $data_for_view = false, $return = false) {
 
-		if(is_array($data_for_view)) {
+		if (is_array($data_for_view)) {
 			extract($data_for_view, EXTR_SKIP);
 		}
 
-		if (file_exists($this->viewCustomscriptsPath().'/'.$this->_mvc_name.'/'.$view_name.'.php')){
-			include( Docebo::inc( $this->viewCustomscriptsPath().'/'.$this->_mvc_name.'/'.$view_name.'.php' ) );
+		if (strpos($view_name, 'html.twig')!==FALSE) {
+			echo TwigManager::getInstance()->render($view_name, $data_for_view, $this->viewPath(). '/' . $this->_mvc_name);
+		} else if (file_exists($this->viewCustomscriptsPath() . '/' . $this->_mvc_name . '/' . $view_name . '.php')) {
+			include( Docebo::inc($this->viewCustomscriptsPath() . '/' . $this->_mvc_name . '/' . $view_name . '.php') );
 		} else {
-			include( Docebo::inc( $this->viewPath().'/'.$this->_mvc_name.'/'.$view_name.'.php' ) );
+			include( Docebo::inc($this->viewPath() . '/' . $this->_mvc_name . '/' . $view_name . '.php') );
 		}
 
-		if($return) {
+		if ($return) {
 			$content = ob_get_contents();
 			@ob_clean();
 			return $content;
 		}
 	}
-	
+
 	/**
 	 * This method will manage a widget (find them in the widget/ folder), the $widget_name must ber a valid widget name
 	 *  (a folder name inside the widget/ folder for example), the widget class will be automatically istanced with the params setted

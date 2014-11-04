@@ -27,6 +27,7 @@ function docebo_autoload($classname) {
 		'Layout'			=> _lib_.'/layout/lib.layout.php',
 		'CmsLayout'			=> _lib_.'/layout/lib.cmslayout.php',
 		'LoginLayout'		=> _lib_.'/layout/lib.loginlayout.php',
+		'TwigManager'		=> _lib_.'/lib.twigmanager.php',
 
 		// mvc
 		'Model'				=> _lib_.'/mvc/lib.model.php',
