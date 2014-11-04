@@ -86,7 +86,13 @@ class Controller {
 		if(is_array($data_for_view)) {
 			extract($data_for_view, EXTR_SKIP);
 		}
-		include( Docebo::inc( $this->viewPath().'/'.$this->_mvc_name.'/'.$view_name.'.php' ) );
+
+		if (file_exists($this->viewCustomscriptsPath().'/'.$this->_mvc_name.'/'.$view_name.'.php')){
+			include( Docebo::inc( $this->viewCustomscriptsPath().'/'.$this->_mvc_name.'/'.$view_name.'.php' ) );
+		} else {
+			include( Docebo::inc( $this->viewPath().'/'.$this->_mvc_name.'/'.$view_name.'.php' ) );
+		}
+
 		if($return) {
 			$content = ob_get_contents();
 			@ob_clean();
