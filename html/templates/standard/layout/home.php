@@ -3,7 +3,7 @@
 	<head>
 	    <!--Fix funzionamento scorm su IE9-->
         <meta http-equiv="x-ua-compatible" content="IE=8"></meta>
-        <!--END -->z
+        <!--END -->
 
 		<title><?php echo Layout::title(); ?></title>
 		<link rel="shortcut icon" href="<?php echo Layout::path(); ?>images/favicon.ico" />
