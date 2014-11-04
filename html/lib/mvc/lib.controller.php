@@ -66,6 +66,11 @@ class Controller {
 		return _base_.'/views';
 	}
 
+	public function viewCustomscriptsPath() {
+
+		return _base_.'/customscripts/views';
+	}
+	
 	/**
 	 * This method will render a specific view for this mvc
 	 * @param string $view_name the name of the view, must be equal to a php file inside the view folder for this mvc without the .php extension

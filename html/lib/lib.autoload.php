@@ -117,19 +117,55 @@ function docebo_autoload($classname) {
 		)
 	);
 
+	//possibile path for autoloading classes custom
+	$pathCustomscripts = array(
+		'adm' => array(
+			_adm_.'/customscripts/models',
+			_adm_.'/customscripts/controllers'
+		),
+		'alms' => array(
+			_lms_.'/customscripts/admin/models',
+			_lms_.'/customscripts/admin/controllers'
+		),
+		'lms' => array(
+			_lms_.'/customscripts/models',
+			_lms_.'/customscripts/controllers'
+		),
+		'acms' => array(
+			_cms_.'/customscripts/admin/models',
+			_cms_.'/customscripts/admin/controllers'
+		),
+		'cms' => array(
+			_cms_.'/customscripts/models',
+			_cms_.'/customscripts/controllers'
+		),
+		'lobj' => array(
+			_lms_.'/customscripts/models',
+			_lms_.'/customscripts/controllers'
+		)
+	);
+        
 	//parse classname for info and path
 	$location = array();
 	if(preg_match('/(Mobile|Adm|Alms|Lms|Acms|Cms|Lobj)Controller$/', $classname, $location)) {
 		// include controller file
 		$loc = ( isset($location[1]) ? strtolower($location[1]) : 'adm' );
-		$c_file = $path[$loc][1].'/'.$classname.'.php';
+                if (file_exists($pathCustomscripts[$loc][1].'/'.$classname.'.php')){
+                    $c_file = $pathCustomscripts[$loc][1].'/'.$classname.'.php';
+                } else {
+                    $c_file = $path[$loc][1].'/'.$classname.'.php';
+                }
 		//if(file_exists($c_file))
 			include_once(Docebo::inc($c_file));
 		return;
 	} else if(preg_match('/(Mobile|Adm|Alms|Lms|Acms|Cms|Lobj)$/', $classname, $location)) {
 		// include model file
 		$loc = ( isset($location[1]) ? strtolower($location[1]) : 'adm' );
-		$c_file = $path[$loc][0].'/'.$classname.'.php';
+                if (file_exists($pathCustomscripts[$loc][0].'/'.$classname.'.php')){
+                    $c_file = $pathCustomscripts[$loc][0].'/'.$classname.'.php';
+                } else {
+                    $c_file = $path[$loc][0].'/'.$classname.'.php';
+                }
 		//if(file_exists($c_file))
 			include_once(Docebo::inc($c_file));
 		return;

@@ -29,25 +29,30 @@
  * @return mixed 	the class istance
  */
 function &createModule($module_name, $class_name = NULL) {
+
 	$module_name = preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $module_name);
 	if(!isset($_SESSION['current_action_platform']))
 		$_SESSION['current_action_platform'] = 'framework';
-	
+
 	switch($_SESSION['current_action_platform']) {
 		case "framework" : {
 			$where = _adm_;
+			$whereCustomscripts = _adm_.'/customscripts';
 			$def_class_name = 'Module';
 		};break;
 		case "lms" : {
 			$where = _lms_.'/admin';
+			$whereCustomscripts = _lms_.'/customscripts/admin';
 			$def_class_name = 'Module';
 		};break;
 		case "cms" : {
 			$where = _cms_.'/admin';
+			$whereCustomscripts = _cms_.'/customscripts/admin';
 			$def_class_name = 'Module';
 		};break;
 		case "scs" : {
 			$where = _scs_.'/admin';
+			$whereCustomscripts = _scs_.'/customscripts/admin';
 			$def_class_name = 'Module';
 		};break;
 	}
@@ -56,10 +61,25 @@ function &createModule($module_name, $class_name = NULL) {
 		
 		$def_class_name = 'Module';
 		$where = _lms_;
-		require_once($where.'/class.module/class.definition.php');
+			$whereCustomscripts = _lms_.'/customscripts';
+			if(file_exists($whereCustomscripts.'/class.module/class.definition.php')) {
+				require_once($whereCustomscripts.'/class.module/class.definition.php');
+			} else {
+				require_once($where.'/class.module/class.definition.php');
+			}
 	}
 	
-	if(file_exists($where.'/class.module/class.'.$module_name.'.php')) {
+	if(file_exists($whereCustomscripts.'/class.module/class.'.$module_name.'.php')) {
+
+		require_once($whereCustomscripts.'/class.module/class.'.$module_name.'.php');
+		if( $class_name === NULL ) $class_name = $def_class_name.'_'.ucfirst($module_name);
+	}
+	elseif(file_exists(_adm_.'/customscripts/class.module/class.'.$module_name.'.php')) {
+
+		require_once(_adm_.'/customscripts/class.module/class.'.$module_name.'.php');
+		if( $class_name === NULL ) $class_name = $def_class_name.'_'.ucfirst($module_name);
+	}
+	elseif(file_exists($where.'/class.module/class.'.$module_name.'.php')) {
 
 		require_once($where.'/class.module/class.'.$module_name.'.php');
 		if( $class_name === NULL ) $class_name = $def_class_name.'_'.ucfirst($module_name);
@@ -73,7 +93,7 @@ function &createModule($module_name, $class_name = NULL) {
 		require_once($where.'/class.module/class.definition.php');
 		$class_name = $def_class_name;
 	}
-	
+
 	$module_cfg = new $class_name();
 	
 	return $module_cfg;
@@ -83,6 +103,7 @@ function &createModule($module_name, $class_name = NULL) {
 function &createLmsModule($module_name) {
 	$module_name = preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $module_name);
 	include_once(_lms_.'/class.module/class.definition.php');
+
 	if(file_exists(_lms_.'/class.module/class.'.$module_name.'.php')) {
 
 		include_once(_lms_.'/class.module/class.'.$module_name.'.php');
