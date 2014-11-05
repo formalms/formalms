@@ -28,6 +28,10 @@ $cfg['db_pass'] = '';
 $cfg['db_name'] = 'forma';
 $cfg['db_charset'] = 'utf8';
 
+$cfg['db_user'] = 'dba_forma';
+$cfg['db_pass'] = 'dba_forma';
+$cfg['db_name'] = 'forma_org';
+
 /**
  * Tables prefix
  * -------------------------------------------------------------------------
@@ -93,3 +97,18 @@ $cfg['demo_mode']   = false;
 $cfg['filter_tool'] = 'htmlpurifier';
 $cfg['mail_br']  = "\r\n";
 
+/**
+ * Template engine custom param
+ * -------------------------------------------------------------------------
+ * add all template_engine enabled (if exists)
+ * array value=file extension
+ * template_engine available: twig
+ * todo: 'class'=>'TwigManager', 'lib'=>'lib.twigmanager.php'); 
+ */
+$cfg['template_engine'] = Array();
+$cfg['template_engine']['twig'] = array('ext'=>'.twig');
+
+//NB avoid caching
+$cfg['twig_debug']    = true;
+
+/* */
