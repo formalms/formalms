@@ -490,6 +490,10 @@ class Boot {
 
 		self::log( "Include layout manager file." );
 		require_once _lib_.'/layout/lib.layout.php';
+		
+		if(Get::cfg('enable_plugins', false)) {
+			PluginManager::initPlugins();
+		}
 	}
 
 	/**

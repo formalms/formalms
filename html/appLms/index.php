@@ -26,6 +26,8 @@ Boot::init(BOOT_PAGE_WR);
 // connect to the database
 $db =& DbConn::getInstance();
 
+if(Get::cfg('enable_plugins', false)) PluginManager::runPlugins();
+
 // some specific lib to load
 require_once(_lms_.'/lib/lib.istance.php');
 require_once(_lms_.'/lib/lib.permission.php');

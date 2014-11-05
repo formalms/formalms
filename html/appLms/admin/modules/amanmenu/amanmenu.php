@@ -740,7 +740,8 @@ function manmodule() {
 	$query_free_module = "
 	SELECT idModule, default_name 
 	FROM ".$GLOBALS['prefix_lms']."_module AS module 
-	WHERE module_info = ''";
+	WHERE module_info = '' or module_info = 'plugin' ";
+
 	if($used_module != '') $query_free_module .= " AND idModule NOT IN ( ".substr($used_module, 0 , -1)." )";
 	$re_free_module = sql_query($query_free_module);
 	

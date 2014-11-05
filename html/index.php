@@ -39,6 +39,8 @@ if(!Docebo::user()->isAnonymous() && (!isset($_GET['modname']) || $_GET['modname
 emptyPageWriter::createInstance();
 $db =& DbConn::getInstance();
 
+if(Get::cfg('enable_plugins', false)) PluginManager::runPlugins();
+
 $query = "SELECT param_value FROM core_setting
 		WHERE param_name = 'maintenance'
 		ORDER BY pack, sequence";

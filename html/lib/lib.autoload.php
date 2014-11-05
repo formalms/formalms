@@ -40,6 +40,7 @@ function docebo_autoload($classname) {
 		'AcmsController'	=> _lib_.'/mvc/lib.acmscontroller.php',
 		'MobileController'	=> _lib_.'/mvc/lib.mobilecontroller.php',
 		'LobjLmsController'	=> _lms_.'/controllers/LobjLmsController.php',
+        'PluginController'	=> _lib_.'/mvc/lib.plugincontroller.php',
 
 		// db
 		'DbConn'			=> _base_.'/db/lib.docebodb.php',

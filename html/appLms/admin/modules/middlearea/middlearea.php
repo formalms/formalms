@@ -70,6 +70,14 @@ function view_area() {
 		'tb_videoconference' => Lang::t('_VIDEOCONFERENCE', 'middlearea'),
 		'tb_kb' => Lang::t('_CONTENT_LIBRARY', 'middlearea')
 	);
+	//todo getplugins enabled??
+	require_once(_adm_."/models/PluginAdm.php");
+	
+	$pluginAdm = new PluginAdm();
+	$plugins=$pluginAdm->getInstalledPlugins();
+	foreach ($plugins as $plugin_name){
+		$tab["tb_".strtolower($plugin_name)]=ucfirst($plugin_name);
+	}
 
 	$query_menu = "SELECT obj_index from %lms_middlearea where obj_index like 'tb_%' ORDER BY sequence";
 	$re_tablist = sql_query($query_menu);
