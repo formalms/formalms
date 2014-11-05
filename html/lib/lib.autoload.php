@@ -27,7 +27,6 @@ function docebo_autoload($classname) {
 		'Layout'			=> _lib_.'/layout/lib.layout.php',
 		'CmsLayout'			=> _lib_.'/layout/lib.cmslayout.php',
 		'LoginLayout'		=> _lib_.'/layout/lib.loginlayout.php',
-		'TwigManager'		=> _lib_.'/lib.twigmanager.php',
 
 		// mvc
 		'Model'				=> _lib_.'/mvc/lib.model.php',
@@ -80,6 +79,18 @@ function docebo_autoload($classname) {
 		'PluginManager'		=> _lib_.'/lib.pluginmanager.php',
 	);
 	
+	$tplengine=Get::cfg('template_engine', array());
+	foreach ($tplengine as $tplkey => $tpleng){
+		switch($tplkey){
+		    case('twig'):
+			$fixed['TwigManager'] = _lib_.'/lib.twigmanager.php';
+			break;
+		    default:
+			//$fixed[$tpleng['class']] = _lib_.'/'.$tpleng['lib'];
+			break;
+		}
+	}
+
 	//search for a base class and include the file if found
 	if(isset($fixed[$classname])) {
 		if(file_exists($fixed[$classname])) include_once( $fixed[$classname] );

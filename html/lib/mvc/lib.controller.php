@@ -87,14 +87,48 @@ class Controller {
 			extract($data_for_view, EXTR_SKIP);
 		}
 
-		if (strpos($view_name, 'html.twig')!==FALSE) {
-			echo TwigManager::getInstance()->render($view_name, $data_for_view, $this->viewPath(). '/' . $this->_mvc_name);
-		} else if (file_exists($this->viewCustomscriptsPath() . '/' . $this->_mvc_name . '/' . $view_name . '.php')) {
-			include( Docebo::inc($this->viewCustomscriptsPath() . '/' . $this->_mvc_name . '/' . $view_name . '.php') );
-		} else {
-			include( Docebo::inc($this->viewPath() . '/' . $this->_mvc_name . '/' . $view_name . '.php') );
-		}
+		$paths=array();
+		$extensions=array();
+		$paths[]=$this->viewCustomscriptsPath();
+		$paths[]=$this->viewPath();
+		$tplengine=Get::cfg('template_engine', array());
 
+		foreach ($tplengine as $tplkey => $tpleng){
+			$extensions[$tplkey]=$tpleng['ext'];
+		}
+		$extensions['php']=".php";
+
+		$extension="";
+		$path="";
+		$tplkey="";
+		foreach ($paths as $p){
+			foreach ($extensions as $k => $e){
+				$fullpath=$p . '/' . $this->_mvc_name . '/' . $view_name . $e;
+				if (file_exists($fullpath)){
+					$extension=$e;
+					$path=$p;
+					$tplkey=$k;
+					break;
+				}
+			}
+			if ($extension != "") break;
+		}
+		
+		switch($tplkey){
+			case "php":
+				include( Docebo::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension));
+				break;
+			case "twig":
+				echo TwigManager::getInstance()->render($view_name.$extension, $data_for_view, $path. '/' . $this->_mvc_name);
+				//$classname = 'TwigManager';
+				//echo $classname::getInstance()->render($view_name.$extension, $data_for_view, $path. '/' . $this->_mvc_name);
+				break;
+			default:
+				//die( 'FILENOTFOUND');
+				include( Docebo::inc($this->viewPath() . '/' . $this->_mvc_name . '/' . $view_name . $extension) );
+				break;
+		}
+		
 		if ($return) {
 			$content = ob_get_contents();
 			@ob_clean();
