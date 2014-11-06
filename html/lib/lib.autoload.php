@@ -40,7 +40,6 @@ function docebo_autoload($classname) {
 		'AcmsController'	=> _lib_.'/mvc/lib.acmscontroller.php',
 		'MobileController'	=> _lib_.'/mvc/lib.mobilecontroller.php',
 		'LobjLmsController'	=> _lms_.'/controllers/LobjLmsController.php',
-        'PluginController'	=> _lib_.'/mvc/lib.plugincontroller.php',
 
 		// db
 		'DbConn'			=> _base_.'/db/lib.docebodb.php',
@@ -90,6 +89,10 @@ function docebo_autoload($classname) {
 			//$fixed[$tpleng['class']] = _lib_.'/'.$tpleng['lib'];
 			break;
 		}
+	}
+
+	if(Get::cfg('enable_plugins', false)){
+		$fixed['PluginController'] = _lib_.'/mvc/lib.plugincontroller.php';
 	}
 
 	//search for a base class and include the file if found
@@ -183,24 +186,7 @@ function docebo_autoload($classname) {
 			include_once(Docebo::inc($c_file));
 		return;
 	}
-	/*if(preg_match ('/(Mobile|Adm|Alms|Lms|Acms|Cms|Lobj)/', $classname, $location)) {
-		$loc = 'adm';
-		if(isset($location[1])){
-			$loc = strtolower($location[1]);
-			if(!isset($path[$loc])) $loc = 'adm';
-		}
-		if(strpos($classname, 'Controller') !== false) {
-			// include controller file
-			$c_file = $path[$loc][1].'/'.$classname.'.php';
-			if(file_exists($c_file)) include_once($c_file);
-			return;
-		} else {
-			// include model file
-			$c_file = $path[$loc][0].'/'.$classname.'.php';
-			if(file_exists($c_file)) include_once($c_file);
-			return;
-		}
-	}*/
+
 	// manage widgets classnames
 	if(preg_match ('/(Widget)/', $classname, $location)) {
 		$loc = _base_.'/widget/'.strtolower(str_replace(array('WidgetController', 'Widget'), array('', ''), $classname));

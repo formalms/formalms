@@ -14,6 +14,10 @@
 class PluginmanagerAdmController extends AdmController {
 
 	public function showTask() {
+		if(!Get::cfg('enable_plugins', false)){
+			cout("Plugin feature disabled");
+			return;
+		}
 		$model = new PluginAdm();
 		$plugins=$model->getInstalledPlugins();
 		

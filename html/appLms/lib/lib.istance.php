@@ -41,17 +41,12 @@ function createModule($module_name, $class_name = NULL) {
 		$class_name = 'LmsModule';
 	}
 
-    // todo: luca
-    //** 1) controllare se il modulo corrente e' plugin 
-    //** 2) se in module info ce la parola PLUGIN , gestire il tutto in una cartella sotto plugins ecc
-     
-    if(checkIfPlugin($module_name)=="plugin"){
-
-           include_once( Get::rel_path('plugins').'/'.$module_name.'/class/class.'.$module_name.'.php' ); 
-           $class_name = 'Module_'.ucfirst($module_name);  
-                      
-            
-    }
+	if(Get::cfg('enable_plugins', false)){
+		if(checkIfPlugin($module_name)=="plugin"){
+			include_once( Get::rel_path('plugins').'/'.$module_name.'/class/class.'.$module_name.'.php' ); 
+			$class_name = 'Module_'.ucfirst($module_name);  
+		}
+	}
     
 	$module_cfg = new $class_name();
 	return $module_cfg;
