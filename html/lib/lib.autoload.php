@@ -133,31 +133,44 @@ function docebo_autoload($classname) {
 		)
 	);
 
+
 	//possibile path for autoloading classes custom
 	$pathCustomscripts = array(
 		'adm' => array(
-			_adm_.'/customscripts/models',
-			_adm_.'/customscripts/controllers'
+			_base_.'/customscripts'.'/'._folder_adm_.'/models',
+			_base_.'/customscripts'.'/'._folder_adm_.'/controllers'
+#			_adm_.'/customscripts/models',
+#			_adm_.'/customscripts/controllers'
 		),
 		'alms' => array(
-			_lms_.'/customscripts/admin/models',
-			_lms_.'/customscripts/admin/controllers'
+			_base_.'/customscripts'.'/'._folder_lms_.'/admin/models',
+			_base_.'/customscripts'.'/'._folder_lms_.'/admin/controllers'
+#			_lms_.'/customscripts/admin/models',
+#			_lms_.'/customscripts/admin/controllers'
 		),
 		'lms' => array(
-			_lms_.'/customscripts/models',
-			_lms_.'/customscripts/controllers'
+			_base_.'/customscripts'.'/'._folder_lms_.'/models',
+			_base_.'/customscripts'.'/'._folder_lms_.'/controllers'
+#			_lms_.'/customscripts/models',
+#			_lms_.'/customscripts/controllers'
 		),
 		'acms' => array(
-			_cms_.'/customscripts/admin/models',
-			_cms_.'/customscripts/admin/controllers'
+			_base_.'/customscripts'.'/'._folder_cms_.'/admin/models',
+			_base_.'/customscripts'.'/'._folder_cms_.'/admin/controllers'
+#			_cms_.'/customscripts/admin/models',
+#			_cms_.'/customscripts/admin/controllers'
 		),
 		'cms' => array(
-			_cms_.'/customscripts/models',
-			_cms_.'/customscripts/controllers'
+			_base_.'/customscripts'.'/'._folder_cms_.'/models',
+			_base_.'/customscripts'.'/'._folder_cms_.'/controllers'
+#			_cms_.'/customscripts/models',
+#			_cms_.'/customscripts/controllers'
 		),
 		'lobj' => array(
-			_lms_.'/customscripts/models',
-			_lms_.'/customscripts/controllers'
+			_base_.'/customscripts'.'/'._folder_lms_.'/models',
+			_base_.'/customscripts'.'/'._folder_lms_.'/controllers'
+#			_lms_.'/customscripts/models',
+#			_lms_.'/customscripts/controllers'
 		)
 	);
         

@@ -22,7 +22,8 @@ class AlmsController extends Controller {
 
 	public function viewCustomscriptsPath() {
 
-		return _lms_.'/customscripts/admin/views';
+		return _base_.'/customscripts'.'/'._folder_lms_.'/admin/views';
+#		return _lms_.'/customscripts/admin/views';
 	}
 
 	public function init() {

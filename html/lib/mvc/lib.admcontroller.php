@@ -22,7 +22,8 @@ class AdmController extends Controller {
 
 	public function viewCustomscriptsPath() {
 
-		return _adm_.'/customscripts/views';
+		return _base_.'/customscripts'.'/'._folder_adm_.'/views';
+#		return _adm_.'/customscripts/views';
 	}
 
 	public function init() {
