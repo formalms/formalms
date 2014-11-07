@@ -166,7 +166,7 @@ function docebo_autoload($classname) {
 	if(preg_match('/(Mobile|Adm|Alms|Lms|Acms|Cms|Lobj)Controller$/', $classname, $location)) {
 		// include controller file
 		$loc = ( isset($location[1]) ? strtolower($location[1]) : 'adm' );
-                if (file_exists($pathCustomscripts[$loc][1].'/'.$classname.'.php')){
+                if (file_exists($pathCustomscripts[$loc][1].'/'.$classname.'.php') && Get::cfg('enable_customscripts', false) == true ){
                     $c_file = $pathCustomscripts[$loc][1].'/'.$classname.'.php';
                 } else {
                     $c_file = $path[$loc][1].'/'.$classname.'.php';
@@ -177,7 +177,7 @@ function docebo_autoload($classname) {
 	} else if(preg_match('/(Mobile|Adm|Alms|Lms|Acms|Cms|Lobj)$/', $classname, $location)) {
 		// include model file
 		$loc = ( isset($location[1]) ? strtolower($location[1]) : 'adm' );
-                if (file_exists($pathCustomscripts[$loc][0].'/'.$classname.'.php')){
+                if (file_exists($pathCustomscripts[$loc][0].'/'.$classname.'.php') && Get::cfg('enable_customscripts', false) == true ){
                     $c_file = $pathCustomscripts[$loc][0].'/'.$classname.'.php';
                 } else {
                     $c_file = $path[$loc][0].'/'.$classname.'.php';

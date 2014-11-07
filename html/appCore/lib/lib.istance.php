@@ -62,19 +62,19 @@ function &createModule($module_name, $class_name = NULL) {
 		$def_class_name = 'Module';
 		$where = _lms_;
 			$whereCustomscripts = _lms_.'/customscripts';
-			if(file_exists($whereCustomscripts.'/class.module/class.definition.php')) {
+			if(file_exists($whereCustomscripts.'/class.module/class.definition.php') && Get::cfg('enable_customscripts', false) == true ) {
 				require_once($whereCustomscripts.'/class.module/class.definition.php');
 			} else {
 				require_once($where.'/class.module/class.definition.php');
 			}
 	}
 	
-	if(file_exists($whereCustomscripts.'/class.module/class.'.$module_name.'.php')) {
+	if(file_exists($whereCustomscripts.'/class.module/class.'.$module_name.'.php') && Get::cfg('enable_customscripts', false) == true ) {
 
 		require_once($whereCustomscripts.'/class.module/class.'.$module_name.'.php');
 		if( $class_name === NULL ) $class_name = $def_class_name.'_'.ucfirst($module_name);
 	}
-	elseif(file_exists(_adm_.'/customscripts/class.module/class.'.$module_name.'.php')) {
+	elseif(file_exists(_adm_.'/customscripts/class.module/class.'.$module_name.'.php') && Get::cfg('enable_customscripts', false) == true ) {
 
 		require_once(_adm_.'/customscripts/class.module/class.'.$module_name.'.php');
 		if( $class_name === NULL ) $class_name = $def_class_name.'_'.ucfirst($module_name);

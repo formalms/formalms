@@ -89,7 +89,9 @@ class Controller {
 
 		$paths=array();
 		$extensions=array();
-		$paths[]=$this->viewCustomscriptsPath();
+		if (Get::cfg('enable_customscripts', false) == true) {
+			$paths[]=$this->viewCustomscriptsPath();
+		}
 		$paths[]=$this->viewPath();
 		$tplengine=Get::cfg('template_engine', array());
 
