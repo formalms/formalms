@@ -6,7 +6,8 @@
         <!--END -->
 
 		<title><?php echo Layout::title(); ?></title>
-		<?php echo Layout::zone('meta'); ?>
+		<?php echo Layout::meta(); ?>
+		<link rel="shortcut icon" href="<?php echo Layout::path(); ?>images/favicon.png" type="image/png" />
 		<link rel="shortcut icon" href="<?php echo Layout::path(); ?>images/favicon.ico" />
 		<!-- reset and font stylesheet -->
 		<?php echo Layout::resetter(); ?>
@@ -24,7 +25,7 @@
 		<?php echo Layout::zone('page_head'); ?>
         <script type="text/javascript">
             YAHOO.util.Event.onDOMReady(function(){
-                checkSelect(document.getElementById('course_type').value);         
+                checkSelect(document.getElementById('course_type').value);
 
                 YAHOO.util.Event.on(
                     YAHOO.util.Selector.query('select#course_type'), 'change', function (e) {
@@ -42,7 +43,7 @@
                     document.getElementById("auto_subscription").checked = false;
                 }
             }
-        </script>       
+        </script>
 	</head>
 	<body class="yui-skin-docebo yui-skin-sam">
 		<!-- blind nav -->
