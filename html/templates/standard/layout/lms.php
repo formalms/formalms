@@ -6,7 +6,7 @@
         <meta http-equiv="x-ua-compatible" content="IE=8"></meta>
         <!--END -->
 
-		<title>XXX <?php echo Layout::title(); ?></title>
+		<title><?php echo Layout::title(); ?></title>
 		<?php echo Layout::zone('meta'); ?>
 		<?php echo Layout::meta(); ?>
 		<link rel="shortcut icon" href="<?php echo Layout::path(); ?>images/favicon.png" type="image/png" />

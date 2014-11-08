@@ -7,8 +7,10 @@
         <!--END -->
 
 		<title><?php echo Layout::title(); ?></title>
-		<link rel="shortcut icon" href="<?php echo Layout::path(); ?>images/favicon.ico" />
 		<?php echo Layout::zone('meta'); ?>
+		<?php echo Layout::meta(); ?>
+		<link rel="shortcut icon" href="<?php echo Layout::path(); ?>images/favicon.png" type="image/png" />
+		<link rel="shortcut icon" href="<?php echo Layout::path(); ?>images/favicon.ico" />
 		<!-- reset and font stylesheet -->
 		<?php echo Layout::resetter(); ?>
 		<!-- common stylesheet -->
@@ -42,7 +44,7 @@
 				<?php echo LoginLayout::login_form(); ?>
 				<?php echo LoginLayout::service_msg(); ?>
 			</div>
-			
+
 		</div>
 		<div class="footer">
 			<?php echo LoginLayout::links(); ?>
