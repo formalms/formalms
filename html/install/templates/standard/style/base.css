@@ -27,3 +27,5 @@ ul.info li{list-style:none;font-weight:normal;margin-top:0.3em;margin-bottom:0.6
 ul.info li.ok span{color:green;font-weight:bold;}
 ul.info li.err{}
 ul.info li.err span{color:red;font-weight:bold;}
+ul.info li.warn{}
+ul.info li.warn span{color:purple;font-weight:bold;}
