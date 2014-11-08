@@ -398,6 +398,7 @@
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Max rooms]]></key>
         <key id="configuration&amp;_BBB_PASSWORD_MODERATOR" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Moderator Password BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_PASSWORD_VIEWER" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Viewer Password BigBlueButton]]></key>
+        <key id="configuration&amp;_BBB_PORT" attributes="" save_date="2014-05-10 12:43:10"><![CDATA[BigBlueButton Port]]></key>
         <key id="configuration&amp;_BBB_SALT" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Salt BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Server address BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_USER" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Username BigBlueButton]]></key>

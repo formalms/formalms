@@ -400,6 +400,7 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Numero massimo di stanze]]></key>
         <key id="configuration&amp;_BBB_PASSWORD_MODERATOR" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Password Moderatore BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_PASSWORD_VIEWER" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Password Partecipante BigBlueButton]]></key>
+        <key id="configuration&amp;_BBB_PORT" attributes="" save_date="2014-05-10 12:43:10"><![CDATA[Porta BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_SALT" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Salt BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Indirizzo server BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_USER" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Nome Utente BigBlueButton]]></key>

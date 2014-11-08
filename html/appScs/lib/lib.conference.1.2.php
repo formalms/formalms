@@ -147,7 +147,7 @@ class Conference_Manager {
 					$user_email=$u_info[ACL_INFO_EMAIL];
 					$confkey = $bbb->generateConfKey();
 					$audiovideosettings=1;
-					$maxmikes=(int)Get::sett("dimdim_max_mikes");
+					$maxmikes=(int)Get::sett("bbb_max_mikes");
 					$extra_conf = array();
 					(isset($_POST['lobbyEnabled']) ? $extra_conf['lobbyEnabled'] = true : $extra_conf['lobbyEnabled'] = false);
 					//(isset($_POST['display_phone_info']) ? $extra_conf['display_phone_info'] = true : $extra_conf['display_phone_info'] = false);
@@ -218,7 +218,7 @@ class Conference_Manager {
 			if (!$success) {
 				sql_query("DELETE FROM ".$this->_getRoomTable()." WHERE id=".(int)$idConference);
 				$idConference = false;
-			}		
+			}
 					break;
 
 				case "teleskill":
@@ -340,11 +340,16 @@ class Conference_Manager {
 		$event=new DoceboCalEvent_lms();
 		$event->id=$conference["idCal"];
 		$event->del();
-		
+
 		switch ($conference["room_type"]) {
 			case "dimdim":
 				$dimdim=new DimDim_Manager();
 				$dimdim->deleteRoom($room_id);
+				break;
+
+			case "bbb":
+				$bbb=new Bbb_Manager();
+				$bbb->deleteRoom($room_id);
 				break;
 
 			case "teleskill":
@@ -361,8 +366,8 @@ class Conference_Manager {
 		switch($room_type) {
 			case "bbb":
 // TODO : support for BBB is experimental - must be refined
-				$dimdim=new Bbb_Manager();
-				$url=$dimdim->getUrl($idConference,$room_type);
+				$bbb=new Bbb_Manager();
+				$url=$bbb->getUrl($idConference,$room_type);
 				break;
 
 			case "dimdim":

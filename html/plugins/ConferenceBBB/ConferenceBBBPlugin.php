@@ -12,47 +12,48 @@
 \ ======================================================================== */
 
 define("_BBB_STREAM_TIMEOUT", 30);
-define("_BBB_AUTH_CODE", 'X-Dimdim-Auth-Token');
-define("_BBB_AUTH_DATA", 'dimdim_login_data');
+define("_BBB_AUTH_CODE", 'X-BBB-Auth-Token');
+define("_BBB_AUTH_DATA", 'bbb_login_data');
 
 include_once(dirname(__FILE__)."/lib.bbb.api.php");
 
 class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginConferenceInterface {
-	
+
 	public static $can_mod = false;
-	
+
 	function ConferenceBBBPlugin() {
-		$this->server = Get::sett('dimdim_server');
-		$this->port = Get::sett('dimdim_port');
+		$this->server = Get::sett('bbb_server');
+		$this->port = Get::sett('bbb_port');
 	}
 
-	
-	
+
+
 	public function init() {
 	}
-	
+
 	public function run() {
 	}
-	
+
 	public function activate() {
+		// test salt : 8cd8ef52e8e101574e400365b55e11a6
 		$res = sql_query(
-				"insert into core_setting
-						(param_name,param_value,value_type,max_size,pack,regroup,sequence,param_load,hide_in_modify,extra_info) 
+				"insert ignore into core_setting
+						(param_name,param_value,value_type,max_size,pack,regroup,sequence,param_load,hide_in_modify,extra_info)
 			 	 values
 				      ('bbb_max_mikes','2','string',255,'bbb',6,6,1,0,'')
 					, ('bbb_max_participant','300','string',255,'bbb',6,7,1,0,'')
 					, ('bbb_max_room','999','string',255,'bbb',6,8,1,0,'')
-					, ('bbb_password_moderator','password','string',255,'bbb',6,4,1,0,'')
-					, ('bbb_password_viewer','password','string',255,'bbb',6,5,1,0,'')
-					, ('bbb_salt','8cd8ef52e8e101574e400365b55e11a6','string',255,'bbb',6,3,1,0,'')
+					, ('bbb_password_moderator','password.moderator','string',255,'bbb',6,4,1,0,'')
+					, ('bbb_password_viewer','password.moderator','string',255,'bbb',6,5,1,0,'')
+					, ('bbb_salt','to be changed with a complex string','string',255,'bbb',6,3,1,0,'')
 					, ('bbb_server','http://test-install.blindsidenetworks.com/bigbluebutton/','string',255,'bbb',6,1,1,0,'')
-					, ('bbb_user','luisiana','string',255,'bbb',6,2,1,0,'')
+					, ('bbb_user','','string',255,'bbb',6,2,1,0,'')
 				"
 		);
-	
+
 		return $res;
 	}
-	
+
 	public function deactivate() {
 		$res = sql_query(
 				"delete from core_setting where param_name in (
@@ -67,22 +68,22 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 				)
 				"
 		);
-	
+
 		return $res;
 	}
-	
-	
+
+
 	function _getRoomTable() {
-		
+
 		return $GLOBALS['prefix_scs'].'_bbb';
 	}
-	
+
 	function _query($query) {
 
 		$re = sql_query($query);
 		return $re;
 	}
-	
+
 	function generateConfKey() {
 		$conf_key = '';
 		for($i = 0; $i <8;$i++) {
@@ -94,22 +95,22 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 		}
 		return $conf_key;
 	}
-	
-	
+
+
 	function canOpenRoom($start_time) {
 		return true;
 	}
-	
-	
+
+
 	function insertRoom($idConference, $name, $start_date, $end_date, $maxparticipants) {
-		
+
 		$acl_manager =& Docebo::user()->getAclManager();
 		$display_name = Docebo::user()->getUserName();
 		$u_info = $acl_manager->getUser(getLogUserId(), false);
 		$user_email=$u_info[ACL_INFO_EMAIL];
 		$confkey = $this->generateConfKey();
 		$audiovideosettings=1;
-		$maxmikes=(int)Get::sett("dimdim_max_mikes");
+		$maxmikes=(int)Get::sett("bbb_max_mikes");
 		$extra_conf = array();
 		$extra_conf['lobbyEnabled'] = false;
 		$extra_conf['privateChatEnabled'] = false;
@@ -121,7 +122,7 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 		$extra_conf['recordingEnabled'] = false;
 		$extra_conf['autoHandsFreeOnAVLoad'] = false;
 		$extra_conf['joinEmailRequired'] = false;
-		
+
 		$res->result = true;
 		require_once(_base_.'/lib/lib.json.php');
 		$json = new Services_JSON();
@@ -145,7 +146,7 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 
 		return false;
 	}
-	
+
 	function roomInfo($room_id) {
 
 		$room_open = "
@@ -156,35 +157,35 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 
 		return $this->nextRow($re_room);
 	}
-	
+
 	function roomActive($idCourse, $at_date = false) {
 
 		$room_open = "
 		SELECT id,idCourse,idSt,name, starttime,endtime, confkey, emailuser, displayname, meetinghours,maxparticipants,audiovideosettings,maxmikes
 		FROM ".$this->_getRoomTable()."
 		WHERE idCourse = '".$idCourse."'";
-		
+
 		if ($at_date !== false) {
 			$room_open .= " AND endtime >= '".$at_date."'";
 		}
-		
+
 		$room_open .= " ORDER BY starttime";
-		
+
 		$re_room = $this->_query($room_open);
-			
+
 		return $re_room;
 	}
-	
+
 
 
 	function nextRow($re_room) {
 
 		return mysql_fetch_array($re_room);
 	}
-	
+
 	function deleteRoom($room_id) {
-		if(Get::sett('use_dimdim_api') === 'on')
-			$res = $this->api_delete_schedule($room_id);
+
+		$res = $this->api_delete_schedule($room_id);
 
 		$room_del = "
 		DELETE FROM ".$this->_getRoomTable()."
@@ -193,25 +194,25 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 
 		return $re_room;
 	}
-	
+
 	function getUrl($idConference,$room_type) {
 		$lang =& DoceboLanguage::createInstance('conference', 'lms');
-		
+
 		$conf=new Conference_Manager();
-		
+
 		$conference = $conf->roomInfo($idConference);
-		
+
 		$acl_manager =& Docebo::user()->getAclManager();
 		$username = Docebo::user()->getUserName();
 		$u_info = $acl_manager->getUser(getLogUserId(), false);
 		$user_email=$u_info[ACL_INFO_EMAIL];
-		
-		
+
+
 		$query2="SELECT * FROM ".$this->_getRoomTable()." WHERE idConference = '".$idConference."'";
 		$re_room = $this->_query($query2);
 		$room=$this->nextRow($re_room);
 
-				
+
 		if ($room["audiovideosettings"]==0) {
 			$av="audio";
 		} else {
@@ -224,16 +225,14 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 		if ($res && $res->result) {
 			$clientId = "";
 		}*/
-    
+
 		$name = $this->getRoomName($idConference);
-//SOSTITUITO DA QUI SOTTO $_url = 'http://'.Get::sett('dimdim_server', "").'/console?clientId='.$clientId.'&group=all&account='.Get::sett('dimdim_user', "").'&room='.urlencode($name);
-////////////////////////////////////////////////////
-		
+
     $url= Get::sett('bbb_server', "");
     $salt = Get::sett('bbb_salt', "");
     $moderator_password = Get::sett('bbb_password_moderator', "");
     $viewer_password = Get::sett('bbb_password_viewer', "");
-		$response = BigBlueButton::createMeetingArray($username, $name, null, $moderator_password, $viewer_password, $salt, $url, $returnurl);		
+		$response = BigBlueButton::createMeetingArray($username, $name, null, $moderator_password, $viewer_password, $salt, $url, $returnurl);
 		if(checkPerm('mod', true)){
       $password = $moderator_password;
 		}
@@ -255,7 +254,7 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
     else{
 	    $_url = BigBlueButton::joinURL($name, $username,$password, $salt, $url);
 	  }
-		
+
 ////////////////////////////////////////////////////
 		$url = '<a onclick="window.open(this.href, \'\', \'\');return false;" href="'.str_replace('&', '&amp;', $_url).'">'.$lang->def('_JOIN_CONFERENCE').'</a>';
 
@@ -275,18 +274,18 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 	 * for the HTTP 1.1 implementation
 	 */
 	function _decode_header ( $str ) {
-	    
+
 	    $out = array ();
 	    $part = preg_split ( "/\r?\n/", $str, -1, PREG_SPLIT_NO_EMPTY );
 		for( $h = 0; $h < sizeof ( $part ); $h++ ) {
-			
+
 			if ( $h != 0 ) {
-	        
+
 				$pos = strpos ( $part[$h], ':' );
 				$k = strtolower ( str_replace ( ' ', '', substr ( $part[$h], 0, $pos ) ) );
 				$v = trim ( substr ( $part[$h], ( $pos + 1 ) ) );
 			} else {
-				
+
 				$k = 'status';
 	            $v = explode ( ' ', $part[$h] );
 	            $v = $v[1];
@@ -294,7 +293,7 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 	        if ( $k == 'set-cookie' ) {
 				$out['cookies'][] = $v;
 	        } else if ( $k == 'content-type' ) {
-	            
+
 	            if(($cs = strpos ($v, ';')) !== false ) { $out[$k] = substr ( $v, 0, $cs ); }
 	            else { $out[$k] = $v; }
 			} else {
@@ -303,13 +302,13 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 	    }
 	    return $out;
 	}
-	
+
 	function _decode_body( $info, $str, $eol = "\r\n" ) {
-	   
+
 	    $tmp = $str;
 	    $add = strlen ( $eol );
 	    if ( isset ( $info['transfer-encoding'] ) && $info['transfer-encoding'] == 'chunked' ) {
-	        
+
 	        do {
 	            $tmp = ltrim ( $tmp );
 	            $pos = strpos ( $tmp, $eol );
@@ -330,7 +329,7 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 	    }
 	    return $str;
 	}
-		
+
 	/**
 	 * The only purpose of this function is to send the message to the server, read the server answer,
 	 * discard the header and return the other content
@@ -339,17 +338,17 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 	 * @param 	string	$port 		the server port
 	 * @param	string 	$get_params	the get_params
 	 *
-	 * @return 	json 	
+	 * @return 	json
 	 */
 	function _sendRequest($url, $port, $get_params) {
 
 		$json_response = '';
 		$tmp_url = parse_url($url);
-				
+
 		if(( $io = fsockopen($tmp_url['host'], $port, $errno, $errstr, _BBB_STREAM_TIMEOUT)) !== false) {
-			
+
 			socket_set_timeout($io, _BBB_STREAM_TIMEOUT);
-			
+
 		    $send  = "GET /".$get_params." HTTP/1.1\r\n";
 		    $send .= "Host: ".$tmp_url['host']."\r\n";
 		    $send .= "User-Agent: PHP Script\r\n";
@@ -359,7 +358,7 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 		    $send .= "Accept-Language: en-us, en;q=0.50\r\n";
 		    $send .= "Accept-Encoding: gzip, deflate, compress;q=0.9\r\n";
 		    $send .= "Connection: Close\r\n\r\n";
-		
+
 		    fputs ( $io, $send );
 			$header = '';
 			do {
@@ -385,12 +384,12 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 	function _api_request($service, $method, $params, $parname = false) {
 		require_once(_base_.'/lib/lib.json.php');
 		require_once(_base_.'/lib/lib.fsock_wrapper.php');
-		$server = Get::sett('dimdim_server', false);
+		$server = Get::sett('bbb_server', false);
 		$output = false;
 		$_parname = ($parname ? $parname."=" : "");
 		if ($server && $service && $method) {
 			$url = 'http://'.$server.'/api/'.$service.'/'.$method;
-			
+
 			$json = new Services_JSON();
 			$fsock = new FSock();
 
@@ -411,7 +410,7 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 						"Content-type" => "application/x-www-form-urlencoded"
 					);
 					$post = $_parname.urlencode($json->encode($params));
-					$res_json = $fsock->post_request($url, Get::sett('dimdim_port', '80'), $post, $other_header);
+					$res_json = $fsock->post_request($url, Get::sett('bbb_port', '80'), $post, $other_header);
 					if ($res_json) {
 						$output = $json->decode($res_json);
 					}
@@ -421,7 +420,7 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 				$post = $_parname.urlencode($json->encode($params));
 				$other_header = array("Content-type" => "application/x-www-form-urlencoded");
 				if ($method != 'login') $other_header[_BBB_AUTH_CODE] = $this->get_auth_code();
-				$res_json = $fsock->post_request($url, Get::sett('dimdim_port', '80'), $post, $other_header);
+				$res_json = $fsock->post_request($url, Get::sett('bbb_port', '80'), $post, $other_header);
 				if ($res_json) {
 					$output = $json->decode($res_json);
 				}
@@ -439,8 +438,8 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 
 	function api_login() {
 		$params = new stdClass();
-		$params->account = Get::sett('dimdim_user', "");
-		$params->password = Get::sett('dimdim_password', "");
+		$params->account = Get::sett('bbb_user', "");
+		$params->password = Get::sett('bbb_password', "");
 		$params->group = "all";
 		$res = $this->_api_request('auth', 'login', $params, 'request');
 		$output = false;
@@ -456,8 +455,8 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 	function api_verify() {
 		$params = new stdClass();
 		$params->authToken = $this->get_auth_code();
-		$params->account = Get::sett('dimdim_user', "");
-		$params->password = Get::sett('dimdim_password', "");
+		$params->account = Get::sett('bbb_user', "");
+		$params->password = Get::sett('bbb_password', "");
 		$params->group = "all";
 		$res =  $this->_api_request('auth', 'verify', $params, 'data');
 		if ($res && $res->result) return true;
@@ -467,8 +466,8 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 	function api_logout() {
 		$params = new stdClass();
 		$params->authToken = $this->get_auth_code();
-		$params->account = Get::sett('dimdim_user', "");
-		$params->password = Get::sett('dimdim_password', "");
+		$params->account = Get::sett('bbb_user', "");
+		$params->password = Get::sett('bbb_password', "");
 		$params->group = "all";
 		return $this->_api_request('auth', 'logout', $params, 'data');
 	}
@@ -477,10 +476,10 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 		$params = new stdClass();
 
 		$params->ClientId = ""; //Optional - Provides the value of client ID if specifically assigned
-		$params->account = Get::sett('dimdim_user', ""); //Optional - Defines the user ID with which the registered Dimdim user will start a meeting groupName Optional all Defines group name, default is all
-		$params->roomName = $display_name; //Optional - default - Defines Room name default is â€œdefaultâ€�? agenda Optional Agenda of the meeting
-		$params->meetingName = $display_name; //Optional - The name of the Meeting. Default is â€œFrom Third party Portalâ€�? displayName Optional This is to set the display name of host
-		$params->joinEmailRequired = false; //Optional - true/false - Enables you to allow the attendees to join the meeting only on entering their email addresses; If it is set to true then joining the meeting without providing the email is disabled. Default is set to false audioVideo Optional av/audio/video/none Defines the audio and video settings av â€“ Audio Video Allowed none â€“ Audio-Video Disabled audio â€“ Audio Only video â€“ Video Only
+		$params->account = Get::sett('bbb_user', ""); //Optional - Defines the user ID with which the registered BBB user will start a meeting groupName Optional all Defines group name, default is all
+		$params->roomName = $display_name; //Optional - default - Defines Room name default is all agenda Optional Agenda of the meeting
+		$params->meetingName = $display_name; //Optional - The name of the Meeting. Default is "From Third party Portal" displayName Optional This is to set the display name of host
+		$params->joinEmailRequired = false; //Optional - true/false - Enables you to allow the attendees to join the meeting only on entering their email addresses; If it is set to true then joining the meeting without providing the email is disabled. Default is set to false audioVideo Optional av/audio/video/none Defines the audio and video settings av Audio Video Allowed none Audio-Video Disabled audio Audio Only video Video Only
 		$params->maxParticipants = $maxparticipants; //Optional - Maximum numbers of participants allowed in the Meeting. autoAssignMikeOnJoin Optional true/false Provides control to let you assign the microphone to the attendee automatically on joining the meeting Default is set to false
 		$params->autoHandsFreeOnAVLoad = false; //Optional - true/false - Enables the Hands-Free option on loading of the audio video broadcaster in the meeting Default is set to false assistentEnabled Optional true/false Enables the Meeting Assistant to be displayed at the start of the meeting Default is set to true
 		$params->privateChatEnabled = true; //Optional - true/false - Enables the Private Chat feature in the meeting publicChatEnabled Optional true/false Enables the Public Chat feature in the meeting lobbyEnabled Optional true/false Enables the waiting area before the start of the meeting
@@ -531,8 +530,8 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 
 		$params = new stdClass();
 
-		$params->account = Get::sett('dimdim_user', "");//Optional Defines the user ID with which the registered Dimdim user will start a meeting
-		$params->groupName = "all";//Optional all Defines group name, default is â€œallâ€�?
+		$params->account = Get::sett('bbb_user', "");//Optional Defines the user ID with which the registered BBB user will start a meeting
+		$params->groupName = "all";//Optional all Defines group name, default is all
 		//$params->roomName = $name; //Optional default Defines Room name
 		$params->scheduleId = $info_decoded->scheduleId; //Mandatory
 
@@ -549,7 +548,7 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 		$params = new stdClass();
 
 		//$params->
-		
+
 	}
 
 
@@ -557,7 +556,7 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 		$params = new stdClass();
 /*
 		//$params->
-		$params->ClientId //optional - Provides the value of client ID if specifically assigned account Optional Defines the user ID with which the registered Dimdim user has started a meeting which attendee wants to join groupName Optional all Defines group name
+		$params->ClientId //optional - Provides the value of client ID if specifically assigned account Optional Defines the user ID with which the registered BBB user has started a meeting which attendee wants to join groupName Optional all Defines group name
 		$params->roomName //Optional - default - Defines Room name
 		$params->displayName //optional Display name of the user when he joins the meeting
 		$params->meetingKey //optional
