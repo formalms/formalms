@@ -17,26 +17,37 @@ Class Step6Controller extends StepController {
 
 	var $step=6;
 
+	function connectToDb() {
+		require_once(_base_.'/config.php');
+		require_once(_base_.'/db/lib.docebodb.php');
+
+
+//		$db = mysql_connect($cfg['db_host'], $cfg['db_user'], $cfg['db_pass']);
+//		mysql_select_db($cfg['db_name']);
+		$db =& DbConn::getInstance();
+		return $db;
+	}
 
 	public function render() {
 
 		$platform_arr=getPlatformArray();
 		$_SESSION['platform_arr'] =$platform_arr;
 
-		$db = mysql_connect($_SESSION['db_info']['db_host'], $_SESSION['db_info']['db_user'], $_SESSION['db_info']['db_pass']);
-		mysql_select_db($_SESSION['db_info']['db_name']);
-		
+		$db =$this->connectToDb();
+
 		$qtxt ="SELECT lang_code FROM core_lang_language WHERE 1";
-		$q =mysql_query($qtxt);
+		// $q =mysql_query($qtxt);
+		$q = $db->query($qtxt);
+
 
 		if ($q) {
-			while($row=mysql_fetch_assoc($q)) {
+			while($row=$db->fetch_assoc($q)) {
 				$lang_code =$row["lang_code"];
 				$_SESSION["lang_install"][$lang_code]=1;
 			}
 		}
 
-		mysql_close($db);
+		$db->close($db);
 		parent::render();
 	}
 
