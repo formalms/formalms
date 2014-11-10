@@ -24,8 +24,13 @@ Lang::setLanguage();
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Forma installer</title>
-
+		<title>forma.lms installer</title>
+		<meta name="Copyright" content="formalms.org" >
+		<meta name="Generator" content="formalms.org" >
+		<link rel="Copyright" href="http://www.formalms.org/copyright" title="Copyright Notice" />
+		<link rel="Author" href="http://www.formalms.org/about" title="About" />
+		<link rel="shortcut icon" href="./templates/standard/images/favicon.png" type="image/png" />
+		<link rel="shortcut icon" href="./templates/standard/images/favicon.ico" />
 		<?php echo getZoneContent('page_head'); ?>
 		<link rel="stylesheet" type="text/css" href="../templates/standard/style/reset-fonts-grids.css" />
 		<link rel="stylesheet" type="text/css" href="./templates/standard/style/base.css" />
