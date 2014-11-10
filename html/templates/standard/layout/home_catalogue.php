@@ -39,7 +39,9 @@
 			<?php echo Layout::zone('content'); ?>
 		</div>
 		<div class="footer">
+			<div class="copyright">
 			<?php echo Layout::copyright(); ?>
+			</div>
 		</div>
 		<!-- def lang -->
 		<?php echo Layout::zone('def_lang'); ?>

@@ -239,7 +239,7 @@ class Layout {
 		$html .= '</span>';
 		$html .= ' - ';
 		$html .= '<span class="poweredby">';
-		$html .= 'Powered by '. '<a href="http://www.formalms.org/" target="_blank">forma.lms CE</a>';
+		$html .= '<a href="http://www.formalms.org/" target="_blank">Powered'.' by ' . 'forma.lms CE</a>';
 		$html .= '</span>';
 		$html .= '</p>';
 		return $html;

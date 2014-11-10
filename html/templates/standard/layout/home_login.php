@@ -48,7 +48,9 @@
 		</div>
 		<div class="footer">
 			<?php echo LoginLayout::links(); ?>
+			<div class="copyright">
 			<?php echo Layout::copyright(); ?>
+			</div>
 		</div>
 		<div class="webcontent">
 			<div class="box">
