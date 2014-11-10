@@ -1,8 +1,11 @@
--- MySQL dump 10.9
+
+-- ------------------------------------------------------
+-- MySQL dump
+-- MySQL Version: 5.x.xx
+-- PHP   Version: 5.x.x
 --
 -- Host: localhost    Database: formalms
 -- ------------------------------------------------------
--- Server version
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -2105,16 +2108,17 @@ INSERT INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequen
 ('mo_33', 1, 'a:0:{}',0),
 ('mo_34', 1, 'a:0:{}',0),
 ('mo_help', 1, 'a:0:{}',0),
-('tb_assessment', 1, 'a:0:{}',0),
+('tb_elearning', 0, 'a:0:{}', 0),
 ('tb_catalog', 1, 'a:0:{}',0),
+('tb_assessment', 1, 'a:0:{}',0),
 ('tb_classroom', 1, 'a:0:{}',0),
 ('tb_communication', 1, 'a:0:{}',0),
 ('tb_coursepath', 1, 'a:0:{}',0),
 ('tb_games', 1, 'a:0:{}',0),
 ('tb_label', 1, 'a:0:{}',0),
 ('tb_videoconference', 1, 'a:0:{}',0),
-('tb_elearning', 0, 'a:0:{}', 0),
-('tb_kb', 0, 'a:0:{}', 0);
+('tb_kb', 0, 'a:0:{}', 0),
+('tb_home', '1', 'a:0:{}', '0');
 
 -- --------------------------------------------------------
 
@@ -3495,14 +3499,6 @@ CREATE TABLE IF NOT EXISTS `learning_wiki_course` (
 --
 -- Limiti per le tabelle scaricate
 --
-
---
--- Limiti per la tabella `core_lang_translation`
---
-ALTER TABLE `core_lang_translation`
-  ADD CONSTRAINT `core_lang_translation_ibfk_1` FOREIGN KEY (`lang_code`) REFERENCES `core_lang_language` (`lang_code`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `core_lang_translation_ibfk_2` FOREIGN KEY (`id_text`) REFERENCES `core_lang_text` (`id_text`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 
 
 

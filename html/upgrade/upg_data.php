@@ -36,21 +36,21 @@ $last_ver =getVersionIntNumber($GLOBALS['cfg']['endversion']);
 if ($_SESSION['upgrade_ok']) {
 	$current_ver =$to_upgrade_arr[$upg_step-1];
 	if ($current_ver != $last_ver) {
-		$docebo_version =$GLOBALS['cfg']['versions'][$current_ver];
+		$formalms_version =$GLOBALS['cfg']['versions'][$current_ver];
 	}
 	else {
-		$docebo_version =$GLOBALS['cfg']['versions'][$GLOBALS['cfg']['endversion']];
+		$formalms_version =$GLOBALS['cfg']['versions'][$GLOBALS['cfg']['endversion']];
 	}
-	$upgrade_msg .="Upgrading to version: ".$docebo_version;
+	$upgrade_msg .= " <br/>" . "Upgrading to version: ".$formalms_version;
 
 	// --- pre upgrade -----------------------------------------------------------
 	$fn =_upgrader_.'/data/upg_data/'.$current_ver.'_pre.php';
 	if (file_exists($fn)) {
-		$GLOBALS['debug'] .=  "<br/>" . "Source pre-upgrade file: " . $fn ;
+		$GLOBALS['debug'] .=  " <br/>" . "Source pre-upgrade file: " . $fn ;
 		require($fn);
 		$func ='preUpgrade'.$current_ver;
 		if (function_exists($func)) {
-			$GLOBALS['debug'] .=  "<br/>" . "Execute pre-upgrade func: " . $func ;
+			$GLOBALS['debug'] .=  " <br/>" . "Execute pre-upgrade func: " . $func ;
 			$res =$func();
 			if (!$res) { $_SESSION['upgrade_ok']=false; }
 		}
@@ -61,7 +61,7 @@ if ($_SESSION['upgrade_ok']) {
 		// --- sql upgrade -----------------------------------------------------------
 		$fn =_upgrader_.'/data/upg_data/'.$current_ver.'_db.sql';
 		if (file_exists($fn)) {
-			$GLOBALS['debug'] .=  "<br/>" . "Upgrade db with file: " . $fn ;
+			$GLOBALS['debug'] .=  " <br/>" . "Upgrade db with file: " . $fn ;
 			$res =importSqlFile($fn);
 			if (!$res['ok']) {
 				$_SESSION['upgrade_ok']=false;
@@ -73,11 +73,11 @@ if ($_SESSION['upgrade_ok']) {
 		// --- post upgrade ----------------------------------------------------------
 		$fn =_upgrader_.'/data/upg_data/'.$current_ver.'_post.php';
 		if (file_exists($fn)) {
-			$GLOBALS['debug'] .=  "<br/>" . "Source post-upgrade file: " . $fn ;
+			$GLOBALS['debug'] .=  " <br/>" . "Source post-upgrade file: " . $fn ;
 			require($fn);
 			$func ='postUpgrade'.$current_ver;
 			if (function_exists($func)) {
-			$GLOBALS['debug'] .=  "<br/>" . "Execute post-upgrade func: " . $func ;
+			$GLOBALS['debug'] .=  " <br/>" . "Execute post-upgrade func: " . $func ;
 				$res =$func();
 				if (!$res) {
 					$_SESSION['upgrade_ok']=false;
@@ -92,11 +92,11 @@ if ($_SESSION['upgrade_ok']) {
 		require_once(_installer_.'/lib/lib.role.php');
 		$fn =_upgrader_.'/data/upg_data/'.$current_ver.'_role.php';
 		if (file_exists($fn)) {
-			$GLOBALS['debug'] .=  "<br/>" . "Source role-upgrade file: " . $fn ;
+			$GLOBALS['debug'] .=  " <br/>" . "Source role-upgrade file: " . $fn ;
 			require($fn);
 			$func ='upgradeUsersRoles'.$current_ver;
 			if (function_exists($func)) {
-			$GLOBALS['debug'] .=  "<br/>" . "Execute role-upgrade func: " . $func ;
+			$GLOBALS['debug'] .=  " <br/>" . "Execute role-upgrade func: " . $func ;
 				$role_list =$func();
 				if (!empty($role_list)) {
 					$role_list_arr =explode("\n", $role_list);
@@ -106,7 +106,7 @@ if ($_SESSION['upgrade_ok']) {
 			}
 			$func ='upgradeGodAdminRoles'.$current_ver;
 			if (function_exists($func)) {
-			$GLOBALS['debug'] .=  "<br/>" . "Execute role-upgrade func: " . $func ;
+			$GLOBALS['debug'] .=  " <br/>" . "Execute role-upgrade func: " . $func ;
 				$role_list =$func();
 				if (!empty($role_list)) {
 					$role_list_arr =explode("\n", $role_list);
@@ -122,7 +122,7 @@ if ($_SESSION['upgrade_ok']) {
 
 // Save version number if upgrade was successfull:
 if ($_SESSION['upgrade_ok']) {
-	$qtxt ="UPDATE core_setting SET param_value = '".$docebo_version."' WHERE param_name = 'core_version' ";
+	$qtxt ="UPDATE core_setting SET param_value = '".$formalms_version."' WHERE param_name = 'core_version' ";
 	$q =mysql_query($qtxt);
 }
 
