@@ -10,13 +10,15 @@
 \ ======================================================================== */
 
 -----------------------------------------------------------------------------
-FORMALMS 1.2
-Relase date: 2014 May 30
+FORMALMS 1.3
+Relase date: 2014 November 10
 -----------------------------------------------------------------------------
 
 
 Index
 -----
+
+0. New in these release
 
 1. Requirements
 
@@ -31,6 +33,47 @@ Index
 5. Others
 
 
+------------------------------------------------------------------------------
+
+0. New in these release
+
+For all bugfix and new feature included in this release, please read changelog.txt
+Here some notes
+
+In this release we have introduced, in a "experimental status", the following new features:
+a) Plugin manager:
+   you can build your own plugins and automatically execute it.
+   Plugins will be official distributed or provided by third parties.
+b) BigBlueButton and Teleskill conference as plugin
+   we release BBB and Teleskill as plugin . The plugin version is used if plugin manager is enabled
+   otherwise the standard module version is used. When plugin will be stable, module version will be
+   deprecated and dropped
+c) Alternate template engine TWIG:
+   you can build views with the TWIG engine superseeding standard views in custom engine (php).
+d) Custom scripts overlay:
+   you can now build your modified version of some files on a "custom scripts" folders structure.
+   When a custom script is found, the standard execution will be overlayed by the "custom" version.
+e) PHP 5.5 and 5.6:
+   forma.lms can now be installed with php 5.5 and 5.6 version,
+   NO tests were made with these versions of php, so please provide feedback on any issue you may find.
+
+The new features in experimental status can be used for test and development works: they are provided
+"as is" in a "beta stage" and can be used to test and prepare your installation.
+These features may be reworked or modified in "core execution" to meet tests results and usage feedbacks,
+to be stabilized in the next releases.
+
+All these new features are disabled by defaultsm the features must be enebled in the config file
+if you want use it
+
+0.2 Discontinued and deprecated features
+
+In these release we put in "DEPRECATED" status :
+a) DimDim support
+b) docebo405ce template
+c) all "CMS" components
+
+in a next release, without any furher advice, deprecated features will be discontinued and dropped
+from the main stream
 
 
 ------------------------------------------------------------------------------
