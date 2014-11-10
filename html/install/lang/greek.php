@@ -102,6 +102,7 @@ define("_CHECKED_FILES","Ορισμένα αρχεία δεν έχουν τα κ
 define("_UPGRADER_TITLE", "Forma - Αναβάθμιση");
 define("_UPGRADE_CONFIG","Το αρχείο config.php αναβαθμίζεται");
 define("_UPG_CONFIG_OK","Το αρχείο config.php ανανεώθηκε με επιτυχία");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "Η ενημέρωση του αρχείου config.php απέτυχε.");
 define("_UPGRADING", "Αναβάθμιση εν εξελίξει");
 define("_UPGRADING_LANGUAGES", "Αναβάθμιση γλωσσών");

@@ -98,6 +98,7 @@ define("_CHECKED_FILES","Niektóre z plików nie mają właściwego prawa dostę
 define("_UPGRADER_TITLE", "Forma - Aktualizacja");
 define("_UPGRADE_CONFIG","Aktualizacja pliku config.php");
 define("_UPG_CONFIG_OK","Config.php został zaktualizowany");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "Proces aktualizacji pliku config.php sie nie powiódł .");
 define("_UPGRADING", "Aktualizacja w trakcie");
 define("_UPGRADING_LANGUAGES", "Aktualizacja języków");

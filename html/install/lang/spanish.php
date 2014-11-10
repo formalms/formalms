@@ -99,6 +99,7 @@ define("_CHECKED_FILES","Ciertos archivos no tienen el permiso adecuado");
 define("_UPGRADER_TITLE", "Forma - Actualizacion");
 define("_UPGRADE_CONFIG","Actualizando el archivo config.php");
 define("_UPG_CONFIG_OK","El archivo Config.php fue actualizado satisfactoriamente");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "El proceso de actualizacion del archivo config.php fallo.");
 define("_UPGRADING", "Actualizacion en proceso");
 define("_UPGRADING_LANGUAGES", "Actualizar idiomas");

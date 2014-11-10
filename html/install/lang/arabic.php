@@ -98,6 +98,7 @@ define("_CHECKED_FILES","ملفات معينة لا تملك الصلاحيات 
 define("_UPGRADER_TITLE", "Forma - ترقية");
 define("_UPGRADE_CONFIG","ترقية config.php ملف");
 define("_UPG_CONFIG_OK","Config.php تحديث ملف بنجاح");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "عملية التحديث ل config.php فشلت.");
 define("_UPGRADING", "الترقية في التقدم");
 define("_UPGRADING_LANGUAGES", "ترقية اللغات");

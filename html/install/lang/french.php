@@ -98,6 +98,7 @@ define("_CHECKED_FILES","Certains fichiers n'ont pas les droits d'accès adéqua
 define("_UPGRADER_TITLE", "Forma - Mise à jour");
 define("_UPGRADE_CONFIG","Actualiser le fichier config.php");
 define("_UPG_CONFIG_OK","fichier Config.php correctement mis à jour");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "Le processus de mise à jour du fichier config.php a échoué.");
 define("_UPGRADING", "Mise à jour en cours");
 define("_UPGRADING_LANGUAGES", "Mise à jour des langues");

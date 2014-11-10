@@ -102,6 +102,7 @@ define("_CHECKED_FILES","Některé soubory nemají adekvátní oprávnění");
 define("_UPGRADER_TITLE", "Forma - Aktualizace");
 define("_UPGRADE_CONFIG","Aktualizuji config.php");
 define("_UPG_CONFIG_OK","Config.php byl úspěšně aktualizován");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", " Aktualizace pro config.php byla neúspěšná.");
 define("_UPGRADING", "Probíhá aktualizace");
 define("_UPGRADING_LANGUAGES", "Aktualizovat jazyky");

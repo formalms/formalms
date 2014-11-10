@@ -102,6 +102,7 @@ define("_CHECKED_FILES","برخی پرونده ها فاقد مجوز درست �
 define("_UPGRADER_TITLE", "Forma - به روز رسانی");
 define("_UPGRADE_CONFIG","به روز رسانی پرونده config.php");
 define("_UPG_CONFIG_OK","به روز رسانی پرونده config.php با موفقیت انجام شد");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "به روز رسانی config.php انجام نشد");
 define("_UPGRADING", "به روز رسانی در حال انجام است");
 define("_UPGRADING_LANGUAGES", "به روز رسانی زبان ها");

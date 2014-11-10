@@ -98,6 +98,7 @@ define("_CHECKED_FILES","Отдельные файлы не имеют необ�
 define("_UPGRADER_TITLE", "Forma - Обновление");
 define("_UPGRADE_CONFIG","Обновление файла config.php");
 define("_UPG_CONFIG_OK","Файл config.php успешно обновлен");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "Процесс обновления файла config.php завершился неудачей.");
 define("_UPGRADING", "Обновление продолжается");
 define("_UPGRADING_LANGUAGES", "Обновляемые языки");

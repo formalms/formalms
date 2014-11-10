@@ -103,6 +103,7 @@ define("_CHECKED_FILES","一部のファイルに適切なパーミッション�
 define("_UPGRADER_TITLE", "Forma - アップグレード");
 define("_UPGRADE_CONFIG","config.phpをアップグレード中");
 define("_UPG_CONFIG_OK","config.phpは無事アップデートされました");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "config.phpのアップデートに失敗しました。");
 define("_UPGRADING", "アップグレード中");
 define("_UPGRADING_LANGUAGES", "言語のアップグレード");
