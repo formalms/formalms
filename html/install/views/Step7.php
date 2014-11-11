@@ -18,7 +18,7 @@
 		[ <a href="#" onclick="YAHOO.util.Dom.get('pwd').innerHTML ='<?php echo $_SESSION['adm_info']['pass']; ?>'; return false;"><?php echo Lang::t('_REVEAL_PASSWORD'); ?></a> ]
 	</li>
 </ul>
-<h3>Usefull links:</h3>
+<h3>USEFUL LINKS:</h3>
 
 <ul class="info">
 <li><a href="http://www.formalms.org" target="_blank">Official Website</a></li>
