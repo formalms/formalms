@@ -20,17 +20,19 @@ Index
 
 0. New in these release
 
-1. Requirements
+1. Licence
 
-2. Installation procedure
+2. Requirements
 
-3. Upgrade procedure
+3. Installation procedure
 
-3.1 Upgrade from docebo ce 3.x to 4.x
+4. Upgrade procedure
 
-4. Loading a new language
+4.1 Upgrade from docebo ce 3.x to FormaLMS 1.x
 
-5. Others
+5. Loading a new language
+
+6. Other
 
 
 ------------------------------------------------------------------------------
@@ -38,9 +40,10 @@ Index
 0. New in these release
 
 For all bugfix and new feature included in this release, please read changelog.txt
-Here some notes
+Here are some notes:
 
-In this release we have introduced, in a "experimental status", the following new features:
+In this release we introduced, in a "experimental status", the following new features:
+
 a) Plugin manager:
    you can build your own plugins and automatically execute it.
    Plugins will be official distributed or provided by third parties.
@@ -78,19 +81,24 @@ from the main stream
 
 ------------------------------------------------------------------------------
 
-1. Requirements
+1. LICENCE
+
+This software is released with GPL v2.0 license, please refer to the provided file license.txt for details.
+You are welcome to add your credits to the page footer using the provided configuration option. Please do not remove the hardcoded "Powered by forma.lms CE" credit, in respect to the work of the project partners and community
+
+
+2. REQUIREMENTS
 
 Server specs: Linux, Windows, MacOs, Unix, Sun with
 - Apache 2.0.x or above
 - PHP 5.2.x or 5.3.x 5.4.x
 - Mysql 5.0 or higher with transaction support
 - Doesn't matter if safe mode or register global are on or off
-- If you need to test on your windows home pc we suggest easyphp or xampp
+- If you need to test on your windows home pc we suggest easyphp, wamp or xampp
 
 
 
-
-2. Installation procedure
+3. INSTALL PROCEDURE
 
 - Be sure you have your ftp parameters (host, user, password) and database parameters (user, password dbname) available
 - If you are on your home pc with your easyphp/xampp create a database trought http://localhost/mysql/ or http://localhost/phpmyadmin/
@@ -102,8 +110,7 @@ Note: The system will load XML file languages, this operation can take some time
 
 
 
-
-3. Upgrade procedure
+4. UPGRADE PROCEDURE
 
 - Make a full backup of db and files
 - Make sure that you have a full backup that you can trust and recover if needed
@@ -113,15 +120,13 @@ Note: The system will load XML file languages, this operation can take some time
 - Follow instructions
 
 
-
-3.1 Upgrade from docebo ce 3.x and docebo ce 4.x  to FormaLMS 1.x
+4.1 Upgrade from docebo ce 3.x and docebo ce 4.x  to FormaLMS 1.x
 
 You can directly upgrade your old docebo installations to Forma 1.x
 The config.php file is completly changed from the previous release to the new one, in this case you will need to manually compile the new config.php file (you can found the new one inside the folder of the new version)
 
 
-
-4. Loading a new language
+5. LOADING A NEW LANGUAGE
 
 - Make sure that you have the required xml file
 - Go in the administration area
@@ -131,3 +136,4 @@ The config.php file is completly changed from the previous release to the new on
 - Click Import
 
 
+6. OTHER
