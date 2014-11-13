@@ -64,7 +64,7 @@ class Layout {
 	public static function meta() {
 
 		return '<meta http-equiv="Content-Type" content="text/html; charset='.self::charset().'" />'."\n"
-			."\t\t".'<meta name="Copyright" content="'. Get::sett('owned_by', 'Copyright &copy; forma.lms') .'" />'."\n"
+			."\t\t".'<meta name="Copyright" content="'. str_replace('"',"'",strip_tags(Get::sett('owned_by', 'Copyright &copy; forma.lms'))) .'" />'."\n"
 			."\t\t".'<meta name="Generator" content="www.formalms.org '. Get::sett('core_version', ''). '" />'."\n"
 			."\t\t".'<link rel="Copyright" href="http://www.formalms.org/copyright" title="Copyright Notice" />'."\n"
 			."\t\t".'<link rel="Author" href="http://www.formalms.org/about" title="About" />'."\n";
