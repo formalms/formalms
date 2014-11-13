@@ -82,7 +82,8 @@ function &createModule($module_name, $class_name = NULL) {
 	elseif(file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/class.'.$module_name.'.php') && Get::cfg('enable_customscripts', false) == true ) {
 #	elseif(file_exists(_adm_.'/customscripts/class.module/class.'.$module_name.'.php') && Get::cfg('enable_customscripts', false) == true ) {
 
-		require_once(_adm_.'/customscripts/class.module/class.'.$module_name.'.php');
+		require_once(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/class.'.$module_name.'.php');
+#		require_once(_adm_.'/customscripts/class.module/class.'.$module_name.'.php');
 		if( $class_name === NULL ) $class_name = $def_class_name.'_'.ucfirst($module_name);
 	}
 	elseif(file_exists($where.'/class.module/class.'.$module_name.'.php')) {
