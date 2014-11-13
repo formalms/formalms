@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[Activeaza trasaturile accesarii]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[Configurarea "allow_url_include"]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[Cere un cod creat prin modulul de cod]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[Cere un arbore de cod ales de utilizator dintr-o lista meniu in jos]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[Cere un arbore de cod care trebuie introdus manual de utilizator]]></key>
@@ -834,7 +834,7 @@ Altfel, trebuie sa te inregistrezi in sistem, urmarind linkul: <br />
         <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[Useri inregistrati azi]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[Useri inregistrati ieri]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[Useri super-admin]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[Reteaua FormaLms]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[Reteaua forma.lms]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[Useri suspendati]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[Consultare site]]></key>
         <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[Suport LMS]]></key>
@@ -855,7 +855,7 @@ Titlu: '[title]'
 
 [text]
 
-Il poti citi pe FormaLms la URL <a href="[url]">[url]</a>]]></key>
+Il poti citi pe forma.lms la URL <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-05-10 12:43:36"><![CDATA[Cerere de inscriere aprobata]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-05-10 12:43:36"><![CDATA[Cererea de inscriere la cursul [course] a fost aprobata de administrator. Poti accesa cursul apasand URL-ul aflat la <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-05-10 12:43:36"><![CDATA[Administratorul a confirmat cererea de inscriere la <a href="[url]">[url]</a>]]></key>
@@ -1225,9 +1225,9 @@ Parola: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[Pagina acasa]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[FormaLms este o platformade E-Learning Open Source (LMS si LCMS) folosita in corporatie si magazine inalte de educatie.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:36"><![CDATA[forma.lms este o platformade E-Learning Open Source (LMS si LCMS) folosita in corporatie si magazine inalte de educatie.<br/>
 <br/>
-Platforma suporta 12 limbi, este compatibila cu  standardele SCORM 1.2 si 1.3 , si suporta diferite modele didactice , inclusiv: Sters, Auto-Orientat, Colaborativ si chiar invatare sociala prin Chat, Wiki, Forumuri si alte functii diferite.<br/>
+Platforma suporta 25 limbi, este compatibila cu  standardele SCORM 1.2 si 2004, si suporta diferite modele didactice , inclusiv: Sters, Auto-Orientat, Colaborativ si chiar invatare sociala prin Chat, Wiki, Forumuri si alte functii diferite.<br/>
 <br/>
 <br/>
 Pentru a schimba aceste cuvinte du-te la Admin/Language management, cauta pentru  <b>login</b> si editeaza cheia <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1871,7 +1871,7 @@ Trebuie sa confirmi contul inainte de a-l folosi.]]></key>
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:37"><![CDATA[Inapoi la lista]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:37"><![CDATA[Selecteaz aun pachet cu extensia .zip sau .pif]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:37"><![CDATA[Specifica fisierul pentru incarcare]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:37"><![CDATA[Importator SCORM 1.2 si 1.3]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:37"><![CDATA[Importator SCORM 1.2 si 2004]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:37"><![CDATA[Creaza o lista completa de obiecte]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:37"><![CDATA[Incarca pachetul SCORM]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:37"><![CDATA[SCORM]]></key>
@@ -1908,7 +1908,7 @@ Parola: [password]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-05-10 12:43:37"><![CDATA[Conturi conectate:]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:37"><![CDATA[Link la contul FormaLms cu:]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:37"><![CDATA[Link la contul forma.lms cu:]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-05-10 12:43:37"><![CDATA[Inceput]]></key>

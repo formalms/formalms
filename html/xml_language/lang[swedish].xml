@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[Aktivera tillgänglighetsegenskaper]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[Konfigurera "allow_url_include"]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[Be om en kod skapad via kodmodulen]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[Be om en trädkod vald av användaren från en lista]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[Be om en trädkod som måste inmatas manuellt av användaren]]></key>
@@ -834,7 +834,7 @@ Annars måste du registrera dig till vårt system, följ denna länk: <br />
         <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[Användare som registrerats idag]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[Användare som registrerats igår]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[Super-admin användare]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[FormaLms nätverk]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[forma.lms nätverk]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[Avbryt användare]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[Konsulteringssida]]></key>
         <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[LMS understödssida]]></key>
@@ -855,7 +855,7 @@ Titeil: '[title]'
 
 [text]
 
-Du kan läsa den i FormaLms på URL <a href="[url]">[url]</a>]]></key>
+Du kan läsa den i forma.lms på URL <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-05-10 12:43:45"><![CDATA[Beställningsförfrågan godkänd]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-05-10 12:43:45"><![CDATA[Din kursbeställningsförfrågan för [course] har godkänts av administratorn. Do kan gå in i kursen genom att klicka URLen som finns i <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-05-10 12:43:45"><![CDATA[Administratorn har bekräftat din beställning till <a href="[url]">[url]</a>]]></key>
@@ -1225,9 +1225,9 @@ Lösenord: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[Hemsida]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[FormaLms är en öppen källkods e-Lärnings platform (LMS och LCMS) som används i företags och högre utbildningsmarknaden.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:45"><![CDATA[forma.lms är en öppen källkods e-Lärnings platform (LMS och LCMS) som används i företags och högre utbildningsmarknaden.<br/>
 <br/>
-Platformen stöder 12 språl, den är kompatibel med SCORM 1.2 och 1.3 standarderna, och stöder olika didaktiska modeller, inklusive: blandad, själv-styrd, samarbetande och till och med social lärning via Chat Wiki, Forums och andra funktioner.<br/>
+Platformen stöder 25 språl, den är kompatibel med SCORM 1.2 och 2004 standarderna, och stöder olika didaktiska modeller, inklusive: blandad, själv-styrd, samarbetande och till och med social lärning via Chat Wiki, Forums och andra funktioner.<br/>
 <br/>
 <br/>
 För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, sök efter  <b>login</b> och editera nyckeln <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1871,7 +1871,7 @@ Du måste bekräfta ditt konto förrän du använder det.]]></key>
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:46"><![CDATA[Tillbaka till lista]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:46"><![CDATA[Välj ett innehållspaket med .zip eller .pif slut]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:46"><![CDATA[Du måste specifiera filen att uppladdas]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:46"><![CDATA[SCORM 1.2 och 1.3 importerare]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:46"><![CDATA[SCORM 1.2 och 2004 importerare]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:46"><![CDATA[Skapa komplett objektlista]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:46"><![CDATA[Ladda upp SCORM paket]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:46"><![CDATA[SCORM]]></key>
@@ -1908,7 +1908,7 @@ Lösenord: [password]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-05-10 12:43:46"><![CDATA[Anslutna konton:]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:46"><![CDATA[Länka ditt FormaLms konto med:]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:46"><![CDATA[Länka ditt forma.lms konto med:]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-05-10 12:43:46"><![CDATA[Startat]]></key>

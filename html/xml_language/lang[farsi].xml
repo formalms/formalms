@@ -840,13 +840,20 @@
         <key id="dashboard&amp;_TOTAL_USER" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[کاربران ثبت نام کرده]]></key>
         <key id="dashboard&amp;_UNKNOWN_RELEASE" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[خطا، هنگام دریافت آخرین نسخه موجود]]></key>
         <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[خدمات تجاری formalms.org]]></key>
-        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[انجمن متن باز Dobeco.org]]></key>
+        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[انجمن متن باز formalms.org]]></key>
         <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[اطلاعات کاربران]]></key>
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[اشتراک منتظر]]></key>
       </module>
       <module id="email">
         <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2014-05-10 12:43:12"><![CDATA[اعلان جدید]]></key>
-        <key id="email&amp;_ALERT_TEXT" attributes="email" save_date="2014-05-10 12:43:12"><![CDATA[اعلان جدید در دوره "[course]" منتشر شد عنوان: '[title]' [text] می توانید در دوکبو بخوانید در نشانی <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_ALERT_TEXT" attributes="email" save_date="2014-05-10 12:43:12"><![CDATA[اعلان جدید در دوره "[course]" م
+
+
+نتشر شد عنوان: '[title]'
+
+[text]
+
+می توانید در دوکبو بخوانید در نشانی <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-05-10 12:43:12"><![CDATA[درخواست اشتراک تایید شد]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-05-10 12:43:12"><![CDATA[درخواست اشتراک شما برای دوره [course] توسط مدیر تایید شد. با کلیک روی نشانی واقع در <a href="[url]">[url]</a> وارد دوره شوید]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-05-10 12:43:12"><![CDATA[مدیر درخواست اشتراک شما در <a href="[url]">[url]</a>] را تایید کرده است]]></key>
@@ -1200,7 +1207,7 @@
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[صفحه خانه]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[دوکبو یک تریبون متن باز یادگیری الکترونیک (LMS و LCMS) است که در شرکت ها و آموزش عالی استفاده می شود. <br.> <br/> این تریبون از 12 زبان پشتیبانی می کند، با استانداردهای اسکورم 1.2 و 1.3 سازگار است، و از مدل های آموزشی مختلف پشتیبانی می کند، از جمله: تلفیقی، خودگردان، همکارانه و حتی یادگیری اجتماعی از طریق گپ، ویکی، تالارهای گفتگو و کارکردهای دیگر. <br/> <br/> <br/> برای تغییر این واژه ها لطفا بروید به مدیر/ تنظیم زبان، <b>login</b> را جستجو کنید و کلید <b>_INTRO_STD_TEXT</b> را ویرایش کنید]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[دوکبو یک تریبون متن باز یادگیری الکترونیک (LMS و LCMS) است که در شرکت ها و آموزش عالی استفاده می شود. <br.> <br/> این تریبون از 25 زبان پشتیبانی می کند، با استانداردهای اسکورم 1.2 و 2004 سازگار است، و از مدل های آموزشی مختلف پشتیبانی می کند، از جمله: تلفیقی، خودگردان، همکارانه و حتی یادگیری اجتماعی از طریق گپ، ویکی، تالارهای گفتگو و کارکردهای دیگر. <br/> <br/> <br/> برای تغییر این واژه ها لطفا بروید به مدیر/ تنظیم زبان، <b>login</b> را جستجو کنید و کلید <b>_INTRO_STD_TEXT</b> را ویرایش کنید]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[پرش به فرم ورود]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[تایید LDAP فعال است، اگر کارکرد موجود نیست، لطفا با مدیر خود تماس بگیرید]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[ورود]]></key>
@@ -1830,7 +1837,7 @@
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[بازگشت به فهرست]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[انتخاب بسته مطلب با پسوند .zip یا .pif]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[باید پرونده موردنظر برای بارگذاری را مشخص کنید]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[درونبر اسکورم 1.2 و 1.3]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[درونبر اسکورم 1.2 و 2004]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[ایجاد فهرست کامل گروهه ها]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[بارگزاری بسته اسکورم]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:12"><![CDATA[اسکورم]]></key>

@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[Activar as caracteristicas de acessibilidade]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[Configuração de "allow_url_include"]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[FormaLms <abbr title="Aplicação Interface de Programação">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[FormaLms <abbr title="Aplicação Interface de Programação">API</abbr> and <abbr title="Inscrição única">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[forma.lms <abbr title="Aplicação Interface de Programação">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[forma.lms <abbr title="Aplicação Interface de Programação">API</abbr> and <abbr title="Inscrição única">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[Pede pelo código criado através do módulo de código]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[Pede pela árvore de código escolhida pelo utilizador de uma lista no menu]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[Pede pela árvore de código que deve ser inserida manualmente pelo utilizador]]></key>
@@ -834,7 +834,7 @@ Caso contrário, deve registar-se no nosso sistema, seguindo este link: <br />
         <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[Utilizadores resgistados hoje]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[Utilizadores registados ontem]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[Utilizadores super-admin]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[Rede FormaLms]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[Rede forma.lms]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[Utilizadores suspensos]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[Consultar site]]></key>
         <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[Site de suporte LMS]]></key>
@@ -855,7 +855,7 @@ Título: '[title]'
 
 [text]
 
-Você pode ler FormaLms no URL <a href="[url]">[url]</a>]]></key>
+Você pode ler forma.lms no URL <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-05-10 12:43:34"><![CDATA[Pedido de subscrição aprovado]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-05-10 12:43:34"><![CDATA[O seu pedido de subscrição do curso [course] foi aprovado pelo administrador. Você pode entrar no curso clicando no URL localizado em <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-05-10 12:43:34"><![CDATA[O administrador confirmou o seu pedido de subscrição para <a href="[url]">[url]</a>]]></key>
@@ -1225,9 +1225,9 @@ Senha: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[Home page]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[FormaLms é uma plataforma e-Learning Open Source (LMS and LCMS) utilizada nos mercados de educação corporativa e superior.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:34"><![CDATA[forma.lms é uma plataforma e-Learning Open Source (LMS and LCMS) utilizada nos mercados de educação corporativa e superior.<br/>
 <br/>
-A plataforma suporta 12 línguas, é compatível com os padrões SCORM 1.2 e 1.3, e suporta diferentes modelos didácticos, incluindo: Misturado, Auto-Directo, Colaborativo e ainda Ensino Social através de Chat, Wiki, Forums e outras funções diferentes.<br/>
+A plataforma suporta 25 línguas, é compatível com os padrões SCORM 1.2 e 2004, e suporta diferentes modelos didácticos, incluindo: Misturado, Auto-Directo, Colaborativo e ainda Ensino Social através de Chat, Wiki, Forums e outras funções diferentes.<br/>
 <br/>
 <br/>
 Para alterar estas palavras por favor vá a  gestão Admin/Idioma, pesquise por <b>login</b> e edite a chave <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1871,7 +1871,7 @@ Você tem que confirmar a sua conta antes de a usar.]]></key>
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:35"><![CDATA[Voltar á lista]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:35"><![CDATA[Seleccione um pacote de conteúdo com extensão .zip ou .pif]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:35"><![CDATA[Você deve especificar o arquivo para upload]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:35"><![CDATA[Importador SCORM 1.2 e 1.3]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:35"><![CDATA[Importador SCORM 1.2 e 2004]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:35"><![CDATA[Criar uma lista completa de objectos]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:35"><![CDATA[Enviar pacote SCORM]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:35"><![CDATA[SCORM]]></key>
@@ -1908,7 +1908,7 @@ Senha: [password]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-05-10 12:43:35"><![CDATA[Contas conectadas:]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:35"><![CDATA[Liga a sua conta FormaLms com:]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:35"><![CDATA[Liga a sua conta forma.lms com:]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-05-10 12:43:35"><![CDATA[Iniciado]]></key>

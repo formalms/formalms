@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[Activeer toegankelijkheid functies]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[Configuratie van "allow_url_include"]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[Vraag naar code die de code module genereerd]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[Vraag naar een tree-code gekozen door de gebruiker uit een lijst in een dropdown menu]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[Vraag naar een tree-code die handmatig moet worden ingevoerd door de gebruiker]]></key>
@@ -834,7 +834,7 @@ ander moet je je eerst registreren. Volg dan deze link: <br />
         <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[Geregistreerde gebruikers, vandaag]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[Geregistreerde gebruikers, gisteren]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[Super-admins]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[FormaLms network]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[forma.lms network]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[Ge-deactiveerde gebruikers]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[Consultatie site]]></key>
         <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:07"><![CDATA[LMS support site]]></key>
@@ -849,7 +849,14 @@ ander moet je je eerst registreren. Volg dan deze link: <br />
       </module>
       <module id="email">
         <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2014-05-10 12:43:07"><![CDATA[Nieuwe aankondiging]]></key>
-        <key id="email&amp;_ALERT_TEXT" attributes="email" save_date="2014-05-10 12:43:07"><![CDATA[Nieuwe aankondiging was gepubliceerd in cursus "[course]" Titel: '[title]' [text] Je kunt het lezen op FormaLms, URL <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_ALERT_TEXT" attributes="email" save_date="2014-05-10 12:43:07"><![CDATA[Nieuwe aankondiging was gepubliceerd in cursus "[course]"
+
+
+Titel: '[title]'
+
+[text]
+
+Je kunt het lezen op forma.lms, URL <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-05-10 12:43:07"><![CDATA[Inschrijf verzoek goed gekeurd]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-05-10 12:43:07"><![CDATA[Je inschrijving voor cursus [course] is goedgekeurd door de administrator.Je kunt de cursus binnengaan door te klikken op de link die je daar vind: <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-05-10 12:43:07"><![CDATA[De admin heeft je inschrijf verzoek bevestigd op <a href="[url]">[url]</a>]]></key>
@@ -1219,9 +1226,9 @@ Wachtwoord: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:08"><![CDATA[Home page]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:08"><![CDATA[FormaLms is een Open Source e-Learning platform (LMS en LCMS) gebruikt in de bedrijfswereld en hogere opleidingen.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:08"><![CDATA[forma.lms is een Open Source e-Learning platform (LMS en LCMS) gebruikt in de bedrijfswereld en hogere opleidingen.<br/>
 <br/>
-Het Platform ondersteund 12 talen, uitwisselbaar met SCORM 1.2 en 1.3 standaard, en ondersteund didactische modellen, waaronder: gemengt, zelf georienteerd, samenwerkend en zelfs sociaal leren dmv Chat, Wiki, Forums en andere verschillende functies.<br/>
+Het Platform ondersteund 25 talen, uitwisselbaar met SCORM 1.2 en 2004 standaard, en ondersteund didactische modellen, waaronder: gemengt, zelf georienteerd, samenwerkend en zelfs sociaal leren dmv Chat, Wiki, Forums en andere verschillende functies.<br/>
 <br/>
 <br/>
 Om deze woorden te veranderenga naar Admin/talen management, zoek naar <b>login</b> en wijzig sleutel <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1868,7 +1875,7 @@ Je moet je account bevestigen voor je het gebruikt.]]></key>
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:08"><![CDATA[Terug naar lijst]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:08"><![CDATA[Selecteer een package met .zip or .pif extensie]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:08"><![CDATA[Je moet een bestand selecteren]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:08"><![CDATA[SCORM 1.2 en 1.3 importer]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:08"><![CDATA[SCORM 1.2 en 2004 importer]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:08"><![CDATA[Maak copmplete objecten lijst]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:08"><![CDATA[Upload SCORM package]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:08"><![CDATA[SCORM]]></key>
@@ -1905,7 +1912,7 @@ Wachtwoord: [password]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-05-10 12:43:08"><![CDATA[Verbonden accounts:]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:08"><![CDATA[Link je FormaLms account met:]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:08"><![CDATA[Link je forma.lms account met:]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-05-10 12:43:08"><![CDATA[Begonnen]]></key>

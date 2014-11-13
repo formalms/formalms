@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20141110</DATE>
+  <DATE>20141113</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -389,8 +389,8 @@ La chat si aprirà in una finestra di Popup]]></key>
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Attiva tutte le feature per l'accessibilità]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Configurazione di "allow_url_include"]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Richiedi codice creato attraverso il modulo codici]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Chiedi un codice di accesso all'organigramma, il codice sarà scelto da un menu a tendina]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Chiedi un codice di accesso all'organigramma che deve essere inserito manualmente dall'utente]]></key>
@@ -413,6 +413,8 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_CONF_LMS" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[E-Learning]]></key>
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Limite per il massimo di contenuti caricabili nel corso (in MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Simbolo valuta (sarà mostrato all'utente)]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2014-11-13 22:36:19"><![CDATA[Email HelpDesk]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PFX" attributes="" save_date="2014-11-13 22:36:13"><![CDATA[Oggetto mail HelpDesk]]></key>
         <key id="configuration&amp;_DEBUG" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Opzioni di debug]]></key>
         <key id="configuration&amp;_DEFAULTTEMPLATE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Template predefinito]]></key>
         <key id="configuration&amp;_DIMDIM_MAX_MIKES" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Massimo utenti Audio]]></key>
@@ -426,12 +428,13 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_DONT_SHOW" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Non mostrarle]]></key>
         <key id="configuration&amp;_DO_DEBUG" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Attiva informazioni di debug]]></key>
         <key id="configuration&amp;_ECOMMERCE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[E-Commerce]]></key>
+        <key id="configuration&amp;_FILE_UPLOAD_WHITELIST" attributes="" save_date="2014-11-13 22:48:48"><![CDATA[Estensioni file permesse (whitelist)]]></key>
         <key id="configuration&amp;_FIRST_CATALOGUE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Mostra il catalogo corsi come pagina principale]]></key>
         <key id="configuration&amp;_FORUM_AS_TABLE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Mostra i forum in formato tabella]]></key>
         <key id="configuration&amp;_FTPERR" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Errore nell'FTP]]></key>
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[FTP OK]]></key>
-        <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Codice fornito da google]]></key>
-        <key id="configuration&amp;_GOOGLE_STAT_IN_LMS" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Usa le statistiche di google nel lms]]></key>
+        <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2014-11-13 23:16:18"><![CDATA[Codice fornito da Google]]></key>
+        <key id="configuration&amp;_GOOGLE_STAT_IN_LMS" attributes="" save_date="2014-11-13 23:16:31"><![CDATA[Usa le statistiche di Google (Analitycs)]]></key>
         <key id="configuration&amp;_HOUR_REQUEST_LIMIT" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Limite di ore disponibili per confermare la richiesta di iscrizione]]></key>
         <key id="configuration&amp;_HTEDITOR" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Editor html WYSWYG]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_ADMIN" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Permetti agli amministratori la gestione delle immagini nell'editor]]></key>
@@ -448,6 +451,8 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Stringa di autenticazione Ldap]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Configurazione di "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Mittente delle email di registrazione e della procedura automatica di recupero password]]></key>
+        <key id="configuration&amp;_MAINTENANCE" attributes="" save_date="2014-11-13 22:43:36"><![CDATA[Sito in manutenzione]]></key>
+        <key id="configuration&amp;_MAINTENANCE_PW" attributes="" save_date="2014-11-13 22:45:41"><![CDATA[Password manutenzione]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Opzioni principali]]></key>
         <key id="configuration&amp;_MANDATORY_CODE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Se una delle opzioni di registrazione con codice riportate sopra è abilitata gli utenti sono obbligati ad inserire il codice di registrazione]]></key>
         <key id="configuration&amp;_MAX_EXECUTION_TIME" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Configurazione di "max_execution_time"]]></key>
@@ -463,8 +468,9 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_POLL" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Utilizza l'opzione "nessuna risposta" nelle domande del sondaggio]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_TEST" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Utilizza l'opzione "nessuna risposta" nelle domande del test]]></key>
         <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Se all'utente non è assegnato almeno un catalogo corsi mostra tutti i corsi e i curricula]]></key>
+        <key id="configuration&amp;_ON_USERCOURSE_EMPTY" attributes="" save_date="2014-11-13 23:18:06"><![CDATA[Reindirizza l'utente al catalogo se non è iscritto a nessun corso]]></key>
         <key id="configuration&amp;_ORG_NAME_TELESKILL" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Nome dell'organizzazione che apparirà nella room della videoconferenza]]></key>
-        <key id="configuration&amp;_OWNED_BY" attributes="" save_date="2014-11-09 23:12:41"><![CDATA[Proprità sito]]></key>
+        <key id="configuration&amp;_OWNED_BY" attributes="" save_date="2014-11-11 23:04:33"><![CDATA[Proprietà sito]]></key>
         <key id="configuration&amp;_PAGE_TITLE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Titolo pagina (apparirà come titolo del Browser)]]></key>
         <key id="configuration&amp;_PASS_ALFANUMERIC" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[La password deve essere composta sia da lettere che da numeri]]></key>
         <key id="configuration&amp;_PASS_CHANGE_FIRST_LOGIN" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Obbliga gli utenti al cambio della password al primo login]]></key>
@@ -500,12 +506,12 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_REGISTER_TYPE_SELF_OPTIN" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Autoregistrazione libera con double opt-in]]></key>
         <key id="configuration&amp;_REGISTRATION_CODE_TYPE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Tipo di utilizzo del codice registrazione]]></key>
         <key id="configuration&amp;_REQUEST_MANDATORY_FIELDS_COMPILATION" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Al login all'utente verranno proposti i campi obbligatori da compilare relativi al suo profilo]]></key>
-        <key id="configuration&amp;_REST_AUTH_API_KEY" attributes="" save_date="2014-11-09 23:13:47"><![CDATA[Aut. API chiave]]></key>
-        <key id="configuration&amp;_REST_AUTH_API_SECRET" attributes="" save_date="2014-11-09 23:13:34"><![CDATA[Aut. API chiave segreta]]></key>
+        <key id="configuration&amp;_REST_AUTH_API_KEY" attributes="" save_date="2014-11-13 22:29:37"><![CDATA[Aut. Chiave API]]></key>
+        <key id="configuration&amp;_REST_AUTH_API_SECRET" attributes="" save_date="2014-11-13 22:29:31"><![CDATA[Aut. Codice segreto API]]></key>
         <key id="configuration&amp;_REST_AUTH_CODE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Codice unico di accesso:]]></key>
         <key id="configuration&amp;_REST_AUTH_LIFETIME" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Tempo di vita del token:]]></key>
         <key id="configuration&amp;_REST_AUTH_METHOD" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Metodo di autenticazione:]]></key>
-        <key id="configuration&amp;_REST_AUTH_SECRET_KEY" attributes="" save_date="2014-11-09 23:13:55"><![CDATA[Aut. chiave segreta]]></key>
+        <key id="configuration&amp;_REST_AUTH_SECRET_KEY" attributes="" save_date="2014-11-13 22:30:42"><![CDATA[Aut. Chiave segreta]]></key>
         <key id="configuration&amp;_REST_AUTH_TOKEN" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Generazione di un Token ad ogni connessione]]></key>
         <key id="configuration&amp;_REST_AUTH_UPDATE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Ripristina tempo di vita del token ad ogni connessione]]></key>
         <key id="configuration&amp;_SAFEMODE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Configurazione di "safe_mode"]]></key>
@@ -555,12 +561,13 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_SOCIAL_TWITTER_ACTIVE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Utilizza l'interfacciamento e il single sign on di Twitter]]></key>
         <key id="configuration&amp;_SOCIAL_TWITTER_CONSUMER" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Twitter consumer code]]></key>
         <key id="configuration&amp;_SOCIAL_TWITTER_SECRET" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Twitter secret code]]></key>
-        <key id="configuration&amp;_SSO_SECRET" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Parola chiave per il calcolo dell'hash utilizzato nel SSO verso FormaLms]]></key>
+        <key id="configuration&amp;_SSO_SECRET" attributes="" save_date="2014-11-13 23:24:17"><![CDATA[Parola chiave per il calcolo dell'hash utilizzato nel SSO]]></key>
         <key id="configuration&amp;_SSO_TOKEN" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Abilita SSO con altri applicativi attraverso un token]]></key>
         <key id="configuration&amp;_STOP_CONCURRENT_USER" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Disabilita accessi simultanei allo stesso username]]></key>
         <key id="configuration&amp;_TABLIST_MYCOURSES" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Ordinamento corsi nell'area "I miei corsi"]]></key>
         <key id="configuration&amp;_TELESKILL_MAX_PARTICIPANT" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Massimo utenti per stanza]]></key>
         <key id="configuration&amp;_TELESKILL_MAX_ROOM" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Numero massimo di stanze]]></key>
+        <key id="configuration&amp;_TEMPLATE_DOMAIN" attributes="" save_date="2014-11-13 22:51:14"><![CDATA[Associazione Dominio Template]]></key>
         <key id="configuration&amp;_TRACKING" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Abilita tracciamento utenti (Raccomandato)]]></key>
         <key id="configuration&amp;_TTLSESSION" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Tempo di vita della sessione]]></key>
         <key id="configuration&amp;_UPLOADFTP" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Connessione FTP]]></key>
@@ -863,22 +870,29 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Utenti registrati oggi]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Utenti registrati ieri]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Utenti super-amministratori]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[FormaLms Online]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-11-13 23:21:37"><![CDATA[forma.lms Online]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Utenti sospesi]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Portale dedicato alla consulenza]]></key>
-        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Sito di supporto alla piattaforma di e-learning]]></key>
+        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-11-13 23:22:31"><![CDATA[Sito di supporto alla piattaforma di e-learning forma.lms]]></key>
         <key id="dashboard&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Corsi totali]]></key>
         <key id="dashboard&amp;_TOTAL_SUBSCRIPTION" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Numero totale di iscrizioni]]></key>
         <key id="dashboard&amp;_TOTAL_USER" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Utenti registrati]]></key>
         <key id="dashboard&amp;_UNKNOWN_RELEASE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Non è stato possibile recuperare l'informazione relativa all'ultima versione disponibile]]></key>
-        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Sito ufficiale FormaLms]]></key>
-        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Supporto e community opensource FormaLms]]></key>
+        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2014-11-13 23:22:16"><![CDATA[Sito ufficiale forma.lms]]></key>
+        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2014-11-13 23:22:47"><![CDATA[Supporto e community opensource forma.lms]]></key>
         <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Informazioni sugli utenti]]></key>
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Iscrizioni in attesa]]></key>
       </module>
       <module id="email">
         <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2014-11-09 22:44:27"><![CDATA[Nuovo avviso creato]]></key>
-        <key id="email&amp;_ALERT_TEXT" attributes="email" save_date="2014-11-09 22:44:27"><![CDATA[Un nuovo avviso è stato pubblicato nel corso "[course]" dal titolo: '[title]' [text] Puoi leggerlo su FormaLms all'indirizzo <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_ALERT_TEXT" attributes="email" save_date="2014-11-13 23:24:37"><![CDATA[Un nuovo avviso è stato pubblicato nel corso "[course]"
+
+
+Titolo: '[title]'
+
+[text]
+
+Puoi leggerlo su forma.lms all'indirizzo <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-09 22:44:27"><![CDATA[Richiesta di iscrizione approvata]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-11-09 22:44:27"><![CDATA[La tua richiesta di iscrizione al corso [course] è stata approvata dall'mministratore. Puoi accedere al corso cliccando il link <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-11-09 22:44:27"><![CDATA[L'amministratore ha confermato la tua richiesta di iscrizione a <a href="[url]">[url]</a>]]></key>
@@ -927,8 +941,8 @@ Title: [thread_title]]]></key>
         <key id="email&amp;_TO_NEW_USER_SBJ" attributes="email" save_date="2014-11-09 22:44:27"><![CDATA[Un nuovo utente si è registrato alla piattaforma.]]></key>
         <key id="email&amp;_TO_NEW_USER_TEXT" attributes="email" save_date="2014-11-09 22:44:27"><![CDATA[Un nuovo utente si è registrato alla piattaforma.]]></key>
         <key id="email&amp;_USER_END_COURSE_SBJ" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Hai completato il corso [course]]]></key>
-        <key id="email&amp;_USER_END_COURSE_TEXT" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Hai completato il corso [course] su FormaLms]]></key>
-        <key id="email&amp;_USER_END_COURSE_TEXT_SMS" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Hai completato il corso [course] su FormaLms]]></key>
+        <key id="email&amp;_USER_END_COURSE_TEXT" attributes="" save_date="2014-11-13 23:22:59"><![CDATA[Hai completato il corso [course] su forma.lms]]></key>
+        <key id="email&amp;_USER_END_COURSE_TEXT_SMS" attributes="" save_date="2014-11-13 23:23:07"><![CDATA[Hai completato il corso [course] su forma.lms]]></key>
         <key id="email&amp;_WAITING_USER_SBJ" attributes="email" save_date="2014-11-09 22:44:27"><![CDATA[Un utente si è registrato ed è in attesa di approvazione]]></key>
         <key id="email&amp;_WAITING_USER_TEXT" attributes="email" save_date="2014-11-09 22:44:27"><![CDATA[All'indirizzo <a href="[url]">[url]</a> c'é un nuovo utente in attesa di approvazione]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2014-11-09 22:44:27"><![CDATA[Hai ricevuto un nuovo messaggio]]></key>
@@ -1259,9 +1273,9 @@ Title: [thread_title]]]></key>
       <module id="login">
         <key id="login&amp;_ACCESS_LOCK" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Accesso bloccato, hai superato il numero massimo di tentativi.]]></key>
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Home page]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[FormaLms è un sistema open source per l'e-learning (LMS e LCMS) utilizzato nelle più grandi organizzazioni e università.<br />
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[forma.lms è un sistema open source per l'e-learning (LMS e LCMS) utilizzato nelle più grandi organizzazioni e università.<br />
 <br />
-Il sistema, rilasciato in 12 lingue è composto da 53 funzioni tra cui Wiki, Forum, Project Manager, supporta lo standard SCORM 1.2 ed è configurabile per adattarsi al modello didattico desiderato (autoapprendimento, blended learning, didattica collaborativa, social e-learning).<b><br /><br />Per cambiare questa frase andare su Admin/Gestione lingue, cercare per LMS/login e modificare la chiave _INTRO_STD_TEXT</b><br /><br />]]></key>
+Il sistema, rilasciato in 25 lingue è composto da 53 funzioni tra cui Wiki, Forum, Project Manager, supporta lo standard SCORM 1.2 e 2004 ed è configurabile per adattarsi al modello didattico desiderato (autoapprendimento, blended learning, didattica collaborativa, social e-learning).<b><br /><br />Per cambiare questa frase andare su Admin/Gestione lingue, cercare per LMS/login e modificare la chiave _INTRO_STD_TEXT</b><br /><br />]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Salta alla form di login]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[LDAP attivo funzioni disattivate contatta il responsabile]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Login]]></key>
@@ -1343,6 +1357,7 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="menu&amp;_MODULE_NAME" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[nome modulo]]></key>
         <key id="menu&amp;_NEWS_INTERNAL" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Gestisci news nell'area utenti]]></key>
         <key id="menu&amp;_PLAYERTEMPLATE" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Template del Player]]></key>
+        <key id="menu&amp;_PLUGIN_MANAGER" attributes="" save_date="2014-11-13 23:00:01"><![CDATA[Plugin]]></key>
         <key id="menu&amp;_PRIVACYPOLICIES" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Privacy policies]]></key>
         <key id="menu&amp;_PUBLIC_ADMIN_MANAGER" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Amministratori pubblici]]></key>
         <key id="menu&amp;_PUBLIC_ADMIN_RULES" attributes="" save_date="2014-11-09 22:44:27"><![CDATA[Profilo amministratore pubblico]]></key>
@@ -1937,7 +1952,7 @@ Ti è stata inviata una e-mail con i tuoi dati di registrazione.]]></key>
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-11-09 22:44:28"><![CDATA[&lt;&lt; Indietro]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-11-09 22:44:28"><![CDATA[Selezionare un content package in formato zip o pif]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-11-09 22:44:28"><![CDATA[Devi specificare il file da caricare]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-11-09 22:44:28"><![CDATA[Importazione scorm]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-11-09 22:44:28"><![CDATA[Importazione SCORM 1.2 e 2004]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-11-09 22:44:28"><![CDATA[Crea lista completa oggetti]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-11-09 22:44:28"><![CDATA[Carica content package]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-11-09 22:44:28"><![CDATA[Scorm]]></key>
@@ -1974,7 +1989,7 @@ Password: [password]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-11-09 22:44:28"><![CDATA[Account collegati:]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-11-09 22:44:28"><![CDATA[Collega il tuo account FormaLms con:]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-11-13 23:20:48"><![CDATA[Collega il tuo account forma.lms con:]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-11-09 22:44:28"><![CDATA[Iniziato]]></key>

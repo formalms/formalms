@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[Aktifkan fitur aksesibilitas]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[Konfigurasi dari "allow_url_include"]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[Meminta kode melalui modul kode]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[Meminta kode tree yang dipilih user dari daftar dalam menu dropdown]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[Meminta kode tree yang harus dimasukkan secara manual oleh user]]></key>
@@ -834,7 +834,7 @@ Jika tidak, anda harus mendaftar dahulu di sistem kami, dengan mengikuti link be
         <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[User terdaftar hari ini]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[User terdaftar kemarin]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[User Super-admin]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[Jejaring FormaLms]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[Jejaring forma.lms]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[User yang ditangguhkan]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[Tempat konsultasi]]></key>
         <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:25"><![CDATA[Tempat support LMS]]></key>
@@ -1225,9 +1225,9 @@ Password: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:26"><![CDATA[Halaman Utama]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:26"><![CDATA[FormaLms ialah platform e-learning open source (LMS and LCMS) yang telah digunakan dalam korporasi dan pasar yang cerdas.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:26"><![CDATA[forma.lms ialah platform e-learning open source (LMS and LCMS) yang telah digunakan dalam korporasi dan pasar yang cerdas.<br/>
 <br/>
-Platform ini mendukung 12 bahasa, sesuai dengan standar SCORM 1.2 dan 1.3, dan mendukung berbagai macam model pengajaran, antara lain: secara bersama, otodidak, gabungan dan bahkan Pembelajaran sosial melalui Chat, Wiki, Forum dan fungsi-fungsi berbeda lainnya.<br/>
+Platform ini mendukung 25 bahasa, sesuai dengan standar SCORM 1.2 dan 2004, dan mendukung berbagai macam model pengajaran, antara lain: secara bersama, otodidak, gabungan dan bahkan Pembelajaran sosial melalui Chat, Wiki, Forum dan fungsi-fungsi berbeda lainnya.<br/>
 <br/>
 <br/>
 Untuk mengubah kata-kata ini, silahkan menuju ke pengaturan Admin/Bahasa, cari <b>login</b> dan rubah kuncinya <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1871,7 +1871,7 @@ Anda harus melakukan konfirmasi akun anda sebelum menggunakannya.]]></key>
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:26"><![CDATA[Kembali ke daftar]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:26"><![CDATA[Pilih paket dengan ekstensi .zip atau .pif]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:26"><![CDATA[Anda harus menentukan file yang ingin diunggah]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:26"><![CDATA[SCORM 1.2 dan 1.3 importir]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:26"><![CDATA[SCORM 1.2 dan 2004 importir]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:26"><![CDATA[Buat daftar objek lengkap]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:26"><![CDATA[Unggah paket SCORM]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:26"><![CDATA[SCORM]]></key>
@@ -1908,7 +1908,7 @@ Password: [password]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-05-10 12:43:26"><![CDATA[Akun terhubung:]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:26"><![CDATA[Link akun FormaLms anda dengan:]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:26"><![CDATA[Link akun forma.lms anda dengan:]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-05-10 12:43:26"><![CDATA[Mulai]]></key>

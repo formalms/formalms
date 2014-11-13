@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[Kisegítő lehetőségek beállításainak aktiválása]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:43:23"><![CDATA["allow_url_include" konfigurálás]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr> és <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> és <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[A kód modul által létrehozott kód kérése]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[Legördülő menüből felhasználó által kiválasztott fa-kód kérése]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[Felhasználó által beírt fa-kód kérése]]></key>
@@ -834,7 +834,7 @@ Egyébként regisztrálni kell a rendszerünkbe az alábbi linken: <br />
         <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[Felhasználók, akik ma regisztráltak]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[Felhasználók, akik tegnap regisztráltak]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[Szuper-adminisztrátor felhasználók]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[FormaLms hálózat]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[forma.lms hálózat]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[Felfüggesztett felhasználók]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[Tanácsadó oldal]]></key>
         <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[LMS támogatás oldal (support)]]></key>
@@ -855,7 +855,7 @@ Cím: '[title]'
 
 [text]
 
-olvasható a FormaLMS-n az alábbi URL-en: <a href="[url]">[url]</a>]]></key>
+olvasható a forma.lms-n az alábbi URL-en: <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-05-10 12:43:23"><![CDATA[Feliratkozási kérelem jóváhagyva]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-05-10 12:43:23"><![CDATA[A tanfolyamra [course] való feliratkozást az adminisztrátor jóváhagyta. A tanfolyamra történő belépéshez kattints a hivatkozásra: <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-05-10 12:43:23"><![CDATA[Az adminisztrátor visszaigazolta a feliratkozási kérelmet ide: <a href="[url]">[url]</a>]]></key>
@@ -1225,9 +1225,9 @@ Jelszó: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[Főoldal]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[FormaLMS egy nyílt forrású e-tanulási rendszer (LMS: Learning Managment System - Képzés menedzsment rendszer és LCMS: Learning Content Management System - Tartalom (tananyag) menedzsment rendszer) melyet vállalati piacon és felsőoktatásban használnak.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:23"><![CDATA[forma.lms egy nyílt forrású e-tanulási rendszer (LMS: Learning Managment System - Képzés menedzsment rendszer és LCMS: Learning Content Management System - Tartalom (tananyag) menedzsment rendszer) melyet vállalati piacon és felsőoktatásban használnak.<br/>
 <br/>
-A rendszer 12 nyelvet támogat, kompatibilis a SCORM 1.2 és 1.3 szabvánnyal, különböző oktatói modelleket támogat, beleértve a kevertet, önállót, együttműködésest és még a közösségi tanulást is, csevegési, Wiki, fórum és más különböző funkciókkal.<br/>
+A rendszer 25 nyelvet támogat, kompatibilis a SCORM 1.2 és 2004 szabvánnyal, különböző oktatói modelleket támogat, beleértve a kevertet, önállót, együttműködésest és még a közösségi tanulást is, csevegési, Wiki, fórum és más különböző funkciókkal.<br/>
 <br/>
 <br/>
 A fenti szöveg módosításához lépj be az Adminisztrátor/Nyelv kezeléshez, keresd a <b>bejelentkezést</b>, és szerkesztsd ezt a kulcsot: <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1871,7 +1871,7 @@ A fiók igénylést meg kell erősíteni, mielőtt azt használnád.]]></key>
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:24"><![CDATA[Vissza a listához]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:24"><![CDATA[Tartalom csomag kiválasztása (.zip vagy .pif kiterjesztéssel)]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:24"><![CDATA[Fájlt meg kell adni a feltöltéshez]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:24"><![CDATA[SCORM 1.2 és 1.3 importáló]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:24"><![CDATA[SCORM 1.2 és 2004 importáló]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:24"><![CDATA[Teljes objektum lista készítése]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:24"><![CDATA[SCORM csomag feltöltése]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:24"><![CDATA[SCORM]]></key>
@@ -1908,7 +1908,7 @@ Jelszó: [password]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-05-10 12:43:24"><![CDATA[Fiókok összekapcsolva:]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:24"><![CDATA[A te FormaLMS fiókod összekapcsolása ezzel:]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:24"><![CDATA[A te forma.lms fiókod összekapcsolása ezzel:]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-05-10 12:43:24"><![CDATA[Elkezdődött]]></key>

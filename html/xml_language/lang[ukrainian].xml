@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:43:49"><![CDATA[Активувати спрощений режим]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:43:49"><![CDATA[Конфігурація "allow_url_include"]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:49"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:49"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr> та <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:49"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:49"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> та <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:43:49"><![CDATA[Запит коду, створеного модулем коду]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:49"><![CDATA[Запит дерева коду, вибраного користувачем з випадаючого списку]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:49"><![CDATA[Запит дерева коду, що має бути введене безпосередньо користувачем]]></key>
@@ -834,7 +834,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[Користувачі, зареєстровані сьогодні]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[Користувачі, зареєстровані вчора]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[Супер-адміністратори]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[Мережа FormaLms]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[Мережа forma.lms]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[Заморозити користувачів]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[Сайт консультацій]]></key>
         <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[Сайт підтримки LMS]]></key>
@@ -855,7 +855,7 @@ Otherwise, you must register in our system, following this link: <br />
 
 [text]
 
-Ви можете прочитати це на FormaLms за адресою <a href="[url]">[url]</a>]]></key>
+Ви можете прочитати це на forma.lms за адресою <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-05-10 12:43:50"><![CDATA[Запит на підписку підтверджено]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-05-10 12:43:50"><![CDATA[Ваш запит на підписку на курс [course] був одобрений адміністратором. Ви можете увійти на курс перейшовши за посиланням <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-05-10 12:43:50"><![CDATA[Адміністратор підтвердив ваш запит на підписку на <a href="[url]">[url]</a>]]></key>
@@ -1225,9 +1225,9 @@ Otherwise, you must register in our system, following this link: <br />
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[Домашня сторінка]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[FormaLms це платформа e-Навчання з відкритим кодом (LMS та LCMS) застосовується на корпоративних ринках та ринках вищої освіти.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[forma.lms це платформа e-Навчання з відкритим кодом (LMS та LCMS) застосовується на корпоративних ринках та ринках вищої освіти.<br/>
 <br/>
-Платформа підтримує 12 мов, сумісна з стандартами SCORM 1.2 та 1.3, підтримує різні навчальні моделі, включаючи: Змішану, Самостійного навчання, Сумісного та навіть Соціального Навчання через чат, wiki, форуми та інші різноманінті функції.<br/>
+Платформа підтримує 25 мов, сумісна з стандартами SCORM 1.2 та 2004, підтримує різні навчальні моделі, включаючи: Змішану, Самостійного навчання, Сумісного та навіть Соціального Навчання через чат, wiki, форуми та інші різноманінті функції.<br/>
 <br/>
 <br/>
 Щоб змініти ці слова, будь ласка перейдіьт до Адміністратор/Управління мовами, знайдить <b>login</b> та відредагуйте ключ <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1871,7 +1871,7 @@ To complete  the registration process, please click on the link below, (or copy 
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[Повернутись до переліку]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[Обрати задовільний формат з розширенням .zip або .pif]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[Ви маете обрати файл для завантаження]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[SCORM 1.2 та 1.3 імпортер]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[SCORM 1.2 та 2004 імпортер]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[Створити завершений перелік предметів]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[Завантажити пакет SCORM]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[SCORM]]></key>
@@ -1908,7 +1908,7 @@ To complete  the registration process, please click on the link below, (or copy 
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[Підключені профілі:]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[З'єднайте ваш аккаунт FormaLms з:]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[З'єднайте ваш аккаунт forma.lms з:]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-05-10 12:43:50"><![CDATA[Розпочаті]]></key>

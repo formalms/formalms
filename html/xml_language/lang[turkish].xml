@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:43:47"><![CDATA[Erişilebilirlik özelliklerini etkinleştir]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:43:47"><![CDATA["allow_url_include" ayarları]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:47"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:47"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr> ve <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:47"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:47"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> ve <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:43:47"><![CDATA[Kod modülü ile yaratılmış bir kod isteminde bulun]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:47"><![CDATA[Kullanıcının açılan menü listesinden seçtiği bir ağaç kod isteminde bulun]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:47"><![CDATA[Kullanıcı tarafından elle girilmesi gereken bir ağaç kod isteminde bulun]]></key>
@@ -834,7 +834,7 @@ Ya da bu bağlantı üzerinden sistemimize kayıt olabilirsiniz: <br />
         <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[Bugün kayıt olan kullanıcılar]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[Dün kayıt olan kullanıcılar]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[Süper-yönetici kullanıcılar]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[FormaLms ağı]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[forma.lms ağı]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[Askıya alınmış kullanıcılar]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[Danışma sitesi]]></key>
         <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[LMS destek sitesi]]></key>
@@ -855,7 +855,7 @@ Başlık: '[title]'
 
 [text]
 
-FormaLms üzerinden <a href="[url]">[url]</a> bağlantısı üzerinden okuyabilirsiniz]]></key>
+forma.lms üzerinden <a href="[url]">[url]</a> bağlantısı üzerinden okuyabilirsiniz]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-05-10 12:43:48"><![CDATA[Kayıt isteği onaylandı]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-05-10 12:43:48"><![CDATA[[course] dersi için kayıt isteminiz yönetici tarafından onaylandı. <a href="[url]">[url]</a> bağlantısına tıklayarak derse ulaşabilirsiniz.]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-05-10 12:43:48"><![CDATA[<a href="[url]">[url]</a> bağlantısına kayıt isteğinizi yönetici doğruladı]]></key>
@@ -1225,9 +1225,9 @@ Kullanıcı Adı: [userid]
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[Ana sayfa]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[FormaLms, ticari ve yüksek öğretim pazarında kullanılan Açık Kaynaklı e-Öğrenme platformudur (LMS ve LCMS).<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[forma.lms, ticari ve yüksek öğretim pazarında kullanılan Açık Kaynaklı e-Öğrenme platformudur (LMS ve LCMS).<br/>
 <br/>
-Platform 12 farklı dili destekliyor, SCORM 1.2 ve 1.3 standardları ile uyumlu, ve farklı öğretici modelleri destekliyor, örneğin: Harmanlanmış, Kendi-Yönlendirilmiş, Ortaklaşa ve hatta Chat, Wiki, Forums üzerinden Sosyal Öğrenme ve diğer çeşitli fonksiyonlar.<br/>
+Platform 25 farklı dili destekliyor, SCORM 1.2 ve 2004 standardları ile uyumlu, ve farklı öğretici modelleri destekliyor, örneğin: Harmanlanmış, Kendi-Yönlendirilmiş, Ortaklaşa ve hatta Chat, Wiki, Forums üzerinden Sosyal Öğrenme ve diğer çeşitli fonksiyonlar.<br/>
 <br/>
 <br/>
 Bu kelimeleri değiştirmek için lütfen Admin/Language yönetimine gidin, <b>login</b> arayın ve <b>_INTRO_STD_TEXT</b> anahtarını değiştirin]]></key>
@@ -1871,7 +1871,7 @@ Hesabınızı kullanmadan önce doğrulamanız gerekiyor.]]></key>
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[Listeye dön]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[.zip veya .pif uzantılı paket içeriği seç]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[Karşıya yükleme için dosya belirlemelisiniz]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[SCORM 1.2 ve 1.3 içeri aktarım]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[SCORM 1.2 ve 2004 içeri aktarım]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[Tüm nesnelerin listesini yarat]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[SCORM paketi yükle]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[SCORM]]></key>
@@ -1908,7 +1908,7 @@ Kullanıcı adı: [userid]
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[Bağlı hesaplar:]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[FormaLms hesabınızı bağlabileceğiniz ortamlar:]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[forma.lms hesabınızı bağlabileceğiniz ortamlar:]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-05-10 12:43:48"><![CDATA[Başladı]]></key>
