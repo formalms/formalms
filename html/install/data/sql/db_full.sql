@@ -2653,7 +2653,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('no_answer_in_test', 'off', 'enum', 3, '0', 4, 6, 1, 0, ''),
 ('on_catalogue_empty', 'on', 'enum', 3, '0', 4, 3, 1, 0, ''),
 ('org_name_teleskill', '', 'string', 255, 'teleskill', 6, 4, 1, 0, ''),
-('owned_by', 'Copyright (c) forma.lms', 'string', 255, '0', 1, 7, 1, 0, ''),
+('owned_by', 'Copyright (c) forma.lms', 'html', 255, '0', 1, 7, 1, 0, ''),
 ('page_title', 'Forma E-learning', 'string', 255, '0', 1, 1, 1, 0, ''),
 ('pass_alfanumeric', 'off', 'enum', 3, 'password', 3, 6, 1, 0, ''),
 ('pass_change_first_login', 'off', 'enum', 3, 'password', 3, 8, 1, 0, ''),
