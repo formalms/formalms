@@ -1,0 +1,3 @@
+INSERT INTO `core_event_manager` (`idEventMgr`, `idClass`, `permission`, `channel`, `recipients`, `show_level`) VALUES (41, 41, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin,admin');
+INSERT INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES (1, 41);
+INSERT INTO `core_event_class` (`idClass`, `class`, `platform`, `description`) VALUES (41, 'UserNewWaiting', 'framework', '');
