@@ -174,11 +174,15 @@ class qformat_gift {
         if (ereg( '^\$CATEGORY:', $text)) {
             // $newcategory = $matches[1];
             $newcategory = trim(substr( $text, 10 ));
-
+            $newcategory = trim(substr( $newcategory, 0,  strpos($newcategory, "::")));
+			
+            $question->setCategoryFromName($newcategory);
+            $text = trim(substr($text, 10+strlen($newcategory)));
+                        
             // build fake question to contain category
             
           	// XXX: create a category !
-            return true;
+            //return true;
         }
         
         // QUESTION NAME parser --------------------------------------------------------------
@@ -592,7 +596,11 @@ class qformat_gift {
 	
 	    // add comment
 	    $expout .= "// question: $question->id  \n";
-	
+
+	    if ($question->id_category != ""){
+	        $expout .= "\$CATEGORY:$question->id_category\n";
+	    }
+		
 	    // get  question text format
 	    /*$textformat = $question->textformat;
 	    $question->text = "";
@@ -657,7 +665,7 @@ class qformat_gift {
 				$expout .= "::".$this->repchar($question->prompt)."::".$qtext_format.$this->repchar( $question->quest_text )."{\n";
 				
 				foreach($question->answers as $answer) {
-					if ($answer->score_correct == 1) {
+					if (($answer->score_correct == 1) || ($answer->score_correct == 0 && $answer->is_correct == 1) ) {
 						$answertext = '=';
 					}
 					elseif ($answer->score_correct > 1) {

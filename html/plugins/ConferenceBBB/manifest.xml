@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin_manifest>
+	<title>Conference Big Blue Button</title>
+	<author>Joint Technologies</author>
+	<code>bbb</code>
+	<version>1.0</version>
+	<category>conference</category>
+	<description>Conference Big Blue Button</description>
+	<link>http://www.joint-tech.it/</link>
+	<license>GNU General Public License version 2</license>
+</plugin_manifest>

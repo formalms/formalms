@@ -102,6 +102,7 @@ define("_CHECKED_FILES","Деякі файли мають невірні пра�
 define("_UPGRADER_TITLE", "Forma - Оновлення");
 define("_UPGRADE_CONFIG","Оновлення файлу config.php");
 define("_UPG_CONFIG_OK","Файл Config.php повністю оновлено");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "Процесс оновлення файлу config.php провалився.");
 define("_UPGRADING", "Оновлення в процессі");
 define("_UPGRADING_LANGUAGES", "Оновити мови");

@@ -98,6 +98,7 @@ define("_CHECKED_FILES","某些文件没有足够的权限");
 define("_UPGRADER_TITLE", "Forma - 升级");
 define("_UPGRADE_CONFIG","正在升级 config.php file 文件");
 define("_UPG_CONFIG_OK","Config.php 已经成功升级");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "升级config.php失败。");
 define("_UPGRADING", "正在升级");
 define("_UPGRADING_LANGUAGES", "设计语言");

@@ -302,7 +302,8 @@ class CourseReportManager {
 	}
 	
 	function updateActivity($id_report, $id_course, &$source) {
-		
+        $source_of = isset($source['source_of'])?$source['source_of']:'activity';
+        $id_source = isset($source['id_source'])?$source['id_source']:'0';
 		// Save report modification
 		$query_upd_report = "
 		UPDATE ".$GLOBALS['prefix_lms']."_coursereport
@@ -313,7 +314,7 @@ class CourseReportManager {
 			use_for_final = '".$source['use_for_final']."',  
 			show_to_user = '".$source['show_to_user']."' 
 		WHERE id_course = '".$id_course."' AND id_report = '".$id_report."' 
-			AND source_of = 'activity' AND id_source = '0'";
+			AND source_of = '".$source_of."' AND id_source = '".$id_source."'";
 		return sql_query($query_upd_report);
 	}
 	

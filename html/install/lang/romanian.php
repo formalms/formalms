@@ -98,6 +98,7 @@ define("_CHECKED_FILES","Fisiere certe nu au permisiuni adecvate");
 define("_UPGRADER_TITLE", "Upgrade Forma ");
 define("_UPGRADE_CONFIG","Upgradare fisier config.php ");
 define("_UPG_CONFIG_OK","Fisierul Config.php updatat cu succes");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "Updatarea fisierului config.php a esuat.");
 define("_UPGRADING", "Upgrade in progres");
 define("_UPGRADING_LANGUAGES", "Upgradeaza limbile");

@@ -12,6 +12,7 @@
 \ ======================================================================== */
 
 class PluginManager {
+	protected static $plugin_list = array();
 
 	protected static $files = false;
 
@@ -58,18 +59,23 @@ class PluginManager {
     }
 
 	public static function autoload() {
+		require_once _adm_.'/models/PluginAdm.php';
 		
-		// user SPL iterator to recursive list all the plugins files
-		$paths = glob( _plugins_.'/*' );
-		
-		foreach($paths as $folder) {
-			
-			if(file_exists($folder.'/autoload.php')) include($folder.'/autoload.php');
+		$pluginAdm = new PluginAdm();
+		$plugin_list=$pluginAdm->getInstalledPlugins();
+
+		foreach($plugin_list as $plugin_name) {
+
+			if(file_exists(_plugins_.'/'.$plugin_name.'/autoload.php')) 
+				include(_plugins_.'/'.$plugin_name.'/autoload.php');
+
+			$class_name=$plugin_name.'Plugin';
+			self::$plugin_list[$plugin_name]=$class_name;
 		}
     }
-	
+
 	public static function config() {
-		
+
 		// user SPL iterator to recursive list all the plugins files
 		$paths = glob( _plugins_.'/*' );
 		
@@ -83,6 +89,41 @@ class PluginManager {
 			} 
 		}
 		return $plugin_cfg;
+    }
+
+    public function initPlugins(){
+
+		foreach(self::$plugin_list as $plugin_name => $class_name) {
+
+			if(file_exists(_plugins_.'/'.$plugin_name.'/'.$class_name.'.php')) 
+				include_once(_plugins_.'/'.$plugin_name.'/'.$class_name.'.php');
+
+			if (method_exists($class_name, 'init')) { 
+				call_user_func(array($class_name, 'init'), $plugin_name);
+			}
+
+		}
+    }
+
+    public function runPlugins(){
+    	foreach(self::$plugin_list as $plugin_name => $class_name) {
+			if(file_exists(_plugins_.'/'.$plugin_name.'/'.$class_name.'.php')) 
+				include_once(_plugins_.'/'.$plugin_name.'/'.$class_name.'.php');
+
+			if (method_exists($class_name, 'run')) { 
+				call_user_func(array($class_name, 'run'), $plugin_name);
+			}
+
+		}
+    }
+
+    public static function getPlugins($plugin_name = ""){
+    	if ($plugin_name != ""){
+    	  return self::$plugin_list[$plugin_name];
+    	}
+    	else{
+    	  return self::$plugin_list;
+    	}
     }
 }
 

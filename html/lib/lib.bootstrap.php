@@ -240,6 +240,14 @@ class Boot {
 		self::log( "Load template library." );
 		require_once(_base_.'/lib/lib.template.php');
 
+		// twig template engine
+		$tplengine=Get::cfg('template_engine', array());
+		if (array_key_exists('twig', $tplengine)){
+		    self::log( "Load twig template engine." );
+		    require_once(_base_.'/addons/twig/lib/Twig/Autoloader.php');
+		    Twig_Autoloader::register();
+		}
+
 		// mimetype
 		self::log( "Load mimetype library." );
 		require_once(_base_.'/lib/lib.mimetype.php');
@@ -482,6 +490,10 @@ class Boot {
 
 		self::log( "Include layout manager file." );
 		require_once _lib_.'/layout/lib.layout.php';
+		
+		if(Get::cfg('enable_plugins', false)) {
+			PluginManager::initPlugins();
+		}
 	}
 
 	/**

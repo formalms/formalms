@@ -98,6 +98,7 @@ define("_CHECKED_FILES","Bepaalde bestanden hebben niet genoeg schrijf rechten."
 define("_UPGRADER_TITLE", "Forma - Upgrade");
 define("_UPGRADE_CONFIG","Upgrading config.php bestand");
 define("_UPG_CONFIG_OK","Config.php file Succesvol ge-update.");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "Het update process is gefaald.");
 define("_UPGRADING", "Upgrade in bezig");
 define("_UPGRADING_LANGUAGES", "Upgrade talen");

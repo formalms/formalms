@@ -102,6 +102,7 @@ define("_CHECKED_FILES","Jotkin tiedostot eivät omaa riittäviä oikeuksia");
 define("_UPGRADER_TITLE", "Forma - Päivitys");
 define("_UPGRADE_CONFIG","Config.php tiedoston päivitys");
 define("_UPG_CONFIG_OK","Config.php tiedosto päivitettiin onnistuneesti");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "Config.php tiedoston päivitysprosessi epäonnistui");
 define("_UPGRADING", "Päivitys käynnissä");
 define("_UPGRADING_LANGUAGES", "Päivitettävät kielet");

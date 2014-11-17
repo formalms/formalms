@@ -66,6 +66,11 @@ class Controller {
 		return _base_.'/views';
 	}
 
+	public function viewCustomscriptsPath() {
+
+		return _base_.'/customscripts/views';
+	}
+	
 	/**
 	 * This method will render a specific view for this mvc
 	 * @param string $view_name the name of the view, must be equal to a php file inside the view folder for this mvc without the .php extension
@@ -78,17 +83,61 @@ class Controller {
 	 */
 	public function render($view_name, $data_for_view = false, $return = false) {
 
-		if(is_array($data_for_view)) {
+		if (is_array($data_for_view)) {
 			extract($data_for_view, EXTR_SKIP);
 		}
-		include( Docebo::inc( $this->viewPath().'/'.$this->_mvc_name.'/'.$view_name.'.php' ) );
-		if($return) {
+
+		$paths=array();
+		$extensions=array();
+		if (Get::cfg('enable_customscripts', false) == true) {
+			$paths[]=$this->viewCustomscriptsPath();
+		}
+		$paths[]=$this->viewPath();
+		$tplengine=Get::cfg('template_engine', array());
+
+		foreach ($tplengine as $tplkey => $tpleng){
+			$extensions[$tplkey]=$tpleng['ext'];
+		}
+		$extensions['php']=".php";
+
+		$extension="";
+		$path="";
+		$tplkey="";
+		foreach ($paths as $p){
+			foreach ($extensions as $k => $e){
+				$fullpath=$p . '/' . $this->_mvc_name . '/' . $view_name . $e;
+				if (file_exists($fullpath)){
+					$extension=$e;
+					$path=$p;
+					$tplkey=$k;
+					break;
+				}
+			}
+			if ($extension != "") break;
+		}
+		
+		switch($tplkey){
+			case "php":
+				include( Docebo::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension));
+				break;
+			case "twig":
+				echo TwigManager::getInstance()->render($view_name.$extension, $data_for_view, $path. '/' . $this->_mvc_name);
+				//$classname = 'TwigManager';
+				//echo $classname::getInstance()->render($view_name.$extension, $data_for_view, $path. '/' . $this->_mvc_name);
+				break;
+			default:
+				//die( 'FILENOTFOUND');
+				include( Docebo::inc($this->viewPath() . '/' . $this->_mvc_name . '/' . $view_name . $extension) );
+				break;
+		}
+		
+		if ($return) {
 			$content = ob_get_contents();
 			@ob_clean();
 			return $content;
 		}
 	}
-	
+
 	/**
 	 * This method will manage a widget (find them in the widget/ folder), the $widget_name must ber a valid widget name
 	 *  (a folder name inside the widget/ folder for example), the widget class will be automatically istanced with the params setted

@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[Aktivovat funkci pro usnadnění přístupu]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[Konfigurace "allow_url_include" funkce]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr> a <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> a <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[Požadovat kód vytvořený pomocí kódového modulu]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[Požadovat kmenový kód vybraný uživatelem ze seznamu v rozbalovacím menu]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[Požadovat kmenový kód který musí uživatel manuálně vložit]]></key>
@@ -834,7 +834,7 @@ V opačném případě se musíte zaregistrovat do našeho systému, na tomto od
         <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[Uživatelé registrovaní dnes]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[Uživatelé registrovaní včera]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[Super-administrátoři]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[FormaLms síť]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[forma.lms síť]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[Suspendovaní uživatelé]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[Stránky poradenství]]></key>
         <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[LMS podpora]]></key>
@@ -855,7 +855,7 @@ Title: '[title]'
 
 [text]
 
-You can read it on FormaLms at URL <a href="[url]">[url]</a>]]></key>
+You can read it on forma.lms at URL <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-05-10 12:43:05"><![CDATA[Žádost o zápis potvrzena]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-05-10 12:43:05"><![CDATA[Vaše žádost o zápis do [course] bylo povrzena. Můžete vstoupit do kurzu klinutím na následujicí odkaz <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-05-10 12:43:05"><![CDATA[Administrátor potvrdil vaši žádost o zápis do <a href="[url]">[url]</a>]]></key>
@@ -1225,9 +1225,9 @@ Password: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[Domovská stráka]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[FormaLms je Open Source e-studijní platforma (LMS a LCMS) používaná v korporačních a univerzitních trzích.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:05"><![CDATA[forma.lms je Open Source e-studijní platforma (LMS a LCMS) používaná v korporačních a univerzitních trzích.<br/>
 <br/>
-Platforma podporuje 12 jazykům, je v souladu se SCORM 1.2 a 1.3 standarty, a odlišné výučné modely, vč.: Smíšené, ve vlastní režii, spolupráce a dokonce sociální studium pomocí Chatu, Wikipedie, Fóra a dalších funkcí.<br/>
+Platforma podporuje 25 jazykům, je v souladu se SCORM 1.2 a 2004 standarty, a odlišné výučné modely, vč.: Smíšené, ve vlastní režii, spolupráce a dokonce sociální studium pomocí Chatu, Wikipedie, Fóra a dalších funkcí.<br/>
 <br/>
 <br/>
 Pro změnu těchto slov jděte do Správy Administrace/Jazyků, vyhledejte <b>příhlášení</b> a upravte  klíč <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1871,7 +1871,7 @@ Musíte potvrdit svůj účet před použitím.]]></key>
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:06"><![CDATA[Zpět na seznam]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:06"><![CDATA[Vyberte obsah balíčku s .Zip nebo.PIF koncovkou]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:06"><![CDATA[Musíte zadat soubor k uploadu]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:06"><![CDATA[SCORM 1.2 a 1.3 importer]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:06"><![CDATA[SCORM 1.2 a 2004 importer]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:06"><![CDATA[Vytvořit kompletní seznam objektů]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:06"><![CDATA[Nahrát SCORM balíček]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:06"><![CDATA[SCORM]]></key>
@@ -1908,7 +1908,7 @@ Heslo: [password]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-05-10 12:43:06"><![CDATA[Připojené účty:]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:06"><![CDATA[Propojte svůj FormaLms účet k:]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:06"><![CDATA[Propojte svůj forma.lms účet k:]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-05-10 12:43:06"><![CDATA[Začatý]]></key>

@@ -102,6 +102,7 @@ define("_CHECKED_FILES","Bizonyos fájlok nem rendelkeznek megfelelő engedélly
 define("_UPGRADER_TITLE", "Forma - Frissítés");
 define("_UPGRADE_CONFIG","Config.php fájl frissítése");
 define("_UPG_CONFIG_OK","Config.php fájl sikeresen frissítve");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "Config.php fájl frissítése nem sikerült.");
 define("_UPGRADING", "Frissítés folyamatban");
 define("_UPGRADING_LANGUAGES", "Nyelvek frissítése");

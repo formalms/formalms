@@ -321,7 +321,13 @@ function createNewAlert(	$class,$module,$section,$priority,$description,
 
 	$event->deleteOldProperty();
 
-	$event->setProperty('recipientid',implode(',',$recipients));
+	if (is_array($recipients["to"]) && is_array($recipients["cc"]) && is_array($recipients["bcc"]) ){
+		$event->setProperty('recipientid',implode(',',$recipients["to"]));
+		$event->setProperty('recipientcc',implode(',',$recipients["cc"]));
+		$event->setProperty('recipientbcc',implode(',',$recipients["bcc"]));
+	} else {
+		$event->setProperty('recipientid',implode(',',$recipients));
+	}
 	$event->setProperty('subject', addslashes($msg_composer->getSubject('email', getLanguage() ) ));
 	$event->setProperty('body', addslashes($msg_composer->getBody('email', getLanguage() )) );
 	$msg_composer->prepare_serialize(); // __sleep is preferred but i preferr this method

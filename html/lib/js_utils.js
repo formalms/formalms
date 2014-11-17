@@ -1,9 +1,12 @@
 /* ======================================================================== \
-| 	DOCEBO - The E-Learning Suite											|
-| 																			|
-| 	Copyright (c) 2008 (Docebo)												|
-| 	http://www.docebo.com													|
-|   License 	http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt		|
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 //utils functions
@@ -162,12 +165,13 @@ LightBox.prototype = {
 				} );
 			}
 
-			this.overlay_light.setHeader('<h1 class="title_handler" id="title_handler">Title</h1>'
+			//this.overlay_light.setHeader('<h1 class="title_handler" id="title_handler">Title</h1>'
+			this.overlay_light.setHeader(''
 				+'<a class="close_handler" id="close_handler" href="#"><span>'+this.oLangs.get('_CLOSE')+'</span></a>');
 			this.overlay_light.setBody('<iframe id="overlay_iframe" name="overlay_iframe" src="" height="100%" width="100%" frameborder="0"></iframe>');
 
 			YAHOO.util.Event.on(window, "resize", function(e, obj) {
-				
+
 				if  (YAHOO.env.ua.ipad == 0 ||  typeof YAHOO.env.ua.ipad == "undefined" || !YAHOO.env.ua.ipad) {
 					var new_w = (YAHOO.util.Dom.getViewportWidth()-16), new_h = (YAHOO.util.Dom.getViewportHeight()-16);
 				} else {
@@ -176,7 +180,7 @@ LightBox.prototype = {
 					} else {
 						var new_w = (YAHOO.util.Dom.getViewportWidth()-16), new_h = (YAHOO.util.Dom.getViewportHeight()-16);
 					}
-				}	
+				}
 				obj.overlay_light.cfg.setProperty("width", ( obj.max_width != false && new_w > obj.max_width ? obj.max_width : new_w ) + "px");
 				obj.overlay_light.cfg.setProperty("height", ( obj.max_height != false && new_h > obj.max_height ? obj.max_height : new_h ) + "px");
 				obj.overlay_light.center();
@@ -186,9 +190,9 @@ LightBox.prototype = {
 			}, this );
 
 			this.overlay_light.render(document.body);
-			
+
 			YAHOO.util.Event.addListener("close_handler", "click", function(e, obj) {
-			
+
 				YAHOO.util.Event.preventDefault(e);
 				window.onbeforeunload = null;
 				try {
@@ -197,12 +201,12 @@ LightBox.prototype = {
 					window.overlay_iframe.uiPlayer.closePlayer(true, window);
 				}
 			}, this);
-			
+
 		}
 		var nodes = YAHOO.util.Selector.query('a[rel^=lightbox]');
 		YAHOO.util.Event.addListener(nodes, "click", function(e, obj) {
 			YAHOO.util.Event.preventDefault(e);
-			
+
 			var arguments = this.rel.split(';');
 			//search for width and height
 			for(var i=0;i < arguments.length;i++) {

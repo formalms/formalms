@@ -1,9 +1,10 @@
--- phpMyAdmin SQL Dump
--- version 3.2.4
--- http://www.phpmyadmin.net
+-- ------------------------------------------------------
+-- MySQL dump
+-- MySQL Version: 5.x.xx
+-- PHP   Version: 5.x.x
 --
--- Versione MySQL: 5.1.41
--- Versione PHP: 5.3.1
+-- Host: localhost    Database: formalms
+-- ------------------------------------------------------
 
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
@@ -1498,6 +1499,7 @@ INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name
 (5, 3, 'setting', '_CONFIGURATION', '', 'view', NULL, 1, 'class.configuration.php', 'Module_Configuration', 'adm/setting/show'),
 (7, 3, 'event_manager', '_EVENTMANAGER', 'display', 'view_event_manager', NULL, 3, 'class.event_manager.php', 'Module_Event_Manager', ''),
 (8, 3, 'iotask', '_IOTASK', 'iotask', 'view', NULL, 4, 'class.iotask.php', 'Module_IOTask', ''),
+(9, 3, 'pluginmanager', '_PLUGIN_MANAGER', '', 'view', NULL, 7, '', '', 'adm/pluginmanager/show'),
 (10, 5, 'lang', '_LANG', '', 'view', NULL, 1, '', '', 'adm/lang/show'),
 (13, 6, 'newsletter', '_NEWSLETTER', 'newsletter', 'view', NULL, 1, 'class.newsletter.php', 'Module_Newsletter', ''),
 (16, 2, 'usermanagement', '_LISTUSER', '', 'view', NULL, 1, '', '', 'adm/usermanagement/show'),
@@ -1732,6 +1734,34 @@ INSERT INTO `core_platform` (`platform`, `class_file`, `class_name`, `class_file
 ('framework', '', '', 'class.admin_menu_fw.php', 'Admin_Framework', 'Admin_Managment_Framework', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 1, 'true', 'true', '', 'false', 'false'),
 ('lms', '', '', 'class.admin_menu_lms.php', 'Admin_Lms', 'Admin_Managment_Lms', 'class.conf_lms.php', 'Config_Lms', 'defaultTemplate', 'LmsAdminModule', 2, 'true', 'false', '', 'true', 'false'),
 ('scs', '', '', 'class.admin_menu_scs.php', 'Admin_Scs', '', 'class.conf_scs.php', 'Config_Scs', 'defaultTemplate', 'ScsAdminModule', 4, 'true', 'false', '', 'false', 'false');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_plugin`
+--
+
+
+CREATE TABLE IF NOT EXISTS `core_plugin` (
+  `plugin_id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `title` varchar(64) NOT NULL,
+  `code` varchar(32) NOT NULL,
+  `category` VARCHAR(255),
+  `version` varchar(16) NOT NULL,
+  `author` varchar(128) NOT NULL,
+  `link` varchar(255) NOT NULL,
+  `priority` int(5) NOT NULL,
+  `description` text NOT NULL,
+  `active` int(1) NOT NULL,
+  PRIMARY KEY (`plugin_id`),
+  UNIQUE KEY `name` (`name`,`code`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+--
+-- Dump dei dati per la tabella `core_plugin`
+--
+
 
 -- --------------------------------------------------------
 
@@ -2078,6 +2108,7 @@ INSERT INTO `core_role` (`idst`, `roleid`, `description`) VALUES
 (229, '/lms/admin/coursecategory/mod', NULL),
 (230, '/lms/admin/coursecategory/del', NULL),
 (272, '/lms/course/private/coursecharts/view', ''),
+(280, '/framework/admin/pluginmanager/view', ''),
 (11553, '/framework/admin/usermanagement/associate_user', NULL),
 (11612, '/lms/course/public/pcertificate/view', NULL),
 (11613, '/lms/course/public/pcertificate/mod', NULL),
@@ -2463,6 +2494,7 @@ INSERT INTO `core_role_members` (`idst`, `idstMember`) VALUES
 (272, 10894),
 (272, 10895),
 (272, 10896),
+(280, 3),
 (11553, 3),
 (11612, 3),
 (11613, 3),
@@ -2567,6 +2599,7 @@ CREATE TABLE IF NOT EXISTS `core_setting` (
 INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES
 ('accessibility', 'off', 'enum', 255, '0', 8, 5, 1, 0, ''),
 ('bbb_server', 'http://test-install.blindsidenetworks.com/bigbluebutton/', 'string', 255, 'bbb', 6, 1, 1, 0, ''),
+('bbb_port', '80', 'string', 255, 'bbb', 6, 2, 1, 0, ''),
 ('bbb_user', '', 'string', 255, 'bbb', 6, 2, 1, 0, ''),
 ('bbb_salt', 'to be changed with a complex string', 'string', 255, 'bbb', 6, 3, 1, 0, ''),
 ('bbb_password_moderator', 'password.moderator', 'string', 255, 'bbb', 6, 4, 1, 0, ''),
@@ -2577,7 +2610,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('code_teleskill', '', 'string', 255, 'teleskill', 6, 3, 1, 0, ''),
 ('common_admin_session', 'on', 'enum', 3, 'security', 8, 24, 1, 0, ''),
 ('conference_creation_limit_per_user', '99999999999', 'string', 255, '0', 6, 0, 1, 0, ''),
-('core_version', '1.2', 'string', 255, '0', 1, 0, 1, 1, ''),
+('core_version', '1.3', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('course_quota', '0', 'string', 255, '0', 4, 5, 1, 0, ''),
 ('currency_symbol', '&euro;', 'string', 10, '0', 5, 2, 1, 0, ''),
 ('customer_help_email', '', 'string', 255, '0', 3, 19, 1, 0, ''),
@@ -2620,6 +2653,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('no_answer_in_test', 'off', 'enum', 3, '0', 4, 6, 1, 0, ''),
 ('on_catalogue_empty', 'on', 'enum', 3, '0', 4, 3, 1, 0, ''),
 ('org_name_teleskill', '', 'string', 255, 'teleskill', 6, 4, 1, 0, ''),
+('owned_by', 'Copyright (c) forma.lms', 'html', 255, '0', 1, 7, 1, 0, ''),
 ('page_title', 'Forma E-learning', 'string', 255, '0', 1, 1, 1, 0, ''),
 ('pass_alfanumeric', 'off', 'enum', 3, 'password', 3, 6, 1, 0, ''),
 ('pass_change_first_login', 'off', 'enum', 3, 'password', 3, 8, 1, 0, ''),
@@ -2645,6 +2679,8 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('register_type', 'admin', 'register_type', 10, 'register', 3, 11, 0, 0, ''),
 ('registration_code_type', '0', 'registration_code_type', 3, 'register', 3, 17, 1, 0, ''),
 ('request_mandatory_fields_compilation', 'off', 'enum', 3, '0', 3, 2, 1, 0, ''),
+('rest_auth_api_key', '', 'string', 255, 'api', 9, 7, 1, 0, ''),
+('rest_auth_api_secret', '', 'string', 255, 'api', 9, 8, 1, 0, ''),
 ('rest_auth_code', '', 'string', 255, 'api', 9, 4, 1, 0, ''),
 ('rest_auth_lifetime', '60', 'int', 3, 'api', 9, 5, 1, 0, ''),
 ('rest_auth_method', '1', 'rest_auth_sel_method', 3, 'api', 9, 3, 1, 0, ''),
@@ -3365,7 +3401,9 @@ CREATE TABLE IF NOT EXISTS `learning_certificate_assign` (
   `id_user` int(11) NOT NULL DEFAULT '0',
   `on_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `cert_file` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id_certificate`,`id_course`,`id_user`)
+  PRIMARY KEY (`id_certificate`,`id_course`,`id_user`),
+  KEY `id_course` (`id_course`),
+  KEY `id_user` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -3401,8 +3439,8 @@ CREATE TABLE IF NOT EXISTS `learning_certificate_course` (
 CREATE TABLE IF NOT EXISTS `learning_certificate_meta` (
   `idMetaCertificate` int(11) NOT NULL AUTO_INCREMENT,
   `idCertificate` int(11) NOT NULL DEFAULT '0',
-  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `description` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `description` longtext NOT NULL,
   PRIMARY KEY (`idMetaCertificate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
@@ -3422,7 +3460,7 @@ CREATE TABLE IF NOT EXISTS `learning_certificate_meta_assign` (
   `idMetaCertificate` int(11) NOT NULL DEFAULT '0',
   `idCertificate` int(11) NOT NULL DEFAULT '0',
   `on_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `cert_file` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `cert_file` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`idUser`,`idMetaCertificate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -4080,11 +4118,11 @@ CREATE TABLE IF NOT EXISTS `learning_courseuser` (
 CREATE TABLE IF NOT EXISTS `learning_course_date` (
   `id_date` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_course` int(10) unsigned NOT NULL DEFAULT '0',
-  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `code` varchar(255) NOT NULL DEFAULT '',
   `name` varchar(255) NOT NULL DEFAULT '',
   `description` text NOT NULL,
   `max_par` int(11) NOT NULL DEFAULT '0',
-  `price` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `price` varchar(255) NOT NULL DEFAULT '0',
   `overbooking` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `test_type` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `status` int(10) unsigned NOT NULL DEFAULT '0',
@@ -4136,7 +4174,7 @@ CREATE TABLE IF NOT EXISTS `learning_course_date_presence` (
   `id_user` int(11) unsigned NOT NULL DEFAULT '0',
   `id_day` int(11) unsigned NOT NULL DEFAULT '0',
   `presence` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `score` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `score` varchar(255) DEFAULT NULL,
   `note` text NOT NULL,
   PRIMARY KEY (`day`,`id_date`,`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -4157,7 +4195,7 @@ CREATE TABLE IF NOT EXISTS `learning_course_date_user` (
   `id_user` int(11) NOT NULL DEFAULT '0',
   `date_subscription` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `date_complete` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `presence` mediumtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `presence` mediumtext,
   `subscribed_by` int(10) unsigned NOT NULL DEFAULT '0',
   `overbooking` int(10) DEFAULT '0',
   `requesting_unsubscribe` tinyint(1) unsigned DEFAULT NULL,
@@ -5249,16 +5287,17 @@ INSERT INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequen
 ('mo_33', 1, 'a:0:{}',0),
 ('mo_34', 1, 'a:0:{}',0),
 ('mo_help', 1, 'a:0:{}',0),
-('tb_assessment', 1, 'a:0:{}',0),
+('tb_elearning', 0, 'a:0:{}', 0),
 ('tb_catalog', 1, 'a:0:{}',0),
+('tb_assessment', 1, 'a:0:{}',0),
 ('tb_classroom', 1, 'a:0:{}',0),
 ('tb_communication', 1, 'a:0:{}',0),
 ('tb_coursepath', 1, 'a:0:{}',0),
 ('tb_games', 1, 'a:0:{}',0),
 ('tb_label', 1, 'a:0:{}',0),
 ('tb_videoconference', 1, 'a:0:{}',0),
-('tb_elearning', 0, 'a:0:{}', 0),
-('tb_kb', 0, 'a:0:{}', 0);
+('tb_kb', 0, 'a:0:{}', 0),
+('tb_home', '1', 'a:0:{}', '0');
 
 
 -- --------------------------------------------------------
@@ -6567,9 +6606,9 @@ CREATE TABLE IF NOT EXISTS `learning_transaction` (
   `price` int(11) NOT NULL DEFAULT '0',
   `payment_status` tinyint(1) NOT NULL DEFAULT '0',
   `course_status` tinyint(1) NOT NULL DEFAULT '0',
-  `method` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `payment_note` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `course_note` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `method` varchar(255) NOT NULL DEFAULT '',
+  `payment_note` text NOT NULL,
+  `course_note` text NOT NULL,
   PRIMARY KEY (`id_transaction`),
   KEY `id_user` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;

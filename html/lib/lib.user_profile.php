@@ -1880,51 +1880,51 @@ class UserProfileViewer {
 		}
 
 		$html .= '</div></div>';
-		
+
 		// box carriera
 		require_once($GLOBALS['where_lms'].'/lib/lib.middlearea.php');
 		require_once($GLOBALS['where_lms'].'/modules/course/course.php');
 		$ma = new Man_MiddleArea();
 		$access_career                          = $ma->currentCanAccessObj('career');
-		
+
 		//if($this->acl_man->relativeId($this->user_info[ACL_INFO_USERID]) == 'alberto' && $access_career) {
 		if($access_career) {
-		
-		
-			$course_stats = userCourseList($url, false, false);
-		
+
+			$url = $this->_url_man;
+			$course_stats = userCourseList($url, false, false);		//TODO:  review this call . use course list to compute carreer
+
 			$base_url = 'index.php?r='._after_login_.'&amp;filter=';
 			$end = 0;
 			if(isset($course_stats['with_ustatus'][_CUS_END]) && $course_stats['with_ustatus'][_CUS_END] != 0) {
 				$end = $course_stats['with_ustatus'][_CUS_END];
 			}
-		
+
 			$html .= '<div class="inline_block">'
 					.'<h2 class="heading">'.$this->_lang->def('_CAREER').'</h2>'
 							.'<div class="content">'
 									.'<div class="course_stat">'
 											.'<table summary="">'
-		
+
 													.'<tr><th scope="row">'.$this->_lang->def('_TOTAL_COURSE').' :</th><td>'.($course_stats['total'] - $end).'</td></tr>'
-		
+
 															.( isset($course_stats['with_ustatus'][_CUS_END]) && $course_stats['with_ustatus'][_CUS_END] != 0
 																	? '<tr><th scope="row">'.$this->_lang->def('_COURSE_END').' :</th><td>'.$course_stats['with_ustatus'][_CUS_END].'</td></tr>'
 																	: '' )
-		
+
 																	.( isset($course_stats['expiring']) && $course_stats['expiring'] != 0
 																			? '<tr><th scope="row">'.$this->_lang->def('_COURSE_EXPIRING').' :</th><td>'.$course_stats['expiring'].'</td></tr>'
 																			: '' );
-		
+
 			if(count($course_stats['with_ulevel']) > 1) {
-		
+
 				require_once($GLOBALS['where_lms'].'/lib/lib.levels.php');
 				$lvl = CourseLevel::getLevels();
 				foreach($course_stats['with_ulevel'] as $lvl_num => $quantity) {
-		
+
 					$html .= ''
 							.'<tr><th scope="row">'.str_replace('[level]', $lvl[$lvl_num], $this->_lang->def('_COURSE_AS') ).' :</th><td>'.$quantity.'</td></tr>';
 				} //end foreach
-		
+
 			}
 			$query =        "SELECT c.idMetaCertificate, m.idCertificate"
 					." FROM ".$GLOBALS['prefix_lms']."_certificate_meta_course as c"
@@ -1932,29 +1932,29 @@ class UserProfileViewer {
 									." WHERE c.idUser = '".getLogUserId()."'"
 											." GROUP BY c.idMetaCertificate"
 													." ORDER BY m.title, m.description";
-		
+
 			$result = sql_query($query);
-		
+
 			$num_meta_cert = mysql_num_rows($result);
-		
+
 			while(list($id_meta, $id_certificate) = sql_fetch_row($result))
 			{
 				$query_released =   "SELECT on_date"
 						." FROM ".$GLOBALS['prefix_lms']."_certificate_meta_assign"
 								." WHERE idUser = '".getLogUserId()."'"
 										." AND idMetaCertificate = '".$id_meta."'";
-		
+
 				$result_released = sql_query($query_released);
-		
+
 				$query =    "SELECT user_release"
 						." FROM ".$GLOBALS['prefix_lms']."_certificate"
 								." WHERE id_certificate = '".$id_certificate."'";
-		
+
 				list($user_release) = sql_fetch_row(sql_query($query));
-		
+
 				if(mysql_num_rows($result_released))
 				{
-		
+
 				}
 				elseif($user_release == 0)
 				$num_meta_cert--;
@@ -1964,10 +1964,10 @@ class UserProfileViewer {
 							." FROM ".$GLOBALS['prefix_lms']."_certificate_meta_course"
 									." WHERE idUser = '".getLogUserId()."'"
 											." AND idMetaCertificate = '".$id_meta."'";
-		
+
 					$result_int = sql_query($query);
 					$control = true;
-		
+
 					while(list($id_course) = sql_fetch_row($result_int))
 					{
 						$query =    "SELECT COUNT(*)"
@@ -1975,37 +1975,37 @@ class UserProfileViewer {
 										." WHERE idCourse = '".$id_course."'"
 												." AND idUser = '".getLogUserId()."'"
 														." AND status = '"._CUS_END."'";
-		
-		
+
+
 						list($number) = sql_fetch_row(sql_query($query));
-		
+
 						if(!$number)
 							$control = false;
 					}
-		
+
 					if(!$control)
 						$num_meta_cert--;
 				}
 			}
-		
+
 			$tot_cert = $num_meta_cert + $course_stats['cert_relesable'];
-		
+
 			$html .= ''
 					.( isset($course_stats['cert_relesable']) && $tot_cert != 0
 							? '<tr><th scope="row">'.$this->_lang->def('_CERT_RELESABLE').' :</th><td><a href="index.php?modname=mycertificate&amp;op=mycertificate">'.$tot_cert.'</a></td></tr>'
 							: '' )
-		
+
 							.( $pendent != 0
 									? '<tr><th scope="row">'.$this->_lang->def('_FRIEND_PENDENT').' :</th><td><a href="index.php?modname=myfriends&amp;op=myfriends">'.$pendent.'</a></td></tr>'
 									: '' )
-		
+
 									.'</table>'
 											.'</div>'
 													.'</div>'
 															.'</div>';
-		
+
 		}
-		
+
 		/*
 		$html = '<div class="user_presentation">'."\n"
 
@@ -4221,7 +4221,7 @@ class UserProfileData {
 			$cman = new CourseSubscribe_Manager();
 			$arr_status = $cman->getUserStatus();
 			$stats[$id_c]['user_status'] = isset($arr_status[$status_user]) ? $arr_status[$status_user] : "";
-			
+
 			$stats[$id_c]['date_inscr'] = $date_inscr;
 			$stats[$id_c]['date_first_access'] = $date_first_access;
 			$stats[$id_c]['date_complete'] = $date_complete;

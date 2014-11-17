@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Aktiviraj accessibility opcije]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Konfiguracija "allow_url_include"]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Traži kod kreiran kroz kodni modul]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Traži kod stabla koje je korisnik izabrao iz liste padajućeg izbornika]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Traži kod stabla koji korisnik mora manualno unijeti]]></key>
@@ -834,7 +834,7 @@ U suprotnom, morate se registrirati, koristeći link: <br />
         <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Korisnici registrirani danas]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Korisnici registrirani jučer]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Korisnici super-administratori]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[FormaLms mreža]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[forma.lms mreža]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Suspendirani korisnici]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Sajt za konzultacije]]></key>
         <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Sajt za LMS podršku]]></key>
@@ -855,7 +855,7 @@ Naslov: '[title]'
 
 [text]
 
-Možete pročitati na FormaLms-u na URL-u <a href="[url]">[url]</a>]]></key>
+Možete pročitati na forma.lms-u na URL-u <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-05-10 12:43:03"><![CDATA[Zahtjev za upis je odobren]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-05-10 12:43:03"><![CDATA[Vaš zahtjev za upis na tečaj [course] je odobrio administrator. Za pristup tečaju možete koristiti URL <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-05-10 12:43:03"><![CDATA[Administrator je potvrdio Vaš zahtjev za upis na <a href="[url]">[url]</a>]]></key>
@@ -1225,9 +1225,9 @@ Zaporka: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Početna stranica]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[FormaLms je Open Source e-Learning platforma (LMS and LCMS) koja se koristi u korporativnim i visokoškolskim tržištima.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[forma.lms je Open Source e-Learning platforma (LMS and LCMS) koja se koristi u korporativnim i visokoškolskim tržištima.<br/>
 <br/>
-Platforma podržava 12 jezika, usklađena je sa SCORM 1.2 i 1.3 standardima, te podržava razne didaktičke metode, uključno: miješano, samo-usmjereno, zajedničko i čak društveno učenje koristeći ćaskanje, Wiki, forume i razne druge metode.<br/>
+Platforma podržava 25 jezika, usklađena je sa SCORM 1.2 i 2004 standardima, te podržava razne didaktičke metode, uključno: miješano, samo-usmjereno, zajedničko i čak društveno učenje koristeći ćaskanje, Wiki, forume i razne druge metode.<br/>
 <br/>
 <br/>
 Da promijenite ove riječi molimo idite na Admin/Jezik upravljanje, tražite <b>prijava</b> i promijenite ključ <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1871,7 +1871,7 @@ Treba da potvrdite Vaš nalog prije nego ga počnete koristiti.]]></key>
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Vrati se na listu]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Odaberi paket sa .zip or .pif ekstenzijom]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Trebate specificirati fajl za upload]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[SCORM 1.2 i 1.3 importer]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[SCORM 1.2 i 2004 importer]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Kreiraj listu kompletnih sredstava]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Upload SCORM paket]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[SCORM]]></key>
@@ -1908,7 +1908,7 @@ Zaporka: [password]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Nalozi konektirani:]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Poveži svoj FormaLms nalog sa:]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Poveži svoj forma.lms nalog sa:]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-05-10 12:43:03"><![CDATA[Pokrenuto]]></key>

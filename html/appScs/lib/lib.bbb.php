@@ -17,16 +17,16 @@ include_once(dirname(__FILE__)."/lib.bbb.api.php");
 
 define("_BBB_STREAM_TIMEOUT", 30);
 
-define("_BBB_AUTH_CODE", 'X-Dimdim-Auth-Token');
-define("_BBB_AUTH_DATA", 'dimdim_login_data');
+define("_BBB_AUTH_CODE", 'X-BBB-Auth-Token');
+define("_BBB_AUTH_DATA", 'bbb_login_data');
 
 class Bbb_Manager {
 
 	var $can_mod = false;
 
-	function DimDim_Manager() {
-		$this->server = Get::sett('dimdim_server');
-		$this->port = Get::sett('dimdim_port');
+	function Bbb_Manager() {
+		$this->server = Get::sett('bbb_server');
+		$this->port = Get::sett('bbb_port');
 	}
 
 	function _getRoomTable() {
@@ -62,8 +62,7 @@ class Bbb_Manager {
 
 		$res->result = true;
 
-		if(Get::sett('use_dimdim_api') === 'on')
-			$res = $this->api_schedule_meeting(
+		$res = $this->api_schedule_meeting(
 							$idConference,
 							$user_email,
 							$display_name,
@@ -142,8 +141,8 @@ class Bbb_Manager {
 	}
 
 	function deleteRoom($room_id) {
-		if(Get::sett('use_dimdim_api') === 'on')
-			$res = $this->api_delete_schedule($room_id);
+
+		$res = $this->api_delete_schedule($room_id);
 
 		$room_del = "
 		DELETE FROM ".$this->_getRoomTable()."
@@ -185,8 +184,6 @@ class Bbb_Manager {
 		}*/
 
 		$name = $this->getRoomName($idConference);
-//SOSTITUITO DA QUI SOTTO $_url = 'http://'.Get::sett('dimdim_server', "").'/console?clientId='.$clientId.'&group=all&account='.Get::sett('dimdim_user', "").'&room='.urlencode($name);
-////////////////////////////////////////////////////
 
     $url= Get::sett('bbb_server', "");
     $salt = Get::sett('bbb_salt', "");
@@ -344,7 +341,7 @@ class Bbb_Manager {
 	function _api_request($service, $method, $params, $parname = false) {
 		require_once(_base_.'/lib/lib.json.php');
 		require_once(_base_.'/lib/lib.fsock_wrapper.php');
-		$server = Get::sett('dimdim_server', false);
+		$server = Get::sett('bbb_server', false);
 		$output = false;
 		$_parname = ($parname ? $parname."=" : "");
 		if ($server && $service && $method) {
@@ -370,7 +367,7 @@ class Bbb_Manager {
 						"Content-type" => "application/x-www-form-urlencoded"
 					);
 					$post = $_parname.urlencode($json->encode($params));
-					$res_json = $fsock->post_request($url, Get::sett('dimdim_port', '80'), $post, $other_header);
+					$res_json = $fsock->post_request($url, Get::sett('bbb_port', '80'), $post, $other_header);
 					if ($res_json) {
 						$output = $json->decode($res_json);
 					}
@@ -380,7 +377,7 @@ class Bbb_Manager {
 				$post = $_parname.urlencode($json->encode($params));
 				$other_header = array("Content-type" => "application/x-www-form-urlencoded");
 				if ($method != 'login') $other_header[_BBB_AUTH_CODE] = $this->get_auth_code();
-				$res_json = $fsock->post_request($url, Get::sett('dimdim_port', '80'), $post, $other_header);
+				$res_json = $fsock->post_request($url, Get::sett('bbb_port', '80'), $post, $other_header);
 				if ($res_json) {
 					$output = $json->decode($res_json);
 				}
@@ -398,8 +395,8 @@ class Bbb_Manager {
 
 	function api_login() {
 		$params = new stdClass();
-		$params->account = Get::sett('dimdim_user', "");
-		$params->password = Get::sett('dimdim_password', "");
+		$params->account = Get::sett('bbb_user', "");
+		$params->password = Get::sett('bbb_password', "");
 		$params->group = "all";
 		$res = $this->_api_request('auth', 'login', $params, 'request');
 		$output = false;
@@ -415,8 +412,8 @@ class Bbb_Manager {
 	function api_verify() {
 		$params = new stdClass();
 		$params->authToken = $this->get_auth_code();
-		$params->account = Get::sett('dimdim_user', "");
-		$params->password = Get::sett('dimdim_password', "");
+		$params->account = Get::sett('bbb_user', "");
+		$params->password = Get::sett('bbb_password', "");
 		$params->group = "all";
 		$res =  $this->_api_request('auth', 'verify', $params, 'data');
 		if ($res && $res->result) return true;
@@ -426,8 +423,8 @@ class Bbb_Manager {
 	function api_logout() {
 		$params = new stdClass();
 		$params->authToken = $this->get_auth_code();
-		$params->account = Get::sett('dimdim_user', "");
-		$params->password = Get::sett('dimdim_password', "");
+		$params->account = Get::sett('bbb_user', "");
+		$params->password = Get::sett('bbb_password', "");
 		$params->group = "all";
 		return $this->_api_request('auth', 'logout', $params, 'data');
 	}
@@ -436,10 +433,10 @@ class Bbb_Manager {
 		$params = new stdClass();
 
 		$params->ClientId = ""; //Optional - Provides the value of client ID if specifically assigned
-		$params->account = Get::sett('dimdim_user', ""); //Optional - Defines the user ID with which the registered Dimdim user will start a meeting groupName Optional all Defines group name, default is all
-		$params->roomName = $display_name; //Optional - default - Defines Room name default is Ã¢â‚¬Å“defaultÃ¢â‚¬Â� agenda Optional Agenda of the meeting
-		$params->meetingName = $display_name; //Optional - The name of the Meeting. Default is Ã¢â‚¬Å“From Third party PortalÃ¢â‚¬Â� displayName Optional This is to set the display name of host
-		$params->joinEmailRequired = false; //Optional - true/false - Enables you to allow the attendees to join the meeting only on entering their email addresses; If it is set to true then joining the meeting without providing the email is disabled. Default is set to false audioVideo Optional av/audio/video/none Defines the audio and video settings av Ã¢â‚¬â€œ Audio Video Allowed none Ã¢â‚¬â€œ Audio-Video Disabled audio Ã¢â‚¬â€œ Audio Only video Ã¢â‚¬â€œ Video Only
+		$params->account = Get::sett('bbb_user', ""); //Optional - Defines the user ID with which the registered BBB user will start a meeting groupName Optional all Defines group name, default is all
+		$params->roomName = $display_name; //Optional - default - Defines Room name default is "default" agenda Optional Agenda of the meeting
+		$params->meetingName = $display_name; //Optional - The name of the Meeting. Default is "From Third party Portal" displayName Optional This is to set the display name of host
+		$params->joinEmailRequired = false; //Optional - true/false - Enables you to allow the attendees to join the meeting only on entering their email addresses; If it is set to true then joining the meeting without providing the email is disabled. Default is set to false audioVideo Optional av/audio/video/none Defines the audio and video settings av "Audio Video Allowed" none Audio-Video Disabled audio Audio Only video Video Only
 		$params->maxParticipants = $maxparticipants; //Optional - Maximum numbers of participants allowed in the Meeting. autoAssignMikeOnJoin Optional true/false Provides control to let you assign the microphone to the attendee automatically on joining the meeting Default is set to false
 		$params->autoHandsFreeOnAVLoad = false; //Optional - true/false - Enables the Hands-Free option on loading of the audio video broadcaster in the meeting Default is set to false assistentEnabled Optional true/false Enables the Meeting Assistant to be displayed at the start of the meeting Default is set to true
 		$params->privateChatEnabled = true; //Optional - true/false - Enables the Private Chat feature in the meeting publicChatEnabled Optional true/false Enables the Public Chat feature in the meeting lobbyEnabled Optional true/false Enables the waiting area before the start of the meeting
@@ -484,9 +481,9 @@ class Bbb_Manager {
 		$room = $this->nextRow($re_room);
 
 		$params = new stdClass();
-		$params->enterpriseName = 'dimdim';
+		$params->enterpriseName = 'bbb';
 		$params->groupName = 'all';
-		$params->accountName = Get::sett('dimdim_user', "");
+		$params->accountName = Get::sett('bbb_user', "");
 		$params->roomName = 'default';
 		$params->startDate = date("M j, Y", fromDatetimeToTimestamp($startdate));
 		$params->startHour = ($starthour > 12 ? $starthour-12 : $starthour)."";
@@ -536,8 +533,8 @@ class Bbb_Manager {
 
 		$params = new stdClass();
 
-		$params->account = Get::sett('dimdim_user', "");//Optional Defines the user ID with which the registered Dimdim user will start a meeting
-		$params->groupName = "all";//Optional all Defines group name, default is Ã¢â‚¬Å“allÃ¢â‚¬Â�
+		$params->account = Get::sett('bbb_user', "");//Optional Defines the user ID with which the registered BBB user will start a meeting
+		$params->groupName = "all";//Optional all Defines group name, default is "all"
 		//$params->roomName = $name; //Optional default Defines Room name
 		$params->scheduleId = $info_decoded->scheduleId; //Mandatory
 
@@ -562,7 +559,7 @@ class Bbb_Manager {
 		$params = new stdClass();
 /*
 		//$params->
-		$params->ClientId //optional - Provides the value of client ID if specifically assigned account Optional Defines the user ID with which the registered Dimdim user has started a meeting which attendee wants to join groupName Optional all Defines group name
+		$params->ClientId //optional - Provides the value of client ID if specifically assigned account Optional Defines the user ID with which the registered BBB user has started a meeting which attendee wants to join groupName Optional all Defines group name
 		$params->roomName //Optional - default - Defines Room name
 		$params->displayName //optional Display name of the user when he joins the meeting
 		$params->meetingKey //optional

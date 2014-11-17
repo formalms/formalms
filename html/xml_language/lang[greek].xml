@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Ενεργοποίηση δυνατοτήτων προσβασιμότητας]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Ρύθμιση του "allow_url_include"]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[<abbr title="Application Programming Interface">API</abbr> του FormaLms]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[<abbr title="Application Programming Interface">API</abbr> και <abbr title="Single Sign On">SSO</abbr> του FormaLms]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[<abbr title="Application Programming Interface">API</abbr> του forma.lms]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[<abbr title="Application Programming Interface">API</abbr> και <abbr title="Single Sign On">SSO</abbr> του forma.lms]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Ζητήστε έναν κωδικό που δημιουργείται μέσω της υπομονάδας κωδικού]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Ζητήστε έναν κωδικό δέντρου που επιλέγεται από το χρηστη από μια λίστα]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Ζητήστε έναν κωδικό δέντρου που συμπληρώνεται χειροκίνητα από το χρηστη]]></key>
@@ -834,7 +834,7 @@
         <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Χρήστες που εγγράφηκαν σήμερα]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Χρήστες που εγγράφηκαν χθες]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Χρήστες Υπερ-διαχειριστές]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Δίκτυο FormaLms]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Δίκτυο forma.lms]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Αποβληθέντες χρήστες]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Ιστότοπος συμβουλευτικής]]></key>
         <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Ιστοσελίδα υποστήριξης Ηλεκτρονικής μάθησης]]></key>
@@ -855,7 +855,7 @@
 
 [text]
 
-Μπορείτε να τη διαβάσετε στο FormaLms στο URl <a href="[url]">[url]</a>]]></key>
+Μπορείτε να τη διαβάσετε στο forma.lms στο URl <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-05-10 12:43:21"><![CDATA[Η αίτηση εγγραφής εγκρίθηκε]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-05-10 12:43:21"><![CDATA[Η αίτηση εγγραφής σας στο μάθημα [course] έγινε δεκτή από το διαχειριστή. Μπορείτε να μπείτε στο μάθημα πατώντας στο URL που βρίσκεται στο <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-05-10 12:43:21"><![CDATA[Ο διαχειριστής επιβεβαίωσε την αίτηση εγγραφής σας στο <a href="[url]">[url]</a>]]></key>
@@ -1225,9 +1225,9 @@
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Αρχική σελίδα]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Το FormaLms είναι μια πλατφόρμα Ανοιχτού Κώδικα, για Ηλεκτρονική Μάθηση (LMS και LCMS) που χρησιμοποιείται σε εμπορικές αγορές και αγορές ανώτατης εκπαίδευσης.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Το forma.lms είναι μια πλατφόρμα Ανοιχτού Κώδικα, για Ηλεκτρονική Μάθηση (LMS και LCMS) που χρησιμοποιείται σε εμπορικές αγορές και αγορές ανώτατης εκπαίδευσης.<br/>
 <br/>
-Η πλατφόρμα υποστηρίζει 12 γλώσσες, είναι συμβατή με τα πρότυπα SCORM 1.2 και 1.3, και υποστηρίζει ποικίλα διδακτικά μοντέλα, που περιλαμβάνουν : Μικτός, Αυτο-διαχειριζόμενο, Συνεργατικό και ακόμα και Κοινωνικής Μάθησης μέσω ηλεκτρονικής συνομιλίας, Wiki, Forum, και άλλες λειτουργίες.<br/>
+Η πλατφόρμα υποστηρίζει 25 γλώσσες, είναι συμβατή με τα πρότυπα SCORM 1.2 και 2004, και υποστηρίζει ποικίλα διδακτικά μοντέλα, που περιλαμβάνουν : Μικτός, Αυτο-διαχειριζόμενο, Συνεργατικό και ακόμα και Κοινωνικής Μάθησης μέσω ηλεκτρονικής συνομιλίας, Wiki, Forum, και άλλες λειτουργίες.<br/>
 <br/>
 <br/>
 Για να αλλάξετε αυτό το κείμενο παρακαλώ πηγαίνετε Διαχειριστής/Διαχείριση γλωσσών, αναζητήσεις <b>login</b> και επεξεργαστείτε το κλειδί <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1871,7 +1871,7 @@
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Επιστροφή στη λίστα]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Επιλέξτε ένα πακέτο περιεχομένου με επέκταση .zip ή .pif]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Πρέπει να ορίσετε ένα αρχείο για φόρτωση]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Εισαγωγέας για SCORM 1.2 και 1.3]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Εισαγωγέας για SCORM 1.2 και 2004]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Δημιουργία πλήρους λίστας αντικειμένων]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Φόρτωση πακέτου SCORM]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[SCORM]]></key>
@@ -1908,7 +1908,7 @@
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Συνδεδεμένοι λογαριασμοί:]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Συνδέστε το λογαριασμό σας στο FormaLms με:]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Συνδέστε το λογαριασμό σας στο forma.lms με:]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-05-10 12:43:21"><![CDATA[Έχει εκκινηθεί]]></key>

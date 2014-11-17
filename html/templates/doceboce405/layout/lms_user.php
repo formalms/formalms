@@ -28,10 +28,10 @@
 		<?php echo Layout::zone('feedback'); ?>
 		<!-- header -->
 		<div id="header" class="layout_header">
-			
+
 			<div class="user_panel">
 				<p><?php if (!Docebo::user()->isAnonymous()) echo '<b><span>'.Lang::t('_WELCOME', 'profile').', </span>'.Docebo::user()->getUserName().'</b>'; ?><br />
-					<?php echo Format::date(date("Y-m-d H:i:s")); ?><br />					
+					<?php echo Format::date(date("Y-m-d H:i:s")); ?><br />
 					<span class="select-language"><?php echo Layout::change_lang(); ?></span>
 				</p>
 				<?php if (!Docebo::user()->isAnonymous()): ?>
@@ -57,7 +57,7 @@
 			<?php echo Layout::zone('menu_over'); ?>
 		</div>
 		<!-- content -->
-		<div class="layout_colum_container">			
+		<div class="layout_colum_container">
 			<?php echo Layout::zone('content'); ?>
 			<div class="nofloat"></div>
 		</div>
@@ -65,7 +65,7 @@
 		<div id="footer" class="layout_footer">
 			<?php echo Layout::zone('footer'); ?>
 			<p class="powered_by">
-				Powered by <a href="http://www.docebo.com/?versions" onclick="window.open(this.href); return false;">Docebo <sup>&reg;</sup> Community Edition</a>
+				Powered by <a href="http://www.formalms.org/?versions" onclick="window.open(this.href); return false;">forma.lms <sup>&reg;</sup> Community Edition</a>
 			</p>
 			<div class="nofloat"></div>
 		</div>

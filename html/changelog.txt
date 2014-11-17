@@ -1,3 +1,62 @@
+
+FORMA LMS
+
+RELEASE CHANGELOG
+
+
+---------------------------------------------------------------------------------------
+FORMA 1.3
+---------------------------------------------------------------------------------------
+
+3210 | Bug | Subscription from code list broken in v.1.2
+1995 | Bug | Automatic play of first LO not working from catalog
+2472 | Bug | Gradebook - apply user level filter in edit page
+2511 | Bug | Gradebook - Double title in scorm activities
+2748 | Bug | Gradebook: final score only for active users
+3059 | Bug | Wrong links in installer/upgrader step 7
+3085 | Bug | Sponsor logo in course menu
+3116 | Bug | Scorm Tracking: Keep alive error in IE11
+3211 | Bug | Fixed change psw after first login
+3213 | Bug | Sending mail with GMAIL
+3228 | Bug | Missing icon in course stats panel
+3231 | Bug | Database - added index on certificates table
+3256 | Bug | Using apex in course menu items
+3332 | Bug | Admin and publicadmin not visualizing data in user reports
+3396 | Bug | Gradebook: modify activity
+3446 | Bug | XSS Vulnerabilities by  high-tech bridge
+3472 | Bug | Gradebook - Activity title reset
+3473 | Bug | Gradebook - grade value wrong
+3474 | Bug | Gradebook - Wrong display final score
+3487 | Bug | Pagination not working in sent messages
+3500 | Bug | Fixed utf8_unicode_ci collation for some tables
+3501 | Bug | Disallowed Key Characters in global data
+3502 | Bug | CSS file not found in install procedure
+3523 | Bug | Error in GIFT export of MC questions
+3536 | Bug | Bug in tracking competenza. Solo in assegnazione manuale
+3538 | Bug | Bug fix in Importing/Exporting Test in GIFT Format
+3557 | Bug | Gradebook - tag [course_score_final]  in certificates
+3562 | Bug | Fixed automatic play of first LO from mycourses
+3597 | Bug | Gradebook - Scorm module title with ' cause error
+3599 | Bug | My courses - call to a non object . PHP Error
+3604 | Bug | Reference to jquery CDN
+3643 | Bug | Upgrade step 6 - did not retrieve installed language
+2962 | Change Request | Added new plugin management system
+2963 | Change Request | Added REST Library for user roles
+3595 | Change Request | Scorm player - TOC not scrollable
+3605 | Change Request | API keys administration forn new auth method
+3618 | Change Request | Added new cc/bcc function in common mail libraries
+3620 | Change Request | Customizable footer credits
+3628 | Change Request | Custom scripts
+3629 | Change Request | New alternate template engine: TWIG
+3632 | Change Request | Plugin Manager
+3633 | Change Request | Conference module (BBB and Teleskill)  as a Plugin
+3642 | Change Request | PHP 5.5 and 5.6 experimental status
+3056 | Change Request | Added client info to helpdesk email
+3507 | Change Request | Translation keys fixes and upgrades
+489 | Change Request | Frontend Tabs - New html tab
+
+
+
 ---------------------------------------------------------------------------------------
 FORMA 1.2
 ---------------------------------------------------------------------------------------

@@ -96,28 +96,32 @@ if(!empty($GLOBALS['chapter'])) {
 	$class_extension = ($nItem > 1) ? '':'_hiddentree';
 }
 
-//$lms_base_url = Get::rel_path('lms').'/';
-//$lms_base_url = preg_replace("/:\/\/([A-Za-z0-9_:.]+)\//","://".$_SERVER['HTTP_HOST']."/",Get::sett('url'));
-//$lms_base_url = preg_replace("/http[s]*:\/\/([A-Za-z0-9_:.]+)\//", 'http' . ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 's' : '' )."://".$_SERVER['HTTP_HOST']."/",Get::sett('url'));
-//$lms_base_url .= 'appLms/';
-//$lms_base_url = Get::rel_path('lms').'/';
-//
-//$lms_base_url = 'http' . ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 's' : '' ).'://'.$_SERVER['HTTP_HOST']
-//	    	.( strlen(dirname($_SERVER['SCRIPT_NAME'])) != 1 ? dirname($_SERVER['SCRIPT_NAME']) : '' ).'/';
-	    	
-$lms_base_url = 'http' . ( ((isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' ) 
-		                          or (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https') 
+
+$lms_base_url = 'http' . ( ((isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' )
+		                          or (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https')
 		                          or (isset($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) == 'on') ) ? 's' : '' ).'://'
 		    .( (isset($_SERVER['HTTP_X_FORWARDED_HOST']) ) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : $_SERVER['HTTP_HOST'] )
 	    	.( strlen(dirname($_SERVER['SCRIPT_NAME'])) != 1 ? dirname($_SERVER['SCRIPT_NAME']) : '' ).'/';
-	    		
-/*
- lms_url: 'http://server/appLms/modules/scorm/soaplms.php',
- lms_base_url: 'http://server/appLms/',
-*/
+
 $lms_url = $lms_base_url.$scormws;
 $xmlTreeUrl = $lms_base_url.$scormxmltree.'?idscorm_organization='.$idscorm_organization.'&idReference='.$idReference.'&environment='.$environment;
 $imagesPath = getPathImage().'treeview/';
+
+// support for setting keepalive tmo
+$gc_maxlifetime = ini_get("session.gc_maxlifetime");	// seconds
+$cfg_keepalivetmo = Get::cfg('keepalivetmo', 0);	// minumum : 60 sec.
+
+if ( $cfg_keepalivetmo > 0 ) {
+	$keepalivetmo = $cfg_keepalivetmo;
+} else {
+	if ( $gc_maxlifetime > ( 15*60 )  ) {
+		$keepalivetmo = ( 14*60 ) ;
+	} else if ( $gc_maxlifetime >= ( 2 * 60 )  ){
+		$keepalivetmo = $gc_maxlifetime - 60;
+	} else {
+		$keepalivetmo = $gc_maxlifetime - 15;	// second
+	}
+}
 
 header("Content-Type: text/html; charset=utf-8");
 
@@ -158,6 +162,7 @@ if(trim($playertemplate) != '') echo '	<link href="'.Get::tmpl_path().'/player_s
 	echo " idElemSeparator: 'separator',\n ";
 	echo " showTree: '$isshow_tree',\n ";
 	echo " playertemplate: '$playertemplate',\n";
+	echo " keepalivetmo: '".$keepalivetmo."',\n";
 	echo " auth_request: '".Util::getSignature()."',\n";
 
 	echo " environment: '$environment',\n";

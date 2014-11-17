@@ -34,7 +34,7 @@
 		</div>
 		<div class="footer">
 			<span class="copyright">
-				Powered by <a href="http://www.docebo.com/?versions" onclick="window.open(this.href); return false;">Docebo <sup>&reg;</sup> Community Edition</a>
+				Powered by <a href="http://www.formalms.org/?versions" onclick="window.open(this.href); return false;">forma.lms <sup>&reg;</sup> Community Edition</a>
 			</span>
 		</div>
 		<!-- def lang -->

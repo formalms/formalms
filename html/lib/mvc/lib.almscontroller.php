@@ -20,6 +20,11 @@ class AlmsController extends Controller {
 		return _lms_.'/admin/views';
 	}
 
+	public function viewCustomscriptsPath() {
+
+		return _base_.'/customscripts'.'/'._folder_lms_.'/admin/views';
+#		return _lms_.'/customscripts/admin/views';
+	}
 
 	public function init() {
 		parent::init();

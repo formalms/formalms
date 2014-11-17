@@ -861,7 +861,7 @@ class Man_Course {
 			$exp_time = $time_end - $now;
 			if($exp_time > 0) $expiring = round($exp_time / (24*60*60));
 		}
-		if($course['valid_time'] != '0' && $course['valid_time'] != '' && $course['date_first_access'] != '') {
+		if($course['valid_time'] != '0' && $course['valid_time'] != '' && $course['date_first_access'] != '' && $course['level']<=3) {
 
 			$time_first_access = fromDatetimeToTimestamp($course['date_first_access']);
 
@@ -1912,9 +1912,9 @@ class Man_CourseUser {
 		$counter = 0;
 		$subs = $this->getUserSubscriptionsInfo($id_user);
 
+		if(!mysql_num_rows($result_course)) return 0;
         // return -2 if course subscription is not allowed
         if(!mysql_num_rows($result_course_active)) return -2;
-		if(!mysql_num_rows($result_course)) return 0;
 		while (list($id_course) = sql_fetch_row($result_course))
 		{
 			if(!isset($subs[$id_course])) {

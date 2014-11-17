@@ -687,9 +687,11 @@ class SettingAdm extends Model {
 					}
 				};break;
 				//else simple assignament
-
-
-
+				case "html" : {
+					$new_value = $_POST['option'][$var_name];
+					$new_value = strip_tags($_POST['option'][$var_name],'<a><b><i><sup>');
+					$new_value = str_replace('"',"'",$new_value);
+				};break;
 				default : {
 					$new_value = $_POST['option'][$var_name];
 				}

@@ -102,6 +102,7 @@ define("_CHECKED_FILES","Определени файлове не разпола
 define("_UPGRADER_TITLE", "Forma - Upgrade");
 define("_UPGRADE_CONFIG","Обновяване на файла config.php");
 define("_UPG_CONFIG_OK","Файлът Config.php е обновен успешно");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "Процесът на обновяване на файла config.php неуспешен.");
 define("_UPGRADING", "В процес на обновяване");
 define("_UPGRADING_LANGUAGES", "Езици на обновяването");

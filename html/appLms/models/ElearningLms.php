@@ -118,12 +118,16 @@ class ElearningLms extends Model {
 				$result[$data['idCourse']]['numof_waiting'] = $data['numof_waiting'];
 			}
 
+
+            #3562 Grifo multimedia - LR
+            $query_lo = "select org.idOrg, org.idCourse, org.objectType from (SELECT o.idOrg, o.idCourse, o.objectType 
+                          FROM %lms_organization AS o WHERE o.objectType != '' AND o.idCourse IN (".implode(',', $courses).") ORDER BY o.path) as org 
+                          GROUP BY org.idCourse ";             
+
+
+              
 			// find first LO type
-			$re_firstlo = $db->query(
-				"SELECT o.idOrg, o.idCourse, o.objectType FROM %lms_organization AS o "
-				." WHERE o.objectType != '' AND o.idCourse IN (".implode(',', $courses).") "
-				." GROUP BY o.idCourse ORDER BY o.path"
-			);
+			$re_firstlo = $db->query($query_lo);
 			while($data = $db->fetch_assoc($re_firstlo)) {
 				$result[$data['idCourse']]['first_lo_type'] = $data['objectType'];
 			}

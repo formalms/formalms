@@ -64,10 +64,10 @@ class Layout {
 	public static function meta() {
 
 		return '<meta http-equiv="Content-Type" content="text/html; charset='.self::charset().'" />'."\n"
-			."\t\t".'<meta name="Copyright" content="Forma srl" />'."\n"
-			."\t\t".'<link rel="Copyright" href="http://www.forma.com/" title="Copyright Notice" />'."\n"
-			."\t\t".'<link rel="shortcut icon" href="'.self::path().'images/favicon.png" type="image/png" />'."\n"
-			."\t\t".'<link rel="icon" href="'.self::path().'images/favicon.ico" />'."\n";
+			."\t\t".'<meta name="Copyright" content="'. Get::sett('owned_by', 'Copyright &copy; forma.lms') .'" />'."\n"
+			."\t\t".'<meta name="Generator" content="www.formalms.org '. Get::sett('core_version', ''). '" />'."\n"
+			."\t\t".'<link rel="Copyright" href="http://www.formalms.org/copyright" title="Copyright Notice" />'."\n"
+			."\t\t".'<link rel="Author" href="http://www.formalms.org/about" title="About" />'."\n";
 
 	}
 
@@ -234,8 +234,12 @@ class Layout {
 
 		$html = "";
 		$html .= '<p class="powered_by">';
-		$html .= '<span class="copyright">';
-		$html .= 'Powered by <a href="http://www.formalms.org/" onclick="window.open(this.href); return false;">Forma LMS</a>';
+		$html .= '<span class="ownedby">';
+		$html .= Get::sett('owned_by', 'Copyright (c) forma.lms');
+		$html .= '</span>';
+		$html .= ' - ';
+		$html .= '<span class="poweredby">';
+		$html .= '<a href="http://www.formalms.org/" target="_blank">Powered'.' by ' . 'forma.lms CE</a>';
 		$html .= '</span>';
 		$html .= '</p>';
 		return $html;

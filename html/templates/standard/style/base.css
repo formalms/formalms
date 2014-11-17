@@ -1,21 +1,12 @@
 /* ======================================================================== \
-
 |   FORMA - The E-Learning Suite                                            |
-
 |                                                                           |
-
 |   Copyright (c) 2013 (Forma)                                              |
-
 |   http://www.formalms.org                                                 |
-
 |   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
-
 |                                                                           |
-
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
-
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
-
 \ ======================================================================== */
 
 /*
@@ -248,9 +239,8 @@ ul.social-accounts li span{vertical-align:middle;}
 .user_panel a.logout{background:url(../images/standard/exit.png) 0 50% no-repeat;}
 .user_panel a.identity span,.user_panel a.logout span{padding-left:20px;}
 /*specials blocks*/
-.powered_by{text-align:right;margin-right:3em;}
-.powered_by{color:#999;}
-.powered_by a{color:#666;}
+.powered_by{color:#999;text-align:right;} /* margin-right:3em; */
+.powered_by a{color:#777;}
 .powered_by sup{vertical-align:text-top;}
 .ico-tooltip{text-decoration:none;display:-moz-inline-box;display:inline-block;background:url(../images/ico_sprite.png) 0 -240px no-repeat;overflow:hidden;white-space:nowrap;height:16px;width:16px;text-indent:20px;}
 .ico-tooltip em{}

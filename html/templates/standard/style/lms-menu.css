@@ -1,21 +1,12 @@
 /* ======================================================================== \
-
 |   FORMA - The E-Learning Suite                                            |
-
 |                                                                           |
-
 |   Copyright (c) 2013 (Forma)                                              |
-
 |   http://www.formalms.org                                                 |
-
 |   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
-
 |                                                                           |
-
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
-
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
-
 \ ======================================================================== */
 
 
@@ -109,6 +100,12 @@ img.course_logo {
 	margin-right:10px;
 	}
 
+img.course_logo.sponsor {
+  float: left;
+  margin: -150px -720px;
+  width: auto;
+}
+
 .yui-t3 #course-info h1 {
 	float: left;
 	margin: 0 0 .6em 0;
@@ -193,9 +190,9 @@ img.course_logo {
 }
 
 #course-info ul#float-right .menu-area:hover{
-	background-color:#9c0000; 
-	background: -webkit-gradient(linear, left top, left bottom, from(#D9DCDF), to(#F1F2F4)); 
-	background: -moz-linear-gradient(top,  #D9DCDF,  #F1F2F4); 
+	background-color:#9c0000;
+	background: -webkit-gradient(linear, left top, left bottom, from(#D9DCDF), to(#F1F2F4));
+	background: -moz-linear-gradient(top,  #D9DCDF,  #F1F2F4);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#D9DCDF', endColorstr='#F1F2F4',GradientType=0 ); /* IE6-9 */
 	border: 1px solid #cccccc;
 	-webkit-border-radius: 5px;
@@ -203,7 +200,7 @@ img.course_logo {
 	border-radius: 5px;
 }
 
-#course-info ul#float-right a:hover, #course-info ul#float-left a:hover{  
+#course-info ul#float-right a:hover, #course-info ul#float-left a:hover{
 	text-decoration:none;
 }
 
@@ -218,7 +215,7 @@ img.course_logo {
     font: 16px HelveticaNeue,Open Sans Condensed,'PT Sans',verdana,helvetica,sans-serif;
     background-color: #f1f2f4;
     border: 1px solid #CCCCCC;
-	background: -webkit-gradient(linear, left top, left bottom, from(#F1F2F4 ), to(#D9DCDF )); 
+	background: -webkit-gradient(linear, left top, left bottom, from(#F1F2F4 ), to(#D9DCDF ));
 	background: -moz-linear-gradient(center top , #F1F2F4, #D9DCDF ) repeat scroll 0 0 transparent;
 	/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F1F2F4', endColorstr='#D9DCDF ',GradientType=0 ); /* IE6-9 */
     box-shadow: 0 1px 0 #fff inset;
@@ -230,10 +227,10 @@ img.course_logo {
 }
 
 #course-info ul#float-right .menu-selected {
-	background-color:#9c0000; 
+	background-color:#9c0000;
 	border: 1px solid #9c0000;
-	background: -webkit-gradient(linear, left top, left bottom, from(#CC0000), to(#9c0000)); 
-	background: -moz-linear-gradient(top,  #C84000, #993300); 
+	background: -webkit-gradient(linear, left top, left bottom, from(#CC0000), to(#9c0000));
+	background: -moz-linear-gradient(top,  #C84000, #993300);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#CC0000', endColorstr='#9c0000',GradientType=0 ); /* IE6-9 */
 	box-shadow:0 1px 0 #DD5860 inset;
 }
@@ -241,8 +238,8 @@ img.course_logo {
 #course-info ul#float-right .menu-selected:hover{
     background-color: #9c0000;
     border: 1px solid #9c0000;
-	background: -webkit-gradient(linear, left top, left bottom, from(#9c0000), to(#CC0000)); 
-	background: -moz-linear-gradient(top,  #C84000,  #C84000); 
+	background: -webkit-gradient(linear, left top, left bottom, from(#9c0000), to(#CC0000));
+	background: -moz-linear-gradient(top,  #C84000,  #C84000);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9c0000', endColorstr='#CC0000',GradientType=0 ); /* IE6-9 */
     box-shadow: 0 1px 0 #DD5860 inset;
 }

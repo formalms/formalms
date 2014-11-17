@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[تنشيط ميزات الوصول]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:42:56"><![CDATA["allow_url_include" تكوين]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[رمز وحدة طلب رمز تم إنشاؤها من خلال]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[طلب رمز الشجرة التي اختارها المستخدم من قائمة في القائمة المنسدلة]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[طلب رمز الشجرة التي يجب إدخالها يدويا من قبل المستخدم]]></key>
@@ -837,7 +837,7 @@
         <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[شبكة دوكوبو]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[المستخدمين المعلقين]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[موقع للاستشارات]]></key>
-        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[FormaLms دعم موقع]]></key>
+        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[forma.lms دعم موقع]]></key>
         <key id="dashboard&amp;_TOTAL_COURSE" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[عدد من الدورات]]></key>
         <key id="dashboard&amp;_TOTAL_SUBSCRIPTION" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[عدد الاشتراكات]]></key>
         <key id="dashboard&amp;_TOTAL_USER" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[المستخدمين المسجلين]]></key>
@@ -855,7 +855,7 @@ Title: '[title]'
 
 [text]
 
-You can read it on FormaLms at url <a href="[url]">[url]</a>]]></key>
+You can read it on forma.lms at url <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-05-10 12:42:56"><![CDATA[طلب الموافقة على اشتراك]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-05-10 12:42:56"><![CDATA[لقد تمت الموافقة على طلبك  من قبل المسؤول للاشتراك في دورة يمكنك ان تدخل الدورة من خلال النقر على الرابط الموجود <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-05-10 12:42:56"><![CDATA[أكد مسؤول طلب الاشتراك الخاص بك<a href="[url]">[url]</a>]]></key>
@@ -1225,9 +1225,9 @@ Username: [userid]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[الصفحة الرئيسية]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[دوكوبو هو المصدر المفتوح منصة التعلم الإلكتروني   تستخدم في الشركات والتعليم العالي FormaLms  (LMS and LCMS).<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:42:56"><![CDATA[دوكوبو هو المصدر المفتوح منصة التعلم الإلكتروني   تستخدم في الشركات والتعليم العالي forma.lms (LMS and LCMS).<br/>
 <br/>
-البرنامج يدعم 12 لغة ، انها متوافقة مع معايير اس كورم 1.2 و 1.3 ، ويدعم نماذج تعليمية مختلفة ، بما في ذلك : مختلط ، ادارة ذاتية ، والتعلم التعاوني حتى الاجتماعي من خلال المحادثة ، ويكي ، منتديات وغيرها من وظائف مختلفة.<br/>
+البرنامج يدعم 25 لغة ، انها متوافقة مع معايير اس كورم 1.2 و 2004 ، ويدعم نماذج تعليمية مختلفة ، بما في ذلك : مختلط ، ادارة ذاتية ، والتعلم التعاوني حتى الاجتماعي من خلال المحادثة ، ويكي ، منتديات وغيرها من وظائف مختلفة.<br/>
 <br/>
 <br/>
 لتغيير هذه الكلمات الرجاء الذهاب إلى ادارة المراقبة / اللغة ، ابحث عن <b>login</b> and edit the key <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1871,7 +1871,7 @@ Username: [userid]]]></key>
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:42:57"><![CDATA[العودة إلى قائمة]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:42:57"><![CDATA[التمديد.zip or .pifحدد حزمة المحتوى مع]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:42:57"><![CDATA[يجب تحديد ملف للتحميل]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:42:57"><![CDATA[اس كورم 1.2 و 1.3 المستورد]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:42:57"><![CDATA[اس كورم 1.2 و 2004 المستورد]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:42:57"><![CDATA[إنشاء قائمة كائنات كاملة]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:42:57"><![CDATA[تحميل حزمة اس كورم]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:42:57"><![CDATA[اس كورم]]></key>

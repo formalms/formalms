@@ -183,14 +183,14 @@ class MessageModule {
 					<div class="yui-content">
 							<div id="tab_inbox">
 								'.Form::openForm('inbox_tab_advice', $form_url)
-								.Form::getHidden('active_tab', 'active_tab', $active_tab)
+								.Form::getHidden('active_tab', 'active_tab', 'inbox')
 								.$form_filter_inbox
 								.$this->inbox($all_courses, true)
 								.Form::closeForm().'
 							</div>
 							<div id="tab_outbox">
 								'.Form::openForm('outbox_tab_advice', $form_url)
-								.Form::getHidden('active_tab', 'active_tab', $active_tab)
+								.Form::getHidden('active_tab', 'active_tab', 'outbox')
 								.$form_filter_outbox
 								.$this->outbox($all_courses, true)
 								.Form::closeForm().'
@@ -379,8 +379,8 @@ class MessageModule {
 		$um =& UrlManager::getInstance("message");
 		$acl_man 	=& Docebo::user()->getAclManager();
 		$tb = new Table(Get::sett('visuItem', 25));
-		$tb->initNavBar('ini', 'button');
-		$ini = $tb->getSelectedElement();
+		$tb->initNavBar('iniout', 'button');
+		$ini = $tb->getSelectedElement('iniout');
 		$acl_man =& Docebo::user()->getAclManager();
 
 

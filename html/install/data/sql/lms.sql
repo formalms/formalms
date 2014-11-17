@@ -1,8 +1,11 @@
--- MySQL dump 10.9
+
+-- ------------------------------------------------------
+-- MySQL dump
+-- MySQL Version: 5.x.xx
+-- PHP   Version: 5.x.x
 --
 -- Host: localhost    Database: formalms
 -- ------------------------------------------------------
--- Server version
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -225,7 +228,9 @@ CREATE TABLE IF NOT EXISTS `learning_certificate_assign` (
   `id_user` int(11) NOT NULL DEFAULT '0',
   `on_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `cert_file` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id_certificate`,`id_course`,`id_user`)
+  PRIMARY KEY (`id_certificate`,`id_course`,`id_user`),
+  KEY `id_course` (`id_course`),
+  KEY `id_user` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -261,8 +266,8 @@ CREATE TABLE IF NOT EXISTS `learning_certificate_course` (
 CREATE TABLE IF NOT EXISTS `learning_certificate_meta` (
   `idMetaCertificate` int(11) NOT NULL AUTO_INCREMENT,
   `idCertificate` int(11) NOT NULL DEFAULT '0',
-  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `description` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `description` longtext NOT NULL,
   PRIMARY KEY (`idMetaCertificate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
@@ -282,7 +287,7 @@ CREATE TABLE IF NOT EXISTS `learning_certificate_meta_assign` (
   `idMetaCertificate` int(11) NOT NULL DEFAULT '0',
   `idCertificate` int(11) NOT NULL DEFAULT '0',
   `on_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `cert_file` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `cert_file` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`idUser`,`idMetaCertificate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -940,11 +945,11 @@ CREATE TABLE IF NOT EXISTS `learning_courseuser` (
 CREATE TABLE IF NOT EXISTS `learning_course_date` (
   `id_date` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_course` int(10) unsigned NOT NULL DEFAULT '0',
-  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `code` varchar(255) NOT NULL DEFAULT '',
   `name` varchar(255) NOT NULL DEFAULT '',
   `description` text NOT NULL,
   `max_par` int(11) NOT NULL DEFAULT '0',
-  `price` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `price` varchar(255) NOT NULL DEFAULT '0',
   `overbooking` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `test_type` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `status` int(10) unsigned NOT NULL DEFAULT '0',
@@ -996,7 +1001,7 @@ CREATE TABLE IF NOT EXISTS `learning_course_date_presence` (
   `id_user` int(11) unsigned NOT NULL DEFAULT '0',
   `id_day` int(11) unsigned NOT NULL DEFAULT '0',
   `presence` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `score` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `score` varchar(255) DEFAULT NULL,
   `note` text NOT NULL,
   PRIMARY KEY (`day`,`id_date`,`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1017,7 +1022,7 @@ CREATE TABLE IF NOT EXISTS `learning_course_date_user` (
   `id_user` int(11) NOT NULL DEFAULT '0',
   `date_subscription` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `date_complete` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `presence` mediumtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `presence` mediumtext,
   `subscribed_by` int(10) unsigned NOT NULL DEFAULT '0',
   `overbooking` int(10) DEFAULT '0',
   `requesting_unsubscribe` tinyint(1) unsigned DEFAULT NULL,
@@ -2103,16 +2108,17 @@ INSERT INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequen
 ('mo_33', 1, 'a:0:{}',0),
 ('mo_34', 1, 'a:0:{}',0),
 ('mo_help', 1, 'a:0:{}',0),
-('tb_assessment', 1, 'a:0:{}',0),
+('tb_elearning', 0, 'a:0:{}', 0),
 ('tb_catalog', 1, 'a:0:{}',0),
+('tb_assessment', 1, 'a:0:{}',0),
 ('tb_classroom', 1, 'a:0:{}',0),
 ('tb_communication', 1, 'a:0:{}',0),
 ('tb_coursepath', 1, 'a:0:{}',0),
 ('tb_games', 1, 'a:0:{}',0),
 ('tb_label', 1, 'a:0:{}',0),
 ('tb_videoconference', 1, 'a:0:{}',0),
-('tb_elearning', 0, 'a:0:{}', 0),
-('tb_kb', 0, 'a:0:{}', 0);
+('tb_kb', 0, 'a:0:{}', 0),
+('tb_home', '1', 'a:0:{}', '0');
 
 -- --------------------------------------------------------
 
@@ -3420,9 +3426,9 @@ CREATE TABLE IF NOT EXISTS `learning_transaction` (
   `price` int(11) NOT NULL DEFAULT '0',
   `payment_status` tinyint(1) NOT NULL DEFAULT '0',
   `course_status` tinyint(1) NOT NULL DEFAULT '0',
-  `method` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `payment_note` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `course_note` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `method` varchar(255) NULL DEFAULT '',
+  `payment_note` text NOT NULL,
+  `course_note` text NOT NULL,
   PRIMARY KEY (`id_transaction`),
   KEY `id_user` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
@@ -3493,14 +3499,6 @@ CREATE TABLE IF NOT EXISTS `learning_wiki_course` (
 --
 -- Limiti per le tabelle scaricate
 --
-
---
--- Limiti per la tabella `core_lang_translation`
---
-ALTER TABLE `core_lang_translation`
-  ADD CONSTRAINT `core_lang_translation_ibfk_1` FOREIGN KEY (`lang_code`) REFERENCES `core_lang_language` (`lang_code`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `core_lang_translation_ibfk_2` FOREIGN KEY (`id_text`) REFERENCES `core_lang_text` (`id_text`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 
 
 

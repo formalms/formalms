@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[アクセシビリティ昨日の実効化]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:43:30"><![CDATA["allow_url_include"の設定]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr> と <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> と <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[コードモジュールによる生成コードの要求]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[ドロップダウンメニューのリストのユーザの選んだツリーコードの要求]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[ユーザにマニュアル入力されたらしきツリーコードの要求]]></key>
@@ -834,7 +834,7 @@
         <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[今日登録したユーザ]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[昨日登録したユーザ]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[特別管理者ユーザ]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[FormaLms ネットワーク]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[forma.lms ネットワーク]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[停止ユーザ]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[コナルティングサイト]]></key>
         <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[LMSサポートサイト]]></key>
@@ -855,7 +855,7 @@
 
 [text]
 
-FormaLmsのURL <a href="[url]">[url]</a>で読めます]]></key>
+forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-05-10 12:43:30"><![CDATA[購読申し込み承認]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-05-10 12:43:30"><![CDATA[あなたの[course]に対するコース購読申し込みは管理者に承認されました。<a href="[url]">[url]</a>をクリックすることでコースに入れます]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-05-10 12:43:30"><![CDATA[管理者は<a href="[url]">[url]</a>の購読申し込みを承認しました]]></key>
@@ -1225,9 +1225,9 @@ FormaLmsのURL <a href="[url]">[url]</a>で読めます]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[ホームページ]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[FormaLms はオープンソースのe-ラーニングプラットフォームです(LMS and LCMS)。企業や高等教育の場で利用されます。<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[forma.lms はオープンソースのe-ラーニングプラットフォームです(LMS and LCMS)。企業や高等教育の場で利用されます。<br/>
 <br/>
-このプラットフォームは12の言語をサポートし、SCORM 1.2, 1.3スタンダードに準拠し、ブレンド、セルフトレーニング、コラボレート等、複数の教育法をサポートし、チャット、ウィキ、フォーラム等を用いたソーシャルラーニングといった機能を持ちます。<br/>
+このプラットフォームは 25 の言語をサポートし、SCORM 1.2, 2004 スタンダードに準拠し、ブレンド、セルフトレーニング、コラボレート等、複数の教育法をサポートし、チャット、ウィキ、フォーラム等を用いたソーシャルラーニングといった機能を持ちます。<br/>
 <br/>
 <br/>
 これらの語を変える場合、管理者/言語の管理を参照し、<b>ログイン</b>を探し、<b>_INTRO_STD_TEXT</b>キーを変更してください]]></key>
@@ -1871,7 +1871,7 @@ FormaLmsのURL <a href="[url]">[url]</a>で読めます]]></key>
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[リストに戻る]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[.zipか.pifの拡張子を持つコンテントパッケージを選択してください]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[アップロードするファイルを選んでください]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[SCORM 1.2 and 1.3インポーター]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[SCORM 1.2 and 2004 インポーター]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[完全オブジェクトリストの生成]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[SCORMパッケージのアップロード]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[SCORM]]></key>
@@ -1908,7 +1908,7 @@ FormaLmsのURL <a href="[url]">[url]</a>で読めます]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[アカウント接続中:]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[FormaLmsアカウントを次とリンクする:]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[forma.lmsアカウントを次とリンクする:]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-05-10 12:43:30"><![CDATA[開始]]></key>

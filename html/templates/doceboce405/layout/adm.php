@@ -20,7 +20,7 @@
 		<?php echo Layout::zone('page_head'); ?>
         <script type="text/javascript">
             YAHOO.util.Event.onDOMReady(function(){
-                checkSelect(document.getElementById('course_type').value);         
+                checkSelect(document.getElementById('course_type').value);
 
                 YAHOO.util.Event.on(
                     YAHOO.util.Selector.query('select#course_type'), 'change', function (e) {
@@ -38,7 +38,7 @@
                     document.getElementById("auto_subscription").checked = false;
                 }
             }
-        </script>        
+        </script>
 	</head>
 	<body class="yui-skin-docebo yui-skin-sam">
 		<!-- blind nav -->
@@ -81,7 +81,7 @@
 		<div id="footer" class="layout_footer">
 			<?php echo Layout::zone('footer'); ?>
 			<p class="powered_by">
-				Powered by <a href="http://www.docebo.com/?versions" onclick="window.open(this.href); return false;">Docebo <sup>&reg;</sup> Community Edition</a>
+				Powered by <a href="http://www.formalms.org/?versions" onclick="window.open(this.href); return false;">forma.lms <sup>&reg;</sup> Community Edition</a>
 			</p>
 			<div class="nofloat"></div>
 		</div>

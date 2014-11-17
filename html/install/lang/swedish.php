@@ -102,6 +102,7 @@ define("_CHECKED_FILES","Vissa filer han inte tillräckliga rättigheter");
 define("_UPGRADER_TITLE", "Forma - Uppdatering");
 define("_UPGRADE_CONFIG","Uppdaterar config.php fil");
 define("_UPG_CONFIG_OK","Config.php fil uppdaterad ");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "Uppdateringsprocessen för config.php misslyckades.");
 define("_UPGRADING", "Uppdatering pågår");
 define("_UPGRADING_LANGUAGES", "Uppdatera språk");

@@ -102,6 +102,7 @@ define("_CHECKED_FILES","Belirli dosyalarda yeterli yetkiler yok");
 define("_UPGRADER_TITLE", "Forma - Güncelleme");
 define("_UPGRADE_CONFIG","config.php dosyası güncelleniyor");
 define("_UPG_CONFIG_OK","Config.php dosyası başarıyla güncellendi");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "config.php güncelleme işlemi başarısız oldu.");
 define("_UPGRADING", "Güncelleme yapılıyor");
 define("_UPGRADING_LANGUAGES", "Güncelleme dilleri");

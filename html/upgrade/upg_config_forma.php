@@ -7,8 +7,6 @@
 |   http://www.formalms.org                                                 |
 |   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
 |                                                                           |
-|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
-|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 include('bootstrap.php');
@@ -18,10 +16,12 @@ $enabled_step = 3;
 $current_step = Get::gReq('cur_step', DOTY_INT);
 //$upg_step = Get::gReq('upg_step', DOTY_INT);
 
-if ($_SESSION['start_version'] >= 3000 && $_SESSION['start_version'] < 4000) {
-	echo 'error: version (' . $_SESSION['start_version'] . ') not supported for upgrade: too old (v3)';
-	die();
-}
+//if ($_SESSION['start_version'] >= 3000 && $_SESSION['start_version'] < 4000) {
+//	echo 'error: version (' . $_SESSION['start_version'] . ') not supported for upgrade: too old (v3)';
+//	die();
+//}
+
+// Collapse the upgrade from docebo 3.6xx into this procedure
 
 if ( $current_step != $enabled_step ) {
 	echo 'error: procedure must be called from upgrade step ' . $enabled_step . ' only!!';
@@ -59,31 +59,31 @@ if ($_SESSION['upgrade_ok']) {
 
 		$msg_version =$GLOBALS['cfg']['versions'][$current_ver];
 
-		$GLOBALS['debug'] .="<br/>" . "Upgrading config to version: ".$msg_version;
+		$GLOBALS['debug'] .=" <br/>" . "Upgrading config to version: ".$msg_version;
 
 		// --- config upgrade -----------------------------------------------------------
 		$fn =_upgrader_.'/data/upg_conf/'.$current_ver.'_conf.php';
 
 		if (file_exists($fn)) {
-			$GLOBALS['debug'] .=  "<br/>" . "Source upgrade config file: " . $fn ;
+			$GLOBALS['debug'] .=  " <br/>" . "Source upgrade config file: " . $fn ;
 			require($fn);
 			$func ='upgradeConfig'.$current_ver;
 			if (function_exists($func)) {
-				$GLOBALS['debug'] .=  "<br/>" . "Execute upgrade config func: " . $func ;
-				list($res, $config) = $func($config);
-				if ( !$res ) {
+				$GLOBALS['debug'] .=  " <br/>" . "Execute upgrade config func: " . $func ;
+				list($sts, $config) = $func($config);
+				if ( $sts <= 0 ) {
 					$_SESSION['upgrade_ok']=false;
 					break;
-				} else if ( $res > 1 ) { // made change in config
+				} else if ( $sts > 1 ) { // made change in config
 					$config_changed = true ;
 				}
 			}
 		}
 	}
 }
-else
-
-$res =array('res'=>'XXX');
+else {
+  $sts = 0;
+}
 
 $config_saved = false;
 if ($_SESSION['upgrade_ok']) {
@@ -106,23 +106,19 @@ if ($_SESSION['upgrade_ok']) {
 
 $GLOBALS['debug'] = ""
 					//. '<br/>' . 'Result: ' . ( $_SESSION['upgrade_ok'] ? 'OK ' : 'ERROR !!! ' )
-					. '<br/>' . $GLOBALS['debug']
-					.'<br>------' ;
-
-if ( ! $config_changed || $config_saved ) {
-		$res =array('res'=>'ok', 'msg' => $GLOBALS['debug']);
+					. '<br/> ----<br>' . $GLOBALS['debug']
+					.'<br> -----' ;
+if ( ! $_SESSION['upgrade_ok']) {
+		$res =array('res'=>'Error', 'msg' => $GLOBALS['debug']);
+} else if ( ! $config_changed ) {
+		$res =array('res'=>'not_change', 'msg' => $GLOBALS['debug']);
+} else if ( $config_saved ) {
+		$res =array('res'=>'saved', 'msg' => $GLOBALS['debug']);
 } else if ( ! $config_saved ) {
 		$res =array('res'=>'not_saved', 'msg' => $GLOBALS['debug']);
 } else {
 		$res =array('res'=>'Error', 'msg' => $GLOBALS['debug']);
 }
-
-/*******************
-echo $GLOBALS['debug'];
-print_r($res);
-*********************/
-
-
 
 /* */
 require_once(_base_.'/lib/lib.json.php');
@@ -140,7 +136,7 @@ die();
 function saveConfig($fn, $config) {
 	$saved =file_put_contents($fn, $config);
 	if ( ! $saved ) {
-		$GLOBALS['debug'] .= "<br/>" . "Error saving config: file read-only or not accesisble: " . $fn ;
+		$GLOBALS['debug'] .= " <br/>" . "Error saving config: file read-only or not accesisble: " . $fn ;
 	}
 	return($saved);
 }

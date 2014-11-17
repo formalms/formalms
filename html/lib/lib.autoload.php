@@ -79,6 +79,22 @@ function docebo_autoload($classname) {
 		'PluginManager'		=> _lib_.'/lib.pluginmanager.php',
 	);
 	
+	$tplengine=Get::cfg('template_engine', array());
+	foreach ($tplengine as $tplkey => $tpleng){
+		switch($tplkey){
+		    case('twig'):
+			$fixed['TwigManager'] = _lib_.'/lib.twigmanager.php';
+			break;
+		    default:
+			//$fixed[$tpleng['class']] = _lib_.'/'.$tpleng['lib'];
+			break;
+		}
+	}
+
+	if(Get::cfg('enable_plugins', false)){
+		$fixed['PluginController'] = _lib_.'/mvc/lib.plugincontroller.php';
+	}
+
 	//search for a base class and include the file if found
 	if(isset($fixed[$classname])) {
 		if(file_exists($fixed[$classname])) include_once( $fixed[$classname] );
@@ -117,41 +133,73 @@ function docebo_autoload($classname) {
 		)
 	);
 
+
+	//possibile path for autoloading classes custom
+	$pathCustomscripts = array(
+		'adm' => array(
+			_base_.'/customscripts'.'/'._folder_adm_.'/models',
+			_base_.'/customscripts'.'/'._folder_adm_.'/controllers'
+#			_adm_.'/customscripts/models',
+#			_adm_.'/customscripts/controllers'
+		),
+		'alms' => array(
+			_base_.'/customscripts'.'/'._folder_lms_.'/admin/models',
+			_base_.'/customscripts'.'/'._folder_lms_.'/admin/controllers'
+#			_lms_.'/customscripts/admin/models',
+#			_lms_.'/customscripts/admin/controllers'
+		),
+		'lms' => array(
+			_base_.'/customscripts'.'/'._folder_lms_.'/models',
+			_base_.'/customscripts'.'/'._folder_lms_.'/controllers'
+#			_lms_.'/customscripts/models',
+#			_lms_.'/customscripts/controllers'
+		),
+		'acms' => array(
+			_base_.'/customscripts'.'/'._folder_cms_.'/admin/models',
+			_base_.'/customscripts'.'/'._folder_cms_.'/admin/controllers'
+#			_cms_.'/customscripts/admin/models',
+#			_cms_.'/customscripts/admin/controllers'
+		),
+		'cms' => array(
+			_base_.'/customscripts'.'/'._folder_cms_.'/models',
+			_base_.'/customscripts'.'/'._folder_cms_.'/controllers'
+#			_cms_.'/customscripts/models',
+#			_cms_.'/customscripts/controllers'
+		),
+		'lobj' => array(
+			_base_.'/customscripts'.'/'._folder_lms_.'/models',
+			_base_.'/customscripts'.'/'._folder_lms_.'/controllers'
+#			_lms_.'/customscripts/models',
+#			_lms_.'/customscripts/controllers'
+		)
+	);
+        
 	//parse classname for info and path
 	$location = array();
 	if(preg_match('/(Mobile|Adm|Alms|Lms|Acms|Cms|Lobj)Controller$/', $classname, $location)) {
 		// include controller file
 		$loc = ( isset($location[1]) ? strtolower($location[1]) : 'adm' );
-		$c_file = $path[$loc][1].'/'.$classname.'.php';
+                if (file_exists($pathCustomscripts[$loc][1].'/'.$classname.'.php') && Get::cfg('enable_customscripts', false) == true ){
+                    $c_file = $pathCustomscripts[$loc][1].'/'.$classname.'.php';
+                } else {
+                    $c_file = $path[$loc][1].'/'.$classname.'.php';
+                }
 		//if(file_exists($c_file))
 			include_once(Docebo::inc($c_file));
 		return;
 	} else if(preg_match('/(Mobile|Adm|Alms|Lms|Acms|Cms|Lobj)$/', $classname, $location)) {
 		// include model file
 		$loc = ( isset($location[1]) ? strtolower($location[1]) : 'adm' );
-		$c_file = $path[$loc][0].'/'.$classname.'.php';
+                if (file_exists($pathCustomscripts[$loc][0].'/'.$classname.'.php') && Get::cfg('enable_customscripts', false) == true ){
+                    $c_file = $pathCustomscripts[$loc][0].'/'.$classname.'.php';
+                } else {
+                    $c_file = $path[$loc][0].'/'.$classname.'.php';
+                }
 		//if(file_exists($c_file))
 			include_once(Docebo::inc($c_file));
 		return;
 	}
-	/*if(preg_match ('/(Mobile|Adm|Alms|Lms|Acms|Cms|Lobj)/', $classname, $location)) {
-		$loc = 'adm';
-		if(isset($location[1])){
-			$loc = strtolower($location[1]);
-			if(!isset($path[$loc])) $loc = 'adm';
-		}
-		if(strpos($classname, 'Controller') !== false) {
-			// include controller file
-			$c_file = $path[$loc][1].'/'.$classname.'.php';
-			if(file_exists($c_file)) include_once($c_file);
-			return;
-		} else {
-			// include model file
-			$c_file = $path[$loc][0].'/'.$classname.'.php';
-			if(file_exists($c_file)) include_once($c_file);
-			return;
-		}
-	}*/
+
 	// manage widgets classnames
 	if(preg_match ('/(Widget)/', $classname, $location)) {
 		$loc = _base_.'/widget/'.strtolower(str_replace(array('WidgetController', 'Widget'), array('', ''), $classname));

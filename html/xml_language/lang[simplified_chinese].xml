@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[激活可用属性]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[配置“允许包含的网址”]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[FormaLms <abbr title="应用编程接口">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[FormaLms <abbr title="应用编程接口">API</abbr> and <abbr title="单点登录">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[forma.lms <abbr title="应用编程接口">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[forma.lms <abbr title="应用编程接口">API</abbr> and <abbr title="单点登录">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[要求通过代码模块创建代码]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[要求用户从下拉菜单列表中选择树代码]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[要求必须由用户手动输入树代码]]></key>
@@ -834,7 +834,7 @@
         <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[今天注册的用户]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[昨天注册的用户]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[超级管理员用户]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[FormaLms 网络]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[forma.lms 网络]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[暂停的用户]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[咨询站点]]></key>
         <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[LMS支持地点]]></key>
@@ -855,7 +855,7 @@
 
 [text]
 
-您可以通过FormaLms的如下网址阅读：<a href="[url]">[url]</a>]]></key>
+您可以通过forma.lms的如下网址阅读：<a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-05-10 12:43:41"><![CDATA[订购请求获批准]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-05-10 12:43:41"><![CDATA[您订购[course]的请求得到管理员批准。您可以点击位于<a href="[url]">[url]</a>的网址进入课程。]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-05-10 12:43:41"><![CDATA[管理员已经确认您对<a href="[url]">[url]</a>的订购请求。]]></key>
@@ -1225,9 +1225,9 @@
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[主页]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[FormaLms是一个开源的网络学习平台(LMS和LCMS)，被广泛用于公司和高等教育领域。<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[forma.lms是一个开源的网络学习平台(LMS和LCMS)，被广泛用于公司和高等教育领域。<br/>
 <br/>
-该平台支持12中语言，与SCORM 1.2和1.3标准兼容，支持不同的教学模式，包括：混合式学习，自学，协作学习，以及通过聊天、维基、论坛和其它不同方法进行的社会学习。<br/>
+该平台支持25中语言，与SCORM 1.2 和 2004 标准兼容，支持不同的教学模式，包括：混合式学习，自学，协作学习，以及通过聊天、维基、论坛和其它不同方法进行的社会学习。<br/>
 <br/>
 <br/>
 要修改这些词汇，请到管理员与语言管理部分，找到<b>登陆</b>与编辑键 <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1869,7 +1869,7 @@
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[返回列表]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[选择带有.zip或.pif扩展名的内容方案]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[您必须指定要上传的文件]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[SCORM 1.2 个和 1.3输入器]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[SCORM 1.2 个和 2004 输入器]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[创建完整的目标列表]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[上传SCORM包]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[SCORM]]></key>
@@ -1906,7 +1906,7 @@
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[连结的帐号：]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[将您的FormaLms帐户与下面对象建立链接：]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[将您的forma.lms帐户与下面对象建立链接：]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-05-10 12:43:41"><![CDATA[开始]]></key>

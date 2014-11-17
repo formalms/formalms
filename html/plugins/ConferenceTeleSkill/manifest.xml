@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin_manifest>
+	<title>Conference Teleskill</title>
+	<author>Joint Technologies</author>
+	<code>teleskill</code>
+	<version>1.0</version>
+	<category>conference</category>
+	<description>Conference teleskill</description>
+	<link>http://www.joint-tech.it/</link>
+	<license>GNU General Public License version 2</license>
+</plugin_manifest>

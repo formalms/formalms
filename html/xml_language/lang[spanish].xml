@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Activar características de accesibilidad]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Configuración de "allow_url_include"]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr> y <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> y <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Pedir un código creado a través de el módulo de código]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Pedir un código de árbol seleccionado por el usuario de una lista en un menú desplegable]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Pedir un código de árbol que debe ser escrito manualmente por el usuario]]></key>
@@ -702,7 +702,7 @@
         <key id="course&amp;_SUBSCRIPTION_IN_PERIOD" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[La suscripción está disponible durante el siguiente período]]></key>
         <key id="course&amp;_SUBSCRIPTION_OPEN" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Las suscripciones están abiertas]]></key>
         <key id="course&amp;_THANKS_LOGIN_OR_REGISTER" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Ud. ha solicitado comprar el curso: <b>[name]</b><br />
-Para proceder, ud. debe iniciar sesión en la plata FormaLms si ya está registrado.<br />
+Para proceder, ud. debe iniciar sesión en la plata forma.lms si ya está registrado.<br />
 En otro caso, Ud. debe registrarse en nuestro sistema, dando click en el siguiente enlace: <br />
 <br />
 <a href="[link_register]">Registrarme</a>]]></key>
@@ -1221,9 +1221,9 @@ Contraseña: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Página de inicio]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[FormaLms es una plataforma e-Learning Open Source (LMS and LCMS) usada en corporaciones y mercados de educacion superior.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[forma.lms es una plataforma e-Learning Open Source (LMS and LCMS) usada en corporaciones y mercados de educacion superior.<br/>
 <br/>
-La plataforma soporta 12 lenguajes, es compatible con los estándares SCORM 1.2 y 1.3, y soporta diferentes modelos didácticos, incluyendo: Mezclado (Blended), Autodirigido (Self-Directed), Colaboración (Collaborative) e incluso aprendizaje social a través de Chat, Wiki, Foros y otras funciones diferentes<br/>
+La plataforma soporta 25 lenguajes, es compatible con los estándares SCORM 1.2 y 2004, y soporta diferentes modelos didácticos, incluyendo: Mezclado (Blended), Autodirigido (Self-Directed), Colaboración (Collaborative) e incluso aprendizaje social a través de Chat, Wiki, Foros y otras funciones diferentes<br/>
 <br/>
 <br/>
 Para cambiar estas palabras, por favor vaya a Administrador/Administrador de Idioma, busque por <b>login</b> y edite la llave <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1867,7 +1867,7 @@ Tiene que confirmar su cuenta antes de usarla]]></key>
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Regresar a la lista]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Seleccionar un paquete de contenido con extension .zip o .pif]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Ud. debe especificar el archivo a cargar]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Importador de SCORM 1.2 y 1.3]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Importador de SCORM 1.2 y 2004]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Crear una lista completa de objetos]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Subir paquete SCORM]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[SCORM]]></key>
@@ -1904,7 +1904,7 @@ Contraseña: [password]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Cuentas conectadas:]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Enlazar su cuenta de FormaLms con:]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Enlazar su cuenta de forma.lms con:]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-05-10 12:43:43"><![CDATA[Iniciado]]></key>

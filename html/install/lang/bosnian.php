@@ -102,6 +102,7 @@ define("_CHECKED_FILES","Neki fajlovi nemaju adekvatna prava pristupa");
 define("_UPGRADER_TITLE", "Forma- Nadogradnja");
 define("_UPGRADE_CONFIG","Nadogradnja fajla config.php");
 define("_UPG_CONFIG_OK","Config.php je nadograđen uspješno");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "Nadogradnja fajla config.php nije uspjela.");
 define("_UPGRADING", "Nadogradnja u toku");
 define("_UPGRADING_LANGUAGES", "Nadogradnja jezika");

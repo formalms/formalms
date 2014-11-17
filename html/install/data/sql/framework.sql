@@ -1,8 +1,10 @@
--- MySQL dump 10.13
+-- ------------------------------------------------------
+-- MySQL dump
+-- MySQL Version: 5.x.xx
+-- PHP   Version: 5.x.x
 --
 -- Host: localhost    Database: formalms
 -- ------------------------------------------------------
--- Server version       5.1.66
 
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
@@ -1139,6 +1141,7 @@ INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name
 (5, 3, 'setting', '_CONFIGURATION', '', 'view', NULL, 1, 'class.configuration.php', 'Module_Configuration', 'adm/setting/show'),
 (7, 3, 'event_manager', '_EVENTMANAGER', 'display', 'view_event_manager', NULL, 3, 'class.event_manager.php', 'Module_Event_Manager', ''),
 (8, 3, 'iotask', '_IOTASK', 'iotask', 'view', NULL, 4, 'class.iotask.php', 'Module_IOTask', ''),
+(9, 3, 'pluginmanager', '_PLUGIN_MANAGER', '', 'view', NULL, 7, '', '', 'adm/pluginmanager/show'),
 (10, 5, 'lang', '_LANG', '', 'view', NULL, 1, '', '', 'adm/lang/show'),
 (13, 6, 'newsletter', '_NEWSLETTER', 'newsletter', 'view', NULL, 1, 'class.newsletter.php', 'Module_Newsletter', ''),
 (16, 2, 'usermanagement', '_LISTUSER', '', 'view', NULL, 1, '', '', 'adm/usermanagement/show'),
@@ -1719,6 +1722,7 @@ INSERT INTO `core_role` (`idst`, `roleid`, `description`) VALUES
 (229, '/lms/admin/coursecategory/mod', NULL),
 (230, '/lms/admin/coursecategory/del', NULL),
 (272, '/lms/course/private/coursecharts/view', ''),
+(280, '/framework/admin/pluginmanager/view', ''),
 (11553, '/framework/admin/usermanagement/associate_user', NULL),
 (11612, '/lms/course/public/pcertificate/view', NULL),
 (11613, '/lms/course/public/pcertificate/mod', NULL),
@@ -2104,6 +2108,7 @@ INSERT INTO `core_role_members` (`idst`, `idstMember`) VALUES
 (272, 10894),
 (272, 10895),
 (272, 10896),
+(280, 3),
 (11553, 3),
 (11612, 3),
 (11613, 3),
@@ -2208,6 +2213,7 @@ CREATE TABLE IF NOT EXISTS `core_setting` (
 INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES
 ('accessibility', 'off', 'enum', 255, '0', 8, 5, 1, 0, ''),
 ('bbb_server', 'http://test-install.blindsidenetworks.com/bigbluebutton/', 'string', 255, 'bbb', 6, 1, 1, 0, ''),
+('bbb_port', '80', 'string', 255, 'bbb', 6, 2, 1, 0, ''),
 ('bbb_user', '', 'string', 255, 'bbb', 6, 2, 1, 0, ''),
 ('bbb_salt', 'to be changed with a complex string', 'string', 255, 'bbb', 6, 3, 1, 0, ''),
 ('bbb_password_moderator', 'password.moderator', 'string', 255, 'bbb', 6, 4, 1, 0, ''),
@@ -2218,7 +2224,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('code_teleskill', '', 'string', 255, 'teleskill', 6, 3, 1, 0, ''),
 ('common_admin_session', 'on', 'enum', 3, 'security', 8, 24, 1, 0, ''),
 ('conference_creation_limit_per_user', '99999999999', 'string', 255, '0', 6, 0, 1, 0, ''),
-('core_version', '1.2', 'string', 255, '0', 1, 0, 1, 1, ''),
+('core_version', '1.3', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('course_quota', '0', 'string', 255, '0', 4, 5, 1, 0, ''),
 ('currency_symbol', '&euro;', 'string', 10, '0', 5, 2, 1, 0, ''),
 ('customer_help_email', '', 'string', 255, '0', 3, 19, 1, 0, ''),
@@ -2261,6 +2267,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('no_answer_in_test', 'off', 'enum', 3, '0', 4, 6, 1, 0, ''),
 ('on_catalogue_empty', 'on', 'enum', 3, '0', 4, 3, 1, 0, ''),
 ('org_name_teleskill', '', 'string', 255, 'teleskill', 6, 4, 1, 0, ''),
+('owned_by', 'Copyright (c) forma.lms', 'html', 255, '0', 1, 7, 1, 0, ''),
 ('page_title', 'Forma E-learning', 'string', 255, '0', 1, 1, 1, 0, ''),
 ('pass_alfanumeric', 'off', 'enum', 3, 'password', 3, 6, 1, 0, ''),
 ('pass_change_first_login', 'off', 'enum', 3, 'password', 3, 8, 1, 0, ''),
@@ -2286,6 +2293,8 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('register_type', 'admin', 'register_type', 10, 'register', 3, 11, 0, 0, ''),
 ('registration_code_type', '0', 'registration_code_type', 3, 'register', 3, 17, 1, 0, ''),
 ('request_mandatory_fields_compilation', 'off', 'enum', 3, '0', 3, 2, 1, 0, ''),
+('rest_auth_api_key', '', 'string', 255, 'api', 9, 7, 1, 0, ''),
+('rest_auth_api_secret', '', 'string', 255, 'api', 9, 8, 1, 0, ''),
 ('rest_auth_code', '', 'string', 255, 'api', 9, 4, 1, 0, ''),
 ('rest_auth_lifetime', '60', 'int', 3, 'api', 9, 5, 1, 0, ''),
 ('rest_auth_method', '1', 'rest_auth_sel_method', 3, 'api', 9, 3, 1, 0, ''),
@@ -2793,6 +2802,17 @@ CREATE TABLE IF NOT EXISTS `core_wiki_revision` (
 --
 
 
+
+--
+-- Limiti per le tabelle scaricate
+--
+
+--
+-- Limiti per la tabella `core_lang_translation`
+--
+ALTER TABLE `core_lang_translation`
+  ADD CONSTRAINT `core_lang_translation_ibfk_1` FOREIGN KEY (`lang_code`) REFERENCES `core_lang_language` (`lang_code`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `core_lang_translation_ibfk_2` FOREIGN KEY (`id_text`) REFERENCES `core_lang_text` (`id_text`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 

@@ -102,6 +102,7 @@ define("_CHECKED_FILES","File-file tertentu tidak memiliki ijin yang memadai");
 define("_UPGRADER_TITLE", "Forma - Upgrade");
 define("_UPGRADE_CONFIG","Upgrade file config.php");
 define("_UPG_CONFIG_OK","File Config.php telah di-update");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
 define("_UPG_CONFIG_NOT_SAVED", "Proses update file config.php gagal.");
 define("_UPGRADING", "Proses Upgrade sedang berjalan");
 define("_UPGRADING_LANGUAGES", "Upgrade Bahasa");

@@ -691,7 +691,7 @@ class QuestionRaw {
 	function setCategoryFromName($category_name) {
 		
 		$cat_list = array();
-		$qtxt = "SELECT idCategory,  " 
+		$qtxt = "SELECT idCategory " 
 			."FROM ".$GLOBALS['prefix_lms']."_quest_category "
 			."WHERE name = '".$category_name."' AND ( author = 0 OR author = ".(int)getLogUserId()." ) ";
 		$re = sql_query($qtxt);

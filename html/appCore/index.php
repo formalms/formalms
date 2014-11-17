@@ -16,7 +16,7 @@ define("IN_FORMA", true);
 define("_deeppath_", '../');
 require(dirname(__FILE__).'/../base.php');
 
-define('_file_version_', '1.2');
+define('_file_version_', '1.3');
 
 // start buffer
 ob_start();
@@ -37,6 +37,8 @@ $GLOBALS['modname'] = Get::req('modname', DOTY_ALPHANUM, '');
 $GLOBALS['op']		= Get::req('op', DOTY_ALPHANUM, '');
 // create instance of StdPageWriter
 StdPageWriter::createInstance();
+
+if(Get::cfg('enable_plugins', false)) PluginManager::runPlugins();
 
 require_once(_adm_.'/lib/lib.preoperation.php');
 

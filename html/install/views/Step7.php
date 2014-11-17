@@ -18,16 +18,24 @@
 		[ <a href="#" onclick="YAHOO.util.Dom.get('pwd').innerHTML ='<?php echo $_SESSION['adm_info']['pass']; ?>'; return false;"><?php echo Lang::t('_REVEAL_PASSWORD'); ?></a> ]
 	</li>
 </ul>
+<h3>USEFUL LINKS:</h3>
 
+<ul class="info">
+<li><a href="http://www.formalms.org" target="_blank">Official Website</a></li>
+</ul>
+<br />
 <h3><?php echo Lang::t('_COMMUNITY'); ?>:</h3>
-<p><a href="http://www.formalms.org" target="_blank">http://www.formalms.org</a></p>
-<p><a href="http://www.formalms.org/manuals" target="_blank">http://www.formalms.org/manuals</a></p>
-<p><a href="http://www.formalms.org/forum" target="_blank">http://www.formalms.org/forum</a></p>
-<p><a href="http://www.formalms.org/wiki" target="_blank">http://www.formalms.org/wiki</a></p>
-<p><a href="http://www.formalms.org/freetraining" target="_blank">http://www.formalms.org/freetraining</a></p>
-
+<ul class="info">
+<li><a href="http://www.formalms.org/community" target="_blank">Community</a></li>
+<br />
+<li><a href="http://sourceforge.net/projects/forma/" target="_blank">SourceForge Project</a></li>
+<li><a href="https://www.linkedin.com/company/formalms" target="_blank">Linkedin Project Page</a></li>
+</ul>
+<br />
 <h3><?php echo Lang::t('_COMMERCIAL_SERVICES'); ?>:</h3>
-<p><a href="http://www.formalms.org/services" target="_blank">http://www.formalms.org/services</a></p>
+<ul class="info">
+<li><a href="http://www.formalms.org/about/partners.html" target="_blank">Partners</a></li>
+</ul>
 
 <script type="text/javascript">
 YAHOO.util.Event.onDOMReady(function() {

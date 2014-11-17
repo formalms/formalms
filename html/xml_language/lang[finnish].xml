@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[Aktivoi saavutettavuusominaisuudet]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[Mukauta "allow_url_include"]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[Kysy koodimoduulin kautta luotua koodia]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[Kysy puukodia jonka käyttäjä on valinnut valikon listasta]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[Kysy puukoodia jonka käyttäjän yulee syöttää manuaalisesti]]></key>
@@ -834,7 +834,7 @@ Muussa tapauksessa sinun tulee rekisteröityä järjestelmäämme seuraamalla t�
         <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[Tänään rekisteröityneet käyttäjät]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[Eilen rekisteröityneet käyttäjät]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[Super-ylläpitokäyttäjät]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[FormaLms verkko]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[forma.lms verkko]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[Hyllytetyt käyttäjät]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[Konsultointisivusto]]></key>
         <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[LMS tukisivusto]]></key>
@@ -1225,9 +1225,9 @@ Salasana: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[Kotisivu]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[FormaLms on avoimen lähdekoodin verkko-oppimisalusta (LMS ja LCMS) jota käytetään yritys- ja korkeakoulutusmarkkinoilla.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:14"><![CDATA[forma.lms on avoimen lähdekoodin verkko-oppimisalusta (LMS ja LCMS) jota käytetään yritys- ja korkeakoulutusmarkkinoilla.<br/>
 <br/>
-Alusta tukee 12 kieltä, ja on yhteensopiva SCORM 1.2 ja 1.3 standardien kanssa, ja tukee eri oppimismalleja, kuten: sekaoppiminen, itseohjaava oppiminen, yhteistyöoppiminen ja sosiaalinen oppiminen chatin, wikin foorumien ja muiden toimintojen kautta.<br/>
+Alusta tukee 25 kieltä, ja on yhteensopiva SCORM 1.2 ja 2004 standardien kanssa, ja tukee eri oppimismalleja, kuten: sekaoppiminen, itseohjaava oppiminen, yhteistyöoppiminen ja sosiaalinen oppiminen chatin, wikin foorumien ja muiden toimintojen kautta.<br/>
 <br/>
 <br/>
 Muuttaaksesi näitä sanoja mene Ylläpito/kielihallintaan, etsi <b>login</b> ja muuta avainta <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1871,7 +1871,7 @@ Sinun täytyy vahvistaa tilisi ennen sen käyttämistä.]]></key>
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:15"><![CDATA[Takaisin listaan]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:15"><![CDATA[Valitse sisältöpaketti joko .zip tai .pif päätteellä]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:15"><![CDATA[Sinun täytyy määrittää ylösladattava tiedosto]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:15"><![CDATA[SCORM 1.2 ja 1.3 tuoja]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:15"><![CDATA[SCORM 1.2 ja 2004 tuoja]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:15"><![CDATA[Luo lista kaikista objekteista]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:15"><![CDATA[Lataa ylös SCORM paketti]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:15"><![CDATA[SCORM]]></key>
@@ -1908,7 +1908,7 @@ Salasana: [password]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-05-10 12:43:15"><![CDATA[Yhdistettyjä tilejä:]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:15"><![CDATA[Linkitä FormaLms tilisi seuraavan kanssa:]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:15"><![CDATA[Linkitä forma.lms tilisi seuraavan kanssa:]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-05-10 12:43:15"><![CDATA[Alkanut]]></key>

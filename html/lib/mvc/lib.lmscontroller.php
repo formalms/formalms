@@ -20,4 +20,9 @@ class LmsController extends Controller {
 		return _lms_.'/views';
 	}
 
+	public function viewCustomscriptsPath() {
+
+		return _base_.'/customscripts'.'/'._folder_lms_.'/views';
+#		return _lms_.'/customscripts/views';
+	}
 }

@@ -1051,7 +1051,7 @@ class CompetencesAdm extends Model {
 			$params->date_assignment = date("Y-m-d H:i:s"); //the date of the operation
 			$params->score_assigned = $score; //the score assigned
 			$params->score_total = $score;
-			$this->trackOperation($id_competence, $users, $params);
+			$this->trackOperation($id_competence, array_keys($users), $params);
 		}
 
 		return $res ? true : false;

@@ -1,7 +1,7 @@
 <?php
 
 
-define("_INSTALLER_TITLE", "Installer - Forma");
+define("_INSTALLER_TITLE", "Installer - forma.lms");
 define("_INSTALL", "Installazione");
 define("_JUMP_TO_CONTENT", "Salta al contenuto");
 
@@ -38,7 +38,7 @@ define("_LACKING_DIRECTORIES","Manacano alcune directory contenenti gli applicat
 define("_CANT_CONNECT_WITH_DB", "Non &egrave; stato possibile connettersi al database, controlla i parametri inseriti");
 define("_CANT_SELECT_DB", "Non &egrave; stato possibile trovare il database specificato, controlla i parametri inseriti");
 define("_CANT_CONNECT_WITH_FTP","Non &egrave; stato possibile connettersi tramite ftp al server specificato, controlla i parametri inseriti");
-define("_SQL_STRICT_MODE_WARN", "La modalit&agrave; <a href=\"http://dev.mysql.com/doc/en/server-sql-mode.html\" target=\"_blank\">strict mode</a> di MySQL &egrave; attiva; Forma LMS non la supporta, ti preghiamo di disattivarla");
+define("_SQL_STRICT_MODE_WARN", "La modalit&agrave; <a href=\"http://dev.mysql.com/doc/en/server-sql-mode.html\" target=\"_blank\">strict mode</a> di MySQL &egrave; attiva; forma.lms non la supporta, ti preghiamo di disattivarla");
 define("_SQL_STRICT_MODE", "MySQL <a href=\"http://dev.mysql.com/doc/en/server-sql-mode.html\" target=\"_blank\">strict mode</a>");
 define("_CHECKED_DIRECTORIES","Alcune delle directory per il salvataggio dei file non esistono oppure non hanno permessi adeguati");
 define("_CHECKED_FILES","Alcuni file non hanno permessi adeguati");
@@ -47,12 +47,12 @@ define("_EMPTY_DIRECTORIES","");
 define("_SELECT_WHATINSTALL", "Seleziona quali applicativi vuoi installare");
 define("_WARNING_NOT_INSTALL", "<b>Attenzione</b>: se si deseleziona un applicativo non sar&agrave; pi&ugrave; possibile installarlo in futuro usando la procedura automatica.");
 
-define("_FRAMEWORK", "Forma Core Framework");
-define("_LMS", "Forma Learning Management System");
-define("_ECOM", "Forma E-Commerce");
-define("_CMS", "Forma Content Management System");
-define("_KMS", "Forma Knowledge Management System");
-define("_SCS", "Forma Syncronous Collaborative System");
+define("_FRAMEWORK", "forma.lms Core Framework");
+define("_LMS", "forma.lms Learning Management System");
+define("_ECOM", "forma.lms E-Commerce");
+define("_CMS", "forma.lms Content Management System");
+define("_KMS", "forma.lms Knowledge Management System");
+define("_SCS", "forma.lms Syncronous Collaborative System");
 
 define("_NEXT", "Passo successivo");
 define("_BACK", "Torna indietro");
@@ -82,11 +82,11 @@ define("_FTP_CONFPASS", "Conferma password");
 define("_FTP_PATH", "Percorso FTP (è dove sono archiviati i file, es. /htdocs/ /mainfile_html/)");
 
 
-define("_SOFTWARE_LICENSE", "Licenza software degli applicativi Forma");
+define("_SOFTWARE_LICENSE", "Licenza software degli applicativi forma.lms");
 define("_AGREE_LICENSE", "Accetto i termini della licenza software");
 define("_MUST_ACCEPT_LICENSE", "E' necessario accettare i termini della licenza software per continuare.");
 
-define("_DOMXML_REQUIRED", "Per installare la suite Forma &egrave; necessario che sia installato il modulo domxml o PHP 5 o successivo.");
+define("_DOMXML_REQUIRED", "Per installare la suite forma.lms &egrave; necessario che sia installato il modulo domxml o PHP 5 o successivo.");
 
 define("_LANG_TO_INSTALL", "Lingue da installare");
 define("_NUMBER_ESTIMATED_USERS", "Numero di utenti registrati stimati");
@@ -180,14 +180,14 @@ define("_ON","ON ");
 define("_OFF","OFF ");
 define("_NEXT_STEP","Passo successivo ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Considerare questa nota solo se si intende usare LDAP ");
-define("_NOTSCORM","Questo server non supporta domXML per php4 e non è php 5, non puoi installare forma qui, chiedi al tuo provider di installare l'estensione domxml");
+define("_NOTSCORM","Questo server non supporta domXML per php4 e non è php 5, non puoi installare forma.lms qui, chiedi al tuo provider di installare l'estensione domxml");
 define("_YOU_DONT_HAVE_FUNCTION_OVERLOAD","la funzione overload non è attiva, per farla funzionare devi avere installato una versione di PHP uguale maggiore alla 4.3.0. Linux mandriva non è compilata con la funzione overload, cerca un file con un nome simile a php4-overload-xxxxx.mdk e installa tu il modulo, fedora core4 ha invece un bug <a href=\"http://download.fedora.redhat.com/pub/fedora/linux/core/updates/4/\" target=\"_blank\">che va patchato</a>. Se sei su windows ti consigliamo di installare <a href=\"http://www.easyphp.org\" target=\"_blank\">easyphp 1.8</a>.");
 define("_CRITICAL_ERROR","Errore critico ");
 define("_MBSTRING","Supporto Multibyte");
 define("_PHP_TIMEZONE","Timezone Installazione");
 
 
-define("_INSTALLER_INTRO_TEXT", "Forma &egrave; un Learning Management System open source mantenuto da un gruppo di aziende italiane, già utilizzato da centinaia di grandi aziende ed universit&agrave; in tutto il mondo.
+define("_INSTALLER_INTRO_TEXT", "forma.lms &egrave; un Learning Management System open source mantenuto da un gruppo di aziende italiane, già utilizzato da centinaia di grandi aziende ed universit&agrave; in tutto il mondo.
 <p><strong>Key Features</strong></p>
 <ul>
 <li>Supporto a <em>Scorm 1.2 e 2004&nbsp;</em></li>
@@ -210,18 +210,19 @@ define("_TRY_AGAIN", "Riprova");
 define("_LOADING", "Caricamento");
 define("_LANGUAGES", "Linguaggi");
 
-define("_UPGRADER_TITLE", "Forma - Upgrade");
+define("_UPGRADER_TITLE", "forma.lms - Upgrade");
 define("_UPGRADE_CONFIG","Aggiornamento del file config.php");
 define("_UPG_CONFIG_OK","Config.php aggiornato correttamente");
-define("_UPG_CONFIG_NOT_SAVED", "The update process for the config.php failed.");
+define("_UPG_CONFIG_NOT_CHANGED", "Config.php gia' aggiornato");
+define("_UPG_CONFIG_NOT_SAVED", "config.php non salvato");
 define("_UPGRADING", "Aggiornamento in corso");
 define("_UPGRADING_LANGUAGES", "Aggiornamento linguaggi");
 define("_UPGRADE_COMPLETE", "Aggiornamento completato");
-define("_VERSION","Versione Forma");
+define("_VERSION","Versione forma.lms");
 define("_START","Iniziale");
 define("_END","Finale");
-define("_INVALID_CONFIG_FILE", "File config.php non valido; assicurati che sia della versione di Forma specificata alla voce \"Iniziale\"");
-define("_UPGRADE_NOT_NEEDED","Hai già l'ultima versione di Forma; non è necessario aggiornare.");
+define("_INVALID_CONFIG_FILE", "File config.php non valido; assicurati che sia della versione di forma.lms specificata alla voce \"Iniziale\"");
+define("_UPGRADE_NOT_NEEDED","Hai già l'ultima versione di forma.lms; non è necessario aggiornare.");
 
 define("_COMMUNITY", "Community");
 define("_COMMERCIAL_SERVICES", "Servizi commerciali");

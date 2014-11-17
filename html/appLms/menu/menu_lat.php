@@ -76,9 +76,15 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 	if(isset($_SESSION['idCourse'])) {
             $path = $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathcourse');
             $course_img 	= Docebo::course()->getValue('img_course');
+			$sponsor_link 	= Docebo::course()->getValue('linkSponsor');
+			$sponsor_img 	= Docebo::course()->getValue('imgSponsor');
 
             if($course_img != '') {
                 $logo = '<img class="course_logo" src="'.$path.$course_img.'" alt="'.Lang::t('_COURSE_LOGO', 'course').' : '.$course_name.'" />';
+            }
+			// sponsor logo
+			if($sponsor_img != '') {
+                $sponsor_img = '<img class="course_logo sponsor" src="'.$path.$sponsor_img.'" />';
             }
         }
 		$menu_reborn = $logo.'<h1>'.Docebo::course()->getValue('name').'</h1>';
@@ -176,7 +182,8 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
             }
 
         $all_stats = '<div id="accordion"><h3>';
-        $all_stats .='<span class="tempo">'.Lang::t('_TOTAL_TIME', 'course').': '.$tot_time.' ';
+		$all_stats .='<span class="tempo">'.Lang::t('_TOTAL_TIME', 'course').': '.$tot_time.' ';
+		
 
 		// get status count value
         if(Docebo::course()->getValue('show_progress') == 1 ) {
@@ -252,7 +259,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
         }
 
 		$all_stats .= '<div id="arrow"></div><div class="clear"></div>';
-        $all_stats .= '</h3><div>'.$user_stats_table.''.$course_stats_table.''.$course_ex_stats_table.'</div>';
+        $all_stats .= '</h3><div>'.$user_stats_table.''.$course_stats_table.''.$course_ex_stats_table.$sponsor_img.'</div>';
 
         $all_stats .='</div>';
 

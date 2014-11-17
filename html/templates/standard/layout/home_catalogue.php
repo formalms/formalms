@@ -6,8 +6,10 @@
         <!--END -->
 
 		<title><?php echo Layout::title(); ?></title>
-		<link rel="shortcut icon" href="<?php echo Layout::path(); ?>images/favicon.ico" />
 		<?php echo Layout::zone('meta'); ?>
+		<?php echo Layout::meta(); ?>
+		<link rel="shortcut icon" href="<?php echo Layout::path(); ?>images/favicon.png" type="image/png" />
+		<link rel="shortcut icon" href="<?php echo Layout::path(); ?>images/favicon.ico" />
 		<!-- reset and font stylesheet -->
 		<?php echo Layout::resetter(); ?>
 		<!-- common stylesheet -->
@@ -37,7 +39,9 @@
 			<?php echo Layout::zone('content'); ?>
 		</div>
 		<div class="footer">
+			<div class="copyright">
 			<?php echo Layout::copyright(); ?>
+			</div>
 		</div>
 		<!-- def lang -->
 		<?php echo Layout::zone('def_lang'); ?>

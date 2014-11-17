@@ -13,12 +13,12 @@
 
 function view_area() {
 	checkPerm('view');
-	
+
 	require_once(_lms_.'/lib/lib.middlearea.php');
-	
+
 	$lang 	=& DoceboLanguage::createInstance('middlearea', 'lms');
 	$lc 	=& DoceboLanguage::createInstance('menu_course', 'lms');
-	
+
 	$query_menu = "SELECT mo.idModule, mo.default_name, under.my_name
 	FROM %lms_module AS mo
 		JOIN %lms_menucourse_under AS under
@@ -27,12 +27,12 @@ function view_area() {
 		AND mvc_path <> 'elearning/show'
 	ORDER BY under.sequence";
 	$re_menu_voice = sql_query($query_menu);
-	
+
 	$base_url = 'index.php?modname=middlearea&amp;op=select_permission&amp;load=1&amp;obj_index=';
 	$second_url = 'index.php?modname=middlearea&amp;op=switch_active&amp;obj_index=';
-	
+
 	$ma = new Man_MiddleArea();
-	$disabled_list = $ma->getDisabledList(); 
+	$disabled_list = $ma->getDisabledList();
 
 	// Main men
 	$main_menu = '';
@@ -43,7 +43,7 @@ function view_area() {
 			.' <a class="ico-sprite subs_users" href="'.$base_url.'mo_'.$id_m.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
 			.' <a class="ico-sprite subs_'.( isset($disabled_list['mo_'.$id_m]) ? 'noac' : 'actv' ).'" href="'.$second_url.'mo_'.$id_m.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
 			.'</li>';
-		
+
 	}
 	$main_menu .= '<li>'
 			.'<span>'.Lang::t('_MESSAGES', 'menu_over').'</span>'
@@ -55,11 +55,12 @@ function view_area() {
 			.' <a class="ico-sprite subs_users" href="'.$base_url.'mo_help'.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
 			.' <a class="ico-sprite subs_'.( isset($disabled_list['mo_help']) ? 'noac' : 'actv' ).'" href="'.$second_url.'mo_help'.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
 			.'</li>';
-	
+
 	// Tab list
 	$tab_list = '';
 	$tab = array(
 		'tb_elearning' => Lang::t('_ELEARNING', 'middlearea'),
+        'tb_home' => Lang::t('_HOME', 'middlearea'),
 		'tb_label' => Lang::t('_LABELS', 'label'),
 		'tb_classroom' => Lang::t('_CLASSROOM', 'middlearea'),
         'tb_catalog' => Lang::t('_CATALOGUE', 'middlearea'),
@@ -71,9 +72,19 @@ function view_area() {
 		'tb_kb' => Lang::t('_CONTENT_LIBRARY', 'middlearea')
 	);
 
+	if(Get::cfg('enable_plugins', false)){
+		require_once(_adm_."/models/PluginAdm.php");
+
+		$pluginAdm = new PluginAdm();
+		$plugins=$pluginAdm->getInstalledPlugins();
+		foreach ($plugins as $plugin_name){
+			$tab["tb_".strtolower($plugin_name)]=ucfirst($plugin_name);
+		}
+	}
+
 	$query_menu = "SELECT obj_index from %lms_middlearea where obj_index like 'tb_%' ORDER BY sequence";
 	$re_tablist = sql_query($query_menu);
-	
+
 	while(list($obj_index) = sql_fetch_row($re_tablist)) {
 		$id = $obj_index;
 		$name = $tab[$id];
@@ -107,7 +118,7 @@ function view_area() {
 
 	cout( getTitleArea($lang->def('_MIDDLE_AREA'), 'middlearea')
 		.'<div class="std_block">');
-	
+
 	cout('<h2>'.Lang::t('_MAN_MENU', 'menu').'</h2>'
 
 		.'<ul class="action-list">'
@@ -143,7 +154,7 @@ function view_area() {
 
         sortable.delegate.after('drag:end', function (e) {
 	        var node = sortable.delegate.get('currentNode');
-	        
+
 	            // rewind
 	            while(node.previous()) {
 	            	node = node.previous();
@@ -164,11 +175,11 @@ function view_area() {
 		                }
 		        };
 		        YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
-		        
-		        
+
+
 	    });
     });
-    
+
 
     </script>";
 
@@ -178,69 +189,69 @@ function view_area() {
 function switch_active() {
 
 	require_once($GLOBALS['where_lms'].'/lib/lib.middlearea.php');
-	
-	$man_ma = new Man_MiddleArea(); 
-	
+
+	$man_ma = new Man_MiddleArea();
+
 	$obj_index = importVar('obj_index', false, '');
-	
+
 	$lang =& DoceboLanguage::createInstance('middlearea', 'lms');
 	$selected = $man_ma->getObjIdstList($obj_index);
 	$man_ma->setObjIdstList($obj_index, $selected);
-	
+
 	$re = $man_ma->changeDisableStatus($obj_index);
-        
-	
+
+
 	Util::jump_to('index.php?modname=middlearea&amp;op=view_area&amp;result='.($re ? 'ok' : 'err' ));
 }
 
 function select_permission() {
 	checkPerm('view');
-	
+
 	require_once($GLOBALS['where_lms'].'/lib/lib.middlearea.php');
 	require_once(_base_.'/lib/lib.userselector.php');
 	require_once(_base_.'/lib/lib.form.php');
-	
+
 	$lang =& DoceboLanguage::createInstance('middlearea', 'lms');
-	
+
 	$obj_index = importVar('obj_index', false, '');
-	
-	// first step load selector 
-	
-	$man_ma 	 = new Man_MiddleArea(); 
+
+	// first step load selector
+
+	$man_ma 	 = new Man_MiddleArea();
 	$acl_manager = new DoceboACLManager();
 	$user_select = new UserSelector();
-	
+
 	$user_select->show_user_selector = TRUE;
 	$user_select->show_group_selector = TRUE;
 	$user_select->show_orgchart_selector = TRUE;
 	$user_select->show_orgchart_simple_selector = false;
 	//$user_select->multi_choice = TRUE;
-	
+
 	// try to load previous saved
 	if(isset($_GET['load'])) {
-		
+
 		$selected = $man_ma->getObjIdstList($obj_index);
 		if(is_array($selected))	$user_select->resetSelection($selected);
 	}
 	if(isset($_POST['okselector'])) {
-	
+
 		$selected = $user_select->getSelection($_POST);
 		$re = $man_ma->setObjIdstList($obj_index, $selected);
 		Util::jump_to('index.php?modname=middlearea&amp;op=view_area&amp;result='.($re ? 'ok' : 'err' ));
 	}
-	
-	
+
+
 	cout( getTitleArea(array(
 			'index.php?modname=middlearea&amp;op=view_area' => $lang->def('_MIDDLE_AREA'),
 			Lang::t('_VIEW_PERMISSION', 'standard')
 		), 'middlearea')
 		.'<div class="std_block">');
 	$user_select->addFormInfo(Form::getHidden('obj_index', 'obj_index', $obj_index));
-	$user_select->loadSelector('index.php?modname=middlearea&amp;op=select_permission', 
-			false, 
+	$user_select->loadSelector('index.php?modname=middlearea&amp;op=select_permission',
+			false,
 			false,
 			true);
-	
+
 	cout('</div>');
 }
 
@@ -275,14 +286,14 @@ function view() {
  * Dispatching
  **/
 function MiddleAreaDispatch($op) {
-	
+
 	if(isset($_POST['cancelselector'])) $op = 'view_area';
-	
+
 	switch($op) {
-		case "select_permission" : {	
+		case "select_permission" : {
 			select_permission();
 		};break;
-		case "switch_active" : {	
+		case "switch_active" : {
 			switch_active();
 		};break;
 		case "view_area" :
@@ -291,8 +302,8 @@ function MiddleAreaDispatch($op) {
 			view_area();
 		};break;
 	}
-	
-	
+
+
 }
 
 ?>

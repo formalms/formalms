@@ -22,6 +22,7 @@ define('_AUTH_SECRET_KEY', 2);
 
 define('_AUTH_UCODE_DESC', 'SINGLE_CODE');
 define('_AUTH_TOKEN_DESC', 'GENERATED_TOKEN');
+define('_AUTH_SECRET_KEY_DESC', 'SECRET_KEY');
 
 define('_REST_OUTPUT_XML', 'xml');
 define('_REST_OUTPUT_JSON', 'json');
@@ -85,16 +86,10 @@ class API {
 
 		// ---- new auth method (alpha) 20110610 ---- [
 
-		$api_key =Get::cfg('api_key');
-		$api_secret =Get::cfg('api_secret');
+		$api_key =Get::sett('rest_auth_api_key', '');
+		$api_secret =Get::sett('rest_auth_api_secret', '');
 
-		if (!empty($api_key) && !empty($api_secret)) {
-			$auth_method =_AUTH_SECRET_KEY;
-		}
-		else {
-			//load auth setting
 			$auth_method = Get::sett('rest_auth_method', 'none');
-		}
 
 		// ]----
 
@@ -162,10 +157,10 @@ class API {
 				$params_to_check[]=$val;
 			}
 		}
-		$hash_sha1 = sha1( implode(',', $params_to_check). ',' . Get::cfg('api_secret') );
+		$hash_sha1 = sha1( implode(',', $params_to_check). ',' . Get::sett('rest_auth_api_secret', '') );
 		
 		// check if the two hashes match each other
-		if(strtolower($auth) != strtolower(Get::cfg('api_key').':'.$hash_sha1)){
+		if(strtolower($auth) != strtolower(Get::sett('rest_auth_api_key','').':'.$hash_sha1)){
 			return false;
 		}
 		else{

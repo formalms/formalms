@@ -378,8 +378,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Активиране на функции за достъпност]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Конфигурация на "allow_url_include"]]></key>
-        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[FormaLms <abbr title="Application Programming Interface">API</abbr> и <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> и <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Искайте код, създаден чрез кодовия модул]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Искайте наследствен код, избран от потребителя от списъка в падащото меню]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Искайте наследствен код, който трябва да бъде въведен ръчно от потребителя]]></key>
@@ -835,7 +835,7 @@
         <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Потребители, регистрирани днес]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Потребители, регистрирани вчера]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Супер-администратор потребители]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[FormaLms network]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[forma.lms network]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Прекратени регистрации]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Сайт за консултации]]></key>
         <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[LMS сайт за поддръжка]]></key>
@@ -856,7 +856,7 @@
 
 [text]
 
-Можете да го прочетете при FormaLms на URL <a href="[url]">[url]</a>]]></key>
+Можете да го прочетете при forma.lms на URL <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-05-10 12:43:01"><![CDATA[Искане за записване одобрено]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-05-10 12:43:01"><![CDATA[Молбата ви за записване за [course] е била одобрена от администратора. Можете да въведете курса, кликайки на URL <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-05-10 12:43:01"><![CDATA[Администраторът потвърждава вашата заявка за записване за <a href="[url]">[url]</a>]]></key>
@@ -1226,9 +1226,9 @@
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Начална страница]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[FormaLms е с отворен код платформа за е-Обучение (LMS и LCMS), използвана в областта на корпоративните пазари и висшето образование.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[forma.lms е с отворен код платформа за е-Обучение (LMS и LCMS), използвана в областта на корпоративните пазари и висшето образование.<br/>
 <br/>
-Платформата поддържа 12 езика, съвместима с SCORM 1.2 и 1.3 стандарти и поддържа различни модели на обучение, в това число: смесено, самообучение, сътрудничество и дори социално обучение чрез чат, Wiki, форуми и различни други функции.<br/>
+Платформата поддържа 25 езика, съвместима с SCORM 1.2 и 2004 стандарти и поддържа различни модели на обучение, в това число: смесено, самообучение, сътрудничество и дори социално обучение чрез чат, Wiki, форуми и различни други функции.<br/>
 <br/>
 <br/>
 За да промените тези думи, моля отидете до Администратор/управление на език, търси за <b>login</b> И променете ключа <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1872,7 +1872,7 @@
         <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Обратно към списъка]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Изберете съдържанието на пакета с разширения .zip или .pif]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Вие трябва да посочите файл за качване]]></key>
-        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[SCORM 1.2 и 1.3 импортиране]]></key>
+        <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[SCORM 1.2 и 2004 импортиране]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Създаване на пълен списък с обекти]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Качване на SCORM пакет]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[SCORM]]></key>
@@ -1909,7 +1909,7 @@
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Включени профили:]]></key>
-        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Свържете вашия FormaLms профил с:]]></key>
+        <key id="social&amp;_CONNECT_YOUR_ACCOUNT_WITH" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Свържете вашия forma.lms профил с:]]></key>
       </module>
       <module id="standard">
         <key id="standard&amp;ab-initio" attributes="" save_date="2014-05-10 12:43:01"><![CDATA[Започнат]]></key>

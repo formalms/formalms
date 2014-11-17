@@ -29,6 +29,7 @@
  * @return mixed 	the class istance
  */
 function createModule($module_name, $class_name = NULL) {
+
 	$module_name = preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $module_name);
 	if(file_exists(dirname(__FILE__).'/../class.module/class.'.$module_name.'.php')) {
 		
@@ -39,8 +40,29 @@ function createModule($module_name, $class_name = NULL) {
 		include_once(dirname(__FILE__).'/../class.module/class.definition.php');
 		$class_name = 'LmsModule';
 	}
+
+	if(Get::cfg('enable_plugins', false)){
+		if(checkIfPlugin($module_name)=="plugin"){
+			include_once( Get::rel_path('plugins').'/'.$module_name.'/class/class.'.$module_name.'.php' ); 
+			$class_name = 'Module_'.ucfirst($module_name);  
+		}
+	}
+    
 	$module_cfg = new $class_name();
 	return $module_cfg;
 }
+
+
+
+function checkIfPlugin($module_name){
+        list($module_info) = sql_fetch_row(sql_query(    "SELECT module_info"
+                                                        ." FROM learning_module"
+                                                        ." WHERE module_name = '".$module_name."'"));
+
+        return $module_info;
+    
+}
+
+
 
 ?>

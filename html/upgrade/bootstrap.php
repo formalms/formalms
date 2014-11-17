@@ -26,6 +26,8 @@ require(_base_.'/config.php');
 define('_installer_', _base_.'/install');
 define('_upgrader_', _base_.'/upgrade');
 
+require_once _base_.'/lib/loggers/lib.logger.php';
+
 include(_installer_.'/lib/lib.php');
 include(_installer_.'/lib/lib.lang.php');
 include(_installer_.'/lib/lib.step.php');
