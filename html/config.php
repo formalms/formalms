@@ -1,6 +1,5 @@
 <?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
-
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
 |                                                                           |
@@ -11,7 +10,6 @@
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
-
 
 /**
  * Db info
@@ -25,11 +23,10 @@
  */
 $cfg['db_type'] = 'mysql';
 $cfg['db_host'] = 'localhost';
-$cfg['db_user'] = 'formalms';
-$cfg['db_pass'] = 'formalms822';
-$cfg['db_name'] = 'formalms';
+$cfg['db_user'] = 'root';
+$cfg['db_pass'] = '';
+$cfg['db_name'] = 'forma';
 $cfg['db_charset'] = 'utf8';
-
 
 /**
  * Tables prefix
@@ -48,7 +45,6 @@ $cfg['prefix_scs'] = 'conference';
 $cfg['prefix_ecom'] = 'ecom';
 $cfg['prefix_crm'] = 'crm';
 
-
 /**
  * File upload
  * -------------------------------------------------------------------------
@@ -61,24 +57,55 @@ $cfg['prefix_crm'] = 'crm';
  */
 $cfg['uploadType'] = 'fs';
 
-
 $cfg['ftphost']  = 'localhost';
 $cfg['ftpport']  = '21';
 $cfg['ftpuser']  = '';
 $cfg['ftppass']  = '';
 $cfg['ftppath']  = '/';
 
-
 /**
  * External smtp config
  * -------------------------------------------------------------------------
  */
 $cfg['use_smtp'] = 'off';
-$cfg['smtp_host'] ='';
-//$cfg['smtp_port'] = '';			// Options: '' (default port) , port number
-//$cfg['smtp_secure'] = '';			// Options: '', 'ssl', 'tls'
+$cfg['smtp_host'] ='';				// Options: hostname;hostname:port;...
+//$cfg['smtp_port'] ='';			// Options: '' (default port) , port number
+//$cfg['smtp_secure'] = '';			// Options: "", "ssl", "tls"
 $cfg['smtp_user'] ='';
 $cfg['smtp_pwd'] ='';
+
+/**
+ * Other params
+ * -------------------------------------------------------------------------
+ * timezone     = default site timezone , if not specified get default from php.ini date.timezone
+ *                for valid timezone see http://www.php.net/manual/en/timezones.php
+ * set_mysql_tz = set mysql timezone same as php timezone ,  valid value
+ *                true = set ,  false = (default) not set
+ * keepalive    = set TMO for keepalive scorm tracking. must be < session lifetime, 0 to disable keepalive
+ *                default session lifetime - 15 sec
+ * enable_customscripts = enable custom scripts processing;  accepted vaule: true , false ; default false
+ * enable_plugins = enable plugins processing;  accepted value: true , false ; default false
+*
+ */
+
+//$cfg['timezone'] = 'Europe/Rome';		// define if different from php.ini setting
+//$cfg['set_mysql_tz'] = false;			// set mysql timezone same as php timezone , default false
+
+//$cfg['keepalivetmo'] = '';			// timeout for keepalive, must be < session lifetime, 0 to disable keepalive
+
+//$cfg['enable_customscripts'] = false;	// enable custom scripts processing;  accepted value: true , false ; default false
+//$cfg['enable_plugins']       = false; // enable plugins processing;  accepted value: true , false ; default false
+
+/**
+ * Template engine custom param
+ * -------------------------------------------------------------------------
+ * add all template_engine enabled (if exists)
+ * parameter :  array value=file extension
+ * template_engine available: twig
+ *
+ * If not defined (default) no alternate template engine
+ */
+//$cfg['template_engine']['twig'] = array('ext' => '.twig');
 
 
 /**
@@ -93,7 +120,6 @@ $cfg['session_lenght']   = (120 * 60);
 $cfg['session_save_path']  = false;
 $cfg['demo_mode']   = false;
 
-
 /**
  * Technical preferences
  * -------------------------------------------------------------------------
@@ -102,34 +128,3 @@ $cfg['demo_mode']   = false;
  */
 $cfg['filter_tool'] = 'htmlpurifier';
 $cfg['mail_br']  = "\r\n";
-
-
-
-
-/**
- * Other params
- * -------------------------------------------------------------------------
- * timezone     = default site timezone , if not specified get default from php.ini date.timezone
- *                for valid timezone see http://www.php.net/manual/en/timezones.php
- * set_mysql_tz = set mysql timezone same as php timezone ,  valid value
- *                true = set ,  false = (default) not set
- */
-//$cfg['timezone'] = 'Europe/Rome';		//define if different from php.ini setting
-//$cfg['set_mysql_tz'] = false;			//set mysql timezone same as php timezone , default false
-
-
-
-//$cfg['keepalivetmo'] = '';			// timeout for keepalive, must be < session lifetime, 0 to disable keepalive
-
-//$cfg['enable_customscripts'] = false;	// enable custom scripts processing;  accepted value: true , false ; default false
-
-//$cfg['enable_plugins']       = false; // enable plugins processing;  accepted value: true , false ; default false
-
-/**
- * Template engine custom param
- * -------------------------------------------------------------------------
- * add all template_engine enabled (if exists)
- * array value=file extension
- * template_engine available: twig
- */
-//$cfg['template_engine']['twig'] = array('ext' => '.twig');
