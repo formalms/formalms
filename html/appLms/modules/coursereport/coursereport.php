@@ -99,7 +99,7 @@ function scormreport($idTest) {
 }
 
 function coursereport() {
-	checkPerm('view');
+    	checkPerm('view');
 	require_once($GLOBALS['where_lms'].'/lib/lib.coursereport.php');
 	require_once($GLOBALS['where_lms'].'/lib/lib.test.php');
 	require_once(_base_.'/lib/lib.form.php');
@@ -431,7 +431,7 @@ function coursereport() {
 	}
 	// XXX: Retrive other source scores
 	$reports_score 	=& $report_man->getReportsScores(
-		(isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id));
+		(isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
 
 	// XXX: Calculate statistic
 	$report_details = array();
