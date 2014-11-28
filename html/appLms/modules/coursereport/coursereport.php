@@ -230,7 +230,7 @@ function coursereport() {
 						$a_line_2[] = '';
 					}
 				} else {
-					$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=testvote&type_filter='.$type_filter.'&amp;id_test='.$id.'"><span><span>'.$lang->def('_EDIT_SCORE').'</span></a>'
+					$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=testvote&amp;type_filter='.$type_filter.'&amp;id_test='.$id.'"><span><span>'.$lang->def('_EDIT_SCORE').'</span></a>'
 									.' <a class="ico-sprite subs_chart" href="index.php?modname=coursereport&amp;op=testQuestion&amp;id_test='.$id.'"><span><span>'.$lang->def('_TQ_LINK').'</span></a>';
 					$a_line_2[] = '<a href="index.php?modname=coursereport&amp;op=roundtest&amp;id_test='.$id.'" '
 								.'title="'.$lang->def('_ROUND_TEST_VOTE').'">'.$lang->def('_ROUND_VOTE').'</a>';
@@ -244,7 +244,7 @@ function coursereport() {
 						$my_action = '';
 						$a_line_2[] = '';
 				} else {
-					$my_action =	$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=modactivityscore&type_filter='.$type_filter.'&amp;id_report='.$info_report['id_report'].'&amp;source_of='.$info_report['source_of'].'&amp;id_source='.$info_report['id_source'].'"><span><span>'.$lang->def('_CHANGE_ACTIVITY_VOTE').'</span></a>'
+					$my_action =	$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=modactivityscore&amp;type_filter='.$type_filter.'&amp;id_report='.$info_report['id_report'].'&amp;source_of='.$info_report['source_of'].'&amp;id_source='.$info_report['id_source'].'"><span><span>'.$lang->def('_CHANGE_ACTIVITY_VOTE').'</span></a>'
 									.' <a class="ico-sprite subs_del" href="index.php?modname=coursereport&amp;op=delactivity&amp;id_report='.$info_report['id_report'].'"><span><span>'.$lang->def('_DELETE_ACTIVITY_VOTE').'</span></a>';
 
 					$a_line_2[] = '<a href="index.php?modname=coursereport&amp;op=roundreport&amp;id_report='.$info_report['id_report'].'" '
@@ -258,7 +258,7 @@ function coursereport() {
 						$my_action = '';
 						$a_line_2[] = '';
 				} else {
-					$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=modactivityscore&type_filter='.$type_filter.'&amp;id_report='.$info_report['id_report'].'&amp;source_of='.$info_report['source_of'].'&amp;id_source='.$info_report['id_source'].'"><span><span>'.$lang->def('_CHANGE_ACTIVITY_VOTE').'</span></a>'
+					$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=modactivityscore&amp;type_filter='.$type_filter.'&amp;id_report='.$info_report['id_report'].'&amp;source_of='.$info_report['source_of'].'&amp;id_source='.$info_report['id_source'].'"><span><span>'.$lang->def('_CHANGE_ACTIVITY_VOTE').'</span></a>'
 									.' <a class="ico-sprite subs_del" href="index.php?modname=coursereport&amp;op=delactivity&amp;id_report='.$info_report['id_report'].'"><span><span>'.$lang->def('_DELETE_ACTIVITY_VOTE').'</span></a>';
 
 					$a_line_2[] = '<a href="index.php?modname=coursereport&amp;op=roundreport&amp;id_report='.$info_report['id_report'].'" '
@@ -274,7 +274,7 @@ function coursereport() {
 						$my_action = '';
 						$a_line_2[] = '';
 				} else {
-                    $my_action = '<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=finalvote&amp;id_report='.$info_report['id_report'].'"><span><span>'.$lang->def('_EDIT_SCORE').'</span></a>';
+                    $my_action = '<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=finalvote&amp;type_filter='.$type_filter.'&amp;id_report='.$info_report['id_report'].'"><span><span>'.$lang->def('_EDIT_SCORE').'</span></a>';
 
 					$a_line_2[] = ''
 							.'<a href="index.php?modname=coursereport&amp;op=redofinal&amp;id_report='.$info_report['id_report'].'" '
@@ -1507,8 +1507,15 @@ function finalvote() {
 	$report_man 	= new CourseReportManager();
 
 	// XXX: Find students
-	$id_students	=& $report_man->getStudentId();
-	$students_info 	=& $acl_man->getUsers($id_students);
+	$type_filter = false;
+        if (isset($_GET['type_filter']) && $_GET['type_filter'] != null) {
+            $type_filter = $_GET['type_filter'];
+        }
+
+        $lev = $type_filter;
+        $students = getSubscribed((int) $_SESSION['idCourse'], FALSE, $lev, TRUE, false, false, true);
+        $id_students = array_keys($students);
+        $students_info 	=& $acl_man->getUsers($id_students);
 
 	// XXX: Write in output
 	$page_title = array(
@@ -1518,7 +1525,7 @@ function finalvote() {
 	$out->add(
 		getTitleArea($page_title, 'coursereport')
 		.'<div class="std_block">'
-		.Form::openForm('finalvote', 'index.php?modname=coursereport&amp;op=finalvote')
+		.Form::openForm('finalvote', 'index.php?modname=coursereport&amp;op=finalvote&amp;type_filter='.$type_filter)
 		.Form::getHidden('id_report', 'id_report', $id_report)
 	);
 
