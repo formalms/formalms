@@ -524,11 +524,16 @@ class DoceboConnectionManager {
 	 * @return the array stripped
 	 **/
 	private function stripslashes_deep( $value ) {
-	    $value = is_array($value) ?
-	                array_map('stripslashes_deep', $value) :
-	                stripslashes($value);
-
-	    return( $value);
+		if ( is_string($value) ) {
+			$value = stripslashes($value);
+		} elseif ( is_array($value) ) {
+			foreach ($value as $k => $v) {
+				$value[$k]=$this->stripslashes_deep($v);
+			}
+		} else {
+			// NOOP
+		}
+		return($value);
 	}
 }
 
