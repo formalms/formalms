@@ -14,18 +14,14 @@
 abstract class PluginController extends Controller {
 
 	protected $_mvc_name = 'plugincontroller';
-
-	public abstract function viewPluginPath();
-
-	public abstract function viewPluginCustomscriptsPath();
+        protected $_plugin_name = '';
     
 	public function viewPath() {
-
-		return $this->viewPluginPath();
+		return _plugins_.'/'.$this->_plugin_name.'/views';
 	}
 
 	public function viewCustomscriptsPath() {
-
-		return $this->viewPluginCustomscriptsPath();
+		return _plugins_.'/'.$this->_plugin_name.'/customscripts'.'/'._folder_lms_.'/views';
 	}
+
 }
