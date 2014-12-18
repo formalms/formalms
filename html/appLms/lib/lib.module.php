@@ -59,10 +59,10 @@ function createLOTrack( $idTrack, $objectType, $idResource, $idParams, $back_url
 	list( $className, $fileName ) = sql_fetch_row( $rs );
 	if ( trim( $fileName ) == '' ) return false;
 	require_once(dirname(__FILE__).'/../class.module/learning.object.php' );
-	if (file_exists(_base_ . '/customscripts/'._folder_lms_.'/class.module/'.$file_name ) && Get::cfg('enable_customscripts', false) == true ){
-		require_once(_base_ . '/customscripts/'._folder_lms_.'/class.module/'.$file_name );
+	if (file_exists(_base_ . '/customscripts/'._folder_lms_.'/class.module/'.$fileName ) && Get::cfg('enable_customscripts', false) == true ){
+		require_once(_base_ . '/customscripts/'._folder_lms_.'/class.module/'.$fileName );
 	} else {
-		require_once(dirname(__FILE__).'/../class.module/'.$file_name );
+		require_once(dirname(__FILE__).'/../class.module/'.$fileName );
 	}
 	$lo = new $className ( $idTrack, $idResource, $idParams, $back_url );
 	return $lo;
@@ -83,10 +83,10 @@ function createLOTrackShort( $idReference, $idUser, $back_url ) {
 	list( $idParams, $objectType, $idResource, $idTrack, $className, $fileName ) = sql_fetch_row( $rs );
 	if ( trim( $fileName ) == '' ) return false;
 	require_once( dirname(__FILE__).'/../class.module/learning.object.php' );
-	if (file_exists(_base_ . '/customscripts/'._folder_lms_.'/class.module/'.$file_name ) && Get::cfg('enable_customscripts', false) == true ){
-		require_once(_base_ . '/customscripts/'._folder_lms_.'/class.module/'.$file_name );
+	if (file_exists(_base_ . '/customscripts/'._folder_lms_.'/class.module/'.$fileName ) && Get::cfg('enable_customscripts', false) == true ){
+		require_once(_base_ . '/customscripts/'._folder_lms_.'/class.module/'.$fileName );
 	} else {
-		require_once(dirname(__FILE__).'/../class.module/'.$file_name );
+		require_once(dirname(__FILE__).'/../class.module/'.$fileName );
 	}
 	$lo = new $className ( $idTrack, $idResource, $idParams, $back_url );
 	return $lo;
