@@ -13,6 +13,7 @@
 
 require_once(_base_.'/lib/lib.json.php');
 
+$msg_find = "";
 
 function chelpCheckField($val) {
 	$res = $val;
@@ -38,7 +39,7 @@ switch ($op) {
 			$body .= '<div class="line_field"><b>'.Lang::t('_COURSE_NAME', 'admin_course_management').':</b> '
 				.$GLOBALS['course_descriptor']->getValue('name').'</div>';
 		}
-		
+
 		$body .= '<div id="customer_help_error_message" class="align_center"></div>';
 
 		$body .= Form::openForm('customer_help_form', 'ajax.server.php?mn=customer_help&plf=lms&op=send');
@@ -97,7 +98,7 @@ switch ($op) {
 		//$msg .= chelpCheckField(Get::req("help_req_txt", DOTY_STRING, ""));
 		$msg .= Get::req("help_req_text", DOTY_STRING, "");
 		$msg .= $br_char."----------------------------------".$br_char;
-        
+
         /** Getting client info */
         $result = parse_user_agent();
 
@@ -112,7 +113,7 @@ switch ($op) {
         $mailer = new DoceboMailer();
 		$mailer->IsHTML(true);
 		$res = $mailer->SendMail($user_email, $help_email, $subject, $msg);
-		
+
 		$output = array('success' => $res);
 		if (!$res) $output['message'] = UIFeedback::perror(Lang::t('_OPERATION_FAILURE', 'menu'));
 		$json = new Services_JSON();
@@ -136,7 +137,7 @@ switch ($op) {
             if (isset($_SERVER['HTTP_USER_AGENT'])) {
                 $u_agent = $_SERVER['HTTP_USER_AGENT'];
             } else {
-                throw new \InvalidArgumentException('parse_user_agent requires a user agent');
+                throw new InvalidArgumentException('parse_user_agent requires a user agent');
             }
         }
 
@@ -187,47 +188,38 @@ switch ($op) {
         $browser = $result['browser'][0];
         $version = $result['version'][0];
 
-        $find = function ( $search, &$key ) use ( $result ) {
-                    $xkey = array_search(strtolower($search), array_map('strtolower', $result['browser']));
-                    if ($xkey !== false) {
-                        $key = $xkey;
-
-                        return true;
-                    }
-
-                    return false;
-                };
+		$find = "_parse_ua_find";
 
         $key = 0;
         if ($browser == 'Iceweasel') {
             $browser = 'Firefox';
-        } elseif ($find('Playstation Vita', $key)) {
+        } elseif ($find('Playstation Vita', $key, $result)) {
             $platform = 'PlayStation Vita';
             $browser = 'Browser';
-        } elseif ($find('Kindle Fire Build', $key) || $find('Silk', $key)) {
+        } elseif ($find('Kindle Fire Build', $key, $result) || $find('Silk', $key, $result)) {
             $browser = $result['browser'][$key] == 'Silk' ? 'Silk' : 'Kindle';
             $platform = 'Kindle Fire';
             if (!($version = $result['version'][$key]) || !is_numeric($version[0])) {
                 $version = $result['version'][array_search('Version', $result['browser'])];
             }
-        } elseif ($find('NintendoBrowser', $key) || $platform == 'Nintendo 3DS') {
+        } elseif ($find('NintendoBrowser', $key, $result) || $platform == 'Nintendo 3DS') {
             $browser = 'NintendoBrowser';
             $version = $result['version'][$key];
-        } elseif ($find('Kindle', $key)) {
+        } elseif ($find('Kindle', $key, $result)) {
             $browser = $result['browser'][$key];
             $platform = 'Kindle';
             $version = $result['version'][$key];
-        } elseif ($find('OPR', $key)) {
+        } elseif ($find('OPR', $key, $result)) {
             $browser = 'Opera Next';
             $version = $result['version'][$key];
-        } elseif ($find('Opera', $key)) {
+        } elseif ($find('Opera', $key, $result)) {
             $browser = 'Opera';
-            $find('Version', $key);
+            $find('Version', $key, $result);
             $version = $result['version'][$key];
-        } elseif ($find('Midori', $key)) {
+        } elseif ($find('Midori', $key, $result)) {
             $browser = 'Midori';
             $version = $result['version'][$key];
-        } elseif ($find('Chrome', $key) || $find('CriOS', $key)) {
+        } elseif ($find('Chrome', $key, $result) || $find('CriOS', $key, $result)) {
             $browser = 'Chrome';
             $version = $result['version'][$key];
         } elseif ($browser == 'AppleWebKit') {
@@ -238,15 +230,15 @@ switch ($op) {
                 $platform = 'BlackBerry';
             } elseif ($platform == 'BlackBerry' || $platform == 'PlayBook') {
                 $browser = 'BlackBerry Browser';
-            } elseif ($find('Safari', $key)) {
+            } elseif ($find('Safari', $key, $result)) {
                 $browser = 'Safari';
             }
 
-            $find('Version', $key);
+            $find('Version', $key, $result);
 
             $version = $result['version'][$key];
         } elseif ($browser == 'MSIE' || strpos($browser, 'Trident') !== false) {
-            if ($find('IEMobile', $key)) {
+            if ($find('IEMobile', $key, $result)) {
                 $browser = 'IEMobile';
             } else {
                 $browser = 'MSIE';
@@ -262,5 +254,17 @@ switch ($op) {
 
         return array('platform' => $platform, 'browser' => $browser, 'version' => $version);
     }
+
+	function _parse_ua_find( $search, &$key, &$result ) {
+		$xkey = array_search(strtolower($search), array_map('strtolower', $result['browser']));
+		if ($xkey !== false) {
+			$key = $xkey;
+			return true;
+		}
+
+		return false;
+	}
+
+
 
 ?>
