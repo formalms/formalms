@@ -22,10 +22,10 @@ class TwigManager {
      * Singleton class, the constructor is private
      */
     private function __construct() {
-        $cache = Get::cfg('twig_debug', false)?false:_files_ . '/tmp';
         $loader = new Twig_Loader_Filesystem();
         $this->twig = new Twig_Environment($loader, array(
-            'cache' => $cache,
+            'cache' => _files_ . '/tmp',
+            'debug' => Get::cfg('twig_debug', false)
         ));
         $this->twig->addFunction('translate', new Twig_Function_Function(function ($key, $module = false, $substitution = array(), $lang_code = false, $default = false) {
             return Lang::t($key, $module, $substitution, $lang_code, $default);
