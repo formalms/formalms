@@ -178,7 +178,11 @@ class DoceboEventManager {
 		$arr_consumer = DoceboEventManager::listConsumerFromClassId( $event->getClassId() );
 
 		foreach( $arr_consumer as $consumer_id => $consumer_param ) {
-			require_once( $GLOBALS['where_framework'].$consumer_param[1] );
+			if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.$consumer_param[1]) && Get::cfg('enable_customscripts', false) == true ){
+				require_once(_base_.'/customscripts'.'/'._folder_adm_.$consumer_param[1]);
+			} else {
+				require_once($GLOBALS['where_framework'].$consumer_param[1]);
+			}
 
 			$consumer = eval( "return new ".$consumer_param[0]."(". $consumer_id .");" );
 			$consumer->actionEvent( $event );
