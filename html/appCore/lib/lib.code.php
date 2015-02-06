@@ -28,6 +28,11 @@ class CodeManager
 
 	}
 
+	protected function _getCourseTable()
+	{
+		return $GLOBALS['prefix_lms'].'_course';
+	}
+
 	protected function _getCodeTable()
 	{
 		return $GLOBALS['prefix_fw'].'_code';
@@ -302,6 +307,28 @@ class CodeManager
 		return $res;
 	}
 
+	public function getAvailableCourseAssociated($id_code_group)
+	{
+		$query = "SELECT ccc.idCourse"
+		." FROM ".$this->_getCodeCourseTable()." AS ccc JOIN ".$this->_getCourseTable()." AS lc ON ccc.idCourse = lc.idCourse"
+		." WHERE ccc.idCodeGroup  = '".$id_code_group."'
+		 	AND ((lc.can_subscribe = 2
+			AND (lc.sub_end_date = '0000-00-00'
+				OR lc.sub_end_date >= '2015-02-06')
+			AND (lc.sub_start_date = '0000-00-00'
+				OR '2015-02-06' >= lc.sub_start_date))
+		OR (lc.can_subscribe = 1))";
+
+		$result = sql_query($query);
+
+		$res = array();
+
+		while (list($id_course) = sql_fetch_row($result))
+			$res[$id_course] = $id_course;
+
+		return $res;
+	}
+
 	protected function clearCourseAssociation($id_code_group)
 	{
 		$query =	"DELETE"
@@ -433,6 +460,13 @@ class CodeManager
 		$id_code_group = $this->getGroupOfCode($code);
 
 		return $this->getCourseAssociated($id_code_group);
+	}
+
+	public function getAvailableCourseAssociateWithCode($code)
+	{
+		$id_code_group = $this->getGroupOfCode($code);
+
+		return $this->getAvailableCourseAssociated($id_code_group);
 	}
 
 	public function getOrgAssociateWithCode($code)

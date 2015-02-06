@@ -110,7 +110,7 @@ function subscribe()
 
 				if($valid_code == 1)
 				{
-					$array_course = $code_manager->getCourseAssociateWithCode($code);
+					$array_course = $code_manager->getAvailableCourseAssociateWithCode($code);
 
 					require_once(_lms_.'/lib/lib.course.php');
 					$man_course = new Man_Course();
@@ -157,7 +157,11 @@ function subscribe()
 					}
 					else
 					{
-						$out->add(getErrorUi(Lang::t('_ALREADY_SUBSCRIBED', 'course_autoregistration')));
+						if (sizeof($array_course)==0) {
+							$out->add(getErrorUi(Lang::t('_SUBSCRIPTION_NOT_ALLOWED_YET', 'course_autoregistration')));
+						} else {
+							$out->add(getErrorUi(Lang::t('_ALREADY_SUBSCRIBED', 'course_autoregistration')));
+						}
 
 						$out->add(	$form->openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=course_autoregistration')
 									.$form->openElementSpace()
@@ -167,6 +171,8 @@ function subscribe()
 									.$form->getButton('subscribe', 'subscribe', Lang::t('_SEND', 'course_autoregistration'))
 									.$form->closeButtonSpace());
 					}
+
+
 				}
 				else
 				{
