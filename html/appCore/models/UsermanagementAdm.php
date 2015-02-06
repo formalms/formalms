@@ -435,7 +435,7 @@ class UsermanagementAdm extends Model {
 		//retrieve which fields are required
 		$custom_fields = array_keys($fields);
 
-		if (count($users_rows) > 0 && !empty($custom_fields)) {
+		if (count($users_rows) > 0) { // && !empty($custom_fields)) {
 			//fields
 			$query_fields = "SELECT f.id_common, f.type_field, fu.id_user, fu.user_entry ".
 				" FROM %adm_field_userentry AS fu JOIN %adm_field AS f ON (fu.id_common=f.id_common) ".
