@@ -84,6 +84,11 @@ define("_ADMIN_PASS", "Password");
 define("_ADMIN_CONFPASS", "Confirm password");
 define("_ADMIN_EMAIL", "e-mail");
 define("_LANG_TO_INSTALL", "Languages to install");
+define("_ADMIN_USERID_REQ", "Username required");
+define("_ADMIN_PASS_REQ", "Password required");
+define("_ADMIN_PASS_DOESNT_MATCH", "Password does'nt match");
+define("_NO_LANG_SELECTED", "No languages selected");
+
 // -----------------------------------------
 define("_TITLE_STEP6", "Step 6: Database data setup");
 define("_DATABASE", "Database");

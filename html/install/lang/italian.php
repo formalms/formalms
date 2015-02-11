@@ -88,7 +88,6 @@ define("_MUST_ACCEPT_LICENSE", "E' necessario accettare i termini della licenza 
 
 define("_DOMXML_REQUIRED", "Per installare la suite forma.lms &egrave; necessario che sia installato il modulo domxml o PHP 5 o successivo.");
 
-define("_LANG_TO_INSTALL", "Lingue da installare");
 define("_NUMBER_ESTIMATED_USERS", "Numero di utenti registrati stimati");
 define("_LESS_THAN50", "Meno di 50");
 define("_LESS_THAN150", "Tra 50 e 150");
@@ -112,6 +111,14 @@ define("_ADMIN_LASTNAME", "Cognome");
 define("_ADMIN_PASS", "Password");
 define("_ADMIN_CONFPASS", "Conferma password");
 define("_ADMIN_EMAIL", "Indirizzo e-mail");
+define("_LANG_TO_INSTALL", "Lingue da installare");
+
+define("_ADMIN_USERID_REQ", "Username obbligatorio");
+define("_ADMIN_PASS_REQ", "Password obbligatoria");
+define("_ADMIN_PASS_DOESNT_MATCH", "Le password non corrispondono");
+define("_NO_LANG_SELECTED", "Nessuna lingua selezionata");
+
+
 define("_WEBSITE_INFO", "Informazioni sul sito web");
 define("_DEFAULT_PLATFORM", "Applicativo predefinito (home page)");
 define("_SITE_DEFAULT_SENDER", "Mittente predefinito dei messaggi e-mail automatici");

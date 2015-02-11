@@ -16,37 +16,39 @@
 
 	function validateStep5() {
 		var err =false;
+		var msg = '';
 		disableBtnNext(true);
 
 		setInputError('admin_user', false);
 		setInputError('admin_pass', false);
 		setInputError('admin_confpass', false);
 
-		if (YAHOO.util.Dom.get('admin_user').value == '') {
+		if ( YAHOO.util.Dom.get('admin_user').value == '') {
 			setInputError('admin_user');
-			setWarnMsg("<?php echo Lang::t('_ADMIN_USERID_REQ') ?>");
+			msg += "<?php echo addslashes(Lang::t('_ADMIN_USERID_REQ')) ?>" + "<br>";
 			err =true;
 		}
 
-		if (YAHOO.util.Dom.get('admin_pass').value == '') {
+		if ( YAHOO.util.Dom.get('admin_pass').value == '') {
 			setInputError('admin_pass');
-			setWarnMsg("<?php echo Lang::t('_ADMIN_PASS_REQ') ?>");
+			msg += "<?php echo addslashes(Lang::t('_ADMIN_PASS_REQ')) ?>" + "<br>";
 			err =true;
 		}
 
-		if (YAHOO.util.Dom.get('admin_pass').value != YAHOO.util.Dom.get('admin_confpass').value) {
+		if ( YAHOO.util.Dom.get('admin_pass').value != YAHOO.util.Dom.get('admin_confpass').value) {
 			setInputError('admin_pass');
 			setInputError('admin_confpass');
-			setWarnMsg("<?php echo Lang::t('_ADMIN_PASS_DOESNT_MATCH') ?>");
+			msg += "<?php echo addslashes(Lang::t('_ADMIN_PASS_DOESNT_MATCH')) ?>" + "<br>";
 			err =true;
 		}
 
 		var nodes = YAHOO.util.Selector.query('input[type="checkbox"]:checked');
-		if (nodes.length < 1) {
-			setWarnMsg("<?php echo Lang::t('_NO_LANG_SELECTED') ?>");
+		if ( nodes.length < 1) {
+			msg += "<?php echo addslashes(Lang::t('_NO_LANG_SELECTED')) ?>" + "<br>";
 			err =true;
 		}
-		
+		if ( err ) setWarnMsg(msg);
+
 		disableBtnNext(err);
 		if (!err) { hideWarnMsg(); }
 	}
@@ -60,7 +62,7 @@ echo Form::getTextfield(Lang::t('_ADMIN_USERNAME'), "admin_user", "adm_info[user
 	.Form::getPassword(Lang::t('_ADMIN_CONFPASS'), "admin_confpass", "adm_info[confpass]", 255)
 	.Form::getTextfield(Lang::t('_ADMIN_EMAIL'), "admin_email", "adm_info[email]", 255);
 ?>
-	
+
 <h3><?php echo Lang::t('_LANG_TO_INSTALL'); ?></h3>
 <ul class="lang_to_install_list">
 <?php

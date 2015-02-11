@@ -7,18 +7,18 @@ Class Lang {
 	private function  __construct() {
 		self::init();
 	}
-	
+
 	public static function init() {
 		require_once(_installer_.'/lang/'.self::getSelLang().'.php');
 	}
-	
+
 	public static function getSelLang() {
 		return $_SESSION['sel_lang'];
 	}
 
 	public static function t($keyword) {
 		if (!self::$_loaded) self::init();
-	
+
 		if (defined($keyword)) {
 			return constant($keyword);
 		}
@@ -27,7 +27,7 @@ Class Lang {
 			//return ucfirst(trim(strtolower(str_replace('_', ' ', $keyword))));
 		}
 	}
-	
+
 	static public function direction($key="code") {
 
 		return 'ltr';
@@ -55,7 +55,7 @@ Class Lang {
 			$res["hu"] = "hungarian";
 			$res["id"] = "indonesian";
 			$res["it"] = "italian";
-			//$res["ja"] = "japanese";
+			$res["ja"] = "japanese";
 			//$res["ko"] = "korean";
 			//$res["ms"] = "malay";
 			//$res["no"] = "norwegian";
@@ -93,7 +93,7 @@ Class Lang {
 			$res["hungarian"] = "hungarian";
 			$res["indonesian"] = "indonesian";
 			$res["italian"] = "italian";
-			//$res["japanese"] = "japanese";
+			$res["japanese"] = "japanese";
 			//$res["korean"] = "korean";
 			//$res["malay"] = "malay";
 			//$res["norwegian"] = "norwegian";
