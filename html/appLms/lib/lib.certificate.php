@@ -453,7 +453,7 @@ class Certificate {
 		require_once(Docebo::inc(_base_.'/lib/pdf/lib.pdf.php'));
 
 		$pdf = new PDF($orientation);
-		$pdf->setEncrypted(Get::cfg('certificate_excryption', true));
+		$pdf->setEncrypted(Get::cfg('certificate_encryption', true));
 		$pdf->setPassword(Get::cfg('certificate_password', null));
 
 		if($for_saving)
