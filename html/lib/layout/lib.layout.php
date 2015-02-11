@@ -145,7 +145,7 @@ class Layout {
 		$r = Get::req('r', DOTY_MIXED, '');
 		$lang_sel = Lang::get();
 		$lang_model = new LangAdm();
-		$lang_list = $lang_model->getLangListNoStat();
+		$lang_list = $lang_model->getLangListNoStat(false,false,'lang_description','ASC');
 
 		$server_query_string = $_SERVER['QUERY_STRING'];
 		$pos = strpos($server_query_string, 'special=changelang&new_lang=');
