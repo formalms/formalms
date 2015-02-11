@@ -132,6 +132,10 @@ div.info_container{padding-right:116px;padding-left:0;}
 .user_panel a.identity{background-position:100% 50%;}
 .user_panel a.logout{background-position:100% 50%;}
 .user_panel a.identity span,.user_panel a.logout span{padding-left:0;padding-right:20px;}
+.layout_footer .copyright{right:-16px;text-align: left;}
+
+/*lms-home.css*/
+.footer .copyright{right:564px;}
 
 /*lms-menu.css*/
 .yui-skin-docebo div.nested_tab .yui-navset .yui-nav li,.yui-skin-docebo div.nested_tab .yui-navset .yui-navset-top .yui-nav li{border-left:0px none;border-right:1px solid #808080;}

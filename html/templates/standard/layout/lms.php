@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo Layout::lang_code(); ?>">
 	<head>
 	    <!--Fix funzionamento scorm su IE9-->
@@ -26,7 +25,7 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/print.css" media="print" />
 		<?php echo Layout::accessibility(); ?>
 		<!-- Page Head area -->
-		<script type="text/javascript" src="<?php echo Get::rel_path('base')?>/lib/js_utils.js"></script>
+		<script type="text/javascript" src="<?php echo Get::rel_path('base'); ?>/lib/js_utils.js"></script>
 		<?php echo Layout::zone('page_head'); ?>
         <script type="text/javascript" src="<?php echo Layout::path(); ?>resources/jquery/jquery.min.js"></script>
         <script src="<?php echo Layout::path(); ?>resources/jquery/jquery-ui.js"></script>
@@ -103,12 +102,14 @@
 		<!-- footer -->
 		<div id="footer" class="layout_footer">
 			<?php echo Layout::zone('footer'); ?>
-			<?php echo Layout::copyright(); ?>
+			<div class="copyright">
+				<?php echo Layout::copyright(); ?>
+			</div>
 		</div>
 		</div>
 		<!-- scripts -->
 		<?php echo Layout::zone('scripts'); ?>
-		<!-- end scripts -->
+		<!-- debug -->
 		<?php echo Layout::zone('debug'); ?>
 		<!-- def_lang -->
 		<?php echo Layout::zone('def_lang'); ?>

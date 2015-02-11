@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo Layout::lang_code(); ?>">
 	<head>
 	    <!--Fix funzionamento scorm su IE9-->
@@ -44,12 +43,14 @@
 				<?php echo LoginLayout::login_form(); ?>
 				<?php echo LoginLayout::service_msg(); ?>
 			</div>
-
 		</div>
+
+		<!-- footer -->
 		<div class="footer">
+			<?php echo Layout::zone('footer'); ?>
 			<?php echo LoginLayout::links(); ?>
 			<div class="copyright">
-			<?php echo Layout::copyright(); ?>
+				<?php echo Layout::copyright(); ?>
 			</div>
 		</div>
 		<div class="webcontent">

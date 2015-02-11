@@ -34,18 +34,18 @@
 			<!-- <h1 id="main_title"><a href="index.php"><?php echo Lang::t('_MAIN_TITLE', 'login'); ?></a></h1>-->
 			<a href="index.php"><img class="left_logo" src="<?php echo Layout::path(); ?>images/company_logo.png" alt="Left logo" /></a>
 			<div class="nofloat"></div>
+			<div class="divider"></div>
 		</div>
 		<div class="webcontent">
 			<?php echo Layout::zone('content'); ?>
 		</div>
+		<!-- footer -->
 		<div class="footer">
-		</div>
-
-		<div id="footer" class="layout_footer">
 			<?php echo Layout::zone('footer'); ?>
-			<?php echo Layout::copyright(); ?>
+			<div class="copyright">
+				<?php echo Layout::copyright(); ?>
+			</div>
 		</div>
-
 		<!-- def lang -->
 		<?php echo Layout::zone('def_lang'); ?>
 		<!-- scripts -->

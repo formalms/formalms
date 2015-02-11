@@ -22,8 +22,16 @@ html, body {}
 .layout_header {padding: 8px 1em;background:#ffffff;}
 .layout_header .left_logo {margin-top: 5px;margin-left: 10px;vertical-align:middle;}
 .layout_colum_container{padding:1em;}
-.layout_footer {padding:.4em 1em;background:#efefef;}
-.layout_footer img  {vertical-align:middle;}
+
+.layout_footer{background:#eeeeee; height:21px; font-size:90%;}
+.layout_footer img{vertical-align:middle;}
+.layout_footer #link{margin-top:3px;padding:3px 16px 4px;}
+.layout_footer a{text-decoration:none;color:#777777;}
+.layout_footer a:hover{text-decoration:underline;}
+.layout_footer #link a.first{font-weight:bold;padding:0 6px 0 0;margin:0 3px 0 0;border-right:1px solid #777777;}
+.layout_footer .copyright{position:relative;top:3px;right:16px;text-align: right;color:#777777;}
+.layout_footer .ownedby{color:#777777;}
+
 .directory_order_image {vertical-align:middle;margin-left:2px;}
 #main_menu_container {border-top: 1px solid #cccccc;border-bottom: 1px solid #cccccc;}
 #admin_box_login{margin:10em auto;width:40em;border:1px solid #cccccc;}
