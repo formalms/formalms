@@ -128,3 +128,12 @@ $cfg['demo_mode']   = false;
  */
 $cfg['filter_tool'] = 'htmlpurifier';
 $cfg['mail_br']  = "\r\n";
+
+/**
+ * Certificate Encryption
+ * -------------------------------------------------------------------------
+ * certificate_excryption: boolean to set whether to enable or not the pdf encryption of certificates (default is TRUE)
+ * certificate_password: password to use when encryption is enabled. It must be exactly 32 chars! (default is a random generated one)
+ */
+//$cfg['certificate_excryption'] = true;
+//$cfg['certificate_password']  = "12345678901234567890123456789012";
