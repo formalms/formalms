@@ -48,11 +48,14 @@ if(Get::sett('stop_concurrent_user') == 'on') {
 }
 
 if(isset($_SESSION['must_renew_pwd']) && $_SESSION['must_renew_pwd'] == 1) {
-	
-	$GLOBALS['modname'] = '';
-	$GLOBALS['op'] 		= '';
-	if(strpos($GLOBALS['req'], 'lms/profile') === false) {
-		$GLOBALS['req'] = 'lms/profile/renewalpwd';
+	if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+		if(!Docebo::user()->isAnonymous() && $GLOBALS['modname'] != 'login' && $GLOBALS['op'] != 'logout') {
+			$GLOBALS['modname'] = '';
+			$GLOBALS['op'] 		= '';
+			if(strpos($GLOBALS['req'], 'lms/profile') === false) {
+				$GLOBALS['req'] = 'lms/profile/renewalpwd';
+			}
+		}
 	}
 }else{
 	if($GLOBALS['modname'] == '' && $GLOBALS['op'] == '' && $GLOBALS['req'] == '' && !Docebo::user()->isAnonymous()) {
@@ -191,7 +194,7 @@ if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 		}
 	}
 }
-
+/*
 if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 	if(!Docebo::user()->isAnonymous() && $GLOBALS['modname'] != 'login' && $GLOBALS['op'] != 'logout') {
 		$pwd_elapsed = Docebo::user()->isPasswordElapsed();
@@ -202,7 +205,7 @@ if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 		}
 	}
 }
-
+*/
 //operation that is needed before loading grafiphs element, menu and so on
 switch($GLOBALS['op']) {
 	

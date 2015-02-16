@@ -38,7 +38,14 @@ if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 		}
 	}
 }
-
+if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+	if(isset($_SESSION['must_renew_pwd']) && $_SESSION['must_renew_pwd'] == 1) {
+		if(!Docebo::user()->isAnonymous() && $GLOBALS['modname'] != 'login' && $GLOBALS['op'] != 'logout') {
+			Util::jump_to(Get::rel_path('lms').'/index.php');
+		}
+	}
+}
+/*
 if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 	if(!Docebo::user()->isAnonymous() && $GLOBALS['modname'] != 'login' && $GLOBALS['op'] != 'logout') {
 		$pwd_elapsed = Docebo::user()->isPasswordElapsed();
@@ -47,7 +54,7 @@ if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 		}
 	}
 }
-
+*/
 // NOTE: some special function
 switch($GLOBALS['op']) {
 	case "confirm" : {
