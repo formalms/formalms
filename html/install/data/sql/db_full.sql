@@ -1029,7 +1029,7 @@ INSERT INTO `core_event_manager` (`idEventMgr`, `idClass`, `permission`, `channe
 (9, 9, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER', 'godadmin,admin,user'),
 (10, 10, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
 (11, 11, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
-(12, 12, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
+(12, 12, 'mandatory', 'email', '_EVENT_RECIPIENTS_TEACHER', 'godadmin,admin,user'),
 (13, 13, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER_GOD', 'godadmin,admin,user'),
 (14, 14, 'not_used', 'email', '_ALL', 'godadmin,admin,user'),
 (15, 15, 'not_used', 'email', '_ALL', 'godadmin,admin,user'),
