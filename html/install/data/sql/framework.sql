@@ -2326,7 +2326,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('social_twitter_secret', '', 'string', 255, 'main', 12, 5, 1, 0, ''),
 ('sso_secret', '', 'text', 255, '0', 9, 1, 1, 0, ''),
 ('sso_token', 'off', 'enum', 3, '0', 9, 0, 1, 0, ''),
-('stop_concurrent_user', 'off', 'enum', 3, 'security', 8, 23, 1, 0, ''),
+('stop_concurrent_user', 'on', 'enum', 3, 'security', 8, 23, 1, 0, ''),
 ('tablist_mycourses', 'name,status', 'tablist_mycourses', 255, '0', 4, 1, 1, 0, ''),
 ('teleskill_max_participant', '300', 'string', 255, 'teleskill', 6, 6, 1, 0, ''),
 ('teleskill_max_room', '99999999999', 'string', 255, 'teleskill', 6, 5, 1, 0, ''),
