@@ -2644,7 +2644,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('ldap_user_string', '$user@domain2.domain1', 'string', 255, '0', 7, 4, 1, 0, ''),
 ('mail_sender', 'sample@localhost', 'string', 255, 'register', 3, 12, 0, 0, ''),
 ('maintenance', 'off', 'enum', 3, 'security', 8, 25, 0, 0, ''),
-('maintenance_pw', 'manutenzione', 'string', 3, 'security', 8, 25, 0, 0, ''),
+('maintenance_pw', 'manutenzione', 'string', 16, 'security', 8, 25, 0, 0, ''),
 ('mandatory_code', 'off', 'enum', 3, 'register', 3, 18, 1, 0, ''),
 ('max_log_attempt', '0', 'int', 3, '0', 3, 4, 0, 0, ''),
 ('nl_sendpause', '20', 'int', 3, 'newsletter', 8, 10, 1, 0, ''),
