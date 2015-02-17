@@ -36,9 +36,11 @@
 			<div class="nofloat"></div>
 		</div>
 		<div class="content">
-			<!-- <div class="homecatalogue">
-				<?php echo Layout::get_catalogue(); ?>
-			</div> -->
+            <?php if ($GLOBALS['framework']['course_block'] == "on") { ?>
+			    <div class="homecatalogue">
+				    <?php echo Layout::get_catalogue(); ?>
+			    </div>
+            <?php } ?>                
 			<?php if ($GLOBALS['maintenance'] != "on") { ?>
 			<div class="login-box<?php echo LoginLayout::isSocialActive() ? '-social': ''; ?>">
 			<h2>LOGIN</h2>
