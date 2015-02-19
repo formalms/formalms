@@ -290,7 +290,7 @@ class AdminrulesAdmController extends AdmController
 			$user_selected = array_diff($user_selected, $user_alredy_subscribed);
 
 			if(count($user_selected) == 0)
-				Util::jump_to('index.php?r=adm/adminrules/add_admin&idst='.$idst);
+				Util::jump_to('index.php?r=adm/adminrules/add_admin&load=1&idst='.$idst);
 
 			if($this->model->saveNewAdmin($idst, $user_selected))
 				Util::jump_to('index.php?r=adm/adminrules/admin_manage&idst='.$idst.'&amp;res=ok_ins');
