@@ -36,7 +36,7 @@
 			<div class="nofloat"></div>
 		</div>
 		<div class="content">
-            <?php if ($GLOBALS['framework']['course_block'] == "on") { ?>
+            <?php if ($GLOBALS['framework']['course_block'] == "on" && $GLOBALS['maintenance'] != "on") { ?>
 			    <div class="homecatalogue">
 				    <?php echo Layout::get_catalogue(); ?>
 			    </div>
