@@ -35,7 +35,8 @@
 			<a href="index.php"><img class="left_logo" src="<?php echo Layout::path(); ?>images/company_logo.png" alt="Left logo" /></a>
 			<div class="nofloat"></div>
 		</div>
-		<div class="content">
+        <div class="webcontent"><?php echo LoginLayout::external_page(); ?></div>        
+        <div class="content">
             <?php if ($GLOBALS['framework']['course_block'] == "on" && $GLOBALS['maintenance'] != "on") { ?>
 			    <div class="homecatalogue">
 				    <?php echo Layout::get_catalogue(); ?>

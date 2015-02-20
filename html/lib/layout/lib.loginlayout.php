@@ -17,15 +17,10 @@ class LoginLayout {
 	 * Return the menu for the pre-login pages
 	 * @return <string>
 	 */
-	public static function menu() {
+	public static function external_page() {
 
 		$db = DbConn::getInstance();
 
-		$li = '';
-		$ul = '<ul id="main_menu">';
-		if(Get::sett('course_block') == 'on') {
-			$li .= '<li class="first"><a href="index.php?r=homecatalogue">'.Lang::t('_COURSE_LIST', 'course').'</a></li>';
-		}
 		$query = "
 		SELECT idPages, title
 		FROM %lms_webpages
@@ -36,6 +31,9 @@ class LoginLayout {
 		$numof = $db->num_rows($result);
 		$numof--;
 
+        $li = '';
+        $ul = '<ul id="main_menu">';
+        
 		$i = 0;
 		while(list($id_pages, $title) = sql_fetch_row($result)) {
 			$li .= '<li'.( $i == $numof ? ' class="last"' : '' ).'><a href="index.php?modname=login&amp;op=readwebpages&amp;idPages='.$id_pages.'">'

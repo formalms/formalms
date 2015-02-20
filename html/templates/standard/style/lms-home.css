@@ -62,3 +62,9 @@ ul.reg_instruction li{list-style-type:square;margin:2px;}
 .lostpwd_box span{font-weight:bold;}
 .form_right{margin:0.60em 0 0 0;padding:0.40em;text-align:right;color:#ffffff;font-weight:bold;background:#C84000;}
 .form_right .textfield{margin:0 14px; width:auto; padding:0; border:1px solid #4180ac;}
+/* external page management ======================================*/
+ul#main_menu{position:absolute;left:25px;bottom:-10px;font-size:0.8em;}
+ul#main_menu li{display:inline;margin:0 0 0 10px;border-right:1px solid #3979a7;}
+ul#main_menu li.last{border:0px none;}
+ul#main_menu li a{margin:0 10px 0 0;color:#333333;font-weight:bold;text-decoration:none;}
+ul#main_menu li a.odd{color:#003466;}
