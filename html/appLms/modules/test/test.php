@@ -1047,14 +1047,12 @@ function updatemodality() {
 		show_solution = '".$_POST['show_solution']."',
 		max_attempt = '".(int)$_POST['max_attempt']."'"
 	.( $time_dependent == 2 && $_POST['display_type'] == 0 ? " ,time_dependent = 0 " : "" )
-	.( Get::req('use_suspension', DOTY_INT, -1) > 0
-		? " ,use_suspension = 1 ".
-			" ,suspension_num_attempts = '".Get::req('suspension_num_attempts', DOTY_INT, 1)."' ".
-			" ,suspension_num_hours = '".Get::req('suspension_num_hours', DOTY_INT, 1)."' ".
-			" ,suspension_prerequisites = ".(Get::req('suspension_prerequisites', DOTY_INT, 0)>0 ? '1' : '0')." "
-		: " ")
-	." ,mandatory_answer = ".Get::req('mandatory_answer', DOTY_INT, 0)
-	." WHERE idTest = '$idTest'")) {
+	." ,use_suspension = ".Get::req('use_suspension', DOTY_INT, 0).
+			" ,suspension_num_attempts = '".Get::req('suspension_num_attempts', DOTY_INT, 0)."' ".
+			" ,suspension_num_hours = '".Get::req('suspension_num_hours', DOTY_INT, 0)."' ".
+			" ,suspension_prerequisites = ".Get::req('suspension_prerequisites', DOTY_INT, 0)." ".
+			" ,mandatory_answer = ".Get::req('mandatory_answer', DOTY_INT, 0).
+			" WHERE idTest = '$idTest'")) {
 		errorCommunication($lang->def('_OPERATION_FAILURE')
 			.getBackUi('index.php?modname=test&amp;op=deftime&amp;idTest='.$idTest.'&amp;back_url='.$url_coded, $lang->def('_BACK')));
 		return;
