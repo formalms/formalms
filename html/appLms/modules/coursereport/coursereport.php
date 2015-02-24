@@ -231,7 +231,7 @@ function coursereport() {
 					}
 				} else {
 					$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=testvote&amp;type_filter='.$type_filter.'&amp;id_test='.$id.'"><span><span>'.$lang->def('_EDIT_SCORE').'</span></a>'
-									.' <a class="ico-sprite subs_chart" href="index.php?modname=coursereport&amp;op=testQuestion&amp;id_test='.$id.'"><span><span>'.$lang->def('_TQ_LINK').'</span></a>';
+									.' <a class="ico-sprite subs_chart" href="index.php?modname=coursereport&amp;op=testQuestion&amp;type_filter='.$type_filter.'&amp;id_test='.$id.'"><span><span>'.$lang->def('_TQ_LINK').'</span></a>';
 					$a_line_2[] = '<a href="index.php?modname=coursereport&amp;op=roundtest&amp;id_test='.$id.'" '
 								.'title="'.$lang->def('_ROUND_TEST_VOTE').'">'.$lang->def('_ROUND_VOTE').'</a>';
 				}
@@ -2939,6 +2939,13 @@ function testQuestion()
 
 	$test_man = new GroupTestManagement();
 	$acl_man = Docebo::user()->getAclManager();
+	$id_students = array();
+	if (isset($_GET['type_filter']) && $_GET['type_filter']!=null) {
+		$type_filter = $_GET['type_filter'];
+		$lev = $type_filter;
+		$students = getSubscribed((int)$_SESSION['idCourse'], FALSE, $lev, TRUE, false, false, true);
+		$id_students = array_keys($students);
+	}
 
 	$quests = array();
 	$answers = array();
@@ -2973,10 +2980,20 @@ function testQuestion()
 		$quests[$id_quest]['type_quest'] = $type_quest;
 		$quests[$id_quest]['title_quest'] = $title_quest;
 
-		$query_answer =	"SELECT idAnswer, is_correct, answer"
-						." FROM ".$GLOBALS['prefix_lms']."_testquestanswer"
-						." WHERE idQuest = '".$id_quest."'"
-						." ORDER BY sequence";
+//		$query_answer =	"SELECT idAnswer, is_correct, answer"
+//						." FROM ".$GLOBALS['prefix_lms']."_testquestanswer"
+//						." WHERE idQuest = '".$id_quest."'"
+//						." ORDER BY sequence";
+
+		$query_answer =	"SELECT tqa.idAnswer, tqa.is_correct, tqa.answer"
+			." FROM ".$GLOBALS['prefix_lms']."_testquestanswer AS tqa"
+			." LEFT JOIN"
+			." forma.learning_testtrack_answer tta ON tqa.idAnswer = tta.idAnswer"
+			." LEFT JOIN"
+			." forma.learning_testtrack tt ON tt.idTrack = tta.idTrack"
+			." WHERE tqa.idQuest = '".$id_quest."'";
+			$query_answer .= (!empty($id_students))?" and tt.idUser in (".implode(",", $id_students).")":"";
+			$query_answer .= " ORDER BY tqa.sequence";
 
 		$result_answer = sql_query($query_answer);
 
