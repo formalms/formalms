@@ -2988,9 +2988,9 @@ function testQuestion()
 		$query_answer =	"SELECT tqa.idAnswer, tqa.is_correct, tqa.answer"
 			." FROM ".$GLOBALS['prefix_lms']."_testquestanswer AS tqa"
 			." LEFT JOIN"
-			." forma.learning_testtrack_answer tta ON tqa.idAnswer = tta.idAnswer"
+			." ".$GLOBALS['prefix_lms']."_testtrack_answer tta ON tqa.idAnswer = tta.idAnswer"
 			." LEFT JOIN"
-			." forma.learning_testtrack tt ON tt.idTrack = tta.idTrack"
+			." ".$GLOBALS['prefix_lms']."_testtrack tt ON tt.idTrack = tta.idTrack"
 			." WHERE tqa.idQuest = '".$id_quest."'";
 			$query_answer .= (!empty($id_students))?" and tt.idUser in (".implode(",", $id_students).")":"";
 			$query_answer .= " ORDER BY tqa.sequence";
