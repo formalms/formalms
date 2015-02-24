@@ -2980,20 +2980,20 @@ function testQuestion()
 		$quests[$id_quest]['type_quest'] = $type_quest;
 		$quests[$id_quest]['title_quest'] = $title_quest;
 
-		$query_answer =	"SELECT idAnswer, is_correct, answer"
-						." FROM ".$GLOBALS['prefix_lms']."_testquestanswer"
-						." WHERE idQuest = '".$id_quest."'"
-						." ORDER BY sequence";
+//		$query_answer =	"SELECT idAnswer, is_correct, answer"
+//						." FROM ".$GLOBALS['prefix_lms']."_testquestanswer"
+//						." WHERE idQuest = '".$id_quest."'"
+//						." ORDER BY sequence";
 
-//		$query_answer =	"SELECT tqa.idAnswer, tqa.is_correct, tqa.answer"
-//			." FROM ".$GLOBALS['prefix_lms']."_testquestanswer AS tqa"
-//			." LEFT JOIN"
-//			." forma.learning_testtrack_answer tta ON tqa.idAnswer = tta.idAnswer"
-//			." LEFT JOIN"
-//			." forma.learning_testtrack tt ON tt.idTrack = tta.idTrack"
-//			." WHERE tqa.idQuest = '".$id_quest."'";
-//			$query_answer .= (!empty($id_students))?" and tt.idUser in (".implode(",", $id_students).")":"";
-//			$query_answer .= " ORDER BY tqa.sequence";
+		$query_answer =	"SELECT tqa.idAnswer, tqa.is_correct, tqa.answer"
+			." FROM ".$GLOBALS['prefix_lms']."_testquestanswer AS tqa"
+			." LEFT JOIN"
+			." forma.learning_testtrack_answer tta ON tqa.idAnswer = tta.idAnswer"
+			." LEFT JOIN"
+			." forma.learning_testtrack tt ON tt.idTrack = tta.idTrack"
+			." WHERE tqa.idQuest = '".$id_quest."'";
+			$query_answer .= (!empty($id_students))?" and tt.idUser in (".implode(",", $id_students).")":"";
+			$query_answer .= " ORDER BY tqa.sequence";
 
 		$result_answer = sql_query($query_answer);
 
