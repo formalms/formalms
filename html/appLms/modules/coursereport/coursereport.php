@@ -2939,7 +2939,7 @@ function testQuestion()
 
 	$test_man = new GroupTestManagement();
 	$acl_man = Docebo::user()->getAclManager();
-	$id_students = array();
+	$id_students = null;
 	if (isset($_GET['type_filter']) && $_GET['type_filter']!=null) {
 		$type_filter = $_GET['type_filter'];
 		$lev = $type_filter;
@@ -2992,7 +2992,7 @@ function testQuestion()
 			." LEFT JOIN"
 			." ".$GLOBALS['prefix_lms']."_testtrack tt ON tt.idTrack = tta.idTrack"
 			." WHERE tqa.idQuest = '".$id_quest."'";
-			$query_answer .= (!empty($id_students))?" and tt.idUser in (".implode(",", $id_students).")":"";
+			$query_answer .= (null==$id_students)?" and tt.idUser in (".implode(",", $id_students).")":"";
 			$query_answer .= " ORDER BY tqa.sequence";
 
 		$result_answer = sql_query($query_answer);
