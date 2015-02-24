@@ -2938,14 +2938,13 @@ function testQuestion()
 	$id_test = importVar('id_test', true, 0);
 
 	$test_man = new GroupTestManagement();
-	$acl_man = Docebo::user()->getAclManager();
-	$id_students = null;
+
+	$lev = FALSE;
 	if (isset($_GET['type_filter']) && $_GET['type_filter']!=null) {
-		$type_filter = $_GET['type_filter'];
-		$lev = $type_filter;
-		$students = getSubscribed((int)$_SESSION['idCourse'], FALSE, $lev, TRUE, false, false, true);
-		$id_students = array_keys($students);
+		$lev = $_GET['type_filter'];
 	}
+	$students = getSubscribed((int)$_SESSION['idCourse'], FALSE, $lev, TRUE, false, false, true);
+	$id_students = array_keys($students);
 
 	$quests = array();
 	$answers = array();
@@ -2992,7 +2991,7 @@ function testQuestion()
 			." LEFT JOIN"
 			." ".$GLOBALS['prefix_lms']."_testtrack tt ON tt.idTrack = tta.idTrack"
 			." WHERE tqa.idQuest = '".$id_quest."'";
-			$query_answer .= (null!=$id_students)?" and tt.idUser in (".implode(",", $id_students).")":"";
+			$query_answer .= " and tt.idUser in (".implode(",", $id_students).")";
 			$query_answer .= " ORDER BY tqa.sequence";
 
 		$result_answer = sql_query($query_answer);
