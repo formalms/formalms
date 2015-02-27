@@ -915,7 +915,7 @@ class DoceboACLManager {
 		***/
         $query = "SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,"
 				." level, lastenter, valid, pwd_expire_at, register_date, lastenter "
-				. ", force_change  "
+				. ", force_change, facebook_id, twitter_id, linkedin_id, google_id, privacy_policy "
 				." FROM ".$this->_getTableUser();
 
 		if( $idst !== FALSE )

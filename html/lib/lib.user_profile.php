@@ -1828,7 +1828,7 @@ class UserProfileViewer {
 				if ($social->isActive('google') && !$social->connectedToUser('google')) {
 					$html.='<li><a href="'.Get::sett('url').'index.php?modname=login&amp;op=google_login&amp;connect=1" '.
 						'title="'.Lang::t('_CONNECT', 'social').': '.Lang::t('_GOOGLE', 'social').'"><span>'.
-						Get::img('social/google.png', Lang::t('_GOOGLE', 'social')).'</span></a></li>';
+						Get::img('social/google.png', $this->user_info[ACL_INFO_GOOGLE_ID]).'</span></a></li>';
 				}
 				$html.='</ul><br/>';
 			}

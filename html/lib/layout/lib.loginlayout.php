@@ -125,7 +125,24 @@ class LoginLayout {
 				$html .= '<b class="logout">'.Lang::t('_UNLOGGED', 'login').'</b>';
 			}
 			if(isset($_GET['access_fail'])) {
+				switch((int)$_GET['access_fail']) {
+					default:  
 				$html .= '<b class="login_failed">'.Lang::t('_NOACCESS', 'login').'</b>';
+					  break;
+					case 4: // 
+						$html .= '<b class="login_failed">'.Lang::t('_EMPTYGOOGLEMAIL', 'login').'</b>';
+					  break;
+					case 5: // 
+						$html .= '<b class="login_failed">'.Lang::t('_UNKNOWNGOOGLERROR', 'login').'</b>';
+					  break;
+					case 6: // 
+						$html .= '<b class="login_failed">'.Lang::t('_UNDOGOOGLELOGIN', 'login').'</b>';
+					  break;
+					case 7: // 
+						$html .= '<b class="login_failed">'.Lang::t('_GOOGLETOKENEXPIRED', 'login').'</b>';
+					  break;
+				}
+			
 			}
 			if(isset($_GET['msg'])) {
 				$class ="login_failed";
