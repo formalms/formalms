@@ -1058,7 +1058,7 @@ Class CourseAlmsController extends AlmsController
 			}
 
 			ob_clean();
-			echo $this->json->encode(array('success' => true, 'o' => $o));
+			echo $this->json->encode(array('success' => true));
 		}
 	}
 
