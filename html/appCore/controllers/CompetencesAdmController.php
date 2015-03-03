@@ -755,6 +755,27 @@ Class CompetencesAdmController extends AdmController {
 			return;
 		}
 
+		//check associations with course
+		if ($this->model->getCompetenceCoursesTotal(Get::req('id', DOTY_INT, -1)) > 0){
+			$output = array('success' => false, 'message' => UIFeedback::perror(Lang::t('_WITH_COURSE_ASSOCIATIONS', 'competences')));
+			echo $this->json->encode($output);
+			return;
+		}
+
+		//check associations with fncrole
+		if ($this->model->getCompetenceFncRolesTotal(Get::req('id', DOTY_INT, -1)) > 0){
+			$output = array('success' => false, 'message' => UIFeedback::perror(Lang::t('_WITH_FNCROLE_ASSOCIATIONS', 'competences')));
+			echo $this->json->encode($output);
+			return;
+		}
+
+		//check associations with user
+		if ($this->model->getCompetenceUsersTotal(Get::req('id', DOTY_INT, -1)) > 0){
+			$output = array('success' => false, 'message' => UIFeedback::perror(Lang::t('_WITH_USER_ASSOCIATIONS', 'competences')));
+			echo $this->json->encode($output);
+			return;
+		}
+		
 		$output = array('success' => false);
 		$id = Get::req('id', DOTY_INT, -1);
 		if ($id > 0) $output['success'] = $this->model->deleteCompetence($id);
