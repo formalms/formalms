@@ -3016,7 +3016,8 @@ function testQuestion()
 	$query_track =	"SELECT idTrack"
 					." FROM ".$GLOBALS['prefix_lms']."_testtrack"
 					." WHERE idTest = '".$id_test."'"
-					." AND score_status = 'valid'";
+					." AND score_status = 'valid'"
+					." AND idUser in (".implode(",", $id_students).")";
 
 	$result_track = sql_query($query_track);
 
@@ -3040,7 +3041,8 @@ function testQuestion()
 	$query_total_play =	"SELECT COUNT(*)"
 						." FROM ".$GLOBALS['prefix_lms']."_testtrack"
 						." WHERE idTest = '".$id_test."'"
-						." AND score_status = 'valid'";
+						." AND score_status = 'valid'"
+						." AND idUser in (".implode(",", $id_students).")";
 
 	list($total_play) = sql_fetch_row(sql_query($query_total_play));
 
