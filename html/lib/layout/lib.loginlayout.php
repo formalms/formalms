@@ -130,16 +130,13 @@ class LoginLayout {
 				$html .= '<b class="login_failed">'.Lang::t('_NOACCESS', 'login').'</b>';
 					  break;
 					case 4: // 
-						$html .= '<b class="login_failed">'.Lang::t('_EMPTYGOOGLEMAIL', 'login').'</b>';
+						$html .= '<b class="login_failed">'.Lang::t('_EMPTYSOCIALID', 'login').'</b>';
 					  break;
 					case 5: // 
-						$html .= '<b class="login_failed">'.Lang::t('_UNKNOWNGOOGLERROR', 'login').'</b>';
+						$html .= '<b class="login_failed">'.Lang::t('_UNKNOWNSOCIALERROR', 'login').'</b>';
 					  break;
 					case 6: // 
-						$html .= '<b class="login_failed">'.Lang::t('_UNDOGOOGLELOGIN', 'login').'</b>';
-					  break;
-					case 7: // 
-						$html .= '<b class="login_failed">'.Lang::t('_GOOGLETOKENEXPIRED', 'login').'</b>';
+						$html .= '<b class="login_failed">'.Lang::t('_CANCELSOCIALLOGIN', 'login').'</b>';
 					  break;
 				}
 			
@@ -192,14 +189,7 @@ class LoginLayout {
 			.'<span>'.Lang::t('_LOGIN_WITH', 'login').' </span>';
 		
 		if ($social->isActive('facebook')) {
-			$social->includeFacebookLib();
-			$facebook =$social->getFacebookObj();
-			$_SESSION['fb_from']='login';
-			$loginUrl = $facebook->getLoginUrl(array(
-					/* 'req_perms'=>'email', */
-					'next'=>Get::sett('url').'index.php?modname=login&op=facebook_login',
-				));
-			$res.='<a href="'.$loginUrl.'">'.Get::img('social/facebook-24.png').'</a>';
+			$res.='<a href="index.php?modname=login&amp;op=facebook_login">'.Get::img('social/facebook-24.png').'</a>';
 		}
 
 		if ($social->isActive('twitter')) {

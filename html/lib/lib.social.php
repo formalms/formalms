@@ -152,16 +152,12 @@ class Social {
 	}
 
 	public function includeGoogleLib() {
-		// lib google
-		//include_once(_base_ . '/addons/social/google/autoload.php');
-		
-		// lib multiaccount
 		include_once(_base_ . '/addons/social/OAuthLib/vendor/autoload.php');
 	}
 
 
 	public function includeFacebookLib() {
-		include_once(_base_ . '/addons/social/facebook/facebook.php');
+		include_once(_base_ . '/addons/social/OAuthLib/vendor/autoload.php');
 	}
 
 

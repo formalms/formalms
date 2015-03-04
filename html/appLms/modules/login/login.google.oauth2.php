@@ -55,10 +55,10 @@ try{
 				else { // user is already logged in, so connect the account with user
 					$res=$social->connectAccount('google', $objUserInfo["email"]);
 					if($res==true){
-						Util::jump_to(_folder_lms_.'/index.php?'.'feedback_code=_GOOGLECONNECTMAILOK&feedback_type=inf&feedback_extra='.$objUserInfo["email"]);
+						Util::jump_to(_folder_lms_.'/index.php?'.'feedback_code=_SOCIALCONNECTOK&feedback_type=inf&feedback_extra='.$objUserInfo["email"]);
 					}
 					else{
-						Util::jump_to(_folder_lms_.'/index.php?'.'feedback_code=_GOOGLECONNECTMAILKO&feedback_type=err&feedback_extra='.$objUserInfo["email"]);
+						Util::jump_to(_folder_lms_.'/index.php?'.'feedback_code=_SOCIALCONNECTKO&feedback_type=err&feedback_extra='.$objUserInfo["email"]);
 					}
 				}
 			}

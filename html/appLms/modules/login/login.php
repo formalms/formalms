@@ -552,52 +552,7 @@ switch($GLOBALS['op']) {
 	} break;
 
 	case "facebook_login": {
-		$social =new Social();
-		$social->includeFacebookLib();
-		
-		$facebook =$social->getFacebookObj();
-		$session = $facebook->getSession();
-
-		$me = null;
-		// Session based API call.
-		if ($session) {
-			try {
-				$uid = $facebook->getUser();
-				$me = $facebook->api('/me');
-			} catch (FacebookApiException $e) {
-				//error_log($e);
-			}
-		}
-
-		if ($me && $uid) {
-
-			if (Docebo::user()->isAnonymous()) { // sign in the user
-				$user =DoceboUser::createDoceboUserFromField('facebook_id', $uid, 'public_area');
-				if ($user) {
-					DoceboUser::setupUser($user);
-					
-					Util::jump_to('index.php?r=lms/elearning/show');
-				} else {
-					//Util::jump_to('index.php?access_fail=2');
-					if ($_SESSION['fb_from'] == 'login') {
-						socialConnectLogin($uid, 'facebook');
-					}
-					else if ($_SESSION['fb_from'] == 'register') {
-						$_SESSION['fb_info']=$me;
-						Util::jump_to(Get::rel_path('base').'/index.php?modname=login&op=register');
-					}
-					return;
-				}
-			} else { // user is already logged in, so connect the account with user
-				$social->connectAccount('facebook', $uid);
-				Util::jump_to('index.php?r=lms/elearning/show');
-				die();
-			}
-		}
-		else {
-			Util::jump_to('index.php?access_fail=3');
-		}
-		die();
+		include_once(dirname(__FILE__).'/login.facebook.oauth2.php');
 	} break;
 
 
