@@ -75,10 +75,6 @@ try{
 	}
 }
 catch(Exception $e){
-echo $e->getMessage();
-echo "<hr>";
-var_dump($e);
-die();
 // reset session auth code
 	Util::jump_to('index.php?access_fail=5');
 }
