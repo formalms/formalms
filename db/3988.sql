@@ -17,34 +17,31 @@ INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text) 
 INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text) values ((SELECT id_text FROM core_lang_text where text_key = '_SOCIAL_GOOGLE_SECRET'), 'english', 'Google Secret');
 INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text) values ((SELECT id_text FROM core_lang_text where text_key = '_SOCIAL_GOOGLE_SECRET'), 'italian', 'Google Chiave Segreta');
 
--- GOOGLE ERROR
+-- SOCIAL ERROR
 -- ------------
--- cancel auth google request
--- empty google mail
--- google token expired
--- google login generic unknown error
+-- cancel auth social request
+-- empty social id
+-- social login generic unknown error
+-- social login generic unknown error
 
--- google login error codes
-insert into core_lang_text(text_key,text_module) values ('_CANCELGOOGLELOGIN','login');
-insert into core_lang_text(text_key,text_module) values ('_EMPTYGOOGLEMAIL','login');
-insert into core_lang_text(text_key,text_module) values ('_GOOGLETOKENEXPIRED','login');
-insert into core_lang_text(text_key,text_module) values ('_UNKNOWNGOOGLERROR','login');
-insert into core_lang_text(text_key,text_module) values ('_GOOGLECONNECTMAILKO','login');
-insert into core_lang_text(text_key,text_module) values ('_GOOGLECONNECTMAILOK','login');
+-- social login error codes
+insert IGNORE into core_lang_text(text_key,text_module) values ('_CANCELSOCIALLOGIN','login');
+insert IGNORE into core_lang_text(text_key,text_module) values ('_EMPTYSOCIALID','login');
+insert IGNORE into core_lang_text(text_key,text_module) values ('_UNKNOWNSOCIALERROR','login');
+insert IGNORE into core_lang_text(text_key,text_module) values ('_SOCIALCONNECTKO','login');
+insert IGNORE into core_lang_text(text_key,text_module) values ('_SOCIALCONNECTOK','login');
 
 -- translation login error codes
-insert into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_CANCELGOOGLELOGIN' and text_module = 'login'), 'italian', 'Richiesta di accesso con google annullata dall''utente');
-insert into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_CANCELGOOGLELOGIN' and text_module = 'login'), 'english', 'Request access from google, cancel by user');
-insert into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_EMPTYGOOGLEMAIL' and text_module = 'login'), 'italian', 'Impossibile recuperare la mail di accesso di google');
-insert into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_EMPTYGOOGLEMAIL' and text_module = 'login'), 'english', 'Unable to find google mail');
-insert into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_GOOGLETOKENEXPIRED' and text_module = 'login'), 'italian', 'Token google scaduto, rieffettuare il login');
-insert into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_GOOGLETOKENEXPIRED' and text_module = 'login'), 'english', 'Google token expired');
-insert into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_UNKNOWNGOOGLERROR' and text_module = 'login'), 'italian', 'Errore sconosciuto durante login google');
-insert into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_UNKNOWNGOOGLERROR' and text_module = 'login'), 'english', 'Unknown error in google login');
-insert into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_GOOGLECONNECTMAILKO' and text_module = 'login'), 'italian', 'Connessione all''account google non riuscita');
-insert into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_GOOGLECONNECTMAILKO' and text_module = 'login'), 'english', 'Google id connection failed');
-insert into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_GOOGLECONNECTMAILOK' and text_module = 'login'), 'italian', 'Connessione all''account google riuscita');
-insert into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_GOOGLECONNECTMAILOK' and text_module = 'login'), 'english', 'Google id connection successs');
+insert IGNORE into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_CANCELSOCIALLOGIN' and text_module = 'login'), 'italian', 'Richiesta di accesso con social annullata dall''utente');
+insert IGNORE into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_CANCELSOCIALLOGIN' and text_module = 'login'), 'english', 'Request access from social, cancel by user');
+insert IGNORE into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_EMPTYSOCIALID' and text_module = 'login'), 'italian', 'Impossibile recuperare l''id di accesso social');
+insert IGNORE into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_EMPTYSOCIALID' and text_module = 'login'), 'english', 'Unable to find social id account');
+insert IGNORE into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_UNKNOWNSOCIALERROR' and text_module = 'login'), 'italian', 'Errore sconosciuto durante login social');
+insert IGNORE into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_UNKNOWNSOCIALERROR' and text_module = 'login'), 'english', 'Unknown error in social login');
+insert IGNORE into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_SOCIALCONNECTKO' and text_module = 'login'), 'italian', 'Connessione all''account social non riuscita');
+insert IGNORE into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_SOCIALCONNECTKO' and text_module = 'login'), 'english', 'Social id connection failed');
+insert IGNORE into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_SOCIALCONNECTOK' and text_module = 'login'), 'italian', 'Connessione all''account social riuscita');
+insert IGNORE into core_lang_translation(id_text, lang_code, translation_text) values ((select id_text from core_lang_text where text_key = '_SOCIALCONNECTOK' and text_module = 'login'), 'english', 'Social id connection successs');
 
 -- global update to insert return uri google
 update core_lang_translation set translation_text = concat(translation_text, ' (redirect_uri: http://server/path/index.php?modname=login&op=google_login)') where id_text = (select id_text from core_lang_text where text_key = '_SOCIAL_GOOGLE_ACTIVE' and text_module = 'configuration');
