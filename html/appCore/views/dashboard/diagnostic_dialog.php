@@ -69,6 +69,14 @@
 		}
 	}
 
+	$html .= '<li>'.Lang::t('_OPENSSL', 'configuration').':&nbsp;<b>'.( extension_loaded('openssl')
+			? Lang::t('_ON', 'standard')
+			: '<span class="red">'.Lang::t('_OFF', 'standard').' '.Lang::t('_WARINNG_SOCIAL', 'configuration').'</span>').'</b>';
+	
+	$html .= '<li>'.Lang::t('_ALLOW_URL_FOPEN', 'configuration').':&nbsp;<b>'.($php_conf['allow_url_fopen']['local_value']
+		? Lang::t('_ON')
+		: '<span class="red">'.Lang::t('_OFF', 'standard').' '.Lang::t('_WARINNG_SOCIAL', 'configuration').'</span>').'</b>';;
+
 $html .= '</ul>';
 $html .= '</div>';
 
