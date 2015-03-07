@@ -1,5 +1,5 @@
 -- label
-INSERT INTO core_lang_text(text_key, text_module, text_attributes)VALUES ('_MAINTENANCE_TEXT', 'login', '');
+INSERT IGNORE INTO core_lang_text(text_key, text_module, text_attributes)VALUES ('_MAINTENANCE_TEXT', 'login', '');
 
 -- translation
 INSERT IGNORE INTO core_lang_translation( id_text, lang_code, translation_text, save_date )
