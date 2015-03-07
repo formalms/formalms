@@ -2704,6 +2704,8 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('social_fb_api', '', 'string', 255, 'main', 12, 1, 1, 0, ''),
 ('social_fb_secret', '', 'string', 255, 'main', 12, 2, 1, 0, ''),
 ('social_google_active', 'off', 'enum', 3, 'main', 12, 9, 1, 0, ''),
+('social_google_client_id', '', 'string', 255, 'main', 12, 10, 1, 0, ''),
+('social_google_secret', '', 'string', 255, 'main', 12, 11, 1, 0, ''),
 ('social_linkedin_access', '', 'string', 255, 'main', 12, 7, 1, 0, ''),
 ('social_linkedin_active', 'off', 'enum', 3, 'main', 12, 6, 1, 0, ''),
 ('social_linkedin_secret', '', 'string', 255, 'main', 12, 8, 1, 0, ''),
