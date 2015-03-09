@@ -33,7 +33,7 @@ class LoginLayout {
 
         $li = '';
         $ul = '<ul id="main_menu">';
-        
+
 		$i = 0;
 		while(list($id_pages, $title) = sql_fetch_row($result)) {
 			$li .= '<li'.( $i == $numof ? ' class="last"' : '' ).'><a href="index.php?modname=login&amp;op=readwebpages&amp;idPages='.$id_pages.'">'
@@ -126,20 +126,20 @@ class LoginLayout {
 			}
 			if(isset($_GET['access_fail'])) {
 				switch((int)$_GET['access_fail']) {
-					default:  
-				$html .= '<b class="login_failed">'.Lang::t('_NOACCESS', 'login').'</b>';
-					  break;
-					case 4: // 
+					case 4: //
 						$html .= '<b class="login_failed">'.Lang::t('_EMPTYSOCIALID', 'login').'</b>';
 					  break;
-					case 5: // 
+					case 5: //
 						$html .= '<b class="login_failed">'.Lang::t('_UNKNOWNSOCIALERROR', 'login').'</b>';
 					  break;
-					case 6: // 
+					case 6: //
 						$html .= '<b class="login_failed">'.Lang::t('_CANCELSOCIALLOGIN', 'login').'</b>';
 					  break;
+					default:
+						$html .= '<b class="login_failed">'.Lang::t('_NOACCESS', 'login').'</b>';
+					  break;
 				}
-			
+
 			}
 			if(isset($_GET['msg'])) {
 				$class ="login_failed";
@@ -187,7 +187,7 @@ class LoginLayout {
 
 		$res.= Form::openForm('social_form', Get::rel_path('lms').'/index.php?modname=login&amp;op=social')
 			.'<span>'.Lang::t('_LOGIN_WITH', 'login').' </span>';
-		
+
 		if ($social->isActive('facebook')) {
 			$res.='<a href="index.php?modname=login&amp;op=facebook_login">'.Get::img('social/facebook-24.png').'</a>';
 		}
@@ -205,7 +205,7 @@ class LoginLayout {
 		}
 
 		$res.=Form::closeForm();
-		
+
 		$res.='</div>';
 		return $res;
 	}
