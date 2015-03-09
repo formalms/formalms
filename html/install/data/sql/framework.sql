@@ -1380,6 +1380,34 @@ INSERT INTO `core_platform` (`platform`, `class_file`, `class_name`, `class_file
 -- --------------------------------------------------------
 
 --
+-- Struttura della tabella `core_plugin`
+--
+
+
+CREATE TABLE IF NOT EXISTS `core_plugin` (
+  `plugin_id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `title` varchar(64) NOT NULL,
+  `code` varchar(32) NOT NULL,
+  `category` VARCHAR(255),
+  `version` varchar(16) NOT NULL,
+  `author` varchar(128) NOT NULL,
+  `link` varchar(255) NOT NULL,
+  `priority` int(5) NOT NULL,
+  `description` text NOT NULL,
+  `active` int(1) NOT NULL,
+  PRIMARY KEY (`plugin_id`),
+  UNIQUE KEY `name` (`name`,`code`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+--
+-- Dump dei dati per la tabella `core_plugin`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `core_privacypolicy`
 --
 
@@ -2224,7 +2252,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('code_teleskill', '', 'string', 255, 'teleskill', 6, 3, 1, 0, ''),
 ('common_admin_session', 'on', 'enum', 3, 'security', 8, 24, 1, 0, ''),
 ('conference_creation_limit_per_user', '99999999999', 'string', 255, '0', 6, 0, 1, 0, ''),
-('core_version', '1.3', 'string', 255, '0', 1, 0, 1, 1, ''),
+('core_version', '1.4', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('course_block', 'off', 'enum', 3, 0, 4, 5, 1, 0, ''),
 ('course_quota', '0', 'string', 255, '0', 4, 5, 1, 0, ''),
 ('currency_symbol', '&euro;', 'string', 10, '0', 5, 2, 1, 0, ''),
