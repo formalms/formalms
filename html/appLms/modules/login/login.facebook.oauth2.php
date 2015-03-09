@@ -1,4 +1,14 @@
-<?php
+<?php //if (!defined('IN_FORMA')) { die('You can\'t access!'); }
+
+/* ======================================================================== \
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+\ ======================================================================== */
+
 use OAuth\OAuth2\Service\Facebook;
 use OAuth\Common\Storage\Session;
 use OAuth\Common\Consumer\Credentials;
@@ -35,7 +45,7 @@ try{
 			// 2. $_REQUEST['code'] -> RETURN OK FROM FACEBOOK AUTH
 		case (isset($_REQUEST['code'])):
 			$token = $facebookService->requestAccessToken($_GET['code']);
-			 
+
 			$objUserInfo = json_decode($facebookService->request('/me'), true);
 
 			if (!empty($objUserInfo["id"])) {

@@ -1,4 +1,14 @@
-<?php
+<?php //if (!defined('IN_FORMA')) { die('You can\'t access!'); }
+
+/* ======================================================================== \
+|   FORMA - The E-Learning Suite                                            |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+\ ======================================================================== */
+
 use OAuth\OAuth2\Service\Google;
 use OAuth\Common\Storage\Session;
 use OAuth\Common\Consumer\Credentials;
@@ -37,7 +47,7 @@ try{
 			// 2. $_REQUEST['code'] -> RETURN OK FROM GOOGLE AUTH
 		case (isset($_REQUEST['code'])):
 			$token = $googleService->requestAccessToken($_GET['code']);
-			 
+
 			$objUserInfo = json_decode($googleService->request('https://www.googleapis.com/oauth2/v1/userinfo'), true);
 
 			if (!empty($objUserInfo["email"])) {
