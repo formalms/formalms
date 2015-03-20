@@ -24,7 +24,7 @@ class LoginLayout {
 		$query = "
 		SELECT idPages, title
 		FROM %lms_webpages
-		WHERE publish = '1' AND language = '".getLanguage()."'
+		WHERE publish = '1' AND in_home='0' AND language = '".getLanguage()."'
 		ORDER BY sequence ";
 		$result = $db->query( $query);
 

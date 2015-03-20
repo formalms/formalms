@@ -35,7 +35,6 @@
 			<a href="index.php"><img class="left_logo" src="<?php echo Layout::path(); ?>images/company_logo.png" alt="Left logo" /></a>
 			<div class="nofloat"></div>
 		</div>
-        <div class="webcontent"><?php echo LoginLayout::external_page(); ?></div>        
         <div class="content">
             <?php if ($GLOBALS['framework']['course_block'] == "on" && $GLOBALS['maintenance'] != "on") { ?>
 			    <div class="homecatalogue">
@@ -51,7 +50,7 @@
 			</div>
 			<?php } ?>
 		</div>
-
+              
 		<!-- footer -->
 		<div class="footer">
 			<?php if ($GLOBALS['maintenance'] != "on") { ?>
@@ -62,6 +61,7 @@
 				<?php echo Layout::copyright(); ?>
 			</div>
 		</div>
+        <div class="external_page"><?php echo LoginLayout::external_page() ?></div>                                                    
 		<div class="webcontent">
 			<?php if ($GLOBALS['maintenance'] == "on") { ?>
 			<div class="box">
@@ -71,6 +71,7 @@
 				</div>
 			</div>
 			<?php } ?>
+
 			<div class="box">
 				<h3><?php echo Lang::t('_HOMEPAGE', 'login'); ?></h3>
 				<div class="text">
