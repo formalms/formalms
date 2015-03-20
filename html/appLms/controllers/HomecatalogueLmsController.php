@@ -204,5 +204,5 @@ class HomecatalogueLmsController extends LmsController
 		}
 		die();
 	}
-}
+} 
 ?>

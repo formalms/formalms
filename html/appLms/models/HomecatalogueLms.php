@@ -305,5 +305,24 @@ class HomecatalogueLms extends Model
 
 		return $res;
 	}
+    
+    public function getMajorCategory($std_link, $only_son = false)
+    {
+        $query =    "SELECT idCategory, path, lev"
+                    ." FROM %lms_category"
+                    ." WHERE lev = 1"
+                    ." ORDER BY path";
+
+        $result = sql_query($query);
+        $res = array();
+
+        while(list($id_cat, $path, $level) = sql_fetch_row($result))
+        {
+            $name = end(explode('/', $path));
+            $res[$id_cat] = $name;
+        }
+
+        return $res;
+    }
 }
 ?>
