@@ -3,6 +3,49 @@ FORMA LMS
 
 RELEASE CHANGELOG
 
+---------------------------------------------------------------------------------------
+FORMA 1.4
+---------------------------------------------------------------------------------------
+
+3809 | Bug| Blank page on certificate creation
+3811 | Bug| Helpdesk popup not working on php 5.2
+4024 | Bug| Social account linked to forma account not displayd in personal info box
+1455 | Bug| Wrong message when blocking registration requests to waiting users
+1780 | Bug| Certificates - Empty values in classroom course variables
+2095 | Bug| Test - Impossible change suspension option
+2735 | Bug| OrgChart - User level and language not shown in dynamic columns
+3574 | Bug| GRadebook - Stats not working properly
+3596 | Bug| Block subscription by code if course is closed
+3635 | Bug| Missing image in forum
+3636 | Bug| Force password change is not blocking
+3687 | Bug| User Profile - Wrong language order in language selector
+3725 | Bug| Root node not listed on user import
+3758 | Bug| IO task - Error on parameters send
+3761 | Bug| EVENTS - wrong description for event recipients in event manager
+3765 | Bug| Added Customscript for modules
+3801 | Bug| Certificate - ed_date_begin tag not working
+3810 | Bug| Course Copy - Scorm version not copied but set to 1.2 by default
+3893 | Bug| Maintenance password lenght limited to 3 char
+3901 | Bug| Scorm - maxtimeallowed parameter is not initialized
+3908 | Bug| Customscripts not included in \lib\lib.eventmanager.php
+3919 | Bug| Installer - Admin user must be configured
+3924 | Bug| Fix footer credits display on login page
+3970 | Bug| Some links not working on latest mobile browsers (IOS and Android)
+4014 | Bug| Errore nel Web Service Checkusername
+4015 | Bug| GRADEBOOK - Exclude unsubscribed users from stats
+4033 | Bug| Course Copy - All objects are copied even if unselected
+4036 | Bug| Facebook Login not working
+3743 | Bug| Deleted competences are not removed from associated courses
+ 522 |Change Request | Link a catalogo nella pagina di login
+3690 |Change Request | Maintenance mode - Global refactoring
+3737 |Change Request | GRADEBOOK - Remove filter in final score edit
+3762 |Change Request | Added Customscript for IO task
+3902 |Change Request | Certificates - enable/define pdf protection password in config
+3926 |Change Request | Glossary - Split alphabetical selector (Robykirk)
+3972 |Change Request | Disable simultaneous access with the same username - set by default
+3988 |Change Request | Switch Google authetication to use oauth service
+3989 |Change Request | Language upgrade and fix for release
+3998 |Change Request | Ripristino pagine esterno nella pagine di login
 
 ---------------------------------------------------------------------------------------
 FORMA 1.3
@@ -140,7 +183,7 @@ FORMA 1.1
 1323 | Bug | Communications were saved even with non-allowed files attached
 2210 | Bug | Template - Login box breaks is social functions are active
 2211 | Bug | Catalog - Wrong div class and inline styling for labels view
-2242 | Bug | My courses - Elearning Tab - Courses assigned to a curricula were hidden under "All open courses" filter 
+2242 | Bug | My courses - Elearning Tab - Courses assigned to a curricula were hidden under "All open courses" filter
 2209 | Bug | Page footer position error in html page edit
 1188 | Bug | Question Bank - Added page autorefresh on question delete
 2182 | Bug | Wrong/missing label for course status in infocourse module
@@ -265,11 +308,11 @@ Improvement
 	Import users trough csv function
 	Some reports improvements and fixings (report search filter, ...)
 	Added the visualization of course description and the possibility to download demo material from the home catalogue
-	
+
 Bug id
 	467, 464, 465, 456, 453, 451, 450, 447, 444, 441, 438, 436, 434, 433, 431, 430, 429, 428, 425, 426,424, 423,421,
 	420,419, 418, 417, 412, 410, 407, 399, 389, 396, 394, 393, 392, 390, 387, 385, 384, 382, 381, 380, 379, 359, 342
-	
+
 Generic Fixes
 	Fix: Label image update
 	Fix: Optimization for admin user filter query
@@ -294,7 +337,7 @@ Docebo 4.0.4
 
 - Updated addon htmlpurifier to 4.2.0 version
 
-- interface clarification for a new course menu assignment 
+- interface clarification for a new course menu assignment
 
 - Errors with labels display and image upload
 

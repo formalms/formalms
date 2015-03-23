@@ -10,8 +10,8 @@
 \ ======================================================================== */
 
 -----------------------------------------------------------------------------
-FORMALMS 1.3
-Relase date: 2014 November 10
+FORMALMS 1.4
+Relase date: 2015 March 30
 -----------------------------------------------------------------------------
 
 
@@ -19,6 +19,7 @@ Index
 -----
 
 0.   New in these release
+0.2  Discontinued and deprecated features
 1.   Licence
 2.   Requirements
 3.   Installation procedure
@@ -37,36 +38,26 @@ Here are some notes:
 
 In this release we introduced, in a "experimental status", the following new features:
 
-a) Plugin manager:
-   you can build your own plugins and automatically execute it.
-   Plugins will be official distributed or provided by third parties.
-b) BigBlueButton and Teleskill conference as plugin
-   we release BBB and Teleskill as plugin . The plugin version is used if plugin manager is enabled
-   otherwise the standard module version is used. When plugin will be stable, module version will be
-   deprecated and dropped
-c) Alternate template engine TWIG:
-   you can build views with the TWIG engine superseeding standard views in custom engine (php).
-d) Custom scripts overlay:
-   you can now build your modified version of some files on a "custom scripts" folders structure.
-   When a custom script is found, the standard execution will be overlayed by the "custom" version.
-e) PHP 5.5 and 5.6:
-   forma.lms can now be installed with php 5.5 and 5.6 version,
-   NO tests were made with these versions of php, so please provide feedback on any issue you may find.
+a) Google login (social login):
+   Google will discontinued openid login feature upon 2015 april 20, allowing only oauth2 protocol
+   for authentication. With this release, forma.lms switch google authentication to oauth2.
+   To use google oauth2 you must register at google an application and  generate an application ID and a secret key
+   thoe value must be enteter in the configuration screen to enable google authentication.
 
-The new features in experimental status can be used for test and development works: they are provided
-"as is" in a "beta stage" and can be used to test and prepare your installation.
-These features may be reworked or modified in "core execution" to meet tests results and usage feedbacks,
-to be stabilized in the next releases.
+   FOr those that have google authentication enabled and perfom forma.lms upgrade before 20 april 2015,
+   for backward compatibility, the upgrade enable in config.php (for the transition period) the old openid protocol
+   After the switchoff date you must disable openid in your config.php file
 
-All these new features are disabled by defaults. the features must be enebled in the config file
-if you want use it
+   The openid protocol are "DEPRECATED" from this release and will be DISCONTINUED
+
+b) Plugin manager: the plugin feature still remain in "experimental" status
+c) Custom scripts overlay: the feature is fully supported
 
 0.2 Discontinued and deprecated features
 
 In these release we put in "DEPRECATED" status :
-a) DimDim support
-b) docebo405ce template
-c) all "CMS" components
+a) openid protocol ( for google login)
+b) php 5.2  support
 
 in a next release, without any furher advice, deprecated features will be discontinued and dropped
 from the main stream
@@ -116,6 +107,7 @@ Depending on number of languagse chosen, this operation can take some time in or
 - Export the language files (if you did any customization), to import them again after the upgrade
 - Delete all the files and dir excluding
   * the folder files/
+  * the folder customscripts/
   * your own template in templates/<yourowntemplate> (if you have any)
   * the config.php file in root folder,
 - Upload the new files
@@ -133,8 +125,8 @@ Depending on number of languagse, this operation can take some time in order to 
 
 You can directly upgrade your old docebo (either series 3.6.x and 4.x) installations to forma.lms 1.x
 The config.php file is completly changed from D36 and with more config options since D4.x
-The upgrade procedure change for you the config.php and write (if writeble, or require you to download it
-and upload to the web root folder).
+The upgrade procedure change for you the config.php and write (if writeble), or require you to download it
+and upload to the web root folder.
 Coming from D36 review the config.php and add your own settings, if needed
 
 
