@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Forma - نصب");
+define("_INSTALLER_TITLE", "forma.lms - نصب");
 define("_NEXT", "مرحله بعدی");
 define("_BACK", "Back");
 define("_LOADING", "در حال بارگیری");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "دوباره سعی کنید");
 //--------------------------------------
 define("_TITLE_STEP1", "مرحله 1: انتخاب زبان");
 define("_LANGUAGE", "زبان");
-define("_INSTALLER_INTRO_TEXT", "شرکت دوکبو تولیدکننده چهارچوب یادگیری الکترونیک متن باز DoceboLMS است که در سازمان های پیچیده، شرکت ها، دستگاه های دولتی و مراکز بهداشتی کاربرد دارد.
+define("_INSTALLER_INTRO_TEXT", "شرکت دوکبو تولیدکننده چهارچوب یادگیری الکترونیک متن باز forma.lms است که در سازمان های پیچیده، شرکت ها، دستگاه های دولتی و مراکز بهداشتی کاربرد دارد.
 	<p><b>ویژگی های کلیدی</b></p>
 	<ul>
 		<li>پشتیبانی از اسکورم 1.2 و 2004</li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","نسخه PHP :");
 define("_MYSQLCLIENT_VERSION","نسخه مشتری Mysql :");
 define("_LDAP","Ldap :");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","تنها در صورت نیاز به استفاده از LDAP این اخطار را در نظر بگیرید");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","PHP Information : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
@@ -40,6 +42,8 @@ define("_REGISTER_GLOBALS","register_global : ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize : ");
 define("_POST_MAX_SIZE","post_max_size : ");
 define("_MAX_EXECUTION_TIME","max_execution_time : ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","ON ");
 define("_OFF","OFF ");
 
@@ -99,7 +103,7 @@ define("_DOWNLOAD_CONFIG", "بارگیری config");
 define("_CHECKED_DIRECTORIES","یکی از پوشه های ذخیره پرونده ها وجود ندارد یا فاقد مجوز صحیح است");
 define("_CHECKED_FILES","برخی پرونده ها فاقد مجوز درست اند");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - به روز رسانی");
+define("_UPGRADER_TITLE", "forma.lms - به روز رسانی");
 define("_UPGRADE_CONFIG","به روز رسانی پرونده config.php");
 define("_UPG_CONFIG_OK","به روز رسانی پرونده config.php با موفقیت انجام شد");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");

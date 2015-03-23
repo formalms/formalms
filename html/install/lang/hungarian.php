@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Forma - Telepítés");
+define("_INSTALLER_TITLE", "forma.lms - Telepítés");
 define("_NEXT", "Következő lépés");
 define("_BACK", "Vissza");
 define("_LOADING", "Betöltés");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Próbáld újra");
 //--------------------------------------
 define("_TITLE_STEP1", "1. lépés: nyelv választás");
 define("_LANGUAGE", "Nyelv");
-define("_INSTALLER_INTRO_TEXT", "A Forma egy cég, amely kifejlesztette a saját, nyílt forráskódú e-tanulási keretrendszerét, a FormaLMS-t, összetett szervezetek, vállalatok, valamint a közigazgatás és egészségügy számára.
+define("_INSTALLER_INTRO_TEXT", "A formalms.org egy cég, amely kifejlesztette a saját, nyílt forráskódú e-tanulási keretrendszerét, a forma.lms-t, összetett szervezetek, vállalatok, valamint a közigazgatás és egészségügy számára.
 	<p><b>A legfontosabb jellemzői</b></p>
 	<ul>
 		<li>Scorm 1.2 és 2004 támogatás</li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","PHP verzió : ");
 define("_MYSQLCLIENT_VERSION","MySQL kliens verzió: ");
 define("_LDAP","LDAP: ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Csak akkor vedd figyelembe ezt a figyelmeztetést, ha szükséged van az LDAP használatára ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","PHP információ: ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc: ");
@@ -40,10 +42,12 @@ define("_REGISTER_GLOBALS","register_global: ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize: ");
 define("_POST_MAX_SIZE","post_max_size: ");
 define("_MAX_EXECUTION_TIME","max_execution_time: ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","ON ");
 define("_OFF","OFF ");
 
-define("_VERSION","Forma verzió");
+define("_VERSION","forma.lms verzió");
 define("_START","Kezdés");
 define("_END","Vége");
 // -----------------------------------------
@@ -99,7 +103,7 @@ define("_DOWNLOAD_CONFIG", "Konfig letöltése");
 define("_CHECKED_DIRECTORIES","Néhány mappa, ahol a fájlok tárolódnak, nem létezik, vagy nem rendelkezik megfelelő engedéllyel");
 define("_CHECKED_FILES","Bizonyos fájlok nem rendelkeznek megfelelő engedéllyel");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - Frissítés");
+define("_UPGRADER_TITLE", "forma.lms - Frissítés");
 define("_UPGRADE_CONFIG","Config.php fájl frissítése");
 define("_UPG_CONFIG_OK","Config.php fájl sikeresen frissítve");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");

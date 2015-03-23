@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Forma - Instalacion");
+define("_INSTALLER_TITLE", "forma.lms - Instalacion");
 define("_NEXT", "Proximo paso");
 define("_BACK", "Atras");
 define("_LOADING", "Cargando");
@@ -9,7 +9,7 @@ define("_TRY_AGAIN", "Intente nuevamente");
 define("_TITLE_STEP1", "Paso 1: Seleccione idioma");
 define("_LANGUAGE", "Idioma");
 
-define("_INSTALLER_INTRO_TEXT", "	Forma es una compañia que ha desarrollado su propio open source e-learning framework llamado FormaLMS, apropiado para organizaciones complejas, mercado corporativo, para el gobierno y para la salud.
+define("_INSTALLER_INTRO_TEXT", "formalms.org es una compañia que ha desarrollado su propio open source e-learning framework llamado forma.lms, apropiado para organizaciones complejas, mercado corporativo, para el gobierno y para la salud.
 	<p><b>Principales caracteristicas:</b></p>
 	<ul>
 		<li>Soporte para Scorm 1.2 y 2004</li>
@@ -33,6 +33,8 @@ define("_PHPVERSION","Version de PHP : ");
 define("_MYSQLCLIENT_VERSION","Version de MySQL : ");
 define("_LDAP","Ldap : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Considere esta advertencia solamente si Ud. necesita usar LDAP ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","Informacion de PHP : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
@@ -41,6 +43,8 @@ define("_REGISTER_GLOBALS","register_global : ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize : ");
 define("_POST_MAX_SIZE","post_max_size : ");
 define("_MAX_EXECUTION_TIME","max_execution_time : ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","ON ");
 define("_OFF","OFF ");
 // -----------------------------------------
@@ -96,7 +100,7 @@ define("_DOWNLOAD_CONFIG", "Descargar configuracion");
 define("_CHECKED_DIRECTORIES","Algunos directorios donde los archivos estan guardados no existen o no tienen los permisos correctos");
 define("_CHECKED_FILES","Ciertos archivos no tienen el permiso adecuado");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - Actualizacion");
+define("_UPGRADER_TITLE", "forma.lms - Actualizacion");
 define("_UPGRADE_CONFIG","Actualizando el archivo config.php");
 define("_UPG_CONFIG_OK","El archivo Config.php fue actualizado satisfactoriamente");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");

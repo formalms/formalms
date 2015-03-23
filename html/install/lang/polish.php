@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Forma - Instalacja");
+define("_INSTALLER_TITLE", "forma.lms - Instalacja");
 define("_NEXT", "Dalej");
 define("_BACK", "Cofnij");
 define("_LOADING", "Ładowanie");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Spróbuj ponownie");
 //--------------------------------------
 define("_TITLE_STEP1", "Krok 1: wybierz język");
 define("_LANGUAGE", "Język");
-define("_INSTALLER_INTRO_TEXT", "Forma to firma która stworzyła własny framework open-source do e-learningu nazywany FormaLMS odpowiedni dla dużych organizacji, rynku korporacyjnego, rządu oraz służby zdrowia.
+define("_INSTALLER_INTRO_TEXT", "formalms.org to firma która stworzyła własny framework open-source do e-learningu nazywany forma.lms odpowiedni dla dużych organizacji, rynku korporacyjnego, rządu oraz służby zdrowia.
 	<p><b>Główne cechy</b></p>
 	<ul>
 		<li>Wsparcie dla Scorm 1.2 i 2004</li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","Wersja PHP  : ");
 define("_MYSQLCLIENT_VERSION","Wersja klienta Mysql : ");
 define("_LDAP","Ldap : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Weź pod uwagę to ostrzeżenie tylko jeżeli masz zamiar korzystać z LDAP ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","Informacje o PHP : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
@@ -40,6 +42,8 @@ define("_REGISTER_GLOBALS","register_global : ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize : ");
 define("_POST_MAX_SIZE","post_max_size : ");
 define("_MAX_EXECUTION_TIME","max_execution_time : ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","ON ");
 define("_OFF","OFF ");
 // -----------------------------------------
@@ -95,7 +99,7 @@ define("_DOWNLOAD_CONFIG", "Pobierz plik config");
 define("_CHECKED_DIRECTORIES","Niektóre z folderów gdzie są przechowywane pliki nie istnieją lub nie mają prawidłowego prawa dostępu");
 define("_CHECKED_FILES","Niektóre z plików nie mają właściwego prawa dostępu");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - Aktualizacja");
+define("_UPGRADER_TITLE", "forma.lms - Aktualizacja");
 define("_UPGRADE_CONFIG","Aktualizacja pliku config.php");
 define("_UPG_CONFIG_OK","Config.php został zaktualizowany");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");

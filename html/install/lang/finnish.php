@@ -1,6 +1,6 @@
 <?php
 
-define("_INSTALLER_TITLE", "Forma - Asennus");
+define("_INSTALLER_TITLE", "forma.lms - Asennus");
 define("_NEXT", "Seuraava vaihe");
 define("_BACK", "Takaisin");
 define("_LOADING", "Ladataan");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Yritä uudestaan");
 //--------------------------------------
 define("_TITLE_STEP1", "Vaihe 1: Valitse kieli");
 define("_LANGUAGE", "Kieli");
-define("_INSTALLER_INTRO_TEXT", "Forma on yhtiö joka on kehittänyt omat avoimen lähdekoodin verkko-oppimispuitteet nimeltään FormaLMS jotka sopivat monimutkaisille organisaatioille, yritysmarkkinoille, hallintoon ja terveydenhuoltoon.
+define("_INSTALLER_INTRO_TEXT", "formalms.org on yhtiö joka on kehittänyt omat avoimen lähdekoodin verkko-oppimispuitteet nimeltään forma.lms jotka sopivat monimutkaisille organisaatioille, yritysmarkkinoille, hallintoon ja terveydenhuoltoon.
 	<p><b>Keskeiset ominaisuudet</b></p>
 	<ul>
 		<li>Scorm 1.2 ja 2004 tuki</li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","PHP Versio : ");
 define("_MYSQLCLIENT_VERSION","Mysql Clientin Versio : ");
 define("_LDAP","Ldap : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Huomioi tämä varoitus vain jos sinun tarvitsee käyttää LDAP:ia ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","PHP Tiedot : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
@@ -40,10 +42,12 @@ define("_REGISTER_GLOBALS","register_global : ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize : ");
 define("_POST_MAX_SIZE","post_max_size : ");
 define("_MAX_EXECUTION_TIME","max_execution_time : ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","ON ");
 define("_OFF","OFF ");
 
-define("_VERSION","Forma version");
+define("_VERSION","forma.lms version");
 define("_START","Start");
 define("_END","Final");
 // -----------------------------------------
@@ -99,7 +103,7 @@ define("_DOWNLOAD_CONFIG", "Latauksen asetukset");
 define("_CHECKED_DIRECTORIES","Jotkin kansiot joissa tiedostoja säilytetään eivät ole olemassa tai eivät omaa oikeita oikeuksia");
 define("_CHECKED_FILES","Jotkin tiedostot eivät omaa riittäviä oikeuksia");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - Päivitys");
+define("_UPGRADER_TITLE", "forma.lms - Päivitys");
 define("_UPGRADE_CONFIG","Config.php tiedoston päivitys");
 define("_UPG_CONFIG_OK","Config.php tiedosto päivitettiin onnistuneesti");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");

@@ -1,6 +1,6 @@
 <?php
 
-define("_INSTALLER_TITLE", "Forma - Installatie.");
+define("_INSTALLER_TITLE", "forma.lms - Installatie.");
 define("_NEXT", "Volgende stap.");
 define("_BACK", "Terug.");
 define("_LOADING", "Laden.");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Probeer opnieuw.");
 //--------------------------------------
 define("_TITLE_STEP1", "Step 1: Selecteerr een taal.");
 define("_LANGUAGE", "Taal.");
-define("_INSTALLER_INTRO_TEXT", "Forma is een bedrijf dat zijn eigen open-source e-learning framework wat Forma heet ontwikkeld. Toepasbaar in de bedrijfs wereld, de zakelijke markt, overheid en zorg.
+define("_INSTALLER_INTRO_TEXT", "formalms.org is een bedrijf dat zijn eigen open-source e-learning framework wat forma.lms heet ontwikkeld. Toepasbaar in de bedrijfs wereld, de zakelijke markt, overheid en zorg.
 	<p><b>Eigenschappen</b></p>
 	<ul>
 		<li>Scorm 1.2 en 2004 ondersteuning</li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","PHP Versie : ");
 define("_MYSQLCLIENT_VERSION","Mysql CLient Versie : ");
 define("_LDAP","Ldap : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Deze  waarschuwing is alleen geldig als je LDAP gaat gebruiken. ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","PHP Informatie : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
@@ -40,6 +42,8 @@ define("_REGISTER_GLOBALS","register_global : ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize : ");
 define("_POST_MAX_SIZE","post_max_size : ");
 define("_MAX_EXECUTION_TIME","max_execution_time : ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","ON ");
 define("_OFF","OFF ");
 // -----------------------------------------
@@ -95,7 +99,7 @@ define("_DOWNLOAD_CONFIG", "Download config");
 define("_CHECKED_DIRECTORIES","Een map waar bestanden worden opgeslagen besataat niet om heefft gen schrijf rechten.");
 define("_CHECKED_FILES","Bepaalde bestanden hebben niet genoeg schrijf rechten.");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - Upgrade");
+define("_UPGRADER_TITLE", "forma.lms - Upgrade");
 define("_UPGRADE_CONFIG","Upgrading config.php bestand");
 define("_UPG_CONFIG_OK","Config.php file Succesvol ge-update.");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");

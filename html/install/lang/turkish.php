@@ -1,6 +1,6 @@
 <?php
 
-define("_INSTALLER_TITLE", "Forma - Kurulum");
+define("_INSTALLER_TITLE", "forma.lms - Kurulum");
 define("_NEXT", "Sonraki Adım");
 define("_BACK", "Geri");
 define("_LOADING", "Yükleniyor");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Tekrar deneyin");
 //--------------------------------------
 define("_TITLE_STEP1", "Adım 1: Dil seçimi");
 define("_LANGUAGE", "Dil");
-define("_INSTALLER_INTRO_TEXT", "Forma; karmaşık organizasyonlar, şirketler pazarı, hükümet ve sağlık sektörüne uygun FormaLMS adında açık-kaynaklı kendi e-öğrenme altyapısını geliştirmiş bir firmadır.
+define("_INSTALLER_INTRO_TEXT", "formalms.org; karmaşık organizasyonlar, şirketler pazarı, hükümet ve sağlık sektörüne uygun forma.lms adında açık-kaynaklı kendi e-öğrenme altyapısını geliştirmiş bir firmadır.
 	<p><b>Önemli Nitelikleri</b></p>
 	<ul>
 		<li>Scorm 1.2 ve 2004 desteği</li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","PHP Versiyonu : ");
 define("_MYSQLCLIENT_VERSION","Mysql İstemci Versiyonu : ");
 define("_LDAP","Ldap : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Bu uyarıyı sadece eğer LDAP kullanacaksanız dikkate alın ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","PHP Bilgisi : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
@@ -40,10 +42,12 @@ define("_REGISTER_GLOBALS","register_global : ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize : ");
 define("_POST_MAX_SIZE","post_max_size : ");
 define("_MAX_EXECUTION_TIME","max_execution_time : ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","ON ");
 define("_OFF","OFF ");
 
-define("_VERSION","Forma versiyonu");
+define("_VERSION","forma.lms versiyonu");
 define("_START","Başlangıç");
 define("_END","Final");
 // -----------------------------------------
@@ -99,7 +103,7 @@ define("_DOWNLOAD_CONFIG", "Karşıdan yükleme yapılandırması");
 define("_CHECKED_DIRECTORIES","Dosyaların kaydedildiği bazı dizinler mevcut değil ya da gerekli yetkiler yok");
 define("_CHECKED_FILES","Belirli dosyalarda yeterli yetkiler yok");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - Güncelleme");
+define("_UPGRADER_TITLE", "forma.lms - Güncelleme");
 define("_UPGRADE_CONFIG","config.php dosyası güncelleniyor");
 define("_UPG_CONFIG_OK","Config.php dosyası başarıyla güncellendi");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");

@@ -1,6 +1,6 @@
 <?php
 
-define("_INSTALLER_TITLE", "Forma - Instalasi");
+define("_INSTALLER_TITLE", "forma.lms - Instalasi");
 define("_NEXT", "Lanjut");
 define("_BACK", "Kembali");
 define("_LOADING", "Sedang memuat");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Coba lagi");
 //--------------------------------------
 define("_TITLE_STEP1", "Langkah 1: Pilih Bahasa");
 define("_LANGUAGE", "Bahasa");
-define("_INSTALLER_INTRO_TEXT", "Forma ialah sebuah perusahaan yang telah mengembangkan framework e-learningnya secara open source dengan nama FormaLMS, yang cocok digunakan untuk organisasi yang kompleks, pasar korporat, instansi pemerintahan dan pusat perawatan kesehatan.
+define("_INSTALLER_INTRO_TEXT", "formalms.org ialah sebuah perusahaan yang telah mengembangkan framework e-learningnya secara open source dengan nama forma.lms, yang cocok digunakan untuk organisasi yang kompleks, pasar korporat, instansi pemerintahan dan pusat perawatan kesehatan.
 	<p><b>Fitur Utama</b></p>
 	<ul>
 		<li>Mendukung Scorm 1.2 dan 2004</li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","Versi PHP : ");
 define("_MYSQLCLIENT_VERSION","Versi Client Mysql : ");
 define("_LDAP","Ldap : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Perhatikan peringatan ini jika anda menggunakan LDAP ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","Informasi PHP : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
@@ -40,10 +42,12 @@ define("_REGISTER_GLOBALS","register_global : ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize : ");
 define("_POST_MAX_SIZE","post_max_size : ");
 define("_MAX_EXECUTION_TIME","max_execution_time : ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","Nyala ");
 define("_OFF","Mati ");
 
-define("_VERSION","Versi Forma");
+define("_VERSION","Versi forma.lms");
 define("_START","Mulai");
 define("_END","Selesai");
 // -----------------------------------------
@@ -99,7 +103,7 @@ define("_DOWNLOAD_CONFIG", "Konfigurasi Download");
 define("_CHECKED_DIRECTORIES","Beberapa directory dimana file akan disimpan tidak ditemukan atau tidak memiliki ijin yang sesuai");
 define("_CHECKED_FILES","File-file tertentu tidak memiliki ijin yang memadai");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - Upgrade");
+define("_UPGRADER_TITLE", "forma.lms - Upgrade");
 define("_UPGRADE_CONFIG","Upgrade file config.php");
 define("_UPG_CONFIG_OK","File Config.php telah di-update");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");

@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Forma - Instalace");
+define("_INSTALLER_TITLE", "forma.lms - Instalace");
 define("_NEXT", "Další krok");
 define("_BACK", "Zpět");
 define("_LOADING", "Načítám");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Zkuste to znovu");
 //--------------------------------------
 define("_TITLE_STEP1", "Krok 1: Zvolte jazyk");
 define("_LANGUAGE", "Jazyk");
-define("_INSTALLER_INTRO_TEXT", "Forma je společnost vyvíjejicí svůj vlastní open-source e-vzdělávací systém nazvaný FormaLMS vhodný pro komplexní organizace, firemní trh, vládu a zdravotnictví.
+define("_INSTALLER_INTRO_TEXT", "formalms.org je společnost vyvíjejicí svůj vlastní open-source e-vzdělávací systém nazvaný forma.lms vhodný pro komplexní organizace, firemní trh, vládu a zdravotnictví.
 	<p><b>Hlavní charakteristiky</b></p>
 	<ul>
 		<li>Podpora pro Scorm 1.2 a 2004</li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","Verze PHP: ");
 define("_MYSQLCLIENT_VERSION","Verze Mysql klienta: ");
 define("_LDAP","Ldap : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Pokuď budete potřebovat LDAP, zvažte toto varování ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","Informace o PHP : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
@@ -40,10 +42,12 @@ define("_REGISTER_GLOBALS","register_global : ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize : ");
 define("_POST_MAX_SIZE","post_max_size : ");
 define("_MAX_EXECUTION_TIME","max_execution_time : ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","Zapnuto ");
 define("_OFF","Vypnuto ");
 
-define("_VERSION","Verze Forma");
+define("_VERSION","Verze forma.lms");
 define("_START","Start");
 define("_END","Konec");
 // -----------------------------------------
@@ -99,7 +103,7 @@ define("_DOWNLOAD_CONFIG", "Stáhnout soubor s konfigurací");
 define("_CHECKED_DIRECTORIES","Některé složky s uloženými soubory neexistují nebo nemají správná oprávnění");
 define("_CHECKED_FILES","Některé soubory nemají adekvátní oprávnění");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - Aktualizace");
+define("_UPGRADER_TITLE", "forma.lms - Aktualizace");
 define("_UPGRADE_CONFIG","Aktualizuji config.php");
 define("_UPG_CONFIG_OK","Config.php byl úspěšně aktualizován");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");

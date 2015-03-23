@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Forma - Встановлення");
+define("_INSTALLER_TITLE", "forma.lms - Встановлення");
 define("_NEXT", "Наступний крок");
 define("_BACK", "Назад");
 define("_LOADING", "Завантаження");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Спробувати знову");
 //--------------------------------------
 define("_TITLE_STEP1", "Крок 1: Оберіть мову");
 define("_LANGUAGE", "Мова");
-define("_INSTALLER_INTRO_TEXT", "Forma - це компанія, що розробила систему електронного навчання з відкритим кодом яка називається FormaLMS і найкраще підходить для великих організацій, корпоративної, держвної галузі та галузі охорони здоров’я.
+define("_INSTALLER_INTRO_TEXT", "formalms.org - це компанія, що розробила систему електронного навчання з відкритим кодом яка називається forma.lms і найкраще підходить для великих організацій, корпоративної, держвної галузі та галузі охорони здоров’я.
 	<p><b>Основні властивості</b></p>
 	<ul>
 		<li>Підтримка Scorm 1.2 та 2004</li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","Версія PHP : ");
 define("_MYSQLCLIENT_VERSION","Версія клієнту Mysql : ");
 define("_LDAP","Ldap : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Зверніть увагу на це тільки якщо ви використовуєте LDAP ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","Інформація про PHP : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
@@ -40,10 +42,12 @@ define("_REGISTER_GLOBALS","register_global : ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize : ");
 define("_POST_MAX_SIZE","post_max_size : ");
 define("_MAX_EXECUTION_TIME","max_execution_time : ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","ON ");
 define("_OFF","OFF ");
 
-define("_VERSION","Версія Forma");
+define("_VERSION","Версія forma.lms");
 define("_START","Початок");
 define("_END","Кінець");
 // -----------------------------------------
@@ -99,7 +103,7 @@ define("_DOWNLOAD_CONFIG", "Завантажити конфіг");
 define("_CHECKED_DIRECTORIES","Деякі директорії для збереження файлів не існують або мають не вірні параметри доступу");
 define("_CHECKED_FILES","Деякі файли мають невірні права доступу");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - Оновлення");
+define("_UPGRADER_TITLE", "forma.lms - Оновлення");
 define("_UPGRADE_CONFIG","Оновлення файлу config.php");
 define("_UPG_CONFIG_OK","Файл Config.php повністю оновлено");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");

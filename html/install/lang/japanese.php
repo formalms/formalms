@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Forma - インストール");
+define("_INSTALLER_TITLE", "forma.lms - インストール");
 define("_NEXT", "進む");
 define("_BACK", "戻る");
 define("_LOADING", "ローディング");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "もう一度試す");
 //--------------------------------------
 define("_TITLE_STEP1", "ステップ1: 言語を選ぶ");
 define("_LANGUAGE", "言語");
-define("_INSTALLER_INTRO_TEXT", "Doceboは複雑な組織、企業市場、政府、医療等のためのオープンソースのE-ラーニングフレームワークであるDoceboLMSを開発している会社です。
+define("_INSTALLER_INTRO_TEXT", "formalms.orgは複雑な組織、企業市場、政府、医療等のためのオープンソースのE-ラーニングフレームワークであるforma.lmsを開発している会社です。
 	<p><b>主要機能</b></p>
 	<ul>
 		<li>Scorm 1.2と2004のサポート</li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","PHPバージョン : ");
 define("_MYSQLCLIENT_VERSION","Mysqlクライアントバージョン : ");
 define("_LDAP","LDAP : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","この警告はLDAPを使う場合のみ考慮してください");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","PHP情報 : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
@@ -40,10 +42,12 @@ define("_REGISTER_GLOBALS","register_global : ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize : ");
 define("_POST_MAX_SIZE","post_max_size : ");
 define("_MAX_EXECUTION_TIME","max_execution_time : ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","ON ");
 define("_OFF","OFF ");
 
-define("_VERSION","Doceboバージョン");
+define("_VERSION","forma.lmsバージョン");
 define("_START","開始");
 define("_END","終了");
 // -----------------------------------------
@@ -100,7 +104,7 @@ define("_DOWNLOAD_CONFIG", "configをダウンロード");
 define("_CHECKED_DIRECTORIES","ファイルが保存されるディレクトリが存在しないか必要なパーミッションがありません");
 define("_CHECKED_FILES","一部のファイルに適切なパーミッションがありません");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - アップグレード");
+define("_UPGRADER_TITLE", "forma.lms - アップグレード");
 define("_UPGRADE_CONFIG","config.phpをアップグレード中");
 define("_UPG_CONFIG_OK","config.phpは無事アップデートされました");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
