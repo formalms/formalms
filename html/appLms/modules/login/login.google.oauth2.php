@@ -1,4 +1,4 @@
-<?php //if (!defined('IN_FORMA')) { die('You can\'t access!'); }
+<?php if (!defined('IN_FORMA')) { die('You can\'t access!'); }
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -19,7 +19,11 @@ $social->includeGoogleLib();
 $client_id = Get::sett('social_google_client_id');
 $client_secret = Get::sett('social_google_secret');
 //$redirect_uri = Get::sett('url').'index.php?modname=login&op=google_login';
-$redirect_uri = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'].'?modname=login&op=google_login';
+$protocol = (    (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' )
+				 or (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https')
+				 or (isset($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) == 'on') ) ? 'https' : 'http' ;
+
+$redirect_uri = $protocol.'://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'].'?modname=login&op=google_login';
 
 try{
 	$serviceFactory = new \OAuth\ServiceFactory();

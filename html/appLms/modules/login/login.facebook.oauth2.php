@@ -1,4 +1,4 @@
-<?php //if (!defined('IN_FORMA')) { die('You can\'t access!'); }
+<?php if (!defined('IN_FORMA')) { die('You can\'t access!'); }
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
