@@ -747,9 +747,13 @@ class MessageModule {
 						if ((isset($_SESSION['idCourse'])) && (isset($GLOBALS['course_descriptor']))) {
 							$course_name = $GLOBALS['course_descriptor']->getValue('name');
 							$is_course = true;
-						} elseif ($_POST['msg_course_filter'] != 0 ) {
-							$query_course = "SELECT name FROM %lms_course WHERE idCourse = ".$_POST['msg_course_filter'];
-							$course_result = $this->db->fetch_row($this->db->query($query_course));
+						} elseif ($_POST['msg_course_filter'] != 0  && is_numeric($_POST['msg_course_filter'])) {
+
+                            $idCourse = $_POST['msg_course_filter'];
+
+                            $query_course = "SELECT name FROM %lms_course WHERE idCourse = ".$idCourse;
+
+                            $course_result = $this->db->fetch_row($this->db->query($query_course));
 							list($name) = $course_result;
 							$course_name = $name;
 							$is_course = true;
