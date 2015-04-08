@@ -1898,11 +1898,11 @@ function modscorm()
 		.getBackUi('index.php?modname=coursereport&amp;op=coursereport', $lang->def('_BACK'))
 	);
 	// XXX: Save input if needed
-	if(isset($_POST['save']))
+	if(isset($_POST['save']) && is_numeric($_POST['id_source']))
 	{
 		$report_man = new CourseReportManager();
 		// check input
-		if($_POST['titolo'] == '')
+		if($_POST['titolo'] == '' )
             $_POST['titolo'] = $lang->def('_NOTITLE');
 		//MODIFICHE NUOVISSIMISSIME
 		$query_report = "
@@ -1965,12 +1965,12 @@ function modscorm()
 
 	if(isset($_POST['filtra']))
 	{
-		if($_POST['source_of']=='scoitem')
+		if($_POST['source_of']=='scoitem' && is_numeric($_POST['title']))
 		{//richiesto lo scorm item
 			$query_report = "
 			SELECT  title
 			FROM ".$GLOBALS['prefix_lms']."_organization
-			WHERE objectType='scormorg' and idResource=".$_POST['title']."";
+			WHERE objectType='scormorg' and idResource=".(int)$_POST['title']."";
 			$risultato=sql_query($query_report);
 			$titolo=sql_fetch_assoc($risultato);
 			$titolo=$titolo['title'];
