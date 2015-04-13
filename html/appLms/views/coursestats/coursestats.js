@@ -79,7 +79,7 @@ var CourseStats = {
 				}
 			});
 
-			E.addListener("set_advanced_filter", "click", function(e) {
+			E.addListener("set_advanced_filter-button", "click", function(e) {
 				C.filterSelection = D.get("filter_selection").value;
 				C.filterOrgChart = D.get("filter_orgchart").value;
 				C.filterGroups = D.get("filter_groups").value;
@@ -87,7 +87,7 @@ var CourseStats = {
 				DataTable_coursestats_table.refresh();
 			});
 
-			E.addListener("reset_advanced_filter", "click", function(e) {
+			E.addListener("reset_advanced_filter-button", "click", function(e) {
 				D.get("filter_selection").selectedIndex = 0;
 				D.get("filter_orgchart").value = 0;
 				D.get("filter_groups").value = 0;
