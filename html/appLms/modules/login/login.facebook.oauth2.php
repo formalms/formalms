@@ -49,6 +49,12 @@ try{
 			$objUserInfo = json_decode($facebookService->request('/me'), true);
 
 			if (!empty($objUserInfo["id"])) {
+				if($_SESSION['fb_from'] == "register"){
+					$_SESSION['fb_info']=$objUserInfo;
+					Util::jump_to(Get::rel_path('base').'/index.php?modname=login&op=register');
+				    die();
+				}
+				
 				if (Docebo::user()->isAnonymous()) { // sign in the user
 					$user = DoceboUser::createDoceboUserFromField('facebook_id', $objUserInfo["id"], 'public_area');
 					if ($user) {
