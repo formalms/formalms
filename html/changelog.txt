@@ -6,7 +6,7 @@ RELEASE CHANGELOG
 ---------------------------------------------------------------------------------------
 FORMA 1.4
 ---------------------------------------------------------------------------------------
-Released: 2015-04-14
+Released: 2015-04-21
 
 3809 | Bug | Blank page on certificate creation
 3811 | Bug | Helpdesk popup not working on php 5.2
@@ -37,7 +37,6 @@ Released: 2015-04-14
 4033 | Bug | Course Copy - All objects are copied even if unselected
 4036 | Bug | Facebook Login non funzionante
 4083 | Bug | Teleskill plugin - 500 internal server error
-4097 | Bug | SECURITY - Multiple PHP Object Injections
 4084 | Bug | Plugin - fixed query on getPluginsInfo function
 4094 | Bug | SECURITY - Blind Time-Based SQL Injection in appCore/lib/lib.message.php
 4095 | Bug | SECURITY - SQL Injection in title param in file appLms/modules/coursereport/coursereport.php
@@ -50,7 +49,7 @@ Released: 2015-04-14
 3737 | Change Request | Gradebook - Remove filter in final score edit
 3762 | Change Request | Added Customscript for IO task
 3763 | Change Request | LANG - added 5 missing keys in the TEST module
-3774 | Change Request | "LANG - event ""course completed"" - message translations have been corrected"
+3774 | Change Request | LANG - event "course completed" - message translations have been corrected
 3902 | Change Request | Certificates - enable/define pdf protection password in config
 3926 | Change Request | Glossary - Split alphabetical selector (Robykirk)
 3972 | Change Request | Disable simultaneous access with the same username - set by default
@@ -115,7 +114,7 @@ Released: 2014-11-14
 
 
 ---------------------------------------------------------------------------------------
-FORMA 1.2 
+FORMA 1.2
 ---------------------------------------------------------------------------------------
 Released: 2014-05-30
 
@@ -201,7 +200,7 @@ Released: 2014-02-18
 1323 | Bug | Communications were saved even with non-allowed files attached
 2210 | Bug | Template - Login box breaks is social functions are active
 2211 | Bug | Catalog - Wrong div class and inline styling for labels view
-2242 | Bug | My courses - Elearning Tab - Courses assigned to a curricula were hidden under "All open courses" filter 
+2242 | Bug | My courses - Elearning Tab - Courses assigned to a curricula were hidden under "All open courses" filter
 2209 | Bug | Page footer position error in html page edit
 1188 | Bug | Question Bank - Added page autorefresh on question delete
 2182 | Bug | Wrong/missing label for course status in infocourse module
@@ -327,11 +326,11 @@ Improvement
 	Import users trough csv function
 	Some reports improvements and fixings (report search filter, ...)
 	Added the visualization of course description and the possibility to download demo material from the home catalogue
-	
+
 Bug id
 	467, 464, 465, 456, 453, 451, 450, 447, 444, 441, 438, 436, 434, 433, 431, 430, 429, 428, 425, 426,424, 423,421,
 	420,419, 418, 417, 412, 410, 407, 399, 389, 396, 394, 393, 392, 390, 387, 385, 384, 382, 381, 380, 379, 359, 342
-	
+
 Generic Fixes
 	Fix: Label image update
 	Fix: Optimization for admin user filter query
@@ -356,7 +355,7 @@ Docebo 4.0.4
 
 - Updated addon htmlpurifier to 4.2.0 version
 
-- interface clarification for a new course menu assignment 
+- interface clarification for a new course menu assignment
 
 - Errors with labels display and image upload
 
