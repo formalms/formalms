@@ -127,7 +127,7 @@ class HomecatalogueLms extends Model
 		$filter .= " AND show_rules = 0";
 
 		$login_link = '<a href="index.php">'.Lang::t('_LOG_IN', 'login').'</a>';
-		$signin_link = '<a href="index.php?modname=login&op=register">'.Lang::t('SIGN_IN', 'login').'</a>';
+		$signin_link = '<a href="index.php?modname=login&op=register">'.Lang::t('_SIGN_IN', 'login').'</a>';
 
 		require_once(_lib_.'/lib.usermanager.php');
 		$option = new UserManagerOption();
@@ -251,7 +251,7 @@ class HomecatalogueLms extends Model
 		$res['body'] = '';
 
 		$login_link = '<a href="index.php">'.Lang::t('_LOG_IN', 'login').'</a>';
-		$signin_link = '<a href="index.php?modname=login&op=register">'.Lang::t('SIGN_IN', 'login').'</a>';
+		$signin_link = '<a href="index.php?modname=login&op=register">'.Lang::t('_SIGN_IN', 'login').'</a>';
 
 		require_once(_lib_.'/lib.usermanager.php');
 		$option = new UserManagerOption();
@@ -305,7 +305,7 @@ class HomecatalogueLms extends Model
 
 		return $res;
 	}
-    
+
     public function getMajorCategory($std_link, $only_son = false)
     {
         $query =    "SELECT idCategory, path, lev"
