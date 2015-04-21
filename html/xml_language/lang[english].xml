@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20150323</DATE>
+  <DATE>20150421</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -1304,6 +1304,7 @@ To change these words please go to Admin/Language management, search for <b>logi
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Accessible Login]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login with]]></key>
+        <key id="login&amp;_LOG_IN" attributes="" save_date="2015-04-21 00:00:00"><![CDATA[Login]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lost password]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fill this field with your user ID and you will receive an email (at your registration address) with the instruction for generate a new password.]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fill this field with the email given in your registration process and you will receive an email that contains your username for this site.]]></key>
@@ -1313,9 +1314,11 @@ To change these words please go to Admin/Language management, search for <b>logi
         <key id="login&amp;_PASSNOMATCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[The two provided passwords are not equal or password field is empty.]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Please [login] or [signin] to buy or proceed with this course]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE_NO_REG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Please [login] to buy or proceed with this course]]></key>
+        <key id="login&amp;_REGISTER_WITH_FACEBOOK" attributes="" save_date="2015-04-21 00:00:00"><![CDATA[register with Facebook]]></key>
         <key id="login&amp;_REG_ELAPSEDREQUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[This request is expired.]]></key>
         <key id="login&amp;_REG_PRIVACY_POLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Privacy policy]]></key>
         <key id="login&amp;_SESSION_EXPIRED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Session expired]]></key>
+        <key id="login&amp;_SIGN_IN" attributes="" save_date="2015-04-21 00:00:00"><![CDATA[Register]]></key>
         <key id="login&amp;_SOCIALCONNECTKO" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Social id connection failed]]></key>
         <key id="login&amp;_SOCIALCONNECTOK" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Social id connection successs]]></key>
         <key id="login&amp;_TWO_USERS_LOGGED_WITH_SAME_USERNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Another user has logged in with your username]]></key>
@@ -2588,6 +2591,7 @@ Password: [password]]]></key>
         <key id="test&amp;_QUEST_TM2_SETSCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Set score]]></key>
         <key id="test&amp;_QUEST_TM2_SETTIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Set time:]]></key>
         <key id="test&amp;_QUEST_UPLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Upload file]]></key>
+        <key id="test&amp;_RESTART_INFO" attributes="" save_date="2015-04-21 00:00:00"><![CDATA[Restart test execution from beginning]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Select page]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Suspend the test after the following number of failed attempts]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Suspend the test for the following number of hours]]></key>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20150323</DATE>
+  <DATE>20150421</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -1295,6 +1295,7 @@ Il sistema, rilasciato in 25 lingue è composto da 53 funzioni tra cui Wiki, For
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login accessibile]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Accedi con]]></key>
+        <key id="login&amp;_LOG_IN" attributes="" save_date="2015-04-21 00:00:00"><![CDATA[Login]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Recupera password o userid]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Riempi questo campo con il tuo userid e riceverai una e-mail (all'indirizzo a con cui ti sei registrato) con le istruzioni per generare una nuova password.]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Metti in questo campo l'indirizzo di posta con cui ti sei registrato e riceverai una email contenente il tuo username per questo sito.]]></key>
@@ -1304,6 +1305,7 @@ Il sistema, rilasciato in 25 lingue è composto da 53 funzioni tra cui Wiki, For
         <key id="login&amp;_PASSNOMATCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Le due digitazione della password non corrispondono oppure la password è bianca.]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Per procedere con l'inscrizione o l'acquisto effettua il [login] o [signin]]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE_NO_REG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Per procedere con l'inscrizione o l'acquisto effettua il [login]]]></key>
+        <key id="login&amp;_REGISTER_WITH_FACEBOOK" attributes="" save_date="2015-04-21 00:00:00"><![CDATA[registrati con Facebook]]></key>
         <key id="login&amp;_REG_ELAPSEDREQUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Questa richiesta è risulta scaduta.]]></key>
         <key id="login&amp;_REG_PRIVACY_POLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Qualsiasi dato, da noi raccolto, che sia idoneo ad identificare una persona, sarà usato solo nel rispetto delle procedure e per lo scopo dichiarato alla persona interessata, ed a condizione che quest'ultima, nei casi previsti dalla legge, lo abbia espressamente autorizzato.
 
@@ -1313,6 +1315,7 @@ Il sistema, rilasciato in 25 lingue è composto da 53 funzioni tra cui Wiki, For
 
 Nella conservazione dei dati verranno osservate accuratezza e precisione per garantire l'integrità e la qualità dei dati trattati. Per qualsiasi informazione aggiuntiva usate il form di contatto.]]></key>
         <key id="login&amp;_SESSION_EXPIRED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sessione Scaduta]]></key>
+        <key id="login&amp;_SIGN_IN" attributes="" save_date="2015-04-21 00:00:00"><![CDATA[Registrati]]></key>
         <key id="login&amp;_SOCIALCONNECTKO" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Connessione all'account social non riuscita]]></key>
         <key id="login&amp;_SOCIALCONNECTOK" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Connessione all'account social riuscita]]></key>
         <key id="login&amp;_TWO_USERS_LOGGED_WITH_SAME_USERNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Un altro utente è entrato con lo stesso username]]></key>
@@ -2581,6 +2584,7 @@ Password: [password]]]></key>
         <key id="test&amp;_QUEST_TM2_SETSCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Imposta punti]]></key>
         <key id="test&amp;_QUEST_TM2_SETTIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Imposta tempo]]></key>
         <key id="test&amp;_QUEST_UPLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Carica un file]]></key>
+        <key id="test&amp;_RESTART_INFO" attributes="" save_date="2015-04-21 00:00:00"><![CDATA[Riesecuzione test dall'inizio]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seleziona pagina]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sospendi il test dopo il seguente numero di tentativi sbagliati]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sospendi la possibilità di compilare il test per il numero di ore seguenti]]></key>
