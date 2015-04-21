@@ -23,3 +23,10 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 -- translation
 INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text, save_date) VALUES ((SELECT id_text FROM core_lang_text WHERE text_key = '_WARINNG_SOCIAL'), 'english', 'Attention without these settings the social login will not work', now() );
 INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text, save_date) VALUES ((SELECT id_text FROM core_lang_text WHERE text_key = '_WARINNG_SOCIAL'), 'italian', 'Attenzione senza questi settaggi la login social non funzioner&agrave;', now() );
+
+
+INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text, save_date)
+SELECT clt.id_text, cll.lang_code, 'Attention without these settings the social login will not work', now()
+FROM   core_lang_text clt, core_lang_language cll
+WHERE  text_key = '_WARINNG_SOCIAL' and lang_code not in ('english','italian');
+
