@@ -3,10 +3,66 @@ FORMA LMS
 
 RELEASE CHANGELOG
 
+---------------------------------------------------------------------------------------
+FORMA 1.4
+---------------------------------------------------------------------------------------
+Released: 2015-04-21
+
+3809 | Bug | Blank page on certificate creation
+3811 | Bug | Helpdesk popup not working on php 5.2
+4024 | Bug | Social account linked to forma account not displayd in personal info box
+1455 | Bug | Wrong message when blocking registration requests to waiting users [1.1]
+1780 | Bug | Certificates - Empty values in classroom course variables
+2095 | Bug | Test - Impossible change suspension option
+2735 | Bug | OrgChart - User level and language not shown in dynamic columns
+3574 | Bug | Gradebook - Exclude unsubscribed users from gneral Statistics table
+3596 | Bug | Block subscription by code if course is closed
+3635 | Bug | Missing image in forum
+3636 | Bug | Force password change is not blocking
+3687 | Bug | User Profile - Wrong language order in language selector
+3725 | Bug | Root node not listed on user import
+3758 | Bug | IO task - Error on parameters send
+3761 | Bug | EVENTS - wrong description for event recipients in event manager
+3765 | Bug | Added Customscript for modules
+3801 | Bug | Certificate - ed_date_begin tag not working
+3810 | Bug | Course Copy - Scorm version not copied but set to 1.2 by default
+3893 | Bug | Maintenance password lenght limited to 3 char
+3901 | Bug | Scorm - maxtimeallowed  parameter is not initialized
+3908 | Bug | Customscripts not included in \lib\lib.eventmanager.php
+3919 | Bug | Installer - Admin user must be configured
+3924 | Bug | Fix footer credits display on login page
+3970 | Bug | Some links not working on latest mobile browsers (IOS and Android)
+4014 | Bug | Errore nel Web Service Checkusername
+4015 | Bug | Gradebook - Exclude unsubscribed users from answer stats
+4033 | Bug | Course Copy - All objects are copied even if unselected
+4036 | Bug | Facebook Login non funzionante
+4083 | Bug | Teleskill plugin - 500 internal server error
+4084 | Bug | Plugin - fixed query on getPluginsInfo function
+4094 | Bug | SECURITY - Blind Time-Based SQL Injection in appCore/lib/lib.message.php
+4095 | Bug | SECURITY - SQL Injection in title param in file appLms/modules/coursereport/coursereport.php
+4096 | Bug | SECURITY - SQL Injection in id_source param in appLms/modules/coursereport/coursereport.php
+4120 | Bug | Advanced search in course stats not working
+3743 | Bug | Deleted competences are not removed from associated courses
+4101 | Change Request | LANG -Missing Restart info text string when repeating a test
+0522 | Change Request | Catalog link on login page
+3690 | Change Request | Maintenance mode - Global refactoring
+3737 | Change Request | Gradebook - Remove filter in final score edit
+3762 | Change Request | Added Customscript for IO task
+3763 | Change Request | LANG - added 5 missing keys in the TEST module
+3774 | Change Request | LANG - event "course completed" - message translations have been corrected
+3902 | Change Request | Certificates - enable/define pdf protection password in config
+3926 | Change Request | Glossary - Split alphabetical selector (Robykirk)
+3972 | Change Request | Disable simultaneous access with the same username - set by default
+3988 | Change Request | Switch Google authetication to use oauth service
+3998 | Change Request | Show external content on login page
+3756 | Change Request | Gradebook - Apply user level filter to answer stats
+
 
 ---------------------------------------------------------------------------------------
 FORMA 1.3
 ---------------------------------------------------------------------------------------
+Released: 2014-11-14
+
 
 3210 | Bug | Subscription from code list broken in v.1.2
 1995 | Bug | Automatic play of first LO not working from catalog
@@ -60,13 +116,15 @@ FORMA 1.3
 ---------------------------------------------------------------------------------------
 FORMA 1.2
 ---------------------------------------------------------------------------------------
+Released: 2014-05-30
+
 
 1102 | Bug | Subscribing by code ignores course subscr dates and state
 1141 | Bug | Missing coursepath type info in catalog elements list
 1579 | Bug | "Hiding ""show result"" option in course config (unused and not working since Docebo 4)"
 1681 | Bug | Date selection calendar starting from 1970
 1770 | Bug | Edition courses available before/after the configured start-end dates
-1771 | Bug | Fatal error su importazione file GIFT nella question bank
+1771 | Bug | Question Bank - Fixed fatal error on GIFT import
 1773 | Bug | Scorm - XML error with selectSingleNode
 1788 | Bug | Report - schedule activation button not working
 1994 | Bug | Missing scorm stats for copied objects in stats area
@@ -118,6 +176,8 @@ FORMA 1.2
 ---------------------------------------------------------------------------------------
 FORMA 1.1
 ---------------------------------------------------------------------------------------
+Released: 2014-02-18
+
 498 | Bug | Improved PHP5.4 compatibility
 1456 | Bug | Removed empty tabs from middlearea (authoring, biblioteca, calendar)
 1517 | Bug | Bug with SNAP scorm lo tracking
@@ -140,7 +200,7 @@ FORMA 1.1
 1323 | Bug | Communications were saved even with non-allowed files attached
 2210 | Bug | Template - Login box breaks is social functions are active
 2211 | Bug | Catalog - Wrong div class and inline styling for labels view
-2242 | Bug | My courses - Elearning Tab - Courses assigned to a curricula were hidden under "All open courses" filter 
+2242 | Bug | My courses - Elearning Tab - Courses assigned to a curricula were hidden under "All open courses" filter
 2209 | Bug | Page footer position error in html page edit
 1188 | Bug | Question Bank - Added page autorefresh on question delete
 2182 | Bug | Wrong/missing label for course status in infocourse module
@@ -172,6 +232,7 @@ FORMA 1.1
 ---------------------------------------------------------------------------------------
 FORMA 1.0
 ---------------------------------------------------------------------------------------
+Released: 2013-10-30
 
 Bug #391: Force IE9 compatibility
 Bug #392: Deleted users remain in course subscription count
@@ -190,7 +251,7 @@ Bug #404: Bugs e mod in catalogo corsi
 Bug #405: Fix communications admin page
 Bug #406: End Course date not working
 Bug #407: Installer/Upgrader
-Bug #408: Question Bank
+Bug #408: Question Bank - Missing question edit/delete icons
 Bug #409: Missing subscribe button for curricula in catalog
 Bug #412: Text Label fields hidden in usertable dropdown
 Bug #413: course subscription - notification event not working
@@ -265,11 +326,11 @@ Improvement
 	Import users trough csv function
 	Some reports improvements and fixings (report search filter, ...)
 	Added the visualization of course description and the possibility to download demo material from the home catalogue
-	
+
 Bug id
 	467, 464, 465, 456, 453, 451, 450, 447, 444, 441, 438, 436, 434, 433, 431, 430, 429, 428, 425, 426,424, 423,421,
 	420,419, 418, 417, 412, 410, 407, 399, 389, 396, 394, 393, 392, 390, 387, 385, 384, 382, 381, 380, 379, 359, 342
-	
+
 Generic Fixes
 	Fix: Label image update
 	Fix: Optimization for admin user filter query
@@ -294,7 +355,7 @@ Docebo 4.0.4
 
 - Updated addon htmlpurifier to 4.2.0 version
 
-- interface clarification for a new course menu assignment 
+- interface clarification for a new course menu assignment
 
 - Errors with labels display and image upload
 

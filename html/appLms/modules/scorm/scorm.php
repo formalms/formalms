@@ -356,7 +356,7 @@ function _scorm_copyitem( $idscorm_package, $idscorm_organization ) {
 	}
 	*/
 	/* copy package record */
-	$rs_package = sql_query(	"SELECT idpackage,idProg,'".$path."',defaultOrg,idUser "
+	$rs_package = sql_query(	"SELECT idpackage,idProg,'".$path."',defaultOrg,idUser,scormVersion "
 								." FROM ".$GLOBALS['prefix_lms']."_scorm_package "
 								." WHERE idscorm_package='".(int)$idscorm_package."'");
 	
@@ -364,7 +364,7 @@ function _scorm_copyitem( $idscorm_package, $idscorm_organization ) {
 	for( $i = 0; $i < count($arr_package); $i++)
 		$arr_package[$i] = addslashes($arr_package[$i]);
 	sql_query("INSERT INTO ".$GLOBALS['prefix_lms']."_scorm_package "
-				." (idpackage,idProg,path,defaultOrg,idUser) VALUES "
+				." (idpackage,idProg,path,defaultOrg,idUser,scormVersion) VALUES "
 				."('".implode("','", $arr_package)."')");
 		
 	

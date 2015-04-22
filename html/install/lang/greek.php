@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Forma - Εγκατάσταση");
+define("_INSTALLER_TITLE", "forma.lms - Εγκατάσταση");
 define("_NEXT", "Επόμενο βήμα");
 define("_BACK", "Πίσω");
 define("_LOADING", "Φόρτωση");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Επαναπροσπάθεια");
 //--------------------------------------
 define("_TITLE_STEP1", "Βήμα 1: Επιλογή γλώσσας");
 define("_LANGUAGE", "Γλώσσα");
-define("_INSTALLER_INTRO_TEXT", "Η Forma είναι μια εταιρεία που ανέπτυξε το δικό της πρόγραμμα ηλεκτρονικής μάθησης ανοιχτού κώδικα, που ονομάζεται FormaLMS και είναι κατάλληλο για πολύπλοκους οργανισμούς, την εταιρική αγορά, την κυβερνηση και το χώρο παροχής υπηρεσιών υγείας.
+define("_INSTALLER_INTRO_TEXT", "Η formalms.org είναι μια εταιρεία που ανέπτυξε το δικό της πρόγραμμα ηλεκτρονικής μάθησης ανοιχτού κώδικα, που ονομάζεται forma.lms και είναι κατάλληλο για πολύπλοκους οργανισμούς, την εταιρική αγορά, την κυβερνηση και το χώρο παροχής υπηρεσιών υγείας.
 	<p><b>Βασικά χαρακτηριστικά</b></p>
 	<ul>
 		<li>Υποστήριξη για Scorm 1.2 και 2004</li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","Έκδοση PHP : ");
 define("_MYSQLCLIENT_VERSION","Έκδοση πελάτη MySQL : ");
 define("_LDAP","LDAP : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Λάβετε υπ' όψιν σας αυτή την προειδοποίηση μόνο εάν χρειάζεστε τη χρήση LDAP ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","Πληροφιρίες PHP : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
@@ -40,10 +42,12 @@ define("_REGISTER_GLOBALS","register_global : ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize : ");
 define("_POST_MAX_SIZE","post_max_size : ");
 define("_MAX_EXECUTION_TIME","max_execution_time : ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","ON ");
 define("_OFF","OFF ");
 
-define("_VERSION","Έκδοση Forma");
+define("_VERSION","Έκδοση forma.lms");
 define("_START","Έναρξη");
 define("_END","Τέλος");
 // -----------------------------------------
@@ -99,7 +103,7 @@ define("_DOWNLOAD_CONFIG", "Ρύθμιση μεταφόρτωσης");
 define("_CHECKED_DIRECTORIES","Κάποιος φάκελος όπου αποθηκεύονται αρχεία δεν υπάρχει ή δεν έχει σωστά δικαιώματα χρήσης");
 define("_CHECKED_FILES","Ορισμένα αρχεία δεν έχουν τα κατάλληλα δικαιώματα χρήσης");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - Αναβάθμιση");
+define("_UPGRADER_TITLE", "forma.lms - Αναβάθμιση");
 define("_UPGRADE_CONFIG","Το αρχείο config.php αναβαθμίζεται");
 define("_UPG_CONFIG_OK","Το αρχείο config.php ανανεώθηκε με επιτυχία");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");

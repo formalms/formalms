@@ -112,33 +112,17 @@ class CertificateSubs_Course extends CertificateSubstitution {
 
 			if( $man_course->getValue('course_edition') == 1) {
 
-				$query = "SELECT cu.edition_id, ce.date_begin, ce.classrooms"
-						." FROM ".$GLOBALS['prefix_lms']."_courseuser AS cu"
-						." JOIN ".$GLOBALS['prefix_lms']."_course_edition AS ce ON ce.idCourseEdition = cu.edition_id"
-						." WHERE cu.idCourse = ".$this->id_course
-						." AND cu.idUser = ".$this->id_user
-						." ORDER BY ce.date_begin DESC"
-						." LIMIT 0, 1";
-				$result = sql_query($query);
-
-                           
+                
+                $query = "SELECT date_begin " 
+                         ."FROM ".$GLOBALS['prefix_lms']."_course_editions INNER JOIN ".$GLOBALS['prefix_lms']."_course_editions_user ON "
+                          .$GLOBALS['prefix_lms']."_course_editions_user.id_edition = ".$GLOBALS['prefix_lms']."_course_editions.id_edition "
+                         ."where ".$GLOBALS['prefix_lms']."_course_editions .id_course = ".$this->id_course." and ".$GLOBALS['prefix_lms']."_course_editions_user.id_user = ".$this->id_user;
+                $result = sql_query($query);
+                         
                 
 				if(sql_num_rows($result) > 0) {  
-				
-                    list($edition_id, $date_begin, $classroom) = sql_fetch_row($result);
-
-                    
-					if($edition_id !== 0) {
-
-						$query = "SELECT name"
-								." FROM ".$GLOBALS['prefix_lms']."_classroom"
-								." WHERE idClassroom = ".$classroom;
-						list($name) = sql_fetch_row(sql_query($query));
-						$subs['[ed_date_begin]'] = Format::date($date_begin, 'date');
-						$subs['[ed_classroom]'] = $name;
-					}
-                      
-                    
+                    list($date_begin) = sql_fetch_row($result);
+					$subs['[ed_date_begin]'] = Format::date($date_begin, 'date');
 				}
 			} // end session
             

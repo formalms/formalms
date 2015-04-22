@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Forma - 安装");
+define("_INSTALLER_TITLE", "forma.lms - 安装");
 define("_NEXT", "下一步");
 define("_BACK", "返回");
 define("_LOADING", "载入中");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "请重试");
 //--------------------------------------
 define("_TITLE_STEP1", "第一步：选择语言");
 define("_LANGUAGE", "语言");
-define("_INSTALLER_INTRO_TEXT", "Docebo是一家开发网络学习系统框架的公司，产品的名称叫DoceboLMS， 是一种开放源码的平台，适合复杂的机构组织、企业集团、政府和卫生部门使用。
+define("_INSTALLER_INTRO_TEXT", "formalms.org是一家开发网络学习系统框架的公司，产品的名称叫forma.lms， 是一种开放源码的平台，适合复杂的机构组织、企业集团、政府和卫生部门使用。
 	<p><b>特色功能</b></p>
 	<ul>
 		<li>支持Scorm 1.2和2004</li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","PHP Version : ");
 define("_MYSQLCLIENT_VERSION","Mysql客户端版本：");
 define("_LDAP","Ldap协议：");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","只有您需要使用LDAP协议时才考虑此提示 ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","PHP信息：");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
@@ -40,6 +42,8 @@ define("_REGISTER_GLOBALS","全局注册：");
 define("_UPLOAD_MAX_FILESIZE","上传文件最大大小：");
 define("_POST_MAX_SIZE","post方法最大值： ");
 define("_MAX_EXECUTION_TIME","最大执行时间：");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","启用 ");
 define("_OFF","关闭 ");
 // -----------------------------------------
@@ -95,7 +99,7 @@ define("_DOWNLOAD_CONFIG", "下载配置文件");
 define("_CHECKED_DIRECTORIES","文件存储的某些目录不存在或没有相应的权限");
 define("_CHECKED_FILES","某些文件没有足够的权限");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - 升级");
+define("_UPGRADER_TITLE", "forma.lms - 升级");
 define("_UPGRADE_CONFIG","正在升级 config.php file 文件");
 define("_UPG_CONFIG_OK","Config.php 已经成功升级");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");

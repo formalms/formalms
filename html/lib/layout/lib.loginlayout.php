@@ -17,24 +17,22 @@ class LoginLayout {
 	 * Return the menu for the pre-login pages
 	 * @return <string>
 	 */
-	public static function menu() {
+	public static function external_page() {
 
 		$db = DbConn::getInstance();
 
-		$li = '';
-		$ul = '<ul id="main_menu">';
-		if(Get::sett('course_block') == 'on') {
-			$li .= '<li class="first"><a href="index.php?r=homecatalogue">'.Lang::t('_COURSE_LIST', 'course').'</a></li>';
-		}
 		$query = "
 		SELECT idPages, title
 		FROM %lms_webpages
-		WHERE publish = '1' AND language = '".getLanguage()."'
+		WHERE publish = '1' AND in_home='0' AND language = '".getLanguage()."'
 		ORDER BY sequence ";
 		$result = $db->query( $query);
 
 		$numof = $db->num_rows($result);
 		$numof--;
+
+        $li = '';
+        $ul = '<ul id="main_menu">';
 
 		$i = 0;
 		while(list($id_pages, $title) = sql_fetch_row($result)) {
@@ -127,7 +125,21 @@ class LoginLayout {
 				$html .= '<b class="logout">'.Lang::t('_UNLOGGED', 'login').'</b>';
 			}
 			if(isset($_GET['access_fail'])) {
-				$html .= '<b class="login_failed">'.Lang::t('_NOACCESS', 'login').'</b>';
+				switch((int)$_GET['access_fail']) {
+					case 4: //
+						$html .= '<b class="login_failed">'.Lang::t('_EMPTYSOCIALID', 'login').'</b>';
+					  break;
+					case 5: //
+						$html .= '<b class="login_failed">'.Lang::t('_UNKNOWNSOCIALERROR', 'login').'</b>';
+					  break;
+					case 6: //
+						$html .= '<b class="login_failed">'.Lang::t('_CANCELSOCIALLOGIN', 'login').'</b>';
+					  break;
+					default:
+						$html .= '<b class="login_failed">'.Lang::t('_NOACCESS', 'login').'</b>';
+					  break;
+				}
+
 			}
 			if(isset($_GET['msg'])) {
 				$class ="login_failed";
@@ -175,16 +187,9 @@ class LoginLayout {
 
 		$res.= Form::openForm('social_form', Get::rel_path('lms').'/index.php?modname=login&amp;op=social')
 			.'<span>'.Lang::t('_LOGIN_WITH', 'login').' </span>';
-		
+
 		if ($social->isActive('facebook')) {
-			$social->includeFacebookLib();
-			$facebook =$social->getFacebookObj();
-			$_SESSION['fb_from']='login';
-			$loginUrl = $facebook->getLoginUrl(array(
-					/* 'req_perms'=>'email', */
-					'next'=>Get::sett('url').'index.php?modname=login&op=facebook_login',
-				));
-			$res.='<a href="'.$loginUrl.'">'.Get::img('social/facebook-24.png').'</a>';
+			$res.='<a href="index.php?modname=login&amp;op=facebook_login">'.Get::img('social/facebook-24.png').'</a>';
 		}
 
 		if ($social->isActive('twitter')) {
@@ -200,7 +205,7 @@ class LoginLayout {
 		}
 
 		$res.=Form::closeForm();
-		
+
 		$res.='</div>';
 		return $res;
 	}

@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo Layout::lang_code(); ?>">
 	<head>
 	    <!--Fix funzionamento scorm su IE9-->
@@ -30,21 +29,25 @@
 			<div class="select-language">
 				<?php echo Lang::t('_CHANGELANG', 'register').': '.Layout::change_lang(); ?>
 			</div>
-			<h1 id="main_title"><a href="index.php"><?php echo Lang::t('_MAIN_TITLE', 'login'); ?></a></h1>
+			<!--<h1 id="main_title"><a href="index.php"><?php echo Lang::t('_MAIN_TITLE', 'login'); ?></a></h1>-->
+			<a href="index.php"><img class="left_logo" src="<?php echo Layout::path(); ?>images/company_logo.png" alt="Left logo" /></a>
 			<div class="nofloat"></div>
 		</div>
 		<div class="content">
-			<h2>E-LEARNING LOGIN</h2>
 			<div class="login-box<?php echo LoginLayout::isSocialActive() ? '-social': ''; ?>">
+			<h2>LOGIN</h2>
 				<?php echo LoginLayout::social_login(); ?>
 				<?php echo LoginLayout::login_form(); ?>
+				<?php echo LoginLayout::service_msg(); ?>
 			</div>
-			<?php echo LoginLayout::service_msg(); ?>
 		</div>
+
+		<!-- footer -->
 		<div class="footer">
+			<?php echo Layout::zone('footer'); ?>
 			<?php echo LoginLayout::links(); ?>
 			<div class="copyright">
-			<?php echo Layout::copyright(); ?>
+				<?php echo Layout::copyright(); ?>
 			</div>
 		</div>
 		<div class="webcontent yui-gc">

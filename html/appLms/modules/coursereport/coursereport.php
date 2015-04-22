@@ -99,7 +99,7 @@ function scormreport($idTest) {
 }
 
 function coursereport() {
-	checkPerm('view');
+    	checkPerm('view');
 	require_once($GLOBALS['where_lms'].'/lib/lib.coursereport.php');
 	require_once($GLOBALS['where_lms'].'/lib/lib.test.php');
 	require_once(_base_.'/lib/lib.form.php');
@@ -230,8 +230,8 @@ function coursereport() {
 						$a_line_2[] = '';
 					}
 				} else {
-					$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=testvote&type_filter='.$type_filter.'&amp;id_test='.$id.'"><span><span>'.$lang->def('_EDIT_SCORE').'</span></a>'
-									.' <a class="ico-sprite subs_chart" href="index.php?modname=coursereport&amp;op=testQuestion&amp;id_test='.$id.'"><span><span>'.$lang->def('_TQ_LINK').'</span></a>';
+					$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=testvote&amp;type_filter='.$type_filter.'&amp;id_test='.$id.'"><span><span>'.$lang->def('_EDIT_SCORE').'</span></a>'
+									.' <a class="ico-sprite subs_chart" href="index.php?modname=coursereport&amp;op=testQuestion&amp;type_filter='.$type_filter.'&amp;id_test='.$id.'"><span><span>'.$lang->def('_TQ_LINK').'</span></a>';
 					$a_line_2[] = '<a href="index.php?modname=coursereport&amp;op=roundtest&amp;id_test='.$id.'" '
 								.'title="'.$lang->def('_ROUND_TEST_VOTE').'">'.$lang->def('_ROUND_VOTE').'</a>';
 				}
@@ -244,7 +244,7 @@ function coursereport() {
 						$my_action = '';
 						$a_line_2[] = '';
 				} else {
-					$my_action =	$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=modactivityscore&type_filter='.$type_filter.'&amp;id_report='.$info_report['id_report'].'&amp;source_of='.$info_report['source_of'].'&amp;id_source='.$info_report['id_source'].'"><span><span>'.$lang->def('_CHANGE_ACTIVITY_VOTE').'</span></a>'
+					$my_action =	$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=modactivityscore&amp;type_filter='.$type_filter.'&amp;id_report='.$info_report['id_report'].'&amp;source_of='.$info_report['source_of'].'&amp;id_source='.$info_report['id_source'].'"><span><span>'.$lang->def('_CHANGE_ACTIVITY_VOTE').'</span></a>'
 									.' <a class="ico-sprite subs_del" href="index.php?modname=coursereport&amp;op=delactivity&amp;id_report='.$info_report['id_report'].'"><span><span>'.$lang->def('_DELETE_ACTIVITY_VOTE').'</span></a>';
 
 					$a_line_2[] = '<a href="index.php?modname=coursereport&amp;op=roundreport&amp;id_report='.$info_report['id_report'].'" '
@@ -258,7 +258,7 @@ function coursereport() {
 						$my_action = '';
 						$a_line_2[] = '';
 				} else {
-					$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=modactivityscore&type_filter='.$type_filter.'&amp;id_report='.$info_report['id_report'].'&amp;source_of='.$info_report['source_of'].'&amp;id_source='.$info_report['id_source'].'"><span><span>'.$lang->def('_CHANGE_ACTIVITY_VOTE').'</span></a>'
+					$my_action =	'<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=modactivityscore&amp;type_filter='.$type_filter.'&amp;id_report='.$info_report['id_report'].'&amp;source_of='.$info_report['source_of'].'&amp;id_source='.$info_report['id_source'].'"><span><span>'.$lang->def('_CHANGE_ACTIVITY_VOTE').'</span></a>'
 									.' <a class="ico-sprite subs_del" href="index.php?modname=coursereport&amp;op=delactivity&amp;id_report='.$info_report['id_report'].'"><span><span>'.$lang->def('_DELETE_ACTIVITY_VOTE').'</span></a>';
 
 					$a_line_2[] = '<a href="index.php?modname=coursereport&amp;op=roundreport&amp;id_report='.$info_report['id_report'].'" '
@@ -274,7 +274,7 @@ function coursereport() {
 						$my_action = '';
 						$a_line_2[] = '';
 				} else {
-                    $my_action = '<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=finalvote&amp;id_report='.$info_report['id_report'].'"><span><span>'.$lang->def('_EDIT_SCORE').'</span></a>';
+                    $my_action = '<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=finalvote&amp;type_filter='.$type_filter.'&amp;id_report='.$info_report['id_report'].'"><span><span>'.$lang->def('_EDIT_SCORE').'</span></a>';
 
 					$a_line_2[] = ''
 							.'<a href="index.php?modname=coursereport&amp;op=redofinal&amp;id_report='.$info_report['id_report'].'" '
@@ -431,7 +431,7 @@ function coursereport() {
 	}
 	// XXX: Retrive other source scores
 	$reports_score 	=& $report_man->getReportsScores(
-		(isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id));
+		(isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
 
 	// XXX: Calculate statistic
 	$report_details = array();
@@ -1507,8 +1507,15 @@ function finalvote() {
 	$report_man 	= new CourseReportManager();
 
 	// XXX: Find students
-	$id_students	=& $report_man->getStudentId();
-	$students_info 	=& $acl_man->getUsers($id_students);
+	$type_filter = false;
+        if (isset($_GET['type_filter']) && $_GET['type_filter'] != null) {
+            $type_filter = $_GET['type_filter'];
+        }
+
+        $lev = $type_filter;
+        $students = getSubscribed((int) $_SESSION['idCourse'], FALSE, $lev, TRUE, false, false, true);
+        $id_students = array_keys($students);
+        $students_info 	=& $acl_man->getUsers($id_students);
 
 	// XXX: Write in output
 	$page_title = array(
@@ -1518,7 +1525,7 @@ function finalvote() {
 	$out->add(
 		getTitleArea($page_title, 'coursereport')
 		.'<div class="std_block">'
-		.Form::openForm('finalvote', 'index.php?modname=coursereport&amp;op=finalvote')
+		.Form::openForm('finalvote', 'index.php?modname=coursereport&amp;op=finalvote&amp;type_filter='.$type_filter)
 		.Form::getHidden('id_report', 'id_report', $id_report)
 	);
 
@@ -1891,11 +1898,11 @@ function modscorm()
 		.getBackUi('index.php?modname=coursereport&amp;op=coursereport', $lang->def('_BACK'))
 	);
 	// XXX: Save input if needed
-	if(isset($_POST['save']))
+	if(isset($_POST['save']) && is_numeric($_POST['id_source']))
 	{
 		$report_man = new CourseReportManager();
 		// check input
-		if($_POST['titolo'] == '')
+		if($_POST['titolo'] == '' )
             $_POST['titolo'] = $lang->def('_NOTITLE');
 		//MODIFICHE NUOVISSIMISSIME
 		$query_report = "
@@ -1958,12 +1965,12 @@ function modscorm()
 
 	if(isset($_POST['filtra']))
 	{
-		if($_POST['source_of']=='scoitem')
+		if($_POST['source_of']=='scoitem' && is_numeric($_POST['title']))
 		{//richiesto lo scorm item
 			$query_report = "
 			SELECT  title
 			FROM ".$GLOBALS['prefix_lms']."_organization
-			WHERE objectType='scormorg' and idResource=".$_POST['title']."";
+			WHERE objectType='scormorg' and idResource=".(int)$_POST['title']."";
 			$risultato=sql_query($query_report);
 			$titolo=sql_fetch_assoc($risultato);
 			$titolo=$titolo['title'];
@@ -2931,7 +2938,13 @@ function testQuestion()
 	$id_test = importVar('id_test', true, 0);
 
 	$test_man = new GroupTestManagement();
-	$acl_man = Docebo::user()->getAclManager();
+
+	$lev = FALSE;
+	if (isset($_GET['type_filter']) && $_GET['type_filter']!=null) {
+		$lev = $_GET['type_filter'];
+	}
+	$students = getSubscribed((int)$_SESSION['idCourse'], FALSE, $lev, TRUE, false, false, true);
+	$id_students = array_keys($students);
 
 	$quests = array();
 	$answers = array();
@@ -2966,10 +2979,20 @@ function testQuestion()
 		$quests[$id_quest]['type_quest'] = $type_quest;
 		$quests[$id_quest]['title_quest'] = $title_quest;
 
-		$query_answer =	"SELECT idAnswer, is_correct, answer"
-						." FROM ".$GLOBALS['prefix_lms']."_testquestanswer"
-						." WHERE idQuest = '".$id_quest."'"
-						." ORDER BY sequence";
+//		$query_answer =	"SELECT idAnswer, is_correct, answer"
+//						." FROM ".$GLOBALS['prefix_lms']."_testquestanswer"
+//						." WHERE idQuest = '".$id_quest."'"
+//						." ORDER BY sequence";
+
+		$query_answer =	"SELECT tqa.idAnswer, tqa.is_correct, tqa.answer"
+			." FROM ".$GLOBALS['prefix_lms']."_testquestanswer AS tqa"
+			." LEFT JOIN"
+			." ".$GLOBALS['prefix_lms']."_testtrack_answer tta ON tqa.idAnswer = tta.idAnswer"
+			." LEFT JOIN"
+			." ".$GLOBALS['prefix_lms']."_testtrack tt ON tt.idTrack = tta.idTrack"
+			." WHERE tqa.idQuest = '".$id_quest."'";
+			$query_answer .= " and tt.idUser in (".implode(",", $id_students).")";
+			$query_answer .= " ORDER BY tqa.sequence";
 
 		$result_answer = sql_query($query_answer);
 
@@ -2993,7 +3016,8 @@ function testQuestion()
 	$query_track =	"SELECT idTrack"
 					." FROM ".$GLOBALS['prefix_lms']."_testtrack"
 					." WHERE idTest = '".$id_test."'"
-					." AND score_status = 'valid'";
+					." AND score_status = 'valid'"
+					." AND idUser in (".implode(",", $id_students).")";
 
 	$result_track = sql_query($query_track);
 
@@ -3017,7 +3041,8 @@ function testQuestion()
 	$query_total_play =	"SELECT COUNT(*)"
 						." FROM ".$GLOBALS['prefix_lms']."_testtrack"
 						." WHERE idTest = '".$id_test."'"
-						." AND score_status = 'valid'";
+						." AND score_status = 'valid'"
+						." AND idUser in (".implode(",", $id_students).")";
 
 	list($total_play) = sql_fetch_row(sql_query($query_total_play));
 

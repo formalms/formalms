@@ -55,6 +55,7 @@ $GLOBALS['xpathwritedb'] = array( 	'lesson_location' => '//cmi/core/lesson_locat
 function scormInitializeParams($trackobj, $scormtype, $idscorm_item) {
 	
 	list(	$adlcp_masteryscore,
+			$adlcp_maxtimeallowed,
 			$adlcp_completionthreshold,
 			$adlcp_datafromlms,
 			$adlcp_timelimitaction ) = 

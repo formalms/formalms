@@ -435,7 +435,7 @@ class UsermanagementAdm extends Model {
 		//retrieve which fields are required
 		$custom_fields = array_keys($fields);
 
-		if (count($users_rows) > 0 && !empty($custom_fields)) {
+		if (count($users_rows) > 0) { // && !empty($custom_fields)) {
 			//fields
 			$query_fields = "SELECT f.id_common, f.type_field, fu.id_user, fu.user_entry ".
 				" FROM %adm_field_userentry AS fu JOIN %adm_field AS f ON (fu.id_common=f.id_common) ".
@@ -2392,15 +2392,19 @@ class UsermanagementAdm extends Model {
 
 
 	public function getOrgChartDropdownList($idstUser=null) {
+        
         $output = array();
         if($idstUser==null){
             $output = array('0' => '('.Lang::t('_ROOT', 'standard').')');
         }else{
             $queryRoot = "SELECT count(G.idst) FROM %adm_admin_tree T JOIN %adm_group G WHERE T.idst = G.idst AND idstAdmin =".$idstUser." AND G.groupid = '/ocd_0'"; 
             list($control) = $this->db->fetch_row($this->db->query($queryRoot));
-            if($control > 0) {
+            if($control < 0) {
+                $output = array('0' => '('.Lang::t('_ROOT', 'standard').')');
+            } else if ($control == 0  && Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN ) { //#3725
                 $output = array('0' => '('.Lang::t('_ROOT', 'standard').')');
             }
+             
         }
 
 		$org_lang = array();
@@ -2410,6 +2414,8 @@ class UsermanagementAdm extends Model {
 			$org_lang[$obj->id_dir] = $obj->translation;
 		}
         
+          
+          
         $query = "SELECT * FROM %adm_org_chart_tree ORDER BY path";
         if($idstUser!=null){
             $org_groups = $this->_getAdminOrgTree($idstUser);

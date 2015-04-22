@@ -48,30 +48,33 @@ if(Get::sett('stop_concurrent_user') == 'on') {
 }
 
 if(isset($_SESSION['must_renew_pwd']) && $_SESSION['must_renew_pwd'] == 1) {
-	
-	$GLOBALS['modname'] = '';
-	$GLOBALS['op'] 		= '';
-	if(strpos($GLOBALS['req'], 'lms/profile') === false) {
-		$GLOBALS['req'] = 'lms/profile/renewalpwd';
+	if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+		if(!Docebo::user()->isAnonymous() && $GLOBALS['modname'] != 'login' && $GLOBALS['op'] != 'logout') {
+			$GLOBALS['modname'] = '';
+			$GLOBALS['op'] 		= '';
+			if(strpos($GLOBALS['req'], 'lms/profile') === false) {
+				$GLOBALS['req'] = 'lms/profile/renewalpwd';
+			}
+		}
 	}
-}
-
-if($GLOBALS['modname'] == '' && $GLOBALS['op'] == '' && $GLOBALS['req'] == '' && !Docebo::user()->isAnonymous()) {
-	if(!isset($_SESSION['idCourse'])) {
-		// the user isn't into a course, redirect it to the mycourses area
-		$_SESSION['current_main_menu'] = '1';
-		$_SESSION['sel_module_id'] = '1';
-		$GLOBALS['req'] = _after_login_;
-	} else {
-		//redirect the user in the leaved module of the course
-		if($_SESSION['sel_module_id'] !=0) {
-			$query = "SELECT module_name, default_op, mvc_path"
-				." FROM %lms_module"
-				." WHERE idModule = ".(int)$_SESSION['sel_module_id'];
-			list($modname, $op, $mvc_path) = sql_fetch_row(sql_query($query));
-			if($mvc_path !== '') $GLOBALS['req'] = $mvc_path;
-			$GLOBALS['modname'] = $modname;
-			$GLOBALS['op'] 		= $op;
+}else{
+	if($GLOBALS['modname'] == '' && $GLOBALS['op'] == '' && $GLOBALS['req'] == '' && !Docebo::user()->isAnonymous()) {
+		if(!isset($_SESSION['idCourse'])) {
+			// the user isn't into a course, redirect it to the mycourses area
+			$_SESSION['current_main_menu'] = '1';
+			$_SESSION['sel_module_id'] = '1';
+			$GLOBALS['req'] = _after_login_;
+		} else {
+			//redirect the user in the leaved module of the course
+			if($_SESSION['sel_module_id'] !=0) {
+				$query = "SELECT module_name, default_op, mvc_path"
+					." FROM %lms_module"
+					." WHERE idModule = ".(int)$_SESSION['sel_module_id'];
+				list($modname, $op, $mvc_path) = sql_fetch_row(sql_query($query));
+				if($mvc_path !== '') $GLOBALS['req'] = $mvc_path;
+				$GLOBALS['modname'] = $modname;
+				$GLOBALS['op'] 		= $op;
+			}
 		}
 	}
 }
@@ -173,6 +176,36 @@ if($next_action != false && Get::sett('sco_direct_play', 'off') == 'on') {
 	}
 }
 
+if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+	
+	$query = "SELECT param_value FROM core_setting
+			WHERE param_name = 'maintenance'
+			ORDER BY pack, sequence";
+
+	$mode = $db->fetch_row($db->query($query));
+	// Se siamo in modalita' manutenzione
+	if($mode[0] == "on") {
+//	if(Get::sett('maintenance') == 'on'){ // non posso farlo cosi perche non ancora settato
+		if(!Docebo::user()->isAnonymous() && $GLOBALS['modname'] != 'login' && $GLOBALS['op'] != 'logout') {
+			TrackUser::resetUserSession(getLogUserId());
+			$_SESSION = array();
+			session_destroy();
+			Util::jump_to(Get::rel_path('lms').'/index.php?modname=login&op=logout');
+		}
+	}
+}
+/*
+if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+	if(!Docebo::user()->isAnonymous() && $GLOBALS['modname'] != 'login' && $GLOBALS['op'] != 'logout') {
+		$pwd_elapsed = Docebo::user()->isPasswordElapsed();
+		if($pwd_elapsed > 0) {
+			$GLOBALS['modname'] = '';
+			$GLOBALS['op'] 		= '';
+			$GLOBALS['req'] = 'lms/profile/renewalpwd';
+		}
+	}
+}
+*/
 //operation that is needed before loading grafiphs element, menu and so on
 switch($GLOBALS['op']) {
 	

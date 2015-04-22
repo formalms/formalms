@@ -118,6 +118,7 @@ class ProfileLmsController extends LmsController {
 			}
 
 		} else {
+				$_SESSION['must_renew_pwd'] = 1;
 				$res = Docebo::user()->isPasswordElapsed();
 				if ($res == 2) 
 					$_title = getTitleArea(Lang::t('_CHANGEPASSWORD', 'profile'));

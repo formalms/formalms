@@ -34,6 +34,8 @@ define("_PHPVERSION","PHP Version : ");
 define("_MYSQLCLIENT_VERSION","Mysql Client Version : ");
 define("_LDAP","Ldap : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Consider this warning only if you need to use LDAP ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 define("_MBSTRING","Multibyte Support");
 define("_PHP_TIMEZONE","Site Timezone");
 
@@ -41,6 +43,8 @@ define("_PHPINFO","PHP Information : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
 define("_SAFEMODE","Safe mode : ");
 define("_REGISTER_GLOBALS","register_global : ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize : ");
 define("_POST_MAX_SIZE","post_max_size : ");
 define("_MAX_EXECUTION_TIME","max_execution_time : ");
@@ -84,6 +88,11 @@ define("_ADMIN_PASS", "Password");
 define("_ADMIN_CONFPASS", "Confirm password");
 define("_ADMIN_EMAIL", "e-mail");
 define("_LANG_TO_INSTALL", "Languages to install");
+define("_ADMIN_USERID_REQ", "Username required");
+define("_ADMIN_PASS_REQ", "Password required");
+define("_ADMIN_PASS_DOESNT_MATCH", "Password does'nt match");
+define("_NO_LANG_SELECTED", "No languages selected");
+
 // -----------------------------------------
 define("_TITLE_STEP6", "Step 6: Database data setup");
 define("_DATABASE", "Database");

@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Инсталляция Forma");
+define("_INSTALLER_TITLE", "Инсталляция forma.lms");
 define("_NEXT", "Следующий шаг");
 define("_BACK", "Вернуться");
 define("_LOADING", "Загрузка");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Попробуйте заново");
 //--------------------------------------
 define("_TITLE_STEP1", "Шаг 1: Выберите язык");
 define("_LANGUAGE", "Язык");
-define("_INSTALLER_INTRO_TEXT", "Компания Forma разработала собственную обучающую систему с открытым кодом, FormaLMS, пригодную для применения в курпных организациях, корпоративном секторе, правительстве и здравоохранении.
+define("_INSTALLER_INTRO_TEXT", "Компания formalms.org разработала собственную обучающую систему с открытым кодом, forma.lms, пригодную для применения в курпных организациях, корпоративном секторе, правительстве и здравоохранении.
 	<p><b>Ключевые особенности</b></p>
 	<ul>
 		<li>поддержка Scorm 1.2 и 2004</li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","Версия PHP : ");
 define("_MYSQLCLIENT_VERSION","Версия клиента Mysql: ");
 define("_LDAP","LDAP: ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Примите во внимание только если Вы используете LDAP ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","Информация о PHP: ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc: ");
@@ -40,6 +42,8 @@ define("_REGISTER_GLOBALS","register_global: ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize: ");
 define("_POST_MAX_SIZE","post_max_size: ");
 define("_MAX_EXECUTION_TIME","max_execution_time: ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","ВКЛ ");
 define("_OFF","ВЫКЛ ");
 // -----------------------------------------
@@ -95,7 +99,7 @@ define("_DOWNLOAD_CONFIG", "Конфигурация загрузки");
 define("_CHECKED_DIRECTORIES","Некоторые каталоги, в которых сохраняются файлы, не существуют или не имеют необходимых разрешений");
 define("_CHECKED_FILES","Отдельные файлы не имеют необходимых разрешений");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - Обновление");
+define("_UPGRADER_TITLE", "forma.lms - Обновление");
 define("_UPGRADE_CONFIG","Обновление файла config.php");
 define("_UPG_CONFIG_OK","Файл config.php успешно обновлен");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");

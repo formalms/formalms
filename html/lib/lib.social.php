@@ -151,9 +151,13 @@ class Social {
 		include_once(_base_ . '/addons/social/oauth_lib/OAuth.php');
 	}
 
+	public function includeGoogleLib() {
+		include_once(_base_ . '/addons/social/OAuthLib/vendor/autoload.php');
+	}
+
 
 	public function includeFacebookLib() {
-		include_once(_base_ . '/addons/social/facebook/facebook.php');
+		include_once(_base_ . '/addons/social/OAuthLib/vendor/autoload.php');
 	}
 
 

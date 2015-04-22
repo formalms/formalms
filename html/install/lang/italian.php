@@ -1,7 +1,7 @@
 <?php
 
 
-define("_INSTALLER_TITLE", "Installer - forma.lms");
+define("_INSTALLER_TITLE", "forma.lms - Installazione");
 define("_INSTALL", "Installazione");
 define("_JUMP_TO_CONTENT", "Salta al contenuto");
 
@@ -88,7 +88,6 @@ define("_MUST_ACCEPT_LICENSE", "E' necessario accettare i termini della licenza 
 
 define("_DOMXML_REQUIRED", "Per installare la suite forma.lms &egrave; necessario che sia installato il modulo domxml o PHP 5 o successivo.");
 
-define("_LANG_TO_INSTALL", "Lingue da installare");
 define("_NUMBER_ESTIMATED_USERS", "Numero di utenti registrati stimati");
 define("_LESS_THAN50", "Meno di 50");
 define("_LESS_THAN150", "Tra 50 e 150");
@@ -112,6 +111,14 @@ define("_ADMIN_LASTNAME", "Cognome");
 define("_ADMIN_PASS", "Password");
 define("_ADMIN_CONFPASS", "Conferma password");
 define("_ADMIN_EMAIL", "Indirizzo e-mail");
+define("_LANG_TO_INSTALL", "Lingue da installare");
+
+define("_ADMIN_USERID_REQ", "Username obbligatorio");
+define("_ADMIN_PASS_REQ", "Password obbligatoria");
+define("_ADMIN_PASS_DOESNT_MATCH", "Le password non corrispondono");
+define("_NO_LANG_SELECTED", "Nessuna lingua selezionata");
+
+
 define("_WEBSITE_INFO", "Informazioni sul sito web");
 define("_DEFAULT_PLATFORM", "Applicativo predefinito (home page)");
 define("_SITE_DEFAULT_SENDER", "Mittente predefinito dei messaggi e-mail automatici");
@@ -168,6 +175,8 @@ define("_PHPVERSION","PHP Version");
 define("_MYSQLCLIENT_VERSION","Versione Client Mysql: ");
 define("_SAFEMODE","Safe mode");
 define("_REGISTER_GLOBALS","register_global");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize");
 define("_POST_MAX_SIZE","post_max_size");
@@ -176,6 +185,8 @@ define("_ALLOW_URL_INCLUDE","allow_url_include");
 define("_DANGER", "Pericolo - Settare ad OFF");
 define("_DOMXML","domxml();");
 define("_LDAP","Ldap");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Considerare questa nota solo se si intende usare i login social");
 define("_ON","ON ");
 define("_OFF","OFF ");
 define("_NEXT_STEP","Passo successivo ");
@@ -210,7 +221,7 @@ define("_TRY_AGAIN", "Riprova");
 define("_LOADING", "Caricamento");
 define("_LANGUAGES", "Linguaggi");
 
-define("_UPGRADER_TITLE", "forma.lms - Upgrade");
+define("_UPGRADER_TITLE", "forma.lms - Aggiornamento");
 define("_UPGRADE_CONFIG","Aggiornamento del file config.php");
 define("_UPG_CONFIG_OK","Config.php aggiornato correttamente");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php gia' aggiornato");

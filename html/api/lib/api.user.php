@@ -570,7 +570,7 @@ class User_API extends API {
 		$query .= " WHERE userid = '".$this->aclManager->absoluteId($userid)."'";
 		
 		if ($params['also_check_as_email']) {
-			$query .= " OR email='".$userid."'";
+			$query .= " OR email='".$params['also_check_as_email']."'";
 		}
 		
 		$q = $this->aclManager->_executeQuery( $query );

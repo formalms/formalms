@@ -671,7 +671,7 @@ INSERT INTO `core_event_manager` (`idEventMgr`, `idClass`, `permission`, `channe
 (9, 9, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER', 'godadmin,admin,user'),
 (10, 10, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
 (11, 11, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
-(12, 12, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
+(12, 12, 'mandatory', 'email', '_EVENT_RECIPIENTS_TEACHER', 'godadmin,admin,user'),
 (13, 13, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER_GOD', 'godadmin,admin,user'),
 (14, 14, 'not_used', 'email', '_ALL', 'godadmin,admin,user'),
 (15, 15, 'not_used', 'email', '_ALL', 'godadmin,admin,user'),
@@ -1376,6 +1376,34 @@ INSERT INTO `core_platform` (`platform`, `class_file`, `class_name`, `class_file
 ('framework', '', '', 'class.admin_menu_fw.php', 'Admin_Framework', 'Admin_Managment_Framework', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 1, 'true', 'true', '', 'false', 'false'),
 ('lms', '', '', 'class.admin_menu_lms.php', 'Admin_Lms', 'Admin_Managment_Lms', 'class.conf_lms.php', 'Config_Lms', 'defaultTemplate', 'LmsAdminModule', 2, 'true', 'false', '', 'true', 'false'),
 ('scs', '', '', 'class.admin_menu_scs.php', 'Admin_Scs', '', 'class.conf_scs.php', 'Config_Scs', 'defaultTemplate', 'ScsAdminModule', 4, 'true', 'false', '', 'false', 'false');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_plugin`
+--
+
+
+CREATE TABLE IF NOT EXISTS `core_plugin` (
+  `plugin_id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `title` varchar(64) NOT NULL,
+  `code` varchar(32) NOT NULL,
+  `category` VARCHAR(255),
+  `version` varchar(16) NOT NULL,
+  `author` varchar(128) NOT NULL,
+  `link` varchar(255) NOT NULL,
+  `priority` int(5) NOT NULL,
+  `description` text NOT NULL,
+  `active` int(1) NOT NULL,
+  PRIMARY KEY (`plugin_id`),
+  UNIQUE KEY `name` (`name`,`code`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+--
+-- Dump dei dati per la tabella `core_plugin`
+--
+
 
 -- --------------------------------------------------------
 
@@ -2224,7 +2252,8 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('code_teleskill', '', 'string', 255, 'teleskill', 6, 3, 1, 0, ''),
 ('common_admin_session', 'on', 'enum', 3, 'security', 8, 24, 1, 0, ''),
 ('conference_creation_limit_per_user', '99999999999', 'string', 255, '0', 6, 0, 1, 0, ''),
-('core_version', '1.3', 'string', 255, '0', 1, 0, 1, 1, ''),
+('core_version', '1.4', 'string', 255, '0', 1, 0, 1, 1, ''),
+('course_block', 'off', 'enum', 3, 0, 4, 5, 1, 0, ''),
 ('course_quota', '0', 'string', 255, '0', 4, 5, 1, 0, ''),
 ('currency_symbol', '&euro;', 'string', 10, '0', 5, 2, 1, 0, ''),
 ('customer_help_email', '', 'string', 255, '0', 3, 19, 1, 0, ''),
@@ -2258,7 +2287,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('ldap_user_string', '$user@domain2.domain1', 'string', 255, '0', 7, 4, 1, 0, ''),
 ('mail_sender', 'sample@localhost', 'string', 255, 'register', 3, 12, 0, 0, ''),
 ('maintenance', 'off', 'enum', 3, 'security', 8, 25, 0, 0, ''),
-('maintenance_pw', 'manutenzione', 'string', 3, 'security', 8, 25, 0, 0, ''),
+('maintenance_pw', 'manutenzione', 'string', 16, 'security', 8, 25, 0, 0, ''),
 ('mandatory_code', 'off', 'enum', 3, 'register', 3, 18, 1, 0, ''),
 ('max_log_attempt', '0', 'int', 3, '0', 3, 4, 0, 0, ''),
 ('nl_sendpause', '20', 'int', 3, 'newsletter', 8, 10, 1, 0, ''),
@@ -2318,6 +2347,8 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('social_fb_api', '', 'string', 255, 'main', 12, 1, 1, 0, ''),
 ('social_fb_secret', '', 'string', 255, 'main', 12, 2, 1, 0, ''),
 ('social_google_active', 'off', 'enum', 3, 'main', 12, 9, 1, 0, ''),
+('social_google_client_id', '', 'string', 255, 'main', 12, 10, 1, 0, ''),
+('social_google_secret', '', 'string', 255, 'main', 12, 11, 1, 0, ''),
 ('social_linkedin_access', '', 'string', 255, 'main', 12, 7, 1, 0, ''),
 ('social_linkedin_active', 'off', 'enum', 3, 'main', 12, 6, 1, 0, ''),
 ('social_linkedin_secret', '', 'string', 255, 'main', 12, 8, 1, 0, ''),
@@ -2326,7 +2357,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('social_twitter_secret', '', 'string', 255, 'main', 12, 5, 1, 0, ''),
 ('sso_secret', '', 'text', 255, '0', 9, 1, 1, 0, ''),
 ('sso_token', 'off', 'enum', 3, '0', 9, 0, 1, 0, ''),
-('stop_concurrent_user', 'off', 'enum', 3, 'security', 8, 23, 1, 0, ''),
+('stop_concurrent_user', 'on', 'enum', 3, 'security', 8, 23, 1, 0, ''),
 ('tablist_mycourses', 'name,status', 'tablist_mycourses', 255, '0', 4, 1, 1, 0, ''),
 ('teleskill_max_participant', '300', 'string', 255, 'teleskill', 6, 6, 1, 0, ''),
 ('teleskill_max_room', '99999999999', 'string', 255, 'teleskill', 6, 5, 1, 0, ''),

@@ -303,7 +303,11 @@ class DoceboConnectionManager {
 		$arr_conn = $this->get_connector_bytype($type);
 		if( $arr_conn === FALSE ) return FALSE;
 		require_once($GLOBALS['where_framework'].'/lib/connectors/lib.connector.php');
-		require_once($GLOBALS['where_framework'].'/lib/connectors/'.$arr_conn[CONNMGR_CONNTYPE_FILE]);
+		if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/lib/connectors/'.$arr_conn[CONNMGR_CONNTYPE_FILE]) && Get::cfg('enable_customscripts', false) == true ){
+			require_once(_base_.'/customscripts'.'/'._folder_adm_.'/lib/connectors/'.$arr_conn[CONNMGR_CONNTYPE_FILE]);
+		} else {
+			require_once($GLOBALS['where_framework'].'/lib/connectors/'.$arr_conn[CONNMGR_CONNTYPE_FILE]);
+		}		
 		return eval('return new '.$arr_conn[CONNMGR_CONNTYPE_CLASS].'(NULL);');
 	}
 
@@ -524,11 +528,16 @@ class DoceboConnectionManager {
 	 * @return the array stripped
 	 **/
 	private function stripslashes_deep( $value ) {
-	    $value = is_array($value) ?
-	                array_map('stripslashes_deep', $value) :
-	                stripslashes($value);
-
-	    return( $value);
+		if ( is_string($value) ) {
+			$value = stripslashes($value);
+		} elseif ( is_array($value) ) {
+			foreach ($value as $k => $v) {
+				$value[$k]=$this->stripslashes_deep($v);
+			}
+		} else {
+			// NOOP
+		}
+		return($value);
 	}
 }
 

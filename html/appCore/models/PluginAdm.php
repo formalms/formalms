@@ -200,6 +200,7 @@ class PluginAdm extends Model {
 		echo Form::getLineBox($lang->def('_PLUGIN_AUTHOR'), $author);
 		echo Form::getLineBox($lang->def('_PLUGIN_LINK'), $link);
 		echo Form::getLineBox($lang->def('_PLUGIN_DESCR'), $description);
+		echo Form::getLineBox($lang->def('_PLUGIN_CATEGORY'), $category);
 		echo Form::getLineBox($lang->def('_PLUGIN_VERSION'), $version);
 		echo Form::getDropdown( $lang->def('_PLUGIN_PRIORITY') ,
 									strtolower("priority_".$canonical_name),
@@ -282,11 +283,11 @@ class PluginAdm extends Model {
 			FROM ".$this->table."
 			where name in ('".$plugin_list."')");
 		
-		while(list($plugin_id, $name, $title, $code, $version, $author, $link, $priority, $description, $active ) = 
-				sql_fetch_row( $reSetting )){
+		while(list($plugin_id, $name, $title, $code, $category, $version, $author, $link, $priority, $description, $active ) = sql_fetch_row( $reSetting )){
 			$plugin_info[$name]['id']=$plugin_id;
 			$plugin_info[$name]['title']=$title;
 			$plugin_info[$name]['code']=$code;
+			$plugin_info[$name]['category']=$category;
 			$plugin_info[$name]['version']=$version;
 			$plugin_info[$name]['author']=$author;
 			$plugin_info[$name]['link']=$link;

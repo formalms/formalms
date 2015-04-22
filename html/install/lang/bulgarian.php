@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Forma - Инсталиране");
+define("_INSTALLER_TITLE", "forma.lms - Инсталиране");
 define("_NEXT", "Следваща стъпка");
 define("_BACK", "Назад");
 define("_LOADING", "Зареждане");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Опитайте пак");
 //--------------------------------------
 define("_TITLE_STEP1", "Стъпка 1: Посочете език");
 define("_LANGUAGE", "Език");
-define("_INSTALLER_INTRO_TEXT", "Forma е компания, която е разработила собствен продукт с отворен код за електронно обучение наречен FormaLMS, подходящ за големи организации, корпоративния пазар, правителството и здравеопазването.
+define("_INSTALLER_INTRO_TEXT", "formalms.org е компания, която е разработила собствен продукт с отворен код за електронно обучение наречен forma.lms, подходящ за големи организации, корпоративния пазар, правителството и здравеопазването.
 	<p><b>Основни функции</b></p>
 	<ul>
 		<li>Scorm 1.2 и поддръжка за 2004</li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","PHP версия: ");
 define("_MYSQLCLIENT_VERSION","Версия на Mysql клиента: ");
 define("_LDAP","Ldap : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Вземете предвид това предупреждение, само ако ще трябва да използвате LDAP ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","PHP информация: ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
@@ -40,10 +42,12 @@ define("_REGISTER_GLOBALS","register_global : ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize : ");
 define("_POST_MAX_SIZE","post_max_size : ");
 define("_MAX_EXECUTION_TIME","max_execution_time : ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","Включено ");
 define("_OFF","Изключено");
 
-define("_VERSION","Forma версия");
+define("_VERSION","forma.lms версия");
 define("_START","Начало");
 define("_END","Край");
 // -----------------------------------------
@@ -99,7 +103,7 @@ define("_DOWNLOAD_CONFIG", "Свалете config");
 define("_CHECKED_DIRECTORIES","Някои папки, където се съхраняват файловете не съществуват или не са разрешени за ползване");
 define("_CHECKED_FILES","Определени файлове не разполагат с подходящите разрешителни");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - Upgrade");
+define("_UPGRADER_TITLE", "forma.lms - Upgrade");
 define("_UPGRADE_CONFIG","Обновяване на файла config.php");
 define("_UPG_CONFIG_OK","Файлът Config.php е обновен успешно");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");

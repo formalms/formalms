@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Forma - Installation");
+define("_INSTALLER_TITLE", "forma.lms - Installation");
 define("_NEXT", "Etape suivante");
 define("_BACK", "Retour");
 define("_LOADING", "Chargement");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Essayer de nouveau");
 //--------------------------------------
 define("_TITLE_STEP1", "Etape 1: Choix de la langue");
 define("_LANGUAGE", "Langue");
-define("_INSTALLER_INTRO_TEXT", "Forma est une société qui a développé sa propre structure d'apprentissage électronique open-source appelé FormaLMS, adapté aux sociétés complexes, au monde des entreprises , au gouvernement et aux services de santé.
+define("_INSTALLER_INTRO_TEXT", "formalms.org est une société qui a développé sa propre structure d'apprentissage électronique open-source appelé forma.lms, adapté aux sociétés complexes, au monde des entreprises , au gouvernement et aux services de santé.
 	<p><b>Fonctionnalités Clées</b></p>
 	<ul>
 		<li>Compatible Scorm 1.2 et 2004</li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","Version PHP : ");
 define("_MYSQLCLIENT_VERSION","Version Client Mysql : ");
 define("_LDAP","Ldap : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Ne prêtez attention à cette avertissement que si vous utilisez LDAP ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","Information PHP : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
@@ -40,6 +42,8 @@ define("_REGISTER_GLOBALS","register_global : ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize : ");
 define("_POST_MAX_SIZE","post_max_size : ");
 define("_MAX_EXECUTION_TIME","max_execution_time : ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","ON ");
 define("_OFF","OFF ");
 // -----------------------------------------
@@ -95,7 +99,7 @@ define("_DOWNLOAD_CONFIG", "Télécharger la config");
 define("_CHECKED_DIRECTORIES","Certains répertoires où les fichiers sont stockés n'existent pas ou n'ont pas les droits d'accès qui conviennent");
 define("_CHECKED_FILES","Certains fichiers n'ont pas les droits d'accès adéquates");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - Mise à jour");
+define("_UPGRADER_TITLE", "forma.lms - Mise à jour");
 define("_UPGRADE_CONFIG","Actualiser le fichier config.php");
 define("_UPG_CONFIG_OK","fichier Config.php correctement mis à jour");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");

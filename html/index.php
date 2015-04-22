@@ -58,10 +58,12 @@ if($mode[0] == "on"){
 	if(isset($_GET["passwd"])){
 		// Se la password non corrisponde lo mando alla pagina di manutenzione
 		if($passwd[0] != $_GET["passwd"]){
-			Util::jump_to('maintenance.html');
+			$GLOBALS['maintenance'] = "on";
+			//Util::jump_to('maintenance.html');// Modificata index.php togliendo box login
 		}
 	}else{
-		Util::jump_to('maintenance.html');
+		$GLOBALS['maintenance'] = "on";
+		//Util::jump_to('maintenance.html');// Modificata index.php togliendo box login
 	}
 }
 

@@ -450,10 +450,11 @@ class Certificate {
 
 	function getPdf($html, $name, $img = false, $orientation = 'P', $download = true, $facs_simile = false, $for_saving = false)
 	{
-
-		require_once(_base_.'/addons/tcpdf/tcpdf.php');
+		require_once(Docebo::inc(_base_.'/lib/pdf/lib.pdf.php'));
 
 		$pdf = new PDF($orientation);
+		$pdf->setEncrypted(Get::cfg('certificate_encryption', true));
+		$pdf->setPassword(Get::cfg('certificate_password', null));
 
 		if($for_saving)
 			return $pdf->getPdf($html, $name, $img, $download, $facs_simile, $for_saving);

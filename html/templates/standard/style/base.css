@@ -45,13 +45,12 @@ a.nounder{text-decoration:none;}
 a.nounder:hover{text-decoration:underline;}
 a img{vertical-align:middle;}
 h1 img,h2 img,h3 img,h4 img,h5 img,h6 img{vertical-align:middle;}
-
 /* Main Page Container */
 div#container {width:960px; margin:0 auto; padding:0 10px; background:#fff; /*border:1px solid #ddd*/; border-top:0; border-bottom:0;}
 .layout_header {	padding:5px 0;}
 
-.layout_header .left_logo {margin:0;
-}
+.layout_header .left_logo {margin:0;}
+div.divider{border-bottom: 1px solid #cccccc; margin-top: 5px; margin-bottom: 10px; position: relative;}
 
 /* utility */
 .container-hide{display:none;}
@@ -239,9 +238,6 @@ ul.social-accounts li span{vertical-align:middle;}
 .user_panel a.logout{background:url(../images/standard/exit.png) 0 50% no-repeat;}
 .user_panel a.identity span,.user_panel a.logout span{padding-left:20px;}
 /*specials blocks*/
-.powered_by{color:#999;text-align:right;} /* margin-right:3em; */
-.powered_by a{color:#777;}
-.powered_by sup{vertical-align:text-top;}
 .ico-tooltip{text-decoration:none;display:-moz-inline-box;display:inline-block;background:url(../images/ico_sprite.png) 0 -240px no-repeat;overflow:hidden;white-space:nowrap;height:16px;width:16px;text-indent:20px;}
 .ico-tooltip em{}
 .container-blindnav{position:absolute;top:-990px;height:1px;width:1px;overflow:hidden;}
@@ -267,6 +263,8 @@ p.container-feedback{position:absolute;top:0;width:30%;left:35%;padding:.6em 3em
 .up_dashboard .actions{margin:0 6px 6px;padding:2px 6px;text-align:right;border:1px solid #cccccc;border-top:0px none;}
 /* lightbox */
 #overlay_lightbox_c.yui-panel-container.shadow .underlay{position:absolute;background:transparent;}
+#overlay_lightbox_c {z-index: -1000 !important;}
+.masked #overlay_lightbox_c {z-index: 11000 !important;}
 #overlay_lightbox.yui-panel{border:none;overflow:visible;background:transparent;}
 #overlay_lightbox.yui-panel .hd{padding:0;border:none;color:#ffffff;height:24px;margin:0;overflow:visible;position:relative;background:transparent;}
 #overlay_lightbox.yui-panel .hd h1{color:#ffffff;margin:0;padding:2px 2px 2px 8px;font-size:115%;background:transparent;display:inline;}
@@ -377,6 +375,7 @@ ul.style_none li{list-style:none; }
 .tag_cloud li.t3{font-size:100%;font-weight:normal;}
 .tag_cloud li.t2{font-size:85%;font-weight:normal;}
 .tag_cloud li.t1{font-size:75%;font-weight:normal;}
+
 /* panel for 20/80 layout */
 div.panel_left_small{float:left;width:23%;margin:0.8%;position:relative;}
 div.panel_right_big{float:left;width:73%;margin:0.8%;position:relative;}
@@ -469,7 +468,6 @@ div.cart_box a .num_notify { font-size: 0.80em; }
 .cart_right { float: right; margin-right: 2em; }
 p.total_price { margin-bottom: 1em; }
 /* ---------- */
-
 /* Categories */
 
 .yui-t2 .yui-b {
@@ -511,3 +509,4 @@ ul.flat-categories ul ul ul li a {color:#666;}
 ul.flat-categories ul ul ul li.expanded {background:#FFF url('../images/treeview/arrow-down-circle.png')no-repeat 3px 4px;}
 
 ul.style_none li {list-style:none; }
+

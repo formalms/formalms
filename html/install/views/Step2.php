@@ -13,6 +13,7 @@
 	<li class="<?php echo $cl['mbstring']; ?>"><?php echo Lang::t('_MBSTRING'); ?>: <span><?php echo (extension_loaded('mbstring') ? _ON : _OFF); ?></span></li>
 	<li class="<?php echo $cl['mime_ct']; ?>"><?php echo Lang::t('_MIME_CONTENT_TYPE'); ?>: <span><?php echo ($cl['mime_ct'] == 'ok' ? _ON : _OFF); ?></span></li>
 	<li class="<?php echo $cl['ldap']; ?>"><?php echo Lang::t('_LDAP'); ?>: <span><?php echo (extension_loaded('ldap') ? _ON : _OFF.' '._ONLY_IF_YU_WANT_TO_USE_IT); ?></span></li>
+	<li class="<?php echo $cl['openssl']; ?>"><?php echo Lang::t('_OPENSSL'); ?>: <span><?php echo (extension_loaded('openssl') ? _ON : _OFF.' '._WARINNG_SOCIAL); ?></span></li>
 	<li class="ok"><?php echo Lang::t('_PHP_TIMEZONE'); ?>: <span><?php echo @date_default_timezone_get(); ?></span></li>
 </ul>
 
@@ -29,6 +30,8 @@
 	<li><?php echo Lang::t('_MAGIC_QUOTES_GPC'); ?>: <?php echo ($php_conf['magic_quotes_gpc']['local_value'] != '' ? _ON : _OFF); ?></li>
 	<li><?php echo Lang::t('_SAFEMODE'); ?>: <?php echo ($php_conf['safe_mode']['local_value'] != '' ? _ON : _OFF); ?></li>
 	<li><?php echo Lang::t('_REGISTER_GLOBALS'); ?>: <?php echo ($php_conf['register_globals']['local_value'] != '' ? _ON : _OFF); ?></li>
+	<li class="<?php echo $cl['allow_url_fopen']; ?>"><?php echo Lang::t('_ALLOW_URL_FOPEN'); ?>: <?php echo ( $php_conf['allow_url_fopen']['local_value'] != '' ? _ON : _OFF.' '._WARINNG_SOCIAL); ?></li>
+	<li><?php echo Lang::t('_ALLOW_URL_INCLUDE'); ?>: <?php echo ( $php_conf['allow_url_include']['local_value'] != '' ? _ON : _OFF); ?></li>
 	<li><?php echo Lang::t('_UPLOAD_MAX_FILESIZE'); ?>: <?php echo $php_conf['upload_max_filesize']['local_value']; ?></li>
 	<li><?php echo Lang::t('_POST_MAX_SIZE'); ?>: <?php echo $php_conf['post_max_size']['local_value']; ?></li>
 	<li><?php echo Lang::t('_MAX_EXECUTION_TIME'); ?>: <?php echo $php_conf['max_execution_time']['local_value'].'s'; ?></li>

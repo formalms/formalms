@@ -20,6 +20,41 @@ if(isset($_GET['of_platform']) || isset($_POST['of_platform'])) {
 	$_SESSION['current_action_platform'] = Get::req('of_platform');
 }
 
+if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+	$db = DbConn::getInstance();
+	
+	$query = "SELECT param_value FROM core_setting
+			WHERE param_name = 'maintenance'
+			ORDER BY pack, sequence";
+
+	$mode = $db->fetch_row($db->query($query));
+	// Se siamo in modalita' manutenzione
+	if($mode[0] == "on") {
+//	if(Get::sett('maintenance') == 'on'){ // non posso farlo cosi perche non ancora settato
+		if(!Docebo::user()->isAnonymous() && $GLOBALS['modname'] != 'login' && $GLOBALS['op'] != 'logout') {
+			$_SESSION = array();
+			session_destroy();
+			Util::jump_to(Get::rel_path('lms').'/index.php?modname=login&op=logout');
+		}
+	}
+}
+if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+	if(isset($_SESSION['must_renew_pwd']) && $_SESSION['must_renew_pwd'] == 1) {
+		if(!Docebo::user()->isAnonymous() && $GLOBALS['modname'] != 'login' && $GLOBALS['op'] != 'logout') {
+			Util::jump_to(Get::rel_path('lms').'/index.php');
+		}
+	}
+}
+/*
+if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+	if(!Docebo::user()->isAnonymous() && $GLOBALS['modname'] != 'login' && $GLOBALS['op'] != 'logout') {
+		$pwd_elapsed = Docebo::user()->isPasswordElapsed();
+		if($pwd_elapsed > 0) {
+			Util::jump_to(Get::rel_path('lms').'/index.php');
+		}
+	}
+}
+*/
 // NOTE: some special function
 switch($GLOBALS['op']) {
 	case "confirm" : {

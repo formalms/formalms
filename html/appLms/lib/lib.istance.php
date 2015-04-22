@@ -31,7 +31,11 @@
 function createModule($module_name, $class_name = NULL) {
 
 	$module_name = preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $module_name);
-	if(file_exists(dirname(__FILE__).'/../class.module/class.'.$module_name.'.php')) {
+        if (file_exists(_base_ . '/customscripts/'._folder_lms_.'/class.module/class.'.$module_name.'.php' ) && Get::cfg('enable_customscripts', false) == true ){
+		
+                include_once(_base_ . '/customscripts/'._folder_lms_.'/class.module/class.'.$module_name.'.php' );
+                if( $class_name === NULL ) $class_name = 'Module_'.ucfirst($module_name);
+        }else if(file_exists(dirname(__FILE__).'/../class.module/class.'.$module_name.'.php')) {
 		
 		include_once(dirname(__FILE__).'/../class.module/class.'.$module_name.'.php');
 		if( $class_name === NULL ) $class_name = 'Module_'.ucfirst($module_name); 

@@ -1,21 +1,29 @@
 <?php
-
-
+use OAuth\OAuth2\Service\Facebook;
+use OAuth\Common\Storage\Session;
+use OAuth\Common\Consumer\Credentials;
 
 function reg_with_fb() {
-	$social =new Social();
-	$social->includeFacebookLib();
-	$facebook =$social->getFacebookObj();
+  $_SESSION['fb_from'] = "register";
 
-	$_SESSION['fb_from']='register';
-	
-	$loginUrl = $facebook->getLoginUrl(array(
-		'req_perms'=>'email',
-		'next'=>Get::sett('url').'index.php?modname=login&op=facebook_login',
-	));
-	
-	session_write_close();
-	header('location: '.$loginUrl);
+  $social =new Social();
+  $social->includeFacebookLib();
+  
+  $client_id = Get::sett('social_fb_api');
+  $client_secret = Get::sett('social_fb_secret');
+  $redirect_uri = Get::sett('url').'index.php?modname=login&op=facebook_login';
+  
+	$serviceFactory = new \OAuth\ServiceFactory();
+	$storage = new Session();
+	$credentials = new Credentials(
+			$client_id,
+			$client_secret,
+			$redirect_uri
+	);
+
+	$facebookService = $serviceFactory->createService('facebook', $credentials, $storage, array()); //, 'userinfo_profile'
+	$authUrl = $facebookService->getAuthorizationUri();
+	header('Location: ' . $authUrl);
 	die();
 }
 

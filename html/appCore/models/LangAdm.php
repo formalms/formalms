@@ -312,7 +312,7 @@ class LangAdm extends Model {
 	public function getAllTranslation($lang_code) {
 
 		$qtxt = "
-		SELECT lt.id_text as id, lt.text_key, lt.text_module, ta.translation_text
+		SELECT lt.id_text as id, lt.text_key, lt.text_module, ta.translation_text, date_format(ta.save_date,'%Y-%m-%d %H:%i:%s') as save_date
 		FROM  %adm_lang_text AS lt
 		LEFT JOIN %adm_lang_translation AS ta ON ( lt.id_text = ta.id_text AND ta.lang_code = '".$lang_code."')
 		WHERE 1 ";
@@ -321,7 +321,7 @@ class LangAdm extends Model {
 		$result = $this->db->query($qtxt);
 		while($obj = $this->db->fetch_obj($result)) {
 
-			$data[$obj->text_module][$obj->text_key] = array($obj->id, $obj->translation_text);
+			$data[$obj->text_module][$obj->text_key] = array($obj->id, $obj->translation_text, $obj->save_date);
 		}
 		return $data;
 	}
@@ -431,33 +431,45 @@ class LangAdm extends Model {
 	 * @param string $new_value
 	 * @return bool
 	 */
-	public function saveTranslation($id_text, $lang_code, $new_value) {
+	public function saveTranslation($id_text, $lang_code, $new_value, $save_date = null) {
 
 		if(!$this->isTranslated($id_text, $lang_code)) {
 
-			return $this->insertTranslation($id_text, $lang_code, $new_value);
+			return $this->insertTranslation($id_text, $lang_code, $new_value, $save_date);
 		} else {
 
-			return $this->updateTranslation($id_text, $lang_code, $new_value);
+			return $this->updateTranslation($id_text, $lang_code, $new_value, $save_date);
 		}
 	}
 
-	public function insertTranslation($id_text, $lang_code, $new_value) {
+	public function insertTranslation($id_text, $lang_code, $new_value, $save_date = null ) {
+
+		if ( empty($save_date) ){
+			$dt = 'NOW()';
+		} else {
+			$dt = "date_format('" . $save_date ."','%Y-%m-%d %H:%i:%s')";
+		}
 
 		$query = "INSERT INTO %adm_lang_translation "
 			."( id_text, lang_code, translation_text, save_date ) VALUES ("
 			." ".(int)$id_text.",  "
 			." '".$lang_code."', "
 			." '".$new_value."', "
-			." NOW() )";
+			." ".$dt . " )";
 		return $this->db->query($query);
 	}
 
-	public function updateTranslation($id_text, $lang_code, $new_value) {
+	public function updateTranslation($id_text, $lang_code, $new_value, $save_date = null) {
+
+		if ( empty($save_date) ){
+			$dt = 'NOW()';
+		} else {
+			$dt = "date_format('" . $save_date ."','%Y-%m-%d %H:%i:%s')";
+		}
 
 		$query = "UPDATE %adm_lang_translation "
 				."SET translation_text = '".$new_value."', "
-				." save_date = NOW() "
+				." save_date = " . $dt . " "
 				."WHERE id_text = ".(int)$id_text." "
 				." AND lang_code = '".$lang_code."'";
 		return $this->db->query($query);
@@ -579,6 +591,7 @@ class LangAdm extends Model {
 
 				$text_module = $key->parentNode->getAttribute('id');
 				$text_key = array_pop(explode("&", str_replace('&amp;', '&', $key->getAttribute( 'id' ))));
+				$text_savedt =  $key->getAttribute( 'save_date' );
 				$translation = $this->cleanImport($key->nodeValue);
 
 				$re = true;
@@ -587,17 +600,17 @@ class LangAdm extends Model {
 					$id_text = $current_translation[$text_module][$text_key][0];
 					if($current_translation[$text_module][$text_key][1] == NULL) {
 						// no translation loaded
-						$re = $this->insertTranslation($id_text, $lang_code, $translation);
+						$re = $this->insertTranslation($id_text, $lang_code, $translation, $text_savedt);
 					} elseif($overwrite) {
 						// a previous translation exist, and the user request an update
-						$re = $this->updateTranslation($id_text, $lang_code, $translation);
+						$re = $this->updateTranslation($id_text, $lang_code, $translation, $text_savedt);
 					}
 				} elseif(!$noadd_miss) {
 					// we must also create the key, and we are required to create if
 					$text_attributes = $key->getAttribute('attributes');
 					$id_text = $this->insertKey($text_key, $text_module, $text_attributes);
 					//now we can insert the translation
-					if($id_text) $re = $this->insertTranslation($id_text, $lang_code, $translation);
+					if($id_text) $re = $this->insertTranslation($id_text, $lang_code, $translation, $text_savedt);
 				}
 				if($re) $definitions++;
 

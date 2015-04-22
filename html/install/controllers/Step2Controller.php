@@ -28,7 +28,11 @@ function checkRequirements() {
 	$res['xml']=(extension_loaded('domxml') ? 'ok' : 'err');
 	$res['mbstring']=(extension_loaded('mbstring') ? 'ok' : 'err');
 	$res['ldap']=(extension_loaded('ldap') ? 'ok' : 'err');
+	$res['openssl']=( extension_loaded('openssl') ? 'ok' : 'err');
+	$res['allow_url_fopen']=  ($php_conf['allow_url_fopen']['local_value'] ? 'ok' : 'err');
+	$res['allow_url_include'] = ($php_conf['allow_url_include']['local_value'] ? 'err' : 'ok' );
 	$res['mime_ct']=(function_exists('mime_content_type') || (class_exists('file') && method_exists('finfo', 'file')) ? 'ok' : 'err');
+
 
 	return $res;
 }

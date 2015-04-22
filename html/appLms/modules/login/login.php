@@ -12,24 +12,24 @@
 \ ======================================================================== */
 
 function loadWebPage() {
-	
+
 	//load info
 	if(isset($_GET['idPages'])) {
 		$textQuery = "
 		SELECT title, description, publish
-		FROM ".$GLOBALS['prefix_lms']."_webpages 
+		FROM ".$GLOBALS['prefix_lms']."_webpages
 		WHERE idPages  = '".(int)$_GET['idPages']."'";
 	} else {
 		$textQuery = "
 		SELECT title, description, publish
-		FROM ".$GLOBALS['prefix_lms']."_webpages 
+		FROM ".$GLOBALS['prefix_lms']."_webpages
 		WHERE in_home  = '1'";
 	}
 	list($title, $description, $publish) = sql_fetch_row(sql_query($textQuery));
-	
+
 	$GLOBALS['page']->add('<li><a href="#home_page">'. Lang::t('_JUMP').' : '.$title.'</a></li>', 'blind_navigation');
-	
-	$GLOBALS['page']->add( 
+
+	$GLOBALS['page']->add(
 		 '<div class="home_block">'
 		 .'<h1 id="home_page">'.$title .'</h1>'
 		 .'<div class="home_textof">'.$description.'</div>'
@@ -37,29 +37,29 @@ function loadWebPage() {
 }
 
 function loadNews() {
-	
+
 	if(Get::sett('visuNewsHomePage') == '0') return;
-	if(Get::sett('activeNews') == 'off') return; 
+	if(Get::sett('activeNews') == 'off') return;
 	$textQuery = "
-	SELECT idNews, publish_date, title, short_desc 
-	FROM ".$GLOBALS['prefix_lms']."_news 
-	WHERE language = '".getLanguage()."' 
+	SELECT idNews, publish_date, title, short_desc
+	FROM ".$GLOBALS['prefix_lms']."_news
+	WHERE language = '".getLanguage()."'
 	ORDER BY important DESC, publish_date DESC
 	LIMIT 0,".Get::sett('visuNewsHomePage');
-	
+
 	$lang = DoceboLanguage::createInstance('login');
-	
+
 	$GLOBALS['page']->add('<li><a href="#home_page">'.$lang->def('_JUMP_TO').' : '.$lang->def('_NEWS').'</a></li>', 'blind_navigation');
-	
-	$GLOBALS['page']->add( 
+
+	$GLOBALS['page']->add(
 		'<div class="news_block">'
 		.'<h1>'.$lang->def('_NEWS').'</h1>'
 		.'<div class="news_list">', 'content');
-	
+
 	//do query
 	$result = sql_query($textQuery);
 	while( list($idNews, $publish_date, $title, $short_desc) = sql_fetch_row($result)) {
-		
+
 		$GLOBALS['page']->add(
 			'<h2><a href="index.php?modname=login&amp;op=readnews&amp;idNews='.$idNews.'">'.$title.'</a></h2>'
 			.'<p class="news_textof">'
@@ -74,25 +74,25 @@ function loadNews() {
 }
 
 function news() {
-	
+
 	$textQuery = "
-	SELECT idNews, publish_date, title, short_desc 
-	FROM ".$GLOBALS['prefix_lms']."_news 
+	SELECT idNews, publish_date, title, short_desc
+	FROM ".$GLOBALS['prefix_lms']."_news
 	WHERE language = '".getLanguage()."'
 	ORDER BY important DESC, publish_date DESC";
-	
+
 	$lang = DoceboLanguage::createInstance('login');
-	
-	$GLOBALS['page']->add( 
+
+	$GLOBALS['page']->add(
 		getTitleArea($lang->def('_NEWS'), 'news', $lang->def('_NEWS'))
 		.'<div class="news_block">'
 		.getBackUi( 'index.php', $lang->def('_BACK') ), 'content');
-	
+
 	//do query
 	$result = sql_query($textQuery);
 	while( list($idNews, $publish_date, $title, $short_desc) = sql_fetch_row($result)) {
-		
-		$GLOBALS['page']->add( 
+
+		$GLOBALS['page']->add(
 			'<div class="news_title">'
 			.'<a href="index.php?modname=login&amp;op=readnews&amp;idNews='.$idNews.'">'.$title.'</a></div>'
 			.'<div class="news_textof">'
@@ -109,19 +109,19 @@ function news() {
 }
 
 function readnews() {
-	
+
 	$textQuery = "
-	SELECT publish_date, title, long_desc 
-	FROM ".$GLOBALS['prefix_lms']."_news 
+	SELECT publish_date, title, long_desc
+	FROM ".$GLOBALS['prefix_lms']."_news
 	WHERE idNews = '".$_GET['idNews']."'";
 	//do query
 	$result = sql_query($textQuery);
 	list($publish_date, $title, $long_desc) = sql_fetch_row($result);
-	
+
 	$l_login = DoceboLanguage::createInstance('login');
 	$l_std = DoceboLanguage::createInstance('standard');
-	
-	$GLOBALS['page']->add( 
+
+	$GLOBALS['page']->add(
 		getTitleArea($l_login->def('_NEWS'), 'news', $l_login->def('_NEWS'))
 		.'<div class="news_block">'
 		.getBackUi( 'index.php', $l_std->def('_BACK') )
@@ -136,25 +136,25 @@ function readnews() {
 
 // XXX: lostpwd
 function lostpwd() {
-	
+
 	require_once(_base_.'/lib/lib.usermanager.php');
-	
+
 	$lang = DoceboLanguage::createInstance('login');
 	$user_manager = new UserManager();
-	
+
 	$GLOBALS['page']->add( getTitleArea($lang->def('_LOGIN'), 'login')
 		.'<div class="std_block">'
 		.getBackUi( 'index.php', $lang->def('_BACK') ), 'content');
 	if($user_manager->haveToLostpwdConfirm()) {
-		
+
 		$GLOBALS['page']->add($user_manager->performLostpwdConfirm(), 'content');
 	}
 	if($user_manager->haveToLostpwdAction()) {
-		
+
 		$GLOBALS['page']->add($user_manager->performLostpwdAction('index.php?modname=login&amp;op=lostpwd'), 'content');
 	}
 	if($user_manager->haveToLostpwdMask()) {
-		
+
 		$GLOBALS['page']->add($user_manager->getLostpwdMask('index.php?modname=login&amp;op=lostpwd'), 'content');
 	}
 	$GLOBALS['page']->add( '</div>', 'content');
@@ -162,16 +162,16 @@ function lostpwd() {
 
 
 function register() {
-	
+
 	require_once(_base_.'/lib/lib.usermanager.php');
 	require_once(_base_.'/lib/lib.form.php');
-	
+
 	$user_manager = new UserManager();
-	
+
 	$link = 'http://'.$_SERVER['HTTP_HOST']
     		.( strlen(dirname($_SERVER['PHP_SELF'])) != 1 ? dirname($_SERVER['PHP_SELF']) : '' )
 			.'/index.php?modname=login&amp;op=register_opt';
-	
+
 	$GLOBALS['page']->add(
 		getTitleArea(Lang::t('_REGISTER', 'register', 'lms'), 'register')
 		.'<div class="std_block">'
@@ -183,13 +183,13 @@ function register() {
 }
 
 function register_confirm() {
-	
+
 	require_once(_base_.'/lib/lib.usermanager.php');
 	require_once(_base_.'/lib/lib.form.php');
-	
+
 	$user_manager = new UserManager();
-	
-	$GLOBALS['page']->add( 
+
+	$GLOBALS['page']->add(
 		getTitleArea(Lang::t('_REGISTER', 'register', 'lms'), 'register')
 		.'<div class="std_block">'
 		.$user_manager->confirmRegister()
@@ -209,7 +209,7 @@ function login_coursecatalogueJsSetup() {
 		'container/assets/skins/sam' => 'container.css',
 		'button/assets/skins/sam' => 'button.css'
 	));
-	
+
 	addCss('style_course_list', 'lms');
 	addJs($GLOBALS['where_lms_relative'].'/modules/coursecatalogue/', 'ajax.coursecatalogue.js');
 	//addCss('style_yui_docebo', 'lms');
@@ -217,9 +217,9 @@ function login_coursecatalogueJsSetup() {
 }
 
 function externalCourselist() {
-	
+
 	require_once($GLOBALS['where_lms'].'/modules/coursecatalogue/lib.coursecatalogue.php');
-	
+
 	require_once(_base_.'/lib/lib.form.php');
 	require_once(_base_.'/lib/lib.user_profile.php');
 	require_once(_base_.'/lib/lib.navbar.php');
@@ -227,22 +227,22 @@ function externalCourselist() {
 	require_once($GLOBALS['where_lms'].'/lib/lib.catalogue.php');
 	require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
 	require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
-	
+
 	require_once(_base_.'/lib/lib.urlmanager.php');
 	$url =& UrlManager::getInstance('login');
 	$url->setStdQuery('modname=login&op=courselist');
-	
+
 	addCss('style_tab', 'lms');
 	login_coursecatalogueJsSetup();
-	
+
 	$GLOBALS['page']->add(
 	'<!--[if lt IE 7.]>
 		<script type="text/javascript" src="'.$GLOBALS['where_framework_relative'].'/lib/lib.pngfix.js"></script>
 	<![endif]-->', 'page_head');
-	
+
 	$lang 	=& DoceboLanguage::createInstance('catalogue');
 	$lang_c =& DoceboLanguage::createInstance('course');
-	
+
 	// list of tab ---------------------------------------------------------------------------
 	$tab_list = array(
 		'time' 		=> $lang->def('_TAB_VIEW_TIME'),
@@ -262,17 +262,17 @@ function externalCourselist() {
 		if(!isset($tab_selected[$tab_code])) unset($tab_list[$tab_code]);
 	}
 	reset($tab_list);
-	
+
 	// tab selected for courses -------------------------------------------------------------
 	$first_coursecatalogue_tab = Get::sett('first_coursecatalogue_tab', key($tab_list));
 	if(!isset($tab_list[$first_coursecatalogue_tab])) $first_coursecatalogue_tab = key($tab_list);
-	
+
 	if(isset($_GET['tab']) || isset($_POST['tab'])) {
 		$selected_tab = $_SESSION['cc_tab'] = Get::req('tab', DOTY_MIXED, $first_coursecatalogue_tab);
 	}
 	elseif(isset($_SESSION['cc_tab'])) $selected_tab = $_SESSION['cc_tab'];
 	else $selected_tab = $first_coursecatalogue_tab;
-	
+
 	$GLOBALS['page']->add(
 		'<div id="coursecatalogue_tab_container">'
 		.'<ul class="flat_tab">', 'content');
@@ -293,11 +293,11 @@ function externalCourselist() {
 		};break;*/
 		default: {
 			displayCourseList($url, $selected_tab);
-		} 
+		}
 	}
-	
+
 	$GLOBALS['page']->add('</div>', 'content');
-	
+
 	// end of function ----------------------------------------------------------------
 }
 
@@ -342,7 +342,7 @@ function showdemo() {
 }
 
 function donwloadmaterials() {
-	
+
 	require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
 	require_once(_base_.'/lib/lib.multimedia.php');
 	$lang = DoceboLanguage::createInstance('course', 'lms');
@@ -351,7 +351,7 @@ function donwloadmaterials() {
 	$edition_id = importVar('edition_id', true, 0);
 
 	if($id_course != 0) {
-			
+
 		$man_course = new DoceboCourse($id_course);
 		$file = $man_course->getValue('img_material');
 	}
@@ -359,7 +359,7 @@ function donwloadmaterials() {
 		$select_edition = " SELECT img_material ";
 		$from_edition 	= " FROM ".$GLOBALS["prefix_lms"]."_course_edition";
 		$where_edition 	= " WHERE idCourseEdition = '".$edition_id."' ";
-	
+
 		list($file) = sql_fetch_row(sql_query($select_edition.$from_edition.$where_edition));
 	}
 	require_once(_base_.'/lib/lib.download.php' );
@@ -471,14 +471,14 @@ function socialConnectLogin($uid=false, $network_code=false) {
 		} break;
 	}
 
-	
+
 	$GLOBALS['page']->add( getTitleArea($lang->def('_LOGIN'), 'login')
 		.'<div class="std_block">'
 		.getBackUi( 'index.php', $lang->def('_BACK') ), 'content');
 
 	if ($can_connect) {
 		$res.=Get::img('social/'.$network_code.'-24.png').'&nbsp;';
-		$res.=str_replace('[network_code]', Lang::t($network_code, 'social'), Lang::t('_YOU_ARE_CONNECTING_SOCIAL_ACCOUNT', 'social'));
+		$res.=str_replace('[network_code]', Lang::t($network_code, 'social'), Lang::t('_YOU_ARE_CONNECTING_SOCIAL_ACCOUNT', 'social'))." <b>".$uid."</b>";
 	}
 
 	$res.=Form::openForm('scl_form', 'index.php?modname=login&amp;op=social_connect_login')
@@ -499,7 +499,7 @@ function socialConnectLogin($uid=false, $network_code=false) {
 
 // XXX: switch
 switch($GLOBALS['op']) {
-	
+
 	case "register" : {
 		register();
 	};break;
@@ -511,11 +511,11 @@ switch($GLOBALS['op']) {
 		require_once(_lms_."/modules/login/facebook.php");
 		reg_with_fb();
 	} break;
-	
+
 	case "courselist" : {
 		externalCourselist();
 	};break;
-	
+
 	case "showdemo" : {
 		showdemo();
 	};break;
@@ -528,11 +528,11 @@ switch($GLOBALS['op']) {
 	case "buycourse" : {
 		buycourse();
 	};break;
-	
-		
-	
+
+
+
 	case "readwebpages" : {
-		loadWebPage(); 
+		loadWebPage();
 	};break;
 	case "news" : {
 		news();
@@ -552,59 +552,14 @@ switch($GLOBALS['op']) {
 	} break;
 
 	case "facebook_login": {
-		$social =new Social();
-		$social->includeFacebookLib();
-		
-		$facebook =$social->getFacebookObj();
-		$session = $facebook->getSession();
-
-		$me = null;
-		// Session based API call.
-		if ($session) {
-			try {
-				$uid = $facebook->getUser();
-				$me = $facebook->api('/me');
-			} catch (FacebookApiException $e) {
-				//error_log($e);
-			}
-		}
-
-		if ($me && $uid) {
-
-			if (Docebo::user()->isAnonymous()) { // sign in the user
-				$user =DoceboUser::createDoceboUserFromField('facebook_id', $uid, 'public_area');
-				if ($user) {
-					DoceboUser::setupUser($user);
-					
-					Util::jump_to('index.php?r=lms/elearning/show');
-				} else {
-					//Util::jump_to('index.php?access_fail=2');
-					if ($_SESSION['fb_from'] == 'login') {
-						socialConnectLogin($uid, 'facebook');
-					}
-					else if ($_SESSION['fb_from'] == 'register') {
-						$_SESSION['fb_info']=$me;
-						Util::jump_to(Get::rel_path('base').'/index.php?modname=login&op=register');
-					}
-					return;
-				}
-			} else { // user is already logged in, so connect the account with user
-				$social->connectAccount('facebook', $uid);
-				Util::jump_to('index.php?r=lms/elearning/show');
-				die();
-			}
-		}
-		else {
-			Util::jump_to('index.php?access_fail=3');
-		}
-		die();
+		include_once(dirname(__FILE__).'/login.facebook.oauth2.php');
 	} break;
 
 
 	case "twitter_login": {
 		$social =new Social();
 		$social->includeTwitterLib();
-		
+
 		require_once(_base_.'/lib/lib.preference.php');
 		$preference = new UserPreferences(getLogUserId());
 
@@ -624,7 +579,7 @@ switch($GLOBALS['op']) {
 					exit;
 				} else {
 			}
-				
+
 		} else { // twitter callback
 
 			$twitter =new EpiTwitter($conf['twitter_key'], $conf['twitter_secret']);
@@ -637,7 +592,7 @@ switch($GLOBALS['op']) {
 			$twitter->setToken($resp->oauth_token, $resp->oauth_token_secret);
 
 			$user_pref['twitter_key']=$resp->oauth_token;
-			$user_pref['twitter_secret']=$resp->oauth_token_secret;			
+			$user_pref['twitter_secret']=$resp->oauth_token_secret;
 		}
 
 		$twitter = new EpiTwitter(
@@ -648,7 +603,7 @@ switch($GLOBALS['op']) {
 		);
 
 
-		
+
 		$userInfo = $twitter->get_accountVerify_credentials();
 
 		if ($userInfo) {
@@ -688,7 +643,7 @@ switch($GLOBALS['op']) {
 		$conf =$social->getConfig();
 
 		$user_pref =array();
-		
+
 		if (Docebo::user()->isAnonymous()) {
 			$user_pref['linkedin_key']='';
 			$user_pref['linkedin_secret']='';
@@ -742,10 +697,10 @@ switch($GLOBALS['op']) {
 					Util::jump_to('index.php?r=lms/elearning/show');
 					die();
 				}
-			} else {				
+			} else {
 				Util::jump_to('index.php?access_fail=3');
 			}
-		} else { // !$sign_in			
+		} else { // !$sign_in
 			Util::jump_to('index.php?access_fail=3');
 		}
 		die();
@@ -753,60 +708,17 @@ switch($GLOBALS['op']) {
 
 
 	case "google_login": {
-		$social =new Social();
-		$social->includeOpenidLib();
-
-		try {
-			if (!isset($_GET['openid_mode'])) {
-				$openid = new LightOpenID;
-				$openid->identity = 'https://www.google.com/accounts/o8/id';
-				$openid->required =array('contact/email', 'namePerson/first', 'namePerson/last');
-				header('Location: ' . str_replace('&amp;', '&', $openid->authUrl()));
-			} elseif ($_GET['openid_mode'] == 'cancel') {
-				Util::jump_to('index.php?access_fail=3');
-			} else {
-				$openid = new LightOpenID;
-				$_GET['openid_return_to']=$_REQUEST['openid_return_to']; // to avoid having &amp; instead of &
-
-				if ($openid->validate()) {
-					$user_data =$social->getGoogleUserInfo();
-					if (!empty($user_data['email'])) {
-
-						if (Docebo::user()->isAnonymous()) { // sign in the user
-							$user = DoceboUser::createDoceboUserFromField('google_id', $user_data['email'], 'public_area');
-							if ($user) {
-								DoceboUser::setupUser($user);
-
-								Util::jump_to('index.php?r=lms/elearning/show');
-							} else {
-								//Util::jump_to('index.php?access_fail=2');
-								socialConnectLogin($user_data['email'], 'google');
-								return;
-							}
-						} else { // user is already logged in, so connect the account with user
-							$social->connectAccount('google', $user_data['email']);
-							Util::jump_to('index.php?r=lms/elearning/show');
-							die();
-						}
-
-						print_r($user_data);
-					} else {
-						Util::jump_to('index.php?access_fail=2');
-					}
-				} else {
-					Util::jump_to('index.php?access_fail=3');
-				}
-				die();
-			}
-		} catch (ErrorException $e) {
-			echo $e->getMessage();
+		if(Get::cfg('use_google_login_oauth2', true)){
+			include_once(dirname(__FILE__).'/login.google.oauth2.php');
 		}
-
+		else {
+			include_once(dirname(__FILE__).'/login.google.openid.php');
+		}
 	} break;
 
 
 	default: {
-		
+
 		if(Get::sett('home_course_catalogue') == 'on') {
 			externalCourselist();
 		} else {

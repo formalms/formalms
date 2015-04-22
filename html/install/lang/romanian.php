@@ -1,6 +1,6 @@
 <?php
 
-define("_INSTALLER_TITLE", "Instalare Forma ");
+define("_INSTALLER_TITLE", "Instalare forma.lms ");
 define("_NEXT", "Pasul urmator");
 define("_BACK", "Inapoi");
 define("_LOADING", "Incarcare");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Incearca din nou");
 //--------------------------------------
 define("_TITLE_STEP1", "Pasul 1: Selecteaza limba");
 define("_LANGUAGE", "Limba");
-define("_INSTALLER_INTRO_TEXT", "Forma este o companie care a dezvoltat propria platforma de e-learning open-source numita FormaLMS potrivita pentru organizatiile complexe, piata corporativa, guvern si sanatate.
+define("_INSTALLER_INTRO_TEXT", "formalms.org este o companie care a dezvoltat propria platforma de e-learning open-source numita forma.lms potrivita pentru organizatiile complexe, piata corporativa, guvern si sanatate.
 	<p><b>Trasaturi cheie</b></p>
 	<ul>
 		<li>Suport Scorm 1.2 and 2004 </li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","Versiune PHP  : ");
 define("_MYSQLCLIENT_VERSION","Versiune Mysql CLient ");
 define("_LDAP","Ldap : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Ia in considerare acest avertisment doar daca ai nevoie sa folosesti LDAP ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","Informatii PHP  : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
@@ -40,6 +42,8 @@ define("_REGISTER_GLOBALS","register_global : ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize : ");
 define("_POST_MAX_SIZE","post_max_size : ");
 define("_MAX_EXECUTION_TIME","max_execution_time : ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","ON ");
 define("_OFF","OFF ");
 // -----------------------------------------
@@ -95,7 +99,7 @@ define("_DOWNLOAD_CONFIG", "Configurare Download");
 define("_CHECKED_DIRECTORIES","Unele directoare unde sunt stocate fisiere nu exista sau nu au permisiunile corecte");
 define("_CHECKED_FILES","Fisiere certe nu au permisiuni adecvate");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Upgrade Forma ");
+define("_UPGRADER_TITLE", "Upgrade forma.lms ");
 define("_UPGRADE_CONFIG","Upgradare fisier config.php ");
 define("_UPG_CONFIG_OK","Fisierul Config.php updatat cu succes");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");

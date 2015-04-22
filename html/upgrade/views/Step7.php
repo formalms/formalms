@@ -1,7 +1,7 @@
 <h2><?php echo Lang::t('_UPGRADE_COMPLETE'); ?></h2>
 
 <br />
-<h3>Usefull links:</h3>
+<h3>Useful links:</h3>
 
 <ul class="info">
 <li><a href="http://www.formalms.org" target="_blank">Official Website</a></li>

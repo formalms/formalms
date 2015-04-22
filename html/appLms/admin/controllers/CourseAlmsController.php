@@ -783,79 +783,82 @@ Class CourseAlmsController extends AlmsController
 				
 				// Go trough all the entry of learning_organization
 				while($source = sql_fetch_object($source_res)) {
-					
-					// if it's an object we must make a copy, if it's a folder we can create a row
-					// inside learning_orgation and save the id for later use
-					
-					if($source->objectType == '') {
-						
-						// is a folder
-						// create a new row in learning_organization
-						$query_new_org = "INSERT INTO %lms_organization (
-							idParent, 
-							path, lev, title,
-							objectType, idResource, idCategory, idUser, 
-							idAuthor, version, difficult, description, 
-							language, resource, objective, dateInsert, 
-							idCourse, prerequisites, isTerminator, idParam, 
-							visible, milestone)
-							VALUES
-							('".( isset($id_orgs[ $source->idParent ]) ? $id_orgs[ $source->idParent ] : 0 )."', 
-							'".$source->path."', '".$source->lev."', '".sql_escape_string($source->title)."',
-							'".$source->objectType."', '".$source->idResource."', '".$source->idCategory."', '".$source->idUser."', 
-							'".$source->idAuthor."', '".$source->version."', '".$source->difficult."', '".sql_escape_string($source->description)."', 
-							'".$source->language."', '".$source->resource."', '".$source->objective."', '".$source->dateInsert."', 
-							'".$new_id_course."', '".$source->prerequisites."', '".$source->isTerminator."', '".$source->idParam."', 
-							'".$source->visible."', '".$source->milestone."')";
-						$re_new_org = sql_query($query_new_org);
-						$new_id_reference = sql_insert_id();
-						
-						// map for later use
-						$org_map['folder'][$source->idOrg] = $new_id_reference;
-					} else {
-						
-						// is an object
-						// make a copy
-						$lo					= $this->_createLO($source->objectType);
-						$new_id_resource	= $lo->copy($source->idResource);
-						
-						// create a new row in learning_organization
-						$query_new_org = "INSERT INTO %lms_organization (
-							idParent, path, lev, title,
-							objectType, idResource, idCategory, idUser, 
-							idAuthor, version, difficult, description, 
-							language, resource, objective, dateInsert, 
-							idCourse, prerequisites, isTerminator, idParam, 
-							visible, milestone)
-							VALUES
-							('".( isset($id_orgs[ $source->idParent ]) ? $id_orgs[ $source->idParent ] : 0 )."', 
-							'".$source->path."', '".$source->lev."', '".sql_escape_string($source->title)."',
-							'".$source->objectType."', '".$new_id_resource."', '".$source->idCategory."', '".$source->idUser."', 
-							'".$source->idAuthor."', '".$source->version."', '".$source->difficult."', '".sql_escape_string($source->description)."', 
-							'".$source->language."', '".$source->resource."', '".$source->objective."', '".$source->dateInsert."', 
-							'".$new_id_course."', '".$source->prerequisites."', '".$source->isTerminator."', '0', 
-							'".$source->visible."', '".$source->milestone."')";
-						$re_new_org = sql_query($query_new_org);
-						$new_id_reference = sql_insert_id();
-						
-						// for a learning_object we have to create a row in lo_param as well
-						// with 4.1 or 4.2 we plan to remove this table, but until then we need this
-						$query_lo_par  = "INSERT INTO %lms_lo_param (param_name, param_value) VALUES ('idReference', '".$new_id_reference."') ";
-						$result_lo_par = sql_query($query_lo_par);
-						$id_lo_par = sql_insert_id();
+					// check if LO id is checked
+					if (in_array($source->idOrg, $_POST['lo_list'])) {
 
-						$query_up_lo = "UPDATE %lms_lo_param SET idParam = '".$id_lo_par."' WHERE id = '".$id_lo_par."' ";
-						$result_up_lo = sql_query($query_up_lo);
+						// if it's an object we must make a copy, if it's a folder we can create a row
+						// inside learning_orgation and save the id for later use
 
-						$query_up_or = "UPDATE %lms_organization SET idParam = '".$id_lo_par."' WHERE idOrg = '".$new_id_reference."' ";
-						$result_up_or = sql_query($query_up_or);
-						
-						// map for later use
-						$org_map[$source->objectType][$source->idResource] = $new_id_resource;
+						if($source->objectType == '') {
+
+							// is a folder
+							// create a new row in learning_organization
+							$query_new_org = "INSERT INTO %lms_organization (
+								idParent,
+								path, lev, title,
+								objectType, idResource, idCategory, idUser,
+								idAuthor, version, difficult, description,
+								language, resource, objective, dateInsert,
+								idCourse, prerequisites, isTerminator, idParam,
+								visible, milestone)
+								VALUES
+								('".( isset($id_orgs[ $source->idParent ]) ? $id_orgs[ $source->idParent ] : 0 )."',
+								'".$source->path."', '".$source->lev."', '".sql_escape_string($source->title)."',
+								'".$source->objectType."', '".$source->idResource."', '".$source->idCategory."', '".$source->idUser."',
+								'".$source->idAuthor."', '".$source->version."', '".$source->difficult."', '".sql_escape_string($source->description)."',
+								'".$source->language."', '".$source->resource."', '".$source->objective."', '".$source->dateInsert."',
+								'".$new_id_course."', '".$source->prerequisites."', '".$source->isTerminator."', '".$source->idParam."',
+								'".$source->visible."', '".$source->milestone."')";
+							$re_new_org = sql_query($query_new_org);
+							$new_id_reference = sql_insert_id();
+
+							// map for later use
+							$org_map['folder'][$source->idOrg] = $new_id_reference;
+						} else {
+
+							// is an object
+							// make a copy
+							$lo					= $this->_createLO($source->objectType);
+							$new_id_resource	= $lo->copy($source->idResource);
+
+							// create a new row in learning_organization
+							$query_new_org = "INSERT INTO %lms_organization (
+								idParent, path, lev, title,
+								objectType, idResource, idCategory, idUser,
+								idAuthor, version, difficult, description,
+								language, resource, objective, dateInsert,
+								idCourse, prerequisites, isTerminator, idParam,
+								visible, milestone)
+								VALUES
+								('".( isset($id_orgs[ $source->idParent ]) ? $id_orgs[ $source->idParent ] : 0 )."',
+								'".$source->path."', '".$source->lev."', '".sql_escape_string($source->title)."',
+								'".$source->objectType."', '".$new_id_resource."', '".$source->idCategory."', '".$source->idUser."',
+								'".$source->idAuthor."', '".$source->version."', '".$source->difficult."', '".sql_escape_string($source->description)."',
+								'".$source->language."', '".$source->resource."', '".$source->objective."', '".$source->dateInsert."',
+								'".$new_id_course."', '".$source->prerequisites."', '".$source->isTerminator."', '0',
+								'".$source->visible."', '".$source->milestone."')";
+							$re_new_org = sql_query($query_new_org);
+							$new_id_reference = sql_insert_id();
+
+							// for a learning_object we have to create a row in lo_param as well
+							// with 4.1 or 4.2 we plan to remove this table, but until then we need this
+							$query_lo_par  = "INSERT INTO %lms_lo_param (param_name, param_value) VALUES ('idReference', '".$new_id_reference."') ";
+							$result_lo_par = sql_query($query_lo_par);
+							$id_lo_par = sql_insert_id();
+
+							$query_up_lo = "UPDATE %lms_lo_param SET idParam = '".$id_lo_par."' WHERE id = '".$id_lo_par."' ";
+							$result_up_lo = sql_query($query_up_lo);
+
+							$query_up_or = "UPDATE %lms_organization SET idParam = '".$id_lo_par."' WHERE idOrg = '".$new_id_reference."' ";
+							$result_up_or = sql_query($query_up_or);
+
+							// map for later use
+							$org_map[$source->objectType][$source->idResource] = $new_id_resource;
+						}
+						// create a map for the olds and new idReferences
+						$id_orgs[$source->idOrg] = $new_id_reference;
+						if($source->prerequisites != '') $prereq_map[$new_id_reference] = $source->prerequisites;
 					}
-					// create a map for the olds and new idReferences
-					$id_orgs[$source->idOrg] = $new_id_reference;
-					if($source->prerequisites != '') $prereq_map[$new_id_reference] = $source->prerequisites;
 					
 				}
 				

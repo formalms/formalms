@@ -915,7 +915,7 @@ class DoceboACLManager {
 		***/
         $query = "SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,"
 				." level, lastenter, valid, pwd_expire_at, register_date, lastenter "
-				. ", force_change  "
+				. ", force_change, facebook_id, twitter_id, linkedin_id, google_id, privacy_policy "
 				." FROM ".$this->_getTableUser();
 
 		if( $idst !== FALSE )
@@ -1730,6 +1730,10 @@ class DoceboACLManager {
 	 * @return array array of security token of roles that contains $idstMember
 	 */
 	function getRolesContainer( $idstMember, $flip = false ) {
+
+        if(!is_numeric($idstMember)) {
+            return array();
+        }
 		$query = "SELECT idst FROM ".$this->_getTableRoleMembers()
 				." WHERE idstMember = '".$idstMember."'";
 		$rs = $this->_executeQuery( $query );
@@ -1749,6 +1753,16 @@ class DoceboACLManager {
 	 * @return array array of security token of roles that contains $idstMember
 	 */
 	function getRolesAllContainer( $arrMember ) {
+
+        foreach($arrMember as $index => $idst) {
+            if(!is_numeric($idst)){
+                unset($arrMember[$index]);
+            }
+        }
+
+        if(empty($arrMember)){
+            return $arrMember;
+        }
 		$query = "SELECT idst FROM ".$this->_getTableRoleMembers()
 				." WHERE idstMember IN ( ".implode(',', $arrMember)." )";
 		$rs = $this->_executeQuery( $query );
@@ -1801,6 +1815,16 @@ class DoceboACLManager {
 	 */
 	function getGroupUMembers( $idst, $filter = '' ) {
     if (!is_array($idst)) $idst = array((int)$idst);
+
+        foreach($idst as $index => $idst) {
+            if(!is_numeric($idst)){
+                unset($idst[$index]);
+            }
+        }
+
+        if(empty($idst)){
+            return $idst;
+        }
 		$query = "SELECT tgm.idstMember"
 				."  FROM ".$this->_getTableGroupMembers()." AS tgm"
 				."  LEFT JOIN ".$this->_getTableUser()." AS tu"
@@ -1828,6 +1852,17 @@ class DoceboACLManager {
 	 */
 	function getGroupGMembers( $idst, $filter = '' ) {
         if(!is_array($idst)) $idst = array($idst);
+
+        foreach($idst as $index => $idst) {
+            if(!is_numeric($idst)){
+                unset($idst[$index]);
+            }
+        }
+
+        if(empty($idst)){
+            return $idst;
+        }
+
 		$query = "SELECT tgm.idstMember"
 				."  FROM ".$this->_getTableGroupMembers()." AS tgm"
 				."  LEFT JOIN ".$this->_getTableGroup()." AS tg"
@@ -1860,11 +1895,17 @@ class DoceboACLManager {
 			$count++;
 		}
 		return $arrST;*/
-		if ( !is_array($idst) ) {
+		if ( !is_array($idst) && is_numeric($idst) ) {
 			$arrST = array($idst);
 			$new_st = array($idst);
 		} else {
-			$arrST = $idst;
+            foreach($idst as $index => $idst) {
+                if(!is_numeric($idst)){
+                    unset($idst[$index]);
+                }
+            }
+
+            $arrST = $idst;
 			$new_st = $idst;
 		}
 
@@ -2153,6 +2194,16 @@ class DoceboACLManager {
 	 */
 	function getUsersFromMixedIdst( $arr_idst ) {
 
+        foreach($arr_idst as $index => $idst) {
+            if(!is_numeric($idst)){
+                unset($arr_idst[$index]);
+            }
+        }
+
+        if(empty($arr_idst)){
+            return $arr_idst;
+        }
+
 		$query = " SELECT u.idst "
 				." FROM ".$this->_getTableUser()." AS u"
 				." WHERE u.idst IN ( ".implode(",", $arr_idst)." )";
@@ -2171,6 +2222,16 @@ class DoceboACLManager {
 	 * @return 	array 	the idst corresponding to a group
 	 */
 	function getGroupsFromMixedIdst( $arr_idst ) {
+
+        foreach($arr_idst as $index => $idst) {
+            if(!is_numeric($idst)){
+                unset($arr_idst[$index]);
+            }
+        }
+
+        if(empty($arr_idst)){
+            return $arr_idst;
+        }
 
 		$query = " SELECT g.idst "
 				." FROM ".$this->_getTableGroup()." AS g "

@@ -44,7 +44,8 @@ class CompetencesAdm extends Model {
 	public function _getCompetencesCoursesTable() { return "%lms_competence_course"; }
 	public function _getCompetencesRequiredTable() { return "%lms_competence_required"; }
 	public function _getCompetencesTrackTable() { return "%lms_competence_track"; }
-
+	public function _getCompetencesFncRoleTable() { return "%adm_fncrole_competence"; }
+	public function _getCourseUserTable() { return "%lms_courseuser"; }
 
 	protected function _shiftRL($from, $shift) {
 		$query1 = "UPDATE ".$this->_getCategoriesTable()." SET iLeft = iLeft + ".$shift." WHERE iLeft >= ".$from;
@@ -1622,7 +1623,54 @@ class CompetencesAdm extends Model {
 
 		return $res ? true : false;
 	}
+	
+	public function getCompetenceCoursesTotal($id_competence, $filter = false) {
+		//validate filter data and abjust query
+		$_filter = "";
+		if (is_array($filter) && isset($filter['text']) && $filter['text'] != '')
+			$_filter .= " AND (u.userid LIKE '%".$filter['text']."%' "
+				." OR u.firstname LIKE '%".$filter['text']."%' "
+				." OR u.lastname LIKE '%".$filter['text']."%') ";
 
+		$competence_type = $this->getcompetenceType($id_competence);
+		$query = "SELECT COUNT(*) "
+			." FROM ".$this->_getCompetencesCoursesTable()." "
+			." WHERE id_competence = ".(int)$id_competence." ".$_filter;
+		$res = $this->db->query($query);
+
+		//extract total value database
+		$output = false;
+		if ($res) {
+			list($total) = $this->db->fetch_row($res);
+			$output = $total;
+		}
+
+		return $output;
+	}
+	
+	public function getCompetenceFncRolesTotal($id_competence, $filter = false) {
+		//validate filter data and abjust query
+		$_filter = "";
+		if (is_array($filter) && isset($filter['text']) && $filter['text'] != '')
+			$_filter .= " AND (u.userid LIKE '%".$filter['text']."%' "
+				." OR u.firstname LIKE '%".$filter['text']."%' "
+				." OR u.lastname LIKE '%".$filter['text']."%') ";
+
+		$competence_type = $this->getcompetenceType($id_competence);
+		$query = "SELECT COUNT(*) "
+			." FROM ".$this->_getCompetencesFncRoleTable()." "
+			." WHERE id_competence = ".(int)$id_competence." ".$_filter;
+		$res = $this->db->query($query);
+
+		//extract total value database
+		$output = false;
+		if ($res) {
+			list($total) = $this->db->fetch_row($res);
+			$output = $total;
+		}
+
+		return $output;
+	}
 
 }
 

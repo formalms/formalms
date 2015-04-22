@@ -153,6 +153,24 @@ class ElearningLmsController extends LmsController {
 			else
 				$this->render('_tabs', array());
 		}
+		
+		// add feedback:
+		// - feedback_type: [err|inf] display error feedback or info feedback
+		// - feedback_code: translation code of message
+		// - feedback_extra: extrainfo concat at end message
+		$feedback_code=Get::req('feedback_code', DOTY_STRING, "");
+		$feedback_type=Get::req('feedback_type', DOTY_STRING, "");
+		$feedback_extra=Get::req('feedback_extra', DOTY_STRING, "");
+		switch($feedback_type){
+			case "err":
+				$msg = Lang::t($feedback_code, 'login')." ".$feedback_extra;
+				UIFeedback::error($msg);
+				break;
+			case "inf":
+				$msg = Lang::t($feedback_code, 'login')." ".$feedback_extra;
+				UIFeedback::info($msg);
+				break;
+		}		
 	}
 
 	public function newTask() {

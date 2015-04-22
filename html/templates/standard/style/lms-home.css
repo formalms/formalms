@@ -11,7 +11,7 @@
 
 html,body{height:100%;}
 body{font:13px/1.231 arial,sans-serif;color:#333333;background:#fff;*font-size:small;*font:x-small;}
-.header,.content,.footer,.webcontent{position:relative;width:900px;margin:0 auto;padding:0;}
+.header,.content,.footer,.webcontent, .external_page{position:relative;width:900px;margin:0 auto;padding:0;}
 .header{height:70px; padding:5px 0;}
 .header .cat_link{text-decoration:none;color:#C84000;}
 .header .catalogue{position:absolute;bottom:10px;right:215px;font-size:90%;letter-spacing:1px;}
@@ -62,3 +62,10 @@ ul.reg_instruction li{list-style-type:square;margin:2px;}
 .lostpwd_box span{font-weight:bold;}
 .form_right{margin:0.60em 0 0 0;padding:0.40em;text-align:right;color:#ffffff;font-weight:bold;background:#C84000;}
 .form_right .textfield{margin:0 14px; width:auto; padding:0; border:1px solid #4180ac;}
+/* external page management ======================================*/
+.external_page{background:#C84000;}
+.external_page ul#main_menu{position:relative;left:0px;padding:10px 25px;font-size:0.8em;}
+.external_page ul#main_menu li{display:inline;margin:0 0 0 10px;border-right:1px solid #fff;}
+.external_page ul#main_menu li.last{border:0px none;}
+.external_page ul#main_menu li a{margin:0 10px 0 0;color:#fff;font-weight:normal;text-decoration:none;}
+.external_page ul#main_menu li a.odd{color:#003466;}

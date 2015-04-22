@@ -1,6 +1,6 @@
 ﻿<?php
 
-define("_INSTALLER_TITLE", "Forma - Installation");
+define("_INSTALLER_TITLE", "forma.lms - Installation");
 define("_NEXT", "Next step");
 define("_BACK", "Back");
 define("_LOADING", "Loading");
@@ -8,7 +8,7 @@ define("_TRY_AGAIN", "Try again");
 //--------------------------------------
 define("_TITLE_STEP1", "Step 1: Select language");
 define("_LANGUAGE", "Language");
-define("_INSTALLER_INTRO_TEXT", "مناسبة للمنظمات المعقدة ، السوق المشتركة  ،  الحكومة والرعاية الصحية DoceboLMS دوكوبو هي الشركة التي طورت إطار التعلم الإلكتروني الخاص بها تدعى
+define("_INSTALLER_INTRO_TEXT", "مناسبة للمنظمات المعقدة ، السوق المشتركة  ،  الحكومة والرعاية الصحية forma.lms دوكوبو هي الشركة التي طورت إطار التعلم الإلكتروني الخاص بها تدعى
 	<p><b>Key Features</b></p>
 	<ul>
 		<li>اس كورم 1.2 ودعم 2004</li>
@@ -32,6 +32,8 @@ define("_PHPVERSION","PHP الإصدار : ");
 define("_MYSQLCLIENT_VERSION","Mysql إصدار عميل : ");
 define("_LDAP","Ldap : ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","النظر في هذا التحذير إلا إذا كنت بحاجة إلى استخدام LDAP ");
+define("_OPENSSL","Openssl : ");
+define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
 
 define("_PHPINFO","PHP معلومات : ");
 define("_MAGIC_QUOTES_GPC","magic_quotes_gpc : ");
@@ -40,6 +42,8 @@ define("_REGISTER_GLOBALS","register_global : ");
 define("_UPLOAD_MAX_FILESIZE","upload_max_filsize : ");
 define("_POST_MAX_SIZE","post_max_size : ");
 define("_MAX_EXECUTION_TIME","max_execution_time : ");
+define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
+define("_ALLOW_URL_INCLUDE","allow_url_include : ");
 define("_ON","ON ");
 define("_OFF","OFF ");
 // -----------------------------------------
@@ -95,7 +99,7 @@ define("_DOWNLOAD_CONFIG", "تحميل التهيئة");
 define("_CHECKED_DIRECTORIES","بعض الدليل حيث يتم تخزين الملفات غير موجود أو ليس لديه الإذن الصحيح");
 define("_CHECKED_FILES","ملفات معينة لا تملك الصلاحيات الكافية");
 // -----------------------------------------
-define("_UPGRADER_TITLE", "Forma - ترقية");
+define("_UPGRADER_TITLE", "forma.lms - ترقية");
 define("_UPGRADE_CONFIG","ترقية config.php ملف");
 define("_UPG_CONFIG_OK","Config.php تحديث ملف بنجاح");
 define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
