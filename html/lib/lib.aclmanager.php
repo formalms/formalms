@@ -1816,8 +1816,8 @@ class DoceboACLManager {
 	function getGroupUMembers( $idst, $filter = '' ) {
     if (!is_array($idst)) $idst = array((int)$idst);
 
-        foreach($idst as $index => $idst) {
-            if(!is_numeric($idst)){
+        foreach($idst as $index => $vidst) {
+            if(!is_numeric($vidst)){
                 unset($idst[$index]);
             }
         }
