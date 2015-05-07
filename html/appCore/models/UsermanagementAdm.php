@@ -2451,7 +2451,7 @@ class UsermanagementAdm extends Model {
 		if (property_exists($info, 'firstname')) $user_conditions[] = " firstname='".$info->firstname."' ";
 		if (property_exists($info, 'lastname')) $user_conditions[] = " lastname='".$info->lastname."' ";
 		if (property_exists($info, 'email')) $user_conditions[] = " email='".$info->email."' ";
-		if (property_exists($info, 'password')) $user_conditions[] = "pass=".$this->aclManager->encrypt ($info->password);
+		if (property_exists($info, 'password')) $user_conditions[] = "pass='".$this->aclManager->encrypt ($info->password)."' ";
 		if (property_exists($info, 'force_change')) $user_conditions[] = "force_change=".$info->force_change ? '1' : '0';
 
 		//set level

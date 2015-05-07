@@ -2317,8 +2317,8 @@ class UsermanagementAdmController extends AdmController {
 		if (isset($sel_properties['lastname'])) $info->lastname = Get::req('lastname', DOTY_STRING, "");
 		if (isset($sel_properties['email'])) $info->email = Get::req('email', DOTY_STRING, "");
 		if (isset($sel_properties['password'])) {
-			$pwd_1 = Get::req('password', DOTY_STRING, "");
-			$pwd_2 = Get::req('password_confirm', DOTY_STRING, "");
+			$pwd_1 = Get::req('new_password', DOTY_STRING, "");
+			$pwd_2 = Get::req('new_password_confirm', DOTY_STRING, "");
 			if ($pwd_1 == $pwd_2) {
 				$info->password = $pwd_1;
 			} else {
