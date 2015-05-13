@@ -2004,8 +2004,10 @@ class DoceboACLManager
             }
         }
 
+        $inString = (implode(',', $arrMember) == "" ? "NULL" : implode(',', $arrMember));
+
         $query = "SELECT idst FROM " . $this->_getTableRoleMembers()
-            . " WHERE idstMember IN ( " . implode(',', $arrMember) . " )";
+            . " WHERE idstMember IN ( " . $inString . " )";
         $rs = $this->_executeQuery($query);
         $arrRoles = array();
         $i = 0;
@@ -2073,11 +2075,13 @@ class DoceboACLManager
             $idst = array((int)$idst);
         }
 
+        $inString = (implode(',', $idst) == "" ? "NULL" : implode(',', $idst));
+
         $query = "SELECT tgm.idstMember"
             . "  FROM " . $this->_getTableGroupMembers() . " AS tgm"
             . "  LEFT JOIN " . $this->_getTableUser() . " AS tu"
             . "    ON (tgm.idstMember = tu.idst)"
-            . " WHERE tgm.idst IN ( '" . implode("','", $idst) . "' )"
+            . " WHERE tgm.idst IN ( '" . $inString . "' )"
             . "   AND tgm.filter = '" . $filter . "'"
             . "   AND NOT ISNULL(tu.idst)";
 
@@ -2111,11 +2115,13 @@ class DoceboACLManager
             $idst = array((int)$idst);
         }
 
+        $inString = (implode(',', $idst) == "" ? "NULL" : implode(',', $idst));
+
         $query = "SELECT tgm.idstMember"
             . "  FROM " . $this->_getTableGroupMembers() . " AS tgm"
             . "  LEFT JOIN " . $this->_getTableGroup() . " AS tg"
             . "    ON (tgm.idstMember = tg.idst)"
-            . " WHERE tgm.idst IN ( '" . implode("','", $idst) . "' )"
+            . " WHERE tgm.idst IN ( '" . $inString . "' )"
             . "   AND tgm.filter = '" . $filter . "'"
             . "   AND NOT ISNULL(tg.idst)";
         $rs = $this->_executeQuery($query);
@@ -2467,9 +2473,11 @@ class DoceboACLManager
             }
         }
 
+        $inString = (implode(',', $arr_idst) == "" ? "NULL" : implode(',', $arr_idst));
+
         $query = " SELECT u.idst "
             . " FROM " . $this->_getTableUser() . " AS u"
-            . " WHERE u.idst IN ( " . implode(",", $arr_idst) . " )";
+            . " WHERE u.idst IN ( " . $inString . " )";
         $rs = $this->_executeQuery($query);
         $arr_user = array();
         if (!$rs) return $arr_user;
@@ -2492,9 +2500,11 @@ class DoceboACLManager
             }
         }
 
+        $inString = (implode(',', $arr_idst) == "" ? "NULL" : implode(',', $arr_idst));
+
         $query = " SELECT g.idst "
             . " FROM " . $this->_getTableGroup() . " AS g "
-            . " WHERE g.idst IN ( " . implode(",", $arr_idst) . " )";
+            . " WHERE g.idst IN ( " . $inString . " )";
         $rs = $this->_executeQuery($query);
         $arr_groups = array();
         if (!$rs) return $arr_groups;
