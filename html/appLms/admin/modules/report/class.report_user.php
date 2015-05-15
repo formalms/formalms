@@ -1390,6 +1390,15 @@ class Report_User extends Report {
 		$fman = new FieldList();
 		$field_values = array();
 		$customcols =& $filter_columns['custom_fields'];
+        $num_row = 0;
+        foreach ($customcols as $the_idField) {
+            list($exists) = sql_fetch_row(sql_query('Select idField from core_field where idField='.$the_idField['id']));
+            if ($exists == NULL)                            
+                $customcols[$num_row]['selected'] = FALSE;
+
+            $num_row++;
+        }
+        
 		$custom_list = array();
 		foreach ($customcols as $val) {
 			if ($val['selected']) {
