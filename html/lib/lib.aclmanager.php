@@ -2081,7 +2081,7 @@ class DoceboACLManager
             . "  FROM " . $this->_getTableGroupMembers() . " AS tgm"
             . "  LEFT JOIN " . $this->_getTableUser() . " AS tu"
             . "    ON (tgm.idstMember = tu.idst)"
-            . " WHERE tgm.idst IN ( '" . $inString . "' )"
+            . " WHERE tgm.idst IN (" . $inString . ")"
             . "   AND tgm.filter = '" . $filter . "'"
             . "   AND NOT ISNULL(tu.idst)";
 
@@ -2121,7 +2121,7 @@ class DoceboACLManager
             . "  FROM " . $this->_getTableGroupMembers() . " AS tgm"
             . "  LEFT JOIN " . $this->_getTableGroup() . " AS tg"
             . "    ON (tgm.idstMember = tg.idst)"
-            . " WHERE tgm.idst IN ( '" . $inString . "' )"
+            . " WHERE tgm.idst IN (" . $inString . ")"
             . "   AND tgm.filter = '" . $filter . "'"
             . "   AND NOT ISNULL(tg.idst)";
         $rs = $this->_executeQuery($query);
