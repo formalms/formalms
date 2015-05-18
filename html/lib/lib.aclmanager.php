@@ -2041,8 +2041,8 @@ class DoceboACLManager
             . "  FROM " . $this->_getTableGroupMembers() . " AS tgm"
             . "  LEFT JOIN " . $this->_getTableUser() . " AS tu"
             . "    ON (tgm.idstMember = tu.idst)"
-            . " WHERE tgm.idst = '" . $idst . "'"
-            . "   AND tgm.filter = '" . $filter . "'"
+            . " WHERE tgm.idst = " . $idst . ""
+            . "   AND tgm.filter = " . $filter . ""
             . "   AND NOT ISNULL(tu.idst)";
 
         if (!$this->include_suspended)
