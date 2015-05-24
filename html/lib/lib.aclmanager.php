@@ -341,9 +341,12 @@ class DoceboACLManager
             }
         }
 
+        $inString = (implode(',', $array_idst_user) == "" ? "NULL" : implode(',', $array_idst_user));
+
         $query = "SELECT idst, userid"
             . " FROM " . $this->_getTableUser()
-            . " WHERE idst IN ( '" . implode("','", $array_idst_user) . "' )";
+            . " WHERE idst IN (" . $inString . ")";
+
 
         $rs = $this->_executeQuery($query);
 
@@ -479,8 +482,11 @@ class DoceboACLManager
                 . "VALUES ( " . (int)$idst . ", '" . date("Y-m-d H:i:s") . "', '" . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . "', " . (int)getLogUserId() . "  )";
             $this->_executeQuery($query_h);
             return $idst;
-        } else
+        }
+        else
+        {
             return FALSE;
+        }
     }
 
     /**
@@ -544,7 +550,7 @@ class DoceboACLManager
 
         $query = "SELECT * "
             . " FROM " . $this->_getTableTempUser() . " "
-            . " WHERE " . ($idst !== false ? " idst = '" . $idst . "' " : '')
+            . " WHERE " . ($idst !== false ? " idst = '" . $idst . "' " : 'NULL')
             . ($random_code !== false ? " random_code = '" . $random_code . "' " : '');
         $rs = $this->_executeQuery($query);
         return mysql_fetch_assoc($rs);
@@ -2010,7 +2016,7 @@ class DoceboACLManager
             . " WHERE idstMember IN ( " . $inString . " )";
         $rs = $this->_executeQuery($query);
         $arrRoles = array();
-        $i = 0;
+
         while (list($idst) = sql_fetch_row($rs)) {
 
             $arrRoles[] = $idst;
@@ -2042,7 +2048,7 @@ class DoceboACLManager
             . "  LEFT JOIN " . $this->_getTableUser() . " AS tu"
             . "    ON (tgm.idstMember = tu.idst)"
             . " WHERE tgm.idst = " . $idst . ""
-            . "   AND tgm.filter = " . $filter . ""
+            . "   AND tgm.filter = '" . $filter . "'"
             . "   AND NOT ISNULL(tu.idst)";
 
         if (!$this->include_suspended)
@@ -2501,6 +2507,7 @@ class DoceboACLManager
         }
 
         $inString = (implode(',', $arr_idst) == "" ? "NULL" : implode(',', $arr_idst));
+
 
         $query = " SELECT g.idst "
             . " FROM " . $this->_getTableGroup() . " AS g "
