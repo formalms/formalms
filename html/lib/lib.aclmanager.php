@@ -544,13 +544,9 @@ class DoceboACLManager
     function getTempUserInfo($idst = false, $random_code = false)
     {
 
-        if (!is_numeric($idst)) {
-            $idst = false;
-        }
-
         $query = "SELECT * "
             . " FROM " . $this->_getTableTempUser() . " "
-            . " WHERE " . ($idst !== false ? " idst = '" . $idst . "' " : 'NULL')
+            ." WHERE ".( $idst !== false ? " idst = '".$idst."' " : '' )
             . ($random_code !== false ? " random_code = '" . $random_code . "' " : '');
         $rs = $this->_executeQuery($query);
         return mysql_fetch_assoc($rs);
