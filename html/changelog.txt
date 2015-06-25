@@ -4,6 +4,19 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+FORMA 1.4.1
+---------------------------------------------------------------------------------------
+Released: 2015-06-25
+
+4158 | Bug | Can't assign users to roles
+4160 | Bug | lib.aclmanager - group and user selections functions
+4210 | Bug | Registration confirmation not working
+4164 | Bug | Update multi users password
+4169 | Bug | Additional fields in report generation
+4206 | Bug | Install stuck on step 6
+4168 | Change Request | User attributes in report generation
+
+---------------------------------------------------------------------------------------
 FORMA 1.4
 ---------------------------------------------------------------------------------------
 Released: 2015-04-21
