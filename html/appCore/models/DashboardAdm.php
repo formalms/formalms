@@ -156,7 +156,7 @@ class DashboardAdm extends Model {
 		$version = array(
 			'db_version' => Get::sett('core_version'),
 			'file_version' => _file_version_,
-			'string' => ''
+			'online_version' => ''
 		);
 
 		// check for differences beetween files and database version
@@ -183,29 +183,16 @@ class DashboardAdm extends Model {
 			}
 		}
 
-		// check for differences beetween files and database version
-		if ( version_compare($version['file_version'], $version['db_version']) <> 0) {
-			$version['string'] .= '<br/>'
-					. 'Different from core file version:' . '<span class="red"><b>' . $version['file_version'] . '</b></span>'
-					. '<br/>'
-					.'<a href="../upgrade" class="red"><b>' . 'You need database upgrade' .'</b></a>';
-		}
-
 		if (Get::sett('welcome_use_feed') == 'on') {
 
 			require_once(_base_.'/lib/lib.fsock_wrapper.php');
 			$fp = new Fsock();
 			$_online_version = $fp->send_request('http://www.formalms.org/versions/release.txt');
-
-			if(!$fp || !$_online_version) {
-
-				$version = array( 'string' => '<b class="red">'.Lang::t('_UNKNOWN_RELEASE', 'dashboard').'</b>' );
-			} elseif(version_compare($_online_version, $version['file_version']) == 1) {
-
-				$version['string'] .= '<br/>'
-					.'<a href="http://www.formalms.org/downloads/?versions" class="red">'.Lang::t('_NEW_RELEASE_AVAILABLE', 'dashboard').': <b>'.$_online_version.'</b></a>';
-			}
+			
+			$version['online_version'] = $_online_version;
+			
 		}
+		
 		return $version;
 	}
 
