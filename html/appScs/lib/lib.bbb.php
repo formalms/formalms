@@ -61,7 +61,7 @@ class Bbb_Manager {
 	function insert_room($idConference,$user_email,$display_name,$confkey,$audiovideosettings,$maxmikes,$maxparticipants, $startdate, $starthour, $startminute, $duration, $extra_conf) {
 
 		$res->result = true;
-
+/*
 		$res = $this->api_schedule_meeting(
 							$idConference,
 							$user_email,
@@ -76,7 +76,7 @@ class Bbb_Manager {
 							$duration,
 							$extra_conf
 					);
-
+*/
 		if ($res && $res->result)
 		{
 
@@ -141,9 +141,9 @@ class Bbb_Manager {
 	}
 
 	function deleteRoom($room_id) {
-
+/*
 		$res = $this->api_delete_schedule($room_id);
-
+*/
 		$room_del = "
 		DELETE FROM ".$this->_getRoomTable()."
 		WHERE idConference = '".$room_id."'";
