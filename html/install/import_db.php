@@ -1,6 +1,7 @@
 <?php
 
 include('bootstrap.php');
+set_time_limit(0);
 
 $db = mysql_connect($_SESSION['db_info']['db_host'], $_SESSION['db_info']['db_user'], $_SESSION['db_info']['db_pass']);
 mysql_select_db($_SESSION['db_info']['db_name']);

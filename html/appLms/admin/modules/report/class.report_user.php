@@ -596,18 +596,17 @@ class Report_User extends Report {
 		$box->title = $lang->def('_SELECT_THE_DATA_COL_NEEDED');
 		$box->description = false;
 		//Form::openElementSpace()
-		if (count($custom) > 0) {
-			$box->body .= Form::getOpenFieldset($lang->def('_USER_CUSTOM_FIELDS'), 'fieldset_course_fields');
-			$box->body .= Form::getCheckBox(Lang::t('_LASTNAME', 'standard'), 'col_sel_lastname', 'cols[]', '_TH_LASTNAME', is_showed('_TH_LASTNAME'));
-			$box->body .= Form::getCheckBox(Lang::t('_FIRSTNAME', 'standard'), 'col_sel_firstname', 'cols[]', '_TH_FIRSTNAME', is_showed('_TH_FIRSTNAME'));
-			$box->body .= Form::getCheckBox(Lang::t('_EMAIL', 'standard'), 'col_sel_email', 'cols[]', '_TH_EMAIL', is_showed('_TH_EMAIL'));
-			$box->body .= Form::getCheckBox(Lang::t('_REGISTER_DATE', 'standard'), 'col_sel_register_date', 'cols[]', '_TH_REGISTER_DATE', is_showed('_TH_REGISTER_DATE'));
-			$box->body .= Form::getCheckBox(Lang::t('_SUSPENDED', 'standard'), 'col_sel_suspended', 'cols[]', '_TH_SUSPENDED', is_showed('_TH_SUSPENDED'));
-			foreach ($custom as $key=>$val) {
-				$box->body .= Form::getCheckBox($val['label'], 'col_custom_'.$val['id'], 'custom['.$val['id'].']', $val['id'], $ref['custom_fields'][$key]['selected']);
-			}
-			$box->body .= Form::getCloseFieldset();
+		$box->body .= Form::getOpenFieldset($lang->def('_USER_CUSTOM_FIELDS'), 'fieldset_course_fields');
+        $box->body .= Form::getCheckBox(Lang::t('_LASTNAME', 'standard'), 'col_sel_lastname', 'cols[]', '_TH_LASTNAME', is_showed('_TH_LASTNAME'));             
+		$box->body .= Form::getCheckBox(Lang::t('_FIRSTNAME', 'standard'), 'col_sel_firstname', 'cols[]', '_TH_FIRSTNAME', is_showed('_TH_FIRSTNAME'));
+		$box->body .= Form::getCheckBox(Lang::t('_EMAIL', 'standard'), 'col_sel_email', 'cols[]', '_TH_EMAIL', is_showed('_TH_EMAIL'));
+		$box->body .= Form::getCheckBox(Lang::t('_REGISTER_DATE', 'standard'), 'col_sel_register_date', 'cols[]', '_TH_REGISTER_DATE', is_showed('_TH_REGISTER_DATE'));
+		$box->body .= Form::getCheckBox(Lang::t('_SUSPENDED', 'standard'), 'col_sel_suspended', 'cols[]', '_TH_SUSPENDED', is_showed('_TH_SUSPENDED'));
+		foreach ($custom as $key=>$val) {
+			$box->body .= Form::getCheckBox($val['label'], 'col_custom_'.$val['id'], 'custom['.$val['id'].']', $val['id'], $ref['custom_fields'][$key]['selected']);
 		}
+		$box->body .= Form::getCloseFieldset();
+
 
 
 		$out->add('<script type="text/javascript">
@@ -1391,6 +1390,15 @@ class Report_User extends Report {
 		$fman = new FieldList();
 		$field_values = array();
 		$customcols =& $filter_columns['custom_fields'];
+        $num_row = 0;
+        foreach ($customcols as $the_idField) {
+            list($exists) = sql_fetch_row(sql_query('Select idField from core_field where idField='.$the_idField['id']));
+            if ($exists == NULL)                            
+                $customcols[$num_row]['selected'] = FALSE;
+
+            $num_row++;
+        }
+        
 		$custom_list = array();
 		foreach ($customcols as $val) {
 			if ($val['selected']) {
