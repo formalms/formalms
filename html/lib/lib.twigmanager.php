@@ -34,11 +34,18 @@ class TwigManager {
             $plugin_files = PluginManager::find_files();
             return '/' . _folder_plugins_ . '/' . $plugin_files[$resource] . '/' . $resource;
         }));
+        $this->twig->addFunction('evalPhp', new Twig_Function_Function(function ($phpCode, $args = array()) {
+            return call_user_func_array($phpCode, $args);
+        }, array(
+            'is_safe' => array('html')
+        )));
+        $this->twig->addGlobal('GLOBALS', $GLOBALS);
+        $this->twig->addGlobal('Docebo', Docebo);
     }
 
     /**
      * Get the TwigManager instance
-     * 
+     *
      * @param string $mvc_name
      * @return TwigManager
      * @throws Exception

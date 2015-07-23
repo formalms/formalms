@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ evalPhp('Layout::lang_code') }}">
+<head>
+    <!--Fix funzionamento scorm su IE9-->
+    <meta http-equiv="x-ua-compatible" content="IE=8"/>
+    <!--END -->
+
+    <title>{{ evalPhp('Layout::title') }}</title>
+    {{ evalPhp('Layout::zone', ['meta']) }}
+    {{ evalPhp('Layout::meta') }}
+    <link rel="shortcut icon" href="{{ evalPhp('Layout::path') }}images/favicon.png" type="image/png"/>
+    <link rel="shortcut icon" href="{{ evalPhp('Layout::path') }}images/favicon.ico"/>
+    <!-- reset and font stylesheet -->
+    {{ evalPhp('Layout::resetter') }}
+    <!-- common stylesheet -->
+    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/base.css"/>
+    {% block stylesheet %}
+    {% endblock %}
+    <!-- specific stylesheet -->
+    {{ evalPhp('YuiLib::load', ['base']) }}
+    <!-- printer stylesheet-->
+    <link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/print.css" media="print"/>
+    {{ evalPhp('Layout::accessibility') }}
+    <!-- Page Head area -->
+    {{ evalPhp('Layout::zone', ['page_head']) }}
+    {{ evalPhp('Layout::rtl') }}
+    {% block pagehead %}
+    {% endblock %}
+    <!-- Javascripts area -->
+    {% block javascript %}
+    {% endblock %}
+</head>
+<body class="yui-skin-docebo yui-skin-sam">
+    {% block content %}
+    {% endblock %}
+    <?php echo Layout::analytics(); ?>
+</body>
+</html>

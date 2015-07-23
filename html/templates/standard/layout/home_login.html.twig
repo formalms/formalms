@@ -1,0 +1,73 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/lms-home.css"/>
+{% endblock %}
+
+{% block content %}
+    <div class="header">
+        {% if  GLOBALS['maintenance'] != "on" %}
+            <div class="select-language">
+                {{ evalPhp('Lang::t', ['_CHANGELANG', 'register']) }}: {{ evalPhp('Layout::change_lang') }}
+            </div>
+        {% endif %}
+        <a href="index.php"><img class="left_logo" src="{{ evalPhp('Layout::path') }}images/company_logo.png"
+                                 alt="Left logo"/></a>
+
+        <div class="nofloat"></div>
+    </div>
+    <div class="content">
+        {% if  GLOBALS['framework']['course_block'] == "on" and GLOBALS['maintenance'] != "on" %}
+            <div class="homecatalogue">
+                {{ evalPhp('Layout::get_catalogue') }}
+            </div>
+        {% endif %}
+        {% if GLOBALS['maintenance'] != "on" %}
+            <div class="login-box{% if evalPhp('LoginLayout::isSocialActive') %}-social{% endif %}">
+                <h2>LOGIN</h2>
+                {{ evalPhp('LoginLayout::social_login') | raw }}
+                {{ evalPhp('LoginLayout::login_form') | raw }}
+                {{ evalPhp('LoginLayout::service_msg') | raw }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- footer -->
+    <div class="footer">
+        {% if GLOBALS['maintenance'] != "on" %}
+            {{ evalPhp('Layout::zone', ['footer']) }}
+            {{ evalPhp('LoginLayout::links') }}
+        {% endif %}
+        <div class="copyright">
+            {{ evalPhp('Layout::copyright') }}
+        </div>
+    </div>
+    <div class="external_page">{{ evalPhp('LoginLayout::external_page') }}</div>
+    <div class="webcontent">
+        {% if GLOBALS['maintenance'] == "on" %}
+        <div class="box">
+            <h3>{{ evalPhp('Lang::t', ['_MAINTENANCE', 'configuration']) }}</h3>
+
+            <div class="text">
+                {{ evalPhp('Lang::t', ['_MAINTENANCE', 'login']) }}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="box">
+            <h3>{{ evalPhp('Lang::t', ['_HOMEPAGE', 'login']) }}</h3>
+
+            <div class="text">
+                {{ evalPhp('Lang::t', ['_INTRO_STD_TEXT', 'login']) }}
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        window.onload = function () {
+            try {
+                window.document.getElementById('login_userid').focus();
+            } catch (e) {
+            }
+        }
+    </script>
+{% endblock %}
