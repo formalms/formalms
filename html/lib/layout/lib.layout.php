@@ -226,11 +226,11 @@ class Layout {
 		if($browser["browser"] !== 'msie') {
 			$intest = '<?xml version="1.0" encoding="'.self::charset().'"?'.'>'."\n";
 		}
-//        if (file_exists(_base_.'/templates/'.getTemplate().'/layout/'.$layout.'.html.twig')){
-//            echo TwigManager::getInstance()->render($layout.'.html.twig', [], _base_.'/templates/'.getTemplate().'/layout/');
-//        } else {
+        if (file_exists(_base_.'/templates/'.getTemplate().'/layout/'.$layout.'.html.twig')){
+            echo TwigManager::getInstance()->render($layout.'.html.twig', [], _base_.'/templates/'.getTemplate().'/layout/');
+        } else {
             include(_base_.'/templates/'.getTemplate().'/layout/'.$layout.'.php');
-//        }
+        }
 
 	}
 
