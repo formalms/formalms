@@ -1132,13 +1132,17 @@ class MessageModule {
 	function messageGetTitleArea($text, $image = '', $alt_image = '') {
 		$res="";
 
+        /*
 		if (Get::cur_plat() == "cms") {
 			$res = getCmsTitleArea($text, $image = '', $alt_image = '');
 		}
 		else {
 			$res = getTitleArea($text, $image = '', $alt_image = '');
 		}
-
+        */
+        
+        $res = getTitleArea($text, $image = '', $alt_image = '');
+        
 		return $res;
 	}
 

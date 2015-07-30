@@ -432,7 +432,7 @@ class AdminrulesAdm extends Model
 			case 'scs':
 				echo 'scs';
 			break;
-
+              /*
 			case 'cms':
 				require_once(_base_.'/lib/lib.table.php');
 
@@ -570,7 +570,7 @@ class AdminrulesAdm extends Model
 					}
 				}//End while
 			break;
-
+              */
 			case 'ecom':
 				echo 'ecom';
 			break;

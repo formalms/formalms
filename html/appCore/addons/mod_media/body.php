@@ -30,11 +30,12 @@ if(canAccessPersonalMedia()) {
 	$menu_url["personal"]=$page_url."&amp;op=personal";
 }
 
+/*
 if(canAccessCmsMedia()) {
 	$menu_label["cms"]=$lang->def("_CMS_MEDIA");
 	$menu_url["cms"]=$page_url."&amp;op=cms";
 }
-
+*/
 // ---------------------------------------------
 /*
 if ((canAccessPersonalMedia()) || (canAccessCmsMedia()))
@@ -56,10 +57,10 @@ $GLOBALS['page']->add(
 define("_USER_FPATH_INTERNAL", "/common/users/");
 define("_USER_FPATH", $GLOBALS["where_files_relative"]._USER_FPATH_INTERNAL);
 
-define("_FPATH_INTERNAL", "/appCms/media/");
+//define("_FPATH_INTERNAL", "/appCms/media/");
 define("_FPATH", $GLOBALS["where_files_relative"]._FPATH_INTERNAL);
 
-define("_PPATH_INTERNAL", "/appCms/media/preview/");
+//define("_PPATH_INTERNAL", "/appCms/media/preview/");
 define("_PPATH", $GLOBALS["where_files_relative"]._PPATH_INTERNAL);
 
 
@@ -70,10 +71,11 @@ switch ($op) {
 		//show_main($out, $lang);
 	} break;
 
+    /*
 	case "cms": {
 		show_cms_media($out, $lang);
 	} break;
-
+    */
 	case "personal": {
 		show_personal_media($out, $lang);
 	} break;
@@ -117,7 +119,7 @@ function canAccessPersonalMedia() {
 	}
 }
 
-
+/*
 function canAccessCmsMedia() {
 return false;
 	require_once(_base_.'/lib/lib.platform.php');
@@ -140,12 +142,13 @@ return false;
 		return false;
 	}
 }
-
+*/
 
 
 function show_main(& $out, & $lang) {
 
-	if ((canAccessPersonalMedia()) || (canAccessCmsMedia()))
+	//if ((canAccessPersonalMedia()) || (canAccessCmsMedia()))
+    if (canAccessPersonalMedia() )
 		$out->add($lang->def("_POPUP_MEDIA_INTRO"));
 	else
 		$out->add("<span style=\"color: #FF0000;\">".$lang->def("_POPUP_MEDIA_NOACCESS")."</span>\n");
@@ -426,7 +429,7 @@ function del_personal_media(& $out, & $lang) {
 }
 
 
-
+/*
 function show_cms_media(& $out, & $lang) {
 
 	if (!canAccessCmsMedia())
@@ -526,7 +529,7 @@ function show_cms_media(& $out, & $lang) {
 	$out->add($res);
 
 }
-
+*/
 function select_media(& $out, & $lang) {
 
 	require_once(_base_.'/lib/lib.form.php');
@@ -542,7 +545,7 @@ function select_media(& $out, & $lang) {
 	$path="";
 
 	switch($from) {
-
+/*
 		case "cms": {
 
 			if (!canAccessCmsMedia())
@@ -571,7 +574,7 @@ function select_media(& $out, & $lang) {
 			}
 
 		} break;
-
+*/
 		case "personal": {
 
 			if (!canAccessPersonalMedia())

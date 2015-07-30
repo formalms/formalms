@@ -11,6 +11,7 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
+/*
 class AcmsController extends Controller {
 
 	protected $_mvc_name = 'acmscontroller';
@@ -21,3 +22,4 @@ class AcmsController extends Controller {
 	}
 
 }
+*/

@@ -1008,8 +1008,8 @@ function saveForumPerm($idForum, $selected_items, $database_items) {
 			}
 		}
 
-	include_once($GLOBALS['where_cms']."/lib/lib.reloadperm.php");
-	setCmsReloadPerm();
+	//include_once($GLOBALS['where_cms']."/lib/lib.reloadperm.php");
+	//setCmsReloadPerm();
 }
 
 function getForumPermList() {

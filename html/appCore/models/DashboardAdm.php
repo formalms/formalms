@@ -528,5 +528,42 @@ class DashboardAdm extends Model {
 
 		return $output;
 	}
+	
+  public function getDashBoardReportList(){
+      $report_list = array();
+      $where_cond = "";
+      $user_idst = Docebo::user()->getIdSt();
+      $user_level = Docebo::user()->getUserLevelId();
+      
+      if ($user_level != ADMIN_GROUP_GODADMIN)
+          $where_cond .= "AND (author='".$user_idst."' OR is_public>0)";
+      
+      
+
+      $query = "SELECT id_filter, filter_name, author, creation_date, is_public "
+          ." FROM %lms_report_filter "
+          ." WHERE (author>0 OR is_public>0) ".$where_cond
+          ." ORDER BY filter_name ASC ";
+
+      $r = $this->db->query($query);
+      while (list($idrep, $name, $author, $creation_date, $is_public) = $this->db->fetch_row($r)) {
+          $report_list[$idrep] = $name;
+      }
+      return $report_list;
+  }
+  
+  public function getDashBoardCertList($id_course, $id_user) {
+        $query = "SELECT cc.id_certificate, ce.name, available_for_status, cu.status "
+            ." FROM (".$GLOBALS['prefix_lms']."_certificate AS ce "
+            ." JOIN ".$GLOBALS['prefix_lms']."_certificate_course AS cc "
+            ."        ON (ce.id_certificate = cc.id_certificate) )"
+            ." JOIN ".$GLOBALS['prefix_lms']."_courseuser AS cu "
+            ."        ON (cu.idCourse = cc.id_course)"
+            ." WHERE cu.idCourse = ".(int)$id_course." "
+            ."    AND idUser = ".(int)$id_user." ";
+            return sql_query($query);
+      
+  }
+	
 
 }

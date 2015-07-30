@@ -177,7 +177,7 @@ class FeedReaderManager {
 	 * 			if not given last connection will be used.
 	 */
 	function FeedReaderManager( $dbconn = NULL ) {
-		$this->prefix=$GLOBALS["prefix_cms"];
+		//$this->prefix=$GLOBALS["prefix_cms"];
 		$this->dbConn=$dbconn;
 	}
 
@@ -570,7 +570,7 @@ class FeedGenerator {
 	 */
 	function FeedGenerator($key1=FALSE, $key2=NULL, $platform=FALSE, $pfm_prefix=FALSE, $dbconn=NULL) {
 
-		$this->prefix=$GLOBALS["prefix_cms"];
+		//$this->prefix=$GLOBALS["prefix_cms"];
 		$this->dbConn=$dbconn;
 
 		$this->lang =& DoceboLanguage::createInstance('feedmanager', "framework");

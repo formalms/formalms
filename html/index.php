@@ -26,7 +26,7 @@ if(!Docebo::user()->isAnonymous() && (!isset($_GET['modname']) || $_GET['modname
 
 	require_once(_base_.'/lib/lib.platform.php');
 	$pm = PlatformManager::createInstance();
-	if($pm->getHomePlatform() == 'cms') Util::jump_to(_folder_cms_.'/index.php');
+	//if($pm->getHomePlatform() == 'cms') Util::jump_to(_folder_cms_.'/index.php');
 	Util::jump_to(_folder_lms_.'/index.php');
 }
 
@@ -68,6 +68,7 @@ if($mode[0] == "on"){
 }
 
 // redirect if the main page is the cms
+/*
 $query_platform = "SELECT platform
 FROM ".$GLOBALS['prefix_fw']."_platform
 WHERE main = 'true'
@@ -76,6 +77,7 @@ list($sel) = $db->fetch_row($db->query($query_platform));
 if($sel == 'cms') {
 	Util::jump_to(_folder_cms_);
 }
+*/
 
 // load the requested module
 $module_cfg = false;

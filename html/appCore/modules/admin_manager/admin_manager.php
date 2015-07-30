@@ -30,7 +30,7 @@ function adminManager_list() {
 	$pm=& PlatformManager::createInstance();
 
 	$lms_is_active = $pm->isLoaded("lms");
-	$cms_is_active = $pm->isLoaded("cms");
+	//$cms_is_active = $pm->isLoaded("cms");
 
 	// print table --------------------------------------------------------
 	$table = new Table( 	Get::sett('visuItem'),
@@ -64,7 +64,7 @@ function adminManager_list() {
 							.'title="'.$lang->def( '_ASSIGN_USERS' ).'" />';
 		$typeH[] = 'image';
 	}
-	if ($cms_is_active) {
+	/* if ($cms_is_active) {
 
 		// Cms Pages
 		$contentH[] = '<img src="'.getPathImage().'admin_manager/pagetree.png" alt="'.$lang->def( '_ASSIGN_CMS_PAGES' ).'" '
@@ -86,7 +86,7 @@ function adminManager_list() {
 		$contentH[] = '<img src="'.getPathImage().'admin_manager/contenttree.png" alt="'.$lang->def( '_ASSIGN_CMS_CONTENT' ).'" '
 							.'title="'.$lang->def( '_ASSIGN_CMS_CONTENT' ).'" />';
 		$typeH[] = 'image';
-	}
+	}*/
 	$table->setColsStyle($typeH);
 	$table->addHead($contentH);
 
@@ -132,7 +132,7 @@ function adminManager_list() {
 								.' alt="'.$lang->def( '_ASSIGN_USERS' ).' : '.$admin_userid.'" /></a>';
 		}
 		// Assign cms trees permissions
-		if ($cms_is_active) {
+	/*	if ($cms_is_active) {
 			// Cms Pages
 			$img ="<img src=\"".getPathImage()."admin_manager/pagetree.png\" alt=\"".$lang->def("_ASSIGN_CMS_PAGES")."\" ";
 			$img.="title=\"".$lang->def("_ASSIGN_CMS_PAGES")."\" />";
@@ -164,7 +164,7 @@ function adminManager_list() {
 			$rowContent[]="<a href=\"".$url."\">".$img."</a>\n";
 		}
 		$table->addBody($rowContent);
-	}
+	}*/
 
 	$GLOBALS['page']->add(
 		$table->getTable()
@@ -459,7 +459,7 @@ function adminManager_edit_course() {
 }
 
 
-function adminManager_assignCmsPages($admin_idst) {
+/* function ($admin_idst) {
 	checkPerm('view');
 	if ($admin_idst < 1)
 		return FALSE;
@@ -503,10 +503,10 @@ function adminManager_assignCmsPages($admin_idst) {
 
 	$res.="</div>\n";
 	$out->add($res);
-}
+}*/
 
 
-function adminManager_saveCmsPages($admin_idst) {
+/*function adminManager_saveCmsPages($admin_idst) {
 
 	require_once($GLOBALS["where_cms"]."/lib/lib.tree_perm.php");
 
@@ -514,10 +514,10 @@ function adminManager_saveCmsPages($admin_idst) {
 	$ctp->saveNodePerm($admin_idst, $_POST["sel_type"]);
 
 	Util::jump_to("index.php?modname=admin_manager&op=view");
-}
+}*/
 
 
-function adminManager_assignCmsNews($admin_idst) {
+/*function adminManager_assignCmsNews($admin_idst) {
 	checkPerm('view');
 	if ($admin_idst < 1)
 		return FALSE;
@@ -561,10 +561,10 @@ function adminManager_assignCmsNews($admin_idst) {
 
 	$res.="</div>\n";
 	$out->add($res);
-}
+}*/
 
 
-function adminManager_saveCmsNews($admin_idst) {
+/* function adminManager_saveCmsNews($admin_idst) {
 
 	require_once($GLOBALS["where_cms"]."/lib/lib.tree_perm.php");
 
@@ -572,10 +572,10 @@ function adminManager_saveCmsNews($admin_idst) {
 	$ctp->saveNodePerm($admin_idst, $_POST["sel_type"]);
 
 	Util::jump_to("index.php?modname=admin_manager&op=view");
-}
+}*/
 
 
-function adminManager_assignCmsDocs($admin_idst) {
+/* function adminManager_assignCmsDocs($admin_idst) {
 	checkPerm('view');
 	if ($admin_idst < 1)
 		return FALSE;
@@ -619,10 +619,10 @@ function adminManager_assignCmsDocs($admin_idst) {
 
 	$res.="</div>\n";
 	$out->add($res);
-}
+}*/
 
 
-function adminManager_saveCmsDocs($admin_idst) {
+/*function adminManager_saveCmsDocs($admin_idst) {
 
 	require_once($GLOBALS["where_cms"]."/lib/lib.tree_perm.php");
 
@@ -630,10 +630,10 @@ function adminManager_saveCmsDocs($admin_idst) {
 	$ctp->saveNodePerm($admin_idst, $_POST["sel_type"]);
 
 	Util::jump_to("index.php?modname=admin_manager&op=view");
-}
+}*/
 
 
-function adminManager_assignCmsMedia($admin_idst) {
+/* function adminManager_assignCmsMedia($admin_idst) {
 	checkPerm('view');
 	if ($admin_idst < 1)
 		return FALSE;
@@ -677,10 +677,10 @@ function adminManager_assignCmsMedia($admin_idst) {
 
 	$res.="</div>\n";
 	$out->add($res);
-}
+}*/
 
 
-function adminManager_saveCmsMedia($admin_idst) {
+/* function adminManager_saveCmsMedia($admin_idst) {
 
 	require_once($GLOBALS["where_cms"]."/lib/lib.tree_perm.php");
 
@@ -688,11 +688,11 @@ function adminManager_saveCmsMedia($admin_idst) {
 	$ctp->saveNodePerm($admin_idst, $_POST["sel_type"]);
 
 	Util::jump_to("index.php?modname=admin_manager&op=view");
-}
+}*/
 
 
 
-function adminManager_assignCmsContent($admin_idst) {
+/* function adminManager_assignCmsContent($admin_idst) {
 	checkPerm('view');
 	if ($admin_idst < 1)
 		return FALSE;
@@ -736,10 +736,10 @@ function adminManager_assignCmsContent($admin_idst) {
 
 	$res.="</div>\n";
 	$out->add($res);
-}
+}*/
 
 
-function adminManager_saveCmsContent($admin_idst) {
+/* function adminManager_saveCmsContent($admin_idst) {
 
 	require_once($GLOBALS["where_cms"]."/lib/lib.tree_perm.php");
 
@@ -747,7 +747,7 @@ function adminManager_saveCmsContent($admin_idst) {
 	$ctp->saveNodePerm($admin_idst, $_POST["sel_type"]);
 
 	Util::jump_to("index.php?modname=admin_manager&op=view");
-}
+}*/
 
 
 
@@ -779,26 +779,29 @@ function adminManagerDispatch( $op ) {
 		case "edit_course" : {
 			adminManager_edit_course();
 		};break;
+        /*
 		// Cms page management
 		case "assign_cmspag": {
-			adminManager_assignCmsPages(ImportVar( 'adminidst', true, 0));
+			//adminManager_assignCmsPages(ImportVar( 'adminidst', true, 0));
 		};break;
 		// Cms news tree management
 		case "assign_cmsnews": {
-			adminManager_assignCmsNews(ImportVar( 'adminidst', true, 0));
+			//adminManager_assignCmsNews(ImportVar( 'adminidst', true, 0));
 		};break;
 		// Cms documents tree management
 		case "assign_cmsdocs": {
-			adminManager_assignCmsDocs(ImportVar( 'adminidst', true, 0));
+			//adminManager_assignCmsDocs(ImportVar( 'adminidst', true, 0));
 		};break;
 		// Cms media tree management
 		case "assign_cmsmedia": {
-			adminManager_assignCmsMedia(ImportVar( 'adminidst', true, 0));
+			//adminManager_assignCmsMedia(ImportVar( 'adminidst', true, 0));
 		};break;
 		// Cms media tree management
 		case "assign_cmscontent": {
-			adminManager_assignCmsContent(ImportVar( 'adminidst', true, 0));
+			//adminManager_assignCmsContent(ImportVar( 'adminidst', true, 0));
 		};break;
+        */
+        
 	}
 }
 

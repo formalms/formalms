@@ -71,29 +71,9 @@ Class DashboardAdmController extends AdmController {
 		if (version_compare(phpversion(), "5.2.0", ">"))
 			if($php_conf['allow_url_include']['local_value'])
 				$problem = true;		
-
-
-		$user_idst = Docebo::user()->getIdSt();
-		$user_level = Docebo::user()->getUserLevelId();
-		$acl_man = Docebo::user()->getAclManager();
-
-		$where = "";
-		if ($user_level != ADMIN_GROUP_GODADMIN)
-			$where .= "AND (author='".$user_idst."' OR is_public>0)";
-
-		$num_reports = 0;
-		$query = "SELECT id_filter, filter_name, author, creation_date, is_public "
-			." FROM %lms_report_filter "
-			." WHERE (author>0 OR is_public>0) ".$where
-			." ORDER BY filter_name ASC ".($num_reports > 0 ? " LIMIT 0,".(int)$num_reports : ""); //creation_date DESC
-		$res = sql_query($query);
-
-		$arr_report = array();
-		while (list($idrep, $name, $author, $creation_date, $is_public) = sql_fetch_row($res)) {
-
-			$arr_report[$idrep] = $name;
-		}
-
+		
+		$arr_report = $this->model->getDashBoardReportList();
+		
 		//load date script for user creation and editing mask
 		Form::loadDatefieldScript();
 
@@ -211,15 +191,8 @@ Class DashboardAdmController extends AdmController {
 				.'</a>';
 		}
 
-		$query = "SELECT cc.id_certificate, ce.name, available_for_status, cu.status "
-			." FROM (".$GLOBALS['prefix_lms']."_certificate AS ce "
-			." JOIN ".$GLOBALS['prefix_lms']."_certificate_course AS cc "
-			."		ON (ce.id_certificate = cc.id_certificate) )"
-			." JOIN ".$GLOBALS['prefix_lms']."_courseuser AS cu "
-			."		ON (cu.idCourse = cc.id_course)"
-			." WHERE cu.idCourse = ".(int)$id_course." "
-			."	AND idUser = ".(int)$id_user." ";
-		$res = sql_query($query);
+		
+        $res = $this->model->getDashBoardCertList($id_course, $id_user);
 		$relesable = array();
 		while (list($id_certificate, $name, $available_for_status, $user_status) = sql_fetch_row($res)) {
 			if($cert->canRelease( $available_for_status, $user_status ) && !isset($released[$id_certificate])) {
@@ -240,6 +213,8 @@ Class DashboardAdmController extends AdmController {
 			? implode(', ', $relesable)
 			: Lang::t('_NONE', 'standard')
 		).'<br /><br />';
+        
+        
 		echo $this->json->encode($output);
 	}
 

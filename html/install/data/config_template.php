@@ -40,7 +40,7 @@ $cfg['db_charset'] = 'utf8';
  */
 $cfg['prefix_fw']	= 'core';
 $cfg['prefix_lms']	= 'learning';
-$cfg['prefix_cms'] 	= 'cms';
+//$cfg['prefix_cms'] 	= 'cms';
 $cfg['prefix_scs']	= 'conference';
 $cfg['prefix_ecom']	= 'ecom';
 $cfg['prefix_crm']	= 'crm';

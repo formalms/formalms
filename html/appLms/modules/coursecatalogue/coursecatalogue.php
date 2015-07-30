@@ -14,7 +14,7 @@
 function coursecatalogue($id_block, $title, $option = array())
 {
 	YuiLib::load(array('animation' => 'my_animation', 'container' => 'container-min', 'container' => 'container_core-min'));
-	cout(Util::get_js(Get::rel_path('cms').'/modules/catalog/catalog.js', true), 'page_head');
+	//cout(Util::get_js(Get::rel_path('cms').'/modules/catalog/catalog.js', true), 'page_head');
 
 	if(!isset($_SESSION['chart']))
 		$_SESSION['chart'] = array();
@@ -33,7 +33,7 @@ function coursecatalogue($id_block, $title, $option = array())
 		$man_subscribe->subscribeToCourse(getLogUserId(), $id_course);
 	}
 
-	require_once(_cms_.'/lib/lib.catalog.php');
+//	require_once(_cms_.'/lib/lib.catalog.php');
 	require_once(_base_.'/lib/lib.navbar.php');
 
 	cout('<link href="./modules/catalog/catalog.css" type="text/css" rel="stylesheet"/>', 'page_head');
