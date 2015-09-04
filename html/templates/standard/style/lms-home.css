@@ -9,6 +9,174 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
+@media only screen and (max-width: 940px), only screen and (max-device-width: 940px) {
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .header {
+        width: 100%;
+        height: auto;
+        padding: 10px 15px;
+    }
+
+    .header .left_logo {
+        /*max-width: 70%;*/
+    }
+
+    .content {
+        width: 100%;
+        height: auto;
+        background: none;
+    }
+
+    .content h2 {
+        padding: 0px;
+        top: 20px;
+        color: #000;
+    }
+
+    .content .homecatalogue {
+        left: 17px;
+    }
+
+    .content #login_confirm {
+        margin: 40px 0px;
+    }
+
+    .content .login-box, .content .login-box-social {
+        width: 100%;
+        height: auto;
+        background-color: #ffffff;
+        float: none;
+        margin: 0px;
+        padding: 30px 15px;
+    }
+
+    .content #login_confirm p {
+        margin: 0;
+    }
+
+    .content #login_confirm label {
+        margin-bottom: 0;
+    }
+
+    .content #login_confirm input.textfield {
+        width: 100%;
+        height: 30px;
+    }
+
+    .content #login_confirm input#login {
+        width: 100%;
+        height: 30px;
+    }
+
+    .header, .content, .footer, .webcontent, .external_page {
+        width: 100%;
+    }
+
+    .login-line {
+        margin-bottom: 20px;
+    }
+
+    .footer {
+        height: auto;
+        padding: 10px 0px 10px 0px;
+        line-height: 20px;
+    }
+
+    .footer #link {
+        padding: 3px 15px 4px;
+        margin-top: 0px;
+    }
+
+    .footer #link {
+        padding: 0px 15px 0px 15px;
+    }
+
+    .footer .copyright {
+        position: relative;
+        bottom: auto;
+        right: auto;
+        padding: 0px 15px 0px 15px;
+    }
+
+    div#language_setup_c {
+        display: none;
+    }
+
+    .webcontent .box {
+        margin: 0px;
+        /*padding: 20px 15px;*/
+    }
+
+    .lostpwd_box {
+        padding: 0px;
+        margin: 0px 0px 30px 0px;
+    }
+
+    .header, .content, .footer, .webcontent, .external_page{
+        position: relative;
+        width: 100%;
+        margin: 10px auto;
+    }
+
+    .external_page ul#main_menu {
+        padding: 10px 5px;
+    }
+
+
+    .form_right .textfield {
+        height: 25px;
+    }
+
+    .reg_form_button {
+        text-align: center;
+    }
+
+    #reg_button-button {
+        width: 115px;
+        height: 30px;
+        margin: auto;
+        font-size: 100%;
+    }
+}
+
+@media only screen and (max-width : 768px) {
+    .header {
+        margin: 10px auto 40px;
+    }
+
+    .header .select-language {
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        -webkit-transform: translateX(-50%);
+        -moz-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
+        -o-transform: translateX(-50%);
+        transform: translateX(-50%);
+    }
+
+    #login_confirm_form .container-feedback {
+        /*display: none;*/
+    }
+
+    #social_form {
+        /*display: none;*/
+    }
+
+    p label[for="new_lang"] { display:none; }
+}
+
 html,body{height:100%;}
 body{font:13px/1.231 arial,sans-serif;color:#333333;background:#fff;*font-size:small;*font:x-small;}
 .header,.content,.footer,.webcontent, .external_page{position:relative;width:900px;margin:0 auto;padding:0;}
