@@ -19,12 +19,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 
     <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/base.css"/>
-    {% block stylesheet %}
-    {% endblock %}
     <!-- specific stylesheet -->
     {{ evalPhp('YuiLib::load', ['base']) }}
     <!-- printer stylesheet-->
-    <link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/print.css" media="print"/>
+    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/print.css" media="print"/>
     {{ evalPhp('Layout::accessibility') }}
     <!-- Page Head area -->
     {{ evalPhp('Layout::zone', ['page_head']) }}
@@ -33,7 +31,10 @@
     {% endblock %}
     <!-- Javascripts area -->
     <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    {% block stylesheet %}
+    {% endblock %}
     {% block javascript %}
     {% endblock %}
 </head>
@@ -41,7 +42,7 @@
     <div class="container-fluid">
     {% block content %}
     {% endblock %}
-    <?php echo Layout::analytics(); ?>
+        {{ evalPhp('Layout::analytics') }}
     </div>
 </body>
 </html>
