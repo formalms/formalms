@@ -169,12 +169,11 @@ ul.reg_instruction li{list-style-type:square;margin:2px;}
     }
 
     div#language_setup_c {
-        display: none;
+
     }
 
     .webcontent .box {
         margin: 0px;
-        /*padding: 20px 15px;*/
     }
 
     .lostpwd_box {
@@ -227,13 +226,14 @@ ul.reg_instruction li{list-style-type:square;margin:2px;}
         transform: translateX(-50%);
     }
 
-    #login_confirm_form .container-feedback {
-        /*display: none;*/
+    div#language_setup_c {
+        left: 0 !important;
+        width: 100% !important;
     }
 
-    #social_form {
-        /*display: none;*/
+    div#language_setup {
+        width: 100% !important;
     }
 
-    /*p label[for="new_lang"] { display:none; }*/
+    p label[for="new_lang"] { display:none; }
 }
