@@ -177,6 +177,7 @@
     p label[for="new_lang"] { display:none; }
 }
 
+
 html,body{height:100%;}
 body{font:13px/1.231 arial,sans-serif;color:#333333;background:#fff;*font-size:small;*font:x-small;}
 .header,.content,.footer,.webcontent, .external_page{position:relative;width:900px;margin:0 auto;padding:0;}
