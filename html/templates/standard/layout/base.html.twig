@@ -1,11 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ evalPhp('Layout::lang_code') }}">
+<!DOCTYPE html>
+<html lang="{{ evalPhp('Layout::lang_code') }}">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--Fix funzionamento scorm su IE9-->
     <meta http-equiv="x-ua-compatible" content="IE=8"/>
     <!--END -->
 
-    <title>{{ evalPhp('Layout::title') }}</title>
+    <title>[TWIG] {{ evalPhp('Layout::title') }}</title>
     {{ evalPhp('Layout::zone', ['meta']) }}
     {{ evalPhp('Layout::meta') }}
     <link rel="shortcut icon" href="{{ evalPhp('Layout::path') }}images/favicon.png" type="image/png"/>
@@ -13,6 +14,10 @@
     <!-- reset and font stylesheet -->
     {{ evalPhp('Layout::resetter') }}
     <!-- common stylesheet -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
     <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/base.css"/>
     {% block stylesheet %}
     {% endblock %}
@@ -27,12 +32,16 @@
     {% block pagehead %}
     {% endblock %}
     <!-- Javascripts area -->
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     {% block javascript %}
     {% endblock %}
 </head>
 <body class="yui-skin-docebo yui-skin-sam">
+    <div class="container-fluid">
     {% block content %}
     {% endblock %}
     <?php echo Layout::analytics(); ?>
+    </div>
 </body>
 </html>
