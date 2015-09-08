@@ -41,7 +41,7 @@ body{font:13px/1.231 arial,sans-serif;color:#333333;background:#fff;*font-size:s
 .footer a{text-decoration:none;color:#fff;}
 .footer a:hover{text-decoration:underline;}
 .footer #link a.first{font-weight:bold;padding:0 6px 0 0;margin:0 3px 0 0;border-right:1px solid #ffffff;}
-.footer .copyright{position:absolute;bottom:4px;right:16px;color:#fff;}
+.footer .copyright{position:absolute;bottom:-6px;right:16px;color:#fff;}
 .footer .ownedby{color:#fff;}
 .webcontent .box {margin:10px 5px;}
 .webcontent h3 {margin:0 0 10px;padding:0;font-size:140%;color:#C84000;}
@@ -64,7 +64,7 @@ ul.reg_instruction li{list-style-type:square;margin:2px;}
 .form_right .textfield{margin:0 14px; width:auto; padding:0; border:1px solid #4180ac;}
 /* external page management ======================================*/
 .external_page{background:#C84000;}
-.external_page ul#main_menu{position:relative;left:0px;padding:10px 25px;font-size:0.8em;}
+.external_page ul#main_menu{position:relative;left:0px;padding: 10px 7px;font-size:0.8em;}
 .external_page ul#main_menu li{display:inline;margin:0 0 0 10px;border-right:1px solid #fff;}
 .external_page ul#main_menu li.last{border:0px none;}
 .external_page ul#main_menu li a{margin:0 10px 0 0;color:#fff;font-weight:normal;text-decoration:none;}
