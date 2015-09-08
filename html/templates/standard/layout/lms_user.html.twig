@@ -17,52 +17,39 @@
     {{ evalPhp('Layout::zone', ['feedback']) }}
     <!-- container -->
     <div id="container">
-        <!-- header -->
-        <div id="header" class="layout_header">
-
-            <div class="user_panel">
-                <p>
-                    {% if not evalPhp('Docebo::user').isAnonymous() %}
-                    <b><span> {{ evalPhp('Lang::t', ['_WELCOME', 'profile']) }}, </span>
-                        {{ evalPhp('Docebo::user').getUserName() }}</b>
-                    {% endif %}
-                    <br/>
-                    {{ "now"|date("Y-m-d H:i:s") }}<br/>
-                    <span class="select-language">{{ evalPhp('Layout::change_lang') }}</span>
-                </p>
-                {% if not evalPhp('Docebo::user').isAnonymous() %}
-                <ul>
-                    <li><a class="identity" href="index.php?r=profile/show">
-                            <span>{{ evalPhp('Lang::t', ['_PROFILE', 'profile']) }}</span>
-                        </a></li>
-                    <li>
-                        <a class="logout" href="index.php?modname=login&amp;op=logout">
-                            <span>{{ evalPhp('Lang::t', ['_LOGOUT', 'standard']) }}</span>
-                        </a></li>
-                </ul>
-                {% endif %}
-            </div>
-            <img class="left_logo" src="{{ evalPhp('Layout::path') }}images/company_logo.png" alt="Left logo"/>
-            {{ evalPhp('Layout::zone', ['header']) }}
-            <div class="nofloat"></div>
-        </div>
+        
+        
+        
+        
+        
         <!-- menu_over -->
         <div id="menu_over" class="layout_menu_over">
             {{ evalPhp('Layout::cart') }}
             {{ evalPhp('Layout::zone', ['menu_over']) }}
+                    
         </div>
-        <!-- content -->
+        
+        
+    
+        
+        <!-- content  -->   
         <div class="layout_colum_container">
             {{ evalPhp('Layout::zone', ['content']) }}
+            
             <div class="nofloat"></div>
         </div>
-        <!-- footer -->
+            
+        <!-- footer  -->
         <div id="footer" class="layout_footer">
             {{ evalPhp('Layout::zone', ['footer']) }}
             <div class="copyright">
                 {{ evalPhp('Layout::copyright') }}
             </div>
         </div>
+        
+        
+        
+        
     </div>
     <!-- scripts -->
     {{ evalPhp('Layout::zone', ['scripts']) }}

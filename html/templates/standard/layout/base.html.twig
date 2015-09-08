@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html lang="{{ evalPhp('Layout::lang_code') }}">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--Fix funzionamento scorm su IE9-->
+    <!--[if lt IE 9]>
     <meta http-equiv="x-ua-compatible" content="IE=8"/>
+    <![endif]-->     
     <!--END -->
+
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 
     <title>[TWIG] {{ evalPhp('Layout::title') }}</title>
     {{ evalPhp('Layout::zone', ['meta']) }}
@@ -16,8 +25,14 @@
     <!-- common stylesheet -->
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">                 
 
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->     
+    
     <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/base.css"/>
     <!-- specific stylesheet -->
     {{ evalPhp('YuiLib::load', ['base']) }}
@@ -29,20 +44,26 @@
     {{ evalPhp('Layout::rtl') }}
     {% block pagehead %}
     {% endblock %}
+    
     <!-- Javascripts area -->
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>                 
     {% block stylesheet %}
     {% endblock %}
     {% block javascript %}
     {% endblock %}
+    
+    
+   
+    
+    
 </head>
 <body class="yui-skin-docebo yui-skin-sam">
-    <div class="container-fluid">
+    <div class="container-fluid">      
     {% block content %}
     {% endblock %}
         {{ evalPhp('Layout::analytics') }}
-    </div>
+    </div>      
 </body>
 </html>

@@ -28,7 +28,7 @@ Font scales : 140%, 115%, 108%, 100%, 90%, 83%
 */
 
 html, body{height:100%;}
-body{min-width:960px;color:#000000;font:13px/1.231 arial,sans-serif;*font-size:small;*font:x-small;}
+body{color:#000000;font:13px/1.231 arial,sans-serif;*font-size:small;*font:x-small;}
 /* base.css, part of YUI's CSS Foundation */
 h1{font-size:150%;padding:6px 6px 4px;color:#C84000;}
 h2{font-size:115%;padding:5px 5px 4px;color:#666666;}
@@ -46,7 +46,7 @@ a.nounder:hover{text-decoration:underline;}
 a img{vertical-align:middle;}
 h1 img,h2 img,h3 img,h4 img,h5 img,h6 img{vertical-align:middle;}
 /* Main Page Container */
-div#container {width:960px; margin:0 auto; padding:0 10px; background:#fff; /*border:1px solid #ddd*/; border-top:0; border-bottom:0;}
+div#container { margin:0 auto; padding:0 10px; background:#fff; /*border:1px solid #ddd*/; border-top:0; border-bottom:0;}
 .layout_header {	padding:5px 0;}
 
 .layout_header .left_logo {margin:0;}
@@ -226,7 +226,7 @@ ul.social-accounts li span{vertical-align:middle;}
 .lang_ukrainian{background-position:0 -640px;}
 
 /* User panel in the header section*/
-.user_panel{width:400px;float:right;position:relative;right:0px;top:0px;font-size:100%;}
+.user_panel{float:right;position:relative;right:0px;top:0px;font-size:100%;}
 .user_panel p{width:55%;float:left;text-align:right;padding:0 5% 0 0;border-right:2px solid #cccccc;}
 .user_panel p span{color:#C84000;}
 .user_panel ul{float:left;margin:0;padding:0 0 0 5%;}

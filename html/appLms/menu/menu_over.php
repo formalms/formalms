@@ -138,47 +138,101 @@ if(!Docebo::user()->isAnonymous()) {
 		$menu_i++;
 	}
 
-	// print menu code -------------------------------------------------------------------------------------------------
-	cout('<div id="lms_menu_container" class="lms_menu_over yuimenubar yuimenubarnav">'
-		.'<div class="bd"><ul class="first-of-type">', 'menu_over');
-	while(list($id_m, $voice) = each($menu['all'])) {
+    
+//** DEV: LR - creato un menu_over  responsive  attraverso bootstrap **
+cout('
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid" id="lms_menu_container" >
 
-			cout('<li class="yuimenuitem">'
-				.'<a class="yuimenuitemlabel"  id="mo_'.$id_m.'" href="'.$voice[0].'">'
-				.'<span class="admmenu">'.$voice[1].'</span>'
-				.'</a>',
-			'menu_over');
-			if($voice[2] !== false) {
+        
+          <div class="navbar-header">
 
-				cout('<div id="submenu_'.$id_m.'" class="yuimenu">'
-					.'<div class="bd"><ul class="first-of-type">', 'menu_over');
-				while(list($id_m, $s_voice) = each($menu[ $voice[2] ])) {
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                      
+              <span  class="glyphicon glyphicon-align-justify"></span>
+            </button>
+            <a class="navbar-brand" href="#"><img class="left_logo" width="150" src="'. Layout::path().'/images/company_logo.png" alt="Left logo"/></a>   
+          </div>        
+        
+          <div id="navbar" class="navbar-collapse collapse">   
+            
+                                         
+              ','menu_over');            
+         
 
-					cout('<li class="yuimenuitem">'
-						.'<a class="yuimenuitemlabel" href="'.$s_voice[0].'"">'
-						.'<span class="admmenu">'.$s_voice[1].'</span>'
-						.'</a>'
-						.'</li>', 'menu_over');
-				}
-				cout('</ul></div>'
-					.'</div>', 'menu_over');
-			}
-			cout('</li>', 'menu_over');
-	}
-	cout('</ul></div>'
-		.'</div>'
-	, 'menu_over');
+         
+                  cout('<div class="user_panel"  > <br>
+                    <p><span>'.Lang::t('_WELCOME', 'profile').', </span>'.Docebo::user()->getUserName().'</b>
+                            '. Format::date(date("Y-m-d H:i:s")).'<br />
+                            <span class="select-language">'. Layout::change_lang().'</span>
+                        </p>
+                        
+                        <ul >
+                            <li><a class="identity" href="index.php?r=profile/show">
+                                
+                                <span>'. Lang::t('_PROFILE', 'profile').'</span>
+                            </a></li><li>
+                            <a class="logout" href="index.php?modname=login&amp;op=logout">
+                           
+                                <span>'.Lang::t('_LOGOUT', 'standard').'</span>
+                            </a></li>
+                        </ul>
+                        
+                    </div>
+                ','menu_over');         
+         
+         
+         
+         cout('<ul class="pager" ><br>','menu_over');
+         
+            foreach ($menu['all'] as $row) {
+                cout( '<li ><a   href="'.$row[0].'">'.$row[1].'</a></li> &nbsp; ','menu_over');
 
-	cout('<script type="text/javascript">'."
-	YAHOO.util.Event.onContentReady('lms_menu_container', function () {
-		var oMenuBar = new YAHOO.widget.".( Lang::direction() == 'rtl' ? 'MenuBarRtl' : 'MenuBar' )."('lms_menu_container', {
-			maxheight : 600, minscrollheight : 550, lazyload: true, effect: { effect: YAHOO.widget.ContainerEffect.FADE, duration: 0.25 }
-		});
-		oMenuBar.render();
-		".$setup_menu."
-		});".
-		'</script>'
-	, 'scripts');
-}
+                
+            if($row[2] !== false) {
 
+                    cout('<div id="submenu_'.$id_m.'" >'
+                        .'<div class="bd"><ul class="first-of-type">', 'menu_over');
+                    while(list($id_m, $s_voice) = each($menu[ $row[2] ])) {
+
+                        cout(''
+                            .'<a  href="'.$s_voice[0].'"">'
+                            .''.$s_voice[1].''
+                            .'</a> &nbsp; '
+                            .'', 'menu_over');
+                    }
+                    cout('</div>'
+                        .'</div>', 'menu_over');
+                }             
+  
+            }  
+          
+        
+                     
+          cout('</ul>','menu_over'); 
+            
+  
+                                 
+
+         
+         
+         
+         
+          cout('</div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+','menu_over');        
+    
+         
+
+
+       
+
+       
+    
+    
+}    
+     
 ?>
