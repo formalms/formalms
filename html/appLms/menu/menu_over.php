@@ -155,14 +155,10 @@ cout('
             <a class="navbar-brand" href="#"><img class="left_logo" width="150" src="'. Layout::path().'/images/company_logo.png" alt="Left logo"/></a>   
           </div>        
         
-          <div id="navbar" class="navbar-collapse collapse">   
+          <div id="navbar" class="navbar-collapse collapse" >   
             
                                          
-              ','menu_over');            
-         
-
-         
-                  cout('<div class="user_panel"  > <br>
+             <div class="user_panel"  > <br>
                     <p><span>'.Lang::t('_WELCOME', 'profile').', </span>'.Docebo::user()->getUserName().'</b>
                             '. Format::date(date("Y-m-d H:i:s")).'<br />
                             <span class="select-language">'. Layout::change_lang().'</span>
@@ -184,7 +180,7 @@ cout('
          
          
          
-         cout('<ul class="pager" ><br>','menu_over');
+         cout('<ul class="pager" ><br><br><br><br>','menu_over');
          
             foreach ($menu['all'] as $row) {
                 cout( '<li ><a   href="'.$row[0].'">'.$row[1].'</a></li> &nbsp; ','menu_over');
