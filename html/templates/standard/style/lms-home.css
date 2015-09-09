@@ -85,16 +85,18 @@ ul.reg_instruction li{list-style-type:square;margin:2px;}
         width: 100%;
         height: auto;
         padding: 10px 15px;
+        
     }
 
     .header .left_logo {
-        /*max-width: 70%;*/
+        max-width: 70%;
     }
 
     .content {
         width: 100%;
         height: auto;
         background: none;
+        
     }
 
     .content h2 {
