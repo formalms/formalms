@@ -4,7 +4,7 @@
 // la questione è di nascondere tutto il menu in quanto il catalog è stato tirato fuori...
    // if (!strpos($_GET['r'], 'atalog/')) {
         ?>
-        <ul class="yui-nav">
+        <ul class="nav nav-tabs">
             <?php
             $tab = array(
                 'tb_elearning' => Lang::t('_ELEARNING', 'middlearea'),
@@ -42,7 +42,7 @@
                 ?>
 
                 <?php if ($this->isActive($cid)) : ?>
-                    <li<?php echo $this->selected($cid); ?>>
+                    <li  <?php echo $this->selected($cid); ?>>
                         <a href="index.php?r=lms/<?php echo $cid; ?>/show&sop=unregistercourse"><em><?php echo $name ?></em><?php //echo ( isset(${$name}) ? '<b>'.${$name}.'</b>' : '' );  ?></a></li>
                 <?php endif; ?>
 
@@ -54,6 +54,9 @@
         </ul>
         <?php
     //}
-    ?>
+    ?>        
     <div class="yui-content">
         <div id="tab_content" class="nested_tab">
+        
+        
+        

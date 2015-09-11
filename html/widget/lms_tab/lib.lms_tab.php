@@ -50,7 +50,7 @@ class Lms_TabWidget extends Widget {
 	public function selected($tab_name, $other_classes = false) {
 		
 		$class = '';
-		if( $tab_name == $this->active ) $class .= 'selected';
+		if( $tab_name == $this->active ) $class .= 'active';
 		if( $other_classes != false ) $class .= ' '.$other_classes;
 
 		return ( $class ? ' class="'.$class.'" ' : '' );

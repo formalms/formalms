@@ -510,3 +510,13 @@ ul.flat-categories ul ul ul li.expanded {background:#FFF url('../images/treeview
 
 ul.style_none li {list-style:none; }
 
+
+
+.nav-tabs > li.active a {
+    background-color:#cccccc!important;
+}
+
+
+.nav-tabs > li a  {
+    background-color:#eeeeee!important;
+}
