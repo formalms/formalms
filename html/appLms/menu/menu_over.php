@@ -141,12 +141,16 @@ if(!Docebo::user()->isAnonymous()) {
     
 //** DEV: LR - creato un menu_over  responsive  attraverso bootstrap **
 cout('
+
+
+    
       <!-- Static navbar -->
-      <nav class="navbar navbar-default">
+      <nav class="navbar navbar-default">   
+
         <div class="container-fluid" id="lms_menu_container" >
 
         
-          <div class="navbar-header">
+          <div class="navbar-header" >
 
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                       
@@ -157,25 +161,7 @@ cout('
         
           <div id="navbar" class="navbar-collapse collapse" >   
             
-                                         
-             <div class="user_panel"  > <br>
-                    <p><span>'.Lang::t('_WELCOME', 'profile').', </span>'.Docebo::user()->getUserName().'</b>
-                            '. Format::date(date("Y-m-d H:i:s")).'<br />
-                            <span class="select-language">'. Layout::change_lang().'</span>
-                        </p>
-                        
-                        <ul >
-                            <li><a class="identity" href="index.php?r=profile/show">
-                                
-                                <span>'. Lang::t('_PROFILE', 'profile').'</span>
-                            </a></li><li>
-                            <a class="logout" href="index.php?modname=login&amp;op=logout">
-                           
-                                <span>'.Lang::t('_LOGOUT', 'standard').'</span>
-                            </a></li>
-                        </ul>
-                        
-                    </div>
+                    
                 ','menu_over');         
          
          
@@ -183,7 +169,7 @@ cout('
          cout('<ul class="pager" ><br><br><br><br>','menu_over');
          
             foreach ($menu['all'] as $row) {
-                cout( '<li ><a   href="'.$row[0].'">'.$row[1].'</a></li> &nbsp; ','menu_over');
+                cout( '<li ><a href="'.$row[0].'" >'.$row[1].'</a></li> &nbsp; ','menu_over');
 
                 
             if($row[2] !== false) {
@@ -205,10 +191,70 @@ cout('
             }  
           
         
+        
+        
+        cout('         <ul class="nav navbar-nav navbar-right">
+                                                    <li class="dropdown">
+                                                    
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">'.Docebo::user()->getUserName().'<b class="caret"></b></a>
+                                                        
+                                                        
+                                                        <ul class="dropdown-menu">
+                                                           
+                                                           
+                                                           
+                                                           
+                                                            <li>
+                                                                
+                                                               
+                                                       
+                                                                        <div class="col-md-12">
+                                    
+                                                                                   '.Lang::t('_WELCOME', 'profile').', <b>'.Docebo::user()->getUserName().'&nbsp; &nbsp; &nbsp; </b>                                     
+                                                                                                               <br>
+                                                                                                                    '. Format::date(date("Y-m-d H:i:s")).'<br />
+                                                                                                                    <span class="select-language">'. Layout::change_lang().'</span>
+                                                                                                                                                                      
+                                                                                        
+                                                                                                
+                                                                                            <div class="divider">  _____________________________________
+                                                                                            </div>
+                                                                               
+                                                                               
+                                                                                           <div>
+                                                                                                    <a href="index.php?r=profile/show" class="btn btn-primary btn-sm pull-left">'.Lang::t('_PROFILE', 'profile').' </a>
+                                                                                      
+                                                                                             
+                                                                                           
+                                                                                                    <a href="index.php?modname=login&amp;op=logout" class="btn btn-primary btn-sm pull-right">'.Lang::t('_LOGOUT', 'standard').'</a>
+                                                                                           </div>                                                               
+                                                               
+                                                                        </div>
+                                                              
+                                           
+                                                                    
+                                                          
+                                                                
+                                                            </li>
+
+                                                            
+                                                        </ul>
+                                                    </li>
+                                                </ul>        
+
+                                        ','menu_over')   ; 
+                                                
+                                                
+                                                
+                                                
+                                                    
+        
+        
+        
                      
           cout('</ul>','menu_over'); 
-            
-  
+                                             
+          
                                  
 
          
@@ -216,9 +262,23 @@ cout('
          
          
           cout('</div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
+        </div><!--/.container-fluid -->    
+        
+
+        
       </nav>
 
+      
+      
+      
+
+      
+      
+      
+      
+      
+      
+      
 ','menu_over');        
     
          

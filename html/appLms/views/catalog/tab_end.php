@@ -1,9 +1,19 @@
-		<?php
+		
+        
+        
+        
+        
+        <?php
 			//Left category
 			if (!isset($_GET['r']) || $_GET['r'] !== 'catalog/coursepathCourse') {
-				echo '</div>'
-				. '</div>'
-				. '<div class="yui-b" id="left_categories">'
+				
+                
+              
+                
+                
+                echo '</div>' 
+				. '</div>'  
+				. '<div class="col-md-4" id="left_categories">'
 				. '<ul class="flat-categories">'
                 //FORMA Modifica 25/07/2012 GN 
                 . '<li><a href="' . $std_link . '">' . Lang::t('_ALL_CATEGORIES', 'catalog') . '</a></li>';

@@ -1,6 +1,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo Layout::lang_code(); ?>">
 	<head>
+    
+    
+    <!-- Javascripts area -->
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>      
+    
+    <!-- common stylesheet -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">          
+    
+    
 	    <!--Fix funzionamento scorm su IE9-->
         <meta http-equiv="x-ua-compatible" content="IE=8"></meta>
         <!--END -->
@@ -59,29 +72,7 @@
 		<!-- container -->
 		<div id="container">
 		<!-- header -->
-		<div id="header" class="layout_header">
-			<div class="user_panel">
-				<p><?php if (!Docebo::user()->isAnonymous()) echo '<b><span>'.Lang::t('_WELCOME', 'profile').', </span>'.Docebo::user()->getUserName().'</b>'; ?><br />
-					<?php echo Format::date(date("Y-m-d H:i:s")); ?><br />
-					<span class="select-language"><?php echo Layout::change_lang(); ?></span>
-				</p>
-				<?php if (!Docebo::user()->isAnonymous()): ?>
-				<ul>
-					<li><a class="identity" href="index.php?r=profile/show">
-						<!-- <img src="<?php echo Layout::path(); ?>images/standard/identity.png" alt="" />&nbsp; -->
-						<span><?php echo Lang::t('_PROFILE', 'profile'); ?></span>
-					</a></li><li>
-					<a class="logout" href="index.php?modname=login&amp;op=logout">
-						<!-- <img src="<?php echo Layout::path(); ?>images/standard/exit.png" alt="Left logo" />&nbsp; -->
-						<span><?php echo Lang::t('_LOGOUT', 'standard'); ?></span>
-					</a></li>
-				</ul>
-				<?php endif; ?>
-			</div>
-			<img class="left_logo" src="<?php echo Layout::path(); ?>images/company_logo.png" alt="Left logo" />
-			<?php echo Layout::zone('header'); ?>
-			<div class="nofloat"></div>
-		</div>
+
 		<!-- menu_over -->
 		<?php echo Layout::zone('menu_over'); ?>
 		<!-- content -->
@@ -96,6 +87,8 @@
 				else
 					echo Layout::zone('content');
 				?>
+                
+                
 			</div>
 			<div class="nofloat"></div>
 		</div>

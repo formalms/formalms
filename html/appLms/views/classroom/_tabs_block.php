@@ -1,15 +1,7 @@
-<div class="yui-t6">
-	<div class="yui-b">
-		<?php
-		$this->widget('lms_block', array(
-			'zone' => 'right',
-			'link' => 'elearning/show',
-			'block_list' => $block_list
-		));
-		?>
-	</div>
-	<div id="yui-main">
-		<div class="yui-b">
+<div class="row">
+
+	<div id="middlearea_container">
+		<div class="col-md-8">
 
 			<div class="middlearea_container">
 				<?php
@@ -43,6 +35,18 @@
 
 		</div>
 	</div>
+    
+    
+    <div class="col-md-4">
+        <?php
+        $this->widget('lms_block', array(
+            'zone' => 'right',
+            'link' => 'elearning/show',
+            'block_list' => $block_list
+        ));
+        ?>
+    </div>    
+    
 	<div class="nofloat"></div>
 </div>
 

@@ -16,14 +16,31 @@
 				'close' => false
 			));
 	?>
-	<div class="yui-t1">
-		<div id="yui-main">
-			<div class="yui-b">
-				<div class="yui-ge">
-					<div class="yui-u first"><!--- page content --->
-						<div class="middle_colum">
+	<div class="row">
+		<div id="yui-main" class="col-md-12">
+			<div class="">
+				<div class="">
+					<div class="">
+                    
+                    
+                    
+                    <!--- page content --->
+                    
+                <div class="col-md-2" id="left_categories"><!--- left categories --->
+                    <ul class="flat-categories">
+                        <li><a href="#" id="folder_0"><?php echo Lang::t('_ALL_CATEGORIES', 'kb'); ?></a></li>
+                        <?php foreach ($initial_folders['folders'] as $folder): ?>
+                            <li><a href="#" id="folder_<?php echo $folder['id']; ?>"><?php echo $folder['name']; ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>    
+                    
+                    
+						<div class="col-md-8">
 							<!-- search form -->
-							<div class="quick_search_form">
+							
+                            
+                            <div class="quick_search_form">
 								<div class="simple_search_box" id="usermanagement_simple_filter_options" style="display: block;">
 									<?php
 									echo Form::openForm('quick_search', '');
@@ -35,7 +52,8 @@
 									?>
 								</div>
 							</div>
-							<!-- categories navigation -->
+							
+                            <!-- categories navigation -->
 							<!-- Hiding Horizontal Cat navigation
 							<ul id="kb_folder_nav" class="navigation"></ul>
 							<div class="kb_folder_box"  id="folder_box">
@@ -43,8 +61,9 @@
 								<div class="nofloat"></div>
 							</div>
 							-->
+                            
 							<!-- content table -->
-							<?php
+                            <?php
 									$this->widget('table', array(
 										'id' => 'kb_table',
 										'ajaxUrl' => 'ajax.server.php?r=kb/getlist',
@@ -67,11 +86,26 @@
 											array('key' => 'play', 'label' => '<span class="ico-sprite subs_play"><span>' . Lang::t('_PLAY', 'storage') . '</span></span>', 'formatter' => 'frm_play', 'className' => 'img-cell'),
 										),
 										'fields' => array('res_id', 'r_name', 'r_type', 'r_env', 'r_env_parent', 'r_lang', 'tags', 'edit', 'force_visible', 'is_mobile'),
-									));
+									)
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    );
 							?>
+                      
+                            
 								</div><!--- middle_colum --->
-							</div>
-							<div class="yui-u"><!--- tags column --->
+						
+                        
+                      
+                        
+                        
+							<div class="col-md-2"><!--- tags column --->
 								<p class="section_title"><?php echo Lang::t('_TAGS', 'kb'); ?></p>
 								<?php if (!empty($tag_cloud)): ?>
 									<ul class="tag_cloud" id="kb_tag_cloud">
@@ -81,17 +115,15 @@
 									</ul>
 								<?php endif; ?>
 							</div>
+                            
+                            
+                            
+                            
+                            
 						</div>
 					</div>
-				</div>
-				<div class="yui-b" id="left_categories"><!--- left categories --->
-					<ul class="flat-categories">
-						<li><a href="#" id="folder_0"><?php echo Lang::t('_ALL_CATEGORIES', 'kb'); ?></a></li>
-						<?php foreach ($initial_folders['folders'] as $folder): ?>
-							<li><a href="#" id="folder_<?php echo $folder['id']; ?>"><?php echo $folder['name']; ?></a></li>
-						<?php endforeach; ?>
-					</ul>
-				</div>
+				</div> 
+
 			</div>
 			<div class="nofloat"></div>
 <?php

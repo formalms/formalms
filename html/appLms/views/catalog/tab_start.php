@@ -56,33 +56,19 @@ $ma = new Man_MiddleArea();
 		<div class="yui-content">
 		<?php
 			if (!isset($_GET['r']) || $_GET['r'] !== 'catalog/coursepathCourse') {
-				echo '<div class="yui-t2">'
+				echo '<div class="row>'
 					. '<div id="yui-main">'
-					. '<div class="yui-b">'
+                    
+                    
+                    
+                    
+					. '<div class="col-md-8">'
 					. $this->model->getBreadCrumbs($std_link);
 
 				$category = $this->model->getMinorCategory($std_link, true);
 				if(!empty($category)) {
 
-/* FORMA - LEVATE CATEGORIE ORIZZONTALI
-					echo '<div class="kb_folder_box"  id="folder_box">'
-						.'<ul id="kb_folder_box_ul" class="style_none">';
-					foreach ($category as $id_cat => $data) {
-						echo '<li>'
-						. '<div><a href="' . $std_link . '&amp;id_cat=' . $id_cat . '">' . $data['name'] . '</a></div>'
-						. '<ul class="subfolders">';
 
-						if (isset($data['son']))
-							foreach ($data['son'] as $id_cat_s => $name_s)
-								echo '<li><a href="' . $std_link . '&amp;id_cat=' . $id_cat_s . '">' . $name_s . '</a></li>';
-
-						echo '</ul>'
-						. '</li>';
-					}
-					echo '</ul>'
-						.'<div class="nofloat"></div>'
-						. '</div>';
-*/
 				} else {
 
 					echo '<br />';
