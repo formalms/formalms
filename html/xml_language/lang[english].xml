@@ -208,6 +208,27 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0,6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[week]]></key>
       </module>
+      <module id="cart">
+        <key id="cart&amp;_CART" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Cart]]></key>
+        <key id="cart&amp;_CODE" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Code]]></key>
+        <key id="cart&amp;_COURSE_PRIZE" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Course prize]]></key>
+        <key id="cart&amp;_COURSE_TYPE" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Course type]]></key>
+        <key id="cart&amp;_DATE_BEGIN" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Date begin]]></key>
+        <key id="cart&amp;_DATE_END" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Date end]]></key>
+        <key id="cart&amp;_DEL_SELECTED_ELEMENT" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Delete selected element]]></key>
+        <key id="cart&amp;_EMPTY_CART" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Empty cart]]></key>
+        <key id="cart&amp;_LEARNING_COURSE" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Learning course]]></key>
+        <key id="cart&amp;_NAME" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Name]]></key>
+        <key id="cart&amp;_ORDER_NOW" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Order now]]></key>
+        <key id="cart&amp;_ORDER_NUMBER" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Order number]]></key>
+        <key id="cart&amp;_PAYMENT_SELECT" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Select payment method]]></key>
+        <key id="cart&amp;_PAY_WITH_PAYPAL" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Pay with paypal]]></key>
+        <key id="cart&amp;_TOTAL" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Total]]></key>
+        <key id="cart&amp;_TRANS_CREATED" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Trans created]]></key>
+        <key id="cart&amp;_WIRE_INFO" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Wire info]]></key>
+        <key id="cart&amp;_WIRE_PAYMENT" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Wire payment]]></key>
+        <key id="cart&amp;_WIRE_PAYMENT_DETAILS" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Wire payment details]]></key>
+      </module>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Add to cart]]></key>
         <key id="catalogue&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Catalogue]]></key>
@@ -215,16 +236,20 @@
         <key id="catalogue&amp;_CATALOGUE_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Select catalogs]]></key>
         <key id="catalogue&amp;_CATALOGUE_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[List all the available catalogs]]></key>
         <key id="catalogue&amp;_CERT_RELESABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificates available for the download]]></key>
+        <key id="catalogue&amp;_CLASSROOM_IN_CART" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Classroom in cart]]></key>
         <key id="catalogue&amp;_CLASSROOM_LOCATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Building]]></key>
+        <key id="catalogue&amp;_CONFIRM_ADD_TO_CART" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Confirm add to chart]]></key>
         <key id="catalogue&amp;_CONFIRM_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Confirm Subscription]]></key>
         <key id="catalogue&amp;_COURSEPATH_INTRO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[This curriculum has <b>[enrolled]</b> subscribed users]]></key>
         <key id="catalogue&amp;_COURSEPATH_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Your curriculum]]></key>
         <key id="catalogue&amp;_COURSEPATH_SUBSCRIBE_WIN_TIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Curricula Subscribe]]></key>
         <key id="catalogue&amp;_COURSEPATH_SUBSCRIBE_WIN_TXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Confirm your subscription to this Course Path:]]></key>
+        <key id="catalogue&amp;_COURSE_ADDED_IN_CART" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Course added in cart]]></key>
         <key id="catalogue&amp;_COURSE_AS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Courses where you are [level]]]></key>
         <key id="catalogue&amp;_COURSE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Courses you are subscribed to]]></key>
         <key id="catalogue&amp;_COURSE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Courses you have completed]]></key>
         <key id="catalogue&amp;_COURSE_EXPIRING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Courses expiring in one week]]></key>
+        <key id="catalogue&amp;_COURSE_IN_CART" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Course in cart]]></key>
         <key id="catalogue&amp;_COURSE_LIST_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[List of available courses]]></key>
         <key id="catalogue&amp;_COURSE_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Course subscription]]></key>
         <key id="catalogue&amp;_COURSE_S_GODADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Only admin can subscribe]]></key>
