@@ -135,7 +135,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
         if($cont==0)  $span = '<span class="glyphicon glyphicon-cloud"></span>';
         if($cont==1)  $span = '<span class="glyphicon glyphicon-inbox"></span>';
         if($cont==2)  $span = '<span class="glyphicon glyphicon-education"></span>';
-        if($cont==3)  $span = '<span class="glyphicon glyphicon-signal"></span>';
+        if($cont==3)  $span = '<span class="glyphicon glyphicon-stats"></span>';
         
 		if(!empty($menu['submenu'])) {
            /*   
@@ -174,11 +174,13 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
             
 			while(list($id_sub, $sub) = each($menu['submenu'])) {
 
-					$active = '';
-					if ($id_sub == $_GET['id_module_sel']) $active_sub = ' active';
-
+					$active_sub = '';
+                    $sub_menu_name = $sub['name'];
+					if ($id_sub == $_GET['id_module_sel']){
+                         $active_sub = 'class="active-sub"';                 
+                    }
 				//cout('<li class="sub-v '.$active.'"><a href="'.$sub['link'].'" >'.$sub['name'].'</a></li>' , 'menu');
-                cout('<li><a href="'.$sub['link'].'">'.$sub['name'].'</a></li>','menu')    ;
+                cout('<li '.$active_sub.'><a href="'.$sub['link'].'">'.$sub_menu_name.'</a></li>','menu')    ;
                 
                 
 			}

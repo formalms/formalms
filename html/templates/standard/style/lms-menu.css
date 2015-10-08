@@ -355,6 +355,18 @@ img.course_logo.sponsor {
     color: white;
   }
   .sidebar-nav .navbar li a > .caret {
- //   margin-top: 8px;
+    margin-top: 8px;
   }  
 }
+
+
+  .active-sub{
+    padding-right:0; 
+    font-size:small;
+    background-color: #eeeeee;
+    padding-left: 0;
+    font-weight:bold;
+    border-color:#000000;
+  } 
+
+
