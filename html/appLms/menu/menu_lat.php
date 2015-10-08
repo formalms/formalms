@@ -149,15 +149,24 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 			, 'menu'); 
                */
             
-               
+            $active = "class='collapse'";  
+            $style = 'style="height: 0px;"';
+            $li_class = '';
+            if($_SESSION['current_main_menu'] == $id_main) {
+                $active = '';
+                $style = 'style="height: auto;"';
+                $li_class = 'class="active"';
+                
+                
+            }    
              
-           cout('<br><li class="active">
+           cout('<br><li '.$li_class.'>
                       <a href="#" data-toggle="collapse" data-target="#toggleDemo-'.$id_main.'" data-parent="#sidenav01" class="collapsed">
                         '.$span.'
-                     '.$menu['main']['name'].'
+                     <b>'.$menu['main']['name'].'</b>
                      <span class="caret pull-right">
                       </a>
-                      <div class="collapse" id="toggleDemo-'.$id_main.'" style="height: 0px;">
+                      <div  '.$active.' id="toggleDemo-'.$id_main.'" '.$style.' >
                         <ul class="nav nav-list">','menu'); 
                        
             
@@ -166,10 +175,10 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 			while(list($id_sub, $sub) = each($menu['submenu'])) {
 
 					$active = '';
-					if ($id_sub == $_GET['id_module_sel']) $active = ' active';
+					if ($id_sub == $_GET['id_module_sel']) $active_sub = ' active';
 
 				//cout('<li class="sub-v '.$active.'"><a href="'.$sub['link'].'" >'.$sub['name'].'</a></li>' , 'menu');
-                cout('<li class="active"><a href="'.$sub['link'].'" '.$active.'>'.$sub['name'].'</a></li>','menu')    ;
+                cout('<li><a href="'.$sub['link'].'">'.$sub['name'].'</a></li>','menu')    ;
                 
                 
 			}
