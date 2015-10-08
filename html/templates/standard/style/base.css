@@ -28,7 +28,7 @@ Font scales : 140%, 115%, 108%, 100%, 90%, 83%
 */
 
 html, body{height:100%;}
-body{color:#000000;font:13px/1.231 arial,sans-serif;*font-size:small;*font:x-small;}
+body{color:#000000;font:13px/1.231 arial,sans-serif;*font-size:small;*font:x-small; background:#ffffff ;}
 /* base.css, part of YUI's CSS Foundation */
 h1{font-size:150%;padding:6px 6px 4px;color:#C84000;}
 h2{font-size:115%;padding:5px 5px 4px;color:#666666;}
@@ -46,11 +46,21 @@ a.nounder:hover{text-decoration:underline;}
 a img{vertical-align:middle;}
 h1 img,h2 img,h3 img,h4 img,h5 img,h6 img{vertical-align:middle;}
 /* Main Page Container */
+/*
+div#container { margin:0 auto; padding:0 10px; background:#fff;  border-top:0; border-bottom:0;}
+*/
+
 div#container { margin:0 auto; padding:0 10px; background:#fff; /*border:1px solid #ddd*/; border-top:0; border-bottom:0;}
+@media screen and (min-width: 890px) {
+    #container {
+        width: 960px;
+    }
+}
+
 .layout_header {	padding:5px 0;}
 
 .layout_header .left_logo {margin:0;}
-div.divider{border-bottom: 1px solid #cccccc; margin-top: 5px; margin-bottom: 10px; position: relative;}
+div.divider{border-bottom: 1px solid #cccccc; margin-top: 5px; margin-bottom: 10px; position: relative;}     
 
 /* utility */
 .container-hide{display:none;}

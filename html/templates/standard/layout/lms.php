@@ -73,14 +73,18 @@
 		<div id="container">
 		<!-- header -->
 
+        
 		<!-- menu_over -->
 		<?php echo Layout::zone('menu_over'); ?>
+                                            
 		<!-- content -->
-		<div id="lms_main_container" class="yui-t3">
-			<div id="course-info" class="yui-b">
+		<div id="lms_main_container" >
+        
+			<div id="course-info-boot" class="col-md-3">
 				<?php echo Layout::zone('menu'); ?>
-			</div>
-			<div id="yui-main">
+			</div>  
+		
+        	<div id="yui-main-boot" class='col-md-9'>
 				<?php
 				if(!isset($_SESSION['direct_play']))
 					echo '<div class="yui-b">'.Layout::zone('content').'</div>';
@@ -90,6 +94,7 @@
                 
                 
 			</div>
+            
 			<div class="nofloat"></div>
 		</div>
 		<!-- footer -->
