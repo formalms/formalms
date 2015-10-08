@@ -360,13 +360,17 @@ img.course_logo.sponsor {
 }
 
 
-  .active-sub{
+  .active-li{
     padding-right:0; 
     font-size:small;
-    background-color: #eeeeee;
+    background-color: #dddddd;
     padding-left: 0;
     font-weight:bold;
-    border-color:#000000;
+    
+    
   } 
 
-
+  .active-sub{
+    background-color: #eeeeee;
+    
+  }

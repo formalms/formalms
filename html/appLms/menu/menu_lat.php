@@ -132,10 +132,10 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
     
 	while(list($id_main, $menu) = each($menu_module)) {
         $span='';
-        if($cont==0)  $span = '<span class="glyphicon glyphicon-cloud"></span>';
-        if($cont==1)  $span = '<span class="glyphicon glyphicon-inbox"></span>';
-        if($cont==2)  $span = '<span class="glyphicon glyphicon-education"></span>';
-        if($cont==3)  $span = '<span class="glyphicon glyphicon-stats"></span>';
+        if($cont==0)  $span = '<span class="glyphicon glyphicon-cloud"></span> ';
+        if($cont==1)  $span = '<span class="glyphicon glyphicon-inbox"></span> ';
+        if($cont==2)  $span = '<span class="glyphicon glyphicon-education"></span> ';
+        if($cont==3)  $span = '<span class="glyphicon glyphicon-stats"></span> ';
         
 		if(!empty($menu['submenu'])) {
            /*   
@@ -151,11 +151,11 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
             
             $active = "class='collapse'";  
             $style = 'style="height: 0px;"';
-            $li_class = '';
+            $li_class = 'class="active"';
             if($_SESSION['current_main_menu'] == $id_main) {
                 $active = '';
                 $style = 'style="height: auto;"';
-                $li_class = 'class="active"';
+               // $li_class = 'class="active"';
                 
                 
             }    
