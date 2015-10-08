@@ -128,10 +128,15 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
     
     
     
-    
+    $cont=0;
     
 	while(list($id_main, $menu) = each($menu_module)) {
-
+        $span='';
+        if($cont==0)  $span = '<span class="glyphicon glyphicon-cloud"></span>';
+        if($cont==1)  $span = '<span class="glyphicon glyphicon-inbox"></span>';
+        if($cont==2)  $span = '<span class="glyphicon glyphicon-education"></span>';
+        if($cont==3)  $span = '<span class="glyphicon glyphicon-signal"></span>';
+        
 		if(!empty($menu['submenu'])) {
            /*   
 			cout('<li class="main-v main-'.( $_SESSION['current_main_menu'] == $id_main ? 'open' : 'close' ).'">'
@@ -148,6 +153,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
              
            cout('<br><li class="active">
                       <a href="#" data-toggle="collapse" data-target="#toggleDemo-'.$id_main.'" data-parent="#sidenav01" class="collapsed">
+                        '.$span.'
                      '.$menu['main']['name'].'
                      <span class="caret pull-right">
                       </a>
@@ -189,6 +195,11 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
             
 		} // endif
 
+        
+        
+        $cont++;
+        
+        
 	}    
     
     cout('              </ul>
