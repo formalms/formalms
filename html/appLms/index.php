@@ -23,10 +23,6 @@ ob_start();
 require(_base_.'/lib/lib.bootstrap.php');
 Boot::init(BOOT_PAGE_WR);
 
-\appCore\Events\DispatcherManager::addListener('prova.evento.appLms', array(new \appLms\Events\DumpAndDieLmsListener(), 'onFooAction'));
-
-\appCore\Events\DispatcherManager::dispatch('prova.evento.appLms');
-
 // connect to the database
 $db =& DbConn::getInstance();
 
@@ -134,6 +130,10 @@ ob_clean();
 
 // layout
 Layout::render( ( isset($_SESSION['idCourse']) ? 'lms' : 'lms_user' ) );
+
+\appCore\Events\DispatcherManager::addListener('prova.evento.appLms', array(new \appLms\Events\DumpAndDieLmsListener(), 'printOnlyADot'));
+
+\appCore\Events\DispatcherManager::dispatch('prova.evento.appLms');
 
 #// finalize TEST_COMPATIBILITA_PHP54
 Boot::finalize();

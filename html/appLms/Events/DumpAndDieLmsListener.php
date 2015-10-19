@@ -14,4 +14,9 @@ class DumpAndDieLmsListener
         var_dump($event);
         die;
     }
+
+    public function printOnlyADot(\Symfony\Component\EventDispatcher\Event $event)
+    {
+        echo "...";
+    }
 }
