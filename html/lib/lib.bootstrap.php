@@ -248,6 +248,10 @@ class Boot {
 		    Twig_Autoloader::register();
 		}
 
+		// composer autoload dispatcher
+		self::log( "Load event dispatcher." );
+		require_once(_base_.'/addons/autoload.php');
+
 		// mimetype
 		self::log( "Load mimetype library." );
 		require_once(_base_.'/lib/lib.mimetype.php');
