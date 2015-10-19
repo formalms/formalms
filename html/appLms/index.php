@@ -119,13 +119,6 @@ if(!empty($GLOBALS['req'])) {
 	
 }
 
-
-?       html/addons/symfony/var-dumper
-!       html/addons/twig/CHANGELOG
-!       html/addons/twig/LICENSE
-!       html/addo/twig/README.rst
-
-
 // -----------------------------------------------------------------------------
 
 #// finalize TEST_COMPATIBILITA_PHP54
