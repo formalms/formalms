@@ -1,0 +1,21 @@
+{
+    "name": "cocciagialla/forma_ecm",
+    "require": {
+        "symfony/event-dispatcher": "^2.7"
+    },
+    "authors": [
+        {
+            "name": "Gianluigi 'cocciagialla' Mammarella",
+            "email": "cocciagialla@gmail.com"
+        }
+    ],
+    "config": {
+        "vendor-dir": "html/addons"
+    },
+    "autoload": {
+        "psr-0": {
+            "appLms": "html",
+            "appCore": "html"
+        }
+    }
+}

@@ -23,6 +23,10 @@ ob_start();
 require(_base_.'/lib/lib.bootstrap.php');
 Boot::init(BOOT_PAGE_WR);
 
+\appCore\Events\DispatcherManager::addListener('prova.evento.appLms', array(new \appLms\Events\DumpAndDieLmsListener(), 'onFooAction'));
+
+\appCore\Events\DispatcherManager::dispatch('prova.evento.appLms');
+
 // connect to the database
 $db =& DbConn::getInstance();
 
