@@ -227,7 +227,7 @@ class Layout {
 			$intest = '<?xml version="1.0" encoding="'.self::charset().'"?'.'>'."\n";
 		}
         if (file_exists(_base_.'/templates/'.getTemplate().'/layout/'.$layout.'.html.twig')){
-            echo TwigManager::getInstance()->render($layout.'.html.twig', array(), _base_.'/templates/'.getTemplate().'/layout/');
+            echo \appCore\Template\TwigManager::getInstance()->render($layout.'.html.twig', array(), _base_.'/templates/'.getTemplate().'/layout/');
         } else {
             include(_base_.'/templates/'.getTemplate().'/layout/'.$layout.'.php');
         }

@@ -1,7 +1,9 @@
 {
     "name": "cocciagialla/forma_ecm",
     "require": {
-        "symfony/event-dispatcher": "^2.7"
+        "symfony/event-dispatcher": "^2.7",
+        "twig/twig": "~1.0",
+        "symfony/var-dumper": "^2.7"
     },
     "authors": [
         {

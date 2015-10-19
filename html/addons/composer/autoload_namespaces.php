@@ -8,4 +8,5 @@ $baseDir = dirname(dirname($vendorDir));
 return array(
     'appLms' => array($baseDir . '/html'),
     'appCore' => array($baseDir . '/html'),
+    'Twig_' => array($vendorDir . '/twig/twig/lib'),
 );

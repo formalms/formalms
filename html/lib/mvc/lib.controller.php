@@ -121,9 +121,7 @@ class Controller {
 				include( Docebo::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension));
 				break;
 			case "twig":
-				echo TwigManager::getInstance()->render($view_name.$extension, $data_for_view, $path. '/' . $this->_mvc_name);
-				//$classname = 'TwigManager';
-				//echo $classname::getInstance()->render($view_name.$extension, $data_for_view, $path. '/' . $this->_mvc_name);
+				echo \appCore\Template\TwigManager::getInstance()->render($view_name.$extension, $data_for_view, $path. '/' . $this->_mvc_name);
 				break;
 			default:
 				//die( 'FILENOTFOUND');

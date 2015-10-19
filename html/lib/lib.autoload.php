@@ -79,18 +79,6 @@ function docebo_autoload($classname) {
 		'PluginManager'		=> _lib_.'/lib.pluginmanager.php',
 	);
 	
-	$tplengine=Get::cfg('template_engine', array());
-	foreach ($tplengine as $tplkey => $tpleng){
-		switch($tplkey){
-		    case('twig'):
-			$fixed['TwigManager'] = _lib_.'/lib.twigmanager.php';
-			break;
-		    default:
-			//$fixed[$tpleng['class']] = _lib_.'/'.$tpleng['lib'];
-			break;
-		}
-	}
-
 	if(Get::cfg('enable_plugins', false)){
 		$fixed['PluginController'] = _lib_.'/mvc/lib.plugincontroller.php';
 	}
