@@ -140,9 +140,11 @@ function forum() {
 
 	$re_last_post = sql_query("
 	SELECT f.idForum, m.idThread, m.posted, m.title, m.author
-	FROM ".$GLOBALS['prefix_lms']."_forum AS f LEFT JOIN
-		".$GLOBALS['prefix_lms']."_forummessage AS m ON ( f.last_post = m.idMessage )
-	WHERE f.idCourse = '".(int)$_SESSION['idCourse']."'");
+	FROM ".$GLOBALS['prefix_lms']."_forum AS f
+	LEFT JOIN ".$GLOBALS['prefix_lms']."_forummessage AS m ON ( f.last_post = m.idMessage )
+	LEFT JOIN ".$GLOBALS['prefix_lms']."_forumthread AS t ON ( m.idThread = t.idThread )
+	WHERE f.idCourse = '".(int)$_SESSION['idCourse']."' AND (t.privateThread=0 OR (t.privateThread=1 AND t.author='".getLogUserId()."') OR '1'='".$mod_perm."')");
+
 	while(list($idF_p, $idT_p, $posted, $title_p, $id_a) = sql_fetch_row($re_last_post)) {
 
 		if($posted !== NULL) {
@@ -220,21 +222,21 @@ function forum() {
 
 			// NOTES: other content
 			$content = array(
-							$emoticon_img,
-							'<a'.$c_css.' href="index.php?modname=forum&amp;op=thread&amp;idForum='.$idF.'">'.$status.' '.$title.'</a>',
-							$descr,
-							$num_thread.( $thread_notread ? '<div class="forum_notread">'.$thread_notread.' '.$lang->def('_ADD').'</div>' : '' ),
-							$num_post.( $mess_notread ? '<div class="forum_notread">'.$mess_notread.' '.$lang->def('_ADD').'</div>' : '' ) );
+				$emoticon_img,
+				'<a'.$c_css.' href="index.php?modname=forum&amp;op=thread&amp;idForum='.$idF.'">'.$status.' '.$title.'</a>',
+				$descr,
+				$num_thread.( $thread_notread ? '<div class="forum_notread">'.$thread_notread.' '.$lang->def('_ADD').'</div>' : '' ),
+				$num_post.( $mess_notread ? '<div class="forum_notread">'.$mess_notread.' '.$lang->def('_ADD').'</div>' : '' ) );
 			if(isset($last_post[$idF])) {
 
 				$author = $last_post[$idF]['author'];
 				$content[] = $last_post[$idF]['info'].' ( '.$lang->def('_BY').': <span class="mess_author">'
-							.( isset($authors_names[$author])
-								? ( $authors_names[$author][ACL_INFO_LASTNAME].$authors_names[$author][ACL_INFO_FIRSTNAME] == ''
-										? $acl_man->relativeId($authors_names[$author][ACL_INFO_USERID])
-										: $authors_names[$author][ACL_INFO_LASTNAME].' '.$authors_names[$author][ACL_INFO_FIRSTNAME] )
-								: $lang->def('_UNKNOWN_AUTHOR')
-							).'</span> )';
+					.( isset($authors_names[$author])
+						? ( $authors_names[$author][ACL_INFO_LASTNAME].$authors_names[$author][ACL_INFO_FIRSTNAME] == ''
+							? $acl_man->relativeId($authors_names[$author][ACL_INFO_USERID])
+							: $authors_names[$author][ACL_INFO_LASTNAME].' '.$authors_names[$author][ACL_INFO_FIRSTNAME] )
+						: $lang->def('_UNKNOWN_AUTHOR')
+					).'</span> )';
 			} else {
 
 				$content[] = $lang->def('_NONE');
@@ -252,13 +254,13 @@ function forum() {
 				$content[] = '<a href="index.php?modname=forum&amp;op=modforumaccess&amp;idForum='.$idF.'&amp;load=1">
 					<img src="'.getPathImage().'standard/moduser.png" title="'.$lang->def('_VIEW_PERMISSION').'" alt="'.$lang->def('_VIEW_PERMISSION').'" /></a>';
 				$content[] = '<a href="index.php?modname=forum&amp;op=export&amp;idForum='.$idF.'" ' .
-						'title="'.$lang->def('_EXPORT_CSV').' : '.strip_tags($title).'">
+					'title="'.$lang->def('_EXPORT_CSV').' : '.strip_tags($title).'">
 					<img src="'.getPathImage().'standard/download.png" alt="'.$lang->def('_DEL').'" /></a>';
 
 				$content[] = '<a href="index.php?modname=forum&amp;op=modforum&amp;idForum='.$idF.'">
 					<img src="'.getPathImage().'standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" /></a>';
 				$content[] = '<a href="index.php?modname=forum&amp;op=delforum&amp;idForum='.$idF.'" ' .
-						'title="'.$lang->def('_DEL').' : '.strip_tags($title).'">
+					'title="'.$lang->def('_DEL').' : '.strip_tags($title).'">
 					<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" /></a>';
 			}
 			$tb->addBody( $content );
@@ -280,10 +282,10 @@ function forum() {
 			.'<div class="quick_search_form">'
 			.'<label for="search_arg">'.$lang->def('_SEARCH_LABEL').'</label> '
 			.Form::getInputTextfield(	'search_t',
-										'search_arg',
-										'search_arg',
-										'',
-										$lang->def('_SEARCH'), 255, '' )
+				'search_arg',
+				'search_arg',
+				'',
+				$lang->def('_SEARCH'), 255, '' )
 			.'<input class="search_b" type="submit" id="search_button" name="search_button" value="'.$lang->def('_SEARCH').'" />'
 			.'</div>'
 			.Form::closeForm()
@@ -301,10 +303,10 @@ function forum() {
 			.'<div class="quick_search_form">'
 			.'<label for="search_arg">'.$lang->def('_SEARCH_LABEL').'</label> '
 			.Form::getInputTextfield(	'search_t',
-										'search_arg',
-										'search_arg',
-										'',
-										$lang->def('_SEARCH'), 255, '' )
+				'search_arg',
+				'search_arg',
+				'',
+				$lang->def('_SEARCH'), 255, '' )
 			.'<input class="search_b" type="submit" id="search_button" name="search_button" value="'.$lang->def('_SEARCH').'" />'
 			.'</div>'
 			.Form::closeForm()
@@ -335,25 +337,25 @@ function forum() {
 			$GLOBALS['page']->add(
 				'<table class="forum_table" cellspacing="0" summary="'.$lang->def('_FORUM_INFORMATION').'">'
 				.'<tr class="forum_header">'
-					.'<th class="forum_title">'.$status.'&nbsp;'
-					.'<img src="'.getPathImage().'emoticons/'.$emoticons.'.gif" title="'.$lang->def('_EMOTICONS').'" alt="'.$lang->def('_EMOTICONS').'" />'
-					.'&nbsp;'
-					.'<a'.$c_css.' href="index.php?modname=forum&amp;op=thread&amp;idForum='.$idF.'">'.$title.'</a>'
-					.'</th>'
-					.'<th class="image" nowrap="nowrap">'.$lang->def('_NUMTHREAD').'</th>'
-					.'<th class="image" nowrap="nowrap">'.$lang->def('_NUMPOST').'</th>'
+				.'<th class="forum_title">'.$status.'&nbsp;'
+				.'<img src="'.getPathImage().'emoticons/'.$emoticons.'.gif" title="'.$lang->def('_EMOTICONS').'" alt="'.$lang->def('_EMOTICONS').'" />'
+				.'&nbsp;'
+				.'<a'.$c_css.' href="index.php?modname=forum&amp;op=thread&amp;idForum='.$idF.'">'.$title.'</a>'
+				.'</th>'
+				.'<th class="image" nowrap="nowrap">'.$lang->def('_NUMTHREAD').'</th>'
+				.'<th class="image" nowrap="nowrap">'.$lang->def('_NUMPOST').'</th>'
 				.'</tr>'
 				.'<tr>'
-					.'<td>'.$descr.'</td>'
-					.'<td class="image" nowrap="nowrap">'.$num_thread
-						.( $thread_notread ? '<div class="forum_notread">'.$thread_notread.' '.$lang->def('_UNREAD').'</div>' : '' )
-					.'</td>'
-					.'<td class="image" nowrap="nowrap">'.$num_post
-						.( $mess_notread ? '<div class="forum_notread">'.$mess_notread.' '.$lang->def('_UNREAD').'</div>' : '' )
-					.'</td>'
+				.'<td>'.$descr.'</td>'
+				.'<td class="image" nowrap="nowrap">'.$num_thread
+				.( $thread_notread ? '<div class="forum_notread">'.$thread_notread.' '.$lang->def('_UNREAD').'</div>' : '' )
+				.'</td>'
+				.'<td class="image" nowrap="nowrap">'.$num_post
+				.( $mess_notread ? '<div class="forum_notread">'.$mess_notread.' '.$lang->def('_UNREAD').'</div>' : '' )
+				.'</td>'
 				.'</tr>'
 				.'<tr>'
-					.'<td colspan="3">', 'content');
+				.'<td colspan="3">', 'content');
 
 			if(isset($last_post[$idF])) {
 
@@ -361,22 +363,22 @@ function forum() {
 				$GLOBALS['page']->add('<span class="forum_lastpost">'.$lang->def('_LASTPOST').' : '.$last_post[$idF]['info'].' ( '.$lang->def('_BY').': <span class="mess_author">'
 					.( isset($authors_names[$author])
 						? ( $authors_names[$author][ACL_INFO_LASTNAME].$authors_names[$author][ACL_INFO_FIRSTNAME] == ''
-								? $acl_man->relativeId($authors_names[$author][ACL_INFO_USERID])
-								: $authors_names[$author][ACL_INFO_LASTNAME].' '.$authors_names[$author][ACL_INFO_FIRSTNAME] )
+							? $acl_man->relativeId($authors_names[$author][ACL_INFO_USERID])
+							: $authors_names[$author][ACL_INFO_LASTNAME].' '.$authors_names[$author][ACL_INFO_FIRSTNAME] )
 						: $lang->def('_UNKNOWN_AUTHOR')
 					).'</span> )'
 					.'</span>'
-				, 'content');
+					, 'content');
 
 			} else {
 
 				//$GLOBALS['page']->add($lang->def('_NONE'), 'content');
 			}
 			$GLOBALS['page']->add(
-					'</td>'
+				'</td>'
 				.'</tr>'
 				.'<tr>'
-					.'<td colspan="3" class="forum_manag">', 'content');
+				.'<td colspan="3" class="forum_manag">', 'content');
 			if($mod_perm) {
 
 				$GLOBALS['page']->add('<ul class="link_list_inline">', 'content');
@@ -384,7 +386,7 @@ function forum() {
 
 					$GLOBALS['page']->add('<li><a href="index.php?modname=forum&amp;op=downforum&amp;idForum='.$idF.'">
 					<img src="'.getPathImage().'standard/down.png" title="'.$lang->def('_MOVE_DOWN').'" alt="'.$lang->def('_DOWN').'" /></a></li>'
-					, 'content');
+						, 'content');
 				}
 				if($i != 1) {
 
@@ -397,20 +399,20 @@ function forum() {
 					'<li><a href="index.php?modname=forum&amp;op=modforumaccess&amp;idForum='.$idF.'&amp;load=1">
 						<img src="'.getPathImage().'standard/moduser.png" title="'.$lang->def('_VIEW_PERMISSION').'" alt="'.$lang->def('_VIEW_PERMISSION').'" /></a></li>'
 					.'<li><a href="index.php?modname=forum&amp;op=export&amp;idForum='.$idF.'"' .
-							' title="'.$lang->def('_EXPORT_CSV').' : '.strip_tags($title).'">
+					' title="'.$lang->def('_EXPORT_CSV').' : '.strip_tags($title).'">
 						<img src="'.getPathImage().'standard/download.png" alt="'.$lang->def('_DOWNLOAD').'" /></a></li>'
 					.'<li><a href="index.php?modname=forum&amp;op=modforum&amp;idForum='.$idF.'">
 						<img src="'.getPathImage().'standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" /></a></li>'
 					.'<li><a href="index.php?modname=forum&amp;op=delforum&amp;idForum='.$idF.'"' .
-							' title="'.$lang->def('_DEL').' : '.strip_tags($title).'">
+					' title="'.$lang->def('_DEL').' : '.strip_tags($title).'">
 						<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" /></a></li>'
-				, 'content');
+					, 'content');
 				$GLOBALS['page']->add('</ul>', 'content');
 			}
 			$GLOBALS['page']->add('</td>'
 				.'</tr>'
 				.'</table>', 'content');
-				$i++;
+			$i++;
 		}
 		if($mod_perm) {
 
@@ -455,20 +457,20 @@ function addforum() {
 		<input type="button" id="emoticon_btn" name="emoticon_btn" value="'.$lang->def('_EMOTICONS').'">
 		</div>'
 		.'<select class="dropdown" style="display: none;" id="emoticons" name="emoticons">'
-	, 'content');
+		, 'content');
 	/*$templ = dir(getPathImage().'emoticons/');
-	while($elem = $templ->read()) {
+    while($elem = $templ->read()) {
 
-		if(strpos($elem, '.gif') !== false) {
-			$GLOBALS['page']->add(
-				'<option value="'.$elem.'" class="option_with_image" style="background-image: url(\''.getPathImage().'emoticons/'.$elem.'\');"'
-				.( $elem == $default ? ' selected="selected"' : '' )
-				.'>'
-				.$elem.'</option>'
-			, 'content');
-		}
-	}
-	closedir($templ->handle);	*/
+        if(strpos($elem, '.gif') !== false) {
+            $GLOBALS['page']->add(
+                '<option value="'.$elem.'" class="option_with_image" style="background-image: url(\''.getPathImage().'emoticons/'.$elem.'\');"'
+                .( $elem == $default ? ' selected="selected"' : '' )
+                .'>'
+                .$elem.'</option>'
+            , 'content');
+        }
+    }
+    closedir($templ->handle);	*/
 
 	Util::get_js(Get::rel_path('lms').'/modules/forum/forum.js', true, true);
 	$emoticon_items ='';
@@ -532,22 +534,22 @@ function insforum() {
 
 		$msg_composer->setSubjectLangText('email', '_NEW_FORUM', false);
 		$msg_composer->setBodyLangText('email', '_NEW_FORUM_BODY', array(	'[url]' => Get::sett('url'),
-																			'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-																			'[title]' => $_POST['title'],
-																			'[text]' => $_POST['description'] ) );
+			'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
+			'[title]' => $_POST['title'],
+			'[text]' => $_POST['description'] ) );
 
 		$msg_composer->setBodyLangText('sms', '_NEW_FORUM_BODY_SMS', array(	'[url]' => Get::sett('url'),
-																			'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-																			'[title]' => $_POST['title'],
-																			'[text]' => $_POST['description'] ) );
+			'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
+			'[title]' => $_POST['title'],
+			'[text]' => $_POST['description'] ) );
 
 		createNewAlert(		'ForumNewCategory',
-							'forum',
-							'addforum',
-							1,
-							$lang->def('_NEW_FORUM'),
-							$recipients,
-							$msg_composer );
+			'forum',
+			'addforum',
+			1,
+			$lang->def('_NEW_FORUM'),
+			$recipients,
+			$msg_composer );
 
 	}
 
@@ -584,20 +586,20 @@ function modforum() {
 		<input type="button" id="emoticon_btn" name="emoticon_btn" value="'.$lang->def('_EMOTICONS').'">
 		</div>'
 		.'<select class="dropdown" style="display: none;" id="emoticons" name="emoticons">'
-	, 'content');
+		, 'content');
 	/*$templ = dir(getPathImage().'emoticons/');
-	while($elem = $templ->read()) {
+    while($elem = $templ->read()) {
 
-		if(strpos($elem, '.gif') !== false) {
-			$GLOBALS['page']->add(
-				'<option value="'.$elem.'" class="option_with_image" style="background-image: url(\''.getPathImage().'emoticons/'.$elem.'\');"'
-				.( $elem == $emoticons ? ' selected="selected"' : '' )
-				.'>'
-				.$elem.'</option>'
-			, 'content');
-		}
-	}
-	closedir($templ->handle); */
+        if(strpos($elem, '.gif') !== false) {
+            $GLOBALS['page']->add(
+                '<option value="'.$elem.'" class="option_with_image" style="background-image: url(\''.getPathImage().'emoticons/'.$elem.'\');"'
+                .( $elem == $emoticons ? ' selected="selected"' : '' )
+                .'>'
+                .$elem.'</option>'
+            , 'content');
+        }
+    }
+    closedir($templ->handle); */
 
 	Util::get_js(Get::rel_path('lms').'/modules/forum/forum.js', true, true);
 	$emoticon_items ='';
@@ -845,9 +847,9 @@ function modforumaccess() {
 		.'<div class="std_block">'
 		, 'content');
 	$user_select->loadSelector('index.php?modname=forum&amp;op=modforumaccess&amp;idForum='.$id_forum,
-			'',
-			$lang->def('_CHOOSE_FORUM_ACCESS'),
-			true );
+		'',
+		$lang->def('_CHOOSE_FORUM_ACCESS'),
+		true );
 	cout('</div>', 'content');
 }
 
@@ -887,7 +889,8 @@ function thread() {
 	SELECT t.idThread, t.author AS thread_author, t.posted, t.title, t.num_post, t.num_view, t.locked, t.erased, t.rilevantForum
 	FROM ".$GLOBALS['prefix_lms']."_forumthread AS t LEFT JOIN
 			".$GLOBALS['prefix_lms']."_forummessage AS m ON ( t.last_post = m.idMessage )
-	WHERE t.idForum = '$id_forum'";
+	WHERE t.idForum = '".$id_forum."' AND (t.privateThread=0 OR (t.privateThread=1 AND t.author='".getLogUserId()."') OR '1'='".$mod_perm."')";
+
 
 	if($_SESSION['idEdition']) $query_thread .= " AND id_edition = '".$_SESSION['idEdition']."'";
 
@@ -911,7 +914,8 @@ function thread() {
 	SELECT m.idThread, t.author AS thread_author, m.posted, m.title, m.author  AS mess_author, m.generator
 	FROM ".$GLOBALS['prefix_lms']."_forumthread AS t LEFT JOIN
 		".$GLOBALS['prefix_lms']."_forummessage AS m ON ( t.last_post = m.idMessage )
-	WHERE t.idForum = '".$id_forum."'");
+	WHERE t.idForum = '".$id_forum."' AND (t.privateThread=0 OR (t.privateThread=1 AND t.author='".getLogUserId()."') OR '1'='".$mod_perm."')");
+
 	while(list($idT_p, $id_ta, $posted, $title_p, $id_a, $is_gener) = sql_fetch_row($re_last_post)) {
 
 		$last_authors[$id_ta] = $id_ta;
@@ -930,20 +934,20 @@ function thread() {
 		$title
 	);
 	$GLOBALS['page']->add(
-		 getTitleArea($page_title, 'forum')
+		getTitleArea($page_title, 'forum')
 		.'<div class="std_block">'
 		.Form::openForm('search_forum', 'index.php?modname=forum&amp;op=search&amp;idForum='.$id_forum)
 		.'<div class="quick_search_form">'
 		.'<label for="search_arg">'.$lang->def('_SEARCH_LABEL').'</label> '
 		.Form::getInputTextfield(	'search_t',
-									'search_arg',
-									'search_arg',
-									'',
-									$lang->def('_SEARCH'), 255, '' )
+			'search_arg',
+			'search_arg',
+			'',
+			$lang->def('_SEARCH'), 255, '' )
 		.'<input class="search_b" type="submit" id="search_button" name="search_button" value="'.$lang->def('_SEARCH').'" />'
 		.'</div>'
 		.Form::closeForm()
-	, 'content');
+		, 'content');
 
 	$tb = new Table(Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'));
 
@@ -953,17 +957,17 @@ function thread() {
 	$cont_h = array(
 		'<img src="'.getPathImage().'standard/msg_read.png" title="'.$lang->def('_FREET').'" alt="'.$lang->def('_FREE').'" />',
 		'<a href="'.$jump_url.'&amp;ord='.( $ord == 'obj' ? 'obji' : 'obj' ).'" title="'.$lang->def('_ORDER_BY').'">'
-			.( $ord == 'obj' ? $img_up : ( $ord == 'obji' ? $img_down : '' ) ).$lang->def('_THREAD').'</a>',
+		.( $ord == 'obj' ? $img_up : ( $ord == 'obji' ? $img_down : '' ) ).$lang->def('_THREAD').'</a>',
 		$lang->def('_NUMREPLY'),
 		'<a href="'.$jump_url.'&amp;ord='.( $ord == 'auth' ? 'authi' : 'auth' ).'" title="'.$lang->def('_ORDER_BY').'">'
-			.( $ord == 'auth' ? $img_up : ( $ord == 'authi' ? $img_down : '' ) ).$lang->def('_AUTHOR').'</a>',
+		.( $ord == 'auth' ? $img_up : ( $ord == 'authi' ? $img_down : '' ) ).$lang->def('_AUTHOR').'</a>',
 		$lang->def('_NUMVIEW'),
 		//$lang->def('_DATE'),
 		'<a href="'.$jump_url.'&amp;ord='.( $ord == 'post' ? 'posti' : 'post' ).'" title="'.$lang->def('_ORDER_BY').'">'
-			.( $ord == 'post' ? $img_up : ( $ord == 'posti' ? $img_down : '' ) ).$lang->def('_LASTPOST').'</a>'
+		.( $ord == 'post' ? $img_up : ( $ord == 'posti' ? $img_down : '' ) ).$lang->def('_LASTPOST').'</a>'
 	);
 	$type_h = array('image', '', 'align_center', 'align_center', 'image',
-	//'align_center',
+		//'align_center',
 	'align_center');
 	if($mod_perm) {
 
@@ -1003,10 +1007,10 @@ function thread() {
 		$c_css = '';
 		// thread author
 		$t_author = ( isset($authors_names[$t_author])
-				? ( $authors_names[$t_author][ACL_INFO_LASTNAME].$authors_names[$t_author][ACL_INFO_FIRSTNAME] == '' ?
-					$acl_man->relativeId($authors_names[$t_author][ACL_INFO_USERID]) :
-					$authors_names[$t_author][ACL_INFO_LASTNAME].' '.$authors_names[$t_author][ACL_INFO_FIRSTNAME] )
-				: $lang->def('_UNKNOWN_AUTHOR') );
+			? ( $authors_names[$t_author][ACL_INFO_LASTNAME].$authors_names[$t_author][ACL_INFO_FIRSTNAME] == '' ?
+				$acl_man->relativeId($authors_names[$t_author][ACL_INFO_USERID]) :
+				$authors_names[$t_author][ACL_INFO_LASTNAME].' '.$authors_names[$t_author][ACL_INFO_FIRSTNAME] )
+			: $lang->def('_UNKNOWN_AUTHOR') );
 
 		// last post author
 		if(isset($last_post[$idT])) {
@@ -1036,8 +1040,8 @@ function thread() {
 		}
 		$content = array($status);
 		$content_temp = ( $erased && !$mod_perm ?
-						'<div class="forumErased">'.$lang->def('_OPERATION_SUCCESSFUL').'</div>' :
-						($important ? '<img src="'.getPathImage().'standard/important.png" alt="'.$lang->def('_IMPORTANT').'" />' : '').' <a'.$c_css.' href="index.php?modname=forum&amp;op=message&amp;idThread='.$idT.'">'.$title.'</a>');
+			'<div class="forumErased">'.$lang->def('_OPERATION_SUCCESSFUL').'</div>' :
+			($important ? '<img src="'.getPathImage().'standard/important.png" alt="'.$lang->def('_IMPORTANT').'" />' : '').' <a'.$c_css.' href="index.php?modname=forum&amp;op=message&amp;idThread='.$idT.'">'.$title.'</a>');
 
 		$content_temp .= '<p class="forum_pages">';
 		if ($first_unread_message_in_page != 1) {
@@ -1121,20 +1125,20 @@ function thread() {
 	if($can_notify) {
 
 		$text_inner .= '<a href="index.php?modname=forum&amp;op=thread&amp;notify=1&amp;idForum='.$id_forum.'&amp;ini='.$ini_page.'" '
-		.( !$is_notify ?
-			'class="ico-wt-sprite fd_notice"><span>'
-			.$lang->def('_NOTIFY_ME_FORUM').'</span></a> '
-			:
-			'class="ico-wt-sprite fd_error"><span>'
-			.$lang->def('_UNNOTIFY_ME_FORUM').'</span></a> '
-		).'';
+			.( !$is_notify ?
+				'class="ico-wt-sprite fd_notice"><span>'
+				.$lang->def('_NOTIFY_ME_FORUM').'</span></a> '
+				:
+				'class="ico-wt-sprite fd_error"><span>'
+				.$lang->def('_UNNOTIFY_ME_FORUM').'</span></a> '
+			).'';
 	}
 	if($moderate) {
 		$text_inner .=	'<a href="index.php?modname=forum&amp;op=modstatus&amp;idForum='.$id_forum.'" class="ico-wt-sprite '.($locked_f ? 'subs_unlocked' : 'subs_locked').'">'
-						.'<span>'
-						.($locked_f ? Lang::t('_UNLOCKFORUM', 'forum') : Lang::t('_LOCKFORUM'))
-						.'</span>'
-						.'</a>';
+			.'<span>'
+			.($locked_f ? Lang::t('_UNLOCKFORUM', 'forum') : Lang::t('_LOCKFORUM'))
+			.'</span>'
+			.'</a>';
 	}
 	if($text_inner != '') $tb->addActionAdd($text_inner);
 
@@ -1178,7 +1182,7 @@ function addthread() {
 		.Form::getHidden('idForum', 'idForum', $id_forum)
 		.Form::getTextfield($lang->def('_SUBJECT'), 'title', 'title', 255)
 		.Form::getTextarea($lang->def('_TEXTOF'), 'textof', 'textof')
-	, 'content');
+		, 'content');
 	if(checkPerm('upload', true)) {
 
 		$GLOBALS['page']->add(Form::getFilefield($lang->def('_UPLOAD'), 'attach', 'attach'), 'content');
@@ -1186,6 +1190,9 @@ function addthread() {
 	$is_important = 1;//array($lang->def('_NO'), $lang->def('_YES'));
 	if (checkPerm('moderate', true) || checkPerm('mod', true))
 		$GLOBALS['page']->add(Form::getCheckbox($lang->def('_IMPORTANT_THREAD'), 'important', 'important', $is_important), 'content');
+
+	$GLOBALS['page']->add(Form::getCheckbox($lang->def('_PRIVATE_THREAD'), 'private', 'private', 1, false), 'content');
+
 	$GLOBALS['page']->add(
 		Form::closeElementSpace()
 		.Form::openButtonSpace()
@@ -1194,7 +1201,7 @@ function addthread() {
 		.Form::closeButtonSpace()
 		.Form::closeForm()
 		.'</div>'
-	, 'content');
+		, 'content');
 }
 
 //---------------------------------------------------------------------------//
@@ -1281,9 +1288,10 @@ function insthread() {
 	}
 	$now = date("Y-m-d H:i:s");
 	$important = importVar('important', true, '0');
+	$private = importVar('private', true, '0');
 	$ins_query = "
 	INSERT INTO ".$GLOBALS['prefix_lms']."_forumthread
-	( idForum, id_edition, title, author, num_post, last_post, posted, rilevantForum )
+	( idForum, id_edition, title, author, num_post, last_post, posted, rilevantForum, privateThread )
 	VALUES (
 		'".$id_forum."',
 		'".$_SESSION['idEdition']."',
@@ -1292,7 +1300,8 @@ function insthread() {
 		 0,
 		 0,
 		 '".$now ."',
-		 '".$important."')";
+		 '".$important."',
+         '".$private."')";
 	if(!sql_query($ins_query)) Util::jump_to('index.php?modname=forum&op=thread&idForum='.$id_forum.'&amp;result=err_ins');
 	list($id_thread) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
 
@@ -1349,14 +1358,14 @@ function insthread() {
 
 	$msg_composer->setSubjectLangText('email', '_SUBJECT_NOTIFY_THREAD', false);
 	$msg_composer->setBodyLangText('email', '_NEW_THREAD_INSERT_IN_FORUM', array(	'[url]' => Get::sett('url'),
-																		'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-																		'[forum_title]' => $forum_title,
-																		'[thread_title]' => $_POST['title'] ) );
+		'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
+		'[forum_title]' => $forum_title,
+		'[thread_title]' => $_POST['title'] ) );
 
 	$msg_composer->setBodyLangText('sms', '_NEW_THREAD_INSERT_IN_FORUM_SMS', array(	'[url]' => Get::sett('url'),
-																		'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-																		'[forum_title]' => $forum_title,
-																		'[thread_title]' => $_POST['title'] ) );
+		'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
+		'[forum_title]' => $forum_title,
+		'[thread_title]' => $_POST['title'] ) );
 
 	launchNotify('forum', $id_forum, $lang->def('_NEW_THREAD'), $msg_composer);
 
@@ -1419,7 +1428,7 @@ function modthread() {
 		.Form::getHidden('idThread', 'idThread', $id_thread)
 		.Form::getTextfield($lang->def('_SUBJECT'), 'title', 'title', 255, $title)
 		.Form::getTextarea($lang->def('_TEXTOF'), 'textof', 'textof', $textof)
-	, 'content');
+		, 'content');
 	if(checkPerm('upload', true)) {
 
 		$GLOBALS['page']->add(Form::getFilefield($lang->def('_UPLOAD'), 'attach', 'attach'), 'content');
@@ -1569,8 +1578,8 @@ function delthread() {
 		UPDATE ".$GLOBALS['prefix_lms']."_forum
 		SET num_thread = num_thread - 1,
 			num_post = num_post - ".$post_deleted
-		.( $last_post_forum == $last_post ? " , last_post = '".$id_new."' " : " " )
-		." WHERE idForum = '".$id_forum."'"))
+			.( $last_post_forum == $last_post ? " , last_post = '".$id_new."' " : " " )
+			." WHERE idForum = '".$id_forum."'"))
 			if($_POST['search'] == 1) Util::jump_to('index.php?modname=forum&op=search&amp;ini='.$ini);
 			else Util::jump_to('index.php?modname=forum&op=thread&idForum='.$id_forum.'&amp;result=err_del');
 
@@ -1686,16 +1695,16 @@ function message() {
 	if ($set_important == 1)
 	{
 		$query_set_important = "UPDATE ".$GLOBALS['prefix_lms']."_forumthread" .
-								" SET rilevantForum = 1" .
-								" WHERE idThread = '".$id_thread."'";
+			" SET rilevantForum = 1" .
+			" WHERE idThread = '".$id_thread."'";
 
 		$result_set_important = sql_query($query_set_important);
 	}
 	if ($set_important == 2)
 	{
 		$query_set_important = "UPDATE ".$GLOBALS['prefix_lms']."_forumthread" .
-								" SET rilevantForum = 0" .
-								" WHERE idThread = '".$id_thread."'";
+			" SET rilevantForum = 0" .
+			" WHERE idThread = '".$id_thread."'";
 
 		$result_set_important = sql_query($query_set_important);
 	}
@@ -1821,21 +1830,21 @@ function message() {
 			.'<a class="ico-wt-sprite subs_user" href="index.php?modname=forum&amp;op=viewprofile&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'&amp;idThread='.$id_thread.'">'
 			.'<span>'.$lang->def('_VIEW_PROFILE').'</span></a>';
 
-			/*.( isset($authors_names[$m_author]) && $authors_names[$m_author][ACL_INFO_AVATAR] != ''
-				? '<img class="forum_avatar'.( $img_size[0] > 150 || $img_size[1] > 150 ? ' image_limit' : '' ).'" src="'.$path.$authors_names[$m_author][ACL_INFO_AVATAR].'" alt="'.$lang->def('_AVATAR').'" />'
-				: '' )*/
+		/*.( isset($authors_names[$m_author]) && $authors_names[$m_author][ACL_INFO_AVATAR] != ''
+            ? '<img class="forum_avatar'.( $img_size[0] > 150 || $img_size[1] > 150 ? ' image_limit' : '' ).'" src="'.$path.$authors_names[$m_author][ACL_INFO_AVATAR].'" alt="'.$lang->def('_AVATAR').'" />'
+            : '' )*/
 
 
-			/*
-			.( isset($authors_names[$m_author])
-				?( $authors_names[$m_author][ACL_INFO_LASTNAME].$authors_names[$m_author][ACL_INFO_FIRSTNAME] == '' ?
-					$acl_man->relativeId($authors_names[$m_author][ACL_INFO_USERID]) :
-					$authors_names[$m_author][ACL_INFO_LASTNAME].' '.$authors_names[$m_author][ACL_INFO_FIRSTNAME] )
-				: $lang->def('_UNKNOWN_AUTHOR') )
-			*/
-			/*.'<img src="'.getPathImage().'standard/identity.png" alt="&gt;" />&nbsp;'
-			.'<a href="index.php?modname=forum&amp;op=viewprofile&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'">'.$lang->def('_VIEW_PROFILE').'</a>';
-		*/
+		/*
+        .( isset($authors_names[$m_author])
+            ?( $authors_names[$m_author][ACL_INFO_LASTNAME].$authors_names[$m_author][ACL_INFO_FIRSTNAME] == '' ?
+                $acl_man->relativeId($authors_names[$m_author][ACL_INFO_USERID]) :
+                $authors_names[$m_author][ACL_INFO_LASTNAME].' '.$authors_names[$m_author][ACL_INFO_FIRSTNAME] )
+            : $lang->def('_UNKNOWN_AUTHOR') )
+        */
+		/*.'<img src="'.getPathImage().'standard/identity.png" alt="&gt;" />&nbsp;'
+        .'<a href="index.php?modname=forum&amp;op=viewprofile&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'">'.$lang->def('_VIEW_PROFILE').'</a>';
+    */
 		// msg info
 		$msgtext = '';
 		if ($counter == $first_unread_message)
@@ -1862,23 +1871,23 @@ function message() {
 			}
 			$msgtext .= '<div class="forum_post_title">'.$lang->def('_SUBJECT').' : '.$message_info['title'].'</div>';
 			$msgtext .= '<div class="forum_post_text">'
-						.str_replace('[quote]', '<blockquote class="forum_quote">', str_replace('[/quote]', '</blockquote>', $message_info['textof']))
-						.'</div>';
+				.str_replace('[quote]', '<blockquote class="forum_quote">', str_replace('[/quote]', '</blockquote>', $message_info['textof']))
+				.'</div>';
 
 			if($message_info['modified_by'] != 0) {
 
 				$modify_by = $message_info['modified_by'];
 				$msgtext .= '<div class="forum_post_modified_by">'
-						.$lang->def('_MODIFY_BY').' : '
-						.( isset($authors_names[$m_author])
-							?( $authors_names[$modify_by][ACL_INFO_LASTNAME].$authors_names[$modify_by][ACL_INFO_FIRSTNAME] == '' ?
-								$acl_man->relativeId($authors_names[$modify_by][ACL_INFO_USERID]) :
-								$authors_names[$modify_by][ACL_INFO_LASTNAME].' '.$authors_names[$modify_by][ACL_INFO_FIRSTNAME] )
-							: $lang->def('_UNKNOWN_AUTHOR')
-						)
-						.' '.$lang->def('_ON').' : '
-						.Format::date($message_info['modified_by_on'])
-						.'</div>';
+					.$lang->def('_MODIFY_BY').' : '
+					.( isset($authors_names[$m_author])
+						?( $authors_names[$modify_by][ACL_INFO_LASTNAME].$authors_names[$modify_by][ACL_INFO_FIRSTNAME] == '' ?
+							$acl_man->relativeId($authors_names[$modify_by][ACL_INFO_USERID]) :
+							$authors_names[$modify_by][ACL_INFO_LASTNAME].' '.$authors_names[$modify_by][ACL_INFO_FIRSTNAME] )
+						: $lang->def('_UNKNOWN_AUTHOR')
+					)
+					.' '.$lang->def('_ON').' : '
+					.Format::date($message_info['modified_by_on'])
+					.'</div>';
 			}
 
 			if(isset($authors_names[$m_author]) && $authors_names[$m_author][ACL_INFO_SIGNATURE] != '') {
@@ -1890,10 +1899,10 @@ function message() {
 			$strip_text = strip_tags($message_info['textof']);
 			$msgtext .= '<div class="tags align-right">'
 				.$tags->showTags(	$id_message,
-									'tags-',
-									$message_info['title'],
-									substr($strip_text, 0, 200).(strlen($strip_text) > 200 ? '...' : '' ),
-									'index.php?modname=forum&op=message&idThread='.$id_thread.'&ini='.$ini_page.'#'.$id_message)
+					'tags-',
+					$message_info['title'],
+					substr($strip_text, 0, 200).(strlen($strip_text) > 200 ? '...' : '' ),
+					'index.php?modname=forum&op=message&idThread='.$id_thread.'&ini='.$ini_page.'#'.$id_message)
 				.'</div>';
 		}
 		$content = array($sender, $msgtext);
@@ -1902,42 +1911,42 @@ function message() {
 		// some action that you can do with this message
 		$action = '';
 		/*if($sema_perm) {
-			if(isset($forum_sema[$id_message])) $img_sema = 'sema_check';
-			else $img_sema = 'sema';
-			$action .= '<a href="index.php?modname=forum&amp;op=editsema&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'" '
-					.'title="'.$lang->def('_MOD').' : '.strip_tags($message_info['title']).'">'
-				.'<img src="'.getPathImage().'forum/'.$img_sema.'.gif" alt="'.$lang->def('_MOD').' : '.strip_tags($message_info['title']).'" /> '
-				.$lang->def('_SEMATAG').'</a> ';
-		}*/
+            if(isset($forum_sema[$id_message])) $img_sema = 'sema_check';
+            else $img_sema = 'sema';
+            $action .= '<a href="index.php?modname=forum&amp;op=editsema&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'" '
+                    .'title="'.$lang->def('_MOD').' : '.strip_tags($message_info['title']).'">'
+                .'<img src="'.getPathImage().'forum/'.$img_sema.'.gif" alt="'.$lang->def('_MOD').' : '.strip_tags($message_info['title']).'" /> '
+                .$lang->def('_SEMATAG').'</a> ';
+        }*/
 		if($moderate || $mod_perm) {
 			if($message_info['locked']) {
 
 				$action .= '<a href="index.php?modname=forum&amp;op=moderatemessage&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'" '
-						.'title="'.$lang->def('_DEMODERATE').' : '.strip_tags($message_info['title']).'">'
+					.'title="'.$lang->def('_DEMODERATE').' : '.strip_tags($message_info['title']).'">'
 					.'<img src="'.getPathImage().'standard/demoderate.png" alt="'.$lang->def('_DEMODERATE').' : '.strip_tags($message_info['title']).'" /> '
 					.$lang->def('_DEMODERATE').'</a> ';
 			} else {
 
 				$action .= '<a href="index.php?modname=forum&amp;op=moderatemessage&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'" '
-						.'title="'.$lang->def('_MODERATE').' : '.strip_tags($message_info['title']).'">'
+					.'title="'.$lang->def('_MODERATE').' : '.strip_tags($message_info['title']).'">'
 					.'<img src="'.getPathImage().'standard/moderate.png" alt="'.$lang->def('_MODERATE').' : '.strip_tags($message_info['title']).'" /> '
 					.$lang->def('_MODERATE').'</a> ';
 			}
 		}
 		if(!$locked_t && !$locked_f && !$message_info['locked'] && $write_perm) {
 			$action .= '<a href="index.php?modname=forum&amp;op=addmessage&amp;idThread='.$id_thread.'&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'" '
-					.'title="'.$lang->def('_REPLY').' : '.strip_tags($message_info['title']).'">'
+				.'title="'.$lang->def('_REPLY').' : '.strip_tags($message_info['title']).'">'
 				.'<img src="'.getPathImage().'standard/reply.png" alt="'.$lang->def('_REPLY').' : '.strip_tags($message_info['title']).'" /> '
 				.$lang->def('_QUOTE').'</a>';
 		}
 		if($moderate || $mod_perm || ($m_author == getLogUserId()) ) {
 
 			$action .= '<a href="index.php?modname=forum&amp;op=modmessage&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'" '
-					.'title="'.$lang->def('_MOD_MESSAGE').' : '.strip_tags($message_info['title']).'">'
+				.'title="'.$lang->def('_MOD_MESSAGE').' : '.strip_tags($message_info['title']).'">'
 				.'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').' : '.strip_tags($message_info['title']).'" /> '
 				.$lang->def('_MOD').'</a>'
 				.'<a href="index.php?modname=forum&amp;op=delmessage&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'" '
-					.'title="'.$lang->def('_DEL').' : '.strip_tags($message_info['title']).'">'
+				.'title="'.$lang->def('_DEL').' : '.strip_tags($message_info['title']).'">'
 				.'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').' : '.strip_tags($message_info['title']).'" /> '
 				.$lang->def('_DEL').'</a> ';
 		}
@@ -1952,10 +1961,10 @@ function message() {
 
 		.'<label for="search_arg">'.$lang->def('_SEARCH_LABEL').'</label> '
 		.Form::getInputTextfield(	'search_t',
-									'search_arg',
-									'search_arg',
-									'',
-									$lang->def('_SEARCH'), 255, '' )
+			'search_arg',
+			'search_arg',
+			'',
+			$lang->def('_SEARCH'), 255, '' )
 		.'<input class="search_b" type="submit" id="search_button" name="search_button" value="'.$lang->def('_SEARCH').'" />'
 		.'</div>'
 		.Form::closeForm(), 'content');
@@ -1988,13 +1997,13 @@ function message() {
 	if($can_notify) {
 
 		$text_inner .= '<a href="index.php?modname=forum&amp;op=message&amp;notify=1&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'" '
-		.( !$is_notify ?
-			'class="ico-wt-sprite fd_notice"><span>'
-			.$lang->def('_NOTIFY_ME_FORUM').'</span></a> '
-			:
-			'class="ico-wt-sprite fd_error"><span>'
-			.$lang->def('_UNNOTIFY_ME_FORUM').'</span></a> '
-		).'';
+			.( !$is_notify ?
+				'class="ico-wt-sprite fd_notice"><span>'
+				.$lang->def('_NOTIFY_ME_FORUM').'</span></a> '
+				:
+				'class="ico-wt-sprite fd_error"><span>'
+				.$lang->def('_UNNOTIFY_ME_FORUM').'</span></a> '
+			).'';
 	}
 	if($moderate) {
 
@@ -2192,13 +2201,13 @@ function showMessageForAdd($id_thread, $how_much) {
 
 				$modify_by = $message_info['modified_by'];
 				$msgtext .= '<div class="forum_post_modified_by">'
-						.$lang->def('_MODIFY_BY').' : '
-						.( isset($authors_names[$modify_by])
-							?( $authors_names[$modify_by][ACL_INFO_LASTNAME].$authors_names[$modify_by][ACL_INFO_FIRSTNAME] == '' ?
-								$acl_man->relativeId($authors_names[$modify_by][ACL_INFO_USERID]) :
-								$authors_names[$modify_by][ACL_INFO_LASTNAME].' '.$authors_names[$modify_by][ACL_INFO_FIRSTNAME] )
-							: $lang->def('_UNKNOWN_AUTHOR')
-						).'</div>';
+					.$lang->def('_MODIFY_BY').' : '
+					.( isset($authors_names[$modify_by])
+						?( $authors_names[$modify_by][ACL_INFO_LASTNAME].$authors_names[$modify_by][ACL_INFO_FIRSTNAME] == '' ?
+							$acl_man->relativeId($authors_names[$modify_by][ACL_INFO_USERID]) :
+							$authors_names[$modify_by][ACL_INFO_LASTNAME].' '.$authors_names[$modify_by][ACL_INFO_FIRSTNAME] )
+						: $lang->def('_UNKNOWN_AUTHOR')
+					).'</div>';
 			}
 			if(isset($authors_names[$m_author]) && $authors_names[$m_author][ACL_INFO_SIGNATURE] != '') {
 				$msgtext .= '<div class="forum_post_sign_separator"></div>'
@@ -2263,9 +2272,9 @@ function addmessage() {
 		WHERE idMessage = '".$id_message."'";
 		list($m_title, $m_textof, $m_locked, $author) = sql_fetch_row(sql_query($message_query));
 		if ($m_locked) {
-            unset($m_title, $m_textof);
-            $id_message=0;
-        }
+			unset($m_title, $m_textof);
+			$id_message=0;
+		}
 		$userInfo=$acl_man->getUser($author,'');
 		$userName=$userInfo[3]." ".$userInfo[2];
 	}
@@ -2282,7 +2291,7 @@ function addmessage() {
 		.Form::getHidden('ini', 'ini', $ini)
 		.Form::getTextfield($lang->def('_SUBJECT'), 'title', 'title', 255, ($id_message != '' ? $lang->def('_RE').' '.$m_title : $thread_title ))
 		.Form::getTextarea($lang->def('_TEXTOF'), 'textof', 'textof', ($id_message != '' ? '<em>'.$lang->def('_WRITTED_BY').': '.$userName.'</em><br /><br />[quote]'.$m_textof.'[/quote]' : '' ))
-	, 'content');
+		, 'content');
 	if(checkPerm('upload', true)) {
 
 		$GLOBALS['page']->add(Form::getFilefield($lang->def('_UPLOAD'), 'attach', 'attach'), 'content');
@@ -2293,7 +2302,7 @@ function addmessage() {
 		.Form::getButton('post_thread', 'post_thread', $lang->def('_SEND'))
 		.Form::getButton('undo', 'undo', $lang->def('_UNDO'))
 		.Form::closeButtonSpace()
-	, 'content');
+		, 'content');
 	showMessageForAdd($id_thread, 3);
 	$GLOBALS['page']->add(
 		Form::openButtonSpace()
@@ -2426,14 +2435,14 @@ function insmessage() {
 
 	$msg_composer->setSubjectLangText('email', '_SUBJECT_NOTIFY_MESSAGE', false);
 	$msg_composer->setBodyLangText('email', '_NEW_MESSAGE_INSERT_IN_THREAD', array(	'[url]' => Get::sett('url'),
-																		'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-																		'[forum_title]' => $forum_title,
-																		'[thread_title]' => $_POST['title'] ) );
+		'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
+		'[forum_title]' => $forum_title,
+		'[thread_title]' => $_POST['title'] ) );
 
 	$msg_composer->setBodyLangText('sms', '_NEW_MESSAGE_INSERT_IN_THREAD_SMS', array(	'[url]' => Get::sett('url'),
-																		'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-																		'[forum_title]' => $forum_title,
-																		'[thread_title]' => $_POST['title'] ) );
+		'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
+		'[forum_title]' => $forum_title,
+		'[thread_title]' => $_POST['title'] ) );
 
 	launchNotify('thread', $id_thread, $lang->def('_NEW_MESSAGE'), $msg_composer);
 
@@ -2502,7 +2511,7 @@ function modmessage() {
 		.Form::getHidden('ini', 'ini', $ini)
 		.Form::getTextfield($lang->def('_SUBJECT'), 'title', 'title', 255, $title)
 		.Form::getTextarea($lang->def('_TEXTOF'), 'textof', 'textof', $textof)
-	, 'content');
+		, 'content');
 	if(checkPerm('upload', true)) {
 
 		$GLOBALS['page']->add(Form::getFilefield($lang->def('_UPLOAD'), 'attach', 'attach'), 'content');
@@ -2513,7 +2522,7 @@ function modmessage() {
 		.Form::getButton('post_thread', 'post_thread', $lang->def('_SAVE'))
 		.Form::getButton('undo', 'undo', $lang->def('_UNDO'))
 		.Form::closeButtonSpace()
-	, 'content');
+		, 'content');
 	showMessageForAdd($id_thread, 3);
 	$GLOBALS['page']->add(
 		Form::openButtonSpace()
@@ -2734,23 +2743,23 @@ function viewprofile() {
 		.$profile->performAction()
 
 		.$profile->getFooter()
-	, 'content');
+		, 'content');
 }
 
 //---------------------------------------------------------------------------//
 
 function forumBackUrl()
-	{
-		$lang =& DoceboLanguage::createInstance('profile', 'framework');
-		$id_user = importVar('id_user', true, 0);
-		$ap = importVar('ap', true, 0);
-		$ini = importVar('ini',true, 0);
-		$id_thread = importVar('idThread', true, 0);
-		$id_message = importVar('idMessage', true, 0);
-		if ($id_user === 0)
-			return getBackUi('index.php?modname=forum&amp;op=message&amp;idThread='.$id_thread.'&amp;ini='.$ini.'&amp;idMessage='.$id_message.'', '<< '.$lang->def('_BACK').'');
-		return getBackUi('index.php?modname=forum&amp;op=viewprofile&amp;idThread='.$id_thread.'&amp;ini='.$ini.'&amp;idMessage='.$id_message.'', '<< '.$lang->def('_BACK').'');
-	}
+{
+	$lang =& DoceboLanguage::createInstance('profile', 'framework');
+	$id_user = importVar('id_user', true, 0);
+	$ap = importVar('ap', true, 0);
+	$ini = importVar('ini',true, 0);
+	$id_thread = importVar('idThread', true, 0);
+	$id_message = importVar('idMessage', true, 0);
+	if ($id_user === 0)
+		return getBackUi('index.php?modname=forum&amp;op=message&amp;idThread='.$id_thread.'&amp;ini='.$ini.'&amp;idMessage='.$id_message.'', '<< '.$lang->def('_BACK').'');
+	return getBackUi('index.php?modname=forum&amp;op=viewprofile&amp;idThread='.$id_thread.'&amp;ini='.$ini.'&amp;idMessage='.$id_message.'', '<< '.$lang->def('_BACK').'');
+}
 
 //---------------------------------------------------------------------------//
 
@@ -2870,20 +2879,20 @@ function forumsearch() {
 		$lang->def('_SEARCH_RESULT_FOR').' : '.$search_arg
 	);
 	$GLOBALS['page']->add(
-		 getTitleArea($page_title, 'forum')
+		getTitleArea($page_title, 'forum')
 		.'<div class="std_block">'
 		.Form::openForm('search_forum', 'index.php?modname=forum&amp;op=search')
 		.'<div class="quick_search_form">'
 		.'<label for="search_arg">'.$lang->def('_SEARCH_LABEL').'</label> '
 		.Form::getInputTextfield(	'search_t',
-									'search_arg',
-									'search_arg',
-									$search_arg,
-									$lang->def('_SEARCH'), 255, '' )
+			'search_arg',
+			'search_arg',
+			$search_arg,
+			$lang->def('_SEARCH'), 255, '' )
 		.'<input class="search_b" type="submit" id="search_button" name="search_button" value="'.$lang->def('_SEARCH').'" />'
 		.'</div>'
 		.Form::closeForm()
-	, 'content');
+		, 'content');
 
 	$tb = new Table(Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'));
 
@@ -2893,18 +2902,18 @@ function forumsearch() {
 	$cont_h = array(
 		'<img src="'.getPathImage().'standard/msg_read.png" title="'.$lang->def('_FREET').'" alt="'.$lang->def('_FREE').'" />',
 		'<a href="'.$jump_url.'&amp;ord='.( $ord == 'obj' ? 'obji' : 'obj' ).'" title="'.$lang->def('_ORDER_BY').'">'
-			.( $ord == 'obj' ? $img_up : ( $ord == 'obji' ? $img_down : '' ) ).$lang->def('_THREAD').'</a>',
+		.( $ord == 'obj' ? $img_up : ( $ord == 'obji' ? $img_down : '' ) ).$lang->def('_THREAD').'</a>',
 		$lang->def('_NUMREPLY'),
 		'<a href="'.$jump_url.'&amp;ord='.( $ord == 'auth' ? 'authi' : 'auth' ).'" title="'.$lang->def('_ORDER_BY').'">'
-			.( $ord == 'auth' ? $img_up : ( $ord == 'authi' ? $img_down : '' ) ).$lang->def('_AUTHOR').'</a>',
+		.( $ord == 'auth' ? $img_up : ( $ord == 'authi' ? $img_down : '' ) ).$lang->def('_AUTHOR').'</a>',
 		$lang->def('_NUMVIEW'),
 		//$lang->def('_DATE'),
 		'<a href="'.$jump_url.'&amp;ord='.( $ord == 'post' ? 'posti' : 'post' ).'" title="'.$lang->def('_ORDER_BY').'">'
-			.( $ord == 'post' ? $img_up : ( $ord == 'posti' ? $img_down : '' ) ).$lang->def('_LASTPOST').'</a>'
+		.( $ord == 'post' ? $img_up : ( $ord == 'posti' ? $img_down : '' ) ).$lang->def('_LASTPOST').'</a>'
 	);
 	$type_h = array('image', '', 'align_center', 'align_center', 'image',
-	//'align_center',
-	'align_center');
+		//'align_center',
+		'align_center');
 	if($mod_perm) {
 
 		$cont_h[] = '<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').'" title="'.$lang->def('_MOD').'" />';
@@ -2919,22 +2928,22 @@ function forumsearch() {
 		$c_css = '';
 		// thread author
 		$t_author = ( isset($authors_names[$t_author])
-				?( $authors_names[$t_author][ACL_INFO_LASTNAME].$authors_names[$t_author][ACL_INFO_FIRSTNAME] == '' ?
-					$acl_man->relativeId($authors_names[$t_author][ACL_INFO_USERID]) :
-					$authors_names[$t_author][ACL_INFO_LASTNAME].' '.$authors_names[$t_author][ACL_INFO_FIRSTNAME] )
-				: $lang->def('_UNKNOWN_AUTHOR')
-			);
+			?( $authors_names[$t_author][ACL_INFO_LASTNAME].$authors_names[$t_author][ACL_INFO_FIRSTNAME] == '' ?
+				$acl_man->relativeId($authors_names[$t_author][ACL_INFO_USERID]) :
+				$authors_names[$t_author][ACL_INFO_LASTNAME].' '.$authors_names[$t_author][ACL_INFO_FIRSTNAME] )
+			: $lang->def('_UNKNOWN_AUTHOR')
+		);
 		// last post author
 		if(isset($last_post[$idT])) {
 
 			$author = $last_post[$idT]['author'];
 			$last_mess_write = $last_post[$idT]['info'].' ( '.$lang->def('_BY').': <span class="mess_author">'
-						.( isset($authors_names[$author])
-							?( $authors_names[$author][ACL_INFO_LASTNAME].$authors_names[$author][ACL_INFO_FIRSTNAME] == '' ?
-								$acl_man->relativeId($authors_names[$author][ACL_INFO_USERID]) :
-								$authors_names[$author][ACL_INFO_LASTNAME].' '.$authors_names[$author][ACL_INFO_FIRSTNAME] )
-							: $lang->def('_UNKNOWN_AUTHOR')
-						).'</span> )';
+				.( isset($authors_names[$author])
+					?( $authors_names[$author][ACL_INFO_LASTNAME].$authors_names[$author][ACL_INFO_FIRSTNAME] == '' ?
+						$acl_man->relativeId($authors_names[$author][ACL_INFO_USERID]) :
+						$authors_names[$author][ACL_INFO_LASTNAME].' '.$authors_names[$author][ACL_INFO_FIRSTNAME] )
+					: $lang->def('_UNKNOWN_AUTHOR')
+				).'</span> )';
 		} else {
 			$last_mess_write = $lang->def('_NONE');
 		}
@@ -2952,11 +2961,11 @@ function forumsearch() {
 		}
 		$content = array($status);
 		$content[] = ( $erased && !$mod_perm ?
-					'<div class="forumErased">'.$lang->def('_OPERATION_SUCCESSFUL').'</div>' :
-					'<a'.$c_css.' href="index.php?modname=forum&amp;op=searchmessage&amp;idThread='.$idT.'&amp;ini_thread='.$ini_page.'">'
-					.( $search_arg !== ''
-							? eregi_replace($search_arg, '<span class="filter_evidence">'.$search_arg.'</span>', $title)
-							: $title ).'</a>');
+			'<div class="forumErased">'.$lang->def('_OPERATION_SUCCESSFUL').'</div>' :
+			'<a'.$c_css.' href="index.php?modname=forum&amp;op=searchmessage&amp;idThread='.$idT.'&amp;ini_thread='.$ini_page.'">'
+			.( $search_arg !== ''
+				? eregi_replace($search_arg, '<span class="filter_evidence">'.$search_arg.'</span>', $title)
+				: $title ).'</a>');
 		$content[] = $num_post
 			.( isset($_SESSION['unreaded_forum'][$_SESSION['idCourse']][$id_forum][$idT]) && $_SESSION['unreaded_forum'][$_SESSION['idCourse']][$id_forum][$idT] != 'new_thread'
 				? '<br /><span class="forum_notread">('.$_SESSION['unreaded_forum'][$_SESSION['idCourse']][$id_forum][$idT].' '.$lang->def('_ADD').')</span>'
@@ -3136,30 +3145,30 @@ function forumsearchmessage() {
 
 			$textof = str_replace('[quote]', '<blockquote class="forum_quote">', str_replace('[/quote]', '</blockquote>', $message_info['textof']));
 			$msgtext .= '<div class="forum_post_title">'.$lang->def('_SUBJECT').' : '
-						.( $search_arg !== ''
-							? eregi_replace($search_arg, '<span class="filter_evidence">'.$search_arg.'</span>', $message_info['title'])
-							: $message_info['title'] )
-						.'</div>';
+				.( $search_arg !== ''
+					? eregi_replace($search_arg, '<span class="filter_evidence">'.$search_arg.'</span>', $message_info['title'])
+					: $message_info['title'] )
+				.'</div>';
 			$msgtext .= '<div class="forum_post_text">'
-						.( $search_arg !== ''
-							? eregi_replace($search_arg, '<span class="filter_evidence">'.$search_arg.'</span>', $textof)
-							: $textof )
-						.'</div>';
+				.( $search_arg !== ''
+					? eregi_replace($search_arg, '<span class="filter_evidence">'.$search_arg.'</span>', $textof)
+					: $textof )
+				.'</div>';
 
 			if($message_info['modified_by'] != 0) {
 
 				$modify_by = $message_info['modified_by'];
 				$msgtext .= '<div class="forum_post_modified_by">'
-						.$lang->def('_MODIFY_BY').' : '
-						.( isset($authors_names[$modify_by])
-							?( $authors_names[$modify_by][ACL_INFO_LASTNAME].$authors_names[$modify_by][ACL_INFO_FIRSTNAME] == '' ?
-								$acl_man->relativeId($authors_names[$modify_by][ACL_INFO_USERID]) :
-								$authors_names[$modify_by][ACL_INFO_LASTNAME].' '.$authors_names[$modify_by][ACL_INFO_FIRSTNAME] )
-							: $lang->def('_UNKNOWN_AUTHOR')
-						)
-						.' '.$lang->def('_ON').' : '
-						.Format::date($message_info['modified_by_on'])
-						.'</div>';
+					.$lang->def('_MODIFY_BY').' : '
+					.( isset($authors_names[$modify_by])
+						?( $authors_names[$modify_by][ACL_INFO_LASTNAME].$authors_names[$modify_by][ACL_INFO_FIRSTNAME] == '' ?
+							$acl_man->relativeId($authors_names[$modify_by][ACL_INFO_USERID]) :
+							$authors_names[$modify_by][ACL_INFO_LASTNAME].' '.$authors_names[$modify_by][ACL_INFO_FIRSTNAME] )
+						: $lang->def('_UNKNOWN_AUTHOR')
+					)
+					.' '.$lang->def('_ON').' : '
+					.Format::date($message_info['modified_by_on'])
+					.'</div>';
 			}
 
 			if(isset($authors_names[$m_author]) && $authors_names[$m_author][ACL_INFO_SIGNATURE] != '') {
@@ -3178,31 +3187,31 @@ function forumsearchmessage() {
 			if($message_info['locked']) {
 
 				$action .= '<a href="index.php?modname=forum&amp;op=moderatemessage&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'" '
-						.'title="'.$lang->def('_DEMODERATE').' : '.strip_tags($message_info['title']).'">'
+					.'title="'.$lang->def('_DEMODERATE').' : '.strip_tags($message_info['title']).'">'
 					.'<img src="'.getPathImage().'standard/demoderate.png" alt="'.$lang->def('_DEMODERATE').' : '.strip_tags($message_info['title']).'" /> '
 					.$lang->def('_DEMODERATE').'</a> ';
 			} else {
 
 				$action .= '<a href="index.php?modname=forum&amp;op=moderatemessage&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'" '
-						.'title="'.$lang->def('_MODERATE').' : '.strip_tags($message_info['title']).'">'
+					.'title="'.$lang->def('_MODERATE').' : '.strip_tags($message_info['title']).'">'
 					.'<img src="'.getPathImage().'standard/moderate.png" alt="'.$lang->def('_MODERATE').' : '.strip_tags($message_info['title']).'" /> '
 					.$lang->def('_MODERATE').'</a> ';
 			}
 		}
 		if((!$locked_t && !$locked_f) || $mod_perm || $moderate) {
 			$action .= '<a href="index.php?modname=forum&amp;op=addmessage&amp;idThread='.$id_thread.'&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'" '
-					.'title="'.$lang->def('_REPLY').' : '.strip_tags($message_info['title']).'">'
+				.'title="'.$lang->def('_REPLY').' : '.strip_tags($message_info['title']).'">'
 				.'<img src="'.getPathImage().'standard/reply.png" alt="'.$lang->def('_REPLY').' : '.strip_tags($message_info['title']).'" /> '
 				.$lang->def('_QUOTE').'</a>';
 		}
 		if($moderate || $mod_perm || ($m_author == getLogUserId()) ) {
 
 			$action .= '<a href="index.php?modname=forum&amp;op=modmessage&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'" '
-					.'title="'.$lang->def('_MOD_MESSAGE').' : '.strip_tags($message_info['title']).'">'
+				.'title="'.$lang->def('_MOD_MESSAGE').' : '.strip_tags($message_info['title']).'">'
 				.'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').' : '.strip_tags($message_info['title']).'" /> '
 				.$lang->def('_MOD').'</a>'
 				.'<a href="index.php?modname=forum&amp;op=delmessage&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'" '
-					.'title="'.$lang->def('_DEL').' : '.strip_tags($message_info['title']).'">'
+				.'title="'.$lang->def('_DEL').' : '.strip_tags($message_info['title']).'">'
 				.'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').' : '.strip_tags($message_info['title']).'" /> '
 				.$lang->def('_DEL').'</a> ';
 		}
@@ -3223,10 +3232,10 @@ function forumsearchmessage() {
 		.'<div class="quick_search_form">'
 		.'<label for="search_arg">'.$lang->def('_SEARCH_LABEL').'</label> '
 		.Form::getInputTextfield(	'search_t',
-									'search_arg',
-									'search_arg',
-									$search_arg,
-									$lang->def('_SEARCH'), 255, '' )
+			'search_arg',
+			'search_arg',
+			$search_arg,
+			$lang->def('_SEARCH'), 255, '' )
 		.'<input class="search_b" type="submit" id="search_button" name="search_button" value="'.$lang->def('_SEARCH').'" />'
 		.'</div>'
 		.Form::closeForm(), 'content');
@@ -3377,12 +3386,12 @@ function launchNotify($notify_is_a, $id_notify, $description, &$msg_composer) {
 	if(!empty($recipients)) {
 
 		createNewAlert(		( $notify_is_a == 'forum' ? 'ForumNewThread' : 'ForumNewResponse' ),
-							'forum',
-							( $notify_is_a == 'forum' ? 'new_thread' : 'responce' ),
-							1,
-							$description,
-							$recipients,
-							$msg_composer );
+			'forum',
+			( $notify_is_a == 'forum' ? 'new_thread' : 'responce' ),
+			1,
+			$description,
+			$recipients,
+			$msg_composer );
 	}
 	return;
 }
@@ -3409,23 +3418,23 @@ function moveThread($id_thread, $id_forum)
 		{
 			// Move the thread to the new forum
 			$query = "UPDATE ".$GLOBALS['prefix_lms']."_forumthread" .
-					" SET idForum = '".$id_new_forum."'" .
-					" WHERE idThread = '".$id_thread."'";
+				" SET idForum = '".$id_new_forum."'" .
+				" WHERE idThread = '".$id_thread."'";
 
 			$result = sql_query($query);
 
 			// Select thenumber of the post in the thread
 			$query_2 = "SELECT num_post" .
-						" FROM ".$GLOBALS['prefix_lms']."_forumthread" .
-						" WHERE idThread = '".$id_thread."'";
+				" FROM ".$GLOBALS['prefix_lms']."_forumthread" .
+				" WHERE idThread = '".$id_thread."'";
 
 			list($num_post) = sql_fetch_row(sql_query($query_2));
 
 			// Update the forum info
 			$query_3 = "SELECT idForum, num_thread, num_post" .
-						" FROM ".$GLOBALS['prefix_lms']."_forum" .
-						" WHERE idForum = '".$id_forum."'" .
-						" OR idForum = '".$id_new_forum."'";
+				" FROM ".$GLOBALS['prefix_lms']."_forum" .
+				" WHERE idForum = '".$id_forum."'" .
+				" OR idForum = '".$id_new_forum."'";
 
 			$result_3 = sql_query($query_3);
 
@@ -3449,44 +3458,44 @@ function moveThread($id_thread, $id_forum)
 			$last_message_update = array();
 
 			$query_4 = "SELECT idMessage" .
-						" FROM ".$GLOBALS['prefix_lms']."_forummessage" .
-						" WHERE idThread IN" .
-						"(" .
-							" SELECT idThread" .
-							" FROM ".$GLOBALS['prefix_lms']."_forumthread" .
-							" WHERE idForum = '".$id_forum."'" .
-						")" .
-						" ORDER BY posted DESC" .
-						" LIMIT 0,1";
+				" FROM ".$GLOBALS['prefix_lms']."_forummessage" .
+				" WHERE idThread IN" .
+				"(" .
+				" SELECT idThread" .
+				" FROM ".$GLOBALS['prefix_lms']."_forumthread" .
+				" WHERE idForum = '".$id_forum."'" .
+				")" .
+				" ORDER BY posted DESC" .
+				" LIMIT 0,1";
 
 			list($last_message_update[$id_forum]) = sql_fetch_row(sql_query($query_4));
 
 			$query_5 = "SELECT idMessage" .
-						" FROM ".$GLOBALS['prefix_lms']."_forummessage" .
-						" WHERE idThread IN" .
-						"(" .
-							" SELECT idThread" .
-							" FROM ".$GLOBALS['prefix_lms']."_forumthread" .
-							" WHERE idForum = '".$id_new_forum."'" .
-						")" .
-						" ORDER BY posted DESC" .
-						" LIMIT 0,1";
+				" FROM ".$GLOBALS['prefix_lms']."_forummessage" .
+				" WHERE idThread IN" .
+				"(" .
+				" SELECT idThread" .
+				" FROM ".$GLOBALS['prefix_lms']."_forumthread" .
+				" WHERE idForum = '".$id_new_forum."'" .
+				")" .
+				" ORDER BY posted DESC" .
+				" LIMIT 0,1";
 
 			list($last_message_update[$id_new_forum]) = sql_fetch_row(sql_query($query_5));
 
 			$query_update_1 = "UPDATE ".$GLOBALS['prefix_lms']."_forum" .
-						" SET num_post = '".$num_post_update[$id_forum]."'," .
-								" num_thread='".$num_thread_update[$id_forum]."'," .
-								" last_post = '".$last_message_update[$id_forum]."'" .
-						" WHERE idForum = '".$id_forum."'";
+				" SET num_post = '".$num_post_update[$id_forum]."'," .
+				" num_thread='".$num_thread_update[$id_forum]."'," .
+				" last_post = '".$last_message_update[$id_forum]."'" .
+				" WHERE idForum = '".$id_forum."'";
 
 			$result_update_1 = sql_query($query_update_1);
 
 			$query_update_2 = "UPDATE ".$GLOBALS['prefix_lms']."_forum" .
-						" SET num_post = '".$num_post_update[$id_new_forum]."'," .
-								" num_thread='".$num_thread_update[$id_new_forum]."'," .
-								" last_post = '".$last_message_update[$id_new_forum]."'" .
-						" WHERE idForum = '".$id_new_forum."'";
+				" SET num_post = '".$num_post_update[$id_new_forum]."'," .
+				" num_thread='".$num_thread_update[$id_new_forum]."'," .
+				" last_post = '".$last_message_update[$id_new_forum]."'" .
+				" WHERE idForum = '".$id_new_forum."'";
 
 			$result_update_2 = sql_query($query_update_2);
 		}
@@ -3500,27 +3509,27 @@ function moveThread($id_thread, $id_forum)
 		$id_forum = importVar('id_forum', true, 0);
 
 		list($title) = sql_fetch_row(sql_query("SELECT title" .
-													" FROM ".$GLOBALS['prefix_lms']."_forumthread" .
-													" WHERE idThread = '".$id_thread."'"));
+			" FROM ".$GLOBALS['prefix_lms']."_forumthread" .
+			" WHERE idThread = '".$id_thread."'"));
 
 		list($from_forum) = sql_fetch_row(sql_query("SELECT title" .
-													" FROM ".$GLOBALS['prefix_lms']."_forum".//thread" .
-													" WHERE idForum = '".$id_forum."'"));
+			" FROM ".$GLOBALS['prefix_lms']."_forum".//thread" .
+			" WHERE idForum = '".$id_forum."'"));
 
 		list($to_forum) = sql_fetch_row(sql_query("SELECT title" .
-													" FROM ".$GLOBALS['prefix_lms']."_forum" .
-													" WHERE idForum = '".$id_new_forum."'"));
+			" FROM ".$GLOBALS['prefix_lms']."_forum" .
+			" WHERE idForum = '".$id_new_forum."'"));
 
 		$GLOBALS['page']->add
 		(
 			getTitleArea($lang->def('_MOVE'), 'forum')
 			.'<div class="std_block">'
 			.getModifyUi(	$lang->def('_AREYOUSURE_MOVE'),
-							'<span>'.$lang->def('_TITLE').' : </span> "'.$title.'"'.' '.$lang->def('_FROM_FORUM').' "'.$from_forum.'" '.$lang->def('_TO_FORUM').' "'.$to_forum.'"',
-							true,
-							'index.php?modname=forum&amp;op=movethread&amp;new_forum='.$id_new_forum.'&amp;id_thread='.$id_thread.'&amp;id_forum='.$id_forum.'&amp;confirm=1',
-							'index.php?modname=forum&amp;op=movethread&amp;id_forum='.$id_forum.'&amp;confirm=0'
-						)
+				'<span>'.$lang->def('_TITLE').' : </span> "'.$title.'"'.' '.$lang->def('_FROM_FORUM').' "'.$from_forum.'" '.$lang->def('_TO_FORUM').' "'.$to_forum.'"',
+				true,
+				'index.php?modname=forum&amp;op=movethread&amp;new_forum='.$id_new_forum.'&amp;id_thread='.$id_thread.'&amp;id_forum='.$id_forum.'&amp;confirm=1',
+				'index.php?modname=forum&amp;op=movethread&amp;id_forum='.$id_forum.'&amp;confirm=0'
+			)
 			.'</div>', 'content'
 		);
 	}
@@ -3532,9 +3541,9 @@ function moveThread($id_thread, $id_forum)
 		$list_forum = array();
 
 		$query = "SELECT idForum, title" .
-				" FROM ".$GLOBALS['prefix_lms']."_forum" .
-				" WHERE idCourse = '".$id_course."'" .
-				" AND idForum <> '".$id_forum."'";
+			" FROM ".$GLOBALS['prefix_lms']."_forum" .
+			" WHERE idCourse = '".$id_course."'" .
+			" AND idForum <> '".$id_forum."'";
 
 		$result = sql_query($query);
 
@@ -3585,7 +3594,7 @@ function addUnreadNotice($id_forum) {
 		SET new_forum_post = new_forum_post + 1
 		WHERE idCourse = '".(int)$_SESSION['idCourse']."'";
 		sql_query($query);
-  }
+	}
 }
 
 function export()
@@ -3603,8 +3612,8 @@ function export()
 	if($id_forum)
 	{
 		$query =	"SELECT idThread, title, num_post"
-					." FROM ".$GLOBALS['prefix_lms']."_forumthread"
-					." WHERE idForum = '".$id_forum."'";
+			." FROM ".$GLOBALS['prefix_lms']."_forumthread"
+			." WHERE idForum = '".$id_forum."'";
 
 		$result = sql_query($query);
 
@@ -3618,8 +3627,8 @@ function export()
 				$tmp['int'] = '"nomethread";"n.msg";"titolomsg";"autore";"data";"corpomsg";"allegato";"id_msg"';
 
 				$query_msg = "SELECT title, author, posted, textof, attach, idMessage"
-							." FROM ".$GLOBALS['prefix_lms']."_forummessage"
-							." WHERE idThread = '".$id_thread."'";
+					." FROM ".$GLOBALS['prefix_lms']."_forummessage"
+					." WHERE idThread = '".$id_thread."'";
 
 				$result_msg = sql_query($query_msg);
 
@@ -3629,8 +3638,8 @@ function export()
 				{
 					$sender_info = $acl_man->getUser($author, false);
 					$author = ( $sender_info[ACL_INFO_LASTNAME].$sender_info[ACL_INFO_FIRSTNAME] == '' ?
-								$acl_man->relativeId($sender_info[ACL_INFO_USERID]) :
-								$sender_info[ACL_INFO_LASTNAME].' '.$sender_info[ACL_INFO_FIRSTNAME] );
+						$acl_man->relativeId($sender_info[ACL_INFO_USERID]) :
+						$sender_info[ACL_INFO_LASTNAME].' '.$sender_info[ACL_INFO_FIRSTNAME] );
 
 					$posted = Format::date($posted);
 
@@ -3674,7 +3683,7 @@ function export()
 					if(isset($tags_associated[$id_message]))
 					{
 						foreach($tag_list as $tag_name)
-						if(isset($tags_associated[$id_message][$tag_name]))
+							if(isset($tags_associated[$id_message][$tag_name]))
 								$csv_string .= ';"'.str_replace('"','\"', $tags_associated[$id_message][$tag_name]['occurences']).'"';
 							else
 								$csv_string .= ';"0"';
@@ -3688,15 +3697,15 @@ function export()
 			}
 
 			$query_forum =	"SELECT title"
-							." FROM ".$GLOBALS['prefix_lms']."_forum"
-							." WHERE idForum = '".$id_forum."'";
+				." FROM ".$GLOBALS['prefix_lms']."_forum"
+				." WHERE idForum = '".$id_forum."'";
 
 			list($forum_title) = sql_fetch_row(sql_query($query_forum));
 
 			$file_name = str_replace(
-			array('\\', '/', 	':', 	'\'', 	'\*', 	'?', 	'"', 	'<', 	'>', 	'|'),
-			array('', 	'', 	'', 	'', 	'', 	'', 	'', 	'', 	'', 	'' ),
-			$forum_title).'.csv';
+					array('\\', '/', 	':', 	'\'', 	'\*', 	'?', 	'"', 	'<', 	'>', 	'|'),
+					array('', 	'', 	'', 	'', 	'', 	'', 	'', 	'', 	'', 	'' ),
+					$forum_title).'.csv';
 
 			sendStrAsFile($csv_string, $file_name);
 		}
@@ -3823,7 +3832,7 @@ function forumDispatch($op) {
 		};break;
 		case "export":
 			export();
-		break;
+			break;
 		//-----------------------------------------------//
 		case "delforum" : {
 			delforum();
@@ -3853,7 +3862,7 @@ function forumDispatch($op) {
 			$id_forum = importVar('id_forum', true, 0);
 			moveThread($id_thread, $id_forum);
 		}
-		break;
+			break;
 		case "upthread" : {
 			upthread();
 		};break;
