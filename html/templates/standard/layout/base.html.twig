@@ -34,6 +34,8 @@
     <![endif]-->     
     
     <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/base.css"/>
+     <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/table-responsive.css"/>
+
     <!-- specific stylesheet -->
     {{ evalPhp('YuiLib::load', ['base']) }}
     <!-- printer stylesheet-->
@@ -64,6 +66,6 @@
     {% block content %}
     {% endblock %}
         {{ evalPhp('Layout::analytics') }}
-    </div>      
+    </div>                      
 </body>
 </html>

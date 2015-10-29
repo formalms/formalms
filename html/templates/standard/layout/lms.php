@@ -31,7 +31,9 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms-to-review.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms-menu.css" />
-		<?php echo Layout::rtl(); ?>
+		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/table-responsive.css" />
+        <?php echo Layout::rtl(); ?>
+        
 		<!-- specific stylesheet -->
 
 		<!-- printer stylesheet-->
@@ -76,11 +78,13 @@
         
 		<!-- menu_over -->
 		<?php echo Layout::zone('menu_over'); ?>
+                
+                
                                             
 		<!-- content -->
 		<div id="lms_main_container" >
         
-			<div id="course-info-boot" class="col-md-3">
+        <div id="course-info-boot" class="col-md-3">
 				<?php echo Layout::zone('menu'); ?>
 			</div>  
 		

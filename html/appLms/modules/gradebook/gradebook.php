@@ -105,16 +105,40 @@ function showgrade() {
 
 	// XXX: create table
 	$table = new Table(0, $lang->def('_GRADEBOOK_CAPTION'), $lang->def('_GRADEBOOK_SUMMARY'));
+    
+    //** CR : LR. TABLE RESPONSE **
+    $table->setTableId("table_pagella");
+        
+        $cont_h = array(
+        $lang->def('_TITLE'),
+        $lang->def('_SCORE'),
+        $lang->def('_REQUIRED_SCORE'),
+        $lang->def('_DATE'),
+        $lang->def('_COMMENTS'),
+        $lang->def('_SHOW_RESULTS')
+    );
+    
+     $info_pagella .='<style>
+                            @media
+                            only screen and (max-width: 870px),
+                            (min-device-width: 870px) and (max-device-width: 1024px)  {            
+     
+                                        #table_pagella td:nth-of-type(1):before { content: "'.$cont_h[0].'"; }
+                                        #table_pagella td:nth-of-type(2):before { content: "'.$cont_h[1].'"; }
+                                        #table_pagella td:nth-of-type(3):before { content: "'.$cont_h[2].'"; }
+                                        #table_pagella td:nth-of-type(4):before { content: "'.$cont_h[3].'"; }
+                                        #table_pagella td:nth-of-type(5):before { content: "'.$cont_h[4].'"; }
+                                        #table_pagella td:nth-of-type(6):before { content: "'.$cont_h[5].'"; }
+                                        }        
+                                        </style>
+                                    ';   
 
+      $out->add($info_pagella, 'content');  
+
+    //*************************************
+    
 	$type_h = array('', 'align_center', 'align_center', '', '');
-	$cont_h = array(
-		$lang->def('_TITLE'),
-		$lang->def('_SCORE'),
-		$lang->def('_REQUIRED_SCORE'),
-		$lang->def('_DATE'),
-		$lang->def('_COMMENTS'),
-		$lang->def('_SHOW_RESULTS')
-	);
+
 
 	$table->setColsStyle($type_h);
 	$table->addHead($cont_h);
@@ -214,7 +238,7 @@ function showgrade() {
 			($report_info['source_of'] === 'scorm_item' ? "-" : $required),
 			$date,
 			$comment, 
-			$link_result));
+			$link_result."&nbsp"));
 	}
 	$out->add(
 		getTitleArea($lang->def('_GRADEBOOK_AREATITLE'), 'gradebook')

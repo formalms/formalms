@@ -1,27 +1,68 @@
 <?php echo getTitleArea(Lang::t('_COURSE', 'course')); ?>
 <div class="std_block">
 <?php
+
+
+
 //Categories tree
 $languages = array(
-	'_ROOT' => $root_name,
-	'_NEW_FOLDER_NAME' => Lang::t('_NEW_CATEGORY', 'course'),
-	'_MOD' => Lang::t('_MOD', 'course'),
-	'_AREYOUSURE' => Lang::t('_AREYOUSURE', 'standard'),
-	'_NAME' => Lang::t('_NAME', 'standardt'),
-	'_MOD' => Lang::t('_MOD', 'standard'),
-	'_DEL' => Lang::t('_DEL', 'standard'),
-	'_MOVE' => Lang::t('_MOVE', 'standard'),
-	'_SAVE' => Lang::t('_SAVE', 'standard'),
-	'_CONFIRM' => Lang::t('_CONFIRM', 'standard'),
-	'_UNDO' => Lang::t('_UNDO', 'standard'),
-	'_ADD' => Lang::t('_ADD', 'standard'),
-	'_YES'=> Lang::t('_YES', 'standard'),
-	'_NO' => Lang::t('_NO', 'standard'),
-	'_INHERIT' => Lang::t('_ORG_CHART_INHERIT', 'organization_chart'),
-	'_NEW_FOLDER' => Lang::t('_NEW_FOLDER', 'organization_chart'),
-	'_DEL' => Lang::t('_DEL', 'standard'),
-	'_AJAX_FAILURE' => Lang::t('_CONNECTION_ERROR', 'standard')
+    '_ROOT' => $root_name,
+    '_NEW_FOLDER_NAME' => Lang::t('_NEW_CATEGORY', 'course'),
+    '_MOD' => Lang::t('_MOD', 'course'),
+    '_AREYOUSURE' => Lang::t('_AREYOUSURE', 'standard'),
+    '_NAME' => Lang::t('_NAME', 'standardt'),
+    '_MOD' => Lang::t('_MOD', 'standard'),
+    '_DEL' => Lang::t('_DEL', 'standard'),
+    '_MOVE' => Lang::t('_MOVE', 'standard'),
+    '_SAVE' => Lang::t('_SAVE', 'standard'),
+    '_CONFIRM' => Lang::t('_CONFIRM', 'standard'),
+    '_UNDO' => Lang::t('_UNDO', 'standard'),
+    '_ADD' => Lang::t('_ADD', 'standard'),
+    '_YES'=> Lang::t('_YES', 'standard'),
+    '_NO' => Lang::t('_NO', 'standard'),
+    '_INHERIT' => Lang::t('_ORG_CHART_INHERIT', 'organization_chart'),
+    '_NEW_FOLDER' => Lang::t('_NEW_FOLDER', 'organization_chart'),
+    '_DEL' => Lang::t('_DEL', 'standard'),
+    '_AJAX_FAILURE' => Lang::t('_CONNECTION_ERROR', 'standard')
 );
+
+
+      //** CR : LR TABLE OF COURSE , RESPONSIVE **
+      $modifica = $languages['_MOD'];
+      $cancella = $languages['_DEL'];
+      $nome = $languages['_NAME'];
+      
+      
+     $info_course ='<style>
+              @media
+        only screen and (max-width: 870px),
+        (min-device-width: 870px) and (max-device-width: 1024px)  {            
+
+                    #yuievtautoid-0 td:nth-of-type(1):before { content: "Codice"; }
+                    #yuievtautoid-0 td:nth-of-type(2):before { content: "'.$nome.'"; }
+                    #yuievtautoid-0 td:nth-of-type(3):before { content: "Tipo"; }
+                    #yuievtautoid-0 td:nth-of-type(4):before { content: "Studenti"; }
+                    #yuievtautoid-0 td:nth-of-type(5):before { content: "In attesa"; }
+                    #yuievtautoid-0 td:nth-of-type(6):before { content: "Iscritto"; }
+                    #yuievtautoid-0 td:nth-of-type(7):before { content: "Classe/Edizione"; }
+                    #yuievtautoid-0 td:nth-of-type(8):before { content: "Assegnazione Certificati"; }
+                    #yuievtautoid-0 td:nth-of-type(9):before { content: "Competenze"; }
+                    #yuievtautoid-0 td:nth-of-type(10):before { content: "Assegna un nuovo menu al corso"; } 
+                    #yuievtautoid-0 td:nth-of-type(11):before { content: "Crea una copia"; } 
+                    #yuievtautoid-0 td:nth-of-type(12):before { content: "'.$modifica.'"; } 
+                    #yuievtautoid-0 td:nth-of-type(13):before { content: "'.$cancella.'"; } 
+                    }        
+                    </style>
+                ';   
+    
+     echo  $info_course;
+    //*********************** 
+
+                      
+
+
+
+
 
 $_tree_params = array(
 	'id' => 'category_tree',
@@ -67,32 +108,32 @@ $columns_arr = array(
 	array('key' => 'code', 'label' => Lang::t('_CODE', 'course'), 'sortable' => true),
 	array('key' => 'name', 'label' => Lang::t('_NAME', 'course'), 'sortable' => true),
 	array('key' => 'type', 'label' => Lang::t('_TYPE', 'course'), 'className' => 'min-cell'),
-	array('key' => 'students', 'label' => Lang::t('_STUDENTS', 'coursereport'), 'className' => 'img-cell')
+	array('key' => 'students', 'label' => Lang::t('_STUDENTS', 'coursereport'), 'className' => 'img-cell1')
 );
 
 if ($permissions['moderate'])//if(checkPerm('moderate', true, 'course', 'lms'))
-	$columns_arr[] = array('key' => 'wait', 'label' => Lang::t('_WAITING', 'course'), 'className' => 'img-cell');
+	$columns_arr[] = array('key' => 'wait', 'label' => Lang::t('_WAITING', 'course'), 'className' => 'img-cell1');
 
 if ($permissions['subscribe'])//if(checkPerm('subscribe', true, 'course', 'lms'))
-	$columns_arr[] = array('key' => 'user', 'label' =>  Get::sprite('subs_users', Lang::t('_USER_STATUS_SUBS', 'course') ), 'className' => 'img-cell');
+	$columns_arr[] = array('key' => 'user', 'label' =>  Get::sprite('subs_users', Lang::t('_USER_STATUS_SUBS', 'course') ), 'className' => 'img-cell1');
 
 if ($permissions['view'])
-	$columns_arr[] = array('key' => 'edition', 'label' =>  Get::sprite('subs_date', Lang::t('_CLASSROOM_EDITION', 'course') ), 'className' => 'img-cell');
+	$columns_arr[] = array('key' => 'edition', 'label' =>  Get::sprite('subs_date', Lang::t('_CLASSROOM_EDITION', 'course') ), 'className' => 'img-cel1l');
 
 if ($permissions['mod']) {
-	$columns_arr[] = array('key' => 'certificate', 'label' => Get::sprite('subs_pdf', Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')), 'className' => 'img-cell');
-	$columns_arr[] = array('key' => 'competences', 'label' => Get::sprite('subs_competence', Lang::t('_COMPETENCES', 'course')), 'className' => 'img-cell');
-	$columns_arr[] = array('key' => 'menu', 'label' => Get::sprite('subs_menu', Lang::t('_ASSIGN_MENU', 'course')), 'className' => 'img-cell');
+	$columns_arr[] = array('key' => 'certificate', 'label' => Get::sprite('subs_pdf', Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')), 'className' => 'img-cell1');
+	$columns_arr[] = array('key' => 'competences', 'label' => Get::sprite('subs_competence', Lang::t('_COMPETENCES', 'course')), 'className' => 'img-cell1');
+	$columns_arr[] = array('key' => 'menu', 'label' => Get::sprite('subs_menu', Lang::t('_ASSIGN_MENU', 'course')), 'className' => 'img-cell1');
 }
 
 if ($permissions['add'])
-	$columns_arr[] = array('key' => 'dup', 'label' => Get::sprite('subs_dup', Lang::t('_MAKE_A_COPY', 'course')), 'className' => 'img-cell', 'formatter' => 'dup');
+	$columns_arr[] = array('key' => 'dup', 'label' => Get::sprite('subs_dup', Lang::t('_MAKE_A_COPY', 'course')), 'className' => 'img-cell1', 'formatter' => 'dup');
 
 if ($permissions['mod'])
-	$columns_arr[] = array('key' => 'mod', 'label' => Get::sprite('subs_mod', Lang::t('_MOD', 'course')), 'className' => 'img-cell');
+	$columns_arr[] = array('key' => 'mod', 'label' => Get::sprite('subs_mod', Lang::t('_MOD', 'course')), 'className' => 'img-cell1');
 
 if ($permissions['del'] && !Get::cfg('demo_mode'))
-	$columns_arr[] = array('key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'course')), 'formatter'=>'doceboDelete', 'className' => 'img-cell');
+	$columns_arr[] = array('key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'course')), 'formatter'=>'doceboDelete', 'className' => 'img-cell1');
 
 $_table_params = array(
 	'id'			=> 'course_table',
@@ -124,6 +165,11 @@ if($permissions['subscribe']) {
 }
 
 $this->widget('table', $_table_params);
+
+
+
+
+
 
 ?>
 </div>

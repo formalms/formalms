@@ -220,14 +220,18 @@ function advice() {
 	$out		= $GLOBALS['page'];
 	$out->setWorkingZone('content');
 
-	cout('<div class="yui-navset yui-navset-top tab_block">
-		<ul class="yui-nav">
-			<li class="first '.($active_tab == 'advice' ? 'selected' : '').'">
+            $out->add(
+        getTitleArea($lang->def('_ADVICE'), 'advice'));
+    
+    
+	cout('<br><div class="yui-navset yui-navset-top tab_block">
+		<ul class="nav nav-tabs">
+			<li class="first '.($active_tab == 'advice' ? 'active' : '').'">
 				<a href="index.php?modname=advice&amp;op=advice&amp;tab=advice">
 					<em>'.Lang::t('_UNREAD', 'advice').'</em>
 				</a>
 			</li>
-			<li class="'.($active_tab == 'archive' ? 'selected' : '').'">
+			<li class="'.($active_tab == 'archive' ? 'active' : '').'">
 				<a href="index.php?modname=advice&amp;op=advice&amp;tab=archive">
 					<em>'.Lang::t('_HISTORY', 'advice').'</em>
 				</a>
@@ -242,6 +246,10 @@ function advice() {
 			archiveList();
 		};break;
 	}
+    
+  
+
+    
 	cout('<div class="nofloat"></div>
 		</div>
 	</div>');

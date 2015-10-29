@@ -93,8 +93,53 @@ function forum() {
 	// Find and set unreaded message
 	loadUnreaded();
 
-	$tb = new Table( Get::sett('visuItem'), '', $lang->def('_ELEFORUM'));
-	$tb->initNavBar('ini', 'link');
+	$tb = new Table( Get::sett('visuItem'), '', $lang->def('_ELEFORUM'));  
+	
+    //CR LR: RESPONSIVE TABLE FORUM **
+    $tb->setTableId("table_forum");
+    
+    $titolo = Lang::t("_TITLE", "standard");
+    $descrizione = Lang::t("_DESCRIPTION", "standard");
+    $discussioni = Lang::t("_NUMTHREAD", "forum");
+    $messaggi = Lang::t("_MESSAGES", "standard");
+    $ultimoMsg = Lang::t("_LASTPOST", "forum");
+    $permessi = Lang::t("_VIEW_PERMISSION", "standard");
+    $esporta = Lang::t("_EXPORT_CSV", "standard");
+    $move_giu = Lang::t("_MOVE_DOWN", "standard");
+    $move_su = Lang::t("_MOVE", "standard")." ".strtolower(Lang::t("_UP", "standard"));
+    
+    $modifica = Lang::t("_MOD", "standard");
+    $cancella = Lang::t("_DEL", "standard");
+    
+    
+     $info_forum .='<style>
+                            @media
+                            only screen and (max-width: 870px),
+                            (min-device-width: 770px) and (max-device-width: 1024px)  {            
+     
+                                        #table_forum td:nth-of-type(1):before { content: "'.''.'"; }
+                                        #table_forum td:nth-of-type(2):before { content: "'.$titolo.'"; }
+                                        #table_forum td:nth-of-type(3):before { content: "'.$descrizione.'"; }    
+                                        #table_forum td:nth-of-type(4):before { content: "'.$discussioni.'"; }   
+                                        #table_forum td:nth-of-type(5):before { content: "'.$messaggi.'"; }  
+                                        #table_forum td:nth-of-type(6):before { content: "'.$ultimoMsg.'"; }  
+                                        #table_forum td:nth-of-type(7):before { content: "'.$move_giu.'"; }  
+                                        #table_forum td:nth-of-type(8):before { content: "'.$move_su.'"; }  
+                                        #table_forum td:nth-of-type(9):before { content: "'.$permessi.'"; }  
+                                        #table_forum td:nth-of-type(10):before { content: "'.$esporta.'"; }  
+                                        #table_forum td:nth-of-type(11):before { content: "'.$modifica.'"; }  
+                                        #table_forum td:nth-of-type(12):before { content: "'.$cancella.'"; }  
+                                        }        
+                                        </style>
+                                    ';   
+    
+    $GLOBALS['page']->add($info_forum,'content');
+    
+    
+    //************* FINE RESPONSI TABELLA FORUM *****************
+    
+    
+    $tb->initNavBar('ini', 'link');
 	$tb->setLink($base_link);
 
 	$ini = $tb->getSelectedElement();
@@ -163,9 +208,9 @@ function forum() {
 
 		// show forum list in a table -----------------------------------------
 		// table header
-		$type_h = array('image', '', '', 'image', 'image', '');
+		$type_h = array('image1', '', '', 'image1', 'image1', '');
 		if($mod_perm) {
-			$type_h[] = 'image'; $type_h[] = 'image'; $type_h[] = 'image'; $type_h[] = 'image'; $type_h[] = 'image'; $type_h[] = 'image';
+			$type_h[] = 'image1'; $type_h[] = 'image1'; $type_h[] = 'image1'; $type_h[] = 'image1'; $type_h[] = 'image1'; $type_h[] = 'image1';
 		}
 		$tb->setColsStyle($type_h);
 
@@ -245,11 +290,12 @@ function forum() {
 			if($mod_perm) {
 				if($i != $tot_forum) $content[] = '<a href="index.php?modname=forum&amp;op=downforum&amp;idForum='.$idF.'">
 					<img src="'.getPathImage().'standard/down.png" title="'.$lang->def('_MOVE_DOWN').'" alt="'.$lang->def('_DOWN').'" /></a>';
-				else $content[] = '';
+				else $content[] = '-';
 
+                
 				if($i != 1) $content[] = '<a href="index.php?modname=forum&amp;op=moveupforum&amp;idForum='.$idF.'">
-					<img src="'.getPathImage().'standard/up.png" title="'.$lang->def('_UP').'" alt="'.$lang->def('_UP').'" /></a>';
-				else $content[] = '';
+					<img src="'.getPathImage().'standard/up.png" title="'.$lang->def('_UP').'" alt="'.$lang->def('_UP').'" /></a>';     
+				else $content[] = '-';
 
 				$content[] = '<a href="index.php?modname=forum&amp;op=modforumaccess&amp;idForum='.$idF.'&amp;load=1">
 					<img src="'.getPathImage().'standard/moduser.png" title="'.$lang->def('_VIEW_PERMISSION').'" alt="'.$lang->def('_VIEW_PERMISSION').'" /></a>';
@@ -951,6 +997,47 @@ function thread() {
 
 	$tb = new Table(Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'));
 
+    //** CR: LR. RESPONSIVE TABLE OF THREAD (list of thread)**
+  //CR LR: RESPONSIVE TABLE FORUM **
+    $tb->setTableId("table_thread");
+    
+    $gestisci = Lang::t("_FREET", "forum");
+    $discussioni = Lang::t("_THREAD", "forum");
+    $risposte = Lang::t("_NUMREPLY", "forum");
+    $autore = Lang::t("_AUTHOR", "standard");
+    $visto = Lang::t("_NUMVIEW", "forum");
+    $ultimo = Lang::t("_LASTPOST", "forum");
+    $modifica = Lang::t("_MOD", "standard");
+    
+    $muovi = Lang::t("_MOVE", "standard");
+    $cancella = Lang::t("_DEL", "standard");
+
+    
+    
+     $info_thread .='<style>
+                            @media
+                            only screen and (max-width: 870px),
+                            (min-device-width: 870px) and (max-device-width: 1024px)  {            
+     
+                                        #table_thread td:nth-of-type(1):before { content: "'.$gestisci.'"; }
+                                        #table_thread td:nth-of-type(2):before { content: "'.$discussioni.'"; }
+                                        #table_thread td:nth-of-type(3):before { content: "'.$risposte.'"; }
+                                        #table_thread td:nth-of-type(4):before { content: "'.$autore.'"; }
+                                        #table_thread td:nth-of-type(5):before { content: "'.$visto.'"; }
+                                        #table_thread td:nth-of-type(6):before { content: "'.$ultimo.'"; }
+                                        #table_thread td:nth-of-type(7):before { content: "'.$modifica.'"; }
+                                        #table_thread td:nth-of-type(8):before { content: "'.$muovi.'"; }
+                                        #table_thread td:nth-of-type(9):before { content: "'.$cancella.'"; } 
+                                        }        
+                                        </style>
+                                    ';   
+    
+    $GLOBALS['page']->add($info_thread,'content');
+    
+    
+    //************* FINE RESPONSI TABELLA FORUM *****************    
+    
+    
 	$img_up 	= '<img src="'.getPathImage().'standard/ord_asc.png" alt="'.$lang->def('_ORD_ASC').'" />';
 	$img_down 	= '<img src="'.getPathImage().'standard/ord_desc.png" alt="'.$lang->def('_ORD_DESC').'" />';
 
@@ -966,17 +1053,17 @@ function thread() {
 		'<a href="'.$jump_url.'&amp;ord='.( $ord == 'post' ? 'posti' : 'post' ).'" title="'.$lang->def('_ORDER_BY').'">'
 		.( $ord == 'post' ? $img_up : ( $ord == 'posti' ? $img_down : '' ) ).$lang->def('_LASTPOST').'</a>'
 	);
-	$type_h = array('image', '', 'align_center', 'align_center', 'image',
+	$type_h = array('image1', '', 'align_center', 'align_center', 'image1',
 		//'align_center',
 	'align_center');
 	if($mod_perm) {
 
 		$cont_h[] = '<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').'" title="'.$lang->def('_MOD').'" />';
-		$type_h[] = 'image';
+		$type_h[] = 'image1';
 		$cont_h[] = '<img src="'.getPathImage().'standard/move.png" alt="'.$lang->def('_MOVE').'" title="'.$lang->def('_MOVE').'" />';
-		$type_h[] = 'image';
+		$type_h[] = 'image1';
 		$cont_h[] = '<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" title="'.$lang->def('_DEL').'" />';
-		$type_h[] = 'image';
+		$type_h[] = 'image1';
 	}
 	$tb->setColsStyle($type_h);
 	$tb->addHead($cont_h);

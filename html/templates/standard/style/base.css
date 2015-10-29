@@ -88,7 +88,7 @@ a.no_decoration{text-decoration:none;}
 .opacity-20{-khtml-opacity:.20; -moz-opacity:.20; -ms-filter:"alpha(opacity=20)"; filter:alpha(opacity=20); opacity:.20; }
 /* standard layout class */
 .title_block{margin:0;padding:0;}
-.title_block h1{display:inline;padding-right:0;}
+.title_block h1{ background:#f1f1f1; }
 .title_block h1 a{text-decoration:none;margin-right:6px;}
 .title_block h1 a:hover{text-decoration:underline;}
 .title_block ul{display:inline;}
@@ -530,3 +530,4 @@ ul.style_none li {list-style:none; }
 .nav-tabs > li a  {
     background-color:#eeeeee!important;
 }
+

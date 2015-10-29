@@ -62,6 +62,31 @@ function notes() {
 	$tb = new Table(	Get::sett('visuItem'),
 						$lang->def('_NOTES'), 
 						$lang->def('_NOTES') );
+                        
+     //** CR: LR TABLE OF NOTES RESPONSIVE **
+     $tb->setTableId("table_note");
+     
+     $info_forum .='<style>
+                            @media
+                            only screen and (max-width: 870px),
+                            (min-device-width: 870px) and (max-device-width: 1024px)  {            
+     
+                                        #table_note td:nth-of-type(1):before { content: "Data"; }
+                                        #table_note td:nth-of-type(2):before { content: "Titolo"; }
+                                        #table_note td:nth-of-type(3):before { content: "Modifica"; }
+                                        #table_note td:nth-of-type(4):before { content: "Cancella"; }
+                                        }        
+                                        </style>
+                                    ';   
+    
+    $GLOBALS['page']->add($info_forum,'content');
+     
+     
+     
+     
+     
+     
+     //******************************************                   
 	
 	$contentH = array(
 		( $ord == 'data' ? ( $inv == 'y' ? $img_up : $img_down ) : '' )

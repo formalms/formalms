@@ -41,8 +41,8 @@ function conference_list(&$url) {
 
 	if(checkPerm('mod', true)) {
 		cout('<div class="yui-navset yui-navset-top tab_block">
-			<ul class="yui-nav">
-				<li class="first selected">
+			<ul class="nav nav-tabs">
+				<li class="active">
 					<a href="index.php?modname=conference&amp;op=show">
 						<em>'.Lang::t('_ACTIVE', 'conference').'</em>
 					</a>
@@ -615,13 +615,13 @@ function showHistory()
 	$conference = new Conference_Manager();
 
 	cout('<div class="yui-navset yui-navset-top tab_block">
-		<ul class="yui-nav">
+		<ul class="nav nav-tabs">
 			<li class="first">
 				<a href="index.php?modname=conference&amp;op=show">
 					<em>'.Lang::t('_ACTIVE', 'conference').'</em>
 				</a>
 			</li>
-			<li class="selected">
+			<li class="active">
 				<a href="index.php?modname=conference&amp;op=history">
 					<em>'.Lang::t('_HISTORY', 'conference').'</em>
 				</a>

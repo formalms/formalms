@@ -75,17 +75,20 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 
 
 	
-	
 
-	
 	// Print of the menu
-	cout('<div class="title_block">'
-			.'<h1>'.Docebo::course()->getValue('name').'</h1>'
-		.'</div>'
-		.'<div id="menu_lat" class="lmsmenu_block">'
+	
+    cout(
+		'<div id="menu_lat" class="lmsmenu_block">'
 		.'<div class="bd">'
 		.'<ul class="main-v-ul">'
 	, 'menu');
+
+    
+    
+ 
+    
+    
 	$logo_panel = '';
 	if(isset($_SESSION['idCourse'])) {
 		
@@ -312,6 +315,21 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 		// print first pannel
 		if(!empty($user_stats['head'])) {
 			
+            $tempo_parziale = Lang::t("_PARTIAL_TIME", "course");
+            $tempo_totale =  Lang::t("_TOTAL_TIME", "standard");
+            $user_online =  Lang::t("_WHOIS_ONLINE", "course");
+             //** LR responsive tabella statistiche **
+            $info_panel .='<style>
+                            @media
+                            only screen and (max-width: 870px),
+                            (min-device-width: 870px) and (max-device-width: 1024px)  {            
+                                        #user_stats td:nth-of-type(1):before { content: "'.$tempo_parziale.'"; }
+                                        #user_stats td:nth-of-type(2):before { content: "'.$tempo_totale.'"; }
+                                        #user_stats td:nth-of-type(3):before { content: "'.$user_online.'"; }    
+                                        }        
+                                        </style>
+                                    ';            
+            
 			$info_panel .= '<table id="user_stats" class="quick_table">'
 			.'<thead><tr>'
 			.( isset($user_stats['head'][0]) ? '<th scope="col">'.$user_stats['head'][0].'</th>' : '' )
@@ -323,6 +341,11 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 			.( isset($user_stats['body'][2]) ? '<td>'.$user_stats['body'][2].'</td>' : '' )
 			.'</tr></tbody>'
 			.'</table>';
+            
+            
+
+            
+            
 		}
 		
 		// print progress bar -------------------------------------------------
@@ -341,6 +364,22 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 												array( 'failed' ) );
 			
 			
+            $materiali = Lang::t("_PROGRESS_ALL", "course");
+            $completato =  Lang::t("_COMPLETED", "standard");
+            $sbagliati =  Lang::t("_PROGRESS_FAILED", "course");
+             //** LR responsive tabella statistiche **
+            $info_panel .='<style>
+                            @media
+                            only screen and (max-width: 870px),
+                            (min-device-width: 870px) and (max-device-width: 1024px)  {            
+                                        #course_stats td:nth-of-type(1):before { content: "'.$materiali.'"; }
+                                        #course_stats td:nth-of-type(2):before { content: "'.$completato.'"; }
+                                        #course_stats td:nth-of-type(3):before { content: "'.$sbagliati.'"; }    
+                                        }        
+                                        </style>
+                                    ';             
+            
+            
 			$info_panel .= '<table id="course_stats" class="quick_table">'
 			.'<thead><tr>'
 				.'<th scope="col">'.Lang::t('_PROGRESS_ALL', 'course').'</th>'
@@ -353,11 +392,19 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 			.'</tr></tbody>'
 			.'</table>';
 			
-			$info_panel .= '<p class="course_progress">'
+
+
+			$info_panel_progress = '<p class="course_progress">'
 				.'<span>'.Lang::t('_PROGRESS', 'course').'</span>'
 				.'</p>'
 				.'<div class="nofloat"></div>'
 				.renderProgress($tot_complete, $tot_failed, $total, false)."\n";
+                
+                // MENU OVER                 
+                  cout('<div class="col-md-9"><div><h1>'.Docebo::course()->getValue('name').'</h1></div></div>
+                        <div class="col-md-3"><div>'.$info_panel_progress.'</div></div>' ,'menu_over');  
+                  cout('<div>&nbsp;</div>','menu_over') ;
+                                
 		}
 		
 		$info_panel .= '</div>'."\n";
