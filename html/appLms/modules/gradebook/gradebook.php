@@ -228,10 +228,15 @@ function showgrade() {
 					elseif($score < $report_info['required_score']) $score = '<span class="cr_not_passed">'.$score.'</span>';
 
 					$date = Format::date($report_score[$id_report][$id_user]['date_attempt']);
-					$comment = $report_score[$id_report][$id_user]['comment'];
+					$comment = $report_score[$id_report][$id_user]['comment'];                
 				}
 			};break;
 		}
+        
+        
+        if($date == "") $date = "-";
+        if($comment == "") $comment = "-";
+        
 		$table->addBody(array(
 			$title,
 			( $score == '' ? $lang->def('_NOT_ASSIGNED') : $score.' '.$lang->def('_MAX_DIVISOR').' '.$maxscore ),
