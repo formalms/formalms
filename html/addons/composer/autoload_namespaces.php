@@ -6,7 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname(dirname($vendorDir));
 
 return array(
-    'appLms' => array($baseDir . '/html'),
-    'appCore' => array($baseDir . '/html'),
-    'Twig_' => array($vendorDir . '/twig/twig/lib'),
+    'appLms' => array(_base_),
+    'appCore' => array(_base_),
+    'Twig_' => array(_addons_ . '/twig/twig/lib'),
 );
