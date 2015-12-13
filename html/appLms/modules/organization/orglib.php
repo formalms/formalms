@@ -911,26 +911,33 @@ class OrgDirDb extends RepoDirDb {
 		return $result;
 	}
 	
-	function __setAccess( $idOrgAccess, $selection ) {
+	function __setAccess( $idOrgAccess, $selection, $relation = '' ) {
 		$acl_man =& Docebo::user()->getAclManager();
 		
 		$id_groups = $acl_man->getAllGroupsFromSelection($selection);
-		
-		$query =	"DELETE FROM %lms_organization_access"
-					." WHERE idOrgAccess = ".(int)$idOrgAccess;
-		
-		sql_query($query);
-		
+
+		if ($relation == '') {
+			$query = "DELETE FROM %lms_organization_access"
+					. " WHERE idOrgAccess = " . (int)$idOrgAccess;
+			sql_query($query);
+		}
+
 		foreach($selection as $idst_element)
 		{
 			if(array_search($idst_element, $id_groups) !== false)
 				$type = 'group';
 			else
 				$type = 'user';
-			
+
+			if ($relation != '') {
+				$query = "DELETE FROM %lms_organization_access"
+						. " WHERE idOrgAccess = " . (int)$idOrgAccess . " AND kind = '" . $type . "' AND value = '" . (int)$idst_element . "'";
+				sql_query($query);
+			}
+
 			$query =	"INSERT INTO %lms_organization_access"
-						." (idOrgAccess, kind, value) VALUES ("
-						." '".(int)$idOrgAccess."','".$type."','".(int)$idst_element."')";
+						." (idOrgAccess, kind, value, params) VALUES ("
+						." '".(int)$idOrgAccess."','".$type."','".(int)$idst_element."','".$relation."')";
 
 			sql_query($query);
 		}
@@ -1341,7 +1348,7 @@ class Org_TreeView extends RepoTreeView {
 						if( checkPerm('lesson', true, 'storage') && !$this->playOnly ) {
 							if( $this->withActions == FALSE ) 
 								return $out;
-							if ($arrData[REPOFIELDOBJECTTYPE] != 'poll' && $arrData[REPOFIELDOBJECTTYPE] != 'test') {
+							if ($arrData[REPOFIELDOBJECTTYPE] != 'poll' && $arrData[REPOFIELDOBJECTTYPE] != 'test' && $arrData[REPOFIELDOBJECTTYPE] != 'test360') {
 								$out .= '<input type="image" class="tree_view_image" '
 									.' src="'.$this->_getCategorizeImg().'"'
 									.' id="'.$this->id.'_'.$this->_getCategorizeId().'_'.$stack[$level]['folder']->id.'" '

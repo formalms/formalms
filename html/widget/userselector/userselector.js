@@ -21,6 +21,7 @@ UserSelector.prototype = {
 	oLangs: null,
 	numFields: 3,
 	fieldList: [],
+	relationList: [],
 	dynSelection: [],
 	useSuspended: false,
 
@@ -136,6 +137,40 @@ UserSelector.prototype = {
 			D.get(prefix+"bottom_"+oScope.id).innerHTML = num;
 		};
 
+		this.editorSaveEvent = function(oArgs) {
+			var oEditor = oArgs.editor;
+			var new_value = oArgs.newData;
+			var old_value = oArgs.oldData;
+			var id_user = oEditor.getRecord().getData("id");
+			var col = oEditor.getColumn().getKey();
+			var callback = {
+				success: function(o) {},
+				failure: function(o) {}
+			};
+
+			var form = YAHOO.util.Selector.query('form[id^=main_selector_form]')[0];
+
+			var input = document.createElement("input");
+			input.setAttribute("type", "hidden");
+			input.setAttribute("name", "relation");
+			input.setAttribute("value",new_value);
+			form.appendChild(input);
+			var okSelector = document.createElement("input");
+			okSelector.setAttribute("type", "hidden");
+			okSelector.setAttribute("name", "okselector");
+			okSelector.setAttribute("value", "1");
+			form.appendChild(okSelector);
+			var userSelector = document.createElement("input");
+			userSelector.setAttribute("type", "hidden");
+			userSelector.setAttribute("name", "userselector_input[main_selector]");
+			userSelector.setAttribute("value", id_user);
+			form.appendChild(userSelector);
+
+			YAHOO.util.Connect.setForm(form);
+
+			YAHOO.util.Connect.asyncRequest("POST", form.action, callback);
+		};
+
 		//table events
 		this.initEvent = function() {
 			var updateSelected = function() {
@@ -145,6 +180,9 @@ UserSelector.prototype = {
 			ds.subscribe("add", updateSelected);
 			ds.subscribe("remove", updateSelected);
 			ds.subscribe("reset", updateSelected);
+			ds.subscribe("dropdownChangeEvent", function(e) {
+				YAHOO.util.Event.preventDefault(e);
+			});
 		};
 
 		this.beforeRenderEvent = function() {
@@ -267,6 +305,19 @@ UserSelector.prototype = {
 
 	labelFormatter: function(elLiner, oRecord, oColumn, oData) {
 		elLiner.innerHTML = '<label for="'+this.getTableEl().parentNode.id+'_sel_'+oRecord.getData("id")+'">'+oData+'</label>';
+	},
+	relationFormatter: function(elLiner, oRecord, oColumn, oData) {
+		var i, valid = false;
+		var list = UserSelector.prototype.relationList;
+		for (i=0; i<list.length; i++) {
+			if (list[i].value == oData) {
+				elLiner.innerHTML = list[i].label;
+				valid = true;
+				break;
+			}
+		}
+		if (!valid) elLiner.innerHTML = '&nbsp;';
+		//elLiner.innerHTML = (YAHOO.lang.isNumber(parseInt(oData)) ? oRecord.getData("level_tr") : oData);
 	},
 
 	getSelection: function() {

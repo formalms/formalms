@@ -11,6 +11,8 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
+require_once($GLOBALS['where_lms'] . '/class.module/learning.object.php');
+
 class Learning_Test extends Learning_Object {
 	
 	var $id;
@@ -27,10 +29,11 @@ class Learning_Test extends Learning_Object {
 	 **/
 	function Learning_Test( $id = NULL ) {
 		parent::Learning_Object( $id );
+		$this->obj_type = 'test';
 		if( $id !== NULL ) {
-			$res = $this->db->query("SELECT author, title FROM %lms_test WHERE idTest = '".(int)$id."'");
+			$res = $this->db->query("SELECT author, title, obj_type FROM %lms_test WHERE idTest = '".(int)$id."'");
 			if ($res && $this->db->num_rows($res)>0) {
-				list( $this->idAuthor, $this->title ) = $this->db->fetch_row($res);
+				list( $this->idAuthor, $this->title, $this->obj_type ) = $this->db->fetch_row($res);
 				$this->isPhysicalObject = true;
 			}
 		}
@@ -167,7 +170,7 @@ class Learning_Test extends Learning_Object {
 			time_dependent, time_assigned, penality_test, 
 			penality_time_test, penality_quest, penality_time_quest, max_attempt
 			hide_info, order_info,
-			use_suspension, suspension_num_attempts, suspension_num_hours, suspension_prerequisites, chart_options
+			use_suspension, suspension_num_attempts, suspension_num_hours, suspension_prerequisites, chart_options, obj_type
 		FROM ".$GLOBALS['prefix_lms']."_test 
 		WHERE idTest = '".(int)$id."'"));
 		
@@ -204,7 +207,8 @@ class Learning_Test extends Learning_Object {
 			suspension_num_attempts = '".(int)$test_info['suspension_num_attempts']."',
 			suspension_num_hours = '".(int)$test_info['suspension_num_hours']."',
 			suspension_prerequisites = '".(int)$test_info['suspension_prerequisites']."',
-			chart_options = '".$test_info['chart_options']."'";
+			chart_options = '".$test_info['chart_options']."',
+			obj_type = '".$test_info['obj_type']."'";
 		if(!sql_query($ins_query)) return false;
 		list($id_new_test) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
 		if(!$id_new_test) return false;

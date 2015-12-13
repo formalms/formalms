@@ -52,6 +52,7 @@ function addtest( $object_test ) {
 		
 		.Form::openElementSpace()
 		.Form::getHidden('back_url', 'back_url', htmlentities(urlencode($object_test->back_url)))
+		.Form::getHidden('obj_type', 'obj_type', $object_test->getObjectType() )
 		.Form::getTextfield($lang->def('_TITLE'), 'title', 'title', '255')
 		.Form::getTextarea($lang->def('_DESCRIPTION'), 'textof', 'textof')
 		.Form::closeElementSpace()
@@ -73,9 +74,9 @@ function instest() {
 	
 	$ins_query = "
 	INSERT INTO ".$GLOBALS['prefix_lms']."_test 
-	( author, title, description )
+	( author, title, description, obj_type )
 		VALUES 
-	( '".(int)getLogUserId()."', '".$_POST['title']."', '".$_POST['textof']."' )";
+	( '".(int)getLogUserId()."', '".$_POST['title']."', '".$_POST['textof']."', '".$_POST['obj_type']."' )";
 	
 	if( !sql_query($ins_query) ) {
 		
@@ -125,30 +126,34 @@ function modtest() {
 }
 
 // XXX: uptest
-function uptest() {
+function uptest(Learning_Test $obj_test = null) {
 	checkPerm('view', false, 'storage');
 	$lang =& DoceboLanguage::createInstance('test');
-	
-	if( trim($_POST['title']) == '' ) $_POST['title'] = $lang->def('_NOTITLE');
-	
-	$id_test = importVar('idTest', true, 0);
+
 	$back_url = urldecode(importVar('back_url'));
 	$url_encode = htmlentities(urlencode($back_url));
-	
-	$mod_query = "
-	UPDATE ".$GLOBALS['prefix_lms']."_test
-	SET title = '".$_POST['title']."', 
-		description = '".$_POST['textof']."' 
-	WHERE idTest = '".$id_test."'";
-	
-	if( !sql_query($mod_query) ) {
-		
-		errorCommunication($lang->def('_OPERATION_FAILURE')
-			.getBackUi('index.php?modname=test&amp;op=modtest&amp;idTest='.$id_test.'&amp;back_url='.$url_encode));
-		return;
+
+	if( trim($_POST['title']) == '' ) $_POST['title'] = $lang->def('_NOTITLE');
+
+	if (isset($obj_test)){
+		$id_test = $obj_test->getId();
+
+		$mod_query = "
+			UPDATE ".$GLOBALS['prefix_lms']."_test
+			SET title = '".$_POST['title']."',
+				description = '".$_POST['textof']."'
+			WHERE idTest = '".$id_test."'";
+
+		if( !sql_query($mod_query) ) {
+
+			errorCommunication($lang->def('_OPERATION_FAILURE')
+					.getBackUi('index.php?modname=test&amp;op=modtest&amp;idTest='.$id_test.'&amp;back_url='.$url_encode));
+			return;
+		}
+		require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
+		Track_Object::updateObjectTitle($id_test, $obj_test->getObjectType(), $_POST['title']);
 	}
-	require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
-	Track_Object::updateObjectTitle($id_test, 'test', $_POST['title']);
+
 	
 	Util::jump_to( 'index.php?modname=test&op=modtestgui&idTest='.$id_test.'&back_url='.$url_encode );
 }
@@ -206,8 +211,8 @@ function modtestgui( $object_test ) {
 		.$test_title.'</span></a><br /><br />'
 	, 'content');
 
-	$GLOBALS['page']->add('<ul class="link_list_inline">
-		<li>'.'<a href="index.php?modname=test&amp;op=defmodality&amp;idTest='
+	$GLOBALS['page']->add('<ul class="link_list_inline">', 'content');
+	$GLOBALS['page']->add('<li>'.'<a href="index.php?modname=test&amp;op=defmodality&amp;idTest='
 		.$object_test->getId().'&amp;back_url='.$url_encode.'" title="'.$lang->def('_TEST_MODALITY').'">'
 			.$lang->def('_TEST_MODALITY').'</a>'.'</li>
 		<li>'.'<a href="index.php?modname=test&amp;op=deftime&amp;idTest='
@@ -2181,7 +2186,12 @@ switch($GLOBALS['op']) {
 		modtest();
 	};break;
 	case "uptest" : {
-		uptest();
+		$idTest = importVar('idTest', true, 0);
+		$db = DbConn::getInstance();
+		$res = $db->query("SELECT obj_type FROM %lms_test WHERE idTest = '".(int)$idTest."'");
+		$test_type = $db->fetch_row($res);
+		$object_test = createLO($test_type[0], $idTest);
+		uptest($object_test?$object_test:null);
 	};break;
 
 	case "modtestgui" : {
@@ -2200,7 +2210,12 @@ switch($GLOBALS['op']) {
 			$idTest = importVar('idTest', true, 0);
 			$back_url = importVar('back_url');
 		}
-		$object_test = createLO('test', $idTest);
+		$test_type = importVar('test_type', false, 'test');
+		$db = DbConn::getInstance();
+		$res = $db->query("SELECT obj_type FROM %lms_test WHERE idTest = '".(int)$idTest."'");
+		$test_type = $db->fetch_row($res);
+		$object_test = createLO($test_type[0], $idTest);
+
 		$object_test->edit($idTest, urldecode($back_url));
 	};break;
 	
@@ -2293,6 +2308,10 @@ switch($GLOBALS['op']) {
 	case "delfbkrule": {
 		delfbkrule();
 	} break;
+
+	case "defrelation" : {
+		defrelation();
+	};break;
 	
 }
 

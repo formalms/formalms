@@ -40,6 +40,8 @@
 			echo '<div id="' . $id . '_user_tab">';
 			$this->render('_user_selector', array(
 				'id' => $id,
+				'id_org' => $this->id_org,
+				'org_type' => $this->org_type,
 				'use_form_input' => $use_form_input,
 				'separate_input' => $separate_input,
 				'initial_selection' => $initial_selection['user'],

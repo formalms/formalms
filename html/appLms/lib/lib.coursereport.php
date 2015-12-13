@@ -48,7 +48,7 @@ class CourseReportManager {
 		require_once($GLOBALS['where_lms'].'/lib/lib.orgchart.php');
 		
 		$org_man 	= new OrganizationManagement($_SESSION['idCourse']);
-		$tests 		=& $org_man->getAllLoAbsoluteIdWhereType('test');
+		$tests 		=& $org_man->getAllLoAbsoluteIdWhereType(array('test','test360'));
 		
 		return $tests;
 	}

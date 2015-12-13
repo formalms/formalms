@@ -28,7 +28,7 @@ class OrganizationManagement {
 		$query_lo = "
 		SELECT idResource 
 		FROM ".$GLOBALS['prefix_lms']."_organization 
-		WHERE objectType = '".$objectType."' AND idCourse = '".$id_course."'
+		WHERE objectType IN ('".(is_array($objectType)?implode('\',\'', $objectType):$objectType)."') AND idCourse = '".$id_course."'
 		ORDER BY path";
 		$re_lo = sql_query($query_lo);
 		while(list($id_lo) = sql_fetch_row($re_lo)) {

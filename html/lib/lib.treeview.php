@@ -487,10 +487,11 @@ class TreeView {
 	}
 
 	function _retrieveData() {
-		if( is_array( $this->posFlat) && count($this->posFlat) > 0 )
+		if( is_array( $this->posFlat) && count($this->posFlat) > 0 ) {
 			$coll = $this->tdb->getFoldersCollection($this->posFlat);
-		else
+		} else {
 			$coll = FALSE;
+		}
 		return $coll;
 	}
 

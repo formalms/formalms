@@ -491,16 +491,18 @@ function organization_access( &$treeView, $idItem ) {
 
 	require_once(_base_.'/lib/lib.form.php');
 	require_once(_base_.'/lib/lib.userselector.php');
+	require_once( $GLOBALS['where_lms'].'/lib/lib.repo.php' );
 	$lang =& DoceboLanguage::createInstance('organization', 'lms');
 	$folder = $treeView->tdb->getFolderById( $idItem );
 
 	$user_select 	= new UserSelector();
 	$user_select->learning_filter = 'course';
+	$user_select->org_type = $folder->otherValues[REPOFIELDOBJECTTYPE];
 
 	$aclManager = new DoceboACLManager();
 	if( isset($_POST['okselector']) )
 	{
-		$treeView->tdb->__setAccess($idItem, $user_select->getSelection($_POST));
+		$treeView->tdb->__setAccess($idItem, $user_select->getSelection($_POST), Get::req('relation'));
 		Util::jump_to( 'index.php?modname=storage' );
 	}
 	elseif( isset($_POST['cancelselector']) )
@@ -511,6 +513,7 @@ function organization_access( &$treeView, $idItem ) {
 		$user_select->show_group_selector = TRUE;
 		$user_select->show_orgchart_selector = FALSE;
 		$user_select->show_fncrole_selector = FALSE;
+		$user_select->id_org = $idItem;
 
 		$temp = $treeView->tdb->__getAccess($idItem);
 		$user_select->resetSelection($temp);
