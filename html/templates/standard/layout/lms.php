@@ -3,15 +3,39 @@
 	<head>
     
     
-    <!-- Javascripts area -->
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>      
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->     
     
-    <!-- common stylesheet -->
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>               
+    
+    
+
+    
+    <!--****************** CSS PER RESPONSIVE FORMA (LR)************************ --> 
+    <!-- common stylesheet -->     
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">          
+    <link rel="stylesheet" href="<?php echo Layout::path(); ?>bootstrap/css/bootstrap.css">
+    <link href="<?php echo Layout::path(); ?>/bootstrap-reset.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="<?php echo Layout::path(); ?>bootstrap/css/bootstrap-theme.min.css">   
+    <link rel="stylesheet" href="<?php echo Layout::path(); ?>/css/bootstrap.min.css">
+     
+    <link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/table-responsive.css"/>
+
+         
+        <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/default.css" />
+        <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/component.css" />
+        <script src="http://tympanus.net/Tutorials/CaptionHoverEffects/js/modernizr.custom.js"></script>
+        <script src="http://tympanus.net/codrops/adpacks/demoad.js"></script>
+         
+    <link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/base.css"/>       
+    
+    <!-- *************************************************** -->      
     
     
 	    <!--Fix funzionamento scorm su IE9-->
@@ -31,7 +55,10 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms-to-review.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms-menu.css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/table-responsive.css" />
+	
+    
+                     
+    
         <?php echo Layout::rtl(); ?>
         
 		<!-- specific stylesheet -->

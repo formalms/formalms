@@ -1,9 +1,10 @@
 <div class="row">
 	
-	<div  class="col-md-8">
+	<div  class="col-md-12">
 		<div class="">
 
 			<div class="middlearea_container">
+                      
 				<?php
 
 				$w = $this->widget('lms_tab', array(
@@ -27,12 +28,15 @@
     		$w->endWidget();
 
 				?>
+
+                
 			</div>
 
 		</div>
 	</div>
     
     <div class="col-md-4" >
+    
         <?php
         $this->widget('lms_block', array(
             'zone' => 'right',
@@ -40,14 +44,19 @@
             'block_list' => $block_list
         ));
         ?>
+
+        
     </div>
       
 	<div class="nofloat"></div>
 </div>
+
+
+
 <script type="text/javascript">
 	var lb = new LightBox();
 	lb.back_url = 'index.php?r=elearning/show&sop=unregistercourse';
-  var tabView = new YAHOO.widget.TabView();
+     var tabView = new YAHOO.widget.TabView();
 
 
 	var mytab = new YAHOO.widget.Tab({
@@ -60,8 +69,10 @@
 		lb.init();
 		this.set("cacheData", true);
 	});
-	tabView.addTab(mytab, 0);
-
+	// COMMENTATO
+    tabView.addTab(mytab, 0);
+         
+    
 	<?php if($this->isTabActive('new')): ?>
 	mytab = new YAHOO.widget.Tab({
 	    label: '<?php echo Lang::t('_NEW', 'course'); ?>',
@@ -69,10 +80,12 @@
 	    cacheData: true,
 	    loadMethod: "POST"
 	});
+    
 	mytab.addListener('contentChange', function() {
 		lb.init();
 		this.set("cacheData", true);
 	});
+    // COMMENTATO
 	tabView.addTab(mytab, 1);
 	<?php endif; ?>
 
@@ -83,10 +96,14 @@
 	    cacheData: true,
 	    loadMethod: "POST"
 	});
+    
+
 	mytab.addListener('contentChange', function() {
 		lb.init();
 		this.set("cacheData", true);
 	});
+    
+    // COMMENTATO
 	tabView.addTab(mytab, 2);
 	<?php endif; ?>
 
@@ -101,7 +118,9 @@
 		lb.init();
 		this.set("cacheData", true);
 	});
-	tabView.addTab(mytab, 3);
+	
+    // COMMENTATO
+    tabView.addTab(mytab, 3);
 	<?php endif; ?>
 
 	<?php if($this->isTabActive('suggested') && false): ?>

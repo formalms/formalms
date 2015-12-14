@@ -21,11 +21,8 @@
     <link rel="shortcut icon" href="{{ evalPhp('Layout::path') }}images/favicon.png" type="image/png"/>
     <link rel="shortcut icon" href="{{ evalPhp('Layout::path') }}images/favicon.ico"/>
     <!-- reset and font stylesheet -->
-    {{ evalPhp('Layout::resetter') }}
-    <!-- common stylesheet -->
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">                 
+    {{ evalPhp('Layout::resetter') }}                   
+               
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -33,9 +30,36 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->     
     
-    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/base.css"/>
-     <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/table-responsive.css"/>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>               
+    
+    
 
+    
+    <!--****************** CSS PER RESPONSIVE FORMA (LR)************************ --> 
+    <!-- common stylesheet -->     
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ evalPhp('Layout::path') }}bootstrap/css/bootstrap.css">
+    <link href="{{ evalPhp('Layout::path') }}css/bootstrap-reset.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ evalPhp('Layout::path') }}bootstrap/css/bootstrap-theme.min.css">   
+    <link rel="stylesheet" href="{{ evalPhp('Layout::path') }}bootstrap/css/bootstrap.min.css">
+     
+    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/table-responsive.css"/>
+
+         
+        <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/default.css" />
+        <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/component.css" />
+        <script src="http://tympanus.net/Tutorials/CaptionHoverEffects/js/modernizr.custom.js"></script>
+        <script src="http://tympanus.net/codrops/adpacks/demoad.js"></script>
+         
+    
+    <!-- *************************************************** -->
+
+    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/base.css"/>    
+    
+    
     <!-- specific stylesheet -->
     {{ evalPhp('YuiLib::load', ['base']) }}
     <!-- printer stylesheet-->
@@ -48,17 +72,14 @@
     {% endblock %}
     
     <!-- Javascripts area -->
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>                 
+      
     {% block stylesheet %}
     {% endblock %}
     {% block javascript %}
     {% endblock %}
     
     
-   
-    
+
     
 </head>
 <body class="yui-skin-docebo yui-skin-sam">

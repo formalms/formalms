@@ -1,7 +1,7 @@
 <div class="row">
 
 	<div id="middlearea_container">
-		<div class="col-md-8">
+		<div class="col-md-12">
 
 			<div class="middlearea_container">
 				<?php

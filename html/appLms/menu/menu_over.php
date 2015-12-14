@@ -14,7 +14,24 @@
 if(!Docebo::user()->isAnonymous()) {
 	YuiLib::load('base,menu');
 	require_once(_lms_.'/lib/lib.middlearea.php');
+    
+   require_once('../widget/lms_block/lib.lms_block_menu.php');
+   require_once(_lms_.'/lib/lib.course.php');
+   $widget = new  Lms_BlockWidget_menu() ;
 
+   //** GESTIONE AREA PROFILO UTENTE **
+   require_once (_lib_ . '/lib.user_profile.php');
+   $profile = new UserProfile(getLogUserId());
+   $profile->init('profile', 'framework', 'index.php?r='._after_login_, 'ap');
+   $profile_box  = $profile->homeUserProfile('normal', false, false);
+   $photo = $profile->homePhotoProfile('normal', false, false);
+   
+   $credits = $widget->credits();
+   $career = $widget->career();
+   $subscribe_course = $widget->subscribe_course();
+   $news = $widget->news();
+   
+   
 	$ma = new Man_MiddleArea();
 
 	$user_level = Docebo::user()->getUserLevelId();
@@ -24,8 +41,12 @@ if(!Docebo::user()->isAnonymous()) {
 	FROM ".$GLOBALS['prefix_lms']."_module AS mo
 		JOIN ".$GLOBALS['prefix_lms']."_menucourse_under AS under
 			ON ( mo.idModule = under.idModule)
-	WHERE module_info IN ('all', 'user', 'public_admin')
+	WHERE module_info IN ('all', 'user', 'public_admin')   and mo.idModule not in(7,34)
 	ORDER BY module_info, under.sequence ";
+
+    
+   // echo $query_menu;
+   //  die();
 
 	$menu = array();
 	$re_menu_voice = sql_query($query_menu);
@@ -34,6 +55,7 @@ if(!Docebo::user()->isAnonymous()) {
 		
         if($ma->currentCanAccessObj('mo_'.$id_m) && checkPerm($token, true, $module_name,  true)) {
 
+
             // if e-learning tab disabled, show classroom courses
             if ($module_name ==='course' && !$ma->currentCanAccessObj('tb_elearning'))
                 $mvc_path = 'lms/classroom/show';
@@ -41,7 +63,8 @@ if(!Docebo::user()->isAnonymous()) {
 			$menu[$m_info][$id_m] = array(
 				'index.php?'.( $mvc_path ? 'r='.$mvc_path : 'modname='.$module_name.'&amp;op='.$def_op ).'&amp;sop=unregistercourse',
 				Lang::t($default_name, 'menu_over'),
-				false
+				false ,
+                $id_m
 			);
 		}
 	}
@@ -59,18 +82,18 @@ if(!Docebo::user()->isAnonymous()) {
 	}*/
 
 	// Menu for messages
-	if($ma->currentCanAccessObj('mo_message')) {
+      /*
+	if($ma->currentCanAccessObj('mo_47')) {
 		require_once($GLOBALS['where_framework'].'/lib/lib.message.php');
-		$msg = new Man_Message();
-		$unread_num = $msg->getCountUnreaded(getLogUserId(), array(), '', true);
 		$menu['all'][] = array(
-			'index.php?modname=message&amp;op=message&amp;sop=unregistercourse',
-			Lang::t('_MESSAGES', 'menu_over').( $unread_num ? ' <b class="num_notify">'.$unread_num.'</b>' : '' ),
+			'index.php?r=lms/catalog/show',
+			Lang::t('_CATALOGUE', 'menu_over').( $unread_num ? '' : '' ),
 			false
 		);
 		$menu_i++;
 	}
-
+     */
+     
 	// Customer help
 	if ($ma->currentCanAccessObj('mo_help')) {
 
@@ -78,6 +101,9 @@ if(!Docebo::user()->isAnonymous()) {
 		$can_send_emails = !empty( $help_email ) ? true : false;
 		$can_admin_settings = checkRole('/framework/admin/setting/view', true);
 
+        $strTxtHelp = Lang::t('_CUSTOMER_HELP', 'customer_help')."";
+        $strHelp = "<span class='glyphicon glyphicon-question-sign'></span>";
+        
 		if ($can_send_emails) {
 
 			cout(Util::get_js(Get::rel_path('base').'/lib/js_utils.js', true), 'scripts');
@@ -99,7 +125,7 @@ if(!Docebo::user()->isAnonymous()) {
 
 			$menu['all'][] = array(
 				'#',
-				Lang::t('_CUSTOMER_HELP', 'customer_help'),
+				$strHelp,
 				false
 			);
 			$customer_help = ++$menu_i;
@@ -110,7 +136,7 @@ if(!Docebo::user()->isAnonymous()) {
 			if ($can_admin_settings) {
 				$menu['all'][] = array(
 					'../appCore/index.php?r=adm/setting/show',
-					'<i>('.Lang::t('_CUSTOMER_HELP', 'customer_help').': '.Lang::t('_SET', 'standard').')</i>',
+					'<i>('.$strHelp.': '.Lang::t('_SET', 'standard').')</i>',
 					false
 				);
 			}
@@ -141,9 +167,9 @@ if(!Docebo::user()->isAnonymous()) {
     
 //** DEV: LR - creato un menu_over  responsive  attraverso bootstrap **
 cout('
+           
+           <header class="header white-bg">
 
-
-    
       <!-- Static navbar -->
       <nav class="navbar navbar-default">   
 
@@ -156,78 +182,119 @@ cout('
                       
               <span  class="glyphicon glyphicon-align-justify"></span>
             </button>
-            <a class="navbar-brand" href="#"><img class="left_logo" width="150" src="'. Layout::path().'/images/company_logo.png" alt="Left logo"/></a>   
+
           </div>        
         
-          <div id="navbar" class="navbar-collapse collapse" >   
+          <div id="navbar" class="navbar-collapse collapse " >   
             
                     
                 ','menu_over');         
          
-         
-         
-         cout('<ul class="pager" ><br><br><br><br>','menu_over');
-         
-            foreach ($menu['all'] as $row) {
-                cout( '<li ><a href="'.$row[0].'" >'.$row[1].'</a></li> &nbsp; ','menu_over');
-
                 
-            if($row[2] !== false) {
+         
+         cout('
+         
+         <div class=col-md-2>                 
+             
+             <!--logo start-->
+            <a class="navbar-brand" href="#"><img class="left_logo" width="120" src="'. Layout::path().'/images/company_logo.png" alt="logo di sinistra"/></a>   
+            </div>
+         
+         
+            <div class="col-md-8">
+         
+            <ul class="nav navbar-nav" >','menu_over');
+         
+                foreach ($menu['all'] as $row) {
+                    
+                    $active = "";
+                    if(strrpos($row[0], $_GET['r'])>0 || strrpos($row[0], $_GET['modname'])>0) $active = " class='active'";
+                    
+                    
+                     if(strrpos($row[0], 'appCore')>0 ){
+                        cout( '<li  ><a href="'.$row[0].'" title="'.$row[1].'"><span class="glyphicon glyphicon-cog"></span></a></li>  ','menu_over'); 
+                     } else{
+                        cout( '<li '.$active.'  ><a href="'.$row[0].'" >'.$row[1].'</a></li>','menu_over');
+                     }
+                            
+                        if($row[2] !== false) {
 
-                    cout('<div id="submenu_'.$id_m.'" >'
-                        .'<div class="bd"><ul class="first-of-type">', 'menu_over');
-                    while(list($id_m, $s_voice) = each($menu[ $row[2] ])) {
+                                cout('<div id="submenu_'.$id_m.'" >'
+                                    .'<div class="bd"><ul class="first-of-type">', 'menu_over');
+                                while(list($id_m, $s_voice) = each($menu[ $row[2] ])) {
 
-                        cout(''
-                            .'<a  href="'.$s_voice[0].'"">'
-                            .''.$s_voice[1].''
-                            .'</a> &nbsp; '
-                            .'', 'menu_over');
-                    }
-                    cout('</div>'
-                        .'</div>', 'menu_over');
-                }             
-  
-            }  
+                                    cout(''
+                                        .'<a  href="'.$s_voice[0].'"">'
+                                        .''.$s_voice[1].''
+                                        .'</a> &nbsp; '
+                                        .'', 'menu_over');
+                                }
+                                cout('</div>'
+                                    .'</div>', 'menu_over');
+                            }             
+      
+                }  
           
+               
+               cout('</ul></div>
         
         
-        
-        cout('         <ul class="nav navbar-nav navbar-right">
-                                                    <li class="dropdown">
+              <div class="col-md-2">
+             <ul class="nav pull-right top-menu">
                                                     
-                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">'.Docebo::user()->getUserName().'<b class="caret"></b></a>
-                                                        
+                                                    
+                                                    
+                                                    <li class="dropdown">
+
+                                                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                                        <table><tr><td >'. $photo.'  &nbsp;</td><td><span class="username"> '.Docebo::user()->getUserName().'</span><b class="caret"></b></td></tr></table>
+                                                         
+                                                     </a>                                             
                                                         
                                                         <ul class="dropdown-menu">
-                                                           
-                                                           
-                                                           
-                                                           
+           
                                                             <li>
                                                                 
                                                                
                                                        
                                                                         <div class="col-md-12">
-                                    
-                                                                                   '.Lang::t('_WELCOME', 'profile').', <b>'.Docebo::user()->getUserName().'&nbsp; &nbsp; &nbsp; </b>                                     
-                                                                                                               <br>
-                                                                                                                    '. Format::date(date("Y-m-d H:i:s")).'<br />
+                                                                        
+                                                                                  <!--
+                                                                                   '.Lang::t('_WELCOME', 'profile').', <b>'.Docebo::user()->getUserName().'&nbsp;  </b>                                     
+                                                                                                             
+                                                                                                                     <i style="font-size:.88em">'. Format::date(date("Y-m-d H:i:s")).'</i><br />
+                                                                                  -->                                   
                                                                                                                     <span class="select-language">'. Layout::change_lang().'</span>
-                                                                                                                                                                      
-                                                                                        
-                                                                                                
-                                                                                            <div class="divider">  _____________________________________
+                               
+                                                                                 <div class="pull-right logout-holder">                            
+                                                                                             <!--
+                                                                                             <a href="index.php?r=profile/show"><img title="'.Lang::t('_PROFILE', 'profile').'"  src="'. Layout::path().'/images/chat/user2.gif" alt="'.Lang::t('_PROFILE', 'profile').'"/></a>
+                                                                                             -->
+                                                                                            <a href="index.php?modname=login&amp;op=logout"  ><img title="'.Lang::t('_LOGOUT', 'standard').'"  src="'. Layout::path().'/images/standard/exit.png" alt="'.Lang::t('_LOGOUT', 'standard').'"/></a>
+                                                                                 </div>                                 
+                               
+                                                                                
+                                                                                                    '.$profile_box.'
+                                                                                                     <div >&nbsp;</div>   
+                                                                                                    '.$subscribe_course.'
+                                                                                                    '.$news.'
+                                                                                                    '.$credits.'
+                                                                  
                                                                                             </div>
-                                                                               
-                                                                               
-                                                                                           <div>
-                                                                                                    <a href="index.php?r=profile/show" class="btn btn-primary btn-sm pull-left">'.Lang::t('_PROFILE', 'profile').' </a>
-                                                                                      
-                                                                                             
-                                                                                           
-                                                                                                    <a href="index.php?modname=login&amp;op=logout" class="btn btn-primary btn-sm pull-right">'.Lang::t('_LOGOUT', 'standard').'</a>
-                                                                                           </div>                                                               
+                                                                                                        
+                                                                                    
+                                                                                                                                                              
+                                                                                    <br>
+                                                                                    <!-- 
+                                                                           <div class="col-md-12"> 
+                                                                                    <a href="index.php?r=profile/show" class="glyphicon glyphicon-user">'.Lang::t('_PROFILE', 'profile').' </a>
+                                                                      
+                                         
+                                                                           </div>                                                               
+                                                                            -->
+                                                                        
+                                               
+                                                               
                                                                
                                                                         </div>
                                                               
@@ -236,59 +303,52 @@ cout('
                                                           
                                                                 
                                                             </li>
-
+        
                                                             
                                                         </ul>
                                                     </li>
-                                                </ul>        
+                                                 
 
+                                                 </ul>
+                </div>                                                
+                                                
+                                                
                                         ','menu_over')   ; 
                                                 
                                                 
                                                 
                                                 
-                                                    
+                              
         
         
         
                      
-          cout('</ul>','menu_over'); 
-                                             
+          cout('
+                
+                
+          </div>','menu_over'); 
+          cout('<!--/.nav-collapse -->
           
-                                 
-
-         
-         
-         
-         
-          cout('</div><!--/.nav-collapse -->
+          
+          
         </div><!--/.container-fluid -->    
-        
 
         
       </nav>
 
-      
-      
-      
-
-      
-      
-      
-      
-      
-      
+          </header>
+          <br><br><br><br>
       
 ','menu_over');        
     
-         
-
-
-       
-
-       
     
     
+
 }    
+
+
+     
+
+
      
 ?>

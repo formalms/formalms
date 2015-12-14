@@ -31,8 +31,8 @@
 										.($label_info['description'] !== '' ? '<br /><span id="label_description_'.$id_common_label.'" class="label_description" title="'.html_entity_decode($label_info['description']).'">'.$label_info['description'].'</span>' : '')
 									.'</span>'
 								.'</a>'
-							.'</div>';
-				?>
+							.'</div>';    
+				?>   
 				</div><!-- Needed to close the label conteiner -->
 				</div></div></div><!-- Needed to close the content of the widget manually -->
 			</div>

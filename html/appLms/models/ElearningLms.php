@@ -71,26 +71,29 @@ class ElearningLms extends Model {
 	}
 
 	public function findAll($conditions, $params) {
-		
+		 
 		$conditions[] = ' c.course_type = ":course_type" ';
 		$params[':course_type'] = 'elearning';
-		
+		        
 		$db = DbConn::getInstance();
-		$query = $db->query(
-			"SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.difficult, c.status AS course_status, c.level_show_user, c.course_edition, "
-			."	c.max_num_subscribe, c.create_date, "
-			."	c.direct_play, c.img_othermaterial, c.course_demo, c.use_logo_in_courselist, c.img_course, c.lang_code, "
-			."	c.course_vote, "
-			."	c.date_begin, c.date_end, c.valid_time, c.show_result, c.userStatusOp, c.auto_unsubscribe, c.unsubscribe_date_limit, "
-			
-			."	cu.status AS user_status, cu.level, cu.date_inscr, cu.date_first_access, cu.date_complete, cu.waiting"
-			
-			." FROM %lms_course AS c "
-			." JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) "
-			." WHERE ".$this->compileWhere($conditions, $params)
-			.($_SESSION['id_common_label'] > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '".$_SESSION['id_common_label']."')" : "")
-			." ORDER BY ".$this->_resolveOrder(array('cu', 'c'))
-		);
+        
+        $query =             "SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.difficult, c.status AS course_status, c.level_show_user, c.course_edition, "
+            ."    c.max_num_subscribe, c.create_date, "
+            ."    c.direct_play, c.img_othermaterial, c.course_demo, c.use_logo_in_courselist, c.img_course, c.lang_code, "
+            ."    c.course_vote, "
+            ."    c.date_begin, c.date_end, c.valid_time, c.show_result, c.userStatusOp, c.auto_unsubscribe, c.unsubscribe_date_limit, "
+            
+            ."    cu.status AS user_status, cu.level, cu.date_inscr, cu.date_first_access, cu.date_complete, cu.waiting"
+            
+            ." FROM %lms_course AS c "
+            ." JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse)  "
+            ." WHERE ".$this->compileWhere($conditions, $params)
+            .($_SESSION['id_common_label'] > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '".$_SESSION['id_common_label']."')" : "")
+            ." ORDER BY ".$this->_resolveOrder(array('cu', 'c'));
+        
+  //   echo $query;
+        
+		$query = $db->query($query);
 
 		$result = array();
 		$courses = array();
@@ -99,7 +102,12 @@ class ElearningLms extends Model {
 			$data['enrolled'] = 0;
 			$data['numof_waiting'] = 0;
 			$data['first_lo_type'] = FALSE;
-			$courses[] = $data['idCourse'];
+			
+            
+            //** name category
+            $data['nameCategory'] = $this->getCategory($data['idCategory']); //$this->getCategory($data['idCategory']);
+            
+            $courses[] = $data['idCourse'];
 			$result[$data['idCourse']] = $data;
 		}
 		
@@ -145,6 +153,16 @@ class ElearningLms extends Model {
 			." ON (cu.idCourse = c.idCourse) "
 			." WHERE cu.idUser = ".(int)$id_user." AND c.course_type = 'elearning' "
 			." ORDER BY inscr_year ASC";
+            
+            
+            
+        $query = "SELECT DISTINCT YEAR(cu.date_inscr) AS inscr_year "
+            ." FROM %lms_courseuser AS cu JOIN %lms_course AS c "
+            ." ON (cu.idCourse = c.idCourse) "
+           // ." WHERE cu.idUser = ".(int)$id_user." AND c.course_type = 'elearning' "
+            ." ORDER BY inscr_year ASC";            
+           // die($query);
+            
 		$res = $db->query($query);
 		if ($res && $db->num_rows($res) > 0) {
 			while (list($inscr_year) = $db->fetch_row($res)) {
@@ -167,5 +185,25 @@ class ElearningLms extends Model {
 		}
 		return $output;
 	}
+    
+    
+    private function getCategory($idCat){
+        $db = DbConn::getInstance();
+        $query = "select path from %lms_category where idCategory=".$idCat;
+        $res = $db->query($query);
+        $path = "";
+        if ($res && $db->num_rows($res) > 0) {
+            list($path) = $db->fetch_row($res);
+        }    
+        return $path;
+        
+        
+    }
+    
+    
+    
+    
+    
+       
 
 }

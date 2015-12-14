@@ -56,7 +56,7 @@
     //}
     ?>        
     <div class="yui-content">
-        <div id="tab_content" class="nested_tab">
+        <div id="tab_content" class="nested_tab">   
         
         
         

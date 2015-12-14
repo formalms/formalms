@@ -80,7 +80,7 @@ function mycertificate(&$url) {
 		.Form::closeForm();
 
 	//----------------------------------------------------------------------------
-
+         
 	$cert = new Certificate();
 
 	/*

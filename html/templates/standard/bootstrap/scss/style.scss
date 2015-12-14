@@ -1,0 +1,465 @@
+@import "compass/css3";
+
+/* 
+
+The commented version of this Sass code is ugly and is replaced by a better one. Scroll down for the production ready version. Enjoy!
+
+@import "compass/reset";
+@import "compass/css3";
+
+$body: #f77462;
+$list: #6dc5dd;
+$border: #5ab2ca;
+$geneicons: #fff;
+
+body {
+	background: $body;
+	font-family: Lato, sans-serif;
+}
+
+@font-face {
+	font-family: 'Genericons';
+	src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/53819/genericons-regular-webfont.eot');
+	src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/53819/genericons-regular-webfont.woff') format('woff'),
+		 url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/53819/genericons-regular-webfont.eot') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class*="genericon"] {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	-webkit-font-smoothing: antialiased;
+	font-size: 16px;
+	line-height: 1;
+	font-family: 'Genericons';
+	text-decoration: inherit;
+	font-weight: normal;
+	font-style: normal;
+	vertical-align: top;
+}
+
+[class*="genericon"] {
+	*overflow: auto;
+	*zoom: 1;
+	*display: inline;
+}
+
+.wrap {
+	margin: 50px auto;
+	width: 100%;
+}
+
+.tag > a:first-child:before,
+.tag > a:nth-child(2):before {
+	position: absolute;
+	top: 90px;
+	left: 25px;
+	display: block;
+	vertical-align: text-bottom;
+	font: normal 1.5em Genericons;
+	color: $geneicons;
+	padding-right: 4px;
+}
+
+.tag > a:nth-child(2):before {
+	font-size: 3em;
+	left: 20px;
+	top: 75px;
+}
+
+.tag > a:first-child, 
+.tag > a:nth-child(2) {
+	position: absolute;
+	width: 85px;
+	height: 200px;
+	@include transition( all 0.4s 0.1s ease-out )
+}
+
+.tag > a:first-child {
+	background-color: $list;
+}
+
+.tag > a:nth-child(2) {
+	margin-left: 85px;
+	background: #eee;
+}
+
+#github > div.tag > a:first-child:before,
+#github > div.tag > a:nth-child(2):before {
+	content: '\f200';
+}
+
+#twitter > div.tag > a:first-child:before,
+#twitter > div.tag > a:nth-child(2):before {
+	content: '\f202';
+}
+
+#facebook > div.tag > a:first-child:before,
+#facebook > div.tag > a:nth-child(2):before {
+	content: '\f204';
+}
+
+#linkedin > div.tag > a:first-child:before,
+#linkedin > div.tag > a:nth-child(2):before {
+	content: '\f208';
+}
+
+#insta > div.tag > a:first-child:before,
+#insta > div.tag > a:nth-child(2):before {
+	content: '\f215';
+}
+
+#youtube > div.tag > a:first-child:before,
+#youtube > div.tag > a:nth-child(2):before {
+	content: '\f213';
+}
+	
+#tumblr > div.tag > a:first-child:before,
+#tumblr > div.tag > a:nth-child(2):before {
+	content: '\f214';
+}
+
+#dribbble > div.tag > a:first-child:before,
+#dribbble > div.tag > a:nth-child(2):before {
+	content: '\f201';
+	padding-top: 3px;
+	margin-top: -3px;
+}
+
+#github > div.tag > a:nth-child(2):before {
+	color: #333;
+}
+
+#github > div.tag > a:nth-child(2) {
+	background: #e6e6e6;
+}
+
+#twitter > div.tag > a:nth-child(2) {
+	@include background-image(linear-gradient(#7adcf9, #4bc9f5));
+}
+
+#facebook > div.tag > a:nth-child(2) {
+	@include background-image(linear-gradient(#548abf, #295b9e));
+}
+
+#linkedin > div.tag > a:nth-child(2) {
+	@include background-image(linear-gradient(#00a9cd, #0083b4));
+}
+
+#youtube > div.tag > a:nth-child(2) {
+	@include background-image(linear-gradient(#df192a, #c41222));
+}
+
+#insta > div.tag > a:nth-child(2) {
+	@include background-image(linear-gradient(#7fc121, #298733));
+}
+
+#tumblr > div.tag > a:nth-child(2) {
+	@include background-image(linear-gradient(#283e56, #325372));
+}
+
+#dribbble > div.tag > a:nth-child(2) {
+	@include background-image(linear-gradient(#e03a70, #f189b8));
+}
+
+.accordion {
+	background: $border;
+	position: fixed;
+	width: 100%;
+	height: 200px;
+	margin-top: -100px;
+	left: 0;
+	top: 50%;
+	overflow: hidden;
+
+	ul {
+		margin-left: 30px;
+		list-style-type: none;
+	}
+
+	li {
+		overflow: hidden;
+		position: relative;
+		background-color: $list;
+		border-right: $border 1px solid;
+		width: 80px;
+		height: 200px;
+		float: left;
+		display: block;
+		@include transition( all 0.4s 0.1s ease-out );
+
+		&:hover {
+			width: 450px;
+
+			a:first-child {
+				margin-left: -100px;
+			}
+
+			a:nth-child(2) {
+				margin-left: -5px;
+			}
+		}
+	}
+
+	.paragraph {
+		position: relative;
+		width: 360px;
+		margin-left: 80px;
+		padding: 50px 0 0 10px;
+		height: 200px;
+		background: #fff;
+
+		h1 {
+			font-size: 2.5em;
+			margin-bottom: 10px;
+		} 
+
+		p {
+			font-size: 0.88em;
+			line-height: 1.5em;
+			padding-right: 30px;
+		}
+	}
+}
+
+.clearfix {
+	zoom: 1;
+}
+
+.clearfix:before, .clearfix:after {
+	content: "";
+	display: table;
+}
+
+.clearfix:after {
+	clear: both;
+} */
+
+/* Updated version - 24th Nov 2014 */
+
+@import "compass/reset";
+@import "compass/css3";
+
+/* Variables */
+
+$backgroundColor: #f77462;
+$list: #6dc5dd;
+$border: #5ab2ca;
+$geneicons: #fff;
+
+body {
+  background: $backgroundColor;
+  font-family: Lato, sans-serif;
+}
+
+@font-face {
+  font-family: 'Genericons';
+  src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/53819/genericons-regular-webfont.eot');
+  src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/53819/genericons-regular-webfont.woff') format('woff'),
+     url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/53819/genericons-regular-webfont.eot') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class*="genericon"] {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  line-height: 1;
+  font-family: 'Genericons';
+  text-decoration: inherit;
+  font-weight: normal;
+  font-style: normal;
+  vertical-align: top;
+}
+
+/* IE7 */
+[class*="genericon"] {
+  *overflow: auto;
+  *zoom: 1;
+  *display: inline;
+}
+
+.container {
+  margin: 100px auto;
+}
+
+.accordion {
+  background: $border;
+  width: 100%;
+  min-width: 950px;
+  display: block;
+  list-style-type: none;
+  overflow: hidden;
+  height: 200px;
+  font-size: 0;
+}
+
+.tabs {
+  display: inline-block;
+  background-color: $list;
+  border-right: $border 1px solid;
+  width: 80px;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  margin: 0;
+  font-size: 16px;
+  @include transition( all 0.4s 0.1s ease-in-out );
+
+  &:hover {
+    width: 450px;
+
+    .social-links {
+      a {
+        &:before {
+          margin-left: -100px;
+        }
+
+        &:after {
+          margin-left: -5px;
+        }
+      }
+    }
+  }
+
+  .paragraph {
+    position: relative;
+    width: 360px;
+    margin-left: 80px;
+    padding: 50px 0 0 10px;
+    height: 200px;
+    background: #fff;
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    } 
+
+    p {
+      font-size: 0.88em;
+      line-height: 1.5em;
+      padding-right: 30px;
+    }
+  }
+}
+
+.social-links {
+  display: block;
+
+  a {
+    display: block;
+    text-indent: -9999px;
+    font-size: 0;
+    line-height: 0;
+
+    &:before, &:after {
+      @include transition( all 0.4s 0.1s ease-in-out );
+      width: 80px;
+      height: 200px;
+      position: absolute;
+      text-indent: 0;
+      padding-top: 90px;
+      padding-left: 25px;
+      display: block;
+      font: normal 30px Genericons;
+      color: $geneicons;
+    }
+
+    &:after {
+      font-size: 48px;
+      padding-left: 20px;
+      padding-top: 80px;
+      margin-left: 85px;
+    }
+  }
+}
+
+.twitter-icon {
+  a {
+    &:before, &:after {
+      content: '\f202';
+    }
+
+    &:after {
+      @include background-image(linear-gradient(#7adcf9, #4bc9f5));
+    }
+  }
+}
+
+.facebook-icon {
+  a {
+    &:before, &:after {
+      content: '\f204';
+    }
+
+    &:after {
+      @include background-image(linear-gradient(#548abf, #295b9e));
+    }
+  }
+}
+
+.linkedin-icon {
+  a {
+    &:before, &:after {
+      content: '\f208';
+    }
+
+    &:after {
+      @include background-image(linear-gradient(#00a9cd, #0083b4));
+    }
+  }
+}
+
+.insta-icon {
+  a {
+    &:before, &:after {
+      content: '\f215';
+    }
+
+    &:after {
+      @include background-image(linear-gradient(#7fc121, #298733));
+    }
+  }
+}
+
+.youtube-icon {
+  a {
+    &:before, &:after {
+      content: '\f213';
+    }
+
+    &:after {
+      @include background-image(linear-gradient(#df192a, #c41222));
+    }
+  }
+}
+
+.tumblr-icon {
+  a {
+    &:before, &:after {
+      content: '\f214';
+    }
+
+    &:after {
+      @include background-image(linear-gradient(#283e56, #325372));
+    }
+  }
+}
+
+.dribbble-icon {
+  a {
+    &:before, &:after {
+      content: '\f201';
+    }
+
+    &:after {
+      @include background-image(linear-gradient(#e03a70, #f189b8));
+    }
+  }
+}
+

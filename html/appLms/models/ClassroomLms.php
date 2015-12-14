@@ -74,7 +74,7 @@ class ClassroomLms extends Model {
 
 		$conditions[] = ' c.course_type = ":course_type" ';
 		$params[':course_type'] = 'classroom';
-
+        
 		$db = DbConn::getInstance();
 		$query = $db->query(
 			"SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.lang_code, c.difficult, "

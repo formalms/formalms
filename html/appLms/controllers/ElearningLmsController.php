@@ -207,13 +207,62 @@ class ElearningLmsController extends LmsController {
 			$courselist[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselist[$keys[$i]]);
 		}
 
+        
+  // CLASSROOM 
+        $modelClassroom = new ClassroomLms();
+
+        $filter_text = Get::req('filter_text', DOTY_STRING, "");
+        $filter_year = Get::req('filter_year', DOTY_INT, 0);
+
+        $conditions = array(
+            'cu.iduser = :id_user',
+            'cu.status = :status'
+        );
+
+        $params = array(
+            ':id_user' => (int)Docebo::user()->getId(),
+            ':status' => _CUS_SUBSCRIBED
+        );
+
+        if (!empty($filter_text)) {
+            $conditions[] = "(c.code LIKE '%:keyword%' OR c.name LIKE '%:keyword%')";
+            $params[':keyword'] = $filter_text;
+        }
+
+        if (!empty($filter_year)) {
+            $clist = $modelClassroom->getUserCoursesByYear(Docebo::user()->getId(), $filter_year);
+            if ($clist !== false) {
+                $conditions[] = "cu.idCourse IN (".implode(",", $clist).")";
+            }
+        }
+
+        $cp_courses = $modelClassroom->getUserCoursePathCourses( Docebo::user()->getIdst() );
+        if (!empty($cp_courses)) {
+            $conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
+        }
+
+        $courselistClassroom = $modelClassroom->findAll($conditions, $params);   
+        
+
+        //check courses accessibility
+        $keys = array_keys($courselistClassroom);
+        for ($i=0; $i<count($keys); $i++) {
+            $courselistClassroom[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselistClassroom[$keys[$i]]);
+        }        
+        // fine classroom         
+        
+        
+        
+        
 		require_once(_lms_.'/lib/lib.middlearea.php');
 		$ma = new Man_MiddleArea();
 		$this->render('courselist', array(
 			'path_course' => $this->path_course,
 			'courselist' => $courselist,
 			'use_label' => $ma->currentCanAccessObj('tb_label'),
-			'keyword' => $filter_text
+			'keyword' => $filter_text  ,
+            'display_info' => $this->_getClassDisplayInfo($keys),
+            'courselistClassroom' => $courselistClassroom 
 		));
 	}
 
@@ -253,13 +302,60 @@ class ElearningLmsController extends LmsController {
 		for ($i=0; $i<count($keys); $i++) {
 			$courselist[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselist[$keys[$i]]);
 		}
+        
+         // CLASSROOM 
+        $modelClassroom = new ClassroomLms();
+
+        $filter_text = Get::req('filter_text', DOTY_STRING, "");
+        $filter_year = Get::req('filter_year', DOTY_INT, 0);
+
+        $conditions = array(
+            'cu.iduser = :id_user',
+            'cu.status = :status'
+        );
+
+        $params = array(
+            ':id_user' => (int)Docebo::user()->getId(),
+            ':status' => _CUS_BEGIN
+        );
+
+        if (!empty($filter_text)) {
+            $conditions[] = "(c.code LIKE '%:keyword%' OR c.name LIKE '%:keyword%')";
+            $params[':keyword'] = $filter_text;
+        }
+
+        if (!empty($filter_year)) {
+            $clist = $modelClassroom->getUserCoursesByYear(Docebo::user()->getId(), $filter_year);
+            if ($clist !== false) {
+                $conditions[] = "cu.idCourse IN (".implode(",", $clist).")";
+            }
+        }
+
+        $cp_courses = $modelClassroom->getUserCoursePathCourses( Docebo::user()->getIdst() );
+        if (!empty($cp_courses)) {
+            $conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
+        }
+
+        $courselistClassroom = $modelClassroom->findAll($conditions, $params);   
+        
+
+        //check courses accessibility
+        $keys = array_keys($courselistClassroom);
+        for ($i=0; $i<count($keys); $i++) {
+            $courselistClassroom[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselistClassroom[$keys[$i]]);
+        }        
+        // fine classroom        
+        
+        
 		require_once(_lms_.'/lib/lib.middlearea.php');
 		$ma = new Man_MiddleArea();
 		$this->render('courselist', array(
 			'path_course' => $this->path_course,
 			'courselist' => $courselist,
 			'use_label' => $ma->currentCanAccessObj('tb_label'),
-			'keyword' => $filter_text
+			'keyword' => $filter_text ,
+            'display_info' => $this->_getClassDisplayInfo($keys),
+            'courselistClassroom' => $courselistClassroom            
 		));
 	}
 
@@ -288,24 +384,75 @@ class ElearningLmsController extends LmsController {
 		}
 
 		if (!empty($filter_year)) {
-			$conditions[] = "(cu.date_inscr >= ':year-00-00 00:00:00' AND cu.date_inscr <= ':year-12-31 23:59:59')";
+			$conditions[] = "((cu.date_inscr >= ':year-00-00 00:00:00' AND cu.date_inscr <= ':year-12-31 23:59:59') OR (cu.date_inscr='0000-00-00 00:00:00.000000'))";
 			$params[':year'] = $filter_year;
 		}
 
 		$courselist = $model->findAll($conditions, $params);
 
-		//check courses accessibility
-		$keys = array_keys($courselist);
-		for ($i=0; $i<count($keys); $i++) {
-			$courselist[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselist[$keys[$i]]);
-		}
+        //check courses accessibility
+        $keys = array_keys($courselist);
+        for ($i=0; $i<count($keys); $i++) {
+            $courselist[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselist[$keys[$i]]);
+        }        
+        
+        
+        // CLASSROOM 
+        $modelClassroom = new ClassroomLms();
+
+        $filter_text = Get::req('filter_text', DOTY_STRING, "");
+        $filter_year = Get::req('filter_year', DOTY_INT, 0);
+
+        $conditions = array(
+            'cu.iduser = :id_user',
+            'cu.status = :status'
+        );
+
+        $params = array(
+            ':id_user' => (int)Docebo::user()->getId(),
+            ':status' => _CUS_END
+        );
+
+        if (!empty($filter_text)) {
+            $conditions[] = "(c.code LIKE '%:keyword%' OR c.name LIKE '%:keyword%')";
+            $params[':keyword'] = $filter_text;
+        }
+
+        if (!empty($filter_year)) {
+            $clist = $modelClassroom->getUserCoursesByYear(Docebo::user()->getId(), $filter_year);
+            if ($clist !== false) {
+                $conditions[] = "cu.idCourse IN (".implode(",", $clist).")";
+            }
+        }
+
+        $cp_courses = $modelClassroom->getUserCoursePathCourses( Docebo::user()->getIdst() );
+        if (!empty($cp_courses)) {
+            $conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
+        }
+
+        $courselistClassroom = $modelClassroom->findAll($conditions, $params);   
+        
+
+
+        //check courses accessibility
+        $keys = array_keys($courselistClassroom);
+        for ($i=0; $i<count($keys); $i++) {
+            $courselistClassroom[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselistClassroom[$keys[$i]]);
+        }        
+        // fine classroom        
+                
+        
+        
+
 		require_once(_lms_.'/lib/lib.middlearea.php');
 		$ma = new Man_MiddleArea();
 		$this->render('courselist', array(
 			'path_course' => $this->path_course,
 			'courselist' => $courselist,
 			'use_label' => $ma->currentCanAccessObj('tb_label'),
-			'keyword' => $filter_text
+			'keyword' => $filter_text,
+            'display_info' => $this->_getClassDisplayInfo($keys),
+            'courselistClassroom' => $courselistClassroom               
 		));
 	}
 
@@ -313,11 +460,14 @@ class ElearningLmsController extends LmsController {
 
 
 	public function allTask() {
-		$model = new ElearningLms();
+		
+        // ELEARNING
+        $model = new ElearningLms();
 
 		$filter_text = Get::req('filter_text', DOTY_STRING, "");
 		$filter_year = Get::req('filter_year', DOTY_INT, 0);
 
+        /*
 		$conditions = array(
 			'cu.iduser = :id_user',
 			'cu.status <> :status'
@@ -327,7 +477,18 @@ class ElearningLmsController extends LmsController {
 			':id_user' => (int)Docebo::user()->getId(),
 			':status' => _CUS_END
 		);
+        */
+        
+        
+        $conditions = array(
+            'cu.iduser = :id_user'
+        );
 
+        $params = array(
+            ':id_user' => (int)Docebo::user()->getId()
+        );        
+        
+        
 		if (!empty($filter_text)) {
 			$conditions[] = "(c.code LIKE '%:keyword%' OR c.name LIKE '%:keyword%')";
 			$params[':keyword'] = $filter_text;
@@ -338,18 +499,59 @@ class ElearningLmsController extends LmsController {
 			$params[':year'] = $filter_year;
 		}
 
-//		$cp_courses = $model->getUserCoursePathCourses( Docebo::user()->getIdst() );
-//		if (!empty($cp_courses)) {
-//			$conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
-//		}
 
 		$courselist = $model->findAll($conditions, $params);
 
-		//check courses accessibility
-		$keys = array_keys($courselist);
-		for ($i=0; $i<count($keys); $i++) {
-			$courselist[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselist[$keys[$i]]);
-		}
+        //check courses accessibility
+        $keys = array_keys($courselist);
+        for ($i=0; $i<count($keys); $i++) {
+            $courselist[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselist[$keys[$i]]);
+        }        
+        
+        
+        // CLASSROOM 
+        $modelClassroom = new ClassroomLms();
+
+        $filter_text = Get::req('filter_text', DOTY_STRING, "");
+        $filter_year = Get::req('filter_year', DOTY_INT, 0);
+
+        $conditions = array(
+            'cu.iduser = :id_user',
+            'cu.status <> :status'
+        );
+
+        $params = array(
+            ':id_user' => (int)Docebo::user()->getId(),
+            ':status' => _CUS_END
+        );
+
+        if (!empty($filter_text)) {
+            $conditions[] = "(c.code LIKE '%:keyword%' OR c.name LIKE '%:keyword%')";
+            $params[':keyword'] = $filter_text;
+        }
+
+        if (!empty($filter_year)) {
+            $clist = $modelClassroom->getUserCoursesByYear(Docebo::user()->getId(), $filter_year);
+            if ($clist !== false) {
+                $conditions[] = "cu.idCourse IN (".implode(",", $clist).")";
+            }
+        }
+
+        $cp_courses = $modelClassroom->getUserCoursePathCourses( Docebo::user()->getIdst() );
+        if (!empty($cp_courses)) {
+            $conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
+        }
+
+        $courselistClassroom = $modelClassroom->findAll($conditions, $params);   
+        
+
+        //check courses accessibility
+        $keys = array_keys($courselistClassroom);
+        for ($i=0; $i<count($keys); $i++) {
+            $courselistClassroom[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselistClassroom[$keys[$i]]);
+        }        
+        
+
 
 		require_once(_lms_.'/lib/lib.middlearea.php');
 		$ma = new Man_MiddleArea();
@@ -357,7 +559,9 @@ class ElearningLmsController extends LmsController {
 			'path_course' => $this->path_course,
 			'courselist' => $courselist,
 			'use_label' => $ma->currentCanAccessObj('tb_label'),
-			'keyword' => $filter_text
+			'keyword' => $filter_text  ,
+            'display_info' => $this->_getClassDisplayInfo($keys),
+            'courselistClassroom' => $courselistClassroom
 		));
 	}
 
@@ -440,5 +644,52 @@ class ElearningLmsController extends LmsController {
 
 		Util::jump_to($jump_url);
 	}
+    
+    
+    
+protected function _getClassDisplayInfo($courses) {
+        $model = new ClassroomLms();
+        $class_info = $model->getUserEditionsInfo(Docebo::user()->getIdst(), $courses);
+        if (empty ($class_info)) return array();
+
+        $dm =new DateManager();
+        $status_arr =$dm->getStatusForDropdown();
+
+        $output = array();
+
+        foreach ($class_info as $id_course => $classrooms) {
+            $output[$id_course] = array();
+            foreach ($classrooms as $id_classroom => $classroom) {
+                if (!isset($output[$id_course][$id_classroom])) {
+                    $output[$id_course][$id_classroom] = new stdClass();
+                    $output[$id_course][$id_classroom]->code = $classroom->code;
+                    $output[$id_course][$id_classroom]->name = $classroom->name;
+                    $output[$id_course][$id_classroom]->location = $classroom->location;
+                    $output[$id_course][$id_classroom]->enrolled = $classroom->enrolled;
+                    $output[$id_course][$id_classroom]->status = $status_arr[$classroom->status];
+                    $output[$id_course][$id_classroom]->date_min = $classroom->date_min;
+                    $output[$id_course][$id_classroom]->date_max = $classroom->date_max;
+
+                    if (property_exists($classroom, 'date_info')) {
+                        $output[$id_course][$id_classroom]->date_info =$classroom->date_info; // (array)
+                    }
+                    else {
+                        $output[$id_course][$id_classroom]->date_info =false;
+                    }
+                }
+
+                if (!property_exists($output[$id_course][$id_classroom], 'start_date')) $output[$id_course][$id_classroom]->start_date = $classroom->date_begin;
+                if (!property_exists($output[$id_course][$id_classroom], 'end_date')) $output[$id_course][$id_classroom]->end_date = $classroom->date_end;
+                if ($classroom->date_end > $output[$id_course][$id_classroom]->end_date) $output[$id_course][$id_classroom]->end_date = $classroom->date_end;
+                if ($classroom->date_begin < $output[$id_course][$id_classroom]->start_date) $output[$id_course][$id_classroom]->start_date = $classroom->date_begin;
+            }
+        }
+
+
+        return $output;
+    }    
+    
+    
+    
 
 }

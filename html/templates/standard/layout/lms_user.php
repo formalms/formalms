@@ -16,7 +16,7 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/base.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms-to-review.css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms-menu.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/lms-menu.css" />   
 		<!-- specific stylesheet -->
 
 		<!-- printer stylesheet-->

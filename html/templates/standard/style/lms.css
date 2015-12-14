@@ -43,8 +43,8 @@ _background:url(../images/standard/updates.png) 0 0 no-repeat transparent;}
 .edition_container, .dash-course{position:relative;clear:none;margin:.6em 0.5em;padding:0 0 1em 0;border-bottom:1px solid #cccccc; min-height: 72px; }
 .dash-course img.clogo{display:inline-block;border:2px solid #cccccc;max-width:100px;max-height:70px;padding:2px;margin:0px;}
 .dash-course img.cnologo{padding:5px 20px;background:#ffffff;}
-.dash-course h2{color:#C84000;}
-.dash-course h2 a{color:#C84000;}
+.dash-course h2{color:#C84000; font-size: 20px;}
+.dash-course h2 a{color:#C84000; font-size: 20px;}
 .course_support_info {padding:.2em .4em;}
 .status_subscribed h2{background:#efefef;}
 .status_subscribed h2 a{}

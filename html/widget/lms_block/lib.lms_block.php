@@ -27,9 +27,9 @@ class Lms_BlockWidget extends Widget {
 		if ($ma->currentCanAccessObj ( 'user_details_full' ))
 			$this->block_list ['user_details_full'] = true;
 		if ($ma->currentCanAccessObj ( 'credits' ))
-			$this->block_list ['credits'] = true;
+			//$this->block_list ['credits'] = true;
 		if ($ma->currentCanAccessObj ( 'news' ))
-			$this->block_list ['news'] = true;
+			//$this->block_list ['news'] = true;
 		if ($ma->currentCanAccessObj ( 'career' ))
 			$this->block_list ['career'] = true;
 		if ($ma->currentCanAccessObj ( 'course' ))
@@ -101,7 +101,7 @@ class Lms_BlockWidget extends Widget {
                                             </div>
                                     </div>
                             </div>';
-		echo $html;
+	//	echo $html;
 	}
 	// END
 	
@@ -219,13 +219,13 @@ class Lms_BlockWidget extends Widget {
 			echo '<p>' . Lang::t ( '_NO_CONTENT', 'catalogue' ) . '</p>';
 		}
 		
-		echo '</div>';
+		echo '</div>';    
 	}
 	public function user_details_full($link) {
 		require_once (_lib_ . '/lib.user_profile.php');
 		$profile = new UserProfile ( getLogUserId () );
 		$profile->init ( 'profile', 'framework', 'index.php?r=' . $link, 'ap' );
-		echo $profile->homeUserProfile ( 'normal', false, false );
+		//echo $profile->homeUserProfile ( 'normal', false, false );
 	}
 	public function user_details_short($link) {
 		require_once (_lib_ . '/lib.user_profile.php');

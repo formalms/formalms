@@ -605,6 +605,14 @@ class UserProfile {
 		return $this->_up_viewer->homeUserProfile($picture, $viewer, $intest);
 	}
 
+    function homePhotoProfile($picture = false, $viewer = false, $intest = true)
+    {
+        $this->setViewer($viewer);
+        return $this->_up_viewer->homePhotoProfile($picture, $viewer, $intest);
+    }    
+    
+    
+    
 	/**
 	 * show only username and avatar
 	 * @param int $viewer_id the id of the user that has request the profile, it is used for the permission
@@ -670,7 +678,6 @@ class UserProfile {
 	}
 
 	function getUserPhotoOrAvatar($dimension = 'medium') {
-
 		return $this->_up_viewer->getAvailablePhotoAvatar($dimension);
 	}
 
@@ -1038,6 +1045,15 @@ class UserProfileViewer {
 			.'alt="'.$alt.'" />';
 	}
 
+    
+    function getPASrcHome($image, $alt, $base_reduce_class) {
+
+
+        return '<img class=boxed width=40px; src="'.$GLOBALS['where_files_relative'].$this->_up_data_man->getPAPath().$image.'" ></img> &nbsp; ';
+    }    
+    
+    
+    
 	function getPhotoLimit($dimension) {
 
 		$class_picture = false;
@@ -1070,23 +1086,26 @@ class UserProfileViewer {
 		return array($class_picture, $max_dim);
 	}
 
-	function getAvailablePhotoAvatar($dimension = 'medium') {
-
+	public function getAvailablePhotoAvatar($dimension = 'medium') {
+       
 		list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($dimension);
-		// avatar ------------------------------------------------------------------------------
+		
+        // avatar ------------------------------------------------------------------------------
 		if($this->user_info[ACL_INFO_AVATAR] != "")
 		{
 			return $this->getPASrc(	$this->user_info[ACL_INFO_AVATAR],
 									$this->_lang->def('_AVATAR'),
 									$class_picture);
 		}
-
+        
 		$img_size = getimagesize(getPathImage().'standard/user.png');
 
 		$class_image = '';
 		if($img_size[0] > $this->max_dim_avatar && $img_size[0] > $img_size[1]) $class_image .= $class_picture.'_width';
 		elseif($img_size[1] > $this->max_dim_avatar) $class_image .= ' '.$class_picture.'_height';
-
+          
+     
+                
 		return '<img'.( $class_picture != '' ? ' class="'.$class_picture.'"' : '' ).' '
 			.'src="'.getPathImage().'standard/user.png'.'" '
 			.'alt="'.$this->_lang->def('_NOAVATAR').'" />';
@@ -1768,6 +1787,24 @@ class UserProfileViewer {
 		return $html;
 	}
 
+    
+function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
+
+        $this->loadUserData($this->getViewer());
+        $acl_man     =& Docebo::user()->getAclManager();
+        list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
+
+        $html = '';
+
+        $html .= ''
+                .( ($this->user_info[ACL_INFO_AVATAR] != "")
+                    ? $this->getPASrcHome($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed').""
+                    : '<img width="30px" width="30px"  class="avatar" src="'.getPathImage().'standard/user.png" alt="'.$this->_lang->def('_NOAVATAR').'" /> ' )
+            .'';
+                return $html;
+}           
+    
+    
 	function homeUserProfile($picture = false, $viewer = false, $intest = false) {
 
 		$this->loadUserData($this->getViewer());
@@ -1776,6 +1813,7 @@ class UserProfileViewer {
 
 		$html = '<div class="up_dashboard"><div class="content">';
 
+        /*
 		$html .= '<p class="logo">'
 				.( ($this->user_info[ACL_INFO_AVATAR] != "")
 					? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed')
@@ -1800,7 +1838,47 @@ class UserProfileViewer {
 					)
 				.'</p>'
 			.'<div class="nofloat"></div>';
+        */
+            $ma = new Man_MiddleArea();
+          if($ma->currentCanAccessObj('mo_message')) {
+                  $perm_message = true;
+                require_once($GLOBALS['where_framework'].'/lib/lib.message.php');
+                $msg = new Man_Message();
+                $unread_num = $msg->getCountUnreaded(getLogUserId(), array(), '', true);                  
+          }  
+          
+          if($ma->currentCanAccessObj('mo_7')) {
+                  $perm_certificate = true;   
+          }           
+          
+          
+          if($ma->currentCanAccessObj('mo_34')) {
+                  $perm_competence = true;
+          }           
+          
+            $html .= '<p class="logo">'
+                .( ($this->user_info[ACL_INFO_AVATAR] != "")
+                    ? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed')
+                    : '<img class="boxed" src="'.getPathImage().'standard/user.png" alt="'.$this->_lang->def('_NOAVATAR').'" />' )
+            .'</p>'
+            .'<p class="userinfo"><b><a href="index.php?r=profile/show">'
+                    .$this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]).' '.$this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
+                .'</a></b>
+                <br><i style="font-size:.88em">
+                 <a href="mailto:'.$this->user_info[ACL_INFO_EMAIL].'">'.$this->user_info[ACL_INFO_EMAIL].'</a>
+                 </i>
+                </p>
 
+                <ul class="nav nav-pills nav-stacked">
+                ';
+                if($perm_certificate) $html .= '<li><a href="index.php?modname=mycertificate&op=mycertificate&sop=unregistercourse">Certificati</a></li> ';
+                if($perm_competence ) $html .= '<li><a href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">Competenze</a></li>  ';
+                if($perm_message) $html .= '<li><a href="index.php?modname=message&op=message&sop=unregistercourse">Messaggi <i style="font-size:.88em">('.$unread_num.')</i></a> </li> ';
+                                                       
+          $html .= '</ul>';
+            
+                //  .'<div class="nofloat"></div>';
+                  
 		$social =new Social();
 		if ($social->enabled()) {
 			if (!$social->allConnected()) {

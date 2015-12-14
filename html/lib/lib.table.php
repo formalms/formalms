@@ -291,7 +291,7 @@ class Table {
 
 		$this->table_caption 	= $caption;
 		$this->table_summary 	= $summary;
-
+                                   
 		$this->table_head 		= array();
 		$this->table_body 		= array();
 		$this->table_foot 		= array();

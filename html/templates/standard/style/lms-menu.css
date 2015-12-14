@@ -29,7 +29,7 @@ body.yui-skin-sam .yuimenuitem .yuimenubaritemlabel-hassubmenu {padding-right:20
 
 /* == Nested tab == */
 .yui-nav{font-size:90%;}
-.yui-skin-sam div.nested_tab .yui-navset .yui-nav,.yui-skin-sam div.nested_tab .yui-navset .yui-navset-top .yui-nav {border:none transparent;border-width:0;position:relative;zoom:1;background: #cccccc;padding: 6px 12px;}
+.yui-skin-sam div.nested_tab .yui-navset .yui-nav,.yui-skin-sam div.nested_tab .yui-navset .yui-navset-top .yui-nav {border:none transparent;border-width:0;position:relative;zoom:1;background: #cccccc;padding: 16px 12px;}
 .yui-skin-sam div.nested_tab .yui-navset .yui-nav li.first {border: 0px none;}
 .yui-skin-sam div.nested_tab .yui-navset .yui-nav li,.yui-skin-sam div.nested_tab .yui-navset .yui-navset-top .yui-nav li {zoom:1;border-left: 1px solid #808080;}
 .yui-skin-sam div.nested_tab .yui-navset .yui-nav .selected,.yui-skin-sam div.nested_tab .yui-navset .yui-navset-top .yui-nav .selected {margin:0 0.16em -1px 0;}
