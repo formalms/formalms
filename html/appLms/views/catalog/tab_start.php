@@ -11,7 +11,8 @@ $ma = new Man_MiddleArea();
 	});
 </script>
 <div id="global_conf" class="yui-navset yui-navset-top">
-	<ul class="yui-nav">
+	<!--
+    <ul class="yui-nav">
 		<li class="<?php echo ($active_tab == 'all' ? 'selected' : ''); ?> first">
 			<a href="index.php?r=catalog/allCourse">
 				<em><?php echo Lang::t('_ALL_COURSES', 'catalogue') ?></em>
@@ -53,6 +54,7 @@ $ma = new Man_MiddleArea();
 				. '</li>';
 		?>
 		</ul>
+        -->
 		<div class="yui-content">
 		<?php
 			if (!isset($_GET['r']) || $_GET['r'] !== 'catalog/coursepathCourse') {
