@@ -185,11 +185,20 @@
                                 <p class="course_support_info">
                                     <?php if ($_date_limit !== FALSE && $_date_limit < date("Y-m-d H:i:s")) {
                                         echo '';
-                                    } else { ?>
-                                    <a href="index.php?r=elearning/self_unsubscribe&amp;id_course=<?php echo $course['idCourse']; ?>&amp;back=<?php echo Get::req('r', DOTY_STRING, ""); ?>"
-                                         title="<?php echo Lang::t('_SELF_UNSUBSCRIBE', 'course'); ?>">
-                                         <?php echo Lang::t('_SELF_UNSUBSCRIBE', 'course'); ?>
-                                    </a>
+                                    } else { ?> 
+                                    
+                                        <table width='100%' border="0">
+                                              <tr>
+                                                   <td width='60%' valign=middle>&nbsp;</td>
+                                                   <td align=center >
+                                                               
+                                        <a href="index.php?r=elearning/self_unsubscribe&amp;id_course=<?php echo $course['idCourse']; ?>&amp;back=<?php echo Get::req('r', DOTY_STRING, ""); ?>"
+                                             title="<?php echo Lang::t('_SELF_UNSUBSCRIBE', 'course'); ?>">
+                                             <?php echo Lang::t('_SELF_UNSUBSCRIBE', 'course'); ?>
+                                        </a>
+                                        </td><td>&nbsp;</td></tr></table>
+                                    
+                                    
                                     <?php
                                         if ($_date_limit) echo '&nbsp;('.Lang::t('_UNTIL', 'standard').' '.Format::date(substr($_date_limit, 0, 10), 'date').')';
                                     ?>
