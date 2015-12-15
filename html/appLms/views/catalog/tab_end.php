@@ -16,7 +16,7 @@
 				. '<div class="col-md-4" id="left_categories">'
 				. '<ul class="flat-categories">'
                 //FORMA Modifica 25/07/2012 GN 
-                . '<li><a href="' . $std_link . '">' . Lang::t('_ALL_CATEGORIES', 'catalog') . '</a></li>';
+                . '<li><a href="' . $std_link . '&id_cat=0">' . Lang::t('_ALL_CATEGORIES', 'catalog') . '</a></li>';
 
 
                 // *** FORMA - start ***

@@ -55,7 +55,7 @@ $ma = new Man_MiddleArea();
 		?>
 		</ul>
         -->
-		<div class="yui-content">
+		<div class="yui-content"> 
 		<?php
 			if (!isset($_GET['r']) || $_GET['r'] !== 'catalog/coursepathCourse') {
 				echo '<div class="row>'
@@ -64,8 +64,8 @@ $ma = new Man_MiddleArea();
                     
                     
                     
-					. '<div class="col-md-8">'
-					. $this->model->getBreadCrumbs($std_link);
+					. '<div class="col-md-8">';
+					//. $this->model->getBreadCrumbs($std_link);
 
 				$category = $this->model->getMinorCategory($std_link, true);
 				if(!empty($category)) {

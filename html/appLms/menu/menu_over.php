@@ -210,9 +210,11 @@ cout('
                     $active = "";
                     if(strrpos($row[0], $_GET['r'])>0 || strrpos($row[0], $_GET['modname'])>0) $active = " class='active'";
                     
+                    if( isset($_GET['id_cat']) && strpos($row[0], "catalog")>0)  $active = " class='active'";
+         
                     
                      if(strrpos($row[0], 'appCore')>0 ){
-                        cout( '<li  ><a href="'.$row[0].'" title="'.$row[1].'"><span class="glyphicon glyphicon-cog"></span></a></li>  ','menu_over'); 
+                        cout( '<li  ><a href="'.$row[0].'" title="'.$row[1].'"><span class="glyphicon glyphicon-cog"></span></a></li> ','menu_over'); 
                      } else{
                         cout( '<li '.$active.'  ><a href="'.$row[0].'" >'.$row[1].'</a></li>','menu_over');
                      }

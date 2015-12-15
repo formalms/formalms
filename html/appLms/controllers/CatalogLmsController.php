@@ -113,7 +113,7 @@ class CatalogLmsController extends LmsController {
 											'active_tab' => $active_tab,
 											'user_coursepath' => $user_coursepath,
 											'std_link' => 'index.php?r=catalog/newCourse'.($page > 1 ? '&amp;page='.$page : ''),
-											'model' => $this->model));
+											'model' => $this->model)); 
 		$this->render('courselist', array(	'html' => $html,
 											'nav_bar' => $nav_bar));
 		$this->render('tab_end', array(	'std_link' => 'index.php?r=catalog/newCourse'.($page > 1 ? '&amp;page='.$page : ''),
