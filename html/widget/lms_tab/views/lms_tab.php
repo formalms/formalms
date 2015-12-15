@@ -45,7 +45,8 @@
                     <li  <?php echo $this->selected($cid); ?>>
                 
                 <?php
-                      if (!strpos($_GET['r'], 'catalog/')){
+                      if (!strpos($_GET['r'], 'catalog')  && !isset($_GET['id_cat'])   ){
+                          
                  ?>
                         <a href="index.php?r=lms/<?php echo $cid; ?>/show&sop=unregistercourse"><em><?php echo $name ?></em><?php //echo ( isset(${$name}) ? '<b>'.${$name}.'</b>' : '' );  ?></a></li>
                         
