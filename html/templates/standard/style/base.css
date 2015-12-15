@@ -602,6 +602,7 @@ ul.style_none li {list-style:none; }
     max-width: 100%;
     display: block;
     position: relative;
+    
 }    
     
 .cs-style-3 figcaption {
@@ -686,3 +687,11 @@ ul.style_none li {list-style:none; }
     background-image: url('http://api.randomuser.me/0.3.2/portraits/women/35.jpg');
 }
 
+img.no_traform{
+   -webkit-transform: none!important;
+    -moz-transform: none!important;
+    -ms-transform: none!important;
+    transform: none!important;
+   
+    
+}

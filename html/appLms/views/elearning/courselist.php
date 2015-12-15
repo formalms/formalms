@@ -86,10 +86,11 @@
                                          <td align="right" width=10%>
                                            <?php
                               
-                                              if($course['user_status']=='2') echo "<img src='". Get::tmpl_path().'images/lobject/completed.png'."'>"  ;
-                                              if($course['user_status']=='1') echo "<img src='". Get::tmpl_path().'images/lobject/attempted.png'."'>"  ;
-                                              if($course['user_status']=='0') echo "<img src='". Get::tmpl_path().'images/standard/unpublish.png'."'>" ;
-                                              if(!$course['can_enter']['can']) echo Get::img('standard/locked.png', Lang::t('_'.strtoupper($course['can_enter']['reason']), 'standard'));
+                                              if($course['user_status']=='2') echo "<img class='no_traform' src='". Get::tmpl_path().'images/lobject/completed.png'."'>"  ;
+                                              if($course['user_status']=='1') echo "<img class='no_traform' src='". Get::tmpl_path().'images/lobject/attempted.png'."'>"  ;
+                                              if($course['user_status']=='0') echo "<img class='no_traform' src='". Get::tmpl_path().'images/standard/unpublish.png'."'>" ;
+                                              if(!$course['can_enter']['can']) echo "<img class='no_traform' src='". Get::tmpl_path().'images/standard/locked.png'."'>" ;
+             
                                               
                                             ?>
                                          </td>
