@@ -44,7 +44,7 @@ if(!Docebo::user()->isAnonymous()) {
 	WHERE module_info IN ('all', 'user', 'public_admin')   and mo.idModule not in(7,34)
 	ORDER BY module_info, under.sequence ";
 
-    
+                 
    // echo $query_menu;
    //  die();
 
@@ -144,6 +144,12 @@ if(!Docebo::user()->isAnonymous()) {
 		}
 	}
 
+    
+    
+    
+    
+    
+    
 	// Menu for the public admin
 	if($user_level == ADMIN_GROUP_PUBLICADMIN && !empty($menu['public_admin'])) {
 		$menu['all'][] = array(
@@ -191,7 +197,7 @@ cout('
                 ','menu_over');         
          
                 
-         
+                    
          cout('
          
          <div class=col-md-2>                 
@@ -236,7 +242,6 @@ cout('
                             }             
       
                 }  
-          
                
                cout('</ul></div>
         
@@ -274,10 +279,10 @@ cout('
                                                                         
                                                                         <p align=right>
                                                                         
-                                                                        
-                                                                                   <a href="index.php?modname=login&amp;op=logout"><img title="'.Lang::t('_LOGOUT', 'standard').'"  src="'. Layout::path().'/images/standard/exit.png" alt="'.Lang::t('_LOGOUT', 'standard').'"/></a>
+                                                                                <a href="index.php?r=profile/show"><img   src="'. Layout::path().'/images/standard/moduser.png" /></a>
+                                                                                <a href="index.php?modname=login&amp;op=logout"><img title="'.Lang::t('_LOGOUT', 'standard').'"  src="'. Layout::path().'/images/standard/exit.png" alt="'.Lang::t('_LOGOUT', 'standard').'"/></a>
                                                                                    
-                                                                                   </p>
+                                                                        </p>
 
                                                                         '.$profile_box.'                                               
                                                                          <div >&nbsp;</div>   
@@ -291,25 +296,11 @@ cout('
                                                   </ul>
                                                 </nav><!-- /c-menu slide-right -->
 
-
-
-
                                                 <div id="c-mask" class="c-mask"></div><!-- /c-mask -->
-      
-                                                   
-                                                   
-                                                   
                                                 
                                         ','menu_over')   ; 
                                                 
-                                                
-                                                
-                                                
-                              
-        
-        
-        
-                     
+       
           cout('
                 
                 
@@ -328,17 +319,8 @@ cout('
       
 ','menu_over');        
     
-    
-   
-   
-   
-    
 
 }    
-
-
-     
-
 
      
 ?>
