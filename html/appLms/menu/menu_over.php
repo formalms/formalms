@@ -249,54 +249,60 @@ cout('
               <div class="col-md-2">
              <ul class="nav pull-right top-menu">
                                                  
-                                                <div id="o-wrapper" class="o-wrapper">
-                                                        <button id="c-button--slide-right" class="c-button">
-                                                        
-                                                         <a data-toggle="dropdown"  href="#">
-                                                        <table><tr><td >'. $photo.'  &nbsp;</td><td><span class="username"> '.Docebo::user()->getUserName().'</span></td></tr></table>                                                        
-                                                        
-                                                        </button>
-                                                </div><!-- /o-wrapper -->
+                <div id="o-wrapper" class="o-wrapper">
+                        <button id="c-button--slide-right" class="c-button">
+                        
+                         <a data-toggle="dropdown"  href="#">
+                        <table><tr><td >'. $photo.'  &nbsp;</td><td><span class="username"> '.Docebo::user()->getUserName().'</span></td></tr></table>                                                        
+                        
+                        </button>
+                </div><!-- /o-wrapper -->
 
 
-                                                <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right">
+                <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right">
+                
+                  <button class="c-menu__close">'.Lang::t('_CLOSE', 'standard').'</button>
+                  
+                                                             
+                  
+                  <ul class="c-menu__items">
+                      <li class="c-menu__item">
+                      
+                       <div class="col-md-12">
+                       <br>
+                                         <table width="10%" border="0">
+                                            <tr align="left">
+                                                <td><span class="select-language">'. Layout::change_lang().'</span></td>
+                                               <td align="center">                                                                                                                                                                                   
+                                                </td>
+                                        </tr></table>
+                                        
+                                        <p align=right>
+                                        
+                                                <a href="index.php?r=profile/show">
+                                                 <span class="glyphicon glyphicon-pencil"></span>
+                                                </a>
+                                                &nbsp;
+                                                <a title="'.Lang::t('_LOGOUT', 'standard').'" href="index.php?modname=login&amp;op=logout">
                                                 
-                                                  <button class="c-menu__close">'.Lang::t('_CLOSE', 'standard').'</button>
-                                                  
-                                                                                             
-                                                  
-                                                  <ul class="c-menu__items">
-                                                      <li class="c-menu__item">
-                                                      
-                                                       <div class="col-md-12">
-                                                       <br>
-                                                                         <table width="10%" border="0">
-                                                                            <tr align="left">
-                                                                                <td><span class="select-language">'. Layout::change_lang().'</span></td>
-                                                                               <td align="center">                                                                                                                                                                                   
-                                                                                </td>
-                                                                        </tr></table>
-                                                                        
-                                                                        <p align=right>
-                                                                        
-                                                                                <a href="index.php?r=profile/show"><img   src="'. Layout::path().'/images/standard/moduser.png" /></a>
-                                                                                <a href="index.php?modname=login&amp;op=logout"><img title="'.Lang::t('_LOGOUT', 'standard').'"  src="'. Layout::path().'/images/standard/exit.png" alt="'.Lang::t('_LOGOUT', 'standard').'"/></a>
-                                                                                   
-                                                                        </p>
+                                                    <span class="glyphicon glyphicon-off"></span>
+                                                    </a>
+                                          
+                                        </p>
 
-                                                                        '.$profile_box.'                                               
-                                                                         <div >&nbsp;</div>   
-                                                                        '.$subscribe_course.'
-                                                                        '.$news.'
-                                                                        '.$credits.'
-                                                          
-                                                          </div>   
-                                                      
-                                                      <li>
-                                                  </ul>
-                                                </nav><!-- /c-menu slide-right -->
+                                        '.$profile_box.'                                               
+                                         <div >&nbsp;</div>   
+                                        '.$subscribe_course.'
+                                        '.$news.'
+                                        '.$credits.'
+                          
+                          </div>   
+                      
+                      <li>
+                  </ul>
+                </nav><!-- /c-menu slide-right -->
 
-                                                <div id="c-mask" class="c-mask"></div><!-- /c-mask -->
+                <div id="c-mask" class="c-mask"></div><!-- /c-mask -->
                                                 
                                         ','menu_over')   ; 
                                                 
