@@ -80,7 +80,8 @@ a.no_decoration{text-decoration:none;}
 /* highlight for text */
 .highlight{background-color:#ffffcc;}
 .bg_highlight{background-color:#ffffcc;color:#000;}
-.boxed{padding:2px;border:1px solid #cccccc;width:70px;}
+.boxed{padding:2px;border:1px solid #cccccc;width:80px;}
+.boxedHome{padding:2px;border:1px solid #cccccc;width:30px;}
 .publish-date{font-size:90%;color:#666666;display:inline;padding-right:8px;}
 /* opacity */
 .opacity-80{-khtml-opacity:.80; -moz-opacity:.80; -ms-filter:"alpha(opacity=80)"; filter:alpha(opacity=80); opacity:.80; }

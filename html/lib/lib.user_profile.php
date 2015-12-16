@@ -1049,7 +1049,7 @@ class UserProfileViewer {
     function getPASrcHome($image, $alt, $base_reduce_class) {
 
 
-        return '<img class=boxed width=30px; src="'.$GLOBALS['where_files_relative'].$this->_up_data_man->getPAPath().$image.'" ></img> &nbsp; ';
+        return '<img class=boxedhome width=30px; src="'.$GLOBALS['where_files_relative'].$this->_up_data_man->getPAPath().$image.'" ></img> &nbsp; ';
     }    
     
     
