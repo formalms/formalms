@@ -216,7 +216,7 @@ cout('
                      if(strrpos($row[0], 'appCore')>0 ){
                         cout( '<li  ><a href="'.$row[0].'" title="'.$row[1].'"><span class="glyphicon glyphicon-cog"></span></a></li> ','menu_over'); 
                      } else{
-                        cout( '<li '.$active.'  ><a href="'.$row[0].'" >'.$row[1].'</a></li>','menu_over');
+                        cout( '<li '.$active.'   ><a href="'.$row[0].'" >'.$row[1].'</a></li>','menu_over');
                      }
                             
                         if($row[2] !== false) {
@@ -226,7 +226,7 @@ cout('
                                 while(list($id_m, $s_voice) = each($menu[ $row[2] ])) {
 
                                     cout(''
-                                        .'<a  href="'.$s_voice[0].'"">'
+                                        .'<a id="mo_'.$id_m.'"  href="'.$s_voice[0].'"">'
                                         .''.$s_voice[1].''
                                         .'</a> &nbsp; '
                                         .'', 'menu_over');
@@ -265,16 +265,21 @@ cout('
                                                       
                                                        <div class="col-md-12">
                                                        <br>
-                                                                         <table width="100%" border="0">
+                                                                         <table width="10%" border="0">
                                                                             <tr align="left">
                                                                                 <td><span class="select-language">'. Layout::change_lang().'</span></td>
-                                                                               <td align="center">
-                                                                                 <a href="index.php?modname=login&amp;op=logout"  ><img title="'.Lang::t('_LOGOUT', 'standard').'"  src="'. Layout::path().'/images/standard/exit.png" alt="'.Lang::t('_LOGOUT', 'standard').'"/></a>
+                                                                               <td align="center">                                                                                                                                                                                   
                                                                                 </td>
                                                                         </tr></table>
-                       
                                                                         
-                                                                        '.$profile_box.'
+                                                                        <p align=right>
+                                                                        
+                                                                        
+                                                                                   <a href="index.php?modname=login&amp;op=logout"><img title="'.Lang::t('_LOGOUT', 'standard').'"  src="'. Layout::path().'/images/standard/exit.png" alt="'.Lang::t('_LOGOUT', 'standard').'"/></a>
+                                                                                   
+                                                                                   </p>
+
+                                                                        '.$profile_box.'                                               
                                                                          <div >&nbsp;</div>   
                                                                         '.$subscribe_course.'
                                                                         '.$news.'
@@ -324,6 +329,9 @@ cout('
 ','menu_over');        
     
     
+   
+   
+   
     
 
 }    
