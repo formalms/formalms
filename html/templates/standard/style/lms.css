@@ -97,3 +97,41 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
 .yui-skin-sam .yui-dt .forum_action td {text-align:right;}
 
 .tabs_filter {float:right; top:-15px; z-index: 1; position: relative;}
+
+.c-button {
+    display: inline-block;
+    margin: 4px;
+    padding: 4px 14px;
+    color: #000000;
+    background: transparent none repeat scroll 0px 0px;
+    border: 2px solid #ffffff;
+    cursor: pointer;
+    width:auto;
+}
+
+.c-menu {
+    z-index: 200;
+    background-color: #F7F7F7;
+    transition: transform 0.3s ease 0s;
+}
+
+.c-menu__close {
+    color: #FFF;
+    background-color: #cccccc;
+    border: medium none;
+    cursor: pointer;
+}
+
+.c-menu--push-left .c-menu__item, .c-menu--push-right .c-menu__item, .c-menu--slide-left .c-menu__item, .c-menu--slide-right .c-menu__item {
+    display: block;
+    text-align: center;
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+}
+
+
+.c-menu--push-left .c-menu__close, .c-menu--push-right .c-menu__close, .c-menu--slide-left .c-menu__close, .c-menu--slide-right .c-menu__close {
+    display: block;
+    padding: 0px 0px;
+    width: 100%;
+}

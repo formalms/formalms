@@ -23,7 +23,7 @@
     <!-- reset and font stylesheet -->
     {{ evalPhp('Layout::resetter') }}                   
                
-
+      
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -49,11 +49,15 @@
     <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/table-responsive.css"/>
 
          
-        <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/default.css" />
-        <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/component.css" />
-        <script src="http://tympanus.net/Tutorials/CaptionHoverEffects/js/modernizr.custom.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/default.css" />
+    <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/component.css" />
+    <script src="http://tympanus.net/Tutorials/CaptionHoverEffects/js/modernizr.custom.js"></script>
 
          
+     <!-- menus script menu swipe -->
+    <script src="http://callmenick.com/_development/slide-push-menus/js/dist/menu.js"></script>
+    <link rel="stylesheet" href="http://callmenick.com/_development/slide-push-menus/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://callmenick.com/_development/slide-push-menus/css/style.min.css">         
     
     <!-- *************************************************** -->
 
@@ -87,6 +91,32 @@
     {% block content %}
     {% endblock %}
         {{ evalPhp('Layout::analytics') }}
-    </div>                      
+    </div>
+    
+    
+    <script>
+    
+      /**
+       * Slide right instantiation and action.
+       */
+      var slideRight = new Menu({
+        wrapper: '#o-wrapper',
+        type: 'slide-right',
+        menuOpenerClass: '.c-button',
+        maskId: '#c-mask'
+      });
+
+      var slideRightBtn = document.querySelector('#c-button--slide-right');
+
+      
+      slideRightBtn.addEventListener('click', function(e) {
+        e.preventDefault;
+        slideRight.open();
+      });
+
+      
+    </script>      
+    
+                          
 </body>
 </html>

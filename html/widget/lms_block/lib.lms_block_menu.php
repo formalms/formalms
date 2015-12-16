@@ -108,7 +108,7 @@ class Lms_BlockWidget_menu extends Widget {
                                              <div class="content">
                                     <div>
                                             <div class="form_line_l">
-                                            <p><div ><table><tr><td>'. $op . $it . '</td><td valign="bottom">' . $sb . $cf . '</td></tr></table></div></p>      
+                                            <p><div >'. $op . $it . '' . $sb . $cf . '</div></p>      
                                 ';
                                 
                                 

@@ -33,6 +33,13 @@
         <script src="http://tympanus.net/Tutorials/CaptionHoverEffects/js/modernizr.custom.js"></script>
         <script src="http://tympanus.net/codrops/adpacks/demoad.js"></script>
          
+         
+         
+     <!-- menus script menu swipe -->
+    <script src="http://callmenick.com/_development/slide-push-menus/js/dist/menu.js"></script>
+    <link rel="stylesheet" href="http://callmenick.com/_development/slide-push-menus/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://callmenick.com/_development/slide-push-menus/css/style.min.css">            
+         
     <link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/base.css"/>       
     
     <!-- *************************************************** -->      
@@ -143,5 +150,31 @@
 		<!-- def_lang -->
 		<?php echo Layout::zone('def_lang'); ?>
 		<?php echo Layout::analytics(); ?>
+        
+        
+    <script>
+    
+      /**
+       * Slide right instantiation and action.
+       */
+      var slideRight = new Menu({
+        wrapper: '#o-wrapper',
+        type: 'slide-right',
+        menuOpenerClass: '.c-button',
+        maskId: '#c-mask'
+      });
+
+      var slideRightBtn = document.querySelector('#c-button--slide-right');
+
+      
+      slideRightBtn.addEventListener('click', function(e) {
+        e.preventDefault;
+        slideRight.open();
+      });
+
+      
+    </script>         
+        
+        
 	</body>
 </html>

@@ -243,77 +243,57 @@ cout('
         
               <div class="col-md-2">
              <ul class="nav pull-right top-menu">
-                                                    
-                                                    
-                                                    
-                                                    <li class="dropdown">
-
-                                                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                                        <table><tr><td >'. $photo.'  &nbsp;</td><td><span class="username"> '.Docebo::user()->getUserName().'</span><b class="caret"></b></td></tr></table>
-                                                         
-                                                     </a>                                             
-                                                        
-                                                        <ul class="dropdown-menu">
-           
-                                                            <li>
-                                                                
-                                                               
-                                                       
-                                                                        <div class="col-md-12">
-                                                                        
-                                                                                  <!--
-                                                                                   '.Lang::t('_WELCOME', 'profile').', <b>'.Docebo::user()->getUserName().'&nbsp;  </b>                                     
-                                                                                                             
-                                                                                                                     <i style="font-size:.88em">'. Format::date(date("Y-m-d H:i:s")).'</i><br />
-                                                                                  -->                                   
-                                                                                                                    <span class="select-language">'. Layout::change_lang().'</span>
-                               
-                                                                                 <div class="pull-right logout-holder">                            
-                                                                                             <!--
-                                                                                             <a href="index.php?r=profile/show"><img title="'.Lang::t('_PROFILE', 'profile').'"  src="'. Layout::path().'/images/chat/user2.gif" alt="'.Lang::t('_PROFILE', 'profile').'"/></a>
-                                                                                             -->
-                                                                                            <a href="index.php?modname=login&amp;op=logout"  ><img title="'.Lang::t('_LOGOUT', 'standard').'"  src="'. Layout::path().'/images/standard/exit.png" alt="'.Lang::t('_LOGOUT', 'standard').'"/></a>
-                                                                                 </div>                                 
-                               
-                                                                                
-                                                                                                    '.$profile_box.'
-                                                                                                     <div >&nbsp;</div>   
-                                                                                                    '.$subscribe_course.'
-                                                                                                    '.$news.'
-                                                                                                    '.$credits.'
-                                                                  
-                                                                                            </div>
-                                                                                                        
-                                                                                    
-                                                                                                                                                              
-                                                                                    <br>
-                                                                                    <!-- 
-                                                                           <div class="col-md-12"> 
-                                                                                    <a href="index.php?r=profile/show" class="glyphicon glyphicon-user">'.Lang::t('_PROFILE', 'profile').' </a>
-                                                                      
-                                         
-                                                                           </div>                                                               
-                                                                            -->
-                                                                        
-                                               
-                                                               
-                                                               
-                                                                        </div>
-                                                              
-                                           
-                                                                    
-                                                          
-                                                                
-                                                            </li>
-        
-                                                            
-                                                        </ul>
-                                                    </li>
                                                  
+                                                <div id="o-wrapper" class="o-wrapper">
+                                                        <button id="c-button--slide-right" class="c-button">
+                                                        
+                                                         <a data-toggle="dropdown"  href="#">
+                                                        <table><tr><td >'. $photo.'  &nbsp;</td><td><span class="username"> '.Docebo::user()->getUserName().'</span></td></tr></table>                                                        
+                                                        
+                                                        </button>
+                                                </div><!-- /o-wrapper -->
 
-                                                 </ul>
-                </div>                                                
+
+                                                <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right">
                                                 
+                                                  <button class="c-menu__close">'.Lang::t('_CLOSE', 'standard').'</button>
+                                                  
+                                                                                             
+                                                  
+                                                  <ul class="c-menu__items">
+                                                      <li class="c-menu__item">
+                                                      
+                                                       <div class="col-md-12">
+                                                       <br>
+                                                                         <table width="100%" border="0">
+                                                                            <tr align="left">
+                                                                                <td><span class="select-language">'. Layout::change_lang().'</span></td>
+                                                                               <td align="center">
+                                                                                 <a href="index.php?modname=login&amp;op=logout"  ><img title="'.Lang::t('_LOGOUT', 'standard').'"  src="'. Layout::path().'/images/standard/exit.png" alt="'.Lang::t('_LOGOUT', 'standard').'"/></a>
+                                                                                </td>
+                                                                        </tr></table>
+                       
+                                                                        
+                                                                        '.$profile_box.'
+                                                                         <div >&nbsp;</div>   
+                                                                        '.$subscribe_course.'
+                                                                        '.$news.'
+                                                                        '.$credits.'
+                                                          
+                                                          </div>   
+                                                      
+                                                      <li>
+                                                  </ul>
+                                                </nav><!-- /c-menu slide-right -->
+
+
+
+
+                                                <div id="c-mask" class="c-mask"></div><!-- /c-mask -->
+      
+                                                   
+                                                   
+                                                   
                                                 
                                         ','menu_over')   ; 
                                                 
