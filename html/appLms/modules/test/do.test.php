@@ -117,7 +117,7 @@ function intro( $object_test, $id_param ) {
 		$GLOBALS['page']->add('<span class="text_bold">'.$lang->def('_TEST_INFO').' : </span><br />'
 			.'<ul class="test_info_list">', 'content');
 		
-		if($test_info['order_type'] != 2) {
+		if($test_info['order_type'] != 2 && $test_type != 'test360') {
 			
 			$GLOBALS['page']->add('<li>'.str_replace('[max_score]', ''.($test_info['point_type'] != 1 ? $test_man->getMaxScore() : 100 ) , $lang->def('_TEST_MAXSCORE')).'</li>', 'content');
 		}
@@ -135,12 +135,16 @@ function intro( $object_test, $id_param ) {
 						: $lang->def('_TEST_MOD_DOANSWER_NO') ).'</li>'
 			.'<li>'.( $test_info['can_travel'] ? $lang->def('_TEST_CAN_TRAVEL') 
 						: $lang->def('_TEST_CAN_TRAVEL_NO') ).'</li>'
-			.'<li>'.( ($test_info['show_score'] || $test_info['show_score_cat']) ? $lang->def('_TEST_SHOW_SCORE') 
-						: $lang->def('_TEST_SHOW_SCORE_NO') ).'</li>'
-			.'<li>'.( $test_info['show_solution'] ? $lang->def('_TEST_SHOW_SOLUTION') 
-						: $lang->def('_TEST_SHOW_SOLUTION_NO') ).'</li>'
-			.'<li>'
 		, 'content');
+		if ($test_type != 'test360') {
+			$GLOBALS['page']->add(
+				'<li>' . (($test_info['show_score'] || $test_info['show_score_cat']) ? $lang->def('_TEST_SHOW_SCORE')
+						: $lang->def('_TEST_SHOW_SCORE_NO')) . '</li>'
+				. '<li>' . ($test_info['show_solution'] ? $lang->def('_TEST_SHOW_SOLUTION')
+						: $lang->def('_TEST_SHOW_SOLUTION_NO')) . '</li>'
+			, 'content');
+		}
+		$GLOBALS['page']->add('<li>', 'content');
 		switch($test_info['time_dependent']) {
 			
 			case 0 : $GLOBALS['page']->add($lang->def('_TEST_TIME_ASSIGNED_NO'), 'content');;break;
@@ -739,6 +743,7 @@ function play($object_test, $id_param) {
 					}
 				break;
 				case 'choice':
+				case 'course_valutation':
 					cout('YAHOO.util.Event.onDOMReady(configureSingleC, \'\', \''.(int)$id_quest.'\');'."\n", 'content');
 				break;
 				case 'text_entry':

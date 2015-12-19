@@ -168,9 +168,9 @@ class Learning_Test extends Learning_Object {
 			save_keep, mod_doanswer, can_travel, show_only_status, 
 			show_score, show_score_cat, show_doanswer, show_solution, 
 			time_dependent, time_assigned, penality_test, 
-			penality_time_test, penality_quest, penality_time_quest, max_attempt
+			penality_time_test, penality_quest, penality_time_quest, max_attempt,
 			hide_info, order_info,
-			use_suspension, suspension_num_attempts, suspension_num_hours, suspension_prerequisites, chart_options, obj_type
+			use_suspension, suspension_num_attempts, suspension_num_hours, suspension_prerequisites, chart_options, mandatory_answer, obj_type
 		FROM ".$GLOBALS['prefix_lms']."_test 
 		WHERE idTest = '".(int)$id."'"));
 		
@@ -208,6 +208,7 @@ class Learning_Test extends Learning_Object {
 			suspension_num_hours = '".(int)$test_info['suspension_num_hours']."',
 			suspension_prerequisites = '".(int)$test_info['suspension_prerequisites']."',
 			chart_options = '".$test_info['chart_options']."',
+			mandatory_answer = '".(int)$test_info['mandatory_answer']."',
 			obj_type = '".$test_info['obj_type']."'";
 		if(!sql_query($ins_query)) return false;
 		list($id_new_test) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));

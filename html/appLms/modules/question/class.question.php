@@ -79,6 +79,24 @@ class Question {
 	}
 
 	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @param int $id
+	 * @return Question
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+		return $this;
+	}
+
+	/**
 	 * @return mixed
 	 */
 	public function getTitle()
@@ -93,7 +111,23 @@ class Question {
 	{
 		$this->title = $title;
 	}
-	
+
+	/**
+	 * @return mixed
+	 */
+	public function getCategoryId()
+	{
+		return $this->categoryId;
+	}
+
+	/**
+	 * @param mixed $categoryId
+	 */
+	public function setCategoryId($categoryId)
+	{
+		$this->categoryId = $categoryId;
+	}
+
 	/**
 	 * this function return the sequence value for a new question
 	 * 

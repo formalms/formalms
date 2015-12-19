@@ -287,9 +287,9 @@ class Track_Test extends Track_Object {
 	{
 
 		$res = sql_query("SELECT idQuest, idAnswer, score_assigned, more_info FROM %lms_testtrack_answer WHERE idTrack = '" . (int)$this->idTrack . "'");
-		$list = [];
+		$list = array();
 		while (list($questId, $answerId, $score, $moreInfo) = sql_fetch_row($res)) {
-			$list[] = new Track_TestAnswer($this->idTrack, $questId, $answerId, $score, $moreInfo);
+			$list[$questId] = new Track_TestAnswer($this->idTrack, $questId, $answerId, $score, $moreInfo);
 		}
 		return $list;
 	}
