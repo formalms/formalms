@@ -331,11 +331,16 @@ cout('
         $user_email = $user_info[ACL_INFO_EMAIL];
   
     cout('<!-- hidden inline form -->
-            <div id="inline">
-                <h2>'.Lang::t('_CUSTOMER_HELP', 'customer_help').'</h2>
-                                
-                <form id="contact" name="contact" action="#" method="post"  style="width: 470px; ">
+            <div id="inline" >
 
+                                
+                <form id="contact" name="contact" action="#" method="post"  style="width: 470px;" role="form" style="display: block;">
+
+                    <fieldset>
+
+                              <!-- Form Name -->
+                              <legend>'.Lang::t('_CUSTOMER_HELP', 'customer_help').'</legend>                
+                
                       <input type="hidden" id="sendto" name="sendto" class="txt" value="'.Get::sett('customer_help_email').'" readonly>
                       <input type="hidden" id="authentic_request_newsletter" name="authentic_request" value="'.Util::getSignature().'" />
                       <input type="hidden" id="username" name="username" class="txt" value="'.Docebo::user()->getUserId().'" >
@@ -412,11 +417,15 @@ cout('
                 
                 </table>
                 
-                   <br>
+                   <br> <br>
                 
                 <p align=center>
                     <button id="send">'.Lang::t('_CONFIRM').'</button>
                     </p>
+                    
+        </fieldset>
+      </form>                    
+                    
                 </form>
 </div>','menu_over')   ;
 
