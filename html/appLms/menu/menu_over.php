@@ -340,6 +340,9 @@ cout('
                       <input type="hidden" id="authentic_request_newsletter" name="authentic_request" value="'.Util::getSignature().'" />
                       <input type="hidden" id="username" name="username" class="txt" value="'.Docebo::user()->getUserId().'" >
                       <input type="hidden" id="msg_ok" name="msg_ok" class="txt" value="'.Lang::t('_OPERATION_SUCCESSFUL', 'standard').'" >
+                      
+                      <input type="hidden" id="help_req_resolution" name="help_req_resolution"   >
+                      <input type="hidden" id="help_req_flash_installed" name="help_req_flash_installed" >
            
                       
                  <table cellspacing=2 cellpaddin=2 width=98% border=0 > 

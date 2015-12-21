@@ -25,7 +25,10 @@ class HelpdeskLmsController extends LmsController {
             $oggetto = $_POST['oggetto'];
             $copia = $_POST['copia'];
             $priorita = $_POST['priorita'];
-
+            
+            $help_req_resolution = $_POST['help_req_resolution'];
+            $help_req_flash_installed = $_POST['help_req_flash_installed'];
+            
             $subject  = $_POST['oggetto'];
             $headers  = "From: " . strip_tags($usermail) . "\r\n";
             $headers .= "Reply-To: ". strip_tags($usermail) . "\r\n";
@@ -41,6 +44,8 @@ class HelpdeskLmsController extends LmsController {
             
             $br_char = "<br>";
 
+           // $result = HelpdeskLmsController::parse_user_agent(null);
+            
             $msg  = "<html><body style='font-family:Arial,sans-serif;'>";
             $msg .= "<h2 style='font-weight:bold;border-bottom:1px dotted #ccc;'>".Get::sett('customer_help_email')."</h2>\r\n";
             $msg .= "<p><strong>".Lang::t('_USER', 'standard').":</strong> ".$username."</p>\r\n";
@@ -51,9 +56,12 @@ class HelpdeskLmsController extends LmsController {
             $msg .= $br_char . "---------- CLIENT INFO -----------" . $br_char;
             $msg .= "IP: " . $_SERVER['REMOTE_ADDR'] . $br_char;
             $msg .= "USER AGENT: " . $_SERVER['HTTP_USER_AGENT'] . $br_char;
-            $msg .= "OS: " . "" . $br_char;
-            $msg .= "BROWSER: " . "" . " " . "" . $br_char;
-            $msg .= "FLASH: "."" . $br_char;
+        
+           // $msg .= "OS: " . $result['platform'] . $br_char;
+           // $msg .= "BROWSER: " .  $result['browser'] . " " . $result['version'] . $br_char;
+        
+            $msg .= "RESOLUTION: " .$help_req_resolution . $br_char;
+            $msg .= "FLASH: ".$help_req_flash_installed . $br_char;
 
             $msg .= "</body></html>";
 
@@ -64,4 +72,150 @@ class HelpdeskLmsController extends LmsController {
                 echo "false";
             }
 	}
+    
+    
+  /**
+     * Parses a user agent string into its important parts
+     *
+     * @author Jesse G. Donat <donatj@gmail.com>
+     * @link https://github.com/donatj/PhpUserAgent
+     * @link http://donatstudios.com/PHP-Parser-HTTP_USER_AGENT
+     * @param string|null $u_agent User agent string to parse or null. Uses $_SERVER['HTTP_USER_AGENT'] on NULL
+     * @return array an array with browser, version and platform keys
+     */
+    private function parse_user_agent($u_agent = null) {
+        if (is_null($u_agent)) {
+            if (isset($_SERVER['HTTP_USER_AGENT'])) {
+                $u_agent = $_SERVER['HTTP_USER_AGENT'];
+            } else {
+                throw new InvalidArgumentException('parse_user_agent requires a user agent');
+            }
+        }
+
+        $platform = null;
+        $browser = null;
+        $version = null;
+
+        $empty = array('platform' => $platform, 'browser' => $browser, 'version' => $version);
+
+        if (!$u_agent)
+            return $empty;
+
+        if (preg_match('/\((.*?)\)/im', $u_agent, $parent_matches)) {
+
+            preg_match_all('/(?P<platform>BB\d+;|Android|CrOS|iPhone|iPad|Linux|Macintosh|Windows(\ Phone)?|Silk|linux-gnu|BlackBerry|PlayBook|Nintendo\ (WiiU?|3DS)|Xbox(\ One)?)
+    (?:\ [^;]*)?
+    (?:;|$)/imx', $parent_matches[1], $result, PREG_PATTERN_ORDER);
+
+            $priority = array('Android', 'Xbox One', 'Xbox');
+            $result['platform'] = array_unique($result['platform']);
+            if (count($result['platform']) > 1) {
+                if ($keys = array_intersect($priority, $result['platform'])) {
+                    $platform = reset($keys);
+                } else {
+                    $platform = $result['platform'][0];
+                }
+            } elseif (isset($result['platform'][0])) {
+                $platform = $result['platform'][0];
+            }
+        }
+
+        if ($platform == 'linux-gnu') {
+            $platform = 'Linux';
+        } elseif ($platform == 'CrOS') {
+            $platform = 'Chrome OS';
+        }
+
+        preg_match_all('%(?P<browser>Camino|Kindle(\ Fire\ Build)?|Firefox|Iceweasel|Safari|MSIE|Trident/.*rv|AppleWebKit|Chrome|CriOS|IEMobile|Opera|OPR|Silk|Lynx|Midori|Version|Wget|curl|NintendoBrowser|PLAYSTATION\ (\d|Vita)+)
+    (?:\)?;?)
+    (?:(?:[:/ ])(?P<version>[0-9A-Z.]+)|/(?:[A-Z]*))%ix', $u_agent, $result, PREG_PATTERN_ORDER);
+
+
+    // If nothing matched, return null (to avoid undefined index errors)
+        if (!isset($result['browser'][0]) || !isset($result['version'][0])) {
+            return $empty;
+        }
+
+        $browser = $result['browser'][0];
+        $version = $result['version'][0];
+
+        $find = "_parse_ua_find";
+
+        $key = 0;
+        if ($browser == 'Iceweasel') {
+            $browser = 'Firefox';
+        } elseif ($find('Playstation Vita', $key, $result)) {
+            $platform = 'PlayStation Vita';
+            $browser = 'Browser';
+        } elseif ($find('Kindle Fire Build', $key, $result) || $find('Silk', $key, $result)) {
+            $browser = $result['browser'][$key] == 'Silk' ? 'Silk' : 'Kindle';
+            $platform = 'Kindle Fire';
+            if (!($version = $result['version'][$key]) || !is_numeric($version[0])) {
+                $version = $result['version'][array_search('Version', $result['browser'])];
+            }
+        } elseif ($find('NintendoBrowser', $key, $result) || $platform == 'Nintendo 3DS') {
+            $browser = 'NintendoBrowser';
+            $version = $result['version'][$key];
+        } elseif ($find('Kindle', $key, $result)) {
+            $browser = $result['browser'][$key];
+            $platform = 'Kindle';
+            $version = $result['version'][$key];
+        } elseif ($find('OPR', $key, $result)) {
+            $browser = 'Opera Next';
+            $version = $result['version'][$key];
+        } elseif ($find('Opera', $key, $result)) {
+            $browser = 'Opera';
+            $find('Version', $key, $result);
+            $version = $result['version'][$key];
+        } elseif ($find('Midori', $key, $result)) {
+            $browser = 'Midori';
+            $version = $result['version'][$key];
+        } elseif ($find('Chrome', $key, $result) || $find('CriOS', $key, $result)) {
+            $browser = 'Chrome';
+            $version = $result['version'][$key];
+        } elseif ($browser == 'AppleWebKit') {
+            if (($platform == 'Android' && !($key = 0))) {
+                $browser = 'Android Browser';
+            } elseif (strpos($platform, 'BB') === 0) {
+                $browser = 'BlackBerry Browser';
+                $platform = 'BlackBerry';
+            } elseif ($platform == 'BlackBerry' || $platform == 'PlayBook') {
+                $browser = 'BlackBerry Browser';
+            } elseif ($find('Safari', $key, $result)) {
+                $browser = 'Safari';
+            }
+
+            $find('Version', $key, $result);
+
+            $version = $result['version'][$key];
+        } elseif ($browser == 'MSIE' || strpos($browser, 'Trident') !== false) {
+            if ($find('IEMobile', $key, $result)) {
+                $browser = 'IEMobile';
+            } else {
+                $browser = 'MSIE';
+                $key = 0;
+            }
+            $version = $result['version'][$key];
+        } elseif ($key = preg_grep('/playstation \d/i', array_map('strtolower', $result['browser']))) {
+            $key = reset($key);
+
+            $platform = 'PlayStation ' . preg_replace('/[^\d]/i', '', $key);
+            $browser = 'NetFront';
+        }
+
+        return array('platform' => $platform, 'browser' => $browser, 'version' => $version);
+    }    
+    
+    
+    private function _parse_ua_find( $search, &$key, &$result ) {
+        $xkey = array_search(strtolower($search), array_map('strtolower', $result['browser']));
+        if ($xkey !== false) {
+            $key = $xkey;
+            return true;
+        }
+
+        return false;
+    }    
+    
+    
 }
