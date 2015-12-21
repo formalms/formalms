@@ -332,7 +332,6 @@ cout('
   
     cout('<!-- hidden inline form -->
             <div id="inline" >
-
                                 
                 <form id="contact" name="contact" action="#" method="post"  style="width: 470px;" role="form" style="display: block;">
 
