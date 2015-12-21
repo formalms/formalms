@@ -1871,9 +1871,16 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 
                 <ul class="nav nav-pills nav-stacked">
                 ';
-                if($perm_certificate) $html .= '<li><a href="index.php?modname=mycertificate&op=mycertificate&sop=unregistercourse">Certificati</a></li> ';
-                if($perm_competence ) $html .= '<li><a href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">Competenze</a></li>  ';
-                if($perm_message) $html .= '<li><a href="index.php?modname=message&op=message&sop=unregistercourse">Messaggi  <b class="num_notify"><i style="font-size:.78em">'.$unread_num.'</i></b></a> </li> ';
+                if($perm_certificate) $html .= '<li><a href="index.php?modname=mycertificate&op=mycertificate&sop=unregistercourse">'.Lang::t('_MY_CERTIFICATE', 'menu_over').'</a></li> ';
+                if($perm_competence ) $html .= '<li><a href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">'.Lang::t('_COMPETENCES', 'standard').'</a></li>  ';
+                
+                if($unread_num>0 && $perm_message){
+                          $html .= '<li><a href="index.php?modname=message&op=message&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'<b class="num_notify"><i style="font-size:.78em">'.$unread_num.'</i></b></a> </li> ';
+                }
+                if($unread_num==0 && $perm_message){
+                          $html .= '<li><a href="index.php?modname=message&op=message&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'</a> </li> ';
+                }
+                
                                                        
           $html .= '</ul>';
             
