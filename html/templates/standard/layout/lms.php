@@ -23,7 +23,8 @@
     <link href="<?php echo Layout::path(); ?>/bootstrap-reset.css" rel="stylesheet">
     
     <link rel="stylesheet" href="<?php echo Layout::path(); ?>bootstrap/css/bootstrap-theme.min.css">   
-    <link rel="stylesheet" href="<?php echo Layout::path(); ?>/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo Layout::path(); ?>bootstrap/css/bootstrap.min.css">
+
      
     <link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/table-responsive.css"/>
 
@@ -40,8 +41,11 @@
     <link rel="stylesheet" href="http://callmenick.com/_development/slide-push-menus/css/font-awesome.min.css">
     <link rel="stylesheet" href="http://callmenick.com/_development/slide-push-menus/css/style.min.css">            
          
-    <link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/base.css"/>       
+       
     
+  
+    
+        <link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/base.css"/>
     <!-- *************************************************** -->      
     
     
@@ -99,6 +103,93 @@
             });
         </script>
 		<?php echo Layout::rtl(); ?>
+        
+        
+ 
+  
+    
+ <!-- HELP DESK -->  
+  <link rel="stylesheet" type="text/css" media="all" href="<?php echo Layout::path(); ?>style/helpdesk.css">
+  <link rel="stylesheet" type="text/css" media="all" href="http://designwoop.com/labs/model-contact-form/fancybox/jquery.fancybox.css">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://designwoop.com/labs/model-contact-form/fancybox/jquery.fancybox.js?v=2.0.6"></script>     
+ 
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script> 
+       
+<!-- basic fancybox setup -->
+<script type="text/javascript">
+    function validateEmail(email) { 
+        var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return reg.test(email);
+    }
+
+    $(document).ready(function() {
+        $(".modalbox").fancybox();
+        $("#contact").submit(function() { return false; });
+
+        
+        $("#send").on("click", function(){
+            var emailval  = $("#email").val();
+            var msgval    = $("#msg").val();
+            var msglen    = msgval.length;
+            var mailvalid = validateEmail(emailval);
+             var msg_ok    = $("#msg_ok").val();
+            
+      var sendtoval  = $("#sendto").val();
+      var sendtovalid = validateEmail(sendtoval);
+      
+            if(mailvalid == false) {
+                $("#email").addClass("error");
+            }
+            else if(mailvalid == true){
+                $("#email").removeClass("error");
+            }
+            
+      
+            if(sendtovalid == false) {
+                $("#sendto").addClass("error");
+            }
+            else if(sendtovalid == true){
+                $("#sendto").removeClass("error");
+            }      
+      
+            if(msglen < 4) {
+                $("#msg").addClass("error");
+            }
+            else if(msglen >= 4){
+                $("#msg").removeClass("error");
+            }
+            
+            if(mailvalid == true && msglen >= 4 && sendtovalid==true) {
+                // if both validate we attempt to send the e-mail
+                // first we hide the submit btn so the user doesnt click twice
+                $("#send").replaceWith("<em><img src=<?php echo Layout::path(); ?>images/standard/loadbar.gif ></em>");
+                
+                $.ajax({
+                    type: 'POST',
+                    url: 'ajax.server.php?r=helpdesk/show',
+                    data: $("#contact").serialize(),
+                    success: function(data) {
+                        if(data == "true") {
+                            $("#contact").fadeOut("fast", function(){
+                               $(this).before("<p><strong>" + msg_ok + "</strong></p>");
+                                setTimeout("$.fancybox.close()", 5000);
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>        
+            
+        
+        
+        
+        
+        
+        
 	</head>
 	<body class="yui-skin-docebo yui-skin-sam">
 		<!-- blind nav -->

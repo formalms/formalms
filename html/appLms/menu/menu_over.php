@@ -12,8 +12,8 @@
 \ ======================================================================== */
 
 if(!Docebo::user()->isAnonymous()) {
-	YuiLib::load('base,menu');
-	require_once(_lms_.'/lib/lib.middlearea.php');
+    YuiLib::load('base,menu');
+    require_once(_lms_.'/lib/lib.middlearea.php');
     
    require_once('../widget/lms_block/lib.lms_block_menu.php');
    require_once(_lms_.'/lib/lib.course.php');
@@ -32,27 +32,27 @@ if(!Docebo::user()->isAnonymous()) {
    $news = $widget->news();
    
    
-	$ma = new Man_MiddleArea();
+    $ma = new Man_MiddleArea();
 
-	$user_level = Docebo::user()->getUserLevelId();
+    $user_level = Docebo::user()->getUserLevelId();
 
-	$query_menu = "
-	SELECT mo.idModule, mo.module_name, mo.default_op, mo.mvc_path, mo.default_name, mo.token_associated, mo.module_info
-	FROM ".$GLOBALS['prefix_lms']."_module AS mo
-		JOIN ".$GLOBALS['prefix_lms']."_menucourse_under AS under
-			ON ( mo.idModule = under.idModule)
-	WHERE module_info IN ('all', 'user', 'public_admin')   and mo.idModule not in(7,34)
-	ORDER BY module_info, under.sequence ";
+    $query_menu = "
+    SELECT mo.idModule, mo.module_name, mo.default_op, mo.mvc_path, mo.default_name, mo.token_associated, mo.module_info
+    FROM ".$GLOBALS['prefix_lms']."_module AS mo
+        JOIN ".$GLOBALS['prefix_lms']."_menucourse_under AS under
+            ON ( mo.idModule = under.idModule)
+    WHERE module_info IN ('all', 'user', 'public_admin')   and mo.idModule not in(7,34)
+    ORDER BY module_info, under.sequence ";
 
                  
    // echo $query_menu;
    //  die();
 
-	$menu = array();
-	$re_menu_voice = sql_query($query_menu);
-	while(list($id_m, $module_name, $def_op, $mvc_path, $default_name, $token, $m_info) = sql_fetch_row($re_menu_voice)) {
+    $menu = array();
+    $re_menu_voice = sql_query($query_menu);
+    while(list($id_m, $module_name, $def_op, $mvc_path, $default_name, $token, $m_info) = sql_fetch_row($re_menu_voice)) {
 
-		
+        
         if($ma->currentCanAccessObj('mo_'.$id_m) && checkPerm($token, true, $module_name,  true)) {
 
 
@@ -60,89 +60,89 @@ if(!Docebo::user()->isAnonymous()) {
             if ($module_name ==='course' && !$ma->currentCanAccessObj('tb_elearning'))
                 $mvc_path = 'lms/classroom/show';
             
-			$menu[$m_info][$id_m] = array(
-				'index.php?'.( $mvc_path ? 'r='.$mvc_path : 'modname='.$module_name.'&amp;op='.$def_op ).'&amp;sop=unregistercourse',
-				Lang::t($default_name, 'menu_over'),
-				false ,
+            $menu[$m_info][$id_m] = array(
+                'index.php?'.( $mvc_path ? 'r='.$mvc_path : 'modname='.$module_name.'&amp;op='.$def_op ).'&amp;sop=unregistercourse',
+                Lang::t($default_name, 'menu_over'),
+                false ,
                 $id_m
-			);
-		}
-	}
-	if(isset($menu['all'])) $menu_i = count($menu['all'])-1;
-	else $menu_i = -1;
-	$setup_menu = '';
-	// Menu for the public admin
-	/*if(!empty($menu['user'])) {
-		$menu['all'][] = array(
-			'#',
-			Lang::t('_MY_AREA', 'menu_over'),
-			'user'
-		);
-		$menu_i++;
-	}*/
+            );
+        }
+    }
+    if(isset($menu['all'])) $menu_i = count($menu['all'])-1;
+    else $menu_i = -1;
+    $setup_menu = '';
+    // Menu for the public admin
+    /*if(!empty($menu['user'])) {
+        $menu['all'][] = array(
+            '#',
+            Lang::t('_MY_AREA', 'menu_over'),
+            'user'
+        );
+        $menu_i++;
+    }*/
 
-	// Menu for messages
+    // Menu for messages
       /*
-	if($ma->currentCanAccessObj('mo_47')) {
-		require_once($GLOBALS['where_framework'].'/lib/lib.message.php');
-		$menu['all'][] = array(
-			'index.php?r=lms/catalog/show',
-			Lang::t('_CATALOGUE', 'menu_over').( $unread_num ? '' : '' ),
-			false
-		);
-		$menu_i++;
-	}
+    if($ma->currentCanAccessObj('mo_47')) {
+        require_once($GLOBALS['where_framework'].'/lib/lib.message.php');
+        $menu['all'][] = array(
+            'index.php?r=lms/catalog/show',
+            Lang::t('_CATALOGUE', 'menu_over').( $unread_num ? '' : '' ),
+            false
+        );
+        $menu_i++;
+    }
      */
      
-	// Customer help
-	if ($ma->currentCanAccessObj('mo_help')) {
+    // Customer help
+    if ($ma->currentCanAccessObj('mo_help')) {
 
-		$help_email = trim( Get::sett('customer_help_email', '') );
-		$can_send_emails = !empty( $help_email ) ? true : false;
-		$can_admin_settings = checkRole('/framework/admin/setting/view', true);
+        $help_email = trim( Get::sett('customer_help_email', '') );
+        $can_send_emails = !empty( $help_email ) ? true : false;
+        $can_admin_settings = checkRole('/framework/admin/setting/view', true);
 
         $strTxtHelp = Lang::t('_CUSTOMER_HELP', 'customer_help')."";
         $strHelp = "<span class='glyphicon glyphicon-question-sign'></span>";
         
-		if ($can_send_emails) {
+        if ($can_send_emails) {
 
-			cout(Util::get_js(Get::rel_path('base').'/lib/js_utils.js', true), 'scripts');
-			cout(Util::get_js(Get::rel_path('lms').'/modules/customer_help/customer_help.js', true), 'scripts');
+            cout(Util::get_js(Get::rel_path('base').'/lib/js_utils.js', true), 'scripts');
+            cout(Util::get_js(Get::rel_path('lms').'/modules/customer_help/customer_help.js', true), 'scripts');
 
-			cout('<script type="text/javascript">'.
-				' var CUSTOMER_HELP_AJAX_URL = "ajax.server.php?mn=customer_help&plf=lms&op=getdialog"; '.
-				' var ICON_LOADING = "'.Get::tmpl_path().'images/standard/loadbar.gif"; '.
-				' var LANG = new LanguageManager({'.
-				'	_CONFIRM: "'.Lang::t('_CONFIRM').'",'.
-				'	_UNDO: "'.Lang::t('_UNDO').'",'.
-				'	_COURSE_NAME: "'.Lang::t('_COURSE_NAME', 'course').'",'.
-				'	_VAL_COURSE_NAME: "'.(isset($GLOBALS['course_descriptor']) ? $GLOBALS['course_descriptor']->getValue('name') : "").'",'.
-				'	_DLG_TITLE: "'.Lang::t('_CUSTOMER_HELP', 'customer_help').'",'.
-				'	_LOADING: "'.Lang::t('_LOADING').'"'.
-				'}); '
-				.'</script>'
-			, 'scripts');
+            cout('<script type="text/javascript">'.
+                ' var CUSTOMER_HELP_AJAX_URL = "ajax.server.php?mn=customer_help&plf=lms&op=getdialog"; '.
+                ' var ICON_LOADING = "'.Get::tmpl_path().'images/standard/loadbar.gif"; '.
+                ' var LANG = new LanguageManager({'.
+                '    _CONFIRM: "'.Lang::t('_CONFIRM').'",'.
+                '    _UNDO: "'.Lang::t('_UNDO').'",'.
+                '    _COURSE_NAME: "'.Lang::t('_COURSE_NAME', 'course').'",'.
+                '    _VAL_COURSE_NAME: "'.(isset($GLOBALS['course_descriptor']) ? $GLOBALS['course_descriptor']->getValue('name') : "").'",'.
+                '    _DLG_TITLE: "'.Lang::t('_CUSTOMER_HELP', 'customer_help').'",'.
+                '    _LOADING: "'.Lang::t('_LOADING').'"'.
+                '}); '
+                .'</script>'
+            , 'scripts');
 
-			$menu['all'][] = array(
-				'#',
-				$strHelp,
-				false
-			);
-			$customer_help = ++$menu_i;
-			$setup_menu .= " oMenuBar.getItem($customer_help).subscribe('click', CustomerHelpShowPopUp);";
+            $menu['all'][] = array(
+                '#inline',
+                $strHelp,
+                'modalbox'
+            );
+            $customer_help = ++$menu_i;
+            $setup_menu .= " oMenuBar.getItem($customer_help).subscribe('click', CustomerHelpShowPopUp);";
 
-		} else {
+        } else {
 
-			if ($can_admin_settings) {
-				$menu['all'][] = array(
-					'../appCore/index.php?r=adm/setting/show',
-					'<i>('.$strHelp.': '.Lang::t('_SET', 'standard').')</i>',
-					false
-				);
-			}
+            if ($can_admin_settings) {
+                $menu['all'][] = array(
+                    '../appCore/index.php?r=adm/setting/show',
+                    '<i>('.$strHelp.': '.Lang::t('_SET', 'standard').')</i>',
+                    false
+                );
+            }
 
-		}
-	}
+        }
+    }
 
     
     
@@ -150,25 +150,25 @@ if(!Docebo::user()->isAnonymous()) {
     
     
     
-	// Menu for the public admin
-	if($user_level == ADMIN_GROUP_PUBLICADMIN && !empty($menu['public_admin'])) {
-		$menu['all'][] = array(
-			'#',
-			Lang::t('_PUBLIC_ADMIN_AREA', 'menu_over'),
-			'public_admin'
-		);
-		$menu_i++;
-	}
+    // Menu for the public admin
+    if($user_level == ADMIN_GROUP_PUBLICADMIN && !empty($menu['public_admin'])) {
+        $menu['all'][] = array(
+            '#',
+            Lang::t('_PUBLIC_ADMIN_AREA', 'menu_over'),
+            'public_admin'
+        );
+        $menu_i++;
+    }
 
-	// Link for the administration
-	if($user_level == ADMIN_GROUP_GODADMIN || $user_level == ADMIN_GROUP_ADMIN ) {
-		$menu['all'][] = array(
-			Get::rel_path('adm'),
-			Lang::t('_GO_TO_FRAMEWORK', 'menu_over'),
-			false
-		);
-		$menu_i++;
-	}
+    // Link for the administration
+    if($user_level == ADMIN_GROUP_GODADMIN || $user_level == ADMIN_GROUP_ADMIN ) {
+        $menu['all'][] = array(
+            Get::rel_path('adm'),
+            Lang::t('_GO_TO_FRAMEWORK', 'menu_over'),
+            false
+        );
+        $menu_i++;
+    }
 
     
 //** DEV: LR - creato un menu_over  responsive  attraverso bootstrap **
@@ -222,7 +222,7 @@ cout('
                      if(strrpos($row[0], 'appCore')>0 ){
                         cout( '<li  ><a href="'.$row[0].'" title="'.$row[1].'"><span class="glyphicon glyphicon-cog"></span></a></li> ','menu_over'); 
                      } else{
-                        cout( '<li '.$active.'   ><a href="'.$row[0].'" >'.$row[1].'</a></li>','menu_over');
+                        cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" >'.$row[1].'</a></li>','menu_over');
                      }
                             
                         if($row[2] !== false) {
@@ -232,7 +232,7 @@ cout('
                                 while(list($id_m, $s_voice) = each($menu[ $row[2] ])) {
 
                                     cout(''
-                                        .'<a id="mo_'.$id_m.'"  href="'.$s_voice[0].'"">'
+                                        .'<a  href="'.$s_voice[0].'"">'
                                         .''.$s_voice[1].''
                                         .'</a> &nbsp; '
                                         .'', 'menu_over');
@@ -325,8 +325,101 @@ cout('
       
 ','menu_over');        
     
+        $idst = getLogUserId();
+        $acl_man = Docebo::user()->getAclManager();
+        $user_info = $acl_man->getUser($idst, false);
+        $user_email = $user_info[ACL_INFO_EMAIL];
+  
+    cout(Docebo::user()->idst.'<!-- hidden inline form -->
+            <div id="inline">
+                <h2>'.Lang::t('_CUSTOMER_HELP', 'customer_help').'</h2>
+                 <hr>                                  
+                <form id="contact" name="contact" action="#" method="post" >
+
+                      <input type="hidden" id="sendto" name="sendto" class="txt" value="'.Get::sett('customer_help_email').'" readonly>
+                      <input type="hidden" id="authentic_request_newsletter" name="authentic_request" value="'.Util::getSignature().'" />
+                      <input type="hidden" id="username" name="username" class="txt" value="'.Docebo::user()->getUserId().'" >
+                      <input type="hidden" id="msg_ok" name="msg_ok" class="txt" value="'.Lang::t('_OPERATION_SUCCESSFUL', 'standard').'" >
+           
+                      
+                 <table cellspacing=2 cellpaddin=2 width=98% > 
+   
+
+                 <tr>
+                      <td><label for="username">'.Lang::t('_USER', 'standard').'</label></td>
+                      <td>
+                      <div class="input-group">
+                      <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                      <input class="form-control" type="text" id="username" name="username" class="txt" value="'.Docebo::user()->getUserId().'" readonly>
+                      </div>
+                      </td>
+                 </tr>   
+                 
+                 <tr>  
+                        <td><label for="oggetto">'.Lang::t('_TITLE', 'menu').'</label></td>
+                        <td>
+                        <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-file"></span></span>
+                        <input  class="form-control" type="oggetto" id="oggetto" name="oggetto" class="txt" placeholder="'.Lang::t('_CUSTOMER_HELP_SUBJ_PFX', 'configuration').'">
+                        </div>
+                        </td>
+                </tr>
+              
+                <tr>
+                      <td><label for="email">'.Lang::t('_EMAIL', 'menu').'</label> </td>
+                      <td>
+                      <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                        <input class="form-control" type="email" id="email" name="email" class="txt" value="'.$user_email.'" placeholder="">
+                      </div>
+                      </td>
+                </tr>    
+              
+                    <tr>
+                  <td><label for="telefono">'.Lang::t('_PHONE', 'classroom').'</label></td>
+                      <td>
+                        <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></span>
+                        <input class="form-control" type="text" id="telefono" name="telefono" class="txt" placeholder="">
+                      </div>
+                      </td>
+                    </tr>
+                
+                <tr>
+                      <td><label for="msg">'.Lang::t('_TEXTOF', 'menu').'</label></td>
+                      <td><textarea id="msg" name="msg" class="txtarea" placeholder="'.Lang::t('_WRITE_ASK_A_FRIEND', 'profile').'"></textarea></td>
+                </tr>
+                
+                
+                <tr>
+                      <td><label for="copia">Invia una copia per conoscenza</label></td>
+                      <td>   <input id="copia" name="copia" checked data-toggle="toggle" data-on="'.Lang::t('_GROUP_FIELD_NORMAL', 'admin_directory').'"  data-size="small" data-off="'.Lang::t('_NO', 'standard').'" data-onstyle="success" data-offstyle="danger" type="checkbox">
+                   
+                      </td>
+                </tr>                
+                
+                 <tr>
+                      <td><label for="priorita">'.Lang::t('_PRIORITY', 'message').'</label></td>
+                      <td>
+                       <input id="priorita" name="priorita" data-size="small" checked data-toggle="toggle" data-on="'.Lang::t('_NORMAL', 'message').'" data-off="'.Lang::t('_HIGH', 'message').'" data-onstyle="success" data-offstyle="danger" type="checkbox">
+
+                    </td>
+                 </tr>                  
+                
+                
+                </table>
+                
+                   <br>
+                
+                <p align=center>
+                    <button id="send">'.Lang::t('_CONFIRM').'</button>
+                    </p>
+                </form>
+</div>','menu_over')   ;
 
 }    
 
      
 ?>
+
+
