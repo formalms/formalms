@@ -330,11 +330,11 @@ cout('
         $user_info = $acl_man->getUser($idst, false);
         $user_email = $user_info[ACL_INFO_EMAIL];
   
-    cout(Docebo::user()->idst.'<!-- hidden inline form -->
+    cout('<!-- hidden inline form -->
             <div id="inline">
                 <h2>'.Lang::t('_CUSTOMER_HELP', 'customer_help').'</h2>
-                 <hr>                                  
-                <form id="contact" name="contact" action="#" method="post" >
+                                
+                <form id="contact" name="contact" action="#" method="post"  style="width: 470px; ">
 
                       <input type="hidden" id="sendto" name="sendto" class="txt" value="'.Get::sett('customer_help_email').'" readonly>
                       <input type="hidden" id="authentic_request_newsletter" name="authentic_request" value="'.Util::getSignature().'" />
@@ -342,7 +342,7 @@ cout('
                       <input type="hidden" id="msg_ok" name="msg_ok" class="txt" value="'.Lang::t('_OPERATION_SUCCESSFUL', 'standard').'" >
            
                       
-                 <table cellspacing=2 cellpaddin=2 width=98% > 
+                 <table cellspacing=2 cellpaddin=2 width=98% border=0 > 
    
 
                  <tr>

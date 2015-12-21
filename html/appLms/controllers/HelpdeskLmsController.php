@@ -51,9 +51,9 @@ class HelpdeskLmsController extends LmsController {
             $msg .= $br_char . "---------- CLIENT INFO -----------" . $br_char;
             $msg .= "IP: " . $_SERVER['REMOTE_ADDR'] . $br_char;
             $msg .= "USER AGENT: " . $_SERVER['HTTP_USER_AGENT'] . $br_char;
-            //$msg .= "OS: " . "" . $br_char;
-            //$msg .= "BROWSER: " . "" . " " . "" . $br_char;
-            //$msg .= "FLASH: "."" . $br_char;
+            $msg .= "OS: " . "" . $br_char;
+            $msg .= "BROWSER: " . "" . " " . "" . $br_char;
+            $msg .= "FLASH: "."" . $br_char;
 
             $msg .= "</body></html>";
 
