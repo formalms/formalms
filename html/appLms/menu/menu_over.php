@@ -358,7 +358,7 @@ cout('
    
 
                  <tr>
-                      <td><label for="username">'.Lang::t('_USER', 'standard').'</label></td>
+                      <td width="27%"><label for="username">'.Lang::t('_USER', 'standard').'</label></td>
                       <td>
                       <div class="input-group">
                       <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
