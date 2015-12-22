@@ -209,7 +209,7 @@ cout('
          
             <div class="col-md-8">
          
-            <ul class="nav navbar-nav" >','menu_over');
+            <ul class="nav navbar-nav"  >','menu_over');
          
                 foreach ($menu['all'] as $row) {
                     
@@ -218,11 +218,16 @@ cout('
                     
                     if( isset($_GET['id_cat']) && strpos($row[0], "catalog")>0)  $active = " class='active'";
          
-                    
+                         // ADMIN
                      if(strrpos($row[0], 'appCore')>0 ){
-                        cout( '<li  ><a href="'.$row[0].'" title="'.$row[1].'"><span class="glyphicon glyphicon-cog"></span></a></li> ','menu_over'); 
+                        cout( '<li  ><a href="'.$row[0].'" title="'.$row[1].'" title="'.Lang::t('_GO_TO_FRAMEWORK', 'menu_over').'"><span class="glyphicon glyphicon-cog"></span></a></li> ','menu_over'); 
                      } else{
-                        cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" >'.$row[1].'</a></li>','menu_over');
+                          // HELP DESK
+                         if(strrpos($row[1], 'sign')>0 ){
+                                cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.Lang::t('_CUSTOMER_HELP', 'customer_help').'"  >'.$row[1].'</a></li>','menu_over');
+                         }else{
+                            cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.$row[1].'"  >'.$row[1].'</a></li>','menu_over');
+                         }
                      }
                             
                         if($row[2] !== false) {
@@ -419,7 +424,7 @@ cout('
                    <br> <br>
                 
                 <p align=center>
-                      <table width=98% border=0 > <tr><td align=center>
+                      <table width=98% border=0 background="#ffcc99"> <tr><td align=center>
                         <button id="close">'.Lang::t('_CANCEL').'</button>   
                     </td><td align=center>
                        <button id="send">'.Lang::t('_CONFIRM').'</button>               
