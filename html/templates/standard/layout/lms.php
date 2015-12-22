@@ -31,13 +31,13 @@
          
         <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/default.css" />
         <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/component.css" />
-        <script src="http://tympanus.net/Tutorials/CaptionHoverEffects/js/modernizr.custom.js"></script>
-        <script src="http://tympanus.net/codrops/adpacks/demoad.js"></script>
+        <script src="<?php echo Layout::path(); ?>bootstrap/js/modernizr.custom.js"></script>
+        <script src="<?php echo Layout::path(); ?>bootstrap/js/demoad.js"></script>
          
          
          
      <!-- menus script menu swipe -->
-    <script src="http://callmenick.com/_development/slide-push-menus/js/dist/menu.js"></script>
+    <script src="<?php echo Layout::path(); ?>bootstrap/js/menu.js"></script>
     <link rel="stylesheet" href="http://callmenick.com/_development/slide-push-menus/css/font-awesome.min.css">
     <link rel="stylesheet" href="http://callmenick.com/_development/slide-push-menus/css/style.min.css">            
          
@@ -110,138 +110,15 @@
     
  <!-- HELP DESK -->  
   <link rel="stylesheet" type="text/css" media="all" href="<?php echo Layout::path(); ?>style/helpdesk.css">
-  <link rel="stylesheet" type="text/css" media="all" href="http://designwoop.com/labs/model-contact-form/fancybox/jquery.fancybox.css">
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-  <script type="text/javascript" src="http://designwoop.com/labs/model-contact-form/fancybox/jquery.fancybox.js?v=2.0.6"></script>     
+ <link rel="stylesheet" type="text/css" media="all" href="<?php echo Layout::path(); ?>style/jquery.fancybox.css">
+  <script type="text/javascript" src="<?php echo Layout::path(); ?>bootstrap/js/jquery.min.js"></script>
+   <script type="text/javascript" src="<?php echo Layout::path(); ?>bootstrap/js/jquery.fancybox.js?v=2.0.6"></script>     
  
-    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
-    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script> 
+    <link href="<?php echo Layout::path(); ?>bootstrap/css/bootstrap-toggle.min.css" rel="stylesheet">
+   <script src="<?php echo Layout::path(); ?>bootstrap/js/bootstrap-toggle.min.js"></script>
        
-<!-- basic fancybox setup -->
-<script type="text/javascript">
-    function validateEmail(email) { 
-        var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return reg.test(email);
-    }
 
-   
-   var getFlashVersion = function() {
-        try {
-            try {
-                var axo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash.6');
-                try {
-                    axo.AllowScriptAccess = 'always';
-                }
-                catch (e) {
-                    return '6,0,0';
-                }
-            }
-
-            catch (e) {
-            }
-
-            return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version').replace(/\D+/g, ',').match(/^,?(.+),?$/)[1];
-
-        } catch (e) {
-            try {
-                if (navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin) {
-                    return (navigator.plugins["Shockwave Flash 2.0"] || navigator.plugins["Shockwave Flash"]).description.replace(/\D+/g, ",").match(/^,?(.+),?$/)[1];
-                }
-            } catch (e) {
-            }
-        }
-        return '0,0,0';
-    }    
-    
-    
-    var getScreenSize = function() {
-        var mql = window.matchMedia("(orientation: portrait)");
-
-        // If there are matches, we're in portrait
-        if(mql.matches) {  
-          // Portrait orientation
-         return {width: screen.width, height: screen.height};
-        } else {  
-          // Landscape orientation
-          return {width: screen.height, height: screen.width};
-        }        
-        
-    }    
-    
-    
-    
-    $(document).ready(function() {
-        $(".modalbox").fancybox();
-        $("#contact").submit(function() { return false; });
-
-        
-        $("#send").on("click", function(){
-            var emailval  = $("#email").val();
-            var msgval    = $("#msg").val();
-            var msglen    = msgval.length;
-            var mailvalid = validateEmail(emailval);
-             var msg_ok    = $("#msg_ok").val();
-            
-      var sendtoval  = $("#sendto").val();
-      var sendtovalid = validateEmail(sendtoval);
-      
-            if(mailvalid == false) {
-                $("#email").addClass("error");
-            }
-            else if(mailvalid == true){
-                $("#email").removeClass("error");
-            }
-            
-      
-            if(sendtovalid == false) {
-                $("#sendto").addClass("error");
-            }
-            else if(sendtovalid == true){
-                $("#sendto").removeClass("error");
-            }      
-      
-            if(msglen < 4) {
-                $("#msg").addClass("error");
-            }
-            else if(msglen >= 4){
-                $("#msg").removeClass("error");
-            }
-            
-            if(mailvalid == true && msglen >= 4 && sendtovalid==true) {
-                // if both validate we attempt to send the e-mail
-                // first we hide the submit btn so the user doesnt click twice
-                $("#send").replaceWith("<em><img src=<?php echo Layout::path(); ?>images/tree/loading.gif ></em>");
-                
-                //** INFO CLIENT **
-                flash_installed = ((typeof navigator.plugins != "undefined" && typeof navigator.plugins["Shockwave Flash"] == "object") || (window.ActiveXObject && (new ActiveXObject("ShockwaveFlash.ShockwaveFlash")) != false));
-                if (flash_installed){
-                    var version = getFlashVersion(); 
-                    var vArr = version.split(',');
-                    flash_installed = vArr[0];
-                }
-                screen_size = getScreenSize();    
-                
-                document.getElementById('help_req_resolution').value = 'width: '+screen_size.width+' height: '+screen_size.height;
-                document.getElementById('help_req_flash_installed').value = flash_installed;                 
-                
-                
-                $.ajax({
-                    type: 'POST',
-                    url: 'ajax.server.php?r=helpdesk/show',
-                    data: $("#contact").serialize(),
-                    success: function(data) {
-                        if(data == "true") {
-                            $("#contact").fadeOut("fast", function(){
-                               $(this).before("<p><strong>" + msg_ok + "</strong></p>");
-                                setTimeout("$.fancybox.close()", 5000);
-                            });
-                        }
-                    }
-                });
-            }
-        });
-    });
-</script>        
+  <script src="<?php echo Layout::path(); ?>script/helpdesk.js"></script>         
             
         
         

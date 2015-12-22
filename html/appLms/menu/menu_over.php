@@ -419,9 +419,12 @@ cout('
                    <br> <br>
                 
                 <p align=center>
-                    <button id="send">'.Lang::t('_CONFIRM').'</button>
-                    </p>
-                    
+                      <table width=98% border=0 > <tr><td align=center>
+                        <button id="close">'.Lang::t('_CANCEL').'</button>   
+                    </td><td align=center>
+                       <button id="send">'.Lang::t('_CONFIRM').'</button>               
+                    </td></tr>
+                      </table>
         </fieldset>
       </form>                    
                     
