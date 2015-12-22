@@ -255,11 +255,11 @@ cout('
              <ul class="nav pull-right top-menu">
                                                  
                 <div id="o-wrapper" class="o-wrapper">
-                        <button id="c-button--slide-right" class="c-button">
+                        <button id="c-button--slide-right" class="c-button" >
                         
-                         <a data-toggle="dropdown"  href="#">
-                        <table><tr><td >'. $photo.'  &nbsp;</td><td><span class="username"> '.Docebo::user()->getUserName().'</span></td></tr></table>                                                        
-                        
+                         <a data-toggle="dropdown"  href="#" title="'.Lang::t('_PROFILE', 'menu_course').'">
+                        <table><tr><td>'. $photo.'  &nbsp;</td><td><span class="username"> '.Docebo::user()->getUserName().'</span></td></tr></table>                                                        
+                          </a>
                         </button>
                 </div><!-- /o-wrapper -->
 
@@ -284,7 +284,7 @@ cout('
                                         
                                         <p align=right>
                                         
-                                                <a href="index.php?r=profile/show">
+                                                <a href="index.php?r=profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
                                                  <span class="glyphicon glyphicon-pencil"></span>
                                                 </a>
                                                 &nbsp;
