@@ -421,15 +421,16 @@ cout('
                 
                 </table>
                 
-                   <br> <br>
+                   <br>
                 
-                <p align=center>
-                      <table width=98% border=0 background="#ffcc99"> <tr><td align=center>
+          
+                      <table width=88% border=0 background="#ffcc99"> <tr><td align=center>
                         <button id="close">'.Lang::t('_CANCEL').'</button>   
                     </td><td align=center>
                        <button id="send">'.Lang::t('_CONFIRM').'</button>               
                     </td></tr>
                       </table>
+                   
         </fieldset>
       </form>                    
                     
