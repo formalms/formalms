@@ -110,7 +110,7 @@
     
  <!-- HELP DESK -->  
   <link rel="stylesheet" type="text/css" media="all" href="<?php echo Layout::path(); ?>style/helpdesk.css">
- <link rel="stylesheet" type="text/css" media="all" href="<?php echo Layout::path(); ?>style/jquery.fancybox.css">
+  <link rel="stylesheet" type="text/css" media="all" href="<?php echo Layout::path(); ?>style/jquery.fancybox.css">
   <script type="text/javascript" src="<?php echo Layout::path(); ?>bootstrap/js/jquery.min.js"></script>
    <script type="text/javascript" src="<?php echo Layout::path(); ?>bootstrap/js/jquery.fancybox.js?v=2.0.6"></script>     
  

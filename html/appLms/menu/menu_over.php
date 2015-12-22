@@ -266,7 +266,7 @@ cout('
 
                 <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right">
                 
-                  <button class="c-menu__close">'.Lang::t('_CLOSE', 'standard').'</button>
+                  <button class="c-menu__close">'.Lang::t('_HIDETREE', 'organization').'</button>
                   
                                                              
                   
