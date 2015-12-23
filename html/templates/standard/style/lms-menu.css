@@ -291,7 +291,7 @@ img.course_logo.sponsor {
   .sidebar-nav .navbar ul {
     float: none;
     display: block;
-    width:254px;
+    width:100%;
   }
   .sidebar-nav .navbar li {
     float: none;
