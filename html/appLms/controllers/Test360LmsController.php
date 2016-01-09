@@ -29,6 +29,7 @@ class Test360LmsController extends LmsController
     }
 
     private function _formatCsvValue($value, $delimiter) {
+        $value = html_entity_decode($value, ENT_QUOTES, 'utf-8');
         $formatted_value = str_replace($delimiter, '\\'.$delimiter, $value);
         return $delimiter.$formatted_value.$delimiter;
     }
