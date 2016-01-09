@@ -28,6 +28,81 @@ class Test360LmsController extends LmsController
 
     }
 
+    private function _formatCsvValue($value, $delimiter) {
+        $formatted_value = str_replace($delimiter, '\\'.$delimiter, $value);
+        return $delimiter.$formatted_value.$delimiter;
+    }
+
+    public function exportCSVTask()
+    {
+        require_once(_base_.'/lib/lib.download.php');
+        require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
+        require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
+        require_once($GLOBALS['where_lms'] . '/class.module/track.test.php');
+        require_once($GLOBALS['where_lms'] . '/class.module/track.testAnswer.php');
+        require_once($GLOBALS['where_lms'] . '/class.module/learning.test360.php');
+
+        $idTest = $_GET['idTest'];
+
+        $testObj = new Learning_Test360($idTest);
+
+        $query_test_users = "
+        SELECT value, params
+        FROM " . $GLOBALS['prefix_lms'] . "_organization LEFT JOIN " . $GLOBALS['prefix_lms'] . "_organization_access ON idOrg = idOrgAccess
+        WHERE objectType = '" . $testObj->getObjectType() . "' AND idResource = '" . $testObj->getId() . "'";
+        $re_test_users = sql_query($query_test_users);
+
+
+        $separator = ',';
+        $delimiter = '"';
+        $line_end = "\r\n";
+
+        $output = "";
+
+        $head = array();
+        $head[] = $this->_formatCsvValue("", $delimiter);
+        $head[] = $this->_formatCsvValue("", $delimiter);
+
+        $subhead = array();
+        $subhead[] = $this->_formatCsvValue("Domanda", $delimiter);
+        $subhead[] = $this->_formatCsvValue("Categoria", $delimiter);
+
+        $questionsArray = array();
+
+
+        while (list($idUser, $testRelation) = sql_fetch_row($re_test_users)) {
+            $userInfo = Docebo::user()->getAclManager()->getUser($idUser, false);
+            $firstname = $userInfo[ACL_INFO_FIRSTNAME];
+            $lastname = $userInfo[ACL_INFO_LASTNAME];
+            $head[] = $this->_formatCsvValue($firstname.' '.$lastname, $delimiter);
+            $subhead[] = $this->_formatCsvValue($testRelation, $delimiter);
+
+            $idTrack = Track_Test::getTrack($testObj->getId(), $idUser);
+            $trackTest = new Track_Test($idTrack);
+
+            $answers = $trackTest->getAnswers();
+            foreach ($testObj->getQuests() as $question) {
+                if (!array_key_exists($question->getId(), $questionsArray)){
+                    $questionsArray[$question->getId()] = array();
+                    $questionsArray[$question->getId()][] = $this->_formatCsvValue($question->getTitle(), $delimiter);
+                    $questionsArray[$question->getId()][] = $this->_formatCsvValue($question->getCategoryName(), $delimiter);
+                }
+                if (array_key_exists($question->getId(), $answers)) {
+                    $questionsArray[$question->getId()][] = $this->_formatCsvValue($answers[$question->getId()]->getMoreInfo(), $delimiter);
+                } else {
+                    $questionsArray[$question->getId()][] = $this->_formatCsvValue("", $delimiter);
+                }
+            }
+        }
+        $output .= implode($separator, $head).$line_end;
+        $output .= implode($separator, $subhead).$line_end;
+        foreach ($questionsArray as $questionArray) {
+            $output .= implode($separator, $questionArray).$line_end;
+        }
+        sendStrAsFile($output, 'export_test360_'.date("Ymd").'.csv');
+
+    }
+
     public function reportTask()
     {
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
@@ -50,7 +125,7 @@ class Test360LmsController extends LmsController
 
 
         $query_test_users = "
-        SELECT idOrg, value, params
+        SELECT value, params
         FROM " . $GLOBALS['prefix_lms'] . "_organization LEFT JOIN " . $GLOBALS['prefix_lms'] . "_organization_access ON idOrg = idOrgAccess
         WHERE objectType = '" . $testObj->getObjectType() . "' AND idResource = '" . $testObj->getId() . "'";
         $re_test_users = sql_query($query_test_users);
@@ -58,7 +133,7 @@ class Test360LmsController extends LmsController
         $questAnswers = array();
         $categoryQuestAnswers = array();
         $categories = array();
-        while (list($idOrg, $idUser, $testRelation) = sql_fetch_row($re_test_users)) {
+        while (list($idUser, $testRelation) = sql_fetch_row($re_test_users)) {
             $idTrack = Track_Test::getTrack($testObj->getId(), $idUser);
             $userInfo = Docebo::user()->getAclManager()->getUser($idUser, false);
             $trackTest = new Track_Test($idTrack);

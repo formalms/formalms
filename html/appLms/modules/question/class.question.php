@@ -670,7 +670,10 @@ class Question {
 		return $new_id_quest;
 	}
 	
-	function getCategoryName($id_cat) {
+	function getCategoryName($id_cat = null) {
+		if ($id_cat == null){
+			$id_cat = $this->categoryId;
+		}
 		
 		$name = '';
 		$qtxt = "SELECT name " 
