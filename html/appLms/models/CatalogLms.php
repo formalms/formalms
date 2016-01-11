@@ -388,7 +388,7 @@ class CatalogLms extends Model
 				}
 				$action .= '</div>';
 			}
-
+               /*   
 			$html .=	'<div class="dash-course">'
 						.($row['use_logo_in_courselist'] && $row['img_course'] ? '<div class="logo_container"><img class="clogo" src="'.$path_course.$row['img_course'].'" alt="'.Util::purge($row['name']).'" /></div>' : '')
 						.($row['use_logo_in_courselist'] && !$row['img_course'] ? '<div class="logo_container"><img class="clogo cnologo" src="'.Get::tmpl_path().'images/course/course_nologo.png'.'" alt="'.Util::purge($row['name']).'" /></div>' : '')
@@ -414,6 +414,45 @@ class CatalogLms extends Model
 						.'</div>'
 
 						.'</div>';
+                       */ 
+                   
+                        
+            // boxes courses of catalog            
+           $html .= '<div class="item  col-xs-4 col-lg-4">
+                    <div class="thumbnail">'
+                        .($row['use_logo_in_courselist'] && $row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.$path_course.$row['img_course'].'" alt="'.Util::purge($row['name']).'" /></div>' : '')
+                        .($row['use_logo_in_courselist'] && !$row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.Get::tmpl_path().'images/course/course_nologo.png'.'" alt="'.Util::purge($row['name']).'" /></div>' : '')
+                        .'<div class="caption">
+                            <h4 class="group inner list-group-item-heading">
+                                '.$row['name'].'</h4>
+                            <p class="group inner list-group-item-text">
+                                '.$row['description'].'</p> &nbsp; '
+                                
+                                .'<p class="course_support_info">'
+                                 .($row['course_demo'] ? '<a href="index.php?r=catalog/downloadDemoMaterial&amp;course_id='.$row['idCourse'].'" class="ico-wt-sprite subs_download"><span>'.Lang::t('_COURSE_DEMO', 'course').'</span></a>' : '')
+                                 .'</p>'                               
+                                
+        
+  
+                            .'<div class="row">
+                                <div class="col-xs-12 col-md-6">'
+                                    .'<p class="course_support_info">'
+                                    .($row['code'] ? '<i style="font-size:.88em">['.$row['code'].']</i>' : '&nbsp;')
+                                    .'</p>
+  
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    '.$action.'
+                                </div>
+           
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>';
+                        
+                        
 		}
 
 		if(sql_num_rows($result) <= 0)
