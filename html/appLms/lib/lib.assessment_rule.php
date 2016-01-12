@@ -135,7 +135,7 @@ Class AssessmentRuleManager {
 		$to_score =Get::pReq('to_score', DOTY_INT, 0);
 		$competences_list =Get::pReq('competences_list', DOTY_STRING, '');
 		$courses_list =Get::pReq('courses_list', DOTY_STRING, '');
-		$feedback_txt =Get::pReq('feedback_txt', DOTY_STRING, '');
+		$feedback_txt =Get::pReq('feedback_txt', DOTY_MIXED, '');
 
 		if ($rule_id <= 0) {
 			$qtxt ="INSERT INTO %lms_assessment_rule
