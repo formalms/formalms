@@ -6,20 +6,22 @@
  * releaseDate : '2012-11-20',
  */
 
-
-tinyMCE.init({
+//tinyMCE
+//tinymce.baseURL = "../addons/tinymce/tinymce.gzip.php";
+tinymce.init({
 	// General options
 	mode : "textareas",
-	theme : "advanced",
-	skin : "o2k7",
-	skin_variant : "silver",
+	theme : "modern",
+	/*skin : "o2k7",
+	skin_variant : "silver",*/
 	editor_selector : "tinymce_complex",
 	forced_root_block : false,
 	force_p_newlines : false,
 	force_br_newlines : true,
 	relative_urls : true,
 	remove_script_host: false,
-	plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+	plugins : "",
+	//autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks
 
 	// Theme options
 	theme_advanced_buttons1 : "code,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
