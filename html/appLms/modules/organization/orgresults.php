@@ -210,7 +210,15 @@ function getTrackingTable($id_user, $id_org) {
 		$scorm_history = '<a href="index.php?modname=organization&op=scorm_history&amp;id_user='.$id_user.'&amp;id_org='.$id_org.'&amp;id_obj='.$row['item'].'">'.$lang->def('_HISTORY').'</a>';
 		
 		$line[] = $row['title'];
-		$line[] = $lessons_status[$row['item']];
+		//$line[] = $lessons_status[$row['item']];
+		if ($lessons_status[$row['item']] === 'completed') {
+			$line[] = Lang::t('_COMPLETED', 'standard');
+		} else if ($lessons_status[$row['item']] == 'incomplete') {
+			$line[] = Lang::t('_INCOMPLETE', 'standard');
+		} else {
+			$line[] = $lessons_status[$row['item']];
+		}
+		
 		$line[] = $row['score_raw'];
 		$line[] = $row['score_max'];
 		$line[] = Format::date($row['last_access']);
