@@ -74,7 +74,7 @@ class AdminrulesAdm extends Model
 				'groupid' => $name,
 				'special' => '<a id="special_'.$idst.'" href="ajax.adm_server.php?r=adm/adminrules/special&amp;idst='.$idst.'" class="ico-sprite subs_conf" title="'.Lang::t('_SPECIAL_SETTING', 'adminrules').': '.$name.'"><span>'.Lang::t('_SPECIAL_SETTING', 'adminrules').'</span></a>',
 				'menu' => '<a href="index.php?r=adm/adminrules/menu&amp;idst='.$idst.'" class="ico-sprite '.($have_menu ? 'subs_elem' : 'fd_notice').'" title="'.Lang::t('_EDIT_SETTINGS', 'adminrules').': '.$name.'"><span>'.Lang::t('_EDIT_SETTINGS', 'adminrules').'</span></a>',
-				'lang' => '<a id="lang_'.$idst.'" href="ajax.adm_server.php?r=adm/adminrules/lang&amp;idst='.$idst.'" class="ico-sprite subs_lang" title="'.Lang::t('_SPECIAL_SETTING', 'adminrules').': '.$name.'"><span>'.Lang::t('_SPECIAL_SETTING', 'adminrules').'</span></a>',
+				'lang' => '<a id="lang_'.$idst.'" href="ajax.adm_server.php?r=adm/adminrules/lang&amp;idst='.$idst.'" class="ico-sprite subs_lang" title="'.Lang::t('_LANG_SETTING', 'adminrules').': '.$name.'"><span>'.Lang::t('_LANG_SETTING', 'adminrules').'</span></a>',
 				'admin_manage' => '<a href="index.php?r=adm/adminrules/admin_manage&amp;idst='.$idst.'" class="ico-sprite '.($have_user ? 'subs_users' : 'fd_notice').'" title="'.Lang::t('_MANAGE_SUBSCRIPTION', 'adminrules').'"><span>'.Lang::t('_MANAGE_SUBSCRIPTION', 'adminrules').'</span></a>',
 				'del' => 'ajax.adm_server.php?r=adm/adminrules/delGroup&amp;idst='.$idst
 			);
