@@ -228,8 +228,8 @@ class Layout {
 		}
         if (file_exists(_base_.'/templates/'.getTemplate().'/layout/'.$layout.'.html.twig')){
             
-            echo TwigManager::getInstance()->render($layout.'.html.twig', array(), _base_.'/templates/'.getTemplate().'/layout/');
-           // echo \appCore\Template\TwigManager::getInstance()->render($layout.'.html.twig', array(), _base_.'/templates/'.getTemplate().'/layout/');
+//            echo TwigManager::getInstance()->render($layout.'.html.twig', array(), _base_.'/templates/'.getTemplate().'/layout/');
+            echo \appCore\Template\TwigManager::getInstance()->render($layout.'.html.twig', array(), _base_.'/templates/'.getTemplate().'/layout/');
            
         } else {
             include(_base_.'/templates/'.getTemplate().'/layout/'.$layout.'.php');

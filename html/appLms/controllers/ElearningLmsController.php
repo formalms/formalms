@@ -90,6 +90,12 @@ class ElearningLmsController extends LmsController {
 
 	public function showTask() {
 
+		$msg[0] = 'Il vecchio var_dump';
+		$msg[1] = 'Quest è il solito var_dump';
+		var_dump($msg);
+		$msg[0] = 'Il nuovo componente VarDumper';
+		$msg[1] = 'Questo un var_dump molto più bello!';
+		\Symfony\Component\VarDumper\VarDumper::dump($msg);
 		$model = new ElearningLms();
 
 		if(Get::sett('on_usercourse_empty') === 'on')
@@ -207,8 +213,8 @@ class ElearningLmsController extends LmsController {
 			$courselist[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselist[$keys[$i]]);
 		}
 
-        
-  // CLASSROOM 
+
+  // CLASSROOM
         $modelClassroom = new ClassroomLms();
 
         $filter_text = Get::req('filter_text', DOTY_STRING, "");
@@ -241,19 +247,19 @@ class ElearningLmsController extends LmsController {
             $conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
         }
 
-        $courselistClassroom = $modelClassroom->findAll($conditions, $params);   
-        
+        $courselistClassroom = $modelClassroom->findAll($conditions, $params);
+
 
         //check courses accessibility
         $keys = array_keys($courselistClassroom);
         for ($i=0; $i<count($keys); $i++) {
             $courselistClassroom[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselistClassroom[$keys[$i]]);
-        }        
-        // fine classroom         
-        
-        
-        
-        
+        }
+        // fine classroom
+
+
+
+
 		require_once(_lms_.'/lib/lib.middlearea.php');
 		$ma = new Man_MiddleArea();
 		$this->render('courselist', array(
@@ -262,7 +268,7 @@ class ElearningLmsController extends LmsController {
 			'use_label' => $ma->currentCanAccessObj('tb_label'),
 			'keyword' => $filter_text  ,
             'display_info' => $this->_getClassDisplayInfo($keys),
-            'courselistClassroom' => $courselistClassroom 
+            'courselistClassroom' => $courselistClassroom
 		));
 	}
 
@@ -302,8 +308,8 @@ class ElearningLmsController extends LmsController {
 		for ($i=0; $i<count($keys); $i++) {
 			$courselist[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselist[$keys[$i]]);
 		}
-        
-         // CLASSROOM 
+
+         // CLASSROOM
         $modelClassroom = new ClassroomLms();
 
         $filter_text = Get::req('filter_text', DOTY_STRING, "");
@@ -336,17 +342,17 @@ class ElearningLmsController extends LmsController {
             $conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
         }
 
-        $courselistClassroom = $modelClassroom->findAll($conditions, $params);   
-        
+        $courselistClassroom = $modelClassroom->findAll($conditions, $params);
+
 
         //check courses accessibility
         $keys = array_keys($courselistClassroom);
         for ($i=0; $i<count($keys); $i++) {
             $courselistClassroom[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselistClassroom[$keys[$i]]);
-        }        
-        // fine classroom        
-        
-        
+        }
+        // fine classroom
+
+
 		require_once(_lms_.'/lib/lib.middlearea.php');
 		$ma = new Man_MiddleArea();
 		$this->render('courselist', array(
@@ -355,7 +361,7 @@ class ElearningLmsController extends LmsController {
 			'use_label' => $ma->currentCanAccessObj('tb_label'),
 			'keyword' => $filter_text ,
             'display_info' => $this->_getClassDisplayInfo($keys),
-            'courselistClassroom' => $courselistClassroom            
+            'courselistClassroom' => $courselistClassroom
 		));
 	}
 
@@ -394,10 +400,10 @@ class ElearningLmsController extends LmsController {
         $keys = array_keys($courselist);
         for ($i=0; $i<count($keys); $i++) {
             $courselist[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselist[$keys[$i]]);
-        }        
-        
-        
-        // CLASSROOM 
+        }
+
+
+        // CLASSROOM
         $modelClassroom = new ClassroomLms();
 
         $filter_text = Get::req('filter_text', DOTY_STRING, "");
@@ -430,19 +436,19 @@ class ElearningLmsController extends LmsController {
             $conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
         }
 
-        $courselistClassroom = $modelClassroom->findAll($conditions, $params);   
-        
+        $courselistClassroom = $modelClassroom->findAll($conditions, $params);
+
 
 
         //check courses accessibility
         $keys = array_keys($courselistClassroom);
         for ($i=0; $i<count($keys); $i++) {
             $courselistClassroom[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselistClassroom[$keys[$i]]);
-        }        
-        // fine classroom        
-                
-        
-        
+        }
+        // fine classroom
+
+
+
 
 		require_once(_lms_.'/lib/lib.middlearea.php');
 		$ma = new Man_MiddleArea();
@@ -452,7 +458,7 @@ class ElearningLmsController extends LmsController {
 			'use_label' => $ma->currentCanAccessObj('tb_label'),
 			'keyword' => $filter_text,
             'display_info' => $this->_getClassDisplayInfo($keys),
-            'courselistClassroom' => $courselistClassroom               
+            'courselistClassroom' => $courselistClassroom
 		));
 	}
 
@@ -460,7 +466,7 @@ class ElearningLmsController extends LmsController {
 
 
 	public function allTask() {
-		
+
         // ELEARNING
         $model = new ElearningLms();
 
@@ -478,17 +484,17 @@ class ElearningLmsController extends LmsController {
 			':status' => _CUS_END
 		);
         */
-        
-        
+
+
         $conditions = array(
             'cu.iduser = :id_user'
         );
 
         $params = array(
             ':id_user' => (int)Docebo::user()->getId()
-        );        
-        
-        
+        );
+
+
 		if (!empty($filter_text)) {
 			$conditions[] = "(c.code LIKE '%:keyword%' OR c.name LIKE '%:keyword%')";
 			$params[':keyword'] = $filter_text;
@@ -506,10 +512,10 @@ class ElearningLmsController extends LmsController {
         $keys = array_keys($courselist);
         for ($i=0; $i<count($keys); $i++) {
             $courselist[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselist[$keys[$i]]);
-        }        
-        
-        
-        // CLASSROOM 
+        }
+
+
+        // CLASSROOM
         $modelClassroom = new ClassroomLms();
 
         $filter_text = Get::req('filter_text', DOTY_STRING, "");
@@ -542,15 +548,15 @@ class ElearningLmsController extends LmsController {
             $conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
         }
 
-        $courselistClassroom = $modelClassroom->findAll($conditions, $params);   
-        
+        $courselistClassroom = $modelClassroom->findAll($conditions, $params);
+
 
         //check courses accessibility
         $keys = array_keys($courselistClassroom);
         for ($i=0; $i<count($keys); $i++) {
             $courselistClassroom[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselistClassroom[$keys[$i]]);
-        }        
-        
+        }
+
 
 
 		require_once(_lms_.'/lib/lib.middlearea.php');
@@ -559,7 +565,9 @@ class ElearningLmsController extends LmsController {
 			'path_course' => $this->path_course,
 			'courselist' => $courselist,
 			'use_label' => $ma->currentCanAccessObj('tb_label'),
-			'keyword' => $filter_text  ,
+			'keyword' => $filter_text,
+			'ustatus' => $this->ustatus,
+			'levels' => $this->levels,
             'display_info' => $this->_getClassDisplayInfo($keys),
             'courselistClassroom' => $courselistClassroom
 		));
@@ -644,9 +652,9 @@ class ElearningLmsController extends LmsController {
 
 		Util::jump_to($jump_url);
 	}
-    
-    
-    
+
+
+
 protected function _getClassDisplayInfo($courses) {
         $model = new ClassroomLms();
         $class_info = $model->getUserEditionsInfo(Docebo::user()->getIdst(), $courses);
@@ -687,9 +695,9 @@ protected function _getClassDisplayInfo($courses) {
 
 
         return $output;
-    }    
-    
-    
-    
+    }
+
+
+
 
 }

@@ -143,7 +143,7 @@ class Controller {
 	 * @param array $params the params that wil be passed to the widget
 	 * @return Widget the widget instance
 	 */
-	public function widget($widget_name, $params = null) {
+	public static function widget($widget_name, $params = null) {
 
 		$widget_name = strtolower($widget_name);
 		require_once(_base_.'/widget/'.$widget_name.'/lib.'.$widget_name.'.php');
