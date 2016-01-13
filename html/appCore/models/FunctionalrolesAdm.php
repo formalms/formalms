@@ -714,7 +714,7 @@ class FunctionalrolesAdm extends Model {
 
 	public function deleteMembers($id_fncrole, $arr_idst) {
 		if ($id_fncrole <= 0) return false; //invalid role
-		if (is_numeric($arr_idst)) $users = array($arr_idst); //handle single user case
+		if (is_numeric($arr_idst)) $arr_idst = array($arr_idst); //handle single user case
 		if (!is_array($arr_idst)) return false; //invalid user data
 		if (count($arr_idst) <= 0) return true; //0 users operation: always "successfull"
 
