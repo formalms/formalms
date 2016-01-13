@@ -206,7 +206,16 @@ class CoursestatsLmsController extends LmsController {
 				$completed = 0;
 				foreach ($lo_list as $idOrg => $lo) {
 					if (isset($record->lo_status[$idOrg])) {
-						$row['lo_'.$idOrg] = $record->lo_status[$idOrg];
+						if ($record->lo_status[$idOrg] === 'completed') {
+							$row['lo_'.$idOrg] = Lang::t('_COMPLETED', 'standard');
+						} else if ($record->lo_status[$idOrg] == 'passed') {
+							$row['lo_'.$idOrg] = Lang::t('passed', 'standard');
+						} else if ($record->lo_status[$idOrg] == 'failed') {
+							$row['lo_'.$idOrg] = Lang::t('failed', 'standard');
+						} else {
+							$row['lo_'.$idOrg] = $record->lo_status[$idOrg];
+						}
+						//$row['lo_'.$idOrg] = $record->lo_status[$idOrg];
 						if ($record->lo_status[$idOrg] == 'completed' || $record->lo_status[$idOrg] == 'passed') $completed++;
 					} else {
 						$row['lo_'.$idOrg] = "";
@@ -217,6 +226,7 @@ class CoursestatsLmsController extends LmsController {
 				$records[] = $row;
 			}
 		}
+
 
 		$output = array(
 			'startIndex' => $startIndex,
