@@ -1054,7 +1054,7 @@ function modstatus() {
 	$user_info = $aclManager->getUser( $idUser, FALSE );
 
 	$out->setWorkingZone('content');
-	$out->add(getTitleArea($lang->def('_STATUS').$user_info[ACL_INFO_FIRSTNAME].' '.$user_info[ACL_INFO_LASTNAME], 'stats'));
+	$out->add(getTitleArea($lang->def('_STATUS').' '.$user_info[ACL_INFO_FIRSTNAME].' '.$user_info[ACL_INFO_LASTNAME], 'stats'));
 	$out->add('<div class="std_block">'
 			.getBackUi('index.php?modname=stats&amp;op=statuser&amp;idUser='.$idUser, $lang->def('_BACK')));
 
