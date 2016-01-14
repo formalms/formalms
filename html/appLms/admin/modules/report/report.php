@@ -304,7 +304,7 @@ function get_report_table($url='') {
 				' title="'.$lang->def('_DEL').' : '.($row['author'] == 0 ? $lang->def($row['filter_name']) : $row['filter_name']).'">'.
 				'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" />';//.
 				'</a>';
-			$can_public = ($can_mod ? true : ($is_admin && $row['author']==Docebo::user()->getIdst() ? true : false));
+			$can_public = ($can_mod ? true : ($level==ADMIN_GROUP_GODADMIN && $row['author']==Docebo::user()->getIdst() ? true : false));
 			$public = '<image '.($can_public ? 'class="handover"' : '').' src="'.getPathImage('lms').'standard/'.
 			($row['is_public']==1 ? '' : 'un').'publish.png'.'" '.
 			($is_admin || $can_mod ? 'onclick="public_report(this, '.$row['id_filter'].');" ' : '').' />'.
