@@ -602,6 +602,8 @@ class Report_User extends Report {
 		$box->body .= Form::getCheckBox(Lang::t('_EMAIL', 'standard'), 'col_sel_email', 'cols[]', '_TH_EMAIL', is_showed('_TH_EMAIL'));
 		$box->body .= Form::getCheckBox(Lang::t('_REGISTER_DATE', 'standard'), 'col_sel_register_date', 'cols[]', '_TH_REGISTER_DATE', is_showed('_TH_REGISTER_DATE'));
 		$box->body .= Form::getCheckBox(Lang::t('_SUSPENDED', 'standard'), 'col_sel_suspended', 'cols[]', '_TH_SUSPENDED', is_showed('_TH_SUSPENDED'));
+		$box->body .= Form::getCheckBox(Lang::t('_ORGCHART', 'standard'), 'col_sel_organization_chart', 'cols[]', '_TH_ORGANIZATION_CHART', is_showed('_TH_ORGANIZATION_CHART'));
+                
 		foreach ($custom as $key=>$val) {
 			$box->body .= Form::getCheckBox($val['label'], 'col_custom_'.$val['id'], 'custom['.$val['id'].']', $val['id'], $ref['custom_fields'][$key]['selected']);
 		}
@@ -1382,6 +1384,7 @@ class Report_User extends Report {
 		if (in_array('_TH_EMAIL', $cols)) { $th2[] = Lang::t('_EMAIL', 'standard'); $colspanuser++; }
 		if (in_array('_TH_REGISTER_DATE', $cols)) { $th2[] = Lang::t('_REGISTER_DATE', 'standard'); $colspanuser++; }
 		if (in_array('_TH_SUSPENDED', $cols)) { $th2[] = Lang::t('_SUSPENDED', 'standard'); $colspanuser++; }
+		if (in_array('_TH_ORGANIZATION_CHART', $cols)) { $th2[] = Lang::t('_ORGCHART', 'standard'); $colspanuser++; }
 
 		require_once($GLOBALS['where_framework'].'/lib/lib.field.php');
 		$aclManager = new DoceboACLManager();
@@ -1553,6 +1556,23 @@ class Report_User extends Report {
 				if (in_array('_TH_EMAIL', $cols)) $row[] = $email;
 				if (in_array('_TH_REGISTER_DATE', $cols)) $row[] = Format::date($register_date, 'datetime');
 				if (in_array('_TH_SUSPENDED', $cols)) $row[] = $valid ? Lang::t('_NO', 'standard') : Lang::t('_YES', 'standard');
+
+                require_once(_adm_."/models/UsermanagementAdm.php");
+                $umodel = new UsermanagementAdm();
+                $folders = $umodel->getUserFolders($id_user);
+                $organization_chart = "";
+                
+                $first = true;
+                foreach ($folders as $keyFolder => $valueFolder) {
+                        if($first) {
+                                $organization_chart = ''.$valueFolder;
+                                $first = false;
+                        } else {
+                                $organization_chart .= '</br>'.$valueFolder;
+                        }
+                }
+                
+                if (in_array('_TH_ORGANIZATION_CHART', $cols)) $row[] = $organization_chart;
 
 				foreach ($customcols as $val) {
 					if ($val['selected']) {
