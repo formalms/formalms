@@ -111,9 +111,9 @@ function showgrade() {
         
         $cont_h = array(
         $lang->def('_TITLE'),
-        $lang->def('_SCORE'),
+        $lang->def('_SCORE_LAST_TEST'),
         $lang->def('_REQUIRED_SCORE'),
-        $lang->def('_DATE'),
+        $lang->def('_DATE_LAST_TEST'),
         $lang->def('_COMMENTS'),
         $lang->def('_SHOW_RESULTS')
     );
