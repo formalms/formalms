@@ -122,7 +122,7 @@ function get_report_table($url='') {
 
 	$is_admin = ( ($level==ADMIN_GROUP_GODADMIN || $level==ADMIN_GROUP_ADMIN) ? true : false);
 
-	if ($is_admin || $can_mod) {//if ($can_mod) {
+	if ($level==ADMIN_GROUP_GODADMIN || $can_mod) {//if ($can_mod) {
 		cout('<script type="text/javascript">
 		var _FAILURE = "error";
 		var ajax_path = "'.Get::rel_path('lms').'/ajax.adm_server.php?mn=report&plf=lms";
@@ -270,7 +270,7 @@ function get_report_table($url='') {
 		'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" title="'.$lang->def('_DEL').'" />'	*/
 	);
 
-	if ($is_admin || $can_mod) {
+	if ($level==ADMIN_GROUP_GODADMIN || $can_mod) {
 		$col_type[]='image';
 		$col_type[]='image';
 		$col_content[]='<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').'" title="'.$lang->def('_MOD').'" />';
@@ -307,7 +307,7 @@ function get_report_table($url='') {
 			$can_public = ($can_mod ? true : ($level==ADMIN_GROUP_GODADMIN && $row['author']==Docebo::user()->getIdst() ? true : false));
 			$public = '<image '.($can_public ? 'class="handover"' : '').' src="'.getPathImage('lms').'standard/'.
 			($row['is_public']==1 ? '' : 'un').'publish.png'.'" '.
-			($is_admin || $can_mod ? 'onclick="public_report(this, '.$row['id_filter'].');" ' : '').' />'.
+			($level==ADMIN_GROUP_GODADMIN || $can_mod ? 'onclick="public_report(this, '.$row['id_filter'].');" ' : '').' />'.
 				'<input type="hidden" id="enable_value_'.$row['id_filter'].'" '.
 				'value="'.($row['is_public']==1 ? '0' : '1').'" />';
 
@@ -330,7 +330,7 @@ function get_report_table($url='') {
 				_REP_KEY_MOD    => $mod_link,
 				_REP_KEY_REM    => $rem_link*/
 			);
-			if ($is_admin || $can_mod) {
+			if ($level==ADMIN_GROUP_GODADMIN || $can_mod) {
 				if ($row['author']==Docebo::user()->getIdst() || $can_mod) {
 					$tb_content[_REP_KEY_MOD] = $mod_link;
 					$tb_content[_REP_KEY_REM] = $rem_link;
@@ -343,7 +343,7 @@ function get_report_table($url='') {
 		}
 	}
 
-	if ($is_admin || $can_mod) {//if ($can_mod) {
+	if ($level==ADMIN_GROUP_GODADMIN || $can_mod) {//if ($can_mod) {
 		$tb->addActionAdd('
 			<a href="index.php?modname=report&amp;op=report_category">'.
 		'<img src="'.getPathImage().'standard/add.png" '.
