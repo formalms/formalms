@@ -268,6 +268,9 @@ function mimetype($ext) {
 			return 'application/x-xdma';
 		case "zip" :
 			return 'application/zip';
+		case "rar" :
+			// or application/octet-stream?			
+			return 'application/x-rar';
 		case "7z" :
 			return 'application/x-7z-compressed';
 
