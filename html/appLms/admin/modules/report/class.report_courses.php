@@ -292,7 +292,7 @@ class Report_Courses extends Report {
 				//.Form::openElementSpace()
 				.Form::getOpenFieldset($lang->def('_COURSE_FIELDS'), 'fieldset_course_fields')
 				.Form::getCheckBox($lang->def('_COURSE_CODE'), 'col_sel_coursecode', 'cols[]', '_CODE_COURSE', is_showed('_CODE_COURSE', $ref))
-				.Form::getCheckBox('', 'col_sel_coursename', 'cols[]', '_NAME_COURSE', true, "style='display:none;'")
+				//.Form::getCheckBox('', 'col_sel_coursename', 'cols[]', '_NAME_COURSE', true, "style='display:none;'")
 				.Form::getCheckBox($glang->def('_CATEGORY'), 'col_sel_category', 'cols[]', '_COURSE_CATEGORY', is_showed('_COURSE_CATEGORY', $ref))
 				.Form::getCheckBox($glang->def('_STATUS'), 'col_sel_status', 'cols[]', '_COURSESTATUS', is_showed('_COURSESTATUS', $ref))
 				.Form::getCheckBox($glang->def('_CATALOGUE'), 'col_sel_catalogue', 'cols[]', '_COURSECATALOGUE', is_showed('_COURSECATALOGUE', $ref))
@@ -458,7 +458,7 @@ class Report_Courses extends Report {
 
 				.Form::getOpenFieldset($lang->def('_COURSE_FIELDS'), 'fieldset_course_fields')
 				.Form::getCheckBox($lang->def('_COURSE_CODE'), 'col_sel_coursecode', 'cols[]', '_CODE_COURSE', is_showed('_CODE_COURSE', $ref))
-				.Form::getCheckBox($glang->def('_COURSE_NAME'), 'col_sel_coursename', 'cols[]', '_NAME_COURSE', is_showed('_NAME_COURSE', $ref))
+				//.Form::getCheckBox($glang->def('_COURSE_NAME'), 'col_sel_coursename', 'cols[]', '_NAME_COURSE', is_showed('_NAME_COURSE', $ref))
 				.Form::getCheckBox($glang->def('_CATEGORY'), 'col_sel_category', 'cols[]', '_COURSE_CATEGORY', is_showed('_COURSE_CATEGORY', $ref))
 				.Form::getCheckBox($glang->def('_STATUS'), 'col_sel_status', 'cols[]', '_COURSESTATUS', is_showed('_COURSESTATUS', $ref))
 				.Form::getCheckBox($glang->def('_CREATION_DATE', 'report'), 'col_sel_publication', 'cols[]', '_PUBLICATION_DATE', is_showed('_PUBLICATION_DATE', $ref))
@@ -528,7 +528,7 @@ class Report_Courses extends Report {
 
 				.Form::getOpenFieldset($lang->def('_COURSE_FIELDS'), 'fieldset_course_fields')
 				.Form::getCheckBox($lang->def('_COURSE_CODE'), 'col_sel_coursecode', 'cols[]', '_CODE_COURSE', is_showed('_CODE_COURSE', $ref))
-				.Form::getCheckBox($glang->def('_COURSE_NAME'), 'col_sel_coursename', 'cols[]', '_NAME_COURSE', is_showed('_NAME_COURSE', $ref))
+				//.Form::getCheckBox($glang->def('_COURSE_NAME'), 'col_sel_coursename', 'cols[]', '_NAME_COURSE', is_showed('_NAME_COURSE', $ref))
 				.Form::getCheckBox($glang->def('_CATEGORY'), 'col_sel_category', 'cols[]', '_COURSE_CATEGORY', is_showed('_COURSE_CATEGORY', $ref))
 				.Form::getCheckBox($glang->def('_STATUS'), 'col_sel_status', 'cols[]', '_COURSESTATUS', is_showed('_COURSESTATUS', $ref))
 				.Form::getCheckBox($glang->def('_CREATION_DATE', 'report'), 'col_sel_publication', 'cols[]', '_PUBLICATION_DATE', is_showed('_PUBLICATION_DATE', $ref))
@@ -1340,7 +1340,7 @@ class Report_Courses extends Report {
 
 		$colspan_course = 0;
 		if(in_array('_CODE_COURSE', $filter_cols)) $colspan_course++;
-		if(in_array('_NAME_COURSE', $filter_cols)) $colspan_course++;
+		$colspan_course++;
 		if(in_array('_COURSE_CATEGORY', $filter_cols)) $colspan_course++;
 		if(in_array('_COURSESTATUS', $filter_cols)) $colspan_course++;
 
@@ -1393,7 +1393,7 @@ class Report_Courses extends Report {
 		$th3 = array();
 
 		if (in_array('_CODE_COURSE', $filter_cols)) $th3[] = $lang->def('_COURSE_CODE');
-		if (in_array('_NAME_COURSE', $filter_cols)) $th3[] = $lang->def('_COURSE_NAME');
+		$th3[] = $lang->def('_COURSE_NAME');
 		if (in_array('_COURSE_CATEGORY', $filter_cols)) $th3[] = $lang->def('_CATEGORY');
 		if (in_array('_COURSESTATUS', $filter_cols)) $th3[] = array('style'=>'align-center', 'value'=>$lang->def('_STATUS'));
 
@@ -1527,7 +1527,7 @@ class Report_Courses extends Report {
 
 			$trow = array();
 			if (in_array('_CODE_COURSE', $filter_cols)) $trow[] = addslashes($code_c);
-			if (in_array('_NAME_COURSE', $filter_cols)) $trow[] = addslashes($name_c);
+			$trow[] = addslashes($name_c);
 			if (in_array('_COURSE_CATEGORY', $filter_cols)) $trow[] = $array_category[$info_course['idCategory']];
 			if (in_array('_COURSESTATUS', $filter_cols)) $trow[] = (isset($array_status[$info_course['status']]) ? $array_status[$info_course['status']] : '');
 
@@ -1749,7 +1749,7 @@ class Report_Courses extends Report {
 
 		$colspan_course = 1;
 		if(in_array('_CODE_COURSE', $filter_cols)) $colspan_course++;
-		if(in_array('_NAME_COURSE', $filter_cols)) $colspan_course++;
+		$colspan_course++;
 		if(in_array('_COURSE_CATEGORY', $filter_cols)) $colspan_course++;
 		if(in_array('_COURSESTATUS', $filter_cols)) $colspan_course++;
 		if(in_array('_PUBLICATION_DATE', $filter_cols)) $colspan_course++;
@@ -1768,7 +1768,7 @@ class Report_Courses extends Report {
 
 		$th2[] = $glang->def('_QUEST_TEXT');
 		if (in_array('_CODE_COURSE', $filter_cols)) $th2[] = $glang->def('_COURSE_CODE');
-		if (in_array('_NAME_COURSE', $filter_cols)) $th2[] = $glang->def('_COURSE_NAME');
+		$th2[] = $glang->def('_COURSE_NAME');
 		if (in_array('_COURSE_CATEGORY', $filter_cols)) $th2[] = $glang->def('_CATEGORY');
 		if (in_array('_COURSESTATUS', $filter_cols)) $th2[] = $glang->def('_STATUS');
 		if (in_array('_PUBLICATION_DATE', $filter_cols)) $th2[] = $glang->def('_CREATION_DATE');
@@ -1790,7 +1790,7 @@ class Report_Courses extends Report {
 
 			$trow[] = addslashes($course_info['title_quest']);
 			if (in_array('_CODE_COURSE', $filter_cols)) $trow[] = addslashes($course_info['code']);
-			if (in_array('_NAME_COURSE', $filter_cols)) $trow[] = addslashes($course_info['name']);
+			$trow[] = addslashes($course_info['name']);
 			if (in_array('_COURSE_CATEGORY', $filter_cols)) $trow[] = $array_category[$course_info['idCategory']];
 			if (in_array('_COURSESTATUS', $filter_cols)) $trow[] = (isset($array_status[$course_info['status']]) ? $array_status[$course_info['status']] : '');
 			if (in_array('_PUBLICATION_DATE', $filter_cols)) $trow[] = Format::date($course_info['create_date'], 'datetime');
@@ -1838,7 +1838,7 @@ class Report_Courses extends Report {
 
 		$colspan_course = 0;
 		if(in_array('_CODE_COURSE', $filter_cols)) $colspan_course++;
-		if(in_array('_NAME_COURSE', $filter_cols)) $colspan_course++;
+		$colspan_course++;
 		if(in_array('_COURSE_CATEGORY', $filter_cols)) $colspan_course++;
 		if(in_array('_COURSESTATUS', $filter_cols)) $colspan_course++;
 		if(in_array('_PUBLICATION_DATE', $filter_cols)) $colspan_course++;
@@ -1856,7 +1856,7 @@ class Report_Courses extends Report {
 		$th2 = array();
 
 		if (in_array('_CODE_COURSE', $filter_cols)) $th2[] = $glang->def('_COURSE_CODE');
-		if (in_array('_NAME_COURSE', $filter_cols)) $th2[] = $glang->def('_COURSE_NAME');
+		$th2[] = $glang->def('_COURSE_NAME');
 		if (in_array('_COURSE_CATEGORY', $filter_cols)) $th2[] = $glang->def('_CATEGORY');
 		if (in_array('_COURSESTATUS', $filter_cols)) $th2[] = $glang->def('_STATUS');
 		if (in_array('_PUBLICATION_DATE', $filter_cols)) $th2[] = $glang->def('_CREATION_DATE');
@@ -1877,7 +1877,7 @@ class Report_Courses extends Report {
 			$trow = array();
 
 			if (in_array('_CODE_COURSE', $filter_cols)) $trow[] = addslashes($course_info['code']);
-			if (in_array('_NAME_COURSE', $filter_cols)) $trow[] = addslashes($course_info['name']);
+			$trow[] = addslashes($course_info['name']);
 			if (in_array('_COURSE_CATEGORY', $filter_cols)) $trow[] = $array_category[$course_info['idCategory']];
 			if (in_array('_COURSESTATUS', $filter_cols)) $trow[] = (isset($array_status[$course_info['status']]) ? $array_status[$course_info['status']] : '');
 			if (in_array('_PUBLICATION_DATE', $filter_cols)) $trow[] = Format::date($course_info['create_date'], 'datetime');
