@@ -633,6 +633,7 @@ class Report_User extends Report {
 		Form::getOpenFieldset($lang->def('_COURSE_FIELDS'), 'fieldset_course_fields')
 		.Form::getCheckBox($lang->def('_CATEGORY'), 'col_sel_category', 'cols[]', '_TH_CAT', is_showed('_TH_CAT'))
 		.Form::getCheckBox($lang->def('_CODE'), 'col_sel_coursecode', 'cols[]', '_TH_CODE', is_showed('_TH_CODE'))
+                .Form::getCheckBox($lang->def('_COURSE_TYPE'), 'col_sel_coursetype', 'cols[]', '_TH_COURSETYPE', is_showed('_TH_COURSETYPE'))
 		.Form::getCheckBox($lang->def('_TH_COURSEPATH'), 'col_sel_coursepath', 'cols[]', '_TH_COURSEPATH', is_showed('_TH_COURSEPATH'))
 		.Form::getCheckBox($lang->def('_STATUS'), 'col_sel_status', 'cols[]', '_TH_COURSESTATUS', is_showed('_TH_COURSESTATUS'))
 		.Form::getCheckBox(Lang::t('_CREDITS', 'standard'), 'col_sel_credits', 'cols[]', '_TH_COURSECREDITS', is_showed('_TH_COURSECREDITS'))
@@ -1419,7 +1420,7 @@ class Report_User extends Report {
 		if (in_array('_TH_CAT', $cols))	{ $th2[] = $lang->def('_CATEGORY'); $colspan1++; }
 		if (in_array('_TH_CODE', $cols)) { $th2[] = $lang->def('_CODE'); $colspan1++; }
 		$th2[] = $lang->def('_COURSE_NAME'); $colspan1++;
-		$th2[] = Lang::t('_COURSE_TYPE', 'course'); $colspan1++;
+                if (in_array('_TH_COURSETYPE', $cols)) { $th2[] = Lang::t('_COURSE_TYPE', 'course'); $colspan1++; }
 		if (in_array('_TH_COURSEPATH', $cols)) { $th2[] = $lang->def('_TH_COURSEPATH'); $colspan1++; }
 		if (in_array('_TH_COURSESTATUS', $cols)) { $th2[] = $lang->def('_STATUS'); $colspan1++; }
 		if (in_array('_TH_COURSECREDITS', $cols)) { $th2[] = Lang::t('_CREDITS', 'standard'); $colspan1++; }
@@ -1455,7 +1456,7 @@ class Report_User extends Report {
 		$th1[] = array('colspan'=>$colspan1, 'value'=>$lang->def('_COURSES'));
 		if ($show_classrooms_editions) $th1[] = array('colspan' => $colspan_classrooms_editions, 'value' => Lang::t('_CLASSROOM', 'standard'));
 		$th1[] = array('colspan'=>$colspan2, 'value'=>$lang->def('_STATUS'));
-		$th1[] = '';
+		//$th1[] = '';
 
 		$buffer->openHeader();
 		$buffer->addHeader($th1);
@@ -1586,7 +1587,9 @@ class Report_User extends Report {
 				if (in_array('_TH_CAT', $cols)) $row[] = $category_list[$id_category];
 				if (in_array('_TH_CODE', $cols)) $row[] = $code;
 				$row[] = $name;
-				$row[] = isset($course_types_trans[$course_type]) ? $course_types_trans[$course_type] : "";
+                                //add _TH_COURSETYPE
+                                
+				if (in_array('_TH_COURSETYPE', $cols)) $row[] = isset($course_types_trans[$course_type]) ? $course_types_trans[$course_type] : "";
 				if (in_array('_TH_COURSEPATH', $cols)) $row[] = $category_path_list[$id_category];
 				if (in_array('_TH_COURSESTATUS', $cols)) $row[] = $this->_convertStatusCourse($status);
 				if (in_array('_TH_COURSECREDITS', $cols)) $row[] = $credits;
