@@ -637,6 +637,7 @@ class Report_User extends Report {
 		.Form::getCheckBox($lang->def('_TH_COURSEPATH'), 'col_sel_coursepath', 'cols[]', '_TH_COURSEPATH', is_showed('_TH_COURSEPATH'))
 		.Form::getCheckBox($lang->def('_STATUS'), 'col_sel_status', 'cols[]', '_TH_COURSESTATUS', is_showed('_TH_COURSESTATUS'))
 		.Form::getCheckBox(Lang::t('_CREDITS', 'standard'), 'col_sel_credits', 'cols[]', '_TH_COURSECREDITS', is_showed('_TH_COURSECREDITS'))
+                .Form::getCheckBox(Lang::t('_LABEL', 'standard'), 'col_sel_label', 'cols[]', '_TH_COURSELABEL', is_showed('_TH_COURSELABEL'))
 		.Form::getCloseFieldset()
 
 		.Form::getOpenFieldset(
@@ -1372,7 +1373,10 @@ class Report_User extends Report {
 		$clevels = new CourseLevel();
 		$user_levels_trans = $clevels->getLevels();
 		unset($clevels);
-
+                
+                require_once(_lms_.'/admin/models/LabelAlms.php');
+		$label_model = new LabelAlms();
+                   
 		$buffer->openTable($lang->def('_RU_CAPTION'), $lang->def('_RU_CAPTION'));
 
 		$th1 = array();
@@ -1421,6 +1425,7 @@ class Report_User extends Report {
 		if (in_array('_TH_CODE', $cols)) { $th2[] = $lang->def('_CODE'); $colspan1++; }
 		$th2[] = $lang->def('_COURSE_NAME'); $colspan1++;
                 if (in_array('_TH_COURSETYPE', $cols)) { $th2[] = Lang::t('_COURSE_TYPE', 'course'); $colspan1++; }
+		if (in_array('_TH_COURSELABEL', $cols)) { $th2[] = $lang->def('_TH_COURSELABEL'); $colspan1++; }
 		if (in_array('_TH_COURSEPATH', $cols)) { $th2[] = $lang->def('_TH_COURSEPATH'); $colspan1++; }
 		if (in_array('_TH_COURSESTATUS', $cols)) { $th2[] = $lang->def('_STATUS'); $colspan1++; }
 		if (in_array('_TH_COURSECREDITS', $cols)) { $th2[] = Lang::t('_CREDITS', 'standard'); $colspan1++; }
@@ -1590,6 +1595,15 @@ class Report_User extends Report {
                                 //add _TH_COURSETYPE
                                 
 				if (in_array('_TH_COURSETYPE', $cols)) $row[] = isset($course_types_trans[$course_type]) ? $course_types_trans[$course_type] : "";
+				if (in_array('_TH_COURSELABEL', $cols)) {
+                                    $course_label_id = $label_model->getCourseLabel($id_course);
+                                    if ($course_label_id > 0) {
+                                         $arr_course_label = $label_model->getLabelInfo($course_label_id);
+                                         $row[] = $arr_course_label[getLanguage()][LABEL_TITLE];
+                                    } else {
+                                         $row[] = "";
+                                    }
+                                }
 				if (in_array('_TH_COURSEPATH', $cols)) $row[] = $category_path_list[$id_category];
 				if (in_array('_TH_COURSESTATUS', $cols)) $row[] = $this->_convertStatusCourse($status);
 				if (in_array('_TH_COURSECREDITS', $cols)) $row[] = $credits;

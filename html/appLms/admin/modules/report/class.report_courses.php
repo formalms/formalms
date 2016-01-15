@@ -297,6 +297,7 @@ class Report_Courses extends Report {
 				.Form::getCheckBox($glang->def('_STATUS'), 'col_sel_status', 'cols[]', '_COURSESTATUS', is_showed('_COURSESTATUS', $ref))
 				.Form::getCheckBox($glang->def('_CATALOGUE'), 'col_sel_catalogue', 'cols[]', '_COURSECATALOGUE', is_showed('_COURSECATALOGUE', $ref))
 				.Form::getCheckBox($glang->def('_CREATION_DATE'), 'col_sel_publication', 'cols[]', '_PUBLICATION_DATE', is_showed('_PUBLICATION_DATE', $ref))
+                                .Form::getCheckBox($glang->def('_LABEL'), 'col_sel_label', 'cols[]', '_COURSELABEL', is_showed('_COURSELABEL', $ref))
 				.Form::getCloseFieldset()
 
 				.Form::getOpenFieldset(
@@ -532,6 +533,7 @@ class Report_Courses extends Report {
 				.Form::getCheckBox($glang->def('_CATEGORY'), 'col_sel_category', 'cols[]', '_COURSE_CATEGORY', is_showed('_COURSE_CATEGORY', $ref))
 				.Form::getCheckBox($glang->def('_STATUS'), 'col_sel_status', 'cols[]', '_COURSESTATUS', is_showed('_COURSESTATUS', $ref))
 				.Form::getCheckBox($glang->def('_CREATION_DATE', 'report'), 'col_sel_publication', 'cols[]', '_PUBLICATION_DATE', is_showed('_PUBLICATION_DATE', $ref))
+				.Form::getCheckBox($glang->def('_LABEL'), 'col_sel_label', 'cols[]', '_COURSELABEL', is_showed('_COURSELABEL', $ref))
 				.Form::getCloseFieldset()
 
 				.Form::getOpenFieldset($lang->def('_COURSE', 'levels'), 'fieldset_course_fields')
@@ -1329,7 +1331,10 @@ class Report_Courses extends Report {
 					&$classrooms_editions_info) {
 		require_once(_lms_.'/admin/modules/report/report_tableprinter.php');
 		$buffer = new ReportTablePrinter($type);
-
+                
+                require_once(_lms_.'/admin/models/LabelAlms.php');
+		$label_model = new LabelAlms();
+                
 		$output = '';
 
 		require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
@@ -1346,6 +1351,7 @@ class Report_Courses extends Report {
 
 		if(in_array('_COURSECATALOGUE', $filter_cols)) $colspan_course++;
 		if(in_array('_PUBLICATION_DATE', $filter_cols)) $colspan_course++;
+                if(in_array('_CURSELABEL', $filter_cols)) $colspan_course++;
 
 		if(in_array('_LANGUAGE', $filter_cols)) $colspan_course++;
 		if(in_array('_DIFFICULT', $filter_cols)) $colspan_course++;
@@ -1400,6 +1406,8 @@ class Report_Courses extends Report {
 		if(in_array('_COURSECATALOGUE', $filter_cols)) $th3[] = $lang->def('_CATALOGUE');
 		if(in_array('_PUBLICATION_DATE', $filter_cols)) $th3[] = array('style'=>'align-center', 'value'=>$lang->def('_CREATION_DATE'));
 
+                if (in_array('_COURSELABEL', $filter_cols)) $th3[] = $lang->def('_LABEL');
+                
 		if (in_array('_LANGUAGE', $filter_cols)) $th3[] = array('style'=>'align-center', 'value'=>$lang->def('_COURSE_LANG_METHOD'));
 		if (in_array('_DIFFICULT', $filter_cols)) $th3[] = array('style'=>'align-center', 'value'=>$lang->def('_DIFFICULTY'));
 		if (in_array('_DATE_BEGIN', $filter_cols)) $th3[] = array('style'=>'align-center', 'value'=>$lang->def('_DATE_BEGIN'));
@@ -1531,6 +1539,16 @@ class Report_Courses extends Report {
 			if (in_array('_COURSE_CATEGORY', $filter_cols)) $trow[] = $array_category[$info_course['idCategory']];
 			if (in_array('_COURSESTATUS', $filter_cols)) $trow[] = (isset($array_status[$info_course['status']]) ? $array_status[$info_course['status']] : '');
 
+						if (in_array('_COURSELABEL', $filter_cols)) {
+                            $course_label_id = $label_model->getCourseLabel($course_info['id_course']);
+                            if ($course_label_id > 0) {
+                                 $arr_course_label = $label_model->getLabelInfo($course_label_id);
+                                 $trow[] = $arr_course_label[getLanguage()][LABEL_TITLE];
+                            } else {
+                                 $trow[] = "";
+                            }
+                        }
+                        
 			if(in_array('_COURSECATALOGUE', $filter_cols)) {
 				$temp = array();
 				if (isset($catalogue_entries[$info_course['idCourse']])) {
