@@ -374,7 +374,7 @@ class EditionManager
 
 	public function getCourseEditionSubscription($id_course, $id_edition, $start_index, $results, $sort, $dir, $filter)
 	{
-		$query =	"SELECT u.idst, u.userid, u.firstname, u.lastname, s.level, s.status, s.date_begin_validity, s.date_expire_validity"
+		$query =	"SELECT u.idst, u.userid, u.firstname, u.lastname, s.level, s.status, s.date_complete, s.date_begin_validity, s.date_expire_validity"
 					." FROM ".$this->courseuser_table." AS s"
 					." JOIN ".$this->user_table." AS u ON s.idUser = u.idst"
 					." WHERE s.idCourse = ".(int)$id_course
@@ -456,7 +456,7 @@ class EditionManager
 		$result = sql_query($query);
 		$res = array();
 
-		while(list($id_user, $userid, $firstname, $lastname, $level, $status, $date_begin_validity, $date_expire_validity) = sql_fetch_row($result))
+		while(list($id_user, $userid, $firstname, $lastname, $level, $status, $date_complete, $date_begin_validity, $date_expire_validity) = sql_fetch_row($result))
 		{
 			if($firstname !== '' && $lastname !== '')
 				$user = $firstname.' '.$lastname;
@@ -473,6 +473,7 @@ class EditionManager
 							'fullname' => $user,
 							'level_id' => $level,
 							'status_id' => $status,
+							'date_complete' => $date_complete,
 							'date_begin_validity' => $date_begin_validity,
 							'date_expire_validity' => $date_expire_validity,
 							'del' => 'ajax.adm_server.php?r='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? 'lms/p' : 'alms/').'subscription/delPopUp&id_course='.$id_course.'&id_edition='.$id_edition.'&id_user='.$id_user);

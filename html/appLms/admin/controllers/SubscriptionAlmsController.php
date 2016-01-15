@@ -149,6 +149,7 @@ class SubscriptionAlmsController extends AlmsController {
 			'email' => Lang::t('_EMAIL', 'standard'),
 			'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
 			'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
+			'date_complete' => Lang::t('_DATE_COMPLETE', 'subscribe'),
 			'level' => Lang::t('_LEVEL', 'standard'),
 			'language' => Lang::t('_LANGUAGE', 'standard')
 		);
@@ -593,6 +594,7 @@ class SubscriptionAlmsController extends AlmsController {
 		$array_user = $this->model->loadUser($start_index, $results, $sort, $dir, $filter);
 
 		$list = array();
+                $date_complete = array();
 		foreach ($array_user as $value) {
 			$is_valid_begin = $value['date_begin_validity'] && $value['date_begin_validity'] != '0000-00-00 00:00:00';
 			$is_valid_expire = $value['date_expire_validity'] && $value['date_expire_validity'] != '0000-00-00 00:00:00';
@@ -617,6 +619,7 @@ class SubscriptionAlmsController extends AlmsController {
 				if ($value['overbooking']) $record['status'] = ''._CUS_OVERBOOKING;
 			}
 			$list[(int)$value['id_user']] = $record;
+			$date_complete[(int)$value['id_user']] = $value['date_complete'];
 		}
 
 		//custom fields
@@ -624,6 +627,7 @@ class SubscriptionAlmsController extends AlmsController {
 		$umodel = new UsermanagementAdm();
 		$field_data = $umodel->getCustomFieldValues($arr_idst);
 		foreach ($arr_idst as $idst) {
+                        $field_data[$idst]["date_complete"] = $date_complete[$idst];
 			foreach ($dyn_fields as $dindex => $dvalue) {
 				$content = "".( isset($field_data[$idst][$dvalue]) ? $field_data[$idst][$dvalue] : "");
 				if ($dvalue == 'level' && $content != "") $content = Lang::t('_DIRECTORY_'.$content, 'admin_directory');

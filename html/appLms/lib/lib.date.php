@@ -1421,7 +1421,7 @@ class DateManager
 
 	public function getCourseEditionSubscription($id_course, $id_date, $start_index = false, $results = false, $sort = false, $dir = false, $filter = false)
 	{
-		$query =	"SELECT u.idst, u.userid, u.firstname, u.lastname, s.level, s.status, s.date_begin_validity, s.date_expire_validity "
+		$query =	"SELECT u.idst, u.userid, u.firstname, u.lastname, s.level, s.status, s.date_complete, s.date_begin_validity, s.date_expire_validity "
 					." FROM ".$this->courseuser_table." AS s"
 					." JOIN ".$this->user_table." AS u ON s.idUser = u.idst"
 					." WHERE s.idCourse = ".(int)$id_course
@@ -1498,7 +1498,7 @@ class DateManager
 
 		$overbooking_users = $this->getDateOverbookingUsers($id_date);
 
-		while(list($id_user, $userid, $firstname, $lastname, $level, $status, $date_begin_validity, $date_expire_validity) = sql_fetch_row($result))
+		while(list($id_user, $userid, $firstname, $lastname, $level, $status, $date_complete, $date_begin_validity, $date_expire_validity) = sql_fetch_row($result))
 		{
 			if($firstname !== '' && $lastname !== '')
 				$user = $firstname.' '.$lastname;
@@ -1515,6 +1515,7 @@ class DateManager
 							'fullname' => $user,
 							'level_id' => $level,
 							'status_id' => $status,
+							'date_complete' => $date_complete,
 							'date_begin_validity' => $date_begin_validity,
 							'date_expire_validity' => $date_expire_validity,
 							'overbooking' => in_array($id_user, $overbooking_users),

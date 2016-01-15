@@ -185,7 +185,7 @@ class CourseSubscribe_Manager
 	{
 		require_once(_base_.'/lib/lib.form.php');
 
-		$query =	"SELECT u.idst, u.userid, u.firstname, u.lastname, s.level, s.status, s.date_begin_validity, s.date_expire_validity, s.waiting "
+		$query =	"SELECT u.idst, u.userid, u.firstname, u.lastname, s.level, s.status, s.date_complete, s.date_begin_validity, s.date_expire_validity, s.waiting "
 					." FROM ".$this->subscribe_table." AS s"
 					." JOIN ".$this->user_table." AS u ON s.idUser = u.idst"
 					." WHERE s.idCourse = ".$id_course;
@@ -274,7 +274,7 @@ class CourseSubscribe_Manager
 		$result = sql_query($query);
 		$res = array();
 
-		while(list($id_user, $userid, $firstname, $lastname, $level, $status, $date_begin_validity, $date_expire_validity, $waiting) = sql_fetch_row($result))
+		while(list($id_user, $userid, $firstname, $lastname, $level, $status, $date_complete, $date_begin_validity, $date_expire_validity, $waiting) = sql_fetch_row($result))
 		{
 			if($firstname !== '' && $lastname !== '')
 				$user = $firstname.' '.$lastname;
@@ -293,6 +293,7 @@ class CourseSubscribe_Manager
 							'status' => $this->getUserStatusTr($status),
 							'level_id' => $level,
 							'status_id' => $status,
+							'date_complete' => $date_complete,
 							'date_begin_validity' => $date_begin_validity,
 							'date_expire_validity' => $date_expire_validity,
 							'waiting' => $waiting > 0,
