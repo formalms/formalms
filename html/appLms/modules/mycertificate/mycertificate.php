@@ -395,9 +395,9 @@ function mycertificate(&$url) {
 						}
 
 						$_value =	'<a class="ico-wt-sprite subs_pdf" href="'.$url->getUrl('op=release_cert&id_certificate='.$id_cert.'&id_course='.$id_course).'" '
-							.' title="'.$lang->def('_TAKE_A_COPY').'"><span>'
+							.' title="'.$lang->def('_DOWNLOAD').'"><span>'
 							//.'<img src="'.getPathImage('lms').'certificate/certificate.gif" alt="'.$lang->def('_ALT_TAKE_A_COPY').' : '.strip_tags($certificate[CERT_NAME]).'" />'
-							.$lang->def('_TAKE_A_COPY').'</span></a>';
+							.$lang->def('_DOWNLOAD').'</span></a>';
 						$cont[] = array(
 							'value' => $_value,
 							'style' => $type_h[$show_preview ? 8 : 7]
@@ -419,9 +419,9 @@ function mycertificate(&$url) {
 						}
 
 						$_value =	'<a class="ico-wt-sprite subs_pdf" href="'.$url->getUrl('op=release_cert&id_certificate='.$id_cert.'&id_course='.$id_course).'" '
-							.' title="'.$lang->def('_NEW_CERTIFICATE').'"><span>'
+							.' title="'.$lang->def('_GENERATE', 'certificate').'"><span>'
 							//.'<img src="'.getPathImage('lms').'certificate/certificate.gif" alt="'.$lang->def('_ALT_NEW_CERTIFICATE').' : '.strip_tags($certificate[CERT_NAME]).'" />'
-							.$lang->def('_NEW_CERTIFICATE').'</span></a>';
+							.$lang->def('_GENERATE', 'certificate').'</span></a>';
 						$cont[] = array(
 							'value' => $_value,
 							'style' => $type_h[$show_preview ? 8 : 7]
@@ -555,8 +555,8 @@ function mycertificate(&$url) {
 			list($date) = sql_fetch_row($result_released);
 
 			$cont[] =	'<a class="ico-wt-sprite subs_pdf" href="'.$url->getUrl('op=release_cert&id_certificate='.$id_certificate.'&idmeta='.$id_meta).'" '
-				.' title="'.$lang->def('_TAKE_A_COPY').'"><span>'
-				.$lang->def('_TAKE_A_COPY').'</span></a>';
+				.' title="'.$lang->def('_DOWNLOAD').'"><span>'
+				.$lang->def('_DOWNLOAD').'</span></a>';
 
 			$tb_meta_cert->addBody($cont);
 
@@ -618,8 +618,8 @@ function mycertificate(&$url) {
 				}
 
 				$cont[] =	'<a class="ico-wt-sprite subs_pdf" href="'.$url->getUrl('op=release_cert&id_certificate='.$id_certificate.'&idmeta='.$id_meta).'" '
-					.' title="'.$lang->def('_NEW_CERTIFICATE').'"><span>'
-					.$lang->def('_NEW_CERTIFICATE').'</span></a>';
+					.' title="'.$lang->def('_GENERATE', 'certificate').'"><span>'
+					.$lang->def('_GENERATE', 'certificate').'</span></a>';
 
 				$tb_meta_cert->addBody($cont);
 
