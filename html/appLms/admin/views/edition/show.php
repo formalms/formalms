@@ -5,6 +5,7 @@ $title = array(	'index.php?r='.$base_link_course.'/show' => Lang::t('_COURSE', '
 echo getTitleArea($title);
 ?>
 <div class="std_block">
+<?php echo $back_link; ?>
 <?php
 
 $_columns = array(
@@ -50,6 +51,7 @@ $this->widget('table', $_params);
 
 ?>
 </div>
+<?php echo $back_link; ?>
 <script type="text/javascript">
 var StatusList = {
 <?php

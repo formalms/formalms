@@ -54,6 +54,16 @@ class EditionAlmsController extends AlmsController {
 		}
 		return $message;
 	}
+        
+	protected function _getBackLink() {
+		if ($this->id_edition != 0) {
+			return getBackUi('index.php?r='.$this->base_link_edition.'/show&id_course=' . $this->id_course, Lang::t('_BACK', 'standard'));
+		} elseif ($this->id_date != 0) {
+			return getBackUi('index.php?r='.$this->base_link_classroom.'/classroom&id_course=' . $this->id_course, Lang::t('_BACK', 'standard'));
+		} else {
+			return getBackUi('index.php?r='.$this->base_link_course.'/show', Lang::t('_BACK', 'standard'));
+		}
+	}
 
 	protected function show()
 	{
@@ -62,6 +72,7 @@ class EditionAlmsController extends AlmsController {
 
 		$model = new EditionAlms($id_course);
 		$this->render('show', array(
+			'back_link' => $this->_getBackLink(),
 			'model' => $model,
 			'permissions' => $this->permissions,
 			'base_link_course' => $this->base_link_course,
