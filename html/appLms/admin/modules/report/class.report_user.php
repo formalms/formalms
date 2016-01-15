@@ -2336,7 +2336,7 @@ class Report_User extends Report {
 			$date_now = Format::date(date("Y-m-d H:i:s"));
 
 			//set query suspended users condition
-			$query_show_suspended = "u.valid = 1"; //default condition
+			$query_show_suspended = "AND u.valid = 1"; //default condition
 			switch ($show_suspended) {
 				case "all": $query_show_suspended = ""; break;
 				case "suspended_only": $query_show_suspended = " AND u.valid = 0 "; break;
@@ -2363,7 +2363,7 @@ class Report_User extends Report {
 
 			$query_course_user = "
 				SELECT cu.idUser, cu.idCourse, cu.edition_id, cu.date_inscr, cu.date_first_access,
-				cu.date_complete, cu.status, cu.level, cu.date_last_access,
+				cu.date_complete, cu.status, cu.level,
 				u.userid, u.firstname, u.lastname, u.email, u.valid
 				FROM ".$GLOBALS['prefix_lms']."_courseuser AS cu " .
 				" JOIN ".$GLOBALS['prefix_fw']."_user as u ON cu.idUser = u.idst
