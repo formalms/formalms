@@ -1351,7 +1351,7 @@ class Report_Courses extends Report {
 
 		if(in_array('_COURSECATALOGUE', $filter_cols)) $colspan_course++;
 		if(in_array('_PUBLICATION_DATE', $filter_cols)) $colspan_course++;
-                if(in_array('_CURSELABEL', $filter_cols)) $colspan_course++;
+                if(in_array('_COURSELABEL', $filter_cols)) $colspan_course++;
 
 		if(in_array('_LANGUAGE', $filter_cols)) $colspan_course++;
 		if(in_array('_DIFFICULT', $filter_cols)) $colspan_course++;
@@ -1539,7 +1539,7 @@ class Report_Courses extends Report {
 			if (in_array('_COURSE_CATEGORY', $filter_cols)) $trow[] = $array_category[$info_course['idCategory']];
 			if (in_array('_COURSESTATUS', $filter_cols)) $trow[] = (isset($array_status[$info_course['status']]) ? $array_status[$info_course['status']] : '');
 
-                                            if (in_array('_COURSELABEL', $filter_cols)) {
+                        if (in_array('_COURSELABEL', $filter_cols)) {
                             $course_label_id = $label_model->getCourseLabel($course_info['id_course']);
                             if ($course_label_id > 0) {
                                  $arr_course_label = $label_model->getLabelInfo($course_label_id);
