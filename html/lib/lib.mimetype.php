@@ -582,6 +582,9 @@ function getOtherMime($ext, & $mime_array) {
 			$mime_array[]='video/x-ms-wvx';
 			$mime_array[]='audio/x-ms-wax';
 		} break;
+		case "exe" : {
+			$mime_array[]='application/x-dosexec';
+		} break;
 
 	}
 
