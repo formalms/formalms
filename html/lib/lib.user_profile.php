@@ -2090,7 +2090,7 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 			$tot_cert = $num_meta_cert + $course_stats['cert_relesable'];
 
 			$html .= ''
-					.( isset($course_stats['cert_relesable']) && $tot_cert != 0
+					.( isset($course_stats['cert_relesable']) /*&& $tot_cert != 0*/
 							? '<tr><th scope="row">'.$this->_lang->def('_CERT_RELESABLE').' :</th><td><a href="index.php?modname=mycertificate&amp;op=mycertificate">'.$tot_cert.'</a></td></tr>'
 							: '' )
 
