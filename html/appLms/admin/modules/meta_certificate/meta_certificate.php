@@ -451,7 +451,7 @@ function list_element_meta_certificate()
 		if(file_exists($GLOBALS['where_lms'].'/lib/certificate/'.$file_name)) {
 
 			require_once($GLOBALS['where_lms'].'/lib/certificate/'.$file_name);
-			$instance = new $class_name(0, 0);
+			$instance = new $class_name(0, 0, 1);
 			$this_subs = $instance->getSubstitutionTags();
 			foreach($this_subs as $tag => $description)
 			{
