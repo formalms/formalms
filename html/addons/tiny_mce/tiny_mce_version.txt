@@ -1,3 +1,0 @@
-majorVersion : '3',
-minorVersion : '5.8',
-releaseDate : '2012-11-20',
