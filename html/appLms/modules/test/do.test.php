@@ -917,13 +917,6 @@ function showResult( $object_test, $id_param ) {
 	$play_man 		= new PlayTestManagement($id_test, Docebo::user()->getIdst(), $id_track, $test_man);
 	$test_info 		= $test_man->getTestAllInfo();
 	$track_info 	= $play_man->getTrackAllInfo();
-        
-	if($track_info['score_status'] != 'not_complete' && $track_info['score_status'] != 'doing') {
-
-		$GLOBALS['page']->add(getErrorUi($lang->def('_ERR_INCOERENCY_WITH_PAGE_NUMBER'))
-			.getBackUi(Util::str_replace_once('&', '&amp;', $object_test->back_url), $lang->def('_BACK')), 'content');
-		return;
-	}
 	
 	$previous_page = importVar('previous_page', false, false);
 	
@@ -932,6 +925,13 @@ function showResult( $object_test, $id_param ) {
 		'score_status' => 'doing' );
 	
 	if(isset($_POST['page_to_save']) && (($_POST['page_to_save'] > $track_info['last_page_saved']) || $test_info['mod_doanswer'])) {
+        
+                if($track_info['score_status'] != 'not_complete' && $track_info['score_status'] != 'doing') {
+
+                        $GLOBALS['page']->add(getErrorUi($lang->def('_ERR_INCOERENCY_WITH_PAGE_NUMBER'))
+                                .getBackUi(Util::str_replace_once('&', '&amp;', $object_test->back_url), $lang->def('_BACK')), 'content');
+                        return;
+                }
 		
 		$play_man->storePage($_POST['page_to_save'], $test_info['mod_doanswer']);
 		$play_man->closeTrackPageSession($_POST['page_to_save']);
