@@ -360,7 +360,7 @@ class EnrollrulesAlmsController extends AlmsController {
 		$id_rule = Get::req('id_rule', DOTY_INT, 0);
 		$rule = $this->model->getRule($id_rule);
 		
-		if(isset($_POST['undo'])) Util::jump_to('index.php?r=alms/enrollrules/modelem&amp;id_rule='.$id_rule);
+		if(isset($_POST['undo'])) Util::jump_to('index.php?r=alms/enrollrules/'.( $rule->rule_type == 'base' ? 'modbaseelem' : 'modelem' ).'&amp;id_rule='.$id_rule);
 		if(isset($_POST['save'])) {
 			
 			// Save the new course in the list

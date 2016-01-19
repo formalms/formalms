@@ -30,9 +30,9 @@ $this->widget('table', array(
 	'fields'		=> $keys,
 	'show'			=> 'table',
 	'rel_actions'	=> array(
-		'<a id="rule_course_over" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addcourses&amp;id_rule='.$id_rule.'&amp;load=1"><span>'.Lang::t('_ADD_COURSES', 'enrollrules').'</span></a>',
+		'<a id="rule_course_over" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addcourses&amp;id_rule='.$id_rule.'&amp;load=1"><span>'.Lang::t('_COURSES').'</span></a>',
 
-		'<a id="rule_course_below" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addcourses&amp;id_rule='.$id_rule.'&amp;load=1"><span>'.Lang::t('_ADD_COURSES', 'enrollrules').'</span></a>'
+		'<a id="rule_course_below" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addcourses&amp;id_rule='.$id_rule.'&amp;load=1"><span>'.Lang::t('_COURSES').'</span></a>'
 	),
 ));
 echo Form::openButtonSpace()

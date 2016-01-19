@@ -30,11 +30,11 @@ $this->widget('table', array(
 	'fields'		=> $keys,
 	'show'			=> 'table',
 	'rel_actions'	=> array(
-		'<a id="rule_entity_over" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addentity&amp;id_rule='.$id_rule.'"><span>'.Lang::t('_ADD', 'enrollrules').' '.$rule->rule_type_text.'</span></a>'.
-		'<a id="rule_course_over" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addcourses&amp;id_rule='.$id_rule.'&amp;load=1"><span>'.Lang::t('_ADD', 'enrollrules').' '.Lang::t('_COURSES', 'standard').'</span></a>',
+		'<a id="rule_entity_over" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addentity&amp;id_rule='.$id_rule.'"><span>'.$rule->rule_type_text.'</span></a>'.
+		'<a id="rule_course_over" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addcourses&amp;id_rule='.$id_rule.'&amp;load=1"><span>'.Lang::t('_COURSES', 'standard').'</span></a>',
 
-		'<a id="rule_entity_below" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addentity&amp;id_rule='.$id_rule.'"><span>'.Lang::t('_ADD', 'enrollrules').' '.$rule->rule_type_text.'</span></a>'.
-		'<a id="rule_course_below" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addcourses&amp;id_rule='.$id_rule.'&amp;load=1"><span>'.Lang::t('_ADD', 'enrollrules').' '.Lang::t('_COURSES', 'standard').'</span></a>'
+		'<a id="rule_entity_below" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addentity&amp;id_rule='.$id_rule.'"><span>'.$rule->rule_type_text.'</span></a>'.
+		'<a id="rule_course_below" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addcourses&amp;id_rule='.$id_rule.'&amp;load=1"><span>'.Lang::t('_COURSES', 'standard').'</span></a>'
 	),
 ));
 echo Form::openButtonSpace()
