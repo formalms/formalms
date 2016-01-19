@@ -664,7 +664,12 @@ Class CompetencesAdmController extends AdmController {
 
 
 	public function add_competence_actionTask() {
-		$back_url = 'index.php?r='.$this->base_link_competence.'/show';
+		$back_url = 'index.php?r='.$this->base_link_competence.'/show';              
+                
+                if (isset($_POST['undo'])) {
+			//--- UNDO: return to catalogue list -------------------------------------
+			Util::jump_to($back_url);
+                }
 
 		//check permissions
 		if (!$this->permissions['add']) Util::jump_to($back_url);
@@ -705,7 +710,12 @@ Class CompetencesAdmController extends AdmController {
 
 
 	public function mod_competence_actionTask() {
-		$back_url = 'index.php?r='.$this->base_link_competence.'/show';
+		$back_url = 'index.php?r='.$this->base_link_competence.'/show';              
+                
+                if (isset($_POST['undo'])) {
+			//--- UNDO: return to catalogue list -------------------------------------
+			Util::jump_to($back_url);
+                }
 
 		//check permissions
 		if (!$this->permissions['mod']) Util::jump_to($back_url);
