@@ -132,7 +132,7 @@
       <style>
       label {
         display: inline-block;
-        width: 5em;
+        //width: 5em;
       }
   </style> 
         
