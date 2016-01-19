@@ -179,7 +179,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 
 					$active_sub = '';
                     $sub_menu_name = $sub['name'];
-					if ($id_sub == $_GET['id_module_sel']){
+					if ($id_sub == $_SESSION['sel_module_id']){
                          $active_sub = 'class="active-sub"';                 
                     }
 				//cout('<li class="sub-v '.$active.'"><a href="'.$sub['link'].'" >'.$sub['name'].'</a></li>' , 'menu');
