@@ -189,7 +189,7 @@ class Bbb_Manager {
     $salt = Get::sett('bbb_salt', "");
     $moderator_password = Get::sett('bbb_password_moderator', "");
     $viewer_password = Get::sett('bbb_password_viewer', "");
-		$response = BigBlueButton::createMeetingArray($username, $name, null, $moderator_password, $viewer_password, $salt, $url, $returnurl);
+		$response = BigBlueButton::createMeetingArray($username, $name, null, $moderator_password, $viewer_password, $salt, 'http://'.$url, $returnurl);
 		if(checkPerm('mod', true)){
       $password = $moderator_password;
 		}

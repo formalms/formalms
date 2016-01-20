@@ -147,7 +147,7 @@ class BigBlueButton {
 	*@return The url to join the meeting
 	*/
 	public function createMeetingURL($name, $meetingID, $attendeePW, $moderatorPW, $welcome, $logoutURL, $SALT, $URL ) {
-		$url_create = $URL."api/create?";
+		$url_create = $URL."/api/create?";
 		$voiceBridge = 70000 + rand(0, 9999);
 		//var_dump('$params');
 		$params = 'name='.urlencode($name).'&meetingID='.urlencode($meetingID).'&attendeePW='.urlencode($attendeePW).'&moderatorPW='.urlencode($moderatorPW).'&voiceBridge='.$voiceBridge.'&logoutURL='.urlencode($logoutURL);
