@@ -18,7 +18,27 @@ class Module_Statistic extends LmsModule {
 		require_once($GLOBALS['where_lms'].'/modules/statistic/statistic.php');
 		statisticDispatch($GLOBALS['op']);
 	}
-	
+
+	function getAllToken($op) {
+			return array( 	'view' => array( 	'code' => 'view',
+								'name' => '_VIEW',
+								'image' => 'standard/view.png'), 
+					'view_all' => array( 	'code' => 'view_all',
+								'name' => '_VIEW_ALL',
+								'image' => 'standard/moduser.png') );
+	}
+
+	function getPermissionsForMenu($op) {
+		return array(
+			1 => $this->selectPerm($op, ''),
+			2 => $this->selectPerm($op, ''),
+			3 => $this->selectPerm($op, ''),
+			4 => $this->selectPerm($op, 'view'),
+			5 => $this->selectPerm($op, 'view'),
+			6 => $this->selectPerm($op, 'view,view_all'),
+			7 => $this->selectPerm($op, 'view,view_all')
+		);
+	}	
 }
 
 ?>

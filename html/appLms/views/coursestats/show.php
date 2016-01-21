@@ -75,7 +75,28 @@ foreach ($lo_list as $lo) {
 $rel_actions = '<a href="index.php?r=coursestats/export_csv" class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'">'
 				.'<span>'.Lang::t('_EXPORT_CSV', 'report').'</span></a>';
 
-$params = array(
+
+if( checkPerm('view_all', true, 'coursestats') == false ) {
+    // se amministratore non metto paginazione
+    $params = array(
+	'id' => 'coursestats_table',
+	'ajaxUrl' => 'ajax.server.php?r=coursestats/gettabledata',
+	'sort' => 'userid',
+	'columns' => $columns,
+	'fields' => $fields,
+	'use_paginator' => false,
+	'generateRequest' => 'CourseStats.requestBuilder',
+	'rel_actions' => $rel_actions,
+	'events' => array(
+		'initEvent' => 'CourseStats.initEvent'
+	),
+	'scroll_x' => "100%"
+    );
+    
+    $view_all_perm = 0;
+    
+} else {
+    $params = array(
 	'id' => 'coursestats_table',
 	'ajaxUrl' => 'ajax.server.php?r=coursestats/gettabledata',
 	'sort' => 'userid',
@@ -87,7 +108,11 @@ $params = array(
 		'initEvent' => 'CourseStats.initEvent'
 	),
 	'scroll_x' => "100%"
-);
+    );
+    
+    $view_all_perm = 1;
+    
+}
 
 $this->widget('table', $params);
 
@@ -108,6 +133,7 @@ $this->widget('table', $params);
 		filterDescendants: <?php echo $filter_descendants ? 'true' : 'false'; ?>,
 		countLOs: <?php echo count($lo_list); ?>,
 		footerData: [<?php echo $lo_totals_js; ?>],
-		statusList: <?php echo $status_list; ?>
+		statusList: <?php echo $status_list; ?>,
+		view_all: <?php echo $view_all_perm; ?>
 	});
 </script>

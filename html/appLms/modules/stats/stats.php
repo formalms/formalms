@@ -220,7 +220,9 @@ function statuserfilter() {
 	
 	require_once(_base_.'/lib/lib.form.php');
 	require_once(_lms_.'/lib/lib.subscribe.php');
-
+	
+	$view_all_perm = checkPerm('view_all_statuser', true);
+	
 	$lang =& DoceboLanguage::createInstance('stats', 'lms');
 	$out  =& $GLOBALS['page'];
 	$form = new Form();
@@ -409,6 +411,22 @@ function statuserfilter() {
 
 	list($total_user) = sql_fetch_row(sql_query($query));
 
+	//apply sub admin filters, if needed
+	if( !$view_all_perm ) {
+		//filter users
+		require_once(_base_.'/lib/lib.preference.php');
+		$ctrlManager = new ControllerPreference();
+		$ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+                foreach( $students as $idst => $user_course_info ) {
+                    if ( !in_array ($idst, $ctrl_users) ) {
+                        // Elimino gli studenti non amministrati
+                        unset ($students[$idst]);
+                    }
+                    
+                }
+                $total_user = count($students);
+	}
+        
 	$content_h 	= array(
 		$lang->def('_USERNAME'),
 		$lang->def('_STATS_FULLNAME'),
@@ -424,6 +442,21 @@ function statuserfilter() {
 	$aclManager =& Docebo::user()->getACLManager();
 	$acl =& Docebo::user()->getACL();
 
+	//apply sub admin filters, if needed
+	if( !$view_all_perm ) {
+		//filter users
+		require_once(_base_.'/lib/lib.preference.php');
+		$ctrlManager = new ControllerPreference();
+		$ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+                foreach( $students as $idst => $user_course_info ) {
+                    if ( !in_array ($idst, $ctrl_users) ) {
+                        // Elimino gli studenti non amministrati
+                        unset ($students[$idst]);
+                    }
+                    
+                }
+	}
+                
 	// search memebers of the selected group
 
 	foreach( $students as $idst => $user_course_info ) {
@@ -654,6 +687,8 @@ function statitem() {
 	require_once(_base_.'/lib/lib.table.php');
 	require_once(_lms_.'/lib/lib.subscribe.php');
 
+	$view_all_perm = checkPerm('view_all_statcourse', true);
+        
 	$cs = new CourseSubscribe_Manager();
 
 	$lang =& DoceboLanguage::createInstance('stats', 'lms');
@@ -701,6 +736,22 @@ function statitem() {
 
 	list($total_user) = sql_fetch_row(sql_query($query));
 
+	//apply sub admin filters, if needed
+	if( !$view_all_perm ) {
+		//filter users
+		require_once(_base_.'/lib/lib.preference.php');
+		$ctrlManager = new ControllerPreference();
+		$ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+                foreach( $students as $idst => $user_course_info ) {
+                    if ( !in_array ($idst, $ctrl_users) ) {
+                        // Elimino gli studenti non amministrati
+                        unset ($students[$idst]);
+                    }
+                    
+                }
+                $total_user = count($students);
+	}
+        
 	// get idst of the access in item
 	$query = "SELECT value FROM ".$GLOBALS['prefix_lms']."_organization_access"
 			." WHERE idOrgAccess = '".$idItem."'";

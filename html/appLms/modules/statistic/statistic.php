@@ -95,12 +95,29 @@ function outPageView($link) {
 			}
 		};break;
 	}
+	
+	
+    $view_all_perm = checkPerm('view_all', true);
+	$course_man 	= new Man_Course();
+	$course_user 	= $course_man->getIdUserOfLevel($_SESSION['idCourse']);
+
+	//apply sub admin filters, if needed
+	if( !$view_all_perm ) {
+		//filter users
+		require_once(_base_.'/lib/lib.preference.php');
+		$ctrlManager = new ControllerPreference();
+		$ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+		$course_user = array_intersect($course_user, $ctrl_users);
+	}
+	
+	
 	$page_views = array();
 	$query_stat = "
 	SELECT ".$select.", COUNT(*) 
 	FROM ".$GLOBALS['prefix_lms']."_trackingeneral 
-	WHERE idCourse='".$_SESSION['idCourse']."' "
-		."AND timeof >= '$dateinit' AND timeof <= '$dateend' 
+	WHERE idCourse='".$_SESSION['idCourse']."' ";
+	if( !$view_all_perm ) { $query_stat .= " AND idUser IN (".implode($course_user , ',').") "; }
+	$query_stat .= " AND timeof >= '$dateinit' AND timeof <= '$dateend' 
 	GROUP BY ".$group_by."
 	ORDER BY timeof";
 	$max = 0;
@@ -176,12 +193,24 @@ function statistic() {
 	require_once(_base_.'/lib/lib.table.php');
 	require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
 	
+        $view_all_perm = checkPerm('view_all', true);
+        
 	$lang =& DoceboLanguage::createInstance('statistic', 'lms');
 	$acl_man 		= Docebo::user()->getAclManager();
 	$course_man 	= new Man_Course();
 	$course_user 	= $course_man->getIdUserOfLevel($_SESSION['idCourse']);
-	$users_list 	=& $acl_man->getUsers($course_user);
+
+	//apply sub admin filters, if needed
+	if( !$view_all_perm ) {
+		//filter users
+		require_once(_base_.'/lib/lib.preference.php');
+		$ctrlManager = new ControllerPreference();
+		$ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+		$course_user = array_intersect($course_user, $ctrl_users);
+	}
+
 	
+	$users_list 	=& $acl_man->getUsers($course_user);
 	$GLOBALS['page']->add(
 		getTitleArea($lang->def('_STATISTICS'), 'statistic')
 		.'<div class="std_block">', 'content');

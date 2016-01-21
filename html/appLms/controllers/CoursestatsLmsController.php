@@ -95,6 +95,9 @@ class CoursestatsLmsController extends LmsController {
 	//----------------------------------------------------------------------------
 
 	public function showTask() {
+            
+		$view_all_perm = checkPerm('view_all', true, 'coursestats');
+            
 		$id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse']>0 ? $_SESSION['idCourse'] : false;
 		if ((int)$id_course <= 0) {
 			//...
@@ -105,6 +108,34 @@ class CoursestatsLmsController extends LmsController {
 		Util::get_js(Get::rel_path("lms").'/views/coursestats/coursestats.js', true, true);
 
 		$total_users = $this->model->getCourseStatsTotal($id_course, false);
+                
+                //apply sub admin filters, if needed
+                if( !$view_all_perm ) {
+                    
+                        $pagination = array(
+                                'startIndex' => 0,
+                                'results' => 9999999999,
+                                'sort' => "",
+                                'dir' => "asc"
+                        );
+
+                        $list = $this->model->getCourseStatsList($pagination, $id_course, $filter);
+
+                        //filter users
+                        require_once(_base_.'/lib/lib.preference.php');
+                        $ctrlManager = new ControllerPreference();
+                        $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+                        $idx = 0;
+                        foreach ($list as $record) {
+                            if ( !in_array ($record->idst, $ctrl_users) ) {
+                                // Elimino gli studenti non amministrati
+                                unset ($list[$idx]);
+                            }
+                            $idx ++;
+                        }
+                        $total_users = count($list);
+                }
+                
 		$lo_totals = $this->model->getLOsTotalCompleted($id_course);
 		$_arr_js = array();
 		foreach ($lo_totals as $id_lo => $total_lo) {
@@ -139,6 +170,9 @@ class CoursestatsLmsController extends LmsController {
 
 
 	public function gettabledataTask() {
+            
+		$view_all_perm = checkPerm('view_all', true, 'coursestats');
+
 		$startIndex = Get::req('startIndex', DOTY_INT, 0);
 		$results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
 		$rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
@@ -159,7 +193,13 @@ class CoursestatsLmsController extends LmsController {
 			'groups' => $filter_groups,
 			'descendants' => $filter_descendants
 		);
-
+                
+                // se amministratore nessuna paginazione
+                if( !$view_all_perm ) {
+                    $results = 9999999999;
+                    $rowsPerPage = 9999999999;
+                }
+                
 		//get total from database and validate the results count
 		$total = $this->model->getCourseStatsTotal($id_course, $filter);
 		if ($startIndex >= $total) {
@@ -188,6 +228,24 @@ class CoursestatsLmsController extends LmsController {
 		//format models' data
 		$records = array();
 		$acl_man = Docebo::user()->getAclManager();
+                
+                //apply sub admin filters, if needed
+                if( !$view_all_perm ) {
+                        //filter users
+                        require_once(_base_.'/lib/lib.preference.php');
+                        $ctrlManager = new ControllerPreference();
+                        $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+                        $idx = 0;
+                        foreach ($list as $record) {
+                            if ( !in_array ($record->idst, $ctrl_users) ) {
+                                // Elimino gli studenti non amministrati
+                                unset ($list[$idx]);
+                            }
+                            $idx ++;
+                        }
+                        $total = count($list);
+                }
+                
 		if (is_array($list)) {
 			$lo_list = $this->model->getCourseLOs($id_course);
 			foreach ($list as $record) {
@@ -645,6 +703,8 @@ class CoursestatsLmsController extends LmsController {
 	public function export_csvTask() {
 		//check permissions
 		if (!$this->permissions['view']) Util::jump_to('index.php?r=coursestats/show');
+                
+		$view_all_perm = checkPerm('view_all', true, 'coursestats');
 
 		require_once(_base_.'/lib/lib.download.php');
 
@@ -675,6 +735,23 @@ class CoursestatsLmsController extends LmsController {
 		$output .= implode($separator, $head).$line_end;
 
 		$records = $this->model->getCourseStatsList(false, $id_course, false);
+                
+                //apply sub admin filters, if needed
+                if( !$view_all_perm ) {
+                        //filter users
+                        require_once(_base_.'/lib/lib.preference.php');
+                        $ctrlManager = new ControllerPreference();
+                        $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+                        $idx = 0;
+                        foreach ($records as $record) {
+                            if ( !in_array ($record->idst, $ctrl_users) ) {
+                                // Elimino gli studenti non amministrati
+                                unset ($records[$idx]);
+                            }
+                            $idx ++;
+                        }
+                }
+                
 		if (!empty($records)) {
 			$acl_man = Docebo::user()->getAclManager();
 

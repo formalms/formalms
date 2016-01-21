@@ -30,6 +30,7 @@ $GLOBALS['operation_result'] = '';
 if(!function_exists("aout")) {
 	function aout($string) { $GLOBALS['operation_result'] .= $string; }
 }
+require_once(_lms_.'/lib/lib.permission.php');
 
 // load the correct module
 $aj_file = '';
