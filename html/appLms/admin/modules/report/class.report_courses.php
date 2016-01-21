@@ -582,6 +582,9 @@ class Report_Courses extends Report {
 	//Doc valutation
 	function _get_doc_val_query($type='html', $report_data = NULL, $other = '')
 	{
+		checkPerm('view');
+		$view_all_perm = checkPerm('view_all', true);
+		
 		$lang =& DoceboLanguage::createInstance('report', 'framework');
 
 		if ($report_data==NULL)
@@ -592,6 +595,22 @@ class Report_Courses extends Report {
 		$all_courses = $ref['rows_filter']['all_courses'];
 		$course_selected =& $ref['rows_filter']['selected_courses'];
 
+		if( !$view_all_perm ) {
+			if ($all_courses == true) {
+				// get all course
+				$rs = sql_query("SELECT idCourse FROM %lms_course");
+				$course_selected = array();
+				while (list($id_course) = sql_fetch_row($rs)) { $course_selected[] = $id_course; }
+			}
+			//filter courses
+			$all_courses = false;
+			$admin_allcourses = false;
+			require_once(_base_.'/lib/lib.preference.php');
+			$adminManager = new AdminPreference();
+			$admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+			$course_selected = array_intersect($admin_courses['course'], $course_selected);
+		}
+		
 		$query =	"SELECT c.idCourse, c.code, c.name, c.idCategory, c.status, c.create_date, p.id_quest, p.title_quest"
 					." FROM ".$GLOBALS['prefix_lms']."_course AS c"
 					." JOIN ".$GLOBALS['prefix_lms']."_organization AS o ON o.idCourse = c.idCourse"
@@ -613,15 +632,30 @@ class Report_Courses extends Report {
 			$course_doc[$row['idCourse'].'_'.$row['id_quest']] = $row;
 			$question_id[$row['id_quest']] = $row['id_quest'];
 		}
-
+		
+		//apply sub admin filters, if needed
+		if( !$view_all_perm ) {
+			//filter users
+			require_once(_base_.'/lib/lib.preference.php');
+			$ctrlManager = new ControllerPreference();
+			$ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+		}
+		
 		if(empty($question_id))
 			return $lang->def('_EMPTY_SELECTION');
 		else
 		{
-			$query =	"SELECT id_quest, MIN(CAST(more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer"
-						." FROM ".$GLOBALS['prefix_lms']."_polltrack_answer"
-						." WHERE id_quest IN (".implode(',', $question_id).")"
-						." GROUP BY id_quest";
+			if( !$view_all_perm ) {
+				$query =	"SELECT pta.id_quest, MIN(CAST(pta.more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(pta.more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(pta.more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer"
+							." FROM ".$GLOBALS['prefix_lms']."_polltrack_answer AS pta, ".$GLOBALS['prefix_lms']."_polltrack AS pt"
+							." WHERE 1 AND pta.id_track = pt.id_track AND pt.id_user IN (".implode($ctrl_users , ',').") AND pta.id_quest IN (".implode(',', $question_id).")"
+							." GROUP BY pta.id_quest";
+			} else {
+				$query =	"SELECT id_quest, MIN(CAST(more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer"
+							." FROM ".$GLOBALS['prefix_lms']."_polltrack_answer"
+							." WHERE id_quest IN (".implode(',', $question_id).")"
+							." GROUP BY id_quest";
+			}
 
 			$result = sql_query($query);
 
@@ -639,6 +673,9 @@ class Report_Courses extends Report {
 	//Course valutation
 	function _get_course_val_query($type='html', $report_data = NULL, $other = '')
 	{
+		checkPerm('view');
+		$view_all_perm = checkPerm('view_all', true);
+		
 		$lang =& DoceboLanguage::createInstance('report', 'framework');
 
 		if ($report_data==NULL)
@@ -649,6 +686,22 @@ class Report_Courses extends Report {
 		$all_courses = $ref['rows_filter']['all_courses'];
 		$course_selected =& $ref['rows_filter']['selected_courses'];
 
+		if( !$view_all_perm ) {
+			if ($all_courses == true) {
+				// get all course
+				$rs = sql_query("SELECT idCourse FROM %lms_course");
+				$course_selected = array();
+				while (list($id_course) = sql_fetch_row($rs)) { $course_selected[] = $id_course; }
+			}
+			//filter courses
+			$all_courses = false;
+			$admin_allcourses = false;
+			require_once(_base_.'/lib/lib.preference.php');
+			$adminManager = new AdminPreference();
+			$admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+			$course_selected = array_intersect($admin_courses['course'], $course_selected);
+		}
+		
 		$query =	"SELECT c.idCourse, c.code, c.name, c.idCategory, c.status, c.create_date, p.id_quest"
 					." FROM ".$GLOBALS['prefix_lms']."_course AS c"
 					." JOIN ".$GLOBALS['prefix_lms']."_organization AS o ON o.idCourse = c.idCourse"
@@ -669,14 +722,30 @@ class Report_Courses extends Report {
 			$question_id[$row['id_quest']] = $row['id_quest'];
 		}
 
+		//apply sub admin filters, if needed
+		if( !$view_all_perm ) {
+			//filter users
+			require_once(_base_.'/lib/lib.preference.php');
+			$ctrlManager = new ControllerPreference();
+			$ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+		}
+		
+		
 		if(empty($question_id))
 			return $lang->def('_EMPTY_SELECTION');
 		else
 		{
-			$query =	"SELECT id_quest, MIN(CAST(more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer"
-						." FROM ".$GLOBALS['prefix_lms']."_polltrack_answer"
-						." WHERE id_quest IN (".implode(',', $question_id).")"
-						." GROUP BY id_quest";
+			if( !$view_all_perm ) {
+				$query =	"SELECT pta.id_quest, MIN(CAST(pta.more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(pta.more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(pta.more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer"
+							." FROM ".$GLOBALS['prefix_lms']."_polltrack_answer AS pta, ".$GLOBALS['prefix_lms']."_polltrack AS pt"
+							." WHERE 1 AND pta.id_track = pt.id_track AND pt.id_user IN (".implode($ctrl_users , ',').") AND pta.id_quest IN (".implode(',', $question_id).")"
+							." GROUP BY pta.id_quest";
+			} else {
+				$query =	"SELECT id_quest, MIN(CAST(more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer"
+							." FROM ".$GLOBALS['prefix_lms']."_polltrack_answer"
+							." WHERE id_quest IN (".implode(',', $question_id).")"
+							." GROUP BY id_quest";
+			}
 
 			$result = sql_query($query);
 
@@ -694,6 +763,9 @@ class Report_Courses extends Report {
 
 	function _get_users_query($type='html', $report_data = NULL, $other = '') {
 
+		checkPerm('view');
+		$view_all_perm = checkPerm('view_all', true);
+		
 		//$jump_url, $alluser, $org_chart_subdivision, $start_time, $end_time
 		if ($report_data==NULL) {
 			$ref =& $_SESSION['report_tempdata'];
@@ -746,7 +818,7 @@ class Report_Courses extends Report {
 		}
 
 		//apply filters for sub-admins
-		if($user_level != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+		if( !$view_all_perm ) {
 			//filter users
 			$alluser = 0;
 			require_once(_base_.'/lib/lib.preference.php');

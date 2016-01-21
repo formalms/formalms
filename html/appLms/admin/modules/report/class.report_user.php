@@ -909,8 +909,11 @@ class Report_User extends Report {
 	 */
 	function _get_courses_query($type='html', $report_data = NULL, $other='') {
 
+		checkPerm('view');
+		$view_all_perm = checkPerm('view_all', true);
+		
 		require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
-
+		
 		$output = '';
 		$jump_url = '';
 		$org_chart_subdivision = 0; // not implemented
@@ -955,8 +958,7 @@ class Report_User extends Report {
 		}
 
 		//apply sub admin filters, if needed
-		$userlevelid = Docebo::user()->getUserLevelId();
-		if( $userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous() ) {
+		if( !$view_all_perm ) {
 			//filter users
 			$alluser = false;
 			require_once(_base_.'/lib/lib.preference.php');
@@ -2943,6 +2945,10 @@ class Report_User extends Report {
 	}
 
 	function _get_LO_query($type='html', $report_data = NULL, $other='') {
+		
+		checkPerm('view');
+		$view_all_perm = checkPerm('view_all', true);
+		
 		require_once("report_tableprinter.php");
 
 		function is_showed($which, $data) {
@@ -2971,6 +2977,18 @@ class Report_User extends Report {
 			$users =& $acl_man->getAllUsersIdst();
 		} else {
 			$users =& $acl_man->getAllUsersFromSelection($_rows['users']);
+		}
+
+		//apply sub admin filters, if needed
+		if( !$view_all_perm ) {
+			//filter users
+			$all_users = false;
+			require_once(_base_.'/lib/lib.preference.php');
+			$adminManager = new AdminPreference();
+			$admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+			$admin_users = $acl_man->getAllUsersFromSelection($admin_users);
+			$users = array_intersect($users, $admin_users);
+			unset($admin_users);
 		}
 
 		$temptypes=array();
