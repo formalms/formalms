@@ -2025,69 +2025,22 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 				} //end foreach
 
 			}
-			$query =        "SELECT c.idMetaCertificate, m.idCertificate"
-					." FROM ".$GLOBALS['prefix_lms']."_certificate_meta_course as c"
-							." JOIN ".$GLOBALS['prefix_lms']."_certificate_meta as m ON c.idMetaCertificate = m.idMetaCertificate"
-									." WHERE c.idUser = '".getLogUserId()."'"
-											." GROUP BY c.idMetaCertificate"
-													." ORDER BY m.title, m.description";
-
+			$query =   "SELECT SUM(num) AS tot_cert
+                                    FROM (
+                                      SELECT COUNT(*) AS num
+                                      FROM ".$GLOBALS['prefix_lms']."_certificate_assign AS ca
+                                      WHERE ca.id_user = ".$this->_id_user." 
+                                    UNION ALL
+                                      SELECT COUNT(*) AS num
+                                      FROM ".$GLOBALS['prefix_lms']."_certificate_course AS cc
+                                        JOIN ".$GLOBALS['prefix_lms']."_courseuser AS cu
+                                        ON (cu.idCourse = cc.id_course
+                                          AND cu.status = cc.available_for_status)
+                                      WHERE cu.idUser = ".$this->_id_user
+                                  .") AS t";
+                        
 			$result = sql_query($query);
-
-			$num_meta_cert = mysql_num_rows($result);
-
-			while(list($id_meta, $id_certificate) = sql_fetch_row($result))
-			{
-				$query_released =   "SELECT on_date"
-						." FROM ".$GLOBALS['prefix_lms']."_certificate_meta_assign"
-								." WHERE idUser = '".getLogUserId()."'"
-										." AND idMetaCertificate = '".$id_meta."'";
-
-				$result_released = sql_query($query_released);
-
-				$query =    "SELECT user_release"
-						." FROM ".$GLOBALS['prefix_lms']."_certificate"
-								." WHERE id_certificate = '".$id_certificate."'";
-
-				list($user_release) = sql_fetch_row(sql_query($query));
-
-				if(mysql_num_rows($result_released))
-				{
-
-				}
-				elseif($user_release == 0)
-				$num_meta_cert--;
-				else
-				{
-					$query =        "SELECT idCourse"
-							." FROM ".$GLOBALS['prefix_lms']."_certificate_meta_course"
-									." WHERE idUser = '".getLogUserId()."'"
-											." AND idMetaCertificate = '".$id_meta."'";
-
-					$result_int = sql_query($query);
-					$control = true;
-
-					while(list($id_course) = sql_fetch_row($result_int))
-					{
-						$query =    "SELECT COUNT(*)"
-								." FROM ".$GLOBALS['prefix_lms']."_courseuser"
-										." WHERE idCourse = '".$id_course."'"
-												." AND idUser = '".getLogUserId()."'"
-														." AND status = '"._CUS_END."'";
-
-
-						list($number) = sql_fetch_row(sql_query($query));
-
-						if(!$number)
-							$control = false;
-					}
-
-					if(!$control)
-						$num_meta_cert--;
-				}
-			}
-
-			$tot_cert = $num_meta_cert + $course_stats['cert_relesable'];
+			list($tot_cert) = sql_fetch_row($result);
 
 			$html .= ''
 					.( isset($course_stats['cert_relesable']) /*&& $tot_cert != 0*/
