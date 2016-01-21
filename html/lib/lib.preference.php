@@ -1525,4 +1525,15 @@ class AdminPreference
 	public function addAdminClasslocation($entries, $idst_admin) { return $this->_addAdminEntries($entries, $idst_admin, 'classlocation'); }
 
 }
+
+class ControllerPreference extends AdminPreference
+{
+    public function getUsers($id_controller) {
+	$ctrl_users = array();
+	$admin_users = $this->getAdminUsers($id_controller);
+	$admin_users[]=$id_controller;
+	$ctrl_users = array_unique($admin_users);
+	return $ctrl_users;
+    }
+}
 ?>
