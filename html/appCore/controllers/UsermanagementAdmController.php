@@ -136,6 +136,18 @@ class UsermanagementAdmController extends AdmController {
 		switch ($res) {
 			case 'ok_assignuser': $message = getResultUi(Lang::t('_OPERATION_SUCCESSFUL', 'standard')); break;
 			case 'err_assignuser': $message = getErrorUi(Lang::t('_GROUP_USERASSIGN_ERROR', 'admin_directory')); break;
+                        case 'err_alreadyassigned': {                            
+                            $countassigned = Get::req('count', DOTY_STRING, '');
+                            $id_first = Get::req('id_first', DOTY_STRING, '');
+                            $profile_user = $this->model->getProfileData($id_first);
+                            
+                            if($countassigned == 1) {                            
+                                $message = getErrorUi(Lang::t('_USER').' '.$profile_user->firstname.' '.$profile_user->lastname.' '.Lang::t('_ALREADY_ASSIGNED', 'admin_directory'));
+                            } else {
+                                $message = getErrorUi($countassigned.' '.Lang::t('_USERS_ALREADY_ASSIGNED', 'admin_directory').' ('.$profile_user->firstname.' '.$profile_user->lastname.'...)');
+                            }
+                            break;
+                        }
 			default: $message = "";
 		}		
 
@@ -1201,7 +1213,7 @@ class UsermanagementAdmController extends AdmController {
 		if ($id > 0) {
 			require_once(_adm_.'/lib/lib.directory.php');
 			require_once(_adm_.'/class.module/class.directory.php');
-
+                        
 			$aclm = Docebo::user()->getAclManager();
 			$selector = new UserSelector();
 			$selector->use_suspended = true;
@@ -1213,6 +1225,28 @@ class UsermanagementAdmController extends AdmController {
 				Util::jump_to($back_url);
 			} elseif ($save) {
 				$selection = $selector->getSelection($_POST);
+                                
+                                $singlenode = Get::sett('orgchart_singlenode', '');
+                                if ($singlenode){ // se in configuazione è impostata l'univocita della posizione nell'organigramma per l'utente
+                                    // eseguo il controllo ed eventualmente do l'errore
+                                    require_once(_lib_.'/lib.user_profile.php');
+                                    require_once(_adm_.'/modules/org_chart/tree.org_chart.php');
+
+                                    $userprofiledata = new UserProfileData();
+                                    $alreadyassigned = array();
+                                    foreach ($selection as $sel_user){
+                                        $groups = $userprofiledata->getUserGroupsList($sel_user);
+                                        $treedborgdb = new TreeDb_OrgDb();
+                                        $user_org = $treedborgdb->getFolderIdByTranslations(reset($groups['folders']));                                        
+                                        if($user_org && $id != $user_org){
+                                            $alreadyassigned[] = $sel_user;
+                                        }
+                                    }
+                                    if(count($alreadyassigned)) {
+                                        Util::jump_to($next_url.'&res=err_alreadyassigned&count='.count($alreadyassigned).'&id_first='.$alreadyassigned[0]);
+                                    }
+                                }
+                                
 				$res = $this->model->assignUsers($id, $selection);
 
 				if($res) {
