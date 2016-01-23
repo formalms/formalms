@@ -217,15 +217,18 @@ function modtestgui( $object_test ) {
 			.$lang->def('_TEST_MODALITY').'</a>'.'</li>
 		<li>'.'<a href="index.php?modname=test&amp;op=deftime&amp;idTest='
 		.$object_test->getId().'&amp;back_url='.$url_encode.'" title="'.$lang->def('_TEST_COMPILE_TIME').'">'
-			.$lang->def('_TEST_COMPILE_TIME').'</a>'.'</li>
-		<li>'.'<a href="index.php?modname=test&amp;op=defpoint&amp;idTest='
-		.$object_test->getId().'&amp;back_url='.$url_encode.'" title="'.$lang->def('_TEST_POINT_ASSIGNEMENT').'">'
-			.$lang->def('_TEST_POINT_ASSIGNEMENT').'</a>'.'</li>
-		<li>'.'<a href="index.php?modname=test&amp;op=feedbackman&amp;idTest='
-		.$object_test->getId().'&amp;back_url='.$url_encode.'" title="'.$lang->def('_FEEDBACK_MANAGEMENT').'">'
-			.$lang->def('_FEEDBACK_MANAGEMENT').'</a>'.'</li>
-	</ul>', 'content');
-	
+			.$lang->def('_TEST_COMPILE_TIME').'</a>'.'</li>'
+	, 'content');
+	if (!$object_test instanceof Learning_Test360) {
+		$GLOBALS['page']->add('<li>' . '<a href="index.php?modname=test&amp;op=defpoint&amp;idTest='
+				. $object_test->getId() . '&amp;back_url=' . $url_encode . '" title="' . $lang->def('_TEST_POINT_ASSIGNEMENT') . '">'
+				. $lang->def('_TEST_POINT_ASSIGNEMENT') . '</a>' . '</li>
+		<li>' . '<a href="index.php?modname=test&amp;op=feedbackman&amp;idTest='
+				. $object_test->getId() . '&amp;back_url=' . $url_encode . '" title="' . $lang->def('_FEEDBACK_MANAGEMENT') . '">'
+				. $lang->def('_FEEDBACK_MANAGEMENT') . '</a>' . '</li>'
+		, 'content');
+	}
+	$GLOBALS['page']->add('</ul>', 'content');
 	$caption = str_replace('%tot_page%' , $num_page, str_replace('%tot_element%' ,$num_quest , $lang->def('_TEST_CAPTION')));
 	
 	$tab = new Table( 0, $caption, $lang->def('_TEST_SUMMARY'));
@@ -734,6 +737,11 @@ function defmodality() {
 	require_once(_base_.'/lib/lib.json.php');
 
 	$idTest = importVar('idTest', true, 0);
+	$db = DbConn::getInstance();
+	$res = $db->query("SELECT obj_type FROM %lms_test WHERE idTest = '".(int)$idTest."'");
+	$test_type = $db->fetch_row($res);
+	$object_test = createLO($test_type[0], $idTest);
+
 	$back_url = urldecode(importVar('back_url'));
 	$url_coded = htmlentities(urlencode($back_url));
 	
@@ -925,65 +933,72 @@ function defmodality() {
 				.( $save_keep == 1 ? '  checked="checked"' : '' ).' /> '
 			.'<label for="save_keep_yes">'.$lang->def('_YES').'</label>'
 			.'<br /><br />'
-			
-			.Form::getTextfield($lang->def('_MAX_ATTEMPT'), 'max_attempt', 'max_attempt', 3, $max_attempt)
+	, 'content');
 
-		//--- suspensions options --------------------------------------------------
+	if (!$object_test instanceof Learning_Test360) {
+		$GLOBALS['page']->add(Form::getTextfield($lang->def('_MAX_ATTEMPT'), 'max_attempt', 'max_attempt', 3, $max_attempt)
 
-			.'<br />'
-			.Form::getCheckbox($lang->def('_USE_SUSPENSION'), 'use_suspension', 'use_suspension', 1, $use_suspension, 'onclick="setSuspension();"')
+				//--- suspensions options --------------------------------------------------
+
+				. '<br />'
+				. Form::getCheckbox($lang->def('_USE_SUSPENSION'), 'use_suspension', 'use_suspension', 1, $use_suspension, 'onclick="setSuspension();"')
 				//.'<div class="grouping">'
-				.Form::getTextfield($lang->def('_SUSPENSION_NUM_ATTEMPTS'), 'suspension_num_attempts', 'suspension_num_attempts', 5, $suspension_num_attempts)
-				.Form::getTextfield($lang->def('_SUSPENSION_NUM_HOURS'), 'suspension_num_hours', 'suspension_num_hours', 5, $suspension_num_hours)
-				.Form::getCheckBox($lang->def('_SUSPENSION_PREREQUISITES'), 'suspension_prerequisites', 'suspension_prerequisites', 1, $suspension_prerequisites)
+				. Form::getTextfield($lang->def('_SUSPENSION_NUM_ATTEMPTS'), 'suspension_num_attempts', 'suspension_num_attempts', 5, $suspension_num_attempts)
+				. Form::getTextfield($lang->def('_SUSPENSION_NUM_HOURS'), 'suspension_num_hours', 'suspension_num_hours', 5, $suspension_num_hours)
+				. Form::getCheckBox($lang->def('_SUSPENSION_PREREQUISITES'), 'suspension_prerequisites', 'suspension_prerequisites', 1, $suspension_prerequisites)
 				//.'</div>'
-		//--- Mandatory test answering ---------------------------------------------
+				//--- Mandatory test answering ---------------------------------------------
+				.'<br /><br />'
+				.Form::getCloseFieldset()
 
-			.'<br /><br />'
-		.Form::getCloseFieldset()
-			
-		.Form::getOpenFieldset($lang->def('_TEST_MM_FOUR'))
-			//can modify answer
-			.$lang->def('_TEST_MM4_SHOWTOT').'<br />'
-			.'<input class="valign_middle" type="radio" id="show_tot_no" name="show_tot" value="0"'
+				.Form::getOpenFieldset($lang->def('_TEST_MM_FOUR'))
+				//can modify answer
+				.$lang->def('_TEST_MM4_SHOWTOT').'<br />'
+				.'<input class="valign_middle" type="radio" id="show_tot_no" name="show_tot" value="0"'
 				.( !$show_score ? '  checked="checked"' : '' ).' /> '
-			.'<label for="show_tot_no">'.$lang->def('_NO').'</label>&nbsp;&nbsp;'
-			.'<input class="valign_middle" type="radio" id="show_tot_yes" name="show_tot" value="1"'
+				.'<label for="show_tot_no">'.$lang->def('_NO').'</label>&nbsp;&nbsp;'
+				.'<input class="valign_middle" type="radio" id="show_tot_yes" name="show_tot" value="1"'
 				.( $show_score ? '  checked="checked"' : '' ).' /> '
-			.'<label for="show_tot_yes">'.$lang->def('_YES').'</label>'
-			.'<br /><br />'
-			.$lang->def('_TEST_MM4_SHOWCAT').'<br />'
-			.'<input class="valign_middle" type="radio" id="show_cat_no" name="show_cat" value="0"'
+				.'<label for="show_tot_yes">'.$lang->def('_YES').'</label>'
+				.'<br /><br />'
+				.$lang->def('_TEST_MM4_SHOWCAT').'<br />'
+				.'<input class="valign_middle" type="radio" id="show_cat_no" name="show_cat" value="0"'
 				.( !$show_score_cat ? '  checked="checked"' : '' ).' /> '
-			.'<label for="show_cat_no">'.$lang->def('_NO').'</label>&nbsp;&nbsp;'
-			.'<input class="valign_middle" type="radio" id="show_cat_yes" name="show_cat" value="1"'
+				.'<label for="show_cat_no">'.$lang->def('_NO').'</label>&nbsp;&nbsp;'
+				.'<input class="valign_middle" type="radio" id="show_cat_yes" name="show_cat" value="1"'
 				.( $show_score_cat ? '  checked="checked"' : '' ).' /> '
-			.'<label for="show_cat_yes">'.$lang->def('_YES').'</label>'
-			.'<br /><br />'
-			.$lang->def('_TEST_MM4_SHOWDOANSWER').'<br />'
-			.'<input class="valign_middle" type="radio" id="show_doanswer_no" name="show_doanswer" value="0"'
+				.'<label for="show_cat_yes">'.$lang->def('_YES').'</label>'
+				.'<br /><br />'
+				.$lang->def('_TEST_MM4_SHOWDOANSWER').'<br />'
+				.'<input class="valign_middle" type="radio" id="show_doanswer_no" name="show_doanswer" value="0"'
 				.( $show_doanswer == 0 ? '  checked="checked"' : '' ).' /> '
-			.'<label for="show_doanswer_no">'.$lang->def('_NO').'</label>&nbsp;&nbsp;'
-			.'<input class="valign_middle" type="radio" id="show_doanswer_yes" name="show_doanswer" value="1"'
+				.'<label for="show_doanswer_no">'.$lang->def('_NO').'</label>&nbsp;&nbsp;'
+				.'<input class="valign_middle" type="radio" id="show_doanswer_yes" name="show_doanswer" value="1"'
 				.( $show_doanswer == 1 ? '  checked="checked"' : '' ).' /> '
-			.'<label for="show_doanswer_yes">'.$lang->def('_YES').'</label>&nbsp;&nbsp;'
-			.'<input class="valign_middle" type="radio" id="show_doanswer_yes_if_passed" name="show_doanswer" value="2"'
+				.'<label for="show_doanswer_yes">'.$lang->def('_YES').'</label>&nbsp;&nbsp;'
+				.'<input class="valign_middle" type="radio" id="show_doanswer_yes_if_passed" name="show_doanswer" value="2"'
 				.( $show_doanswer == 2 ? '  checked="checked"' : '' ).' /> '
-			.'<label for="show_doanswer_yes_if_passed">'.$lang->def('_YES_IF_PASSED').'</label>'
-			.'<br /><br />'
-			.$lang->def('_TEST_MM4_SHOWSOL').'<br />'
-			.'<input class="valign_middle" type="radio" id="show_solution_no" name="show_solution" value="0"'
+				.'<label for="show_doanswer_yes_if_passed">'.$lang->def('_YES_IF_PASSED').'</label>'
+				.'<br /><br />'
+				.$lang->def('_TEST_MM4_SHOWSOL').'<br />'
+				.'<input class="valign_middle" type="radio" id="show_solution_no" name="show_solution" value="0"'
 				.( $show_solution == 0 ? '  checked="checked"' : '' ).' /> '
-			.'<label for="show_solution_no">'.$lang->def('_NO').'</label>&nbsp;&nbsp;'
-			.'<input class="valign_middle" type="radio" id="show_solution_yes" name="show_solution" value="1"'
+				.'<label for="show_solution_no">'.$lang->def('_NO').'</label>&nbsp;&nbsp;'
+				.'<input class="valign_middle" type="radio" id="show_solution_yes" name="show_solution" value="1"'
 				.( $show_solution == 1 ? '  checked="checked"' : '' ).' /> '
-			.'<label for="show_solution_yes">'.$lang->def('_YES').'</label>&nbsp;&nbsp;'
-			.'<input class="valign_middle" type="radio" id="show_solution_yes_if_passed" name="show_solution" value="2"'
+				.'<label for="show_solution_yes">'.$lang->def('_YES').'</label>&nbsp;&nbsp;'
+				.'<input class="valign_middle" type="radio" id="show_solution_yes_if_passed" name="show_solution" value="2"'
 				.( $show_solution == 2 ? '  checked="checked"' : '' ).' /> '
-			.'<label for="show_solution_yes_if_passed">'.$lang->def('_YES_IF_PASSED').'</label>'
-			.'<br /><br />'
-		.Form::getCloseFieldset()
-		.'<div class="align_right">'
+				.'<label for="show_solution_yes_if_passed">'.$lang->def('_YES_IF_PASSED').'</label>'
+				.'<br /><br />'
+				.Form::getCloseFieldset()
+		, 'content');
+	} else {
+		$GLOBALS['page']->add('<input type="hidden" id="show_tot_no" name="show_tot" value="0" checked="checked"/>', 'content');
+	}
+
+	$GLOBALS['page']->add(
+		'<div class="align_right">'
 			.'<input class="button" type="submit" value="'.$lang->def('_SAVE').'" />'
 		.'</div>'
 		.Form::closeForm()

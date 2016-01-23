@@ -59,7 +59,7 @@ class Module_Organization extends LmsModule {
 			$this->repoDb = new OrgDirDb($id_course);
 			
 			/* TODO: ACL */
-			if( !checkPerm('lesson', TRUE, 'storage') ) {
+			if(!checkPerm('lesson', TRUE, 'storage') ) {
 				$this->repoDb->setFilterVisibility( TRUE );
 				$this->repoDb->setFilterAccess( Docebo::user()->getArrSt() );
 			}
