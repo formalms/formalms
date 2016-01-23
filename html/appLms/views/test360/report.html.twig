@@ -4,6 +4,12 @@
     {{ tb.getTable|raw }}
 
     <hr>
+    <br>
+    <a href="index.php?r=test360/exportCSV&idTest={{ testObj.id }}" class="ico-wt-sprite subs_csv" title="{{ translate('_EXPORT_CSV', 'report') }}">
+        <span>{{ translate('_EXPORT_CSV', 'report') }}</span>
+    </a>
+    <br>
+    <hr>
     <style>
         .ct-bar {
             stroke-width: 20px;
