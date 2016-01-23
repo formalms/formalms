@@ -1,0 +1,69 @@
+{{ titleArea|raw }}
+<div class="std_block" xmlns="http://www.w3.org/1999/html">
+    {{ backUI|raw }}
+    {{ tb.getTable|raw }}
+
+    <hr>
+    <style>
+        .ct-bar {
+            stroke-width: 20px;
+        }
+    </style>
+    <script>
+        var catLabels = [];
+        var catAutoSeries = [];
+        var catEteroSeries = [];
+        {% for categoryId, categoryName in categories %}
+            catLabels.push('{{ categoryName }}');
+            catAutoSeries.push({{ categoryQuestAnswers[categoryId]['auto']['total']  / categoryQuestAnswers[categoryId]['auto']['counter'] }});
+            catEteroSeries.push({{ categoryQuestAnswers[categoryId]['etero']['total'] / categoryQuestAnswers[categoryId]['etero']['counter'] }});
+        {% endfor %}
+    </script>
+    <h3>Statistiche per categoria</h3>
+
+    <div class="chart-cat"></div>
+    <script>
+        new Chartist.Bar('.chart-cat', {
+            labels: catLabels,
+            series: [catAutoSeries, catEteroSeries]
+        }, {
+            reverseData: true,
+            horizontalBars: false,
+            high: 7,
+            height: 300,
+            seriesBarDistance: 30,
+            axisX: {},
+            axisY: {
+                scaleMinSpace: 10,
+            }
+        });
+    </script>
+    <hr>
+    <hr>
+    <h3>Statistiche per domanda</h3>
+    {% for quest in testObj.quests %}
+        <h2>{{ quest.getTitle|raw }}</h2>
+        <div id="chart-{{ quest.id }}"></div>
+        <script>
+            new Chartist.Bar('#chart-{{ quest.id }}', {
+                labels: ['Auto', 'Etero'],
+                series: [
+                    {{ questAnswers[quest.id]['auto']['total'] }},
+                    {{ questAnswers[quest.id]['etero']['total'] / questAnswers[quest.id]['etero']['counter'] }}
+                ]
+            }, {
+                reverseData: true,
+                horizontalBars: true,
+                high: 7,
+                distributeSeries: true,
+                axisX: {
+                    scaleMinSpace: 50,
+                },
+                axisY: {
+                    position: 'end',
+                }
+            });
+        </script>
+        <hr>
+    {% endfor %}
+</div>
