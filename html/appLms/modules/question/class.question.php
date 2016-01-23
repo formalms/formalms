@@ -22,16 +22,28 @@
  */
 
 class Question {
-	
+
+	protected $db;
+
 	/**
 	 * @var int	$id 	contains the question identifier 
 	 * 
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 **/
-	
-	var $id;
-	private $_table_category;
+	protected $id;
+
+	protected $_table_category;
+
+	protected $title;
+
+	protected $categoryId;
+
+	protected $type;
+
+	protected $difficult;
+
+	protected $testId;
 	
 	/**
 	 * class constructor
@@ -42,7 +54,14 @@ class Question {
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
 	function Question( $id ) {
-		$this->id = $id;
+		$this->db = DbConn::getInstance();
+		if( $id !== NULL ) {
+			$this->id = $id;
+			$res = $this->db->query("SELECT idTest, idCategory, type_quest, title_quest, difficult FROM %lms_testquest WHERE idQuest = '".(int)$id."'");
+			if ($res && $this->db->num_rows($res)>0) {
+				list( $this->testId, $this->categoryId, $this->type, $this->title, $this->difficult ) = $this->db->fetch_row($res);
+			}
+		}
 		$this->_table_category =$GLOBALS['prefix_lms'].'_quest_category';
 		return;
 	}
@@ -57,6 +76,22 @@ class Question {
 	 */
 	function getQuestionType() {
 		return 'question';
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTitle()
+	{
+		return $this->title;
+	}
+
+	/**
+	 * @param mixed $title
+	 */
+	public function setTitle($title)
+	{
+		$this->title = $title;
 	}
 	
 	/**

@@ -36,8 +36,12 @@ class UserSelector {
 	public $nFields = FALSE;
 
 	public $use_suspended = false;
+	public $id_org = null;
+	public $org_type = null;
 
-	public function __construct() {}
+	public function __construct() {
+		$this->id_org = null;
+	}
 
 	public function setPageTitle($title) {}
 
@@ -70,6 +74,8 @@ class UserSelector {
 
 		$res.=Util::widget('userselector', array(
 			'id' => $id,
+			'id_org' => $this->id_org,
+			'org_type' => $this->org_type,
 			'show_user_selector' => $this->show_user_selector,
 			'show_group_selector' => $this->show_group_selector,
 			'show_orgchart_selector' => $this->show_orgchart_selector,

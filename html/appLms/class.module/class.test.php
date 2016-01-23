@@ -28,8 +28,9 @@ class Module_Test extends LmsModule {
 				$idTest = importVar('id_test', true, 0);
 				$id_param = importVar('id_param', true, 0);
 				$back_url = importVar('back_url');
+				$test_type = importVar('test_type', false, 'test');
 				
-				$object_poll = createLO( 'test', $idTest );
+				$object_poll = createLO( $test_type, $idTest );
 				$object_poll->play( $idTest, $id_param, unserialize(urldecode($back_url)) );
 			};break;
 			default : {

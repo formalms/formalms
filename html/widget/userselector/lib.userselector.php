@@ -25,6 +25,9 @@ class UserselectorWidget extends Widget {
 	 */
 	public $id = '';
 
+	public $id_org = null;
+	public $org_type = null;
+
 	/**
 	 * Display the user selector tab
 	 * @var bool

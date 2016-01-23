@@ -167,7 +167,7 @@ switch( $GLOBALS['op'] ) {
 	case "organization":
 	case "pubrepo":
 	default:
-		storage_display();
+ 		storage_display();
 	break;
 }
 

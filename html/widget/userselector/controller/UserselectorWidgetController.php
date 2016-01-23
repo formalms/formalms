@@ -74,7 +74,7 @@ class UserselectorWidgetController extends Controller {
 			} break;
 		}
 
-		$idOrg = 0;//Get::req('id_org', DOTY_INT, 0);
+		$idOrg = Get::req('id_org', DOTY_INT, 0);
 		$descendants = false;//(Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
 		$startIndex = Get::req('startIndex', DOTY_INT, 0);
 		$results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
@@ -101,7 +101,7 @@ class UserselectorWidgetController extends Controller {
 			$searchFilter['dyn_filter'] = $dyn_filter;
 		}
 
-		$total = $this->user_model->getTotalUsers($idOrg, $descendants, $searchFilter, true, $learning_filter);
+		$total = $this->user_model->getTotalUsers(0, $descendants, $searchFilter, true, $learning_filter);
 		if ($startIndex >= $total) {
 			if ($total<$results) {
 				$startIndex = 0;
@@ -117,9 +117,8 @@ class UserselectorWidgetController extends Controller {
 			'dir' => $dir
 		);
 
-		$list = $this->user_model->getUsersList($idOrg, $descendants, $pagination, $searchFilter, true, $learning_filter);
+		$list = $this->user_model->getUsersList(0, $descendants, $pagination, $searchFilter, true, $learning_filter);
 
-		
 		//prepare the data for sending
 
 		require_once(_adm_.'/lib/lib.field.php');
@@ -131,11 +130,16 @@ class UserselectorWidgetController extends Controller {
 		$output_results = array();
 		if (is_array($list) && count($list)>0) {
 			foreach ($list as $idst=>$record) {
+				$query =	"SELECT params"
+						." FROM %lms_organization_access WHERE idOrgAccess = '".$idOrg."' AND kind='user' AND value='".$record['idst']."'";
+				$relation = sql_fetch_row(sql_query($query));
+
 				$record_row = array(
 					'id'		=> (int)$record['idst'],
 					'userid'	=> Layout::highlight($acl_man->relativeId( $record['userid']), $filter_text),
 					'firstname' => Layout::highlight($record['firstname'], $filter_text),
 					'lastname'	=> Layout::highlight($record['lastname'], $filter_text),
+					'relation'  => isset($relation[0])?$relation[0]:'',
 					'email'		=> Layout::highlight($record['email'], $filter_text),
 					'register_date' => Format::date($record['register_date'], "datetime"),
 					'lastenter' => Format::date($record['lastenter'], "datetime"),

@@ -62,6 +62,7 @@ function intro( $object_test, $id_param ) {
 	
 	$lang 			=& DoceboLanguage::createInstance('test');
 	$id_test 		= $object_test->getId();
+	$test_type		= $object_test instanceof Learning_Test360 ? 'test360' : 'test';
 	$id_reference 	= getLoParam($id_param, 'idReference');
 	$url_coded 		= urlencode(serialize($object_test->back_url));
 	$id_track 		= retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
@@ -173,6 +174,7 @@ function intro( $object_test, $id_param ) {
 	$GLOBALS['page']->add(
 		Form::openForm('test_intro', 'index.php?modname=test&amp;op=play')
 		.Form::getHidden('id_test', 'id_test', $id_test)
+		.Form::getHidden('test_type', 'test_type', $test_type)
 		.Form::getHidden('id_param', 'id_param', $id_param)
 		.Form::getHidden('idTrack', 'idTrack', $id_track)
 		.Form::getHidden('back_url', 'back_url', $url_coded)
@@ -683,6 +685,7 @@ function play($object_test, $id_param) {
 
 		switch($type_quest)
 		{
+			case 'course_valutation':
 			case 'choice_multiple':
 			case 'choice':
 			case 'associate':
