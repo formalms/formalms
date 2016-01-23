@@ -20,7 +20,7 @@
     <!-- common stylesheet -->     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?php echo Layout::path(); ?>bootstrap/css/bootstrap.css">
-    <link href="<?php echo Layout::path(); ?>/bootstrap-reset.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo Layout::path(); ?>bootstrap/css/bootstrap-reset.css">
     
     <link rel="stylesheet" href="<?php echo Layout::path(); ?>bootstrap/css/bootstrap-theme.min.css">   
     <link rel="stylesheet" href="<?php echo Layout::path(); ?>bootstrap/css/bootstrap.min.css">
@@ -32,7 +32,7 @@
         <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/default.css" />
         <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/component.css" />
         <script src="<?php echo Layout::path(); ?>bootstrap/js/modernizr.custom.js"></script>
-        <script src="<?php echo Layout::path(); ?>bootstrap/js/demoad.js"></script>
+<!--        <script src="--><?php //echo Layout::path(); ?><!--bootstrap/js/demoad.js"></script>-->
          
          
          

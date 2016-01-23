@@ -103,9 +103,10 @@ $cfg['smtp_pwd'] ='';
  * parameter :  array value=file extension
  * template_engine available: twig
  *
- * If not defined (default) no alternate template engine
+ * If not defined no alternate template engine. Twig is enabled on default
  */
-//$cfg['template_engine']['twig'] = array('ext' => '.twig');
+$cfg['template_engine']['twig'] = array('ext' => '.html.twig');
+$cfg['twig_debug'] = true;
 
 
 /**
