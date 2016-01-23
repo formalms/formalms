@@ -1629,15 +1629,17 @@ function editUserReport($id_user, $id_test, $id_track) {
 					.( $review['comment'] != '' ? $review['comment'] : '' )
 					.'</div>';
 			}
-			$report_test .= 
-				'<div class="test_edit_scores">'
-				.Form::getTextfield(	$lang->def('_NEW_SCORE_FOR_QUESTION'),
-										'new_user_score_'.$id_quest, 
-										'new_user_score['.$id_quest.']', 
-										8, 
-										'' )
-				.'</div>'."\n"
-				.'</div>'."\n";
+			if (!$quest_obj instanceof CourseValutation_Question) {
+				$report_test .=
+						'<div class="test_edit_scores">'
+						. Form::getTextfield($lang->def('_NEW_SCORE_FOR_QUESTION'),
+								'new_user_score_' . $id_quest,
+								'new_user_score[' . $id_quest . ']',
+								8,
+								'')
+						. '</div>' . "\n"
+						. '</div>' . "\n";
+			}
 		}
 	}
 
@@ -1652,24 +1654,28 @@ function editUserReport($id_user, $id_test, $id_track) {
 	
 	$GLOBALS['page']->add(
 		'<div class="title">'.$lang->def('_TITLE').' : '.$title.'</div>', 'content');
-	
-	$GLOBALS['page']->add('<br />'
-		.Form::getTextfield(	$lang->def('_BONUS_SCORE_FOR_TEST'),
-										'bonus_score', 
-										'bonus_score', 
-										8, 
-										$bonus_score )
-		.'<br />'
-		.($total_time > 0 ? '<b>'.Lang::t('_DATE_BEGIN', 'standard').'</b> : '.Format::date($date_attempt, 'datetime')
-		.'<br />'
-		.'<b>'.Lang::t('_DATE_END', 'standard').'</b> : '.Format::date($date_end_attempt, 'datetime')
-		.'<br />'
-		.'<b>'.Lang::t('_TOTAL_TIME', 'test').'</b> : '.$minutes.':'.$seconds
-		.'<br />'
-		.'<br />' : '')
-		.'<div class="test_answer_space">'
-		.$report_test
-		.'</div>', 'content');
+
+	if (!$quest_obj instanceof CourseValutation_Question)
+	{
+		$GLOBALS['page']->add('<br />'
+			. Form::getTextfield($lang->def('_BONUS_SCORE_FOR_TEST'),
+					'bonus_score',
+					'bonus_score',
+					8,
+					$bonus_score)
+			. '<br />'
+			. ($total_time > 0 ? '<b>' . Lang::t('_DATE_BEGIN', 'standard') . '</b> : ' . Format::date($date_attempt, 'datetime')
+					. '<br />'
+					. '<b>' . Lang::t('_DATE_END', 'standard') . '</b> : ' . Format::date($date_end_attempt, 'datetime')
+					. '<br />'
+					. '<b>' . Lang::t('_TOTAL_TIME', 'test') . '</b> : ' . $minutes . ':' . $seconds
+					. '<br />'
+					. '<br />' : ''), 'content');
+	}
+	$GLOBALS['page']->add('<div class="test_answer_space">'
+	. $report_test
+	. '</div>', 'content');
+
 }
 
 function saveManualUserReport($id_user, $id_test, $id_track) {
