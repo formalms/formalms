@@ -883,7 +883,7 @@ class DoceboACLManager
      * @param time $del_field if is true delete also the field related to the user
      * @return TRUE if success, FALSE otherwise
      */
-    function deleteTempUser($idst_single = false, $random_code = false, $time = false, $del_field = true)
+    function deleteTempUser($idst_single = false, $random_code = false, $time = false, $del_field = true, $reset_code = trued)
     {
 
         require_once(_adm_ . '/lib/lib.field.php');
@@ -930,7 +930,9 @@ class DoceboACLManager
             require_once($GLOBALS['where_framework'] . '/lib/lib.code.php');
             $code_manager = new CodeManager();
 
-            $code_manager->resetUserCode($idst);
+             if ($reset_code === true) {
+                $code_manager->resetUserCode($idst);
+             }
         }
 
         return $result;

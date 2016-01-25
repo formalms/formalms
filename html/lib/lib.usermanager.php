@@ -1542,7 +1542,7 @@ class UserManagerRenderer {
 		$code_is_mandatory = (Get::sett('mandatory_code', 'off') == 'on');
 		$reg_code = Get::req('reg_code', DOTY_MIXED, '');
 		if($registration_code_type === 'custom')
-			$reg_code = 'change_by_custom_operation';
+			$reg_code = 'change_by_custom_operation';      
 
 		$array_folder = false;
 		$uma = new UsermanagementAdm();
@@ -1997,7 +1997,8 @@ class UserManagerRenderer {
 				$request['linkedin_id'],								// $linkedin_id
 				$request['google_id']) ) {							// $google_id
 					// remove temporary enter
-					$acl_man->deleteTempUser( $request['idst'] , false, false, false );
+					//$acl_man->deleteTempUser( $request['idst'] , false, false, false );
+                                        $acl_man->deleteTempUser( $request['idst'] , false, false, false, false);
 
                     $acl_man->updateUser($request['idst'],
                         FALSE,  FALSE,  FALSE,  FALSE,  FALSE,  FALSE, FALSE,
