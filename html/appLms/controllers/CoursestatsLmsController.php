@@ -271,7 +271,7 @@ class CoursestatsLmsController extends LmsController {
 						} else if ($record->lo_status[$idOrg] == 'failed') {
 							$row['lo_'.$idOrg] = Lang::t('failed', 'standard');
 						} else {
-							$row['lo_'.$idOrg] = $record->lo_status[$idOrg];
+							$row['lo_'.$idOrg] = Lang::t($record->lo_status[$idOrg], 'standard');
 						}
 						//$row['lo_'.$idOrg] = $record->lo_status[$idOrg];
 						if ($record->lo_status[$idOrg] == 'completed' || $record->lo_status[$idOrg] == 'passed') $completed++;
@@ -463,7 +463,7 @@ class CoursestatsLmsController extends LmsController {
 
 		$info->LO_name = $lo_info->title;
 		$info->LO_type = $lo_info->objectType;
-		$info->status = $tracked ? $track_info->status : "not attempted";
+		$info->status = $tracked ? Lang::t($track_info->status, "standard") : "not attempted";
 		$info->score = '-';//$track_info->score.' / '.$track_info->max_score;
 
 		$info->first_access = $tracked ? Format::date($track_info->first_access, 'datetime') : $never;
