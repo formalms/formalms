@@ -1444,13 +1444,16 @@ class UserManagerRenderer {
 		}
 		// now in array_folder we have the associated folder for the users
 		if(!empty($array_folder)) {
-
+                        /*
 			//let's find the oc and ocd
 			$oc_folders = $uma->getOcFolders($array_folder);
 			while(list($id, $ocs) = each($oc_folders)) {
 
 				$acl_man->addToGroup($ocs[0], $iduser);
 				$acl_man->addToGroup($ocs[1], $iduser);
+			}*/
+			while(list($id, $folder) = each($array_folder)) {
+				$acl_man->addToGroup($folder, $iduser);
 			}
 
 			$enrollrules = new EnrollrulesAlms();
@@ -1624,13 +1627,13 @@ class UserManagerRenderer {
 
             $mailer = DoceboMailer::getInstance();
 
-            if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, false, false) ) {
+            /*if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, false, false) ) {
 
                 $out .= '<div class="reg_err_data">'
                             .$lang->def('_OPERATION_FAILURE')
                             .'</div>';
             }
-            else {
+            else*/ {
                 $this->confirmRegister($this->_platform, $options);
                 $out .= '<div class="reg_success">'
                                 .$lang->def('_REG_SUCCESS_SELF')
