@@ -1377,10 +1377,18 @@ Class CourseAlms extends Model
 				." WHERE idCourse IN (".implode(",", $courses).") "
 				." AND level = 3 AND waiting <= 0 "
 				." GROUP BY idCourse";
+                $class_real_count =	"SELECT cu.idCourse,COUNT(*) FROM %lms_courseuser AS cu JOIN %lms_course_date AS cd JOIN %lms_course_date_user AS cdu "
+                                        ." ON (cd.id_date = cdu.id_date AND cd.id_course = cu.idCourse AND cu.idUser = cdu.id_user) "
+                                        ." WHERE cu.idCourse IN (".implode(",", $courses).") AND cu.level = 3 GROUP BY cu.idCourse";
+                
 		$res = sql_query($query);
-		while (list($id_course, $count) = sql_fetch_row($res))
+                $res1 = sql_query($class_real_count);
+		while (list($id_course, $count) = sql_fetch_row($res)){
 			$output[$id_course] = $count;
-
+                }
+                while (list($id_course_class, $count_class) = sql_fetch_row($res1)){
+                    $output[$id_course_class] = $count_class;
+                }             
 		return $output;
 	}
     
