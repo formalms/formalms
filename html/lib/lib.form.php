@@ -526,7 +526,7 @@ class Form {
 			.$other_before
 			.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>';
 			if ($other_afterbefore)
-				$ret .= ' '.$other_afterbefore.' <span id="upLLoad" style="display:none;">';
+				$ret .= ' '.$other_afterbefore.' <span id="upLLoad">';
 			$ret .= Form::getInputFilefield( $css_text, $id, $name, $value, $alt_name, $other_param );
 			if ($other_afterbefore)
 				$ret .= '</span>';
