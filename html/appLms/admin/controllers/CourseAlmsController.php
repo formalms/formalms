@@ -495,7 +495,7 @@ Class CourseAlmsController extends AlmsController
 			$id_list = array_keys($list);
 			$count_students = $this->model->getCoursesStudentsNumber($id_list);
 			foreach ($list as $id_course => $cinfo) {
-				$list[$id_course]['students'] = isset($count_students[$id_course]) ? $count_students[$id_course] : '';
+				$list[$id_course]['students'] = isset($count_students[$id_course]) ? $count_students[$id_course] : '0';
 			}
 		}
 
