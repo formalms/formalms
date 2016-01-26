@@ -520,11 +520,11 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 
 
 	function api_delete_schedule($id_conference) {
-		$query = "SELECT * FROM ".$this->_getRoomTable()." WHERE idConference = '".$idConference."'";
+		$query = "SELECT * FROM ".$this->_getRoomTable()." WHERE idConference = '".$id_conference."'";
 		$res = $this->_query($query);
 		$info = $this->nextRow($res);
 
-		require_once($GLOBALS['where_framework'].'/lib/lib.json.php');
+		require_once(_base_.'/lib/lib.json.php');
 		$json = new Services_JSON();
 		$info_decoded = $json->decode($info['schedule_info']);
 
