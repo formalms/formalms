@@ -189,7 +189,7 @@ var CourseStats = {
 	LOFormatter: function(elLiner, oRecord, oColumn, oData) {
 		var content;
 		if (!oData) {
-			content = '<i>'+CourseStats.oLanguage.get('_LO_NOT_STARTED')+'</i>';
+			content = CourseStats.oLanguage.get('_LO_NOT_STARTED');
 		} else {
 			var id_lo = oColumn.getKey().replace('lo_', ''); //extract LO id by column key
 			var url = 'index.php?r=coursestats/show_user_object&amp;id_user='+oRecord.getData("id")+'&amp;id_lo='+id_lo;
