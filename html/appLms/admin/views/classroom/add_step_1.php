@@ -25,11 +25,11 @@ echo	Form::openForm('add_date', 'index.php?r='.$base_link_classroom.'/addclassro
 		.'<p><label for="overbooking" class="floating">'.Lang::t('_ALLOW_OVERBOOKING', 'course').'</label></p>'
 		.Form::getInputCheckbox('overbooking', 'overbooking', 1, (isset($_POST['overbooking']) && $_POST['overbooking'] == 1 ? true : false), false)
 		.'</div>'
-		.Form::getDatefield(Lang::t('_SUBSCRIPTION_DATE_BEGIN_FROM', 'course'), 'sub_start_date', 'sub_start_date', (isset($_POST['sub_start_date']) ? ($_POST['sub_start_date'] === '00-00-0000' ? '' : $_POST['sub_start_date']) : ''))
+		.Form::getDatefield(Lang::t('_SUBSCRIPTION_DATE_BEGIN', 'course'), 'sub_start_date', 'sub_start_date', (isset($_POST['sub_start_date']) ? ($_POST['sub_start_date'] === '00-00-0000' ? '' : $_POST['sub_start_date']) : ''))
 		.Form::getDatefield(Lang::t('_SUBSCRIPTION_DATE_END', 'course'), 'sub_end_date', 'sub_end_date', (isset($_POST['sub_end_date']) ? ($_POST['sub_end_date'] === '00-00-0000' ? '' : $_POST['sub_end_date']) : ''))
 		.Form::getDatefield(Lang::t('_UNSUBSCRIBE_DATE_LIMIT', 'course'), 'unsubscribe_date_limit', 'unsubscribe_date_limit', (isset($_POST['unsubscribe_date_limit']) ? ($_POST['unsubscribe_date_limit'] === '00-00-0000' ? '' : $_POST['unsubscribe_date_limit']) : ''))
 		.'<div id="date_container">';
-echo "<br><b>".Lang::t('_SELECT_DAYS_COURSE', 'course')."</b><br>";
+echo "<br><b>".Lang::t('_CALENDAR_CLASSROOM_EDITION', 'course')."</b><br>";
 ?>
 
 <div id="calendar_container" class="form_line_l"></div>
