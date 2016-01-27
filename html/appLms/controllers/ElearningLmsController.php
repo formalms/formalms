@@ -90,12 +90,7 @@ class ElearningLmsController extends LmsController {
 
 	public function showTask() {
 
-		$msg[0] = 'Il vecchio var_dump';
-		$msg[1] = 'Quest è il solito var_dump';
-		var_dump($msg);
-		$msg[0] = 'Il nuovo componente VarDumper';
-		$msg[1] = 'Questo un var_dump molto più bello!';
-		\Symfony\Component\VarDumper\VarDumper::dump($msg);
+
 		$model = new ElearningLms();
 
 		if(Get::sett('on_usercourse_empty') === 'on')
