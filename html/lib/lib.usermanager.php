@@ -1627,13 +1627,13 @@ class UserManagerRenderer {
 
             $mailer = DoceboMailer::getInstance();
 
-            /*if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, false, false) ) {
+            if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, false, false) ) {
 
                 $out .= '<div class="reg_err_data">'
                             .$lang->def('_OPERATION_FAILURE')
                             .'</div>';
             }
-            else*/ {
+            else {
                 $this->confirmRegister($this->_platform, $options);
                 $out .= '<div class="reg_success">'
                                 .$lang->def('_REG_SUCCESS_SELF')
