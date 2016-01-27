@@ -145,7 +145,7 @@ function conference_list(&$url) {
 				else
 					$cont[] = '';
 */
-				if (getLogUserId()==$room["idSt"])
+				if (getLogUserId()==$room["idSt"] || Docebo::user()->getUserLevelId()==ADMIN_GROUP_GODADMIN)
 					$cont[]='<a href="index.php?modname=conference&amp;op=delconf&id='.$room["id"].'" '
 							.'title="'.$lang->def('_DEL').' : '.strip_tags($room["name"]).'"><img src="'.getPathImage().'/standard/delete.png'.'" /></a>';
 				else
