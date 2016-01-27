@@ -1,4 +1,3 @@
-{{ 'XXXXX' }}
 <?php if( $use_label ) : ?>
 <div class="container-back">
 	<a href="index.php?r=elearning/show&id_common_label=-2">
