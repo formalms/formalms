@@ -24,8 +24,8 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 	$id_main_sel 	= Get::req('id_main_sel', DOTY_INT, 0);
 	$id_module_sel 	= Get::req('id_module_sel', DOTY_INT, 0);
 	
-	if(isset($_GET['id_main_sel'])) 	$_SESSION['current_main_menu'] = $id_main_sel;
-	if(isset($_GET['id_module_sel'])) 	$_SESSION['sel_module_id'] = $id_module_sel;
+	if($id_main_sel > 0) 	$_SESSION['current_main_menu'] = $id_main_sel;
+	if($id_module_sel > 0) 	$_SESSION['sel_module_id'] = $id_module_sel;
 
 	// recover main menu --------------------------------------------------------------------------------
 	$counter = 0;
