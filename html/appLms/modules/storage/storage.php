@@ -91,9 +91,15 @@ function storage_display() {
 	$tv = create_TabView( $GLOBALS['op'] );
 	
 	$repo =& create_activeTab($tv);
+        
+	$lang =& DoceboLanguage::createInstance('storage', 'lms');
 	
 	$repo->initialize();
 	$GLOBALS['page']->setWorkingZone('content');
+        $GLOBALS['page']->add(
+                getTitleArea(lang::t('_STORAGE', 'menu_course'))
+                    .'<div class="std_block">'
+                );
 	
 	if( !$repo->hideTab() ) {
 		$GLOBALS['page']->add( $tv->printTabView_Begin($repo->getUrlParams()) );
@@ -154,7 +160,7 @@ function storage_display() {
 		       'treeview_delete_folder_pubrepo');
 	    } break;
 	  }
-	
+	$GLOBALS['page']->add('</div>');
 	//if( !$repo->hideTab() ) 	
 	//	$GLOBALS['page']->add( $tv->printTabView_End() );
 	

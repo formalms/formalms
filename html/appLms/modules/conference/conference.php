@@ -38,9 +38,14 @@ function conference_list(&$url) {
 	$conference = new Conference_Manager();
 	$re_room 		= $conference->roomActive($_SESSION['idCourse'], fromDatetimeToTimestamp(date("Y-m-d H:i:s")));
 	$room_number 	= $conference->totalRoom($re_room);
+        
+	$GLOBALS['page']->setWorkingZone('content');
+        $GLOBALS['page']->add(
+                getTitleArea($lang->def('_VIDEOCONFERENCE'), 'conference')
+                .'<div class="std_block">');
 
 	if(checkPerm('mod', true)) {
-		cout('<div class="yui-navset yui-navset-top tab_block">
+		 $GLOBALS['page']->add('<div class="yui-navset yui-navset-top tab_block">
 			<ul class="nav nav-tabs">
 				<li class="active">
 					<a href="index.php?modname=conference&amp;op=show">
@@ -54,10 +59,7 @@ function conference_list(&$url) {
 				</li>
 			</ul>
 			<div class="yui-content">'
-		, 'content');
-	} else {
-		cout(getTitleArea($lang->def('_VIDEOCONFERENCE'), 'conference')
-			.'<div class="std_block">', 'content');
+		);
 	}
 
 	if($room_number == 0) {
@@ -160,7 +162,7 @@ function conference_list(&$url) {
 		require_once(_base_.'/lib/lib.dialog.php');
 		setupHrefDialogBox('a[href*=delconf]');
 
-		$GLOBALS['page']->add($tb->getTable(), 'content');
+		$GLOBALS['page']->add($tb->getTable().'</div>', 'content');
 	}
 
 // TODO : support for BBB is experimental - must be refined
@@ -177,16 +179,16 @@ function conference_list(&$url) {
 			if ($conference->can_create_user_limit(getLogUserId(),$idCourse,time())) {
 				cout('<a class="ico-wt-sprite subs_add" href="'.$url->getUrl('op=startnewconf').'"><span>'.$lang->def('_CREATE').'</span></a>', 'content');
 			} else {
-				cout('<b>'.$lang->def('_NO_MORE_ROOM').'</b>', 'content');
+				cout('<b>'.$lang->def('_NO_MORE_ROOM'), 'content');
 			}
 		}
 		cout('</div>', 'content');
 	}
 
 	if(checkPerm('mod', true)) {
-		cout('<div class="nofloat"></div></div></div>', 'content');
+		cout('<div class="nofloat"></div></div></div></div>', 'content');
 	} else {
-		cout('</div>', 'content');
+		cout('</div></div>', 'content');
 	}
 }
 

@@ -128,6 +128,7 @@ class CoursechartsLmsController extends LmsController {
 
 	public function show() {
 		checkPerm('view', true, 'coursecharts');
+                echo getTitleArea(lang::t('_COURSECHART', 'menu_course'));
 		echo '<div class="std_block">';
 		//echo getBackUi('index.php?r=coursecharts/show', Lang::t('_BACK', 'standard'));
 

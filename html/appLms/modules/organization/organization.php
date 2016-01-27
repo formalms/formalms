@@ -17,8 +17,6 @@ require_once( Docebo::inc( _lms_.'/modules/organization/orglib.php' ) );
 
 function organization( &$treeView ) {
 	
-	//getTitleArea('organizations');
-
 	// contruct and initialize TreeView to manage organization
 	/*$orgDb = new OrgDirDb();
 	if( !checkPerm('lesson') ) {
@@ -109,11 +107,16 @@ function organization( &$treeView ) {
 function organization_display( &$treeView ) {
 	// print conainer div and form
 	require_once($GLOBALS['where_lms'].'/lib/lib.track_user.php');
-	TrackUser::setActionTrack(getLogUserId(), $_SESSION['idCourse'], 'organization', 'view');
+	TrackUser::setActionTrack(getLogUserId(), $_SESSION['idCourse'], 'organization', 'view');        
+        
+	$lang =& DoceboLanguage::createInstance('organization', 'lms');
 	
 	global $modname, $op;
 	$GLOBALS['page']->setWorkingZone('content');
-	$GLOBALS['page']->add( '<div class="std_block">' );
+	$GLOBALS['page']->add( 
+		getTitleArea(lang::t('_ORGANIZATION', 'menu_course'))
+                .'<div class="std_block">' 
+                );
 	$GLOBALS['page']->add( '<form id="orgshow" method="post"'
 	.' action="index.php?modname='.$modname.'&amp;op='.$op.'"'
 	.' >'."\n"
