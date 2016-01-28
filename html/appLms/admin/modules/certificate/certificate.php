@@ -768,7 +768,11 @@ function view_report_certificate() {
 			$dl_url = $url."&amp;op=send_certificate";
 			if($can_assign) $downloadables[] = 'dl_single_'.$input_id;
 			$cont[] = ($can_assign
-				? '<a id="dl_single_'.$input_id.'" class="ico-wt-sprite subs_pdf" href="javascript:;" title="'.$lang->def('_GENERATE').'"><span>'.$lang->def('_GENERATE').'</span></a>'
+				? (
+                                    $certificate->certificateAvailableForUser($id_certificate, $id_course, $info['userid'])
+                                    ? '<a id="dl_single_'.$input_id.'" class="ico-wt-sprite subs_pdf" href="javascript:;" title="'.$lang->def('_GENERATE').'"><span>'.$lang->def('_GENERATE').'</span></a>'
+                                    : "-"
+                                )
 				: '<a id="dl_single_'.$input_id.'" class="ico-wt-sprite subs_pdf" href="'.$dl_url.'" title="'.$lang->def('_DOWNLOAD').'"><span>'.$lang->def('_DOWNLOAD').'</span></a>'
 			);
 			$cont[] = ($can_assign ? '' : Get::sprite_link('subs_del', $url.'&amp;op=del_report_certificate', Lang::t('_DEL', 'certificate')) );

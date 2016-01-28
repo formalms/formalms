@@ -686,7 +686,9 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 		while(list($id_cert, $certificate) = each($available_cert[$cinfo['idCourse']])) {
 			
 			if(!isset($released[$id_cert]) && $cert->canRelease($certificate[CERT_AV_STATUS], $cinfo['user_status'])) {
-				$course_stats['cert_relesable']++;
+                                if ($cert->certificateAvailableForUser($id_cert, $cinfo['idCourse'], Docebo::user()->getIdst())){
+                                    $course_stats['cert_relesable']++;
+                                }
 			}
 		}
 	}
