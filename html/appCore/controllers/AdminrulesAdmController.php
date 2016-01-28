@@ -242,9 +242,12 @@ class AdminrulesAdmController extends AdmController
 	public function admin_manage()
 	{
 		$idst = Get::req('idst', DOTY_INT, 0);
-
-		$this->render('admin_manage', array('idst' => $idst,
-											'model' => $this->model));
+                
+		$this->render('admin_manage', 
+                        array(
+                            'idst' => $idst,
+                            'back_link' => getBackUi('index.php?r=adm/adminrules/show', Lang::t('_BACK', 'standard')),
+                            'model' => $this->model));
 	}
 
 	public function getAdmins()
