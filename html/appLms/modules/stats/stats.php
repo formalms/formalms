@@ -609,7 +609,7 @@ function statcourse() {
     	Util::jump_to(" index.php?modname=stats&op=statitem&idItem=".$treeView->getItemToPlay());
 
 	$out->setWorkingZone('content');
-	$out->add(getTitleArea($lang->def('_STATISTIC'), 'stats'));
+	$out->add(getTitleArea(lang::t('_STATCOURSE', 'menu_course')));
 	$out->add('<div class="std_block">');
 	$out->add( $form->openForm( 'orgshow', "index.php?modname=stats&amp;op=statcourse" ) );
 

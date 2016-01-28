@@ -212,7 +212,7 @@ function statistic() {
 	
 	$users_list 	=& $acl_man->getUsers($course_user);
 	$GLOBALS['page']->add(
-		getTitleArea($lang->def('_STATISTICS'), 'statistic')
+		getTitleArea(lang::t('_STAT', 'menu_course'))
 		.'<div class="std_block">', 'content');
 		
 	if(Get::sett('tracking') == 'on') {
