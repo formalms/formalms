@@ -45,7 +45,7 @@ YAHOO.util.Event.onDOMReady(function(e) {
 <?php
 echo getTitleArea(array(
 	'index.php?r='. $this->link.'/show' => Lang::t('_ORGCHART', 'directory'),
-	Lang::t('_DELETED_USERS', 'admin_directory')
+	Lang::t('_DELETED_USER_LIST', 'profile')
 ));
 ?>
 <div class="std_block">
@@ -76,8 +76,8 @@ $params = array(
 			array('key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true),
 			array('key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true),
 			array('key' => 'email', 'label' => Lang::t('_EMAIL', 'standard'), 'sortable' => true),
-			array('key' => 'deletion_date', 'label' => Lang::t('_DELETION_DATE', 'admin_directory'), 'sortable' => true),
-			array('key' => 'deleted_by', 'label' => Lang::t('_DELETED_BY', 'admin_directory'), 'sortable' => true)
+			array('key' => 'deletion_date', 'label' => Lang::t('_DELETION_DATE', 'profile'), 'sortable' => true),
+			array('key' => 'deleted_by', 'label' => Lang::t('_DELETED_BY', 'profile'), 'sortable' => true)
 		),
 	'fields' => array('id', 'userid', 'firstname', 'lastname', 'email', 'deletion_date', 'deleted_by'),
 	'generateRequest' => 'DeletedManagement.requestBuilder'

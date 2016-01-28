@@ -14,8 +14,8 @@ if ($permissions['approve_waiting_user'] && $num_waiting_users > 0) {
 
 if ($permissions['view_user'] && Get::sett('register_deleted_user', "off") == "on") {
 	$_other_links .= '<a class="ico-wt-sprite subs_unassoc" href="index.php?r='. $this->link.'/show_deleted" '
-		.' title="'.Lang::t('_DELETED_USERS', 'admin_directory').'" id="show_deleted_users">'
-		.'<span>'.Lang::t('_DELETED_USERS', 'admin_directory').' ('.$num_deleted_users.')</span>'
+		.' title="'.Lang::t('_DELETED_USER_LIST', 'profile').'" id="show_deleted_users">'
+		.'<span>'.Lang::t('_DELETED_USER_LIST', 'profile').' ('.$num_deleted_users.')</span>'
 		.'</a>';
 }
 
