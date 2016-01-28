@@ -169,7 +169,7 @@ class CatalogLms extends Model
 					//Controllo che l'utente non sia iscritto a tutte le edizioni future
 					$date_id = array();
 
-					$user_classroom = $this->classroom_man->getUserDates(Docebo::user()->getIdSt());
+                                        $user_classroom = $this->classroom_man->getUserDateForCourse(Docebo::user()->getIdSt(), $row['idCourse']);
 					$classroom_full = $this->classroom_man->getFullDateForCourse($row['idCourse']);
 					$classroom_not_confirmed = $this->classroom_man->getNotConfirmetDateForCourse($row['idCourse']);
 
