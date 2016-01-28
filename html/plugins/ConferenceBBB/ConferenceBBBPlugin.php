@@ -256,7 +256,7 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 	  }
 
 ////////////////////////////////////////////////////
-		$url = '<a onclick="window.open(this.href, \'\', \'\');return false;" href="'.str_replace('&', '&amp;', $_url).'">'.$lang->def('_JOIN_CONFERENCE').'</a>';
+		$url = '<a onclick="window.open(this.href, \'\', \'\');return false;" href="'.str_replace('&', '&amp;', $_url).'">'.$lang->def('_ENTER').'</a>';
 
 		return $url;
 	}

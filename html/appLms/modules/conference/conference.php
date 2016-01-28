@@ -82,10 +82,11 @@ function conference_list(&$url) {
 			/*$cont_h[] = '';
 			$type_h[] = 'image';
 */
-			$cont_h[] = '';
+
+			$cont_h[] = '<img src="'.getPathImage().'/standard/edit.png'.'" />';
 			$type_h[] = 'image';
 
-			$cont_h[] = '';
+			$cont_h[] = '<img src="'.getPathImage().'/standard/delete.png'.'" />';
 			$type_h[] = 'image';
 		}
 
@@ -134,22 +135,15 @@ function conference_list(&$url) {
 			$cont[]=$conference->getUrl($room["id"],$room["room_type"]);
 			if(checkPerm('mod', true))
 			{
-				if (getLogUserId()==$room["idSt"] && $room["room_type"] == 'teleskill')
-					$cont[]='<a href="index.php?modname=conference&amp;op=modconf&amp;id='.$room["id"].'" '
-							.'title="'.$lang->def('_MOD').' : '.strip_tags($room["name"]).'"><img src="'.getPathImage().'/standard/edit.png'.'" /></a>';
+				if (getLogUserId()==$room["idSt"] || Docebo::user()->getUserLevelId()==ADMIN_GROUP_GODADMIN)
+					$cont[] =	'<a href="index.php?modname=conference&amp;op=modconf&amp;id='.$room["id"].'">'
+								.'<img src="'.getPathImage().'/standard/edit.png'.'" /></a>';
 				else
 					$cont[] = '';
-/*
-				if (getLogUserId()==$room["idSt"])
-					$cont[] =	'<a href="index.php?modname=conference&amp;op=modbooking&amp;id='.$room["id"].'" title="'.$lang->def('_MOD_BOOKING').' : '.strip_tags($room["name"]).'">'
-								.'<img src="'.getPathImage().'/standard/modadmin.gif" alt="'.$lang->def('_MOD_BOOKING').' : '.strip_tags($room["name"]).'">'
-								.'</a>';
-				else
-					$cont[] = '';
-*/
+
 				if (getLogUserId()==$room["idSt"] || Docebo::user()->getUserLevelId()==ADMIN_GROUP_GODADMIN)
 					$cont[]='<a href="index.php?modname=conference&amp;op=delconf&id='.$room["id"].'" '
-							.'title="'.$lang->def('_DEL').' : '.strip_tags($room["name"]).'"><img src="'.getPathImage().'/standard/delete.png'.'" /></a>';
+							.'"><img src="'.getPathImage().'/standard/delete.png'.'" /></a>';
 				else
 					$cont[] = '';
 			}
@@ -404,7 +398,7 @@ function conference_delconf() {
 	}
 }
 
-function conference_modconf()
+function conference_modconf($url = null)
 {
 	$lang =& DoceboLanguage::createInstance('conference', 'lms');
 
@@ -412,7 +406,10 @@ function conference_modconf()
 
 	$conference = new Conference_Manager();
 
-	$room_info = $conference->roomInfo($id_room);
+        $room_info = $conference->roomInfo($id_room);
+        $start_date=Format::date(date("Y-m-d H:i:s",$room_info["starttime"]), 'datetime');
+        list($date, $time) = explode(' ', $start_date);
+        list($hour, $min, $sec) = explode(':', $time);
 
 	if(isset($_POST['update_conf']))
 	{
@@ -441,6 +438,37 @@ function conference_modconf()
 
 				Util::jump_to('index.php?modname=conference&amp;op=list');
 			break;
+                    
+			case 'bbb':
+				$conference = new Conference_Manager();
+
+                                $start_date = Format::dateDb($_POST['start_date'], 'date');
+                                $start_date = substr($start_date, 0, 10);
+
+                                $start_time = ( strlen($_POST['start_time']['hour']) == 1 ? '0' : '' ).$_POST['start_time']['hour'].':'
+                                        .( strlen($_POST['start_time']['minute']) == 1 ? '0' : '' ).$_POST['start_time']['minute'].':00';
+
+                                $start_timestamp = fromDatetimeToTimestamp($start_date.' '.$start_time);
+
+                                $conference_name=(trim($_POST["conference_name"]))?(trim($_POST["conference_name"])):($lang->def('_VIDEOCONFERENCE'));
+
+                                $meetinghours=(int)$_POST["meetinghours"];
+
+                                $end_timestamp = $start_timestamp + $meetinghours * 3600;
+
+                                $maxparticipants=(int)$_POST["maxparticipants"];
+
+                                $idCourse=$_SESSION['idCourse'];
+                                $room_type=$_POST["room_type"];
+
+                                
+                                $conference->updateRoom($id_room,$conference_name,$room_type,$start_timestamp,$end_timestamp,$meetinghours,$maxparticipants,(isset($_POST['bookable']) ? 1 : 0), 
+                                        $start_date,
+                                        (int)$_POST['start_time']['hour'],
+                                        (int)$_POST['start_time']['minute']
+                                );
+                                Util::jump_to('index.php?modname=conference&amp;op=list');       
+			break;
 
 			default:
 				Util::jump_to('index.php?modname=conference&amp;op=list');
@@ -458,6 +486,93 @@ function conference_modconf()
 				$teleskill = new Teleskill_Management();
 
 				$teleskill->getModUi($room_info);
+			break;
+                    
+			case 'bbb':
+				checkPerm('view');
+                                $mod_perm = checkPerm('mod');
+
+                                require_once(_base_.'/lib/lib.form.php');
+
+                                $lang =& DoceboLanguage::createInstance('conference', 'lms');
+
+                                $conf_system=array();
+                                //$conf_system[""]="";
+                                $default="";
+                                $default_maxp=30;
+                                if (Get::sett('code_teleskill')) $conf_system["teleskill"]="teleskill";
+                                if (Get::sett('dimdim_server') and Get::sett('dimdim_user') and Get::sett('dimdim_password')) $conf_system["dimdim"]="dimdim";
+                                if (Get::sett('bbb_server') and Get::sett('bbb_user') and Get::sett('bbb_salt') and Get::sett('bbb_password_moderator') and Get::sett('bbb_password_viewer')){
+                                  $conf_system["bbb"]="Big Blue Button";
+                                  $default="bbb";
+                                  $default_maxp=Get::sett('bbb_max_participant');
+                                }
+                                
+                                YuiLib::load();
+
+                                //addJs($GLOBALS['where_lms_relative'].'/modules/conference/', 'ajax_conference.js');
+
+                                $GLOBALS['page']->add(
+                                        getTitleArea($lang->def('_VIDEOCONFERENCE'), 'conference')
+                                        .'<div class="std_block">'
+                                , 'content');
+
+                                $GLOBALS['page']->add(
+                                        Form::openForm('mod_conference', $url->getUrl('op=modconf&id='.$id_room))
+                                        .Form::openElementSpace()
+                                        .Form::getTextfield(	$lang->def('_VIDEOCONFERENCE'),
+                                                                                        'conference_name',
+                                                                                        'conference_name',
+                                                                                        255,
+                                                                                        $room_info['name'] )
+
+
+                                        .Form::getLineBox(
+                                                $lang->def('_CONFERENCE_SYSTEM'),
+                                                Form::getInputDropdown('', 'room_type', 'room_type', $conf_system
+                                                        , $room_info['room_type']
+                                                        , ''/*, 'onchange="getMaxRoom()"'*/ )
+                                        )
+
+                                        .Form::getDatefield($lang->def('_START_DATE'), 	'start_date', 'start_date',
+                                                 $start_date)
+
+                                        .Form::getLineBox(
+                                                $lang->def('_AT_HOUR'),
+                                                Form::getInputDropdown('', 'start_time_hour', 'start_time[hour]', range(0, 23)
+                                                        , $hour
+                                                        , '' )
+                                                .' : '
+                                                .Form::getInputDropdown('', 'start_time_minute', 'start_time[minute]', range(0, 59)
+                                                        ,  $min
+                                                        , '' )
+                                        )
+
+                                        .Form::getLineBox(
+                                                $lang->def('_MEETING_HOURS'),
+                                                Form::getInputDropdown('', 'meetinghours', 'meetinghours', range(0, 5)
+                                                        , $room_info['meetinghours']
+                                                        , '' )
+
+                                        )
+
+                                        .Form::getTextfield(	$lang->def('_MAX_PARTICIPANTS'),
+                                                                                        'maxparticipants',
+                                                                                        'maxparticipants',
+                                                                                        6,
+                                                                                        $room_info['maxparticipants']), 'content');
+                                
+
+                                $GLOBALS['page']->add(
+                                        Form::closeElementSpace()
+                                        .Form::openButtonSpace()
+                                        .Form::getButton('update_conf', 'update_conf', $lang->def('_MOD'))
+                                        .Form::getButton('undo', 'undo', $lang->def('_UNDO'))
+                                        .Form::closeButtonSpace()
+                                        .Form::closeForm()
+
+                                        .'</div>'
+                                , 'content');
 			break;
 
 			default:
@@ -513,8 +628,11 @@ function modBooking()
 	}
 	else
 	{
-		cout(	getTitleArea($lang->def('_MOD_BOOKING_TITLE'))
-				.'<div class="std_block">');
+		
+                $GLOBALS['page']->setWorkingZone('content');
+                $GLOBALS['page']->add(	getTitleArea($lang->def('_MOD_BOOKING_TITLE'))
+				.'<div class="std_block">'
+                        );
 
 		$conference = new Conference_Manager();
 
@@ -839,7 +957,7 @@ function dispatchConference($op) {
 			conference_startnewconf($url);
 		};break;
 		case 'modconf':
-			conference_modconf();
+			conference_modconf($url);
 		break;
 		case 'delconf' : {
 			conference_delconf();

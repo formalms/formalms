@@ -152,9 +152,89 @@ class Conference_Manager {
 		return $idConference;
 	}
 
-	function updateRoom()
+	function updateRoom($id,$name,$room_type,$start_timestamp,$end_timestamp,$meetinghours,$maxparticipants,$bookable, $startdate, $starthour, $startminute)
 	{
+            $start_date = date("Y-m-d H:i:s", $start_timestamp);
+		$end_date = date("Y-m-d H:i:s", $end_timestamp);
 
+		$parts[1] = substr($start_date, 0, 4);
+		$parts[2] = substr($start_date, 5, 2);
+		$parts[3] = substr($start_date, 8, 2);
+		$parts[4] = substr($start_date, 11, 2);
+		$parts[5] = substr($start_date, 14, 2);
+		$parts[6] = substr($start_date, 17, 2);
+
+
+		$event=new DoceboCalEvent_lms();
+		$event->calEventClass="lms";
+		$event->start_year=$parts[1];
+		$event->start_month=$parts[2];
+		$event->start_day=$parts[3];
+
+		$event->_year=$event->start_year;
+		$event->_month=$event->start_month;
+		$event->_day=$event->start_day;
+
+		$event->start_hour=$parts[4];
+		$event->start_min=$parts[5];
+		$event->start_sec=$parts[6];
+
+		$parts[1] = substr($end_date, 0, 4);
+		$parts[2] = substr($end_date, 5, 2);
+		$parts[3] = substr($end_date, 8, 2);
+		$parts[4] = substr($end_date, 11, 2);
+		$parts[5] = substr($end_date, 14, 2);
+		$parts[6] = substr($end_date, 17, 2);
+
+		$event->end_year=$parts[1];
+		$event->end_month=$parts[2];
+		$event->end_day=$parts[3];
+
+		$event->end_hour=$parts[4];
+		$event->end_min=$parts[5];
+		$event->end_sec=$parts[6];
+
+		$event->title=$name;
+		$event->description=$name;
+
+		$event->_owner=$idSt;
+		if (!$event->_owner) $event->_owner==Docebo::user()->getIdSt();
+
+		$event->category="b";
+		$event->private="";
+		$event->idCourse=$idCourse;
+
+		$idCal=$event->store();
+
+		//save in database the roomid for user login
+		$update_room = "
+		UPDATE ".$this->_getRoomTable()."
+		SET 
+                idCal='".$idCal."',
+                name='".$name."',
+                room_type='".$room_type."', 
+                starttime='".$start_timestamp."',
+                endtime='".$end_timestamp."',
+                meetinghours='".$meetinghours."',
+                maxparticipants='".$maxparticipants."',
+                bookable='".$bookable."'
+                WHERE id='".$id."'";
+
+		$ok=sql_query($update_room);
+                $idConference = $id;
+
+		if ($ok) {
+      $plugin_conference=$this->PluginConferenceAdm->getElement($room_type, "code");  
+  		$classname = PluginManager::getPlugins($plugin_conference['name']);
+		  $classconference = new $classname();
+
+		  $success = $classconference->insertRoom($idConference,$name, $start_date,$end_date, $maxparticipants);
+
+			if (!$success) {
+				sql_query("DELETE FROM ".$this->_getRoomTable()." WHERE id=".(int)$idConference);
+				$idConference = false;
+			}		
+		}
 	}
 
 	function roomInfo($room_id) {

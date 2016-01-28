@@ -232,7 +232,7 @@ class DimDim_Manager {
 
 		$name = $this->getRoomName($idConference);
 		$_url = 'http://'.Get::sett('dimdim_server', "").'/console?clientId='.$clientId.'&group=all&account='.Get::sett('dimdim_user', "").'&room='.urlencode($name);
-		$url = '<a onclick="window.open(this.href, \'\', \'\');return false;" href="'.str_replace('&', '&amp;', $_url).'">'.$lang->def('_JOIN_CONFERENCE').'</a>';
+		$url = '<a onclick="window.open(this.href, \'\', \'\');return false;" href="'.str_replace('&', '&amp;', $_url).'">'.$lang->def('_ENTER').'</a>';
 
 		return $url;
 	}
