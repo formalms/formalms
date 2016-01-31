@@ -110,8 +110,10 @@ class PluginManager {
 			if(file_exists(_plugins_.'/'.$plugin_name.'/'.$class_name.'.php')) 
 				include_once(_plugins_.'/'.$plugin_name.'/'.$class_name.'.php');
 
-			if (method_exists($class_name, 'run')) { 
+			if (method_exists($class_name, 'run')) {
 				call_user_func(array($class_name, 'run'), $plugin_name);
+			} else if (method_exists(_folder_plugins_.'\\'.$plugin_name.'\\'.$class_name, 'run')){
+				call_user_func(array(_folder_plugins_.'\\'.$plugin_name.'\\'.$class_name, 'run'), $plugin_name);
 			}
 
 		}

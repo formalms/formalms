@@ -62,7 +62,7 @@ function intro( $object_test, $id_param ) {
 	
 	$lang 			=& DoceboLanguage::createInstance('test');
 	$id_test 		= $object_test->getId();
-	$test_type		= $object_test instanceof Learning_Test360 ? 'test360' : 'test';
+	$test_type		= $object_test->getObjectType();
 	$id_reference 	= getLoParam($id_param, 'idReference');
 	$url_coded 		= urlencode(serialize($object_test->back_url));
 	$id_track 		= retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
@@ -117,7 +117,7 @@ function intro( $object_test, $id_param ) {
 		$GLOBALS['page']->add('<span class="text_bold">'.$lang->def('_TEST_INFO').' : </span><br />'
 			.'<ul class="test_info_list">', 'content');
 		
-		if($test_info['order_type'] != 2 && $test_type != 'test360') {
+		if($test_info['order_type'] != 2 && $test_type == 'test') {
 			
 			$GLOBALS['page']->add('<li>'.str_replace('[max_score]', ''.($test_info['point_type'] != 1 ? $test_man->getMaxScore() : 100 ) , $lang->def('_TEST_MAXSCORE')).'</li>', 'content');
 		}
@@ -136,7 +136,7 @@ function intro( $object_test, $id_param ) {
 			.'<li>'.( $test_info['can_travel'] ? $lang->def('_TEST_CAN_TRAVEL') 
 						: $lang->def('_TEST_CAN_TRAVEL_NO') ).'</li>'
 		, 'content');
-		if ($test_type != 'test360') {
+		if ($test_type == 'test') {
 			$GLOBALS['page']->add(
 				'<li>' . (($test_info['show_score'] || $test_info['show_score_cat']) ? $lang->def('_TEST_SHOW_SCORE')
 						: $lang->def('_TEST_SHOW_SCORE_NO')) . '</li>'
@@ -365,7 +365,7 @@ function resetTrack($id_test, $id_track) {
 	$re_quest = sql_query($query_question);
 	while(list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($re_quest)) {
 		
-		require_once($GLOBALS['where_lms'].'/modules/question/'.$type_file);
+		require_once(Docebo::inc(_folder_lms_.'/modules/question/'.$type_file));
 		$quest_obj = eval("return new $type_class( $idQuest );");
 		
 		$quest_obj->deleteAnswer($id_track);
@@ -679,7 +679,7 @@ function play($object_test, $id_param) {
 
 	while(list($idQuest, $type_quest, $type_file, $type_class, $time_assigned) = sql_fetch_row($re_question)) {
 		
-		require_once($GLOBALS['where_lms'].'/modules/question/'.$type_file);
+		require_once(Docebo::inc(_folder_lms_.'/modules/question/'.$type_file));
 		$quest_obj = eval("return new $type_class( $idQuest );");
 		
 		$GLOBALS['page']->add($quest_obj->play( 	$quest_sequence_number, 
@@ -973,7 +973,7 @@ function showResult( $object_test, $id_param ) {
 
 	while(list($id_quest, $type_quest, $type_file, $type_class, $id_cat) = sql_fetch_row($reQuest)) {
 		
-		require_once($GLOBALS['where_lms'].'/modules/question/'.$type_file);
+		require_once(Docebo::inc(_folder_lms_.'/modules/question/'.$type_file));
 		
 		$quest_point_do = 0;
 		
@@ -1297,7 +1297,7 @@ function review($object_test, $id_param) {
 	$quest_sequence_number = 1;
 	while(list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
 		
-		require_once($GLOBALS['where_lms'].'/modules/question/'.$type_file);
+		require_once(Docebo::inc(_folder_lms_.'/modules/question/'.$type_file));
 		$quest_obj = eval("return new $type_class( $idQuest );");
 		
 		$review = $quest_obj->displayUserResult( 	$idTrack, 
@@ -1598,7 +1598,7 @@ function editUserReport($id_user, $id_test, $id_track) {
 	$reQuest = sql_query($query_question);
 	while(list($id_quest, $type_quest, $type_file, $type_class, $id_cat) = sql_fetch_row($reQuest)) {
 		
-		require_once($GLOBALS['where_lms'].'/modules/question/'.$type_file);
+		require_once(Docebo::inc(_folder_lms_.'/modules/question/'.$type_file));
 		
 		$quest_point_do = 0;
 		
@@ -1721,7 +1721,7 @@ function saveManualUserReport($id_user, $id_test, $id_track) {
 	while(list($id_quest, $type_quest, $type_file, $type_class, $id_cat) = sql_fetch_row($reQuest)) {
 		
 		// instance question class
-		require_once($GLOBALS['where_lms'].'/modules/question/'.$type_file);
+		require_once(Docebo::inc(_folder_lms_.'/modules/question/'.$type_file));
 		$quest_obj = eval("return new $type_class( $id_quest );");
 		
 		// check score

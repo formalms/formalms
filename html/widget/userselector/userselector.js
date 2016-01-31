@@ -306,19 +306,6 @@ UserSelector.prototype = {
 	labelFormatter: function(elLiner, oRecord, oColumn, oData) {
 		elLiner.innerHTML = '<label for="'+this.getTableEl().parentNode.id+'_sel_'+oRecord.getData("id")+'">'+oData+'</label>';
 	},
-	relationFormatter: function(elLiner, oRecord, oColumn, oData) {
-		var i, valid = false;
-		var list = UserSelector.prototype.relationList;
-		for (i=0; i<list.length; i++) {
-			if (list[i].value == oData) {
-				elLiner.innerHTML = list[i].label;
-				valid = true;
-				break;
-			}
-		}
-		if (!valid) elLiner.innerHTML = '&nbsp;';
-		//elLiner.innerHTML = (YAHOO.lang.isNumber(parseInt(oData)) ? oRecord.getData("level_tr") : oData);
-	},
 
 	getSelection: function() {
 		return this.oTable.innerSelector.toString();

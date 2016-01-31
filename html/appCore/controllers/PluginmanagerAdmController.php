@@ -19,7 +19,7 @@ class PluginmanagerAdmController extends AdmController {
 			return;
 		}
 		$model = new PluginAdm();
-		$plugins=$model->getInstalledPlugins();
+		$plugins=$model->getInstalledPlugins(true);
 		
 		$plugins_info=$model->getPluginsInfo($plugins);
 		

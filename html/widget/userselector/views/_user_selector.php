@@ -9,17 +9,13 @@
  */
 //js global variable name
 $_varname = 'UserSelector_'.$id;
+$event = new \appLms\Events\Widget\UserSelectorRenderJSScriptEvent();
+\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Widget\UserSelectorRenderJSScriptEvent::EVENT_NAME, $event);
 
-$relationList_js = '[
-			{"value": "OWNER","label": "'.Lang::t('_OWNER', 'test360').'"},
-			{"value": "MANAGER","label": "'.Lang::t('_MANAGER', 'test360').'"},
-			{"value": "PEER","label": "'.Lang::t('_PEER', 'test360').'"},
-			{"value": "SUBORDINATE","label": "'.Lang::t('_SUBORDINATE', 'test360').'"},
-			{"value": "OTHER","label": "'.Lang::t('_OTHER', 'test360').'"},
-		]';
 ?>
+
 <script type="text/javascript">
-	UserSelector.prototype.relationList = <?php echo $relationList_js; ?>;
+	<?php echo $event->getPrependScript(); ?>
 	var <?php echo $_varname; ?> = new UserSelector("<?php echo $id; ?>", {
 		imgPath: '<?php echo Get::tmpl_path(); ?>',
 		langs: {
@@ -107,10 +103,6 @@ $columns_arr = array();
 $columns_arr[] = array('key' => 'userid', 'label' => Lang::t('_USERNAME'), 'sortable' => true, 'formatter' => $_varname . '.labelFormatter');
 $columns_arr[] = array('key' => 'lastname', 'label' => Lang::t('_LASTNAME'), 'sortable' => true, 'formatter' => $_varname . '.labelFormatter');
 $columns_arr[] = array('key' => 'firstname', 'label' => Lang::t('_FIRSTNAME'), 'sortable' => true, 'formatter' => $_varname . '.labelFormatter');
-if ($org_type == 'test360') {
-	$columns_arr[] = array('key' => 'relation', 'label' => Lang::t('_RELATION'), 'sortable' => true, 'formatter' => $_varname . '.relationFormatter',
-			'editor' => 'new YAHOO.widget.DropdownCellEditor({dropdownOptions: '.$relationList_js.'})');
-}
 for ($i = 0; $i < $num_var_fields; $i++) {
 	$columns_arr[] = array('key' => '_dyn_field_' . $i, 'label' => $dyn_labels[$i]);
 }
@@ -129,15 +121,16 @@ $rel_action_bottom = '<span>'
 //render table
 $id_org = isset($data_for_view['id_org'])?$data_for_view['id_org']:0;
 $fields = array('id', 'userid', 'firstname', 'lastname', '_dyn_field_0', '_dyn_field_1', '_dyn_field_2', 'valid');
-if ($org_type == 'test360') {
-	$fields[] = 'relation';
-}
+
+$event = new \appLms\Events\Widget\UserSelectorBeforeRenderEvent($_varname, $columns_arr, $fields);
+\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Widget\UserSelectorBeforeRenderEvent::EVENT_NAME, $event);
+
 $this->widget('table', array(
 	'id' => 'user_selector_table_' . $id,
 	'ajaxUrl' => 'ajax.adm_server.php?r=widget/userselector/getusertabledata&id_org='.$id_org.(isset($learning_filter) ? '&learning_filter='.$learning_filter : ''),
 	'sort' => 'userid',
-	'columns' => $columns_arr,
-	'fields' => $fields,
+	'columns' => $event->getColumns(),
+	'fields' => $event->getFields(),
 	'stdSelection' => true,
 	'stdSelectionField' => '_checked',
 	'selectAllAdditionalFilter' => $_varname . '.selectAllAdditionalFilter()',

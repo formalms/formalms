@@ -37,7 +37,7 @@ class PluginAdm extends Model {
 	 *
 	 * @access 	public
 	 */
-	public function getInstalledPlugins() {
+	public function getInstalledPlugins($includeNotActive = false) {
 
 		$sorted_plugins=array();
 		
@@ -46,8 +46,8 @@ class PluginAdm extends Model {
 			FROM ".$this->table."
 			order by active desc, priority");
 		
-		while(list($plugin_id, $name, $code, $versione, $path, $author, $link, $priority, $description, $active ) = sql_fetch_row( $reSetting )){
-			$sorted_plugins[]=$name;
+		while(list($plugin_id, $name, $title, $code, $versione, $path, $author, $link, $priority, $description, $active ) = sql_fetch_row( $reSetting )){
+			$sorted_plugins[] = array('name' => $name, 'active' => $active);
 		}
 		
 		$unsorted_plugins=array();
@@ -60,13 +60,15 @@ class PluginAdm extends Model {
 
 		$plugins=array();
 		
-		foreach ($sorted_plugins as $order => $name){
-			if($unsorted_plugins[$name]){
-				$plugins[]=$name;
-				unset($unsorted_plugins[$name]);
+		foreach ($sorted_plugins as $order => $conf){
+			if($unsorted_plugins[$conf['name']]){
+				if ($conf['active'] || $includeNotActive) {
+					$plugins[] = $conf['name'];
+				}
+				unset($unsorted_plugins[$conf['name']]);
 			}
 			else{
-				$this->deactivePlugin($name);
+				$this->deactivePlugin($conf['name']);
 			}
 		}
 		
@@ -130,14 +132,15 @@ class PluginAdm extends Model {
 		$res=sql_query("select name from ".$this->table."
 					where plugin_id = ".$plugin_id);
 		
-		list($name) = sql_fetch_row( $res );
-		
-		$plugin_class=ucfirst($name)."Plugin";
-		require_once(_plugins_."/".$name."/".$plugin_class.".php");
-				
-		$pluginApp=new $plugin_class();
-		if(method_exists($pluginApp, 'activate')){
-			$pluginApp->activate();
+		list($plugin_name) = sql_fetch_row( $res );
+
+		$plugin_class=ucfirst($plugin_name)."Plugin";
+		require_once(_plugins_."/".$plugin_name."/".$plugin_class.".php");
+
+		if (method_exists($plugin_class, 'activate')){
+			call_user_func(array($plugin_class, 'activate'), $plugin_name);
+		} else if (method_exists(_folder_plugins_.'\\'.$plugin_name.'\\'.$plugin_class, 'activate')){
+			call_user_func(array(_folder_plugins_.'\\'.$plugin_name.'\\'.$plugin_class, 'activate'), $plugin_name);
 		}
 	}
 	
@@ -145,14 +148,15 @@ class PluginAdm extends Model {
 		$res=sql_query("select name from ".$this->table."
 					where plugin_id = ".$plugin_id);
 		
-		list($name) = sql_fetch_row( $res );
+		list($plugin_name) = sql_fetch_row( $res );
 		
-		$plugin_class=ucfirst($name)."Plugin";
-		require_once(_plugins_."/".$name."/".$plugin_class.".php");
-				
-		$pluginApp=new $plugin_class();
-		if(method_exists($pluginApp, 'deactivate')){
-			$pluginApp->deactivate();
+		$plugin_class=ucfirst($plugin_name)."Plugin";
+		require_once(_plugins_."/".$plugin_name."/".$plugin_class.".php");
+
+		if (method_exists($plugin_class, 'deactivate')){
+			call_user_func(array($plugin_class, 'deactivate'), $plugin_name);
+		} else if (method_exists(_folder_plugins_.'\\'.$plugin_name.'\\'.$plugin_class, 'deactivate')){
+			call_user_func(array(_folder_plugins_.'\\'.$plugin_name.'\\'.$plugin_class, 'deactivate'), $plugin_name);
 		}
 	}
 	

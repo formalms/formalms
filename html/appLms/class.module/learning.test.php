@@ -291,6 +291,14 @@ class Learning_Test extends Learning_Object {
 		return $output;
 	}
 
+	public static final function getTestTypes(){
+		$event = new \appLms\Events\Lms\TestGetTypesEvent();
+		$event->addTestType('test');
+		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestGetTypesEvent::EVENT_NAME, $event);
+
+		return $event->getTestTypes();
+	}
+
 }
 
 ?>

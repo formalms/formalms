@@ -80,7 +80,8 @@ function docebo_autoload($classname) {
 	);
 	
 	if(Get::cfg('enable_plugins', false)){
-		$fixed['PluginController'] = _lib_.'/mvc/lib.plugincontroller.php';
+		$fixed['LmsPluginController'] = _lib_.'/mvc/lib.lmsplugincontroller.php';
+		$fixed['AdmPluginController'] = _lib_.'/mvc/lib.admplugincontroller.php';
 	}
 
 	//search for a base class and include the file if found
