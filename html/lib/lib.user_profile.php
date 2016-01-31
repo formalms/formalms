@@ -1900,7 +1900,7 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 					$redirect_uri = Get::sett('url').'index.php?modname=login&op=facebook_login';
 					
 					$serviceFactory = new \OAuth\ServiceFactory();
-					$storage = new Session();
+					$storage = new Session(false);
 					$credentials = new Credentials(
 							$client_id,
 							$client_secret,

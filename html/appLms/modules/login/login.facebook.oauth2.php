@@ -22,7 +22,7 @@ $redirect_uri = Get::sett('url').'index.php?modname=login&op=facebook_login';
 
 try{
 	$serviceFactory = new \OAuth\ServiceFactory();
-	$storage = new Session();
+	$storage = new Session(false);
 	$credentials = new Credentials(
 			$client_id,
 			$client_secret,

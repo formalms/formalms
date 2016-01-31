@@ -27,7 +27,7 @@ $redirect_uri = $protocol.'://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'].'?
 
 try{
 	$serviceFactory = new \OAuth\ServiceFactory();
-	$storage = new Session();
+	$storage = new Session(false);
 	$credentials = new Credentials(
 			$client_id,
 			$client_secret,
