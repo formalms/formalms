@@ -23,8 +23,8 @@ switch ($op) {
 		$output = array('success' => true);
 
 		$lang =& DoceboLanguage::createInstance('certificate', 'lms');
-		$head = Lang::t('_GENERATE_CERTIFICATES', 'certificate');
-		$body = '<div><p>'.Lang::t('_PROGRESS', 'certificate').'</p><div class="box_progress_bar" id="load_line">'
+		$head = Lang::t('_CERTIFICATES_GENERATION', 'certificate');
+		$body = '<div><p>'.Lang::t('_PROGRESS', 'standard').'</p><div class="box_progress_bar" id="load_line">'
 			.'<div id="print_progressbar" class="bar_complete" style="width:0%"></div>'
 			.'<div class="no_float"></div></div>'
 			.'<p>'.Lang::t('_GENERATE', 'certificate').'&nbsp;<span id="actual_num">'
