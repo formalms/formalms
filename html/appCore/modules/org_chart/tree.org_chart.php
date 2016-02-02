@@ -231,6 +231,7 @@ class TreeDb_OrgDb extends TreeDb {
 	
 	
 	function getFolderIdByTranslations( $translation ) {
+                if($translation === false) return false;
 		$query = "SELECT id_dir "
 				."  FROM ".$GLOBALS['prefix_fw'].'_org_chart'
 				." WHERE translation = '".$translation."'";
