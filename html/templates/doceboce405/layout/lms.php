@@ -38,7 +38,7 @@
 				</p>
 				<?php if (!Docebo::user()->isAnonymous()): ?>
 				<ul>
-					<li><a class="identity" href="index.php?r=profile/show">
+					<li><a class="identity" href="index.php?r=lms/profile/show">
 						<!-- <img src="<?php echo Layout::path(); ?>images/standard/identity.png" alt="" />&nbsp; -->
 						<span><?php echo Lang::t('_PROFILE', 'profile'); ?></span>
 					</a></li><li>

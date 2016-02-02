@@ -1861,7 +1861,7 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
                     ? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed')
                     : '<img class="boxed" src="'.getPathImage().'standard/user.png" alt="'.$this->_lang->def('_NOAVATAR').'" />' )
             .'</p>'
-            .'<p class="userinfo"><b><a href="index.php?r=profile/show">'
+            .'<p class="userinfo"><b><a href="index.php?r=lms/profile/show">'
                     .$this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]).' '.$this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
                 .'</a></b>
                 <br><i style="font-size:.88em">

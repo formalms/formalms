@@ -284,7 +284,7 @@ cout('
                                         
                                         <p align=right>
                                         
-                                                <a href="index.php?r=profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
+                                                <a href="index.php?r=lms/profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
                                                  <span class="glyphicon glyphicon-pencil"></span>
                                                 </a>
                                                 &nbsp;
