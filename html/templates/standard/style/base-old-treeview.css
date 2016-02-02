@@ -97,7 +97,6 @@ input.TreeViewOpExpandCorner {
 
 
 input.OrgPlay {
-	float:right;
 	background: url("../images/standard/view.png") no-repeat 0 0 transparent;
 	overflow: hidden;
 	border: 0px none;
@@ -107,6 +106,11 @@ input.OrgPlay {
 	height: 24px;
 	vertical-align: middle;
 	cursor: pointer;
+	//float:right;
+        //instead
+        display: inline-block;
+        position: absolute;
+        right: 0;
 }
 input.TreeViewOpCollapseCorner {
 	background: url("../images/treeview/menu_corner_minus.gif") no-repeat 0 0 transparent;
