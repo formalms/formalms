@@ -45,6 +45,12 @@ class UserselectorWidget extends Widget {
 	 * @var bool
 	 */
 	public $show_orgchart_selector = true;
+        
+        
+        
+        
+        
+	public $show_orgchart_simple_selector = false;
 
 	/**
 	 * Display the functional role selector tab
@@ -155,6 +161,7 @@ class UserselectorWidget extends Widget {
 			'show_user_selector' => $this->show_user_selector,
 			'show_group_selector' => $this->show_group_selector,
 			'show_orgchart_selector' => $this->show_orgchart_selector,
+			'show_orgchart_simple_selector' => $this->show_orgchart_simple_selector,
 			'show_fncrole_selector' => $this->show_fncrole_selector,
 			'selected_tab' => $selected_tab,
 			'use_form_input' => (bool)$this->use_form_input,

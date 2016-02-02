@@ -78,6 +78,9 @@ FolderTree.prototype = {
 	_treeState: [],
 
 	_setSelectedNodeOnServer: true,
+        
+        
+        _simple : false,
 
 	//some events
 	onSelectNode : function(o) {},
@@ -96,6 +99,8 @@ FolderTree.prototype = {
 		this._hiddenSelection = oConfig.hiddenSelection || false;
 
 		this._setSelectedNodeOnServer = oConfig.setSelectedNodeOnServer || true;
+                
+                this._simple = oConfig.simple;
 
 		//set input hidden
 		var temp = document.createElement('input');
@@ -259,7 +264,8 @@ FolderTree.prototype = {
 			html: label,
 			checkable: (isRoot ? false : this._checkableNodes),
 			options: (options ? options : false),
-			style: (style ? style : false)
+			style: (style ? style : false),
+                        simple: this._simple
 		};
 		if (others) params = params || others;
 

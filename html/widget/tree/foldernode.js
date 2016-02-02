@@ -16,6 +16,7 @@ YAHOO.widget.FolderNode = function(oData, oParent, expanded, checked) {
 	if (oData.radioButtons) this._useRadioButtons = true;
 	if (oData.options) this._loadOptions(oData.options);
 	if (oData.style) this._subStyle=oData.style;
+	if (oData.simple) this._simple=oData.simple;
 
 	if (oData.preExpanded) { this.expanded=true; this.dynamicLoadComplete=true; this._dynLoad=false; }
 };
@@ -34,6 +35,8 @@ YAHOO.extend(YAHOO.widget.FolderNode, YAHOO.widget.HTMLNode, {
 	_subStyle: false,
 	
 	_useRadioButtons: false,
+	
+	_simple: false,
 
 	_radioStatus: 0,
 
@@ -198,10 +201,12 @@ YAHOO.extend(YAHOO.widget.FolderNode, YAHOO.widget.HTMLNode, {
 							'<label style="visibility:hidden" for="sel_1_'+n+'">'+this.tree._containerObject._lang.get('_RADIO_YES')+'</label>';
 			output += '&nbsp;&nbsp;';
 		}
-		output += '<input class="radiosel" id="sel_2_'+n+'" type="radio" name="sel['+n+']" '
-						+'value="2" '+(this._radioStatus==2 ? 'checked="checked"' : '')+' '
-						+( is_descendant ? 'disabled="disabled"' : '')+' />'
-						+'<label for="sel_2_'+n+'">'+this.tree._containerObject._lang.get('_RADIO_INHERIT')+'</label>';
+                if(!this._simple){
+                        output += '<input class="radiosel" id="sel_2_'+n+'" type="radio" name="sel['+n+']" '
+                                                        +'value="2" '+(this._radioStatus==2 ? 'checked="checked"' : '')+' '
+                                                        +( is_descendant ? 'disabled="disabled"' : '')+' />'
+                                                        +'<label for="sel_2_'+n+'">'+this.tree._containerObject._lang.get('_RADIO_INHERIT')+'</label>';
+                }
 		return output;
 	},
 

@@ -79,6 +79,7 @@ class UserSelector {
 			'show_user_selector' => $this->show_user_selector,
 			'show_group_selector' => $this->show_group_selector,
 			'show_orgchart_selector' => $this->show_orgchart_selector,
+			'show_orgchart_simple_selector' => $this->show_orgchart_simple_selector,
 			'show_fncrole_selector' => $this->show_fncrole_selector,
 			'initial_selection' => $this->selection,
 			'admin_filter' => true,

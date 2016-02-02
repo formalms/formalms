@@ -45,6 +45,9 @@ FolderTree.prototype = {
 
 	//tree state variable is a collection of expanded nodes (array of node ids)
 	_treeState: [],
+        
+        
+        _simple : false,
 
 
 	//some events
@@ -190,7 +193,8 @@ FolderTree.prototype = {
 			html: ( this._draggableNodes ? '<div id="'+dd_id+'">'+label+'</div>' : label ),
 			checkable: (isRoot ? false : this._checkableNodes),
 			options: (options ? options : false),
-			style: (style ? style : false)
+			style: (style ? style : false),
+                        simple: this._simple
 		};
 		if (others) params = params || others;
 

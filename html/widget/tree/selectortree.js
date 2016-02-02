@@ -58,7 +58,8 @@ YAHOO.lang.extend(SelectorTree, FolderTree, {
 			checkable: (isRoot ? false : this._checkableNodes),
 			radioButtons: (isRoot && this.canSelectRoot==false ? false : true),
 			options: (options ? options : false),
-			style: (style ? style : false)
+			style: (style ? style : false),
+                        simple: this._simple
 		};
 		if (others) params = params || others;
 

@@ -43,6 +43,7 @@ $this->widget('tree', array(
 	'ajaxUrl' => 'ajax.adm_server.php?r=widget/userselector/getorgcharttreedata',
 	'treeClass' => 'SelectorTree',
 	'treeFile' => Get::rel_path('base').'/widget/tree/selectortree.js',
+        'options' => array('simple' => $this->show_orgchart_simple_selector),
 	'languages' => $_languages,
 	'rootNodeId' => isset($root_node_id) ? $root_node_id : 0,
 	'initialSelectedNode' => (int)$selected_node,
