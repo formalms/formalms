@@ -27,7 +27,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			$subs['[meta_complete]'] = $lang->def('_META_COMPLETE');
 			$subs['[meta_inscr]'] = $lang->def('_META_INSCR');
 			$subs['[meta_access]'] = $lang->def('_META_ACCESS');
-                        $subs['[meta_level]'] = $lang->def('_LEVEL');
+                        //$subs['[meta_level]'] = $lang->def('_LEVEL');
 		}
 		else
 		{
@@ -107,7 +107,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			$array_meta_complete = array();
 			$array_meta_inscr = array();
 			$array_meta_access = array();
-                        $array_meta_level = array();
+                        //$array_meta_level = array();
 			while(list($id_course) = sql_fetch_row($result))
 			{
                                 //
@@ -121,7 +121,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 				$array_meta_complete[] = $date_complete_meta;
 				$array_meta_inscr[] = $date_inscr_meta;
 				$array_meta_access[] = $date_access_meta;
-                                $array_meta_level[] = $level;
+                                //$array_meta_level[] = $level;
 
 				$man_course = new Man_Course();
 
@@ -194,13 +194,13 @@ class CertificateSubs_UserStat extends CertificateSubstitution {
 			rsort($array_meta_complete);
 			sort($array_meta_inscr);
 			sort($array_meta_access);
-                        sort($array_meta_level);
+                        //sort($array_meta_level);
 
 			$subs['[meta_complete]'] = $array_meta_complete[0];
 			$subs['[meta_inscr]'] = $array_meta_inscr[0];
 			$subs['[meta_access]'] = $array_meta_access[0];
                         
-                        $subs['[meta_level]'] = $lang->def('_LEVEL_'.$array_meta_level[0],'levels');
+                       // $subs['[meta_level]'] = $lang->def('_LEVEL_'.$array_meta_level[0],'levels');
                         
 			$subs['[table_course]'] = ( $course_count ? $table_course : '' );
 			$subs['[table_blended]'] = ( $blended_count ? $table_blended : '' );
