@@ -2443,7 +2443,7 @@ input[type="month"].input-lg {
 .radio,
 .checkbox {
   position: relative;
-  display: block;
+  display: inline-block;
   min-height: 20px;
   margin-top: 10px;
   margin-bottom: 10px;

@@ -2126,7 +2126,7 @@ input[type=date].input-lg,input[type=time].input-lg,input[type=datetime-local].i
 }
 .radio,.checkbox {
 	position:relative;
-	display:block;
+	display:inline-block;
 	min-height:20px;
 	margin-top:10px;
 	margin-bottom:10px
