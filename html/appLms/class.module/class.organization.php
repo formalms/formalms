@@ -256,11 +256,16 @@ class Module_Organization extends LmsModule {
 						.'&op=custom_enditem&id_item='
 						.$id_item;
 			}
-			
-
-			$lo->play(  $idItem,
-						$folder->otherValues[ORGFIELDIDPARAM],
-						$back_url );
+			require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
+			if( Track_Object::isPrerequisitesSatisfied(
+					$folder->otherValues[ORGFIELDPREREQUISITES],
+					getLogUserId() ) ) {
+				$lo->play(  $idItem,
+							$folder->otherValues[ORGFIELDIDPARAM],
+							$back_url );
+			} else {
+				die("You don't have permissions");
+			}
 			
 			return;
 		}
