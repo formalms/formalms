@@ -501,17 +501,17 @@ class DoceboACLManager
      * @return int the security token
      */
     function registerTempUser($userid, $firstname, $lastname, $pass, $email, $random_code, $create_by_admin = 0,
-                              $facebook_id = '', $twitter_id = '', $linkedin_id = '', $google_id = '')
+                              $facebook_id = '', $twitter_id = '', $linkedin_id = '', $google_id = '', $avatar= '')
     {
 
         $idst = $this->_createST();
         $userid = $this->absoluteId($userid);
         $query = "INSERT INTO " . $this->_getTableTempUser()
-            . " ( idst, userid, firstname, lastname, pass, email, random_code, request_on, create_by_admin, confirmed, facebook_id, twitter_id, linkedin_id, google_id) "
+            . " ( idst, userid, firstname, lastname, pass, email, random_code, request_on, create_by_admin, confirmed, facebook_id, twitter_id, linkedin_id, google_id, avatar) "
             . "VALUES ( '" . $idst . "', '" . $userid . "', '" . $firstname . "', '" . $lastname . "', "
             . " '" . $this->encrypt($pass) . "', '" . $email . "', '" . $random_code . "', '" . date("Y-m-d H:i:s") . "', "
             . "	'" . $create_by_admin . "', '" . ($create_by_admin == 0 ? 0 : 1) . "',
-				'" . $facebook_id . "', '" . $twitter_id . "', '" . $linkedin_id . "', '" . $google_id . "')";
+				'" . $facebook_id . "', '" . $twitter_id . "', '" . $linkedin_id . "', '" . $google_id . "', '" . $avatar . "')";
         $this->_executeQuery($query);
         return $idst;
     }

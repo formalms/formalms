@@ -1492,14 +1492,59 @@ class UserManagerRenderer {
 		$random_code = md5($_POST['register']['userid'].mt_rand().mt_rand().mt_rand());
 		// register as temporary user and send mail
 		$acl_man 	=& Docebo::user()->getAclManager();
-		$iduser = $acl_man->registerTempUser(
-			$_POST['register']['userid'],
-			$_POST['register']['firstname'],
-			$_POST['register']['lastname'],
-			$_POST['register']['pwd'],
-			$_POST['register']['email'],
-			$random_code
-		);
+		$iduser="";
+		//avatar
+		require_once('/lib.user_profile.php');
+		$userprofiledata = new UserProfileData();
+		$file_descriptor=$_FILES['up_avatar'];
+		if (isset($file_descriptor)){
+				
+			require_once(_base_.'/lib/lib.upload.php');
+			require_once(_base_.'/lib/lib.multimedia.php');
+				
+			$savefile = $id_user.'a_'.mt_rand(0,100).'_'.time().'_'.$file_descriptor['name'];
+			if(file_exists($GLOBALS['where_files_relative'].'/appCore/'.Get::sett('pathphoto').$savefile)) return false;
+				
+			sl_open_fileoperations();
+			if(createImageFromTmp(	$file_descriptor['tmp_name'],
+					'/appCore/'.Get::sett('pathphoto').$savefile,
+					$file_descriptor['name'],
+					$max_width,
+					$max_height,
+					true ) != 0) {
+							
+						sl_close_fileoperations();
+						return false;
+					}
+					sl_close_fileoperations();
+					if(!$iduser = $acl_man->registerTempUser(
+						$_POST['register']['userid'],
+						$_POST['register']['firstname'],
+						$_POST['register']['lastname'],
+						$_POST['register']['pwd'],
+						$_POST['register']['email'],
+						$random_code,
+						0,
+						'',
+						'',
+						'',
+						'',
+						$savefile)) {
+								sl_unlink(substr($this->getPAPath(), 1).$savefile);
+								return false;
+							}
+							
+							//$userprofiledata->saveAvatarData($iduser, $_FILES['up_avatar'], 150, 150);
+		} else {
+			$iduser = $acl_man->registerTempUser(
+				$_POST['register']['userid'],
+				$_POST['register']['firstname'],
+				$_POST['register']['lastname'],
+				$_POST['register']['pwd'],
+				$_POST['register']['email'],
+				$random_code
+			);
+		}
 
 		if($iduser === false) {
 
@@ -1509,7 +1554,6 @@ class UserManagerRenderer {
 			$this->error = true;
 			return $out;
 		}
-
 
 		// facebook register:
 		if ($social->isActive('facebook')) {
@@ -1625,10 +1669,8 @@ class UserManagerRenderer {
 
             require_once(_base_.'/lib/lib.mailer.php');
 
-            $mailer = DoceboMailer::getInstance();
-
+           	$mailer = DoceboMailer::getInstance();
             if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, false, false) ) {
-
                 $out .= '<div class="reg_err_data">'
                             .$lang->def('_OPERATION_FAILURE')
                             .'</div>';
@@ -1825,8 +1867,12 @@ class UserManagerRenderer {
 
 		$out .= '</ul>'.$extra
 				.Form::openElementSpace('reg_form');
-
-
+		
+		$html .= Form::getFilefield(	"Avatar",
+										'up_avatar',
+										'up_avatar');
+	
+		$out .= $html;
 		$out .= Form::getTextfield($lang->def('_USERNAME').' '.$mand_sym,
 									'register_userid',
 									'register[userid]',
@@ -1989,7 +2035,7 @@ class UserManagerRenderer {
 				addslashes($request['lastname']),		// $lastname
 				$request['pass'],						// $pass
 				addslashes($request['email']),			// $email
-				'',										// $avatar
+				$request['avatar'],						// $avatar
 				'',										// $signature
 				true,									// $alredy_encripted
 				$request['idst'],						// $idst
@@ -2006,6 +2052,7 @@ class UserManagerRenderer {
                     $acl_man->updateUser($request['idst'],
                         FALSE,  FALSE,  FALSE,  FALSE,  FALSE,  FALSE, FALSE,
                         date("Y-m-d H:i:s") );
+                    
 					// subscribe to base group
 					$idst_usergroup 	= $acl_man->getGroup(false, ADMIN_GROUP_USER);
 					$idst_usergroup 	= $idst_usergroup[ACL_INFO_IDST];
