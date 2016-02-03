@@ -61,7 +61,7 @@ function outPageView($link) {
 			echo $dateinit = date("Y-m-d H:i:s", time() - 30*24*3600);
 			$y = date("Y", time() - 30*24*3600);
 			$m = date("m", time() - 30*24*3600);
-			$start_num = substr($dateinit, 8, 2);
+			$start_num = substr($dateinit, 8, 2) -1;
 			$colums = 31;
 			$limit = cal_days_in_month(CAL_GREGORIAN, ($m), $y);
 			$select = " DAYOFMONTH(timeof) AS from_time ";
@@ -79,7 +79,7 @@ function outPageView($link) {
 		};break;
 		case 'year' : {
 			$dateinit = date("Y-m-d H:i:s", time() - 365*24*3600);
-			$start_num = substr($dateinit, 5, 2) - 1;
+			$start_num = substr($dateinit, 5, 2) ;
 			$colums = 12;
 			$select = " MONTH(timeof) AS from_time ";
 			$group_by = " MONTH(timeof) ";
