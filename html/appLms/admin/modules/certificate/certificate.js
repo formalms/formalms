@@ -74,7 +74,7 @@ function initializeSingleSelection(o) {
 function finalizeSelection() {
 	all_finished = true;
 	glob_dialog.cfg.queueProperty("buttons", [
-		{ text: "Close", handler: force_reload }
+		{ text: _close, handler: force_reload }
 	]);
 	glob_dialog.render();
 }

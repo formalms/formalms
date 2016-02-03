@@ -889,7 +889,8 @@ function view_report_certificate() {
 		.'var glob_id_certificate = '.(int)$id_certificate.', glob_id_course = '.(int)$id_course.';'
 		.'var single_list = ['.(count($downloadables) ? '"'.implode('","', $downloadables).'"' : '').']; '
 		.'var reload_url = "'.str_replace('&amp;', '&', (isset(/*$form_url*/$submit_url) ? /*$form_url*/$submit_url : '')).'", '
-		.'_ERROR_PARSE = "'.$lang->def('_OPERATION_FAILURE').'", _SUCCESS = "'.$lang->def('_OPERATION_SUCCESSFUL').'", '
+		.'_ERROR_PARSE = "'.$lang->def('_OPERATION_FAILURE').'", _SUCCESS = "'.$lang->def('_OPERATION_SUCCESSFUL').'"; '
+		.'var _close = "'.$lang->def("_CLOSE").'";'
 		.'_AREYOUSURE="'.Lang::t('_AREYOUSURE', 'standard').'";';
 	$out->add('<script type="text/javascript">'.$script.'</script>', 'page_head');
 }
