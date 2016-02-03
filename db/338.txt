@@ -1,0 +1,1 @@
+ALTER TABLE  `core_user_temp` ADD  `avatar` VARCHAR( 255 ) NOT NULL
