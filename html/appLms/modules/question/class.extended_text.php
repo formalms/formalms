@@ -307,28 +307,29 @@ class ExtendedText_Question extends Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function storeAnswer( $id_track, &$source, $can_overwrite = false ) {
-		
-		
+	function storeAnswer(Track_Test $trackTest, &$source, $can_overwrite = false ) {
+
+		$can_overwrite = $can_overwrite && !$trackTest->getTestObj()->isRetainAnswersHistory();
 		$result = true;
 		
-		if($this->userDoAnswer($id_track)) {
+		if($this->userDoAnswer($trackTest->idTrack)) {
 			if(!$can_overwrite) return true;
-			if(!$this->deleteAnswer($id_track)) return false;
+			if(!$this->deleteAnswer($trackTest->idTrack)) return false;
 		}
 		
 		if(isset($source['quest'][$this->id])) {
 				
 			//answer checked by the user 
 			$track_query = "
-			INSERT INTO ".$GLOBALS['prefix_lms']."_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info, user_answer ) 
+			INSERT INTO ".$GLOBALS['prefix_lms']."_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info, user_answer, number_time )
 			VALUES (
-				'".(int)$id_track."', 
+				'".(int)$trackTest->idTrack."',
 				'".(int)$this->id."', 
 				'0', 
 				'0', 
 				'".$source['quest'][$this->id]."',
-				1 )";
+				1,
+				'".(int)($trackTest->getNumberOfAttempt()+1)."')";
 			return sql_query($track_query);
 		}
 	}

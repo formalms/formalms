@@ -762,14 +762,13 @@ class HotText_Question extends Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function storeAnswer( $id_track, &$source, $can_overwrite = false ) {
-		
-		
+	function storeAnswer(Track_Test $trackTest, &$source, $can_overwrite = false ) {
+
 		$result = true;
-		
-		if($this->userDoAnswer($id_track)) {
+
+		if ($this->userDoAnswer($trackTest->idTrack) && !$trackTest->getTestObj()->isRetainAnswersHistory()) {
 			if(!$can_overwrite) return true;
-			if(!$this->deleteAnswer($id_track)) return false;
+			if(!$this->deleteAnswer($trackTest->idTrack)) return false;
 		}
 		
 		$re_answer = sql_query("
@@ -784,12 +783,13 @@ class HotText_Question extends Question {
 				$track_query = "
 				INSERT INTO ".$GLOBALS['prefix_lms']."_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info, user_answer ) 
 				VALUES (
-					'".(int)$id_track."', 
+					'".(int)$trackTest->idTrack."',
 					'".(int)$this->id."', 
 					'".(int)$id_answer."', 
 					'".( $is_correct ? $score_corr : -$score_incorr )."', 
 					'',
-					1 )";
+					1,
+					'".(int)$trackTest->getNumberOfAttempt()."')";
 				$result &= sql_query($track_query);
 			} elseif($is_correct && ($score_incorr != 0)) {
 				
@@ -797,24 +797,26 @@ class HotText_Question extends Question {
 				$track_query = "
 				INSERT INTO ".$GLOBALS['prefix_lms']."_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info, user_answer ) 
 				VALUES (
-					'".(int)$id_track."', 
+					'".(int)$trackTest->idTrack."',
 					'".(int)$this->id."', 
 					'".(int)$id_answer."', 
 					'".-$score_incorr."', 
 					'',
-					0 )";
+					0,
+					'".(int)$trackTest->getNumberOfAttempt()."')";
 				$result &= sql_query($track_query);
 			} elseif(!$is_correct && ($score_corr != 0)) {
 			//answer correct with penality but not checked by the user 
 				$track_query = "
 				INSERT INTO ".$GLOBALS['prefix_lms']."_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info, user_answer ) 
 				VALUES (
-					'".(int)$id_track."', 
+					'".(int)$trackTest->idTrack."',
 					'".(int)$this->id."', 
 					'".(int)$id_answer."', 
 					'".$score_corr."', 
 					'',
-					0 )";
+					0,
+					'".(int)$trackTest->getNumberOfAttempt()."')";
 				$result &= sql_query($track_query);
 			}
 		}

@@ -749,13 +749,13 @@ function defmodality() {
 		$save_keep, $mod_doanswer, $can_travel, 
 		$show_score,  $show_score_cat, $show_doanswer, $show_solution, 
 		$max_attempt, $hide_info,
-		$order_info, $use_suspension, $suspension_num_attempts, $suspension_num_hours, $suspension_prerequisites, $mandatory_answer
+		$order_info, $use_suspension, $suspension_num_attempts, $suspension_num_hours, $suspension_prerequisites, $mandatory_answer, $retain_answers_history
 	) = sql_fetch_row( sql_query("
 	SELECT title, description, display_type, order_type, shuffle_answer, question_random_number, 
 		save_keep, mod_doanswer, can_travel, 
 		show_score, show_score_cat, show_doanswer, show_solution, 
 		max_attempt, hide_info,
-		order_info, use_suspension, suspension_num_attempts, suspension_num_hours, suspension_prerequisites, mandatory_answer
+		order_info, use_suspension, suspension_num_attempts, suspension_num_hours, suspension_prerequisites, mandatory_answer, retain_answers_history
 	FROM %lms_test
 	WHERE idTest = '".$idTest."'"));
 	
@@ -897,7 +897,7 @@ function defmodality() {
 		.Form::getOpenFieldset($lang->def('_TEST_MM_TWO'))
 			//visualization of the info
 			.Form::getCheckBox($lang->def('_MANDATORY_ANSWER'), 'mandatory_answer', 'mandatory_answer', 1, $mandatory_answer)
-
+			.Form::getCheckBox($lang->def('_RETAIN_ANSWERS_HISTORY'), 'retain_answers_history', 'retain_answers_history', 1, $retain_answers_history)
 			.$lang->def('_TEST_MM2_HIDE_INFO').'<br />'
 			.'<input class="valign_middle" type="radio" id="mod_hide_info_no" name="mod_hide_info" value="0"'
 				.( !$hide_info ? '  checked="checked"' : '' ).' /> '
@@ -994,7 +994,12 @@ function defmodality() {
 				.Form::getCloseFieldset()
 		, 'content');
 	} else {
-		$GLOBALS['page']->add('<input type="hidden" id="show_tot_no" name="show_tot" value="0" checked="checked"/>', 'content');
+		$GLOBALS['page']->add(
+				'<input type="hidden" id="show_tot_no" name="show_tot" value="0" checked="checked"/>'
+				.'<br /><br />'
+				.Form::getCloseFieldset(),
+				'content'
+		);
 	}
 
 	$GLOBALS['page']->add(
@@ -1065,6 +1070,7 @@ function updatemodality() {
 		show_score_cat = '".( $_POST['show_cat'] ? 1 : 0 )."', 
 		show_doanswer = '".$_POST['show_doanswer']."', 
 		show_solution = '".$_POST['show_solution']."',
+		retain_answers_history = '".$_POST['retain_answers_history']."',
 		max_attempt = '".(int)$_POST['max_attempt']."'"
 	.( $time_dependent == 2 && $_POST['display_type'] == 0 ? " ,time_dependent = 0 " : "" )
 	." ,use_suspension = ".Get::req('use_suspension', DOTY_INT, 0).

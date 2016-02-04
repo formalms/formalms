@@ -635,13 +635,13 @@ class Numerical_Question extends Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function storeAnswer( $id_track, &$source, $can_overwrite = false ) {
-		
+	function storeAnswer(Track_Test $trackTest, &$source, $can_overwrite = false ) {
+
 		$result = true;
-		
-		if($this->userDoAnswer($id_track)) {
+
+		if ($this->userDoAnswer($trackTest->idTrack) && !$trackTest->getTestObj()->isRetainAnswersHistory()) {
 			if(!$can_overwrite) return true;
-			if(!$this->deleteAnswer($id_track)) return false;
+			if(!$this->deleteAnswer($trackTest->idTrack)) return false;
 		}
 		
 		$is_correct = false;
@@ -663,13 +663,14 @@ class Numerical_Question extends Question {
 			
 		}
 		$track_query = "
-		INSERT INTO ".$GLOBALS['prefix_lms']."_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info ) 
+		INSERT INTO ".$GLOBALS['prefix_lms']."_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info, number_time )
 		VALUES (
-			'".(int)$id_track."', 
+			'".(int)$trackTest->idTrack."',
 			'".(int)$this->id."', 
 			'".(int)$id_answer."', 
 			'".$score."', 
-			'".$source['quest'][$this->id]."' )";
+			'".$source['quest'][$this->id]."',
+			'".(int)($trackTest->getNumberOfAttempt()+1)."')";
 			
 		return  sql_query($track_query);
 	}

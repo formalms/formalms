@@ -12,9 +12,14 @@
 \ ======================================================================== */
 
 require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
+require_once(Docebo::inc(_folder_lms_.'/class.module/learning.test.php'));
 
 class Track_Test extends Track_Object {
-	
+
+	protected $idTest;
+
+	protected $number_of_attempt;
+
 	/** 
 	 * object constructor
 	 * Table : learning_commontrack
@@ -23,7 +28,15 @@ class Track_Test extends Track_Object {
 	function Track_Test( $idTrack, $idResource = false, $idParams = false, $back_url = NULL ) {
 		$this->objectType = 'test';
 		parent::Track_Object($idTrack);
-		
+
+		$this->db = DbConn::getInstance();
+		if( $idTrack !== NULL ) {
+			$res = $this->db->query("SELECT idTest, number_of_attempt FROM %lms_testtrack WHERE idTrack = '".(int)$idTrack."'");
+			if ($res && $this->db->num_rows($res)>0) {
+				list( $this->idTest, $this->number_of_attempt ) = $this->db->fetch_row($res);
+			}
+		}
+
 		$this->idResource = $idResource;
 		$this->idParams = $idParams;
 		if($back_url === NULL) $this->back_url = array();
@@ -285,13 +298,52 @@ class Track_Test extends Track_Object {
 	 */
 	public function getAnswers()
 	{
-
-		$res = sql_query("SELECT idQuest, idAnswer, score_assigned, more_info FROM %lms_testtrack_answer WHERE idTrack = '" . (int)$this->idTrack . "'");
+		$res = sql_query("SELECT idQuest, idAnswer, score_assigned, more_info, number_time FROM %lms_testtrack_answer WHERE idTrack = '" . (int)$this->idTrack . "'");
 		$list = array();
-		while (list($questId, $answerId, $score, $moreInfo) = sql_fetch_row($res)) {
-			$list[$questId] = new Track_TestAnswer($this->idTrack, $questId, $answerId, $score, $moreInfo);
+		while (list($questId, $answerId, $score, $moreInfo, $numberTime) = sql_fetch_row($res)) {
+			$list[$questId][$numberTime] = new Track_TestAnswer($this->idTrack, $questId, $answerId, $score, $moreInfo);
 		}
 		return $list;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getIdTest()
+	{
+		return $this->idTest;
+	}
+
+	/**
+	 * @param mixed $idTest
+	 * @return Track_Test
+	 */
+	public function setIdTest($idTest)
+	{
+		$this->idTest = $idTest;
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getNumberOfAttempt()
+	{
+		return (int)$this->number_of_attempt;
+	}
+
+	/**
+	 * @param mixed $number_of_attempt
+	 * @return Track_Test
+	 */
+	public function setNumberOfAttempt($number_of_attempt)
+	{
+		$this->number_of_attempt = $number_of_attempt;
+		return $this;
+	}
+
+	public function getTestObj(){
+		return new Learning_Test($this->getIdTest());
 	}
 
 }

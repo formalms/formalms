@@ -352,23 +352,18 @@ function intro( $object_test, $id_param ) {
 		.'</div>', 'content');
 }
 
-function resetTrack($id_test, $id_track) {
-	if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
-	
-	require_once(_base_.'/lib/lib.upload.php');
-	
-	$query_question = "
-	SELECT q.idQuest, q.type_quest, t.type_file, t.type_class 
-	FROM ".$GLOBALS['prefix_lms']."_testquest AS q JOIN ".$GLOBALS['prefix_lms']."_quest_type AS t 
-	WHERE q.idTest = '".$id_test."' AND q.type_quest = t.type_quest 
-	ORDER BY q.sequence";
-	$re_quest = sql_query($query_question);
-	while(list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($re_quest)) {
-		
-		require_once(Docebo::inc(_folder_lms_.'/modules/question/'.$type_file));
-		$quest_obj = eval("return new $type_class( $idQuest );");
-		
-		$quest_obj->deleteAnswer($id_track);
+function resetTrack($id_test, $id_track)
+{
+	if (!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
+	require_once(Docebo::inc(_folder_lms_.'/class.module/learning.test.php'));
+	require_once(_base_ . '/lib/lib.upload.php');
+
+	$testObj = new Learning_Test($id_test);
+	if (!$testObj->isRetainAnswersHistory()) {
+		$quests = $testObj->getQuests();
+		foreach ($quests as $quest_obj) {
+			$quest_obj->deleteAnswer($id_track);
+		}
 	}
 	
 	$query_page = "

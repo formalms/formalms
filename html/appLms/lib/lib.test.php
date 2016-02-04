@@ -1053,8 +1053,10 @@ class PlayTestManagement {
 		while(list($id_quest, $type_quest, $type_file, $type_class) = sql_fetch_row($re_question)) {
 			
 			require_once(Docebo::inc(_folder_lms_.'/modules/question/'.$type_file));
-			$quest_obj 	= eval("return new $type_class( $id_quest );");
-			$storing 	= $quest_obj->storeAnswer( $this->id_track, $_POST, $can_overwrite );
+			require_once(Docebo::inc(_folder_lms_.'/class.module/track.test.php'));
+			$trackTest = new Track_Test($this->id_track);
+			$quest_obj = eval("return new $type_class( $id_quest );");
+			$storing   = $quest_obj->storeAnswer( $trackTest, $_POST, $can_overwrite );
 		}
 	}
 	
