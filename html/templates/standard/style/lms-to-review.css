@@ -432,4 +432,132 @@ div.colored_row{height:16px;text-align:center;background:#E1EBF4;border:1px soli
 
 /* HTML Page*/
 .std_block div.title {font-size:150%;padding:6px 0;color:#C84000;}
-.attach {padding:10px; border:1px solid #EFEFEF;} 
+.attach {padding:10px; border:1px solid #EFEFEF;}
+
+/* ======================= FIX RESPONSIVE PN ========================== */
+.test_answer_space .answer_question {
+    margin: 0;
+}
+
+.test_answer_space .answer_question input[type="radio"], .test_answer_space .answer_question input[type="checkbox"] {
+    margin: 4px;
+}
+
+#test_intro .pcontainer-feedback {
+    width: auto;
+    left: 0;
+}
+
+.TreeViewContainer #row_0 {
+    padding: 10px;
+    height: 40px;
+    line-height: 20px;
+}
+
+.dash-course .catalog_action {
+    position: relative;
+    float: right;
+}
+
+@media screen and (max-width: 767px) {
+    .dash-course .logo_container {
+        margin: 0 auto;
+        float: none;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .dash-course .info_container {
+        padding-left: 0;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .grid.cs-style-3 li figure {
+        height: auto;
+        max-width: 210px;
+    }
+}
+
+.dash-course .catalog_action {
+    position: relative;
+    float: right;
+}
+
+@media screen and (max-width: 767px) {
+    .dash-course .logo_container {
+        margin: 0 auto;
+        float: none;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .dash-course .info_container {
+        padding-left: 0;
+    }
+}
+
+.row.row--forum {
+    border-top:3px solid #ccc;
+    border-left:1px solid #ccc;
+}
+
+.row.row--forum .row.row--post {
+    border-bottom: 2px solid #ccc;
+}
+
+.tablecell {
+    border-right:1px solid #ccc;
+    display:inline-block;
+    padding:8px;
+    border-bottom:1px solid #ccc;
+}
+
+.row-height {
+    height: 100%;
+    width: 100%;
+}
+
+.msg--headings {
+    background-color:#efefef;
+}
+
+.row.row--admin {
+    border-bottom:none;
+    border-top:1px solid #ccc;
+    padding-top:10px;
+    text-align:center;
+    margin: 10px 0 10px 0;
+}
+
+.message__single {
+    padding: 10px;
+    border-bottom:1px solid #ccc;
+    margin:0;
+}
+
+.message--title {
+    font-weight:700;
+}
+
+.topic__message--actions {
+    background-color:#efefef;
+    padding:5px;
+}
+
+.topic__message {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+
+.topic__message--author {
+    border-right: 1px solid #ccc;
+}
+
+@media screen and (max-width: 767px) {
+    .topic__message--author {
+        border-right: none;
+        border-bottom:1px dotted #ccc;
+    }
+}
