@@ -9,8 +9,12 @@
  * file that was distributed with this source code.
  */
 
+require_once dirname(__FILE__).'/FilesystemHelper.php';
+
 class Twig_Tests_EnvironmentTest extends PHPUnit_Framework_TestCase
 {
+    private $deprecations = array();
+
     /**
      * @expectedException        LogicException
      * @expectedExceptionMessage You must set a loader first.
@@ -175,7 +179,7 @@ class Twig_Tests_EnvironmentTest extends PHPUnit_Framework_TestCase
         $output = $twig->render('index', array('foo' => 'bar'));
         $this->assertEquals('bar', $output);
 
-        unlink($key);
+        Twig_Tests_FilesystemHelper::removeDir($dir);
     }
 
     public function testAutoReloadCacheMiss()
@@ -287,7 +291,7 @@ class Twig_Tests_EnvironmentTest extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('foo_global', $twig->getGlobals());
 
         $this->assertCount(1, $this->deprecations);
-        $this->assertContains('Defining the getGlobals() method in an extension is deprecated', $this->deprecations[0]);
+        $this->assertContains('Defining the getGlobals() method in the "environment_test" extension ', $this->deprecations[0]);
 
         restore_error_handler();
     }
@@ -349,7 +353,7 @@ class Twig_Tests_EnvironmentTest extends PHPUnit_Framework_TestCase
         $twig->initRuntime();
 
         $this->assertCount(1, $this->deprecations);
-        $this->assertContains('Defining the initRuntime() method in an extension is deprecated.', $this->deprecations[0]);
+        $this->assertContains('Defining the initRuntime() method in the "with_deprecation" extension is deprecated since version 1.23.', $this->deprecations[0]);
 
         restore_error_handler();
     }
@@ -364,7 +368,7 @@ class Twig_Tests_EnvironmentTest extends PHPUnit_Framework_TestCase
     /**
      * @requires PHP 5.3
      */
-    public function testOverrideExtenion()
+    public function testOverrideExtension()
     {
         $twig = new Twig_Environment($this->getMock('Twig_LoaderInterface'));
         $twig->addExtension(new Twig_Tests_EnvironmentTest_ExtensionWithDeprecationInitRuntime());
