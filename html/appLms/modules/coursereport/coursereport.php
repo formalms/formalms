@@ -574,7 +574,7 @@ function coursereport() {
 											}
                                             $tt = "(" . $tests_score[$id_test][$idst_user]['times'] . ")";
 											if ($testObj->obj_type == 'test360'){
-												$cont[] = '<a href="index.php?r=test360/report&idTest=' . $tests_score[$id_test][$idst_user]['idTest'] . '&idTrack=' . $tests_score[$id_test][$idst_user]['idTrack'] . '&studentName=' . $acl_man->relativeId($user_info[ACL_INFO_USERID]) . '" class="ico-wt-sprite subs_confirm">&nbsp;&nbsp;</a>';
+												$cont[] = '<a href="index.php?r=test360/report&idTest=' . $tests_score[$id_test][$idst_user]['idTest'] . '&idTrack=' . $tests_score[$id_test][$idst_user]['idTrack'] . '&showAuto=1&showEtero=1" class="ico-wt-sprite subs_confirm">&nbsp;&nbsp;</a>';
 											} else if ($score >= $info_report['required_score']) {
                                                 if ($score == $test_details[$id_test]['max_score'])
                                                     $cont[] = '<span class="cr_max_score">' . $score . " " . $tt . '</span>';
