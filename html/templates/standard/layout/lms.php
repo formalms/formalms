@@ -83,6 +83,7 @@
         <script type="text/javascript" src="<?php echo Layout::path(); ?>resources/jquery/jquery.min.js"></script>
         <script src="<?php echo Layout::path(); ?>resources/jquery/jquery-ui.js"></script>
 		<script type="text/javascript" src="<?php echo Layout::path(); ?>resources/chartist.min.js"></script>
+        <script type="text/javascript" src="<?php echo Layout::path(); ?>resources/chartist-plugin-pointlabels.js"></script>
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>resources/chartist.min.css" />
         <script>
             $('document').ready(function() {
