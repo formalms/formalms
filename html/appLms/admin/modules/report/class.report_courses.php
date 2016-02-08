@@ -1020,8 +1020,8 @@ class Report_Courses extends Report {
 					.($all_courses ? "" : "AND cu.idCourse IN (".implode(',', $course_selected).") ")
 					.($show_suspended ? "" : " AND u.valid = 1 ")
 					.($only_students ? " AND cu.level = 3 " : "");
-				if($start_time != '' && $start_time != '0000-00-00') $query_course_user .= " AND cu.date_complete >= '".$start_time."' ";
-				if($end_time != '' && $end_time != '0000-00-00') $query_course_user .= " AND cu.date_complete <= '".$end_time."'";
+				if($start_time != '' && $start_time != '0000-00-00') $query_course_user .= " AND coalesce(cu.date_complete, cu.date_first_access, cu.date_inscr) >= '".$start_time."' ";
+				if($end_time != '' && $end_time != '0000-00-00') $query_course_user .= " AND coalesce(cu.date_complete, cu.date_first_access, cu.date_inscr) <= '".$end_time."'";
 
 				$num_iscr 		= array();
 				$num_nobegin 	= array();
