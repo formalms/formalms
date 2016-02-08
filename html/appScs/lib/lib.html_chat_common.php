@@ -68,7 +68,8 @@ function checkLogin($auto_reload=true) {
 	$id_user=0;
 
 	$room=getChatRoomId();
-	$lang=& $GLOBALS["lang"];
+	//$lang=& $GLOBALS["lang"];
+        $lang=& DoceboLanguage::createInstance('htmlframechat', 'scs');$lang=& DoceboLanguage::createInstance('htmlframechat', 'scs');
 
 	$where_del ="WHERE ( (last_hit < '".(time()-LOGOUT_TIME)."' AND auto_reload='1') OR ";
 	$where_del.="(last_hit < '".(time()-90)."' AND auto_reload='0') ) AND id_room=$room";
