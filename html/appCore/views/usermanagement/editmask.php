@@ -16,6 +16,9 @@ if (!$is_editing) {
 	echo '<div id="create_user_tab1">';
 }
 
+echo Form::getFilefield(	"Avatar",
+		'up_avatar',
+		'up_avatar');
 echo Form::getTextField(Lang::t('_USERNAME', 'standard'), 'username', 'username', 255, $info->userid);
 echo Form::getTextField(Lang::t('_FIRSTNAME', 'standard'), 'firstname', 'firstname', 255, $info->firstname);
 echo Form::getTextField(Lang::t('_LASTNAME', 'standard'), 'lastname', 'lastname', 255, $info->lastname);
