@@ -1497,7 +1497,7 @@ class UserManagerRenderer {
 		require_once(_base_.'/lib/lib.user_profile.php');
 		$userprofiledata = new UserProfileData();
 		$file_descriptor=$_FILES['up_avatar'];
-		if (isset($file_descriptor)){
+		if ($file_descriptor['name']!=""){
 				
 			require_once(_base_.'/lib/lib.upload.php');
 			require_once(_base_.'/lib/lib.multimedia.php');
@@ -1638,6 +1638,7 @@ class UserManagerRenderer {
 
                 if($registration_code_type == 'code_module') {
                     // ok, the registration has failed, let's remove the user association form the code
+                    require_once(_base_.'/appCore/lib/lib.code.php');
                     $code_manager = new CodeManager();
                     $code_manager->resetUserAssociation($code, $iduser);
                 }
