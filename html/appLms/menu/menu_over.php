@@ -258,7 +258,7 @@ cout('
               Learning_Cart::init();
               $num_item = Learning_Cart::cartItemCount();
               if($num_item>0){
-                cout('<li><a href="index.php?r=cart/show" id="cart_action"><span  class="glyphicon glyphicon-shopping-cart"><sub id="cart_element" class="num_notify_bar">'.Learning_Cart::cartItemCount().'</sub></span></a></li>' ,'menu_over')  ;
+                cout('<li><a href="index.php?r=cart/show" id="cart_action" title="'.Lang::t("_CART", "cart").'"><span  class="glyphicon glyphicon-shopping-cart"><sub id="cart_element" class="num_notify_bar">'.Learning_Cart::cartItemCount().'</sub></span></a></li>' ,'menu_over')  ;
               } 
                
                cout('

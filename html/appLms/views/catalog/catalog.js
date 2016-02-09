@@ -212,7 +212,8 @@ function subscribeToCourse(id_course, id_date, id_edition, selling)
 														cart_element.innerHTML = res.cart_element;
 
 													dialog.hide();
-
+                                                     setTimeout(function(){ location.reload(); }, 100);
+                                                     
 													if(res.num_element > 0)
 													{
 														var cart = YAHOO.util.Dom.get('cart_box');
@@ -241,8 +242,10 @@ function subscribeToCourse(id_course, id_date, id_edition, selling)
 													div_feedback.innerHTML = res.message;
 
 													dialog.hide();
+                                                    
 												}
-											},
+                                            
+                                            },
 											failure: function()
 											{
 

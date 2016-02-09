@@ -82,7 +82,9 @@ $this->widget('table', array(
 
 													price.innerHTML = '0';
 
-													DataTable_cart_table.refresh();
+													//DataTable_cart_table.refresh();
+                                                    setTimeout(function(){ location.reload(); }, 100);
+                                                    
 												}
 												else
 												{
@@ -115,7 +117,8 @@ $this->widget('table', array(
 
 													price.innerHTML = res.price;
 
-													DataTable_cart_table.refresh();
+													//DataTable_cart_table.refresh();
+                                                    setTimeout(function(){ location.reload(); }, 100);
 												}
 												else
 												{
