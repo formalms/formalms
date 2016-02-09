@@ -417,7 +417,8 @@ class CatalogLms extends Model
                        */ 
                    
                         
-            // boxes courses of catalog            
+            // boxes courses of catalog   
+            /*         
            $html .= '<div class="item  col-xs-4 col-lg-4">
                     <div class="thumbnail">'
                         .($row['use_logo_in_courselist'] && $row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.$path_course.$row['img_course'].'" alt="'.Util::purge($row['name']).'" /></div>' : '')
@@ -451,6 +452,56 @@ class CatalogLms extends Model
                         </div>
                     </div>
                 </div>';
+             */
+        
+        $html .= '
+                  
+                        <li>
+
+                               <table width=100%  border=0 >
+                               <tr>
+                               <td width=33%>
+                               '
+                                .($row['use_logo_in_courselist'] && $row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.$path_course.$row['img_course'].'" alt="'.Util::purge($row['name']).'" /></div>' : '')
+                                .($row['use_logo_in_courselist'] && !$row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.Get::tmpl_path().'images/course/course_nologo.png'.'" alt="'.Util::purge($row['name']).'" /></div>' : '')                         
+                                .
+                               '                     
+                               </td>
+                               <td>   
+                                <h3 class="cbp-vm-title">'.$row['name'].'</h3>
+                                </td>
+                               </tr>
+                               
+                               <tr><td colspan=2>
+                                <div class="cbp-vm-price">'.($row['code'] ? '<i style="font-size:.68em">['.$row['code'].']</i>' : '&nbsp;').'</div>
+                                </td></tr>
+                                
+                                
+                                <tr><td colspan=2 valign="bottom" align="center">
+                                    <div class="cbp-vm-details">
+                                    '.$row['description'].'
+
+                                     <p class="course_support_info">'
+                                     .($row["course_demo"] ? '<a href="index.php?r=catalog/downloadDemoMaterial&amp;course_id='.$row['idCourse'].'" class="ico-wt-sprite subs_download"><span>'.Lang::t('_COURSE_DEMO', 'course').'</span></a>' : '')
+                                     .'</p> 
+                                 
+                                 
+                                   '.$action.'
+                          
+                                </div>
+                                 </td></tr>
+                                </table>
+                 
+                        </li>
+               
+              ';
+        
+        
+              
+              
+                       
+                        
+                        
                         
                         
 		}

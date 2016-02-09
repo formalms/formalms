@@ -3368,7 +3368,7 @@ textarea.input-group-sm>.form-control,textarea.input-group-sm>.input-group-addon
 	.navbar-nav {
 		float:right;
 		margin:0    ;
-        width: 460px;
+        width: 720px;
 	}
 	.navbar-nav>li {
 		float:left
@@ -3931,7 +3931,8 @@ a.thumbnail:hover,a.thumbnail:focus,a.thumbnail.active {
 }
 .thumbnail .caption {
 	padding:9px;
-	color:#333
+	color:#333;
+ 
 }
 .alert {
 	padding:15px;

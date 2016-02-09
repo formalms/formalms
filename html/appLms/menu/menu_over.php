@@ -207,7 +207,7 @@ cout('
             </div>
          
          
-            <div class="col-md-8">
+            <div class="col-md-10">
          
             <ul class="nav navbar-nav"  >','menu_over');
          
@@ -228,6 +228,8 @@ cout('
                          }else{
                             cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.$row[1].'"  >'.$row[1].'</a></li>','menu_over');
                          }
+                         
+                         
                      }
                             
                         if($row[2] !== false) {
@@ -248,65 +250,70 @@ cout('
       
                 }  
                
-               cout('</ul></div>
-        
-        
-              <div class="col-md-2">
-             <ul class="nav pull-right top-menu">
-                                                 
-                <div id="o-wrapper" class="o-wrapper">
-                        <button id="c-button--slide-right" class="c-button" >
-                        
-                         <a data-toggle="dropdown"  href="#" title="'.Lang::t('_PROFILE', 'menu_course').'">
-                        <table><tr><td>'. $photo.'  &nbsp;</td><td><span class="username"> '.Docebo::user()->getUserName().'</span></td></tr></table>                                                        
-                          </a>
-                        </button>
-                </div><!-- /o-wrapper -->
+               
+               
+               // CARRELLO SPESA 
+               cout( '<li  ><a href="" title="'.Lang::t("_CART", "cart").'"><span class="glyphicon glyphicon-shopping-cart"></span></a></li> ','menu_over'); 
+               
+               
+               cout('
+                                     <li>                                
+                                    <div id="o-wrapper" class="o-wrapper">
+                                            <button id="c-button--slide-right" class="c-button" >
+                                            
+                                             <a data-toggle="dropdown"  href="#" title="'.Lang::t('_PROFILE', 'menu_course').'">
+                                            <table><tr><td>'. $photo.'  &nbsp;</td><td><span class="username"> '.Docebo::user()->getUserName().'</span></td></tr></table>                                                        
+                                              </a>
+                                            </button>
+                                    </div><!-- /o-wrapper -->
 
 
-                <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right">
-                
-                  <button class="c-menu__close">'.Lang::t('_HIDETREE', 'organization').'</button>
-                  
-                                                             
-                  
-                  <ul class="c-menu__items">
-                      <li class="c-menu__item">
-                      
-                       <div class="col-md-12">
-                       <br>
-                                         <table width="10%" border="0">
-                                            <tr align="left">
-                                                <td><span class="select-language">'. Layout::change_lang().'</span></td>
-                                               <td align="center">                                                                                                                                                                                   
-                                                </td>
-                                        </tr></table>
-                                        
-                                        <p align=right>
-                                        
-                                                <a href="index.php?r=lms/profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
-                                                 <span class="glyphicon glyphicon-pencil"></span>
-                                                </a>
-                                                &nbsp;
-                                                <a title="'.Lang::t('_LOGOUT', 'standard').'" href="index.php?modname=login&amp;op=logout">
-                                                
-                                                    <span class="glyphicon glyphicon-off"></span>
-                                                    </a>
+                                    <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right">
+                                    
+                                      <button class="c-menu__close">'.Lang::t('_HIDETREE', 'organization').'</button>
+                                      
+                                                                                 
+                                      
+                                      <ul class="c-menu__items">
+                                          <li class="c-menu__item">
                                           
-                                        </p>
+                                           <div class="col-md-12">
+                                           <br>
+                                                             <table width="10%" border="0">
+                                                                <tr align="left">
+                                                                    <td><span class="select-language">'. Layout::change_lang().'</span></td>
+                                                                   <td align="center">                                                                                                                                                                                   
+                                                                    </td>
+                                                            </tr></table>
+                                                            
+                                                            <p align=right>
+                                                            
+                                                                    <a href="index.php?r=lms/profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
+                                                                     <span class="glyphicon glyphicon-pencil"></span>
+                                                                    </a>
+                                                                    &nbsp;
+                                                                    <a title="'.Lang::t('_LOGOUT', 'standard').'" href="index.php?modname=login&amp;op=logout">
+                                                                    
+                                                                        <span class="glyphicon glyphicon-off"></span>
+                                                                        </a>
+                                                              
+                                                            </p>
 
-                                        '.$profile_box.'                                               
-                                         <div >&nbsp;</div>   
-                                        '.$subscribe_course.'
-                                        '.$news.'
-                                        '.$credits.'
-                          
-                          </div>   
-                      
-                      <li>
-                  </ul>
-                </nav><!-- /c-menu slide-right -->
-
+                                                            '.$profile_box.'                                               
+                                                             <div >&nbsp;</div>   
+                                                            '.$subscribe_course.'
+                                                            '.$news.'
+                                                            '.$credits.'
+                                              
+                                              </div>   
+                                          
+                                          <li>
+                                      </ul>
+                                      </nav><!-- /c-menu slide-right -->
+                                 </ul>
+                               
+                                    </li>  
+                                      
                 <div id="c-mask" class="c-mask"></div><!-- /c-mask -->
                                                 
                                         ','menu_over')   ; 
