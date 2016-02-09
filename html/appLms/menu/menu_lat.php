@@ -137,7 +137,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
         $span='';
         if($cont==0)  $span = '<span class="glyphicon glyphicon-cloud"></span> ';
         if($cont==1)  $span = '<span class="glyphicon glyphicon-inbox"></span> ';
-        if($cont==2)  $span = '<span class="glyphicon glyphicon-education"></span> ';
+        if($cont==2)  $span = '<span class="glyphicon glyphicon-road"></span>';
         if($cont==3)  $span = '<span class="glyphicon glyphicon-stats"></span> ';
         
 		if(!empty($menu['submenu'])) {
