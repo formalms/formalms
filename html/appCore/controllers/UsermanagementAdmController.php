@@ -1263,13 +1263,12 @@ class UsermanagementAdmController extends AdmController {
                                     require_once(_lib_.'/lib.user_profile.php');
                                     require_once(_adm_.'/modules/org_chart/tree.org_chart.php');
 
-                                    $userprofiledata = new UserProfileData();
+                                    $treedborgdb = new TreeDb_OrgDb();
                                     $alreadyassigned = array();
                                     foreach ($selection as $sel_user){
-                                        $groups = $userprofiledata->getUserGroupsList($sel_user);
-                                        $treedborgdb = new TreeDb_OrgDb();
-                                        $user_org = $treedborgdb->getFolderIdByTranslations(reset($groups['folders']));                                        
-                                        if($user_org && $id != $user_org){
+                                        $user_org = $this->model->getUserFolders($sel_user);
+                                        $folder_id = $treedborgdb->getFoldersIdFromIdst(array_keys($user_org));                                        
+                                        if(count($folder_id) && (count($folder_id) > 1 || $id != reset($folder_id))){
                                             $alreadyassigned[] = $sel_user;
                                         }
                                     }
