@@ -1494,7 +1494,7 @@ class UserManagerRenderer {
 		$acl_man 	=& Docebo::user()->getAclManager();
 		$iduser="";
 		//avatar
-		require_once('/lib.user_profile.php');
+		require_once(_base_.'/lib/lib.user_profile.php');
 		$userprofiledata = new UserProfileData();
 		$file_descriptor=$_FILES['up_avatar'];
 		if (isset($file_descriptor)){
