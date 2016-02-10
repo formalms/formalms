@@ -487,37 +487,6 @@ class UsermanagementAdmController extends AdmController {
 		$userdata->email = trim(Get::req('email', DOTY_STRING, ''));
 		$userdata->password = $password;
 		$userdata->force_change = trim(Get::Req('force_changepwd', DOTY_INT, 0));	
-		$userdata->avatar='';
-
-		//avatar
-		require_once(_base_.'/lib/lib.user_profile.php');
-		$userprofiledata = new UserProfileData();
-		$file_descriptor=$_FILES['up_avatar'];
-		if ($file_descriptor['name']!=""){
-		
-			require_once(_base_.'/lib/lib.upload.php');
-			require_once(_base_.'/lib/lib.multimedia.php');
-		
-			$savefile = $id_user.'a_'.mt_rand(0,100).'_'.time().'_'.$file_descriptor['name'];
-			if(file_exists($GLOBALS['where_files_relative'].'/appCore/'.Get::sett('pathphoto').$savefile)) return false;
-		
-			sl_open_fileoperations();
-			if(createImageFromTmp(	$file_descriptor['tmp_name'],
-				'/appCore/'.Get::sett('pathphoto').$savefile,
-				$file_descriptor['name'],
-				150,
-				150,
-				true ) != 0) {
-				$output['success'] = false;
-				$output['message'] ="problemi caricamento immagine";
-				echo $this->echoResult($output);
-				sl_close_fileoperations();
-				return;
-			}
-			$userdata->avatar= $savefile;
-			sl_close_fileoperations();
-		}
-
 		/* $userdata->facebook_id = Get::pReq('facebook_id', DOTY_STRING, '');
 		$userdata->twitter_id = Get::pReq('twitter_id', DOTY_STRING, '');
 		$userdata->linkedin_id = Get::pReq('linkedin_id', DOTY_STRING, '');
