@@ -82,15 +82,7 @@ function renderProgress($tot_complete, $tot_failed, $total, $show_title = false)
                               </div>
                             </div>';
         }
-       
-        if($perc_failed != 0){
-                   $html .= '<div class="progress">
-                              <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="'.$perc_failed.'" aria-valuemin="0" aria-valuemax="100" style="width: '.$perc_failed.'%">
-                                <span class="sr-only">'.$perc_failed.'% Complete (danger)</span>
-                                <span class="progress-completed">'.$perc_failed.'%</span>
-                              </div>
-                            </div>';
-        }       
+             
        
        if($perc_complete == 0 && $total==0){
                    $html .= '<div class="progress">
