@@ -73,7 +73,7 @@ function renderProgress($tot_complete, $tot_failed, $total, $show_title = false)
 		$html .= '<div class="nofloat">'
 			.'</div></div>'."\n";
          */   
-        if($perc_complete != 0){
+        if($perc_complete >= 0){
                    $html .= '<div class="progress">
                               <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="'.$perc_complete.'" aria-valuemin="0" aria-valuemax="100" style="width: '.$perc_complete.'%">
                                 <span class="sr-only">'.$perc_complete.'% Complete (success)</span>
@@ -83,7 +83,7 @@ function renderProgress($tot_complete, $tot_failed, $total, $show_title = false)
                             </div>';
         }
              
-       
+        /*
        if($perc_complete == 0 && $total==0){
                    $html .= '<div class="progress">
                               <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
@@ -91,7 +91,7 @@ function renderProgress($tot_complete, $tot_failed, $total, $show_title = false)
                               </div>
                             </div>';
         }
-       
+        */
             
 	}
     
