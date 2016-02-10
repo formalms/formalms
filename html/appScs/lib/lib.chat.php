@@ -52,29 +52,14 @@ class ChatManager {
 		$out = '';
 		$url = urlencode($_SERVER["REQUEST_URI"]);
 
-		switch ($chat_type) {
+                
+                $link = $basepath;
+                $link.= $GLOBALS['where_scs_relative'].'/modules/htmlframechat/index.php?sn='.$platform.'&amp;ri='.$id_room;
+                //$link.="&amp;use_room=".$use_room;
+                $link.="&amp;use_room=0";
+                $link.= "&amp;backurl=".htmlentities(urlencode($url));
 
-			case "default":
-			case "accessible": {
-				$link = $basepath;
-				$link.= $GLOBALS['where_scs_relative'].'/modules/htmlframechat/index.php?sn='.$platform.'&amp;ri='.$id_room;
-				//$link.="&amp;use_room=".$use_room;
-				$link.="&amp;use_room=0";
-				$link.= "&amp;backurl=".htmlentities(urlencode($url));
-
-				$text=$open_text;
-			} break;
-
-			case "accessible2": {
-				$link = $basepath;
-				$link.= $GLOBALS['where_scs_relative'].'/modules/htmlwachat/index.php?use_room=0&amp;sn='.$platform.'&amp;ri='.$id_room;
-				$link.="&amp;use_room=".$use_room;
-				$link.= "&amp;backurl=".htmlentities(urlencode($url));
-
-				$text=$open_text_wa;
-			} break;
-
-		}
+                $text=$open_text;
 
 		$out .= '<p><a href="'.$link.'"
 			onclick="window.open(\''.$link.'\', \'DoceboChat\',\'toolbar=no,menubar=no,directories=no\'); return false;"
