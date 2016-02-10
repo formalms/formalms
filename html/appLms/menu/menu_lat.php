@@ -52,11 +52,12 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 	WHERE under.idCourse = ".(int)$_SESSION ['idCourse']."
 	ORDER BY under.idMain, under.sequence";
 	$re_menu_voice = $db->query($query_menu);
+    
+    
 	while($obj = $db->fetch_obj($re_menu_voice)) {
 
 		// checkmodule module
-		if(checkPerm($obj->token, true, $obj->module_name)) {
-
+		if(checkPerm($obj->token, true, $obj->module_name)) {  
 			$GLOBALS['module_assigned_name'][$obj->module_name] = ( $obj->my_name != '' ? $obj->my_name : Lang::t($obj->default_name, 'menu_course') );
 			
 			$menu_module[$obj->id_main]['submenu'][$obj->id] = array(
@@ -70,10 +71,6 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 		} // end if checkPerm
 
 	} // end while
-	
-	
-
-
 	
 
 	// Print of the menu
@@ -97,19 +94,20 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 			$course_name 	= Docebo::course()->getValue('name');
 			$course_img 	= Docebo::course()->getValue('img_course');
 			
-			
+			 $img_course = "";
 			if($course_img != '') {
 	             $logo_panel .= '<div class="lmsmenu_block">'."\n";
 				$logo_panel .= '<p class="align-center">'
 					.'<img class="boxed" src="'.$path.$course_img.'" alt="'.Lang::t('_COURSE_LOGO', 'course').' : '.$course_name.'" />'
 					.'</p>'
 					.'<br />'."\n";
-			$logo_panel .= '</div>'."\n";
+			        $logo_panel .= '</div>'."\n";
+                    $img_course = '<img class="boxed" src="'.$path.$course_img.'" alt="'.Lang::t('_COURSE_LOGO', 'course').' : '.$course_name.'" />'    ;
             }
 			
 	}			
 
-	$GLOBALS['page']->add($logo_panel, 'menu');	
+	//$GLOBALS['page']->add($logo_panel, 'menu');	
 
          
     cout('
@@ -132,6 +130,10 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
     
     
     $cont=0;
+    
+    //** id_main e' l'indice del menu principale 
+    //** menu è il vettore interno 
+    $array_menu = array();
     
 	while(list($id_main, $menu) = each($menu_module)) {
         $span='';
@@ -177,20 +179,21 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
             
 			while(list($id_sub, $sub) = each($menu['submenu'])) {
 
+                  $array_menu[$id_main]['nome_area'] = $menu['main']['name'];    
+                  $array_menu[$id_main]['menu'] = $sub;
+          
+
 					$active_sub = '';
                     $sub_menu_name = $sub['name'];
 					if ($id_sub == $_SESSION['sel_module_id']){
                          $active_sub = 'class="active-sub"';                 
                     }
-				//cout('<li class="sub-v '.$active.'"><a href="'.$sub['link'].'" >'.$sub['name'].'</a></li>' , 'menu');
-                cout('<li '.$active_sub.'><a href="'.$sub['link'].'">'.$sub_menu_name.'</a></li>','menu')    ;
+                    
+				    //cout('<li class="sub-v '.$active.'"><a href="'.$sub['link'].'" >'.$sub['name'].'</a></li>' , 'menu');
+                    cout('<li '.$active_sub.'><a href="'.$sub['link'].'">'.$sub_menu_name.'</a></li>','menu')    ;
                 
                 
 			}
-            
-            
-            
-            
             
              /*
 			cout('</ul>'
@@ -216,13 +219,21 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
         
 	}    
     
+    
     cout('              </ul>
               </div><!--/.nav-collapse -->
     </div>
   </div>','menu');
+  
+  
+        
+      //**  gestione del menu orizzontale **    
+      //var_dump($array_menu);
+  
+      
+
     
-    
-     
+
 	if($course_type === 'assessment' && Docebo::user()->getUserLevelId() === ADMIN_GROUP_GODADMIN)
 		cout(	'<li class="main-v">'
 				.'<a class="main-av" href="'.Get::rel_path('adm').'/index.php?modname=preassessment&op=assesmentlist&of_platform=lms">'.Lang::t('_BACK_TO_ADMINISTRATION', 'course').'</a></li>', 'menu');
@@ -392,18 +403,28 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 			.'</tr></tbody>'
 			.'</table>';
 			
-
-
 			$info_panel_progress = '<p class="course_progress">'
-				.'<span>'.Lang::t('_PROGRESS', 'course').'</span>'
+				.'<span>'.Lang::t('_PROGRESS', 'course').' </span>'
 				.'</p>'
-				.'<div class="nofloat"></div>'
-				.renderProgress($tot_complete, $tot_failed, $total, false)."\n";
+				.'<div class="nofloat"></div>'        
+                .renderProgress($tot_complete, $tot_failed, $total, false)."\n";
                 
-                // MENU OVER                 
-                  cout('<div class="col-md-9"><div><h1>'.Docebo::course()->getValue('name').'</h1></div></div>
-                        <div class="col-md-3"><div>'.$info_panel_progress.'</div></div>' ,'menu_over');  
-                  cout('<div>&nbsp;</div>','menu_over') ;
+                // MENU OVER                
+                  cout('<div class="col-md-1">'.$img_course.'</div>','menu_over'); 
+ 
+                  cout('<div class="col-md-11" >','menu_over');
+                      cout('<div class="col-md-7"><div><h1>'.Docebo::course()->getValue('name').'</h1></div></div>
+                            <div class="col-md-4"><div>'.$info_panel_progress.'</div></div>
+                            <div class="col-md-1"><div><br> <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-stats"></span></button></div></div>
+                            ' ,'menu_over');  
+                            
+                     // cout('<div class="col-md-12 layout_footer_menu" ><h1>&nbsp;</h1></div>','menu_over') ;
+                      
+                    //  cout('<div class="col-md-12" >menu .....</div>','menu_over') ;
+                      
+                  cout('</div><br><br>&nbsp;','menu_over');
+                  
+                  
                                 
 		}
 		
@@ -417,13 +438,14 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 		
 		if($sponsor_link != '' && trim($sponsor_link) != 'http://') {
 			
-			$GLOBALS['page']->add('<div class="lmsmenu_block align-center">'
-				.'<a href="'.$sponsor_link.'" title="'.$sponsor_link.'">'.$link_arg.'</a>'
-				.'</div>'
-			, 'menu');
+            $link_arg = '<div class="lmsmenu_block align-center">'
+                .'<a href="'.$sponsor_link.'" title="'.$sponsor_link.'">'.$link_arg.'</a>'
+                .'</div>';
+            
+			//$GLOBALS['page']->add($link_arg, 'menu');
 		} elseif($sponsor_img != '') {
 			
-			$GLOBALS['page']->add('<p class="align-center">'.$link_arg.'</p>', 'menu');
+			//$GLOBALS['page']->add('<p class="align-center">'.$link_arg.'</p>', 'menu');
 		}
 		
 	} // end if course
@@ -434,8 +456,41 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 		$GLOBALS['page']->addEnd('');
 	}
 	
-	$GLOBALS['page']->add($info_panel, 'menu');
+//	$GLOBALS['page']->add($info_panel, 'menu');
 	
+    
+    $pop_up_modal = '<!-- Trigger the modal with a button -->
+                        <!-- Modal -->
+                        <div id="myModal" class="modal fade" role="dialog">
+                          <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">'.Lang::t('_STATFORUSER', 'stats').'</h4>
+                              </div>
+                              <div class="modal-body">
+                                <p>
+                                '.$link_arg.'
+                                <br>'.$info_panel.'</p>
+                                <br>
+                                <div id="tag_cloud" class="yui-navset"></div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">'.Lang::t('_CLOSE', 'standard').'</button>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>';
+        $GLOBALS['page']->add($pop_up_modal, 'menu');                
+                        
+                        
+    
+    
+    
+    
 	if((Get::sett('use_tag', 'off') == 'on') && checkPerm('view', true, 'forum')) {
 	
 		YuiLib::load(array('tabview'=>'tabview-min.js')
@@ -444,7 +499,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 		require_once($GLOBALS['where_framework'].'/lib/lib.tags.php');
 		$tags = new Tags('*');
 
-		$GLOBALS['page']->add('<div id="tag_cloud" class="yui-navset"></div>', 'menu');
+		//$GLOBALS['page']->add('<div id="tag_cloud" class="yui-navset"></div>', 'menu');
 		$GLOBALS['page']->add(''
 			.'<script type="text/javascript">'."\n"
 			."	(function() {"."\n"

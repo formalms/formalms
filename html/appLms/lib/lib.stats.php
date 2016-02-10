@@ -24,7 +24,7 @@
  **/
 function renderProgress($tot_complete, $tot_failed, $total, $show_title = false) {
 	
-	if($total == 0) return '';
+	//if($total == 0) return '';
 	$perc_complete 	= round(($tot_complete / $total) * 100, 2);
 	$perc_failed 	= round(($tot_failed / $total) * 100, 2);
 	
@@ -32,27 +32,80 @@ function renderProgress($tot_complete, $tot_failed, $total, $show_title = false)
 	$title = str_replace('[complete]', $tot_complete, $title);
 	$title = str_replace('[failed]', $tot_failed, $title);
 	
-	$html = '';
+//	$html = $perc_complete. " - ". $tot_complete. " - ".$total;
+   $html = '';
 	if($show_title === true) $html .= '<span class="progress_title">'.$title.'</span><br />';
 	if($perc_complete >= 100) {
-		
+		/*
 		$html .= "\n".'<div class="box_progress_complete" title="'.$title.'">'
 			.'<div class="nofloat">'
 			.'</div></div>'."\n";
+          */  
+          $perc_complete = 100;
+     $html .= '<div class="progress">
+                              <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="'.$perc_complete.'" aria-valuemin="0" aria-valuemax="100" style="width: '.$perc_complete.'%">
+                                <span class="progress-completed">'.$perc_complete.'%</span>
+                              </div>
+                            </div>';            
+            
+            
 	} elseif($perc_failed + $perc_complete >= 100) {
-		
+		      /*
 		$html .= "\n".'<div class="box_progress_failed" title="'.$title.'">';
 		if($perc_complete != 0) $html .= '<div class="bar_complete" style="width: '.$perc_complete.'%;"></div>';
 		$html .= '<div class="nofloat">'
 			.'</div></div>'."\n";
+            */
+                            $html .= '<div class="progress">
+                              <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="'.$perc_complete.'" aria-valuemin="0" aria-valuemax="100" style="width: '.$perc_complete.'%">
+                                <span class="sr-only">'.$perc_failed.'% Complete (danger)</span>
+                                <span class="progress-completed">'.$perc_failed.'%</span>
+                              </div>
+                            </div>';
+            
+            
+            
 	} else {
-		
-		$html .= "\n".'<div class="box_progress_bar" title="'.$title.'">';
+		  /*
+		$html .= "\n".'22<div class="box_progress_bar" title="'.$title.'">';
 		if($perc_complete != 0) $html .= '<div class="bar_complete" style="width: '.$perc_complete.'%;"></div>';
 		if($perc_failed != 0) $html .= '<div class="bar_failed" style="width: '.$perc_failed.'%;"></div>';
 		$html .= '<div class="nofloat">'
 			.'</div></div>'."\n";
+         */   
+        if($perc_complete != 0){
+                   $html .= '<div class="progress">
+                              <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="'.$perc_complete.'" aria-valuemin="0" aria-valuemax="100" style="width: '.$perc_complete.'%">
+                                <span class="sr-only">'.$perc_complete.'% Complete (success)</span>
+                                 <span class="progress-completed">'.$perc_complete.'%</span>
+                                 
+                              </div>
+                            </div>';
+        }
+       
+        if($perc_failed != 0){
+                   $html .= '<div class="progress">
+                              <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="'.$perc_failed.'" aria-valuemin="0" aria-valuemax="100" style="width: '.$perc_failed.'%">
+                                <span class="sr-only">'.$perc_failed.'% Complete (danger)</span>
+                                <span class="progress-completed">'.$perc_failed.'%</span>
+                              </div>
+                            </div>';
+        }       
+       
+       if($perc_complete == 0 && $total==0){
+                   $html .= '<div class="progress">
+                              <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                <span class="sr-only">0% Complete (success)</span>
+                              </div>
+                            </div>';
+        }
+       
+            
 	}
+    
+      
+    
+    
 	
 	return $html;
 }

@@ -24,6 +24,7 @@
 .layout_footer #link a.first{font-weight:bold;padding:0 6px 0 0;margin:0 3px 0 0;border-right:1px solid #777777;}
 .layout_footer .copyright{position:relative;top:3px;right:16px;text-align: right;color:#777777;}
 .layout_footer .ownedby{color:#777777;}
+.layout_footer_menu{background:#eeeeee; height:2px; font-size:90%;}
 
 /* Lms interface management components styles */
 .lms_management{}
