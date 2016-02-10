@@ -195,7 +195,7 @@ class Layout {
 	 */
 	public static function get_catalogue()
 	{
-		$html = '<a href="index.php?r=homecatalogue/show">'.Lang::t('_CATALOGUE', 'register').'</a>';
+		$html = '<a href="index.php?r=homecatalogue/show">'.Lang::t('_CATALOGUE', 'standard').'</a>';
 
 		return $html;
 	}
