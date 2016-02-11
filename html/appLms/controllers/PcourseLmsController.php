@@ -43,6 +43,8 @@ class PcourseLmsController extends CourseAlmsController {
 			'add_category'	=> false, //checkPerm('add', true, 'pcourse', 'lms'),
 			'mod_category'	=> false, //checkPerm('mod', true, 'pcourse', 'lms'),
 			'del_category'	=> false, //checkPerm('del', true, 'pcourse')
+			'view_cert'		=> checkPerm('view', true, 'pcertificate', 'lms'),
+			'mod_cert'		=> checkPerm('mod', true, 'pcertificate', 'lms')
 		);
 		$this->_mvc_name = 'course';
 	}

@@ -37,6 +37,154 @@ define("ASSIGN_CERT_FILE", 		4);
 
 class Certificate {
 
+        function countAssignment($filter){                
+                return count($this->getAssignment($filter));
+        }
+    
+        function getAssignment($filter){   
+                $assigned = $this->getAssigned($filter);
+                $assignable = $this->getAssignable($filter);
+                
+                $assignment = array();
+                foreach ($assigned AS $as){
+                    $assignment[] = $as;
+                }
+                foreach ($assignable AS $as){
+                    $assignment[] = $as;
+                }
+                
+                return $assignment;
+        }
+
+        function getAssigned($filter){
+                $query = "      SELECT ca.id_certificate, ca.id_course," 
+                            ."	ca.id_user, SUBSTRING(u.userid, 2) AS username,"
+                            ."	u.lastname, u.firstname, co.code, cc.available_for_status,"
+                            ."  co.name AS course_name, ce.name AS cert_name,"
+                            ."	cu.status, co.date_begin, co.date_end, cu.date_inscr,"
+                            ."	cu.date_complete, ca.on_date, ca.cert_file"
+                            ."	FROM %lms_certificate_assign AS ca"
+                            ."      LEFT JOIN %lms_certificate AS ce"
+                            ."      ON ca.id_certificate = ce.id_certificate"
+                            ."      LEFT JOIN %lms_course AS co"
+                            ."      ON ca.id_course = co.idCourse"
+                            ."      LEFT JOIN %lms_courseuser AS cu"
+                            ."      ON ca.id_user = cu.idUser" 
+                            ."          AND ca.id_course  = cu.idCourse"
+                            ."      LEFT JOIN %lms_certificate_course AS cc" 
+                            ."      ON ca.id_certificate = cc.id_certificate"
+                            ."          AND ca.id_course  = cc.id_course"
+                            ."      LEFT JOIN %adm_user AS u"
+                            ."      ON ca.id_user = u.idst"
+                            ."	WHERE 1 = 1";
+                if (isset($filter['id_certificate'])) {
+                        $query .= " AND ca.id_certificate = ".$filter['id_certificate'];	
+                }
+                if (isset($filter['id_course'])) {
+                        $query .= " AND ca.id_course = ".$filter['id_course'];	
+                }
+                if (isset($filter['id_user'])) {
+                        $query .= " AND ca.id_user = ".$filter['id_user'];	
+                }
+                if (!isset($filter['id_user'])) {
+                    if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN)
+                    {
+                            require_once(_base_.'/lib/lib.preference.php');
+                            $adminManager = new AdminPreference();
+                            $query .= " AND ".$adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');
+                    }                        	
+                }
+
+                $res = sql_query($query);
+                while ($row = sql_fetch_assoc($res)){
+                    $assigned[] = $row;
+                }
+                return $assigned;
+        }
+
+        function getAssignable($filter){
+                $query = "	SELECT ce.id_certificate, co.idCourse AS id_course," 
+                            ."	u.idst AS id_user, SUBSTRING(u.userid, 2) AS username,"
+                            ."	u.lastname, u.firstname, co.code, cc.available_for_status,"
+                            ."  co.name AS course_name, ce.name AS cert_name,"
+                            ."	cu.status, co.date_begin, co.date_end, cu.date_inscr,"
+                            ."	cu.date_complete, NULL AS on_date, NULL AS cert_file"         
+                            ."	FROM %lms_certificate_course AS cc"
+                            ."      JOIN %lms_certificate AS ce"
+                            ."      ON cc.id_certificate = ce.id_certificate"
+                            ."      JOIN %lms_course AS co"
+                            ."      ON cc.id_course = co.idCourse"
+                            ."      JOIN %lms_courseuser AS cu"
+                            ."      ON co.idCourse = cu.idCourse"
+                            ."          AND ("
+                            ."              (cc.available_for_status = 1 AND cu.status >= 0 AND cu.status <= 2)"
+                            ."              OR (cc.available_for_status = 2 AND cu.status >= 1 AND cu.status <= 2)" 
+                            ."              OR (cc.available_for_status = 3 AND cu.status = 2)"
+                            ."          )" 
+                            ."      JOIN %adm_user AS u"
+                            ."      ON cu.idUser = u.idst"
+                            ."	WHERE (cc.id_certificate, co.idCourse, cu.idUser) NOT IN ("
+                            ."      SELECT ca.id_certificate, ca.id_course, ca.id_user"
+                            ."      FROM %lms_certificate_assign AS ca"
+                            ."	)";
+                if (isset($filter['id_certificate'])) {
+                        $query .= " AND cc.id_certificate = ".$filter['id_certificate'];	
+                }
+                if (isset($filter['id_course'])) {
+                        $query .= " AND co.idCourse = ".$filter['id_course'];	
+                }
+                if (isset($filter['id_user'])) {
+                        $query .= " AND cu.idUser = ".$filter['id_user'];	
+                }
+                if (!isset($filter['id_user'])) {
+                    if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN)
+                    {
+                            require_once(_base_.'/lib/lib.preference.php');
+                            $adminManager = new AdminPreference();
+                            $query .= " AND ".$adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');
+                    }                        	
+                }
+
+                $res = sql_query($query);
+                while ($row = sql_fetch_assoc($res)){
+                    if($this->certificateAvailableForUser($row['id_certificate'],$row['id_course'],$row['id_user'])
+                            && $this->canRelExceptional($row['id_user'], $row['id_course'])){
+                        $assignable[] = $row;
+                    }
+                }
+                return $assignable;
+        }
+        
+        function canRelExceptional($perm_close_lo, $id_user, $id_course){
+            require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
+            require_once($GLOBALS['where_lms'] . '/lib/lib.orgchart.php');
+
+            $course_score_final = false;
+            $org_man = new OrganizationManagement(false);
+            $rep_man = new CourseReportManager();
+
+            if ($perm_close_lo == 0) {
+                $score_final = $org_man->getFinalObjectScore(array($id_user), array($id_course));
+
+                if (isset($score_final[$id_course][$id_user]) && $score_final[$id_course][$id_user]['max_score']) {
+                    $course_score_final = $score_final[$id_course][$id_user()]['score'];
+                    $course_score_final_max = $score_final[$id_course][$id_user()]['max_score'];
+                }
+            } else {
+                $score_course = $rep_man->getUserFinalScore(array($id_user), array($id_course));
+
+                if (!empty($score_course)) {
+                    $course_score_final = (isset($score_course[$id_user][$id_course]) ? $score_course[$id_user][$id_course]['score'] : false);
+                    $course_score_final_max = (isset($score_course[$id_user][$id_course]) ? $score_course[$id_user][$id_course]['max_score'] : false);
+                }
+            }
+
+            if ($course_score_final >= $certificate[CERT_AV_POINT_REQUIRED]){
+                return true;
+            } else {
+                return false;
+            }
+		}
 	function getCertificateList($name_filter = false, $code_filter = false) {
 
 		$cert = array();
@@ -96,38 +244,18 @@ class Certificate {
         }
 
         function certificateAvailableForUser($id_cert, $id_course, $id_user) {
-                $sql = "SELECT certificate_available_for_obj, certificate_available_for_who FROM learning_certificate_course WHERE id_course = ".$id_course." AND id_certificate = ".$id_cert;
+                $sql = "SELECT minutes_required FROM learning_certificate_course WHERE id_course = ".$id_course." AND id_certificate = ".$id_cert;
                 $re = mysql_query($sql);
-                
-                list($available_for_obj, $available_for_who) = mysql_fetch_row($re);
-                
-                if ($available_for_who != 2) {
-	                $sql = "SELECT certificate_available_for_prof FROM learning_course WHERE idCourse = ".$id_course;
-	                $re = mysql_query($sql);
-	                list($available_for_prof) = mysql_fetch_row($re);
-	                $profs = explode(";", $available_for_prof);
-	
-	                // prima faccio check sulle eventuali professioni
-	                if ($available_for_prof != '' && is_array($profs) && count($profs) > 0) {
-	                        $found = false;
-	                        $sql = "SELECT user_entry FROM core_field_userentry WHERE id_user = ".$id_user." AND (id_common = 11 OR id_common = 47 OR id_common = 49)";
-	                        $re = mysql_query($sql);
-	                        while (list($p) = mysql_fetch_row($re)) {
-	                        	if ($p && in_array($p, $profs)) {
-	                                $found = true;
-	                         	}
-	                        }
-	                        if (($available_for_who == 0 && $found == false) ||($available_for_who == 1 && $found == true))
+                list($minutes_required) = mysql_fetch_row($re);
+                if ($minutes_required > 0){
+                    require_once(_lms_.'/lib/lib.track_user.php');
+
+                    $time_in = TrackUser::getUserTotalCourseTime($id_user, $id_course);
+                    $minutes_in = (double) ($time_in / 60);
+                    if ($minutes_in<$minutes_required){
 	                                return false;
 	                }
                 }
-
-                // ora faccio il check sull'eventuale obj da superare
-                $sql = "SELECT status FROM learning_commontrack WHERE idUser = ".$id_user." AND idReference = ".$available_for_obj." ORDER BY dateAttempt DESC LIMIT 1";
-                $re = mysql_query($sql);
-                list($status) = mysql_fetch_row($re);
-                if ($available_for_obj > 0 && $status != 'passed' && $status != 'completed')
-                        return false;
 
                 return true;
         }
@@ -137,14 +265,14 @@ class Certificate {
 
 		$cert = array();
 		$query_certificate = "
-		SELECT id_certificate, available_for_status
+		SELECT id_certificate, available_for_status, minutes_required
 		FROM %lms_certificate_course
 		WHERE id_course = '".$id_course."' "
 		." AND point_required = 0";
 		$re_certificate = sql_query($query_certificate);
-		while(list($id, $available_for_status) = sql_fetch_row($re_certificate)) {
+		while(list($id, $available_for_status, $minutes_required) = sql_fetch_row($re_certificate)) {
 
-			$cert[$id] = $available_for_status;
+			$cert[$id] = array("available_for_status"=>$available_for_status, "minutes_required"=>$minutes_required);
 		}
 		return $cert;
 	}
@@ -355,8 +483,7 @@ class Certificate {
 		return false;
 	}
 
-// 	function updateCertificateCourseAssign($id_course, $list_of_assign, $list_of_assign_ex, $point_required, $list_of_assign_obj, $list_of_who)
-	function updateCertificateCourseAssign($id_course, $list_of_assign, $list_of_assign_ex, $point_required)
+	function updateCertificateCourseAssign($id_course, $list_of_assign, $list_of_assign_ex, $point_required, $minutes_required)
 	{
 		$query =	"DELETE FROM ".$GLOBALS['prefix_lms']."_certificate_course"
 					." WHERE id_course = ".$id_course;
@@ -368,13 +495,10 @@ class Certificate {
 			foreach($list_of_assign as $id_cert => $status)
 				if($status != 0)
 				{
-//                  $new_obj = $list_of_assign_obj[$id_cert];
-// 					$new_who = $list_of_who[$id_cert];
+                    $minutes = $minutes_required[$id_cert];
 					$query =	"INSERT INTO ". $GLOBALS['prefix_lms'] . "_certificate_course"
-//                              ." (id_certificate, id_course, available_for_status, certificate_available_for_obj, certificate_available_for_who)"
-								." (id_certificate, id_course, available_for_status)"
-								//." VALUES (".(int)$id_cert.", ".(int)$id_course.", ".(int)$status.", ".(int)$new_obj.", ".(int)$new_who.")";
-								." VALUES (".(int)$id_cert.", ".(int)$id_course.", ".(int)$status.")";
+								." (id_certificate, id_course, available_for_status, minutes_required)"
+								." VALUES (".(int)$id_cert.", ".(int)$id_course.", ".(int)$status.", ".(int)$minutes.")";
 
 					if(!sql_query($query))
 						return false;
@@ -385,17 +509,12 @@ class Certificate {
 			foreach($list_of_assign_ex as $id_cert => $status)
 				if($status != 0)
 				{
-//                  $new_obj = $list_of_assign_obj[$id_cert];
-// 					$new_who = $list_of_who[$id_cert];
 					$query =	"INSERT INTO ". $GLOBALS['prefix_lms'] . "_certificate_course"
-// 								." (id_certificate, id_course, available_for_status, point_required, certificate_available_for_obj, certificate_available_for_who)"
-								." (id_certificate, id_course, available_for_status)"
-// 								." VALUES (".(int)$id_cert.", ".(int)$id_course.", ".(int)$status.", ".(int)$point_required.", ".(int)$new_obj.", ".(int)$new_who.")";
-								." VALUES (".(int)$id_cert.", ".(int)$id_course.", ".(int)$status.")";
+                        ." (id_certificate, id_course, available_for_status, point_required)"
+                        ." VALUES (".(int)$id_cert.", ".(int)$id_course.", ".(int)$status.", ".(int)$point_required.")";
 
 					if(!sql_query($query))
 						return false;
-                                        
 				}
 
 		return true;
@@ -444,22 +563,22 @@ class Certificate {
 		);
 
 		$name .= '.pdf';
-		
-		$this->getPdf($cert_structure, $name, $bgimage, $orientation, true, false);
+		$nomecertificato = $name.'_'.time();
+		$this->getPdf($nomecertificato, $cert_structure, $name, $bgimage, $orientation, true, false);
 	}
 
-	function getPdf($html, $name, $img = false, $orientation = 'P', $download = true, $facs_simile = false, $for_saving = false)
+	function getPdf($nomecertificato, $html, $name, $img = false, $orientation = 'P', $download = true, $facs_simile = false, $for_saving = false)
 	{
 		require_once(Docebo::inc(_base_.'/lib/pdf/lib.pdf.php'));
 
 		$pdf = new PDF($orientation);
 		$pdf->setEncrypted(Get::cfg('certificate_encryption', true));
 		$pdf->setPassword(Get::cfg('certificate_password', null));
-
+		$nomecertificato = $name.'_'.time();
 		if($for_saving)
-			return $pdf->getPdf($html, $name, $img, $download, $facs_simile, $for_saving);
+			return $pdf->getPdf($nomecertificato, $html, $name, $img, $download, $facs_simile, $for_saving);
 		else
-			$pdf->getPdf($html, $name, $img, $download, $facs_simile, $for_saving);
+			$pdf->getPdf($nomecertificato, $html, $name, $img, $download, $facs_simile, $for_saving);
 	}
 
 	function send_facsimile_certificate($id_certificate, $id_user, $id_course, $array_substituton = false)
@@ -474,8 +593,8 @@ class Certificate {
 			$cert_structure = str_replace(array_keys($array_substituton), $array_substituton, $cert_structure);
 		}
 		$cert_structure = fillSiteBaseUrlTag($cert_structure);
-
-		$this->getPdf($cert_structure, $name, $bgimage, $orientation, true, true);
+		$nomecertificato = $name.'_'.time();
+		$this->getPdf($nomecertificato, $cert_structure, $name, $bgimage, $orientation, true, true);
 	}
 
 	function send_certificate($id_certificate, $id_user, $id_course, $array_substituton = false, $download = true, $from_multi = false)
@@ -521,10 +640,10 @@ class Certificate {
 		$cert_structure = fillSiteBaseUrlTag($cert_structure);
 
 		$cert_file = $id_course.'_'.$id_certificate.'_'.$id_user.'_'.time().'_'.$name.'.pdf';
-
+		$nomecertificato = $name.'_'.time();
 		sl_open_fileoperations();
 		if(!$fp = sl_fopen(CERTIFICATE_PATH.$cert_file, 'w')) { sl_close_fileoperations(); return false; }
-		if(!fwrite($fp, $this->getPdf($cert_structure, $name, $bgimage, $orientation, false, false, true))) { sl_close_fileoperations(); return false; }
+		if(!fwrite($fp, $this->getPdf($nomecertificato, $cert_structure, $name, $bgimage, $orientation, false, false, true))) { sl_close_fileoperations(); return false; }
 		fclose($fp);
 		sl_close_fileoperations();
 
@@ -544,8 +663,8 @@ class Certificate {
 
 		if($from_multi)
 			return;
-
-		$this->getPdf($cert_structure, $name, $bgimage, $orientation, $download, false);
+		$nomecertificato = $name.'_'.time();
+		$this->getPdf($nomecertificato, $cert_structure, $name, $bgimage, $orientation, $download, false);
 	}
 
 	function getCourseForCertificate($id_certificate)

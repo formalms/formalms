@@ -31,9 +31,9 @@ form{margin:0;padding:0;}
 .intestation img{margin:0 0.20em;}
 .chatText{margin:0;padding:0.20em;background:#ffffff;}
 .intestation_2{margin:0.40em;padding:0.10em;color:#003d6b;background:#ffffff;font-weight:bold;font-size:1.10em;}
-.chatText div.chat_line-0{background:#003d6b;}
-.chatText div.chat_line-1{background:#eeeeee;}
-.chatText div.chat_line-2{color:#808080;}
+.chatText div.chat_line-0{background:#e5f4ff;padding:0.20em;}
+.chatText div.chat_line-1{background:#eeeeee;padding:0.20em;}
+.chatText div.chat_line-2{color:#808080;padding:0.20em;}
 .chatText span.user_name{font-weight:bold;}
 .chatRooms, .chatUsers{color:#036;margin:0.20em;padding:0.20em;background:#fff;border:1px solid #003d6b;}
 .chatUsers div.user_row{padding-left:26px;padding-top:4px;height:22px;background:url('../images/chat/user4.gif') no-repeat;}

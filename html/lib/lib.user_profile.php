@@ -2087,7 +2087,13 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 				}
 			}
 
-			$tot_cert = $num_meta_cert + $course_stats['cert_relesable'];
+			// $tot_cert = $num_meta_cert + $course_stats['cert_relesable'];
+                        
+                        require_once($GLOBALS['where_lms'].'/lib/lib.certificate.php');
+                        $cert = new Certificate();
+                        
+                        $filter['id_user'] = $this->_id_user;
+                        $tot_cert = $num_meta_cert + $cert->countAssignment($filter);
 
 			$html .= ''
 					.( isset($course_stats['cert_relesable']) /*&& $tot_cert != 0*/

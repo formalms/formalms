@@ -468,12 +468,12 @@ class DoceboUser {
 
  		return $this->user_level;
 	}
-
+/** Modifica per inversione cognome nome ... meglio nome cognome **/
 	public function getUserName() {
 
 		$user_info = $this->aclManager->getUser(getLogUserId(), false);
-		return ( $user_info[ACL_INFO_LASTNAME].$user_info[ACL_INFO_FIRSTNAME]
-			? $user_info[ACL_INFO_LASTNAME].' '.$user_info[ACL_INFO_FIRSTNAME]
+		return ( $user_info[ACL_INFO_FIRSTNAME].$user_info[ACL_INFO_LASTNAME]
+			? $user_info[ACL_INFO_FIRSTNAME].' '.$user_info[ACL_INFO_LASTNAME]
 			: $this->aclManager->relativeId($user_info[ACL_INFO_USERID]) );
 	}
 

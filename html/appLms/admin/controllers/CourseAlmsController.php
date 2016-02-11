@@ -54,7 +54,9 @@ Class CourseAlmsController extends AlmsController
 			'subscribe'		=> checkPerm('subscribe', true, 'course', 'lms'),
 			'add_category'	=> checkPerm('add', true, 'coursecategory', 'lms'),
 			'mod_category'	=> checkPerm('mod', true, 'coursecategory', 'lms'),
-			'del_category'	=> checkPerm('del', true, 'coursecategory', 'lms')
+			'del_category'	=> checkPerm('del', true, 'coursecategory', 'lms'),
+			'view_cert'		=> checkPerm('view', true, 'certificate', 'lms'),
+			'mod_cert'		=> checkPerm('mod', true, 'certificate', 'lms')
 		);
 	}
 
@@ -482,7 +484,8 @@ Class CourseAlmsController extends AlmsController
 				'edition' => ($row['course_type'] === 'classroom' 
 						? '<a href="index.php?r='.$this->base_link_classroom.'/classroom&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_CLASSROOM_EDITION', 'course').'">'.$this->model->classroom_man->getDateNumber($row['idCourse'], true).'</a>' : ($row['course_edition'] == 1 ? '<a href="index.php?r='.$this->base_link_edition.'/show&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_EDITIONS', 'course').'">'.$this->model->edition_man->getEditionNumber($row['idCourse']).'</a>'
 						: '')),
-				'certificate' => '<a href="index.php?r='.$this->base_link_course.'/certificate&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_pdf'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_ASSIGN', 'certificate')).'</a>',
+				'certificate' => '<a href="index.php?r='.$this->base_link_course.'/certificate&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_pdf'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')).'</a>',
+				'certreleased' => '<a href="index.php?modname='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? 'p' : '').'certificate&op=view_report_certificate&amp;id_course='.$row['idCourse'].'&from=courselist&of_platform=lms">'.Get::sprite('subs_print'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')).'</a>',
 				'competences' => '<a href="index.php?r='.$this->base_link_competence.'/man_course&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_competence'.(!isset($course_with_competence[$row['idCourse']]) ? '_grey' : ''), Lang::t('_COMPETENCES', 'course')).'</a>',
 				'menu' => '<a href="index.php?r='.$this->base_link_course.'/menu&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_menu', Lang::t('_ASSIGN_MENU', 'course')).'</a>',
 				'dup' => 'ajax.adm_server.php?r='.$this->base_link_course.'/dupcourse&id_course='.$row['idCourse'],
@@ -1147,8 +1150,17 @@ Class CourseAlmsController extends AlmsController
 													'certificate_assign_'.$id_cert,
 													'certificate_assign['.$id_cert.']',
 													$possible_status,
-													( isset($course_cert[$id_cert]) ? $course_cert[$id_cert] : 0 ),
-													'' );
+                                                                ( isset($course_cert[$id_cert]['available_for_status']) ? $course_cert[$id_cert]['available_for_status'] : 0 ),
+                                                                '' )
+                                                                ."<br/>"
+                                                                .Lang::t('_ASSIGN_FOR_AT_LEAST_MINUTES', 'course')
+                                                                .Form::getInputTextfield( 'dropdown_nowh',
+                                                                'certificate_assign_minutes_'.$id_cert,
+                                                                'certificate_assign_minutes['.$id_cert.']',
+                                                                $course_cert[$id_cert]['minutes_required'],
+                                                                '',
+                                                                6,
+                                                                'style="width: 40px; text-align: right;"');
 				$cont[] = Form::getInputDropdown(	'dropdown_nowh',
 													'certificate_ex_assign_'.$id_cert,
 													'certificate_ex_assign['.$id_cert.']',

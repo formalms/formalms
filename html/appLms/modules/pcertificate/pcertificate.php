@@ -205,6 +205,20 @@ function view_report_certificate()
 	$tb->initNavBar('ini', 'button');
 	$ini = $tb->getSelectedElement();
 
+	//apply sub admin filters, if needed
+	$userlevelid = Docebo::user()->getUserLevelId();
+	$alluser = true;
+	if( $userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous() ) {
+			//filter users
+			$alluser = false;
+			require_once(_base_.'/lib/lib.preference.php');
+			$adminManager = new AdminPreference();
+			$acl_man = Docebo::user()->getAclManager();
+			$admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+	}
+	
+	
+	$tc  = $GLOBALS['prefix_lms']."_certificate as c";
 	$tca = $GLOBALS['prefix_lms']."_certificate_assign as ca";
 	$tcc = $GLOBALS['prefix_lms']."_certificate_course as cc";
 	$tcu = $GLOBALS['prefix_lms']."_courseuser as cu";
@@ -213,9 +227,10 @@ function view_report_certificate()
 	$where = "";
 	if ($search_filter != '') $where .= " AND (u.userid LIKE '%".$search_filter."%' OR u.lastname LIKE '%".$search_filter."%' OR u.firstname LIKE '%".$search_filter."%') ";
 	if ($only_released > 0) $where = " AND ca.on_date ".($only_released==1 ? "IS NOT" : "IS")." NULL ";//$where .= " AND ".$aval_status." ".($only_released==1 ? "<" : ">=")." cu.status ";
+	if( !$alluser ) $where .= " AND cu.idUser IN (".implode(',', $admin_users).")";
 
 	list($aval_status) = sql_fetch_row(sql_query("SELECT available_for_status FROM ".$tcc." "
-		." WHERE id_certificate='".(int)$id_certificate."' AND id_course='".(int)$id_course."'"));
+		." WHERE id_course='".(int)$id_course."'"));// id_certificate='".(int)$id_certificate."' AND 
 
 	switch($aval_status)
 	{
@@ -225,27 +240,50 @@ function view_report_certificate()
 	}
 
 	list($totalrows) = sql_fetch_row(sql_query("SELECT COUNT(*) "
-		." FROM ( ".$tu." JOIN ".$tcu." ON (u.idst = cu.idUser) ) LEFT JOIN ".$tca." "
-		." ON ( ca.id_course = cu.idCourse AND ca.id_user=cu.idUser ) "
-		." WHERE (ca.id_certificate='".(int)$id_certificate."' OR ca.id_certificate IS NULL) AND ".$aval_status." "
+		." FROM ( ".$tu." JOIN ".$tcu." ON (u.idst = cu.idUser) )  "
+		." JOIN ".$tcc." ON cc.id_course = cu.idCourse "
+		." JOIN ".$tc." ON c.id_certificate = cc.id_certificate"
+		." LEFT JOIN ".$tca." ON ( ca.id_course = cu.idCourse AND ca.id_user=cu.idUser AND ca.id_certificate = cc.id_certificate ) "
+		." LEFT JOIN (SELECT iduser, idcourse, SUM( (UNIX_TIMESTAMP( lastTime ) - UNIX_TIMESTAMP( enterTime ) ) ) elapsed from learning_tracksession group by iduser, idcourse) t_elapsed on t_elapsed.idcourse=cu.idCourse and cu.idUser = t_elapsed.idUser "	
+		." WHERE 1 "
+		." AND ".$aval_status." "
+		." AND coalesce(elapsed,0) >= coalesce(cc.minutes_required,0)*60 "
+		. ($id_certificate != 0 ? " AND cc.id_certificate = ".$id_certificate : "")
 		." AND cu.idCourse='".(int)$id_course."' ".$where));
 
-	$query = "SELECT u.userid, u.firstname, u.lastname, cu.date_complete, ca.on_date, cu.idUser as id_user, cu.status "
-		." FROM ( ".$tu." JOIN ".$tcu." ON (u.idst = cu.idUser) ) LEFT JOIN ".$tca." "
-		." ON ( ca.id_course = cu.idCourse AND ca.id_user=cu.idUser ) "
-		." WHERE (ca.id_certificate='".(int)$id_certificate."' OR ca.id_certificate IS NULL) AND ".$aval_status." "
+	$query = "SELECT u.userid, u.firstname, u.lastname, cu.date_complete, ca.on_date, cu.idUser as id_user, cu.status , cc.id_certificate, c.name as name_certificate"
+		." FROM ( ".$tu." JOIN ".$tcu." ON (u.idst = cu.idUser) ) "
+		." JOIN ".$tcc." ON cc.id_course = cu.idCourse "
+		." JOIN ".$tc." ON c.id_certificate = cc.id_certificate"
+		." LEFT JOIN ".$tca." ON ( ca.id_course = cu.idCourse AND ca.id_user=cu.idUser AND ca.id_certificate = cc.id_certificate ) "
+		." LEFT JOIN (SELECT iduser, idcourse, SUM( (UNIX_TIMESTAMP( lastTime ) - UNIX_TIMESTAMP( enterTime ) ) ) elapsed from learning_tracksession group by iduser, idcourse) t_elapsed on t_elapsed.idcourse=cu.idCourse and cu.idUser = t_elapsed.idUser "	
+		." WHERE 1 "
+		." AND ".$aval_status." "
+		." AND coalesce(elapsed,0) >= coalesce(cc.minutes_required,0)*60 "
+		. ($id_certificate != 0 ? " AND cc.id_certificate = ".$id_certificate : "")
 		." AND cu.idCourse='".(int)$id_course."' ".$where
-		." ORDER BY u.userid LIMIT ".$ini.", ".$numtablerows;
+		." ORDER BY u.userid, c.name LIMIT ".$ini.", ".$numtablerows;
 
 	$res = sql_query($query);
 
 	$from = Get::req('from', DOTY_MIXED, '');
 
+	if ($from === 'courselist')
+	{
+		$back_ui = getBackUi('index.php?r=lms/pcourse/show', $lang->def('_BACK'));
+
+		$out->add(getTitleArea(array(
+				'index.php?r=lms/pcourse/show' => $lang->def('_CERTIFICATE_ASSIGN_STATUS', 'course'),
+				$lang->def('_COURSES')), 'certificate'));
+	} 
+	else 
+	{
 	$back_ui = getBackUi('index.php?r=lms/pcourse/certificate&amp;id_course='.(int)$id_course, $lang->def('_BACK'));
 
 	$out->add(getTitleArea(array(
 			'index.php?r=lms/pcourse/certificate&amp;id_course='.(int)$id_course => $lang->def('_CERTIFICATE_ASSIGN_STATUS', 'course'),
 			$lang->def('_CERTIFICATE_REPORT_COURSE_CERT')), 'certificate'));
+	}
 
 	$out->add('<div class="std_block">'.$back_ui);
 
@@ -263,6 +301,7 @@ function view_report_certificate()
 						$lang->def('_LASTNAME'),
 						$lang->def('_FIRSTNAME'),
 						$clang->def('_STATUS'),
+						$clang->def('_CERTIFICATE_REPORT', 'certificate'),
 						$lang->def('_DATE'),
 						$lang->def('_RELASE_DATE'),
 						Get::img('course/certificate.png', Lang::t('_TITLE_VIEW_CERT', 'certificate')),
@@ -296,7 +335,7 @@ function view_report_certificate()
 			{
 				$input = '<input type="hidden" id="selection_'.$input_id.'" name="selection['.$input_id.']" value="'.$input_id.'"/> ';
 				if(in_array($input_id, $total_selection)) $checked = ' checked="checked"'; else $checked = '';
-				$sel_cell_content .= $input.'<input type="checkbox" id="selected_'.$input_id.'" name="selected['.$input_id.']" value="'.$input_id.'"'.$checked.'/>';
+				$sel_cell_content .= $input.'<input type="checkbox" id_certificate="'.$info['id_certificate'].'" id="selected_'.$input_id.'" name="selected['.$input_id.']" value="'.$input_id.'"'.$checked.'/>';
 
 				$label_open = '<label for="selected_'.$input_id.'">';
 				$label_close = '</label>';
@@ -309,19 +348,23 @@ function view_report_certificate()
 			$cont[] = $label_open.($search_filter!='' ? highlightText($info['lastname'], $search_filter) : $info['lastname']).$label_close;
 			$cont[] = $label_open.($search_filter!='' ? highlightText($info['firstname'], $search_filter) : $info['firstname']).$label_close;
 			$cont[] = $arr_status[$info['status']];
-
+			$cont[] = $info['name_certificate'];
 			$cont[] = $info['date_complete'];
 			$cont[] = $info['on_date'];
 
-			$url = 'index.php?modname=pcertificate&amp;certificate_id='.$id_certificate.'&amp;course_id='.$id_course.'&amp;user_id='.$info['id_user'];
+			$url = 'index.php?modname=pcertificate&amp;certificate_id='.$info['id_certificate'].'&amp;course_id='.$id_course.'&amp;user_id='.$info['id_user'];
 
 			$dl_url = $url."&amp;op=send_certificate";
-			if($can_assign) $downloadables[] = 'dl_single_'.$input_id;
-			$cont[] = '<a href="'.($can_assign ? "javascript:;" : $dl_url).'" id="dl_single_'.$input_id.'">'
+			if($can_assign) { 
+				if (!in_array('dl_single_'.$input_id.'_'.$info['id_certificate'], $downloadables)){
+					$downloadables[] = 'dl_single_'.$input_id.'_'.$info['id_certificate'];
+				}
+			}
+			$cont[] = '<a href="'.($can_assign ? "javascript:;" : $dl_url).'" id="dl_single_'.$input_id.'_'.$info['id_certificate'].'">'
 				.Get::img('course/certificate.png', Lang::t('_TITLE_VIEW_CERT', 'certificate'))
 				.($can_assign ?  $lang->def('_GENERATE') : $lang->def('_DOWNLOAD')).'</a>';
 
-			$cont[] = ($can_assign ? "" : '<a href="'.$url.'&amp;op=del_report_certificate">'
+			$cont[] = ($can_assign ? "" : '<a href="'.$url.'&amp;op=del_report_certificate&amp;from='.$from.'">'
 				.Get::img('standard/delete.png', Lang::t('_DEL', 'certificate')).'</a>');
 
 			$tb->addBody($cont);
@@ -331,8 +374,9 @@ function view_report_certificate()
 		setupHrefDialogBox('a[href*=del_report_certificate]');
 
 		$form = new Form();
-		$form_url = "index.php?modname=pcertificate&amp;op=view_report_certificate&amp;id_certificate=".(int)$id_certificate."&amp;id_course=".(int)$id_course;
+		$form_url = "index.php?modname=pcertificate&amp;op=view_report_certificate&amp;id_certificate=".(int)$id_certificate."&amp;id_course=".(int)$id_course."&amp;from=".$from;
 		$out->add($form->openForm("certificates_emission", $form_url));
+		$out->add($form->getHidden('from', 'from', $from));
 
 		$out->add($form->getHidden('old_selection', 'old_selection', implode(',', $total_selection)));
 
@@ -394,11 +438,12 @@ function view_report_certificate()
 	$out->add($back_ui.'</div>');
 
 	addCss('style_menu', 'lms');
-	Util::get_js(Get::rel_path('lms').'/modules/pcertificate/pcertificate.js', true, true);
+	Util::get_js(Get::rel_path('base').'/appLms/modules/pcertificate/pcertificate.js', true, true);
 	$script = 'var ajax_url="ajax.server.php?plf=lms&mn=pcertificate"; var _STOP="'.$lang->def('_STOP').'"; '
-		.'var glob_id_certificate = '.(int)$id_certificate.', glob_id_course = '.(int)$id_course.';'
+		.'var glob_id_certificate = 0, glob_id_course = '.(int)$id_course.';'
 		.'var single_list = ['.(count($downloadables) ? '"'.implode('","', $downloadables).'"' : '').']; '
 		.'var reload_url = "'.str_replace('&amp;', '&', (isset($form_url) ? $form_url : '')).'", _ERROR_PARSE = "'.$lang->def('_OPERATION_FAILURE').'", _SUCCESS = "'.$lang->def('_OPERATION_SUCCESSFUL').'";';
+	
 	$out->add('<script type="text/javascript">'.$script.'</script>', 'page_head');
 }
 
@@ -417,6 +462,7 @@ function del_report_certificate()
 	$id_certificate = importVar('certificate_id', true, 0);
 	$id_course = importVar('course_id', true, 0);
 	$id_user = importVar('user_id', true, 0);
+	$from = Get::req('from', DOTY_MIXED, '');
 
 	$certificate_info = array();
 	$certificate_info = $certificate->getCertificateInfo($id_certificate);
@@ -435,22 +481,23 @@ function del_report_certificate()
 		if($deletion_result)
 		{
 			$deletion_result = $certificate->delCertificateForUserInCourse($id_certificate, $id_user, $id_course);
+			if ($from == 'courselist') { $id_certificate = 0; }
 			if($deletion_result)
-				Util::jump_to('index.php?modname=pcertificate&amp;op=view_report_certificate&id_certificate='.$id_certificate.'&id_course='.$id_course.'&deletion=1');
+				Util::jump_to('index.php?modname=pcertificate&amp;op=view_report_certificate&id_certificate='.$id_certificate.'&id_course='.$id_course.'&from='.$from.'&deletion=1');
 			else
-				Util::jump_to('index.php?modname=pcertificate&amp;op=view_report_certificate&id_certificate='.$id_certificate.'&id_course='.$id_course.'&deletion=2');
+				Util::jump_to('index.php?modname=pcertificate&amp;op=view_report_certificate&id_certificate='.$id_certificate.'&id_course='.$id_course.'&from='.$from.'&deletion=2');
 		}
 		else
-			Util::jump_to('index.php?modname=pcertificate&amp;op=view_report_certificate&id_certificate='.$id_certificate.'&id_course='.$id_course.'&deletion=3');
+			Util::jump_to('index.php?modname=pcertificate&amp;op=view_report_certificate&id_certificate='.$id_certificate.'&id_course='.$id_course.'&from='.$from.'&deletion=3');
 	}
 	elseif(isset($_POST['undo_del_report_certificate']))
-		Util::jump_to('index.php?modname=pcertificate&amp;op=view_report_certificate&id_certificate='.$id_certificate.'&id_course='.$id_course);
+		Util::jump_to('index.php?modname=pcertificate&amp;op=view_report_certificate&id_certificate='.$id_certificate.'&id_course='.$id_course.'&from='.$from);
 	else
 	{
 		$GLOBALS['page']->add(
 			getTitleArea($lang->def('_VIEW_REPORT_DELETION'), 'certificate')
 			.'<div class="std_block">'
-			.$form->openForm('del_certificate', 'index.php?modname=pcertificate&amp;op=del_report_certificate&amp;certificate_id='.$id_certificate.'&amp;course_id='.$id_course.'&amp;user_id='.$id_user)
+			.$form->openForm('del_certificate', 'index.php?modname=pcertificate&amp;op=del_report_certificate&amp;certificate_id='.$id_certificate.'&amp;course_id='.$id_course.'&amp;user_id='.$id_user.'&amp;from='.$from)
 			.$form->getHidden('id_certificate', 'id_certificate', $id_certificate)
 			.getDeleteUi(	$lang->def('_AREYOUSURE'),
 							'<span>'.$lang->def('_NAME').' : </span>'.$certificate_info[$id_certificate][CERT_NAME].'<br />'

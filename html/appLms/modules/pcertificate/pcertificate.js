@@ -1,4 +1,5 @@
 var list = [];
+var list_cert = [];
 var totnum = 0;
 var glob_dialog = null;
 var successful_printed = [];
@@ -27,7 +28,7 @@ function send_print(e, args) {
 
 			if (args.type=="total") initializeTotalSelection();
 			if (args.type=="single") initializeSingleSelection(args.scope);
-			do_printing(glob_id_certificate, glob_id_course, list[counter]);
+			do_printing(list_cert[counter], glob_id_course, list[counter]);
 		}
 	}, 'op=getpopup');
 
@@ -36,26 +37,38 @@ function send_print(e, args) {
 
 function initializeTotalSelection() {
 	//set selection of elements
-	var sel = YAHOO.util.Dom.get("old_selection").value;
-	if (sel != '') sel = sel.split(','); else sel = []; //sel is now an array of ids
+	var sel = [];
+	var sel_cert = [];
 
-	var actual_sel = YAHOO.util.Selector.query('input[id^=selected_]');
-	for (var i =0; i<actual_sel.length; i++) {
-		if (actual_sel[i].checked) sel.push(actual_sel[i].value);
+	var i, actual_sel = YAHOO.util.Selector.query('input[id^=selected_]');
+    
+        for (i=0; i<actual_sel.length; i++) {
+            if (actual_sel[i].checked){
+                sel.push(actual_sel[i].value);
+                sel_cert.push(actual_sel[i].getAttribute("id_certificate"));
+            }
 	}
 
 	list = sel;
+	list_cert = sel_cert;
+	
 	totnum = sel.length;
 	counter = 0;
 
-	//YAHOO.util.Dom.get('actual_num').innerHTML = (totnum-counter)+'';
-	//YAHOO.util.Dom.get('total_num').innerHTML = totnum+'';
+	if (totnum <= 0) {
+		glob_dialog.destroy();
+	} else {
 	updateDialogNums(counter, totnum);
+}
 }
 
 function initializeSingleSelection(o) {
 	var id = o.id.split('_')[2]; //retrieve user id
 	list = [id];
+        
+	var id_cert = o.id.split('_')[3]; //retrieve certificate id
+	list_cert = id_cert;
+        
 	totnum = 1;
 	counter = 0;
 	updateDialogNums(counter, totnum);
@@ -78,7 +91,7 @@ function array_contains(value, arr) {
 
 
 function updateDialogNums(counter, totnum) {
-	YAHOO.util.Dom.get('actual_num').innerHTML = (totnum-counter)+'';
+    YAHOO.util.Dom.get('actual_num').innerHTML = counter+'';
 	YAHOO.util.Dom.get('total_num').innerHTML = totnum+'';
 }
 
@@ -132,8 +145,10 @@ function do_printing(id_certificate, id_course, id_user)
 				counter++;
 				var pbar = YAHOO.util.Dom.get('print_progressbar');
 				pbar.style.width = Math.ceil( 100*(counter/totnum) )+'%';
+				updateDialogNums(counter,totnum);
+
 				if (counter<totnum)
-					do_printing(glob_id_certificate, glob_id_course, list[counter]);
+					do_printing(list_cert[counter], glob_id_course, list[counter]);
 				else
 					finalizeSelection();
 			}

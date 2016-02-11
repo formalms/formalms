@@ -122,6 +122,13 @@ if ($permissions['view'])
 
 if ($permissions['mod']) {
 	$columns_arr[] = array('key' => 'certificate', 'label' => Get::sprite('subs_pdf', Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')), 'className' => 'img-cell1');
+}
+
+if ($permissions['view_cert']) {
+	$columns_arr[] = array('key' => 'certreleased', 'label' => Get::sprite('subs_print', Lang::t('_CERTIFICATE_RELEASE', 'course')), 'className' => 'img-cell1');
+}
+
+if ($permissions['mod']) {
 	$columns_arr[] = array('key' => 'competences', 'label' => Get::sprite('subs_competence', Lang::t('_COMPETENCES', 'course')), 'className' => 'img-cell1');
 	$columns_arr[] = array('key' => 'menu', 'label' => Get::sprite('subs_menu', Lang::t('_ASSIGN_MENU', 'course')), 'className' => 'img-cell1');
 }
@@ -144,7 +151,7 @@ $_table_params = array(
 	'sort'			=> 'name',
 	'dir'			=> 'asc',
 	'columns'		=> $columns_arr,
-	'fields' => array('id', 'code', 'name', 'type', 'type_id', 'students', 'wait', 'user', 'edition', 'certificate', 'competences', 'menu', 'dup', 'mod', 'del'),
+	'fields' => array('id', 'code', 'name', 'type', 'type_id', 'students', 'wait', 'user', 'edition', 'certificate', 'certreleased', 'competences', 'menu', 'dup', 'mod', 'del'),
 	'show' => 'table',
 	'delDisplayField' => 'name',
 	'generateRequest' => 'Courses.requestBuilder'
