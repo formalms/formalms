@@ -1,4 +1,3 @@
-
 -) To setup for the first time the project for development:
 
     copy and rename /test/behat/behat_cofnig.yml.dist and change 'base_url' to your needs, then:
