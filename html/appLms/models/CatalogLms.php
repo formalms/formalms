@@ -364,6 +364,7 @@ class CatalogLms extends Model
 								case 2:
 									// free
 									$action .= '<a href="javascript:;" onclick="subscriptionPopUp(\''.$row['idCourse'].'\', \'0\', \'0\', \'0\')" title="'.Lang::t('_SUBSCRIBE', 'catalogue').'"><p class="can_subscribe">'.Lang::t('_SUBSCRIBE', 'catalogue').'</p></a>';
+                                   // $action .= '<a class="cbp-vm-add" href="javascript:;" onclick="subscriptionPopUp(\''.$row['idCourse'].'\', \'0\', \'0\', \'0\')" title="'.Lang::t('_SUBSCRIBE', 'catalogue').'">'.Lang::t('_SUBSCRIBE', 'catalogue').'</a>';
 								break;
 								case 1:
 									// moderate
@@ -457,10 +458,11 @@ class CatalogLms extends Model
         $html .= '
                   
                         <li>
-
-                               <table width=100%  border=0 >
+                              
+                              <!--
+                               <table width=100%  border=1 >
                                <tr>
-                               <td width=33%>
+                               <td width=33% >
                                '
                                 .($row['use_logo_in_courselist'] && $row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.$path_course.$row['img_course'].'" alt="'.Util::purge($row['name']).'" /></div>' : '')
                                 .($row['use_logo_in_courselist'] && !$row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.Get::tmpl_path().'images/course/course_nologo.png'.'" alt="'.Util::purge($row['name']).'" /></div>' : '')                         
@@ -491,8 +493,48 @@ class CatalogLms extends Model
                                 </div>
                                  </td></tr>
                                 </table>
+                                 -->
                  
+                 
+                                     
+                                        <div class="cbp-vm-image" >
+                                                            '
+                                                            .($row['use_logo_in_courselist'] && $row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.$path_course.$row['img_course'].'" alt="'.Util::purge($row['name']).'" /></div>' : '')
+                                                            .($row['use_logo_in_courselist'] && !$row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.Get::tmpl_path().'images/course/course_nologo.png'.'" alt="'.Util::purge($row['name']).'" /></div>' : '')                         
+                                                            .
+                                                           '  
+                                                    
+                                                    '.($row['code'] ? '<i style="font-size:.68em">['.$row['code'].']</i>' : '&nbsp;').'                  
+                                        </div>
+                                        <h3 class="cbp-vm-title">'.$row['name'].'</h3>
+                           
+                                        <div class="cbp-vm-details">  &nbsp
+                                             '.$row['description'].'
+                                       
+                                        '.
+                                            ($row["course_demo"] ? '<a   href="index.php?r=catalog/downloadDemoMaterial&amp;course_id='.$row['idCourse'].'" class="ico-wt-sprite subs_download"><span>'.Lang::t('_COURSE_DEMO', 'course').'</span></a>' : '')
+                                        .'                                       
+                                                         
+                                       
+                                        </div>
+                                            
+                                         
+                                          <div class="cbp-vm-add">                                   
+                                                <table   border=0 align=center  >
+                                                      <tr><td>  <br>
+                                                   '.$action.'  
+                                                </td></tr>
+                                                 </table>     
+                                         </div>
+                                        
+                                            
+                                        
+                                       
+                                          
+                                       
+                                        
                         </li>
+                        
                
               ';
         

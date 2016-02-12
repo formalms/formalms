@@ -64,7 +64,7 @@ $ma = new Man_MiddleArea();
                     
                     
                     
-					. '<div class="col-md-8">';
+					. '<div class="col-md-9">';
 					//. $this->model->getBreadCrumbs($std_link);
 
 				$category = $this->model->getMinorCategory($std_link, true);

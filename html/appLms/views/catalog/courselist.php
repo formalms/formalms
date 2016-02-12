@@ -14,7 +14,7 @@
             <a href="#"  data-view="cbp-vm-view-list"><span class='glyphicon glyphicon-align-justify'></span></a>
         </div>
                  
-            <ul>
+            <ul >
             
     <?php
 	    echo	$nav_bar->getNavBar()
