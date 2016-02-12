@@ -85,7 +85,7 @@ div.kb_res_list a{font-weight:bold;font-size:108%;}
 div.kb_res_list div.line div.tags{font-size:90%;margin-top:0.6em;}
 .games_chart{float:right;text-align:center;}
 .games_chart #standings_chart{width:400px;height:250px;}
-.edition_container .edition_subscribe, .catalog_action{min-width:190px;text-align:center;background:#ffffff;font-size:90%; color:#000000}
+.edition_container .edition_subscribe, .catalog_action{min-width:190px;text-align:center;background:#f5f5f5;font-size:90%; color:#000000}
 .subscribed{padding:2px 4px;background:#eeeeee;border:1px solid #666666;}
 .edition_container .edition_subscribe a p,  .can_subscribe{padding:2px 4px;background:#ddffdd;border:1px solid #009900;}
 .cannot_subscribe{padding:2px 4px;background:#ffffcc;border:1px solid #ffcc33; color:#000000}
