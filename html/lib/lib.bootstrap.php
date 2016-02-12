@@ -214,8 +214,8 @@ class Boot {
 	private static function utility() {
 
 		// composer autoload
-		self::log( "Load event dispatcher." );
-		require_once(_base_.'/addons/autoload.php');
+		self::log( "Load composer autoload." );
+		require_once(_base_.'/../vendor/autoload.php');
 
 		self::log( "Include autoload file." );
 		require_once _base_.'/lib/lib.autoload.php';

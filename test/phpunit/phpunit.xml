@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit
+    backupGlobals                               = "false"
+    backupStaticAttributes                      = "false"
+    colors                                      = "true"
+    convertErrorsToExceptions                   = "true"
+    convertNoticesToExceptions                  = "true"
+    convertWarningsToExceptions                 = "true"
+    processIsolation                            = "false"
+    stopOnFailure                               = "false"
+    syntaxCheck                                 = "false"
+    bootstrap                                   = "" >
+
+    <php>
+        <ini name="display_errors" value="1"/>
+        <ini name="xdebug.default_enable" value="0" />
+        <ini name="xdebug.enable_coverage" value="0" />
+        <ini name="xdebug.remote_autostart" value="0" />
+        <ini name="xdebug.remote_enable" value="0" />
+        <ini name="xdebug.overload_var_dump" value="0" />
+        <ini name="xdebug.show_mem_delta" value="0" />
+    </php>
+
+    <logging>
+        <log type="testdox-html" target="build/testdox.html"/>
+    </logging>
+
+    <testsuites>
+        <testsuite name="Project Test Suite">
+            <directory></directory>
+        </testsuite>
+    </testsuites>
+
+    <listeners>
+    </listeners>
+
+</phpunit>

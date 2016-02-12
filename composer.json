@@ -1,0 +1,37 @@
+{
+    "name": "cocciagialla/forma_ecm",
+    "require": {
+        "symfony/event-dispatcher": "^2.7",
+        "twig/twig": "~1.0",
+        "symfony/var-dumper": "^2.7"
+    },
+    "require-dev": {
+        "phing/phing": "2.13.0",
+        "behat/mink-extension": "~2.0@dev",
+        "behat/mink-browserkit-driver": "~1.1@dev",
+        "behat/mink-goutte-driver": "~1.1",
+        "behat/behat": "~3.0.6",
+        "behat/mink": "~1.6",
+        "behat/mink-selenium2-driver": "~1.2",
+        "phpunit/phpunit": "~4.1.0"
+    },
+    "authors": [
+        {
+            "name": "Gianluigi 'cocciagialla' Mammarella",
+            "email": "cocciagialla@gmail.com"
+        }
+    ],
+    "config": {
+        "vendor-dir": "vendor",
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-0": {
+            "appLms": "html/",
+            "appCore": "html/"
+        },
+        "psr-4": {
+            "FormaLms\\Features\\Contexts\\": "test/behat/FormaLms/Features/Contexts"
+        }
+    }
+}

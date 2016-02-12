@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="FormaLms" basedir="." default="help">
+    <property name="workspace" value="${project.basedir}" />
+    <property name="sourcedir" value="${project.basedir}/html" />
+    <property name="builddir" value="${project.basedir}/build" />
+    <property name="builddir.logs" value="${builddir}/logs" />
+    <property name="behat.basedir" value="${project.basedir}/test/behat" />
+    <property name="bundle" value="**" override="true"/>
+    <property name="env" value="dev" override="true"/>
+
+    <!-- Filesets -->
+    <fileset id="sourcecode" dir="${sourcedir}">
+        <include name="**/*.php" />
+    </fileset>
+
+    <target name="help" description="Help">
+        <echo msg="Help"/>
+    </target>
+
+    <target name="project:setup" description="Project complete setup for development" depends="vendors, parameters">
+        <echo msg="Setup complete"/>
+    </target>
+
+    <target name="project:test" description="Execute test suites">
+        <echo msg="Tests started" />
+        <exec command="bin/behat --config test/behat/behat.yml" logoutput="true" checkreturn="true" passthru="true" />
+        <exec command="bin/phpunit --stderr --verbose -c test/phpunit/phpunit.xml" logoutput="true" checkreturn="true" passthru="true"/>
+        <echo msg="Tests finished" />
+    </target>
+
+    <target name="project:build" depends="prepare, vendors-no-dev, parameters, project:test"/>
+
+    <target name="prepare" description="Prepare for build">
+        <mkdir dir="${builddir}/logs"/>
+    </target>
+
+    <target name="vendors" description="Install vendors">
+        <exec command="php composer.phar install --no-progress --prefer-dist --optimize-autoloader" logoutput="true" />
+        <echo msg="Vendor updated"/>
+    </target>
+    <target name="vendors-no-dev" description="Install vendors">
+        <exec command="php composer.phar install --no-dev --no-progress --prefer-dist --optimize-autoloader" logoutput="true" />
+        <echo msg="Vendor updated"/>
+    </target>
+
+    <target name="vendors" description="Install vendors">
+        <exec command="php composer.phar install --no-progress --prefer-dist --optimize-autoloader" logoutput="true" />
+        <echo msg="Vendor updated"/>
+    </target>
+
+    <target name="parameters" description="Set parameters for selected env">
+        <!--<exec executable="cp">-->
+            <!--<arg path="config_test.php" />-->
+            <!--<arg path="config.php" />-->
+        <!--</exec>-->
+        <echo msg="Not implemented yet"/>
+        <echo msg="Set parameter for ${env} completed"/>
+    </target>
+
+    <target name="test:db:reset" description="Drop and recreate the db for test">
+        <echo msg="Not implemented yet"/>
+    </target>
+
+</project>

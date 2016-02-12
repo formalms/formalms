@@ -1,0 +1,25 @@
+imports:
+    - behat_config.yml
+default:
+    gherkin:
+        cache: false # Sets the gherkin parser cache folder
+    suites:
+        login:
+            paths:
+                - %paths.base%/FormaLms/Features/Login
+            contexts:
+                - FormaLms\Features\Contexts\FeatureContext
+        course:
+            paths:
+                - %paths.base%/FormaLms/Features/Course
+            contexts:
+                - FormaLms\Features\Contexts\FeatureContext
+
+    extensions:
+        Behat\MinkExtension:
+#            selenium2: ~
+#            javascript_session: selenium2
+            browser_name: chrome
+            sessions:
+                default:
+                    goutte: ~
