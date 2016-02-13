@@ -216,7 +216,7 @@ class MessageModule {
 		$out->setWorkingZone('content');
 		$um =& UrlManager::getInstance("message");
 
-		$tb = new Table(Get::sett('visuItem', 25));
+		$tb = new Table(Get::sett('visuItem', 25), '', '', 'messages-recv');
 		$tb->initNavBar('ini', 'button');
 		$ini = $tb->getSelectedElement();
 		$acl_man =& Docebo::user()->getAclManager();
@@ -378,7 +378,7 @@ class MessageModule {
 		$out->setWorkingZone('content');
 		$um =& UrlManager::getInstance("message");
 		$acl_man 	=& Docebo::user()->getAclManager();
-		$tb = new Table(Get::sett('visuItem', 25));
+		$tb = new Table(Get::sett('visuItem', 25), '', '', 'messages-sent');
 		$tb->initNavBar('iniout', 'button');
 		$ini = $tb->getSelectedElement('iniout');
 		$acl_man =& Docebo::user()->getAclManager();

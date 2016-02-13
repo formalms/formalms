@@ -90,7 +90,7 @@ function forum() {
 	// Find and set unreaded message
 	loadUnreaded();
 
-	$tb = new Table( Get::sett('visuItem'), '', $lang->def('_ELEFORUM'));
+	$tb = new Table( Get::sett('visuItem'), '', $lang->def('_ELEFORUM'), 'list-forums');
 	$tb->initNavBar('ini', 'link');
 	$tb->setLink($base_link);
 
@@ -1136,7 +1136,7 @@ function thread() {
 		.Form::closeForm()
 	, 'content');
 
-	$tb = new Table(Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'));
+	$tb = new Table(Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'), 'thread-summary');
 
 	$img_up 	= '<img src="'.getPathImage().'standard/ord_asc.png" alt="'.$lang->def('_ORD_ASC').'" />';
 	$img_down 	= '<img src="'.getPathImage().'standard/ord_desc.png" alt="'.$lang->def('_ORD_DESC').'" />';
@@ -1866,7 +1866,7 @@ function message() {
 	$profile_man = new UserProfile(0);
 	$profile_man->init('profile', 'framework', 'index.php?modname=public_forum&op=forum');
 
-	$tb 	= new Table(Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'));
+	$tb 	= new Table(Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'), 'forum-message');
 	$tb->initNavBar('ini', 'link');
 	$tb->setLink('index.php?modname=public_forum&amp;op=message&amp;idThread='.$id_thread);
 	$ini 	= $tb->getSelectedElement();

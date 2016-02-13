@@ -279,11 +279,11 @@ class Table {
 	 * @param <type> $caption the table caption
 	 * @param <type> $summary the tabel summary
 	 */
-	public function  __construct($max_rows = 10, $caption = '', $summary = '') {
+	public function  __construct($max_rows = 10, $caption = '', $summary = '', $class = '') {
 
 		if(!$max_rows) $max_rows = Get::sett('visuItem');
 
-		$this->table_style 		= 'table-view';
+		$this->table_style 		= 'table-view '.$class;
 
 		$this->cols 			= 0;
 		$this->max_rows 		= $max_rows;
