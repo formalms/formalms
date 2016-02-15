@@ -1153,7 +1153,7 @@ Class CourseAlmsController extends AlmsController
                                                                 ( isset($course_cert[$id_cert]['available_for_status']) ? $course_cert[$id_cert]['available_for_status'] : 0 ),
                                                                 '' )
                                                                 ."<br/>"
-                                                                .Lang::t('_ASSIGN_FOR_AT_LEAST_MINUTES', 'course')
+                                                                .Lang::t('_ASSIGN_FOR_AT_LEAST_MINUTES', 'course').' '
                                                                 .Form::getInputTextfield( 'dropdown_nowh',
                                                                 'certificate_assign_minutes_'.$id_cert,
                                                                 'certificate_assign_minutes['.$id_cert.']',
