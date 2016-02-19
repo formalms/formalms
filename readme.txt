@@ -1,3 +1,10 @@
+/*****************
+* XAMPP User
+* you are required to enable php_openssl.dll in your php settings:
+* 1) check if you have php_openssl.dll in \<xampp install dir>\php\ext\
+* 2) in php.ini, add the following line under Windows Extensions section
+*		 extension=php_openssl.dll
+***************************/
 
 -) To setup for the first time the project for development:
 
