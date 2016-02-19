@@ -579,9 +579,9 @@ ul.style_none li {list-style:none; }
     max-width: 100%;
     margin: 0px auto;
     list-style: outside none none;
-    text-align: left;
+    text-align: left;      
 }    
-    
+      
         .cs-style-3 figcaption {
     height: 150px;
     width: 80%;
@@ -704,7 +704,7 @@ img.no_traform{
 
 
     
- /* Main container */
+ /* Main container */         
 .cbp-vm-switcher {
     padding: 10px;
     border: 1px solid #cccccc;
@@ -845,16 +845,18 @@ img.no_traform{
 }
 
 .cbp-vm-view-grid ul li {
-    width: 32%;
+    width: 30%;
     text-align: center;
-    padding: 25px;
-    margin: 20px 0 0;
+    padding: 10px;
+    margin: 20px 5px 0;
     display: inline-block;
     min-height: 420px;
     vertical-align: top;
     background-color: #f5f5f5;
     border: 1px;
-    border-color: gray;
+    border-color: #cccccc;
+    border-radius: 10px;
+    border-style:double;
 }
 
 .cbp-vm-view-grid .cbp-vm-title {
@@ -990,3 +992,200 @@ img.no_traform{
 }
 
 
+ 
+#container1_all_task  ul { list-style: none; }
+#container1_all_task  .buttons { margin-bottom: 20px; }
+
+#container1_all_task  .list li { width: 100%; height: 10%;  padding-bottom: 10px; padding: 10; min-height: 10px; }
+#container1_all_task  .grid li { float: left;  height: 50px; padding: 10px;padding-right: 1px;  margin: 5px;   }
+
+#container1_all_task .list li  .area1{
+    width:20% ;
+   float: left;
+}
+
+#container1_all_task .list li  .area2{
+    width:30% ;         
+    float: left; 
+}
+
+#container1_all_task .list li  .area3{
+    width:35% ;  
+    float: left;
+    margin:auto;
+}
+
+#container1_all_task .list li  .area4{
+    width:15% ;  
+    float: left;
+}
+
+#container1_all_task .grid li  .area1 {
+    min-height:20% ;
+}
+
+#container1_all_task .grid li  .area2 {
+    min-height:10% ;
+}
+
+#container1_all_task .grid li  .area3 {
+    min-height:40% ;
+    padding: 5px;
+}
+
+#container1_all_task .grid li  .area4 {
+    min-height:30% ; 
+}
+
+#container1_new_task  ul { list-style: none; }
+#container1_new_task  .buttons { margin-bottom: 20px; }
+
+#container1_new_task  .list li { width: 100%; height: 10%;  padding-bottom: 10px; padding: 10; min-height: 10px; }
+#container1_new_task  .grid li { float: left;  height: 50px; padding: 10px;padding-right: 1px;  margin: 5px; }
+
+#container1_new_task .list li  .area1{
+    width:20% ;
+   float: left;
+}
+
+#container1_new_task .list li  .area2{
+    width:30% ;         
+    float: left;
+}
+
+#container1_new_task .list li  .area3{
+    width:40% ;  
+    float: left;
+}
+
+#container1_new_task .list li  .area4{
+    width:10% ;  
+    float: left;
+}
+
+#container1_new_task .grid li  .area1 {
+    min-height:20% ;
+}
+
+#container1_new_task .grid li  .area2 {
+    min-height:10% ;
+}
+
+#container1_new_task .grid li  .area3 {
+    min-height:40% ;
+    padding: 5px;
+}
+
+#container1_new_task .grid li  .area4 {
+    min-height:30% ; 
+}
+
+
+
+#container1_inprogress  ul { list-style: none; }
+#container1_inprogress  .buttons { margin-bottom: 20px; }
+
+#container1_inprogress  .list li { width: 100%; height: 10%;  padding-bottom: 10px; padding: 10; min-height: 10px; }
+#container1_inprogress  .grid li { float: left;  height: 50px; padding: 10px;padding-right: 1px;  margin: 5px; }
+
+#container1_inprogress .list li  .area1{
+    width:20% ;
+   float: left;
+}
+
+#container1_inprogress .list li  .area2{
+    width:30% ;         
+    float: left;
+}
+
+#container1_inprogress .list li  .area3{
+    width:40% ;  
+    float: left;
+}
+
+#container1_inprogress .list li  .area4{
+    width:10% ;  
+    float: left;
+}
+
+#container1_inprogress .grid li  .area1 {
+    min-height:20% ;
+}
+
+#container1_inprogress .grid li  .area2 {
+    min-height:10% ;
+}
+
+#container1_inprogress .grid li  .area3 {
+    min-height:40% ;
+    padding: 5px;
+}
+
+#container1_inprogress .grid li  .area4 {
+    min-height:30% ; 
+}
+
+
+#container1_completed  ul { list-style: none; }
+#container1_completed  .buttons { margin-bottom: 20px; }
+
+#container1_completed  .list li { width: 100%; height: 10%;  padding-bottom: 10px; padding: 10; min-height: 10px; }
+#container1_completed  .grid li { float: left;  height: 50px; padding: 10px;padding-right: 1px;  margin: 5px; }
+
+#container1_completed .list li  .area1{
+    width:20% ;
+   float: left;
+}
+
+#container1_completed .list li  .area2{
+    width:30% ;         
+    float: left;
+}
+
+#container1_completed .list li  .area3{
+    width:40% ;  
+    float: left;
+}
+
+#container1_completed .list li  .area4{
+    width:10% ;  
+    float: left;
+}
+
+#container1_completed .grid li  .area1 {
+    min-height:20% ;
+}
+
+#container1_completed .grid li  .area2 {
+    min-height:10% ;
+}
+
+#container1_completed .grid li  .area3 {
+    min-height:40% ;
+    padding: 5px;
+}
+
+#container1_completed .grid li  .area4 {
+    min-height:30% ; 
+}
+
+
+
+.enter_course {
+    color: #fff;
+    background: #cccccc;
+    padding: 10px 20px;
+    border-radius: 2px;
+    margin: 20px 0 0;
+    height: auto;
+    display: inline-block;
+    transition: background 0.2s;
+    color: #000000;
+}
+
+.completed_course_2 {
+    border: 1px solid #BCC78B;
+    background-color: #e2e7cc;
+    background-color: #EFF9D0 !important;
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.5) 35px, rgba(255,255,255,.5) 70px);
+}

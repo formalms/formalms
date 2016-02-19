@@ -263,7 +263,8 @@ class ElearningLmsController extends LmsController {
 			'use_label' => $ma->currentCanAccessObj('tb_label'),
 			'keyword' => $filter_text  ,
             'display_info' => $this->_getClassDisplayInfo($keys),
-            'courselistClassroom' => $courselistClassroom
+            'courselistClassroom' => $courselistClassroom ,
+            'stato_corso' => "new_task"
 		));
 	}
 
@@ -356,7 +357,8 @@ class ElearningLmsController extends LmsController {
 			'use_label' => $ma->currentCanAccessObj('tb_label'),
 			'keyword' => $filter_text ,
             'display_info' => $this->_getClassDisplayInfo($keys),
-            'courselistClassroom' => $courselistClassroom
+            'courselistClassroom' => $courselistClassroom ,
+            'stato_corso' => "inprogress"
 		));
 	}
 
@@ -453,7 +455,8 @@ class ElearningLmsController extends LmsController {
 			'use_label' => $ma->currentCanAccessObj('tb_label'),
 			'keyword' => $filter_text,
             'display_info' => $this->_getClassDisplayInfo($keys),
-            'courselistClassroom' => $courselistClassroom
+            'courselistClassroom' => $courselistClassroom   ,
+            'stato_corso' => "completed"
 		));
 	}
 
@@ -564,7 +567,8 @@ class ElearningLmsController extends LmsController {
 			'ustatus' => $this->ustatus,
 			'levels' => $this->levels,
             'display_info' => $this->_getClassDisplayInfo($keys),
-            'courselistClassroom' => $courselistClassroom
+            'courselistClassroom' => $courselistClassroom ,
+            'stato_corso' => "all_task"
 		));
 	}
 
