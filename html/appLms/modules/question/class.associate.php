@@ -912,7 +912,7 @@ class Associate_Question extends Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function play( $num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false ) {
+	function play( $num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false, $number_time = null ) {
 		$lang =& DoceboLanguage::createInstance('test');
 		
 		
@@ -944,7 +944,7 @@ class Associate_Question extends Question {
 			SELECT idAnswer, more_info 
 			FROM ".$GLOBALS['prefix_lms']."_testtrack_answer 
 			WHERE idQuest = '".(int)$this->id."' AND 
-				idTrack = '".(int)$id_track."'";
+				idTrack = '".(int)$id_track."' AND number_time =  ".$number_time;
 			$re_answer_do = sql_query($recover_answer);
 			if(mysql_num_rows($re_answer_do)) {
 				

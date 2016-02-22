@@ -175,7 +175,7 @@ class Title_Question extends Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function play( $num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false ) {
+	function play( $num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false, $number_time = null ) {
 		
 		
 		list($title_quest) = sql_fetch_row(sql_query("

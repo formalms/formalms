@@ -367,13 +367,14 @@ class Question {
 	 * @param 	bool	$shuffle_answer 	randomize the answer display order
 	 * @param 	int		$id_track 			where find the answer, if find -> load
 	 * @param 	bool	$freeze 			if true, when load disable the user interaction
+	 * @param 	int		$number_time		the actual number of attempt
 	 * 
 	 * @return string of html question code
 	 * 
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function play( $num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false ) {
+	function play( $num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false, $number_time = null ) {
 		
 		return '';
 	}

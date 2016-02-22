@@ -676,11 +676,17 @@ function play($object_test, $id_param) {
 		
 		require_once(Docebo::inc(_folder_lms_.'/modules/question/'.$type_file));
 		$quest_obj = eval("return new $type_class( $idQuest );");
-		
-		$GLOBALS['page']->add($quest_obj->play( 	$quest_sequence_number, 
-								$test_info['shuffle_answer'], 
-								$id_track,
-								!$test_info['mod_doanswer'] && !$lock_edit ), 'content');
+
+		$GLOBALS['page']->add(
+				$quest_obj->play(
+						$quest_sequence_number,
+						$test_info['shuffle_answer'],
+						$id_track,
+						!$test_info['mod_doanswer'] && !$lock_edit,
+						($track_info['number_of_save'] + 1)
+				),
+				'content'
+		);
 
 		switch($type_quest)
 		{
