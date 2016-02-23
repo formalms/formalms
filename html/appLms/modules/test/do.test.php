@@ -916,7 +916,8 @@ function showResult( $object_test, $id_param ) {
 	$id_reference 	= getLoParam($id_param, 'idReference');
 	$url_coded 		= urlencode(serialize($object_test->back_url));
 	$id_track 		= retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
-	
+	$trackObj 		= new Track_Test($id_track);
+
 	if($id_track === false) {
 		
 		$GLOBALS['page']->add(getErrorUi($lang->def('_TEST_TRACK_FAILURE')
@@ -979,7 +980,7 @@ function showResult( $object_test, $id_param ) {
 		$quest_point_do = 0;
 		
 		$quest_obj = new $type_class( $id_quest );
-		$quest_point_do 	= $quest_obj->userScore($id_track);
+		$quest_point_do 	= $quest_obj->userScore($id_track, $trackObj->getNumberOfAttempt() + 1);
 		$quest_max_score 	= $quest_obj->getMaxScore();
 		if($quest_obj->getScoreSetType() == 'manual') {
 			++$num_manual;

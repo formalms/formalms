@@ -593,21 +593,22 @@ class Question {
 	/**
 	 * return the user score for this question
 	 * 
-	 * @param  int		$id_track	the test relative to this question
+	 * @param  int		$id_track		the test relative to this question
+	 * @param  int		$number_time	the number of this attempt
 	 * 
 	 * @return double	return the score for the user or 0 if there isn't a track for the question
 	 * 
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function userScore( $id_track ) {
+	function userScore( $id_track, $number_time ) {
 		
 		
 		$score = 0;
 		$re_answer = sql_query("
 		SELECT score_assigned 
 		FROM ".$GLOBALS['prefix_lms']."_testtrack_answer
-		WHERE idQuest = '".(int)$this->id."' AND idTrack = '".(int)$id_track."'");
+		WHERE idQuest = '".(int)$this->id."' AND idTrack = '".(int)$id_track."' AND number_time = ".$number_time);
 		if(!mysql_num_rows($re_answer)) return $score;
 		while(list($score_assigned) = sql_fetch_row($re_answer)) {
 			$score = round($score + $score_assigned, 2);
