@@ -237,7 +237,7 @@ class OrgDirDb extends RepoDirDb {
 			$result .= " AND ( "
 				."(".$GLOBALS['prefix_lms']."_organization_access.kind IN ('user','group') "
 				." 	AND ".$GLOBALS['prefix_lms']."_organization_access.value IN ('".join("','",$this->filterAccess)."'))"				
-//				." OR (".$GLOBALS['prefix_lms']."_organization_access.idOrgAccess IS NULL AND ".$tname.".objectType != 'test360')"
+				." OR (".$GLOBALS['prefix_lms']."_organization_access.idOrgAccess IS NULL AND ".$tname.".objectType != 'test360')"
 				.")";
 		}
 		return $result;
