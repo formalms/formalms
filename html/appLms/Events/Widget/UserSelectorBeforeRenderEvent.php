@@ -6,12 +6,14 @@ use Symfony\Component\EventDispatcher\Event;
 class UserSelectorBeforeRenderEvent extends Event
 {
     const EVENT_NAME = 'widget.user_selector.before_render';
+    protected $idOrg;
     protected $userSelectorId;
     protected $columns;
     protected $fields;
 
-    public function __construct($userSelectorId, $columns = array(), $fields = array())
+    public function __construct($idOrg, $userSelectorId, $columns = array(), $fields = array())
     {
+        $this->idOrg = $idOrg;
         $this->userSelectorId = $userSelectorId;
         $this->columns = $columns;
         $this->fields = $fields;
@@ -70,6 +72,14 @@ class UserSelectorBeforeRenderEvent extends Event
     public function getUserSelectorId()
     {
         return $this->userSelectorId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdOrg()
+    {
+        return $this->idOrg;
     }
 
 }

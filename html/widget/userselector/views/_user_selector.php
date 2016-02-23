@@ -122,7 +122,7 @@ $rel_action_bottom = '<span>'
 $id_org = isset($data_for_view['id_org'])?$data_for_view['id_org']:0;
 $fields = array('id', 'userid', 'firstname', 'lastname', '_dyn_field_0', '_dyn_field_1', '_dyn_field_2', 'valid');
 
-$event = new \appLms\Events\Widget\UserSelectorBeforeRenderEvent($_varname, $columns_arr, $fields);
+$event = new \appLms\Events\Widget\UserSelectorBeforeRenderEvent($id_org, $_varname, $columns_arr, $fields);
 \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Widget\UserSelectorBeforeRenderEvent::EVENT_NAME, $event);
 
 $this->widget('table', array(
