@@ -343,7 +343,7 @@ function intro( $object_test, $id_param ) {
 			$GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_RESTART')), 'content');
 	} else {
 		
-		resetTrack($id_test, $id_track);
+		resetTrack($object_test, $id_track);
 		$GLOBALS['page']->add(Form::getButton('begin', 'begin', $lang->def('_TEST_BEGIN')), 'content');
 	}
 	$GLOBALS['page']->add(
@@ -352,13 +352,12 @@ function intro( $object_test, $id_param ) {
 		.'</div>', 'content');
 }
 
-function resetTrack($id_test, $id_track)
+function resetTrack($testObj, $id_track)
 {
 	if (!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
 	require_once(Docebo::inc(_folder_lms_.'/class.module/learning.test.php'));
 	require_once(_base_ . '/lib/lib.upload.php');
 
-	$testObj = new Learning_Test($id_test);
 	if (!$testObj->isRetainAnswersHistory()) {
 		$quests = $testObj->getQuests();
 		foreach ($quests as $quest_obj) {
@@ -434,7 +433,7 @@ function playTestDispatch( $object_test, $id_param ) {
 		
 		if($score_status == 'not_complete' || $is_end) {
 			
-			resetTrack($object_test->getId(), importVar('idTrack', true, 0));
+			resetTrack($object_test, importVar('idTrack', true, 0));
 		}
 		play($object_test, $id_param);
 	} elseif(isset($_POST['test_save_keep'])) {
