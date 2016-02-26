@@ -563,22 +563,22 @@ class Certificate {
 		);
 
 		$name .= '.pdf';
-		$nomecertificato = $name.'_'.time();
-		$this->getPdf($nomecertificato, $cert_structure, $name, $bgimage, $orientation, true, false);
+		
+		$this->getPdf($cert_structure, $name, $bgimage, $orientation, true, false);
 	}
 
-	function getPdf($nomecertificato, $html, $name, $img = false, $orientation = 'P', $download = true, $facs_simile = false, $for_saving = false)
+	function getPdf($html, $name, $img = false, $orientation = 'P', $download = true, $facs_simile = false, $for_saving = false)
 	{
 		require_once(Docebo::inc(_base_.'/lib/pdf/lib.pdf.php'));
 
 		$pdf = new PDF($orientation);
 		$pdf->setEncrypted(Get::cfg('certificate_encryption', true));
 		$pdf->setPassword(Get::cfg('certificate_password', null));
-		$nomecertificato = $name.'_'.time();
+
 		if($for_saving)
-			return $pdf->getPdf($nomecertificato, $html, $name, $img, $download, $facs_simile, $for_saving);
+			return $pdf->getPdf($html, $name, $img, $download, $facs_simile, $for_saving);
 		else
-			$pdf->getPdf($nomecertificato, $html, $name, $img, $download, $facs_simile, $for_saving);
+			$pdf->getPdf($html, $name, $img, $download, $facs_simile, $for_saving);
 	}
 
 	function send_facsimile_certificate($id_certificate, $id_user, $id_course, $array_substituton = false)
@@ -593,8 +593,8 @@ class Certificate {
 			$cert_structure = str_replace(array_keys($array_substituton), $array_substituton, $cert_structure);
 		}
 		$cert_structure = fillSiteBaseUrlTag($cert_structure);
-		$nomecertificato = $name.'_'.time();
-		$this->getPdf($nomecertificato, $cert_structure, $name, $bgimage, $orientation, true, true);
+
+		$this->getPdf($cert_structure, $name, $bgimage, $orientation, true, true);
 	}
 
 	function send_certificate($id_certificate, $id_user, $id_course, $array_substituton = false, $download = true, $from_multi = false)
@@ -640,10 +640,10 @@ class Certificate {
 		$cert_structure = fillSiteBaseUrlTag($cert_structure);
 
 		$cert_file = $id_course.'_'.$id_certificate.'_'.$id_user.'_'.time().'_'.$name.'.pdf';
-		$nomecertificato = $name.'_'.time();
+
 		sl_open_fileoperations();
 		if(!$fp = sl_fopen(CERTIFICATE_PATH.$cert_file, 'w')) { sl_close_fileoperations(); return false; }
-		if(!fwrite($fp, $this->getPdf($nomecertificato, $cert_structure, $name, $bgimage, $orientation, false, false, true))) { sl_close_fileoperations(); return false; }
+		if(!fwrite($fp, $this->getPdf($cert_structure, $name, $bgimage, $orientation, false, false, true))) { sl_close_fileoperations(); return false; }
 		fclose($fp);
 		sl_close_fileoperations();
 
@@ -663,8 +663,8 @@ class Certificate {
 
 		if($from_multi)
 			return;
-		$nomecertificato = $name.'_'.time();
-		$this->getPdf($nomecertificato, $cert_structure, $name, $bgimage, $orientation, $download, false);
+
+		$this->getPdf($cert_structure, $name, $bgimage, $orientation, $download, false);
 	}
 
 	function getCourseForCertificate($id_certificate)
