@@ -796,7 +796,7 @@ class Man_Course {
 	}
 
 	function removeCourseMenu($id_course) {
-
+                
 		$query_del = "
 		DELETE FROM ".$GLOBALS['prefix_lms']."_menucourse_main
 		WHERE idCourse = '".$id_course."'";

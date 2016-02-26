@@ -1218,7 +1218,7 @@ Class CourseAlmsController extends AlmsController
 			$course_man->removeCourseMenu($id_course);
 			$course_idst =& $course_man->getCourseIdstGroupLevel($id_course);
 
-			$result = cerateCourseMenuFromCustom($id_custom, $id_course, $course_idst);
+			$result = createCourseMenuFromCustom($id_custom, $id_course, $course_idst);
 
 			if($_SESSION['idCourse'] == $id_course)
 			{
@@ -1250,15 +1250,14 @@ Class CourseAlmsController extends AlmsController
 		{
 			require_once($GLOBALS['where_lms'].'/lib/lib.manmenu.php');
 			$menu_custom = getAllCustom();
-			$menu_custom = array(0 => Lang::t('_SELECT', 'standard').' ...' ) + $menu_custom;
-			reset($menu_custom);
+                        $sel_custom = getAssociatedCustom($id_course);
 
 			$course_info = $this->model->getInfo($id_course);
 			$course_name = ($course_info['code'] !== '' ? '['.$course_info['code'].'] ' : '').$course_info['name'];
 
 			$this->render('menu', array(
 				'menu_custom' => $menu_custom,
-				'sel_custom' => 0,
+				'sel_custom' => $sel_custom,
 				'id_course' => $id_course,
 				'base_link_course' => $this->base_link_course,
 				'course_name' => $course_name

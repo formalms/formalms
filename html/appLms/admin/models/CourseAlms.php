@@ -681,7 +681,7 @@ Class CourseAlms extends Model
 		$course_idst =& DoceboCourse::createCourseLevel($id_course);
 
 		// create the course menu -----------------------------------------------------------
-		if(!cerateCourseMenuFromCustom($id_custom, $id_course, $course_idst))
+		if(!createCourseMenuFromCustom($id_custom, $id_course, $course_idst))
 			return array('err' => '_err_coursemenu');
 
 		$res = array();

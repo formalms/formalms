@@ -311,7 +311,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 			
 			require_once($GLOBALS['where_lms'].'/lib/lib.manmenu.php');
 			
-			if(!cerateCourseMenuFromCustom($this->std_menu_to_assign, $id_course, $course_idst)) {
+			if(!createCourseMenuFromCustom($this->std_menu_to_assign, $id_course, $course_idst)) {
 				$this->last_error = 'Error in menu assignament';
 				return false;
 			}

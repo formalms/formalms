@@ -1016,7 +1016,7 @@ function insCourse() {
 	$course_idst =& DoceboCourse::createCourseLevel($id_course);
 
 	// create the course menu -----------------------------------------------------------
-	if(!cerateCourseMenuFromCustom($id_custom, $id_course, $course_idst)) {
+	if(!createCourseMenuFromCustom($id_custom, $id_course, $course_idst)) {
 
 		Util::jump_to($url.'err_coursemenu');
 	}
@@ -2388,7 +2388,7 @@ function assignMenu() {
 		$course_man->removeCourseMenu($id_course);
 		$course_idst =& $course_man->getCourseIdstGroupLevel($id_course);
 
-		$result = cerateCourseMenuFromCustom($id_custom, $id_course, $course_idst);
+		$result = createCourseMenuFromCustom($id_custom, $id_course, $course_idst);
 
 		if($_SESSION['idCourse'] == $id_course)
 		{

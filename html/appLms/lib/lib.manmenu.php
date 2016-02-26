@@ -19,9 +19,12 @@
  * @author	 Fabio Pirovano 
  */
 
-function cerateCourseMenuFromCustom($id_custom, $id_course, $group_idst) {
+function createCourseMenuFromCustom($id_custom, $id_course, $group_idst) {
 	
 	$acl_man =& Docebo::user()->getAclManager();
+        
+        $menucustom_course_upquery = 'UPDATE %lms_course SET id_menucustom='.$id_custom.' WHERE idCourse='.$id_course;
+        sql_query($menucustom_course_upquery);
 	
 	$re_main = sql_query("
 		SELECT idMain, sequence, name, image
@@ -91,6 +94,23 @@ function getAllCustom() {
 		$customs[$id] = $name;
 	}
 	return $customs;
+}
+
+function getAssociatedCustom($id_course) {
+	/*$query = "
+	SELECT mc.title 
+	FROM ".$GLOBALS['prefix_lms']."_course AS c
+	JOIN ".$GLOBALS['prefix_lms']."_menucustom AS mc
+            ON c.id_menucustom = mc.idCustom
+	WHERE idCourse=".$id_course;*/
+	$query = "
+	SELECT id_menucustom 
+	FROM ".$GLOBALS['prefix_lms']."_course 
+	WHERE idCourse=".$id_course;
+	$re_asscustom = sql_query($query);
+	
+	list($id_menucustom) = sql_fetch_row($re_asscustom);
+	return $id_menucustom;
 }
 
 
