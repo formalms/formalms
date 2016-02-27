@@ -897,7 +897,6 @@ function defmodality() {
 		.Form::getOpenFieldset($lang->def('_TEST_MM_TWO'))
 			//visualization of the info
 			.Form::getCheckBox($lang->def('_MANDATORY_ANSWER'), 'mandatory_answer', 'mandatory_answer', 1, $mandatory_answer)
-			.Form::getCheckBox($lang->def('_RETAIN_ANSWERS_HISTORY'), 'retain_answers_history', 'retain_answers_history', 1, $retain_answers_history)
 			.$lang->def('_TEST_MM2_HIDE_INFO').'<br />'
 			.'<input class="valign_middle" type="radio" id="mod_hide_info_no" name="mod_hide_info" value="0"'
 				.( !$hide_info ? '  checked="checked"' : '' ).' /> '
@@ -939,8 +938,7 @@ function defmodality() {
 		$GLOBALS['page']->add(Form::getTextfield($lang->def('_MAX_ATTEMPT'), 'max_attempt', 'max_attempt', 3, $max_attempt)
 
 				//--- suspensions options --------------------------------------------------
-
-				. '<br />'
+				.Form::getCheckBox($lang->def('_RETAIN_ANSWERS_HISTORY'), 'retain_answers_history', 'retain_answers_history', 1, $retain_answers_history)
 				. Form::getCheckbox($lang->def('_USE_SUSPENSION'), 'use_suspension', 'use_suspension', 1, $use_suspension, 'onclick="setSuspension();"')
 				//.'<div class="grouping">'
 				. Form::getTextfield($lang->def('_SUSPENSION_NUM_ATTEMPTS'), 'suspension_num_attempts', 'suspension_num_attempts', 5, $suspension_num_attempts)
@@ -995,7 +993,8 @@ function defmodality() {
 		, 'content');
 	} else {
 		$GLOBALS['page']->add(
-				'<input type="hidden" id="show_tot_no" name="show_tot" value="0" checked="checked"/>'
+				'<input type="hidden" id="retain_answers_history" name="retain_answers_history" value="1" checked="checked"/>'
+				.'<input type="hidden" id="show_tot_no" name="show_tot" value="0" checked="checked"/>'
 				.'<br /><br />'
 				.Form::getCloseFieldset(),
 				'content'

@@ -231,7 +231,6 @@ class Learning_Test extends Learning_Object {
 		WHERE q.idTest = '".$id."' AND q.type_quest = t.type_quest");
 		//retriving quest
 		while( list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest) ) {
-			Docebo::inc(_folder_lms_.'/modules/question/'.$type_file);
 			$quest_obj = new $type_class( $idQuest );
 			$new_id = $quest_obj->copy($id_new_test);
 			if(!$new_id) {

@@ -269,7 +269,7 @@ function exportquest(&$url) {
 
 					while( list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest) )
 					{
-						Docebo::inc(_folder_lms_.'/modules/question/'.$type_file);
+						require_once(Docebo::inc(_folder_lms_.'/modules/question/'.$type_file));
 						$quest_obj = new $type_class( $idQuest );
 						$new_id = $quest_obj->copy($id_test);
 					}
