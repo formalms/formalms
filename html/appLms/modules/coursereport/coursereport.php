@@ -53,7 +53,7 @@ function testreport($idTrack, $idTest, $testName, $studentName) {
 		$i = 1;
 		while(list($date_attempt, $score, $idTest, $idUser, $number_time) = sql_fetch_row($re_testreport)) {
 
-			$tb->addBody(array($i++, $date_attempt, $score, '<a href="http://formalms.local/appLms/index.php?modname=coursereport&op=testreview&id_test='.$idTest.'&id_user='.$idUser.'&number_time='.$number_time.'&idTrack='.$idTrack.'">-></a>'));
+			$tb->addBody(array($i++, $date_attempt, $score, '<a href="index.php?modname=coursereport&op=testreview&id_test='.$idTest.'&id_user='.$idUser.'&number_time='.$number_time.'&idTrack='.$idTrack.'">-></a>'));
         }
 		$out->add(
 			$tb->getTable()
