@@ -1524,7 +1524,7 @@ function testreview() {
 				. Form::getButton('go_back', 'go_back', $lang->def('_UNDO'))
 				. Form::closeButtonSpace()
 				. Form::closeForm()
-				. '</div></div>'
+				. '</div>'
 		);
 	}
 }
