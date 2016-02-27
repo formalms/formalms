@@ -1550,7 +1550,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
 }
 
 
-function editUserReport($id_user, $id_test, $id_track) {
+function editUserReport($id_user, $id_test, $id_track, $number_time = null) {
 	
 	$lang =& DoceboLanguage::createInstance('test');
 	
@@ -1604,12 +1604,13 @@ function editUserReport($id_user, $id_test, $id_track) {
 		$quest_point_do = 0;
 		
 		$quest_obj = eval("return new $type_class( $id_quest );");
-		$quest_point_do = $quest_obj->userScore($id_track);
+		$quest_point_do = $quest_obj->userScore($id_track, $number_time);
 		$quest_max_score = $quest_obj->getMaxScore();
 		if(($type_quest != 'title') && ($type_quest != 'break_page')) {
 			$review = $quest_obj->displayUserResult( 	$id_track, 
 														( $type_quest != 'title' ? $quest_sequence_number++ : $quest_sequence_number ), 
-														$quest_sequence_number );
+														$quest_sequence_number,
+														$number_time);
 			
 			$report_test .= '<div class="test_quest_review_container">'
 				.$review['quest'];

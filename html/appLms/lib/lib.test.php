@@ -305,7 +305,7 @@ class GroupTestManagement {
 		return $re;
 	}
 	
-	function editReview($id_test, $id_user) {
+	function editReview($id_test, $id_user, $number_time = null) {
 		
 		require_once($GLOBALS['where_lms'].'/modules/test/do.test.php');
 		
@@ -316,7 +316,7 @@ class GroupTestManagement {
 		$rs = sql_query( $query );
 		list($id_track) = sql_fetch_row($rs);
 		
-		editUserReport($id_user, $id_test, $id_track);
+		editUserReport($id_user, $id_test, $id_track, $number_time);
 	}
 	
 	function saveReview($id_test, $id_user) {

@@ -594,21 +594,26 @@ class Question {
 	 * return the user score for this question
 	 * 
 	 * @param  int		$id_track		the test relative to this question
-	 * @param  int		$number_time	the number of this attempt
+	 * @param  int		$number_time	the number of the attempt
 	 * 
 	 * @return double	return the score for the user or 0 if there isn't a track for the question
 	 * 
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function userScore( $id_track, $number_time ) {
+	function userScore( $id_track, $number_time = null ) {
 		
 		
 		$score = 0;
-		$re_answer = sql_query("
-		SELECT score_assigned 
+		$query = "SELECT score_assigned
 		FROM ".$GLOBALS['prefix_lms']."_testtrack_answer
-		WHERE idQuest = '".(int)$this->id."' AND idTrack = '".(int)$id_track."' AND number_time = ".$number_time);
+		WHERE idQuest = '".(int)$this->id."'
+		AND idTrack = '".(int)$id_track."'";
+		if ($number_time != null){
+			$query .= " AND number_time = ".$number_time;
+		}
+		$query .= " ORDER BY number_time DESC LIMIT 1";
+		$re_answer = sql_query($query);
 		if(!mysql_num_rows($re_answer)) return $score;
 		while(list($score_assigned) = sql_fetch_row($re_answer)) {
 			$score = round($score + $score_assigned, 2);
@@ -632,7 +637,7 @@ class Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function displayUserResult( $id_track, $num_quest, $show_solution ) {
+	function displayUserResult( $id_track, $num_quest, $show_solution, $number_time = null ) {
 		
 		
 		return array(	'quest' 	=> $num_quest.' : displayUserResult() not defined ! '.$this->getQuestionType().'<br />', 

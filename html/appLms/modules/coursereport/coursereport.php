@@ -22,9 +22,10 @@ function testreport($idTrack, $idTest, $testName, $studentName) {
         $out =& $GLOBALS['page'];
         $out->setWorkingZone('content');
         $query_testreport = "
-        SELECT DATE_FORMAT(date_attempt, '%d/%m/%Y %H:%i'), score
-        FROM ".$GLOBALS['prefix_lms']."_testtrack_times
-        WHERE idTrack = '".$idTrack."' AND idTest = '".$idTest."' ORDER BY date_attempt";
+        SELECT DATE_FORMAT(tt.date_attempt, '%d/%m/%Y %H:%i'), tt.score, tt.idTest, t.idUser, tt.number_time
+        FROM ".$GLOBALS['prefix_lms']."_testtrack_times AS tt
+        LEFT JOIN ".$GLOBALS['prefix_lms']."_testtrack AS t ON tt.idTrack=t.idTrack
+        WHERE tt.idTrack = '".$idTrack."' AND tt.idTest = '".$idTest."' ORDER BY tt.date_attempt";
         $re_testreport = sql_query($query_testreport);
 
 		$test_man       = new GroupTestManagement();
@@ -46,12 +47,13 @@ function testreport($idTrack, $idTest, $testName, $studentName) {
 			'N.',
 			$lang->def('_DATE'),
 			$lang->def('_SCORE'),
+			''
 		), array('min-cell','',''));
 
 		$i = 1;
-		while(list($date_attempt, $score) = sql_fetch_row($re_testreport)) {
+		while(list($date_attempt, $score, $idTest, $idUser, $number_time) = sql_fetch_row($re_testreport)) {
 
-			$tb->addBody(array($i++, $date_attempt, $score));
+			$tb->addBody(array($i++, $date_attempt, $score, '<a href="http://formalms.local/appLms/index.php?modname=coursereport&op=testreview&id_test='.$idTest.'&id_user='.$idUser.'&number_time='.$number_time.'&idTrack='.$idTrack.'">-></a>'));
         }
 		$out->add(
 			$tb->getTable()
@@ -574,7 +576,7 @@ function coursereport() {
 											}
                                             $tt = "(" . $tests_score[$id_test][$idst_user]['times'] . ")";
 											if ($testObj->obj_type == 'test360'){
-												$cont[] = '<a href="index.php?r=test360/report&idTest=' . $tests_score[$id_test][$idst_user]['idTest'] . '&showAuto=1&showEtero=1" class="ico-wt-sprite subs_confirm">&nbsp;&nbsp;</a>';
+												$cont[] = '<a href="index.php?r=test360/report&idTest=' . $tests_score[$id_test][$idst_user]['idTest'] . '&showAuto=1&showEtero=1" class="ico-wt-sprite subs_confirm">&nbsp;&nbsp;</a> '.$tt;
 											} else if ($score >= $info_report['required_score']) {
                                                 if ($score == $test_details[$id_test]['max_score'])
                                                     $cont[] = '<span class="cr_max_score">' . $score . " " . $tt . '</span>';
@@ -1457,6 +1459,8 @@ function testreview() {
 
 	// XXX: Initializaing
 	$id_test 		= importVar('id_test', true, 0);
+	$idTrack 		= importVar('idTrack', true, 0);
+	$number_time 	= importVar('number_time', true, null);
 	$lang 			=& DoceboLanguage::createInstance('coursereport', 'lms');
 	$out 			=& $GLOBALS['page'];
 	$out->setWorkingZone('content');
@@ -1491,22 +1495,38 @@ function testreview() {
 		'index.php?modname=coursereport&amp;op=testvote&amp;id_test='.$id_test =>$test_info[$id_test]['title'],
 		$user_name
 	);
-	$out->add(
-		getTitleArea($page_title, 'coursereport')
-		.'<div class="std_block">'
-		.Form::openForm('test_vote', 'index.php?modname=coursereport&amp;op=testreview')
-		.Form::getHidden('id_test', 'id_test', $id_test)
-		.Form::getHidden('id_user', 'id_user', $id_user)
-	);
-	$test_man->editReview($id_test, $id_user);
-	$out->add(
-		Form::openButtonSpace()
-		.Form::getButton('save_new_scores', 'save_new_scores', $lang->def('_SAVE'))
-		.Form::getButton('undo_testreview', 'undo_testreview', $lang->def('_UNDO'))
-		.Form::closeButtonSpace()
-		.Form::closeForm()
-		.'</div>'
-	);
+	if(isset($_POST['view_answer'])) {
+		$out->add(
+				getTitleArea($page_title, 'coursereport')
+				. '<div class="std_block">'
+				. Form::openForm('test_vote', 'index.php?modname=coursereport&amp;op=testreview')
+				. Form::getHidden('id_test', 'id_test', $id_test)
+				. Form::getHidden('id_user', 'id_user', $id_user)
+		);
+		$test_man->editReview($id_test, $id_user, $number_time);
+		$out->add(
+				Form::openButtonSpace()
+				. Form::getButton('save_new_scores', 'save_new_scores', $lang->def('_SAVE'))
+				. Form::getButton('undo_testreview', 'undo_testreview', $lang->def('_UNDO'))
+				. Form::closeButtonSpace()
+				. Form::closeForm()
+				. '</div>'
+		);
+	} else {
+		$out->add(
+				getTitleArea($page_title, 'coursereport')
+				. '<div class="std_block">'
+				. Form::openForm('test_vote', 'index.php?modname=coursereport&op=testreport&idTest='.$id_test.'&idTrack='.$idTrack)
+		);
+		$test_man->editReview($id_test, $id_user, $number_time);
+		$out->add(
+				Form::openButtonSpace()
+				. Form::getButton('go_back', 'go_back', $lang->def('_UNDO'))
+				. Form::closeButtonSpace()
+				. Form::closeForm()
+				. '</div></div>'
+		);
+	}
 }
 
 function finalvote() {
