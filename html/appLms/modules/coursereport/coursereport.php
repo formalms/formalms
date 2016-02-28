@@ -47,13 +47,12 @@ function testreport($idTrack, $idTest, $testName, $studentName) {
 			'N.',
 			$lang->def('_DATE'),
 			$lang->def('_SCORE'),
-			''
+			$lang->def('_STATISTICS')
 		), array('min-cell','',''));
 
 		$i = 1;
 		while(list($date_attempt, $score, $idTest, $idUser, $number_time) = sql_fetch_row($re_testreport)) {
-
-			$tb->addBody(array($i++, $date_attempt, $score, '<a href="index.php?modname=coursereport&op=testreview&id_test='.$idTest.'&id_user='.$idUser.'&number_time='.$number_time.'&idTrack='.$idTrack.'">-></a>'));
+			$tb->addBody(array($i++, $date_attempt, $score, '<a class="ico-sprite subs_chart" href="index.php?modname=coursereport&op=testreview&id_test='.$idTest.'&id_user='.$idUser.'&number_time='.$number_time.'&idTrack='.$idTrack.'">><span>Statistiche</span></a>'));
         }
 		$out->add(
 			$tb->getTable()
@@ -1518,7 +1517,7 @@ function testreview() {
 				. '<div class="std_block">'
 				. Form::openForm('test_vote', 'index.php?modname=coursereport&op=testreport&idTest='.$id_test.'&idTrack='.$idTrack)
 		);
-		$test_man->editReview($id_test, $id_user, $number_time);
+		$test_man->editReview($id_test, $id_user, $number_time, false);
 		$out->add(
 				Form::openButtonSpace()
 				. Form::getButton('go_back', 'go_back', $lang->def('_UNDO'))

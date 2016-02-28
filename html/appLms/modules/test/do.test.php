@@ -1550,7 +1550,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
 }
 
 
-function editUserReport($id_user, $id_test, $id_track, $number_time = null) {
+function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edit_new_score = true) {
 	
 	$lang =& DoceboLanguage::createInstance('test');
 	
@@ -1631,7 +1631,7 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null) {
 					.( $review['comment'] != '' ? $review['comment'] : '' )
 					.'</div>';
 			}
-			if (!$quest_obj instanceof CourseValutation_Question) {
+			if($edit_new_score) {
 				$report_test .=
 						'<div class="test_edit_scores">'
 						. Form::getTextfield($lang->def('_NEW_SCORE_FOR_QUESTION'),
