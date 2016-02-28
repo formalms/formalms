@@ -913,33 +913,52 @@ class OrgDirDb extends RepoDirDb {
 	
 	function __setAccess( $idOrgAccess, $selection, $relation = '' ) {
 		$acl_man =& Docebo::user()->getAclManager();
-		
+
 		$id_groups = $acl_man->getAllGroupsFromSelection($selection);
 
-		if ($relation == '') {
-			$query = "DELETE FROM %lms_organization_access"
-					. " WHERE idOrgAccess = " . (int)$idOrgAccess;
-			sql_query($query);
-		}
-
-		foreach($selection as $idst_element)
-		{
+		if ($relation != ''){
+			$idst_element = current($selection);
 			if(array_search($idst_element, $id_groups) !== false)
 				$type = 'group';
 			else
 				$type = 'user';
 
-			if ($relation != '') {
-				$query = "DELETE FROM %lms_organization_access"
-						. " WHERE idOrgAccess = " . (int)$idOrgAccess . " AND kind = '" . $type . "' AND value = '" . (int)$idst_element . "'";
-				sql_query($query);
-			}
+			$query = "DELETE FROM %lms_organization_access"
+					. " WHERE idOrgAccess = " . (int)$idOrgAccess . " AND kind = '" . $type . "' AND value = '" . (int)$idst_element . "'";
+			sql_query($query);
 
 			$query =	"INSERT INTO %lms_organization_access"
-						." (idOrgAccess, kind, value, params) VALUES ("
-						." '".(int)$idOrgAccess."','".$type."','".(int)$idst_element."','".$relation."')";
+					." (idOrgAccess, kind, value, params) VALUES ("
+					." '".(int)$idOrgAccess."','".$type."','".(int)$idst_element."','".$relation."')";
 
 			sql_query($query);
+		} else {
+			$query_old_values = "SELECT value, params FROM %lms_organization_access"
+					. " WHERE idOrgAccess = " . (int)$idOrgAccess;
+			$re_old_values = sql_query($query_old_values);
+
+			$old_relations = array();
+			while(list($old_value, $old_relation) = sql_fetch_row($re_old_values)) {
+				$old_relations[$old_value] = $old_relation;
+			}
+
+			$query = "DELETE FROM %lms_organization_access"
+					. " WHERE idOrgAccess = " . (int)$idOrgAccess;
+			sql_query($query);
+
+			foreach($selection as $idst_element)
+			{
+				if(array_search($idst_element, $id_groups) !== false)
+					$type = 'group';
+				else
+					$type = 'user';
+
+				$query =	"INSERT INTO %lms_organization_access"
+						." (idOrgAccess, kind, value, params) VALUES ("
+						." '".(int)$idOrgAccess."','".$type."','".(int)$idst_element."','".$old_relations[$idst_element]."')";
+
+				sql_query($query);
+			}
 		}
 	}
 	

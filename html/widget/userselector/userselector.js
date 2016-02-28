@@ -148,27 +148,21 @@ UserSelector.prototype = {
 				failure: function(o) {}
 			};
 
+			var checkbox = window.document.getElementById('user_selector_table_main_selector_sel_'+id_user);
+			if (!checkbox.checked) {
+				window.document.getElementById('user_selector_table_main_selector_sel_' + id_user).click();
+			}
 			var form = YAHOO.util.Selector.query('form[id^=main_selector_form]')[0];
 
-			var input = document.createElement("input");
-			input.setAttribute("type", "hidden");
-			input.setAttribute("name", "relation");
-			input.setAttribute("value",new_value);
-			form.appendChild(input);
 			var okSelector = document.createElement("input");
 			okSelector.setAttribute("type", "hidden");
 			okSelector.setAttribute("name", "okselector");
 			okSelector.setAttribute("value", "1");
 			form.appendChild(okSelector);
-			var userSelector = document.createElement("input");
-			userSelector.setAttribute("type", "hidden");
-			userSelector.setAttribute("name", "userselector_input[main_selector]");
-			userSelector.setAttribute("value", id_user);
-			form.appendChild(userSelector);
 
 			YAHOO.util.Connect.setForm(form);
 
-			YAHOO.util.Connect.asyncRequest("POST", form.action, callback);
+			YAHOO.util.Connect.asyncRequest("POST", form.action+'&relation='+new_value+'&userselector_input[main_selector]='+id_user, callback);
 		};
 
 		//table events
