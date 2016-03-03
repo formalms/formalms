@@ -47,6 +47,16 @@ class Learning_Test extends Learning_Object {
 			}
 		}
 	}
+
+	public static function load($id){
+		$testObj = new self($id);
+		if ($testObj->getObjectType() == 'test'){
+			return $testObj;
+		}
+
+		$type_class = sql_query("SELECT className FROM %lms_lo_types WHERE objectType = '".$testObj->getObjectType()."'");
+		return  new $type_class( $id );
+	}
 	
 	function getObjectType() {
 		return 'test';
