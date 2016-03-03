@@ -211,24 +211,29 @@ function modtestgui( $object_test ) {
 		.$test_title.'</span></a><br /><br />'
 	, 'content');
 
-	$GLOBALS['page']->add('<ul class="link_list_inline">', 'content');
-	$GLOBALS['page']->add('<li>'.'<a href="index.php?modname=test&amp;op=defmodality&amp;idTest='
-		.$object_test->getId().'&amp;back_url='.$url_encode.'" title="'.$lang->def('_TEST_MODALITY').'">'
-			.$lang->def('_TEST_MODALITY').'</a>'.'</li>
-		<li>'.'<a href="index.php?modname=test&amp;op=deftime&amp;idTest='
-		.$object_test->getId().'&amp;back_url='.$url_encode.'" title="'.$lang->def('_TEST_COMPILE_TIME').'">'
-			.$lang->def('_TEST_COMPILE_TIME').'</a>'.'</li>'
-	, 'content');
-	if (!$object_test instanceof Learning_Test360) {
-		$GLOBALS['page']->add('<li>' . '<a href="index.php?modname=test&amp;op=defpoint&amp;idTest='
-				. $object_test->getId() . '&amp;back_url=' . $url_encode . '" title="' . $lang->def('_TEST_POINT_ASSIGNEMENT') . '">'
-				. $lang->def('_TEST_POINT_ASSIGNEMENT') . '</a>' . '</li>
-		<li>' . '<a href="index.php?modname=test&amp;op=feedbackman&amp;idTest='
+	$event = new \appLms\Events\Lms\TestConfigurationTabsRenderEvent($object_test, $url_encode, $lang);
+
+	$event->addTab('_TEST_MODALITY', '<li>'.'<a href="index.php?modname=test&amp;op=defmodality&amp;idTest='
+			.$object_test->getId().'&amp;back_url='.$url_encode.'" title="'.$lang->def('_TEST_MODALITY').'">'
+			.$lang->def('_TEST_MODALITY').'</a>'.'</li>');
+	$event->addTab('_TEST_COMPILE_TIME', '<li>'.'<a href="index.php?modname=test&amp;op=deftime&amp;idTest='
+			.$object_test->getId().'&amp;back_url='.$url_encode.'" title="'.$lang->def('_TEST_COMPILE_TIME').'">'
+			.$lang->def('_TEST_COMPILE_TIME').'</a>'.'</li>');
+	$event->addTab('_TEST_POINT_ASSIGNEMENT', '<li>' . '<a href="index.php?modname=test&amp;op=defpoint&amp;idTest='
+			. $object_test->getId() . '&amp;back_url=' . $url_encode . '" title="' . $lang->def('_TEST_POINT_ASSIGNEMENT') . '">'
+			. $lang->def('_TEST_POINT_ASSIGNEMENT') . '</a>' . '</li>');
+	$event->addTab('_FEEDBACK_MANAGEMENT', '<li>' . '<a href="index.php?modname=test&amp;op=feedbackman&amp;idTest='
 				. $object_test->getId() . '&amp;back_url=' . $url_encode . '" title="' . $lang->def('_FEEDBACK_MANAGEMENT') . '">'
-				. $lang->def('_FEEDBACK_MANAGEMENT') . '</a>' . '</li>'
-		, 'content');
+				. $lang->def('_FEEDBACK_MANAGEMENT') . '</a>' . '</li>');
+
+	\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestConfigurationTabsRenderEvent::EVENT_NAME, $event);
+
+	$GLOBALS['page']->add('<ul class="link_list_inline">', 'content');
+	foreach ($event->getTabs() as $tab) {
+		$GLOBALS['page']->add($tab, 'content');
 	}
 	$GLOBALS['page']->add('</ul>', 'content');
+
 	$caption = str_replace('%tot_page%' , $num_page, str_replace('%tot_element%' ,$num_quest , $lang->def('_TEST_CAPTION')));
 	
 	$tab = new Table( 0, $caption, $lang->def('_TEST_SUMMARY'));
