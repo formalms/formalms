@@ -133,8 +133,11 @@ if($login_user != '' && Get::sett('sso_token', 'off') == 'on') {
 
 				// specific action required
 				switch($next_action) {
+					case "organization" : {
+						$linkto = 'index.php?modname=organization&op=custom_playitem&id_item='.$id_item;
+						Util::jump_to($linkto);
+					};break;
 					case "playsco" : {
-
 						$linkto = 'index.php?modname=organization&op=custom_playitem&id_course='.$id_course.'&courseid='.$id_course.'&id_item='.$id_item.'&start_from_chapter='.$chapter.'&collapse_menu=1';
 						Util::jump_to($linkto);
 					};break;
