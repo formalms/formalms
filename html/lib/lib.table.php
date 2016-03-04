@@ -107,7 +107,8 @@ class TableCell {
 				.( $this->style != '' ? ' class="'.$this->style.'"' 	: '' )
 				.( $this->colspan != '' ? ' colspan="'.$this->colspan.'"' 	: '' )
 				.( $this->rowspan != '' ? ' rowspan="'.$this->rowspan.'"' : '' ).'>'
-				.( !$this->simple_markup ? '<div class="yui-dt-liner"><span class="yui-dt-label">' : '' )
+				//.( !$this->simple_markup ? '<div class="yui-dt-liner"><span class="yui-dt-label">' : '' )
+				.( !$this->simple_markup ? '<div class=""><span class="">' : '' )
 				.( $this->label != '' ? $this->label  : '' )
 				.( !$this->simple_markup ? '</span></div>' : '' )
 				.'</th>';
@@ -118,7 +119,8 @@ class TableCell {
 				.( $this->style != '' ? ' class="'.$this->style.'"' 	: '' )
 				.( $this->colspan != '' ? ' colspan="'.$this->colspan.'"' 	: '' )
 				.( $this->rowspan != '' ? ' rowspan="'.$this->rowspan.'"' : '' ).'>'
-				.( !$this->simple_markup ? '<div class="yui-dt-liner">' : '' )
+				// .( !$this->simple_markup ? '<div class="yui-dt-liner">' : '' )
+				.( !$this->simple_markup ? '<div class="">' : '' )
 				.( $this->label != '' ? $this->label  : '' )
 				.( !$this->simple_markup ? '</div>' : '' )
 				.'</td>';
@@ -231,7 +233,8 @@ class TableRow {
 
 		if(!is_array($this->cells)) return '';
 
-		$row = '<tr class="yui-dt-'.($i%2?'odd':'even').' '.$this->style.'"'
+		// $row = '<tr class="yui-dt-'.($i%2?'odd':'even').' '.$this->style.'"'
+		$row = '<tr class="'.($i%2?'odd':'even').' '.$this->style.'"'
 			.( $this->id !== false ? ' id="'.$this->id.'"' : '' )
 			.(!empty($this->other_code) ? ' '.$this->other_code : '').'>'."\n";
 
@@ -304,7 +307,7 @@ class Table {
 		/*i need this for the transiction from old to new*/
 		$this->rows = 0;
 		$this->maxRowsAtTime = $max_rows;
-		Util::get_css(Get::tmpl_path('base').'yui-skin/datatable.css', true, true);
+		//Util::get_css(Get::tmpl_path('base').'yui-skin/datatable.css', true, true);
 	}
 
 
@@ -474,7 +477,8 @@ class Table {
 		if(count($this->table_head) == 0 && count($this->table_foot) == 0 && count($this->table_body) == 0) {
 			return '';
 		}
-		$table = '<div class="yui-dt">';
+		//$table = '<div class="yui-dt">';
+		$table = '<div class="table-responsive">';
 
 		if($this->add_action && !$this->hide_over) {
 			$table .= '<div class="table-container-over">'
