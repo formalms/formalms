@@ -43,6 +43,8 @@ class SettingAdm extends Model {
 		WHERE hide_in_modify = '0'
 		ORDER BY regroup ");
 
+		$event = new \appCore\Events\Core\ConfigGetRegroupUnitsEvent();
+
 		$names = array(
 			1	=> 'Main_options',
 			3	=> 'User',
@@ -56,6 +58,10 @@ class SettingAdm extends Model {
 			11	=> 'Sms',
 			12	=> 'Social',
 		);
+
+		$event->setGroupUnits($names);
+		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\ConfigGetRegroupUnitsEvent::EVENT_NAME, $event);
+		$names = $event->getGroupUnits();
 
 		$group = array();
 		while(list($id_regroup) = sql_fetch_row($re_regroup))  {
