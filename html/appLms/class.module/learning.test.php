@@ -27,6 +27,8 @@ class Learning_Test extends Learning_Object {
 
 	var $retain_answers_history = false;
 
+	var $idCourse;
+
 	/**
 	 * function learning_Test()
 	 * class constructor
@@ -44,6 +46,10 @@ class Learning_Test extends Learning_Object {
 					$this->retain_answers_history
 					) = $this->db->fetch_row($res);
 				$this->isPhysicalObject = true;
+			}
+			$res = $this->db->query("SELECT idCourse FROM %lms_organization WHERE objectType='".$this->obj_type."' AND idResource = '".(int)$id."'");
+			if ($res && $this->db->num_rows($res)>0) {
+				list($this->idCourse) = $this->db->fetch_row($res);
 			}
 		}
 	}
@@ -355,6 +361,22 @@ class Learning_Test extends Learning_Object {
 	public function setRetainAnswersHistory($retain_answers_history)
 	{
 		$this->retain_answers_history = $retain_answers_history;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getIdCourse()
+	{
+		return $this->idCourse;
+	}
+
+	/**
+	 * @param mixed $idCourse
+	 */
+	public function setIdCourse($idCourse)
+	{
+		$this->idCourse = $idCourse;
 	}
 
 }

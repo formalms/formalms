@@ -142,19 +142,8 @@ class DoceboUserNotifier extends DoceboEventConsumer {
 	}
 
 	function _sendSms($body, &$sms_recipients, &$users_info = false) {
-
-		// in the future, if we'll have more than one gateway, smsmarket
-		// will became a class that will include all the smsmarket's methods
-		// and we will just load the class and call $obj->sendsms(..)
-
-		/* switch(Get::sett('sms_gateway')) {
-			case "smsmarket": {
-				$this->_smsmarket_Send(strip_tags($body), $sms_recipients);
-			} break;
-		} */
-		require_once(_adm_.'/lib/lib.sms.php');
-		$sms_manager =new SmsManager();
-		$sms_manager->sendSms(strip_tags($body), $sms_recipients);
+		require_once(Docebo::inc(_adm_ . '/lib/Sms/SmsGatewayManager.php'));
+		SmsGatewayManager::send($sms_recipients, strip_tags($body));
 	}
 
 
