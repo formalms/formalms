@@ -486,7 +486,7 @@ class Table {
 				.'</div>';
 		}
 
-		$table .= '<table class="'.$this->table_style.'" ';
+		$table .= '<table class="table table-bordered '.$this->table_style.'" ';
 		$table.= ($this->getTableId() !== FALSE ? 'id="'.$this->getTableId().'" ' : "");
 		$table.= 'summary="'.$this->table_summary.'" cellspacing="0">'."\n";
 		if($this->table_caption != '') {

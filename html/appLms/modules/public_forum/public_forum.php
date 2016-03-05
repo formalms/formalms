@@ -90,8 +90,7 @@ function forum() {
 	// Find and set unreaded message
 	loadUnreaded();
 
-	// $tb = new Table( Get::sett('visuItem'), '', $lang->def('_ELEFORUM'), 'list-forums');
-	$tb = new Table( Get::sett('visuItem'), '', $lang->def('_ELEFORUM'), 'table table-bordered');
+	$tb = new Table( Get::sett('visuItem'), '', $lang->def('_ELEFORUM'), 'list-forums');
 	$tb->initNavBar('ini', 'link');
 	$tb->setLink($base_link);
 
@@ -1138,7 +1137,7 @@ function thread() {
 	, 'content');
 
 	// $tb = new Table(Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'), 'thread-summary');
-	$tb = new Table(Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'), 'thread-summary table table-bordered');
+	$tb = new Table(Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'), 'thread-summary');
 
 	$img_up 	= '<img src="'.getPathImage().'standard/ord_asc.png" alt="'.$lang->def('_ORD_ASC').'" />';
 	$img_down 	= '<img src="'.getPathImage().'standard/ord_desc.png" alt="'.$lang->def('_ORD_DESC').'" />';
@@ -1869,7 +1868,7 @@ function message() {
 	$profile_man->init('profile', 'framework', 'index.php?modname=public_forum&op=forum');
 
 	// $tb 	= new Table(Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'), 'forum-message');
-	$tb 	= new Table(Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'), 'forum-message table table-bordered');
+	$tb 	= new Table(Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'), 'forum-message');
 	$tb->initNavBar('ini', 'link');
 	$tb->setLink('index.php?modname=public_forum&amp;op=message&amp;idThread='.$id_thread);
 	$ini 	= $tb->getSelectedElement();
@@ -2298,8 +2297,7 @@ function showMessageForAdd($id_thread, $how_much) {
 
 	$acl_man 	=& Docebo::user()->getAclManager();
 
-	// $tb 	= new Table(Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'));
-	$tb 	= new Table(Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'), 'table table-bordered');
+	$tb = new Table(Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'));
 
 	// Find post
 	$messages 		= array();
@@ -3109,8 +3107,7 @@ function forumsearch() {
 		.Form::closeForm()
 	, 'content');
 
-	// $tb = new Table(Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'));
-	$tb = new Table(Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'), 'table table-bordered');
+	$tb = new Table(Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'));
 
 	$img_up 	= '<img src="'.getPathImage().'standard/ord_asc.png" alt="'.$lang->def('_ORD_ASC').'" />';
 	$img_down 	= '<img src="'.getPathImage().'standard/ord_desc.png" alt="'.$lang->def('_ORD_DESC').'" />';
@@ -3232,8 +3229,7 @@ function forumsearchmessage() {
 	$mod_perm	= checkPerm('mod', true);
 	$acl_man 	=& Docebo::user()->getAclManager();
 
-	// $tb 	= new Table(Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'));
-	$tb 	= new Table(Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'), 'table table-bordered');
+	$tb	= new Table(Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'));
 	$tb->initNavBar('ini', 'link');
 	$tb->setLink('index.php?modname=public_forum&amp;op=searchmessage&amp;idThread='.$id_thread.'&amp;ini_thread='.$ini_thread);
 	$ini 	= $tb->getSelectedElement();
