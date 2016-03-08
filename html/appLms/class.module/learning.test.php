@@ -12,7 +12,6 @@
 \ ======================================================================== */
 
 require_once(Docebo::inc(_folder_lms_.'/class.module/learning.object.php'));
-require_once(Docebo::inc(_folder_lms_.'/class.module/learning.test.php'));
 require_once(Docebo::inc(_folder_lms_.'/modules/question/class.question.php'));
 
 class Learning_Test extends Learning_Object {
@@ -28,6 +27,8 @@ class Learning_Test extends Learning_Object {
 	var $retain_answers_history = false;
 
 	var $idCourse;
+
+	var $idOrg;
 
 	/**
 	 * function learning_Test()
@@ -47,9 +48,9 @@ class Learning_Test extends Learning_Object {
 					) = $this->db->fetch_row($res);
 				$this->isPhysicalObject = true;
 			}
-			$res = $this->db->query("SELECT idCourse FROM %lms_organization WHERE objectType='".$this->obj_type."' AND idResource = '".(int)$id."'");
+			$res = $this->db->query("SELECT idOrg, idCourse FROM %lms_organization WHERE objectType='".$this->obj_type."' AND idResource = '".(int)$id."'");
 			if ($res && $this->db->num_rows($res)>0) {
-				list($this->idCourse) = $this->db->fetch_row($res);
+				list($this->idOrg, $this->idCourse) = $this->db->fetch_row($res);
 			}
 		}
 	}
@@ -378,6 +379,23 @@ class Learning_Test extends Learning_Object {
 	{
 		$this->idCourse = $idCourse;
 	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getIdOrg()
+	{
+		return $this->idOrg;
+	}
+
+	/**
+	 * @param mixed $idOrg
+	 */
+	public function setIdOrg($idOrg)
+	{
+		$this->idOrg = $idOrg;
+	}
+
 
 }
 
