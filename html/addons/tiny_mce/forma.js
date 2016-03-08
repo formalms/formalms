@@ -20,8 +20,20 @@ tinymce.init({
 	force_br_newlines : true,
 	relative_urls : true,
 	remove_script_host: false,
-	plugins : "",
-	//autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks
+
+  plugins: [
+    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+    'searchreplace wordcount visualblocks visualchars code fullscreen',
+    'insertdatetime media nonbreaking save table contextmenu directionality',
+    'emoticons template paste textcolor colorpicker textpattern imagetools'
+  ],
+  toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+  toolbar2: 'print preview media | forecolor backcolor emoticons',
+  image_advtab: true,
+  templates: [
+    { title: 'Test template 1', content: 'Test 1' },
+    { title: 'Test template 2', content: 'Test 2' }
+  ],
 
 	// Theme options
 	theme_advanced_buttons1 : "code,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
@@ -44,7 +56,7 @@ tinymce.init({
 
 	height:"250px",
 	width:"100%",
-	file_browser_callback : 'myFileBrowser'
+	//file_browser_callback : 'myFileBrowser'
 });
 
 /***************
@@ -75,7 +87,7 @@ tinyMCE.init
 	file_browser_callback : 'myFileBrowser'
 });
 ***********/
-
+/*
 function myFileBrowser (field_name, url, type, win)
 {
 	tinyMCE.activeEditor.windowManager.open({
@@ -93,3 +105,4 @@ function myFileBrowser (field_name, url, type, win)
 
 	return false;
 }
+*/
