@@ -36,16 +36,6 @@ function loadHeaderHTMLEditor() {
 		//using tiny_mce
 		case 'tinymce':
 			Util::get_js(Get::rel_path('base').'/addons/tiny_mce/tinymce.gzip.js', true, true);
-			$GLOBALS['page']->add(	'<script type="text/javascript">
-									tinymce.init({
-                                                                        //safari,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template
-									plugins : "",
-									themes : "modern",
-									languages : "en",
-									disk_cache : true,
-									debug : false
-									});
-								</script>', 'page_head');
 			Util::get_js(Get::rel_path('base').'/addons/tiny_mce/forma.js', true, true);
 		break;
 

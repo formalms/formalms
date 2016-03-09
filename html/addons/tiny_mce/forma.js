@@ -64,9 +64,6 @@ tinymce.init({
             width: 800,
             height: 600
         }, {
-            oninsert: function(url) {
-                win.document.getElementById(field_name).value = url; 
-            },
             window : win,
             input : field_name
         });
