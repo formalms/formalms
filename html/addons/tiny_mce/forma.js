@@ -57,6 +57,20 @@ tinymce.init({
 	height:"250px",
 	width:"100%",
 	//file_browser_callback : 'myFileBrowser'
+	file_browser_callback: function(field_name, url, type, win) { 
+        tinymce.activeEditor.windowManager.open({
+            title: "My file browser",
+            url: '../appCore/addons/mod_media/index_tiny.php' + "?type=" + type,
+            width: 800,
+            height: 600
+        }, {
+            oninsert: function(url) {
+                win.document.getElementById(field_name).value = url; 
+            },
+            window : win,
+            input : field_name
+        });
+    }
 });
 
 /***************
@@ -87,7 +101,7 @@ tinyMCE.init
 	file_browser_callback : 'myFileBrowser'
 });
 ***********/
-/*
+
 function myFileBrowser (field_name, url, type, win)
 {
 	tinyMCE.activeEditor.windowManager.open({
@@ -105,4 +119,3 @@ function myFileBrowser (field_name, url, type, win)
 
 	return false;
 }
-*/

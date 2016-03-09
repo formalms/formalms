@@ -171,34 +171,35 @@ function show_personal_media(& $out, & $lang) {
 	$user_id 	= (int)Docebo::user()->getIdSt();
 
 	//if(Get::sett('hteditor') == 'tinymce') {
-		$GLOBALS['page']->add(''.
-				'<script type="text/javascript" type="text/javascript" src="'.Get::rel_path('base').'/addons/tiny_mce/tiny_mce_popup.js"></script>',
-			'page_head');
-
+		
 		$GLOBALS['page']->add('<script type="text/javascript">'
 		.'var FileBrowserDialogue = {
-		    init : function () {
-		        // Here goes your code for setting your custom things onLoad.
-				var allLinks = document.getElementsByTagName("link");
-				allLinks[allLinks.length-1].parentNode.removeChild(allLinks[allLinks.length-1]);
-		    },
 		    mySubmit : function (url) {
 		        var URL = url;
-		        var win = tinyMCEPopup.getWindowArg("window");
+				
+				
+		        var win = top.tinymce.activeEditor.windowManager.getParams().window;
+				var input = top.tinymce.activeEditor.windowManager.getParams().input;
 
 		        // insert information now
-		        win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = URL;
-
-		        // for image browsers: update image dimensions
-		        if(win.ImageDialog) {
-			        if (win.ImageDialog.getImageData) win.ImageDialog.getImageData();
-			        if (win.ImageDialog.showPreviewImage) win.ImageDialog.showPreviewImage(URL);
-		        }
+		        win.document.getElementById(input).value = URL;
+				
+				// simulate the onchange event to let tinymce load the dimension of the image
+				var element=win.document.getElementById(input);
+				if ("createEvent" in document) {
+				    var evt = document.createEvent("HTMLEvents");
+				    evt.initEvent("change", false, true);
+				    element.dispatchEvent(evt);
+				}
+				else{
+				    element.fireEvent("onchange");
+				}
+				
 		        // close popup window
-		        tinyMCEPopup.close();
+				top.tinymce.activeEditor.windowManager.close();
+				
 		    }
 		}
-			tinyMCEPopup.onInit.add(FileBrowserDialogue.init, FileBrowserDialogue);
 		'
 
 		.'</script>', 'page_head');
@@ -214,7 +215,7 @@ function show_personal_media(& $out, & $lang) {
 
 	$path =(strlen(dirname($_SERVER['PHP_SELF'])) != 1 ? dirname($_SERVER['PHP_SELF']) : '' ).'/';
 	$path.=$GLOBALS["where_files_relative"];
-	$site_url="http://".$_SERVER['HTTP_HOST'].$path.'/common/users/';
+	
 
 	$qtxt = "
 	SELECT *
@@ -224,11 +225,12 @@ function show_personal_media(& $out, & $lang) {
 
 	if (($q) && (mysql_num_rows($q) > 0)) {
 		while($row = mysql_fetch_array($q)) {
-
+			$site_url="http://".$_SERVER['HTTP_HOST'].$path.'/common/users/';
 			$rowcnt = array();
 
 			if (!empty($row["media_url"])) {
 				$rowcnt[]="&nbsp;";
+				
 			}
 			else {
 				$file = _USER_FPATH.rawurlencode($row["real_fname"]);
@@ -245,6 +247,7 @@ function show_personal_media(& $out, & $lang) {
 
 			if (!empty($row["media_url"])) {
 				$type=getMediaType($row["media_url"]);
+				$site_url=$row["media_url"];
 			}
 			else {
 				$type=getMediaType($row["fname"]);
@@ -495,7 +498,7 @@ function show_cms_media(& $out, & $lang) {
 					? 'onclick="FileBrowserDialogue.mySubmit(\''.cleanUrlPath($site_url.$row["real_fname"]).'\'); return false;"' : '' )
 				.'>'
 				.$img."</a>\n";
-	*/
+	
 	$path =(strlen(dirname($_SERVER['PHP_SELF'])) != 1 ? dirname($_SERVER['PHP_SELF']) : '' ).'/';
 	$path.=$GLOBALS["where_files_relative"];
 	$site_url="http://".$_SERVER['HTTP_HOST'].$path._FPATH_INTERNAL;
@@ -521,7 +524,7 @@ function show_cms_media(& $out, & $lang) {
 
 	/*$res.=$form->openButtonSpace();
 	$res.=$form->getButton('undo', 'undo', $lang->def('_BACK'));
-	$res.=$form->closeButtonSpace(); */
+	$res.=$form->closeButtonSpace(); 
 
 	$res.=$form->closeForm();
 
