@@ -439,8 +439,75 @@ div.colored_row{height:16px;text-align:center;background:#E1EBF4;border:1px soli
     margin: 0;
 }
 
-.test_answer_space .answer_question input[type="radio"], .test_answer_space .answer_question input[type="checkbox"] {
-    margin: 4px;
+.test_answer_space .answer_question .input-wrapper {
+	display: inline-block;
+	position: relative;
+	margin: 10px;
+}
+
+.test_answer_space .answer_question .input-wrapper input[type="radio"], .test_answer_space .answer_question .input-wrapper input[type="checkbox"] {
+		width: 14px;
+		height: 14px;
+    margin: 0;
+    position: relative;
+    z-index: 999;
+    opacity: 0;
+}
+
+.test_answer_space .answer_question .input-wrapper::before {
+	content: '';
+	display: block;
+	width: 20px;
+	height: 20px;
+	border: solid 1px #ccc;
+	background-color: #fff;
+	position: absolute;
+	top: -3px;
+	left: -3px;
+}
+
+.test_answer_space .answer_question .input-wrapper.checked::before {
+	background-color: #3B99FC;
+}
+
+.test_answer_space .answer_question .input-wrapper-radio.checked::after {
+	display: block;
+	content: '';
+	width: 8px;
+	height: 8px;
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	background-color: #fff;
+}
+
+.test_answer_space .answer_question .input-wrapper-checkbox.checked::after {
+	display: block;
+	content: '\e013';
+	width: 12px;
+	height: 12px;
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	font-family: 'Glyphicons Halflings';
+	font-size: 11px;
+	line-height: 12px;
+	color: #fff;
+}
+
+.test_answer_space .answer_question .input-wrapper-radio::before, .test_answer_space .answer_question .input-wrapper-radio::after {
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+	border-radius: 50%;
+}
+
+.test_answer_space .answer_question label, .test_answer_space .answer_question label {
+	height: 16px;
+	margin: 0;
+	vertical-align: middle;
+	line-height: 14px;
 }
 
 #test_intro .pcontainer-feedback {

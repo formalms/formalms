@@ -632,10 +632,19 @@ class Choice_Question extends Question {
 			.'<div class="answer_question">';
 		while(list($id_answer, $answer) = sql_fetch_row($re_answer)){
 			
-			$content .=  '<input type="radio" id="quest_'.$id_quest.'_'.$id_answer.'" '
+			// $content .=  '<input type="radio" id="quest_'.$id_quest.'_'.$id_answer.'" '
+			// 	.'name="quest['.$id_quest.']" value="'.$id_answer.'"'
+			// 	.( ($find_prev && $id_answer == $id_answer_do) ? ' checked="checked"' : '' )
+			// 	.( $find_prev && $freeze ? ' disabled="disabled"' : '' ).' />'
+			// 	.'<label class="text_answer" for="quest_'.$id_quest.'_'.$id_answer.'">'.$answer.'</label><br />';
+
+			// wrapping radio button: mod by Andrea Fiadone - 10/03/2016
+			$content .=  '<div class="input-wrapper input-wrapper-radio">'
+				.'<input type="radio" id="quest_'.$id_quest.'_'.$id_answer.'" '
 				.'name="quest['.$id_quest.']" value="'.$id_answer.'"'
 				.( ($find_prev && $id_answer == $id_answer_do) ? ' checked="checked"' : '' )
-				.( $find_prev && $freeze ? ' disabled="disabled"' : '' ).' /> '
+				.( $find_prev && $freeze ? ' disabled="disabled"' : '' ).' />'
+				.'</div> '
 				.'<label class="text_answer" for="quest_'.$id_quest.'_'.$id_answer.'">'.$answer.'</label><br />';
 		}
 		if (Get::sett('no_answer_in_test') == 'on')

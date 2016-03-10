@@ -632,6 +632,16 @@ function play($object_test, $id_param) {
 		$time_string .= Form::getHidden('time_elapsed', 'time_elapsed', '0')
 			.'<br />';
 	}
+
+	$checkState =	"<script type=\"text/javascript\">
+									(function($) {
+										$(document).on('change', '.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]', function() {
+											$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
+											$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
+											$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
+										});
+									})(jQuery);
+								</script>";
 	
 	$GLOBALS['page']->add(
 		getTitleArea($lang->def('_TITLE').' : '.$test_info['title'], 'test', $lang->def('_TEST_INFO'))
@@ -644,7 +654,8 @@ function play($object_test, $id_param) {
 		.Form::getHidden('id_param', 'id_param', $id_param)
 		.Form::getHidden('back_url', 'back_url', $url_coded)
 		.Form::getHidden('idTrack', 'idTrack', $id_track)
-		.$time_string, 'content');
+		.$time_string
+		.$checkState, 'content');
 	
 	
 	if($tot_page > 1) {
