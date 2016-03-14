@@ -215,19 +215,20 @@
         <key id="cart&amp;_COURSE_TYPE" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Tipo Corso]]></key>
         <key id="cart&amp;_DATE_BEGIN" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Data di inizio]]></key>
         <key id="cart&amp;_DATE_END" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Data di completamento]]></key>
-        <key id="cart&amp;_DEL_SELECTED_ELEMENT" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Cancella elementi selezionati]]></key>
-        <key id="cart&amp;_EMPTY_CART" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Svuota carrello]]></key>
+        <key id="cart&amp;_DEL_SELECTED_ELEMENT" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Cancella l'articolo selezionato]]></key>
+        <key id="cart&amp;_EMPTY_CART" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Svuota il tuo carrello]]></key>
         <key id="cart&amp;_LEARNING_COURSE" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Corso elearning]]></key>
         <key id="cart&amp;_NAME" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Nome]]></key>
         <key id="cart&amp;_ORDER_NOW" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Ordina ora]]></key>
-        <key id="cart&amp;_ORDER_NUMBER" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Numero ordine]]></key>
-        <key id="cart&amp;_PAYMENT_SELECT" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Seleziona metodo di pagamento]]></key>
+        <key id="cart&amp;_ORDER_NUMBER" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Ordine n&deg;]]></key>
+        <key id="cart&amp;_PAYMENT_SELECT" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Scegli il tuo pagamento preferito]]></key>
         <key id="cart&amp;_PAY_WITH_PAYPAL" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Paga con Paypal]]></key>
         <key id="cart&amp;_TOTAL" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Totale]]></key>
         <key id="cart&amp;_TRANS_CREATED" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Transazione creata]]></key>
         <key id="cart&amp;_WIRE_INFO" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Informazioni pagamento]]></key>
-        <key id="cart&amp;_WIRE_PAYMENT" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Paga con bonifico]]></key>
+        <key id="cart&amp;_WIRE_PAYMENT" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Bonifico bancario]]></key>
         <key id="cart&amp;_WIRE_PAYMENT_DETAILS" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Dettagli del pagamento]]></key>
+        <key id="cart&amp;_CLASSROOM_COURSE" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Corso d'aula]]></key>
       </module>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aggiungi al carrello]]></key>
@@ -238,7 +239,7 @@
         <key id="catalogue&amp;_CERT_RELESABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificati disponibili per il download]]></key>
         <key id="catalogue&amp;_CLASSROOM_IN_CART" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Classroom nel carrello]]></key>
         <key id="catalogue&amp;_CLASSROOM_LOCATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Stabile - Palazzo]]></key>
-        <key id="catalogue&amp;_CONFIRM_ADD_TO_CART" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Conferma aggiunta al carrello]]></key>
+        <key id="catalogue&amp;_CONFIRM_ADD_TO_CART" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Conferma: aggiunta al carrello?]]></key>
         <key id="catalogue&amp;_CONFIRM_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Conferma l'iscrizione]]></key>
         <key id="catalogue&amp;_COURSEPATH_INTRO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Questo percorso formativo ha <b>[enrolled]</b> utenti iscritti]]></key>
         <key id="catalogue&amp;_COURSEPATH_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Il tuo curriculum]]></key>
@@ -254,7 +255,7 @@
         <key id="catalogue&amp;_COURSE_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Iscrizione al corso]]></key>
         <key id="catalogue&amp;_COURSE_S_GODADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Solo gli amministratori possono iscrivere]]></key>
         <key id="catalogue&amp;_COURSE_S_MODERATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[L'iscrizione al corso richiede l'approvazione]]></key>
-        <key id="catalogue&amp;_COURSE_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tipo corso]]></key>
+        <key id="catalogue&amp;_COURSE_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tipo di corso]]></key>
         <key id="catalogue&amp;_COURSE_YOU_CAN_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Corsi a cui puoi accedere]]></key>
         <key id="catalogue&amp;_ELEARNING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-learning]]></key>
         <key id="catalogue&amp;_ENTRY_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Corsi e percorsi]]></key>
@@ -283,6 +284,8 @@
         <key id="catalogue&amp;_USER_STATUS_ENTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Entra nel corso]]></key>
         <key id="catalogue&amp;_WAITING_APPROVAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[In attesa di approvazione]]></key>
         <key id="catalogue&amp;_WORD_TO_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cerca per testo]]></key>
+        <key id="catalogue&amp;_SHOW_EDITIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostra le edizioni]]></key>
+				<key id="catalogue&amp;_ALL_EDITION_BUYED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hai acquistato tutte le edizioni]]></key>
       </module>
       <module id="certificate">
         <key id="certificate&amp;_ALT_REM_META_CERT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Elimina i meta certificati già pubblicati]]></key>
@@ -860,6 +863,7 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="coursereport&amp;_TQ_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Statistiche per il test "[test]"]]></key>
         <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Considera per voto finale]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Peso]]></key>
+				<key id="coursereport&amp;_TH_TEST_REPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Report test]]></key>
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aggiungi nuovo corso]]></key>
@@ -959,9 +963,9 @@ Title: [thread_title]]]></key>
 
 <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_NEW_USER_UNSUBS_WAITING_SUBJECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Richiesta di rimozione da un corso]]></key>
-        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_SUBJECT_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Richiesta di rimozione da un corso]]></key>
+        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_SUBJECT_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Richiesta di disiscrizione da un corso]]></key>
         <key id="email&amp;_NEW_USER_UNSUBS_WAITING_TEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[L'utente [userid] è in attesa di essere cancellato da un corso]]></key>
-        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_TEXT_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Un utente è in attesa di essere cancellato da un corso]]></key>
+        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_TEXT_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[	Un utente ha chiesto di essere disiscritto da un corso]]></key>
         <key id="email&amp;_PASSWORD_CHANGED" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[e la tua password è stata cambiata in: [password]]]></key>
         <key id="email&amp;_REFUSED_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Utente non approvato]]></key>
         <key id="email&amp;_REFUSED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[L'amministratore di [url] non ha approvato la tua richiesta di iscrizione]]></key>
@@ -2065,7 +2069,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_ALL_PAGES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tutte le pagine]]></key>
         <key id="standard&amp;_ALT_CHECK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Selezionata]]></key>
         <key id="standard&amp;_ALT_LESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[-]]></key>
-        <key id="standard&amp;_ALT_MORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[]]></key>
+        <key id="standard&amp;_ALT_MORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Testo alternativo]]></key>
         <key id="standard&amp;_ALT_ROOT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Principale]]></key>
         <key id="standard&amp;_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Risposta]]></key>
         <key id="standard&amp;_APPROVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Approva]]></key>
@@ -2509,9 +2513,9 @@ Password: [password]]]></key>
         <key id="subscribe&amp;_DATE_LAST_COMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Data dell'ultimo completamento]]></key>
         <key id="subscribe&amp;_DENY_SUBSCRIBED_TEXT_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[La tua richiesta di iscrizione al corso [course] è stata rifiutata dall'amministratore.]]></key>
         <key id="subscribe&amp;_EMPTYSPACE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Per questo corso devi selezionare solo [max_subscribe] utenti da iscrivere]]></key>
-        <key id="subscribe&amp;_IMPORT_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seleziona il file da importare]]></key>
+        <key id="subscribe&amp;_IMPORT_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Importa file .csv]]></key>
         <key id="subscribe&amp;_IMPORT_FROM_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Importa utenti dal corso]]></key>
-        <key id="subscribe&amp;_IMPORT_HEADER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Usa la prima riga come header]]></key>
+        <key id="subscribe&amp;_IMPORT_HEADER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[La prima riga è l'intestazione?]]></key>
         <key id="subscribe&amp;_IMPORT_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Per l'import usare un file con un elenco di userid (uno per riga)]]></key>
         <key id="subscribe&amp;_INSERT_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inserimenti corretti]]></key>
         <key id="subscribe&amp;_INSERT_NOT_NEEDED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inserimenti non necessari]]></key>
