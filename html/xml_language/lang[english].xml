@@ -2555,6 +2555,8 @@ Password: [password]]]></key>
       </module>
       <module id="subscription">
         <key id="subscription&amp;_CONFIRM_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Confirm Subscription]]></key>
+        <key id="subscription&amp;_IMPORT_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[.csv file import]]></key>
+        <key id="subscribe&amp;_IMPORT_HEADER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Do you want to include the header?]]></key>
       </module>
       <module id="sysforum">
         <key id="sysforum&amp;_ADDMESSAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[New message]]></key>

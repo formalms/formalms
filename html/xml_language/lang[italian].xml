@@ -212,7 +212,7 @@
         <key id="cart&amp;_CART" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Carrello]]></key>
         <key id="cart&amp;_CODE" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Codice]]></key>
         <key id="cart&amp;_COURSE_PRIZE" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Prezzo del corso]]></key>
-        <key id="cart&amp;_COURSE_TYPE" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Tipo Corso]]></key>
+        <key id="cart&amp;_COURSE_TYPE" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Tipo di Corso]]></key>
         <key id="cart&amp;_DATE_BEGIN" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Data di inizio]]></key>
         <key id="cart&amp;_DATE_END" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Data di completamento]]></key>
         <key id="cart&amp;_DEL_SELECTED_ELEMENT" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Cancella l'articolo selezionato]]></key>
@@ -2513,7 +2513,7 @@ Password: [password]]]></key>
         <key id="subscribe&amp;_DATE_LAST_COMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Data dell'ultimo completamento]]></key>
         <key id="subscribe&amp;_DENY_SUBSCRIBED_TEXT_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[La tua richiesta di iscrizione al corso [course] è stata rifiutata dall'amministratore.]]></key>
         <key id="subscribe&amp;_EMPTYSPACE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Per questo corso devi selezionare solo [max_subscribe] utenti da iscrivere]]></key>
-        <key id="subscribe&amp;_IMPORT_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Importa file .csv]]></key>
+        <key id="subscribe&amp;_IMPORT_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seleziona i file da importare]></key>
         <key id="subscribe&amp;_IMPORT_FROM_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Importa utenti dal corso]]></key>
         <key id="subscribe&amp;_IMPORT_HEADER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[La prima riga è l'intestazione?]]></key>
         <key id="subscribe&amp;_IMPORT_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Per l'import usare un file con un elenco di userid (uno per riga)]]></key>
@@ -2548,6 +2548,8 @@ Password: [password]]]></key>
       </module>
       <module id="subscription">
         <key id="subscription&amp;_CONFIRM_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Conferma l'iscrizione]]></key>
+        <key id="subscription&amp;_IMPORT_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Importa file .csv]]></key>
+        <key id="subscribe&amp;_IMPORT_HEADER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[La prima riga è l'intestazione?]]></key>
       </module>
       <module id="sysforum">
         <key id="sysforum&amp;_ADDMESSAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Scrivi commento]]></key>
