@@ -2513,7 +2513,7 @@ Password: [password]]]></key>
         <key id="subscribe&amp;_DATE_LAST_COMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Data dell'ultimo completamento]]></key>
         <key id="subscribe&amp;_DENY_SUBSCRIBED_TEXT_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[La tua richiesta di iscrizione al corso [course] è stata rifiutata dall'amministratore.]]></key>
         <key id="subscribe&amp;_EMPTYSPACE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Per questo corso devi selezionare solo [max_subscribe] utenti da iscrivere]]></key>
-        <key id="subscribe&amp;_IMPORT_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seleziona i file da importare]></key>
+        <key id="subscribe&amp;_IMPORT_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seleziona i file da importare]]></key>
         <key id="subscribe&amp;_IMPORT_FROM_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Importa utenti dal corso]]></key>
         <key id="subscribe&amp;_IMPORT_HEADER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[La prima riga è l'intestazione?]]></key>
         <key id="subscribe&amp;_IMPORT_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Per l'import usare un file con un elenco di userid (uno per riga)]]></key>
