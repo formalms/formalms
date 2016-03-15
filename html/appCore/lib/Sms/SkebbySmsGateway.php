@@ -66,7 +66,7 @@ class SkebbySmsGateway implements SmsGatewayInterface
             $text,
             SMS_TYPE_BASIC,
             '',
-            Get::sett('sms_sent_from', '')
+            Get::sett('sms_sent_from', 'ISO-8859-1')
         );
 
 
