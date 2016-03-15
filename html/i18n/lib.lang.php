@@ -163,7 +163,8 @@ class Lang {
 	 */
 	public static function load_module($module, $lang_code = false) {
 
-		$lang_code = self::lang_code($lang_code);
+                if(!$lang_code) $lang_code = self::lang_code();
+		//$lang_code = self::lang_code($lang_code);
 		if(isset(self::$_loaded_modules[$lang_code][$module])) return true;
 		else self::$_loaded_modules[$lang_code][$module] = $module;
 
@@ -183,7 +184,8 @@ class Lang {
 
 		if(self::$_lang == false) self::init('standard');
 		if(!$module) $module = self::$_module;
-		$lang_code = self::lang_code($lang_code);
+		if(!$lang_code) $lang_code = self::lang_code();
+		//$lang_code = self::lang_code($lang_code);
 
 		$translation = '';
 		if( isset(self::$translations[$lang_code][$module][$key]) ) {
@@ -211,7 +213,8 @@ class Lang {
 		if($key == '') return '';
 		if(self::$_lang == false) self::init('standard');
 		if(!$module) $module = self::$_module;
-		$lang_code = self::lang_code($lang_code);
+		if(!$lang_code)$lang_code = self::lang_code();
+                //$lang_code = self::lang_code($lang_code);
 		self::load_module($module, $lang_code);
 
 		$translation = '';
