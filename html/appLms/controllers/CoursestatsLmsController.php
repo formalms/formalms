@@ -647,6 +647,61 @@ class CoursestatsLmsController extends LmsController {
 			return;
 		}
 
+                require_once(_lms_.'/modules/organization/orglib.php');
+                require_once(_lms_.'/lib/lib.param.php');
+                
+                $repoDb = new OrgDirDb($id_course);
+                $folder = $repoDb->getFolderById( $id_lo );
+                $id_resource = $folder->otherValues[REPOFIELDIDRESOURCE];
+                $id_param = $folder->otherValues[ORGFIELDIDPARAM];
+                $idReference = getLOParam($id_param, 'idReference');
+                
+                require_once(_lms_.'/class.module/track.object.php');
+                $lo_info = $this->model->getLOInfo($id_lo);
+                
+                switch($lo_info->objectType){
+                    case 'faq':
+                        require_once(_lms_.'/class.module/track.faq.php');
+                        $itemtrack = new Track_Faq(null);
+                        break;
+                    case 'glossary': 
+                        require_once(_lms_.'/class.module/track.glossary.php');
+                        $itemtrack = new Track_Glossary(null);
+                        break;
+                    case 'htmlpage': 
+                        require_once(_lms_.'/class.module/track.htmlpage.php');
+                        $itemtrack = new Track_Htmlpage(null);
+                        break;
+                    case 'item': 
+                        require_once(_lms_.'/class.module/track.item.php');
+                        $itemtrack = new Track_Item(null, $id_user);
+                        break;
+                    case 'link': 
+                        require_once(_lms_.'/class.module/track.link.php');
+                        $itemtrack = new Track_Link(null);
+                        break;
+                    case 'poll': 
+                        require_once(_lms_.'/class.module/track.poll.php');
+                        $itemtrack = new Track_Poll(null);
+                        break;
+                    case 'scormorg':
+                        require_once(_lms_.'/modules/scorm/scorm_items_track.php');
+                        $itemtrack = new Scorm_ItemsTrack(null, $GLOBALS['prefix_lms']);
+                        break;
+                    case 'test': 
+                        require_once(_lms_.'/class.module/track.test.php');
+                        $itemtrack = new Track_Test(null);
+                        break;
+                }
+                
+                list( $exist, $idTrack ) = $itemtrack->getIdTrack( $idReference, $id_user, $id_resource, TRUE );
+                
+                if( !$exist ){
+                        require_once( _lms_ . '/class.module/track.object.php' );
+                        $track_lo = new Track_Object( $idTrack );
+                        $track_lo->createTrack( $idReference, $idTrack, $id_user, date("Y-m-d H:i:s"), 'not attempted', $lo_info->objectType);
+                }
+
 		$output = array();
 		$col = Get::req('col', DOTY_STRING, "");
 		switch ($col) {

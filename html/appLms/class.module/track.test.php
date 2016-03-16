@@ -90,6 +90,18 @@ class Track_Test extends Track_Object {
 		return $id_track;
 	}
 	
+        function getIdTrack( $idReference, $idUser, $idResource, $createOnFail = FALSE ) {
+                
+                $rsTrack = $this->getTrack($idResource,$idUser);
+                if( $rsTrack !== FALSE ) {
+                    return array( TRUE, $rsTrack );
+                } else if ($createOnFail) {
+                        $rsTrack = $this->createNewTrack( $idUser, $idResource, $idReference );
+                        return array( FALSE, $rsTrack );
+                }
+		return FALSE;
+	}
+	
 	/**
 	 * function isTrack( $idUser, $idTest, $idReference )
 	 *

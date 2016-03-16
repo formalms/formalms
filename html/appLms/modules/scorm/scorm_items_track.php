@@ -459,6 +459,22 @@ Class Scorm_ItemsTrack {
 		}
 		return $result;
 	}
+        
+        
+        function getIdTrack( $idReference, $idUser, $idResource, $createOnFail = FALSE ) {
+                
+                $rsItemTrack = $this->getItemTrack($idUser,$idReference, NULL, $idResource);
+                if( $rsItemTrack !== FALSE ) {
+                    $arrItemTrack = mysql_fetch_assoc( $rsItemTrack );
+                    return array( TRUE, $arrItemTrack['idscorm_item_track'] );
+                } else if ($createOnFail) {
+                        $this->createItemsTrack( $idUser, $idReference, $idResource );
+                        $rsItemTrack = $this->getItemTrack( $idUser, $idReference, NULL, $idResource );
+                        $arrItemTrack = mysql_fetch_assoc( $rsItemTrack );
+                        return array( FALSE, $arrItemTrack['idscorm_item_track'] );
+                }
+		return FALSE;
+	}
 	
 	/**
 	 *	Scorm_ItemsTrack::setStatus

@@ -82,8 +82,9 @@ $arrItemTrack = mysql_fetch_assoc( $rsItemTrack );
 require_once( _lms_ . '/class.module/track.object.php' );
 require_once( _lms_ . '/class.module/track.scorm.php' );
 $track_so = new Track_ScormOrg( $arrItemTrack['idscorm_item_track'], false, false, NULL, $environment );
-if( $track_so->idReference === NULL )
+if( $track_so->idReference === NULL ){
 	$track_so->createTrack( $idReference, $arrItemTrack['idscorm_item_track'], $idUser, date("Y-m-d H:i:s"), 'ab-initio', 'scormorg' );
+}
 
 
 /* info on number of items and setting of variables for tree hide/show */

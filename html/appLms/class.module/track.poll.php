@@ -63,7 +63,7 @@ class Track_Poll extends Track_Object {
 	/**
 	 * @return id_track if exists or false 
 	 **/
-	function getIdTrack( $id_reference, $id_resource, $id_user ) {
+	function getTrack( $id_reference, $id_resource, $id_user ) {
 		
 		
 		$query = "
@@ -78,6 +78,18 @@ class Track_Poll extends Track_Object {
 			return $id_track;
 		}
 		else return false;
+	}
+        
+        function getIdTrack( $idReference, $idUser, $idResource, $createOnFail = FALSE ) {
+                
+                $rsTrack = $this->getTrack($id_reference,$idResource,$idUser);
+                if( $rsTrack !== FALSE ) {
+                    return array( TRUE, $rsTrack );
+                } else if ($createOnFail) {
+                        $rsTrack = $this->createNewTrack( $idUser, $idResource, $idReference );
+                        return array( FALSE, $rsTrack );
+                }
+		return FALSE;
 	}
 	
 	/**

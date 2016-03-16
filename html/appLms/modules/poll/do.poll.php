@@ -20,27 +20,11 @@ function retriveTrack($id_reference, $id_poll, $id_user) {
 	}
 	
 	if($id_reference !== FALSE) {
+                require_once(_lms_.'/class.module/track.poll.php');
+                $itemtrack = new Track_Poll(null);
 		
-		// Load existing info track$id_reference, $id_resource, $id_user
-		
-		$id_track 	= Track_Poll::getIdTrack($id_reference, $id_poll, $id_user); //fixed by fleo
-		//$track_info 	= Track_Poll::getIdTrack($id_reference, $id_poll, $id_user); 
-		//$id_track 		= $track_info['id_track'];
-		
-		if($id_track) {
-			return $id_track;
-		} else {
-			$id_track = Track_Poll::createNewTrack($id_user, $id_poll, $id_reference);
-			if($id_track) {
-				/*Track_Poll::createTrack(	$id_reference, 
-											$id_track, 
-											$id_user, 
-											date('Y-m-d H:i:s'), 
-											'attempted', 
-											'poll' );*/
-				return $id_track;
-			}
-		}
+                list( $exist, $idTrack ) = $itemtrack->getIdTrack( $idReference, $id_user, $id_poll, TRUE );
+                return $idTrack;
 	} 
 	return false;
 }
