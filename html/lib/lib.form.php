@@ -43,22 +43,22 @@ class Form {
 	 * @param string $other 	optional code for the form tag
 	 * @return string 	with the form opening html code
 	 */
-	 public static function openForm( $id , $action, $css_form = false, $method = false, $enctype = '', $other = '' ) {
+	public static function openForm( $id , $action, $css_form = false, $method = false, $enctype = '', $other = '' ) {
 
-		 $editor_extra=getEditorExtra();
-		 $other.=(!empty($editor_extra) ? " ".$editor_extra : "");
+		$editor_extra=getEditorExtra();
+		$other.=(!empty($editor_extra) ? " ".$editor_extra : "");
 
 		if ($css_form  === false) $css_form = 'std_form';
 		if ($method == false) $method = 'post';
 		return '<form '
-			.( $css_form == '' ? '' : ' class="'.$css_form.'"' )
-			.' id="'.$id.'" method="'.$method.'" action="'.$action.'"'
-			.( $enctype != '' ? ' enctype="'.$enctype.'"' : '' )
-			.$other.'>'."\n"
-			.'<div>'."\n"
+		.( $css_form == '' ? '' : ' class="'.$css_form.'"' )
+		.' id="'.$id.'" method="'.$method.'" action="'.$action.'"'
+		.( $enctype != '' ? ' enctype="'.$enctype.'"' : '' )
+		.$other.'>'."\n"
+		.'<div>'."\n"
 
-			.'<input type="hidden" id="authentic_request_'.$id.'" name="authentic_request" value="'.Util::getSignature().'" />';
-    }
+		.'<input type="hidden" id="authentic_request_'.$id.'" name="authentic_request" value="'.Util::getSignature().'" />';
+	}
 
 	/**
 	 * public static function openElementSpace( $css_class )
@@ -69,20 +69,20 @@ class Form {
 	public static function openElementSpace( $css_class = 'form_elem' ) {
 		return '<div class="'.$css_class.'">'."\n";
 	}
-	
-	
+
+
 	/**
 	 * public static function getTextLabel($label, $css_class = '')
 	 *
 	 * @param string    $label              the text of the label
 	 * @param string    $css_class 		the css of the container element
 	 */
-	
+
 	public static function getTextLabel($label, $css_class = 'textLabel') {
 		//check if the label
 		return '<div><label class="'.$css_class.'">'.$label.'</label></div>';
 	}
-	
+
 
 	/**
 	 * public static function getTextBox( $text , $css_line = '')
@@ -95,7 +95,7 @@ class Form {
 	public static function getTextBox( $text , $css_line = 'form_line_text', $inline = false ) {
 
 		return '<'.( $inline ? 'span' : 'div' ).' class="'.$css_line.'">'
-				.$text.'</'.( $inline ? 'span' : 'div' ).'>'."\n";
+		.$text.'</'.( $inline ? 'span' : 'div' ).'>'."\n";
 	}
 
 	/**
@@ -108,9 +108,9 @@ class Form {
 	public static function getLineBox( $span_text, $text , $css_line = 'form_line_l', $css_f_effect = 'label_effect' ) {
 
 		return '<div class="'.$css_line.'">'
-				.'<p class="'.$css_f_effect.'">'.$span_text.'</p>'
-				.$text
-				.'</div>'."\n";
+		.'<p class="'.$css_f_effect.'">'.$span_text.'</p>'
+		.$text
+		.'</div>'."\n";
 	}
 
 	/**
@@ -145,12 +145,12 @@ class Form {
 		$value = str_replace($search, $replace, $value);
 
 		return '<input type="text" '
-			."\n\t".'class="'.$css_text.'" '
-			."\n\t".'id="'.$id.'" '
-			.($name !== false ? "\n\t".'name="'.$name.'" ' : "")
-			."\n\t".'value="'.$value.'" '
-			."\n\t".'maxlength="'.$maxlenght.'" '
-			."\n\t".'alt="'.$alt_name.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
+		."\n\t".'class="'.$css_text.'" '
+		."\n\t".'id="'.$id.'" '
+		.($name !== false ? "\n\t".'name="'.$name.'" ' : "")
+		."\n\t".'value="'.$value.'" '
+		."\n\t".'maxlength="'.$maxlenght.'" '
+		."\n\t".'alt="'.$alt_name.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
 	}
 
 	/**
@@ -173,11 +173,11 @@ class Form {
 	public static function getLineTextfield( $css_line, $css_label, $label_name, $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param, $other_after, $other_before ) {
 
 		return '<div class="'.$css_line.'">'
-			.$other_before
-			.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
-			.Form::getInputTextfield( $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param )
-			.$other_after
-			.'</div>';
+		.$other_before
+		.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
+		.Form::getInputTextfield( $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param )
+		.$other_after
+		.'</div>';
 	}
 
 	/**
@@ -201,56 +201,56 @@ class Form {
 
 
 	public static function loadDatefieldScript($date_format = false) {
-    if (defined("IS_AJAX")) return; //we can't print scripts in an ajax request
+		if (defined("IS_AJAX")) return; //we can't print scripts in an ajax request
 		if (!isset($GLOBALS['jscal_loaded']) || $GLOBALS['jscal_loaded'] == false) {
 			YuiLib::load('calendar');
 			if ($date_format == false) { $regset = Format::instance(); $date_format = $regset->date_token; }
 
 			$arr_months = array(
-				Lang::t('_MONTH_01', 'calendar'),
-				Lang::t('_MONTH_02', 'calendar'),
-				Lang::t('_MONTH_03', 'calendar'),
-				Lang::t('_MONTH_04', 'calendar'),
-				Lang::t('_MONTH_05', 'calendar'),
-				Lang::t('_MONTH_06', 'calendar'),
-				Lang::t('_MONTH_07', 'calendar'),
-				Lang::t('_MONTH_08', 'calendar'),
-				Lang::t('_MONTH_09', 'calendar'),
-				Lang::t('_MONTH_10', 'calendar'),
-				Lang::t('_MONTH_11', 'calendar'),
-				Lang::t('_MONTH_12', 'calendar')
+					Lang::t('_MONTH_01', 'calendar'),
+					Lang::t('_MONTH_02', 'calendar'),
+					Lang::t('_MONTH_03', 'calendar'),
+					Lang::t('_MONTH_04', 'calendar'),
+					Lang::t('_MONTH_05', 'calendar'),
+					Lang::t('_MONTH_06', 'calendar'),
+					Lang::t('_MONTH_07', 'calendar'),
+					Lang::t('_MONTH_08', 'calendar'),
+					Lang::t('_MONTH_09', 'calendar'),
+					Lang::t('_MONTH_10', 'calendar'),
+					Lang::t('_MONTH_11', 'calendar'),
+					Lang::t('_MONTH_12', 'calendar')
 			);
 			$arr_months_short = array(
-				Lang::t('_JAN', 'calendar'),
-				Lang::t('_FEB', 'calendar'),
-				Lang::t('_MAR', 'calendar'),
-				Lang::t('_APR', 'calendar'),
-				Lang::t('_MAY', 'calendar'),
-				Lang::t('_JUN', 'calendar'),
-				Lang::t('_JUL', 'calendar'),
-				Lang::t('_AUG', 'calendar'),
-				Lang::t('_SEP', 'calendar'),
-				Lang::t('_OCT', 'calendar'),
-				Lang::t('_NOV', 'calendar'),
-				Lang::t('_DEC', 'calendar')
+					Lang::t('_JAN', 'calendar'),
+					Lang::t('_FEB', 'calendar'),
+					Lang::t('_MAR', 'calendar'),
+					Lang::t('_APR', 'calendar'),
+					Lang::t('_MAY', 'calendar'),
+					Lang::t('_JUN', 'calendar'),
+					Lang::t('_JUL', 'calendar'),
+					Lang::t('_AUG', 'calendar'),
+					Lang::t('_SEP', 'calendar'),
+					Lang::t('_OCT', 'calendar'),
+					Lang::t('_NOV', 'calendar'),
+					Lang::t('_DEC', 'calendar')
 			);
 			$arr_days = array(
-				Lang::t('_SUNDAY', 'calendar'),
-				Lang::t('_MONDAY', 'calendar'),
-				Lang::t('_TUESDAY', 'calendar'),
-				Lang::t('_WEDNESDAY', 'calendar'),
-				Lang::t('_THURSDAY', 'calendar'),
-				Lang::t('_FRIDAY', 'calendar'),
-				Lang::t('_SATURDAY', 'calendar')
+					Lang::t('_SUNDAY', 'calendar'),
+					Lang::t('_MONDAY', 'calendar'),
+					Lang::t('_TUESDAY', 'calendar'),
+					Lang::t('_WEDNESDAY', 'calendar'),
+					Lang::t('_THURSDAY', 'calendar'),
+					Lang::t('_FRIDAY', 'calendar'),
+					Lang::t('_SATURDAY', 'calendar')
 			);
 			$arr_days_medium = array(
-				Lang::t('_SUN', 'calendar'),
-				Lang::t('_MON', 'calendar'),
-				Lang::t('_TUE', 'calendar'),
-				Lang::t('_WED', 'calendar'),
-				Lang::t('_THU', 'calendar'),
-				Lang::t('_FRI', 'calendar'),
-				Lang::t('_SAT', 'calendar')
+					Lang::t('_SUN', 'calendar'),
+					Lang::t('_MON', 'calendar'),
+					Lang::t('_TUE', 'calendar'),
+					Lang::t('_WED', 'calendar'),
+					Lang::t('_THU', 'calendar'),
+					Lang::t('_FRI', 'calendar'),
+					Lang::t('_SAT', 'calendar')
 			);
 
 			$arr_days_short = array();
@@ -340,7 +340,7 @@ class Form {
 	public static function getInputDatefield( $css_field, $id, $name, $value = '', $date_format = FALSE, $sel_time = FALSE, $alt_name = '', $other_param = '' ) {
 
 		$value =($value == '00-00-0000' ? '' : $value);
-		
+
 		if ($date_format == false) {
 			$regset = Format::instance(); $date_format = $regset->date_token;
 		}
@@ -359,16 +359,16 @@ class Form {
 				.'<button type="button"></button></span></span>'
 				.'<div id="calendar_menu_'.$id.'"><div id="calendar_container_'.$id.'"></div></div>';
 
-    if (defined("IS_AJAX")) {
-      if (!isset($GLOBALS['date_inputs'])) $GLOBALS['date_inputs'] = array();
-      $GLOBALS['date_inputs'][] = array($id, $date, $date_format);
-    } else {
-      $script = '<script type="text/javascript">'
-        .'YAHOO.util.Event.onDOMReady(function() {'
-        .'	YAHOO.dateInput.setCalendar("'.$id.'", "'.$date.'", "'.$date_format.'");'
-        .'});</script>';
-      cout($script, 'scripts'); //script in the scripts page section, this ensure to have it after the YAHOO.dateInput declaration
-    }
+		if (defined("IS_AJAX")) {
+			if (!isset($GLOBALS['date_inputs'])) $GLOBALS['date_inputs'] = array();
+			$GLOBALS['date_inputs'][] = array($id, $date, $date_format);
+		} else {
+			$script = '<script type="text/javascript">'
+					.'YAHOO.util.Event.onDOMReady(function() {'
+					.'	YAHOO.dateInput.setCalendar("'.$id.'", "'.$date.'", "'.$date_format.'");'
+					.'});</script>';
+			cout($script, 'scripts'); //script in the scripts page section, this ensure to have it after the YAHOO.dateInput declaration
+		}
 
 		return  Form::getInputTextfield( $css_field, $id, $name, Format::date($iso, 'date'), $alt_name, '30', '')/*.$other_after_b*/;
 
@@ -395,11 +395,11 @@ class Form {
 	public static function getLineDatefield( $css_line, $css_label, $label_name, $css_text, $id, $name, $value, $date_format, $alt_name, $other_param, $other_after, $other_before ) {
 
 		return '<div class="'.$css_line.'">'
-			.$other_before
-			.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
-			.Form::getInputDatefield( $css_text, $id, $name, $value, $date_format, false, $alt_name, $other_param )
-			.$other_after
-			.'</div>';
+		.$other_before
+		.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
+		.Form::getInputDatefield( $css_text, $id, $name, $value, $date_format, false, $alt_name, $other_param )
+		.$other_after
+		.'</div>';
 	}
 
 
@@ -413,7 +413,7 @@ class Form {
 	 * @param string $value 		optional default value for the input field
 	 * @param string $alt_name 		the alt name for the field
 	 * @param string $date_format 	optional string with the date format selected
-     * @param bool	 $sel_time 		optional if true will show also the time selector
+	 * @param bool	 $sel_time 		optional if true will show also the time selector
 	 * @param string $alt_name 		optional with the alt value
 	 * @param string $other_after 	optional html code added after the input element
 	 * @param string $other_before 	optional html code added before the label element
@@ -425,7 +425,7 @@ class Form {
 		if($date_format == false) $date_format = $regset->date_token;
 		if($alt_name == '') $alt_name = strip_tags($label_name);
 		return Form::getLineDatefield( 'form_line_l', 'floating', $label_name, 'textfield',
-										$id, $name, $value, $date_format, $alt_name, $other_param, $other_after, $other_before);
+				$id, $name, $value, $date_format, $alt_name, $other_param, $other_after, $other_before);
 
 	}
 
@@ -441,13 +441,13 @@ class Form {
 	 */
 	public static function getInputPassword( $css_text, $id, $name, $alt_name, $maxlenght, $other_param, $value ) {
 		return '<input type="password" '
-			."\n\t".'class="'.$css_text.'" '
-			."\n\t".'id="'.$id.'" '
-			."\n\t".'name="'.$name.'" '
-			."\n\t".'maxlength="'.$maxlenght.'" '
-			."\n\t".'value="'.$value.'" '
-			."\n\t".'autocomplete="off" '
-			."\n\t".'alt="'.$alt_name.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
+		."\n\t".'class="'.$css_text.'" '
+		."\n\t".'id="'.$id.'" '
+		."\n\t".'name="'.$name.'" '
+		."\n\t".'maxlength="'.$maxlenght.'" '
+		."\n\t".'value="'.$value.'" '
+		."\n\t".'autocomplete="off" '
+		."\n\t".'alt="'.$alt_name.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
 	}
 
 	/**
@@ -466,11 +466,11 @@ class Form {
 	 */
 	public static function getLinePassword( $css_line, $css_label, $label_name, $css_text, $id, $name, $alt_name, $maxlenght, $other_param, $other_after, $other_before, $value = '' ) {
 		return '<div class="'.$css_line.'">'
-			.$other_before
-			.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
-			.Form::getInputPassword( $css_text, $id, $name, $alt_name, $maxlenght, $other_param, $value )
-			.$other_after
-			.'</div>';
+		.$other_before
+		.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
+		.Form::getInputPassword( $css_text, $id, $name, $alt_name, $maxlenght, $other_param, $value )
+		.$other_after
+		.'</div>';
 	}
 
 	/**
@@ -500,11 +500,11 @@ class Form {
 	 */
 	public static function getInputFilefield( $css_text, $id, $name, $value, $alt_name,  $other_param ) {
 		return '<input type="file" '
-			."\n\t".'class="'.$css_text.'" '
-			."\n\t".'id="'.$id.'" '
-			."\n\t".'name="'.$name.'" '
-			."\n\t".'value="'.$value.'" '
-			."\n\t".'alt="'.$alt_name.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
+		."\n\t".'class="'.$css_text.'" '
+		."\n\t".'id="'.$id.'" '
+		."\n\t".'name="'.$name.'" '
+		."\n\t".'value="'.$value.'" '
+		."\n\t".'alt="'.$alt_name.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
 	}
 
 	/**
@@ -523,15 +523,15 @@ class Form {
 	 */
 	public static function getLineFilefield( $css_line, $css_label, $label_name, $css_text, $id, $name, $value, $alt_name, $other_param, $other_after, $other_before, $other_afterbefore = '') {
 		$ret = '<div class="'.$css_line.'">'
-			.$other_before
-			.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>';
-			if ($other_afterbefore)
-				$ret .= ' '.$other_afterbefore.' <span id="upLLoad">';
-			$ret .= Form::getInputFilefield( $css_text, $id, $name, $value, $alt_name, $other_param );
-			if ($other_afterbefore)
-				$ret .= '</span>';
-			$ret .= $other_after
-			.'</div>';
+				.$other_before
+				.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>';
+		if ($other_afterbefore)
+			$ret .= ' '.$other_afterbefore.' <span id="upLLoad">';
+		$ret .= Form::getInputFilefield( $css_text, $id, $name, $value, $alt_name, $other_param );
+		if ($other_afterbefore)
+			$ret .= '</span>';
+		$ret .= $other_after
+				.'</div>';
 		return $ret;
 	}
 
@@ -650,13 +650,13 @@ class Form {
 	public static function getInputDropdown( $css_dropdown, $id, $name, $all_value, $selected, $other_param ) {
 
 		$html_code = '<select class="'.$css_dropdown.'" '
-					."\n\t".'id="'.$id.'" '
-					."\n\t".'name="'.$name.'"  '.$other_param.'>'."\n";
+				."\n\t".'id="'.$id.'" '
+				."\n\t".'name="'.$name.'"  '.$other_param.'>'."\n";
 		if( is_array($all_value) ) {
 			while( list($key, $value) = each($all_value) ) {
 				$html_code .= '	<option value="'.$key.'"'
-							.((string)$key == (string)$selected ? ' selected="selected"' : '' )
-							.'>'.$value.'</option>'."\n";
+						.((string)$key == (string)$selected ? ' selected="selected"' : '' )
+						.'>'.$value.'</option>'."\n";
 			}
 		}
 		$html_code .= '</select>';
@@ -682,11 +682,11 @@ class Form {
 	 */
 	public static function getLineDropdown( $css_line, $css_label, $label_name, $css_dropdown, $id, $name, $all_value, $selected, $other_param, $other_after, $other_before ) {
 		return '<div class="'.$css_line.'">'
-			.$other_before
-			.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
-			.Form::getInputDropdown( $css_dropdown, $id, $name, $all_value, $selected, $other_param )
-			.$other_after
-			.'</div>';
+		.$other_before
+		.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
+		.Form::getInputDropdown( $css_dropdown, $id, $name, $all_value, $selected, $other_param )
+		.$other_after
+		.'</div>';
 	}
 
 	/**
@@ -723,15 +723,15 @@ class Form {
 	public static function getInputListbox( $css_listbox, $id, $name, $all_value, $selected, $multiple, $other_param ) {
 
 		$html_code = '<select class="'.$css_listbox.'" '
-					."\n\t".'id="'.$id.'" '
-					."\n\t".'name="'.$name.'" '
-					.(($multiple)?'multiple="multiple" ':'')
-					.$other_param.'>'."\n";
+				."\n\t".'id="'.$id.'" '
+				."\n\t".'name="'.$name.'" '
+				.(($multiple)?'multiple="multiple" ':'')
+				.$other_param.'>'."\n";
 		if( is_array($all_value) ) {
 			while( list($key, $value) = each($all_value) ) {
 				$html_code .= '	<option value="'.$key.'"'
-							.(in_array ( $key, $selected) ? ' selected="selected"' : '' )
-							.'>'.$value.'</option>'."\n";
+						.(in_array ( $key, $selected) ? ' selected="selected"' : '' )
+						.'>'.$value.'</option>'."\n";
 			}
 		}
 		$html_code .= '</select>';
@@ -758,11 +758,11 @@ class Form {
 	 */
 	public static function getLineListbox( $css_line, $css_label, $label_name, $css_listbox, $id, $name, $all_value, $selected, $multiple, $other_param, $other_after, $other_before ) {
 		return '<div class="'.$css_line.'">'
-			.$other_before
-			.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
-			.Form::getInputListbox( $css_listbox, $id, $name, $all_value, $selected, $multiple, $other_param )
-			.$other_after
-			.'</div>';
+		.$other_before
+		.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
+		.Form::getInputListbox( $css_listbox, $id, $name, $all_value, $selected, $multiple, $other_param )
+		.$other_after
+		.'</div>';
 	}
 
 	/**
@@ -781,17 +781,17 @@ class Form {
 	 */
 	public static function getListbox( $label_name, $id, $name, $all_value, $selected = FALSE, $multiple = TRUE, $other_after = '', $other_before = '', $other_param = '' ) {
 		return Form::getLineListbox('form_line_l',
-									'floating',
-									$label_name,
-									'listbox',
-									$id,
-									$name,
-									$all_value,
-									($selected === FALSE)?array():$selected,
-									$multiple,
-									$other_param,
-									$other_after,
-									$other_before );
+				'floating',
+				$label_name,
+				'listbox',
+				$id,
+				$name,
+				$all_value,
+				($selected === FALSE)?array():$selected,
+				$multiple,
+				$other_param,
+				$other_after,
+				$other_before );
 	}
 
 	/**
@@ -806,8 +806,8 @@ class Form {
 	public static function getInputCheckbox( $id, $name, $value, $is_checked, $other_param ) {
 
 		return '<input class="check" type="checkbox" id="'.$id.'" name="'.$name.'" value="'.$value.'"'
-				.( $is_checked ? ' checked="checked"' : '' )
-				.( $other_param != '' ? ' '.$other_param : '' ).' />';
+		.( $is_checked ? ' checked="checked"' : '' )
+		.( $other_param != '' ? ' '.$other_param : '' ).' />';
 	}
 
 	/**
@@ -827,11 +827,11 @@ class Form {
 	public static function getLineCheckbox( $css_line, $css_label, $label_name, $id, $name, $value, $is_checked, $other_param, $other_after, $other_before ) {
 
 		return '<div class="'.$css_line.'">'
-			.$other_before
-			.Form::getInputCheckbox( $id, $name, $value, $is_checked, $other_param )
-			.' <label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label>'
-			.$other_after
-			.'</div>';
+		.$other_before
+		.Form::getInputCheckbox( $id, $name, $value, $is_checked, $other_param )
+		.' <label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label>'
+		.$other_after
+		.'</div>';
 	}
 
 	/**
@@ -871,17 +871,17 @@ class Form {
 		foreach( $all_value as  $val_item => $label_item ) {
 
 			$out .= '<p>'.Form::getInputCheckbox( $id.'_'.$val_item,
-											$name.'['.$val_item.']',
-											1,
-											isset($selected[$val_item]),
-											'' )
+							$name.'['.$val_item.']',
+							1,
+							isset($selected[$val_item]),
+							'' )
 					.' <label class="label_padded" for="'.$id.'_'.$val_item.'">'
 					.$label_item.'</label>'
 					.'</p>';
 			$count++;
 		}
 		$out .= '</div>'.$other_after
-			.'</div>';
+				.'</div>';
 
 		return $out;
 	}
@@ -898,8 +898,8 @@ class Form {
 	public static function getInputRadio( $id, $name, $value, $is_checked, $other_param ) {
 
 		return '<input class="radio" type="radio" id="'.$id.'" name="'.$name.'" value="'.$value.'"'
-				.( $is_checked ? 'checked="checked"' : '' )
-				.( $other_param != '' ? ' '.$other_param : '' ).' />';
+		.( $is_checked ? 'checked="checked"' : '' )
+		.( $other_param != '' ? ' '.$other_param : '' ).' />';
 	}
 
 	/**
@@ -919,9 +919,9 @@ class Form {
 	public static function getLineRadio( $css_line, $css_label, $label_name, $id, $name, $value, $is_checked, $other_param = '' ) {
 
 		return '<div class="'.$css_line.'">'
-			.Form::getInputRadio( $id, $name, $value, $is_checked, $other_param )
-			.' <label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label>'
-			.'</div>';
+		.Form::getInputRadio( $id, $name, $value, $is_checked, $other_param )
+		.' <label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label>'
+		.'</div>';
 	}
 
 	/**
@@ -959,10 +959,10 @@ class Form {
 				.'<div class="grouping">';
 		foreach( $all_value as $label_item => $val_item ) {
 			$out .= Form::getInputRadio( 	$id.'_'.$count,
-											$name,
-											$val_item,
-											$val_item == $selected,
-											'' );
+					$name,
+					$val_item,
+					$val_item == $selected,
+					'' );
 			$out .= ' <label class="label_padded" for="'.$id.'_'.$count.'">'
 					.$label_item.'</label> <br />';
 			$count++;
@@ -977,13 +977,13 @@ class Form {
 		$out = '<div class="form_line_l">'
 				.$other_before
 				.'<p><span>'.$group_name.'</span></p>';
-				//.'<span class="grouping">';
+		//.'<span class="grouping">';
 		foreach( $all_value as $label_item => $val_item ) {
 			$out .= Form::getInputRadio( 	$id.'_'.$count,
-											$name,
-											$val_item,
-											$val_item == $selected,
-											'' );
+					$name,
+					$val_item,
+					$val_item == $selected,
+					'' );
 			$out .= ' <label class="label_padded" for="'.$id.'_'.$count.'">'
 					.$label_item.'</label> &nbsp;';
 			$count++;
@@ -1004,9 +1004,9 @@ class Form {
 	public static function getOpenCombo( $group_name, $css_line = 'form_line_l', $other_before = '' ) {
 
 		return'<div class="'.$css_line.'">'
-			.$other_before
-			.'<p><span class="label_effect">'.$group_name.'</span></p>'
-			.'<div class="grouping">';
+		.$other_before
+		.'<p><span class="label_effect">'.$group_name.'</span></p>'
+		.'<div class="grouping">';
 	}
 
 	/**
@@ -1018,8 +1018,8 @@ class Form {
 	public static function getCloseCombo( $other_after = '' ) {
 
 		return '</div>'
-			.$other_after
-			.'</div>';
+		.$other_after
+		.'</div>';
 	}
 
 	/**
@@ -1032,20 +1032,20 @@ class Form {
 	public static function getOpenFieldset( $legend, $id_field = '', $css_line = 'fieldset-std'  ) {
 
 		return'<fieldset'.( $id_field != '' ? ' id="'.$id_field.'"' : '' ).' class="'.$css_line.'">'
-			.( $legend != '' ? '<legend>'
-			.$legend.'</legend>' : '' )
-			.'<div class="fieldset-content"'.( $id_field != '' ? ' id="content_'.$id_field.'"' : '' ).'>';
+		.( $legend != '' ? '<legend>'
+				.$legend.'</legend>' : '' )
+		.'<div class="fieldset-content"'.( $id_field != '' ? ' id="content_'.$id_field.'"' : '' ).'>';
 	}
 
 	public static function openCollasableFieldset( $legend, $id_field = '') {
 
 		return'<fieldset'.( $id_field != '' ? ' id="'.$id_field.'"' : '' ).' class="fieldset-std fieldset-close">'
-			.( $legend != '' ? '<legend>'
-			.'<a class="filedset-av" href="javascript: ;" onclick="( this.parentNode.parentNode.className != \'fieldset-std fieldset-close\' '
-			.' ? this.parentNode.parentNode.className = \'fieldset-std fieldset-close\' '
-			.' : this.parentNode.parentNode.className = \'fieldset-std fieldset-open\' )">'
-			.$legend.'</a></legend>' : '' )
-			.'<div class="fieldset-content"'.( $id_field != '' ? ' id="content_'.$id_field.'"' : '' ).'>';
+		.( $legend != '' ? '<legend>'
+				.'<a class="filedset-av" href="javascript: ;" onclick="( this.parentNode.parentNode.className != \'fieldset-std fieldset-close\' '
+				.' ? this.parentNode.parentNode.className = \'fieldset-std fieldset-close\' '
+				.' : this.parentNode.parentNode.className = \'fieldset-std fieldset-open\' )">'
+				.$legend.'</a></legend>' : '' )
+		.'<div class="fieldset-content"'.( $id_field != '' ? ' id="content_'.$id_field.'"' : '' ).'>';
 	}
 
 	/**
@@ -1054,7 +1054,7 @@ class Form {
 	public static function getCloseFieldset( ) {
 
 		return '</div>'
-			.'</fieldset>';
+		.'</fieldset>';
 	}
 
 	/**
@@ -1063,13 +1063,13 @@ class Form {
 	 * this public static function is a temporary substitute for a more complete one
 	 */
 	public static function getTextarea($label_name, $id, $name, $value = '', $extra_param_for = false, $id_form = '',
-				$css_line = 'form_line_l', $css_label = 'floating', $css_text = 'textarea',$simple=false) {
+									   $css_line = 'form_line_l', $css_label = 'floating', $css_text = 'textarea',$simple=false) {
 
 		$html_code = '<div class="'.$css_line.'">'
-			.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p><br />'
-			.'<div class="nofloat"></div>'
-			.loadHtmlEditor($id_form, $id, $name, $value, $css_text, $extra_param_for,$simple)
-			.'</div>';
+				.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p><br />'
+				.'<div class="nofloat"></div>'
+				.loadHtmlEditor($id_form, $id, $name, $value, $css_text, $extra_param_for,$simple)
+				.'</div>';
 		return $html_code;
 	}
 
@@ -1081,16 +1081,16 @@ class Form {
 	}
 
 	public static function getSimpleTextarea($label_name, $id ,$name , $value = '',
-				$css_line = false, $css_label = false, $css_text = false, $rows = 5, $cols = 22, $afterlabel = '' ) {
+											 $css_line = false, $css_label = false, $css_text = false, $rows = 5, $cols = 22, $afterlabel = '' ) {
 
 		if($css_line === false) $css_line = 'form_line_l';
 		if($css_label === false) $css_label = 'floating';
 		if($css_text === false) $css_text = 'textarea';
 
 		return '<div class="'.$css_line.'">'
-			.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
-			.Form::getInputTextarea($id ,$name , $value, $css_text, $rows, $cols)
-			.''.$afterlabel.'</div>';
+		.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
+		.Form::getInputTextarea($id ,$name , $value, $css_text, $rows, $cols)
+		.''.$afterlabel.'</div>';
 	}
 
 
@@ -1100,9 +1100,9 @@ class Form {
 		if($css_label === false) $css_label = 'floating';
 
 		return '<div class="'.$css_line.'">'."\n"
-			.'<p><label class="'.$css_label.'">'.$label_name.'</label></p>'
-			.'<div class="inline_block"'.($height>0 ? ' style="max-height:'.$height.';overflow:auto"' : '').'>'.$text.'</div>'
-			.'</div>'."\n";
+		.'<p><label class="'.$css_label.'">'.$label_name.'</label></p>'
+		.'<div class="inline_block"'.($height>0 ? ' style="max-height:'.$height.';overflow:auto"' : '').'>'.$text.'</div>'
+		.'</div>'."\n";
 	}
 
 
@@ -1135,7 +1135,7 @@ class Form {
 	 */
 	public static function closeElementSpace( ) {
 		return '<div class="nofloat"></div>'
-			.'</div>';
+		.'</div>';
 	}
 
 	/**
@@ -1160,10 +1160,10 @@ class Form {
 	 */
 	public static function getReset( $id, $name, $value, $css_button = 'button' ) {
 		return '<input type="reset" '
-				."\n\t".'class="'.$css_button.'" '
-				."\n\t".'id="'.$id.'" '
-				."\n\t".'name="'.$name.'" '
-				."\n\t".'value="'.$value.'" />';
+		."\n\t".'class="'.$css_button.'" '
+		."\n\t".'id="'.$id.'" '
+		."\n\t".'name="'.$name.'" '
+		."\n\t".'value="'.$value.'" />';
 	}
 
 	/**
@@ -1185,34 +1185,28 @@ class Form {
 					(function() {
 						YAHOO.util.Event.onDOMReady(function() {
 							var o = YAHOO.namespace("buttonObjects.'.$id.'");
-							// YAHOO.buttonObjects.'.$id.' = new YAHOO.widget.Button("'.$id.'", { value: "'.addslashes($value).'" });
-							YAHOO.buttonObjects.'.$id.' = \'<button type="button" class="btn btn-default" id="'.$id.'">'.addslashes($value).'</button>\';
+							YAHOO.buttonObjects.'.$id.' = new YAHOO.widget.Button("'.$id.'", { value: "'.addslashes($value).'" });
 						});
 					})();
 					</script>', 'scripts');
-			// return '<input type="'.($is_submit ? 'submit' : 'button').'" id="'.$id.'" '
-			// 	.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
-			return '<input type="'.($is_submit ? 'submit' : 'button').'" class="btn btn-default" id="'.$id.'" '
-				.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
+			return '<input type="'.($is_submit ? 'submit' : 'button').'" id="'.$id.'" '
+			.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
 
 		}
 		if($css_button == 'yui-button') {
-			// return 	'<span id="'.$id.'_span" class="yui-button yui-submit-button">'
-			return 	'<span id="'.$id.'_span">'
-					.'<span class="first-child">'
-					// .'<input type="'.($is_submit ? 'submit' : 'button').'" id="'.$id.'" '.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />'
-					.'<input type="'.($is_submit ? 'submit' : 'button').'" class="btn btn-default" id="'.$id.'" '.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />'
-					.'</span>'
-					.'</span>';
+			return 	'<span id="'.$id.'_span" class="yui-button yui-submit-button">'
+			.'<span class="first-child">'
+			.'<input type="'.($is_submit ? 'submit' : 'button').'" id="'.$id.'" '.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />'
+			.'</span>'
+			.'</span>';
 
 		}
 		$css_button = ($css_button === FALSE ? 'button' : $css_button);
 		return '<input type="'.($is_submit ? 'submit' : 'button').'" '
-				// ."\n\t".'class="'.$css_button.'" '
-				."\n\t".'class="'.$css_button.' btn btn-default" '
-				."\n\t".'id="'.$id.'" '
-				."\n\t".'name="'.$name.'" '
-				."\n\t".'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
+		."\n\t".'class="'.$css_button.'" '
+		."\n\t".'id="'.$id.'" '
+		."\n\t".'name="'.$name.'" '
+		."\n\t".'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
 	}
 
 	/**
@@ -1231,10 +1225,10 @@ class Form {
 		$css_button = ($css_button === FALSE ? 'button' : $css_button);
 		if (($type!='submit') && ($type!='button') && ($type!='reset')) $type = 'button';
 		return '<input type="'.$type.'" '
-				."\n\t".'class="'.$css_button.'" '
-				."\n\t".'id="'.$id.'" '
-				."\n\t".'name="'.$name.'" '
-				."\n\t".'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
+		."\n\t".'class="'.$css_button.'" '
+		."\n\t".'id="'.$id.'" '
+		."\n\t".'name="'.$name.'" '
+		."\n\t".'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
 	}
 
 	/**
@@ -1254,7 +1248,7 @@ class Form {
 	public static function closeForm() {
 
 		return '</div>'
-			.'</form>';
+		.'</form>';
 	}
 }
 
