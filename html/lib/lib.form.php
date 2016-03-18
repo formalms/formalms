@@ -1177,36 +1177,66 @@ class Form {
 	 *
 	 * @return string contains the close tag for button element
 	 */
+	// public static function getButton( $id, $name, $value, $css_button = FALSE, $other_param = '', $use_js = true, $is_submit = true ) {
+
+	// 	if($use_js && ($css_button == false || $css_button == 'yui-button')) {
+	// 		if (!defined("IS_AJAX"))
+	// 			cout('<script type="text/javascript">
+	// 				(function() {
+	// 					YAHOO.util.Event.onDOMReady(function() {
+	// 						var o = YAHOO.namespace("buttonObjects.'.$id.'");
+	// 						YAHOO.buttonObjects.'.$id.' = new YAHOO.widget.Button("'.$id.'", { value: "'.addslashes($value).'" });
+	// 					});
+	// 				})();
+	// 				</script>', 'scripts');
+	// 		return '<input type="'.($is_submit ? 'submit' : 'button').'" id="'.$id.'" '
+	// 		.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
+
+	// 	}
+	// 	if($css_button == 'yui-button') {
+	// 		return 	'<span id="'.$id.'_span" class="yui-button yui-submit-button">'
+	// 		.'<span class="first-child">'
+	// 		.'<input type="'.($is_submit ? 'submit' : 'button').'" id="'.$id.'" '.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />'
+	// 		.'</span>'
+	// 		.'</span>';
+
+	// 	}
+	// 	$css_button = ($css_button === FALSE ? 'button' : $css_button);
+	// 	return '<input type="'.($is_submit ? 'submit' : 'button').'" '
+	// 	."\n\t".'class="'.$css_button.'" '
+	// 	."\n\t".'id="'.$id.'" '
+	// 	."\n\t".'name="'.$name.'" '
+	// 	."\n\t".'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
+	// }
 	public static function getButton( $id, $name, $value, $css_button = FALSE, $other_param = '', $use_js = true, $is_submit = true ) {
 
 		if($use_js && ($css_button == false || $css_button == 'yui-button')) {
-			if (!defined("IS_AJAX"))
+			if (!defined("IS_AJAX")) {
 				cout('<script type="text/javascript">
 					(function() {
 						YAHOO.util.Event.onDOMReady(function() {
 							var o = YAHOO.namespace("buttonObjects.'.$id.'");
-							YAHOO.buttonObjects.'.$id.' = new YAHOO.widget.Button("'.$id.'", { value: "'.addslashes($value).'" });
+							YAHOO.buttonObjects.'.$id.' = \'<button type="button" class="btn btn-default" id="'.$id.'">'.addslashes($value).'</button>\';
 						});
 					})();
 					</script>', 'scripts');
-			return '<input type="'.($is_submit ? 'submit' : 'button').'" id="'.$id.'" '
-			.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
-
+			}
+			return '<input type="'.($is_submit ? 'submit' : 'button').'" class="btn btn-default" id="'.$id.'" '
+				.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
 		}
 		if($css_button == 'yui-button') {
-			return 	'<span id="'.$id.'_span" class="yui-button yui-submit-button">'
-			.'<span class="first-child">'
-			.'<input type="'.($is_submit ? 'submit' : 'button').'" id="'.$id.'" '.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />'
-			.'</span>'
-			.'</span>';
-
+			return 	'<span id="'.$id.'_span">'
+					.'<span class="first-child">'
+					.'<input type="'.($is_submit ? 'submit' : 'button').'" class="btn btn-default" id="'.$id.'" '.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />'
+					.'</span>'
+					.'</span>';
 		}
 		$css_button = ($css_button === FALSE ? 'button' : $css_button);
 		return '<input type="'.($is_submit ? 'submit' : 'button').'" '
-		."\n\t".'class="'.$css_button.'" '
-		."\n\t".'id="'.$id.'" '
-		."\n\t".'name="'.$name.'" '
-		."\n\t".'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
+				."\n\t".'class="'.$css_button.' btn btn-default" '
+				."\n\t".'id="'.$id.'" '
+				."\n\t".'name="'.$name.'" '
+				."\n\t".'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
 	}
 
 	/**
