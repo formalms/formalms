@@ -241,10 +241,8 @@ class Module_Organization extends LmsModule {
 				
 			$id_item = importVar('id_item');
 			$folder = $this->repoDb->getFolderById( $id_item );
-			
-			$lo = createLO( $folder->otherValues[REPOFIELDOBJECTTYPE]);
-			
 			$idItem = $folder->otherValues[REPOFIELDIDRESOURCE];
+			$lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE], $idItem);
 			if(isset($_GET['edit']) && $_GET['edit']) {
 				
 				$back_url = 'index.php?modname='.$modname
