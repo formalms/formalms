@@ -426,6 +426,11 @@ div.bar_text {float: left;width: 100%;text-align: center;z-index: 100;margin: 0p
 /* Language selection */
 .yui-skin-docebo .select-language a{color:#C84000;text-decoration:none;padding:0 16px 0 5px;font-weight:bold;text-transform:capitalize;background:url(../images/login/lang_arrow.png) no-repeat 99% 0;}
 .yui-skin-docebo .select-language a:hover{text-decoration:underline;}
+@media only screen and (max-width : 768px) {
+	#language_setup {
+	    width: 100% !important;
+	}
+}
 #language_setup{border:0px none;}
 #language_setup .hd{background:transparent;border:0px none;margin:0;padding:0;}
 #language_setup .bd{background:#000000;border:1px solid #ffffff;padding:5px 12px;}
