@@ -71,12 +71,13 @@ function instest() {
 	$lang =& DoceboLanguage::createInstance('test');
 	
 	if( trim($_POST['title']) == '' ) $_POST['title'] = $lang->def('_NOTITLE');
-	
+
+	$retain_answers_history = $_POST['obj_type'] == 'test360' ? 1 : 0;
 	$ins_query = "
 	INSERT INTO ".$GLOBALS['prefix_lms']."_test 
-	( author, title, description, obj_type )
+	( author, title, description, obj_type, retain_answers_history )
 		VALUES 
-	( '".(int)getLogUserId()."', '".$_POST['title']."', '".$_POST['textof']."', '".$_POST['obj_type']."' )";
+	( '".(int)getLogUserId()."', '".$_POST['title']."', '".$_POST['textof']."', '".$_POST['obj_type']."', ".$retain_answers_history." )";
 	
 	if( !sql_query($ins_query) ) {
 		
@@ -998,7 +999,7 @@ function defmodality() {
 		, 'content');
 	} else {
 		$GLOBALS['page']->add(
-				'<input type="hidden" id="retain_answers_history" name="retain_answers_history" value="1" checked="checked"/>'
+				Form::getCheckBox($lang->def('_RETAIN_ANSWERS_HISTORY'), 'retain_answers_history', 'retain_answers_history', 1, $retain_answers_history)
 				.'<input type="hidden" id="show_tot_no" name="show_tot" value="0" checked="checked"/>'
 				.'<br /><br />'
 				.Form::getCloseFieldset(),
