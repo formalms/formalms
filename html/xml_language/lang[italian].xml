@@ -266,7 +266,8 @@
         <key id="catalogue&amp;_IMPORT_NEW_ENTRY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Importa nuovo]]></key>
         <key id="catalogue&amp;_METHOD_MANUAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Iscrizione manuale]]></key>
         <key id="catalogue&amp;_MOD_ENTRY_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostra gli elementi del catalogo]]></key>
-        <key id="catalogue&amp;_NEW_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nuovo  catalogo]]></key>
+        <key id="catalogue&amp;_NEW_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nuovo  catalogo]]></key> 
+        <key id="catalogue&amp;_NO_AVAILABLE_EDITIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nessuna edizione disponibile]]></key>
         <key id="catalogue&amp;_NO_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nessun corso disponibile]]></key>
         <key id="catalogue&amp;_NO_COURSE_FOUND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Corso non trovato]]></key>
         <key id="catalogue&amp;_NO_EDITIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Non ci sono edizioni in questo corso]]></key>
@@ -298,6 +299,7 @@
         <key id="certificate&amp;_CERTIFICATE_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista template certificati]]></key>
         <key id="certificate&amp;_CERTIFICATE_VIEW_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificati rilasciati]]></key>
         <key id="certificate&amp;_CERTIFICATE_WARNING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[NOTA IMPORTANTE: Per un limite della classe pdf che verrà sistemato nelle versioni future si consiglia di usare SOLO immagini di sfondo e di non usare immagini nel codice HTML all'interno di tag quali < p > < div > < center > ecc, questo potrebbe causare pagine di errore.]]></key>
+        <key id="certificate&amp;_CERTIFICATES_GENERATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Generazione certificati]]></key>
         <key id="certificate&amp;_CHOOSE_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Scegli un certificato]]></key>
         <key id="certificate&amp;_CHOOSE_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Scegli un corso]]></key>
         <key id="certificate&amp;_COURSE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Data inizio corso]]></key>
@@ -419,8 +421,9 @@ La chat si aprirà in una finestra di Popup]]></key>
       </module>
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Attiva tutte le feature per l'accessibilità]]></key>
-        <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Configurazione di "allow_url_fopen"]]></key>
+        <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Configurazione di "allow_url_fopen"]]></key>   
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configurazione di "allow_url_include"]]></key>
+        <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[già assegnato]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
         <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Richiedi codice creato attraverso il modulo codici]]></key>
@@ -446,8 +449,8 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_COURSE_BLOCK" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Attiva elenco corsi in home page]]></key>
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Limite per il massimo di contenuti caricabili nel corso (in MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Simbolo valuta (sarà mostrato all'utente)]]></key>
-        <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Email HelpDesk]]></key>
-        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PFX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oggetto mail HelpDesk]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Email Help Desk]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PFX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oggetto mail Help Desk]]></key>
         <key id="configuration&amp;_DEBUG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Opzioni di debug]]></key>
         <key id="configuration&amp;_DEFAULTTEMPLATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Template predefinito]]></key>
         <key id="configuration&amp;_DIMDIM_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Massimo utenti Audio]]></key>
@@ -467,9 +470,9 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_FTPERR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Errore nell'FTP]]></key>
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[FTP OK]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Codice fornito da Google]]></key>
-        <key id="configuration&amp;_GOOGLE_STAT_IN_LMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Usa le statistiche di Google (Analitycs)]]></key>
+        <key id="configuration&amp;_GOOGLE_STAT_IN_LMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Usa le statistiche di Google Analitics]]></key>
         <key id="configuration&amp;_HOUR_REQUEST_LIMIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Limite di ore disponibili per confermare la richiesta di iscrizione]]></key>
-        <key id="configuration&amp;_HTEDITOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Editor html WYSWYG]]></key>
+        <key id="configuration&amp;_HTEDITOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Editor HTML WYSWYG]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Permetti agli amministratori la gestione delle immagini nell'editor]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_GODADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Permetti ai superamministratori la gestione delle immagini nell'editor]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Permetti agli utenti la gestione delle immagini nell'editor]]></key>
@@ -477,11 +480,11 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostra, nell'area dei risultati ricerche per la content library, anche gli oggetti non indicizzati completamente.]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Attiva l'interfaccia di editing delle lingue (utilizzato per il debug)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nome e cognome sono campi obbligatori per la registrazione]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Estensione ldap di php]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Porta server Ldap]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Indirizzo server Ldap]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Usa autenticazione Ldap]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Stringa di autenticazione Ldap]]></key>
+        <key id="configuration&amp;_LDAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Estensione LDAP di PHP]]></key>
+        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Porta server LDAP]]></key>
+        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Indirizzo server LDAP]]></key>
+        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Usa autenticazione LDAP]]></key>
+        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Stringa di autenticazione LDAP]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configurazione di "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mittente delle email di registrazione e della procedura automatica di recupero password]]></key>
         <key id="configuration&amp;_MAINTENANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sito in manutenzione]]></key>
@@ -500,17 +503,18 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Con domxml ad OFF non funzionerà il modulo SCORM, la Videoconferenza e la gestione delle lingue]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_POLL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizza l'opzione "nessuna risposta" nelle domande del sondaggio]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizza l'opzione "nessuna risposta" nelle domande del test]]></key>
-        <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Se all'utente non è assegnato almeno un catalogo corsi mostra tutti i corsi e i curricula]]></key>
+        <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Se all'utente non è assegnato almeno un catalogo corsi mostra tutti i corsi e i curriculum]]></key>
         <key id="configuration&amp;_ON_USERCOURSE_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reindirizza l'utente al catalogo se non è iscritto a nessun corso]]></key>
-        <key id="configuration&amp;_OPENSSL" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Estensione php_openssl di php]]></key>
+        <key id="configuration&amp;_OPENSSL" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Estensione php_openssl di php]]></key> 
+        <key id="configuration&amp;_ORGCHART_SINGLENODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Limita l'utente ad un solo nodo dell'organigramma]]></key>
         <key id="configuration&amp;_ORG_NAME_TELESKILL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nome dell'organizzazione che apparirà nella room della videoconferenza]]></key>
         <key id="configuration&amp;_OWNED_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Proprietà sito]]></key>
-        <key id="configuration&amp;_PAGE_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Titolo pagina (apparirà come titolo del Browser)]]></key>
+        <key id="configuration&amp;_PAGE_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Titolo pagina (apparirà come titolo del browser)]]></key>
         <key id="configuration&amp;_PASS_ALFANUMERIC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[La password deve essere composta sia da lettere che da numeri]]></key>
         <key id="configuration&amp;_PASS_CHANGE_FIRST_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Obbliga gli utenti al cambio della password al primo login]]></key>
         <key id="configuration&amp;_PASS_MAX_TIME_VALID" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Giorni di validità di una password (0 = la password non ha scadenza)]]></key>
         <key id="configuration&amp;_PASS_MIN_CHAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lunghezza password (numero minimo di caratteri)]]></key>
-        <key id="configuration&amp;_PATH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Percorso per l'Upload files]]></key>
+        <key id="configuration&amp;_PATH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Percorso per il caricamento file]]></key>
         <key id="configuration&amp;_PATHCHAT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nome della cartella in cui vengono caricati i file della chat]]></key>
         <key id="configuration&amp;_PATHCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nome della cartella in cui vengono caricati i file dei corsi]]></key>
         <key id="configuration&amp;_PATHFIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Path di salvataggio dei file dei campi supplementari]]></key>
@@ -555,7 +559,7 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Consenti l'utilizzo di link esterni per attivare su altri applicativi la visualizzazioni di capitoli di un pacchetto SCORM]]></key>
         <key id="configuration&amp;_SECURITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configurazioni di sicurezza]]></key>
         <key id="configuration&amp;_SENDER_EVENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mittente delle email di notifica]]></key>
-        <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aggiungi i seguenti indirizzi in CC per tutte la mail inviate dalla piattaforma]]></key>
+        <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aggiungi i seguenti indirizzi in CC per tutte le mail inviate dalla piattaforma]]></key>
         <key id="configuration&amp;_SERVERINFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configurazione del server]]></key>
         <key id="configuration&amp;_SERVER_ADDR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Indirizzo del server]]></key>
         <key id="configuration&amp;_SERVER_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Email dell'amministratore del server]]></key>
@@ -563,7 +567,7 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_SERVER_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nome del server]]></key>
         <key id="configuration&amp;_SERVER_PORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Porta del server]]></key>
         <key id="configuration&amp;_SERVER_SOFTWARE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Software del server]]></key>
-        <key id="configuration&amp;_SESSION_IP_CONTROL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Attiva il controllo di coerenza dell'ip durante la sessione]]></key>
+        <key id="configuration&amp;_SESSION_IP_CONTROL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Attiva il controllo di coerenza dell'IP durante la sessione]]></key>
         <key id="configuration&amp;_SHOW_AS_BLOCK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostra in un blocco]]></key>
         <key id="configuration&amp;_SHOW_AS_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostra come elenco di link]]></key>
         <key id="configuration&amp;_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sms]]></key>
@@ -615,9 +619,10 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Chiedi all'utente di scegliere una nuova password diversa dalle ultime X password che ha usato]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Quota disco in MB assegnata all'utente per l'area myfiles]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Usa il form di registrazione in modalità "avanzata"]]></key>
-        <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizza l'Api DimDim al posto che l'interfacciamento tramite URL]]></key>
+        <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizza l'API DimDim al posto che l'interfacciamento tramite URL]]></key>
         <key id="configuration&amp;_USE_REST_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Abilita le funzionalità delle API]]></key>
         <key id="configuration&amp;_USE_TAG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Attiva l'uso dei tag]]></key>
+        <key id="configuration&amp;_USERS_ALREADY_ASSIGNED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[utenti già assegnati]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Attenzione senza questi settaggi la login social non funzioner&agrave;]]></key>
       </module>
       <module id="course">
@@ -630,12 +635,14 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="course&amp;_ALLOW_OVERBOOKING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Consenti l'overbooking]]></key>
         <key id="course&amp;_ALL_OPEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tutti i corsi aperti]]></key>
         <key id="course&amp;_ASSIGN_FOR_ALL_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Assegna per qualsiasi stato utente]]></key>
+        <key id="course&amp;_ASSIGN_FOR_AT_LEAST_MINUTES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tempo di fruizione minimo per l''assegnazione (min.)]]></key>
         <key id="course&amp;_ASSIGN_FOR_STATUS_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Assegna agli utenti che hanno completato il corso]]></key>
         <key id="course&amp;_ASSIGN_FOR_STATUS_INCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Assegna per gli utenti che stanno frequentando il corso]]></key>
         <key id="course&amp;_ASSIGN_MENU" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Assegna un nuovo menu al corso]]></key>
         <key id="course&amp;_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Codice registrazione]]></key>
-        <key id="course&amp;_BACK_TO_ADMINISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Torna all'area di amministrazione]]></key>
+        <key id="course&amp;_BACK_TO_ADMINISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Torna all'area di amministrazione]]></key> 
         <key id="course&amp;_BUY_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Permette di comprare questo corso]]></key>
+        <key id="course&amp;_CALENDAR_CLASSROOM_EDITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Calendario edizione aula]]></key>
         <key id="course&amp;_CAN_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Iscriviti]]></key>
         <key id="course&amp;_CASCADE_MOD_ON_EDITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Copia le modifiche anche nelle edizioni]]></key>
         <key id="course&amp;_CATEGORY_PATH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sei in]]></key>
@@ -651,7 +658,7 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Classe occupata]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[I dati del tuo corso verranno salvati.]]></key>
         <key id="course&amp;_COPY_SUBSCRIPTION_TO_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Copia iscrizioni nel corso]]></key>
-        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[% di pagamento anticipato]]></key>
+        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Quota parte pagamento anticipato]]></key>
         <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Codice per l'iscrizione automatica ad un corso]]></key>
         <key id="course&amp;_COURSE_CONTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Corsi contenuti]]></key>
         <key id="course&amp;_COURSE_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Durata Corso: dal <b>[date_begin]</b> al <b>[date_end]</b>.]]></key>
@@ -770,8 +777,8 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="course&amp;_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Iscrizione]]></key>
         <key id="course&amp;_SUBSCRIPTION_CLOSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Le iscrizioni sono chiuse]]></key>
         <key id="course&amp;_SUBSCRIPTION_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Iscrizione avvenuta con successo]]></key>
-        <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dal]]></key>
-        <key id="course&amp;_SUBSCRIPTION_DATE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Al]]></key>
+        <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Iscrizione permessa dal]]></key>
+        <key id="course&amp;_SUBSCRIPTION_DATE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Iscrizione permessa al]]></key>
         <key id="course&amp;_SUBSCRIPTION_ERROR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Errore durante l'iscrizione]]></key>
         <key id="course&amp;_SUBSCRIPTION_IN_PERIOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[L'iscrizione è disponibile nel seguente periodo]]></key>
         <key id="course&amp;_SUBSCRIPTION_OPEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Le iscrizioni sono aperte]]></key>
@@ -991,6 +998,7 @@ Title: [thread_title]]]></key>
       <module id="enrollrules">
         <key id="enrollrules&amp;_BASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Base]]></key>
         <key id="enrollrules&amp;_SHOW_LOGS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostra log]]></key>
+        <key id="enrollrules&amp;_ENTITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Entità]]></key>
       </module>
       <module id="event_manager">
         <key id="event_manager&amp;_EVENT_CHANNEL_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SMS]]></key>
@@ -1387,7 +1395,7 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="menu&amp;_BLIND_MENU_MODULES" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Salta alla lista dei moduli]]></key>
         <key id="menu&amp;_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificati]]></key>
         <key id="menu&amp;_COMMUNICATION_MAN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Comunicazioni]]></key>
-        <key id="menu&amp;_CONFIGURATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configurazione]]></key>
+        <key id="menu&amp;_CONFIGURATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configurazioni]]></key>
         <key id="menu&amp;_DASHBOARD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pagina di benvenuto]]></key>
         <key id="menu&amp;_EVENTMANAGER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gestore eventi]]></key>
         <key id="menu&amp;_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Eventi]]></key>
@@ -2332,7 +2340,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_REACTIVATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Riattiva]]></key>
         <key id="standard&amp;_READ" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Letto]]></key>
         <key id="standard&amp;_RECIPIENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Destinatari]]></key>
-        <key id="standard&amp;_REGISTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registrati]]></key>
+        <key id="standard&amp;_REGISTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registrazione]]></key>
         <key id="standard&amp;_REGISTER_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Data di registrazione]]></key>
         <key id="standard&amp;_REMOVE_FROM_NODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rimuovi dal nodo]]></key>
         <key id="standard&amp;_REPLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rispondi]]></key>
@@ -2507,7 +2515,8 @@ Password: [password]]]></key>
         <key id="subscribe&amp;_COPY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Copia]]></key>
         <key id="subscribe&amp;_COPY_TO_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Copia Iscrizioni]]></key>
         <key id="subscribe&amp;_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Iscrizione corretta]]></key>
-        <key id="subscribe&amp;_DATE_BEGIN_VALIDITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Attivo da]]></key>
+        <key id="subscribe&amp;_DATE_BEGIN_VALIDITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Attivo da]]></key> 
+        <key id="subscribe&amp;_DATE_COMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Data completamento]]></key>
         <key id="subscribe&amp;_DATE_EXPIRE_VALIDITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Attivo fino a]]></key>
         <key id="subscribe&amp;_DATE_FIRST_COMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Data del primo completamento]]></key>
         <key id="subscribe&amp;_DATE_LAST_COMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Data dell'ultimo completamento]]></key>

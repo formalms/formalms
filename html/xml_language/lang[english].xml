@@ -267,6 +267,7 @@
         <key id="catalogue&amp;_METHOD_MANUAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Manual subscription]]></key>
         <key id="catalogue&amp;_MOD_ENTRY_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Show elements of the catalog]]></key>
         <key id="catalogue&amp;_NEW_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[New catalog]]></key>
+        <key id="catalogue&amp;_NO_AVAILABLE_EDITIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[No available editions]]></key>
         <key id="catalogue&amp;_NO_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[No courses available]]></key>
         <key id="catalogue&amp;_NO_COURSE_FOUND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Course not found]]></key>
         <key id="catalogue&amp;_NO_EDITIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[There are no editions in this course.]]></key>
@@ -298,6 +299,7 @@
         <key id="certificate&amp;_CERTIFICATE_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificate template list]]></key>
         <key id="certificate&amp;_CERTIFICATE_VIEW_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Released certificates]]></key>
         <key id="certificate&amp;_CERTIFICATE_WARNING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[IMPORTANT: Due to a limitation of the PDF class which will be fixed in a future version, we suggest using ONLY background images and not embedded images in HTML code inside tags like < p >, < div >, < center > etc., as this can cause errors.]]></key>
+        <key id="certificate&amp;_CERTIFICATES_GENERATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificates generation]]></key>
         <key id="certificate&amp;_CHOOSE_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Choose the certificate]]></key>
         <key id="certificate&amp;_CHOOSE_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Choose the course]]></key>
         <key id="certificate&amp;_COURSE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Course starting date]]></key>
@@ -418,7 +420,8 @@
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Activate accessibility features]]></key>
         <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Configuration of "allow_url_fopen"]]></key>
-        <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configuration of "allow_url_include"]]></key>
+        <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configuration of "allow_url_include"]]></key>  
+        <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[already assigned]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
         <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ask for a code created through the code module]]></key>
@@ -501,6 +504,7 @@
         <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[If not a single course catalog is assigned to a user, show all the courses and curricula]]></key>
         <key id="configuration&amp;_ON_USERCOURSE_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Send user to catalog if enrolled in any course]]></key>
         <key id="configuration&amp;_OPENSSL" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Php extension php_openssl]]></key>
+        <key id="configuration&amp;_ORGCHART_SINGLENODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Limit the user to only one node of the organization chart]]></key>
         <key id="configuration&amp;_ORG_NAME_TELESKILL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Organization name for the conference]]></key>
         <key id="configuration&amp;_OWNED_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Site owner]]></key>
         <key id="configuration&amp;_PAGE_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Page title (will appear in the user's browser)]]></key>
@@ -615,7 +619,8 @@
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Use advanced registration form]]></key>
         <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Use DimDim Api instead of url interfacing]]></key>
         <key id="configuration&amp;_USE_REST_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Enable the API functionality]]></key>
-        <key id="configuration&amp;_USE_TAG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Enable tags feature inside the forums.]]></key>
+        <key id="configuration&amp;_USE_TAG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Enable tags feature inside the forums.]]></key> 
+        <key id="configuration&amp;_USERS_ALREADY_ASSIGNED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[already assigned users]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Attention without these settings the social login will not work]]></key>
       </module>
       <module id="course">
@@ -627,13 +632,15 @@
         <key id="course&amp;_ADVERT_LOBJ" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[There are [lobj] new learning objects]]></key>
         <key id="course&amp;_ALLOW_OVERBOOKING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Allow overbooking]]></key>
         <key id="course&amp;_ALL_OPEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[All open]]></key>
-        <key id="course&amp;_ASSIGN_FOR_ALL_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Assign for any user's status]]></key>
+        <key id="course&amp;_ASSIGN_FOR_ALL_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Assign for any user's status]]></key> 
+        <key id="course&amp;_ASSIGN_FOR_AT_LEAST_MINUTES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Minimum time of fruition for the assignment (min.)]]></key>
         <key id="course&amp;_ASSIGN_FOR_STATUS_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Assign for users that have  completed the course]]></key>
         <key id="course&amp;_ASSIGN_FOR_STATUS_INCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Assign for users that are attending the course]]></key>
         <key id="course&amp;_ASSIGN_MENU" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Assign a new menu to the course]]></key>
         <key id="course&amp;_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registration code]]></key>
         <key id="course&amp;_BACK_TO_ADMINISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Back to the admin area]]></key>
-        <key id="course&amp;_BUY_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Allowed to buy this course]]></key>
+        <key id="course&amp;_BUY_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Allowed to buy this course]]></key>  
+        <key id="course&amp;_CALENDAR_CLASSROOM_EDITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Calendar classroom edition]]></key>
         <key id="course&amp;_CAN_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Subscribe]]></key>
         <key id="course&amp;_CASCADE_MOD_ON_EDITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Copy changes also to editions]]></key>
         <key id="course&amp;_CATEGORY_PATH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[You are in]]></key>
@@ -996,7 +1003,8 @@ Password: [password]]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_BASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Base]]></key>
-        <key id="enrollrules&amp;_SHOW_LOGS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Show logs]]></key>
+        <key id="enrollrules&amp;_SHOW_LOGS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Show logs]]></key>  
+        <key id="enrollrules&amp;_ENTITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Entity]]></key>
       </module>
       <module id="event_manager">
         <key id="event_manager&amp;_EVENT_CHANNEL_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SMS]]></key>
@@ -2471,7 +2479,7 @@ Password: [password]]]></key>
         <key id="stats&amp;_FILTERSTATUSSELECTONEOPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[All status]]></key>
         <key id="stats&amp;_ORGPLAYTITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Stats by object]]></key>
         <key id="stats&amp;_PROGRESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objects]]></key>
-        <key id="stats&amp;_STATFORUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[User stas]]></key>
+        <key id="stats&amp;_STATFORUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[User stats]]></key>
         <key id="stats&amp;_STATISTIC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Statistics]]></key>
         <key id="stats&amp;_STATNOTRACKFORUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[No data for user/lesson]]></key>
         <key id="stats&amp;_STATSFORITEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[for lesson]]></key>
@@ -2514,7 +2522,8 @@ Password: [password]]]></key>
         <key id="subscribe&amp;_COPY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Copy]]></key>
         <key id="subscribe&amp;_COPY_TO_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Copy Subscriptions]]></key>
         <key id="subscribe&amp;_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Correct subscription]]></key>
-        <key id="subscribe&amp;_DATE_BEGIN_VALIDITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Active from]]></key>
+        <key id="subscribe&amp;_DATE_BEGIN_VALIDITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Active from]]></key>   
+        <key id="subscribe&amp;_DATE_COMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Completion date]]></key>
         <key id="subscribe&amp;_DATE_EXPIRE_VALIDITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Active until]]></key>
         <key id="subscribe&amp;_DATE_FIRST_COMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Date of first completion]]></key>
         <key id="subscribe&amp;_DATE_LAST_COMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Date of last completion]]></key>
