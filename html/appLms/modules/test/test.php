@@ -586,8 +586,8 @@ function &istanceQuest( $type_of_quest, $id ) {
 	WHERE type_quest = '".$type_of_quest."'");
 	if( !mysql_num_rows($re_quest) ) return;
 	list($type_file, $type_class) = sql_fetch_row($re_quest);
-	
-	require_once( $GLOBALS['where_lms'].'/modules/question/'.$type_file);
+
+	require_once(Docebo::inc(_folder_lms_.'/modules/question/'.$type_file));
 	$quest_obj = eval("return new $type_class ( $id );");
 	
 	return $quest_obj;
