@@ -375,10 +375,13 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="classroom&amp;_AVAILABLE_INSTRUMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dotazione disponibile]]></key>
         <key id="classroom&amp;_BUILDING_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Classe]]></key>
         <key id="classroom&amp;_CAPACITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Capienza]]></key>
-        <key id="classroom&amp;_CITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Città]]></key>
+        <key id="classroom&amp;_CITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Città]]></key>       
+        <key id="classroom&amp;_CLASSROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aula]]></key>
+        <key id="classroom&amp;_CLASSROOM_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Didascalia aula]]></key>
         <key id="classroom&amp;_DISPOSITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Layout]]></key>
         <key id="classroom&amp;_FAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fax]]></key>
         <key id="classroom&amp;_INSTRUMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dotazione della classe]]></key>
+        <key id="classroom&amp;_NEW_CLASSROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nuova aula]]></key>
         <key id="classroom&amp;_PHONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Numero di telefono]]></key>
         <key id="classroom&amp;_PHOTO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Foto]]></key>
         <key id="classroom&amp;_RESPONSABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Riferisce a]]></key>
@@ -1969,7 +1972,7 @@ Ti è stata inviata una e-mail con i tuoi dati di registrazione.]]></key>
         <key id="reservation&amp;_BODY_DELSUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Iscrizione all'evento cancellata]]></key>
         <key id="reservation&amp;_CANCEL_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cancella Iscrizione]]></key>
         <key id="reservation&amp;_CATEGORY_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Categorie]]></key>
-        <key id="reservation&amp;_CATEGORY_GESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gestione Categorie]]></key>
+        <key id="reservation&amp;_CATEGORY_GESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gestione categorie]]></key>
         <key id="reservation&amp;_CATEGORY_MAX_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Numero massimo partecipanti]]></key>
         <key id="reservation&amp;_CHOOSE_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Iscrivi utenti]]></key>
         <key id="reservation&amp;_CONFIRM_DATA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Conferma i tuoi dati]]></key>
@@ -1989,10 +1992,10 @@ Ti è stata inviata una e-mail con i tuoi dati di registrazione.]]></key>
         <key id="reservation&amp;_RESERVATION_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Prenotazioni]]></key>
         <key id="reservation&amp;_RESERVATION_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Eventi disponibili]]></key>
         <key id="reservation&amp;_RESERVATION_MAIL_SEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Invia Email]]></key>
-        <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Le Mie Iscrizioni]]></key>
+        <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Le mie iscrizioni]]></key>
         <key id="reservation&amp;_RESERVATION_PAST_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Iscrizioni ad eventi passati]]></key>
         <key id="reservation&amp;_RESERVATION_PROFILE_MODIFY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registrazione]]></key>
-        <key id="reservation&amp;_RESERVATION_SUBSCRIBED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gestione Iscrizioni]]></key>
+        <key id="reservation&amp;_RESERVATION_SUBSCRIBED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gestione iscrizioni]]></key>
         <key id="reservation&amp;_RESERVATION_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista delle prenotazioni]]></key>
         <key id="reservation&amp;_ROOM_FULL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Impossibile iscriversi]]></key>
         <key id="reservation&amp;_SAVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Modifica evento]]></key>

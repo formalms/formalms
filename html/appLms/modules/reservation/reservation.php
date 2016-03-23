@@ -1496,7 +1496,7 @@ function viewUserEvent()
 		$category = array();
 		$category = $man_res->viewCategory($id_course);
 		
-		$out->add(getTitleArea('_CATEGORY').'<div class="std_block">', 'content');
+		$out->add(getTitleArea($lang->def('_CATEGORY')).'<div class="std_block">', 'content');
 		
 		$error = importVar('error', false, '');
 		
@@ -1766,8 +1766,8 @@ function viewUserEvent()
 	
 	
 		$mod_perm	= true;
-		// create a language istance for module admin_classroom
-		$lang 		=& DoceboLanguage::createInstance('admin_classroom', 'lms');
+		// create a language istance for module classroom
+		$lang 		=& DoceboLanguage::createInstance('classroom', 'lms');
 		$out 		=& $GLOBALS['page'];
 		$out->setWorkingZone('content');
 		
@@ -1833,7 +1833,7 @@ function viewUserEvent()
 			);
 		}
 	
-		$out->add(getTitleArea($lang->def('_TITLE_CLASSROOM'), 'classroom', $lang->def('_ALT_TITLE_CLASSROOM'))
+		$out->add(getTitleArea($lang->def('_CLASSROOM'), 'classroom', $lang->def('_ALT_TITLE_CLASSROOM'))
 				.'<div class="std_block">'	);
 		if(isset($_GET['result'])) {
 			switch($_GET['result']) {
@@ -1855,7 +1855,7 @@ function viewUserEvent()
 		require_once(_base_.'/lib/lib.form.php');
 		require_once($GLOBALS["where_lms"]."/lib/lib.classlocation.php");
 	
-		$lang 		=& DoceboLanguage::createInstance('admin_classroom', 'lms');
+		$lang 		=& DoceboLanguage::createInstance('classroom', 'lms');
 		$form		= new Form();
 		$out 		=& $GLOBALS['page'];
 		$out->setWorkingZone('content');
@@ -1949,7 +1949,7 @@ function viewUserEvent()
 		$idClassroom 	= importVar('idClassroom', true, 0);
 		$load 		= importVar('load', true, 0);
 		$all_languages = Docebo::langManager()->getAllLangCode();
-		$lang 		=& DoceboLanguage::createInstance('admin_classroom', 'lms');
+		$lang 		=& DoceboLanguage::createInstance('classroom', 'lms');
 	
 		if($_POST['title'] == '') $_POST['title'] = $lang->def('_NOTITLE');
 		$lang_sel = $_POST['language'];
@@ -2012,7 +2012,7 @@ function viewUserEvent()
 		require_once(_base_.'/lib/lib.form.php');
 	
 		$idClassroom 	= importVar('idClassroom', true, 0);
-		$lang 		=& DoceboLanguage::createInstance('admin_classroom', 'lms');
+		$lang 		=& DoceboLanguage::createInstance('classroom', 'lms');
 	
 		if(isset($_POST['confirm'])) {
 	
@@ -2034,7 +2034,7 @@ function viewUserEvent()
 				$lang->def('_DEL_CLASSROOM')
 			);
 			$GLOBALS['page']->add(
-				getTitleArea($page_title, 'admin_classroom')
+				getTitleArea($page_title, 'classroom')
 				.'<div class="std_block">'
 				.$form->openForm('del_classroom', 'index.php?modname=reservation&amp;op=delclassroom')
 				.$form->getHidden('idClassroom', 'idClassroom', $idClassroom)
@@ -2179,7 +2179,7 @@ function infoLocation()
 	
 	checkPerm('view');
 	
-	$lang =& DoceboLanguage::createInstance('admin_classroom', 'lms');
+	$lang =& DoceboLanguage::createInstance('classroom', 'lms');
 	
 	$out = $GLOBALS['page'];
 	$out->setWorkingZone('content');

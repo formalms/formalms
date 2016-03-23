@@ -373,10 +373,13 @@
         <key id="classroom&amp;_AVAILABLE_INSTRUMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Available Hardware]]></key>
         <key id="classroom&amp;_BUILDING_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Room]]></key>
         <key id="classroom&amp;_CAPACITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Capacity]]></key>
-        <key id="classroom&amp;_CITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[City]]></key>
+        <key id="classroom&amp;_CITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[City]]></key>           
+        <key id="classroom&amp;_CLASSROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Classroom]]></key>
+        <key id="classroom&amp;_CLASSROOM_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Classroom caption]]></key>
         <key id="classroom&amp;_DISPOSITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Layout]]></key>
         <key id="classroom&amp;_FAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fax]]></key>
         <key id="classroom&amp;_INSTRUMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Classroom hardware]]></key>
+        <key id="classroom&amp;_NEW_CLASSROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[New classroom]]></key>
         <key id="classroom&amp;_PHONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Phone number]]></key>
         <key id="classroom&amp;_PHOTO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Photo]]></key>
         <key id="classroom&amp;_RESPONSABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Refer(s) to]]></key>
