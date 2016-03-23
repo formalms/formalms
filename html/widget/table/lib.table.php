@@ -43,6 +43,7 @@ class TableWidget extends Widget {
 	public $print_table_below = true;
 
 	public $stdSelection = false;
+	public $stdSelectionHidden = false;
 	public $stdSelectionField = '';
 	public $delDisplayField = false;
 	public $selectAllAdditionalFilter = false;
@@ -272,7 +273,7 @@ class TableWidget extends Widget {
 	protected function _getColumns() {
 		if ($this->stdSelection) {
 			$label = Form::getInputCheckbox($this->id.'_head_select', '', 1, false, '');
-			$columnsList = array( array('key'=>'_select', 'label'=>$label, 'formatter'=>'doceboSelect', 'className'=>'img-cell') );
+			$columnsList = array( array('key'=>'_select', 'label'=>$label, 'formatter'=>'doceboSelect', 'className'=>'img-cell', 'hidden' => $this->stdSelectionHidden) );
 			for ($i=0; $i<count($this->columns); $i++) {
 				$columnsList[] = $this->columns[$i];
 			}

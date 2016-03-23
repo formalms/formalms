@@ -927,11 +927,13 @@ class OrgDirDb extends RepoDirDb {
 					. " WHERE idOrgAccess = " . (int)$idOrgAccess . " AND kind = '" . $type . "' AND value = '" . (int)$idst_element . "'";
 			sql_query($query);
 
-			$query =	"INSERT INTO %lms_organization_access"
-					." (idOrgAccess, kind, value, params) VALUES ("
-					." '".(int)$idOrgAccess."','".$type."','".(int)$idst_element."','".$relation."')";
+			if ($relation != 'NULL') {
+				$query = "INSERT INTO %lms_organization_access"
+						. " (idOrgAccess, kind, value, params) VALUES ("
+						. " '" . (int)$idOrgAccess . "','" . $type . "','" . (int)$idst_element . "','" . $relation . "')";
 
-			sql_query($query);
+				sql_query($query);
+			}
 		} else {
 			$query_old_values = "SELECT value, params FROM %lms_organization_access"
 					. " WHERE idOrgAccess = " . (int)$idOrgAccess;

@@ -149,7 +149,7 @@ UserSelector.prototype = {
 			};
 
 			var checkbox = window.document.getElementById('user_selector_table_main_selector_sel_'+id_user);
-			if (!checkbox.checked) {
+			if ((!checkbox.checked && new_value != 'NULL') || (checkbox.checked && new_value == 'NULL')) {
 				window.document.getElementById('user_selector_table_main_selector_sel_' + id_user).click();
 			}
 			var form = YAHOO.util.Selector.query('form[id^=main_selector_form]')[0];

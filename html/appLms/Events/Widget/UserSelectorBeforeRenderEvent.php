@@ -10,13 +10,15 @@ class UserSelectorBeforeRenderEvent extends Event
     protected $userSelectorId;
     protected $columns;
     protected $fields;
+    protected $stdSelectionHidden;
 
-    public function __construct($idOrg, $userSelectorId, $columns = array(), $fields = array())
+    public function __construct($idOrg, $userSelectorId, $columns = array(), $fields = array(), $stdSelectionHidden = false)
     {
         $this->idOrg = $idOrg;
         $this->userSelectorId = $userSelectorId;
         $this->columns = $columns;
         $this->fields = $fields;
+        $this->stdSelectionHidden = $stdSelectionHidden;
     }
 
     /**
@@ -80,6 +82,22 @@ class UserSelectorBeforeRenderEvent extends Event
     public function getIdOrg()
     {
         return $this->idOrg;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isStdSelectionHidden()
+    {
+        return $this->stdSelectionHidden;
+    }
+
+    /**
+     * @param boolean $stdSelectionHidden
+     */
+    public function setStdSelectionHidden($stdSelectionHidden)
+    {
+        $this->stdSelectionHidden = $stdSelectionHidden;
     }
 
 }
