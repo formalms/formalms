@@ -61,14 +61,12 @@ class Learning_Test extends Learning_Object {
 			return $testObj;
 		}
 
-		$type_class = sql_query("SELECT className FROM %lms_lo_types WHERE objectType = '".$testObj->getObjectType()."'");
+		$res = sql_query("SELECT fileName, className FROM %lms_lo_types WHERE objectType = '".$testObj->getObjectType()."'");
+		list($type_file, $type_class) = sql_fetch_row($res);
+		require_once(Docebo::inc(_folder_lms_ . '/class.module/'.$type_file));
 		return  new $type_class( $id );
 	}
-	
-	function getObjectType() {
-		return 'test';
-	}
-	
+
 	function getParamInfo() {
 		return false;
 	}
