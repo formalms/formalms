@@ -132,7 +132,6 @@ $this->widget('table', array(
 	'columns' => $event->getColumns(),
 	'fields' => $event->getFields(),
 	'stdSelection' => true,
-	'stdSelectionHidden' => $event->isStdSelectionHidden(),
 	'stdSelectionField' => '_checked',
 	'selectAllAdditionalFilter' => $_varname . '.selectAllAdditionalFilter()',
 	'generateRequest' => $_varname . '.requestBuilder',
