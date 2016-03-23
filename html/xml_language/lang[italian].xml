@@ -496,11 +496,11 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_MANDATORY_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Se una delle opzioni di registrazione con codice riportate sopra è abilitata gli utenti sono obbligati ad inserire il codice di registrazione]]></key>
         <key id="configuration&amp;_MAX_EXECUTION_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configurazione di "max_execution_time"]]></key>
         <key id="configuration&amp;_MAX_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Numero massimo di tentativi sbagliati per accedere (0 = nessun limite)]]></key>
-        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql Collation]]></key>
-        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql Encoding]]></key>
-        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sql mode]]></key>
-        <key id="configuration&amp;_MYSQL_TIMEZONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql Timezone]]></key>
-        <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Versione di mysql]]></key>
+        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL Collation]]></key>
+        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL Encoding]]></key>
+        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SQL mode]]></key>
+        <key id="configuration&amp;_MYSQL_TIMEZONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL Timezone]]></key>
+        <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Versione di MySQL]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pausa tra un blocco e l'altro (secondi)]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Invia i messaggi a blocchi di (messaggi)]]></key>
         <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Con domxml ad OFF non funzionerà il modulo SCORM, la Videoconferenza e la gestione delle lingue]]></key>

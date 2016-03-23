@@ -494,10 +494,10 @@
         <key id="configuration&amp;_MANDATORY_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[If one of the registration code options above are enabled, users are forced to enter the registration code (the code field must be filled in)]]></key>
         <key id="configuration&amp;_MAX_EXECUTION_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configuration of "max_execution_time"]]></key>
         <key id="configuration&amp;_MAX_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximum number of consecutively failed login attempts (0 = no limit)]]></key>
-        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql Collation]]></key>
-        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql Encoding]]></key>
-        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sql mode]]></key>
-        <key id="configuration&amp;_MYSQL_TIMEZONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql Timezone]]></key>
+        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL Collation]]></key>
+        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL Encoding]]></key>
+        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SQL mode]]></key>
+        <key id="configuration&amp;_MYSQL_TIMEZONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL Timezone]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL version]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pause between blocks (seconds)]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Send newsletter messages in blocks of]]></key>
@@ -506,7 +506,7 @@
         <key id="configuration&amp;_NO_ANSWER_IN_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Use "no answer" option in test questions]]></key>
         <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[If not a single course catalog is assigned to a user, show all the courses and curricula]]></key>
         <key id="configuration&amp;_ON_USERCOURSE_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Send user to catalog if enrolled in any course]]></key>
-        <key id="configuration&amp;_OPENSSL" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Php extension php_openssl]]></key>
+        <key id="configuration&amp;_OPENSSL" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[PHP extension php_openssl]]></key>
         <key id="configuration&amp;_ORGCHART_SINGLENODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Limit the user to only one node of the organization chart]]></key>
         <key id="configuration&amp;_ORG_NAME_TELESKILL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Organization name for the conference]]></key>
         <key id="configuration&amp;_OWNED_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Site owner]]></key>
