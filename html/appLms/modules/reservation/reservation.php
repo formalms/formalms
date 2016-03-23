@@ -1833,7 +1833,7 @@ function viewUserEvent()
 			);
 		}
 	
-		$out->add(getTitleArea($lang->def('_CLASSROOM'), 'classroom', $lang->def('_ALT_TITLE_CLASSROOM'))
+		$out->add(getTitleArea($lang->def('_CLASSROOM'), 'classroom', $lang->def('_ALT_CLASSROOM'))
 				.'<div class="std_block">'	);
 		if(isset($_GET['result'])) {
 			switch($_GET['result']) {
@@ -1896,10 +1896,10 @@ function viewUserEvent()
 		}
 	
 		$page_title = array(
-			'index.php?modname=classroom&amp;op=classroom' => $lang->def('_TITLE_CLASSROOM'),
+			'index.php?modname=classroom&amp;op=classroom' => $lang->def('_CLASSROOM'),
 			( $load ? $lang->def('_MOD_CLASSROOM') : $lang->def('_NEW_CLASSROOM') )
 		);
-		$out->add(getTitleArea($page_title, 'classroom', $lang->def('_ALT_TITLE_CLASSROOMS'))
+		$out->add(getTitleArea($page_title, 'classroom', $lang->def('_ALT_CLASSROOMS'))
 				.'<div class="std_block">'
 				.getBackUi( 'index.php?modname=reservation&amp;op=classroom', $lang->def('_BACK') )
 	
@@ -2030,7 +2030,7 @@ function viewUserEvent()
 	
 			$form = new Form();
 			$page_title = array(
-				'index.php?modname=reservation&amp;op=classroom' => $lang->def('_TITLE_CLASSROOM'),
+				'index.php?modname=reservation&amp;op=classroom' => $lang->def('_CLASSROOM'),
 				$lang->def('_DEL_CLASSROOM')
 			);
 			$GLOBALS['page']->add(
