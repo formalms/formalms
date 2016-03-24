@@ -1,4 +1,4 @@
-//*****************
+/*****************
 * XAMPP User
 * you are required to enable php_openssl.dll in your php settings:
 * 1) check if you have php_openssl.dll in \<xampp install dir>\php\ext\
