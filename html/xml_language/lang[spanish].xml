@@ -409,7 +409,6 @@
         <key id="configuration&amp;_DO_DEBUG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Habilitar información de depurado]]></key>
         <key id="configuration&amp;_ECOMMERCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Commerce]]></key>
         <key id="configuration&amp;_FIRST_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostrar "catálogo de usuario" como página de inicio del usuario]]></key>
-        <key id="configuration&amp;_FORUM_AS_TABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostrar una lista de foros en una tabla]]></key>
         <key id="configuration&amp;_FTPERR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Error en FTP]]></key>
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[FTP OK]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Código facilitado por Google]]></key>

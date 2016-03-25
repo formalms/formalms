@@ -467,7 +467,6 @@
         <key id="configuration&amp;_ECOMMERCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Commerce]]></key>
         <key id="configuration&amp;_FILE_UPLOAD_WHITELIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Whitelist permitted file extensions]]></key>
         <key id="configuration&amp;_FIRST_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Show "course catalog" as user main page]]></key>
-        <key id="configuration&amp;_FORUM_AS_TABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Show forum list in a table]]></key>
         <key id="configuration&amp;_FTPERR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Error in FTP]]></key>
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[FTP OK]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Code provided by Google]]></key>

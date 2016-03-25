@@ -60,7 +60,6 @@ INSERT INTO `core_setting_default` (`param_name`, `param_value`, `value_type`, `
 ('dimdim_user', '', 'string', 255, 'dimdim', 6, 2, 1, 0, ''),
 ('do_debug', 'off', 'enum', 3, 'debug', 8, 8, 1, 0, ''),
 ('first_catalogue', 'off', 'enum', 3, '0', 4, 2, 1, 0, ''),
-('forum_as_table', 'on', 'enum', 3, '0', 4, 4, 1, 0, ''),
 ('google_stat_code', '', 'textarea', 65535, '0', 10, 2, 1, 0, ''),
 ('google_stat_in_lms', '0', 'check', 1, '0', 10, 1, 1, 0, ''),
 ('hour_request_limit', '48', 'int', 2, 'register', 3, 13, 0, 0, ''),

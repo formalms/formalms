@@ -157,139 +157,7 @@ function forum() {
 	if(isset($last_authors)) {
 		$authors_names =& $acl_man->getUsers($last_authors);
 	}
-	// switch to one of the 2 visualization method
-	if(Get::sett('forum_as_table') == 'on') {
-
-		// show forum list in a table -----------------------------------------
-		// table header
-		$type_h = array('image', 'image', 'forumTitle', 'align_center', 'align_center', 'align_center', 'image');
-		if($mod_perm) {
-			$type_h[] = 'image'; $type_h[] = 'image'; $type_h[] = 'image'; $type_h[] = 'image'; $type_h[] = 'image'; $type_h[] = 'image';
-		}
-		$tb->setColsStyle($type_h);
-
-		$cont_h = array(
-			'<img src="'.getPathImage('fw').'blank.png" title="'.$lang->def('_EMOTICONS').'" alt="'.$lang->def('_EMOTICONS').'" />',
-			$lang->def('_TITLE'),
-			$lang->def('_DESCRIPTION'),
-			$lang->def('_NUMTHREAD'),
-			$lang->def('_NUMPOST'),
-			$lang->def('_LASTPOST')
-		);
-		if($mod_perm) {
-			$cont_h[] = '<img src="'.getPathImage().'standard/down.png" title="'.$lang->def('_MOVE_DOWN').'" alt="'.$lang->def('_DOWN').'" />';
-			$cont_h[] = '<img src="'.getPathImage().'standard/up.png" title="'.$lang->def('_UP').'" alt="'.$lang->def('_UP').'" />';
-			$cont_h[] = '<img src="'.getPathImage().'standard/moduser.png" title="'.$lang->def('_VIEW_PERMISSION').'" alt="'.$lang->def('_VIEW_PERMISSION').'" />';
-			$cont_h[] = '<img src="'.getPathImage().'standard/download.png" title="'.$lang->def('_EXPORT_CSV').'" alt="'.$lang->def('_EXPORT_CSV').'" />';
-			$cont_h[] = '<img src="'.getPathImage().'standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" />';
-			$cont_h[] = '<img src="'.getPathImage().'standard/delete.png" title="'.$lang->def('_DEL').'" alt="'.$lang->def('_DEL').'" />';
-		}
-		$tb->addHead($cont_h);
-
-		// table body
-		$i = 1;
-		while(list($idF, $title, $descr, $num_thread, $num_post, $locked, $emoticons) = sql_fetch_row($re_forum) ) {
-			if (checkPublicForumPerm('view', $idF) || checkPerm('mod', true))
-			{
-				$c_css 			= '';
-				$mess_notread 	= 0;
-				$thread_notread = 0;
-				// NOTES: status
-				if($locked)	$status = '<span class="ico-sprite subs_locked"><span>'.Lang::t('_LOCKED', 'forum').'</span></span>';
-				elseif( isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$idF])) {
-	
-					if(isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$idF]) && is_array($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$idF])) {
-						foreach($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$idF] as $k => $n_mess)
-							if($n_mess != 'new_thread') $mess_notread += $n_mess;
-							else $thread_notread += 1;
-					}
-					if($mess_notread > 0 || $thread_notread > 0) {
-						$status = '<img src="'.getPathImage().'standard/msg_unread.png" alt="'.$lang->def('_UNREAD').'" />';
-						$c_css = ' class="text_bold"';
-					} else {
-						$status = '';
-					}
-				} else $status = '';
-	
-				if (strpos($emoticons, '.gif') !== false) {
-					$emoticon_img ='<img src="'.getPathImage().'emoticons/'.$emoticons.'" title="'.$lang->def('_EMOTICONS').'" alt="'.$lang->def('_EMOTICONS').'" />';
-				}
-				else {
-					$emoticon_img ='<span class="emoticon emo-'.$emoticons.'"><span></span></span>';
-				}
-
-				// NOTES: other content
-				$content = array(
-								$emoticon_img,
-								'<a'.$c_css.' href="index.php?modname=public_forum&amp;op=thread&amp;idForum='.$idF.'">'.$status.' '.$title.'</a>',
-								$descr,
-								$num_thread.( $thread_notread ? '<div class="forum_notread">'.$thread_notread.' '.$lang->def('_ADD').'</div>' : '' ),
-								$num_post.( $mess_notread ? '<div class="forum_notread">'.$mess_notread.' '.$lang->def('_ADD').'</div>' : '' ) );
-				if(isset($last_post[$idF])) {
-	
-					$author = $last_post[$idF]['author'];
-					$content[] = $last_post[$idF]['info'].' ( '.$lang->def('_BY').': <span class="mess_author">'
-								.( isset($authors_names[$author])
-									? ( $authors_names[$author][ACL_INFO_LASTNAME].$authors_names[$author][ACL_INFO_FIRSTNAME] == ''
-											? $acl_man->relativeId($authors_names[$author][ACL_INFO_USERID])
-											: $authors_names[$author][ACL_INFO_LASTNAME].' '.$authors_names[$author][ACL_INFO_FIRSTNAME] )
-									: $lang->def('_UNKNOWN_AUTHOR')
-								).'</span> )';
-				} else {
-	
-					$content[] = $lang->def('_NONE');
-				}
-				// NOTES: mod and perm
-				if($mod_perm) {
-					if($i != $tot_forum) $content[] = '<a href="index.php?modname=public_forum&amp;op=downforum&amp;idForum='.$idF.'">
-						<img src="'.getPathImage().'standard/down.png" title="'.$lang->def('_MOVE_DOWN').'" alt="'.$lang->def('_DOWN').'" /></a>';
-					else $content[] = '';
-	
-					if($i != 1) $content[] = '<a href="index.php?modname=public_forum&amp;op=moveupforum&amp;idForum='.$idF.'">
-						<img src="'.getPathImage().'standard/up.png" title="'.$lang->def('_UP').'" alt="'.$lang->def('_UP').'" /></a>';
-					else $content[] = '';
-	
-					$content[] = '<a href="index.php?modname=public_forum&amp;op=modforumaccess&amp;idForum='.$idF.'&amp;load=1">
-						<img src="'.getPathImage().'standard/moduser.png" title="'.$lang->def('_VIEW_PERMISSION').'" alt="'.$lang->def('_VIEW_PERMISSION').'" /></a>';
-					$content[] = '<a href="index.php?modname=public_forum&amp;op=export&amp;idForum='.$idF.'" ' .
-						'title="'.$lang->def('_EXPORTFORUM').' : '.strip_tags($title).'">
-						<img src="'.getPathImage().'standard/download.png" alt="'.$lang->def('_EXPORTFORUM').'" /></a>';
-					$content[] = '<a href="index.php?modname=public_forum&amp;op=modforum&amp;idForum='.$idF.'">
-						<img src="'.getPathImage().'standard/edit.png" title="'.$lang->def('_MOD').'" alt="'.$lang->def('_MOD').'" /></a>';
-					$content[] = '<a href="index.php?modname=public_forum&amp;op=delforum&amp;idForum='.$idF.'" title="'.$lang->def('_DEL').' : '.strip_tags($title).'">
-						<img src="'.getPathImage().'standard/delete.png" title="'.$lang->def('_DEL').' : '.strip_tags($title).'" alt="'.$lang->def('_DEL').'" /></a>';
-				}
-				$tb->addBody( $content );
-				++$i;
-			}
-		}
-		if($mod_perm) {
-
-			$tb->addActionAdd('<a class="ico-wt-sprite subs_add" href="index.php?modname=public_forum&amp;op=addforum"><span>'
-				.$lang->def('_ADDFORUM')
-				.'</span></a>');
-		}
-		$GLOBALS['page']->add(
-			getTitleArea($lang->def('_FORUM'), 'forum')
-			.'<div class="std_block">'
-			.Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search')
-			.'<div class="quick_search_form">'
-			.'<label for="search_arg">'.$lang->def('_SEARCH_LABEL').'</label> '
-			.Form::getInputTextfield(	'search_t',
-										'search_arg',
-										'search_arg',
-										'',
-										$lang->def('_SEARCH'), 255, '' )
-			.'<input class="search_b" type="submit" id="search_button" name="search_button" value="'.$lang->def('_SEARCH').'" />'
-			.'</div>'
-			.Form::closeForm()
-			.$tb->getTable()
-			.$tb->getNavBar($ini, $tot_forum)
-			.'</div>', 'content' );
-	} else {
-
-		// second view styles
-		$i = 1;
+                $i = 1;
 		$GLOBALS['page']->add(
 			getTitleArea($lang->def('_FORUM'), 'forum')
 			.'<div class="std_block">'
@@ -425,7 +293,6 @@ function forum() {
 		require_once(_base_.'/lib/lib.dialog.php');
 		setupHrefDialogBox('a[href*=delforum]');
 	}
-}
 
 //---------------------------------------------------------------------------//
 

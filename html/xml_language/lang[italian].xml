@@ -469,7 +469,6 @@ La chat si aprirà in una finestra di Popup]]></key>
         <key id="configuration&amp;_ECOMMERCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Commerce]]></key>
         <key id="configuration&amp;_FILE_UPLOAD_WHITELIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Estensioni file permesse (whitelist)]]></key>
         <key id="configuration&amp;_FIRST_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostra il catalogo corsi come pagina principale]]></key>
-        <key id="configuration&amp;_FORUM_AS_TABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostra i forum in formato tabella]]></key>
         <key id="configuration&amp;_FTPERR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Errore nell'FTP]]></key>
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[FTP OK]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Codice fornito da Google]]></key>
