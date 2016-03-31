@@ -158,6 +158,7 @@ function forum() {
 		$authors_names =& $acl_man->getUsers($last_authors);
 	}
 
+
 	// switch to one of the 2 visualization method
 	if(Get::sett('forum_as_table') == 'on') {
 
@@ -371,19 +372,20 @@ function forum() {
 												.'</div>');
 		}
 		$GLOBALS['page']->add(
-			getTitleArea($lang->def('_FORUM'), 'forum')
-			//.'<div class="std_block">'
-			//.'<div class="quick_search_form">'
-			//.'<label for="search_arg">'.$lang->def('_SEARCH_LABEL').'</label> '
-			// .Form::getInputTextfield(	'search_t',
-			// 							'search_arg',
-			// 							'search_arg',
-			// 							'',
-			// 							$lang->def('_SEARCH'), 255, '' )
-			//.'<input class="search_b" type="submit" id="search_button" name="search_button" value="'.$lang->def('_SEARCH').'" />'
-			//.'</div>'
-			//.Form::closeForm()
-			, 'content');
+		 	getTitleArea($lang->def('_FORUM'), 'forum')
+		// 	.'<div class="std_block">'
+		// 	.'<div class="quick_search_form">'
+		// 	.'<label for="search_arg">'.$lang->def('_SEARCH_LABEL').'</label> '
+		// 	.Form::getInputTextfield(	'search_t',
+		// 								'search_arg',
+		// 								'search_arg',
+		// 								'',
+		// 								$lang->def('_SEARCH'), 255, '' )
+		// 	.'<input class="search_b" type="submit" id="search_button" name="search_button" value="'.$lang->def('_SEARCH').'" />'
+		// 	.'</div>'
+		// 	.Form::closeForm()
+		.$tb->getTable()
+		, 'content');
 	} else {
 
 		// second view styles
