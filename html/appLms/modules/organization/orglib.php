@@ -1228,7 +1228,8 @@ class Org_TreeView extends RepoTreeView {
 
 		require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
 		
-		$out = '<div class="TreeViewRowBase">';
+		// $out = '<div class="TreeViewRowBase">';
+		$out = '<td>';
 		$id = ($stack[$level]['isExpanded'])?($this->_getCompressActionId()):($this->_getExpandActionId());
 		$id .= $stack[$level]['folder']->id;
 		for( $i = 0; $i <= $level; $i++ ) {
@@ -1321,7 +1322,8 @@ class Org_TreeView extends RepoTreeView {
 			}
 		}
 		
-		$out .= '</div>';
+		// $out .= '</div>';
+		
 		$out .= $this->printActions( $stack, $level );
 				
 		if( $level > 0 ) {
@@ -1493,6 +1495,8 @@ class Org_TreeView extends RepoTreeView {
 					break;
 				}
 			}
+
+			$out .= '</td>';
 		}
 		return $out;
 	}
@@ -1513,7 +1517,14 @@ class Org_TreeView extends RepoTreeView {
 		$level = 0;
 		$count = 0;
 
-		$tree .= '<div class="TreeViewContainer">'."\n";
+		// $tree .= '<div class="TreeViewContainer">'."\n";
+		$tree .= '<div class="panel panel-default panel-treeview">'."\n";
+
+		$tree .= '<div class="panel-heading">';
+		$tree .= $this->printElement($stack, $level);
+		$tree .= '</div>';
+		
+		$tree .= '<table class="table table-striped table-hover">'."\n";
 		$folder = $this->tdb->getRootFolder();
 		$stack[$level] = array();
 		$stack[$level]['folder'] = $folder;
@@ -1524,9 +1535,10 @@ class Org_TreeView extends RepoTreeView {
 		$stack[$level]['idSeq'] = $folder->id;
 		$stack[$level]['isFirst'] = $isFirst;
 
-		$tree .= '<div class="TreeViewRowOdd" id="row_'.$stack[$level]['idSeq'].'">';
-		$tree .= $this->printElement($stack, $level);
-		$tree .= '</div>';
+		// $tree .= '<div class="TreeViewRowOdd" id="row_'.$stack[$level]['idSeq'].'">';
+		// $tree .= $this->printElement($stack, $level);
+		// $tree .= '</div>';
+
 		$level++;
 
 		if( $coll !== FALSE ) {
@@ -1563,12 +1575,14 @@ class Org_TreeView extends RepoTreeView {
 				
 				if($row_content !== false) {
 					$count++;
-					if( $count % 2 == 0 )
-						$tree .= '<div class="TreeViewRowOdd" id="row_'.$stack[$level]['idSeq'].'">';
-					else
-						$tree .= '<div class="TreeViewRowEven" id="row_'.$stack[$level]['idSeq'].'">';
+					// if( $count % 2 == 0 )
+					// 	$tree .= '<div class="TreeViewRowOdd" id="row_'.$stack[$level]['idSeq'].'">';
+					// else
+					// 	$tree .= '<div class="TreeViewRowEven" id="row_'.$stack[$level]['idSeq'].'">';
+					$tree .= '<tr id="row_'.$stack[$level]['idSeq'].'">';
 					$tree .= $row_content;
-					$tree .= '</div>';
+					// $tree .= '</div>';
+					$tree .= '</tr>';
 	
 					if( is_array($val) ) {
 						$level++;
@@ -1589,6 +1603,7 @@ class Org_TreeView extends RepoTreeView {
 		print_r( $this->compressList );
 		echo "-->\n"; */
 
+		$tree .= '</table>'."\n";
 		$tree .= '</div>'."\n";
 		return $tree;
 	}

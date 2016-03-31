@@ -76,7 +76,8 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 	// Print of the menu
 	
     cout(
-		'<div id="menu_lat" class="lmsmenu_block">'
+		// '<div id="menu_lat" class="lmsmenu_block">'
+   	'<div id="menu_lat" class="panel panel-default lmsmenu_block">'
 		.'<div class="bd">'
 		.'<ul class="main-v-ul">'
 	, 'menu');
@@ -96,13 +97,14 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 			
 			 $img_course = "";
 			if($course_img != '') {
-	             $logo_panel .= '<div class="lmsmenu_block">'."\n";
+	            $logo_panel .= '<div class="lmsmenu_block">'."\n";
 				$logo_panel .= '<p class="align-center">'
 					.'<img class="boxed" src="'.$path.$course_img.'" alt="'.Lang::t('_COURSE_LOGO', 'course').' : '.$course_name.'" />'
 					.'</p>'
 					.'<br />'."\n";
-			        $logo_panel .= '</div>'."\n";
-                    $img_course = '<img class="boxed" src="'.$path.$course_img.'" alt="'.Lang::t('_COURSE_LOGO', 'course').' : '.$course_name.'" />'    ;
+		        $logo_panel .= '</div>'."\n";
+                // $img_course = '<img class="boxed" src="'.$path.$course_img.'" alt="'.Lang::t('_COURSE_LOGO', 'course').' : '.$course_name.'" />';
+                $img_course = '<img class="img-rounded" src="'.$path.$course_img.'" alt="'.Lang::t('_COURSE_LOGO', 'course').' : '.$course_name.'" />';
             }
 			
 	}			
@@ -409,10 +411,11 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 				.'<div class="nofloat"></div>'        
                 .renderProgress($tot_complete, $tot_failed, $total, false)."\n";
                 
-                // MENU OVER                
-                  cout('<div class="col-md-1">'.$img_course.'</div>','menu_over'); 
+                // MENU OVER
+                cout('<div class="row">','menu_over');               
+                  cout('<div class="col-sm-3">'.$img_course.'</div>','menu_over'); 
  
-                  cout('<div class="col-md-11" >','menu_over');
+                  cout('<div class="col-sm-9" >','menu_over');
                       cout('<div class="col-md-7"><div><h1>'.Docebo::course()->getValue('name').'</h1></div></div>
                             <div class="col-md-4"><div>'.$info_panel_progress.'</div></div>
                             <div class="col-md-1"><div><br> <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-stats"></span></button></div></div>
@@ -422,7 +425,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
                       
                     //  cout('<div class="col-md-12" >menu .....</div>','menu_over') ;
                       
-                  cout('</div><br><br>&nbsp;','menu_over');
+                  cout('</div></div><br><br>&nbsp;','menu_over');
                   
                   
                                 

@@ -1,9 +1,8 @@
 
   
-    <div class="well well-sm">
-        <strong><?php echo Lang::t('_CATALOGUE', 'standard'); ?></strong>
-     
-    </div>
+<div class="well well-sm">
+    <strong><?php echo Lang::t('_CATALOGUE', 'standard'); ?></strong>
+</div>
 
 
    

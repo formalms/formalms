@@ -37,30 +37,36 @@ class MessageModule {
 			case 5 :
 				$img_priority = "veryimportant.png";
 				$text_priority = Lang::t('_VERYHIGH', 'message');
+				$color_priority = 'danger'; // added 15/03/2016
 				break;
 			case 4 :
 				$img_priority = "important.png";
 				$text_priority = Lang::t('_HIGH', 'message');
+				$color_priority = 'warning'; // added 15/03/2016
 				break;
 			case 3 :
 				$img_priority = "notimportant.png";
 				$text_priority = Lang::t('_NORMAL', 'message');
+				$color_priority = 'success'; // added 15/03/2016
 				break;
 			case 2 :
 				$img_priority = "lowmessage.png";
 				$text_priority = Lang::t('_LOW', 'message');
+				$color_priority = 'info'; // added 15/03/2016
 				break;
 			case 1 :
 				$img_priority = "verylowmessage.png";
 				$text_priority = Lang::t('_VERYLOW', 'message');
+				$color_priority = 'info'; // added 15/03/2016
 				break;
 			default :
 				$img_priority = "notimportant.png";
 				$text_priority = Lang::t('_NORMAL', 'message');
+				$color_priority = 'success'; // added 15/03/2016
 				break;
 		}
 
-		return(array($img_priority,$text_priority));
+		return(array($img_priority,$text_priority,$color_priority));
 	}
 
 	//operations functions
@@ -99,7 +105,7 @@ class MessageModule {
 		require_once(_base_.'/lib/lib.tab.php');
 		require_once(_lms_.'/lib/lib.course.php');
 
-		YuiLib::load('tabview');
+		//YuiLib::load('tabview');
 		$send_perm 	= true;//checkPerm('send_all', true) || checkPerm('send_upper', true);
 
 		$output = "";
@@ -135,7 +141,7 @@ class MessageModule {
 
 		if (count($all_value) > 0) {
 			$form_filter_inbox =
-				Form::getLineDropdown(	'form_line_l',
+				Form::getLineDropdown(	'form_line_l pull-right',
 										'label_padded',
 										Lang::t('_FILTER'),
 										'dropdown_nowh',
@@ -149,7 +155,7 @@ class MessageModule {
 				.Form::getHidden('msg_course_filter_outbox', 'msg_course_filter_outbox', $_filter_outbox)
 				.Form::getBreakRow();
 			$form_filter_outbox =
-				Form::getLineDropdown(	'form_line_l',
+				Form::getLineDropdown(	'form_line_l pull-right',
 										'label_padded',
 										Lang::t('_FILTER'),
 										'dropdown_nowh',
@@ -169,45 +175,74 @@ class MessageModule {
 				.Form::getHidden("msg_course_filter_inbox", "msg_course_filter_inbox", 0);
 		}
 
+		// $output .= '
+		// 	<div class="std_block">
+		// 		<div id="tab_message" class="yui-navset">
+		// 			<ul class="yui-nav">
+		// 					<li'.($active_tab == 'inbox' ? ' class="selected"' : '').'>
+		// 						<a href="#tab_inbox"><em>'.Lang::t('_INBOX', 'message').'</em></a>
+		// 					</li>
+		// 					<li'.($active_tab == 'outbox' ? ' class="selected"' : '').'>
+		// 						<a href="#tab_outbox"><em>'.Lang::t('_OUTBOX', 'message').'</em></a>
+		// 					</li>
+		// 			</ul>
+		// 			<div class="yui-content">
+		// 					<div id="tab_inbox">
+		// 						'.Form::openForm('inbox_tab_advice', $form_url)
+		// 						.Form::getHidden('active_tab', 'active_tab', 'inbox')
+		// 						.$form_filter_inbox
+		// 						.$this->inbox($all_courses, true)
+		// 						.Form::closeForm().'
+		// 					</div>
+		// 					<div id="tab_outbox">
+		// 						'.Form::openForm('outbox_tab_advice', $form_url)
+		// 						.Form::getHidden('active_tab', 'active_tab', 'outbox')
+		// 						.$form_filter_outbox
+		// 						.$this->outbox($all_courses, true)
+		// 						.Form::closeForm().'
+		// 					</div>
+		// 			</div>
+		// 		</div>
+		// 		<script type="text/javascript">
+		// 				YAHOO.util.Event.onDOMReady(function() {
+		// 					var tabview = new YAHOO.widget.TabView("tab_message");
+		// 				});
+		// 		</script>
+		// 	</div>';
+
 		$output .= '
 			<div class="std_block">
-				<div id="tab_message" class="yui-navset">
-					<ul class="yui-nav">
-							<li'.($active_tab == 'inbox' ? ' class="selected"' : '').'>
-								<a href="#tab_inbox"><em>'.Lang::t('_INBOX', 'message').'</em></a>
+				<div id="tab_message">
+					<ul class="nav nav-tabs">
+							<li'.($active_tab == 'inbox' ? ' class="active"' : '').'>
+								<a data-toggle="tab" href="#inbox-messages"><em>'.Lang::t('_INBOX', 'message').'</em></a>
 							</li>
-							<li'.($active_tab == 'outbox' ? ' class="selected"' : '').'>
-								<a href="#tab_outbox"><em>'.Lang::t('_OUTBOX', 'message').'</em></a>
+							<li'.($active_tab == 'outbox' ? ' class="active"' : '').'>
+								<a data-toggle="tab" href="#outbox-messages"><em>'.Lang::t('_OUTBOX', 'message').'</em></a>
 							</li>
 					</ul>
-					<div class="yui-content">
-							<div id="tab_inbox">
+					<div class="tab-content">
+							<div class="tab-pane'.($active_tab == 'inbox' ? ' active' : '').'" id="inbox-messages">
 								'.Form::openForm('inbox_tab_advice', $form_url)
-								.Form::getHidden('active_tab', 'active_tab', 'inbox')
 								.$form_filter_inbox
-								.$this->inbox($all_courses, true)
+								.$this->inbox($all_courses, true) // mod: passing filter
 								.Form::closeForm().'
 							</div>
-							<div id="tab_outbox">
+							<div class="tab-pane'.($active_tab == 'outbox' ? ' active' : '').'" id="outbox-messages">
 								'.Form::openForm('outbox_tab_advice', $form_url)
-								.Form::getHidden('active_tab', 'active_tab', 'outbox')
 								.$form_filter_outbox
-								.$this->outbox($all_courses, true)
+								.$this->outbox($all_courses, true) // mod: passing filter
 								.Form::closeForm().'
 							</div>
 					</div>
 				</div>
-				<script type="text/javascript">
-						YAHOO.util.Event.onDOMReady(function() {
-							var tabview = new YAHOO.widget.TabView("tab_message");
-						});
-				</script>
 			</div>';
 
 		cout($output, 'content');
 	}
 
-	function inbox(&$course_list, $noprint = false) {
+	// mod 15/03/2016: passing filter to be rendered in table actions section
+	function inbox(&$course_list, $noprint = false, $filter_form = false) {
 		require_once(_base_.'/lib/lib.table.php');
 
 		$lang 		=& DoceboLanguage::createInstance('message', 'lms');
@@ -276,16 +311,36 @@ class MessageModule {
 
 		list($tot_message) = $this->db->fetch_row($this->db->query($query));
 
+		// $cont_h = array(
+		// 	'<img src="'.getPathImage('fw').'standard/notimportant.png" title="'.Lang::t('_PRIORITY', 'message').'" alt="'.Lang::t('_PRIORITY', 'message').'" />',
+		// 	'<img src="'.getPathImage('fw').'standard/msg_unread.png" title="'.Lang::t('_UNREAD', 'message').'" alt="'.Lang::t('_UNREAD', 'message').'" />',
+		// 	Lang::t('_TITLE', 'message'),
+		// 	'<img src="'.getPathImage().'standard/attach.png" title="'.Lang::t('_ATTACH_TITLE', 'message').'" alt="'.Lang::t('_ATTACHMENT', 'message').'" />',
+		// 	Lang::t('_SENDER', 'message'),
+		// 	Lang::t('_DATE', 'message'),
+		// 	'<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>'
+		// );
+
 		$cont_h = array(
-			'<img src="'.getPathImage('fw').'standard/notimportant.png" title="'.Lang::t('_PRIORITY', 'message').'" alt="'.Lang::t('_PRIORITY', 'message').'" />',
-			'<img src="'.getPathImage('fw').'standard/msg_unread.png" title="'.Lang::t('_UNREAD', 'message').'" alt="'.Lang::t('_UNREAD', 'message').'" />',
+			'<span class="glyphicon glyphicon-exclamation-sign" title="'.Lang::t('_PRIORITY', 'message').'"></span>',
+			'<span class="glyphicon glyphicon-folder-close" title="'.Lang::t('_UNREAD', 'message').'"></span>',
 			Lang::t('_TITLE', 'message'),
-			'<img src="'.getPathImage().'standard/attach.png" title="'.Lang::t('_ATTACH_TITLE', 'message').'" alt="'.Lang::t('_ATTACHMENT', 'message').'" />',
+			'<span class="glyphicon glyphicon-paperclip" title="'.Lang::t('_ATTACH_TITLE', 'message').'"></span>',
 			Lang::t('_SENDER', 'message'),
 			Lang::t('_DATE', 'message'),
-			'<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>'
+			'<span>'.Lang::t('_DEL', 'standard').'</span>'
 		);
-		$type_h = array('image', 'image', '', 'image', '', 'message_posted', 'image');
+
+		$type_h = array(
+			'image hidden-xs',
+			'image hidden-xs',
+			'col-xs-5',
+			'image hidden-xs',
+			'col-xs-3',
+			'col-xs-3 message_posted',
+			'col-xs-1 image'
+		);
+
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
 
@@ -296,19 +351,29 @@ class MessageModule {
 						$acl_man->relativeId($sender_info[ACL_INFO_USERID]) :
 						$sender_info[ACL_INFO_LASTNAME].' '.$sender_info[ACL_INFO_FIRSTNAME] );
 
-			list($img_priority,$text_priority) = self::decodePriority($priority);
+			// list($img_priority,$text_priority) = self::decodePriority($priority);
+
+			list($img_priority,$text_priority,$color_priority) = self::decodePriority($priority);
 
 			$cont = array();
-			$cont[] = '<img src="'.getPathImage().'standard/'.$img_priority.'" '
-				.'title="'.$text_priority.'" '
-				.'alt="'.$text_priority.'" />';
+			// $cont[] = '<img src="'.getPathImage().'standard/'.$img_priority.'" '
+			// 	.'title="'.$text_priority.'" '
+			// 	.'alt="'.$text_priority.'" />';
+
+			$cont[] = '<span class="glyphicon glyphicon-exclamation-sign text-'.$color_priority.'" title="'.$text_priority.'"></span>';
+
+			// if($read == _MESSAGE_READED) {
+			// 	$cont[] = '<img src="'.getPathImage('fw').'standard/msg_read.png" title="'.Lang::t('_TITLE_READ').'" '
+			// 					.'alt="'.Lang::t('_READ').'" />';
+			// } else  { //($read == _MESSAGE_UNREADED)
+			// 	$cont[] = '<img src="'.getPathImage('fw').'standard/msg_unread.png" title="'.Lang::t('_UNREAD').'" '
+			// 					.'alt="'.Lang::t('_UNREAD').'" />';
+			// }
 
 			if($read == _MESSAGE_READED) {
-				$cont[] = '<img src="'.getPathImage('fw').'standard/msg_read.png" title="'.Lang::t('_TITLE_READ').'" '
-								.'alt="'.Lang::t('_READ').'" />';
+				$cont[] = '<span class="glyphicon glyphicon-folder-open" title="'.Lang::t('_TITLE_READ').'"></span>';
 			} else  { //($read == _MESSAGE_UNREADED)
-				$cont[] = '<img src="'.getPathImage('fw').'standard/msg_unread.png" title="'.Lang::t('_UNREAD').'" '
-								.'alt="'.Lang::t('_UNREAD').'" />';
+				$cont[] = '<span class="glyphicon glyphicon-folder-close" title="'.Lang::t('_UNREAD').'"></span>';
 			}
 
 			$read_url = $this->mvc_urls
@@ -339,7 +404,8 @@ class MessageModule {
 			$del_url = $this->mvc_urls
 				? "ajax.server.php?r=message/delete_message&id=".$id_mess
 				: $um->getUrl("op=delmessage&from=out&id_message=".$id_mess.$add_filter);
-			$cont[] = '<a id="_del_inbox_'.$id_mess.'" href="'.$del_url.'" class="ico-sprite subs_del" title=""><span></span></a>';
+			// $cont[] = '<a id="_del_inbox_'.$id_mess.'" href="'.$del_url.'" class="ico-sprite subs_del" title=""><span></span></a>';
+			$cont[] = '<a id="_del_inbox_'.$id_mess.'" href="'.$del_url.'" class="btn btn-default" title=""><span class="glyphicon glyphicon-remove"></span></a>';
 			$tb->addBody( $cont );
 		}
 		//if(checkPerm('send_all', true) || checkPerm('send_upper', true)) {
@@ -347,8 +413,17 @@ class MessageModule {
 				? "index.php?r=message/add&from=out"
 				: $um->getUrl("op=addmessage&from=out");
 
-			$tb->addActionAdd('<a class="ico-wt-sprite subs_add" href="'.$add_url.'" title="'.Lang::t('_SEND').'">'
-				.'<span>'.Lang::t('_SEND').'</span></a>');
+			// $tb->addActionAdd('<a class="ico-wt-sprite subs_add" href="'.$add_url.'" title="'.Lang::t('_SEND').'">'
+			// 	.'<span>'.Lang::t('_SEND').'</span></a>');
+
+			$tb->addActionAdd('<a class="btn btn-default" href="'.$add_url.'" title="'.Lang::t('_SEND').'">
+													<span class="glyphicon glyphicon-plus-sign"></span>&nbsp;
+													<span>'.Lang::t('_SEND').'</span>
+												</a>');
+
+			if ($filter_form) {
+				$tb->addActionAdd($filter_form);
+			}
 		//}
 
 		$output = "";
@@ -369,7 +444,8 @@ class MessageModule {
 			cout($output, 'content');
 	}
 
-	function outbox(&$course_list, $noprint = false) {
+	// mod 15/03/2016: passing filter to be rendered in table actions section
+	function outbox(&$course_list, $noprint = false, $filter_form = false) {
 		require_once(_base_.'/lib/lib.table.php');
 
 		//if(!checkPerm('send_all', true) && !checkPerm('send_upper', true)) die("You can't access");
@@ -439,32 +515,52 @@ class MessageModule {
 		}
 		list($tot_message) = $this->db->fetch_row($this->db->query($query));
 
+		// $cont_h = array(
+		// 	'<img src="'.getPathImage().'standard/notimportant.png" title="'.Lang::t('_PRIORITY', 'message').'" alt="'.Lang::t('_PRIORITY', 'message').'" />',
+		// 	Lang::t('_TITLE'),
+		// 	'<img src="'.getPathImage().'standard/attach.png" title="'.Lang::t('_ATTACH_TITLE').'" alt="'.Lang::t('_ATTACHMENT').'" />',
+		// 	Lang::t('_DATE'),
+		// 	Lang::t('_RECIPIENTS'),
+		// 	'<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>'
+		// );
+
 		$cont_h = array(
-			'<img src="'.getPathImage().'standard/notimportant.png" title="'.Lang::t('_PRIORITY', 'message').'" alt="'.Lang::t('_PRIORITY', 'message').'" />',
-			Lang::t('_TITLE'),
-			'<img src="'.getPathImage().'standard/attach.png" title="'.Lang::t('_ATTACH_TITLE').'" alt="'.Lang::t('_ATTACHMENT').'" />',
-			Lang::t('_DATE'),
-			Lang::t('_RECIPIENTS'),
-			'<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>'
+			'<span class="glyphicon glyphicon-exclamation-sign" title="'.Lang::t('_PRIORITY', 'message').'"></span>',
+			Lang::t('_TITLE', 'message'),
+			'<span class="glyphicon glyphicon-paperclip" title="'.Lang::t('_ATTACH_TITLE', 'message').'"></span>',
+			Lang::t('_DATE', 'message'),
+			Lang::t('_RECIPIENTS', 'message'),
+			'<span>'.Lang::t('_DEL', 'standard').'</span>'
 		);
-		$type_h = array('image', '', 'image', 'message_posted', 'message_posted', 'image');
+
+		$type_h = array(
+			'image hidden-xs',
+			'col-xs-5',
+			'image hidden-xs',
+			'col-xs-3 message_posted',
+			'col-xs-3 message_posted',
+			'col-xs-1 image');
+
 		$tb->setColsStyle($type_h);
 		$tb->addHead($cont_h);
 
 		while( list($id_mess, $posted, $attach, $title, $priority) = $this->db->fetch_row($re_message) ) {
 
-			list($img_priority,$text_priority) = self::decodePriority($priority);
+			list($img_priority,$text_priority,$color_priority) = self::decodePriority($priority);
 
 			$cont = array();
-			$cont[] = '<img src="'.getPathImage().'standard/'.$img_priority.'" '
-				.'title="'.$text_priority.'" '
-				.'alt="'.$text_priority.'" />';
+			// $cont[] = '<img src="'.getPathImage().'standard/'.$img_priority.'" '
+			// 	.'title="'.$text_priority.'" '
+			// 	.'alt="'.$text_priority.'" />';
+
+			$cont[] = '<span class="glyphicon glyphicon-exclamation-sign text-'.$color_priority.'" title="'.$text_priority.'"></span>';
 
 			$read_url = $this->mvc_urls
 				? "index.php?r=message/read&id_message=".$id_mess
 				: $um->getUrl("op=readmessage&id_message=".$id_mess);
 			$cont[] = '<a id="_title_outbox_'.$id_mess.'" href="'.$read_url.'" '
-							.'title="'.Lang::t('_READ_MESS').'">'.$title.'</a>';
+							.'title="'.Lang::t('_READ_MESS').'">'.$title.'</a>';			
+
 			if($attach != '') {
 				$cont[] = '<img src="'.getPathImage('fw').mimeDetect($attach).'" alt="'.Lang::t('_MIME').'" />';
 			} else {
@@ -509,15 +605,25 @@ class MessageModule {
 			$del_url = $this->mvc_urls
 				? "ajax.server.php?r=message/delete_message&id=".$id_mess
 				: $um->getUrl("op=delmessage&id_message=".$id_mess.'&out=out'.$add_filter);
-			$cont[] = '<a id="_del_outbox_'.$id_mess.'" href="'.$del_url.'" class="ico-sprite subs_del" title=""><span></span></a>';
+			// $cont[] = '<a id="_del_outbox_'.$id_mess.'" href="'.$del_url.'" class="ico-sprite subs_del" title=""><span></span></a>';
+			$cont[] = '<a id="_del_outbox_'.$id_mess.'" href="'.$del_url.'" class="btn btn-default" title=""><span class="glyphicon glyphicon-remove"></span></a>';
 			$tb->addBody( $cont );
 		}
 		//if(checkPerm('send_all', true) || checkPerm('send_upper', true)) {
 			$add_url = $this->mvc_urls
 				? "index.php?r=message/add"
 				: $um->getUrl("op=addmessage");
-			$tb->addActionAdd('<a class="ico-wt-sprite subs_add" href="'.$add_url.'" title="'.Lang::t('_SEND').'">'
-				.'<span>'.Lang::t('_SEND').'</span></a>');
+			// $tb->addActionAdd('<a class="ico-wt-sprite subs_add" href="'.$add_url.'" title="'.Lang::t('_SEND').'">'
+			// 	.'<span>'.Lang::t('_SEND').'</span></a>');
+
+			$tb->addActionAdd('<a class="btn btn-default" href="'.$add_url.'" title="'.Lang::t('_SEND').'">
+													<span class="glyphicon glyphicon-plus-sign"></span>&nbsp;
+													<span>'.Lang::t('_SEND').'</span>
+												</a>');
+
+			if ($filter_form) {
+				$tb->addActionAdd($filter_form);
+			}
 		//}
 
 		$output = "";

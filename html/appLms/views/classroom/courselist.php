@@ -11,6 +11,23 @@
 
 <?php endif; ?>
 
+<?php
+// draw search
+$_model = new ElearningLms();
+$_auxiliary = Form::getInputDropdown('', 'course_search_filter_year', 'filter_year',
+$_model->getFilterYears(Docebo::user()->getIdst()), 0, '');
+
+$this->widget('tablefilter', array(
+	'id' => 'course_search',
+	'filter_text' => "",
+	// 'auxiliary_filter' => Lang::t('_SEARCH', 'standard').":&nbsp;&nbsp;&nbsp;".$_auxiliary,
+	'auxiliary_filter' => '<span class="filter-label">'.Lang::t('_YEAR', 'standard').":</span>&nbsp;&nbsp;&nbsp;".$_auxiliary,
+	'js_callback_set' => 'course_search_callback_set',
+	'js_callback_reset' => 'course_search_callback_reset',
+	'css_class' => 'tabs_filter'
+));
+?>
+
 <?php $unsubscribe_call_arr =array(); ?>
 
 <?php foreach( $courselist as $course ) : ?>

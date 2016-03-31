@@ -52,6 +52,8 @@
         <meta http-equiv="x-ua-compatible" content="IE=8"></meta>
         <!--END -->
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 		<title><?php echo Layout::title(); ?></title>
 		<?php echo Layout::zone('meta'); ?>
 		<?php echo Layout::meta(); ?>
@@ -158,7 +160,7 @@
                 
                                             
 		<!-- content -->
-		<div id="lms_main_container" >
+		<div id="lms_main_container" class="row">
         
         <div id="course-info-boot" class="col-md-3">
 				<?php echo Layout::zone('menu'); ?>

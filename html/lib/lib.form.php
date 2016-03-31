@@ -154,6 +154,34 @@ class Form {
 	}
 
 	/**
+	 * public static function getTextfield( $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param )
+	 *
+	 * @param string $css_text 		the css class for the input element
+	 * @param string $id 			the id of the element
+	 * @param string $name 			the name of the element
+	 * @param string $value 		the default value for the input field
+	 * @param string $alt_name 		the alt name for the field
+	 * @param string $maxlenght 	the max number of characters
+	 * @param string $other_param 	other element for the tag
+	 * @return string 	with the html code for the input type="text" element
+	 */
+	public static function getSearchInputTextfield( $css_text, $id, $name, $placeholder, $value, $alt_name, $maxlenght, $other_param = '' ) {
+
+		$search = array('"', '<', '>');
+		$replace = array('&quot;', '&lt;', '&gt;');
+		$value = str_replace($search, $replace, $value);
+
+		return '<input type="text" '
+			."\n\t".'class="form-control '.$css_text.'" '
+			."\n\t".'id="'.$id.'" '
+			.($name !== false ? "\n\t".'name="'.$name.'" ' : "")
+			."\n\t".'placeholder="'.$placeholder.'" '
+			."\n\t".'value="'.$value.'" '
+			."\n\t".'maxlength="'.$maxlenght.'" '
+			."\n\t".'alt="'.$alt_name.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
+	}
+
+	/**
 	 * public static function getLineTextfield( $css_line, $css_label, $label_name, $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param, $other_after, $other_before )
 	 *
 	 * @param string $css_line 		css for the line
@@ -649,7 +677,7 @@ class Form {
 	 */
 	public static function getInputDropdown( $css_dropdown, $id, $name, $all_value, $selected, $other_param ) {
 
-		$html_code = '<select class="'.$css_dropdown.'" '
+		$html_code = '<select class="form-control '.$css_dropdown.'" '
 				."\n\t".'id="'.$id.'" '
 				."\n\t".'name="'.$name.'"  '.$other_param.'>'."\n";
 		if( is_array($all_value) ) {
@@ -682,11 +710,12 @@ class Form {
 	 */
 	public static function getLineDropdown( $css_line, $css_label, $label_name, $css_dropdown, $id, $name, $all_value, $selected, $other_param, $other_after, $other_before ) {
 		return '<div class="'.$css_line.'">'
-		.$other_before
-		.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
-		.Form::getInputDropdown( $css_dropdown, $id, $name, $all_value, $selected, $other_param )
-		.$other_after
-		.'</div>';
+			.$other_before
+			// .'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
+			.'<label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label>'
+			.Form::getInputDropdown( $css_dropdown, $id, $name, $all_value, $selected, $other_param )
+			.$other_after
+			.'</div>';
 	}
 
 	/**
@@ -1185,28 +1214,34 @@ class Form {
 					(function() {
 						YAHOO.util.Event.onDOMReady(function() {
 							var o = YAHOO.namespace("buttonObjects.'.$id.'");
-							YAHOO.buttonObjects.'.$id.' = new YAHOO.widget.Button("'.$id.'", { value: "'.addslashes($value).'" });
+							// YAHOO.buttonObjects.'.$id.' = new YAHOO.widget.Button("'.$id.'", { value: "'.addslashes($value).'" });
+							YAHOO.buttonObjects.'.$id.' = \'<button type="button" class="btn btn-default" id="'.$id.'">'.addslashes($value).'</button>\';
 						});
 					})();
 					</script>', 'scripts');
-			return '<input type="'.($is_submit ? 'submit' : 'button').'" id="'.$id.'" '
+			// return '<input type="'.($is_submit ? 'submit' : 'button').'" id="'.$id.'" '
+			// 	.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
+			return '<input type="'.($is_submit ? 'submit' : 'button').'" class="btn btn-default" id="'.$id.'" '
 			.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
 
 		}
 		if($css_button == 'yui-button') {
-			return 	'<span id="'.$id.'_span" class="yui-button yui-submit-button">'
-			.'<span class="first-child">'
-			.'<input type="'.($is_submit ? 'submit' : 'button').'" id="'.$id.'" '.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />'
-			.'</span>'
-			.'</span>';
+			// return 	'<span id="'.$id.'_span" class="yui-button yui-submit-button">'
+			return 	'<span id="'.$id.'_span">'
+					.'<span class="first-child">'
+					// .'<input type="'.($is_submit ? 'submit' : 'button').'" id="'.$id.'" '.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />'
+					.'<input type="'.($is_submit ? 'submit' : 'button').'" class="btn btn-default" id="'.$id.'" '.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />'
+					.'</span>'
+					.'</span>';
 
 		}
 		$css_button = ($css_button === FALSE ? 'button' : $css_button);
 		return '<input type="'.($is_submit ? 'submit' : 'button').'" '
-		."\n\t".'class="'.$css_button.'" '
-		."\n\t".'id="'.$id.'" '
-		."\n\t".'name="'.$name.'" '
-		."\n\t".'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
+				// ."\n\t".'class="'.$css_button.'" '
+				."\n\t".'class="'.$css_button.' btn btn-default" '
+				."\n\t".'id="'.$id.'" '
+				."\n\t".'name="'.$name.'" '
+				."\n\t".'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
 	}
 
 	// public static function getButton( $id, $name, $value, $css_button = FALSE, $other_param = '', $use_js = true, $is_submit = true ) {

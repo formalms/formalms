@@ -177,17 +177,20 @@ cout('
            <header class="header white-bg">
 
       <!-- Static navbar -->
-      <nav class="navbar navbar-default">   
 
-        <div class="container-fluid" id="lms_menu_container" >
+      <nav> 
+
+        <div class="row-fluid" id="lms_menu_container" >
 
         
           <div class="navbar-header" >
 
+            <a class="navbar-brand" href="#"><img class="left_logo" width="120" src="'. Layout::path().'/images/company_logo.png" alt="logo di sinistra"/></a> 
+
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                       
               <span  class="glyphicon glyphicon-align-justify"></span>
-            </button>
+            </button>  
 
           </div>        
         
@@ -200,14 +203,10 @@ cout('
                     
          cout('
          
-         <div class=col-md-2>                 
-             
-             <!--logo start-->
-            <a class="navbar-brand" href="#"><img class="left_logo" width="120" src="'. Layout::path().'/images/company_logo.png" alt="logo di sinistra"/></a>   
-            </div>
+
          
          
-            <div class="col-md-10">
+            <div>
          
             <ul class="nav navbar-nav"  >','menu_over');
          

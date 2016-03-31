@@ -125,15 +125,40 @@ class TableCell {
 				.( !$this->simple_markup ? '</div>' : '' )
 				.'</td>';
 		}
+	}
 
 
+		/**
+	 * @return string	a table cell
+	 *
+	 * @access public
+	 */
+	public function getResponsiveCell() {
 
-		return '<'.( $this->cell_type == 'header' ? 'th scope="col"' : 'td' )
-				.( $this->style != '' 	? ' class="'.$this->style.'"' 		: '' )
-				.( $this->colspan != '' ? ' colspan="'.$this->colspan.'"' 	: '' )
-				.( $this->rowspan != '' ? ' rowspan="'.$this->rowspan.'"' 	: '' ).'>'
+		if($this->cell_type == 'header') {
+
+			return '<div '
+				.( $this->style != '' ? ' class="table-cell '.$this->style.'"' 	: '' ).'>'
+				.( !$this->simple_markup ? '<div class=""><span class="">' : '' )
+				.( $this->label != '' ? $this->label  : '' )
+				.( !$this->simple_markup ? '</span></div>' : '' )
+				.'</div>';
+
+		} else {
+
+			return '<div '
+				.( $this->style != '' ? ' class="table-cell '.$this->style.'"' 	: '' ).'>'
+				.( !$this->simple_markup ? '<div class="">' : '' )
+				.( $this->label != '' ? $this->label  : '' )
+				.( !$this->simple_markup ? '</div>' : '' )
+				.'</div>';
+		}
+
+
+		return '<div '
+				.( $this->style != '' 	? ' class="table-cell '.$this->style.'"' 		: '' ).'>'
 				.( $this->label != '' ? $this->label  : '&nbsp;' )
-				.'</'.( $this->cell_type == 'header' ? 'th' : 'td' ).'>'."\n";
+				.'</div>';
 	}
 
 }
@@ -250,6 +275,29 @@ class TableRow {
 			}
 		}
 		$row .= '</tr>'."\n";
+		return $row;
+	}
+
+	/**
+	 * @return string	a table row
+	 *
+	 * @access public
+	 */
+	public function getResponsiveRow($i = 0) {
+
+		if(!is_array($this->cells)) return '';
+
+		$row = '<div class="table-row '.$this->style.'"'
+			.( $this->id !== false ? ' id="'.$this->id.'"' : '' )
+			.(!empty($this->other_code) ? ' '.$this->other_code : '').'>';
+
+		reset($this->cells);
+		while(list(, $cell) = each($this->cells)) {
+
+			$row .= $cell->getResponsiveCell();
+		}
+
+		$row .= '</div>'."\n";
 		return $row;
 	}
 }
@@ -478,20 +526,31 @@ class Table {
 			return '';
 		}
 		//$table = '<div class="yui-dt">';
-		$table = '<div class="table-responsive">';
+		$table = '';
 
 		if($this->add_action && !$this->hide_over) {
-			$table .= '<div class="table-container-over">'
+			//$table .= '<div class="table-container-over">'
+			$table .= '<div class="row table-actions table-actions--above">'
 				.implode("\n", $this->add_action)
 				.'</div>';
 		}
 
+		$table .= '<div class="table-responsive">';
+
+		$table .= '<div class="panel panel-default">';
+
+		if($this->table_caption != '') {
+			$table .= '<div class="panel-heading clearfix">'.$this->table_caption.'</div>';
+		}
+
+		//$table .= '<div class="panel-body"></div>';
+
 		$table .= '<table class="table table-bordered '.$this->table_style.'" ';
 		$table.= ($this->getTableId() !== FALSE ? 'id="'.$this->getTableId().'" ' : "");
 		$table.= 'summary="'.$this->table_summary.'" cellspacing="0">'."\n";
-		if($this->table_caption != '') {
-			$table .= '<caption>'.$this->table_caption.'</caption>'."\n";
-		}
+		// if($this->table_caption != '') {
+		// 	$table .= '<caption>'.$this->table_caption.'</caption>'."\n";
+		// }
 		if(count($this->table_head)) {
 
 			reset($this->table_head);
@@ -522,9 +581,10 @@ class Table {
 			}
 			$table .= '</tbody>'."\n";
 		}
-		$table .= '</table>';
+		$table .= '</table></div>';
 		if($this->add_action) {
-			$table .= '<div class="table-container-below">'
+			// $table .= '<div class="table-container-below">'
+			$table .= '<div class="row table-actions table-actions--below">'
 				.implode("\n", $this->add_action)
 				.'</div>';
 		}
@@ -532,6 +592,86 @@ class Table {
 
 		return $table;
 	}
+
+
+
+	/**
+	 * @return	string	the xhtml code for the composed table
+	 */
+	public function getResponsiveTable() {
+
+		$this->resetRowCount();
+
+		if(count($this->table_head) == 0 && count($this->table_foot) == 0 && count($this->table_body) == 0) {
+			return '';
+		}
+
+		$table = '';
+
+		if($this->add_action && !$this->hide_over) {
+			$table .= '<div class="row table-actions table-actions--above">'
+				.implode("\n", $this->add_action)
+				.'</div>';
+		}
+
+		$table .= '<div class="table-responsive">';
+
+		$table .= '<div class="panel panel-default">';
+
+		if($this->table_caption != '') {
+			$table .= '<div class="panel-heading clearfix">'.$this->table_caption.'</div>';
+		}
+
+		$table .= '<div class="table table-bordered '.$this->table_style.'" ';
+		$table .= ($this->getTableId() !== FALSE ? 'id="'.$this->getTableId().'" ' : "");
+		$table .= 'summary="'.$this->table_summary.'">';
+
+		if(count($this->table_head)) {
+
+			reset($this->table_head);
+			$table .= '<div class="table-head">';
+			while(list(, $row) = each($this->table_head)) {
+				if(is_array($row)) $table .= $row['label'];
+				else $table .= $row->getResponsiveRow();
+			}
+			$table .= '</div>';
+		}
+		if(count($this->table_foot)) {
+
+			reset($this->table_foot);
+			$table .= '<div class="table-foot">';
+			while(list(, $row) = each($this->table_foot)) {
+				if(is_array($row)) $table .= $row['label'];
+				else $table .= $row->getResponsiveRow();
+			}
+			$table .= '</div>';
+		}
+		if(count($this->table_body)) {
+			$i = 0;
+			reset($this->table_body);
+			$table .= '<div class="table-body">';
+			while(list($k, $row) = each($this->table_body)) {
+				if(is_array($row)) $table .= $row['label'];
+				else $table .= $row->getResponsiveRow($i++);
+			}
+			$table .= '</div>';
+		}
+
+		$table .= '</div></div>';
+
+		if($this->add_action) {
+			$table .= '<div class="row table-actions table-actions--below">'
+								.implode("\n", $this->add_action)
+								.'</div>';
+		}
+
+		$table .= '</div>';
+
+		return $table;
+	}
+
+
+
 
 	public function initNavBar($public_name, $kind_of = false) {
 
@@ -652,7 +792,7 @@ class Table {
 	public function closeTable() {
 		// EFFECTS: close the table
 		return '</tbody>'
-			.'</table>'."\n\n";
+			.'</table></div></div></div>'."\n\n";
 	}
 
 	public function writeHeader($colElem, $colsType) {

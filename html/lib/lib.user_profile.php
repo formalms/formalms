@@ -1202,13 +1202,15 @@ class UserProfileViewer {
 		if($is_online && $is_online !== 'unk') {
 
 			$action[] = '<li>'
-				.'<img src="'.getPathImage('fw').'standard/online.png" alt="'.$this->_lang->def('_USERONLINE').'" /> '
+				//.'<img src="'.getPathImage('fw').'standard/online.png" alt="'.$this->_lang->def('_USERONLINE').'" /> '
+				.'<span class="glyphicon glyphicon-record text-success"></span>'
 				//.$this->_lang->def('_USERONLINE')
 				.'</li>';
 		} else/*if(!$reduced)*/ {
 
 			$action[] = '<li>'
-				.'<img src="'.getPathImage('fw').'standard/offline.png" alt="'.$this->_lang->def('_UP_OFFLINE').'" /> '
+				//.'<img src="'.getPathImage('fw').'standard/offline.png" alt="'.$this->_lang->def('_UP_OFFLINE').'" /> '
+			.'<span class="glyphicon glyphicon-record text-danger"></span>'
 				//.$this->_lang->def('_UP_OFFLINE')
 				.'</li>';
 		}
@@ -1867,22 +1869,22 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
                 <br><i style="font-size:.88em">
                  <a href="mailto:'.$this->user_info[ACL_INFO_EMAIL].'">'.$this->user_info[ACL_INFO_EMAIL].'</a>
                  </i>
-                </p>
+                </p>';
 
-                <ul class="nav nav-pills nav-stacked">
-                ';
-                if($perm_certificate) $html .= '<li><a href="index.php?modname=mycertificate&op=mycertificate&sop=unregistercourse">'.Lang::t('_MY_CERTIFICATE', 'menu_over').'</a></li> ';
-                if($perm_competence ) $html .= '<li><a href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">'.Lang::t('_COMPETENCES', 'standard').'</a></li>  ';
+          //       <ul class="nav nav-pills nav-stacked">
+          //       ';
+          //       if($perm_certificate) $html .= '<li><a href="index.php?modname=mycertificate&op=mycertificate&sop=unregistercourse">'.Lang::t('_MY_CERTIFICATE', 'menu_over').'</a></li> ';
+          //       if($perm_competence ) $html .= '<li><a href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">'.Lang::t('_COMPETENCES', 'standard').'</a></li>  ';
                 
-                if($unread_num>0 && $perm_message){
-                          $html .= '<li><a href="index.php?modname=message&op=message&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'<b class="num_notify"><i style="font-size:.78em">'.$unread_num.'</i></b></a> </li> ';
-                }
-                if($unread_num==0 && $perm_message){
-                          $html .= '<li><a href="index.php?modname=message&op=message&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'</a> </li> ';
-                }
+          //       if($unread_num>0 && $perm_message){
+          //                 $html .= '<li><a href="index.php?modname=message&op=message&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'<b class="num_notify"><i style="font-size:.78em">'.$unread_num.'</i></b></a> </li> ';
+          //       }
+          //       if($unread_num==0 && $perm_message){
+          //                 $html .= '<li><a href="index.php?modname=message&op=message&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'</a> </li> ';
+          //       }
                 
                                                        
-          $html .= '</ul>';
+          // $html .= '</ul>';
             
                 //  .'<div class="nofloat"></div>';
                   
@@ -1978,7 +1980,22 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 
 		}
 
-		$html .= '</div></div>';
+		$html .= '</div><br />';
+
+		$html .= '<ul class="nav nav-pills nav-stacked">';
+
+	    if($perm_certificate) $html .= '<li><a class="btn btn-default" href="index.php?modname=mycertificate&op=mycertificate&sop=unregistercourse">'.Lang::t('_MY_CERTIFICATE', 'menu_over').'</a></li>';
+	    if($perm_competence ) $html .= '<li><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">'.Lang::t('_COMPETENCES', 'standard').'</a></li>';
+	      
+	    if($unread_num>0 && $perm_message){
+	        $html .= '<li><a class="btn btn-default" href="index.php?modname=message&op=message&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'<b class="num_notify"><i style="font-size:.78em">'.$unread_num.'</i></b></a></li>';
+	    }
+	    if($unread_num==0 && $perm_message){
+	    	$html .= '<li><a class="btn btn-default" href="index.php?modname=message&op=message&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'</a></li>';
+	    }
+		                                           
+		$html .= '</ul>';
+		$html .= '</div><br />';
 
 		// box carriera
 		require_once($GLOBALS['where_lms'].'/lib/lib.middlearea.php');

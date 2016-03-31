@@ -57,7 +57,8 @@ version: 2.9.0
          * @property CLASSNAME
          * @default "navset"
          */
-        CLASSNAME: 'yui-navset',
+        // CLASSNAME: 'yui-navset',
+        CLASSNAME: 'tab_subnav',
         
         /**
          * The className of the HTMLElement containing the TabView's tab elements
@@ -68,7 +69,8 @@ version: 2.9.0
          * @property TAB_PARENT_CLASSNAME
          * @default "nav"
          */
-        TAB_PARENT_CLASSNAME: 'yui-nav',
+        // TAB_PARENT_CLASSNAME: 'yui-nav',
+        TAB_PARENT_CLASSNAME: 'nav nav-pills',
         
         /**
          * The className of the HTMLElement containing the TabView's label elements
@@ -79,7 +81,8 @@ version: 2.9.0
          * @property CONTENT_PARENT_CLASSNAME
          * @default "nav-content"
          */
-        CONTENT_PARENT_CLASSNAME: 'yui-content',
+        // CONTENT_PARENT_CLASSNAME: 'yui-content',
+        CONTENT_PARENT_CLASSNAME: 'content',
         
         _tabParent: null,
         _contentParent: null,
@@ -322,11 +325,11 @@ version: 2.9.0
                 value: attr.orientation,
                 method: function(value) {
                     var current = this.get('orientation');
-                    this.addClass('yui-navset-' + value);
+                    // this.addClass('yui-navset-' + value);
                     
-                    if (current != value) {
-                        this.removeClass('yui-navset-' + current);
-                    }
+                    // if (current != value) {
+                    //     this.removeClass('yui-navset-' + current);
+                    // }
                     
                     if (value === 'bottom') {
                         this.appendChild(this._tabParent);
@@ -611,7 +614,8 @@ version: 2.9.0
          * @type String
          * @default "active"
          */
-        ACTIVE_TITLE: 'active',
+        // ACTIVE_TITLE: 'active',
+        ACTIVE_TITLE: '',
 
         /**
          * The class name applied to disabled tabs.

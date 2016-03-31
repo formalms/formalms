@@ -208,7 +208,8 @@ function getTitleArea($text, $image = '', $alt_image = '', $ignore_glob = false)
 	if(!is_array($text))
 		$text = array($text);
 
-	$html = '<div class="title_block">'."\n";
+	// $html = '<div class="title_block">'."\n";
+	$html = '<div class="page-header">'."\n";
 	foreach($text as $link => $title) {
 
 		if($is_first) {
@@ -231,15 +232,19 @@ function getTitleArea($text, $image = '', $alt_image = '', $ignore_glob = false)
 
 			// Init navigation
 			if(count($text) > 1) {
-				$html .= '<ul class="navigation">';
+				// $html .= '<ul class="navigation">';
+				$html .= '<ul class="breadcrumb">';
 			//	if(!is_int($link)) {
 			//		$html .= '<li><a href="'.$link.'">'. Lang::t('_START_PAGE', 'standard').' '.strtolower($title).'</a></li>';
 			//	} else $html .= '<li>'. Lang::t('_START_PAGE', 'standard').' '.strtolower($title).'</li>';
 			}
 		} else {
 
-			if(is_int($link)) $html .= '<li> &rsaquo; '.$title.'</li>';
-			else $html .= ' <li> &rsaquo; <a href="'.$link.'">'.$title.'</a></li>';
+			// if(is_int($link)) $html .= '<li> &rsaquo; '.$title.'</li>';
+			// else $html .= ' <li> &rsaquo; <a href="'.$link.'">'.$title.'</a></li>';
+
+			if(is_int($link)) $html .= '<li>'.$title.'</li>';
+			else $html .= ' <li><a href="'.$link.'">'.$title.'</a></li>';
 		}
 	}
 	if(count($text) > 1) $html .= '</ul>'."\n";

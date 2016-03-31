@@ -512,7 +512,14 @@ class TreeView {
 		$level = 0;
 		$count = 0;
 
-		$tree .= '<div class="TreeViewContainer">'."\n";
+		// $tree .= '<div class="TreeViewContainer">'."\n";
+		$tree .= '<div class="panel panel-default panel-treeview">'."\n";
+
+		$tree .= '<div class="panel-heading">';
+		$tree .= $this->printElement($stack, $level);
+		$tree .= '</div>';
+		
+		$tree .= '<table class="table table-striped table-hover">'."\n";
 		$folder = $this->tdb->getRootFolder();
 		$stack[$level] = array();
 		$stack[$level]['folder'] = $folder;
@@ -523,9 +530,10 @@ class TreeView {
 		$stack[$level]['idSeq'] = $folder->id;
 		$stack[$level]['isFirst'] = $isFirst;
 
-		$tree .= '<div class="TreeViewRowOdd" id="row_'.$stack[$level]['idSeq'].'">';
-		$tree .= $this->printElement($stack, $level);
-		$tree .= '</div>';
+		// $tree .= '<div class="TreeViewRowOdd" id="row_'.$stack[$level]['idSeq'].'">';
+		// $tree .= $this->printElement($stack, $level);
+		// $tree .= '</div>';
+
 		$level++;
 
 		if( $coll !== FALSE ) {
@@ -558,12 +566,14 @@ class TreeView {
 
 				$stack[$level]['idSeq'] = $stack[$level-1]['idSeq'].'.'.$folder->id;
 
-				if( $count % 2 == 0 )
-					$tree .= '<div class="TreeViewRowOdd" id="row_'.$stack[$level]['idSeq'].'">';
-				else
-					$tree .= '<div class="TreeViewRowEven" id="row_'.$stack[$level]['idSeq'].'">';
+				// if( $count % 2 == 0 )
+				// 	$tree .= '<div class="TreeViewRowOdd" id="row_'.$stack[$level]['idSeq'].'">';
+				// else
+				// 	$tree .= '<div class="TreeViewRowEven" id="row_'.$stack[$level]['idSeq'].'">';
+				$tree .= '<tr id="row_'.$stack[$level]['idSeq'].'">';
 				$tree .= $this->printElement($stack, $level);
-				$tree .= '</div>';
+				// $tree .= '</div>';
+				$tree .= '</tr>';
 
 				if( is_array($val) ) {
 					$level++;
@@ -584,7 +594,9 @@ class TreeView {
 		print_r( $this->compressList );
 		echo "-->\n"; */
 
+		$tree .= '</table>'."\n";
 		$tree .= '</div>'."\n";
+
 		return $tree;
 	}
 
@@ -624,7 +636,8 @@ class TreeView {
 	}
 
 	function printElement(&$stack, $level) {
-		$tree = '<div class="TreeViewRowBase">';
+		// $tree = '<div class="TreeViewRowBase">';
+		$tree = '<td>';
 		$id = ($stack[$level]['isExpanded'])?($this->_getCompressActionId()):($this->_getExpandActionId());
 		$id .= $stack[$level]['folder']->id;
 		for( $i = 0; $i <= $level; $i++ ) {
@@ -652,8 +665,11 @@ class TreeView {
 			.'" id="seq_'. $stack[$level]['idSeq'] .'" '
 			.$this->getFolderPrintOther($stack[$level]['folder'])
 			.' />';
-		$tree .= '</div>';
+		// $tree .= '</div>';
+		
 		$tree .= $this->printActions( $stack, $level );
+
+		$tree .= '</td>';
 		return $tree."\n";
 	}
 
@@ -774,7 +790,8 @@ class TreeView {
 	}
 
 	function loadActions() {
-		$tree = '<div class="TreeViewActionContainer">';
+		// $tree = '<div class="TreeViewActionContainer">';
+		$tree = '<td>';
 		if( $this->canAdd() ) {
 			$tree .= '<img src="'.$this->_getAddImage().'" alt="'.$this->_getAddAlt().'" /> '
 				.'<input type="submit" class="TreeViewAction" value="'.$this->_getAddLabel().'"'
@@ -807,7 +824,8 @@ class TreeView {
 			next($otherActions);
 		}
 		reset($otherActions);
-		return $tree .= '</div>';
+		// return $tree .= '</div>';
+		return $tree .= '</td>';
 	}
 
 	function loadNewFolder() {

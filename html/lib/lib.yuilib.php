@@ -80,7 +80,8 @@ class YuiLib {
 			'swf/swf-min.js'
 		),
 		'tabview' => array(
-			'tabview/tabview-min.js'
+			// 'tabview/tabview-min.js'
+			'tabview/tabview.js'
 		),
 		'treeview' => array(
 			'treeview/treeview-min.js'
