@@ -1214,8 +1214,7 @@ class Form {
 					(function() {
 						YAHOO.util.Event.onDOMReady(function() {
 							var o = YAHOO.namespace("buttonObjects.'.$id.'");
-							// YAHOO.buttonObjects.'.$id.' = new YAHOO.widget.Button("'.$id.'", { value: "'.addslashes($value).'" });
-							YAHOO.buttonObjects.'.$id.' = \'<button type="button" class="btn btn-default" id="'.$id.'">'.addslashes($value).'</button>\';
+							YAHOO.buttonObjects.'.$id.' = new YAHOO.widget.Button("'.$id.'", { value: "'.addslashes($value).'" });
 						});
 					})();
 					</script>', 'scripts');
