@@ -1,0 +1,1 @@
+DELETE FROM core_setting WHERE param_name = 'forum_as_table'
