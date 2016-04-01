@@ -629,7 +629,7 @@ function viewUserEvent()
 					$lang->def('_LASTNAME'),
 					$lang->def('_EMAIL'),
 					$lang->def('_CELLULARE'),
-					$lang->def('_SEND_EMAIL'),
+					$lang->def('_SEND_MAIL', 'report'),
 				);
 				$type_h = array('', '', '', '', '','','');
 
@@ -640,7 +640,7 @@ function viewUserEvent()
 					$lang->def('_FIRSTNAME'),
 					$lang->def('_LASTNAME'),
 					$lang->def('_EMAIL'),
-					$lang->def('_SEND_EMAIL'),
+					$lang->def('_SEND_MAIL', 'report'),
 				);
 
 				$type_h = array('', '', '', '', '','','');
@@ -668,7 +668,7 @@ function viewUserEvent()
 					if ($GLOBALS['cfg']['reservation_exportcell_id']) {
 						$count[] = $cell;
 					}
-					$count[] = '<a href="index.php?modname=reservation&op=send_user_event&id_user='.$info_user[0].'&id_event='.$id_event.'">'.$lang->def('_SEND_EMAIL').'</a>';
+					$count[] = '<a href="index.php?modname=reservation&op=send_user_event&id_user='.$info_user[0].'&id_event='.$id_event.'">'.$lang->def('_SEND_MAIL', 'report').'</a>';
 					$tb->addBody($count);
 				}
 				$counter++;
@@ -747,12 +747,12 @@ function viewUserEvent()
 					Form::openForm('form_event', 'index.php?modname=reservation&amp;op=send_user_event')
 					.Form::openElementSpace()
 					.Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
-					.Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
+					.Form::getTextarea($lang->def('_MAIL_BODY', 'report'), 'mail_body', 'mail_body')
 					.Form::getHidden('id_event', 'id_event', $id_event)
 					.Form::getHidden('id_user', 'id_user', $id_user)
 					.Form::closeElementSpace()
 					.Form::openButtonSpace()
-					.Form::getButton('send_mail', 'send_mail', $lang->def('_SEND_MAIL'))
+					.Form::getButton('send_mail', 'send_mail', $lang->def('_SEND_MAIL', 'report'))
 					.Form::getButton('undo_mail', 'undo_mail', $lang->def('_UNDO'))
 					.Form::closeButtonSpace()
 					.Form::closeForm()
@@ -2160,11 +2160,11 @@ function reservationSendMail()
 			Form::openForm('form_event', 'index.php?modname=reservation&amp;op=send_mail')
 			.Form::openElementSpace()
 			.Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
-			.Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
+			.Form::getTextarea($lang->def('_MAIL_BODY', 'report'), 'mail_body', 'mail_body')
 			.Form::getHidden('id_event', 'id_event', $id_event)
 			.Form::closeElementSpace()
 			.Form::openButtonSpace()
-			.Form::getButton('send_mail', 'send_mail', $lang->def('_SEND_MAIL'))
+			.Form::getButton('send_mail', 'send_mail', $lang->def('_SEND_MAIL', 'report'))
 			.Form::getButton('undo_mail', 'undo_mail', $lang->def('_UNDO'))
 			.Form::closeButtonSpace()
 			.Form::closeForm()
@@ -2187,7 +2187,7 @@ function infoLocation()
 	$id_location = importVar('id_location', true, 0);
 	$active_tab = importVar('active_tab', false, 'events');
 	
-	$out->add(getTitleArea('_RESERVATION_INFO_LOCATION').'<div class="std_block">');
+	$out->add(getTitleArea($lang->def('_RESERVATION_INFO_LOCATION')).'<div class="std_block">');
 	
 	$query_classroom = "SELECT name, description , location_id , room , street, city, state , zip_code,
 						phone,fax, capacity, disposition, instrument, available_instrument,note,responsable
