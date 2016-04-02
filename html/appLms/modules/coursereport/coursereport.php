@@ -533,7 +533,7 @@ function coursereport() {
                     case "test" : {
                             $id_test = $info_report['id_source'];
 							require_once($GLOBALS['where_lms'] . '/class.module/learning.test.php');
-							$testObj = new Learning_Test($id_test);
+							$testObj = Learning_Test::load($id_test);
                             if (isset($tests_score[$id_test][$idst_user])) {
                                 switch ($tests_score[$id_test][$idst_user]['score_status']) {
                                     case "not_complete" : $cont[] = '-';
@@ -568,7 +568,8 @@ function coursereport() {
                                                 $test_details[$id_test]['not_passed'] ++;
                                         };
                                         break;
-                                    case "valid" : {
+									case "doing" :
+									case "valid" : {
                                             $score = $tests_score[$id_test][$idst_user]['score'];
                                             if ($tests_score[$id_test][$idst_user]['times'] > 0) {
 												$tests_score[$id_test][$idst_user]['times'] = "<a href=\"index.php?modname=coursereport&op=testreport&idTest=" . $tests_score[$id_test][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$id_test][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report['id_source']]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]) . "\">" . $tests_score[$id_test][$idst_user]['times'] . "</a>";
