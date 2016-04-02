@@ -19,10 +19,10 @@ try {
         <?php
         if ($credit != null) {
             ?>
-            <b><?php echo Lang::t('_SMS_CREDIT', 'configuration') . ': ' . $credit['credit_left']; ?></b><br>
-            <b><?php echo Lang::t('_SMS_CREDIT', 'configuration') . ': ' . $credit[SkebbySmsGateway::SMS_TYPE_BASIC]; ?></b>
+            <b><?php echo Lang::t('_SMS_CREDIT', 'configuration') . ': &euro; ' . round($credit['credit_left'], 2); ?></b><br>
+            <b><?php echo Lang::t('_SMS_CREDIT', 'configuration') . ' BASIC: ' . $credit[SkebbySmsGateway::SMS_TYPE_BASIC]; ?></b>
             <br>
-            <b><?php echo Lang::t('_SMS_CREDIT', 'configuration') . ': ' . $credit[SkebbySmsGateway::SMS_TYPE_CLASSIC]; ?></b>
+            <b><?php echo Lang::t('_SMS_CREDIT', 'configuration') . ' CLASSIC: ' . $credit[SkebbySmsGateway::SMS_TYPE_CLASSIC]; ?></b>
             <?php
         }
         ?>
