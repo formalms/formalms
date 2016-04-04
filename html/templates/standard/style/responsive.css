@@ -113,8 +113,8 @@
 }
 
 /* MENU */
-#menu_over header.header {
-  border-bottom: solid 1px #ccc;
+#container header.header {
+  border-bottom: solid 1px #ccc !important;
 }
 
 #lms_menu_container {

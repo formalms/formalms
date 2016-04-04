@@ -27,6 +27,8 @@
      
     <link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/table-responsive.css"/>
 
+    <link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/responsive.css"/>
+
          
         <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/default.css" />
         <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/component.css" />
