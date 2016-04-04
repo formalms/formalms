@@ -309,7 +309,7 @@ input.LVAction {
 }
 
 img.OrgStatus {
-	margin: 0 0 0 4px;
+	margin: 0 4px;
 	padding:0;
 	float: right;
 	width: 16px;
