@@ -280,16 +280,16 @@ function forum() {
 													<a class="btn btn-default'.($i == 1 ? ' disabled' : '').'" href="index.php?modname=public_forum&amp;op=moveupforum&amp;idForum='.$idF.'" title="'.$lang->def('_UP').'">
 														<span class="glyphicon glyphicon-chevron-up"></span>
 													</a>
-													<a class="btn btn-default href="index.php?modname=public_forum&amp;op=modforumaccess&amp;idForum='.$idF.'&amp;load=1" title="'.$lang->def('_VIEW_PERMISSION').'">
+													<a class="btn btn-default" href="index.php?modname=public_forum&amp;op=modforumaccess&amp;idForum='.$idF.'&amp;load=1" title="'.$lang->def('_VIEW_PERMISSION').'">
 														<span class="glyphicon glyphicon-ban-circle"></span>
 													</a>
-													<a class="btn btn-default href="index.php?modname=public_forum&amp;op=export&amp;idForum='.$idF.'" title="'.$lang->def('_EXPORTFORUM').' : '.strip_tags($title).'">
+													<a class="btn btn-default" href="index.php?modname=public_forum&amp;op=export&amp;idForum='.$idF.'" title="'.$lang->def('_EXPORTFORUM').' : '.strip_tags($title).'">
 														<span class="glyphicon glyphicon-save"></span>
 													</a>
-													<a class="btn btn-default href="index.php?modname=public_forum&amp;op=modforum&amp;idForum='.$idF.'" title="'.$lang->def('_MOD').'">
+													<a class="btn btn-default" href="index.php?modname=public_forum&amp;op=modforum&amp;idForum='.$idF.'" title="'.$lang->def('_MOD').'">
 														<span class="glyphicon glyphicon-pencil"></span>
 													</a>
-													<a class="btn btn-default href="index.php?modname=public_forum&amp;op=delforum&amp;idForum='.$idF.'" title="'.$lang->def('_DEL').' : '.strip_tags($title).'">
+													<a class="btn btn-default" href="index.php?modname=public_forum&amp;op=delforum&amp;idForum='.$idF.'" title="'.$lang->def('_DEL').' : '.strip_tags($title).'">
 														<span class="glyphicon glyphicon-remove"></span>
 													</a>
 												</div>
