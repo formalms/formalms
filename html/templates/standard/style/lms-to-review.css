@@ -287,17 +287,19 @@ ul.test_info_list li{margin:0 0 0.20em 0;padding:0;}
 .test_title_play{margin:0;padding:0;font-weight:bold;font-size:108%;color:#003d6b;text-align:center;}
 .test_time_left{text-align:center;background:#E1EBF7;padding:0.50em;border:1px solid #003d6b;}
 .test_time_left span{font-weight:bold;color:#ff0000;}
-.test_answer_space{margin:0.40em;padding:0.00em;background:#ffffff;line-height:1.3em;}
+/*.test_answer_space{margin:0.40em;padding:0.00em;background:#ffffff;line-height:1.3em;}*/
+.test_answer_space{margin:0;padding:0.00em;background:#ffffff;line-height:1.3em;}
 /*= NOTE:this is for the question type 'title'=*/
 .test_answer_space .quest_title, .test_answer_space .quest_title_review{font-style:italic;display:block;margin:0.40em 0 1.00em 0;padding:0.30em;background:#E1EBF7;border:1px solid #E1EBF4;}
 .test_answer_space .quest_title_review{margin:0.40em 0 2.00em 0;}
 /*= NOTE:container for one question=*/
-.test_answer_space .play_question{margin:1.00em 0 0 0;padding:0.2em;background:#efefef;border:1px solid #efefef;}
+/*.test_answer_space .play_question{margin:1.00em 0 0 0;padding:0.2em;background:#efefef;border:1px solid #efefef;}*/
+.test_answer_space .play_question{}
 /*= NOTE:container of the question's title=*/
-.test_answer_space .title_question{margin:0;padding:4px;font-weight:bold;}
+.test_answer_space .title_question{margin:1em 0 0;padding:10px;font-weight:bold;background-color:#eee;}
 .test_answer_space .associate_colum_float{float:left;width:40%;}
 /*= NOTE:answers of the question=*/
-.test_answer_space .answer_question{margin:3px 0 0 20px;padding:5px;background:#ffffff;}
+.test_answer_space .answer_question{margin:3px 0 0 20px;padding:5px 0;background:#ffffff;}
 .test_answer_space .answer_question p{display:inline;}
 .test_answer_space .text_answer{}
 .test_answer_space .text_answer_none{}
