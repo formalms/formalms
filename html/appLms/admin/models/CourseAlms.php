@@ -818,7 +818,9 @@ Class CourseAlms extends Model
 												$path,
 												($quota != 0 ? $quota - $used : false),
 												isset($_POST['file_to_del']['course_logo']),
-												true );
+												true,
+												640,
+												170 );
 
 		$error 				|= $arr_file['error'];
 		$quota_exceeded 	|= $arr_file['quota_exceeded'];
@@ -1021,7 +1023,7 @@ Class CourseAlms extends Model
 		return $res;
 	}
 
-	public function manageCourseFile($new_file_id, $old_file, $path, $quota_available, $delete_old, $is_image = false)
+	public function manageCourseFile($new_file_id, $old_file, $path, $quota_available, $delete_old, $is_image = false, $width = 150, $height = 150)
 	{
 		$arr_new_file = ( isset($_FILES[$new_file_id]) && $_FILES[$new_file_id]['tmp_name'] != '' ? $_FILES[$new_file_id] : false);
 		$return = array(	'filename' => $old_file,
@@ -1048,8 +1050,8 @@ Class CourseAlms extends Model
 				$re = createImageFromTmp(	$arr_new_file['tmp_name'],
 											$path.$filename,
 											$arr_new_file['name'],
-											150,
-											150,
+											$width,
+											$height,
 											true );
 
 				if($re < 0) $return['error'] = true;
