@@ -60,8 +60,9 @@
 .tab_subnav .nav a {
     color: #fff;
 }
-.tab_subnav .nav a:hover {
+.tab_subnav .nav a:hover, .tab_subnav .nav li.selected a {
     color: #C84000;
+    background-color: #eee;
 }
 .tab_subnav .content {
     padding: 0 5px 5px;
