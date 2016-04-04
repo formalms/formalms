@@ -12,7 +12,7 @@
 \ ======================================================================== */
 
 //Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN
-
+// TODO: obsolete
 function mycertificate(&$url) {
 	checkPerm('view');
 
@@ -198,7 +198,7 @@ function mycertificate(&$url) {
 
 			list($date) = sql_fetch_row($result_released);
 
-			$cont[] =	'<a class="ico-wt-sprite subs_pdf" href="'.$url->getUrl('op=release_cert&id_certificate='.$id_certificate.'&idmeta='.$id_meta).'" '
+			$cont[] =	'<a class="ico-wt-sprite subs_pdf" href="'.$url->getUrl('op=release_cert&id_certificate='.$id_certificate.'&id_meta='.$id_meta).'" '
 				.' title="'.$lang->def('_DOWNLOAD').'"><span>'
 				.$lang->def('_DOWNLOAD').'</span></a>';
 
@@ -256,12 +256,12 @@ function mycertificate(&$url) {
 				$cont[] = $course_list;
 
 				if ($show_preview) {
-					$cont[] =	'<a class="ico-wt-sprite subs_view" href="'.$url->getUrl('op=preview_cert&id_certificate='.$id_certificate.'&idmeta='.$id_meta).'" '
+					$cont[] =	'<a class="ico-wt-sprite subs_view" href="'.$url->getUrl('op=preview_cert&id_certificate='.$id_certificate.'&id_meta='.$id_meta).'" '
 						.' title="'.$lang->def('_PREVIEW').'"><span>'
 						.$lang->def('_PREVIEW').'</span></a>';
 				}
 
-				$cont[] =	'<a class="ico-wt-sprite subs_pdf" href="'.$url->getUrl('op=release_cert&id_certificate='.$id_certificate.'&idmeta='.$id_meta).'" '
+				$cont[] =	'<a class="ico-wt-sprite subs_pdf" href="'.$url->getUrl('op=release_cert&id_certificate='.$id_certificate.'&id_meta='.$id_meta).'" '
 					.' title="'.$lang->def('_GENERATE').'"><span>'
 					.$lang->def('_GENERATE').'</span></a>';
 
@@ -331,6 +331,7 @@ function release_cert(&$url) {
 // ================================================================================
 
 function mycertificateDispatch($op) {
+	checkPerm('obsolete');
 
 	require_once($GLOBALS['where_lms'].'/lib/lib.certificate.php');
 
