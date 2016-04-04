@@ -13,7 +13,8 @@
 				echo Form::getInputTextfield("search_t", $id."_filter_text", "filter_text", $filter_text, '', 255, 'placeholder='.$str_search );
 				echo Form::getButton($id."_filter_set", "filter_set", Lang::t('_SEARCH', 'standard'), "search_b");
 				echo Form::getButton($id."_filter_reset", "filter_reset", Lang::t('_RESET', 'standard'), "reset_b");
-			*/ ?>
+				*/
+			?>
 			<?php $str_search = Lang::t("_SEARCH", 'standard'); ?>
 			<div class="navbar-form form-group">
 				<!-- <span class="navbar-text">Filtra:</span> -->
@@ -21,7 +22,7 @@
 				<div class="input-group">
 					<?php echo Form::getInputTextfield("form-control", $id."_filter_text", "filter_text", $filter_text, '', 255, 'placeholder='.$str_search ); ?>
 					<div class="input-group-btn">
-						<button type="submit" class="btn btn-default" id="<?php echo $id."_filter_set"; ?>" name="_filter_set" title="<?php echo Lang::t('_SEARCH', 'standard'); ?>">
+						<button type="submit" class="btn btn-default" id="<?php echo $id."_filter_set"; ?>" name="filter_set" title="<?php echo Lang::t('_SEARCH', 'standard'); ?>">
 							<span class="glyphicon glyphicon-search"></span>
 						</button>
 					</div>
