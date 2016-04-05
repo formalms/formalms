@@ -71,10 +71,11 @@
     position: relative;
 }
 .tab_subnav .nav {
-    padding: 5px;
+    padding: 5px 10px;
     background-color: #C84000;
 }
 .tab_subnav .nav a {
+    padding: 10px;
     color: #fff;
 }
 .tab_subnav .nav a:hover, .tab_subnav .nav li.selected a {
