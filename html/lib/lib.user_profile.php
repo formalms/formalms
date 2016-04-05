@@ -1873,7 +1873,7 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 
           //       <ul class="nav nav-pills nav-stacked">
           //       ';
-          //       if($perm_certificate) $html .= '<li><a href="index.php?modname=mycertificate&op=mycertificate&sop=unregistercourse">'.Lang::t('_MY_CERTIFICATE', 'menu_over').'</a></li> ';
+          //       if($perm_certificate) $html .= '<li><a href="index.php?r=lms/mycertificate/show">'.Lang::t('_MY_CERTIFICATE', 'menu_over').'</a></li> ';
           //       if($perm_competence ) $html .= '<li><a href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">'.Lang::t('_COMPETENCES', 'standard').'</a></li>  ';
                 
           //       if($unread_num>0 && $perm_message){
@@ -1984,7 +1984,7 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 
 		$html .= '<ul class="nav nav-pills nav-stacked">';
 
-	    if($perm_certificate) $html .= '<li><a class="btn btn-default" href="index.php?modname=mycertificate&op=mycertificate&sop=unregistercourse">'.Lang::t('_MY_CERTIFICATE', 'menu_over').'</a></li>';
+	    if($perm_certificate) $html .= '<li><a class="btn btn-default" href="index.php?r=lms/mycertificate/show">'.Lang::t('_MY_CERTIFICATE', 'menu_over').'</a></li>';
 	    if($perm_competence ) $html .= '<li><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">'.Lang::t('_COMPETENCES', 'standard').'</a></li>';
 	      
 	    if($unread_num>0 && $perm_message){
