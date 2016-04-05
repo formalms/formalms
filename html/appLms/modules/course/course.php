@@ -165,7 +165,7 @@ function mycourses(&$url) {
 		$GLOBALS['page']->addStart(''
 			
 			.( isset($course_stats['cert_relesable']) && $tot_cert != 0
-				? '<tr><th scope="row">'.$lang->def('_CERT_RELESABLE').' :</th><td><a href="index.php?modname=mycertificate&amp;op=mycertificate">'.$tot_cert.'</a></td></tr>'
+				? '<tr><th scope="row">'.$lang->def('_CERT_RELESABLE').' :</th><td><a href="index.php?r=lms/mycertificate/show">'.$tot_cert.'</a></td></tr>'
 				: '' )
 			
 			.( $pendent != 0
