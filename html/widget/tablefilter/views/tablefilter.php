@@ -13,8 +13,7 @@
 				echo Form::getInputTextfield("search_t", $id."_filter_text", "filter_text", $filter_text, '', 255, 'placeholder='.$str_search );
 				echo Form::getButton($id."_filter_set", "filter_set", Lang::t('_SEARCH', 'standard'), "search_b");
 				echo Form::getButton($id."_filter_reset", "filter_reset", Lang::t('_RESET', 'standard'), "reset_b");
-				*/
-			?>
+				*/ ?>
 			<?php $str_search = Lang::t("_SEARCH", 'standard'); ?>
 			<div class="navbar-form form-group">
 				<!-- <span class="navbar-text">Filtra:</span> -->
