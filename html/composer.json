@@ -23,15 +23,15 @@
     ],
     "config": {
         "vendor-dir": "vendor",
-        "bin-dir": "bin"
+        "bin-dir": "../bin"
     },
     "autoload": {
         "psr-0": {
-            "appLms": "html/",
-            "appCore": "html/"
+            "appLms": "",
+            "appCore": ""
         },
         "psr-4": {
-            "FormaLms\\Features\\Contexts\\": "test/behat/FormaLms/Features/Contexts"
+            "FormaLms\\Features\\Contexts\\": "../test/behat/FormaLms/Features/Contexts"
         }
     }
 }
