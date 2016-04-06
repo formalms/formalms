@@ -36,16 +36,11 @@
     </target>
 
     <target name="vendors" description="Install vendors">
-        <exec command="php composer.phar install --no-progress --prefer-dist --optimize-autoloader" logoutput="true" />
+        <exec command="php ../composer.phar install --no-progress --prefer-dist --optimize-autoloader" dir="${sourcedir}" logoutput="true" />
         <echo msg="Vendor updated"/>
     </target>
     <target name="vendors-no-dev" description="Install vendors">
-        <exec command="php composer.phar install --no-dev --no-progress --prefer-dist --optimize-autoloader" logoutput="true" />
-        <echo msg="Vendor updated"/>
-    </target>
-
-    <target name="vendors" description="Install vendors">
-        <exec command="php composer.phar install --no-progress --prefer-dist --optimize-autoloader" logoutput="true" />
+        <exec command="php ../composer.phar install --no-dev --no-progress --prefer-dist --optimize-autoloader" dir="${sourcedir}" logoutput="true" />
         <echo msg="Vendor updated"/>
     </target>
 

@@ -6,11 +6,11 @@
 *		 extension=php_openssl.dll
 ***************************/
 
--) To setup for the first time the project for development:
+-) To setup the first time the project for development:
 
-    copy and rename /test/behat/behat_cofnig.yml.dist and change 'base_url' to your needs, then:
+    copy and rename /test/behat/behat_config.yml.dist and change 'base_url' to your needs, then:
 
-    php composer.phar install
+    cd html && php ../composer.phar install
 
 -) To update the project libraries during development (after an update):
 
