@@ -185,7 +185,7 @@ cout('
         
           <div class="navbar-header" >
 
-            <a class="navbar-brand" href="'. Get::sett('url', null) .'"><img class="left_logo" width="120" src="'. Layout::path().'/images/company_logo.png" alt="logo di sinistra"/></a> 
+            <a class="navbar-brand" href="?r=elearning/show&sop=unregistercourse"><img class="left_logo" width="120" src="'. Layout::path().'/images/company_logo.png" alt="logo di sinistra"/></a> 
 
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                       
