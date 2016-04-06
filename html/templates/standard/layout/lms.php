@@ -9,7 +9,7 @@
     <![endif]-->     
     
     <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>    
+    <script src="{{ evalPhp('Layout::path') }}resources/jquery/jquery-1.11.3.min.js"></script>  
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>               
     
     
@@ -128,8 +128,8 @@
             
         
       <!-- TOOLTIP -->
-     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link href="{{ evalPhp('Layout::path') }}resources/jquery/jquery-ui-1.11.4.min.css" rel="stylesheet">
+    <script src="{{ evalPhp('Layout::path') }}resources/jquery/jquery-ui-1.11.4.min.js"></script>
   <script>
       $(function() {
         $( document ).tooltip();
