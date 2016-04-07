@@ -95,16 +95,18 @@ function intro( $object_test, $id_param ) {
 						str_replace('[minute_assigned]', ''.$minute_assigned, $time_readable));
 	}
 	
-	$page_title = array(
-		Util::str_replace_once('&', '&amp;', $object_test->back_url) => $lang->def('_TITLE'), 
-		$test_info['title']
-	);
+	// $page_title = array(
+	// 	Util::str_replace_once('&', '&amp;', $object_test->back_url) => $lang->def('_TITLE'), 
+	// 	$test_info['title']
+	// );
+	$page_title = $test_info['title'];
+	
 	$GLOBALS['page']->add(
 		getTitleArea($page_title, 'test', $lang->def('_TEST_INFO'))
 		.'<div class="std_block">'
 		.getBackUi( Util::str_replace_once('&', '&amp;', $object_test->back_url), $lang->def('_BACK'))
 		
-		.'<span class="text_bold">'.$lang->def('_TITLE').' : </span>'.$test_info['title'].'<br /><br />'
+		// .'<span class="text_bold">'.$lang->def('_TITLE').' : </span>'.$test_info['title'].'<br /><br />'
 		.( $test_info['description'] != '' 
 			? '<span class="text_bold">'.$lang->def('_DESCRIPTION').' : </span>'.$test_info['description'].'<br /><br />' 
 			: '' )
@@ -644,7 +646,8 @@ function play($object_test, $id_param) {
 								</script>";
 	
 	$GLOBALS['page']->add(
-		getTitleArea($lang->def('_TITLE').' : '.$test_info['title'], 'test', $lang->def('_TEST_INFO'))
+		// getTitleArea($lang->def('_TITLE').' : '.$test_info['title'], 'test', $lang->def('_TEST_INFO'))
+		getTitleArea($test_info['title'], 'test', $lang->def('_TEST_INFO'))
 		.'<div class="std_block">'
 		
 		.Form::openForm('test_play', 'index.php?modname=test&amp;op=play', 'std_form', 'post', 'multipart/form-data')
@@ -835,7 +838,8 @@ function saveAndExit($object_test, $id_param) {
 	$track_info 	= $play_man->getTrackAllInfo();
 	
 	$GLOBALS['page']->add(
-			getTitleArea($lang->def('_TITLE').' : '.$test_info['title'], 'test', $lang->def('_TEST_INFO'))
+			// getTitleArea($lang->def('_TITLE').' : '.$test_info['title'], 'test', $lang->def('_TEST_INFO'))
+		getTitleArea($test_info['title'], 'test', $lang->def('_TEST_INFO'))
 			.'<div class="std_block">', 'content');
 	
 	// find the page to display 
@@ -1057,7 +1061,8 @@ function showResult( $object_test, $id_param ) {
 	// --
 	
 	$GLOBALS['page']->add(
-		getTitleArea($lang->def('_TITLE').' : '.$test_info['title'], 'test', $lang->def('_TEST_INFO'))
+		// getTitleArea($lang->def('_TITLE').' : '.$test_info['title'], 'test', $lang->def('_TEST_INFO'))
+		getTitleArea($test_info['title'], 'test', $lang->def('_TEST_INFO'))
 		.'<div class="std_block">'
 		.( $next_status == 'failed' 
 			? '<b>'.$lang->def('_TEST_FAILED').'</b>' 
