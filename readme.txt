@@ -10,7 +10,8 @@
 
     copy and rename /test/behat/behat_config.yml.dist and change 'base_url' to your needs, then:
 
-    cd html && php ../composer.phar install
+    # --ignore-platform-reqs use this when you don't have php >= 5.5 (tests will not run)
+    cd html && php ../composer.phar install [--ignore-platform-reqs]
 
 -) To update the project libraries during development (after an update):
 
