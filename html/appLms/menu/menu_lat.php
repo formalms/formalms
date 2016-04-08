@@ -429,6 +429,15 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
                   
                   
                                 
+		} else {
+			// MENU OVER
+			cout('<div class="row">','menu_over');               
+			  cout('<div class="col-sm-3">'.$img_course.'</div>','menu_over'); 
+			
+			  cout('<div class="col-sm-9" >','menu_over');
+			      cout('<div class="col-md-7"><div><h1>'.Docebo::course()->getValue('name').'</h1></div></div>' ,'menu_over');  
+			      
+			  cout('</div></div><br><br>&nbsp;','menu_over');
 		}
 		
 		$info_panel .= '</div>'."\n";
