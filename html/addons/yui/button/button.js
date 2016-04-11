@@ -629,7 +629,8 @@ version: 2.9.0
         * @final
         * @type String
         */
-        CLASS_NAME_PREFIX: "yui-",
+        // CLASS_NAME_PREFIX: "yui-",
+        CLASS_NAME_PREFIX: "",
         
         
         /**
@@ -2407,7 +2408,7 @@ version: 2.9.0
         
             oElement.innerHTML =  "<" + sNodeName + " class=\"first-child\">" + 
                 (p_sType == "link" ? "<a></a>" : 
-                "<button type=\"button\"></button>") + "</" + sNodeName + ">";
+                "<button type=\"button\" class=\"btn btn-default\"></button>") + "</" + sNodeName + ">";
         
             return oElement;
         
@@ -3963,7 +3964,8 @@ version: 2.9.0
         * @final
         * @type String
         */
-        CLASS_NAME_PREFIX: "yui-",
+        // CLASS_NAME_PREFIX: "yui-",
+        CLASS_NAME_PREFIX: "",
         
         
         /**
