@@ -1001,6 +1001,8 @@ function defmodality() {
 		$GLOBALS['page']->add(
 				Form::getCheckBox($lang->def('_RETAIN_ANSWERS_HISTORY'), 'retain_answers_history', 'retain_answers_history', 1, $retain_answers_history)
 				.'<input type="hidden" id="show_tot_no" name="show_tot" value="0" checked="checked"/>'
+				. Form::getCheckbox($lang->def('_USE_SUSPENSION'), 'use_suspension', 'use_suspension', 1, $use_suspension, 'onclick="setSuspension();"')
+				. Form::getTextfield($lang->def('_SUSPENSION_NUM_HOURS'), 'suspension_num_hours', 'suspension_num_hours', 5, $suspension_num_hours)
 				.'<br /><br />'
 				.Form::getCloseFieldset(),
 				'content'
