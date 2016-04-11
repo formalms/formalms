@@ -67,6 +67,9 @@
     border-color: #C84000 !important;
     color: #fff !important;
 }
+.nav-tabs > li.active a * {
+    color: #fff !important;
+}
 .tab_subnav {
     position: relative;
 }
