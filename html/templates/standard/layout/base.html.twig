@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>[TWIG] {{ evalPhp('Layout::title') }}</title>
+    <title>{{ evalPhp('Layout::title') }}</title>
     {{ evalPhp('Layout::zone', ['meta']) }}
     {{ evalPhp('Layout::meta') }}
     <link rel="shortcut icon" href="{{ evalPhp('Layout::path') }}images/favicon.png" type="image/png"/>
