@@ -669,8 +669,6 @@ class Certificate {
 			array('', 	'', 	'', 	'', 	'', 	'', 	'', 	'', 	'', 	'' ),
 			$name
 		);
-
-		$name .= '.pdf';
 		
 		$this->getPdf($cert_structure, $name, $bgimage, $orientation, true, false);
 	}
