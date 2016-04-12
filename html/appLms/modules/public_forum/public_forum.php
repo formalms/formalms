@@ -365,7 +365,7 @@ function forum() {
 												<div class="col-xs-7 col-sm-6 col-md-4 col-lg-3 pull-right">'
 												.Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search')
 												.'<div class="input-group">'
-												.Form::getSearchInputTextfield('', '', '', 'Cerca argomento...', '', '', '', '')
+												.Form::getSearchInputTextfield('', 'search_arg', 'search_arg', 'Cerca argomento...')
 												.'<div class="input-group-btn"><button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-search"></span></button></div>'
 												.'</div>'
 												.Form::closeForm()
@@ -1526,9 +1526,9 @@ function thread() {
 	$text_inner .= '</ul>
 								</div>
 								<div class="col-xs-7 col-sm-6 col-md-4 col-lg-3 pull-right">'
-								.Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search')
+								.Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search&amp;idForum='.$id_forum)
 								.'<div class="input-group">'
-								.Form::getSearchInputTextfield('', '', '', 'Cerca argomento...', '', '', '', '')
+								.Form::getSearchInputTextfield('', 'search_arg', 'search_arg', 'Cerca argomento...')
 								.'<div class="input-group-btn"><button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-search"></span></button></div>'
 								.'</div>'
 								.Form::closeForm()
@@ -2537,9 +2537,9 @@ function message() {
 	$text_inner .= '</ul>
 								</div>
 								<div class="col-xs-7 col-sm-6 col-md-4 col-lg-3 pull-right">'
-								.Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search')
+								.Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search&amp;idThread='.$id_thread)
 								.'<div class="input-group">'
-								.Form::getSearchInputTextfield('', '', '', 'Cerca argomento...', '', '', '', '')
+								.Form::getSearchInputTextfield('', 'search_arg', 'search_arg', 'Cerca argomento...')
 								.'<div class="input-group-btn"><button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-search"></span></button></div>'
 								.'</div>'
 								.Form::closeForm()
@@ -3606,7 +3606,7 @@ function forumsearch() {
 	$text_inner = '<div class="col-xs-7 col-sm-6 col-md-4 col-lg-3 pull-right">'
 								.Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search')
 								.'<div class="input-group">'
-								.Form::getSearchInputTextfield('', '', '', 'Cerca argomento...', '', '', '', '')
+								.Form::getSearchInputTextfield('', 'search_arg', 'search_arg', 'Cerca argomento...')
 								.'<div class="input-group-btn"><button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-search"></span></button></div>'
 								.'</div>'
 								.Form::closeForm()
@@ -4065,9 +4065,9 @@ function forumsearchmessage() {
 	$text_inner .= '</ul>
 								</div>
 								<div class="col-xs-7 col-sm-6 col-md-4 col-lg-3 pull-right">'
-								.Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search')
+								.Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=searchmessage&amp;idThread='.$id_thread)
 								.'<div class="input-group">'
-								.Form::getSearchInputTextfield('', '', '', 'Cerca argomento...', '', '', '', '')
+								.Form::getSearchInputTextfield('', 'search_arg', 'search_arg', 'Cerca argomento...')
 								.'<div class="input-group-btn"><button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-search"></span></button></div>'
 								.'</div>'
 								.Form::closeForm()
