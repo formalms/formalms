@@ -18,7 +18,7 @@ class Course_API extends API {
 
 	public function getCourses($params) {
 		require_once(_lms_.'/lib/lib.course.php');
-		$output =array();		
+		$output =array();
 
 		$output['success']=true;
 
@@ -27,7 +27,7 @@ class Course_API extends API {
 		$course_man =new Man_Course();
 		$course_list =$course_man->getAllCoursesWithMoreInfo($id_category);
 
-		
+
 		foreach($course_list as $key=>$course_info) {
 			$output['course_info'][]=array(
 				'course_id'=>$course_info['idCourse'],
@@ -315,8 +315,9 @@ class Course_API extends API {
 		$output['success']=true;
 
 		if (empty($params['idst']) || (int)$params['idst'] <= 0) {
-			return false;
-			// return array('success'=>true, 'debug'=>print_r($params, true));
+			$output['success']=false;
+			$output['message']='INVALID REQUEST';
+			return $output;
 		}
 		else {
 			$user_id =$params['idst'];
@@ -337,24 +338,38 @@ class Course_API extends API {
 		$course_man =new Man_Course();
 		$db = DbConn::getInstance();
 
+		$user_data = $this->aclManager->getUser($user_id, false);
+
+		if (!$user_data) {
+				$output['success']=false;
+				$output['message']='NO_DATA_FOUND';
+				return $output;
+		}
+
 		$course_info =false;
 		$edition_info =false;
 		$classroom_info =false;
 
-		$this->fillCourseDataFromParams(
+		$course_exists = $this->fillCourseDataFromParams(
 			$params, $db, $course_id, $edition_id, $classroom_id, $course_code,
 			$edition_code, $classroom_code, $course_info, $edition_info,
 			$classroom_info, $output
 		);
-		
-		
+		if ($course_exists === false){
+			$output['success']=false;
+			$output['message']='NO_DATA_FOUND';
+			return $output;
+		}
+
+
 		// --------------- add user: -----------------------------------
-		
+
 		$model = new SubscriptionAlms($course_id, $edition_id, $classroom_id);
 		$docebo_course = new DoceboCourse($course_id);
 		$level_idst = $docebo_course->getCourseLevel($course_id);
-		if (count($level_idst) == 0 || $level_idst[1] == '')
+		if (count($level_idst) == 0 || $level_idst[1] == ''){
 			$level_idst = $docebo_course->createCourseLevel($course_id);
+		}
 		$waiting = 0;
 
 		$acl_man->addToGroup($level_idst[$user_level], $user_id);
@@ -448,8 +463,8 @@ class Course_API extends API {
 				if (!$ok) { $update_ok =false; }
 			}
 		}
-				
-		
+
+
 		if (!$update_ok) {
 			$output['success']=false;
 		}
@@ -528,8 +543,8 @@ class Course_API extends API {
 
 		return $output;
 	}
-	
-	
+
+
 	public function subscribeUserWithCode($params) {
 		require_once(_lms_.'/lib/lib.subscribe.php');
 		require_once(_lms_.'/lib/lib.course.php');
@@ -544,17 +559,17 @@ class Course_API extends API {
 			$user_id =$params['idst'];
 		}
 
-		
+
 		$registration_code_type =$params['reg_code_type'];
 		$code =$params['reg_code'];
 		$code = strtoupper($code);
 		$code = str_replace('-', '', $code);
-		
+
 		if (empty($registration_code_type) || empty($code)) {
 			$output['success']=false;
 		}
 		else {
-		
+
 			if($registration_code_type == 'tree_course') $code = substr($code, 10, 10);
 
 			$course_registration_result = false;
@@ -580,11 +595,11 @@ class Course_API extends API {
 		return $output;
 	}
 
-	
+
 
 
 	// ---------------------------------------------------------------------------
-	
+
 	public function call($name, $params) {
 		$output = false;
 
@@ -597,7 +612,7 @@ class Course_API extends API {
 			$params['idst']=$params[0]; //params[0] should contain user idst
 		}
 
-		
+
 		switch ($name) {
 
 			case 'listCourses':
@@ -636,7 +651,7 @@ class Course_API extends API {
 					$output = $this->deleteUserSubscription($params);
 				}
 			} break;
-			
+
 			case 'subscribeUserWithCode':
 			case 'subscribeuserwithcode': {
 				if (!isset($params['ext_not_found'])) {
