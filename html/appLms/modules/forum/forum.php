@@ -231,7 +231,7 @@ function forum() {
 				// NOTES: mod and perm
 				if($mod_perm) {
 
-					$content[] = '<div class="btn-group visible-xs visible-lg">
+					$content[] = '<div class="btn-group visible-xs">
 													<a class="btn btn-default'.($i == $tot_forum ? ' disabled' : '').'" href="index.php?modname=forum&amp;op=downforum&amp;idForum='.$idF.'" title="'.$lang->def('_MOVE_DOWN').'">
 														<span class="glyphicon glyphicon-chevron-down"></span>
 													</a>
@@ -251,7 +251,7 @@ function forum() {
 														<span class="glyphicon glyphicon-remove"></span>
 													</a>
 												</div>
-												<div class="dropdown hidden-xs hidden-lg">
+												<div class="dropdown hidden-xs">
 														<button class="btn btn-default dropdown-toggle" type="button" id="forumFunctions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 														  <span class="glyphicon glyphicon-cog"></span> &nbsp;<span class="caret"></span>
 														</button>
@@ -2533,48 +2533,48 @@ function message() {
 		$is_notify = issetNotify('thread', $id_thread, getLogUserId());
 	}
 
-	$text_inner = '<div class="btn-group col-lg-9 visible-lg">';
-	if(!$locked_t && !$locked_f && $write_perm) {
-		$text_inner .= '<a class="btn btn-default" href="index.php?modname=forum&amp;op=addmessage&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'" title="'.$lang->def('_REPLY').'">
-											<span class="glyphicon glyphicon-plus-sign"></span>&nbsp;
-											<span>'.$lang->def('_REPLY').'</span>
-										</a>';
-	}
+	// $text_inner = '<div class="btn-group col-lg-9 visible-lg">';
+	// if(!$locked_t && !$locked_f && $write_perm) {
+	// 	$text_inner .= '<a class="btn btn-default" href="index.php?modname=forum&amp;op=addmessage&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'" title="'.$lang->def('_REPLY').'">
+	// 										<span class="glyphicon glyphicon-plus-sign"></span>&nbsp;
+	// 										<span>'.$lang->def('_REPLY').'</span>
+	// 									</a>';
+	// }
 
-	if($can_notify) {
-		$text_inner .= '<a class="btn btn-default" href="index.php?modname=forum&amp;op=message&amp;notify=1&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'" title="'.( !$is_notify ? $lang->def('_NOTIFY_ME_THREAD_TITLE') : $lang->def('_UNNOTIFY_ME_THREAD_TITLE') ).'">
-											<span class="glyphicon glyphicon-star"></span>&nbsp;
-											<span>'.( !$is_notify ? $lang->def('_NOTIFY_ME_THREAD') : $lang->def('_UNNOTIFY_ME_THREAD') ).'</span>
-										</a>';
-	}
+	// if($can_notify) {
+	// 	$text_inner .= '<a class="btn btn-default" href="index.php?modname=forum&amp;op=message&amp;notify=1&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'" title="'.( !$is_notify ? $lang->def('_NOTIFY_ME_THREAD_TITLE') : $lang->def('_UNNOTIFY_ME_THREAD_TITLE') ).'">
+	// 										<span class="glyphicon glyphicon-star"></span>&nbsp;
+	// 										<span>'.( !$is_notify ? $lang->def('_NOTIFY_ME_THREAD') : $lang->def('_UNNOTIFY_ME_THREAD') ).'</span>
+	// 									</a>';
+	// }
 
-	if($mod_perm) {
-		$text_inner .= '<a class="btn btn-default" href="index.php?modname=forum&amp;op=modstatusthread&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'" title="'.( $locked_t ? $lang->def('_FREETHREAD') : $lang->def('_LOCKTHREAD') ).'">
-											<span class="glyphicon glyphicon-lock"></span>&nbsp;
-											<span>'.( $locked_t ? $lang->def('_FREETHREAD') : $lang->def('_LOCKTHREAD') ).'</span>
-										</a>
-										<a class="btn btn-default" href="index.php?modname=forum&amp;op=changeerased&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'" title="'.( $erased_t ? $lang->def('_UNERASE') : $lang->def('_MODERATE') ).'">
-											<span class="glyphicon glyphicon-'.( $erased_t ? 'lock' : 'ban-circle' ).'"></span>&nbsp;
-											<span>'.( $erased_t ? $lang->def('_UNERASE') : $lang->def('_MODERATE') ).'</span>
-										</a>';
-	}
+	// if($mod_perm) {
+	// 	$text_inner .= '<a class="btn btn-default" href="index.php?modname=forum&amp;op=modstatusthread&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'" title="'.( $locked_t ? $lang->def('_FREETHREAD') : $lang->def('_LOCKTHREAD') ).'">
+	// 										<span class="glyphicon glyphicon-lock"></span>&nbsp;
+	// 										<span>'.( $locked_t ? $lang->def('_FREETHREAD') : $lang->def('_LOCKTHREAD') ).'</span>
+	// 									</a>
+	// 									<a class="btn btn-default" href="index.php?modname=forum&amp;op=changeerased&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'" title="'.( $erased_t ? $lang->def('_UNERASE') : $lang->def('_MODERATE') ).'">
+	// 										<span class="glyphicon glyphicon-'.( $erased_t ? 'lock' : 'ban-circle' ).'"></span>&nbsp;
+	// 										<span>'.( $erased_t ? $lang->def('_UNERASE') : $lang->def('_MODERATE') ).'</span>
+	// 									</a>';
+	// }
 
-	if (checkPerm('moderate', $id_forum) || checkPerm('mod', true)) {
-		if ($is_important) {
-			$text_inner .= '<a class="btn btn-default" href="index.php?modname=forum&op=message&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'&amp;important=2" title="'.$lang->def('_SET_NOT_IMPORTANT_THREAD').'">
-												<span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
-												<span>'.$lang->def('_SET_NOT_IMPORTANT_THREAD').'</span>
-											</a>';
-		} else {
-			$text_inner .= '<a class="btn btn-default" href="index.php?modname=forum&op=message&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'&amp;important=1" title="'.$lang->def('_MARK_AS_IMPORTANT').'">
-												<span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
-												<span>'.$lang->def('_MARK_AS_IMPORTANT').'</span>
-											</a>';
-		}
-	}
+	// if (checkPerm('moderate', $id_forum) || checkPerm('mod', true)) {
+	// 	if ($is_important) {
+	// 		$text_inner .= '<a class="btn btn-default" href="index.php?modname=forum&op=message&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'&amp;important=2" title="'.$lang->def('_SET_NOT_IMPORTANT_THREAD').'">
+	// 											<span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
+	// 											<span>'.$lang->def('_SET_NOT_IMPORTANT_THREAD').'</span>
+	// 										</a>';
+	// 	} else {
+	// 		$text_inner .= '<a class="btn btn-default" href="index.php?modname=forum&op=message&amp;idThread='.$id_thread.'&amp;ini='.$ini_page.'&amp;important=1" title="'.$lang->def('_MARK_AS_IMPORTANT').'">
+	// 											<span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
+	// 											<span>'.$lang->def('_MARK_AS_IMPORTANT').'</span>
+	// 										</a>';
+	// 	}
+	// }
 
-	$text_inner .= '</div>';
-	$text_inner .= '<div class="dropdown col-xs-5 col-sm-4 hidden-lg pull-left">
+	// $text_inner .= '</div>';
+	$text_inner = '<div class="dropdown col-xs-5 col-sm-4 pull-left">
 										<button class="btn btn-default dropdown-toggle" type="button" id="tableActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 										  <span class="glyphicon glyphicon-cog"></span> &nbsp;
 										  Operazioni &nbsp;

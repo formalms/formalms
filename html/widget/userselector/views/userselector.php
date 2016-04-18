@@ -1,43 +1,39 @@
-<script type="text/javascript">
-	YAHOO.util.Event.onDOMReady(function() {
-		var tabs = new YAHOO.widget.TabView("<?php echo $id; ?>_tabview");
-	});
-</script>
 <?php if ($use_form_input && !$separate_input)
 	echo '<input type="hidden" id="userselector_input_' . $id . '" name="userselector_input[' . $id . ']" value="" />'; ?>
-<div id="<?php echo $id; ?>_tabview" class="yui-navset">
-	<ul class="yui-nav">
+<div id="<?php echo $id; ?>_tabview">
+	<ul class="nav nav-tabs">
 		<?php
 		if ($show_user_selector) { ?>
-			<li<?php if ($selected_tab == 'user') echo ' class="selected"'; ?>>
-			<a href="#<?php echo $id . '_user_tab'; ?>"><em><?php echo Lang::t('_USERS', 'admin_user_management'); ?></em></a>
+			<li<?php if ($selected_tab == 'user') echo ' class="active"'; ?>>
+			<a href="#<?php echo $id . '_user_tab'; ?>" data-toggle="tab"><em><?php echo Lang::t('_USERS', 'admin_user_management'); ?></em></a>
 		</li>
 		<?php
 		}
 		if ($show_group_selector) { ?>
-			<li<?php if ($selected_tab == 'group') echo ' class="selected"'; ?>>
-			<a href="#<?php echo $id . '_group_tab'; ?>"><em><?php echo Lang::t('_GROUPS', 'admin_user_management'); ?></em></a>
+			<li<?php if ($selected_tab == 'group') echo ' class="active"'; ?>>
+			<a href="#<?php echo $id . '_group_tab'; ?>" data-toggle="tab"><em><?php echo Lang::t('_GROUPS', 'admin_user_management'); ?></em></a>
 		</li>
 		<?php
 		}
 		if ($show_orgchart_selector) { ?>
-			<li<?php if ($selected_tab == 'orgchart') echo ' class="selected"'; ?>>
-			<a href="#<?php echo $id . '_orgchart_tab'; ?>"><em><?php echo Lang::t('_ORGCHART', 'admin_user_management'); ?></em></a>
+			<li<?php if ($selected_tab == 'orgchart') echo ' class="active"'; ?>>
+			<a href="#<?php echo $id . '_orgchart_tab'; ?>" data-toggle="tab"><em><?php echo Lang::t('_ORGCHART', 'admin_user_management'); ?></em></a>
 		</li>
 		<?php
 		}
 		if ($show_fncrole_selector) { ?>
 			<li<?php if ($selected_tab == 'fncrole')
-				echo ' class="selected"'; ?>>
-			<a href="#<?php echo $id . '_fncrole_tab'; ?>"><em><?php echo Lang::t('_FUNCTIONAL_ROLE', 'fncroles'); ?></em></a>
+				echo ' class="active"'; ?>>
+			<a href="#<?php echo $id . '_fncrole_tab'; ?>" data-toggle="tab"><em><?php echo Lang::t('_FUNCTIONAL_ROLE', 'fncroles'); ?></em></a>
 		</li>
 		<?php
 		} ?>
 	</ul>
-	<div class="yui-content">
+<div class="tab-content">
 		<?php
 		if ($show_user_selector) {
-			echo '<div id="' . $id . '_user_tab">';
+			$active_class = ($selected_tab == 'user') ? ' active' : '';
+			echo '<div id="' . $id . '_user_tab" class="tab-pane'.$active_class.'">';
 			$this->render('_user_selector', array(
 				'id' => $id,
 				'id_org' => $this->id_org,
@@ -59,7 +55,8 @@
 			echo '</div>';
 		}
 		if ($show_group_selector) {
-			echo '<div id="' . $id . '_group_tab">';
+			$active_class = ($selected_tab == 'group') ? ' active' : '';
+			echo '<div id="' . $id . '_group_tab" class="tab-pane'.$active_class.'">';
 			$this->render('_group_selector', array(
 				'id' => $id,
 				'filter_text' => "", //TO DO: read from session ...
@@ -72,7 +69,8 @@
 			echo '</div>';
 		}
 		if ($show_orgchart_selector) {
-			echo '<div id="' . $id . '_orgchart_tab">';
+			$active_class = ($selected_tab == 'orgchart') ? ' active' : '';
+			echo '<div id="' . $id . '_orgchart_tab" class="tab-pane'.$active_class.'">';
 			$this->render('_orgchart_selector', array(
 				'id' => $id,
 				'use_form_input' => $use_form_input,
@@ -86,7 +84,8 @@
 			echo '</div>';
 		}
 		if ($show_fncrole_selector) {
-			echo '<div id="' . $id . '_fncrole_tab">';
+			$active_class = ($selected_tab == 'fncrole') ? ' active' : '';
+			echo '<div id="' . $id . '_fncrole_tab" class="tab-pane'.$active_class.'">';
 			$this->render('_fncrole_selector', array(
 				'id' => $id,
 				'filter_text' => "", //TO DO: read from session ...
