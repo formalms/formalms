@@ -1,18 +1,26 @@
 <?php echo getTitleArea(Lang::t('_CONFIGURATION', 'configuration')); ?>
 <div class="std_block">
 
-	<div id="global_conf" class="yui-navset">
-		<ul class="yui-nav">
-		<?php
-		while(list($id, $canonical_name) = each($regroup)) {
-			echo '<li'.($id == $active_tab?' class="selected"':'').'>'
-				.'<a href="#tab_g_'.$id.'">'
-				.'<em>'.Lang::t('_'.strtoupper($canonical_name), 'configuration').'</em>'
-				.'</a>'
-				.'</li>';
-		}
-		reset($regroup);
-		?>
+	<div id="global_conf" class="tabs-wrapper">
+		<ul class="nav nav-tabs bordered">
+			<li class="dropdown">
+				<a href="javascript:void(0)" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="dropdown-title"><?php echo Lang::t('_MAIN_OPTIONS', 'configuration'); ?></span> &nbsp;<span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-left tabs-dropdown">
+				<?php
+				while(list($id, $canonical_name) = each($regroup)) {
+					// echo '<li'.($id == $active_tab?' class="selected"':'').'>'
+					echo '<li'.($id == $active_tab?' class="active"':'').'>'
+						.'<a href="#tab_g_'.$id.'">'
+						.'<em>'.Lang::t('_'.strtoupper($canonical_name), 'configuration').'</em>'
+						.'</a>'
+						.'</li>';
+				}
+				reset($regroup);
+				?>
+				</ul>
+			</li>
 		</ul>
 		<div class="yui-content">
 			<?php
@@ -50,21 +58,21 @@
 	</div>
 </div>
 <script type="text/javascript">
-YAHOO.util.Event.onDOMReady(function(){
-	var targets =  YAHOO.util.Selector.query("span[id^=tt_target]");
-	new YAHOO.widget.Tooltip("tooltip_info", {
-		context:targets,
-		effect:{effect:YAHOO.widget.ContainerEffect.FADE, duration:0.20}
-	});
-	new YAHOO.widget.TabView('global_conf', {orientation:'left'});
+// YAHOO.util.Event.onDOMReady(function(){
+// 	var targets =  YAHOO.util.Selector.query("span[id^=tt_target]");
+// 	new YAHOO.widget.Tooltip("tooltip_info", {
+// 		context:targets,
+// 		effect:{effect:YAHOO.widget.ContainerEffect.FADE, duration:0.20}
+// 	});
+// 	new YAHOO.widget.TabView('global_conf', {orientation:'left'});
     
-    var myEl = document.getElementById('register_type_self');
+//     var myEl = document.getElementById('register_type_self');
 
-    YAHOO.util.Event.addListener("register_type_self", "click", function(e){
-        if (!confirm('<?php echo addslashes(Lang::t('_CONFIRM_REGISTER_TYPE_SELF', 'configuration')) ?>')){
-            e.preventDefault();
-            e.stopPropagation();
-        }
-    });
-});
+//     YAHOO.util.Event.addListener("register_type_self", "click", function(e){
+//         if (!confirm('<?php echo addslashes(Lang::t('_CONFIRM_REGISTER_TYPE_SELF', 'configuration')) ?>')){
+//             e.preventDefault();
+//             e.stopPropagation();
+//         }
+//     });
+// });
 </script>

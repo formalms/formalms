@@ -56,7 +56,10 @@
 
 /* TABS */
 .nav-tabs {
-    border-bottom: none;
+    border: none;
+}
+.nav-tabs.bordered {
+    border-bottom: solid 1px #ccc;
 }
 .nav-tabs > li a:hover {
     border-color: #eee;
