@@ -142,8 +142,10 @@ class MessageModule {
 		if (count($all_value) > 0) {
 			$form_filter_inbox =
 				Form::getLineDropdown(	'form_line_l pull-right',
-										'label_padded',
-										Lang::t('_FILTER'),
+										// 'label_padded',
+										// Lang::t('_FILTER'),
+										'',
+										'',
 										'dropdown_nowh',
 										'msg_course_filter_inbox',
 										'msg_course_filter_inbox',
@@ -156,8 +158,10 @@ class MessageModule {
 				.Form::getBreakRow();
 			$form_filter_outbox =
 				Form::getLineDropdown(	'form_line_l pull-right',
-										'label_padded',
-										Lang::t('_FILTER'),
+										// 'label_padded',
+										// Lang::t('_FILTER'),
+										'',
+										'',
 										'dropdown_nowh',
 										'msg_course_filter_outbox',
 										'msg_course_filter_outbox',

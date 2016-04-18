@@ -145,7 +145,7 @@ class Form {
 		$value = str_replace($search, $replace, $value);
 
 		return '<input type="text" '
-		."\n\t".'class="'.$css_text.'" '
+		."\n\t".'class="form-control '.$css_text.'" '
 		."\n\t".'id="'.$id.'" '
 		.($name !== false ? "\n\t".'name="'.$name.'" ' : "")
 		."\n\t".'value="'.$value.'" '
@@ -469,7 +469,7 @@ class Form {
 	 */
 	public static function getInputPassword( $css_text, $id, $name, $alt_name, $maxlenght, $other_param, $value ) {
 		return '<input type="password" '
-		."\n\t".'class="'.$css_text.'" '
+		."\n\t".'class="form-control '.$css_text.'" '
 		."\n\t".'id="'.$id.'" '
 		."\n\t".'name="'.$name.'" '
 		."\n\t".'maxlength="'.$maxlenght.'" '
@@ -711,8 +711,8 @@ class Form {
 	public static function getLineDropdown( $css_line, $css_label, $label_name, $css_dropdown, $id, $name, $all_value, $selected, $other_param, $other_after, $other_before ) {
 		return '<div class="'.$css_line.'">'
 			.$other_before
-			// .'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
-			.'<label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label>'
+			.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
+			// .'<label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label>'
 			.Form::getInputDropdown( $css_dropdown, $id, $name, $all_value, $selected, $other_param )
 			.$other_after
 			.'</div>';
@@ -1106,7 +1106,7 @@ class Form {
 
 		if($css_text === false) $css_text = 'textarea';
 
-		return '<textarea class="'.$css_text.'" id="'.$id.'" name="'.$name.'" rows="'.$rows.'" cols="'.$cols.'"'.$other_param.'>'.$value.'</textarea>';
+		return '<textarea class="form-control '.$css_text.'" id="'.$id.'" name="'.$name.'" rows="'.$rows.'" cols="'.$cols.'"'.$other_param.'>'.$value.'</textarea>';
 	}
 
 	public static function getSimpleTextarea($label_name, $id ,$name , $value = '',

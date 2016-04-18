@@ -308,7 +308,9 @@ ul.style_none li{list-style:none; }
 /* Form */
 .form_elem{padding:0px 6px;}
 .form_line_l, .form-line{display:block; margin:1px 0;line-height:1.8em;}
-.form_line_l p, .form-line p{display:inline;margin:0 8px 0 0;padding:2px 0 2px 0;vertical-align:top;}
+/*.form_line_l p, .form-line p{display:inline;margin:0 8px 0 0;padding:2px 0 2px 0;vertical-align:top;}*/
+.form_line_l p, .form-line p{display:inline-block;margin:0 8px 0 0;padding:2px 0 2px 0;vertical-align:middle;}
+.form_line_l .form-control {display:inline-block;vertical-align:middle;}
 .form_line_l p span, .form-line p span, .form_line_l p label, .form_line_l .label_effect, .form-line p label{display:-moz-inline-box;display:inline-block;vertical-align:top;width:30em;font-weight:bold;}
 .form_line_l input[type='checkbox'] + p span, .form-line input[type='checkbox'] + p span, .form_line_l input[type='checkbox'] + p label, .form-line input[type='checkbox'] + p label{width: calc(30em - 17px);}
 .form_line_l .mandatory, .form-line .mandatory{font-weight:bold;color:#EE1111;display:inline;width:auto;}
