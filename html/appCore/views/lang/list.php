@@ -99,27 +99,29 @@
 	</script>
 	<div class="quick_search_form">
 		<?php
-		echo Form::openForm('lang_filters', 'index.php?r=adm/lang/list')
+		echo Form::openForm('lang_filters', 'index.php?r=adm/lang/list', false, false, '', '', 'row')
+			.'<div class="module-filter col-xs-12 col-sm-3">'
 			.'<label for="la_module">'.Lang::t('_LANG_MODULE', 'admin_lang').'</label> : '
 			.Form::getInputDropdown( "search_d", "la_module", "la_module", $module_list, '', ' onchange=" DataTable_lang_table.refresh(); "' )
-			.' '
-			.'<label for="la_text">'.Lang::t('_SEARCH', 'admin_lang').'</label> : '
-			.Form::getInputTextfield( "search_t", "la_text", "la_text", '', '', 255, '' )
-			.Form::getButton( "filter_set", "filter_set", Lang::t('_SEARCH', 'admin_lang'), "search_b")
-			.Form::getButton( "filter_reset", "filter_reset", Lang::t('_RESET', 'admin_lang'), "reset_b");
-		
-		echo '<br /><div class="">'
+			.'</div>'
+			.'<div class="lang-filter col-xs-12 col-sm-3">'
 			.'<label for="lang_code">'.Lang::t('_LANGUAGE', 'admin_lang').'</label>: '
 			.Form::getInputDropdown( "search_d", "lang_code", "lang_code", $language_list, array_search( $lang_code, $language_list ), ' onchange=" DataTable_lang_table.refresh(); "' )
-			.'&nbsp;&nbsp;&nbsp;'
+			.'</div>'
+			.'<div class="lang-confr-filter col-xs-12 col-sm-3">'
 			.'<label for="lang_code_diff">'.Lang::t('_LANG_COMPARE', 'admin_lang').'</label>: '
 			.Form::getInputDropdown( "search_d", "lang_code_diff", "lang_code_diff", $language_list_diff, '', ' onchange=" DataTable_lang_table.refresh(); "' )
-			.'&nbsp;&nbsp;&nbsp;'
 			.Form::getInputCheckbox('only_empty', 'only_empty', '1', false, '')
 			.' <label class="label_normal" for="waiting">'.Lang::t('_ONLY_EMPTY', 'admin_lang').'</label>'
-			.'</div>';
-		
-		echo Form::closeForm();
+			.'</div>'
+			.'<div class="search col-xs-12 col-sm-3">'
+			.'<label for="la_text">'.Lang::t('_SEARCH', 'admin_lang').'</label> : '
+			.'<div class="input-group">'
+			.Form::getSearchInputTextfield( "", "la_text", "la_text", '', '', 255, '' )
+			.'<div class="input-group-btn"><button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-search"></span></button></div>'
+			.'</div>'
+			.'</div>'
+			.Form::closeForm();
 		?>
 	</div>
 	<?php

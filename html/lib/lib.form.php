@@ -43,7 +43,7 @@ class Form {
 	 * @param string $other 	optional code for the form tag
 	 * @return string 	with the form opening html code
 	 */
-	public static function openForm( $id , $action, $css_form = false, $method = false, $enctype = '', $other = '' ) {
+	public static function openForm( $id , $action, $css_form = false, $method = false, $enctype = '', $other = '', $css_content = '' ) {
 
 		$editor_extra=getEditorExtra();
 		$other.=(!empty($editor_extra) ? " ".$editor_extra : "");
@@ -55,7 +55,7 @@ class Form {
 		.' id="'.$id.'" method="'.$method.'" action="'.$action.'"'
 		.( $enctype != '' ? ' enctype="'.$enctype.'"' : '' )
 		.$other.'>'."\n"
-		.'<div>'."\n"
+		.'<div class="' . $css_content . '">'."\n"
 
 		.'<input type="hidden" id="authentic_request_'.$id.'" name="authentic_request" value="'.Util::getSignature().'" />';
 	}
