@@ -126,7 +126,7 @@ class BigBlueButton {
 	*@return The url to join the meeting
 	*/
 	public function joinURL( $meetingID, $userName, $PW, $SALT, $URL ) {
-		$url_join = $URL."api/join?";
+		$url_join = $URL."/api/join?";
 		$params = 'meetingID='.urlencode($meetingID).'&fullName='.urlencode($userName).'&password='.urlencode($PW);
 		return ($url_join.$params.'&checksum='.sha1("join".$params.$SALT) );
 	}
@@ -169,7 +169,7 @@ class BigBlueButton {
 	*@return The url to check if the specified meeting is running.
 	*/
 	public function isMeetingRunningURL( $meetingID, $URL, $SALT ) {
-		$base_url = $URL."api/isMeetingRunning?";
+		$base_url = $URL."/api/isMeetingRunning?";
 		$params = 'meetingID='.urlencode($meetingID);
 		return ($base_url.$params.'&checksum='.sha1("isMeetingRunning".$params.$SALT) );	
 	}
@@ -185,7 +185,7 @@ class BigBlueButton {
 	*@return The url to check if the specified meeting is running.
 	*/
 	public function getMeetingInfoURL( $meetingID, $modPW, $URL, $SALT ) {
-		$base_url = $URL."api/getMeetingInfo?";
+		$base_url = $URL."/api/getMeetingInfo?";
 		$params = 'meetingID='.urlencode($meetingID).'&password='.urlencode($modPW);
 		return ( $base_url.$params.'&checksum='.sha1("getMeetingInfo".$params.$SALT));	
 	}
@@ -199,7 +199,7 @@ class BigBlueButton {
 	*@return The url of getMeetings.
 	*/
 	public function getMeetingsURL($URL, $SALT) { 
-		$base_url = $URL."api/getMeetings?";
+		$base_url = $URL."/api/getMeetings?";
 		$params = 'random='.(rand() * 1000 );
 		return ( $base_url.$params.'&checksum='.sha1("getMeetings".$params.$SALT));
 	}
@@ -215,7 +215,7 @@ class BigBlueButton {
 	*@return The url to end the specified meeting.
 	*/
 	public function endMeetingURL( $meetingID, $modPW, $URL, $SALT ) {
-		$base_url = $URL."api/end?";
+		$base_url = $URL."/api/end?";
 		$params = 'meetingID='.urlencode($meetingID).'&password='.urlencode($modPW);
 		return ( $base_url.$params.'&checksum='.sha1("end".$params.$SALT) );
 	}	
