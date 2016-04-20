@@ -46,7 +46,6 @@ function configureMultiC()
 				answer[i].disabled = true;
 		}
 		tot_question--;
-		controlTotQuestion();
 	}
 }
 
@@ -100,7 +99,6 @@ function configureSingleC()
 		{
 			tot_question--;
 			to_purge = true;
-			controlTotQuestion();
 		}
 		else
 			YAHOO.util.Event.addListener(answer[i], "click", singleCNotSel);
