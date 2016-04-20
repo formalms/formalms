@@ -514,6 +514,7 @@ function organization_access( &$treeView, $idItem ) {
 		$user_select->show_orgchart_selector = FALSE;
 		$user_select->show_fncrole_selector = FALSE;
 		$user_select->id_org = $idItem;
+		$user_select->nFields = 2;
 
 		$temp = $treeView->tdb->__getAccess($idItem);
 		$user_select->resetSelection($temp);
