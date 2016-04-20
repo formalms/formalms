@@ -47,6 +47,7 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 					, ('bbb_password_viewer','password.moderator','string',255,'bbb',6,5,1,0,'')
 					, ('bbb_salt','to be changed with a complex string','string',255,'bbb',6,3,1,0,'')
 					, ('bbb_server','http://test-install.blindsidenetworks.com/bigbluebutton/','string',255,'bbb',6,1,1,0,'')
+					, ('bbb_port','80','string',255,'bbb',6,1,1,0,'')
 					, ('bbb_user','','string',255,'bbb',6,2,1,0,'')
 				"
 		);
@@ -64,6 +65,7 @@ class ConferenceBBBPlugin extends FormaPluginConference implements FormaPluginCo
 				   , 'bbb_password_viewer'
 				   , 'bbb_salt'
 				   , 'bbb_server'
+                                   , 'bbb_port'
 				   , 'bbb_user'
 				)
 				"
