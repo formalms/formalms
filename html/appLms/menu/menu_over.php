@@ -34,6 +34,10 @@ if(!Docebo::user()->isAnonymous()) {
    
     $ma = new Man_MiddleArea();
 
+    if (!$ma->currentCanAccessObj('credits')) {
+      $credits = '';
+    }
+
     $user_level = Docebo::user()->getUserLevelId();
 
     $query_menu = "
