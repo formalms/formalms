@@ -10,7 +10,7 @@
 
 require_once(_lms_.'/lib/lib.certificate.php');
 
-class MyCertificateLms extends Model {
+class MycertificateLms extends Model {
 
     protected $certificate;
     
@@ -32,13 +32,13 @@ class MyCertificateLms extends Model {
                 
         $data = array();
         foreach ($myCertificates AS $cert) {        
-            $preview    = '<a class="ico-wt-sprite subs_view" href="?r=myCertificate/'
+            $preview    = '<a class="ico-wt-sprite subs_view" href="?r=mycertificate/'
                         . 'preview&id_certificate='.$cert['id_certificate'].'&id_course='.$cert['id_course'].'" '
                         .' title="'.Lang::t('_PREVIEW', 'certificate').'"><span>'.Lang::t('_PREVIEW', 'certificate').'</span></a>';
-            $download    = '<a class="ico-wt-sprite subs_pdf" href="?r=myCertificate/'
+            $download    = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
                         . 'download&id_certificate='.$cert['id_certificate'].'&id_course='.$cert['id_course'].'" '
                         .' title="'.Lang::t('_DOWNLOAD', 'certificate').'"><span>'.Lang::t('_DOWNLOAD', 'certificate').'</span></a>';
-            $generate    = '<a class="ico-wt-sprite subs_pdf" href="?r=myCertificate/'
+            $generate    = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
                         . 'download&id_certificate='.$cert['id_certificate'].'&id_course='.$cert['id_course'].'" '
                         .' title="'.Lang::t('_GENERATE', 'certificate').'"><span>'.Lang::t('_GENERATE', 'certificate').'</span></a>';
             
@@ -88,13 +88,13 @@ class MyCertificateLms extends Model {
                 
         $data = array();
         foreach ($myMetaCertificates AS $meta) {        
-            $preview    = '<a class="ico-wt-sprite subs_view" href="?r=myCertificate/'
+            $preview    = '<a class="ico-wt-sprite subs_view" href="?r=mycertificate/'
                         . 'preview&id_certificate='.$meta['id_certificate'].'&id_meta='.$meta['id_meta'].'" '
                         .' title="'.Lang::t('_PREVIEW', 'certificate').'"><span>'.Lang::t('_PREVIEW', 'certificate').'</span></a>';
-            $download    = '<a class="ico-wt-sprite subs_pdf" href="?r=myCertificate/'
+            $download    = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
                         . 'download&id_certificate='.$meta['id_certificate'].'&id_meta='.$meta['id_meta'].'" '
                         .' title="'.Lang::t('_DOWNLOAD', 'certificate').'"><span>'.Lang::t('_DOWNLOAD', 'certificate').'</span></a>';
-            $generate    = '<a class="ico-wt-sprite subs_pdf" href="?r=myCertificate/'
+            $generate    = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
                         . 'download&id_certificate='.$meta['id_certificate'].'&id_meta='.$meta['id_meta'].'" '
                         .' title="'.Lang::t('_GENERATE', 'certificate').'"><span>'.Lang::t('_GENERATE', 'certificate').'</span></a>';
 					

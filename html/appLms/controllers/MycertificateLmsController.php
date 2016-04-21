@@ -10,7 +10,7 @@
 
 require_once(_lms_.'/lib/lib.certificate.php');
 
-class MyCertificateLmsController extends LmsController {
+class MycertificateLmsController extends LmsController {
 
     const mod_name = 'mycertificate';
     
@@ -23,7 +23,7 @@ class MyCertificateLmsController extends LmsController {
     public function init() {
         $this->id_user = Docebo::user()->getIdSt();
         $this->json = new Services_JSON();
-        $this->model = new MyCertificateLms($this->id_user);
+        $this->model = new MycertificateLms($this->id_user);
         $this->certificate = new Certificate();
     }
     
