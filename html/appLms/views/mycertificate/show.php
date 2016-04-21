@@ -29,7 +29,7 @@ $cert_columns = array(
 
 $this->widget('table', array(
     'id'                => 'cert_table',
-    'ajaxUrl'		=> 'ajax.server.php?r=myCertificate/getMyCertificates',
+    'ajaxUrl'		=> 'ajax.server.php?r=mycertificate/getMyCertificates',
     'columns'		=> $cert_columns,
     'rowsPerPage'	=> Get::sett('visuItem', 25),
     'startIndex'	=> 0,
@@ -55,7 +55,7 @@ $meta_columns = array(
 
 $this->widget('table', array(
     'id'                => 'meta_table',
-    'ajaxUrl'		=> 'ajax.server.php?r=myCertificate/getMyMetaCertificates',
+    'ajaxUrl'		=> 'ajax.server.php?r=mycertificate/getMyMetaCertificates',
     'columns'		=> $meta_columns,
     'rowsPerPage'	=> Get::sett('visuItem', 25),
     'startIndex'	=> 0,
