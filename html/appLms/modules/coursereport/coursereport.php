@@ -143,7 +143,7 @@ function coursereport() {
 	$lev = $type_filter;
 
 	$students = getSubscribedInfo((int)$_SESSION['idCourse'], FALSE, $lev, TRUE, false, false, true);
-        
+
 	//apply sub admin filters, if needed
 	if( !$view_all_perm ) {
 		//filter users
@@ -155,10 +155,10 @@ function coursereport() {
                         // Elimino gli studenti non amministrati
                         unset ($students[$idst]);
                     }
-                    
+
                 }
 	}
-        
+
 	$id_students = array_keys($students);
 	$students_info 	=& $acl_man->getUsers($id_students);
 	$i=0;
@@ -1112,7 +1112,7 @@ function testvote() {
 	$lev = $type_filter;
     $students = getSubscribed((int)$_SESSION['idCourse'], FALSE, $lev, TRUE, false, false, true);
     $id_students = array_keys($students);
-	$students_info 	=& $acl_man->getUsers($id_students);    
+	$students_info 	=& $acl_man->getUsers($id_students);
 
 	// XXX: Find test
 	$test_info		=& $test_man->getTestInfo(array($id_test));
@@ -2442,7 +2442,7 @@ function modactivityscore() {
         Form::closeForm()
         .'</div>'
     );
-   
+
 }
 
 function delactivity() {
@@ -2580,7 +2580,7 @@ function export()
 	$lev = $type_filter;
 
 	$students = getSubscribedInfo((int)$_SESSION['idCourse'], FALSE, $lev, TRUE, false, false, true);
-        
+
 	//apply sub admin filters, if needed
 	if( !$view_all_perm ) {
 		//filter users
@@ -2592,10 +2592,10 @@ function export()
                         // Elimino gli studenti non amministrati
                         unset ($students[$idst]);
                     }
-                    
+
                 }
 	}
-        
+
 	$i=0;
 	$students_info=array();
 	foreach( $students as $idst => $user_course_info )
@@ -2763,7 +2763,7 @@ function export()
 
 	$csv .= "\n";
 
-	$tests_score 	=& $test_man->getTestsScores($included_test, $id_students);
+	$tests_score 	=& $test_man->getTestsScores($included_test, array_keys($students));
 
 	$test_details 	= array();
 	if(is_array($included_test))
@@ -2878,7 +2878,7 @@ function export()
 
 								if($score >= $info_report['required_score']) {
 									if($score == $test_details[$id_test]['max_score']) $csv .= ';"'.$score." ".$tt.'"';
-									else $csv .= ';"'." ".$tt.'"';
+									else $csv .= ';"'.$score." ".$tt.'"';
 
 									if(!isset($test_details[$id_test]['passed'])) $test_details[$id_test]['passed'] = 1;
 									else $test_details[$id_test]['passed']++;
