@@ -224,14 +224,18 @@ class OrgDirDb extends RepoDirDb {
 			$result = " AND (idCourse = '".$this->idCourse."')";
 			if( $this->filterTypes !== NULL )
 				$result .= " AND (objectType IN ( '".implode("','",$this->filterTypes)."' ))";
-			if( $this->filterVisibility )
+			if( $this->filterVisibility ) {
 				$result .= " AND (visible = '1' )";
+				$result .= " AND (NOW() > publish_from OR publish_from = '0000-00-00 00:00:00' OR publish_from IS NULL)";
+			}
 		} else {
 			$result = " AND (".$tname.".idCourse = '".$this->idCourse."')";
 			if( $this->filterTypes !== NULL )
 				$result .= " AND (".$tname.".objectType IN ( '".implode("','",$this->filterTypes)."' ))";
-			if( $this->filterVisibility )
-				$result .= " AND (".$tname.".visible = '1' )";
+			if( $this->filterVisibility ) {
+				$result .= " AND (" . $tname . ".visible = '1' )";
+				$result .= " AND (NOW() > " . $tname . ".publish_from OR " . $tname . ".publish_from = '0000-00-00 00:00:00' OR " . $tname . ".publish_from IS NULL)";
+			}
 		}
 		if( $this->filterAccess !== FALSE ) {
 			$result .= " AND ( "
