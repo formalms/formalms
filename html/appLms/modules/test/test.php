@@ -72,12 +72,14 @@ function instest() {
 	
 	if( trim($_POST['title']) == '' ) $_POST['title'] = $lang->def('_NOTITLE');
 
-	$retain_answers_history = $_POST['obj_type'] == 'test360' ? 1 : 0;
+	// @TODO to refactor into test360Plugin
+	$isTest360 = $_POST['obj_type'] == 'test360' ? 1 : 0;
+
 	$ins_query = "
 	INSERT INTO ".$GLOBALS['prefix_lms']."_test 
-	( author, title, description, obj_type, retain_answers_history )
+	( author, title, description, obj_type, retain_answers_history, mandatory_answer, hide_info)
 		VALUES 
-	( '".(int)getLogUserId()."', '".$_POST['title']."', '".$_POST['textof']."', '".$_POST['obj_type']."', ".$retain_answers_history." )";
+	( '".(int)getLogUserId()."', '".$_POST['title']."', '".$_POST['textof']."', '".$_POST['obj_type']."', ".$isTest360.", ".$isTest360.", ".$isTest360." )";
 	
 	if( !sql_query($ins_query) ) {
 		
