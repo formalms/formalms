@@ -72,12 +72,12 @@
     border-color: #eee;
     color: inherit;
 }
-.nav-tabs > li.active a {
+#container .nav-tabs > li.active a {
     background-color: #C84000 !important;
     border-color: #C84000 !important;
     color: #fff !important;
 }
-.nav-tabs > li.active a * {
+#container .nav-tabs > li.active a * {
     color: #fff !important;
 }
 .tab_subnav {
