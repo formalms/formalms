@@ -315,6 +315,8 @@ function exportquest(&$url) {
 					.$form->getButton('button_undo', 'button_undo', $lang->def('_UNDO'))
 					.$form->closeButtonSpace()
 					.$form->closeForm(), 'content');
+
+					cout('<div class="std_block yui-skin-docebo yui-skin-sam">', 'content');
 			}
 			else
 			{
