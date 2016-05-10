@@ -110,7 +110,10 @@ function insitem() {
 		$zip_content = $zip->listContent();
 		$zip_extracted_size = 0;
 		while(list(, $file_info) = each($zip_content)) {
-
+			if(strpos($file_info['filename'], '../') !== false){
+				$_SESSION['last_error'] = _ERROR_UPLOAD;
+				Util::jump_to( ''.$back_url.'&create_result=0' );
+			}
 			$zip_extracted_size += $file_info['size'];
 		}
 
