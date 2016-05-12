@@ -4,6 +4,16 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+FORMA 1.4.2
+---------------------------------------------------------------------------------------
+Released: 2016-05-12
+
+4577 | Bug | SECURITY - Security Vulnerability in ZIP upload
+4825 | Bug | SECURITY - Cross-Site Scripting (XSS) vulnerability in avatar upload
+4222 | Bug | BBB Videoconference Blank pages when creating or deleting conference
+4223 | Bug | Fix some error in admin dashboard
+
+---------------------------------------------------------------------------------------
 FORMA 1.4.1
 ---------------------------------------------------------------------------------------
 Released: 2015-06-25

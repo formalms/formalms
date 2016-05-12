@@ -16,7 +16,7 @@ define("IN_FORMA", true);
 define("_deeppath_", '../');
 require(dirname(__FILE__).'/../base.php');
 
-define('_file_version_', '1.4.1');
+define('_file_version_', '1.4.2');
 
 // start buffer
 ob_start();

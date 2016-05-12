@@ -220,8 +220,27 @@
 						<ul class="link_list">
 							<li>
 								<?php
-									echo Lang::t('_VERSION', 'dashboard').': <b>'.$version['db_version'].'</b>'
-										.$version['string'];
+									echo Lang::t('_VERSION', 'dashboard').': <b>'.$version['db_version'].'</b>';
+
+									// check for differences beetween files and database version
+									if ( version_compare($version['file_version'], $version['db_version']) <> 0) {
+										echo '<br/>'
+												. 'Different from core file version:' . '<span class="red"><b>' . $version['file_version'] . '</b></span>'
+												. '<br/>'
+												.'<a href="../upgrade" class="red"><b>' . 'You need database upgrade' .'</b></a>';
+									}
+
+									if (Get::sett('welcome_use_feed') == 'on') {
+
+										if(!$version['online_version']) {
+
+											$version = array( 'string' => '<b class="red">'.Lang::t('_UNKNOWN_RELEASE', 'dashboard').'</b>' );
+										} elseif(version_compare($version['online_version'], $version['file_version']) == 1) {
+
+											echo '<br/>'
+												.'<a href="http://www.formalms.org/downloads/?versions" class="red">'.Lang::t('_NEW_RELEASE_AVAILABLE', 'dashboard').': <b>'.$version['online_version'].'</b></a>';
+										}
+									}
 								?>
 							</li>
 							<li>
