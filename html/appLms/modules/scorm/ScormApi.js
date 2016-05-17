@@ -59,7 +59,7 @@
 
 	if( this.host != '' )
 		loadFromXml( this.basepath + '/scormItemTrackData-'+this.scormVersion+'.xml', null, this );
-	
+
  }
 
 ScormApi.prototype.setScormVersion = function( version ) {
@@ -74,15 +74,15 @@ ScormApi.prototype.feelThePresence = function(  ) {
 ScormApi.UNINITIALIZED = 0;
 ScormApi.INITIALIZED = 1;
 ScormApi.FINISHED = 2;
- 
+
 ScormApi.prototype.useWaitDialog = function( toUse ) {
 	this.toUseWD = toUse;
 }
- 
+
  ScormApi.prototype.setXmlDocument = function( xmldoc ) {
  	this.tomTemplate = xmldoc;
  }
- 
+
  ScormApi.prototype.setTom = function( tom ) {
  	this.tom = CreateXmlDocument();
  	var rootelem = importAllNode( this.tom, this.tomTemplate.documentElement, true );
@@ -93,7 +93,7 @@ ScormApi.prototype.useWaitDialog = function( toUse ) {
  	rootelem = tom.selectSingleNode('//cmi');
  	this.parseXML( rootelem, '/' , this, this.setTomParam );
  }
- 
+
  ScormApi.prototype.setTomParam = function( elem, basequery ) {
  	var index = elem.getAttribute('index');
  	var item = elem.getAttribute('item');
@@ -102,7 +102,7 @@ ScormApi.prototype.useWaitDialog = function( toUse ) {
 	var value = elem.hasChildNodes()?elem.firstChild.nodeValue:'';
 
  	if( index != null && index.isInteger() ) {
- 		elemContainer.setAttribute('isset','1'); 	
+ 		elemContainer.setAttribute('isset','1');
  		// elemento da creare nel this.tom
  		var elemIndex = this.tom.selectSingleNode(query + '/index' );
  		// clono index in un index_entry
@@ -113,7 +113,7 @@ ScormApi.prototype.useWaitDialog = function( toUse ) {
  		for( var iChild = 0; iChild < elemIndex.childNodes.length; iChild++ ) {
 			index_entry.appendChild(elemIndex.childNodes.item(iChild).cloneNode(true));
 		}
- 		index_entry.setAttribute('isset','1');		
+ 		index_entry.setAttribute('isset','1');
 		basequery = query + '/index_entry[@index="' + index + '"]/';
 		return basequery;
  	} else if( item == 'yes') {
@@ -129,7 +129,7 @@ ScormApi.prototype.useWaitDialog = function( toUse ) {
  	}
  	return basequery;
  }
- 
+
  ScormApi.prototype.parseXML = function( elem, basequery, obj, func ) {
  	basequery = func.call( obj, elem, basequery );
  	if( basequery === false ) return;
@@ -139,19 +139,19 @@ ScormApi.prototype.useWaitDialog = function( toUse ) {
 	 		this.parseXML( childs.item(i), basequery, obj, func );
  	}
  }
- 
+
  ScormApi.prototype.getStrTom = function() {
  	this.track = CreateXmlDocument();
  	var rootelem = this.track.createElement('trackobj');
  	this.track.appendChild(rootelem);
- 	
+
  	this.parseXML( this.tom.documentElement, '/trackobj' , this, this.setTrack );
- 	
+
  	var tmpelem = this.track.createElement('remove');
  	var idUser = this.track.createElement('idUser');
  	var idReference = this.track.createElement('idReference');
  	var environment = this.track.createElement('environment');
- 	var idscorm_item = this.track.createElement('idscorm_item'); 	 	
+ 	var idscorm_item = this.track.createElement('idscorm_item');
 
 	idUser.appendChild(this.track.createTextNode(this.idUser));
 	idReference.appendChild(this.track.createTextNode(this.idReference));
@@ -161,13 +161,13 @@ ScormApi.prototype.useWaitDialog = function( toUse ) {
 	tmpelem.appendChild(idUser);
 	tmpelem.appendChild(idReference);
 	tmpelem.appendChild(environment);
-	tmpelem.appendChild(idscorm_item);		
- 	
+	tmpelem.appendChild(idscorm_item);
+
  	rootelem.appendChild(tmpelem);
- 	
+
  	return SerializeXML( this.track );
  }
- 
+
  ScormApi.prototype.setTrack = function( elem, basequery ) {
 	var isset = elem.getAttribute('isset');
 	if( isset == null || isset == '0' ) return false;
@@ -176,7 +176,7 @@ ScormApi.prototype.useWaitDialog = function( toUse ) {
 	var query = basequery;
 	var elemContainer = this.track.selectSingleNode(query);
 	var value = elem.hasChildNodes()?elem.firstChild.nodeValue:'';
- 
+
  	if( index != null && index == 'yes' ) {
  		// do nothing!
  	} else if( index != null && index.isInteger() ) {
@@ -194,19 +194,19 @@ ScormApi.prototype.useWaitDialog = function( toUse ) {
  	} else {
  		var te = importAllNode(this.track, elem, false);
  		elemContainer.appendChild(te);
- 		basequery += '/' + te.tagName; 		
+ 		basequery += '/' + te.tagName;
  	}
  	return basequery;
  }
- 
+
  ScormApi.prototype.setIdscorm_item = function( idscorm_item ) {
  	this.idscorm_item = idscorm_item;
  }
- 
+
 ScormApi.prototype.getIdscorm_item = function() {
  	return this.idscorm_item;
 }
- 
+
  ScormApi.prototype.setIdscorm_organization = function( idscorm_organization ) {
  	this.idscorm_organization = idscorm_organization;
  }
@@ -233,53 +233,53 @@ ScormApi.prototype.LMSInitialize = function( param ) {
 	return new String("true");
 }
 
- 
+
 ScormApi.prototype.LMSFinish = function( param ) {
 	this.initialized = false;
 	if(this.finish_launched) return new String("true");
 	// nothing to do
-	if( this.dbgLevel > 0 ) 
+	if( this.dbgLevel > 0 )
 		this.dbgPrint( '+LMSFinish("' + param + '"); [' + this.idUser + ',' + this.idReference + ',' + this.idscorm_item + ']' );
-	
+
 	this.resetError();
 	var result = "";
 	if( this.transmission_start_cb != null )
 		this.transmission_start_cb();
-	result = this.commonLMSFinish(); 
+	result = this.commonLMSFinish();
 	if( this.transmission_end_cb != null )
 		this.transmission_end_cb();
-	
-	if( this.dbgLevel > 0 ) 
+
+	if( this.dbgLevel > 0 )
 		this.dbgPrint( '-LMSFinish:"' + result + '"' );
-	
-	if( this.finish_cb != null ) 
+
+	if( this.finish_cb != null )
 		this.finish_cb( this );
-	
+
 	this.finish_launched = true;
 	return result;
 }
- 
-ScormApi.prototype.LMSCommit = function( param ) {
+
+ScormApi.prototype.LMSCommit = function( param , /*FIX 17052016*/ callback) {
  	// nothing to do
-	if( this.dbgLevel > 0 ) 
+	if( this.dbgLevel > 0 )
 		this.dbgPrint( '+LMSCommit("' + param + '"); [' + this.idUser + ',' + this.idReference + ',' + this.idscorm_item + ']' );
- 	
+
  	this.resetError();
 	var result = "";
 	if( this.transmission_start_cb != null )
 		this.transmission_start_cb();
-	result = this.commonLMSCommit(); 
+	result = this.commonLMSCommit("", /*FIX 17052016*/ callback);
 	if( this.transmission_end_cb != null )
 		this.transmission_end_cb();
-	
-	if( this.dbgLevel > 0 ) 
+
+	if( this.dbgLevel > 0 )
 		this.dbgPrint( '-LMSCommit:"' + result + '"' );
-	
-	if( this.commit_cb != null ) 
+
+	if( this.commit_cb != null )
 		this.commit_cb( this );
 	return result;
 }
- 
+
 ScormApi.prototype.LMSGetLastError = function() {
 	if( this.dbgLevel > 0 ) {
 		this.dbgPrint( '+LMSGetLastError();' );
@@ -289,9 +289,9 @@ ScormApi.prototype.LMSGetLastError = function() {
 }
 
 ScormApi.prototype.LMSGetErrorString = function( ecode ) {
-	if( this.dbgLevel > 0 ) 
+	if( this.dbgLevel > 0 )
 		this.dbgPrint( '+LMSGetErrorString("' + ecode + '");' );
-		
+
 	var result = "";
 	result = DSCORM_getErrText(ecode);
 
@@ -301,7 +301,7 @@ ScormApi.prototype.LMSGetErrorString = function( ecode ) {
 	}
 	return result;
 }
- 
+
 ScormApi.prototype.LMSGetDiagnostic = function( ecode ) {
 	if( this.dbgLevel > 0 ) {
 		this.dbgPrint( '+LMSGetDiagnostic("' + ecode + '");' );
@@ -309,7 +309,7 @@ ScormApi.prototype.LMSGetDiagnostic = function( ecode ) {
 	}
  	return this.diagnostic;
 }
- 
+
 ScormApi.prototype.LMSGetValue = function( param ) {
 	if(this.initialized == false) {
         this.setError("122");
@@ -317,7 +317,7 @@ ScormApi.prototype.LMSGetValue = function( param ) {
 	}
 	if( this.dbgLevel > 0 )
 		this.dbgPrint( '+LMSGetValue("' + param + '"); [' + this.idUser + ',' + this.idReference + ',' + this.idscorm_item + ']' );
-	
+
 	this.resetError();
 	var result = "";
 	if( this.transmission_start_cb != null )
@@ -325,8 +325,8 @@ ScormApi.prototype.LMSGetValue = function( param ) {
 	result = this.commonLMSGetValue( param );
 	if( this.transmission_end_cb != null )
 		this.transmission_end_cb();
-	
-	if( this.dbgLevel > 0 ) 
+
+	if( this.dbgLevel > 0 )
 		this.dbgPrint( '-LMSGetValue:"' + result + '"' );
 	if(result == null) result = "";
 	//yuiLogMsg( " LMSGetValue( "+param+") return " +result  );
@@ -351,19 +351,19 @@ ScormApi.prototype.LMSSetValue = function( param, data ) {
 	if( this.transmission_end_cb != null )
 		this.transmission_end_cb();
 
-	if( this.dbgLevel > 0 ) 
+	if( this.dbgLevel > 0 )
 		this.dbgPrint( '-LMSSetValue:"' + result + '"' );
-	
+
 	if(result == null) return new String("false");
 	else return new String("true");
 }
-  
+
 // =========== Private functions ============================
 ScormApi.prototype.commonLMSInitialize = function() {
 
 	strSoap = '<?xml version="1.0" encoding="utf-8"?>'
 			+ '<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"'
-			+ ' xmlns:enc="http://schemas.xmlsoap.org/soap/encoding/"' 
+			+ ' xmlns:enc="http://schemas.xmlsoap.org/soap/encoding/"'
 			+ ' env:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"'
 			+ ' xmlns:xs="http://www.w3.org/1999/XMLSchema"'
 			+ ' xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance">'
@@ -391,7 +391,7 @@ ScormApi.prototype.commonLMSInitialize = function() {
 			}
 		}
     );
-	
+
 	if( ajxreq.transport.status == 200 ) {
 		try {
 			this.setTom( ajxreq.transport.responseXML );
@@ -414,7 +414,7 @@ ScormApi.prototype.commonLMSInitialize = function() {
 }
 
 ScormApi.prototype.commonLMSFinish = function() {
-	
+
 	strSoap = this.getStrTom();
 	var ajxreq = new Ajax.Request(
        	this.baseurl+'?op=Finish',
@@ -429,10 +429,10 @@ ScormApi.prototype.commonLMSFinish = function() {
 			}
 		}
     );
-	
+
 	if( ajxreq.transport.status == 200 ) {
 		try {
-			var xmldoc = ajxreq.transport.responseXML;		
+			var xmldoc = ajxreq.transport.responseXML;
 			var status = xmldoc.getElementsByTagName("status").item(0).firstChild;
 			var errorCode = xmldoc.getElementsByTagName("error").item(0).firstChild;
 			var errorText = xmldoc.getElementsByTagName("errorString").item(0).firstChild;
@@ -442,7 +442,7 @@ ScormApi.prototype.commonLMSFinish = function() {
 				this.setError(errorCode == null ? "102":errorCode.nodeValue);
 				this.diagnostic = errorText == null ? "":errorText.nodeValue;
 				return "false";
-			}	
+			}
 			this.scoStatus = ScormApi.UNINITIALIZED;
 		} catch (ex) {
 			w = window.open('#', 'debug');
@@ -474,7 +474,7 @@ ScormApi.prototype.commonLMSGetValue = function( param ) {
 			this.setError(err);
 			return "";
 		} else {
-			return result;			
+			return result;
 		}
 	}
 }
@@ -496,26 +496,26 @@ ScormApi.prototype.commonLMSSetValue = function( param, value ) {
 			return result;
 		}
 	}
-} 
+}
 
-ScormApi.prototype.commonLMSCommit = function( param ) {
+ScormApi.prototype.commonLMSCommit = function( param , /*FIX 17052016*/ callback ) {
     /*if( this['xmlhttp'] == null ) {
 		this.xmlhttp = this.CreateXmlHttpRequest();
 	}
 	var xmlhttp = this.xmlhttp;
-	
+
 	xmlhttp.open("POST", this.baseurl + '?op=Commit', false);
 	xmlhttp.setRequestHeader("Man", "POST " + this.baseurl + " HTTP/1.1");
 	xmlhttp.setRequestHeader("Host", this.host );
 	xmlhttp.setRequestHeader("Content-Type", "text/xml; charset=utf-8");
-	xmlhttp.setRequestHeader("SOAPAction", this.serviceid + "Commit" );	
-	
+	xmlhttp.setRequestHeader("SOAPAction", this.serviceid + "Commit" );
+
 	strSoap = this.getStrTom();
 
 	xmlhttp.send(strSoap);*/
-	
+
 	strSoap = this.getStrTom();
-	
+
 	var ajxreq = new Ajax.Request(
        	this.baseurl+'?op=Commit',
        	{	method: 'post',
@@ -530,20 +530,24 @@ ScormApi.prototype.commonLMSCommit = function( param ) {
 			}
 		}
     );
-    
+
 	if( ajxreq.transport.status == 200 ) {
 		try {
-			var xmldoc = ajxreq.transport.responseXML;		
+			var xmldoc = ajxreq.transport.responseXML;
 			var status = xmldoc.getElementsByTagName("status").item(0).firstChild;
 			var errorCode = xmldoc.getElementsByTagName("error").item(0).firstChild;
 			var errorText = xmldoc.getElementsByTagName("errorString").item(0).firstChild;
 			if( status.nodeValue == "success" ) {
+        /*FIX 17052016*/
+        if (callback) {
+          callback();
+        }
 				return "true";
 			} else {
 				this.setError(errorCode == null ? "102":errorCode.nodeValue);
 				this.diagnostic = errorText == null ? "":errorText.nodeValue;
 				return "false";
-			}	
+			}
 		} catch (ex) {
 			w = window.open('#', 'debug');
 			w.document.open();
@@ -563,17 +567,17 @@ ScormApi.prototype.commonLMSCommit = function( param ) {
 ScormApi.prototype.CreateXmlHttpRequest = function() {
 	// try first IE
 	var xmlhttp = false;
-	var actXArray = new Array( 	"MSXML4.XmlHttp", "MSXML3.XmlHttp", "MSXML2.XmlHttp", 
+	var actXArray = new Array( 	"MSXML4.XmlHttp", "MSXML3.XmlHttp", "MSXML2.XmlHttp",
 								"MSXML.XmlHttp", "Microsoft.XmlHttp" );
 	var created = false;
-	
+
 	try {
 		xmlhttp = new XMLHttpRequest();
 	} catch (e) {
 		xmlhttp=false;
 	}
 	if (!xmlhttp) {
-		
+
 		for( var i = 0; i < actXArray.length && !created; i++ ) {
 			try {
 				xmlhttp=new ActiveXObject(actXArray[i]);
@@ -583,24 +587,24 @@ ScormApi.prototype.CreateXmlHttpRequest = function() {
 			}
 		}
 	}
-	if( !xmlhttp ) 
+	if( !xmlhttp )
 		alert( "This browser don't support required functionalities for scorm" );
 	return xmlhttp;
 }
- 
+
  /**
   *	@internal
-  * Set the error code 
+  * Set the error code
   * @param string ecode error code
   * @return null
   */
  ScormApi.prototype.setError = function(ecode) {
  	this.errorCode = ecode;
  }
- 
+
   /**
   *	@internal
-  * Reset the error code 
+  * Reset the error code
   * @return null
   */
  ScormApi.prototype.resetError = function() {
@@ -631,8 +635,8 @@ ScormApi.prototype.CreateXmlHttpRequest = function() {
   * Scorm LMS path
   */
  ScormApi.prototype.LMSUrl = "";
- 
- 
+
+
  /**
   * @internal
   * Debug print out function
@@ -653,9 +657,9 @@ function ScormApiUI( host, baseurl, serviceid, idUser, idReference, idscorm_orga
 }
 
 ScormApiUI.prototype = new ScormApi;
- 
+
 ScormApiUI.prototype.LMSInitialize = function( param ) {
-	
+
 	if(this.initialized != false) {
         this.setError("103");
 		return new String("false");
@@ -665,16 +669,16 @@ ScormApiUI.prototype.LMSInitialize = function( param ) {
 		return new String("false");
 	}
 	this.initialized = false;
-	
+
 	// nothing to do
-	if( this.dbgLevel > 0 ) 
+	if( this.dbgLevel > 0 )
 		this.dbgPrint( '+LMSInitialize("' + param + '"); [' + this.idUser + ',' + this.idReference + ',' + this.idscorm_item + ']' );
- 	
+
 	this.resetError();
 	var result = "";
 	if( this.transmission_start_cb != null )
 		this.transmission_start_cb();
-	
+
 	if( window.document.all && this.toUseWD) {	//IE
 		// compute page position
 		var args = new Object();
@@ -689,33 +693,33 @@ ScormApiUI.prototype.LMSInitialize = function( param ) {
 	}
 	if( this.transmission_end_cb != null )
 		this.transmission_end_cb();
-	
-	if( this.dbgLevel > 0 ) 
+
+	if( this.dbgLevel > 0 )
 		this.dbgPrint( '-LMSInitialize:"' + result + '"' );
-	
-	if( this.initialize_cb != null ) 
+
+	if( this.initialize_cb != null )
 		this.initialize_cb( param );
 
 	this.initialized = true;
 	this.finish_launched = false;
-	
+
 	// loaded, we canrelease the event block
 	relwin();
 	return String(result);
-} 
- 
+}
+
 ScormApiUI.prototype.LMSFinish = function( param ) {
 	this.initialized = false;
 	if(this.finish_launched) return new String("true");
 	// nothing to do
-	if( this.dbgLevel > 0 ) 
+	if( this.dbgLevel > 0 )
 		this.dbgPrint( '+LMSFinish("' + param + '"); [' + this.idUser + ',' + this.idReference + ',' + this.idscorm_item + ']' );
- 	
+
 	this.resetError();
 	var result = "";
 	if( this.transmission_start_cb != null )
 		this.transmission_start_cb();
-	
+
 	if( window.document.all && this.toUseWD) {	//IE
 		// compute page position
 		var args = new Object();
@@ -730,16 +734,16 @@ ScormApiUI.prototype.LMSFinish = function( param ) {
 	}
 	if( this.transmission_end_cb != null )
 		this.transmission_end_cb();
-	
-	if( this.dbgLevel > 0 ) 
+
+	if( this.dbgLevel > 0 )
 		this.dbgPrint( '-LMSFinish:"' + result + '"' );
-	
-	if( this.finish_cb != null ) 
+
+	if( this.finish_cb != null )
 		this.finish_cb( param );
 	this.finish_launched = true;
 	return result;
 }
- 
+
 ScormApiUI.prototype.LMSCommit = function( param ) {
 	if(this.initialized == false) {
         this.setError("142");
@@ -749,16 +753,16 @@ ScormApiUI.prototype.LMSCommit = function( param ) {
         this.setError("201");
 		return new String("false");
 	}
-	
+
  	// nothing to do
-	if( this.dbgLevel > 0 ) 
+	if( this.dbgLevel > 0 )
 		this.dbgPrint( '+LMSCommit("' + param + '"); [' + this.idUser + ',' + this.idReference + ',' + this.idscorm_item + ']' );
- 	
+
  	this.resetError();
 	var result = "";
 	if( this.transmission_start_cb != null )
 		this.transmission_start_cb();
-	
+
 	if( window.document.all && this.toUseWD ) {	//IE
 		// compute page position
 		var args = new Object();
@@ -773,15 +777,15 @@ ScormApiUI.prototype.LMSCommit = function( param ) {
 	}
 	if( this.transmission_end_cb != null )
 		this.transmission_end_cb();
-	
-	if( this.dbgLevel > 0 ) 
+
+	if( this.dbgLevel > 0 )
 		this.dbgPrint( '-LMSCommit:"' + result + '"' );
-	
-	if( this.commit_cb != null ) 
+
+	if( this.commit_cb != null )
 		this.commit_cb( param );
 	return result;
 }
- 
+
 // =========== SCORM 1.3 API wrapper ========================
 ScormApiUI.prototype.Initialize = function(param){
 	return this.LMSInitialize(param);
@@ -789,7 +793,7 @@ ScormApiUI.prototype.Initialize = function(param){
 
 ScormApiUI.prototype.GetLastError = function() {
 	return this.LMSGetLastError();
-} 
+}
 
 ScormApiUI.prototype.GetErrorString = function(ecode){
 	return this.LMSGetErrorString(ecode);
@@ -814,7 +818,7 @@ ScormApiUI.prototype.SetValue = function(param, data){
 ScormApiUI.prototype.Commit = function(param){
 	return this.LMSCommit(param);
 }
- 
+
 function eventCanceller(ev) {
 	if (!ev) var ev = window.event;
 	if( ev.stopPropagation ) {
@@ -838,16 +842,16 @@ function capwin() {
 	return;
 	//alert(w.document.anchors );
 	if( w.attachEvent ) { //IE 5+
-		
+
 		for(var i = 0,l = w.document.anchors.length; i < l; i++) {
 			var a = w.document.anchors[i];
-			
+
 			a.attachEvent( "onclick",eventCanceller );
 			a.attachEvent( "onmousedown",eventCanceller );
 			a.attachEvent( "onfocus",eventCanceller );
 		}
 	} else {
-		
+
 		// geko
 		w.addEventListener("click", eventCanceller, true);
 		w.addEventListener("mousedown", eventCanceller, true);
@@ -878,32 +882,32 @@ function relwin() {
 
 
 function slStopEvents() {
-	
+
 	slEventCap++;
-	if( slEventCap > 1 ) 
+	if( slEventCap > 1 )
 		return;
 	capwin();
 }
 
 function slStartEvents() {
-	
+
 	slEventCap--;
-	if( slEventCap > 0 ) 
+	if( slEventCap > 0 )
 		return;
 	//relwin();
 }
 
 function loadFromXml(xml_file, renderer, obj_ref) {
-	
+
 	if(window.ActiveXObject) {
-		
+
 		var xmlhttp = new Ajax.Request(xml_file, {
 				method: 'get',
 				asynchronous:false
 			}
 	    );
 		if( xmlhttp.transport.status == 200 ) {
-			
+
 			// browser is IE
 			var xmldom = new ActiveXObject("MSXML2.DOMDocument");
 			xmldom.async = false;
@@ -925,9 +929,9 @@ function loadFromXml(xml_file, renderer, obj_ref) {
 
 			return true;
 		}
-		
+
 	} else {
-		
+
 		// load with xmlhttp, ema like this way ...
 	/*		xmlhttp = new XMLHttpRequest();
 		xmlhttp.open("GET", xml_file, false);
@@ -943,7 +947,7 @@ function loadFromXml(xml_file, renderer, obj_ref) {
 				if( renderer == null ) obj_ref.setXmlDocument(xmlhttp.transport.responseXML);
 				else renderer(xmlhttp.transport.responseXML);
 			} catch (ex) {
-				
+
 				alert( 'Load from xml:'+xmlhttp.transport.responseText );
 			}
 		} else {
@@ -964,7 +968,7 @@ function CreateXmlDocument() {
 	}
 	return xdoc;
 }
- 
+
 function SerializeXML( domxml ) {
 	try {
 		var serializer = new XMLSerializer();
@@ -974,7 +978,7 @@ function SerializeXML( domxml ) {
 	}
 }
 
-/** 
+/**
  * function importAllNode - IE don't implemente the W3C standard DOMDocument method
  * importNode. We use this function to walk around the MS hole.
  * @param Document xmldoc targhet of the import
@@ -982,13 +986,13 @@ function SerializeXML( domxml ) {
  * @param boolean bImportChildren if it's true the function import oNode and all
  *								it's childrens and descendants
  * @return Node the imported node in the xmldoc context
- **/ 
+ **/
 function importAllNode(xmldoc, oNode, bImportChildren){
 
 	if( window.ActiveXObject && /Win/.test(navigator.userAgent) ) {
-	
+
 		var oNew;
-	
+
 		if(oNode.nodeType == 1){
 			oNew = xmldoc.createElement(oNode.nodeName);
 			for(var i = 0; i < oNode.attributes.length; i++){
@@ -997,16 +1001,15 @@ function importAllNode(xmldoc, oNode, bImportChildren){
 		} else if(oNode.nodeType == 3){
 			oNew = xmldoc.createTextNode(oNode.nodeValue);
 		}
-		
+
 		if(bImportChildren && oNode.hasChildNodes()){
 			for(var oChild = oNode.firstChild; oChild; oChild = oChild.nextSibling){
 				oNew.appendChild(importAllNode(xmldoc, oChild, true));
 			}
 		}
-		
+
 		return oNew;
 	} else {
 		return xmldoc.importNode(oNode, bImportChildren);
 	}
 }
-	
