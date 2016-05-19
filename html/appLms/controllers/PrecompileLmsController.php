@@ -79,6 +79,7 @@ class PrecompileLmsController extends LmsController {
 
 		if ($fields_checked && $policy_checked) {
 			//send alert
+			unset($_SESSION['request_mandatory_fields_compilation']);
 			Util::jump_to($this->jump_url);
 		} else {
 			//send alert

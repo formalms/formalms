@@ -57,6 +57,18 @@ if(isset($_SESSION['must_renew_pwd']) && $_SESSION['must_renew_pwd'] == 1) {
 			}
 		}
 	}
+}elseif(isset($_SESSION['request_mandatory_fields_compilation']) && $_SESSION['request_mandatory_fields_compilation'] == 1) {
+	if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+		if(!Docebo::user()->isAnonymous() && $GLOBALS['modname'] != 'login' && $GLOBALS['op'] != 'logout') {
+			$GLOBALS['modname'] = '';
+			$GLOBALS['op'] 		= '';
+                        if(strpos($GLOBALS['req'], 'lms/precompile') === false) {
+                            if(strpos($GLOBALS['req'], 'precompile/set') === false) {
+                                $GLOBALS['req'] = 'lms/precompile/show';
+                            }
+                        }
+		}
+	}
 }else{
 	if($GLOBALS['modname'] == '' && $GLOBALS['op'] == '' && $GLOBALS['req'] == '' && !Docebo::user()->isAnonymous()) {
 		if(!isset($_SESSION['idCourse'])) {
@@ -249,6 +261,7 @@ switch($GLOBALS['op']) {
 
 					$pwd_elapsed = Docebo::user()->isPasswordElapsed();
 					if($pwd_elapsed > 0) {
+						$_SESSION['must_renew_pwd'] = 1;
 						//$GLOBALS['modname'] = 'profile';
 						//$GLOBALS['op'] 		= 'renewalpwd';
 						$GLOBALS['modname'] = '';
@@ -277,7 +290,13 @@ switch($GLOBALS['op']) {
 						//if there are field that must be compiled or the privacy policy must be accepted
 						$pcm = new PrecompileLms();
 						if($pcm->compileRequired()) {
-							Util::jump_to('index.php?r=lms/precompile/show');
+                                                        $_SESSION['request_mandatory_fields_compilation'] = 1;
+                                                        if ($GLOBALS['req'] != 'lms/profile/renewalpwd') { // se diverso da pagina cambio pwd
+                                                            $GLOBALS['modname'] = '';
+                                                            $GLOBALS['op'] 		= '';
+                                                            $GLOBALS['req'] = 'lms/precompile/show';
+                                                            //Util::jump_to('index.php?r=lms/precompile/show');
+                                                        }
 						}
 					}
 
