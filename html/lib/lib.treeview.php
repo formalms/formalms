@@ -666,10 +666,10 @@ class TreeView {
 			.$this->getFolderPrintOther($stack[$level]['folder'])
 			.' />';
 		// $tree .= '</div>';
-		
+
 		$tree .= $this->printActions( $stack, $level );
 
-		$tree .= '</td>';
+		//$tree .= '</td>';
 		return $tree."\n";
 	}
 
