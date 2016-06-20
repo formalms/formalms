@@ -323,6 +323,7 @@ class Table {
 
 	public $row_count =0;
 	public $join_next_row =FALSE;
+	public $force_print = false;
 
 	/**
 	 * Construct the table drawer class
@@ -522,7 +523,7 @@ class Table {
 
 		$this->resetRowCount();
 
-		if(count($this->table_head) == 0 && count($this->table_foot) == 0 && count($this->table_body) == 0) {
+		if(count($this->table_head) == 0 && count($this->table_foot) == 0 && count($this->table_body) == 0 && !$this->force_print) {
 			return '';
 		}
 		//$table = '<div class="yui-dt">';
@@ -602,7 +603,7 @@ class Table {
 
 		$this->resetRowCount();
 
-		if(count($this->table_head) == 0 && count($this->table_foot) == 0 && count($this->table_body) == 0) {
+		if(count($this->table_head) == 0 && count($this->table_foot) == 0 && count($this->table_body) == 0 && !$this->force_print) {
 			return '';
 		}
 
