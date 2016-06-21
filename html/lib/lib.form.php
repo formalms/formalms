@@ -1210,14 +1210,20 @@ class Form {
 
 		if($use_js && ($css_button == false || $css_button == 'yui-button')) {
 			if (!defined("IS_AJAX"))
-				/*cout('<script type="text/javascript">
+				cout('<script type="text/javascript">
 					(function() {
 						YAHOO.util.Event.onDOMReady(function() {
 							var o = YAHOO.namespace("buttonObjects.'.$id.'");
 							YAHOO.buttonObjects.'.$id.' = new YAHOO.widget.Button("'.$id.'", { value: "'.addslashes($value).'" });
+							
+							$("button#' . $id . '-button").on( "click", function (event) {
+                                event.preventDefault();
+                                $("button#' . $id . '-button").closest("form").append(\'<input type="hidden" name="' . $id . '" value="'.addslashes($value).'" />\');
+                                $("button#' . $id . '-button").closest("form").submit();
+                            });
 						});
 					})();
-					</script>', 'scripts');*/
+					</script>', 'scripts');
 			// return '<input type="'.($is_submit ? 'submit' : 'button').'" id="'.$id.'" '
 			// 	.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
 			return '<input type="'.($is_submit ? 'submit' : 'button').'" class="btn btn-default" id="'.$id.'" '
