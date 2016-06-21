@@ -135,18 +135,22 @@ class CatalogLms extends Model
 
 		$query =	"SELECT *"
 					." FROM %lms_course"
-					." WHERE status NOT IN (".CST_PREPARATION.", ".CST_CONCLUDED.", ".CST_CANCELLED.")"
+					." WHERE status NOT IN (".CST_PREPARATION.", ".CST_CANCELLED.")"
 					." AND course_type <> 'assessment'"
-					." AND (                       
+            
+			   ." AND (                       
 						(can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '".date('Y-m-d')."') AND (sub_start_date = '0000-00-00' OR '".date('Y-m-d')."' >= sub_start_date)) OR
                         (can_subscribe=1)
-					) "
+					) "           
+          
 					.$filter
 					.($id_cat > 0 ? " AND idCategory = ".(int)$id_cat : '')
-					." ORDER BY name"
-					." LIMIT ".$limit.", ".Get::sett('visuItem');
+					." ORDER BY name";
+					//." LIMIT ".$limit.", ".Get::sett('visuItem');
 
 		$result = sql_query($query);
+
+    //echo $query;
 
 		$html = '';
 		$path_course = $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathcourse').'/';
@@ -389,114 +393,33 @@ class CatalogLms extends Model
 				}
 				$action .= '</div>';
 			}
-               /*   
-			$html .=	'<div class="dash-course">'
-						.($row['use_logo_in_courselist'] && $row['img_course'] ? '<div class="logo_container"><img class="clogo" src="'.$path_course.$row['img_course'].'" alt="'.Util::purge($row['name']).'" /></div>' : '')
-						.($row['use_logo_in_courselist'] && !$row['img_course'] ? '<div class="logo_container"><img class="clogo cnologo" src="'.Get::tmpl_path().'images/course/course_nologo.png'.'" alt="'.Util::purge($row['name']).'" /></div>' : '')
-
-						.'<div class="info_container">'
-						.'<h2>'
-						.($row['lang_code'] != 'none' ? Get::img('language/'.strtolower($row['lang_code']).'.png', $row['lang_code']).' ' : '' )
-						.$row['name']
-						.'</h2>'
-						.$additional_info
-
-						.'<p class="course_support_info">'.$row['description'].'</p>'
-
-						.'<p class="course_support_info">'
-						.($row['course_demo'] ? '<a href="index.php?r=catalog/downloadDemoMaterial&amp;course_id='.$row['idCourse'].'" class="ico-wt-sprite subs_download"><span>'.Lang::t('_COURSE_DEMO', 'course').'</span></a>' : '')
-						.'</p>'
-						.'<p class="course_support_info">'
-						.($row['code'] ? '<i style="font-size:.88em">['.$row['code'].']</i>' : '')
-						.'</p>'
-						.$action
-						.'<div class="nofloat"></div>'
-
-						.'</div>'
-
-						.'</div>';
-                       */ 
-                   
-                        
-            // boxes courses of catalog   
-            /*         
-           $html .= '<div class="item  col-xs-4 col-lg-4">
-                    <div class="thumbnail">'
-                        .($row['use_logo_in_courselist'] && $row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.$path_course.$row['img_course'].'" alt="'.Util::purge($row['name']).'" /></div>' : '')
-                        .($row['use_logo_in_courselist'] && !$row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.Get::tmpl_path().'images/course/course_nologo.png'.'" alt="'.Util::purge($row['name']).'" /></div>' : '')
-                        .'<div class="caption">
-                            <h4 class="group inner list-group-item-heading">
-                                '.$row['name'].'</h4>
-                            <p class="group inner list-group-item-text">
-                                '.$row['description'].'</p> &nbsp; '
-                                
-                                .'<p class="course_support_info">'
-                                 .($row['course_demo'] ? '<a href="index.php?r=catalog/downloadDemoMaterial&amp;course_id='.$row['idCourse'].'" class="ico-wt-sprite subs_download"><span>'.Lang::t('_COURSE_DEMO', 'course').'</span></a>' : '')
-                                 .'</p>'                               
-                                
+     
+           // BUG TRACKER - LR #5669
+        $data_inizio = $row['date_begin'];
+        $data_end = $row['date_end'];
         
-  
-                            .'<div class="row">
-                                <div class="col-xs-12 col-md-6">'
-                                    .'<p class="course_support_info">'
-                                    .($row['code'] ? '<i style="font-size:.88em">['.$row['code'].']</i>' : '&nbsp;')
-                                    .'</p>
-  
-                                </div>
-                                <div class="col-xs-12 col-md-6">
-                                    '.$action.'
-                                </div>
-           
-                                
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>';
-             */
+        $str_lock_start = "";
+        $str_lock_end = "";
+        
+        if($row['hour_begin'] != "-1") $str_h_begin = $row['hour_begin']; 
+        if($row['hour_end'] != "-1") $str_h_end = $row['hour_end']; 
+        
+        $can_enter_star = true;
+        $can_enter_end = true  ;  
+        if($data_inizio != "0000-00-00") $str_lock_start = "<br><b><i style='font-size:.68em'>".Lang::t('_COURSE_BEGIN', 'certificate')."</b>: ".Format::date($data_inizio, 'date')." ".$str_h_begin."</i>" ;
+        if($data_end  != "0000-00-00") $str_lock_end= "<br><b><i style='font-size:.68em'>".Lang::t('_COURSE_END', 'certificate')."</b>: ".Format::date($data_end, 'date')." ".$str_h_end."</i>";
+
+        if($data_inizio != "0000-00-00" && $data_inizio > date('Y-m-d')  ) $can_enter_star = false;
+        if($data_end != "0000-00-00" &&  $data_end      < date('Y-m-d') ) $can_enter_end = false;
+
+        if($data_inizio != "0000-00-00"  || $data_fine != "0000-00-00" ) $str_can_enter = ($can_enter_star && $can_enter_end);
+        if($data_inizio == "0000-00-00"  && $data_fine == "0000-00-00" ) $str_can_enter = true;        
         
         $html .= '
                   
                         <li>
                               
-                              <!--
-                               <table width=100%  border=1 >
-                               <tr>
-                               <td width=33% >
-                               '
-                                .($row['use_logo_in_courselist'] && $row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.$path_course.$row['img_course'].'" alt="'.Util::purge($row['name']).'" /></div>' : '')
-                                .($row['use_logo_in_courselist'] && !$row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.Get::tmpl_path().'images/course/course_nologo.png'.'" alt="'.Util::purge($row['name']).'" /></div>' : '')                         
-                                .
-                               '                     
-                               </td>
-                               <td>   
-                                <h3 class="cbp-vm-title">'.$row['name'].'</h3>
-                                </td>
-                               </tr>
-                               
-                               <tr><td colspan=2>
-                                <div class="cbp-vm-price">'.($row['code'] ? '<i style="font-size:.68em">['.$row['code'].']</i>' : '&nbsp;').'</div>
-                                </td></tr>
-                                
-                                
-                                <tr><td colspan=2 valign="bottom" align="center">
-                                    <div class="cbp-vm-details">
-                                    '.$row['description'].'
-
-                                     <p class="course_support_info">'
-                                     .($row["course_demo"] ? '<a href="index.php?r=catalog/downloadDemoMaterial&amp;course_id='.$row['idCourse'].'" class="ico-wt-sprite subs_download"><span>'.Lang::t('_COURSE_DEMO', 'course').'</span></a>' : '')
-                                     .'</p> 
-                                 
-                                 
-                                   '.$action.'
-                          
-                                </div>
-                                 </td></tr>
-                                </table>
-                                 -->
-                 
-                 
-                                     
+   
                                         <div class="cbp-vm-image" >
                                                             '
                                                             .($row['use_logo_in_courselist'] && $row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.$path_course.$row['img_course'].'" alt="'.Util::purge($row['name']).'" /></div>' : '')
@@ -509,34 +432,34 @@ class CatalogLms extends Model
                                         <h3 class="cbp-vm-title">'.$row['name'].'</h3>
                            
                                         <div class="cbp-vm-details">  &nbsp
-                                             '.$row['description'].'
+                                             '.$row['description'].'   
                                        
                                         '.
                                             ($row["course_demo"] ? '<a   href="index.php?r=catalog/downloadDemoMaterial&amp;course_id='.$row['idCourse'].'" class="ico-wt-sprite subs_download"><span>'.Lang::t('_COURSE_DEMO', 'course').'</span></a>' : '')
                                         .'                                       
                                                          
-                                       
+                                         <br>
+                                        
+                                        '.$str_lock_start.' 
+                                        '.$str_lock_end.' 
+                
                                         </div>
                                             
                                          
                                           <div class="cbp-vm-add">                                   
                                                 <table   border=0 align=center  >
                                                       <tr><td>  <br>
-                                                   '.$action.'  
-                                                </td></tr>
-                                                 </table>     
-                                         </div>
-                                        
-                                            
-                                        
-                                       
+                                                  ';
+                                                  
+        
+          if($str_can_enter==true &&  $row['status']!=CST_CONCLUDED)  $html .=    $action;
+          if($str_can_enter==false || $row['status']==CST_CONCLUDED)  $html .= "<img class='no_traform' src='". Get::tmpl_path().'images/standard/locked.png'."'>" ;   
+              
                                           
-                                       
-                                        
-                        </li>
-                        
-               
-              ';
+             $html .= ' </td></tr>
+                             </table>     
+                     </div>                             
+                        </li>';
         
         
               
