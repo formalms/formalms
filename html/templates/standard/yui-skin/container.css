@@ -42,7 +42,7 @@ version: 2.8.0r4
 .yui-skin-sam .yui-dialog .ft button.default{font-weight:bold;}
 .yui-skin-sam .yui-dialog .ft span.default{border-color:#304369;background-position:0 -1400px;}
 .yui-skin-sam .yui-dialog .ft span.default .first-child{border-color:#304369;}
-.yui-skin-sam .yui-dialog .ft span.default button{color:#fff;}
+/*.yui-skin-sam .yui-dialog .ft span.default button{color:#fff;}*/
 .yui-skin-sam .yui-dialog .ft span.yui-button-disabled{background-position:0 -1500px;border-color:#ccc;}
 .yui-skin-sam .yui-dialog .ft span.yui-button-disabled .first-child{border-color:#ccc;}
 .yui-skin-sam .yui-dialog .ft span.yui-button-disabled button{color:#a6a6a6;}
