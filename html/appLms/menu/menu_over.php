@@ -450,6 +450,14 @@ cout('
 
 
 cout('<!-- hidden inline form -->
+ <style>
+#inline_no_help {
+    display: none;
+    width: 100px;
+    height: 100px;
+}
+</style>
+
             <div id="inline_no_help" >
                     No Help Desk            
         
