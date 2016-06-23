@@ -99,9 +99,9 @@ if(!Docebo::user()->isAnonymous()) {
      */
      
     // Customer help
-    if ($ma->currentCanAccessObj('mo_help')) {
-
         $help_email = trim( Get::sett('customer_help_email', '') );
+    if ($ma->currentCanAccessObj('mo_help') ) {
+        
         $can_send_emails = !empty( $help_email ) ? true : false;
         $can_admin_settings = checkRole('/framework/admin/setting/view', true);
 
@@ -136,23 +136,17 @@ if(!Docebo::user()->isAnonymous()) {
             $setup_menu .= " oMenuBar.getItem($customer_help).subscribe('click', CustomerHelpShowPopUp);";
 
         } else {
-
-            if ($can_admin_settings) {
-                $menu['all'][] = array(
-                    '../appCore/index.php?r=adm/setting/show',
-                    '<i>('.$strHelp.': '.Lang::t('_SET', 'standard').')</i>',
-                    false
-                );
-            }
+           // nessun email per help desk
+        $menu['all'][] = array(
+               '#inline_no_help',
+                $strHelp,
+                'modalbox'
+        );
+        $menu_i++;
 
         }
     }
 
-    
-    
-    
-    
-    
     
     // Menu for the public admin
     if($user_level == ADMIN_GROUP_PUBLICADMIN && !empty($menu['public_admin'])) {
@@ -451,6 +445,17 @@ cout('
                     
                 </form>
 </div>','menu_over')   ;
+
+
+
+
+cout('<!-- hidden inline form -->
+            <div id="inline_no_help" >
+                    No Help Desk            
+        
+</div>','menu_over')   ;
+
+
 
 }    
 
