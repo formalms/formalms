@@ -151,6 +151,7 @@ class CartLmsController extends LmsController {
 			fputs($fp, $header . $req);
 			while(!feof($fp)) {
 				$res = fgets($fp, 1024);
+                $res = trim($res);                                  
 				if (strcmp($res, "VERIFIED") == 0) {
 
 					require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
