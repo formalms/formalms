@@ -1,64 +1,50 @@
 {% extends "base.html.twig" %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/lms-home.css"/>
+    <link rel="stylesheet" type="text/css" href="{{layout_path}}style/lms-home.css"/>
 {% endblock %}
 
 {% block content %}
     <div class="header">
-        {% if  GLOBALS['maintenance'] != "on" %}
             <div class="select-language">
-                {{ evalPhp('Lang::t', ['_CHANGELANG', 'register']) }}: {{ evalPhp('Layout::change_lang') }}
+                {{ changeLanguage_text }}: {{ changeLanguageBox|raw }}
             </div>
-        {% endif %}
-        <a href="index.php"><img class="left_logo" src="{{ evalPhp('Layout::path') }}images/company_logo.png"
-                                 alt="Left logo"/></a>
-
+        <a href="index.php"><img class="left_logo" src="{{ layout_path }}images/company_logo.png" alt="Left logo"/></a>
         <div class="nofloat"></div>
     </div>
     <div class="content">
-        {% if  GLOBALS['framework']['course_block'] == "on" and GLOBALS['maintenance'] != "on" %}
             <div class="homecatalogue">
-                {{ evalPhp('Layout::get_catalogue') }}
+                {{ catalogue|raw }}
             </div>
-        {% endif %}
-        {% if GLOBALS['maintenance'] != "on" %}
-            <div class="login-box{% if evalPhp('LoginLayout::isSocialActive') %}-social{% endif %}">
+            <div class="{{ login_box_css }}">
                 <h2>LOGIN</h2>
-                {{ evalPhp('LoginLayout::social_login') | raw }}
-                {{ evalPhp('LoginLayout::login_form') | raw }}
-                {{ evalPhp('LoginLayout::service_msg') | raw }}
+                {{ social_login | raw }}
+                {{ login_form | raw }}
+                {{ service_msg | raw }}
             </div>
-        {% endif %}
     </div>
 
     <!-- footer -->
     <div class="footer">
-        {% if GLOBALS['maintenance'] != "on" %}
-            {{ evalPhp('Layout::zone', ['footer']) }}
-            {{ evalPhp('LoginLayout::links') }}
-        {% endif %}
+            {{layout_zone_footer | raw}}
+            {{ login_links|raw }}
         <div class="copyright">
-            {{ evalPhp('Layout::copyright') }}
+            {{ copyright|raw }}
         </div>
     </div>
-    <div class="external_page">{{ evalPhp('LoginLayout::external_page') }}</div>
+    <div class="external_page">{{ external_page|raw }}</div>
     <div class="webcontent">
-        {% if GLOBALS['maintenance'] == "on" %}
         <div class="box">
-            <h3>{{ evalPhp('Lang::t', ['_MAINTENANCE', 'configuration']) }}</h3>
-
+            <h3>{{ configuration_maintenance_text|raw }}</h3>
             <div class="text">
-                {{ evalPhp('Lang::t', ['_MAINTENANCE', 'login']) }}
+                {{ login_maintenance_text|raw }}
             </div>
         </div>
-        {% endif %}
-
         <div class="box">
-            <h3>{{ evalPhp('Lang::t', ['_HOMEPAGE', 'login']) }}</h3>
+            <h3>{{ homepage_text|raw }}</h3>
 
             <div class="text">
-                {{ evalPhp('Lang::t', ['_INTRO_STD_TEXT', 'login']) }}
+                {{ intro_text|raw }}
             </div>
         </div>
     </div>

@@ -15,103 +15,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>{{ evalPhp('Layout::title') }}</title>
-    {{ evalPhp('Layout::zone', ['meta']) }}
-    {{ evalPhp('Layout::meta') }}
-    <link rel="shortcut icon" href="{{ evalPhp('Layout::path') }}images/favicon.png" type="image/png"/>
-    <link rel="shortcut icon" href="{{ evalPhp('Layout::path') }}images/favicon.ico"/>
+    <title>{{ layout_title }}</title>
+    <!-- zone  -->
+    {{ layout_zone_meta}}
+    <!-- meta  -->
+    {{ layout_meta | raw }}
+    <link rel="shortcut icon" href="{{layout_path}}images/favicon.png" type="image/png"/>
+    <link rel="shortcut icon" href="{{layout_path}}images/favicon.ico"/>
     <!-- reset and font stylesheet -->
-    {{ evalPhp('Layout::resetter') }}                   
-               
-      
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->     
+    {{ resetter|raw }}
     
-    <!-- Bootstrap JS -->
-    <script src="{{ evalPhp('Layout::path') }}resources/jquery/jquery-1.11.3.min.js"></script>  
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>               
-    
-    <!--****************** CSS PER RESPONSIVE FORMA (LR)************************ -->   
-    <!-- common stylesheet -->     
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{ evalPhp('Layout::path') }}bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="{{ evalPhp('Layout::path') }}bootstrap/css/bootstrap-reset.css" />
-    
-    <link rel="stylesheet" href="{{ evalPhp('Layout::path') }}bootstrap/css/bootstrap-theme.min.css" />
-    <link rel="stylesheet" href="{{ evalPhp('Layout::path') }}bootstrap/css/bootstrap.min.css" />
-     
-    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/table-responsive.css"/>
+    <!-- JQuery, Bootstrap  -->
+    {% block jquery_core %}
+    {{ jqueryLib|raw }}    
+    {% endblock %}
 
-    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/responsive.css"/>
-
-         
-    <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/default.css" />
-    <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/component.css" />
-    <script src="{{ evalPhp('Layout::path') }}bootstrap/js/modernizr.custom.js"></script>
-
-         
-     <!-- menus script menu swipe -->
-    <script src="{{ evalPhp('Layout::path') }}bootstrap/js/menu.js"></script>
-    <link rel="stylesheet" href="http://callmenick.com/_development/slide-push-menus/css/font-awesome.min.css">
-    <link rel="stylesheet" href="http://callmenick.com/_development/slide-push-menus/css/style.min.css">         
-       
-     <!-- HELP DESK -->  
-     <link rel="stylesheet" type="text/css" media="all" href="{{ evalPhp('Layout::path') }}style/helpdesk.css">
-     <link rel="stylesheet" type="text/css" media="all" href="{{ evalPhp('Layout::path') }}style/jquery.fancybox.css">
-     <script type="text/javascript" src="{{ evalPhp('Layout::path') }}bootstrap/js/jquery.min.js"></script>
-     <script type="text/javascript" src="{{ evalPhp('Layout::path') }}bootstrap/js/jquery.fancybox.js?v=2.0.6"></script>     
-     
-     <link href="{{ evalPhp('Layout::path') }}bootstrap/css/bootstrap-toggle.min.css" rel="stylesheet">
-     <script src="{{ evalPhp('Layout::path') }}bootstrap/js/bootstrap-toggle.min.js"></script>
-
-     
-    <script src="{{ evalPhp('Layout::path') }}script/helpdesk.js"></script>                
-    <script src="{{ evalPhp('Layout::path') }}script/grid_list.js"></script>          
-               
-                 
-                  
-      <!-- TOOLTIP -->
-    <link href="{{ evalPhp('Layout::path') }}resources/jquery/jquery-ui-1.11.4.min.css" rel="stylesheet">
-    <script src="{{ evalPhp('Layout::path') }}resources/jquery/jquery-ui-1.11.4.min.js"></script>
-  <script>
-      $(function() {
-        $( document ).tooltip();
-      });
-      </script>
-      <style>
-      label {
-        display: inline-block;
-        //width: 5em;
-      }
-  </style>   
-   
-
-    <!-- *************************************************** -->
-
+    {% block bootstrap %}
+    {{ boostrap|raw }}    
+    {% endblock %}
+    
+    {% block jquery_addons %}
+    <!-- addons: js -->    
+    {{ jqueryAddons|raw }}    
+    {% endblock %}
     
     
-    
-    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/base.css"/>    
-    
-    
-    <!-- specific stylesheet -->
-    {{ evalPhp('YuiLib::load', ['base']) }}
+    {% block css_addons %}
+    <!-- addons: css -->    
+    {{ cssAddons|raw }}    
+    {% endblock %}
+
+
+    <!-- specific stylesheet -->    
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/base.css"/>    
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/responsive.css"/>
+
+    <!-- to be eliminated -->    
+    {{ yuiLib}}
     <!-- printer stylesheet-->
-    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/print.css" media="print"/>
-    {{ evalPhp('Layout::accessibility') }}
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/print.css" media="print"/>
+    {{ accessibility|raw }}
     <!-- Page Head area -->
-    {{ evalPhp('Layout::zone', ['page_head']) }}
-    {{ evalPhp('Layout::rtl') }}
+    {{ layout_zone_page_head|raw }}
+    {{ layout_rtl|raw }}
     {% block pagehead %}
     {% endblock %}
     
-    <!-- Javascripts area -->
-      
+    
+    <!-- Custom css area -->    
     {% block stylesheet %}
     {% endblock %}
+
+    <!-- Custom Javascripts area -->
     {% block javascript %}
     {% endblock %}
     
@@ -123,33 +78,8 @@
     <div class="container-fluid">      
     {% block content %}
     {% endblock %}
-        {{ evalPhp('Layout::analytics') }}
+        {{ layout_analytics|raw }}
     </div>
-    
-    
-    <script>
-    
-      /**
-       * Slide right instantiation and action.
-       */
-      var slideRight = new Menu({
-        wrapper: '#o-wrapper',
-        type: 'slide-right',
-        menuOpenerClass: '.c-button',
-        maskId: '#c-mask'
-      });
-
-      var slideRightBtn = document.querySelector('#c-button--slide-right');
-
-      
-      slideRightBtn.addEventListener('click', function(e) {
-        e.preventDefault;
-        slideRight.open();
-      });
-
-      
-    </script>      
-    
                           
 </body>
 </html>

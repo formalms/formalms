@@ -25,7 +25,6 @@ function docebo_autoload($classname) {
 	$fixed = array(
 		// Layout
 		'Layout'			=> _lib_.'/layout/lib.layout.php',
-		//'CmsLayout'			=> _lib_.'/layout/lib.cmslayout.php',
 		'LoginLayout'		=> _lib_.'/layout/lib.loginlayout.php',
 
 		// mvc
@@ -45,7 +44,7 @@ function docebo_autoload($classname) {
 		'DbConn'			=> _base_.'/db/lib.docebodb.php',
 		'Mysql_DbConn'		=> _base_.'/db/drivers/docebodb.mysql.php',
 		'Mysqli_DbConn'		=> _base_.'/db/drivers/docebodb.mysqli.php',
-
+        
 		// i18n
 		'Lang'				=> _i18n_.'/lib.lang.php',
 		'DoceboLanguage'	=> _i18n_.'/lib.lang.php',
@@ -77,6 +76,10 @@ function docebo_autoload($classname) {
 		//aws
 		'Plugin'			=> _lib_.'/lib.plugin.php',
 		'PluginManager'		=> _lib_.'/lib.pluginmanager.php',
+         // lib jquery
+        'jquerylib'         => _lib_.'/lib.jquerylib.php',
+        
+
 	);
 	
 	if(Get::cfg('enable_plugins', false)){
