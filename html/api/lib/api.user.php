@@ -65,7 +65,13 @@ class User_API extends API {
 			$set_idst,
 			(isset($userdata['pwd_expire_at']) ? $userdata['pwd_expire_at'] : '')
 		);
-		
+
+		//evento registrazione utente tramite api
+		$event = new \appLms\Events\Api\ApiUserRegistrationEvent();
+		$event->setId($id_user);
+		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Api\ApiUserRegistrationEvent::EVENT_NAME, $event);
+
+
 		// suspend
                 if (isset($userdata['valid']) && $userdata['valid'] == '0'){
 			$res = $this->aclManager->suspendUser($id_user);

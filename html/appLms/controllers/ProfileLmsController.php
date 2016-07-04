@@ -68,6 +68,11 @@ class ProfileLmsController extends LmsController {
 		}
 		if ($_check) $profile->enableEditMode();
 
+		//evento mostra profilo
+		$event = new \appLms\Events\Lms\UserProfileShowEvent();
+		$event->setProfile($profile);
+		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\UserProfileShowEvent::EVENT_NAME, $event);
+
 		//view part
 		if(Get::sett('profile_only_pwd') == 'on') {
 

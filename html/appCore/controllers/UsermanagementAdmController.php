@@ -310,6 +310,13 @@ class UsermanagementAdmController extends AdmController {
 			'results' => count($list),
 			'records' => $output_results
 		);
+		
+		if(Get::cfg('enable_plugins', false)) PluginManager::runPlugins();
+
+		$event = new appCore\Events\Core\UsersManagementShowEvent;
+		$event->setUsers($output['records']);
+		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementShowEvent::EVENT_NAME, $event);
+		$output['records'] = $event->getUsers();
 
 		echo $this->json->encode($output);
 	}
@@ -1946,6 +1953,14 @@ class UsermanagementAdmController extends AdmController {
 		if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) $profile->enableGodMode();
 		//$profile->setEndUrl('index.php?modname=directory&op=org_chart#user_row_'.$id_user);
 
+		//evento mostra dettaglio profilo
+		if(Get::cfg('enable_plugins', false)) PluginManager::runPlugins();
+		$event = new \appCore\Events\Core\UsersManagementShowDetailsEvent();
+		$event->setProfile($profile);
+		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementShowDetailsEvent::EVENT_NAME, $event);
+
+
+
 		$this->render('user_profile', array(
 			'id_user' => $id_user,
 			'title' => Lang::t('_DETAILS', 'standard').': '.$this->model->getUserId($id_user),
@@ -2398,6 +2413,12 @@ class UsermanagementAdmController extends AdmController {
 			$info->__preferences = $pref_properties;
 		}
 
+		if(Get::cfg('enable_plugins', false)) PluginManager::runPlugins();
+		$event = new \appCore\Events\Core\UsersManagementEditMultipleEvent();
+		$event->setUsers($users);
+		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementEditMultipleEvent::EVENT_NAME, $event);
+		$users = $event->getUsers();
+		
 		$res = $this->model->updateMultipleUsers($users, $info);
 
 		if (!$res) {
