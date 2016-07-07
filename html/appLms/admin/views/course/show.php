@@ -38,6 +38,7 @@ $languages = array(
         only screen and (max-width: 870px),
         (min-device-width: 870px) and (max-device-width: 1024px)  {            
 
+                    #yuievtautoid-0 td:nth-of-type(1):before { content: "Id"; }
                     #yuievtautoid-0 td:nth-of-type(1):before { content: "Codice"; }
                     #yuievtautoid-0 td:nth-of-type(2):before { content: "'.$nome.'"; }
                     #yuievtautoid-0 td:nth-of-type(3):before { content: "Tipo"; }
@@ -105,6 +106,7 @@ echo	'<div class="quick_search_form">'
 		.'</div>';
 
 $columns_arr = array(
+	array('key' => 'id', 'label' => null, 'sortable' => false),
 	array('key' => 'code', 'label' => Lang::t('_CODE', 'course'), 'sortable' => true),
 	array('key' => 'name', 'label' => Lang::t('_NAME', 'course'), 'sortable' => true),
 	array('key' => 'type', 'label' => Lang::t('_TYPE', 'course'), 'className' => 'min-cell'),
