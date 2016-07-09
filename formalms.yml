@@ -7,11 +7,7 @@ configuration:
     - "formalms.yml"
     - "README.md"
   custom_commands:
-    - "whoami"
-    - "pwd"
-    - "cd /var/www/html/formalms.ppreview.it/current/html"
-    - "php ../composer.phar install"
-    - "cd .."
+    - "cd /var/www/html/formalms.ppreview.it/current/html/ && composer install"
   staging:
       domain: formalms.ppreview.it
       repo: git@bitbucket.org:purplenetwork/formalms.git
