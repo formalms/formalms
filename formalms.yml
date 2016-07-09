@@ -6,6 +6,8 @@ configuration:
     - ".gitignore"
     - "formalms.yml"
     - "README.md"
+  custom_commands:
+    - "cd html && php ../composer.phar install"
   staging:
       domain: formalms.ppreview.it
       repo: git@bitbucket.org:purplenetwork/formalms.git
