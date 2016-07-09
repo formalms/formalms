@@ -7,7 +7,7 @@ configuration:
     - "formalms.yml"
     - "README.md"
   custom_commands:
-    - "cd html"
+    - "cd /var/www/html/formalms.ppreview.it/current/html"
     - "php ../composer.phar install"
     - "cd .."
   staging:
