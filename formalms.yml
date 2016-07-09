@@ -1,0 +1,24 @@
+configuration:
+  project_type: html
+  run_composer: false
+  ignore:
+    - ".git"
+    - ".gitignore"
+    - "formalms.yml"
+    - "README.md"
+  staging:
+      domain: formalms.ppreview.it
+      repo: git@bitbucket.org:purplenetwork/formalms.git
+      branch: dev
+      db_host: purple-stage-mysql.cw3niwyk1dxj.eu-west-1.rds.amazonaws.com
+      db_name: formalms
+      db_user: formalms_user
+      db_password: t33-ppeo78
+  production:
+      domain: project4.com
+      repo: git@bitbucket.org:purplenetwork/sf2-skeleton.git
+      branch: master
+      db_host: db_host_ip_or_name
+      db_name: mysql_db
+      db_user: mysql_user
+      db_password: mysql_password
