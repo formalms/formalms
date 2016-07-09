@@ -22,7 +22,7 @@
  * charset to use in the db connection
  */
 $cfg['db_type'] = 'mysql';
-$cfg['db_host'] = 'localhost';
+$cfg['db_host'] = 'purple-stage-mysql.cw3niwyk1dxj.eu-west-1.rds.amazonaws.com';
 $cfg['db_user'] = 'formalms_user';
 $cfg['db_pass'] = 't33-ppeo78';
 $cfg['db_name'] = 'formalms';
