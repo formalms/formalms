@@ -44,40 +44,40 @@ class CatalogLms extends Model
 		$this->acl_man =& Docebo::user()->getAclManager();
 	}
 
-
-
+    
+    
     public function enrolledStudent($idCourse){
             $query =    "SELECT COUNT(*)"
                 ." FROM %lms_courseuser"
                 ." WHERE idCourse = '".$idCourse."'";
-
-
+        
+        
         list($enrolled) = sql_fetch_row(sql_query($query));
         return $enrolled;
     }
-
+    
 
     public function getInfoEnroll($idCourse,$idUser){
                 $query =    "SELECT status, waiting, level"
                             ." FROM %lms_courseuser"
                             ." WHERE idCourse = ".$idCourse
                             ." AND idUser = ".$idUser;
-                $result_control = sql_query($query);
+                $result_control = sql_query($query);                
                 return $result_control;
     }
-
-
+    
+    
     public function getInfoLO($idCourse){
-
+        
           $query_lo =    "select org.idOrg, org.idCourse, org.objectType from (SELECT o.idOrg, o.idCourse, o.objectType 
               FROM %lms_organization AS o WHERE o.objectType != '' AND o.idCourse IN (".$row['idCourse'].") ORDER BY o.path) as org 
               GROUP BY org.idCourse";
-
-              $result_lo = sql_query($query_lo);
+              
+              $result_lo = sql_query($query_lo);   
               return $result_lo;
     }
-
-
+    
+    
 	public function getCourseList($type = '', $page = 1,$val_enroll,$val_enroll_not )
 	{
         require_once(_lms_.'/lib/lib.catalogue.php');
@@ -150,7 +150,7 @@ class CatalogLms extends Model
 				$base_link = 'index.php?r=catalog/allCourse&amp;page='.$page;
 
                // var_dump($user_catalogue);
-
+                
 				if(count($user_catalogue) > 0)
 				{
 					$courses = array();
@@ -177,41 +177,40 @@ class CatalogLms extends Model
         $str_enroll_not = "";
         if($val_enroll=='true')  $str_enroll = " AND idCourse in (select idCourse from %lms_courseuser where idUser =".Docebo::user()->getIdSt().")" ;
         if($val_enroll_not =='true')  $str_enroll_not = " AND idCourse not in (select idCourse from %lms_courseuser where idUser =".Docebo::user()->getIdSt().")" ;
-
+        
 
 		$query =	"SELECT *"
 					." FROM %lms_course"
-					." WHERE status NOT IN (".CST_PREPARATION.", ".CST_CANCELLED.")"
+					." WHERE status NOT IN (".CST_PREPARATION.", ".CST_CONCLUDED.", ".CST_CANCELLED.")"
 					." AND course_type <> 'assessment'"
-
+                    
                     .$str_enroll
                     .$str_enroll_not
-
-
+                    
+        
 					." AND (                       
 						(can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '".date('Y-m-d')."') AND (sub_start_date = '0000-00-00' OR '".date('Y-m-d')."' >= sub_start_date)) OR
                         (can_subscribe=1)
 					) "
+                    
+                    
+                   // ." AND (can_subscribe=1 AND (date_begin = '0000-00-00' OR date_end >= '".date('Y-m-d')."') AND (date_begin = '0000-00-00' OR '".date('Y-m-d')."' >= date_begin) ) "
 
-
-                    ." AND (can_subscribe=1 AND (date_begin = '0000-00-00' OR date_end >= '".date('Y-m-d')."') AND (date_begin = '0000-00-00' OR '".date('Y-m-d')."' >= date_begin) ) "
-
-
-
+                    
 					.$filter
 					.($id_cat > 0 ? " AND idCategory = ".(int)$id_cat : '')
 					." ORDER BY name";
 
 
             //  echo "QUERY_CAT = ".$query;
-
+                    
 		$result = sql_query($query);
 
-
-        //return
-        return $result;
-
-
+        
+        //return 
+        return $result; 
+        
+      
 	}
 
 	public function getTotalCourseNumber($type = '')
@@ -793,10 +792,10 @@ class CatalogLms extends Model
 
 		return $res;
 	}
-
-
-
-
+    
+    
+    
+    
         public function GetGlobalJsonTree(){
             $global_tree = [];
             $top_category = $this->getMajorCategory();
@@ -809,11 +808,11 @@ class CatalogLms extends Model
                     $global_tree[] = array('text'=>$this->the_tree[0]['text'], 'nodes'=>$this->the_tree[0]['nodes'], "href" => "index.php?r=catalog/allCourse&id_cat=".$a_top_cat_key, "id_cat" => $a_top_cat_key);
                 } else {
                     $global_tree[] = array('text'=>$val, "href" => "index.php?r=catalog/allCourse&id_cat=".$a_top_cat_key, "id_cat" => $a_top_cat_key);
-                }
+                }    
             }
-            return  $global_tree;
-
-
+            return  $global_tree;              
+            
+              
         }
 
         public function getMinorCategoryTree($id_cat){
@@ -837,41 +836,41 @@ class CatalogLms extends Model
                 $res[$id_cat]['id_cat'] = $id_cat;
                 if($id_parent != 0) {
                     $res[$id_parent]['son'][$id_cat] = $name;
-                }
+                }    
             }
-            return $res;
+            return $res;            
 
-        }
+        }        
 
         private function GetChildTree($array_k){
-            $leaves = [];
+            $leaves = [];       
             foreach ($array_k as $single_key) {
                 if (is_array($this->children[$single_key]['son'])) {
                     $this->tree_deep++;
                     $b = $this->GetChildTree(array_keys($this->children[$single_key]['son']));
-
+                    
                     $leaves[] = array('text'=>$this->children[$single_key]['name'], 'nodes'=>$b, "href" => "index.php?r=catalog/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat'] );
                     if  ($this->tree_deep==0){
                         $this->the_tree[] = array('text'=>$leaves[0]['text'], 'nodes'=>$leaves[0]['nodes'], "href" => "index.php?r=catalog/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat'] );
-                        $this->tree_deep = 0;
+                        $this->tree_deep = 0;                   
                     }
                 } else {
                     $leaves[] = array('text'=>$this->children[$single_key]['name'],  "href" => "index.php?r=catalog/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat']);
                 }
                 if (array_key_exists($single_key, $this->children)) {
-                    unset($this->children[$single_key]);
+                    unset($this->children[$single_key]);   
                 }
             }
-
-
+            
+            
             $this->tree_deep--;
             return $leaves;
-        }
-
-
-
-
-
+        }     
+    
+    
+    
+    
+    
 }
 
 ?>

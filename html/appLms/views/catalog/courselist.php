@@ -5,6 +5,15 @@
     });
 </script>  
 
+<script type="text/javascript">
+    var lb = new LightBox();
+    lb.back_url = 'index.php?r=lms/catalog/show&sop=unregistercourse';
+    
+    var Config = {};
+    Config.langs = {_CLOSE: '<?php echo Lang::t('_CLOSE', 'standard'); ?>'};
+    lb.init(Config);  
+</script>
+
 
   <?php
 
@@ -305,6 +314,32 @@
             $str_start_end = Lang::t('_SUBSCRIPTION_DATE_BEGIN', 'course'). " <b>". $row['date_begin'].'</b>  '.Lang::t('_SUBSCRIPTION_DATE_END', 'course').' <b>'.$row['date_end']."</b>";
         }
         
+        
+        
+        
+    // BUG TRACKER - LR #5669
+        $data_inizio = $row['date_begin'];
+        $data_end = $row['date_end'];
+        
+        $str_lock_start = "";
+        $str_lock_end = "";
+        
+        if($row['hour_begin'] != "-1") $str_h_begin = $row['hour_begin']; 
+        if($row['hour_end'] != "-1") $str_h_end = $row['hour_end']; 
+        
+        $can_enter_star = true;
+        $can_enter_end = true  ;  
+        if($data_inizio != "0000-00-00") $str_lock_start = "<b><i style='font-size:.68em'>".Lang::t('_COURSE_BEGIN', 'certificate')."</b>: ".Format::date($data_inizio, 'date')." ".$str_h_begin."</i>" ;
+        if($data_end  != "0000-00-00") $str_lock_end= "<br><b><i style='font-size:.68em'>".Lang::t('_COURSE_END', 'certificate')."</b>: ".Format::date($data_end, 'date')." ".$str_h_end."</i>";
+
+        if($data_inizio != "0000-00-00" && $data_inizio > date('Y-m-d')  ) $can_enter_star = false;
+        if($data_end != "0000-00-00" &&  $data_end      < date('Y-m-d') ) $can_enter_end = false;
+
+        if($data_inizio != "0000-00-00"  || $data_fine != "0000-00-00" ) $str_can_enter = ($can_enter_star && $can_enter_end);
+        if($data_inizio == "0000-00-00"  && $data_fine == "0000-00-00" ) $str_can_enter = true;        
+                
+        
+        
         $html .= '
                   
                         <li>
@@ -324,35 +359,42 @@
                                         '.$img_type.'
                                     
                                         <h3 class="cbp-vm-title">'.$row['name'].'<br><br> <font style="color:#FFFFFF;background-color:#C84000;">'.$arr_cat[$row['idCategory']]['name'].'</font> </h3> 
-                                        '.$str_start_end.'
+                                        '.$str_lock_start.' 
+                                        '.$str_lock_end.'  
                  
                                          <!-- DATE START - DATE END  -->
                                          
                                          
                                           
                                         <div class="cbp-vm-details">  &nbsp
-                                                    
-                                                     
                                                      '.$row['description'].' 
-
-                                      
                                         '.
                                             ($row["course_demo"] ? '<a   href="index.php?r=catalog/downloadDemoMaterial&amp;course_id='.$row['idCourse'].'" class="ico-wt-sprite subs_download"><span>'.Lang::t('_COURSE_DEMO', 'course').'</span></a>' : '')
                                         .'                                       
                                                          
+                                        <br>
+                                        
+                                                            
+                                       
                                        
                                         </div>
                                             
                                          
                                           <div class="cbp-vm-add">                                   
                                                 <table   border=0 align=center  >
-                                                      <tr><td>  <br>
-                                                   '.$action.'  
-                                                </td></tr>
-                                                 </table>     
-                                         </div>             
-                           </li>
-              ';
+                                                      <tr><td>  <br>';
+                                                      
+                                                      
+      if($str_can_enter==true &&  $row['status']!=CST_CONCLUDED)  $html .=    $action;
+          if($str_can_enter==false || $row['status']==CST_CONCLUDED)  $html .= "<img class='no_traform' src='". Get::tmpl_path().'images/standard/locked.png'."'>" ;   
+              
+                                          
+             $html .= ' </td></tr>
+                             </table>     
+                     </div>                             
+                        </li>';
+                                                              
+                                                      
                         
         }
 
