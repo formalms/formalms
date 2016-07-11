@@ -46,7 +46,9 @@
           
           // load css
           $jquery_ui_css = "/addons/".self::_path."/core/ui/css/jquery-ui-".self::_jquery_ui_version.$which_version.".css";
+          
           $local_link .= Util::get_css('../.'.$jquery_ui_css,true);
+        //  $local_link .= Util::get_css('.'.$jquery_ui_css,true);
           
           return $local_link;          
       }
@@ -57,9 +59,14 @@
           
           // load css
           $bootstrap_core_css = "/addons/".self::_path."/bootstrap/css/bootstrap-".self::_bootstrap_version.$which_version.".css";
+          
           $local_link .= Util::get_css('../.'.$bootstrap_core_css, true);
+        //  $local_link .= Util::get_css('.'.$bootstrap_core_css, true);
+         
           $bootstrap_core_css = "/addons/".self::_path."/bootstrap/css/bootstrap-theme-".self::_bootstrap_version.$which_version.".css";
+         
           $local_link .= Util::get_css('../.'.$bootstrap_core_css, true);
+         // $local_link .= Util::get_css('.'.$bootstrap_core_css, true);
           
           
           return $local_link;          
@@ -92,43 +99,11 @@
                   foreach ($addon_files as $css_file){
                       $css_file = $full_path.$css_file;
                       $local_link .= Util::get_css('../.'.$css_file, true);
+                      
                   }
               }    
           }
           return $local_link;          
-      }
-      
-      public static function loadSingleAddon($addon_name, $which_version){
-          $local_link = '';
-          if (in_array($addon_name, self::$array_css_addons)) {
-                $full_path = "/addons/".self::_path."/".$addon_name."/";
-                $addon_files = self::select_file($full_path, $which_version.'.css' );
-                if (count($addon_files)>0) {
-                    $css_file = $full_path.$css_file;
-                    $local_link = Util::get_css('../.'.$css_file, true);
-                }
-          }    
-          if (in_array($addon_name, self::$array_js_addons)) {
-                $full_path = "/addons/".self::_path."/".$addon_name."/";
-                $addon_files = self::select_file($full_path, $which_version.'.js' );
-                if (count($addon_files)>0) {
-                    $js_file = $full_path.$js_file;
-                    $local_link .= Util::get_js('../.'.$js_file, true);
-                }
-          }    
-          return $local_link;
-      }
-      
-      public static function initJQueryAjax(){
-          $retval = "\n".'<script type=\'text/javascript\'>
-                             $ajaxSetup(
-                                {
-                                    headers: {\'X-Signature\':'.Util::getSignature().'}
-                                }
-                             )
-                            </script>'; 
-           return $retval;                 
-          
       }
       
       
@@ -150,6 +125,21 @@
           }
           return $ret_array;
       }          
+      
+      
+      public static function initJQueryAjax(){
+          $retval = "\n".'<script type=\'text/javascript\'>
+                             $.ajaxSetup(
+                                {
+                                    headers: {"X-Signature":"'.Util::getSignature().'"}
+                                }
+                             )
+                            </script>'; 
+           return $retval;                 
+          
+      }      
+      
+      
       
       
   }
