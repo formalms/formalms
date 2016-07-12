@@ -1,1 +1,3 @@
 .idea/
+test/behat/behat_config.yml
+html/plugins/Commerce
