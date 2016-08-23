@@ -32,6 +32,7 @@ $GLOBALS['cfg']['versions'] = array(
    '10300' => '1.3',
    '10400' => '1.4',
    '10401' => '1.4.1',
+   '20000' => '2.0',
 );
 
 // for reference old docebo ce versions
