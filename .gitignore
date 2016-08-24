@@ -2,5 +2,7 @@
 test/behat/behat_config.yml
 html/plugins/Commerce
 html/config.php
-html/files/
-!html/files/*/index.html
+html/files/**
+!html/files/**/.htaccess
+!html/files/**/index.html
+!*/
