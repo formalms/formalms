@@ -1,5 +1,8 @@
 .idea/
 test/behat/behat_config.yml
 html/plugins
-config.php
 html/files/tmp
+html/config.php
+html/files/**
+!html/files/**/.htaccess
+!html/files/**/index.html
