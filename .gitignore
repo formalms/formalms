@@ -1,4 +1,5 @@
 .idea/
 test/behat/behat_config.yml
-html/plugins/Commerce
 html/plugins
+config.php
+html/files/tmp

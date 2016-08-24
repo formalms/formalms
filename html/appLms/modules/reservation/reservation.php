@@ -679,7 +679,14 @@ function viewUserEvent()
 			.Form::closeForm()
 			);
 			$out->add('<br/>');
-			$out->add('<a href="index.php?modname=reservation&amp;op=excel&amp;id_event='.$id_event.'" target="_blank">'.$lang->def('_EXPORT_XLS').'</a>', 'content');
+
+            $event = new \appLms\Events\Lms\UserListEvent($out,$lang);
+
+            $event->setIdEvent($id_event);
+
+            \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\UserListEvent::EVENT_NAME, $event);
+
+            $out->add($event->getExportLink(),'content');
 		}
 		else
 		{
