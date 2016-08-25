@@ -149,7 +149,7 @@ class SubscriptionAlmsController extends AlmsController {
 			'email' => Lang::t('_EMAIL', 'standard'),
 			'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
 			'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
-			'date_complete' => Lang::t('_DATE_COMPLETE', 'subscribe'),
+			'date_complete' => Lang::t('_DATE_COMPLETE', 'certificate'),
 			'level' => Lang::t('_LEVEL', 'standard'),
 			'language' => Lang::t('_LANGUAGE', 'standard')
 		);
