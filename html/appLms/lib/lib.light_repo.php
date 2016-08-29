@@ -232,8 +232,18 @@ class LightRepoManager {
 		
 		$file_list = array();
 		$acl_man 		= Docebo::user()->getAclManager();
+                $view_all_perm = checkPerm('view_all', true);
 		$course_man 	= new Man_Course();
 		$course_user 	= $course_man->getIdUserOfLevel($this->_id_course, 3);
+		
+                //apply sub admin filters, if needed
+                if( !$view_all_perm ) {
+                        //filter users
+                        require_once(_base_.'/lib/lib.preference.php');
+                        $ctrlManager = new ControllerPreference();
+                        $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+                        $course_user = array_intersect($course_user, $ctrl_users);
+                }
 		
 		if(empty($course_user)) return $file_list;
 		
