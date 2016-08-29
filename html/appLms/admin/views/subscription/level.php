@@ -42,6 +42,8 @@ echo getTitleArea(array(
 
 	echo Form::openForm('choose_level', 'index.php?r='.$this->link.'/ins&amp;id_course='.$model->getIdCourse().'&amp;id_edition='.$model->getIdEdition().'&amp;id_date='.$model->getIdDate())
 		.Form::getHidden('send_alert', 'send_alert', $send_alert);
+        
+        echo Form::getHidden("subs", "subs", "");
 
 
 	if ($date_begin_validity) {
@@ -100,6 +102,21 @@ echo getTitleArea(array(
                 e.checked = 1;
         }
 		}
+                
+        $(\'#choose_level\').submit(function(e) {        
+            var subs = new Array();
+            $(\'input[name^="user_level_sel"]\').each(function() {                
+                if($(this)["context"]["checked"]) {                
+                    var level = $(this)["context"]["value"];                    
+                    if(level != "0") {
+                        var user = $(this)["context"]["name"].replace("user_level_sel[", "").replace("]", "");
+                        subs += "," + user + ":" + level;
+                    }
+                }                
+                $(this).attr("disabled", "disabled");
+            });
+            $(\'#subs\').val(subs.substring(1));
+        });
 	</script>';
 ?>
 </div>
