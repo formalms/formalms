@@ -1,15 +1,6 @@
-#ignore all files except !FILES
-html/files/**
-!html/files/**/.htaccess
-!html/files/**/index.html
-!html/files/common/iofiles/demo_20060313_095630.csv
-!html/files/common/iofiles/demo_tree_20060412_234612.xml
-!html/files/common/iofiles/demo_tree_20060413_234612.xml
-!html/files/appLms/certificate/certificate_sample.jpg
-!html/files/appLms/label/label_image.png
-!*/
-
 .idea/
-html/config.php
 test/behat/behat_config.yml
-html/plugins/Commerce
+html/plugins
+html/files/tmp
+html/config.php
+html/files
