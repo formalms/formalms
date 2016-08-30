@@ -27,7 +27,10 @@ class Module_Light_repo extends LmsModule {
 								'image' => 'standard/view.png' ),
 			'mod' => array( 	'code' => 'mod',
 								'name' => '_MOD',
-								'image' => 'standard/edit.png' )
+								'image' => 'standard/edit.png' ),
+                        'view_all' => array( 	'code' => 'view_all',
+								'name' => '_VIEW_ALL',
+								'image' => 'standard/moduser.png')
 		);
 	}
 
@@ -38,8 +41,8 @@ class Module_Light_repo extends LmsModule {
 			3 => $this->selectPerm($op, 'view'),
 			4 => $this->selectPerm($op, 'view'),
 			5 => $this->selectPerm($op, 'view,mod'),
-			6 => $this->selectPerm($op, 'view,mod'),
-			7 => $this->selectPerm($op, 'view,mod')
+			6 => $this->selectPerm($op, 'view,mod,view_all'),
+			7 => $this->selectPerm($op, 'view,mod,view_all')
 		);
 	}
 }

@@ -149,7 +149,7 @@ class SubscriptionAlmsController extends AlmsController {
 			'email' => Lang::t('_EMAIL', 'standard'),
 			'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
 			'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
-			'date_complete' => Lang::t('_DATE_COMPLETE', 'subscribe'),
+			'date_complete' => Lang::t('_DATE_COMPLETE', 'certificate'),
 			'level' => Lang::t('_LEVEL', 'standard'),
 			'language' => Lang::t('_LANGUAGE', 'standard')
 		);
@@ -494,7 +494,16 @@ class SubscriptionAlmsController extends AlmsController {
 			if (!$direct_subscribe)
 				$waiting = 1;
 
-			$user_selected = $_POST['user_level_sel'];
+                        $user_selected = array();
+                        if($_POST['subs']) {
+                            $subs = $_POST['subs'];
+                            $subs = explode(",", $_POST['subs']);
+                            foreach($subs AS $sub) {
+                                list($user, $level) = explode(":", $sub);
+                                $user_selected[$user] = $level;
+                            }
+                        }
+                        
 			$this->db->start_transaction();
 			while (list($id_user, $lv_sel) = each($user_selected)) {
 				if (!$limited_subscribe || $max_subscribe) {
@@ -1312,8 +1321,18 @@ class SubscriptionAlmsController extends AlmsController {
 
 							if (!$direct_subscribe)
 								$waiting = 1;
+                                                        
+                                                        $user_selected = array();
+                                                        if($_POST['subs']) {
+                                                            $subs = $_POST['subs'];
+                                                            $subs = explode(",", $_POST['subs']);
+                                                            foreach($subs AS $sub) {
+                                                                list($user, $level) = explode(":", $sub);
+                                                                $user_selected[$user] = $level;
+                                                            }
+                                                        }
 
-							while (list($id_user, $lv_sel) = each($_POST['user_level_sel'])) {
+							while (list($id_user, $lv_sel) = each($user_selected)) {
 								if (!$limited_subscribe || $max_subscribe) {
 									if ($lv_sel != 0) {
 										//$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);

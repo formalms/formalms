@@ -3,6 +3,4 @@ test/behat/behat_config.yml
 html/plugins
 html/files/tmp
 html/config.php
-html/files/**
-!html/files/**/.htaccess
-!html/files/**/index.html
+html/files
