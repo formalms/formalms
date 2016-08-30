@@ -17,10 +17,15 @@ class UserListEvent extends Event
     /** @var null */
     protected $out;
 
-    protected $exportEndpoint;
+    protected $defaultExportEndpoint;
 
     /** @var null */
     protected $exportLink;
+
+    /**
+     * @var null;
+     */
+    protected $exportEndpoint;
 
     /** @var null */
     protected $idEvent;
@@ -44,9 +49,11 @@ class UserListEvent extends Event
     {
         $this->idEvent = $idEvent;
 
-        $this->exportEndpoint = 'index.php?modname=reservation&amp;op=excel&amp;id_event='.$this->idEvent;
+        $this->defaultExportEndpoint = 'index.php?modname=reservation&amp;op=excel&id_event=' . $this->idEvent;
 
-        $this->exportLink = '<a href="'.$this->exportEndpoint.'" target="_blank">'.$this->lang->def('_EXPORT_XLS').'</a>';
+        $this->exportEndpoint = 'index.php?r=lms/userdataexporter/exportxls&idEvent='.$this->idEvent;
+
+        $this->exportLink = '<a href="' . $this->defaultExportEndpoint . '" target="_blank">' . $this->lang->def('_EXPORT_XLS') . '</a>';
     }
 
     /**
@@ -87,6 +94,17 @@ class UserListEvent extends Event
     public function setExportLink($exportLink)
     {
         $this->exportLink = $exportLink;
+    }
+
+    /**
+     * @return mixed
+     */
+    /**
+     * @return mixed
+     */
+    public function getDefaultExportEndpoint()
+    {
+        return $this->defaultExportEndpoint;
     }
 
     /**
