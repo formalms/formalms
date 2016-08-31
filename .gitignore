@@ -12,4 +12,4 @@ html/files/**
 .idea/
 html/config.php
 test/behat/behat_config.yml
-html/plugins/Commerce
+html/plugins/**
