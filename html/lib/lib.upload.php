@@ -68,17 +68,21 @@ function sl_fopen( $filename, $mode ) {
 	}
 }
 
-function sl_upload( $srcFile, $dstFile ) {
+function sl_upload( $srcFile, $dstFile, $file_ext) {
 	$uploadType = Get::cfg('uploadType');
 
 	// check if the mime type is allowed by the whitelist
 	// if the whitelist is empty all types are accepted
 	require_once(_lib_.'/lib.mimetype.php');
-	$upload_whitelist =Get::sett('file_upload_whitelist', 'rar,exe,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv');
+	$upload_whitelist =Get::sett('file_upload_whitelist', 'rar,exe,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv,jpeg');
 	$upload_whitelist_arr =explode(',', trim($upload_whitelist, ','));
 	if (!empty($upload_whitelist_arr)) {
 		$valid_ext = false;
-		$file_ext =strtolower(substr(strrchr($dstFile, "."), 1));
+		$ext=strtolower(substr(strrchr($dstFile, "."), 1));
+		if($ext!=""){
+			$file_ext =strtolower(substr(strrchr($dstFile, "."), 1));
+		}
+
 		foreach ($upload_whitelist_arr as $k=>$v) { // remove extra spaces and set lower case
 			$ext =trim(strtolower($v));
 			$mt =mimetype($ext);
@@ -89,7 +93,7 @@ function sl_upload( $srcFile, $dstFile ) {
 			}
 		}
 		$mimetype_arr = array_unique($mimetype_arr);
-		if ( class_exists('file') && method_exists('finfo', 'file')) {
+		if ( class_exists('finfo') && method_exists('finfo', 'file')) {
 			$finfo =new finfo(FILEINFO_MIME_TYPE);
 			$file_mime_type =$finfo->file($srcFile);
 		}

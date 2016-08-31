@@ -261,7 +261,7 @@ function createImageFromTmp($tmp_pathfile, $dst_pathfile, $original_name, $width
 	}
 	// no resize needed
 	sl_unlink($dst_pathfile);
-	if(sl_upload($tmp_pathfile, $dst_pathfile)) return 0;
+	if(sl_upload($tmp_pathfile, $dst_pathfile, $file_extension)) return 0;
 	return -2;
 }
 
