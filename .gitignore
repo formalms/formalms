@@ -1,4 +1,4 @@
-#ignore all files except !FILES
+# Sezione html/files
 html/files/**
 !html/files/**/.htaccess
 !html/files/**/index.html
@@ -7,9 +7,16 @@ html/files/**
 !html/files/common/iofiles/demo_tree_20060413_234612.xml
 !html/files/appLms/certificate/certificate_sample.jpg
 !html/files/appLms/label/label_image.png
+
+# Sezione ??? a cosa serve?
 !*/
 
+# Sezione generica
 .idea/
 html/config.php
 test/behat/behat_config.yml
+
+# Sezione Plugins
 html/plugins/**
+!html/plugins/ConferenceBBB
+!html/plugins/ConferenceTeleSkill
