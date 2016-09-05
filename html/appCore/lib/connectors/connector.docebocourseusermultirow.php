@@ -325,7 +325,7 @@ class DoceboConnector_DoceboCourseUserMultiRow extends DoceboConnector {
                             '')";
                 
                 $result = sql_query($query);
-                if(!$result) die($query.' '.mysql_error());
+                if(!$result) die($query.' '.sql_error());
             }*/
         
 		if($re_ins) {
@@ -336,7 +336,7 @@ class DoceboConnector_DoceboCourseUserMultiRow extends DoceboConnector {
 			}
 		} else {
 			
-			$this->last_error = 'error on user course subscription : '.mysql_error();
+			$this->last_error = 'error on user course subscription : '.sql_error();
 		}
 		return $re_ins;
 	}

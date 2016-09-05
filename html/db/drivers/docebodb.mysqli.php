@@ -172,6 +172,10 @@ class mysqli_DbConn extends DbConn {
 		return mysqli_error($this->conn);
 	}
 
+	public function free_result($resource) {
+		mysqli_free_result($resource);
+	}
+
 	public function start_transaction() {
 
 		return $this->query("START TRANSACTION");

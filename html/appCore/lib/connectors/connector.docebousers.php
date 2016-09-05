@@ -161,11 +161,11 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 		$query = "SHOW FIELDS FROM ".$GLOBALS['prefix_fw']."_user";
 		$rs = sql_query( $query, $this->dbconn );
 		if( $rs === FALSE ) {
-			$this->last_error = Lang::t('_OPERATION_FAILURE', 'standard').$query.' ['.mysql_error($this->dbconn).']';
+			$this->last_error = Lang::t('_OPERATION_FAILURE', 'standard').$query.' ['.sql_error().']';
 			return FALSE;
 		}
 		$this->cols_descriptor = array();
-		while( $field_info = mysql_fetch_array($rs) ) {
+		while( $field_info = sql_fetch_array($rs) ) {
 			if( !in_array($field_info['Field'],$this->ignore_cols) ) {
 				$mandatory = in_array($field_info['Field'],$this->mandatory_cols);
 				if( isset($this->default_cols[$field_info['Field']])) {
@@ -187,7 +187,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 			}
 		}
 
-		mysql_free_result( $rs );
+		sql_free_result( $rs );
 
 		foreach($arr_fields as $field_id => $field_info) {
 			if( in_array($field_info[FIELD_INFO_TYPE],$this->valid_filed_type) ) {

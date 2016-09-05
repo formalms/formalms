@@ -136,7 +136,7 @@ class DoceboConnector_DoceboTestTrack extends DoceboConnector {
 			$re_test = sql_query($query_test);
 			
 			
-			if(!$re_test)  die($query_test." ".mysql_error());//return false;
+			if(!$re_test)  die($query_test." ".sql_error());//return false;
 			while(list($idOrg, $idCourse, $idTest, $name) = sql_fetch_row($re_test)) {
 				
 				$name = strtolower($name);
@@ -288,10 +288,10 @@ class DoceboConnector_DoceboTestTrack extends DoceboConnector {
 			NULL , '".$arr_id['idst_user']."', '".$id_org."', '".$id_test."', '".$row['date_attempt']."', NULL , '".$row['date_attempt']."', '0', '0', '0', '0', '".$row['user_score']."' , '0', 'valid', ''
 		)";
 		if(!sql_query($new_track))  {
-			$this->last_error = 'failed track insert : '.mysql_error().'<br />';
+			$this->last_error = 'failed track insert : '.sql_error().'<br />';
 			return false;
 		}
-		$id_track = mysql_insert_id();
+		$id_track = sql_insert_id();
 		$new_commontrack = "INSERT INTO ".$GLOBALS['prefix_lms']."_commontrack (
 			`idReference` ,
 			`idUser` ,
@@ -303,7 +303,7 @@ class DoceboConnector_DoceboTestTrack extends DoceboConnector {
 			'".$id_org."', '".$arr_id['idst_user']."', '".$id_track."', 'test', '".$row['date_attempt']."', 'completed'
 		)";
 		if(!sql_query($new_commontrack))  {
-			$this->last_error = 'failed common track insert : '.mysql_error().'<br />';
+			$this->last_error = 'failed common track insert : '.sql_error().'<br />';
 			return false;
 		}
 		return true;

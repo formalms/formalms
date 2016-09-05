@@ -209,7 +209,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 		}
 		
 		$re_course = sql_query($search_query);
-		if(mysql_num_rows($re_course) == 0) return 0;
+		if(sql_num_rows($re_course) == 0) return 0;
 		if(!$re_course) return false;
 		list($id_course, $imported_from) = sql_fetch_row($re_course);
 		
@@ -244,7 +244,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 		// check if the course identified by the pk alredy exits
 		$id_course = $this->get_row_by_pk($pk);
 		if($id_course === false) {
-			$this->last_error = 'Error in search query : ( '.mysql_error().' )';
+			$this->last_error = 'Error in search query : ( '.sql_error().' )';
 			return false;
 		}
 		if($id_course === 'jump') return true;
@@ -278,11 +278,11 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 				imported_from_connection = '".$this->get_name()."'";
 			
 			if(!sql_query($query_course)) {
-				$this->last_error = 'Error in insert query : ( '.mysql_error().' )'
+				$this->last_error = 'Error in insert query : ( '.sql_error().' )'
 					.'<!-- '.$query_course.' -->';
 				return false;
 			}
-			$id_course = mysql_insert_id();
+			$id_course = sql_insert_id();
 			
 			// import the menu
 			
@@ -342,7 +342,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 			WHERE idCourse = '".$id_course."'";
 			
 			if(!sql_query($query_course)){
-				$this->last_error = 'Error in update query : ( '.mysql_error().' )'
+				$this->last_error = 'Error in update query : ( '.sql_error().' )'
 					.'<!-- '.$query_course.' -->';
 				return false;
 			}
