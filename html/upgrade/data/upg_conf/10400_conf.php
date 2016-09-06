@@ -22,6 +22,9 @@
 
 // Create this function only if needed, else you can remove it
 // (we check it with function_exists)
+require_once('bootstrap.php');
+require_once('../config.php');
+include_once(_base_."/db/lib.docebodb.php");
 function upgradeConfig10400($config) {
 
 	$config_sts = 1 ;	// no change required
@@ -76,14 +79,10 @@ function check_google_login() {
 //include('./bootstrap.php');
 require('../config.php');
 
-	$db = mysql_connect($cfg['db_host'], $cfg['db_user'], $cfg['db_pass']);
-	mysql_select_db($cfg['db_name']);
-
 	$query = "SELECT param_value FROM core_setting WHERE param_name = 'social_google_active'";
-	$active = mysql_fetch_row(mysql_query($query));
+	$active = sql_fetch_row(sql_query($query));
 	$query = "SELECT param_value FROM core_setting WHERE param_name = 'social_google_client_id'";
-	$gc_id = mysql_fetch_row(mysql_query($query));
-	mysql_close($db);
+	$gc_id = sql_fetch_row(sql_query($query));
 
 	// google login is active and use openid
     $isactive = ( $active[0] == "on" && empty($gc_id[0]) );

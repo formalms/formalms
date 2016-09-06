@@ -22,7 +22,7 @@
 
 require_once('bootstrap.php');
 require_once('../config.php');
-
+include_once(_base_."/db/lib.docebodb.php");
 function preUpgrade10100() {
 
 	$sts = upgrade_dbtbl();
@@ -41,17 +41,17 @@ function upgrade_dbtbl() {
 -- SHOW COLUMNS FROM learning_middlearea LIKE 'sequence'
 ******/
 	$qry="SHOW COLUMNS FROM learning_middlearea LIKE 'sequence'";
-	$q = mysql_query($qry);
+	$q = sql_query($qry);
 	if (!$q) {
-		$GLOBALS['debug'].="<br/>" . mysql_error();
+		$GLOBALS['debug'].="<br/>" . sql_error();
 	} else {
-		$count =mysql_num_rows($q);
+		$count =sql_num_rows($q);
 		if ($count == 0 )  {
 			// create missing columns
 			$qry="ALTER TABLE `learning_middlearea` ADD `sequence` INT( 5 ) NOT NULL;";
-			$q = mysql_query($qry);
+			$q = sql_query($qry);
 			if (!$q) {
-				$GLOBALS['debug'].= "<br/>" . mysql_error();
+				$GLOBALS['debug'].= "<br/>" . sql_error();
 			}
 		}
 

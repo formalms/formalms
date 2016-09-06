@@ -315,6 +315,12 @@ class DbConn {
      */
     public function free_result($res) {}
 
+    /**
+     * Will free all memory associated with the result identifier result.
+     * @return string
+     */
+    public function get_client_info() {}
+
 	/**
 	 * Close the connection with the dbms
 	 * @return string
@@ -412,6 +418,12 @@ function  sql_error(){
 function sql_free_result($res, $conn = false){
     $db = DbConn::getInstance();
     $re = $db->free_result($res);
+    return $re;
+}
+
+function  sql_get_client_info(){
+    $db = DbConn::getInstance();
+    $re = $db->get_client_info();
     return $re;
 }
 
