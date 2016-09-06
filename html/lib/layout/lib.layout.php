@@ -306,10 +306,11 @@
              case 'adm':
                 break;
              case 'lms':
-                if(!isset($_SESSION['direct_play']))
+                if(!isset($_SESSION['direct_play'])) {
                     $retArray['direct_play'] =  '<div class="yui-b">'.Layout::zone('content').'</div>';
-                else
-                    $retArray['direct_play'] =  Layout::zone('content');                
+                } else {
+                    $retArray['direct_play'] =  Layout::zone('content');
+                }                    
                 break;                                
                 
         }

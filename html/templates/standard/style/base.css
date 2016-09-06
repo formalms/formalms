@@ -712,7 +712,6 @@ ul.style_none li {list-style:none; }
     border-radius: 100%;
     border: 2px solid #aaa;
     background-size: cover;
-    background-image: url('http://api.randomuser.me/0.3.2/portraits/women/35.jpg');
 }
 
 img.no_traform{
