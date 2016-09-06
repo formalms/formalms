@@ -333,6 +333,11 @@ class Course_API extends API {
 		$user_level =$this->getUserLevelId((isset($params['user_level']) ? $params['user_level'] : 'student'));
 		// $user_status =(isset($params['user_status']) ? $params['user_status'] : false);
 
+                if (!isset($params['sendmail']) || $params['sendmail'] == "") {
+                        $sendMailToUser = false;
+                } else {
+                        $sendMailToUser = true;
+                }
 
 		$acl_man =Docebo::user()->getAclManager();
 		$course_man =new Man_Course();
@@ -384,7 +389,23 @@ class Course_API extends API {
 			$output['message']='User has been subscribed to the course';
 		}
 
+                if ($sendMailToUser) {
+                    // Send Message
+                    require_once(_base_.'/lib/lib.eventmanager.php');
 
+                    $array_subst = array(	'[url]' => Get::sett('url'),
+                                            '[course]' => $course_info['name'] );
+
+                    $msg_composer = new EventMessageComposer();
+                    $msg_composer->setSubjectLangText('email', '_APPROVED_SUBSCRIBED_SUBJECT', false);
+                    $msg_composer->setBodyLangText('email', '_APPROVED_SUBSCRIBED_TEXT', $array_subst);
+
+                    $recipients = array($user_id);
+
+                    if(!empty($recipients)) {
+                                    createNewAlert(	'UserCourseInsertedApi', 'subscribe', 'insert', '1', 'User subscribed API', $recipients, $msg_composer);
+                    }
+                }
 		return $output;
 	}
 
