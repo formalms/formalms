@@ -12,6 +12,7 @@
 	echo ( empty($version[1]) ? 'unknow' : $version[1] ); ?></span></li>
 	<li class="<?php echo $cl['mbstring']; ?>"><?php echo Lang::t('_MBSTRING'); ?>: <span><?php echo (extension_loaded('mbstring') ? _ON : _OFF); ?></span></li>
 	<li class="<?php echo $cl['mime_ct']; ?>"><?php echo Lang::t('_MIME_CONTENT_TYPE'); ?>: <span><?php echo ($cl['mime_ct'] == 'ok' ? _ON : _OFF); ?></span></li>
+	<li class="<?php echo $cl['fileinfo']; ?>"><?php echo Lang::t('_FILEINFO'); ?>: <span><?php echo (extension_loaded('fileinfo') ? _ON : _OFF.' '._ONLY_IF_YU_WANT_TO_USE_FILEINFO); ?></span></li>
 	<li class="<?php echo $cl['ldap']; ?>"><?php echo Lang::t('_LDAP'); ?>: <span><?php echo (extension_loaded('ldap') ? _ON : _OFF.' '._ONLY_IF_YU_WANT_TO_USE_IT); ?></span></li>
 	<li class="<?php echo $cl['openssl']; ?>"><?php echo Lang::t('_OPENSSL'); ?>: <span><?php echo (extension_loaded('openssl') ? _ON : _OFF.' '._WARINNG_SOCIAL); ?></span></li>
 	<li class="ok"><?php echo Lang::t('_PHP_TIMEZONE'); ?>: <span><?php echo @date_default_timezone_get(); ?></span></li>

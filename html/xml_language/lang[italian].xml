@@ -961,10 +961,7 @@ Puoi leggerlo su forma.lms all'indirizzo <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_MOD_USER_SUBSCRIPTION_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[La tua iscrizione è stata modificata]]></key>
         <key id="email&amp;_MOD_USER_SUBSCRIPTION_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[La tua iscrizione al corso [course] all'indirizzo <a href="[url]">[url]</a> è stata modificata]]></key>
         <key id="email&amp;_NEW_FORUM" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Nuovo forum]]></key>
-        <key id="email&amp;_NEW_FORUM_BODY" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Un nuovo forum è stato aggiunto al corso '[course]' all'indirizzo <a href="[url]">[url]</a>
-
-Title: [title]
-[text]]]></key>
+        <key id="email&amp;_NEW_FORUM_BODY" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Un nuovo forum è stato aggiunto al corso '[course]' all'indirizzo [url] Titolo: [title] [text]]]></key>
         <key id="email&amp;_NEW_MESSAGE_INSERT_IN_THREAD" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[C'è un nuovo messaggio in una discussione che stai seguendo all'indirizzo:
 
 <a href="[url]">[url]</a> > [course] > [forum_title] > [thread_title]]]></key>
@@ -2493,6 +2490,7 @@ Password: [password]]]></key>
         <key id="stats&amp;_STATSUSERITEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Statistiche per Studente/oggetto]]></key>
         <key id="stats&amp;_STATS_FULLNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nome e cognome]]></key>
         <key id="stats&amp;_STATS_USERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Statistiche utenti]]></key>
+        <key id="stats&amp;_VIEW_OPEN_QUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visualizza le risposte aperte del questionario]]></key>
       </module>
       <module id="storage">
         <key id="storage&amp;_HOMEREPOROOTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[I miei oggetti]]></key>

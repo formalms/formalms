@@ -240,7 +240,7 @@ class DoceboConnectorFixedText extends DoceboConnector {
 			
 			$result = sql_query($query);
 			
-			if(mysql_num_rows($result))
+			if(sql_num_rows($result))
 			{
 				$put = '';
 				

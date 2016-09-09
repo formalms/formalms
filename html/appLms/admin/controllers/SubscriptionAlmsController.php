@@ -149,7 +149,7 @@ class SubscriptionAlmsController extends AlmsController {
 			'email' => Lang::t('_EMAIL', 'standard'),
 			'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
 			'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
-			'date_complete' => Lang::t('_DATE_COMPLETE', 'subscribe'),
+			'date_complete' => Lang::t('_DATE_COMPLETE', 'certificate'),
 			'level' => Lang::t('_LEVEL', 'standard'),
 			'language' => Lang::t('_LANGUAGE', 'standard')
 		);
@@ -494,7 +494,16 @@ class SubscriptionAlmsController extends AlmsController {
 			if (!$direct_subscribe)
 				$waiting = 1;
 
-			$user_selected = $_POST['user_level_sel'];
+                        $user_selected = array();
+                        if($_POST['subs']) {
+                            $subs = $_POST['subs'];
+                            $subs = explode(",", $_POST['subs']);
+                            foreach($subs AS $sub) {
+                                list($user, $level) = explode(":", $sub);
+                                $user_selected[$user] = $level;
+                            }
+                        }
+                        
 			$this->db->start_transaction();
 			while (list($id_user, $lv_sel) = each($user_selected)) {
 				if (!$limited_subscribe || $max_subscribe) {
@@ -980,12 +989,15 @@ class SubscriptionAlmsController extends AlmsController {
 		$sel_date_begin = Form::getInputCheckbox('multimod_date_begin_set', 'multimod_date_begin_set', 1, false, '') . ' ';
 		$sel_date_expire = Form::getInputCheckbox('multimod_date_expire_set', 'multimod_date_expire_set', 1, false, '') . ' ';
 
+		$sel_date_complete = Form::getInputCheckbox('multimod_date_complete_set', 'multimod_date_complete_set', 1, false, 'disabled') . ' ';
+		
 		$sel_date_begin_reset = Form::getInputCheckbox('multimod_date_begin_reset', 'multimod_date_begin_reset', 1, false, '') . ' ';
 		$sel_date_expire_reset = Form::getInputCheckbox('multimod_date_expire_reset', 'multimod_date_expire_reset', 1, false, '') . ' ';
 
 		$body = Form::openForm('multimod_dialog', 'ajax.adm_server.php?r='.$this->link.'/multimod')
 				. Form::getDropdown(Lang::t('_LEVEL', 'subscribe'), 'multimod_level', 'multimod_level', $this->model->getUserLevelList(), '', '', $sel_level)
 				. Form::getDropdown(Lang::t('_STATUS', 'subscribe'), 'multimod_status', 'multimod_status', $this->model->getUserStatusList(), '', '', $sel_status)
+				. Form::getDateField(Lang::t('_DATE_COMPLETE', 'subscribe'), 'multimod_date_complete', 'multimod_date_complete', '', false, false, '', '', $sel_date_complete)
 				. Form::getDatefield(Lang::t('_DATE_BEGIN_VALIDITY', 'subscribe'), 'multimod_date_begin', 'multimod_date_begin', '', false, false, '', '', $sel_date_begin)
 				. Form::getDateField(Lang::t('_DATE_EXPIRE_VALIDITY', 'subscribe'), 'multimod_date_expire', 'multimod_date_expire', '', false, false, '', '', $sel_date_expire)
 
@@ -1046,9 +1058,11 @@ class SubscriptionAlmsController extends AlmsController {
 
 				$res2 = true;
 				if ($set_status > 0) {
+					$new_date_complete = Get::req('multimod_date_complete', DOTY_STRING, "");
+					$new_date_complete = Format::dateDb($new_date_complete, 'date');
 					$new_status = Get::req('multimod_status', DOTY_INT, -999);
 					if (in_array($new_status, array_keys($this->model->getUserStatusList())))
-						$res2 = $sman->updateUserStatusInCourse($users_list, $this->id_course, $new_status);
+						$res2 = $sman->updateUserStatusInCourse($users_list, $this->id_course, $new_status, $new_date_complete);
 				}
 
 				$res3 = true;
@@ -1312,8 +1326,18 @@ class SubscriptionAlmsController extends AlmsController {
 
 							if (!$direct_subscribe)
 								$waiting = 1;
+                                                        
+                                                        $user_selected = array();
+                                                        if($_POST['subs']) {
+                                                            $subs = $_POST['subs'];
+                                                            $subs = explode(",", $_POST['subs']);
+                                                            foreach($subs AS $sub) {
+                                                                list($user, $level) = explode(":", $sub);
+                                                                $user_selected[$user] = $level;
+                                                            }
+                                                        }
 
-							while (list($id_user, $lv_sel) = each($_POST['user_level_sel'])) {
+							while (list($id_user, $lv_sel) = each($user_selected)) {
 								if (!$limited_subscribe || $max_subscribe) {
 									if ($lv_sel != 0) {
 										//$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
@@ -2596,6 +2620,24 @@ class SubscriptionAlmsController extends AlmsController {
 									. " WHERE idCourse=" . (int) $id_course . " AND idUser=" . (int) $id_user . " AND edition_id=" . (int) $id_edition;
 							$res = sql_query($query);
 						}
+
+						$output = array('success' => $res ? true : false);
+						if ($res)
+							$output['new_value'] = Format::date($_new_date, 'date');
+
+						echo $this->json->encode($output);
+					} break;
+
+				case 'date_complete': {
+						$_new_date = date("Y-m-d H:i:s", $new_value); //convert the input in ISO format
+						//extract date_begin and check if ggreater than date_expire
+						$res = false;
+						$query = "SELECT date_complete FROM %lms_courseuser "
+								. " WHERE idCourse=" . (int) $id_course . " AND idUser=" . (int) $id_user . " AND edition_id=" . (int) $id_edition;
+						list($date_begin) = sql_fetch_row(sql_query($query));
+							$query = "UPDATE %lms_courseuser SET date_complete = '" . $_new_date . "' "
+									. " WHERE idCourse=" . (int) $id_course . " AND idUser=" . (int) $id_user . " AND edition_id=" . (int) $id_edition;
+							$res = sql_query($query);
 
 						$output = array('success' => $res ? true : false);
 						if ($res)

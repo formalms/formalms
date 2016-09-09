@@ -136,7 +136,7 @@ class DoceboConnector_CourseSap extends DoceboConnector {
 		
 		if(!$this->_query_result) {
 			
-			$this->last_error = mysql_error();
+			$this->last_error = sql_error();
 			return FALSE;
 		}
 		return TRUE;		

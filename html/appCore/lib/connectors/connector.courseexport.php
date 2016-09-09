@@ -200,7 +200,7 @@ class DoceboConnectorCourseExport extends DoceboConnector {
 			$counter++;
 		}
 		
-		while($row = mysql_fetch_array($result))
+		while($row = sql_fetch_array($result))
 		{
 			$data[$counter][] = $row[0];
 			$data[$counter][] = $row[1];

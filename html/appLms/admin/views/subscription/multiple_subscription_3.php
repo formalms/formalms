@@ -35,6 +35,7 @@ echo getTitleArea($title);
 	$array_content = array();
 
 	echo	Form::openForm('chose_level_form', 'index.php?r='.$this->link.'/multiplesubscription')
+			.Form::getHidden('subs', 'subs', '')
 			.Form::getHidden('course_selection', 'course_selection', $course_selection)
 			.Form::getHidden('user_selection', 'user_selection', $user_selection)
 			.Form::getHidden('edition_selected', 'edition_selected', $edition_selected)
@@ -83,6 +84,21 @@ function SelAll (lvl)
                 e.checked = 1;
         }
 }
+                
+        $(\'#chose_level_form\').submit(function(e) {        
+            var subs = new Array();
+            $(\'input[name^="user_level_sel"]\').each(function() {                
+                if($(this)["context"]["checked"]) {                
+                    var level = $(this)["context"]["value"];                    
+                    if(level != "0") {
+                        var user = $(this)["context"]["name"].replace("user_level_sel[", "").replace("]", "");
+                        subs += "," + user + ":" + level;
+                    }
+                }                
+                $(this).attr("disabled", "disabled");
+            });
+            $(\'#subs\').val(subs.substring(1));
+        });
 </script>';
 ?>
 

@@ -962,10 +962,7 @@ Username: [userid]]]></key>
         <key id="email&amp;_MOD_USER_SUBSCRIPTION_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Your subscription has been changed]]></key>
         <key id="email&amp;_MOD_USER_SUBSCRIPTION_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Your subscription at the course [course] at the address <a href="[url]">[url]</a> has been changed]]></key>
         <key id="email&amp;_NEW_FORUM" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[New forum]]></key>
-        <key id="email&amp;_NEW_FORUM_BODY" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[New forum added to the course '[course]' at the address <a href="[url]">[url]</a>
-
- Title: [title]
- [text]]]></key>
+        <key id="email&amp;_NEW_FORUM_BODY" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[New forum added to the course '[course]' at the address [url] Title: [title] [text]]]></key>
         <key id="email&amp;_NEW_MESSAGE_INSERT_IN_THREAD" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[There is a new message in a thread that you are following
  [url] > [course] > [forum_title] > [thread_title]]]></key>
         <key id="email&amp;_NEW_THREAD_INSERT_IN_FORUM" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[There is a new thread in
@@ -2500,6 +2497,7 @@ Password: [password]]]></key>
         <key id="stats&amp;_STATSUSERITEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Stats by Student/Object]]></key>
         <key id="stats&amp;_STATS_FULLNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fullname]]></key>
         <key id="stats&amp;_STATS_USERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Users stats]]></key>
+        <key id="stats&amp;_VIEW_OPEN_QUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[View the answers to the open questions]]></key>
       </module>
       <module id="storage">
         <key id="storage&amp;_HOMEREPOROOTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[My Objects]]></key>

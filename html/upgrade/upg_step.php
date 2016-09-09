@@ -2,12 +2,10 @@
 
 include('bootstrap.php');
 require('../config.php');
+include_once(_base_."/db/lib.docebodb.php");
 
-$db = mysql_connect($cfg['db_host'], $cfg['db_user'], $cfg['db_pass']);
-mysql_select_db($cfg['db_name']);
-
-mysql_query("SET NAMES 'utf8'");
-mysql_query("SET CHARACTER SET 'utf8'");
+sql_query("SET NAMES 'utf8'");
+sql_query("SET CHARACTER SET 'utf8'");
 
 $enabled_step = 4;
 $current_step = Get::gReq('cur_step', DOTY_INT);
@@ -35,34 +33,34 @@ switch($upg_step) {
 		$fn = _upgrader_.'/data/sql/upgrade01.sql';
 		importSqlFile($fn);
 
-		$re = mysql_query("SELECT idCourse, idUser, COUNT(*)
+		$re = sql_query("SELECT idCourse, idUser, COUNT(*)
 		FROM learning_courseuser
 		GROUP BY idCourse, idUser
 		HAVING COUNT(*) >= 2");
 
-		while(list($idc, $idu, $occurency) = mysql_fetch_row($re)) {
+		while(list($idc, $idu, $occurency) = sql_fetch_row($re)) {
 
 			$query = "DELETE FROM learning_courseuser WHERE idCourse = ".$idc." AND idUser = ".$idu." LIMIT ".($occurency-1);
-			if(!mysql_query($query)) {
+			if(!sql_query($query)) {
 
-				$GLOBALS['debug'] .= $query.' - '.mysql_error();
+				$GLOBALS['debug'] .= $query.' - '.sql_error();
 			}
 		}
 
-		$re = mysql_query("SELECT id_category, lang_code, text_name, text_desc
+		$re = sql_query("SELECT id_category, lang_code, text_name, text_desc
 			FROM learning_competence_category_text
 			WHERE 1");
 
-		while(list($id_cat, $lang_code, $name, $description) = mysql_fetch_row($re))
-			mysql_query("INSERT INTO learning_competence_category_lang
+		while(list($id_cat, $lang_code, $name, $description) = sql_fetch_row($re))
+			sql_query("INSERT INTO learning_competence_category_lang
 				VALUES (".$id_category.", '".$lang_code."', '".$name."', '".$description."')");
 
-		$re = mysql_query("SELECT id_category, lang_code, text_name, text_desc
+		$re = sql_query("SELECT id_category, lang_code, text_name, text_desc
 			FROM learning_competence_text
 			WHERE 1");
 
-		while(list($id_cat, $lang_code, $name, $description) = mysql_fetch_row($re))
-			mysql_query("INSERT INTO learning_competence_lang
+		while(list($id_cat, $lang_code, $name, $description) = sql_fetch_row($re))
+			sql_query("INSERT INTO learning_competence_lang
 				VALUES (".$id_category.", '".$lang_code."', '".$name."', '".$description."')");
 
 	} break;
@@ -83,17 +81,14 @@ switch($upg_step) {
 		addUpgraderRoles();
 	} break;
 	case "7": { // --- Remove old photo ------------------------------------------
-		$db = mysql_connect($_SESSION['db_info']['db_host'], $_SESSION['db_info']['db_user'], $_SESSION['db_info']['db_pass']);
-		mysql_select_db($_SESSION['db_info']['db_name']);
-
 		$query =	"SELECT photo"
 					." FROM core_user"
 					." WHERE avatar <> ''"
 					." AND photo <> ''";
 
-		$result = mysql_query($query);
+		$result = sql_query($query);
 
-		while(list($photo) = mysql_fetch_row($result)) {
+		while(list($photo) = sql_fetch_row($result)) {
 			@unlink('../files/doceboCore/photo/'.$photo);
 		}
 
@@ -116,9 +111,6 @@ $GLOBALS['debug'] = 'Execution step ' .$current_step . '.' . $upg_step . '<br/>R
 
 echo $GLOBALS['debug'];
 
-mysql_close($db);
-
-
 
 
 // -----------------------------------------------------------------------------
@@ -133,8 +125,8 @@ function populate($table_name, $field_id) {
 	SELECT ".$field_id.", idParent, path, lev, iLeft, iRight
 	FROM ".$table_name."
 	ORDER BY path";
-	$q = mysql_query($search_query);
-	if (!$q) { $GLOBALS['debug'].=mysql_error()."\n"; }
+	$q = sql_query($search_query);
+	if (!$q) { $GLOBALS['debug'].=sql_error()."\n"; }
 
 	if(!$q) return false;
 
@@ -148,10 +140,10 @@ function populate($table_name, $field_id) {
 			'left' => 0,
 			'right' => 0,
 			'iLeft' => 1,
-			'iRight' => mysql_num_rows($q) * 2
+			'iRight' => sql_num_rows($q) * 2
 		)
 	);
-	while(list($id, $idParent, $path, $deep, $il, $ir) = mysql_fetch_row($q)) {
+	while(list($id, $idParent, $path, $deep, $il, $ir) = sql_fetch_row($q)) {
 
 		$GLOBALS['tree_st'][$id] = array(
 			'id' => $id,
@@ -177,8 +169,8 @@ function populate($table_name, $field_id) {
 		// we need to update also idst_oc and idst_ocd
 		$idst_oc = array();
 		$qtxt ="SELECT idst, groupid FROM core_group WHERE groupid LIKE '/oc%' ";
-		$q = mysql_query($qtxt);
-		while($row=mysql_fetch_object($q)) {
+		$q = sql_query($qtxt);
+		while($row=sql_fetch_object($q)) {
 
 			$idst_oc[$row->groupid] = $row->idst;
 		}
@@ -190,8 +182,8 @@ function populate($table_name, $field_id) {
 		.( $table_name == 'core_org_chart_tree' ? ", idst_oc = '".$idst_oc['/oc_'.$node['id']]."', idst_ocd = '".$idst_oc['/ocd_'.$node['id']]."' " : "" )
 		."WHERE ".$field_id." = ".$node['id']."";
 
-		$q2 =mysql_query($qtxt);
-		if (!$q2) { $GLOBALS['debug'].=mysql_error()."\n"; }
+		$q2 =sql_query($qtxt);
+		if (!$q2) { $GLOBALS['debug'].=sql_error()."\n"; }
 	}
 }
 
@@ -235,11 +227,11 @@ function updateLearningModule() {
 		(t1.module_name=t2.module_name AND
 		t1.default_name = t2.default_name)
 		WHERE t2.module_name IS NULL OR t1.mvc_path != '' OR t1.module_info != ''";
-	$q =mysql_query($qtxt);
-	if (!$q) { $GLOBALS['debug'].=mysql_error()."\n"; }
+	$q =sql_query($qtxt);
+	if (!$q) { $GLOBALS['debug'].=sql_error()."\n"; }
 
 	if ($q) {
-		while($row=mysql_fetch_assoc($q)) {
+		while($row=sql_fetch_assoc($q)) {
 
 			if ($row['old_id'] > 0) { // update (t1.mvc_path != '')
 				$qtxt ="UPDATE learning_module SET module_name = '".$row['module_name']."',
@@ -248,8 +240,8 @@ function updateLearningModule() {
 					file_name = '".$row['file_name']."',class_name = '".$row['class_name']."',
 					module_info = '".$row['module_info']."',mvc_path = '".$row['mvc_path']."'
 					WHERE learning_module.idModule ='".$row['old_id']."' LIMIT 1";
-				$q2 =mysql_query($qtxt);
-				if (!$q2) { $GLOBALS['debug'].=mysql_error()."\n"; }
+				$q2 =sql_query($qtxt);
+				if (!$q2) { $GLOBALS['debug'].=sql_error()."\n"; }
 			}
 			else { // insert missing
 				$qtxt ="INSERT INTO learning_module (module_name, default_op,
@@ -259,14 +251,14 @@ function updateLearningModule() {
 					'".$row['default_name']."', '".$row['token_associated']."',
 					'".$row['file_name']."', '".$row['class_name']."',
 					'".$row['module_info']."', '".$row['mvc_path']."');";
-				$q2 =mysql_query($qtxt);
-				if (!$q2) { $GLOBALS['debug'].=mysql_error()."\n"; }
+				$q2 =sql_query($qtxt);
+				if (!$q2) { $GLOBALS['debug'].=sql_error()."\n"; }
 			}
 		}
 	}
 
 	$qtxt ="DROP TABLE IF EXISTS `learning_module_new`;";
-	mysql_query($qtxt);
+	sql_query($qtxt);
 }
 
 
@@ -365,8 +357,8 @@ function updateSettings() {
 
 	// empty the core_setting
 	$qtxt = "TRUNCATE TABLE core_setting";
-	$q=mysql_query($qtxt);
-	if (!$q) { $GLOBALS['debug'].=mysql_error()."\n"; }
+	$q=sql_query($qtxt);
+	if (!$q) { $GLOBALS['debug'].=sql_error()."\n"; }
 
 	// Store config (we'll keep only the core_setting table)
 	foreach($new_setting as $key=>$val) {
@@ -378,12 +370,12 @@ function updateSettings() {
 		}
 		$fields_qtxt =implode(', ', $fields);
 		$qtxt ="INSERT INTO core_setting SET ".$fields_qtxt;
-		$q=mysql_query($qtxt);
-		if (!$q) { $GLOBALS['debug'].=mysql_error()."\n"; }
+		$q=sql_query($qtxt);
+		if (!$q) { $GLOBALS['debug'].=sql_error()."\n"; }
 	}
 
 	$qtxt ="DROP TABLE IF EXISTS `core_setting_default`;";
-	mysql_query($qtxt);
+	sql_query($qtxt);
 }
 
 
@@ -391,11 +383,11 @@ function getSettingsArr($table) {
 	$res = array();
 
 	$qtxt = "SELECT * FROM ".$table." ORDER BY param_name";
-	$q=mysql_query($qtxt);
-	if (!$q) { $GLOBALS['debug'].=mysql_error()."\n"; }
+	$q=sql_query($qtxt);
+	if (!$q) { $GLOBALS['debug'].=sql_error()."\n"; }
 
 	if ($q) {
-		while($row=mysql_fetch_assoc($q)) {
+		while($row=sql_fetch_assoc($q)) {
 			$key = $row['param_name'];
 			$res[$key] = $row;
 		}
@@ -420,7 +412,7 @@ function kbUpgrade() {
 
 	$qtxt = "INSERT INTO learning_kb_res (r_name, original_name, r_item_id, r_type, r_env, r_env_parent_id)"
 		."SELECT title as title1, title as title2, idResource, objectType, 'course_lo', idCourse FROM learning_organization WHERE objectType <> '' ";
-	$q=mysql_query($qtxt);
+	$q=sql_query($qtxt);
 }
 
 

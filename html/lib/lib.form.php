@@ -1215,12 +1215,14 @@ class Form {
 						YAHOO.util.Event.onDOMReady(function() {
 							var o = YAHOO.namespace("buttonObjects.'.$id.'");
 							YAHOO.buttonObjects.'.$id.' = new YAHOO.widget.Button("'.$id.'", { value: "'.addslashes($value).'" });
-							
+							//#PN_vs_GRIFO
+/*
 							$("button#' . $id . '-button").on( "click", function (event) {
                                 event.preventDefault();
                                 $("button#' . $id . '-button").closest("form").append(\'<input type="hidden" name="' . $id . '" value="'.addslashes($value).'" />\');
                                 $("button#' . $id . '-button").closest("form").submit();
                             });
+*/
 						});
 					})();
 					</script>', 'scripts');

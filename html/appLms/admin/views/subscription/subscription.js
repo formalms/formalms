@@ -153,6 +153,32 @@ var Subscription = {
 								}
 							});
 						});
+E.onAvailable("multimod_status", function() {
+	
+	E.addListener(this, "change", function() {
+		if (this.value == 2) {
+			var el = D.get("multimod_date_complete_set");
+			if (el) el.checked = true;
+			var m = D.get("multimod_date_complete");
+			if (m) m.disabled = false;
+			var c = D.get("calendar_button_multimod_date_complete-button");
+			if (c) c.disabled = false;
+		} else {
+			var el = D.get("multimod_date_complete_set");
+			if (el) el.checked = false;
+			var m = D.get("multimod_date_complete");
+			if (m) m.disabled = true;
+			var c = D.get("calendar_button_multimod_date_complete-button");
+			if (c) c.disabled = true;
+		}
+	});
+});
+E.onAvailable("multimod_date_complete", function() {
+		var m = D.get("multimod_date_complete");
+		if (m) m.disabled = true;
+		var c = D.get("calendar_button_multimod_date_complete-button");
+		if (c) c.disabled = true;
+});
 						E.onAvailable("multimod_date_expire_set", function() {
 							E.addListener(this, "click", function() {
 								if (this.checked) {

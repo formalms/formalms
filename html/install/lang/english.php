@@ -33,6 +33,8 @@ define("_SERVER_SOFTWARE","Server software : ");
 define("_PHPVERSION","PHP Version : ");
 define("_MYSQLCLIENT_VERSION","Mysql Client Version : ");
 define("_LDAP","Ldap : ");
+define("_FILEINFO","Fileinfo support ");
+define("_ONLY_IF_YU_WANT_TO_USE_FILEINFO","Consider this warning only if you need to use fileinfo ");
 define("_ONLY_IF_YU_WANT_TO_USE_IT","Consider this warning only if you need to use LDAP ");
 define("_OPENSSL","Openssl : ");
 define("_WARINNG_SOCIAL","Consider this warning only if you use social login");

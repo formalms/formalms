@@ -83,7 +83,7 @@ else {
 	<li><?php echo Lang::t('_SERVER_SOFTWARE'); ?>: <span><?php echo $_SERVER['SERVER_SOFTWARE']; ?></span></li>
 	<li class="<?php echo $cl['php']; ?>"><?php echo Lang::t('_PHPVERSION'); ?>: <span><?php echo phpversion(); ?></span></li>
 	<li class="<?php echo $cl['mysql']; ?>"><?php echo Lang::t('_MYSQLCLIENT_VERSION'); ?>: <span><?php
-	preg_match( '/([0-9]+\.[\.0-9]+)/', mysql_get_client_info(), $version );
+	preg_match( '/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $version );
 	echo ( empty($version[1]) ? 'unknow' : $version[1] ); ?></span></li>
 	<li class="<?php echo $cl['strict_mode']; ?>"><?php echo Lang::t('_SQL_STRICT_MODE'); ?>: <span><?php echo ($cl['strict_mode'] == 'ok' ? _OFF : _ON); ?></span></li>
 	<li class="<?php echo $cl['mbstring']; ?>"><?php echo Lang::t('_MBSTRING'); ?>: <span><?php echo (extension_loaded('mbstring') ? _ON : _OFF); ?></span></li>
