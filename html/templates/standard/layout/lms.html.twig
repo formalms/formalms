@@ -13,6 +13,7 @@
 {% endblock %}    
 
     {% block javascript %}
+        <script type="text/javascript" src="{{ evalPhp('Get::rel_path', ['base']) }}/lib/js_utils.js"></script>
         <script>
             $('document').ready(function() {
                 $('div.menu-area a').bind('click',function(event){
