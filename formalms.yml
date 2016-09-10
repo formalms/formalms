@@ -16,7 +16,7 @@ configuration:
   staging:
       domain: formalms.ppreview.it
       repo: git@bitbucket.org:purplenetwork/formalms.git
-      branch: dev
+      branch: grifo-02
       db_host: purple-stage-mysql.cw3niwyk1dxj.eu-west-1.rds.amazonaws.com
       db_name: formalms
       db_user: formalms_user
