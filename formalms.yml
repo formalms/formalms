@@ -15,16 +15,12 @@ configuration:
     - "rm -rf /var/www/html/formalms.ppreview.it/current/html/files/tmp/*"
   staging:
       domain: formalms.ppreview.it
-      repo: git@bitbucket.org:purplenetwork/formalms.git
-      branch: grifo-02
       db_host: purple-stage-mysql.cw3niwyk1dxj.eu-west-1.rds.amazonaws.com
       db_name: formalms
       db_user: formalms_user
       db_password: t33-ppeo78
   production:
-      domain: project4.com
-      repo: git@bitbucket.org:purplenetwork/sf2-skeleton.git
-      branch: master
+      domain: xxx.com
       db_host: db_host_ip_or_name
       db_name: mysql_db
       db_user: mysql_user
