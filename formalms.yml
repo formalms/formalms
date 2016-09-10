@@ -14,7 +14,7 @@ configuration:
       domain: formalms.ppreview.it
       db_host: purple-stage-mysql.cw3niwyk1dxj.eu-west-1.rds.amazonaws.com
       db_name: formalms
-      db_user: formalms_user
+      db_user: formalms_usr
       db_password: t33-ppeo78
   production:
       domain: xxx.com
