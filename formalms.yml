@@ -1,5 +1,5 @@
 configuration:
-  project_type: html
+  project_type: formalms
   run_composer: false
   shared_children:
     - path: "html/files"
@@ -10,9 +10,6 @@ configuration:
     - ".gitignore"
     - "formalms.yml"
     - "README.md"
-  custom_commands:
-    - "cd /var/www/html/formalms.ppreview.it/current/html/ && composer install"
-    - "rm -rf /var/www/html/formalms.ppreview.it/current/html/files/tmp/*"
   staging:
       domain: formalms.ppreview.it
       db_host: purple-stage-mysql.cw3niwyk1dxj.eu-west-1.rds.amazonaws.com
