@@ -183,6 +183,30 @@ class Mysql_DbConn extends DbConn {
 		return mysql_get_client_info();
 	}
 
+	public function get_server_info($resource){
+		return mysql_get_server_info($resource);
+	}
+
+	public function data_seek($resource, $row_number){
+		return mysql_data_seek($resource, $row_number);
+	}
+
+	public function field_seek($resource, $row_number){
+		return mysql_field_seek($resource, $row_number);
+	}
+
+	public function num_fields($resource){
+		return mysql_num_fields($resource);
+	}
+
+	public function fetch_field($resource){
+		return mysql_fetch_field($resource);
+	}
+
+	public function real_escape_string($resource, $escapestring){
+		return mysql_real_escape_string($resource, $escapestring);
+	}
+
 	public function start_transaction() {
 
 		return $this->query("START TRANSACTION");
