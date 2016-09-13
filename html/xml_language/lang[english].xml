@@ -79,7 +79,7 @@
         <key id="admin_directory&amp;_REFUSED_USER_TEXT_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[User has not been approved]]></key>
         <key id="admin_directory&amp;_REFUSE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Refuse]]></key>
         <key id="admin_directory&amp;_REFUSE_USER_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Refuse user registration request]]></key>
-        <key id="admin_directory&amp;_SIMPLE_FILTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Search in fields: userID, First Name or Last Name]]></key
+        <key id="admin_directory&amp;_SIMPLE_FILTER" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Search in fields: userID, First Name or Last Name]]></key
         <key id="admin_directory&amp;_WAITING_USER_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Users list with confirmed registration request and waiting for approval]]></key>
       </module>
       <module id="admin_lang">
@@ -245,7 +245,7 @@
         <key id="catalogue&amp;_COURSEPATH_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Your curriculum]]></key>
         <key id="catalogue&amp;_COURSEPATH_SUBSCRIBE_WIN_TIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Curricula Subscribe]]></key>
         <key id="catalogue&amp;_COURSEPATH_SUBSCRIBE_WIN_TXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Confirm your subscription to this Course Path:]]></key>
-        <key id="catalogue&amp;_COURSE_ADDED_IN_CART" attributes="" save_date="2015-10-05 00:00:00"><![CDATA[Course added to cart]]></key>
+        <key id="catalogue&amp;_COURSE_ADDED_IN_CART" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Course added to cart]]></key>
         <key id="catalogue&amp;_COURSE_AS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Courses where you are [level]]]></key>
         <key id="catalogue&amp;_COURSE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Courses you are subscribed to]]></key>
         <key id="catalogue&amp;_COURSE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Courses you have completed]]></key>
@@ -293,7 +293,7 @@
         <key id="certificate&amp;_ALT_TAKE_A_COPY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Publish a meta-certificate copy]]></key>
         <key id="certificate&amp;_BACK_IMAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Background image]]></key>
         <key id="certificate&amp;_BASE_LANGUAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificate language]]></key>          
-        <key id="certificate&amp;_CERTIFICATE_ASSIGN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificate assignment]]></key>   
+        <key id="certificate&amp;_CERTIFICATE_ASSIGN" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Certificate assignment]]></key>
         <key id="certificate&amp;_CERTIFICATE_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificate template list]]></key
         <key id="certificate&amp;_CERTIFICATE_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificates list]]></key>
         <key id="certificate&amp;_CERTIFICATE_REPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Released certificate]]></key>
@@ -377,12 +377,12 @@
         <key id="classroom&amp;_CITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[City]]></key>           
         <key id="classroom&amp;_CLASSROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Classroom]]></key>
         <key id="classroom&amp;_CLASSROOM_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Classroom caption]]></key>
-        <key id="classroom&amp;_DEL_CLASSROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Delete classroom]]></key>
+        <key id="classroom&amp;_DEL_CLASSROOM" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Delete classroom]]></key>
         <key id="classroom&amp;_DISPOSITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Layout]]></key>
         <key id="classroom&amp;_FAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fax]]></key>
         <key id="classroom&amp;_INSTRUMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Classroom hardware]]></key>
         <key id="classroom&amp;_LOCATION_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Location info]]></key>
-        <key id="classroom&amp;_MOD_CLASSROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Edit classroom]]></key>
+        <key id="classroom&amp;_MOD_CLASSROOM" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Edit classroom]]></key>
         <key id="classroom&amp;_NEW_CLASSROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[New classroom]]></key>
         <key id="classroom&amp;_PHONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Phone number]]></key>
         <key id="classroom&amp;_PHOTO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Photo]]></key>
@@ -394,7 +394,7 @@
       </module>
       <module id="code">
         <key id="code&amp;_CODE_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Code list]]></key>
-        <key id="code&amp;_CODE_USED_NUMBER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Number of uses]]></key
+        <key id="code&amp;_CODE_USED_NUMBER" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Number of uses]]></key
         <key id="code&amp;_UNLIMITED_USE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Unlimited use]]></key>
         <key id="code&amp;_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Used]]></key>
       </module>
@@ -652,11 +652,11 @@
         <key id="course&amp;_CASCADE_MOD_ON_EDITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Copy changes also to editions]]></key>
         <key id="course&amp;_CATEGORY_PATH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[You are in]]></key>
         <key id="course&amp;_CATEGORY_SELECTED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Selected category]]></key>
-        <key id="course&amp;_CERTIFICATE_ASSIGN_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificate release]]></key>
+        <key id="course&amp;_CERTIFICATE_ASSIGN_STATUS" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Certificate release]]></key>
         <key id="course&amp;_CERTIFICATE_EX_ASSIGN_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificate assignment for Excellence]]></key>
         <key id="course&amp;_CERTIFICATE_LANGUAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificate language]]></key>
         <key id="course&amp;_CERTIFICATE_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificate]]></key>
-        <key id="course&amp;_CERTIFICATE_RELEASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificates release]]></key>
+        <key id="course&amp;_CERTIFICATE_RELEASE" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Certificates release]]></key>
         <key id="course&amp;_CERTIFICATE_RELEASED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Number of released certificates]]></key>
         <key id="course&amp;_CLASSROOMTOCOURSE_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Classroom -> Course association]]></key>
         <key id="course&amp;_CLASSROOM_EDITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Classrooms/Editions]]></key>
@@ -765,7 +765,7 @@
         <key id="course&amp;_SC_EVERYWHERE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Everyone, and show on home page]]></key>
         <key id="course&amp;_SC_ONLYINSC_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Only users subscribed to the course]]></key>
         <key id="course&amp;_SC_ONLY_IN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Only for logged in users]]></key>
-        <key id="course&amp;_SELECT_DAYS_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Select course's days]]></key>
+        <key id="course&amp;_SELECT_DAYS_COURSE" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Select course's days]]></key>
         <key id="course&amp;_SELF_UNSUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Unsubscribe from the course]]></key>
         <key id="course&amp;_SHOW_ADVANCED_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Advanced course info]]></key>
         <key id="course&amp;_SHOW_COUNT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Show only number of connected users, but don't use Instant Messenger]]></key>
@@ -785,7 +785,7 @@
         <key id="course&amp;_SUBSCRIPTION_CLOSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Subscriptions are closed]]></key>
         <key id="course&amp;_SUBSCRIPTION_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Subscription successfull]]></key>
         <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[From]]></key>
-        <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN_FROM" attributes=""><![CDATA[Registration is open from]]></key>
+        <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN_FROM" save_date="2016-04-13 00:00:00" attributes=""><![CDATA[Registration is open from]]></key>
         <key id="course&amp;_SUBSCRIPTION_DATE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[To]]></key>
         <key id="course&amp;_SUBSCRIPTION_ERROR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Error during subscription]]></key>
         <key id="course&amp;_SUBSCRIPTION_IN_PERIOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Subscription is available during the following period]]></key>
@@ -874,13 +874,13 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="coursereport&amp;_TABLE_QUEST_CORRECT_ASS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Percentage of correct answers for link "[title]"]]></key>
         <key id="coursereport&amp;_TABLE_QUEST_CORRECT_TXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Percentage of correct answers after inserting text in phrase "[title]"]]></key>
         <key id="coursereport&amp;_TABLE_QUEST_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Insert list for question "[title]"]]></key>
-        <key id="coursereport&amp;_TEST_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Information about the test]]></key
+        <key id="coursereport&amp;_TEST_INFO" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Information about the test]]></key
         <key id="coursereport&amp;_TITLE_ACT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Activity title]]></key>
         <key id="coursereport&amp;_TOT_QUESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Total questions]]></key>
         <key id="coursereport&amp;_TQ_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Stats for test "[test]"]]></key>
         <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Use for final score]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Weight]]></key>
-        <key id="coursereport&amp;_TH_TEST_REPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Test report]]></key>
+        <key id="coursereport&amp;_TH_TEST_REPORT" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Test report]]></key>
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Add new course]]></key>
@@ -962,10 +962,7 @@ Username: [userid]]]></key>
         <key id="email&amp;_MOD_USER_SUBSCRIPTION_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Your subscription has been changed]]></key>
         <key id="email&amp;_MOD_USER_SUBSCRIPTION_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Your subscription at the course [course] at the address <a href="[url]">[url]</a> has been changed]]></key>
         <key id="email&amp;_NEW_FORUM" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[New forum]]></key>
-        <key id="email&amp;_NEW_FORUM_BODY" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[New forum added to the course '[course]' at the address <a href="[url]">[url]</a>
-
- Title: [title]
- [text]]]></key>
+        <key id="email&amp;_NEW_FORUM_BODY" attributes="email" save_date="2016-09-12 00:00:00"><![CDATA[New forum added to the course '[course]' at the address [url] Title: [title] [text]]]></key>
         <key id="email&amp;_NEW_MESSAGE_INSERT_IN_THREAD" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[There is a new message in a thread that you are following
  [url] > [course] > [forum_title] > [thread_title]]]></key>
         <key id="email&amp;_NEW_THREAD_INSERT_IN_FORUM" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[There is a new thread in
@@ -1180,6 +1177,7 @@ Password: [password]]]></key>
         <key id="glossary&amp;_TERM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Word]]></key>
         <key id="glossary&amp;_TERMDESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Word description]]></key>
         <key id="glossary&amp;_TERMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Terms]]></key>
+        <key id="glossary&amp;_PRIVATE_THREAD" attributes="" save_date="2016-09-12 00:00:00"><![CDATA[Private Thread]]></key>
       </module>
       <module id="gradebook">
         <key id="gradebook&amp;_GRADEBOOK_AREATITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Grade book]]></key>
@@ -1368,7 +1366,7 @@ To change these words please go to Admin/Language management, search for <b>logi
         <key id="login&amp;_SIGN_IN" attributes="" save_date="2015-04-21 00:00:00"><![CDATA[Register]]></key>
         <key id="login&amp;_SOCIALCONNECTKO" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Social id connection failed]]></key>
         <key id="login&amp;_SOCIALCONNECTOK" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Social id connection successs]]></key>
-        <key id="login&amp;_TWO_USERS_LOGGED_WITH_SAME_USERNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Another user has logged in with your username]]></key
+        <key id="login&amp;_TWO_USERS_LOGGED_WITH_SAME_USERNAME" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Another user has logged in with your username]]></key
         <key id="login&amp;_UNKNOWNSOCIALERROR" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Unknown error in social login]]></key>
         <key id="login&amp;_UNLOGGED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[You are logged out]]></key>
       </module>
@@ -1531,7 +1529,7 @@ To change these words please go to Admin/Language management, search for <b>logi
         <key id="organization&amp;_CONFIRM_EXIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Your progress will be saved.]]></key>
         <key id="organization&amp;_HIDETREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hide menu]]></key>
         <key id="organization&amp;_LOCKED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Blocked]]></key>
-        <key id="organization&amp;_NO_TEST_STATS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Statistics not available.]]></key>
+        <key id="organization&amp;_NO_TEST_STATS" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Statistics not available.]]></key>
         <key id="organization&amp;_OBJECTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objective]]></key>
         <key id="organization&amp;_ORGANIZATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lectures]]></key>
         <key id="organization&amp;_ORGISTERMINATOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[End object marker]]></key>
@@ -2372,7 +2370,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_SAVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Save changes]]></key>
         <key id="standard&amp;_SCHEDULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Schedule]]></key>
         <key id="standard&amp;_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Score]]></key>
-        <key id="standard&amp;_SCORE_LAST_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Score last test]]></key>
+        <key id="standard&amp;_SCORE_LAST_TEST" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Score last test]]></key>
         <key id="standard&amp;_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Search]]></key>
         <key id="standard&amp;_SECONDS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[seconds]]></key>
         <key id="standard&amp;_SELECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Select]]></key>
@@ -2439,8 +2437,8 @@ Password: [password]]]></key>
         <key id="standard&amp;_USER_STATUS_SUSPEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Suspended]]></key>
         <key id="standard&amp;_VERSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Version]]></key>
         <key id="standard&amp;_VIDEOCONFERENCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Video conference]]></key>
-        <key id="standard&amp;_VIEW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[View]]></key>                       
-        <key id="standard&amp;_VIEW_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[View All]]></key>
+        <key id="standard&amp;_VIEW" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[View]]></key>
+        <key id="standard&amp;_VIEW_ALL" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[View All]]></key>
         <key id="standard&amp;_VIEW_PERMISSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Edit view rights]]></key>
         <key id="standard&amp;_WAITING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Waiting]]></key>
         <key id="standard&amp;_WAITING_USERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Waiting users]]></key>
@@ -2500,6 +2498,7 @@ Password: [password]]]></key>
         <key id="stats&amp;_STATSUSERITEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Stats by Student/Object]]></key>
         <key id="stats&amp;_STATS_FULLNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fullname]]></key>
         <key id="stats&amp;_STATS_USERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Users stats]]></key>
+        <key id="stats&amp;_VIEW_OPEN_QUEST" attributes="" save_date="2016-09-12 00:00:00"><![CDATA[View the answers to the open questions]]></key>
       </module>
       <module id="storage">
         <key id="storage&amp;_HOMEREPOROOTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[My Objects]]></key>
@@ -2605,7 +2604,7 @@ Password: [password]]]></key>
         <key id="test&amp;_HARD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hard]]></key>
         <key id="test&amp;_MANDATORY_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ask the user to answer all questions]]></key>
         <key id="test&amp;_MAX_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximum number of attempts to answer the test (set 0 for no limits)]]></key>
-        <key id="test&amp;_MAX_ATTEMPT_REACH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[The maximum number of attempt has been reached.]]></key>
+        <key id="test&amp;_MAX_ATTEMPT_REACH" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[The maximum number of attempt has been reached.]]></key>
         <key id="test&amp;_NEED_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[You must answer all questions to proceed with the test.]]></key>
         <key id="test&amp;_NEW_SCORE_FOR_QUESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Assign a new score for this question]]></key>
         <key id="test&amp;_NEW_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[As a new test]]></key>
@@ -2792,7 +2791,7 @@ Password: [password]]]></key>
         <key id="test&amp;_USE_SUSPENSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Use test suspension]]></key>
         <key id="test&amp;_VERY_HARD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Very hard]]></key>
         <key id="test&amp;_YES_IF_PASSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yes, if the test has been passed]]></key>
-        <key id="test&amp;_YOU_HAVE_PASS_THIS_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[You passed this test]]></key>
+        <key id="test&amp;_YOU_HAVE_PASS_THIS_TEST" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[You passed this test]]></key>
       </module>
       <module id="transaction">
         <key id="transaction&amp;_MARK_AS_PAID" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mark as paid]]></key>

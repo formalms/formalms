@@ -1,6 +1,10 @@
 configuration:
   project_type: html
   run_composer: false
+  shared_children:
+    - path: "html/files"
+      src: "html/files"
+      type: "directory"
   ignore:
     - ".git"
     - ".gitignore"
@@ -8,7 +12,7 @@ configuration:
     - "README.md"
   custom_commands:
     - "cd /var/www/html/formalms.ppreview.it/current/html/ && composer install"
-    - "chmod -R 777 /var/www/html/formalms.ppreview.it/current/html/files/tmp"
+#    - "chmod -R 777 /var/www/html/formalms.ppreview.it/current/html/files/tmp"
   staging:
       domain: formalms.ppreview.it
       repo: git@bitbucket.org:purplenetwork/formalms.git
