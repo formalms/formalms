@@ -13,8 +13,6 @@
 
 if (Docebo::user()->isAnonymous()) die("You can't access");
 
-use appCore\Events\DispatcherManager;
-use appLms\Events\Lms\CourseTestReportEvent;
 
 function testreport($idTrack, $idTest, $testName, $studentName)
 {
@@ -47,41 +45,33 @@ function testreport($idTrack, $idTest, $testName, $studentName)
         . getBackUi("javascript:history.go(-1)", Lang::t('_BACK', 'standard'))
     );
 
-    $event = new CourseTestReportEvent();
-
     $tb = new Table(0, $testName . ' : ' . $studentName);
 
     $tableHeaderArray = array(
         'N.',
         $lang->def('_DATE'),
         $lang->def('_SCORE'),
-        $lang->def('_STATISTICS'));
+        $lang->def('_STATISTICS'),
+		$lang->def('_DELETE'));
 
-    $event->setTableHeaderArray($tableHeaderArray);
 
-    \appLms\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseTestReportEvent::EVENT_NAME_ACTION_HEADER, $event);
 
     $tb->addHead($tableHeaderArray, array('min-cell', '', ''));
 
     $i = 1;
     while (list($date_attempt, $score, $idTest, $idUser, $number_time) = sql_fetch_row($re_testreport)) {
 
-        $tableBodyArray = array($i++, $date_attempt, $score, '<a class="ico-sprite subs_chart" href="index.php?modname=coursereport&op=testreview&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '">><span>Statistiche</span></a>','<a class="ico-sprite subs_chart" href="index.php?modname=coursereport&op=testreview&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '">><span>Statistiche</span></a>');
+        $tableBodyArray = array(
+        	$i++,
+			$date_attempt,
+			$score,
+			'<a class="ico-sprite subs_chart" href="index.php?modname=coursereport&op=testreview&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>'.$lang->def('_STATISTICS').'</span></a>',
+			'<a class="ico-sprite subs_del" href="index.php?modname=coursereport&op=testdelete&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>'.$lang->def('_DELETE').'</span></a>');
 
-        $event->setTableBodyArray($tableBodyArray);
-
-        $tb->addBody($event->getTableBodyArray());
+        $tb->addBody($tableBodyArray);
     }
 
 
-    /*$event = new \appLms\Events\Lms\UserListEvent($out,$lang);
-
-	$event->setIdEvent($id_event);
-
-	\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\UserListEvent::EVENT_NAME, $event);
-
-	$out->add($event->getExportLink(),'content');
-    */
     $out->add(
         $tb->getTable()
         . '</div>'
@@ -1544,6 +1534,30 @@ function testreview()
             . '</div>'
         );
     }
+}
+
+function testDelete() {
+
+    checkPerm('mod');
+
+    require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
+    require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
+    require_once(_base_ . '/lib/lib.form.php');
+
+
+    $id_test = importVar('id_test', true, 0);
+    $id_track = importVar('idTrack', true, 0);
+    $id_user = importVar('id_user', true, 0);
+    $number_time = importVar('number_time', true, null);
+    $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
+    $out =& $GLOBALS['page'];
+    $out->setWorkingZone('content');
+
+    $acl_man = Docebo::user()->getAclManager();
+    $test_man = new GroupTestManagement();
+
+    $test_man->deleteTestTrack($id_test,$id_user,$id_track);
+
 }
 
 function finalvote()
@@ -3313,6 +3327,10 @@ function coursereportDispatch($op)
         case "testreview" : {
             testreview();
         };
+            break;
+        case "testdelete" : {
+            testDelete();
+        }
             break;
         case "testQuestion" :
             testQuestion();

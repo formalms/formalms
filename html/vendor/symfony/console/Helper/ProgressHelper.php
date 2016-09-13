@@ -12,6 +12,7 @@
 namespace Symfony\Component\Console\Helper;
 
 use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Exception\LogicException;
 
@@ -194,6 +195,10 @@ class ProgressHelper extends Helper
      */
     public function start(OutputInterface $output, $max = null)
     {
+        if ($output instanceof ConsoleOutputInterface) {
+            $output = $output->getErrorOutput();
+        }
+
         $this->startTime = time();
         $this->current = 0;
         $this->max = (int) $max;
@@ -367,8 +372,6 @@ class ProgressHelper extends Helper
         }
 
         if (isset($this->formatVars['bar'])) {
-            $completeBars = 0;
-
             if ($this->max > 0) {
                 $completeBars = floor($percent * $this->barWidth);
             } else {
