@@ -2,12 +2,10 @@
 
 include('bootstrap.php');
 require('../config.php');
+include_once(_base_."/db/lib.docebodb.php");
 
-$db = mysql_connect($cfg['db_host'], $cfg['db_user'], $cfg['db_pass']);
-mysql_select_db($cfg['db_name']);
-
-mysql_query("SET NAMES 'utf8'");
-mysql_query("SET CHARACTER SET 'utf8'");
+sql_query("SET NAMES 'utf8'");
+sql_query("SET CHARACTER SET 'utf8'");
 
 $enabled_step = 5;
 $current_step = Get::gReq('cur_step', DOTY_INT);
@@ -123,10 +121,9 @@ if ($_SESSION['upgrade_ok']) {
 // Save version number if upgrade was successfull:
 if ($_SESSION['upgrade_ok']) {
 	$qtxt ="UPDATE core_setting SET param_value = '".$formalms_version."' WHERE param_name = 'core_version' ";
-	$q =mysql_query($qtxt);
+	$q =sql_query($qtxt);
 }
 
-mysql_close($db);
 
 
 

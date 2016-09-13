@@ -309,13 +309,61 @@ class DbConn {
 	 */
 	public function error() {}
 
+    /**
+     * Will free all memory associated with the result identifier result.
+     * @return string
+     */
+    public function free_result($res) {}
+
+    /**
+     * Will free all memory associated with the result identifier result.
+     * @return string
+     */
+    public function get_client_info() {}
+
 	/**
 	 * Close the connection with the dbms
 	 * @return string
 	 */
 	public function close() {}
 
-	/**
+    /**
+     * get_info todo:edit
+     * @return string
+     */
+    public function get_server_info(){}
+
+    /**
+     * data_seek info todo:edit
+     * @return string
+     */
+    public function data_seek(){}
+
+    /**
+     * field_seek info todo:edit
+     * @return string
+     */
+    public function field_seek(){}
+
+    /**
+	 * num_field info todo:edit
+	 * @return string
+	 */
+    public function num_fields(){}
+
+    /**
+	 * fetch_field info todo:edit
+	 * @return string
+	 */
+    public function fetch_field(){}
+
+    /**
+	 * real_escape_string info todo:edit
+	 * @return string
+	 */
+    public function real_escape_string(){}
+
+    /**
 	 * Return the current time
 	 * @return float
 	 */
@@ -397,4 +445,65 @@ function  sql_escape_string($res, $conn = false)
 	return $re;
 }
 
+function  sql_error(){
+    $db = DbConn::getInstance();
+    $re = $db->error();
+    return $re;
+}
+
+function sql_free_result($res, $conn = false){
+    $db = DbConn::getInstance();
+    $re = $db->free_result($res);
+    return $re;
+}
+
+function  sql_get_client_info(){
+    $db = DbConn::getInstance();
+    $re = $db->get_client_info();
+    return $re;
+}
+
+function sql_get_server_info(){
+    $db = DbConn::getInstance();
+    $re = $db->get_server_info();
+    return $re;
+}
+
+function sql_data_seek(){
+    $db = DbConn::getInstance();
+    $re = $db->data_seek();
+    return $re;
+}
+
+function sql_errno(){
+    $db = DbConn::getInstance();
+    $re = $db->errno();
+    return $re;
+}
+
+function sql_affected_rows(){
+    $db = DbConn::getInstance();
+    $re = $db->affected_rows();
+    return $re;
+}
+function sql_field_seek(){
+    $db = DbConn::getInstance();
+    $re = $db->field_seek();
+    return $re;
+}
+function sql_num_field(){
+    $db = DbConn::getInstance();
+    $re = $db->num_field();
+    return $re;
+}
+function sql_fetch_field(){
+    $db = DbConn::getInstance();
+    $re = $db->fetch_field();
+    return $re;
+}
+function sql_real_escape_string(){
+    $db = DbConn::getInstance();
+    $re = $db->real_escape_string();
+    return $re;
+}
 ?>

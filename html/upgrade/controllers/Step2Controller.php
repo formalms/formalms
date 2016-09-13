@@ -46,34 +46,8 @@ Class Step2Controller extends StepController {
 		return ($next_step);
 	}
 
-
-	function connectToDb() {
-		require_once(_base_.'/config.php');
-
-		if (isset($GLOBALS['dbhost'])) {
-			$_SESSION['db_info']['db_host'] = $GLOBALS['dbhost']; //$cfg['db_host'];
-			$_SESSION['db_info']['db_user'] = $GLOBALS['dbuname']; //$cfg['db_user'];
-			$_SESSION['db_info']['db_pass'] = $GLOBALS['dbpass']; //$cfg['db_pass'];
-			$_SESSION['db_info']['db_name'] = $GLOBALS['dbname']; //$cfg['db_name'];
-		}
-		else if (isset($GLOBALS['cfg']['db_host'])) {
-			$_SESSION['db_info']['db_host'] = $GLOBALS['cfg']['db_host'];
-			$_SESSION['db_info']['db_user'] = $GLOBALS['cfg']['db_user'];
-			$_SESSION['db_info']['db_pass'] = $GLOBALS['cfg']['db_pass'];
-			$_SESSION['db_info']['db_name'] = $GLOBALS['cfg']['db_name'];
-		}
-
-		$db = mysql_connect($_SESSION['db_info']['db_host'], $_SESSION['db_info']['db_user'], $_SESSION['db_info']['db_pass']);
-		mysql_select_db($_SESSION['db_info']['db_name']);
-
-		return $db;
-	}
-
-
 	public function getCurrentVersion() {
-		$db =$this->connectToDb();
-		list($current_version) = mysql_fetch_row(mysql_query("SELECT param_value FROM core_setting WHERE param_name = 'core_version' "));
-		mysql_close($db);
+		list($current_version) = sql_fetch_row(sql_query("SELECT param_value FROM core_setting WHERE param_name = 'core_version' "));
 
 		$current_version =getVersionIntNumber($current_version);
 
@@ -107,7 +81,7 @@ Class Step2Controller extends StepController {
 		$res['php']=((version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '5.5.0', '<')) ? 'ok' :
                      ((version_compare(PHP_VERSION, '5.5.0', '>=') && version_compare(PHP_VERSION, '5.7.0', '<')) ? 'warn' :  'err' ));
 		// mysql client version, in php the version number is a string regcut it
-		preg_match( '/([0-9]+\.[\.0-9]+)/', mysql_get_client_info(), $version );
+		preg_match( '/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $version );
 		if(empty($version[1])) $res['mysql']='ok';
 		else $res['mysql']=(version_compare($version[1], '5.0') >= 0 ? 'ok' : 'err');
 		$res['xml']=(extension_loaded('domxml') ? 'ok' : 'err');
@@ -147,18 +121,13 @@ Class Step2Controller extends StepController {
 
 
 	function checkStrictMode() {
-		$db =$this->connectToDb();
-
 		$qtxt ="SELECT @@GLOBAL.sql_mode AS res";
-		$q =mysql_query($qtxt, $db);
-		list($r1)=mysql_fetch_row($q);
+		$q =sql_query($qtxt);
+		list($r1)=sql_fetch_row($q);
 		$qtxt ="SELECT @@SESSION.sql_mode AS res";
-		$q =mysql_query($qtxt, $db);
-		list($r2)=mysql_fetch_row($q);
+		$q =sql_query($qtxt);
+		list($r2)=sql_fetch_row($q);
 		$res =((strpos($r1.$r2, 'STRICT_') === false) ? true : false);
-
-		mysql_close($db);
-
 		return $res;
 	}
 

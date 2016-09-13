@@ -10,7 +10,7 @@
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
-
+include_once(_base_."/db/lib.docebodb.php");
 Class StepController {
 
 	public $step = 0;

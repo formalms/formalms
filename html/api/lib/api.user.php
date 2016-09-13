@@ -52,7 +52,18 @@ class User_API extends API {
 		$userdata = (!isset($userdata['userid'])&&isset($params)) ?$params:$userdata;
 		
 		if (!isset($userdata['userid'])) return false;
-
+                
+                if (!isset($userdata['sendmail']) || $userdata['sendmail'] == "") {
+                        $sendMailToUser = false;
+                } else {
+                        $sendMailToUser = true;
+                }
+                
+                if (!isset($userdata['password']) || $userdata['password'] == "") {
+			$userdata['password'] = mt_rand();
+                        $sendMailToUser = true;
+		}
+                
 		$id_user = $this->aclManager->registerUser(
 			$userdata['userid'],
 			(isset($userdata['firstname']) ? $userdata['firstname'] : '' ),
@@ -63,7 +74,8 @@ class User_API extends API {
 			(isset($userdata['signature']) ? $userdata['signature'] : ''),
 			false, // alredy_encripted
 			$set_idst,
-			(isset($userdata['pwd_expire_at']) ? $userdata['pwd_expire_at'] : '')
+			(isset($userdata['pwd_expire_at']) ? $userdata['pwd_expire_at'] : ''),
+			(isset($userdata['force_change']) ? $userdata['force_change'] : 0)
 		);
 
 		//evento registrazione utente tramite api
@@ -190,6 +202,27 @@ class User_API extends API {
 
 		}
 
+                if ($sendMailToUser) {
+                    // Send Message
+                    require_once(_base_.'/lib/lib.eventmanager.php');
+
+                    $array_subst = array(
+                            '[url]' => Get::sett('url'),
+                            '[userid]' => $userdata['userid'],
+                            '[password]' => $userdata['password']
+                    );
+
+                    $e_msg = new EventMessageComposer();
+                    $e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
+                    $e_msg->setBodyLangText('email', '_REGISTERED_USER_TEXT', $array_subst );
+
+                    $recipients = array($id_user);
+
+                    if(!empty($recipients)) {
+                                    createNewAlert( 'UserNewApi', 'directory', 'edit', '1', 'New user created API', $recipients, $e_msg  );
+                    }
+                }
+                
 		return $id_user;
 	}
 

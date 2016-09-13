@@ -225,11 +225,11 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 		$arr_id = $this->get_row_bypk($pk);
 		
 		if(!$arr_id || ($arr_id['idst_user'] == '')) {
-			$this->last_error = 'not found the requested user '.mysql_error();
+			$this->last_error = 'not found the requested user '.sql_error();
 			return false;
 		}
 		if($arr_id['id_course'] == '') {
-			$this->last_error = 'not found the requested course '.mysql_error();
+			$this->last_error = 'not found the requested course '.sql_error();
 			return false;
 		}
 		if (!$row['level'])
@@ -265,7 +265,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 			}
 		} else {
 			
-			$this->last_error = 'error on user course subscription : '.mysql_error();
+			$this->last_error = 'error on user course subscription : '.sql_error();
 		}*/
 		return $re_ins;
 	}

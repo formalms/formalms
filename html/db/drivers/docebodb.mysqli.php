@@ -172,6 +172,38 @@ class mysqli_DbConn extends DbConn {
 		return mysqli_error($this->conn);
 	}
 
+	public function free_result($resource) {
+		return mysqli_free_result($resource);
+	}
+
+	public function get_client_info() {
+		return mysqli_get_client_info();
+	}
+
+	public function get_server_info($resource){
+		return mysqli_get_server_info($resource);
+	}
+
+	public function data_seek($resource, $row_number){
+		return mysqli_data_seek($resource, $row_number);
+	}
+
+	public function field_seek($resource, $row_number){
+		return mysqli_field_seek($resource, $row_number);
+	}
+
+	public function num_fields($resource){
+		return mysqli_num_fields($resource);
+	}
+
+	public function fetch_field($resource){
+		return mysqli_fetch_field($resource);
+	}
+
+	public function real_escape_string($resource, $escapestring){
+		return mysqli_real_escape_string($resource, $escapestring);
+	}
+
 	public function start_transaction() {
 
 		return $this->query("START TRANSACTION");
