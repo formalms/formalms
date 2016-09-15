@@ -52,8 +52,7 @@ function testreport($idTrack, $idTest, $testName, $studentName)
         $lang->def('_DATE'),
         $lang->def('_SCORE'),
         $lang->def('_STATISTICS'),
-		$lang->def('_DELETE'));
-
+        $lang->def('_DELETE'));
 
 
     $tb->addHead($tableHeaderArray, array('min-cell', '', ''));
@@ -62,11 +61,11 @@ function testreport($idTrack, $idTest, $testName, $studentName)
     while (list($date_attempt, $score, $idTest, $idUser, $number_time) = sql_fetch_row($re_testreport)) {
 
         $tableBodyArray = array(
-        	$i++,
-			$date_attempt,
-			$score,
-			'<a class="ico-sprite subs_chart" href="index.php?modname=coursereport&op=testreview&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>'.$lang->def('_STATISTICS').'</span></a>',
-			'<a class="ico-sprite subs_del" href="index.php?modname=coursereport&op=testdelete&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>'.$lang->def('_DELETE').'</span></a>');
+            $i++,
+            $date_attempt,
+            $score,
+            '<a class="ico-sprite subs_chart" href="index.php?modname=coursereport&op=testreview&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>' . $lang->def('_STATISTICS') . '</span></a>',
+            '<a class="ico-sprite subs_del" href="index.php?modname=coursereport&op=testreview&delete_track=' . md5($idTest . "_" . $idUser . "_" . $number_time) . '&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>' . $lang->def('_DELETE') . '</span></a>');
 
         $tb->addBody($tableBodyArray);
     }
@@ -1467,11 +1466,14 @@ function testreview()
 
     // XXX: Initializaing
     $id_test = importVar('id_test', true, 0);
-    $idTrack = importVar('idTrack', true, 0);
+    $id_track = importVar('idTrack', true, 0);
     $number_time = importVar('number_time', true, null);
+    $delete = importVar('delete_track', false, null);
+
     $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
     $out =& $GLOBALS['page'];
     $out->setWorkingZone('content');
+
 
     // XXX: Instance management
     $acl_man = Docebo::user()->getAclManager();
@@ -1523,20 +1525,71 @@ function testreview()
         $out->add(
             getTitleArea($page_title, 'coursereport')
             . '<div class="std_block">'
-            . Form::openForm('test_vote', 'index.php?modname=coursereport&op=testreport&idTest=' . $id_test . '&idTrack=' . $idTrack)
+            . Form::openForm('test_vote', 'index.php?modname=coursereport&op=testreport&idTest=' . $id_test . '&idTrack=' . $id_track)
         );
         $test_man->editReview($id_test, $id_user, $number_time, false);
         $out->add(
             Form::openButtonSpace()
             . Form::getButton('go_back', 'go_back', $lang->def('_UNDO'))
+
+        );
+    }
+
+    if ($delete == md5($id_test . "_" . $id_user . "_" . $number_time)) {
+
+        $out->add('<button type="button" class="btn btn-default" data-toggle="modal" data-target="#delete_test_track_modal">' . $lang->def('_DELETE_TEST_TRACK') . '</button>'
             . Form::closeButtonSpace()
             . Form::closeForm()
             . '</div>'
         );
+
+        $modal = '<div class="modal fade" tabindex="-1" role="dialog" id="delete_test_track_modal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">' . $lang->def('_DELETE_TEST_TRACK_MODAL_TITLE') . '</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>' . $lang->def("_DELETE_TEST_TRACK_MODAL_BODY") . '</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">' . $lang->def('_CLOSE') . '</button>
+                                    <button id="detele-test-track" type="button" class="btn btn-default">' . $lang->def('_DELETE') . '</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                      </div><!-- /.modal-dialog -->
+                  </div><!-- /.modal -->';
+
+        $modal .= '<script type="text/javascript">
+                           $( document ).ready(function() {
+                               
+                               $("#detele-test-track").on( "click", function(event) {
+                                   
+                                   event.preventDefault();
+                                   
+                                   window.location.href = "index.php?modname=coursereport&op=testdelete&delete_track=' . md5($id_test . "_" . $id_user . "_" . $number_time) . '&id_test=' . $id_test . '&id_user=' . $id_user . '&number_time=' . $number_time . '&idTrack=' . $id_track . '";
+                               });
+                               
+                               
+                               $("#delete_test_track_modal").modal("show");
+                           });
+
+                    </script>';
+        $out->add($modal);
+
+    } else {
+        $out->add(Form::closeButtonSpace()
+            . Form::closeForm()
+            . '</div>');
     }
 }
 
-function testDelete() {
+/**
+ * Mostra la view di riepilogo del test con il pulsante per l'eliminazione del test.
+ */
+function testDelete()
+{
 
     checkPerm('mod');
 
@@ -1544,20 +1597,26 @@ function testDelete() {
     require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
     require_once(_base_ . '/lib/lib.form.php');
 
-
+    // XXX: Initializaing
     $id_test = importVar('id_test', true, 0);
     $id_track = importVar('idTrack', true, 0);
-    $id_user = importVar('id_user', true, 0);
     $number_time = importVar('number_time', true, null);
+    $delete = importVar('delete_track', false, null);
+    $id_user = importVar('id_user', true, 0);
+
     $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
     $out =& $GLOBALS['page'];
     $out->setWorkingZone('content');
 
-    $acl_man = Docebo::user()->getAclManager();
-    $test_man = new GroupTestManagement();
+    if ($delete == md5($id_test . "_" . $id_user . "_" . $number_time)) {
 
-    $test_man->deleteTestTrack($id_test,$id_user,$id_track);
+        $test_man = new GroupTestManagement();
 
+        $test_man->deleteReview($id_test, $id_user, $id_track, $number_time);
+    }
+    else {
+        die("You can't access");
+    }
 }
 
 function finalvote()
