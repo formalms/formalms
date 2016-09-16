@@ -53,8 +53,9 @@ function retriveTrack($id_reference, $id_test, $id_user, $do_not_create = false)
     return $id_track;
 }
 
-function intro($object_test, $id_param)
+function intro($object_test, $id_param, $deleteLastTrack = false)
 {
+
     if (!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
 
     require_once(_base_ . '/lib/lib.form.php');
@@ -332,24 +333,146 @@ function intro($object_test, $id_param)
     }
 
     if ($score_status == 'not_complete') {
-        $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_BEGIN')), 'content');
+
+        if ($object_test instanceof Learning_Test360) {
+
+            require_once($GLOBALS['where_lms'] . '/class.module/track.test.php');
+            require_once($GLOBALS['where_lms'] . '/modules/test/do.test.php');
+
+            list($max_daily_test_auto, $max_daily_test_etero, $author) = sql_fetch_row(sql_query("SELECT max_daily_test_auto, max_daily_test_etero, author FROM " . $GLOBALS['prefix_lms'] . "_test WHERE idTest = '" . $id_test . "'"));
+
+            list($number_of_save, $number_of_attempt) = sql_fetch_row(sql_query("SELECT number_of_save, number_of_attempt FROM " . $GLOBALS['prefix_lms'] . "_testtrack WHERE idTest = " . $id_test . " AND idTrack=" . $id_track . " AND idUser=" . Docebo::user()->getIdst()));
+
+            if ($author == Docebo::user()->getIdst()) {
+                if ($max_daily_test_auto > 0 && $number_of_save >= $max_daily_test_auto) {
+
+                    $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
+                } else {
+                    $GLOBALS['page']->add(Form::getButton('begin', 'begin', $lang->def('_TEST_BEGIN')), 'content');
+                }
+            } else {
+                if ($max_daily_test_etero > 0 && $number_of_save >= $max_daily_test_etero) {
+
+                    $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
+                } else {
+                    $GLOBALS['page']->add(Form::getButton('begin', 'begin', $lang->def('_TEST_BEGIN')), 'content');
+                }
+            }
+        } //--- and check max attempts
+        else {
+            $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_BEGIN')), 'content');
+        }
+
     } elseif ($is_end) {
         if ($_SESSION['levelCourse'] > '3') {
-            $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_RESTART')), 'content');
-        } elseif (str_replace('incomplete', '', $prerequisite) !== $prerequisite)
-            ($incomplete
-                ? $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_RESTART')), 'content')
-                : $GLOBALS['page']->add($lang->def('_TEST_COMPLETED'), 'content'));
-        elseif (str_replace('NULL', '', $prerequisite) !== $prerequisite)
-            ($score_status !== 'valid' && $score_status !== 'passed'
-                ? $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_RESTART')), 'content')
-                : $GLOBALS['page']->add($lang->def('_TEST_COMPLETED'), 'content'));
-        else
+
+            if ($object_test instanceof Learning_Test360) {
+
+                require_once($GLOBALS['where_lms'] . '/class.module/track.test.php');
+                require_once($GLOBALS['where_lms'] . '/modules/test/do.test.php');
+
+                list($max_daily_test_auto, $max_daily_test_etero, $author) = sql_fetch_row(sql_query("SELECT max_daily_test_auto, max_daily_test_etero, author FROM " . $GLOBALS['prefix_lms'] . "_test WHERE idTest = '" . $id_test . "'"));
+
+                list($number_of_save, $number_of_attempt) = sql_fetch_row(sql_query("SELECT number_of_save, number_of_attempt FROM " . $GLOBALS['prefix_lms'] . "_testtrack WHERE idTest = " . $id_test . " AND idTrack=" . $id_track . " AND idUser=" . Docebo::user()->getIdst()));
+
+                if ($author == Docebo::user()->getIdst()) {
+                    if ($max_daily_test_auto > 0 && $number_of_save >= $max_daily_test_auto) {
+
+                        $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
+                    } else {
+                        $GLOBALS['page']->add(Form::getButton('begin', 'begin', $lang->def('_TEST_BEGIN')), 'content');
+                    }
+                } else {
+                    if ($max_daily_test_etero > 0 && $number_of_save >= $max_daily_test_etero) {
+
+                        $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
+                    } else {
+                        $GLOBALS['page']->add(Form::getButton('begin', 'begin', $lang->def('_TEST_BEGIN')), 'content');
+                    }
+                }
+            } //--- and check max attempts
+            else {
+                $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_RESTART')), 'content');
+            }
+
+        } else if (str_replace('incomplete', '', $prerequisite) !== $prerequisite) {
+            if ($incomplete) {
+                $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_RESTART')), 'content');
+            } else {
+                $GLOBALS['page']->add($lang->def('_TEST_COMPLETED'), 'content');
+
+                if ($object_test instanceof Learning_Test360) {
+
+                    $event = new appLms\Events\Lms\TestCompletedEvent($object_test, Docebo::user()->getIdst(), Docebo::user()->getAclManager());
+
+                    $event->setLang($lang);
+
+                    $event->setTestScore($tests_score[$id_test][Docebo::user()->getIdst()]['comment']);
+
+                    $event->setTestDate(date('Y-m-d H:i:s'));
+
+                    \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCompletedEvent::EVENT_NAME, $event);
+                }
+            }
+        } else if (str_replace('NULL', '', $prerequisite) !== $prerequisite) {
+            if ($score_status !== 'valid' && $score_status !== 'passed') {
+                $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_RESTART')), 'content');
+            } else {
+                $GLOBALS['page']->add($lang->def('_TEST_COMPLETED'), 'content');
+
+                if ($object_test instanceof Learning_Test360) {
+
+                    $event = new appLms\Events\Lms\TestCompletedEvent($object_test, Docebo::user()->getIdst(), Docebo::user()->getAclManager());
+
+                    $event->setLang($lang);
+
+                    $event->setTestScore($tests_score[$id_test][Docebo::user()->getIdst()]['comment']);
+
+                    $event->setTestDate(date('Y-m-d H:i:s'));
+
+                    \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCompletedEvent::EVENT_NAME, $event);
+                }
+            }
+        } else
             $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_RESTART')), 'content');
     } else {
 
-        resetTrack($object_test, $id_track);
-        $GLOBALS['page']->add(Form::getButton('begin', 'begin', $lang->def('_TEST_BEGIN')), 'content');
+        //--- check max attempts  ----------------------------
+        if ($object_test instanceof Learning_Test360) {
+
+            require_once($GLOBALS['where_lms'] . '/class.module/track.test.php');
+            require_once($GLOBALS['where_lms'] . '/modules/test/do.test.php');
+
+            list($max_daily_test_auto, $max_daily_test_etero, $author) = sql_fetch_row(sql_query("SELECT max_daily_test_auto, max_daily_test_etero, author FROM " . $GLOBALS['prefix_lms'] . "_test WHERE idTest = '" . $id_test . "'"));
+            //SELECT count(*) FROM `learning_testtrack` WHERE `date_attempt` >= '2016-09-15' AND `date_attempt` < "2016-09-16"
+
+            $queryAttempts = "SELECT count(*) FROM " . $GLOBALS['prefix_lms'] .
+                "_testtrack WHERE idTest = " . $id_test . " AND idTrack=" . $id_track .
+                " AND idUser=" . Docebo::user()->getIdst() .
+                " AND `date_attempt` >=" . date('Y-m-d') . " AND `date_attempt` <" . date("Y-m-d", time() + 86400);
+
+            list($number_of_attempt) = sql_fetch_row(sql_query($queryAttempts));
+
+            if ($author == Docebo::user()->getIdst()) {
+                if ($max_daily_test_auto > 0 && $number_of_attempt >= $max_daily_test_auto) {
+
+                    $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
+                } else {
+                    $GLOBALS['page']->add(Form::getButton('begin', 'begin', $lang->def('_TEST_BEGIN')), 'content');
+                }
+            } else {
+                if ($max_daily_test_etero > 0 && $number_of_attempt >= $max_daily_test_etero) {
+
+                    $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
+                } else {
+                    $GLOBALS['page']->add(Form::getButton('begin', 'begin', $lang->def('_TEST_BEGIN')), 'content');
+                }
+            }
+        } //--- and check max attempts
+        else {
+            resetTrack($object_test, $id_track);
+            $GLOBALS['page']->add(Form::getButton('begin', 'begin', $lang->def('_TEST_BEGIN')), 'content');
+        }
     }
     $GLOBALS['page']->add(
         '</div>'
@@ -456,6 +579,11 @@ function playTestDispatch($object_test, $id_param)
         showResult($object_test, $id_param);
     } else {
 
+        if ($object_test instanceof Learning_Test360) {
+            if (isset($_POST['deleteandbegin'])) {
+                deleteUserReport(Docebo::user()->getIdst(), $id_test, $id_test);
+            }
+        }
         // play test
         play($object_test, $id_param);
     }
@@ -469,6 +597,7 @@ function play($object_test, $id_param)
     require_once($GLOBALS['where_lms'] . '/class.module/track.test.php');
     require_once($GLOBALS['where_lms'] . '/lib/lib.param.php');
     require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
+
 
     if (!isset($_SESSION['test_date_begin']))
         $_SESSION['test_date_begin'] = date('Y-m-d H:i:s');
@@ -1077,6 +1206,7 @@ function showResult($object_test, $id_param)
             : $lang->def('_TEST_COMPLETED'))
         . '<br />', 'content');
 
+
     if ($test_info['point_type'] != '1') {
         $save_score = $point_do;
     } else {
@@ -1101,6 +1231,27 @@ function showResult($object_test, $id_param)
             (idTrack, idReference, idTest, date_attempt, number_time, score, score_status, date_begin, date_end, time) VALUES
             ('" . $id_track . "', '" . $id_reference . "', '" . $id_test . "', now(), '" . $new_info['number_of_save'] . "', '" . $new_info['score'] . "', '" . $new_info['score_status'] . "', '" . $_SESSION['test_date_begin'] . "', '" . date('Y-m-d H:i:s') . "', '" . $time . "')");
 
+
+            if ($object_test instanceof Learning_Test360) {
+
+                $event = new appLms\Events\Lms\TestCompletedEvent($object_test, Docebo::user()->getIdst(), Docebo::user()->getAclManager());
+
+                $event->setLang($lang);
+
+                $event->setTestScore($new_info['score']);
+
+                $event->setTestDate($new_info['date_end_attempt']);
+
+                $smsCellField = Get::sett('sms_cell_num_field');
+
+                $query = "SELECT user_entry FROM %adm_field_userentry WHERE id_common=" . $smsCellField . " AND id_user=" . Docebo::user()->getIdst();
+                list($userPhoneNumber) = sql_fetch_row(sql_query($query));
+                $userPhoneNumber = ltrim(Get::sett('sms_international_prefix', '') . $userPhoneNumber, '+');
+
+                $event->setUserPhoneNumber($userPhoneNumber);
+
+                \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCompletedEvent::EVENT_NAME, $event);
+            }
             unset($_SESSION['test_date_begin']);
         }
     }
@@ -1699,7 +1850,17 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
 
 }
 
-function deleteUserReport($id_user, $id_test, $id_track, $number_time)
+
+/**
+ * Prende in ingresso id utente, id test, id track e numero di compilazione ed elimina la compilazione.
+ * Se $number_time è null viene automaticamente preso l'ultima compilazione eseguita.
+ *
+ * @param $id_user
+ * @param $id_test
+ * @param $id_track
+ * @param null $number_time
+ */
+function deleteUserReport($id_user, $id_test, $id_track, $number_time = null)
 {
     require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
 
@@ -1708,164 +1869,35 @@ function deleteUserReport($id_user, $id_test, $id_track, $number_time)
 
     if ($res) {
 
-        //sql_query('START TRANSACTION');
+        if ($number_time === null) {
+            $number_time = $number_of_attempt;
+        }
 
-        //sql_query('SET autocommit=0');
-
-        $deleteTimeResponse = sql_affected_rows(sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_times WHERE `idTrack`=' . $idTrack . ' AND `idReference`=' . $idReference . ' AND `idTest`=' . $idTest . ' AND `number_time`=' . $number_time));
+        sql_affected_rows(sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_times WHERE `idTrack`=' . $idTrack . ' AND `idReference`=' . $idReference . ' AND `idTest`=' . $idTest . ' AND `number_time`=' . $number_time));
 
 
-        
         $response = sql_query('SELECT `idQuest`,`idAnswer` FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_answer WHERE `idTrack`=' . $idTrack . ' AND `number_time`=' . $number_time);
 
         $quests = array();
 
-        while(list($idQuest, $idAnswer) = sql_fetch_row($response)){
-            
+        while (list($idQuest, $idAnswer) = sql_fetch_row($response)) {
+
             $quests[] = $idQuest;
         }
 
-        $deleteQuery = 'DELETE FROM '.$GLOBALS['prefix_lms'] . '_testtrack_quest WHERE idTrack='.$idTrack.' AND idQuest IN('.implode(",",$quests).')';
+        $deleteQuery = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_quest WHERE idTrack=' . $idTrack . ' AND idQuest IN(' . implode(",", $quests) . ')';
 
         sql_affected_rows(sql_query($deleteQuery));
 
-        $deleteQuery = 'DELETE FROM '. $GLOBALS['prefix_lms'] . '_testtrack_answer WHERE `idTrack`=' . $idTrack . ' AND `number_time`=' . $number_time;
+        $deleteQuery = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_answer WHERE `idTrack`=' . $idTrack . ' AND `number_time`=' . $number_time;
 
         sql_affected_rows(sql_query($deleteQuery));
 
-        $updateTestrack = sql_query('UPDATE `learning_testtrack` SET `number_of_save`='.($number_of_save-1).',`number_of_attempt`=($number_of_attempt-1) WHERE `idTrack`=' . $id_track . ' AND `idUser`=' . $id_user . ' AND `idTest`=' . $id_test);
+        sql_query('UPDATE `learning_testtrack` SET `number_of_save`=' . ($number_of_save - 1) . ',`number_of_attempt`=($number_of_attempt-1) WHERE `idTrack`=' . $id_track . ' AND `idUser`=' . $id_user . ' AND `idTest`=' . $id_test);
 
-
-        $acl_man = Docebo::user()->getAclManager();
-        $test_man = new GroupTestManagement();
-
-        $user_name = $acl_man->getUserName($id_user);
-
-        // XXX: Find test
-        $test_info =& $test_man->getTestInfo(array($id_test));
-
-        Util::jump_to('index.php?modname=coursereport&op=testreport&idTest='.$id_test.'&idTrack='.$id_track.'&testName='.$test_info[$id_test]['title'].'&studentName='.$user_name);
+        return true;
     }
-    /*
-        $lang =& DoceboLanguage::createInstance('test');
-
-
-        //test info---------------------------------------------------------
-        list($title, $mod_doanswer, $point_type, $point_required, $question_random_number,
-            $show_score, $show_score_cat, $show_doanswer,
-            $show_solution, $order_type) = sql_fetch_row(sql_query("
-        SELECT  title, mod_doanswer, point_type, point_required, question_random_number,
-                show_score, show_score_cat, show_doanswer,
-                show_solution, order_type
-        FROM " . $GLOBALS['prefix_lms'] . "_test
-        WHERE idTest = '" . (int)$id_test . "'"));
-
-        list($score, $bonus_score, $date_attempt, $date_attempt_mod, $date_end_attempt) = sql_fetch_row(sql_query("
-        SELECT score, bonus_score, date_attempt, date_attempt_mod, date_end_attempt
-        FROM " . $GLOBALS['prefix_lms'] . "_testtrack
-        WHERE idTrack = '" . (int)$id_track . "'"));
-
-        $point_do = 0;
-        $max_score = 0;
-        $num_manual = 0;
-        $manual_score = 0;
-        $quest_sequence_number = 1;
-        $report_test = '';
-        $point_do_cat = array();
-
-        if ($order_type >= 2) {
-            $re_visu_quest = sql_query("SELECT idQuest
-            FROM " . $GLOBALS['prefix_lms'] . "_testtrack_quest
-            WHERE idTrack = '" . (int)$id_track . "' ");
-
-            while (list($id_q) = sql_fetch_row($re_visu_quest)) $quest_see[] = $id_q;
-
-            $query_question = "
-            SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory
-            FROM " . $GLOBALS['prefix_lms'] . "_testquest AS q JOIN " . $GLOBALS['prefix_lms'] . "_quest_type AS t
-            WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode($quest_see, ',') . ")
-            ORDER BY q.sequence";
-        } else {
-            $query_question = "
-            SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory
-            FROM " . $GLOBALS['prefix_lms'] . "_testquest AS q JOIN " . $GLOBALS['prefix_lms'] . "_quest_type AS t
-            WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest
-            ORDER BY q.sequence";
-        }
-        $reQuest = sql_query($query_question);
-        while (list($id_quest, $type_quest, $type_file, $type_class, $id_cat) = sql_fetch_row($reQuest)) {
-
-            require_once(Docebo::inc(_folder_lms_ . '/modules/question/' . $type_file));
-
-            $quest_point_do = 0;
-
-            $quest_obj = eval("return new $type_class( $id_quest );");
-            $quest_point_do = $quest_obj->userScore($id_track, $number_time);
-            $quest_max_score = $quest_obj->getMaxScore();
-            if (($type_quest != 'title') && ($type_quest != 'break_page')) {
-                $review = $quest_obj->displayUserResult($id_track,
-                    ($type_quest != 'title' ? $quest_sequence_number++ : $quest_sequence_number),
-                    $quest_sequence_number,
-                    $number_time);
-
-                $report_test .= '<div class="test_quest_review_container">'
-                    . $review['quest'];
-
-                if ($review['score'] !== false) {
-                    $report_test .= '<div class="test_answer_comment_nomargin">'
-                        . '<div class="test_score_note">' . $lang->def('_SCORE') . ' : ';
-                    if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
-                        $report_test .= $lang->def('_NOT_ASSIGNED');
-                    } else {
-                        if ($review['score'] > 0) {
-                            $report_test .= '<span class="test_score_positive">' . $review['score'] . '</span>';
-                        } else {
-                            $report_test .= '<span class="test_score_negative">' . $review['score'] . '</span>';
-                        }
-                    }
-                    $report_test .= '</div>'
-                        . ($review['comment'] != '' ? $review['comment'] : '')
-                        . '</div>';
-                }
-            }
-        }
-
-        $total_time = 0;
-        $total_time = fromDatetimeToTimestamp($date_end_attempt) - fromDatetimeToTimestamp($date_attempt);
-        if ($total_time > 0) {
-            $seconds = $total_time % 60;
-            $total_time -= $seconds;
-            $minutes = $total_time / 60;
-        }
-
-        $GLOBALS['page']->add(
-            '<div class="title">' . $lang->def('_TITLE') . ' : ' . $title . '</div>', 'content');
-
-        if (!$quest_obj instanceof CourseValutation_Question) {
-            $GLOBALS['page']->add('<br />'
-                . Form::getTextfield($lang->def('_BONUS_SCORE_FOR_TEST'),
-                    'bonus_score',
-                    'bonus_score',
-                    8,
-                    $bonus_score)
-                . '<br />'
-                . ($total_time > 0 ? '<b>' . Lang::t('_DATE_BEGIN', 'standard') . '</b> : ' . Format::date($date_attempt, 'datetime')
-                    . '<br />'
-                    . '<b>' . Lang::t('_DATE_END', 'standard') . '</b> : ' . Format::date($date_end_attempt, 'datetime')
-                    . '<br />'
-                    . '<b>' . Lang::t('_TOTAL_TIME', 'test') . '</b> : ' . $minutes . ':' . $seconds
-                    . '<br />'
-                    . '<br />' : ''), 'content');
-        }
-
-
-
-        $GLOBALS['page']->add('<div class="test_answer_space">'
-            . $report_test
-            . '</div>', 'content');
-
-        $GLOBALS['page']->add(Form::getButton('delete_track_button',$lang->def('_DELETE'),'delete'));
-        */
+    return false;
 }
 
 function saveManualUserReport($id_user, $id_test, $id_track)

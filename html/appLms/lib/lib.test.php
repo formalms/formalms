@@ -337,7 +337,7 @@ class GroupTestManagement {
 
         require_once($GLOBALS['where_lms'].'/modules/test/do.test.php');
 
-        deleteUserReport($id_user, $id_test, $id_track, $number_time);
+        return deleteUserReport($id_user, $id_test, $id_track, $number_time);
     }
 
 	function deleteTestTrack($id_test, $id_user) {

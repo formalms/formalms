@@ -1588,7 +1588,7 @@ function testreview()
 /**
  * Mostra la view di riepilogo del test con il pulsante per l'eliminazione del test.
  */
-function testDelete()
+function testdelete()
 {
 
     checkPerm('mod');
@@ -1613,8 +1613,19 @@ function testDelete()
         $test_man = new GroupTestManagement();
 
         $test_man->deleteReview($id_test, $id_user, $id_track, $number_time);
-    }
-    else {
+
+        $acl_man = Docebo::user()->getAclManager();
+
+        $test_man = new GroupTestManagement();
+
+        $user_name = $acl_man->getUserName($id_user);
+
+        // XXX: Find test
+        $test_info =& $test_man->getTestInfo(array($id_test));
+
+        Util::jump_to('index.php?modname=coursereport&op=testreport&idTest=' . $id_test . '&idTrack=' . $id_track . '&testName=' . $test_info[$id_test]['title'] . '&studentName=' . $user_name);
+
+    } else {
         die("You can't access");
     }
 }
@@ -3388,7 +3399,7 @@ function coursereportDispatch($op)
         };
             break;
         case "testdelete" : {
-            testDelete();
+            testdelete();
         }
             break;
         case "testQuestion" :

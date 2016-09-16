@@ -15,13 +15,13 @@ require_once(Docebo::inc(_folder_lms_.'/class.module/learning.object.php'));
 require_once(Docebo::inc(_folder_lms_.'/modules/question/class.question.php'));
 
 class Learning_Test extends Learning_Object {
-	
+
 	var $id;
-	
+
 	var $idAuthor;
-	
+
 	var $title;
-	
+
 	var $back_url;
 
 	var $retain_answers_history = false;
@@ -70,7 +70,7 @@ class Learning_Test extends Learning_Object {
 	function getParamInfo() {
 		return false;
 	}
-	
+
 	/**
 	 * function create( $back_url )
 	 * @param string $back_url contains the back url
@@ -81,30 +81,30 @@ class Learning_Test extends Learning_Object {
 	 **/
 	function create( $back_url ) {
 		$this->back_url = $back_url;
-		
+
 		unset($_SESSION['last_error']);
-		
+
 		require_once( $GLOBALS['where_lms'].'/modules/test/test.php' );
 		addtest( $this );
 	}
-	
+
 	/**
 	 * function edit
 	 * @param int $id contains the resource id
 	 * @param string $back_url contains the back url
 	 * @return nothing
-	 * attach in back_url id_lo that is passed $id and attach edit_result with the result of operation in boolean format 
+	 * attach in back_url id_lo that is passed $id and attach edit_result with the result of operation in boolean format
 	 **/
 	function edit( $id, $back_url ) {
 		$this->id = $id;
 		$this->back_url = $back_url;
-		
+
 		unset($_SESSION['last_error']);
-		
+
 		require_once( _lms_.'/modules/test/test.php' );
 		modtestgui( $this );
 	}
-	
+
 	/**
 	 * function del
 	 * @param int $id contains the resource id
@@ -113,9 +113,9 @@ class Learning_Test extends Learning_Object {
 	 **/
 	function del( $id, $back_url = NULL ) {
 		checkPerm('view', false, 'storage');
-		
+
 		unset($_SESSION['last_error']);
-		
+
 		// finding track
 		$re_quest_track = sql_query("
 		SELECT idTrack 
@@ -125,7 +125,7 @@ class Learning_Test extends Learning_Object {
 		while(list($id_t) = sql_fetch_row($re_quest_track)) {
 			$id_tracks[] = $id_t;
 		}
-		
+
 		//finding quest
 		$reQuest = sql_query("
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class 
@@ -136,7 +136,7 @@ class Learning_Test extends Learning_Object {
 		while( list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest) ) {
 
 			Docebo::inc(_folder_lms_.'/modules/question/'.$type_file);
-			
+
 			$quest_obj = eval("return new $type_class( $idQuest );");
 			if(!$quest_obj->del())  {
 				$_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE');
@@ -151,7 +151,7 @@ class Learning_Test extends Learning_Object {
 		}
 		// delete tracking
 		if(!empty($id_tracks)) {
-			
+
 			if(!sql_query("
 			DELETE FROM ".$GLOBALS['prefix_lms']."_testtrack_page 
 			WHERE idTrack IN ('".implode(',', $id_tracks)."') ")) {
@@ -159,7 +159,7 @@ class Learning_Test extends Learning_Object {
 				return false;
 			}
 		}
-		
+
 		if( !sql_query("DELETE FROM ".$GLOBALS['prefix_lms']."_testtrack WHERE idTest = '".$id."'") ) {
 			$_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE');
 			return false;
@@ -174,7 +174,7 @@ class Learning_Test extends Learning_Object {
 		}
 		return $id;
 	}
-	
+
 	/**
 	 * function copy( $id, $back_url )
 	 * @param int $id contains the resource id
@@ -182,7 +182,7 @@ class Learning_Test extends Learning_Object {
 	 * @return int $id if success FALSE if fail
 	 **/
 	function copy( $id, $back_url = NULL ) {
-		
+
 		//find source info
 		$test_info = mysql_fetch_assoc(sql_query("
 		SELECT author, title, description, 
@@ -197,7 +197,7 @@ class Learning_Test extends Learning_Object {
 			mandatory_answer, obj_type, retain_answers_history
 		FROM ".$GLOBALS['prefix_lms']."_test 
 		WHERE idTest = '".(int)$id."'"));
-		
+
 		//insert new item
 		$ins_query = "
 		INSERT INTO ".$GLOBALS['prefix_lms']."_test
@@ -238,7 +238,7 @@ class Learning_Test extends Learning_Object {
 		if(!sql_query($ins_query)) return false;
 		list($id_new_test) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
 		if(!$id_new_test) return false;
-		
+
 		//finding quest
 		$reQuest = sql_query("
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class 
@@ -256,7 +256,7 @@ class Learning_Test extends Learning_Object {
 		}
 		return $id_new_test;
 	}
-	
+
 	/**
 	 * function play( $id, $id_param, $back_url )
 	 * @param int $id contains the resource id
@@ -266,10 +266,10 @@ class Learning_Test extends Learning_Object {
 	 **/
 	function play( $id, $id_param, $back_url ) {
 		require_once( $GLOBALS['where_lms'].'/modules/test/do.test.php' );
-		
+
 		$this->id = $id;
 		$this->back_url = $back_url;
-		
+
 		$step = importVar('next_step');
 		switch($step) {
 			case "test_review" : {
@@ -283,7 +283,7 @@ class Learning_Test extends Learning_Object {
 			};break;
 		}
 	}
-	
+
 	function canBeMilestone() {
 		return TRUE;
 	}
