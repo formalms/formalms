@@ -1533,17 +1533,15 @@ function testreview()
             . Form::getButton('go_back', 'go_back', $lang->def('_UNDO'))
 
         );
-    }
 
-    if ($delete == md5($id_test . "_" . $id_user . "_" . $number_time)) {
+        if ($delete == md5($id_test . "_" . $id_user . "_" . $number_time)) {
 
-        $out->add('<button type="button" class="btn btn-default" data-toggle="modal" data-target="#delete_test_track_modal">' . $lang->def('_DELETE_TEST_TRACK') . '</button>'
-            . Form::closeButtonSpace()
-            . Form::closeForm()
-            . '</div>'
-        );
+            $out->add(Form::getButton('delete_track_button', $lang->def('_DELETE_TEST_TRACK'), $lang->def('_DELETE_TEST_TRACK'), 'btn btn-default', 'data-toggle="modal" data-target="#delete_test_track_modal"', false, false)
+                . Form::closeButtonSpace()
+                . Form::closeForm()
+                . '</div></div>');
 
-        $modal = '<div class="modal fade" tabindex="-1" role="dialog" id="delete_test_track_modal">
+            $modal = '<div class="modal fade" tabindex="-1" role="dialog" id="delete_test_track_modal">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -1559,9 +1557,8 @@ function testreview()
                                 </div>
                             </div><!-- /.modal-content -->
                       </div><!-- /.modal-dialog -->
-                  </div><!-- /.modal -->';
-
-        $modal .= '<script type="text/javascript">
+                  </div><!-- /.modal -->
+                  <script type="text/javascript">
                            $( document ).ready(function() {
                                
                                $("#detele-test-track").on( "click", function(event) {
@@ -1576,13 +1573,16 @@ function testreview()
                            });
 
                     </script>';
-        $out->add($modal);
+            $out->add($modal);
 
-    } else {
-        $out->add(Form::closeButtonSpace()
-            . Form::closeForm()
-            . '</div>');
+        } else {
+            $out->add(Form::closeButtonSpace()
+                . Form::closeForm()
+                . '</div>');
+        }
     }
+
+
 }
 
 /**

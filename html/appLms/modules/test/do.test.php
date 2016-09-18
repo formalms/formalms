@@ -104,6 +104,34 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
     // );
     $page_title = $test_info['title'];
 
+    $maxAttempts = false;
+
+    //--- check max attempts
+    if ($object_test instanceof Learning_Test360) {
+
+        require_once($GLOBALS['where_lms'] . '/class.module/track.test.php');
+        require_once($GLOBALS['where_lms'] . '/modules/test/do.test.php');
+
+        list($max_daily_test_auto, $max_daily_test_etero, $author) = sql_fetch_row(sql_query("SELECT max_daily_test_auto, max_daily_test_etero, author FROM " . $GLOBALS['prefix_lms'] . "_test WHERE idTest = '" . $id_test . "'"));
+
+        $queryAttempts = "SELECT count(*) FROM " . $GLOBALS['prefix_lms'] .
+            "_testtrack_times WHERE idTest = " . $id_test . " AND idTrack=" . $id_track .
+            " AND `date_attempt` >= '" . date('Y-m-d') . "' AND `date_attempt` < '" . date("Y-m-d", time() + 86400)."'";
+
+        list($number_of_attempt) = sql_fetch_row(sql_query($queryAttempts));
+
+
+        if ($author == Docebo::user()->getIdst()) {
+            if ($max_daily_test_auto > 0 && $number_of_attempt >= $max_daily_test_auto) {
+                $maxAttempts = true;
+            }
+        } else {
+            if ($max_daily_test_etero > 0 && $number_of_attempt >= $max_daily_test_etero) {
+                $maxAttempts = true;
+            }
+        }
+    }//--end check max attempts
+
     $GLOBALS['page']->add(
         getTitleArea($page_title, 'test', $lang->def('_TEST_INFO'))
         . '<div class="std_block">'
@@ -113,7 +141,7 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
         . ($test_info['description'] != ''
             ? '<span class="text_bold">' . $lang->def('_DESCRIPTION') . ' : </span>' . $test_info['description'] . '<br /><br />'
             : '')
-        . (isset($track_info['score']) && $track_info['score'] >= $test_info['point_required'] ? '<span class="text_bold">' . str_replace('[score]', $track_info['score'], $lang->def('_RESTART_INFO')) . '</span><br /><br />' : '')
+        . (!$maxAttempts && isset($track_info['score']) && $track_info['score'] >= $test_info['point_required'] ? '<span class="text_bold">' . str_replace('[score]', $track_info['score'], $lang->def('_RESTART_INFO')) . '</span><br /><br />' : '')
         , 'content');
 
 
@@ -334,31 +362,12 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
 
     if ($score_status == 'not_complete') {
 
-        if ($object_test instanceof Learning_Test360) {
+        //--- check max attempts
+        if ($maxAttempts) {
 
-            require_once($GLOBALS['where_lms'] . '/class.module/track.test.php');
-            require_once($GLOBALS['where_lms'] . '/modules/test/do.test.php');
-
-            list($max_daily_test_auto, $max_daily_test_etero, $author) = sql_fetch_row(sql_query("SELECT max_daily_test_auto, max_daily_test_etero, author FROM " . $GLOBALS['prefix_lms'] . "_test WHERE idTest = '" . $id_test . "'"));
-
-            list($number_of_save, $number_of_attempt) = sql_fetch_row(sql_query("SELECT number_of_save, number_of_attempt FROM " . $GLOBALS['prefix_lms'] . "_testtrack WHERE idTest = " . $id_test . " AND idTrack=" . $id_track . " AND idUser=" . Docebo::user()->getIdst()));
-
-            if ($author == Docebo::user()->getIdst()) {
-                if ($max_daily_test_auto > 0 && $number_of_save >= $max_daily_test_auto) {
-
-                    $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
-                } else {
-                    $GLOBALS['page']->add(Form::getButton('begin', 'begin', $lang->def('_TEST_BEGIN')), 'content');
-                }
-            } else {
-                if ($max_daily_test_etero > 0 && $number_of_save >= $max_daily_test_etero) {
-
-                    $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
-                } else {
-                    $GLOBALS['page']->add(Form::getButton('begin', 'begin', $lang->def('_TEST_BEGIN')), 'content');
-                }
-            }
-        } //--- and check max attempts
+            $GLOBALS['page']->add('<span class="text_bold">' . $lang->def('_MAX_DAILY_ATTEMPT') . '</span><br /><br />', 'content');
+            $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
+        } //--- end check max attempts
         else {
             $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_BEGIN')), 'content');
         }
@@ -366,31 +375,12 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
     } elseif ($is_end) {
         if ($_SESSION['levelCourse'] > '3') {
 
-            if ($object_test instanceof Learning_Test360) {
+            //--- check max attempts
+            if ($maxAttempts) {
 
-                require_once($GLOBALS['where_lms'] . '/class.module/track.test.php');
-                require_once($GLOBALS['where_lms'] . '/modules/test/do.test.php');
-
-                list($max_daily_test_auto, $max_daily_test_etero, $author) = sql_fetch_row(sql_query("SELECT max_daily_test_auto, max_daily_test_etero, author FROM " . $GLOBALS['prefix_lms'] . "_test WHERE idTest = '" . $id_test . "'"));
-
-                list($number_of_save, $number_of_attempt) = sql_fetch_row(sql_query("SELECT number_of_save, number_of_attempt FROM " . $GLOBALS['prefix_lms'] . "_testtrack WHERE idTest = " . $id_test . " AND idTrack=" . $id_track . " AND idUser=" . Docebo::user()->getIdst()));
-
-                if ($author == Docebo::user()->getIdst()) {
-                    if ($max_daily_test_auto > 0 && $number_of_save >= $max_daily_test_auto) {
-
-                        $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
-                    } else {
-                        $GLOBALS['page']->add(Form::getButton('begin', 'begin', $lang->def('_TEST_BEGIN')), 'content');
-                    }
-                } else {
-                    if ($max_daily_test_etero > 0 && $number_of_save >= $max_daily_test_etero) {
-
-                        $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
-                    } else {
-                        $GLOBALS['page']->add(Form::getButton('begin', 'begin', $lang->def('_TEST_BEGIN')), 'content');
-                    }
-                }
-            } //--- and check max attempts
+                $GLOBALS['page']->add('<span class="text_bold">' . $lang->def('_MAX_DAILY_ATTEMPT') . '</span><br /><br />', 'content');
+                $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
+            } //--- end check max attempts
             else {
                 $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_RESTART')), 'content');
             }
@@ -437,38 +427,12 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
             $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_RESTART')), 'content');
     } else {
 
-        //--- check max attempts  ----------------------------
-        if ($object_test instanceof Learning_Test360) {
+        //--- check max attempts
+        if ($maxAttempts) {
 
-            require_once($GLOBALS['where_lms'] . '/class.module/track.test.php');
-            require_once($GLOBALS['where_lms'] . '/modules/test/do.test.php');
-
-            list($max_daily_test_auto, $max_daily_test_etero, $author) = sql_fetch_row(sql_query("SELECT max_daily_test_auto, max_daily_test_etero, author FROM " . $GLOBALS['prefix_lms'] . "_test WHERE idTest = '" . $id_test . "'"));
-            //SELECT count(*) FROM `learning_testtrack` WHERE `date_attempt` >= '2016-09-15' AND `date_attempt` < "2016-09-16"
-
-            $queryAttempts = "SELECT count(*) FROM " . $GLOBALS['prefix_lms'] .
-                "_testtrack WHERE idTest = " . $id_test . " AND idTrack=" . $id_track .
-                " AND idUser=" . Docebo::user()->getIdst() .
-                " AND `date_attempt` >=" . date('Y-m-d') . " AND `date_attempt` <" . date("Y-m-d", time() + 86400);
-
-            list($number_of_attempt) = sql_fetch_row(sql_query($queryAttempts));
-
-            if ($author == Docebo::user()->getIdst()) {
-                if ($max_daily_test_auto > 0 && $number_of_attempt >= $max_daily_test_auto) {
-
-                    $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
-                } else {
-                    $GLOBALS['page']->add(Form::getButton('begin', 'begin', $lang->def('_TEST_BEGIN')), 'content');
-                }
-            } else {
-                if ($max_daily_test_etero > 0 && $number_of_attempt >= $max_daily_test_etero) {
-
-                    $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
-                } else {
-                    $GLOBALS['page']->add(Form::getButton('begin', 'begin', $lang->def('_TEST_BEGIN')), 'content');
-                }
-            }
-        } //--- and check max attempts
+            $GLOBALS['page']->add('<span class="text_bold">' . $lang->def('_MAX_DAILY_ATTEMPT') . '</span><br /><br />', 'content');
+            $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
+        } //--- end check max attempts
         else {
             resetTrack($object_test, $id_track);
             $GLOBALS['page']->add(Form::getButton('begin', 'begin', $lang->def('_TEST_BEGIN')), 'content');
@@ -533,7 +497,16 @@ function playTestDispatch($object_test, $id_param)
     $url_coded = urlencode(serialize($object_test->back_url));
     $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
 
-    if (isset($_POST['restart'])) {
+    if (isset($_POST['deleteandbegin'])) {
+
+        if ($object_test instanceof Learning_Test360) {
+
+            deleteUserReport(Docebo::user()->getIdst(),$id_test,$id_track);
+            resetTrack($object_test, importVar('idTrack', true, 0));
+        }
+        // play test
+        play($object_test, $id_param);
+    } else if (isset($_POST['restart'])) {
 
         //delete existing track and begin the test
         $test_man = new TestManagement($id_test);
@@ -579,11 +552,6 @@ function playTestDispatch($object_test, $id_param)
         showResult($object_test, $id_param);
     } else {
 
-        if ($object_test instanceof Learning_Test360) {
-            if (isset($_POST['deleteandbegin'])) {
-                deleteUserReport(Docebo::user()->getIdst(), $id_test, $id_test);
-            }
-        }
         // play test
         play($object_test, $id_param);
     }
@@ -1864,12 +1832,14 @@ function deleteUserReport($id_user, $id_test, $id_track, $number_time = null)
 {
     require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
 
-    list($idTrack, $idUser, $idReference, $idTest, $number_of_save, $number_of_attempt) = $res = sql_fetch_row(sql_query('SELECT `idTrack`,`idUser`,`idReference`,`idTest`,`number_of_save`,`number_of_attempt` FROM ' . $GLOBALS['prefix_lms'] . '_testtrack 
+    list($idTrack, $idUser, $idReference, $idTest, $number_of_save) = $res = sql_fetch_row(sql_query('SELECT `idTrack`,`idUser`,`idReference`,`idTest`,`number_of_save` FROM ' . $GLOBALS['prefix_lms'] . '_testtrack 
     WHERE `idTrack`=' . $id_track . ' AND `idUser`=' . $id_user . ' AND `idTest`=' . $id_test));
 
     if ($res) {
 
         if ($number_time === null) {
+            list($number_of_attempt) = $attemptRes = sql_fetch_row(sql_query('SELECT MAX(number_time) FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_times WHERE `idTrack`=' . $idTrack . ' AND `idReference`=' . $idReference . ' AND `idTest`=' . $idTest));
+
             $number_time = $number_of_attempt;
         }
 
