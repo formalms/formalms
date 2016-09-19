@@ -401,6 +401,14 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
 
                     $event->setTestDate(date('Y-m-d H:i:s'));
 
+                    $smsCellField = Get::sett('sms_cell_num_field');
+
+                    $query = "SELECT user_entry FROM %adm_field_userentry WHERE id_common=" . $smsCellField . " AND id_user=" . Docebo::user()->getIdst();
+                    list($userPhoneNumber) = sql_fetch_row(sql_query($query));
+                    $userPhoneNumber = ltrim(Get::sett('sms_international_prefix', '') . $userPhoneNumber, '+');
+
+                    $event->setUserPhoneNumber($userPhoneNumber);
+
                     \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCompletedEvent::EVENT_NAME, $event);
                 }
             }
@@ -419,6 +427,14 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
                     $event->setTestScore($tests_score[$id_test][Docebo::user()->getIdst()]['comment']);
 
                     $event->setTestDate(date('Y-m-d H:i:s'));
+
+                    $smsCellField = Get::sett('sms_cell_num_field');
+
+                    $query = "SELECT user_entry FROM %adm_field_userentry WHERE id_common=" . $smsCellField . " AND id_user=" . Docebo::user()->getIdst();
+                    list($userPhoneNumber) = sql_fetch_row(sql_query($query));
+                    $userPhoneNumber = ltrim(Get::sett('sms_international_prefix', '') . $userPhoneNumber, '+');
+
+                    $event->setUserPhoneNumber($userPhoneNumber);
 
                     \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCompletedEvent::EVENT_NAME, $event);
                 }
@@ -1174,6 +1190,28 @@ function showResult($object_test, $id_param)
             : $lang->def('_TEST_COMPLETED'))
         . '<br />', 'content');
 
+    if ($next_status != 'failed') {
+        //if ($object_test instanceof Learning_Test360) {
+
+            $event = new appLms\Events\Lms\TestCompletedEvent($object_test, Docebo::user()->getIdst(), Docebo::user()->getAclManager());
+
+            $event->setLang($lang);
+
+            $event->setTestScore($new_info['score']);
+
+            $event->setTestDate($new_info['date_end_attempt']);
+
+            $smsCellField = Get::sett('sms_cell_num_field');
+
+            $query = "SELECT user_entry FROM %adm_field_userentry WHERE id_common=" . $smsCellField . " AND id_user=" . Docebo::user()->getIdst();
+            list($userPhoneNumber) = sql_fetch_row(sql_query($query));
+            $userPhoneNumber = ltrim(Get::sett('sms_international_prefix', '') . $userPhoneNumber, '+');
+
+            $event->setUserPhoneNumber($userPhoneNumber);
+
+            \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCompletedEvent::EVENT_NAME, $event);
+        //}
+    }
 
     if ($test_info['point_type'] != '1') {
         $save_score = $point_do;
