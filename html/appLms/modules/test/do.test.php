@@ -1197,9 +1197,9 @@ function showResult($object_test, $id_param)
 
             $event->setLang($lang);
 
-            $event->setTestScore($new_info['score']);
+            $event->setTestScore($point_do);
 
-            $event->setTestDate($new_info['date_end_attempt']);
+            $event->setTestDate($test_track->dateAttempt);
 
             $smsCellField = Get::sett('sms_cell_num_field');
 
