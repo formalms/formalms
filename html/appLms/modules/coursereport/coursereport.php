@@ -186,22 +186,16 @@ function coursereport()
 	foreach( $students as $idst => $user_course_info )
 		$students_info[$idst] =& $acl_man->getUser( $idst, FALSE );
 */
-    // XXX: Info for updates
-    $query_tot_report = "
-	SELECT COUNT(*)
-	FROM " . $GLOBALS['prefix_lms'] . "_coursereport
-	WHERE id_course = '" . $_SESSION['idCourse'] . "'";
-    list($tot_report) = sql_fetch_row(sql_query($query_tot_report));
 
-    $query_tests = "
-	SELECT id_report, id_source
-	FROM " . $GLOBALS['prefix_lms'] . "_coursereport
-	WHERE id_course = '" . $_SESSION['idCourse'] . "' AND source_of = 'test'";
-    $re_tests = sql_query($query_tests);
-    while (list($id_r, $id_t) = sql_fetch_row($re_tests)) {
-        $included_test[$id_t] = $id_t;
-        $included_test_report_id[$id_r] = $id_r;
-    }
+    $courseReportModel = new CoursereportLms();
+
+    // XXX: Info for updates
+    $tot_report = $courseReportModel->getTotalCourseReport($_SESSION['idCourse']);
+
+    $test_and_reports = $courseReportModel->getTestsAndReports($_SESSION['idCourse']);
+
+    $included_test = $test_and_reports['source'];
+    $included_test_report_id = $test_and_reports['report'];
 
     // XXX: Update if needed
     if ($tot_report == 0)
@@ -370,6 +364,7 @@ function coursereport()
     require_once(_adm_ . '/lib/lib.field.php');
 
     $fman = new FieldList();
+
     $fields = $fman->getFlatAllFields(array('framework', 'lms'));
 
     $f_list = array(
@@ -387,6 +382,7 @@ function coursereport()
     $js_arr = array();
     foreach ($f_list as $key => $value)
         $js_arr[] = $key . ': ' . json_encode($value);
+
     $f_list_js = '{' . implode(',', $js_arr) . '}';
 
     $fieldlist = $f_list;
@@ -394,6 +390,7 @@ function coursereport()
     $dyn_filter = array();
     $num_var_fields = 1;
     $label = '<form name="formx" method="get">';
+
     for ($i = 0; $i < $num_var_fields; $i++) {
         $label .= '<select onchange="document.formx.submit()" id="_dyn_field_selector_0" name="_dyn_field_selector_0">';
         foreach ($fieldlist as $key => $value) {
