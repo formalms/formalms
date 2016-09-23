@@ -442,7 +442,7 @@ class TestManagement {
 		WHERE idTest = '".$id_test."'";
 		$re_test = sql_query($query_test);
 
-		$this->test_info = mysql_fetch_assoc($re_test);
+		$this->test_info = sql_fetch_assoc($re_test);
 	}
 
 	/**
