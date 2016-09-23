@@ -109,27 +109,8 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
     //--- check max attempts
     if ($object_test instanceof Learning_Test360) {
 
-        require_once($GLOBALS['where_lms'] . '/class.module/track.test.php');
-        require_once($GLOBALS['where_lms'] . '/modules/test/do.test.php');
+        $maxAttempts = Test360LmsController::checkMaxDailyAttempts($object_test,$id_track);
 
-        list($max_daily_test_auto, $max_daily_test_etero, $author) = sql_fetch_row(sql_query("SELECT max_daily_test_auto, max_daily_test_etero, author FROM " . $GLOBALS['prefix_lms'] . "_test WHERE idTest = '" . $id_test . "'"));
-
-        $queryAttempts = "SELECT count(*) FROM " . $GLOBALS['prefix_lms'] .
-            "_testtrack_times WHERE idTest = " . $id_test . " AND idTrack=" . $id_track .
-            " AND `date_attempt` >= '" . date('Y-m-d') . "' AND `date_attempt` < '" . date("Y-m-d", time() + 86400)."'";
-
-        list($number_of_attempt) = sql_fetch_row(sql_query($queryAttempts));
-
-
-        if ($author == Docebo::user()->getIdst()) {
-            if ($max_daily_test_auto > 0 && $number_of_attempt >= $max_daily_test_auto) {
-                $maxAttempts = true;
-            }
-        } else {
-            if ($max_daily_test_etero > 0 && $number_of_attempt >= $max_daily_test_etero) {
-                $maxAttempts = true;
-            }
-        }
     }//--end check max attempts
 
     $GLOBALS['page']->add(
@@ -209,8 +190,7 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
     // Actions
     $score_status = $play_man->getScoreStatus();
     $show_result = $test_info['show_score'] || $test_info['show_score_cat'] || $test_info['show_solution'];
-    $is_end = $score_status == 'valid' || $score_status == 'not_checked' ||
-        $score_status == 'passed' || $score_status == 'not_passed';
+    $is_end = $score_status == 'valid' || $score_status == 'not_checked' || $score_status == 'passed' || $score_status == 'not_passed';
 
 
     $GLOBALS['page']->add(
@@ -333,30 +313,37 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
 //--- end suspension check -----------------------------------------------------
 
 
-    if ($score_status == 'passed') $incomplete = FALSE;
-    elseif ($score_status == 'valid') {
+    if ($score_status == 'passed') {
+        $incomplete = FALSE;
+    } elseif ($score_status == 'valid') {
         $track_info = $play_man->getTrackAllInfo();
 
-        if ($track_info['score'] >= $test_info['point_required'])
+        if ($track_info['score'] >= $test_info['point_required']) {
             $incomplete = FALSE;
-        else
+        } else {
             $incomplete = TRUE;
+        }
     } else {
         $incomplete = TRUE;
     }
+
     if ($score_status == 'not_complete') {
         $GLOBALS['page']->add(Form::getHidden('page_continue', 'page_continue', $play_man->getLastPageSeen()), 'content');
     }
+
     if ($is_end) {
         $GLOBALS['page']->add(Form::getHidden('show_result', 'show_result', 1), 'content');
     }
+
     if ($test_info['save_keep'] && $score_status == 'not_complete') {
         $GLOBALS['page']->add('<span class="text_bold">' . $lang->def('_TEST_SAVED') . '</span><br /><br />', 'content');
     }
+
     $GLOBALS['page']->add('<div class="align_right">', 'content');
+
     if ($is_end && $show_result) {
         $GLOBALS['page']->add(Form::getButton('show_review', 'show_review', $lang->def('_TEST_SHOW_REVIEW')), 'content');
-    } elseif ($test_info['save_keep'] && $score_status == 'not_complete') {
+    } else if ($test_info['save_keep'] && $score_status == 'not_complete') {
         $GLOBALS['page']->add(Form::getButton('continue', 'continue', $lang->def('_TEST_CONTINUE')), 'content');
     }
 
@@ -387,7 +374,15 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
 
         } else if (str_replace('incomplete', '', $prerequisite) !== $prerequisite) {
             if ($incomplete) {
-                $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_RESTART')), 'content');
+                //--- check max attempts
+                if ($maxAttempts) {
+
+                    $GLOBALS['page']->add('<span class="text_bold">' . $lang->def('_MAX_DAILY_ATTEMPT') . '</span><br /><br />', 'content');
+                    $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
+                } //--- end check max attempts
+                else {
+                    $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_RESTART')), 'content');
+                }
             } else {
                 $GLOBALS['page']->add($lang->def('_TEST_COMPLETED'), 'content');
 
@@ -517,7 +512,7 @@ function playTestDispatch($object_test, $id_param)
 
         if ($object_test instanceof Learning_Test360) {
 
-            deleteUserReport(Docebo::user()->getIdst(),$id_test,$id_track);
+            deleteUserReport(Docebo::user()->getIdst(), $id_test, $id_track);
             resetTrack($object_test, importVar('idTrack', true, 0));
         }
         // play test
@@ -1193,23 +1188,23 @@ function showResult($object_test, $id_param)
     if ($next_status != 'failed') {
         //if ($object_test instanceof Learning_Test360) {
 
-            $event = new appLms\Events\Lms\TestCompletedEvent($object_test, Docebo::user()->getIdst(), Docebo::user()->getAclManager());
+        $event = new appLms\Events\Lms\TestCompletedEvent($object_test, Docebo::user()->getIdst(), Docebo::user()->getAclManager());
 
-            $event->setLang($lang);
+        $event->setLang($lang);
 
-            $event->setTestScore($point_do);
+        $event->setTestScore($point_do);
 
-            $event->setTestDate($test_track->dateAttempt);
+        $event->setTestDate($test_track->dateAttempt);
 
-            $smsCellField = Get::sett('sms_cell_num_field');
+        $smsCellField = Get::sett('sms_cell_num_field');
 
-            $query = "SELECT user_entry FROM %adm_field_userentry WHERE id_common=" . $smsCellField . " AND id_user=" . Docebo::user()->getIdst();
-            list($userPhoneNumber) = sql_fetch_row(sql_query($query));
-            $userPhoneNumber = ltrim(Get::sett('sms_international_prefix', '') . $userPhoneNumber, '+');
+        $query = "SELECT user_entry FROM %adm_field_userentry WHERE id_common=" . $smsCellField . " AND id_user=" . Docebo::user()->getIdst();
+        list($userPhoneNumber) = sql_fetch_row(sql_query($query));
+        $userPhoneNumber = ltrim(Get::sett('sms_international_prefix', '') . $userPhoneNumber, '+');
 
-            $event->setUserPhoneNumber($userPhoneNumber);
+        $event->setUserPhoneNumber($userPhoneNumber);
 
-            \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCompletedEvent::EVENT_NAME, $event);
+        \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCompletedEvent::EVENT_NAME, $event);
         //}
     }
 
