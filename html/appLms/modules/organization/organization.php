@@ -163,7 +163,8 @@ function organization_display( &$treeView ) {
 	</script>' );
 	*/
 	$GLOBALS['page']->add( '<script type="text/javascript">'
-	."var lb = new LightBox();
+	."
+				var lb = new LightBox();
         var Config = {};
         Config.langs = {_CLOSE: '".Lang::t('_CLOSE', 'standard')."'};
         lb.init(Config);"

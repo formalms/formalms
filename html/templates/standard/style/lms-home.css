@@ -12,6 +12,7 @@
 html,body{height:100%;}
 body{font:13px/1.231 arial,sans-serif;color:#333333;background:#fff;*font-size:small;*font:x-small;}
 .header,.content,.footer,.webcontent, .external_page{position:relative;width:900px;margin:0 auto;padding:0;}
+.webcontent-catalogue, {position:relative;width:90%;margin:0 auto;padding:0;}
 .header{height:70px; padding:5px 0;}
 .header .cat_link{text-decoration:none;color:#C84000;}
 .header .catalogue{position:absolute;bottom:10px;right:215px;font-size:90%;letter-spacing:1px;}
@@ -36,13 +37,28 @@ body{font:13px/1.231 arial,sans-serif;color:#333333;background:#fff;*font-size:s
 .content .homecatalogue{position:absolute;top:15px;left:25px;font-size:90%;letter-spacing:1px;padding:5px;background-color:#C84000}
 .content .homecatalogue a{text-decoration:none;color:#ffffff}
 .content .homecatalogue a:hover{text-decoration:underline;}
+
 .footer{background:#C84000;height:21px;font-size:90%;}
+.footer-catalogue{background:#C84000;height:21px;font-size:90%; width:100%}
+
 .footer #link{margin-top:3px;padding:3px 16px 4px;}
+.footer-catalogue #link{margin-top:3px;padding:3px 16px 4px;}
+
 .footer a{text-decoration:none;color:#fff;}
+.footer-catalogue a{text-decoration:none;color:#fff;}
+
 .footer a:hover{text-decoration:underline;}
+.footer-catalogue a:hover{text-decoration:underline;}
+
 .footer #link a.first{font-weight:bold;padding:0 6px 0 0;margin:0 3px 0 0;border-right:1px solid #ffffff;}
+.footer-catalogue #link a.first{font-weight:bold;padding:0 6px 0 0;margin:0 3px 0 0;border-right:1px solid #ffffff;} 
+
 .footer .copyright{position:absolute;bottom:-6px;right:16px;color:#fff;}
+.footer-catalogue {bottom:-6px;right:16px;color:#fff;} 
+
 .footer .ownedby{color:#fff;}
+
+
 .webcontent .box {margin:10px 5px;}
 .webcontent h3 {margin:0 0 10px;padding:0;font-size:140%;color:#C84000;}
 .webcontent p {margin:0 0 6px;}

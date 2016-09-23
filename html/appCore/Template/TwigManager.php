@@ -23,9 +23,10 @@ class TwigManager {
      */
     private function __construct() {
         $loader = new \Twig_Loader_Filesystem();
+        $debug = \Get::cfg('twig_debug', false);
         $this->twig = new \Twig_Environment($loader, array(
-            'cache' => _files_ . '/tmp',
-            'debug' => \Get::cfg('twig_debug', false)
+            'cache' => $debug?false:_files_ . '/tmp',
+            'debug' => $debug
         ));
         $this->twig->addFunction('translate', new \Twig_Function_Function(function ($key, $module = false, $substitution = array(), $lang_code = false, $default = false) {
             return \Lang::t($key, $module, $substitution, $lang_code, $default);

@@ -1,0 +1,80 @@
+    
+{% extends "base.html.twig" %}   
+
+
+    {% block stylesheet %}
+            
+	    	<link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/base.css" />
+		    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/lms-home.css" />
+		    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/lms-home-catalogue.css" /> 
+              
+            <link rel="stylesheet" type="text/css" href="./addons/jquery/swipe/font-awesome.min.css" />
+              
+            <link rel="stylesheet" type="text/css" href="./addons/jquery/bootstrap/css/bootstrap-3.3.6.min.css" />
+            <link rel="stylesheet" type="text/css" href="./addons/jquery/core/ui/css/jquery-ui-1.11.4.min.css" />    
+            <link rel="stylesheet" type="text/css" href="./addons/jquery/bootstrap/css/bootstrap-theme-3.3.6.min.css" />            
+            <link rel="stylesheet" type="text/css" href="./addons/jquery/table/table-responsive.min.css" />
+            <link rel="stylesheet" type="text/css" href="./addons/jquery/swipe/style.min.css" />    
+            <link rel="stylesheet" type="text/css" href="./addons/jquery/fancybox/fancybox.min.css" />
+            <link rel="stylesheet" type="text/css" href="./addons/jquery/swipe/font-awesome.min.css" />
+            <link rel="stylesheet" type="text/css" href="./addons/jquery/swipe/style.min.css" />                            
+                        
+                        
+             {{ evalPhp('Layout::resetter') }}   
+            
+    {% endblock %}  
+                                 
+     {% block content %} 
+
+     
+     
+        {{ evalPhp('Layout::zone', ['meta']) }}
+        {{ evalPhp('Layout::meta') }}
+    
+        {{ evalPhp('Layout::rtl') }}
+		
+        <!-- specific stylesheet -->
+         {{ evalPhp('YuiLib::load', ['base']) }}
+		
+          <!-- printer stylesheet-->
+         {{ evalPhp('Layout::accessibility') }}
+    
+          <!-- Page Head area -->
+          {{ evalPhp('Layout::zone', ['page_head']) }}
+    
+
+  
+
+		<!-- blind nav -->
+    {{ evalPhp('Layout::zone', ['blind_navigation']) }}
+ 
+		<div class="webcontent-catalogue">
+        {{ evalPhp('Layout::zone', ['content']) }}    
+		</div>
+	
+  	<!-- footer -->
+		<div class="footer-catalogue">
+          {{ evalPhp('Layout::zone', ['footer']) }}
+      
+			<div class="copyright" align=right>
+
+            {{ evalPhp('Layout::copyright') }}
+        
+        
+			</div>
+		</div>
+	
+  
+  	<!-- def lang -->
+    {{ evalPhp('Layout::zone', ['def_lang']) }}
+    
+		<!-- scripts -->
+    {{ evalPhp('Layout::zone', ['scripts']) }}
+    
+		<!-- end scripts -->
+     {{ evalPhp('Layout::zone', ['debug']) }}
+     
+    {{ evalPhp('Layout::analytics') }}
+	
+  
+  {% endblock %}  
