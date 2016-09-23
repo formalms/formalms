@@ -69,8 +69,23 @@ class UserselectorWidgetController extends Controller {
 		$op = Get::req('op', DOTY_MIXED, false);
 		switch ($op) {
 			case "selectall": {
+                            if (isset($_SESSION['usersendnewsletter'])){
+                                // Se sono nelle newsletter seleziono solo gli utenti iscritti al corso
+                                require_once(_lms_ . '/lib/lib.subscribe.php');
+                                $subscribe_man = new CourseSubscribe_Manager();
+                                $course_users = $subscribe_man->getCourseSubscribedUserIdst($_SESSION['idCourse'], true);
+                                $i = 0;
+                                foreach ($course_users[$_SESSION['idCourse']] as &$courseUser) {
+                                    $output[$i] = $courseUser;
+                                    $i = $i + 1;
+                                }
+                                echo $this->json->encode($output);
+                                return;
+                            } else {
 				$this->_selectAllUsers();
 				return;
+                            }                                
+                                
 			} break;
 		}
 
