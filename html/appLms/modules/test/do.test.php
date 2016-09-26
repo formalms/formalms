@@ -109,7 +109,7 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
     //--- check max attempts
     if ($object_test instanceof Learning_Test360) {
 
-        $maxAttempts = Test360LmsController::checkMaxDailyAttempts($object_test,$id_track);
+        $maxAttempts = Test360LmsController::checkMaxDailyAttempts($object_test, $id_track);
 
     }//--end check max attempts
 
@@ -409,7 +409,16 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
             }
         } else if (str_replace('NULL', '', $prerequisite) !== $prerequisite) {
             if ($score_status !== 'valid' && $score_status !== 'passed') {
-                $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_RESTART')), 'content');
+                //--- check max attempts
+                if ($maxAttempts) {
+
+                    $GLOBALS['page']->add('<span class="text_bold">' . $lang->def('_MAX_DAILY_ATTEMPT') . '</span><br /><br />', 'content');
+                    $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
+                } //--- end check max attempts
+                else {
+                    $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_RESTART')), 'content');
+                }
+
             } else {
                 $GLOBALS['page']->add($lang->def('_TEST_COMPLETED'), 'content');
 
@@ -434,8 +443,18 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
                     \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCompletedEvent::EVENT_NAME, $event);
                 }
             }
-        } else
-            $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_RESTART')), 'content');
+        } else {
+
+            //--- check max attempts
+            if ($maxAttempts) {
+
+                $GLOBALS['page']->add('<span class="text_bold">' . $lang->def('_MAX_DAILY_ATTEMPT') . '</span><br /><br />', 'content');
+                $GLOBALS['page']->add(Form::getButton('deleteandbegin', 'deleteandbegin', $lang->def('_DELETE_LAST_AND_TEST_BEGIN')), 'content');
+            } //--- end check max attempts
+            else {
+                $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_RESTART')), 'content');
+            }
+        }
     } else {
 
         //--- check max attempts
