@@ -20,6 +20,11 @@ class HomecatalogueLms extends Model
 	var $cstatus;
 	var $acl_man;
 
+    /* category handling */
+    var $children;
+    var $the_tree;
+    var $tree_deep;       
+    
 	public function  __construct()
 	{
 		require_once(_lms_.'/lib/lib.course.php');
@@ -92,7 +97,75 @@ class HomecatalogueLms extends Model
 		return $res;
 	}
 
-	public function getCourseList($type = '', $page = 1)
+    
+    
+public function getCourseList($type, $page = 1 )
+    {
+
+        require_once(_lms_.'/lib/lib.catalogue.php');
+        $cat_man = new Catalogue_Manager();
+
+      //  $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+        $filter = '';
+
+
+        switch($type)
+        {
+            case 'elearning' :
+            case '1' :
+                $filter = " AND course_type = 'elearning'";
+            break;
+            case 'classroom':
+            case '2':
+                $filter = " AND course_type = 'classroom'";
+            break;
+           
+            default:
+            break;
+        }
+
+        $filter .= " AND show_rules = 0";
+
+        $login_link = '<a href="index.php">'.Lang::t('_LOG_IN', 'login').'</a>';
+        $signin_link = '<a href="index.php?modname=login&op=register">'.Lang::t('_SIGN_IN', 'login').'</a>';
+
+        require_once(_lib_.'/lib.usermanager.php');
+        $option = new UserManagerOption();
+        $register_type = $option->getOption('register_type');
+
+        $limit = ($page - 1) * Get::sett('visuItem');
+        $id_cat = Get::req('id_cat', DOTY_INT, 0);
+
+    
+        
+        $query =    "SELECT *"
+                    ." FROM %lms_course"
+                    ." WHERE status NOT IN (".CST_PREPARATION.", ".CST_CONCLUDED.", ".CST_CANCELLED.")"
+                    ." AND course_type <> 'assessment'"
+                    ." AND ("
+                    ." date_end = '0000-00-00'"
+                    ." OR date_end > '".date('Y-m-d')."'"
+                    ." )"
+                    .$filter
+                    .($id_cat > 0 ? " AND idCategory = ".(int)$id_cat : '')
+                    ." ORDER BY name"
+                   ;
+                   
+                   
+                 //  die($query);
+                   
+                    
+        $result = sql_query($query);
+
+        
+        //return 
+        return $result; 
+        
+      
+    }    
+    
+    
+	public function getCourseList_ORIGINALE($type = '', $page = 1)
 	{
 		require_once(_lms_.'/lib/lib.catalogue.php');
 		$cat_man = new Catalogue_Manager();
@@ -306,6 +379,8 @@ class HomecatalogueLms extends Model
 		return $res;
 	}
 
+ 
+ 
     public function getMajorCategory($std_link, $only_son = false)
     {
         $query =    "SELECT idCategory, path, lev"
@@ -323,6 +398,81 @@ class HomecatalogueLms extends Model
         }
 
         return $res;
-    }
+    } 
+ 
+     
+        public function GetGlobalJsonTree(){
+            $global_tree = [];
+            $top_category = $this->getMajorCategory();
+            foreach ($top_category as $a_top_cat_key=>$val) {
+                $this->tree_deep = 0;
+                $this->the_tree = [];
+                $this->children = $this->getMinorCategoryTree($a_top_cat_key);
+                $this->GetChildTree(array_keys($this->children));
+                if (count($this->the_tree)>0) {
+                    $global_tree[] = array('text'=>$this->the_tree[0]['text'], 'nodes'=>$this->the_tree[0]['nodes'], "href" => "index.php?r=catalog/allCourse&id_cat=".$a_top_cat_key, "id_cat" => $a_top_cat_key);
+                } else {
+                    $global_tree[] = array('text'=>$val, "href" => "index.php?r=catalog/allCourse&id_cat=".$a_top_cat_key, "id_cat" => $a_top_cat_key);
+                }    
+            }
+            return  $global_tree;              
+            
+              
+        }
+
+        public function getMinorCategoryTree($id_cat){
+            $query_i =    "SELECT iLeft, iRight, idCategory"
+            ." FROM %lms_category"
+            ." WHERE idCategory = ".(int)$id_cat;
+            list($i_left, $i_right) = sql_fetch_row(sql_query($query_i));
+
+            $query =    "SELECT idCategory, path, idParent, lev"
+            ." FROM %lms_category"
+            ." WHERE iLeft >= ".(int)$i_left
+            ." AND iRight <= ".$i_right
+            ." ORDER BY lev";
+            $result = sql_query($query);
+            $res = array();
+
+            while(list($id_cat, $path, $id_parent, $lev) = sql_fetch_row($result)){
+                $name = end(explode('/', $path));
+
+                $res[$id_cat]['name'] = $name;
+                $res[$id_cat]['id_cat'] = $id_cat;
+                if($id_parent != 0) {
+                    $res[$id_parent]['son'][$id_cat] = $name;
+                }    
+            }
+            return $res;            
+
+        }        
+
+        private function GetChildTree($array_k){
+            $leaves = [];       
+            foreach ($array_k as $single_key) {
+                if (is_array($this->children[$single_key]['son'])) {
+                    $this->tree_deep++;
+                    $b = $this->GetChildTree(array_keys($this->children[$single_key]['son']));
+                    
+                    $leaves[] = array('text'=>$this->children[$single_key]['name'], 'nodes'=>$b, "href" => "index.php?r=homecatalogue/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat'] );
+                    if  ($this->tree_deep==0){
+                        $this->the_tree[] = array('text'=>$leaves[0]['text'], 'nodes'=>$leaves[0]['nodes'], "href" => "index.php?r=homecatalogue/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat'] );
+                        $this->tree_deep = 0;                   
+                    }
+                } else {
+                    $leaves[] = array('text'=>$this->children[$single_key]['name'],  "href" => "index.php?r=homecatalogue/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat']);
+                }
+                if (array_key_exists($single_key, $this->children)) {
+                    unset($this->children[$single_key]);   
+                }
+            }
+            
+            
+            $this->tree_deep--;
+            return $leaves;
+        }
+    
+    
+    
 }
 ?>

@@ -1,0 +1,108 @@
+{% extends "base.html.twig" %}
+
+
+{% block stylesheet %}
+        <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/base.css"/>   
+        <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/base-old-treeview.css" />
+        <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms.css" />
+        <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-to-review.css" />
+        <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-menu.css" />   
+        <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/responsive.css"/>
+        <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/table-responsive.css"/>
+           
+{% endblock %}    
+
+    {% block javascript %}
+        <script type="text/javascript" src="{{ evalPhp('Get::rel_path', ['base']) }}/lib/js_utils.js"></script>
+        <script>
+            $('document').ready(function() {
+                $('div.menu-area a').bind('click',function(event){
+                	event.preventDefault();
+                    id = $(this).attr('rel');
+                    $('ul.float-left').hide();
+                    $('ul#'+id).show();
+                    $('div.menu-area').removeClass('menu-selected');
+                    $(this).parent().addClass('menu-selected');
+                });
+
+                 $( "#accordion" ).accordion({
+                    collapsible: true,
+                    active:false,
+                    icons:false
+                });
+
+
+            });
+        </script>
+        
+        
+ {% endblock %}       
+       
+        
+        
+      
+ {% block content %}       
+      
+    {{ evalPhp('Layout::zone', ['meta']) }}    
+    {{ evalPhp('Layout::meta') }}      
+
+    {{ evalPhp('Layout::rtl') }}
+    {{ evalPhp('Layout::accessibility') }}       
+    {{ evalPhp('Layout::zone', ['page_head']) }}      
+
+    
+
+		<!-- blind nav -->
+    {{ evalPhp('Layout::zone', ['blind_navigation']) }}
+    
+		<!-- feedback -->
+    {{ evalPhp('Layout::zone', ['feedback']) }}
+    
+		<!-- container -->
+		<div id="container">
+		<!-- header -->
+
+        
+		<!-- menu_over -->
+    {{ evalPhp('Layout::zone', ['menu_over']) }}
+                
+                
+                                            
+		<!-- content -->
+		<div id="lms_main_container" class="row">
+        
+        <div id="course-info-boot" class="col-md-3">
+        {{ evalPhp('Layout::zone', ['menu']) }}
+        
+			</div>  
+		
+        	<div id="yui-main-boot" class='col-md-9'>
+                    
+         {{ direct_play|raw }} 
+               
+                
+			</div>
+            
+			<div class="nofloat"></div>
+		</div>
+		<!-- footer -->
+		<div id="footer" class="layout_footer">
+      {{ evalPhp('Layout::zone', ['footer']) }}
+      
+			<div class="copyright">
+        {{ evalPhp('Layout::copyright') }}
+        
+        
+			</div>
+		</div>
+		</div>
+
+    <!-- scripts -->
+    {{ evalPhp('Layout::zone', ['scripts']) }}
+    <!-- debug -->
+    {{ evalPhp('Layout::zone', ['debug']) }}
+    <!-- def_lang -->
+    {{ evalPhp('Layout::zone', ['def_lang']) }}
+ 
+ {% endblock %}       
+        
