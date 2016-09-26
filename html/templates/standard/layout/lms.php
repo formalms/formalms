@@ -130,19 +130,7 @@
       <!-- TOOLTIP -->
     <link href="<?php echo Layout::path(); ?>resources/jquery/jquery-ui-1.11.4.min.css" rel="stylesheet">
     <script src="<?php echo Layout::path(); ?>resources/jquery/jquery-ui-1.11.4.min.js"></script>
-  <script>
-      $(function() {
-        $( document ).tooltip();
-      });
-      </script>
-      <style>
-      label {
-        display: inline-block;
-        //width: 5em;
-      }
-  </style> 
-        
-        
+
         
         
 	</head>

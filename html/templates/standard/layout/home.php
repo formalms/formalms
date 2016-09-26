@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo Layout::lang_code(); ?>">
 	<head>
 	    <!--Fix funzionamento scorm su IE9-->
-        <meta http-equiv="x-ua-compatible" content="IE=8"></meta>
+        <meta http-equiv="x-ua-compatible" content="IE=9"></meta>
         <!--END -->
 
 		<title><?php echo Layout::title(); ?></title>

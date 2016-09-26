@@ -1,8 +1,9 @@
 {% extends "base.html.twig" %}
 
 {% block stylesheet %}
-<link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/adm.css"/>
-<link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/lms-to-review.css"/>
+<link rel="stylesheet" type="text/css" href="{{ layout_path }}style/adm.css"/>
+<link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-to-review.css"/>
+<link rel="stylesheet" type="text/css" href="../templates/standard/style/reset-fonts-grids.css" />
 {% endblock %}
 
 {% block javascript %}

@@ -55,7 +55,7 @@ class CatalogLmsController extends LmsController {
 
 		$page = Get::req('page', DOTY_INT, 1);
 		$id_cat = Get::req('id_cat', DOTY_INT, 0);
-
+        
 		$nav_bar = new NavBar('page', Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
 
 		$nav_bar->setLink('index.php?r=catalog/allCourse'.($id_cat > 1 ? '&amp;id_cat='.$id_cat : ''));
@@ -68,6 +68,10 @@ class CatalogLmsController extends LmsController {
 
 		echo '<div class="middlearea_container">';
 
+        $this->render('catalog_header');
+        $this->render('catalog_tree', array('model' => $this->model, 'id_cat=' => $id_cat));
+         
+           /*
 		$lmstab = $this->widget('lms_tab', array(
 								'active' => 'catalog',
 								'close' => false));
@@ -78,15 +82,39 @@ class CatalogLmsController extends LmsController {
 											'std_link' => 'index.php?r=catalog/allCourse'.($page > 1 ? '&amp;page='.$page : ''),
 											'model' => $this->model,
 											'ma' => $ma));
+                                            
+                                            
+        $this->render('tab_end', array(    'std_link' => 'index.php?r=catalog/allCourse'.($page > 1 ? '&amp;page='.$page : ''),    'model' => $this->model));
+
 		$this->render('courselist', array(	'html' => $html,
 											'nav_bar' => $nav_bar));
-		$this->render('tab_end', array(	'std_link' => 'index.php?r=catalog/allCourse'.($page > 1 ? '&amp;page='.$page : ''),
-										'model' => $this->model));
-		$lmstab->endWidget();
 
+		$lmstab->endWidget();
+         */
+         
+                      
 		echo '</div>';
 	}
 
+    
+    // AJAX 
+    public function allCourseForma()
+    {
+  
+       $id_cat = Get::req('id_cat', DOTY_INT, 0);     
+       $typeCourse = Get::req('type_course', DOTY_STRING, '');
+       $val_enroll = Get::req('val_enroll', DOTY_STRING, '');
+       $val_enroll_not = Get::req('val_enroll_not', DOTY_STRING, '');
+              
+       $result = $this->model->getCourseList($typeCourse,1,$val_enroll, $val_enroll_not);
+       
+    //   $this->render('tab_start');       
+       $this->render('courselist', array( "result" => $result));
+
+    }    
+    
+    
+    
 	public function newCourse()
 	{
 		require_once(_base_.'/lib/lib.navbar.php');

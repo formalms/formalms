@@ -9,6 +9,8 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
+//alert('loading js_utils.js')
+
 //utils functions
 function addSlashes(str) {
 	str=str.replace(/\'/g,'\\\'');
@@ -165,8 +167,7 @@ LightBox.prototype = {
 				} );
 			}
 
-			//this.overlay_light.setHeader('<h1 class="title_handler" id="title_handler">Title</h1>'
-			this.overlay_light.setHeader(''
+			this.overlay_light.setHeader('<h1 class="title_handler" id="title_handler">Title</h1>'
 				+'<a class="close_handler" id="close_handler" href="#"><span>'+this.oLangs.get('_CLOSE')+'</span></a>');
 			this.overlay_light.setBody('<iframe id="overlay_iframe" name="overlay_iframe" src="" height="100%" width="100%" frameborder="0"></iframe>');
 
@@ -224,7 +225,6 @@ LightBox.prototype = {
 				obj.overlay_light.center();
 			}
 			obj.overlay_light.show();
-			window.onbeforeunload = function() { return "Exit ? Your progress will be saved."; } //'. Lang::t('_CONFIRM').'
 			YAHOO.util.Dom.get('overlay_iframe').src = this.href;
 			YAHOO.util.Dom.get('title_handler').innerHTML = ( this.title ? this.title : this.innerHTML );
 		}, this );

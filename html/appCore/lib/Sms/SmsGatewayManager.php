@@ -12,7 +12,12 @@ class SmsGatewayManager
     public static function send($recipients = array(), $text, $type = null)
     {
         $smsGateway = self::getGateway();
-        return $smsGateway->send($recipients, strip_tags($text), $type);
+        try {
+            $response = $smsGateway->send($recipients, strip_tags($text), $type);
+        }
+        catch (SmsGatewayException $e){
+            return false;
+        }
     }
 
     /**

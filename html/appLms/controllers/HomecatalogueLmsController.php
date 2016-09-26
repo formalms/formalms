@@ -61,10 +61,11 @@ class HomecatalogueLmsController extends LmsController
 
 		$nav_bar->setLink('index.php?r=homecatalogue/allCourse'.($id_cat > 1 ? '&amp;id_cat='.$id_cat : ''));
 
-		$html = $this->model->getCourseList($active_tab, $page);
+		//$html = $this->model->getCourseList($active_tab, $page);   
 		$user_catalogue = array();//$this->model->getUserCatalogue(Docebo::user()->getIdSt());
 		$user_coursepath = array();//$this->model->getUserCoursepath(Docebo::user()->getIdSt());
 
+        /*
 		echo '<div style="margin:1em;">';
 
 		$this->render('tab_start', array(	'user_catalogue' => $user_catalogue,
@@ -77,8 +78,33 @@ class HomecatalogueLmsController extends LmsController
 		$this->render('tab_end', array(	'std_link' => 'index.php?r=homecatalogue/allCourse'.($page > 1 ? '&amp;page='.$page : ''),
 										'model' => $this->model_catalog));
 		echo '</div>';
+        */
+        
+        echo '<div class="middlearea_container">';
+
+        $this->render('catalog_header');
+        $this->render('catalog_tree', array('model' => $this->model, 'id_cat=' => $id_cat));
+                 
+        echo '</div>';        
+        
 	}
 
+    
+    // AJAX 
+    public function allCourseForma()
+    {
+  
+       $id_cat = Get::req('id_cat', DOTY_INT, 0);     
+       $typeCourse = Get::req('type_course', DOTY_STRING, '');
+              
+       $result = $this->model->getCourseList($typeCourse,1);
+           
+       $this->render('courselist', array( "result" => $result));
+
+    }     
+    
+    
+    
 	public function newCourse()
 	{
 		require_once(_base_.'/lib/lib.navbar.php');

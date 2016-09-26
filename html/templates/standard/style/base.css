@@ -286,7 +286,7 @@ p.container-feedback{position:absolute;top:0;width:30%;left:35%;padding:.6em 3em
 #overlay_lightbox_c {z-index: -1000 !important;}
 .masked #overlay_lightbox_c {z-index: 11000 !important;}
 #overlay_lightbox.yui-panel{border:none;overflow:visible;background:transparent;}
-#overlay_lightbox.yui-panel .hd{padding:0;border:none;color:#ffffff;height:24px;margin:0;overflow:visible;position:relative;background:#c0c0c0;}
+#overlay_lightbox.yui-panel .hd{padding:0;border:none;color:#ffffff;height:24px;margin:0;overflow:visible;position:relative;background:#000000;}
 #overlay_lightbox.yui-panel .hd h1{color:#ffffff;margin:0;padding:2px 2px 2px 8px;font-size:115%;background:transparent;display:inline;}
 #overlay_lightbox.yui-panel .bd{overflow:hidden;margin:0;padding:0;border:2px solid #ffffff;background:#ffffff;}
 #overlay_lightbox .close_handler{position:absolute;right:10px;top:1px;font-size:90%;font-weight:bold;color:#ffffff;text-decoration:none;display:-moz-inline-box;display:inline-block;vertical-align:middle;border:none;margin:0;height:16px;}
@@ -712,7 +712,6 @@ ul.style_none li {list-style:none; }
     border-radius: 100%;
     border: 2px solid #aaa;
     background-size: cover;
-    background-image: url('http://api.randomuser.me/0.3.2/portraits/women/35.jpg');
 }
 
 img.no_traform{
