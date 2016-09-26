@@ -359,9 +359,9 @@ StdUIPlayer.initialize2 = function(xtree) {
 
 	window.uiPlayer.setScormPlayer( window.scormPlayer );
 	window.uiPlayer.drawTree();
-	//window.uiPlayer.drawProgressBar();
-	//window.uiPlayer.drawTitleCP();
-	//window.uiPlayer.drawNavigation();
+	window.uiPlayer.drawProgressBar();
+	window.uiPlayer.drawTitleCP();
+	window.uiPlayer.drawNavigation();
 }
 
 function showhidetree() {

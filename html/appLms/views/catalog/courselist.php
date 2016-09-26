@@ -1,11 +1,34 @@
+ 
+ <script type="text/javascript">
+    YAHOO.util.Event.onDOMReady(function() {
+        initialize("<?php echo Lang::t('_UNDO', 'standard'); ?>");
+    });
+</script>  
 
+<script type="text/javascript">
+    var lb = new LightBox();
+    lb.back_url = 'index.php?r=lms/catalog/show&sop=unregistercourse';
+    
+    var Config = {};
+    Config.langs = {_CLOSE: '<?php echo Lang::t('_CLOSE', 'standard'); ?>'};
+    lb.init(Config);  
+</script>
+
+
+  <?php
+
+
+       require_once(_lms_ . '/lib/lib.middlearea.php');
+       $ma = new Man_MiddleArea();
+       
+                  echo  '<div class="col-md-12">';
+
+
+                $category = $this->model->getMinorCategory($std_link, true);
   
-<div class="well well-sm">
-    <strong><?php echo Lang::t('_CATALOGUE', 'standard'); ?></strong>
-</div>
-
-
-   
+           ?>
+           
+           
 <div class="main">
     <div id="cbp-vm" class="cbp-vm-switcher cbp-vm-view-grid">
         <div class="cbp-vm-options">
@@ -16,26 +39,382 @@
             <ul >
             
     <?php
-	    echo	$nav_bar->getNavBar()
-			    //.$html
+//	    echo   $html
+  
+  
 
-                .''
+        $html = '';
+        $path_course = $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathcourse').'/';
+
+        $smodel = new CatalogLms();
         
-                .$html
-                .''
+        while($row = sql_fetch_assoc($result))
+        {
+            $action = '';
+
+            if($row['course_type'] === 'classroom')
+            {
+                $additional_info = '';
+
+                $classrooms = $smodel->classroom_man->getCourseDate($row['idCourse'], false);
+
+                $action = '<div class="catalog_action" id="action_'.$row['idCourse'].'">';
+                if(count($classrooms) == 0)
+                    $action .= '<p class="cannot_subscribe">'.Lang::t('_NO_EDITIONS', 'catalogue').'</p>';
+                else
+                {
+                    //Controllo che l'utente non sia iscritto a tutte le edizioni future
+                    $date_id = array();
+
+                                        $user_classroom = $smodel->classroom_man->getUserDateForCourse(Docebo::user()->getIdSt(), $row['idCourse']);
+                    $classroom_full = $smodel->classroom_man->getFullDateForCourse($row['idCourse']);
+                    $classroom_not_confirmed = $smodel->classroom_man->getNotConfirmetDateForCourse($row['idCourse']);
+
+                    $overbooking_classroom = $smodel->classroom_man->getOverbookingDateForCourse($row['idCourse']);
+
+                    foreach($classrooms as $classroom_info)
+                        $date_id[] = $classroom_info['id_date'];
+
+                    reset($classrooms);
+                    // for all the dates we will remove the one in which the user is subscribed and the classroom not confirmed
+                    $control = array_diff($date_id, $user_classroom, $classroom_not_confirmed);
+
+                    if(count($control) == 0)
+                    {
+                        if (!empty($overbooking_classroom)) {
+                            $_text = ($row['selling'] == 0
+                                ? Lang::t('_SUBSCRIBE', 'catalogue')
+                                : Lang::t('_ADD_TO_CART', 'catalogue'));
+                            $action .= '<a href="javascript:;" onclick="courseSelection(\''.$row['idCourse'].'\', \''.($row['selling'] == 0 ? '0' : '1').'\')" '
+                                .' title="'.$_text.'"><p class="can_subscribe">'.$_text.'<br />'
+                                .'('.Lang::t('_SUBSCRIBE_WITH_OVERBOOKING', 'catalogue').': '.count($overbooking_classroom).')</p>'
+                                .'</a>';
+                        } else {
+                            //$action .= '<p class="cannot_subscribe">'.Lang::t('_NO_EDITIONS', 'catalogue').'</p>';
+/* FORMA - INSERITO BOTTONE ENTRA
+                            if (count($user_classroom) > 0) {
+                                $action .= '<p class="subscribed">'.Lang::t('_USER_STATUS_SUBS', 'catalogue').'</p>';
+                            } else {
+                                $action .= '<p class="cannot_subscribe">'.Lang::t('_NO_AVAILABLE_EDITIONS', 'catalogue').'</p>';
+                            }
+*/
+                            if (count($user_classroom) > 0) {
+                                $action .= '<a href="index.php?modname=course&op=aula&idCourse='.$row['idCourse'].' "'
+                                    .' title="'.$_text.'"><p class="subscribed">'
+                                    .Lang::t('_USER_STATUS_ENTER', 'catalogue').'</p>'
+                                    .'</a>';
+                            } else {
+                                $action .= '<p class="cannot_subscribe">'.Lang::t('_NO_AVAILABLE_EDITIONS', 'catalogue').'</p>';
+                            }
+                        }            
+                        
+                    }
+                    else
+                    {
+                        if($row['selling'] == 0)
+
+                           switch ($row['subscribe_method']) {
+                                case 2:
+                                    // free
+                                    $action .= '<a href="javascript:;" onclick="courseSelection(\''.$row['idCourse'].'\', \'0\')" title="'.Lang::t('_SUBSCRIBE', 'catalogue').'"><p class="can_subscribe">'.Lang::t('_SUBSCRIBE', 'catalogue').'</p></a>';                                    
+                                break;
+                                case 1:
+                                    // moderate
+                                     $action .=  '<a href="javascript:;" onclick="courseSelection(\''.$row['idCourse'].'\', \'0\')" title="'.Lang::t('_SUBSCRIBE', 'catalogue').'"><p class="can_subscribe">'.Lang::t('_COURSE_S_MODERATE', 'catalogue').'</p></a>';
+                                break;
+                                case 0:
+                                    // only admin
+                                    $action .= '<p class="cannot_subscribe">'.Lang::t('_COURSE_S_GODADMIN', 'catalogue').'</p>';
+                                break; 
+                            }                               
+                            
+                            
+                        else
+                        {
+                            $classroom_in_chart = array();
+
+                            if(isset($_SESSION['lms_cart'][$row['idCourse']]['classroom']))
+                                $classroom_in_chart = $_SESSION['lms_cart'][$row['idCourse']]['classroom'];
+
+                            $control = array_diff($control, $classroom_in_chart);
+
+                            if(count($control) == 0)
+                                $action .= '<p class="subscribed">'.Lang::t('_ALL_EDITION_BUYED', 'catalogue').'</p>';
+                            else
+                                $action .= '<a href="javascript:;" onclick="courseSelection(\''.$row['idCourse'].'\', \'1\')" title="'.Lang::t('_ADD_TO_CART', 'catalogue').'"><p class="can_subscribe">'.Lang::t('_ADD_TO_CART', 'catalogue').'</p></a>';
+                        }
+                    }
+                }
+                $action .= '</div>';
+            }
+            elseif($row['course_edition'] == 1)
+            {
+                $additional_info = '';
+
+                $editions = $smodel->edition_man->getEditionAvailableForCourse(Docebo::user()->getIdSt(), $row['idCourse']);
+
+                $action = '<div class="catalog_action" id="action_'.$row['idCourse'].'">';
+                if(count($editions) == 0)
+                    $action .= '<p class="cannot_subscribe">'.Lang::t('_NO_EDITIONS', 'catalogue').'</p>';
+                else
+                {
+                    if($row['selling'] == 0)
+                        $action .= '<a href="javascript:;" onclick="courseSelection(\''.$row['idCourse'].'\', \'0\')" title="'.Lang::t('_SUBSCRIBE', 'catalogue').'"><p class="can_subscribe">'.Lang::t('_SUBSCRIBE', 'catalogue').'</p></a>';
+                    else
+                    {
+                        $edition_in_chart = array();
+
+                        if(isset($_SESSION['lms_cart'][$row['idCourse']]['editions']))
+                            $edition_in_chart = $_SESSION['lms_cart'][$row['idCourse']]['editions'];
+
+                        $editions = array_diff($editions, $edition_in_chart);
+
+                        if(count($editions) == 0)
+                            $action .= '<p class="subscribed">'.Lang::t('_ALL_EDITION_BUYED', 'catalogue').'</p>';
+                        else
+                            $action .= '<a href="javascript:;" onclick="courseSelection(\''.$row['idCourse'].'\', \'1\')" title="'.Lang::t('_ADD_TO_CART', 'catalogue').'"><p class="can_subscribe">'.Lang::t('_ADD_TO_CART', 'catalogue').'</p></a>';
+                    }
+                }
+                $action .= '</div>';
+            }
+            else
+            {
+                // standard elearning course without editions
+                /*
+                $query =    "SELECT COUNT(*)"
+                            ." FROM %lms_courseuser"
+                            ." WHERE idCourse = '".$row['idCourse']."'";
+                            
+                list($enrolled) = sql_fetch_row(sql_query($query));
+                 */
+                 
+                 $enrolled = $smodel->enrolledStudent($row['idCourse']);
+                 
+                $row['enrolled'] = $enrolled;
+                $row['create_date'] = Format::date($row['create_date'], 'date');
+                $additional_info =    '<p class="course_support_info">'.Lang::t('_COURSE_INTRO', 'course', array(
+                                        '[course_type]'        => $row['course_type'],
+                                        '[create_date]'        => $row['create_date'],
+                                        '[enrolled]'        => $row['enrolled'],
+                                        '[course_status]'    => Lang::t($this->cstatus[$row['status']], 'course')))
+                                    .'</p>';
+
+                                    
+                 // da mettere nel model 
+                /*
+                $query =    "SELECT status, waiting, level"
+                            ." FROM %lms_courseuser"
+                            ." WHERE idCourse = ".$row['idCourse']
+                            ." AND idUser = ".Docebo::user()->getIdSt();
+                $result_control = sql_query($query);
+                */
+                $result_control = $smodel->getInfoEnroll($row['idCourse'],Docebo::user()->getIdSt());
                 
-                .'
-                    
+                
+                $action = '<div class="catalog_action" id="action_'.$row['idCourse'].'">';
+                if(sql_num_rows($result_control) > 0)
+                {
+                    // the user is enrolled in some way
+                    list($status, $waiting, $level) = sql_fetch_row($result_control);
+
+                    if($waiting)
+                        $action .= '<p class="subscribed">'.Lang::t('_WAITING', 'catalogue').'</p>';
+                    else {
+                        
+              // #1995 Grifo multimedia (da togliere????????)                               
+              // da mettere nel model           
+              /*
+              $query_lo =    "select org.idOrg, org.idCourse, org.objectType from (SELECT o.idOrg, o.idCourse, o.objectType 
+              FROM %lms_organization AS o WHERE o.objectType != '' AND o.idCourse IN (".$row['idCourse'].") ORDER BY o.path) as org 
+              GROUP BY org.idCourse";
+              $result_lo = sql_query($query_lo);            
+              */   
+              $result_lo = $smodel->getInfoLO($row['idCourse']);
+                 
+                 list($id_org, $id_course, $obj_type) = sql_fetch_row($result_lo);
+               $str_rel = "";
+           
+               if($obj_type == "scormorg" && $level<=3 && $row['direct_play']==1 ) $str_rel = " rel='lightbox'";
+                  $action .= '<a href="index.php?modname=course&op=aula&idCourse='.$row['idCourse'].' "'
+                    .' title="'.$_text.'"   '.$str_rel.'><p class="subscribed">'
+                    .Lang::t('_USER_STATUS_ENTER', 'catalogue').'</p>'
+                    .'</a><br>';
+                                
+                    }
+                        
+                }
+                else
+                {
+                    // course is not enrolled
+                    $course_full = false;
+
+                    if($row['max_num_subscribe'] != 0)
+                    {
+                        // DA INSERIRE NEL MODEL
+                        /*
+                        $query = "SELECT COUNT(*)"
+                            ." FROM %lms_courseuser"
+                            ." WHERE idCourse = ".$row['idCourse'];
+                        list($control) = sql_fetch_row(sql_query($query));
+                        */
+                        $control = $smodel->enrolledStudent($row['idCourse']);
+                        
+                        if($control >= $row['max_num_subscribe'])
+                        {
+                            // the course have reached the maximum number of subscription
+                            $action .= '<p class="cannot_subscribe">'.Lang::t('_MAX_NUM_SUBSCRIBE', 'catalogue').' - '.$row['max_num_subscribe'].'</p>';
+                            $course_full = true;
+                        }
+                    }
+
+                    if(!$course_full)
+                    {
+
+                        if($row['selling'] == 0) {
+
+                            switch ($row['subscribe_method']) {
+                                case 2:
+                                    // free
+                                    $action .= '<a href="javascript:;" onclick="subscriptionPopUp(\''.$row['idCourse'].'\', \'0\', \'0\', \'0\')" title="'.Lang::t('_SUBSCRIBE', 'catalogue').'"><p class="can_subscribe">'.Lang::t('_SUBSCRIBE', 'catalogue').'</p></a>';
+                                   // $action .= '<a class="cbp-vm-add" href="javascript:;" onclick="subscriptionPopUp(\''.$row['idCourse'].'\', \'0\', \'0\', \'0\')" title="'.Lang::t('_SUBSCRIBE', 'catalogue').'">'.Lang::t('_SUBSCRIBE', 'catalogue').'</a>';
+                                break;
+                                case 1:
+                                    // moderate
+                                    $action .= '<a href="javascript:;" onclick="subscriptionPopUp(\''.$row['idCourse'].'\', \'0\', \'0\', \'0\')" title="'.Lang::t('_COURSE_S_MODERATE', 'course').'"><p class="can_subscribe">'.Lang::t('_COURSE_S_MODERATE', 'catalogue').'</p></a>';
+                                break;
+                                case 0:
+                                    // only admin
+                                    $action .= '<p class="cannot_subscribe">'.Lang::t('_COURSE_S_GODADMIN', 'catalogue').'</p>';
+                                break;
+                            }
+
+
+                        } else {
+                            $date_in_chart = array();
+
+                            if(isset($_SESSION['lms_cart'][$row['idCourse']]))
+                                $action .= '<p class="subscribed">'.Lang::t('_COURSE_IN_CART', 'catalogue').'</p>';
+                            else
+                                $action .= '<a href="javascript:;" onclick="subscriptionPopUp(\''.$row['idCourse'].'\', \'0\', \'0\', \'1\')" title="'.Lang::t('_ADD_TO_CART', 'catalogue').'"><p class="can_subscribe">'.Lang::t('_ADD_TO_CART', 'catalogue').'</p></a>';
+                        }
+                    }
+                }
+                $action .= '</div>';
+            }
+
+        $arr_cat = $smodel->getMinorCategoryTree((int)$row['idCategory']);
+        
+        
+        if($row['course_type']=="elearning") $img_type =  "<img src='".Layout::path()."images/lobject/scormorg.gif'>";
+        if($row['course_type']=="classroom") $img_type = "<img src='".Layout::path()."images/course/classroom-cal.png'>";
+        // start - end 
+        
+        $str_start_end ="";
+        if($row['date_begin']!="0000-00-00"){
+            $str_start_end = Lang::t('_SUBSCRIPTION_DATE_BEGIN', 'course'). " <b>". $row['date_begin'].'</b>  '.Lang::t('_SUBSCRIPTION_DATE_END', 'course').' <b>'.$row['date_end']."</b>";
+        }
+        
+        
+        
+        
+    // BUG TRACKER - LR #5669
+        $data_inizio = $row['date_begin'];
+        $data_end = $row['date_end'];
+        
+        $str_lock_start = "";
+        $str_lock_end = "";
+        
+        if($row['hour_begin'] != "-1") $str_h_begin = $row['hour_begin']; 
+        if($row['hour_end'] != "-1") $str_h_end = $row['hour_end']; 
+        
+        $can_enter_star = true;
+        $can_enter_end = true  ;  
+        if($data_inizio != "0000-00-00") $str_lock_start = "<b><i style='font-size:.68em'>".Lang::t('_COURSE_BEGIN', 'certificate')."</b>: ".Format::date($data_inizio, 'date')." ".$str_h_begin."</i>" ;
+        if($data_end  != "0000-00-00") $str_lock_end= "<br><b><i style='font-size:.68em'>".Lang::t('_COURSE_END', 'certificate')."</b>: ".Format::date($data_end, 'date')." ".$str_h_end."</i>";
+
+        if($data_inizio != "0000-00-00" && $data_inizio > date('Y-m-d')  ) $can_enter_star = false;
+        if($data_end != "0000-00-00" &&  $data_end      < date('Y-m-d') ) $can_enter_end = false;
+
+        if($data_inizio != "0000-00-00"  || $data_fine != "0000-00-00" ) $str_can_enter = ($can_enter_star && $can_enter_end);
+        if($data_inizio == "0000-00-00"  && $data_fine == "0000-00-00" ) $str_can_enter = true;        
+                
+        
+        
+        $html .= '
+                  
+                        <li>
+                                        <div class="cbp-vm-image" >
+                                                            '
+                                                            .($row['use_logo_in_courselist'] && $row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.$path_course.$row['img_course'].'" alt="'.Util::purge($row['name']).'" /></div>' : '')
+                                                            .($row['use_logo_in_courselist'] && !$row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.Get::tmpl_path().'images/course/course_nologo.png'.'" alt="'.Util::purge($row['name']).'" /></div>' : '')                         
+                                                            .
+                                                           '
+                                                           
+                                                    <!--         
+                                                    '.($row['code'] ? '<i style="font-size:.68em">['.$row['code'].']</i>' : '&nbsp;').'                  
+                                                     -->
+                                                    
+                                                    
+                                        </div>
+                                        '.$img_type.'
+                                    
+                                        <h3 class="cbp-vm-title">'.$row['name'].'<br><br> <font style="color:#FFFFFF;background-color:#C84000;">'.$arr_cat[$row['idCategory']]['name'].'</font> </h3> 
+                                        '.$str_lock_start.' 
+                                        '.$str_lock_end.'  
+                 
+                                         <!-- DATE START - DATE END  -->
+                                         
+                                         
+                                          
+                                        <div class="cbp-vm-details">  &nbsp
+                                                     '.$row['description'].' 
+                                        '.
+                                            ($row["course_demo"] ? '<a   href="index.php?r=catalog/downloadDemoMaterial&amp;course_id='.$row['idCourse'].'" class="ico-wt-sprite subs_download"><span>'.Lang::t('_COURSE_DEMO', 'course').'</span></a>' : '')
+                                        .'                                       
+                                                         
+                                        <br>
+                                        
+                                                            
+                                       
+                                       
+                                        </div>
+                                            
+                                         
+                                          <div class="cbp-vm-add">                                   
+                                                <table   border=0 align=center  >
+                                                      <tr><td>  <br>';
+                                                      
+                                                      
+      if($str_can_enter==true &&  $row['status']!=CST_CONCLUDED)  $html .=    $action;
+          if($str_can_enter==false || $row['status']==CST_CONCLUDED)  $html .= "<img class='no_traform' src='". Get::tmpl_path().'images/standard/locked.png'."'>" ;   
+              
+                                          
+             $html .= ' </td></tr>
+                             </table>     
+                     </div>                             
+                        </li>';
+                                                              
+                                                      
+                        
+        }
+
+        if(sql_num_rows($result) <= 0)
+            $html = '<p>'.Lang::t('_NO_CONTENT', 'standard').'</p>';
+
+        echo $html;  
+  
+        
+        
+     ?>      
           </ul>
          
             
     </div>
-</div><!-- /main -->' 
-            
-            
-			.$nav_bar->getNavBar();
-			// #1995 Grifo multimedia LR
-?>
+</div><!-- /main -->
+
+
+</div>
+
 
 <script type="text/javascript">
     var lb = new LightBox();
