@@ -123,8 +123,8 @@ class TreeDb_OrgDb extends TreeDb {
 				." WHERE (". $this->fields['idParent'] ." = '". (int)$idFolder ."')";
 				
 		$rs = sql_query( $query ) 
-				or die( "Error [$query] ". mysql_error() );
-		if( mysql_num_rows( $rs ) == 1 ) {
+				or die( "Error [$query] ". sql_error() );
+		if( sql_num_rows( $rs ) == 1 ) {
 			list( $result ) = sql_fetch_row( $rs );
 			return $result;
 		} else {
