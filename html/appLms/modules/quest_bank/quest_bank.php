@@ -68,7 +68,7 @@ function questbank(&$url) {
 
 	cout($qb_select->get_selector(), 'content');
 
-	$re_type = mysql_query("
+	$re_type = sql_query("
 	SELECT type_quest
 	FROM ".$GLOBALS['prefix_lms']."_quest_type
 	WHERE type_quest <> 'break_page'
@@ -109,7 +109,7 @@ function modquest(&$url) {
 
 	$id_quest = importVar('id_quest', true, 0);
 
-	list($type_quest) = sql_fetch_row(mysql_query("
+	list($type_quest) = sql_fetch_row(sql_query("
 	SELECT type_quest
 	FROM ".$GLOBALS['prefix_lms']."_testquest
 	WHERE idQuest = '".$id_quest."' AND idTest = 0"));
@@ -251,7 +251,7 @@ function exportquest(&$url) {
 					VALUES
 				( '".(int)getLogUserId()."', '".$title."', '".$_POST['textof']."' )";
 				//TODO:
-				if( !mysql_query($ins_query) )
+				if( !sql_query($ins_query) )
 				{
 					$_SESSION['last_error'] = $lang->def('_OPERATION_FAILURE');
 				}

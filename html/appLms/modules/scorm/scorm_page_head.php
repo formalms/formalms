@@ -27,8 +27,6 @@ if(!Docebo::user()->isLoggedIn() || !isset($_SESSION['idCourse']))
 
 require_once(dirname(__FILE__) . '/config.scorm.php');
 
-$dbconn = mysql_connect($GLOBALS['dbhost'], $GLOBALS['dbuname'], $GLOBALS['dbpass']);
-mysql_select_db($GLOBALS['dbname']);
 
 @sql_query("SET NAMES '".$GLOBALS['db_conn_names']."'", $dbconn);
 @sql_query("SET CHARACTER SET '".$GLOBALS['db_conn_char_set']."'", $dbconn);
@@ -220,7 +218,7 @@ $rs = $itemtrack->getItemTrack(sl_sal_getUserId(), $idReference, NULL, $idscorm_
 if( $rs === FALSE ) {
 	echo "Lesson never initiated";
 } else {
-	$report = mysql_fetch_assoc($rs);
+	$report = sql_fetch_assoc($rs);
 	echo Lang::t('_PROGRESS', 'scorm')." ".$report['nDescendantCompleted']."/".$report['nDescendant']."<br />";
 	$widthMax = 220;
 	$widthOne = ($widthMax-$report['nDescendant'])/$report['nDescendant'];

@@ -113,7 +113,7 @@ class PDF extends TCPDF
         $query = "SELECT lang_browsercode, lang_direction"
             . " FROM " . $GLOBALS['prefix_fw'] . "_lang_language"
             . " WHERE lang_code = '" . getLanguage() . "'";
-        list($lang_code, $lang_direction) = mysql_fetch_row(mysql_query($query));
+        list($lang_code, $lang_direction) = sql_fetch_row(sql_query($query));
 
         if (strpos($lang_code, ';') !== false) {
             $lang_code = current(explode(';', $lang_code));

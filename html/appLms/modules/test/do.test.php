@@ -720,8 +720,8 @@ function play($object_test, $id_param) {
 				$query =	"SELECT idAnswer, is_correct"
 							." FROM ".$GLOBALS['prefix_lms']."_testquestanswer"
 							." WHERE idQuest = ".(int)$idQuest;
-				$result = mysql_query($query);
-				while(list($id_answer, $is_correct) = mysql_fetch_row($result))
+				$result = sql_query($query);
+				while(list($id_answer, $is_correct) = sql_fetch_row($result))
 					$array_answer[$idQuest][$id_answer] = $is_correct;
 				$array_answer[$idQuest]['type'] = $type_quest;
 				$tot_question++;

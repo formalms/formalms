@@ -256,8 +256,8 @@ function getSendToIdst($id_send, $limit) {
 	$qtxt="SELECT idst FROM ".$GLOBALS["prefix_fw"]."_newsletter_sendto WHERE id_send='".(int)$id_send."' LIMIT ".$limit;
 	$q=sql_query($qtxt);
 
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		while($row=mysql_fetch_array($q)) {
+	if (($q) && (sql_num_rows($q) > 0)) {
+		while($row=sql_fetch_array($q)) {
 			$res[]=$row["idst"];
 		}
 	}
@@ -389,13 +389,13 @@ function init_send() {
 
 	$qtxt ="INSERT INTO ".$GLOBALS["prefix_fw"]."_newsletter (sub, msg, fromemail, language, send_type, stime) ";
 	$qtxt.="VALUES ('".$sub."', '".$msg."', '".$fromemail."', '".$lang_selected."', '".$send_type."', NOW())";
-	$q=sql_query($qtxt); //echo mysql_error();
+	$q=sql_query($qtxt); //echo sql_error();
 
 	$qtxt="SELECT LAST_INSERT_ID() as last_id FROM ".$GLOBALS["prefix_fw"]."_newsletter";
 	$q=sql_query($qtxt);
 
 
-	$row=mysql_fetch_array($q);
+	$row=sql_fetch_array($q);
 	$last_id=$row["last_id"];
 
 	$qtxt="UPDATE ".$GLOBALS["prefix_fw"]."_newsletter SET id_send='".$last_id."' WHERE id='$last_id'";
@@ -419,8 +419,8 @@ function get_send_info($send_id) {
 	$qtxt="SELECT * FROM ".$GLOBALS["prefix_fw"]."_newsletter WHERE id='".$send_id."'";
 	$q=sql_query($qtxt); //echo $qtxt;
 
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		while($row=mysql_fetch_assoc($q)) {
+	if (($q) && (sql_num_rows($q) > 0)) {
+		while($row=sql_fetch_assoc($q)) {
 
 			if ($sel_lang == "") $sel_lang=$row["language"];
 			$sel_lang=$row["language"];

@@ -487,7 +487,7 @@ class DoceboLangManager {
 				."   AND tt.text_module = '".$module."'"
 				."   AND tran.lang_code = '".$lang_code."'";
 		$rs = sql_query( $query );
-		if( mysql_num_rows($rs) < 1 )
+		if( sql_num_rows($rs) < 1 )
 			return FALSE;
 		list($translation_text) = sql_fetch_row($rs);
 		return $translation_text;
@@ -570,7 +570,7 @@ class DoceboLangManager {
 				." WHERE text_key = '".$key."' "
 				."   AND text_module = '".$module."'";
 		$rs = sql_query( $query );
-		if( mysql_num_rows($rs) == 0 ) {
+		if( sql_num_rows($rs) == 0 ) {
 			return FALSE;
 		}
 		list( $attributes ) = sql_fetch_row($rs);
@@ -594,7 +594,7 @@ class DoceboLangManager {
 				." WHERE text_key = '".$key."' "
 				."   AND text_module = '".$module."''";
 		$rs = sql_query( $query );
-		if( mysql_num_rows($rs) == 0 ) {
+		if( sql_num_rows($rs) == 0 ) {
 			return FALSE;
 		}
 		list( $id_text ) = sql_fetch_row($rs);
@@ -629,7 +629,7 @@ class DoceboLangManager {
 				." WHERE text_key = '".$key."' "
 				."   AND text_module = '".$module."'";
 		$rs = sql_query( $query );
-		if( mysql_num_rows($rs) == 0 ) {
+		if( sql_num_rows($rs) == 0 ) {
 			
 			if($no_add === true) return true;
 			$query = "INSERT INTO ".$this->_getTableText()
@@ -755,7 +755,7 @@ class DoceboLangManager {
 				." FROM ".$this->_getTableLanguage()
 				." WHERE lang_code='".$lang_code."'";
 		$rs = sql_query( $query );
-		if( mysql_num_rows( $rs ) !== 1 )
+		if( sql_num_rows( $rs ) !== 1 )
 			return FALSE;
 
 		list($description) = sql_fetch_row( $rs );
@@ -782,7 +782,7 @@ class DoceboLangManager {
 				." FROM ".$this->_getTableLanguage()
 				." WHERE lang_code='".$lang_code."'";
 		$rs = sql_query( $query );
-		if( mysql_num_rows( $rs ) !== 1 )
+		if( sql_num_rows( $rs ) !== 1 )
 			return FALSE;
 
 		list($lang_browsercode) = sql_fetch_row( $rs );
@@ -799,7 +799,7 @@ class DoceboLangManager {
 				." FROM ".$this->_getTableLanguage()
 				." WHERE lang_code='".$lang_code."'";
 		$rs = sql_query( $query );
-		if( mysql_num_rows( $rs ) !== 1 )
+		if( sql_num_rows( $rs ) !== 1 )
 			return FALSE;
 
 		list($lang_direction) = sql_fetch_row( $rs );
@@ -820,7 +820,7 @@ class DoceboLangManager {
 
 			$bl_arr = explode(";", $value);
 			$browser_language = $bl_arr[0];
-			$browser_language =mysql_escape_string(substr($browser_language, 0, 5));
+			$browser_language =sql_escape_string(substr($browser_language, 0, 5));
 			
 			$query = "SELECT lang_code "
 				." FROM ".$this->_getTableLanguage()
@@ -839,7 +839,7 @@ class DoceboLangManager {
 				." FROM ".$this->_getTableLanguage()
 				." WHERE lang_code='".$lang_code."'";
 		$rs = sql_query( $query );
-		if( mysql_num_rows( $rs ) !== 1 ) {
+		if( sql_num_rows( $rs ) !== 1 ) {
 			return $this->insertLanguage($lang_code, $lang_description, $lang_charset, $lang_brosercode, $lang_direction);
 		} elseif( $lang_description !== FALSE ) {
 			return $this->updateLanguage($lang_code, $lang_description, $lang_charset, $lang_brosercode, $lang_direction);

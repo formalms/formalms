@@ -103,7 +103,7 @@ class TrackUser {
 		FROM ".$GLOBALS['prefix_lms']."_tracksession 
 		WHERE idCourse = '".$id_course."' AND idUser = '".$idst_user."'";
 		$re = sql_query($query_time);
-		if($re && mysql_num_rows($re)) list($tot_time) = sql_fetch_row(sql_query($query_time));
+		if($re && sql_num_rows($re)) list($tot_time) = sql_fetch_row(sql_query($query_time));
 		
 		return $tot_time;
 	}
@@ -119,7 +119,7 @@ class TrackUser {
 		WHERE idCourse = '".$id_course."' AND idUser = '".$idst_user."' "
 				." AND idEnter <> '".$_SESSION['id_enter_course']."'";
 		$re = sql_query($query_time);
-		if($re && mysql_num_rows($re)) list($tot_time) = sql_fetch_row($re);
+		if($re && sql_num_rows($re)) list($tot_time) = sql_fetch_row($re);
 		
 		return $tot_time;
 	}
@@ -170,7 +170,7 @@ class TrackUser {
 		
 		$result=sql_query($query_time);
 		$who_is_online_list=array();
-		while ($row=mysql_fetch_array($result)) {
+		while ($row=sql_fetch_array($result)) {
 			$who_is_online_list[]=$row["idUser"];
 		};
 		

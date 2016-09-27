@@ -201,7 +201,7 @@ function getTrackingTable($id_user, $id_org) {
 		" ORDER BY t1.idscorm_item ";
 
 	$res = sql_query($qry);
-	while ($row = mysql_fetch_assoc($res)) {
+	while ($row = sql_fetch_assoc($res)) {
 		
 		$line = array();
 		
@@ -277,7 +277,7 @@ function getHistoryTable($id_user, $id_obj) {
 		" WHERE t2.idscorm_item=$id_obj AND t2.idUser=$id_user ".
 		" ORDER BY t1.date_action ASC ";
 	$res = sql_query($qry); $i=1;
-	while ($row = mysql_fetch_assoc($res)) {
+	while ($row = sql_fetch_assoc($res)) {
 		
 		$line = array();
 		
@@ -329,7 +329,7 @@ function getInteractionsTable($id_user, $idtrack) {
 
 	$qry = "SELECT xmldata FROM ".$GLOBALS['prefix_lms']."_scorm_tracking WHERE idscorm_tracking=$idtrack AND idUser=$id_user";
 	$res = sql_query($qry);
-	$row = mysql_fetch_array($res);
+	$row = sql_fetch_array($res);
 	
 	
 	$doc = new DoceboDOMDocument();

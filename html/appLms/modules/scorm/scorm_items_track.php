@@ -73,7 +73,7 @@ Class Scorm_ItemsTrack {
 	
 	function getTrackingScore( $idscorm_tracking ) {
 		$query = "SELECT score_raw FROM ".$this->prefix."_scorm_tracking WHERE idscorm_tracking='".(int)$idscorm_tracking."'";
-		$rs = sql_query($query, $this->dbconn) or die( "Scorm_ItemsTrack::getTrackingScore error in select [$query] ". mysql_error($this->dbconn) );
+		$rs = sql_query($query, $this->dbconn) or die( "Scorm_ItemsTrack::getTrackingScore error in select [$query] ". sql_error($this->dbconn) );
 		list( $score ) = sql_fetch_row($rs);
 		return $score;
 	}
@@ -93,8 +93,8 @@ Class Scorm_ItemsTrack {
 				." WHERE idscorm_item_track='".(int)$idscorm_item_track."'";
 		$rs = sql_query($query, $this->dbconn);
 		if( $rs === FALSE ) 
-			die( "Scorm_ItemsTrack::getItemTrackById error in select [$query] ". mysql_error($this->dbconn) );
-		if( mysql_num_rows($rs) == 0 ) 
+			die( "Scorm_ItemsTrack::getItemTrackById error in select [$query] ". sql_error($this->dbconn) );
+		if( sql_num_rows($rs) == 0 )
 			return FALSE;
 		return $rs;		
 	}	
@@ -131,8 +131,8 @@ Class Scorm_ItemsTrack {
 		}
 		$rs = sql_query($query, $this->dbconn);
 		if( $rs === FALSE ) 
-			die( "Scorm_ItemsTrack::getItemsTrack error in select [$query] ". mysql_error($this->dbconn) );
-		if( mysql_num_rows($rs) == 0 ) 
+			die( "Scorm_ItemsTrack::getItemsTrack error in select [$query] ". sql_error($this->dbconn) );
+		if( sql_num_rows($rs) == 0 )
 			return FALSE;
 		return $rs;		
 	}	
@@ -151,7 +151,7 @@ Class Scorm_ItemsTrack {
 		if( sql_query($query,$this->dbconn) ) {
 			return TRUE;
 		} else {
-			die( "Scorm_ItemsTrack::setTracking error in select [$query] ". mysql_error($this->dbconn) );
+			die( "Scorm_ItemsTrack::setTracking error in select [$query] ". sql_error($this->dbconn) );
 		}
 	}
 	
@@ -248,7 +248,7 @@ Class Scorm_ItemsTrack {
 			soap__dbgOut( $query );		
 			$rs = sql_query($query,$this->dbconn);
 			if( $rs === FALSE )
-				die("Scorm_ItemsTrack::getParentItemTrack error in select [$query] ". mysql_error($this->dbconn) 
+				die("Scorm_ItemsTrack::getParentItemTrack error in select [$query] ". sql_error($this->dbconn)
 				." - ".print_r($items_array) );				
 			return $rs;
 		} else {
@@ -312,7 +312,7 @@ Class Scorm_ItemsTrack {
 		if( $rs == FALSE ) {
 			return FALSE;
 		} 
-		if ( mysql_num_rows($rs) == 0) {
+		if ( sql_num_rows($rs) == 0) {
 			$result = array();
 		    return $result;
 		} else {
@@ -364,11 +364,11 @@ Class Scorm_ItemsTrack {
 				//."   AND idReference='".(int)$idReference."'";
 		$rs = sql_query($query,$this->dbconn);
 		if( $rs === FALSE ) {
-			$textOut = "Scorm_ItemsTrack::getParentItem error in select [$query] ". mysql_error($this->dbconn);
+			$textOut = "Scorm_ItemsTrack::getParentItem error in select [$query] ". sql_error($this->dbconn);
 			soap__dbgOut( $textOut, 1 );
 			die( $textOut );
 		}			
-		if( mysql_num_rows( $rs ) == 0 )
+		if( sql_num_rows( $rs ) == 0 )
 			return FALSE;
 		else
 			return sql_fetch_row($rs);
@@ -413,9 +413,9 @@ Class Scorm_ItemsTrack {
 		}
 		$rs = sql_query($query,$this->dbconn);
 		if( $rs === FALSE ) 
-			die("Scorm_ItemsTrack::getParentItem error in select [$query] ". mysql_error($this->dbconn));
+			die("Scorm_ItemsTrack::getParentItem error in select [$query] ". sql_error($this->dbconn));
 		else
-			return mysql_fetch_assoc($rs);
+			return sql_fetch_assoc($rs);
 	}
 	
 	/**
@@ -438,7 +438,7 @@ Class Scorm_ItemsTrack {
 		//echo "a --> " . $query;
 		$result = sql_query($query, $this->dbconn);
 		if($result === FALSE) {
-			$textOut = "Scorm_ItemsTrack::createItemsTrak error in insert [$query] ". mysql_error($this->dbconn);
+			$textOut = "Scorm_ItemsTrack::createItemsTrak error in insert [$query] ". sql_error($this->dbconn);
 			soap__dbgOut( $textOut, 1 );
 			die( $textOut );
 		}
@@ -453,7 +453,7 @@ Class Scorm_ItemsTrack {
 				." ORDER BY idscorm_item";
 		$result = sql_query($query, $this->dbconn);
 		if($result === FALSE) {
-			$textOut = "Scorm_ItemsTrack::createItemsTrak error in insert [$query] ". mysql_error($this->dbconn);
+			$textOut = "Scorm_ItemsTrack::createItemsTrak error in insert [$query] ". sql_error($this->dbconn);
 			soap__dbgOut( $textOut, 1 );
 			die( $textOut );
 		}
@@ -465,12 +465,12 @@ Class Scorm_ItemsTrack {
                 
                 $rsItemTrack = $this->getItemTrack($idUser,$idReference, NULL, $idResource);
                 if( $rsItemTrack !== FALSE ) {
-                    $arrItemTrack = mysql_fetch_assoc( $rsItemTrack );
+                    $arrItemTrack = sql_fetch_assoc( $rsItemTrack );
                     return array( TRUE, $arrItemTrack['idscorm_item_track'] );
                 } else if ($createOnFail) {
                         $this->createItemsTrack( $idUser, $idReference, $idResource );
                         $rsItemTrack = $this->getItemTrack( $idUser, $idReference, NULL, $idResource );
-                        $arrItemTrack = mysql_fetch_assoc( $rsItemTrack );
+                        $arrItemTrack = sql_fetch_assoc( $rsItemTrack );
                         return array( FALSE, $arrItemTrack['idscorm_item_track'] );
                 }
 		return FALSE;
@@ -491,14 +491,14 @@ Class Scorm_ItemsTrack {
 			soap__dbgOut( $textOut, 1 );
 			die( $textOut );
 		}
-		$record = mysql_fetch_assoc($rs);
+		$record = sql_fetch_assoc($rs);
 		if( strcmp($record['status'], $status) != 0 ) {
 			$query = "UPDATE ".$this->main_table
 					." SET status='$status'"
 					." WHERE idscorm_item_track=".$record['idscorm_item_track'];
 
 			if( sql_query($query, $this->dbconn) === FALSE ) {
-				$textOut = "Scorm_ItemsTrack::setStatus error in update [$query] ". mysql_error($this->dbconn);
+				$textOut = "Scorm_ItemsTrack::setStatus error in update [$query] ". sql_error($this->dbconn);
 				soap__dbgOut( $textOut, 1 );		
 				die( $textOut );			
 			}
@@ -522,7 +522,7 @@ Class Scorm_ItemsTrack {
 		$rs = $this->getParentItemTrack($idUser, $idReference, $idscorm_item);
 		if( $rs === FALSE ) 
 			return FALSE;
-		$record = mysql_fetch_assoc($rs);
+		$record = sql_fetch_assoc($rs);
 		
 		$status = 'incomplete';
 		if( $isChild ) {
@@ -549,7 +549,7 @@ Class Scorm_ItemsTrack {
 				." WHERE idscorm_item_track=".$record['idscorm_item_track'];
 		
 		if( sql_query($query, $this->dbconn) === FALSE ) {
-			$textOut = "Scorm_ItemsTrack::forwardCompleted error in update [$query] ". mysql_error($this->dbconn)
+			$textOut = "Scorm_ItemsTrack::forwardCompleted error in update [$query] ". sql_error($this->dbconn)
 						.print_r($record);
 			soap__dbgOut( $textOut, 1 );		
 			die( $textOut );
@@ -575,7 +575,7 @@ Class Scorm_ItemsTrack {
 				$track_so->setStatus( 'completed' );
 				$track_so->setDate( date("Y-m-d H:i:s") );
 				$track_so->update();
-				soap__dbgOut( "mysql error = " .mysql_error() );
+				soap__dbgOut( "mysql error = " .sql_error() );
 			}
 		}
 	}

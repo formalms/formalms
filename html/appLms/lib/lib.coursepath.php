@@ -421,7 +421,7 @@ class CoursePath_Manager {
 		WHERE ".$this->_path_field[COURSEPATH_ID]." = '".$id."'";
 		$re_select = sql_query($select);
 		if(!$re_select) return false;
-		return  mysql_fetch_assoc($re_select);
+		return  sql_fetch_assoc($re_select);
 	}
 
 	/**
@@ -463,7 +463,7 @@ class CoursePath_Manager {
 		FROM ".$this->_getPathCourseTable()."
 		WHERE id_path  IN (".implode(',', $coursepaths).") ";
 		$re_courses = $this->_query($query);
-		while($row=mysql_fetch_assoc($re_courses)) {
+		while($row=sql_fetch_assoc($re_courses)) {
 			$id =$row["id_item"];
 			$courses[$id] = $row;
 		}
@@ -649,7 +649,7 @@ class CoursePath_Manager {
 		$repath_elem = sql_query($query_pathelem);
 
 		$info = array();
-		$info = mysql_fetch_array($repath_elem);
+		$info = sql_fetch_array($repath_elem);
 		return $info;
 	}
 

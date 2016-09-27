@@ -223,8 +223,8 @@ function show_personal_media(& $out, & $lang) {
 	WHERE user_idst='".$user_id."'";
 	$q = sql_query($qtxt);
 
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		while($row = mysql_fetch_array($q)) {
+	if (($q) && (sql_num_rows($q) > 0)) {
+		while($row = sql_fetch_array($q)) {
 			$site_url="http://".$_SERVER['HTTP_HOST'].$path.'/common/users/';
 			$rowcnt = array();
 
@@ -388,8 +388,8 @@ function del_personal_media(& $out, & $lang) {
 		$qtxt.="WHERE id='".$id."' AND user_idst='".$user_id."' AND type='image'";
 		$q=sql_query($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			$row=mysql_fetch_array($q);
+		if (($q) && (sql_num_rows($q) > 0)) {
+			$row=sql_fetch_array($q);
 			$real_fname=$row["real_fname"];
 
 			//@sl_unlink(_USER_FPATH.$real_fname);
@@ -563,8 +563,8 @@ function select_media(& $out, & $lang) {
 			$qtxt.="WHERE t1.idMedia='".$item_id."' AND t1.publish='1'";
 			$q=sql_query($qtxt);
 
-			if (($q) && (mysql_num_rows($q) > 0)) {
-				$row=mysql_fetch_array($q);
+			if (($q) && (sql_num_rows($q) > 0)) {
+				$row=sql_fetch_array($q);
 				$src=$row["real_fname"];
 				$title=$row["title"];
 
@@ -592,8 +592,8 @@ function select_media(& $out, & $lang) {
 			$qtxt.="WHERE id='".$item_id."' AND user_idst='".$user_id."' AND type='image'";
 			$q=sql_query($qtxt);
 
-			if (($q) && (mysql_num_rows($q) > 0)) {
-				$row=mysql_fetch_array($q);
+			if (($q) && (sql_num_rows($q) > 0)) {
+				$row=sql_fetch_array($q);
 				if (!empty($row["media_url"])) {
 					$src=$row["media_url"];
 				}

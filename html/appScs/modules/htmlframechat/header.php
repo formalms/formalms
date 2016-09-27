@@ -61,11 +61,11 @@ ob_start();
 
 /*Start database connection***********************************************/
 /*
-$GLOBALS['dbConn'] = mysql_connect($GLOBALS['dbhost'], $GLOBALS['dbuname'], $GLOBALS['dbpass']);
+$GLOBALS['dbConn'] = sql_connect($GLOBALS['dbhost'], $GLOBALS['dbuname'], $GLOBALS['dbpass']);
 if( !$GLOBALS['dbConn'] )
 	die( "Can't connect to db. Check configurations" );
 
-if( !mysql_select_db($dbname, $GLOBALS['dbConn']) )
+if( !sql_select_db($dbname, $GLOBALS['dbConn']) )
 	die( "Database not found. Check configurations" );
 
 @sql_query("SET NAMES '".$GLOBALS['db_conn_names']."'", $GLOBALS['dbConn']);

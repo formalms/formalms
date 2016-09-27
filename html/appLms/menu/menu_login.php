@@ -95,7 +95,7 @@ function loadNewsBlock() {
 			.'<p><span class="news_data">'.$lang->def('_DATE').' '.Format::date($publish_date, 'date').': </span>'
 			.$short_desc.'</p>';
 	}
-	if(mysql_num_rows($result) == 0) {
+	if(sql_num_rows($result) == 0) {
 		$html .= $lang->def('_NO_CONTENT');
 	}
 	$html .= '</div>';

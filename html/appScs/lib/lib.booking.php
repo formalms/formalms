@@ -48,9 +48,9 @@ class ChatBooking {
 				return FALSE;
 		}
 		if( $this->dbconn === NULL )
-			return mysql_insert_id();
+			return sql_insert_id();
 		else
-			return mysql_insert_id($this->dbconn);
+			return sql_insert_id($this->dbconn);
 	}
 
 
@@ -76,13 +76,13 @@ class ChatBooking {
 		$qtxt.="WHERE room_id='".(int)$room_id."' AND user_idst='".(int)$user_idst."' LIMIT 0,1";
 		$q=$this->_executeQuery($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
 
-			$row=mysql_fetch_assoc($q);
+			$row=sql_fetch_assoc($q);
 			$res=$row["booking_id"];
 
 		}
-		else if (($q) && (mysql_num_rows($q) == 0)) {
+		else if (($q) && (sql_num_rows($q) == 0)) {
 
 			$qtxt ="INSERT INTO ".$this->_getBookingTable()." (room_id, platform, module, user_idst) ";
 			$qtxt.="VALUES ('".(int)$room_id."', '".$this->getPlatform()."', ";
@@ -110,8 +110,8 @@ class ChatBooking {
 		$q=$this->_executeQuery($qtxt);
 
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while ($row=mysql_fetch_assoc($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while ($row=sql_fetch_assoc($q)) {
 				$user_idst=$row["user_idst"];
 				$res[$user_idst]=$row;
 			}

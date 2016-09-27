@@ -34,14 +34,14 @@ class Teleskill_Management
 	function _query($query) {
 
 		$re = sql_query($query);
-		if(!$re) echo '<!-- Teleskill_Management - query : '.$query.' error : '.mysql_error().' -->';
+		if(!$re) echo '<!-- Teleskill_Management - query : '.$query.' error : '.sql_error().' -->';
 		else echo '<!-- Teleskill_Management - query : '.$query.' -->';
 		return $re;
 	}
 
 	function nextRow($re_room) {
 
-		return mysql_fetch_array($re_room);
+		return sql_fetch_array($re_room);
 	}
 
 	function _getRoomTable() {

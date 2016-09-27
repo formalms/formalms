@@ -190,7 +190,7 @@ class Man_Reservation {
 			$query .= " WHERE idCourse = '".$id_course."'";
 		
 		$result = sql_query($query);
-		$num_rows = mysql_num_rows($result);
+		$num_rows = sql_num_rows($result);
 		
 		$re = array();
 		$re[0] = $lang->def('_UNDEFINITED');
@@ -227,7 +227,7 @@ class Man_Reservation {
 				" FROM ".$this->getTableClassroom()."";
 		
 		$result = sql_query($query);
-		$num_rows = mysql_num_rows($result);
+		$num_rows = sql_num_rows($result);
 		
 		$re = array();
 		$re[0] = $lang->def('_UNDEFINITED');
@@ -308,7 +308,7 @@ class Man_Reservation {
 				" WHERE idEvent = '".$id_event."'";
 		
 		$result = sql_query($query);
-		$num_rows = mysql_num_rows($result);
+		$num_rows = sql_num_rows($result);
 		
 		if ($num_rows)
 		{
@@ -386,7 +386,7 @@ class Man_Reservation {
 				" WHERE idLaboratory = '".$id_laboratory."'";
 		
 		$result = sql_query($query);
-		$num_rows = mysql_num_rows($result);
+		$num_rows = sql_num_rows($result);
 		
 		if ($num_rows)
 		{
@@ -571,7 +571,7 @@ class Man_Reservation {
 					" OR idCourse = '0'";
 		
 		$result = sql_query($query);
-		$num_rows = mysql_num_rows($result);
+		$num_rows = sql_num_rows($result);
 		
 		$re = array();
 		
@@ -784,7 +784,7 @@ class Man_Reservation {
 		
 		$result = sql_query($query);
 		
-		$num_rows = mysql_num_rows($result);
+		$num_rows = sql_num_rows($result);
 		
 		if ($num_rows)
 		{
@@ -855,7 +855,7 @@ class Man_Reservation {
 		}
 		
 		$result = sql_query($query);
-		$num_rows = mysql_num_rows($result);
+		$num_rows = sql_num_rows($result);
 		
 		if ($num_rows)
 		{
@@ -934,7 +934,7 @@ class Man_Reservation {
 		}
 		
 		$result = sql_query($query);
-		$num_rows = mysql_num_rows($result);
+		$num_rows = sql_num_rows($result);
 		
 		if ($num_rows)
 		{
@@ -1013,7 +1013,7 @@ class Man_Reservation {
 		}
 		
 		$result = sql_query($query);
-		$num_rows = mysql_num_rows($result);
+		$num_rows = sql_num_rows($result);
 		
 		if ($num_rows)
 		{
@@ -1152,7 +1152,7 @@ class Man_Reservation {
 						" OR idCourse = '0'";
 		
 		$result = sql_query($query);
-		$num_rows = mysql_num_rows($result);
+		$num_rows = sql_num_rows($result);
 		
 		$re = array();
 		$re[0][CATEGORY_ID] = 0;

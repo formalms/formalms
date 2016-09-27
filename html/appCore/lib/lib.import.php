@@ -200,13 +200,13 @@ class DoceboImport_DestinationMySQL extends DoceboImport_Destination {
 		$query = "SHOW FIELDS FROM ".$this->table;
 		$rs = sql_query( $query, $this->dbconn );
 		if( $rs === FALSE ) {
-			$this->last_error = 'Error on query: '.$query.' ['.mysql_error($this->dbconn).']';
+			$this->last_error = 'Error on query: '.$query.' ['.sql_error($this->dbconn).']';
 			return FALSE;
 		}
 		$this->cols_descriptor = array();
 		if( $this->mandatory_cols === NULL )
 			$computed_mandatory_cols = array();
-		while( $field_info = mysql_fetch_array($rs) ) {
+		while( $field_info = sql_fetch_array($rs) ) {
 			if( $this->mandatory_cols === NULL ) {
 				if($field_info['Null']!='YES') {
 					$computed_mandatory_cols[] = $field_info['Field'];
@@ -225,7 +225,7 @@ class DoceboImport_DestinationMySQL extends DoceboImport_Destination {
 		if( $this->mandatory_cols === NULL )
 			$this->mandatory_cols = $computed_mandatory_cols;
 		
-		mysql_free_result( $rs );
+		sql_free_result( $rs );
 		return TRUE;
 	}
 	
@@ -266,7 +266,7 @@ class DoceboImport_DestinationMySQL extends DoceboImport_Destination {
 		$query = "INSERT INTO ".$this->table
 				." ".$fields." VALUES ".$values;
 		if( !sql_query($query, $this->dbconn) ) {
-			$this->last_error = 'Error on query: '.$query.' ['.mysql_error($this->dbconn).']';
+			$this->last_error = 'Error on query: '.$query.' ['.sql_error($this->dbconn).']';
 			return FALSE;
 		} else {
 			return TRUE;

@@ -116,8 +116,8 @@ class Learning_Faq extends Learning_Object {
 		//insert new item
 		$query_ins = "
 		INSERT INTO ".$GLOBALS['prefix_lms']."_faq_cat
-		SET title = '".mysql_escape_string($title)."',
-			description = '".mysql_escape_string($descr)."',
+		SET title = '".sql_escape_string($title)."',
+			description = '".sql_escape_string($descr)."',
 			author = '".$author."'";
 		if(!sql_query($query_ins)) return false;
 		list($idCat) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
@@ -132,10 +132,10 @@ class Learning_Faq extends Learning_Object {
 			$query_ins = "
 			INSERT INTO ".$GLOBALS['prefix_lms']."_faq
 			SET idCategory = '".$idCat."',
-				question = '".mysql_escape_string($question)."',
-				title = '".mysql_escape_string($title)."',
-				keyword = '".mysql_escape_string($keyword)."',
-				answer = '".mysql_escape_string($answer)."',
+				question = '".sql_escape_string($question)."',
+				title = '".sql_escape_string($title)."',
+				keyword = '".sql_escape_string($keyword)."',
+				answer = '".sql_escape_string($answer)."',
 				sequence = '".$seq."'";
 			if(!sql_query($query_ins)) {
 				$this->del( $idCat );

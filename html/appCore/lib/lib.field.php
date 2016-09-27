@@ -547,7 +547,7 @@ class FieldList {
 
 		$rs = sql_query($query);
 		
-		if( mysql_num_rows($rs) < 1 )
+		if( sql_num_rows($rs) < 1 )
 			return 'NULL';
 		list( $type_file, $type_class ) = sql_fetch_row( $rs );
 		require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
@@ -597,7 +597,7 @@ class FieldList {
 
 		$play_txt = '';
 		$re_fields = sql_query($query);
-		if(!mysql_num_rows($re_fields)) return '';
+		if(!sql_num_rows($re_fields)) return '';
 		
 		while(list($id_common, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
 
@@ -631,7 +631,7 @@ class FieldList {
 		if(!$rs)
 			return $res;
 		
-		if( mysql_num_rows($rs) < 1 ){
+		if( sql_num_rows($rs) < 1 ){
 			return $res;
 		}
 		list( $id_common, $type_file, $type_class ) = sql_fetch_row( $rs );
@@ -668,7 +668,7 @@ class FieldList {
 		if($rs == false)
 			return 'NULL';
 		
-		if( mysql_num_rows($rs) < 1 )
+		if( sql_num_rows($rs) < 1 )
 			return 'NULL';
 
 		while(list( $id_common, $type_file, $type_class ) = sql_fetch_row( $rs )) {
@@ -715,7 +715,7 @@ class FieldList {
 		if($rs == false)
 			return 'NULL';
 		
-		if( mysql_num_rows($rs) < 1 )
+		if( sql_num_rows($rs) < 1 )
 			return 'NULL';
 
 		list( $id_common, $type_file, $type_class ) = sql_fetch_row( $rs );
@@ -759,7 +759,7 @@ class FieldList {
 
 		$rs = sql_query($query);
 		
-		if( mysql_num_rows($rs) < 1 )
+		if( sql_num_rows($rs) < 1 )
 			return 'NULL';
 		list( $type_file, $type_class ) = sql_fetch_row( $rs );
 		require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
@@ -828,7 +828,7 @@ class FieldList {
 			$precompiled = $this->getInheritedAdminFields($check_precompiled);
 		}
 
-		if(!mysql_num_rows($re_fields)) return '';
+		if(!sql_num_rows($re_fields)) return '';
 		while(list($id_common, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
 
 			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
@@ -1316,7 +1316,7 @@ class FieldList {
 		$query = "SELECT idst FROM ".$this->getGroupFieldsTable()
 				." WHERE idst = '".$idst."' AND id_field = '".$id_field."'";
 		$rs = sql_query( $query );
-		if( mysql_num_rows( $rs ) > 0 ) {
+		if( sql_num_rows( $rs ) > 0 ) {
 			$query = "UPDATE ".$this->getGroupFieldsTable()
 					." SET idst = '".(int)$idst."',"
 					."     id_field = '".(int)$id_field."',"
@@ -1498,8 +1498,8 @@ class FieldList {
 		$raw_res=array();
 		$raw_res["field"]=array();
 		$raw_res["user"]=array();
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while($row=mysql_fetch_assoc($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while($row=sql_fetch_assoc($q)) {
 
 				$id_common=$row["id_common"];
 				$id_user=$row["id_user"];

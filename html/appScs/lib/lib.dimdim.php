@@ -142,7 +142,7 @@ class DimDim_Manager {
 
 	function nextRow($re_room) {
 
-		return mysql_fetch_array($re_room);
+		return sql_fetch_array($re_room);
 	}
 	
 	function deleteRoom($room_id) {

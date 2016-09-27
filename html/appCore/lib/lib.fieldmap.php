@@ -53,9 +53,9 @@ Class FieldMapManager {
 				return FALSE;
 		}
 		if( $this->dbconn === NULL )
-			return mysql_insert_id();
+			return sql_insert_id();
 		else
-			return mysql_insert_id($this->dbconn);
+			return sql_insert_id($this->dbconn);
 	}
 
 
@@ -164,8 +164,8 @@ Class FieldMapManager {
 		$qtxt.="ORDER BY field_map_resource, field_type";
 		$q=$this->_query($qtxt); //--DEBUG--// echo $qtxt;
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while($row=mysql_fetch_array($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while($row=sql_fetch_array($q)) {
 					$field_id=$row["field_id"];
 					$res["map"][$field_id]["resource"]=$row["field_map_resource"];
 					$res["map"][$field_id]["type"]=$row["field_type"];

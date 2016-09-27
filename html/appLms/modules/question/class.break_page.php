@@ -101,7 +101,7 @@ class BreakPage_Question extends Question {
 		( 	'".(int)$new_id_test."', 
 			'".(int)$sel_cat."', 
 			'".$this->getQuestionType()."', 
-			'".mysql_escape_string($quest)."',
+			'".sql_escape_string($quest)."',
 			'".(int)$sel_diff."', 
 			'".$time_ass."',
 			'".(int)$sequence."',

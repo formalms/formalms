@@ -31,17 +31,16 @@ class mysqli_DbConn extends DbConn {
             if(!$this->conn = @mysqli_connect($host, $user, $pwd, $dbname)) {
 
                 Log::add( 'mysql connect error : '.mysqli_connect_error() );
-				Util::fatal('Cannot connect to the database server.');
+				//Util::fatal('Cannot connect to the database server.');
                 return false;
             }
             $this->log( 'mysql connected to : '.$host );
             $this->log( 'mysql db selected' );
         } else {
-
             if(!$this->conn = @mysqli_connect($host, $user, $pwd)) {
 
                 Log::add( 'mysql connect error : '.mysqli_connect_error() );
-				Util::fatal('Cannot connect to the database server.');
+				//Util::fatal('Cannot connect to the database server.');
                 return false;
             }
             $this->log( 'mysql connected to : '.$host );
@@ -54,10 +53,10 @@ class mysqli_DbConn extends DbConn {
 
 	public function select_db($dbname) {
 
-		if(!@mysqli_select_db($dbname, $this->conn)) {
+		if(!@mysqli_select_db($this->conn, $dbname)) {
 
 			Log::add( 'mysql select db error' );
-			Util::fatal('Cannot connect to the database server.');
+			//Util::fatal('Cannot connect to the database server.');
 			return false;
 		}
 		$this->log( 'mysql db selected ' );

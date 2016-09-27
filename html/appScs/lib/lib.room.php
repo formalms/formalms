@@ -19,7 +19,7 @@ function getAdminRules() {
 		enable_audio, enable_webcam, enable_stream_watch, enable_strem_write, enable_remote_desktop
 	FROM ".$GLOBALS['prefix_scs']."_rules_admin ";
 	$re_rules_admin = sql_query($query_rules_admin);
-	return mysql_fetch_assoc($re_rules_admin);
+	return sql_fetch_assoc($re_rules_admin);
 }
 
 function getRoomRules($id_room) {
@@ -31,7 +31,7 @@ function getRoomRules($id_room) {
 	FROM ".$GLOBALS['prefix_scs']."_rules_room
 	WHERE id_room = '".$id_room."'";
 	$re_rules_admin = sql_query($query_rules_admin);
-	return mysql_fetch_assoc($re_rules_admin);
+	return sql_fetch_assoc($re_rules_admin);
 }
 
 function insertRoom($array_source) {
@@ -95,8 +95,8 @@ function getRoomList($incl_room_type=FALSE, $excl_room_type=FALSE) {
 	
 	$q = sql_query($room_qtxt);
 
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		while($row=mysql_fetch_array($q)) {
+	if (($q) && (sql_num_rows($q) > 0)) {
+		while($row=sql_fetch_array($q)) {
 			$id =$row["id_room"];
 			$res[$id]=$row["room_name"];
 		}

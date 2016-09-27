@@ -110,10 +110,10 @@ function modpage( $object_page ) {
 	// recuper gli allegati 
 	$path = '/appLms/htmlpages/';
 	$query = "SELECT * FROM ".$GLOBALS['prefix_lms']."_htmlpage_attachment WHERE idpage = ".$object_page->getId();
-	$res = mysql_query($query);
+	$res = sql_query($query);
 	$attachments = array();
 	if ($res) {
-		while ($row = mysql_fetch_assoc($res)) {
+		while ($row = sql_fetch_assoc($res)) {
 			$attachments[] = array(
 				'id' => $row['id'],
 				'title' => $row['title'],
@@ -208,7 +208,7 @@ function uppage() {
 		foreach($ids as $id) {
 			if ($id) {
 				$query = "DELETE FROM learning_htmlpage_attachment WHERE id = ".$id;
-				mysql_query($query);
+				sql_query($query);
 			}
 		}
 	}

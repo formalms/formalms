@@ -329,12 +329,12 @@ class DataSource_Query extends DataSource {
 
 	public function setRowIndex($offset) {
 		if (!$this->data) return false;
-		return mysql_field_seek($this->data, $offset);
+		return sql_field_seek($this->data, $offset);
 	}
 
 	public function reset() {
 		if (!$this->data) return false;
-		return mysql_field_seek($this->data, 0);
+		return sql_field_seek($this->data, 0);
 	}
 
 }

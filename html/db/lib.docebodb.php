@@ -506,4 +506,16 @@ function sql_real_escape_string(){
     $re = $db->real_escape_string();
     return $re;
 }
+
+function sql_connect($db_host, $db_user, $db_pass, $db_name=false){
+    $db = DbConn::getInstance();
+    $re = $db->connect($db_host, $db_user, $db_pass, $db_name);
+    return $re;
+}
+
+function sql_select_db($db_name){
+    $db = DbConn::getInstance();
+    $re = $db->select_db($db_name);
+    return $re;
+}
 ?>

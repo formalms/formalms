@@ -55,13 +55,13 @@ class MyFriends {
 		return $re_query;
 	}
 	
-	function _last_id() 			{ return mysql_insert_id(); }
+	function _last_id() 			{ return sql_insert_id(); }
 	
-	function num_rows($resource) 	{ return mysql_num_rows($resource); }
+	function num_rows($resource) 	{ return sql_num_rows($resource); }
 	
 	function fetch_row($resource) 	{ return sql_fetch_row($resource); }
 	
-	function fetch_array($resource) { return mysql_fetch_array($resource); }
+	function fetch_array($resource) { return sql_fetch_array($resource); }
 		
 	function getUser() 				{ return $this->id_user; } 
 	

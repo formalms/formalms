@@ -162,7 +162,7 @@ function viewReport() {
 
 	$temp = Get::req('dl', DOTY_STRING, false);
 	if ($temp) {
-		list($filter_name) = mysql_fetch_row(mysql_query("SELECT filter_name FROM ".$GLOBALS['prefix_lms']."_report_filter WHERE id_filter = '".$idrep."'"));
+		list($filter_name) = sql_fetch_row(sql_query("SELECT filter_name FROM ".$GLOBALS['prefix_lms']."_report_filter WHERE id_filter = '".$idrep."'"));
 		$filename = 'report_'.$filter_name.'_'.date("d_m_Y");
 		switch ($temp) {
 			case 'htm': { sendStrAsFile($obj_report->getHTML(false, NULL), $filename.'.html'); } break;
@@ -412,7 +412,7 @@ function mod_report_cols() {
 	}
 
 	$query = "SELECT filter_data FROM ".$GLOBALS['prefix_lms']."_report_filter WHERE id_filter='".(int)$idrep."'";
-	list($old_data_serialized) = mysql_fetch_row(mysql_query($query));
+	list($old_data_serialized) = sql_fetch_row(sql_query($query));
 	$old_data = unserialize($old_data_serialized);
 	$category = $old_data['columns_filter_category'];
 	$_SESSION['report_tempdata']['columns_filter_category'] = $category;
@@ -452,9 +452,9 @@ function getFilterData($idrep) {
 			$GLOBALS['report_filter_data'] = $json->decode($req_data);
 		} else {
 			$query = "SELECT filter_data FROM ".$GLOBALS['prefix_lms']."_report_filter WHERE id_filter='".(int)$idrep."'";
-			$res = mysql_query($query);
-			if ($res && mysql_num_rows($res)>0) {
-				list($data) = mysql_fetch_row($res);
+			$res = sql_query($query);
+			if ($res && sql_num_rows($res)>0) {
+				list($data) = sql_fetch_row($res);
 				$GLOBALS['report_filter_data'] = unserialize($data);
 			} else {
 				//...

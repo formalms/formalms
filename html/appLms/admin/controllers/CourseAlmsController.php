@@ -74,7 +74,7 @@ Class CourseAlmsController extends AlmsController
 		if (isset($_GET['idCourse'])) {
 			$query_list = "SELECT * FROM %lms_organization WHERE idCourse = '".(int)$_GET['idCourse']."' AND idParent = ".$p." ORDER BY path ASC";
 			$result_list = sql_query($query_list);
-			if (mysql_num_rows($result_list) > 0) {
+			if (sql_num_rows($result_list) > 0) {
 				if ($p == 0)
 					echo "<div id='treeDiv' class='ygtv-checkbox'>";
 				echo "<ul>";

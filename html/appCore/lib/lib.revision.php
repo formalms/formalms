@@ -63,9 +63,9 @@ class RevisionManager {
 				return FALSE;
 		}
 		if( $this->dbconn === NULL )
-			return mysql_insert_id();
+			return sql_insert_id();
 		else
-			return mysql_insert_id($this->dbconn);
+			return sql_insert_id($this->dbconn);
 	}
 
 
@@ -136,8 +136,8 @@ class RevisionManager {
 		$q=$this->_query($qtxt);
 
 		if ($q) {
-			if (mysql_num_rows($q) > 0) {
-				$row=mysql_fetch_assoc($q);
+			if (sql_num_rows($q) > 0) {
+				$row=sql_fetch_assoc($q);
 				$version=$row["version"];
 				$this->revision_info[$version]=$row;
 				$res=$row;
@@ -193,8 +193,8 @@ class RevisionManager {
 		$q=$this->_query($qtxt);
 
 		if ($q) {
-			if (mysql_num_rows($q) > 0) {
-				$res=mysql_fetch_assoc($q);
+			if (sql_num_rows($q) > 0) {
+				$res=sql_fetch_assoc($q);
 			}
 			else {
 				$res=$this->getEmptyRevision();
@@ -240,7 +240,7 @@ class RevisionManager {
 		$q=$this->_query($qtxt);
 
 		if ($q)
-			$data_info["data_tot"]=mysql_num_rows($q);
+			$data_info["data_tot"]=sql_num_rows($q);
 		else
 			$data_info["data_tot"]=0;
 
@@ -249,9 +249,9 @@ class RevisionManager {
 			$q=$this->_query($qtxt);
 		}
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
 			$i=0;
-			while($row=mysql_fetch_assoc($q)) {
+			while($row=sql_fetch_assoc($q)) {
 
 				$version=$row["version"];
 				$data_info["data_arr"][$i]=$row;
@@ -348,7 +348,7 @@ class RevisionManager {
 		$q=$this->_query($qtxt);
 
 		if ($q)
-			$data_info["data_tot"]=mysql_num_rows($q);
+			$data_info["data_tot"]=sql_num_rows($q);
 		else
 			$data_info["data_tot"]=0;
 
@@ -357,9 +357,9 @@ class RevisionManager {
 			$q=$this->_executeQuery($qtxt);
 		}
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
 			$i=0;
-			while($row=mysql_fetch_assoc($q)) {
+			while($row=sql_fetch_assoc($q)) {
 
 				$version=$row["version"];
 				$data_info["data_arr"][$i]=$row;
@@ -463,9 +463,9 @@ Class OldRevisionManager {
 				return FALSE;
 		}
 		if( $this->dbconn === NULL )
-			return mysql_insert_id();
+			return sql_insert_id();
 		else
-			return mysql_insert_id($this->dbconn);
+			return sql_insert_id($this->dbconn);
 	}
 
 
@@ -502,8 +502,8 @@ Class OldRevisionManager {
 		$q=$this->_executeQuery($qtxt);
 
 		if ($q) {
-			if (mysql_num_rows($q) > 0) {
-				$row=mysql_fetch_assoc($q);
+			if (sql_num_rows($q) > 0) {
+				$row=sql_fetch_assoc($q);
 				$version=$row["version"];
 				$this->revision_info[$version]=$row;
 				$res=$row;
@@ -528,8 +528,8 @@ Class OldRevisionManager {
 		$q=$this->_executeQuery($qtxt);
 
 		if ($q) {
-			if (mysql_num_rows($q) > 0) {
-				$res=mysql_fetch_assoc($q);
+			if (sql_num_rows($q) > 0) {
+				$res=sql_fetch_assoc($q);
 			}
 			else {
 				$res=$this->getEmptyRevision();
@@ -580,7 +580,7 @@ Class OldRevisionManager {
 		$q=$this->_executeQuery($qtxt);
 
 		if ($q)
-			$data_info["data_tot"]=mysql_num_rows($q);
+			$data_info["data_tot"]=sql_num_rows($q);
 		else
 			$data_info["data_tot"]=0;
 
@@ -589,9 +589,9 @@ Class OldRevisionManager {
 			$q=$this->_executeQuery($qtxt);
 		}
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
 			$i=0;
-			while($row=mysql_fetch_assoc($q)) {
+			while($row=sql_fetch_assoc($q)) {
 
 				$version=$row["version"];
 				$data_info["data_arr"][$i]=$row;
@@ -669,7 +669,7 @@ Class OldRevisionManager {
 		$q=$this->_executeQuery($qtxt);
 
 		if ($q)
-			$data_info["data_tot"]=mysql_num_rows($q);
+			$data_info["data_tot"]=sql_num_rows($q);
 		else
 			$data_info["data_tot"]=0;
 
@@ -678,9 +678,9 @@ Class OldRevisionManager {
 			$q=$this->_executeQuery($qtxt);
 		}
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
 			$i=0;
-			while($row=mysql_fetch_assoc($q)) {
+			while($row=sql_fetch_assoc($q)) {
 
 				$version=$row["version"];
 				$data_info["data_arr"][$i]=$row;
