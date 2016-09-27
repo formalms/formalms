@@ -520,9 +520,7 @@ function selSendTo() {
 
 		$qtxt="UPDATE ".$GLOBALS["prefix_fw"]."_newsletter SET tot='".$tot."' WHERE id='$id_send'";
 		$q=sql_query($qtxt);
-                
-                unset($_SESSION['usersendnewsletter']);
-                
+
 		$back_url="index.php?modname=newsletter&amp;op=summary&amp;tot=".$tot."&amp;id_send=".$id_send;
 		Util::jump_to(str_replace("&amp;", "&", $back_url));
 	}
@@ -564,7 +562,6 @@ function selSendTo() {
 			$mdir->setUserFilter('group', $arr_idstGroup);
 			$mdir->setGroupFilter('path', '/lms/course/'.$id_course.'/group');
 			$mdir->show_orgchart_selector = FALSE;
-                        $_SESSION['usersendnewsletter'] = TRUE;
 		}
 
 		// Exclude anonymous user!
