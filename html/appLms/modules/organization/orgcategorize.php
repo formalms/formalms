@@ -67,7 +67,7 @@ $form_url ='index.php?modname=storage&amp;op=display';
 		AND idscorm_organization='".(int)$idResource."'";
 	$q =sql_query($qtxt);
 
-	$row =mysql_fetch_assoc($q);
+	$row =sql_fetch_assoc($q);
 
 	Util::widget('kbcategorize', array(
 		'original_name'=>$row['title'],
@@ -224,7 +224,7 @@ function getScoItemsTable($id_org, $scormorg_title, $idItem) {
 	$i =0;
 	$data =array();
 	$sco_arr =array();
-	while ($row = mysql_fetch_assoc($q)) {
+	while ($row = sql_fetch_assoc($q)) {
 
 		$sco_id =$row["idscorm_item"];
 		$sco_arr[]=$sco_id;

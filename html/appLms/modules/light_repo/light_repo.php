@@ -26,7 +26,7 @@ function repoList(&$url) {
 	
 	$repositories 	= $file_man->getRepoList(!$mod_perm);
 	
-	if($repositories !== false && mysql_num_rows($repositories) == 1 && !$mod_perm) { 
+	if($repositories !== false && sql_num_rows($repositories) == 1 && !$mod_perm) {
 		$repo = sql_fetch_row($repositories);
 		return repoMyDetails($url, $repo[LR_ID]); 
 	}
@@ -35,7 +35,7 @@ function repoList(&$url) {
 		.'<div id="light_repo_block" class="std_block">'
 	, 'content');
 	
-	if($repositories !== false && mysql_num_rows($repositories) > 0) {
+	if($repositories !== false && sql_num_rows($repositories) > 0) {
 		
 		if(isset($_GET['result'])) {
 			

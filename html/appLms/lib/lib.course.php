@@ -342,7 +342,7 @@ class Man_Course {
 		WHERE idCourse = '".$id_course."'";
 		$re = sql_query($query);
 
-		return mysql_fetch_assoc($re);
+		return sql_fetch_assoc($re);
 	}
 
 	/**
@@ -362,7 +362,7 @@ class Man_Course {
 		}
 		$re = sql_query($query);
 
-		return mysql_fetch_assoc($re);
+		return sql_fetch_assoc($re);
 	}
 
 	/**
@@ -473,7 +473,7 @@ class Man_Course {
 		if($id_category !== false) $query_course .= " WHERE idCategory = '".$id_category."' ";
 		$query_course .= " ORDER BY name";
 		$re_course = sql_query($query_course);
-		while($course = mysql_fetch_array($re_course)) {
+		while($course = sql_fetch_array($re_course)) {
 
 			$courses[$course['idCourse']] = $course;
 		}
@@ -762,7 +762,7 @@ class Man_Course {
 		if($d_op !== false) 	$query_menu .= " AND default_op = '".$d_op."' ";
 
 		$re_query = sql_query($query_menu);
-		if(!$re_query || (mysql_num_rows($re_query) == 0)) return false;
+		if(!$re_query || (sql_num_rows($re_query) == 0)) return false;
 
 		$i = 0;
 		while(list($id_module, $module_name, $module_op, $file_name, $class_name) = sql_fetch_row($re_query)) {
@@ -839,7 +839,7 @@ class Man_Course {
             $canStart = false;
             // evaluate date_begin and date_end only for active editions
             // if no editions is active returns subscription_expired
-            while ($edition_elem = mysql_fetch_assoc($re_edition)) {
+            while ($edition_elem = sql_fetch_assoc($re_edition)) {
                 if (is_null($edition_elem['date_end']) || $edition_elem['date_end'] == '0000-00-00' || strcmp(date('Y-m-d'), $edition_elem['date_end']) <= 0) {
                     $canEnd = $canEnd || true;
                 }
@@ -994,7 +994,7 @@ class Man_Course {
 		WHERE show_rules = '0' ".( !Docebo::user()->isAnonymous() ? " OR show_rules = '1' " : "" )."
 		GROUP BY idCategory";
 		$re_category = sql_query($query_cat);
-		while(list($id, $num) = mysql_fetch_array($re_category)) {
+		while(list($id, $num) = sql_fetch_array($re_category)) {
 
 			$count[$id]['course'] = $num;
 		}
@@ -1006,7 +1006,7 @@ class Man_Course {
 		$query_cat .= " ORDER BY path DESC";
 
 		$re_category = sql_query($query_cat);
-		while(list($id_cat, $id_parent) = mysql_fetch_array($re_category)) {
+		while(list($id_cat, $id_parent) = sql_fetch_array($re_category)) {
 
 			$categories[$id_cat]['category'] = 0;
 			if(isset($count[$id_parent]['category'])) $count[$id_parent]['category'] += 1;
@@ -1025,7 +1025,7 @@ class Man_Course {
 		WHERE idCategory = '".$id_cat."'";
 
 		$re_category = sql_query($query_cat);
-		return mysql_fetch_array($re_category);
+		return sql_fetch_array($re_category);
 	}
 
 	function &getCategoriesInfo($id_parent = false, $also_itself = false, $entire_path = false) {
@@ -1041,7 +1041,7 @@ class Man_Course {
 		$query_cat .= " ORDER BY description";
 
 		$re_category = sql_query($query_cat);
-		while($cat = mysql_fetch_array($re_category)) {
+		while($cat = sql_fetch_array($re_category)) {
 
 			if($entire_path === false) {
 
@@ -1733,7 +1733,7 @@ class Man_CourseUser {
 		$query_courses .= "ORDER BY c.name";
 
 		$re_course = sql_query($query_courses);
-		while($course = mysql_fetch_assoc($re_course)) {
+		while($course = sql_fetch_assoc($re_course)) {
 
 			$courses[$course['idCourse']] = $course;
 		}
@@ -1771,7 +1771,7 @@ class Man_CourseUser {
 		$query_courses .= "ORDER BY c.name";
 
 		$re_course = sql_query($query_courses);
-		while($course = mysql_fetch_assoc($re_course)) {
+		while($course = sql_fetch_assoc($re_course)) {
 
 			$courses[$course['idCourse']] = $course['idCourse'];
 		}
@@ -1803,7 +1803,7 @@ class Man_CourseUser {
 		$query_courses .= " ORDER BY c.name";
 
 		$re_course = sql_query($query_courses);
-		while($course = mysql_fetch_assoc($re_course)) {
+		while($course = sql_fetch_assoc($re_course)) {
 
 			$courses[$course['idCourse']] = $course;
 		}
@@ -1912,9 +1912,9 @@ class Man_CourseUser {
 		$counter = 0;
 		$subs = $this->getUserSubscriptionsInfo($id_user);
 
-		if(!mysql_num_rows($result_course)) return 0;
+		if(!sql_num_rows($result_course)) return 0;
         // return -2 if course subscription is not allowed
-        if(!mysql_num_rows($result_course_active)) return -2;
+        if(!sql_num_rows($result_course_active)) return -2;
 		while (list($id_course) = sql_fetch_row($result_course))
 		{
 			if(!isset($subs[$id_course])) {
@@ -1923,7 +1923,7 @@ class Man_CourseUser {
 				if($result) $counter++;
 			}
 		}
-		if(mysql_num_rows($result_course)!= 0 && $counter == 0) return -1;
+		if(sql_num_rows($result_course)!= 0 && $counter == 0) return -1;
 		return $counter;
 	}
 
@@ -1933,8 +1933,8 @@ class Man_CourseUser {
 						" WHERE autoregistration_code = '".$code."'";
 		$result_course = sql_query($query_course);
 
-		if(!mysql_num_rows($result_course)) return 0;
-		return mysql_num_rows($result_course);
+		if(!sql_num_rows($result_course)) return 0;
+		return sql_num_rows($result_course);
 	}
 
 }
@@ -1958,7 +1958,7 @@ class DoceboCourse {
 		FROM ".$GLOBALS['prefix_lms']."_course
 		WHERE idCourse = '".$this->id_course."'";
 		$re_load = $this->_executeQuery($query_load);
-		$this->course_info = mysql_fetch_assoc($re_load);
+		$this->course_info = sql_fetch_assoc($re_load);
 	}
 
 	function DoceboCourse($id_course) {
@@ -2349,7 +2349,7 @@ function getCoursesInfo(&$courses) { //return by reference? & ...
 	FROM ".$GLOBALS['prefix_lms']."_course
 	WHERE idCourse IN (".implode(',', $courses).")";
 	$re_select = sql_query($select);
-	while($assoc = mysql_fetch_assoc($re_select)) {
+	while($assoc = sql_fetch_assoc($re_select)) {
 
 		$re_courses[$assoc['idCourse']] = array(
 			'id' => $assoc['idCourse'],
@@ -2392,7 +2392,7 @@ function isUserCourseSubcribed($id_user, $id_course, $edition_id=FALSE) {
 	}
 
 	$re_course = sql_query($query_course);
-	return (mysql_num_rows($re_course) > 0) ;
+	return (sql_num_rows($re_course) > 0) ;
 }
 
 function logIntoCourse($id_course, $gotofirst_page = true) {
@@ -2611,7 +2611,7 @@ function getModuleFromId($id_module) {
 	WHERE idModule = ".(int)$id_module." ";
 
 	$re_module = sql_query($query_menu);
-	if(!$re_module || mysql_num_rows($re_module) == 0) return false;
+	if(!$re_module || sql_num_rows($re_module) == 0) return false;
 	$result = sql_fetch_row($re_module);
 	return $result;
 }

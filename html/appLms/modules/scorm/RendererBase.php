@@ -239,7 +239,7 @@ class RendererDefaultImplementation extends RendererAbstract {
 			else
 				$text = "neverstarted"; 
 		} else {
-			$report = mysql_fetch_assoc($rs);
+			$report = sql_fetch_assoc($rs);
 			if( $this->renderStatusCallBack === FALSE ) {
 				switch($report['status']) {
 					case 'completed': {

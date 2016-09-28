@@ -26,7 +26,7 @@ class GroupTestManagement {
 		FROM ".$GLOBALS['prefix_lms']."_test 
 		WHERE idTest IN  ( ".implode(',', $id_tests)." )";
 		$re_test = sql_query($query_test);
-		while($test = mysql_fetch_assoc($re_test)) {
+		while($test = sql_fetch_assoc($re_test)) {
 			
 			$id_t  = $test['idTest'];
 			$tests[$id_t] = $test;
@@ -111,12 +111,12 @@ class GroupTestManagement {
 		WHERE idTest IN ( ".implode(',', $id_tests)." ) ";
 		if($id_students !== false) $query_scores .= " AND idUser IN ( ".implode(',', $id_students)." )";
 		$re_scores = sql_query($query_scores);
-		while($test_data = mysql_fetch_assoc($re_scores)) {
+		while($test_data = sql_fetch_assoc($re_scores)) {
 			
             $times_sql = "SELECT idReference FROM ".$GLOBALS['prefix_lms']."_testtrack_times
                         WHERE idTrack = ".$test_data['idTrack']." AND idTest = ".$test_data['idTest'];
                         $re_times = sql_query($times_sql);
-                        $test_data['times'] = mysql_num_rows($re_times);
+                        $test_data['times'] = sql_num_rows($re_times);
             
 			if($test_data['date_attempt_mod'] != NULL && $test_data['date_attempt_mod'] !== '0000-00-00 00:00:00') {
 				$test_data['date_attempt'] = $test_data['date_attempt_mod'];
@@ -145,7 +145,7 @@ class GroupTestManagement {
 		WHERE score_status IN ('passed', 'valid', 'completed') AND idTest IN ( ".implode(',', $id_tests)." ) ";
 		if($id_students !== false) $query_scores .= " AND idUser IN ( ".implode(',', $id_students)." )";
 		$re_scores = sql_query($query_scores);
-		while($test_data = mysql_fetch_assoc($re_scores)) {
+		while($test_data = sql_fetch_assoc($re_scores)) {
 			
 			if(!$pure) {
 				$data[$test_data['idTest']][$test_data['idUser']]['score'] = $test_data['score'] + $test_data['bonus_score'];
@@ -435,7 +435,7 @@ class TestManagement {
 		WHERE idTest = '".$id_test."'";
 		$re_test = sql_query($query_test);
 		
-		$this->test_info = mysql_fetch_assoc($re_test);
+		$this->test_info = sql_fetch_assoc($re_test);
 	}
 	
 	/**
@@ -741,7 +741,7 @@ class PlayTestManagement {
 		FROM ".$GLOBALS['prefix_lms']."_testtrack_page
 		WHERE idTrack = '".$this->id_track."'";
 		$re_time = sql_query($query_time);
-		if(!mysql_num_rows($re_time)) 
+		if(!sql_num_rows($re_time))
 			return $time_accumulated;
 		
 		while(list($from_ts, $to, $to_ts, $accumulated) = sql_fetch_row($re_time)) {
@@ -759,7 +759,7 @@ class PlayTestManagement {
 		FROM ".$GLOBALS['prefix_lms']."_testtrack_page
 		WHERE idTrack = '".$this->id_track."' AND page = '".$page."'";
 		$re_time = sql_query($query_time);
-		if(!mysql_num_rows($re_time)) 
+		if(!sql_num_rows($re_time))
 			return $time_accumulated;
 		
 		list($from_ts, $to, $to_ts, $accumulated) = sql_fetch_row($re_time);
@@ -778,7 +778,7 @@ class PlayTestManagement {
 		WHERE idTrack = '".$this->id_track."' AND page = '".$page."'";
 		$re_time = sql_query($query_time);
 		
-		if(!mysql_num_rows($re_time)) {
+		if(!sql_num_rows($re_time)) {
 			
 			$query_track = "
 			INSERT INTO ".$GLOBALS['prefix_lms']."_testtrack_page
@@ -817,7 +817,7 @@ class PlayTestManagement {
 		SELECT display_to 
 		FROM ".$GLOBALS['prefix_lms']."_testtrack_page
 		WHERE idTrack = '".$this->id_track."' AND page = '".$page."'";
-		$re_time = sql_query($query_time);if(mysql_num_rows($re_time)) {
+		$re_time = sql_query($query_time);if(sql_num_rows($re_time)) {
 			
 			list($to) = sql_fetch_row($re_time);
 			if($to === NULL) {
@@ -905,7 +905,7 @@ class PlayTestManagement {
 		WHERE idTrack = '".$this->id_track."' AND page = '".$page_number."'";
 		$re_quest = sql_query($query_quest);
 		
-		if(mysql_num_rows($re_quest)) {
+		if(sql_num_rows($re_quest)) {
 			
 			// page alredy seen, retrive the question alredy displayed
 			while(list($id_quest) = sql_fetch_row($re_quest)) $quest_displayed[] = $id_quest;

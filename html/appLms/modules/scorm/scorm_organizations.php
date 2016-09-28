@@ -52,29 +52,29 @@ class Scorm_Organization {
 				
 		//die($query);
 		$rs = sql_query($query, $this->dbconn);
-		if ($rs == false || mysql_num_rows($rs) == 0) {
+		if ($rs == false || sql_num_rows($rs) == 0) {
 			if ($createonfail) {
 				// not found => create new resource record
 				$query = "INSERT INTO $this->orgtable "
 				. "(org_identifier,idscorm_packege,title) VALUES "
 				. "( '$this->org_identifier', $this->idscorm_package, '$this->title' )";
 				if (sql_query($query, $this->dbconn)) {
-					if (mysql_affected_rows($this->dbconn) == 1) {
+					if (sql_affected_rows($this->dbconn) == 1) {
 						// get the id of the last insert = idscorm_tracking
-						$this->idscorm_organization = mysql_insert_id($this->dbconn);
+						$this->idscorm_organization = sql_insert_id($this->dbconn);
 					} else {
-						$this->setError(1, "Scorm_Organization::Scorm_Organization " . mysql_error($this->dbconn) . "[" .$query ."]");
+						$this->setError(1, "Scorm_Organization::Scorm_Organization " . sql_error($this->dbconn) . "[" .$query ."]");
 					} 
 				} else {
-					$this->setError(2, "Scorm_Organization::Scorm_Organization " . mysql_error($this->dbconn) . "[" .$query ."]");
+					$this->setError(2, "Scorm_Organization::Scorm_Organization " . sql_error($this->dbconn) . "[" .$query ."]");
 				} 
 			} else {
-				$this->setError(3, "Scorm_Organization::Scorm_Organization " . mysql_error($this->dbconn) . "[" .$query ."]");
+				$this->setError(3, "Scorm_Organization::Scorm_Organization " . sql_error($this->dbconn) . "[" .$query ."]");
 			} 
 		} else {
 			list(	$this->idscorm_organization,
-					$this->title ) = mysql_fetch_array($rs);
-			mysql_free_result($rs);
+					$this->title ) = sql_fetch_array($rs);
+			sql_free_result($rs);
 		} 
 	} 
 
@@ -87,11 +87,11 @@ class Scorm_Organization {
 				." SET title = '".$this->title."',"
 				." WHERE idscorm_organization = '".(int)$this->idscorm_organization."'";
 		if( sql_query === false ) {
-			$this->setError(4, "Scorm_Organization::save 1 ". mysql_error($this->dbconn) . "[" .$query ."]" );
+			$this->setError(4, "Scorm_Organization::save 1 ". sql_error($this->dbconn) . "[" .$query ."]" );
 			return false;
 		} else {
-			if( mysql_affected_rows($this->dbconn) == 0 && mysql_errno($this->dbconn) != 0 ) {
-				$this->setError(5, "Scorm_Organization::save 2 ". mysql_error($this->dbconn) . "[" .$query ."]" );
+			if( sql_affected_rows($this->dbconn) == 0 && sql_errno($this->dbconn) != 0 ) {
+				$this->setError(5, "Scorm_Organization::save 2 ". sql_error($this->dbconn) . "[" .$query ."]" );
 				return false;		
 			}
 		}

@@ -48,11 +48,11 @@ ob_start();
 /*
 
 // connect to database -------------------------------------------------------------------
-$GLOBALS['dbConn'] = mysql_connect($cfg['db_host'], $cfg['db_user'], $cfg['db_pass']);
+$GLOBALS['dbConn'] = sql_connect($cfg['db_host'], $cfg['db_user'], $cfg['db_pass']);
 if( !$GLOBALS['dbConn'] )
 	die( "Can't connect to db. Check configurations" );
 
-if( !mysql_select_db($cfg['db_name'], $GLOBALS['dbConn']) )
+if( !sql_select_db($cfg['db_name'], $GLOBALS['dbConn']) )
 	die( "Database not found. Check configurations" );
 */
 
@@ -104,18 +104,18 @@ switch($op) {
 						." FROM ".$GLOBALS['prefix_lms']."_testtrack"
 						." WHERE idTest = '".$id_test."'";
 
-		$result_track = mysql_query($query_track);
+		$result_track = sql_query($query_track);
 
-		while(list($id_track) = mysql_fetch_row($result_track))
+		while(list($id_track) = sql_fetch_row($result_track))
 		{
 			$query_track_answer =	"SELECT more_info"
 									." FROM ".$GLOBALS['prefix_lms']."_testtrack_answer"
 									." WHERE idTrack = '".$id_track."'"
 									." AND idQuest = '".$id_quest."'";
 
-			$result_track_answer = mysql_query($query_track_answer);
+			$result_track_answer = sql_query($query_track_answer);
 
-			while(list($more_info) = mysql_fetch_row($result_track_answer))
+			while(list($more_info) = sql_fetch_row($result_track_answer))
 				$result['records'][] = $more_info;
 		}
 
@@ -140,18 +140,18 @@ switch($op) {
 						." FROM ".$GLOBALS['prefix_lms']."_testtrack"
 						." WHERE idTest = '".$id_test."'";
 
-		$result_track = mysql_query($query_track);
+		$result_track = sql_query($query_track);
 
-		while(list($id_track) = mysql_fetch_row($result_track))
+		while(list($id_track) = sql_fetch_row($result_track))
 		{
 			$query_track_answer =	"SELECT more_info"
 									." FROM ".$GLOBALS['prefix_lms']."_testtrack_answer"
 									." WHERE idTrack = '".$id_track."'"
 									." AND idQuest = '".$id_quest."'";
 
-			$result_track_answer = mysql_query($query_track_answer);
+			$result_track_answer = sql_query($query_track_answer);
 
-			while(list($more_info) = mysql_fetch_row($result_track_answer))
+			while(list($more_info) = sql_fetch_row($result_track_answer))
 			{
 				$link = '<a href="index.php?modname=question&amp;op=quest_download&amp;type_quest=upload'
 						.'&amp;id_quest='.$id_quest.'&amp;id_track='.$id_track.'">'
@@ -174,7 +174,7 @@ switch($op) {
 
 // close database connection
 
-/* mysql_close($GLOBALS['dbConn']); */
+/* sql_close($GLOBALS['dbConn']); */
 
 ob_clean();
 echo $GLOBALS['operation_result'];

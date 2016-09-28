@@ -98,7 +98,7 @@ class Learning_Poll extends Learning_Object {
 		SELECT q.id_quest, q.type_quest, t.type_file, t.type_class 
 		FROM ".$GLOBALS['prefix_lms']."_pollquest AS q JOIN ".$GLOBALS['prefix_lms']."_quest_type_poll AS t 
 		WHERE q.id_poll = '".$id."' AND q.type_quest = t.type_quest");
-		if(!mysql_num_rows($reQuest)) return true;
+		if(!sql_num_rows($reQuest)) return true;
 		//deleting answer
 		while( list($id_quest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest) ) {
 			
@@ -135,7 +135,7 @@ class Learning_Poll extends Learning_Object {
 	function copy( $id, $back_url = NULL ) {
 		
 		//find source info
-		$poll_info = mysql_fetch_array(sql_query("
+		$poll_info = sql_fetch_array(sql_query("
 		SELECT author, title, description
 		FROM ".$GLOBALS['prefix_lms']."_poll 
 		WHERE id_poll = '".(int)$id."'"));
@@ -144,8 +144,8 @@ class Learning_Poll extends Learning_Object {
 		$ins_query = "
 		INSERT INTO ".$GLOBALS['prefix_lms']."_poll
 		SET author = '".(int)$poll_info['author']."', 
-			title = '".mysql_escape_string($poll_info['title'])."', 
-			description = '".mysql_escape_string($poll_info['description'])."'";
+			title = '".sql_escape_string($poll_info['title'])."', 
+			description = '".sql_escape_string($poll_info['description'])."'";
 		if(!sql_query($ins_query)) return false;
 		list($id_new_poll) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
 		if(!$id_new_poll) return false;

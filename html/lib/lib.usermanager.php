@@ -718,8 +718,8 @@ class UserManager {
 
 		$re = $this->_executeQuery($query);
 		if(!$re) return false;
-		if(mysql_num_rows($re) <=0 ) return false;
-		return mysql_fetch_assoc($re);
+		if(sql_num_rows($re) <=0 ) return false;
+		return sql_fetch_assoc($re);
 	}
 
 	function insertPwdRandomCode($idst_user, $code) {
@@ -2479,7 +2479,7 @@ class UserManagerRenderer {
 				return array( 	'error' => true,
 								'msg' => getErrorUi(str_replace('[diff_pwd]', Get::sett('user_pwd_history_length'), $lang->def('_REG_PASS_MUST_DIFF'))) );
 			}
-			$re_pwd = mysql_query("SELECT passw "
+			$re_pwd = sql_query("SELECT passw "
 			." FROM ".$GLOBALS['prefix_fw']."_password_history"
 			." WHERE idst_user = ".(int)$idst.""
 			." ORDER BY pwd_date DESC");

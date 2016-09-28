@@ -85,11 +85,11 @@ class ImportUser extends DoceboImport_Destination {
 		$query = "SHOW FIELDS FROM ".$GLOBALS['prefix_fw']."_user";
 		$rs = sql_query( $query, $this->dbconn );
 		if( $rs === FALSE ) {
-			$this->last_error = Lang::t('_ORG_IMPORT_ERR_ERRORONQUERY').$query.' ['.mysql_error($this->dbconn).']';
+			$this->last_error = Lang::t('_ORG_IMPORT_ERR_ERRORONQUERY').$query.' ['.sql_error($this->dbconn).']';
 			return FALSE;
 		}
 		$this->cols_descriptor = array();
-		while( $field_info = mysql_fetch_array($rs) ) {
+		while( $field_info = sql_fetch_array($rs) ) {
 			if( !in_array($field_info['Field'],$this->ignore_cols) ) {
 				$mandatory = in_array($field_info['Field'],$this->mandatory_cols);
 				if( isset($this->default_cols[$field_info['Field']])) {
@@ -117,7 +117,7 @@ class ImportUser extends DoceboImport_Destination {
 			DOCEBOIMPORT_DATATYPE => 'text'
 		);
 
-		mysql_free_result( $rs );
+		sql_free_result( $rs );
 
 		foreach($this->arr_fields as $field_id => $field_info) {
 			if( in_array($field_info[FIELD_INFO_TYPE],$this->valid_filed_type) ) {
@@ -438,7 +438,7 @@ class ImportGroupUser extends DoceboImport_Destination {
 
 		while(list($k, $v) = each($row)) {
 			
-			$row[$k] = mysql_escape_string($v);
+			$row[$k] = sql_escape_string($v);
 		}
 		reset($row);
 		// find the group idst

@@ -73,7 +73,7 @@ class DateManager
 
 		$res = 0;
 
-		while($row = mysql_fetch_assoc($result))
+		while($row = sql_fetch_assoc($result))
 		{
 			if(strcmp($row['date_begin'],date('Y-m-d H:i:s')) > 0 || $all)
 			{
@@ -113,7 +113,7 @@ class DateManager
 
 		$res = 0;
 
-		while($row = mysql_fetch_assoc($result))
+		while($row = sql_fetch_assoc($result))
 		{
 			if(isset($_SESSION['date_begin_filter']) && $_SESSION['date_begin_filter'] !== '' && isset($_SESSION['date_end_filter']) && $_SESSION['date_end_filter'] !== '')
 			{
@@ -184,7 +184,7 @@ class DateManager
 
 		if($result)
 		{
-			$res = mysql_insert_id();
+			$res = sql_insert_id();
 			return $res;
 		}
 		return $result;
@@ -246,7 +246,7 @@ class DateManager
 
 		
 
-		while($row = mysql_fetch_assoc($result))
+		while($row = sql_fetch_assoc($result))
 		{
 			if(strcmp($row['date_begin'],date('Y-m-d H:i:s')) > 0 || $all)
 			{
@@ -344,7 +344,7 @@ class DateManager
 					." GROUP BY dt.id_date"
 					." ORDER BY dy.date_begin";
 
-		$res = mysql_fetch_assoc(sql_query($query));
+		$res = sql_fetch_assoc(sql_query($query));
 
 		if($res['user_subscribed'] > 1)
 				$res['num_day'] = $res['num_day'] / $res['user_subscribed'];
@@ -373,7 +373,7 @@ class DateManager
 
 		$res = array();
 
-		while($row = mysql_fetch_assoc($result))
+		while($row = sql_fetch_assoc($result))
 			$res[$row['id_day']] = $row;
 
 		return $res;
@@ -508,7 +508,7 @@ class DateManager
 
 					$result = sql_query($query);
 
-					if(mysql_num_rows($result) > 0)
+					if(sql_num_rows($result) > 0)
 						while(list($id_date_conflict) = sql_fetch_row($result))
 							if(array_search($id_date_conflict, $res[$date_info['id_date']]) === false)
 								if(isset($res[$id_date_conflict]) && array_search($date_info['id_date'], $res[$id_date_conflict]) === false)
@@ -524,7 +524,7 @@ class DateManager
 
 					$result = sql_query($query);
 
-					if(mysql_num_rows($result) > 0)
+					if(sql_num_rows($result) > 0)
 						while(list($id_date_conflict) = sql_fetch_row($result))
 							if(array_search($id_date_conflict, $res[$date_info['id_date']]) === false)
 								if(isset($res[$id_date_conflict]) && array_search($date_info['id_date'], $res[$id_date_conflict]) === false)
@@ -547,7 +547,7 @@ class DateManager
 		$res = array();
 		$i = 0;
 
-		while($row = mysql_fetch_assoc($result))
+		while($row = sql_fetch_assoc($result))
 		{
 			$res[$i]['date_begin'] = $row['date_begin'];
 			$res[$i]['date_end'] = $row['date_end'];
@@ -876,7 +876,7 @@ class DateManager
 		$result = sql_query($query);
 		$res = array();
 
-		while($row = mysql_fetch_assoc($result))
+		while($row = sql_fetch_assoc($result))
 			$res[$row['id_user']][$row['day']] = $row;
 
 		return $res;
@@ -1190,7 +1190,7 @@ class DateManager
 
 		$res = array();
 
-		if(mysql_num_rows($result))
+		if(sql_num_rows($result))
 		{
 			while(list($id_date, $id_user) = sql_fetch_row($result))
 				$res[$id_date]['user'][$id_user] = $id_user;
@@ -1224,7 +1224,7 @@ class DateManager
 
 		$res = array();
 
-		if(mysql_num_rows($result) > 0)
+		if(sql_num_rows($result) > 0)
 			while(list($id_user) = sql_fetch_row($result))
 				$res[$id_user] = $id_user;
 
@@ -1279,7 +1279,7 @@ class DateManager
 
 		$result = sql_query($query);
 
-		while($row = mysql_fetch_assoc($result))
+		while($row = sql_fetch_assoc($result))
 			$res[] = $row;
 
 		return $res;
@@ -1303,7 +1303,7 @@ class DateManager
 
 		$res = array();
 
-		while($row = mysql_fetch_assoc($result))
+		while($row = sql_fetch_assoc($result))
 			if(strcmp($row['date_begin'], $date_begin) > 0 && strcmp($row['date_begin'], $date_end) < 0)
 				$res[$row['id_course']] = $row['id_course'];
 

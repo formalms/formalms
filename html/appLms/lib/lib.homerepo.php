@@ -495,7 +495,7 @@ function manHomerepo_saveIdResource( $idFolder, $idResource, $objectType, $title
 			. (isset($arrParam['objective'])?(addslashes($arrParam['objective'])):'') ."','"
 			. getdate() ."' )";
 	sql_query( $query ) 
-		or die( mysql_error() );
+		or die( sql_error() );
 }
 
 function manHomerepo_update( $idFolder, $idObject, &$arrParam ) {
@@ -513,7 +513,7 @@ function manHomerepo_update( $idFolder, $idObject, &$arrParam ) {
 			." `dateInsert` = '".getdate()."'"
 			." WHERE idObject = '".(int)$idObject."'";
 	sql_query( $query ) 
-		or die( mysql_error() );
+		or die( sql_error() );
 }
 
 function manHomerepo_display( &$treeView, $withContents, $withActions = FALSE ) {
@@ -850,9 +850,9 @@ function loadFields( $arrayData, &$lo, $idLO ) {
 					." WHERE idObject='".(int)$idLO."'";
 					
 			$rs = sql_query( $query ) 
-				or die( mysql_error() );
+				or die( sql_error() );
 			
-			$arrayData = mysql_fetch_assoc($rs);
+			$arrayData = sql_fetch_assoc($rs);
 			echo '<input type="hidden" name="idLO" id="idLO" value="'.$idLO.'" />';
 			$title = $arrayData['title'];
 		} else {
@@ -886,7 +886,7 @@ function loadFields( $arrayData, &$lo, $idLO ) {
 		else
 			echo '<option value="'.$idCat.'">'.$catTitle.'</option>';
 	}
-	echo '</select> ( '.mysql_num_rows($reCategory).' '._DISP.')'
+	echo '</select> ( '.sql_num_rows($reCategory).' '._DISP.')'
 		.'</div>'
 		//-------------------------------------------------
 		.'<div class="title">'._VERSION.'</div>'
@@ -978,9 +978,9 @@ function manHomeRepo_ShowItem( $itemId ) {
 			." AND idObject='".(int)$itemId."'";
 			
 	$rs = sql_query( $query ) 
-		or die( mysql_error() );
+		or die( sql_error() );
 	
-	$arrayData = mysql_fetch_assoc($rs);
+	$arrayData = sql_fetch_assoc($rs);
 	
 	echo '<div class="ObjectForm">';
 	echo '<span class="mainTitle">'._CATEGORIZATION. ' ' . $arrayData['title'] .'</span><br /><br />';
@@ -1030,7 +1030,7 @@ function manHomeRepo_getData( $idObject ) {
 		."`resource`, `objective`, `dateInsert`"
 		." FROM ".$GLOBALS['prefix_lms']."_homerepo"
 		." WHERE idObject='". (int)$idObject . "'";
-	$rs = sql_query( $query ) or die( mysql_error() );
-	return mysql_fetch_assoc( $rs );
+	$rs = sql_query( $query ) or die( sql_error() );
+	return sql_fetch_assoc( $rs );
 }
 ?>

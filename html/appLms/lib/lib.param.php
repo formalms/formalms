@@ -20,7 +20,7 @@ function getLOParam( $idParam, $param_name ) {
 			."  AND param_name = '".$param_name."'";
 	$rs = sql_query($query) or 
 			errorCommunication( 'getLOParam' );
-	if( mysql_num_rows( $rs ) == 1 ) {
+	if( sql_num_rows( $rs ) == 1 ) {
 		list( $param_value ) = sql_fetch_row( $rs );
 		return $param_value;
 	} else 
@@ -54,7 +54,7 @@ function setLOParam( $idParam, $param_name, $param_value) {
 				."( '0', '".$param_name."', '".$param_value."' )";
 		if(sql_query( $query )) {
 			
-			$idParam = mysql_insert_id();
+			$idParam = sql_insert_id();
 			$query = "UPDATE ".$GLOBALS['prefix_lms']."_lo_param SET "
 					." idParam='".(int)$idParam."'"
 					."WHERE id = '".(int)$idParam."'";

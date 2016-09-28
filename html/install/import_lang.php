@@ -3,13 +3,11 @@
 include('bootstrap.php');
 
 require_once(_installer_.'/lib/lib.lang_import.php');
+include _lib_.'/loggers/lib.logger.php';
+require_once(_base_.'/db/lib.docebodb.php');
 
-
-$db = mysql_connect($_SESSION['db_info']['db_host'], $_SESSION['db_info']['db_user'], $_SESSION['db_info']['db_pass']);
-mysql_select_db($_SESSION['db_info']['db_name']);
-
-mysql_query("SET NAMES 'utf8'");
-mysql_query("SET CHARACTER SET 'utf8'");
+sql_query("SET NAMES 'utf8'");
+sql_query("SET CHARACTER SET 'utf8'");
 
 $platform_code = Get::pReq('platform', DOTY_STRING);
 $lang = Get::pReq('lang', DOTY_STRING);
@@ -66,6 +64,6 @@ require_once(_base_.'/lib/lib.json.php');
 $json =new Services_JSON();
 ob_clean();
 echo $json->encode($res);
-mysql_close($db);
+
 die();
 

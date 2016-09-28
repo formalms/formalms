@@ -70,8 +70,8 @@ class AjaxComment {
 	// some abstraction function
 	function _query($query) { $re = sql_query($query); return $re; }
 	function _fetch_row($resource) { return sql_fetch_row($resource); }
-	function _fetch_assoc($resource) { return mysql_fetch_assoc($resource); }
-	function _num_rows($resource) { return mysql_num_rows($resource); }
+	function _fetch_assoc($resource) { return sql_fetch_assoc($resource); }
+	function _num_rows($resource) { return sql_num_rows($resource); }
 	
 	function setTable($table) {
 		

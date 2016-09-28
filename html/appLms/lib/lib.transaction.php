@@ -92,7 +92,7 @@ class Man_Transaction
 
 		$result = sql_query($query);
 
-		while($row = mysql_fetch_assoc($result))
+		while($row = sql_fetch_assoc($result))
 			$res = $row;
 
 		return $res;
@@ -290,7 +290,7 @@ class Man_Transaction
 					{
 						$acl_man->addToGroup($level_idst[3], $id_user);
 
-						$re = mysql_query(	"INSERT INTO ".$GLOBALS['prefix_lms']."_courseuser
+						$re = sql_query(	"INSERT INTO ".$GLOBALS['prefix_lms']."_courseuser
 											(idUser, idCourse, edition_id, level, waiting, subscribed_by, date_inscr)
 											VALUES ('".$id_user."', '".$id_course."', '0', '3', '0', '".getLogUserId()."', '".date("Y-m-d H:i:s")."')");
 
@@ -336,7 +336,7 @@ class Man_Transaction
 				{
 					$acl_man->addToGroup($level_idst[3], $id_user);
 
-					$re = mysql_query(	"INSERT INTO ".$GLOBALS['prefix_lms']."_courseuser
+					$re = sql_query(	"INSERT INTO ".$GLOBALS['prefix_lms']."_courseuser
 										(idUser, idCourse, edition_id, level, waiting, subscribed_by, date_inscr)
 										VALUES ('".$id_user."', '".$id_course."', '0', '3', '0', '".getLogUserId()."', '".date("Y-m-d H:i:s")."')");
 					if($re)

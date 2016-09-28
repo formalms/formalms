@@ -991,7 +991,7 @@ while(i<lista.length)
 	$sql="SELECT * FROM core_field";
 $filler="";
 $filler="<br>";
-    $result_quest = sql_query($sql) or die (mysql_error());
+    $result_quest = sql_query($sql) or die (sql_error());
 	while ($quests = sql_fetch_array($result_quest)){
 		$filler.="<input type=\'checkbox\' onclick=\'cambialink(".$quests['idField'].",this.checked)\' value=\'".$quests['idField']."\'>".$quests['translation']."<br>";
 	}
@@ -3106,7 +3106,7 @@ function testQuestion()
                 $query_total_play =     "SELECT COUNT(*)"
                                                 ." FROM ".$GLOBALS['prefix_lms']."_testtrack"
                                                 ." WHERE idTest = '".$id_test."' AND score_status = 'not_checked'";
-                list($total_play2) = mysql_fetch_row(mysql_query($query_total_play));
+                list($total_play2) = sql_fetch_row(sql_query($query_total_play));
 $total_play += $total_play2;
 
         }*/

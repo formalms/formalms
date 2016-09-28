@@ -20,7 +20,7 @@ class QuestBankMan {
 	function _query($query) {
 
 		$re = sql_query($query);
-		if(Get::sett('do_debug') == 'on' && isset($GLOBALS['page'])) $GLOBALS['page']->add('<!-- '.$query.' :: '.mysql_error().' -->', 'debug');
+		if(Get::sett('do_debug') == 'on' && isset($GLOBALS['page'])) $GLOBALS['page']->add('<!-- '.$query.' :: '.sql_error().' -->', 'debug');
 		return $re;
 	}
 
@@ -31,7 +31,7 @@ class QuestBankMan {
 
 	function num_rows($re) {
 
-		return mysql_num_rows($re);
+		return sql_num_rows($re);
 	}
 
 	function QuestBankMan() {
@@ -110,7 +110,7 @@ class QuestBankMan {
 			SELECT type_quest
 			FROM ".$this->_table_quest."
 			WHERE idQuest = '".$id_quest."' AND idTest = 0 ");
-			if(!mysql_num_rows($re_quest)) {
+			if(!sql_num_rows($re_quest)) {
 				$this->last_error = 'quest_not_found';
 				return false;
 			}
@@ -120,7 +120,7 @@ class QuestBankMan {
 			SELECT type_file, type_class
 			FROM ".$GLOBALS['prefix_lms']."_quest_type
 			WHERE type_quest = '".$type_quest."'");
-			if(!mysql_num_rows($re_quest)) {
+			if(!sql_num_rows($re_quest)) {
 				$this->last_error = 'quest_not_found';
 				return false;
 			}
@@ -139,7 +139,7 @@ class QuestBankMan {
 		SELECT type_file, type_class
 		FROM ".$GLOBALS['prefix_lms']."_quest_type
 		WHERE type_quest = '".$type_quest."'");
-		if(!mysql_num_rows($re_quest)) {
+		if(!sql_num_rows($re_quest)) {
 			$this->last_error = 'quest_not_found';
 			return false;
 		}

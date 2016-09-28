@@ -39,7 +39,7 @@ echo(getTitleArea($title_arr));
 	$i =0;
 	$data =array();
 	$sco_arr =array();
-	while ($row = mysql_fetch_assoc($q)) {
+	while ($row = sql_fetch_assoc($q)) {
 
 		$sco_id =$row["idscorm_item"];
 		$sco_arr[]=$sco_id;

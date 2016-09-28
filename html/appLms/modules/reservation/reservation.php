@@ -658,8 +658,8 @@ function viewUserEvent()
 					if ($GLOBALS['cfg']['reservation_exportcell_id']) {
 						// id_common = 13 => cellulare
 						$sql = "SELECT user_entry FROM core_field_userentry WHERE id_user = '".$info_user[0]."' AND id_common = 13";
-						$res = mysql_query($sql);
-	                    list($cell) = mysql_fetch_row($res);
+						$res = sql_query($sql);
+	                    list($cell) = sql_fetch_row($res);
 	                }
 					$count[] = $acl_man->relativeId($info_user[ACL_INFO_USERID]);
 					$count[] = $info_user[ACL_INFO_FIRSTNAME];

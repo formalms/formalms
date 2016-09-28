@@ -115,7 +115,7 @@ class DashboardAdm extends Model {
 		$info_character = array();
 		$info_collation = array();
 
-		//string mysql_client_encoding ([ resource $link_identifier ] )
+		//string sql_client_encoding ([ resource $link_identifier ] )
 		$query = "SHOW VARIABLES LIKE 'character_set%'";
 		$res = $this->db->query($query);
 		while (list($name, $value) = $this->db->fetch_row($res)) {

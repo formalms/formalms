@@ -73,7 +73,7 @@ class Track_Poll extends Track_Object {
 		$rs = sql_query( $query )
 			or errorCommunication( 'Learning_Poll.existTrack' );
 		
-		if( mysql_num_rows( $rs )  > 0 ) {
+		if( sql_num_rows( $rs )  > 0 ) {
 			list( $id_track ) = sql_fetch_row( $rs );
 			return $id_track;
 		}

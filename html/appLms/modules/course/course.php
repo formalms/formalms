@@ -107,7 +107,7 @@ function mycourses(&$url) {
 
         $result = sql_query($query);
 
-        $num_meta_cert = mysql_num_rows($result);
+        $num_meta_cert = sql_num_rows($result);
 
         while(list($id_meta, $id_certificate) = sql_fetch_row($result))
         {
@@ -124,7 +124,7 @@ function mycourses(&$url) {
 
             list($user_release) = sql_fetch_row(sql_query($query));
 
-            if(mysql_num_rows($result_released))
+            if(sql_num_rows($result_released))
             {
 
             }
@@ -451,7 +451,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 		." WHERE idUser = '".getLogUserId()."'");
 	
 	$subscription = array();
-	while($cinfo = mysql_fetch_assoc($subcourse_list)) {
+	while($cinfo = sql_fetch_assoc($subcourse_list)) {
 		
 		$subscription['course'][$cinfo['idCourse']] = $cinfo;
 		if($cinfo['edition_id'] != 0) $subscription['edition'][$cinfo['idCourse']][$cinfo['edition_id']] = $cinfo;
@@ -535,7 +535,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 	
 	$editions = array();
 	if($re_edition)
-	while($edition_elem = mysql_fetch_assoc($re_edition)) {
+	while($edition_elem = sql_fetch_assoc($re_edition)) {
 		
 		$edition_elem['classrooms'] = ( isset($classrooms[$edition_elem['classrooms']]) ? $classrooms[$edition_elem['classrooms']] : '' );
 		$editions[$edition_elem["id_course"]][$edition_elem["id_course"]] = $edition_elem;
@@ -585,7 +585,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 			." GROUP BY u.idCourse, u.edition_id ");
 	
 		$enrolled = array();
-		while($cinfo = mysql_fetch_assoc($enroll_list)) {
+		while($cinfo = sql_fetch_assoc($enroll_list)) {
 			
 			$enrolled[$cinfo['idCourse']][$cinfo['edition_id']] = $cinfo['number'];
 		}
@@ -619,14 +619,14 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 	
 	// pre assessment list ---------------------------------------------------------------------------------------
 	$i = 0;
-	if(mysql_num_rows($preass_list) && $current_tab == 'lo_plan') {
+	if(sql_num_rows($preass_list) && $current_tab == 'lo_plan') {
 		
 		if ($page_add)
 			$GLOBALS['page']->add(
 				'<div id="mycourse_asses">'
 				.'<h1>'.$lang_c->def('_ASSESSMENT_LIST').'</h1>'
 			, 'content');
-		while($cinfo = mysql_fetch_assoc($preass_list)) {
+		while($cinfo = sql_fetch_assoc($preass_list)) {
 			
 			
 			$cinfo['user_score'] = ( isset($user_score[$cinfo['idCourse']]) ? $user_score[$cinfo['idCourse']] : NULL );
@@ -665,7 +665,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 	$direct_play = false;
 	
 	
-	while($cinfo = mysql_fetch_assoc($re_course))
+	while($cinfo = sql_fetch_assoc($re_course))
 	{
 		$access = Man_Course::canEnterCourse($cinfo);
 		
@@ -693,9 +693,9 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 		}
 	}
 	
-	if(mysql_num_rows($re_course)) mysql_data_seek($re_course, 0);
+	if(sql_num_rows($re_course)) sql_data_seek($re_course, 0);
 	
-	while($cinfo = mysql_fetch_assoc($re_course)) {
+	while($cinfo = sql_fetch_assoc($re_course)) {
 		
 		$cinfo['edition_list'] 	= ( isset($editions[$cinfo['idCourse']]) ? $editions[$cinfo['idCourse']] : array() );
 		$cinfo['user_score'] 	= ( isset($user_score[$cinfo['idCourse']]) ? $user_score[$cinfo['idCourse']] : NULL );
@@ -1425,7 +1425,7 @@ function dashAcourse($id_course, $h_number) {
 	$editions = array();
 	
 	if($re_edition)
-	while($edition_elem = mysql_fetch_assoc($re_edition)) {
+	while($edition_elem = sql_fetch_assoc($re_edition)) {
 		
 		$edition_elem['waiting'] = 0;
 		$edition_elem['user_count'] = 0;
@@ -1439,7 +1439,7 @@ function dashAcourse($id_course, $h_number) {
 	$group_ed_count 	= "GROUP BY edition_id ";
 	$re_ed_count = sql_query($select_ed_count.$from_ed_count.$where_ed_count.$group_ed_count );
 	if($re_ed_count)
-	while($ed_count_elem = mysql_fetch_assoc($re_ed_count)) {
+	while($ed_count_elem = sql_fetch_assoc($re_ed_count)) {
 		
 		$editions[$ed_count_elem["idCourse"]][$ed_count_elem["edition_id"]]['waiting'] = $ed_count_elem['waiting'];
 		$editions[$ed_count_elem["idCourse"]][$ed_count_elem["edition_id"]]['user_count'] = $ed_count_elem['user_count'];

@@ -131,7 +131,7 @@ function getTrackingTable($id_user, $id_org, $idscorm_item, $idReference) {
 		" GROUP BY t2.idscorm_tracking";
 
 	$res = sql_query($qry);
-	while ($row = mysql_fetch_assoc($res)) {
+	while ($row = sql_fetch_assoc($res)) {
 
 		$line = array();
 
@@ -183,7 +183,7 @@ function getHistoryTable($id_user, $id_org, $idscorm_item, $idReference) {
 		" WHERE t2.idscorm_item=$idscorm_item AND t2.idUser=$id_user ".
 		" ORDER BY t1.date_action ASC ";
 	$res = sql_query($qry); $i=1;
-	while ($row = mysql_fetch_assoc($res)) {
+	while ($row = sql_fetch_assoc($res)) {
 
 		$line = array();
 

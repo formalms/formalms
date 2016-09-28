@@ -158,7 +158,7 @@ class LightRepoManager {
 		." FROM ".$this->_tableUser()." "
 		." WHERE id_user = '".$this->_id_user."' "
 		." 	AND id_repo = '".$id_repo."' ";
-		if (mysql_num_rows(sql_query($query)))
+		if (sql_num_rows(sql_query($query)))
 		{
 			list($last_enter) = sql_fetch_row(sql_query($query));
 			
@@ -173,7 +173,7 @@ class LightRepoManager {
 		." FROM ".$this->_tableUser()." "
 		." WHERE id_user = '".$this->_id_user."' "
 		." 	AND id_repo = '".$id_repo."' ";
-		if( mysql_num_rows(sql_query($query)) ) {
+		if( sql_num_rows(sql_query($query)) ) {
 			
 			$upd_query = "UPDATE ".$this->_tableUser()
 				." SET last_enter = '".date("Y-m-d H:i:s")."'"

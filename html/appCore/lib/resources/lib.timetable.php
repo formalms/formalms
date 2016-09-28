@@ -52,9 +52,9 @@ class Timetable {
 				return FALSE;
 		}
 		if( $this->dbconn === NULL )
-			return mysql_insert_id();
+			return sql_insert_id();
 		else
-			return mysql_insert_id($this->dbconn);
+			return sql_insert_id($this->dbconn);
 	}
 
 
@@ -76,8 +76,8 @@ class Timetable {
 
 		$q=$this->_query($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			$row=mysql_fetch_assoc($q);
+		if (($q) && (sql_num_rows($q) > 0)) {
+			$row=sql_fetch_assoc($q);
 
 			$class_name="Resource".ucfirst(strtolower($resource_code));
 			$resource_file =$GLOBALS["where_".$row["platform"]]."/lib/resources/lib.resource_";
@@ -159,8 +159,8 @@ class Timetable {
 
 			$q=$this->_query($sel_qtxt);
 
-			if (($q) && (mysql_num_rows($q) > 0)) {
-				$row=mysql_fetch_assoc($q);
+			if (($q) && (sql_num_rows($q) > 0)) {
+				$row=sql_fetch_assoc($q);
 				$id=(int)$row["id"];
 			}
 			else {
@@ -347,8 +347,8 @@ class Timetable {
 
 		$q=$this->_query($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while($row=mysql_fetch_assoc($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while($row=sql_fetch_assoc($q)) {
 				$res[]=$row;
 				// TODO: cache result in global variable
 			}

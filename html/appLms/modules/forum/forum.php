@@ -2109,7 +2109,7 @@ function delthread() {
 
 			if($file != '') delete_file($file);
 		}
-		$post_deleted = mysql_num_rows($re_mess);
+		$post_deleted = sql_num_rows($re_mess);
 		if(!sql_query("
 		DELETE FROM ".$GLOBALS['prefix_lms']."_forummessage
 		WHERE idThread = '".$id_thread."'"))
@@ -2322,7 +2322,7 @@ function message() {
 	WHERE idThread = '".$id_thread."'
 	ORDER BY posted
 	LIMIT $ini, ".Get::sett('visuItem'));
-	while($record = mysql_fetch_assoc($re_message)) {
+	while($record = sql_fetch_assoc($re_message)) {
 
 		$messages[$record['idMessage']] 	= $record;
 		$authors[$record['author']] 		= $record['author'];
@@ -2745,7 +2745,7 @@ function message() {
 	// WHERE idThread = '".$id_thread."'
 	// ORDER BY posted
 	// LIMIT $ini, ".Get::sett('visuItem'));
-	// while($record = mysql_fetch_assoc($re_message)) {
+	// while($record = sql_fetch_assoc($re_message)) {
 
 	// 	$messages[$record['idMessage']] 	= $record;
 	// 	$authors[$record['author']] 		= $record['author'];
@@ -3105,7 +3105,7 @@ function showMessageForAdd($id_thread, $how_much) {
 	WHERE idThread = '".$id_thread."'
 	ORDER BY posted DESC
 	LIMIT 0, ".$how_much);
-	while($record = mysql_fetch_assoc($re_message)) {
+	while($record = sql_fetch_assoc($re_message)) {
 
 		$messages[$record['idMessage']] 	= $record;
 		$authors[$record['author']] 		= $record['author'];
@@ -4289,7 +4289,7 @@ function forumsearchmessage() {
 	WHERE idThread = '".$id_thread."'
 	ORDER BY posted
 	LIMIT $ini, ".Get::sett('visuItem'));
-	while($record = mysql_fetch_assoc($re_message)) {
+	while($record = sql_fetch_assoc($re_message)) {
 
 		$messages[$record['idMessage']] 	= $record;
 		$authors[$record['author']] 		= $record['author'];
@@ -4630,7 +4630,7 @@ function forumsearchmessage() {
 	// WHERE idThread = '".$id_thread."'
 	// ORDER BY posted
 	// LIMIT $ini, ".Get::sett('visuItem'));
-	// while($record = mysql_fetch_assoc($re_message)) {
+	// while($record = sql_fetch_assoc($re_message)) {
 
 	// 	$messages[$record['idMessage']] 	= $record;
 	// 	$authors[$record['author']] 		= $record['author'];
@@ -4901,7 +4901,7 @@ function issetNotify($notify_is_a, $id_notify, $id_user) {
 		id_user = '".$id_user."' AND
 		notify_is_a = '".( $notify_is_a == 'forum' ? 'forum' : 'thread' )."'";
 	$re = sql_query($query_notify);
-	return ( mysql_num_rows($re) == 0 ? false : true );
+	return ( sql_num_rows($re) == 0 ? false : true );
 }
 
 /**
@@ -5136,7 +5136,7 @@ function addUnreadNotice($id_forum) {
 	FROM ".$GLOBALS['prefix_lms']."_forum_access
 	WHERE idForum = '".$id_forum."'";
 	$re_view = sql_query($query_view_forum);
-	if(mysql_num_rows($re_view)) {
+	if(sql_num_rows($re_view)) {
 
 		$members = array();
 		while(list($idst) = sql_fetch_row($re_view)) {
@@ -5180,7 +5180,7 @@ function export()
 
 		$result = sql_query($query);
 
-		if(mysql_num_rows($result));
+		if(sql_num_rows($result));
 		{
 			$tmp = array();
 			$id_list = array();

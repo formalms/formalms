@@ -229,7 +229,7 @@ class Tags {
 			." ( NULL, '".$tag_name."' ) ";	
 			$re = sql_query($query);
 			
-			if($re) $to_associate[] = mysql_insert_id();
+			if($re) $to_associate[] = sql_insert_id();
 		}
 		
 		// add tags ------------------------------------------------------
@@ -267,7 +267,7 @@ class Tags {
 			." WHERE resource_type = '".$this->resource_type."' "  
 			."		AND id_resource = ".(int)$id_resource." ";
 		$re = sql_query($q_search);
-		if(!mysql_num_rows($re)) {
+		if(!sql_num_rows($re)) {
 		
 			$query = "INSERT INTO ".$this->_resource_t." "
 				."( id_resource, resource_type, title, sample_text, permalink )"

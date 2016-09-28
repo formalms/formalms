@@ -176,7 +176,7 @@ function displayCourseList(&$url, $order_type) {
 	$re_edition = sql_query($select_edition.$from_edition.$where_edition.$order_edition);
 	$editions = array();
 	if($re_edition)
-	while($edition_elem = mysql_fetch_assoc($re_edition)) {
+	while($edition_elem = sql_fetch_assoc($re_edition)) {
 
 		$edition_elem['classrooms'] = ( isset($classrooms[$edition_elem['classrooms']]) ? $classrooms[$edition_elem['classrooms']] : '' );
 		$edition_elem['waiting'] = 0;
@@ -195,7 +195,7 @@ function displayCourseList(&$url, $order_type) {
 	$group_ed_count 	= "GROUP BY u.edition_id ";
 	$re_ed_count = sql_query($select_ed_count.$from_ed_count.$where_ed_count.$group_ed_count );
 	if($re_ed_count)
-	while($ed_count_elem = mysql_fetch_assoc($re_ed_count)) {
+	while($ed_count_elem = sql_fetch_assoc($re_ed_count)) {
 
 		if(isset($editions[$ed_count_elem["idCourse"]][$ed_count_elem["edition_id"]])) {
 			$editions[$ed_count_elem["idCourse"]][$ed_count_elem["edition_id"]]['waiting'] = $ed_count_elem['waiting'];
@@ -249,7 +249,7 @@ function displayCourseList(&$url, $order_type) {
 				.'<div class="nofloat"></div>', 'content');
 		}
 	}
-	if(!$re_course || !mysql_num_rows($re_course)) {
+	if(!$re_course || !sql_num_rows($re_course)) {
 
 		// no course found for the criteria --------------------------------------------
 		$GLOBALS['page']->add(
@@ -265,7 +265,7 @@ function displayCourseList(&$url, $order_type) {
 
 	$i = 0;
 	$direct_play = false;
-	while($cinfo = mysql_fetch_assoc($re_course)) {
+	while($cinfo = sql_fetch_assoc($re_course)) {
 
 		if(must_search_filter()) {
 
@@ -1161,7 +1161,7 @@ function getCourseEditionList($course_id) {
 	if(!$q=sql_query($qtxt)) return '';
 
 	$html = '<ul class="course_editions">';
-	while($ed_info=mysql_fetch_assoc($q)) {
+	while($ed_info=sql_fetch_assoc($q)) {
 
 		$html .= '<li><b>['.$ed_info['code'].'] '.$ed_info['name'].'</b><br/><p>';
 
@@ -1248,8 +1248,8 @@ function getCourseEditionTable($course_id) {
 
 	$q=sql_query($qtxt);
 
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		while($row=mysql_fetch_assoc($q)) {
+	if (($q) && (sql_num_rows($q) > 0)) {
+		while($row=sql_fetch_assoc($q)) {
 
 			$cont=array();
 			$cont[]=$row["code"];
@@ -1361,8 +1361,8 @@ function loadEcomItems() {
 
 		$action="transaction";
 		$res[$action] = array();
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while($row=mysql_fetch_assoc($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while($row=sql_fetch_assoc($q)) {
 
 				if ((!isset($res[$action][$row["type"]])) || (!in_array($row["id_prod"], $res[$action][$row["type"]]))) {
 					$key=$row["id_prod"];

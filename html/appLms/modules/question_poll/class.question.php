@@ -223,7 +223,7 @@ class QuestionPoll {
 		( 	'".(int)$new_id_poll."', 
 			'".(int)$sel_cat."', 
 			'".$this->getQuestionType()."', 
-			'".mysql_escape_string($quest)."',
+			'".sql_escape_string($quest)."',
 			'".(int)$sequence."',
 			'".(int)$page."' ) ";
 		if(!sql_query($ins_query)) return false;
@@ -248,7 +248,7 @@ class QuestionPoll {
 			( id_quest, sequence, answer ) VALUES
 			( 	'".(int)$new_id_quest."', 
 				'".(int)$seq."', 
-				'".mysql_escape_string($answer)."' ) ";
+				'".sql_escape_string($answer)."' ) ";
 			if(!sql_query($ins_answer_query)) return false;
 			
 			list($map_answer[$id_answer]) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
@@ -267,7 +267,7 @@ class QuestionPoll {
 			( id_quest, id_answer, extra_info ) VALUES 
 			( 	'".(int)$new_id_quest."', 
 				'".(int)$map_answer[$id_answer]."', 
-				'".mysql_escape_string($title_info)."' )")) return false;
+				'".sql_escape_string($title_info)."' )")) return false;
 		}
 		
 		return $new_id_quest;
@@ -334,7 +334,7 @@ class QuestionPoll {
 			id_track = '".(int)$id_track."'";
 		$re_answer_do = sql_query($recover_answer);
 		
-		if(mysql_num_rows($re_answer_do)) return true;
+		if(sql_num_rows($re_answer_do)) return true;
 		else return false;
 	}
 	

@@ -73,7 +73,7 @@ class DoceboCal_core {
 		
 		$calevents = array();
 		$i=0;
-		while ($row=mysql_fetch_array($result)) {
+		while ($row=sql_fetch_array($result)) {
 		
 			/* you should call the constructor of the proper type of event class*/
 			$calevents[$i]=new DoceboCalEvent_core();

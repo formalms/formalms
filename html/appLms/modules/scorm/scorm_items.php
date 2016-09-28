@@ -78,25 +78,25 @@ class Scorm_Item {
 				
 		//die($query);
 		$rs = sql_query($query, $this->dbconn);
-		if ($rs == false || mysql_num_rows($rs) == 0) {
+		if ($rs == false || sql_num_rows($rs) == 0) {
 			if ($createonfail) {
 				// not found => create new item record
 				$query = "INSERT INTO $this->itemtable "
 				. "(item_identifier,idscorm_organization) VALUES ( $this->item_identifier, $this->idscorm_organization )";
 				if (sql_query($query, $this->dbconn)) {
-					if (mysql_affected_rows($this->dbconn) == 1) {
+					if (sql_affected_rows($this->dbconn) == 1) {
 						// get the id of the last insert = idscorm_tracking
-						$this->idscorm_item = mysql_insert_id($this->dbconn);
+						$this->idscorm_item = sql_insert_id($this->dbconn);
 					} else {
-						$this->setError(1, "Scorm_Item::Scorm_Item " . mysql_error($this->dbconn) . "[" .$query ."]");
+						$this->setError(1, "Scorm_Item::Scorm_Item " . sql_error($this->dbconn) . "[" .$query ."]");
 						return false;
 					} 
 				} else {
-					$this->setError(1, "Scorm_Item::Scorm_Item " . mysql_error($this->dbconn) . "[" .$query ."]");
+					$this->setError(1, "Scorm_Item::Scorm_Item " . sql_error($this->dbconn) . "[" .$query ."]");
 					return false;
 				} 
 			} else {
-				$this->setError(1, "Scorm_Item::Scorm_Item " . mysql_error($this->dbconn) . "[" .$query ."]");
+				$this->setError(1, "Scorm_Item::Scorm_Item " . sql_error($this->dbconn) . "[" .$query ."]");
 				return false;
 			} 
 		} else {
@@ -112,8 +112,8 @@ class Scorm_Item {
 					$this->adlcp_maxtimeallowed, 
 					$this->adlcp_timelimitaction, 
 					$this->adlcp_datafromlms, 
-					$this->adlcp_masteryscore ) = mysql_fetch_array($rs);
-			mysql_free_result($rs);
+					$this->adlcp_masteryscore ) = sql_fetch_array($rs);
+			sql_free_result($rs);
 		} 
 		return true;
 	} 
@@ -132,11 +132,11 @@ class Scorm_Item {
 				." adlcp_masteryscore = '$this->adlcp_masteryscore',"
 				." WHERE idscorm_item = $this->idscorm_item";
 		if( sql_query === false ) {
-			$this->setError(2, "Scorm_Item::save 1 ". mysql_error($this->dbconn) . "[" .$query ."]" );
+			$this->setError(2, "Scorm_Item::save 1 ". sql_error($this->dbconn) . "[" .$query ."]" );
 			return false;
 		} else {
-			if( mysql_affected_rows($this->dbconn) == 0 && mysql_errno($this->dbconn) != 0 ) {
-				$this->setError(2, "Scorm_Item::save 2 ". mysql_error($this->dbconn) . "[" .$query ."]" );
+			if( sql_affected_rows($this->dbconn) == 0 && sql_errno($this->dbconn) != 0 ) {
+				$this->setError(2, "Scorm_Item::save 2 ". sql_error($this->dbconn) . "[" .$query ."]" );
 				return false;		
 			}
 		}

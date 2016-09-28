@@ -84,7 +84,7 @@ function showgrade() {
 	ORDER BY sequence ";
 	$re_report = sql_query($query_report);
 
-	while($info_report = mysql_fetch_assoc($re_report)) {
+	while($info_report = sql_fetch_assoc($re_report)) {
 
 		$reports[$info_report['id_report']]	= $info_report;
 
@@ -329,7 +329,7 @@ function coursereport() {
 	ORDER BY sequence ";
 	$re_report = sql_query($query_report);
 
-	while($info_report = mysql_fetch_assoc($re_report)) {
+	while($info_report = sql_fetch_assoc($re_report)) {
 
 		switch($info_report['source_of']) {
 			case "test" : {
@@ -370,7 +370,7 @@ function coursereport() {
 			$query_track = "SELECT idTrack FROM ".$GLOBALS['prefix_lms']."_testtrack "
 							."WHERE idTest =".$id_test[$i]." AND idUser=".$id_user;
 			$re_track = sql_query($query_track);
-			$track = mysql_fetch_assoc($re_track);
+			$track = sql_fetch_assoc($re_track);
 			$score=user_test_report($id_user, $id_test[$i],$track['idTrack']);
 			if ($track) {
 				$tests[$j]['title']=$test_title;

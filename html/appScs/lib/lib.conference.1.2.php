@@ -391,7 +391,7 @@ class Conference_Manager {
 			$query="SELECT * FROM  ".$this->_getRoomTable().
 			" WHERE idSt='$idSt' AND idCourse='$idCourse' AND starttime=>'$start_timestamp'";
 			$re_room=$this->_query($query);
-			$p=mysql_error();
+			$p=sql_error();
 			$n_room=$this->totalRoom($re_room);
 
 			if ($n_room >= $this->creation_limit_per_user) {
