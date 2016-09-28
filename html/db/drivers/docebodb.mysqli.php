@@ -199,6 +199,12 @@ class mysqli_DbConn extends DbConn {
 		return mysqli_fetch_field($resource);
 	}
 
+	public function escape_string($resource,$escapestring) {
+
+		if(!$resource) return false;
+		return mysqli_real_escape_string($resource, $escapestring);
+	}
+
 	public function real_escape_string($resource, $escapestring){
 		return mysqli_real_escape_string($resource, $escapestring);
 	}
