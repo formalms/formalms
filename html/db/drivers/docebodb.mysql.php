@@ -161,8 +161,14 @@ class Mysql_DbConn extends DbConn {
 
 	public function affected_rows($resource) {
 
-		if(!$resource) return false;
-		return mysql_affected_rows($resource);
+		//if(!$resource) return false;
+		//return mysql_affected_rows($resource);
+            if(!$resource){
+                return mysql_affected_rows($this->conn);
+            }
+            else{
+                return mysql_affected_rows($resource);
+            }
 	}
 
 	public function errno() {
