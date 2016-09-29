@@ -29,7 +29,7 @@ class CoursereportLmsController extends LmsController {
 
 
 
-    public function showTask()
+    public function play()
     {
         checkPerm('view');
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
@@ -974,8 +974,6 @@ while(i<lista.length)
         }
         $out->add('</div>');
     }
-
-
 }
 
 ?>

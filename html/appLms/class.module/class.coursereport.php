@@ -14,9 +14,17 @@
 class Module_CourseReport extends LmsModule {
 	
 	function loadBody() {
-		
-		require_once($GLOBALS['where_lms'].'/modules/'.$this->module_name.'/'.$this->module_name.'.php');
-		coursereportDispatch($GLOBALS['op']);
+
+        switch($GLOBALS['op']) {
+            case "coursereport" : {
+
+                $object_poll = new CoursereportLmsController();
+                $object_poll->play();
+            };break;
+            default : {
+                parent::loadBody();
+            }
+        }
 	}
 	
 	function getAllToken($op) {
