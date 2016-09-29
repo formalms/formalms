@@ -404,7 +404,7 @@ class Module_Directory extends Module {
 		
 		$query = "SELECT * FROM ".$this->_getTableDeletedUser()."";
 		$result = sql_query($query);
-		$num_rows = mysql_num_rows($result);
+		$num_rows = sql_num_rows($result);
 		//print_r($ini);
 		if($ini)
 		{

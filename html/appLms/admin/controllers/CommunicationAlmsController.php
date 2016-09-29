@@ -570,7 +570,7 @@ class CommunicationAlmsController extends AlmsController {
 				AND idscorm_organization='".(int)$data['id_resource']."'";
 			$q =sql_query($qtxt);
 
-			$row =mysql_fetch_assoc($q);
+			$row =sql_fetch_assoc($q);
 
 			$sco_data =array();
 			$sco_data['item_id'] =$sco_id;

@@ -90,7 +90,7 @@ class Scorm_Tracking {
 			// id is idscorm_tracking
 			$query = "SELECT idUser, idscorm_item FROM ".$GLOBALS['prefix_lms']."_scorm_tracking WHERE idscorm_tracking='".(int)$id."'";
 			$rs = sql_query($query, $this->dbconn);
-			if ($rs == false || mysql_num_rows($rs) == 0) {
+			if ($rs == false || sql_num_rows($rs) == 0) {
 				return false;
 			}
 			list($this->idUser, $this->idscorm_item) = sql_fetch_row($rs);
@@ -107,10 +107,10 @@ class Scorm_Tracking {
 		
 		$rs = sql_query($query, $this->dbconn);
 		if( $rs == false ) {
-			$this->setError(1, "Scorm_Tracking::Scorm_Tracking " . mysql_error($this->dbconn) . "[" .$query ."]");
+			$this->setError(1, "Scorm_Tracking::Scorm_Tracking " . sql_error($this->dbconn) . "[" .$query ."]");
 			return false;
 		}
-		if ( mysql_num_rows($rs) == 0) {
+		if ( sql_num_rows($rs) == 0) {
 			if ($createonfail) {
 				// not found => create new track record
 				$query = "INSERT INTO $this->tracktable "
@@ -118,29 +118,29 @@ class Scorm_Tracking {
 				." VALUES"
 				." ( $this->idUser, $this->idReference, $id )";
 				if (sql_query($query, $this->dbconn)) {
-					if (mysql_affected_rows($this->dbconn) == 1) {
+					if (sql_affected_rows($this->dbconn) == 1) {
 						// get the id of the last insert = idscorm_tracking
-						$this->idtrack = mysql_insert_id($this->dbconn);
+						$this->idtrack = sql_insert_id($this->dbconn);
 						$this->scormVersion = getScormVersion('idscorm_item',$id);
 						//update history
 						
 						//end update
 					} else {
-						$this->setError(1, "Scorm_Tracking::Scorm_Tracking " . mysql_error($this->dbconn) . "[" .$query ."]");
+						$this->setError(1, "Scorm_Tracking::Scorm_Tracking " . sql_error($this->dbconn) . "[" .$query ."]");
 						return false;
 					} 
 				} else {
-					$this->setError(1, "Scorm_Tracking::Scorm_Tracking " . mysql_error($this->dbconn) . "[" .$query ."]");
+					$this->setError(1, "Scorm_Tracking::Scorm_Tracking " . sql_error($this->dbconn) . "[" .$query ."]");
 					return false;
 				} 
 			} else {
-				$this->setError(1, "Scorm_Tracking::Scorm_Tracking " . mysql_error($this->dbconn) . "[" .$query ."]");
+				$this->setError(1, "Scorm_Tracking::Scorm_Tracking " . sql_error($this->dbconn) . "[" .$query ."]");
 				return false;
 			} 
 		} else {
-			list($this->idscorm_item, $this->idtrack) = mysql_fetch_array($rs);
+			list($this->idscorm_item, $this->idtrack) = sql_fetch_array($rs);
 			$this->scormVersion = getScormVersion('idscorm_item',$this->idscorm_item);
-			mysql_free_result($rs);
+			sql_free_result($rs);
 		} 
 		return true;
 	} 
@@ -149,7 +149,7 @@ class Scorm_Tracking {
 		if (!$idtrack) $idtrack = $this->idtrack;
 		$qry = "SELECT * FROM $this->tracktable WHERE idscorm_tracking=$idtrack";
 		if ($res = sql_query($qry)) {
-			$temp = mysql_fetch_assoc($res);
+			$temp = sql_fetch_assoc($res);
 			return $temp;
 		} else
 			return false;
@@ -193,7 +193,7 @@ class Scorm_Tracking {
 		$rs = sql_query("SELECT xmldata FROM $this->tracktable WHERE idscorm_tracking = $this->idtrack", $this->dbconn);
 		if ($rs === false) {
 			// set error and exit with false
-			$this->setError(1, "Scorm_Tracking::getXmlDoc " . mysql_error($this->dbconn));
+			$this->setError(1, "Scorm_Tracking::getXmlDoc " . sql_error($this->dbconn));
 			return false;
 		} 
 
@@ -236,17 +236,17 @@ class Scorm_Tracking {
 		 . "xmldata = '" . addslashes($xmldoc->saveXML()) . "' "
 		 . "WHERE idscorm_tracking = $this->idtrack";
 		if (sql_query($query)) {
-			if (mysql_affected_rows($this->dbconn) == 1) {
+			if (sql_affected_rows($this->dbconn) == 1) {
 				//action removed, left blank intentionaly
 			} else {
-				if(	mysql_errno($this->dbconn) != 0 ) {
-					$this->setError(1, "Scorm_Tracking::setXmlDoc " . mysql_error($this->dbconn));
+				if(	sql_errno($this->dbconn) != 0 ) {
+					$this->setError(1, "Scorm_Tracking::setXmlDoc " . sql_error($this->dbconn));
 					return false;
 				} else 
 					return true;
 			} 
 		} else {
-			$this->setError(1, "Scorm_Tracking::setXmlDoc " . mysql_error($this->dbconn));
+			$this->setError(1, "Scorm_Tracking::setXmlDoc " . sql_error($this->dbconn));
 			return false;
 		} 
 	} 
@@ -293,10 +293,10 @@ class Scorm_Tracking {
 				$rs = sql_query( $query, $this->dbconn);
 				if ($rs === false) {
 					// set error and exit with false
-					$this->setError(1, "Scorm_Tracking::getParam [$query] " . mysql_error($this->dbconn));
+					$this->setError(1, "Scorm_Tracking::getParam [$query] " . sql_error($this->dbconn));
 					return false;
 				} else {
-					list($value) = mysql_fetch_array($rs);
+					list($value) = sql_fetch_array($rs);
 					soap__dbgOut( "-Scorm_Tracking::getParam return ".$value,SOAP_DBG_LEVEL_LOG,SOAP_DBG_FILTER_GETPARAM );
 					return $value;
 				}			
@@ -429,7 +429,7 @@ class Scorm_Tracking {
 			soap__dbgOut( " Scorm_Tracking::setParam query for update fieldMap = $query", SOAP_DBG_LEVEL_LOG,SOAP_DBG_FILTER_SETPARAM );
 
 			if (sql_query($query, $this->dbconn)) {
-				if (mysql_affected_rows($this->dbconn) == 1) {
+				if (sql_affected_rows($this->dbconn) == 1) {
 					
 					// return true;
 					// We must also set the value in xmlData filed!
@@ -437,15 +437,15 @@ class Scorm_Tracking {
 				} else {
 					// mysql return 0 also when $fieldMap is already $paramval
 					soap__dbgOut( " Scorm_Tracking::setParam affected row != 1" ,SOAP_DBG_LEVEL_ERROR,SOAP_DBG_FILTER_SETPARAM );
-					if( mysql_errno($this->dbconn) != 0 ) {
+					if( sql_errno($this->dbconn) != 0 ) {
 						soap__dbgOut( " Scorm_Tracking::setParam report Error" ,SOAP_DBG_LEVEL_ERROR,SOAP_DBG_FILTER_SETPARAM );
-						$this->setError(1, "Scorm_Tracking::setParam 1 [ $query ] " . mysql_error($this->dbconn));
+						$this->setError(1, "Scorm_Tracking::setParam 1 [ $query ] " . sql_error($this->dbconn));
 						return false;
 					}
 				} 
 			} else {
 				soap__dbgOut( " Scorm_Tracking::setParam report Error" ,SOAP_DBG_LEVEL_ERROR,SOAP_DBG_FILTER_SETPARAM );
-				$this->setError(1, "Scorm_Tracking::setParam 2 [ $query ] " . mysql_error($this->dbconn));
+				$this->setError(1, "Scorm_Tracking::setParam 2 [ $query ] " . sql_error($this->dbconn));
 				return false;
 			} 
 		}
@@ -533,7 +533,7 @@ class Scorm_Tracking {
 	 		$query .= "WHERE idscorm_tracking = $this->idtrack";
 			//echo "<!-- $query -->\n";
 			if (sql_query($query, $this->dbconn)) {
-				if (mysql_affected_rows($this->dbconn) == 1) {
+				if (sql_affected_rows($this->dbconn) == 1) {
 					
 					// return true;
 					// We must also set the value in xmlData filed!
@@ -541,15 +541,15 @@ class Scorm_Tracking {
 				} else {
 					// mysql return 0 also when $fieldMap is already $paramval
 					soap__dbgOut( " Scorm_Tracking::setParam affected row != 1" ,SOAP_DBG_LEVEL_ERROR,SOAP_DBG_FILTER_SETPARAM );
-					if( mysql_errno($this->dbconn) != 0 ) {
+					if( sql_errno($this->dbconn) != 0 ) {
 						soap__dbgOut( " Scorm_Tracking::setParam report Error" ,SOAP_DBG_LEVEL_ERROR,SOAP_DBG_FILTER_SETPARAM );
-						$this->setError(1, "Scorm_Tracking::setParam 1 [ $query ] " . mysql_error($this->dbconn));
+						$this->setError(1, "Scorm_Tracking::setParam 1 [ $query ] " . sql_error($this->dbconn));
 						return false;
 					}
 				} 
 			} else {
 				soap__dbgOut( " Scorm_Tracking::setParam report Error" ,SOAP_DBG_LEVEL_ERROR,SOAP_DBG_FILTER_SETPARAM );
-				$this->setError(1, "Scorm_Tracking::setParam 2 [ $query ] " . mysql_error($this->dbconn));
+				$this->setError(1, "Scorm_Tracking::setParam 2 [ $query ] " . sql_error($this->dbconn));
 				return false;
 			}
 			 				

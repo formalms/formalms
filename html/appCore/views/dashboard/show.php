@@ -243,6 +243,9 @@
 									}
 								?>
 							</li>
+                                                        <li>
+                                                            <a href="index.php?r=adm/dbupgrades/show"><?php echo Lang::t('_DB_UPGRADES', 'dashboard'); ?></a>
+                                                        </li>
 							<li>
 								<a id="quicklinks_diagnostic" href="ajax.adm_server.php?r=adm/dashboard/diagnostic_dialog">
 									<?php

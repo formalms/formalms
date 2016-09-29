@@ -257,11 +257,11 @@ class ListView {
 
 	function getTotRowsWhithFilter()
 	{
-		return mysql_num_rows($this->data->rs_f);
+		return sql_num_rows($this->data->rs_f);
 	}
 
 	function getLoadedRows() {
-		return mysql_num_rows($this->rs);
+		return sql_num_rows($this->rs);
 	}
 
 	function getTotalRows() {

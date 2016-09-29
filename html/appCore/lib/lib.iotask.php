@@ -87,7 +87,7 @@ class DoceboConnectionManager {
 		$this->rs_connection = sql_query($query);
 		if( $this->rs_connection === FALSE )
 			return FALSE;
-		if( mysql_num_rows($this->rs_connection) == 0 )
+		if( sql_num_rows($this->rs_connection) == 0 )
 			return FALSE;
 
 		return sql_fetch_row($this->rs_connection);
@@ -113,7 +113,7 @@ class DoceboConnectionManager {
 		$rs_connection = sql_query($query);
 		if( $rs_connection === FALSE )
 			return FALSE;
-		if( mysql_num_rows($rs_connection) == 0 )
+		if( sql_num_rows($rs_connection) == 0 )
 			return array();
 		$arr_name = array();
 		while( list($name) = sql_fetch_row($rs_connection) )
@@ -133,7 +133,7 @@ class DoceboConnectionManager {
 		$rs_connection = sql_query($query);
 		if( $rs_connection === FALSE )
 			return FALSE;
-		if( mysql_num_rows($rs_connection) == 0 )
+		if( sql_num_rows($rs_connection) == 0 )
 			return FALSE;
 
 		return sql_fetch_row($rs_connection);
@@ -155,7 +155,7 @@ class DoceboConnectionManager {
 		if( sql_query($query) )
 			return TRUE;
 		else {
-			$this->last_error = mysql_error();
+			$this->last_error = sql_error();
 			return FALSE;
 		}
 	}
@@ -197,7 +197,7 @@ class DoceboConnectionManager {
 		if( sql_query($query) ) {
 			return TRUE;
 		} else {
-			$this->last_error = mysql_error();
+			$this->last_error = sql_error();
 			return FALSE;
 		}
 
@@ -212,7 +212,7 @@ class DoceboConnectionManager {
 		$this->rs_connector = sql_query($query);
 		if( $this->rs_connector === FALSE )
 			return FALSE;
-		if( mysql_num_rows($this->rs_connector) == 0 )
+		if( sql_num_rows($this->rs_connector) == 0 )
 			return FALSE;
 
 		return sql_fetch_row($this->rs_connector);
@@ -238,7 +238,7 @@ class DoceboConnectionManager {
 		$rs_connector = sql_query($query);
 		if( $rs_connector === FALSE )
 			return FALSE;
-		if( mysql_num_rows($rs_connector) == 0 )
+		if( sql_num_rows($rs_connector) == 0 )
 			return FALSE;
 
 		return sql_fetch_row($rs_connector);
@@ -254,7 +254,7 @@ class DoceboConnectionManager {
 		$rs_connector = sql_query($query);
 		if( $rs_connector === FALSE )
 			return FALSE;
-		if( mysql_num_rows($rs_connector) == 0 )
+		if( sql_num_rows($rs_connector) == 0 )
 			return FALSE;
 
 		return sql_fetch_row($rs_connector);
@@ -288,7 +288,7 @@ class DoceboConnectionManager {
 		if( sql_query($query) ) {
 			return TRUE;
 		} else {
-			$this->last_error = mysql_error();
+			$this->last_error = sql_error();
 			return FALSE;
 		}
 	}
@@ -323,7 +323,7 @@ class DoceboConnectionManager {
 		$this->rs_task = sql_query($query);
 		if( $this->rs_task === FALSE )
 			return FALSE;
-		if( mysql_num_rows($this->rs_task) == 0 )
+		if( sql_num_rows($this->rs_task) == 0 )
 			return FALSE;
 
 		$arr_result = sql_fetch_row($this->rs_task);
@@ -362,7 +362,7 @@ class DoceboConnectionManager {
 		$rs_task = sql_query($query);
 		if( $rs_task === FALSE )
 			return FALSE;
-		if( mysql_num_rows($rs_task) == 0 )
+		if( sql_num_rows($rs_task) == 0 )
 			return FALSE;
 
 		$arr_result = sql_fetch_row($rs_task);
@@ -434,7 +434,7 @@ class DoceboConnectionManager {
 		if( sql_query($query) )
 			return TRUE;
 		else {
-			$this->last_error = mysql_error();
+			$this->last_error = sql_error();
 			return FALSE;
 		}
 	}
@@ -489,7 +489,7 @@ class DoceboConnectionManager {
 		if( sql_query($query) ) {
 			return TRUE;
 		} else {
-			$this->last_error = mysql_error();
+			$this->last_error = sql_error();
 			return FALSE;
 		}
 	}
@@ -501,7 +501,7 @@ class DoceboConnectionManager {
 		if( sql_query($query) ) {
 			return TRUE;
 		} else {
-			$this->last_error = mysql_error();
+			$this->last_error = sql_error();
 			return FALSE;
 		}
 	}

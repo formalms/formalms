@@ -7,11 +7,14 @@ Class StepController {
 	
 
 	public function render() {
+        include _lib_.'/loggers/lib.logger.php';
+	    include _base_.'/db/lib.docebodb.php';
 		include_once(_installer_.'/views/Step'.(int)$this->step.'.php');
 	}
 
 
 	public function ajax_validate() {
+
 		$this->ajax_out(array('success'=>false, 'err'=>array(), 'ok'=>array()));
 	}
 

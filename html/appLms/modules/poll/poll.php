@@ -184,7 +184,7 @@ function modpollgui( $object_poll ) {
 	WHERE id_poll = '".$object_poll->getId()."'
 	ORDER BY sequence");
 	
-	$num_quest = mysql_num_rows($re_quest);
+	$num_quest = sql_num_rows($re_quest);
 	list($num_page) = sql_fetch_row(sql_query("
 	SELECT MAX(page) 
 	FROM ".$GLOBALS['prefix_lms']."_pollquest 
@@ -480,7 +480,7 @@ function &istanceQuest( $type_of_quest, $id ) {
 	SELECT type_file, type_class 
 	FROM ".$GLOBALS['prefix_lms']."_quest_type_poll _poll 
 	WHERE type_quest = '".$type_of_quest."'");
-	if( !mysql_num_rows($re_quest) ) return;
+	if( !sql_num_rows($re_quest) ) return;
 	list($type_file, $type_class) = sql_fetch_row($re_quest);
 	
 	require_once( $GLOBALS['where_lms'].'/modules/question_poll/'.$type_file);

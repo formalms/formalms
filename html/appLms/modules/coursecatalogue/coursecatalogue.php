@@ -335,9 +335,9 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
 					." WHERE idCourse = ".$course_info['idCourse']
 					." AND idUser = ".getLogUserId();
 
-		$result = mysql_query($query);
+		$result = sql_query($query);
 
-		if(mysql_num_rows($result) > 0)
+		if(sql_num_rows($result) > 0)
 		{
 			list($status, $waiting) = sql_fetch_row($result);
 
@@ -439,7 +439,7 @@ function subscribeToCourse($id_user, $id_course, $id_date = 0)
 		{
 			$acl_man->addToGroup($level_idst[3], $id_user);
 
-			$re = mysql_query(	"INSERT INTO ".$GLOBALS['prefix_lms']."_courseuser
+			$re = sql_query(	"INSERT INTO ".$GLOBALS['prefix_lms']."_courseuser
 								(idUser, idCourse, edition_id, level, waiting, subscribed_by, date_inscr)
 								VALUES ('".$id_user."', '".$id_course."', '0', '3', '".$waiting."', '".getLogUserId()."', '".date("Y-m-d H:i:s")."')");
 
@@ -458,7 +458,7 @@ function subscribeToCourse($id_user, $id_course, $id_date = 0)
 		{
 			$acl_man->addToGroup($level_idst[3], $id_user);
 
-			$re = mysql_query(	"INSERT INTO ".$GLOBALS['prefix_lms']."_courseuser
+			$re = sql_query(	"INSERT INTO ".$GLOBALS['prefix_lms']."_courseuser
 								(idUser, idCourse, edition_id, level, waiting, subscribed_by, date_inscr)
 								VALUES ('".$id_user."', '".$id_course."', '0', '3', '".$waiting."', '".getLogUserId()."', '".date("Y-m-d H:i:s")."')");
 			if($re)

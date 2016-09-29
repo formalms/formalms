@@ -170,7 +170,7 @@ function insitem() {
 		Util::jump_to( ''.$back_url.'&create_result=0' );
 	}
 	
-	$idscorm_package = mysql_insert_id();
+	$idscorm_package = sql_insert_id();
 	
 	// create the n entries in resources table
 	for( $i = 0; $i < $cpm->GetResourceNumber(); $i++ ) {
@@ -186,7 +186,7 @@ function insitem() {
 		if(!$result){
 			$_SESSION['last_error'] = _OPERATION_FAILURE;
 			Util::jump_to( ''.$back_url.'&create_result=0' );
-		} else if(mysql_affected_rows() == 0)  {
+		} else if(sql_affected_rows() == 0)  {
 			$_SESSION['last_error'] = _OPERATION_FAILURE;
 			Util::jump_to( ''.$back_url.'&create_result=0' );
 		}
@@ -224,7 +224,7 @@ function moditem($object_item) {
 	$query = "SELECT idOrg ".
 		" FROM ".$GLOBALS['prefix_lms']."_organization ".
 		" WHERE idResource = ".(int)$object_item->id." AND objectType = 'scormorg' ";
-	list($id_reference) = mysql_fetch_row(mysql_query($query));
+	list($id_reference) = sql_fetch_row(sql_query($query));
 
 	require_once(_lib_.'/lib.table.php');
 	$tb = new Table();
@@ -242,8 +242,8 @@ function moditem($object_item) {
 		" WHERE idscorm_organization = ".(int)$object_item->id."".
 		" ORDER BY idscorm_item ";
 
-	$res = mysql_query($qry);
-	while($row = mysql_fetch_row($res)) {
+	$res = sql_query($qry);
+	while($row = sql_fetch_row($res)) {
 
 		$line = array();
 		$line[] = $row[2];
@@ -293,9 +293,9 @@ function _scorm_deleteitem( $idscorm_package, $idscorm_organization, $erasetrack
 	// detect if there are other organization in package
 	$rs = sql_query("SELECT idscorm_organization FROM ".$GLOBALS['prefix_lms']."_scorm_organizations WHERE idscorm_package=".$idscorm_package);
 
-	if( mysql_num_rows( $rs ) == 0 ) {
+	if( sql_num_rows( $rs ) == 0 ) {
 		$rs = sql_query("SELECT path FROM ".$GLOBALS['prefix_lms']."_scorm_package WHERE idscorm_package='".(int)$idscorm_package."'")
-			or die(mysql_error());
+			or die(sql_error());
 	
 		list($path) = sql_fetch_row($rs);
 		$scopath = str_replace ( '\\', '/', $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathscorm'));
@@ -305,7 +305,7 @@ function _scorm_deleteitem( $idscorm_package, $idscorm_organization, $erasetrack
 			/* if is the only occurrence of path in db delete files */
 			$rs = sql_query(	"SELECT idscorm_package FROM ".$GLOBALS['prefix_lms']."_scorm_package"
 								." WHERE path = '".$path."'");
-			if( mysql_num_rows( $rs ) == 1 ) {
+			if( sql_num_rows( $rs ) == 1 ) {
 				
 				$size = Get::dir_size($scopath.$path);
 			
@@ -338,7 +338,7 @@ function _scorm_copyitem( $idscorm_package, $idscorm_organization ) {
 	if( ($rs = sql_query("SELECT path FROM ".$GLOBALS['prefix_lms']."_scorm_package "
 							."WHERE idscorm_package='"
 							.(int)$idscorm_package."'")) === FALSE ) {
-		$_SESSION['last_error'] = _OPERATION_FAILURE.': '.mysql_error();
+		$_SESSION['last_error'] = _OPERATION_FAILURE.': '.sql_error();
 		return FALSE;
 	}
 
@@ -377,7 +377,7 @@ function _scorm_copyitem( $idscorm_package, $idscorm_organization ) {
 				."   FROM ".$GLOBALS['prefix_lms']."_scorm_package "
 				."  WHERE idscorm_package='".(int)$idscorm_package."'");*/
 	
-	$new_idscorm_package = mysql_insert_id();
+	$new_idscorm_package = sql_insert_id();
 	
 	/* copy resources */
 	$rs_resources = sql_query(" SELECT idsco,'".$new_idscorm_package."',scormtype,href "

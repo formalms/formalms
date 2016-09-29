@@ -2748,7 +2748,7 @@ class Report_User extends Report {
 		$lo_trans = $this->getLOTypesTranslations();
 		$box->body .= Form::getOpenFieldset(Lang::t('_RU_LO_TYPES', 'report'), 'lotypes_fieldset');
 		$res = sql_query("SELECT * FROM %lms_lo_types");
-		while ($row = mysql_fetch_assoc($res)) {
+		while ($row = sql_fetch_assoc($res)) {
 			$trans = isset($lo_trans[$row['objectType']]) ? $lo_trans[$row['objectType']] : "";
 			$box->body .= Form::getCheckBox($trans , 'lo_type_'.$row['objectType'], 'lo_types['.$row['objectType'].']', $row['objectType'], (in_array($row['objectType'], $ref['lo_types']) ? true : false) );
 		}
@@ -3097,7 +3097,7 @@ class Report_User extends Report {
 			.(!$all_users ? " AND t2.idUser IN (".implode(',', $users).") " : "" )
 			.(count($tempmilestones)>0 ? " AND t1.milestone IN (".implode(',', $tempmilestones).") " : "" );
 		$res = sql_query($query);
-		while ($row=mysql_fetch_assoc($res)) {
+		while ($row=sql_fetch_assoc($res)) {
 			$score_arr['test'][ $row['idOrg'] ][ $row['idUser'] ]=$row['score']+$row['bonus_score'];
 		}
 
@@ -3111,7 +3111,7 @@ class Report_User extends Report {
 			.(!$all_users ? " AND t2.idUser IN (".implode(',', $users).") " : "" )
 			.(count($tempmilestones)>0 ? " AND t1.milestone IN (".implode(',', $tempmilestones).") " : "" );
 		$res = sql_query($query);
-		while ($row=mysql_fetch_assoc($res)) {
+		while ($row=sql_fetch_assoc($res)) {
 			$score_arr['scorm'][ $row['idOrg'] ][ $row['idUser'] ]=$row['score_raw'];
 		}
 
@@ -3155,7 +3155,7 @@ class Report_User extends Report {
 			.( count($tempmilestones)>0 ? "AND t1.milestone IN (".implode(',', $tempmilestones).")" : "" )
 			." ORDER BY ".$query_order_by;
 		$res = sql_query($query);
-		while ($row = mysql_fetch_assoc($res)) {
+		while ($row = sql_fetch_assoc($res)) {
 
 			$temp=array();
 			foreach ($this->LO_columns as $val)

@@ -53,8 +53,8 @@ function listUsers(&$out, &$lang) {
 	$res .= "<div class=\"chatUsers\">\n"
 		.'<div class="intestation"><img src="'.$GLOBALS["img_path"].'users_list.gif" alt=".:" />'.$lang->def('_USERS_LIST').'</div>';
 
-	if (($users_q) && (mysql_num_rows($users_q) > 0)) {
-		while($row = mysql_fetch_array($users_q)) {
+	if (($users_q) && (sql_num_rows($users_q) > 0)) {
+		while($row = sql_fetch_array($users_q)) {
 			if ($row["userid"]<>"Anonymous") 
 			$res .= "<div class=\"user_row\">".$row["userid"]."</div>\n";
 		}
@@ -77,8 +77,8 @@ function checkLogin($auto_reload=true) {
 	$qtxt="SELECT userid FROM ".$GLOBALS["prefix_scs"]."_rules_user ".$where_del;
 	$q=sql_query($qtxt);
 
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		while($row=mysql_fetch_array($q)) {
+	if (($q) && (sql_num_rows($q) > 0)) {
+		while($row=sql_fetch_array($q)) {
 			if ($row["userid"]<>"Anonymous")  {
 			$txt ="<div class=\"chat_user_logout\">";
 			$txt.=$row["userid"]." ".$lang->def("_USER_HAS_QUIT")."</div>";
@@ -102,7 +102,7 @@ function checkLogin($auto_reload=true) {
 	$users_qtxt="SELECT * FROM ".$GLOBALS["prefix_scs"]."_rules_user";
 	$users_q=sql_query($users_qtxt);
 
-	if (($users_q) && (mysql_num_rows($users_q) == 0)) {
+	if (($users_q) && (sql_num_rows($users_q) == 0)) {
 		$qtxt="ALTER TABLE ".$GLOBALS["prefix_scs"]."_rules_user AUTO_INCREMENT=1";
 		$q=sql_query($qtxt);
 	}
@@ -181,7 +181,7 @@ function checkLogin($auto_reload=true) {
 		$qtxt ="UPDATE ".$GLOBALS["prefix_scs"]."_rules_user SET id_room='".$room."', last_hit='".$now."' ";
 		$qtxt.="WHERE id_user='".$id_user."'";
 		$q=sql_query($qtxt);
-		if(mysql_affected_rows() == 0) {
+		if(sql_affected_rows() == 0) {
 			// seem that the user is not logged into the room, log in
 			$qtxt ="INSERT INTO ".$GLOBALS["prefix_scs"]."_rules_user (id_user, id_room, userid, user_ip, last_hit, auto_reload) ";
 			$qtxt.="VALUES('".$_SESSION["chat_user_id"]."', '".$room."', '".$_SESSION["chat_user_name"]."', '".$_SERVER["REMOTE_ADDR"]."', '".$now."', '".($auto_reload ? 1:0)."')";
@@ -190,8 +190,8 @@ function checkLogin($auto_reload=true) {
 		}
 	}
 
-	/*if (($users_q) && (mysql_num_rows($users_q) > 0)) {
-		while($row=mysql_fetch_array($users_q)) {
+	/*if (($users_q) && (sql_num_rows($users_q) > 0)) {
+		while($row=sql_fetch_array($users_q)) {
 			$res.="<div>".$row["userid"]."</div>\n";
 		}
 	}*/
@@ -207,8 +207,8 @@ function haveNewMsg(& $last_msg_id) {
 	$qtxt.="WHERE id_room='".$room."' AND msg_id > '".$last_msg_id."' ORDER BY msg_id DESC";
 	$q=sql_query($qtxt); //-- debug: --// echo $qtxt;
 
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		$row=mysql_fetch_array($q);
+	if (($q) && (sql_num_rows($q) > 0)) {
+		$row=sql_fetch_array($q);
 		$last_msg_id=$row["msg_id"];
 		$res=true;
 	}
@@ -247,12 +247,12 @@ function getMsgBuffer(&$lang, $limit = false, $incremental = false) {
 		ORDER BY t1.sent_date, t1.msg_id";
 		$re_msg = sql_query($query_msg);
 	}
-	if($re_msg && (mysql_num_rows($re_msg) > 0)) {
+	if($re_msg && (sql_num_rows($re_msg) > 0)) {
 		
 		$color 		= 0;
 		$lines 		= 0;
 		$last_id 	= 0;
-		while($msg_info = mysql_fetch_array($re_msg)) {
+		while($msg_info = sql_fetch_array($re_msg)) {
 			// if the message sender is the same that read
 			if($msg_info['id_user'] == $_SESSION['chat_user_id']) $color = 2;
 			else $color = ($lines++) % 2;
@@ -281,7 +281,7 @@ function cleanOldMsg() {
 	$qtxt="SELECT * FROM ".$GLOBALS["prefix_scs"]."_chat_msg LIMIT 0,1";
 	$q=sql_query($qtxt);
 
-	if (($q) && (mysql_num_rows($q) == 0)) {
+	if (($q) && (sql_num_rows($q) == 0)) {
 		$qtxt="ALTER TABLE ".$GLOBALS["prefix_scs"]."_chat_msg AUTO_INCREMENT=1";
 		$q=sql_query($qtxt);
 	}
@@ -308,8 +308,8 @@ function listRooms(& $out, & $lang) {
 	$res = '<div class="chatRooms">'
 		.'<div class="intestation"><img src="'.$GLOBALS["img_path"].'rooms_list.gif" alt=".:" />'.$lang->def('_ROOMS_LIST').'</div>'
 		."<ul>";
-	if (($room_q) && (mysql_num_rows($room_q) > 0)) {
-		while($row = mysql_fetch_array($room_q)) {
+	if (($room_q) && (sql_num_rows($room_q) > 0)) {
+		while($row = sql_fetch_array($room_q)) {
 			$res.="<li>";
 			if ($row["id_room"] != $room)
 				$res.="<a href=\"".getPopupBaseUrl()."&amp;op=setroom&amp;ri=".$row["id_room"]."\">";
@@ -396,9 +396,9 @@ function saveChatMsg() {
 	$q=sql_query($qtxt);
 
 	$res="";
-	if (($q) && (mysql_num_rows($q) > 0)) {
+	if (($q) && (sql_num_rows($q) > 0)) {
 		$i=0;
-		while($row=mysql_fetch_array($q)) {
+		while($row=sql_fetch_array($q)) {
 
 			$line="";
 			if (!empty($row["userid"]))
@@ -439,8 +439,8 @@ function getDefaultRoomId() {
 	
 	$room_q = sql_query($room_qtxt);	
 	
-	if (($room_q) && (mysql_num_rows($room_q) > 0)) {
-		$row=mysql_fetch_array($room_q);
+	if (($room_q) && (sql_num_rows($room_q) > 0)) {
+		$row=sql_fetch_array($room_q);
 		$res=(int)$row["id_room"];
 	}
 	

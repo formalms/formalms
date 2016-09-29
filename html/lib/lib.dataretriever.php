@@ -38,12 +38,12 @@ class DataRetriever {
 	}
 
 	function getFieldCount() {
-		return mysql_num_fields( $this->rs );
+		return sql_num_fields( $this->rs );
 	}
 
 	function getFieldsInfo() {
 		$result = array();
-		while( ($fInfo = mysql_fetch_field( $this->rs )) != NULL ) {
+		while( ($fInfo = sql_fetch_field( $this->rs )) != NULL ) {
 			$result[$fInfo->name] = $fInfo;
 		}
 		return $result;
@@ -94,7 +94,7 @@ class DataRetriever {
 	}
 
 	function fetchRecord() {
-		return mysql_fetch_assoc ( $this-> rs );
+		return sql_fetch_assoc ( $this-> rs );
 	}
 
 	function getTotalRows() {

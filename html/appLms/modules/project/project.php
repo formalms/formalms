@@ -148,8 +148,8 @@ function user_projects($userid) {
 
 	$res = array();
 	$q=sql_query($qtxt);
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		while ($row=mysql_fetch_assoc($q)) {
+	if (($q) && (sql_num_rows($q) > 0)) {
+		while ($row=sql_fetch_assoc($q)) {
 			$res[]=$row["id"];
 		}
 	}
@@ -162,10 +162,10 @@ function user_projects($userid) {
 
 	$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj WHERE cid='".$_SESSION["idCourse"]."' ORDER BY ptitle;");
 
-	if (($query) && (mysql_num_rows($query) > 0)) {
-		while ($row=mysql_fetch_array($query)) {
+	if (($query) && (sql_num_rows($query) > 0)) {
+		while ($row=sql_fetch_array($query)) {
 			$grpqry=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_coursegroupuser WHERE (idGroup='".$row["pgroup"]."' AND idUser='$userid');");
-			if (mysql_num_rows($grpqry) > 0) array_push($res, $row["id"]);
+			if (sql_num_rows($grpqry) > 0) array_push($res, $row["id"]);
 		}
 	}
 
@@ -186,8 +186,8 @@ function userProjectsList($userid) {
 
 	$res = array();
 	$q =sql_query($qtxt);
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		while ($row=mysql_fetch_assoc($q)) {
+	if (($q) && (sql_num_rows($q) > 0)) {
+		while ($row=sql_fetch_assoc($q)) {
 			$res[]=$row;
 		}
 	}
@@ -361,17 +361,17 @@ function addprj_now() {
 
 		if ($query) {
 			$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj ORDER BY id DESC;");
-			$row=mysql_fetch_array($query);
+			$row=sql_fetch_array($query);
 			$id=$row["id"];
 
 			$query=sql_query("INSERT INTO ".$GLOBALS["prefix_lms"]."_prj_users (pid,userid,flag) VALUES('$id','".Docebo::user()->getIdSt()."','2');");
-			$out->add( mysql_error());
+			$out->add( sql_error());
 
 			//$out->add(getResultUi($lang->def("_OPERATION_SUCCESSFUL")).$goonlink);
 			Util::jump_to("index.php?modname=project&op=project");
 		}
 		else
-			$out->add(getErrorUi($lang->def("_OPERATION_FAILURE").": ".mysql_error()).$backlink);
+			$out->add(getErrorUi($lang->def("_OPERATION_FAILURE").": ".sql_error()).$backlink);
 	}
 	else
 		$out->add(getErrorUi($lang->def("_OPERATION_FAILURE").": ".$err).$backlink);
@@ -387,8 +387,8 @@ function get_level($user, $prjid) {
 	$qtxt="SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_users WHERE (userid='".$user."' AND pid='".$prjid."');";
 	$query=sql_query($qtxt);
 
-	if (($query) && (mysql_num_rows($query) > 0)) {
-		$row=mysql_fetch_array($query);
+	if (($query) && (sql_num_rows($query) > 0)) {
+		$row=sql_fetch_array($query);
 		$res=$row["flag"];
 	}
 
@@ -414,8 +414,8 @@ function getAdminList($prjid) {
 	$qtxt="SELECT userid FROM ".$GLOBALS["prefix_lms"]."_prj_users WHERE pid='".$prjid."' AND flag='1'";
 	$query=sql_query($qtxt);
 
-	if (($query) && (mysql_num_rows($query) > 0)) {
-		while($row=mysql_fetch_array($query)) {
+	if (($query) && (sql_num_rows($query) > 0)) {
+		while($row=sql_fetch_array($query)) {
 			$res[]=$row["userid"];
 		}
 	}
@@ -435,7 +435,7 @@ function show_task( $id, $row, $modimg ) {
 		.'<h2 class="heading">'.$lang->def("_PRJTASKS").'</h2>');
 
 	$query = sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj WHERE id='$id' LIMIT 1;");
-	$data = mysql_fetch_array($query);
+	$data = sql_fetch_array($query);
 	$progtot = $row["pprog"];
 
 	$out->add('<div class="content">'
@@ -463,8 +463,8 @@ function show_task( $id, $row, $modimg ) {
 	$out->add("</tr>\n");
 
 	$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_tasks WHERE pid='$id' ORDER BY tname;");
-	if (($query) && (mysql_num_rows($query) > 0)) {
-		while ($data=mysql_fetch_array($query)) {
+	if (($query) && (sql_num_rows($query) > 0)) {
+		while ($data=sql_fetch_array($query)) {
 			$tdesc=nl2br($data["tdesc"]);
 			$tdesc=str_replace("'","\'",$tdesc); $tdesc=str_replace("\"","\\'",$tdesc);
 			$tdesc=str_replace("\n","\\n",$tdesc); $tdesc=str_replace("\r","\\r",$tdesc);
@@ -506,9 +506,9 @@ function show_news( $id, $row , $modimg ) {
 		.'<div class="content">');
 
 	$query = sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_news WHERE pid='$id' ORDER BY ndate DESC;");
-	if (($query) && (mysql_num_rows($query) > 0)) {
+	if (($query) && (sql_num_rows($query) > 0)) {
 		$out->add("<table width=\"100%\">\n");
-		while ($data=mysql_fetch_array($query)) {
+		while ($data=sql_fetch_array($query)) {
 			$ndate=Format::date($data["ndate"], "date");
 			$modlink=""; $dellink="";
 
@@ -547,9 +547,9 @@ function show_files( $id, $row , $modimg ) {
 		.'<div class="content">');
 
 	$query = sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_files WHERE pid='$id' ORDER BY ftitle;");
-	if (($query) && (mysql_num_rows($query) > 0)) {
+	if (($query) && (sql_num_rows($query) > 0)) {
 		$out->add('<table width="100%">'."\n");
-		while($data = mysql_fetch_array($query)) {
+		while($data = sql_fetch_array($query)) {
 			$fname = $data["fname"];
 			$img = '<img src="'.getPathImage('fw').mimeDetect(_FPATH.$fname).'" alt="myme-type" />';
 			$readlink = $modlink = $dellink = '';
@@ -596,9 +596,9 @@ function show_todo( $id, $row , $modimg ) {
 		.'<div class="content">');
 
 	$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_todo WHERE pid='$id' ORDER BY id DESC;");
-	if (($query) && (mysql_num_rows($query) > 0)) {
+	if (($query) && (sql_num_rows($query) > 0)) {
 		$out->add("<table width=\"100%\">\n");
-		while ($data=mysql_fetch_array($query)) {
+		while ($data=sql_fetch_array($query)) {
 			$readlink="<a href=\"index.php?modname=project&amp;op=prjreaditem&amp;type=todo&amp;id=$id&amp;itemid=".$data["id"]."\">".$data["ttitle"]."</a>";
 			$out->add("<tr><td><b>".$readlink."</b>");
 			$modlink=""; $dellink="";
@@ -641,8 +641,8 @@ function show_prj() {
 	$modimg = '<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def("_MOD").'" />';
 
 	$query = sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj WHERE id='$id';");
-	if (($query) && (mysql_num_rows($query) > 0)) {
-		$row = mysql_fetch_array($query);
+	if (($query) && (sql_num_rows($query) > 0)) {
+		$row = sql_fetch_array($query);
 	}
 
 
@@ -805,7 +805,7 @@ function manprjadmin() {
 			FROM ".$GLOBALS["prefix_lms"]."_prj
 			WHERE cid='".$_SESSION["idCourse"]."'
 				AND id = '".$id."'";
-			list($group) = mysql_fetch_array(sql_query($query));
+			list($group) = sql_fetch_array(sql_query($query));
 			if($group == $group_all) {
 				$arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/'.(int)$_SESSION['idCourse'].'/subscribed/');
 				$user_select->setUserFilter('group',$arr_idstGroup);
@@ -875,8 +875,8 @@ function edit_news($mode="edit") {
 
 		if ($mode == "edit") {
 			$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_news WHERE pid='$id' AND id='$itemid';");
-			if (($query) && (mysql_num_rows($query) > 0)) {
-				$row=mysql_fetch_array($query);
+			if (($query) && (sql_num_rows($query) > 0)) {
+				$row=sql_fetch_array($query);
 				$ndate=Format::date($row["ndate"], "date");
 			}
 			$label=$lang->def("_SAVE");
@@ -919,9 +919,9 @@ function edit_news($mode="edit") {
 		.'<input type="hidden" id="authentic_request_prj" name="authentic_request" value="'.Util::getSignature().'" />');
 
 		$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_news WHERE pid='$id' AND id='$itemid';");
-		if (($query) && (mysql_num_rows($query) > 0) || ($mode == "new")) {
+		if (($query) && (sql_num_rows($query) > 0) || ($mode == "new")) {
 			if ($mode == "edit")
-				$row=mysql_fetch_array($query);
+				$row=sql_fetch_array($query);
 			if ($mode == "new")
 				$row=Array();
 			//$out->add("<table border=\"0\" cellpadding=\"4\" cellspacing=\"1\" bgcolor=\"#DDDDEE\" style=\"border-spacing: 1px;\" >\n");
@@ -1012,8 +1012,8 @@ function edit_todo($mode="edit") {
 
 		if ($mode == "edit") {
 			$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_todo WHERE pid='$id' AND id='$itemid';");
-			if (($query) && (mysql_num_rows($query) > 0)) {
-				$row=mysql_fetch_array($query);
+			if (($query) && (sql_num_rows($query) > 0)) {
+				$row=sql_fetch_array($query);
 			}
 			$label=$lang->def("_SAVE");
 		}
@@ -1050,10 +1050,10 @@ function edit_todo($mode="edit") {
 		.'<input type="hidden" id="authentic_request_prj" name="authentic_request" value="'.Util::getSignature().'" />');
 
 		$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_todo WHERE pid='$id' AND id='$itemid';");
-		if (($query) && (mysql_num_rows($query) > 0) || ($mode == "new")) {
+		if (($query) && (sql_num_rows($query) > 0) || ($mode == "new")) {
 
 			if ($mode == "edit")
-				$row=mysql_fetch_array($query);
+				$row=sql_fetch_array($query);
 			if ($mode == "new")
 				$row=Array();
 
@@ -1133,8 +1133,8 @@ function edit_tasks($mode="edit") {
 
 		if ($mode == "edit") {
 			$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_tasks WHERE pid='$id' AND id='$itemid';");
-			if (($query) && (mysql_num_rows($query) > 0)) {
-				$row=mysql_fetch_array($query);
+			if (($query) && (sql_num_rows($query) > 0)) {
+				$row=sql_fetch_array($query);
 			}
 			$label=$lang->def("_SAVE");
 		}
@@ -1174,15 +1174,15 @@ function edit_tasks($mode="edit") {
 
 		// progresso totale: ___%
 /*		$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj WHERE id='$id' LIMIT 1;");
-		$row=mysql_fetch_array($query);
+		$row=sql_fetch_array($query);
 		$out->add($lang->def("_PRJPROGTOT").":\n");
 		$out->add("<input type=\"text\" size=\"3\" id=\"progtot\" name=\"progtot\" value=\"".(int)$row["pprog"]."\" />%<br /><br />\n");*/
 
 		$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_tasks WHERE pid='$id' AND id='$itemid';");
-		if (($query) && (mysql_num_rows($query) > 0) || ($mode == "new")) {
+		if (($query) && (sql_num_rows($query) > 0) || ($mode == "new")) {
 
 			if ($mode == "edit")
-				$row=mysql_fetch_array($query);
+				$row=sql_fetch_array($query);
 			if ($mode == "new")
 				$row=Array();
 
@@ -1276,7 +1276,7 @@ function edit_files($mode="edit") {
 				sl_close_fileoperations();
 
 				if (($ok) && ($savefile != ""))
-					$query=sql_query("INSERT INTO ".$GLOBALS["prefix_lms"]."_prj_files (pid,fname,ftitle,fver,fdesc) VALUES('$id','".( get_magic_quotes_gpc() ? $savefile : mysql_escape_string($savefile) )."','$ftitle','$fver','$fdesc');");
+					$query=sql_query("INSERT INTO ".$GLOBALS["prefix_lms"]."_prj_files (pid,fname,ftitle,fver,fdesc) VALUES('$id','".( get_magic_quotes_gpc() ? $savefile : sql_escape_string($savefile) )."','$ftitle','$fver','$fdesc');");
 			}
 			if ($mode == "edit") {
 				$query=sql_query("UPDATE ".$GLOBALS["prefix_lms"]."_prj_files SET ftitle='$ftitle',fver='$fver',fdesc='$fdesc' WHERE id='$itemid' LIMIT 1;");
@@ -1291,8 +1291,8 @@ function edit_files($mode="edit") {
 
 		if ($mode == "edit") {
 			$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_files WHERE pid='$id' AND id='$itemid';");
-			if (($query) && (mysql_num_rows($query) > 0)) {
-				$row=mysql_fetch_array($query);
+			if (($query) && (sql_num_rows($query) > 0)) {
+				$row=sql_fetch_array($query);
 			}
 			$label=$lang->def("_SAVE");
 		}
@@ -1335,10 +1335,10 @@ function edit_files($mode="edit") {
 		.'<input type="hidden" id="authentic_request_prj" name="authentic_request" value="'.Util::getSignature().'" />');
 
 		$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_files WHERE pid='$id' AND id='$itemid';");
-		if (($query) && (mysql_num_rows($query) > 0) || ($mode == "new")) {
+		if (($query) && (sql_num_rows($query) > 0) || ($mode == "new")) {
 
 			if ($mode == "edit")
-				$row=mysql_fetch_array($query);
+				$row=sql_fetch_array($query);
 			if ($mode == "new")
 				$row=Array();
 
@@ -1435,8 +1435,8 @@ function send_msg() {
 		$mid="";
 		if ( isset($_POST['replyto']) && ($_POST["replyto"] > 0)) {
 			$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_msg WHERE id='".$_POST["replyto"]."' AND pid='$id';");
-			if (($query) && (mysql_num_rows($query) > 0)) {
-					$row=mysql_fetch_array($query);
+			if (($query) && (sql_num_rows($query) > 0)) {
+					$row=sql_fetch_array($query);
 					$title=$row["msub"];
 					if (substr($title, 0, 3) != "Re:") $title="Re: ".$title;
 					$text="> ".$row["mtxt"];
@@ -1494,12 +1494,12 @@ function read_msg() { 	/*
 		$out->add( '<div class="std_block">');
 
 		$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_msg WHERE id='".$_GET["msgid"]."' AND pid='$id';");
-		if (($query) && (mysql_num_rows($query) > 0)) {
-				$row=mysql_fetch_array($query);
+		if (($query) && (sql_num_rows($query) > 0)) {
+				$row=sql_fetch_array($query);
 				$title=$row["msub"];
 				$text=$row["mtxt"];
 				$user_query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_user WHERE idUser='".$row["mfrom"]."';");
-				$user_data=mysql_fetch_array($user_query);
+				$user_data=sql_fetch_array($user_query);
 				$darr=explode("-",$row["mdate"]);
 				$mdate=$darr[2]."-".$darr[1]."-".$darr[0];
 				$mid=$row["mid"];
@@ -1568,7 +1568,7 @@ function sel_prj($goto) { /*
 	$out->add("<ul>");
 	foreach ($myprj as $key=>$val) {
 		$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj WHERE id='$val';");
-		$row=mysql_fetch_array($query);
+		$row=sql_fetch_array($query);
 		if (is_owner(Docebo::user()->getIdSt(), $val))
 			$out->add("<li><a href=\"index.php?modname=project&amp;op=$goto&amp;id=$val\">".$row["ptitle"]."</li>\n");
 	}
@@ -1655,8 +1655,8 @@ function mod_prj() {
 
 
 		$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj WHERE id='$id';");
-		if (($query) && (mysql_num_rows($query) > 0)) {
-			$row=mysql_fetch_array($query);
+		if (($query) && (sql_num_rows($query) > 0)) {
+			$row=sql_fetch_array($query);
 		}
 
 		$group_arr=getGroupsForProject($lang);
@@ -1762,8 +1762,8 @@ function del_prj() {
 			$qtxt="SELECT ptitle FROM ".$GLOBALS["prefix_lms"]."_prj WHERE id='".$id."'";
 			$q=sql_query($qtxt);
 
-			if (($q) && (mysql_num_rows($q) > 0)) {
-				$row=mysql_fetch_array($q);
+			if (($q) && (sql_num_rows($q) > 0)) {
+				$row=sql_fetch_array($q);
 				$title=$row["ptitle"];
 			}
 
@@ -1805,8 +1805,8 @@ function del_prj_now($id) {
 
 	// -------------------------------------- Cancello i file:
 	$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_files WHERE pid='$id';");
-	if (($query) && (mysql_num_rows($query) > 0)) { // cancello allgeati
-		while($row=mysql_fetch_array($query)) {
+	if (($query) && (sql_num_rows($query) > 0)) { // cancello allgeati
+		while($row=sql_fetch_array($query)) {
 			@sl_unlink(_FPATH_INTERNAL.$row["fname"]);
 		}
 	} // Cancello le righe dal database:
@@ -1901,8 +1901,8 @@ function del_item() {
 			$qtxt="SELECT ".$field." as title FROM ".$table." WHERE id='".$itemid."' AND pid='".$id."'";
 			$q=sql_query($qtxt);
 
-			if (($q) && (mysql_num_rows($q) > 0)) {
-				$row=mysql_fetch_array($q);
+			if (($q) && (sql_num_rows($q) > 0)) {
+				$row=sql_fetch_array($q);
 				$title=$row["title"];
 			}
 
@@ -1949,7 +1949,7 @@ function del_item_now($id, $itemid, $type) {
 		} break;
 		case "file": {
 			$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj_files WHERE id='".$itemid."' AND pid='".$id."'");
-			$row=@mysql_fetch_array($query);
+			$row=@sql_fetch_array($query);
 			@sl_unlink(_FPATH_INTERNAL.$row["fname"]);
 			$query=sql_query("DELETE FROM ".$GLOBALS["prefix_lms"]."_prj_files WHERE id='".$itemid."' and pid='".$id."' LIMIT 1;");
 		} break;
@@ -1996,8 +1996,8 @@ function read_item() {
 		$out->add("<div class=\"descr_prj\">\n");
 
 		$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"].$table." WHERE pid='$id' AND id='".(int)$_GET["itemid"]."' LIMIT 1;");
-		if (($query) && (mysql_num_rows($query) > 0)) {
-			$row=mysql_fetch_array($query);
+		if (($query) && (sql_num_rows($query) > 0)) {
+			$row=sql_fetch_array($query);
 			$out->add(nl2br($row[$field]));
 		}
 
@@ -2054,7 +2054,7 @@ function edit_progtot() {
 
 		// progresso totale: ___%
 		$query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj WHERE id='$id' LIMIT 1;");
-		$row=mysql_fetch_array($query);
+		$row=sql_fetch_array($query);
 		$out->add($lang->def("_PRJPROGTOT").":\n");
 		$out->add("<input type=\"text\" size=\"3\" id=\"progtot\" name=\"progtot\" value=\"".(int)$row["pprog"]."\" />%<br /><br />\n");
 

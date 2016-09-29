@@ -29,7 +29,7 @@
 		'fields'		=> array('id_user', 'userid', 'firstname', 'lastname', 'del'),
 		'stdSelection' => false,
 		'rel_actions' => $rel_action,
-		'delDisplayField' => 'groupid'
+		'delDisplayField' => 'userid'
 	));
 ?>
 

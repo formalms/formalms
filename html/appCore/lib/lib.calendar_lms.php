@@ -58,10 +58,10 @@ class DoceboCal_lms extends DoceboCal_core{
 		$query="SELECT a.* FROM ".$GLOBALS['prefix_fw']."_calendar AS a,".$GLOBALS['prefix_lms']."_calendar AS b WHERE a.id=b.id AND (a.private<>'on' OR (a.private='on' AND a._owner='".Docebo::user()->getIdSt()."')) AND b.idCourse='".$_SESSION['idCourse']."' AND ".$where." ORDER BY start_date";
 
 		$result=sql_query($query);
-		//return mysql_num_rows($result);
+		//return sql_num_rows($result);
 		$calevents = array();
 		$i=0;
-		while ($row=mysql_fetch_array($result)) {
+		while ($row=sql_fetch_array($result)) {
 		
 			/* you should call the constructor of the proper type of event class*/
 			$calevents[$i]=new DoceboCalEvent_lms();

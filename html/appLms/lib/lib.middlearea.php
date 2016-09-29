@@ -75,7 +75,7 @@ class Man_MiddleArea {
 		$query = "SELECT obj_index 
 		FROM ".$this->_tableMA()." 
 		WHERE obj_index = '".$obj_index."' ";
-		$exists = mysql_num_rows($this->_query($query));
+		$exists = sql_num_rows($this->_query($query));
 		
 		if(!$exists) {
 			

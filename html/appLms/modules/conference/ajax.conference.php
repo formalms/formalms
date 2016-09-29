@@ -40,15 +40,6 @@ if ($GLOBALS["where_files_relative"] != false) {
 
 ob_start();
 
-// connect to database -------------------------------------------------------------------
-
-$GLOBALS['dbConn'] = mysql_connect($GLOBALS['dbhost'], $GLOBALS['dbuname'], $GLOBALS['dbpass']);
-if( !$GLOBALS['dbConn'] )
-	die( "Can't connect to db. Check configurations" );
-
-if( !mysql_select_db($dbname, $GLOBALS['dbConn']) )
-	die( "Database not found. Check configurations" );
-
 // load lms setting ------------------------------------------------------------------
 
 session_name("docebo_session");
@@ -93,7 +84,7 @@ switch ($op) {
 
 // close database connection
 
-mysql_close($GLOBALS['dbConn']);
+sql_close($GLOBALS['dbConn']);
 
 ob_clean();
 print($GLOBALS['operation_result']);

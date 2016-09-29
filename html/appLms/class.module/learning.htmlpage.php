@@ -124,8 +124,8 @@ class Learning_Htmlpage extends Learning_Object {
 		//insert new item
 		$insertQuery = "
 		INSERT INTO ".$GLOBALS['prefix_lms']."_htmlpage 
-		SET title = '".mysql_escape_string($title)."',
-			textof = '".mysql_escape_string($textof)."',
+		SET title = '".sql_escape_string($title)."',
+			textof = '".sql_escape_string($textof)."',
 			author = '".$author."'";
 		
 		if(!sql_query($insertQuery)) {
@@ -158,10 +158,10 @@ class Learning_Htmlpage extends Learning_Object {
 		// recuper gli allegati 
 		$path = '/appLms/htmlpages/';
 		$query = "SELECT * FROM ".$GLOBALS['prefix_lms']."_htmlpage_attachment WHERE idpage = ".$id;
-		$res = mysql_query($query);
+		$res = sql_query($query);
 		$attachments = array();
 		if ($res) {
-			while ($row = mysql_fetch_assoc($res)) {
+			while ($row = sql_fetch_assoc($res)) {
 				$attachments[] = array(
 					'id' => $row['id'],
 					'title' => $row['title'],

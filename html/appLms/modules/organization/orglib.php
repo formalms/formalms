@@ -255,8 +255,8 @@ class OrgDirDb extends RepoDirDb {
 				." WHERE (". $this->fields['idParent'] ." = '". (int)$idFolder ."')"
 				.$this->_getFilter();
 		$rs = sql_query( $query ) 
-				or die( "Error [$query] ". mysql_error() );
-		if( mysql_num_rows( $rs ) == 1 ) {
+				or die( "Error [$query] ". sql_error() );
+		if( sql_num_rows( $rs ) == 1 ) {
 			list( $result ) = sql_fetch_row( $rs );
 			return $result;
 		} else {
@@ -652,7 +652,7 @@ class OrgDirDb extends RepoDirDb {
 				." WHERE milestone = '".$milestone."'"
 				."   AND  idCourse = '".(int)$idCourse."'";
 		$rs = sql_query($query);
-		if( mysql_num_rows($rs) == 1) {
+		if( sql_num_rows($rs) == 1) {
 			list($idFolder) = sql_fetch_row($rs);
 			$folder = $this->getFolderById( $idFolder );
 			return $folder;
@@ -667,7 +667,7 @@ class OrgDirDb extends RepoDirDb {
 					." WHERE FIND_IN_SET( '".$folder->id."', prerequisites ) > 0";
 			$rs = sql_query($query);
 			if ($rs)
-				$num_rows = mysql_num_rows($rs);
+				$num_rows = sql_num_rows($rs);
 			else
 				$num_rows = 0;
 			if ($num_rows)
@@ -777,7 +777,7 @@ class OrgDirDb extends RepoDirDb {
 				." '".(int)$idOrgAccess."','".$kind."','".(int)$id."')";
 		$rs = sql_query( $query );
 		if( $rs === FALSE ) { 
-			if( mysql_errno() == 1062 ) {
+			if( sql_errno() == 1062 ) {
 				// duplicate entry. This is not a error that should block
 				return;
 			} else {
@@ -910,7 +910,7 @@ class OrgDirDb extends RepoDirDb {
 				." WHERE idOrgAccess = '".(int)$idOrgAccess."'";
 		$rs = sql_query( $query );
 		$result = array();
-		while( list( $id ) = mysql_fetch_row( $rs ) )
+		while( list( $id ) = sql_fetch_row( $rs ) )
 			$result[] = $id;
 		return $result;
 	}

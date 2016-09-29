@@ -119,7 +119,7 @@ Class DashboardAdmController extends AdmController {
 		$this->render('diagnostic_dialog', array(
 			'title' => Lang::t('_SERVERINFO', 'configuration'),
 			'php_conf' => ini_get_all(),
-			'sql_server_info' => mysql_get_server_info(),
+			'sql_server_info' => sql_get_server_info(),
 			'sql_additional_info' => $this->model->getSqlInfo(),
 			'json' => $this->json
 		));

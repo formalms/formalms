@@ -85,7 +85,7 @@ class Track_Test extends Track_Object {
 		WHERE idUser = '".$id_user."' AND idTest = '".$id_test."'";
 		$re = sql_query($query);
 		
-		if(!mysql_num_rows($re)) return false;
+		if(!sql_num_rows($re)) return false;
 		list($id_track) = sql_fetch_row($re);
 		return $id_track;
 	}

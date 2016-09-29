@@ -46,9 +46,9 @@ Class FieldMap {
 				return FALSE;
 		}
 		if( $this->dbconn === NULL )
-			return mysql_insert_id();
+			return sql_insert_id();
 		else
-			return mysql_insert_id($this->dbconn);
+			return sql_insert_id($this->dbconn);
 	}
 
 

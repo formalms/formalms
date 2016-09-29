@@ -91,7 +91,7 @@ class BreakPage_QuestionPoll extends QuestionPoll {
 		( 	'".(int)$new_id_poll."', 
 			'".(int)$sel_cat."', 
 			'".$this->getQuestionType()."', 
-			'".mysql_escape_string($quest)."',
+			'".sql_escape_string($quest)."',
 			'".(int)$sequence."',
 			'".(int)$page."' ) ";
 		if(!sql_query($ins_query)) return false;

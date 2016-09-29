@@ -136,7 +136,7 @@ if(Docebo::user()->isAnonymous()) {
 			$re_edition = sql_query($select_edition.$from_edition.$where_edition.$order_edition);
 			$editions = array();
 			if($re_edition)
-			while($edition_elem = mysql_fetch_assoc($re_edition)) {
+			while($edition_elem = sql_fetch_assoc($re_edition)) {
 
 				$edition_elem['waiting'] = 0;
 				$edition_elem['user_count'] = 0;
@@ -151,7 +151,7 @@ if(Docebo::user()->isAnonymous()) {
 			$group_ed_count 	= "GROUP BY edition_id ";
 			$re_ed_count = sql_query($select_ed_count.$from_ed_count.$where_ed_count.$group_ed_count );
 			if($re_ed_count)
-			while($ed_count_elem = mysql_fetch_assoc($re_ed_count)) {
+			while($ed_count_elem = sql_fetch_assoc($re_ed_count)) {
 
 				$editions[$ed_count_elem["idCourse"]][$ed_count_elem["edition_id"]]['waiting'] = $ed_count_elem['waiting'];
 				$editions[$ed_count_elem["idCourse"]][$ed_count_elem["edition_id"]]['user_count'] = $ed_count_elem['user_count'];
@@ -546,7 +546,7 @@ if(Docebo::user()->isAnonymous()) {
 			$order_edition 	= " ORDER BY date_begin ";
 			$re_edition = sql_query($select_edition.$from_edition.$where_edition.$order_edition);
 
-			while($ed_info = mysql_fetch_assoc($re_edition)) {
+			while($ed_info = sql_fetch_assoc($re_edition)) {
 
 				if($ed_info['img_material'] != '') {
 

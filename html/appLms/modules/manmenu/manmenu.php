@@ -34,7 +34,7 @@ function manmenu() {
 	WHERE idCourse = '".(int)$_SESSION['idCourse']."'
 	ORDER BY sequence";
 	$re_voice = sql_query($query_voice);
-	$tot_voice = mysql_num_rows($re_voice);
+	$tot_voice = sql_num_rows($re_voice);
 	
 	$tb = new Table(0, $lang->def('_TB_MANMENU_CAPTION'), $lang->def('_TB_MANMENU_SUMMARY'));
 	$content_h 	= array(
@@ -398,7 +398,7 @@ function manmodule() {
 	WHERE module.idModule = menu.idModule AND menu.idMain = '".(int)$id_main."' 
 	ORDER BY menu.sequence";
 	$re_module = sql_query($query_module);
-	$tot_module = mysql_num_rows($re_module);
+	$tot_module = sql_num_rows($re_module);
 	
 	$used_module = '';
 	$query_used_module = "
@@ -519,7 +519,7 @@ function manmodule() {
 			.'title="'.$lang->def('_FIX_SEQUENCE').'">'
 			.$lang->def('_FIX_SEQUENCE').'</a> ]'
 		.'<br /><br />'
-		.( mysql_num_rows($re_free_module) != false ? $tb_free->getTable() : '' ) 
+		.( sql_num_rows($re_free_module) != false ? $tb_free->getTable() : '' )
 		.'</div>');
 }
 

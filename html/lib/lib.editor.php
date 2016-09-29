@@ -170,7 +170,7 @@ function getHTMLEditorList() {
 			$ht_array[$hteditor_db] = strtolower(substr($hteditorname_db, 1));
 		}
 	}
-	mysql_free_result($reHt);
+	sql_free_result($reHt);
 	return $ht_array;
 }
 
