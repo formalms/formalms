@@ -85,7 +85,7 @@ function inspage() {
 			$n++;
 			$file = save_file($_FILE);
 			if($file) {
-				$insert_query = "INSERT INTO ".$GLOBALS['prefix_lms']."_htmlpage_attachment SET file = '".$file."', title = '".trim($_FILE['name'])."', idpage = ".$idPage;
+				$insert_query = "INSERT INTO ".$GLOBALS['prefix_lms']."_htmlpage_attachment SET file = '".str_replace("'", "\'", $file)."', title = '".str_replace("'", "\'", trim($_FILE['name']))."', idpage = ".$idPage;
 				sql_query($insert_query);
 			}
 		}		
