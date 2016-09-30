@@ -155,6 +155,12 @@ class mysqli_DbConn extends DbConn {
 		return mysqli_fetch_array($resource);
 	}
 
+	public function fetch_obj($resource) {
+
+		if(!$resource) return false;
+		return mysqli_fetch_object($resource);
+	}
+
 	public function num_rows($resource) {
 
 		if(!$resource) return false;
