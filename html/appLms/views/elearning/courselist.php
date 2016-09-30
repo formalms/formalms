@@ -1,6 +1,4 @@
 <link rel="shortcut icon" href="../favicon.ico"> 
-        <link rel="stylesheet" type="text/css" href="css/demo.css" />
-        <link rel="stylesheet" type="text/css" href="css/style2.css" />
 		<script type="text/javascript" src="js/modernizr.custom.04022.js"></script>
 
         <!--
