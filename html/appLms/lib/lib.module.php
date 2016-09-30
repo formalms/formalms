@@ -46,7 +46,7 @@ function createLO( $objectType, $id_resource = false, $environment = false ) {
 	if (file_exists(_base_ . '/customscripts/'._folder_lms_.'/class.module/'.$file_name ) && Get::cfg('enable_customscripts', false) == true ){
 		require_once(_base_ . '/customscripts/'._folder_lms_.'/class.module/'.$file_name );
 	} else {
-		require_once(Docebo::inc(_folder_lms_.'/class.module/'.$file_name));
+		require_once(Docebo::inc(_lms_.'/class.module/'.$file_name));
 	}
 	$lo = new $class_name($id_resource, $environment);
 	return $lo;
