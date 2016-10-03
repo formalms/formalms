@@ -166,7 +166,7 @@ class DoceboACLManager
         if ($this->dbconn === NULL)
             $rs = sql_query($query);
         else
-            $rs = sql_query($query);
+            $rs = sql_query($query, $this->dbconn);
         return $rs;
     }
 
