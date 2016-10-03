@@ -198,7 +198,7 @@ function modtestgui($object_test)
 	WHERE idTest = '" . $object_test->getId() . "'
 	ORDER BY sequence");
 
-    $num_quest = mysql_num_rows($re_quest);
+	$num_quest = sql_num_rows($re_quest);
     list($num_page) = sql_fetch_row(sql_query("
 	SELECT MAX(page) 
 	FROM " . $GLOBALS['prefix_lms'] . "_testquest 
@@ -597,9 +597,9 @@ function &istanceQuest($type_of_quest, $id)
 
     $re_quest = sql_query("
 	SELECT type_file, type_class 
-	FROM " . $GLOBALS['prefix_lms'] . "_quest_type 
-	WHERE type_quest = '" . $type_of_quest . "'");
-    if (!mysql_num_rows($re_quest)) return;
+	FROM ".$GLOBALS['prefix_lms']."_quest_type 
+	WHERE type_quest = '".$type_of_quest."'");
+	if( !sql_num_rows($re_quest) ) return;
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
     require_once(Docebo::inc(_folder_lms_ . '/modules/question/' . $type_file));
@@ -726,8 +726,8 @@ function delquest()
 
         $max_score = _getTestMaxScore($idTest);
         if ($max_score !== false) {
-            $query = "UPDATE " . $GLOBALS['prefix_lms'] . "_test SET score_max=" . (int)$max_score . " WHERE idTest=" . (int)$idTest;
-            $res = mysql_query($query);
+			$query = "UPDATE ".$GLOBALS['prefix_lms']."_test SET score_max=".(int)$max_score." WHERE idTest=".(int)$idTest;
+			$res = sql_query($query);
         }
 
         Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded);
@@ -818,10 +818,10 @@ function defmodality()
 
     $has_categories = false;
     $categories = array();
-    $query = "SELECT tq.idCategory, qc.name, COUNT(tq.idcategory) FROM " . $GLOBALS['prefix_lms'] . "_testquest as tq LEFT JOIN " . $GLOBALS['prefix_lms'] . "_quest_category as qc "
-        . " ON (tq.idCategory = qc.idCategory) WHERE idTest='" . (int)$idTest . "' GROUP BY tq.idCategory";
-    $res = mysql_query($query);
-    if (mysql_num_rows($res) > 0) {
+	$query = "SELECT tq.idCategory, qc.name, COUNT(tq.idcategory) FROM ".$GLOBALS['prefix_lms']."_testquest as tq LEFT JOIN ".$GLOBALS['prefix_lms']."_quest_category as qc "
+		." ON (tq.idCategory = qc.idCategory) WHERE idTest='".(int)$idTest."' GROUP BY tq.idCategory";
+	$res = sql_query($query);
+	if (sql_num_rows($res)>0) {
         $has_categories = true;
         while (list($id_cat, $name_cat, $num_quest) = sql_fetch_row($res)) {
             if ($id_cat == 0) $name_cat = $lang->def('_NO_CATEGORY');
@@ -2009,8 +2009,8 @@ function _getTestMaxScore($idTest)
 
 
     $max_score = 0;
-    while (list($idQuest, $type_quest, $type_file, $type_class, $title_quest, $difficult) = mysql_fetch_row($re_quest)) {
-        require_once(Docebo::inc(_folder_lms_ . '/modules/question/' . $type_file));
+	while(list($idQuest, $type_quest, $type_file, $type_class, $title_quest, $difficult) = sql_fetch_row($re_quest)) {
+		require_once(Docebo::inc(_folder_lms_.'/modules/question/'.$type_file));
         $quest_obj = eval("return new $type_class( $idQuest );");
         $max_score += $quest_obj->getMaxScore();
     }
@@ -2020,11 +2020,11 @@ function _getTestMaxScore($idTest)
 
 function _adjustAllTestMaxScore()
 {
-    $query = "SELECT * FROM " . $GLOBALS['prefix_lms'] . "_test";
-    $res = mysql_query($query);
+	$query = "SELECT * FROM ".$GLOBALS['prefix_lms']."_test";
+	$res = sql_query($query);
     if (!$res) return;
 
-    while ($obj = mysql_fetch_object($res)) {
+	while ($obj = sql_fetch_object($res)) {
         if ($obj->idTest) {
             $max_score = _getTestMaxScore($obj->idTest);
             if ($max_score !== false) {
