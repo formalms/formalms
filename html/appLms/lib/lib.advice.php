@@ -23,7 +23,7 @@ class Man_Advice {
 		FROM ".$GLOBALS['prefix_lms']."_advice 
 		WHERE author <> '".$id_user."' AND idCourse IN ( ".implode(',', $courses)." ) ";
 		$re_advice = sql_query($query_unreaded);
-		if(!mysql_num_rows($re_advice)) return array();
+		if(!sql_num_rows($re_advice)) return array();
 		
 		while(list($id_c, $posted) = sql_fetch_row($re_advice)) {
 			

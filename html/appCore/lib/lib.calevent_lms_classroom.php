@@ -172,12 +172,12 @@ class DoceboCalEvent_lms_classroom extends DoceboCalEvent_core {
 				$query.=" WHERE id='".$this->id."'";
 			
 			$q=sql_query($query);
-			if (mysql_error()) die(mysql_error()."<br />".$query);
+			if (sql_error()) die(sql_error()."<br />".$query);
 
 
 			if ($q) {
 				if ($action_add) {
-					$this->id = mysql_insert_id();
+					$this->id = sql_insert_id();
 				}
 
 

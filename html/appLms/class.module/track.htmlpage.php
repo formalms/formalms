@@ -28,7 +28,7 @@ class Track_Htmlpage extends Track_Object {
 
 		$rs = sql_query( $query )
 			or errorCommunication( 'getIdTrack:: '.$query );
-		if( mysql_num_rows( $rs )  > 0 ) {
+		if( sql_num_rows( $rs )  > 0 ) {
 			list( $idTrack ) = sql_fetch_row( $rs );
 			return array( TRUE, $idTrack );
 		} else if( $createOnFail ) {
@@ -37,7 +37,7 @@ class Track_Htmlpage extends Track_Object {
 					."'".(int)$idResource."','".(int)$idReference."','".(int)$idUser."')";
 			sql_query( $query )
 				or errorCommunication( 'getIdTrack' );
-			$idTrack = mysql_insert_id();
+			$idTrack = sql_insert_id();
 			return array( FALSE, $idTrack );
 		}
 		return FALSE;

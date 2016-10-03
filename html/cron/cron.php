@@ -33,14 +33,6 @@ require_once(dirname(__FILE__).'/'.$path_to_root.'/appLms/config.php');
 
 ob_start();
 
-// connect to database -------------------------------------------------------------------
-
-$GLOBALS['dbConn'] = mysql_connect($GLOBALS['dbhost'], $GLOBALS['dbuname'], $GLOBALS['dbpass']);
-if( !$GLOBALS['dbConn'] )
-	die( "Can't connect to db. Check configurations" );
-
-if( !mysql_select_db($dbname, $GLOBALS['dbConn']) )
-	die( "Database not found. Check configurations" );
 
 @sql_query("SET NAMES '".$GLOBALS['db_conn_names']."'", $GLOBALS['dbConn']);
 @sql_query("SET CHARACTER SET '".$GLOBALS['db_conn_char_set']."'", $GLOBALS['dbConn']);
@@ -81,7 +73,7 @@ function aout($string)
 
 // close database connection
 
-mysql_close($GLOBALS['dbConn']);
+sql_close($GLOBALS['dbConn']);
 
 ob_clean();
 echo $GLOBALS['operation_result'];

@@ -105,7 +105,7 @@ class SOAPLMS {
 		$itemtrack = new Scorm_ItemsTrack($dbconn, $GLOBALS['prefix_lms']);
 		$rs = $itemtrack->getItemTrack( $idUser, $idReference, $idscorm_item );
 		
-		$arrItemTrackData = mysql_fetch_assoc( $rs );
+		$arrItemTrackData = sql_fetch_assoc( $rs );
 				
 		$trackobj = new Scorm_Tracking( NULL, NULL, $arrItemTrackData['idscorm_tracking'], NULL, $dbconn, FALSE, FALSE );
 		if( $trackobj->getErrorCode() != 0 ) {
@@ -158,7 +158,7 @@ class SOAPLMS {
 		$itemtrack = new Scorm_ItemsTrack($dbconn, $GLOBALS['prefix_lms']);
 		$rs = $itemtrack->getItemTrack( $idUser, $idReference, $idscorm_item );
 		
-		$arrItemTrackData = mysql_fetch_assoc( $rs );
+		$arrItemTrackData = sql_fetch_assoc( $rs );
 		
 		$trackobj = new Scorm_Tracking( NULL, NULL, $arrItemTrackData['idscorm_tracking'], NULL, $dbconn, FALSE, FALSE );
 		if( $trackobj->getErrorCode() != 0 ) {
@@ -238,7 +238,7 @@ class SOAPLMS {
 		$itemtrack = new Scorm_ItemsTrack($dbconn, $GLOBALS['prefix_lms']);
 		$rs = $itemtrack->getItemTrack( $idUser, $idReference, $idscorm_item );
 		
-		$arrItemTrackData = mysql_fetch_assoc( $rs );
+		$arrItemTrackData = sql_fetch_assoc( $rs );
 		
 		// get tracking
 		soap__dbgOut("before: Scorm_Tracking(NULL, NULL, {$arrItemTrackData['idscorm_tracking']}, NULL, $dbconn, FALSE, FALSE);");
@@ -279,7 +279,7 @@ class SOAPLMS {
 		$itemtrack = new Scorm_ItemsTrack($dbconn, $GLOBALS['prefix_lms']);
 		$rs = $itemtrack->getItemTrack( $idUser, $idReference, $idscorm_item );
 		
-		$arrItemTrackData = mysql_fetch_assoc( $rs );
+		$arrItemTrackData = sql_fetch_assoc( $rs );
 
 		// get tracking
 		$trackobj = new Scorm_Tracking(NULL, NULL, $arrItemTrackData['idscorm_tracking'], NULL, $dbconn, FALSE, FALSE);
@@ -311,7 +311,7 @@ class SOAPLMS {
 		$itemtrack = new Scorm_ItemsTrack($dbconn, $GLOBALS['prefix_lms']);
 		$rs = $itemtrack->getItemTrack( $idUser, $idReference, $idscorm_item );
 		
-		$arrItemTrackData = mysql_fetch_assoc( $rs );
+		$arrItemTrackData = sql_fetch_assoc( $rs );
 
 		// get tracking
 		soap__dbgOut("before: Scorm_Tracking(NULL, NULL, {$arrItemTrackData['idscorm_tracking']}, NULL, $dbconn, FALSE, FALSE);");
@@ -503,8 +503,8 @@ if( (isset($_GET['op']) && $_GET['op'] == 'Finish') ) {
 			." WHERE ".$GLOBALS['prefix_lms']."_scorm_resources.idscorm_package = ".$GLOBALS['prefix_lms']."_scorm_package.idscorm_package"
 			."   AND idscorm_resource = '".$_GET['idscorm_resource']."'";
 	$result = sql_query($query)
-				or die( "Error on load sco: ". mysql_error() . "[ $query ]");
-	list($path, $href, $scormtype, $scormVersion) = mysql_fetch_array($result);
+				or die( "Error on load sco: ". sql_error() . "[ $query ]");
+	list($path, $href, $scormtype, $scormVersion) = sql_fetch_array($result);
 	
 	require_once(dirname(__FILE__) . '/scorm-'.$scormVersion.'.php');
 	
@@ -512,7 +512,7 @@ if( (isset($_GET['op']) && $_GET['op'] == 'Finish') ) {
 	$itemtrack = new Scorm_ItemsTrack($dbconn, $GLOBALS['prefix_lms']);
 	$rs = $itemtrack->getItemTrack( $_GET['idUser'], $_GET['idReference'], $_GET['idscorm_item']);
 	
-	$arrItemTrackData = mysql_fetch_assoc( $rs );
+	$arrItemTrackData = sql_fetch_assoc( $rs );
 	
 	if( $arrItemTrackData['idscorm_tracking'] === NULL ) {
 		// The record don't exist => create a new one

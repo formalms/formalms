@@ -569,7 +569,7 @@ class Field_Dropdown extends Field {
 		FROM ".$this->_getObjEntryTable()."
 		WHERE id_obj = '".$id_obj."' AND
 			id_field = '".(int)$this->id_field."'");
-		$some_entry = mysql_num_rows($re_entry);
+		$some_entry = sql_num_rows($re_entry);
 		if($some_entry) {
 			if(!sql_query("
 			UPDATE ".$this->_getObjEntryTable()."
@@ -612,7 +612,7 @@ class Field_Dropdown extends Field {
 		FROM ".$this->_getUserEntryTable()."
 		WHERE id_obj = '".$id_obj."' 
                 AND id_field = '".(int)$this->id_field."'");
-		$some_entry = mysql_num_rows($re_entry);
+		$some_entry = sql_num_rows($re_entry);
 		if($some_entry && $no_overwrite) return true;
 
 		$id_value = 0;

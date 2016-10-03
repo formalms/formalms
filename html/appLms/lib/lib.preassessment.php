@@ -58,9 +58,9 @@ class AssessmentList {
 
 	function fetch_row($re) 		{ return sql_fetch_row($re); }
 
-	function fetch_array($re) 		{ return mysql_fetch_array($re); }
+	function fetch_array($re) 		{ return sql_fetch_array($re); }
 
-	function num_rows($re) 			{ return mysql_num_rows($re); }
+	function num_rows($re) 			{ return sql_num_rows($re); }
 
 	function _query($query) 		{ $re = sql_query($query); return $re; }
 
@@ -376,9 +376,9 @@ class AssessmentRule {
 
 	function fetch_row($re) 		{ if($re === false) return false; return sql_fetch_row($re); }
 
-	function fetch_array($re) 		{ if($re === false) return false; return mysql_fetch_array($re); }
+	function fetch_array($re) 		{ if($re === false) return false; return sql_fetch_array($re); }
 
-	function num_rows($re) 			{ if($re === false) return 0; return mysql_num_rows($re); }
+	function num_rows($re) 			{ if($re === false) return 0; return sql_num_rows($re); }
 
 	function _query($query) 		{ $re = sql_query($query); return $re; }
 
@@ -494,7 +494,7 @@ class AssessmentRule {
 				'',
 				'0' )";
 			if(!$re = $this->_query($query)) return false;
-			return mysql_insert_id();
+			return sql_insert_id();
 		} else {
 
 			$query = "

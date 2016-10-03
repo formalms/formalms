@@ -447,7 +447,7 @@ class Field_Cf extends Field {
 			id_common = '".(int)$this->id_common."' AND
 			id_common_son = '0'
 			AND id_user != '".$id_user."'");
-		if(mysql_num_rows($re_entry)) return $this->returnError(Lang::t('_CF_DUPLICATED', 'field'));
+		if(sql_num_rows($re_entry)) return $this->returnError(Lang::t('_CF_DUPLICATED', 'field'));
 
 		return true;
 	}
@@ -474,7 +474,7 @@ class Field_Cf extends Field {
 		WHERE id_user = '".$id_user."' AND
 			id_common = '".(int)$this->id_common."' AND
 			id_common_son = '0'");
-		$some_entry = mysql_num_rows($re_entry);
+		$some_entry = sql_num_rows($re_entry);
 		if($some_entry) {
 			if($no_overwrite) return true;
 			if(!sql_query("
@@ -521,7 +521,7 @@ class Field_Cf extends Field {
 		WHERE id_user = '".$id_user."' AND
 			id_common = '".(int)$this->id_common."' AND
 			id_common_son = '0'");
-		$some_entry = mysql_num_rows($re_entry);
+		$some_entry = sql_num_rows($re_entry);
 		if($some_entry) {
 			if($no_overwrite) return true;
 			if(!sql_query("

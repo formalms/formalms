@@ -68,6 +68,7 @@ function insitem() {
 		}
 		$path = '/appLms/'.Get::sett('pathlesson');
 		$savefile = ( isset($_SESSION['idCourse']) ? $_SESSION['idCourse'] : '0' ).'_'.mt_rand(0,100).'_'.time().'_'.$_FILES['attach']['name'];
+		$savefile = str_replace("'", "\'", $savefile);//Patch file con apostrofo
 		if(!file_exists( $GLOBALS['where_files_relative'].$path.$savefile )) {
 			sl_open_fileoperations();
 			if(!sl_upload($_FILES['attach']['tmp_name'], $path.$savefile)) {

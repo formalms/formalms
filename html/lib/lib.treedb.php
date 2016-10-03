@@ -200,9 +200,9 @@ class TreeDb {
 
 	function _printSQLError( $funcname ) {
 		if( $this->dbconn === NULL )
-			die( "Error on $funcname " . mysql_error() );
+			die( "Error on $funcname " . sql_error() );
 		else
-			die( "Error on $funcname " . mysql_error($this->dbconn) );
+			die( "Error on $funcname " . sql_error($this->dbconn) );
 	}
 
 	function getChildrensIdById( $idFolder ) {
@@ -214,9 +214,9 @@ class TreeDb {
 				.$this->_getFilter($this->table)
 				.") ORDER BY ". $this->_getOrderBy($this->table);
 		$rs = $this->_executeQuery( $query )
-				or die( mysql_error() . " [ $query ]");
+				or die( sql_error() . " [ $query ]");
 				// or $this->_printSQLError( 'getChildrensById' );
-		if( mysql_num_rows( $rs ) === 0 ) {
+		if( sql_num_rows( $rs ) === 0 ) {
 			return FALSE;
 		} else {
 			$result = array();
@@ -231,14 +231,14 @@ class TreeDb {
 		$query = "SELECT ".$this->_getDISTINCT(). $fields['id']
 				." FROM ". $this->table.$this->_getOtherTables()
 				.$this->_outJoinFilter($this->table)
-				." WHERE ((path LIKE '".(($folder->id == 0)?"":mysql_escape_string($folder->path))."/%')"
+				." WHERE ((path LIKE '".(($folder->id == 0)?"":sql_escape_string($folder->path))."/%')"
 				."   AND (".$fields['id']." != '".$folder->id."') "
 				.$this->_getFilter($this->table)
 				.") ORDER BY ". $this->_getOrderBy($this->table);
 		$rs = $this->_executeQuery( $query )
-				or die( mysql_error() . " [ $query ]");
+				or die( sql_error() . " [ $query ]");
 				// or $this->_printSQLError( 'getChildrensById' );
-		if( mysql_num_rows( $rs ) === 0 ) {
+		if( sql_num_rows( $rs ) === 0 ) {
 			return FALSE;
 		} else {
 			$result = array();
@@ -314,7 +314,7 @@ class TreeDb {
 				. $this->fields['path']
 				." = CONCAT('". $newFolder->path ."', SUBSTRING( path, ". $len ." )),"
 				. $this->fields['lev'] ." = ( ".$this->fields['lev']." + (".$levDiff.")) "
-				." WHERE ((path LIKE '".mysql_escape_string($prevFolder->path)."/%')"
+				." WHERE ((path LIKE '".sql_escape_string($prevFolder->path)."/%')"
 				."   AND (".$this->fields['id']." != '".$prevFolder->id."')) "
 				.$this->_getFilter();
 		return $this->_executeQuery( $query );
@@ -371,7 +371,7 @@ class TreeDb {
 					.$this->_getFilter($this->table);
 			$rs = $this->_executeQuery( $query )
 					or $this->_printSQLError( 'getFolderById' );
-			if( mysql_num_rows($rs) == 0 ) {
+			if( sql_num_rows($rs) == 0 ) {
 				$false_var = NULL;
 				return $false_var;
 			}
@@ -390,11 +390,11 @@ class TreeDb {
 		$query = "SELECT ".$this->_getDISTINCT(). $this->_listFields($this->table)
 				." FROM ". $this->table.$this->_getOtherTables()
 				.$this->_outJoinFilter($this->table)
-				." WHERE (". $fields['path']. "='".mysql_escape_string($path)."')"
+				." WHERE (". $fields['path']. "='".sql_escape_string($path)."')"
 				.$this->_getFilter($this->table);
 		$rs = $this->_executeQuery( $query )
 				or $this->_printSQLError( 'getFolderByPath: '. $query );
-		if( mysql_num_rows($rs) == 0 ) {
+		if( sql_num_rows($rs) == 0 ) {
 			$false_var = NULL;
 			return $false_var;
 		}
@@ -446,7 +446,7 @@ class TreeDb {
 	 **/
 	function addFolderById( $idParent, $folderName ) {
 		$parent = $this->getFolderById( $idParent );
-		$path = mysql_escape_string($parent->path). "/" .$folderName;
+		$path = sql_escape_string($parent->path). "/" .$folderName;
 		$level = $parent->level + 1;
 		return $this->_addFolder( $idParent, $path, $level );
 	}
@@ -476,7 +476,7 @@ class TreeDb {
 		$newFolder = $parentFolder;
 		for( $index = $parentFolder->level+1; $index < count($pathTokens); $index++ ) {
 			$newFolder = $this->_addFolder( $newFolder->id,
-											mysql_escape_string($newFolder->path) . $pathTokens[$index],
+											sql_escape_string($newFolder->path) . $pathTokens[$index],
 											$newFolder->level +1);
 		}
 
@@ -591,11 +591,11 @@ class FoldersCollection {
 	}
 
 	function count() {
-		return mysql_num_rows( $this->rs );
+		return sql_num_rows( $this->rs );
 	}
 
 	function getFirst() {
-		if( !mysql_data_seek ( $this->rs, 0 ) )
+		if( !sql_data_seek ( $this->rs, 0 ) )
 			return FALSE;
 
 		return $this->getNext();

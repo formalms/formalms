@@ -148,7 +148,7 @@ function event_user_view($op) {
 								."   AND idst = '".Docebo::user()->getIdSt()."'");
 				
 				$channels = isset($arr_channel[$idEventMgr])?(implode(',',$arr_channel[$idEventMgr])):'';
-				if( mysql_num_rows( $rs_test ) == 1 )
+				if( sql_num_rows( $rs_test ) == 1 )
 					$query = "UPDATE ".$GLOBALS['prefix_fw']."_event_user "
 							." SET channel='".$channels."'"
 							." WHERE idEventMgr = '".(int)$idEventMgr."'" 
@@ -158,7 +158,7 @@ function event_user_view($op) {
 							." (idEventMgr,idst,channel) VALUES"
 							." ('".(int)$idEventMgr."','".Docebo::user()->getIdSt()."','".$channels."' )";
 				$result = sql_query( $query );
-				mysql_free_result($rs_test);
+				sql_free_result($rs_test);
 				if( $result === FALSE )
 					break;
 			}
@@ -227,7 +227,7 @@ function event_user_view($op) {
 						." WHERE idEventMgr='".$idEventMgr."'"
 						."   AND idst='".Docebo::user()->getIdSt()."'";
 				$rs_user = sql_query( $query );
-				if( mysql_num_rows($rs_user) == 1 ) {
+				if( sql_num_rows($rs_user) == 1 ) {
 					list( $user_channel ) = sql_fetch_row( $rs_user );
 					$arr_user_channel = explode( ',', $user_channel );
 					$cont[] = '<input type="checkbox" name="channel['.$idEventMgr.'][email]" value="email"'
@@ -248,7 +248,7 @@ function event_user_view($op) {
 								.($channel_sms?'':' disabled="disabled"')
 								.' />';
 				}
-				mysql_free_result($rs_user);
+				sql_free_result($rs_user);
 			}
 			
 			$tb_event_classes->addBody($cont);
@@ -300,7 +300,7 @@ function event_special_view($op) {
 											." ('".$platform."','".$arr_class[$key]."','".$arr_description[$key]."') ");
 					if( $result1 === FALSE )
 						break;
-					$idClass = mysql_insert_id();
+					$idClass = sql_insert_id();
 					DoceboEventManager::registerEventConsumer(array($arr_class[$key]), 'DoceboUserNotifier', $GLOBALS['where_framework'].'/lib/lib.usernotifier.php');
 					
 					$result1 = sql_query(	"INSERT INTO ".$GLOBALS['prefix_fw']."_event_manager "

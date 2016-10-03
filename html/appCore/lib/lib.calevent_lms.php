@@ -160,10 +160,10 @@ class DoceboCalEvent_lms extends DoceboCalEvent_core {
 		if ($this->id) $query.=" WHERE id='".$this->id."'";
 		
 		$result=sql_query($query);
-		if (mysql_error()) die(mysql_error()."<br />".$query);
+		if (sql_error()) die(sql_error()."<br />".$query);
 		
 		if (!$this->id) {
-			$this->id=mysql_insert_id();
+			$this->id=sql_insert_id();
 			$query="INSERT INTO ".$GLOBALS['prefix_lms']."_calendar SET id='".$this->id."',idCourse='".$this->idCourse."'";
 			$result=sql_query($query);
 		};

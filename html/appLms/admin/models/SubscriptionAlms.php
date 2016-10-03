@@ -935,7 +935,7 @@ Class SubscriptionAlms extends Model
 							." AND type_of_entry = 'course'"
 							." AND id_entry = '".$id_course."'";
 
-				list($control_course) = mysql_fetch_row(mysql_query($query));
+				list($control_course) = sql_fetch_row(sql_query($query));
 
 				$query =	"SELECT COUNT(*)"
 							." FROM ".Get::cfg('prefix_fw')."_admin_course"
@@ -948,7 +948,7 @@ Class SubscriptionAlms extends Model
 							." WHERE id_item = '".$id_course."'"
 							." )";
 
-				list($control_coursepath) = mysql_fetch_row(mysql_query($query));
+				list($control_coursepath) = sql_fetch_row(sql_query($query));
 
 				$query =	"SELECT COUNT(*)"
 							." FROM ".Get::cfg('prefix_fw')."_admin_course"
@@ -961,7 +961,7 @@ Class SubscriptionAlms extends Model
 							." WHERE idEntry = '".$id_course."'"
 							." )";
 
-				list($control_catalogue) = mysql_fetch_row(mysql_query($query));
+				list($control_catalogue) = sql_fetch_row(sql_query($query));
 
 				if($control_user && ($control_course || $control_coursepath || $control_catalogue))
 					$recipients[] = $id_user;

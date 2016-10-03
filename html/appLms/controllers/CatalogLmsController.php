@@ -466,7 +466,7 @@ class CatalogLmsController extends LmsController {
 							." AND type_of_entry = 'course'"
 							." AND id_entry = '".$id_course."'";
 
-				list($control_course) = mysql_fetch_row(mysql_query($query));
+				list($control_course) = sql_fetch_row(sql_query($query));
 
 				/*if($control)
 					$recipients[] = $id_user;*/
@@ -482,7 +482,7 @@ class CatalogLmsController extends LmsController {
 							." WHERE id_item = '".$id_course."'"
 							." )";
 
-				list($control_coursepath) = mysql_fetch_row(mysql_query($query));
+				list($control_coursepath) = sql_fetch_row(sql_query($query));
 
 				/*if($control)
 					$recipients[] = $id_user;*/
@@ -498,7 +498,7 @@ class CatalogLmsController extends LmsController {
 							." WHERE idEntry = '".$id_course."'"
 							." )";
 
-				list($control_catalogue) = mysql_fetch_row(mysql_query($query));
+				list($control_catalogue) = sql_fetch_row(sql_query($query));
 
 				if($control_user && ($control_course || $control_coursepath || $control_catalogue))
 					$recipients[] = $id_user;

@@ -542,7 +542,7 @@ class Choice_Question extends Question {
 		( 	'".(int)$new_id_test."', 
 			'".(int)$sel_cat."', 
 			'".$this->getQuestionType()."', 
-			'".mysql_escape_string($quest)."',
+			'".sql_escape_string($quest)."',
 			'".(int)$sel_diff."', 
 			'".$time_ass."',
 			'".(int)$sequence."',
@@ -567,8 +567,8 @@ class Choice_Question extends Question {
 			( idQuest, is_correct, answer, comment, score_correct, score_incorrect ) VALUES
 			( 	'".(int)$new_id_quest."', 
 				'".(int)$is_correct."', 
-				'".mysql_escape_string($answer)."', 
-				'".mysql_escape_string($comment)."',
+				'".sql_escape_string($answer)."', 
+				'".sql_escape_string($comment)."',
 				'".$this->_checkScore($score_c)."', 
 				'".$this->_checkScore($score_inc)."') ";
 			if(!sql_query($ins_answer_query)) return false;
@@ -617,7 +617,7 @@ class Choice_Question extends Question {
 			WHERE idQuest = '".(int)$this->id."' AND 
 				idTrack = '".(int)$id_track."' AND ( user_answer = 1 OR user_answer = NULL ) AND number_time =  ".$number_time;
 			$re_answer_do = sql_query($recover_answer);
-			if(mysql_num_rows($re_answer_do)) {
+			if(sql_num_rows($re_answer_do)) {
 				
 				//find previous answer
 				$find_prev = true;

@@ -656,7 +656,7 @@ class UsermanagementAdm extends Model {
 	}
 
 
-	public function getAllUsers($idOrg, $descendants = false, $filter = false, $usersFilter = false) {
+	public function getAllUsers($idOrg, $descendants = false, $filter = false, $usersFilter = false, $learning_filter = 'none') {
 		$useAnonymous = false;
 		$searchFilter = isset($filter['text']) ? $filter['text'] : false;
 		$useSuspended = isset($filter['suspended']) ? (bool)$filter['suspended'] : true;
@@ -751,6 +751,14 @@ class UsermanagementAdm extends Model {
 			)";
 		}
 
+		switch ($learning_filter) {
+			case 'course':
+				$id_course = $_SESSION['idCourse'];
+				$res = $this->aclManager->getGroupsIdstFromBasePath('/lms/course/'.$id_course.'/subscribed/');
+				$query .= " AND u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN (".implode(",", $res).") ) ";
+			break;
+		}
+                
 		// Retrive all the user selected
 		$output = array();
 		$res = $this->db->query($query);

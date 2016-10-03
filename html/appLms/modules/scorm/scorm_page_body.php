@@ -63,11 +63,11 @@ ob_start();
 
 // connect to database -------------------------------------------------------------------
 
-$GLOBALS['dbConn'] = mysql_connect($GLOBALS['dbhost'], $GLOBALS['dbuname'], $GLOBALS['dbpass']);
+$GLOBALS['dbConn'] = sql_connect($GLOBALS['dbhost'], $GLOBALS['dbuname'], $GLOBALS['dbpass']);
 if( !$GLOBALS['dbConn'] )
 	die( "Can't connect to db. Check configurations" );
 
-if( !mysql_select_db($dbname, $GLOBALS['dbConn']) )
+if( !sql_select_db($dbname, $GLOBALS['dbConn']) )
 	die( "Database not found. Check configurations" );
 
 @sql_query("SET NAMES '".$GLOBALS['db_conn_names']."'", $GLOBALS['dbConn']);
@@ -163,7 +163,7 @@ $lang =& DoceboLanguage::createInstance('organization', 'lms');
 
 // close database connection
 
-mysql_close($GLOBALS['dbConn']);
+sql_close($GLOBALS['dbConn']);
 
 ob_end_flush();
 

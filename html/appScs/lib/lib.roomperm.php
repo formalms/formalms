@@ -46,9 +46,9 @@ class RoomPermissions {
 				return FALSE;
 		}
 		if( $this->dbconn === NULL )
-			return mysql_insert_id();
+			return sql_insert_id();
 		else
-			return mysql_insert_id($this->dbconn);
+			return sql_insert_id($this->dbconn);
 	}
 
 
@@ -120,8 +120,8 @@ class RoomPermissions {
 
 		$q=$this->_executeQuery($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while ($row=mysql_fetch_assoc($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while ($row=sql_fetch_assoc($q)) {
 
 				$user_idst=$row["user_idst"];
 				$perm=$row["perm"];

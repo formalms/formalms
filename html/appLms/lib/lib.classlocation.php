@@ -48,9 +48,9 @@ Class ClassLocationManager {
 				return FALSE;
 		}
 		if( $this->dbconn === NULL )
-			return mysql_insert_id();
+			return sql_insert_id();
 		else
-			return mysql_insert_id($this->dbconn);
+			return sql_insert_id($this->dbconn);
 	}
 
 
@@ -91,7 +91,7 @@ Class ClassLocationManager {
 		$q=$this->_executeQuery($qtxt);
 
 		if ($q)
-			$data_info["data_tot"]=mysql_num_rows($q);
+			$data_info["data_tot"]=sql_num_rows($q);
 		else
 			$data_info["data_tot"]=0;
 
@@ -100,9 +100,9 @@ Class ClassLocationManager {
 			$q=$this->_executeQuery($qtxt);
 		}
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
 			$i=0;
-			while($row=mysql_fetch_array($q)) {
+			while($row=sql_fetch_array($q)) {
 
 				$id=$row["location_id"];
 				$data_info["data_arr"][$i]=$row;
@@ -142,8 +142,8 @@ Class ClassLocationManager {
 		$qtxt.="WHERE location_id='".(int)$id."'";
 		$q=$this->_executeQuery($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			$res=mysql_fetch_array($q);
+		if (($q) && (sql_num_rows($q) > 0)) {
+			$res=sql_fetch_array($q);
 		}
 
 		return $res;

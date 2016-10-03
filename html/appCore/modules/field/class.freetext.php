@@ -449,7 +449,7 @@ class Field_Freetext extends Field {
 		WHERE id_user = '".$id_user."' AND
 			id_common = '".(int)$this->id_common."' AND
 			id_common_son = '0'");
-		$some_entry = mysql_num_rows($re_entry);
+		$some_entry = sql_num_rows($re_entry);
 		if($some_entry) {
 			if($no_overwrite) return true;
 			if(!sql_query("
@@ -498,7 +498,7 @@ class Field_Freetext extends Field {
 		WHERE id_user = '".$id_user."' AND
 			id_common = '".(int)$this->id_common."' AND
 			id_common_son = '0'");
-		$some_entry = mysql_num_rows($re_entry);
+		$some_entry = sql_num_rows($re_entry);
 		if($some_entry) {
 			if($no_overwrite) return true;
 			if(!sql_query("

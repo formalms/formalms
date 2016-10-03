@@ -328,8 +328,8 @@ class Certificate {
                 SELECT id_certificate, certificate_available_for_obj
                 FROM ".$GLOBALS['prefix_lms']."_certificate_course
                 WHERE id_course = '".$id_course."' ";
-                $re_certificate = mysql_query($query_certificate);
-                while(list($id, $available_for_status) = mysql_fetch_row($re_certificate)) {
+                $re_certificate = sql_query($query_certificate);
+                while(list($id, $available_for_status) = sql_fetch_row($re_certificate)) {
 
                         $cert[$id] = $available_for_status;
                 }
@@ -343,8 +343,8 @@ class Certificate {
                 SELECT id_certificate, certificate_available_for_who
                 FROM ".$GLOBALS['prefix_lms']."_certificate_course
                 WHERE id_course = '".$id_course."' ";
-                $re_certificate = mysql_query($query_certificate);
-                while(list($id, $available_for_who) = mysql_fetch_row($re_certificate)) {
+                $re_certificate = sql_query($query_certificate);
+                while(list($id, $available_for_who) = sql_fetch_row($re_certificate)) {
 
                         $cert[$id] = $available_for_who;
                 }
@@ -353,8 +353,8 @@ class Certificate {
 
         function certificateAvailableForUser($id_cert, $id_course, $id_user) {
                 $sql = "SELECT minutes_required FROM learning_certificate_course WHERE id_course = ".$id_course." AND id_certificate = ".$id_cert;
-                $re = mysql_query($sql);
-                list($minutes_required) = mysql_fetch_row($re);
+                $re = sql_query($sql);
+                list($minutes_required) = sql_fetch_row($re);
                 if ($minutes_required > 0){
                     require_once(_lms_.'/lib/lib.track_user.php');
 
@@ -575,7 +575,7 @@ class Certificate {
 
 		$re = sql_query($query_certificate);
 		if(!$re) return false;
-		return (mysql_num_rows($re) > 0);
+		return (sql_num_rows($re) > 0);
 	}
 
 	function canRelease($av_for_status, $user_status) {
@@ -722,8 +722,8 @@ class Certificate {
 			AND idMetaCertificate = '".$id_meta."'";
 
 		$re = sql_query($query_certificate);
-		echo mysql_error();
-		if((mysql_num_rows($re) > 0)) {
+		echo sql_error();
+		if((sql_num_rows($re) > 0)) {
 			if(!$download)
 				return;
 			require_once(_base_.'/lib/lib.download.php' );
@@ -911,7 +911,7 @@ class Certificate {
 			." ON (t1.id_certificate = t2.id_certificate AND t2.id_user = t3.idst)  "
 			.(count($conditions)>0 ? "WHERE ".implode(" AND ", $conditions) : "");
 
-		list($total) = sql_fetch_row(sql_query($query)); echo mysql_error();
+		list($total) = sql_fetch_row(sql_query($query)); echo sql_error();
 		return $total;
 	}
 

@@ -68,9 +68,9 @@ function importSqlFile($fn) {
 
 		if (!empty($qtxt)) {
 
-			$q=mysql_query($qtxt);
+			$q=sql_query($qtxt);
 			if (!$q) {
-				$res['log'].=mysql_error()."\n";
+				$res['log'].=sql_error()."\n";
 				$res['ok'] =FALSE;
 			}
 		}

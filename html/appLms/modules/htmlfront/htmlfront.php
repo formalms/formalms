@@ -58,7 +58,7 @@ function edithtml() {
 	$error = false;
 	if(isset($_POST['save'])) {
 		
-		if(mysql_num_rows($re_htmlfront) > 0) {
+		if(sql_num_rows($re_htmlfront) > 0) {
 			
 			$upd_query = "
 			UPDATE ".$GLOBALS['prefix_lms']."_htmlfront 

@@ -717,7 +717,7 @@ class HotText_Question extends Question {
 			WHERE idQuest = '".(int)$this->id."' AND 
 				idTrack = '".(int)$id_track."' AND number_time =  ".$number_time;
 			$re_answer_do = sql_query($recover_answer);
-			if(mysql_num_rows($re_answer_do)) {
+			if(sql_num_rows($re_answer_do)) {
 				
 				//find previous answer
 				$find_prev = true;

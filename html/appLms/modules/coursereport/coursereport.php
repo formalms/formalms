@@ -1000,12 +1000,12 @@ while(i<lista.length)
 	}
 	</script>');
 
-    $sql = "SELECT * FROM core_field";
-    $filler = "";
-    $filler = "<br>";
-    $result_quest = sql_query($sql) or die (mysql_error());
-    while ($quests = sql_fetch_array($result_quest)) {
-        $filler .= "<input type=\'checkbox\' onclick=\'cambialink(" . $quests['idField'] . ",this.checked)\' value=\'" . $quests['idField'] . "\'>" . $quests['translation'] . "<br>";
+	$sql="SELECT * FROM core_field";
+$filler="";
+$filler="<br>";
+    $result_quest = sql_query($sql) or die (sql_error());
+	while ($quests = sql_fetch_array($result_quest)){
+		$filler.="<input type=\'checkbox\' onclick=\'cambialink(".$quests['idField'].",this.checked)\' value=\'".$quests['idField']."\'>".$quests['translation']."<br>";
     }
     $filler .= "<input type=\'checkbox\' onclick=\'cambialink(9999,this.checked)\' value=\'999\'>" . $lang->def('_QUESTION_ANSWERED') . "<br>";
     $filler .= "<input type=\'checkbox\' onclick=\'cambialink(1999,this.checked)\' value=\'1999\'>" . $lang->def('_TOT_QUESTION') . "<br>";
@@ -2128,6 +2128,7 @@ function modscorm()
                     $info_report['id_source'])
 
 
+
                 . Form::getTextfield($lang->def('_WEIGHT'),
                     'weight',
                     'weight',
@@ -2974,6 +2975,7 @@ function export()
                                     break;
                                 default : {
                                     $csv .= ';"-"';
+							}
                                 }
                             }
                         } else
@@ -3144,11 +3146,12 @@ function testQuestion()
     }
 
 
-    $query_track = "SELECT idTrack"
-        . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack"
-        . " WHERE idTest = '" . $id_test . "'"
-        . " AND score_status = 'valid'"
-        . " AND idUser in (" . implode(",", $id_students) . ")";
+
+	$query_track =	"SELECT idTrack"
+					." FROM ".$GLOBALS['prefix_lms']."_testtrack"
+					." WHERE idTest = '".$id_test."'"
+					." AND score_status = 'valid'"
+					." AND idUser in (".implode(",", $id_students).")";
 
     $result_track = sql_query($query_track);
 
@@ -3180,7 +3183,7 @@ function testQuestion()
                 $query_total_play =     "SELECT COUNT(*)"
                                                 ." FROM ".$GLOBALS['prefix_lms']."_testtrack"
                                                 ." WHERE idTest = '".$id_test."' AND score_status = 'not_checked'";
-                list($total_play2) = mysql_fetch_row(mysql_query($query_total_play));
+                list($total_play2) = sql_fetch_row(sql_query($query_total_play));
 $total_play += $total_play2;
 
         }*/
@@ -3371,6 +3374,7 @@ function showchart()
 
 
 //------------------------------------------------------------------------------
+
 
 
 function coursereportDispatch($op)

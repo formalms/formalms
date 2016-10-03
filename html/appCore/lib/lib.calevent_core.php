@@ -186,9 +186,9 @@ class DoceboCalEvent_core {
 		if ($this->id) $query.=" WHERE id='".$this->id."'";
 		
 		$result=sql_query($query);
-		if (mysql_error()) die(mysql_error()."<br />".$query);
+		if (sql_error()) die(sql_error()."<br />".$query);
 		
-		if (!$this->id) $this->id=mysql_insert_id();
+		if (!$this->id) $this->id=sql_insert_id();
 		
 		return $this->id;
 	} else {
@@ -206,7 +206,7 @@ class DoceboCalEvent_core {
 	function getOwner() {
 		$query="SELECT _owner FROM ".$GLOBALS['prefix_fw']."_calendar WHERE id='".$this->id."'";
 		$result=sql_query($query);
-		$row=mysql_fetch_array($result);
+		$row=sql_fetch_array($result);
 		return $row["_owner"]; 
 	}
 	

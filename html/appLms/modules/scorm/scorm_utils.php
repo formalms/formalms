@@ -417,8 +417,8 @@ function isTrackingAvailable( $idscorm_package, $idProg ) {
 				." AND sr.idscorm_resource=st.idscorm_resource";
 	}
 	// debug echo "<!-- isTrackingAvailable:Query = $query -->";
-	$rs = sql_query($query) or die(mysql_error());
-	return (mysql_num_rows($rs)>0)?TRUE:FALSE;
+	$rs = sql_query($query) or die(sql_error());
+	return (sql_num_rows($rs)>0)?TRUE:FALSE;
 }
 
 /*
@@ -477,7 +477,7 @@ function getScormVersion( $idtype, $id) {
 			return FALSE;
 	}
 	$rs = sql_query($query);
-	if( mysql_num_rows($rs) != 1 ) 
+	if( sql_num_rows($rs) != 1 )
 		return FALSE;
 	list($scormVersion) = sql_fetch_row($rs);
 	
@@ -491,7 +491,7 @@ function getPackIdOrgIdFromProgId( $progId, $prefix ) {
 			." WHERE sp.idProg=".$progId
 			." AND sp.idscorm_package=so.idscorm_package"
 			." AND sp.defaultOrg=so.org_identifier";
-	$rs = sql_query($query) or die(mysql_error());
+	$rs = sql_query($query) or die(sql_error());
 	return sql_fetch_row($rs);
 }
 

@@ -511,7 +511,7 @@ class sys_forum {
 			WHERE ( fa.idGroup IN ($in_grp) AND fa.can_read='1' ) AND f.idForum = '".$idF."'";
 
 			$re_forum = sql_query($query_view_forum);
-			if(!mysql_num_rows($re_forum)) {
+			if(!sql_num_rows($re_forum)) {
 				errorCommunication(_ISLOCKED);
 				return;
 			}

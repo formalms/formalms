@@ -50,9 +50,9 @@ class CourseSubscribe {
 				return FALSE;
 		}
 		if( $this->dbconn === NULL )
-			return mysql_insert_id();
+			return sql_insert_id();
 		else
-			return mysql_insert_id($this->dbconn);
+			return sql_insert_id($this->dbconn);
 	}
 
 
@@ -130,8 +130,8 @@ class CourseSubscribe {
 		$qtxt ="SELECT ".$fields." FROM ".$table." WHERE ".$id_name."='".$id_val."'";
 
 		$q=sql_query($qtxt);
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			$main_res=mysql_fetch_assoc($q);
+		if (($q) && (sql_num_rows($q) > 0)) {
+			$main_res=sql_fetch_assoc($q);
 		}
 
 		$fields="sum(waiting = '1') as waiting, COUNT(*) as user_count";
@@ -143,8 +143,8 @@ class CourseSubscribe {
 		$qtxt.="GROUP BY ".$id_name_user;
 
 		$q=sql_query($qtxt);
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			$user_res=mysql_fetch_assoc($q);
+		if (($q) && (sql_num_rows($q) > 0)) {
+			$user_res=sql_fetch_assoc($q);
 		}
 		else {
 			$user_res["waiting"]=0;

@@ -309,7 +309,7 @@ class Catalogue_Manager {
 		WHERE m.idCatalogue = cm.idCatalogue AND cm.idst_member IN (".implode(',', $user_groups).")
 		ORDER BY m.name";
 		$re_catalogue = $this->_executeQuery($query);
-		while($cata = mysql_fetch_assoc($re_catalogue)) {
+		while($cata = sql_fetch_assoc($re_catalogue)) {
 
 			$catalogues[$cata['idCatalogue']] = $cata;
 		}
@@ -436,7 +436,7 @@ class AdminCatalogue {
 	function _executeQuery($query) {
 
 		$rs = sql_query($query);
-		$GLOBALS['page']->add('<!-- '.$query.' : '.mysql_error().' -->'."\n", 'debug');
+		$GLOBALS['page']->add('<!-- '.$query.' : '.sql_error().' -->'."\n", 'debug');
 		return $rs;
 	}
 

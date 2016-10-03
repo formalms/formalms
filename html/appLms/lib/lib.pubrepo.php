@@ -184,7 +184,7 @@ function manPurepo_save( $idFolder, &$lo, $arrParam ) {
 			. (isset($arrParam['objective'])?($arrParam['objective']):'') ."','"
 			. getdate() ."' )";
 	sql_query( $query ) 
-		or die( mysql_error() );
+		or die( sql_error() );
 }
 
 function manPubrepo_display( &$treeView, $withContents, $withActions = FALSE ) {
@@ -414,7 +414,7 @@ function loadFields( &$arrayData, &$lo ) {
 		else
 			echo '<option value="'.$idCat.'">'.$catTitle.'</option>';
 	}
-	echo '</select> ( '.mysql_num_rows($reCategory).' '._DISP.')'
+	echo '</select> ( '.sql_num_rows($reCategory).' '._DISP.')'
 		.'</div>'
 		//-------------------------------------------------
 		.'<div class="title">'._VERSION.'</div>'
@@ -506,9 +506,9 @@ function manPubRepo_ShowItem( $itemId ) {
 			.' WHERE '.$GLOBALS['prefix_lms'].'_pubrepo.idCategory = '.$GLOBALS['prefix_lms'].'_coursecategory.idCategory'
 			." AND idObject='".(int)$itemId."'";
 	$rs = sql_query( $query ) 
-		or die( mysql_error() );
+		or die( sql_error() );
 	
-	$arrayData = mysql_fetch_assoc($rs);
+	$arrayData = sql_fetch_assoc($rs);
 	
 	echo '<div class="ObjectForm">';
 	echo '<span class="mainTitle">'._CATEGORIZATION. ' ' . $arrayData['title'] .'</span><br /><br />';
@@ -568,7 +568,7 @@ function manPubRepo_getData( $idObject ) {
 		."`resource`, `objective`, `dateInsert`"
 		." FROM ".$GLOBALS['prefix_lms']."_pubrepo"
 		." WHERE idObject='". (int)$idObject . "'";
-	$rs = sql_query( $query ) or die( mysql_error() );
-	return mysql_fetch_assoc( $rs );
+	$rs = sql_query( $query ) or die( sql_error() );
+	return sql_fetch_assoc( $rs );
 }
 ?>

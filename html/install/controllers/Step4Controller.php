@@ -111,10 +111,11 @@ Class Step4Controller extends StepController {
 
 	private function checkConnection($db_host, $db_name, $db_user, $db_pass) {
 		$res ='err_connect';
-
-		$GLOBALS['db_link']=mysql_connect($db_host, $db_user, $db_pass);
+        include _lib_.'/loggers/lib.logger.php';
+        include _base_.'/db/lib.docebodb.php';
+		$GLOBALS['db_link']=sql_connect($db_host, $db_user, $db_pass);
 		if ($GLOBALS['db_link']) {
-			$res =(mysql_select_db($db_name, $GLOBALS['db_link']) ? 'ok' : 'err_db_sel');
+			$res =sql_select_db($db_name);
 		}
 
 		return $res;
@@ -123,11 +124,11 @@ Class Step4Controller extends StepController {
 
 	function checkStrictMode() {
 		$qtxt ="SELECT @@GLOBAL.sql_mode AS res";
-		$q =mysql_query($qtxt, $GLOBALS['db_link']);
-		list($r1)=mysql_fetch_row($q);
+		$q =sql_query($qtxt, $GLOBALS['db_link']);
+		list($r1)=sql_fetch_row($q);
 		$qtxt ="SELECT @@SESSION.sql_mode AS res";
-		$q =mysql_query($qtxt, $GLOBALS['db_link']);
-		list($r2)=mysql_fetch_row($q);
+		$q =sql_query($qtxt, $GLOBALS['db_link']);
+		list($r2)=sql_fetch_row($q);
 		$res =((strpos($r1.$r2, 'STRICT_') === false) ? true : false);
 
 		return $res;

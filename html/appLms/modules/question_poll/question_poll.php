@@ -18,7 +18,7 @@ function quest_create($type_quest, $id_poll, $back_poll) {
 	SELECT type_file, type_class 
 	FROM ".$GLOBALS['prefix_lms']."_quest_type_poll 
 	WHERE type_quest = '".$type_quest."'");
-	if( !mysql_num_rows($re_quest) ) return;
+	if( !sql_num_rows($re_quest) ) return;
 	list($type_file, $type_class) = sql_fetch_row($re_quest);
 	
 	require_once($GLOBALS['where_lms'].'/modules/question_poll/'.$type_file);
@@ -34,7 +34,7 @@ function quest_edit($type_quest, $id_quest, $back_poll) {
 	SELECT type_file, type_class 
 	FROM ".$GLOBALS['prefix_lms']."_quest_type_poll 
 	WHERE type_quest = '".$type_quest."'");
-	if( !mysql_num_rows($re_quest) ) return;
+	if( !sql_num_rows($re_quest) ) return;
 	list($type_file, $type_class) = sql_fetch_row($re_quest);
 	
 	require_once($GLOBALS['where_lms'].'/modules/question_poll/'.$type_file);

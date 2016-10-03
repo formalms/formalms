@@ -103,13 +103,11 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 					.'</p>'
 					.'<br />'."\n";
 		        $logo_panel .= '</div>'."\n";
-                // $img_course = '<img class="boxed" src="'.$path.$course_img.'" alt="'.Lang::t('_COURSE_LOGO', 'course').' : '.$course_name.'" />';
-                $img_course = '<img class="img-rounded" src="'.$path.$course_img.'" alt="'.Lang::t('_COURSE_LOGO', 'course').' : '.$course_name.'" />';
+                 $img_course = '<br><p align="center"><img class="boxed" src="'.$path.$course_img.'" alt="'.Lang::t('_COURSE_LOGO', 'course').' : '.$course_name.'" /></p>';
             }
 			
 	}			
 
-	//$GLOBALS['page']->add($logo_panel, 'menu');	
 
          
     cout('

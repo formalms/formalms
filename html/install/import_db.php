@@ -3,24 +3,22 @@
 include('bootstrap.php');
 set_time_limit(0);
 
-$db = mysql_connect($_SESSION['db_info']['db_host'], $_SESSION['db_info']['db_user'], $_SESSION['db_info']['db_pass']);
-mysql_select_db($_SESSION['db_info']['db_name']);
 
-mysql_query("SET NAMES 'utf8'");
-mysql_query("SET CHARACTER SET 'utf8'");
+sql_query("SET NAMES 'utf8'");
+sql_query("SET CHARACTER SET 'utf8'");
 
 $sq = 'ALTER DATABASE `' . $_SESSION['db_info']['db_name'] . "` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci";
-mysql_query($sq);
+sql_query($sq);
 
 $result = TRUE;
 
 // -- Finding mysql version -------------------
 $qtxt = "SELECT VERSION()";
-$q = mysql_query($qtxt);
-list($version) = mysql_fetch_row($q);
+$q = sql_query($qtxt);
+list($version) = sql_fetch_row($q);
 $match = array();
 preg_match("/^\\d+\\.\\d+/", $version, $match);
-$mysql_ver = $match[0] * 100;
+$sql_ver = $match[0] * 100;
 // --------------------------------------------
 
 $platform_arr = $_SESSION['platform_arr'];
@@ -47,7 +45,7 @@ if ($result) {
 		if (!in_array($language, $lang_install)) {
 
 			$qtxt = "DELETE FROM core_lang_language WHERE lang_code='" . $language . "'";
-			$q = mysql_query($qtxt);
+			$q = sql_query($qtxt);
 		}
 	}
 
@@ -72,7 +70,7 @@ $json = new Services_JSON();
 ob_clean();
 echo $json->encode($jres);
 
-mysql_close($db);
+sql_close($db);
 session_write_close();
 
 // -------------------------------------------------------------------------------
@@ -83,29 +81,29 @@ function registerAdminUser() {
 	// ----------- Registering admin user ---------------------------------
 
 	$qtxt = "SELECT * FROM core_user WHERE userid='/" . $_SESSION['adm_info']["userid"] . "'";
-	$q = mysql_query($qtxt);
+	$q = sql_query($qtxt);
 
-	if (($q) && (mysql_num_rows($q) > 0)) { // Did the user refreshed the page?
+	if (($q) && (sql_num_rows($q) > 0)) { // Did the user refreshed the page?
 		// You never know..
 		$qtxt = "UPDATE core_user SET firstname='" . $_SESSION['adm_info']["firstname"] . "',
 			lastname='" . $_SESSION['adm_info']["lastname"] . "',
 			pass='" . md5($_SESSION['adm_info']["pass"]) . "' ";
 		$qtxt.="WHERE userid='/" . $_SESSION['adm_info']["userid"] . "'";
-		$q = mysql_query($qtxt);
+		$q = sql_query($qtxt);
 	} else { // Let's create the admin user..
 		$qtxt = "INSERT INTO core_st (idst) VALUES(NULL)";
-		$q = mysql_query($qtxt);
-		$user_idst = mysql_insert_id();
+		$q = sql_query($qtxt);
+		$user_idst = sql_insert_id();
 
 		$qtxt = "SELECT groupid, idst FROM core_group WHERE groupid='/framework/level/godadmin' ";
 		$qtxt.="OR groupid='/oc_0'";
-		$q = mysql_query($qtxt);
+		$q = sql_query($qtxt);
 
 		$godadmin = 0;
 		$oc_0 = 0;
 		$res = array();
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while ($row = mysql_fetch_array($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while ($row = sql_fetch_array($q)) {
 				$res[$row["groupid"]] = $row["idst"];
 			}
 			$godadmin = $res["/framework/level/godadmin"];
@@ -113,15 +111,15 @@ function registerAdminUser() {
 		}
 
 		$qtxt = "INSERT INTO core_group_members (idst, idstMember) VALUES('" . $oc_0 . "', '" . $user_idst . "')";
-		$q = mysql_query($qtxt);
+		$q = sql_query($qtxt);
 		$qtxt = "INSERT INTO core_group_members (idst, idstMember) VALUES('" . $godadmin . "', '" . $user_idst . "')";
-		$q = mysql_query($qtxt);
+		$q = sql_query($qtxt);
 
 		$qtxt = "INSERT INTO core_user (idst, userid, firstname, lastname, pass, email) ";
 		$qtxt.="VALUES ('" . $user_idst . "', '/" . $_SESSION['adm_info']["userid"] . "',
 			'" . $_SESSION['adm_info']["firstname"] . "', '" . $_SESSION['adm_info']["lastname"] . "',
 			'" . md5($_SESSION['adm_info']["pass"]) . "', '" . $_SESSION['adm_info']["email"] . "')";
-		$q = mysql_query($qtxt);
+		$q = sql_query($qtxt);
 	}
 }
 
@@ -131,9 +129,9 @@ function storeSettings() {
 	$qtxt = "UPDATE core_setting SET param_value='" . $url . "' ";
 	$qtxt.="WHERE param_name='url'";
 
-	$q = mysql_query($qtxt);$qtxt = "UPDATE core_setting SET param_value='" . $_SESSION['sel_lang'] . "' ";
+	$q = sql_query($qtxt);$qtxt = "UPDATE core_setting SET param_value='" . $_SESSION['sel_lang'] . "' ";
 	$qtxt.="WHERE param_name='default_language'";
-	$q = mysql_query($qtxt);
+	$q = sql_query($qtxt);
 }
 
 

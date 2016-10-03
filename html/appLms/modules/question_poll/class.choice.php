@@ -386,7 +386,7 @@ class Choice_QuestionPoll extends QuestionPoll {
 		( 	'".(int)$new_id_poll."', 
 			'".(int)$sel_cat."', 
 			'".$this->getQuestionType()."', 
-			'".mysql_escape_string($quest)."',
+			'".sql_escape_string($quest)."',
 			'".(int)$sequence."',
 			'".(int)$page."' ) ";
 		if(!sql_query($ins_query)) return false;
@@ -407,7 +407,7 @@ class Choice_QuestionPoll extends QuestionPoll {
 			INSERT INTO ".$GLOBALS['prefix_lms']."_pollquestanswer 
 			( id_quest, answer, sequence ) VALUES
 			( 	'".$new_id_quest."', 
-				'".mysql_escape_string($answer)."', 
+				'".sql_escape_string($answer)."', 
 				'".$sequence."' ) ";
 			if(!sql_query($ins_answer_query)) {
 				
@@ -457,7 +457,7 @@ class Choice_QuestionPoll extends QuestionPoll {
 			WHERE id_quest = '".(int)$this->id."' AND 
 				id_track = '".(int)$id_track."'";
 			$re_answer_do = sql_query($recover_answer);
-			if(mysql_num_rows($re_answer_do)) {
+			if(sql_num_rows($re_answer_do)) {
 				
 				//find previous answer
 				$find_prev = true;
@@ -598,7 +598,7 @@ class Choice_QuestionPoll extends QuestionPoll {
 			WHERE id_quest = '".(int)$this->id."' AND 
 				id_track = '".(int)$id_track."'";
 			$re_answer_do = sql_query($recover_answer);
-			if(mysql_num_rows($re_answer_do)) $find_prev = true;
+			if(sql_num_rows($re_answer_do)) $find_prev = true;
 		}
 		
 		if(isset($source['quest'][$this->id]) && ($source['quest'][$this->id] != 0)) {

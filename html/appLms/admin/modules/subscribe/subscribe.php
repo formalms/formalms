@@ -1142,8 +1142,8 @@ function addUserToTimeTable($user_id, $course_id, $edition_id=0) {
 
 	$q=sql_query($qtxt);
 
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		$row=mysql_fetch_assoc($q);
+	if (($q) && (sql_num_rows($q) > 0)) {
+		$row=sql_fetch_assoc($q);
 
 		$start_date=$row["date_begin"];
 		$end_date=$row["date_end"];

@@ -131,7 +131,7 @@ class Learning_Test extends Learning_Object {
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class 
 		FROM %lms_testquest AS q JOIN ".$GLOBALS['prefix_lms']."_quest_type AS t
 		WHERE q.idTest = '".$id."' AND q.type_quest = t.type_quest");
-		if(!mysql_num_rows($reQuest)) return true;
+		if(!sql_num_rows($reQuest)) return true;
 		//deleting answer
 		while( list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest) ) {
 
@@ -184,7 +184,7 @@ class Learning_Test extends Learning_Object {
 	function copy( $id, $back_url = NULL ) {
 
 		//find source info
-		$test_info = mysql_fetch_assoc(sql_query("
+		$test_info = sql_fetch_assoc(sql_query("
 		SELECT author, title, description, 
 			point_type, point_required, 
 			display_type, order_type, shuffle_answer, question_random_number, 
@@ -202,8 +202,8 @@ class Learning_Test extends Learning_Object {
 		$ins_query = "
 		INSERT INTO ".$GLOBALS['prefix_lms']."_test
 		SET author = '".(int)$test_info['author']."',
-			title = '".mysql_escape_string($test_info['title'])."',
-			description = '".mysql_escape_string($test_info['description'])."',
+			title = '".sql_escape_string($test_info['title'])."',
+			description = '".sql_escape_string($test_info['description'])."',
 			point_type = '".(int)$test_info['point_type']."',
 			point_required = '".(int)$test_info['point_required']."',
 			display_type = '".(int)$test_info['display_type']."',

@@ -74,7 +74,7 @@ class Config_Scs extends Config {
 				max_user_at_time, max_room_at_time, max_subroom_for_room, 
 				enable_drawboard, enable_livestream, enable_remote_desktop, enable_webcam, enable_audio 
 		FROM ".$this->table_root."");
-		$values = mysql_fetch_array( $reSettingValue );
+		$values = sql_fetch_array( $reSettingValue );
 		
 		$html = '';
 		while($res = sql_fetch_row( $reSetting ) ) {

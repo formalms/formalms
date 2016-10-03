@@ -193,7 +193,7 @@ class Admin_Managment {
 			ORDER BY sequence";
 			$re_menu = sql_query($query_menu);
 
-			if(mysql_num_rows($re_menu)) {
+			if(sql_num_rows($re_menu)) {
 				
 				$all_tokens = array();
 				$name_menu = array();

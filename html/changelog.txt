@@ -402,7 +402,7 @@ Docebo 4.0.3
 
 - import and export csv user list with dropdown fields
 
-- removed mysql_close() calls with no parameter.
+- removed sql_close() calls with no parameter.
 
 - forum display glitch
 

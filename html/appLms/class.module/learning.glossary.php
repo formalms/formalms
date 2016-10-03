@@ -116,8 +116,8 @@ class Learning_Glossary extends Learning_Object {
 		//insert new item
 		$insertQuery = "
 		INSERT INTO ".$GLOBALS['prefix_lms']."_glossary 
-		SET title = '".mysql_escape_string($title)."',
-			description = '".mysql_escape_string($descr)."',
+		SET title = '".sql_escape_string($title)."',
+			description = '".sql_escape_string($descr)."',
 			author = '".$author."'";
 		if(!sql_query($insertQuery)) return false;
 		list($idGlossary) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
@@ -130,8 +130,8 @@ class Learning_Glossary extends Learning_Object {
 				$query_ins = "
 				INSERT INTO ".$GLOBALS['prefix_lms']."_glossaryterm 
 				SET idGlossary = '".$idGlossary."',
-					term = '".mysql_escape_string($term)."',
-					description = '".mysql_escape_string($term_descr)."'";
+					term = '".sql_escape_string($term)."',
+					description = '".sql_escape_string($term_descr)."'";
 				if(!sql_query($query_ins)) {
 					$this->del( $idGlossary );
 					return false;

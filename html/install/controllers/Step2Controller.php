@@ -19,10 +19,10 @@ function checkRequirements() {
 
 	// phpversion();
 	// PHP_VERSION version supported 5.2.x 5.3.x 5.4.x -- experimental 5.5.x 5.6.x
-	$res['php']=((version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '5.6.0', '<')) ? 'ok' :
-                     ((version_compare(PHP_VERSION, '5.6.0', '>=') && version_compare(PHP_VERSION, '5.7.0', '<')) ? 'warn' :  'err' ));
+	$res['php']=((version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '7.0.11', '<')) ? 'ok' :
+                     ((version_compare(PHP_VERSION, '7.0.11', '>=') && version_compare(PHP_VERSION, '7.0.12', '<')) ? 'warn' :  'err' ));
 	// mysql version, in easyphp the version number is ina string regcut it
-	preg_match( '/([0-9]+\.[\.0-9]+)/', mysql_get_client_info(), $version );
+	preg_match( '/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $version );
 	if(empty($version[1])) $res['mysql']='ok';
 	else $res['mysql']=(version_compare($version[1], '5.0') >= 0 ? 'ok' : 'err');
 	$res['xml']=(extension_loaded('domxml') ? 'ok' : 'err');

@@ -54,9 +54,9 @@ class CPManagerDb {
 				." WHERE idscorm_package=".$this->idscorm_package;
 		$rs = sql_query($query,$this->dbconn);
 		if( $rs === FALSE ) {
-			$this->setError( SPSCORM_E_DB_ERROR, 'Generic db error: '.mysql_error($this->dbconn) );
+			$this->setError( SPSCORM_E_DB_ERROR, 'Generic db error: '.sql_error($this->dbconn) );
 			return FALSE;
-		} else if( mysql_num_rows($rs) == 0 ) {
+		} else if( sql_num_rows($rs) == 0 ) {
 			$this->setError( SPSCORM_E_RECORDNOTFOUND, 'Package with id='.$this->idscorm_package.' not found' );
 			return FALSE;
 		}
@@ -73,9 +73,9 @@ class CPManagerDb {
 				." AND idscorm_package=".$this->idscorm_package;
 		$rs = sql_query($query, $this->dbconn);
 		if( $rs === FALSE ) {
-			$this->setError(SPSCORM_E_DB_ERROR, 'Generic db error: '.mysql_error($this->dbconn) );
+			$this->setError(SPSCORM_E_DB_ERROR, 'Generic db error: '.sql_error($this->dbconn) );
 			return FALSE;
-		} else if( mysql_num_rows($rs) == 0 ) {
+		} else if( sql_num_rows($rs) == 0 ) {
 			$this->setError(SPSCORM_E_RECORDNOTFOUND, 'Organization with identifier='.addslashes($identifier).' and idscorm_package='.$this->idscorm_package.' not found' );
 			return FALSE;			
 		}
@@ -90,14 +90,14 @@ class CPManagerDb {
 				." AND idscorm_package=".$this->idscorm_package;
 		$rs = sql_query($query,$this->dbconn);
 		if( $rs === FALSE ) {
-			$this->setError( SPSCORM_E_DB_ERROR, 'Generic db error: '.mysql_error($this->dbconn) );
+			$this->setError( SPSCORM_E_DB_ERROR, 'Generic db error: '.sql_error($this->dbconn) );
 			return FALSE;
-		} else if( mysql_num_rows($rs) == 0 ) {
+		} else if( sql_num_rows($rs) == 0 ) {
 			$this->setError( SPSCORM_E_RECORDNOTFOUND, 'Resource with scoid='.addslashes($identifier).' and idscorm_package='.$this->idscorm_package.' not found' );
 			return FALSE;
 		}
 				
-		$row = mysql_fetch_assoc($rs);
+		$row = sql_fetch_assoc($rs);
 						
 		$info['href'] = $row['href'];
 		$info['identifier'] = $identifier;
@@ -121,9 +121,9 @@ class CPManagerDb {
 				." AND idscorm_package=".$this->idscorm_package;
 		$rs = sql_query($query, $this->dbconn);
 		if( $rs === FALSE ) {
-			$this->setError(SPSCORM_E_DB_ERROR, 'Generic db error: '.mysql_error($this->dbconn) );
+			$this->setError(SPSCORM_E_DB_ERROR, 'Generic db error: '.sql_error($this->dbconn) );
 			return FALSE;
-		} else if( mysql_num_rows($rs) == 0 ) {
+		} else if( sql_num_rows($rs) == 0 ) {
 			$this->setError(SPSCORM_E_RECORDNOTFOUND, 'Organization with identifier='.$identifier.' and idscorm_package='.$this->idscorm_package.' not found' );
 			return FALSE;			
 		}
@@ -150,11 +150,11 @@ class CPManagerDb {
 				." ORDER BY idscorm_item";
 		$rs = sql_query($query, $this->dbconn);
 		if( $rs === FALSE ) {
-			$this->setError(SPSCORM_E_DB_ERROR, 'Generic db error: '.mysql_error($this->dbconn) );
+			$this->setError(SPSCORM_E_DB_ERROR, 'Generic db error: '.sql_error($this->dbconn) );
 			return FALSE;
 		} 
 		
-		if( mysql_num_rows($rs) == 0 ) {
+		if( sql_num_rows($rs) == 0 ) {
 			// is ok a organization without resources?
 			$itemInfo['isLeaf'] = TRUE;
 			// debug -- echo "<!-- Organization is leaf [$query] -->";
@@ -164,7 +164,7 @@ class CPManagerDb {
 		
         $renderer->RenderStartItem( $this, $itemInfo );
         
-		while( FALSE !== ($record = mysql_fetch_assoc($rs)) ) {
+		while( FALSE !== ($record = sql_fetch_assoc($rs)) ) {
 			$this->RenderItem( $record, $renderer, true );
 		}
 		
@@ -217,12 +217,12 @@ class CPManagerDb {
         
 		$rs = sql_query($query, $this->dbconn);
 		if( $rs === FALSE ) {
-			echo '<!-- Generic db error: '.mysql_error($this->dbconn)." [$query] -->";
-			$this->setError(SPSCORM_E_DB_ERROR, 'Generic db error: '.mysql_error($this->dbconn) );
+			echo '<!-- Generic db error: '.sql_error($this->dbconn)." [$query] -->";
+			$this->setError(SPSCORM_E_DB_ERROR, 'Generic db error: '.sql_error($this->dbconn) );
 			return FALSE;
 		} 
 		
-		if( mysql_num_rows($rs) == 0 ) {
+		if( sql_num_rows($rs) == 0 ) {
 			$itemInfo['isLeaf'] = TRUE;
 			// debug echo "<!-- Organization is leaf [$query] -->";
 		} else {
@@ -232,11 +232,11 @@ class CPManagerDb {
 
 		$renderer->RenderStartItem(	$this, $itemInfo );
 		
-		$subrecord = mysql_fetch_assoc($rs);
+		$subrecord = sql_fetch_assoc($rs);
 		
 		while( $subrecord ) {
 			
-			$nextRecord = mysql_fetch_assoc($rs);
+			$nextRecord = sql_fetch_assoc($rs);
 			
 			/* pass the info about the last element */
 			if( $nextRecord === FALSE )

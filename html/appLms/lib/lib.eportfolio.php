@@ -579,7 +579,7 @@ class Man_Eportfolio {
 		WHERE id_portfolio = '".$id_portfolio."' 
 			AND id_user = '".$id_user."' ";
 		if(!$re_curriculum = $this->_query($query)) return false;
-		if(mysql_num_rows($re_curriculum) == 0) return false;
+		if(sql_num_rows($re_curriculum) == 0) return false;
 		
 		$row = sql_fetch_row($re_curriculum);
 		return $row;
@@ -609,11 +609,11 @@ class Man_Eportfolio {
 		WHERE id_portfolio = '".$id_portfolio."' 
 			AND id_user = '".$id_user."' ";
 		if(!$re_curriculum = $this->_query($sel_query)) {
-			die('table problem '.mysql_error());	
+			die('table problem '.sql_error());
 			return false;
 		}
 		
-		if(!mysql_num_rows($re_curriculum)) {
+		if(!sql_num_rows($re_curriculum)) {
 		
 			$query = "
 			INSERT INTO ".$this->getTableCurriculum()." 
@@ -680,7 +680,7 @@ class Man_Eportfolio {
 		WHERE id_pdp = '".$id_pdp."'";
 		if(!$re_epf = $this->_query($query)) return $data;
 		
-		return mysql_fetch_assoc($re_epf);
+		return sql_fetch_assoc($re_epf);
 	}
 	
 	/**
@@ -919,7 +919,7 @@ class Man_Eportfolio {
 		
 		if(!$re_pdp = $this->_query($query)) return $data;
 		
-		$data = mysql_fetch_array($re_pdp);
+		$data = sql_fetch_array($re_pdp);
 		return $data;
 	}
 	
@@ -1525,7 +1525,7 @@ class Man_Eportfolio {
 			(	'".$id_presentation."',
 				'".$id_user."',
 				'".$add."' )";
-				echo mysql_error();
+				echo sql_error();
 			$result &= $this->_query($query);
 		}
 		while(list(, $del) = each($to_del)) {
@@ -1549,7 +1549,7 @@ class Man_Eportfolio {
 			AND id_user = '".$id_user."'";
 		$re_attach = $this->_query($query);
 		if(!$re_attach) return $files;
-		if(!mysql_num_rows($re_attach)) return $files;
+		if(!sql_num_rows($re_attach)) return $files;
 		
 		while(list($id) = sql_fetch_row($re_attach)) {
 			
@@ -1593,7 +1593,7 @@ class Man_Eportfolio {
 		WHERE id_presentation = '".$id_presentation."'
 			AND recipient_mail = '".$email."'";
 		$re_invite = $this->_query($query);
-		if(mysql_num_rows($re_invite)) {
+		if(sql_num_rows($re_invite)) {
 			
 			$query = "
 			UPDATE ".$this->getTablePresentationInvite()."  
@@ -1634,7 +1634,7 @@ class Man_Eportfolio {
 		WHERE id_presentation = '".$id_presentation."'
 			AND security_code = '".$security_code."'";
 		$re_invite = $this->_query($query);
-		if(mysql_num_rows($re_invite)) return true;
+		if(sql_num_rows($re_invite)) return true;
 		return false;
 	}
 }
@@ -1742,7 +1742,7 @@ class EpfShowPresentation {
 		
 		$re_pdp = $this->man_epf->getQueryPdpOfEportfolio($this->id_portfolio);
 		
-		if(!$re_pdp || !mysql_num_rows($re_pdp)) return $html;
+		if(!$re_pdp || !sql_num_rows($re_pdp)) return $html;
 		
 		// print presentation -------------------------------------------------------------
 				
@@ -1755,7 +1755,7 @@ class EpfShowPresentation {
 		while($row = sql_fetch_row($re_pdp)) {
 			
 			$re_pdp_answer 	= $this->man_epf->getQueryPdpUserAnswer($row[PDP_ID], getLogUserId());
-			$num_answer 	= mysql_num_rows($re_pdp_answer);
+			$num_answer 	= sql_num_rows($re_pdp_answer);
 			
 			$html .= '<div class="pdp_question_display">';
 			

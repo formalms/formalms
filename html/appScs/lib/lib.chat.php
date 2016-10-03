@@ -83,7 +83,7 @@ class ChatManager {
 		ORDER BY userid";
 		$users_q = sql_query($users_qtxt);
 
-		while($row = mysql_fetch_array($users_q)) {
+		while($row = sql_fetch_array($users_q)) {
 			$res[] = $row["userid"];
 		}
 		return $res;

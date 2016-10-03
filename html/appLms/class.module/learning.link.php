@@ -114,8 +114,8 @@ class Learning_Link extends Learning_Object {
 		//insert new item
 		$query_ins = "
 		INSERT INTO ".$GLOBALS['prefix_lms']."_link_cat
-		SET title = '".mysql_escape_string($title)."',
-			description = '".mysql_escape_string($descr)."',
+		SET title = '".sql_escape_string($title)."',
+			description = '".sql_escape_string($descr)."',
 			author = '".$author."'";
 		if(!sql_query($query_ins)) return false;
 		list($idCat) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
@@ -130,10 +130,10 @@ class Learning_Link extends Learning_Object {
 			$query_ins = "
 			INSERT INTO ".$GLOBALS['prefix_lms']."_link
 			SET idCategory = '".$idCat."',
-				title = '".mysql_escape_string($title)."',
-				link_address = '".mysql_escape_string($link_a)."',
-				keyword = '".mysql_escape_string($keyword)."',
-				description = '".mysql_escape_string($description)."',
+				title = '".sql_escape_string($title)."',
+				link_address = '".sql_escape_string($link_a)."',
+				keyword = '".sql_escape_string($keyword)."',
+				description = '".sql_escape_string($description)."',
 				sequence = '".$seq."'";
 			if(!sql_query($query_ins)) {
 				$this->del( $idCat );

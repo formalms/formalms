@@ -25,7 +25,7 @@ function field_create($type_field, $back) {
 	SELECT type_file, type_class 
 	FROM ".$GLOBALS['prefix_fw']."_customfield_type 
 	WHERE type_field = '".$type_field."'");
-	if( !mysql_num_rows($re_quest) ) return;
+	if( !sql_num_rows($re_quest) ) return;
 	list($type_file, $type_class) = sql_fetch_row($re_quest);
 	
 	require_once($GLOBALS['where_framework'].'/modules/customfield/'.$type_file);
@@ -42,7 +42,7 @@ function field_edit($type_field, $id_field, $back) {
 	SELECT type_file, type_class 
 	FROM ".$GLOBALS['prefix_fw']."_customfield_type 
 	WHERE type_field = '".$type_field."'");
-	if( !mysql_num_rows($re_quest) ) return;
+	if( !sql_num_rows($re_quest) ) return;
 	list($type_file, $type_class) = sql_fetch_row($re_quest);
 	
 	require_once($GLOBALS['where_framework'].'/modules/customfield/'.$type_file);
@@ -60,7 +60,7 @@ function field_del($type_field, $id_field, $back) {
 	SELECT type_file, type_class 
 	FROM ".$GLOBALS['prefix_fw']."_customfield_type 
 	WHERE type_field = '".$type_field."'");
-	if( !mysql_num_rows($re_quest) ) return;
+	if( !sql_num_rows($re_quest) ) return;
 	list($type_file, $type_class) = sql_fetch_row($re_quest);
 	
 	require_once($GLOBALS['where_framework'].'/modules/customfield/'.$type_file);
@@ -76,7 +76,7 @@ function field_specialop($type_field, $id_field, $back) {
 	SELECT type_file, type_class 
 	FROM ".$GLOBALS['prefix_fw']."_customfield_type 
 	WHERE type_field = '".$type_field."'");
-	if( !mysql_num_rows($re_quest) ) return;
+	if( !sql_num_rows($re_quest) ) return;
 	list($type_file, $type_class) = sql_fetch_row($re_quest);
 	
 	require_once($GLOBALS['where_framework'].'/modules/customfield/'.$type_file);

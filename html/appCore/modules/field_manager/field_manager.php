@@ -91,7 +91,7 @@ function field_list() {
 			"" )."
 	ORDER BY sequence";
 	$re_field_display = sql_query($query_field_display);
-	$all_fields = mysql_num_rows($re_field_display);
+	$all_fields = sql_num_rows($re_field_display);
 
 	$img_up = '<img class="valing-middle" src="'.getPathImage().'standard/up.png" alt="'.$std_lang->def('_MOVE_UP').'" />';
 	$img_down = '<img class="valing-middle" src="'.getPathImage().'standard/down.png" alt="'.$std_lang->def('_MOVE_DOWN').'" />';
