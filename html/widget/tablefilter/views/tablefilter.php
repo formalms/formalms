@@ -15,9 +15,24 @@
 				echo Form::getButton($id."_filter_reset", "filter_reset", Lang::t('_RESET', 'standard'), "reset_b");
 				*/ ?>
 			<?php $str_search = Lang::t("_SEARCH", 'standard'); ?>
+            
+            <?php $str_elearning = Lang::t("_COURSE_TYPE_ELEARNING", 'course'); ?>
+            <?php $str_classroom = Lang::t("_BUILDING_ROOM", 'classroom'); ?>
+            
 			<div class="navbar-form form-group">
 				<!-- <span class="navbar-text">Filtra:</span> -->
+
+
+                <select id="course_search_filter_type" class="form-control" name="filter_type">
+                    <option value="" selected="selected"><?php echo  Lang::t("_ALL", 'standard'); ?></option>
+                    <option value="elearning"><?php echo $str_elearning; ?></option>
+                    <option value="classroom"><?php echo $str_classroom; ?></option>
+                </select>
+
+
+
 				<?php echo $auxiliary_filter ? $auxiliary_filter : ""; ?>
+                
 				<div class="input-group">
 					<?php echo Form::getInputTextfield("form-control", $id."_filter_text", "filter_text", $filter_text, '', 255, 'placeholder='.$str_search ); ?>
 					<div class="input-group-btn">

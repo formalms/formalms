@@ -1,4 +1,4 @@
- 
+ <link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>font-awesome/css/font-awesome.min.css" />
  <script type="text/javascript">
     YAHOO.util.Event.onDOMReady(function() {
         initialize("<?php echo Lang::t('_UNDO', 'standard'); ?>");
@@ -32,14 +32,14 @@
 <div class="main">
     <div id="cbp-vm" class="cbp-vm-switcher cbp-vm-view-grid">
         <div class="cbp-vm-options">
-            <a href="#"  data-view="cbp-vm-view-grid"><span class='glyphicon glyphicon-th'></span></a> 
-            <a href="#"  data-view="cbp-vm-view-list"><span class='glyphicon glyphicon-align-justify'></span></a>
+            <a href="#"  data-view="cbp-vm-view-grid"><span class='glyphicon glyphicon-th cat'></span></a> 
+            <a href="#"  data-view="cbp-vm-view-list"><span class='glyphicon glyphicon-align-justify cat'></span></a>
         </div>
                  
             <ul >
             
     <?php
-//	    echo   $html
+//        echo   $html
   
   
 
@@ -305,8 +305,9 @@
         $arr_cat = $smodel->getMinorCategoryTree((int)$row['idCategory']);
         
         
-        if($row['course_type']=="elearning") $img_type =  "<img src='".Layout::path()."images/lobject/scormorg.gif'>";
-        if($row['course_type']=="classroom") $img_type = "<img src='".Layout::path()."images/course/classroom-cal.png'>";
+        if($row['course_type']=="elearning") $img_type = "<span class='elearning'><i class='fa fa-graduation-cap'></i>&nbsp;E-learning</span>
+";
+        if($row['course_type']=="classroom") $img_type = "<span class='classroom'><i class='fa fa-university'></i>&nbsp;Classroom</span>";
         // start - end 
         
         $str_start_end ="";
@@ -336,7 +337,9 @@
         if($data_end != "0000-00-00" &&  $data_end      < date('Y-m-d') ) $can_enter_end = false;
 
         if($data_inizio != "0000-00-00"  || $data_fine != "0000-00-00" ) $str_can_enter = ($can_enter_star && $can_enter_end);
-        if($data_inizio == "0000-00-00"  && $data_fine == "0000-00-00" ) $str_can_enter = true;        
+        if($data_inizio == "0000-00-00"  && $data_fine == "0000-00-00" ) $str_can_enter = true;   
+        $data_inizio_format = Format::date($data_inizio, 'date'); 
+        $data_end_format = Format::date($data_end, 'date');   
                 
         
         
@@ -344,9 +347,20 @@
                   
                         <li>
                                         <div class="cbp-vm-image" >
+                                        <div class="area1 course-cover cat"> 
+                                        
+                                         <a href="#">
+                                         <div class="area2 cat" >
+                                         <h1 class="cat">'.$row['name'].'</h1>
+                                         <div class="icon cat">&raquo;</div>
+                                         <div style="clear:both;"></div>
+                                         <p class="course_support_info1">
+                             <p class="descrizione_corso cat">'.$row['description'].'</p>
+                             <p class="tipo_corso">'.$img_type.'</p>
+                                         </div>
                                                             '
-                                                            .($row['use_logo_in_courselist'] && $row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.$path_course.$row['img_course'].'" alt="'.Util::purge($row['name']).'" /></div>' : '')
-                                                            .($row['use_logo_in_courselist'] && !$row['img_course'] ? '<div class="logo_container"><img class="group list-group-image" src="'.Get::tmpl_path().'images/course/course_nologo.png'.'" alt="'.Util::purge($row['name']).'" /></div>' : '')                         
+                                                            .($row['use_logo_in_courselist'] && $row['img_course'] ? '<img class="group list-group-image" src="'.$path_course.$row['img_course'].'" alt="'.Util::purge($row['name']).'" />' : '')
+                                                            .($row['use_logo_in_courselist'] && !$row['img_course'] ? '<img class="group list-group-image" src="'.Get::tmpl_path().'images/course/course_nologo.png'.'" alt="'.Util::purge($row['name']).'" />' : '')                         
                                                             .
                                                            '
                                                            
@@ -354,43 +368,72 @@
                                                     '.($row['code'] ? '<i style="font-size:.68em">['.$row['code'].']</i>' : '&nbsp;').'                  
                                                      -->
                                                     
-                                                    
+                                              </a>  
+                                              </div>    
                                         </div>
-                                        '.$img_type.'
+                                        
+                                        
+                                        
                                     
-                                        <h3 class="cbp-vm-title">'.$row['name'].'<br><br> <font style="color:#FFFFFF;background-color:#C84000;">'.$arr_cat[$row['idCategory']]['name'].'</font> </h3> 
-                                        '.$str_lock_start.' 
-                                        '.$str_lock_end.'  
+                                        
+                                        
+                                        '.($arr_cat[$row['idCategory']]['name'] != "" ? '<div class="categoria_corso cat"><a href="#" class="tooltips" title="CATEGORIA DEL CORSO"><i class="fa fa-folder-open-o" aria-hidden="true"></i> </a><span class="categoria_corso_nome"> '.$arr_cat[$row['idCategory']]['name'].'</span> </div>  
+<div style="clear:both"></div> ' : '') 
+
+.($arr_cat[$row['idCategory']]['name'] == "" ? '<div class="categoria_corso cat"><a href="#" class="tooltips" title="CATEGORIA DEL CORSO"><i class="fa fa-folder-open-o" aria-hidden="true"></i> </a><span class="categoria_corso_nome"> '.Lang::t('_NO_CATEGORY', 'standard').'</span> </div>  
+<div style="clear:both"></div> ' : '') .'
+
+                   <div class="edizioni_cal cat">
+                                        
+                                        '.($data_inizio != "0000-00-00"  && $data_end != "0000-00-00" ? '
+                                        <a href="#" class="tooltips" id="classe_data_start" title="INIZIO"><div class="edizioni_start cat"><i class="fa  fa-2x fa-calendar-check-o" aria-hidden="true"></i>'.$data_inizio_format.' </a></div>
+                                        <a href="#" class="tooltips" id="classe_data_end" title="FINE"><div class="edizioni_end cat"><i class="fa fa-2x fa-calendar-times-o" aria-hidden="true"></i>'.$data_end_format.' </a></div>
+                                        <div style="clear:both"></div>' : '')
+                                        
+                                        
+.($data_inizio == "0000-00-00"  && $data_end == "0000-00-00" ? '' : '') 
+                                        
+.($data_inizio != "0000-00-00"  && $data_end == "0000-00-00" ? '
+                                        <a href="#" class="tooltips" id="classe_data_start" title="INIZIO"><div class="edizioni_start cat"><i class="fa  fa-2x fa-calendar-check-o" aria-hidden="true"></i>'.$data_inizio_format.' </a></div><div style="clear:both"></div>' : '')
+                                        
+.($data_inizio == "0000-00-00"  && $data_end != "0000-00-00" ? '
+                                        <a href="#" class="tooltips" id="classe_data_end" title="FINE"><div class="edizioni_end cat"><i class="fa  fa-2x fa-calendar-check-o" aria-hidden="true"></i>'.$data_end_format.' </a></div><div style="clear:both"></div>' : '')  .
+                                                           '
+                                                           
+                   </div>
+                                        
+                                
+                                        
+                                        
+                                         
                  
                                          <!-- DATE START - DATE END  -->
                                          
                                          
                                           
-                                        <div class="cbp-vm-details">  &nbsp
-                                                     '.$row['description'].' 
+                                         <div class="box_edizioni cat">
+                                               <div class="edizioni cat">
+                                                 <div class="edizioni_nome cat">
+                                                 '.Lang::t('_COURSE_DEMO', 'course').'
+                                                 </div>  
+                                                 <div class="luogo cat">  
                                         '.
-                                            ($row["course_demo"] ? '<a   href="index.php?r=catalog/downloadDemoMaterial&amp;course_id='.$row['idCourse'].'" class="ico-wt-sprite subs_download"><span>'.Lang::t('_COURSE_DEMO', 'course').'</span></a>' : '')
-                                        .'                                       
-                                                         
-                                        <br>
-                                        
-                                                            
-                                       
-                                       
-                                        </div>
+                                            ($row["course_demo"] ? '<a   href="index.php?r=catalog/downloadDemoMaterial&amp;course_id='.$row['idCourse'].'"><i class="fa fa-2x fa-download" aria-hidden="true"></i>&nbsp<span>DOWNLOAD</a>' : '')
+                                        .'  
+                                                 </div>                                     
+                                               </div>
+                                         </div>
                                             
                                          
                                           <div class="cbp-vm-add">                                   
-                                                <table   border=0 align=center  >
-                                                      <tr><td>  <br>';
+                                                <div>';
                                                       
                                                       
       if($str_can_enter==true &&  $row['status']!=CST_CONCLUDED)  $html .=    $action;
-          if($str_can_enter==false || $row['status']==CST_CONCLUDED)  $html .= "<img class='no_traform' src='". Get::tmpl_path().'images/standard/locked.png'."'>" ;   
+          if($str_can_enter==false || $row['status']==CST_CONCLUDED)  $html .= "<div class='lock cat'><i class='fa fa-3x fa-lock' aria-hidden='true'></i></div>" ;   
               
                                           
-             $html .= ' </td></tr>
-                             </table>     
+             $html .= ' </div>    
                      </div>                             
                         </li>';
                                                               

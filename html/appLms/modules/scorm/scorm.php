@@ -160,7 +160,7 @@ function insitem() {
 	$query = "INSERT INTO ".$GLOBALS['prefix_lms']."_scorm_package"
 			." (idpackage,idProg,path,defaultOrg,idUser,scormVersion) VALUES"
 			." ('".addslashes($cpm->identifier)
-			."','0','".$savefile.STRPOSTCONTENT
+			."','0','".str_replace("'", "\'", $savefile).STRPOSTCONTENT
 			."','".addslashes($cpm->defaultOrg)
 			."','".(int)getLogUserId()
 			."','".$cpm->scorm_version

@@ -144,8 +144,12 @@
 		var i, tabs = tabView.get("tabs"), activeTab = tabView.get("activeTab");
 		var ft = YAHOO.util.Dom.get("course_search_filter_text").value;
 		var fy = YAHOO.util.Dom.get("course_search_filter_year").value;
+        
+        // aggiunta filtro tipo corso 
+        var ftype = YAHOO.util.Dom.get("course_search_filter_type").value;
+                 
 		for (i=0; i<tabs.length; i++) {
-			tabs[i].set("postData", "filter_text="+ft+"&filter_year="+fy);
+			tabs[i].set("postData", "filter_text="+ft+"&filter_year="+fy + "&filter_type=" + ftype);
 			tabs[i].set("cacheData", false);
 		}
 		tabView.selectTab( tabView.getTabIndex(activeTab) );
