@@ -179,7 +179,8 @@ class ElearningLmsController extends LmsController {
 
 		$filter_text = Get::req('filter_text', DOTY_STRING, "");
 		$filter_year = Get::req('filter_year', DOTY_INT, 0);
-
+        $filter_type = Get::req('filter_type', DOTY_STRING, "");
+        
 		$conditions = array(
 			'cu.iduser = :id_user',
 			'cu.status = :status'
@@ -200,8 +201,12 @@ class ElearningLmsController extends LmsController {
 			$params[':year'] = $filter_year;
 		}
 
-		$courselist = $model->findAll($conditions, $params);
 
+      // filtro per tipo corso elearning
+        if (empty($filter_type) || $filter_type=="elearning") {    
+            $courselist = $model->findAll($conditions, $params);
+        }        
+        
 		//check courses accessibility
 		$keys = array_keys($courselist);
 		for ($i=0; $i<count($keys); $i++) {
@@ -242,7 +247,9 @@ class ElearningLmsController extends LmsController {
             $conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
         }
 
-        $courselistClassroom = $modelClassroom->findAll($conditions, $params);
+        if (empty($filter_type) || $filter_type=="classroom") { 
+            $courselistClassroom = $modelClassroom->findAll($conditions, $params);
+        }
 
 
         //check courses accessibility
@@ -264,7 +271,8 @@ class ElearningLmsController extends LmsController {
 			'keyword' => $filter_text  ,
             'display_info' => $this->_getClassDisplayInfo($keys),
             'courselistClassroom' => $courselistClassroom ,
-            'stato_corso' => "new_task"
+            'stato_corso' => "new_task" ,
+            'filter_type' => $filter_type
 		));
 	}
 
@@ -470,19 +478,7 @@ class ElearningLmsController extends LmsController {
 
 		$filter_text = Get::req('filter_text', DOTY_STRING, "");
 		$filter_year = Get::req('filter_year', DOTY_INT, 0);
-
-        /*
-		$conditions = array(
-			'cu.iduser = :id_user',
-			'cu.status <> :status'
-		);
-
-		$params = array(
-			':id_user' => (int)Docebo::user()->getId(),
-			':status' => _CUS_END
-		);
-        */
-
+        $filter_type = Get::req('filter_type', DOTY_STRING, "");
 
         $conditions = array(
             'cu.iduser = :id_user'
@@ -503,9 +499,11 @@ class ElearningLmsController extends LmsController {
 			$params[':year'] = $filter_year;
 		}
 
-
-		$courselist = $model->findAll($conditions, $params);
-
+        // filtro per tipo corso elearning
+        if (empty($filter_type) || $filter_type=="elearning") {    
+		    $courselist = $model->findAll($conditions, $params);
+        }
+        
         //check courses accessibility
         $keys = array_keys($courselist);
         for ($i=0; $i<count($keys); $i++) {
@@ -546,8 +544,10 @@ class ElearningLmsController extends LmsController {
             $conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
         }
 
-        $courselistClassroom = $modelClassroom->findAll($conditions, $params);
-
+        // filtro per tipo corso classroom
+        if (empty($filter_type) || $filter_type=="classroom") {   
+            $courselistClassroom = $modelClassroom->findAll($conditions, $params);
+        }
 
         //check courses accessibility
         $keys = array_keys($courselistClassroom);
@@ -568,7 +568,8 @@ class ElearningLmsController extends LmsController {
 			'levels' => $this->levels,
             'display_info' => $this->_getClassDisplayInfo($keys),
             'courselistClassroom' => $courselistClassroom ,
-            'stato_corso' => "all_task"
+            'stato_corso' => "all_task" ,
+            'filter_type' => $filter_type
 		));
 	}
 

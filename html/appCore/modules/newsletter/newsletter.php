@@ -387,7 +387,7 @@ function init_send() {
 
 
 	$qtxt ="INSERT INTO ".$GLOBALS["prefix_fw"]."_newsletter (sub, msg, fromemail, language, send_type, stime, file) ";
-	$qtxt.="VALUES ('".$sub."', '".$msg."', '".$fromemail."', '".$lang_selected."', '".$send_type."', NOW(), '".$json->encode($savefile)."')";
+	$qtxt.="VALUES ('".$sub."', '".$msg."', '".$fromemail."', '".$lang_selected."', '".$send_type."', NOW(), '".str_replace("'", "\'", $json->encode($savefile))."')";
 	$q=sql_query($qtxt); //echo sql_error();
 
 	$qtxt="SELECT LAST_INSERT_ID() as last_id FROM ".$GLOBALS["prefix_fw"]."_newsletter";

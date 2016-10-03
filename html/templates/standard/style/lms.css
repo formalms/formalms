@@ -86,9 +86,12 @@ div.kb_res_list div.line div.tags{font-size:90%;margin-top:0.6em;}
 .games_chart{float:right;text-align:center;}
 .games_chart #standings_chart{width:400px;height:250px;}
 .edition_container .edition_subscribe, .catalog_action{min-width:190px;text-align:center;background:#f5f5f5;font-size:90%; color:#000000}
-.subscribed{padding:2px 4px;background:#eeeeee;border:1px solid #666666;}
-.edition_container .edition_subscribe a p,  .can_subscribe{padding:2px 4px;background:#ddffdd;border:1px solid #009900;}
-.cannot_subscribe{padding:2px 4px;background:#ffffcc;border:1px solid #ffcc33; color:#000000}
+.subscribed{padding:10px;background:#c84000;color:#fff;text-transform: uppercase;}
+.subscribed:before {  content: "\f061";position: absolute;right:4em;padding: 0 1px;font-family: FontAwesome;-webkit-transform: translateZ(0);transform: translateZ(0);}
+.edition_container .edition_subscribe a p,  .can_subscribe{padding: 10px;background: #1bac2c;color: #fff;text-transform: uppercase;font-weight:400}
+.edition_container .edition_subscribe a p:before,  .can_subscribe:before { content: "\f061";position: absolute;right:4em;padding: 0 1px;font-family: FontAwesome;-webkit-transform:translateZ(0);
+    transform: translateZ(0);}
+.cannot_subscribe{padding: 5px;background: rgb(234, 216, 88);color: rgb(255, 255, 255);text-transform: uppercase;font-weight:400}
 #statistic_chart{width:80%;height:250px;margin:0 auto;}
 #tag_cloud{margin:0 1em 1em;}
 #tag_cloud .yui-content{background:#ffffff;}
