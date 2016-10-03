@@ -39,16 +39,13 @@ class DbConn {
 	 */
 	public function __construct() {}
 
-    /**
-     * This function return the current instance for the class, if it's the first
-     * time that is called it will instance the class
-     * @param bool $link
-     * @return bool|DbConn
-     */
-	public static function &getInstance($link=false) {
-        if ($link){
-            return $link;
-        }
+	/**
+	 * This function return the current instance for the class, if it's the first
+	 * time that is called it will instance the class
+	 * @return DbConn
+	 */
+	public static function &getInstance() {
+
 		if(self::$instance == NULL) {
 
 			$db_type = Get::cfg('db_type', ( function_exists('mysqli_connect') ? 'mysqli' : 'mysql' ) );
@@ -244,16 +241,12 @@ class DbConn {
 	 */
 	public function fetch_array($resource) {}
 
-    /**
-     * Get a result row as an object
-     *
-     * @param $resource resource_id
-     * @param null $class_name
-     * @param null $params
-     * @param bool $conn
-     * @return Object
-     */
-	public function fetch_obj($resource, $class_name=null, $params=null, $conn=false) {}
+	/**
+	 * Get a result row as an object
+	 * @return Object
+	 * @param $resource resource_id
+	 */
+	public function fetch_obj($resource) {}
 
 	/**
 	 * Retrieves the number of rows from a result set
@@ -265,8 +258,9 @@ class DbConn {
 	/**
 	 * Retrieves the number of rows from a result set
 	 * @return int
+	 * @param $resource resource_id
 	 */
-	public function affected_rows() {}
+	public function affected_rows($resource) {}
 
 	/**
 	 * Begin a transaction
@@ -317,7 +311,6 @@ class DbConn {
 
     /**
      * Will free all memory associated with the result identifier result.
-     * @param $res
      * @return string
      */
     public function free_result($res) {}
@@ -342,40 +335,28 @@ class DbConn {
 
     /**
      * data_seek info todo:edit
-     * @param $result
-     * @param $row_number
      * @return string
      */
-    public function data_seek($result, $row_number){}
+    public function data_seek(){}
 
     /**
      * field_seek info todo:edit
-     * @param $result
-     * @param $fieldnr
      * @return string
      */
-    public function field_seek($result, $fieldnr){}
+    public function field_seek(){}
 
     /**
-     * num_field info todo:edit
-     * @param $res
-     * @return string
-     */
-    public function num_fields($res){}
+	 * num_field info todo:edit
+	 * @return string
+	 */
+    public function num_fields(){}
 
     /**
-     * fetch_field info todo:edit
-     * @param $result
-     * @return string
-     */
-    public function fetch_field($result){}
+	 * fetch_field info todo:edit
+	 * @return string
+	 */
+    public function fetch_field(){}
 
-    /**
-     * escape_string info todo:edit
-     * @param $res
-     * @return string
-     */
-    public function escape_string($res){}
 
     /**
 	 * real_escape_string info todo:edit
@@ -396,14 +377,14 @@ class DbConn {
 
 function sql_query($query, $conn = false) {
 
-	$db = DbConn::getInstance($conn);
+	$db = DbConn::getInstance();
 	$re = $db->query($query);
 
 	return $re;
 }
 function sql_limit_query($query, $from, $results, $conn = false) {
 
-	$db = DbConn::getInstance($conn);
+	$db = DbConn::getInstance();
 	$re = $db->query_limit($query, $from, $results);
 
 	return $re;
@@ -411,7 +392,7 @@ function sql_limit_query($query, $from, $results, $conn = false) {
 
 function sql_insert_id($conn = false) {
 
-	$db = DbConn::getInstance($conn);
+	$db = DbConn::getInstance();
 	$re = $db->insert_id();
 
 	return $re;
@@ -419,7 +400,7 @@ function sql_insert_id($conn = false) {
 
 function sql_num_rows($res, $conn = false) {
 
-	$db = DbConn::getInstance($conn);
+	$db = DbConn::getInstance();
 	$re = $db->num_rows($res);
 
 	return $re;
@@ -427,7 +408,7 @@ function sql_num_rows($res, $conn = false) {
 
 function sql_fetch_row($res, $conn = false) {
 
-	$db = DbConn::getInstance($conn);
+	$db = DbConn::getInstance();
 	$re = $db->fetch_row($res);
 
 	return $re;
@@ -435,7 +416,7 @@ function sql_fetch_row($res, $conn = false) {
 
 function sql_fetch_assoc($res, $conn = false) {
 
-	$db = DbConn::getInstance($conn);
+	$db = DbConn::getInstance();
 	$re = $db->fetch_assoc($res);
 
 	return $re;
@@ -443,23 +424,23 @@ function sql_fetch_assoc($res, $conn = false) {
 
 function sql_fetch_array($res, $conn = false) {
 
-	$db = DbConn::getInstance($conn);
+	$db = DbConn::getInstance();
 	$re = $db->fetch_array($res);
 
 	return $re;
 }
 
-function sql_fetch_object($res, $class_name=null, $params=null, $conn = false) {
+function sql_fetch_object($res, $conn = false) {
 
-	$db = DbConn::getInstance($conn);
-	$re = $db->fetch_obj($res, $class_name, $params);
+	$db = DbConn::getInstance();
+	$re = $db->fetch_obj($res);
 
 	return $re;
 }
 
 function  sql_escape_string($res, $conn = false)
 {
-	$db = DbConn::getInstance($conn);
+	$db = DbConn::getInstance();
 	$re = $db->escape_string($res);
 
 	return $re;
@@ -471,7 +452,7 @@ function  sql_error(){
     return $re;
 }
 
-function sql_free_result($res){
+function sql_free_result($res, $conn = false){
     $db = DbConn::getInstance();
     $re = $db->free_result($res);
     return $re;
@@ -489,9 +470,9 @@ function sql_get_server_info(){
     return $re;
 }
 
-function sql_data_seek($result, $row_number){
+function sql_data_seek(){
     $db = DbConn::getInstance();
-    $re = $db->data_seek($result, $row_number);
+    $re = $db->data_seek();
     return $re;
 }
 
@@ -506,19 +487,19 @@ function sql_affected_rows(){
     $re = $db->affected_rows();
     return $re;
 }
-function sql_field_seek($result, $fieldnr){
+function sql_field_seek(){
     $db = DbConn::getInstance();
-    $re = $db->field_seek($result, $fieldnr);
+    $re = $db->field_seek();
     return $re;
 }
-function sql_num_field($res){
+function sql_num_field(){
     $db = DbConn::getInstance();
-    $re = $db->num_field($res);
+    $re = $db->num_field();
     return $re;
 }
-function sql_fetch_field($result){
+function sql_fetch_field(){
     $db = DbConn::getInstance();
-    $re = $db->fetch_field($result);
+    $re = $db->fetch_field();
     return $re;
 }
 function sql_real_escape_string(){

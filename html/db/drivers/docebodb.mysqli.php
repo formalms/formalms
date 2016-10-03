@@ -87,9 +87,9 @@ class mysqli_DbConn extends DbConn {
 		return 'NULL';
 	}
 
-	public function escape($escapestr) {
+	public function escape($data) {
 
-		return mysqli_real_escape_string($this->conn, $escapestr);
+		return mysqli_real_escape_string($data, $this->conn);
 	}
 
 	public function query($query) {
@@ -125,7 +125,7 @@ class mysqli_DbConn extends DbConn {
 
 		if($this->debug) $start_at = $this->get_time();
 
-		$re = mysqli_query($this->conn, $parsed_query);
+		$re = mysqli_query($parsed_query, $this->conn);
 
 		if($this->debug) $this->query_log( $parsed_query, ($this->get_time() - $start_at) );
 
@@ -137,44 +137,35 @@ class mysqli_DbConn extends DbConn {
 		return mysqli_insert_id($this->conn);
 	}
 
-	public function fetch_row($result) {
+	public function fetch_row($resource) {
 
-		if(!$result) return false;
-		return mysqli_fetch_row($result);
+		if(!$resource) return false;
+		return mysqli_fetch_row($resource);
 	}
 
-	public function fetch_assoc($result) {
+	public function fetch_assoc($resource) {
 
-		if(!$result) return false;
-		return mysqli_fetch_assoc($result);
+		if(!$resource) return false;
+		return mysqli_fetch_assoc($resource);
 	}
 
-	public function fetch_array($result) {
+	public function fetch_array($resource) {
 
-		if(!$result) return false;
-		return mysqli_fetch_array($result);
+		if(!$resource) return false;
+		return mysqli_fetch_array($resource);
 	}
 
-	public function fetch_obj($result, $class_name=null, $params=null) {
+	public function fetch_obj($resource) {
 
-		if(!$result) return false;
-		if ($params){
-			return mysqli_fetch_object($result, $class_name, $params);
-		}
-		if ($class_name){
-			return mysqli_fetch_object($result, $class_name);
-		}
-		return mysqli_fetch_object($result);
+		if(!$resource) return false;
+		return mysqli_fetch_object($resource);
 	}
 
-	public function num_rows($result) {
+	public function num_rows($resource) {
 
-		if(!$result) return false;
-		return mysqli_num_rows($result);
-	}
 
-	public function affected_rows() {
-		return mysqli_affected_rows($this->conn);
+		if(!$resource) return false;
+		return mysqli_num_rows($resource);
 	}
 
 	public function errno() {
@@ -187,40 +178,42 @@ class mysqli_DbConn extends DbConn {
 		return mysqli_error($this->conn);
 	}
 
-	public function free_result($result) {
-		return mysqli_free_result($result);
+	public function free_result($resource) {
+		return mysqli_free_result($resource);
 	}
 
 	public function get_client_info() {
-		return mysqli_get_client_info($this->conn);
+		return mysqli_get_client_info();
 	}
 
-	public function get_server_info(){
-		return mysqli_get_server_info($this->conn);
+	public function get_server_info($resource){
+		return mysqli_get_server_info($resource);
 	}
 
-	public function data_seek($result, $offset){
-		return mysqli_data_seek($result, $offset);
+	public function data_seek($resource, $row_number){
+		return mysqli_data_seek($resource, $row_number);
 	}
 
-	public function field_seek($result, $fieldnr){
-		return mysqli_field_seek($result, $fieldnr);
+	public function field_seek($resource, $row_number){
+		return mysqli_field_seek($resource, $row_number);
 	}
 
-	public function num_fields($result){
-		return mysqli_num_fields($result);
+	public function num_fields($resource){
+		return mysqli_num_fields($resource);
 	}
 
-	public function fetch_field($result){
-		return mysqli_fetch_field($result);
+	public function fetch_field($resource){
+		return mysqli_fetch_field($resource);
 	}
 
-	public function escape_string($escapestring) {
-		return mysqli_real_escape_string($this->conn, $escapestring);
+	public function escape_string($resource,$escapestring) {
+
+		if(!$resource) return false;
+		return mysqli_real_escape_string($resource, $escapestring);
 	}
 
-	public function real_escape_string($escapestring){
-		return mysqli_real_escape_string($this->conn, $escapestring);
+	public function real_escape_string($resource, $escapestring){
+		return mysqli_real_escape_string($resource, $escapestring);
 	}
 
 	public function start_transaction() {
