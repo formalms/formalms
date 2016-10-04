@@ -1000,12 +1000,12 @@ while(i<lista.length)
 	}
 	</script>');
 
-	$sql="SELECT * FROM core_field";
-$filler="";
-$filler="<br>";
+    $sql = "SELECT * FROM core_field";
+    $filler = "";
+    $filler = "<br>";
     $result_quest = sql_query($sql) or die (sql_error());
-	while ($quests = sql_fetch_array($result_quest)){
-		$filler.="<input type=\'checkbox\' onclick=\'cambialink(".$quests['idField'].",this.checked)\' value=\'".$quests['idField']."\'>".$quests['translation']."<br>";
+    while ($quests = sql_fetch_array($result_quest)) {
+        $filler .= "<input type=\'checkbox\' onclick=\'cambialink(" . $quests['idField'] . ",this.checked)\' value=\'" . $quests['idField'] . "\'>" . $quests['translation'] . "<br>";
     }
     $filler .= "<input type=\'checkbox\' onclick=\'cambialink(9999,this.checked)\' value=\'999\'>" . $lang->def('_QUESTION_ANSWERED') . "<br>";
     $filler .= "<input type=\'checkbox\' onclick=\'cambialink(1999,this.checked)\' value=\'1999\'>" . $lang->def('_TOT_QUESTION') . "<br>";
@@ -2128,7 +2128,6 @@ function modscorm()
                     $info_report['id_source'])
 
 
-
                 . Form::getTextfield($lang->def('_WEIGHT'),
                     'weight',
                     'weight',
@@ -2975,80 +2974,79 @@ function export()
                                     break;
                                 default : {
                                     $csv .= ';"-"';
-							}
                                 }
                             }
-                        } else
-                            $csv .= ';"-"';
-                    };
-                        break;
-                    case "scoitem" : {
-                        $query_report = "
+                        }
+                    }
+                break;
+            case
+                "scoitem" : {
+                    $query_report = "
 						SELECT *
 						FROM " . $GLOBALS['prefix_lms'] . "_scorm_tracking
 						WHERE idscorm_item = '" . $info_report['id_source'] . "' AND idUser = '" . $idst_user . "'
 						";
-                        $report = sql_fetch_assoc(sql_query($query_report));
-                        if ($report['score_raw'] == NULL) $report['score_raw'] = "-";
+                    $report = sql_fetch_assoc(sql_query($query_report));
+                    if ($report['score_raw'] == NULL) $report['score_raw'] = "-";
 
-                        $id_track = (isset($report['idscorm_tracking']) ? $report['idscorm_tracking'] : 0);
-                        $query_report = "
+                    $id_track = (isset($report['idscorm_tracking']) ? $report['idscorm_tracking'] : 0);
+                    $query_report = "
 						SELECT *
 						FROM " . $GLOBALS['prefix_lms'] . "_scorm_tracking_history
 						WHERE idscorm_tracking = '" . $id_track . "'
 						";
 
-                        $query = sql_query($query_report);
-                        $num = sql_num_rows($query);
-                        $csv .= ';"' . $report['score_raw'] . '"';
+                    $query = sql_query($query_report);
+                    $num = sql_num_rows($query);
+                    $csv .= ';"' . $report['score_raw'] . '"';
 
-                    }
+                }
                         break;
                     case "activity" :
                     case "final_vote" : {
-                        $id_report = $info_report['id_report'];
-                        if (isset($reports_score[$id_report][$idst_user])) {
-                            switch ($reports_score[$id_report][$idst_user]['score_status']) {
-                                case "not_complete" :
-                                    $csv .= ';"-"';
-                                    break;
-                                case "valid"        : {
-                                    if ($reports_score[$id_report][$idst_user]['score'] >= $info_report['required_score']) {
-                                        if ($reports_score[$id_report][$idst_user]['score'] == $info_report['max_score']) {
-                                            $csv .= ';"' . $reports_score[$id_report][$idst_user]['score'] . '"';
-                                        } else $csv .= ';"' . $reports_score[$id_report][$idst_user]['score'] . '"';
-
-                                        // Count passed
-                                        if (!isset($report_details[$id_report]['passed'])) $report_details[$id_report]['passed'] = 1;
-                                        else $report_details[$id_report]['passed']++;
-                                    } else {
+                    $id_report = $info_report['id_report'];
+                    if (isset($reports_score[$id_report][$idst_user])) {
+                        switch ($reports_score[$id_report][$idst_user]['score_status']) {
+                            case "not_complete" :
+                                $csv .= ';"-"';
+                                break;
+                            case "valid"        : {
+                                if ($reports_score[$id_report][$idst_user]['score'] >= $info_report['required_score']) {
+                                    if ($reports_score[$id_report][$idst_user]['score'] == $info_report['max_score']) {
                                         $csv .= ';"' . $reports_score[$id_report][$idst_user]['score'] . '"';
+                                    } else $csv .= ';"' . $reports_score[$id_report][$idst_user]['score'] . '"';
 
-                                        // Count not passed
-                                        if (!isset($report_details[$id_report]['not_passed'])) $report_details[$id_report]['not_passed'] = 1;
-                                        else $report_details[$id_report]['not_passed']++;
-                                    }
-                                    if (isset($report_details[$id_report]['varianza']) && isset($report_details[$id_report]['averange'])) {
-                                        $report_details[$id_report]['varianza'] += round(pow(($reports_score[$id_report][$idst_user]['score'] - $report_details[$id_report]['averange']), 2), 2);
-                                    } else {
-                                        $report_details[$id_report]['varianza'] = round(pow(($reports_score[$id_report][$idst_user]['score'] - $report_details[$id_report]['averange']), 2), 2);
-                                    }
-                                };
-                                    break;
-                            }
-                        } else
-                            $csv .= ';"-"';
-                    };
+                                    // Count passed
+                                    if (!isset($report_details[$id_report]['passed'])) $report_details[$id_report]['passed'] = 1;
+                                    else $report_details[$id_report]['passed']++;
+                                } else {
+                                    $csv .= ';"' . $reports_score[$id_report][$idst_user]['score'] . '"';
+
+                                    // Count not passed
+                                    if (!isset($report_details[$id_report]['not_passed'])) $report_details[$id_report]['not_passed'] = 1;
+                                    else $report_details[$id_report]['not_passed']++;
+                                }
+                                if (isset($report_details[$id_report]['varianza']) && isset($report_details[$id_report]['averange'])) {
+                                    $report_details[$id_report]['varianza'] += round(pow(($reports_score[$id_report][$idst_user]['score'] - $report_details[$id_report]['averange']), 2), 2);
+                                } else {
+                                    $report_details[$id_report]['varianza'] = round(pow(($reports_score[$id_report][$idst_user]['score'] - $report_details[$id_report]['averange']), 2), 2);
+                                }
+                            };
+                                break;
+                        }
+                    } else
+                        $csv .= ';"-"';
+                };
                         break;
                 }
-            }
-            $csv .= "\n";
         }
+    $csv .= "\n";
+}
 
-    $file_name = date('YmdHis') . '_report_export.csv';
+$file_name = date('YmdHis') . '_report_export.csv';
 
-    require_once(_base_ . '/lib/lib.download.php');
-    sendStrAsFile($csv, $file_name);
+require_once(_base_ . '/lib/lib.download.php');
+sendStrAsFile($csv, $file_name);
 }
 
 function testQuestion()
@@ -3146,12 +3144,11 @@ function testQuestion()
     }
 
 
-
-	$query_track =	"SELECT idTrack"
-					." FROM ".$GLOBALS['prefix_lms']."_testtrack"
-					." WHERE idTest = '".$id_test."'"
-					." AND score_status = 'valid'"
-					." AND idUser in (".implode(",", $id_students).")";
+    $query_track = "SELECT idTrack"
+        . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack"
+        . " WHERE idTest = '" . $id_test . "'"
+        . " AND score_status = 'valid'"
+        . " AND idUser in (" . implode(",", $id_students) . ")";
 
     $result_track = sql_query($query_track);
 
@@ -3374,7 +3371,6 @@ function showchart()
 
 
 //------------------------------------------------------------------------------
-
 
 
 function coursereportDispatch($op)
