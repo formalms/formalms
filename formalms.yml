@@ -2,8 +2,14 @@ configuration:
   project_type: formalms
   run_composer: false
   shared_children:
-    - path: "html/files"
-      src: "html/files"
+    - path: "html/files/appCore"
+      src: "html/files/appCore"
+      type: "directory"
+    - path: "html/files/appLms"
+      src: "html/files/appLms"
+      type: "directory"
+    - path: "html/files/common"
+      src: "html/files/common"
       type: "directory"
   ignore:
     - ".git"
