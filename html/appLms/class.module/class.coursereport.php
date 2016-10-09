@@ -16,27 +16,16 @@ class Module_CourseReport extends LmsModule
 
     function loadBody()
     {
-
+        $op = $GLOBALS['op'];
         try {
 
-            switch ($GLOBALS['op']) {
+            $object_poll = new CoursereportLmsController();
+            $object_poll->$op();
 
-                case "coursereport" : {
-                    $object_poll = new CoursereportLmsController();
-                    $object_poll->$GLOBALS['op']();
-
-                };
-                    break;
-
-                default : {
-                    require_once($GLOBALS['where_lms'] . '/modules/' . $this->module_name . '/' . $this->module_name . '.php');
-                    coursereportDispatch($GLOBALS['op']);
-                }
-            }
         } catch (Exception $exception) {
 
             require_once($GLOBALS['where_lms'] . '/modules/' . $this->module_name . '/' . $this->module_name . '.php');
-            coursereportDispatch($GLOBALS['op']);
+            coursereportDispatch($op());
         }
     }
 
