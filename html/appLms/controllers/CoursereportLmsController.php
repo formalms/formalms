@@ -11,21 +11,22 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once(_base_.'/lib/lib.json.php');
+require_once(_base_ . '/lib/lib.json.php');
 
 
-class CoursereportLmsController extends LmsController {
+class CoursereportLmsController extends LmsController
+{
 
 
-	public function init() {
-		$this->model = new CoursestatsLms();
-		$this->json = new Services_JSON();
-		$this->permissions = array(
-			'view' => true,//checkPerm('view', true, 'coursestats')
-			'mod' => true
-		);
-	}
-
+    public function init()
+    {
+        $this->model = new CoursestatsLms();
+        $this->json = new Services_JSON();
+        $this->permissions = array(
+            'view' => true,//checkPerm('view', true, 'coursestats')
+            'mod' => true
+        );
+    }
 
 
     public function coursereport()
@@ -53,6 +54,9 @@ class CoursereportLmsController extends LmsController {
         // XXX: Find test from organization
         $org_tests =& $report_man->getTest();
         $tests_info = $test_man->getTestInfo($org_tests);
+
+        $courseReportModel = new CoursereportLms($_SESSION['idCourse']);
+
 
         // XXX: Find students
         /*
@@ -98,23 +102,35 @@ class CoursereportLmsController extends LmsController {
             $students_info[$idst] =& $acl_man->getUser( $idst, FALSE );
     */
 
-        $courseReportModel = new CoursereportLms($_SESSION['idCourse']);
-
+        $tot_report = $courseReportModel->getReportCount();
         // XXX: Info for updates
-        $tot_report = $courseReportModel->getTotalCourseReport();
+        $reportsArray = $courseReportModel->getReportsFilteredBySourceOf('test');
 
-        $included_test = $courseReportModel->getTests();
-        $included_test_report_id = $courseReportModel->getBla();
+        foreach ($reportsArray as $reportLms) {
+            $included_test[$reportLms->getIdSource()] = $reportLms->getIdSource();
+            $included_test_report_id[$reportLms->getIdReport()] = $reportLms->getIdReport();
+        }
+
+        //$included_test_report_id = $courseReportModel->getTestCoursereport();
 
         // XXX: Update if needed
-        if ($tot_report == 0)
+        if ($courseReportModel->getReportCount() == 0) {
             $report_man->initializeCourseReport($org_tests);
-        else {
-            if (is_array($included_test)) $test_to_add = array_diff($org_tests, $included_test);
-            else $test_to_add = $org_tests;
-            if (is_array($included_test)) $test_to_del = array_diff($included_test, $org_tests);
-            else $test_to_del = $org_tests;
+        } else {
+            if (is_array($included_test)) {
+                $test_to_add = array_diff($org_tests, $included_test);
+            } else {
+                $test_to_add = $org_tests;
+            }
+
+            if (is_array($included_test)) {
+                $test_to_del = array_diff($included_test, $org_tests);
+            } else {
+                $test_to_del = $org_tests;
+            }
+
             if (!empty($test_to_add) || !empty($test_to_del)) {
+
                 $report_man->addTestToReport($test_to_add, 1);
                 $report_man->delTestToReport($test_to_del);
 
@@ -123,7 +139,8 @@ class CoursereportLmsController extends LmsController {
         }
         $report_man->updateTestReport($org_tests);
 
-
+        // XXX: Retrive all colums (test and so), and set it
+        $img_mod = '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" />';
 
         $type_h = array('line_users');
         $cont_h = array($lang->def('_DETAILS'));
@@ -136,27 +153,60 @@ class CoursereportLmsController extends LmsController {
         $colums['show_to_user'] = array($lang->def('_SHOW_TO_USER'));
         $colums['use_for_final'] = array($lang->def('_USE_FOR_FINAL'));
 
-        $query_report = "
-	SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
-	FROM " . $GLOBALS['prefix_lms'] . "_coursereport
-	WHERE id_course = '" . $_SESSION['idCourse'] . "'
-	ORDER BY sequence ";
-        $re_report = sql_query($query_report);
         $total_weight = 0;
         $i = 1;
-        while ($info_report = sql_fetch_assoc($re_report)) {
-            $id = $info_report['id_source'];
-            $reports[$info_report['id_report']] = $info_report;
-            $reports_id[] = $info_report['id_report'];
+
+        $info_reports_list = array();
+        $info_reports = array();
+
+        $maxCols = 1;
+        $col = 0;
+        $selectedTest = isset($_GET['_dyn_field_selector_1']) ? $_GET['_dyn_field_selector_1'] : null;
+
+
+
+        $testSelector = '<form name="formTestSelector" method="get">';
+        $testSelector .= '<select onchange="document.formTestSelector.submit()" id="_dyn_field_selector_1" name="_dyn_field_selector_1">';
+
+
+        foreach ($courseReportModel->getCourseReports() as $info_report) {
+
+            if ($col < $maxCols) {
+                if ($selectedTest) {
+                    if ($selectedTest == $info_report->getIdReport()) {
+                        $info_reports[] = $info_report;
+                        $col++;
+                    }
+                } else {
+                    $info_reports[] = $info_report;
+                    $col++;
+                }
+            }
+            $info_reports_list[] = $info_report;
+
+
+            if ($i == 0) {
+                $first = $info_report->getIdReport();
+            }
+            $testSelector .= '<option value="' . $info_report->getIdReport() . '"' . ($_GET['_dyn_field_selector_1'] == $info_report->getIdReport() ? ' selected="selected"' : '') . '>' . strip_tags($tests_info[$info_report->getIdSource()]['title']) . '</option>';
+        }
+
+        $testSelector .= '</select>';
+        $testSelector .= '</form>';
+
+        foreach ($info_reports as $info_report) {
+
+            $id = $info_report->getIdSource();
+            $reports_id[] = $info_report->getIdReport();
 
             // XXX: set action colums
 
             $type_h[] = 'min-cell';
 
-            switch ($info_report['source_of']) {
+            switch ($info_report->getSourceOf()) {
                 case "test" : {
 
-                    $title = strip_tags($tests_info[$info_report['id_source']]['title']);
+                    $title = strip_tags($tests_info[$info_report->getIdSource()]['title']);
 
                     if (!$mod_perm) {
                         if (!$view_perm) {
@@ -176,31 +226,31 @@ class CoursereportLmsController extends LmsController {
                     break;
                 case "scoitem"    : {
 
-                    $title = strip_tags($info_report['title']);
+                    $title = strip_tags($info_report->getTitle());
 
                     if (!$mod_perm) {
                         $my_action = '';
                         $a_line_2[] = '';
                     } else {
-                        $my_action = $my_action = '<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=modactivityscore&amp;type_filter=' . $type_filter . '&amp;id_report=' . $info_report['id_report'] . '&amp;source_of=' . $info_report['source_of'] . '&amp;id_source=' . $info_report['id_source'] . '"><span><span>' . $lang->def('_CHANGE_ACTIVITY_VOTE') . '</span></a>'
-                            . ' <a class="ico-sprite subs_del" href="index.php?modname=coursereport&amp;op=delactivity&amp;id_report=' . $info_report['id_report'] . '"><span><span>' . $lang->def('_DELETE_ACTIVITY_VOTE') . '</span></a>';
+                        $my_action = $my_action = '<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=modactivityscore&amp;type_filter=' . $type_filter . '&amp;id_report=' . $info_report->getIdReport() . '&amp;source_of=' . $info_report->getSourceOf() . '&amp;id_source=' . $info_report->getIdSource() . '"><span><span>' . $lang->def('_CHANGE_ACTIVITY_VOTE') . '</span></a>'
+                            . ' <a class="ico-sprite subs_del" href="index.php?modname=coursereport&amp;op=delactivity&amp;id_report=' . $info_report->getIdReport() . '"><span><span>' . $lang->def('_DELETE_ACTIVITY_VOTE') . '</span></a>';
 
-                        $a_line_2[] = '<a href="index.php?modname=coursereport&amp;op=roundreport&amp;id_report=' . $info_report['id_report'] . '" '
+                        $a_line_2[] = '<a href="index.php?modname=coursereport&amp;op=roundreport&amp;id_report=' . $info_report->getIdReport() . '" '
                             . 'title="' . $lang->def('_ROUND_ACTIVITY_VOTE_TITLE') . '">' . $lang->def('_ROUND_VOTE') . '</a>';
                     }
                 };
                     break;
                 case "activity"    : {
-                    $title = strip_tags($info_report['title']);
+                    $title = strip_tags($info_report->getTitle());
 
                     if (!$mod_perm) {
                         $my_action = '';
                         $a_line_2[] = '';
                     } else {
-                        $my_action = '<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=modactivityscore&amp;type_filter=' . $type_filter . '&amp;id_report=' . $info_report['id_report'] . '&amp;source_of=' . $info_report['source_of'] . '&amp;id_source=' . $info_report['id_source'] . '"><span><span>' . $lang->def('_CHANGE_ACTIVITY_VOTE') . '</span></a>'
-                            . ' <a class="ico-sprite subs_del" href="index.php?modname=coursereport&amp;op=delactivity&amp;id_report=' . $info_report['id_report'] . '"><span><span>' . $lang->def('_DELETE_ACTIVITY_VOTE') . '</span></a>';
+                        $my_action = '<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=modactivityscore&amp;type_filter=' . $type_filter . '&amp;id_report=' . $info_report->getIdReport() . '&amp;source_of=' . $info_report->getSourceOf() . '&amp;id_source=' . $info_report->getIdSource() . '"><span><span>' . $lang->def('_CHANGE_ACTIVITY_VOTE') . '</span></a>'
+                            . ' <a class="ico-sprite subs_del" href="index.php?modname=coursereport&amp;op=delactivity&amp;id_report=' . $info_report->getIdReport() . '"><span><span>' . $lang->def('_DELETE_ACTIVITY_VOTE') . '</span></a>';
 
-                        $a_line_2[] = '<a href="index.php?modname=coursereport&amp;op=roundreport&amp;id_report=' . $info_report['id_report'] . '" '
+                        $a_line_2[] = '<a href="index.php?modname=coursereport&amp;op=roundreport&amp;id_report=' . $info_report->getIdReport() . '" '
                             . 'title="' . $lang->def('_ROUND_VOTE') . '">' . $lang->def('_ROUND_VOTE') . '</a>';
                     }
                 };
@@ -208,18 +258,18 @@ class CoursereportLmsController extends LmsController {
                 case "final_vote"    : {
 
                     $title = strip_tags($lang->def('_FINAL_SCORE'));
-                    $info_report['weight'] = $total_weight;
+                    $info_report->setWeight($total_weight);
 
                     if (!$mod_perm) {
                         $my_action = '';
                         $a_line_2[] = '';
                     } else {
-                        $my_action = '<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=finalvote&amp;type_filter=' . $type_filter . '&amp;id_report=' . $info_report['id_report'] . '"><span><span>' . $lang->def('_EDIT_SCORE') . '</span></a>';
+                        $my_action = '<a class="ico-sprite subs_mod" href="index.php?modname=coursereport&amp;op=finalvote&amp;type_filter=' . $type_filter . '&amp;id_report=' . $info_report->getIdReport() . '"><span><span>' . $lang->def('_EDIT_SCORE') . '</span></a>';
 
                         $a_line_2[] = ''
-                            . '<a href="index.php?modname=coursereport&amp;op=redofinal&amp;id_report=' . $info_report['id_report'] . '" '
+                            . '<a href="index.php?modname=coursereport&amp;op=redofinal&amp;id_report=' . $info_report->getIdReport() . '" '
                             . 'title="' . $lang->def('_REDO_FINAL_VOTE_TITLE') . '">' . $lang->def('_REDO_FINAL_VOTE') . '</a></li>'
-                            . '<br/><a href="index.php?modname=coursereport&amp;op=roundreport&amp;id_report=' . $info_report['id_report'] . '" '
+                            . '<br/><a href="index.php?modname=coursereport&amp;op=roundreport&amp;id_report=' . $info_report->getIdReport() . '" '
                             . 'title="' . $lang->def('_ROUND_FINAL_VOTE_TITLE') . '">' . $lang->def('_ROUND_VOTE') . '</a></li>'
                             . '';
                     }
@@ -227,40 +277,29 @@ class CoursereportLmsController extends LmsController {
                     break;
             }
 
-            $top = $title . '<br/>';
+            $top = $testSelector . '<br/>' . $title . '<br/>';
             if ($mod_perm)
-                if ($i > 1 && $info_report['source_of'] != 'final_vote')
-                    $top .= '<a class="ico-sprite subs_left" href="index.php?modname=coursereport&amp;op=moveleft&amp;id_report=' . $info_report['id_report'] . '"><span><span>' . $lang->def('_MOVE_LEFT') . '</span></a>';
+                if ($i > 1 && $info_report->getSourceOf() != 'final_vote')
+                    $top .= '<a class="ico-sprite subs_left" href="index.php?modname=coursereport&amp;op=moveleft&amp;id_report=' . $info_report->getIdReport() . '"><span><span>' . $lang->def('_MOVE_LEFT') . '</span></a>';
             $top .= $my_action;
             if ($mod_perm)
                 if (($i < ($tot_report - 1)) && ($tot_report > 2))
-                    $top .= '<a class="ico-sprite subs_right" href="index.php?modname=coursereport&amp;op=moveright&amp;id_report=' . $info_report['id_report'] . '"><span><span>' . $lang->def('_MOVE_RIGHT') . '</span></a>';
+                    $top .= '<a class="ico-sprite subs_right" href="index.php?modname=coursereport&amp;op=moveright&amp;id_report=' . $info_report->getIdReport() . '"><span><span>' . $lang->def('_MOVE_RIGHT') . '</span></a>';
             $cont_h[] = $top;
             $i++;
 
             //set info colums
-            $colums['max_score'][] = $info_report['max_score'];
-            $colums['required_score'][] = $info_report['required_score'];
-            $colums['weight'][] = $info_report['weight'];
-            $colums['show_to_user'][] = ($info_report['show_to_user'] == 'true' ? $lang->def('_YES') : $lang->def('_NO'));
-            $colums['use_for_final'][] = ($info_report['use_for_final'] == 'true' ? $lang->def('_YES') : $lang->def('_NO'));
+            $colums['max_score'][] = $info_report->getMaxScore();
+            $colums['required_score'][] = $info_report->getRequiredScore();
+            $colums['weight'][] = $info_report->getWeight();
+            $colums['show_to_user'][] = ($info_report->isShowToUser() ? $lang->def('_YES') : $lang->def('_NO'));
+            $colums['use_for_final'][] = ($info_report->isUseForFinal() ? $lang->def('_YES') : $lang->def('_NO'));
 
-            if ($info_report['use_for_final'] == 'true') $total_weight += $info_report['weight'];
+            if ($info_report->isUseForFinal()) {
+                $total_weight += $info_report->getWeight();
+            }
         }
 
-        // XXX: Set table intestation
-        $tb_report = new Table(0, $lang->def('_COURSE_REPORT_CAPTION'), $lang->def('_COURSE_REPORT_SUMMARY'));
-
-        $tb_report->setColsStyle($type_h);
-        $tb_report->addHead($cont_h);
-
-        $tb_report->addBody($a_line_2);
-
-        $tb_report->addBody($colums['max_score']);
-        $tb_report->addBody($colums['required_score']);
-        $tb_report->addBody($colums['weight']);
-        $tb_report->addBody($colums['show_to_user']);
-        $tb_report->addBody($colums['use_for_final']);
 
         //$tb->addBodyExpanded('<span class="text_bold title_big">'.$lang->def('_STUDENTS_VOTE').'</span>', 'align-center');
         $tb_score = new Table(0, $lang->def('_STUDENTS_VOTE'), $lang->def('_COURSE_REPORT_SUMMARY'));
@@ -272,7 +311,6 @@ class CoursereportLmsController extends LmsController {
         require_once(_adm_ . '/lib/lib.field.php');
 
         $fman = new FieldList();
-
         $fields = $fman->getFlatAllFields(array('framework', 'lms'));
 
         $f_list = array(
@@ -288,8 +326,9 @@ class CoursereportLmsController extends LmsController {
         $f_list = $f_list + $fields;
 
         $js_arr = array();
-        foreach ($f_list as $key => $value)
+        foreach ($f_list as $key => $value) {
             $js_arr[] = $key . ': ' . json_encode($value);
+        }
 
         $f_list_js = '{' . implode(',', $js_arr) . '}';
 
@@ -298,7 +337,6 @@ class CoursereportLmsController extends LmsController {
         $dyn_filter = array();
         $num_var_fields = 1;
         $label = '<form name="formx" method="get">';
-
         for ($i = 0; $i < $num_var_fields; $i++) {
             $label .= '<select onchange="document.formx.submit()" id="_dyn_field_selector_0" name="_dyn_field_selector_0">';
             foreach ($fieldlist as $key => $value) {
@@ -314,6 +352,8 @@ class CoursereportLmsController extends LmsController {
 
         $field_selected = ($_GET['_dyn_field_selector_0']) ? $_GET['_dyn_field_selector_0'] : 'userid';
         $_SESSION['field_selected'] = $field_selected;
+
+
         // aggiungo un elemento in posizione 1
         $index = 1;
         $start = array_slice($cont_h, 0, $index);
@@ -410,7 +450,7 @@ class CoursereportLmsController extends LmsController {
         reset($report_details);
 
         // XXX: Display user scores
-        if (!empty($students_info))
+        if (!empty($students_info)) {
             while (list($idst_user, $user_info) = each($students_info)) {
                 $user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
                     ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
@@ -446,10 +486,11 @@ class CoursereportLmsController extends LmsController {
                 $results_test = array();
                 $results_activity = array();
                 $results_scorm_test = array();
-                foreach ($reports as $id_report => $info_report) {
-                    switch ($info_report['source_of']) {
+
+                foreach ($info_reports as $info_report) {
+                    switch ($info_report->getSourceOf()) {
                         case "test" : {
-                            $id_test = $info_report['id_source'];
+                            $id_test = $info_report->getIdSource();
                             require_once($GLOBALS['where_lms'] . '/class.module/learning.test.php');
                             $testObj = Learning_Test::load($id_test);
                             if (isset($tests_score[$id_test][$idst_user])) {
@@ -491,12 +532,12 @@ class CoursereportLmsController extends LmsController {
                                     case "valid" : {
                                         $score = $tests_score[$id_test][$idst_user]['score'];
                                         if ($tests_score[$id_test][$idst_user]['times'] > 0) {
-                                            $tests_score[$id_test][$idst_user]['times'] = "<a href=\"index.php?modname=coursereport&op=testreport&idTest=" . $tests_score[$id_test][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$id_test][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report['id_source']]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]) . "\">" . $tests_score[$id_test][$idst_user]['times'] . "</a>";
+                                            $tests_score[$id_test][$idst_user]['times'] = "<a href=\"index.php?modname=coursereport&op=testreport&idTest=" . $tests_score[$id_test][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$id_test][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]) . "\">" . $tests_score[$id_test][$idst_user]['times'] . "</a>";
                                         }
                                         $tt = "(" . $tests_score[$id_test][$idst_user]['times'] . ")";
                                         if ($testObj->obj_type == 'test360') {
                                             $cont[] = '<a href="index.php?r=test360/report&idTest=' . $tests_score[$id_test][$idst_user]['idTest'] . '&showAuto=1&showEtero=1" class="ico-wt-sprite subs_confirm">&nbsp;&nbsp;</a> ' . $tt;
-                                        } else if ($score >= $info_report['required_score']) {
+                                        } else if ($score >= $info_report->getRequiredScore()) {
                                             if ($score == $test_details[$id_test]['max_score'])
                                                 $cont[] = '<span class="cr_max_score">' . $score . " " . $tt . '</span>';
                                             else
@@ -532,31 +573,29 @@ class CoursereportLmsController extends LmsController {
                                 }
                             } else
                                 $cont[] = '-';
-                            if ($info_report['use_for_final'] == 'true') {
-                                array_push($results_test, $score * $info_report['weight']);
+                            if ($info_report->isUseForFinal()) {
+                                array_push($results_test, $score * $info_report->getWeight());
                             }
                         };
                             break;
                         case "scoitem" : {
-                            $query_report = "
-						SELECT *
-						FROM " . $GLOBALS['prefix_lms'] . "_scorm_tracking
-						WHERE idscorm_item = '" . $info_report['id_source'] . "' AND idUser = '" . $idst_user . "'
-						";
+                            $query_report = "SELECT *
+						                    FROM " . $GLOBALS['prefix_lms'] . "_scorm_tracking
+						                    WHERE idscorm_item = '" . $info_report->getIdSource() . "' AND idUser = '" . $idst_user . "'";
                             //echo $query_report;
                             $report = sql_fetch_assoc(sql_query($query_report));
+
                             if ($report['score_raw'] == NULL)
                                 $report['score_raw'] = "-";
                             //$cont[] = '<span class="cr_passed">'.$report['score_max'].'</span>';
-                            if ($info_report['use_for_final'] == 'true') {
-                                array_push($results_scorm_test, $report['score_raw'] * $info_report['weight']);
+                            if ($info_report->isUseForFinal()) {
+                                array_push($results_scorm_test, $report['score_raw'] * $info_report->getWeight());
                             }
                             $id_track = (isset($report['idscorm_tracking']) ? $report['idscorm_tracking'] : 0);
-                            $query_report = "
-						SELECT *
-						FROM " . $GLOBALS['prefix_lms'] . "_scorm_tracking_history
-						WHERE idscorm_tracking = '" . $id_track . "'
-						";
+                            $query_report = "SELECT *
+						                    FROM " . $GLOBALS['prefix_lms'] . "_scorm_tracking_history
+						                    WHERE idscorm_tracking = '" . $id_track . "'";
+
                             //echo $query_report;
                             $query = sql_query($query_report);
                             $num = sql_num_rows($query);
@@ -568,7 +607,7 @@ class CoursereportLmsController extends LmsController {
                         }
                             break;
                         case "activity" : {
-                            $id_report = $info_report['id_report'];
+                            $id_report = $info_report->getIdReport();
                             $score = 0;
                             if (isset($reports_score[$id_report][$idst_user])) {
                                 switch ($reports_score[$id_report][$idst_user]['score_status']) {
@@ -577,8 +616,8 @@ class CoursereportLmsController extends LmsController {
                                         break;
                                     case "valid" : {
                                         $score = $reports_score[$id_report][$idst_user]['score'];
-                                        if ($score >= $info_report['required_score']) {
-                                            if ($score == $info_report['max_score']) {
+                                        if ($score >= $info_report->getRequiredScore()) {
+                                            if ($score == $info_report->getMaxScore()) {
                                                 $cont[] = '<span class="cr_max_score">' . $score . '</span>';
                                             } else
                                                 $cont[] = $score;
@@ -606,8 +645,8 @@ class CoursereportLmsController extends LmsController {
                             } else {
                                 $cont[] = '<span class="cr_not_passed">-</span>';
                             }
-                            if ($info_report['use_for_final'] == 'true') {
-                                array_push($results_activity, $score * $info_report['weight']);
+                            if ($info_report->isUseForFinal()) {
+                                array_push($results_activity, $score * $info_report->getWeight());
                             }
                         }
                             break;
@@ -647,117 +686,7 @@ class CoursereportLmsController extends LmsController {
                 }
                 $tb_score->addBody($cont);
             }
-        // XXX: Display statistics
-        $stats['passed'] = array($lang->def('_PASSED'));//, ''
-        $stats['not_passed'] = array($lang->def('_NOT_PASSED'));//, ''
-        $stats['not_checked'] = array($lang->def('_NOT_CHECKED'));//, ''
-        $stats['averange'] = array($lang->def('_AVERANGE'));//, ''
-        $stats['varianza'] = array($lang->def('_STANDARD_DEVIATION'));//, ''
-        $stats['max_score'] = array($lang->def('_MAX_SCORE'));//, ''
-        $stats['min_score'] = array($lang->def('_MIN_SCORE'));//, ''
-        foreach ($reports as $id_report => $info_report) {
-            switch ($info_report['source_of']) {
-                case "test" : {
-                    $id_test = $info_report['id_source'];
-
-                    if (isset($test_details[$id_test]['passed']) || isset($test_details[$id_test]['not_passed'])) {
-                        if (!isset($test_details[$id_test]['passed']))
-                            $test_details[$id_test]['passed'] = 0;
-                        if (!isset($test_details[$id_test]['not_passed']))
-                            $test_details[$id_test]['not_passed'] = 0;
-
-                        $test_details[$id_test]['varianza'] /= ($test_details[$id_test]['passed'] + $test_details[$id_test]['not_passed']);
-                        $test_details[$id_test]['varianza'] = sqrt($test_details[$id_test]['varianza']);
-                    }
-                    $stats['passed'][] = (isset($test_details[$id_test]['passed']) ? round($test_details[$id_test]['passed'], 2) : '-');
-                    $stats['not_passed'][] = (isset($test_details[$id_test]['not_passed']) ? round($test_details[$id_test]['not_passed'], 2) : '-');
-                    $stats['not_checked'][] = (isset($test_details[$id_test]['not_checked']) ? round($test_details[$id_test]['not_checked'], 2) : '-');
-                    $stats['averange'][] = (isset($test_details[$id_test]['averange']) ? round($test_details[$id_test]['averange'], 2) : '-');
-                    $stats['varianza'][] = (isset($test_details[$id_test]['varianza']) ? round($test_details[$id_test]['varianza'], 2) : '-');
-                    $stats['max_score'][] = (isset($test_details[$id_test]['max_score']) ? round($test_details[$id_test]['max_score'], 2) : '-');
-                    $stats['min_score'][] = (isset($test_details[$id_test]['min_score']) ? round($test_details[$id_test]['min_score'], 2) : '-');
-                };
-                    break;
-                case "scoitem" : {
-                    $query_report = "
-						SELECT *
-						FROM " . $GLOBALS['prefix_lms'] . "_scorm_tracking
-						WHERE idscorm_item = '" . $info_report['id_source'] . "'";
-
-                    $passed = 0;
-                    $total = 0;
-                    $media = 0;
-                    $varianza = 0;
-                    $votomassimo = 0;
-                    $votominimo = 9999;
-                    $result = sql_query($query_report);
-                    while ($report = sql_fetch_assoc($result)) {
-                        if ($report['score_raw'] != NULL) {
-                            if ($report['score_raw'] > $votomassimo)
-                                $votomassimo = $report['score_raw'];
-                            if ($report['score_raw'] < $votominimo)
-                                $votominimo = $report['score_raw'];
-                            $media = $media + $report['score_raw'];
-                            $total = $total + 1;
-                            if ($report['lesson_status'] == 'passed') {
-                                $passed++;
-                            }
-                        }
-                    }
-                    $media = ($total == 0 ? '0' : $media / $total);
-                    $result = sql_query($query_report);
-                    $var = 0;
-                    while ($report = sql_fetch_assoc($result))
-                        if ($report['score_raw'] != NULL)
-                            $var = $var + pow($media - $report['score_raw'], 2);
-                    $varianza = ($total == 0 ? '0' : floor($var / $total));
-                    if ($votominimo == 9999)
-                        $votominimo = "";
-
-                    $stats['passed'][] = $passed;
-                    $stats['not_passed'][] = $total - $passed;
-                    $stats['not_checked'][] = "-";
-                    $stats['averange'][] = $media;
-                    $stats['varianza'][] = $varianza;
-                    $stats['max_score'][] = $votomassimo;
-                    $stats['min_score'][] = $votominimo;
-                };
-                    break;
-                case "activity" :
-                case "final_vote" : {
-                    if (isset($report_details[$id_report]['passed']) || isset($report_details[$id_report]['not_passed'])) {
-                        if (!isset($report_details[$id_report]['passed']))
-                            $report_details[$id_report]['passed'] = 0;
-                        if (!isset($report_details[$id_report]['not_passed']))
-                            $report_details[$id_report]['not_passed'] = 0;
-
-                        $report_details[$id_report]['varianza'] /= ($report_details[$id_report]['passed'] + $report_details[$id_report]['not_passed']);
-                        $report_details[$id_report]['varianza'] = sqrt($report_details[$id_report]['varianza']);
-                    }
-                    $stats['passed'][] = (isset($report_details[$id_report]['passed']) ? round($report_details[$id_report]['passed'], 2) : '-');
-                    $stats['not_passed'][] = (isset($report_details[$id_report]['not_passed']) ? round($report_details[$id_report]['not_passed'], 2) : '-');
-                    $stats['not_checked'][] = (isset($report_details[$id_report]['not_checked']) ? round($report_details[$id_report]['not_checked'], 2) : '-');
-                    $stats['averange'][] = (isset($report_details[$id_report]['averange']) ? round($report_details[$id_report]['averange'], 2) : '-');
-                    $stats['varianza'][] = (isset($report_details[$id_report]['varianza']) ? round(sqrt($report_details[$id_report]['varianza']), 2) : '-');
-                    $stats['max_score'][] = (isset($report_details[$id_report]['max_score']) ? round($report_details[$id_report]['max_score'], 2) : '-');
-                    $stats['min_score'][] = (isset($report_details[$id_report]['min_score']) ? round($report_details[$id_report]['min_score'], 2) : '-');
-                };
-                    break;
-            }
         }
-        $tb_stat = new Table(0, $lang->def('_SUMMARY_VOTE'), $lang->def('_COURSE_REPORT_SUMMARY'));
-        $tb_stat->setColsStyle($type_h);
-        $cont_h[0] = $lang->def('_STATISTICS');
-        $tb_stat->addHead($cont_h);
-
-        //$tb->addBodyExpanded('<span class="text_bold title_big">'.$lang->def('_SUMMARY_VOTE').'</span>', 'align-center');
-        $tb_stat->addBody($stats['passed']);
-        $tb_stat->addBody($stats['not_passed']);
-        $tb_stat->addBody($stats['not_checked']);
-        $tb_stat->addBody($stats['averange']);
-        $tb_stat->addBody($stats['varianza']);
-        $tb_stat->addBody($stats['max_score']);
-        $tb_stat->addBody($stats['min_score']);
 
         // Write in output
         $out->add(getTitleArea($lang->def('_COURSEREPORT', 'menu_course'), 'coursereport')
@@ -908,7 +837,7 @@ while(i<lista.length)
         $sql = "SELECT * FROM core_field";
         $filler = "";
         $filler = "<br>";
-        $result_quest = sql_query($sql) or die (mysql_error());
+        $result_quest = sql_query($sql) or die (sql_error());
         while ($quests = sql_fetch_array($result_quest)) {
             $filler .= "<input type=\'checkbox\' onclick=\'cambialink(" . $quests['idField'] . ",this.checked)\' value=\'" . $quests['idField'] . "\'>" . $quests['translation'] . "<br>";
         }
@@ -945,10 +874,7 @@ while(i<lista.length)
 
         $out->add(Form::closeForm());
 
-        $out->add(
-            $tb_report->getTable() . '<br /><br />'
-            . $tb_score->getTable() . '<br /><br />'
-            . $tb_stat->getTable() . '<br /><br />');
+        $out->add($tb_score->getTable() . '<br /><br />');
 
         if (checkPerm('mod', true)) {
             $out->add(
@@ -1243,25 +1169,25 @@ function testvote()
 
         . Form::getLinebox($lang->def('_TITLE_ACT'),
             strip_tags($test_info[$id_test]['title']))
-        . ($question_random_number ? Form::getTextfield($lang->def('_MAX_SCORE'), 'max_score', 'max_score', '11', $info_report['max_score']) : Form::getLinebox($lang->def('_MAX_SCORE'), $info_report['max_score']))
+        . ($question_random_number ? Form::getTextfield($lang->def('_MAX_SCORE'), 'max_score', 'max_score', '11', $info_report->getMaxScore()) : Form::getLinebox($lang->def('_MAX_SCORE'), $info_report->getMaxScore()))
         . Form::getLinebox($lang->def('_REQUIRED_SCORE'),
-            $info_report['required_score'])
+            $info_report->getRequiredScore())
 
         . Form::getTextfield($lang->def('_WEIGHT'),
             'weight',
             'weight',
             '11',
-            $info_report['weight'])
+            $info_report->getWeight())
         . Form::getDropdown($lang->def('_SHOW_TO_USER'),
             'show_to_user',
             'show_to_user',
             array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
-            $info_report['show_to_user'])
+            $info_report->isShowToUserToString())
         . Form::getDropdown($lang->def('_USE_FOR_FINAL'),
             'use_for_final',
             'use_for_final',
             array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
-            $info_report['use_for_final'])
+            $info_report->isUseForFinalToString())
         . Form::getCloseFieldSet()
         . Form::closeElementSpace()
     );
@@ -1278,7 +1204,7 @@ function testvote()
 
         $cont = array(Form::getLabel('user_score_' . $idst_user, $user_name));
 
-        $id_test = $info_report['id_source'];
+        $id_test = $info_report->getIdSource();
         if (isset($tests_score[$id_test][$idst_user])) {
             switch ($tests_score[$id_test][$idst_user]['score_status']) {
                 case "not_complete" : {
@@ -1701,22 +1627,14 @@ function finalvote()
 
     if (isset($_POST['save'])) {
         // retirive activity info
-        $info_report = array(
-            'max_score' => importVar('max_score', true),
-            'required_score' => importVar('required_score', true),
-            'weight' => importVar('weight', true),
-            'show_to_user' => importVar('show_to_user', false, 'true'),
-            'id_source' => 0,
-            'source_of' => 'final_vote'
-        );
+        //__construct($id_report, $title, $max_score, $required_score, $weight, $show_to_user, $use_for_final, $source_of, $id_source)
+        $info_report = new ReportLms(null,null,importVar('max_score', true),importVar('required_score', true),importVar('weight', true),importVar('show_to_user', false, 'true'),null,'final_vote',importVar('max_score', true));
+
+
     } else {
         // retirive activity info
-        $query_report = "
-		SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
-		FROM " . $GLOBALS['prefix_lms'] . "_coursereport
-		WHERE id_course = '" . $_SESSION['idCourse'] . "'
-				AND source_of = 'final_vote' AND id_source = '0'";
-        $info_report = sql_fetch_assoc(sql_query($query_report));
+
+        $info_report = CoursereportLms::getReportFinalScore($_SESSION['idCourse']);
     }
 
     $out->add(
@@ -1730,17 +1648,17 @@ function finalvote()
             'max_score',
             'max_score',
             '11',
-            $info_report['max_score'])
+            $info_report->getMaxScore())
         . Form::getTextfield($lang->def('_REQUIRED_SCORE'),
             'required_score',
             'required_score',
             '11',
-            $info_report['required_score'])
+            $info_report->getRequiredScore())
         . Form::getDropdown($lang->def('_SHOW_TO_USER'),
             'show_to_user',
             'show_to_user',
             array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
-            $info_report['show_to_user'])
+            $info_report->isShowToUserToString())
         . Form::getCloseFieldSet()
         . Form::closeElementSpace()
     );
@@ -1887,44 +1805,37 @@ function redofinal()
     $id_students =& $report_man->getStudentId();
 
     // XXX: retrive info about the final score
-    $query_final = "
-	SELECT id_report, max_score
-	FROM " . $GLOBALS['prefix_lms'] . "_coursereport
-	WHERE id_course = '" . $_SESSION['idCourse'] . "' AND source_of = 'final_vote'";
-    $info_final = sql_fetch_assoc(sql_query($query_final));
+
+    $courseReportLms = new CoursereportLms($_SESSION['idCourse']);
+
+
+    $info_final = $courseReportLms->getReportsFilteredBySourceOf('final_vote');
 
     // XXX: Retrive all reports (test and so), and set it
 
-    $query_report = "
-	SELECT id_report, max_score, weight, source_of, id_source
-	FROM " . $GLOBALS['prefix_lms'] . "_coursereport
-	WHERE id_course = '" . $_SESSION['idCourse'] . "' AND use_for_final = 'true' AND source_of <> 'final_vote'
-	ORDER BY sequence ";
+    $reports = $courseReportLms->getReportsForFinal();
 
-    $re_report = sql_query($query_report);
-    if (!sql_num_rows($re_report)) {
+    if (count($reports) == 0) {
         Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&amp;result=ok');
     }
 
     $sum_max_score = 0;
     $included_test = array();
     $other_source = array();
-    while ($info_report = sql_fetch_assoc($re_report)) {
 
-        $sum_max_score += $info_report['max_score'] * $info_report['weight'];
+    foreach ($reports as $info_report) {
 
-        $reports_info[$info_report['id_report']] = $info_report;
+        $sum_max_score += $info_report->getMaxScore() * $info_report->getWeight();
 
-        switch ($info_report['source_of']) {
+        switch ($info_report->getSourceOf()) {
             case "activity" :
-                $other_source[$info_report['id_report']] = $info_report['id_report'];
+                $other_source[$info_report->getIdReport()] = $info_report->getIdReport();
                 break;
             case "test" :
-                $included_test[$info_report['id_source']] = $info_report['id_source'];
+                $included_test[$info_report->getIdSource()] = $info_report->getIdSource();
                 break;
         }
     }
-
     // XXX: Retrive Test score
     if (!empty($included_test))
         $tests_score =& $test_man->getTestsScores($included_test, $id_students);
@@ -1934,22 +1845,23 @@ function redofinal()
         $other_score =& $report_man->getReportsScores($other_source);
 
     $final_score = array();
+
     while (list(, $id_user) = each($id_students)) {
         $user_score = 0;
-        while (list($id_report, $rep_info) = each($reports_info)) {
-            $id_source = $rep_info['id_source'];
-            switch ($rep_info['source_of']) {
+
+        foreach ($reports as $info_report) {
+            switch ($info_report->getSourceOf()) {
                 case "activity" : {
-                    if (isset($other_score[$id_report][$id_user]) && ($other_score[$id_report][$id_user]['score_status'] == 'valid')) {
-                        $user_score += ($other_score[$id_report][$id_user]['score'] * $rep_info['weight']);
+                    if (isset($other_score[$info_report->getIdReport()][$id_user]) && ($other_score[$info_report->getIdReport()][$id_user]['score_status'] == 'valid')) {
+                        $user_score += ($other_score[$info_report->getIdReport()][$id_user]['score'] * $info_report->getWeight());
                     } else {
                         $user_score += 0;
                     }
                 };
                     break;
                 case "test" : {
-                    if (isset($tests_score[$id_source][$id_user]) && ($tests_score[$id_source][$id_user]['score_status'] == 'valid')) {
-                        $user_score += ($tests_score[$id_source][$id_user]['score'] * $rep_info['weight']);
+                    if (isset($tests_score[$info_report->getIdSource()][$id_user]) && ($tests_score[$info_report->getIdSource()][$id_user]['score_status'] == 'valid')) {
+                        $user_score += ($tests_score[$info_report->getIdSource()][$id_user]['score'] * $info_report->getWeight());
                     } else {
                         $user_score += 0;
                     }
@@ -1958,10 +1870,9 @@ function redofinal()
             }
         }
 
-        reset($reports_info);
         // user final score
         if ($sum_max_score != 0)
-            $final_score[$id_user] = round(($user_score / $sum_max_score) * $info_final['max_score'], 2);
+            $final_score[$id_user] = round(($user_score / $sum_max_score) * $info_final[0]->getMaxScore(), 2);
         else
             $final_score[$id_user] = 0;
     }
@@ -1971,10 +1882,14 @@ function redofinal()
 	SELECT id_user
 	FROM " . $GLOBALS['prefix_lms'] . "_coursereport_score
 	WHERE id_report = '" . $info_final['id_report'] . "'";
+
     $re_final = sql_query($query_final_score);
-    while (list($id_user) = sql_fetch_row($re_final))
+    while (list($id_user) = sql_fetch_row($re_final)) {
         $exists_final[$id_user] = $id_user;
+    }
+
     $re = true;
+
     while (list($user, $score) = each($final_score)) {
         if (isset($exists_final[$user])) {
             $query_scores = "
@@ -2017,24 +1932,15 @@ function modscorm()
 
     // XXX: Retrive all colums (test and so), and set it
     if ($id_report == 0) {
-        $info_report = array(
-            'id_report' => importVar('id_report', true, 0),
-            'title' => importVar('title'),
-            'max_score' => importVar('max_score', true),
-            'required_score' => importVar('required_score', true),
-            'weight' => importVar('weight', true),
-            'show_to_user' => importVar('show_to_user', false, 'true'),
-            'use_for_final' => importVar('use_for_final', false, 'true'),
-            'source_of' => '',
-            'id_source' => '0'
-        );
+
+        $info_report = new ReportLms(importVar('id_report', true, 0),importVar('title'),importVar('max_score', true),importVar('required_score', true),importVar('weight', true),importVar('show_to_user', true, true),importVar('use_for_final', true, true),'',0);
+
+
     } elseif (!isset($_POST['save'])) {
-        $query_report = "
-		SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
-		FROM " . $GLOBALS['prefix_lms'] . "_coursereport
-		WHERE id_course = '" . $_SESSION['idCourse'] . "' AND id_report = '" . $id_report . "'
-				AND source_of = 'activity' AND id_source = '0'";
-        $info_report = sql_fetch_assoc(sql_query($query_report));
+
+        $courseReportModel = new CoursereportLms($_SESSION['idCourse'],$id_report,'activity','0');
+
+        $info_report = $courseReportModel->getCourseReports()[0];
     }
 
     $page_title = array(
@@ -2049,6 +1955,7 @@ function modscorm()
     );
     // XXX: Save input if needed
     if (isset($_POST['save']) && is_numeric($_POST['id_source'])) {
+
         $report_man = new CourseReportManager();
         // check input
         if ($_POST['titolo'] == '')
@@ -2135,24 +2042,24 @@ function modscorm()
                     'id_source',
                     'id_source',
                     $array_scorm,
-                    $info_report['id_source'])
+                    $info_report->getIdSource())
 
 
                 . Form::getTextfield($lang->def('_WEIGHT'),
                     'weight',
                     'weight',
                     '11',
-                    $info_report['weight'])
+                    $info_report->getWeight())
                 . Form::getDropdown($lang->def('_SHOW_TO_USER'),
                     'show_to_user',
                     'show_to_user',
                     array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
-                    $info_report['show_to_user'])
+                    $info_report->isShowToUserToString())
                 . Form::getDropdown($lang->def('_USE_FOR_FINAL'),
                     'use_for_final',
                     'use_for_final',
                     array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
-                    $info_report['use_for_final'])
+                    $info_report->isUseForFinalToString())
                 . Form::getHidden('title', 'title', $_POST['title'])
                 . Form::getHidden('source_of', 'source_of', $_POST['source_of'])
                 . Form::getHidden('titolo', 'titolo', $titolo)
@@ -2188,7 +2095,7 @@ function modscorm()
                 'title',
                 'title',
                 $array_scorm,
-                $info_report['title'])
+                $info_report->getTitle())
 
             . Form::getRadioSet($lang->def('_SCORE'),
                 'source_of',
@@ -2226,25 +2133,19 @@ function modactivity()
     }
 
     // XXX: Retrive all colums (test and so), and set it
+
     if ($id_report == 0) {
 
-        $info_report = array(
-            'id_report' => importVar('id_report', true, 0),
-            'title' => importVar('title'),
-            'max_score' => importVar('max_score', true),
-            'required_score' => importVar('required_score', true),
-            'weight' => importVar('weight', true),
-            'show_to_user' => importVar('show_to_user', false, 'true'),
-            'use_for_final' => importVar('use_for_final', false, 'true')
-        );
+        $info_report = new ReportLms(importVar('id_report', true, 0),importVar('title'),importVar('max_score', true),importVar('required_score', true),importVar('weight', true),importVar('show_to_user', true, true),importVar('use_for_final', true, true),'',0);
+
+
     } elseif (!isset($_POST['save'])) {
-        $query_report = "
-		SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final
-		FROM " . $GLOBALS['prefix_lms'] . "_coursereport
-		WHERE id_course = '" . $_SESSION['idCourse'] . "' AND id_report = '" . $id_report . "'
-				AND source_of = 'activity' AND id_source = '0'";
-        $info_report = sql_fetch_assoc(sql_query($query_report));
+
+        $courseReportModel = new CoursereportLms($_SESSION['idCourse'],$id_report,'activity','0');
+
+        $info_report = $courseReportModel->getCourseReports()[0];
     }
+
 
     $page_title = array(
         'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
@@ -2283,32 +2184,32 @@ function modactivity()
             'title',
             'title',
             '255',
-            $info_report['title'])
+            $info_report->getTitle())
         . Form::getTextfield($lang->def('_MAX_SCORE'),
             'max_score',
             'max_score',
             '11',
-            $info_report['max_score'])
+            $info_report->getMaxScore())
         . Form::getTextfield($lang->def('_REQUIRED_SCORE'),
             'required_score',
             'required_score',
             '11',
-            $info_report['required_score'])
+            $info_report->getRequiredScore())
         . Form::getTextfield($lang->def('_WEIGHT'),
             'weight',
             'weight',
             '11',
-            $info_report['weight'])
+            $info_report->getWeight())
         . Form::getDropdown($lang->def('_SHOW_TO_USER'),
             'show_to_user',
             'show_to_user',
             array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
-            $info_report['show_to_user'])
+            $info_report->isShowToUserToString())
         . Form::getDropdown($lang->def('_USE_FOR_FINAL'),
             'use_for_final',
             'use_for_final',
             array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
-            $info_report['use_for_final'])
+            $info_report->isUseForFinalToString())
         . Form::closeElementSpace()
         . Form::openButtonSpace()
         . Form::getButton('save', 'save', $lang->def('_SAVE'))
@@ -2348,35 +2249,22 @@ function modactivityscore()
     $students_info =& $acl_man->getUsers($id_students);
 
     if (isset($_POST['save'])) {
-        // retirive activity info
-        $info_report = array(
-            'id_report' => importVar('id_report', true, 0),
-            'title' => importVar('title'),
-            'max_score' => importVar('max_score', true),
-            'required_score' => importVar('required_score', true),
-            'source_of' => importVar('source_of'),
-            'weight' => importVar('weight', true),
-            'show_to_user' => importVar('show_to_user', false, 'true'),
-            'use_for_final' => importVar('use_for_final', false, 'true')
-        );
-        // XXX: retrive scores
-    } else {
-        // retirive activity info
-        $query_report = "
-		SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, id_source, source_of
-		FROM " . $GLOBALS['prefix_lms'] . "_coursereport
-		WHERE id_course = '" . $_SESSION['idCourse'] . "' AND id_report = '" . $id_report . "'
-				AND (source_of = 'scoitem' OR source_of = 'activity')"; // TBD AND id_source = '0'";
-        $info_report = sql_fetch_assoc(sql_query($query_report));
 
-        // XXX: retrive scores
-        $report_score =& $report_man->getReportsScores(array($id_report));
+        $info_report = new ReportLms(importVar('id_report', true, 0),importVar('title'),importVar('max_score', true),importVar('required_score', true),importVar('weight', true),importVar('show_to_user', true, true),importVar('use_for_final', true, true),'',0);
+
+    } else {
+
+        $courseReportModel = new CoursereportLms($_SESSION['idCourse'],$id_report,['activity','scoitem'],'0');
+
+        $info_report = $courseReportModel->getCourseReports()[0];
+
+        $report_score =& $report_man->getReportsScores($info_report->getIdReport());
     }
 
     // XXX: Write in output
     $page_title = array(
         'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
-        strip_tags($info_report['title'])
+        strip_tags($info_report->getTitle())
     );
     $out->add(
         getTitleArea($page_title, 'coursereport')
@@ -2389,17 +2277,19 @@ function modactivityscore()
         if ($_POST['title'] == '') $_POST['title'] = $lang->def('_NOTITLE');
         $re_check = $report_man->checkActivityData($_POST);
         if (!$re_check['error']) {
+
             if (!$report_man->updateActivity($id_report, $_SESSION['idCourse'], $info_report)) {
                 $out->add(getErrorUi($lang->def('_OPERATION_FAILURE')));
             } else {
                 // save user score modification
                 $query_upd_report = "
 				UPDATE " . $GLOBALS['prefix_lms'] . "_coursereport
-				SET weight = '" . $info_report['weight'] . "',
-					use_for_final = '" . $info_report['use_for_final'] . "',
-					show_to_user = '" . $info_report['show_to_user'] . "'
+				SET weight = '" . $info_report->getWeight() . "',
+					use_for_final = '" . $info_report->isUseForFinalToString() . "',
+					show_to_user = '" . $info_report->isShowToUserToString() . "'
 				WHERE id_course = '" . $_SESSION['idCourse'] . "' AND id_report = '" . $id_report . "'";
                 $re = sql_query($query_upd_report);
+
                 $re = $report_man->saveReportScore($id_report, $_POST['user_score'], $_POST['date_attempt'], $_POST['comment']);
                 Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&result=' . ($re ? 'ok' : 'err'));
             }
@@ -2413,11 +2303,11 @@ function modactivityscore()
         Form::openElementSpace()
         . Form::getOpenFieldSet($lang->def('_ACTIVITY_INFO'))
         . Form::getHidden('id_report', 'id_report', $id_report)
-        . Form::getHidden('id_source', 'id_source', $info_report['id_source'])
-        . Form::getHidden('source_of', 'source_of', $info_report['source_of'])
+        . Form::getHidden('id_source', 'id_source', $info_report->getIdSource())
+        . Form::getHidden('source_of', 'source_of', $info_report->getSourceOf())
     );
     // for scorm object changing title, maxScore and requiredScore is not allowed
-    switch ($info_report['source_of']) {
+    switch ($info_report->getSourceOf()) {
         case 'scoitem':
             $out->add(
                 Form::getLinebox(
@@ -2428,7 +2318,7 @@ function modactivityscore()
                     strip_tags($info_report['max_score']))
                 . Form::getLinebox(
                     $lang->def('_REQUIRED_SCORE'),
-                    strip_tags($info_report['required_score']))
+                    strip_tags($info_report->getRequiredScore()))
             );
             break;
         case 'activity':
@@ -2450,7 +2340,7 @@ function modactivityscore()
                     'required_score',
                     'required_score',
                     '11',
-                    $info_report['required_score'])
+                    $info_report->getRequiredScore())
             );
             break;
     }
@@ -2477,7 +2367,7 @@ function modactivityscore()
         . Form::closeElementSpace()
     );
 
-    if ($info_report['source_of'] != 'scoitem') {
+    if ($info_report->getSourceOf() != 'scoitem') {
         /* XXX: scores */
         $tb = new Table(0, $lang->def('_STUDENTS_VOTE'), $lang->def('_STUDENTS_VOTE'));
         $type_h = array('', 'align-center', 'align-center', '');
@@ -2530,7 +2420,7 @@ function modactivityscore()
         . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
         . Form::closeButtonSpace()
     );
-    if ($info_report['source_of'] != 'scoitem') {
+    if ($info_report->getSourceOf() != 'scoitem') {
         $out->add(
             $tb->getTable()
             . Form::openButtonSpace()
@@ -2758,16 +2648,16 @@ function export()
     $total_weight = 0;
     $i = 1;
     while ($info_report = sql_fetch_assoc($re_report)) {
-        $id = $info_report['id_source'];
-        $reports[$info_report['id_report']] = $info_report;
-        $reports_id[] = $info_report['id_report'];
+        $id = $info_report->getIdSource();
+        $reports[$info_report->getIdReport()] = $info_report;
+        $reports_id[] = $info_report->getIdReport();
 
         // XXX: set action colums
 
-        switch ($info_report['source_of']) {
+        switch ($info_report->getSourceOf()) {
             case "test" : {
 
-                $title = strip_tags($tests_info[$info_report['id_source']]['title']);
+                $title = strip_tags($tests_info[$info_report->getIdSource()]['title']);
             };
                 break;
             case "scoitem"    : {
@@ -2792,7 +2682,7 @@ function export()
 
         //set info colums
         $colums['max_score'][] = $info_report['max_score'];
-        $colums['required_score'][] = $info_report['required_score'];
+        $colums['required_score'][] = $info_report->getRequiredScore();
         $colums['weight'][] = $info_report['weight'];
         $colums['show_to_user'][] = ($info_report['show_to_user'] == 'true' ? $lang->def('_YES') : $lang->def('_NO'));
         $colums['use_for_final'][] = ($info_report['use_for_final'] == 'true' ? $lang->def('_YES') : $lang->def('_NO'));
@@ -2932,9 +2822,9 @@ function export()
             $csv .= '"' . $user_name . '"';
 
             foreach ($reports as $id_report => $info_report) {
-                switch ($info_report['source_of']) {
+                switch ($info_report->getSourceOf()) {
                     case "test" : {
-                        $id_test = $info_report['id_source'];
+                        $id_test = $info_report->getIdSource();
                         if (isset($tests_score[$id_test][$idst_user])) {
                             switch ($tests_score[$id_test][$idst_user]['score_status']) {
                                 case "not_complete" :
@@ -2962,7 +2852,7 @@ function export()
                                 case "valid"        : {
                                     $score = $tests_score[$id_test][$idst_user]['score'];
 
-                                    if ($score >= $info_report['required_score']) {
+                                    if ($score >= $info_report->getRequiredScore()) {
                                         if ($score == $test_details[$id_test]['max_score']) $csv .= ';"' . $score . " " . $tt . '"';
                                         else $csv .= ';"' . $score . " " . $tt . '"';
 
@@ -2994,7 +2884,7 @@ function export()
                         $query_report = "
 						SELECT *
 						FROM " . $GLOBALS['prefix_lms'] . "_scorm_tracking
-						WHERE idscorm_item = '" . $info_report['id_source'] . "' AND idUser = '" . $idst_user . "'
+						WHERE idscorm_item = '" . $info_report->getIdSource() . "' AND idUser = '" . $idst_user . "'
 						";
                         $report = sql_fetch_assoc(sql_query($query_report));
                         if ($report['score_raw'] == NULL) $report['score_raw'] = "-";
@@ -3014,15 +2904,15 @@ function export()
                         break;
                     case "activity" :
                     case "final_vote" : {
-                        $id_report = $info_report['id_report'];
+                        $id_report = $info_report->getIdReport();
                         if (isset($reports_score[$id_report][$idst_user])) {
                             switch ($reports_score[$id_report][$idst_user]['score_status']) {
                                 case "not_complete" :
                                     $csv .= ';"-"';
                                     break;
                                 case "valid"        : {
-                                    if ($reports_score[$id_report][$idst_user]['score'] >= $info_report['required_score']) {
-                                        if ($reports_score[$id_report][$idst_user]['score'] == $info_report['max_score']) {
+                                    if ($reports_score[$id_report][$idst_user]['score'] >= $info_report->getRequiredScore()) {
+                                        if ($reports_score[$id_report][$idst_user]['score'] == $info_report->getMaxScore()) {
                                             $csv .= ';"' . $reports_score[$id_report][$idst_user]['score'] . '"';
                                         } else $csv .= ';"' . $reports_score[$id_report][$idst_user]['score'] . '"';
 

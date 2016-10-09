@@ -15,7 +15,7 @@ class ReportLms extends Model
     /**
      * @var integer
      */
-    protected $maxSccore;
+    protected $maxScore;
 
     /**
      * @var integer
@@ -52,9 +52,17 @@ class ReportLms extends Model
      */
     protected $idSource;
 
-
-    public function __construct($id_report, $title, $max_score, $required_score, $weight, $show_to_user, $use_for_final, $source_of, $id_source)
+    public function __construct($id_report = 0, $title = '', $max_score = true, $required_score = true, $weight = true, $show_to_user = false, $use_for_final = false, $source_of = '', $id_source = 0)
     {
+        $this->idReport = $id_report;
+        $this->title = $title;
+        $this->maxSccore = $max_score;
+        $this->requiredScore = $required_score;
+        $this->weight = $weight;
+        $this->showToUser = $show_to_user === 'true'? true : false;
+        $this->useForFinal = $use_for_final === 'true'? true : false;
+        $this->sourceOf = $source_of;
+        $this->idSource = $id_source;
 
     }
 
@@ -91,19 +99,19 @@ class ReportLms extends Model
     }
 
     /**
-     * @param int $maxSccore
+     * @param int $maxScore
      */
-    public function setMaxSccore($maxSccore)
+    public function setMaxScore($maxScore)
     {
-        $this->maxSccore = $maxSccore;
+        $this->maxScore = $maxScore;
     }
 
     /**
      * @return int
      */
-    public function getMaxSccore()
+    public function getMaxScore()
     {
-        return $this->maxSccore;
+        return $this->maxScore;
     }
 
     /**
@@ -155,6 +163,13 @@ class ReportLms extends Model
     }
 
     /**
+     * @return string
+     */
+    public function isShowToUserToString() {
+        return ($this->useForFinal ? 'true' : 'false');
+    }
+
+    /**
      * @param boolean $useForFinal
      */
     public function setUseForFinal($useForFinal)
@@ -168,6 +183,13 @@ class ReportLms extends Model
     public function isUseForFinal()
     {
         return $this->useForFinal;
+    }
+
+    /**
+     * @return string
+     */
+    public function isUseForFinalToString() {
+        return ($this->useForFinal ? 'true' : 'false');
     }
 
     /**
@@ -216,5 +238,9 @@ class ReportLms extends Model
     public function getIdSource()
     {
         return $this->idSource;
+    }
+
+    public function save() {
+        
     }
 }

@@ -16,6 +16,7 @@ class Module_CourseReport extends LmsModule
 
     function loadBody()
     {
+
         try {
 
             switch ($GLOBALS['op']) {

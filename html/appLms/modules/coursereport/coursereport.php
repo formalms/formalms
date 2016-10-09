@@ -238,11 +238,47 @@ function coursereport()
 	SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
 	FROM " . $GLOBALS['prefix_lms'] . "_coursereport
 	WHERE id_course = '" . $_SESSION['idCourse'] . "'
-	ORDER BY sequence ";
+	ORDER BY sequence";
     $re_report = sql_query($query_report);
     $total_weight = 0;
     $i = 1;
+
+    $info_reports_list = array();
+    $info_reports = array();
+
+    $maxCols = 1;
+    $col = 0;
+    $selectedTest = isset($_GET['_dyn_field_selector_1']) ? $_GET['_dyn_field_selector_1'] : null;;
+
+    $testSelector = '<form name="formTestSelector" method="get">';
+    $testSelector .= '<select onchange="document.formTestSelector.submit()" id="_dyn_field_selector_1" name="_dyn_field_selector_1">';
+
+
     while ($info_report = sql_fetch_assoc($re_report)) {
+        if ($col < $maxCols) {
+            if ($selectedTest) {
+                if ($selectedTest == $info_report['id_report']){
+                    $info_reports[] = $info_report;
+                    $col++;
+                }
+            } else {
+                $info_reports[] = $info_report;
+                $col++;
+            }
+        }
+        $info_reports_list[] = $info_report;
+
+
+        if ($i == 0)
+            $first = $info_report['id_report'];
+        $testSelector .= '<option value="' . $info_report['id_report'] . '"' . ($_GET['_dyn_field_selector_1'] == $info_report['id_report'] ? ' selected="selected"' : '') . '>' . strip_tags($tests_info[$info_report['id_source']]['title']) . '</option>';
+
+
+    }
+    $testSelector .= '</select>';
+    $testSelector .= '</form>';
+
+    foreach ($info_reports as $info_report) {
         $id = $info_report['id_source'];
         $reports[$info_report['id_report']] = $info_report;
         $reports_id[] = $info_report['id_report'];
@@ -325,7 +361,7 @@ function coursereport()
                 break;
         }
 
-        $top = $title . '<br/>';
+        $top = $testSelector . '<br/>' . $title . '<br/>';
         if ($mod_perm)
             if ($i > 1 && $info_report['source_of'] != 'final_vote')
                 $top .= '<a class="ico-sprite subs_left" href="index.php?modname=coursereport&amp;op=moveleft&amp;id_report=' . $info_report['id_report'] . '"><span><span>' . $lang->def('_MOVE_LEFT') . '</span></a>';
@@ -346,19 +382,6 @@ function coursereport()
         if ($info_report['use_for_final'] == 'true') $total_weight += $info_report['weight'];
     }
 
-    // XXX: Set table intestation
-    $tb_report = new Table(0, $lang->def('_COURSE_REPORT_CAPTION'), $lang->def('_COURSE_REPORT_SUMMARY'));
-
-    $tb_report->setColsStyle($type_h);
-    $tb_report->addHead($cont_h);
-
-    $tb_report->addBody($a_line_2);
-
-    $tb_report->addBody($colums['max_score']);
-    $tb_report->addBody($colums['required_score']);
-    $tb_report->addBody($colums['weight']);
-    $tb_report->addBody($colums['show_to_user']);
-    $tb_report->addBody($colums['use_for_final']);
 
     //$tb->addBodyExpanded('<span class="text_bold title_big">'.$lang->def('_STUDENTS_VOTE').'</span>', 'align-center');
     $tb_score = new Table(0, $lang->def('_STUDENTS_VOTE'), $lang->def('_COURSE_REPORT_SUMMARY'));
@@ -385,8 +408,10 @@ function coursereport()
     $f_list = $f_list + $fields;
 
     $js_arr = array();
-    foreach ($f_list as $key => $value)
+    foreach ($f_list as $key => $value) {
         $js_arr[] = $key . ': ' . json_encode($value);
+    }
+
     $f_list_js = '{' . implode(',', $js_arr) . '}';
 
     $fieldlist = $f_list;
@@ -409,6 +434,8 @@ function coursereport()
 
     $field_selected = ($_GET['_dyn_field_selector_0']) ? $_GET['_dyn_field_selector_0'] : 'userid';
     $_SESSION['field_selected'] = $field_selected;
+
+
     // aggiungo un elemento in posizione 1
     $index = 1;
     $start = array_slice($cont_h, 0, $index);
@@ -505,7 +532,7 @@ function coursereport()
     reset($report_details);
 
     // XXX: Display user scores
-    if (!empty($students_info))
+    if (!empty($students_info)) {
         while (list($idst_user, $user_info) = each($students_info)) {
             $user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
                 ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
@@ -742,117 +769,7 @@ function coursereport()
             }
             $tb_score->addBody($cont);
         }
-    // XXX: Display statistics
-    $stats['passed'] = array($lang->def('_PASSED'));//, ''
-    $stats['not_passed'] = array($lang->def('_NOT_PASSED'));//, ''
-    $stats['not_checked'] = array($lang->def('_NOT_CHECKED'));//, ''
-    $stats['averange'] = array($lang->def('_AVERANGE'));//, ''
-    $stats['varianza'] = array($lang->def('_STANDARD_DEVIATION'));//, ''
-    $stats['max_score'] = array($lang->def('_MAX_SCORE'));//, ''
-    $stats['min_score'] = array($lang->def('_MIN_SCORE'));//, ''
-    foreach ($reports as $id_report => $info_report) {
-        switch ($info_report['source_of']) {
-            case "test" : {
-                $id_test = $info_report['id_source'];
-
-                if (isset($test_details[$id_test]['passed']) || isset($test_details[$id_test]['not_passed'])) {
-                    if (!isset($test_details[$id_test]['passed']))
-                        $test_details[$id_test]['passed'] = 0;
-                    if (!isset($test_details[$id_test]['not_passed']))
-                        $test_details[$id_test]['not_passed'] = 0;
-
-                    $test_details[$id_test]['varianza'] /= ($test_details[$id_test]['passed'] + $test_details[$id_test]['not_passed']);
-                    $test_details[$id_test]['varianza'] = sqrt($test_details[$id_test]['varianza']);
-                }
-                $stats['passed'][] = (isset($test_details[$id_test]['passed']) ? round($test_details[$id_test]['passed'], 2) : '-');
-                $stats['not_passed'][] = (isset($test_details[$id_test]['not_passed']) ? round($test_details[$id_test]['not_passed'], 2) : '-');
-                $stats['not_checked'][] = (isset($test_details[$id_test]['not_checked']) ? round($test_details[$id_test]['not_checked'], 2) : '-');
-                $stats['averange'][] = (isset($test_details[$id_test]['averange']) ? round($test_details[$id_test]['averange'], 2) : '-');
-                $stats['varianza'][] = (isset($test_details[$id_test]['varianza']) ? round($test_details[$id_test]['varianza'], 2) : '-');
-                $stats['max_score'][] = (isset($test_details[$id_test]['max_score']) ? round($test_details[$id_test]['max_score'], 2) : '-');
-                $stats['min_score'][] = (isset($test_details[$id_test]['min_score']) ? round($test_details[$id_test]['min_score'], 2) : '-');
-            };
-                break;
-            case "scoitem" : {
-                $query_report = "
-						SELECT *
-						FROM " . $GLOBALS['prefix_lms'] . "_scorm_tracking
-						WHERE idscorm_item = '" . $info_report['id_source'] . "'";
-
-                $passed = 0;
-                $total = 0;
-                $media = 0;
-                $varianza = 0;
-                $votomassimo = 0;
-                $votominimo = 9999;
-                $result = sql_query($query_report);
-                while ($report = sql_fetch_assoc($result)) {
-                    if ($report['score_raw'] != NULL) {
-                        if ($report['score_raw'] > $votomassimo)
-                            $votomassimo = $report['score_raw'];
-                        if ($report['score_raw'] < $votominimo)
-                            $votominimo = $report['score_raw'];
-                        $media = $media + $report['score_raw'];
-                        $total = $total + 1;
-                        if ($report['lesson_status'] == 'passed') {
-                            $passed++;
-                        }
-                    }
-                }
-                $media = ($total == 0 ? '0' : $media / $total);
-                $result = sql_query($query_report);
-                $var = 0;
-                while ($report = sql_fetch_assoc($result))
-                    if ($report['score_raw'] != NULL)
-                        $var = $var + pow($media - $report['score_raw'], 2);
-                $varianza = ($total == 0 ? '0' : floor($var / $total));
-                if ($votominimo == 9999)
-                    $votominimo = "";
-
-                $stats['passed'][] = $passed;
-                $stats['not_passed'][] = $total - $passed;
-                $stats['not_checked'][] = "-";
-                $stats['averange'][] = $media;
-                $stats['varianza'][] = $varianza;
-                $stats['max_score'][] = $votomassimo;
-                $stats['min_score'][] = $votominimo;
-            };
-                break;
-            case "activity" :
-            case "final_vote" : {
-                if (isset($report_details[$id_report]['passed']) || isset($report_details[$id_report]['not_passed'])) {
-                    if (!isset($report_details[$id_report]['passed']))
-                        $report_details[$id_report]['passed'] = 0;
-                    if (!isset($report_details[$id_report]['not_passed']))
-                        $report_details[$id_report]['not_passed'] = 0;
-
-                    $report_details[$id_report]['varianza'] /= ($report_details[$id_report]['passed'] + $report_details[$id_report]['not_passed']);
-                    $report_details[$id_report]['varianza'] = sqrt($report_details[$id_report]['varianza']);
-                }
-                $stats['passed'][] = (isset($report_details[$id_report]['passed']) ? round($report_details[$id_report]['passed'], 2) : '-');
-                $stats['not_passed'][] = (isset($report_details[$id_report]['not_passed']) ? round($report_details[$id_report]['not_passed'], 2) : '-');
-                $stats['not_checked'][] = (isset($report_details[$id_report]['not_checked']) ? round($report_details[$id_report]['not_checked'], 2) : '-');
-                $stats['averange'][] = (isset($report_details[$id_report]['averange']) ? round($report_details[$id_report]['averange'], 2) : '-');
-                $stats['varianza'][] = (isset($report_details[$id_report]['varianza']) ? round(sqrt($report_details[$id_report]['varianza']), 2) : '-');
-                $stats['max_score'][] = (isset($report_details[$id_report]['max_score']) ? round($report_details[$id_report]['max_score'], 2) : '-');
-                $stats['min_score'][] = (isset($report_details[$id_report]['min_score']) ? round($report_details[$id_report]['min_score'], 2) : '-');
-            };
-                break;
-        }
     }
-    $tb_stat = new Table(0, $lang->def('_SUMMARY_VOTE'), $lang->def('_COURSE_REPORT_SUMMARY'));
-    $tb_stat->setColsStyle($type_h);
-    $cont_h[0] = $lang->def('_STATISTICS');
-    $tb_stat->addHead($cont_h);
-
-    //$tb->addBodyExpanded('<span class="text_bold title_big">'.$lang->def('_SUMMARY_VOTE').'</span>', 'align-center');
-    $tb_stat->addBody($stats['passed']);
-    $tb_stat->addBody($stats['not_passed']);
-    $tb_stat->addBody($stats['not_checked']);
-    $tb_stat->addBody($stats['averange']);
-    $tb_stat->addBody($stats['varianza']);
-    $tb_stat->addBody($stats['max_score']);
-    $tb_stat->addBody($stats['min_score']);
 
     // Write in output
     $out->add(getTitleArea($lang->def('_COURSEREPORT', 'menu_course'), 'coursereport')
@@ -1040,10 +957,7 @@ while(i<lista.length)
 
     $out->add(Form::closeForm());
 
-    $out->add(
-        $tb_report->getTable() . '<br /><br />'
-        . $tb_score->getTable() . '<br /><br />'
-        . $tb_stat->getTable() . '<br /><br />');
+    $out->add($tb_score->getTable() . '<br /><br />');
 
     if (checkPerm('mod', true)) {
         $out->add(
@@ -2978,75 +2892,75 @@ function export()
                             }
                         }
                     }
-                break;
-            case
-                "scoitem" : {
-                    $query_report = "
+                        break;
+                    case
+                    "scoitem" : {
+                        $query_report = "
 						SELECT *
 						FROM " . $GLOBALS['prefix_lms'] . "_scorm_tracking
 						WHERE idscorm_item = '" . $info_report['id_source'] . "' AND idUser = '" . $idst_user . "'
 						";
-                    $report = sql_fetch_assoc(sql_query($query_report));
-                    if ($report['score_raw'] == NULL) $report['score_raw'] = "-";
+                        $report = sql_fetch_assoc(sql_query($query_report));
+                        if ($report['score_raw'] == NULL) $report['score_raw'] = "-";
 
-                    $id_track = (isset($report['idscorm_tracking']) ? $report['idscorm_tracking'] : 0);
-                    $query_report = "
+                        $id_track = (isset($report['idscorm_tracking']) ? $report['idscorm_tracking'] : 0);
+                        $query_report = "
 						SELECT *
 						FROM " . $GLOBALS['prefix_lms'] . "_scorm_tracking_history
 						WHERE idscorm_tracking = '" . $id_track . "'
 						";
 
-                    $query = sql_query($query_report);
-                    $num = sql_num_rows($query);
-                    $csv .= ';"' . $report['score_raw'] . '"';
+                        $query = sql_query($query_report);
+                        $num = sql_num_rows($query);
+                        $csv .= ';"' . $report['score_raw'] . '"';
 
-                }
+                    }
                         break;
                     case "activity" :
                     case "final_vote" : {
-                    $id_report = $info_report['id_report'];
-                    if (isset($reports_score[$id_report][$idst_user])) {
-                        switch ($reports_score[$id_report][$idst_user]['score_status']) {
-                            case "not_complete" :
-                                $csv .= ';"-"';
-                                break;
-                            case "valid"        : {
-                                if ($reports_score[$id_report][$idst_user]['score'] >= $info_report['required_score']) {
-                                    if ($reports_score[$id_report][$idst_user]['score'] == $info_report['max_score']) {
+                        $id_report = $info_report['id_report'];
+                        if (isset($reports_score[$id_report][$idst_user])) {
+                            switch ($reports_score[$id_report][$idst_user]['score_status']) {
+                                case "not_complete" :
+                                    $csv .= ';"-"';
+                                    break;
+                                case "valid"        : {
+                                    if ($reports_score[$id_report][$idst_user]['score'] >= $info_report['required_score']) {
+                                        if ($reports_score[$id_report][$idst_user]['score'] == $info_report['max_score']) {
+                                            $csv .= ';"' . $reports_score[$id_report][$idst_user]['score'] . '"';
+                                        } else $csv .= ';"' . $reports_score[$id_report][$idst_user]['score'] . '"';
+
+                                        // Count passed
+                                        if (!isset($report_details[$id_report]['passed'])) $report_details[$id_report]['passed'] = 1;
+                                        else $report_details[$id_report]['passed']++;
+                                    } else {
                                         $csv .= ';"' . $reports_score[$id_report][$idst_user]['score'] . '"';
-                                    } else $csv .= ';"' . $reports_score[$id_report][$idst_user]['score'] . '"';
 
-                                    // Count passed
-                                    if (!isset($report_details[$id_report]['passed'])) $report_details[$id_report]['passed'] = 1;
-                                    else $report_details[$id_report]['passed']++;
-                                } else {
-                                    $csv .= ';"' . $reports_score[$id_report][$idst_user]['score'] . '"';
-
-                                    // Count not passed
-                                    if (!isset($report_details[$id_report]['not_passed'])) $report_details[$id_report]['not_passed'] = 1;
-                                    else $report_details[$id_report]['not_passed']++;
-                                }
-                                if (isset($report_details[$id_report]['varianza']) && isset($report_details[$id_report]['averange'])) {
-                                    $report_details[$id_report]['varianza'] += round(pow(($reports_score[$id_report][$idst_user]['score'] - $report_details[$id_report]['averange']), 2), 2);
-                                } else {
-                                    $report_details[$id_report]['varianza'] = round(pow(($reports_score[$id_report][$idst_user]['score'] - $report_details[$id_report]['averange']), 2), 2);
-                                }
-                            };
-                                break;
-                        }
-                    } else
-                        $csv .= ';"-"';
-                };
+                                        // Count not passed
+                                        if (!isset($report_details[$id_report]['not_passed'])) $report_details[$id_report]['not_passed'] = 1;
+                                        else $report_details[$id_report]['not_passed']++;
+                                    }
+                                    if (isset($report_details[$id_report]['varianza']) && isset($report_details[$id_report]['averange'])) {
+                                        $report_details[$id_report]['varianza'] += round(pow(($reports_score[$id_report][$idst_user]['score'] - $report_details[$id_report]['averange']), 2), 2);
+                                    } else {
+                                        $report_details[$id_report]['varianza'] = round(pow(($reports_score[$id_report][$idst_user]['score'] - $report_details[$id_report]['averange']), 2), 2);
+                                    }
+                                };
+                                    break;
+                            }
+                        } else
+                            $csv .= ';"-"';
+                    };
                         break;
                 }
+            }
+            $csv .= "\n";
         }
-    $csv .= "\n";
-}
 
-$file_name = date('YmdHis') . '_report_export.csv';
+    $file_name = date('YmdHis') . '_report_export.csv';
 
-require_once(_base_ . '/lib/lib.download.php');
-sendStrAsFile($csv, $file_name);
+    require_once(_base_ . '/lib/lib.download.php');
+    sendStrAsFile($csv, $file_name);
 }
 
 function testQuestion()
