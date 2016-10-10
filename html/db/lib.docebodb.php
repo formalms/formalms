@@ -519,4 +519,11 @@ function sql_select_db($db_name){
     $re = $db->select_db($db_name);
     return $re;
 }
+
+function sql_close(){
+       $db = DbConn::getInstance();
+       $re = $db->close();
+       return $re;
+}
+
 ?>

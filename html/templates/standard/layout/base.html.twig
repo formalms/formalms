@@ -3,8 +3,8 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--Fix funzionamento scorm su IE9-->
-    <!--[if lt IE 9] -->
+    <!--Fix scorm issues on su IE9-->
+    <!--[if lt IE 9] >
     <meta http-equiv="x-ua-compatible" content="IE=9"/>
     <![endif] -->     
     <!--END -->
@@ -22,6 +22,7 @@
     {{ layout_meta | raw }}
     <link rel="shortcut icon" href="{{layout_path}}images/favicon.png" type="image/png"/>
     <link rel="shortcut icon" href="{{layout_path}}images/favicon.ico"/>
+		<link rel="stylesheet" type="text/css" href="{{ layout_path }}style/font-awesome/css/font-awesome.min.css" />        
     <!-- reset and font stylesheet -->
     {{ resetter|raw }}
     
