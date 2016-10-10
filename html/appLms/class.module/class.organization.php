@@ -386,9 +386,10 @@ class Module_Organization extends LmsModule {
 								.'&op=display&sor='.$saveName.'&'
 								.$this->treeView->_getOpCreateLOEnd().'=1' );
 				} else {
-					$GLOBALS['page']->addStart(
-					getTitleArea(def('_ORGANIZATION', 'organization', 'lms'), 'organization')
-						.'<div class="std_block">', 'content');
+                   
+                    $GLOBALS['page']->addStart(
+					getTitleArea($this->lang->def('_ORGANIZATION', 'organization', 'lms'), 'organization')
+						.'<div class="std_block">', 'content'); 
 					$GLOBALS['page']->addEnd('</div>', 'content');
 					if( isset($_SESSION['last_error']) )
 						if( $_SESSION['last_error'] != "" ) {
