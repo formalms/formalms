@@ -518,7 +518,7 @@ class Report_User extends Report {
 
 				$already.='<input class="align_right" type="text" style="width: '.
 				($type==_FILTER_DATE ? '7' : '9').'em;" '.
-					'name="courses_filter['.$key.'][value]" value="'.Format::date($value['value'], 'date').'"'.
+					'name="courses_filter['.$key.'][value]" value="'.($type==_FILTER_DATE ? Format::date($value['value'], 'date') : $value['value']).'"'.
 					' id="courses_filter_'.$index.'_value" />';
 
 				if ($type==_FILTER_DATE) {
