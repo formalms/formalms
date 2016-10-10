@@ -1,4 +1,3 @@
- <link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>font-awesome/css/font-awesome.min.css" />
  <script type="text/javascript">
     YAHOO.util.Event.onDOMReady(function() {
         initialize("<?php echo Lang::t('_UNDO', 'standard'); ?>");

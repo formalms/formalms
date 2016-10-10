@@ -1,10 +1,6 @@
 <link rel="shortcut icon" href="../favicon.ico"> 
 		<script type="text/javascript" src="js/modernizr.custom.04022.js"></script>
 
-        <!--
-        <link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/font-awesome/css/font-awesome.min.css" />
-        -->
-
 <?php if( $use_label ) : ?>
 <div class="container-back">
 	<a href="index.php?r=elearning/show&id_common_label=-2">
@@ -16,7 +12,7 @@
 <?php $contCourse=0; ?>
 
 <div  id="container1_<?php echo $stato_corso; ?>">
-    <?php /*<div id="cbp-vm" class="cbp-vm-switcher cbp-vm-view-grid">*/ ?>
+
     <div id="cbp-vm">
     
     <?php if($filter_type=="" || $filter_type=='elearning'){  ?>
@@ -32,7 +28,7 @@
                     $nameCategory = substr($course['nameCategory'],6);
                 }                 
             ?>            
-            <?php /*<li class="completed_course_<?php  echo $course['user_status']; ?>">*/ ?> 
+
             <div class="col-xs-12 col-sm-6 col-lg-4 course-block ">           
                 <div class="course-block-content completed_course_<?php  echo $course['user_status']; ?>">
                     <?php if($course['use_logo_in_courselist'] && $course['img_course']) : ?>
@@ -48,10 +44,6 @@
                               $date = Format::date($course['date_end'], 'date');
                               $month_name =  ucfirst(strftime("%B", strtotime($date))); 
                               $month_name =  substr($month_name,0,3);
-							  
-							  
-
-
 							  
 							  
 							  ?>
@@ -82,8 +74,10 @@
                         <div style="clear:both;"></div>
                          <p class="course_support_info1">
                              <p class="descrizione_corso"><?php echo $course['description']?></p>
-                             <p class="utenti"><i class="fa fa-users" aria-hidden="true"></i><span class="utenti_numero">&nbsp<?php echo $course['enrolled']?></span>&nbspUtenti</p>
-                             <p class="stato_corso"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i><span class="stato_corso_stato">&nbsp<?php echo Lang::t($this->cstatus[$course['course_status']],'course')?></span></p>
+                             <p class="extra">
+                             <span class="utenti"><i class="fa fa-users" aria-hidden="true"></i><span class="utenti_numero">&nbsp<?php echo $course['enrolled']?></span>&nbspUtenti</span>
+                             <span class="stato_corso"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i><span class="stato_corso_stato">&nbsp<?php echo Lang::t($this->cstatus[$course['course_status']],'course')?></span></span>
+                             </p>
                               
                              
                             </p> 
@@ -115,34 +109,26 @@
                               $date = Format::date($course['date_end'], 'date');
                               $month_name =  ucfirst(strftime("%B", strtotime($date))); 
                               $month_name =  substr($month_name,0,3);
-							  
-							  
-
-
-							  
-							  
 							  ?>
                                                                        
                                  
                             <!-- IMG COURSE -->   
                             <a href="#">
                             
-                            <?php
-							
-							 if($date != "00-00-0000") : ?>
+                            <?php if($date != "00-00-0000") : ?>
                     
-                            <div class="data_chiusura">
-                             <div class="corso_scaduto2">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-calendar  fa-stack-1x"></i>
-                                        <i class="fa fa-ban  fa-stack-2x text-danger"></i>
-                                    </span>
+                                <div class="data_chiusura">
+                                 <div class="corso_scaduto2">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-calendar  fa-stack-1x"></i>
+                                            <i class="fa fa-ban  fa-stack-2x text-danger"></i>
+                                        </span>
+                                    </div>
+                                <div class="giorno"><?php echo $giorno ?></div>
+                                <div class="mese"><?php echo $month_name ?></div>
+                                <div class="anno"><?php echo $anno ?></div>
+                               
                                 </div>
-                            <div class="giorno"><?php echo $giorno ?></div>
-                            <div class="mese"><?php echo $month_name ?></div>
-                            <div class="anno"><?php echo $anno ?></div>
-                           
-                            </div>
                            <?php endif; ?> 
                             <div class="area2" >
                         <h1><?php echo $course['name'];     ?></h1>
@@ -150,8 +136,10 @@
                         <div style="clear:both;"></div>
                          <p class="course_support_info1">
                              <p class="descrizione_corso"><?php echo $course['description']?></p>
-                             <p class="utenti"><i class="fa fa-users" aria-hidden="true"></i><span class="utenti_numero">&nbsp<?php echo $course['enrolled']?></span>&nbspUtenti</p>
-                             <p class="stato_corso"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i><span class="stato_corso_stato">&nbsp<?php echo Lang::t($this->cstatus[$course['course_status']],'course')?></span></p>
+                             <p class="extra">
+                             <span class="utenti"><i class="fa fa-users" aria-hidden="true"></i><span class="utenti_numero">&nbsp<?php echo $course['enrolled']?></span>&nbspUtenti</span>
+                             <span class="stato_corso"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i><span class="stato_corso_stato">&nbsp<?php echo Lang::t($this->cstatus[$course['course_status']],'course')?></span></span>
+                             </p>
                               
                              
                             </p> 
@@ -204,11 +192,6 @@
                                               
                             <p class="course_support_info1">
                                 <!-- CODE COURSE -->
-                                <!--
-                                <?php if($course['code']) { ?>
-                                    <i style="font-size:.88em">[<?php echo $keyword != "" ? Layout::highlight($course['code'], $keyword) : $course['code']; ?>]</i>
-                                <?php } ?>
-                                 -->
                                <p class="categoria_corso"><a href="#" class="tooltips" title="CATEGORIA DEL CORSO"><i class="fa fa-folder-open-o" aria-hidden="true"></i> </a><span class="categoria_corso_nome"> <?php if($nameCategory) { ?>
                                     <?php echo $nameCategory ?>
                                 <?php } ?> </span> </p>  
@@ -266,15 +249,6 @@
                             }
                             unset($smodel);
                         ?>                             
-                        <!--
-                            <?php if ($course['can_enter']['can']) { ?>
-                             <a href="index.php?modname=course&amp;op=aula&amp;idCourse=<?php echo $course['idCourse']; ?>">Apri corso</a>
-                            <?php } else {    
-                                    echo Get::img('standard/locked.png', Lang::t('_'.strtoupper($course['can_enter']['reason']), 'standard'));
-                                    echo ' '.($keyword != "" ? Layout::highlight($course['name'], $keyword) : $course['name']);
-                                }
-                            ?>
-                        -->         
                     </div> 
                     <div class="area4">
                         <?php if ($course['can_enter']['can']) { ?>
