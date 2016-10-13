@@ -91,7 +91,7 @@
                                 class="portrait"
                                 width="100%"
                                 src="<?php echo $path_course.$course['img_course']; ?>"
-                                alt="<?php echo Util::purge($course['name']); ?>" />
+                                alt="" />
                                 </a>
                         </div>
                     <?php endif; ?>
