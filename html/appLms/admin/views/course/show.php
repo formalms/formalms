@@ -106,7 +106,6 @@ echo	'<div class="quick_search_form">'
 		.'</div>';
 
 $columns_arr = array(
-	array('key' => 'id', 'label' => null, 'sortable' => false),
 	array('key' => 'code', 'label' => Lang::t('_CODE', 'course'), 'sortable' => true),
 	array('key' => 'name', 'label' => Lang::t('_NAME', 'course'), 'sortable' => true),
 	array('key' => 'type', 'label' => Lang::t('_TYPE', 'course'), 'className' => 'min-cell'),
