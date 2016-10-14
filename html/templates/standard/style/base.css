@@ -1364,8 +1364,9 @@ h1.cat {font-size: 10px;text-align:left;}
     text-overflow: ellipsis;
     padding-top: 5px;
     margin-bottom: 10px;
-    height: 56%;
-    font-size: 12px;}
+    min-height: 35%;
+    font-size: 12px;
+}
 	
 .descrizione_corso.cat {
 	height:auto;
@@ -1412,9 +1413,9 @@ hr.style7 {
 
 .stato {float:left;margin:10px 0;}
 
-.attesa a{color:#c84000;cursor:help;}
-.completo a{color:#3cc60d;cursor:help;}
-.non_pubblicato a{color:#d61111;cursor:help;}
+.progress_status a{color:#cccc00;cursor:help;}
+.completed_status a{color:#3cc60d;cursor:help;}
+.enrolled_status a{color:#d61111;cursor:help;}
 
 .corso_scaduto {float:left;margin:8px 0;}
 .disiscrivi {float:left;margin:8px 0;}
