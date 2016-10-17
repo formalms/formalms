@@ -17,16 +17,17 @@
 			<?php $str_search = Lang::t("_SEARCH", 'standard'); ?>
             
             <?php $str_elearning = Lang::t("_COURSE_TYPE_ELEARNING", 'course'); ?>
-            <?php $str_classroom = Lang::t("_BUILDING_ROOM", 'classroom'); ?>
+            <?php $str_classroom = Lang::t("_CLASSROOM_COURSE", 'cart'); ?>
+            <?php $str_all = Lang::t("_ALL", 'standard'); ?>            
             
 			<div class="navbar-form form-group">
 				<!-- <span class="navbar-text">Filtra:</span> -->
 
 
                 <select id="course_search_filter_type" class="form-control" name="filter_type">
-                    <option value="" selected="selected"><?php echo  Lang::t("_ALL", 'standard'); ?></option>
-                    <option value="elearning"><?php echo $str_elearning; ?></option>
+                    <option value="elearning" selected="selected"><?php echo $str_elearning; ?></option>
                     <option value="classroom"><?php echo $str_classroom; ?></option>
+                    <option value="all"><?php echo $str_all; ?></option>                    
                 </select>
 
 

@@ -202,9 +202,10 @@ class ElearningLmsController extends LmsController {
 		}
 
 
-      // filtro per tipo corso elearning
-        if (empty($filter_type) || $filter_type=="elearning") {    
+        // filtro per tipo corso elearning
+        if (empty($filter_type) || $filter_type=="elearning" || $filter_type=="all") {    
             $courselist = $model->findAll($conditions, $params);
+            $filter_type = empty($filter_type) ? 'elearning': $filter_type;            
         }        
         
 		//check courses accessibility
@@ -247,7 +248,7 @@ class ElearningLmsController extends LmsController {
             $conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
         }
 
-        if (empty($filter_type) || $filter_type=="classroom") { 
+        if ($filter_type=="classroom" || $filter_type=='all') {   
             $courselistClassroom = $modelClassroom->findAll($conditions, $params);
         }
 
@@ -258,8 +259,6 @@ class ElearningLmsController extends LmsController {
             $courselistClassroom[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselistClassroom[$keys[$i]]);
         }
         // fine classroom
-
-
 
 
 		require_once(_lms_.'/lib/lib.middlearea.php');
@@ -284,6 +283,7 @@ class ElearningLmsController extends LmsController {
 
 		$filter_text = Get::req('filter_text', DOTY_STRING, "");
 		$filter_year = Get::req('filter_year', DOTY_INT, 0);
+        $filter_type = Get::req('filter_type', DOTY_STRING, "");        
 
 		$conditions = array(
 			'cu.iduser = :id_user',
@@ -305,7 +305,11 @@ class ElearningLmsController extends LmsController {
 			$params[':year'] = $filter_text;
 		}
 
-		$courselist = $model->findAll($conditions, $params);
+        if (empty($filter_type) || $filter_type=="elearning" || $filter_type=="all") {    		
+                $courselist = $model->findAll($conditions, $params);
+                $filter_type = empty($filter_type) ? 'elearning': $filter_type; 
+        }       
+                
 
 		//check courses accessibility
 		$keys = array_keys($courselist);
@@ -346,7 +350,9 @@ class ElearningLmsController extends LmsController {
             $conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
         }
 
-        $courselistClassroom = $modelClassroom->findAll($conditions, $params);
+        if ($filter_type=="classroom" || $filter_type=='all') {   
+            $courselistClassroom = $modelClassroom->findAll($conditions, $params);
+        }    
 
 
         //check courses accessibility
@@ -366,7 +372,8 @@ class ElearningLmsController extends LmsController {
 			'keyword' => $filter_text ,
             'display_info' => $this->_getClassDisplayInfo($keys),
             'courselistClassroom' => $courselistClassroom ,
-            'stato_corso' => "inprogress"
+            'stato_corso' => "inprogress",
+            'filter_type' => $filter_type
 		));
 	}
 
@@ -378,6 +385,7 @@ class ElearningLmsController extends LmsController {
 
 		$filter_text = Get::req('filter_text', DOTY_STRING, "");
 		$filter_year = Get::req('filter_year', DOTY_INT, 0);
+        $filter_type = Get::req('filter_type', DOTY_STRING, "");        
 
 		$conditions = array(
 			'cu.iduser = :id_user',
@@ -399,7 +407,12 @@ class ElearningLmsController extends LmsController {
 			$params[':year'] = $filter_year;
 		}
 
-		$courselist = $model->findAll($conditions, $params);
+		
+        if (empty($filter_type) || $filter_type=="elearning" || $filter_type=="all") {            
+                $courselist = $model->findAll($conditions, $params);
+                $filter_type = empty($filter_type) ? 'elearning': $filter_type; 
+        }       
+
 
         //check courses accessibility
         $keys = array_keys($courselist);
@@ -441,7 +454,9 @@ class ElearningLmsController extends LmsController {
             $conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
         }
 
-        $courselistClassroom = $modelClassroom->findAll($conditions, $params);
+        if ($filter_type=="classroom" || $filter_type=='all') {           
+            $courselistClassroom = $modelClassroom->findAll($conditions, $params);
+        }    
 
 
 
@@ -464,7 +479,8 @@ class ElearningLmsController extends LmsController {
 			'keyword' => $filter_text,
             'display_info' => $this->_getClassDisplayInfo($keys),
             'courselistClassroom' => $courselistClassroom   ,
-            'stato_corso' => "completed"
+            'stato_corso' => "completed",
+            'filter_type' => $filter_type            
 		));
 	}
 
@@ -499,9 +515,10 @@ class ElearningLmsController extends LmsController {
 			$params[':year'] = $filter_year;
 		}
 
-        // filtro per tipo corso elearning
-        if (empty($filter_type) || $filter_type=="elearning") {    
+        // e-learning filter
+        if (empty($filter_type) || $filter_type=="elearning" || $filter_type=="all") {    
 		    $courselist = $model->findAll($conditions, $params);
+            $filter_type = empty($filter_type) ? 'elearning': $filter_type;
         }
         
         //check courses accessibility
@@ -545,7 +562,7 @@ class ElearningLmsController extends LmsController {
         }
 
         // filtro per tipo corso classroom
-        if (empty($filter_type) || $filter_type=="classroom") {   
+        if ($filter_type=="classroom" || $filter_type=='all') {   
             $courselistClassroom = $modelClassroom->findAll($conditions, $params);
         }
 

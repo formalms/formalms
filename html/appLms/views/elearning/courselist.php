@@ -66,7 +66,7 @@
 
     <div id="cbp-vm">
     
-    <?php if($filter_type=="" || $filter_type=='elearning'){  ?>
+    <?php if($filter_type=="all" || $filter_type=='elearning'){  ?>
     <h1 class="page-header"><strong><?php echo Lang::t('_ELEARNING', 'catalogue'); ?></strong></h1>    
 
         <div class="clearfix" id='mia_area_<?php echo $stato_corso; ?>'>                       
@@ -89,11 +89,12 @@
                                 </div>
                            <?php endif; ?> 
                            <div class="area2" >
-                                    <h1><?php echo TruncateText($course['name'],100); ?></h1>
-                                    <div class="icon">&raquo;</div>
+                                    <h1>
+                                        <?php echo TruncateText($course['name'],50); ?>
+                                    </h1>
                                     <div style="clear:both;"></div>
                                     <p class="course_support_info1">
-                                        <p class="descrizione_corso"><?php echo TruncateText($course['description'],150); ?></p>
+                                        <p class="descrizione_corso"><?php echo TruncateText($course['description'],100); ?></p>
                                         <p class="extra">
                                             <span class="utenti">
                                                 <i class="fa fa-users" aria-hidden="true"></i>
@@ -113,7 +114,7 @@
                            </div>
                            <!-- COURSE IMAGE -->
                            <?php if($course['use_logo_in_courselist']) : ?>
-                                <img class="portrait" width="100%" src="<?php echo GetCourseImage($course, $path_course) ?>" alt="<?php echo Util::purge($course['name']); ?>" />
+                                <img class="portrait" width="100%" src="<?php echo GetCourseImage($course, $path_course) ?>" alt="" />
                            <?php endif; ?>
                                                                
                         </a>
@@ -215,14 +216,13 @@
         <br>
 
         <?php
-        // end elearning
+        // END ELEARNING
         }
         ?>
         
-        
 
-        <?php if($filter_type=="" || $filter_type=='classroom'){  ?>
-            <h1 class="page-header"><strong><?php echo Lang::t('_CLASSROOM', 'standard'); ?></strong></h1>
+        <?php if($filter_type=="all" || $filter_type=='classroom'){  ?>
+            <h1 class="page-header"><strong><?php echo Lang::t('_CLASSROOM_COURSE', 'cart'); ?></strong></h1>
             <div class="clearfix" id="mia_area_class_<?php echo $stato_corso; ?>">
             <?php if( empty($courselistClassroom) ) : ?>
                 <p><?php echo Lang::t('_NO_CONTENT', 'standard'); ?></p>
@@ -271,7 +271,7 @@
                     </div>
                     <!-- COURSE IMAGE -->
                     <?php if($course['use_logo_in_courselist']) : ?>
-                        <img class="portrait" width="100%" src="<?php echo GetCourseImage($course, $path_course) ?>" alt="<?php echo Util::purge($course['name']); ?>" />
+                        <img class="portrait" width="100%" src="<?php echo GetCourseImage($course, $path_course) ?>" alt="" />
                     <?php endif; ?>
                     </a>
                     </div>

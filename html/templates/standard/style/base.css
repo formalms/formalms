@@ -1279,10 +1279,10 @@ width: 30%;
 	
 .course-cover.cat {max-height: 151px;}
 
-.icon{position:absolute;z-index:12; left:10px; font-size:20px; top:2px;  width:10px; height:10px;display:block; color:#c84000; }
+.icon{position:absolute;z-index:12; left:10px; font-size:20px; top:12px;  width:10px; height:10px;display:block; /*color:#c84000;*/ color:#ccc; }
 .icon.cat{top:1px;}
 
-.area2 h1{font-size: 13px; padding: 0;margin: 0;float: left; text-transform:uppercase;color:#fff;}
+.area2 h1{font-size: 18px; padding: 0;margin: 0;float: left; text-transform:uppercase;color:#fff;}
 h1.cat {font-size: 10px;text-align:left;}
 .area2 p{font-weight: normal;margin-top:4px;}
 .area1 a {cursor: help;}
@@ -1300,7 +1300,7 @@ h1.cat {font-size: 10px;text-align:left;}
 		background: url(../images/bg-header.png); 
 		bottom:0;
 		left:0;
-		padding: 8px 0 0px 30px;
+		padding: 18px 0 0px 30px;
 		display:block;                    
 		margin:0; 
 		transition: all ease-in-out 300ms;-o-transition: all ease-in-out 300ms;-moz-transition: all ease-in-out 300ms;-webkit-transition: all ease-in-out 300ms;
@@ -1362,9 +1362,9 @@ h1.cat {font-size: 10px;text-align:left;}
     max-width: 90%;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding-top: 5px;
+    padding-top: 1px;
     margin-bottom: 10px;
-    min-height: 35%;
+    min-height: 5%;
     font-size: 12px;
 }
 	
