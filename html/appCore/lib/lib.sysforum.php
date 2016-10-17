@@ -450,7 +450,7 @@ class sys_forum {
 			FROM ".$this->prefix."_sysforum
 			WHERE idMessage = '".(int)$_GET['idMessage']."'"));
 
-			$textof = ereg_replace('<br />' ,'><br />' , $textof );
+			$textof = preg_replace('<br />' ,'><br />' , $textof );
 		}
 
 		//if($erased_t && !$mod_perm) {

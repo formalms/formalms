@@ -81,15 +81,15 @@ class DoceboCal {
 			
 			$calevents[$i]->id=$row["id"];
 
-			ereg("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["start_date"],$parts);
+            preg_match("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["start_date"],$parts);
 			$calevents[$i]->start->year=$parts[1];
 			$calevents[$i]->start->month=$parts[2];
 			$calevents[$i]->start->day=$parts[3];
 			$calevents[$i]->start->hour=$parts[4];
 			$calevents[$i]->start->min=$parts[5];
 			$calevents[$i]->start->sec=$parts[6];
-			
-			ereg("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["end_date"],$parts);
+
+            preg_match("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["end_date"],$parts);
 			$calevents[$i]->end->year=$parts[1];
 			$calevents[$i]->end->month=$parts[2];
 			$calevents[$i]->end->day=$parts[3];

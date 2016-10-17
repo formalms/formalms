@@ -613,7 +613,7 @@ class InlineChoice_Question extends Question {
 			.'<div class="title_question">'.$num_quest.') '.$lang->def('_TEST_IC_TITLE').'</div>'."\n"
 			.'<div class="answer_question">'."\n"
 			.'<label for="quest_'.$id_quest.'">'
-			.ereg_replace('\[answer\]', $select, $title_quest).'</label>'."\n"
+			.preg_replace('\[answer\]', $select, $title_quest).'</label>'."\n"
 			.'</div>'."\n"
 			.'</div>'."\n";
 	}
@@ -808,7 +808,7 @@ class InlineChoice_Question extends Question {
 			.'<div class="title_question">'.$num_quest.') '.$lang->def('_TEST_IC_TITLE').'</div>'."\n"
 			.'<div class="answer_question">'."\n"
 			.'<label for="quest_'.$id_quest.'">'
-			.ereg_replace('\[answer\]', $select, $title_quest).'</label>'."\n"
+			.preg_replace('\[answer\]', $select, $title_quest).'</label>'."\n"
 			.'</div>'."\n"
 			.'</div>'."\n";
 		

@@ -835,7 +835,7 @@ function loadFields( $arrayData, &$lo, $idLO ) {
 	
 	$langl = dir('menu/language/');
 	while($ele = $langl->read())
-		if(ereg("lang-",$ele)) {
+		if(preg_match("lang-",$ele)) {
 			$langArray[] = str_replace("lang-","",str_replace(".php","",$ele));
 		}
 	closedir($langl->handle);

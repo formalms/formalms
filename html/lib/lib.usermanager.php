@@ -608,7 +608,7 @@ class UserManager {
 		if($this->_render->haveToLostuserAction()) {
 
 			$mail = $this->_render->getLostUserParam();
-			if(eregi("\r", $mail) || eregi("\n", $mail)) die("This isn't a good email address !");
+			if(preg_match("\r", $mail) || preg_match("\n", $mail)) die("This isn't a good email address !");
 
 			$acl_man =& Docebo::user()->getAclManager();
 			$user_info = $acl_man->getUserByEmail($mail);
@@ -2197,11 +2197,11 @@ class UserManagerRenderer {
 			return array( 	'error' => true,
 							'msg' => $lang->def('_ERR_INVALID_MAIL') );
 		}
-		if (!eregi("^([a-z0-9_\-]|\\.[a-z0-9_])+@(([a-z0-9_\-]|\\.-)+\\.)+[a-z]{2,8}$", $source['register']['email'])) {
+		if (!preg_match("^([a-z0-9_\-]|\\.[a-z0-9_])+@(([a-z0-9_\-]|\\.-)+\\.)+[a-z]{2,8}$", $source['register']['email'])) {
 			return array( 	'error' => true,
 							'msg' => $lang->def('_ERR_INVALID_MAIL') );
 		}
-		if (eregi("[\r\n]+", $source['register']['email'])) {
+		if (preg_match("[\r\n]+", $source['register']['email'])) {
 			return array( 	'error' => true,
 							'msg' => $lang->def('_ERR_INVALID_MAIL') );
 		}
