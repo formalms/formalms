@@ -17,13 +17,13 @@ require_once(_base_ . '/lib/lib.json.php');
 class CoursereportLmsController extends LmsController
 {
 
-
     public function init()
     {
-        $this->model = new CoursestatsLms();
+        $this->model = new CoursereportLms($_SESSION['idCourse']);
         $this->json = new Services_JSON();
+        $this->_mvc_name = "coursereport";
         $this->permissions = array(
-            'view' => true,//checkPerm('view', true, 'coursestats')
+            'view' => true,
             'mod' => true
         );
     }
@@ -54,9 +54,7 @@ class CoursereportLmsController extends LmsController
         // XXX: Find test from organization
         $org_tests =& $report_man->getTest();
         $tests_info = $test_man->getTestInfo($org_tests);
-
-        $courseReportModel = new CoursereportLms($_SESSION['idCourse']);
-
+        
 
         // XXX: Find students
         /*
@@ -102,19 +100,19 @@ class CoursereportLmsController extends LmsController
             $students_info[$idst] =& $acl_man->getUser( $idst, FALSE );
     */
 
-        $tot_report = $courseReportModel->getReportCount();
+        $tot_report = $this->model->getReportCount();
         // XXX: Info for updates
-        $reportsArray = $courseReportModel->getReportsFilteredBySourceOf('test');
+        $reportsArray = $this->model->getReportsFilteredBySourceOf('test');
 
         foreach ($reportsArray as $reportLms) {
             $included_test[$reportLms->getIdSource()] = $reportLms->getIdSource();
             $included_test_report_id[$reportLms->getIdReport()] = $reportLms->getIdReport();
         }
 
-        //$included_test_report_id = $courseReportModel->getTestCoursereport();
+        //$included_test_report_id = $this->model->getTestCoursereport();
 
         // XXX: Update if needed
-        if ($courseReportModel->getReportCount() == 0) {
+        if ($this->model->getReportCount() == 0) {
             $report_man->initializeCourseReport($org_tests);
         } else {
             if (is_array($included_test)) {
@@ -168,7 +166,7 @@ class CoursereportLmsController extends LmsController
         $testSelector .= '<select onchange="document.formTestSelector.submit()" id="_dyn_field_selector_1" name="_dyn_field_selector_1">';
 
 
-        foreach ($courseReportModel->getCourseReports() as $info_report) {
+        foreach ($this->model->getCourseReports() as $info_report) {
 
             if ($col < $maxCols) {
                 if ($selectedTest) {
@@ -486,11 +484,12 @@ class CoursereportLmsController extends LmsController
                 $results_activity = array();
                 $results_scorm_test = array();
 
+                require_once($GLOBALS['where_lms'] . '/class.module/learning.test.php');
                 foreach ($info_reports as $info_report) {
                     switch ($info_report->getSourceOf()) {
                         case "test" : {
                             $id_test = $info_report->getIdSource();
-                            require_once($GLOBALS['where_lms'] . '/class.module/learning.test.php');
+
                             $testObj = Learning_Test::load($id_test);
                             if (isset($tests_score[$id_test][$idst_user])) {
                                 switch ($tests_score[$id_test][$idst_user]['score_status']) {
@@ -1947,9 +1946,9 @@ while(i<lista.length)
 
         } elseif (!isset($_POST['save'])) {
 
-            $courseReportModel = new CoursereportLms($_SESSION['idCourse'], $id_report, 'activity', '0');
+            $this->model = new CoursereportLms($_SESSION['idCourse'], $id_report, 'activity', '0');
 
-            $info_report = $courseReportModel->getCourseReports()[0];
+            $info_report = $this->model->getCourseReports()[0];
         }
 
         $page_title = array(
@@ -2150,9 +2149,9 @@ while(i<lista.length)
 
         } elseif (!isset($_POST['save'])) {
 
-            $courseReportModel = new CoursereportLms($_SESSION['idCourse'], $id_report, 'activity', '0');
+            $this->model = new CoursereportLms($_SESSION['idCourse'], $id_report, 'activity', '0');
 
-            $info_report = $courseReportModel->getCourseReports()[0];
+            $info_report = $this->model->getCourseReports()[0];
         }
 
 
@@ -2263,9 +2262,9 @@ while(i<lista.length)
 
         } else {
 
-            $courseReportModel = new CoursereportLms($_SESSION['idCourse'], $id_report, ['activity', 'scoitem'], '0');
+            $this->model = new CoursereportLms($_SESSION['idCourse'], $id_report, ['activity', 'scoitem'], '0');
 
-            $info_report = $courseReportModel->getCourseReports()[0];
+            $info_report = $this->model->getCourseReports()[0];
 
             $report_score =& $report_man->getReportsScores($info_report->getIdReport());
         }
@@ -2648,11 +2647,11 @@ while(i<lista.length)
         $colums['show_to_user'] = array($lang->def('_SHOW_TO_USER'));
         $colums['use_for_final'] = array($lang->def('_USE_FOR_FINAL'));
 
-        $courseReportModel = new CoursereportLms($_SESSION['idCourse']);
+        $this->model = new CoursereportLms($_SESSION['idCourse']);
 
         $total_weight = 0;
         $i = 1;
-        foreach ($courseReportModel->getCourseReports() as $info_report){
+        foreach ($this->model->getCourseReports() as $info_report){
             $id = $info_report->getIdSource();
             $reports[$info_report->getIdReport()] = $info_report;
             $reports_id[] = $info_report->getIdReport();
@@ -2826,7 +2825,7 @@ while(i<lista.length)
                     : $acl_man->relativeId($user_info[ACL_INFO_USERID]));
                 $csv .= '"' . $user_name . '"';
 
-                foreach ($courseReportModel->getCourseReports() as $info_report){
+                foreach ($this->model->getCourseReports() as $info_report){
 
                     switch ($info_report->getSourceOf()) {
                         case "test" : {

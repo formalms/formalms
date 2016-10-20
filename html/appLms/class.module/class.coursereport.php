@@ -17,7 +17,12 @@ class Module_CourseReport extends LmsModule
     function loadBody()
     {
         $op = $GLOBALS['op'];
+
         try {
+            if (isset($_POST['undo'])) $op = 'coursereport';
+            if (isset($_POST['undo_testreview'])) $op = 'testvote';
+            if (isset($_POST['undo_reset'])) $op = 'testvote';
+            if (isset($_POST['view_answer'])) $op = 'testreview';
 
             $object_poll = new CoursereportLmsController();
             $object_poll->$op();

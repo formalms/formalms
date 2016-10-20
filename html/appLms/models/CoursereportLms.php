@@ -18,7 +18,23 @@ class CoursereportLms extends Model
      * @var int
      */
     protected $idCourse;
+    /**
+     * @var int
+     */
+    protected $idReport;
+    /**
+     * @var string
+     */
+    protected $sourceOf;
 
+    /**
+     * @var int
+     */
+    protected $idSource;
+
+    /**
+     * @var int
+     */
     protected $reportCount;
     /**
      * @var ReportLms[]
@@ -34,49 +50,31 @@ class CoursereportLms extends Model
      * @param null $idSource
      */
 
-    public function __construct($idCourse,$idReport = null,$sourceOf = null,$idSource = null)
+    public function __construct($idCourse, $idReport = null, $sourceOf = null, $idSource = null)
     {
         $this->idCourse = $idCourse;
 
+        $this->idReport = $idReport;
+
+        $this->sourceOf = $sourceOf;
+
+        $this->idSource = $idSource;
+
         $this->courseReports = array();
 
-        $query_report = "SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
-                        FROM " . $GLOBALS['prefix_lms'] . "_coursereport
-	                    WHERE id_course = '" . $this->idCourse ."'";
+        $this->grabCourseReports();
 
-        if (!is_null($idReport)) {
-            $query_report .= " AND id_report = '". $idReport ."'";
-        }
-
-        if (!is_null($sourceOf)) {
-
-            if (is_array($sourceOf)){
-
-                $query_report .=" AND source_of IN ('". implode($sourceOf,"','") ."')";
-            }
-            else {
-                $query_report .= " AND source_of = '". $sourceOf ."'";
-            }
-        }
-
-        if (!is_null($idSource)) {
-            $query_report .= " AND id_source = '". $idSource ."'";
-        }
-
-        $query_report .= "ORDER BY sequence ";
-
-        $re_report = sql_query($query_report);
-
-        while ($info_report = sql_fetch_assoc($re_report)) {
-
-            $report = new ReportLms($info_report['id_report'], $info_report['title'], $info_report['max_score'], $info_report['required_score'], $info_report['weight'], $info_report['show_to_user'], $info_report['use_for_final'], $info_report['source_of'], $info_report['id_source']);
-
-            $this->courseReports[] = $report;
-        }
-
-        $this->reportCount = count($this->courseReports);
     }
 
+    /**
+     * @param int $idCourse
+     */
+    public function setIdCourse($idCourse)
+    {
+        $this->idCourse = $idCourse;
+
+        $this->grabCourseReports();
+    }
 
     /**
      * @return int
@@ -100,7 +98,46 @@ class CoursereportLms extends Model
      */
     public function getReportCount()
     {
+        $this->reportCount = count($this->courseReports);
+
         return $this->reportCount;
+    }
+
+    private function grabCourseReports() {
+
+        $query_report = "SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
+                        FROM " . $GLOBALS['prefix_lms'] . "_coursereport
+	                    WHERE id_course = '" . $this->idCourse ."'";
+
+        if (!is_null($this->idReport)) {
+            $query_report .= " AND id_report = '". $this->idReport ."'";
+        }
+
+        if (!is_null($this->sourceOf)) {
+
+            if (is_array($this->sourceOf)){
+
+                $query_report .=" AND source_of IN ('". implode($this->sourceOf,"','") ."')";
+            }
+            else {
+                $query_report .= " AND source_of = '". $this->sourceOf ."'";
+            }
+        }
+
+        if (!is_null($this->idSource)) {
+            $query_report .= " AND id_source = '". $this->idSource ."'";
+        }
+
+        $query_report .= " ORDER BY sequence ";
+
+        $re_report = sql_query($query_report);
+
+        while ($info_report = sql_fetch_assoc($re_report)) {
+
+            $report = new ReportLms($info_report['id_report'], $info_report['title'], $info_report['max_score'], $info_report['required_score'], $info_report['weight'], $info_report['show_to_user'], $info_report['use_for_final'], $info_report['source_of'], $info_report['id_source']);
+
+            $this->courseReports[] = $report;
+        }
     }
 
     /**
@@ -143,7 +180,8 @@ class CoursereportLms extends Model
      * @param $idCourse
      * @return ReportLms
      */
-    public static function getReportFinalScore($idCourse){
+    public static function getReportFinalScore($idCourse)
+    {
 
         $query_report = "SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
 		FROM " . $GLOBALS['prefix_lms'] . "_coursereport
@@ -159,7 +197,4 @@ class CoursereportLms extends Model
 
         return $report;
     }
-
-
-
 }
