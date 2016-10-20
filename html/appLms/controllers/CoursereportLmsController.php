@@ -185,7 +185,12 @@ class CoursereportLmsController extends LmsController
             if ($i == 0) {
                 $first = $info_report->getIdReport();
             }
-            $testSelector .= '<option value="' . $info_report->getIdReport() . '"' . ($_GET['_dyn_field_selector_1'] == $info_report->getIdReport() ? ' selected="selected"' : '') . '>' . strip_tags($tests_info[$info_report->getIdSource()]['title']) . '</option>';
+            if ($info_report->getSourceOf() != 'final_vote'){
+                $testSelector .= '<option value="' . $info_report->getIdReport() . '"' . ($_GET['_dyn_field_selector_1'] == $info_report->getIdReport() ? ' selected="selected"' : '') . '>' . strip_tags($tests_info[$info_report->getIdSource()]['title']) . '</option>';
+            }
+            else if ($info_report->getSourceOf() == 'final_vote'){
+                $info_reports[] = $info_report;
+            }
         }
 
         $testSelector .= '</select>';
@@ -274,7 +279,13 @@ class CoursereportLmsController extends LmsController
                     break;
             }
 
-            $top = $testSelector . '<br/>' . $title . '<br/>';
+            if ($info_report->getSourceOf() == 'final_vote') {
+                $top =  $title . '<br/>';
+            }
+            else {
+                $top = $testSelector . '<br/>' . $title . '<br/>';
+            }
+
             if ($mod_perm)
                 if ($i > 1 && $info_report->getSourceOf() != 'final_vote')
                     $top .= '<a class="ico-sprite subs_left" href="index.php?modname=coursereport&amp;op=moveleft&amp;id_report=' . $info_report->getIdReport() . '"><span><span>' . $lang->def('_MOVE_LEFT') . '</span></a>';
