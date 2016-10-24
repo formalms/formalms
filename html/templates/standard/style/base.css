@@ -90,7 +90,7 @@ a.no_decoration{text-decoration:none;}
 /* highlight for text */
 .highlight{background-color:#ffffcc;}
 .bg_highlight{background-color:#ffffcc;color:#000;}
-.boxed{padding:2px;border:1px solid #cccccc;width:80px;}
+.boxed{padding:2px;border:1px solid #cccccc; max-height:70% !important; width:70%;}
 .boxedHome{padding:2px;border:1px solid #cccccc;width:30px;}
 .publish-date{font-size:90%;color:#666666;display:inline;padding-right:8px;}
 /* opacity */
@@ -510,6 +510,9 @@ p.total_price { margin-bottom: 1em; }
   width: 14em;
 }
 
+.yui-b {
+    min-height: 450px;
+}
 ul.flat-categories{margin:20px 0 0 5px;padding:0;}
 ul.flat-categories li{
 	margin:2px 0;
@@ -1721,3 +1724,6 @@ ul.tabs li.current{
 .cbp-vm-view-list .edizioni_cal.cat {margin:0 0 5px 0;width:100%}
 }
 
+@media screen and (max-width: 768) {
+    .boxed {max-height:40%;}
+}

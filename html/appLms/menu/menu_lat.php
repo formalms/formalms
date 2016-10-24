@@ -76,34 +76,29 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 	// Print of the menu
 	
     cout(
-		// '<div id="menu_lat" class="lmsmenu_block">'
    	'<div id="menu_lat" class="panel panel-default lmsmenu_block">'
 		.'<div class="bd">'
 		.'<ul class="main-v-ul">'
 	, 'menu');
-
-    
-    
- 
-    
     
 	$logo_panel = '';
 	if(isset($_SESSION['idCourse'])) {
 		
 			
 			$path = $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathcourse');
-			$course_name 	= Docebo::course()->getValue('name');
-			$course_img 	= Docebo::course()->getValue('img_course');
+            $course_name 	= Docebo::course()->getValue('name');
+            if (Docebo::course()->getValue('use_logo_in_courselist'))             
+			    $course_img  = ( Docebo::course()->getValue('img_course')==''? Get::tmpl_path().'images/course/course_nologo.png': $path.Docebo::course()->getValue('img_course') );
 			
 			 $img_course = "";
 			if($course_img != '') {
 	            $logo_panel .= '<div class="lmsmenu_block">'."\n";
 				$logo_panel .= '<p class="align-center">'
-					.'<img class="boxed" src="'.$path.$course_img.'" alt="'.Lang::t('_COURSE_LOGO', 'course').' : '.$course_name.'" />'
-					.'</p>'
-					.'<br />'."\n";
+					.'<img class="boxed" src="'.$course_img.'" />'
+					.'</p>'."\n";
+					
 		        $logo_panel .= '</div>'."\n";
-                 $img_course = '<br><p align="center"><img class="boxed" src="'.$path.$course_img.'" alt="'.Lang::t('_COURSE_LOGO', 'course').' : '.$course_name.'" /></p>';
+                $img_course = '<br><p align="center"><img class="boxed" src="'.$course_img.'" /></p>';
             }
 			
 	}			
@@ -112,7 +107,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
          
     cout('
                   <div class="sidebar-nav">
-      <div class="navbar navbar-default" role="navigation">
+                  <div class="navbar navbar-default" role="navigation">
                 <div class="navbar-header">
                   <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
                  
@@ -160,9 +155,6 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
             if($_SESSION['current_main_menu'] == $id_main) {
                 $active = '';
                 $style = 'style="height: auto;"';
-               // $li_class = 'class="active"';
-                
-                
             }    
              
            cout('<br><li '.$li_class.'>
@@ -227,8 +219,8 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
   
   
         
-      //**  gestione del menu orizzontale **    
-      //var_dump($array_menu);
+      //**  horizontal menu **    
+      //
   
       
 
@@ -378,7 +370,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
             $materiali = Lang::t("_PROGRESS_ALL", "course");
             $completato =  Lang::t("_COMPLETED", "standard");
             $sbagliati =  Lang::t("_PROGRESS_FAILED", "course");
-             //** LR responsive tabella statistiche **
+             //** LR responsive stats tab **
             $info_panel .='<style>
                             @media
                             only screen and (max-width: 870px),
@@ -411,26 +403,19 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
                 
                 // MENU OVER
                 cout('<div class="row">','menu_over');               
-                  cout('<div class="col-sm-3">'.$img_course.'</div>','menu_over'); 
+                  cout('<div class="col-sm-3">'.$logo_panel.'</div>','menu_over'); 
  
                   cout('<div class="col-sm-9" >','menu_over');
-                      cout('<div class="col-md-7"><div><h1>'.Docebo::course()->getValue('name').'</h1></div></div>
-                            <div class="col-md-4"><div>'.$info_panel_progress.'</div></div>
-                            <div class="col-md-1"><div><br> <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-stats"></span></button></div></div>
-                            ' ,'menu_over');  
-                            
-                     // cout('<div class="col-md-12 layout_footer_menu" ><h1>&nbsp;</h1></div>','menu_over') ;
-                      
-                    //  cout('<div class="col-md-12" >menu .....</div>','menu_over') ;
-                      
-                  cout('</div></div><br><br>&nbsp;','menu_over');
-                  
-                  
+                  cout('<div class="col-md-7"><div><h1>'.Docebo::course()->getValue('name').'</h1></div></div>
+                        <div class="col-md-4"><div>'.$info_panel_progress.'</div></div>
+                        <div class="col-md-1"><div><br> <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-stats"></span></button></div></div>
+                        ' ,'menu_over');  
+                  cout('</div></div>&nbsp;','menu_over');
                                 
 		} else {
 			// MENU OVER
 			cout('<div class="row">','menu_over');               
-			  cout('<div class="col-sm-3">'.$img_course.'</div>','menu_over'); 
+			  cout('<div class="col-sm-3">'.$logo_panel.'</div>','menu_over'); 
 			
 			  cout('<div class="col-sm-9" >','menu_over');
 			      cout('<div class="col-md-7"><div><h1>'.Docebo::course()->getValue('name').'</h1></div></div>' ,'menu_over');  
@@ -466,7 +451,6 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 		$GLOBALS['page']->addEnd('');
 	}
 	
-//	$GLOBALS['page']->add($info_panel, 'menu');
 	
     
     $pop_up_modal = '<!-- Trigger the modal with a button -->
@@ -497,9 +481,6 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
         $GLOBALS['page']->add($pop_up_modal, 'menu');                
                         
                         
-    
-    
-    
     
 	if((Get::sett('use_tag', 'off') == 'on') && checkPerm('view', true, 'forum')) {
 	

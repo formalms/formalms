@@ -2,18 +2,15 @@
 
 
 {% block stylesheet %}
-        <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/base.css"/>   
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/base-old-treeview.css" />
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms.css" />
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-to-review.css" />
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-menu.css" />   
-        <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/responsive.css"/>
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/table-responsive.css"/>
            
 {% endblock %}    
 
     {% block javascript %}
-        <script type="text/javascript" src="{{ evalPhp('Get::rel_path', ['base']) }}/lib/js_utils.js"></script>
         <script>
             $('document').ready(function() {
                 $('div.menu-area a').bind('click',function(event){
@@ -47,12 +44,8 @@
     {{ evalPhp('Layout::meta') }}      
 
     {{ evalPhp('Layout::rtl') }}
-    {{ evalPhp('Layout::accessibility') }}       
-    {{ evalPhp('Layout::zone', ['page_head']) }}      
-
-    
-
-		<!-- blind nav -->
+    {{ evalPhp('Layout::accessibility') }}
+	<!-- blind nav -->
     {{ evalPhp('Layout::zone', ['blind_navigation']) }}
     
 		<!-- feedback -->
