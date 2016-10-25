@@ -34,6 +34,7 @@ define("ASSIGN_COURSE_ID", 		1);
 define("ASSIGN_USER_ID", 		2);
 define("ASSIGN_OD_DATE", 		3);
 define("ASSIGN_CERT_FILE", 		4);
+define("ASSIGN_CERT_SENDNAME", 		5);
 
 class Certificate {
 
@@ -793,19 +794,62 @@ class Certificate {
 
 	function getInfoForCourseCertificate($id_course, $id_certificate, $id_user = false)
 	{
-		$info = array();
 
+		// Get Course info
+		$query = "SELECT name" .
+				" FROM ".$GLOBALS['prefix_lms']."_course" .
+				" WHERE  idCourse = ".$id_course;
+		$result = sql_query($query);
+		while ($row = sql_fetch_row($result)){
+			$arrCourseInfo[] = $row;
+		}
+
+		$courseInfo = $arrCourseInfo[0][0];
+		// Parsing campo  ( togliere: blank ' " & / \ )
+		$pattern = "/['\"\s&\/]/i";
+		$replacement = "";
+		$courseInfo=preg_replace ( $pattern, $replacement, $courseInfo);
+		
+		
+		if ($id_user){
+			// Get User info
+			$query = "SELECT lastname, firstname" .
+					" FROM ".$GLOBALS['prefix_fw']."_user" .
+					" WHERE idst = ".$id_user;
+			$result = sql_query($query);
+			while ($row = sql_fetch_row($result)){
+				$arrUserInfo[] = $row;
+			}
+
+			$userInfo = $arrUserInfo[0][0].$arrUserInfo[0][1];
+			// Parsing campo  ( togliere: blank ' " & / \ )
+			$pattern = "/['\"\s&\/]/i";
+			$replacement = "";
+			$userInfo=preg_replace ( $pattern, $replacement, $userInfo);
+		}
+		
+		// Get Certificate info
+		$info = array();
 		$query = "SELECT *" .
 				" FROM ".$GLOBALS['prefix_lms']."_certificate_assign" .
 				" WHERE id_certificate = '".$id_certificate."'" .
 				" AND id_course = '".$id_course."'";
-		if ($id_user)
+		if ($id_user){
 			$query .= " AND id_user = $id_user";
+		}
 
 		$result = sql_query($query);
 
-		while ($row = sql_fetch_row($result))
+		while ($row = sql_fetch_row($result)){
+			$dateTimeCert = strtotime($row[ASSIGN_OD_DATE]);
+			$dateInfo = date('YmdHis',$dateTimeCert);
+			if ($id_user){
+				$row[ASSIGN_CERT_SENDNAME] = $userInfo."_".$courseInfo."_".$dateInfo.".pdf";
+			}else{
+				$row[ASSIGN_CERT_SENDNAME] = $courseInfo."_".$dateInfo.".pdf";
+			}
 			$info[] = $row;
+		}
 
 		return $info;
 	}
