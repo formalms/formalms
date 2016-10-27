@@ -513,6 +513,7 @@ p.total_price { margin-bottom: 1em; }
 .yui-b {
     min-height: 450px;
 }
+
 ul.flat-categories{margin:20px 0 0 5px;padding:0;}
 ul.flat-categories li{
 	margin:2px 0;
@@ -1243,16 +1244,14 @@ width: 30%;
 
 .course-block-content {
     border-radius: 4px; 
-	max-width: 542px;
-    height: 260px;
-	padding: 15px;
+	max-width: 300px;
+    height: 280;
+	padding: 5px;
 	overflow: hidden;
 	margin: auto;
 	background-color: #f5f5f5;
-	box-shadow: 0 1px 3px rgb(17, 17, 17);
-    -moz-box-shadow: 0 1px 2px #111;
-    -webkit-box-shadow: 0 1px 3px rgb(17, 17, 17);
-	border: 3px solid rgb(225, 224, 221);}
+	border: 1px solid #DDD
+}	
 	
 .course-block-content.classe {height: 565px;}
 
@@ -1262,11 +1261,8 @@ width: 30%;
     margin: auto;
     background: rgb(240, 240, 240);
     color: rgb(34, 34, 34);
-    box-shadow: 0 1px 3px rgb(17, 17, 17);
-    -moz-box-shadow: 0 1px 2px #111;
-    -webkit-box-shadow: 0 1px 3px rgb(17, 17, 17);
 	border: 3px solid rgb(225, 224, 221);
-	max-height: 150px;
+	max-height: 170px;
     width: 100%;
     height: 100%;
 
@@ -1285,7 +1281,7 @@ width: 30%;
 .icon{position:absolute;z-index:12; left:10px; font-size:20px; top:12px;  width:10px; height:10px;display:block; /*color:#c84000;*/ color:#ccc; }
 .icon.cat{top:1px;}
 
-.area2 h1{font-size: 18px; padding: 0;margin: 0;float: left; text-transform:uppercase;color:#fff;}
+.area2 h1{font-size: 14px; padding: 1px 0  0 0;;margin: 0;float: left; text-transform:uppercase;color:#fff;}
 h1.cat {font-size: 10px;text-align:left;}
 .area2 p{font-weight: normal;margin-top:4px;}
 .area1 a {cursor: help;}
@@ -1303,7 +1299,7 @@ h1.cat {font-size: 10px;text-align:left;}
 		background: url(../images/bg-header.png); 
 		bottom:0;
 		left:0;
-		padding: 18px 0 0px 30px;
+		padding: 10px 0 0px 10px;
 		display:block;                    
 		margin:0; 
 		transition: all ease-in-out 300ms;-o-transition: all ease-in-out 300ms;-moz-transition: all ease-in-out 300ms;-webkit-transition: all ease-in-out 300ms;
@@ -1387,7 +1383,7 @@ width:90%;
 .cbp-vm-view-list .course-cover .area2.cat {height:50%;}
 	
 .studente,.categoria_corso {
-	font-size: 14px;
+	font-size: 12px;
     float: right;
 	text-transform:uppercase;
 	max-width:50%;
@@ -1396,7 +1392,7 @@ width:90%;
     }
 	
 .categoria_corso {
-	font-size: 14px;
+	font-size: 12px;
     float: left;
 	text-transform:uppercase;
 	max-width:50%;
