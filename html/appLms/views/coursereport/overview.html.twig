@@ -1,0 +1,78 @@
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th colspan="2" class="transparent"></th>
+                <th colspan="6">INFO</th>
+                <th colspan="6">STATS</th>
+                <th class="transparent"></th>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+                <td>Type</td>
+                <td>Max</td>
+                <td>Required</td>
+                <td>Weight</td>
+                <td>Show</td>
+                <td>Finale</td>
+                <td>Passed Completed</td>
+                <td>Not passed incomplete</td>
+                <td>Checked</td>
+                <td>Average</td>
+                <td>Max Score</td>
+                <td>Min Score</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody class="course-sortable">
+        {% for test in overview['tests'] %}
+            <tr>
+                <td class="handle"><i class="fa fa-sort"></i></td>
+                <td class="name">{{ test.name }}</td>
+                <td>{{ test.type }}</td>
+                <td>{{ test.max }}</td>
+                <td>{{ test.required }}</td>
+                <td>{{ test.weight }}</td>
+                {% if test.show == 'true' %}
+                    <td class="text-center"><i class="fa fa-check"></i></td>
+                {% else %}
+                    <td class="text-center"><i class="fa fa-close"></i></td>
+                {% endif %}
+                {% if test.final == 'true' %}
+                    <td class="text-center"><i class="fa fa-check"></i></td>
+                {% else %}
+                    <td class="text-center"><i class="fa fa-close"></i></td>
+                {% endif %}
+                <td><a href="{{ test.passed.link }}">{{ test.passed.value }}</a></td>
+                <td><a href="{{ test.not_passed.link }}">{{ test.not_passed.value }}</a></td>
+                <td><a href="{{ test.checked.link }}">{{ test.checked.value }}</a></td>
+                <td>{{ test.average }}</td>
+                <td>{{ test.max_score }}</td>
+                <td>{{ test.min_score }}</td>
+                <td class="actions">
+                    {% for action in test.actions %}
+                        <a href="{{ action.link }}"><i class="fa fa-{{ action.icon }}"></i></a>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot class="empty">
+            <th colspan="15"></th>
+        </tfoot>
+    </table>
+
+    <script type="text/javascript">
+        var fixHelper = function(e, ui) {
+            ui.children().each(function() {
+                var $that = $(this);
+                $that.width($that.width());
+            });
+            return ui;
+        };
+        $('.course-sortable').sortable({
+            handle: '.handle',
+            helper: fixHelper
+        }).disableSelection();
+    </script>
+</div>

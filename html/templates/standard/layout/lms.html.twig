@@ -10,7 +10,7 @@
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/responsive.css"/>
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/table-responsive.css"/>
            
-{% endblock %}    
+{% endblock %}
 
     {% block javascript %}
         <script type="text/javascript" src="{{ evalPhp('Get::rel_path', ['base']) }}/lib/js_utils.js"></script>
@@ -70,20 +70,21 @@
                                             
 		<!-- content -->
 		<div id="lms_main_container" class="row">
-        
-        <div id="course-info-boot" class="col-md-3">
-        {{ evalPhp('Layout::zone', ['menu']) }}
-        
-			</div>  
+            {#
+            <div id="course-info-boot" class="col-md-3">
+                {{ evalPhp('Layout::zone', ['menu']) }}
+            </div>
 		
         	<div id="yui-main-boot" class='col-md-9'>
-                    
-         {{ direct_play|raw }} 
-               
-                
+                {{ direct_play|raw }}
 			</div>
-            
+			#}
+
+            {{ direct_play|raw }}
+
+            {#
 			<div class="nofloat"></div>
+            #}
 		</div>
 		<!-- footer -->
 		<div id="footer" class="layout_footer">
