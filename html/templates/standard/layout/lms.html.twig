@@ -2,12 +2,10 @@
 
 
 {% block stylesheet %}
-        <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/base.css"/>   
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/base-old-treeview.css" />
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms.css" />
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-to-review.css" />
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-menu.css" />   
-        <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/responsive.css"/>
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/table-responsive.css"/>
         <link rel="stylesheet" type="text/css" href="{{ evalPhp('Get::rel_path', ['base']) }}//addons/chartist/chartist.min.css" />
 
@@ -51,10 +49,6 @@
 
     {{ evalPhp('Layout::rtl') }}
     {{ evalPhp('Layout::accessibility') }}       
-    {{ evalPhp('Layout::zone', ['page_head']) }}      
-
-    
-
 		<!-- blind nav -->
     {{ evalPhp('Layout::zone', ['blind_navigation']) }}
     

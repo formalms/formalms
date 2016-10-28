@@ -71,7 +71,7 @@
 
         <div class="clearfix" id='mia_area_<?php echo $stato_corso; ?>'>                       
         <?php foreach( $courselist as $course ) : ?> 
-            <div class="col-xs-12 col-sm-6 col-lg-4 course-block ">           
+            <div class="col-xs-12 col-sm-6 col-lg-3 course-block ">           
                 <div class="course-block-content completed_course_<?php  echo $course['user_status']; ?>">
                         <div class="area1 course-cover">   
                             <a href="#">
@@ -90,11 +90,11 @@
                            <?php endif; ?> 
                            <div class="area2" >
                                     <h1>
-                                        <?php echo TruncateText($course['name'],50); ?>
+                                        <?php echo TruncateText($course['name'],100); ?>
                                     </h1>
                                     <div style="clear:both;"></div>
                                     <p class="course_support_info1">
-                                        <p class="descrizione_corso"><?php echo TruncateText($course['description'],100); ?></p>
+                                        <p class="descrizione_corso"><?php echo TruncateText($course['description'],150); ?></p>
                                         <p class="extra">
                                             <span class="utenti">
                                                 <i class="fa fa-users" aria-hidden="true"></i>
@@ -200,7 +200,7 @@
                     <div class="area4">
                         <?php if ($course['can_enter']['can']) { ?>
                             <a class="enter_course" title="<?php echo Util::purge($course['name']); ?>" href="index.php?modname=course&amp;op=aula&amp;idCourse=<?php echo $course['idCourse']; ?>"<?php echo ( $course['direct_play'] == 1 && $course['level'] <= 3 && $course['first_lo_type'] == 'scormorg' ? ' rel="lightbox"' :'' ); ?>>
-                                <?php echo $keyword != "" ? Layout::highlight($course['name'], $keyword) : Lang::t('_USER_STATUS_ENTER', 'catalogue'); ?>
+                                <?php echo Lang::t('_USER_STATUS_ENTER', 'catalogue'); ?>
                             </a>
                         <?php } else {    
                                 echo '<div class="lock"><i class="fa fa-3x fa-lock" aria-hidden="true"></i></div>';
@@ -230,7 +230,7 @@
             <?php $unsubscribe_call_arr =array(); ?>
             <?php foreach( $courselistClassroom as $course ) : ?>
 
-            <div class="col-xs-12 col-sm-6 col-lg-4 course-block completed_course_<?php  echo $course['user_status']; ?>">
+            <div class="col-xs-12 col-sm-6 col-lg-3 course-block completed_course_<?php  echo $course['user_status']; ?>">
                 <div class="course-block-content classe">
                         <div class="area1 course-cover">   
                             <!-- IMG COURSE -->   

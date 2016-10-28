@@ -979,12 +979,14 @@ function send_certificate() {
 
 	$file = $info_report[ASSIGN_CERT_FILE];
 
+	$sendname = $info_report[ASSIGN_CERT_SENDNAME];
+	
 	//recognize mime type
 	$expFileName = explode('.', $file);
 	$totPart = count($expFileName) - 1;
 
 	//send file
-	sendFile('/appLms/certificate/', $file, $expFileName[$totPart]);
+	sendFile('/appLms/certificate/', $file, $expFileName[$totPart], $sendname);
 }
 
 function print_certificate() {

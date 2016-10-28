@@ -91,7 +91,6 @@ class ElearningLms extends Model {
             .($_SESSION['id_common_label'] > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '".$_SESSION['id_common_label']."')" : "")
             ." ORDER BY ".$this->_resolveOrder(array('cu', 'c'));
         
-  //   echo $query;
         
 		$query = $db->query($query);
 

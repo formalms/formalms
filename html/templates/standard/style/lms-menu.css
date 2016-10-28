@@ -42,8 +42,7 @@ body.yui-skin-sam .yuimenuitem .yuimenubaritemlabel-hassubmenu {padding-right:20
 .yui-skin-sam div.nested_tab .yui-navset .yui-content,.yui-skin-sam div.nested_tab .yui-navset .yui-navset-top .yui-content {border:0px none;border-top-color:transparent;padding:0.5em 0.5em 0.25em;}
 
 /* == Lateral menu == */
-.lmsmenu_block,
-.lmsmenu_block{margin:0 10px 10px 0;padding:.6em;background:#FFFFFF;border:1px solid #cccccc;}
+.lmsmenu_block{background:#FFFFFF;border:none;margin-left:5px;}
 
 ul.main-v-ul{margin:0;padding:0;}
 li.main-v{list-style:none;margin:0;padding:0;}
