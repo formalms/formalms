@@ -200,7 +200,7 @@
                     <div class="area4">
                         <?php if ($course['can_enter']['can']) { ?>
                             <a class="enter_course" title="<?php echo Util::purge($course['name']); ?>" href="index.php?modname=course&amp;op=aula&amp;idCourse=<?php echo $course['idCourse']; ?>"<?php echo ( $course['direct_play'] == 1 && $course['level'] <= 3 && $course['first_lo_type'] == 'scormorg' ? ' rel="lightbox"' :'' ); ?>>
-                                <?php echo $keyword != "" ? Layout::highlight($course['name'], $keyword) : Lang::t('_USER_STATUS_ENTER', 'catalogue'); ?>
+                                <?php echo Lang::t('_USER_STATUS_ENTER', 'catalogue'); ?>
                             </a>
                         <?php } else {    
                                 echo '<div class="lock"><i class="fa fa-3x fa-lock" aria-hidden="true"></i></div>';
