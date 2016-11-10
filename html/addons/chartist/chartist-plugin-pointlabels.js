@@ -26,7 +26,14 @@
             labelClass: 'ct-label',
             labelOffset: {
                 x: 0,
-                y: -10
+                y: -12
+            },
+            lineClass: 'ct-label-line',
+            lineOffset: {
+                x1: -5,
+                x2: +5,
+                y1: -15,
+                y2: -5
             },
             textAnchor: 'middle',
             labelInterpolationFnc: Chartist.noop
@@ -57,6 +64,13 @@
                                 y: data.y2 + options.labelOffset.y,
                                 style: 'text-anchor: ' + options.textAnchor
                             }, options.labelClass).text(options.labelInterpolationFnc(data.value.x === undefined ? data.value.y : data.value.x));
+
+                            data.group.elem('line', {
+                                x1: data.x2 + options.lineOffset.x1,
+                                x2: data.x2 + options.lineOffset.x2,
+                                y1: data.y2 + options.lineOffset.y1,
+                                y2: data.y2 + options.lineOffset.y1
+                            }, options.lineClass,true);
                         }
                     });
                 }
