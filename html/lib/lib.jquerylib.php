@@ -26,14 +26,17 @@
       const _path = 'jquery';
       const _core = 'core';
       static $array_js_addons = ['html5support',  //  HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
-                      'helpdesk',
-                      'fancybox',
-                      'swipe'];      
+                        'helpdesk',
+                        'fancybox',
+                        'swipe',
+                        'chartist',
+                        'chartist-plugin-pointlabels'];
                       
-      static $array_css_addons = [  'table',    //  media query for table formatting
-                      'helpdesk',
-                      'fancybox',
-                      'swipe'];      
+      static $array_css_addons = ['table',    //  media query for table formatting
+                        'helpdesk',
+                        'fancybox',
+                        'swipe',
+                        'chartist'];
                       
       
       public static function loadJQuery($which_version='') {
