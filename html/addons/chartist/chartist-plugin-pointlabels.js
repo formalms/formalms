@@ -26,16 +26,17 @@
             labelClass: 'ct-label',
             labelOffset: {
                 x: 0,
-                y: -12
+                y: -15
             },
             lineClass: 'ct-label-line',
             lineOffset: {
-                x1: -5,
-                x2: +5,
-                y1: -15,
-                y2: -5
+                x1: 0,
+                x2: 0,
+                y1: -18,
+                y2: -8
             },
             textAnchor: 'middle',
+            labelBackground: false,
             labelInterpolationFnc: Chartist.noop
         };
 
@@ -65,12 +66,14 @@
                                 style: 'text-anchor: ' + options.textAnchor
                             }, options.labelClass).text(options.labelInterpolationFnc(data.value.x === undefined ? data.value.y : data.value.x));
 
-                            data.group.elem('line', {
-                                x1: data.x2 + options.lineOffset.x1,
-                                x2: data.x2 + options.lineOffset.x2,
-                                y1: data.y2 + options.lineOffset.y1,
-                                y2: data.y2 + options.lineOffset.y1
-                            }, options.lineClass,true);
+                            if (options.labelBackground == true) {
+                                data.group.elem('line', {
+                                    x1: data.x2 + options.lineOffset.x1,
+                                    x2: data.x2 + options.lineOffset.x2,
+                                    y1: data.y2 + options.lineOffset.y1,
+                                    y2: data.y2 + options.lineOffset.y1
+                                }, options.lineClass, true);
+                            }
                         }
                     });
                 }
