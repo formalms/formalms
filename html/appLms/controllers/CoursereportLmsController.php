@@ -154,6 +154,15 @@ class CoursereportLmsController extends LmsController
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
 
+        $idTrack = Get::gReq('idTrack');
+        $idTest = Get::gReq('idTest');
+
+        $testName = Get::gReq('testName');
+
+        $studentName = Get::gReq('studentName');
+
+
+
         $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
         $out =& $GLOBALS['page'];
         $out->setWorkingZone('content');

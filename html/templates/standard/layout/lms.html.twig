@@ -2,17 +2,18 @@
 
 
 {% block stylesheet %}
-        <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/base.css"/>   
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/base-old-treeview.css" />
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms.css" />
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-to-review.css" />
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-menu.css" />   
-        <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/responsive.css"/>
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/table-responsive.css"/>
-           
-{% endblock %}
+        <link rel="stylesheet" type="text/css" href="{{ evalPhp('Get::rel_path', ['base']) }}//addons/chartist/chartist.min.css" />
+
+{% endblock %}    
 
     {% block javascript %}
+        <script type="text/javascript" src="{{ evalPhp('Get::rel_path', ['base']) }}/addons/chartist/chartist.min.js"></script>
+        <script type="text/javascript" src="{{ evalPhp('Get::rel_path', ['base']) }}/addons/chartist/chartist-plugin-pointlabels.js"></script>
         <script type="text/javascript" src="{{ evalPhp('Get::rel_path', ['base']) }}/lib/js_utils.js"></script>
         <script>
             $('document').ready(function() {
@@ -48,10 +49,6 @@
 
     {{ evalPhp('Layout::rtl') }}
     {{ evalPhp('Layout::accessibility') }}       
-    {{ evalPhp('Layout::zone', ['page_head']) }}      
-
-    
-
 		<!-- blind nav -->
     {{ evalPhp('Layout::zone', ['blind_navigation']) }}
     
@@ -70,21 +67,20 @@
                                             
 		<!-- content -->
 		<div id="lms_main_container" class="row">
-            {#
-            <div id="course-info-boot" class="col-md-3">
-                {{ evalPhp('Layout::zone', ['menu']) }}
-            </div>
+        
+        <div id="course-info-boot" class="col-md-3">
+        {{ evalPhp('Layout::zone', ['menu']) }}
+        
+			</div>  
 		
         	<div id="yui-main-boot" class='col-md-9'>
-                {{ direct_play|raw }}
+                    
+         {{ direct_play|raw }} 
+               
+                
 			</div>
-			#}
-
-            {{ direct_play|raw }}
-
-            {#
+            
 			<div class="nofloat"></div>
-            #}
 		</div>
 		<!-- footer -->
 		<div id="footer" class="layout_footer">

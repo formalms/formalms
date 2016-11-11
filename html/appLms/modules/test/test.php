@@ -72,6 +72,9 @@ function addtest($object_test)
 function instest()
 {
     checkPerm('view', false, 'storage');
+
+    require_once(Docebo::inc(_folder_lms_.'/class.module/learning.test.php'));
+
     $lang =& DoceboLanguage::createInstance('test');
 
     if (trim($_POST['title']) == '') $_POST['title'] = $lang->def('_NOTITLE');
@@ -85,6 +88,8 @@ function instest()
 		VALUES 
 	( '" . (int)getLogUserId() . "', '" . $_POST['title'] . "', '" . $_POST['textof'] . "', '" . $_POST['obj_type'] . "', " . $isTest360 . ", " . $isTest360 . ", " . $isTest360 . " )";
 
+
+
     if (!sql_query($ins_query)) {
 
         $_SESSION['last_error'] = $lang->def('_OPERATION_FAILURE');
@@ -92,6 +97,13 @@ function instest()
     }
 
     list($id_test) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
+
+    $test = Learning_Test::load($id_test);
+
+    $event = new \appLms\Events\Lms\TestCreateEvent($test,$lang);
+
+    \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCreateEvent::EVENT_NAME,$event);
+
     if ($id_test > 0) Util::jump_to('' . urldecode($_POST['back_url']) . '&id_lo=' . $id_test . '&create_result=1');
     else Util::jump_to('' . urldecode($_POST['back_url']) . '&create_result=0');
 }
@@ -198,7 +210,7 @@ function modtestgui($object_test)
 	WHERE idTest = '" . $object_test->getId() . "'
 	ORDER BY sequence");
 
-	$num_quest = sql_num_rows($re_quest);
+    $num_quest = sql_num_rows($re_quest);
     list($num_page) = sql_fetch_row(sql_query("
 	SELECT MAX(page) 
 	FROM " . $GLOBALS['prefix_lms'] . "_testquest 
@@ -597,9 +609,9 @@ function &istanceQuest($type_of_quest, $id)
 
     $re_quest = sql_query("
 	SELECT type_file, type_class 
-	FROM ".$GLOBALS['prefix_lms']."_quest_type 
-	WHERE type_quest = '".$type_of_quest."'");
-	if( !sql_num_rows($re_quest) ) return;
+	FROM " . $GLOBALS['prefix_lms'] . "_quest_type 
+	WHERE type_quest = '" . $type_of_quest . "'");
+    if (!sql_num_rows($re_quest)) return;
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
     require_once(Docebo::inc(_folder_lms_ . '/modules/question/' . $type_file));
@@ -726,8 +738,8 @@ function delquest()
 
         $max_score = _getTestMaxScore($idTest);
         if ($max_score !== false) {
-			$query = "UPDATE ".$GLOBALS['prefix_lms']."_test SET score_max=".(int)$max_score." WHERE idTest=".(int)$idTest;
-			$res = sql_query($query);
+            $query = "UPDATE " . $GLOBALS['prefix_lms'] . "_test SET score_max=" . (int)$max_score . " WHERE idTest=" . (int)$idTest;
+            $res = sql_query($query);
         }
 
         Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded);
@@ -818,10 +830,10 @@ function defmodality()
 
     $has_categories = false;
     $categories = array();
-	$query = "SELECT tq.idCategory, qc.name, COUNT(tq.idcategory) FROM ".$GLOBALS['prefix_lms']."_testquest as tq LEFT JOIN ".$GLOBALS['prefix_lms']."_quest_category as qc "
-		." ON (tq.idCategory = qc.idCategory) WHERE idTest='".(int)$idTest."' GROUP BY tq.idCategory";
-	$res = sql_query($query);
-	if (sql_num_rows($res)>0) {
+    $query = "SELECT tq.idCategory, qc.name, COUNT(tq.idcategory) FROM " . $GLOBALS['prefix_lms'] . "_testquest as tq LEFT JOIN " . $GLOBALS['prefix_lms'] . "_quest_category as qc "
+        . " ON (tq.idCategory = qc.idCategory) WHERE idTest='" . (int)$idTest . "' GROUP BY tq.idCategory";
+    $res = sql_query($query);
+    if (sql_num_rows($res) > 0) {
         $has_categories = true;
         while (list($id_cat, $name_cat, $num_quest) = sql_fetch_row($res)) {
             if ($id_cat == 0) $name_cat = $lang->def('_NO_CATEGORY');
@@ -1017,23 +1029,26 @@ function defmodality()
             , 'content');
     } else {
 
-        list($max_daily_test_auto, $max_daily_test_etero) = sql_fetch_row(sql_query("SELECT max_daily_test_auto,max_daily_test_etero FROM " . $GLOBALS['prefix_lms'] . "_test WHERE idTest = '" . $idTest . "'"));
 
         $GLOBALS['page']->add(
             Form::getCheckBox($lang->def('_RETAIN_ANSWERS_HISTORY'), 'retain_answers_history', 'retain_answers_history', 1, $retain_answers_history)
             . '<input type="hidden" id="show_tot_no" name="show_tot" value="0" checked="checked"/>'
             . Form::getCheckbox($lang->def('_USE_SUSPENSION'), 'use_suspension', 'use_suspension', 1, $use_suspension, 'onclick="setSuspension();"')
             . Form::getTextfield($lang->def('_SUSPENSION_NUM_ATTEMPTS'), 'suspension_num_attempts', 'suspension_num_attempts', 5, $suspension_num_attempts)
-            . Form::getTextfield($lang->def('_SUSPENSION_NUM_HOURS'), 'suspension_num_hours', 'suspension_num_hours', 5, $suspension_num_hours)
-            . '<br />'
-            . '<label for="max_daily_num_auto">' . $lang->def('_MAX_DAILY_INFINITE_IF_0') . '</label>'
-            . Form::getTextfield($lang->def('_MAX_DAILY_NUM_AUTO'), 'max_daily_num_auto', 'max_daily_num_auto', 5, $max_daily_test_auto)
-            . '<label for="max_daily_num_etero">' . $lang->def('_MAX_DAILY_INFINITE_IF_0') . '</label>'
-            . Form::getTextfield($lang->def('_MAX_DAILY_NUM_ETERO'), 'max_daily_num_etero', 'max_daily_num_etero', 5, $max_daily_test_etero)
-            . '<br /><br />'
-            . Form::getCloseFieldset(),
+            . Form::getTextfield($lang->def('_SUSPENSION_NUM_HOURS'), 'suspension_num_hours', 'suspension_num_hours', 5, $suspension_num_hours),
             'content'
         );
+
+        $event = new \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent($object_test, $lang);
+
+
+        \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_NAME, $event);
+
+        $GLOBALS['page']->add($event->getElementString(),'content');
+        $GLOBALS['page']->add(
+            '<br /><br />'
+            .Form::getCloseFieldset(), 'content');
+
     }
 
     $GLOBALS['page']->add(
@@ -1116,7 +1131,7 @@ function updatemodality()
         " WHERE idTest = '$idTest'";
 
 
-    $event = new \appLms\Events\Lms\TestUpdateModalityEvent($idTest,$queryString);
+    $event = new \appLms\Events\Lms\TestUpdateModalityEvent($idTest, $queryString);
 
     $event->setPostVars($_POST);
 
@@ -2009,8 +2024,8 @@ function _getTestMaxScore($idTest)
 
 
     $max_score = 0;
-	while(list($idQuest, $type_quest, $type_file, $type_class, $title_quest, $difficult) = sql_fetch_row($re_quest)) {
-		require_once(Docebo::inc(_folder_lms_.'/modules/question/'.$type_file));
+    while (list($idQuest, $type_quest, $type_file, $type_class, $title_quest, $difficult) = sql_fetch_row($re_quest)) {
+        require_once(Docebo::inc(_folder_lms_ . '/modules/question/' . $type_file));
         $quest_obj = eval("return new $type_class( $idQuest );");
         $max_score += $quest_obj->getMaxScore();
     }
@@ -2020,11 +2035,11 @@ function _getTestMaxScore($idTest)
 
 function _adjustAllTestMaxScore()
 {
-	$query = "SELECT * FROM ".$GLOBALS['prefix_lms']."_test";
-	$res = sql_query($query);
+    $query = "SELECT * FROM " . $GLOBALS['prefix_lms'] . "_test";
+    $res = sql_query($query);
     if (!$res) return;
 
-	while ($obj = sql_fetch_object($res)) {
+    while ($obj = sql_fetch_object($res)) {
         if ($obj->idTest) {
             $max_score = _getTestMaxScore($obj->idTest);
             if ($max_score !== false) {

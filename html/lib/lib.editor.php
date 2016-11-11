@@ -36,7 +36,7 @@ function loadHeaderHTMLEditor() {
 		//using tiny_mce
 		case 'tinymce':
 			Util::get_js(Get::rel_path('base').'/addons/tiny_mce/tinymce.gzip.js', true, true);
-			Util::get_js(Get::rel_path('base').'/addons/tiny_mce/forma.js', true, true);
+			Util::get_js(Get::rel_path('base').'/addons/tiny_mce/forma.js', true, true); 
 		break;
 
 		case 'yui':
@@ -58,7 +58,7 @@ function loadHeaderHTMLEditor() {
 	}
 
 
-
+   
 	if(isset($GLOBALS['page'])) {
 		$GLOBALS['page']->add($res, 'page_head');
 	} else {
@@ -78,11 +78,14 @@ function loadHeaderHTMLEditor() {
  **/
 function loadHtmlEditor($id_form, $id, $name, $value, $css_text, $extra_param_for = false, $simple = false) {
 
-	if (!isset($GLOBALS["HTML_EDITOR_SETUP"])) {
+	
+    if (!isset($GLOBALS["HTML_EDITOR_SETUP"])) {
 		loadHeaderHTMLEditor();
 		$GLOBALS["HTML_EDITOR_SETUP"]=TRUE;
-	}
-
+	}  else {
+        loadHeaderHTMLEditor();        
+    }
+      
 	if(getAccessibilityStatus() === false)
 		$ht = Get::sett('hteditor');
 	else
