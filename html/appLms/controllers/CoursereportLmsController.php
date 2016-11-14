@@ -28,129 +28,389 @@ class CoursereportLmsController extends LmsController
         );
     }
 
-    public function coursereport() {
-        //checkPerm('view', true, 'coursereport');
-        $params = array(
-            'overview' => array(
-                'tests' => array(
-                    array(
-                        'name' => 'Pre Assessment',
-                        'type' => 'Test',
-                        'max' => 100,
-                        'required' => 75,
-                        'weight' => 100,
-                        'show' => 'true',
-                        'final' => 'false',
-                        'passed' => array(
-                            'value' => 347,
-                            'link' => 'javascript:void(0)'
-                        ),
-                        'not_passed' => array(
-                            'value' => 0,
-                            'link' => 'javascript:void(0)'
-                        ),
-                        'checked' => array(
-                            'value' => 15,
-                            'link' => 'javascript:void(0)'
-                        ),
-                        'average' => 75,
-                        'max_score' => 33,
-                        'min_score' => 10,
-                        'actions' => array(
-                            array(
-                                'icon' => 'bar-chart',
-                                'link' => 'javascript:void(0)'
-                            ),
-                            array(
-                                'icon' => 'edit',
-                                'link' => 'javascript:void(0)'
-                            ),
-                            array(
-                                'icon' => 'trash',
-                                'link' => 'javascript:void(0)'
-                            )
-                        )
-                    ),
-                    array(
-                        'name' => 'Intermediate Test',
-                        'type' => 'Test',
-                        'max' => 100,
-                        'required' => 75,
-                        'weight' => 100,
-                        'show' => 'true',
-                        'final' => 'true',
-                        'passed' => array(
-                            'value' => 368,
-                            'link' => 'javascript:void(0)'
-                        ),
-                        'not_passed' => array(
-                            'value' => 10,
-                            'link' => 'javascript:void(0)'
-                        ),
-                        'checked' => array(
-                            'value' => 50,
-                            'link' => 'javascript:void(0)'
-                        ),
-                        'average' => 81,
-                        'max_score' => 100,
-                        'min_score' => 21,
-                        'actions' => array(
-                            array(
-                                'icon' => 'bar-chart',
-                                'link' => 'javascript:void(0)'
-                            ),
-                            array(
-                                'icon' => 'edit',
-                                'link' => 'javascript:void(0)'
-                            ),
-                            array(
-                                'icon' => 'trash',
-                                'link' => 'javascript:void(0)'
-                            )
-                        )
-                    )
-                )
-            ),
-            'details' => array(
-                'activities' => array(
-                    'Pre Assessment',
-                    'Intermediate Test',
-                    'Test in Scorm Object',
-                    'Survey'
-                ),
-                'students' => array(
-                    array(
-                        'name' => 'Johnny Rotten',
-                        'email' => 'email@email.com',
-                        'activities_results' => array(
-                            '75 (1)',
-                            '81 (17)',
-                            '81 (21)',
-                            'false'
-                        ),
-                        'total_result' => '90'
-                    ),
-                    array(
-                        'name' => 'Bill Frisell',
-                        'email' => 'email@email.com',
-                        'activities_results' => array(
-                            '75',
-                            '100 (1)',
-                            '100 (1)',
-                            'true'
-                        ),
-                        'total_result' => '90'
-                    )
-                )
-            )
-        );
+    public function coursereport()
+    {
+        //checkPerm('view');
+        require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
+        require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
 
-        $this->render('coursereport', $params);
+        $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
+
+        $view_perm = checkPerm('view', true);
+        $view_all_perm = checkPerm('view_all', true);
+        $mod_perm = checkPerm('mod', true);
+
+        // XXX: Instance management
+        $acl_man = Docebo::user()->getAclManager();
+        $test_man = new GroupTestManagement();
+        $report_man = new CourseReportManager();
+
+        // XXX: Find test from organization
+        $org_tests =& $report_man->getTest();
+        $tests_info = $test_man->getTestInfo($org_tests);
+
+        $type_filter = Get::pReq('type_filter',DOTY_MIXED,false);
+
+        if ($type_filter == 'false'){
+            $type_filter = false;
+        }
+
+        $students = getSubscribedInfo((int)$_SESSION['idCourse'], FALSE, $type_filter, TRUE, false, false, true);
+
+        //apply sub admin filters, if needed
+        if (!$view_all_perm) {
+            //filter users
+            require_once(_base_ . '/lib/lib.preference.php');
+            $ctrlManager = new ControllerPreference();
+            $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+            foreach ($students as $idst => $user_course_info) {
+                if (!in_array($idst, $ctrl_users)) {
+                    // Elimino gli studenti non amministrati
+                    unset ($students[$idst]);
+                }
+
+            }
+        }
+
+        $id_students = array_keys($students);
+
+        $included_test = $this->model->getSourcesId(CoursereportLms::SOURCE_OF_TEST);
+        $reports_id = $this->model->getReportsId();
+        $included_test_report_id = $this->model->getReportsId(CoursereportLms::SOURCE_OF_TEST);
+
+        $tests_score 	=& $test_man->getTestsScores($included_test, $id_students);
+        // XXX: Calculate statistic
+        $test_details 	= array();
+
+        if(is_array($included_test))
+        {
+            while(list($id_test, $users_result) = each($tests_score))
+            {
+                while(list($id_user, $single_test) = each($users_result))
+                {
+                    if($single_test['score_status'] == 'valid')
+                    {
+                        // max
+                        if(!isset($test_details[$id_test]['max_score'])){
+                            $test_details[$id_test]['max_score'] = $single_test['score'];
+                        }
+                        elseif($single_test['score'] > $test_details[$id_test]['max_score']){
+                            $test_details[$id_test]['max_score'] = $single_test['score'];
+                        }
+
+                        // min
+                        if(!isset($test_details[$id_test]['min_score'])) {
+                            $test_details[$id_test]['min_score'] = $single_test['score'];
+                        }
+                        elseif($single_test['score'] < $test_details[$id_test]['min_score']){
+                            $test_details[$id_test]['min_score'] = $single_test['score'];
+                        }
+
+                        //number of valid score
+                        if(!isset($test_details[$id_test]['num_result'])){
+                            $test_details[$id_test]['num_result'] = 1;
+                        }
+                        else {
+                            $test_details[$id_test]['num_result']++;
+                        }
+
+                        // averange
+                        if(!isset($test_details[$id_test]['averange'])){
+                            $test_details[$id_test]['averange'] = $single_test['score'];
+                        }
+                        else {
+                            $test_details[$id_test]['averange'] += $single_test['score'];
+                        }
+                    }
+                }
+            }
+            while(list($id_test, $single_detail) = each($test_details)){
+                if(isset($single_detail['num_result'])) {
+                    $test_details[$id_test]['averange'] /= $test_details[$id_test]['num_result'];
+                }
+            }
+            reset($test_details);
+        }
+
+
+
+        // XXX: Retrive other source scores
+        $reports_score 	=& $report_man->getReportsScores((isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
+
+        // XXX: Calculate statistic
+        $report_details = array();
+        while(list($id_report, $users_result) = each($reports_score))
+        {
+            while(list($id_user, $single_report) = each($users_result))
+            {
+                if($single_report['score_status'] == 'valid')
+                {
+                    // max
+                    if(!isset($report_details[$id_report]['max_score']))
+                        $report_details[$id_report]['max_score'] = $single_report['score'];
+                    elseif($single_report['score'] > $report_details[$id_report]['max_score'])
+                        $report_details[$id_report]['max_score'] = $single_report['score'];
+
+                    // min
+                    if(!isset($report_details[$id_report]['min_score']))
+                        $report_details[$id_report]['min_score'] = $single_report['score'];
+                    elseif($single_report['score'] < $report_details[$id_report]['min_score'])
+                        $report_details[$id_report]['min_score'] = $single_report['score'];
+
+                    //number of valid score
+                    if(!isset($report_details[$id_report]['num_result']))
+                        $report_details[$id_report]['num_result'] = 1;
+                    else
+                        $report_details[$id_report]['num_result']++;
+
+                    // averange
+                    if(!isset($report_details[$id_report]['averange']))
+                        $report_details[$id_report]['averange'] = $single_report['score'];
+                    else
+                        $report_details[$id_report]['averange'] += $single_report['score'];
+                }
+            }
+        }
+        while(list($id_report, $single_detail) = each($report_details)){
+            if(isset($single_detail['num_result'])) {
+                $report_details[$id_report]['averange'] /= $report_details[$id_report]['num_result'];
+            }
+        }
+        reset($report_details);
+
+        $tests = array();
+        foreach ($this->model->getCourseReports() as $info_report) {
+
+            if ($info_report->getSourceOf() != "final_vote") {
+
+                switch ($info_report->getSourceOf()) {
+                    case CoursereportLms::SOURCE_OF_TEST : {
+
+                        $name = strip_tags($tests_info[$info_report->getIdSource()]['title']);
+                    };
+                        break;
+                    case CoursereportLms::SOURCE_OF_SCOITEM    : {
+                        $name = strip_tags($info_report->getTitle());
+
+                    };
+                        break;
+                    case CoursereportLms::SOURCE_OF_ACTIVITY    : {
+                        $name = strip_tags($info_report->getTitle());
+                    };
+                        break;
+                    case CoursereportLms::SOURCE_OF_FINAL_VOTE    : {
+                        $name = strip_tags($lang->def('_FINAL_SCORE'));
+                    };
+                        break;
+                    default: {
+                        $name = "";
+                    }
+                }
+
+
+                $test = array(
+                    'name' => $name,
+                    'type' => ucfirst($info_report->getSourceOf()),
+                    'max' => $info_report->getMaxScore(),
+                    'required' => $info_report->getRequiredScore(),
+                    'weight' => $info_report->getWeight(),
+                    'show' => ($info_report->isShowToUser() ? 'true' : 'false'),
+                    'final' => ($info_report->isUseForFinal() ? 'true' : 'false'),
+                    'passed' => array(
+                        'value' => (isset($test_details[$id_test]['passed']) ? round($test_details[$id_test]['passed'], 2) : '-' ),
+                        'link' => 'javascript:void(0)'
+                    ),
+                    'not_passed' => array(
+                        'value' => ( isset($test_details[$id_test]['not_passed']) ? round($test_details[$id_test]['not_passed'], 2) : '-' ),
+                        'link' => 'javascript:void(0)'
+                    ),
+                    'checked' => array(
+                        'value' => ( isset($test_details[$id_test]['not_checked']) ? round($test_details[$id_test]['not_checked'], 2) : '-' ),
+                        'link' => 'javascript:void(0)'
+                    ),
+                    'average' => ( isset($test_details[$id_test]['averange']) ? round($test_details[$id_test]['averange'], 2) : '-' ),
+                    'max_score' => ( isset($test_details[$id_test]['max_score']) ? round($test_details[$id_test]['max_score'], 2) : '-' ),
+                    'min_score' => ( isset($test_details[$id_test]['min_score']) ? round($test_details[$id_test]['min_score'], 2) : '-' ),
+                    'actions' => array(
+                        array(
+                            'icon' => 'bar-chart',
+                            'link' => 'javascript:void(0)'
+                        ),
+                        array(
+                            'icon' => 'edit',
+                            'link' => 'javascript:void(0)'
+                        ),
+                        array(
+                            'icon' => 'trash',
+                            'link' => 'javascript:void(0)'
+                        )
+                    )
+                );
+
+                $tests[] = $test;
+            }
+
+            $ajaxResponse = array(
+                'overview' => array(
+                    'tests' => $tests
+                ),
+                'details' => array(
+                    'activities' => array(
+                        'Pre Assessment',
+                        'Intermediate Test',
+                        'Test in Scorm Object',
+                        'Survey'
+                    ),
+                    'students' => array(
+                        array(
+                            'name' => 'Johnny Rotten',
+                            'email' => 'email@email.com',
+                            'activities_results' => array(
+                                '75 (1)',
+                                '81 (17)',
+                                '81 (21)',
+                                'false'
+                            ),
+                            'total_result' => '90'
+                        ),
+                        array(
+                            'name' => 'Bill Frisell',
+                            'email' => 'email@email.com',
+                            'activities_results' => array(
+                                '75',
+                                '100 (1)',
+                                '100 (1)',
+                                'true'
+                            ),
+                            'total_result' => '90'
+                        )
+                    )
+                )
+            );
+
+
+            $params = array(
+                'overview' => array(
+                    'tests' => array(
+                        array(
+                            'name' => 'Pre Assessment',
+                            'type' => 'Test',
+                            'max' => 100,
+                            'required' => 75,
+                            'weight' => 100,
+                            'show' => 'true',
+                            'final' => 'false',
+                            'passed' => array(
+                                'value' => 347,
+                                'link' => 'javascript:void(0)'
+                            ),
+                            'not_passed' => array(
+                                'value' => 0,
+                                'link' => 'javascript:void(0)'
+                            ),
+                            'checked' => array(
+                                'value' => 15,
+                                'link' => 'javascript:void(0)'
+                            ),
+                            'average' => 75,
+                            'max_score' => 33,
+                            'min_score' => 10,
+                            'actions' => array(
+                                array(
+                                    'icon' => 'bar-chart',
+                                    'link' => 'javascript:void(0)'
+                                ),
+                                array(
+                                    'icon' => 'edit',
+                                    'link' => 'javascript:void(0)'
+                                ),
+                                array(
+                                    'icon' => 'trash',
+                                    'link' => 'javascript:void(0)'
+                                )
+                            )
+                        ),
+                        array(
+                            'name' => 'Intermediate Test',
+                            'type' => 'Test',
+                            'max' => 100,
+                            'required' => 75,
+                            'weight' => 100,
+                            'show' => 'true',
+                            'final' => 'true',
+                            'passed' => array(
+                                'value' => 368,
+                                'link' => 'javascript:void(0)'
+                            ),
+                            'not_passed' => array(
+                                'value' => 10,
+                                'link' => 'javascript:void(0)'
+                            ),
+                            'checked' => array(
+                                'value' => 50,
+                                'link' => 'javascript:void(0)'
+                            ),
+                            'average' => 81,
+                            'max_score' => 100,
+                            'min_score' => 21,
+                            'actions' => array(
+                                array(
+                                    'icon' => 'bar-chart',
+                                    'link' => 'javascript:void(0)'
+                                ),
+                                array(
+                                    'icon' => 'edit',
+                                    'link' => 'javascript:void(0)'
+                                ),
+                                array(
+                                    'icon' => 'trash',
+                                    'link' => 'javascript:void(0)'
+                                )
+                            )
+                        )
+                    )
+                ),
+                'details' => array(
+                    'activities' => array(
+                        'Pre Assessment',
+                        'Intermediate Test',
+                        'Test in Scorm Object',
+                        'Survey'
+                    ),
+                    'students' => array(
+                        array(
+                            'name' => 'Johnny Rotten',
+                            'email' => 'email@email.com',
+                            'activities_results' => array(
+                                '75 (1)',
+                                '81 (17)',
+                                '81 (21)',
+                                'false'
+                            ),
+                            'total_result' => '90'
+                        ),
+                        array(
+                            'name' => 'Bill Frisell',
+                            'email' => 'email@email.com',
+                            'activities_results' => array(
+                                '75',
+                                '100 (1)',
+                                '100 (1)',
+                                'true'
+                            ),
+                            'total_result' => '90'
+                        )
+                    )
+                )
+            );
+        }
+
+        $this->render('coursereport', $ajaxResponse);
+
     }
 
     function testreport($idTrack, $idTest, $testName, $studentName)
     {
-        checkPerm('view');
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
 
@@ -160,7 +420,6 @@ class CoursereportLmsController extends LmsController
         $testName = Get::gReq('testName');
 
         $studentName = Get::gReq('studentName');
-
 
 
         $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
@@ -179,7 +438,7 @@ class CoursereportLmsController extends LmsController
         $tests_info =& $test_man->getTestInfo($org_tests);
 
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_TH_TEST_REPORT'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_TH_TEST_REPORT'),
             strip_tags($testName)
         );
         $out->add(
@@ -242,7 +501,7 @@ class CoursereportLmsController extends LmsController
         $tests_info =& $test_man->getTestInfo($org_tests);
 
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_TH_TEST_REPORT'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_TH_TEST_REPORT'),
             strip_tags($testName)
         );
         $out->add(getTitleArea($page_title, 'coursereport') . '<div class="std_block">' . getBackUi("javascript:history.go(-1)", Lang::t('_BACK', 'standard')));
@@ -325,7 +584,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Write in output
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($test_info[$id_test]['title'])
         );
         $GLOBALS['page']->add(
@@ -367,7 +626,7 @@ class CoursereportLmsController extends LmsController
 
         if (isset($_POST['save'])) {
             $re = saveTestUpdate($id_test, $test_man);
-            Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&resul=' . ($re ? 'ok' : 'err'));
+            Util::jump_to('index.php?r=coursereport/coursereport&resul=' . ($re ? 'ok' : 'err'));
         }
 
         // retirive activity info
@@ -592,7 +851,7 @@ class CoursereportLmsController extends LmsController
 
         $test_info =& $test_man->getTestInfo(array($id_test));
 
-        $page_title = array('index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+        $page_title = array('index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             'index.php?modname=coursereport&amp;op=testdetail&amp;id_test=' . $id_test => $test_info[$id_test]['title']
         );
 
@@ -694,7 +953,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Write in output
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             'index.php?modname=coursereport&amp;op=testvote&amp;id_test=' . $id_test => $test_info[$id_test]['title'],
             $user_name
         );
@@ -855,7 +1114,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Write in output
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($lang->def('_FINAL_SCORE'))
         );
         $out->add(
@@ -880,7 +1139,7 @@ class CoursereportLmsController extends LmsController
 
             $re = $report_man->saveReportScore($id_report, $_POST['user_score'], $_POST['date_attempt'], $_POST['comment']);
 
-            Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&result=' . ($re ? 'ok' : 'err'));
+            Util::jump_to('index.php?r=coursereport/coursereport&result=' . ($re ? 'ok' : 'err'));
         }
 
         if (isset($_POST['save'])) {
@@ -1005,7 +1264,7 @@ class CoursereportLmsController extends LmsController
         // XXX: Find test from organization
         $re = $test_man->roundTestScore($id_test);
 
-        Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&amp;result=' . ($re ? 'ok' : 'err'));
+        Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
     function roundreport()
@@ -1026,7 +1285,7 @@ class CoursereportLmsController extends LmsController
         // XXX: Find test from organization
         $re = $report_man->roundReportScore($id_report);
 
-        Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&amp;result=' . ($re ? 'ok' : 'err'));
+        Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
     /**
@@ -1074,7 +1333,7 @@ class CoursereportLmsController extends LmsController
         $reports = $courseReportLms->getReportsForFinal();
 
         if (count($reports) == 0) {
-            Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&amp;result=ok');
+            Util::jump_to('index.php?r=coursereport/coursereport&amp;result=ok');
         }
 
         $sum_max_score = 0;
@@ -1167,7 +1426,7 @@ class CoursereportLmsController extends LmsController
                 $re &= sql_query($query_scores);
             }
         }
-        Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&amp;result=' . ($re ? 'ok' : 'err'));
+        Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
     function modscorm()
@@ -1186,7 +1445,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: undo
         if (isset($_POST['undo']))
-            jumpTo('index.php?modname=coursereport&amp;op=coursereport');
+            jumpTo('index.php?r=coursereport/coursereport');
 
         // XXX: Retrive all colums (test and so), and set it
         if ($id_report == 0) {
@@ -1202,14 +1461,14 @@ class CoursereportLmsController extends LmsController
         }
 
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($lang->def('_ADD_ACTIVITY'))
         );
         $out->add(
             getTitleArea($page_title, 'coursereport')
             . '<div class="std_block">'
 
-            . getBackUi('index.php?modname=coursereport&amp;op=coursereport', $lang->def('_BACK'))
+            . getBackUi('index.php?r=coursereport/coursereport', $lang->def('_BACK'))
         );
         // XXX: Save input if needed
         if (isset($_POST['save']) && is_numeric($_POST['id_source'])) {
@@ -1267,7 +1526,7 @@ class CoursereportLmsController extends LmsController
 				WHERE id_course = '" . $_POST['id_course'] . "' AND id_report = '" . $id_report . "'";
                     $re = sql_query($query_upd_report);
                 }
-                Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&result=' . ($re ? 'ok' : 'err'));
+                Util::jump_to('index.php?r=coursereport/coursereport&result=' . ($re ? 'ok' : 'err'));
             } else
                 $out->add(getErrorUi($re_check['message']));
         }
@@ -1332,7 +1591,7 @@ class CoursereportLmsController extends LmsController
         }
         // XXX: Write in output
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($lang->def('_ADD_ACTIVITY'))
         );
 
@@ -1387,7 +1646,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: undo
         if (isset($_POST['undo'])) {
-            Util::jump_to('index.php?modname=coursereport&amp;op=coursereport');
+            Util::jump_to('index.php?r=coursereport/coursereport');
         }
 
         // XXX: Retrive all colums (test and so), and set it
@@ -1406,13 +1665,13 @@ class CoursereportLmsController extends LmsController
 
 
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($lang->def('_ADD_ACTIVITY'))
         );
         $out->add(
             getTitleArea($page_title, 'coursereport')
             . '<div class="std_block">'
-            . getBackUi('index.php?modname=coursereport&amp;op=coursereport', $lang->def('_BACK'))
+            . getBackUi('index.php?r=coursereport/coursereport', $lang->def('_BACK'))
         );
         // XXX: Save input if needed
         if (isset($_POST['save'])) {
@@ -1424,14 +1683,14 @@ class CoursereportLmsController extends LmsController
             if (!$re_check['error']) {
                 if ($id_report == 0) $re = $report_man->addActivity($_SESSION['idCourse'], $_POST);
                 else $re = $report_man->updateActivity($id_report, $_SESSION['idCourse'], $_POST);
-                Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&result=' . ($re ? 'ok' : 'err'));
+                Util::jump_to('index.php?r=coursereport/coursereport&result=' . ($re ? 'ok' : 'err'));
             } else
                 $out->add(getErrorUi($re_check['message']));
         }
 
         // XXX: Write in output
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($lang->def('_ADD_ACTIVITY'))
         );
         $out->add(
@@ -1521,7 +1780,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Write in output
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($info_report->getTitle())
         );
         $out->add(
@@ -1549,7 +1808,7 @@ class CoursereportLmsController extends LmsController
                     $re = sql_query($query_upd_report);
 
                     $re = $report_man->saveReportScore($id_report, $_POST['user_score'], $_POST['date_attempt'], $_POST['comment']);
-                    Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&result=' . ($re ? 'ok' : 'err'));
+                    Util::jump_to('index.php?r=coursereport/coursereport&result=' . ($re ? 'ok' : 'err'));
                 }
             } else {
                 $out->add(getErrorUi($re_check['message']));
@@ -1715,12 +1974,12 @@ class CoursereportLmsController extends LmsController
         if (isset($_POST['confirm'])) {
 
             if (!$report_man->deleteReportScore($id_report)) {
-                Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&amp;result=err');
+                Util::jump_to('index.php?r=coursereport/coursereport&amp;result=err');
             }
 
             $re = $report_man->deleteReport($id_report);
 
-            Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&amp;result=' . ($re ? 'ok' : 'err'));
+            Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
         }
 
         // retirive activity info
@@ -1733,7 +1992,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Write in output
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             $lang->def('_DEL') . ' : ' . strip_tags($info_report['title'])
         );
         $out->add(
@@ -1790,7 +2049,7 @@ class CoursereportLmsController extends LmsController
 		WHERE id_course = '" . $_SESSION['idCourse'] . "' AND id_report = '" . $id_report . "'");
         }
 
-        Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&amp;result=' . ($re ? 'ok' : 'err'));
+        Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
     function export()
@@ -1901,7 +2160,7 @@ class CoursereportLmsController extends LmsController
 
         $total_weight = 0;
         $i = 1;
-        foreach ($this->model->getCourseReports() as $info_report){
+        foreach ($this->model->getCourseReports() as $info_report) {
             $id = $info_report->getIdSource();
             $reports[$info_report->getIdReport()] = $info_report;
             $reports_id[] = $info_report->getIdReport();
@@ -2075,7 +2334,7 @@ class CoursereportLmsController extends LmsController
                     : $acl_man->relativeId($user_info[ACL_INFO_USERID]));
                 $csv .= '"' . $user_name . '"';
 
-                foreach ($this->model->getCourseReports() as $info_report){
+                foreach ($this->model->getCourseReports() as $info_report) {
 
                     switch ($info_report->getSourceOf()) {
                         case "test" : {

@@ -1,0 +1,1 @@
+UPDATE `learning_module` SET `mvc_path` = 'lms/coursereport/coursereport' WHERE `learning_module`.`module_name` = "coursereport" AND `learning_module`.`default_op` = "coursereport"

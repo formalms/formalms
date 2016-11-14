@@ -7,13 +7,11 @@
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-to-review.css" />
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-menu.css" />   
         <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/table-responsive.css"/>
-        <link rel="stylesheet" type="text/css" href="{{ evalPhp('Get::rel_path', ['base']) }}//addons/chartist/chartist.min.css" />
 
 {% endblock %}    
 
     {% block javascript %}
-        <script type="text/javascript" src="{{ evalPhp('Get::rel_path', ['base']) }}/addons/chartist/chartist.min.js"></script>
-        <script type="text/javascript" src="{{ evalPhp('Get::rel_path', ['base']) }}/addons/chartist/chartist-plugin-pointlabels.js"></script>
+
         <script type="text/javascript" src="{{ evalPhp('Get::rel_path', ['base']) }}/lib/js_utils.js"></script>
         <script>
             $('document').ready(function() {

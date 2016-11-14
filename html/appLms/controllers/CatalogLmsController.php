@@ -107,8 +107,6 @@ class CatalogLmsController extends LmsController {
        $val_enroll_not = Get::req('val_enroll_not', DOTY_STRING, '');
               
        $result = $this->model->getCourseList($typeCourse,1,$val_enroll, $val_enroll_not);
-       
-    //   $this->render('tab_start');       
        $this->render('courselist', array( "result" => $result));
 
     }    
