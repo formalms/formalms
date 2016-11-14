@@ -197,6 +197,12 @@ class CoursereportLmsController extends LmsController
                     case CoursereportLms::SOURCE_OF_TEST : {
 
                         $name = strip_tags($tests_info[$info_report->getIdSource()]['title']);
+                        $passed = (isset($test_details[$id_test]['passed']) ? round($test_details[$id_test]['passed'], 2) : '-');
+                        $notPassed = (isset($test_details[$id_test]['not_passed']) ? round($test_details[$id_test]['not_passed'], 2) : '-');
+                        $notChecked = (isset($test_details[$id_test]['not_checked']) ? round($test_details[$id_test]['not_checked'], 2) : '-');
+                        $average = (isset($test_details[$id_test]['averange']) ? round($test_details[$id_test]['averange'], 2) : '-');
+                        $maxScore = (isset($test_details[$id_test]['max_score']) ? round($test_details[$id_test]['max_score'], 2) : '-');
+                        $minScore = (isset($test_details[$id_test]['min_score']) ? round($test_details[$id_test]['min_score'], 2) : '-');
                     };
                         break;
                     case CoursereportLms::SOURCE_OF_SCOITEM    : {
@@ -227,20 +233,20 @@ class CoursereportLmsController extends LmsController
                     'show' => ($info_report->isShowToUser() ? 'true' : 'false'),
                     'final' => ($info_report->isUseForFinal() ? 'true' : 'false'),
                     'passed' => array(
-                        'value' => (isset($test_details[$id_test]['passed']) ? round($test_details[$id_test]['passed'], 2) : '-'),
+                        'value' => $passed,
                         'link' => 'javascript:void(0)'
                     ),
                     'not_passed' => array(
-                        'value' => (isset($test_details[$id_test]['not_passed']) ? round($test_details[$id_test]['not_passed'], 2) : '-'),
+                        'value' => $notPassed,
                         'link' => 'javascript:void(0)'
                     ),
                     'checked' => array(
-                        'value' => (isset($test_details[$id_test]['not_checked']) ? round($test_details[$id_test]['not_checked'], 2) : '-'),
+                        'value' => $notChecked,
                         'link' => 'javascript:void(0)'
                     ),
-                    'average' => (isset($test_details[$id_test]['averange']) ? round($test_details[$id_test]['averange'], 2) : '-'),
-                    'max_score' => (isset($test_details[$id_test]['max_score']) ? round($test_details[$id_test]['max_score'], 2) : '-'),
-                    'min_score' => (isset($test_details[$id_test]['min_score']) ? round($test_details[$id_test]['min_score'], 2) : '-'),
+                    'average' => $average,
+                    'max_score' => $maxScore,
+                    'min_score' => $minScore,
                     'actions' => array(
                         array(
                             'icon' => 'bar-chart',
@@ -418,6 +424,10 @@ class CoursereportLmsController extends LmsController
         $this->render('coursereport', $ajaxResponse);
     }
 
+    function getDetailCourseReport(){
+        
+    }
+
     /**
      * Restituisce i campi utente
      */
@@ -452,6 +462,8 @@ class CoursereportLmsController extends LmsController
 
         echo $this->json->encode($field_list);
     }
+
+
 
     function testreport($idTrack, $idTest, $testName, $studentName)
     {
