@@ -73,10 +73,32 @@ class CoursereportLmsController extends LmsController
         }
 
         $id_students = array_keys($students);
+        $students_info 	=& $acl_man->getUsers($id_students);
+
+
+
+        $tot_report = $this->model->getReportCount();
 
         $included_test = $this->model->getSourcesId(CoursereportLms::SOURCE_OF_TEST);
         $reports_id = $this->model->getReportsId();
         $included_test_report_id = $this->model->getReportsId(CoursereportLms::SOURCE_OF_TEST);
+
+        if($tot_report == 0)
+            $report_man->initializeCourseReport($org_tests);
+        else {
+            if(is_array($included_test)) $test_to_add = array_diff($org_tests, $included_test);
+            else $test_to_add = $org_tests;
+            if(is_array($included_test)) $test_to_del = array_diff($included_test, $org_tests);
+            else $test_to_del = $org_tests;
+            if(!empty($test_to_add) || !empty($test_to_del)) {
+                $report_man->addTestToReport($test_to_add, 1);
+                $report_man->delTestToReport($test_to_del);
+
+                $included_test = $org_tests;
+            }
+        }
+        $report_man->updateTestReport($org_tests);
+
 
         $tests_score 	=& $test_man->getTestsScores($included_test, $id_students);
         // XXX: Calculate statistic
