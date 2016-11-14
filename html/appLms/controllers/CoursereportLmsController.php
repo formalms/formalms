@@ -35,7 +35,7 @@ class CoursereportLmsController extends LmsController
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
 
         $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
-        $included_test = array();
+
         $view_perm = checkPerm('view', true);
         $view_all_perm = checkPerm('view_all', true);
         $mod_perm = checkPerm('mod', true);
@@ -49,8 +49,13 @@ class CoursereportLmsController extends LmsController
         $org_tests =& $report_man->getTest();
         $tests_info = $test_man->getTestInfo($org_tests);
 
+        $type_filter = Get::pReq('type_filter',DOTY_MIXED,false);
 
-        $students = getSubscribedInfo((int)$_SESSION['idCourse'], FALSE, $lev, TRUE, false, false, true);
+        if ($type_filter == 'false'){
+            $type_filter = false;
+        }
+
+        $students = getSubscribedInfo((int)$_SESSION['idCourse'], FALSE, $type_filter, TRUE, false, false, true);
 
         //apply sub admin filters, if needed
         if (!$view_all_perm) {
@@ -68,17 +73,15 @@ class CoursereportLmsController extends LmsController
         }
 
         $id_students = array_keys($students);
-        $students_info =& $acl_man->getUsers($id_students);
 
-        $tot_report = $this->model->getReportCount();
-        // XXX: Info for updates
-        $reportsArray = $this->model->getReportsFilteredBySourceOf('test');
+        $included_test = $this->model->getSourcesId(CoursereportLms::SOURCE_OF_TEST);
+        $reports_id = $this->model->getReportsId();
+        $included_test_report_id = $this->model->getReportsId(CoursereportLms::SOURCE_OF_TEST);
 
-
-        $total_weight = 0;
         $tests_score 	=& $test_man->getTestsScores($included_test, $id_students);
         // XXX: Calculate statistic
         $test_details 	= array();
+
         if(is_array($included_test))
         {
             while(list($id_test, $users_result) = each($tests_score))
@@ -128,9 +131,11 @@ class CoursereportLmsController extends LmsController
             }
             reset($test_details);
         }
+
+
+
         // XXX: Retrive other source scores
-        $reports_score 	=& $report_man->getReportsScores(
-            (isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
+        $reports_score 	=& $report_man->getReportsScores((isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
 
         // XXX: Calculate statistic
         $report_details = array();
@@ -179,21 +184,21 @@ class CoursereportLmsController extends LmsController
             if ($info_report->getSourceOf() != "final_vote") {
 
                 switch ($info_report->getSourceOf()) {
-                    case "test" : {
+                    case CoursereportLms::SOURCE_OF_TEST : {
 
                         $name = strip_tags($tests_info[$info_report->getIdSource()]['title']);
                     };
                         break;
-                    case "scoitem"    : {
+                    case CoursereportLms::SOURCE_OF_SCOITEM    : {
                         $name = strip_tags($info_report->getTitle());
 
                     };
                         break;
-                    case "activity"    : {
+                    case CoursereportLms::SOURCE_OF_ACTIVITY    : {
                         $name = strip_tags($info_report->getTitle());
                     };
                         break;
-                    case "final_vote"    : {
+                    case CoursereportLms::SOURCE_OF_FINAL_VOTE    : {
                         $name = strip_tags($lang->def('_FINAL_SCORE'));
                     };
                         break;
@@ -400,17 +405,12 @@ class CoursereportLmsController extends LmsController
             );
         }
 
-
         $this->render('coursereport', $ajaxResponse);
 
     }
 
     function testreport($idTrack, $idTest, $testName, $studentName)
     {
-        //$_GET['idTrack'], $_GET['idTest'], $_GET['testName'], $_GET['studentName']
-
-
-        checkPerm('view');
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
 

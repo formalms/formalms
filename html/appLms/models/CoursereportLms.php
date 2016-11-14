@@ -16,6 +16,12 @@ require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
 
 class CoursereportLms extends Model
 {
+
+    const SOURCE_OF_TEST = 'test';
+    const SOURCE_OF_SCOITEM = 'scoitem';
+    const SOURCE_OF_ACTIVITY = 'activity';
+    const SOURCE_OF_FINAL_VOTE = 'final_vote';
+
     /**
      * @var int
      */
@@ -203,7 +209,7 @@ class CoursereportLms extends Model
 
         foreach ($this->courseReports as $courseReport) {
 
-            if ($courseReport->getSourceOf() === $sourceOf) {
+            if ($sourceOf === null || $courseReport->getSourceOf() === $sourceOf) {
                 $result[] = $courseReport;
             }
         }
@@ -251,12 +257,33 @@ class CoursereportLms extends Model
         return $report;
     }
 
-    public function getReportsId(){
+    public function getReportsId($sourceOf = null)
+    {
         $responseArray = array();
 
-        foreach ($this->courseReports as $report) {
+        foreach ($this->courseReports as $courseReport) {
 
+            if ($sourceOf === null || $courseReport->getSourceOf() === $sourceOf) {
+
+                $responseArray[] = $courseReport->getIdReport();
+            }
         }
 
+        return $responseArray;
+    }
+
+    public function getSourcesId($sourceOf = null)
+    {
+        $responseArray = array();
+
+        foreach ($this->courseReports as $courseReport) {
+
+            if ($sourceOf === null || $courseReport->getSourceOf() === $sourceOf) {
+
+                $responseArray[] = $courseReport->getIdSource();
+            }
+        }
+
+        return $responseArray;
     }
 }
