@@ -49,9 +49,10 @@ class CoursereportLmsController extends LmsController
         $org_tests =& $report_man->getTest();
         $tests_info = $test_man->getTestInfo($org_tests);
 
-        $type_filter = Get::pReq('type_filter',DOTY_MIXED,false);
 
-        if ($type_filter == 'false'){
+        $type_filter = Get::pReq('type_filter', DOTY_MIXED, false);
+
+        if ($type_filter == 'false') {
             $type_filter = false;
         }
 
@@ -73,8 +74,7 @@ class CoursereportLmsController extends LmsController
         }
 
         $id_students = array_keys($students);
-        $students_info 	=& $acl_man->getUsers($id_students);
-
+        $students_info =& $acl_man->getUsers($id_students);
 
 
         $tot_report = $this->model->getReportCount();
@@ -83,14 +83,14 @@ class CoursereportLmsController extends LmsController
         $reports_id = $this->model->getReportsId();
         $included_test_report_id = $this->model->getReportsId(CoursereportLms::SOURCE_OF_TEST);
 
-        if($tot_report == 0)
+        if ($tot_report == 0)
             $report_man->initializeCourseReport($org_tests);
         else {
-            if(is_array($included_test)) $test_to_add = array_diff($org_tests, $included_test);
+            if (is_array($included_test)) $test_to_add = array_diff($org_tests, $included_test);
             else $test_to_add = $org_tests;
-            if(is_array($included_test)) $test_to_del = array_diff($included_test, $org_tests);
+            if (is_array($included_test)) $test_to_del = array_diff($included_test, $org_tests);
             else $test_to_del = $org_tests;
-            if(!empty($test_to_add) || !empty($test_to_del)) {
+            if (!empty($test_to_add) || !empty($test_to_del)) {
                 $report_man->addTestToReport($test_to_add, 1);
                 $report_man->delTestToReport($test_to_del);
 
@@ -100,54 +100,46 @@ class CoursereportLmsController extends LmsController
         $report_man->updateTestReport($org_tests);
 
 
-        $tests_score 	=& $test_man->getTestsScores($included_test, $id_students);
+        $tests_score =& $test_man->getTestsScores($included_test, $id_students);
         // XXX: Calculate statistic
-        $test_details 	= array();
+        $test_details = array();
 
-        if(is_array($included_test))
-        {
-            while(list($id_test, $users_result) = each($tests_score))
-            {
-                while(list($id_user, $single_test) = each($users_result))
-                {
-                    if($single_test['score_status'] == 'valid')
-                    {
+        if (is_array($included_test)) {
+            while (list($id_test, $users_result) = each($tests_score)) {
+                while (list($id_user, $single_test) = each($users_result)) {
+                    if ($single_test['score_status'] == 'valid') {
                         // max
-                        if(!isset($test_details[$id_test]['max_score'])){
+                        if (!isset($test_details[$id_test]['max_score'])) {
                             $test_details[$id_test]['max_score'] = $single_test['score'];
-                        }
-                        elseif($single_test['score'] > $test_details[$id_test]['max_score']){
+                        } elseif ($single_test['score'] > $test_details[$id_test]['max_score']) {
                             $test_details[$id_test]['max_score'] = $single_test['score'];
                         }
 
                         // min
-                        if(!isset($test_details[$id_test]['min_score'])) {
+                        if (!isset($test_details[$id_test]['min_score'])) {
                             $test_details[$id_test]['min_score'] = $single_test['score'];
-                        }
-                        elseif($single_test['score'] < $test_details[$id_test]['min_score']){
+                        } elseif ($single_test['score'] < $test_details[$id_test]['min_score']) {
                             $test_details[$id_test]['min_score'] = $single_test['score'];
                         }
 
                         //number of valid score
-                        if(!isset($test_details[$id_test]['num_result'])){
+                        if (!isset($test_details[$id_test]['num_result'])) {
                             $test_details[$id_test]['num_result'] = 1;
-                        }
-                        else {
+                        } else {
                             $test_details[$id_test]['num_result']++;
                         }
 
                         // averange
-                        if(!isset($test_details[$id_test]['averange'])){
+                        if (!isset($test_details[$id_test]['averange'])) {
                             $test_details[$id_test]['averange'] = $single_test['score'];
-                        }
-                        else {
+                        } else {
                             $test_details[$id_test]['averange'] += $single_test['score'];
                         }
                     }
                 }
             }
-            while(list($id_test, $single_detail) = each($test_details)){
-                if(isset($single_detail['num_result'])) {
+            while (list($id_test, $single_detail) = each($test_details)) {
+                if (isset($single_detail['num_result'])) {
                     $test_details[$id_test]['averange'] /= $test_details[$id_test]['num_result'];
                 }
             }
@@ -155,46 +147,42 @@ class CoursereportLmsController extends LmsController
         }
 
 
-
         // XXX: Retrive other source scores
-        $reports_score 	=& $report_man->getReportsScores((isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
+        $reports_score =& $report_man->getReportsScores((isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
 
         // XXX: Calculate statistic
         $report_details = array();
-        while(list($id_report, $users_result) = each($reports_score))
-        {
-            while(list($id_user, $single_report) = each($users_result))
-            {
-                if($single_report['score_status'] == 'valid')
-                {
+        while (list($id_report, $users_result) = each($reports_score)) {
+            while (list($id_user, $single_report) = each($users_result)) {
+                if ($single_report['score_status'] == 'valid') {
                     // max
-                    if(!isset($report_details[$id_report]['max_score']))
+                    if (!isset($report_details[$id_report]['max_score']))
                         $report_details[$id_report]['max_score'] = $single_report['score'];
-                    elseif($single_report['score'] > $report_details[$id_report]['max_score'])
+                    elseif ($single_report['score'] > $report_details[$id_report]['max_score'])
                         $report_details[$id_report]['max_score'] = $single_report['score'];
 
                     // min
-                    if(!isset($report_details[$id_report]['min_score']))
+                    if (!isset($report_details[$id_report]['min_score']))
                         $report_details[$id_report]['min_score'] = $single_report['score'];
-                    elseif($single_report['score'] < $report_details[$id_report]['min_score'])
+                    elseif ($single_report['score'] < $report_details[$id_report]['min_score'])
                         $report_details[$id_report]['min_score'] = $single_report['score'];
 
                     //number of valid score
-                    if(!isset($report_details[$id_report]['num_result']))
+                    if (!isset($report_details[$id_report]['num_result']))
                         $report_details[$id_report]['num_result'] = 1;
                     else
                         $report_details[$id_report]['num_result']++;
 
                     // averange
-                    if(!isset($report_details[$id_report]['averange']))
+                    if (!isset($report_details[$id_report]['averange']))
                         $report_details[$id_report]['averange'] = $single_report['score'];
                     else
                         $report_details[$id_report]['averange'] += $single_report['score'];
                 }
             }
         }
-        while(list($id_report, $single_detail) = each($report_details)){
-            if(isset($single_detail['num_result'])) {
+        while (list($id_report, $single_detail) = each($report_details)) {
+            if (isset($single_detail['num_result'])) {
                 $report_details[$id_report]['averange'] /= $report_details[$id_report]['num_result'];
             }
         }
@@ -239,20 +227,20 @@ class CoursereportLmsController extends LmsController
                     'show' => ($info_report->isShowToUser() ? 'true' : 'false'),
                     'final' => ($info_report->isUseForFinal() ? 'true' : 'false'),
                     'passed' => array(
-                        'value' => (isset($test_details[$id_test]['passed']) ? round($test_details[$id_test]['passed'], 2) : '-' ),
+                        'value' => (isset($test_details[$id_test]['passed']) ? round($test_details[$id_test]['passed'], 2) : '-'),
                         'link' => 'javascript:void(0)'
                     ),
                     'not_passed' => array(
-                        'value' => ( isset($test_details[$id_test]['not_passed']) ? round($test_details[$id_test]['not_passed'], 2) : '-' ),
+                        'value' => (isset($test_details[$id_test]['not_passed']) ? round($test_details[$id_test]['not_passed'], 2) : '-'),
                         'link' => 'javascript:void(0)'
                     ),
                     'checked' => array(
-                        'value' => ( isset($test_details[$id_test]['not_checked']) ? round($test_details[$id_test]['not_checked'], 2) : '-' ),
+                        'value' => (isset($test_details[$id_test]['not_checked']) ? round($test_details[$id_test]['not_checked'], 2) : '-'),
                         'link' => 'javascript:void(0)'
                     ),
-                    'average' => ( isset($test_details[$id_test]['averange']) ? round($test_details[$id_test]['averange'], 2) : '-' ),
-                    'max_score' => ( isset($test_details[$id_test]['max_score']) ? round($test_details[$id_test]['max_score'], 2) : '-' ),
-                    'min_score' => ( isset($test_details[$id_test]['min_score']) ? round($test_details[$id_test]['min_score'], 2) : '-' ),
+                    'average' => (isset($test_details[$id_test]['averange']) ? round($test_details[$id_test]['averange'], 2) : '-'),
+                    'max_score' => (isset($test_details[$id_test]['max_score']) ? round($test_details[$id_test]['max_score'], 2) : '-'),
+                    'min_score' => (isset($test_details[$id_test]['min_score']) ? round($test_details[$id_test]['min_score'], 2) : '-'),
                     'actions' => array(
                         array(
                             'icon' => 'bar-chart',
@@ -428,7 +416,41 @@ class CoursereportLmsController extends LmsController
         }
 
         $this->render('coursereport', $ajaxResponse);
+    }
 
+    /**
+     * Restituisce i campi utente
+     */
+    function getUserFieldsSelector()
+    {
+
+        require_once(_adm_ . '/lib/lib.field.php');
+
+        $fman = new FieldList();
+        $fields = $fman->getFlatAllFields(array('framework', 'lms'));
+
+        $field_list = array(
+            'userid' => Lang::t('_USERNAME', 'standard'),
+            'firstname' => Lang::t('_FIRSTNAME', 'standard'),
+            'lastname' => Lang::t('_LASTNAME', 'standard'),
+            'email' => Lang::t('_EMAIL', 'standard'),
+            'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
+            'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
+            'language' => Lang::t('_LANGUAGE', 'standard'),
+            'level' => Lang::t('_LEVEL', 'standard')
+        );
+        $field_list = $field_list + $fields;
+
+        /*$js_arr = array();
+        foreach ($field_list as $key => $value) {
+            $js_arr[] = $key . ': ' . json_encode($value);
+        }
+        $f_list_js = '{' . implode(',', $js_arr) . '}';
+
+        $myList = json_encode($field_list);
+        */
+
+        echo $this->json->encode($field_list);
     }
 
     function testreport($idTrack, $idTest, $testName, $studentName)
