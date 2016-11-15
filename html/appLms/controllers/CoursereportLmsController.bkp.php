@@ -28,9 +28,9 @@ class CoursereportLmsController extends LmsController
         );
     }
 
-    public function coursereport()
-    {
-        checkPerm('view');
+    public function coursereport() {
+
+        //checkPerm('view');
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
         require_once(_base_ . '/lib/lib.form.php');
@@ -881,7 +881,7 @@ while(i<lista.length)
             );
         }
 
-        $out->add(Form::openForm("statuserfilter", "index.php?modname=coursereport&amp;op=coursereport"));
+        $out->add(Form::openForm("statuserfilter", "index.php?r=coursereport/coursereport"));
         $type_groups = array('false' => $lang->def('_ALL'), '1' => $lang2->def('_LEVEL_1'), '2' => $lang2->def('_LEVEL_2'), '3' => $lang2->def('_LEVEL_3'), '4' => $lang2->def('_LEVEL_4'), '5' => $lang2->def('_LEVEL_5'), '6' => $lang2->def('_LEVEL_6'), '7' => $lang2->def('_LEVEL_7'));
         $out->add(Form::getDropdown($lang->def('_LEVEL'),
             'type_filter',
@@ -916,12 +916,20 @@ while(i<lista.length)
         $out->add('</div>');
     }
 
-
     function testreport($idTrack, $idTest, $testName, $studentName)
     {
         checkPerm('view');
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
+
+        $idTrack = Get::gReq('idTrack');
+        $idTest = Get::gReq('idTest');
+
+        $testName = Get::gReq('testName');
+
+        $studentName = Get::gReq('studentName');
+
+
 
         $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
         $out =& $GLOBALS['page'];
@@ -939,7 +947,7 @@ while(i<lista.length)
         $tests_info =& $test_man->getTestInfo($org_tests);
 
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_TH_TEST_REPORT'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_TH_TEST_REPORT'),
             strip_tags($testName)
         );
         $out->add(
@@ -1002,7 +1010,7 @@ while(i<lista.length)
         $tests_info =& $test_man->getTestInfo($org_tests);
 
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_TH_TEST_REPORT'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_TH_TEST_REPORT'),
             strip_tags($testName)
         );
         $out->add(getTitleArea($page_title, 'coursereport') . '<div class="std_block">' . getBackUi("javascript:history.go(-1)", Lang::t('_BACK', 'standard')));
@@ -1085,7 +1093,7 @@ while(i<lista.length)
 
         // XXX: Write in output
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($test_info[$id_test]['title'])
         );
         $GLOBALS['page']->add(
@@ -1127,7 +1135,7 @@ while(i<lista.length)
 
         if (isset($_POST['save'])) {
             $re = saveTestUpdate($id_test, $test_man);
-            Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&resul=' . ($re ? 'ok' : 'err'));
+            Util::jump_to('index.php?r=coursereport/coursereport&resul=' . ($re ? 'ok' : 'err'));
         }
 
         // retirive activity info
@@ -1352,7 +1360,7 @@ while(i<lista.length)
 
         $test_info =& $test_man->getTestInfo(array($id_test));
 
-        $page_title = array('index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+        $page_title = array('index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             'index.php?modname=coursereport&amp;op=testdetail&amp;id_test=' . $id_test => $test_info[$id_test]['title']
         );
 
@@ -1454,7 +1462,7 @@ while(i<lista.length)
 
         // XXX: Write in output
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             'index.php?modname=coursereport&amp;op=testvote&amp;id_test=' . $id_test => $test_info[$id_test]['title'],
             $user_name
         );
@@ -1615,7 +1623,7 @@ while(i<lista.length)
 
         // XXX: Write in output
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($lang->def('_FINAL_SCORE'))
         );
         $out->add(
@@ -1640,7 +1648,7 @@ while(i<lista.length)
 
             $re = $report_man->saveReportScore($id_report, $_POST['user_score'], $_POST['date_attempt'], $_POST['comment']);
 
-            Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&result=' . ($re ? 'ok' : 'err'));
+            Util::jump_to('index.php?r=coursereport/coursereport&result=' . ($re ? 'ok' : 'err'));
         }
 
         if (isset($_POST['save'])) {
@@ -1765,7 +1773,7 @@ while(i<lista.length)
         // XXX: Find test from organization
         $re = $test_man->roundTestScore($id_test);
 
-        Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&amp;result=' . ($re ? 'ok' : 'err'));
+        Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
     function roundreport()
@@ -1786,7 +1794,7 @@ while(i<lista.length)
         // XXX: Find test from organization
         $re = $report_man->roundReportScore($id_report);
 
-        Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&amp;result=' . ($re ? 'ok' : 'err'));
+        Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
     /**
@@ -1834,7 +1842,7 @@ while(i<lista.length)
         $reports = $courseReportLms->getReportsForFinal();
 
         if (count($reports) == 0) {
-            Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&amp;result=ok');
+            Util::jump_to('index.php?r=coursereport/coursereport&amp;result=ok');
         }
 
         $sum_max_score = 0;
@@ -1927,7 +1935,7 @@ while(i<lista.length)
                 $re &= sql_query($query_scores);
             }
         }
-        Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&amp;result=' . ($re ? 'ok' : 'err'));
+        Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
     function modscorm()
@@ -1946,7 +1954,7 @@ while(i<lista.length)
 
         // XXX: undo
         if (isset($_POST['undo']))
-            jumpTo('index.php?modname=coursereport&amp;op=coursereport');
+            jumpTo('index.php?r=coursereport/coursereport');
 
         // XXX: Retrive all colums (test and so), and set it
         if ($id_report == 0) {
@@ -1962,14 +1970,14 @@ while(i<lista.length)
         }
 
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($lang->def('_ADD_ACTIVITY'))
         );
         $out->add(
             getTitleArea($page_title, 'coursereport')
             . '<div class="std_block">'
 
-            . getBackUi('index.php?modname=coursereport&amp;op=coursereport', $lang->def('_BACK'))
+            . getBackUi('index.php?r=coursereport/coursereport', $lang->def('_BACK'))
         );
         // XXX: Save input if needed
         if (isset($_POST['save']) && is_numeric($_POST['id_source'])) {
@@ -2027,7 +2035,7 @@ while(i<lista.length)
 				WHERE id_course = '" . $_POST['id_course'] . "' AND id_report = '" . $id_report . "'";
                     $re = sql_query($query_upd_report);
                 }
-                Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&result=' . ($re ? 'ok' : 'err'));
+                Util::jump_to('index.php?r=coursereport/coursereport&result=' . ($re ? 'ok' : 'err'));
             } else
                 $out->add(getErrorUi($re_check['message']));
         }
@@ -2092,7 +2100,7 @@ while(i<lista.length)
         }
         // XXX: Write in output
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($lang->def('_ADD_ACTIVITY'))
         );
 
@@ -2147,7 +2155,7 @@ while(i<lista.length)
 
         // XXX: undo
         if (isset($_POST['undo'])) {
-            Util::jump_to('index.php?modname=coursereport&amp;op=coursereport');
+            Util::jump_to('index.php?r=coursereport/coursereport');
         }
 
         // XXX: Retrive all colums (test and so), and set it
@@ -2166,13 +2174,13 @@ while(i<lista.length)
 
 
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($lang->def('_ADD_ACTIVITY'))
         );
         $out->add(
             getTitleArea($page_title, 'coursereport')
             . '<div class="std_block">'
-            . getBackUi('index.php?modname=coursereport&amp;op=coursereport', $lang->def('_BACK'))
+            . getBackUi('index.php?r=coursereport/coursereport', $lang->def('_BACK'))
         );
         // XXX: Save input if needed
         if (isset($_POST['save'])) {
@@ -2184,14 +2192,14 @@ while(i<lista.length)
             if (!$re_check['error']) {
                 if ($id_report == 0) $re = $report_man->addActivity($_SESSION['idCourse'], $_POST);
                 else $re = $report_man->updateActivity($id_report, $_SESSION['idCourse'], $_POST);
-                Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&result=' . ($re ? 'ok' : 'err'));
+                Util::jump_to('index.php?r=coursereport/coursereport&result=' . ($re ? 'ok' : 'err'));
             } else
                 $out->add(getErrorUi($re_check['message']));
         }
 
         // XXX: Write in output
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($lang->def('_ADD_ACTIVITY'))
         );
         $out->add(
@@ -2281,7 +2289,7 @@ while(i<lista.length)
 
         // XXX: Write in output
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             strip_tags($info_report->getTitle())
         );
         $out->add(
@@ -2309,7 +2317,7 @@ while(i<lista.length)
                     $re = sql_query($query_upd_report);
 
                     $re = $report_man->saveReportScore($id_report, $_POST['user_score'], $_POST['date_attempt'], $_POST['comment']);
-                    Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&result=' . ($re ? 'ok' : 'err'));
+                    Util::jump_to('index.php?r=coursereport/coursereport&result=' . ($re ? 'ok' : 'err'));
                 }
             } else {
                 $out->add(getErrorUi($re_check['message']));
@@ -2475,12 +2483,12 @@ while(i<lista.length)
         if (isset($_POST['confirm'])) {
 
             if (!$report_man->deleteReportScore($id_report)) {
-                Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&amp;result=err');
+                Util::jump_to('index.php?r=coursereport/coursereport&amp;result=err');
             }
 
             $re = $report_man->deleteReport($id_report);
 
-            Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&amp;result=' . ($re ? 'ok' : 'err'));
+            Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
         }
 
         // retirive activity info
@@ -2493,7 +2501,7 @@ while(i<lista.length)
 
         // XXX: Write in output
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             $lang->def('_DEL') . ' : ' . strip_tags($info_report['title'])
         );
         $out->add(
@@ -2550,7 +2558,7 @@ while(i<lista.length)
 		WHERE id_course = '" . $_SESSION['idCourse'] . "' AND id_report = '" . $id_report . "'");
         }
 
-        Util::jump_to('index.php?modname=coursereport&amp;op=coursereport&amp;result=' . ($re ? 'ok' : 'err'));
+        Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
     function export()

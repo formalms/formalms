@@ -13,7 +13,6 @@
 
 if (Docebo::user()->isAnonymous()) die("You can't access");
 
-
 function testreport($idTrack, $idTest, $testName, $studentName)
 {
     checkPerm('view');
@@ -44,33 +43,18 @@ function testreport($idTrack, $idTest, $testName, $studentName)
         . '<div class="std_block">'
         . getBackUi("javascript:history.go(-1)", Lang::t('_BACK', 'standard'))
     );
-
     $tb = new Table(0, $testName . ' : ' . $studentName);
-
-    $tableHeaderArray = array(
+    $tb->addHead(array(
         'N.',
         $lang->def('_DATE'),
         $lang->def('_SCORE'),
-        $lang->def('_STATISTICS'),
-        $lang->def('_DELETE'));
-
-
-    $tb->addHead($tableHeaderArray, array('min-cell', '', ''));
+        $lang->def('_STATISTICS')
+    ), array('min-cell', '', ''));
 
     $i = 1;
     while (list($date_attempt, $score, $idTest, $idUser, $number_time) = sql_fetch_row($re_testreport)) {
-
-        $tableBodyArray = array(
-            $i++,
-            $date_attempt,
-            $score,
-            '<a class="ico-sprite subs_chart" href="index.php?modname=coursereport&op=testreview&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>' . $lang->def('_STATISTICS') . '</span></a>',
-            '<a class="ico-sprite subs_del" href="index.php?modname=coursereport&op=testreview&delete_track=' . md5($idTest . "_" . $idUser . "_" . $number_time) . '&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>' . $lang->def('_DELETE') . '</span></a>');
-
-        $tb->addBody($tableBodyArray);
+        $tb->addBody(array($i++, $date_attempt, $score, '<a class="ico-sprite subs_chart" href="index.php?modname=coursereport&op=testreview&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '">><span>Statistiche</span></a>'));
     }
-
-
     $out->add(
         $tb->getTable()
         . '</div>'
@@ -145,9 +129,9 @@ function coursereport()
 
     // XXX: Find students
     /*
-	 * $id_students	=& $report_man->getStudentId();
-	 * $students_info 	=& $acl_man->getUsers($id_students);
-	 */
+     * $id_students	=& $report_man->getStudentId();
+     * $students_info 	=& $acl_man->getUsers($id_students);
+     */
 
     $lang2 =& DoceboLanguage::createInstance('levels', 'lms');
 
@@ -183,8 +167,8 @@ function coursereport()
     $i = 0;
 
     /*$students_info=array();
-	foreach( $students as $idst => $user_course_info )
-		$students_info[$idst] =& $acl_man->getUser( $idst, FALSE );
+    foreach( $students as $idst => $user_course_info )
+        $students_info[$idst] =& $acl_man->getUser( $idst, FALSE );
 */
     // XXX: Info for updates
     $query_tot_report = "
@@ -238,47 +222,11 @@ function coursereport()
 	SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
 	FROM " . $GLOBALS['prefix_lms'] . "_coursereport
 	WHERE id_course = '" . $_SESSION['idCourse'] . "'
-	ORDER BY sequence";
+	ORDER BY sequence ";
     $re_report = sql_query($query_report);
     $total_weight = 0;
     $i = 1;
-
-    $info_reports_list = array();
-    $info_reports = array();
-
-    $maxCols = 1;
-    $col = 0;
-    $selectedTest = isset($_GET['_dyn_field_selector_1']) ? $_GET['_dyn_field_selector_1'] : null;;
-
-    $testSelector = '<form name="formTestSelector" method="get">';
-    $testSelector .= '<select onchange="document.formTestSelector.submit()" id="_dyn_field_selector_1" name="_dyn_field_selector_1">';
-
-
     while ($info_report = sql_fetch_assoc($re_report)) {
-        if ($col < $maxCols) {
-            if ($selectedTest) {
-                if ($selectedTest == $info_report['id_report']){
-                    $info_reports[] = $info_report;
-                    $col++;
-                }
-            } else {
-                $info_reports[] = $info_report;
-                $col++;
-            }
-        }
-        $info_reports_list[] = $info_report;
-
-
-        if ($i == 0)
-            $first = $info_report['id_report'];
-        $testSelector .= '<option value="' . $info_report['id_report'] . '"' . ($_GET['_dyn_field_selector_1'] == $info_report['id_report'] ? ' selected="selected"' : '') . '>' . strip_tags($tests_info[$info_report['id_source']]['title']) . '</option>';
-
-
-    }
-    $testSelector .= '</select>';
-    $testSelector .= '</form>';
-
-    foreach ($info_reports as $info_report) {
         $id = $info_report['id_source'];
         $reports[$info_report['id_report']] = $info_report;
         $reports_id[] = $info_report['id_report'];
@@ -361,7 +309,7 @@ function coursereport()
                 break;
         }
 
-        $top = $testSelector . '<br/>' . $title . '<br/>';
+        $top = $title . '<br/>';
         if ($mod_perm)
             if ($i > 1 && $info_report['source_of'] != 'final_vote')
                 $top .= '<a class="ico-sprite subs_left" href="index.php?modname=coursereport&amp;op=moveleft&amp;id_report=' . $info_report['id_report'] . '"><span><span>' . $lang->def('_MOVE_LEFT') . '</span></a>';
@@ -382,6 +330,19 @@ function coursereport()
         if ($info_report['use_for_final'] == 'true') $total_weight += $info_report['weight'];
     }
 
+    // XXX: Set table intestation
+    $tb_report = new Table(0, $lang->def('_COURSE_REPORT_CAPTION'), $lang->def('_COURSE_REPORT_SUMMARY'));
+
+    $tb_report->setColsStyle($type_h);
+    $tb_report->addHead($cont_h);
+
+    $tb_report->addBody($a_line_2);
+
+    $tb_report->addBody($colums['max_score']);
+    $tb_report->addBody($colums['required_score']);
+    $tb_report->addBody($colums['weight']);
+    $tb_report->addBody($colums['show_to_user']);
+    $tb_report->addBody($colums['use_for_final']);
 
     //$tb->addBodyExpanded('<span class="text_bold title_big">'.$lang->def('_STUDENTS_VOTE').'</span>', 'align-center');
     $tb_score = new Table(0, $lang->def('_STUDENTS_VOTE'), $lang->def('_COURSE_REPORT_SUMMARY'));
@@ -408,10 +369,8 @@ function coursereport()
     $f_list = $f_list + $fields;
 
     $js_arr = array();
-    foreach ($f_list as $key => $value) {
+    foreach ($f_list as $key => $value)
         $js_arr[] = $key . ': ' . json_encode($value);
-    }
-
     $f_list_js = '{' . implode(',', $js_arr) . '}';
 
     $fieldlist = $f_list;
@@ -434,8 +393,6 @@ function coursereport()
 
     $field_selected = ($_GET['_dyn_field_selector_0']) ? $_GET['_dyn_field_selector_0'] : 'userid';
     $_SESSION['field_selected'] = $field_selected;
-
-
     // aggiungo un elemento in posizione 1
     $index = 1;
     $start = array_slice($cont_h, 0, $index);
@@ -771,6 +728,119 @@ function coursereport()
         }
     }
 
+
+    // XXX: Display statistics
+    $stats['passed'] = array($lang->def('_PASSED'));//, ''
+    $stats['not_passed'] = array($lang->def('_NOT_PASSED'));//, ''
+    $stats['not_checked'] = array($lang->def('_NOT_CHECKED'));//, ''
+    $stats['averange'] = array($lang->def('_AVERANGE'));//, ''
+    $stats['varianza'] = array($lang->def('_STANDARD_DEVIATION'));//, ''
+    $stats['max_score'] = array($lang->def('_MAX_SCORE'));//, ''
+    $stats['min_score'] = array($lang->def('_MIN_SCORE'));//, ''
+    foreach ($reports as $id_report => $info_report) {
+        switch ($info_report['source_of']) {
+            case "test" : {
+                $id_test = $info_report['id_source'];
+
+                if (isset($test_details[$id_test]['passed']) || isset($test_details[$id_test]['not_passed'])) {
+                    if (!isset($test_details[$id_test]['passed']))
+                        $test_details[$id_test]['passed'] = 0;
+                    if (!isset($test_details[$id_test]['not_passed']))
+                        $test_details[$id_test]['not_passed'] = 0;
+
+                    $test_details[$id_test]['varianza'] /= ($test_details[$id_test]['passed'] + $test_details[$id_test]['not_passed']);
+                    $test_details[$id_test]['varianza'] = sqrt($test_details[$id_test]['varianza']);
+                }
+                $stats['passed'][] = (isset($test_details[$id_test]['passed']) ? round($test_details[$id_test]['passed'], 2) : '-');
+                $stats['not_passed'][] = (isset($test_details[$id_test]['not_passed']) ? round($test_details[$id_test]['not_passed'], 2) : '-');
+                $stats['not_checked'][] = (isset($test_details[$id_test]['not_checked']) ? round($test_details[$id_test]['not_checked'], 2) : '-');
+                $stats['averange'][] = (isset($test_details[$id_test]['averange']) ? round($test_details[$id_test]['averange'], 2) : '-');
+                $stats['varianza'][] = (isset($test_details[$id_test]['varianza']) ? round($test_details[$id_test]['varianza'], 2) : '-');
+                $stats['max_score'][] = (isset($test_details[$id_test]['max_score']) ? round($test_details[$id_test]['max_score'], 2) : '-');
+                $stats['min_score'][] = (isset($test_details[$id_test]['min_score']) ? round($test_details[$id_test]['min_score'], 2) : '-');
+            };
+                break;
+            case "scoitem" : {
+                $query_report = "
+						SELECT *
+						FROM " . $GLOBALS['prefix_lms'] . "_scorm_tracking
+						WHERE idscorm_item = '" . $info_report['id_source'] . "'";
+
+                $passed = 0;
+                $total = 0;
+                $media = 0;
+                $varianza = 0;
+                $votomassimo = 0;
+                $votominimo = 9999;
+                $result = sql_query($query_report);
+                while ($report = sql_fetch_assoc($result)) {
+                    if ($report['score_raw'] != NULL) {
+                        if ($report['score_raw'] > $votomassimo)
+                            $votomassimo = $report['score_raw'];
+                        if ($report['score_raw'] < $votominimo)
+                            $votominimo = $report['score_raw'];
+                        $media = $media + $report['score_raw'];
+                        $total = $total + 1;
+                        if ($report['lesson_status'] == 'passed') {
+                            $passed++;
+                        }
+                    }
+                }
+                $media = ($total == 0 ? '0' : $media / $total);
+                $result = sql_query($query_report);
+                $var = 0;
+                while ($report = sql_fetch_assoc($result))
+                    if ($report['score_raw'] != NULL)
+                        $var = $var + pow($media - $report['score_raw'], 2);
+                $varianza = ($total == 0 ? '0' : floor($var / $total));
+                if ($votominimo == 9999)
+                    $votominimo = "";
+
+                $stats['passed'][] = $passed;
+                $stats['not_passed'][] = $total - $passed;
+                $stats['not_checked'][] = "-";
+                $stats['averange'][] = $media;
+                $stats['varianza'][] = $varianza;
+                $stats['max_score'][] = $votomassimo;
+                $stats['min_score'][] = $votominimo;
+            };
+                break;
+            case "activity" :
+            case "final_vote" : {
+                if (isset($report_details[$id_report]['passed']) || isset($report_details[$id_report]['not_passed'])) {
+                    if (!isset($report_details[$id_report]['passed']))
+                        $report_details[$id_report]['passed'] = 0;
+                    if (!isset($report_details[$id_report]['not_passed']))
+                        $report_details[$id_report]['not_passed'] = 0;
+
+                    $report_details[$id_report]['varianza'] /= ($report_details[$id_report]['passed'] + $report_details[$id_report]['not_passed']);
+                    $report_details[$id_report]['varianza'] = sqrt($report_details[$id_report]['varianza']);
+                }
+                $stats['passed'][] = (isset($report_details[$id_report]['passed']) ? round($report_details[$id_report]['passed'], 2) : '-');
+                $stats['not_passed'][] = (isset($report_details[$id_report]['not_passed']) ? round($report_details[$id_report]['not_passed'], 2) : '-');
+                $stats['not_checked'][] = (isset($report_details[$id_report]['not_checked']) ? round($report_details[$id_report]['not_checked'], 2) : '-');
+                $stats['averange'][] = (isset($report_details[$id_report]['averange']) ? round($report_details[$id_report]['averange'], 2) : '-');
+                $stats['varianza'][] = (isset($report_details[$id_report]['varianza']) ? round(sqrt($report_details[$id_report]['varianza']), 2) : '-');
+                $stats['max_score'][] = (isset($report_details[$id_report]['max_score']) ? round($report_details[$id_report]['max_score'], 2) : '-');
+                $stats['min_score'][] = (isset($report_details[$id_report]['min_score']) ? round($report_details[$id_report]['min_score'], 2) : '-');
+            };
+                break;
+        }
+    }
+    $tb_stat = new Table(0, $lang->def('_SUMMARY_VOTE'), $lang->def('_COURSE_REPORT_SUMMARY'));
+    $tb_stat->setColsStyle($type_h);
+    $cont_h[0] = $lang->def('_STATISTICS');
+    $tb_stat->addHead($cont_h);
+
+    //$tb->addBodyExpanded('<span class="text_bold title_big">'.$lang->def('_SUMMARY_VOTE').'</span>', 'align-center');
+    $tb_stat->addBody($stats['passed']);
+    $tb_stat->addBody($stats['not_passed']);
+    $tb_stat->addBody($stats['not_checked']);
+    $tb_stat->addBody($stats['averange']);
+    $tb_stat->addBody($stats['varianza']);
+    $tb_stat->addBody($stats['max_score']);
+    $tb_stat->addBody($stats['min_score']);
+
     // Write in output
     $out->add(getTitleArea($lang->def('_COURSEREPORT', 'menu_course'), 'coursereport')
         . '<div class="std_block">');
@@ -920,7 +990,7 @@ while(i<lista.length)
     $sql = "SELECT * FROM core_field";
     $filler = "";
     $filler = "<br>";
-    $result_quest = sql_query($sql) or die (sql_error());
+    $result_quest = sql_query($sql) or die (mysql_error());
     while ($quests = sql_fetch_array($result_quest)) {
         $filler .= "<input type=\'checkbox\' onclick=\'cambialink(" . $quests['idField'] . ",this.checked)\' value=\'" . $quests['idField'] . "\'>" . $quests['translation'] . "<br>";
     }
@@ -957,7 +1027,10 @@ while(i<lista.length)
 
     $out->add(Form::closeForm());
 
-    $out->add($tb_score->getTable() . '<br /><br />');
+    $out->add(
+        $tb_report->getTable() . '<br /><br />'
+        . $tb_score->getTable() . '<br /><br />'
+        . $tb_stat->getTable() . '<br /><br />');
 
     if (checkPerm('mod', true)) {
         $out->add(
@@ -1203,13 +1276,13 @@ function testvote()
                 case "not_passed"    :
                 case "passed"        : {
                     /*
-					$cont[] = Form::getInputDropdown(	'dropdown',
-															'user_score',
-															'user_score',
-															array('passed' => $lang->def('_PASSED'), 'not_passed' => $lang->def('_NOT_PASSED')),
-															$tests_score[$id_test][$idst_user]['score_status'],
-															'');
-															*/
+                        $cont[] = Form::getInputDropdown(	'dropdown',
+                                                                'user_score',
+                                                                'user_score',
+                                                                array('passed' => $lang->def('_PASSED'), 'not_passed' => $lang->def('_NOT_PASSED')),
+                                                                $tests_score[$id_test][$idst_user]['score_status'],
+                                                                '');
+                                                                */
                     $cont[] = Form::getInputTextfield('textfield_nowh',
                         'user_score_' . $idst_user,
                         'user_score[' . $idst_user . ']',
@@ -1380,14 +1453,11 @@ function testreview()
 
     // XXX: Initializaing
     $id_test = importVar('id_test', true, 0);
-    $id_track = importVar('idTrack', true, 0);
+    $idTrack = importVar('idTrack', true, 0);
     $number_time = importVar('number_time', true, null);
-    $delete = importVar('delete_track', false, null);
-
     $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
     $out =& $GLOBALS['page'];
     $out->setWorkingZone('content');
-
 
     // XXX: Instance management
     $acl_man = Docebo::user()->getAclManager();
@@ -1439,108 +1509,16 @@ function testreview()
         $out->add(
             getTitleArea($page_title, 'coursereport')
             . '<div class="std_block">'
-            . Form::openForm('test_vote', 'index.php?modname=coursereport&op=testreport&idTest=' . $id_test . '&idTrack=' . $id_track)
+            . Form::openForm('test_vote', 'index.php?modname=coursereport&op=testreport&idTest=' . $id_test . '&idTrack=' . $idTrack)
         );
         $test_man->editReview($id_test, $id_user, $number_time, false);
         $out->add(
             Form::openButtonSpace()
             . Form::getButton('go_back', 'go_back', $lang->def('_UNDO'))
-
+            . Form::closeButtonSpace()
+            . Form::closeForm()
+            . '</div>'
         );
-
-        if ($delete == md5($id_test . "_" . $id_user . "_" . $number_time)) {
-
-            $out->add(Form::getButton('delete_track_button', $lang->def('_DELETE_TEST_TRACK'), $lang->def('_DELETE_TEST_TRACK'), 'btn btn-default', 'data-toggle="modal" data-target="#delete_test_track_modal"', false, false)
-                . Form::closeButtonSpace()
-                . Form::closeForm()
-                . '</div></div>');
-
-            $modal = '<div class="modal fade" tabindex="-1" role="dialog" id="delete_test_track_modal">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title">' . $lang->def('_DELETE_TEST_TRACK_MODAL_TITLE') . '</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <p>' . $lang->def("_DELETE_TEST_TRACK_MODAL_BODY") . '</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">' . $lang->def('_CLOSE') . '</button>
-                                    <button id="detele-test-track" type="button" class="btn btn-default">' . $lang->def('_DELETE') . '</button>
-                                </div>
-                            </div><!-- /.modal-content -->
-                      </div><!-- /.modal-dialog -->
-                  </div><!-- /.modal -->
-                  <script type="text/javascript">
-                           $( document ).ready(function() {
-                               
-                               $("#detele-test-track").on( "click", function(event) {
-                                   
-                                   event.preventDefault();
-                                   
-                                   window.location.href = "index.php?modname=coursereport&op=testdelete&delete_track=' . md5($id_test . "_" . $id_user . "_" . $number_time) . '&id_test=' . $id_test . '&id_user=' . $id_user . '&number_time=' . $number_time . '&idTrack=' . $id_track . '";
-                               });
-                               
-                               
-                               $("#delete_test_track_modal").modal("show");
-                           });
-
-                    </script>';
-            $out->add($modal);
-
-        } else {
-            $out->add(Form::closeButtonSpace()
-                . Form::closeForm()
-                . '</div>');
-        }
-    }
-
-
-}
-
-/**
- * Mostra la view di riepilogo del test con il pulsante per l'eliminazione del test.
- */
-function testdelete()
-{
-
-    checkPerm('mod');
-
-    require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
-    require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
-    require_once(_base_ . '/lib/lib.form.php');
-
-    // XXX: Initializaing
-    $id_test = importVar('id_test', true, 0);
-    $id_track = importVar('idTrack', true, 0);
-    $number_time = importVar('number_time', true, null);
-    $delete = importVar('delete_track', false, null);
-    $id_user = importVar('id_user', true, 0);
-
-    $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
-    $out =& $GLOBALS['page'];
-    $out->setWorkingZone('content');
-
-    if ($delete == md5($id_test . "_" . $id_user . "_" . $number_time)) {
-
-        $test_man = new GroupTestManagement();
-
-        $test_man->deleteReview($id_test, $id_user, $id_track, $number_time);
-
-        $acl_man = Docebo::user()->getAclManager();
-
-        $test_man = new GroupTestManagement();
-
-        $user_name = $acl_man->getUserName($id_user);
-
-        // XXX: Find test
-        $test_info =& $test_man->getTestInfo(array($id_test));
-
-        Util::jump_to('index.php?modname=coursereport&op=testreport&idTest=' . $id_test . '&idTrack=' . $id_track . '&testName=' . $test_info[$id_test]['title'] . '&studentName=' . $user_name);
-
-    } else {
-        die("You can't access");
     }
 }
 
@@ -2890,11 +2868,11 @@ function export()
                                     $csv .= ';"-"';
                                 }
                             }
-                        }
-                    }
+                        } else
+                            $csv .= ';"-"';
+                    };
                         break;
-                    case
-                    "scoitem" : {
+                    case "scoitem" : {
                         $query_report = "
 						SELECT *
 						FROM " . $GLOBALS['prefix_lms'] . "_scorm_tracking
@@ -3091,13 +3069,13 @@ function testQuestion()
     list($total_play) = sql_fetch_row(sql_query($query_total_play));
 
     /*if ($total_play == 0) {
-                $query_total_play =     "SELECT COUNT(*)"
-                                                ." FROM ".$GLOBALS['prefix_lms']."_testtrack"
-                                                ." WHERE idTest = '".$id_test."' AND score_status = 'not_checked'";
-                list($total_play2) = sql_fetch_row(sql_query($query_total_play));
+            $query_total_play =     "SELECT COUNT(*)"
+                                            ." FROM ".$GLOBALS['prefix_lms']."_testtrack"
+                                            ." WHERE idTest = '".$id_test."' AND score_status = 'not_checked'";
+            list($total_play2) = mysql_fetch_row(mysql_query($query_total_play));
 $total_play += $total_play2;
 
-        }*/
+    }*/
 //print_r($tracks);
     foreach ($quests as $quest) {
         switch ($quest['type_quest']) {
@@ -3311,10 +3289,6 @@ function coursereportDispatch($op)
         case "testreview" : {
             testreview();
         };
-            break;
-        case "testdelete" : {
-            testdelete();
-        }
             break;
         case "testQuestion" :
             testQuestion();

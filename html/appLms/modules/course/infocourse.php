@@ -126,11 +126,10 @@ function infocourse() {
 	
 	
 	$GLOBALS['page']->add(
-		getTitleArea('', 'course')
+		getTitleArea($lang->def('_INFO'), 'course')
 		.'<div class="std_block">'
 	, 'content');
-	
-	$GLOBALS['page']->add(loadMaterials($_SESSION['idCourse']), 'content');
+	  
 	
 	$GLOBALS['page']->add(
 		'<table class="vertical_table">'

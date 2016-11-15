@@ -78,7 +78,7 @@ class CatalogLms extends Model
     }
     
     
-	public function getCourseList($type = '', $page = 1,$val_enroll,$val_enroll_not )
+	public function getCourseList($type = '', $page = 1)
 	{
         require_once(_lms_.'/lib/lib.catalogue.php');
 		$cat_man = new Catalogue_Manager();
@@ -173,41 +173,21 @@ class CatalogLms extends Model
 
 		$limit = ($page - 1) * Get::sett('visuItem');
 		$id_cat = Get::req('id_cat', DOTY_INT, 0);
-        $str_enroll = "";
-        $str_enroll_not = "";
-        if($val_enroll=='true')  $str_enroll = " AND idCourse in (select idCourse from %lms_courseuser where idUser =".Docebo::user()->getIdSt().")" ;
-        if($val_enroll_not =='true')  $str_enroll_not = " AND idCourse not in (select idCourse from %lms_courseuser where idUser =".Docebo::user()->getIdSt().")" ;
-        
 
 		$query =	"SELECT *"
 					." FROM %lms_course"
 					." WHERE status NOT IN (".CST_PREPARATION.", ".CST_CONCLUDED.", ".CST_CANCELLED.")"
 					." AND course_type <> 'assessment'"
-                    
-                    .$str_enroll
-                    .$str_enroll_not
-                    
-        
 					." AND (                       
 						(can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '".date('Y-m-d')."') AND (sub_start_date = '0000-00-00' OR '".date('Y-m-d')."' >= sub_start_date)) OR
                         (can_subscribe=1)
 					) "
                     
-                    
-                   // ." AND (can_subscribe=1 AND (date_begin = '0000-00-00' OR date_end >= '".date('Y-m-d')."') AND (date_begin = '0000-00-00' OR '".date('Y-m-d')."' >= date_begin) ) "
-
-                    
 					.$filter
 					.($id_cat > 0 ? " AND idCategory = ".(int)$id_cat : '')
 					." ORDER BY name";
 
-
-            //  echo "QUERY_CAT = ".$query;
-                    
 		$result = sql_query($query);
-
-        
-        //return 
         return $result; 
         
       

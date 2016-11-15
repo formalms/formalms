@@ -10,8 +10,8 @@
 \ ======================================================================== */
 
 -----------------------------------------------------------------------------
-FORMALMS 1.4.1
-Relase date: 2015 June 25
+FORMALMS 1.4.2
+Relase date: 2016 May 12
 -----------------------------------------------------------------------------
 
 
@@ -31,7 +31,11 @@ Index
 
 ------------------------------------------------------------------------------
 
-0. New in these release
+0   New in these release (1.4.1)
+
+This is a maintenance release for fixing vulnerability issues
+
+0.1 New in these release (1.4)
 
 For all bugfix and new features included in this release, please read changelog.txt
 Here are some notes:
@@ -42,9 +46,9 @@ a) Google login (social login):
    Google will discontinued openid login feature upon 2015 april 20, allowing only oauth2 protocol
    for authentication. With this release, forma.lms switch google authentication to oauth2.
    To use google oauth2 you must register at google an application and  generate an application ID and a secret key
-   thoe value must be enteter in the configuration screen to enable google authentication.
+   those value must be entered in the configuration screen to enable google authentication.
 
-   FOr those that have google authentication enabled and perfom forma.lms upgrade before 20 april 2015,
+   For those that have google authentication enabled and perfom forma.lms upgrade before 20 april 2015,
    for backward compatibility, the upgrade enable in config.php (for the transition period) the old openid protocol
    After the switchoff date you must disable openid in your config.php file
 
@@ -77,7 +81,7 @@ in respect to the work of the project partners and community
 
 Server specs: Linux, Windows, MacOs, Unix, Sun with
 - Apache 2.0.x or above
-- PHP 5.2.x or 5.3.x 5.4.x ( 5.5.x and 5.6.x in beta status)
+- PHP 5.2.x or 5.3.x 5.4.x  5.5.x and 5.6.x
 - Mysql 5.0 or higher with transaction support
 - Doesn't matter if safe mode or register global are on or off
 - If you need to test on your windows home pc we suggest easyphp, wamp or xampp

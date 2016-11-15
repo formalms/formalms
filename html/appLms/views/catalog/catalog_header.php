@@ -52,75 +52,48 @@
 
 
 <script language="javascript">
-   
+        
+        function scriviCookie(nomeCookie,valoreCookie,durataCookie)
+        {
+          var scadenza = new Date();
+          var adesso = new Date();
+          scadenza.setTime(adesso.getTime() + (parseInt(durataCookie) * 60000));
+          document.cookie = nomeCookie + '=' + escape(valoreCookie) + '; expires=' + scadenza.toGMTString() + '; path=/';
+        }          
+             
+             
+             
+        function leggiCookie(nomeCookie)
+        {
+          if (document.cookie.length > 0)
+          {
+            var inizio = document.cookie.indexOf(nomeCookie + "=");
+            if (inizio != -1)
+            {
+              inizio = inizio + nomeCookie.length + 1;
+              var fine = document.cookie.indexOf(";",inizio);
+              if (fine == -1) fine = document.cookie.length;
+              return unescape(document.cookie.substring(inizio,fine));
+            }else{
+               return "";
+            }
+          }
+          return "";
+        }
+
 
    
-     // carica corso in funzione della tipologia del corso selezionato 
+     // select by course type
     function loadCourseType(){
-        
-        
-        
-        var id_cat = leggiCookie('id_current_cat');
-        var val_enroll = leggiCookie('val_enroll'); 
-        var val_enroll_not = leggiCookie('val_enroll_not'); 
-
-        str_loading = "<?php echo Layout::path() ?>images/standard/loadbar.gif";
-        $("#div_course").html("<br><p align='center'><img src='"  + str_loading + "'></p>");         
-        
          type_course  = document.getElementById("typeCourse").selectedIndex;
          if(type_course==0) get_type_curse = "";
          if(type_course==1) get_type_curse = "elearning";
          if(type_course==2) get_type_curse = "classroom";
-        
-        scriviCookie('type_course',get_type_curse,60);
-          
-           var objAjax = YAHOO.util.Connect.asyncRequest('POST', "ajax.server.php?r=catalog/allCourseForma&type_course=" + get_type_curse + "&id_cat=" + id_cat + "&val_enroll=" + val_enroll + "&val_enroll_not=" + val_enroll_not , {
-                                success: function(objReq){
-                                 try {
-                                        var cat =objReq.responseText;
-                                    } catch (e) {
-                                           alert("errore ajax su calcolo catalogo")
-                                     return; }
-                                
-                                    $("#div_course").html(objReq.responseText);
-                                }
-                            });                 
+         scriviCookie('type_course',get_type_curse,60);
+         callAjaxCatalog(leggiCookie('id_current_cat'))
     }
 
-
-    // carica corsi in funzione delle iscrizioni 
-    function loadCourseEnroll(){
-        
-        str_loading = "<?php echo Layout::path() ?>images/standard/loadbar.gif";
-        $("#div_course").html("<br><p align='center'><img src='"  + str_loading + "'></p>");         
-        
-
-        
-          val_enroll = false;
-      //  val_enroll = document.getElementById('someSwitchOptionDefault').checked
-        val_enroll_not = document.getElementById('someSwitchOptionDefaultNot').checked
-
-        
-     //   scriviCookie('val_enroll',val_enroll,60);
-        scriviCookie('val_enroll_not',val_enroll_not,60);
-        
-        var type_course = leggiCookie('type_course'); 
-        var id_cat = leggiCookie('id_current_cat');
-
-        var objAjax = YAHOO.util.Connect.asyncRequest('POST', "ajax.server.php?r=catalog/allCourseForma&type_course=" + type_course + "&id_cat=" + id_cat + "&val_enroll=" + val_enroll + "&val_enroll_not=" + val_enroll_not, {
-                                success: function(objReq){
-                                 try {
-                                        var cat =objReq.responseText;
-                                    } catch (e) {
-                                           alert("errore ajax su calcolo catalogo")
-                                     return; }
-                                
-                                    $("#div_course").html(objReq.responseText);
-                                }
-                            });   
-        
-    }
-    
+   
 
 </script>
 
@@ -131,62 +104,29 @@
 }
 </style>
 
-
-<?php
-
-   $up_menu = '<div class="tabs-wrapper">
+<div class="tabs-wrapper">
                 <ul class="nav nav-tabs hidden-xs">
                     <li class="active">
-                        <a href="#">'.Lang::t('_CATALOGUE').'</a>
+                        <a href="#"><?php echo Lang::t('_CATALOGUE');?></a>
                   </li>
-                <ul> 
-                </div>';   
+                </ul> 
+</div>
+<div class="tab_subnav">
+        <ul class="nav nav-pills" >
+            <li>
+                      <select class='form-control' id="typeCourse" onchange="javascript:loadCourseType();">
+                          <option value=''><?php echo Lang::t('_ALL') ?></option>
+                          <option value='elearning'><?php echo Lang::t('_ELEARNING') ?></option>
+                          <option value='classroom'><?php echo Lang::t('_CLASSROOM','classroom') ?></option>
+                      </select>
+             </li>                       
+        </ul>
+</div>
 
-                
-   $down_menu = '<div class="tab_subnav">
-                    <ul class="nav nav-pills" >
-                        <li class="list-group-item">
+<script type='text/javascript'>
 
-                              <i>'.Lang::t('_COURSE_TYPE', 'catalogue').'</i>: 
-                                  <select id="typeCourse" onchange="javascript:loadCourseType();">
-                                      <option>'.Lang::t('_ALL').'</option>
-                                      <option>'.Lang::t('_ELEARNING').'</option>
-                                      <option>'.Lang::t('_CLASSROOM').'</option>
-                                  </select>
-                                &nbsp; &nbsp;
-                                
-                                                <!--
-  
-                                        <i>'.Lang::t('_COURSE_BEGIN','catalogue').'</i>
-                                       &nbsp;<div class="material-switch pull-right">
-                                            <input id="someSwitchOptionDefault" name="someSwitchOption001" type="checkbox" onclick="loadCourseEnroll()" />
-                                            <label for="someSwitchOptionDefault" class="label-success"></label>
-                                       
-                                             -->
-                                       
-                                          &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; 
-                                        <i>Corsi a cui non sei iscritto</i>
-                                            &nbsp;<div class="material-switch pull-right">
-                                            <input id="someSwitchOptionDefaultNot" name="someSwitchOption00Not1" type="checkbox" onclick="loadCourseEnroll()" />
-                                            <label for="someSwitchOptionDefaultNot" class="label-success"></label>
-                                            </div>                                           
-                                       
-                                        </div>
-                  
-                                 
-                                   
-                       
-      
-                        
-                         </li>                       
-                        
-                    </ul>
+      $("select#typeCourse").val(leggiCookie('type_course'))
+</script>
                     
-                </div>
-                    
-                    ';
 
-    echo $up_menu;
-    echo $down_menu;
-?>
 
