@@ -30,11 +30,14 @@ class CoursereportLmsController extends LmsController
 
     public function coursereport() {
         //checkPerm('view', true, 'coursereport');
+
+
+
         $params = array(
             'overview' => array(
                 'tests' => array(
                     array(
-                        'name' => 'Pre Assessment',
+                        'name' => 'Pre Assessment 4',
                         'type' => 'Test',
                         'max' => 100,
                         'required' => 75,
