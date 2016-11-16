@@ -481,8 +481,6 @@ class CoursereportLmsController extends LmsController
             );
         }
 
-        $this->getDetailCourseReport();
-
         $this->render('coursereport', $ajaxResponse);
     }
 
@@ -593,6 +591,13 @@ class CoursereportLmsController extends LmsController
                 array(
                     'name' => 'Johnny Rotten',
                     'email' => 'email@email.com',
+                    'userid' => Lang::t('_USERNAME', 'standard'),
+                    'firstname' => Lang::t('_FIRSTNAME', 'standard'),
+                    'lastname' => Lang::t('_LASTNAME', 'standard'),
+                    'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
+                    'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
+                    'language' => Lang::t('_LANGUAGE', 'standard'),
+                    'level' => Lang::t('_LEVEL', 'standard'),
                     'activities_results' => array(
                         '75 (1)',
                         '81 (17)',
@@ -604,6 +609,13 @@ class CoursereportLmsController extends LmsController
                 array(
                     'name' => 'Bill Frisell',
                     'email' => 'email@email.com',
+                    'userid' => Lang::t('_USERNAME', 'standard'),
+                    'firstname' => Lang::t('_FIRSTNAME', 'standard'),
+                    'lastname' => Lang::t('_LASTNAME', 'standard'),
+                    'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
+                    'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
+                    'language' => Lang::t('_LANGUAGE', 'standard'),
+                    'level' => Lang::t('_LEVEL', 'standard'),
                     'activities_results' => array(
                         '75',
                         '100 (1)',
