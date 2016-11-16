@@ -36,9 +36,9 @@ class CoursereportLmsController extends LmsController
 
         $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
 
-        $view_perm = checkPerm('view', true);
-        $view_all_perm = checkPerm('view_all', true);
-        $mod_perm = checkPerm('mod', true);
+        $view_perm = checkPerm('view', true, $this->_mvc_name);
+        $view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
+        $mod_perm = checkPerm('mod', true, $this->_mvc_name);
 
         // XXX: Instance management
         $acl_man = Docebo::user()->getAclManager();
@@ -76,20 +76,27 @@ class CoursereportLmsController extends LmsController
         $id_students = array_keys($students);
         $students_info =& $acl_man->getUsers($id_students);
 
-
         $tot_report = $this->model->getReportCount();
 
         $included_test = $this->model->getSourcesId(CoursereportLms::SOURCE_OF_TEST);
         $reports_id = $this->model->getReportsId();
         $included_test_report_id = $this->model->getReportsId(CoursereportLms::SOURCE_OF_TEST);
 
-        if ($tot_report == 0)
+        if ($tot_report == 0) {
             $report_man->initializeCourseReport($org_tests);
-        else {
-            if (is_array($included_test)) $test_to_add = array_diff($org_tests, $included_test);
-            else $test_to_add = $org_tests;
-            if (is_array($included_test)) $test_to_del = array_diff($included_test, $org_tests);
-            else $test_to_del = $org_tests;
+        } else {
+            if (is_array($included_test)) {
+                $test_to_add = array_diff($org_tests, $included_test);
+            } else {
+                $test_to_add = $org_tests;
+            }
+
+            if (is_array($included_test)) {
+                $test_to_del = array_diff($included_test, $org_tests);
+            } else {
+                $test_to_del = $org_tests;
+            }
+
             if (!empty($test_to_add) || !empty($test_to_del)) {
                 $report_man->addTestToReport($test_to_add, 1);
                 $report_man->delTestToReport($test_to_del);
@@ -188,8 +195,19 @@ class CoursereportLmsController extends LmsController
         }
         reset($report_details);
 
+        $total_weight = 0;
+
         $tests = array();
         foreach ($this->model->getCourseReports() as $info_report) {
+
+            $passedLink = 'javascript:void(0)';
+            $notPassedLink = 'javascript:void(0)';
+            $notCheckedLink = 'javascript:void(0)';
+
+
+            $chartLink = 'javascript:void(0)';
+            $editLink = 'javascript:void(0)';
+            $trashLink = 'javascript:void(0)';
 
             if ($info_report->getSourceOf() != "final_vote") {
 
@@ -197,31 +215,55 @@ class CoursereportLmsController extends LmsController
                     case CoursereportLms::SOURCE_OF_TEST : {
 
                         $name = strip_tags($tests_info[$info_report->getIdSource()]['title']);
-                        $passed = (isset($test_details[$id_test]['passed']) ? round($test_details[$id_test]['passed'], 2) : '-');
-                        $notPassed = (isset($test_details[$id_test]['not_passed']) ? round($test_details[$id_test]['not_passed'], 2) : '-');
-                        $notChecked = (isset($test_details[$id_test]['not_checked']) ? round($test_details[$id_test]['not_checked'], 2) : '-');
-                        $average = (isset($test_details[$id_test]['averange']) ? round($test_details[$id_test]['averange'], 2) : '-');
-                        $maxScore = (isset($test_details[$id_test]['max_score']) ? round($test_details[$id_test]['max_score'], 2) : '-');
-                        $minScore = (isset($test_details[$id_test]['min_score']) ? round($test_details[$id_test]['min_score'], 2) : '-');
+
+                        if ($mod_perm) {
+                            $chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                            $editLink = 'index.php?modname=coursereport&op=testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                        }
                     };
                         break;
                     case CoursereportLms::SOURCE_OF_SCOITEM    : {
                         $name = strip_tags($info_report->getTitle());
+                        if ($mod_perm) {
+                            $chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                            $editLink = 'index.php?modname=coursereport&op=testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                        }
 
                     };
                         break;
                     case CoursereportLms::SOURCE_OF_ACTIVITY    : {
                         $name = strip_tags($info_report->getTitle());
+                        if ($mod_perm) {
+                            $chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                            $editLink = 'index.php?modname=coursereport&op=testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                        }
                     };
                         break;
                     case CoursereportLms::SOURCE_OF_FINAL_VOTE    : {
                         $name = strip_tags($lang->def('_FINAL_SCORE'));
+
+                        if ($mod_perm) {
+                            $editLink = 'index.php?modname=coursereport&amp;op=finalvote&amp;type_filter=' . $type_filter . '&amp;id_report=' . $info_report->getIdReport();
+                        }
+
+                        $info_report->setWeight($total_weight);
                     };
                         break;
                     default: {
                         $name = "";
                     }
                 }
+
+                if ($info_report->isUseForFinal()) {
+                    $total_weight += $info_report->getWeight();
+                }
+
+                $passed = (isset($test_details[$id_test]['passed']) ? round($test_details[$id_test]['passed'], 2) : '-');
+                $notPassed = (isset($test_details[$id_test]['not_passed']) ? round($test_details[$id_test]['not_passed'], 2) : '-');
+                $notChecked = (isset($test_details[$id_test]['not_checked']) ? round($test_details[$id_test]['not_checked'], 2) : '-');
+                $average = (isset($test_details[$id_test]['averange']) ? round($test_details[$id_test]['averange'], 2) : '-');
+                $maxScore = (isset($test_details[$id_test]['max_score']) ? round($test_details[$id_test]['max_score'], 2) : '-');
+                $minScore = (isset($test_details[$id_test]['min_score']) ? round($test_details[$id_test]['min_score'], 2) : '-');
 
 
                 $test = array(
@@ -234,15 +276,18 @@ class CoursereportLmsController extends LmsController
                     'final' => ($info_report->isUseForFinal() ? 'true' : 'false'),
                     'passed' => array(
                         'value' => $passed,
-                        'link' => 'javascript:void(0)'
+                        'link' => $passedLink,
+                        'visible' => 'true'
                     ),
                     'not_passed' => array(
                         'value' => $notPassed,
-                        'link' => 'javascript:void(0)'
+                        'link' => $notPassedLink,
+                        'visible' => 'true'
                     ),
                     'checked' => array(
                         'value' => $notChecked,
-                        'link' => 'javascript:void(0)'
+                        'link' => $notCheckedLink,
+                        'visible' => 'true'
                     ),
                     'average' => $average,
                     'max_score' => $maxScore,
@@ -250,15 +295,18 @@ class CoursereportLmsController extends LmsController
                     'actions' => array(
                         array(
                             'icon' => 'bar-chart',
-                            'link' => 'javascript:void(0)'
+                            'link' => $chartLink,
+                            'visible' => 'true'
                         ),
                         array(
                             'icon' => 'edit',
-                            'link' => 'javascript:void(0)'
+                            'link' => $editLink,
+                            'visible' => 'true'
                         ),
                         array(
                             'icon' => 'trash',
-                            'link' => 'javascript:void(0)'
+                            'link' => $trashLink,
+                            'visible' => 'true'
                         )
                     )
                 );
@@ -318,15 +366,18 @@ class CoursereportLmsController extends LmsController
                             'final' => 'false',
                             'passed' => array(
                                 'value' => 347,
-                                'link' => 'javascript:void(0)'
+                                'link' => 'javascript:void(0)',
+                                'visible' => 'true'
                             ),
                             'not_passed' => array(
                                 'value' => 0,
-                                'link' => 'javascript:void(0)'
+                                'link' => 'javascript:void(0)',
+                                'visible' => 'true'
                             ),
                             'checked' => array(
                                 'value' => 15,
-                                'link' => 'javascript:void(0)'
+                                'link' => 'javascript:void(0)',
+                                'visible' => 'true'
                             ),
                             'average' => 75,
                             'max_score' => 33,
@@ -334,15 +385,18 @@ class CoursereportLmsController extends LmsController
                             'actions' => array(
                                 array(
                                     'icon' => 'bar-chart',
-                                    'link' => 'javascript:void(0)'
+                                    'link' => 'javascript:void(0)',
+                                    'visible' => 'true'
                                 ),
                                 array(
                                     'icon' => 'edit',
-                                    'link' => 'javascript:void(0)'
+                                    'link' => 'javascript:void(0)',
+                                    'visible' => 'true'
                                 ),
                                 array(
                                     'icon' => 'trash',
-                                    'link' => 'javascript:void(0)'
+                                    'link' => 'javascript:void(0)',
+                                    'visible' => 'false'
                                 )
                             )
                         ),
@@ -356,15 +410,18 @@ class CoursereportLmsController extends LmsController
                             'final' => 'true',
                             'passed' => array(
                                 'value' => 368,
-                                'link' => 'javascript:void(0)'
+                                'link' => 'javascript:void(0)',
+                                'visible' => 'false'
                             ),
                             'not_passed' => array(
                                 'value' => 10,
-                                'link' => 'javascript:void(0)'
+                                'link' => 'javascript:void(0)',
+                                'visible' => 'false'
                             ),
                             'checked' => array(
                                 'value' => 50,
-                                'link' => 'javascript:void(0)'
+                                'link' => 'javascript:void(0)',
+                                'visible' => 'true'
                             ),
                             'average' => 81,
                             'max_score' => 100,
@@ -372,15 +429,18 @@ class CoursereportLmsController extends LmsController
                             'actions' => array(
                                 array(
                                     'icon' => 'bar-chart',
-                                    'link' => 'javascript:void(0)'
+                                    'link' => 'javascript:void(0)',
+                                    'visible' => 'true'
                                 ),
                                 array(
                                     'icon' => 'edit',
-                                    'link' => 'javascript:void(0)'
+                                    'link' => 'javascript:void(0)',
+                                    'visible' => 'true'
                                 ),
                                 array(
                                     'icon' => 'trash',
-                                    'link' => 'javascript:void(0)'
+                                    'link' => 'javascript:void(0)',
+                                    'visible' => 'false'
                                 )
                             )
                         )
@@ -421,11 +481,142 @@ class CoursereportLmsController extends LmsController
             );
         }
 
+        $this->getDetailCourseReport();
+
         $this->render('coursereport', $ajaxResponse);
     }
 
-    function getDetailCourseReport(){
-        
+    function getDetailCourseReport()
+    {
+        require_once(_adm_ . '/lib/lib.field.php');
+
+        $acl_man = Docebo::user()->getAclManager();
+        $test_man = new GroupTestManagement();
+        $report_man = new CourseReportManager();
+
+        $type_filter = Get::pReq('type_filter', DOTY_MIXED, false);
+
+        if ($type_filter == 'false') {
+            $type_filter = false;
+        }
+
+
+        $reportsArray = $this->model->getCourseReports();
+
+        $students = getSubscribedInfo((int)$_SESSION['idCourse'], FALSE, $type_filter, TRUE, false, false, true);
+
+        $id_students = array_keys($students);
+        $students_info =& $acl_man->getUsers($id_students);
+
+        $reportsArray = $this->model->getReportsFilteredBySourceOf('test');
+
+        foreach ($reportsArray as $reportLms) {
+            $included_test[$reportLms->getIdSource()] = $reportLms->getIdSource();
+            $included_test_report_id[$reportLms->getIdReport()] = $reportLms->getIdReport();
+        }
+
+        $tests_score =& $test_man->getTestsScores($included_test, $id_students);
+
+        if (!empty($students_info)) {
+            require_once($GLOBALS['where_lms'] . '/class.module/learning.test.php');
+
+            while (list($idst_user, $user_info) = each($students_info)) {
+
+                $user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
+                    ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
+                    : $acl_man->relativeId($user_info[ACL_INFO_USERID]));
+                $cont = array($user_name);
+
+                $fman = new FieldList();
+                $field_entries = $fman->getUsersFieldEntryData($user_info[0], false, true);
+
+                $user = array(
+                    'id' => $user_info[ACL_INFO_IDST],
+                    'userid' => $user_info[ACL_INFO_USERID],
+                    'firstname' => $user_info[ACL_INFO_FIRSTNAME],
+                    'lastname' => $user_info[ACL_INFO_LASTNAME],
+                    'email' => $user_info[ACL_INFO_EMAIL],
+                    'register_date' => $user_info[ACL_INFO_REGISTER_DATE],
+                    'lastenter' => $user_info[ACL_INFO_LASTENTER]
+                );
+
+
+
+                $results_test = array();
+                $results_activity = array();
+                $results_scorm_test = array();
+
+
+                foreach ($reportsArray as $info_report) {
+
+                    if ($info_report->getSourceOf() != "final_vote") {
+
+                        switch ($info_report->getSourceOf()) {
+                            case CoursereportLms::SOURCE_OF_TEST : {
+
+
+                            };
+                                break;
+                            case CoursereportLms::SOURCE_OF_SCOITEM    : {
+
+
+                            };
+                                break;
+                            case CoursereportLms::SOURCE_OF_ACTIVITY    : {
+
+                            };
+                                break;
+                            case CoursereportLms::SOURCE_OF_FINAL_VOTE    : {
+
+                            };
+                                break;
+                            default: {
+
+                            }
+                        }
+
+
+                    }
+                }
+            }
+        }
+
+
+        $resposeArray = array('details' => array(
+            'activities' => array(
+                'Pre Assessment',
+                'Intermediate Test',
+                'Test in Scorm Object',
+                'Survey'
+            ),
+            'students' => array(
+                array(
+                    'name' => 'Johnny Rotten',
+                    'email' => 'email@email.com',
+                    'activities_results' => array(
+                        '75 (1)',
+                        '81 (17)',
+                        '81 (21)',
+                        'false'
+                    ),
+                    'total_result' => '90'
+                ),
+                array(
+                    'name' => 'Bill Frisell',
+                    'email' => 'email@email.com',
+                    'activities_results' => array(
+                        '75',
+                        '100 (1)',
+                        '100 (1)',
+                        'true'
+                    ),
+                    'total_result' => '90'
+                )
+            )
+        )
+        );
+
+        $this->json->encode($resposeArray);
     }
 
     /**
@@ -462,7 +653,6 @@ class CoursereportLmsController extends LmsController
 
         echo $this->json->encode($field_list);
     }
-
 
 
     function testreport($idTrack, $idTest, $testName, $studentName)
