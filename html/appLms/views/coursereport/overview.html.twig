@@ -1,3 +1,91 @@
+<style>
+
+  .button--add {
+
+    width: 190px;
+    position: relative;
+
+    background-color: #8baa18;
+    outline: none;
+    cursor: pointer;
+    padding: 5px 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+
+    text-transform: uppercase;
+    color: #FFF;
+  }
+
+  .button--add span {
+    padding: 0 10px;
+  }
+
+  .button--add:after {
+
+    content: '\f107';
+
+    position: absolute;
+    top: 0;
+    right: 12px;
+    height: 26px;
+    padding-left: 10px;
+    padding-top: 3px;
+    border-left: 1px solid #FFF;
+
+    font-family: 'FontAwesome';
+    font-size: 18px;
+  }
+
+  .button--add .dropdown {
+
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #8baa18;
+    margin: 0;
+    margin-top: 10px;
+    padding: 0 10px;
+
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .button--add.active .dropdown  {
+
+    position: relative;
+
+    padding: 0;
+    list-style: none;
+    opacity: 1;
+    pointer-events: auto;
+    padding-bottom: 0;
+  }
+
+  .button--add .dropdown li a {
+
+    display: block;
+    text-decoration: none;
+    color: #FFF;
+    padding: 5px 10px;
+  }
+
+  .button--add .dropdown li:hover {
+
+    background-color: #FFF;
+  }
+
+
+  .button--add .dropdown li a:hover {
+
+    color: #8baa18;
+  }
+
+
+</style>
+
+
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
@@ -62,23 +150,34 @@
         </tfoot>
     </table>
 
-    {#<div class="button--add">#}
-      {#<button>ADD NEW</button>#}
-      {#<a>NUOVA ATTIVITA'</a>#}
-      {#<a>NUOVO OGGETTO SCORM</a>#}
-    {#</div>#}
+    <div class="button--add">
+      <span>ADD NEW</span>
+      <ul class="dropdown">
+        <li><a href="#">NUOVA ATTIVITA'</a></li>
+        <li><a href="#">NUOVO OGGETTO SCORM</a></li>
+      </ul>
+    </div>
 
     <script type="text/javascript">
-        var fixHelper = function(e, ui) {
-            ui.children().each(function() {
-                var $that = $(this);
-                $that.width($that.width());
-            });
-            return ui;
-        };
-        $('.course-sortable').sortable({
-            handle: '.handle',
-            helper: fixHelper
-        }).disableSelection();
+      var fixHelper = function(e, ui) {
+        ui.children().each(function() {
+          var $that = $(this);
+          $that.width($that.width());
+        });
+        return ui;
+      };
+      $('.course-sortable').sortable({
+        handle: '.handle',
+        helper: fixHelper
+      }).disableSelection();
+
+
+      var $buttonAdd = $('.button--add');
+
+      $buttonAdd.on('click', function (e) {
+
+        $(this).toggleClass('active');
+      })
+
     </script>
 </div>
