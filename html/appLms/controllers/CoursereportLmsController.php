@@ -486,7 +486,7 @@ class CoursereportLmsController extends LmsController
         $this->render('coursereport', $ajaxResponse);
     }
 
-    function getDetailCourseReport()
+    function getDetailCourseReport() //ajax json fake
     {
         require_once(_adm_ . '/lib/lib.field.php');
 
@@ -622,7 +622,7 @@ class CoursereportLmsController extends LmsController
     /**
      * Restituisce i campi utente
      */
-    function getUserFieldsSelector()
+    function getUserFieldsSelector() //array associativo
     {
 
         require_once(_adm_ . '/lib/lib.field.php');
