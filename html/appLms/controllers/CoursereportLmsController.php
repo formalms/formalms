@@ -82,6 +82,7 @@ class CoursereportLmsController extends LmsController
         $reports_id = $this->model->getReportsId();
         $included_test_report_id = $this->model->getReportsId(CoursereportLms::SOURCE_OF_TEST);
 
+
         if ($tot_report == 0) {
             $report_man->initializeCourseReport($org_tests);
         } else {
@@ -198,6 +199,7 @@ class CoursereportLmsController extends LmsController
         $total_weight = 0;
 
         $tests = array();
+
         foreach ($this->model->getCourseReports() as $info_report) {
 
             $passedLink = 'javascript:void(0)';
@@ -480,6 +482,8 @@ class CoursereportLmsController extends LmsController
                 )
             );
         }
+        
+
 
         $this->render('coursereport', $ajaxResponse);
     }

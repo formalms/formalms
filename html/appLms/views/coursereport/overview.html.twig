@@ -50,7 +50,7 @@
     right: 0;
     background-color: #8baa18;
     margin: 0;
-    margin-top: 10px;
+    margin-top: 5px;
     padding: 0 10px;
 
     opacity: 0;
@@ -76,14 +76,15 @@
     padding: 5px 10px;
   }
 
-  .button--add .dropdown li:hover {
+  .button--add .dropdown li:first-child {
 
-    background-color: #FFF;
+    padding-top: 5px;
+    border-top: 1px solid white;
   }
-
 
   .button--add .dropdown li a:hover {
 
+    background-color: #FFF;
     color: #8baa18;
   }
 
@@ -151,38 +152,41 @@
         {% endfor %}
         </tbody>
         <tfoot class="empty">
-            <th colspan="15">loading</th>
+            <th colspan="15"></th>
         </tfoot>
     </table>
 
-    <div class="button--add">
-      <span>ADD NEW</span>
-      <ul class="dropdown">
-        <li><a href="#">NUOVA ATTIVITA'</a></li>
-        <li><a href="#">NUOVO OGGETTO SCORM</a></li>
-      </ul>
-    </div>
-
-    <script type="text/javascript">
-      var fixHelper = function(e, ui) {
-        ui.children().each(function() {
-          var $that = $(this);
-          $that.width($that.width());
-        });
-        return ui;
-      };
-      $('.course-sortable').sortable({
-        handle: '.handle',
-        helper: fixHelper
-      }).disableSelection();
-
-
-      var $buttonAdd = $('.button--add');
-
-      $buttonAdd.on('click', function (e) {
-
-        $(this).toggleClass('active');
-      })
-
-    </script>
 </div>
+
+<div class="button--add">
+  <span>ADD NEW</span>
+  <ul class="dropdown">
+    <li><a href="#">NUOVA ATTIVITA'</a></li>
+    <li><a href="#">NUOVO OGGETTO SCORM</a></li>
+  </ul>
+</div>
+
+
+
+<script type="text/javascript">
+  var fixHelper = function(e, ui) {
+    ui.children().each(function() {
+      var $that = $(this);
+      $that.width($that.width());
+    });
+    return ui;
+  };
+  $('.course-sortable').sortable({
+    handle: '.handle',
+    helper: fixHelper
+  }).disableSelection();
+
+
+  var $buttonAdd = $('.button--add');
+
+  $buttonAdd.on('click', function (e) {
+
+    $(this).toggleClass('active');
+  })
+
+</script>

@@ -1,3 +1,59 @@
+<style>
+
+  .filter-container {
+
+    width: 100%;
+    height: 55px;
+    margin-bottom: 25px;
+    position: relative;
+
+    background-color: #F5F5F5;
+  }
+
+  .filter-container .filter,
+  .table-responsive .filter {
+
+    width: 150px;
+    height: 34px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+
+    background-color: #FFF;
+  }
+
+  .table-responsive .filter {
+
+    position: relative;
+  }
+
+  .filter-container .button--exportcsv {
+
+    width: 100px;
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    padding: 5px 0px;
+
+    color: white;
+    border-radius: 3px;
+    background-color: #aaa;
+
+    text-align: center;
+  }
+
+</style>
+
+
+
+<div class="filter-container">
+  <select class="filter">
+    <option value="" disabled selected>Filter</option>
+  </select>
+
+  <div class="button--exportcsv">EXPORT CSV</div>
+</div>
+
 <div class="table-responsive">
     <table class="table table-bordered table-striped">
         <thead>
@@ -12,7 +68,11 @@
             </tr>
             <tr>
                 <th>User</th>
-                <th>Email</th>
+                <th>
+                  <select class="filter">
+                    <option value="" disabled selected hidden>Filter</option>
+                  </select>
+                </th>
                 <th class="has-subtable">
                     <table class="table table-bordered">
                         <thead>
