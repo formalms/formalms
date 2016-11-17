@@ -136,7 +136,7 @@
 
 <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
-    <li><a data-toggle="tab" href="#details">Details</a></li>
+    <li><a data-toggle="tab" href="#details" class="js-details">Details</a></li>
 </ul>
 
 <div class="tab-content">
@@ -147,3 +147,37 @@
         {% include 'details.html.twig' %}
     </div>
 </div>
+
+<script type="text/javascript">
+
+  var _users;
+  var _data = {'courseID':'id'};
+
+  var _loadingSnippet = 'Loading...';
+
+  var $details = $('.js-details');
+
+  $details.on('click', function () {
+
+    $.ajax({
+
+      type: 'post',
+      url: '../controllers/CourseReportLmsController.php',
+      data: _data,
+      beforeSend: function () {
+        $('.loading').html(_loadingSnippet);
+      },
+      success: function(data) {
+
+        _users = data.students;
+
+
+      },
+      error: function() {
+        $('.loading').html('Something went very wrong');
+      }
+    });
+  });
+
+
+</script>

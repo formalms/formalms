@@ -584,6 +584,37 @@ class CoursereportLmsController extends LmsController
         }
 
 
+//        AJAX
+//        {
+//            "students": [
+//                {
+//                    "userId": "userId",
+//                    "firstName": "firstName",
+//                    "lastName": "lastName",
+//                    "email": "email",
+//                    "registerDate": "registerDate",
+//                    "lastEnter": "lastEnter"
+//                }
+//            ],
+//            "tests":  [
+//                {
+//                    "testId": "testId",
+//                    "testName": "testName"
+//                }
+//            ],
+//            "results": [
+//                {
+//                    "testId": "testId",
+//                    "grades": [
+//                        {
+//                            "userId": "userId",
+//                            "grade": "grade"
+//                        }
+//                    ]
+//                }
+//            ]
+//        }
+
         $resposeArray = array('details' => array(
             'activities' => array(
                 'Pre Assessment',

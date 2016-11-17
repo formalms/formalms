@@ -25,6 +25,9 @@
   .table-responsive .filter {
 
     position: relative;
+    left: 0;
+    top: 0;
+    width: 185px;
   }
 
   .filter-container .button--exportcsv {
@@ -42,13 +45,19 @@
     text-align: center;
   }
 
+  .loading {
+
+    text-align: center;
+    font-size: 18px;
+  }
+
 </style>
 
 
 
 <div class="filter-container">
   <select class="filter">
-    <option value="" disabled selected>Filter</option>
+    <option value="" disabled selected hidden>Filter</option>
   </select>
 
   <div class="button--exportcsv">EXPORT CSV</div>
@@ -69,8 +78,8 @@
             <tr>
                 <th>User</th>
                 <th>
-                  <select class="filter">
-                    <option value="" disabled selected hidden>Filter</option>
+                  <select class="filter js-user-detail-filter">
+                    <option value="" disabled selected>Email</option>
                   </select>
                 </th>
                 <th class="has-subtable">
@@ -114,7 +123,8 @@
         {% endfor %}
         </tbody>
         <tfoot class="empty">
-            <th colspan="4"></th>
+            <th colspan="4" class="loading"></th>
         </tfoot>
     </table>
 </div>
+
