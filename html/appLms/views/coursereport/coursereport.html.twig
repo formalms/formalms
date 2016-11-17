@@ -157,6 +157,99 @@
 
   var $details = $('.js-details');
 
+  var fakeData = {
+    "students": [
+      {
+        "userId": "1",
+        "firstName": "nome 1",
+        "lastName": "cognome 1",
+        "email": "email 1",
+        "registerDate": "data registrazione 1",
+        "lastEnter": "ultimo login 1"
+      },
+      {
+        "userId": "2",
+        "firstName": "nome 2",
+        "lastName": "cognome 2",
+        "email": "email 2",
+        "registerDate": "data registrazione 2",
+        "lastEnter": "ultimo login 2"
+      }
+    ],
+    "tests": [
+      {
+        "testId": "1",
+        "testName": "test a"
+      },
+      {
+        "testId": "2",
+        "testName": "test b"
+      },
+      {
+        "testId": "3",
+        "testName": "test c"
+      },
+      {
+        "testId": "4",
+        "testName": "test d"
+      }
+    ],
+    "results": [
+      {
+        "testId": "1",
+        "grades": [
+          {
+            "userId": "user 1",
+            "grade": "80"
+          },
+          {
+            "userId": "user 2",
+            "grade": "80"
+          }
+        ]
+      },
+      {
+        "testId": "2",
+        "grades": [
+          {
+            "userId": "user 1",
+            "grade": "80"
+          },
+          {
+            "userId": "user 2",
+            "grade": "80"
+          }
+        ]
+      },
+      {
+        "testId": "3",
+        "grades": [
+          {
+            "userId": "user 1",
+            "grade": "80"
+          },
+          {
+            "userId": "user 2",
+            "grade": "80"
+          }
+        ]
+      },
+      {
+        "testId": "4",
+        "grades": [
+          {
+            "userId": "user 1",
+            "grade": "80"
+          },
+          {
+            "userId": "user 2",
+            "grade": "80"
+          }
+        ]
+      }
+    ]
+  };
+
   $details.on('click', function () {
 
     $.ajax({
@@ -171,9 +264,34 @@
 
         _users = data.students;
 
+//        $('.table-activities__row').empty();
+//
+//        for (var i = 0; i < 4; i++) {
+//
+//          $.each(data.tests, function(i, item) {
+//            alert(data.tests[i].PageName);
+//          });​
+//        }
+
       },
       error: function() {
         $('.loading').html('Something went very wrong');
+
+        $('.table-activities__row').empty();
+
+        for (var i = 0; i < 4; i++) { //popolo le select dei test
+
+          var _select = '<th class="text-center filter-activites"><select class="filter">';
+
+          $.each(fakeData.tests, function(i) {
+
+              _select += '<option value="' + fakeData.tests[i].testId + '">' + fakeData.tests[i].testName + '</option>';
+          });
+
+          _select += '</select></th>';
+
+          $('.table-activities__row').append(_select);
+        }
       }
     });
   });

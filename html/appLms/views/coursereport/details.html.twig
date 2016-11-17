@@ -104,14 +104,12 @@
                 <th class="has-subtable">
                     <table class="table table-bordered table-activities">
                         <thead>
-                            <tr>
-                            {% for test in details['activities'] %}
-                                <th class="text-center filter-activites">
-                                  <select class="filter">
-                                    <option>{{ test }}</option>
-                                  </select>
-                                </th>
-                            {% endfor %}
+                            <tr class="table-activities__row">
+                              <th class="text-center filter-activites">
+                                <select class="filter">
+                                  <option value="">filter</option>
+                                </select>
+                              </th>
                             </tr>
                         </thead>
                     </table>
