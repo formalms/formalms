@@ -307,7 +307,7 @@ if(!Docebo::user()->isAnonymous())
 			if ($confirm)
 				$result = $man_res->modEvent($id_event, $id_course, $id_laboratory, $id_category, $title, $description, $date, $max_user, $deadline, $from_time, $to_time);
 			if ($result)
-				Util::jump_to('index.php?modname=reservation&op=reservation');
+				Util::jump_to('index.php?modname=reservation&op=view_event');
 			Util::jump_to('index.php?modname=reservation&op=mod_event&amp;id_event='.$id_event.'&amp;error=laboratory');
 		}
 		
