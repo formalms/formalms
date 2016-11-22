@@ -513,6 +513,7 @@ p.total_price { margin-bottom: 1em; }
 .yui-b {
     min-height: 450px;
 }
+
 ul.flat-categories{margin:20px 0 0 5px;padding:0;}
 ul.flat-categories li{
 	margin:2px 0;
@@ -1243,16 +1244,14 @@ width: 30%;
 
 .course-block-content {
     border-radius: 4px; 
-	max-width: 542px;
-    height: 260px;
-	padding: 15px;
+	max-width: 300px;
+    height: 280px;
+	padding: 5px;
 	overflow: hidden;
 	margin: auto;
 	background-color: #f5f5f5;
-	box-shadow: 0 1px 3px rgb(17, 17, 17);
-    -moz-box-shadow: 0 1px 2px #111;
-    -webkit-box-shadow: 0 1px 3px rgb(17, 17, 17);
-	border: 3px solid rgb(225, 224, 221);}
+	border: 1px solid #DDD
+}	
 	
 .course-block-content.classe {height: 565px;}
 
@@ -1262,11 +1261,8 @@ width: 30%;
     margin: auto;
     background: rgb(240, 240, 240);
     color: rgb(34, 34, 34);
-    box-shadow: 0 1px 3px rgb(17, 17, 17);
-    -moz-box-shadow: 0 1px 2px #111;
-    -webkit-box-shadow: 0 1px 3px rgb(17, 17, 17);
 	border: 3px solid rgb(225, 224, 221);
-	max-height: 150px;
+	max-height: 170px;
     width: 100%;
     height: 100%;
 
@@ -1280,12 +1276,12 @@ width: 30%;
       border: 3px solid #006400;
 }
 	
-.course-cover.cat {max-height: 151px;}
 
-.icon{position:absolute;z-index:12; left:10px; font-size:20px; top:12px;  width:10px; height:10px;display:block; /*color:#c84000;*/ color:#ccc; }
+
+.icon{position:absolute;z-index:12; left:10px; font-size:20px; top:8px;  width:10px; height:10px;display:block; /*color:#c84000;*/ color:#ccc; }
 .icon.cat{top:1px;}
 
-.area2 h1{font-size: 18px; padding: 0;margin: 0;float: left; text-transform:uppercase;color:#fff;}
+.area2 h1{font-size: 14px; padding: 1px 0  0 0;;margin: 0;float: left; text-transform:uppercase;color:#fff; text-align:left}
 h1.cat {font-size: 10px;text-align:left;}
 .area2 p{font-weight: normal;margin-top:4px;}
 .area1 a {cursor: help;}
@@ -1303,7 +1299,7 @@ h1.cat {font-size: 10px;text-align:left;}
 		background: url(../images/bg-header.png); 
 		bottom:0;
 		left:0;
-		padding: 18px 0 0px 30px;
+		padding: 10px 0 0px 10px;
 		display:block;                    
 		margin:0; 
 		transition: all ease-in-out 300ms;-o-transition: all ease-in-out 300ms;-moz-transition: all ease-in-out 300ms;-webkit-transition: all ease-in-out 300ms;
@@ -1313,12 +1309,32 @@ h1.cat {font-size: 10px;text-align:left;}
 		
 
 .course-cover .area2{width:100%; height:28%;}
-.course-cover .area2.cat {width:100%; height:30%;}
+.course-cover .area2.cat {width:100%; height:32%;}
 .area1 a:hover .area2{height: 100%; width:100%;}
+
+
+.node-treeview1 {
+    background-color: #ffffff!important;
+}
+
+.node-treeview1:hover {
+    background-color: #e5e4ce!important;
+}
+
+.node-treeview1.node-checked {
+    background-color: #C84000!important; 
+}
+
+.node-treeview1.node-selected {
+    background-color: #C84000!important; 
+}
+
+
 
 
  .course-cover p{opacity:0;/* animation */transition: all ease-in-out 1000ms;-o-transition: all ease-in-out 1000ms;-moz-transition: all ease-in-out 1000ms;-webkit-transition: all ease-in-out 1000ms;}
  .course-cover a:hover p{opacity:1}
+ .course-cover.cat {min-height: 150px; } 
  
  .data_chiusura {    background: rgba(0,0,0,.5);
     color: rgba(255,255,255,.75);
@@ -1387,7 +1403,7 @@ width:90%;
 .cbp-vm-view-list .course-cover .area2.cat {height:50%;}
 	
 .studente,.categoria_corso {
-	font-size: 14px;
+	font-size: 12px;
     float: right;
 	text-transform:uppercase;
 	max-width:50%;
@@ -1396,7 +1412,7 @@ width:90%;
     }
 	
 .categoria_corso {
-	font-size: 14px;
+	font-size: 12px;
     float: left;
 	text-transform:uppercase;
 	max-width:50%;
@@ -1631,10 +1647,9 @@ a#classe_data_end.tooltips:hover {cursor:help;}
 
 .area3.classe {margin:10px 0}
 .linea {margin:15px 0;}
-.box_edizioni {    box-shadow: 0 1px 3px rgb(17, 17, 17);
-    -moz-box-shadow: 0 1px 2px #111;
-    -webkit-box-shadow: 0 1px 3px rgb(17, 17, 17);
-    border: 3px solid rgb(225, 224, 221);}
+.box_edizioni {
+    border: 3px solid rgb(225, 224, 221);
+    }
 .cbp-vm-view-list .box_edizioni.cat { margin: 15px; width: 96.5%;}
 .cbp-vm-view-list .edizioni_cal.cat  {height: 46px;margin: 10px 44px;width: 30%;}
 .edizioni {padding:5px;background:#fff;margin-bottom:2px}

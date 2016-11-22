@@ -366,6 +366,7 @@ function modcourseinfo() {
 	
 	//-expiration---------------------------------------------------------
 	
+    // BUG: LR, non registrava il tempo medio del corso
 	$out->add(
 		$form->getOpenFieldset($lang->def('_COURSE_TIME_OPTION'))/*
 		.$form->getDatefield($lang->def('_DATE_BEGIN'), 'course_date_begin', 'course_date_begin', 
@@ -374,8 +375,7 @@ function modcourseinfo() {
 			$course['date_end'])
 		.$form->getTextfield($lang->def('_DAY_OF_VALIDITY'), 'course_day_of', 'course_day_of', '10', 
 			$course['valid_time'])*/
-		.$form->getTextfield($lang->def('_MEDIUM_TIME'), 'course_medium_time', 'course_medium_time', '10', '0', 
-			$course['mediumTime'])
+		.$form->getTextfield($lang->def('_MEDIUM_TIME'), 'course_medium_time', 'course_medium_time', '10',  $course['mediumTime'])
 		.$form->getCloseFieldset());
 	
 	//sponsor-and-logo----------------------------------------------------
