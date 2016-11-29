@@ -229,7 +229,7 @@
                 }
                 $action .= '</div>';
             }
-
+            
         $arr_cat = $smodel->getMinorCategoryTree((int)$row['idCategory']);
         
         
@@ -287,8 +287,12 @@
                                              .($row['use_logo_in_courselist'] && !$row['img_course'] ? '<img class="group list-group-image" src="'.Get::tmpl_path().'images/course/course_nologo.png'.'" alt="'.Util::purge($row['name']).'" />' : '')                         
                                          . '</div></a>  
                                 </div>    
-                            </div>
-                            <div class="edizioni_cal cat">'         
+                            </div> ';
+                          
+                        $strClassStyle = 'style="background-color: transparent;"';    
+                        if($data_inizio != "0000-00-00"  && $data_end != "0000-00-00") $strClassStyle = "";
+                            
+                        $html .= '  <div class="edizioni_cal cat" '.$strClassStyle.'>'         
                                 .($data_inizio != "0000-00-00"  && $data_end != "0000-00-00" ? 
                                 '<a href="#" class="tooltips" id="classe_data_start" title="INIZIO"><div class="edizioni_start cat"><i class="fa  fa-2x fa-calendar-check-o" aria-hidden="true"></i>'.$data_inizio_format.' </a></div>
                                 <a href="#" class="tooltips" id="classe_data_end" title="FINE"><div class="edizioni_end cat"><i class="fa fa-2x fa-calendar-times-o" aria-hidden="true"></i>'.$data_end_format.' </a></div>
@@ -298,7 +302,8 @@
                                 <a href="#" class="tooltips" id="classe_data_start" title="INIZIO"><div class="edizioni_start cat"><i class="fa  fa-2x fa-calendar-check-o" aria-hidden="true"></i>'.$data_inizio_format.' </a></div><div style="clear:both"></div>' : '')
                                 .($data_inizio == "0000-00-00"  && $data_end != "0000-00-00" ? '
                                 <a href="#" class="tooltips" id="classe_data_end" title="FINE"><div class="edizioni_end cat"><i class="fa  fa-2x fa-calendar-check-o" aria-hidden="true"></i>'.$data_end_format.' </a></div><div style="clear:both"></div>' : '')  .
-                            '</div>';
+                            '</div>'
+                            ;
               
               if  ($row["course_demo"]) {
                 $html .= '<!-- DATE START - DATE END  -->
@@ -318,7 +323,9 @@
                         <div>';
            if($str_can_enter==true &&  $row['status']!=CST_CONCLUDED)  $html .=    $action;
            if($str_can_enter==false || $row['status']==CST_CONCLUDED)  $html .= "<div class='lock cat'><i class='fa fa-3x fa-lock' aria-hidden='true'></i></div>" ;   
-              
+           
+           // in caso di corso a tempo, l utente deve potersi iscrivere, se non iscritto
+           if(($row['subscribe_method']==2 ||  $row['subscribe_method']==1) && $str_can_enter==false && strrpos($action, "subscribed")==false  )  $html .=    $action; 
                                           
              $html .= ' </div>    
                      </div>                             

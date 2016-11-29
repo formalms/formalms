@@ -85,9 +85,6 @@
 		<?php echo Layout::zone('page_head'); ?>
         <script type="text/javascript" src="<?php echo Layout::path(); ?>resources/jquery/jquery.min.js"></script>
         <script src="<?php echo Layout::path(); ?>resources/jquery/jquery-ui.js"></script>
-		<script type="text/javascript" src="<?php echo Layout::path(); ?>resources/chartist/chartist.min.js"></script>
-        <script type="text/javascript" src="<?php echo Layout::path(); ?>resources/chartist/chartist-plugin-pointlabels.js"></script>
-		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>resources/chartist/chartist.min.css" />
         <script>
             $('document').ready(function() {
                 $('div.menu-area a').bind('click',function(event){
