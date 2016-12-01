@@ -30,13 +30,17 @@
                         'fancybox',
                         'swipe',
                         'chartist',
-                        'chartist-plugin-pointlabels'];
+                        'chartist-plugin-pointlabels',
+                        'select'
+                        
+                        ];
                       
       static $array_css_addons = ['table',    //  media query for table formatting
                         'helpdesk',
                         'fancybox',
                         'swipe',
-                        'chartist'];
+                        'chartist',
+                        'select'];
                       
       
       public static function loadJQuery($which_version='') {
