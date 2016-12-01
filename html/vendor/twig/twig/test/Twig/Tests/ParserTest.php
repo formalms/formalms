@@ -100,7 +100,7 @@ class Twig_Tests_ParserTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Twig_Error_Syntax
-     * @expectedExceptionMessage A template that extends another one cannot have a body but a byte order mark (BOM) has been detected; it must be removed at line 1.
+     * @expectedExceptionMessage A template that extends another one cannot start with a byte order mark (BOM); it must be removed at line 1
      */
     public function testFilterBodyNodesWithBOM()
     {
@@ -141,14 +141,14 @@ class Twig_Tests_ParserTest extends PHPUnit_Framework_TestCase
             'optimizations' => 0,
         ));
 
-        $twig->parse($twig->tokenize(<<<EOF
+        $twig->parse($twig->tokenize(new Twig_Source(<<<EOF
 {% from _self import foo %}
 
 {% macro foo() %}
     {{ foo }}
 {% endmacro %}
 EOF
-        ));
+        , 'index')));
     }
 
     protected function getParser()
@@ -156,6 +156,7 @@ EOF
         $parser = new TestParser(new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock()));
         $parser->setParent(new Twig_Node());
         $parser->stream = $this->getMockBuilder('Twig_TokenStream')->disableOriginalConstructor()->getMock();
+        $parser->stream->expects($this->any())->method('getSourceContext')->will($this->returnValue(new Twig_Source('', '')));
 
         return $parser;
     }

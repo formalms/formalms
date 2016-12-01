@@ -319,171 +319,11 @@ class CoursereportLmsController extends LmsController
             $ajaxResponse = array(
                 'overview' => array(
                     'tests' => $tests
-                ),
-                'details' => array(
-                    'activities' => array(
-                        'Pre Assessment',
-                        'Intermediate Test',
-                        'Test in Scorm Object',
-                        'Survey'
-                    ),
-                    'students' => array(
-                        array(
-                            'name' => 'Johnny Rotten',
-                            'email' => 'email@email.com',
-                            'activities_results' => array(
-                                '75 (1)',
-                                '81 (17)',
-                                '81 (21)',
-                                'false'
-                            ),
-                            'total_result' => '90'
-                        ),
-                        array(
-                            'name' => 'Bill Frisell',
-                            'email' => 'email@email.com',
-                            'activities_results' => array(
-                                '75',
-                                '100 (1)',
-                                '100 (1)',
-                                'true'
-                            ),
-                            'total_result' => '90'
-                        )
-                    )
-                )
-            );
-
-
-            $params = array(
-                'overview' => array(
-                    'tests' => array(
-                        array(
-                            'name' => 'Pre Assessment',
-                            'type' => 'Test',
-                            'max' => 100,
-                            'required' => 75,
-                            'weight' => 100,
-                            'show' => 'true',
-                            'final' => 'false',
-                            'passed' => array(
-                                'value' => 347,
-                                'link' => 'javascript:void(0)',
-                                'visible' => 'true'
-                            ),
-                            'not_passed' => array(
-                                'value' => 0,
-                                'link' => 'javascript:void(0)',
-                                'visible' => 'true'
-                            ),
-                            'checked' => array(
-                                'value' => 15,
-                                'link' => 'javascript:void(0)',
-                                'visible' => 'true'
-                            ),
-                            'average' => 75,
-                            'max_score' => 33,
-                            'min_score' => 10,
-                            'actions' => array(
-                                array(
-                                    'icon' => 'bar-chart',
-                                    'link' => 'javascript:void(0)',
-                                    'visible' => 'true'
-                                ),
-                                array(
-                                    'icon' => 'edit',
-                                    'link' => 'javascript:void(0)',
-                                    'visible' => 'true'
-                                ),
-                                array(
-                                    'icon' => 'trash',
-                                    'link' => 'javascript:void(0)',
-                                    'visible' => 'false'
-                                )
-                            )
-                        ),
-                        array(
-                            'name' => 'Intermediate Test',
-                            'type' => 'Test',
-                            'max' => 100,
-                            'required' => 75,
-                            'weight' => 100,
-                            'show' => 'true',
-                            'final' => 'true',
-                            'passed' => array(
-                                'value' => 368,
-                                'link' => 'javascript:void(0)',
-                                'visible' => 'false'
-                            ),
-                            'not_passed' => array(
-                                'value' => 10,
-                                'link' => 'javascript:void(0)',
-                                'visible' => 'false'
-                            ),
-                            'checked' => array(
-                                'value' => 50,
-                                'link' => 'javascript:void(0)',
-                                'visible' => 'true'
-                            ),
-                            'average' => 81,
-                            'max_score' => 100,
-                            'min_score' => 21,
-                            'actions' => array(
-                                array(
-                                    'icon' => 'bar-chart',
-                                    'link' => 'javascript:void(0)',
-                                    'visible' => 'true'
-                                ),
-                                array(
-                                    'icon' => 'edit',
-                                    'link' => 'javascript:void(0)',
-                                    'visible' => 'true'
-                                ),
-                                array(
-                                    'icon' => 'trash',
-                                    'link' => 'javascript:void(0)',
-                                    'visible' => 'false'
-                                )
-                            )
-                        )
-                    )
-                ),
-                'details' => array(
-                    'activities' => array(
-                        'Pre Assessment',
-                        'Intermediate Test',
-                        'Test in Scorm Object',
-                        'Survey'
-                    ),
-                    'students' => array(
-                        array(
-                            'name' => 'Johnny Rotten',
-                            'email' => 'email@email.com',
-                            'activities_results' => array(
-                                '75 (1)',
-                                '81 (17)',
-                                '81 (21)',
-                                'false'
-                            ),
-                            'total_result' => '90'
-                        ),
-                        array(
-                            'name' => 'Bill Frisell',
-                            'email' => 'email@email.com',
-                            'activities_results' => array(
-                                '75',
-                                '100 (1)',
-                                '100 (1)',
-                                'true'
-                            ),
-                            'total_result' => '90'
-                        )
-                    )
                 )
             );
         }
-        
 
+        $ajaxResponse = array_merge($ajaxResponse, $this->getDetailCourseReport());
 
         $this->render('coursereport', $ajaxResponse);
     }
@@ -502,6 +342,54 @@ class CoursereportLmsController extends LmsController
             $type_filter = false;
         }
 
+        $resposeArray = array('details' =>
+            array(
+                'activities' => array(
+                    'Pre Assessment',
+                    'Intermediate Test',
+                    'Test in Scorm Object',
+                    'Survey'
+                ),
+                'students' => array(
+                    array(
+                        'name' => 'Johnny Rotten',
+                        'email' => 'email@email.com',
+                        'userid' => Lang::t('_USERNAME', 'standard'),
+                        'firstname' => Lang::t('_FIRSTNAME', 'standard'),
+                        'lastname' => Lang::t('_LASTNAME', 'standard'),
+                        'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
+                        'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
+                        'language' => Lang::t('_LANGUAGE', 'standard'),
+                        'level' => Lang::t('_LEVEL', 'standard'),
+                        'activities_results' => array(
+                            '75 (1)',
+                            '81 (17)',
+                            '81 (21)',
+                            'false'
+                        ),
+                        'total_result' => '90'
+                    ),
+                    array(
+                        'name' => 'Bill Frisell',
+                        'email' => 'email@email.com',
+                        'userid' => Lang::t('_USERNAME', 'standard'),
+                        'firstname' => Lang::t('_FIRSTNAME', 'standard'),
+                        'lastname' => Lang::t('_LASTNAME', 'standard'),
+                        'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
+                        'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
+                        'language' => Lang::t('_LANGUAGE', 'standard'),
+                        'level' => Lang::t('_LEVEL', 'standard'),
+                        'activities_results' => array(
+                            '75',
+                            '100 (1)',
+                            '100 (1)',
+                            'true'
+                        ),
+                        'total_result' => '90'
+                    )
+                )
+            )
+        );
 
         $reportsArray = $this->model->getCourseReports();
 
@@ -529,9 +417,6 @@ class CoursereportLmsController extends LmsController
                     : $acl_man->relativeId($user_info[ACL_INFO_USERID]));
                 $cont = array($user_name);
 
-                $fman = new FieldList();
-                $field_entries = $fman->getUsersFieldEntryData($user_info[0], false, true);
-
                 $user = array(
                     'id' => $user_info[ACL_INFO_IDST],
                     'userid' => $user_info[ACL_INFO_USERID],
@@ -543,7 +428,6 @@ class CoursereportLmsController extends LmsController
                 );
 
 
-
                 $results_test = array();
                 $results_activity = array();
                 $results_scorm_test = array();
@@ -553,10 +437,35 @@ class CoursereportLmsController extends LmsController
 
                     if ($info_report->getSourceOf() != "final_vote") {
 
+                        $testObj = Learning_Test::load($reportLms->getIdSource());
+
                         switch ($info_report->getSourceOf()) {
                             case CoursereportLms::SOURCE_OF_TEST : {
 
+                                if (isset($tests_score[$reportLms->getIdSource()][$idst_user])) {
+                                    switch ($tests_score[$reportLms->getIdSource()][$idst_user]['score_status']) {
+                                        case "not_complete" : {
 
+                                        }
+                                            break;
+                                        case "passed" : {
+
+                                        }
+                                            break;
+                                        case "not_passed" : {
+
+                                        }
+                                            break;
+                                        case "doing" :
+                                        case "valid" : {
+
+
+                                        }
+                                            break;
+                                    }
+                                } else {
+
+                                }
                             };
                                 break;
                             case CoursereportLms::SOURCE_OF_SCOITEM    : {
@@ -584,86 +493,9 @@ class CoursereportLmsController extends LmsController
         }
 
 
-//        AJAX
-//        {
-//            "students": [
-//                {
-//                    "userId": "userId",
-//                    "firstName": "firstName",
-//                    "lastName": "lastName",
-//                    "email": "email",
-//                    "registerDate": "registerDate",
-//                    "lastEnter": "lastEnter"
-//                }
-//            ],
-//            "tests":  [
-//                {
-//                    "testId": "testId",
-//                    "testName": "testName"
-//                }
-//            ],
-//            "results": [
-//                {
-//                    "testId": "testId",
-//                    "grades": [
-//                        {
-//                            "userId": "userId",
-//                            "grade": "grade"
-//                        }
-//                    ]
-//                }
-//            ]
-//        }
 
-        $resposeArray = array('details' => array(
-            'activities' => array(
-                'Pre Assessment',
-                'Intermediate Test',
-                'Test in Scorm Object',
-                'Survey'
-            ),
-            'students' => array(
-                array(
-                    'name' => 'Johnny Rotten',
-                    'email' => 'email@email.com',
-                    'userid' => Lang::t('_USERNAME', 'standard'),
-                    'firstname' => Lang::t('_FIRSTNAME', 'standard'),
-                    'lastname' => Lang::t('_LASTNAME', 'standard'),
-                    'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
-                    'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
-                    'language' => Lang::t('_LANGUAGE', 'standard'),
-                    'level' => Lang::t('_LEVEL', 'standard'),
-                    'activities_results' => array(
-                        '75 (1)',
-                        '81 (17)',
-                        '81 (21)',
-                        'false'
-                    ),
-                    'total_result' => '90'
-                ),
-                array(
-                    'name' => 'Bill Frisell',
-                    'email' => 'email@email.com',
-                    'userid' => Lang::t('_USERNAME', 'standard'),
-                    'firstname' => Lang::t('_FIRSTNAME', 'standard'),
-                    'lastname' => Lang::t('_LASTNAME', 'standard'),
-                    'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
-                    'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
-                    'language' => Lang::t('_LANGUAGE', 'standard'),
-                    'level' => Lang::t('_LEVEL', 'standard'),
-                    'activities_results' => array(
-                        '75',
-                        '100 (1)',
-                        '100 (1)',
-                        'true'
-                    ),
-                    'total_result' => '90'
-                )
-            )
-        )
-        );
-
-        $this->json->encode($resposeArray);
+        //$this->json->encode($resposeArray);
+        return $resposeArray;
     }
 
     /**
