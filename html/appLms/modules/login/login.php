@@ -257,7 +257,7 @@ function externalCourselist() {
 		$tab_list['popular'] 	= $lang->def('_TAB_VIEW_MOSTPOPULAR');
 		$tab_list['recent'] 	= $lang->def('_TAB_VIEW_RECENT');
 	}
-	$tab_selected = unserialize(urldecode(Get::sett('tablist_coursecatalogue')));
+	$tab_selected = Util::unserialize(urldecode(Get::sett('tablist_coursecatalogue')));
 	foreach($tab_list as $tab_code => $v) {
 		if(!isset($tab_selected[$tab_code])) unset($tab_list[$tab_code]);
 	}

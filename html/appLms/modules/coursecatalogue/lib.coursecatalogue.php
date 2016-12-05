@@ -112,10 +112,10 @@ function displayCourseList(&$url, $order_type) {
 
 			$rule_man = new AssessmentRule();
 			$ass_elem = $rule_man->getCompleteEffectListForAssessmentWithUserResult($arr_assessment['course_list'], $user_result);
-			$_SESSION['cp_assessment_effect'] = urlencode(serialize($ass_elem));
+			$_SESSION['cp_assessment_effect'] = urlencode(Util::serialize($ass_elem));
 		} else {
 
-			$ass_elem = unserialize(urldecode($_SESSION['cp_assessment_effect']));
+			$ass_elem = Util::unserialize(urldecode($_SESSION['cp_assessment_effect']));
 		}
 		if(!empty($ass_elem['parsed']['course'])) {
 
@@ -381,9 +381,9 @@ function displayCoursePathList(&$url, $selected_tab) {
 
 			$rule_man = new AssessmentRule();
 			$ass_elem = $rule_man->getCompleteEffectListForAssessmentWithUserResult($arr_assessment['course_list'], $user_result);
-			$_SESSION['cp_assessment_effect'] = urlencode(serialize($ass_elem));
+			$_SESSION['cp_assessment_effect'] = urlencode(Util::serialize($ass_elem));
 		} else {
-			$ass_elem = unserialize(urldecode($_SESSION['cp_assessment_effect']));
+			$ass_elem = Util::unserialize(urldecode($_SESSION['cp_assessment_effect']));
 		}
 		if(!empty($ass_elem['parsed']['coursepath'])) {
 			$path_man->filterOrInPath($ass_elem['parsed']['coursepath']);

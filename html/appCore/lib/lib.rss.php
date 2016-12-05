@@ -109,7 +109,7 @@ class FeedReader {
 			}
 
 			if (!empty($rss_array)) {
-				$content=urlencode(serialize($rss_array));
+				$content=urlencode(Util::serialize($rss_array));
 				if (!empty($content)) {
 					$this->frManager->setFeedContent($feed_id, $content, $image);
 					$ok =TRUE;
@@ -121,7 +121,7 @@ class FeedReader {
 			return $rss_array;
 		}
 		else {
-			return unserialize(urldecode($feed_info["content"]));
+			return Util::unserialize(urldecode($feed_info["content"]));
 		}
 
 	}

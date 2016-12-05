@@ -117,7 +117,7 @@ class Selector_Course {
 		// older selection
 		if(isset($array_state['course_selected'])) {
 
-			$this->current_selection = unserialize(urldecode($array_state['course_selected']));
+			$this->current_selection = Util::unserialize(urldecode($array_state['course_selected']));
 		}
 		// add last selection
 		if(isset($_POST['new_course_selected'])) {
@@ -130,7 +130,7 @@ class Selector_Course {
 
 	function stateSelection() {
 
-		return Form::getHidden('course_selected', 'course_selected', urlencode(serialize($this->current_selection)) );
+		return Form::getHidden('course_selected', 'course_selected', urlencode(Util::serialize($this->current_selection)) );
 	}
 
 	function getSelection() {

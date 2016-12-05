@@ -463,7 +463,7 @@ class SettingAdm extends Model
 
 					$lang_c 	=& DoceboLanguage::createInstance('catalogue', 'lms');
 
-					$tab_selected = unserialize(urldecode($var_value));
+					$tab_selected = Util::unserialize(urldecode($var_value));
 
 					$tab_list = array(
 						'time' 		=> $lang_c->def('_TAB_VIEW_TIME'),
@@ -678,9 +678,8 @@ class SettingAdm extends Model
 
 						$tab_selected[$tab_code] = 1;
 					}
-					$new_value = urlencode(serialize($tab_selected));
-                };
-                    break;
+					$new_value = urlencode(Util::serialize($tab_selected));
+				};break;
 
 				case "tablist_mycourses" : {
                     $temp_arr = array();

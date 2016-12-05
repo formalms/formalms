@@ -18,8 +18,8 @@ require_once(_lms_.'/lib/lib.report.php');
 require_once(_lms_.'/admin/modules/report/report_schedule.php');
 
 
-function _encode(&$data) { return serialize($data); } //{ return urlencode(serialize($data)); }
-function _decode(&$data) { return unserialize($data); } //{ return unserialize(urldecode($data)); }
+function _encode(&$data) { return serialize($data); } //{ return urlencode(Util::serialize($data)); }
+function _decode(&$data) { return unserialize($data); } //{ return Util::unserialize(urldecode($data)); }
 
 function unload_filter($temp=false) {
 	$_SESSION['report']=array();

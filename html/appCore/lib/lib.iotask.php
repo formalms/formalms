@@ -142,7 +142,7 @@ class DoceboConnectionManager {
 	function &create_connection_byname( $name ) {
 	  	$arr = $this->get_connection_byname( $name );
 	  	$connection = $this->create_connector_bytype( $arr[CONNMGR_CONN_TYPE] );
-			$params_arr =unserialize(urldecode($arr[CONNMGR_CONN_PARAMS]));
+			$params_arr =Util::unserialize(urldecode($arr[CONNMGR_CONN_PARAMS]));
 			$params_arr = $this->stripslashes_deep( $params_arr );
 	  	$connection->set_config( $params_arr );
 	  	return $connection;
@@ -172,7 +172,7 @@ class DoceboConnectionManager {
 		$description = $connection->get_description();
 		$type = Get::filter($connection->get_type_name(), DOTY_ALPHANUM);
 		$params = $connection->get_config();
-		$str_params = urlencode(serialize($params));
+		$str_params = urlencode(Util::serialize($params));
 		$lang =& $this->get_lang();
 
 		if( strlen(trim($name)) == 0 ) {
@@ -366,7 +366,7 @@ class DoceboConnectionManager {
 			return FALSE;
 
 		$arr_result = sql_fetch_row($rs_task);
-		$arr_result[CONNMGR_TASK_MAP] = unserialize(urldecode($arr_result[CONNMGR_TASK_MAP]));
+		$arr_result[CONNMGR_TASK_MAP] = Util::unserialize(urldecode($arr_result[CONNMGR_TASK_MAP]));
 		$schedule = explode(' ', $arr_result[CONNMGR_TASK_SCHEDULE]);
 		$arr_result[CONNMGR_TASK_SCHEDULE] = array('qt' => $schedule[0], 'um' => $schedule[1]);
 		return $arr_result;
@@ -447,7 +447,7 @@ class DoceboConnectionManager {
 	function save_task( $old_name, &$params ) {
 		$map = $params[CONNMGR_TASK_MAP];
 		$schedule = $params[CONNMGR_TASK_SCHEDULE];
-		$str_map = urlencode(serialize($map));
+		$str_map = urlencode(Util::serialize($map));
 		$str_schedule = $schedule['qt'].' '.$schedule['um'];
 		$lang =& $this->get_lang();
 
