@@ -5,13 +5,22 @@
   cout(Util::get_js(Get::rel_path('lms') . '/views/catalog/bootstrap-treeview.js', true), 'page_head');
   cout(Util::get_js(Get::rel_path('lms') . '/views/catalog/catalog.js', true), 'page_head');
 ?>
-      <div class="row">
-            <div class="col-sm-3">
-                <div id="treeview1" class=""></div>
+
+
+      <div class="row" >
+            <div class="col-sm-3" id="test">
+            <div style="height: 107px;"></div>
+                <div id="treeview1"  class=""></div>
             </div>    
-            <div class="col-sm-9" id="div_course"><br><p align="center"><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p></div>
+            <div class="col-sm-12" id="div_course"><br><p align="center"><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p></div>
       
       <div>
+      
+      
+      
+
+      
+      
       <script type="text/javascript">
               function callAjaxCatalog(id_cat) {
                   str_loading = "<?php echo Layout::path() ?>images/standard/loadbar.gif";

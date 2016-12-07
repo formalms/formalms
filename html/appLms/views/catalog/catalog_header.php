@@ -104,6 +104,20 @@
 }
 </style>
 
+
+
+    <link rel="stylesheet" href="views/catalog/menu_cat/css/BootSideMenu.css">
+
+    <!--[if lt IE 9]>
+    <script src="views/catalog/menu_cat/js/html5shiv-printshiv.min.js"></script>
+    <script src="views/catalog/menu_cat/js/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+
+    <script src="views/catalog/menu_cat/js/BootSideMenu.js"></script>
+
+
 <div class="tabs-wrapper">
                 <ul class="nav nav-tabs hidden-xs">
                     <li class="active">
@@ -123,10 +137,23 @@
         </ul>
 </div>
 
+
 <script type='text/javascript'>
 
       $("select#typeCourse").val(leggiCookie('type_course'))
 </script>
                     
 
+                    
+                    
+      <script type="text/javascript">
+$(document).ready(function () {
+    $('#test').BootSideMenu({
+        side: "left",
+        pushBody:false,
+        width: '360px'
+    });
+});
+</script>                    
+                    
 
