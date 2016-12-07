@@ -147,13 +147,13 @@
                     
                     
       <script type="text/javascript">
-$(document).ready(function () {
-    $('#test').BootSideMenu({
-        side: "left",
-        pushBody:false,
-        width: '360px'
-    });
-});
-</script>                    
+            $(document).ready(function () {
+                $('#test').BootSideMenu({
+                    side: "left",
+                    pushBody:true,
+                    width: '360px'
+                });
+            });
+      </script>                    
                     
 
