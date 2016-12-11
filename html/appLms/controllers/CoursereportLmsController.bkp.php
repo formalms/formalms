@@ -618,10 +618,12 @@ class CoursereportLmsController extends LmsController
                             //echo $query_report;
                             $query = sql_query($query_report);
                             $num = sql_num_rows($query);
+
                             if ($num > 0)
                                 $storico = " (<a href=\"index.php?modname=coursereport&op=scormreport&idTest=" . $id_track . "\">" . $num . "</a>)";
                             else
                                 $storico = "";
+
                             $cont[] = '<span class="cr_not_check">' . $report['score_raw'] . '</span>' . $storico;
                         }
                             break;
