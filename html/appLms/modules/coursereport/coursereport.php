@@ -569,6 +569,7 @@ function coursereport()
                                 case "doing" :
                                 case "valid" : {
                                     $score = $tests_score[$id_test][$idst_user]['score'];
+
                                     if ($tests_score[$id_test][$idst_user]['times'] > 0) {
                                         $tests_score[$id_test][$idst_user]['times'] = "<a href=\"index.php?modname=coursereport&op=testreport&idTest=" . $tests_score[$id_test][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$id_test][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report['id_source']]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]) . "\">" . $tests_score[$id_test][$idst_user]['times'] . "</a>";
                                     }
