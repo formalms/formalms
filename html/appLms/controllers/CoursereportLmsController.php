@@ -516,9 +516,11 @@ class CoursereportLmsController extends LmsController
         $test_man = new GroupTestManagement();
         $report_man = new CourseReportManager();
 
+        $view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
         $type_filter = Get::pReq('type_filter', DOTY_MIXED, false);
         $org_tests =& $report_man->getTest();
         $tests_info = $test_man->getTestInfo($org_tests);
+
         if ($type_filter == 'false') {
             $type_filter = false;
         }
@@ -527,6 +529,21 @@ class CoursereportLmsController extends LmsController
         $reportsArray = $this->model->getCourseReports();
 
         $students = getSubscribedInfo((int)$_SESSION['idCourse'], FALSE, $type_filter, TRUE, false, false, true);
+
+
+        if (!$view_all_perm) {
+            //filter users
+            require_once(_base_ . '/lib/lib.preference.php');
+            $ctrlManager = new ControllerPreference();
+            $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+            foreach ($students as $idst => $user_course_info) {
+                if (!in_array($idst, $ctrl_users)) {
+                    // Elimino gli studenti non amministrati
+                    unset ($students[$idst]);
+                }
+
+            }
+        }
 
         $id_students = array_keys($students);
         $students_info =& $acl_man->getUsers($id_students);
@@ -781,8 +798,7 @@ class CoursereportLmsController extends LmsController
 
                                                     $values[] = $value;
                                                 }
-                                            }
-                                            else {
+                                            } else {
                                                 if ($score == $test_details[$id_test]['max_score']) {
                                                     $value = array(
                                                         'icon' => 'cr_max_score cr_not_passed',
@@ -793,8 +809,7 @@ class CoursereportLmsController extends LmsController
                                                         'active' => 'true');
 
                                                     $values[] = $value;
-                                                }
-                                                else {
+                                                } else {
                                                     $value = array(
                                                         'icon' => 'cr_not_passed',
                                                         'showIcon' => 'false',
@@ -808,7 +823,7 @@ class CoursereportLmsController extends LmsController
                                             }
                                         }
                                             break;
-                                        default :{
+                                        default : {
                                             $value = array(
                                                 'icon' => '',
                                                 'showIcon' => 'false',
@@ -839,7 +854,7 @@ class CoursereportLmsController extends LmsController
                             CoursereportLms::SOURCE_OF_SCOITEM    : {
                                 $results_activity[] = strip_tags($info_report->getTitle());
 
-                                $scormItem = new ScormLms($info_report->getIdSource(),$idst_user);
+                                $scormItem = new ScormLms($info_report->getIdSource(), $idst_user);
 
                                 $value = array(
                                     'icon' => 'cr_not_check',
@@ -853,11 +868,11 @@ class CoursereportLmsController extends LmsController
 
                                 $history = $scormItem->getHistory();
 
-                                if ($history > 0){
+                                if ($history > 0) {
                                     $value = array(
                                         'icon' => 'cr_not_check',
                                         'showIcon' => 'false',
-                                        'value' => '('.$history.')',
+                                        'value' => '(' . $history . ')',
                                         'showValue' => 'true',
                                         'link' => "index.php?modname=coursereport&op=scormreport&idTest=" . $scormItem->getIdTrack(),
                                         'active' => 'true');
@@ -870,6 +885,82 @@ class CoursereportLmsController extends LmsController
                                 break;
                             case CoursereportLms::SOURCE_OF_ACTIVITY    : {
                                 $results_activity[] = strip_tags($info_report->getTitle());
+
+                                $score = 0;
+                                if (isset($reports_score[$info_report->getIdReport()][$idst_user])) {
+                                    switch ($reports_score[$info_report->getIdReport()][$idst_user]['score_status']) {
+                                        case CoursereportLms::TEST_STATUS_NOT_COMPLETED: {
+                                            $value = array(
+                                                'icon' => '',
+                                                'showIcon' => 'false',
+                                                'value' => '-',
+                                                'showValue' => 'true',
+                                                'link' => "javascript:void(0)",
+                                                'active' => 'false');
+
+                                            $values[] = $value;
+                                        }
+                                            break;
+                                        case CoursereportLms::TEST_STATUS_VALID: {
+                                            $score = $reports_score[$info_report->getIdReport()][$idst_user]['score'];
+                                            if ($score >= $info_report->getRequiredScore()) {
+                                                if ($score == $info_report->getMaxScore()) {
+                                                    $value = array(
+                                                        'icon' => 'cr_max_score',
+                                                        'showIcon' => 'false',
+                                                        'value' => $score,
+                                                        'showValue' => 'true',
+                                                        'link' => "javascript:void(0)",
+                                                        'active' => 'false');
+
+                                                    $values[] = $value;
+                                                } else {
+                                                    $value = array(
+                                                        'icon' => '',
+                                                        'showIcon' => 'false',
+                                                        'value' => $score,
+                                                        'showValue' => 'true',
+                                                        'link' => "javascript:void(0)",
+                                                        'active' => 'false');
+
+                                                    $values[] = $value;
+                                                }
+                                            } else {
+                                                $value = array(
+                                                    'icon' => 'cr_not_passed',
+                                                    'showIcon' => 'false',
+                                                    'value' => $score,
+                                                    'showValue' => 'true',
+                                                    'link' => "javascript:void(0)",
+                                                    'active' => 'false');
+
+                                                $values[] = $value;
+                                            }
+                                        }
+                                            break;
+                                        default:{
+                                            $value = array(
+                                                'icon' => '',
+                                                'showIcon' => 'false',
+                                                'value' => '-',
+                                                'showValue' => 'true',
+                                                'link' => "javascript:void(0)",
+                                                'active' => 'false');
+
+                                            $values[] = $value;
+                                        }
+                                    }
+                                } else {
+                                    $value = array(
+                                        'icon' => 'cr_not_passed',
+                                        'showIcon' => 'false',
+                                        'value' => '-',
+                                        'showValue' => 'true',
+                                        'link' => "javascript:void(0)",
+                                        'active' => 'false');
+
+                                    $values[] = $value;
+                                }
                             }
                                 break;
                             case CoursereportLms::SOURCE_OF_FINAL_VOTE    : {
@@ -930,6 +1021,7 @@ class CoursereportLmsController extends LmsController
                 )
             )
         );
+
 
         $resposeArray['details']['students'] = array_merge($resposeArray['details']['students'], $students_array);
 
