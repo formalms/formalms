@@ -26,12 +26,14 @@ class JQueryLib
     static $array_js_addons = ['html5support',  //  HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
         'helpdesk',
         'fancybox',
-        'swipe'];
+        'swipe',
+        'select'];
 
     static $array_css_addons = ['table',    //  media query for table formatting
         'helpdesk',
         'fancybox',
-        'swipe'];
+        'swipe',
+        'select'];
 
 
     public static function loadJQuery($which_version = '')

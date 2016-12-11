@@ -180,6 +180,8 @@ class ElearningLmsController extends LmsController {
 		$filter_text = Get::req('filter_text', DOTY_STRING, "");
 		$filter_year = Get::req('filter_year', DOTY_INT, 0);
         $filter_type = Get::req('filter_type', DOTY_STRING, "");
+        $filter_cat = Get::req('filter_cat', DOTY_STRING, "");
+        
         
 		$conditions = array(
 			'cu.iduser = :id_user',
@@ -202,6 +204,10 @@ class ElearningLmsController extends LmsController {
 		}
 
 
+       if (!empty($filter_cat)) {
+            $conditions[] = "(c.idCategory in (".$filter_cat.") )";
+        }         
+        
         // filtro per tipo corso elearning
         if (empty($filter_type) || $filter_type=="elearning" || $filter_type=="all") {    
             $courselist = $model->findAll($conditions, $params);
@@ -236,13 +242,18 @@ class ElearningLmsController extends LmsController {
             $params[':keyword'] = $filter_text;
         }
 
+        
+       if (!empty($filter_cat)) {
+            $conditions[] = "(c.idCategory in (".$filter_cat.") )";
+        }          
+        
         if (!empty($filter_year)) {
             $clist = $modelClassroom->getUserCoursesByYear(Docebo::user()->getId(), $filter_year);
             if ($clist !== false) {
                 $conditions[] = "cu.idCourse IN (".implode(",", $clist).")";
             }
         }
-
+        
         $cp_courses = $modelClassroom->getUserCoursePathCourses( Docebo::user()->getIdst() );
         if (!empty($cp_courses)) {
             $conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
@@ -284,6 +295,8 @@ class ElearningLmsController extends LmsController {
 		$filter_text = Get::req('filter_text', DOTY_STRING, "");
 		$filter_year = Get::req('filter_year', DOTY_INT, 0);
         $filter_type = Get::req('filter_type', DOTY_STRING, "");        
+        
+        $filter_cat = Get::req('filter_cat', DOTY_STRING, ""); 
 
 		$conditions = array(
 			'cu.iduser = :id_user',
@@ -305,12 +318,18 @@ class ElearningLmsController extends LmsController {
 			$params[':year'] = $filter_text;
 		}
 
+       if (!empty($filter_cat)) {
+            $conditions[] = "(c.idCategory in (".$filter_cat.") )";
+        }          
+        
         if (empty($filter_type) || $filter_type=="elearning" || $filter_type=="all") {    		
                 $courselist = $model->findAll($conditions, $params);
                 $filter_type = empty($filter_type) ? 'elearning': $filter_type; 
         }       
                 
 
+                
+                
 		//check courses accessibility
 		$keys = array_keys($courselist);
 		for ($i=0; $i<count($keys); $i++) {
@@ -354,6 +373,10 @@ class ElearningLmsController extends LmsController {
             $courselistClassroom = $modelClassroom->findAll($conditions, $params);
         }    
 
+       if (!empty($filter_cat)) {
+            $conditions[] = "(c.idCategory in (".$filter_cat.") )";
+        }          
+        
 
         //check courses accessibility
         $keys = array_keys($courselistClassroom);
@@ -386,6 +409,7 @@ class ElearningLmsController extends LmsController {
 		$filter_text = Get::req('filter_text', DOTY_STRING, "");
 		$filter_year = Get::req('filter_year', DOTY_INT, 0);
         $filter_type = Get::req('filter_type', DOTY_STRING, "");        
+        $filter_cat = Get::req('filter_cat', DOTY_STRING, "");  
 
 		$conditions = array(
 			'cu.iduser = :id_user',
@@ -407,6 +431,11 @@ class ElearningLmsController extends LmsController {
 			$params[':year'] = $filter_year;
 		}
 
+        
+       if (!empty($filter_cat)) {
+            $conditions[] = "(c.idCategory in (".$filter_cat.") )";
+        }          
+        
 		
         if (empty($filter_type) || $filter_type=="elearning" || $filter_type=="all") {            
                 $courselist = $model->findAll($conditions, $params);
@@ -449,11 +478,17 @@ class ElearningLmsController extends LmsController {
             }
         }
 
+       if (!empty($filter_cat)) {
+            $conditions[] = "(c.idCategory in (".$filter_cat.") )";
+        }         
+        
+        
         $cp_courses = $modelClassroom->getUserCoursePathCourses( Docebo::user()->getIdst() );
         if (!empty($cp_courses)) {
             $conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
         }
-
+      
+        
         if ($filter_type=="classroom" || $filter_type=='all') {           
             $courselistClassroom = $modelClassroom->findAll($conditions, $params);
         }    
@@ -493,9 +528,19 @@ class ElearningLmsController extends LmsController {
         $model = new ElearningLms();
 
 		$filter_text = Get::req('filter_text', DOTY_STRING, "");
-		$filter_year = Get::req('filter_year', DOTY_INT, 0);
-        $filter_type = Get::req('filter_type', DOTY_STRING, "");
+		//$filter_year = Get::req('filter_year', DOTY_INT, 0);
+        $filter_type = "".Get::req('filter_type', DOTY_STRING, "");      
+        $filter_cat = Get::req('filter_cat', DOTY_STRING, "");
+        $filter_year = Get::req('filter_year', DOTY_STRING, 0);
+  
+        
+       // echo "filter_type = ".$filter_type;
+       // echo "<br>filter_cat = ".$filter_cat;
+       // echo "<br>filter_year = ".$filter_year;
+        
 
+        //$vett_year = str_split(",");
+  
         $conditions = array(
             'cu.iduser = :id_user'
         );
@@ -511,15 +556,24 @@ class ElearningLmsController extends LmsController {
 		}
 
 		if (!empty($filter_year)) {
+            $str_cond_year = "";
 			$conditions[] = "(cu.date_inscr >= ':year-00-00 00:00:00' AND cu.date_inscr <= ':year-12-31 23:59:59')";
 			$params[':year'] = $filter_year;
 		}
 
+        if (!empty($filter_cat)) {
+            $conditions[] = "(c.idCategory in (".$filter_cat.") )";
+        }        
+        
+        
+        
         // e-learning filter
-        if (empty($filter_type) || $filter_type=="elearning" || $filter_type=="all") {    
+        if (  strrpos($filter_type,"elearning")>=0 ) {    
 		    $courselist = $model->findAll($conditions, $params);
             $filter_type = empty($filter_type) ? 'elearning': $filter_type;
         }
+        
+        
         
         //check courses accessibility
         $keys = array_keys($courselist);
@@ -556,13 +610,19 @@ class ElearningLmsController extends LmsController {
             }
         }
 
+        
+       if (!empty($filter_cat)) {
+            $conditions[] = "(c.idCategory in (".$filter_cat.") )";
+        }             
+        
+        
         $cp_courses = $modelClassroom->getUserCoursePathCourses( Docebo::user()->getIdst() );
         if (!empty($cp_courses)) {
             $conditions[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
         }
 
         // filtro per tipo corso classroom
-        if ($filter_type=="classroom" || $filter_type=='all') {   
+        if ($filter_type=="classroom" ) {   
             $courselistClassroom = $modelClassroom->findAll($conditions, $params);
         }
 

@@ -66,7 +66,8 @@
 
     <div id="cbp-vm">
     
-    <?php if($filter_type=="all" || $filter_type=='elearning'){  ?>
+    <?php 
+    if($filter_type=="all" || $filter_type=='elearning'   ){  ?>
     <h1 class="page-header"><strong><?php echo Lang::t('_ELEARNING', 'catalogue'); ?></strong></h1>    
 
         <div class="clearfix" id='mia_area_<?php echo $stato_corso; ?>'>                       
@@ -221,7 +222,7 @@
         ?>
         
 
-        <?php if($filter_type=="all" || $filter_type=='classroom'){  ?>
+        <?php if($filter_type=="all" || $filter_type=="classroom"  ){  ?>
             <h1 class="page-header"><strong><?php echo Lang::t('_CLASSROOM_COURSE', 'cart'); ?></strong></h1>
             <div class="clearfix" id="mia_area_class_<?php echo $stato_corso; ?>">
             <?php if( empty($courselistClassroom) ) : ?>
