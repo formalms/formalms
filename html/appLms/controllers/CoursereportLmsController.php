@@ -169,28 +169,10 @@ class CoursereportLmsController extends LmsController
         $total_weight = 0;
 
         $tests = array();
-        $statsValues = array();
-
         if (!empty($students_info)) {
             while (list($idst_user, $user_info) = each($students_info)) {
 
                 foreach ($this->model->getCourseReports() as $info_report) {
-
-                    $passedLink = 'javascript:void(0)';
-                    $notPassedLink = 'javascript:void(0)';
-                    $notCheckedLink = 'javascript:void(0)';
-
-
-                    $chartLink = 'javascript:void(0)';
-                    $editLink = 'javascript:void(0)';
-                    $trashLink = 'javascript:void(0)';
-
-                    $passed = "-";
-                    $notPassed = "-";
-                    $notChecked = "-";
-                    $average = "-";
-                    $maxScore = "-";
-                    $minScore = "-";
 
                     if ($info_report->getSourceOf() != CoursereportLms::SOURCE_OF_FINAL_VOTE) {
 
@@ -341,7 +323,6 @@ class CoursereportLmsController extends LmsController
                 }
             }
 
-            $index = 0;
             foreach ($this->model->getCourseReports() as $info_report) {
 
                 if ($info_report->getSourceOf() != CoursereportLms::SOURCE_OF_FINAL_VOTE) {
@@ -366,12 +347,20 @@ class CoursereportLmsController extends LmsController
                     switch ($info_report->getSourceOf()) {
                         case CoursereportLms::SOURCE_OF_TEST : {
 
+                            $testObj = Learning_Test::load($info_report->getIdSource());
+
+
+                            $event = new \appLms\Events\Lms\TestCousereportEvent($testObj);
+
+                            $type = ucfirst($testObj->getObjectType());
                             $id = $info_report->getIdSource();
                             $name = strip_tags($tests_info[$info_report->getIdSource()]['title']);
 
                             if ($mod_perm) {
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                 $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $event->setOverViewTestQuestionLink($chartLink);
+
                                 $editLink = 'index.php?modname=coursereport&op=testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                             }
 
@@ -394,18 +383,17 @@ class CoursereportLmsController extends LmsController
                             $maxScore = (isset($test_details[$info_report->getIdSource()]['max_score']) ? round($test_details[$info_report->getIdSource()]['max_score'], 2) : '-');
                             $minScore = (isset($test_details[$info_report->getIdSource()]['min_score']) ? round($test_details[$info_report->getIdSource()]['min_score'], 2) : '-');
 
-                            //$test[CoursereportLms::TEST_STATUS_PASSED]['value'] = $passed;
-                            //$test[CoursereportLms::TEST_STATUS_NOT_PASSED]['value'] = $notPassed;
-                            //$test[CoursereportLms::TEST_STATUS_NOT_CHECKED]['value'] = $notChecked;
-                            //$test['average'] = $average;
-                            //$test['max_score'] = $maxScore;
-                            //$test['min_score'] = $minScore;
 
+                            \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCousereportEvent::EVENT_NAME,$event);
+
+                            $chartLink = $event->getOverViewTestQuestionLink();
                         }
                             break;
                         case CoursereportLms::SOURCE_OF_SCOITEM: {
 
                             $name = strip_tags($info_report->getTitle());
+                            $type = ucfirst($info_report->getSourceOf());
+
                             if ($mod_perm) {
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                 $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
@@ -415,8 +403,8 @@ class CoursereportLmsController extends LmsController
                             $scormItem = new ScormLms($info_report->getIdSource());
 
                             $passed = $scormItem->getPassed() > 0 ? $scormItem->getPassed() : "-";
-                            $notPassed  = $scormItem->getNotPassed() > 0 ? $scormItem->getNotPassed() : "-";
-                            $notChecked  = $scormItem->getNotChecked() > 0 ? $scormItem->getNotChecked() : "-";
+                            $notPassed = $scormItem->getNotPassed() > 0 ? $scormItem->getNotPassed() : "-";
+                            $notChecked = $scormItem->getNotChecked() > 0 ? $scormItem->getNotChecked() : "-";
                             $average = $scormItem->getAverage();
                             $varianza = $scormItem->getVarianza();
                             $maxScore = $scormItem->getMaxScore();
@@ -428,6 +416,7 @@ class CoursereportLmsController extends LmsController
 
                             $id = $info_report->getIdReport();
                             $name = strip_tags($info_report->getTitle());
+                            $type = ucfirst($info_report->getSourceOf());
 
                             if ($mod_perm) {
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
@@ -444,13 +433,6 @@ class CoursereportLmsController extends LmsController
                             $maxScore = (isset($report_details[$info_report->getIdReport()]['max_score']) ? round($report_details[$info_report->getIdReport()]['max_score'], 2) : '-');
                             $minScore = (isset($report_details[$info_report->getIdReport()]['min_score']) ? round($report_details[$info_report->getIdReport()]['min_score'], 2) : '-');
 
-                            //$test[CoursereportLms::TEST_STATUS_PASSED]['value'] = $passed;
-                            //$test[CoursereportLms::TEST_STATUS_NOT_PASSED]['value'] = $notPassed;
-                            //$test[CoursereportLms::TEST_STATUS_NOT_CHECKED]['value'] = $notChecked;
-                            //$test['average'] = $average;
-                            //$test['max_score'] = $maxScore;
-                            //$test['min_score'] = $minScore;
-
                         }
                             break;
                         default: {
@@ -461,7 +443,7 @@ class CoursereportLmsController extends LmsController
                     $test = array(
                         'id' => $id,
                         'name' => $name,
-                        'type' => ucfirst($info_report->getSourceOf()),
+                        'type' => $type,
                         'max' => $info_report->getMaxScore(),
                         'required' => $info_report->getRequiredScore(),
                         'weight' => $info_report->getWeight(),
@@ -505,9 +487,7 @@ class CoursereportLmsController extends LmsController
                         )
                     );
 
-                    //if (array_search($test['id'],array_column($tests, 'id')) === false){
                     $tests[] = $test;
-                    //}
                 }
             }
 
@@ -3136,7 +3116,7 @@ class CoursereportLmsController extends LmsController
 
     function testQuestion()
     {
-        $view_perm = checkPerm('view', true, $this->_mvc_name);
+        checkPerm('view', true, $this->_mvc_name);
 
         YuiLib::load(array('animation' => 'my_animation.js'));
         addJs($GLOBALS['where_lms_relative'] . '/modules/coursereport/', 'ajax.coursereport.js');
