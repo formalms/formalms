@@ -43,7 +43,7 @@ class OrgChartManager {
 		$branch_name = array();
 		while(list($id, $groupid) = each($groups_id)) {
 			
-			$id_dir = split('_', $groupid);
+			$id_dir = explode('_', $groupid);
 			$branch_name[$id]['name'] = $folder_name[$id_dir[1]];
 			$branch_name[$id]['type_of_folder'] = ( $id_dir[0] == '/oc' ? ORG_CHART_NORMAL : ORG_CHART_WITH_DESCENDANTS );
 		}

@@ -3867,12 +3867,12 @@ function forumsearchmessage()
             $textof = str_replace('[quote]', '<blockquote class="forum_quote">', str_replace('[/quote]', '</blockquote>', $message_info['textof']));
             $msgtext .= '<div class="forum_post_title">' . $lang->def('_SUBJECT') . ' : '
                 . ($search_arg !== ''
-                    ? eregi_replace($search_arg, '<span class="filter_evidence">' . $search_arg . '</span>', $message_info['title'])
+                    ? preg_replace($search_arg, '<span class="filter_evidence">' . $search_arg . '</span>', $message_info['title'])
                     : $message_info['title'])
                 . '</div>';
             $msgtext .= '<div class="forum_post_text">'
                 . ($search_arg !== ''
-                    ? eregi_replace($search_arg, '<span class="filter_evidence">' . $search_arg . '</span>', $textof)
+                    ? preg_replace($search_arg, '<span class="filter_evidence">' . $search_arg . '</span>', $textof)
                     : $textof)
                 . '</div>';
 

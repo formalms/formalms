@@ -373,8 +373,8 @@ function loadFields( &$arrayData, &$lo ) {
 	//searching languages
 	$langl = dir('menu/language/');
 	while($ele = $langl->read())
-		if(ereg("lang-",$ele)) {
-			$langArray[] = ereg_replace("lang-","",ereg_replace(".php","",$ele));
+		if(preg_match("lang-",$ele)) {
+			$langArray[] = preg_replace("lang-","",preg_replace(".php","",$ele));
 		}
 	closedir($langl->handle);
 	sort($langArray);
