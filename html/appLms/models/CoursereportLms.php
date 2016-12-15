@@ -22,6 +22,14 @@ class CoursereportLms extends Model
     const SOURCE_OF_ACTIVITY = 'activity';
     const SOURCE_OF_FINAL_VOTE = 'final_vote';
 
+
+    const TEST_STATUS_NOT_COMPLETED = 'not_complete';
+    const TEST_STATUS_NOT_CHECKED = 'not_checked';
+    const TEST_STATUS_NOT_PASSED = 'not_passed';
+    const TEST_STATUS_PASSED = 'passed';
+    const TEST_STATUS_DOING = 'doing';
+    const TEST_STATUS_VALID = 'valid';
+
     /**
      * @var int
      */

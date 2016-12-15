@@ -111,7 +111,7 @@
                 <td>Finale</td>
                 <td>Passed Completed</td>
                 <td>Not passed incomplete</td>
-                <td>Checked</td>
+                <td>Not Checked</td>
                 <td>Average</td>
                 <td>Max Score</td>
                 <td>Min Score</td>
@@ -139,7 +139,7 @@
                 {% endif %}
                 <td><a href="{{ test.passed.link }}">{{ test.passed.value }}</a></td>
                 <td><a href="{{ test.not_passed.link }}">{{ test.not_passed.value }}</a></td>
-                <td><a href="{{ test.checked.link }}">{{ test.checked.value }}</a></td>
+                <td><a href="{{ test.not_checked.link }}">{{ test.not_checked.value }}</a></td>
                 <td>{{ test.average }}</td>
                 <td>{{ test.max_score }}</td>
                 <td>{{ test.min_score }}</td>

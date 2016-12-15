@@ -1,5 +1,5 @@
 {
-    "name": "cocciagialla/forma_ecm",
+    "name": "formalms/formalms",
     "require": {
         "symfony/event-dispatcher": "^2.7",
         "twig/twig": "~1.0",

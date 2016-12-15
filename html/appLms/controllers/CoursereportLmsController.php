@@ -82,33 +82,10 @@ class CoursereportLmsController extends LmsController
         $reports_id = $this->model->getReportsId();
         $included_test_report_id = $this->model->getReportsId(CoursereportLms::SOURCE_OF_TEST);
 
-
-        if ($tot_report == 0) {
-            $report_man->initializeCourseReport($org_tests);
-        } else {
-            if (is_array($included_test)) {
-                $test_to_add = array_diff($org_tests, $included_test);
-            } else {
-                $test_to_add = $org_tests;
-            }
-
-            if (is_array($included_test)) {
-                $test_to_del = array_diff($included_test, $org_tests);
-            } else {
-                $test_to_del = $org_tests;
-            }
-
-            if (!empty($test_to_add) || !empty($test_to_del)) {
-                $report_man->addTestToReport($test_to_add, 1);
-                $report_man->delTestToReport($test_to_del);
-
-                $included_test = $org_tests;
-            }
-        }
-        $report_man->updateTestReport($org_tests);
-
-
         $tests_score =& $test_man->getTestsScores($included_test, $id_students);
+
+        $reports_scores =& $report_man->getReportsScores((isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
+
         // XXX: Calculate statistic
         $test_details = array();
 
@@ -137,30 +114,25 @@ class CoursereportLmsController extends LmsController
                             $test_details[$id_test]['num_result']++;
                         }
 
-                        // averange
-                        if (!isset($test_details[$id_test]['averange'])) {
-                            $test_details[$id_test]['averange'] = $single_test['score'];
+                        // average
+                        if (!isset($test_details[$id_test]['average'])) {
+                            $test_details[$id_test]['average'] = $single_test['score'];
                         } else {
-                            $test_details[$id_test]['averange'] += $single_test['score'];
+                            $test_details[$id_test]['average'] += $single_test['score'];
                         }
                     }
                 }
             }
             while (list($id_test, $single_detail) = each($test_details)) {
                 if (isset($single_detail['num_result'])) {
-                    $test_details[$id_test]['averange'] /= $test_details[$id_test]['num_result'];
+                    $test_details[$id_test]['average'] /= $test_details[$id_test]['num_result'];
                 }
             }
             reset($test_details);
         }
 
-
-        // XXX: Retrive other source scores
-        $reports_score =& $report_man->getReportsScores((isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
-
-        // XXX: Calculate statistic
         $report_details = array();
-        while (list($id_report, $users_result) = each($reports_score)) {
+        while (list($id_report, $users_result) = each($reports_scores)) {
             while (list($id_user, $single_report) = each($users_result)) {
                 if ($single_report['score_status'] == 'valid') {
                     // max
@@ -181,309 +153,352 @@ class CoursereportLmsController extends LmsController
                     else
                         $report_details[$id_report]['num_result']++;
 
-                    // averange
-                    if (!isset($report_details[$id_report]['averange']))
-                        $report_details[$id_report]['averange'] = $single_report['score'];
+                    // average
+                    if (!isset($report_details[$id_report]['average']))
+                        $report_details[$id_report]['average'] = $single_report['score'];
                     else
-                        $report_details[$id_report]['averange'] += $single_report['score'];
+                        $report_details[$id_report]['average'] += $single_report['score'];
                 }
             }
         }
-        while (list($id_report, $single_detail) = each($report_details)) {
-            if (isset($single_detail['num_result'])) {
-                $report_details[$id_report]['averange'] /= $report_details[$id_report]['num_result'];
-            }
-        }
+        while (list($id_report, $single_detail) = each($report_details))
+            if (isset($single_detail['num_result']))
+                $report_details[$id_report]['average'] /= $report_details[$id_report]['num_result'];
         reset($report_details);
 
         $total_weight = 0;
 
         $tests = array();
+        if (!empty($students_info)) {
+            while (list($idst_user, $user_info) = each($students_info)) {
 
-        foreach ($this->model->getCourseReports() as $info_report) {
+                foreach ($this->model->getCourseReports() as $info_report) {
 
-            $passedLink = 'javascript:void(0)';
-            $notPassedLink = 'javascript:void(0)';
-            $notCheckedLink = 'javascript:void(0)';
+                    if ($info_report->getSourceOf() != CoursereportLms::SOURCE_OF_FINAL_VOTE) {
+
+                        switch ($info_report->getSourceOf()) {
+                            case CoursereportLms::SOURCE_OF_TEST : {
+
+                                if (isset($tests_score[$info_report->getIdSource()][$idst_user])) {
+
+                                    $scoreStatus = $tests_score[$info_report->getIdSource()][$idst_user]['score_status'];
+                                    switch ($scoreStatus) {
+                                        case CoursereportLms::TEST_STATUS_NOT_COMPLETED : {
+                                            if (!isset($test_details[$info_report->getIdSource()][$scoreStatus])) {
+                                                $test_details[$info_report->getIdSource()][$scoreStatus] = 1;
+                                            } else {
+                                                $test_details[$info_report->getIdSource()][$scoreStatus]++;
+                                            }
+                                        }
+                                            break;
+                                        case CoursereportLms::TEST_STATUS_NOT_CHECKED : {
+                                            if (!isset($test_details[$info_report->getIdSource()][$scoreStatus])) {
+                                                $test_details[$info_report->getIdSource()][$scoreStatus] = 1;
+                                            } else {
+                                                $test_details[$info_report->getIdSource()][$scoreStatus]++;
+                                            }
+                                        }
+                                            break;
+                                        case CoursereportLms::TEST_STATUS_NOT_PASSED : {
+                                            if (!isset($test_details[$info_report->getIdSource()][$scoreStatus])) {
+                                                $test_details[$info_report->getIdSource()][$scoreStatus] = 1;
+                                            } else {
+                                                $test_details[$info_report->getIdSource()][$scoreStatus]++;
+                                            }
+                                        }
+                                            break;
+                                        case CoursereportLms::TEST_STATUS_PASSED : {
+                                            if (!isset($test_details[$info_report->getIdSource()][$scoreStatus])) {
+                                                $test_details[$info_report->getIdSource()][$scoreStatus] = 1;
+                                            } else {
+                                                $test_details[$info_report->getIdSource()][$scoreStatus]++;
+                                            }
+                                        }
+                                            break;
+                                        case CoursereportLms::TEST_STATUS_DOING :
+                                        case CoursereportLms::TEST_STATUS_VALID : {
+
+                                            $score = $tests_score[$info_report->getIdSource()][$idst_user]['score'];
+
+                                            if ($score >= $info_report->getRequiredScore()) {
+                                                if (!isset($test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_PASSED])) {
+                                                    $test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_PASSED] = 1;
+                                                } else {
+                                                    $test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_PASSED]++;
+                                                }
+                                            } else {
+                                                if (!isset($test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_NOT_PASSED])) {
+                                                    $test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_NOT_PASSED] = 1;
+                                                } else {
+                                                    $test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_NOT_PASSED]++;
+                                                }
+                                            }
+
+                                        }
+                                            break;
+                                    }
+                                }
+                                if ($info_report->isUseForFinal()) {
+                                    array_push($results_test, $score * $info_report->getWeight());
+                                }
+                            };
+                                break;
+                            case CoursereportLms::SOURCE_OF_SCOITEM    : {
 
 
-            $chartLink = 'javascript:void(0)';
-            $editLink = 'javascript:void(0)';
-            $trashLink = 'javascript:void(0)';
+                            };
+                                break;
+                            case CoursereportLms::SOURCE_OF_ACTIVITY    : {
 
-            if ($info_report->getSourceOf() != "final_vote") {
+                                if (isset($tests_score[$info_report->getIdReport()][$idst_user])) {
 
-                switch ($info_report->getSourceOf()) {
-                    case CoursereportLms::SOURCE_OF_TEST : {
+                                    $scoreStatus = $tests_score[$info_report->getIdReport()][$idst_user]['score_status'];
+                                    switch ($scoreStatus) {
+                                        case CoursereportLms::TEST_STATUS_NOT_COMPLETED : {
+                                            if (!isset($report_details[$info_report->getIdReport()][$scoreStatus])) {
+                                                $report_details[$info_report->getIdReport()][$scoreStatus] = 1;
+                                            } else {
+                                                $report_details[$info_report->getIdReport()][$scoreStatus]++;
+                                            }
+                                        }
+                                            break;
+                                        case CoursereportLms::TEST_STATUS_NOT_CHECKED : {
+                                            if (!isset($report_details[$info_report->getIdReport()][$scoreStatus])) {
+                                                $report_details[$info_report->getIdReport()][$scoreStatus] = 1;
+                                            } else {
+                                                $report_details[$info_report->getIdReport()][$scoreStatus]++;
+                                            }
+                                        }
+                                            break;
+                                        case CoursereportLms::TEST_STATUS_NOT_PASSED : {
+                                            if (!isset($report_details[$info_report->getIdReport()][$scoreStatus])) {
+                                                $report_details[$info_report->getIdReport()][$scoreStatus] = 1;
+                                            } else {
+                                                $report_details[$info_report->getIdReport()][$scoreStatus]++;
+                                            }
+                                        }
+                                            break;
+                                        case CoursereportLms::TEST_STATUS_PASSED : {
+                                            if (!isset($report_details[$info_report->getIdReport()][$scoreStatus])) {
+                                                $report_details[$info_report->getIdReport()][$scoreStatus] = 1;
+                                            } else {
+                                                $report_details[$info_report->getIdReport()][$scoreStatus]++;
+                                            }
+                                        }
+                                            break;
+                                        case CoursereportLms::TEST_STATUS_DOING :
+                                        case CoursereportLms::TEST_STATUS_VALID : {
 
-                        $name = strip_tags($tests_info[$info_report->getIdSource()]['title']);
+                                            $score = $tests_score[$info_report->getIdReport()][$idst_user]['score'];
 
-                        if ($mod_perm) {
-                            $chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
-                            $editLink = 'index.php?modname=coursereport&op=testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                            if ($score >= $info_report->getRequiredScore()) {
+                                                if (!isset($report_details[$info_report->getIdReport()][CoursereportLms::TEST_STATUS_PASSED])) {
+                                                    $report_details[$info_report->getIdReport()][CoursereportLms::TEST_STATUS_PASSED] = 1;
+                                                } else {
+                                                    $report_details[$info_report->getIdReport()][CoursereportLms::TEST_STATUS_PASSED]++;
+                                                }
+                                            } else {
+                                                if (!isset($report_details[$info_report->getIdReport()][CoursereportLms::TEST_STATUS_NOT_PASSED])) {
+                                                    $report_details[$info_report->getIdReport()][CoursereportLms::TEST_STATUS_NOT_PASSED] = 1;
+                                                } else {
+                                                    $report_details[$info_report->getIdReport()][CoursereportLms::TEST_STATUS_NOT_PASSED]++;
+                                                }
+                                            }
+
+                                        }
+                                            break;
+                                    }
+                                }
+                            };
+                                break;
+                            default: {
+                                $name = "";
+                            }
                         }
-                    };
-                        break;
-                    case CoursereportLms::SOURCE_OF_SCOITEM    : {
-                        $name = strip_tags($info_report->getTitle());
-                        if ($mod_perm) {
-                            $chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
-                            $editLink = 'index.php?modname=coursereport&op=testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
-                        }
 
-                    };
-                        break;
-                    case CoursereportLms::SOURCE_OF_ACTIVITY    : {
-                        $name = strip_tags($info_report->getTitle());
-                        if ($mod_perm) {
-                            $chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
-                            $editLink = 'index.php?modname=coursereport&op=testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                        if ($info_report->isUseForFinal()) {
+                            $total_weight += $info_report->getWeight();
                         }
-                    };
-                        break;
-                    case CoursereportLms::SOURCE_OF_FINAL_VOTE    : {
-                        $name = strip_tags($lang->def('_FINAL_SCORE'));
-
-                        if ($mod_perm) {
-                            $editLink = 'index.php?modname=coursereport&amp;op=finalvote&amp;type_filter=' . $type_filter . '&amp;id_report=' . $info_report->getIdReport();
-                        }
-
-                        $info_report->setWeight($total_weight);
-                    };
-                        break;
-                    default: {
-                        $name = "";
                     }
                 }
+            }
 
-                if ($info_report->isUseForFinal()) {
-                    $total_weight += $info_report->getWeight();
-                }
+            foreach ($this->model->getCourseReports() as $info_report) {
 
-                $passed = (isset($test_details[$id_test]['passed']) ? round($test_details[$id_test]['passed'], 2) : '-');
-                $notPassed = (isset($test_details[$id_test]['not_passed']) ? round($test_details[$id_test]['not_passed'], 2) : '-');
-                $notChecked = (isset($test_details[$id_test]['not_checked']) ? round($test_details[$id_test]['not_checked'], 2) : '-');
-                $average = (isset($test_details[$id_test]['averange']) ? round($test_details[$id_test]['averange'], 2) : '-');
-                $maxScore = (isset($test_details[$id_test]['max_score']) ? round($test_details[$id_test]['max_score'], 2) : '-');
-                $minScore = (isset($test_details[$id_test]['min_score']) ? round($test_details[$id_test]['min_score'], 2) : '-');
+                if ($info_report->getSourceOf() != CoursereportLms::SOURCE_OF_FINAL_VOTE) {
+
+                    $passedLink = 'javascript:void(0)';
+                    $notPassedLink = 'javascript:void(0)';
+                    $notCheckedLink = 'javascript:void(0)';
 
 
-                $test = array(
-                    'name' => $name,
-                    'type' => ucfirst($info_report->getSourceOf()),
-                    'max' => $info_report->getMaxScore(),
-                    'required' => $info_report->getRequiredScore(),
-                    'weight' => $info_report->getWeight(),
-                    'show' => ($info_report->isShowToUser() ? 'true' : 'false'),
-                    'final' => ($info_report->isUseForFinal() ? 'true' : 'false'),
-                    'passed' => array(
-                        'value' => $passed,
-                        'link' => $passedLink,
-                        'visible' => 'true'
-                    ),
-                    'not_passed' => array(
-                        'value' => $notPassed,
-                        'link' => $notPassedLink,
-                        'visible' => 'true'
-                    ),
-                    'checked' => array(
-                        'value' => $notChecked,
-                        'link' => $notCheckedLink,
-                        'visible' => 'true'
-                    ),
-                    'average' => $average,
-                    'max_score' => $maxScore,
-                    'min_score' => $minScore,
-                    'actions' => array(
-                        array(
-                            'icon' => 'bar-chart',
-                            'link' => $chartLink,
+                    $chartLink = 'javascript:void(0)';
+                    $editLink = 'javascript:void(0)';
+                    $trashLink = 'javascript:void(0)';
+
+                    $passed = "-";
+                    $notPassed = "-";
+                    $notChecked = "-";
+                    $average = "-";
+                    $maxScore = "-";
+                    $minScore = "-";
+                    $varianza = "-";
+
+                    switch ($info_report->getSourceOf()) {
+                        case CoursereportLms::SOURCE_OF_TEST : {
+
+                            $testObj = Learning_Test::load($info_report->getIdSource());
+
+
+                            $event = new \appLms\Events\Lms\TestCousereportEvent($testObj);
+
+                            $type = ucfirst($testObj->getObjectType());
+                            $id = $info_report->getIdSource();
+                            $name = strip_tags($tests_info[$info_report->getIdSource()]['title']);
+
+                            if ($mod_perm) {
+                                //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $event->setOverViewTestQuestionLink($chartLink);
+
+                                $editLink = 'index.php?modname=coursereport&op=testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                            }
+
+                            if (isset($test_details[$info_report->getIdSource()]['passed']) || isset($test_details[$info_report->getIdSource()]['not_passed'])) {
+                                if (!isset($test_details[$info_report->getIdSource()]['passed'])) {
+                                    $test_details[$info_report->getIdSource()]['passed'] = 0;
+                                }
+                                if (!isset($test_details[$info_report->getIdSource()]['not_passed'])) {
+                                    $test_details[$info_report->getIdSource()]['not_passed'] = 0;
+                                }
+
+                                $test_details[$id_test]['varianza'] /= ($test_details[$id_test]['passed'] + $test_details[$id_test]['not_passed']);
+                                $test_details[$id_test]['varianza'] = sqrt($test_details[$id_test]['varianza']);
+                            }
+
+                            $passed = (isset($test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_PASSED]) ? round($test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_PASSED], 2) : '-');
+                            $notPassed = (isset($test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_NOT_PASSED]) ? round($test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_NOT_PASSED], 2) : '-');
+                            $notChecked = (isset($test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_NOT_CHECKED]) ? round($test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_NOT_CHECKED], 2) : '-');
+                            $average = (isset($test_details[$info_report->getIdSource()]['average']) ? round($test_details[$info_report->getIdSource()]['average'], 2) : '-');
+                            $maxScore = (isset($test_details[$info_report->getIdSource()]['max_score']) ? round($test_details[$info_report->getIdSource()]['max_score'], 2) : '-');
+                            $minScore = (isset($test_details[$info_report->getIdSource()]['min_score']) ? round($test_details[$info_report->getIdSource()]['min_score'], 2) : '-');
+
+
+                            \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCousereportEvent::EVENT_NAME,$event);
+
+                            $chartLink = $event->getOverViewTestQuestionLink();
+                        }
+                            break;
+                        case CoursereportLms::SOURCE_OF_SCOITEM: {
+
+                            $name = strip_tags($info_report->getTitle());
+                            $type = ucfirst($info_report->getSourceOf());
+
+                            if ($mod_perm) {
+                                //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $editLink = 'index.php?modname=coursereport&op=testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                            }
+
+                            $scormItem = new ScormLms($info_report->getIdSource());
+
+                            $passed = $scormItem->getPassed() > 0 ? $scormItem->getPassed() : "-";
+                            $notPassed = $scormItem->getNotPassed() > 0 ? $scormItem->getNotPassed() : "-";
+                            $notChecked = $scormItem->getNotChecked() > 0 ? $scormItem->getNotChecked() : "-";
+                            $average = $scormItem->getAverage();
+                            $varianza = $scormItem->getVarianza();
+                            $maxScore = $scormItem->getMaxScore();
+                            $minScore = $scormItem->getMinScore();
+                        }
+                            break;
+                        case CoursereportLms::SOURCE_OF_ACTIVITY:
+                        case CoursereportLms::SOURCE_OF_FINAL_VOTE: {
+
+                            $id = $info_report->getIdReport();
+                            $name = strip_tags($info_report->getTitle());
+                            $type = ucfirst($info_report->getSourceOf());
+
+                            if ($mod_perm) {
+                                //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+
+                                $editLink = 'index.php?modname=coursereport&op=testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                            }
+
+
+                            $passed = ((isset($report_details[$info_report->getIdReport()][CoursereportLms::TEST_STATUS_PASSED]) && $report_details[$info_report->getIdReport()][CoursereportLms::TEST_STATUS_PASSED] > 0) ? round($report_details[$info_report->getIdReport()][CoursereportLms::TEST_STATUS_PASSED], 2) : '-');
+                            $notPassed = ((isset($report_details[$info_report->getIdReport()][CoursereportLms::TEST_STATUS_NOT_PASSED]) && $report_details[$info_report->getIdReport()][CoursereportLms::TEST_STATUS_NOT_PASSED] > 0) ? round($report_details[$info_report->getIdReport()][CoursereportLms::TEST_STATUS_NOT_PASSED], 2) : '-');
+                            $notChecked = ((isset($report_details[$info_report->getIdReport()][CoursereportLms::TEST_STATUS_NOT_CHECKED]) && $report_details[$info_report->getIdReport()][CoursereportLms::TEST_STATUS_NOT_CHECKED] > 0) ? round($report_details[$info_report->getIdReport()][CoursereportLms::TEST_STATUS_NOT_CHECKED], 2) : '-');
+                            $average = (isset($report_details[$info_report->getIdReport()]['average']) ? round($report_details[$info_report->getIdReport()]['average'], 2) : '-');
+                            $maxScore = (isset($report_details[$info_report->getIdReport()]['max_score']) ? round($report_details[$info_report->getIdReport()]['max_score'], 2) : '-');
+                            $minScore = (isset($report_details[$info_report->getIdReport()]['min_score']) ? round($report_details[$info_report->getIdReport()]['min_score'], 2) : '-');
+
+                        }
+                            break;
+                        default: {
+
+                        }
+                    }
+
+                    $test = array(
+                        'id' => $id,
+                        'name' => $name,
+                        'type' => $type,
+                        'max' => $info_report->getMaxScore(),
+                        'required' => $info_report->getRequiredScore(),
+                        'weight' => $info_report->getWeight(),
+                        'show' => ($info_report->isShowToUser() ? 'true' : 'false'),
+                        'final' => ($info_report->isUseForFinal() ? 'true' : 'false'),
+                        'passed' => array(
+                            'value' => $passed,
+                            'link' => $passedLink,
                             'visible' => 'true'
                         ),
-                        array(
-                            'icon' => 'edit',
-                            'link' => $editLink,
+                        'not_passed' => array(
+                            'value' => $notPassed,
+                            'link' => $notPassedLink,
                             'visible' => 'true'
                         ),
-                        array(
-                            'icon' => 'trash',
-                            'link' => $trashLink,
+                        'not_checked' => array(
+                            'value' => $notChecked,
+                            'link' => $notCheckedLink,
                             'visible' => 'true'
+                        ),
+                        'average' => $average,
+                        'max_score' => $maxScore,
+                        'min_score' => $minScore,
+                        'varianza' => $varianza,
+                        'actions' => array(
+                            array(
+                                'icon' => 'bar-chart',
+                                'link' => $chartLink,
+                                'visible' => 'true'
+                            ),
+                            array(
+                                'icon' => 'edit',
+                                'link' => $editLink,
+                                'visible' => 'true'
+                            ),
+                            array(
+                                'icon' => 'trash',
+                                'link' => $trashLink,
+                                'visible' => 'true'
+                            )
                         )
-                    )
-                );
+                    );
 
-                $tests[] = $test;
+                    $tests[] = $test;
+                }
             }
 
             $ajaxResponse = array(
                 'overview' => array(
                     'tests' => $tests
-                ),
-                'details' => array(
-                    'activities' => array(
-                        'Pre Assessment',
-                        'Intermediate Test',
-                        'Test in Scorm Object',
-                        'Survey'
-                    ),
-                    'students' => array(
-                        array(
-                            'name' => 'Johnny Rotten',
-                            'email' => 'email@email.com',
-                            'activities_results' => array(
-                                '75 (1)',
-                                '81 (17)',
-                                '81 (21)',
-                                'false'
-                            ),
-                            'total_result' => '90'
-                        ),
-                        array(
-                            'name' => 'Bill Frisell',
-                            'email' => 'email@email.com',
-                            'activities_results' => array(
-                                '75',
-                                '100 (1)',
-                                '100 (1)',
-                                'true'
-                            ),
-                            'total_result' => '90'
-                        )
-                    )
-                )
-            );
-
-
-            $params = array(
-                'overview' => array(
-                    'tests' => array(
-                        array(
-                            'name' => 'Pre Assessment',
-                            'type' => 'Test',
-                            'max' => 100,
-                            'required' => 75,
-                            'weight' => 100,
-                            'show' => 'true',
-                            'final' => 'false',
-                            'passed' => array(
-                                'value' => 347,
-                                'link' => 'javascript:void(0)',
-                                'visible' => 'true'
-                            ),
-                            'not_passed' => array(
-                                'value' => 0,
-                                'link' => 'javascript:void(0)',
-                                'visible' => 'true'
-                            ),
-                            'checked' => array(
-                                'value' => 15,
-                                'link' => 'javascript:void(0)',
-                                'visible' => 'true'
-                            ),
-                            'average' => 75,
-                            'max_score' => 33,
-                            'min_score' => 10,
-                            'actions' => array(
-                                array(
-                                    'icon' => 'bar-chart',
-                                    'link' => 'javascript:void(0)',
-                                    'visible' => 'true'
-                                ),
-                                array(
-                                    'icon' => 'edit',
-                                    'link' => 'javascript:void(0)',
-                                    'visible' => 'true'
-                                ),
-                                array(
-                                    'icon' => 'trash',
-                                    'link' => 'javascript:void(0)',
-                                    'visible' => 'false'
-                                )
-                            )
-                        ),
-                        array(
-                            'name' => 'Intermediate Test',
-                            'type' => 'Test',
-                            'max' => 100,
-                            'required' => 75,
-                            'weight' => 100,
-                            'show' => 'true',
-                            'final' => 'true',
-                            'passed' => array(
-                                'value' => 368,
-                                'link' => 'javascript:void(0)',
-                                'visible' => 'false'
-                            ),
-                            'not_passed' => array(
-                                'value' => 10,
-                                'link' => 'javascript:void(0)',
-                                'visible' => 'false'
-                            ),
-                            'checked' => array(
-                                'value' => 50,
-                                'link' => 'javascript:void(0)',
-                                'visible' => 'true'
-                            ),
-                            'average' => 81,
-                            'max_score' => 100,
-                            'min_score' => 21,
-                            'actions' => array(
-                                array(
-                                    'icon' => 'bar-chart',
-                                    'link' => 'javascript:void(0)',
-                                    'visible' => 'true'
-                                ),
-                                array(
-                                    'icon' => 'edit',
-                                    'link' => 'javascript:void(0)',
-                                    'visible' => 'true'
-                                ),
-                                array(
-                                    'icon' => 'trash',
-                                    'link' => 'javascript:void(0)',
-                                    'visible' => 'false'
-                                )
-                            )
-                        )
-                    )
-                ),
-                'details' => array(
-                    'activities' => array(
-                        'Pre Assessment',
-                        'Intermediate Test',
-                        'Test in Scorm Object',
-                        'Survey'
-                    ),
-                    'students' => array(
-                        array(
-                            'name' => 'Johnny Rotten',
-                            'email' => 'email@email.com',
-                            'activities_results' => array(
-                                '75 (1)',
-                                '81 (17)',
-                                '81 (21)',
-                                'false'
-                            ),
-                            'total_result' => '90'
-                        ),
-                        array(
-                            'name' => 'Bill Frisell',
-                            'email' => 'email@email.com',
-                            'activities_results' => array(
-                                '75',
-                                '100 (1)',
-                                '100 (1)',
-                                'true'
-                            ),
-                            'total_result' => '90'
-                        )
-                    )
                 )
             );
         }
-        
 
+        $ajaxResponse = array_merge($ajaxResponse, $this->getDetailCourseReport());
 
         $this->render('coursereport', $ajaxResponse);
     }
@@ -496,7 +511,10 @@ class CoursereportLmsController extends LmsController
         $test_man = new GroupTestManagement();
         $report_man = new CourseReportManager();
 
+        $view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
         $type_filter = Get::pReq('type_filter', DOTY_MIXED, false);
+        $org_tests =& $report_man->getTest();
+        $tests_info = $test_man->getTestInfo($org_tests);
 
         if ($type_filter == 'false') {
             $type_filter = false;
@@ -506,6 +524,21 @@ class CoursereportLmsController extends LmsController
         $reportsArray = $this->model->getCourseReports();
 
         $students = getSubscribedInfo((int)$_SESSION['idCourse'], FALSE, $type_filter, TRUE, false, false, true);
+
+
+        if (!$view_all_perm) {
+            //filter users
+            require_once(_base_ . '/lib/lib.preference.php');
+            $ctrlManager = new ControllerPreference();
+            $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+            foreach ($students as $idst => $user_course_info) {
+                if (!in_array($idst, $ctrl_users)) {
+                    // Elimino gli studenti non amministrati
+                    unset ($students[$idst]);
+                }
+
+            }
+        }
 
         $id_students = array_keys($students);
         $students_info =& $acl_man->getUsers($id_students);
@@ -519,6 +552,55 @@ class CoursereportLmsController extends LmsController
 
         $tests_score =& $test_man->getTestsScores($included_test, $id_students);
 
+        $test_details = array();
+
+        if (is_array($included_test)) {
+            while (list($id_test, $users_result) = each($tests_score)) {
+                while (list($id_user, $single_test) = each($users_result)) {
+                    if ($single_test['score_status'] == 'valid') {
+                        // max
+                        if (!isset($test_details[$id_test]['max_score'])) {
+                            $test_details[$id_test]['max_score'] = $single_test['score'];
+                        } elseif ($single_test['score'] > $test_details[$id_test]['max_score']) {
+                            $test_details[$id_test]['max_score'] = $single_test['score'];
+                        }
+
+                        // min
+                        if (!isset($test_details[$id_test]['min_score'])) {
+                            $test_details[$id_test]['min_score'] = $single_test['score'];
+                        } elseif ($single_test['score'] < $test_details[$id_test]['min_score']) {
+                            $test_details[$id_test]['min_score'] = $single_test['score'];
+                        }
+
+                        //number of valid score
+                        if (!isset($test_details[$id_test]['num_result'])) {
+                            $test_details[$id_test]['num_result'] = 1;
+                        } else {
+                            $test_details[$id_test]['num_result']++;
+                        }
+
+                        // average
+                        if (!isset($test_details[$id_test]['average'])) {
+                            $test_details[$id_test]['average'] = $single_test['score'];
+                        } else {
+                            $test_details[$id_test]['average'] += $single_test['score'];
+                        }
+                    }
+                }
+            }
+            while (list($id_test, $single_detail) = each($test_details)) {
+                if (isset($single_detail['num_result'])) {
+                    $test_details[$id_test]['average'] /= $test_details[$id_test]['num_result'];
+                }
+            }
+            reset($test_details);
+        }
+
+        $results_test = array();
+        $results_activity = array();
+        $results_scorm_test = array();
+        $students_array = array();
+
         if (!empty($students_info)) {
             require_once($GLOBALS['where_lms'] . '/class.module/learning.test.php');
 
@@ -527,12 +609,8 @@ class CoursereportLmsController extends LmsController
                 $user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
                     ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
                     : $acl_man->relativeId($user_info[ACL_INFO_USERID]));
-                $cont = array($user_name);
 
-                $fman = new FieldList();
-                $field_entries = $fman->getUsersFieldEntryData($user_info[0], false, true);
-
-                $user = array(
+                $student = array(
                     'id' => $user_info[ACL_INFO_IDST],
                     'userid' => $user_info[ACL_INFO_USERID],
                     'firstname' => $user_info[ACL_INFO_FIRSTNAME],
@@ -541,129 +619,410 @@ class CoursereportLmsController extends LmsController
                     'register_date' => $user_info[ACL_INFO_REGISTER_DATE],
                     'lastenter' => $user_info[ACL_INFO_LASTENTER]
                 );
+                $student['name'] = $user_info[ACL_INFO_FIRSTNAME] . " " . $user_info[ACL_INFO_LASTNAME];
 
-
-
-                $results_test = array();
-                $results_activity = array();
-                $results_scorm_test = array();
-
+                $student['activities_results'] = array(
+                    array(
+                        array(
+                            'icon' => 'bar-chart',
+                            'showIcon' => 'true',
+                            'value' => '75',
+                            'showValue' => 'true',
+                            'link' => "javascript:void(0)",
+                            'active' => 'true'),
+                        array(
+                            'icon' => 'bar-chart',
+                            'showIcon' => 'false',
+                            'value' => '(1)',
+                            'showValue' => 'true',
+                            'link' => "javascript:void(0)",
+                            'active' => 'false')
+                    ),
+                    array(
+                        array(
+                            'icon' => 'bar-chart',
+                            'showIcon' => 'true',
+                            'value' => '81',
+                            'showValue' => 'true',
+                            'link' => "javascript:void(0)",
+                            'active' => 'true'),
+                        array(
+                            'icon' => 'bar-chart',
+                            'showIcon' => 'false',
+                            'value' => '(17)',
+                            'showValue' => 'true',
+                            'link' => "javascript:void(0)",
+                            'active' => 'false')
+                    ),
+                    array(
+                        array(
+                            'icon' => 'bar-chart',
+                            'showIcon' => 'true',
+                            'value' => '81',
+                            'showValue' => 'true',
+                            'link' => "javascript:void(0)",
+                            'active' => 'true'),
+                        array(
+                            'icon' => 'bar-chart',
+                            'showIcon' => 'false',
+                            'value' => '(21)',
+                            'showValue' => 'true',
+                            'link' => "javascript:void(0)",
+                            'active' => 'false')
+                    ),
+                    array(),
+                );
+                $student['total_result'] = '90';
 
                 foreach ($reportsArray as $info_report) {
 
                     if ($info_report->getSourceOf() != "final_vote") {
 
+                        $testObj = Learning_Test::load($info_report->getIdSource());
+
                         switch ($info_report->getSourceOf()) {
                             case CoursereportLms::SOURCE_OF_TEST : {
 
 
-                            };
+                                $results_activity[] = strip_tags($tests_info[$info_report->getIdSource()]['title']);
+                                $values = array();
+
+                                if (isset($tests_score[$info_report->getIdSource()][$idst_user])) {
+                                    switch ($tests_score[$info_report->getIdSource()][$idst_user]['score_status']) {
+                                        case CoursereportLms::TEST_STATUS_NOT_COMPLETED : {
+
+
+                                            if ($testObj->obj_type == 'test360') {
+                                                $score = $tests_score[$info_report->getIdSource()][$idst_user]['score'];
+
+                                                $value = array(
+                                                    'icon' => 'ico-wt-sprite',
+                                                    'showIcon' => 'true',
+                                                    'value' => '',
+                                                    'showValue' => 'false',
+                                                    'link' => "index.php?r=test360/report&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&showAuto=1&showEtero=1",
+                                                    'active' => 'true');
+
+                                                $values[] = $value;
+
+                                                if ($tests_score[$info_report->getIdSource()][$idst_user]['times'] > 0) {
+                                                    $value = array(
+                                                        'icon' => '',
+                                                        'showIcon' => 'false',
+                                                        'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
+                                                        'showValue' => 'true',
+                                                        'link' => "index.php?modname=coursereport&op=testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'active' => 'true');
+
+                                                    $values[] = $value;
+                                                }
+                                            } else {
+                                                $value = array(
+                                                    'icon' => '',
+                                                    'showIcon' => 'false',
+                                                    'value' => '-',
+                                                    'showValue' => 'true',
+                                                    'link' => "javascript:void(0)",
+                                                    'active' => 'false');
+
+                                                $values[] = $value;
+                                            }
+                                        }
+                                            break;
+                                        case CoursereportLms::TEST_STATUS_NOT_CHECKED :
+                                        case CoursereportLms::TEST_STATUS_NOT_PASSED :
+                                        case CoursereportLms::TEST_STATUS_PASSED : {
+                                            $value = array(
+                                                'icon' => '',
+                                                'showIcon' => 'false',
+                                                'value' => '-',
+                                                'showValue' => 'true',
+                                                'link' => "javascript:void(0)",
+                                                'active' => 'false');
+
+                                            $values[] = $value;
+                                        }
+                                            break;
+                                        case CoursereportLms::TEST_STATUS_DOING :
+                                        case CoursereportLms::TEST_STATUS_VALID : {
+
+                                            $score = $tests_score[$info_report->getIdSource()][$idst_user]['score'];
+
+                                            if ($testObj->obj_type == 'test360') {
+
+                                                $value = array(
+                                                    'icon' => 'ico-wt-sprite',
+                                                    'showIcon' => 'true',
+                                                    'value' => '',
+                                                    'showValue' => 'false',
+                                                    'link' => "index.php?r=test360/report&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&showAuto=1&showEtero=1",
+                                                    'active' => 'true');
+
+                                                $values[] = $value;
+
+                                                $value = array(
+                                                    'icon' => '',
+                                                    'showIcon' => 'false',
+                                                    'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
+                                                    'showValue' => 'true',
+                                                    'link' => "index.php?modname=coursereport&op=testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                    'active' => 'true');
+
+                                                $values[] = $value;
+
+                                            } else if ($score >= $info_report->getRequiredScore()) {
+                                                if ($score == $test_details[$info_report->getIdSource()]['max_score']) {
+
+                                                    $value = array(
+                                                        'icon' => 'cr_max_score',
+                                                        'showIcon' => 'false',
+                                                        'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
+                                                        'showValue' => 'true',
+                                                        'link' => "index.php?modname=coursereport&op=testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'active' => 'true');
+
+                                                    $values[] = $value;
+                                                } else {
+                                                    $value = array(
+                                                        'icon' => '',
+                                                        'showIcon' => 'false',
+                                                        'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
+                                                        'showValue' => 'true',
+                                                        'link' => "index.php?modname=coursereport&op=testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'active' => 'true');
+
+                                                    $values[] = $value;
+                                                }
+                                            } else {
+                                                if ($score == $test_details[$id_test]['max_score']) {
+                                                    $value = array(
+                                                        'icon' => 'cr_max_score cr_not_passed',
+                                                        'showIcon' => 'false',
+                                                        'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
+                                                        'showValue' => 'true',
+                                                        'link' => "index.php?modname=coursereport&op=testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'active' => 'true');
+
+                                                    $values[] = $value;
+                                                } else {
+                                                    $value = array(
+                                                        'icon' => 'cr_not_passed',
+                                                        'showIcon' => 'false',
+                                                        'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
+                                                        'showValue' => 'true',
+                                                        'link' => "index.php?modname=coursereport&op=testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'active' => 'true');
+
+                                                    $values[] = $value;
+                                                }
+                                            }
+                                        }
+                                            break;
+                                        default : {
+                                            $value = array(
+                                                'icon' => '',
+                                                'showIcon' => 'false',
+                                                'value' => '-',
+                                                'showValue' => 'true',
+                                                'link' => "javascript:void(0)",
+                                                'active' => 'false');
+
+                                            $values[] = $value;
+                                        }
+                                    }
+                                } else {
+                                    $value = array(
+                                        'icon' => '',
+                                        'showIcon' => 'false',
+                                        'value' => '-',
+                                        'showValue' => 'true',
+                                        'link' => "javascript:void(0)",
+                                        'active' => 'false');
+
+                                    $values[] = $value;
+                                }
+
+                                $student['activities_results'] = $values;
+                            }
                                 break;
-                            case CoursereportLms::SOURCE_OF_SCOITEM    : {
+                            case
+                            CoursereportLms::SOURCE_OF_SCOITEM    : {
+                                $results_activity[] = strip_tags($info_report->getTitle());
 
+                                $scormItem = new ScormLms($info_report->getIdSource(), $idst_user);
 
-                            };
+                                $value = array(
+                                    'icon' => 'cr_not_check',
+                                    'showIcon' => 'false',
+                                    'value' => $scormItem->getScoreRaw(),
+                                    'showValue' => 'true',
+                                    'link' => "javascript:void(0)",
+                                    'active' => 'false');
+
+                                $values[] = $value;
+
+                                $history = $scormItem->getHistory();
+
+                                if ($history > 0) {
+                                    $value = array(
+                                        'icon' => 'cr_not_check',
+                                        'showIcon' => 'false',
+                                        'value' => '(' . $history . ')',
+                                        'showValue' => 'true',
+                                        'link' => "index.php?modname=coursereport&op=scormreport&idTest=" . $scormItem->getIdTrack(),
+                                        'active' => 'true');
+
+                                    $values[] = $value;
+                                }
+
+                                $student['activities_results'] = $values;
+                            }
                                 break;
                             case CoursereportLms::SOURCE_OF_ACTIVITY    : {
+                                $results_activity[] = strip_tags($info_report->getTitle());
 
-                            };
+                                $score = 0;
+                                if (isset($reports_score[$info_report->getIdReport()][$idst_user])) {
+                                    switch ($reports_score[$info_report->getIdReport()][$idst_user]['score_status']) {
+                                        case CoursereportLms::TEST_STATUS_NOT_COMPLETED: {
+                                            $value = array(
+                                                'icon' => '',
+                                                'showIcon' => 'false',
+                                                'value' => '-',
+                                                'showValue' => 'true',
+                                                'link' => "javascript:void(0)",
+                                                'active' => 'false');
+
+                                            $values[] = $value;
+                                        }
+                                            break;
+                                        case CoursereportLms::TEST_STATUS_VALID: {
+                                            $score = $reports_score[$info_report->getIdReport()][$idst_user]['score'];
+                                            if ($score >= $info_report->getRequiredScore()) {
+                                                if ($score == $info_report->getMaxScore()) {
+                                                    $value = array(
+                                                        'icon' => 'cr_max_score',
+                                                        'showIcon' => 'false',
+                                                        'value' => $score,
+                                                        'showValue' => 'true',
+                                                        'link' => "javascript:void(0)",
+                                                        'active' => 'false');
+
+                                                    $values[] = $value;
+                                                } else {
+                                                    $value = array(
+                                                        'icon' => '',
+                                                        'showIcon' => 'false',
+                                                        'value' => $score,
+                                                        'showValue' => 'true',
+                                                        'link' => "javascript:void(0)",
+                                                        'active' => 'false');
+
+                                                    $values[] = $value;
+                                                }
+                                            } else {
+                                                $value = array(
+                                                    'icon' => 'cr_not_passed',
+                                                    'showIcon' => 'false',
+                                                    'value' => $score,
+                                                    'showValue' => 'true',
+                                                    'link' => "javascript:void(0)",
+                                                    'active' => 'false');
+
+                                                $values[] = $value;
+                                            }
+                                        }
+                                            break;
+                                        default: {
+                                            $value = array(
+                                                'icon' => '',
+                                                'showIcon' => 'false',
+                                                'value' => '-',
+                                                'showValue' => 'true',
+                                                'link' => "javascript:void(0)",
+                                                'active' => 'false');
+
+                                            $values[] = $value;
+                                        }
+                                    }
+                                } else {
+                                    $value = array(
+                                        'icon' => 'cr_not_passed',
+                                        'showIcon' => 'false',
+                                        'value' => '-',
+                                        'showValue' => 'true',
+                                        'link' => "javascript:void(0)",
+                                        'active' => 'false');
+
+                                    $values[] = $value;
+                                }
+                            }
                                 break;
                             case CoursereportLms::SOURCE_OF_FINAL_VOTE    : {
-
-                            };
+                                $results_activity[] = strip_tags(Lang::t('_FINAL_SCORE'));
+                            }
                                 break;
                             default: {
 
                             }
                         }
-
-
                     }
                 }
+
+                $students_array[] = $student;
             }
         }
 
-
-//        AJAX
-//        {
-//            "students": [
-//                {
-//                    "userId": "userId",
-//                    "firstName": "firstName",
-//                    "lastName": "lastName",
-//                    "email": "email",
-//                    "registerDate": "registerDate",
-//                    "lastEnter": "lastEnter"
-//                }
-//            ],
-//            "tests":  [
-//                {
-//                    "testId": "testId",
-//                    "testName": "testName"
-//                }
-//            ],
-//            "results": [
-//                {
-//                    "testId": "testId",
-//                    "grades": [
-//                        {
-//                            "userId": "userId",
-//                            "grade": "grade"
-//                        }
-//                    ]
-//                }
-//            ]
-//        }
-
-        $resposeArray = array('details' => array(
-            'activities' => array(
-                'Pre Assessment',
-                'Intermediate Test',
-                'Test in Scorm Object',
-                'Survey'
-            ),
-            'students' => array(
-                array(
-                    'name' => 'Johnny Rotten',
-                    'email' => 'email@email.com',
-                    'userid' => Lang::t('_USERNAME', 'standard'),
-                    'firstname' => Lang::t('_FIRSTNAME', 'standard'),
-                    'lastname' => Lang::t('_LASTNAME', 'standard'),
-                    'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
-                    'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
-                    'language' => Lang::t('_LANGUAGE', 'standard'),
-                    'level' => Lang::t('_LEVEL', 'standard'),
-                    'activities_results' => array(
-                        '75 (1)',
-                        '81 (17)',
-                        '81 (21)',
-                        'false'
+        $resposeArray = array('details' =>
+            array(
+                'activities' => $results_activity,
+                'students' => array(
+                    array(
+                        'name' => 'Johnny Rotten',
+                        'email' => 'email@email.com',
+                        'userid' => Lang::t('_USERNAME', 'standard'),
+                        'firstname' => Lang::t('_FIRSTNAME', 'standard'),
+                        'lastname' => Lang::t('_LASTNAME', 'standard'),
+                        'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
+                        'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
+                        'language' => Lang::t('_LANGUAGE', 'standard'),
+                        'level' => Lang::t('_LEVEL', 'standard'),
+                        'activities_results' => array(
+                            '75 (1)',
+                            '81 (17)',
+                            '81 (21)',
+                            'false'
+                        ),
+                        'total_result' => '90'
                     ),
-                    'total_result' => '90'
-                ),
-                array(
-                    'name' => 'Bill Frisell',
-                    'email' => 'email@email.com',
-                    'userid' => Lang::t('_USERNAME', 'standard'),
-                    'firstname' => Lang::t('_FIRSTNAME', 'standard'),
-                    'lastname' => Lang::t('_LASTNAME', 'standard'),
-                    'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
-                    'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
-                    'language' => Lang::t('_LANGUAGE', 'standard'),
-                    'level' => Lang::t('_LEVEL', 'standard'),
-                    'activities_results' => array(
-                        '75',
-                        '100 (1)',
-                        '100 (1)',
-                        'true'
-                    ),
-                    'total_result' => '90'
+                    array(
+                        'name' => 'Bill Frisell',
+                        'email' => 'email@email.com',
+                        'userid' => Lang::t('_USERNAME', 'standard'),
+                        'firstname' => Lang::t('_FIRSTNAME', 'standard'),
+                        'lastname' => Lang::t('_LASTNAME', 'standard'),
+                        'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
+                        'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
+                        'language' => Lang::t('_LANGUAGE', 'standard'),
+                        'level' => Lang::t('_LEVEL', 'standard'),
+                        'activities_results' => array(
+                            '75',
+                            '100 (1)',
+                            '100 (1)',
+                            'true'
+                        ),
+                        'total_result' => '90'
+                    )
                 )
             )
-        )
         );
 
-        $this->json->encode($resposeArray);
+
+        $resposeArray['details']['students'] = array_merge($resposeArray['details']['students'], $students_array);
+
+
+        //$this->json->encode($resposeArray);
+        return $resposeArray;
     }
 
     /**
@@ -2574,16 +2933,16 @@ class CoursereportLmsController extends LmsController
                         else
                             $test_details[$id_test]['num_result']++;
 
-                        if (!isset($test_details[$id_test]['averange']))
-                            $test_details[$id_test]['averange'] = $single_test['score'];
+                        if (!isset($test_details[$id_test]['average']))
+                            $test_details[$id_test]['average'] = $single_test['score'];
                         else
-                            $test_details[$id_test]['averange'] += $single_test['score'];
+                            $test_details[$id_test]['average'] += $single_test['score'];
                     }
                 }
             }
             while (list($id_test, $single_detail) = each($test_details))
                 if (isset($single_detail['num_result']))
-                    $test_details[$id_test]['averange'] /= $test_details[$id_test]['num_result'];
+                    $test_details[$id_test]['average'] /= $test_details[$id_test]['num_result'];
             reset($test_details);
         }
         $reports_score =& $report_man->getReportsScores(
@@ -2608,16 +2967,16 @@ class CoursereportLmsController extends LmsController
                     else
                         $report_details[$id_report]['num_result']++;
 
-                    if (!isset($report_details[$id_report]['averange']))
-                        $report_details[$id_report]['averange'] = $single_report['score'];
+                    if (!isset($report_details[$id_report]['average']))
+                        $report_details[$id_report]['average'] = $single_report['score'];
                     else
-                        $report_details[$id_report]['averange'] += $single_report['score'];
+                        $report_details[$id_report]['average'] += $single_report['score'];
                 }
             }
         }
         while (list($id_report, $single_detail) = each($report_details))
             if (isset($single_detail['num_result']))
-                $report_details[$id_report]['averange'] /= $report_details[$id_report]['num_result'];
+                $report_details[$id_report]['average'] /= $report_details[$id_report]['num_result'];
         reset($report_details);
 
         if (!empty($students_info))
@@ -2672,10 +3031,10 @@ class CoursereportLmsController extends LmsController
                                             if (!isset($test_details[$id_test]['not_passed'])) $test_details[$id_test]['not_passed'] = 1;
                                             else $test_details[$id_test]['not_passed']++;
                                         }
-                                        if (isset($test_details[$id_test]['varianza']) && isset($test_details[$id_test]['averange'])) {
-                                            $test_details[$id_test]['varianza'] += pow(($tests_score[$id_test][$idst_user]['score'] - $test_details[$id_test]['averange']), 2);
+                                        if (isset($test_details[$id_test]['varianza']) && isset($test_details[$id_test]['average'])) {
+                                            $test_details[$id_test]['varianza'] += pow(($tests_score[$id_test][$idst_user]['score'] - $test_details[$id_test]['average']), 2);
                                         } else {
-                                            $test_details[$id_test]['varianza'] = pow(($tests_score[$id_test][$idst_user]['score'] - $test_details[$id_test]['averange']), 2);
+                                            $test_details[$id_test]['varianza'] = pow(($tests_score[$id_test][$idst_user]['score'] - $test_details[$id_test]['average']), 2);
                                         }
                                     };
                                         break;
@@ -2732,10 +3091,10 @@ class CoursereportLmsController extends LmsController
                                             if (!isset($report_details[$info_report->getIdReport()]['not_passed'])) $report_details[$info_report->getIdReport()]['not_passed'] = 1;
                                             else $report_details[$info_report->getIdReport()]['not_passed']++;
                                         }
-                                        if (isset($report_details[$info_report->getIdReport()]['varianza']) && isset($report_details[$info_report->getIdReport()]['averange'])) {
-                                            $report_details[$info_report->getIdReport()]['varianza'] += round(pow(($reports_score[$info_report->getIdReport()][$idst_user]['score'] - $report_details[$info_report->getIdReport()]['averange']), 2), 2);
+                                        if (isset($report_details[$info_report->getIdReport()]['varianza']) && isset($report_details[$info_report->getIdReport()]['average'])) {
+                                            $report_details[$info_report->getIdReport()]['varianza'] += round(pow(($reports_score[$info_report->getIdReport()][$idst_user]['score'] - $report_details[$info_report->getIdReport()]['average']), 2), 2);
                                         } else {
-                                            $report_details[$info_report->getIdReport()]['varianza'] = round(pow(($reports_score[$info_report->getIdReport()][$idst_user]['score'] - $report_details[$info_report->getIdReport()]['averange']), 2), 2);
+                                            $report_details[$info_report->getIdReport()]['varianza'] = round(pow(($reports_score[$info_report->getIdReport()][$idst_user]['score'] - $report_details[$info_report->getIdReport()]['average']), 2), 2);
                                         }
                                     };
                                         break;
@@ -2757,7 +3116,7 @@ class CoursereportLmsController extends LmsController
 
     function testQuestion()
     {
-        checkPerm('view');
+        checkPerm('view', true, $this->_mvc_name);
 
         YuiLib::load(array('animation' => 'my_animation.js'));
         addJs($GLOBALS['where_lms_relative'] . '/modules/coursereport/', 'ajax.coursereport.js');
@@ -2781,9 +3140,12 @@ class CoursereportLmsController extends LmsController
         $test_man = new GroupTestManagement();
 
         $lev = FALSE;
-        if (isset($_GET['type_filter']) && $_GET['type_filter'] != null) {
-            $lev = $_GET['type_filter'];
+        $type_filter = Get::gReq('type_filter', DOTY_MIXED, false);
+
+        if (isset($type_filter) && $type_filter != null) {
+            $lev = $type_filter;
         }
+
         $students = getSubscribed((int)$_SESSION['idCourse'], FALSE, $lev, TRUE, false, false, true);
         $id_students = array_keys($students);
 

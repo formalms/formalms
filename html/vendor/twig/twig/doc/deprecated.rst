@@ -20,6 +20,11 @@ Token Parsers
   * ``Twig_TokenParserBrokerInterface``
   * ``Twig_TokenParserBroker``
 
+* As of Twig 1.27, ``Twig_Parser::getFilename()`` is deprecated. From a token
+  parser, use ``$this->parser->getStream()->getSourceContext()->getPath()`` instead.
+
+* As of Twig 1.27, ``Twig_Parser::getEnvironment()`` is deprecated.
+
 Extensions
 ----------
 
@@ -36,6 +41,9 @@ Extensions
 * As of Twig 1.23, the ``Twig_ExtensionInterface::getGlobals()`` method is
   deprecated. Implement ``Twig_Extension_GlobalsInterface`` to avoid
   deprecation notices.
+
+* As of Twig 1.26, the ``Twig_ExtensionInterface::getName()`` method is
+  deprecated and it is not used internally anymore.
 
 PEAR
 ----
@@ -109,6 +117,17 @@ Nodes
 * As of Twig 1.x, ``Node::toXml()`` is deprecated and will be removed in Twig
   2.0.
 
+* As of Twig 1.26, ``Node::$nodes`` should only contains ``Twig_Node``
+  instances, storing a ``null`` value is deprecated and won't be possible in
+  Twig 2.x.
+
+* As of Twig 1.27, the ``filename`` attribute on ``Twig_Node_Module`` is
+  deprecated. Use ``getName()`` instead.
+
+* As of Twig 1.27, the ``Twig_Node::getFilename()/Twig_Node::getLine()``
+  methods are deprecated, use
+  ``Twig_Node::getTemplateName()/Twig_Node::getTemplateLine()`` instead.
+
 Interfaces
 ----------
 
@@ -120,15 +139,29 @@ Interfaces
 * ``Twig_NodeInterface``         (use ``Twig_Node`` instead)
 * ``Twig_ParserInterface``       (use ``Twig_Parser`` instead)
 * ``Twig_ExistsLoaderInterface`` (merged with ``Twig_LoaderInterface``)
+* ``Twig_SourceContextLoaderInterface`` (merged with ``Twig_LoaderInterface``)
 * ``Twig_TemplateInterface``     (use ``Twig_Template`` instead, and use
   those constants Twig_Template::ANY_CALL, Twig_Template::ARRAY_CALL,
   Twig_Template::METHOD_CALL)
+
+Compiler
+--------
+
+* As of Twig 1.26, the ``Twig_Compiler::getFilename()`` has been deprecated.
+  You should not use it anyway as its values is not reliable.
+
+* As of Twig 1.27, the ``Twig_Compiler::addIndentation()`` has been deprecated.
+  Use ``Twig_Compiler::write('')`` instead.
 
 Loaders
 -------
 
 * As of Twig 1.x, ``Twig_Loader_String`` is deprecated and will be removed in
   2.0. You can render a string via ``Twig_Environment::createTemplate()``.
+
+* As of Twig 1.27, ``Twig_LoaderInterface::getSource()`` is deprecated.
+  Implement ``Twig_SourceContextLoaderInterface`` instead and use
+  ``getSourceContext()``.
 
 Node Visitors
 -------------
@@ -153,10 +186,25 @@ Globals
 Miscellaneous
 -------------
 
-* As of Twig 1.x, ``Twig_Environment::clearTemplateCache()``, ``Twig_Environment::writeCacheFile()``,
-  ``Twig_Environment::clearCacheFiles()``, ``Twig_Environment::getCacheFilename()``, and
-  ``Twig_Environment::getTemplateClassPrefix()`` are deprecated and will be removed in 2.0.
+* As of Twig 1.x, ``Twig_Environment::clearTemplateCache()``,
+  ``Twig_Environment::writeCacheFile()``,
+  ``Twig_Environment::clearCacheFiles()``,
+  ``Twig_Environment::getCacheFilename()``,
+  ``Twig_Environment::getTemplateClassPrefix()``,
+  ``Twig_Environment::getLexer()``, ``Twig_Environment::getParser()``, and
+  ``Twig_Environment::getCompiler()`` are deprecated and will be removed in 2.0.
 
 * As of Twig 1.x, ``Twig_Template::getEnvironment()`` and
   ``Twig_TemplateInterface::getEnvironment()`` are deprecated and will be
   removed in 2.0.
+
+* As of Twig 1.27, ``Twig_Error::getTemplateFile()`` and
+  ``Twig_Error::setTemplateFile()`` are deprecated. Use
+  ``Twig_Error::getTemplateName()`` and ``Twig_Error::setTemplateName()``
+  instead.
+
+* As of Twig 1.27, ``Twig_Template::getSource()`` is deprecated. Use
+  ``Twig_Template::getSourceContext()`` instead.
+
+* As of Twig 1.27, ``Twig_Parser::addHandler()`` and
+  ``Twig_Parser::addNodeVisitor()`` are deprecated and will be removed in 2.0.
