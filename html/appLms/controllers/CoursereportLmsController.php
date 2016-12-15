@@ -382,7 +382,7 @@ class CoursereportLmsController extends LmsController
                             $minScore = (isset($test_details[$info_report->getIdSource()]['min_score']) ? round($test_details[$info_report->getIdSource()]['min_score'], 2) : '-');
 
 
-                            \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCousereportEvent::EVENT_NAME,$event);
+                            \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCousereportEvent::EVENT_NAME, $event);
 
                             $chartLink = $event->getOverViewTestQuestionLink();
                         }
@@ -498,6 +498,9 @@ class CoursereportLmsController extends LmsController
 
         $ajaxResponse = array_merge($ajaxResponse, $this->getDetailCourseReport());
 
+        //echo json_encode($ajaxResponse);
+        //die();
+
         $this->render('coursereport', $ajaxResponse);
     }
 
@@ -541,9 +544,9 @@ class CoursereportLmsController extends LmsController
         $id_students = array_keys($students);
         $students_info =& $acl_man->getUsers($id_students);
 
-        $reportsArray = $this->model->getReportsFilteredBySourceOf('test');
+        $reportsArrayTest = $this->model->getReportsFilteredBySourceOf('test');
 
-        foreach ($reportsArray as $reportLms) {
+        foreach ($reportsArrayTest as $reportLms) {
             $included_test[$reportLms->getIdSource()] = $reportLms->getIdSource();
             $included_test_report_id[$reportLms->getIdReport()] = $reportLms->getIdReport();
         }
@@ -681,8 +684,6 @@ class CoursereportLmsController extends LmsController
                         switch ($info_report->getSourceOf()) {
                             case CoursereportLms::SOURCE_OF_TEST : {
 
-
-                                $results_activity[] = strip_tags($tests_info[$info_report->getIdSource()]['title']);
                                 $currentValues = array();
 
                                 if (isset($tests_score[$info_report->getIdSource()][$idst_user])) {
@@ -845,8 +846,6 @@ class CoursereportLmsController extends LmsController
                                 break;
                             case
                             CoursereportLms::SOURCE_OF_SCOITEM    : {
-                                $results_activity[] = strip_tags($info_report->getTitle());
-
                                 $scormItem = new ScormLms($info_report->getIdSource(), $idst_user);
 
                                 $value = array(
@@ -877,8 +876,6 @@ class CoursereportLmsController extends LmsController
                             }
                                 break;
                             case CoursereportLms::SOURCE_OF_ACTIVITY    : {
-                                $results_activity[] = strip_tags($info_report->getTitle());
-
                                 $score = 0;
                                 if (isset($reports_score[$info_report->getIdReport()][$idst_user])) {
                                     switch ($reports_score[$info_report->getIdReport()][$idst_user]['score_status']) {
@@ -958,7 +955,7 @@ class CoursereportLmsController extends LmsController
                             }
                                 break;
                             case CoursereportLms::SOURCE_OF_FINAL_VOTE    : {
-                                $results_activity[] = strip_tags(Lang::t('_FINAL_SCORE'));
+
                             }
                                 break;
                             default: {
@@ -969,6 +966,38 @@ class CoursereportLmsController extends LmsController
                 }
 
                 $students_array[] = $student;
+            }
+        }
+
+        foreach ($reportsArray as $info_report) {
+
+            if ($info_report->getSourceOf() != "final_vote") {
+
+                switch ($info_report->getSourceOf()) {
+                    case CoursereportLms::SOURCE_OF_TEST : {
+
+                        $results_activity[] = strip_tags($tests_info[$info_report->getIdSource()]['title']);
+
+                    }
+                        break;
+                    case
+                    CoursereportLms::SOURCE_OF_SCOITEM    : {
+                        $results_activity[] = strip_tags($info_report->getTitle());
+                    }
+                        break;
+                    case CoursereportLms::SOURCE_OF_ACTIVITY    : {
+                        $results_activity[] = strip_tags($info_report->getTitle());
+
+                    }
+                        break;
+                    case CoursereportLms::SOURCE_OF_FINAL_VOTE    : {
+                        $results_activity[] = strip_tags(Lang::t('_FINAL_SCORE'));
+                    }
+                        break;
+                    default: {
+
+                    }
+                }
             }
         }
 
