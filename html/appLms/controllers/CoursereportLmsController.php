@@ -2874,13 +2874,13 @@ class CoursereportLmsController extends LmsController
             $i++;
 
             //set info colums
-            $colums['max_score'][] = $info_report['max_score'];
+            $colums['max_score'][] = $info_report->getMaxScore();
             $colums['required_score'][] = $info_report->getRequiredScore();
-            $colums['weight'][] = $info_report['weight'];
-            $colums['show_to_user'][] = ($info_report['show_to_user'] == 'true' ? $lang->def('_YES') : $lang->def('_NO'));
-            $colums['use_for_final'][] = ($info_report['use_for_final'] == 'true' ? $lang->def('_YES') : $lang->def('_NO'));
+            $colums['weight'][] = $info_report->getWeight();
+            $colums['show_to_user'][] = ($info_report->isShowToUser() == 'true' ? $lang->def('_YES') : $lang->def('_NO'));
+            $colums['use_for_final'][] = ($info_report->isUseForFinal() == 'true' ? $lang->def('_YES') : $lang->def('_NO'));
 
-            if ($info_report['use_for_final'] == 'true') $total_weight += $info_report['weight'];
+            if ($info_report->isUseForFinal() == 'true') $total_weight += $info_report->getWeight();
         }
 
         $csv .= "\n";
