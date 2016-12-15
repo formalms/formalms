@@ -152,15 +152,20 @@
 
   var _users;
   var _data = {'courseID':'id'};
-
   var _loadingSnippet = 'Loading...';
+  var _testId;
+
 
   var $details = $('.js-details');
+  var $detailsTable = $('.js-details-table');
+  var $detailsTableRow;
+
+  var fakeUsers;
 
   var fakeData = {
     "students": [
       {
-        "userId": "1",
+        "userId": "user1",
         "firstName": "nome 1",
         "lastName": "cognome 1",
         "email": "email 1",
@@ -168,7 +173,7 @@
         "lastEnter": "ultimo login 1"
       },
       {
-        "userId": "2",
+        "userId": "user2",
         "firstName": "nome 2",
         "lastName": "cognome 2",
         "email": "email 2",
@@ -199,11 +204,11 @@
         "testId": "1",
         "grades": [
           {
-            "userId": "user 1",
+            "userId": "user1",
             "grade": "80"
           },
           {
-            "userId": "user 2",
+            "userId": "user2",
             "grade": "80"
           }
         ]
@@ -212,11 +217,11 @@
         "testId": "2",
         "grades": [
           {
-            "userId": "user 1",
+            "userId": "user1",
             "grade": "80"
           },
           {
-            "userId": "user 2",
+            "userId": "user2",
             "grade": "80"
           }
         ]
@@ -225,11 +230,11 @@
         "testId": "3",
         "grades": [
           {
-            "userId": "user 1",
+            "userId": "user1",
             "grade": "80"
           },
           {
-            "userId": "user 2",
+            "userId": "user2",
             "grade": "80"
           }
         ]
@@ -238,11 +243,11 @@
         "testId": "4",
         "grades": [
           {
-            "userId": "user 1",
+            "userId": "user1",
             "grade": "80"
           },
           {
-            "userId": "user 2",
+            "userId": "user2",
             "grade": "80"
           }
         ]
@@ -264,34 +269,61 @@
 
         _users = data.students;
 
-//        $('.table-activities__row').empty();
-//
-//        for (var i = 0; i < 4; i++) {
-//
-//          $.each(data.tests, function(i, item) {
-//            alert(data.tests[i].PageName);
-//          });​
-//        }
-
       },
-      error: function() {
+      error: function() { //in sostituzione dei servizi mancanti uso fakedata - PRIMA CHIAMATA AJAX
         $('.loading').html('Something went very wrong');
 
         $('.table-activities__row').empty();
 
         for (var i = 0; i < 4; i++) { //popolo le select dei test
 
-          var _select = '<th class="text-center filter-activites"><select class="filter">';
+          var $select = '<th class="text-center filter-activites"><select class="filter">';
 
-          $.each(fakeData.tests, function(i) {
+          $.each(fakeData.results, function(i) {
 
-              _select += '<option value="' + fakeData.tests[i].testId + '">' + fakeData.tests[i].testName + '</option>';
+              $select += '<option class="' + fakeData.tests[i].testId + '" value="' + fakeData.tests[i].testId + '">' + fakeData.tests[i].testName + '</option>';
           });
 
-          _select += '</select></th>';
+          $select += '</select></th>';
 
-          $('.table-activities__row').append(_select);
+          $('.table-activities__row').append($select);
         }
+
+        fakeUsers = fakeData.students;
+
+        $.each(fakeUsers, function(i) { //popolo gli studenti
+
+          $detailsTableRow = '<tr class="' + fakeUsers[i].userId + '"><td class="name">' + fakeUsers[i].firstName + '</td><td class="email">' + fakeUsers[i].email + '</td><td class="has-subtable"><table class="table table-bordered"><thead>';
+              '<tr class="js-user-results-row ' + fakeUsers[i].userId + '"></tr></thead></table></td><td class="total text-center"></td></tr>';
+
+          $detailsTable.append($detailsTableRow);
+
+        });
+
+        //        for (var i = 0; i < fakeData.tests.length; i++) { //fix
+//
+////          console.log(fakeData.results[i].grades[j].userId);
+////          console.log(fakeData.results[i]); oggetto
+//
+//          console.log(fakeData.tests[i].testId);
+//
+//          for (var j = 0; j < fakeData.tests[i].grades.length; j++) {
+//
+////            console.log(fakeData.results[i].testId);
+//
+//            $(document).on('load', '.js-user-result-row .' + fakeData.tests[i].grades[j].userId, function () {
+//
+//              var $userResultRow = $('.js-user-result-row .' + fakeData.tests[i].grades[j].userId);
+//
+//              console.log($userResultRow);
+//
+//              $userResultRow.append('<td class="text-center ' + fakeData.tests[i].testId +'">' + fakeData.tests[i].grades[j].grade + '</td>');
+//
+//            });
+//          }
+//        }
+
+
       }
     });
   });
