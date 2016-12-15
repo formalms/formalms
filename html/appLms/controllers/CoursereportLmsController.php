@@ -76,8 +76,6 @@ class CoursereportLmsController extends LmsController
         $id_students = array_keys($students);
         $students_info =& $acl_man->getUsers($id_students);
 
-        $tot_report = $this->model->getReportCount();
-
         $included_test = $this->model->getSourcesId(CoursereportLms::SOURCE_OF_TEST);
         $reports_id = $this->model->getReportsId();
         $included_test_report_id = $this->model->getReportsId(CoursereportLms::SOURCE_OF_TEST);
@@ -685,7 +683,7 @@ class CoursereportLmsController extends LmsController
 
 
                                 $results_activity[] = strip_tags($tests_info[$info_report->getIdSource()]['title']);
-                                $values = array();
+                                $currentValues = array();
 
                                 if (isset($tests_score[$info_report->getIdSource()][$idst_user])) {
                                     switch ($tests_score[$info_report->getIdSource()][$idst_user]['score_status']) {
@@ -842,7 +840,7 @@ class CoursereportLmsController extends LmsController
                                     $values[] = $value;
                                 }
 
-                                $student['activities_results'] = $values;
+                                $student['activities_results'][] = $values;
                             }
                                 break;
                             case
@@ -875,7 +873,7 @@ class CoursereportLmsController extends LmsController
                                     $values[] = $value;
                                 }
 
-                                $student['activities_results'] = $values;
+                                $student['activities_results'][] = $values;
                             }
                                 break;
                             case CoursereportLms::SOURCE_OF_ACTIVITY    : {
@@ -956,6 +954,7 @@ class CoursereportLmsController extends LmsController
 
                                     $values[] = $value;
                                 }
+                                $student['activities_results'][] = $values;
                             }
                                 break;
                             case CoursereportLms::SOURCE_OF_FINAL_VOTE    : {
