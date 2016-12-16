@@ -4092,7 +4092,7 @@ window.CourseReport = (function($) {
     $.ajax({
 
       type: 'post',
-      url: '/appLms/index.php?r=lms/coursereport/getDetailCourseReport',
+      url: 'ajax.adm_server.php?r=lms/coursereport/getDetailCourseReport',
       data: _data,
       beforeSend: function () {
         $('.loading').html(_loadingSnippet);
