@@ -622,57 +622,7 @@ class CoursereportLmsController extends LmsController
                 );
                 $student['name'] = $user_info[ACL_INFO_FIRSTNAME] . " " . $user_info[ACL_INFO_LASTNAME];
 
-                $student['activities_results'] = array(
-                    array(
-                        array(
-                            'icon' => 'bar-chart',
-                            'showIcon' => 'true',
-                            'value' => '75',
-                            'showValue' => 'true',
-                            'link' => "javascript:void(0)",
-                            'active' => 'true'),
-                        array(
-                            'icon' => 'bar-chart',
-                            'showIcon' => 'false',
-                            'value' => '(1)',
-                            'showValue' => 'true',
-                            'link' => "javascript:void(0)",
-                            'active' => 'false')
-                    ),
-                    array(
-                        array(
-                            'icon' => 'bar-chart',
-                            'showIcon' => 'true',
-                            'value' => '81',
-                            'showValue' => 'true',
-                            'link' => "javascript:void(0)",
-                            'active' => 'true'),
-                        array(
-                            'icon' => 'bar-chart',
-                            'showIcon' => 'false',
-                            'value' => '(17)',
-                            'showValue' => 'true',
-                            'link' => "javascript:void(0)",
-                            'active' => 'false')
-                    ),
-                    array(
-                        array(
-                            'icon' => 'bar-chart',
-                            'showIcon' => 'true',
-                            'value' => '81',
-                            'showValue' => 'true',
-                            'link' => "javascript:void(0)",
-                            'active' => 'true'),
-                        array(
-                            'icon' => 'bar-chart',
-                            'showIcon' => 'false',
-                            'value' => '(21)',
-                            'showValue' => 'true',
-                            'link' => "javascript:void(0)",
-                            'active' => 'false')
-                    ),
-                    array(),
-                );
+                $student['activities_results'] = array();
                 $student['total_result'] = '90';
 
                 foreach ($reportsArray as $info_report) {
@@ -689,7 +639,6 @@ class CoursereportLmsController extends LmsController
                                 if (isset($tests_score[$info_report->getIdSource()][$idst_user])) {
                                     switch ($tests_score[$info_report->getIdSource()][$idst_user]['score_status']) {
                                         case CoursereportLms::TEST_STATUS_NOT_COMPLETED : {
-
 
                                             if ($testObj->obj_type == 'test360') {
                                                 $score = $tests_score[$info_report->getIdSource()][$idst_user]['score'];
@@ -971,34 +920,30 @@ class CoursereportLmsController extends LmsController
 
         foreach ($reportsArray as $info_report) {
 
-            if ($info_report->getSourceOf() != "final_vote") {
+            switch ($info_report->getSourceOf()) {
+                case CoursereportLms::SOURCE_OF_TEST : {
+                    $results_activity[] = array('id' => $info_report->getIdSource(), "name" => strip_tags($tests_info[$info_report->getIdSource()]['title']));
+                }
+                    break;
+                case CoursereportLms::SOURCE_OF_SCOITEM : {
+                    $scormItem = new ScormLms($info_report->getIdSource(), $idst_user);
+                    //$results_activity[] = strip_tags($info_report->getTitle());
+                    $results_activity[] = array('id' => $scormItem->getIdTrack(), "name" => strip_tags($info_report->getTitle()));
+                }
+                    break;
+                case CoursereportLms::SOURCE_OF_ACTIVITY : {
+                    $results_activity[] = array('id' => $info_report->getIdReport(), "name" => strip_tags($info_report->getTitle()));
+                }
+                    break;
+                case CoursereportLms::SOURCE_OF_FINAL_VOTE    : {
+                    $results_activity[] = strip_tags(Lang::t('_FINAL_SCORE'));
+                }
+                    break;
+                default: {
 
-                switch ($info_report->getSourceOf()) {
-                    case CoursereportLms::SOURCE_OF_TEST : {
-
-                        $results_activity[] = strip_tags($tests_info[$info_report->getIdSource()]['title']);
-
-                    }
-                        break;
-                    case
-                    CoursereportLms::SOURCE_OF_SCOITEM    : {
-                        $results_activity[] = strip_tags($info_report->getTitle());
-                    }
-                        break;
-                    case CoursereportLms::SOURCE_OF_ACTIVITY    : {
-                        $results_activity[] = strip_tags($info_report->getTitle());
-
-                    }
-                        break;
-                    case CoursereportLms::SOURCE_OF_FINAL_VOTE    : {
-                        $results_activity[] = strip_tags(Lang::t('_FINAL_SCORE'));
-                    }
-                        break;
-                    default: {
-
-                    }
                 }
             }
+
         }
 
         $resposeArray = array('details' =>
