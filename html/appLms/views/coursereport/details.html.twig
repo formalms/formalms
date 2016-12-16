@@ -83,7 +83,7 @@
         <thead>
             <tr>
                 <th colspan="2" class="transparent"></th>
-                <th class="text-center">
+                <th colspan="4" class="text-center">
                     {#<a class="activities-nav activities-nav--prev js-prev-activities"><i class="fa fa-chevron-left"></i></a>#}
                     ACTIVITIES
                     {#<a class="activities-nav activities-nav--next js-next-activities"><i class="fa fa-chevron-right"></i></a>#}
@@ -94,26 +94,35 @@
                 <th>User</th>
                 <th>
                   <select class="filter js-user-detail-filter">
-                    <option value="firstName">First Name</option>
-                    <option value="lastName">Last Name</option>
+                    <option value="firstname">First Name</option>
+                    <option value="lastname">Last Name</option>
                     <option value="email" selected>Email</option>
-                    <option value="registerDate">Register Date</option>
-                    <option value="lastEnter">Last Enter</option>
+                    <option value="register_date">Register Date</option>
+                    <option value="lastenter">Last Enter</option>
                   </select>
                 </th>
-                <th class="has-subtable">
-                    <table class="table table-bordered table-activities">
-                        <thead>
-                            <tr class="table-activities__row">
-                              <th class="text-center filter-activites">
-                                <select class="filter">
-                                  <option value="">filter</option>
-                                </select>
-                              </th>
-                            </tr>
-                        </thead>
-                    </table>
+
+                <th>
+                  <select class="filter js-test-filter">
+                    <option value="">-</option>
+                  </select>
                 </th>
+                <th>
+                  <select class="filter js-test-filter">
+                    <option value="">-</option>
+                  </select>
+                </th>
+                <th>
+                  <select class="filter js-test-filter">
+                    <option value="">-</option>
+                  </select>
+                </th>
+                <th>
+                  <select class="filter js-test-filter">
+                    <option value="">-</option>
+                  </select>
+                </th>
+
                 <th class="text-center">Final</th>
             </tr>
         </thead>
@@ -144,7 +153,7 @@
         {#{% endfor %}#}
         </tbody>
         <tfoot class="empty">
-            <th colspan="4" class="loading"></th>
+            <th colspan="7" class="loading"></th>
         </tfoot>
     </table>
 </div>

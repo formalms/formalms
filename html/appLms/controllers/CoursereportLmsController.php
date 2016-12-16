@@ -496,10 +496,13 @@ class CoursereportLmsController extends LmsController
             );
         }
 
-        $ajaxResponse = array_merge($ajaxResponse, $this->getDetailCourseReport());
+//        $ajaxResponse = array_merge($ajaxResponse, $this->getDetailCourseReport());
 
         //echo json_encode($ajaxResponse);
         //die();
+
+        Util::get_js(Get::rel_path('base') . '/appLms/views/coursereport/js/coursereport.js', true, true);
+        Util::get_css(Get::rel_path('base') . '/appLms/views/coursereport/css/coursereport.css', true, true);
 
         $this->render('coursereport', $ajaxResponse);
     }
@@ -1049,8 +1052,8 @@ class CoursereportLmsController extends LmsController
         $resposeArray['details']['students'] = array_merge($resposeArray['details']['students'], $students_array);
 
 
-        //$this->json->encode($resposeArray);
-        return $resposeArray;
+        $this->json->encode($resposeArray);
+//        return $resposeArray;
     }
 
     /**

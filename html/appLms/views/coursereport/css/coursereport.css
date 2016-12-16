@@ -1,0 +1,133 @@
+.tab-content {
+    border: none;
+    border-top: solid 2px #ddd;
+    padding: 5px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -ms-box-shadow: none;
+    -o-box-shadow: none;
+    box-shadow: none;
+}
+
+table {
+    table-layout: auto;
+}
+
+th, td {
+    vertical-align: middle !important;
+}
+
+thead {
+    font-weight: bold;
+}
+
+td > a {
+    text-decoration: none;
+    color: blue;
+}
+
+th > a,
+td > a {
+    cursor: pointer;
+}
+
+td > a:hover {
+    font-weight: bold;
+    color: blue;
+}
+
+tfoot.empty th,
+tfoot.empty td {
+    padding: 4px !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.transparent {
+    background-color: transparent !important;
+}
+
+#overview td:not(.handle):not(.name):not(.actions) {
+    width: 70px;
+    text-align: center;
+}
+
+#overview td.handle {
+    width: 30px;
+    text-align: center;
+    cursor: move;
+    cursor: hand;
+    cursor: -webkit-grab;
+}
+
+#overview .actions {
+    width: 120px;
+    text-align: center;
+}
+
+#overview .actions .fa {
+    display: inline-block;
+    margin: 0 4px;
+    font-size: 20px;
+    color: #444;
+}
+
+#overview .actions .fa:hover {
+    color: #000;
+}
+
+#overview .fa-check {
+    color: green;
+}
+
+#overview .fa-close {
+    color: red;
+}
+
+#details .has-subtable {
+    padding: 0 !important;
+}
+
+#details .has-subtable .table {
+    table-layout: fixed;
+    margin: 0;
+}
+
+#details .has-subtable .table,
+#details .has-subtable .table th,
+#details .has-subtable .table td {
+    border-top: none !important;
+    border-bottom: none !important;
+}
+
+#details .table-striped > tbody > tr:nth-of-type(odd),
+#details .table-striped > tbody > tr:nth-of-type(odd) .has-subtable tr {
+    background-color: #fcfcfc;
+}
+
+#details .activities-nav--prev {
+    float: left;
+}
+
+#details .activities-nav--next {
+    float: right;
+}
+
+#details .name,
+#details .email {
+    width: 200px;
+}
+
+#details .total {
+    width: 50px;
+}
+
+#details .fa-check {
+    color: green;
+}
