@@ -509,6 +509,7 @@ class CoursereportLmsController extends LmsController
 
     function getDetailCourseReport() //ajax json fake
     {
+        require_once($GLOBALS['where_lms'] . '/lib/lib.course.php');
         require_once(_adm_ . '/lib/lib.field.php');
 
         $acl_man = Docebo::user()->getAclManager();
@@ -936,10 +937,6 @@ class CoursereportLmsController extends LmsController
                     break;
                 case CoursereportLms::SOURCE_OF_ACTIVITY : {
                     $results_activity[] = array('id' => $info_report->getIdReport(), "name" => strip_tags($info_report->getTitle()));
-                }
-                    break;
-                case CoursereportLms::SOURCE_OF_FINAL_VOTE    : {
-                    $results_activity[] = strip_tags(Lang::t('_FINAL_SCORE'));
                 }
                     break;
                 default: {
