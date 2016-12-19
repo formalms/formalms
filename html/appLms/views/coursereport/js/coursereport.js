@@ -4099,6 +4099,8 @@ window.CourseReport = (function($) {
       },
       success: function(data) {
         $('.loading').html(data);
+        console.log('ajax-started');
+        console.log('data ->' + data);
         return data;
       },
       error: function(e) { //in sostituzione dei servizi mancanti uso fakedata - PRIMA CHIAMATA AJAX
@@ -4173,8 +4175,8 @@ window.CourseReport = (function($) {
   };
 
   /**
-   * Funzione per aggiornare le info dell'utente in base la filtro
-   * @param    {string}   info   -   valore del filtro info utente
+   * Funzione per aggiornare le info dell'utente in base al filtro
+   * @param   {string}   info   -   valore del filtro info utente
    */
   var updateUsersInfo = function (info) {
     var _students = userData.students;
@@ -4185,6 +4187,16 @@ window.CourseReport = (function($) {
       $(elem).children('.student__info').html(_student[info]);
     });
   };
+
+  /**
+   * Funzione per aggiornare la colonna dei risultati di ogni utente in base al test selezionato
+   * @param   {int}   test   -   id del test da filtrare
+   * @param   {int}   column   -   numero della colonna da aggiornare
+   */
+  var updateUsersTestResults = function (test, column) {
+
+  };
+
 
   $(document).ready(function() {
 
@@ -4202,6 +4214,10 @@ window.CourseReport = (function($) {
 
       updateUsersInfo(_info);
     });
+
+    $('.js-test-filter').on('change', function () {
+
+    })
   });
 
 })(jQuery);
