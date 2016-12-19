@@ -162,6 +162,8 @@ class CoursereportLms extends Model
             $included_test_report_id[$id_r] = $id_r;
         }
 
+//        $tot_report = 0;
+
         // XXX: Update if needed
         if ($tot_report == 0) {
             $report_man->initializeCourseReport($org_tests);
