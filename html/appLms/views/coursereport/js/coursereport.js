@@ -4111,6 +4111,39 @@ window.CourseReport = (function($) {
   };
 
   /**
+   *
+   * @param test
+   */
+  var fetchTestResults = function (test) {
+//    $.ajax({
+//
+//      type: 'post',
+//      url: '',
+//      data: test,
+//      beforeSend: function () {
+//        $('.loading').html(_loadingSnippet);
+//      },
+//      success: function(data) {
+//        $('.loading').html(data);
+//        console.log('ajax-started');
+//        console.log('data ->' + data);
+//        return data;
+//      },
+//      error: function(e) { //in sostituzione dei servizi mancanti uso fakedata - PRIMA CHIAMATA AJAX
+//        $('.loading').html('errore: ' + e.message);
+//        return false;
+//      }
+//    });
+
+    return [
+      {
+        user: 11844,
+        result: 1
+      }
+    ];
+  };
+
+  /**
    * Funzione per popolare select dei filtri
    */
   var fillActivitiesFilter = function () {
@@ -4190,10 +4223,15 @@ window.CourseReport = (function($) {
 
   /**
    * Funzione per aggiornare la colonna dei risultati di ogni utente in base al test selezionato
-   * @param   {int}   test   -   id del test da filtrare
+   * @param   test
    * @param   {int}   column   -   numero della colonna da aggiornare
    */
   var updateUsersTestResults = function (test, column) {
+    var _results = fetchTestResults(test);
+
+    $.each(_results, function (i, elem) {
+      $('.student[data-student="' + elem.user + '"]').children('.student__test-result--' + column).html(elem.result);
+    })
 
   };
 
@@ -4216,7 +4254,9 @@ window.CourseReport = (function($) {
     });
 
     $('.js-test-filter').on('change', function () {
+      var _column = $(this).data('test');
 
+      updateUsersTestResults(1, _column);
     })
   });
 
