@@ -232,103 +232,112 @@ function forum() {
 				if($mod_perm) {
 
 					$content[] = '<div class="btn-group visible-xs">
-													<a class="btn btn-default'.($i == $tot_forum ? ' disabled' : '').'" href="index.php?modname=forum&amp;op=downforum&amp;idForum='.$idF.'" title="'.$lang->def('_MOVE_DOWN').'">
-														<span class="glyphicon glyphicon-chevron-down"></span>
-													</a>
-													<a class="btn btn-default'.($i == 1 ? ' disabled' : '').'" href="index.php?modname=forum&amp;op=moveupforum&amp;idForum='.$idF.'" title="'.$lang->def('_UP').'">
-														<span class="glyphicon glyphicon-chevron-up"></span>
-													</a>
-													<a class="btn btn-default" href="index.php?modname=forum&amp;op=modforumaccess&amp;idForum='.$idF.'&amp;load=1" title="'.$lang->def('_VIEW_PERMISSION').'">
-														<span class="glyphicon glyphicon-ban-circle"></span>
-													</a>
-													<a class="btn btn-default" href="index.php?modname=forum&amp;op=export&amp;idForum='.$idF.'" title="'.$lang->def('_EXPORTFORUM').' : '.strip_tags($title).'">
-														<span class="glyphicon glyphicon-save"></span>
-													</a>
-													<a class="btn btn-default" href="index.php?modname=forum&amp;op=modforum&amp;idForum='.$idF.'" title="'.$lang->def('_MOD').'">
-														<span class="glyphicon glyphicon-pencil"></span>
-													</a>
-													<a class="btn btn-default" href="index.php?modname=forum&amp;op=delforum&amp;idForum='.$idF.'" title="'.$lang->def('_DEL').' : '.strip_tags($title).'">
-														<span class="glyphicon glyphicon-remove"></span>
-													</a>
-												</div>
-												<div class="dropdown hidden-xs">
-														<button class="btn btn-default dropdown-toggle" type="button" id="forumFunctions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-														  <span class="glyphicon glyphicon-cog"></span> &nbsp;<span class="caret"></span>
-														</button>
-														<ul class="dropdown-menu" aria-labelledby="forumFunctions">
-															<li>
-																<a class="'.($i == $tot_forum ? ' hidden' : '').'" href="index.php?modname=forum&amp;op=downforum&amp;idForum='.$idF.'">
-																	<span class="glyphicon glyphicon-chevron-down"></span> Sposta giù
-																</a>
-															</li>
-															<li>
-																<a class="'.($i == 1 ? ' hidden' : '').'" href="index.php?modname=forum&amp;op=moveupforum&amp;idForum='.$idF.'">
-																	<span class="glyphicon glyphicon-chevron-up"></span> Sposta su
-																</a>
-															</li>
-															<li>
-																<a href="index.php?modname=forum&amp;op=modforumaccess&amp;idForum='.$idF.'&amp;load=1">
-																	<span class="glyphicon glyphicon-ban-circle"></span> Cambia permessi
-																</a>
-															</li>
-															<li>
-																<a href="index.php?modname=forum&amp;op=export&amp;idForum='.$idF.'">
-																	<span class="glyphicon glyphicon-save"></span> Esporta su CSV
-																</a>
-															</li>
-															<li>
-																<a href="index.php?modname=forum&amp;op=modforum&amp;idForum='.$idF.'">
-																	<span class="glyphicon glyphicon-pencil"></span> Modifica
-																</a>
-															</li>
-															<li>
-																<a href="index.php?modname=forum&amp;op=delforum&amp;idForum='.$idF.'">
-																	<span class="glyphicon glyphicon-remove"></span> Elimina
-																</a>
-															</li>
-														</ul>
-												</div>';
+						<a class="btn btn-default'.($i == $tot_forum ? ' disabled' : '').'" href="index.php?modname=forum&amp;op=downforum&amp;idForum='.$idF.'" title="'.$lang->def('_MOVE_DOWN').'">
+							<span class="glyphicon glyphicon-chevron-down"></span>
+						</a>
+						<a class="btn btn-default'.($i == 1 ? ' disabled' : '').'" href="index.php?modname=forum&amp;op=moveupforum&amp;idForum='.$idF.'" title="'.$lang->def('_UP').'">
+							<span class="glyphicon glyphicon-chevron-up"></span>
+						</a>
+						<a class="btn btn-default" href="index.php?modname=forum&amp;op=modforumaccess&amp;idForum='.$idF.'&amp;load=1" title="'.$lang->def('_VIEW_PERMISSION').'">
+							<span class="glyphicon glyphicon-ban-circle"></span>
+						</a>
+						<a class="btn btn-default" href="index.php?modname=forum&amp;op=export&amp;idForum='.$idF.'" title="'.$lang->def('_EXPORTFORUM').' : '.strip_tags($title).'">
+							<span class="glyphicon glyphicon-save"></span>
+						</a>
+						<a class="btn btn-default" href="index.php?modname=forum&amp;op=modforum&amp;idForum='.$idF.'" title="'.$lang->def('_MOD').'">
+							<span class="glyphicon glyphicon-pencil"></span>
+						</a>
+						<a class="btn btn-default" href="index.php?modname=forum&amp;op=delforum&amp;idForum='.$idF.'" title="'.$lang->def('_DEL').' : '.strip_tags($title).'">
+							<span class="glyphicon glyphicon-remove"></span>
+						</a>
+					</div>
+					<div class="dropdown hidden-xs">
+							<button class="btn btn-default dropdown-toggle" type="button" id="forumFunctions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							  <span class="glyphicon glyphicon-cog"></span> &nbsp;<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" aria-labelledby="forumFunctions">
+								<li>
+									<a class="'.($i == $tot_forum ? ' hidden' : '').'" href="index.php?modname=forum&amp;op=downforum&amp;idForum='.$idF.'">
+										<span class="glyphicon glyphicon-chevron-down"></span> Sposta giù
+									</a>
+								</li>
+								<li>
+									<a class="'.($i == 1 ? ' hidden' : '').'" href="index.php?modname=forum&amp;op=moveupforum&amp;idForum='.$idF.'">
+										<span class="glyphicon glyphicon-chevron-up"></span> Sposta su
+									</a>
+								</li>
+								<li>
+									<a href="index.php?modname=forum&amp;op=modforumaccess&amp;idForum='.$idF.'&amp;load=1">
+										<span class="glyphicon glyphicon-ban-circle"></span> Cambia permessi
+									</a>
+								</li>
+								<li>
+									<a href="index.php?modname=forum&amp;op=export&amp;idForum='.$idF.'">
+										<span class="glyphicon glyphicon-save"></span> Esporta su CSV
+									</a>
+								</li>
+								<li>
+									<a href="index.php?modname=forum&amp;op=modforum&amp;idForum='.$idF.'">
+										<span class="glyphicon glyphicon-pencil"></span> Modifica
+									</a>
+								</li>
+								<li>
+									<a href="index.php?modname=forum&amp;op=delforum&amp;idForum='.$idF.'">
+										<span class="glyphicon glyphicon-remove"></span> Elimina
+									</a>
+								</li>
+							</ul>
+					</div>';
 				}
 				$tb->addBody( $content );
 				++$i;
 			}
 		}
-		if($add_perm || true) {
+		if($mod_perm) {
 
 			$tb->addActionAdd('<div class="btn-group col-lg-9 visible-lg">
-													<a class="btn btn-default" href="index.php?modname=forum&amp;op=addforum">
-														<span class="glyphicon glyphicon-plus-sign"></span>
-														<span>'.$lang->def('_ADDFORUM').'</span>
-													</a>
-												</div>
-												<div class="dropdown col-xs-5 col-sm-4 hidden-lg pull-left">
-														<button class="btn btn-default dropdown-toggle" type="button" id="tableActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-														  <span class="glyphicon glyphicon-cog"></span> &nbsp;
-														  Operazioni &nbsp;
-														  <span class="caret"></span>
-														</button>
-														<ul class="dropdown-menu dropdown-menu-left" aria-labelledby="tableActions">
-															<li>
-																<a href="index.php?modname=forum&amp;op=addforum">
-																	<span class="glyphicon glyphicon-plus-sign"></span>
-																	<span>'.$lang->def('_ADDFORUM').'</span>
-																</a>
-															</li>
-														</ul>
-												</div>
-												<div class="col-xs-7 col-sm-6 col-md-4 col-lg-3 pull-right">'
-												.Form::openForm('search_forum', 'index.php?modname=forum&amp;op=search')
-												.'<div class="input-group">'
-												.Form::getSearchInputTextfield('', 'search_arg', 'search_arg', 'Cerca argomento...')
-												.'<div class="input-group-btn"><button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-search"></span></button></div>'
-												.'</div>'
-												.Form::closeForm()
-												.'</div>');
+				<a class="btn btn-default" href="index.php?modname=forum&amp;op=addforum">
+					<span class="glyphicon glyphicon-plus-sign"></span>
+					<span>'.$lang->def('_ADDFORUM').'</span>
+				</a>
+			</div>
+			<div class="dropdown col-xs-5 col-sm-4 hidden-lg pull-left">
+					<button class="btn btn-default dropdown-toggle" type="button" id="tableActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					  <span class="glyphicon glyphicon-cog"></span> &nbsp;
+					  Operazioni &nbsp;
+					  <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu dropdown-menu-left" aria-labelledby="tableActions">
+						<li>
+							<a href="index.php?modname=forum&amp;op=addforum">
+								<span class="glyphicon glyphicon-plus-sign"></span>
+								<span>'.$lang->def('_ADDFORUM').'</span>
+							</a>
+						</li>
+					</ul>
+			</div>
+			<div class="col-xs-7 col-sm-6 col-md-4 col-lg-3 pull-right">'
+			.Form::openForm('search_forum', 'index.php?modname=forum&amp;op=search')
+			.'<div class="input-group">'
+			.Form::getSearchInputTextfield('', 'search_arg', 'search_arg', 'Cerca argomento...')
+			.'<div class="input-group-btn"><button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-search"></span></button></div>'
+			.'</div>'
+			.Form::closeForm()
+			.'</div>');
 		}
 		$GLOBALS['page']->add(
 		 	getTitleArea($lang->def('_FORUM'), 'forum')
 		.$tb->getTable()
 		, 'content');
+
+		if ($add_perm) {
+			$GLOBALS['page']->add(
+			'<div class="table-container-below">'
+			. '<a class="ico-wt-sprite subs_add" href="index.php?modname=forum&amp;op=addforum"><span>'
+			. $lang->def('_ADDFORUM')
+			. '</span></a>'
+			. '</div>', 'content');
+		}
 
 
 	// require_once(_base_.'/lib/lib.table.php');
