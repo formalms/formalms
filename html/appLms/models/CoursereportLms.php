@@ -141,7 +141,7 @@ class CoursereportLms extends Model
         }
 
         // XXX: Update if needed
-        if ($tot_report == 0){
+        if ($tot_report == 0 || $tot_report == 1){
             $report_man->initializeCourseReport($org_tests);
         }
         /*else {
