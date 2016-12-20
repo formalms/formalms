@@ -11,7 +11,7 @@ var Groups = {
 	filterText: "",
 	currentLanguage: "<?php echo getLanguage(); ?>",
 
-	dialogRenderEvent: function() { var tabView = new YAHOO.widget.TabView("group_langs_tab"); },
+	dialogRenderEvent: function() {},
 
 	requestBuilder: function (oState, oSelf) {
 		var sort, dir, startIndex, results;

@@ -72,7 +72,7 @@
     border-color: #eee;
     color: inherit;
 }
-#container .nav-tabs > li.active a {
+.nav-tabs > li.active a {
     background-color: #C84000 !important;
     border-color: #C84000 !important;
     color: #fff !important;

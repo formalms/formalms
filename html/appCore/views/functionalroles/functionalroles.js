@@ -33,7 +33,7 @@ var FunctionalRoles = {
 		DataTable_fncroles_table.refresh();
 	},
 
-	dialogRenderEvent: function() {var tabView = new YAHOO.widget.TabView("fncrole_langs_tab");},
+	dialogRenderEvent: function() {},
 
 	usersFormatter: function(elLiner, oRecord, oColumn, oData) {
 		var url = 'index.php?r=adm/functionalroles/man_users&id=' + oRecord.getData("id");
