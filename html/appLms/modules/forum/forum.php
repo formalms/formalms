@@ -293,7 +293,7 @@ function forum() {
 				++$i;
 			}
 		}
-		if($mod_perm) {
+		if($add_perm) {
 
 			$tb->addActionAdd('<div class="btn-group col-lg-9 visible-lg">
 													<a class="btn btn-default" href="index.php?modname=forum&amp;op=addforum">
