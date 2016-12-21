@@ -27,6 +27,14 @@ window.CourseReport = (function($) {
       {
         "name": "test vito",
         "id": 2
+      },
+      {
+        "name": "test peppe",
+        "id": 3
+      },
+      {
+        "name": "test vito2",
+        "id": 4
       }
     ],
     "students": [
