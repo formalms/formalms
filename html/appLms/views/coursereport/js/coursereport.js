@@ -15,6 +15,9 @@ window.CourseReport = (function($) {
 
   var fakeUsers;
 
+//  var userData;
+  var testData;
+
   var userData = {
     "activities": [
       {
@@ -4086,7 +4089,9 @@ window.CourseReport = (function($) {
     ]
   };
 
-
+  /**
+   * chiamata ajax per popolare la tabella di dettaglio
+   */
   var loadUserData = function () {
 
     $.ajax({
@@ -4098,12 +4103,37 @@ window.CourseReport = (function($) {
         $('.loading').html(_loadingSnippet);
       },
       success: function(data) {
-        $('.loading').html(data);
-        console.log('ajax-started');
+        $('.loading').html('');
+        console.log('ajax-started-userData');
         console.log('data ->' + data);
         return data;
       },
-      error: function(e) { //in sostituzione dei servizi mancanti uso fakedata - PRIMA CHIAMATA AJAX
+      error: function(e) {
+        $('.loading').html('errore: ' + e.message);
+        return false;
+      }
+    });
+  };
+
+  /**
+   * chiamata ajax per popolare le select dei test della tabella di dettaglio
+   */
+  var loadActivitiesData = function () {
+    $.ajax({
+
+      type: 'post',
+      url: 'ajax.adm_server.php?r=lms/coursereport/coursereport',
+      data: _data,
+      beforeSend: function () {
+        $('.loading').html(_loadingSnippet);
+      },
+      success: function(data) {
+        $('.loading').html(data);
+        console.log('ajax-started-activitiesData');
+        console.log('data ->' + data);
+        return data;
+      },
+      error: function(e) {
         $('.loading').html('errore: ' + e.message);
         return false;
       }
@@ -4129,7 +4159,7 @@ window.CourseReport = (function($) {
 //        console.log('data ->' + data);
 //        return data;
 //      },
-//      error: function(e) { //in sostituzione dei servizi mancanti uso fakedata - PRIMA CHIAMATA AJAX
+//      error: function(e) {
 //        $('.loading').html('errore: ' + e.message);
 //        return false;
 //      }
@@ -4139,6 +4169,14 @@ window.CourseReport = (function($) {
       {
         user: 11844,
         result: 1
+      },
+      {
+        user: 12266,
+        result: 2
+      },
+      {
+        user: 12290,
+        result: 3
       }
     ];
   };
@@ -4241,10 +4279,12 @@ window.CourseReport = (function($) {
     $table = $('.js-details-table');
 
     $('.js-details').on('click', function () {
-      fillActivitiesFilter();
-      fillTable();
 //      userData = loadUserData();
+//      testData = loadActivitiesData();
+      fillTable();
+      fillActivitiesFilter();
       console.log('loadUserData -> ' + loadUserData());
+      console.log('loadActivitiesData -> ' + loadActivitiesData());
     });
 
     $('.js-user-detail-filter').on('change', function () {
