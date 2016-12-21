@@ -4223,7 +4223,7 @@ window.CourseReport = (function($) {
 
   /**
    * Funzione per aggiornare la colonna dei risultati di ogni utente in base al test selezionato
-   * @param   test
+   * @param   {int}   test   -   id del test da filtrare
    * @param   {int}   column   -   numero della colonna da aggiornare
    */
   var updateUsersTestResults = function (test, column) {
