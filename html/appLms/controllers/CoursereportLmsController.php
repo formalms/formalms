@@ -496,6 +496,34 @@ class CoursereportLmsController extends LmsController
             );
         }
 
+        foreach ($this->model->getCourseReports() as $info_report) {
+
+            switch ($info_report->getSourceOf()) {
+                case CoursereportLms::SOURCE_OF_TEST : {
+                    $results_activity[] = array('id' => $info_report->getIdSource(), "name" => strip_tags($tests_info[$info_report->getIdSource()]['title']));
+                }
+                    break;
+                case CoursereportLms::SOURCE_OF_SCOITEM : {
+                    $scormItem = new ScormLms($info_report->getIdSource(), $idst_user);
+                    //$results_activity[] = strip_tags($info_report->getTitle());
+                    $results_activity[] = array('id' => $scormItem->getIdTrack(), "name" => strip_tags($info_report->getTitle()));
+                }
+                    break;
+                case CoursereportLms::SOURCE_OF_ACTIVITY : {
+                    $results_activity[] = array('id' => $info_report->getIdReport(), "name" => strip_tags($info_report->getTitle()));
+                }
+                    break;
+                default: {
+
+                }
+            }
+
+        }
+        $ajaxResponse['details'] = array(
+            'activities' => $results_activity
+        );
+
+
 //        $ajaxResponse = array_merge($ajaxResponse, $this->getDetailCourseReport());
 
         //echo json_encode($ajaxResponse);
@@ -922,7 +950,7 @@ class CoursereportLmsController extends LmsController
             }
         }
 
-        foreach ($reportsArray as $info_report) {
+        /*foreach ($reportsArray as $info_report) {
 
             switch ($info_report->getSourceOf()) {
                 case CoursereportLms::SOURCE_OF_TEST : {
@@ -944,57 +972,16 @@ class CoursereportLmsController extends LmsController
                 }
             }
 
-        }
+        }*/
 
         $resposeArray = array('details' =>
             array(
-                'activities' => $results_activity,
-                'students' => array(
-                    array(
-                        'name' => 'Johnny Rotten',
-                        'email' => 'email@email.com',
-                        'userid' => Lang::t('_USERNAME', 'standard'),
-                        'firstname' => Lang::t('_FIRSTNAME', 'standard'),
-                        'lastname' => Lang::t('_LASTNAME', 'standard'),
-                        'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
-                        'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
-                        'language' => Lang::t('_LANGUAGE', 'standard'),
-                        'level' => Lang::t('_LEVEL', 'standard'),
-                        'activities_results' => array(
-                            '75 (1)',
-                            '81 (17)',
-                            '81 (21)',
-                            'false'
-                        ),
-                        'total_result' => '90'
-                    ),
-                    array(
-                        'name' => 'Bill Frisell',
-                        'email' => 'email@email.com',
-                        'userid' => Lang::t('_USERNAME', 'standard'),
-                        'firstname' => Lang::t('_FIRSTNAME', 'standard'),
-                        'lastname' => Lang::t('_LASTNAME', 'standard'),
-                        'lastenter' => Lang::t('_DATE_LAST_ACCESS', 'profile'),
-                        'register_date' => Lang::t('_DIRECTORY_FILTER_register_date', 'admin_directory'),
-                        'language' => Lang::t('_LANGUAGE', 'standard'),
-                        'level' => Lang::t('_LEVEL', 'standard'),
-                        'activities_results' => array(
-                            '75',
-                            '100 (1)',
-                            '100 (1)',
-                            'true'
-                        ),
-                        'total_result' => '90'
-                    )
-                )
+                //'activities' => $results_activity,
+                'students' => $students_array
             )
         );
 
-
-        $resposeArray['details']['students'] = array_merge($resposeArray['details']['students'], $students_array);
-
-
-        $this->json->encode($resposeArray);
+        echo $this->json->encode($resposeArray);
 //        return $resposeArray;
     }
 

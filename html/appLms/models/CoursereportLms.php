@@ -140,13 +140,11 @@ class CoursereportLms extends Model
             $included_test_report_id[$id_r] = $id_r;
         }
 
-//        $tot_report = 0;
-
         // XXX: Update if needed
-        if ($tot_report == 0){
+        if ($tot_report == 0 || $tot_report == 1){
             $report_man->initializeCourseReport($org_tests);
         }
-        else {
+        /*else {
 
             if (is_array($included_test)) {
                 $test_to_add = array_diff($org_tests, $included_test);
@@ -166,12 +164,10 @@ class CoursereportLms extends Model
 
                 $included_test = $org_tests;
             }
-        }
+        }*/
         $report_man->updateTestReport($org_tests);
 
-        if ($this->courseReports && count($this->courseReports) > 0) {
-            return;
-        }
+        
         $query_report = "SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
                         FROM " . $GLOBALS['prefix_lms'] . "_coursereport
 	                    WHERE id_course = '" . $this->idCourse . "'";
