@@ -77,9 +77,6 @@ class CoursereportLms extends Model
         $this->idSource = $idSource;
 
         $this->courseReports = array();
-
-        $this->grabCourseReports();
-
     }
 
     /**
@@ -105,6 +102,9 @@ class CoursereportLms extends Model
      */
     public function getCourseReports()
     {
+        if (count($this->courseReports) == 0) {
+            $this->grabCourseReports();
+        }
         return $this->courseReports;
     }
 
@@ -141,7 +141,7 @@ class CoursereportLms extends Model
         }
 
         // XXX: Update if needed
-        if ($tot_report == 0 || $tot_report == 1){
+        if ($tot_report == 0 || $tot_report == 1) {
             $report_man->initializeCourseReport($org_tests);
         }
         /*else {
@@ -167,7 +167,7 @@ class CoursereportLms extends Model
         }*/
         $report_man->updateTestReport($org_tests);
 
-        
+
         $query_report = "SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
                         FROM " . $GLOBALS['prefix_lms'] . "_coursereport
 	                    WHERE id_course = '" . $this->idCourse . "'";
@@ -217,6 +217,70 @@ class CoursereportLms extends Model
 
             if ($sourceOf === null || $courseReport->getSourceOf() === $sourceOf) {
                 $result[] = $courseReport;
+            }
+        }
+
+        return $result;
+    }
+
+
+    /**
+     * @param array $id_sources
+     */
+    public function getCourseReportsFilteredByIdSources($id_sources)
+    {
+
+        $result = array();
+
+        if ($id_sources === null || count($id_sources) == 0) {
+            return $result;
+        }
+
+        if (count($this->courseReports) == 0){
+            $this->grabCourseReports();
+        }
+
+        foreach ($this->courseReports as $info_report) {
+
+            switch ($info_report->getSourceOf()) {
+                case CoursereportLms::SOURCE_OF_TEST : {
+
+                    $testObj = Learning_Test::load($info_report->getIdSource());
+
+                    if (in_array($testObj->getObjectType() . "_" . $info_report->getIdSource(), $id_sources)) {
+                        $result[] = $info_report;
+                        if (count($result) == count($id_sources)){
+                            return $result;
+                        }
+                    }
+                }
+                    break;
+                case CoursereportLms::SOURCE_OF_SCOITEM: {
+
+                    $scormItem = new ScormLms($info_report->getIdSource());
+
+                    if (in_array($info_report->getSourceOf() . "_" . $scormItem->getIdSource(), $id_sources)) {
+
+                        $result[] = $info_report;
+                        if (count($result) == count($id_sources)){
+                            return $result;
+                        }
+                    }
+                }
+                    break;
+                case CoursereportLms::SOURCE_OF_ACTIVITY: {
+
+                    if (in_array($info_report->getSourceOf() . "_" . $info_report->getIdSource(), $id_sources)) {
+                        $result[] = $info_report;
+                        if (count($result) == count($id_sources)){
+                            return $result;
+                        }
+                    }
+                }
+                    break;
+                default: {
+
+                }
             }
         }
 

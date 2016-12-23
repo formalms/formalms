@@ -1,21 +1,24 @@
-window.CourseReport = (function($) {
+window.CourseReport = (function ($) {
 
-  'use strict';
+    'use strict';
 
-  var _users;
-  var _data = {'courseID':'id'};
-  var _loadingSnippet = 'Loading...';
-  var _testId;
-
-
-  var $detailsTab = $('.js-details');
-  var $detailsTableRow;
-  var $table;
+    var _users;
+    var _data = {
+        'courseID': 'id',
+        'selected_tests': ['test360_59', 'test360_65']
+    };
+    var _loadingSnippet = 'Loading...';
+    var _testId;
 
 
-  var fakeUsers;
+    var $detailsTab = $('.js-details');
+    var $detailsTableRow;
+    var $table;
 
-  var testData;
+
+    var fakeUsers;
+
+    var testData;
 
 //  var userData = {
 //    "activities": [
@@ -4096,36 +4099,36 @@ window.CourseReport = (function($) {
 //    ]
 //  };
 
-  /**
-   * chiamata ajax per popolare la tabella di dettaglio
-   */
-  var loadUserData = function (callback) {
+    /**
+     * chiamata ajax per popolare la tabella di dettaglio
+     */
+    var loadUserData = function (callback) {
 
-    $.ajax({
+        $.ajax({
 
-      type: 'post',
-      url: 'ajax.adm_server.php?r=lms/coursereport/getDetailCourseReport',
-      data: _data,
-      beforeSend: function () {
-        $('.loading').html(_loadingSnippet);
-      },
-      success: function(data) {
-        $('.loading').html('');
-        var parsedData = JSON.parse(data);
+            type: 'post',
+            url: 'ajax.adm_server.php?r=lms/coursereport/getDetailCourseReport',
+            data: _data,
+            beforeSend: function () {
+                $('.loading').html(_loadingSnippet);
+            },
+            success: function (data) {
+                $('.loading').html('');
+                var parsedData = JSON.parse(data);
 
-        callback(parsedData);
-      },
-      error: function(e) {
-        $('.loading').html('errore: ' + e.message);
-        return false;
-      }
-    });
-  };
+                callback(parsedData);
+            },
+            error: function (e) {
+                $('.loading').html('errore: ' + e.message);
+                return false;
+            }
+        });
+    };
 
-  /**
-   * chiamata ajax per popolare le select dei test della tabella di dettaglio
-   */
-  var loadActivitiesData = function () {
+    /**
+     * chiamata ajax per popolare le select dei test della tabella di dettaglio
+     */
+    var loadActivitiesData = function () {
 //    $.ajax({
 //
 //      type: 'post',
@@ -4146,33 +4149,33 @@ window.CourseReport = (function($) {
 //      }
 //    });
 
-    return {
-      'activities': [
-        {
-          "name": "Mychangemeter Corrado Santagati",
-          "id": 1
-        },
-        {
-          "name": "test vito",
-          "id": 2
-        },
-        {
-          "name": "test peppe",
-          "id": 3
-        },
-        {
-          "name": "test vito2",
-          "id": 4
-        }
-      ]
+        return {
+            'activities': [
+                {
+                    "name": "Mychangemeter Corrado Santagati",
+                    "id": 1
+                },
+                {
+                    "name": "test vito",
+                    "id": 2
+                },
+                {
+                    "name": "test peppe",
+                    "id": 3
+                },
+                {
+                    "name": "test vito2",
+                    "id": 4
+                }
+            ]
+        };
     };
-  };
 
-  /**
-   *
-   * @param test
-   */
-  var fetchTestResults = function (test) {
+    /**
+     *
+     * @param test
+     */
+    var fetchTestResults = function (test) {
 //    $.ajax({
 //
 //      type: 'post',
@@ -4193,145 +4196,145 @@ window.CourseReport = (function($) {
 //      }
 //    });
 
-    return [
-      {
-        user: 11844,
-        result: 1
-      },
-      {
-        user: 12266,
-        result: 2
-      },
-      {
-        user: 12290,
-        result: 3
-      }
-    ];
-  };
+        return [
+            {
+                user: 11844,
+                result: 1
+            },
+            {
+                user: 12266,
+                result: 2
+            },
+            {
+                user: 12290,
+                result: 3
+            }
+        ];
+    };
 
-  /**
-   * Funzione per popolare select dei filtri
-   */
-  var fillActivitiesFilter = function () {
-    var activities = testData.activities;
-    var $filter;
-    var _selected;
-    var _option;
+    /**
+     * Funzione per popolare select dei filtri
+     */
+    var fillActivitiesFilter = function () {
+        var activities = testData.activities;
+        var $filter;
+        var _selected;
+        var _option;
 
-    for (var i = 0; i < 4; i++) {
-      $filter = $($('.js-test-filter')[i]);
-      $.each(activities, function (j, elem) {
-        _selected = (j === i) ? ' selected' : '';
-        _option = '<option value="' + elem.id +'"' + _selected +'>' + elem.name + '</option>';
-        $filter.append(_option);
-      });
-    }
-  };
+        for (var i = 0; i < 4; i++) {
+            $filter = $($('.js-test-filter')[i]);
+            $.each(activities, function (j, elem) {
+                _selected = (j === i) ? ' selected' : '';
+                _option = '<option value="' + elem.id + '"' + _selected + '>' + elem.name + '</option>';
+                $filter.append(_option);
+            });
+        }
+    };
 
-  /**
-   * Funzione per parsare il risultato del singolo test
-   * @param result
-   */
-  var parseResult = function (result) {
+    /**
+     * Funzione per parsare il risultato del singolo test
+     * @param result
+     */
+    var parseResult = function (result) {
 
-    var _parsed = [];
+        var _parsed = [];
 
-    $.each(result, function (i, elem) {
-      _parsed.push(elem.value);
-    });
+        $.each(result, function (i, elem) {
+            _parsed.push(elem.value);
+        });
 
-    return _parsed.join(' ');
-  };
+        return _parsed.join(' ');
+    };
 
-  /**
-   * Funzione per popolare la riga del singolo studente
-   * @param   {object}   student   -   oggetto con i dati relativi allo studente
-   */
-  var buildStudentRow = function (student) {
-    var _student = '<tr class="student" data-student="' + student.id +'">';
-    _student += '<td class="student__name">' + student.firstname + ' ' + student.lastname + '</td>';
-    _student += '<td class="student__info">' + student.email + '</td>';
-
-
-    for (var i = 0; i < 4; i++) {
-      _student += '<td class="student__test-result student__test-result--' + i + '">' + parseResult(student.activities_results[i]) + '</td>';
-    }
-
-    _student += '<td class="student__total-result">' + student.total_result + '</td>';
-    _student += '</tr>';
-
-    return _student;
-  };
-
-  var fillTable = function (data) {
-    var students = data.details['students'];
-
-    $.each(students, function(i, elem) {
-      $table.append(buildStudentRow(elem));
-    });
-
-  };
-
-  /**
-   * Funzione per aggiornare le info dell'utente in base al filtro
-   * @param   {object}   data   -   JSON contenente gli studenti
-   * @param   {string}   info   -   valore del filtro info utente
-   */
-  var updateUsersInfo = function (data, info) {
-    var _students = data.details['students'];
-    var _student;
-
-    $.each($table.children('.student'), function (i, elem) {
-      _student = _students[i];
-      $(elem).children('.student__info').html(_student[info]);
-    });
-  };
-
-  /**
-   * Funzione per aggiornare la colonna dei risultati di ogni utente in base al test selezionato
-   * @param   {int}   test   -   id del test da filtrare
-   * @param   {int}   column   -   numero della colonna da aggiornare
-   */
-  var updateUsersTestResults = function (test, column) {
-    var _results = fetchTestResults(test);
-
-    $.each(_results, function (i, elem) {
-      $('.student[data-student="' + elem.user + '"]').children('.student__test-result--' + column).html(elem.result);
-    })
-
-  };
+    /**
+     * Funzione per popolare la riga del singolo studente
+     * @param   {object}   student   -   oggetto con i dati relativi allo studente
+     */
+    var buildStudentRow = function (student) {
+        var _student = '<tr class="student" data-student="' + student.id + '">';
+        _student += '<td class="student__name">' + student.firstname + ' ' + student.lastname + '</td>';
+        _student += '<td class="student__info">' + student.email + '</td>';
 
 
-  $(document).ready(function() {
+        for (var i = 0; i < 4; i++) {
+            _student += '<td class="student__test-result student__test-result--' + i + '">' + parseResult(student.activities_results[i]) + '</td>';
+        }
 
-    $table = $('.js-details-table');
-    var userData;
+        _student += '<td class="student__total-result">' + student.total_result + '</td>';
+        _student += '</tr>';
 
-    $('.js-details').on('click', function () {
+        return _student;
+    };
 
-      loadUserData(function (data) {
-        userData = data;
-        fillTable(userData);
-      });
-      testData = loadActivitiesData();
+    var fillTable = function (data) {
+        var students = data.details['students'];
 
-      fillActivitiesFilter();
+        $.each(students, function (i, elem) {
+            $table.append(buildStudentRow(elem));
+        });
+
+    };
+
+    /**
+     * Funzione per aggiornare le info dell'utente in base al filtro
+     * @param   {object}   data   -   JSON contenente gli studenti
+     * @param   {string}   info   -   valore del filtro info utente
+     */
+    var updateUsersInfo = function (data, info) {
+        var _students = data.details['students'];
+        var _student;
+
+        $.each($table.children('.student'), function (i, elem) {
+            _student = _students[i];
+            $(elem).children('.student__info').html(_student[info]);
+        });
+    };
+
+    /**
+     * Funzione per aggiornare la colonna dei risultati di ogni utente in base al test selezionato
+     * @param   {int}   test   -   id del test da filtrare
+     * @param   {int}   column   -   numero della colonna da aggiornare
+     */
+    var updateUsersTestResults = function (test, column) {
+        var _results = fetchTestResults(test);
+
+        $.each(_results, function (i, elem) {
+            $('.student[data-student="' + elem.user + '"]').children('.student__test-result--' + column).html(elem.result);
+        })
+
+    };
+
+
+    $(document).ready(function () {
+
+        $table = $('.js-details-table');
+        var userData;
+
+        $('.js-details').on('click', function () {
+
+            loadUserData(function (data) {
+                userData = data;
+                fillTable(userData);
+            });
+            testData = loadActivitiesData();
+
+            fillActivitiesFilter();
 //      fillTable(userData);
+        });
+
+        $('.js-user-detail-filter').on('change', function () {
+            var _info = $(this).val();
+
+            console.log(userData);
+            updateUsersInfo(userData, _info);
+        });
+
+        $('.js-test-filter').on('change', function () {
+            var _column = $(this).data('test');
+
+            updateUsersTestResults(1, _column);
+        })
     });
-
-    $('.js-user-detail-filter').on('change', function () {
-      var _info = $(this).val();
-
-      console.log(userData);
-      updateUsersInfo(userData, _info);
-    });
-
-    $('.js-test-filter').on('change', function () {
-      var _column = $(this).data('test');
-
-      updateUsersTestResults(1, _column);
-    })
-  });
 
 })(jQuery);
 

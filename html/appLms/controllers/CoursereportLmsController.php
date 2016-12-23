@@ -159,9 +159,11 @@ class CoursereportLmsController extends LmsController
                 }
             }
         }
-        while (list($id_report, $single_detail) = each($report_details))
-            if (isset($single_detail['num_result']))
+        while (list($id_report, $single_detail) = each($report_details)) {
+            if (isset($single_detail['num_result'])) {
                 $report_details[$id_report]['average'] /= $report_details[$id_report]['num_result'];
+            }
+        }
         reset($report_details);
 
         $total_weight = 0;
@@ -236,6 +238,7 @@ class CoursereportLmsController extends LmsController
                                             break;
                                     }
                                 }
+                                $results_activity[] = array('id' => CoursereportLms::SOURCE_OF_TEST."_".$info_report->getIdSource(), "name" => strip_tags($tests_info[$info_report->getIdSource()]['title']));
                                 if ($info_report->isUseForFinal()) {
                                     array_push($results_test, $score * $info_report->getWeight());
                                 }
@@ -321,6 +324,8 @@ class CoursereportLmsController extends LmsController
                 }
             }
 
+            $results_activity = array();
+
             foreach ($this->model->getCourseReports() as $info_report) {
 
                 if ($info_report->getSourceOf() != CoursereportLms::SOURCE_OF_FINAL_VOTE) {
@@ -347,12 +352,13 @@ class CoursereportLmsController extends LmsController
 
                             $testObj = Learning_Test::load($info_report->getIdSource());
 
-
                             $event = new \appLms\Events\Lms\TestCousereportEvent($testObj);
 
                             $type = ucfirst($testObj->getObjectType());
                             $id = $info_report->getIdSource();
                             $name = strip_tags($tests_info[$info_report->getIdSource()]['title']);
+
+                            $results_activity[] = array('id' => $testObj->getObjectType()."_".$info_report->getIdSource(), "name" => strip_tags($tests_info[$info_report->getIdSource()]['title']));
 
                             if ($mod_perm) {
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
@@ -400,6 +406,8 @@ class CoursereportLmsController extends LmsController
 
                             $scormItem = new ScormLms($info_report->getIdSource());
 
+                            $results_activity[] = array('id' => $info_report->getSourceOf()."_".$scormItem->getIdSource(), "name" => $name);
+
                             $passed = $scormItem->getPassed() > 0 ? $scormItem->getPassed() : "-";
                             $notPassed = $scormItem->getNotPassed() > 0 ? $scormItem->getNotPassed() : "-";
                             $notChecked = $scormItem->getNotChecked() > 0 ? $scormItem->getNotChecked() : "-";
@@ -415,6 +423,8 @@ class CoursereportLmsController extends LmsController
                             $id = $info_report->getIdReport();
                             $name = strip_tags($info_report->getTitle());
                             $type = ucfirst($info_report->getSourceOf());
+
+                            $results_activity[] = array('id' => $info_report->getSourceOf()."_".$info_report->getIdSource(), "name" => $name);
 
                             if ($mod_perm) {
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
@@ -496,38 +506,9 @@ class CoursereportLmsController extends LmsController
             );
         }
 
-        foreach ($this->model->getCourseReports() as $info_report) {
-
-            switch ($info_report->getSourceOf()) {
-                case CoursereportLms::SOURCE_OF_TEST : {
-                    $results_activity[] = array('id' => $info_report->getIdSource(), "name" => strip_tags($tests_info[$info_report->getIdSource()]['title']));
-                }
-                    break;
-                case CoursereportLms::SOURCE_OF_SCOITEM : {
-                    $scormItem = new ScormLms($info_report->getIdSource(), $idst_user);
-                    //$results_activity[] = strip_tags($info_report->getTitle());
-                    $results_activity[] = array('id' => $scormItem->getIdTrack(), "name" => strip_tags($info_report->getTitle()));
-                }
-                    break;
-                case CoursereportLms::SOURCE_OF_ACTIVITY : {
-                    $results_activity[] = array('id' => $info_report->getIdReport(), "name" => strip_tags($info_report->getTitle()));
-                }
-                    break;
-                default: {
-
-                }
-            }
-
-        }
         $ajaxResponse['details'] = array(
             'activities' => $results_activity
         );
-
-
-//        $ajaxResponse = array_merge($ajaxResponse, $this->getDetailCourseReport());
-
-        //echo json_encode($ajaxResponse);
-        //die();
 
         Util::get_js(Get::rel_path('base') . '/appLms/views/coursereport/js/coursereport.js', true, true);
         Util::get_css(Get::rel_path('base') . '/appLms/views/coursereport/css/coursereport.css', true, true);
@@ -546,6 +527,7 @@ class CoursereportLmsController extends LmsController
 
         $view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
         $type_filter = Get::pReq('type_filter', DOTY_MIXED, false);
+        $tests_filter = Get::pReq('selected_tests',DOTY_MIXED,false);
         $org_tests =& $report_man->getTest();
         $tests_info = $test_man->getTestInfo($org_tests);
 
@@ -553,11 +535,9 @@ class CoursereportLmsController extends LmsController
             $type_filter = false;
         }
 
-
-        $reportsArray = $this->model->getCourseReports();
+        $reportsArray = $this->model->getCourseReportsFilteredByIdSources($tests_filter);
 
         $students = getSubscribedInfo((int)$_SESSION['idCourse'], FALSE, $type_filter, TRUE, false, false, true);
-
 
         if (!$view_all_perm) {
             //filter users
@@ -949,30 +929,6 @@ class CoursereportLmsController extends LmsController
                 $students_array[] = $student;
             }
         }
-
-        /*foreach ($reportsArray as $info_report) {
-
-            switch ($info_report->getSourceOf()) {
-                case CoursereportLms::SOURCE_OF_TEST : {
-                    $results_activity[] = array('id' => $info_report->getIdSource(), "name" => strip_tags($tests_info[$info_report->getIdSource()]['title']));
-                }
-                    break;
-                case CoursereportLms::SOURCE_OF_SCOITEM : {
-                    $scormItem = new ScormLms($info_report->getIdSource(), $idst_user);
-                    //$results_activity[] = strip_tags($info_report->getTitle());
-                    $results_activity[] = array('id' => $scormItem->getIdTrack(), "name" => strip_tags($info_report->getTitle()));
-                }
-                    break;
-                case CoursereportLms::SOURCE_OF_ACTIVITY : {
-                    $results_activity[] = array('id' => $info_report->getIdReport(), "name" => strip_tags($info_report->getTitle()));
-                }
-                    break;
-                default: {
-
-                }
-            }
-
-        }*/
 
         $resposeArray = array('details' =>
             array(
