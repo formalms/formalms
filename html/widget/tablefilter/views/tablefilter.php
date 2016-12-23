@@ -56,6 +56,14 @@
     border-color:#ebccd1;
 }
 
+
+.input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group {
+    z-index: 4;
+    margin-left: 4px !important;
+}    
+    
+
+
 </style>
 
 
