@@ -4112,8 +4112,6 @@ window.CourseReport = (function ($) {
           _data['selected_tests'].push(elem.id)
         });
 
-        console.log(_data);
-
         $.ajax({
 
             type: 'post',
@@ -4127,6 +4125,8 @@ window.CourseReport = (function ($) {
                 var parsedData = JSON.parse(data);
 
                 callback(parsedData);
+
+                return parsedData;
             },
             error: function (e) {
                 $('.loading').html('errore: ' + e.message);
@@ -4152,8 +4152,6 @@ window.CourseReport = (function ($) {
             "id": $(elem).data('activityid')});
         });
 
-        console.log(_activities);
-
         return _activities;
     };
 
@@ -4161,43 +4159,41 @@ window.CourseReport = (function ($) {
      *
      * @param test
      */
-    var fetchTestResults = function (test) {
-//    $.ajax({
-//
-//      type: 'post',
-//      url: '',
-//      data: test,
-//      beforeSend: function () {
-//        $('.loading').html(_loadingSnippet);
-//      },
-//      success: function(data) {
-//        $('.loading').html(data);
-//        console.log('ajax-started');
-//        console.log('data ->' + data);
-//        return data;
-//      },
-//      error: function(e) {
-//        $('.loading').html('errore: ' + e.message);
-//        return false;
-//      }
-//    });
+    var fetchTestResults = function (testId, testName, column) {
 
-        
+        var _test = [];
+        var _activitiesResults = [];
 
-        return [
-            {
-                user: 11844,
-                result: 1
-            },
-            {
-                user: 12266,
-                result: 2
-            },
-            {
-                user: 12290,
-                result: 3
-            }
-        ];
+        _test.push({
+          "name": testName,
+          "id": testId
+        });
+
+        loadUserData(function (data) {
+
+            var _students = data.details['students'];
+            var _studentId, _testResult;
+
+            $.each(_students, function (i, elem) {
+                _studentId = elem.id;
+                _testResult = parseResult(elem.activities_results[0]);
+
+                _activitiesResults.push({
+                  'result': _testResult,
+                  'user': _studentId
+                });
+
+            });
+
+            $.each(_activitiesResults, function (i, elem) {
+              $('.student[data-student="' + elem.user + '"]').children('.student__test-result--' + column).html(elem.result);
+            })
+
+            console.log(_activitiesResults);
+        }, _test);
+
+        return _activitiesResults;
+
     };
 
     /**
@@ -4283,12 +4279,12 @@ window.CourseReport = (function ($) {
      * @param   {int}   test   -   id del test da filtrare
      * @param   {int}   column   -   numero della colonna da aggiornare
      */
-    var updateUsersTestResults = function (test, column) {
-        var _results = fetchTestResults(test);
+    var updateUsersTestResults = function (testId, testName, column) {
+        var _results = fetchTestResults(testId, testName, column);
 
-        $.each(_results, function (i, elem) {
-            $('.student[data-student="' + elem.user + '"]').children('.student__test-result--' + column).html(elem.result);
-        })
+//        $.each(_results, function (i, elem) {
+//            $('.student[data-student="' + elem.user + '"]').children('.student__test-result--' + column).html(elem.result);
+//        })
 
     };
 
@@ -4329,11 +4325,12 @@ window.CourseReport = (function ($) {
 
         $('.js-test-filter').on('change', function () {
             var _column = $(this).data('test');
+            var _testId = $(this).val();
+            var _testName = $(this).text();
 
-            updateUsersTestResults(1, _column);
-        })
+            updateUsersTestResults(_testId, _testName, _column);
+        });
 
-      console.log(activities);
 
     });
 
