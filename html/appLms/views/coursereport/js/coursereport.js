@@ -3,10 +3,10 @@ window.CourseReport = (function ($) {
     'use strict';
 
     var _users;
-    var _data = {
-        'courseID': 'id',
-        'selected_tests': ['test360_59', 'test360_65']
-    };
+//    var _data = {
+//        'courseID': 'id',
+//        'selected_tests': ['test360_92', 'test360_116']
+//    };
     var _loadingSnippet = 'Loading...';
     var _testId;
 
@@ -4101,7 +4101,18 @@ window.CourseReport = (function ($) {
     /**
      * chiamata ajax per popolare la tabella di dettaglio
      */
-    var loadUserData = function (callback) {
+    var loadUserData = function (callback, tests) {
+
+        var _data = {
+          'courseId': 'id',
+          'selected_tests': []
+        };
+
+        $.each(tests, function (i, elem) {
+          _data['selected_tests'].push(elem.id)
+        });
+
+        console.log(_data);
 
         $.ajax({
 
@@ -4170,6 +4181,8 @@ window.CourseReport = (function ($) {
 //        return false;
 //      }
 //    });
+
+        
 
         return [
             {
@@ -4296,11 +4309,12 @@ window.CourseReport = (function ($) {
         $('.js-details').on('click', function () {
             clearDetailTable();
 
+            testData = loadActivitiesData();
+
             loadUserData(function (data) {
                 userData = data;
                 fillTable(userData);
-            });
-            testData = loadActivitiesData();
+            }, testData);
 
             fillActivitiesFilter();
 //      fillTable(userData);
