@@ -88,7 +88,9 @@
     color: #8baa18;
   }
 
-
+  .activities-container {
+    display: none;
+  }
 </style>
 
 
@@ -166,6 +168,12 @@
   </ul>
 </div>
 
+<div class="activities-container">
+    {% for activity in details['activities'] %}
+        <div data-activityId="{{ activity.id }}" data-activityName="{{ activity.name }}"></div>
+    {% endfor %}
+</div>
+
 
 
 <script type="text/javascript">
@@ -181,12 +189,13 @@
     helper: fixHelper
   }).disableSelection();
 
-
   var $buttonAdd = $('.button--add');
 
   $buttonAdd.on('click', function (e) {
 
     $(this).toggleClass('active');
   })
+
+  activities = {{ details|json_encode() }};
 
 </script>

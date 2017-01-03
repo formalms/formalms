@@ -15,10 +15,9 @@ window.CourseReport = (function ($) {
     var $detailsTableRow;
     var $table;
 
-
-    var fakeUsers;
-
     var testData;
+
+    var activities;
 
 //  var userData = {
 //    "activities": [
@@ -4129,46 +4128,22 @@ window.CourseReport = (function ($) {
      * chiamata ajax per popolare le select dei test della tabella di dettaglio
      */
     var loadActivitiesData = function () {
-//    $.ajax({
-//
-//      type: 'post',
-//      url: '',
-//      data: _data,
-//      beforeSend: function () {
-//        $('.loading').html(_loadingSnippet);
-//      },
-//      success: function(data) {
-//        $('.loading').html(data);
-//        console.log('ajax-started-activitiesData');
-//        console.log('data ->' + data);
-//        return data;
-//      },
-//      error: function(e) {
-//        $('.loading').html('errore: ' + e.message);
-//        return false;
-//      }
-//    });
 
-        return {
-            'activities': [
-                {
-                    "name": "Mychangemeter Corrado Santagati",
-                    "id": 1
-                },
-                {
-                    "name": "test vito",
-                    "id": 2
-                },
-                {
-                    "name": "test peppe",
-                    "id": 3
-                },
-                {
-                    "name": "test vito2",
-                    "id": 4
-                }
-            ]
-        };
+        var $elem = $('.activities-container');
+        var _activities = [];
+        var _name, _id;
+
+        $elem.children('div').each(function (i, elem) {
+          _name = $(elem).data('activityid');
+          _id = $(elem).data('activityname');
+          _activities.push({
+            "name": $(elem).data('activityname'),
+            "id": $(elem).data('activityid')});
+        });
+
+        console.log(_activities);
+
+        return _activities;
     };
 
     /**
@@ -4216,7 +4191,7 @@ window.CourseReport = (function ($) {
      * Funzione per popolare select dei filtri
      */
     var fillActivitiesFilter = function () {
-        var activities = testData.activities;
+        var activities = testData;
         var $filter;
         var _selected;
         var _option;
@@ -4304,6 +4279,14 @@ window.CourseReport = (function ($) {
 
     };
 
+    /**
+     * Funzione usata per pulire la tabella di dettaglio
+     */
+    var clearDetailTable = function () {
+
+        $('.js-details-table').empty();
+    };
+
 
     $(document).ready(function () {
 
@@ -4311,6 +4294,7 @@ window.CourseReport = (function ($) {
         var userData;
 
         $('.js-details').on('click', function () {
+            clearDetailTable();
 
             loadUserData(function (data) {
                 userData = data;
@@ -4334,6 +4318,9 @@ window.CourseReport = (function ($) {
 
             updateUsersTestResults(1, _column);
         })
+
+      console.log(activities);
+
     });
 
 })(jQuery);
