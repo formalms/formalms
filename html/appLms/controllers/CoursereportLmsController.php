@@ -646,7 +646,7 @@ class CoursereportLmsController extends LmsController
                         switch ($info_report->getSourceOf()) {
                             case CoursereportLms::SOURCE_OF_TEST : {
 
-                                $currentValues = array();
+                                $values = array();
 
                                 if (isset($tests_score[$info_report->getIdSource()][$idst_user])) {
                                     switch ($tests_score[$info_report->getIdSource()][$idst_user]['score_status']) {
@@ -927,6 +927,7 @@ class CoursereportLmsController extends LmsController
                 }
 
                 $students_array[] = $student;
+
             }
         }
 
