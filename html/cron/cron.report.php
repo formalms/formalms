@@ -137,7 +137,7 @@ function getReportRecipients($id_rep) {
 }
 
 function adaptFileName($fname) {
-	return ereg_replace("[^A-Za-z0-9 ]", "_", $fname).'_'.date('Y-m-d_H-i-s');
+	return preg_replace("[^A-Za-z0-9 ]", "_", $fname).'_'.date('Y-m-d_H-i-s');
 }
 
 

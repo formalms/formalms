@@ -4,21 +4,31 @@
   $id_cat = Get::req('id_cat', DOTY_INT, 0);
   cout(Util::get_js(Get::rel_path('lms') . '/views/catalog/bootstrap-treeview.js', true), 'page_head');
   cout(Util::get_js(Get::rel_path('lms') . '/views/catalog/catalog.js', true), 'page_head');
+  
+   // numero catalogo dichiarati
+   $numero_catalogo = count($model->GetGlobalJsonTree());
+  
 ?>
-
-
-      <div class="row" >
-            <div class="col-sm-3" id="test">
-            <div style="height: 107px;"></div>
-                <div id="treeview1"  class=""></div>
-            </div>    
-            <div class="col-sm-12" id="div_course"><br><p align="center"><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p></div>
-      
-      <div>
       
       
       
-
+    <?php 
+    // se non ci sono cataloghi, nascondere la colonna 
+    if($numero_catalogo==0){  ?>  
+          <div class="row">
+               
+                <div class="col-sm-12" id="div_course"><br><p align="center"><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p></div>
+          <div>
+      <?php } else{ ?>
+      
+            <div class="row">
+                <div class="col-sm-3">
+                    <div id="treeview1" class=""></div>
+                </div>    
+                <div class="col-sm-9" id="div_course"><br><p align="center"><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p></div>
+            <div>
+               
+      <?php  }  ?>
       
       
       <script type="text/javascript">

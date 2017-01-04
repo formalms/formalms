@@ -44,10 +44,10 @@ echo Form::getDropdown(
 );
 
 //edit name and description in all languages (in a TabView widget)
-echo '<div id="competence_langs_tab" class="yui-navset">';
+echo '<div id="competence_langs_tab">';
 
-$_tabview_titles = '<ul class="yui-nav">';
-$_tabview_contents = '<div class="yui-content">';
+$_tabview_titles = '<ul class="nav nav-tabs">';
+$_tabview_contents = '<div class="tab-content">';
 
 $_langs = Docebo::langManager()->getAllLanguages(true);
 foreach ($_langs as $_lang_code => $_lang_data) {
@@ -57,12 +57,12 @@ foreach ($_langs as $_lang_code => $_lang_data) {
 
 	//echo Form::getOpenFieldset($_lang_data['description']);
 
-	$_tabview_titles .= '<li'.($_lang_code==getLanguage() ? ' class="selected"' : '').'>'
-		.'<a href="#langs_tab_'.$_lang_code.'"><em>'.$_lang_code //$_lang_data['description']
+	$_tabview_titles .= '<li'.($_lang_code==getLanguage() ? ' class="active"' : '').'>'
+		.'<a data-toggle="tab" href="#langs_tab_'.$_lang_code.'"><em>'.$_lang_code //$_lang_data['description']
 		.($_name == '' && isset($id_competence) ? ' (*)' : '')
 		.'</em></a></li>';
 
-	$_tabview_contents .= '<div id="langs_tab_'.$_lang_code.'">';
+	$_tabview_contents .= '<div class="tab-pane'.($_lang_code==getLanguage() ? ' active' : '').'" id="langs_tab_'.$_lang_code.'">';
 
 	$_tabview_contents .= Form::getTextfield(
 		Lang::t('_NAME', 'standard'),
@@ -91,9 +91,6 @@ $_tabview_contents .= '</div>';
 echo $_tabview_titles.$_tabview_contents;
 
 echo '</div>';
-
-echo '<script type="text/javascript">YAHOO.util.Event.onDOMReady(function() {'
-	.' var tabs = new YAHOO.widget.TabView("competence_langs_tab"); });</script>';
 
 //if we are editing an existing competence, than print its id
 if (isset($id_competence)) echo Form::getHidden('id_competence', 'id_competence', $id_competence);

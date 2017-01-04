@@ -13,10 +13,10 @@ if (isset($id_group)) {
 $content .= Form::openForm($_form_id, $_form_action);
 
 //edit name and description in all languages (in a TabView widget)
-$content .= '<div id="group_langs_tab" class="yui-navset">';
+$content .= '<div id="group_langs_tab">';
 
-$_tabview_titles = '<ul class="yui-nav">';
-$_tabview_contents = '<div class="yui-content">';
+$_tabview_titles = '<ul class="nav nav-tabs">';
+$_tabview_contents = '<div class="tab-content">';
 
 //edit name and description in all languages
 $_langs = Docebo::langManager()->getAllLanguages(true);
@@ -25,12 +25,12 @@ foreach ($_langs as $_lang_code => $_lang_data) {
 	$_name = isset($group_langs[$_lang_code]) ? $group_langs[$_lang_code]['name'] : "";
 	$_desc = isset($group_langs[$_lang_code]) ? $group_langs[$_lang_code]['description'] : "";
 
-	$_tabview_titles .= '<li'.($_lang_code==getLanguage() ? ' class="selected"' : '').'>'
-		.'<a href="#langs_tab_'.$_lang_code.'"><em>'.$_lang_code //$_lang_data['description']
+	$_tabview_titles .= '<li'.($_lang_code==getLanguage() ? ' class="active"' : '').'>'
+		.'<a data-toggle="tab" href="#langs_tab_'.$_lang_code.'"><em>'.$_lang_code //$_lang_data['description']
 		.($_name == '' && isset($id_group) ? ' (*)' : '')
 		.'</em></a></li>';
 
-	$_tabview_contents .= '<div id="langs_tab_'.$_lang_code.'">';
+	$_tabview_contents .= '<div class="tab-pane'.($_lang_code==getLanguage() ? ' active' : '').'" id="langs_tab_'.$_lang_code.'">';
 
 	$_tabview_contents .= Form::getTextfield(
 		Lang::t('_NAME', 'standard'),

@@ -1634,7 +1634,7 @@ Class CoreWikiPublic {
 
 		$url =$um->getUrl("page=".$page_info["page_code"]);
 		$res.='<div class="wiki_search_title">';
-		$title =eregi_replace("(".$search_txt.")", '<span class="filter_evidence">\\1</span>', $page_info["title"]);
+		$title =preg_replace("(".$search_txt.")", '<span class="filter_evidence">\\1</span>', $page_info["title"]);
 		$res.='<a href="'.$url.'">'.$title."</a></div>\n";
 		$res.='<p class="wiki_search_txt_preview">';
 		$content =strip_tags($data["content"]);
@@ -1643,7 +1643,7 @@ Class CoreWikiPublic {
 		$start =($start > 150 ? $start-150 : 0);
 		$res.=($start > 0 ? "..." : "");
 		$preview =substr($content, $start, 300);
-		$preview =eregi_replace("(".$search_txt.")", '<span class="filter_evidence">\\1</span>', $preview);
+		$preview =preg_replace("(".$search_txt.")", '<span class="filter_evidence">\\1</span>', $preview);
 		$res.=$preview;
 		$res.=(strlen($content) > 300 ? "..." : "");
 		$res.="</p>";
