@@ -13,10 +13,10 @@ window.CourseReport = (function ($) {
     var activities;
 
     /**
-     * chiamata ajax per popolare la tabella di dettaglio
-     * @param   {function}   callback   -   callback usata per elaborare i dati che vengono restituiti dalla chiamata ajax
-     * @param   {array}   tests   -   array contenente gli ID dei test
-     * @param   {int}   maxColumns   -   numero di colonne presente nella tabella dettagli
+     * ajax call used to populate the details table
+     * @param   {function}   callback   -   callback used to handle the data given back from the ajax
+     * @param   {array}   tests   -   array with the ids of the tests
+     * @param   {int}   maxColumns   -   number of columns in the detail table
      */
     var loadUserData = function (callback, tests, maxColumns) {
 
@@ -60,7 +60,7 @@ window.CourseReport = (function ($) {
     };
 
     /**
-     * chiamata ajax per popolare le select dei test della tabella di dettaglio
+     * ajax call used to populate the test select in the details table
      */
     var loadActivitiesData = function () {
 
@@ -80,7 +80,7 @@ window.CourseReport = (function ($) {
     };
 
     /**
-     * funzione che viene usata per popolare la colonna con i test aggiornati
+     * function used to update the test column
      * @param testId
      * @param testName
      * @param column
@@ -122,7 +122,7 @@ window.CourseReport = (function ($) {
     };
 
     /**
-     * Funzione per popolare select dei filtri
+     * function used to populate the test select
      */
     var fillActivitiesFilter = function () {
         var activities = testData;
@@ -141,7 +141,7 @@ window.CourseReport = (function ($) {
     };
 
     /**
-     * Funzione per parsare il risultato del singolo test
+     * function used to parse the test result
      * @param result
      */
     var parseResult = function (result) {
@@ -164,8 +164,8 @@ window.CourseReport = (function ($) {
     };
 
     /**
-     * Funzione per popolare la riga del singolo studente
-     * @param   {object}   student   -   oggetto con i dati relativi allo studente
+     * function used to populate the student row
+     * @param   {object}   student   -   object with the student data
      */
     var buildStudentRow = function (student) {
         var _student = '<tr class="student" data-student="' + student.id + '">';
@@ -193,9 +193,9 @@ window.CourseReport = (function ($) {
     };
 
     /**
-     * Funzione per aggiornare le info dell'utente in base al filtro
-     * @param   {object}   data   -   JSON contenente gli studenti
-     * @param   {string}   info   -   valore del filtro info utente
+     * function used to update user info based on the filter
+     * @param   {object}   data   -   JSON with the student data
+     * @param   {string}   info   -   user filter value
      */
     var updateUsersInfo = function (data, info) {
         var _students = data.details['students'];
@@ -208,10 +208,10 @@ window.CourseReport = (function ($) {
     };
 
     /**
-     * Funzione per aggiornare la colonna dei risultati di ogni utente in base al test selezionato
-     * @param   {int}   testId   -   id del test da filtrare
-     * @param   {string}   testName   -   nome del test da filtrare
-     * @param   {int}   column   -   numero della colonna da aggiornare
+     * function used to update the result column of every student based on the filtered test
+     * @param   {int}   testId   -   test id
+     * @param   {string}   testName   -   name of the test
+     * @param   {int}   column   -   column to update
      */
     var updateUsersTestResults = function (testId, testName, column) {
         var _results = fetchTestResults(testId, testName, column);
@@ -219,7 +219,7 @@ window.CourseReport = (function ($) {
     };
 
     /**
-     * Funzione usata per pulire la tabella di dettaglio
+     * function used to clear the detail table
      */
     var clearDetailTable = function () {
 
