@@ -4167,7 +4167,9 @@ window.CourseReport = (function ($) {
 
     /**
      * funzione che viene usata per popolare la colonna con i test aggiornati
-     * @param test
+     * @param testId
+     * @param testName
+     * @param column
      */
     var fetchTestResults = function (testId, testName, column) {
 
