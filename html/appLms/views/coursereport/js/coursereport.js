@@ -4117,7 +4117,7 @@ window.CourseReport = (function ($) {
         $.each(tests, function (i, elem) {
           _data['selected_tests'].push(elem.id);
 
-          if (i > _maxCol-1) {
+          if (i > (_maxCol-1)) {
             return false;
           }
         });
