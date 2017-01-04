@@ -4225,9 +4225,17 @@ window.CourseReport = (function ($) {
     var parseResult = function (result) {
 
         var _parsed = [];
+        var _showIcon;
 
         $.each(result, function (i, elem) {
-            _parsed.push(elem.value);
+          _showIcon = elem.showIcon;
+
+          if (_showIcon === 'true') {
+            _parsed.push('<a href="' + elem.link + '"><i class="fa fa-check"></i></a>');
+          } else {
+            _parsed.push('<a href="' + elem.link + '">' + elem.value + '</a>');
+          }
+
         });
 
         return _parsed.join(' ');
