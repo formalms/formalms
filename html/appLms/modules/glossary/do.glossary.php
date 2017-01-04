@@ -136,7 +136,7 @@ function play( $object_glos, $id_param ) {
 			'<div class="boxinfo_title">'.$term.'</div>'
 			.'<div class="boxinfo_container">'
 				.( $search == '' ? $descr :
-				 eregi_replace($search, '<span class="filter_evidence">'.$search.'</span>', $descr) )
+				 preg_replace($search, '<span class="filter_evidence">'.$search.'</span>', $descr) )
 			.'</div>'
 			.'<br />', 'content');
 	}

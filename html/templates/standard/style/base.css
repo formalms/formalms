@@ -28,7 +28,7 @@ Font scales : 140%, 115%, 108%, 100%, 90%, 83%
 */
 
 html, body{height:100%;}
-body{color:#000000;font:13px/1.231 arial,sans-serif;*font-size:small;*font:x-small; background:#ffffff ;}
+body{color:#000000;font:13px/1.231 arial,sans-serif;/*font-size:small;font:x-small*/; background:#ffffff ;}
 /* base.css, part of YUI's CSS Foundation */
 h1{font-size:25px;padding:6px 6px 4px;color:#C84000;}
 h2{font-size:115%;padding:5px 5px 4px;color:#666666;}
@@ -263,12 +263,12 @@ ul.social-accounts li span{vertical-align:middle;}
 .ico-tooltip em{}
 .container-blindnav{position:absolute;top:-990px;height:1px;width:1px;overflow:hidden;}
 .container-smsmarket{float:right;margin:1em;padding:.8em;border:1px solid #cccccc;}
-.container-loadbox{position:absolute;top:0;right:50px;border:1px solid #aaaaaa;border-top:0px none;padding:4px 10px;background:#fefefe;}
+.container-loadbox{position:absolute;top:0;right:50px;border:1px solid #aaaaaa;border-top:0;padding:4px 10px;background:#fefefe;}
 .container-loadbox img{vertical-align:middle;}
 .container-loadbox span{margin-left:8px;font-size:90%;vertical-align:middle;}
 div.container-feedback{}
-p.container-feedback{position:absolute;top:0;width:30%;left:35%;padding:.6em 3em;border-top:0px none;font-weight:bold;font-size:90%;text-align:center;border-radius:0 0 10px 10px;-moz-border-radius:0 0 10px 10px;-webkit-border-radius:0 0 10px 10px;background:#ffffcc;border:1px solid #ffcc33;z-index=1;}
-.pcontainer-feedback{position:relative;width:30%;left:35%;padding:.6em 3em;border-top:0px none;font-weight:bold;font-size:90%;text-align:center;border-radius:0 0 3px 3px;-moz-border-radius:0 0 3px 3px;-webkit-border-radius:0 0 3px 3px;background:#ffffcc;border:1px solid #ffcc33;}
+p.container-feedback{position:absolute;top:0;width:30%;left:35%;padding:.6em 3em;border-top:0;font-weight:bold;font-size:90%;text-align:center;border-radius:0 0 10px 10px;-moz-border-radius:0 0 10px 10px;-webkit-border-radius:0 0 10px 10px;background:#ffffcc;border:1px solid #ffcc33;z-index:1;}
+.pcontainer-feedback{position:relative;width:30%;left:35%;padding:.6em 3em;border-top:0;font-weight:bold;font-size:90%;text-align:center;border-radius:0 0 3px 3px;-moz-border-radius:0 0 3px 3px;-webkit-border-radius:0 0 3px 3px;background:#ffffcc;border:1px solid #ffcc33;}
 .dialog_loading_msg{background:url(../images/standard/loading.gif) 0 -4px no-repeat;padding-left:24px;height:18px;}
 .dialog_loading_msg span{vertical-align:middle;}
 /* user profile dashnoard */
@@ -321,6 +321,7 @@ ul.style_none li{list-style:none; }
 .form_line_l textarea.textarea_full{width:98%;margin:0 auto;}
 .form_line_l select, .form-line select{margin-right:2px;}
 .form_line_l input[type=checkbox], .form-line input[type=checkbox]{width:auto; border:0px none; padding:0;}
+.form_line_l input.radio { display: inline-block; }
 .form_elem_button{padding-top:12px;padding-right:1em;text-align:right;}
 .form_elem_button .button{margin:0 8px;}
 .yui-skin-docebo .yui-button input{color:#000000;font-size:90%;line-height:1.6em;min-height:1.6em;padding:0 10px;background-color:transparent;cursor:pointer;border:medium none;display:block;margin:0;}
@@ -350,6 +351,7 @@ ul.style_none li{list-style:none; }
 .add_b{background:url(../images/standard/add.png) 50% 50% no-repeat;border-width:0;height:21px;margin:0 2px 0 -1px;vertical-align:top;width:21px;overflow:hidden;text-indent:30px;cursor:pointer;*padding-left:30px;}
 .plus_b{background:url(../images/ico_sprite.png) 0 -820px no-repeat;border-width:0;height:21px;margin:2px 2px 0 4px;vertical-align:top;width:21px;overflow:hidden;text-indent:30px;cursor:pointer;*padding-left:30px;}
 .common_options{line-height:1.8em;}
+.common_options + div { display: inline-block; }
 .ma_selected_users{margin-left:2em;}
 .yui-skin-docebo .form_autocomplete_container{display:inline; }
 .yui-skin-docebo .form_autocomplete_container .yui-ac-input{position:static; width:20em;}
@@ -1039,7 +1041,7 @@ width: 30%;
 #container1_all_task  ul { list-style: none; }
 #container1_all_task  .buttons { margin-bottom: 20px; }
 
-#container1_all_task  .list li { width: 100%; height: 10%;  padding-bottom: 10px; padding: 10; min-height: 10px; }
+#container1_all_task  .list li { width: 100%; height: 10%;  padding-bottom: 10px; /*padding: 10;*/ min-height: 10px; }
 #container1_all_task  .grid li { float: left;  height: 50px; padding: 10px;padding-right: 1px;  margin: 5px;   }
 
 #container1_all_task .list li  .area1{
@@ -1083,7 +1085,7 @@ width: 30%;
 #container1_new_task  ul { list-style: none; }
 #container1_new_task  .buttons { margin-bottom: 20px; }
 
-#container1_new_task  .list li { width: 100%; height: 10%;  padding-bottom: 10px; padding: 10; min-height: 10px; }
+#container1_new_task  .list li { width: 100%; height: 10%;  padding-bottom: 10px; /*padding: 10;*/ min-height: 10px; }
 #container1_new_task  .grid li { float: left;  height: 50px; padding: 10px;padding-right: 1px;  margin: 5px; }
 
 #container1_new_task .list li  .area1{
@@ -1128,8 +1130,8 @@ width: 30%;
 #container1_inprogress  ul { list-style: none; }
 #container1_inprogress  .buttons { margin-bottom: 20px; }
 
-#container1_inprogress  .list li { width: 100%; height: 10%;  padding-bottom: 10px; padding: 10; min-height: 10px; }
-#container1_inprogress  .grid li { float: left;  height: 50px; padding: 10px;padding-right: 1px;  margin: 5px; }
+#container1_inprogress  .list li { width: 100%; height: 10%;  padding-bottom: 10px; /*padding: 10;*/ min-height: 10px; }
+#container1_inprogress  .grid li { float: left;  height: 50px; padding: 10px; padding-right: 1px;  margin: 5px; }
 
 #container1_inprogress .list li  .area1{
     width:20% ;
@@ -1172,7 +1174,7 @@ width: 30%;
 #container1_completed  ul { list-style: none; }
 #container1_completed  .buttons { margin-bottom: 20px; }
 
-#container1_completed  .list li { width: 100%; height: 10%;  padding-bottom: 10px; padding: 10; min-height: 10px; }
+#container1_completed  .list li { width: 100%; height: 10%;  padding-bottom: 10px; min-height: 10px; }
 #container1_completed  .grid li { float: left;  height: 50px; padding: 10px;padding-right: 1px;  margin: 5px; }
 
 #container1_completed .list li  .area1{
@@ -1739,6 +1741,6 @@ ul.tabs li.current{
 .cbp-vm-view-list .edizioni_cal.cat {margin:0 0 5px 0;width:100%}
 }
 
-@media screen and (max-width: 768) {
+@media screen and (max-width: 768px) {
     .boxed {max-height:40%;}
 }

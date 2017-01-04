@@ -246,7 +246,7 @@ class DoceboUser {
 			}
 
 			//bind on server
-			$ldap_user = ereg_replace( '\$user', $login, Get::sett('ldap_user_string') );
+			$ldap_user = preg_replace( '\$user', $login, Get::sett('ldap_user_string') );
 			if (!(@ldap_bind($ldap_conn, $ldap_user, $password))) {
 				ldap_close($ldap_conn);
 

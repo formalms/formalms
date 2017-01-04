@@ -439,7 +439,7 @@ class TextEntry_Question extends Question {
             .'<div>'.$lang->def('_QUEST_'.strtoupper($this->getQuestionType())).'</div>'
 			.'<div class="title_question">'.$num_quest.') '.$lang->def('_TEST_TE_TITLE').'</div>'."\n"
 			.'<div class="answer_question">'
-			.'<label for="quest_'.$id_quest.'">'.ereg_replace('\[answer\]', $text, $title_quest).'</label>'
+			.'<label for="quest_'.$id_quest.'">'.preg_replace('\[answer\]', $text, $title_quest).'</label>'
 			.'</div>'."\n"
 			.'</div>'."\n";
 	}

@@ -171,7 +171,7 @@ class qformat_gift {
         $text = $this->escapedchar_pre($text);
 
         // Look for category modifier ---------------------------------------------------------
-        if (ereg( '^\$CATEGORY:', $text)) {
+        if (preg_match( '^\$CATEGORY:', $text)) {
             // $newcategory = $matches[1];
             $newcategory = trim(substr( $text, 10 ));
             $newcategory = trim(substr( $newcategory, 0,  strpos($newcategory, "::")));
@@ -351,10 +351,10 @@ class qformat_gift {
                     // determine answer weight
                     if ($answer[0] == "=") {
                         $answer = substr($answer, 1);
-                        if(ereg($gift_answerweight_regex, $answer)) $answer_weight = $this->answerweightparser($answer);
+                        if(preg_match($gift_answerweight_regex, $answer)) $answer_weight = $this->answerweightparser($answer);
                         else $answer_weight = 1;
                         
-                    } elseif(ereg($gift_answerweight_regex, $answer)) {    // check for properly formatted answer weight
+                    } elseif(preg_match($gift_answerweight_regex, $answer)) {    // check for properly formatted answer weight
                         $answer_weight = $this->answerweightparser($answer);
                     
                     } else {     //default, i.e., wrong anwer
@@ -458,7 +458,7 @@ class qformat_gift {
 
 					$oAnswer = new AnswerRaw();
 					// Answer Weight
-					if (ereg($gift_answerweight_regex, $answer)) {    // check for properly formatted answer weight
+					if (preg_match($gift_answerweight_regex, $answer)) {    // check for properly formatted answer weight
 					
 						$answer_weight = $this->answerweightparser($answer);
 					} else {     //default, i.e., full-credit anwer
@@ -512,7 +512,7 @@ class qformat_gift {
 					$oAnswer = new AnswerRaw();
 					
                     // Answer weight
-                    if (ereg($gift_answerweight_regex, $answer)) {
+                    if (preg_match($gift_answerweight_regex, $answer)) {
 						// check for properly formatted answer weight
                         $answer_weight = $this->answerweightparser($answer);
                     } else {

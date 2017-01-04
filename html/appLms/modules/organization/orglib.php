@@ -1104,7 +1104,7 @@ class Org_TreeView extends RepoTreeView {
 	
 	function expandPath( $path ) {
 		$arrId = array();
-		$splitPath = split('/', $path);
+		$splitPath = explode('/', $path);
 		unset( $splitPath[0] );
 		$path = '';
 		foreach( $splitPath as $tok ) {

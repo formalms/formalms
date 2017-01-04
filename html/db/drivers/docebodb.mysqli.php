@@ -22,6 +22,10 @@ class mysqli_DbConn extends DbConn {
 		if(is_resource($this->conn)) $this->close();
 	}
 
+	private function false_if_null($return){
+		return isset($return)?$return:false;
+	}
+
 	public function connect($host, $user, $pwd, $dbname = false) {
 
 		if(is_resource($this->conn)) return $this->conn;
@@ -34,6 +38,7 @@ class mysqli_DbConn extends DbConn {
 				//Util::fatal('Cannot connect to the database server.');
                 return false;
             }
+			$GLOBALS['dbConn'] = $this;
             $this->log( 'mysql connected to : '.$host );
             $this->log( 'mysql db selected' );
         } else {
@@ -43,12 +48,13 @@ class mysqli_DbConn extends DbConn {
 				//Util::fatal('Cannot connect to the database server.');
                 return false;
             }
+			$GLOBALS['dbConn'] = $this;
             $this->log( 'mysql connected to : '.$host );
         }
 
 		$this->set_timezone();	// set connection tz
 
-		return $this->conn;
+		return $this;
 	}
 
 	public function select_db($dbname) {
@@ -87,9 +93,9 @@ class mysqli_DbConn extends DbConn {
 		return 'NULL';
 	}
 
-	public function escape($data) {
+	public function escape($escapestr) {
 
-		return mysqli_real_escape_string($data, $this->conn);
+		return mysqli_real_escape_string($this->conn, $escapestr);
 	}
 
 	public function query($query) {
@@ -125,7 +131,7 @@ class mysqli_DbConn extends DbConn {
 
 		if($this->debug) $start_at = $this->get_time();
 
-		$re = mysqli_query($parsed_query, $this->conn);
+		$re = mysqli_query($this->conn, $parsed_query);
 
 		if($this->debug) $this->query_log( $parsed_query, ($this->get_time() - $start_at) );
 
@@ -137,35 +143,50 @@ class mysqli_DbConn extends DbConn {
 		return mysqli_insert_id($this->conn);
 	}
 
-	public function fetch_row($resource) {
-
-		if(!$resource) return false;
-		return mysqli_fetch_row($resource);
+	public function fetch_row($result) {
+		if(!$result) return false;
+		//mysql and mysqli returns different value if empty result
+		return $this->false_if_null(mysqli_fetch_row($result));
 	}
 
-	public function fetch_assoc($resource) {
+	public function fetch_assoc($result) {
 
-		if(!$resource) return false;
-		return mysqli_fetch_assoc($resource);
+		if(!$result) return false;
+		//mysql and mysqli returns different value if empty result
+		return $this->false_if_null(mysqli_fetch_assoc($result));
 	}
 
-	public function fetch_array($resource) {
+	public function fetch_array($result) {
 
-		if(!$resource) return false;
-		return mysqli_fetch_array($resource);
+		if(!$result) return false;
+		//mysql and mysqli returns different value if empty result
+		return $this->false_if_null(mysqli_fetch_array($result));
 	}
 
-	public function fetch_obj($resource) {
+	public function fetch_obj($result, $class_name=null, $params=null) {
 
-		if(!$resource) return false;
-		return mysqli_fetch_object($resource);
+		if(!$result) return false;
+		if ($params){
+			//mysql and mysqli returns different value if empty result
+			return $this->false_if_null(mysqli_fetch_object($result));
+		}
+		if ($class_name){
+			//mysql and mysqli returns different value if empty result
+			return $this->false_if_null(mysqli_fetch_object($result));
+		}
+		//mysql and mysqli returns different value if empty result
+		return $this->false_if_null(mysqli_fetch_object($result));
 	}
 
-	public function num_rows($resource) {
+	public function num_rows($result) {
 
+		if(!$result) return false;
+		$return=mysqli_num_rows($result);
+		return $return?$return:false;
+	}
 
-		if(!$resource) return false;
-		return mysqli_num_rows($resource);
+	public function affected_rows() {
+		return mysqli_affected_rows($this->conn);
 	}
 
 	public function errno() {
@@ -178,42 +199,40 @@ class mysqli_DbConn extends DbConn {
 		return mysqli_error($this->conn);
 	}
 
-	public function free_result($resource) {
-		return mysqli_free_result($resource);
+	public function free_result($result) {
+		return mysqli_free_result($result);
 	}
 
 	public function get_client_info() {
-		return mysqli_get_client_info();
+		return mysqli_get_client_info($this->conn);
 	}
 
-	public function get_server_info($resource){
-		return mysqli_get_server_info($resource);
+	public function get_server_info(){
+		return mysqli_get_server_info($this->conn);
 	}
 
-	public function data_seek($resource, $row_number){
-		return mysqli_data_seek($resource, $row_number);
+	public function data_seek($result, $offset){
+		return mysqli_data_seek($result, $offset);
 	}
 
-	public function field_seek($resource, $row_number){
-		return mysqli_field_seek($resource, $row_number);
+	public function field_seek($result, $fieldnr){
+		return mysqli_field_seek($result, $fieldnr);
 	}
 
-	public function num_fields($resource){
-		return mysqli_num_fields($resource);
+	public function num_fields($result){
+		return mysqli_num_fields($result);
 	}
 
-	public function fetch_field($resource){
-		return mysqli_fetch_field($resource);
+	public function fetch_field($result){
+		return mysqli_fetch_field($result);
 	}
 
-	public function escape_string($resource,$escapestring) {
-
-		if(!$resource) return false;
-		return mysqli_real_escape_string($resource, $escapestring);
+	public function escape_string($escapestring) {
+		return mysqli_real_escape_string($this->conn, $escapestring);
 	}
 
-	public function real_escape_string($resource, $escapestring){
-		return mysqli_real_escape_string($resource, $escapestring);
+	public function real_escape_string($escapestring){
+		return mysqli_real_escape_string($this->conn, $escapestring);
 	}
 
 	public function start_transaction() {

@@ -92,7 +92,7 @@ class FeedReader {
 
 				while(list(, $param) = each($this->query_rss)) {
 
-					$param_name = split('=', $param);
+					$param_name = explode('=', $param);
 
 					if(strpos($feed_url, $param_name[0]) === false) {
 						$feed_url .= ( strpos($feed_url, '?') === false ? '?' : '&' ).$param;
