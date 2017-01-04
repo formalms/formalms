@@ -91,6 +91,7 @@
   .activities-container {
     display: none;
   }
+
 </style>
 
 
@@ -168,6 +169,7 @@
   </ul>
 </div>
 
+
 <div class="activities-container">
     {% for activity in details['activities'] %}
         <div data-activityId="{{ activity.id }}" data-activityName="{{ activity.name }}"></div>
@@ -175,8 +177,8 @@
 </div>
 
 
-
 <script type="text/javascript">
+
   var fixHelper = function(e, ui) {
     ui.children().each(function() {
       var $that = $(this);
@@ -184,17 +186,12 @@
     });
     return ui;
   };
+
   $('.course-sortable').sortable({
     handle: '.handle',
     helper: fixHelper
   }).disableSelection();
 
-  var $buttonAdd = $('.button--add');
-
-  $buttonAdd.on('click', function (e) {
-
-    $(this).toggleClass('active');
-  })
 
   activities = {{ details|json_encode() }};
 

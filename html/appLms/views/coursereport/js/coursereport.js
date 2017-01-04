@@ -4108,6 +4108,9 @@ window.CourseReport = (function ($) {
           'selected_tests': []
         };
 
+//        var _maxCol = maxColsumns;
+        var _maxCol = 4;
+
         $.each(tests, function (i, elem) {
           _data['selected_tests'].push(elem.id)
         });
@@ -4313,7 +4316,6 @@ window.CourseReport = (function ($) {
             }, testData);
 
             fillActivitiesFilter();
-//      fillTable(userData);
         });
 
         $('.js-user-detail-filter').on('change', function () {
@@ -4331,6 +4333,9 @@ window.CourseReport = (function ($) {
             updateUsersTestResults(_testId, _testName, _column);
         });
 
+        $('.button--add').on('click', function () {
+            $(this).toggleClass('active');
+        });
 
     });
 
