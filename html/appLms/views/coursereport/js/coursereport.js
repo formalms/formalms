@@ -4100,19 +4100,26 @@ window.CourseReport = (function ($) {
 
     /**
      * chiamata ajax per popolare la tabella di dettaglio
+     * @param   {function}   callback   -   callback usata per elaborare i dati che vengono restituiti dalla chiamata ajax
+     * @param   {array}   tests   -   array contenente gli ID dei test
+     * @param   {int}   maxColumns   -   numero di colonne presente nella tabella dettagli
      */
-    var loadUserData = function (callback, tests) {
+    var loadUserData = function (callback, tests, maxColumns) {
 
         var _data = {
           'courseId': 'id',
           'selected_tests': []
         };
 
-//        var _maxCol = maxColsumns;
+//        var _maxCol = maxColumns;
         var _maxCol = 4;
 
         $.each(tests, function (i, elem) {
-          _data['selected_tests'].push(elem.id)
+          _data['selected_tests'].push(elem.id);
+
+          if (i > _maxCol-1) {
+            return false;
+          }
         });
 
         $.ajax({
@@ -4159,7 +4166,7 @@ window.CourseReport = (function ($) {
     };
 
     /**
-     *
+     * funzione che viene usata per popolare la colonna con i test aggiornati
      * @param test
      */
     var fetchTestResults = function (testId, testName, column) {
