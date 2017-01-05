@@ -131,3 +131,170 @@ tfoot.empty td {
 #details .fa-check {
     color: green;
 }
+
+/*
+* overview.html.twig
+*/
+
+.button--add {
+
+    width: 190px;
+    position: relative;
+
+    background-color: #8baa18;
+    outline: none;
+    cursor: pointer;
+    padding: 5px 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+
+    text-transform: uppercase;
+    color: #FFF;
+}
+
+.button--add span {
+    padding: 0 10px;
+}
+
+.button--add:after {
+
+    content: '\f107';
+
+    position: absolute;
+    top: 0;
+    right: 12px;
+    height: 26px;
+    padding-left: 10px;
+    padding-top: 3px;
+    border-left: 1px solid #FFF;
+
+    font-family: 'FontAwesome';
+    font-size: 18px;
+}
+
+.button--add.active:after {
+
+    content: '\f106';
+}
+
+.button--add .dropdown {
+
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #8baa18;
+    margin: 0;
+    margin-top: 5px;
+    padding: 0 10px;
+
+    opacity: 0;
+    pointer-events: none;
+}
+
+.button--add.active .dropdown  {
+
+    position: relative;
+
+    padding: 0;
+    list-style: none;
+    opacity: 1;
+    pointer-events: auto;
+    padding-bottom: 0;
+}
+
+.button--add .dropdown li a {
+
+    display: block;
+    text-decoration: none;
+    color: #FFF;
+    padding: 5px 10px;
+}
+
+.button--add .dropdown li:first-child {
+
+    padding-top: 5px;
+    border-top: 1px solid white;
+}
+
+.button--add .dropdown li a:hover {
+
+    background-color: #FFF;
+    color: #8baa18;
+}
+
+.activities-container {
+    display: none;
+}
+
+/*
+* details.htmk.twig
+*/
+
+
+.filter-container {
+
+    width: 100%;
+    height: 55px;
+    margin-bottom: 25px;
+    position: relative;
+
+    background-color: #F5F5F5;
+}
+
+.filter-container .filter,
+.table-responsive .filter,
+.table-activities .filter {
+
+    width: 150px;
+    height: 34px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+
+    background-color: #FFF;
+}
+
+.table-responsive .filter {
+
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 185px;
+}
+
+.table-activities .filter {
+
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 60px;
+}
+
+.table-activities .filter-activites {
+
+    padding: 0;
+}
+
+.filter-container .button--exportcsv {
+
+    width: 100px;
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    padding: 5px 0px;
+
+    color: white;
+    border-radius: 3px;
+    background-color: #aaa;
+
+    text-align: center;
+}
+
+.loading {
+
+    text-align: center;
+    font-size: 18px;
+}
