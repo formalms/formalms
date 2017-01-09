@@ -46,50 +46,54 @@ class Auth_API extends API {
 	protected function generateToken($username, $password, $third_party =false) {
 
 		$query = "SELECT * FROM %adm_user WHERE "
-			." userid = '".$this->aclManager->absoluteId($username)."' AND "
-			." pass = '".$this->aclManager->encrypt($password)."'";
+			." userid = '".$this->aclManager->absoluteId($username)."'";
 		$res = $this->db->query($query);
 
 		$result = false;
 		if($this->db->num_rows($res) > 0) {
-			
-			if($third_party != false) {
-				
-				$query = "SELECT * FROM %adm_user WHERE "
-					." userid = '".$this->aclManager->absoluteId($third_party)."'";
-				$res = $this->db->query($query);
-				
-			}
-			
-			$row = $this->db->fetch_obj($res);
-			
-			$timenow = time();
-			$now = date("Y-m-d H:i:s", $timenow);
-			$level = $this->aclManager->getUserLevelId($row->idst);
-			$token = md5(uniqid(rand(), true) + $username);
+            $row = $this->db->fetch_obj($res);
+			if ($this->aclManager->password_verify_update($password,$row->pass,$row->idst)){
+                if($third_party != false) {
 
-			$lifetime = Get::sett('rest_auth_lifetime', 1);
-			$expire = date("Y-m-d H:i:s", $timenow + $lifetime) ;
+                    $query = "SELECT * FROM %adm_user WHERE "
+                        ." userid = '".$this->aclManager->absoluteId($third_party)."'";
+                    $res = $this->db->query($query);
 
-			// check if the user is already authenticate
-			$query = "SELECT * FROM %adm_rest_authentication WHERE id_user = ".$row->idst;
-			$res = $this->db->query($query);
-			if ($this->db->num_rows($res) > 0) {
+                }
 
-				// update log table, if so, than re-authenticate it
-				$query = "UPDATE %adm_rest_authentication ".
-					" SET token='$token', generation_date='".$now."', last_enter_date=NULL, expiry_date='".$expire."' ".
-					" WHERE id_user=".$row->idst;
-				$res = $this->db->query($query);
-			} else {
 
-				// set authentication in DB
-				$query = "INSERT INTO %adm_rest_authentication ".
-					"(id_user,user_level, token, generation_date, last_enter_date, expiry_date) VALUES ".
-					"('".$row->idst."', '".$level."', '".$token."', '".$now."', NULL, '".$expire."')";
-				$res = $this->db->query($query);
-			}
-			$result = array('success'=>true, 'token'=>$token, 'expire_at'=>$expire);
+
+                $timenow = time();
+                $now = date("Y-m-d H:i:s", $timenow);
+                $level = $this->aclManager->getUserLevelId($row->idst);
+                $token = md5(uniqid(rand(), true) + $username);
+
+                $lifetime = Get::sett('rest_auth_lifetime', 1);
+                $expire = date("Y-m-d H:i:s", $timenow + $lifetime) ;
+
+                // check if the user is already authenticate
+                $query = "SELECT * FROM %adm_rest_authentication WHERE id_user = ".$row->idst;
+                $res = $this->db->query($query);
+                if ($this->db->num_rows($res) > 0) {
+
+                    // update log table, if so, than re-authenticate it
+                    $query = "UPDATE %adm_rest_authentication ".
+                        " SET token='$token', generation_date='".$now."', last_enter_date=NULL, expiry_date='".$expire."' ".
+                        " WHERE id_user=".$row->idst;
+                    $res = $this->db->query($query);
+                } else {
+
+                    // set authentication in DB
+                    $query = "INSERT INTO %adm_rest_authentication ".
+                        "(id_user,user_level, token, generation_date, last_enter_date, expiry_date) VALUES ".
+                        "('".$row->idst."', '".$level."', '".$token."', '".$now."', NULL, '".$expire."')";
+                    $res = $this->db->query($query);
+                }
+                $result = array('success'=>true, 'token'=>$token, 'expire_at'=>$expire);
+            } else {
+                $result = array('success'=>false, 'message'=>'Error: invalid auth.');
+            }
+
 		} else {
 			$result = array('success'=>false, 'message'=>'Error: invalid auth.');
 		}

@@ -2412,11 +2412,56 @@ class DoceboACLManager
     /**
      * this function encrypt the given string
      * @param string $text text to encrypt
+     * @param int $password_hash
      * @return string encrypted text
+     * @internal param int $password_ash
+     * @internal param bool $alg
      */
-    function encrypt($text)
+    function encrypt($text, $password_hash=PASSWORD_DEFAULT)
     {
-        return MD5($text);
+        if ($password_hash){
+            return password_hash($text, $password_hash);
+        } else {
+            return MD5($text);
+        }
+    }
+
+    /**
+     * @param $password
+     * @param $hash
+     * @param bool $test_all
+     * @return bool
+     * @internal param bool $test_also_old
+     * @internal param int $password_hash
+     */
+    function password_verify($password, $hash, $test_all=false){
+        if (password_verify($password, $hash)){
+            return true;
+        } else if ($test_all){
+            return MD5($password)==$hash;
+        } else {
+            return false;
+        }
+
+    }
+
+    function password_verify_update($password, $hash, $idst){
+        if ($this->password_verify($password, $hash)){
+            return true;
+        } else if ($this->encrypt($password,false)==$hash) {
+            return $this->updateUser(
+                $idst,
+                false,
+                false,
+                false,
+                $password,
+                false,
+                FALSE,
+                false
+            );
+        } else {
+            return false;
+        }
     }
 
     function getAdminLevels()
