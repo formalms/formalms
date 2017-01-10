@@ -172,8 +172,8 @@ function sl_copy( $srcFile, $dstFile ) {
 
 function sl_upload_fs( $srcFile, $dstFile ) {
 
-	$re = move_uploaded_file($srcFile, $GLOBALS['where_files_relative'].$dstFile);
-	if(!$re) die("Error on move_uploaded_file from: $srcFile to $dstFile");
+	$re = move_uploaded_file($srcFile, _files_.$dstFile);
+	if(!$re) die("Error on move_uploaded_file from: $srcFile to ".$dstFile);
 	return $re;
 }
 

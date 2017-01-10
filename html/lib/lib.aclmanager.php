@@ -10,6 +10,7 @@
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
+require_once(_base_.'/addons/password_compact/password.php');
 
 define("ACL_SEPARATOR", "/");
 define("ACL_TABLE_ST", "_st");
@@ -2412,11 +2413,56 @@ class DoceboACLManager
     /**
      * this function encrypt the given string
      * @param string $text text to encrypt
+     * @param int $password_hash
      * @return string encrypted text
+     * @internal param int $password_ash
+     * @internal param bool $alg
      */
-    function encrypt($text)
+    function encrypt($text, $password_hash=PASSWORD_DEFAULT)
     {
-        return MD5($text);
+        if ($password_hash){
+            return password_hash($text, $password_hash);
+        } else {
+            return MD5($text);
+        }
+    }
+
+    /**
+     * @param $password
+     * @param $hash
+     * @param bool $test_all
+     * @return bool
+     * @internal param bool $test_also_old
+     * @internal param int $password_hash
+     */
+    function password_verify($password, $hash, $test_all=false){
+        if (password_verify($password, $hash)){
+            return true;
+        } else if ($test_all){
+            return MD5($password)==$hash;
+        } else {
+            return false;
+        }
+
+    }
+
+    function password_verify_update($password, $hash, $idst){
+        if ($this->password_verify($password, $hash)){
+            return true;
+        } else if ($this->encrypt($password,false)==$hash) {
+            return $this->updateUser(
+                $idst,
+                false,
+                false,
+                false,
+                $password,
+                false,
+                FALSE,
+                false
+            );
+        } else {
+            return false;
+        }
     }
 
     function getAdminLevels()
