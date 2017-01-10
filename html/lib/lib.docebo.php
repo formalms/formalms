@@ -141,7 +141,7 @@ class Docebo {
         $file = str_replace(_base_.'/', '', $file);
 		//if(!class_exists('PluginManager', false)) return $file;
 		if(!Get::cfg('enable_plugins', false)) return _base_.'/'.$file;
-        
+
 		$plugin_files = PluginManager::find_files();
 		
 		if(isset($plugin_files[$file])) {
