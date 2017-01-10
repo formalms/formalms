@@ -21,17 +21,17 @@
  * @abstract
  */
 
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.associate.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.break_page.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.choice.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.choice_multiple.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.extended_text.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.hot_text.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.inline_choice.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.numerical.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.text_entry.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.title.php'));
-require_once(Docebo::inc(_folder_lms_.'/modules/question/class.upload.php'));
+require_once(Docebo::inc(_lms_.'/modules/question/class.associate.php'));
+require_once(Docebo::inc(_lms_.'/modules/question/class.break_page.php'));
+require_once(Docebo::inc(_lms_.'/modules/question/class.choice.php'));
+require_once(Docebo::inc(_lms_.'/modules/question/class.choice_multiple.php'));
+require_once(Docebo::inc(_lms_.'/modules/question/class.extended_text.php'));
+require_once(Docebo::inc(_lms_.'/modules/question/class.hot_text.php'));
+require_once(Docebo::inc(_lms_.'/modules/question/class.inline_choice.php'));
+require_once(Docebo::inc(_lms_.'/modules/question/class.numerical.php'));
+require_once(Docebo::inc(_lms_.'/modules/question/class.text_entry.php'));
+require_once(Docebo::inc(_lms_.'/modules/question/class.title.php'));
+require_once(Docebo::inc(_lms_.'/modules/question/class.upload.php'));
 
 class Question {
 
