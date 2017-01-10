@@ -10,6 +10,7 @@
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
+require_once(_base_.'/addons/password_compact/password.php');
 
 define("ACL_SEPARATOR", "/");
 define("ACL_TABLE_ST", "_st");
