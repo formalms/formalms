@@ -1362,7 +1362,7 @@ function thread() {
 								.Form::closeForm()
 								.'</div>';
 	
-	if($text_inner != '') $tb->addActionAdd($text_inner);
+	//if($text_inner != '') $tb->addActionAdd($text_inner);
 	if($mod_perm || $moderate) {
 					
 		require_once(_base_.'/lib/lib.dialog.php');
