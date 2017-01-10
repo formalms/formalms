@@ -55,10 +55,8 @@ $GLOBALS['page']->add(
 define("_USER_FPATH_INTERNAL", "/common/users/");
 define("_USER_FPATH", $GLOBALS["where_files_relative"]._USER_FPATH_INTERNAL);
 
-//define("_FPATH_INTERNAL", "/appCms/media/");
 define("_FPATH", $GLOBALS["where_files_relative"]._FPATH_INTERNAL);
 
-//define("_PPATH_INTERNAL", "/appCms/media/preview/");
 define("_PPATH", $GLOBALS["where_files_relative"]._PPATH_INTERNAL);
 
 
@@ -81,28 +79,6 @@ switch ($op) {
 // --------------------------------------------------------------------------------------------
 
 
-function canAccessCmsMedia() {
-
-	require_once(_base_.'/lib/lib.platform.php');
-	$pl =& PlatformManager::createInstance();
-
-	if(!$pl->isLoaded('cms')) return false;
-
-	$level_id = Docebo::user()->getUserLevelId();
-	if(Docebo::user()->isAnonymous()) return false;
-
-	if ( (($GLOBALS["htmledit_image_godadmin"]) && ($level_id == ADMIN_GROUP_GODADMIN)) ||
-		(($GLOBALS["htmledit_image_admin"]) && ($level_id == ADMIN_GROUP_ADMIN)) ||
-		(($GLOBALS["htmledit_image_user"]) && ($level_id == ADMIN_GROUP_USER))) {
-
-		if (($GLOBALS["where_cms"] === false) || ($GLOBALS["where_cms_relative"] === false))
-			return false; // There is no CMS installed!
-		else
-			return true;
-	} else {
-		return false;
-	}
-}
 
 
 
@@ -218,7 +194,6 @@ function showWikiSelect(& $out, & $lang) {
 
 	$res="";
 
-	//$res.=$cwp->getWikiLangFlags();
 
 	$url=getPopupBaseUrl()."&amp;op=wiki_sel";
 

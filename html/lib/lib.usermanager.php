@@ -1857,7 +1857,6 @@ class UserManagerRenderer {
 			require_once(_lms_."/modules/login/facebook.php");
 			if (isset($_SESSION['fb_info']) && is_array($_SESSION['fb_info']) && !isset($_POST['register'])) {
 				setFbRegData($_SESSION['fb_info']);
-				// $out .= '<li>'.$lang->def('_ACCOUNT_WILL_BE_CONNECTED_FB', 'login', 'cms').'</li>';
 			}
 			else {
 				$extra =getFbRegisterBox();

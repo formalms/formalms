@@ -186,7 +186,6 @@ class Get {
 	public static function cur_plat() {
 		// where are we ?
 		if(defined("LMS"))		return 'lms';
-		//elseif(defined("CMS"))	return 'cms';
 		elseif(defined("ECOM"))	return 'ecom';
 		elseif(defined("CRM"))	return 'crm';
 		return 'framework';
@@ -194,7 +193,7 @@ class Get {
 
 	/**
 	 * Return the calculated relative path form the current zone (platform) to the requested one
-	 * @param <string> $item (base, lms, cms, ...)
+	 * @param <string> $item (base, lms, ...)
 	 * @return <string> the relative path
 	 */
 	public static function rel_path($to = false) {
@@ -202,7 +201,6 @@ class Get {
 		if($to === false) {
 			if(defined("CORE"))		$to = 'adm';
 			elseif(defined("LMS"))	$to = 'lms';
-			//elseif(defined("CMS"))	$to = 'cms';
 		}
 		if(!defined('_'.$to.'_')) $to = 'base';
 		$path = _deeppath_
@@ -212,7 +210,7 @@ class Get {
 
 	/**
 	 * Return the absolute path of the platform
-	 * @param <string> $item (base, lms, cms, ...)
+	 * @param <string> $item (base, lms, ...)
 	 * @return <string> the absolute path
 	 */
 	public static function abs_path($to = false) {
@@ -220,13 +218,11 @@ class Get {
 		if($to === false) {
 			if(defined("CORE"))		$folder = _folder_adm_;
 			elseif(defined("LMS"))	$folder = _folder_lms_;
-			//elseif(defined("CMS"))	$folder = _folder_cms_;
 			elseif(defined("SCS"))	$folder = _folder_scs_;
 		} else {
 			switch (strtolower($to)) {
 				case 'adm': $folder = _folder_adm_; break;
 				case 'lms': $folder = _folder_lms_; break;
-				//case 'cms': $folder = _folder_cms_; break;
 				case 'scs': $folder = _folder_scs_; break;
 			}
 		}
@@ -237,7 +233,7 @@ class Get {
 
 	/**
 	 * Return the calculated relative path form the current zone (platform) to the requested one
-	 * @param <string> $item (base, lms, cms, ...)
+	 * @param <string> $item (base, lms, ...)
 	 * @return <string> the relative path
 	 */
 	public static function tmpl_path($item = false) {

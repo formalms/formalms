@@ -136,7 +136,6 @@ class Boot {
 
 		$GLOBALS['prefix_fw']	= $cfg['prefix_fw'];
 		$GLOBALS['prefix_lms']	= $cfg['prefix_lms'];
-		//$GLOBALS['prefix_cms']	= $cfg['prefix_cms'];
 		$GLOBALS['prefix_scs']	= $cfg['prefix_scs'];
 		$GLOBALS['prefix_ecom'] = $cfg['prefix_ecom'];
 		$GLOBALS['prefix_crm']	= $cfg['prefix_crm'];
@@ -177,9 +176,6 @@ class Boot {
 		// todo: backward compatibility
 		$GLOBALS['where_framework_relative'] = ( !defined("CORE") ? _deeppath_ : '' )._folder_adm_;
 		$GLOBALS['where_lms_relative']		 = ( !defined("LMS") ? _deeppath_ : '' )._folder_lms_;
-		//$GLOBALS['where_cms_relative']		 = ( !defined("CMS") ? _deeppath_ : '' )._folder_cms_;
-		//$GLOBALS['where_ecom_relative']	 = ( !defined("ECOM") ? _deeppath_ : '' )._folder_ecom_;
-		//$GLOBALS['where_crm_relative']	 = _deeppath_._folder_crm_;
 		$GLOBALS['where_scs_relative']		 = _deeppath_._folder_scs_;
 		$GLOBALS['where_files_relative']	 = _deeppath_._folder_files_;
 
@@ -190,9 +186,6 @@ class Boot {
 
 		$GLOBALS['where_framework'] = _adm_;
 		$GLOBALS['where_lms']		= _lms_;
-		//$GLOBALS['where_cms']		= _cms_;
-		//$GLOBALS['where_crm']		= _crm_;
-		//$GLOBALS['where_ecom']	= _ecom_;
 		$GLOBALS['where_scs']		= _scs_;
 		$GLOBALS['where_files']		= _files_;
 
