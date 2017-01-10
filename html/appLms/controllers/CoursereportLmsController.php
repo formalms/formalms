@@ -556,7 +556,7 @@ class CoursereportLmsController extends LmsController
         $id_students = array_keys($students);
         $students_info =& $acl_man->getUsers($id_students);
 
-        $reportsArrayTest = $this->model->getReportsFilteredBySourceOf('test');
+        $reportsArrayTest = $this->model->getReportsFilteredBySourceOf(CoursereportLms::SOURCE_OF_TEST);
 
         foreach ($reportsArrayTest as $reportLms) {
             $included_test[$reportLms->getIdSource()] = $reportLms->getIdSource();
@@ -1874,8 +1874,7 @@ class CoursereportLmsController extends LmsController
 
         $courseReportLms = new CoursereportLms($_SESSION['idCourse']);
 
-
-        $info_final = $courseReportLms->getReportsFilteredBySourceOf('final_vote');
+        $info_final = $courseReportLms->getReportsFilteredBySourceOf(CoursereportLms::SOURCE_OF_FINAL_VOTE);
 
         // XXX: Retrive all reports (test and so), and set it
 
