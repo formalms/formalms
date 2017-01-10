@@ -1246,38 +1246,38 @@ function thread() {
 		if($mod_perm || $moderate) {
 
 			$thread_functions = '<div class="btn-group thread_functions visible-xs visible-lg">
-														<a class="btn btn-default" href="index.php?modname=forum&amp;op=modthread&amp;idThread='.$idT.'" title="'.$lang->def('_MOD').' : '.strip_tags($title).'">
-															<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-														</a>
-														<a class="btn btn-default" href="index.php?modname=forum&amp;op=movethread&amp;id_forum='.$id_forum.'&amp;id_thread='.$idT.'">
-															<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
-														</a>
-														<a class="btn btn-default" href="index.php?modname=forum&amp;op=delthread&amp;idThread='.$idT.'" title="'.$lang->def('_DEL').' : '.strip_tags($title).'">
-															<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-														</a>
-													</div>
-													<div class="dropdown hidden-xs hidden-lg">
-														<button class="btn btn-default dropdown-toggle" type="button" id="threadsFunctions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-														  <span class="glyphicon glyphicon-cog"></span> &nbsp;<span class="caret"></span>
-														</button>
-														<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="threadFunctions">
-															<li>
-															  <a href="index.php?modname=forum&amp;op=modthread&amp;idThread='.$idT.'">
-															  	<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Modifica
-															  </a>
-															</li>
-															<li>
-															  <a href="index.php?modname=forum&amp;op=movethread&amp;id_forum='.$id_forum.'&amp;id_thread='.$idT.'">
-															  	<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Sposta
-															  </a>
-															</li>
-															<li>
-															  <a href="index.php?modname=forum&amp;op=delthread&amp;idThread='.$idT.'">
-															  	<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Elimina
-															  </a>
-															</li>
-														</ul>
-													</div>';
+									<a class="btn btn-default" href="index.php?modname=forum&amp;op=modthread&amp;idThread='.$idT.'" title="'.$lang->def('_MOD').' : '.strip_tags($title).'">
+										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+									</a>
+									<a class="btn btn-default" href="index.php?modname=forum&amp;op=movethread&amp;id_forum='.$id_forum.'&amp;id_thread='.$idT.'">
+										<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+									</a>
+									<a class="btn btn-default" href="index.php?modname=forum&amp;op=delthread&amp;idThread='.$idT.'" title="'.$lang->def('_DEL').' : '.strip_tags($title).'">
+										<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+									</a>
+								</div>
+								<div class="dropdown hidden-xs hidden-lg">
+									<button class="btn btn-default dropdown-toggle" type="button" id="threadsFunctions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+									  <span class="glyphicon glyphicon-cog"></span> &nbsp;<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="threadFunctions">
+										<li>
+										  <a href="index.php?modname=forum&amp;op=modthread&amp;idThread='.$idT.'">
+											<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Modifica
+										  </a>
+										</li>
+										<li>
+										  <a href="index.php?modname=forum&amp;op=movethread&amp;id_forum='.$id_forum.'&amp;id_thread='.$idT.'">
+											<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Sposta
+										  </a>
+										</li>
+										<li>
+										  <a href="index.php?modname=forum&amp;op=delthread&amp;idThread='.$idT.'">
+											<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Elimina
+										  </a>
+										</li>
+									</ul>
+								</div>';
 
 			$content[] = $thread_functions;
 
@@ -1370,13 +1370,12 @@ function thread() {
 	}
 	
 	$GLOBALS['page']->add($nav_bar->getNavBar($ini), 'content');
-	if (isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID]) && count($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID]))
-		$GLOBALS['page']->add('<div><p align="right"><a href="index.php?modname=forum&op=thread&idForum='.$id_forum.'&amp;allread=1">'.$lang->def('_ALL_THREAD_READ').'</a></p>', 'content');
-		$GLOBALS['page']->add($tb->getTable(), 'content');
-		$GLOBALS['page']->add(
-			$nav_bar->getNavBar($ini)
-			.'</div>', 'content');
-
+	if (isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID]) && count($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID])) {
+		$GLOBALS['page']->add('<div><p align="right"><a href="index.php?modname=forum&op=thread&idForum=' . $id_forum . '&amp;allread=1">' . $lang->def('_ALL_THREAD_READ') . '</a></p>', 'content');
+	}
+	$GLOBALS['page']->add($tb->getTable(), 'content');
+	$GLOBALS['page']->add($text_inner, 'content');
+	$GLOBALS['page']->add($nav_bar->getNavBar($ini) . '</div>', 'content');
 
 	// checkPerm('view');
 
