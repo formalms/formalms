@@ -2559,7 +2559,7 @@ class CoursereportLmsController extends LmsController
 
     function movereport($direction)
     {
-        checkPerm('mod');
+        checkPerm('mod', true, $this->_mvc_name);
 
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
 
