@@ -48,14 +48,6 @@ function &createModule($module_name, $class_name = NULL) {
 			$def_class_name = 'Module';
 		};break;
         
-        /*
-		case "cms" : {
-			$where = _cms_.'/admin';
-			$whereCustomscripts = _base_.'/customscripts'.'/'._folder_cms_.'/admin';
-#			$whereCustomscripts = _cms_.'/customscripts/admin';
-			$def_class_name = 'Module';
-		};break;
-        */
         
 		case "scs" : {
 			$where = _scs_.'/admin';

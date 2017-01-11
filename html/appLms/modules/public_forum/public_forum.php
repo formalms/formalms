@@ -1002,12 +1002,6 @@ function modforumaccess_old()
     $perm["write"]["alt"] = $lang->def("_ADD");
     $perm["upload"]["img"] = getPathImage() . "standard/download.png";
     $perm["upload"]["alt"] = $lang->def("_ALT_UPLOAD");
-    /*$perm["add"]["img"] = getPathImage()."standard/add.png";
-	$perm["add"]["alt"] = $lang->def("_ADD");
-	$perm["mod"]["img"] = getPathImage()."standard/edit.png";
-	$perm["mod"]["alt"] = $lang->def("_MOD");
-	$perm["del"]["img"] = getPathImage()."standard/delete.png";
-	$perm["del"]["alt"] = $lang->def("_DEL");*/
     $perm["moderate"]["img"] = '';
     $perm["moderate"]["alt"] = $lang->def("_MODERATE");
 
@@ -1132,8 +1126,6 @@ function saveForumPerm($idForum, $selected_items, $database_items)
         }
     }
 
-    //include_once($GLOBALS['where_cms']."/lib/lib.reloadperm.php");
-    //setCmsReloadPerm();
 }
 
 function getForumPermList()
@@ -1260,21 +1252,6 @@ function thread()
     );
     $GLOBALS['page']->add(
         getTitleArea($page_title, 'forum')
-        // .'<div class="std_block">'
-        // .Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search&amp;idForum='.$id_forum)
-        // .'<div class="quick_search_form">'
-        // .'<label for="search_arg">'.$lang->def('_SEARCH_LABEL').'</label> '
-        // .Form::getInputTextfield(	'search_t',
-        // 							'search_arg',
-        // 							'search_arg',
-        // 							'',
-        // 							$lang->def('_SEARCH'), 255, '' )
-        // .'<input class="search_b" type="submit" id="search_button" name="search_button" value="'.$lang->def('_SEARCH').'" />'
-        // .'</div>'
-        // .Form::closeForm()
-        , 'content');
-
-    // $tb = new Table(Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'), 'thread-summary');
 
     $threads_order = '<div class="dropdown pull-right">
 										  <button class="btn btn-default dropdown-toggle" type="button" id="threadsOrder" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -1300,33 +1277,7 @@ function thread()
 
     $tb = new Table(Get::sett('visuItem'), $lang->def('_THREAD_CAPTION') . $threads_order, $lang->def('_THRAD_SUMMARY'), 'thread-summary mobile-reverse');
     $tb->force_print = true;
-    // $img_up 	= '<img src="'.getPathImage().'standard/ord_asc.png" alt="'.$lang->def('_ORD_ASC').'" />';
-    // $img_down 	= '<img src="'.getPathImage().'standard/ord_desc.png" alt="'.$lang->def('_ORD_DESC').'" />';
 
-    // $cont_h = array(
-    // 	'<img src="'.getPathImage().'standard/msg_read.png" title="'.$lang->def('_FREET').'" alt="'.$lang->def('_FREE').'" />',
-    // 	'<a href="'.$jump_url.'&amp;ord='.( $ord == 'obj' ? 'obji' : 'obj' ).'" title="'.$lang->def('_ORDER_BY').'">'
-    // 		.( $ord == 'obj' ? $img_up : ( $ord == 'obji' ? $img_down : '' ) ).$lang->def('_THREAD').'</a>',
-    // 	$lang->def('_NUMREPLY'),
-    // 	'<a href="'.$jump_url.'&amp;ord='.( $ord == 'auth' ? 'authi' : 'auth' ).'" title="'.$lang->def('_ORDER_BY').'">'
-    // 		.( $ord == 'auth' ? $img_up : ( $ord == 'authi' ? $img_down : '' ) ).$lang->def('_AUTHOR').'</a>',
-    // 	//$lang->def('_NUMVIEW'),
-    // 	//$lang->def('_DATE'),
-    // 	'<a href="'.$jump_url.'&amp;ord='.( $ord == 'post' ? 'posti' : 'post' ).'" title="'.$lang->def('_ORDER_BY').'">'
-    // 		.( $ord == 'post' ? $img_up : ( $ord == 'posti' ? $img_down : '' ) ).$lang->def('_LASTPOST').'</a>'
-    // );
-    // $type_h = array('image', '', 'align_center', 'align_center', 'image',
-    // //'align_center',
-    // 'align_center');
-    // if($mod_perm || $moderate) {
-
-    // 	//$cont_h[] = '<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').'" title="'.$lang->def('_MOD').'" />';
-    // 	$type_h[] = 'image';
-    // 	//$cont_h[] = '<img src="'.getPathImage().'standard/move.png" alt="'.$lang->def('_MOVE').'" title="'.$lang->def('_MOVETHREAD_TITLE').'" />';
-    // 	$type_h[] = 'image';
-    // 	//$cont_h[] = '<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" title="'.$lang->def('_DEL').'" />';
-    // 	$type_h[] = 'image';
-    // }
 
     $type_h = array(
         'hidden-xs text-center',
@@ -1338,7 +1289,7 @@ function thread()
     );
 
     $tb->setColsStyle($type_h);
-    //$tb->addHead($cont_h);
+
     while (list($idT, $t_author, $posted, $title, $num_post, $num_view, $locked, $erased, $important) = sql_fetch_row($re_thread)) {
 
         $msg_for_page = Get::sett('visuItem');
@@ -1431,8 +1382,6 @@ function thread()
                     : ''));
 
         $content[] = $t_author;
-        //$content[] = $num_view;
-        //$content[] = Format::date($posted);
 
         $mobile_content = $content;
 
@@ -1476,13 +1425,6 @@ function thread()
 
             $content[] = $thread_functions;
 
-            // $content[] = '<a href="index.php?modname=public_forum&amp;op=modthread&amp;idThread='.$idT.'" '
-            // 	.'title="'.$lang->def('_MOD').' : '.strip_tags($title).'">'
-            // 	.'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').' : '.strip_tags($title).'" /></a>';
-            // $content[] = '<a href="index.php?modname=public_forum&amp;op=movethread&amp;id_forum='.$id_forum.'&amp;id_thread='.$idT.'"><img src="'.getPathImage().'standard/move.png" alt="'.$lang->def('_MOVE').'" title="'.$lang->def('_MOVETHREAD_TITLE').'" /></a>';
-            // $content[] = '<a href="index.php?modname=public_forum&amp;op=delthread&amp;idThread='.$idT.'" '
-            // 	.'title="'.$lang->def('_DEL').' : '.strip_tags($title).'">'
-            // 	.'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').' : '.strip_tags($title).'" /></a>';
         }
         $tb->addBody($content);
     }

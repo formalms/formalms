@@ -26,7 +26,6 @@ if(!Docebo::user()->isAnonymous() && (!isset($_GET['modname']) || $_GET['modname
 
 	require_once(_base_.'/lib/lib.platform.php');
 	$pm = PlatformManager::createInstance();
-	//if($pm->getHomePlatform() == 'cms') Util::jump_to(_folder_cms_.'/index.php');
 	Util::jump_to(_folder_lms_.'/index.php');
 }
 
@@ -59,25 +58,13 @@ if($mode[0] == "on"){
 		// Se la password non corrisponde lo mando alla pagina di manutenzione
 		if($passwd[0] != $_GET["passwd"]){
 			$GLOBALS['maintenance'] = "on";
-			//Util::jump_to('maintenance.html');// Modificata index.php togliendo box login
 		}
 	}else{
 		$GLOBALS['maintenance'] = "on";
-		//Util::jump_to('maintenance.html');// Modificata index.php togliendo box login
 	}
 }
 
-// redirect if the main page is the cms
-/*
-$query_platform = "SELECT platform
-FROM ".$GLOBALS['prefix_fw']."_platform
-WHERE main = 'true'
-LIMIT 0, 1";
-list($sel) = $db->fetch_row($db->query($query_platform));
-if($sel == 'cms') {
-	Util::jump_to(_folder_cms_);
-}
-*/
+
 
 // load the requested module
 $module_cfg = false;

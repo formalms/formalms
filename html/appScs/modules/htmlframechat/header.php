@@ -26,8 +26,6 @@ Boot::init(BOOT_PAGE_WR);
 
 $path_to_root =substr(_deeppath_, -1);
 
-//if ($GLOBALS["where_cms_relative"] != false)
-//	$GLOBALS["where_cms_relative"]=$path_to_root.'/'.$GLOBALS["where_cms_relative"];
 
 if ($GLOBALS["where_lms_relative"] != false)
 	$GLOBALS["where_lms_relative"]=$path_to_root.'/'.$GLOBALS["where_lms_relative"];
@@ -82,7 +80,6 @@ if( !sql_select_db($dbname, $GLOBALS['dbConn']) )
 switch (Get::cur_plat()) {
 
 	case "lms":
-	case "cms":
 	case "kms": {
 		$sn = "docebo_session";
 		$user_session = 'public_area';
