@@ -2450,6 +2450,9 @@ class DoceboACLManager
         if ($this->password_verify($password, $hash)){
             return true;
         } else if ($this->encrypt($password,false)==$hash) {
+            return true;
+            // TODO: This will be in forma.lms 2.0
+            /*
             return $this->updateUser(
                 $idst,
                 false,
@@ -2460,6 +2463,7 @@ class DoceboACLManager
                 FALSE,
                 false
             );
+            */
         } else {
             return false;
         }
