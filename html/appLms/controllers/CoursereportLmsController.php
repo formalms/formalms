@@ -639,11 +639,12 @@ class CoursereportLmsController extends LmsController
 
                 foreach ($reportsArray as $info_report) {
 
-                    if ($info_report->getSourceOf() != "final_vote") {
+                    if ($info_report->getSourceOf() != CoursereportLms::SOURCE_OF_FINAL_VOTE) {
 
                         $testObj = Learning_Test::load($info_report->getIdSource());
 
                         switch ($info_report->getSourceOf()) {
+
                             case CoursereportLms::SOURCE_OF_TEST : {
 
                                 $values = array();
@@ -795,6 +796,7 @@ class CoursereportLmsController extends LmsController
                                 break;
                             case
                             CoursereportLms::SOURCE_OF_SCOITEM    : {
+                                $values = array();
                                 $scormItem = new ScormLms($info_report->getIdSource(), $idst_user);
 
                                 $value = array(
@@ -823,6 +825,7 @@ class CoursereportLmsController extends LmsController
                             }
                                 break;
                             case CoursereportLms::SOURCE_OF_ACTIVITY    : {
+                                $values = array();
                                 $score = 0;
                                 if (isset($reports_score[$info_report->getIdReport()][$idst_user])) {
                                     switch ($reports_score[$info_report->getIdReport()][$idst_user]['score_status']) {
