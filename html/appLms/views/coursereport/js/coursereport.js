@@ -46,6 +46,8 @@ window.CourseReport = (function ($) {
             },
             success: function (data) {
                 $('.loading').html('');
+                $('.js-user-level-filter').removeAttr('disabled');
+                $('.js-user-level-filter').removeClass('is-disabled');
                 var parsedData = JSON.parse(data);
 
                 callback(parsedData);

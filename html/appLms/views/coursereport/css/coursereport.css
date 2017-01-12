@@ -298,3 +298,7 @@ tfoot.empty td {
     text-align: center;
     font-size: 18px;
 }
+
+.is-disabled {
+    opacity: .4;
+}

@@ -1,9 +1,15 @@
 <div class="filter-container">
-  <select class="filter">
-    <option value="" disabled selected hidden>Filter</option>
+  <select class="filter js-user-level-filter is-disabled" disabled>
+    {% for i in 0..7 %}
+      {% if loop.first %}
+        <option value="false" selected>{{ translate('_ALL')}}</option>
+      {% else %}
+        <option value="{{ loop.index0 }}">{{ translate('_LEVEL_'~loop.index0)}}</option>
+      {% endif %}
+    {% endfor %}
   </select>
 
-  <div class="button--exportcsv"><a href="index.php?modname=coursereport&op=export&type_filter=">EXPORT CSV</a></div>
+  <div class="button--exportcsv"><a href="index.php?r=lms/coursereport/export">EXPORT CSV</a></div>
 </div>
 
 <div class="table-responsive">
