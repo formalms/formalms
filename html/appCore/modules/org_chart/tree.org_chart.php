@@ -679,8 +679,8 @@ class TreeView_OrgView extends TreeView {
 					
 					// add to group level 
 					$this->aclManager->addToGroup($userlevel,$idst );
-					
-					if(($this->aclManager->absoluteId($userid) != $info[ACL_INFO_USERID]) || ($this->aclManager->encrypt($pass) != $info[ACL_INFO_PASS])) {
+
+					if(($this->aclManager->absoluteId($userid) != $info[ACL_INFO_USERID]) || ($this->aclManager->password_verify_update($pass, $info[ACL_INFO_PASS]))) {
 						
 						require_once(_base_.'/lib/lib.eventmanager.php'); 
 						$pl_man = PlatformManager::createInstance();

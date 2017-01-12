@@ -2445,7 +2445,8 @@ class UserManagerRenderer {
 		$acl_man =& Docebo::user()->getAclManager();
 		$user_info = $acl_man->getUser($idst, false);
 
-		if(!$acl_man->password_verify($_POST['oldpwd'],$user_info[ACL_INFO_PASS],true)) {
+		$password = new Password($_POST['oldpwd']);
+		if(!$password->verify($user_info[ACL_INFO_PASS])) {
 
 			return array( 	'error' => true,
 							'msg' => getErrorUi($lang->def('_ERR_PWD_OLD')) );

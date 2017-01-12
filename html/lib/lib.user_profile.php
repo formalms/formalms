@@ -2420,12 +2420,12 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 			// control password
 			if(strlen($_POST['up_new_pwd']) < Get::sett('pass_min_char')) {
 
-				return $lang->def('_PASSWORD_TOO_SHORT');
+				return $this->_lang->def('_PASSWORD_TOO_SHORT');
 			}
 			if( Get::sett('pass_alfanumeric') == 'on' ) {
 				if( !preg_match('/[a-z]/i', $_POST['up_new_pwd']) || !preg_match('/[0-9]/', $_POST['up_new_pwd']) ) {
 
-					return $lang->def('_ERR_PASSWORD_MUSTBE_ALPHA');
+					return $this->_lang->def('_ERR_PASSWORD_MUSTBE_ALPHA');
 				}
 			}
 			//check password history

@@ -599,6 +599,19 @@ class SettingAdm extends Model
                     echo '<br/><a class="btn btn-default" role="button" href="'.$var_value.'">'.$lang->def('_' . strtoupper($var_name)).'</a>';//($var_name,$lang->def('_' . strtoupper($var_name)),$lang->def('_' . strtoupper($var_name)));//$lang->def('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
                 };
                     break;
+                case "password_algorithms" : {
+                    //drop down hteditor
+                    $layout = array(
+                        1 => Lang::t('PASSWORD_BCRYPT'),
+                        0 => Lang::t('PASSWORD_MD5')
+                    );
+                    echo Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
+                        $var_name,
+                        'option['.$var_name.']',
+                        $layout,
+                        $var_value);
+                };
+                    break;
 				default : {
 					//string or int
                     echo Form::getTextfield($lang->def('_' . strtoupper($var_name)),

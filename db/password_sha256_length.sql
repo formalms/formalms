@@ -1,1 +1,0 @@
-ALTER TABLE `core_user` CHANGE `pass` `pass` VARCHAR(60) NOT NULL;

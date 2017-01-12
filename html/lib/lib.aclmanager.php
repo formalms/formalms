@@ -2420,54 +2420,41 @@ class DoceboACLManager
      * @internal param int $password_ash
      * @internal param bool $alg
      */
-    function encrypt($text, $password_hash=PASSWORD_DEFAULT)
-    {
-        if ($password_hash){
-            return password_hash($text, $password_hash);
-        } else {
-            return MD5($text);
-        }
+    function encrypt($text) {
+        $password=new Password($text);
+        return $password->hash();
     }
 
     /**
-     * @param $password
+     * @param $text
      * @param $hash
-     * @param bool $test_all
-     * @return bool
-     * @internal param bool $test_also_old
-     * @internal param int $password_hash
+     * @param $idst
+     * @return bool|TRUE
+     * @internal param $password
      */
-    function password_verify($password, $hash, $test_all=false){
-        if (password_verify($password, $hash)){
-            return true;
-        } else if ($test_all){
-            return MD5($password)==$hash;
-        } else {
-            return false;
-        }
-
-    }
-
-    function password_verify_update($password, $hash, $idst){
-        if ($this->password_verify($password, $hash)){
-            return true;
-        } else if ($this->encrypt($password,false)==$hash) {
-            return true;
-            // TODO: This will be in forma.lms 2.0
-            /*
-            return $this->updateUser(
-                $idst,
-                false,
-                false,
-                false,
-                $password,
-                false,
-                FALSE,
-                false
-            );
-            */
-        } else {
-            return false;
+    function password_verify_update($text, $hash, $idst=false) {
+        $password = new Password($text);
+        switch ($password->verify($hash)){
+            case PASSWORD_INCORRECT:
+                return false;
+            case PASSWORD_CORRECT:
+                return true;
+            case PASSWORD_UPDATE:{
+                if ($idst){
+                    return $this->updateUser(
+                        $idst,
+                        false,
+                        false,
+                        false,
+                        $text,
+                        false,
+                        FALSE,
+                        false
+                    );
+                } else {
+                    return true;
+                }
+            }
         }
     }
 
