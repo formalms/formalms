@@ -16,13 +16,15 @@ window.CourseReport = (function ($) {
      * ajax call used to populate the details table
      * @param   {function}   callback   -   callback used to handle the data given back from the ajax
      * @param   {array}   tests   -   array with the ids of the tests
-     * @param   {int}   maxColumns   -   number of columns in the detail table
+     * @param   {int}   maxColumns   -   number of columns in the detail table - FOR FUTURE IMPLEMENTATIONS
+     * @param   {int}   filter   -   filter code
      */
-    var loadUserData = function (callback, tests, maxColumns) {
+    var loadUserData = function (callback, tests, filter) {
 
         var _data = {
-          'courseId': 'id',
-          'selected_tests': []
+            'courseId': 'id',
+            'selected_tests': [],
+            'type_filter': filter || false
         };
 
 //        var _maxCol = maxColumns;
@@ -220,6 +222,17 @@ window.CourseReport = (function ($) {
 
     };
 
+    var filterUsersByLevel = function (filter) {
+        var userData;
+
+        clearDetailTable();
+
+        loadUserData(function (data) {
+            userData = data;
+            fillTable(userData);
+        }, testData, filter);
+    };
+
     /**
      * function used to clear the detail table
      */
@@ -245,6 +258,10 @@ window.CourseReport = (function ($) {
             }, testData);
 
             fillActivitiesFilter();
+        });
+
+        $('.js-user-level-filter').on('change', function () {
+           filterUsersByLevel($(this).val());
         });
 
         $('.js-user-detail-filter').on('change', function () {
