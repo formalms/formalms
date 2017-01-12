@@ -30,7 +30,7 @@ class CoursereportLmsController extends LmsController
 
     public function coursereport()
     {
-        //checkPerm('view');
+        //checkPerm('view', true, $this->_mvc_name);
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
 
@@ -1031,7 +1031,7 @@ class CoursereportLmsController extends LmsController
 
     function scormreport($idTest)
     {
-        checkPerm('view');
+        checkPerm('view', true, $this->_mvc_name);
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
 
@@ -2610,7 +2610,7 @@ class CoursereportLmsController extends LmsController
 
     function export()
     {
-        checkPerm('view');
+        checkPerm('view', true, $this->_mvc_name);
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
         require_once(_base_ . '/lib/lib.form.php');
