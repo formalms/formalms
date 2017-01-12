@@ -188,9 +188,11 @@ tfoot.empty td {
     margin: 0;
     margin-top: 5px;
     padding: 0 10px;
+    height: 0;
 
     opacity: 0;
     pointer-events: none;
+
 }
 
 .button--add.active .dropdown  {
@@ -202,6 +204,13 @@ tfoot.empty td {
     opacity: 1;
     pointer-events: auto;
     padding-bottom: 0;
+    height: 58px;
+
+    -webkit-transition: height .2s ease-in 0s;
+    -moz-transition: height .2s ease-in 0s;
+    -ms-transition: height .2s ease-in 0s;
+    -o-transition: height .2s ease-in 0s;
+    transition: height .2s ease-in 0s;
 }
 
 .button--add .dropdown li a {
