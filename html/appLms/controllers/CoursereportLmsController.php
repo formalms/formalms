@@ -1098,7 +1098,7 @@ class CoursereportLmsController extends LmsController
 
     function testvote()
     {
-        checkPerm('mod');
+        checkPerm('mod', true, $this->_mvc_name);
 
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
@@ -1379,7 +1379,7 @@ class CoursereportLmsController extends LmsController
 
     function testDetail()
     {
-        checkPerm('mod');
+        checkPerm('mod', true, $this->_mvc_name);
 
         require_once(_base_ . '/lib/lib.table.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
@@ -1460,7 +1460,7 @@ class CoursereportLmsController extends LmsController
 
     function testreview()
     {
-        checkPerm('mod');
+        checkPerm('mod', true, $this->_mvc_name);
 
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
@@ -1593,7 +1593,7 @@ class CoursereportLmsController extends LmsController
     function testdelete()
     {
 
-        checkPerm('mod');
+        checkPerm('mod', true, $this->_mvc_name);
 
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
@@ -1634,7 +1634,7 @@ class CoursereportLmsController extends LmsController
 
     function finalvote()
     {
-        checkPerm('mod');
+        checkPerm('mod', true, $this->_mvc_name);
 
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once(_base_ . '/lib/lib.form.php');
@@ -1792,7 +1792,7 @@ class CoursereportLmsController extends LmsController
 
     function roundtest()
     {
-        checkPerm('mod');
+        checkPerm('mod', true, $this->_mvc_name);
 
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
@@ -1818,7 +1818,7 @@ class CoursereportLmsController extends LmsController
 
     function roundreport()
     {
-        checkPerm('mod');
+        checkPerm('mod', true, $this->_mvc_name);
 
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
@@ -1852,7 +1852,7 @@ class CoursereportLmsController extends LmsController
 
     function redofinal()
     {
-        checkPerm('mod');
+        checkPerm('mod', true, $this->_mvc_name);
 
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
@@ -1977,9 +1977,13 @@ class CoursereportLmsController extends LmsController
         Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
+    function addscorm() {
+        $this->modscorm();
+    }
+
     function modscorm()
     {
-        checkPerm('mod');
+        checkPerm('mod', true, $this->_mvc_name);
 
         require_once(_lms_ . '/lib/lib.coursereport.php');
         require_once(_base_ . '/lib/lib.form.php');
@@ -2178,9 +2182,13 @@ class CoursereportLmsController extends LmsController
         }
     }
 
+    function addactivity(){
+        $this->modactivity();
+    }
+
     function modactivity()
     {
-        checkPerm('mod');
+        checkPerm('mod', true, $this->_mvc_name);
 
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once(_base_ . '/lib/lib.form.php');
@@ -2286,7 +2294,7 @@ class CoursereportLmsController extends LmsController
 
     function modactivityscore()
     {
-        checkPerm('mod');
+        checkPerm('mod', true, $this->_mvc_name);
 
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once(_base_ . '/lib/lib.form.php');
@@ -2503,7 +2511,7 @@ class CoursereportLmsController extends LmsController
 
     function delactivity()
     {
-        checkPerm('mod');
+        checkPerm('mod', true, $this->_mvc_name);
 
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once(_base_ . '/lib/lib.form.php');
