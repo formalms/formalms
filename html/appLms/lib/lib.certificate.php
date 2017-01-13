@@ -42,7 +42,7 @@ class Certificate {
                 return count($this->getAssignment($filter));
         }
     
-        function getAssignment($filter){   
+        function getAssignment($filter, $pagination = false){   
                 $assigned = $this->getAssigned($filter);
                 $assignable = $this->getAssignable($filter);
                 
@@ -54,7 +54,17 @@ class Certificate {
                     $assignment[] = $as;
                 }
                 
-                return $assignment;
+                $paginated_assignment = array();
+                if($pagination) {
+                    $offset = $pagination["offset"];
+                    $limit = $offset + $pagination["num_rows"];
+                    $limit = ($limit <= count($assignment) ? $limit : count($assignment));
+                    for($i = $offset; $i < $limit; $i++) {
+                        $paginated_assignment[] = $assignment[$i];
+                    }
+                }
+
+                return $pagination ? $paginated_assignment : $assignment;
         }
 
         function getAssigned($filter){
@@ -87,6 +97,34 @@ class Certificate {
                 if (isset($filter['id_user'])) {
                         $query .= " AND ca.id_user = ".$filter['id_user'];	
                 }
+            if (isset($filter['search'])) {
+                    $query .= " AND (1 = 0";
+                    $query .= "     OR u.userid LIKE '%".$filter['search']."%'";
+                    $query .= "     OR u.lastname LIKE '%".$filter['search']."%'";
+                    $query .= "     OR u.firstname LIKE '%".$filter['search']."%'";
+                    $query .= "     OR co.code LIKE '%".$filter['search']."%'";
+                    $query .= "     OR co.name LIKE '%".$filter['search']."%'";
+                    $query .= "     OR ce.name LIKE '%".$filter['search']."%'";
+                    $query .= " )";
+            }
+            if (isset($filter['search_user'])) {
+                    $query .= " AND (1 = 0";
+                    $query .= "     OR u.userid LIKE '%".$filter['search_user']."%'";
+                    $query .= "     OR u.lastname LIKE '%".$filter['search_user']."%'";
+                    $query .= "     OR u.firstname LIKE '%".$filter['search_user']."%'";
+                    $query .= " )";
+            }
+            if (isset($filter['search_course'])) {
+                    $query .= " AND (1 = 0";
+                    $query .= "     OR co.code LIKE '%".$filter['search_course']."%'";
+                    $query .= "     OR co.name LIKE '%".$filter['search_course']."%'";
+                    $query .= " )";
+            }
+            if (isset($filter['search_cert'])) {
+                    $query .= " AND (1 = 0";
+                    $query .= "     OR ce.name LIKE '%".$filter['search_cert']."%'";
+                    $query .= " )";
+            }
                 if (!isset($filter['id_user'])) {
                     if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN)
                     {
@@ -138,6 +176,34 @@ class Certificate {
                 if (isset($filter['id_user'])) {
                         $query .= " AND cu.idUser = ".$filter['id_user'];	
                 }
+            if (isset($filter['search'])) {
+                    $query .= " AND (1 = 0";
+                    $query .= "     OR u.userid LIKE '%".$filter['search']."%'";
+                    $query .= "     OR u.lastname LIKE '%".$filter['search']."%'";
+                    $query .= "     OR u.firstname LIKE '%".$filter['search']."%'";
+                    $query .= "     OR co.code LIKE '%".$filter['search']."%'";
+                    $query .= "     OR co.name LIKE '%".$filter['search']."%'";
+                    $query .= "     OR ce.name LIKE '%".$filter['search']."%'";
+                    $query .= " )";
+            }
+            if (isset($filter['search_user'])) {
+                    $query .= " AND (1 = 0";
+                    $query .= "     OR u.userid LIKE '%".$filter['search_user']."%'";
+                    $query .= "     OR u.lastname LIKE '%".$filter['search_user']."%'";
+                    $query .= "     OR u.firstname LIKE '%".$filter['search_user']."%'";
+                    $query .= " )";
+            }
+            if (isset($filter['search_course'])) {
+                    $query .= " AND (1 = 0";
+                    $query .= "     OR co.code LIKE '%".$filter['search_course']."%'";
+                    $query .= "     OR co.name LIKE '%".$filter['search_course']."%'";
+                    $query .= " )";
+            }
+            if (isset($filter['search_cert'])) {
+                    $query .= " AND (1 = 0";
+                    $query .= "     OR ce.name LIKE '%".$filter['search_cert']."%'";
+                    $query .= " )";
+            }
                 if (!isset($filter['id_user'])) {
                     if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN)
                     {
