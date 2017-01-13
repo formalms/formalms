@@ -116,24 +116,6 @@ class Password {
         else {
             return PASSWORD_INCORRECT;
         }
-
-
-        // CLEAR->DEFAULT_HASH
-        if ($info['algorithm']==$this->algorithm_default && $info['options']==$this->algorithm_options[$this->algorithm_default] && password_verify ($this->password, $text)){
-            return PASSWORD_CORRECT;
-        }
-        // CLEAR->NOT_DEFAULT_HASH
-        else if (is_int($info['algorithm'] && password_verify($this->password, $text))){
-            return PASSWORD_UPDATE;
-        }
-        // CLEAR->MD5
-        else if ($info['algorithm']==PASSWORD_MD5 && $this->generate_hash(PASSWORD_MD5)==$text){
-            return PASSWORD_UPDATE;
-        }
-        // INCORRECT
-        else {
-            return PASSWORD_INCORRECT;
-        }
     }
     public function policies(){
         return $this->policies;
