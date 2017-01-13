@@ -266,11 +266,17 @@ class DoceboConnectionManager {
 	 * @access public
 	 **/
 	function add_connector( $file ) {
-		require_once($GLOBALS['where_framework'].'/lib/connectors/lib.connector.php');
-		require_once($GLOBALS['where_framework'].'/lib/connectors/'.$file);
-		// create function pointer. I file is connector.xxx.php the
-		// factory function should be xxx_factory
-		list(,$func_factory,) = explode('.',$file,3);
+        require_once($GLOBALS['where_framework'].'/lib/connectors/lib.connector.php');
+        $directory = $GLOBALS['where_framework'].'/lib/connectors';
+        $scanned_directory = array_diff(scandir($directory), array('..', '.', 'index.htm', 'lib.connector.php'));
+        if (!in_array($file,$scanned_directory)){
+            echo "Specified connector doesn't exist"; die();
+        } else {
+            require_once($GLOBALS['where_framework'].'/lib/connectors/'.$file);
+        }
+// create function pointer. I file is connector.xxx.php the
+// factory function should be xxx_factory
+        list(,$func_factory,) = explode('.',$file,3);
 		$func_factory .= '_factory';
 		$connector = $func_factory();
 
