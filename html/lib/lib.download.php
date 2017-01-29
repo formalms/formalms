@@ -30,62 +30,87 @@
  *
  * @return nothing
  */
-function sendFile($path, $filename, $ext = NULL, $sendname = NULL) {
+function sendFile($path, $filename, $ext = NULL, $sendname = NULL)
+{
 
-	//empty and close buffer
-	if(!($GLOBALS['where_files_relative'] == substr($path, 0, strlen($GLOBALS['where_files_relative'])))) {
-		$path = $GLOBALS['where_files_relative'].$path;
-	}
-	if($sendname === NULL) {
-		$sendname = implode('_', array_slice(explode('_', $filename), 3));
-		if($sendname == '') $sendname = $filename;
-	}
+    \appCore\Events\DispatcherManager::addListener(
+        \appCore\Events\Core\DownloadEvent::EVENT_NAME,
+        'sendFileFromFS'
+	);
 
-	if($ext === NULL || $ext === false) {
-		$ext = array_pop(explode('.', $filename));
+    $event = new \appCore\Events\Core\DownloadEvent($path, $filename, $ext, $sendname);
+    \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\DownloadEvent::EVENT_NAME, $event);
+}
 
-	}
-	if(substr($sendname, - strlen($ext)) != $ext) $sendname .= '.'.$ext;
 
-	@DbConn::getInstance()->close();
 
-	ob_end_clean();
-	session_write_close();
-	//ini_set("output_buffering", 0);
-	//Download file
-	//send file length info
-	header('Content-Length:'. filesize($path.$filename));
-	//content type forcing dowlad
-	header("Content-type: application/download; charset=utf-8\n");
-	//cache control
-	header("Cache-control: private");
-	//sending creation time
-	header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-	//content type
-	//if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
-	if((isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' ) 
-	or (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https') 
-	or ( isset($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) == 'on') ) {
-		header('Pragma: private');
-	}
-	header('Content-Disposition: attachment; filename="'.$sendname.'"');
-	//sending file
-	$file=fopen($path.$filename, "rb");
-	$i=0;
-	if(!$file) return false;
-	while(!feof($file)) {
-		$buffer=fread($file, 4096);
-		echo $buffer;
-		if ($i % 100 == 0) {
-			$i=0;
-			@ob_end_flush();
+/**
+ * @param \appCore\Events\Core\DownloadEvent $event
+ * @return bool
+ */
+function sendFileFromFS(\appCore\Events\Core\DownloadEvent $event){
+	if (Get::cfg('uploadType') == 'fs' || Get::cfg('uploadType') == 'ftp' || Get::cfg('uploadType', null) == null) {
+		$path = $event->getPath();
+		$filename = $event->getFilename();
+		$ext = $event->getExt();
+		$sendname = $event->getSendname();
+
+		//empty and close buffer
+		if (!($GLOBALS['where_files_relative'] == substr($path, 0, strlen($GLOBALS['where_files_relative'])))) {
+			$path = $GLOBALS['where_files_relative'] . $path;
 		}
-		$i++;
-	}
-	fclose($file);
+		if ($sendname === NULL) {
+			$sendname = implode('_', array_slice(explode('_', $filename), 3));
+			if ($sendname == '') $sendname = $filename;
+		}
 
-	//and now exit
-	exit();
+		if ($ext === NULL || $ext === false) {
+			$ext = array_pop(explode('.', $filename));
+
+		}
+		if (substr($sendname, -strlen($ext)) != $ext) $sendname .= '.' . $ext;
+
+		@DbConn::getInstance()->close();
+
+		ob_end_clean();
+		session_write_close();
+		//ini_set("output_buffering", 0);
+		//Download file
+		//send file length info
+		header('Content-Length:' . filesize($path . $filename));
+		//content type forcing dowlad
+		header("Content-type: application/download; charset=utf-8\n");
+		//cache control
+		header("Cache-control: private");
+		//sending creation time
+		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+		//content type
+		//if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+		if ((isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on')
+			or (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https')
+			or (isset($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) == 'on')
+		) {
+			header('Pragma: private');
+		}
+		header('Content-Disposition: attachment; filename="' . $sendname . '"');
+		//sending file
+		$file = fopen($path . $filename, "rb");
+		$i = 0;
+		if (!$file) return false;
+		while (!feof($file)) {
+			$buffer = fread($file, 4096);
+			echo $buffer;
+			if ($i % 100 == 0) {
+				$i = 0;
+				@ob_end_flush();
+			}
+			$i++;
+		}
+		fclose($file);
+
+		//and now exit
+		exit();
+	}
 }
 
 function sendStrAsFile($string, $filename, $charset=false) {
