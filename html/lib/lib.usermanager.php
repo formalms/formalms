@@ -1857,7 +1857,6 @@ class UserManagerRenderer {
 			require_once(_lms_."/modules/login/facebook.php");
 			if (isset($_SESSION['fb_info']) && is_array($_SESSION['fb_info']) && !isset($_POST['register'])) {
 				setFbRegData($_SESSION['fb_info']);
-				// $out .= '<li>'.$lang->def('_ACCOUNT_WILL_BE_CONNECTED_FB', 'login', 'cms').'</li>';
 			}
 			else {
 				$extra =getFbRegisterBox();
@@ -2446,7 +2445,7 @@ class UserManagerRenderer {
 		$acl_man =& Docebo::user()->getAclManager();
 		$user_info = $acl_man->getUser($idst, false);
 
-		if($user_info[ACL_INFO_PASS] != $acl_man->encrypt($_POST['oldpwd'])) {
+		if(!$acl_man->password_verify($_POST['oldpwd'],$user_info[ACL_INFO_PASS],true)) {
 
 			return array( 	'error' => true,
 							'msg' => getErrorUi($lang->def('_ERR_PWD_OLD')) );

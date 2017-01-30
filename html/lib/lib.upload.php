@@ -69,7 +69,7 @@ function sl_fopen( $filename, $mode ) {
 }
 
 function sl_upload( $srcFile, $dstFile, $file_ext) {
-	$uploadType = Get::cfg('uploadType');
+	$uploadType = Get::cfg('uploadType', null);
 
 	// check if the mime type is allowed by the whitelist
 	// if the whitelist is empty all types are accepted
@@ -109,9 +109,14 @@ function sl_upload( $srcFile, $dstFile, $file_ext) {
 		return sl_upload_ftp( $srcFile, $dstFile );
 	} elseif( $uploadType == "cgi" ) {
 		return sl_upload_cgi( $srcFile, $dstFile );
-	} else {
+	} elseif( $uploadType == "fs" || $uploadType == null ) {
 		return sl_upload_fs( $srcFile, $dstFile );
-	}
+	} else {
+        $event = new \appCore\Events\Core\FileSystem\UploadEvent($srcFile, $dstFile);
+        \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\UploadEvent::EVENT_NAME, $event);
+
+        return $event->getResult();
+    }
 }
 
 function sl_touch( $filename, $time ) {
@@ -172,8 +177,8 @@ function sl_copy( $srcFile, $dstFile ) {
 
 function sl_upload_fs( $srcFile, $dstFile ) {
 
-	$re = move_uploaded_file($srcFile, $GLOBALS['where_files_relative'].$dstFile);
-	if(!$re) die("Error on move_uploaded_file from: $srcFile to $dstFile");
+	$re = move_uploaded_file($srcFile, _files_.$dstFile);
+	if(!$re) die("Error on move_uploaded_file from: $srcFile to ".$dstFile);
 	return $re;
 }
 
@@ -331,9 +336,19 @@ function sl_upload_cgi( $srcFile, $dstFile ) {
  **/
 
  function sl_unlink( $path ) {
+     $uploadType = Get::cfg('uploadType', null);
 
-	 if( !file_exists($GLOBALS['where_files_relative'].$path) ) return true;
-	 return @unlink($GLOBALS['where_files_relative'].$path);
+     if( $uploadType == "fs" || $uploadType == null ) {
+         if( !file_exists($GLOBALS['where_files_relative'].$path) ) return true;
+         return @unlink($GLOBALS['where_files_relative'].$path);
+     } else {
+         $event = new \appCore\Events\Core\FileSystem\UnlinkEvent($path);
+         \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\UnlinkEvent::EVENT_NAME, $event);
+
+         return $event->getResult();
+     }
+
+
  }
 
 ?>

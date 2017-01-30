@@ -92,20 +92,24 @@ class Field_Textfield extends Field {
 				return;
 			}
                         
+                        $code = importVar('code', false, '');
+                        
                         $filter_area_field = importVar('filter_area_field', false, '');
                         
 			// Insert mandatory field
 			if(!sql_query("
 			INSERT INTO ".$this->_getMainTable()."
-			(type_field, lang_code, translation, show_on_platform, use_multilang, area_code) VALUES
-			('".$this->getFieldType()."', '".$mand_lang."', '".$_POST['new_textfield'][$mand_lang]."', '".$show_on."', '".$use_multilang."', '".$filter_area_field."') ")) {
+			(type_field, show_on_platform, use_multilang, area_code, code) VALUES
+			('".$this->getFieldType()."', '".$show_on."', '".$use_multilang."', '".$filter_area_field."', '".$code."') ")) {
 				Util::jump_to($back.'&result=fail');
 			}
-			list($id_common) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
+                        
+			list($id_field) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
+			
 			if(!sql_query("
-			UPDATE ".$this->_getMainTable()."
-			SET id_common = '".(int)$id_common."'
-			WHERE idField = '".(int)$id_common."'")) {
+			INSERT INTO ".$this->_getMainLangTable()."
+			(id_field, lang_code, translation) VALUES
+			('".$id_field."', '".$mand_lang."', '".$_POST['new_textfield'][$mand_lang]."') ")) {
 				Util::jump_to($back.'&result=fail');
 			}
 			$re = true;
@@ -114,12 +118,13 @@ class Field_Textfield extends Field {
 
 				if($mand_lang != $lang_code && $translation != $lang->def('_FIELD_NAME') && trim($translation) != '') {
 					$re_ins = sql_query("
-					INSERT INTO ".$this->_getMainTable()."
-					(type_field, id_common, lang_code, translation, show_on_platform, use_multilang, area_code) VALUES
-					('".$this->getFieldType()."', '".(int)$id_common."', '".$lang_code."', '".$translation."', '".$show_on."', '".$use_multilang."', '".$filter_area_field."') ");
+					INSERT INTO ".$this->_getMainLangTable()."
+					(id_field, lang_code, translation) VALUES
+					('".(int)$id_field."', '".$lang_code."', '".$translation."') ");
 					$re = $re && $re_ins;
 				}
 			}
+			
 			Util::jump_to($back.'&result='.( $re ? 'success' : 'fail'));
 		}
 
@@ -149,6 +154,10 @@ class Field_Textfield extends Field {
 			);
 		}
 
+                $out->add(
+                        $form->getTextfield($lang->def('_CODE'), 'code', 'code', 255, '')
+                );
+                
 		// Combo Box Con Area del campo
 		$re_field = sql_query("
                     SELECT area_code, area_name FROM "
@@ -198,13 +207,20 @@ class Field_Textfield extends Field {
 
 		if(isset($_POST['undo'])) {
 			//undo action
-			Util::jump_to($back.'&result=undo');
+			//Util::jump_to($this->getUrl().'&id_field='
+			//	.$this->id_field.'&type_field='.$this->getFieldType().'&back='.$back_coded);
+                        
+                        Util::jump_to($back);
 		}
 		if(isset($_POST['save_field_'.$this->getFieldType()])) {
 
 			//insert mandatory translation
 			$mand_lang = getLanguage();
-
+			$show_on = '';
+			if(isset($_POST['show_on_platform'])) {
+				while(list($code, ) = each($_POST['show_on_platform']))
+					$show_on .= $code.',';
+			}
 			//control if all is ok
 			if(!isset($_POST['new_textfield'][$mand_lang])) {
 				$out->add(
@@ -228,22 +244,19 @@ class Field_Textfield extends Field {
 			$existsing_translation = array();
 			$re_trans = sql_query("
 			SELECT lang_code
-			FROM ".$this->_getMainTable()."
-			WHERE id_common = '".$this->id_common."'");
+			FROM ".$this->_getMainLangTable()."
+			WHERE id_field = '".$this->id_field."'");
 			while(list($l_code) = sql_fetch_row($re_trans)) {
 				$existsing_translation[$l_code] = 1;
 			}
 
 			$use_multilang =(isset($_POST['use_multi_lang']) ? 1 : 0);
                         
+                        $code = importVar('code', false, '');
+                        
                         $filter_area_field = importVar('filter_area_field', false, '');
                         
 			$re = true;
-			//insert other field
-			if(isset($_POST['show_on_platform'])) {
-				while(list($code, ) = each($_POST['show_on_platform']))
-					$show_on .= $code.',';
-			}
 			//insert other field
 			foreach($_POST['new_textfield'] as $lang_code => $translation) {
 
@@ -251,32 +264,52 @@ class Field_Textfield extends Field {
 
 					if(!sql_query("
 					UPDATE ".$this->_getMainTable()."
-					SET translation = '".$translation."',
-						show_on_platform = '".$show_on."',
+					SET 	show_on_platform = '".$show_on."',
 						use_multilang = '".$use_multilang."',
-                                                area_code = '".$filter_area_field."'
-					WHERE id_common = '".(int)$this->id_common."' AND lang_code = '".$lang_code."'")) $re = false;
+                                                area_code = '".$filter_area_field."',
+                                                code = '".$code."'
+					WHERE id_field = '".(int)$this->id_field."'")) $re = false;
+					
+                                        if(!sql_query("
+					UPDATE ".$this->_getMainLangTable()."
+					SET translation = '".$translation."'
+					WHERE id_field = '".(int)$this->id_field."' AND lang_code = '".$lang_code."'")) $re = false;
+                                        
 				} else {
 
 					if(!sql_query("
-					INSERT INTO ".$this->_getMainTable()."
-					(type_field, id_common, lang_code, translation, show_on_platform, use_multilang, area_code ) VALUES
-					('".$this->getFieldType()."', '".(int)$this->id_common."', '".$lang_code."', '".$translation."', '".$show_on."', '".$use_multilang."', '".$filter_area_field."') ")) $re= false;
+					UPDATE ".$this->_getMainTable()."
+					SET 	show_on_platform = '".$show_on."',
+						use_multilang = '".$use_multilang."',
+                                                area_code = '".$filter_area_field."',
+                                                code = '".$code."'
+					WHERE id_field = '".(int)$this->id_field."'")) $re = false;
+                                    
+					if(!sql_query("
+					INSERT INTO ".$this->_getMainLangTable()."
+					(id_field, lang_code, translation) VALUES
+					('".(int)$this->id_field."', '".$lang_code."', '".$translation."') ")) $re= false;
 				}
 			}
-			Util::jump_to($back.'&result='.( $re ? 'success' : 'fail'));
+			//Util::jump_to($this->getUrl().'&id_field='
+			//	.$this->id_field.'&type_field='.$this->getFieldType().'&back='.$back_coded
+			//	.'&result='.( $re ? 'success' : 'fail'));
+                        
+                        Util::jump_to($back.'&result='.( $re ? 'success' : 'fail'));
 		}
 
 		//load value form database
 		$re_trans = sql_query("
-		SELECT lang_code, translation, show_on_platform, use_multilang, area_code
-		FROM ".$this->_getMainTable()."
-		WHERE id_common = '".$this->id_common."'");
-		while(list($l_code, $trans, $show_on, $db_use_multilang, $area_code) = sql_fetch_row($re_trans)) {
+		SELECT cl.lang_code, cl.translation, c.show_on_platform, c.use_multilang, c.area_code, c.code
+		FROM ".$this->_getMainTable()." AS c, ".$this->_getMainLangTable()." AS cl
+		WHERE c.id_field = cl.id_field
+                AND c.id_field = '".$this->id_field."'");
+		while(list($l_code, $trans, $show_on, $db_use_multilang, $area_code, $field_code) = sql_fetch_row($re_trans)) {
 			$translation[$l_code] = $trans;
 			if(!isset($show_on_platform)) $show_on_platform = array_flip(explode(',', $show_on));
 			if(!isset($use_multilang)) $use_multilang = $db_use_multilang;
                         $filter_area_field = $area_code;
+                        $code = $field_code;
 		}
 
 		require_once(_base_.'/lib/lib.form.php');
@@ -289,8 +322,9 @@ class Field_Textfield extends Field {
 			$form->openForm('create_'.$this->getFieldType(), $this->getUrl())
 			.$form->openElementSpace()
 			.$form->getHidden('type_field', 'type_field', $this->getFieldType())
-			.$form->getHidden('id_common', 'id_common', $this->id_common)
+			.$form->getHidden('id_field', 'id_field', $this->id_field)
 			.$form->getHidden('back', 'back', $back_coded)
+			.$form->getHidden('iop', 'iop', 'modmain')
 		);
 		$mand_lang = getLanguage();
 		foreach($array_lang as $k => $lang_code ) {
@@ -305,6 +339,10 @@ class Field_Textfield extends Field {
 			);
 		}
 
+                $out->add(
+                        $form->getTextfield($lang->def('_CODE'), 'code', 'code', 255, $code)
+                );
+                
 		// Combo Box Con Area del campo
 		$re_field = sql_query("
                     SELECT area_code, area_name FROM "
@@ -335,6 +373,59 @@ class Field_Textfield extends Field {
 		$out->add('</div>');
 	}
 
+
+	/**
+	 * this function completely remove a field
+	 *
+	 * @param  string	$back	indicates the return url
+	 * @return nothing
+	 *
+	 * @access public
+	 */
+	function del($back) {
+
+		$query_del = "
+		DELETE FROM ".$this->_getUserEntryTable()."
+		WHERE id_field = '".(int)$this->id_field."'";
+		$re = sql_query($query_del);
+		if(!$re) Util::jump_to($back.'&result=fail');
+
+                $query_sel = "
+		SELECT id_field_son FROM ".$this->_getElementTable()."
+		WHERE id_field = '".(int)$this->id_field."'";
+                $re_field_element = sql_query($query_sel);
+                $arr_field_son = array();
+		while(list($id_field_son) = sql_fetch_row($re_field_element)) {
+			$arr_field_son[] = $id_field_son;
+		}
+                 
+                if (count($arr_field_son) > 0) {
+		$query_del = "
+		DELETE FROM ".$this->_getElementLangTable()."
+		WHERE id_field_son IN (".implode($arr_field_son).")";
+		$re = sql_query($query_del);
+		if(!$re) Util::jump_to($back.'&result=fail');
+                }
+                
+                $query_del = "
+		DELETE FROM ".$this->_getElementTable()."
+		WHERE id_field = '".(int)$this->id_field."'";
+		$re = sql_query($query_del);
+		if(!$re) Util::jump_to($back.'&result=fail');
+
+                $query_del = "
+		DELETE FROM ".$this->_getMainLangTable()."
+		WHERE id_field = '".(int)$this->id_field."'";
+		$re = sql_query($query_del);
+		if(!$re) Util::jump_to($back.'&result=fail');
+                
+		$query_del = "
+		DELETE FROM ".$this->_getMainTable()."
+		WHERE id_field = '".(int)$this->id_field."'";
+		$re = sql_query($query_del);
+
+		Util::jump_to($back.'&result='.( $re ? 'success' : 'fail'));
+	}
 
 	/**
 	 * display the entry of this field for the passed user

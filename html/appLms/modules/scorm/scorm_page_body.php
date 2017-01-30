@@ -32,72 +32,7 @@ ob_start();
 require(_base_.'/lib/lib.bootstrap.php');
 Boot::init(BOOT_DATETIME);
 
-/*
-if(isset($_REQUEST['GLOBALS'])) die('GLOBALS overwrite attempt detected');
-if(!defined("IN_FORMA")) define("IN_FORMA", true);
 
-$path_to_root = '../..';
-
-// prepare refer ------------------------------------------------------------------
-
-require_once(dirname(__FILE__).'/'.$path_to_root.'/config.php');
-require_once($GLOBALS['where_config'].'/config.php');
-
-if ($GLOBALS["where_cms_relative"] != false)
-	$GLOBALS["where_cms_relative"]=$path_to_root.'/'.$GLOBALS["where_cms_relative"];
-
-if ($GLOBALS["where_kms_relative"] != false)
-	$GLOBALS["where_kms_relative"]=$path_to_root.'/'.$GLOBALS["where_kms_relative"];
-
-if ($GLOBALS["where_lms_relative"] != false)
-	$GLOBALS["where_lms_relative"]=$path_to_root.'/'.$GLOBALS["where_lms_relative"];
-
-if ($GLOBALS["where_framework_relative"] != false)
-	$GLOBALS["where_framework_relative"]=$path_to_root.'/'.$GLOBALS["where_framework_relative"];
-
-
-if ($GLOBALS["where_files_relative"] != false) {
-	$GLOBALS["where_files_relative"]=$path_to_root.'/'.$GLOBALS["where_files_relative"];
-}
-ob_start();
-
-// connect to database -------------------------------------------------------------------
-
-$GLOBALS['dbConn'] = sql_connect($GLOBALS['dbhost'], $GLOBALS['dbuname'], $GLOBALS['dbpass']);
-if( !$GLOBALS['dbConn'] )
-	die( "Can't connect to db. Check configurations" );
-
-if( !sql_select_db($dbname, $GLOBALS['dbConn']) )
-	die( "Database not found. Check configurations" );
-
-@sql_query("SET NAMES '".$GLOBALS['db_conn_names']."'", $GLOBALS['dbConn']);
-@sql_query("SET CHARACTER SET '".$GLOBALS['db_conn_char_set']."'", $GLOBALS['dbConn']);
-
-// load lms setting ------------------------------------------------------------------
-
-session_name("docebo_session");
-session_start();
-
-// load regional setting --------------------------------------------------------------
-
-// load current user from session -----------------------------------------------------
-require_once(_base_.'/lib/lib.user.php');
-$GLOBALS['current_user'] =& DoceboUser::createDoceboUserFromSession('public_area');
-
-require_once(_i18n_.'/lib.lang.php');
-require_once(_base_.'/lib/lib.template.php');
-require_once(_base_.'/lib/lib.utils.php');
-
-// security check --------------------------------------------------------------------
-
-chkInput($_GET);
-chkInput($_POST);
-chkInput($_COOKIE);
-
-// language --- use organization module
-$lang =& DoceboLanguage::createInstance('organization', 'lms');
-
-*/
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Strict//EN"    
 			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

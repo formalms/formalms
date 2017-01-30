@@ -164,6 +164,10 @@ class Mysql_DbConn extends DbConn {
 		if(!$result) return false;
 		return mysql_num_rows($result);
 	}
+    
+    public function affected_rows() {
+        return mysql_affected_rows($this->conn);
+    }    
 
 	public function errno() {
 		return mysql_errno($this->conn);

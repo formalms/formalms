@@ -22,8 +22,7 @@ $path_to_root = '../..';
 require_once(dirname(__FILE__).'/'.$path_to_root.'/config.php');
 require_once($GLOBALS['where_config'].'/config.php');
 
-//if ($GLOBALS["where_cms_relative"] != false)
-//	$GLOBALS["where_cms_relative"]=$path_to_root.'/'.$GLOBALS["where_cms_relative"];
+
 
 if ($GLOBALS["where_kms_relative"] != false)
 	$GLOBALS["where_kms_relative"]=$path_to_root.'/'.$GLOBALS["where_kms_relative"];

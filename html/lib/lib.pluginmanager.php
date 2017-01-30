@@ -107,8 +107,9 @@ class PluginManager {
 
     public function runPlugins(){
     	foreach(self::$plugin_list as $plugin_name => $class_name) {
-			if(file_exists(_plugins_.'/'.$plugin_name.'/'.$class_name.'.php')) 
-				include_once(_plugins_.'/'.$plugin_name.'/'.$class_name.'.php');
+			if(file_exists(_plugins_.'/'.$plugin_name.'/'.$class_name.'.php')) {
+                include_once(_plugins_ . '/' . $plugin_name . '/' . $class_name . '.php');
+            }
 
 			if (method_exists($class_name, 'run')) {
 				call_user_func(array($class_name, 'run'), $plugin_name);

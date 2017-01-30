@@ -1208,30 +1208,6 @@ class Form {
 	 */
 	public static function getButton( $id, $name, $value, $css_button = FALSE, $other_param = '', $use_js = true, $is_submit = true ) {
 
-		if($use_js && ($css_button == false || $css_button == 'yui-button')) {
-			if (!defined("IS_AJAX"))
-				cout('<script type="text/javascript">
-					(function() {
-						YAHOO.util.Event.onDOMReady(function() {
-							var o = YAHOO.namespace("buttonObjects.'.$id.'");
-							YAHOO.buttonObjects.'.$id.' = new YAHOO.widget.Button("'.$id.'", { value: "'.addslashes($value).'" });
-							//#PN_vs_GRIFO
-/*
-							$("button#' . $id . '-button").on( "click", function (event) {
-                                event.preventDefault();
-                                $("button#' . $id . '-button").closest("form").append(\'<input type="hidden" name="' . $id . '" value="'.addslashes($value).'" />\');
-                                $("button#' . $id . '-button").closest("form").submit();
-                            });
-*/
-						});
-					})();
-					</script>', 'scripts');
-			// return '<input type="'.($is_submit ? 'submit' : 'button').'" id="'.$id.'" '
-			// 	.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
-			return '<input type="'.($is_submit ? 'submit' : 'button').'" class="btn btn-default" id="'.$id.'" '
-			.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
-
-		}
 		if($css_button == 'yui-button') {
 			// return 	'<span id="'.$id.'_span" class="yui-button yui-submit-button">'
 			return 	'<span id="'.$id.'_span">'
@@ -1251,36 +1227,6 @@ class Form {
 				."\n\t".'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
 	}
 
-	// public static function getButton( $id, $name, $value, $css_button = FALSE, $other_param = '', $use_js = true, $is_submit = true ) {
-	//
-	// 	if($use_js && ($css_button == false || $css_button == 'yui-button')) {
-	// 		if (!defined("IS_AJAX")) {
-	// 			cout('<script type="text/javascript">
-	// 				(function() {
-	// 					YAHOO.util.Event.onDOMReady(function() {
-	// 						var o = YAHOO.namespace("buttonObjects.'.$id.'");
-	// 						YAHOO.buttonObjects.'.$id.' = \'<button type="button" class="btn btn-default" id="'.$id.'">'.addslashes($value).'</button>\';
-	// 					});
-	// 				})();
-	// 				</script>', 'scripts');
-	// 		}
-	// 		return '<input type="'.($is_submit ? 'submit' : 'button').'" class="btn btn-default" id="'.$id.'" '
-	// 			.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
-	// 	}
-	// 	if($css_button == 'yui-button') {
-	// 		return 	'<span id="'.$id.'_span">'
-	// 				.'<span class="first-child">'
-	// 				.'<input type="'.($is_submit ? 'submit' : 'button').'" class="btn btn-default" id="'.$id.'" '.($name ? 'name="'.$name.'" ' : '').'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />'
-	// 				.'</span>'
-	// 				.'</span>';
-	// 	}
-	// 	$css_button = ($css_button === FALSE ? 'button' : $css_button);
-	// 	return '<input type="'.($is_submit ? 'submit' : 'button').'" '
-	// 			."\n\t".'class="'.$css_button.' btn btn-default" '
-	// 			."\n\t".'id="'.$id.'" '
-	// 			."\n\t".'name="'.$name.'" '
-	// 			."\n\t".'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';
-	// }
 
 	/**
 	 * public static function getInputButton( $id, $name, $value, $type, $css_class, $other_param )
