@@ -1,15 +1,15 @@
 <?php
-namespace appCore\Events\Core;
+namespace appCore\Events\Core\FileSystem;
 
 use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class UploadEvent
- * @package appLms\Events\Core
+ * @package appCore\Events\Core\FileSystem
  */
 class UploadEvent extends Event
 {
-    const EVENT_NAME = 'core.event.upload';
+    const EVENT_NAME = 'core.event.filesystem.upload';
 
     private $srcFile;
     private $dstFile;

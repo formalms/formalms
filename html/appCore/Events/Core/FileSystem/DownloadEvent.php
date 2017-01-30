@@ -1,15 +1,15 @@
 <?php
-namespace appCore\Events\Core;
+namespace appCore\Events\Core\FileSystem;
 
 use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class DownloadEvent
- * @package appLms\Events\Core
+ * @package appCore\Events\Core\FileSystem
  */
 class DownloadEvent extends Event
 {
-    const EVENT_NAME = 'core.event.download';
+    const EVENT_NAME = 'core.event.filesystem.download';
 
     private $path;
     private $filename;

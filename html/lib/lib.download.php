@@ -34,21 +34,21 @@ function sendFile($path, $filename, $ext = NULL, $sendname = NULL)
 {
 
     \appCore\Events\DispatcherManager::addListener(
-        \appCore\Events\Core\DownloadEvent::EVENT_NAME,
+        \appCore\Events\Core\FileSystem\DownloadEvent::EVENT_NAME,
         'sendFileFromFS'
 	);
 
-    $event = new \appCore\Events\Core\DownloadEvent($path, $filename, $ext, $sendname);
-    \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\DownloadEvent::EVENT_NAME, $event);
+    $event = new \appCore\Events\Core\FileSystem\DownloadEvent($path, $filename, $ext, $sendname);
+    \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\DownloadEvent::EVENT_NAME, $event);
 }
 
 
 
 /**
- * @param \appCore\Events\Core\DownloadEvent $event
+ * @param \appCore\Events\Core\FileSystem\DownloadEvent $event
  * @return bool
  */
-function sendFileFromFS(\appCore\Events\Core\DownloadEvent $event){
+function sendFileFromFS(\appCore\Events\Core\FileSystem\DownloadEvent $event){
 	if (Get::cfg('uploadType') == 'fs' || Get::cfg('uploadType') == 'ftp' || Get::cfg('uploadType', null) == null) {
 		$path = $event->getPath();
 		$filename = $event->getFilename();

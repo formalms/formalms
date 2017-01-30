@@ -112,8 +112,8 @@ function sl_upload( $srcFile, $dstFile, $file_ext) {
 	} elseif( $uploadType == "fs" || $uploadType == null ) {
 		return sl_upload_fs( $srcFile, $dstFile );
 	} else {
-        $event = new \appCore\Events\Core\UploadEvent($srcFile, $dstFile);
-        \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UploadEvent::EVENT_NAME, $event);
+        $event = new \appCore\Events\Core\FileSystem\UploadEvent($srcFile, $dstFile);
+        \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\UploadEvent::EVENT_NAME, $event);
 
         return $event->getResult();
     }
@@ -336,9 +336,19 @@ function sl_upload_cgi( $srcFile, $dstFile ) {
  **/
 
  function sl_unlink( $path ) {
+     $uploadType = Get::cfg('uploadType', null);
 
-	 if( !file_exists($GLOBALS['where_files_relative'].$path) ) return true;
-	 return @unlink($GLOBALS['where_files_relative'].$path);
+     if( $uploadType == "fs" || $uploadType == null ) {
+         if( !file_exists($GLOBALS['where_files_relative'].$path) ) return true;
+         return @unlink($GLOBALS['where_files_relative'].$path);
+     } else {
+         $event = new \appCore\Events\Core\FileSystem\UnlinkEvent($path);
+         \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\UnlinkEvent::EVENT_NAME, $event);
+
+         return $event->getResult();
+     }
+
+
  }
 
 ?>
