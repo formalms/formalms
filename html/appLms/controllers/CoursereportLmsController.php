@@ -1231,6 +1231,7 @@ class CoursereportLmsController extends LmsController
             . Form::getHidden('id_test', 'id_test', $id_test)
         );
 
+
         $out->add(
         // main form
             Form::openElementSpace()
@@ -1238,25 +1239,25 @@ class CoursereportLmsController extends LmsController
 
             . Form::getLinebox($lang->def('_TITLE_ACT'),
                 strip_tags($test_info[$id_test]['title']))
-            . ($question_random_number ? Form::getTextfield($lang->def('_MAX_SCORE'), 'max_score', 'max_score', '11', $info_report->getMaxScore()) : Form::getLinebox($lang->def('_MAX_SCORE'), $info_report->getMaxScore()))
+            . ($question_random_number ? Form::getTextfield($lang->def('_MAX_SCORE'), 'max_score', 'max_score', '11', $info_report['max_score']) : Form::getLinebox($lang->def('_MAX_SCORE'), $info_report['max_score']))
             . Form::getLinebox($lang->def('_REQUIRED_SCORE'),
-                $info_report->getRequiredScore())
+                $info_report['required_score'])
 
             . Form::getTextfield($lang->def('_WEIGHT'),
                 'weight',
                 'weight',
                 '11',
-                $info_report->getWeight())
+                $info_report['weight'])
             . Form::getDropdown($lang->def('_SHOW_TO_USER'),
                 'show_to_user',
                 'show_to_user',
                 array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
-                $info_report->isShowToUserToString())
+                $info_report['show_to_user'])
             . Form::getDropdown($lang->def('_USE_FOR_FINAL'),
                 'use_for_final',
                 'use_for_final',
                 array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
-                $info_report->isUseForFinalToString())
+                $info_report['use_for_final'])
             . Form::getCloseFieldSet()
             . Form::closeElementSpace()
         );
@@ -1273,14 +1274,14 @@ class CoursereportLmsController extends LmsController
 
             $cont = array(Form::getLabel('user_score_' . $idst_user, $user_name));
 
-            $id_test = $info_report->getIdSource();
+            $id_test = $info_report['id_source'];
             if (isset($tests_score[$id_test][$idst_user])) {
                 switch ($tests_score[$id_test][$idst_user]['score_status']) {
-                    case "not_complete" : {
+                    case CoursereportLms::TEST_STATUS_NOT_COMPLETED : {
                         $cont[] = '-';
                     };
                         break;
-                    case "not_checked"    : {
+                    case CoursereportLms::TEST_STATUS_NOT_CHECKED    : {
                         $cont[] = '<span class="cr_not_check">' . $lang->def('_NOT_CHECKED') . '</span><br />'
                             . Form::getInputTextfield('textfield_nowh',
                                 'user_score_' . $idst_user,
@@ -1291,8 +1292,8 @@ class CoursereportLmsController extends LmsController
                                 ' tabindex="' . $i++ . '" ');
                     };
                         break;
-                    case "not_passed"    :
-                    case "passed"        : {
+                    case CoursereportLms::TEST_STATUS_NOT_PASSED    :
+                    case CoursereportLms::TEST_STATUS_PASSED        : {
                         /*
                         $cont[] = Form::getInputDropdown(	'dropdown',
                                                                 'user_score',
@@ -1311,7 +1312,7 @@ class CoursereportLmsController extends LmsController
 
                     };
                         break;
-                    case "valid"        : {
+                    case CoursereportLms::TEST_STATUS_VALID        : {
                         $cont[] = Form::getInputTextfield('textfield_nowh',
                             'user_score_' . $idst_user,
                             'user_score[' . $idst_user . ']',
@@ -1896,7 +1897,7 @@ class CoursereportLmsController extends LmsController
             $sum_max_score += $info_report->getMaxScore() * $info_report->getWeight();
 
             switch ($info_report->getSourceOf()) {
-                case "activity" :
+                case CoursereportLms::SOURCE_OF_ACTIVITY :
                     $other_source[$info_report->getIdReport()] = $info_report->getIdReport();
                     break;
                 case "test" :
@@ -1919,7 +1920,7 @@ class CoursereportLmsController extends LmsController
 
             foreach ($reports as $info_report) {
                 switch ($info_report->getSourceOf()) {
-                    case "activity" : {
+                    case CoursereportLms::SOURCE_OF_ACTIVITY : {
                         if (isset($other_score[$info_report->getIdReport()][$id_user]) && ($other_score[$info_report->getIdReport()][$id_user]['score_status'] == 'valid')) {
                             $user_score += ($other_score[$info_report->getIdReport()][$id_user]['score'] * $info_report->getWeight());
                         } else {
@@ -1927,7 +1928,7 @@ class CoursereportLmsController extends LmsController
                         }
                     };
                         break;
-                    case "test" : {
+                    case CoursereportLms::SOURCE_OF_TEST : {
                         if (isset($tests_score[$info_report->getIdSource()][$id_user]) && ($tests_score[$info_report->getIdSource()][$id_user]['score_status'] == 'valid')) {
                             $user_score += ($tests_score[$info_report->getIdSource()][$id_user]['score'] * $info_report->getWeight());
                         } else {
@@ -2727,20 +2728,20 @@ class CoursereportLmsController extends LmsController
             // XXX: set action colums
 
             switch ($info_report->getSourceOf()) {
-                case "test" : {
+                case CoursereportLms::SOURCE_OF_TEST : {
 
                     $title = strip_tags($tests_info[$info_report->getIdSource()]['title']);
                 };
                     break;
-                case "scoitem"    : {
-                    $title = strip_tags($info_report['title']);
+                case CoursereportLms::SOURCE_OF_SCOITEM    : {
+                    $title = strip_tags($info_report->getTitle());
                 };
                     break;
-                case "activity"    : {
-                    $title = strip_tags($info_report['title']);
+                case CoursereportLms::SOURCE_OF_ACTIVITY    : {
+                    $title = strip_tags($info_report->getTitle());
                 };
                     break;
-                case "final_vote"    : {
+                case CoursereportLms::SOURCE_OF_FINAL_VOTE    : {
                     $title = strip_tags($lang->def('_FINAL_SCORE'));
                 };
                     break;
@@ -2896,33 +2897,33 @@ class CoursereportLmsController extends LmsController
                 foreach ($this->model->getCourseReports() as $info_report) {
 
                     switch ($info_report->getSourceOf()) {
-                        case "test" : {
+                        case CoursereportLms::SOURCE_OF_TEST : {
                             $id_test = $info_report->getIdSource();
                             if (isset($tests_score[$id_test][$idst_user])) {
                                 switch ($tests_score[$id_test][$idst_user]['score_status']) {
-                                    case "not_complete" :
+                                    case CoursereportLms::TEST_STATUS_NOT_COMPLETED :
                                         $csv .= ';"-"';
                                         break;
-                                    case "not_checked"    : {
+                                    case CoursereportLms::TEST_STATUS_NOT_CHECKED    : {
                                         $csv .= ';"' . $lang->def('_NOT_CHECKED') . '"';
 
                                         if (!isset($test_details[$id_test]['not_checked'])) $test_details[$id_test]['not_checked'] = 1;
                                         else $test_details[$id_test]['not_checked']++;
                                     };
                                         break;
-                                    case "passed"        : {
+                                    case CoursereportLms::TEST_STATUS_PASSED        : {
                                         $csv .= ';"' . $lang->def('_PASSED') . '"';
                                         if (!isset($test_details[$id_test]['passed'])) $test_details[$id_test]['passed'] = 1;
                                         else $test_details[$id_test]['passed']++;
                                     };
                                         break;
-                                    case "not_passed"    : {
+                                    case CoursereportLms::TEST_STATUS_NOT_PASSED    : {
                                         $csv .= ';"' . $lang->def('_NOT_PASSED') . '"';
                                         if (!isset($test_details[$id_test]['not_passed'])) $test_details[$id_test]['not_passed'] = 1;
                                         else $test_details[$id_test]['not_passed']++;
                                     };
                                         break;
-                                    case "valid"        : {
+                                    case CoursereportLms::TEST_STATUS_VALID        : {
                                         $score = $tests_score[$id_test][$idst_user]['score'];
 
                                         if ($score >= $info_report->getRequiredScore()) {
@@ -2953,7 +2954,7 @@ class CoursereportLmsController extends LmsController
                         }
                             break;
                         case
-                        "scoitem" : {
+                        CoursereportLms::SOURCE_OF_SCOITEM : {
                             $query_report = "
 						SELECT *
 						FROM " . $GLOBALS['prefix_lms'] . "_scorm_tracking
@@ -2975,14 +2976,14 @@ class CoursereportLmsController extends LmsController
 
                         }
                             break;
-                        case "activity" :
-                        case "final_vote" : {
+                        case CoursereportLms::SOURCE_OF_ACTIVITY :
+                        case CoursereportLms::SOURCE_OF_FINAL_VOTE : {
                             if (isset($reports_score[$info_report->getIdReport()][$idst_user])) {
                                 switch ($reports_score[$info_report->getIdReport()][$idst_user]['score_status']) {
-                                    case "not_complete" :
+                                    case CoursereportLms::TEST_STATUS_NOT_COMPLETED :
                                         $csv .= ';"-"';
                                         break;
-                                    case "valid"        : {
+                                    case CoursereportLms::TEST_STATUS_VALID        : {
                                         if ($reports_score[$info_report->getIdReport()][$idst_user]['score'] >= $info_report->getRequiredScore()) {
                                             if ($reports_score[$info_report->getIdReport()][$idst_user]['score'] == $info_report->getMaxScore()) {
                                                 $csv .= ';"' . $reports_score[$info_report->getIdReport()][$idst_user]['score'] . '"';
