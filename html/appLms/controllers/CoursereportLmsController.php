@@ -630,9 +630,11 @@ class CoursereportLmsController extends LmsController
                     'lastname' => $user_info[ACL_INFO_LASTNAME],
                     'email' => $user_info[ACL_INFO_EMAIL],
                     'register_date' => $user_info[ACL_INFO_REGISTER_DATE],
-                    'lastenter' => $user_info[ACL_INFO_LASTENTER]
+                    'lastenter' => $user_info[ACL_INFO_LASTENTER],
+
                 );
-                $student['name'] = $user_info[ACL_INFO_FIRSTNAME] . " " . $user_info[ACL_INFO_LASTNAME];
+
+                $student['name'] = $user_name;
 
                 $student['activities_results'] = array();
                 $student['total_result'] = '90';

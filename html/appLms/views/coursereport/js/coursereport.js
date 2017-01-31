@@ -173,7 +173,7 @@ window.CourseReport = (function ($) {
      */
     var buildStudentRow = function (student) {
         var _student = '<tr class="student" data-student="' + student.id + '">';
-        _student += '<td class="student__name">' + student.firstname + ' ' + student.lastname + '</td>';
+        _student += '<td class="student__name">' + student.name + '</td>';
         _student += '<td class="student__info">' + student.email + '</td>';
 
 
