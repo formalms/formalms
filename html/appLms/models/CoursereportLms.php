@@ -131,7 +131,7 @@ class CoursereportLms extends Model
 
         $query_tests = "SELECT id_report, id_source "
             . " FROM " . $GLOBALS['prefix_lms'] . "_coursereport "
-            . " WHERE id_course = '" . $this->idCourse . "' AND source_of = 'test'";
+            . " WHERE id_course = '" . $this->idCourse . "' AND source_of = '". SELF::SOURCE_OF_TEST."'";
 
         $re_tests = sql_query($query_tests);
 
@@ -297,7 +297,7 @@ class CoursereportLms extends Model
 
         foreach ($this->courseReports as $courseReport) {
 
-            if ($courseReport->isUseForFinal() && $courseReport->getSourceOf() != 'final_vote') {
+            if ($courseReport->isUseForFinal() && $courseReport->getSourceOf() != SELF::SOURCE_OF_FINAL_VOTE) {
                 $reports[] = $courseReport;
             }
         }
@@ -314,7 +314,7 @@ class CoursereportLms extends Model
 
         $query_report = "SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
 		FROM " . $GLOBALS['prefix_lms'] . "_coursereport
-		WHERE id_course = '" . $idCourse . "' AND source_of = 'final_vote' AND id_source = '0'";
+		WHERE id_course = '" . $idCourse . "' AND source_of = '". SELF::SOURCE_OF_FINAL_VOTE ."' AND id_source = '0'";
 
         $re_report = sql_query($query_report);
 

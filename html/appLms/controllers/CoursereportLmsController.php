@@ -918,7 +918,6 @@ class CoursereportLmsController extends LmsController
 
         $resposeArray = array('details' =>
             array(
-                //'activities' => $results_activity,
                 'students' => $students_array
             )
         );
