@@ -9,17 +9,17 @@ echo '<div id="create_user_main_container">';
 if (!$is_editing) {
 	echo '<div id="create_user_tabview" class="yui-navset">';
 	echo '<ul class="yui-nav">';
-	echo '<li class="selected"><a href="#create_user_tab1"><em>'.Lang::t('_DETAILS', 'profile').'</em></a></li>';
-	echo '<li><a href="#create_user_tab2"><em>'.Lang::t('_ORG_CHART', 'organization_chart').'</em></a></li>';
+	echo '<li class="js-tab-nav selected" data-tab="tab1"><a><em>'.Lang::t('_DETAILS', 'profile').'</em></a></li>';
+	echo '<li class="js-tab-nav" data-tab="tab2"><a><em>'.Lang::t('_ORG_CHART', 'organization_chart').'</em></a></li>';
 	echo '</ul>';
-	echo '<div class="yui-content">';
-	echo '<div id="create_user_tab1">';
+	echo '<div class="yui-content user-tab-container">';
+	echo '<div class="user-tab user-tab--tab1 is-visible" id="create_user_tab1">';
 }
 
-echo Form::getTextField(Lang::t('_USERNAME', 'standard'), 'username', 'username', 255, $info->userid);
-echo Form::getTextField(Lang::t('_FIRSTNAME', 'standard'), 'firstname', 'firstname', 255, $info->firstname);
-echo Form::getTextField(Lang::t('_LASTNAME', 'standard'), 'lastname', 'lastname', 255, $info->lastname);
-echo Form::getTextField(Lang::t('_EMAIL', 'standard'), 'email', 'email', 255, $info->email);
+    echo Form::getTextField(Lang::t('_USERNAME', 'standard'), 'username', 'username', 255, $info->userid);
+    echo Form::getTextField(Lang::t('_FIRSTNAME', 'standard'), 'firstname', 'firstname', 255, $info->firstname);
+    echo Form::getTextField(Lang::t('_LASTNAME', 'standard'), 'lastname', 'lastname', 255, $info->lastname);
+    echo Form::getTextField(Lang::t('_EMAIL', 'standard'), 'email', 'email', 255, $info->email);
 
 if ($is_editing) {
 	echo Form::getPassword(Lang::t('_NEW_PASSWORD', 'register'), 'new_password', 'new_password', 255, "");
@@ -54,7 +54,7 @@ if ($social->isActive('google')) {
 
 if (!$is_editing) {
 	echo '</div>';
-	echo '<div id="create_user_tab2">'; // class="little_table"
+	echo '<div class="user-tab user-tab--tab2" id="create_user_tab2">'; // class="little_table"
 
 	echo Form::getHidden('orgchart_hidden_selection', 'orgchart_selection', '');
 	echo '<div id="createuser_orgchart_tree" class="folder_tree"></div>';

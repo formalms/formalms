@@ -1744,3 +1744,24 @@ ul.tabs li.current{
 @media screen and (max-width: 768px) {
     .boxed {max-height:40%;}
 }
+
+
+/* FIX TAB */
+
+.user-tab-container {
+    min-height: 400px;
+    min-width: 700px;
+    position: relative;
+}
+
+.user-tab {
+    position: absolute;
+    width: 100%;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.user-tab.is-visible {
+    visibility: visible;
+    opacity: 1;
+}
