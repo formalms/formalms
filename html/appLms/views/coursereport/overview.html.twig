@@ -82,20 +82,6 @@
 
 <script type="text/javascript">
 
-  var fixHelper = function(e, ui) {
-    ui.children().each(function() {
-      var $that = $(this);
-      $that.width($that.width());
-    });
-    return ui;
-  };
-
-  $('.course-sortable').sortable({
-    handle: '.handle',
-    helper: fixHelper
-  }).disableSelection();
-
-
   activities = {{ details|json_encode() }};
 
 </script>

@@ -286,11 +286,27 @@ window.CourseReport = (function ($) {
         $('.js-details-table').empty();
     };
 
+    var setInteractions = function () {
+        
+        var fixHelper = function(e, ui) {
+            ui.children().each(function() {
+                $(this).width($(this).width());
+            });
+            return ui;
+        };
+
+        $('.course-sortable').sortable({
+            handle: '.handle',
+            helper: fixHelper
+        }).disableSelection();
+
+    };
 
     $(document).ready(function () {
 
         $('#yui-main-boot').addClass('col-md-12');
         $('#yui-main-boot').removeClass('col-md-9');
+
 
         $table = $('.js-details-table');
         var userData;
@@ -312,6 +328,7 @@ window.CourseReport = (function ($) {
             });
 
             fillActivitiesFilter();
+
         });
 
         $('.js-user-level-filter').on('change', function () {
@@ -335,6 +352,9 @@ window.CourseReport = (function ($) {
         $('.button--add').on('click', function () {
             $(this).toggleClass('active');
         });
+
+
+        setInteractions();
 
     });
 
