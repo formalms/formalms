@@ -38,6 +38,9 @@ window.CourseReport = (function ($) {
           }
         });
 
+        /* FAKE DA IMPOSTARE DINAMICAMENTE IN CASO DI CLICK SU ROUND REPORT*/
+        _data['round_report'] = 12;
+
         $.ajax({
 
             type: 'post',
@@ -313,6 +316,44 @@ window.CourseReport = (function ($) {
         var userInfo;
 
         $('.js-details').on('click', function () {
+            clearDetailTable();
+
+            testData = loadActivitiesData();
+
+            loadUserData(function (data) {
+                userData = data;
+                fillTable(userData);
+            }, testData);
+
+            loadUserInfoFilter(function (data) {
+                userInfo = data;
+                fillUserInfoFilter(userInfo);
+            });
+
+            fillActivitiesFilter();
+
+        });
+
+        $('.redo-final').on('click', function () {
+            clearDetailTable();
+
+            testData = loadActivitiesData();
+
+            loadUserData(function (data) {
+                userData = data;
+                fillTable(userData);
+            }, testData);
+
+            loadUserInfoFilter(function (data) {
+                userInfo = data;
+                fillUserInfoFilter(userInfo);
+            });
+
+            fillActivitiesFilter();
+
+        });
+
+        $('.round-report').on('click', function () {
             clearDetailTable();
 
             testData = loadActivitiesData();

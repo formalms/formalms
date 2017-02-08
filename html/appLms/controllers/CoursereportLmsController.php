@@ -238,7 +238,7 @@ class CoursereportLmsController extends LmsController
                                             break;
                                     }
                                 }
-                                $results_activity[] = array('id' => CoursereportLms::SOURCE_OF_TEST."_".$info_report->getIdSource(), "name" => strip_tags($tests_info[$info_report->getIdSource()]['title']));
+                                $results_activity[] = array('id' => CoursereportLms::SOURCE_OF_TEST . "_" . $info_report->getIdSource(), "name" => strip_tags($tests_info[$info_report->getIdSource()]['title']));
                                 if ($info_report->isUseForFinal()) {
                                     array_push($results_test, $score * $info_report->getWeight());
                                 }
@@ -358,7 +358,7 @@ class CoursereportLmsController extends LmsController
                             $id = $info_report->getIdSource();
                             $name = strip_tags($tests_info[$info_report->getIdSource()]['title']);
 
-                            $results_activity[] = array('id' => $testObj->getObjectType()."_".$info_report->getIdSource(), "name" => strip_tags($tests_info[$info_report->getIdSource()]['title']));
+                            $results_activity[] = array('id' => $testObj->getObjectType() . "_" . $info_report->getIdSource(), "name" => strip_tags($tests_info[$info_report->getIdSource()]['title']));
 
                             if ($mod_perm) {
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
@@ -406,7 +406,7 @@ class CoursereportLmsController extends LmsController
 
                             $scormItem = new ScormLms($info_report->getIdSource());
 
-                            $results_activity[] = array('id' => $info_report->getSourceOf()."_".$scormItem->getIdSource(), "name" => $name);
+                            $results_activity[] = array('id' => $info_report->getSourceOf() . "_" . $scormItem->getIdSource(), "name" => $name);
 
                             $passed = $scormItem->getPassed() > 0 ? $scormItem->getPassed() : "-";
                             $notPassed = $scormItem->getNotPassed() > 0 ? $scormItem->getNotPassed() : "-";
@@ -424,7 +424,7 @@ class CoursereportLmsController extends LmsController
                             $name = strip_tags($info_report->getTitle());
                             $type = ucfirst($info_report->getSourceOf());
 
-                            $results_activity[] = array('id' => $info_report->getSourceOf()."_".$info_report->getIdSource(), "name" => $name);
+                            $results_activity[] = array('id' => $info_report->getSourceOf() . "_" . $info_report->getIdSource(), "name" => $name);
 
                             if ($mod_perm) {
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
@@ -516,10 +516,21 @@ class CoursereportLmsController extends LmsController
         $this->render('coursereport', $ajaxResponse);
     }
 
-    function getDetailCourseReport() //ajax json fake
+    function getDetailCourseReport() //ajax json
     {
         require_once($GLOBALS['where_lms'] . '/lib/lib.course.php');
         require_once(_adm_ . '/lib/lib.field.php');
+
+        $redo_final = Get::pReq('redo_final',DOTY_MIXED,false);
+        $round_report = Get::pReq('round_report',DOTY_MIXED,false);
+
+        if ($redo_final && !$round_report){
+            $this->redofinal();
+        }
+
+        if ($round_report  && !$redo_final){
+            $this->roundreport($round_report);
+        }
 
         $acl_man = Docebo::user()->getAclManager();
         $test_man = new GroupTestManagement();
@@ -527,7 +538,8 @@ class CoursereportLmsController extends LmsController
 
         $view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
         $type_filter = Get::pReq('type_filter', DOTY_MIXED, false);
-        $tests_filter = Get::pReq('selected_tests',DOTY_MIXED,false);
+        $tests_filter = Get::pReq('selected_tests', DOTY_MIXED, false);
+
         $org_tests =& $report_man->getTest();
         $tests_info = $test_man->getTestInfo($org_tests);
 
@@ -977,9 +989,9 @@ class CoursereportLmsController extends LmsController
                 $final_score[$id_user] = 0;
         }
 
-        foreach ($students_array as $k => $student){
+        foreach ($students_array as $k => $student) {
 
-            if ($final_score[$student['id']] && $final_score[$student['id']] > 0){
+            if ($final_score[$student['id']] && $final_score[$student['id']] > 0) {
 
                 $student['total_result'] = $final_score[$student['id']];
 
@@ -989,7 +1001,9 @@ class CoursereportLmsController extends LmsController
 
         $resposeArray = array('details' =>
             array(
-                'students' => $students_array
+                'students' => $students_array,
+                'redo-final' => array('idReport' => $info_final[0]->getIdReport()),
+                'round-report' => array('idReport' => $info_final[0]->getIdReport())
             )
         );
 
@@ -1892,7 +1906,7 @@ class CoursereportLmsController extends LmsController
         Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
-    function roundreport()
+    function roundreport($idReport)
     {
         checkPerm('mod', true, $this->_mvc_name);
 
@@ -1901,16 +1915,13 @@ class CoursereportLmsController extends LmsController
         require_once(_base_ . '/lib/lib.form.php');
         require_once(_base_ . '/lib/lib.table.php');
 
-        // XXX: Initializaing
-        $id_report = importVar('id_report', true, 0);
-
         // XXX: Instance management
         $report_man = new CourseReportManager();
 
         // XXX: Find test from organization
-        $re = $report_man->roundReportScore($id_report);
+        $re = $report_man->roundReportScore($idReport);
 
-        Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
+        //Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
     /**
@@ -1955,10 +1966,6 @@ class CoursereportLmsController extends LmsController
         // XXX: Retrive all reports (test and so), and set it
 
         $reports = $courseReportLms->getReportsForFinal();
-
-        if (count($reports) == 0) {
-            Util::jump_to('index.php?r=coursereport/coursereport&amp;result=ok');
-        }
 
         $sum_max_score = 0;
         $included_test = array();
@@ -2019,10 +2026,9 @@ class CoursereportLmsController extends LmsController
         }
         // Save final scores
         $exists_final = array();
-        $query_final_score = "
-	SELECT id_user
-	FROM " . $GLOBALS['prefix_lms'] . "_coursereport_score
-	WHERE id_report = '" . $info_final['id_report'] . "'";
+        $query_final_score = "SELECT id_user
+	                          FROM " . $GLOBALS['prefix_lms'] . "_coursereport_score
+	                          WHERE id_report = '" . $info_final['id_report'] . "'";
 
         $re_final = sql_query($query_final_score);
         while (list($id_user) = sql_fetch_row($re_final)) {
@@ -2050,10 +2056,10 @@ class CoursereportLmsController extends LmsController
                 $re &= sql_query($query_scores);
             }
         }
-        Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
-    function addscorm() {
+    function addscorm()
+    {
         $this->modscorm();
     }
 
@@ -2258,7 +2264,8 @@ class CoursereportLmsController extends LmsController
         }
     }
 
-    function addactivity(){
+    function addactivity()
+    {
         $this->modactivity();
     }
 
