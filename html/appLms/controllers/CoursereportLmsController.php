@@ -365,7 +365,7 @@ class CoursereportLmsController extends LmsController
                                 $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                 $event->setOverViewTestQuestionLink($chartLink);
 
-                                $editLink = 'index.php?modname=coursereport&op=testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $editLink = 'index.php?r=lms/coursereport/testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                             }
 
                             if (isset($test_details[$info_report->getIdSource()]['passed']) || isset($test_details[$info_report->getIdSource()]['not_passed'])) {
@@ -401,7 +401,7 @@ class CoursereportLmsController extends LmsController
                             if ($mod_perm) {
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                 $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
-                                $editLink = 'index.php?modname=coursereport&op=testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $editLink = 'index.php?r=lms/coursereport/testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                             }
 
                             $scormItem = new ScormLms($info_report->getIdSource());
@@ -430,7 +430,7 @@ class CoursereportLmsController extends LmsController
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                 $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
 
-                                $editLink = 'index.php?modname=coursereport&op=testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $editLink = 'index.php?r=lms/coursereport/testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                             }
 
 
@@ -672,7 +672,7 @@ class CoursereportLmsController extends LmsController
                                                         'icon' => '',
                                                         'showIcon' => 'false',
                                                         'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                        'link' => "index.php?modname=coursereport&op=testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
                                                         'active' => 'true');
 
                                                     $values[] = $value;
@@ -722,7 +722,7 @@ class CoursereportLmsController extends LmsController
                                                     'icon' => '',
                                                     'showIcon' => 'false',
                                                     'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                    'link' => "index.php?modname=coursereport&op=testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                    'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
                                                     'active' => 'true');
 
                                                 $values[] = $value;
@@ -734,7 +734,7 @@ class CoursereportLmsController extends LmsController
                                                         'icon' => 'cr_max_score',
                                                         'showIcon' => 'false',
                                                         'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                        'link' => "index.php?modname=coursereport&op=testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
                                                         'active' => 'true');
 
                                                     $values[] = $value;
@@ -743,7 +743,7 @@ class CoursereportLmsController extends LmsController
                                                         'icon' => '',
                                                         'showIcon' => 'false',
                                                         'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                        'link' => "index.php?modname=coursereport&op=testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
                                                         'active' => 'true');
 
                                                     $values[] = $value;
@@ -754,7 +754,7 @@ class CoursereportLmsController extends LmsController
                                                         'icon' => 'cr_max_score cr_not_passed',
                                                         'showIcon' => 'false',
                                                         'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                        'link' => "index.php?modname=coursereport&op=testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
                                                         'active' => 'true');
 
                                                     $values[] = $value;
@@ -763,7 +763,7 @@ class CoursereportLmsController extends LmsController
                                                         'icon' => 'cr_not_passed',
                                                         'showIcon' => 'false',
                                                         'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                        'link' => "index.php?modname=coursereport&op=testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
                                                         'active' => 'true');
 
                                                     $values[] = $value;
@@ -817,7 +817,7 @@ class CoursereportLmsController extends LmsController
                                         'icon' => 'cr_not_check',
                                         'showIcon' => 'false',
                                         'value' => '(' . $history . ')',
-                                        'link' => "index.php?modname=coursereport&op=scormreport&idTest=" . $scormItem->getIdTrack(),
+                                        'link' => "index.php?r=lms/coursereport/scormreport&idTest=" . $scormItem->getIdTrack(),
                                         'active' => 'true');
 
                                     $values[] = $value;
@@ -1019,8 +1019,8 @@ class CoursereportLmsController extends LmsController
                 $i++,
                 $date_attempt,
                 $score,
-                '<a class="ico-sprite subs_chart" href="index.php?modname=coursereport&op=testreview&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>' . $lang->def('_STATISTICS') . '</span></a>',
-                '<a class="ico-sprite subs_del" href="index.php?modname=coursereport&op=testreview&delete_track=' . md5($idTest . "_" . $idUser . "_" . $number_time) . '&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>' . $lang->def('_DELETE') . '</span></a>');
+                '<a class="ico-sprite subs_chart" href="index.php?r=lms/coursereport/testreview&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>' . $lang->def('_STATISTICS') . '</span></a>',
+                '<a class="ico-sprite subs_del" href="index.php?r=lms/coursereport/testreview&delete_track=' . md5($idTest . "_" . $idUser . "_" . $number_time) . '&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>' . $lang->def('_DELETE') . '</span></a>');
 
             $tb->addBody($tableBodyArray);
         }
@@ -1152,7 +1152,7 @@ class CoursereportLmsController extends LmsController
             $user_info = $acl_man->getUser($id_user, false);
 
             $GLOBALS['page']->add(
-                Form::openForm('test_vote', 'index.php?modname=coursereport&amp;op=testvote')
+                Form::openForm('test_vote', 'index.php?r=lms/coursereport/testvote')
                 . Form::getHidden('id_test', 'id_test', $id_test)
                 . Form::getHidden('id_user', 'id_user', $id_user)
                 . getDeleteUi($lang->def('_AREYOUSURE'),
@@ -1228,7 +1228,7 @@ class CoursereportLmsController extends LmsController
         $tb->addHead($cont_h);
 
         $out->add(
-            Form::openForm('test_vote', 'index.php?modname=coursereport&amp;op=testvote')
+            Form::openForm('test_vote', 'index.php?r=lms/coursereport/testvote')
             . Form::getHidden('id_test', 'id_test', $id_test)
         );
 
@@ -1333,7 +1333,7 @@ class CoursereportLmsController extends LmsController
 
                     if ($chart_options->use_charts) {
                         $img = '<img src="' . getPathImage('lms') . 'standard/stats22.gif" alt="' . $lang->def('_SHOW_CHART') . '" title="' . $lang->def('_SHOW_CHART_TITLE') . '" />';
-                        $url = 'index.php?modname=coursereport&op=showchart&id_test=' . (int)$id_test . '&id_user=' . (int)$idst_user . '&chart_type=' . $chart_options->selected_chart;
+                        $url = 'index.php?r=lms/coursereport/showchart&id_test=' . (int)$id_test . '&id_user=' . (int)$idst_user . '&chart_type=' . $chart_options->selected_chart;
                         $cont[] = '<a href="' . $url . '">' . $img . '</a>';
                     }
 
@@ -1406,7 +1406,7 @@ class CoursereportLmsController extends LmsController
         $test_info =& $test_man->getTestInfo(array($id_test));
 
         $page_title = array('index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
-            'index.php?modname=coursereport&amp;op=testdetail&amp;id_test=' . $id_test => $test_info[$id_test]['title']
+            'index.php?r=lms/coursereport/testdetail&amp;id_test=' . $id_test => $test_info[$id_test]['title']
         );
 
         $out->add(getTitleArea($page_title, 'coursereport')
@@ -1497,7 +1497,7 @@ class CoursereportLmsController extends LmsController
 
         if (isset($_POST['save_new_scores'])) {
             $re = $test_man->saveReview($id_test, $id_user);
-            Util::jump_to('index.php?modname=coursereport&amp;op=testvote&amp;id_test=' . $id_test . '&result=' . ($re ? 'ok' : 'err'));
+            Util::jump_to('index.php?r=lms/coursereport/testvote&amp;id_test=' . $id_test . '&result=' . ($re ? 'ok' : 'err'));
         }
 
         $user_name = $acl_man->getUserName($id_user);
@@ -1508,14 +1508,14 @@ class CoursereportLmsController extends LmsController
         // XXX: Write in output
         $page_title = array(
             'index.php?r=coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
-            'index.php?modname=coursereport&amp;op=testvote&amp;id_test=' . $id_test => $test_info[$id_test]['title'],
+            'index.php?r=lms/coursereport/testvote&amp;id_test=' . $id_test => $test_info[$id_test]['title'],
             $user_name
         );
         if (isset($_POST['view_answer'])) {
             $out->add(
                 getTitleArea($page_title, 'coursereport')
                 . '<div class="std_block">'
-                . Form::openForm('test_vote', 'index.php?modname=coursereport&amp;op=testreview')
+                . Form::openForm('test_vote', 'index.php?r=lms/coursereport/testreview')
                 . Form::getHidden('id_test', 'id_test', $id_test)
                 . Form::getHidden('id_user', 'id_user', $id_user)
             );
@@ -1532,7 +1532,7 @@ class CoursereportLmsController extends LmsController
             $out->add(
                 getTitleArea($page_title, 'coursereport')
                 . '<div class="std_block">'
-                . Form::openForm('test_vote', 'index.php?modname=coursereport&op=testreport&idTest=' . $id_test . '&idTrack=' . $id_track)
+                . Form::openForm('test_vote', 'index.php?r=lms/coursereport/testreport&idTest=' . $id_test . '&idTrack=' . $id_track)
             );
             $test_man->editReview($id_test, $id_user, $number_time, false);
             $out->add(
@@ -1572,7 +1572,7 @@ class CoursereportLmsController extends LmsController
                                    
                                    event.preventDefault();
                                    
-                                   window.location.href = "index.php?modname=coursereport&op=testdelete&delete_track=' . md5($id_test . "_" . $id_user . "_" . $number_time) . '&id_test=' . $id_test . '&id_user=' . $id_user . '&number_time=' . $number_time . '&idTrack=' . $id_track . '";
+                                   window.location.href = "index.php?r=lms/coursereport/testdelete&delete_track=' . md5($id_test . "_" . $id_user . "_" . $number_time) . '&id_test=' . $id_test . '&id_user=' . $id_user . '&number_time=' . $number_time . '&idTrack=' . $id_track . '";
                                });
                                
                                
@@ -1630,7 +1630,7 @@ class CoursereportLmsController extends LmsController
             // XXX: Find test
             $test_info =& $test_man->getTestInfo(array($id_test));
 
-            Util::jump_to('index.php?modname=coursereport&op=testreport&idTest=' . $id_test . '&idTrack=' . $id_track . '&testName=' . $test_info[$id_test]['title'] . '&studentName=' . $user_name);
+            Util::jump_to('index.php?r=lms/coursereport/testreport&idTest=' . $id_test . '&idTrack=' . $id_track . '&testName=' . $test_info[$id_test]['title'] . '&studentName=' . $user_name);
 
         } else {
             die("You can't access");
@@ -1674,7 +1674,7 @@ class CoursereportLmsController extends LmsController
         $out->add(
             getTitleArea($page_title, 'coursereport')
             . '<div class="std_block">'
-            . Form::openForm('finalvote', 'index.php?modname=coursereport&amp;op=finalvote&amp;type_filter=' . $type_filter)
+            . Form::openForm('finalvote', 'index.php?r=lms/coursereport/finalvote&amp;type_filter=' . $type_filter)
             . Form::getHidden('id_report', 'id_report', $id_report)
         );
 
@@ -2109,7 +2109,7 @@ class CoursereportLmsController extends LmsController
                     $array_scorm[$scorm['idscorm_item']] = $scorm['title'];
 
                 $out->add(
-                    Form::openForm('addscorm', 'index.php?modname=coursereport&amp;op=addscorm')
+                    Form::openForm('addscorm', 'index.php?r=lms/coursereport/addscorm')
                     . Form::openElementSpace()
                     . Form::getHidden('id_report', 'id_report', $id_report)
                     . Form::getDropdown($lang->def('_SCORM_ITEM'),
@@ -2162,7 +2162,7 @@ class CoursereportLmsController extends LmsController
                 $array_scorm[$scorm['idResource']] = $scorm['title'];
 
             $out->add(
-                Form::openForm('addscorm', 'index.php?modname=coursereport&amp;op=addscorm')
+                Form::openForm('addscorm', 'index.php?r=lms/coursereport/addscorm')
                 . Form::openElementSpace()
                 . Form::getHidden('id_report', 'id_report', $id_report)
                 . Form::getDropdown($lang->def('_TITLE'),
@@ -2255,7 +2255,7 @@ class CoursereportLmsController extends LmsController
             strip_tags($lang->def('_ADD_ACTIVITY'))
         );
         $out->add(
-            Form::openForm('addactivity', 'index.php?modname=coursereport&amp;op=addactivity')
+            Form::openForm('addactivity', 'index.php?r=lms/coursereport/addactivity')
             . Form::openElementSpace()
             . Form::getHidden('id_report', 'id_report', $id_report)
             . Form::getTextfield($lang->def('_TITLE_ACT'),
@@ -2347,7 +2347,7 @@ class CoursereportLmsController extends LmsController
         $out->add(
             getTitleArea($page_title, 'coursereport')
             . '<div class="std_block">'
-            . Form::openForm('activity', 'index.php?modname=coursereport&amp;op=modactivityscore')
+            . Form::openForm('activity', 'index.php?r=lms/coursereport/modactivityscore')
         );
 
         // XXX: Save input if needed
@@ -2559,7 +2559,7 @@ class CoursereportLmsController extends LmsController
         $out->add(
             getTitleArea($page_title, 'coursereport')
             . '<div class="std_block">'
-            . Form::openForm('delactivity', 'index.php?modname=coursereport&amp;op=delactivity')
+            . Form::openForm('delactivity', 'index.php?r=lms/coursereport/delactivity')
             . Form::getHidden('id_report', 'id_report', $id_report)
             . getDeleteUi($lang->def('_AREYOUSURE'),
                 $lang->def('_TITLE_ACT') . ' : ' . $info_report['title'],
@@ -3064,7 +3064,7 @@ class CoursereportLmsController extends LmsController
 
         $test_info = $test_man->getTestInfo(array($id_test));
 
-        $page_title = array('index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+        $page_title = array('index.php?r=lms/coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             $test_info[$id_test]['title']
         );
 
@@ -3321,11 +3321,11 @@ class CoursereportLmsController extends LmsController
         $acl_man = Docebo::user()->getAclManager();
         $user_info = $acl_man->getUser($idUser, false);
         list($title) = sql_fetch_row(sql_query("SELECT title FROM " . $GLOBALS['prefix_lms'] . "_test WHERE idTest=" . (int)$idTest));
-        $backUrl = 'index.php?modname=coursereport&op=testvote&id_test=' . (int)$idTest;
+        $backUrl = 'index.php?r=lms/coursereport/testvote&id_test=' . (int)$idTest;
         $backUi = getBackUi($backUrl, $lang->def('_BACK'));
 
         $page_title = array(
-            'index.php?modname=coursereport&amp;op=coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            'index.php?r=lms/coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
             $backUrl => strip_tags($title),
             $acl_man->relativeId($user_info[ACL_INFO_USERID])
         );
