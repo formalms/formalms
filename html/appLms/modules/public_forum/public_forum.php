@@ -624,10 +624,11 @@ function insforum()
 		'$seq',
 		'" . $_POST['emoticons'] . "' )";
     if (!sql_query($ins_query)) Util::jump_to('index.php?modname=public_forum&op=forum&result=err');
+    list($idForum) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
 
     if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 
-        list($idForum) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
+
         $id_user = getLogUserId();
         $perm = array();
 
@@ -668,6 +669,29 @@ function insforum()
             $recipients,
             $msg_composer);
 
+    }
+
+    if (!empty($recipients)) {
+
+        require_once($GLOBALS['where_framework'] . '/lib/lib.usernotifier.php');
+
+        $can_notify = usernotifier_getUserEventStatus(getLogUserId(), 'ForumNewResponse');
+
+        if ($can_notify) {
+            /* Abilito di default le notifiche per l'utente che sta inserendo il forum */
+            if (!issetNotify('forum', $idForum, getLogUserId())) {
+                $re = setNotify('forum', $idForum, getLogUserId());
+            }
+
+            /* Abilito di default le notifiche per gli utenti del corso*/
+
+            foreach ($recipients as $recipient) {
+
+                if (!issetNotify('forum', $idForum, $recipient)) {
+                    $re = setNotify('forum', $idForum, $recipient);
+                }
+            }
+        }
     }
 
     Util::jump_to('index.php?modname=public_forum&op=forum&result=ok');
@@ -1672,6 +1696,35 @@ function insthread()
 		 '" . $important . "')";
     if (!sql_query($ins_query)) Util::jump_to('index.php?modname=public_forum&op=thread&idForum=' . $id_forum . '&amp;result=err_ins');
     list($id_thread) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
+
+
+    require_once($GLOBALS['where_framework'] . '/lib/lib.usernotifier.php');
+
+    $can_notify = usernotifier_getUserEventStatus(getLogUserId(), 'ForumNewResponse');
+
+    if ($can_notify) {
+        /* Abilito di default le notifiche per l'utente che sta inserendo il thread */
+        if (!issetNotify('thread', $id_thread, getLogUserId())) {
+            $re = setNotify('thread', $id_thread, getLogUserId());
+        }
+
+        /* Abilito di default le notifiche per gli utenti che seguono quel forum*/
+
+        $subscribedUsersQuery = "SELECT `id_user` as idUser FROM `learning_forum_notifier` WHERE `id_notify` = ".$id_forum." AND `notify_is_a` = 'forum'";
+
+        $responseQuery = sql_query($subscribedUsersQuery);
+        while ($student = sql_fetch_assoc($responseQuery)) {
+            $students[] = $student;
+        }
+
+        foreach ($students as $student) {
+
+            if (!issetNotify('thread', $id_thread, $student['idUser'])) {
+                $re = setNotify('thread', $id_thread, $student['idUser']);
+            }
+        }
+    }
+
 
     $name_file = '';
     if (($_FILES['attach']['name'] != '') && checkPublicForumPerm('upload', (int)$_GET['idForum'])) {
