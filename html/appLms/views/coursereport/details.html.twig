@@ -27,12 +27,7 @@
             <tr>
                 <th>User</th>
                 <th>
-                  <select class="filter js-user-detail-filter">
-                    <option value="firstname">First Name</option>
-                    <option value="lastname">Last Name</option>
-                    <option value="email" selected>Email</option>
-                    <option value="register_date">Register Date</option>
-                    <option value="lastenter">Last Enter</option>
+                  <select class="filter js-user-detail-filter is-disabled" disabled>
                   </select>
                 </th>
 
@@ -61,30 +56,7 @@
             </tr>
         </thead>
         <tbody class="js-details-table">
-        {#{% for student in details['students'] %}#}
-            {#<tr>#}
-                {#<td class="name">{{ student.name }}</td>#}
-                {#<td class="email">{{ student.email }}</td>#}
-                {#<td class="has-subtable">#}
-                    {#<table class="table table-bordered">#}
-                        {#<thead>#}
-                        {#<tr>#}
-                        {#{% for result in student['activities_results'] %}#}
-                            {#{% if result == 'true' %}#}
-                            {#<td class="text-center"><i class="fa fa-check"></i></td>#}
-                            {#{% elseif result == 'false' %}#}
-                            {#<td class="text-center">-</td>#}
-                            {#{% else %}#}
-                            {#<td class="text-center">{{ result }}</td>#}
-                            {#{% endif %}#}
-                        {#{% endfor %}#}
-                        {#</tr>#}
-                        {#</thead>#}
-                    {#</table>#}
-                {#</td>#}
-                {#<td class="total text-center">{{ student.total_result }}</td>#}
-            {#</tr>#}
-        {#{% endfor %}#}
+
         </tbody>
         <tfoot class="empty">
             <th colspan="7" class="loading"></th>

@@ -144,6 +144,51 @@ window.CourseReport = (function ($) {
         }
     };
 
+
+    /**
+     * function used to fetch the info filters of users
+     * @param callback   {function}   -   callback used to build the <select> that contains the user info
+     */
+    var loadUserInfoFilter = function (callback) {
+        $.ajax({
+
+            type: 'post',
+            url: 'ajax.adm_server.php?r=lms/coursereport/getUserFieldsSelector',
+            success: function (data) {
+                var parsedData = JSON.parse(data);
+
+                $('.js-user-detail-filter').removeAttr('disabled');
+                $('.js-user-detail-filter').removeClass('is-disabled');
+
+                callback(parsedData);
+
+                return parsedData;
+            },
+            error: function (e) {
+                $('.loading').html('errore: ' + e.message);
+                return false;
+            }
+        });
+    };
+
+
+    var fillUserInfoFilter = function (data) {
+
+        var $filter = $('.js-user-detail-filter');
+        var _option;
+
+        $.each(data, function (i, elem) {
+
+            if (i === 'email') {
+                _option = '<option value="' + i + '" selected>' + elem + '</option>';
+            } else {
+                _option = '<option value="' + i + '">' + elem + '</option>';
+            }
+
+            $filter.append(_option);
+        });
+    };
+
     /**
      * function used to parse the test result
      * @param result
@@ -241,14 +286,31 @@ window.CourseReport = (function ($) {
         $('.js-details-table').empty();
     };
 
+    var setInteractions = function () {
+        
+        var fixHelper = function(e, ui) {
+            ui.children().each(function() {
+                $(this).width($(this).width());
+            });
+            return ui;
+        };
+
+        $('.course-sortable').sortable({
+            handle: '.handle',
+            helper: fixHelper
+        }).disableSelection();
+
+    };
 
     $(document).ready(function () {
 
         $('#yui-main-boot').addClass('col-md-12');
         $('#yui-main-boot').removeClass('col-md-9');
 
+
         $table = $('.js-details-table');
         var userData;
+        var userInfo;
 
         $('.js-details').on('click', function () {
             clearDetailTable();
@@ -260,7 +322,13 @@ window.CourseReport = (function ($) {
                 fillTable(userData);
             }, testData);
 
+            loadUserInfoFilter(function (data) {
+                userInfo = data;
+                fillUserInfoFilter(userInfo);
+            });
+
             fillActivitiesFilter();
+
         });
 
         $('.js-user-level-filter').on('change', function () {
@@ -284,6 +352,9 @@ window.CourseReport = (function ($) {
         $('.button--add').on('click', function () {
             $(this).toggleClass('active');
         });
+
+
+        setInteractions();
 
     });
 
