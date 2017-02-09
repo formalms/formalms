@@ -344,7 +344,7 @@ if ( typeof define === 'function' && define.amd ) {
     function init() {
         optionSwitch.forEach( function( el, i ) {
             el.addEventListener( 'click', function( ev ) {
-                ev.preventDefault();
+//                ev.preventDefault();
                 _switch( this );
             }, false );
         } );
@@ -485,7 +485,7 @@ if ( typeof define === 'function' && define.amd ) {
     function init() {
         optionSwitch.forEach( function( el, i ) {
             el.addEventListener( 'click', function( ev ) {
-                ev.preventDefault();
+//                ev.preventDefault();
                 _switch( this );
             }, false );
         } );
