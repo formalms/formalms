@@ -2609,7 +2609,7 @@ class CoursereportLmsController extends LmsController
         require_once(_base_ . '/lib/lib.table.php');
 
         // XXX: Initializaing
-        $id_report = Get::gReq('id_report', DOTY_MIXED, 0);
+        $id_report = Get::gReq('id_test', DOTY_MIXED, 0);
         $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
         $out =& $GLOBALS['page'];
         $out->setWorkingZone('content');
