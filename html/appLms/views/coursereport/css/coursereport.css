@@ -311,3 +311,7 @@ tfoot.empty td {
 .is-disabled {
     opacity: .4;
 }
+
+.final-buttons-container {
+    display: inline-block;
+}

@@ -19,7 +19,7 @@ window.CourseReport = (function ($) {
      * @param   {int}   maxColumns   -   number of columns in the detail table - FOR FUTURE IMPLEMENTATIONS
      * @param   {int}   filter   -   filter code
      */
-    var loadUserData = function (callback, tests, filter) {
+    var loadUserData = function (callback, tests, filter, round_redo) {
 
         var _data = {
             'courseId': 'id',
@@ -39,7 +39,16 @@ window.CourseReport = (function ($) {
         });
 
         /* FAKE DA IMPOSTARE DINAMICAMENTE IN CASO DI CLICK SU ROUND REPORT*/
-        _data['round_report'] = 12;
+//        _data['round_report'] = 12;
+
+        if (round_redo) {
+            if (round_redo.charAt(0) == 'a') {
+                _data['round_report'] = round_redo.substring(1);
+            } else {
+                _data['redo_final'] = round_redo.substring(1);
+            }
+        }
+
 
         $.ajax({
 
@@ -53,6 +62,8 @@ window.CourseReport = (function ($) {
                 $('.loading').html('');
                 $('.js-user-level-filter').removeAttr('disabled');
                 $('.js-user-level-filter').removeClass('is-disabled');
+                $('.js-user-detail-filter').removeAttr('disabled');
+                $('.js-user-detail-filter').removeClass('is-disabled');
                 var parsedData = JSON.parse(data);
 
                 callback(parsedData);
@@ -236,9 +247,14 @@ window.CourseReport = (function ($) {
     };
 
     var fillTable = function (data) {
-        var students = data.details['students'];
+        var _students = data.details['students'];
+        var _redoFinal = data.details['redo-final'];
+        var _roundReport = data.details['round-report'];
 
-        $.each(students, function (i, elem) {
+        $('.redo-final').attr('data-reportid', _redoFinal.idReport);
+        $('.round-report').attr('data-reportid', _roundReport.idReport);
+
+        $.each(_students, function (i, elem) {
             $table.append(buildStudentRow(elem));
         });
 
@@ -270,6 +286,10 @@ window.CourseReport = (function ($) {
 
     };
 
+    /**
+     * function used to filter users by level
+     * @param filter
+     */
     var filterUsersByLevel = function (filter) {
         var userData;
 
@@ -282,11 +302,34 @@ window.CourseReport = (function ($) {
     };
 
     /**
+     * function used to recount the table in case of rounding or redoing
+     * @param filter   {string}   -   filter type with an ID
+     */
+    var recountTable = function (filter) {
+        var userData;
+
+        clearDetailTable();
+
+        loadUserData(function (data) {
+            userData = data;
+            fillTable(userData);
+        }, testData, false, filter);
+    };
+
+
+    /**
      * function used to clear the detail table
      */
     var clearDetailTable = function () {
 
         $('.js-details-table').empty();
+
+        $('.js-user-level-filter').attr('disabled', true);
+        $('.js-user-level-filter').addClass('is-disabled');
+
+        $('.js-user-detail-filter').attr('disabled', true);
+        $('.js-user-detail-filter').addClass('is-disabled');
+
     };
 
     var setInteractions = function () {
@@ -334,41 +377,16 @@ window.CourseReport = (function ($) {
 
         });
 
-        $('.redo-final').on('click', function () {
-            clearDetailTable();
+        $('.js-finals-filter').on('click', function () {
+            var _selectedFilter;
 
-            testData = loadActivitiesData();
+            if ($(this).hasClass('round-report')) {
+                _selectedFilter = 'a' + $(this).attr('data-reportid');
+            } else {
+                _selectedFilter = 'r' + $(this).attr('data-reportid');
+            }
 
-            loadUserData(function (data) {
-                userData = data;
-                fillTable(userData);
-            }, testData);
-
-            loadUserInfoFilter(function (data) {
-                userInfo = data;
-                fillUserInfoFilter(userInfo);
-            });
-
-            fillActivitiesFilter();
-
-        });
-
-        $('.round-report').on('click', function () {
-            clearDetailTable();
-
-            testData = loadActivitiesData();
-
-            loadUserData(function (data) {
-                userData = data;
-                fillTable(userData);
-            }, testData);
-
-            loadUserInfoFilter(function (data) {
-                userInfo = data;
-                fillUserInfoFilter(userInfo);
-            });
-
-            fillActivitiesFilter();
+            recountTable(_selectedFilter);
 
         });
 
