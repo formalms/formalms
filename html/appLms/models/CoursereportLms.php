@@ -141,10 +141,10 @@ class CoursereportLms extends Model
         }
 
         // XXX: Update if needed
-        if ($tot_report == 0 || $tot_report == 1) {
+        if ($tot_report == 0) {
             $report_man->initializeCourseReport($org_tests);
         }
-        /*else {
+        else {
 
             if (is_array($included_test)) {
                 $test_to_add = array_diff($org_tests, $included_test);
@@ -164,7 +164,8 @@ class CoursereportLms extends Model
 
                 $included_test = $org_tests;
             }
-        }*/
+        }
+
         $report_man->updateTestReport($org_tests);
 
 
