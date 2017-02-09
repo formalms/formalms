@@ -126,7 +126,7 @@ class CoursereportLms extends Model
 
         $query_tot_report = "SELECT COUNT(*) "
             . " FROM " . $GLOBALS['prefix_lms'] . "_coursereport "
-            . " WHERE id_course = '" . $_SESSION['idCourse'] . "'";
+            . " WHERE id_course = '" . $this->idCourse . "'";
         list($tot_report) = sql_fetch_row(sql_query($query_tot_report));
 
         $query_tests = "SELECT id_report, id_source "
