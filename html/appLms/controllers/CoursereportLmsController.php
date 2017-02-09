@@ -336,8 +336,11 @@ class CoursereportLmsController extends LmsController
 
 
                     $chartLink = 'javascript:void(0)';
+                    $chartLinkVisible = true;
                     $editLink = 'javascript:void(0)';
+                    $editLinkVisible = true;
                     $trashLink = 'javascript:void(0)';
+                    $trashLinkVisible = true;
 
                     $passed = "-";
                     $notPassed = "-";
@@ -346,6 +349,7 @@ class CoursereportLmsController extends LmsController
                     $maxScore = "-";
                     $minScore = "-";
                     $varianza = "-";
+
 
                     switch ($info_report->getSourceOf()) {
                         case CoursereportLms::SOURCE_OF_TEST : {
@@ -366,6 +370,7 @@ class CoursereportLmsController extends LmsController
                                 $event->setOverViewTestQuestionLink($chartLink);
 
                                 $editLink = 'index.php?r=lms/coursereport/testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $trashLinkVisible = false;
                             }
 
                             if (isset($test_details[$info_report->getIdSource()]['passed']) || isset($test_details[$info_report->getIdSource()]['not_passed'])) {
@@ -401,7 +406,10 @@ class CoursereportLmsController extends LmsController
                             if ($mod_perm) {
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                 $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
-                                $editLink = 'index.php?r=lms/coursereport/testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $chartLinkVisible = false;
+                                $editLink = 'index.php?r=lms/coursereport/modactivityscore&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+
+                                $trashLink = 'index.php?r=lms/coursereport/delactivity&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                             }
 
                             $scormItem = new ScormLms($info_report->getIdSource());
@@ -417,8 +425,7 @@ class CoursereportLmsController extends LmsController
                             $minScore = $scormItem->getMinScore();
                         }
                             break;
-                        case CoursereportLms::SOURCE_OF_ACTIVITY:
-                        case CoursereportLms::SOURCE_OF_FINAL_VOTE: {
+                        case CoursereportLms::SOURCE_OF_ACTIVITY: {
 
                             $id = $info_report->getIdReport();
                             $name = strip_tags($info_report->getTitle());
@@ -428,9 +435,10 @@ class CoursereportLmsController extends LmsController
 
                             if ($mod_perm) {
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
-                                $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
-
-                                $editLink = 'index.php?r=lms/coursereport/testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                //$chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $chartLinkVisible = false;
+                                $editLink = 'index.php?r=lms/coursereport/modactivityscore&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdReport();
+                                $trashLink = 'index.php?r=lms/coursereport/delactivity&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdReport();
                             }
 
 
@@ -480,17 +488,17 @@ class CoursereportLmsController extends LmsController
                             array(
                                 'icon' => 'bar-chart',
                                 'link' => $chartLink,
-                                'visible' => 'true'
+                                'visible' => $chartLinkVisible
                             ),
                             array(
                                 'icon' => 'edit',
                                 'link' => $editLink,
-                                'visible' => 'true'
+                                'visible' => $editLinkVisible
                             ),
                             array(
                                 'icon' => 'trash',
                                 'link' => $trashLink,
-                                'visible' => 'true'
+                                'visible' => $trashLinkVisible
                             )
                         )
                     );
@@ -2601,7 +2609,7 @@ class CoursereportLmsController extends LmsController
         require_once(_base_ . '/lib/lib.table.php');
 
         // XXX: Initializaing
-        $id_report = importVar('id_report', true, 0);
+        $id_report = Get::gReq('id_report', DOTY_MIXED, 0);
         $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
         $out =& $GLOBALS['page'];
         $out->setWorkingZone('content');
