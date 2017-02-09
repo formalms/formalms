@@ -51,7 +51,9 @@
                 <td>{{ test.min_score }}</td>
                 <td class="actions">
                     {% for action in test.actions %}
+                      {% if action.visible == "true" %}
                         <a href="{{ action.link }}"><i class="fa fa-{{ action.icon }}"></i></a>
+                      {% endif %}
                     {% endfor %}
                 </td>
             </tr>
