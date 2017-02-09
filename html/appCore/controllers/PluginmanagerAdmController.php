@@ -78,6 +78,19 @@ class PluginmanagerAdmController extends AdmController {
             Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=err');
         }
     }
+
+    public function showSettings(){
+        $plugin = Get::req('plugin');
+        $settingAdm=new SettingAdm();
+        $pg_adm=new PluginAdm();
+        $plugin_info=$pg_adm->getPluginFromDB($plugin,'name');
+        $this->render('show_settings', array(
+                'setting_adm' => $settingAdm,
+                'plugin' =>$plugin,
+                'regroup' =>$plugin_info['regroup']
+            )
+        );
+    }
 }
 
 ?>

@@ -191,24 +191,6 @@ class PluginAdm extends Model {
     }
 
     /**
-     * Insert plugin's settings in forma's settings
-     * @param $plugin_name
-     */
-    private function addSettings($plugin_name){
-        $settings = $this->callPluginMethod($plugin_name, 'settings');
-        $manifest = $this->readPluginManifest($plugin_name);
-        //$category_regroup=$this->getRegroupFromCategory($manifest['category']);
-        if ($settings) {
-            $query_insert_string="INSERT %adm_setting (param_name,value_type,max_size,pack,regroup,sequence) VALUES ";
-            foreach ($settings as $key=>$setting){
-                $query_insert_string.="('".$setting['name']."','".$setting['type']."',".$setting['size'].",'".$plugin_name."',".$category_regroup.",".$key."),";
-            }
-            $query_insert_string=rtrim($query_insert_string,",");
-            sql_query($query_insert_string);
-        }
-    }
-
-    /**
      * Remove plugin's settings from forma's settings
      * @param $plugin_name
      * @return reouce_id
@@ -225,20 +207,17 @@ class PluginAdm extends Model {
      * @return bool|mixed
      */
     function installPlugin($plugin_name, $priority, $update=false){
-        if (!$update){
-            $this->callPluginMethod($plugin_name, 'install');
-        }
         $plugin_info=$this->readPluginManifest($plugin_name);
         //FORMA_PLUGIN: QUI AGGIUNGERE IL CONTROLLO DELLA VERSIONE
         $query = "insert into ".$this->table."
 				values(null,'".addslashes($plugin_name)."', '".addslashes($plugin_info['title'])."', '".addslashes($plugin_info['category'])."',
 					'".addslashes($plugin_info['version'])."', '".addslashes($plugin_info['author'])."', '".addslashes($plugin_info['link'])."', $priority,
-					'".addslashes($plugin_info['description'])."', 0 ,0 )";
+					'".addslashes($plugin_info['description'])."',".time()." ,0 )";
         if($plugin_info){
             $result = sql_query($query);
             if ($result){
-                if (!$update) {
-                    $this->addSettings($plugin_name);
+                if (!$update){
+                    $this->callPluginMethod($plugin_name, 'install');
                 }
                 return $plugin_info;
             } else {

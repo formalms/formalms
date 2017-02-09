@@ -220,8 +220,10 @@ class SettingAdm extends Model {
 	 * REturnes the displayable information for a selected group
 	 * @return string
 	 */
-	function printPageWithElement($regroup) {
-
+	function printPageWithElement($regroup=false, $pack=false) {
+        if ($regroup===false && $pack===false){
+            return false;
+        }
 		require_once(_base_.'/lib/lib.form.php');
 
 		//if($regroup == 'templ_man') return $this->_maskTemplateManager();
@@ -229,11 +231,18 @@ class SettingAdm extends Model {
 		if($regroup == 'suite_man') return $this->_maskSuiteManager();
 
 		$lang =& DoceboLanguage::createInstance('configuration', 'framework');
+        $where="";
 
+        if($regroup){
+            $where.=" and regroup = ".$regroup;
+        }
+        if($pack){
+            $where.="and pack = '".$pack."'";
+        }
 		$reSetting = sql_query("
 		SELECT pack, param_name, param_value, value_type, max_size
 		FROM ".$this->table."
-		WHERE regroup = '".$regroup."' AND
+		WHERE 1=1 ".$where." AND
 			hide_in_modify = '0'
 		ORDER BY pack, sequence");
 
