@@ -3,10 +3,8 @@ window.TabNav = (function ($) {
   'use strict';
 
   $(document).ready(function () {
-    $('body').delegate('click', '.js-tab-nav', function () {
-
-      console.log('asdasd');
-
+    
+    $(document).on('click', '.js-tab-nav', function () {
       var _toggledClass = $(this).data('tab');
 
       $(this).addClass('selected').siblings().removeClass('selected');
