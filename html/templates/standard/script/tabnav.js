@@ -3,7 +3,10 @@ window.TabNav = (function ($) {
   'use strict';
 
   $(document).ready(function () {
-    $('body').delegate('click', '.js-tab-nav', function () {
+
+    console.log('ads');
+
+    $(document).on('click', '.js-tab-nav', function () {
 
       console.log('asdasd');
 
