@@ -23,7 +23,6 @@ ob_start();
 // initialize
 require(_base_.'/lib/lib.bootstrap.php');
 Boot::init(BOOT_DATETIME);
-if(Get::cfg('enable_plugins', false)) { PluginManager::initPlugins(); }
 
 // not a pagewriter but something similar
 $GLOBALS['operation_result'] = '';

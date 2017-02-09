@@ -13,42 +13,71 @@
 
 class PluginmanagerAdmController extends AdmController {
 
-	public function showTask() {
-		if(!Get::cfg('enable_plugins', false)){
-			cout("Plugin feature disabled");
-			return;
-		}
-		$model = new PluginAdm();
-		$plugins=$model->getInstalledPlugins(true);
-		
-		$plugins_info=$model->getPluginsInfo($plugins);
-		
-		$active_tab = $_GET['active_tab'];
-		
-		$this->render('show', array(
-			'model' => $model,
-			'plugins' => $plugins,
-			'active_tab' => $active_tab,
-			'plugins_info' => $plugins_info)
-		);
+    public function showTask() {
+        $model = new PluginAdm();
+        $plugins = $model->getPlugins();
+        $this->render('show', array(
+                'model' => $model,
+                'plugins' => $plugins
+            )
+        );
+    }
 
-	}
+    public function install() {
+        $model = new PluginAdm();
+        $plugin = Get::req('plugin');
+        $res=$model->installPlugin($plugin,0);
+        if($res) {
+            Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=ok');
+        } else {
+            Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=err');
+        }
+    }
 
-	public function saveTask() {
+    public function uninstall() {
+        $model = new PluginAdm();
+        $plugin = Get::req('plugin');
+        $res=$model->uninstallPlugin($plugin);
+        if($res) {
+            Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=ok');
+        } else {
+            Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=err');
+        }
+    }
 
-		$model = new PluginAdm();
+    public function update() {
+        $model = new PluginAdm();
+        $plugin = Get::req('plugin');
+        $online = Get::req('online');
+        $res=$model->updatePlugin($plugin,$online);
+        if($res) {
+            Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=ok');
+        } else {
+            Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=err');
+        }
+    }
 
-		$active_tab = importVar('active_tab', false, 1);
-		if($model->saveElement($active_tab)) {
+    public function activate() {
+        $model = new PluginAdm();
+        $plugin = Get::req('plugin');
+        $res=$model->setupPlugin($plugin, 1);
+        if($res) {
+            Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=ok');
+        } else {
+            Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=err');
+        }
+    }
 
-			Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$active_tab.'&result=ok');
-		} else {
-
-			Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$active_tab.'&result=err');
-		}
-
-	}
-
+    public function deactivate() {
+        $model = new PluginAdm();
+        $plugin = Get::req('plugin');
+        $res=$model->setupPlugin($plugin, 0);
+        if($res) {
+            Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=ok');
+        } else {
+            Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=err');
+        }
+    }
 }
 
 ?>

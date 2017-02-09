@@ -38,7 +38,6 @@ $GLOBALS['op']		= Get::req('op', DOTY_ALPHANUM, '');
 // create instance of StdPageWriter
 StdPageWriter::createInstance();
 
-if(Get::cfg('enable_plugins', false)) PluginManager::runPlugins();
 
 require_once(_adm_.'/lib/lib.preoperation.php');
 

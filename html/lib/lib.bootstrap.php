@@ -248,11 +248,6 @@ class Boot {
 		require_once(_lib_.'/lib.acl.php');
 
 		self::log( "Prepare plugin's autoload." );
-		if(Get::cfg('enable_plugins', false)) {
-			PluginManager::autoload();
-			$plugin_cfg = PluginManager::config();
-			$GLOBALS['cfg'] = array_merge($GLOBALS['cfg'], $plugin_cfg);
-		}
 	}
 
 	/**
@@ -483,10 +478,6 @@ class Boot {
 
 		self::log( "Include layout manager file." );
 		require_once _lib_.'/layout/lib.layout.php';
-		
-		if(Get::cfg('enable_plugins', false)) {
-			PluginManager::initPlugins();
-		}
 	}
 
 	/**

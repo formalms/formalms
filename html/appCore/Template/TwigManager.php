@@ -33,10 +33,6 @@ class TwigManager
         $this->twig->addFunction('translate', new \Twig_Function_Function(function ($key, $module = false, $substitution = array(), $lang_code = false, $default = false) {
             return \Lang::t($key, $module, $substitution, $lang_code, $default);
         }));
-        $this->twig->addFunction('pluginUrl', new \Twig_Function_Function(function ($resource) {
-            $plugin_files = \PluginManager::find_files();
-            return '/' . _folder_plugins_ . '/' . $plugin_files[$resource] . '/' . $resource;
-        }));
         $this->twig->addFunction('evalPhp', new \Twig_Function_Function(function ($phpCode, $args = array()) {
             return call_user_func_array($phpCode, $args);
         }, array(
