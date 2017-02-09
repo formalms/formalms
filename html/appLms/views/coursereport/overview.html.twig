@@ -76,6 +76,7 @@
 
 
 <div class="activities-container">
+  {{ dump(details['activities']) }}
     {% for activity in details['activities'] %}
         <div data-activityId="{{ activity.id }}" data-activityName="{{ activity.name }}"></div>
     {% endfor %}
@@ -84,6 +85,6 @@
 
 <script type="text/javascript">
 
-  activities = {{ details|json_encode() }};
+  activities = {{ details|json_encode(constant('JSON_HEX_APOS')) | raw }};
 
 </script>
