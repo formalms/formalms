@@ -1,5 +1,22 @@
 <div class="table-responsive">
     <table class="table table-bordered">
+        <colgroup>
+          <col style="width: 30px">
+          <col style="width: 200px">
+          <col style="width: 75px">
+          <col style="width: 75px">
+          <col style="width: 75px">
+          <col style="width: 75px">
+          <col style="width: 75px">
+          <col style="width: 75px">
+          <col style="width: 85px">
+          <col style="width: 85px">
+          <col style="width: 75px">
+          <col style="width: 75px">
+          <col style="width: 75px">
+          <col style="width: 75px">
+          <col style="width: 85px">
+        </colgroup>
         <thead>
             <tr>
                 <th colspan="2" class="transparent"></th>
@@ -29,26 +46,26 @@
             <tr>
                 <td class="handle"><i class="fa fa-sort"></i></td>
                 <td class="name">{{ test.name }}</td>
-                <td>{{ test.type }}</td>
-                <td>{{ test.max }}</td>
-                <td>{{ test.required }}</td>
-                <td>{{ test.weight }}</td>
+                <td class="table-cell">{{ test.type }}</td>
+                <td class="table-cell">{{ test.max }}</td>
+                <td class="table-cell">{{ test.required }}</td>
+                <td class="table-cell">{{ test.weight }}</td>
                 {% if test.show %}
-                    <td class="text-center"><i class="fa fa-check"></i></td>
+                    <td class="text-center table-cell"><i class="fa fa-check"></i></td>
                 {% else %}
-                    <td class="text-center"><i class="fa fa-close"></i></td>
+                    <td class="text-center table-cell"><i class="fa fa-close"></i></td>
                 {% endif %}
                 {% if test.final %}
-                    <td class="text-center"><i class="fa fa-check"></i></td>
+                    <td class="text-center table-cell"><i class="fa fa-check"></i></td>
                 {% else %}
-                    <td class="text-center"><i class="fa fa-close"></i></td>
+                    <td class="text-center table-cell"><i class="fa fa-close"></i></td>
                 {% endif %}
-                <td><a href="{{ test.passed.link }}">{{ test.passed.value }}</a></td>
-                <td><a href="{{ test.not_passed.link }}">{{ test.not_passed.value }}</a></td>
-                <td><a href="{{ test.not_checked.link }}">{{ test.not_checked.value }}</a></td>
-                <td>{{ test.average }}</td>
-                <td>{{ test.max_score }}</td>
-                <td>{{ test.min_score }}</td>
+                <td class="table-cell"><a href="{{ test.passed.link }}">{{ test.passed.value }}</a></td>
+                <td class="table-cell"><a href="{{ test.not_passed.link }}">{{ test.not_passed.value }}</a></td>
+                <td class="table-cell"><a href="{{ test.not_checked.link }}">{{ test.not_checked.value }}</a></td>
+                <td class="table-cell">{{ test.average }}</td>
+                <td class="table-cell">{{ test.max_score }}</td>
+                <td class="table-cell">{{ test.min_score }}</td>
                 <td class="actions">
                     {% for action in test.actions %}
                       {% if action.visible %}

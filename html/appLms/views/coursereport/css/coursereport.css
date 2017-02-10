@@ -90,6 +90,11 @@ tfoot.empty td {
     color: red;
 }
 
+#overview .table {
+    table-layout: fixed;
+    margin: 0;
+}
+
 #details .has-subtable {
     padding: 0 !important;
 }
