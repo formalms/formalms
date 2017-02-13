@@ -25,24 +25,26 @@ foreach ($plugins as $info){
     $actions="";
     //if already in database
     if (isset($info['plugin_id'])){
-        if (!$info['version_error']){
-            if (!$info['update']){
-                $actions.='<a style="color: #C84000;" href="index.php?r=adm/pluginmanager/uninstall'.'&plugin='.$info['name'].'">Disinstalla</a>';
-                //if active
-                if ($info['active']=="1"){
-                    $actions.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/deactivate'.'&plugin='.$info['name'].'">Disattiva</a>';
-                    //if not active
+        if ($info['core']==="0"){
+            if (!$info['version_error']){
+                if (!$info['update']){
+                    $actions.='<a style="color: #C84000;" href="index.php?r=adm/pluginmanager/uninstall'.'&plugin='.$info['name'].'">Disinstalla</a>';
+                    //if active
+                    if ($info['active']=="1"){
+                        $actions.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/deactivate'.'&plugin='.$info['name'].'">Disattiva</a>';
+                        //if not active
+                    } else {
+                        $actions.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/activate'.'&plugin='.$info['name'].'">Attiva</a>';
+                    }
                 } else {
-                    $actions.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/activate'.'&plugin='.$info['name'].'">Attiva</a>';
+                    if (!class_exists('ZipArchive')){
+                        $actions.= "You can't use the online feautures<br>";
+                    }
+                    $actions.= '<a style="color: #006d07;" href="index.php?r=adm/pluginmanager/update'.'&plugin='.$info['name'].'&online='.$info['online'].'">Update</a>';
                 }
             } else {
-                if (!class_exists('ZipArchive')){
-                    $actions.= "You can't use the online feautures<br>";
-                }
-                $actions.= '<a style="color: #006d07;" href="index.php?r=adm/pluginmanager/update'.'&plugin='.$info['name'].'&online='.$info['online'].'">Update</a>';
+                $actions.= '<a style="color: #c80014;" href="javascript:;">Versione più vecchia</a>';
             }
-        } else {
-            $actions.= '<a style="color: #c80014;" href="javascript:;">Versione più vecchia</a>';
         }
         //if not in database
     } else {
