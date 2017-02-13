@@ -168,9 +168,14 @@ function sl_copy( $srcFile, $dstFile ) {
 		return sl_upload_ftp( $GLOBALS['where_files_relative'].$srcFile, $dstFile );
 	} elseif( $uploadType == "cgi" ) {
 		return sl_upload_cgi( $srcFile, $dstFile );
-	} else {
+	} elseif( $uploadType == "fs" || $uploadType == null ) {
 		return copy($GLOBALS['where_files_relative'].$srcFile, $GLOBALS['where_files_relative'].$dstFile);
-	}
+	} else {
+        $event = new \appCore\Events\Core\FileSystem\CopyEvent($GLOBALS['where_files_relative'].$srcFile, $GLOBALS['where_files_relative'].$dstFile);
+        \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\UploadEvent::EVENT_NAME, $event);
+
+        return $event->getResult();
+    }
 }
 
 /** file system implementation **/
