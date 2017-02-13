@@ -811,7 +811,7 @@ class CoursereportLmsController extends LmsController
                                                 } else {
                                                     $value = array(
                                                         'icon' => 'cr_not_passed',
-                                                        'showIcon' => true,
+                                                        'showIcon' => false,
                                                         'value' => $score,
                                                         'link' => "javascript:void(0)",
                                                         'active' => false);
@@ -1094,7 +1094,7 @@ class CoursereportLmsController extends LmsController
     }
 
 
-    function testreport($idTrack, $idTest, $testName, $studentName)
+    function testreport()
     {
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
