@@ -6,12 +6,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/minkphp/MinkBrowserKitDriver.git",
-            "reference": "81ff645ec09b95d4daf1193542b3dd2e5984af2e"
+            "reference": "1c9c8ad8838af33448d10baa57658b4cb55f23d6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/minkphp/MinkBrowserKitDriver/zipball/81ff645ec09b95d4daf1193542b3dd2e5984af2e",
-            "reference": "81ff645ec09b95d4daf1193542b3dd2e5984af2e",
+            "url": "https://api.github.com/repos/minkphp/MinkBrowserKitDriver/zipball/1c9c8ad8838af33448d10baa57658b4cb55f23d6",
+            "reference": "1c9c8ad8838af33448d10baa57658b4cb55f23d6",
             "shasum": ""
         },
         "require": {
@@ -21,10 +21,10 @@
             "symfony/dom-crawler": "~2.3|~3.0"
         },
         "require-dev": {
-            "silex/silex": "~1.2",
-            "symfony/phpunit-bridge": "~2.7|~3.0"
+            "mink/driver-testsuite": "dev-master",
+            "symfony/http-kernel": "~2.3|~3.0"
         },
-        "time": "2016-04-11 09:16:06",
+        "time": "2016-10-03 08:27:03",
         "type": "mink-driver",
         "extra": {
             "branch-alias": {
