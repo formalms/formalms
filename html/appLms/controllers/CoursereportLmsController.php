@@ -2649,6 +2649,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Initializaing
         $id_report = Get::gReq('id_report', DOTY_MIXED, 0);
+
         $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
         $out =& $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -2658,6 +2659,8 @@ class CoursereportLmsController extends LmsController
         $report_man = new CourseReportManager();
 
         if (isset($_POST['confirm'])) {
+
+            $id_report = Get::pReq('id_report', DOTY_MIXED, 0);
 
             if (!$report_man->deleteReportScore($id_report)) {
                 Util::jump_to('index.php?r=coursereport/coursereport&amp;result=err');
