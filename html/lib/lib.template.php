@@ -45,7 +45,7 @@ function getTemplate() {
 			LIMIT 0,1";
 		
 		$re =sql_query($qtxt);
-		if (mysql_num_rows($re) > 0) {
+		if (sql_num_rows($re) > 0) {
 			list($template_code) = sql_fetch_row($re);
 
 			setTemplate($template_code);

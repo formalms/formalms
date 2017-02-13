@@ -70,8 +70,8 @@ class ReservationRoomPermissions {
 
 		$q=sql_query($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while ($row=mysql_fetch_assoc($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while ($row=sql_fetch_assoc($q)) {
 
 				$user_idst=$row["user_idst"];
 				$perm=$row["perm"];

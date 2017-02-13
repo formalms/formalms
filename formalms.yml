@@ -2,8 +2,14 @@ configuration:
   project_type: formalms
   run_composer: false
   shared_children:
-    - path: "html/files"
-      src: "html/files"
+    - path: "html/files/appCore"
+      src: "html/files/appCore"
+      type: "directory"
+    - path: "html/files/appLms"
+      src: "html/files/appLms"
+      type: "directory"
+    - path: "html/files/common"
+      src: "html/files/common"
       type: "directory"
   ignore:
     - ".git"
@@ -12,12 +18,14 @@ configuration:
     - "README.md"
   staging:
       domain: formalms.ppreview.it
+      document_root_folder: html
       db_host: purple-stage-mysql.cw3niwyk1dxj.eu-west-1.rds.amazonaws.com
       db_name: formalms
       db_user: formalms_usr
       db_password: t33-ppeo78
   production:
       domain: xxx.com
+      document_root_folder: html
       db_host: db_host_ip_or_name
       db_name: mysql_db
       db_user: mysql_user

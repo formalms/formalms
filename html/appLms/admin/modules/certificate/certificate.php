@@ -674,11 +674,23 @@ function view_report_certificate() {
 	}
 	$out->add('<div class="std_block">'.$back_ui);
 
-        $filter = array();
-        if($id_certificate != null) $filter['id_certificate'] = $id_certificate;
-        if($id_course != null) $filter['id_course'] = $id_course;
-        $assignement = $certificate->getAssignment($filter);
-	$numrows = count($assignement);
+        $filter = array(
+            "id_certificate"    => $id_certificate,
+            "id_course"         => $id_course
+        );
+        if($search_filter) {
+            $filter['search_user'] = $search_filter;
+        }
+
+        $pagination = array(
+            "offset"    => $ini,
+            "num_rows"  => $numtablerows
+        );
+
+        $assignement = $certificate->getAssignment($filter, $pagination);
+        $numrows = count($assignement);
+        $totalrows = $certificate->countAssignment($filter);
+
 	$downloadables = array();
 
 	if ($numrows > 0)
@@ -867,7 +879,7 @@ function view_report_certificate() {
 		$print_button_1 .= '&nbsp;&nbsp;&nbsp;<a href="javascript:;" id="unselect_all_1">'.Lang::t('_NONE', 'directory').'</a>';
 		$print_button_2 .= '&nbsp;&nbsp;&nbsp;<a href="javascript:;" id="unselect_all_2">'.Lang::t('_NONE', 'directory').'</a>';
 		
-		$navbar = $tb->getNavBar($ini, $numrows);
+		$navbar = $tb->getNavBar($ini, $totalrows);
 		$out->add($print_button_1.'<br />'.$navbar.$tb->getTable().$navbar.'<br />'.$print_button_2);
 
 		$out->add($form->closeForm());
@@ -979,12 +991,14 @@ function send_certificate() {
 
 	$file = $info_report[ASSIGN_CERT_FILE];
 
+	$sendname = $info_report[ASSIGN_CERT_SENDNAME];
+	
 	//recognize mime type
 	$expFileName = explode('.', $file);
 	$totPart = count($expFileName) - 1;
 
 	//send file
-	sendFile('/appLms/certificate/', $file, $expFileName[$totPart]);
+	sendFile('/appLms/certificate/', $file, $expFileName[$totPart], $sendname);
 }
 
 function print_certificate() {

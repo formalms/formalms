@@ -42,7 +42,7 @@ function loadMaterials($idCourse) {
 	FROM ".$GLOBALS['prefix_lms']."_course_file 
 	WHERE id_course='".$idCourse."'");
 	
-	if(!mysql_num_rows($re_file) && !$mod_perm) return '';
+	if(!sql_num_rows($re_file) && !$mod_perm) return '';
 	
 	$tb = new Table(0, $lang->def('_MATERIALS'), $lang->def('_MATERIALS_TABLE'));
 	
@@ -61,7 +61,7 @@ function loadMaterials($idCourse) {
 	$tb->addHead($cont_h);
 	
 	$html = '<div class="floating_box">';
-	if(mysql_num_rows($re_file)) {
+	if(sql_num_rows($re_file)) {
 		
 		while(list($idFile, $title, $file) = sql_fetch_row($re_file)) {
 			
@@ -126,11 +126,10 @@ function infocourse() {
 	
 	
 	$GLOBALS['page']->add(
-		getTitleArea('', 'course')
+		getTitleArea($lang->def('_INFO'), 'course')
 		.'<div class="std_block">'
 	, 'content');
-	
-	$GLOBALS['page']->add(loadMaterials($_SESSION['idCourse']), 'content');
+	  
 	
 	$GLOBALS['page']->add(
 		'<table class="vertical_table">'
@@ -251,7 +250,7 @@ function modcourseinfo() {
 		show_progress, show_time, show_extra_info, show_rules, date_begin, date_end, valid_time 
 	FROM ".$GLOBALS['prefix_lms']."_course
 	WHERE idCourse = '".$id_course."'";
-	$course = mysql_fetch_array(sql_query($query_course));
+	$course = sql_fetch_array(sql_query($query_course));
 	
 	$lang_code = array_search($course['lang_code'], $array_lang);
 	
@@ -367,6 +366,7 @@ function modcourseinfo() {
 	
 	//-expiration---------------------------------------------------------
 	
+    // BUG: LR, non registrava il tempo medio del corso
 	$out->add(
 		$form->getOpenFieldset($lang->def('_COURSE_TIME_OPTION'))/*
 		.$form->getDatefield($lang->def('_DATE_BEGIN'), 'course_date_begin', 'course_date_begin', 
@@ -375,8 +375,7 @@ function modcourseinfo() {
 			$course['date_end'])
 		.$form->getTextfield($lang->def('_DAY_OF_VALIDITY'), 'course_day_of', 'course_day_of', '10', 
 			$course['valid_time'])*/
-		.$form->getTextfield($lang->def('_MEDIUM_TIME'), 'course_medium_time', 'course_medium_time', '10', '0', 
-			$course['mediumTime'])
+		.$form->getTextfield($lang->def('_MEDIUM_TIME'), 'course_medium_time', 'course_medium_time', '10',  $course['mediumTime'])
 		.$form->getCloseFieldset());
 	
 	//sponsor-and-logo----------------------------------------------------

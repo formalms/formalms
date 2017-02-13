@@ -486,7 +486,7 @@ function sessiondetails() {
 	$tb->setColsStyle($type_h);
 	$total_sec = 0;
 	$read_previous = false;
-	while($read = mysql_fetch_assoc($re_tracks)) {
+	while($read = sql_fetch_assoc($re_tracks)) {
 		
 		if($read_previous !== false) {
 			
@@ -514,9 +514,9 @@ function sessiondetails() {
 	WHERE g.idCourse = '".(int)$_SESSION['idCourse']."' AND g.idUser = '".$idst_user."' AND g.idEnter = '".$id_enter."' 
 	LIMIT ".($ini + Get::sett('visuItem')).", 1";
 	$re_track = sql_query($query_last_track);
-	if(mysql_num_rows($re_track) > 0) {
+	if(sql_num_rows($re_track) > 0) {
 		
-		$read =  mysql_fetch_assoc($re_track);
+		$read =  sql_fetch_assoc($re_track);
 		$time_in = $read['unix_time'] - $read_previous['unix_time']; 
 		$hours = (int)($time_in/3600);
 		$minutes = (int)(($time_in%3600)/60);

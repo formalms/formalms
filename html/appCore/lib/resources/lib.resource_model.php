@@ -52,9 +52,9 @@ class ResourceModel {
 				return FALSE;
 		}
 		if( $this->dbconn === NULL )
-			return mysql_insert_id();
+			return sql_insert_id();
 		else
-			return mysql_insert_id($this->dbconn);
+			return sql_insert_id($this->dbconn);
 	}
 
 
@@ -114,8 +114,8 @@ class ResourceModel {
 
 		$q=$this->_query($qtxt); //echo $qtxt;
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while($row=mysql_fetch_assoc($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while($row=sql_fetch_assoc($q)) {
 				$res[]=$row;
 				// TODO: cache result in global variable
 			}
@@ -177,8 +177,8 @@ class ResourceModel {
 
 		$q=$this->_query($qtxt); //echo $qtxt;
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while($row=mysql_fetch_assoc($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while($row=sql_fetch_assoc($q)) {
 				$resource_id=$row["resource_id"];
 				$res[$resource_id]=$resource_id;
 			}

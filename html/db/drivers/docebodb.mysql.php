@@ -31,19 +31,19 @@ class Mysql_DbConn extends DbConn {
 			return false;
 		}
 		// todo : i need some drawback compatibility :/ for now
-		$GLOBALS['dbConn'] = $this->conn;
+		$GLOBALS['dbConn'] = $this;
 
 		$this->log( 'mysql connected to : '.$host );
 
 		$this->set_timezone();	// set connection tz
 
 		if($dbname !== false) return $this->select_db($dbname);
-		return $this->conn;
+		return $this;
 	}
 
 	public function select_db($dbname) {
 
-		if(!@mysql_select_db($dbname, $this->conn)) {
+		if(!@mysql_select_db($dbname,$this->conn)) {
 
 			$this->log( 'mysql select db error : '.mysql_error() );
 			return false;
@@ -123,88 +123,90 @@ class Mysql_DbConn extends DbConn {
 		return mysql_insert_id($this->conn);
 	}
 
-	public function fetch_row($resource) {
+	public function fetch_row($result) {
 
-		if(!$resource) return false;
-		return mysql_fetch_row($resource);
+		if(!$result) return false;
+		return mysql_fetch_row($result);
 	}
 
-	public function fetch_assoc($resource) {
+	public function fetch_assoc($result) {
 
-		if(!$resource) return false;
-		return mysql_fetch_assoc($resource);
+		if(!$result) return false;
+		return mysql_fetch_assoc($result);
 	}
 
-	public function fetch_array($resource) {
+	public function fetch_array($result) {
 
-		if(!$resource) return false;
-		return mysql_fetch_array($resource);
+		if(!$result) return false;
+		return mysql_fetch_array($result);
 	}
 
-	public function fetch_obj($resource) {
+	public function fetch_obj($result, $class_name=null, $params=null) {
 
-		if(!$resource) return false;
-		return mysql_fetch_object($resource);
+		if(!$result) return false;
+		if ($params){
+			return mysql_fetch_object($result, $class_name, $params);
+		}
+		if ($class_name){
+			return mysql_fetch_object($result, $class_name);
+		}
+		return mysql_fetch_object($result);
 	}
 
-	public function escape_string($resource) {
+	public function escape_string($unescaped_string) {
 
-		if(!$resource) return false;
-		return mysql_escape_string($resource);
+		if(!$unescaped_string) return false;
+		return mysql_escape_string($unescaped_string);
 	}
 
-	public function num_rows($resource) {
+	public function num_rows($result) {
 
-		if(!$resource) return false;
-		return mysql_num_rows($resource);
+		if(!$result) return false;
+		return mysql_num_rows($result);
 	}
-
-	public function affected_rows($resource) {
-
-		if(!$resource) return false;
-		return mysql_affected_rows($resource);
-	}
+    
+    public function affected_rows() {
+        return mysql_affected_rows($this->conn);
+    }    
 
 	public function errno() {
-
 		return mysql_errno($this->conn);
 	}
 
 	public function error() {
-
 		return mysql_error($this->conn);
 	}
 
-	public function free_result($resource) {
-		return mysql_free_result($resource);
+	public function free_result($result) {
+		return mysql_free_result($result);
 	}
 
 	public function get_client_info() {
-		return mysql_get_client_info();
+		return mysql_get_client_info($this->conn);
 	}
 
-	public function get_server_info($resource){
-		return mysql_get_server_info($resource);
+	public function get_server_info(){
+		return mysql_get_server_info($this->conn);
 	}
 
-	public function data_seek($resource, $row_number){
-		return mysql_data_seek($resource, $row_number);
+	public function data_seek($result, $row_number){
+		return mysql_data_seek($result, $row_number);
 	}
 
-	public function field_seek($resource, $row_number){
-		return mysql_field_seek($resource, $row_number);
+	public function field_seek($result, $row_number){
+		return mysql_field_seek($result, $row_number);
 	}
 
-	public function num_fields($resource){
-		return mysql_num_fields($resource);
+	public function num_fields($result){
+		return mysql_num_fields($result);
 	}
 
-	public function fetch_field($resource){
-		return mysql_fetch_field($resource);
+	public function fetch_field($result){
+		return mysql_fetch_field($result);
 	}
 
-	public function real_escape_string($resource, $escapestring){
-		return mysql_real_escape_string($resource, $escapestring);
+	public function real_escape_string($unescaped_string){
+		return mysql_real_escape_string($unescaped_string, $this->conn);
 	}
 
 	public function start_transaction() {

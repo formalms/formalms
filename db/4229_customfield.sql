@@ -83,7 +83,13 @@ INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text) 
 
 
 insert into core_role values(290, '/framework/admin/customfield_manager/view', '');
+insert into core_role values(291, '/framework/admin/customfield_manager/add', '');
+insert into core_role values(292, '/framework/admin/customfield_manager/mod', '');
+insert into core_role values(293, '/framework/admin/customfield_manager/del', '');
 insert into core_role_members values(290, 3);
+insert into core_role_members values(291, 3);
+insert into core_role_members values(292, 3);
+insert into core_role_members values(293, 3);
 
 -- ------------------
 -- MENU CUSTOM FIELD

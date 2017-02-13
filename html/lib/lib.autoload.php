@@ -33,10 +33,8 @@ function docebo_autoload($classname) {
 
 		'Controller'		=> _lib_.'/mvc/lib.controller.php',
 		'LmsController'		=> _lib_.'/mvc/lib.lmscontroller.php',
-		//'CmsController'		=> _lib_.'/mvc/lib.cmscontroller.php',
 		'AdmController'		=> _lib_.'/mvc/lib.admcontroller.php',
 		'AlmsController'	=> _lib_.'/mvc/lib.almscontroller.php',
-		//'AcmsController'	=> _lib_.'/mvc/lib.acmscontroller.php',
 		'MobileController'	=> _lib_.'/mvc/lib.mobilecontroller.php',
 		'LobjLmsController'	=> _lms_.'/controllers/LobjLmsController.php',
 
@@ -107,20 +105,6 @@ function docebo_autoload($classname) {
 			_lms_.'/models',
 			_lms_.'/controllers'
 		),
-        /*
-		'acms' => array(
-			_cms_.'/admin/models',
-			_cms_.'/admin/controllers'
-		),
-		'cms' => array(
-			_cms_.'/models',
-			_cms_.'/controllers'
-		),
-        */
-		/*'mobile' => array(
-			_mobile_.'/models',
-			_mobile_.'/controllers'
-		),*/
 		'lobj' => array(
 			_lms_.'/models',
 			_lms_.'/controllers'
@@ -147,18 +131,6 @@ function docebo_autoload($classname) {
 			_base_.'/customscripts'.'/'._folder_lms_.'/controllers'
 #			_lms_.'/customscripts/models',
 #			_lms_.'/customscripts/controllers'
-		),
-		'acms' => array(
-//			_base_.'/customscripts'.'/'._folder_cms_.'/admin/models',
-//			_base_.'/customscripts'.'/'._folder_cms_.'/admin/controllers'
-#			_cms_.'/customscripts/admin/models',
-#			_cms_.'/customscripts/admin/controllers'
-		),
-		'cms' => array(
-//			_base_.'/customscripts'.'/'._folder_cms_.'/models',
-//			_base_.'/customscripts'.'/'._folder_cms_.'/controllers'
-#			_cms_.'/customscripts/models',
-#			_cms_.'/customscripts/controllers'
 		),
 		'lobj' => array(
 			_base_.'/customscripts'.'/'._folder_lms_.'/models',

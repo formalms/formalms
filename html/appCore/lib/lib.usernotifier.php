@@ -160,7 +160,7 @@ function usernotifier_getUserEventChannel( $idst, $event_class ) {
 	$rs_manager = sql_query( $query );
 	if( $rs_manager === FALSE )
 		return array();
-	if( mysql_num_rows($rs_manager) == 0 )
+	if( sql_num_rows($rs_manager) == 0 )
 		return array();
 
 	list($channel, $permission) = sql_fetch_row( $rs_manager );
@@ -185,7 +185,7 @@ function usernotifier_getUserEventChannel( $idst, $event_class ) {
 				."   AND eu.idst='".(int)$idst."'"
 				."   AND ec.class='".$event_class."'";
 		$rs_user = sql_query( $query );
-		if( mysql_num_rows($rs_user) == 1 ) {
+		if( sql_num_rows($rs_user) == 1 ) {
 			list($channel) = sql_fetch_row( $rs_user );
 
 			if( strlen($channel) > 0 ) {

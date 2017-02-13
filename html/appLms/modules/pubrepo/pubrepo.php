@@ -181,9 +181,9 @@ function pubrepo_itemproperties( &$treeView, &$arrayData, $idItem ) {
 					." WHERE idRepo='".(int)$idItem."'";
 					
 			$rs = sql_query( $query ) 
-				or die( mysql_error() );
+				or die( sql_error() );
 			
-			$arrayData = mysql_fetch_assoc($rs);
+			$arrayData = sql_fetch_assoc($rs);
 			$GLOBALS['page']->add( '<input type="hidden" name="idItem" id="idItem" value="'.$idItem.'" />');
 			$title = $arrayData['title'];
 		} else {

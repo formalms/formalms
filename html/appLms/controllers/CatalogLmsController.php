@@ -107,8 +107,6 @@ class CatalogLmsController extends LmsController {
        $val_enroll_not = Get::req('val_enroll_not', DOTY_STRING, '');
               
        $result = $this->model->getCourseList($typeCourse,1,$val_enroll, $val_enroll_not);
-       
-    //   $this->render('tab_start');       
        $this->render('courselist', array( "result" => $result));
 
     }    
@@ -466,7 +464,7 @@ class CatalogLmsController extends LmsController {
 							." AND type_of_entry = 'course'"
 							." AND id_entry = '".$id_course."'";
 
-				list($control_course) = mysql_fetch_row(mysql_query($query));
+				list($control_course) = sql_fetch_row(sql_query($query));
 
 				/*if($control)
 					$recipients[] = $id_user;*/
@@ -482,7 +480,7 @@ class CatalogLmsController extends LmsController {
 							." WHERE id_item = '".$id_course."'"
 							." )";
 
-				list($control_coursepath) = mysql_fetch_row(mysql_query($query));
+				list($control_coursepath) = sql_fetch_row(sql_query($query));
 
 				/*if($control)
 					$recipients[] = $id_user;*/
@@ -498,7 +496,7 @@ class CatalogLmsController extends LmsController {
 							." WHERE idEntry = '".$id_course."'"
 							." )";
 
-				list($control_catalogue) = mysql_fetch_row(mysql_query($query));
+				list($control_catalogue) = sql_fetch_row(sql_query($query));
 
 				if($control_user && ($control_course || $control_coursepath || $control_catalogue))
 					$recipients[] = $id_user;

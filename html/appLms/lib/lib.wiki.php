@@ -298,8 +298,8 @@ Class LmsWikiManager extends CoreWikiManager {
 		$qtxt.="ORDER BY t2.title";
 		$q =$this->_executeQuery($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while($row =mysql_fetch_assoc($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while($row =sql_fetch_assoc($q)) {
 
 				$wiki_id =$row["wiki_id"];
 				$res["data"][$wiki_id]=$row;
@@ -359,7 +359,7 @@ Class LmsWikiManager extends CoreWikiManager {
 
 		$q =$this->_executeQuery($qtxt);
 
-		if (($q) && (mysql_num_rows($q) == 0)) {
+		if (($q) && (sql_num_rows($q) == 0)) {
 			$res =FALSE;
 		}
 

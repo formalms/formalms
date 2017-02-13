@@ -1634,7 +1634,7 @@ Class CoreWikiPublic {
 
 		$url =$um->getUrl("page=".$page_info["page_code"]);
 		$res.='<div class="wiki_search_title">';
-		$title =eregi_replace("(".$search_txt.")", '<span class="filter_evidence">\\1</span>', $page_info["title"]);
+		$title =preg_replace("(".$search_txt.")", '<span class="filter_evidence">\\1</span>', $page_info["title"]);
 		$res.='<a href="'.$url.'">'.$title."</a></div>\n";
 		$res.='<p class="wiki_search_txt_preview">';
 		$content =strip_tags($data["content"]);
@@ -1643,7 +1643,7 @@ Class CoreWikiPublic {
 		$start =($start > 150 ? $start-150 : 0);
 		$res.=($start > 0 ? "..." : "");
 		$preview =substr($content, $start, 300);
-		$preview =eregi_replace("(".$search_txt.")", '<span class="filter_evidence">\\1</span>', $preview);
+		$preview =preg_replace("(".$search_txt.")", '<span class="filter_evidence">\\1</span>', $preview);
 		$res.=$preview;
 		$res.=(strlen($content) > 300 ? "..." : "");
 		$res.="</p>";
@@ -1780,9 +1780,9 @@ Class CoreWikiManager {
 				return FALSE;
 		}
 		if( $this->dbconn === NULL )
-			return mysql_insert_id();
+			return sql_insert_id();
 		else
-			return mysql_insert_id($this->dbconn);
+			return sql_insert_id($this->dbconn);
 	}
 
 
@@ -1857,7 +1857,7 @@ Class CoreWikiManager {
 		
 		$result = sql_query($query);
 		
-		if(mysql_num_rows($result))
+		if(sql_num_rows($result))
 			while(list($sons_id) = sql_fetch_row($result))
 			{
 				$ord = $this->getLastPageOrd($wiki_id, $parent_level + ($first ? o : 1))+1;
@@ -1899,7 +1899,7 @@ Class CoreWikiManager {
 		$q=$this->_executeQuery($qtxt);
 
 		if ($q)
-			$data_info["data_tot"]=mysql_num_rows($q);
+			$data_info["data_tot"]=sql_num_rows($q);
 		else
 			$data_info["data_tot"]=0;
 
@@ -1908,9 +1908,9 @@ Class CoreWikiManager {
 			$q=$this->_executeQuery($qtxt);
 		}
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
 			$i=0;
-			while($row=mysql_fetch_assoc($q)) {
+			while($row=sql_fetch_assoc($q)) {
 
 				$id=$row["wiki_id"];
 				$data_info["data_arr"][$i]=$row;
@@ -1979,8 +1979,8 @@ Class CoreWikiManager {
 		$qtxt.="WHERE wiki_id='".(int)$id."'";
 		$q=$this->_executeQuery($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			$res=mysql_fetch_assoc($q);
+		if (($q) && (sql_num_rows($q) > 0)) {
+			$res=sql_fetch_assoc($q);
 		}
 
 		return $res;
@@ -2214,7 +2214,7 @@ Class CoreWikiManager {
 		$q=$this->_executeQuery($qtxt);
 
 		if ($q)
-			$data_info["data_tot"]=mysql_num_rows($q);
+			$data_info["data_tot"]=sql_num_rows($q);
 		else
 			$data_info["data_tot"]=0;
 
@@ -2223,9 +2223,9 @@ Class CoreWikiManager {
 			$q=$this->_executeQuery($qtxt);
 		}
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
 			$i=0;
-			while($row=mysql_fetch_array($q)) {
+			while($row=sql_fetch_array($q)) {
 
 				$id=$row["faq_id"];
 				$data_info["data_arr"][$i]=$row;
@@ -2256,9 +2256,9 @@ Class CoreWikiManager {
 		}
 		$q=$this->_executeQuery($qtxt); //echo $qtxt;
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
 
-			$res=mysql_fetch_assoc($q);
+			$res=sql_fetch_assoc($q);
 
 			if ($language === FALSE) {
 				$res["title"]="";
@@ -2300,8 +2300,8 @@ Class CoreWikiManager {
 		$qtxt.="WHERE wiki_id='".(int)$wiki_id."' AND page_code='".$code."'";
 		$q=$this->_executeQuery($qtxt); //echo $qtxt;
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			$row=mysql_fetch_assoc($q);
+		if (($q) && (sql_num_rows($q) > 0)) {
+			$row=sql_fetch_assoc($q);
 			$res=$row["page_id"];
 		}
 
@@ -2343,8 +2343,8 @@ Class CoreWikiManager {
 		$q=$this->_executeQuery($qtxt);
 
 		if ($q) {
-			if (mysql_num_rows($q) > 0) {
-				$res=mysql_fetch_assoc($q);
+			if (sql_num_rows($q) > 0) {
+				$res=sql_fetch_assoc($q);
 
 				if ($language === FALSE) {
 					$res["title"]="";
@@ -2445,7 +2445,7 @@ Class CoreWikiManager {
 			$qtxt.="WHERE page_id='".$page_id."' AND language='".$language."'";
 			$q=$this->_executeQuery($qtxt);
 
-			if (($q) && (mysql_num_rows($q) > 0)) {
+			if (($q) && (sql_num_rows($q) > 0)) {
 
 				$qtxt ="UPDATE ".$this->getWikiPageInfoTable()." SET title='".$title."', ";
 				$qtxt.="version='".$version."', last_update=NOW() ";
@@ -2453,7 +2453,7 @@ Class CoreWikiManager {
 
 				$q=$this->_executeQuery($qtxt);
 			}
-			else if (($q) && (mysql_num_rows($q) == 0)) {
+			else if (($q) && (sql_num_rows($q) == 0)) {
 				$this->createPageInfo($page_id, $language, $title, $version, $wiki_id);
 			}
 
@@ -2489,8 +2489,8 @@ Class CoreWikiManager {
 
 		$q=$this->_executeQuery($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			$row=mysql_fetch_assoc($q);
+		if (($q) && (sql_num_rows($q) > 0)) {
+			$row=sql_fetch_assoc($q);
 			$page_path=$row["page_path"];
 			$last_ord=end(explode("/", $page_path));
 			$res=(int)$last_ord;
@@ -2570,8 +2570,8 @@ Class CoreWikiManager {
 			$q=$this->_executeQuery($qtxt); //echo $qtxt;
 
 			$found=FALSE;
-			if (($q) && (mysql_num_rows($q) > 0)) {
-				while(($found == FALSE) && ($row=mysql_fetch_assoc($q))) {
+			if (($q) && (sql_num_rows($q) > 0)) {
+				while(($found == FALSE) && ($row=sql_fetch_assoc($q))) {
 
 					if ($row["lev"] == 0) {
 						$home=$row;
@@ -2583,7 +2583,7 @@ Class CoreWikiManager {
 
 					if ($row["page_code"] == $page_code) {
 						$found=TRUE;
-						$next=mysql_fetch_assoc($q);
+						$next=sql_fetch_assoc($q);
 					}
 					else {
 						$prev=$row;
@@ -2639,8 +2639,8 @@ Class CoreWikiManager {
 
 		$q=$this->_executeQuery($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while($row=mysql_fetch_assoc($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while($row=sql_fetch_assoc($q)) {
 				$res[]=$row["page_id"];
 			}
 		}

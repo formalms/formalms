@@ -16,6 +16,7 @@ class TablefilterWidget extends Widget {
 	public $id = '';
 	public $filter_text = "";
 	public $auxiliary_filter = "";
+    public $list_category = "";
 	public $common_options = "";
 	public $advanced_filter_content = false;
 	public $advanced_filter_active = false;
@@ -46,6 +47,7 @@ class TablefilterWidget extends Widget {
 		$this->render('tablefilter', array(
 			'id' => $this->id,
 			'filter_text' => (string)$this->filter_text,
+            'list_category' => $this->list_category,
 			'auxiliary_filter' => $this->auxiliary_filter,
 			'common_options' => $this->common_options,
 			'advanced_filter_content' =>  $this->advanced_filter_content,

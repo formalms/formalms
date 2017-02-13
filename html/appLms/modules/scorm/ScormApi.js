@@ -394,7 +394,16 @@ ScormApi.prototype.commonLMSInitialize = function() {
 
 	if( ajxreq.transport.status == 200 ) {
 		try {
-			this.setTom( ajxreq.transport.responseXML );
+            // detecting IE
+            if(window.ActiveXObject || "ActiveXObject" in window) {  
+                var xmldom = new ActiveXObject("Msxml2.DOMDocument.6.0"); 
+                xmldom.async = false;
+                xmldom.loadXML(ajxreq.transport.responseText);
+                xmldom.setProperty("SelectionLanguage", "XPath"); 
+                this.setTom(xmldom);
+			} else {
+                this.setTom( ajxreq.transport.responseXML );
+            }   
 			this.scoStatus = ScormApi.INITIALIZED;
 		} catch (ex) {
 			w = window.open('#', 'debug');
@@ -899,7 +908,8 @@ function slStartEvents() {
 
 function loadFromXml(xml_file, renderer, obj_ref) {
 
-	if(window.ActiveXObject) {
+	// detecting IE
+    if(window.ActiveXObject || "ActiveXObject" in window)  {  
 
 		var xmlhttp = new Ajax.Request(xml_file, {
 				method: 'get',
@@ -908,10 +918,11 @@ function loadFromXml(xml_file, renderer, obj_ref) {
 	    );
 		if( xmlhttp.transport.status == 200 ) {
 
-			// browser is IE
-			var xmldom = new ActiveXObject("MSXML2.DOMDocument");
+            var xmldom = new ActiveXObject("Msxml2.DOMDocument.6.0"); 
 			xmldom.async = false;
 			xmldom.loadXML(xmlhttp.transport.responseText);
+            xmldom.setProperty("SelectionLanguage", "XPath"); 
+            
 
 			if( xmldom.parseError.errorCode != 0 ) {
 				alert( "xml parser error:"
@@ -922,7 +933,7 @@ function loadFromXml(xml_file, renderer, obj_ref) {
 						+ "\n xml_file = " + xmlhttp.transport.responseText );
 				return false;
 			}
-			xmldom.setProperty("SelectionLanguage", "XPath");
+
 
 			if( renderer == null ) obj_ref.setXmlDocument(xmldom);
 			else renderer(xmldom);
@@ -959,8 +970,9 @@ function loadFromXml(xml_file, renderer, obj_ref) {
 
 function CreateXmlDocument() {
 	var xdoc;
-	if( window.ActiveXObject && /Win/.test(navigator.userAgent) ) {
-		xdoc = new ActiveXObject("MSXML2.DOMDocument");
+	 
+    if(window.ActiveXObject || "ActiveXObject" in window)  {  
+        var xdoc = new ActiveXObject("Msxml2.DOMDocument.6.0"); 
 	} else if( document.implementation && document.implementation.createDocument ) {
 		xdoc = document.implementation.createDocument("", "", null);
 	} else {
@@ -989,8 +1001,8 @@ function SerializeXML( domxml ) {
  **/
 function importAllNode(xmldoc, oNode, bImportChildren){
 
-	if( window.ActiveXObject && /Win/.test(navigator.userAgent) ) {
-
+	// If IE
+    if(window.ActiveXObject || "ActiveXObject" in window)  {  
 		var oNew;
 
 		if(oNode.nodeType == 1){

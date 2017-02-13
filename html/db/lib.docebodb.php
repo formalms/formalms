@@ -39,13 +39,16 @@ class DbConn {
 	 */
 	public function __construct() {}
 
-	/**
-	 * This function return the current instance for the class, if it's the first
-	 * time that is called it will instance the class
-	 * @return DbConn
-	 */
-	public static function &getInstance() {
-
+    /**
+     * This function return the current instance for the class, if it's the first
+     * time that is called it will instance the class
+     * @param bool $link
+     * @return bool|DbConn
+     */
+	public static function &getInstance($link=false) {
+        if ($link){
+            return $link;
+        }
 		if(self::$instance == NULL) {
 
 			$db_type = Get::cfg('db_type', ( function_exists('mysqli_connect') ? 'mysqli' : 'mysql' ) );
@@ -241,12 +244,16 @@ class DbConn {
 	 */
 	public function fetch_array($resource) {}
 
-	/**
-	 * Get a result row as an object
-	 * @return Object
-	 * @param $resource resource_id
-	 */
-	public function fetch_obj($resource) {}
+    /**
+     * Get a result row as an object
+     *
+     * @param $resource resource_id
+     * @param null $class_name
+     * @param null $params
+     * @param bool $conn
+     * @return Object
+     */
+	public function fetch_obj($resource, $class_name=null, $params=null) {}
 
 	/**
 	 * Retrieves the number of rows from a result set
@@ -258,9 +265,8 @@ class DbConn {
 	/**
 	 * Retrieves the number of rows from a result set
 	 * @return int
-	 * @param $resource resource_id
 	 */
-	public function affected_rows($resource) {}
+	public function affected_rows() {}
 
 	/**
 	 * Begin a transaction
@@ -311,6 +317,7 @@ class DbConn {
 
     /**
      * Will free all memory associated with the result identifier result.
+     * @param $res
      * @return string
      */
     public function free_result($res) {}
@@ -335,27 +342,40 @@ class DbConn {
 
     /**
      * data_seek info todo:edit
+     * @param $result
+     * @param $row_number
      * @return string
      */
-    public function data_seek(){}
+    public function data_seek($result, $row_number){}
 
     /**
      * field_seek info todo:edit
+     * @param $result
+     * @param $fieldnr
      * @return string
      */
-    public function field_seek(){}
+    public function field_seek($result, $fieldnr){}
 
     /**
-	 * num_field info todo:edit
-	 * @return string
-	 */
-    public function num_fields(){}
+     * num_field info todo:edit
+     * @param $res
+     * @return string
+     */
+    public function num_fields($res){}
 
     /**
-	 * fetch_field info todo:edit
-	 * @return string
-	 */
-    public function fetch_field(){}
+     * fetch_field info todo:edit
+     * @param $result
+     * @return string
+     */
+    public function fetch_field($result){}
+
+    /**
+     * escape_string info todo:edit
+     * @param $res
+     * @return string
+     */
+    public function escape_string($res){}
 
     /**
 	 * real_escape_string info todo:edit
@@ -376,14 +396,14 @@ class DbConn {
 
 function sql_query($query, $conn = false) {
 
-	$db = DbConn::getInstance();
+	$db = DbConn::getInstance($conn);
 	$re = $db->query($query);
 
 	return $re;
 }
 function sql_limit_query($query, $from, $results, $conn = false) {
 
-	$db = DbConn::getInstance();
+	$db = DbConn::getInstance($conn);
 	$re = $db->query_limit($query, $from, $results);
 
 	return $re;
@@ -391,13 +411,13 @@ function sql_limit_query($query, $from, $results, $conn = false) {
 
 function sql_insert_id($conn = false) {
 
-	$db = DbConn::getInstance();
+	$db = DbConn::getInstance($conn);
 	$re = $db->insert_id();
 
 	return $re;
 }
 
-function sql_num_rows($res, $conn = false) {
+function sql_num_rows($res) {
 
 	$db = DbConn::getInstance();
 	$re = $db->num_rows($res);
@@ -405,7 +425,7 @@ function sql_num_rows($res, $conn = false) {
 	return $re;
 }
 
-function sql_fetch_row($res, $conn = false) {
+function sql_fetch_row($res) {
 
 	$db = DbConn::getInstance();
 	$re = $db->fetch_row($res);
@@ -413,7 +433,7 @@ function sql_fetch_row($res, $conn = false) {
 	return $re;
 }
 
-function sql_fetch_assoc($res, $conn = false) {
+function sql_fetch_assoc($res) {
 
 	$db = DbConn::getInstance();
 	$re = $db->fetch_assoc($res);
@@ -421,7 +441,7 @@ function sql_fetch_assoc($res, $conn = false) {
 	return $re;
 }
 
-function sql_fetch_array($res, $conn = false) {
+function sql_fetch_array($res) {
 
 	$db = DbConn::getInstance();
 	$re = $db->fetch_array($res);
@@ -429,15 +449,15 @@ function sql_fetch_array($res, $conn = false) {
 	return $re;
 }
 
-function sql_fetch_object($res, $conn = false) {
+function sql_fetch_object($res, $class_name=null, $params=null) {
 
 	$db = DbConn::getInstance();
-	$re = $db->fetch_obj($res);
+	$re = $db->fetch_obj($res, $class_name, $params);
 
 	return $re;
 }
 
-function  sql_escape_string($res, $conn = false)
+function  sql_escape_string($res)
 {
 	$db = DbConn::getInstance();
 	$re = $db->escape_string($res);
@@ -445,60 +465,60 @@ function  sql_escape_string($res, $conn = false)
 	return $re;
 }
 
-function  sql_error(){
-    $db = DbConn::getInstance();
+function  sql_error($link=null){
+    $db = DbConn::getInstance($link);
     $re = $db->error();
     return $re;
 }
 
-function sql_free_result($res, $conn = false){
+function sql_free_result($res){
     $db = DbConn::getInstance();
     $re = $db->free_result($res);
     return $re;
 }
 
-function  sql_get_client_info(){
-    $db = DbConn::getInstance();
+function  sql_get_client_info($link=null){
+    $db = DbConn::getInstance($link);
     $re = $db->get_client_info();
     return $re;
 }
 
-function sql_get_server_info(){
-    $db = DbConn::getInstance();
+function sql_get_server_info($link=null){
+    $db = DbConn::getInstance($link);
     $re = $db->get_server_info();
     return $re;
 }
 
-function sql_data_seek(){
+function sql_data_seek($result, $row_number){
     $db = DbConn::getInstance();
-    $re = $db->data_seek();
+    $re = $db->data_seek($result, $row_number);
     return $re;
 }
 
-function sql_errno(){
-    $db = DbConn::getInstance();
+function sql_errno($link=null){
+    $db = DbConn::getInstance($link);
     $re = $db->errno();
     return $re;
 }
 
-function sql_affected_rows(){
-    $db = DbConn::getInstance();
+function sql_affected_rows($link=null){
+    $db = DbConn::getInstance($link);
     $re = $db->affected_rows();
     return $re;
 }
-function sql_field_seek(){
+function sql_field_seek($result, $fieldnr){
     $db = DbConn::getInstance();
-    $re = $db->field_seek();
+    $re = $db->field_seek($result, $fieldnr);
     return $re;
 }
-function sql_num_field(){
+function sql_num_field($res){
     $db = DbConn::getInstance();
-    $re = $db->num_field();
+    $re = $db->num_field($res);
     return $re;
 }
-function sql_fetch_field(){
+function sql_fetch_field($result){
     $db = DbConn::getInstance();
-    $re = $db->fetch_field();
+    $re = $db->fetch_field($result);
     return $re;
 }
 function sql_real_escape_string(){
@@ -506,4 +526,23 @@ function sql_real_escape_string(){
     $re = $db->real_escape_string();
     return $re;
 }
+
+function sql_connect($db_host, $db_user, $db_pass, $db_name=false){
+    $db = DbConn::getInstance();
+    $re = $db->connect($db_host, $db_user, $db_pass, $db_name);
+    return $re;
+}
+
+function sql_select_db($db_name){
+    $db = DbConn::getInstance();
+    $re = $db->select_db($db_name);
+    return $re;
+}
+
+function sql_close(){
+    $db = DbConn::getInstance();
+    $re = $db->close();
+    return $re;
+}
+
 ?>

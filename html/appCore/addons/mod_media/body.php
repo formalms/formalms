@@ -30,37 +30,13 @@ if(canAccessPersonalMedia()) {
 	$menu_url["personal"]=$page_url."&amp;op=personal";
 }
 
-/*
-if(canAccessCmsMedia()) {
-	$menu_label["cms"]=$lang->def("_CMS_MEDIA");
-	$menu_url["cms"]=$page_url."&amp;op=cms";
-}
-*/
-// ---------------------------------------------
-/*
-if ((canAccessPersonalMedia()) || (canAccessCmsMedia()))
-	drawMenu($menu_label, $menu_url, $op);
-*/
-// --------------------------------------------------------------------------------------------
-/*
-$GLOBALS['page']->add(
-		'<link href="'.$GLOBALS["where_framework_relative"].'/templates/'.getTemplate().'/style/base-old-treeview.css" rel="stylesheet" type="text/css" />'."\n"
-		.'<link href="'.$GLOBALS["where_framework_relative"].'/templates/'.getTemplate().'/style/style_table.css" rel="stylesheet" type="text/css" />'."\n",
-		'page_head');
-*//*
-$GLOBALS['page']->add(
-		 '<script type="text/javascript"> window.resizeTo(640, 480); </script>',
-		 'page_head');
-*/
 // --------------------------------------------------------------------------------------------
 
 define("_USER_FPATH_INTERNAL", "/common/users/");
 define("_USER_FPATH", $GLOBALS["where_files_relative"]._USER_FPATH_INTERNAL);
 
-//define("_FPATH_INTERNAL", "/appCms/media/");
 define("_FPATH", $GLOBALS["where_files_relative"]._FPATH_INTERNAL);
 
-//define("_PPATH_INTERNAL", "/appCms/media/preview/");
 define("_PPATH", $GLOBALS["where_files_relative"]._PPATH_INTERNAL);
 
 
@@ -71,11 +47,6 @@ switch ($op) {
 		//show_main($out, $lang);
 	} break;
 
-    /*
-	case "cms": {
-		show_cms_media($out, $lang);
-	} break;
-    */
 	case "personal": {
 		show_personal_media($out, $lang);
 	} break;
@@ -119,35 +90,10 @@ function canAccessPersonalMedia() {
 	}
 }
 
-/*
-function canAccessCmsMedia() {
-return false;
-	require_once(_base_.'/lib/lib.platform.php');
-	$pl =& PlatformManager::createInstance();
-
-	if(!$pl->isLoaded('cms')) return false;
-
-	$level_id = Docebo::user()->getUserLevelId();
-	if(Docebo::user()->isAnonymous()) return false;
-
-	if ( (($GLOBALS["htmledit_image_godadmin"]) && ($level_id == ADMIN_GROUP_GODADMIN)) ||
-		(($GLOBALS["htmledit_image_admin"]) && ($level_id == ADMIN_GROUP_ADMIN || $level_id == ADMIN_GROUP_PUBLICADMIN)) ||
-		(($GLOBALS["htmledit_image_user"]) && ($level_id == ADMIN_GROUP_USER))) {
-
-		if (($GLOBALS["where_cms"] === false) || ($GLOBALS["where_cms_relative"] === false))
-			return false; // There is no CMS installed!
-		else
-			return true;
-	} else {
-		return false;
-	}
-}
-*/
 
 
 function show_main(& $out, & $lang) {
 
-	//if ((canAccessPersonalMedia()) || (canAccessCmsMedia()))
     if (canAccessPersonalMedia() )
 		$out->add($lang->def("_POPUP_MEDIA_INTRO"));
 	else
@@ -223,8 +169,8 @@ function show_personal_media(& $out, & $lang) {
 	WHERE user_idst='".$user_id."'";
 	$q = sql_query($qtxt);
 
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		while($row = mysql_fetch_array($q)) {
+	if (($q) && (sql_num_rows($q) > 0)) {
+		while($row = sql_fetch_array($q)) {
 			$site_url="http://".$_SERVER['HTTP_HOST'].$path.'/common/users/';
 			$rowcnt = array();
 
@@ -388,8 +334,8 @@ function del_personal_media(& $out, & $lang) {
 		$qtxt.="WHERE id='".$id."' AND user_idst='".$user_id."' AND type='image'";
 		$q=sql_query($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			$row=mysql_fetch_array($q);
+		if (($q) && (sql_num_rows($q) > 0)) {
+			$row=sql_fetch_array($q);
 			$real_fname=$row["real_fname"];
 
 			//@sl_unlink(_USER_FPATH.$real_fname);
@@ -432,107 +378,7 @@ function del_personal_media(& $out, & $lang) {
 }
 
 
-/*
-function show_cms_media(& $out, & $lang) {
 
-	if (!canAccessCmsMedia())
-		die("You can't access!");
-
-	require_once(_base_."/lib/lib.form.php");
-
-	$form=new Form();
-
-	$res="";
-	$url=getPopupBaseUrl()."&amp;op=cms";
-	if(Get::sett('hteditor') == 'tinymce') {
-		$GLOBALS['page']->add('<script type="text/javascript" type="text/javascript" src="'.$GLOBALS['where_framework_relative'].'/addons/tiny_mce/tiny_mce_popup.js"></script>',
-			'page_head');
-
-		$GLOBALS['page']->add('<script type="text/javascript">'
-		.'var FileBrowserDialogue = {
-		    init : function () {
-		        // Here goes your code for setting your custom things onLoad.
-				var allLinks = document.getElementsByTagName("link");
-				allLinks[allLinks.length-1].parentNode.removeChild(allLinks[allLinks.length-1]);
-		    },
-		    mySubmit : function (url) {
-		        var URL = url;
-		        var win = tinyMCEPopup.getWindowArg("window");
-
-		        // insert information now
-		        win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = URL;
-
-		        // for image browsers: update image dimensions
-		        if(win.ImageDialog) {
-			        if (win.ImageDialog.getImageData) win.ImageDialog.getImageData();
-			        if (win.ImageDialog.showPreviewImage) win.ImageDialog.showPreviewImage(URL);
-		        }
-		        // close popup window
-		        tinyMCEPopup.close();
-		    }
-		}
-
-		tinyMCEPopup.onInit.add(FileBrowserDialogue.init, FileBrowserDialogue);'
-		.'</script>', 'page_head');
-	}
-
-	$res.=$form->openForm("block_form", $url);
-
- 	$res.=$form->openElementSpace();
-
-	// ------- mostro albero ----------------------------------------------\
-
-	include_once($GLOBALS["where_cms"]."/admin/modules/media/media_class.php");
-
-	$tree=createTreeView();
-
-	if( isset($_POST[$tree->_getFolderNameId()]) ) { // Al cambio cartella:
-		$folderid = $_POST[$tree->_getFolderNameId()];
-	}
-	else { // La prima volta che carica la pagina con l'albero:
-		$folderid = $tree->getSelectedFolderId();
-	}
-	/*
-	$rowcnt[] = '<a href="'.$sel_url.'" '
-				.( Get::sett('hteditor') == 'tinymce'
-					? 'onclick="FileBrowserDialogue.mySubmit(\''.cleanUrlPath($site_url.$row["real_fname"]).'\'); return false;"' : '' )
-				.'>'
-				.$img."</a>\n";
-	
-	$path =(strlen(dirname($_SERVER['PHP_SELF'])) != 1 ? dirname($_SERVER['PHP_SELF']) : '' ).'/';
-	$path.=$GLOBALS["where_files_relative"];
-	$site_url="http://".$_SERVER['HTTP_HOST'].$path._FPATH_INTERNAL;
-	$tree->setTiny($site_url);
-
- 	$tree->show_icons=0;
- 	$tree->setSelMode(true);
- 	$tree->setSelModeUrl(getPopupBaseUrl()."&amp;op=select&amp;from=cms", TRUE);
-
-	$folder=$tree->tdb->getFolderById( $tree->getSelectedFolderId() );
-	$res.=$form->getHidden($tree->_getFolderNameId(), $tree->_getFolderNameId(), $folderid);
-	$res.=$form->getHidden("folder_id", "folder_id", $tree->getSelectedFolderId());
-	//$res.='<div><b>'.$lang->def("_FOLDER").':</b></div>';
-	$res.=$tree->load();
-
-	$res.="<br />\n\n";
-	$listView = $tree->getListView();
-	$listView->setInsNew( false );
-	$res.=$listView->printOut();
-	// --------------------------------------------------------------------/
-
- 	$res.=$form->closeElementSpace();
-
-	/*$res.=$form->openButtonSpace();
-	$res.=$form->getButton('undo', 'undo', $lang->def('_BACK'));
-	$res.=$form->closeButtonSpace(); 
-
-	$res.=$form->closeForm();
-
-
-	$out->add($res);
-
-}
-*/
 function select_media(& $out, & $lang) {
 
 	require_once(_base_.'/lib/lib.form.php');
@@ -548,36 +394,7 @@ function select_media(& $out, & $lang) {
 	$path="";
 
 	switch($from) {
-/*
-		case "cms": {
 
-			if (!canAccessCmsMedia())
-				die("You can't access!");
-
-			$path=_FPATH_INTERNAL;
-			$relative_path=_FPATH;
-			$preview_path=_PPATH;
-
-			$qtxt ="SELECT t1.fname, t1.real_fname, t1.media_url, t2.title FROM ".$GLOBALS["prefix_cms"]."_media as t1 ";
-			$qtxt.="LEFT JOIN ".$GLOBALS["prefix_cms"]."_media_info as t2 ON (t2.idm=t1.idMedia) ";
-			$qtxt.="WHERE t1.idMedia='".$item_id."' AND t1.publish='1'";
-			$q=sql_query($qtxt);
-
-			if (($q) && (mysql_num_rows($q) > 0)) {
-				$row=mysql_fetch_array($q);
-				$src=$row["real_fname"];
-				$title=$row["title"];
-
-				if (!empty($row["media_url"])) {
-					$src=$row["media_url"];
-				}
-				else {
-					$src=$row["real_fname"];
-				}
-			}
-
-		} break;
-*/
 		case "personal": {
 
 			if (!canAccessPersonalMedia())
@@ -592,8 +409,8 @@ function select_media(& $out, & $lang) {
 			$qtxt.="WHERE id='".$item_id."' AND user_idst='".$user_id."' AND type='image'";
 			$q=sql_query($qtxt);
 
-			if (($q) && (mysql_num_rows($q) > 0)) {
-				$row=mysql_fetch_array($q);
+			if (($q) && (sql_num_rows($q) > 0)) {
+				$row=sql_fetch_array($q);
 				if (!empty($row["media_url"])) {
 					$src=$row["media_url"];
 				}
@@ -606,7 +423,6 @@ function select_media(& $out, & $lang) {
 
 	}
 
-//	$src=rawurlencode($src);
 
 	$res="";
 	$url=getPopupBaseUrl()."&amp;op=main";
@@ -645,7 +461,7 @@ function select_media(& $out, & $lang) {
 		case "image": {
 			$res.=$form->getTextfield($lang->def("_ALT_TXT"), "alt_text", "alt_text", 255, $title);
 			$res.=$form->getTextfield($lang->def("_TITLE"), "title_text", "title_text", 255, $title);
-			//$res.=$form->getTextfield($lang->def("_BORDER"), "border", "border", 3, "0");
+
 
 		} break;
 
@@ -708,22 +524,17 @@ function addMediaPopupJS($src) {
 	$res="";
 
 	$sn = Get::cur_plat();
-/*	if ($sn != "framework")
-		$src=$GLOBALS[$sn]["url"].$GLOBALS["where_files_relative"]."/".$src;
-	else
-		$src=$GLOBALS["url"].$GLOBALS["where_files_relative"]."/".$src; */
 
 	$path =(strlen(dirname($_SERVER['PHP_SELF'])) != 1 ? dirname($_SERVER['PHP_SELF']) : '' ).'/';
 	$path.=$GLOBALS["where_files_relative"]; //."/";
 
-	//-- test : //
-	//echo(cleanUrlPath("http://127.0.0.1:88/folder/folder/appCore//addons/./mod_media/../../../files/common/")); return 0;
+
 
 
 	$site_url="http://".$_SERVER['HTTP_HOST'].$path;
 	$src=($site_url.$src);
 
-//	$src=str_replace("//", "/", $src);
+
 
 	switch ($GLOBALS["popup"]["editor"]) {
 
@@ -809,29 +620,7 @@ function addXinhaPopupJS($src) {
 		return false;
 	}
 JS_END;
-/*
-	function insItem() {
-  var required = {
-    "f_url": i18n("You must enter the URL")
-  };
-  for (var i in required) {
-    var el = document.getElementById(i);
-    if (!el.value) {
-      alert(required[i]);
-      el.focus();
-      return false;
-    }
-  }
-  // pass data back to the calling window
-  var fields = ["title_text", "alt_text", "border"];
-  var param = new Object();
-  for (var i in fields) {
-    var id = fields[i];
-    var el = document.getElementById(id);
-    param[id] = el.value;
-  }
-  __dlg_close(param);
-  return false; */
+
 
 	// ---------------------------------------------------------------------------
 	$res.=getPopupCommonCode();

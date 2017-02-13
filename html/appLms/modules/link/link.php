@@ -29,7 +29,7 @@ function modlinkgui( $object_link ) {
 	WHERE idCategory = '".$object_link->getId()."' 
 	ORDER BY sequence";
 	$result = sql_query($textQuery);
-	$num_link = mysql_num_rows($result);
+	$num_link = sql_num_rows($result);
 	
 	list($title_cat) = sql_fetch_row(sql_query("
 	SELECT title

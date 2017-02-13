@@ -35,7 +35,7 @@ class PollManagement {
 		WHERE id_poll = '".$id_poll."'";
 		$re_poll = sql_query($query_poll);
 		
-		$this->test_info = mysql_fetch_assoc($re_poll);
+		$this->test_info = sql_fetch_assoc($re_poll);
 	}
 	
 	/**
@@ -131,7 +131,7 @@ class PlayPollManagement {
 		FROM ".$GLOBALS['prefix_lms']."_polltrack
 		WHERE id_track = '".$id_track."'";
 		$re_track_info 		= sql_query($query_track_info);
-		$this->track_info 	= mysql_fetch_assoc($re_track_info);
+		$this->track_info 	= sql_fetch_assoc($re_track_info);
 	}
 	
 	/**
@@ -204,7 +204,7 @@ class ReportPollManagement {
 		}
 		$re_track_info 		= sql_query($query_track_info);
 		$polls_track = array();
-		if(mysql_num_rows($re_track_info)) {
+		if(sql_num_rows($re_track_info)) {
 			while(list($id_track) = sql_fetch_row($re_track_info)) {
 				
 				$polls_track[$id_track] = $id_track;

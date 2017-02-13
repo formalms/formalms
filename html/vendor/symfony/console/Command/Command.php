@@ -307,13 +307,13 @@ class Command
             return;
         }
 
+        $this->definition->addOptions($this->application->getDefinition()->getOptions());
+
         if ($mergeArgs) {
             $currentArguments = $this->definition->getArguments();
             $this->definition->setArguments($this->application->getDefinition()->getArguments());
             $this->definition->addArguments($currentArguments);
         }
-
-        $this->definition->addOptions($this->application->getDefinition()->getOptions());
 
         $this->applicationDefinitionMerged = true;
         if ($mergeArgs) {
@@ -390,7 +390,7 @@ class Command
      * @param string $shortcut    The shortcut (can be null)
      * @param int    $mode        The option mode: One of the InputOption::VALUE_* constants
      * @param string $description A description text
-     * @param mixed  $default     The default value (must be null for InputOption::VALUE_REQUIRED or InputOption::VALUE_NONE)
+     * @param mixed  $default     The default value (must be null for InputOption::VALUE_NONE)
      *
      * @return Command The current instance
      */
@@ -579,6 +579,8 @@ class Command
      * Add a command usage example.
      *
      * @param string $usage The usage, it'll be prefixed with the command name
+     *
+     * @return Command The current instance
      */
     public function addUsage($usage)
     {
@@ -608,10 +610,15 @@ class Command
      *
      * @return mixed The helper value
      *
+     * @throws LogicException           if no HelperSet is defined
      * @throws InvalidArgumentException if the helper is not defined
      */
     public function getHelper($name)
     {
+        if (null === $this->helperSet) {
+            throw new LogicException(sprintf('Cannot retrieve helper "%s" because there is no HelperSet defined. Did you forget to add your command to the application or to set the application on the command using the setApplication() method? You can also set the HelperSet directly using the setHelperSet() method.', $name));
+        }
+
         return $this->helperSet->get($name);
     }
 

@@ -428,7 +428,7 @@ class CodeManager
 					." AND (used = '0'"
 					." OR unlimitedUse = '1')";
 
-		list($control) = mysql_fetch_row(mysql_query($query));
+		list($control) = sql_fetch_row(sql_query($query));
 
 		if($control == 1)
 			return 1;
@@ -437,7 +437,7 @@ class CodeManager
 					." FROM ".$this->_getCodeTable()
 					." WHERE `code` = '".$code."'";
 
-		list($control) = mysql_fetch_row(mysql_query($query));
+		list($control) = sql_fetch_row(sql_query($query));
 
 		if($control == 1)
 			return 0;
@@ -508,7 +508,7 @@ class CodeManager
 
 		$result = sql_query($query);
 
-		if(mysql_num_rows($result))
+		if(sql_num_rows($result))
 		{
 			list($code) = sql_fetch_row($result);
 
@@ -521,7 +521,7 @@ class CodeManager
 
 		$result = sql_query($query);
 
-		if(mysql_num_rows($result))
+		if(sql_num_rows($result))
 		{
 			list($code) = sql_fetch_row($result);
 
@@ -560,7 +560,7 @@ class CodeManager
 					." used = '0'"
 					." WHERE `idUser` = '".$user_idst."' LIMIT 1";
 
-		return mysql_query($query);
+		return sql_query($query);
 	}
 
 

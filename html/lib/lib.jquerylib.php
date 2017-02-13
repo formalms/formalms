@@ -15,133 +15,136 @@
 /**
  * Jquery handling library
  */
+class JQueryLib
+{
+
+    const _jquery_version = '1.12.3';
+    const _jquery_ui_version = '1.11.4';
+    const _bootstrap_version = '3.3.6';
+    const _path = 'jquery';
+    const _core = 'core';
+    static $array_js_addons = ['html5support',  //  HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
+        'helpdesk',
+        'fancybox',
+        'swipe',
+        'select'];
+
+    static $array_css_addons = ['table',    //  media query for table formatting
+        'helpdesk',
+        'fancybox',
+        'swipe',
+        'select'];
 
 
+    public static function loadJQuery($which_version = '')
+    {
+        $jquery_core_lib = "/addons/" . self::_path . "/core/jquery-" . self::_jquery_version . $which_version . ".js";
+        $local_link = Util::get_js($jquery_core_lib);
 
-  class JQueryLib {
-      
-      const _jquery_version = '1.12.3';
-      const _jquery_ui_version = '1.11.4';
-      const _bootstrap_version = '3.3.6';
-      const _path = 'jquery';
-      const _core = 'core';
-      static $array_js_addons = ['html5support',  //  HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
-                      'helpdesk',
-                      'fancybox',
-                      'swipe'];      
-                      
-      static $array_css_addons = [  'table',    //  media query for table formatting
-                      'helpdesk',
-                      'fancybox',
-                      'swipe'];      
-                      
-      
-      public static function loadJQuery($which_version='') {
-          $jquery_core_lib = "/addons/".self::_path."/core/jquery-".self::_jquery_version.$which_version.".js";
-          $local_link = Util::get_js($jquery_core_lib);
-          
-          $jquery_core_lib = "/addons/".self::_path."/core/ui/js/jquery-ui-".self::_jquery_ui_version.$which_version.".js";
-          $local_link .= Util::get_js($jquery_core_lib);
-          $local_link .= self::initJQueryAjax();
-          
-          // load css
-          $jquery_ui_css = "/addons/".self::_path."/core/ui/css/jquery-ui-".self::_jquery_ui_version.$which_version.".css";
-          
-          $local_link .= Util::get_css('../.'.$jquery_ui_css,true);
+        $jquery_core_lib = "/addons/" . self::_path . "/core/ui/js/jquery-ui-" . self::_jquery_ui_version . $which_version . ".js";
+        $local_link .= Util::get_js($jquery_core_lib);
+        $local_link .= self::initJQueryAjax();
+
+        // load css
+        $jquery_ui_css = "/addons/" . self::_path . "/core/ui/css/jquery-ui-" . self::_jquery_ui_version . $which_version . ".css";
+
+        $local_link .= Util::get_css('../.' . $jquery_ui_css, true);
         //  $local_link .= Util::get_css('.'.$jquery_ui_css,true);
-          
-          return $local_link;          
-      }
-      
-      public static function loadBootstrap($which_version='') {
-          $bootstrap_core_lib = "/addons/".self::_path."/bootstrap/js/bootstrap-".self::_bootstrap_version.$which_version.".js";
-          $local_link = Util::get_js($bootstrap_core_lib);
-          
-          // load css
-          $bootstrap_core_css = "/addons/".self::_path."/bootstrap/css/bootstrap-".self::_bootstrap_version.$which_version.".css";
-          
-          $local_link .= Util::get_css('../.'.$bootstrap_core_css, true);
+
+        return $local_link;
+    }
+
+    public static function loadBootstrap($which_version = '')
+    {
+        $bootstrap_core_lib = "/addons/" . self::_path . "/bootstrap/js/bootstrap-" . self::_bootstrap_version . $which_version . ".js";
+        $local_link = Util::get_js($bootstrap_core_lib);
+
+        // load css
+        $bootstrap_core_css = "/addons/" . self::_path . "/bootstrap/css/bootstrap-" . self::_bootstrap_version . $which_version . ".css";
+
+        $local_link .= Util::get_css('../.' . $bootstrap_core_css, true);
         //  $local_link .= Util::get_css('.'.$bootstrap_core_css, true);
-         
-          $bootstrap_core_css = "/addons/".self::_path."/bootstrap/css/bootstrap-theme-".self::_bootstrap_version.$which_version.".css";
-         
-          $local_link .= Util::get_css('../.'.$bootstrap_core_css, true);
-         // $local_link .= Util::get_css('.'.$bootstrap_core_css, true);
-          
-          
-          return $local_link;          
-      }
 
-      
-      
-      public static function loadJQueryAddons($which_version){
-          
-          $local_link = "\n\t\t";
-          foreach (self::$array_js_addons as $a_addon_path){
-              $full_path = "/addons/".self::_path."/".$a_addon_path."/";
-              $addon_files =  self::select_file($full_path, $which_version.'.js' );
-              if (count($addon_files)>0) {
-                  foreach ($addon_files as $js_file){
-                      $js_file = $full_path.$js_file;
-                      $local_link .= Util::get_js($js_file);
-                  }
-              }    
-          }
-          return $local_link;          
-      }
-      
-      public static function loadCssAddons($which_version){
-          $local_link = "\n\t\t";
-          foreach (self::$array_css_addons as $a_addon_path){
-              $full_path = "/addons/".self::_path."/".$a_addon_path."/";
-              $addon_files = self::select_file($full_path, $which_version.'.css' );
-              if (count($addon_files)>0) {
-                  foreach ($addon_files as $css_file){
-                      $css_file = $full_path.$css_file;
-                      $local_link .= Util::get_css('../.'.$css_file, true);
-                      
-                  }
-              }    
-          }
-          return $local_link;          
-      }
-      
-      
-      private static function select_file($which_path, $which_extension) {
+        $bootstrap_core_css = "/addons/" . self::_path . "/bootstrap/css/bootstrap-theme-" . self::_bootstrap_version . $which_version . ".css";
 
-          $dircontents = scandir(dirname(__FILE__)."/..".$which_path);
-          $ret_array = [];
-          foreach ($dircontents as $file) {
-              if (strpos($which_extension, 'min.') && strpos($file, 'min.')) {
-                  if (strpos($which_extension, pathinfo($file, PATHINFO_EXTENSION))) {
-                             $ret_array[] = $file;
-                  }           
-              }     
-              if (!strpos($which_extension, 'min.') && !strpos($file, 'min.')) {
-                    if (strpos($which_extension, pathinfo($file, PATHINFO_EXTENSION))) {
-                        $ret_array[] = $file;
-                    }
-              }    
-          }
-          return $ret_array;
-      }          
-      
-      
-      public static function initJQueryAjax(){
-          $retval = "\n".'<script type=\'text/javascript\'>
+        $local_link .= Util::get_css('../.' . $bootstrap_core_css, true);
+        // $local_link .= Util::get_css('.'.$bootstrap_core_css, true);
+
+
+        return $local_link;
+    }
+
+
+    public static function loadJQueryAddons($which_version)
+    {
+
+        $local_link = "\n\t\t";
+        foreach (self::$array_js_addons as $a_addon_path) {
+            $full_path = "/addons/" . self::_path . "/" . $a_addon_path . "/";
+            $addon_files = self::select_file($full_path, $which_version . '.js');
+            if (count($addon_files) > 0) {
+                foreach ($addon_files as $js_file) {
+                    $js_file = $full_path . $js_file;
+                    $local_link .= Util::get_js($js_file);
+                }
+            }
+        }
+        return $local_link;
+    }
+
+    public static function loadCssAddons($which_version)
+    {
+        $local_link = "\n\t\t";
+        foreach (self::$array_css_addons as $a_addon_path) {
+            $full_path = "/addons/" . self::_path . "/" . $a_addon_path . "/";
+            $addon_files = self::select_file($full_path, $which_version . '.css');
+            if (count($addon_files) > 0) {
+                foreach ($addon_files as $css_file) {
+                    $css_file = $full_path . $css_file;
+                    $local_link .= Util::get_css('../.' . $css_file, true);
+
+                }
+            }
+        }
+        return $local_link;
+    }
+
+
+    private static function select_file($which_path, $which_extension)
+    {
+
+        $dircontents = scandir(dirname(__FILE__) . "/.." . $which_path);
+        $ret_array = [];
+        foreach ($dircontents as $file) {
+            if (strpos($which_extension, 'min.') && strpos($file, 'min.')) {
+                if (strpos($which_extension, pathinfo($file, PATHINFO_EXTENSION))) {
+                    $ret_array[] = $file;
+                }
+            }
+            if (!strpos($which_extension, 'min.') && !strpos($file, 'min.')) {
+                if (strpos($which_extension, pathinfo($file, PATHINFO_EXTENSION))) {
+                    $ret_array[] = $file;
+                }
+            }
+        }
+        return $ret_array;
+    }
+
+
+    public static function initJQueryAjax()
+    {
+        $retval = "\n" . '<script type=\'text/javascript\'>
                              $.ajaxSetup(
                                 {
-                                    headers: {"X-Signature":"'.Util::getSignature().'"}
+                                    headers: {"X-Signature":"' . Util::getSignature() . '"}
                                 }
                              )
-                            </script>'; 
-           return $retval;                 
-          
-      }      
-      
-      
-      
-      
-  }
+                            </script>';
+        return $retval;
+
+    }
+
+
+}
 
 ?>

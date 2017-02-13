@@ -85,7 +85,7 @@ class Test_Charts {
 
 	function _setTestInfo() {
 		$json = new Services_JSON();
-		list($info) = sql_fetch_row(mysql_query("SELECT chart_options FROM ".$GLOBALS['prefix_lms']."_test WHERE idTest=".$this->idTest));
+		list($info) = sql_fetch_row(sql_query("SELECT chart_options FROM ".$GLOBALS['prefix_lms']."_test WHERE idTest=".$this->idTest));
 		if ($info != "") {
 			$this->testInfo = $json->decode($info);
 		} else {
@@ -265,7 +265,7 @@ class Test_Charts {
 
 	function _getTestName() {
 		$query = "SELECT title FROM ".$GLOBALS['prefix_lms']."_test WHERE idTest=".$this->idTest;
-		list($name) = sql_fetch_row( mysql_query( $query ) );
+		list($name) = sql_fetch_row( sql_query( $query ) );
 		return $name;
 	}
 
@@ -273,7 +273,7 @@ class Test_Charts {
 		$categories = array();
 		$query = "SELECT DISTINCT c.idCategory, c.name FROM ".$GLOBALS['prefix_lms']."_quest_category as c "
 			." JOIN ".$GLOBALS['prefix_lms']."_testquest as q ON (q.idCategory = c.idCategory AND q.idTest=".$this->idTest.")";
-		$res = mysql_query($query);
+		$res = sql_query($query);
 		while (list($idCategory, $name) = sql_fetch_row($res)) $categories[$idCategory] = $name;
 		
 		return $categories;
@@ -282,7 +282,7 @@ class Test_Charts {
 	
 	function _getUserStats() {
 		$query = "SELECT idTrack FROM ".$GLOBALS['prefix_lms']."_testtrack WHERE idUser=".$this->idUser." AND idTest=".$this->idTest;
-		$res = mysql_query($query);
+		$res = sql_query($query);
 		list($idTrack) = sql_fetch_row($res);
 
 		$user_values = array();
@@ -290,7 +290,7 @@ class Test_Charts {
 			." FROM ".$GLOBALS['prefix_lms']."_testtrack_answer as ta JOIN ".$GLOBALS['prefix_lms']."_testquest as tq "
 			." ON (ta.idQuest = tq.idQuest) "
 			." WHERE ta.idTrack=".$idTrack." GROUP BY tq.idCategory ";
-		$res = mysql_query($query);
+		$res = sql_query($query);
 		while (list($idCategory, $score) = sql_fetch_row($res)) $user_values[$idCategory] = $score;
 		
 		return $user_values;
@@ -300,7 +300,7 @@ class Test_Charts {
 	function _getAverageStats() {
 		$tracks = array();
 		$query = "SELECT idTrack FROM ".$GLOBALS['prefix_lms']."_testtrack WHERE idTest=".$this->idTest;
-		$res = mysql_query($query);
+		$res = sql_query($query);
 		while (list($idTrack) = sql_fetch_row($res)) $tracks[] = $idTrack;
 
 		//TO DO: check count($tracks) ...
@@ -309,7 +309,7 @@ class Test_Charts {
 			." FROM ".$GLOBALS['prefix_lms']."_testtrack_answer as ta JOIN ".$GLOBALS['prefix_lms']."_testquest as tq "
 			." ON (ta.idQuest = tq.idQuest) "
 			." WHERE ta.idTrack IN (".implode(",", $tracks).") GROUP BY tq.idCategory ";
-		$res = mysql_query($query);
+		$res = sql_query($query);
 		while (list($idCategory, $num_tracks, $score_total) = sql_fetch_row($res)) {
 			$average_values[$idCategory] = ((int)$num_tracks>0 ? $score_total/$num_tracks : 0);
 		}

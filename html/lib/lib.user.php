@@ -246,13 +246,13 @@ class DoceboUser {
 			}
 
 			//bind on server
-			$ldap_user = ereg_replace( '\$user', $login, Get::sett('ldap_user_string') );
+			$ldap_user = preg_replace( '\$user', $login, Get::sett('ldap_user_string') );
 			if (!(@ldap_bind($ldap_conn, $ldap_user, $password))) {
 				ldap_close($ldap_conn);
 
 				// Edited by Claudio Redaelli
 				if (Get::sett('ldap_alternate_check') == 'on') {
-					if($user_info[ACL_INFO_PASS] != $user_manager->encrypt($password))
+					if(!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST]))
 						return $ret_value;
 				} else {
 					$false_public = FALSE;
@@ -262,7 +262,7 @@ class DoceboUser {
 			}
 			ldap_close($ldap_conn);
 
-		} elseif($user_info[ACL_INFO_PASS] != $user_manager->encrypt($password)) {
+		} elseif(!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST])) {
 
 			return $ret_value;
 		}

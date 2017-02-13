@@ -26,7 +26,7 @@ function duplicateCourse()
 	$list_sel = sql_fetch_array($result_sel);
 
 	foreach($list_sel as $k=>$v)
-		$list_sel[$k] = mysql_escape_string($v);
+		$list_sel[$k] = sql_escape_string($v);
 
 	$new_course_dup = 0;
 
@@ -240,7 +240,7 @@ function duplicateCourse()
 			AND idResource = '".$id_vecchio."' ";
 			$result_selmenun = sql_query($query_selmenun);
 
-			while($list_selmenun = mysql_fetch_array($result_selmenun)) {
+			while($list_selmenun = sql_fetch_array($result_selmenun)) {
 
 				$query_dupmen = "INSERT INTO ".$GLOBALS['prefix_lms']."_organization
 				(idParent, path, lev, title,
@@ -286,7 +286,7 @@ function duplicateCourse()
 			AND idOrg = '".$id_vecchio."' ";
 			$result_selmenun = sql_query($query_selmenun);
 
-			$list_selmenun = mysql_fetch_array($result_selmenun);
+			$list_selmenun = sql_fetch_array($result_selmenun);
 
 			$query_dupmen = " INSERT INTO ".$GLOBALS['prefix_lms']."_organization
 			(idParent, path, lev, title,
@@ -376,7 +376,7 @@ function duplicateCourse()
 		$query_dupmen = "INSERT INTO ".$GLOBALS['prefix_lms']."_htmlfront
 		(id_course, textof)
 		VALUES
-		('".$new_course_dup."', '".mysql_escape_string($list_selmenun['textof'])."')";
+		('".$new_course_dup."', '".sql_escape_string($list_selmenun['textof'])."')";
 		$result_dupmen = sql_query($query_dupmen);
 	}
 	//Util::jump_to('index.php?modname=course&amp;op=course_list&result=ok_course');

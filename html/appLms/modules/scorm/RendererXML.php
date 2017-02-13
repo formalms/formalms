@@ -61,7 +61,7 @@ class RendererXML extends RendererAbstract {
 		if ( $rs === FALSE ) {
 			$status = "neverstarted"; 
 		} else {
-			$report = mysql_fetch_assoc($rs);
+			$report = sql_fetch_assoc($rs);
 			$status = $report['status'];
 		}
 		

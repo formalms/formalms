@@ -68,6 +68,7 @@ function insitem() {
 		}
 		$path = '/appLms/'.Get::sett('pathlesson');
 		$savefile = ( isset($_SESSION['idCourse']) ? $_SESSION['idCourse'] : '0' ).'_'.mt_rand(0,100).'_'.time().'_'.$_FILES['attach']['name'];
+		$savefile = str_replace("'", "\'", $savefile);//Patch file con apostrofo
 		if(!file_exists( $GLOBALS['where_files_relative'].$path.$savefile )) {
 			sl_open_fileoperations();
 			if(!sl_upload($_FILES['attach']['tmp_name'], $path.$savefile)) {
@@ -112,7 +113,7 @@ function moditem( $object_item ) {
 	list($title, $description) = sql_fetch_row(sql_query("
 	SELECT title, description 
 	FROM ".$GLOBALS['prefix_lms']."_materials_lesson 
-	WHERE author = ".getLogUserId()." AND idLesson = '".$object_item->getId()."'"));
+	WHERE idLesson = '".$object_item->getId()."'"));
 	
 	$GLOBALS['page']->add(getTitleArea($lang->def('_SECTIONNAME_ITEM'), 'item')
 		.'<div class="std_block">'
@@ -200,8 +201,7 @@ function upitem() {
 	
 	$insert_query = "
 	UPDATE ".$GLOBALS['prefix_lms']."_materials_lesson 
-	SET author = '".getLogUserId()."',
-		title = '".$_POST['title']."',
+	SET title = '".$_POST['title']."',
 		description = '".$_POST['description']."'
 		$new_file
 	WHERE idLesson = '".(int)$_POST['idItem']."'";

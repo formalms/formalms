@@ -45,7 +45,7 @@ class Track_Object {
 					."   AND objectType='".$this->objectType."'";
 			$rs = sql_query( $query ) or
 					errorCommunication( 'Track_Object.Track_Object' );
-			if( mysql_num_rows( $rs ) == 1 ) {
+			if( sql_num_rows( $rs ) == 1 ) {
 				list( $this->idReference, $this->idUser, $this->idTrack, 
 					  $this->objectType, $this->dateAttempt, $this->status ) = sql_fetch_row( $rs );
 			}
@@ -111,7 +111,7 @@ class Track_Object {
 				." )";
 		
 		$result = sql_query($query) 
-			or errorCommunication( 'createTrack'.mysql_error() );
+			or errorCommunication( 'createTrack'.sql_error() );
 		
 		if(isset($this)) {
 			
@@ -267,7 +267,7 @@ class Track_Object {
 		}
 				// ."   AND ((status = 'completed') OR (status = 'passed')))";
 		$rs = sql_query( $query )
-			or die( "Error in query=[ $query ] ". mysql_error() );
+			or die( "Error in query=[ $query ] ". sql_error() );
 			
 		//echo "\n".'<!-- sto controllando i prerequisiti con questa query : '.$query.' -->';
 		while( list( $id, $status ) = sql_fetch_row( $rs ) ) 
@@ -316,9 +316,9 @@ class Track_Object {
 				." WHERE (idReference = ".(int)$idReference.")"
 				."   AND (idUser = '".(int)$idUser."')";
 		$rs = sql_query( $query )
-			or die( "Error in query=[ $query ] ". mysql_error() );
+			or die( "Error in query=[ $query ] ". sql_error() );
 			
-		if( mysql_num_rows( $rs ) == 0 )
+		if( sql_num_rows( $rs ) == 0 )
 			return 'not attempted';
 		else {
 			list( $status ) = sql_fetch_row( $rs );
@@ -335,9 +335,9 @@ class Track_Object {
 				." WHERE (idReference = ".(int)$idReference.")"
 				."   AND (idUser = '".(int)$idUser."')";
 		$rs = sql_query( $query )
-			or die( "Error in query=[ $query ] ". mysql_error() );
+			or die( "Error in query=[ $query ] ". sql_error() );
 			
-		if( mysql_num_rows( $rs ) == 0 )
+		if( sql_num_rows( $rs ) == 0 )
 			return false;
 		else {
 			list( $idTrack ) = sql_fetch_row( $rs );
@@ -354,7 +354,7 @@ class Track_Object {
 				." WHERE (idReference IN (".implode(",", $idReference)."))";
 		}
 		$rs = sql_query( $query )
-			or die( "Error in query=[ $query ] ". mysql_error() );
+			or die( "Error in query=[ $query ] ". sql_error() );
 		return $rs;
 	}
 		

@@ -450,7 +450,7 @@ class sys_forum {
 			FROM ".$this->prefix."_sysforum
 			WHERE idMessage = '".(int)$_GET['idMessage']."'"));
 
-			$textof = ereg_replace('<br />' ,'><br />' , $textof );
+			$textof = preg_replace('<br />' ,'><br />' , $textof );
 		}
 
 		//if($erased_t && !$mod_perm) {
@@ -511,7 +511,7 @@ class sys_forum {
 			WHERE ( fa.idGroup IN ($in_grp) AND fa.can_read='1' ) AND f.idForum = '".$idF."'";
 
 			$re_forum = sql_query($query_view_forum);
-			if(!mysql_num_rows($re_forum)) {
+			if(!sql_num_rows($re_forum)) {
 				errorCommunication(_ISLOCKED);
 				return;
 			}

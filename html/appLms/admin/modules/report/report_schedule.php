@@ -245,12 +245,12 @@ function modify_schedulation() {
 	
 	if ($id_sched = Get::req('id_sched', DOTY_INT, false)) {
 		$qry = "SELECT * FROM ".$GLOBALS['prefix_lms']."_report_schedule WHERE id_report_schedule=$id_sched";
-		$row = mysql_fetch_assoc( sql_query($qry) );
+		$row = sql_fetch_assoc( sql_query($qry) );
 		
 		$recipients = array();
 		$qry = "SELECT * FROM ".$GLOBALS['prefix_lms']."_report_schedule_recipient WHERE id_report_schedule=$id_sched";
 		$recs = sql_query($qry);
-		while ($trow = mysql_fetch_assoc($recs)) {
+		while ($trow = sql_fetch_assoc($recs)) {
 			$recipients[] = $trow['id_user'];
 		}
 		
@@ -396,7 +396,7 @@ function get_schedulations_table($idrep=false) {
 
 	$res = sql_query($query);
 	if ($res) {
-		while ($row = mysql_fetch_assoc($res)) {
+		while ($row = sql_fetch_assoc($res)) {
 			$id = $row['id_report_schedule'];
 			$recipients_link = "ajax.adm_server.php?mn=report&amp;plf=lms&amp;op=show_recipients_window&amp;idsched=".$id;
 

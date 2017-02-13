@@ -192,8 +192,8 @@ class RepoDirDb extends TreeDb {
 				." WHERE (". $this->fields['idParent'] ." = '". (int)$idFolder ."')"
 				.$this->_getFilter();
 		$rs = sql_query( $query ) 
-				or die( "Error [$query] ". mysql_error() );
-		if( mysql_num_rows( $rs ) == 1 ) {
+				or die( "Error [$query] ". sql_error() );
+		if( sql_num_rows( $rs ) == 1 ) {
 			list( $result ) = sql_fetch_row( $rs );
 			return $result;
 		} else {
@@ -539,7 +539,7 @@ class RepoTreeView extends TreeView {
 	
 	function expandPath( $path ) {
 		$arrId = array();
-		$splitPath = split('/', $path);
+		$splitPath = explode('/', $path);
 		unset( $splitPath[0] );
 		$path = '';
 		foreach( $splitPath as $tok ) {
@@ -609,7 +609,7 @@ class RepoTreeView extends TreeView {
 				foreach( $arrayState[$this->id][REPO_OP_SELECTRADIO] as $key => $val ) {
 					// $key contains tree normal group and descendants group idst
 					// concat with an _
-					list( $idst, $idst_desc ) = split( '_', $key );
+					list( $idst, $idst_desc ) = explode( '_', $key );
 					$printedItems[] = $idst;
 					$printedItems[] = $idst_desc;
 					if( $val != '' ) $itemSelectedMulti[] = $val;

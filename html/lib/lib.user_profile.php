@@ -2410,7 +2410,7 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 		$this->loadUserData( getLogUserId() );
 		if(!$this->_user_profile->godMode()) {
 
-			if($this->user_info[ACL_INFO_PASS] != $acl_man->encrypt($_POST['up_old_pwd'])) {
+			if(!$acl_man->password_verify_update($_POST['up_old_pwd'], $this->user_info[ACL_INFO_PASS], getLogUserId())) {
 
 				return $this->_lang->def('_OLDPASSWRONG');
 			}

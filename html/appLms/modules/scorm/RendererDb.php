@@ -95,8 +95,8 @@ class RendererDb extends RendererAbstract {
 					." AND idsco = '". $itemInfo['identifierref'] ."'";
 					
 			$rs = sql_query( $query ) 
-				or die( "Error on RenderStartItem query = $query " . mysql_error($this->dbconn));
-			if( mysql_num_rows( $rs ) == 0 )
+				or die( "Error on RenderStartItem query = $query " . sql_error($this->dbconn));
+			if( sql_num_rows( $rs ) == 0 )
 				die( "Error on RenderStartItem query = $query record not found" );
 			list( $resInfo['uniqueid'] ) = sql_fetch_row( $rs );
 		} 
@@ -167,14 +167,14 @@ class RendererDb extends RendererAbstract {
 		}
 		
 		if( sql_query($query, $this->dbconn) ) {
-			if (mysql_affected_rows($this->dbconn) == 1) {
+			if (sql_affected_rows($this->dbconn) == 1) {
 				// get the id of the last insert = idscorm_tracking
-				$this->stack[$this->deep]['uniqueid'] = mysql_insert_id($this->dbconn);
+				$this->stack[$this->deep]['uniqueid'] = sql_insert_id($this->dbconn);
 			} else {
 				die( "RendererDb::RenderStartItem Error in insert");
 			} 			
 		} else {
-			die( "RendererDb::RenderStartItem Error in insert [$query] ". mysql_error($this->dbconn) );
+			die( "RendererDb::RenderStartItem Error in insert [$query] ". sql_error($this->dbconn) );
 		}
 		
 		$this->deep++;
@@ -197,11 +197,11 @@ class RendererDb extends RendererAbstract {
 						." WHERE idscorm_item=".$this->stack[$this->deep]['uniqueid'];
 			}
 			if( sql_query($query, $this->dbconn) ) {
-				if (mysql_affected_rows($this->dbconn) != 1) {
+				if (sql_affected_rows($this->dbconn) != 1) {
 					die( "RendererDb::RenderStopItem Error in update [$query]");
 				} 			
 			} else {
-				die( "RendererDb::RenderStopItem Error in update [$query] ". mysql_error($this->dbconn) );
+				die( "RendererDb::RenderStopItem Error in update [$query] ". sql_error($this->dbconn) );
 			}
 		}
 		/* For debug

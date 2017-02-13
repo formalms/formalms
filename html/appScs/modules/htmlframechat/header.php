@@ -26,8 +26,6 @@ Boot::init(BOOT_PAGE_WR);
 
 $path_to_root =substr(_deeppath_, -1);
 
-//if ($GLOBALS["where_cms_relative"] != false)
-//	$GLOBALS["where_cms_relative"]=$path_to_root.'/'.$GLOBALS["where_cms_relative"];
 
 if ($GLOBALS["where_lms_relative"] != false)
 	$GLOBALS["where_lms_relative"]=$path_to_root.'/'.$GLOBALS["where_lms_relative"];
@@ -61,11 +59,11 @@ ob_start();
 
 /*Start database connection***********************************************/
 /*
-$GLOBALS['dbConn'] = mysql_connect($GLOBALS['dbhost'], $GLOBALS['dbuname'], $GLOBALS['dbpass']);
+$GLOBALS['dbConn'] = sql_connect($GLOBALS['dbhost'], $GLOBALS['dbuname'], $GLOBALS['dbpass']);
 if( !$GLOBALS['dbConn'] )
 	die( "Can't connect to db. Check configurations" );
 
-if( !mysql_select_db($dbname, $GLOBALS['dbConn']) )
+if( !sql_select_db($dbname, $GLOBALS['dbConn']) )
 	die( "Database not found. Check configurations" );
 
 @sql_query("SET NAMES '".$GLOBALS['db_conn_names']."'", $GLOBALS['dbConn']);
@@ -82,7 +80,6 @@ if( !mysql_select_db($dbname, $GLOBALS['dbConn']) )
 switch (Get::cur_plat()) {
 
 	case "lms":
-	case "cms":
 	case "kms": {
 		$sn = "docebo_session";
 		$user_session = 'public_area';

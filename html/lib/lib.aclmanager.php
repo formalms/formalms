@@ -10,6 +10,7 @@
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
+require_once(_base_.'/addons/password_compact/password.php');
 
 define("ACL_SEPARATOR", "/");
 define("ACL_TABLE_ST", "_st");
@@ -180,9 +181,9 @@ class DoceboACLManager
                 return FALSE;
         }
         if ($this->dbconn === NULL)
-            return mysql_insert_id();
+            return sql_insert_id();
         else
-            return mysql_insert_id($this->dbconn);
+            return sql_insert_id($this->dbconn);
     }
 
     /**
@@ -549,7 +550,7 @@ class DoceboACLManager
             ." WHERE ".( $idst !== false ? " idst = '".$idst."' " : '' )
             . ($random_code !== false ? " random_code = '" . $random_code . "' " : '');
         $rs = $this->_executeQuery($query);
-        return mysql_fetch_assoc($rs);
+        return sql_fetch_assoc($rs);
     }
 
     /**
@@ -567,7 +568,7 @@ class DoceboACLManager
 
         $rs = $this->_executeQuery($query);
         if (sql_num_rows($rs) > 0)
-            return mysql_fetch_assoc($rs);
+            return sql_fetch_assoc($rs);
         else
             return FALSE;
     }
@@ -607,7 +608,7 @@ class DoceboACLManager
         $rs = $this->_executeQuery($query);
         if (sql_num_rows($rs) > 0) {
 
-            while ($info = mysql_fetch_assoc($rs)) {
+            while ($info = sql_fetch_assoc($rs)) {
 
                 $users_info[$info['idst']] = $info;
             }
@@ -690,7 +691,7 @@ class DoceboACLManager
     {
         $idst = $this->_createST();
         if ($idst === FALSE) {
-            echo mysql_error();
+            echo sql_error();
         }
         $roleid = $this->absoluteId($roleid);
         $query = "INSERT INTO " . $this->_getTableRole()
@@ -698,7 +699,7 @@ class DoceboACLManager
             . "VALUES ( '" . $idst . "', '" . $roleid . "', '" . $description . "' )";
         $rs = $this->_executeQuery($query);
         if ($rs === FALSE) {
-            echo mysql_error();
+            echo sql_error();
         }
         return $idst;
     }
@@ -1132,16 +1133,16 @@ class DoceboACLManager
 			level, lastenter, valid, pwd_expire_at, register_date, lastenter, force_change,
 			facebook_id, twitter_id, linkedin_id, google_id, privacy_policy ';
         $qtxt = "SELECT " . $fields . " FROM " . $this->_getTableUser() . " " .
-            "WHERE " . $field_name . " = '" . mysql_escape_string($field_val) . "'";
+            "WHERE " . $field_name . " = '" . sql_escape_string($field_val) . "'";
 
-        $q = mysql_query($qtxt);
+        $q = sql_query($qtxt);
         if ($q) {
             $count = sql_num_rows($q);
 
             if ($count > 1 && $req_unique) {
                 return false;
             } else if ($count > 0) {
-                $res = mysql_fetch_row($q);
+                $res = sql_fetch_row($q);
             }
         }
 
@@ -1373,7 +1374,7 @@ class DoceboACLManager
 
         $res = array();
         if (($q) && (sql_num_rows($q) > 0)) {
-            while ($row = mysql_fetch_array($q)) {
+            while ($row = sql_fetch_array($q)) {
                 $res[] = $row["idst"];
             }
         }
@@ -2412,11 +2413,60 @@ class DoceboACLManager
     /**
      * this function encrypt the given string
      * @param string $text text to encrypt
+     * @param int $password_hash
      * @return string encrypted text
+     * @internal param int $password_ash
+     * @internal param bool $alg
      */
-    function encrypt($text)
+    function encrypt($text, $password_hash=PASSWORD_DEFAULT)
     {
-        return MD5($text);
+        if ($password_hash){
+            return password_hash($text, $password_hash);
+        } else {
+            return MD5($text);
+        }
+    }
+
+    /**
+     * @param $password
+     * @param $hash
+     * @param bool $test_all
+     * @return bool
+     * @internal param bool $test_also_old
+     * @internal param int $password_hash
+     */
+    function password_verify($password, $hash, $test_all=false){
+        if (password_verify($password, $hash)){
+            return true;
+        } else if ($test_all){
+            return MD5($password)==$hash;
+        } else {
+            return false;
+        }
+
+    }
+
+    function password_verify_update($password, $hash, $idst){
+        if ($this->password_verify($password, $hash)){
+            return true;
+        } else if ($this->encrypt($password,false)==$hash) {
+            return true;
+            // TODO: This will be in forma.lms 2.0
+            /*
+            return $this->updateUser(
+                $idst,
+                false,
+                false,
+                false,
+                $password,
+                false,
+                FALSE,
+                false
+            );
+            */
+        } else {
+            return false;
+        }
     }
 
     function getAdminLevels()
@@ -2456,7 +2506,7 @@ class DoceboACLManager
         $re_user = $this->_executeQuery($query);
         if (!$re_user) return $res;
 
-        while ($row = mysql_fetch_array($re_user)) {
+        while ($row = sql_fetch_array($re_user)) {
 
             $res[] = $row["idst"];
         }
@@ -2593,7 +2643,7 @@ class DoceboACLManager
 
         $q = $this->_executeQuery($qtxt);
         if (($q) && (sql_num_rows($q) > 0)) {
-            while ($row = mysql_fetch_assoc($q)) {
+            while ($row = sql_fetch_assoc($q)) {
 
                 $roleid = $row["roleid"];
 

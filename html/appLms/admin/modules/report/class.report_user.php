@@ -112,7 +112,8 @@ class Report_User extends Report {
 			array('key'=>'firstAttempt',    'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_LO_COL_FIRSTATT')),
 			array('key'=>'lastAttempt',     'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_LO_COL_LASTATT')),
 			array('key'=>'lo_status',       'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_STATUS')),
-			array('key'=>'lo_score',        'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_SCORE'))
+			array('key'=>'lo_score',        'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_SCORE')),
+			array('key'=>'lo_total_time',   'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_TOTAL_TIME'))
 		);
 
 		$this->delay_columns = array(
@@ -518,7 +519,7 @@ class Report_User extends Report {
 
 				$already.='<input class="align_right" type="text" style="width: '.
 				($type==_FILTER_DATE ? '7' : '9').'em;" '.
-					'name="courses_filter['.$key.'][value]" value="'.Format::date($value['value'], 'date').'"'.
+					'name="courses_filter['.$key.'][value]" value="'.($type==_FILTER_DATE ? Format::date($value['value'], 'date') : $value['value']).'"'.
 					' id="courses_filter_'.$index.'_value" />';
 
 				if ($type==_FILTER_DATE) {
@@ -2748,7 +2749,7 @@ class Report_User extends Report {
 		$lo_trans = $this->getLOTypesTranslations();
 		$box->body .= Form::getOpenFieldset(Lang::t('_RU_LO_TYPES', 'report'), 'lotypes_fieldset');
 		$res = sql_query("SELECT * FROM %lms_lo_types");
-		while ($row = mysql_fetch_assoc($res)) {
+		while ($row = sql_fetch_assoc($res)) {
 			$trans = isset($lo_trans[$row['objectType']]) ? $lo_trans[$row['objectType']] : "";
 			$box->body .= Form::getCheckBox($trans , 'lo_type_'.$row['objectType'], 'lo_types['.$row['objectType'].']', $row['objectType'], (in_array($row['objectType'], $ref['lo_types']) ? true : false) );
 		}
@@ -3087,6 +3088,10 @@ class Report_User extends Report {
 			'scorm' => array()
 		);
 
+		$total_time_arr=array(
+			'scorm' => array()
+		);
+
 		//retrieve test score
 		$query = "SELECT t1.idOrg, t2.idUser, t1.idCourse, t2.score, t2.bonus_score, t2.score_status "
 			." FROM %lms_organization AS t1 "
@@ -3097,22 +3102,29 @@ class Report_User extends Report {
 			.(!$all_users ? " AND t2.idUser IN (".implode(',', $users).") " : "" )
 			.(count($tempmilestones)>0 ? " AND t1.milestone IN (".implode(',', $tempmilestones).") " : "" );
 		$res = sql_query($query);
-		while ($row=mysql_fetch_assoc($res)) {
+		while ($row=sql_fetch_assoc($res)) {
 			$score_arr['test'][ $row['idOrg'] ][ $row['idUser'] ]=$row['score']+$row['bonus_score'];
 		}
 
 		//retrievescorm score
-		$query = "SELECT t1.idOrg, t2.idUser, t1.idCourse, t2.score_raw, t2.score_min, t2.score_max "
+		$query = "SELECT t1.idOrg, t2.idUser, t1.idCourse, t2.score_raw, t2.score_min, t2.score_max, "
+                        ." SEC_TO_TIME(SUM(TIME_TO_SEC(th.session_time))) AS total_time "
 			." FROM %lms_organization AS t1 "
 			." JOIN %lms_scorm_tracking AS t2 ON ( t1.objectType = 'scormorg' "
-			." AND t1.idOrg = t2.idReference ), %adm_user as t3 "
-			."WHERE t3.idst=t2.idUser ".($suspended ? "" : "AND t3.valid=1 ")
+			." AND t1.idOrg = t2.idReference )"
+                        ." JOIN %adm_user as t3 "
+                        ."     ON t3.idst=t2.idUser ".($suspended ? "" : "AND t3.valid=1 ")
+                        ." LEFT JOIN %lms_scorm_tracking_history AS th "
+                        ."     ON th.idscorm_tracking = t2.idscorm_tracking " 
+			."WHERE 1 "
 			.(!$all_courses ? " AND t1.idCourse IN (".implode(',', $courses).") " : "" )
 			.(!$all_users ? " AND t2.idUser IN (".implode(',', $users).") " : "" )
-			.(count($tempmilestones)>0 ? " AND t1.milestone IN (".implode(',', $tempmilestones).") " : "" );
+			.(count($tempmilestones)>0 ? " AND t1.milestone IN (".implode(',', $tempmilestones).") " : "" )
+                        ." GROUP BY t1.idOrg, t2.idUser, t1.idCourse, t2.score_raw, t2.score_min, t2.score_max, t2.total_time";
 		$res = sql_query($query);
-		while ($row=mysql_fetch_assoc($res)) {
+		while ($row=sql_fetch_assoc($res)) {
 			$score_arr['scorm'][ $row['idOrg'] ][ $row['idUser'] ]=$row['score_raw'];
+			$total_time_arr['scorm'][ $row['idOrg'] ][ $row['idUser'] ]=$row['total_time'];
 		}
 
 		$buffer->openBody();
@@ -3155,7 +3167,7 @@ class Report_User extends Report {
 			.( count($tempmilestones)>0 ? "AND t1.milestone IN (".implode(',', $tempmilestones).")" : "" )
 			." ORDER BY ".$query_order_by;
 		$res = sql_query($query);
-		while ($row = mysql_fetch_assoc($res)) {
+		while ($row = sql_fetch_assoc($res)) {
 
 			$temp=array();
 			foreach ($this->LO_columns as $val)
@@ -3213,6 +3225,9 @@ class Report_User extends Report {
 						}
 					}
 				} break;
+				case 'lo_total_time': { 
+                                    $temp[] = $total_time_arr['scorm'][$row['idOrg']][$row['user_st']];                                    
+                                } break;
 				default: { if (in_array($val['key'], $showed)) $temp[]=''; } break;
 			} //end switch - end for
 

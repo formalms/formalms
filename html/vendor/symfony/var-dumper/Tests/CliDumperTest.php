@@ -69,15 +69,12 @@ array:24 [
   7 => b"é\\x00"
   "[]" => []
   "res" => stream resource {@{$res}
-    wrapper_type: "plainfile"
+%A  wrapper_type: "plainfile"
     stream_type: "STDIO"
     mode: "r"
     unread_bytes: 0
     seekable: true
-    timed_out: false
-    blocked: true
-    eof: false
-    options: []
+%A  options: []
   }
   "obj" => Symfony\Component\VarDumper\Tests\Fixture\DumbFoo {#%d
     +foo: "foo"
@@ -136,6 +133,45 @@ EOTXT
         );
     }
 
+    public function testJsonCast()
+    {
+        $var = (array) json_decode('{"0":{},"1":null}');
+        foreach ($var as &$v) {
+        }
+        $var[] = &$v;
+        $var[''] = 2;
+
+        $this->assertDumpMatchesFormat(
+            <<<EOTXT
+array:4 [
+  "0" => {}
+  "1" => &1 null
+  0 => &1 null
+  "" => 2
+]
+EOTXT
+            ,
+            $var
+        );
+    }
+
+    public function testObjectCast()
+    {
+        $var = (object) array(1 => 1);
+        $var->{1} = 2;
+
+        $this->assertDumpMatchesFormat(
+            <<<EOTXT
+{
+  +1: 1
+  +"1": 2
+}
+EOTXT
+            ,
+            $var
+        );
+    }
+
     public function testClosedResource()
     {
         if (defined('HHVM_VERSION') && HHVM_VERSION_ID < 30600) {
@@ -157,7 +193,7 @@ EOTXT
 
         $this->assertStringMatchesFormat(
             <<<EOTXT
-Unknown resource @{$res}
+Closed resource @{$res}
 
 EOTXT
             ,
@@ -203,7 +239,7 @@ EOTXT
             $twig = <<<EOTXT
           foo.twig:2: """
             foo bar\\n
-                twig source\\n
+              twig source\\n
             \\n
             """
 
@@ -216,16 +252,13 @@ EOTXT;
         $this->assertStringMatchesFormat(
             <<<EOTXT
 stream resource {@{$ref}
-  wrapper_type: "PHP"
+%Awrapper_type: "PHP"
   stream_type: "MEMORY"
   mode: "%s+b"
   unread_bytes: 0
   seekable: true
   uri: "php://memory"
-  timed_out: false
-  blocked: true
-  eof: false
-  options: []
+%Aoptions: []
   ⚠: Symfony\Component\VarDumper\Exception\ThrowingCasterException {{$r}
     #message: "Unexpected Exception thrown from a caster: Foobar"
     -trace: {

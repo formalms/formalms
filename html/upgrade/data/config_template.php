@@ -79,7 +79,7 @@ $cfg['smtp_pwd'] ='';
  * -------------------------------------------------------------------------
  * timezone     = default site timezone , if not specified get default from php.ini date.timezone
  *                for valid timezone see http://www.php.net/manual/en/timezones.php
- * set_mysql_tz = set mysql timezone same as php timezone ,  valid value
+ * set_sql_tz = set mysql timezone same as php timezone ,  valid value
  *                true = set ,  false = (default) not set
  * keepalive    = set TMO for keepalive scorm tracking. must be < session lifetime, 0 to disable keepalive
  *                default session lifetime - 15 sec
@@ -89,7 +89,7 @@ $cfg['smtp_pwd'] ='';
  */
 
 //$cfg['timezone'] = 'Europe/Rome';		// define if different from php.ini setting
-//$cfg['set_mysql_tz'] = false;			// set mysql timezone same as php timezone , default false
+//$cfg['set_sql_tz'] = false;			// set mysql timezone same as php timezone , default false
 
 //$cfg['keepalivetmo'] = '';			// timeout for keepalive, must be < session lifetime, 0 to disable keepalive
 

@@ -162,7 +162,7 @@ function getNumCourseItems( $idCourse, $countHidden = TRUE, $idUser = FALSE, $co
 		return FALSE;
 	} else {
 		list($count) = sql_fetch_row( $rs );
-		mysql_free_result( $rs );
+		sql_free_result( $rs );
 		return $count;
 	}
 }
@@ -188,7 +188,7 @@ function getStatStatusCount($stat_idUser, $stat_idCourse, $arrStauts) {
 		return;
 	}
 	list($tot) = sql_fetch_row( $rsItems );
-	mysql_free_result( $rsItems );
+	sql_free_result( $rsItems );
 	return $tot;
 }
 

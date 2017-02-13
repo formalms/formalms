@@ -11,8 +11,8 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-if($_GET['type'] == 'file') define("POPUP_MOD_NAME", "mod_link");
-else define("POPUP_MOD_NAME", "mod_media");
+
+define("POPUP_MOD_NAME", "mod_media");
 
 
 // ----------- Popup Options ---------------

@@ -77,7 +77,7 @@ if( $rsItemTrack === FALSE ) {
 	$rsItemTrack = $itemtrack->getItemTrack( $idUser, $idReference, NULL, $idscorm_organization );
 }
 
-$arrItemTrack = mysql_fetch_assoc( $rsItemTrack );
+$arrItemTrack = sql_fetch_assoc( $rsItemTrack );
 // with id_item_track of organization|user|reference create an entry in commontrack table
 require_once( _lms_ . '/class.module/track.object.php' );
 require_once( _lms_ . '/class.module/track.scorm.php' );

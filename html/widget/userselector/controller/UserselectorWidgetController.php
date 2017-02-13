@@ -34,6 +34,7 @@ class UserselectorWidgetController extends Controller {
 		$idOrg = 0;//Get::req('id_org', DOTY_INT, 0);
 		$descendants = false;//(Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
+		$learning_filter = Get::req('learning_filter', DOTY_STRING, 'none');
 		$searchFilter = array(
 			'text' => $filter_text,
 			'suspended' => (Get::req('suspended', DOTY_INT, 1)>0 ? true : false)
@@ -42,7 +43,7 @@ class UserselectorWidgetController extends Controller {
 		if ($dyn_filter !== false) {
 			$searchFilter['dyn_filter'] = $dyn_filter;
 		}
-		$output = $this->user_model->getAllUsers($idOrg, $descendants, $searchFilter, true);
+		$output = $this->user_model->getAllUsers($idOrg, $descendants, $searchFilter, true, $learning_filter);
 		echo $this->json->encode($output);
 	}
 
@@ -69,23 +70,8 @@ class UserselectorWidgetController extends Controller {
 		$op = Get::req('op', DOTY_MIXED, false);
 		switch ($op) {
 			case "selectall": {
-                            if (isset($_SESSION['usersendnewsletter'])){
-                                // Se sono nelle newsletter seleziono solo gli utenti iscritti al corso
-                                require_once(_lms_ . '/lib/lib.subscribe.php');
-                                $subscribe_man = new CourseSubscribe_Manager();
-                                $course_users = $subscribe_man->getCourseSubscribedUserIdst($_SESSION['idCourse'], true);
-                                $i = 0;
-                                foreach ($course_users[$_SESSION['idCourse']] as &$courseUser) {
-                                    $output[$i] = $courseUser;
-                                    $i = $i + 1;
-                                }
-                                echo $this->json->encode($output);
-                                return;
-                            } else {
 				$this->_selectAllUsers();
-				return;
-                            }                                
-                                
+				return;                            
 			} break;
 		}
 

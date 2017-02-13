@@ -296,8 +296,8 @@ var UserManagement = {
 				f.submit();
 			};
 
-			E.addListener("apply_dyn_filter-button", "click", function(e) { DataTable_usertable.refresh(); });
-			E.addListener("reset_dyn_filter-button", "click", function(e) { YAHOO.dynFilter.resetFilter(); DataTable_usertable.refresh(); });
+			E.addListener("apply_dyn_filter", "click", function(e) { DataTable_usertable.refresh(); });
+			E.addListener("reset_dyn_filter", "click", function(e) { YAHOO.dynFilter.resetFilter(); DataTable_usertable.refresh(); });
 
 			var items = [];
 			

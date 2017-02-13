@@ -1098,7 +1098,7 @@ function modCourse() {
 	FROM ".$GLOBALS['prefix_lms']."_course
 	WHERE idCourse = '".(int)$id_course."'";
 
-	$course = mysql_fetch_assoc(sql_query($query_course));
+	$course = sql_fetch_assoc(sql_query($query_course));
 	
 	$course['date_begin'] 	= Format::date($course['date_begin'], 'date');
 	$course['date_end'] 	= Format::date($course['date_end'], 'date');
@@ -1603,7 +1603,7 @@ function newCourseEditionForm($course_id) {
 		course_type, policy_point, point_to_all, course_edition
 	FROM ".$GLOBALS['prefix_lms']."_course
 	WHERE idCourse = '".$course_id."'";
-	$course = mysql_fetch_assoc(sql_query($query_course));
+	$course = sql_fetch_assoc(sql_query($query_course));
 
 	$GLOBALS['page']->add(
 		getTitleArea($lang->def('_EDITIONS')." '".$course["name"]."'", 'course_edition')
@@ -1940,7 +1940,7 @@ function modCourseEdition() {
 	SELECT *
 	FROM ".$GLOBALS['prefix_lms']."_course_edition
 	WHERE idCourseEdition = '".$id_course_edition."'";
-	$course_edition = mysql_fetch_assoc(sql_query($query_course_edition));
+	$course_edition = sql_fetch_assoc(sql_query($query_course_edition));
 
 	// set page title
 	$title_area 	= array(
@@ -2261,7 +2261,7 @@ function removeCourseEdition($id_course_edition) {
 	WHERE idCourseEdition = '".$id_course_edition."'";
 	$res=sql_query($query_course_edition);
 
-	$course_ed_info=mysql_fetch_array($res);
+	$course_ed_info=sql_fetch_array($res);
 
 	$old_material=$course_ed_info["img_material"];
 	$old_othermaterial=$course_ed_info["img_othermaterial"];
@@ -2301,7 +2301,7 @@ function removeCourseEdition($id_course_edition) {
 	$array_user_to_delete = array();
 	$array_idst_group = array();
 
-	if (mysql_num_rows($result_control))
+	if (sql_num_rows($result_control))
 	{
 		$array_user = array();
 
@@ -2827,7 +2827,7 @@ function assignClassroom() {
 		WHERE idCourse='".(int)$idCourse."'";
 		$q = sql_query($qtxt);
 
-		if(!$q || !mysql_num_rows($q)) {
+		if(!$q || !sql_num_rows($q)) {
 
 			Util::jump_to('index.php?modname=course&amp;op=course_list&result=fail_course');
 		}
@@ -3034,7 +3034,7 @@ function assignClassroomToEdition() {
 				."WHERE idCourseEdition = '".(int)$idCourseEdition."'";
 		$q = sql_query($qtxt);
 
-		if(!$q || !mysql_num_rows($q)) {
+		if(!$q || !sql_num_rows($q)) {
 			Util::jump_to('index.php?modname=course&amp;op=course_list&result=fail_course');
 		}
 
@@ -3103,8 +3103,8 @@ function checkAvailableClass ($idCourse, $edition_id=FALSE) {
 
 	$q=sql_query($qtxt);
 
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		$row=mysql_fetch_assoc($q);
+	if (($q) && (sql_num_rows($q) > 0)) {
+		$row=sql_fetch_assoc($q);
 
 		$start_date=$row["date_begin"];
 		$end_date=$row["date_end"];
@@ -3144,8 +3144,8 @@ function getCoursesWithEditionArr($flat, $id_category, $id_categories) {
 	$q=sql_query($qtxt);
 
 	$with_edition_arr=array();
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		while($row=mysql_fetch_assoc($q)) {
+	if (($q) && (sql_num_rows($q) > 0)) {
+		while($row=sql_fetch_assoc($q)) {
 
 			$id=$row["idCourse"];
 			$with_edition_arr[$id]=$row["name"];
@@ -3207,8 +3207,8 @@ function updateClassroomOccupation($course_id, $edition_id, $start_date, $end_da
 
 	$q=sql_query($qtxt);
 
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		$row=mysql_fetch_assoc($q);
+	if (($q) && (sql_num_rows($q) > 0)) {
+		$row=sql_fetch_assoc($q);
 
 		$classrooms=$row["classrooms"];
 	}

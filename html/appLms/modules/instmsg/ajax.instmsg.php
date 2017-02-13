@@ -54,14 +54,14 @@ switch ($op) {
 		$result = sql_query($query);
 		$msgs="";
 		while ($row=sql_fetch_array($result)) {
-			ereg("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["data"],$parts);
+			preg_match("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["data"],$parts);
 			$hour=$parts[4];
 			$min=$parts[5];
 			$sec=$parts[6];
 
 			$id_sender=$row["id_sender"];
 			$userInfo=$acl_man->getUser($id_sender,'');
-			$ids=split("/",$userInfo[1]);
+			$ids=explode("/",$userInfo[1]);
 			$name_sender=substr($userInfo[2],0,1).".".$userInfo[3];
 						
 			$m=stripslashes($row["msg"]);
@@ -102,7 +102,7 @@ switch ($op) {
 		$result=sql_query($query);
 		$msgs="";
 		while ($row=sql_fetch_array($result)) {
-			ereg("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["data"],$parts);
+			preg_match("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["data"],$parts);
 			$hour=$parts[4];
 			$min=$parts[5];
 			$sec=$parts[6];
@@ -172,7 +172,7 @@ function getOnlineUsers() {
 			//if (Docebo::user()->getIdSt()<>$idSt) {
 			$emptylist=false;
 			$userInfo=$acl_man->getUser($idSt,'');
-			$ids=split("/",$userInfo[1]);
+			$ids=explode("/",$userInfo[1]);
 			$idUser=$ids[1];
 			$userName=substr($userInfo[2],0,1).".".$userInfo[3];
 			$list.='{"idSt":"'.$idSt.'","idUser":"'.$idUser.'","userName":"'.$userName.'"},';

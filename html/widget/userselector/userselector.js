@@ -277,6 +277,9 @@ UserSelector.prototype = {
 
 			YAHOO.util.Event.addListener("user_apply_dyn_filter_"+oScope.id+"-button", "click", function(e) {oScope.oTable.refresh();});
 			YAHOO.util.Event.addListener("user_reset_dyn_filter_"+oScope.id+"-button", "click", function(e) {YAHOO.dynFilter.resetFilter();oScope.oTable.refresh();});
+            //*** forma 2.0 fix: the previous does not work. When yui is deleted, life will be better 
+            YAHOO.util.Event.addListener("user_apply_dyn_filter_main_selector", "click", function(e) {oScope.oTable.refresh();});
+            YAHOO.util.Event.addListener("user_reset_dyn_filter_main_selector", "click", function(e) {oScope.oTable.refresh();});
 
 			var oDS = new YAHOO.util.XHRDataSource('ajax.adm_server.php?r=adm/usermanagement/users_autocomplete');
 			oDS.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;

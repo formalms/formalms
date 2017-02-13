@@ -481,7 +481,7 @@ class Field_Date extends Field {
 		WHERE id_user = '".$id_user."' AND
 			id_common = '".(int)$this->id_common."' AND
 			id_common_son = '0'");
-		$some_entry = mysql_num_rows($re_entry);
+		$some_entry = sql_num_rows($re_entry);
 
 		$new_entry = $_POST['field_'.$this->getFieldType()][$this->id_common];
 		$new_entry = Format::dateDb($new_entry, 'date');
@@ -534,7 +534,7 @@ class Field_Date extends Field {
 			id_common = '".(int)$this->id_common."' AND
 			id_common_son = '0'");
 
-		$some_entry = mysql_num_rows($re_entry);
+		$some_entry = sql_num_rows($re_entry);
 		$new_entry = Format::dateDb($value, 'date');
 
 		if($some_entry) {

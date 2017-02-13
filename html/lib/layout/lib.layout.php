@@ -304,6 +304,7 @@
                 $retArray['resetter'] = self::GetResetter();
                 break;
              case 'adm':
+                $retArray['jqueryAddons'] = "";
                 break;
              case 'lms':
                 if(!isset($_SESSION['direct_play'])) {

@@ -608,7 +608,7 @@ class UserManager {
 		if($this->_render->haveToLostuserAction()) {
 
 			$mail = $this->_render->getLostUserParam();
-			if(eregi("\r", $mail) || eregi("\n", $mail)) die("This isn't a good email address !");
+			if(preg_match("\r", $mail) || preg_match("\n", $mail)) die("This isn't a good email address !");
 
 			$acl_man =& Docebo::user()->getAclManager();
 			$user_info = $acl_man->getUserByEmail($mail);
@@ -718,8 +718,8 @@ class UserManager {
 
 		$re = $this->_executeQuery($query);
 		if(!$re) return false;
-		if(mysql_num_rows($re) <=0 ) return false;
-		return mysql_fetch_assoc($re);
+		if(sql_num_rows($re) <=0 ) return false;
+		return sql_fetch_assoc($re);
 	}
 
 	function insertPwdRandomCode($idst_user, $code) {
@@ -1857,7 +1857,6 @@ class UserManagerRenderer {
 			require_once(_lms_."/modules/login/facebook.php");
 			if (isset($_SESSION['fb_info']) && is_array($_SESSION['fb_info']) && !isset($_POST['register'])) {
 				setFbRegData($_SESSION['fb_info']);
-				// $out .= '<li>'.$lang->def('_ACCOUNT_WILL_BE_CONNECTED_FB', 'login', 'cms').'</li>';
 			}
 			else {
 				$extra =getFbRegisterBox();
@@ -2197,11 +2196,11 @@ class UserManagerRenderer {
 			return array( 	'error' => true,
 							'msg' => $lang->def('_ERR_INVALID_MAIL') );
 		}
-		if (!eregi("^([a-z0-9_\-]|\\.[a-z0-9_])+@(([a-z0-9_\-]|\\.-)+\\.)+[a-z]{2,8}$", $source['register']['email'])) {
+		if (!preg_match("^([a-z0-9_\-]|\\.[a-z0-9_])+@(([a-z0-9_\-]|\\.-)+\\.)+[a-z]{2,8}$", $source['register']['email'])) {
 			return array( 	'error' => true,
 							'msg' => $lang->def('_ERR_INVALID_MAIL') );
 		}
-		if (eregi("[\r\n]+", $source['register']['email'])) {
+		if (preg_match("[\r\n]+", $source['register']['email'])) {
 			return array( 	'error' => true,
 							'msg' => $lang->def('_ERR_INVALID_MAIL') );
 		}
@@ -2446,7 +2445,7 @@ class UserManagerRenderer {
 		$acl_man =& Docebo::user()->getAclManager();
 		$user_info = $acl_man->getUser($idst, false);
 
-		if($user_info[ACL_INFO_PASS] != $acl_man->encrypt($_POST['oldpwd'])) {
+		if(!$acl_man->password_verify($_POST['oldpwd'],$user_info[ACL_INFO_PASS],true)) {
 
 			return array( 	'error' => true,
 							'msg' => getErrorUi($lang->def('_ERR_PWD_OLD')) );
@@ -2479,7 +2478,7 @@ class UserManagerRenderer {
 				return array( 	'error' => true,
 								'msg' => getErrorUi(str_replace('[diff_pwd]', Get::sett('user_pwd_history_length'), $lang->def('_REG_PASS_MUST_DIFF'))) );
 			}
-			$re_pwd = mysql_query("SELECT passw "
+			$re_pwd = sql_query("SELECT passw "
 			." FROM ".$GLOBALS['prefix_fw']."_password_history"
 			." WHERE idst_user = ".(int)$idst.""
 			." ORDER BY pwd_date DESC");

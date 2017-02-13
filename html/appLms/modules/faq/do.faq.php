@@ -173,7 +173,7 @@ function play( $object_faq, $id_param) {
 				$GLOBALS['page']->add('<div class="boxinfo_title">'.$title.'</div>'
 					.'<div class="boxinfo_container">'
 					.( $search == '' ? $answer :
-					 eregi_replace($search, '<span class="highlight">'.$search.'</span>', $answer) ).'</div><br />', 'content');
+					 preg_replace($search, '<span class="highlight">'.$search.'</span>', $answer) ).'</div><br />', 'content');
 			}
 		}
 		$GLOBALS['page']->add('</div>'
@@ -214,11 +214,11 @@ function play( $object_faq, $id_param) {
 		while(list($question, $answer) = sql_fetch_row($result)) {
 			$GLOBALS['page']->add('<div class="boxinfo_title">'
 				.( $search == '' ? $question :
-				 	eregi_replace($search, '<span class="highlight">'.$search.'</span>', $question) )
+				 	preg_replace($search, '<span class="highlight">'.$search.'</span>', $question) )
 				.'</div>'
 				.'<div class="boxinfo_container">'
 				.( $search == '' ? $answer :
-				 	eregi_replace($search, '<span class="highlight">'.$search.'</span>', $answer) ).'</div><br />', 'content');
+				 	preg_replace($search, '<span class="highlight">'.$search.'</span>', $answer) ).'</div><br />', 'content');
 		}
 	}
 	$GLOBALS['page']->add('<div class="align_center">'

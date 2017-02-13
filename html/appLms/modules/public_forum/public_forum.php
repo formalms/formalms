@@ -32,7 +32,7 @@ function loadUnreaded()
         $reLast = sql_query("SELECT UNIX_TIMESTAMP(lastenter)" .
             " FROM core_user" .
             " WHERE idst = '" . getLogUserId() . "'");
-        if (mysql_num_rows($reLast)) {
+        if (sql_num_rows($reLast)) {
             list($last_forum_access_time) = sql_fetch_row($reLast);
         } else {
             $last_forum_access_time = 0;
@@ -279,62 +279,62 @@ function forum()
                     // 	<img src="'.getPathImage().'standard/delete.png" title="'.$lang->def('_DEL').' : '.strip_tags($title).'" alt="'.$lang->def('_DEL').'" /></a>';
 
                     $content[] = '<div class="btn-group visible-xs visible-lg">
-													<a class="btn btn-default' . ($i == $tot_forum ? ' disabled' : '') . '" href="index.php?modname=public_forum&amp;op=downforum&amp;idForum=' . $idF . '" title="' . $lang->def('_MOVE_DOWN') . '">
-														<span class="glyphicon glyphicon-chevron-down"></span>
-													</a>
-													<a class="btn btn-default' . ($i == 1 ? ' disabled' : '') . '" href="index.php?modname=public_forum&amp;op=moveupforum&amp;idForum=' . $idF . '" title="' . $lang->def('_UP') . '">
-														<span class="glyphicon glyphicon-chevron-up"></span>
-													</a>
-													<a class="btn btn-default" href="index.php?modname=public_forum&amp;op=modforumaccess&amp;idForum=' . $idF . '&amp;load=1" title="' . $lang->def('_VIEW_PERMISSION') . '">
-														<span class="glyphicon glyphicon-ban-circle"></span>
-													</a>
-													<a class="btn btn-default" href="index.php?modname=public_forum&amp;op=export&amp;idForum=' . $idF . '" title="' . $lang->def('_EXPORTFORUM') . ' : ' . strip_tags($title) . '">
-														<span class="glyphicon glyphicon-save"></span>
-													</a>
-													<a class="btn btn-default" href="index.php?modname=public_forum&amp;op=modforum&amp;idForum=' . $idF . '" title="' . $lang->def('_MOD') . '">
-														<span class="glyphicon glyphicon-pencil"></span>
-													</a>
-													<a class="btn btn-default" href="index.php?modname=public_forum&amp;op=delforum&amp;idForum=' . $idF . '" title="' . $lang->def('_DEL') . ' : ' . strip_tags($title) . '">
-														<span class="glyphicon glyphicon-remove"></span>
-													</a>
-												</div>
-												<div class="dropdown hidden-xs hidden-lg">
-														<button class="btn btn-default dropdown-toggle" type="button" id="forumFunctions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-														  <span class="glyphicon glyphicon-cog"></span> &nbsp;<span class="caret"></span>
-														</button>
-														<ul class="dropdown-menu" aria-labelledby="forumFunctions">
-															<li>
-																<a class="' . ($i == $tot_forum ? ' hidden' : '') . '" href="index.php?modname=public_forum&amp;op=downforum&amp;idForum=' . $idF . '">
-																	<span class="glyphicon glyphicon-chevron-down"></span> Sposta giù
-																</a>
-															</li>
-															<li>
-																<a class="' . ($i == 1 ? ' hidden' : '') . '" href="index.php?modname=public_forum&amp;op=moveupforum&amp;idForum=' . $idF . '">
-																	<span class="glyphicon glyphicon-chevron-up"></span> Sposta su
-																</a>
-															</li>
-															<li>
-																<a href="index.php?modname=public_forum&amp;op=modforumaccess&amp;idForum=' . $idF . '&amp;load=1">
-																	<span class="glyphicon glyphicon-ban-circle"></span> Cambia permessi
-																</a>
-															</li>
-															<li>
-																<a href="index.php?modname=public_forum&amp;op=export&amp;idForum=' . $idF . '">
-																	<span class="glyphicon glyphicon-save"></span> Esporta su CSV
-																</a>
-															</li>
-															<li>
-																<a href="index.php?modname=public_forum&amp;op=modforum&amp;idForum=' . $idF . '">
-																	<span class="glyphicon glyphicon-pencil"></span> Modifica
-																</a>
-															</li>
-															<li>
-																<a href="index.php?modname=public_forum&amp;op=delforum&amp;idForum=' . $idF . '">
-																	<span class="glyphicon glyphicon-remove"></span> Elimina
-																</a>
-															</li>
-														</ul>
-												</div>';
+                        <a class="btn btn-default' . ($i == $tot_forum ? ' disabled' : '') . '" href="index.php?modname=public_forum&amp;op=downforum&amp;idForum=' . $idF . '" title="' . $lang->def('_MOVE_DOWN') . '">
+                            <span class="glyphicon glyphicon-chevron-down"></span>
+                        </a>
+                        <a class="btn btn-default' . ($i == 1 ? ' disabled' : '') . '" href="index.php?modname=public_forum&amp;op=moveupforum&amp;idForum=' . $idF . '" title="' . $lang->def('_UP') . '">
+                            <span class="glyphicon glyphicon-chevron-up"></span>
+                        </a>
+                        <a class="btn btn-default" href="index.php?modname=public_forum&amp;op=modforumaccess&amp;idForum=' . $idF . '&amp;load=1" title="' . $lang->def('_VIEW_PERMISSION') . '">
+                            <span class="glyphicon glyphicon-ban-circle"></span>
+                        </a>
+                        <a class="btn btn-default" href="index.php?modname=public_forum&amp;op=export&amp;idForum=' . $idF . '" title="' . $lang->def('_EXPORTFORUM') . ' : ' . strip_tags($title) . '">
+                            <span class="glyphicon glyphicon-save"></span>
+                        </a>
+                        <a class="btn btn-default" href="index.php?modname=public_forum&amp;op=modforum&amp;idForum=' . $idF . '" title="' . $lang->def('_MOD') . '">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        <a class="btn btn-default" href="index.php?modname=public_forum&amp;op=delforum&amp;idForum=' . $idF . '" title="' . $lang->def('_DEL') . ' : ' . strip_tags($title) . '">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                    </div>
+                    <div class="dropdown hidden-xs hidden-lg">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="forumFunctions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                              <span class="glyphicon glyphicon-cog"></span> &nbsp;<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="forumFunctions">
+                                <li>
+                                    <a class="' . ($i == $tot_forum ? ' hidden' : '') . '" href="index.php?modname=public_forum&amp;op=downforum&amp;idForum=' . $idF . '">
+                                        <span class="glyphicon glyphicon-chevron-down"></span> Sposta giù
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="' . ($i == 1 ? ' hidden' : '') . '" href="index.php?modname=public_forum&amp;op=moveupforum&amp;idForum=' . $idF . '">
+                                        <span class="glyphicon glyphicon-chevron-up"></span> Sposta su
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="index.php?modname=public_forum&amp;op=modforumaccess&amp;idForum=' . $idF . '&amp;load=1">
+                                        <span class="glyphicon glyphicon-ban-circle"></span> Cambia permessi
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="index.php?modname=public_forum&amp;op=export&amp;idForum=' . $idF . '">
+                                        <span class="glyphicon glyphicon-save"></span> Esporta su CSV
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="index.php?modname=public_forum&amp;op=modforum&amp;idForum=' . $idF . '">
+                                        <span class="glyphicon glyphicon-pencil"></span> Modifica
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="index.php?modname=public_forum&amp;op=delforum&amp;idForum=' . $idF . '">
+                                        <span class="glyphicon glyphicon-remove"></span> Elimina
+                                    </a>
+                                </li>
+                            </ul>
+                    </div>';
                 }
                 $tb->addBody($content);
                 ++$i;
@@ -347,27 +347,27 @@ function forum()
             // 	.'</span></a>');
 
             $tb->addActionAdd('<div class="btn-group col-lg-9 visible-lg">
-													<a class="btn btn-default" href="index.php?modname=public_forum&amp;op=addforum">
-														<span class="glyphicon glyphicon-plus-sign"></span>
-														<span>' . $lang->def('_ADDFORUM') . '</span>
-													</a>
-												</div>
-												<div class="dropdown col-xs-5 col-sm-4 hidden-lg pull-left">
-														<button class="btn btn-default dropdown-toggle" type="button" id="tableActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-														  <span class="glyphicon glyphicon-cog"></span> &nbsp;
-														  Operazioni &nbsp;
-														  <span class="caret"></span>
-														</button>
-														<ul class="dropdown-menu dropdown-menu-left" aria-labelledby="tableActions">
-															<li>
-																<a href="index.php?modname=public_forum&amp;op=addforum">
-																	<span class="glyphicon glyphicon-plus-sign"></span>
-																	<span>' . $lang->def('_ADDFORUM') . '</span>
-																</a>
-															</li>
-														</ul>
-												</div>
-												<div class="col-xs-7 col-sm-6 col-md-4 col-lg-3 pull-right">'
+                    <a class="btn btn-default" href="index.php?modname=public_forum&amp;op=addforum">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        <span>' . $lang->def('_ADDFORUM') . '</span>
+                    </a>
+                </div>
+                <div class="dropdown col-xs-5 col-sm-4 hidden-lg pull-left">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="tableActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <span class="glyphicon glyphicon-cog"></span> &nbsp;
+                          Operazioni &nbsp;
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="tableActions">
+                            <li>
+                                <a href="index.php?modname=public_forum&amp;op=addforum">
+                                    <span class="glyphicon glyphicon-plus-sign"></span>
+                                    <span>' . $lang->def('_ADDFORUM') . '</span>
+                                </a>
+                            </li>
+                        </ul>
+                </div>
+                <div class="col-xs-7 col-sm-6 col-md-4 col-lg-3 pull-right">'
                 . Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search')
                 . '<div class="input-group">'
                 . Form::getSearchInputTextfield('', 'search_arg', 'search_arg', 'Cerca argomento...')
@@ -1002,12 +1002,6 @@ function modforumaccess_old()
     $perm["write"]["alt"] = $lang->def("_ADD");
     $perm["upload"]["img"] = getPathImage() . "standard/download.png";
     $perm["upload"]["alt"] = $lang->def("_ALT_UPLOAD");
-    /*$perm["add"]["img"] = getPathImage()."standard/add.png";
-	$perm["add"]["alt"] = $lang->def("_ADD");
-	$perm["mod"]["img"] = getPathImage()."standard/edit.png";
-	$perm["mod"]["alt"] = $lang->def("_MOD");
-	$perm["del"]["img"] = getPathImage()."standard/delete.png";
-	$perm["del"]["alt"] = $lang->def("_DEL");*/
     $perm["moderate"]["img"] = '';
     $perm["moderate"]["alt"] = $lang->def("_MODERATE");
 
@@ -1132,8 +1126,6 @@ function saveForumPerm($idForum, $selected_items, $database_items)
         }
     }
 
-    //include_once($GLOBALS['where_cms']."/lib/lib.reloadperm.php");
-    //setCmsReloadPerm();
 }
 
 function getForumPermList()
@@ -1260,21 +1252,6 @@ function thread()
     );
     $GLOBALS['page']->add(
         getTitleArea($page_title, 'forum')
-        // .'<div class="std_block">'
-        // .Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search&amp;idForum='.$id_forum)
-        // .'<div class="quick_search_form">'
-        // .'<label for="search_arg">'.$lang->def('_SEARCH_LABEL').'</label> '
-        // .Form::getInputTextfield(	'search_t',
-        // 							'search_arg',
-        // 							'search_arg',
-        // 							'',
-        // 							$lang->def('_SEARCH'), 255, '' )
-        // .'<input class="search_b" type="submit" id="search_button" name="search_button" value="'.$lang->def('_SEARCH').'" />'
-        // .'</div>'
-        // .Form::closeForm()
-        , 'content');
-
-    // $tb = new Table(Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'), 'thread-summary');
 
     $threads_order = '<div class="dropdown pull-right">
 										  <button class="btn btn-default dropdown-toggle" type="button" id="threadsOrder" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -1300,33 +1277,7 @@ function thread()
 
     $tb = new Table(Get::sett('visuItem'), $lang->def('_THREAD_CAPTION') . $threads_order, $lang->def('_THRAD_SUMMARY'), 'thread-summary mobile-reverse');
     $tb->force_print = true;
-    // $img_up 	= '<img src="'.getPathImage().'standard/ord_asc.png" alt="'.$lang->def('_ORD_ASC').'" />';
-    // $img_down 	= '<img src="'.getPathImage().'standard/ord_desc.png" alt="'.$lang->def('_ORD_DESC').'" />';
 
-    // $cont_h = array(
-    // 	'<img src="'.getPathImage().'standard/msg_read.png" title="'.$lang->def('_FREET').'" alt="'.$lang->def('_FREE').'" />',
-    // 	'<a href="'.$jump_url.'&amp;ord='.( $ord == 'obj' ? 'obji' : 'obj' ).'" title="'.$lang->def('_ORDER_BY').'">'
-    // 		.( $ord == 'obj' ? $img_up : ( $ord == 'obji' ? $img_down : '' ) ).$lang->def('_THREAD').'</a>',
-    // 	$lang->def('_NUMREPLY'),
-    // 	'<a href="'.$jump_url.'&amp;ord='.( $ord == 'auth' ? 'authi' : 'auth' ).'" title="'.$lang->def('_ORDER_BY').'">'
-    // 		.( $ord == 'auth' ? $img_up : ( $ord == 'authi' ? $img_down : '' ) ).$lang->def('_AUTHOR').'</a>',
-    // 	//$lang->def('_NUMVIEW'),
-    // 	//$lang->def('_DATE'),
-    // 	'<a href="'.$jump_url.'&amp;ord='.( $ord == 'post' ? 'posti' : 'post' ).'" title="'.$lang->def('_ORDER_BY').'">'
-    // 		.( $ord == 'post' ? $img_up : ( $ord == 'posti' ? $img_down : '' ) ).$lang->def('_LASTPOST').'</a>'
-    // );
-    // $type_h = array('image', '', 'align_center', 'align_center', 'image',
-    // //'align_center',
-    // 'align_center');
-    // if($mod_perm || $moderate) {
-
-    // 	//$cont_h[] = '<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').'" title="'.$lang->def('_MOD').'" />';
-    // 	$type_h[] = 'image';
-    // 	//$cont_h[] = '<img src="'.getPathImage().'standard/move.png" alt="'.$lang->def('_MOVE').'" title="'.$lang->def('_MOVETHREAD_TITLE').'" />';
-    // 	$type_h[] = 'image';
-    // 	//$cont_h[] = '<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" title="'.$lang->def('_DEL').'" />';
-    // 	$type_h[] = 'image';
-    // }
 
     $type_h = array(
         'hidden-xs text-center',
@@ -1338,7 +1289,7 @@ function thread()
     );
 
     $tb->setColsStyle($type_h);
-    //$tb->addHead($cont_h);
+
     while (list($idT, $t_author, $posted, $title, $num_post, $num_view, $locked, $erased, $important) = sql_fetch_row($re_thread)) {
 
         $msg_for_page = Get::sett('visuItem');
@@ -1431,8 +1382,6 @@ function thread()
                     : ''));
 
         $content[] = $t_author;
-        //$content[] = $num_view;
-        //$content[] = Format::date($posted);
 
         $mobile_content = $content;
 
@@ -1476,13 +1425,6 @@ function thread()
 
             $content[] = $thread_functions;
 
-            // $content[] = '<a href="index.php?modname=public_forum&amp;op=modthread&amp;idThread='.$idT.'" '
-            // 	.'title="'.$lang->def('_MOD').' : '.strip_tags($title).'">'
-            // 	.'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').' : '.strip_tags($title).'" /></a>';
-            // $content[] = '<a href="index.php?modname=public_forum&amp;op=movethread&amp;id_forum='.$id_forum.'&amp;id_thread='.$idT.'"><img src="'.getPathImage().'standard/move.png" alt="'.$lang->def('_MOVE').'" title="'.$lang->def('_MOVETHREAD_TITLE').'" /></a>';
-            // $content[] = '<a href="index.php?modname=public_forum&amp;op=delthread&amp;idThread='.$idT.'" '
-            // 	.'title="'.$lang->def('_DEL').' : '.strip_tags($title).'">'
-            // 	.'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').' : '.strip_tags($title).'" /></a>';
         }
         $tb->addBody($content);
     }
@@ -1984,7 +1926,7 @@ function delthread()
 
             if ($file != '') delete_file($file);
         }
-        $post_deleted = mysql_num_rows($re_mess);
+        $post_deleted = sql_num_rows($re_mess);
         if (!sql_query("
 		DELETE FROM " . $GLOBALS['prefix_lms'] . "_forummessage
 		WHERE idThread = '" . $id_thread . "'")
@@ -2200,7 +2142,7 @@ function message()
 	WHERE idThread = '" . $id_thread . "'
 	ORDER BY posted
 	LIMIT $ini, " . Get::sett('visuItem'));
-    while ($record = mysql_fetch_assoc($re_message)) {
+    while ($record = sql_fetch_assoc($re_message)) {
 
         $messages[$record['idMessage']] = $record;
         $authors[$record['author']] = $record['author'];
@@ -2701,7 +2643,7 @@ function showMessageForAdd($id_thread, $how_much)
 	WHERE idThread = '" . $id_thread . "'
 	ORDER BY posted DESC
 	LIMIT 0, " . $how_much);
-    while ($record = mysql_fetch_assoc($re_message)) {
+    while ($record = sql_fetch_assoc($re_message)) {
 
         $messages[$record['idMessage']] = $record;
         $authors[$record['author']] = $record['author'];
@@ -3771,7 +3713,7 @@ function forumsearchmessage()
 	WHERE idThread = '" . $id_thread . "'
 	ORDER BY posted
 	LIMIT $ini, " . Get::sett('visuItem'));
-    while ($record = mysql_fetch_assoc($re_message)) {
+    while ($record = sql_fetch_assoc($re_message)) {
 
         $messages[$record['idMessage']] = $record;
         $authors[$record['author']] = $record['author'];
@@ -3867,12 +3809,12 @@ function forumsearchmessage()
             $textof = str_replace('[quote]', '<blockquote class="forum_quote">', str_replace('[/quote]', '</blockquote>', $message_info['textof']));
             $msgtext .= '<div class="forum_post_title">' . $lang->def('_SUBJECT') . ' : '
                 . ($search_arg !== ''
-                    ? eregi_replace($search_arg, '<span class="filter_evidence">' . $search_arg . '</span>', $message_info['title'])
+                    ? preg_replace($search_arg, '<span class="filter_evidence">' . $search_arg . '</span>', $message_info['title'])
                     : $message_info['title'])
                 . '</div>';
             $msgtext .= '<div class="forum_post_text">'
                 . ($search_arg !== ''
-                    ? eregi_replace($search_arg, '<span class="filter_evidence">' . $search_arg . '</span>', $textof)
+                    ? preg_replace($search_arg, '<span class="filter_evidence">' . $search_arg . '</span>', $textof)
                     : $textof)
                 . '</div>';
 
@@ -4238,7 +4180,7 @@ function issetNotify($notify_is_a, $id_notify, $id_user)
 		id_user = '" . $id_user . "' AND
 		notify_is_a = '" . ($notify_is_a == 'forum' ? 'forum' : 'thread') . "'";
     $re = sql_query($query_notify);
-    return (mysql_num_rows($re) == 0 ? false : true);
+    return (sql_num_rows($re) == 0 ? false : true);
 }
 
 /**
@@ -4477,7 +4419,7 @@ function export()
 
         $result = sql_query($query);
 
-        if (mysql_num_rows($result)) ;
+        if (sql_num_rows($result)) ;
         {
             $tmp = array();
             $id_list = array();

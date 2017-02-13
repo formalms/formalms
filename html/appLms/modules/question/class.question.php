@@ -225,7 +225,7 @@ class Question {
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
 	function _checkScore( $score ) {
-		$score = ereg_replace(',', '.', $score);
+		$score = preg_replace(',', '.', $score);
 		if( $score{0} == '.') $score = '0'.$score;
 		return $score;
 	}
@@ -295,7 +295,7 @@ class Question {
 		( 	'".(int)$new_id_test."', 
 			'".(int)$idCategory."', 
 			'".$this->getQuestionType()."', 
-			'".mysql_escape_string($title_quest)."',
+			'".sql_escape_string($title_quest)."',
 			'".(int)$difficult."', 
 			'".$time_assigned."',
 			'".(int)$sequence."',
@@ -324,8 +324,8 @@ class Question {
 			( 	'".(int)$new_id_quest."', 
 				'".(int)$seq."', 
 				'".(int)$is_correct."', 
-				'".mysql_escape_string($answer)."', 
-				'".mysql_escape_string($comment)."',
+				'".sql_escape_string($answer)."', 
+				'".sql_escape_string($comment)."',
 				'".$this->_checkScore($score_c)."', 
 				'".$this->_checkScore($score_inc)."') ";
 			if(!sql_query($ins_answer_query)) return false;
@@ -346,7 +346,7 @@ class Question {
 			( idQuest, idAnswer, extra_info ) VALUES 
 			( 	'".(int)$new_id_quest."', 
 				'".(int)$map_answer[$id_answer]."', 
-				'".mysql_escape_string($title_info)."' )")) return false;
+				'".sql_escape_string($title_info)."' )")) return false;
 		}
 		
 		return $new_id_quest;
@@ -399,7 +399,7 @@ class Question {
 			idTrack = '".(int)$id_track."'";
 		$re_answer_do = sql_query($recover_answer);
 		
-		if(mysql_num_rows($re_answer_do)) return true;
+		if(sql_num_rows($re_answer_do)) return true;
 		else return false;
 	}
 	
@@ -614,7 +614,7 @@ class Question {
 		}
 		$query .= " ORDER BY number_time DESC LIMIT 1";
 		$re_answer = sql_query($query);
-		if(!mysql_num_rows($re_answer)) return $score;
+		if(!sql_num_rows($re_answer)) return $score;
 		while(list($score_assigned) = sql_fetch_row($re_answer)) {
 			$score = round($score + $score_assigned, 2);
 		}
@@ -786,7 +786,7 @@ class QuestionRaw {
 			."FROM ".$GLOBALS['prefix_lms']."_quest_category "
 			."WHERE name = '".$category_name."' AND ( author = 0 OR author = ".(int)getLogUserId()." ) ";
 		$re = sql_query($qtxt);
-		if(!$re || !mysql_num_rows($re)) $this->id_category = 0;
+		if(!$re || !sql_num_rows($re)) $this->id_category = 0;
 		else list($this->id_category) = sql_fetch_row($re);
 		
 	}

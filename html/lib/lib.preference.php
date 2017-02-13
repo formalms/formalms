@@ -118,7 +118,7 @@ class UserPreferencesDb {
 		$re_preference = $this->_executeQuery($query_preference);
 
 		$preference = array();
-		if( mysql_num_rows($re_preference) > 0) {
+		if( sql_num_rows($re_preference) > 0) {
 
 			list($path_name, $label, $default_value, $type, $visible, $load_at_startup) = sql_fetch_row($re_preference);
 			$preference = array(
@@ -151,7 +151,7 @@ class UserPreferencesDb {
 		$re_preference = $this->_executeQuery($query_preference);
 
 		$preference = array();
-		if( mysql_num_rows($re_preference) > 0) {
+		if( sql_num_rows($re_preference) > 0) {
 
 			list($default_value) = sql_fetch_row($re_preference);
 			return $default_value;
@@ -246,7 +246,7 @@ class UserPreferencesDb {
 		WHERE path_name = '".$path."' AND id_user = '".$id_user."'";
 		$re_preference = $this->_executeQuery($query_preference);
 
-		if( mysql_num_rows($re_preference) > 0) {
+		if( sql_num_rows($re_preference) > 0) {
 
 			list($value) = sql_fetch_row($re_preference);
 			return $value;
@@ -386,7 +386,7 @@ class UserPreferencesDb {
 		FROM ".$this->_getTableUser()."
 		WHERE path_name = '".$path."' AND id_user = '".$id_user."'";
 		$re_preference = $this->_executeQuery($query_preference);
-		if( !mysql_num_rows($re_preference) ) {
+		if( !sql_num_rows($re_preference) ) {
 
 			// Insert new entry
 			return $this->_executeQuery("

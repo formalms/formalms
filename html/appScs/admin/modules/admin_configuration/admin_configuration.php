@@ -66,7 +66,7 @@ function adminConf() {
 		enable_audio, enable_webcam, enable_stream_watch, enable_strem_write, enable_remote_desktop 
 	FROM ".$GLOBALS['prefix_scs']."_rules_admin";
 	$re_rules_admin = sql_query($query_rules_admin);
-	$rules = mysql_fetch_array($re_rules_admin);
+	$rules = sql_fetch_array($re_rules_admin);
 	
 	$out->add(
 		Form::openForm('rules_admin', 'index.php?modname=admin_configuration&amp;op=conf')

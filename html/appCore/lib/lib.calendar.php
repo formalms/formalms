@@ -73,23 +73,23 @@ class DoceboCal {
 		
 		$query="SELECT * FROM ".$GLOBALS['prefix_fw']."_calendar WHERE ".$where." ORDER BY start_date";
 		$result=sql_query($query);
-		if (mysql_error()) die(mysql_error()."<br>".$query);
+		if (sql_error()) die(sql_error()."<br>".$query);
 		$calevents = array();
 		$i=0;
-		while ($row=mysql_fetch_array($result)) {
+		while ($row=sql_fetch_array($result)) {
 			$calevents[$i]=new CalEvent();
 			
 			$calevents[$i]->id=$row["id"];
 
-			ereg("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["start_date"],$parts);
+            preg_match("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["start_date"],$parts);
 			$calevents[$i]->start->year=$parts[1];
 			$calevents[$i]->start->month=$parts[2];
 			$calevents[$i]->start->day=$parts[3];
 			$calevents[$i]->start->hour=$parts[4];
 			$calevents[$i]->start->min=$parts[5];
 			$calevents[$i]->start->sec=$parts[6];
-			
-			ereg("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["end_date"],$parts);
+
+            preg_match("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["end_date"],$parts);
 			$calevents[$i]->end->year=$parts[1];
 			$calevents[$i]->end->month=$parts[2];
 			$calevents[$i]->end->day=$parts[3];
@@ -143,13 +143,13 @@ class DoceboCal {
 		if ($event->id) $query.=" WHERE id='".$event->id."'";
 		
 		$result=sql_query($query);
-		if (mysql_error()) die(mysql_error()."<br />".$query);
+		if (sql_error()) die(sql_error()."<br />".$query);
 		
-		if (!$event->id) $this->lastId=mysql_insert_id();
+		if (!$event->id) $this->lastId=sql_insert_id();
 	}
 	
 	function getLastId() {
-		return mysql_insert_id();
+		return sql_insert_id();
 	}
 	
 	function delEvent($id) {

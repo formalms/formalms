@@ -43,9 +43,9 @@ class PublicAdminManager {
 				return FALSE;
 		}
 		if( $this->dbconn === NULL )
-			return mysql_insert_id();
+			return sql_insert_id();
 		else
-			return mysql_insert_id($this->dbconn);
+			return sql_insert_id($this->dbconn);
 	}
 	
 	function _getRoleTable()
@@ -318,7 +318,7 @@ class PublicAdminManager {
 				." WHERE idstAdmin = '".(int)$adminidst."'";
 		$rs = $this->_executeQuery( $query );
 		$result = array();
-		if( mysql_num_rows( $rs ) > 0 ) { 
+		if( sql_num_rows( $rs ) > 0 ) {
 			while(list($idstTree) = sql_fetch_row($rs)) {
 				$result[] = $idstTree;
 			}

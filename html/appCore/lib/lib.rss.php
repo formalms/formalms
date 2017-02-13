@@ -92,7 +92,7 @@ class FeedReader {
 
 				while(list(, $param) = each($this->query_rss)) {
 
-					$param_name = split('=', $param);
+					$param_name = explode('=', $param);
 
 					if(strpos($feed_url, $param_name[0]) === false) {
 						$feed_url .= ( strpos($feed_url, '?') === false ? '?' : '&' ).$param;
@@ -207,9 +207,9 @@ class FeedReaderManager {
 				return FALSE;
 		}
 		if( $this->dbconn === NULL )
-			return mysql_insert_id();
+			return sql_insert_id();
 		else
-			return mysql_insert_id($this->dbconn);
+			return sql_insert_id($this->dbconn);
 	}
 
 
@@ -231,16 +231,16 @@ class FeedReaderManager {
 		$q=$this->_executeQuery($qtxt);
 
 		if ($q)
-			$feed_list["feed_tot"]=mysql_num_rows($q);
+			$feed_list["feed_tot"]=sql_num_rows($q);
 		else
 			$feed_list["feed_tot"]=0;
 
 		$qtxt.="LIMIT ".$ini.",".$vis_item;
 		$q=$this->_executeQuery($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
 			$i=0;
-			while($row=mysql_fetch_array($q)) {
+			while($row=sql_fetch_array($q)) {
 				$feed_list["feed_arr"][$i]=$row;
 
 				$i++;
@@ -280,7 +280,7 @@ class FeedReaderManager {
 		$q = $this->_executeQuery($q_head1.$q_body.$q_order.$q_limit);
 
 		if (($q) && (sql_num_rows($q) > 0))
-			while ($row = mysql_fetch_array($q)) $feed_list["feed_arr"][]=$row;
+			while ($row = sql_fetch_array($q)) $feed_list["feed_arr"][]=$row;
 
 		return $feed_list;
 	}
@@ -313,7 +313,7 @@ class FeedReaderManager {
 		WHERE t1.zone = '".$zone."'";
 		if(!$re_feed = $this->_executeQuery($find_feed)) return $feed_list;
 
-		while($row = mysql_fetch_array($re_feed)) {
+		while($row = sql_fetch_array($re_feed)) {
 
 			$feed_list[$row["feed_id"]] = $row["title"];
 		}
@@ -335,8 +335,8 @@ class FeedReaderManager {
 			$qtxt="SELECT * FROM ".$this->_getFeedsTable()." WHERE feed_id='".$feed_id."'";
 			$q=$this->_executeQuery($qtxt);
 
-			if (($q) && (mysql_num_rows($q) > 0)) {
-				$row=mysql_fetch_array($q);
+			if (($q) && (sql_num_rows($q) > 0)) {
+				$row=sql_fetch_array($q);
 				$res=$row;
 			}
 
@@ -405,8 +405,8 @@ class FeedReaderManager {
 
 		$res=0;
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			$row=mysql_fetch_array($q);
+		if (($q) && (sql_num_rows($q) > 0)) {
+			$row=sql_fetch_array($q);
 			$res=$row["ord"];
 		}
 
@@ -608,9 +608,9 @@ class FeedGenerator {
 				return FALSE;
 		}
 		if( $this->dbconn === NULL )
-			return mysql_insert_id();
+			return sql_insert_id();
 		else
-			return mysql_insert_id($this->dbconn);
+			return sql_insert_id($this->dbconn);
 	}
 
 
@@ -711,8 +711,8 @@ class FeedGenerator {
 
 		$q=$this->_executeQuery($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			$res=mysql_fetch_array($q);
+		if (($q) && (sql_num_rows($q) > 0)) {
+			$res=sql_fetch_array($q);
 
 			if (($feed_id !== FALSE) || ($alias !== FALSE)) {
 				$this->key1=$res["key1"];

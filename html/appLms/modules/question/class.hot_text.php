@@ -717,7 +717,7 @@ class HotText_Question extends Question {
 			WHERE idQuest = '".(int)$this->id."' AND 
 				idTrack = '".(int)$id_track."' AND number_time =  ".$number_time;
 			$re_answer_do = sql_query($recover_answer);
-			if(mysql_num_rows($re_answer_do)) {
+			if(sql_num_rows($re_answer_do)) {
 				
 				//find previous answer
 				$find_prev = true;
@@ -733,7 +733,7 @@ class HotText_Question extends Question {
 					.( ($find_prev && $id_answer == $id_answer_do) ? ' checked="checked"' : '' )
 					.( $find_prev && $freeze ? ' disabled="disabled"' : '' ).' />'
 					.'<label class="text_answer_ht" for="quest_'.$id_quest.'_'.$id_answer.'">'.$answer.'</label>';
-			$title_quest = ereg_replace('\[answer'.$i.'\]', $term, $title_quest);
+			$title_quest = preg_replace('\[answer'.$i.'\]', $term, $title_quest);
 			$i++;
 		}
 		return '<div class="play_question">'
@@ -946,7 +946,7 @@ class HotText_Question extends Question {
 				if($show_solution) $comment .= '<br />'.$answer.' <span class="text_bold">'.$lang->def('_TEST_IS_THECORRECT').'</span><br />';
 			}
 			
-			$title_quest = ereg_replace('\[answer'.$i.'\]', $term, $title_quest);
+			$title_quest = preg_replace('\[answer'.$i.'\]', $term, $title_quest);
 			$i++;
 		}
 		$quest = '<div class="play_question">'

@@ -22,8 +22,6 @@ $path_to_root = '../..';
 require_once(dirname(__FILE__).'/'.$path_to_root.'/config.php');
 require_once($GLOBALS['where_config'].'/config.php');
 
-//if ($GLOBALS["where_cms_relative"] != false)
-//	$GLOBALS["where_cms_relative"]=$path_to_root.'/'.$GLOBALS["where_cms_relative"];
 
 if ($GLOBALS["where_kms_relative"] != false)
 	$GLOBALS["where_kms_relative"]=$path_to_root.'/'.$GLOBALS["where_kms_relative"];
@@ -39,15 +37,6 @@ if ($GLOBALS["where_files_relative"] != false) {
 }
 
 ob_start();
-
-// connect to database -------------------------------------------------------------------
-
-$GLOBALS['dbConn'] = mysql_connect($GLOBALS['dbhost'], $GLOBALS['dbuname'], $GLOBALS['dbpass']);
-if( !$GLOBALS['dbConn'] )
-	die( "Can't connect to db. Check configurations" );
-
-if( !mysql_select_db($dbname, $GLOBALS['dbConn']) )
-	die( "Database not found. Check configurations" );
 
 // load lms setting ------------------------------------------------------------------
 require_once(_base_.'/lib/lib.json.php');
@@ -169,7 +158,7 @@ else
 
 // close database connection
 
-mysql_close($GLOBALS['dbConn']);
+sql_close($GLOBALS['dbConn']);
 
 ob_clean();
 print($GLOBALS['operation_result']);

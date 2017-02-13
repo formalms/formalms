@@ -35,7 +35,7 @@ class GroupScormObjMan {
 		if($id_students !== false) $query_scores .= " AND idUser IN ( ".implode(',', $id_students)." )";
 		$query_scores .= " AND score_raw > 0 AND score_raw IS NOT NULL ";
 		$re_scores = sql_query($query_scores);
-		while($scorm_data = mysql_fetch_assoc($re_scores)) {
+		while($scorm_data = sql_fetch_assoc($re_scores)) {
 			
 			$data[$scorm_data['idReference']][$scorm_data['idUser']]['score'] = $scorm_data['score_raw'];
 			$data[$scorm_data['idReference']][$scorm_data['idUser']]['max_score'] = $scorm_data['score_max'];

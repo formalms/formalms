@@ -100,9 +100,9 @@ function news() {
 			.$short_desc
 			.'</div>', 'content');
 	}
-	if(mysql_num_rows($result) == 0) {
+	if(sql_num_rows($result) == 0) {
 		$GLOBALS['page']->add( $lang->def('_NO_CONTENT'), 'content');
-	} elseif(mysql_num_rows($result) >= 3) {
+	} elseif(sql_num_rows($result) >= 3) {
 		$GLOBALS['page']->add( getBackUi( 'index.php', $lang->def('_BACK') ).'</div>', 'content');
 	}
 	$GLOBALS['page']->add('</div>', 'content');

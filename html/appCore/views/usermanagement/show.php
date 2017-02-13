@@ -108,13 +108,14 @@ if ($permissions['view_user']) {
 			?>
 		</div>
 		<div class="overlay_menu advanced_search_box" id="usermanagement_advanced_filter_options">
+        
 			<?php
 				$dyn_data = $dynamic_filter->get(true, true);
 				echo $dyn_data['html'];
 				echo $dyn_data['js'];
 				echo Form::openButtonSpace();
 				echo Form::getButton('apply_dyn_filter', 'apply_dyn_filter', Lang::t('_SEARCH', 'admin_directory'));
-				echo ' ';
+				echo '&nbsp;';
 				echo Form::getButton('reset_dyn_filter', 'reset_dyn_filter', Lang::t('_RESET', 'admin_directory'));
 				echo Form::closeButtonSpace();
 			?>

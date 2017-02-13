@@ -29,7 +29,7 @@ function modfaqgui( $object_faq ) {
 	WHERE idCategory = '".$object_faq->getId()."' 
 	ORDER BY sequence";
 	$result = sql_query($textQuery);
-	$num_faq = mysql_num_rows($result);
+	$num_faq = sql_num_rows($result);
 	
 	list($title_cat) = sql_fetch_row(sql_query("
 	SELECT title

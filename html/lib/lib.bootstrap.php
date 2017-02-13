@@ -136,7 +136,6 @@ class Boot {
 
 		$GLOBALS['prefix_fw']	= $cfg['prefix_fw'];
 		$GLOBALS['prefix_lms']	= $cfg['prefix_lms'];
-		//$GLOBALS['prefix_cms']	= $cfg['prefix_cms'];
 		$GLOBALS['prefix_scs']	= $cfg['prefix_scs'];
 		$GLOBALS['prefix_ecom'] = $cfg['prefix_ecom'];
 		$GLOBALS['prefix_crm']	= $cfg['prefix_crm'];
@@ -149,11 +148,15 @@ class Boot {
 		ini_set('session.cache_expire',     (int)$cfg['session_lenght']);
 		ini_set('session.cache_limiter',    'none');
 		ini_set('session.cookie_lifetime',  (int)$cfg['session_lenght']);
-		// ini_set('session.save_handler',     'files');
 		ini_set('session.use_only_cookies', 1);
 		ini_set('session.use_trans_sid',    0);
 		ini_set('url_rewriter.tags',        '');
 		if($cfg['session_save_path'] !== false) ini_set("session.save_path", $cfg['session_save_path']);
+        if (isset($cfg['session_save_handler']) && $cfg['session_save_handler'] === 'memcached') {
+            ini_set('session.save_handler', 'memcached');
+            ini_set('memcached.sess_prefix', $_SERVER['HTTP_HOST'].'.forma.sess.key.');
+            ini_set('memcached.sess_locking', '1');
+        }
 
 		// set default time zone TZ
 		if( ! isset($cfg['timezone']) ) {	// timezone not speficied in config
@@ -177,9 +180,6 @@ class Boot {
 		// todo: backward compatibility
 		$GLOBALS['where_framework_relative'] = ( !defined("CORE") ? _deeppath_ : '' )._folder_adm_;
 		$GLOBALS['where_lms_relative']		 = ( !defined("LMS") ? _deeppath_ : '' )._folder_lms_;
-		//$GLOBALS['where_cms_relative']		 = ( !defined("CMS") ? _deeppath_ : '' )._folder_cms_;
-		//$GLOBALS['where_ecom_relative']	 = ( !defined("ECOM") ? _deeppath_ : '' )._folder_ecom_;
-		//$GLOBALS['where_crm_relative']	 = _deeppath_._folder_crm_;
 		$GLOBALS['where_scs_relative']		 = _deeppath_._folder_scs_;
 		$GLOBALS['where_files_relative']	 = _deeppath_._folder_files_;
 
@@ -190,9 +190,6 @@ class Boot {
 
 		$GLOBALS['where_framework'] = _adm_;
 		$GLOBALS['where_lms']		= _lms_;
-		//$GLOBALS['where_cms']		= _cms_;
-		//$GLOBALS['where_crm']		= _crm_;
-		//$GLOBALS['where_ecom']	= _ecom_;
 		$GLOBALS['where_scs']		= _scs_;
 		$GLOBALS['where_files']		= _files_;
 

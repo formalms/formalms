@@ -429,14 +429,14 @@ class Report_Aggregate extends Report {
 				$orgchart_labels = array();
 				$query = "SELECT * FROM ".$fw."_org_chart WHERE lang_code='".getLanguage()."'";
 				$res = sql_query($query);
-				while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
 					$orgchart_labels[$row['id_dir']] = $row['translation'];
 				}
 
 				$labels = array();
 				$query = "SELECT * FROM ".$fw."_group WHERE (hidden='false' OR groupid LIKE '/oc_%' OR groupid LIKE '/ocd_%') AND type='free'";
 				$res = sql_query($query);
-				while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
 					if ($row['hidden']=='false') {
 						$labels[$row['idst']] = $acl->relativeId($row['groupid']);
 					} else {
@@ -502,7 +502,7 @@ class Report_Aggregate extends Report {
 						$res = sql_query($query);
 
 						//$tot_completed = 0;
-						while ($row = mysql_fetch_assoc($res) ) {
+						while ($row = sql_fetch_assoc($res) ) {
 							if (!isset($course_stats[$row['idCourse']][$group_id])) {
 								$course_stats[$row['idCourse']][$group_id] = array(
 									'completed' => 0,
@@ -607,7 +607,7 @@ class Report_Aggregate extends Report {
 
 				$res = sql_query($query);
 
-				while ($row = mysql_fetch_array($res) ) {
+				while ($row = sql_fetch_array($res) ) {
 
 					if(!isset($temp[$row['idUser']])) {
 						$temp[$row['idUser']] = array (
@@ -852,7 +852,7 @@ class Report_Aggregate extends Report {
 		$res = sql_query("SELECT * FROM ".$lms."_category ");
 		$categories_names = array();
 		$categories_limit = array();
-		while ($row = mysql_fetch_assoc($res)) {
+		while ($row = sql_fetch_assoc($res)) {
 			$categories_names[ $row['idCategory'] ] = ($row['path']!='/root/' ? end( explode("/", $row['path'])) : Lang::t('_CATEGORY', 'admin_course_management', 'lms'));// Lang::t('_ROOT'));
 			$categories_paths[ $row['idCategory'] ] = ($row['path']!='/root/' ? substr($row['path'], 5, (strlen($row['path'])-5)) : Lang::t('_CATEGORY', 'admin_course_management'));// Lang::t('_ROOT'));
 			$categories_limit[ $row['idCategory'] ] = array($row['iLeft'], $row['iRight']);
@@ -964,7 +964,7 @@ class Report_Aggregate extends Report {
 					$temp = array();
 					$total_1 = 0;
 					$total_2 = 0;
-					while ($row = mysql_fetch_assoc($res)) {
+					while ($row = sql_fetch_assoc($res)) {
 						$iduser = $row['idUser'];
 
 						if (!isset($temp[ $iduser ]))
@@ -1044,7 +1044,7 @@ class Report_Aggregate extends Report {
 				$orgchart_labels = array();
 				$query = "SELECT * FROM ".$fw."_org_chart WHERE lang_code='".getLanguage()."'";
 				$res = sql_query($query);
-				while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
 					$orgchart_labels[$row['id_dir']] = $row['translation'];
 				}
 
@@ -1052,7 +1052,7 @@ class Report_Aggregate extends Report {
 				//$query = "SELECT * FROM ".$fw."_group WHERE (hidden='false' OR groupid LIKE '/oc_%' OR groupid LIKE '/ocd_%') AND type='free'";
 				$query = "SELECT * FROM ".$fw."_group WHERE groupid LIKE '/oc\_%' OR groupid LIKE '/ocd\_%' OR hidden = 'false' ";
 				$res = sql_query($query);
-				while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
 					if ($row['hidden']=='false') {
 						$labels[$row['idst']] = $acl->relativeId($row['groupid']);
 					} else {
@@ -1110,7 +1110,7 @@ class Report_Aggregate extends Report {
 					$temp = array();
 					$total_1 = 0;
 					$total_2 = 0;
-					while ($row = mysql_fetch_assoc($res)) {
+					while ($row = sql_fetch_assoc($res)) {
 						$id_group = $solved_groups[ $row['idGroup'] ];
 
 						if (!isset($temp[ $id_group ]))
@@ -1326,7 +1326,7 @@ class Report_Aggregate extends Report {
 
 
 				$res = sql_query($query);
-				while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
 					//$data[ $row['idUser'] ][ $row['yearComplete'] ] = $row['complete'];
 					$idUser = $row['idUser'];
 					$year = $row['yearComplete'];
@@ -1337,7 +1337,7 @@ class Report_Aggregate extends Report {
 				$usernames = array();
 				$query = "SELECT idst, userid FROM ".$fw."_user WHERE idst IN (".implode(",", $users_list).")";
 				$res = sql_query($query);
-				while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
 					$usernames[ $row['idst'] ] = $acl->relativeId( $row['userid'] );
 				}
 
@@ -1417,7 +1417,7 @@ class Report_Aggregate extends Report {
 				$orgchart_labels = array();
 				$query = "SELECT * FROM ".$fw."_org_chart WHERE lang_code='".getLanguage()."'";
 				$res = sql_query($query);
-				while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
 					$orgchart_labels[$row['id_dir']] = $row['translation'];
 				}
 
@@ -1425,7 +1425,7 @@ class Report_Aggregate extends Report {
 				//$query = "SELECT * FROM ".$fw."_group WHERE (hidden='false' OR groupid LIKE '/oc_%' OR groupid LIKE '/ocd_%') AND type='free'";
 				$query = "SELECT * FROM ".$fw."_group WHERE groupid LIKE '/oc\_%' OR groupid LIKE '/ocd\_%' OR hidden = 'false' ";
 				$res = sql_query($query);
-				while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
 					if ($row['hidden']=='false') {
 						$labels[$row['idst']] = $acl->relativeId($row['groupid']);
 					} else {
@@ -1459,7 +1459,7 @@ class Report_Aggregate extends Report {
 
 				$data = array();
 				$res = sql_query($query);
-				while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
 					$idGroup = $solved_groups[ $row['idGroup'] ];
 					$year = $row['yearComplete'];
 					$month = $row['monthComplete'];

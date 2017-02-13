@@ -132,9 +132,9 @@ class Learning_Item extends Learning_Object {
 		$insertQuery = "
 		INSERT INTO ".$GLOBALS['prefix_lms']."_materials_lesson 
 		SET author = '".getLogUserId()."',
-			title = '".mysql_escape_string($title)."',
-			description = '".mysql_escape_string($descr)."',
-			path = '".mysql_escape_string($savefile)."'";
+			title = '".sql_escape_string($title)."',
+			description = '".sql_escape_string($descr)."',
+			path = '".sql_escape_string($savefile)."'";
 			
 		
 		if(!sql_query($insertQuery)) {

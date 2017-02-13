@@ -21,7 +21,7 @@ class LangAdm {
 			." '".$lang_direction."', "
 			." '".$lang_browsercode."' "
 			.")";
-		if( !mysql_query($query)) return false;
+		if( !sql_query($query)) return false;
 		return true;
 	}
 
@@ -34,8 +34,8 @@ class LangAdm {
 	 	$query = "SELECT lang_code "
 				." FROM core_lang_language "
 				." WHERE lang_code = '".$lang_code."'";
-		$rs = mysql_query($query);
-		return ( mysql_num_rows($rs) > 0);
+		$rs = sql_query($query);
+		return ( sql_num_rows($rs) > 0);
 	}
 
 	/**
@@ -51,7 +51,7 @@ class LangAdm {
 		$query = " UPDATE core_lang_language ";
 		$query .= " SET lang_description = '".$lang_description."', lang_direction = '".$lang_direction."', lang_browsercode = '".$lang_browsercode."' ";
 		$query .= " WHERE lang_code = '".$lang_code."' ";
-		if( !mysql_query($query)) return false;
+		if( !sql_query($query)) return false;
 		return true;
 	}
 
@@ -64,8 +64,8 @@ class LangAdm {
 		WHERE 1 ";
 
 		$data = array();
-		$result = mysql_query($qtxt);
-		while($obj = mysql_fetch_object($result)) {
+		$result = sql_query($qtxt);
+		while($obj = sql_fetch_object($result)) {
 
 			$data[$obj->text_module][$obj->text_key] = array($obj->id, $obj->translation_text);
 		}
@@ -85,8 +85,8 @@ class LangAdm {
 			." ( id_text, text_key, text_module, text_attributes ) VALUES ( "
 			." NULL, '".$text_key."', '".$text_module."', '".$text_attributes."' "
 			.") ";
-		if( !mysql_query($query) ) return false;
-		return mysql_insert_id();
+		if( !sql_query($query) ) return false;
+		return sql_insert_id();
 	}
 
 	public function insertTranslation($id_text, $lang_code, $new_value) {
@@ -97,7 +97,7 @@ class LangAdm {
 			." '".$lang_code."', "
 			." '".$new_value."', "
 			." NOW() )";
-		return mysql_query($query);
+		return sql_query($query);
 	}
 
 	public function updateTranslation($id_text, $lang_code, $new_value) {
@@ -107,7 +107,7 @@ class LangAdm {
 				." save_date = NOW() "
 				."WHERE id_text = ".(int)$id_text." "
 				." AND lang_code = '".$lang_code."'";
-		return mysql_query($query);
+		return sql_query($query);
 	}
 
 	public function importTranslation($lang_file, $overwrite, $noadd_miss) {
@@ -149,7 +149,7 @@ class LangAdm {
 
 			// now we can go trough the xml keys adding them and the new translation
 			$keys = $xpath->query('platform/module/key', $lang);
-			mysql_query("START TRANSACTION");
+			sql_query("START TRANSACTION");
 			foreach($keys as $key) {
 
 				$text_module = $key->parentNode->getAttribute('id');
@@ -177,7 +177,7 @@ class LangAdm {
 				if($re) $definitions++;
 
 			} // end foreach
-			mysql_query("COMMIT");
+			sql_query("COMMIT");
 		}
 		return $definitions;
 	}

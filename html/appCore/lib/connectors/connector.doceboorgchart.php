@@ -248,15 +248,20 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 		// ---- Extract extra languages title
 		$array_lang = Docebo::langManager()->getAllLangCode();
 		if( isset($row['lang_titles']))
-			$folderName = $row['lang_titles'];
+			$folderName = addslashes($row['lang_titles']);
 		else
 			$folderName = array();
 		foreach( $array_lang as $lang) 
 			if( !isset($folderName[$lang]) )
-				$folderName[$lang] = $name;
+				$folderName[$lang] = addslashes($name);
 		
-		if( $arr_folder === FALSE ) {			
-			$id = $this->tree_view->tdb->addFolderByIdTranslation( $parent_id, $folderName );
+		if( $arr_folder === FALSE ) {
+                    
+                        //VECCHIO SISTEMA vedi Update  $id = $this->tree_view->tdb->addFolderByIdTranslation( $parent_id, $folderName );
+                        require_once(_base_.'/lib/lib.usermanager.php');
+                        $umodel = new UsermanagementAdm();
+                        $id = $umodel->addFolder($parent_id, $folderName, $name);
+
 			$this->arr_folders[$path] = array( 'id' => $id, 'inserted' => TRUE );
 		} else {
 			$this->tree_view->tdb->updateFolderByIdTranslation( $arr_folder['id'], $folderName );

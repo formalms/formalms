@@ -77,12 +77,12 @@ class MyFile {
 	
 	function _last_id() {
 		
-		return mysql_insert_id(); 
+		return sql_insert_id();
 	}
 	
 	function num_rows($resource) {
 		
-		return mysql_num_rows($resource);
+		return sql_num_rows($resource);
 	}
 	
 	function fetch_row($resource) {
@@ -92,7 +92,7 @@ class MyFile {
 	
 	function fetch_array($resource) {
 		
-		return mysql_fetch_array($resource);
+		return sql_fetch_array($resource);
 	}
 	
 	/**
@@ -367,7 +367,7 @@ class MyFilesPolicy extends MyFile {
 			AND id_file = '".$id_file."'";
 		
 		$re_query = $this->_query($query);
-		if(!mysql_num_rows($re_query)) return false;
+		if(!sql_num_rows($re_query)) return false;
 		return sql_fetch_row($re_query);
 	}
 	

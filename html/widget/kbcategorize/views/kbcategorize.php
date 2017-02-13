@@ -38,7 +38,7 @@ $languages = array(
 
 $this->widget('tree', array(
 	'id' => 'kbcategorizetree',
-	'ajaxUrl' => 'ajax.adm_server.php?r=alms/kb/gettreedata&show_actions=0&from_widget=1',
+	'ajaxUrl' => Get::rel_path('adm').'/ajax.adm_server.php?r=alms/kb/gettreedata&show_actions=0&from_widget=1',
 	'treeClass' => 'KbFolderTree',
 	'treeFile' => Get::rel_path('lms').'/admin/views/kb/kbfoldertree.js',
 	'languages' => $languages,

@@ -91,7 +91,6 @@ class ElearningLms extends Model {
             .($_SESSION['id_common_label'] > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '".$_SESSION['id_common_label']."')" : "")
             ." ORDER BY ".$this->_resolveOrder(array('cu', 'c'));
         
-  //   echo $query;
         
 		$query = $db->query($query);
 
@@ -173,6 +172,26 @@ class ElearningLms extends Model {
 	}
 
 
+    // LR: list category of subscription
+    public function getListCategory($idUser){
+        $db = DbConn::getInstance();
+        $query = "select idCategory,path from %lms_category where idcategory in (
+       select distinct idCategory from %lms_course as c,%lms_courseuser as cu where cu.idUser=".$idUser." and cu.idCourse=c.idCourse)";
+        
+        $res = $db->query($query);
+        if ($res && $db->num_rows($res) > 0) {
+            $output[0] = Lang::t('_ALL_CATEGORIES', 'standard');
+            while (list($idCategory, $path) = $db->fetch_row($res)) {
+                $output[$idCategory] = str_replace('/root/','',$path);
+            }
+        }
+        return $output;
+        
+        
+    }
+    
+    
+    
 
 	public function getUserCoursePathCourses( $id_user ) {
 		require_once(_lms_.'/lib/lib.coursepath.php');

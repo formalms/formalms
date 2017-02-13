@@ -34,6 +34,7 @@ define("ASSIGN_COURSE_ID", 		1);
 define("ASSIGN_USER_ID", 		2);
 define("ASSIGN_OD_DATE", 		3);
 define("ASSIGN_CERT_FILE", 		4);
+define("ASSIGN_CERT_SENDNAME", 		5);
 
 class Certificate {
 
@@ -41,7 +42,7 @@ class Certificate {
                 return count($this->getAssignment($filter));
         }
     
-        function getAssignment($filter){   
+        function getAssignment($filter, $pagination = false){   
                 $assigned = $this->getAssigned($filter);
                 $assignable = $this->getAssignable($filter);
                 
@@ -53,7 +54,17 @@ class Certificate {
                     $assignment[] = $as;
                 }
                 
-                return $assignment;
+                $paginated_assignment = array();
+                if($pagination) {
+                    $offset = $pagination["offset"];
+                    $limit = $offset + $pagination["num_rows"];
+                    $limit = ($limit <= count($assignment) ? $limit : count($assignment));
+                    for($i = $offset; $i < $limit; $i++) {
+                        $paginated_assignment[] = $assignment[$i];
+                    }
+                }
+
+                return $pagination ? $paginated_assignment : $assignment;
         }
 
         function getAssigned($filter){
@@ -86,6 +97,34 @@ class Certificate {
                 if (isset($filter['id_user'])) {
                         $query .= " AND ca.id_user = ".$filter['id_user'];	
                 }
+            if (isset($filter['search'])) {
+                    $query .= " AND (1 = 0";
+                    $query .= "     OR u.userid LIKE '%".$filter['search']."%'";
+                    $query .= "     OR u.lastname LIKE '%".$filter['search']."%'";
+                    $query .= "     OR u.firstname LIKE '%".$filter['search']."%'";
+                    $query .= "     OR co.code LIKE '%".$filter['search']."%'";
+                    $query .= "     OR co.name LIKE '%".$filter['search']."%'";
+                    $query .= "     OR ce.name LIKE '%".$filter['search']."%'";
+                    $query .= " )";
+            }
+            if (isset($filter['search_user'])) {
+                    $query .= " AND (1 = 0";
+                    $query .= "     OR u.userid LIKE '%".$filter['search_user']."%'";
+                    $query .= "     OR u.lastname LIKE '%".$filter['search_user']."%'";
+                    $query .= "     OR u.firstname LIKE '%".$filter['search_user']."%'";
+                    $query .= " )";
+            }
+            if (isset($filter['search_course'])) {
+                    $query .= " AND (1 = 0";
+                    $query .= "     OR co.code LIKE '%".$filter['search_course']."%'";
+                    $query .= "     OR co.name LIKE '%".$filter['search_course']."%'";
+                    $query .= " )";
+            }
+            if (isset($filter['search_cert'])) {
+                    $query .= " AND (1 = 0";
+                    $query .= "     OR ce.name LIKE '%".$filter['search_cert']."%'";
+                    $query .= " )";
+            }
                 if (!isset($filter['id_user'])) {
                     if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN)
                     {
@@ -137,6 +176,34 @@ class Certificate {
                 if (isset($filter['id_user'])) {
                         $query .= " AND cu.idUser = ".$filter['id_user'];	
                 }
+            if (isset($filter['search'])) {
+                    $query .= " AND (1 = 0";
+                    $query .= "     OR u.userid LIKE '%".$filter['search']."%'";
+                    $query .= "     OR u.lastname LIKE '%".$filter['search']."%'";
+                    $query .= "     OR u.firstname LIKE '%".$filter['search']."%'";
+                    $query .= "     OR co.code LIKE '%".$filter['search']."%'";
+                    $query .= "     OR co.name LIKE '%".$filter['search']."%'";
+                    $query .= "     OR ce.name LIKE '%".$filter['search']."%'";
+                    $query .= " )";
+            }
+            if (isset($filter['search_user'])) {
+                    $query .= " AND (1 = 0";
+                    $query .= "     OR u.userid LIKE '%".$filter['search_user']."%'";
+                    $query .= "     OR u.lastname LIKE '%".$filter['search_user']."%'";
+                    $query .= "     OR u.firstname LIKE '%".$filter['search_user']."%'";
+                    $query .= " )";
+            }
+            if (isset($filter['search_course'])) {
+                    $query .= " AND (1 = 0";
+                    $query .= "     OR co.code LIKE '%".$filter['search_course']."%'";
+                    $query .= "     OR co.name LIKE '%".$filter['search_course']."%'";
+                    $query .= " )";
+            }
+            if (isset($filter['search_cert'])) {
+                    $query .= " AND (1 = 0";
+                    $query .= "     OR ce.name LIKE '%".$filter['search_cert']."%'";
+                    $query .= " )";
+            }
                 if (!isset($filter['id_user'])) {
                     if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN)
                     {
@@ -328,8 +395,8 @@ class Certificate {
                 SELECT id_certificate, certificate_available_for_obj
                 FROM ".$GLOBALS['prefix_lms']."_certificate_course
                 WHERE id_course = '".$id_course."' ";
-                $re_certificate = mysql_query($query_certificate);
-                while(list($id, $available_for_status) = mysql_fetch_row($re_certificate)) {
+                $re_certificate = sql_query($query_certificate);
+                while(list($id, $available_for_status) = sql_fetch_row($re_certificate)) {
 
                         $cert[$id] = $available_for_status;
                 }
@@ -343,8 +410,8 @@ class Certificate {
                 SELECT id_certificate, certificate_available_for_who
                 FROM ".$GLOBALS['prefix_lms']."_certificate_course
                 WHERE id_course = '".$id_course."' ";
-                $re_certificate = mysql_query($query_certificate);
-                while(list($id, $available_for_who) = mysql_fetch_row($re_certificate)) {
+                $re_certificate = sql_query($query_certificate);
+                while(list($id, $available_for_who) = sql_fetch_row($re_certificate)) {
 
                         $cert[$id] = $available_for_who;
                 }
@@ -353,8 +420,8 @@ class Certificate {
 
         function certificateAvailableForUser($id_cert, $id_course, $id_user) {
                 $sql = "SELECT minutes_required FROM learning_certificate_course WHERE id_course = ".$id_course." AND id_certificate = ".$id_cert;
-                $re = mysql_query($sql);
-                list($minutes_required) = mysql_fetch_row($re);
+                $re = sql_query($sql);
+                list($minutes_required) = sql_fetch_row($re);
                 if ($minutes_required > 0){
                     require_once(_lms_.'/lib/lib.track_user.php');
 
@@ -575,7 +642,7 @@ class Certificate {
 
 		$re = sql_query($query_certificate);
 		if(!$re) return false;
-		return (mysql_num_rows($re) > 0);
+		return (sql_num_rows($re) > 0);
 	}
 
 	function canRelease($av_for_status, $user_status) {
@@ -722,8 +789,8 @@ class Certificate {
 			AND idMetaCertificate = '".$id_meta."'";
 
 		$re = sql_query($query_certificate);
-		echo mysql_error();
-		if((mysql_num_rows($re) > 0)) {
+		echo sql_error();
+		if((sql_num_rows($re) > 0)) {
 			if(!$download)
 				return;
 			require_once(_base_.'/lib/lib.download.php' );
@@ -793,19 +860,62 @@ class Certificate {
 
 	function getInfoForCourseCertificate($id_course, $id_certificate, $id_user = false)
 	{
-		$info = array();
 
+		// Get Course info
+		$query = "SELECT name" .
+				" FROM ".$GLOBALS['prefix_lms']."_course" .
+				" WHERE  idCourse = ".$id_course;
+		$result = sql_query($query);
+		while ($row = sql_fetch_row($result)){
+			$arrCourseInfo[] = $row;
+		}
+
+		$courseInfo = $arrCourseInfo[0][0];
+		// Parsing campo  ( togliere: blank ' " & / \ )
+		$pattern = "/['\"\s&\/]/i";
+		$replacement = "";
+		$courseInfo=preg_replace ( $pattern, $replacement, $courseInfo);
+		
+		
+		if ($id_user){
+			// Get User info
+			$query = "SELECT lastname, firstname" .
+					" FROM ".$GLOBALS['prefix_fw']."_user" .
+					" WHERE idst = ".$id_user;
+			$result = sql_query($query);
+			while ($row = sql_fetch_row($result)){
+				$arrUserInfo[] = $row;
+			}
+
+			$userInfo = $arrUserInfo[0][0].$arrUserInfo[0][1];
+			// Parsing campo  ( togliere: blank ' " & / \ )
+			$pattern = "/['\"\s&\/]/i";
+			$replacement = "";
+			$userInfo=preg_replace ( $pattern, $replacement, $userInfo);
+		}
+		
+		// Get Certificate info
+		$info = array();
 		$query = "SELECT *" .
 				" FROM ".$GLOBALS['prefix_lms']."_certificate_assign" .
 				" WHERE id_certificate = '".$id_certificate."'" .
 				" AND id_course = '".$id_course."'";
-		if ($id_user)
+		if ($id_user){
 			$query .= " AND id_user = $id_user";
+		}
 
 		$result = sql_query($query);
 
-		while ($row = sql_fetch_row($result))
+		while ($row = sql_fetch_row($result)){
+			$dateTimeCert = strtotime($row[ASSIGN_OD_DATE]);
+			$dateInfo = date('YmdHis',$dateTimeCert);
+			if ($id_user){
+				$row[ASSIGN_CERT_SENDNAME] = $userInfo."_".$courseInfo."_".$dateInfo.".pdf";
+			}else{
+				$row[ASSIGN_CERT_SENDNAME] = $courseInfo."_".$dateInfo.".pdf";
+			}
 			$info[] = $row;
+		}
 
 		return $info;
 	}
@@ -911,7 +1021,7 @@ class Certificate {
 			." ON (t1.id_certificate = t2.id_certificate AND t2.id_user = t3.idst)  "
 			.(count($conditions)>0 ? "WHERE ".implode(" AND ", $conditions) : "");
 
-		list($total) = sql_fetch_row(sql_query($query)); echo mysql_error();
+		list($total) = sql_fetch_row(sql_query($query)); echo sql_error();
 		return $total;
 	}
 

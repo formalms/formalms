@@ -497,7 +497,7 @@ class Field_Upload extends Field {
 		WHERE id_user = '".(int)$id_user."' AND
 			id_common = '".(int)$this->id_common."' AND
 			id_common_son = '0'");
-		$some_entry = mysql_num_rows($re_entry);
+		$some_entry = sql_num_rows($re_entry);
 		list($old_file) = sql_fetch_row($re_entry);
 		if($some_entry) {
 			if($no_overwrite) return true;

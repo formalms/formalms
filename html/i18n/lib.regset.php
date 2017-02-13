@@ -519,9 +519,9 @@ class RegionalSettingsManager {
 				return FALSE;
 		}
 		if( $this->dbconn === NULL )
-			return mysql_insert_id();
+			return sql_insert_id();
 		else
-			return mysql_insert_id($this->dbconn);
+			return sql_insert_id($this->dbconn);
 	}
 
 
@@ -537,8 +537,8 @@ class RegionalSettingsManager {
 		$qtxt="SELECT region_id, lang_code, region_desc, default_region, browsercode FROM ".$this->_getListTable()." ORDER BY region_id";
 		$q=$this->_executeQuery($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while($row=mysql_fetch_array($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while($row=sql_fetch_array($q)) {
 				$res[]=$row["region_id"];
 
 				if ($row["default_region"])
@@ -569,8 +569,8 @@ class RegionalSettingsManager {
 			$qtxt="SELECT region_id FROM ".$this->_getListTable()." WHERE lang_code='".$def_lang."'";
 			$q=$this->_executeQuery($qtxt);
 
-			if (($q) && (mysql_num_rows($q) > 0)) {
-				$row=mysql_fetch_array($q);
+			if (($q) && (sql_num_rows($q) > 0)) {
+				$row=sql_fetch_array($q);
 				$this->default_region=$row["region_id"];
 			} else {
 				$this->default_region='english';
@@ -608,8 +608,8 @@ class RegionalSettingsManager {
 		$qtxt="SELECT region_id, lang_code, region_desc, default_region, browsercode FROM ".$this->_getListTable();
 		$q=$this->_executeQuery($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while($row=mysql_fetch_array($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while($row=sql_fetch_array($q)) {
 				$res[$row["region_id"]]["lang_code"]=$row["lang_code"];
 				$res[$row["region_id"]]["description"]=$row["region_desc"];
 				$res[$row["region_id"]]["default"]=$row["default_region"];
@@ -649,8 +649,8 @@ class RegionalSettingsManager {
 		$qtxt="SELECT val_name, value FROM ".$this->_getSettingTable()." WHERE region_id='$region_id'";
 		$q=$this->_executeQuery($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while($row=mysql_fetch_array($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while($row=sql_fetch_array($q)) {
 				$res[$region_id][$row["val_name"]]=$row["value"];
 			}
 		}
@@ -793,13 +793,13 @@ class RegionalSettingsManager {
 
 			$bl_arr=explode(";", $al_arr[$i]);
 			$browser_language=$bl_arr[0];
-			$browser_language =mysql_escape_string(substr($browser_language, 0, 5));
+			$browser_language =sql_escape_string(substr($browser_language, 0, 5));
 
 			$qtxt="SELECT region_id FROM ".$this->_getListTable()." WHERE browsercode LIKE '%".$browser_language."%'";
 			$q=$this->_executeQuery($qtxt);
 
-			if (($q) && (mysql_num_rows($q) > 0)) {
-				$row=mysql_fetch_array($q);
+			if (($q) && (sql_num_rows($q) > 0)) {
+				$row=sql_fetch_array($q);
 				$res=$row["region_id"];
 			}
 

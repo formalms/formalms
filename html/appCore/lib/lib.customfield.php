@@ -583,7 +583,7 @@ class CustomFieldList {
 
 		$rs = sql_query($query);
 		
-		if( mysql_num_rows($rs) < 1 )
+		if( sql_num_rows($rs) < 1 )
 			return 'NULL';
 		list( $type_file, $type_class ) = sql_fetch_row( $rs );
 		require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
@@ -633,7 +633,7 @@ class CustomFieldList {
 
 		$play_txt = '';
 		$re_fields = sql_query($query);
-		if(!mysql_num_rows($re_fields)) return '';
+		if(!sql_num_rows($re_fields)) return '';
 		
 		while(list($id_field, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
 
@@ -667,7 +667,7 @@ class CustomFieldList {
 		if(!$rs)
 			return $res;
 		
-		if( mysql_num_rows($rs) < 1 ){
+		if( sql_num_rows($rs) < 1 ){
 			return $res;
 		}
 		list( $id_field, $type_file, $type_class ) = sql_fetch_row( $rs );
@@ -704,7 +704,7 @@ class CustomFieldList {
 		if($rs == false)
 			return 'NULL';
 		
-		if( mysql_num_rows($rs) < 1 )
+		if( sql_num_rows($rs) < 1 )
 			return 'NULL';
 
 		while(list( $id_field, $type_file, $type_class ) = sql_fetch_row( $rs )) {
@@ -751,7 +751,7 @@ class CustomFieldList {
 		if($rs == false)
 			return 'NULL';
 		
-		if( mysql_num_rows($rs) < 1 )
+		if( sql_num_rows($rs) < 1 )
 			return 'NULL';
 
 		list( $id_field, $type_file, $type_class ) = sql_fetch_row( $rs );
@@ -795,7 +795,7 @@ class CustomFieldList {
 
 		$rs = sql_query($query);
 		
-		if( mysql_num_rows($rs) < 1 )
+		if( sql_num_rows($rs) < 1 )
 			return 'NULL';
 		list( $type_file, $type_class ) = sql_fetch_row( $rs );
 		require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
@@ -843,7 +843,7 @@ class CustomFieldList {
 			$precompiled = $this->getInheritedAdminFields($check_precompiled);
 		}
 
-		if(!mysql_num_rows($re_fields)) return '';
+		if(!sql_num_rows($re_fields)) return '';
 		while(list($id_field, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
 
 			require_once($GLOBALS['where_framework'].'/modules/customfield/'.$type_file);
@@ -896,7 +896,7 @@ class CustomFieldList {
 			$precompiled = $this->getInheritedAdminFields($check_precompiled);
 		}
 
-		if(!mysql_num_rows($re_fields)) return '';
+		if(!sql_num_rows($re_fields)) return '';
                 
                 $ret = array();
                 
@@ -1389,7 +1389,7 @@ class CustomFieldList {
 		$query = "SELECT idst FROM ".$this->getGroupFieldsTable()
 				." WHERE idst = '".$idst."' AND id_field = '".$id_field."'";
 		$rs = sql_query( $query );
-		if( mysql_num_rows( $rs ) > 0 ) {
+		if( sql_num_rows( $rs ) > 0 ) {
 			$query = "UPDATE ".$this->getGroupFieldsTable()
 					." SET idst = '".(int)$idst."',"
 					."     id_field = '".(int)$id_field."',"
@@ -1571,8 +1571,8 @@ class CustomFieldList {
 		$raw_res=array();
 		$raw_res["field"]=array();
 		$raw_res["user"]=array();
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while($row=mysql_fetch_assoc($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while($row=sql_fetch_assoc($q)) {
 
 				$id_field=$row["id_field"];
 				$id_user=$row["id_user"];

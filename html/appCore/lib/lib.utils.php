@@ -87,7 +87,7 @@ function chkInput(&$arrData, $deeper = TRUE, $deep_reached = 0) {
 		$new_key = $key;
 		if(get_magic_quotes_gpc()) $new_key = stripslashes($new_key);
 		if(!dontCleanHtml($key)) $new_key = kses($new_key);
-		$new_key = mysql_escape_string($new_key);
+		$new_key = sql_escape_string($new_key);
 		
 		if( $new_key != $key ) {
 			$arrData[$new_key] = $arrData[$key];
@@ -111,7 +111,7 @@ function chkInput(&$arrData, $deeper = TRUE, $deep_reached = 0) {
 			if(!dontReplaceBaseUrl($key)) $new_val = putSiteBaseUrlTag($new_val);
 			if(get_magic_quotes_gpc()) $new_val = stripslashes($new_val);
 			if(!dontCleanHtml($key)) $new_val = kses($new_val);
-			$new_val = mysql_escape_string($new_val);
+			$new_val = sql_escape_string($new_val);
 			
 			if($new_val != $val) {
 				$arrData[$key] = $new_val;
@@ -368,7 +368,7 @@ function getBrowserInfo() {
 
 	if ((isset($bl_arr[0])) && ($bl_arr[0] != "")) {
 		$res["main_lang"]=
-			$browser_language = mysql_escape_string($bl_arr[0]);
+			$browser_language = sql_escape_string($bl_arr[0]);
 	}
 
 
@@ -619,8 +619,8 @@ function utilGetLastOrd($table, $ord_field, $where=FALSE) {
 
 	$res=0;
 
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		$row=mysql_fetch_array($q);
+	if (($q) && (sql_num_rows($q) > 0)) {
+		$row=sql_fetch_array($q);
 		$res=$row[$ord_field];
 	}
 
@@ -649,8 +649,8 @@ function utilMoveItem($direction, $table, $id_name, $id_val, $ord_field, $where=
 	$qtxt.="LIMIT 0,1";
 	$q=sql_query($qtxt);
 
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		$row=mysql_fetch_array($q);
+	if (($q) && (sql_num_rows($q) > 0)) {
+		$row=sql_fetch_array($q);
 		$current_ord=$row[$ord_field];
 	}
 	else
@@ -684,8 +684,8 @@ function utilMoveItem($direction, $table, $id_name, $id_val, $ord_field, $where=
 	$qtxt.="ORDER BY ".$ord_field." ".$order_dir." LIMIT 0,1";
 	$q=sql_query($qtxt);
 
-	if (($q) && (mysql_num_rows($q) > 0)) {
-		$row=mysql_fetch_array($q);
+	if (($q) && (sql_num_rows($q) > 0)) {
+		$row=sql_fetch_array($q);
 		$switch_with=$row[$id_name];
 	}
 	else {

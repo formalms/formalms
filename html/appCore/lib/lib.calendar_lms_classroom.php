@@ -67,7 +67,7 @@ class DoceboCal_lms_classroom extends DoceboCal_core{
 		$consumer_filter=array("course", "course_edition");
 		$entries=$tt->getResourceEntries("classroom", FALSE, $start_date, $end_date, $consumer_filter);
 
-		//return mysql_num_rows($result);
+		//return sql_num_rows($result);
 		$calevents = array();
 		$i=0;
 		$parts=array();
@@ -82,7 +82,7 @@ class DoceboCal_lms_classroom extends DoceboCal_core{
 
 			/* the following should be set according to the type of event class*/
 			$calevents[$i]->id=$row["id"];
-			ereg("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["start_date"],$parts);
+            preg_match("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["start_date"],$parts);
 			$calevents[$i]->start_year=$parts[1];
 			$calevents[$i]->start_month=$parts[2];
 			$calevents[$i]->start_day=$parts[3];
@@ -90,7 +90,7 @@ class DoceboCal_lms_classroom extends DoceboCal_core{
 			$calevents[$i]->start_min=$parts[5];
 			$calevents[$i]->start_sec=$parts[6];
 
-			ereg("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["end_date"],$parts);
+            preg_match("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["end_date"],$parts);
 			$calevents[$i]->end_year=$parts[1];
 			$calevents[$i]->end_month=$parts[2];
 			$calevents[$i]->end_day=$parts[3];
@@ -124,8 +124,8 @@ class DoceboCal_lms_classroom extends DoceboCal_core{
 
 		$edition_info=array();
 		$calevents_keys=array_flip($loaded["course_edition"]);
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while($row=mysql_fetch_assoc($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while($row=sql_fetch_assoc($q)) {
 
 				$id=$row["idCourseEdition"];
 				$course_id=$row["idCourse"];
@@ -147,8 +147,8 @@ class DoceboCal_lms_classroom extends DoceboCal_core{
 		$q=sql_query($qtxt);
 
 		$course_info=array();
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while($row=mysql_fetch_assoc($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while($row=sql_fetch_assoc($q)) {
 
 				$id=$row["idCourse"];
 				$course_info[$id]=$row;
@@ -187,8 +187,8 @@ class DoceboCal_lms_classroom extends DoceboCal_core{
 		$qtxt.=(!empty($where) ? " WHERE ".$where : "");
 		$q=sql_query($qtxt);
 
-		if (($q) && (mysql_num_rows($q) > 0)) {
-			while($row=mysql_fetch_assoc($q)) {
+		if (($q) && (sql_num_rows($q) > 0)) {
+			while($row=sql_fetch_assoc($q)) {
 
 				/* you should call the constructor of the proper type of event class*/
 				$calevents[$i]=new DoceboCalEvent_lms();
@@ -196,7 +196,7 @@ class DoceboCal_lms_classroom extends DoceboCal_core{
 
 				/* the following should be set according to the type of event class*/
 				$calevents[$i]->id=$row["id"];
-				ereg("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["start_date"],$parts);
+                preg_match("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["start_date"],$parts);
 				$calevents[$i]->start_year=$parts[1];
 				$calevents[$i]->start_month=$parts[2];
 				$calevents[$i]->start_day=$parts[3];
@@ -204,7 +204,7 @@ class DoceboCal_lms_classroom extends DoceboCal_core{
 				$calevents[$i]->start_min=$parts[5];
 				$calevents[$i]->start_sec=$parts[6];
 
-				ereg("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["end_date"],$parts);
+                preg_match("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["end_date"],$parts);
 				$calevents[$i]->end_year=$parts[1];
 				$calevents[$i]->end_month=$parts[2];
 				$calevents[$i]->end_day=$parts[3];
