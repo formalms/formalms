@@ -171,7 +171,7 @@ function sl_copy( $srcFile, $dstFile ) {
 	} elseif( $uploadType == "fs" || $uploadType == null ) {
 		return copy($GLOBALS['where_files_relative'].$srcFile, $GLOBALS['where_files_relative'].$dstFile);
 	} else {
-        $event = new \appCore\Events\Core\FileSystem\CopyEvent($GLOBALS['where_files_relative'].$srcFile, $GLOBALS['where_files_relative'].$dstFile);
+        $event = new \appCore\Events\Core\FileSystem\CopyEvent($srcFile, $dstFile);
         \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\UploadEvent::EVENT_NAME, $event);
 
         return $event->getResult();
