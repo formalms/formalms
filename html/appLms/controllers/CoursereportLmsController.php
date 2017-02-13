@@ -409,7 +409,7 @@ class CoursereportLmsController extends LmsController
                                 $chartLinkVisible = false;
                                 $editLink = 'index.php?r=lms/coursereport/modactivityscore&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
 
-                                $trashLink = 'index.php?r=lms/coursereport/delactivity&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $trashLink = 'index.php?r=lms/coursereport/delactivity&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdSource();
                             }
 
                             $scormItem = new ScormLms($info_report->getIdSource());
@@ -438,7 +438,7 @@ class CoursereportLmsController extends LmsController
                                 //$chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                 $chartLinkVisible = false;
                                 $editLink = 'index.php?r=lms/coursereport/modactivityscore&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdReport();
-                                $trashLink = 'index.php?r=lms/coursereport/delactivity&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdReport();
+                                $trashLink = 'index.php?r=lms/coursereport/delactivity&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdReport();
                             }
 
 
@@ -748,7 +748,17 @@ class CoursereportLmsController extends LmsController
                                                 $values[] = $value;
 
                                             } else if ($score >= $info_report->getRequiredScore()) {
+
                                                 if ($score == $test_details[$info_report->getIdSource()]['max_score']) {
+
+                                                    $value = array(
+                                                        'icon' => 'cr_max_score',
+                                                        'showIcon' => true,
+                                                        'value' => $score,
+                                                        'link' => "javascript:void(0)",
+                                                        'active' => false);
+
+                                                    $values[] = $value;
 
                                                     $value = array(
                                                         'icon' => 'cr_max_score',
@@ -759,6 +769,16 @@ class CoursereportLmsController extends LmsController
 
                                                     $values[] = $value;
                                                 } else {
+
+                                                    $value = array(
+                                                        'icon' => 'cr_max_score',
+                                                        'showIcon' => false,
+                                                        'value' => $score,
+                                                        'link' => "javascript:void(0)",
+                                                        'active' => false);
+
+                                                    $values[] = $value;
+
                                                     $value = array(
                                                         'icon' => '',
                                                         'showIcon' => false,
@@ -769,7 +789,17 @@ class CoursereportLmsController extends LmsController
                                                     $values[] = $value;
                                                 }
                                             } else {
+
                                                 if ($score == $test_details[$id_test]['max_score']) {
+                                                    $value = array(
+                                                        'icon' => 'cr_max_score cr_not_passed',
+                                                        'showIcon' => true,
+                                                        'value' => $score,
+                                                        'link' => "javascript:void(0)",
+                                                        'active' => false);
+
+                                                    $values[] = $value;
+
                                                     $value = array(
                                                         'icon' => 'cr_max_score cr_not_passed',
                                                         'showIcon' => false,
@@ -779,6 +809,15 @@ class CoursereportLmsController extends LmsController
 
                                                     $values[] = $value;
                                                 } else {
+                                                    $value = array(
+                                                        'icon' => 'cr_not_passed',
+                                                        'showIcon' => true,
+                                                        'value' => $score,
+                                                        'link' => "javascript:void(0)",
+                                                        'active' => false);
+
+                                                    $values[] = $value;
+
                                                     $value = array(
                                                         'icon' => 'cr_not_passed',
                                                         'showIcon' => false,
@@ -2609,7 +2648,7 @@ class CoursereportLmsController extends LmsController
         require_once(_base_ . '/lib/lib.table.php');
 
         // XXX: Initializaing
-        $id_report = Get::gReq('id_test', DOTY_MIXED, 0);
+        $id_report = Get::gReq('id_report', DOTY_MIXED, 0);
         $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
         $out =& $GLOBALS['page'];
         $out->setWorkingZone('content');
