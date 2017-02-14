@@ -25,7 +25,7 @@
     clear: both;
 }
 
-.graph__nav ul > li {
+.graph__label {
     display: block;
     padding: 10px;
     margin-right: 2px;
@@ -38,18 +38,33 @@
     border-radius: 4px;
 }
 
-.graph__nav ul > li:hover {
+.graph__label:hover {
     color: #c84000;
     background-color: #eee;
 }
 
-.graph__nav ul > li .selected {
+.graph__label.selected {
     color: #c84000;
     background-color: #eee;
 }
-.graph__content {
-    height: 300px;
+
+.graph__container {
+    min-height: 250px;
+    position: relative;
     border: 1px solid #cccccc;
     margin: 0 6px;
+}
+
+.graph__content {
+    width: 100%;
+    visibility: hidden;
+    opacity: 0;
+    min-height: 250px;
+    position: absolute;
     padding: 0 5px 5px;
+}
+
+.graph__content--visible {
+    visibility: visible;
+    opacity: 1;
 }

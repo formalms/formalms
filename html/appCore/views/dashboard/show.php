@@ -341,18 +341,18 @@
 					<div id="users_chart_display"></div>
 				</div> --><br />
 <!--				<div id="users_tabview"></div>-->
-				<div class="graph graph--users js-graph-users">
+				<div class="graph graph--users">
 					<div class="graph__nav">
 						<ul>
-							<li data-tab="accesses">Accessi</li>
-							<li data-tab="registered">Utenti Registrati</li>
+							<li class="js-dashboard-graph graph__label selected" data-tab="accesses">Accessi</li>
+							<li class="js-dashboard-graph graph__label" data-tab="registeredusers">Utenti Registrati</li>
 						</ul>
 					</div>
 					<div class="graph__container">
-						<div class="graph__content graph__content--accesses">
+						<div class="graph__content graph__content--accesses graph__content--visible">
 
 						</div>
-						<div class="graph__content graph__content--registered">
+						<div class="graph__content graph__content--registeredusers">
 
 						</div>
 					</div>
@@ -398,7 +398,27 @@
 					<p>Statistics:&nbsp;<span id="courses_chart_buttons"></span></p>
 					<div id="users_chart_display"></div>
 				</div> --><br />
-				<div id="courses_tabview"></div>
+<!--				<div id="courses_tabview"></div>-->
+				<div class="graph graph--users js-graph-courses">
+					<div class="graph__nav">
+						<ul>
+							<li class="js-dashboard-graph graph__label selected" data-tab="registered">Accessi</li>
+							<li class="js-dashboard-graph graph__label" data-tab="ongoing">In itinere</li>
+							<li class="js-dashboard-graph graph__label" data-tab="finished">Finito</li>
+						</ul>
+					</div>
+					<div class="graph__container">
+						<div class="graph__content graph__content--registered graph__content--visible">
+
+						</div>
+						<div class="graph__content graph__content--ongoing">
+
+						</div>
+						<div class="graph__content graph__content--finished">
+
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
