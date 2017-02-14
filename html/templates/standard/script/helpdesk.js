@@ -53,10 +53,6 @@ $(document).ready(function () {
     $.fancybox.close()
   });
 
-  $('body').on('click', '.container-close', function () {
-    console.log('yea');
-  })
-
 });
 
 $(document).ready(function () {
