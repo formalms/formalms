@@ -1,0 +1,55 @@
+.graph {
+
+}
+
+.graph__nav {
+    padding: 5px 10px;
+    background-color: #c84000;
+}
+
+.graph__nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.graph__nav ul:after {
+    display: table;
+    content: ' ';
+    clear: both;
+}
+
+.graph__nav ul:before {
+    display: table;
+    content: ' ';
+    clear: both;
+}
+
+.graph__nav ul > li {
+    display: block;
+    padding: 10px;
+    margin-right: 2px;
+    font-style: italic;
+    color: #FFF;
+    float: left;
+    cursor: pointer;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.graph__nav ul > li:hover {
+    color: #c84000;
+    background-color: #eee;
+}
+
+.graph__nav ul > li .selected {
+    color: #c84000;
+    background-color: #eee;
+}
+.graph__content {
+    height: 300px;
+    border: 1px solid #cccccc;
+    margin: 0 6px;
+    padding: 0 5px 5px;
+}

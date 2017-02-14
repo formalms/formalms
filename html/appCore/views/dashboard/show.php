@@ -340,7 +340,22 @@
 					<p>Statistics: <span id="users_chart_buttons"></span></p>
 					<div id="users_chart_display"></div>
 				</div> --><br />
-				<div id="users_tabview">
+<!--				<div id="users_tabview"></div>-->
+				<div class="graph graph--users js-graph-users">
+					<div class="graph__nav">
+						<ul>
+							<li data-tab="accesses">Accessi</li>
+							<li data-tab="registered">Utenti Registrati</li>
+						</ul>
+					</div>
+					<div class="graph__container">
+						<div class="graph__content graph__content--accesses">
+
+						</div>
+						<div class="graph__content graph__content--registered">
+
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
