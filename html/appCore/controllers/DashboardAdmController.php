@@ -33,6 +33,7 @@ Class DashboardAdmController extends AdmController {
 		YuiLib::load('autocomplete,tabview');
 		Util::get_js(Get::rel_path('adm').'/views/dashboard/dashboard.js', true, true);
 		Util::get_js(Get::rel_path('adm').'/views/dashboard/js/show.js', true, true);
+		Util::get_js(Get::rel_path('adm').'/views/dashboard/css/show.css', true, true);
 
 		$this->permissions = array(
 			'view' => checkPerm('view', true, 'dashboard', 'framework'),
