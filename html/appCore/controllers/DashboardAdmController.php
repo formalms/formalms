@@ -59,6 +59,9 @@ Class DashboardAdmController extends AdmController {
 		//if (!checkPerm('view', true)) return;
 
 		YuiLib::load('tabview,charts');
+        Util::get_js(Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.js', true, true);
+        Util::get_js(Get::rel_path('base') . '/addons/jquery/chartist-plugin-pointlabels/chartist-plugin-pointlabels.min.js', true, true);
+        Util::get_css(Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.css', true, true);
 		$charts_num_days = 7;
 
 		//check if there are any problems with technical configuration of the server
@@ -91,11 +94,18 @@ Class DashboardAdmController extends AdmController {
 			'course_months_stats' => $this->model->getCoursesMonthsStats(),
 
 			'userdata_accesses' => $this->json->encode($this->model->getUsersChartAccessData($charts_num_days)),
+            'userdata_accesses_js' => $this->model->getUsersChartAccessDataJS($charts_num_days),
 			'userdata_registrations' => $this->json->encode($this->model->getUsersChartRegisterData($charts_num_days)),
+            'userdata_registrations_js' => $this->model->getUsersChartRegisterDataJS($charts_num_days),
 
 			'coursedata_subscriptions' => $this->json->encode($this->model->getCoursesChartSubscriptionData($charts_num_days)),
+            'coursedata_subscriptions_js' => $this->model->getCoursesChartSubscriptionDataJS($charts_num_days),
+
 			'coursedata_startattendings' => $this->json->encode($this->model->getCoursesChartStartAttendingData($charts_num_days)),
+            'coursedata_startattendings_js' => $this->model->getCoursesChartStartAttendingDataJS($charts_num_days),
+
 			'coursedata_completed' => $this->json->encode($this->model->getCoursesChartCompletedData($charts_num_days)),
+            'coursedata_completed_js' => $this->model->getCoursesChartCompletedDataJS($charts_num_days),
 
 			'permissions' => $this->permissions,
 

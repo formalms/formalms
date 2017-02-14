@@ -2126,7 +2126,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: undo
         if (isset($_POST['undo']))
-            jumpTo('index.php?r=coursereport/coursereport');
+            Util::jump_to('index.php?r=coursereport/coursereport');
 
         // XXX: Retrive all colums (test and so), and set it
         if ($id_report == 0) {

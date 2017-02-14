@@ -340,8 +340,9 @@
 					<p>Statistics: <span id="users_chart_buttons"></span></p>
 					<div id="users_chart_display"></div>
 				</div> --><br />
-				<div id="users_tabview">
-				</div>
+				<div id="users_tabview"></div>
+                <div id="user_accesses_chart"></div>
+                <div id="user_registrations_chart"></div>
 			</div>
 		</div>
 		<div class="inline_block_big">
@@ -384,12 +385,98 @@
 					<div id="users_chart_display"></div>
 				</div> --><br />
 				<div id="courses_tabview"></div>
+                <div id="courses_subscriptions_chart"></div>
+                <div id="courses_startattendings_chart"></div>
+                <div id="courses_completed_chart"></div>
 			</div>
 		</div>
 	</div>
 </div>
 <div class="nofloat"></div>
 <script type="text/javascript">
+    $( document ).ready(function() {
+
+        new Chartist.Bar('#user_accesses_chart', {
+            labels: <?php echo $userdata_accesses_js['x_axis']?>,
+            series: [
+                <?php echo $userdata_accesses_js['y_axis']?>
+            ]
+        }, {
+            axisX: {
+                // On the x-axis start means top and end means bottom
+                position: 'end'
+            },
+            axisY: {
+                // On the y-axis start means left and end means right
+                position: 'start'
+            }
+        });
+
+        new Chartist.Bar('#user_registrations_chart', {
+            labels: <?php echo $userdata_registrations_js['x_axis']?>,
+            series: [
+                <?php echo $userdata_registrations_js['y_axis']?>
+            ]
+        }, {
+            axisX: {
+                // On the x-axis start means top and end means bottom
+                position: 'end'
+            },
+            axisY: {
+                // On the y-axis start means left and end means right
+                position: 'start'
+            }
+        });
+
+        new Chartist.Bar('#courses_subscriptions_chart', {
+            labels: <?php echo $coursedata_subscriptions_js['x_axis']?>,
+            series: [
+                <?php echo $coursedata_subscriptions_js['y_axis']?>
+            ]
+        }, {
+            axisX: {
+                // On the x-axis start means top and end means bottom
+                position: 'end'
+            },
+            axisY: {
+                // On the y-axis start means left and end means right
+                position: 'start'
+            }
+        });
+
+        new Chartist.Bar('#courses_startattendings_chart', {
+            labels: <?php echo $coursedata_startattendings_js['x_axis']?>,
+            series: [
+                <?php echo $coursedata_startattendings_js['y_axis']?>
+            ]
+        }, {
+            axisX: {
+                // On the x-axis start means top and end means bottom
+                position: 'end'
+            },
+            axisY: {
+                // On the y-axis start means left and end means right
+                position: 'start'
+            }
+        });
+
+        new Chartist.Bar('#courses_completed_chart', {
+            labels: <?php echo $coursedata_completed_js['x_axis']?>,
+            series: [
+                <?php echo $coursedata_completed_js['y_axis']?>
+            ]
+        }, {
+            axisX: {
+                // On the x-axis start means top and end means bottom
+                position: 'end'
+            },
+            axisY: {
+                // On the y-axis start means left and end means right
+                position: 'start'
+            }
+        });
+    });
+
 YAHOO.util.Event.onDOMReady( function() {
 	Dashboard.drawTabView("users_tabview", [
 		{label: "<?php echo Lang::t('_ACCESSES', 'dashboard'); ?>", content: "user_accesses_chart", active: true},
