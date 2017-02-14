@@ -212,7 +212,7 @@ class PluginAdm extends Model {
         $query = "insert into ".$this->table."
 				values(null,'".addslashes($plugin_name)."', '".addslashes($plugin_info['title'])."', '".addslashes($plugin_info['category'])."',
 					'".addslashes($plugin_info['version'])."', '".addslashes($plugin_info['author'])."', '".addslashes($plugin_info['link'])."', $priority,
-					'".addslashes($plugin_info['description'])."',".time()." ,0 )";
+					'".addslashes($plugin_info['description'])."',".time()." ,0,0 )";
         if($plugin_info){
             $result = sql_query($query);
             if ($result){

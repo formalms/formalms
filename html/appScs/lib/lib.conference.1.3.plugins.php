@@ -137,9 +137,11 @@ class Conference_Manager {
 		if ($ok) $idConference=sql_insert_id();
 
 		if ($ok) {
-      $plugin_conference=$this->PluginConferenceAdm->getElement($room_type, "code");  
-  		$classname = PluginManager::getPlugins($plugin_conference['name']);
-		  $classconference = new $classname();
+
+
+            $pg=new PluginManager('Conference');
+            $classconference=$pg->get_plugin('ConferenceBBB');//$room_type
+
 
 		  $success = $classconference->insertRoom($idConference,$name, $start_date,$end_date, $maxparticipants);
 
@@ -225,7 +227,7 @@ class Conference_Manager {
 
 		if ($ok) {
       $plugin_conference=$this->PluginConferenceAdm->getElement($room_type, "code");  
-  		$classname = PluginManager::getPlugins($plugin_conference['name']);
+  		$classname = PluginManager::getPlugins($plugin_conference['name']); #PLUGIN_SYSTEM_OLD
 		  $classconference = new $classname();
 
 		  $success = $classconference->insertRoom($idConference,$name, $start_date,$end_date, $maxparticipants);
@@ -233,7 +235,7 @@ class Conference_Manager {
 			if (!$success) {
 				sql_query("DELETE FROM ".$this->_getRoomTable()." WHERE id=".(int)$idConference);
 				$idConference = false;
-			}		
+			}
 		}
 	}
 
@@ -339,11 +341,10 @@ class Conference_Manager {
 		$event=new DoceboCalEvent_lms();
 		$event->id=$conference["idCal"];
 		$event->del();
-		
-    $plugin_conference=$this->PluginConferenceAdm->getElement($conference["room_type"], "code");  
-		$classname = PluginManager::getPlugins($plugin_conference['name']);
 
-	  $classconference = new $classname();
+        $pg=new PluginManager('Conference');
+        $classconference =$pg->get_plugin('ConferenceBBB'); //$conference["room_type"]
+
     $url = $classconference->deleteRoom($room_id);
 		
 		return $re_room;
@@ -352,10 +353,10 @@ class Conference_Manager {
 	function getUrl($idConference,$room_type) {
 		$conference = $this->roomInfo($idConference);
 
-    $plugin_conference=$this->PluginConferenceAdm->getElement($room_type, "code");  
-		$classname = PluginManager::getPlugins($plugin_conference['name']);
+        $pg = new PluginManager('Conference');
+        $classconference = $pg->get_plugin('ConferenceBBB');// PluginManager::getPlugins($plugin_conference['name']); #PLUGIN_SYSTEM_OLD
 
-	  $classconference = new $classname();
+
     $url = $classconference ->getUrl($idConference,$room_type);
 
 		return $url;
