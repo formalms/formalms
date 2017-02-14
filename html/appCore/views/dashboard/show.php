@@ -340,8 +340,22 @@
 					<p>Statistics: <span id="users_chart_buttons"></span></p>
 					<div id="users_chart_display"></div>
 				</div> --><br />
-				<div id="users_tabview"></div>
-                <div id="user_accesses_chart"></div>
+<!--				<div id="users_tabview"></div>-->
+				<div class="graph graph--users">
+					<div class="graph__nav">
+						<ul>
+							<li class="js-dashboard-graph graph__label selected" data-tab="accesses">Accessi</li>
+							<li class="js-dashboard-graph graph__label" data-tab="registeredusers">Utenti Registrati</li>
+						</ul>
+					</div>
+					<div class="graph__container">
+						<div id="user_accesses_chart" class="graph__content graph__content--accesses graph__content--visible">
+
+						</div>
+						<div id="user_registrations_chart" class="graph__content graph__content--registeredusers">
+
+						</div>
+					</div>
                 <div id="user_registrations_chart"></div>
 			</div>
 		</div>
@@ -384,10 +398,27 @@
 					<p>Statistics:&nbsp;<span id="courses_chart_buttons"></span></p>
 					<div id="users_chart_display"></div>
 				</div> --><br />
-				<div id="courses_tabview"></div>
-                <div id="courses_subscriptions_chart"></div>
-                <div id="courses_startattendings_chart"></div>
-                <div id="courses_completed_chart"></div>
+<!--				<div id="courses_tabview"></div>-->
+				<div class="graph graph--users js-graph-courses">
+					<div class="graph__nav">
+						<ul>
+							<li class="js-dashboard-graph graph__label selected" data-tab="registered">Accessi</li>
+							<li class="js-dashboard-graph graph__label" data-tab="ongoing">In itinere</li>
+							<li class="js-dashboard-graph graph__label" data-tab="finished">Finito</li>
+						</ul>
+					</div>
+					<div class="graph__container">
+						<div id="courses_subscriptions_chart" class="graph__content graph__content--registered graph__content--visible">
+
+						</div>
+						<div id="courses_startattendings_chart" class="graph__content graph__content--ongoing">
+
+						</div>
+						<div id="courses_completed_chart" class="graph__content graph__content--finished">
+
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -476,24 +507,4 @@
             }
         });
     });
-
-YAHOO.util.Event.onDOMReady( function() {
-	Dashboard.drawTabView("users_tabview", [
-		{label: "<?php echo Lang::t('_ACCESSES', 'dashboard'); ?>", content: "user_accesses_chart", active: true},
-		{label: "<?php echo Lang::t('_TOTAL_USER', 'dashboard'); ?>", content: "user_registrations_chart", active: false}
-	]);
-	Dashboard.drawChart("user_accesses_chart", <?php echo $userdata_accesses; ?>, "<?php echo Lang::t('_ACCESSES', 'dashboard'); ?>", '<?php echo $lang_dir; ?>');
-	Dashboard.drawChart("user_registrations_chart", <?php echo $userdata_registrations; ?>, "<?php echo Lang::t('_TOTAL_USER', 'dashboard'); ?>", '<?php echo $lang_dir; ?>');
-});
-
-YAHOO.util.Event.onDOMReady( function() {
-	Dashboard.drawTabView("courses_tabview", [
-		{label: "<?php echo Lang::t('_USER_STATUS_SUBS', 'dashboard'); ?>", content: "courses_subscriptions_chart", active: false},
-		{label: "<?php echo Lang::t('_USER_STATUS_BEGIN', 'dashboard'); ?>", content: "courses_startattendings_chart", active: false},
-		{label: "<?php echo Lang::t('_USER_STATUS_END', 'dashboard'); ?>", content: "courses_completed_chart", active: true}
-	]);
-	Dashboard.drawChart("courses_subscriptions_chart", <?php echo $coursedata_subscriptions; ?>, "<?php echo Lang::t('_USER_STATUS_SUBS', 'dashboard'); ?>", '<?php echo $lang_dir; ?>');
-	Dashboard.drawChart("courses_startattendings_chart", <?php echo $coursedata_startattendings; ?>, "<?php echo Lang::t('_USER_STATUS_BEGIN', 'dashboard'); ?>", '<?php echo $lang_dir; ?>');
-	Dashboard.drawChart("courses_completed_chart", <?php echo $coursedata_completed; ?>, "<?php echo Lang::t('_USER_STATUS_END', 'dashboard'); ?>", '<?php echo $lang_dir; ?>');
-});
 </script>

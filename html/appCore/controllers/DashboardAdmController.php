@@ -31,9 +31,7 @@ Class DashboardAdmController extends AdmController {
 		$this->model = new DashboardAdm();
 
 		YuiLib::load('autocomplete,tabview');
-		Util::get_js(Get::rel_path('adm').'/views/dashboard/dashboard.js', true, true);
-		Util::get_js(Get::rel_path('adm').'/views/dashboard/js/show.js', true, true);
-		Util::get_js(Get::rel_path('adm').'/views/dashboard/css/show.css', true, true);
+
 
 		$this->permissions = array(
 			'view' => checkPerm('view', true, 'dashboard', 'framework'),
@@ -60,7 +58,10 @@ Class DashboardAdmController extends AdmController {
 	public function show() {
 		//if (!checkPerm('view', true)) return;
 
-		YuiLib::load('tabview,charts');
+		//YuiLib::load('tabview,charts');
+        Util::get_js(Get::rel_path('adm').'/views/dashboard/dashboard.js', true, true);
+        Util::get_js(Get::rel_path('adm').'/views/dashboard/js/show.js', true, true);
+        Util::get_css(Get::rel_path('adm').'/views/dashboard/css/show.css', true, true);
         Util::get_js(Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.js', true, true);
         Util::get_js(Get::rel_path('base') . '/addons/jquery/chartist-plugin-pointlabels/chartist-plugin-pointlabels.min.js', true, true);
         Util::get_css(Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.css', true, true);
