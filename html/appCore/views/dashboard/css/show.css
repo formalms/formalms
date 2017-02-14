@@ -62,6 +62,7 @@
     min-height: 250px;
     position: absolute;
     padding: 0 5px 5px;
+    margin-top: 50px;
 }
 
 .graph__content--visible {
