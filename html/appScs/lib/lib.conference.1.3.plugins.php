@@ -140,7 +140,7 @@ class Conference_Manager {
 
 
             $pg=new PluginManager('Conference');
-            $classconference=$pg->get_plugin('ConferenceBBB');//$room_type
+            $classconference=$pg->get_plugin($room_type);
 
 
 		  $success = $classconference->insertRoom($idConference,$name, $start_date,$end_date, $maxparticipants);
@@ -226,9 +226,8 @@ class Conference_Manager {
                 $idConference = $id;
 
 		if ($ok) {
-      $plugin_conference=$this->PluginConferenceAdm->getElement($room_type, "code");  
-  		$classname = PluginManager::getPlugins($plugin_conference['name']); #PLUGIN_SYSTEM_OLD
-		  $classconference = new $classname();
+          $pg = new PluginManager("Conference");
+          $classconference=$pg->get_plugin($room_type);
 
 		  $success = $classconference->insertRoom($idConference,$name, $start_date,$end_date, $maxparticipants);
 
