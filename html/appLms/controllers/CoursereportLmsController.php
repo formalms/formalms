@@ -3166,7 +3166,7 @@ class CoursereportLmsController extends LmsController
             for ($j=0;$j<$value;$j++){
 
                 $answer = array(
-                    'title' => "risposta numer ".$j,
+                    'title' => "risposta numero ".$j,
                     'percent' => mt_rand(0, 100),
                     'showIcon' => (mt_rand(0,1) == 1 ? true : false)
                     );
@@ -3181,7 +3181,8 @@ class CoursereportLmsController extends LmsController
 
 
         //echo json_encode($responseSampleValue);
-        $this->render('testquestion',$responseSampleValue);
+//        $this->render('testquestion',$responseSampleValue);
+        $this->render('testquestion',array('data' => $responseSampleValue));
     }
 
     function testQuestion()
