@@ -3151,6 +3151,10 @@ class CoursereportLmsController extends LmsController
         sendStrAsFile($csv, $file_name);
     }
 
+    function testQuestionNew(){
+        $this->render('testQuestion');
+    }
+
     function testQuestion()
     {
         checkPerm('view', true, $this->_mvc_name);
