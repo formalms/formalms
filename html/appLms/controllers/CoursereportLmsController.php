@@ -3152,8 +3152,8 @@ class CoursereportLmsController extends LmsController
     }
 
     function testQuestionNew(){
-        $this->render('testQuestion');
-    }
+        checkPerm('view', true, $this->_mvc_name);
+        $this->render('testquestion',array());    }
 
     function testQuestion()
     {
