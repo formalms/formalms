@@ -3153,7 +3153,36 @@ class CoursereportLmsController extends LmsController
 
     function testQuestionNew(){
         checkPerm('view', true, $this->_mvc_name);
-        $this->render('testquestion',array());    }
+
+        $responseSampleValue = array('title' => "titolo test");
+
+        for ($i=0;$i<10;$i++){
+
+            $question = array("title" => "domanda numero ".$i);
+
+            $value = mt_rand(2, 3);
+
+            $answers = array();
+            for ($j=0;$j<$value;$j++){
+
+                $answer = array(
+                    'title' => "risposta numer ".$j,
+                    'percent' => mt_rand(0, 100),
+                    'showIcon' => (mt_rand(0,1) == 1 ? true : false)
+                    );
+
+                $answers[] =$answer;
+            }
+
+            $question['answers'] = $answers;
+
+            $responseSampleValue['questions'][] = $question;
+        }
+
+
+        //echo json_encode($responseSampleValue);
+        $this->render('testquestion',$responseSampleValue);
+    }
 
     function testQuestion()
     {
