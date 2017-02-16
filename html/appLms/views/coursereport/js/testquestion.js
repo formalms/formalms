@@ -25,16 +25,16 @@ window.TestQuestion = (function ($) {
 
     console.log($('.domanda-numero-0-risposta-numero-0').length);
 
-//    $.each(data, function (i, elem) {
-//      console.log(elem);
-//      new Chartist.Bar('.' + elem.class, {
-//        series: [
-//          elem.percent
-//        ]
-//      }, {
-//        horizontalBars: true
-//      });
-//    });
+    $.each(data, function (i, elem) {
+      console.log(elem);
+      new Chartist.Bar('.' + elem.class, {
+        series: [
+          elem.percent
+        ]
+      }, {
+        horizontalBars: true
+      });
+    });
   };
 
   $(document).ready(function () {
