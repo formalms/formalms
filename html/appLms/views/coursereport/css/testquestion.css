@@ -22,6 +22,10 @@
     border: 0px none;
 }
 
+.test-question__percent--white-text {
+    color: #FFF;
+}
+
 .test-question__bar {
     background-color: #c84000;
 }

@@ -37,7 +37,7 @@
                 <div class="">
                   {#{% set chartistClass = question.title ~ '-' ~ answer.title %}#}
                   <div class="progress_bar">
-                    <div class="test-question__percent">
+                    <div class="test-question__percent {% if (answer.percent > 55) %}test-question__percent--white-text{% endif %}">
                       {{ answer.percent }}%
                     </div>
                     <div class="test-question__bar" style="width: {{ answer.percent }}%;">&nbsp;
