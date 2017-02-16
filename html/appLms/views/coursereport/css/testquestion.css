@@ -1,0 +1,12 @@
+.test-question__answer {
+    position: relative;
+    padding-left: 15px;
+}
+
+.test-question__answer--checked:before {
+    content: '\f00c';
+    font-family: 'FontAwesome';
+    color: green;
+    position: absolute;
+    left: -2px;
+}
