@@ -3155,6 +3155,9 @@ class CoursereportLmsController extends LmsController
     function testQuestionNew(){
         checkPerm('view', true, $this->_mvc_name);
 
+        Util::get_js(Get::rel_path('base') . '/appLms/views/coursereport/js/testquestion.js', true, true);
+        Util::get_css(Get::rel_path('base') . '/appLms/views/coursereport/css/testquestion.css', true, true);
+
         $responseSampleValue = array('title' => "titolo test");
 
         for ($i=0;$i<10;$i++){
@@ -3167,7 +3170,7 @@ class CoursereportLmsController extends LmsController
             for ($j=0;$j<$value;$j++){
 
                 $answer = array(
-                    'title' => "risposta numer ".$j,
+                    'title' => "risposta numero ".$j,
                     'percent' => mt_rand(0, 100),
                     'showIcon' => (mt_rand(0,1) == 1 ? true : false)
                     );
@@ -3181,7 +3184,8 @@ class CoursereportLmsController extends LmsController
         }
 
 
-        echo json_encode($responseSampleValue);
+        //echo json_encode($responseSampleValue);
+//        $this->render('testquestion',$responseSampleValue);
         $this->render('testquestion',array('data' => $responseSampleValue));
     }
 
