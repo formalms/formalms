@@ -529,14 +529,14 @@ class CoursereportLmsController extends LmsController
         require_once($GLOBALS['where_lms'] . '/lib/lib.course.php');
         require_once(_adm_ . '/lib/lib.field.php');
 
-        $redo_final = Get::pReq('redo_final',DOTY_MIXED,false);
-        $round_report = Get::pReq('round_report',DOTY_MIXED,false);
+        $redo_final = Get::pReq('redo_final', DOTY_MIXED, false);
+        $round_report = Get::pReq('round_report', DOTY_MIXED, false);
 
-        if ($redo_final && !$round_report){
+        if ($redo_final && !$round_report) {
             $this->redofinal();
         }
 
-        if ($round_report  && !$redo_final){
+        if ($round_report && !$redo_final) {
             $this->roundreport($round_report);
         }
 
@@ -3152,15 +3152,247 @@ class CoursereportLmsController extends LmsController
     }
 
 
-    function testQuestionNew(){
+    function testQuestionNew()
+    {
+
         checkPerm('view', true, $this->_mvc_name);
+        $responseValue = array();
+
+        require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
 
         Util::get_js(Get::rel_path('base') . '/appLms/views/coursereport/js/testquestion.js', true, true);
         Util::get_css(Get::rel_path('base') . '/appLms/views/coursereport/css/testquestion.css', true, true);
 
-        $responseSampleValue = array('title' => "titolo test");
+        $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
 
-        for ($i=0;$i<10;$i++){
+        $id_test = importVar('id_test', true, 0);
+
+        $test_man = new GroupTestManagement();
+
+        $lev = FALSE;
+        $type_filter = Get::gReq('type_filter', DOTY_MIXED, false);
+
+        if (isset($type_filter) && $type_filter != null) {
+            $lev = $type_filter;
+        }
+
+        $students = getSubscribed((int)$_SESSION['idCourse'], FALSE, $lev, TRUE, false, false, true);
+        $id_students = array_keys($students);
+
+        $test_info = $test_man->getTestInfo(array($id_test));
+
+        $responseValue['title'] = $test_info[$id_test]['title'];
+
+        $quests = array();
+        $answers = array();
+        $tracks = array();
+
+        $query_quest = "SELECT idQuest, type_quest, title_quest"
+            . " FROM " . $GLOBALS['prefix_lms'] . "_testquest"
+            . " WHERE idTest = '" . $id_test . "'"
+            . " ORDER BY sequence";
+
+        $result_quest = sql_query($query_quest);
+
+        while (list($id_quest, $type_quest, $title_quest) = sql_fetch_row($result_quest)) {
+            $quests[$id_quest]['idQuest'] = $id_quest;
+            $quests[$id_quest]['type_quest'] = $type_quest;
+            $quests[$id_quest]['title_quest'] = $title_quest;
+
+//		$query_answer =	"SELECT idAnswer, is_correct, answer"
+//						." FROM ".$GLOBALS['prefix_lms']."_testquestanswer"
+//						." WHERE idQuest = '".$id_quest."'"
+//						." ORDER BY sequence";
+
+            $query_answer = "SELECT tqa.idAnswer, tqa.is_correct, tqa.answer"
+                . " FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer AS tqa"
+                . " LEFT JOIN"
+                . " " . $GLOBALS['prefix_lms'] . "_testtrack_answer tta ON tqa.idAnswer = tta.idAnswer"
+                . " LEFT JOIN"
+                . " " . $GLOBALS['prefix_lms'] . "_testtrack tt ON tt.idTrack = tta.idTrack"
+                . " WHERE tqa.idQuest = '" . $id_quest . "'";
+            $query_answer .= " and tt.idUser in (" . implode(",", $id_students) . ")";
+            $query_answer .= " ORDER BY tqa.sequence";
+
+            $result_answer = sql_query($query_answer);
+
+
+            while (list($id_answer, $is_correct, $answer) = sql_fetch_row($result_answer)) {
+                $answers[$id_quest][$id_answer]['idAnswer'] = $id_answer;
+                $answers[$id_quest][$id_answer]['is_correct'] = $is_correct;
+                $answers[$id_quest][$id_answer]['answer'] = $answer;
+            }
+            if ($type_quest == 'choice_multiple' || $type_quest == 'choice' || $type_quest == 'inline_choice') {
+                $answers[$id_quest][0]['idAnswer'] = 0;
+                $answers[$id_quest][0]['is_correct'] = 0;
+                $answers[$id_quest][0]['answer'] = $lang->def('_NO_ANSWER');
+            }
+        }
+
+
+        $query_track = "SELECT idTrack"
+            . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack"
+            . " WHERE idTest = '" . $id_test . "'"
+            . " AND score_status = 'valid'"
+            . " AND idUser in (" . implode(",", $id_students) . ")";
+
+        $result_track = sql_query($query_track);
+
+        while (list($id_track) = sql_fetch_row($result_track)) {
+            $query_track_answer = "SELECT idQuest, idAnswer, more_info"
+                . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer"
+                . " WHERE idTrack = '" . $id_track . "'";
+// COMMENTATO MA NON E' CHIARO COME MAI C'E'????
+            //." AND user_answer = 1";
+//print_r($query_track_answer.'<br />');
+            $result_track_answer = sql_query($query_track_answer);
+
+//echo $query_track_answer."<br>";
+            while (list($id_quest, $id_answer, $more_info) = sql_fetch_row($result_track_answer)) {
+                $tracks[$id_track][$id_quest][$id_answer]['more_info'] = $more_info;
+//echo " -> ".$id_quest." - ".$id_answer." - ".$more_info."<br>";
+            }
+        }
+
+        $query_total_play = "SELECT COUNT(*)"
+            . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack"
+            . " WHERE idTest = '" . $id_test . "'"
+            . " AND score_status = 'valid'"
+            . " AND idUser in (" . implode(",", $id_students) . ")";
+
+        list($total_play) = sql_fetch_row(sql_query($query_total_play));
+
+        foreach ($quests as $quest) {
+            $question = array();
+            $answersArray = array();
+
+            switch ($quest['type_quest']) {
+                case "inline_choice":
+                case "hot_text":
+                case "choice_multiple":
+                case "choice": {
+
+                    $question["title"] = $quest['title_quest'];
+
+                    foreach ($answers[$quest['idQuest']] as $answer) {
+                        $answerObj = array();
+                        $cont = array();
+
+                        if ($answer['is_correct']) {
+                            $answerObj['showIcon'] = true;
+                        } else {
+                            $answerObj['showIcon'] = false;
+                        }
+
+                        $answerObj['title'] = $answer['answer'];
+
+                        $answer_given = 0;
+                        reset($tracks);
+                        $i = 0;
+
+                        foreach ($tracks as $track) {
+                            $i++;
+                            if (isset($track[$quest['idQuest']][$answer['idAnswer']])) {
+                                $answer_given++;
+                            } elseif (!isset($track[$quest['idQuest']]) && $answer['idAnswer'] == 0) {
+                                $answer_given++;
+                            }
+                        }
+                        if ($answer['idAnswer'] == 0 && $i < $total_play) {
+                            //			if ($i < $total_play) {
+                            $answer_given = $answer_given + ($total_play - $i);
+                        }
+
+                        if ($total_play > 0)
+                            $percentage = ($answer_given / $total_play) * 100;
+                        else
+                            $percentage = 0;
+
+                        $percentage = number_format($percentage, 2);
+
+                        $answerObj['percent'] = number_format($percentage, 2);
+
+                        $answersArray[] = $answerObj;
+                    }
+
+                    $question['answers'] = $answersArray;
+                }
+                break;
+                case "upload":
+                case "extended_text":
+                    /*$out->add('<div>');
+                    $out->add('<p><a href="#" onclick="getQuestDetail(' . $quest['idQuest'] . ', ' . $id_test . ', \'' . $quest['type_quest'] . '\'); return false;" id="more_quest_' . $quest['idQuest'] . '"><img src="' . getPathImage('fw') . 'standard/more.gif" alt="' . $lang->def('_MORE_INFO') . '" />' . str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_LIST')) . '</a></p>');
+                    $out->add('<p><a href="#" onclick="closeQuestDetail(' . $quest['idQuest'] . '); return false;" id="less_quest_' . $quest['idQuest'] . '" style="display:none"><img src="' . getPathImage('fw') . 'standard/less.gif" alt="' . $lang->def('_CLOSE') . '" />' . str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_LIST')) . '</a></p>');
+                    $out->add('</div>');
+                    $out->add('<div id="quest_' . $quest['idQuest'] . '">');
+                    $out->add('</div>');*/
+                    break;
+
+                case "text_entry": {
+
+                    $question["title"] = $quest['title_quest'];
+
+                    foreach ($answers[$quest['idQuest']] as $answer) {
+                        $answerObj = array();
+
+                        $answer_correct = 0;
+
+                        foreach ($tracks as $track) {
+                            if ($track[$quest['idQuest']][$answer['idAnswer']]['more_info'] === $answer['answer']) {
+                                $answer_correct++;
+                            }
+                        }
+
+                        $percentage = ($answer_correct / $total_play) * 100;
+
+                        $percentage = number_format($percentage, 2);
+
+                        $answerObj['percent'] = number_format($percentage, 2);
+
+                        $answersArray[] = $answerObj;
+                    }
+
+                    $question['answers'] = $answersArray;
+                }
+                    break;
+
+                case "associate": {
+                    $question["title"] = $quest['title_quest'];
+
+                    foreach ($answers[$quest['idQuest']] as $answer) {
+                        $answerObj = array();
+
+                        $answerObj['title'] = $answer['answer'];
+
+                        $answer_correct = 0;
+
+                        foreach ($tracks as $track) {
+                            if ($track[$quest['idQuest']][$answer['idAnswer']]['more_info'] === $answer['is_correct'])
+                                $answer_correct++;
+                        }
+
+                        $percentage = ($answer_correct / $total_play) * 100;
+                        echo "risp corrette: " . $answer_correct . " totale: " . $total_play;
+
+                        $percentage = number_format($percentage, 2);
+
+                        $answerObj['percent'] = $percentage;
+
+                        $answersArray[] = $answerObj;
+                    }
+
+                    $question['answers'] = $answersArray;
+                }
+                    break;
+            }
+
+            reset($answers);
+            reset($tracks);
+
+            $responseValue['questions'][] = $question;
+        }
+
+        /*for ($i=0;$i<10;$i++){
 
             $question = array("title" => "domanda numero ".$i);
 
@@ -3173,20 +3405,19 @@ class CoursereportLmsController extends LmsController
                     'title' => "risposta numero ".$j,
                     'percent' => mt_rand(0, 100),
                     'showIcon' => (mt_rand(0,1) == 1 ? true : false)
-                    );
+                );
 
                 $answers[] =$answer;
             }
 
             $question['answers'] = $answers;
 
-            $responseSampleValue['questions'][] = $question;
-        }
+            $responseValue['questions'][] = $question;
+        }*/
 
 
-        //echo json_encode($responseSampleValue);
-//        $this->render('testquestion',$responseSampleValue);
-        $this->render('testquestion',array('data' => $responseSampleValue));
+        //echo json_encode($responseValue);
+        $this->render('testquestion', array('data' => $responseValue));
     }
 
     function testQuestion()
