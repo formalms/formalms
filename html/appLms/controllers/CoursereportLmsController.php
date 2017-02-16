@@ -3151,6 +3151,7 @@ class CoursereportLmsController extends LmsController
         sendStrAsFile($csv, $file_name);
     }
 
+
     function testQuestionNew(){
         checkPerm('view', true, $this->_mvc_name);
 
@@ -3180,12 +3181,14 @@ class CoursereportLmsController extends LmsController
         }
 
 
-        //echo json_encode($responseSampleValue);
-        $this->render('testquestion',$responseSampleValue);
+        echo json_encode($responseSampleValue);
+        $this->render('testquestion',array('data' => $responseSampleValue));
     }
 
     function testQuestion()
     {
+        $responseValue = array();
+
         checkPerm('view', true, $this->_mvc_name);
 
         YuiLib::load(array('animation' => 'my_animation.js'));
@@ -3225,19 +3228,8 @@ class CoursereportLmsController extends LmsController
 
         $test_info = $test_man->getTestInfo(array($id_test));
 
-        $page_title = array('index.php?r=lms/coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
-            $test_info[$id_test]['title']
-        );
+        $responseValue['title'] = $test_info[$id_test]['title'];
 
-        $out->add(getTitleArea($page_title, 'coursereport')
-            . '<div class="std_block">'
-        );
-
-        $query_test = "SELECT title"
-            . " FROM " . $GLOBALS['prefix_lms'] . "_test"
-            . " WHERE idTest = '" . $id_test . "'";
-
-        list($titolo_test) = sql_fetch_row(sql_query($query_test));
 
         $query_quest = "SELECT idQuest, type_quest, title_quest"
             . " FROM " . $GLOBALS['prefix_lms'] . "_testquest"
