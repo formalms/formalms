@@ -3162,6 +3162,9 @@ class CoursereportLmsController extends LmsController
 
         Util::get_js(Get::rel_path('base') . '/appLms/views/coursereport/js/testquestion.js', true, true);
         Util::get_css(Get::rel_path('base') . '/appLms/views/coursereport/css/testquestion.css', true, true);
+        Util::get_js(Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.js', true, true);
+        Util::get_js(Get::rel_path('base') . '/addons/jquery/chartist-plugin-pointlabels/chartist-plugin-pointlabels.min.js', true, true);
+        Util::get_css(Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.css', true, true);
 
         $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
 
@@ -3463,8 +3466,19 @@ class CoursereportLmsController extends LmsController
 
         $test_info = $test_man->getTestInfo(array($id_test));
 
-        $responseValue['title'] = $test_info[$id_test]['title'];
+        $page_title = array('index.php?r=lms/coursereport/coursereport' => $lang->def('_COURSEREPORT', 'menu_course'),
+            $test_info[$id_test]['title']
+        );
 
+        $out->add(getTitleArea($page_title, 'coursereport')
+            . '<div class="std_block">'
+        );
+
+        $query_test = "SELECT title"
+            . " FROM " . $GLOBALS['prefix_lms'] . "_test"
+            . " WHERE idTest = '" . $id_test . "'";
+
+        list($titolo_test) = sql_fetch_row(sql_query($query_test));
 
         $query_quest = "SELECT idQuest, type_quest, title_quest"
             . " FROM " . $GLOBALS['prefix_lms'] . "_testquest"
