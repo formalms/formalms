@@ -622,8 +622,8 @@ class Report_Aggregate extends Report {
                         break;
                     }
 
-                    
                 }
+
                 
 				$query = "SELECT cu.idUser, cu.idCourse, cu.status, u.userId, c.code, u.firstname, u.lastname ".
 					" FROM ( ".$lms."_courseuser as cu ".
@@ -635,6 +635,7 @@ class Report_Aggregate extends Report {
                     //($sel_all ? "" : " AND idUser IN (".implode(",", $users).")")."";
                   //** LRZ  
                   if($sel_all==1) $query = $query." AND idUser IN (".implode(",", $users).")";  
+                  if($sel_all==0) $query = $query." AND idUser IN (".implode(",", $users).")";
                     
                     
 				$res = sql_query($query);
