@@ -9,47 +9,56 @@
 
 <div class="std_block">
   {% for question in data['questions'] %}
-  <div class="table-responsive">
-    <div class="panel panel-default">
-      <div class="panel-heading clearfix">{{ question.title }}</div>
-      <table class="table table-bordered table-view " summary="" cellspacing="0">
-        <thead>
-        <tr class="even intest">
-          <th>
-            <div class="">
-              <span class="">Risposta</span>
-            </div>
-          </th>
-          <th class="image nowrap">
-            <div class=""><span class="">Percentuale</span></div>
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for answer in question.answers %}
-          <tr class="">
-          <td>
-            <div class="test-question__answer{% if (answer.showIcon) %} test-question__answer--checked{% endif %}">
-                {{ answer.title }}
-            </div>
-          </td>
-          <td class="image nowrap">
-            <div class="">
-              <div class="progress_bar">
-                <div class="bar_text">
-                  {{ answer.percent }}%
+    <div class="table-responsive">
+      <div class="panel panel-default">
+        <div class="panel-heading clearfix">{{ question.title }}</div>
+        <table class="table table-bordered table-view " summary="" cellspacing="0">
+          <thead>
+            <tr class="even intest">
+              <th>
+                <div class="">
+                  <span class="">Risposta</span>
                 </div>
-                <div class="bar_fill" style="width: {{ answer.percent }}%;">&nbsp;
+              </th>
+              <th class="image nowrap">
+                <div class=""><span class="">Percentuale</span></div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for answer in question.answers %}
+            <tr class="">
+              <td>
+                <div class="test-question__answer {% if (answer.showIcon) %}test-question__answer--checked{% endif %}">
+                    {{ answer.title }}
                 </div>
-              </div>
-            </div>
-          </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-      </table>
+              </td>
+              <td class="image nowrap">
+                <div class="">
+                  {% set chartistClass = question.title ~ '-' ~ answer.title %}
+                  <div class="progress_bar">
+                    <div class="bar_text">
+                      {{ answer.percent }}%
+                    </div>
+                    <div class="bar_fill {{ chartistClass|replace({ (' '): ('-') }) }}" style="width: {{ answer.percent }}%;">&nbsp;
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-  <br>
+    <br />
+  {% endfor %}
+</div>
+<div class="js-chart-container" style="display: none;">
+  {% for question in data['questions'] %}
+    {% for answer in question.answers %}
+      {% set chartistClass = question.title ~ '-' ~ answer.title %}
+      <div data-class="{{ chartistClass|replace({ (' '): ('-') }) }}" data-percent="{{ answer.percent }}"></div>
+    {% endfor %}
   {% endfor %}
 </div>

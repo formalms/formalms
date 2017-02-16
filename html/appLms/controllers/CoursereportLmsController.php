@@ -3156,32 +3156,29 @@ class CoursereportLmsController extends LmsController
 
         Util::get_js(Get::rel_path('base') . '/appLms/views/coursereport/js/testquestion.js', true, true);
         Util::get_css(Get::rel_path('base') . '/appLms/views/coursereport/css/testquestion.css', true, true);
+        Util::get_js(Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.js', true, true);
+        Util::get_js(Get::rel_path('base') . '/addons/jquery/chartist-plugin-pointlabels/chartist-plugin-pointlabels.min.js', true, true);
+        Util::get_css(Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.css', true, true);
 
         $responseSampleValue = array('title' => "titolo test");
 
-        for ($i=0;$i<10;$i++){
-
+        for ($i = 0; $i < 10; $i++) {
             $question = array("title" => "domanda numero ".$i);
-
             $value = mt_rand(2, 3);
-
             $answers = array();
-            for ($j=0;$j<$value;$j++){
 
+            for ($j = 0; $j < $value; $j++) {
                 $answer = array(
                     'title' => "risposta numero ".$j,
                     'percent' => mt_rand(0, 100),
                     'showIcon' => (mt_rand(0,1) == 1 ? true : false)
-                    );
-
-                $answers[] =$answer;
+                );
+                $answers[] = $answer;
             }
 
             $question['answers'] = $answers;
-
             $responseSampleValue['questions'][] = $question;
         }
-
 
         //echo json_encode($responseSampleValue);
 //        $this->render('testquestion',$responseSampleValue);
