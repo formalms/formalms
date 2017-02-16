@@ -97,6 +97,33 @@ class PluginAdm extends Model {
         return false;
     }
 
+    private static function scan_dir(){
+        return array_diff(scandir(_base_.'/plugins/'), array('..', '.'));
+    }
+
+    private function check_dependencies($manifest){
+        if ($manifest) {
+            $dependencies=@$manifest['dependencies'];
+            $plugin_list = self::scan_dir();
+            $check = true;
+            if (isset($dependencies)) {
+                foreach ($dependencies as $name => $version) {
+                    if (in_array($name, $plugin_list)) {
+                        $dependant_manifest=$this->readPluginManifest($name);
+                        if (version_compare($version, $dependant_manifest['version']) > 0) {
+                            $check = false;
+                            break;
+                        }
+                    } else {
+                        $check = false;
+                        break;
+                    }
+                }
+            }
+            return $check;
+        }
+    }
+
     /**
      * Get plugins list (if parameter true returns only active plugins)
      * @param bool $onlyActive
@@ -129,6 +156,11 @@ class PluginAdm extends Model {
                             }
                         }
                     } else if (!$onlyActive){
+                        if ($this->check_dependencies($manifest)){
+                            $manifest['dependencies_satisfied']=true;
+                        } else {
+                            $manifest['dependencies_satisfied']=false;
+                        }
                         $plugins[$file]=$manifest;
                     }
                 }

@@ -48,7 +48,11 @@ foreach ($plugins as $info){
         }
         //if not in database
     } else {
-        $actions.='<a style="color: #C84000;" href="index.php?r=adm/pluginmanager/install'.'&plugin='.$info['name'].'">Installa</a>';
+        if ($info['dependencies_satisfied']){
+            $actions.='<a style="color: #C84000;" href="index.php?r=adm/pluginmanager/install'.'&plugin='.$info['name'].'">Installa</a>';
+        } else {
+            $actions.='<a style="color: #C84000;" href="javascript:;'.'&plugin='.$info['name'].'">Non soddisfatte</a>';
+        }
     }
     $actions.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/showSettings'.'&plugin='.$info['name'].'">Impostazioni</a>';
     $table->addBody(array(
