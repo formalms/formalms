@@ -269,6 +269,8 @@ class Report_Aggregate extends Report {
 	}
 
 	function show_report_courses($data = NULL, $other = '') {
+
+        
 		if ($data===NULL)
 			cout( $this->_get_courses_query() );
 		else
@@ -278,7 +280,7 @@ class Report_Aggregate extends Report {
 	function _get_courses_query($type = 'html', $report_data = NULL, $other = '') {
 		require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
 		require_once(dirname(__FILE__).'/report_tableprinter.php');
-
+    
 		if ($report_data==NULL) $ref =& $_SESSION['report_tempdata']; else $ref =& $report_data;
 
 		$fw  = $GLOBALS['prefix_fw'];
@@ -294,7 +296,7 @@ class Report_Aggregate extends Report {
 
 		$acl = new DoceboACLManager();
 		$html = '';
-
+        
 		$man = new Man_Course();
 		$courses_codes = $man->getAllCourses();
 		if ($all_courses) {
@@ -421,6 +423,8 @@ class Report_Aggregate extends Report {
 			unset($admin_courses);
 		}
 
+
+        
 		switch ($sel_type) {
 
 			case 'groups': {
@@ -587,24 +591,52 @@ class Report_Aggregate extends Report {
 
 
 			case 'users': {
+        
+                
 
-				$temp = array();
-				// resolve the user selection
-				$users 	=& $acl->getAllUsersFromIdst($selection);
-				if ( $userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) { $users = array_intersect($users, $admin_users); }
-				if (count($users)<=0) {
-					$html .= '<p>'.$this->lang->def('_EMPTY_SELECTION').'</p>';
-					break;
-				}
+                //** LRZ - #8583                    
+                if($sel_all==1){
+                     $users =& $acl->getAllUsersIdst();
 
+                    require_once(_base_.'/lib/lib.userselector.php');
+                    require_once(_base_.'/lib/lib.preference.php');
+                    
+                    $acl_man = new DoceboACLManager();                 
+                    $adminManager = new AdminPreference();
+                
+                    $admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+                    $admin_users = $acl_man->getAllUsersFromSelection($admin_users);
+                    $users = array_intersect($users, $admin_users);
+                    unset($admin_users);  
+                     //***
+                             
+                    
+                }   else{
+                    
+                    $temp = array();
+                    // resolve the user selection
+                    $users     =& $acl->getAllUsersFromIdst($selection);
+                    if ( $userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) { $users = array_intersect($users, $admin_users); }
+                    if (count($users)<=0) {
+                        $html .= '<p>'.$this->lang->def('_EMPTY_SELECTION').'</p>';
+                        break;
+                    }
+
+                    
+                }
+                
 				$query = "SELECT cu.idUser, cu.idCourse, cu.status, u.userId, c.code, u.firstname, u.lastname ".
 					" FROM ( ".$lms."_courseuser as cu ".
 					" JOIN  ".$lms."_course as c ON ( cu.idCourse = c.idCourse) ) ".
 					" JOIN ".$fw."_user as u ON (cu.idUser = u.idst)  ".
 					" WHERE 1 ".
-					" AND cu.idCourse IN (".implode(",", $courses).") ".
-					($sel_all ? "" : " AND idUser IN (".implode(",", $users).")")."";
-
+					" AND cu.idCourse IN (".implode(",", $courses).") ";
+					
+                    //($sel_all ? "" : " AND idUser IN (".implode(",", $users).")")."";
+                  //** LRZ  
+                  if($sel_all==1) $query = $query." AND idUser IN (".implode(",", $users).")";  
+                    
+                    
 				$res = sql_query($query);
 
 				while ($row = sql_fetch_array($res) ) {
