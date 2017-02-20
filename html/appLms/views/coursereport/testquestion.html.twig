@@ -35,12 +35,12 @@
               </td>
               <td class="image nowrap">
                 <div class="">
-                  {% set chartistClass = question.title ~ '-' ~ answer.title %}
+                  {#{% set chartistClass = question.title ~ '-' ~ answer.title %}#}
                   <div class="progress_bar">
-                    <div class="bar_text">
+                    <div class="test-question__percent {% if (answer.percent > 55) %}test-question__percent--white-text{% endif %}">
                       {{ answer.percent }}%
                     </div>
-                    <div class="bar_fill {{ chartistClass|replace({ (' '): ('-') }) }}" style="width: {{ answer.percent }}%;">&nbsp;
+                    <div class="test-question__bar" style="width: {{ answer.percent }}%;">&nbsp;
                     </div>
                   </div>
                 </div>
@@ -54,11 +54,11 @@
     <br />
   {% endfor %}
 </div>
-<div class="js-chart-container" style="display: none;">
-  {% for question in data['questions'] %}
-    {% for answer in question.answers %}
-      {% set chartistClass = question.title ~ '-' ~ answer.title %}
-      <div data-class="{{ chartistClass|replace({ (' '): ('-') }) }}" data-percent="{{ answer.percent }}"></div>
-    {% endfor %}
-  {% endfor %}
-</div>
+{#<div class="js-chart-container" style="display: none;">#}
+  {#{% for question in data['questions'] %}#}
+    {#{% for answer in question.answers %}#}
+      {#{% set chartistClass = question.title ~ '-' ~ answer.title %}#}
+      {#<div data-class="{{ chartistClass|replace({ (' '): ('-') }) }}" data-percent="{{ answer.percent }}"></div>#}
+    {#{% endfor %}#}
+  {#{% endfor %}#}
+{#</div>#}
