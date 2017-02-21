@@ -81,7 +81,7 @@ function canAccessPersonalMedia() {
 	if(Docebo::user()->isAnonymous()) return false;
 
 	if ( (Get::sett("htmledit_image_godadmin") && $level_id == ADMIN_GROUP_GODADMIN) ||
-		((Get::sett("htmledit_image_admin")) && ($level_id == ADMIN_GROUP_ADMIN || $level_id == ADMIN_GROUP_PUBLICADMIN)  ) ||
+		((Get::sett("htmledit_image_admin")) && ($level_id == ADMIN_GROUP_ADMIN )  ) ||
 		((Get::sett("htmledit_image_user")) && ($level_id == ADMIN_GROUP_USER)) ) {
 
 		return true;

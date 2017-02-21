@@ -2568,7 +2568,7 @@ class UsermanagementAdmController extends AdmController {
 		$my_level = Docebo::user()->getUserLevelId();
 		if ($my_level == ADMIN_GROUP_GODADMIN) return TRUE;
 		if ($my_level == ADMIN_GROUP_USER) return FALSE;
-		if ($my_level == ADMIN_GROUP_ADMIN || $my_level == ADMIN_GROUP_PUBLICADMIN) {
+		if ($my_level == ADMIN_GROUP_ADMIN ) {
 			if ($level_to_check == ADMIN_GROUP_USER) return TRUE;
 		}
 		return FALSE;

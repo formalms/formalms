@@ -21,16 +21,8 @@ class CourseTableView extends TableView {
 		
 		$lang 	=& DoceboLanguage::CreateInstance('course', 'lms');
 
-		if(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN)
-		{
-			$this->serverUrl = Get::rel_path('lms').'/ajax.server.php?plf=lms&file=coursetableview&sf=table_view';
-			$this->addFormatter("man_subscr", 'courseFormatters.p_man_subscr');
-		}
-		else
-		{
-			$this->serverUrl = Get::rel_path('lms').'/ajax.adm_server.php?plf=lms&file=coursetableview&sf=table_view';
-			$this->addFormatter("man_subscr", 'courseFormatters.man_subscr');
-		}
+                $this->serverUrl = Get::rel_path('lms').'/ajax.adm_server.php?plf=lms&file=coursetableview&sf=table_view';
+                $this->addFormatter("man_subscr", 'courseFormatters.man_subscr');
 
 		$this->addFormatter("classroom", 'courseFormatters.classroom');
 		$this->addFormatter("certificate", 'courseFormatters.certificate');
@@ -40,7 +32,7 @@ class CourseTableView extends TableView {
 
 		$array_columns = array();
 
-		if(checkPerm('mod', true, 'course', 'lms') || checkPerm('mod', true, 'public_course_admin', 'lms'))
+		if(checkPerm('mod', true, 'course', 'lms'))
 		{
 			$array_columns[] = array("key"=>"code", "label"=>$lang->def("_CODE"), "sortable"=>true, "className"=>'min-cell', 'editor' => 'new YAHOO.widget.TextboxCellEditor({asyncSubmitter: saveData})');
 			$array_columns[] = array("key"=>"name", "label"=>$lang->def("_COURSE_NAME"), "sortable"=>true, 'editor' => 'new YAHOO.widget.TextboxCellEditor({asyncSubmitter: saveData})');
@@ -51,13 +43,12 @@ class CourseTableView extends TableView {
 			$array_columns[] = array("key"=>"name", "label"=>$lang->def("_COURSE_NAME"), "sortable"=>true);
 		}
 
-		//if(checkPerm('moderate', true, 'course', 'lms') || checkPerm('moderate', true, 'public_course_admin', 'lms'))
 		$array_columns[] = array("key"=>"waiting", "label"=>$lang->def("_WAITING_USERS"), "className"=>'img-cell');
 
-		if(checkPerm('subscribe', true, 'course', 'lms') || checkPerm('subscribe', true, 'public_course_admin', 'lms')) {
+		if(checkPerm('subscribe', true, 'course', 'lms')) {
 			$array_columns[] = array("key"=>"subscriptions", "label"=>Get::img('course/subscribe.png', $lang->def('_SUBSCRIBE')), "sortable"=>true, "className"=>'img-cell', "formatter"=>$this->getCellFormatter("man_subscr"));
 		}
-		if(checkPerm('mod', true, 'course', 'lms') || checkPerm('mod', true, 'public_course_admin', 'lms'))
+		if(checkPerm('mod', true, 'course', 'lms'))
 		{
 			$array_columns[] = array("key"=>"classroom", "label"=>Get::img('course/classroom-cal.png', $lang->def('_CLASSROOM')), "className"=>'img-cell');
 			$array_columns[] = array("key"=>"certificate", "label"=>Get::img('course/certificate.png', Lang::t('_CERTIFICATE', 'certificate', 'lms')), "className"=>'img-cell', "formatter"=>$this->getCellFormatter("certificate"));
@@ -65,13 +56,13 @@ class CourseTableView extends TableView {
 			$array_columns[] = array("key"=>"menu", "label"=>Get::img('course/menu.png', $lang->def('_ASSIGN_MENU')), "className"=>'img-cell', "formatter"=>$this->getCellFormatter("menu"));
 		}
 
-		if(checkPerm('add', true, 'course', 'lms') || checkPerm('add', true, 'public_course_admin', 'lms'))
+		if(checkPerm('add', true, 'course', 'lms'))
 			$array_columns[] = array("key"=>"dup", "label"=>Get::img('standard/dup.png', $lang->def('_MAKE_A_COPY')), "className"=>'img-cell');
 
-		if(checkPerm('mod', true, 'course', 'lms') || checkPerm('mod', true, 'public_course_admin', 'lms'))
+		if(checkPerm('mod', true, 'course', 'lms'))
 			$array_columns[] = array("key"=>"mod", "label"=>Get::img('standard/edit.png', $lang->def('_MOD')), "className"=>'img-cell', "formatter"=>$this->getCellFormatter("mod"));
 
-		if(checkPerm('del', true, 'course', 'lms') || checkPerm('del', true, 'public_course_admin', 'lms'))
+		if(checkPerm('del', true, 'course', 'lms'))
 			$array_columns[] = array("key"=>"del", "label"=>Get::img('standard/delete.png', $lang->def('_DEL')), "className"=>'img-cell', "formatter"=>$this->getCellFormatter('delete'));
 
 		$this->columns = $array_columns;

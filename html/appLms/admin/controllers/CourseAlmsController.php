@@ -485,7 +485,7 @@ Class CourseAlmsController extends AlmsController
 						? '<a href="index.php?r='.$this->base_link_classroom.'/classroom&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_CLASSROOM_EDITION', 'course').'">'.$this->model->classroom_man->getDateNumber($row['idCourse'], true).'</a>' : ($row['course_edition'] == 1 ? '<a href="index.php?r='.$this->base_link_edition.'/show&amp;id_course='.$row['idCourse'].'" title="'.Lang::t('_EDITIONS', 'course').'">'.$this->model->edition_man->getEditionNumber($row['idCourse']).'</a>'
 						: '')),
 				'certificate' => '<a href="index.php?r='.$this->base_link_course.'/certificate&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_pdf'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')).'</a>',
-				'certreleased' => '<a href="index.php?modname='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? 'p' : '').'certificate&op=view_report_certificate&amp;id_course='.$row['idCourse'].'&from=courselist&of_platform=lms">'.Get::sprite('subs_print'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')).'</a>',
+				'certreleased' => '<a href="index.php?modname=certificate&op=view_report_certificate&amp;id_course='.$row['idCourse'].'&from=courselist&of_platform=lms">'.Get::sprite('subs_print'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')).'</a>',
 				'competences' => '<a href="index.php?r='.$this->base_link_competence.'/man_course&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_competence'.(!isset($course_with_competence[$row['idCourse']]) ? '_grey' : ''), Lang::t('_COMPETENCES', 'course')).'</a>',
 				'menu' => '<a href="index.php?r='.$this->base_link_course.'/menu&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_menu', Lang::t('_ASSIGN_MENU', 'course')).'</a>',
 				'dup' => 'ajax.adm_server.php?r='.$this->base_link_course.'/dupcourse&id_course='.$row['idCourse'],
@@ -1135,7 +1135,7 @@ Class CourseAlmsController extends AlmsController
 			$view_cert = false;
 			if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN)
 			{
-				if(checkPerm('view', true, 'certificate', 'lms') || checkPerm('view', true, 'pcertificate', 'lms'))
+				if(checkPerm('view', true, 'certificate', 'lms'))
 					$view_cert = true;
 			}
 			else
@@ -1167,7 +1167,11 @@ Class CourseAlmsController extends AlmsController
 													$possible_status,
 													( isset($course_ex_cert[$id_cert]) ? $course_ex_cert[$id_cert] : 0 ),
 													'' );
+<<<<<<< HEAD
 				$cont[] = (isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0 && $view_cert ? '<a href="index.php?modname='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? 'p' : '').'certificate&amp;op=view_report_certificate&amp;id_certificate='.$id_cert.'&amp;id_course='.$id_course.'&amp;from=course&amp;of_platform=lms"><b><u>' : '').( isset($released[$id_cert]) ? $released[$id_cert] : '0' ).(isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0  ? '</b></u></a>' : '');
+=======
+				$cont[] = (isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0 && $view_cert ? '<a href="index.php?modname=certificate&amp;op=view_report_certificate&amp;id_certificate='.$id_cert.'&amp;id_course='.$id_course.'&amp;from=course&amp;of_platform=lms">' : '').( isset($released[$id_cert]) ? $released[$id_cert] : '0' ).(isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0  ? '</a>' : '');
+>>>>>>> ece254d... Tolta funzionalità Amministratori Pubblici (HTML+SQL)
 				$tb->addBody($cont);
 			}
 

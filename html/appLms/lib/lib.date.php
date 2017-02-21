@@ -1405,14 +1405,14 @@ class DateManager
 				'classroom' => $this->getDateClassrooms($id_date, true),
 				'students' => $num_student,
 				'num_subscribe' => $user_subscribed,
-				'subscription' => '<a href="index.php?r='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? 'lms/p' : 'alms/').'subscription/show&id_course='.$id_course.'&amp;id_date='.$id_date.'" title="'.Lang::t('_SUBSCRIPTION', 'course').'">'
+				'subscription' => '<a href="index.php?r=alms/subscription/show&id_course='.$id_course.'&amp;id_date='.$id_date.'" title="'.Lang::t('_SUBSCRIPTION', 'course').'">'
 						.($user_subscribed?$user_subscribed:0)
 						.' <span class="ico-sprite subs_'.($user_subscribed>0?'users':'notice').'"><span>'.Lang::t('_USER_STATUS_SUBS').'</span></span></a>',
-				'presence' => '<a href="index.php?r='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? 'lms/p' : 'alms/').'classroom/presence&id_course='.$id_course.'&amp;id_date='.$id_date.'">'.Lang::t('_ATTENDANCE', 'course').'</a>',
+				'presence' => '<a href="index.php?r=alms/classroom/presence&id_course='.$id_course.'&amp;id_date='.$id_date.'">'.Lang::t('_ATTENDANCE', 'course').'</a>',
 				'num_day' => $num_day,
 				'user_subscribed' => $user_subscribed,
-				'mod' => '<a href="index.php?r='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? 'lms/p' : 'alms/').'classroom/modclassroom&id_course='.$id_course.'&amp;id_date='.$id_date.'">'.Get::img('standard/edit.png', Lang::t('_MOD', 'course')).'</a>',
-				'del' => 'ajax.adm_server.php?r='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? 'lms/p' : 'alms/').'classroom/delclassroom&id_course='.$id_course.'&amp;id_date='.$id_date,
+				'mod' => '<a href="index.php?r=alms/classroom/modclassroom&id_course='.$id_course.'&amp;id_date='.$id_date.'">'.Get::img('standard/edit.png', Lang::t('_MOD', 'course')).'</a>',
+				'del' => 'ajax.adm_server.php?r=alms/classroom/delclassroom&id_course='.$id_course.'&amp;id_date='.$id_date,
 				'unsubscribe_date_limit' => $unsubscribe_date_limit);
 		}
 
@@ -1519,7 +1519,7 @@ class DateManager
 							'date_begin_validity' => $date_begin_validity,
 							'date_expire_validity' => $date_expire_validity,
 							'overbooking' => in_array($id_user, $overbooking_users),
-							'del' => 'ajax.adm_server.php?r='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? 'lms/p' : 'alms/').'subscription/delPopUp&id_course='.$id_course.'&id_date='.$id_date.'&id_user='.$id_user);
+							'del' => 'ajax.adm_server.php?r=alms/subscription/delPopUp&id_course='.$id_course.'&id_date='.$id_date.'&id_user='.$id_user);
 		}
 
 		return $res;

@@ -54,7 +54,6 @@ define("ACL_INFO_SETTING_VALUE", 9);
 define("ADMIN_GROUP_GODADMIN", "/framework/level/godadmin");
 define("ADMIN_GROUP_ADMIN", "/framework/level/admin");
 define("ADMIN_GROUP_USER", "/framework/level/user");
-define("ADMIN_GROUP_PUBLICADMIN", "/framework/level/publicadmin");
 
 /**
  * Acl management tasks class
@@ -429,7 +428,6 @@ class DoceboACLManager
             }
             if (isset($list[ADMIN_GROUP_GODADMIN])) $result[ADMIN_GROUP_GODADMIN] = $list[ADMIN_GROUP_GODADMIN];
             if (isset($list[ADMIN_GROUP_ADMIN])) $result[ADMIN_GROUP_ADMIN] = $list[ADMIN_GROUP_ADMIN];
-            if (isset($list[ADMIN_GROUP_PUBLICADMIN])) $result[ADMIN_GROUP_PUBLICADMIN] = $list[ADMIN_GROUP_PUBLICADMIN];
             if (isset($list[ADMIN_GROUP_USER])) $result[ADMIN_GROUP_USER] = $list[ADMIN_GROUP_USER];
 
             if ($flip) $result = array_flip($list); else $result = $list;
@@ -2476,7 +2474,6 @@ class DoceboACLManager
         $output = array();
         $output[ADMIN_GROUP_GODADMIN] = $list[ADMIN_GROUP_GODADMIN];
         $output[ADMIN_GROUP_ADMIN] = $list[ADMIN_GROUP_ADMIN];
-        $output[ADMIN_GROUP_PUBLICADMIN] = $list[ADMIN_GROUP_PUBLICADMIN];
         $output[ADMIN_GROUP_USER] = $list[ADMIN_GROUP_USER];
 
         return $output;

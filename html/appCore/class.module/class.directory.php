@@ -2316,11 +2316,6 @@ class Module_Directory extends Module {
 			$idst_admin = $this->aclManager->getGroupST(ADMIN_GROUP_ADMIN);
 			$users['admin'] 		= $this->aclManager->getGroupUMembersNumber($idst_admin);
 		}
-
-        if(isset($stats_required['public_admin'])) {
-			$idst_admin = $this->aclManager->getGroupST(ADMIN_GROUP_PUBLICADMIN);
-			$users['public_admin'] 		= $this->aclManager->getGroupUMembersNumber($idst_admin);
-		}
 		return $users;
 	}
 
