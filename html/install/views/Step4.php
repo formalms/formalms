@@ -9,7 +9,7 @@
 		disableBtnNext(true);
 
 		var check_fields =['site_url', 'db_host', 'db_name', 'db_user', 'db_pass', 'upload_method', 'ftp_host', 'ftp_port', 'ftp_user', 'ftp_pass'];
-        validateInput(check_fields);
+        validateInput(check_fields,'final_check');
 		YAHOO.util.Event.addListener("my_button", "mouseenter", function(e) {
 			validateInput(check_fields, 'final_check');
 		});
