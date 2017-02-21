@@ -9,7 +9,7 @@
 		disableBtnNext(true);
 
 		var check_fields =['site_url', 'db_host', 'db_name', 'db_user', 'db_pass', 'upload_method', 'ftp_host', 'ftp_port', 'ftp_user', 'ftp_pass'];
-
+        validateInput(check_fields);
 		YAHOO.util.Event.addListener("my_button", "mouseenter", function(e) {
 			validateInput(check_fields, 'final_check');
 		});
@@ -49,15 +49,31 @@
 
 <h3><?php echo Lang::t('_DATABASE_INFO'); ?></h3>
 <div class="form_line_l">
-<?php echo '<p><label class="floating" for="db_type">DB_TYPE</label></p>'.Form::getInputDropdown('',"db_type","db_info[db_type]", array(
-    'mysql'=>'MySQL',
-    'mysqli'=>'MySQLi',
-),'mysqli'); ?>
+<?php
+$cfg=array(
+    'db_type'=>'',
+    'db_host'=>'localhost',
+    'db_name'=>'',
+    'db_user'=>'',
+    'db_pass'=>'',
+);
+if (file_exists(_base_.'/config.php')){
+    define('IN_FORMA',true);
+    include_once _base_.'/config.php';
+}
+$driver=array_filter(array(
+    'mysqli'=>extension_loaded("mysqli")?'mysqli':false,
+    'mysql'=>extension_loaded("mysql")?'mysql':false
+));
+
+
+echo '<p><label class="floating" for="db_type">DB_TYPE</label></p>'.Form::getInputDropdown('',"db_type","db_info[db_type]", $driver,$cfg['db_type']);
+?>
 </div>
-<?php echo Form::getTextfield(Lang::t('_DB_HOST'), "db_host", "db_info[db_host]", 255, "localhost"); ?>
-<?php echo Form::getTextfield(Lang::t('_DB_NAME'), "db_name", "db_info[db_name]", 255); ?>
-<?php echo Form::getTextfield(Lang::t('_DB_USERNAME'), "db_user", "db_info[db_user]", 255); ?>
-<?php echo Form::getPassword(Lang::t('_DB_PASS'), "db_pass", "db_info[db_pass]", 255); ?>
+<?php echo Form::getTextfield(Lang::t('_DB_HOST'), "db_host", "db_info[db_host]", 255, $cfg['db_host']); ?>
+<?php echo Form::getTextfield(Lang::t('_DB_NAME'), "db_name", "db_info[db_name]", 255, $cfg['db_name']); ?>
+<?php echo Form::getTextfield(Lang::t('_DB_USERNAME'), "db_user", "db_info[db_user]", 255, $cfg['db_user']); ?>
+<?php echo Form::getPassword(Lang::t('_DB_PASS'), "db_pass", "db_info[db_pass]", 255,'',  '', '', $cfg['db_pass']); ?>
 	
 <h3><?php echo Lang::t('_UPLOAD_METHOD'); ?></h3>
 
