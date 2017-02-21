@@ -915,6 +915,13 @@ class UsermanagementAdm extends Model {
 
 		if (property_exists($userdata, 'userid') && $userdata->userid != '') {
 			$acl_man = Docebo::user()->getAclManager();
+            if (Get::sett('custom_fields_mandatory_for_admin', 'off') == 'on') {
+                $fields = new FieldList();
+                $filledFieldsForUser = $fields->isFilledFieldsForUser(0);
+                if($filledFieldsForUser !== true) {
+                    return Lang::t('_OPERATION_FAILURE', 'standard'). '<br/>' . implode('<br/>', $filledFieldsForUser);
+                }
+            }
 			$user_idst = $acl_man->registerUser(
 				$userdata->userid,
 				(property_exists($userdata, 'firstname') ? $userdata->firstname : ''),
@@ -1001,8 +1008,7 @@ class UsermanagementAdm extends Model {
 				$fields = new FieldList();
 				$fields->storeFieldsForUser($user_idst);
 
-				$result = $user_idst;
-
+                $result = $user_idst;
 				//apply enroll rules
 				$langs = Docebo::langManager()->getAllLangCode();
 				$lang_code = ( isset($langs[(isset($_POST['user_preference']['ui.language']) ? $_POST['user_preference']['ui.language'] : 'eng')]) ? $langs[$_POST['user_preference']['ui.language']] : false );
@@ -1020,7 +1026,7 @@ class UsermanagementAdm extends Model {
 	public function editUser($idst, $userdata) {
 		require_once(_base_.'/lib/lib.preference.php');
 		require_once(_adm_.'/lib/lib.field.php');
-		$result = false;
+		$result = 'unable to edit user properties';
 
 		if (is_numeric($idst) && $idst>0) {
 			$acl_man = Docebo::user()->getAclManager();
@@ -1074,8 +1080,14 @@ class UsermanagementAdm extends Model {
 				//set custom fields
 				$fields = new FieldList();
 				$fields->storeFieldsForUser($idst);
-
-				$result = true;
+                if (Get::sett('custom_fields_mandatory_for_admin', 'off') == 'on') {
+                    $result = $fields->isFilledFieldsForUser($idst);
+                    if($result !== true) {
+                        $result = implode('<br/>', $result);
+                    }
+                } else {
+                    $result = true;
+                }
 			}
 		}
 
