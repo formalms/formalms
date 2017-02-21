@@ -31,7 +31,13 @@
 					YAHOO.util.Dom.get('logs').innerHTML = res['text'];
 				}
 
-			}
+			},
+            failure: function(o) {
+			    YAHOO.util.Dom.get('loading_db').childNodes[0].src='templates/standard/images/failed.png';
+                YAHOO.util.Dom.get('logs').style.border = '1px solid #cccccc';
+                YAHOO.util.Dom.get('logs').style.padding = '4px';
+                YAHOO.util.Dom.get('logs').innerHTML = 'PHP ERROR';
+            },
 		};
 		var sUrl ='import_db.php';
 		disableBtnNext(true);
@@ -65,6 +71,12 @@
 					disableBtnNext(false);
 				}
 			},
+            failure: function(o) {
+                YAHOO.util.Dom.get('loading_db').childNodes[0].src='templates/standard/images/failed.png';
+                YAHOO.util.Dom.get('logs').style.border = '1px solid #cccccc';
+                YAHOO.util.Dom.get('logs').style.padding = '4px';
+                YAHOO.util.Dom.get('logs').innerHTML = 'PHP ERROR';
+            },
 			error: function(o) {
 				disableBtnNext(false);
 			}
