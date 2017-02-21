@@ -13,7 +13,8 @@ Class Step4Controller extends StepController {
 		// ---
 		$site_url =Get::pReq('site_url', DOTY_STRING);
 		// ---
-		$db_host =Get::pReq('db_host', DOTY_STRING);
+        $db_host =Get::pReq('db_mysql', DOTY_STRING);
+        $db_host =Get::pReq('db_host', DOTY_STRING);
 		$db_name =Get::pReq('db_name', DOTY_STRING);
 		$db_user =Get::pReq('db_user', DOTY_STRING);
 		$db_pass =Get::pReq('db_pass', DOTY_STRING);

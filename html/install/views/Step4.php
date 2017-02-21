@@ -48,7 +48,12 @@
 </div>
 
 <h3><?php echo Lang::t('_DATABASE_INFO'); ?></h3>
-
+<div class="form_line_l">
+<?php echo '<p><label class="floating" for="db_type">DB_TYPE</label></p>'.Form::getInputDropdown('',"db_type","db_info[db_type]", array(
+    'mysql'=>'MySQL',
+    'mysqli'=>'MySQLi',
+),'mysqli'); ?>
+</div>
 <?php echo Form::getTextfield(Lang::t('_DB_HOST'), "db_host", "db_info[db_host]", 255, "localhost"); ?>
 <?php echo Form::getTextfield(Lang::t('_DB_NAME'), "db_name", "db_info[db_name]", 255); ?>
 <?php echo Form::getTextfield(Lang::t('_DB_USERNAME'), "db_user", "db_info[db_user]", 255); ?>

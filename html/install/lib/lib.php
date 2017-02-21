@@ -12,7 +12,7 @@ function generateConfig($tpl_fn) {
 			$config = fread($handle, filesize($tpl_fn));
 			fclose($handle);
 		}
-
+        $config=str_replace("[%-DB_TYPE-%]", $_SESSION['db_info']["db_type"], $config);
 		$config=str_replace("[%-DB_HOST-%]", $_SESSION['db_info']["db_host"], $config);
 		$config=str_replace("[%-DB_USER-%]", $_SESSION['db_info']["db_user"], $config);
 		$config=str_replace("[%-DB_PASS-%]", $_SESSION['db_info']["db_pass"], $config);

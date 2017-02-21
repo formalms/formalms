@@ -6,6 +6,7 @@ set_time_limit(0);
 
 
 DbConn::getInstance(false,array(
+    'db_type'=>$_SESSION['db_info']['db_type'],
     'db_host'=>$_SESSION['db_info']['db_host'],
     'db_user'=>$_SESSION['db_info']['db_user'],
     'db_pass'=>$_SESSION['db_info']['db_pass'],
