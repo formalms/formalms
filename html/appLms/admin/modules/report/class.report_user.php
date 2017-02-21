@@ -2318,6 +2318,18 @@ class Report_User extends Report {
 		else
 			$user_selected =& $acl_man->getAllUsersIdst();
 
+        //apply sub admin filters, if needed
+        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+            //filter users
+            $alluser = false;
+            require_once(_base_.'/lib/lib.preference.php');
+            $adminManager = new AdminPreference();
+            $admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+            $admin_users = $acl_man->getAllUsersFromSelection($admin_users);
+            $user_selected = array_intersect($user_selected, $admin_users);
+            unset($admin_users);
+        }
+
 		$lang =& DoceboLanguage::createInstance('report', 'framework');
 
 		$lang_u =& DoceboLanguage::CreateInstance('stats', 'lms');

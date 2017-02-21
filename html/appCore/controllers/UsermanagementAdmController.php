@@ -580,7 +580,7 @@ class UsermanagementAdmController extends AdmController {
 
 		} else {
 			$output['success'] = false;
-			$output['message'] = Lang::t('_OPERATION_FAILURE', 'standard');
+			$output['message'] = $idst;
 		}
 
 		$this->echoResult($output);
@@ -657,11 +657,11 @@ class UsermanagementAdmController extends AdmController {
 		$userdata->preferences =& $_POST; //Get::req('user_preferences', DOTY_MIXED, array());
 
 		$res = $this->model->editUser($idst, $userdata);
-		if ($res) {
+		if ($res === true) {
 			$output['success'] = true;
 		} else {
 			$output['success'] = false;
-			$output['message'] = 'unable to edit user properties';
+			$output['message'] = $res;
 		}
 
 		echo $this->json->encode($output);
