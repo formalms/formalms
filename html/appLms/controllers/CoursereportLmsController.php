@@ -3158,6 +3158,8 @@ class CoursereportLmsController extends LmsController
         $responseValue = array();
 
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
+        require_once($GLOBALS['where_lms'].'/modules/question/class.question.php');
+        require_once($GLOBALS['where_lms'].'/class.module/track.test.php');
 
         Util::get_js(Get::rel_path('base') . '/appLms/views/coursereport/js/testquestion.js', true, true);
         Util::get_css(Get::rel_path('base') . '/appLms/views/coursereport/css/testquestion.css', true, true);
@@ -3182,84 +3184,39 @@ class CoursereportLmsController extends LmsController
 
         $responseValue['title'] = $test_info[$idTest]['title'];
 
-        $quests = array();
-        $answers = array();
+        $answersNew = array();
         $tracks = array();
+        $quests = Question::getTestQuestsFromTest($idTest);
 
-        $query_quest = "SELECT idQuest, type_quest, title_quest"
-            . " FROM " . $GLOBALS['prefix_lms'] . "_testquest"
-            . " WHERE idTest = '" . $idTest . "'"
-            . " ORDER BY sequence";
+        foreach ($quests as $quest){
 
-        $result_quest = sql_query($query_quest);
+            $resAnswers = Question::getTestQuestAnswerFromQuestAndStudents($quest['idQuest'],$id_students);
 
-        while (list($idQuest, $type_quest, $title_quest) = sql_fetch_row($result_quest)) {
-            $quests[$idQuest]['idQuest'] = $idQuest;
-            $quests[$idQuest]['type_quest'] = $type_quest;
-            $quests[$idQuest]['title_quest'] = $title_quest;
-
-//		$query_answer =	"SELECT idAnswer, is_correct, answer"
-//						." FROM ".$GLOBALS['prefix_lms']."_testquestanswer"
-//						." WHERE idQuest = '".$idQuest."'"
-//						." ORDER BY sequence";
-
-            $query_answer = "SELECT tqa.idAnswer, tqa.is_correct, tqa.answer"
-                . " FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer AS tqa"
-                . " LEFT JOIN"
-                . " " . $GLOBALS['prefix_lms'] . "_testtrack_answer tta ON tqa.idAnswer = tta.idAnswer"
-                . " LEFT JOIN"
-                . " " . $GLOBALS['prefix_lms'] . "_testtrack tt ON tt.idTrack = tta.idTrack"
-                . " WHERE tqa.idQuest = '" . $idQuest . "'";
-            $query_answer .= " and tt.idUser in (" . implode(",", $id_students) . ")";
-            $query_answer .= " ORDER BY tqa.sequence";
-
-            $result_answer = sql_query($query_answer);
-
-
-            while (list($id_answer, $is_correct, $answer) = sql_fetch_row($result_answer)) {
-                $answers[$idQuest][$id_answer]['idAnswer'] = $id_answer;
-                $answers[$idQuest][$id_answer]['is_correct'] = $is_correct;
-                $answers[$idQuest][$id_answer]['answer'] = $answer;
+            foreach ($resAnswers as $k =>  $resAnswer){
+                $answersNew[$quest['idQuest']][$resAnswers['idAnswer']][$k] = $resAnswer;
             }
-            if ($type_quest == 'choice_multiple' || $type_quest == 'choice' || $type_quest == 'inline_choice') {
-                $answers[$idQuest][0]['idAnswer'] = 0;
-                $answers[$idQuest][0]['is_correct'] = 0;
-                $answers[$idQuest][0]['answer'] = $lang->def('_NO_ANSWER');
+
+
+            if ($quest['type_quest'] == 'choice_multiple' || $quest['type_quest'] == 'choice' || $quest['type_quest'] == 'inline_choice') {
+                $answersNew[$quest['idQuest']][0]['idAnswer'] = 0;
+                $answersNew[$quest['idQuest']][0]['is_correct'] = 0;
+                $answersNew[$quest['idQuest']][0]['answer'] = $lang->def('_NO_ANSWER');
             }
         }
 
 
-        $query_track = "SELECT idTrack"
-            . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack"
-            . " WHERE idTest = '" . $idTest . "'"
-            . " AND score_status = 'valid'"
-            . " AND idUser in (" . implode(",", $id_students) . ")";
+        $validIdTracks = Track_Test::getValidTestTrackFromTestAndUsers($idTest,$id_students);
+        foreach ($validIdTracks as $validIdTrack){
+            
+            $trackAnswers = Track_Test::getTestTrackAnswersFromTrack($validIdTrack);
 
-        $result_track = sql_query($query_track);
+            foreach ($trackAnswers as $trackAnswer) {
 
-        while (list($id_track) = sql_fetch_row($result_track)) {
-            $query_track_answer = "SELECT idQuest, idAnswer, more_info"
-                . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer"
-                . " WHERE idTrack = '" . $id_track . "'";
-// COMMENTATO MA NON E' CHIARO COME MAI C'E'????
-            //." AND user_answer = 1";
-//print_r($query_track_answer.'<br />');
-            $result_track_answer = sql_query($query_track_answer);
-
-//echo $query_track_answer."<br>";
-            while (list($idQuest, $id_answer, $more_info) = sql_fetch_row($result_track_answer)) {
-                $tracks[$id_track][$idQuest][$id_answer]['more_info'] = $more_info;
-//echo " -> ".$idQuest." - ".$id_answer." - ".$more_info."<br>";
+                $tracks[$validIdTrack][$trackAnswer['idQuest']][$trackAnswer['idAnswer']]['more_info'] = $trackAnswer['more_info'];
             }
         }
 
-        $query_total_play = "SELECT COUNT(*)"
-            . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack"
-            . " WHERE idTest = '" . $idTest . "'"
-            . " AND score_status = 'valid'"
-            . " AND idUser in (" . implode(",", $id_students) . ")";
-
-        list($total_play) = sql_fetch_row(sql_query($query_total_play));
+        $total_play = Track_Test::getValidTotalPlaysTestTrackFromTestAndUsers($idTest,$id_students);
 
         foreach ($quests as $quest) {
             $question = array();
@@ -3273,7 +3230,7 @@ class CoursereportLmsController extends LmsController
 
                     $question["title"] = str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST'));
 
-                    foreach ($answers[$quest['idQuest']] as $answer) {
+                    foreach ($answersNew[$quest['idQuest']] as $answer) {
                         $answerObj = array();
                         $cont = array();
 
@@ -3323,19 +3280,14 @@ class CoursereportLmsController extends LmsController
                     $question['idQuest'] = $quest['idQuest'];
                     $question['idTest'] = $idTest;
             }
-                    /*$out->add('<div>');
-                    $out->add('<p><a href="#" onclick="getQuestDetail(' . $quest['idQuest'] . ', ' . $idTest . ', \'' . $quest['type_quest'] . '\'); return false;" id="more_quest_' . $quest['idQuest'] . '"><img src="' . getPathImage('fw') . 'standard/more.gif" alt="' . $lang->def('_MORE_INFO') . '" />' . str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_LIST')) . '</a></p>');
-                    $out->add('<p><a href="#" onclick="closeQuestDetail(' . $quest['idQuest'] . '); return false;" id="less_quest_' . $quest['idQuest'] . '" style="display:none"><img src="' . getPathImage('fw') . 'standard/less.gif" alt="' . $lang->def('_CLOSE') . '" />' . str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_LIST')) . '</a></p>');
-                    $out->add('</div>');
-                    $out->add('<div id="quest_' . $quest['idQuest'] . '">');
-                    $out->add('</div>');*/
+
                     break;
 
                 case "text_entry": {
 
                     $question["title"] = str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_CORRECT_TXT'));
 
-                    foreach ($answers[$quest['idQuest']] as $answer) {
+                    foreach ($answersNew[$quest['idQuest']] as $answer) {
                         $answerObj = array();
 
                         $answer_correct = 0;
@@ -3362,7 +3314,7 @@ class CoursereportLmsController extends LmsController
                 case "associate": {
                     $question["title"] =  str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_CORRECT_ASS'));
 
-                    foreach ($answers[$quest['idQuest']] as $answer) {
+                    foreach ($answersNew[$quest['idQuest']] as $answer) {
                         $answerObj = array();
 
                         $answerObj['title'] = $answer['answer'];

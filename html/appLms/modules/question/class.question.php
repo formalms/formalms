@@ -796,9 +796,9 @@ class Question {
         $answers = array();
 
         while (list($id_answer, $is_correct, $answer) = sql_fetch_row($result_answer)) {
-            $answers[$idQuest][$id_answer]['idAnswer'] = $id_answer;
-            $answers[$idQuest][$id_answer]['is_correct'] = $is_correct;
-            $answers[$idQuest][$id_answer]['answer'] = $answer;
+            $answers['idAnswer'] = $id_answer;
+            $answers['is_correct'] = $is_correct;
+            $answers['answer'] = $answer;
         }
 
         return $answers;
