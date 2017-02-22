@@ -76,13 +76,15 @@ define("_FTP_PASS", "Password");
 define("_FTP_CONFPASS", "Confirm password");
 define("_FTP_PATH", "FTP path (is the root where are stored file, ex. /htdocs/ /mainfile_html/");
 define("_CANT_CONNECT_WITH_DB", "Can't connect to DB, please check inserted data");
+define("_DB_NOT_EMPTY", "The specified database is not empty");
+define("_DB_NOT_UTF8", "The specified database is not utf8 charset");
 define("_CANT_SELECT_DB", "Can't select DB, please check inserted data");
 define("_CANT_CONNECT_WITH_FTP","Can't connect in ftp to the specified server, please check inserted parameters");
 define("_SQL_STRICT_MODE_WARN", "You have MySQL <a href=\"http://dev.mysql.com/doc/en/server-sql-mode.html\" target=\"_blank\">strict mode</a> enabled; forma.lms doesn't support it, so please turn it off");
 define("_SQL_STRICT_MODE", "MySQL <a href=\"http://dev.mysql.com/doc/en/server-sql-mode.html\" target=\"_blank\">strict mode</a>");
 // -----------------------------------------
 define("_TITLE_STEP5", "Step 5: Configuration");
-define("_ADMIN_USER_INFO", "Information regarding the administrator user");
+define("_ADMIN_USER_INFO", "Information regarding the administrator user (first login)");
 define("_ADMIN_USERNAME", "Username");
 define("_ADMIN_FIRSTNAME", "Firstname");
 define("_ADMIN_LASTNAME", "Lastname");
@@ -102,6 +104,7 @@ define("_DB_IMPORTING", "Importing database");
 define("_LANGUAGES", "Languages");
 // -----------------------------------------
 define("_TITLE_STEP7", "Step 7: Installation completed");
+define("REMOVE_INSTALL_FOLDER", "It is suggested to remove the install folder, forma is vulnerable until it is reachable.");
 define("_INSTALLATION_COMPLETED", "Installation has been completed");
 define("_INSTALLATION_DETAILS", "Details");
 define("_SITE_HOMEPAGE", "Home");
