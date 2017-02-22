@@ -9,7 +9,7 @@ Class Lang {
 	}
 
 	public static function init() {
-		require_once(_installer_.'/lang/'.self::getSelLang().'.php');
+		require_once(_lib_.'/installer/lang/'.self::getSelLang().'.php');
 	}
 
 	public static function getSelLang() {
