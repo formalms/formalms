@@ -11,14 +11,12 @@
     left: -2px;
 }
 
-.test-question__details-row {
-    height: 0;
+.test-question__details-container {
+    display: none;
+}
 
-    -webkit-transition: height .5s ease-in .5s;
-    -moz-transition: height .5s ease-in .5s;
-    -ms-transition: height .5s ease-in .5s;
-    -o-transition: height .5s ease-in .5s;
-    transition: height .5s ease-in .5s;
+.test-question__details-container--is-visible {
+    display: table-row-group;
 }
 
 .test-question__show-more {
