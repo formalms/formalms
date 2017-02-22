@@ -9,6 +9,10 @@
 </ul>
 <?php endif; ?>
 
+
+<h3><?php echo Lang::t('REMOVE_INSTALL_FOLDER'); ?></h3><br>
+
+
 <h3><?php echo Lang::t('_INSTALLATION_DETAILS'); ?>:</h3>
 <ul class="info">
 	<li><?php echo Lang::t('_SITE_HOMEPAGE'); ?>: <a href="<?php echo $_SESSION['site_url']; ?>" target="_blank"><?php echo $_SESSION['site_url']; ?></a></li>
