@@ -19,7 +19,6 @@ class CoursereportLmsController extends LmsController
 
     public function init()
     {
-        $this->model = new CoursereportLms($_SESSION['idCourse']);
         $this->json = new Services_JSON();
         $this->_mvc_name = "coursereport";
         $this->permissions = array(
@@ -31,6 +30,7 @@ class CoursereportLmsController extends LmsController
     public function coursereport()
     {
         //checkPerm('view', true, $this->_mvc_name);
+
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
 
@@ -39,6 +39,7 @@ class CoursereportLmsController extends LmsController
         $view_perm = checkPerm('view', true, $this->_mvc_name);
         $view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
         $mod_perm = checkPerm('mod', true, $this->_mvc_name);
+        $this->model = new CoursereportLms($_SESSION['idCourse']);
 
         // XXX: Instance management
         $acl_man = Docebo::user()->getAclManager();
@@ -539,6 +540,8 @@ class CoursereportLmsController extends LmsController
         if ($round_report && !$redo_final) {
             $this->roundreport($round_report);
         }
+
+        $this->model = new CoursereportLms($_SESSION['idCourse']);
 
         $acl_man = Docebo::user()->getAclManager();
         $test_man = new GroupTestManagement();
@@ -3207,7 +3210,7 @@ class CoursereportLmsController extends LmsController
 
         $validIdTracks = Track_Test::getValidTestTrackFromTestAndUsers($idTest,$id_students);
         foreach ($validIdTracks as $validIdTrack){
-            
+
             $trackAnswers = Track_Test::getTestTrackAnswersFromTrack($validIdTrack);
 
             foreach ($trackAnswers as $trackAnswer) {

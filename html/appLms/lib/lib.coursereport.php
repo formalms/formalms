@@ -238,7 +238,7 @@ class CourseReportManager {
 		$query_scores = "
 		SELECT id_user, score, score_status
 		FROM ".$GLOBALS['prefix_lms']."_coursereport_score
-		WHERE id_report = ".$id_report."";
+		WHERE id_report = ".$id_report." ";
 		if($id_users !== FALSE) $query_scores .= " AND idUser IN ( ".implode(',', $id_users)." ) ";
 		$re_scores = sql_query($query_scores);
 		while(list($user, $score, $score_status) = sql_fetch_row($re_scores)) {
