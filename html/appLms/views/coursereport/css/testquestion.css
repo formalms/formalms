@@ -10,6 +10,17 @@
     position: absolute;
     left: -2px;
 }
+
+.test-question__details-row {
+    height: 0;
+
+    -webkit-transition: height .5s ease-in .5s;
+    -moz-transition: height .5s ease-in .5s;
+    -ms-transition: height .5s ease-in .5s;
+    -o-transition: height .5s ease-in .5s;
+    transition: height .5s ease-in .5s;
+}
+
 .test-question__show-more {
     position: relative;
 }
