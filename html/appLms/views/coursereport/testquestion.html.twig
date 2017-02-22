@@ -10,7 +10,7 @@
 
 <div class="std_block">
   {% for question in data['questions'] %}
-    {% if question.type == 'upload' %}
+    {% if ((question.type == 'upload' or question.type == 'extended_text')) %}
       <div class="table-responsive">
         <div class="panel panel-default">
           <div class="panel-heading clearfix">{{ question.title }}</div>
@@ -19,11 +19,11 @@
             <tr class="even intest">
               <th>
                 <span class="">File caricati</span>
-                <a href="javascript:void(0)" class="test-question__show-more js-show-more" data-idquest="{{ question.idQuest }}" data-idtest="{{ question.idTest }}"></a>
+                <a href="javascript:void(0)" class="test-question__show-more js-show-more" data-idquest="{{ question.idQuest }}" data-idtest="{{ question.idTest }}" data-type="{{ (question.type == 'upload') ? 'upload' : 'extended-text' }}"></a>
               </th>
             </tr>
             </thead>
-            <tbody>
+            <tbody class="test-question__details-container">
               <tr>
                 <td>
                   <div class="test-question__answer">
@@ -36,8 +36,6 @@
         </div>
       </div>
       <br />
-    {% elseif question.type == 'extended_text' %}
-
     {% else %}
       <div class="table-responsive">
         <div class="panel panel-default">
