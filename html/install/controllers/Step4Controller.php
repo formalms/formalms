@@ -33,6 +33,18 @@ Class Step4Controller extends StepController {
 		if (!empty($db_user)) {
 			$err++;
 			switch ($this->checkConnection($db_host, $db_name, $db_user, $db_pass)) {
+                case 'create_db': {
+                    if ($this->checkStrictMode()) {
+                        $err--;
+                        array_push($res['ok'], 'db_host', 'db_name', 'db_user', 'db_pass');
+                        $res['msg']=Lang::t('_DB_WILL_BE_CREATED');
+                    }
+                    else {
+                        array_push($res['err'], 'db_host');
+                        array_push($res['ok'], 'db_name', 'db_user', 'db_pass');
+                        $res['msg']=Lang::t('_SQL_STRICT_MODE_WARN')." ".Lang::t('_DB_WILL_BE_CREATED');
+                    }
+                } break;
 				case "ok": {
 					if ($this->checkStrictMode()) {
 						$err--;
@@ -115,10 +127,17 @@ Class Step4Controller extends StepController {
         include _base_.'/db/lib.docebodb.php';
 		$GLOBALS['db_link']=sql_connect($db_host, $db_user, $db_pass);
 		if ($GLOBALS['db_link']) {
-			$res =sql_select_db($db_name);
+		    if ($db_name==""){
+		        return 'err_db_sel';
+            }
+            $res =sql_select_db($db_name);
+            if (!$res){
+                return 'create_db';
+            } else {
+                return 'ok';
+            }
 		}
-
-		return $res;
+        return $res;
 	}
 
 
