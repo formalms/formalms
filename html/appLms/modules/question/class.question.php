@@ -761,6 +761,48 @@ class Question {
 		
 		return $oQuest;
 	}
+
+	static function getTestQuestsFromTest($idTest){
+        $query_quest = "SELECT idQuest, type_quest, title_quest"
+            . " FROM " . $GLOBALS['prefix_lms'] . "_testquest"
+            . " WHERE idTest = '" . $idTest . "'"
+            . " ORDER BY sequence";
+
+        $result_quest = sql_query($query_quest);
+
+        $quests = array();
+        while (list($idQuest, $type_quest, $title_quest) = sql_fetch_row($result_quest)) {
+            $quests[$idQuest]['idQuest'] = $idQuest;
+            $quests[$idQuest]['type_quest'] = $type_quest;
+            $quests[$idQuest]['title_quest'] = $title_quest;
+        }
+
+        return $quests;
+	}
+
+	static function getTestQuestAnswerFromQuestAndStudents($idQuest,$idStudents){
+        $query_answer = "SELECT tqa.idAnswer, tqa.is_correct, tqa.answer"
+            . " FROM " . $GLOBALS['prefix_lms'] . "_testquestanswer AS tqa"
+            . " LEFT JOIN"
+            . " " . $GLOBALS['prefix_lms'] . "_testtrack_answer tta ON tqa.idAnswer = tta.idAnswer"
+            . " LEFT JOIN"
+            . " " . $GLOBALS['prefix_lms'] . "_testtrack tt ON tt.idTrack = tta.idTrack"
+            . " WHERE tqa.idQuest = '" . $idQuest . "'";
+        $query_answer .= " and tt.idUser in (" . implode(",", $idStudents) . ")";
+        $query_answer .= " ORDER BY tqa.sequence";
+
+        $result_answer = sql_query($query_answer);
+
+        $answers = array();
+
+        while (list($id_answer, $is_correct, $answer) = sql_fetch_row($result_answer)) {
+            $answers[$idQuest][$id_answer]['idAnswer'] = $id_answer;
+            $answers[$idQuest][$id_answer]['is_correct'] = $is_correct;
+            $answers[$idQuest][$id_answer]['answer'] = $answer;
+        }
+
+        return $answers;
+	}
 	
 }
 

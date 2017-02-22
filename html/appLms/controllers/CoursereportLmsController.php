@@ -3154,7 +3154,6 @@ class CoursereportLmsController extends LmsController
 
     function testQuestionNew()
     {
-
         checkPerm('view', true, $this->_mvc_name);
         $responseValue = array();
 
@@ -3162,13 +3161,10 @@ class CoursereportLmsController extends LmsController
 
         Util::get_js(Get::rel_path('base') . '/appLms/views/coursereport/js/testquestion.js', true, true);
         Util::get_css(Get::rel_path('base') . '/appLms/views/coursereport/css/testquestion.css', true, true);
-        Util::get_js(Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.js', true, true);
-        Util::get_js(Get::rel_path('base') . '/addons/jquery/chartist-plugin-pointlabels/chartist-plugin-pointlabels.min.js', true, true);
-        Util::get_css(Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.css', true, true);
 
         $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
 
-        $id_test = importVar('id_test', true, 0);
+        $idTest = importVar('id_test', true, 0);
 
         $test_man = new GroupTestManagement();
 
@@ -3182,9 +3178,9 @@ class CoursereportLmsController extends LmsController
         $students = getSubscribed((int)$_SESSION['idCourse'], FALSE, $lev, TRUE, false, false, true);
         $id_students = array_keys($students);
 
-        $test_info = $test_man->getTestInfo(array($id_test));
+        $test_info = $test_man->getTestInfo(array($idTest));
 
-        $responseValue['title'] = $test_info[$id_test]['title'];
+        $responseValue['title'] = $test_info[$idTest]['title'];
 
         $quests = array();
         $answers = array();
@@ -3192,19 +3188,19 @@ class CoursereportLmsController extends LmsController
 
         $query_quest = "SELECT idQuest, type_quest, title_quest"
             . " FROM " . $GLOBALS['prefix_lms'] . "_testquest"
-            . " WHERE idTest = '" . $id_test . "'"
+            . " WHERE idTest = '" . $idTest . "'"
             . " ORDER BY sequence";
 
         $result_quest = sql_query($query_quest);
 
-        while (list($id_quest, $type_quest, $title_quest) = sql_fetch_row($result_quest)) {
-            $quests[$id_quest]['idQuest'] = $id_quest;
-            $quests[$id_quest]['type_quest'] = $type_quest;
-            $quests[$id_quest]['title_quest'] = $title_quest;
+        while (list($idQuest, $type_quest, $title_quest) = sql_fetch_row($result_quest)) {
+            $quests[$idQuest]['idQuest'] = $idQuest;
+            $quests[$idQuest]['type_quest'] = $type_quest;
+            $quests[$idQuest]['title_quest'] = $title_quest;
 
 //		$query_answer =	"SELECT idAnswer, is_correct, answer"
 //						." FROM ".$GLOBALS['prefix_lms']."_testquestanswer"
-//						." WHERE idQuest = '".$id_quest."'"
+//						." WHERE idQuest = '".$idQuest."'"
 //						." ORDER BY sequence";
 
             $query_answer = "SELECT tqa.idAnswer, tqa.is_correct, tqa.answer"
@@ -3213,7 +3209,7 @@ class CoursereportLmsController extends LmsController
                 . " " . $GLOBALS['prefix_lms'] . "_testtrack_answer tta ON tqa.idAnswer = tta.idAnswer"
                 . " LEFT JOIN"
                 . " " . $GLOBALS['prefix_lms'] . "_testtrack tt ON tt.idTrack = tta.idTrack"
-                . " WHERE tqa.idQuest = '" . $id_quest . "'";
+                . " WHERE tqa.idQuest = '" . $idQuest . "'";
             $query_answer .= " and tt.idUser in (" . implode(",", $id_students) . ")";
             $query_answer .= " ORDER BY tqa.sequence";
 
@@ -3221,21 +3217,21 @@ class CoursereportLmsController extends LmsController
 
 
             while (list($id_answer, $is_correct, $answer) = sql_fetch_row($result_answer)) {
-                $answers[$id_quest][$id_answer]['idAnswer'] = $id_answer;
-                $answers[$id_quest][$id_answer]['is_correct'] = $is_correct;
-                $answers[$id_quest][$id_answer]['answer'] = $answer;
+                $answers[$idQuest][$id_answer]['idAnswer'] = $id_answer;
+                $answers[$idQuest][$id_answer]['is_correct'] = $is_correct;
+                $answers[$idQuest][$id_answer]['answer'] = $answer;
             }
             if ($type_quest == 'choice_multiple' || $type_quest == 'choice' || $type_quest == 'inline_choice') {
-                $answers[$id_quest][0]['idAnswer'] = 0;
-                $answers[$id_quest][0]['is_correct'] = 0;
-                $answers[$id_quest][0]['answer'] = $lang->def('_NO_ANSWER');
+                $answers[$idQuest][0]['idAnswer'] = 0;
+                $answers[$idQuest][0]['is_correct'] = 0;
+                $answers[$idQuest][0]['answer'] = $lang->def('_NO_ANSWER');
             }
         }
 
 
         $query_track = "SELECT idTrack"
             . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack"
-            . " WHERE idTest = '" . $id_test . "'"
+            . " WHERE idTest = '" . $idTest . "'"
             . " AND score_status = 'valid'"
             . " AND idUser in (" . implode(",", $id_students) . ")";
 
@@ -3251,15 +3247,15 @@ class CoursereportLmsController extends LmsController
             $result_track_answer = sql_query($query_track_answer);
 
 //echo $query_track_answer."<br>";
-            while (list($id_quest, $id_answer, $more_info) = sql_fetch_row($result_track_answer)) {
-                $tracks[$id_track][$id_quest][$id_answer]['more_info'] = $more_info;
-//echo " -> ".$id_quest." - ".$id_answer." - ".$more_info."<br>";
+            while (list($idQuest, $id_answer, $more_info) = sql_fetch_row($result_track_answer)) {
+                $tracks[$id_track][$idQuest][$id_answer]['more_info'] = $more_info;
+//echo " -> ".$idQuest." - ".$id_answer." - ".$more_info."<br>";
             }
         }
 
         $query_total_play = "SELECT COUNT(*)"
             . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack"
-            . " WHERE idTest = '" . $id_test . "'"
+            . " WHERE idTest = '" . $idTest . "'"
             . " AND score_status = 'valid'"
             . " AND idUser in (" . implode(",", $id_students) . ")";
 
@@ -3275,7 +3271,7 @@ class CoursereportLmsController extends LmsController
                 case "choice_multiple":
                 case "choice": {
 
-                    $question["title"] = $quest['title_quest'];
+                    $question["title"] = str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST'));
 
                     foreach ($answers[$quest['idQuest']] as $answer) {
                         $answerObj = array();
@@ -3322,9 +3318,13 @@ class CoursereportLmsController extends LmsController
                 }
                 break;
                 case "upload":
-                case "extended_text":
+                case "extended_text":{
+                    $question["title"] = str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_LIST'));
+                    $question['idQuest'] = $quest['idQuest'];
+                    $question['idTest'] = $idTest;
+            }
                     /*$out->add('<div>');
-                    $out->add('<p><a href="#" onclick="getQuestDetail(' . $quest['idQuest'] . ', ' . $id_test . ', \'' . $quest['type_quest'] . '\'); return false;" id="more_quest_' . $quest['idQuest'] . '"><img src="' . getPathImage('fw') . 'standard/more.gif" alt="' . $lang->def('_MORE_INFO') . '" />' . str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_LIST')) . '</a></p>');
+                    $out->add('<p><a href="#" onclick="getQuestDetail(' . $quest['idQuest'] . ', ' . $idTest . ', \'' . $quest['type_quest'] . '\'); return false;" id="more_quest_' . $quest['idQuest'] . '"><img src="' . getPathImage('fw') . 'standard/more.gif" alt="' . $lang->def('_MORE_INFO') . '" />' . str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_LIST')) . '</a></p>');
                     $out->add('<p><a href="#" onclick="closeQuestDetail(' . $quest['idQuest'] . '); return false;" id="less_quest_' . $quest['idQuest'] . '" style="display:none"><img src="' . getPathImage('fw') . 'standard/less.gif" alt="' . $lang->def('_CLOSE') . '" />' . str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_LIST')) . '</a></p>');
                     $out->add('</div>');
                     $out->add('<div id="quest_' . $quest['idQuest'] . '">');
@@ -3333,7 +3333,7 @@ class CoursereportLmsController extends LmsController
 
                 case "text_entry": {
 
-                    $question["title"] = $quest['title_quest'];
+                    $question["title"] = str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_CORRECT_TXT'));
 
                     foreach ($answers[$quest['idQuest']] as $answer) {
                         $answerObj = array();
@@ -3360,7 +3360,7 @@ class CoursereportLmsController extends LmsController
                     break;
 
                 case "associate": {
-                    $question["title"] = $quest['title_quest'];
+                    $question["title"] =  str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_CORRECT_ASS'));
 
                     foreach ($answers[$quest['idQuest']] as $answer) {
                         $answerObj = array();
@@ -3375,7 +3375,7 @@ class CoursereportLmsController extends LmsController
                         }
 
                         $percentage = ($answer_correct / $total_play) * 100;
-                        echo "risp corrette: " . $answer_correct . " totale: " . $total_play;
+                        //echo "risp corrette: " . $answer_correct . " totale: " . $total_play;
 
                         $percentage = number_format($percentage, 2);
 
@@ -3389,38 +3389,58 @@ class CoursereportLmsController extends LmsController
                     break;
             }
 
+            $question['type'] = $quest['type_quest'];
+
             reset($answers);
             reset($tracks);
 
             $responseValue['questions'][] = $question;
         }
 
-        /*for ($i=0;$i<10;$i++){
-
-            $question = array("title" => "domanda numero ".$i);
-
-            $value = mt_rand(2, 3);
-
-            $answers = array();
-            for ($j=0;$j<$value;$j++){
-
-                $answer = array(
-                    'title' => "risposta numero ".$j,
-                    'percent' => mt_rand(0, 100),
-                    'showIcon' => (mt_rand(0,1) == 1 ? true : false)
-                );
-
-                $answers[] =$answer;
-            }
-
-            $question['answers'] = $answers;
-
-            $responseValue['questions'][] = $question;
-        }*/
-
-
         //echo json_encode($responseValue);
         $this->render('testquestion', array('data' => $responseValue));
+    }
+
+    public function extendedQuestDetails() {
+
+        require_once($GLOBALS['where_lms'].'/class.module/track.test.php');
+        $idTest = Get::gReq('id_test', DOTY_MIXED, 0);
+        $idQuest =  Get::gReq('id_quest', DOTY_MIXED, 0);
+
+        $result = array('id_quest' => $idQuest);
+
+        $idTracks = Track_Test::getIdTracksFromTest($idTest);
+
+        foreach ($idTracks as $idTrack){
+
+            $textEntries = TextEntry_Question::getTextEntryFromIdTrackAndIdQuest($idTrack,$idQuest);
+            foreach ($textEntries as $textEntry){
+                $result['answers'][] = array("answer"=>$textEntry);
+            }
+        }
+
+        echo $this->json->encode($result);
+    }
+
+    public function fileUploaQuestDetails(){
+
+        require_once($GLOBALS['where_lms'].'/class.module/track.test.php');
+        $idTest = Get::gReq('id_test', DOTY_MIXED, 0);
+        $idQuest =  Get::gReq('id_quest', DOTY_MIXED, 0);
+
+        $result = array('id_quest' => $idQuest);
+
+        $idTracks = Track_Test::getIdTracksFromTest($idTest);
+
+        foreach ($idTracks as $idTrack){
+
+            $textEntries = TextEntry_Question::getTextEntryFromIdTrackAndIdQuest($idTrack,$idQuest);
+            foreach ($textEntries as $textEntry){
+                $result['answers'][] = array("answer"=>$textEntry, "filePath" => "index.php?modname=question&amp;op=quest_download&type_quest=upload&id_quest=".$idQuest."&id_track=".$idTrack);
+            }
+        }
+
+        echo $this->json->encode($result);
     }
 
     function testQuestion()
