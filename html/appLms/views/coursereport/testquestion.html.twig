@@ -4,7 +4,6 @@
   </h1>
   <ul class="breadcrumb">
     <li>{{ data.title }}</li>
-    <pre>{{ dump(data) }}</pre>
   </ul>
 </div>
 
@@ -13,12 +12,12 @@
     {% if ((question.type == 'upload' or question.type == 'extended_text')) %}
       <div class="table-responsive">
         <div class="panel panel-default">
-          <div class="panel-heading clearfix">{{ question.title }}</div>
+          <div class="panel-heading clearfix">{{ question.title|convert_encoding('UTF-8', 'HTML-ENTITIES') }}</div>
           <table class="table table-bordered table-view " summary="" cellspacing="0">
             <thead>
             <tr class="even intest">
               <th>
-                <span class="">File caricati</span>
+                <span class="">{{ (question.type == 'upload') ? 'File Caricati' : 'Risposte Aperte' }}</span>
                 <a href="javascript:void(0)" class="test-question__show-more js-show-more" data-idquest="{{ question.idQuest }}" data-idtest="{{ question.idTest }}" data-type="{{ (question.type == 'upload') ? 'upload' : 'extended-text' }}"></a>
               </th>
             </tr>
