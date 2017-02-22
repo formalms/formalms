@@ -4,61 +4,83 @@
   </h1>
   <ul class="breadcrumb">
     <li>{{ data.title }}</li>
+    <pre>{{ dump(data) }}</pre>
   </ul>
 </div>
 
 <div class="std_block">
   {% for question in data['questions'] %}
-    <div class="table-responsive">
-      <div class="panel panel-default">
-        <div class="panel-heading clearfix">{{ question.title }}</div>
-        <table class="table table-bordered table-view " summary="" cellspacing="0">
-          <thead>
+    {% if question.type == 'upload' %}
+      <div class="table-responsive">
+        <div class="panel panel-default">
+          <div class="panel-heading clearfix">{{ question.title }}</div>
+          <table class="table table-bordered table-view " summary="" cellspacing="0">
+            <thead>
             <tr class="even intest">
               <th>
-                <div class="">
-                  <span class="">Risposta</span>
-                </div>
-              </th>
-              <th class="image nowrap">
-                <div class=""><span class="">Percentuale</span></div>
+                <span class="">File caricati</span>
+                <a href="javascript:void(0)" class="test-question__show-more js-show-more" data-idquest="{{ question.idQuest }}" data-idtest="{{ question.idTest }}"></a>
               </th>
             </tr>
-          </thead>
-          <tbody>
-          {% for answer in question.answers %}
-            <tr class="">
-              <td>
-                <div class="test-question__answer {% if (answer.showIcon) %}test-question__answer--checked{% endif %}">
-                    {{ answer.title }}
-                </div>
-              </td>
-              <td class="image nowrap">
-                <div class="">
-                  {#{% set chartistClass = question.title ~ '-' ~ answer.title %}#}
-                  <div class="progress_bar">
-                    <div class="test-question__percent {% if (answer.percent > 55) %}test-question__percent--white-text{% endif %}">
-                      {{ answer.percent }}%
-                    </div>
-                    <div class="test-question__bar" style="width: {{ answer.percent }}%;">&nbsp;
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="test-question__answer">
+                    <a href="" download="">PATH_TO_FILE</a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br />
+    {% elseif question.type == 'extended_text' %}
+
+    {% else %}
+      <div class="table-responsive">
+        <div class="panel panel-default">
+          <div class="panel-heading clearfix">{{ question.title }}</div>
+          <table class="table table-bordered table-view " summary="" cellspacing="0">
+            <thead>
+              <tr class="even intest">
+                <th>
+                  <div class="">
+                    <span class="">Risposta</span>
+                  </div>
+                </th>
+                <th class="image nowrap">
+                  <div class=""><span class="">Percentuale</span></div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for answer in question.answers %}
+              <tr class="">
+                <td>
+                  <div class="test-question__answer {% if (answer.showIcon) %}test-question__answer--checked{% endif %}">
+                      {{ answer.title }}
+                  </div>
+                </td>
+                <td class="image nowrap">
+                  <div class="">
+                    <div class="progress_bar">
+                      <div class="test-question__percent {% if (answer.percent > 55) %}test-question__percent--white-text{% endif %}">
+                        {{ answer.percent }}%
+                      </div>
+                      <div class="test-question__bar" style="width: {{ answer.percent }}%;">&nbsp;
+                      </div>
                     </div>
                   </div>
-                </div>
-              </td>
-            </tr>
-          {% endfor %}
-          </tbody>
-        </table>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-    <br />
+      <br />
+    {% endif %}
   {% endfor %}
 </div>
-{#<div class="js-chart-container" style="display: none;">#}
-  {#{% for question in data['questions'] %}#}
-    {#{% for answer in question.answers %}#}
-      {#{% set chartistClass = question.title ~ '-' ~ answer.title %}#}
-      {#<div data-class="{{ chartistClass|replace({ (' '): ('-') }) }}" data-percent="{{ answer.percent }}"></div>#}
-    {#{% endfor %}#}
-  {#{% endfor %}#}
-{#</div>#}
