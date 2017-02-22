@@ -47,13 +47,19 @@ Class Step4Controller extends StepController {
                 } break;
 				case "ok": {
 				    if ($this->checkDBEmpty($db_name)) {
-                        if ($this->checkStrictMode()) {
-                            $err--;
-                            array_push($res['ok'], 'db_host', 'db_name', 'db_user', 'db_pass');
+				        if ($this->checkDBCharset()){
+                            if ($this->checkStrictMode()) {
+                                $err--;
+                                array_push($res['ok'], 'db_host', 'db_name', 'db_user', 'db_pass');
+                            } else {
+                                array_push($res['err'], 'db_host');
+                                array_push($res['ok'], 'db_name', 'db_user', 'db_pass');
+                                $res['msg'] = Lang::t('_SQL_STRICT_MODE_WARN');
+                            }
                         } else {
-                            array_push($res['err'], 'db_host');
-                            array_push($res['ok'], 'db_name', 'db_user', 'db_pass');
-                            $res['msg'] = Lang::t('_SQL_STRICT_MODE_WARN');
+                            array_push($res['err'], 'db_name');
+                            array_push($res['ok'], 'db_host', 'db_user', 'db_pass');
+                            $res['msg']=Lang::t('_DB_NOT_UTF8');
                         }
                     } else {
                         array_push($res['err'], 'db_name');
@@ -151,6 +157,11 @@ Class Step4Controller extends StepController {
         return $count==0?true:false;
     }
 
+    function checkDBCharset() {
+        $row=sql_query("show variables like 'character_set_database'");
+        list(,$charset)=sql_fetch_row($row);
+        return $charset=="utf8"?true:false;
+    }
 
 	function checkStrictMode() {
 		$qtxt ="SELECT @@GLOBAL.sql_mode AS res";
