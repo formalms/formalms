@@ -131,7 +131,7 @@ class Boot {
 		self::log( "Include configuration file." );
 
 		$cfg = array();
-		if (!file_exists()){
+		if (!file_exists(dirname(__FILE__).'/../config.php')){
             $path = _deeppath_
                 .str_replace(_base_, '.', constant('_base_'));
             Header("Location: ". str_replace(array('//', '\\/', '/./'), '/', $path) ."/install/");
