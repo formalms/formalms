@@ -52,7 +52,7 @@ class DbConn {
         $user=Get::cfg('db_user');
         $pass=Get::cfg('db_pass');
         $name=Get::cfg('db_name');
-	    if (isset($connection_parameters['db_type']) && isset($connection_parameters['db_host']) && isset($connection_parameters['db_user']) && isset($connection_parameters['db_pass']) && isset($connection_parameters['db_name'])){
+	    if (isset($connection_parameters['db_type']) && isset($connection_parameters['db_host']) && isset($connection_parameters['db_user']) && isset($connection_parameters['db_pass'])){
             $db_type=$connection_parameters['db_type'];
 	        $host=$connection_parameters['db_host'];
             $user=$connection_parameters['db_user'];

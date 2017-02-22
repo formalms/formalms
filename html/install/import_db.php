@@ -9,10 +9,11 @@ DbConn::getInstance(false,array(
     'db_type'=>$_SESSION['db_info']['db_type'],
     'db_host'=>$_SESSION['db_info']['db_host'],
     'db_user'=>$_SESSION['db_info']['db_user'],
-    'db_pass'=>$_SESSION['db_info']['db_pass'],
-    'db_name'=>$_SESSION['db_info']['db_name']
+    'db_pass'=>$_SESSION['db_info']['db_pass']
 ));
 
+sql_query("CREATE DATABASE IF NOT EXISTS ".$_SESSION['db_info']['db_name']);
+sql_select_db($_SESSION['db_info']['db_name']);
 sql_query("SET NAMES 'utf8'");
 sql_query("SET CHARACTER SET 'utf8'");
 
