@@ -3377,7 +3377,7 @@ class CoursereportLmsController extends LmsController
         echo $this->json->encode($result);
     }
 
-    public function fileUploaQuestDetails(){
+    public function fileUploadQuestDetails(){
 
         require_once($GLOBALS['where_lms'].'/class.module/track.test.php');
         $idTest = Get::pReq('id_test', DOTY_MIXED, 0);
