@@ -10,6 +10,20 @@
     position: absolute;
     left: -2px;
 }
+.test-question__show-more {
+    position: relative;
+}
+
+.test-question__show-more:before {
+    content: '\f067';
+    font-family: 'FontAwesome';
+    color: #c84000;
+    position: absolute;
+}
+
+.test-question__show-more--active:before {
+    content: '\f068';
+}
 
 .test-question__percent {
     color: #000;
