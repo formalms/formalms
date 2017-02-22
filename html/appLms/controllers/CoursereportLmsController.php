@@ -3359,8 +3359,8 @@ class CoursereportLmsController extends LmsController
     public function extendedQuestDetails() {
 
         require_once($GLOBALS['where_lms'].'/class.module/track.test.php');
-        $idTest = Get::gReq('id_test', DOTY_MIXED, 0);
-        $idQuest =  Get::gReq('id_quest', DOTY_MIXED, 0);
+        $idTest = Get::pReq('id_test', DOTY_MIXED, 0);
+        $idQuest =  Get::pReq('id_quest', DOTY_MIXED, 0);
 
         $result = array('id_quest' => $idQuest);
 
@@ -3380,8 +3380,8 @@ class CoursereportLmsController extends LmsController
     public function fileUploaQuestDetails(){
 
         require_once($GLOBALS['where_lms'].'/class.module/track.test.php');
-        $idTest = Get::gReq('id_test', DOTY_MIXED, 0);
-        $idQuest =  Get::gReq('id_quest', DOTY_MIXED, 0);
+        $idTest = Get::pReq('id_test', DOTY_MIXED, 0);
+        $idQuest =  Get::pReq('id_quest', DOTY_MIXED, 0);
 
         $result = array('id_quest' => $idQuest);
 
