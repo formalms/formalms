@@ -96,9 +96,9 @@ class Track_Test extends Track_Object
 
     public static function getIdTracksFromTest($id_test)
     {
-        $query_track =	"SELECT idTrack"
-            ." FROM ".$GLOBALS['prefix_lms']."_testtrack"
-            ." WHERE idTest = '".$id_test."'";
+        $query_track = "SELECT idTrack"
+            . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack"
+            . " WHERE idTest = '" . $id_test . "'";
 
         $re = sql_query($query_track);
 
@@ -108,7 +108,7 @@ class Track_Test extends Track_Object
         }
 
         while (list($id_track) = sql_fetch_row($re)) {
-           $idTracks[] = $id_track;
+            $idTracks[] = $id_track;
         }
         return $idTracks;
     }
@@ -392,6 +392,54 @@ class Track_Test extends Track_Object
         return new Learning_Test($this->getIdTest());
     }
 
+    static function getValidTestTrackFromTestAndUsers($idTest, $idStrudents)
+    {
+
+        $query_track = "SELECT idTrack"
+            . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack"
+            . " WHERE idTest = '" . $idTest . "'"
+            . " AND score_status = 'valid'"
+            . " AND idUser in (" . implode(",", $idStrudents) . ")";
+
+        $result_track = sql_query($query_track);
+
+        $idTracks = array();
+        while (list($id_track) = sql_fetch_row($result_track)) {
+            $idTracks[] = $id_track;
+        }
+
+        return $idTracks;
+    }
+
+    static function getValidTotalPlaysTestTrackFromTestAndUsers($idTest, $idStrudents)
+    {
+
+        $query_total_play = "SELECT COUNT(*)"
+            . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack"
+            . " WHERE idTest = '" . $idTest . "'"
+            . " AND score_status = 'valid'"
+            . " AND idUser in (" . implode(",", $idStrudents) . ")";
+
+        list($total_play) = sql_fetch_row(sql_query($query_total_play));
+
+        return $total_play;
+    }
+
+    static function getTestTrackAnswersFromTrack($idTrack){
+        $query_track_answer = "SELECT idQuest, idAnswer, more_info"
+            . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer"
+            . " WHERE idTrack = '" . $idTrack . "'";
+
+        $result_track_answer = sql_query($query_track_answer);
+
+        $trackAnswers = array();
+        while (list($idQuest, $id_answer, $more_info) = sql_fetch_row($result_track_answer)) {
+
+            $trackAnswers[] = array("idQuest" => $idQuest,"idAnswer" => $id_answer,"more_info" => $more_info);
+        }
+
+        return $trackAnswers;
+    }
 }
 
 ?>
