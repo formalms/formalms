@@ -78,12 +78,20 @@ Class Step2Controller extends StepController {
 
 		// phpversion();
 		// PHP_VERSION version supported 5.2.x 5.3.x 5.4.x -- experimental 5.5.x 5.6.x
-		$res['php']=((version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '5.5.0', '<')) ? 'ok' :
-                     ((version_compare(PHP_VERSION, '5.5.0', '>=') && version_compare(PHP_VERSION, '7.0.12', '<')) ? 'warn' :  'err' ));
-		// mysql client version, in php the version number is a string regcut it
-		preg_match( '/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $version );
-		if(empty($version[1])) $res['mysql']='ok';
-		else $res['mysql']=(version_compare($version[1], '5.0') >= 0 ? 'ok' : 'err');
+		$res['php']=((version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '7.0.11', '<')) ? 'ok' :
+            ((version_compare(PHP_VERSION, '7.0.11', '>=') && version_compare(PHP_VERSION, '7.1.0', '<')) ? 'warn' :  'err' ));
+        $driver=array(
+            'mysqli'=>extension_loaded("mysqli"),
+            'mysql'=>extension_loaded("mysql")
+        );
+		if(array_filter($driver)) {
+            // mysql client version, in php the version number is a string regcut it
+		    preg_match( '/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $version );
+		    if(empty($version[1])) $res['mysql']='ok';
+		    else $res['mysql']=(version_compare($version[1], '5.0') >= 0 ? 'ok' : 'err');
+        } else {
+            $res['mysql']='err';
+		}
 		$res['xml']=(extension_loaded('domxml') ? 'ok' : 'err');
 		$res['ldap']=(extension_loaded('ldap') ? 'ok' : 'err');
 		$res['mbstring']=(extension_loaded('mbstring') ? 'ok' : 'err');

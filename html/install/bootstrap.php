@@ -22,11 +22,11 @@ require(dirname(__FILE__).'/../base.php');
 define('_installer_', _base_.'/install');
 
 include(_lib_.'/lib.docebo.php');
-include(_installer_.'/lib/lib.php');
-include(_installer_.'/lib/lib.lang.php');
-include(_installer_.'/lib/lib.step.php');
-include(_installer_.'/lib/lib.pagewriter.php');
-include(_installer_.'/lib/lib.template.php');
+include(_lib_.'/installer/lib.php');
+include(_lib_.'/installer/lib.lang.php');
+include(_lib_.'/installer/lib.step.php');
+include(_lib_.'/installer/lib.pagewriter.php');
+include(_lib_.'/installer/lib.template.php');
 PageWriter::init();
 
 include(_base_.'/lib/lib.get.php');

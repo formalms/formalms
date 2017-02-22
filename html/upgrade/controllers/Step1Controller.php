@@ -19,10 +19,6 @@ require_once(dirname(__FILE__).'/StepController.php');
 Class Step1Controller extends StepController {
 
 	public $step = 1;
-	
-	public function render() {
-		include_once(_installer_.'/views/Step'.(int)$this->step.'.php');
-	}
 
 	public function validate() {
 

@@ -266,16 +266,16 @@ function updateLearningModule() {
 
 
 function addUpgraderRoles() {
-	require_once(_installer_.'/lib/lib.role.php');
+	require_once(_lib_.'/lib/lib.role.php');
 
 	$godadmin =getGroupIdst('/framework/level/godadmin');
 	$oc0 =getGroupIdst('/oc_0');
 
-	$fn = _installer_."/data/role/rolelist_godadmin.txt";
+	$fn = _upgrader_."/data/role/rolelist_godadmin.txt";
 	$roles=explode("\n", file_get_contents($fn));
 	addRoles($roles, $godadmin);
 
-	$fn = _installer_."/data/role/rolelist_oc0.txt";
+	$fn = _upgrader_."/data/role/rolelist_oc0.txt";
 	$roles=explode("\n", file_get_contents($fn));
 	addRoles($roles, $oc0);
 
@@ -284,7 +284,7 @@ function addUpgraderRoles() {
 }
 
 function addMissingRoles() {
-	require_once(_installer_.'/lib/lib.role.php');
+	require_once(_lib_.'/installer/lib.role.php');
 
 	$role_nogroup = array(
 					'/lms/course/public/pusermanagement/view',

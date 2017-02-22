@@ -146,7 +146,7 @@ function storeSettings() {
 
 
 function addInstallerRoles() {
-	require_once(_installer_.'/lib/lib.role.php');
+	require_once(_lib_.'/installer/lib.role.php');
 
 	$godadmin =getGroupIdst('/framework/level/godadmin');
 	$oc0 =getGroupIdst('/oc_0');

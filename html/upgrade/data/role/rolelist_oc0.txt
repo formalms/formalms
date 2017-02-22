@@ -1,0 +1,13 @@
+/lms/course/public/course/view
+/lms/course/public/coursecatalogue/view
+/lms/course/public/course_autoregistration/view
+/lms/course/public/message/view
+/lms/course/public/message/send_all
+/lms/course/public/mycertificate/view
+/lms/course/public/mycompetences/view
+/lms/course/public/mygroup/view
+/lms/course/public/profile/view
+/lms/course/public/profile/mod
+/lms/course/public/public_forum/view
+/lms/course/public/public_forum/write
+/lms/course/public/public_forum/upload
