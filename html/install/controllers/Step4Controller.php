@@ -46,15 +46,20 @@ Class Step4Controller extends StepController {
                     }
                 } break;
 				case "ok": {
-					if ($this->checkStrictMode()) {
-						$err--;
-						array_push($res['ok'], 'db_host', 'db_name', 'db_user', 'db_pass');
-					}
-					else {
-						array_push($res['err'], 'db_host');
-						array_push($res['ok'], 'db_name', 'db_user', 'db_pass');
-						$res['msg']=Lang::t('_SQL_STRICT_MODE_WARN');
-					}
+				    if ($this->checkDBEmpty($db_name)) {
+                        if ($this->checkStrictMode()) {
+                            $err--;
+                            array_push($res['ok'], 'db_host', 'db_name', 'db_user', 'db_pass');
+                        } else {
+                            array_push($res['err'], 'db_host');
+                            array_push($res['ok'], 'db_name', 'db_user', 'db_pass');
+                            $res['msg'] = Lang::t('_SQL_STRICT_MODE_WARN');
+                        }
+                    } else {
+                        array_push($res['err'], 'db_name');
+                        array_push($res['ok'], 'db_host', 'db_user', 'db_pass');
+                        $res['msg']=Lang::t('_DB_NOT_EMPTY');
+                    }
 				} break;
 				case "err_connect": {
 					array_push($res['err'], 'db_host', 'db_user', 'db_pass');
@@ -139,6 +144,12 @@ Class Step4Controller extends StepController {
 		}
         return $res;
 	}
+
+	function checkDBEmpty($db_name) {
+        $row=sql_query("SELECT COUNT(DISTINCT `table_name`) FROM `information_schema`.`columns` WHERE `table_schema` = '".$db_name."'");
+        list($count)=sql_fetch_row($row);
+        return $count==0?true:false;
+    }
 
 
 	function checkStrictMode() {
