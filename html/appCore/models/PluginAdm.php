@@ -25,19 +25,25 @@ class PluginAdm extends Model {
     /**
      * Read specified plugin manifest
      * @param $plugin_name
+     * @param bool $key
      * @return bool|mixed
      */
-    function readPluginManifest($plugin_name){
+    function readPluginManifest($plugin_name,$key=false){
         $plugin_file=_base_."/plugins/".$plugin_name."/manifest.xml";
-
+        if (!file_exists($plugin_file)){
+            return false;
+        }
         if($xml = simplexml_load_file($plugin_file)){
             $man_json = json_encode($xml);
             $man_array = json_decode($man_json,TRUE);
 
-            if(!$xml->title || !$xml->version || !$xml->author || !$xml->description || !$xml->name){
+            if(!$xml->name){
                 return false;
             }
             else{
+                if (key_exists($key, $man_array)){
+                    return $man_array[$key];
+                }
                 return $man_array;
             }
         }
@@ -234,17 +240,18 @@ class PluginAdm extends Model {
     /**
      * Insert specified plugin in forma
      * @param $plugin_name
-     * @param $priority
+     * @param int $priority
      * @param bool $update
+     * @param int $core
      * @return bool|mixed
      */
-    function installPlugin($plugin_name, $priority, $update=false){
+    function installPlugin($plugin_name, $priority=0, $update=false, $core=0){
         $plugin_info=$this->readPluginManifest($plugin_name);
         //FORMA_PLUGIN: QUI AGGIUNGERE IL CONTROLLO DELLA VERSIONE
         $query = "insert into ".$this->table."
 				values(null,'".addslashes($plugin_name)."', '".addslashes($plugin_info['title'])."', '".addslashes($plugin_info['category'])."',
 					'".addslashes($plugin_info['version'])."', '".addslashes($plugin_info['author'])."', '".addslashes($plugin_info['link'])."', $priority,
-					'".addslashes($plugin_info['description'])."',".time()." ,0,0 )";
+					'".addslashes($plugin_info['description'])."',".time()." ,0,".(int)$core." )";
         if($plugin_info){
             $result = sql_query($query);
             if ($result){
@@ -347,6 +354,17 @@ class PluginAdm extends Model {
             }
         }
         return false;
+    }
+
+    public static function getPluginCore(){
+        $plugins = array_diff(scandir(_base_.'/plugins/'), array('..', '.'));
+        $plugin_list=array();
+        foreach ($plugins as $plugin){
+            if (self::readPluginManifest($plugin,'core')=="true"){
+                $plugin_list[]=$plugin;
+            }
+        }
+        return $plugin_list;
     }
 }
 
