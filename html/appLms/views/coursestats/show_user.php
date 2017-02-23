@@ -177,15 +177,21 @@ $columns = array(
 	array('key' => 'LO_type', 'label' => Lang::t('_TYPE', 'standard'), 'sortable' => true),
 	array('key' => 'LO_status', 'label' => Lang::t('_STATUS', 'standard'), 'sortable' => true, 'editor' => 'CourseUserStats.statusEditor'),
 	array('key' => 'first_access', 'label' => Lang::t('_DATE_FIRST_ACCESS', ''), 'sortable' => true, 'editor' => 'CourseUserStats.firstAccessEditor'),
-	array('key' => 'last_access', 'label' => Lang::t('_DATE_LAST_ACCESS', ''), 'sortable' => true, 'editor' => 'CourseUserStats.lastAccessEditor'),
-	array('key' => 'first_complete', 'label' => Lang::t('_DATE_FIRST_COMPLETE', ''), 'sortable' => true, 'editor' => 'CourseUserStats.firstCompleteEditor'),
-	array('key' => 'last_complete', 'label' => Lang::t('_DATE_LAST_COMPLETE', ''), 'sortable' => true, 'editor' => 'CourseUserStats.lastCompleteEditor'),
-	array('key' => 'score', 'label' => Lang::t('_SCORE', 'standard'), 'sortable' => true)
+	array('key' => 'last_access', 'label' => Lang::t('_DATE_LAST_ACCESS', ''), 'sortable' => true, 'editor' => 'CourseUserStats.lastAccessEditor')
 );
+//$columns[]=array('key' => 'first_complete', 'label' => Lang::t('_DATE_FIRST_COMPLETE', ''), 'sortable' => true, 'editor' => 'CourseUserStats.firstCompleteEditor');
+//$columns[]=array('key' => 'last_complete', 'label' => Lang::t('_DATE_LAST_COMPLETE', ''), 'sortable' => true, 'editor' => 'CourseUserStats.lastCompleteEditor');
+$columns[]=array('key' => 'history', 'label' => 'Accessi in dettaglio ', 'sortable' => false);
+$columns[]=array('key' => 'totaltime', 'label' => 'Tempo totale accessi', 'sortable' => true);
+$columns[]=array('key' => 'score', 'label' => Lang::t('_SCORE', 'standard'), 'sortable' => true);
 
 $fields = array('id', 'LO_name', 'LO_type', 'LO_status', 'first_access', 'last_access', 'first_complete', 'last_complete',
-	'first_access_timestamp', 'last_access_timestamp', 'first_complete_timestamp', 'last_complete_timestamp', 'score');
+	'first_access_timestamp', 'last_access_timestamp', 'first_complete_timestamp', 'last_complete_timestamp', 'history', 'totaltime', 'score');
 
+$rel_actions = '<a href="index.php?r=coursestats/export_csv2&id_user='.$id_user.'" class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'">'
+				.'<span>'.Lang::t('_EXPORT_CSV', 'report').'</span></a>';
+$rel_actions .= '<a href="index.php?r=coursestats/export_xls2&id_user='.$id_user.'" class="ico-wt-sprite subs_xls" title="'.Lang::t('_EXPORT_XLS', 'report').'">'
+				.'<span>'.Lang::t('_EXPORT_XLS', 'report').'</span></a>';
 
 $params = array(
 	'id' => 'courseuserstats_table',
@@ -193,6 +199,7 @@ $params = array(
 	'sort' => 'LO_name',
 	'columns' => $columns,
 	'fields' => $fields,
+	'rel_actions' => $rel_actions,
 	'use_paginator' => false,
 	'events' => array(
 		'initEvent' => 'CourseUserStats.tableInitEvent'

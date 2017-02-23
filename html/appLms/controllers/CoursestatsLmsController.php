@@ -390,7 +390,10 @@ class CoursestatsLmsController extends LmsController {
 					'first_access_timestamp' => Format::toTimestamp($record->first_access == null ? date("U") : $record->first_access ),
 					'last_access_timestamp' => Format::toTimestamp($record->last_access == null ? date("U") : $record->last_access ),
 					'first_complete_timestamp' => Format::toTimestamp($record->first_complete == null ? date("U") : $record->first_complete ),
-					'last_complete_timestamp' => Format::toTimestamp($record->last_complete == null ? date("U") : $record->last_complete )
+					'last_complete_timestamp' => Format::toTimestamp($record->last_complete == null ? date("U") : $record->last_complete ),
+					'history' => $record->history,
+					'totaltime' => $record->totaltime,
+					'score'=>$record->score
 				);
 
 				$records[] = $row;
@@ -408,6 +411,66 @@ class CoursestatsLmsController extends LmsController {
 		);
 
 		echo $this->json->encode($output);
+	}
+
+	// esportazione xls
+	public function getusertabledataxls($id_course, $id_user) {
+		$startIndex = Get::req('startIndex', DOTY_INT, 0);
+		$results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
+		$rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
+		$sort = Get::req('sort', DOTY_STRING, "");
+		$dir = Get::req('dir', DOTY_STRING, "asc");
+
+		
+		
+
+		//get total from database and validate the results count
+		$total = $this->model->getCourseUserStatsTotal($id_course, $id_user);
+		if ($startIndex >= $total) {
+			if ($total<$results) {
+				$startIndex = 0;
+			} else {
+				$startIndex = $total - $results;
+			}
+		}
+
+		$pagination = false;/*array(
+			'startIndex' => $startIndex,
+			'results' => $results,
+			'sort' => $sort,
+			'dir' => $dir
+		);*/
+
+
+		$list = $this->model->getCourseUserStatsList($pagination, $id_course, $id_user);
+
+		//format models' data
+		$records = array();
+		$output = '';
+		$acl_man = Docebo::user()->getAclManager();
+		if (is_array($list)) {
+			$lo_list = $this->model->getCourseLOs($id_course);
+			foreach ($list as $record) {
+				$output.= '<tr>';
+				$row = array(
+					'LO_name' => $record->title,
+					'LO_type' => $record->objectType,
+					'LO_status' => $record->status != "" ? $record->status : 'not attempted',
+					'first_access' => Format::date($record->first_access, 'datetime'),
+					'last_access' => Format::date($record->last_access, 'datetime'),
+					'history' => $record->history,
+					'totaltime' => $record->totaltime,
+					'score'=>$record->score
+				);
+
+				foreach ($row as $row_data) {
+						$output .= '<td>'.$row_data.'</td>';
+							}
+					$output .= '</tr>';
+			}
+		}
+
+		return $output;
 	}
 
 
@@ -443,6 +506,9 @@ class CoursestatsLmsController extends LmsController {
 		$lo_info = $this->model->getLOInfo($id_lo);
 		$course_info = $this->model->getUserCourseInfo($id_course, $id_user);
 		$track_info = $this->model->getUserTrackInfo($id_user, $id_lo);
+		$track_history = $this->model->getUserScormHistoryTrackInfo($id_user, $id_lo);
+		$total_session_time = $this->model->getUserScormHistoryTrackTotaltime($id_user, $id_lo);
+		
 		$smodel = new SubscriptionAlms();
 		$arr_statust = $smodel->getUserStatusList();
 
@@ -479,6 +545,8 @@ class CoursestatsLmsController extends LmsController {
 			'tracked' => $tracked,
 			'info' => $info,
 			'object_lo' => $this->model->getLOTrackObject($id_track, $lo_info->objectType),
+			'track_history'=>$track_history,
+			'total_session_time'=>$total_session_time,
 			'permissions' => $this->permissions
 		);
 
@@ -753,6 +821,13 @@ class CoursestatsLmsController extends LmsController {
 		return $delimiter.$formatted_value.$delimiter;
 	}
 
+	protected function _formatXlsValue($str) {
+		$str = preg_replace("/\t/", "\\t", $str); 
+		$str = preg_replace("/\r?\n/", "\\n", $str); 
+		if(strstr($str, '"')) $str = '"' . str_replace('"', '""', $str) . '"';
+		return $str;
+	}
+
 	public function export_csvTask() {
 		//check permissions
 		if (!$this->permissions['view']) Util::jump_to('index.php?r=coursestats/show');
@@ -842,6 +917,685 @@ class CoursestatsLmsController extends LmsController {
 		sendStrAsFile($output, 'coursestats_export_'.date("Ymd").'.csv');
 	}
 
+	
+	public function export_csv3Task() {
+		//check permissions
+		if (!$this->permissions['view']) Util::jump_to('index.php?r=coursestats/show');
+
+		require_once(_base_.'/lib/lib.download.php');
+
+		$id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse']>0 ? $_SESSION['idCourse'] : false;
+		if ((int)$id_course <= 0) {
+			//...
+			return;
+		}
+
+		$separator = ',';
+		$delimiter = '"';
+		$line_end = "\r\n";
+		$pagination = false;
+		$output = "";
+		$lo_list = $this->model->getCourseLOs($id_course);
+		$lo_total = count($lo_list);
+/* 
+		$head = array();
+		$head[] = $this->_formatCsvValue(Lang::t('_USERNAME', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_FULLNAME', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_LEVEL', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_STATUS', 'standard'), $delimiter);
+		foreach ($lo_list as $id_lo => $lo_info) {
+			$head[] = $this->_formatCsvValue($lo_info->title, $delimiter);
+		}
+		$head[] = $this->_formatCsvValue(Lang::t('_COMPLETED', 'course'), $delimiter);
+
+		$output .= implode($separator, $head).$line_end;
+		 */
+		$records = $this->model->getCourseStatsList(false, $id_course, false);
+		if (!empty($records)) {
+			$acl_man = Docebo::user()->getAclManager();
+
+			require_once(_lms_.'/lib/lib.subscribe.php');
+			$cman = new CourseSubscribe_Manager();
+			$arr_status = $cman->getUserStatus();
+			$arr_level = $cman->getUserLevel();
+
+			if (is_array($records)) {
+				foreach ($records as $record) {
+					// Dati anagrafici partecipante
+					$rowa = array();
+					$rowa[] =  "Dati Partecipante :";
+					$rowa[] = "Username : ".$acl_man->relativeId($record->userid);
+					$rowa[] = Lang::t('_FULLNAME', 'standard')." : ".$record->firstname.' '.$record->lastname;
+					$rowa[] = Lang::t('_LEVEL', 'standard')." : ";
+					$rowa[] = isset($arr_level[$record->level]) ? $arr_level[$record->level] : "";
+					$rowa[] = Lang::t('_STATUS', 'standard')." : ";
+					$rowa[] = isset($arr_status[$record->status]) ? $arr_status[$record->status] : "";
+					$rowa[] =  "";
+					$rowa[] =  "";
+					$rowa[] =  "";
+					$rowa[] =  "";
+					
+					
+					$num_completed = 0;
+					$csv_row = array();
+					foreach ($rowa as $row_data) {
+						$csv_row[] = $this->_formatCsvValue($row_data, $delimiter);
+							}
+					$output .= implode($separator, $csv_row).$line_end;
+					//Intestazione  LO
+					$head = array();
+					$head[] = $this->_formatCsvValue('Nome oggetto', $delimiter);
+					$head[] = $this->_formatCsvValue('Tipo', $delimiter);
+					$head[] = $this->_formatCsvValue('Stato', $delimiter);
+					$head[] = $this->_formatCsvValue('Primo Accesso', $delimiter);
+					$head[] = $this->_formatCsvValue('Data Ultimo Accesso', $delimiter);
+					$head[] = $this->_formatCsvValue('Accessi in dettaglio', $delimiter);
+					$head[] = $this->_formatCsvValue('Data', $delimiter);
+					$head[] = $this->_formatCsvValue('Durata', $delimiter);
+					$head[] = $this->_formatCsvValue('Esito', $delimiter);
+					$head[] = $this->_formatCsvValue('Tempo totale accessi', $delimiter);
+					$head[] = $this->_formatCsvValue('Punteggio', $delimiter);
+		
+
+					$output .= implode($separator, $head).$line_end;
+					// dettaglio LO
+					$list = $this->model->getCourseUserStatsList2csv($pagination, $id_course, $record->idst);
+					
+					if (is_array($list)) {
+			
+						foreach ($list as $recordlo) {
+								
+				
+						
+						$history = $recordlo->history;
+						
+				
+						 if (is_array($history)) {
+					
+						foreach ($history as $key=>$history_rec) { 
+							if ($key == 0) {
+								$row = array();
+								$row = array(
+									'LO_name' => $recordlo->title,
+									'LO_type' => $recordlo->objectType,
+									'LO_status' => $recordlo->status != "" ? $recordlo->status : 'not attempted',
+									'first_access' => Format::date($recordlo->first_access, 'datetime'),
+									'last_access' => Format::date($recordlo->last_access, 'datetime'),
+									'history_attempt' => $key + 1  ,
+									'history_date' =>  Format::date($history_rec[0],'datetime'),
+									'history_duration' =>  $history_rec[3],
+									'history_status' =>  $history_rec[4],
+									'totaltime' => $recordlo->totaltime,
+									'score'=>$recordlo->score
+								);
+							
+							}
+						else {
+							$row = array();
+							$row = array(
+								'LO_name' => '',
+								'LO_type' => '',
+								'LO_status' => '',
+								'first_access' => '',
+								'last_access' => '',
+								'history_attempt' => $key + 1,
+								'history_date' =>  Format::date($history_rec[0],'datetime'),
+								'history_duration' =>  $history_rec[3],
+								'history_status' =>  $history_rec[4],
+								'totaltime' => '',
+								'score'=>''
+							);						
 }
+						 // aggiungi una riga per ogni record storico accessi
+						$csv_row = array();
+						foreach ($row as $row_data) {
+						$csv_row[] = $this->_formatCsvValue($row_data, $delimiter);
+							}
+						$output .= implode($separator, $csv_row).$line_end;
+					}// each */
+					
+					} else // nessuna history
+						
+					{
+						$row = array();
+						$row = array(
+								
+								'LO_name' => $recordlo->title,
+								'LO_type' => $recordlo->objectType,
+								'LO_status' => $recordlo->status != "" ? $record->status : 'not attempted',
+								'first_access' => Format::date($recordlo->first_access, 'datetime'),
+								'last_access' => Format::date($recordlo->last_access, 'datetime'),
+								'history_attempt' => 'nd'  ,
+								'history_date' =>  'nd',
+								'history_duration' =>  'nd',
+								'history_status' =>  'nd',
+								'totaltime' => $recordlo->totaltime,
+								'score'=>$recordlo->score
+							);
+						$csv_row = array();
+						foreach ($row as $row_data) {
+							$csv_row[] = $this->_formatCsvValue($row_data, $delimiter);
+							}
+							$output .= implode($separator, $csv_row).$line_end;
+					}
+						 
+					
+					} // each recordlo
+					} // is array list
+					
+
+					//format row and produce a string text to add to CSV file
+					
+				}
+			}
+		}
+
+		sendStrAsFile($output, 'coursestats_export_'.date("Ymd").'.csv');
+	}
+	
+	
+	
+public	function export_XlsTask() {
+		//check permissions
+		if (!$this->permissions['view']) Util::jump_to('index.php?r=coursestats/show');
+
+		require_once(_base_.'/lib/lib.download.php');
+
+		$id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse']>0 ? $_SESSION['idCourse'] : false;
+		if ((int)$id_course <= 0) {
+			//...
+			return;
+		}
+
+		
+		$output = "";
+		$lo_list = $this->model->getCourseLOs($id_course);
+		$lo_total = count($lo_list);
+		$output = '<table border="1">';
+		$records = $this->model->getCourseStatsList(false, $id_course, false);
+		if (!empty($records)) {
+			$acl_man = Docebo::user()->getAclManager();
+
+			require_once(_lms_.'/lib/lib.subscribe.php');
+			$cman = new CourseSubscribe_Manager();
+			$arr_status = $cman->getUserStatus();
+			$arr_level = $cman->getUserLevel();
+
+			if (is_array($records)) {
+				foreach ($records as $record) {
+					// Dati anagrafici partecipante
+					$output .= '<tr>';
+					$rowa = array();
+					$rowa[] =  "Dati Partecipante :";
+					$rowa[] = "Username : ".$acl_man->relativeId($record->userid);
+					$rowa[] = Lang::t('_FULLNAME', 'standard')." : ".$record->firstname.' '.$record->lastname;
+					$rowa[] = Lang::t('_LEVEL', 'standard')." : ";
+					$rowa[] = isset($arr_level[$record->level]) ? $arr_level[$record->level] : "";
+					$rowa[] = Lang::t('_STATUS', 'standard')." : ";
+					$rowa[] = isset($arr_status[$record->status]) ? $arr_status[$record->status] : "";
+					$rowa[] =  "";
+					
+					
+					
+					$num_completed = 0;
+					
+					foreach ($rowa as $row_data) {
+						$output .= '<th>'.$row_data.'</th>';
+							}
+					$output .= '</tr>';
+					//Intestazione  LO
+					$output .= '<tr>';
+					$head = array();
+					$head[] = 'Nome oggetto';
+					$head[] = 'Tipo';
+					$head[] = 'Stato';
+					$head[] = 'Primo Accesso';
+					$head[] = 'Data Ultimo Accesso';
+					$head[] = 'Accessi in dettaglio';
+					$head[] = 'Tempo totale accessi';
+					$head[] ='Punteggio';
+					foreach ($head as $row_data) {
+						$output .= '<th>'.$row_data.'</th>';
+							}
+					$output .= '</tr>';
+
+					$dettaglio =  $this->getusertabledataxls($id_course, $record->idst);
+					// dettaglio LO
+					
+					
+					if ($dettaglio) {
+						$output .= $dettaglio;
+						}
+				}
+			}
+		}
+$output .= '</table>';
+
+
+
+header("Expires: 0");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Content-type: application/vnd.ms-excel;charset:UTF-8");
+header("Content-Disposition: attachment; filename=".'coursestats_export_'.date("Ymd").'.xls');
+print "\n"; // Add a line, unless excel error..
+echo $output;
+exit(); 
+
+	}
+	
+	public	function export_Xls2Task() {
+		//check permissions
+		if (!$this->permissions['view']) Util::jump_to('index.php?r=coursestats/show');
+
+		require_once(_base_.'/lib/lib.download.php');
+
+		$id_course = Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
+		$id_user = Get::req('id_user', DOTY_INT, 0);
+		if ((int)$id_course <= 0) {
+			//...
+			return;
+		}
+		
+		
+		
+		
+		$output = "";
+		
+		
+		$smodel = new SubscriptionAlms();
+		$arr_status = $smodel->getUserStatusList();
+
+		$acl_man = Docebo::user()->getACLManager();
+		$user_info = $acl_man->getUser($id_user, false);
+		$course_info = $this->model->getUserCourseInfo($id_course, $id_user);
+		$info = new stdClass();
+		$info->userid = $acl_man->relativeId($user_info[ACL_INFO_USERID]);
+		$info->firstname = $user_info[ACL_INFO_FIRSTNAME];
+		$info->lastname = $user_info[ACL_INFO_LASTNAME];
+		$info->course_status = isset($arr_status[$course_info->status]) ? $arr_status[$course_info->status] : "";
+		$info->first_access = $course_info->date_first_access != "" ? Format::date($course_info->date_first_access, 'datetime') : Lang::t('_NEVER', '');
+		$info->last_access = '';
+		$info->date_complete = $course_info->date_complete != "" ? Format::date($course_info->date_complete, 'datetime') : Lang::t('_NONE', '');
+		
+		
+		$output = '<table border="1">';
+		
+			
+
+			
+
+			
+					// Dati anagrafici partecipante
+					$output .= '<tr>';
+					$rowa = array();
+					$rowa[] =  "Dati Partecipante ";
+					$rowa[] = "Username : ".$acl_man->relativeId($info->userid);
+					$rowa[] = Lang::t('_FULLNAME', 'standard')." : ".$info->firstname.' '.$info->lastname;
+					$rowa[] = "";
+					$rowa[] = "";
+					$rowa[] = "Primo accesso : ".$info->first_access;
+					$rowa[] = "Stato : ".$info->course_status;
+					$rowa[] =  "";
+					
+					
+					
+					$num_completed = 0;
+					
+					foreach ($rowa as $row_data) {
+						$output .= '<th>'.$row_data.'</th>';
+							}
+					$output .= '</tr>';
+					//Intestazione  LO
+					$output .= '<tr>';
+					$head = array();
+					$head[] = 'Nome oggetto';
+					$head[] = 'Tipo';
+					$head[] = 'Stato';
+					$head[] = 'Primo Accesso';
+					$head[] = 'Data Ultimo Accesso';
+					$head[] = 'Accessi in dettaglio';
+					$head[] = 'Tempo totale accessi';
+					$head[] ='Punteggio';
+					foreach ($head as $row_data) {
+						$output .= '<th>'.$row_data.'</th>';
+							}
+					$output .= '</tr>';
+
+					$dettaglio =  $this->getusertabledataxls($id_course, $id_user );
+					// dettaglio LO
+					
+					
+					if ($dettaglio) {
+						$output .= $dettaglio;
+						}
+			
+		
+$output .= '</table>';
+
+
+
+header("Expires: 0");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Content-type: application/vnd.ms-excel;charset:UTF-8");
+header("Content-Disposition: attachment; filename=".'course_stats_user_export_'.date("Ymd").'.xls');
+print "\n"; // Add a line, unless excel error..
+echo $output;
+exit(); 
+
+	}
+
+	
+	
+	public function export_Csv4Task() {
+		//check permissions
+		if (!$this->permissions['view']) Util::jump_to('index.php?r=coursestats/show');
+
+		require_once(_base_.'/lib/lib.download.php');
+
+		$id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse']>0 ? $_SESSION['idCourse'] : false;
+		if ((int)$id_course <= 0) {
+			//...
+			return;
+		}
+
+		$separator = "\t";
+		$delimiter = "'";
+		$line_end = "\r\n";
+		$pagination = false;
+		$output = "";
+		$lo_list = $this->model->getCourseLOs($id_course);
+		$lo_total = count($lo_list);
+
+		$records = $this->model->getCourseStatsList(false, $id_course, false);
+		if (!empty($records)) {
+			$acl_man = Docebo::user()->getAclManager();
+
+			require_once(_lms_.'/lib/lib.subscribe.php');
+			$cman = new CourseSubscribe_Manager();
+			$arr_status = $cman->getUserStatus();
+			$arr_level = $cman->getUserLevel();
+
+			if (is_array($records)) {
+				foreach ($records as $record) {
+					// Dati anagrafici partecipante
+					$rowa = array();
+					$rowa[] =  "Dati Partecipante :";
+					$rowa[] = "Username : ".$acl_man->relativeId($record->userid);
+					$rowa[] = Lang::t('_FULLNAME', 'standard')." : ".$record->firstname.' '.$record->lastname;
+					$rowa[] = Lang::t('_LEVEL', 'standard')." : ";
+					$rowa[] = isset($arr_level[$record->level]) ? $arr_level[$record->level] : "";
+					$rowa[] = Lang::t('_STATUS', 'standard')." : ";
+					$rowa[] = isset($arr_status[$record->status]) ? $arr_status[$record->status] : "";
+					$rowa[] =  "";
+					$rowa[] =  "";
+					$rowa[] =  "";
+					$rowa[] =  "";
+					
+					
+					$num_completed = 0;
+					$csv_row = array();
+					foreach ($rowa as $row_data) {
+						$csv_row[] = $this->_formatXlsValue($row_data);
+							}
+					$output .= implode($separator, $csv_row).$line_end;
+					//Intestazione  LO
+					$head = array();
+					$head[] = 'Nome oggetto';
+					$head[] = 'Tipo';
+					$head[] = 'Stato';
+					$head[] = 'Primo Accesso';
+					$head[] = 'Data Ultimo Accesso';
+					$head[] = 'Accessi in dettaglio';
+					$head[] = 'Data';
+					$head[] = 'Durata';
+					$head[] ='Esito';
+					$head[] = 'Tempo totale accessi';
+					$head[] ='Punteggio';
+		
+
+					$output .= implode($separator, $head).$line_end;
+					// dettaglio LO
+					$list = $this->model->getCourseUserStatsList2csv($pagination, $id_course, $record->idst);
+					
+					if (is_array($list)) {
+			
+						foreach ($list as $recordlo) {
+								
+				
+						
+						$history = $recordlo->history;
+						
+				
+						 if (is_array($history)) {
+					
+						foreach ($history as $key=>$history_rec) { 
+							if ($key == 0) {
+								$row = array();
+								$row = array(
+									'LO_name' => $recordlo->title,
+									'LO_type' => $recordlo->objectType,
+									'LO_status' => $recordlo->status != "" ? $recordlo->status : 'not attempted',
+									'first_access' => Format::date($recordlo->first_access, 'datetime'),
+									'last_access' => Format::date($recordlo->last_access, 'datetime'),
+									'history_attempt' => $key + 1  ,
+									'history_date' =>  Format::date($history_rec[0],'datetime'),
+									'history_duration' =>  $history_rec[3],
+									'history_status' =>  $history_rec[4],
+									'totaltime' => $recordlo->totaltime,
+									'score'=>$recordlo->score
+								);
+							
+							}
+						else {
+							$row = array();
+							$row = array(
+								'LO_name' => '',
+								'LO_type' => '',
+								'LO_status' => '',
+								'first_access' => '',
+								'last_access' => '',
+								'history_attempt' => $key + 1,
+								'history_date' =>  Format::date($history_rec[0],'datetime'),
+								'history_duration' =>  $history_rec[3],
+								'history_status' =>  $history_rec[4],
+								'totaltime' => '',
+								'score'=>''
+							);						
+						}
+						 // aggiungi una riga per ogni record storico accessi
+						$csv_row = array();
+						foreach ($row as $row_data) {
+						$csv_row[] = $this->_formatXlsValue($row_data);
+							}
+						$output .= implode($separator, $csv_row).$line_end;
+					}// each */
+					
+					} else // nessuna history
+						
+					{
+						$row = array();
+						$row = array(
+								
+								'LO_name' => $recordlo->title,
+								'LO_type' => $recordlo->objectType,
+								'LO_status' => $recordlo->status != "" ? $record->status : 'not attempted',
+								'first_access' => Format::date($recordlo->first_access, 'datetime'),
+								'last_access' => Format::date($recordlo->last_access, 'datetime'),
+								'history_attempt' => 'nd'  ,
+								'history_date' =>  'nd',
+								'history_duration' =>  'nd',
+								'history_status' =>  'nd',
+								'totaltime' => $recordlo->totaltime,
+								'score'=>$recordlo->score
+							);
+						$csv_row = array();
+						foreach ($row as $row_data) {
+							$csv_row[] = $this->_formatXlsValue($row_data);
+							}
+							$output .= implode($separator, $csv_row).$line_end;
+					}
+						 
+					
+					} // each recordlo
+					} // is array list
+					
+
+					//format row and produce a string text to add to CSV file
+					
+				}
+			}
+		}
+//sendStrAsFile($output, 'coursestats_export_'.date("Ymd").'.xls');
+header("Content-type: application/vnd.ms-excel");
+header("Content-Disposition: attachment; filename=".'coursestats_export_'.date("Ymd").'.csv');
+echo $output;
+exit();
+	}
+
+	public function export_csv2Task() {
+    //check permissions
+		if (!$this->permissions['view']) Util::jump_to('index.php?r=coursestats/show');
+
+		require_once(_base_.'/lib/lib.download.php');
+
+		$id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse']>0 ? $_SESSION['idCourse'] : false;
+		if ((int)$id_course <= 0) {
+			//...
+			return;
+		}
+
+		$separator = ',';
+		$delimiter = '"';
+		$line_end = "\r\n";
+		$pagination = false;
+		$id_course = Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
+		$id_user = Get::req('id_user', DOTY_INT, 0);
+		
+		$output = "";
+		
+
+		$head = array();
+		$head[] = $this->_formatCsvValue('Nome', $delimiter);
+		$head[] = $this->_formatCsvValue('Tipo', $delimiter);
+		$head[] = $this->_formatCsvValue('Stato', $delimiter);
+		$head[] = $this->_formatCsvValue('Primo Accesso', $delimiter);
+		$head[] = $this->_formatCsvValue('Data Ultimo Accesso', $delimiter);
+		$head[] = $this->_formatCsvValue('Accessi in dettaglio', $delimiter);
+		$head[] = $this->_formatCsvValue('Data', $delimiter);
+		$head[] = $this->_formatCsvValue('Durata', $delimiter);
+		$head[] = $this->_formatCsvValue('Esito', $delimiter);
+		$head[] = $this->_formatCsvValue('Tempo totale accessi', $delimiter);
+		$head[] = $this->_formatCsvValue('Punteggio', $delimiter);
+		
+
+		$output .= implode($separator, $head).$line_end;
+
+		$list = $this->model->getCourseUserStatsList2csv($pagination, $id_course, $id_user);
+		
+		$records = array();
+		$acl_man = Docebo::user()->getAclManager();
+		if (is_array($list)) {
+			
+			foreach ($list as $record) {
+				
+				$row = array(
+								'LO_name' => $record->title,
+								'LO_type' => $record->objectType,
+								'LO_status' => $record->status != "" ? $record->status : 'not attempted',
+								'first_access' => Format::date($record->first_access, 'datetime'),
+								'last_access' => Format::date($record->last_access, 'datetime'),
+								'history_attempt' => 'nd'  ,
+								'history_date' =>  'nd',
+								'history_duration' =>  'nd',
+								'history_status' =>  'nd',
+								'totaltime' => $record->totaltime,
+								'score'=>$record->score
+							);
+				
+				
+				
+				$history = $record->history;
+				
+				
+				if (is_array($history)) {
+					
+					foreach ($history as $key=>$history_rec) { 
+						if ($key == 0) {
+							$row = array(
+								'LO_name' => $record->title,
+								'LO_type' => $record->objectType,
+								'LO_status' => $record->status != "" ? $record->status : 'not attempted',
+								'first_access' => Format::date($record->first_access, 'datetime'),
+								'last_access' => Format::date($record->last_access, 'datetime'),
+								'history_attempt' => $key + 1  ,
+								'history_date' =>  Format::date($history_rec[0],'datetime'),
+								'history_duration' =>  $history_rec[3],
+								'history_status' =>  $history_rec[4],
+								'totaltime' => $record->totaltime,
+								'score'=>$record->score
+							);
+							
+						}
+						else {
+							$row = array(
+								'LO_name' => '',
+								'LO_type' => '',
+								'LO_status' => '',
+								'first_access' => '',
+								'last_access' => '',
+								'history_attempt' => $key + 1,
+								'history_date' =>  Format::date($history_rec[0],'datetime'),
+								'history_duration' =>  $history_rec[3],
+								'history_status' =>  $history_rec[4],
+								'totaltime' => '',
+								'score'=>''
+							);
+							
+							
+						}
+						 // aggiungi una riga per ogni record storico accessi
+						 $csv_row = array();
+						foreach ($row as $row_data) {
+						$csv_row[] = $this->_formatCsvValue($row_data, $delimiter);
+							}
+						$output .= implode($separator, $csv_row).$line_end;
+						} // each
+				}  else // is array
+				{
+					$csv_row = array();
+					foreach ($row as $row_data) {
+					$csv_row[] = $this->_formatCsvValue($row_data, $delimiter);
+						}
+					$output .= implode($separator, $csv_row).$line_end;
+				}
+			} // each list
+			
+		
+		
+		
+        } // is array list
+			
+		
+				
+			
+		
+		
+		
+
+		sendStrAsFile($output, 'course_user_stats_export_'.$id_user.'_'.date("Ymd").'.csv');
+	}
+
+	
+
+
+} 
+
+
 
 ?>

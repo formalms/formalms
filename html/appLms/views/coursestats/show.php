@@ -74,6 +74,8 @@ foreach ($lo_list as $lo) {
 
 $rel_actions = '<a href="index.php?r=coursestats/export_csv" class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'">'
 				.'<span>'.Lang::t('_EXPORT_CSV', 'report').'</span></a>';
+$rel_actions .= '<a href="index.php?r=coursestats/export_csv3" class="ico-wt-sprite subs_csv" title="Esporta report  dettagliato come CSV "><span>Esporta report  dettagliato come CSV</span></a>';
+$rel_actions .= '<a href="index.php?r=coursestats/export_Xls"  class="ico-wt-sprite subs_xls" title="Esporta report  dettagliato come XLS "><span>Esporta report  dettagliato come XLS</span></a>';
 
 
 if( checkPerm('view_all', true, 'coursestats') == false ) {
