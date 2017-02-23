@@ -115,6 +115,20 @@ function sendFileFromFS(\appCore\Events\Core\FileSystem\DownloadEvent $event){
 
 function sendStrAsFile($string, $filename, $charset=false) {
 
+        // UTF-8
+        $bom = "\xEF\xBB\xBF";
+        $meta = '<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />';
+        
+        switch( pathinfo($filename, PATHINFO_EXTENSION) ) {
+            case "csv": 
+                $string = $bom.$string;
+                break;
+            case "xls":
+                $string = $meta.$string;
+                break;
+            default: break;
+        }
+    
 	//empty and close buffer
 
 	@DbConn::getInstance()->close();
@@ -135,6 +149,7 @@ function sendStrAsFile($string, $filename, $charset=false) {
 	if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
 		header('Pragma: private');
 	}
+	header('Content-Encoding: UTF-8');
 	header('Content-Disposition: attachment; filename="'.$filename.'"');
 
 

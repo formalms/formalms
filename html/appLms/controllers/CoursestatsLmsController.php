@@ -1171,17 +1171,8 @@ public	function export_XlsTask() {
 		}
 $output .= '</table>';
 
+sendStrAsFile($output, 'coursestats_export_'.date("Ymd").'.xls');
 
-
-header("Expires: 0");
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-header("Cache-Control: no-store, no-cache, must-revalidate");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
-header("Content-type: application/vnd.ms-excel;charset:UTF-8");
-header("Content-Disposition: attachment; filename=".'coursestats_export_'.date("Ymd").'.xls');
-print "\n"; // Add a line, unless excel error..
-echo $output;
 exit(); 
 
 	}
@@ -1275,17 +1266,8 @@ exit();
 		
 $output .= '</table>';
 
+sendStrAsFile($output, 'coursestats_export_'.date("Ymd").'.xls');
 
-
-header("Expires: 0");
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-header("Cache-Control: no-store, no-cache, must-revalidate");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
-header("Content-type: application/vnd.ms-excel;charset:UTF-8");
-header("Content-Disposition: attachment; filename=".'course_stats_user_export_'.date("Ymd").'.xls');
-print "\n"; // Add a line, unless excel error..
-echo $output;
 exit(); 
 
 	}
@@ -1451,10 +1433,7 @@ exit();
 				}
 			}
 		}
-//sendStrAsFile($output, 'coursestats_export_'.date("Ymd").'.xls');
-header("Content-type: application/vnd.ms-excel");
-header("Content-Disposition: attachment; filename=".'coursestats_export_'.date("Ymd").'.csv');
-echo $output;
+sendStrAsFile($output, 'coursestats_export_'.date("Ymd").'.csv');
 exit();
 	}
 
