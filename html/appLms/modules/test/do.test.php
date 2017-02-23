@@ -1305,8 +1305,8 @@ function showResult($object_test, $id_param)
 
     if ($test_info['show_score'] && $test_info['point_type'] != '1') {
 
-        //$GLOBALS['page']->add('<span class="test_score_note">'.$lang->def('_TEST_TOTAL_SCORE').'</span> '.($point_do + $bonus_score).' / '.$max_score.'<br />', 'content');
-        $GLOBALS['page']->add('<span class="test_score_note">' . $lang->def('_TEST_TOTAL_SCORE') . '</span> ' . ($point_do + $bonus_score) . ' / 100<br />', 'content');
+        $GLOBALS['page']->add('<span class="test_score_note">'.$lang->def('_TEST_TOTAL_SCORE').'</span> '.($point_do + $bonus_score).' / '.$max_score.'<br />', 'content');
+        //$GLOBALS['page']->add('<span class="test_score_note">' . $lang->def('_TEST_TOTAL_SCORE') . '</span> ' . ($point_do + $bonus_score) . ' / 100<br />', 'content');
         if ($num_manual != 0 && $score_status != 'valid') {
             $GLOBALS['page']->add('<br />'
                 . '<span class="test_score_note">' . $lang->def('_TEST_MANUAL_SCORE') . '</span> ' . $manual_score . ' ' . $lang->def('_TEST_SCORES') . '<br />', 'content');
