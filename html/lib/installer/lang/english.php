@@ -103,7 +103,9 @@ define("_DATABASE", "Database");
 define("_DB_IMPORTING", "Importing database");
 define("_LANGUAGES", "Languages");
 // -----------------------------------------
-define("_TITLE_STEP7", "Step 7: Installation completed");
+define("_TITLE_STEP7", "Step 7: Plugin installation");
+// -----------------------------------------
+define("_TITLE_STEP8", "Step 8: Installation completed");
 define("REMOVE_INSTALL_FOLDER", "It is suggested to remove the install folder, forma is vulnerable until it is reachable.");
 define("_INSTALLATION_COMPLETED", "Installation has been completed");
 define("_INSTALLATION_DETAILS", "Details");

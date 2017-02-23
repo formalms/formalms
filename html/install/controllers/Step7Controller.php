@@ -10,6 +10,9 @@ Class Step7Controller extends StepController {
 	public function validate() {
 		return true;
 	}
+	public static function plugin_core(){
+
+    }
 
 }
 
