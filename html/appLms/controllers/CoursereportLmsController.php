@@ -3155,7 +3155,7 @@ class CoursereportLmsController extends LmsController
     }
 
 
-    function testQuestionNew()
+    function testQuestion()
     {
         checkPerm('view', true, $this->_mvc_name);
         $responseValue = array();
@@ -3398,7 +3398,7 @@ class CoursereportLmsController extends LmsController
         echo $this->json->encode($result);
     }
 
-    function testQuestion()
+    function testQuestionOld()
     {
         $responseValue = array();
 
