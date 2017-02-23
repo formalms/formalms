@@ -118,22 +118,27 @@ $this->widget('table', $params);
 
 ?>
 </div>
+
+<script src="<?php echo Get::rel_path('lms').'/views/coursestats/coursestats.js'; ?>"></script>
+
 <script type="text/javascript">
-	CourseStats.init({
-		langs: {
-			_LO_NOT_STARTED: "<?php echo Lang::t('_NOT_STARTED', 'standard'); ?>",
-			_COMPLETED: "<?php echo Lang::t('_COMPLETED', 'standard'); ?>",
-			_PERCENTAGE: "<?php echo Lang::t('_PERCENTAGE', 'standard'); ?>"
-		},
-		idCourse: <?php echo (int)$id_course; ?>,
-		filterText: "<?php echo $filter_text; ?>",
-		filterSelection: <?php echo (int)$filter_selection; ?>,
-		filterOrgChart: <?php echo (int)$filter_orgchart; ?>,
-		filterGroups: <?php echo (int)$filter_groups; ?>,
-		filterDescendants: <?php echo $filter_descendants ? 'true' : 'false'; ?>,
-		countLOs: <?php echo count($lo_list); ?>,
-		footerData: [<?php echo $lo_totals_js; ?>],
-		statusList: <?php echo $status_list; ?>,
-		view_all: <?php echo $view_all_perm; ?>
-	});
+    YAHOO.util.Event.onDOMReady(function() {
+        CourseStats.init({
+            langs: {
+                _LO_NOT_STARTED: "<?php echo Lang::t('_NOT_STARTED', 'standard'); ?>",
+                _COMPLETED: "<?php echo Lang::t('_COMPLETED', 'standard'); ?>",
+                _PERCENTAGE: "<?php echo Lang::t('_PERCENTAGE', 'standard'); ?>"
+            },
+            idCourse: <?php echo (int)$id_course; ?>,
+            filterText: "<?php echo $filter_text; ?>",
+            filterSelection: <?php echo (int)$filter_selection; ?>,
+            filterOrgChart: <?php echo (int)$filter_orgchart; ?>,
+            filterGroups: <?php echo (int)$filter_groups; ?>,
+            filterDescendants: <?php echo $filter_descendants ? 'true' : 'false'; ?>,
+            countLOs: <?php echo count($lo_list); ?>,
+            footerData: [<?php echo $lo_totals_js; ?>],
+            statusList: <?php echo $status_list; ?>,
+            view_all: <?php echo $view_all_perm; ?>
+        });
+    });
 </script>

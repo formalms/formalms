@@ -104,8 +104,6 @@ class CoursestatsLmsController extends LmsController {
 			return;
 		}
 
-		Util::get_js(Get::rel_path("base").'/lib/js_utils.js', true, true);
-		Util::get_js(Get::rel_path("lms").'/views/coursestats/coursestats.js', true, true);
 
 		$total_users = $this->model->getCourseStatsTotal($id_course, false);
                 
