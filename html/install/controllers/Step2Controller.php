@@ -20,7 +20,7 @@ function checkRequirements() {
 	// phpversion();
 	// PHP_VERSION version supported 5.2.x 5.3.x 5.4.x -- experimental 5.5.x 5.6.x
 	$res['php']=((version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '7.0.11', '<')) ? 'ok' :
-                     ((version_compare(PHP_VERSION, '7.0.11', '>=') && version_compare(PHP_VERSION, '7.0.14', '<')) ? 'warn' :  'err' ));
+                     ((version_compare(PHP_VERSION, '7.0.11', '>=') && version_compare(PHP_VERSION, '7.1.0', '<')) ? 'warn' :  'err' ));
 	$driver=array(
         'mysqli'=>extension_loaded("mysqli"),
 	    'mysql'=>extension_loaded("mysql")
