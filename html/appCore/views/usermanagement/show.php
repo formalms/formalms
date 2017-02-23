@@ -280,6 +280,7 @@ UserManagement.init({
 		_EXPORT_CSV: "<?php echo Lang::t('_EXPORT_CSV', 'admin_directory'); ?>",
 		_MOD: "<?php echo Lang::t('_MOD', 'standard'); ?>",
 		_DEL: "<?php echo Lang::t('_DEL', 'standard'); ?>",
+		_GENERATE_PASSWORD: "<?php echo Lang::t('_GENERATE_PASSWORD', 'user_managment'); ?>",
 		_MORE_ACTIONS: "<?php echo Lang::t('_MORE_ACTIONS', 'admin_directory'); ?>",
 		_EMPTY_SELECTION: "<?php echo Lang::t('_EMPTY_SELECTION', 'admin_directory'); ?>",
 		_DIRECTORY_MEMBERTYPETREE: "<?php echo Lang::t('_DIRECTORY_MEMBERTYPETREE', 'admin_directory'); ?>",
