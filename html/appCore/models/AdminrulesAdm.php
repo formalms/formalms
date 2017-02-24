@@ -141,7 +141,10 @@ class AdminrulesAdm extends Model
 			'associate_user' => 'ico-sprite subs_users',
 			'approve_waiting_user' => 'ico-sprite subs_user',
 			'subscribe' => 'ico-sprite subs_users',
-			'moderate' => 'ico-sprite subs_user'
+			'moderate' => 'ico-sprite subs_user',
+			'add_org' => 'ico-sprite subs_add',
+			'mod_org' => 'ico-sprite subs_mod',
+			'del_org' => 'ico-sprite subs_del'
 		);
 
 		switch($id)

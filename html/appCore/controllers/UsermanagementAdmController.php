@@ -42,9 +42,9 @@ class UsermanagementAdmController extends AdmController {
 			'del_user'				=> checkPerm('del', true, 'usermanagement'),					//remove users
 			'approve_waiting_user'	=> checkPerm('approve_waiting_user', true, 'usermanagement'),	//approve waiting users
 			'view_org'				=> checkPerm('view', true, 'usermanagement'),					//view orgchart tree
-			'add_org'				=> checkPerm('mod_org', true, 'usermanagement'),					//create orgchart branches
+			'add_org'				=> checkPerm('add_org', true, 'usermanagement'),					//create orgchart branches
 			'mod_org'				=> checkPerm('mod_org', true, 'usermanagement'),					//edit orgchart branches
-			'del_org'				=> checkPerm('mod_org', true, 'usermanagement'),					//remove orgchart branches
+			'del_org'				=> checkPerm('del_org', true, 'usermanagement'),					//remove orgchart branches
 			'associate_user'		=> checkPerm('associate_user', true, 'usermanagement')
 		);
 
@@ -1110,6 +1110,16 @@ class UsermanagementAdmController extends AdmController {
 			}
 		}
 
+		//add action
+		if ($this->permissions['add_org']) {
+			$actions[] = array(
+				'id' => 'add_'.$id_action,
+				'command' => 'add',
+				'icon' => 'blank.png',
+				'alt' => ''
+			);
+		}
+                
 		return $actions;
 	}
 

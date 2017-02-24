@@ -40,7 +40,9 @@ class UsermanagementAdm extends Model {
 			'approve_waiting_user'	=> 'standard/wait_alarm.png',
 			'associate_user'		=> 'standard/moduser.png',
 			// Enable orgchart nodes creation and edit permission for admins
-			//'mod_org'            => 'standard/modadmin.png'
+			'add_org'				=> 'standard/add.png',
+			'mod_org'                               => 'standard/modadmin.png',
+			'del_org'				=> 'standard/delete.png'
 		);
 	}
 
@@ -1287,8 +1289,10 @@ class UsermanagementAdm extends Model {
 		if ($userFilter) {
 			$userlevelid = $this->getUserLevel();
 			if( $userlevelid != ADMIN_GROUP_GODADMIN ) {
+                            //if (!checkPerm('mod_org', true, 'usermanagement')){
 				$orgTree = $this->_getAdminOrgTree();
 				$is_subadmin = true;
+                            //}
 			}
 		}
 
@@ -1783,14 +1787,6 @@ class UsermanagementAdm extends Model {
 			//if node has been correctly inserted then ...
 			if ($id) {
 
-				//if the creator is a sub admin, make the folder visible for himself
-				$userlevelid = $this->getUserLevel();
-				if( $userlevelid != ADMIN_GROUP_GODADMIN ) {
-					require_once(_base_.'/lib/lib.preference.php');
-					$adminManager = new AdminPreference();
-					$adminManager->addAdminTree($id, Docebo::user()->getIdST());
-				}
-
 				//create group and descendants
 				$acl =& Docebo::user()->getACLManager();
 				$idst_oc = $acl->registerGroup('/oc_'.(int)$id, '', true);
@@ -1798,6 +1794,14 @@ class UsermanagementAdm extends Model {
 				$acl->addToGroup($acl->getGroupST('ocd_'.(int)$id_parent), $idst_ocd); //register the idst of the new branch's descendants into the parent node /ocd_
 				$acl->addToGroup($idst_ocd, $idst_oc);
 
+				//if the creator is a sub admin, make the folder visible for himself
+				$userlevelid = $this->getUserLevel();
+				if( $userlevelid != ADMIN_GROUP_GODADMIN ) {
+					require_once(_base_.'/lib/lib.preference.php');
+					$adminManager = new AdminPreference();
+					$adminManager->addAdminTree($idst_oc, Docebo::user()->getIdST());
+				}
+                                
 				// update the node inserted with the oc and ocd founded
 				$query = "UPDATE %adm_org_chart_tree "
 				."SET idst_oc = ".(int)$idst_oc.", "
