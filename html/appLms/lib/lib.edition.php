@@ -156,7 +156,7 @@ class EditionManager
 	public function insertEdition($id_course, $code, $name, $description, $status, $max_par, $min_par, $price, $date_begin, $date_end, $overbooking, $can_subscribe, $sub_date_begin, $sub_date_end)
 	{
 		($date_begin !== '' ? $date_begin = Format::dateDb($date_begin, 'date') : '');
-		($date_end !== '' ? $date_end = Format::dateDb($date_end, 'date') : '');
+		($date_end !== '' ? $date_end = Format::dateDb($date_end, 'datetime') : '');
 		($sub_date_begin !== '' ? $sub_date_begin = Format::dateDb($sub_date_begin, 'date') : '');
 		($sub_date_end !== '' ? $sub_date_end = Format::dateDb($sub_date_end, 'date') : '');
 
@@ -247,7 +247,10 @@ class EditionManager
 	public function modEdition($id_edition, $code, $name, $description, $status, $max_par, $min_par, $price, $date_begin, $date_end, $overbooking, $can_subscribe, $sub_date_begin, $sub_date_end)
 	{
 		($date_begin !== '' ? $date_begin = Format::dateDb($date_begin, 'date') : '');
-		($date_end !== '' ? $date_end = Format::dateDb($date_end, 'date') : '');
+		if (!DateTime::createFromFormat('d-m-Y H:i', $date_end)){
+			return false;
+		}
+		($date_end !== '' ? $date_end = Format::dateDb($date_end, 'datetime') : '');
 		($sub_date_begin !== '' ? $sub_date_begin = Format::dateDb($sub_date_begin, 'date') : '');
 		($sub_date_end !== '' ? $sub_date_end = Format::dateDb($sub_date_end, 'date') : '');
 
