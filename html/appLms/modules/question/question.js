@@ -5,8 +5,6 @@ function controlTotQuestion()
 	var info = YAHOO.util.Dom.get('answer_info');
 	if(tot_question == 0)
 	{
-		if(YAHOO.buttonObjects.next_page)
-			YAHOO.buttonObjects.next_page.set('disabled', false);
 		if(YAHOO.buttonObjects.show_result)
 			YAHOO.buttonObjects.show_result.set('disabled', false);
 		if(info)
@@ -14,8 +12,6 @@ function controlTotQuestion()
 	}
 	else
 	{
-		if(YAHOO.buttonObjects.next_page)
-			YAHOO.buttonObjects.next_page.set('disabled', true);
 		if(YAHOO.buttonObjects.show_result)
 			YAHOO.buttonObjects.show_result.set('disabled', true);
 		if(info)

@@ -770,6 +770,9 @@ function play($object_test, $id_param)
     $checkState = "<script type=\"text/javascript\">
 									(function($) {
 										$(document).on('change', '.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]', function() {
+                                            $('#next_page').prop('disabled', false);
+											if($('#show_result'))
+												$('#show_result').prop('disabled', false);
 											$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
 											$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
 											$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
@@ -781,7 +784,6 @@ function play($object_test, $id_param)
 											$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
 											$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
                                                                                         
-                                                                                        controlTotQuestion();
 										});
 									})(jQuery);
 								</script>";
