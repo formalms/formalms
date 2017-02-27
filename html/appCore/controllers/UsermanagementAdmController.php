@@ -42,9 +42,9 @@ class UsermanagementAdmController extends AdmController {
 			'del_user'				=> checkPerm('del', true, 'usermanagement'),					//remove users
 			'approve_waiting_user'	=> checkPerm('approve_waiting_user', true, 'usermanagement'),	//approve waiting users
 			'view_org'				=> checkPerm('view', true, 'usermanagement'),					//view orgchart tree
-			'add_org'				=> checkPerm('mod_org', true, 'usermanagement'),					//create orgchart branches
+			'add_org'				=> checkPerm('add_org', true, 'usermanagement'),					//create orgchart branches
 			'mod_org'				=> checkPerm('mod_org', true, 'usermanagement'),					//edit orgchart branches
-			'del_org'				=> checkPerm('mod_org', true, 'usermanagement'),					//remove orgchart branches
+			'del_org'				=> checkPerm('del_org', true, 'usermanagement'),					//remove orgchart branches
 			'associate_user'		=> checkPerm('associate_user', true, 'usermanagement')
 		);
 
@@ -136,6 +136,11 @@ class UsermanagementAdmController extends AdmController {
 		switch ($res) {
 			case 'ok_assignuser': $message = getResultUi(Lang::t('_OPERATION_SUCCESSFUL', 'standard')); break;
 			case 'err_assignuser': $message = getErrorUi(Lang::t('_GROUP_USERASSIGN_ERROR', 'admin_directory')); break;
+                        case 'no_file': $message = getErrorUi(Lang::t('_NO_FILE', 'user_managment')); break;
+                        case 'need_to_alert': $message = getErrorUi(Lang::t('_NEED_TO_ALERT', 'user_managment')); break;
+                        case 'userid_needed': $message = getErrorUi(Lang::t('_USERID_NEEDED', 'user_managment')); break;
+                        case 'field_repeated': $message = getErrorUi(Lang::t('_FIELD_REPEATED', 'user_managment')); break;
+
                         case 'err_alreadyassigned': {                            
                             $countassigned = Get::req('count', DOTY_STRING, '');
                             $id_first = Get::req('id_first', DOTY_STRING, '');
@@ -262,6 +267,10 @@ class UsermanagementAdmController extends AdmController {
 		$fman = new FieldList();
 		$date_fields = $fman->getFieldsByType("date");
 
+        $users = $this->model->getAllUsers($idOrg, $descendants, $searchFilter, true);
+
+        $user_entry_data = $fman->getUsersFieldEntryData($users);
+
 		$output_results = array();
 		if (is_array($list) && count($list)>0) {
 			$current_user = Docebo::user()->getIdSt();
@@ -293,7 +302,7 @@ class UsermanagementAdmController extends AdmController {
 					if ($name == 'lastenter') $content = Format::date($content, 'datetime');
 					if ($name == 'level' && $content != '') $content = Lang::t('_DIRECTORY_'.$content, 'admin_directory');
 					if (!empty($date_fields) && in_array($value, $date_fields)) $content = Format::date(substr($content, 0, 10), 'date');
-
+                    if ($name == '_custom_'.$value) $content = $user_entry_data[(int)$record['idst']][$value];
 					$record_row['_dyn_field_'.$i] = $content;
 				}
 
@@ -580,7 +589,7 @@ class UsermanagementAdmController extends AdmController {
 
 		} else {
 			$output['success'] = false;
-			$output['message'] = Lang::t('_OPERATION_FAILURE', 'standard');
+			$output['message'] = $idst;
 		}
 
 		$this->echoResult($output);
@@ -657,11 +666,11 @@ class UsermanagementAdmController extends AdmController {
 		$userdata->preferences =& $_POST; //Get::req('user_preferences', DOTY_MIXED, array());
 
 		$res = $this->model->editUser($idst, $userdata);
-		if ($res) {
+		if ($res === true) {
 			$output['success'] = true;
 		} else {
 			$output['success'] = false;
-			$output['message'] = 'unable to edit user properties';
+			$output['message'] = $res;
 		}
 
 		echo $this->json->encode($output);
@@ -780,6 +789,34 @@ class UsermanagementAdmController extends AdmController {
 				$output['success'] = $this->model->suspendUsers($arr_users);
 			else
 				$output['success'] = $this->model->unsuspendUsers($arr_users);
+		} else {
+			$output['success'] = false;
+			$output['message'] = Lang::t('_EMPTY_SELECTION', 'admin_directory');
+		}
+		echo $this->json->encode($output);
+	}
+
+	function multigenpwd() {
+		//check permissions
+		if (!$this->permissions['mod_user']) {
+			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			echo $this->json->encode($output);
+			return;
+		}
+
+		$users = Get::req('users', DOTY_STRING, "");
+		$output = array();
+		if ($users!="") {
+			$arr_users = explode(',', $users);
+                        $output['success'] = true;
+                        foreach ($arr_users AS $user){
+                            if(!$this->model->randomPassword($user)){
+                                $output['success'] = false;
+                            }
+                        }
+                        if (!$output['success']){
+                            $output['message'] = Lang::t('_OPERATION_FAILURE', 'standard');
+                        }
 		} else {
 			$output['success'] = false;
 			$output['message'] = Lang::t('_EMPTY_SELECTION', 'admin_directory');
@@ -1073,6 +1110,16 @@ class UsermanagementAdmController extends AdmController {
 			}
 		}
 
+		//add action
+		if ($this->permissions['add_org']) {
+			$actions[] = array(
+				'id' => 'add_'.$id_action,
+				'command' => 'add',
+				'icon' => 'blank.png',
+				'alt' => ''
+			);
+		}
+                
 		return $actions;
 	}
 
@@ -1695,16 +1742,17 @@ class UsermanagementAdmController extends AdmController {
 		switch ($step) {
 
 			case 1: {
-				$params['orgchart_list'] = $this->model->getOrgChartDropdownList(Docebo::user()->getIdSt());
 			} break;
 
 			case 2: {
+				$params['orgchart_list'] = $this->model->getOrgChartDropdownList(Docebo::user()->getIdSt());
+                                
 				require_once(_base_.'/lib/lib.upload.php');
 
 				// ----------- file upload -----------------------------------------
 				if($_FILES['file_import']['name'] == '') {
 					//$_SESSION['last_error'] = Lang::t('_FILEUNSPECIFIED');
-					Util::jump_to($base_url.'&err=no_file' );
+					Util::jump_to($base_url.'&res=no_file' );
 				} else {
 					$path = '/appCore/';
 					$savefile = mt_rand(0,100).'_'.time().'_'.$_FILES['file_import']['name'];
@@ -1735,6 +1783,9 @@ class UsermanagementAdmController extends AdmController {
 				if (trim($import_charset) === '') $import_charset = 'UTF-8';
 
 				$pwd_force_change_policy = Get::req('pwd_force_change_policy', DOTY_STRING, 'do_nothing');
+				$set_password = Get::req('set_password', DOTY_STRING, 'no_action');
+				$use_manual_password = Get::req('use_manual_password', DOTY_BOOL, false);
+				$manual_password = Get::req('manual_password', DOTY_STRING, '');
 
 				$src = new DeceboImport_SourceCSV(array(
 					'filename' => $GLOBALS['where_files_relative'].$path.$savefile,
@@ -1746,8 +1797,11 @@ class UsermanagementAdmController extends AdmController {
 					'dbconn'=>$GLOBALS['dbConn'],
 					'tree' => $idOrg,
 					'pwd_force_change_policy' => $pwd_force_change_policy,
+					'set_password' => $set_password,
+					'use_manual_password' => false,
+					'manual_password' => NULL,
 					'send_alert' => 0,
-					'insert_update' => 0
+					'action_on_users' => 'create_and_update'
 				));
 
 				$src->connect();
@@ -1762,10 +1816,13 @@ class UsermanagementAdmController extends AdmController {
 				$params['first_row_header'] = $first_row_header;
 				$params['separator'] = $separator;
 				$params['import_charset'] = $import_charset;
-				$params['pwd_force_change_policy'] = $pwd_force_change_policy;
 			} break;
 
 			case 3: {
+                                if (!Get::pReq('send_alert', DOTY_INT, 0) && Get::req('set_password', DOTY_STRING, 'from_file') != 'from_file') {
+                                    Util::jump_to($base_url.'&res=need_to_alert' );
+                                }
+                            
 				$filename = Get::req('filename', DOTY_STRING, "");
 				if ($filename == "") return false;
 				$separator = Get::req('import_separator', DOTY_STRING, ',');
@@ -1784,8 +1841,10 @@ class UsermanagementAdmController extends AdmController {
 					'dbconn'=>$GLOBALS['dbConn'],
 					'tree' => $idOrg,
 					'pwd_force_change_policy' => Get::req('pwd_force_change_policy', DOTY_STRING, 'do_nothing'),
+					'set_password' => Get::req('set_password', DOTY_STRING, 'from_file'),
+					'manual_password' => Get::req('password_to_insert', DOTY_STRING, 'automatic_password') == 'use_manual_password'? Get::req('manual_password', DOTY_STRING, NULL) : NULL,
 					'send_alert' => Get::pReq('send_alert', DOTY_INT, 0),
-					'insert_update' => Get::pReq('insert_update', DOTY_INT, 0)
+					'action_on_users' => Get::pReq('action_on_users', DOTY_STRING, 'create_and_update')
 				));
 				$src->connect();
 				$dst->connect();
@@ -1795,6 +1854,17 @@ class UsermanagementAdmController extends AdmController {
 				$importer->setDestination( $dst );
 
 				$importer->parseMap();
+                                if (!in_array('userid', $importer->import_map) 
+                                        || !in_array(array_search('userid', $importer->import_map), array_keys($importer->import_tocompare))) {
+                                    Util::jump_to($base_url.'&res=userid_needed' );
+                                }
+                                
+                                foreach($importer->import_map AS $im){
+                                    if($im != DOCEBOIMPORT_IGNORE && count(array_keys($importer->import_map, $im)) > 1){
+                                        Util::jump_to($base_url.'&res=field_repeated' );
+                                    }
+                                }
+                                
 				$results = $importer->doImport();
 
 				$users = $dst->getNewImportedIdst();

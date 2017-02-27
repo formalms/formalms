@@ -114,7 +114,7 @@ function sl_upload( $srcFile, $dstFile, $file_ext) {
 	} else {
         $event = new \appCore\Events\Core\FileSystem\UploadEvent($srcFile, $dstFile);
         \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\FileSystem\UploadEvent::EVENT_NAME, $event);
-
+		unlink($srcFile);
         return $event->getResult();
     }
 }
@@ -181,7 +181,7 @@ function sl_copy( $srcFile, $dstFile ) {
 /** file system implementation **/
 
 function sl_upload_fs( $srcFile, $dstFile ) {
-
+	if ($srcFile == _files_.$dstFile) return true;
 	$re = move_uploaded_file($srcFile, _files_.$dstFile);
 	if(!$re) die("Error on move_uploaded_file from: $srcFile to ".$dstFile);
 	return $re;

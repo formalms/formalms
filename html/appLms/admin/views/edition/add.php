@@ -21,7 +21,7 @@ echo	Form::openForm('add_edition_form', 'index.php?r='.$base_link_edition.'/add&
 		.Form::getTextfield(Lang::t('_MIN_NUM_SUBSCRIBE', 'course'), 'min_par', 'min_par', 255)
 		.Form::getTextfield(Lang::t('_COURSE_PRIZE', 'course'), 'price', 'price', 255)
 		.Form::getDatefield(Lang::t('_DATE_BEGIN', 'course'), 'date_begin', 'date_begin')
-		.Form::getDatefield(Lang::t('_DATE_END', 'course'), 'date_end', 'date_end')
+		.Form::getDatetimefield(Lang::t('_DATE_END', 'course'), 'date_end', 'date_end', '',"%d-%m-%Y %H:%M")
 		.'<div class="form_line_l">'
 		.'<p><label for="overbooking" class="floating">'.Lang::t('_ALLOW_OVERBOOKING', 'course').'</label></p>'
 		.Form::getInputCheckbox('overbooking', 'overbooking', 1, false, false)

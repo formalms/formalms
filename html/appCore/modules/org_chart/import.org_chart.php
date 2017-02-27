@@ -39,6 +39,9 @@ class ImportUser extends DoceboImport_Destination {
 	public $orgchart = array();
 
 	public $pwd_force_change_policy = "do_nothing";
+	public $set_password = "from_file";
+	public $manual_password = NULL;
+        public $action_on_users = "create_and_update";
 
 	/**
 	 * constructor for forma users destination connection
@@ -58,7 +61,9 @@ class ImportUser extends DoceboImport_Destination {
 			}
 		}
 		$this->send_alert = ($params['send_alert'] == '1');
-		$this->insert_update = ($params['insert_update'] == '1');
+		$this->set_password = $params['set_password'];
+		$this->manual_password = $params['manual_password'];
+		$this->action_on_users = $params['action_on_users'];
 	}
 
 	function connect() {
@@ -180,7 +185,7 @@ class ImportUser extends DoceboImport_Destination {
 	 *				values the data
 	 * @return TRUE if the row was succesfully inserted, FALSE otherwise
 	**/
-	function add_row( $row ) {
+	function add_row( $row, $tocompare ) {
 		$acl =& Docebo::user()->getACL();
 		$acl_manager = Docebo::aclm();
 
@@ -195,32 +200,107 @@ class ImportUser extends DoceboImport_Destination {
 		$pass		= addslashes($this->_convert_char($row['pass']));
 		$email		= addslashes($this->_convert_char($row['email']));
 
+                if(isset($tocompare['userid']))     $tocompare['userid']    = '/'.strtolower( addslashes($this->_convert_char($tocompare['userid'])) );
+		if(isset($tocompare['firstname']))  $tocompare['firstname'] = ucfirst( strtolower( addslashes($this->_convert_char($tocompare['firstname'])) ) );
+		if(isset($tocompare['lastname']))   $tocompare['lastname']  = ucfirst( strtolower( addslashes($this->_convert_char($tocompare['lastname'])) ) ); 
+		if(isset($tocompare['pass']))       $tocompare['pass']      = addslashes($this->_convert_char($tocompare['pass']));
+		if(isset($tocompare['email']))      $tocompare['email']     = addslashes($this->_convert_char($tocompare['email']));
+                
+                if($pass == '') $pass = FALSE;
+                
+                switch ($this->set_password){
+                    case 'insert_empty':
+                        if (!$pass) {
+                            if ($this->manual_password != NULL) {
+                                $newpass = $this->manual_password;
+                            } else {
+                                $newpass = $acl_manager->random_password();
+                            }
+                            $pass = $newpass;
+                        }
+                        break;
+                    case 'insert_all':
+                        if ($this->manual_password != NULL) {
+                            $newpass = $this->manual_password;
+                        } else {
+                            $newpass = $acl_manager->random_password();
+                        }
+                        $pass = $newpass;
+                        break;
+                }
+
 		$force_change = '';
 		switch ($this->pwd_force_change_policy) {
 			case "by_setting": $force_change = Get::sett('pass_change_first_login', 'off') == 'on' ? 1 : 0; break;
 			case "true": $force_change = 1; break;
 			case 'false': $force_change = 0; break;
 		}
-		$idst = false;
+		
 		$is_an_update = false;
-		if($this->insert_update) {
+                $err = false;
+                $idst = $acl_manager->getUserST( $tocompare['userid'] );
+                $sameuserid = FALSE;
+                
+                if($idst !== FALSE){
+                    $user_mng = new UsermanagementAdm();
+                    $infouser = $user_mng->getProfileData($idst);
+                    $fielduser = $this->fl->getUserFieldEntryData($idst);
 			
-			// check if we need to update alredy existent users
-			$idst = $acl_manager->getUserST( $userid );
-			if($idst !== false) {
+                    foreach($tocompare as $field_id => $field_value) {				
+                        if(isset($this->arr_fields[$field_id])) {
+                            if($field_value != $fielduser[$field_id]){
+                                $idst = FALSE;
+                                $sameuserid = TRUE;
+                            }
+                        } else {
+                            if($field_value != $infouser->$field_id){
+                                $idst = FALSE;
+                                $sameuserid = TRUE;
+                            }
+                        }
+                    }
+                }
 				
-				$result = $acl_manager->updateUser(
-					$idst,
+                
+                switch($this->action_on_users) {
+                    case 'create_and_update':
+                        if($idst === FALSE && !$sameuserid) {
+                            // create a new user
+                            $idst = $acl_manager->registerUser(
 					$userid,
 					$firstname,
 					$lastname,
-					$pass,
+                                    $pass ? $pass : '',
 					$email,
+                                    '',
+                                    '',
+                                    FALSE,
+                                    FALSE,
+                                    '',
+                                    $force_change,
+                                    FALSE,
+                                    FALSE,
+                                    FALSE,
+                                    FALSE
+                            );
+                            
+                            if ($idst === FALSE) {
+                                $this->last_error = 'Error on insert user';
+                                $err = true;
+                            }
+                        } else if ($idst !== FALSE) {				
+                            $result = $acl_manager->updateUser(
+                                    $idst,
+                                    $userid,
+                                    $firstname != '' ? $firstname : FALSE,
+                                    $lastname != '' ? $lastname : FALSE,
+                                    $pass,
+                                    $email != '' ? $email : FALSE,
 					FALSE,
 					FALSE,
 					FALSE,
 					TRUE,
-					$force_change,
+                                    $force_change != '' ? $force_change : FALSE,
 					FALSE,
 					FALSE,
 					FALSE,
@@ -230,17 +310,83 @@ class ImportUser extends DoceboImport_Destination {
 				// the user exist but the update query fails
 				if( !$result ) {
 					$this->last_error = 'Error on update user';
-					return FALSE;				
+                                    $err = true;				
 				}
+			} else {
+                            $a = 1;
+                            $newuserid = $userid;
+                            while ($acl_manager->getUserST( $newuserid )) {
+                                $newuserid = $userid . $a;
+                                $a++;
+                            }
+                            $userid = $newuserid;
+
+                                // create a new user
+                            $idst = $acl_manager->registerUser(
+                                    $userid,
+                                    $firstname,
+                                    $lastname,
+                                    $pass ? $pass : '',
+                                    $email,
+                                    '',
+                                    '',
+                                    FALSE,
+                                    FALSE,
+                                    '',
+                                    $force_change,
+                                    FALSE,
+                                    FALSE,
+                                    FALSE,
+                                    FALSE
+                            );
+
+                            if ($idst === FALSE) {
+                                $this->last_error = 'Error on insert user';
+                                $err = true;
 			}
 		}
+                        break;
+                    case 'create_all':
+                        $a = 1;
+                        $newuserid = $userid;
+                        while ($acl_manager->getUserST( $newuserid )) {
+                            $newuserid = $userid . $a;
+                            $a++;
+                        }
+                        $userid = $newuserid;
+                        
+                            // create a new user
+                        $idst = $acl_manager->registerUser(
+                                $userid,
+                                $firstname,
+                                $lastname,
+                                $pass ? $pass : '',
+                                $email,
+                                '',
+                                '',
+                                FALSE,
+                                FALSE,
+                                '',
+                                $force_change,
+                                FALSE,
+                                FALSE,
+                                FALSE,
+                                FALSE
+                        );
+                        
 		if($idst === FALSE) {
+                            $this->last_error = 'Error on insert user';
+                            $err = true;
+                        }
+                        break;
+                    case 'only_create':
+                        if($idst === FALSE && !$sameuserid) {
 			// create a new user
 			$idst = $acl_manager->registerUser(
 				$userid,
 				$firstname,
 				$lastname,
-				$pass,
+                                    $pass ? $pass : '',
 				$email,
 				'',
 				'',
@@ -253,7 +399,78 @@ class ImportUser extends DoceboImport_Destination {
 				FALSE,
 				FALSE
 			);
+                            
+                            if ($idst === FALSE) {
+                                $this->last_error = 'Error on insert user';
+                                $err = true;
+                            }
+                        } else if ($idst !== FALSE) {
+                            $idst = FALSE;
+                            $this->last_error = Lang::t('_USER_ALREADY_EXISTS', 'standard').' --> '.$userid.' | '.$firstname.' | '.$lastname.' | '.$pass.' | '.$email.' |';
+                            return FALSE;
+                        } else {
+                            $a = 1;
+                            $newuserid = $userid;
+                            while ($acl_manager->getUserST( $newuserid )) {
+                                $newuserid = $userid . $a;
+                                $a++;
+                            }
+                            $userid = $newuserid;
+
+                                // create a new user
+                            $idst = $acl_manager->registerUser(
+                                    $userid,
+                                    $firstname,
+                                    $lastname,
+                                    $pass ? $pass : '',
+                                    $email,
+                                    '',
+                                    '',
+                                    FALSE,
+                                    FALSE,
+                                    '',
+                                    $force_change,
+                                    FALSE,
+                                    FALSE,
+                                    FALSE,
+                                    FALSE
+                            );
+
+                            if ($idst === FALSE) {
+                                $this->last_error = 'Error on insert user';
+                                $err = true;
+                            }
 		}
+                        break;
+                    case 'only_update':
+			if($idst !== false) {
+				$result = $acl_manager->updateUser(
+                                    $idst,
+                                    $userid,
+                                    $firstname != '' ? $firstname : FALSE,
+                                    $lastname != '' ? $lastname : FALSE,
+                                    $pass,
+                                    $email != '' ? $email : FALSE,
+                                    FALSE,
+                                    FALSE,
+                                    FALSE,
+                                    TRUE,
+                                    $force_change != '' ? $force_change : FALSE,
+                                    FALSE,
+                                    FALSE,
+                                    FALSE,
+                                    FALSE
+				);
+				$is_an_update = true;
+				// the user exist but the update query fails
+				if( !$result ) {
+					$this->last_error = 'Error on update user';
+					$err = true;				
+				}
+			}
+                        break;
+                }
+                
 		if($idst !== false) {
 			
 			$result = TRUE;
@@ -292,7 +509,7 @@ class ImportUser extends DoceboImport_Destination {
 				'[password]' => $pass
 			);
 			//send email alert
-			if($this->send_alert) {
+			if($this->send_alert && (!$is_an_update || $pass)) {
 				$e_msg = new EventMessageComposer();
 
 				$e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
@@ -328,10 +545,10 @@ class ImportUser extends DoceboImport_Destination {
 				$this->last_error = Lang::t('_ORG_IMPORT_ERR_STORECUSTOMFIELDS').' : <b>'.$userid.'</b>';
 			}
 			return $result;
-		} else {
+		} else if ($err) {
 			$this->last_error = Lang::t('_OPERATION_FAILURE').' : <b>'.$userid.'</b>';
 			return FALSE;
-		}
+		} else return TRUE;
 	}
 
 	function getNewImportedIdst() {

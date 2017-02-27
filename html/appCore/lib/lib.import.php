@@ -424,6 +424,7 @@ class DoceboImport {
 	var $source = NULL;
 	var $destination = NULL;
 	var $import_map = NULL;
+	var $import_tocompare = NULL;
 	
 	/**
 	 * static function to create a Source standard instance
@@ -480,6 +481,8 @@ class DoceboImport {
 		$dst_cols = $this->destination->get_cols_descripor();
 
 		$combo_elements = array();
+		$combo_elements[DOCEBOIMPORT_IGNORE] = $lang->def('_IMPORT_IGNORE');
+                
 		foreach( $dst_cols as $col ) {
 			if( isset($col[DOCEBOIMPORT_COLID]) )
 				$combo_elements[$col[DOCEBOIMPORT_COLID]] = $col[DOCEBOIMPORT_COLNAME];
@@ -487,9 +490,8 @@ class DoceboImport {
 				$combo_elements[$col[DOCEBOIMPORT_COLNAME]] = $col[DOCEBOIMPORT_COLNAME];
 		}
 		
-		$combo_elements[DOCEBOIMPORT_IGNORE] = $lang->def('_IMPORT_IGNORE');
-		
 		$table_dst_labels = array();
+		$table_dst_tocompare = array();
 		$table_src_labels = array();
 		$table_src_labels_type = array();
 		$count = 0;
@@ -500,13 +502,15 @@ class DoceboImport {
 														"import_map_".$count, 
 														"import_map[".$count."]", 
 														$combo_elements, 
-														'', 
+														DOCEBOIMPORT_IGNORE, 
 														"" );
+                        $table_dst_tocompare[] = $form->getInputCheckbox("import_tocompare_".$count, "import_tocompare[".$count."]", '', FALSE);
 			$count++;
 		}
 		
 		$table->setColsStyle($table_src_labels_type);
 		$table->addHead($table_dst_labels);
+		$table->addHead($table_dst_tocompare);
 		$table->addHead($this->encode_array($table_src_labels, $this->source->get_charset()));
 		$count = 0;
 		$row = $this->source->get_first_row();
@@ -528,6 +532,7 @@ class DoceboImport {
 	function parseMap() {
 		if( isset($_POST['import_map']) ) {
 			$this->import_map = $_POST['import_map'];
+			$this->import_tocompare = $_POST['import_tocompare'];
 		}
 	}
 
@@ -545,25 +550,30 @@ class DoceboImport {
 		$open_transaction = false;
 		while( $row !== FALSE ) {
 			$insrow = array();
+                        $tocompare = array();
 			for( $index = 0; $index < count($this->import_map); $index++ ) {
 				if( $this->import_map[$index] != DOCEBOIMPORT_IGNORE ) {
 					$insrow[$this->import_map[$index]] = $row[$index];
+                                        if(in_array($index, array_keys($this->import_tocompare))){
+                                            $tocompare[$this->import_map[$index]] = $row[$index];
 				}
+			}
 			}
 			
 			if($i == 0) {
 				Docebo::db()->start_transaction();
 				$open_transaction = true;
 			}
-					
+			/*		
 			foreach( $dst_cols as $col ) {
 				$col_name = isset($col[DOCEBOIMPORT_COLID])?$col[DOCEBOIMPORT_COLID]:$col[DOCEBOIMPORT_COLNAME];
 				if( !isset($insrow[$col_name]) ) {
 					$insrow[$col_name] = (isset($col[DOCEBOIMPORT_DEFAULT]) ? $col[DOCEBOIMPORT_DEFAULT] : '');
 				}
-			}
+			}*/
 			$this->destination->set_charset($this->source->get_charset());
-			if( !$this->destination->add_row($insrow) ) {
+			//if( !$this->destination->add_row($insrow) ) {
+			if( !$this->destination->add_row($insrow, $tocompare) ) {
 				$out[$this->source->get_row_index()] = $this->destination->get_error();
 			}
 			

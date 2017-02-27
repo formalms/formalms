@@ -301,6 +301,8 @@ class Form {
 										output = output.replace("%d", zfill(d, 2));
 										output = output.replace("%m", zfill(m, 2));
 										output = output.replace("%Y", y);
+										output = output.replace("%H", "00");
+										output = output.replace("%M", "00");
 										return output;
 									};
 
@@ -364,6 +366,62 @@ class Form {
 		}
 	}
 
+	public static function getInputDatetimefield( $css_field, $id, $name, $value = '', $date_format = FALSE, $sel_time = FALSE, $alt_name = '', $other_param = '' ) {
+	
+		$value =($value == '00-00-0000 00:00' ? '' : $value);
+	
+		if ($date_format == false) {
+			$regset = Format::instance(); $date_format = $regset->date_token;
+		}
+		if ($css_field == false) $css_field = 'textfield';
+	
+		Form::loadDatefieldScript($date_format);
+	
+		$date = "";
+		$iso = Format::dateDb($value, 'datetime');
+		if ($value != '' && $value != '0000-00-00 00:00:00') {
+			$datetime=new DateTime($iso);
+			$timestamp = $datetime->format("U");//mktime(0, 0, 0, (int)substr($iso, 5, 2), (int)substr($iso, 8, 2), (int)substr($iso, 0, 4));
+			$date = date("m/d/Y h:m", $timestamp);
+		}
+	
+		$other_after_b = '<span id="calendar_button_'.$id.'" class="yui-button"><span class="first-child docebo_calendar">'
+				.'<button type="button"></button></span></span>'
+				.'<div id="calendar_menu_'.$id.'"><div id="calendar_container_'.$id.'"></div></div>';
+	
+				if (defined("IS_AJAX")) {
+					if (!isset($GLOBALS['date_inputs'])) $GLOBALS['date_inputs'] = array();
+					$GLOBALS['date_inputs'][] = array($id, $date, $date_format);
+				} else {
+					$script = '<script type="text/javascript">'
+							.'YAHOO.util.Event.onDOMReady(function() {'
+									.'	YAHOO.dateInput.setCalendar("'.$id.'", "'.$date.'", "'.$date_format.'");'
+											.'});</script>';
+											cout($script, 'scripts'); //script in the scripts page section, this ensure to have it after the YAHOO.dateInput declaration
+				}
+	
+				return  Form::getInputTextfield( $css_field, $id, $name, Format::date($iso, 'datetime'), $alt_name, '30', '')/*.$other_after_b*/;
+	
+	}
+	
+	public static function getLineDatetimefield( $css_line, $css_label, $label_name, $css_text, $id, $name, $value, $date_format, $alt_name, $other_param, $other_after, $other_before ) {
+	
+		return '<div class="'.$css_line.'">'
+				.$other_before
+				.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
+						.Form::getInputDatetimefield( $css_text, $id, $name, $value, $date_format, false, $alt_name, $other_param )
+						.$other_after
+						.'</div>';
+	}
+	
+	public static function getDatetimefield( $label_name, $id, $name, $value = '', $date_format = FALSE, $sel_time = FALSE, $alt_name = '', $other_after = '', $other_before = '', $other_param = '') {
+		$regset = Format::instance();
+		if($date_format == false) $date_format = $regset->date_token;
+		if($alt_name == '') $alt_name = strip_tags($label_name);
+		return Form::getLineDatetimefield( 'form_line_l', 'floating', $label_name, 'textfield',
+				$id, $name, $value, $date_format, $alt_name, $other_param, $other_after, $other_before);
+	
+	}
 
 	public static function getInputDatefield( $css_field, $id, $name, $value = '', $date_format = FALSE, $sel_time = FALSE, $alt_name = '', $other_param = '' ) {
 

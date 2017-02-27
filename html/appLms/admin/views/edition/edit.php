@@ -21,7 +21,7 @@ echo	Form::openForm('add_edition_form', 'index.php?r='.$base_link_edition.'/edit
 		.Form::getTextfield(Lang::t('_MIN_NUM_SUBSCRIBE', 'course'), 'min_par', 'min_par', 255, $edition_info['min_num_subscribe'])
 		.Form::getTextfield(Lang::t('_COURSE_PRIZE', 'course'), 'price', 'price', 255, $edition_info['price'])
 		.Form::getDatefield(Lang::t('_DATE_BEGIN', 'course'), 'date_begin', 'date_begin', ($edition_info['date_begin'] !== '' && $edition_info['date_begin'] !== '0000-00-00' ? Format::date($edition_info['date_begin'], 'date') : ''))
-		.Form::getDatefield(Lang::t('_DATE_END', 'course'), 'date_end', 'date_end', ($edition_info['date_end'] !== '' && $edition_info['date_end'] !== '0000-00-00' ? Format::date($edition_info['date_end'], 'date') : ''))
+		.Form::getDatetimefield(Lang::t('_DATE_END', 'course'), 'date_end', 'date_end', ($edition_info['date_end'] !== '' && $edition_info['date_end'] !== '0000-00-00' ? Format::date($edition_info['date_end'], 'datetime') : ''),"%d-%m-%Y %H:%M")
 		.'<div class="form_line_l">'
 		.'<p><label for="overbooking" class="floating">'.Lang::t('_ALLOW_OVERBOOKING', 'course').'</label></p>'
 		.Form::getInputCheckbox('overbooking', 'overbooking', 1, $edition_info['overbooking'], false)

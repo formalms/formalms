@@ -43,9 +43,20 @@ class DbConn {
      * This function return the current instance for the class, if it's the first
      * time that is called it will instance the class
      * @param bool $link
+     * @param array $connection_parameters
      * @return bool|DbConn
      */
-	public static function &getInstance($link=false) {
+	public static function &getInstance($link=false, $connection_parameters=array()) {
+	    $host=Get::cfg('db_host');
+        $user=Get::cfg('db_user');
+        $pass=Get::cfg('db_pass');
+        $name=Get::cfg('db_name');
+	    if (isset($connection_parameters['db_host']) && isset($connection_parameters['db_user']) && isset($connection_parameters['db_pass']) && isset($connection_parameters['db_name'])){
+            $host=$connection_parameters['db_host'];
+            $user=$connection_parameters['db_user'];
+            $pass=$connection_parameters['db_pass'];
+            $name=$connection_parameters['db_name'];
+        }
         if ($link){
             return $link;
         }
@@ -60,10 +71,10 @@ class DbConn {
 					self::$instance = new Mysql_DbConn();
 					self::$instance->debug = Get::cfg('do_debug');
 
-					$conn = self::$instance->connect(	Get::cfg('db_host'),
-														Get::cfg('db_user'),
-														Get::cfg('db_pass'),
-														Get::cfg('db_name'));
+					$conn = self::$instance->connect(	$host,
+														$user,
+														$pass,
+														$name);
 					if($conn) self::$connected = true;
 				};break;
 				case "mysqli" : {
@@ -72,10 +83,10 @@ class DbConn {
 					self::$instance = new Mysqli_DbConn();
 					self::$instance->debug = Get::cfg('do_debug');
 
-					$conn = self::$instance->connect(	Get::cfg('db_host'),
-														Get::cfg('db_user'),
-														Get::cfg('db_pass'),
-														Get::cfg('db_name'));
+					$conn = self::$instance->connect(	$host,
+														$user,
+														$pass,
+														$name);
 					if($conn) self::$connected = true;
 				};break;
 			}
@@ -86,7 +97,7 @@ class DbConn {
 	/**
 	 *	Write a log in the logger classe
 	 */
-	public function log($str) { Log::add( trim(str_replace(array("\t", "\n", "\r"), array(" ", "", ""), $str)) ); }
+	public function log($str) { if (class_exists('Log')){Log::add( trim(str_replace(array("\t", "\n", "\r"), array(" ", "", ""), $str)) );}  }
 
 	/**
 	 * connect to the dbms with the specified data

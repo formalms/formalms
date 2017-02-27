@@ -2899,6 +2899,21 @@ class DoceboACLManager
         $admin_userlist = array_merge($admin_users, $this->getGroupUMembers($admin_groups));//$this->getAllUsersFromIdst($admin_groups));
         return $admin_userlist;
     }
+    
+    function random_password () {
+        $pass = '';
+        for ($a = 0; $a < 10; $a++) {
+                $seed = mt_rand(0, 15);
+
+                if ($seed > 10)
+                        $pass .= mt_rand(0, 9);
+                elseif ($seed > 5)
+                        $pass .= chr(mt_rand(65, 90));
+                else
+                        $pass .= chr(mt_rand(97, 122));
+        }
+        return $pass;
+    }
 
 
 } //END ACLManagaer class

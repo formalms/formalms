@@ -220,8 +220,10 @@ function createImageFromTmp($tmp_pathfile, $dst_pathfile, $original_name, $width
 					if($if_not_load !== true) return -4;
 					else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
 				}
-				if(imagejpeg($image_p, $dst_pathfile_rel, 90)) return 0;
-				else {
+				if (imagejpeg($image_p, $dst_pathfile_rel, 90)) {
+                    sl_upload(realpath($dst_pathfile_rel), $dst_pathfile);
+				    return 0;
+                } else {
 					if($if_not_load !== true) return -1;
 					else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
 				}
@@ -237,8 +239,10 @@ function createImageFromTmp($tmp_pathfile, $dst_pathfile, $original_name, $width
 
 				$color = ImageColorAt($image_p, 1, 1);
 				imagecolortransparent($image_p, $color);
-				if(imagepng($image_p, $dst_pathfile_rel) > 0) return 0;
-				else {
+				if (imagepng($image_p, $dst_pathfile_rel) > 0) {
+                    sl_upload(realpath($dst_pathfile_rel), $dst_pathfile);
+				    return 0;
+                } else {
 					if($if_not_load !== true) return -1;
 					else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
 				}
@@ -251,8 +255,10 @@ function createImageFromTmp($tmp_pathfile, $dst_pathfile, $original_name, $width
 				}
 
 				$image_gif = imagetruecolortopalette($image_p, true, 256);
-				if(imagegif($image_p, $dst_pathfile_rel) > 0) return 0;
-				else {
+				if (imagegif($image_p, $dst_pathfile_rel) > 0) {
+                    sl_upload(realpath($dst_pathfile_rel), $dst_pathfile);
+				    return 0;
+                } else {
 					if($if_not_load !== true) return -1;
 					else return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
 				}
