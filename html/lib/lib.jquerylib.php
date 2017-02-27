@@ -47,9 +47,7 @@ class JQueryLib
 
         // load css
         $jquery_ui_css = "/addons/" . self::_path . "/core/ui/css/jquery-ui-" . self::_jquery_ui_version . $which_version . ".css";
-
-        $local_link .= Util::get_css('../.' . $jquery_ui_css, true);
-        //  $local_link .= Util::get_css('.'.$jquery_ui_css,true);
+        $local_link .= Util::get_css( Get::rel_path('base'). $jquery_ui_css, true);
 
         return $local_link;
     }
@@ -61,14 +59,11 @@ class JQueryLib
 
         // load css
         $bootstrap_core_css = "/addons/" . self::_path . "/bootstrap/css/bootstrap-" . self::_bootstrap_version . $which_version . ".css";
+        $local_link .= Util::get_css(Get::rel_path('base') . $bootstrap_core_css, true);       
 
-        $local_link .= Util::get_css('../.' . $bootstrap_core_css, true);
-        //  $local_link .= Util::get_css('.'.$bootstrap_core_css, true);
 
         $bootstrap_core_css = "/addons/" . self::_path . "/bootstrap/css/bootstrap-theme-" . self::_bootstrap_version . $which_version . ".css";
-
-        $local_link .= Util::get_css('../.' . $bootstrap_core_css, true);
-        // $local_link .= Util::get_css('.'.$bootstrap_core_css, true);
+        $local_link .= Util::get_css(Get::rel_path('base') . $bootstrap_core_css, true);
 
 
         return $local_link;
@@ -94,14 +89,16 @@ class JQueryLib
 
     public static function loadCssAddons($which_version)
     {
+        
         $local_link = "\n\t\t";
         foreach (self::$array_css_addons as $a_addon_path) {
+
             $full_path = "/addons/" . self::_path . "/" . $a_addon_path . "/";
             $addon_files = self::select_file($full_path, $which_version . '.css');
             if (count($addon_files) > 0) {
                 foreach ($addon_files as $css_file) {
                     $css_file = $full_path . $css_file;
-                    $local_link .= Util::get_css('../.' . $css_file, true);
+                    $local_link .= Util::get_css(Get::rel_path('base'). $css_file, true);
 
                 }
             }
