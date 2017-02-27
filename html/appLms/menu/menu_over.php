@@ -173,7 +173,7 @@ foreach ($menu['all'] as $row) {
             cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.$row[1].'"  >'.$row[1].'</a></li>','menu_over');
          } 
      }
-        if($row[2] !== false) {
+        if($row[2] !== false && count($menu[ $row[2] ])!=0) {
                 cout('<li class="dropdown" id="submenu_'.$id_m.'" >'
                     .'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.$row[1].' <span class="caret"></span></a>'
                     .'<ul class="dropdown-menu">', 'menu_over');
