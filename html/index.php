@@ -19,115 +19,97 @@ require(dirname(__FILE__).'/base.php');
 ob_start();
 
 // initialize
-require(_base_.'/lib/lib.bootstrap.php');
+require(_lib_ . '/lib.bootstrap.php');
 Boot::init(BOOT_PAGE_WR);
 
-if(!Docebo::user()->isAnonymous() && (!isset($_GET['modname']) || $_GET['modname'] != 'login')) {
-
-	require_once(_base_.'/lib/lib.platform.php');
-	$pm = PlatformManager::createInstance();
-	Util::jump_to(_folder_lms_.'/index.php');
-}
-
-
-
-
-
-// instanciate the page-writer that we want (maybe we can rewrite it in a
-// different way with the introduction of the layout manager)
-emptyPageWriter::createInstance();
+// connect to the database
 $db =& DbConn::getInstance();
 
+// -----------------------------------------------------------------------------
 
-$query = "SELECT param_value FROM core_setting
-		WHERE param_name = 'maintenance'
-		ORDER BY pack, sequence";
+// get maintenence setting
+$query  = " SELECT param_value FROM %adm_setting"
+	. " WHERE param_name = 'maintenance'"
+	. " ORDER BY pack, sequence";
 
-$mode = $db->fetch_row($db->query($query));
+$maintenance = $db->fetch_row($db->query($query))[0];
 
-$query = "SELECT param_value FROM core_setting
-		WHERE param_name = 'maintenance_pw'
-		ORDER BY pack, sequence";
-$passwd = $db->fetch_row($db->query($query));
-
-// Se siamo in modalita' manutenzione
-if($mode[0] == "on"){
-	// Se e' stata chiamata l'URL manualmente con la password
-	if(isset($_GET["passwd"])){
-		// Se la password non corrisponde lo mando alla pagina di manutenzione
-		if($passwd[0] != $_GET["passwd"]){
-			$GLOBALS['maintenance'] = "on";
-		}
-	}else{
-		$GLOBALS['maintenance'] = "on";
-	}
-}
-
-
-
-// load the requested module
-$module_cfg = false;
-$GLOBALS['modname'] = Get::req('modname', DOTY_ALPHANUM, '');
-$GLOBALS['op']		= Get::req('op', DOTY_ALPHANUM, '');
-$r					= Get::req('r', DOTY_MIXED, '');
-$GLOBALS['mvc']		= $r;
-
-if(!empty($GLOBALS['modname'])) {
-	require_once(_lms_.'/lib/lib.istance.php');
-	$module_cfg =& createModule($GLOBALS['modname']);
-}
-if($r !== '')
-{
-	$GLOBALS['page']->add(Util::get_css(Layout::path().'style/base-old-treeview.css', true), 'page_head');
-	$GLOBALS['page']->add(Util::get_css(Layout::path().'style/lms.css', true), 'page_head');
-	$GLOBALS['page']->add(Util::get_css(Layout::path().'style/lms-to-review.css', true), 'page_head');
-	$GLOBALS['page']->add(Util::get_css(Layout::path().'style/lms-menu.css', true), 'page_head');
-    $GLOBALS['page']->add(Util::get_css(Layout::path().'style/lms-home.css', true), 'page_head');    
-	$GLOBALS['page']->add(Util::get_css(Layout::path().'style/print.css', true), 'page_head');
+if($maintenance == "on") {
     
+    // maintenence mode
+    
+    // get maintenence password
+    $query  = " SELECT param_value FROM %adm_setting"
+            . " WHERE param_name = 'maintenance_pw'"
+            . " ORDER BY pack, sequence";
 
-	$r = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $r);
-	$r = explode('/', $r);
-	if(count($r) == 3) {
-		// Position, class and method defined in the path requested
-		$mvc_class = ucfirst(strtolower($r[1])). ucfirst(strtolower($r[0])).'Controller';
-		$mvc_name = $r[1];
-		$task = $r[2];
-	} else {
-		// Only class and method defined in the path requested
-		$mvc_class = ''.ucfirst(strtolower($r[0])).'LmsController';
-		$mvc_name = $r[0];
-		$task = $r[1];
-	}
-	ob_clean();
-	$controller = new $mvc_class( $mvc_name );
-	$controller->request($task);
-
-	$GLOBALS['page']->add(ob_get_contents(), 'content');
-
-	if($r[0] === 'homecatalogue')
-		$layout = 'home_catalogue';
-	else
-		$layout = 'home';
-
-	ob_clean();
+    $maintenance_pw = $db->fetch_row($db->query($query))[0];
+    
+    if(!isset($_GET["passwd"]) || $maintenance_pw != $_GET["passwd"]){
+        
+        // access maintenence denied - login will not appear
+        $GLOBALS['block_for_maintenance'] = true;
+    } else $GLOBALS['block_for_maintenance'] = false;
 }
-else
-{
-	// layout selection
-	if($op == '') $op = 'login';
-	switch ($op) {
-		case 'login': {
-			$layout = 'home_login';
-		};break;
-		default: {
-			if ($module_cfg) {
-				$layout = 'home';
-				$module_cfg->loadBody();
-			}
-			else { die(); }
-		};break;
-	}
+
+// old SSO-URL backward compatibility
+$sso = Get::req("login_user", DOTY_MIXED, false) && Get::req("time", DOTY_MIXED, false) && Get::req("token", DOTY_MIXED, false);
+
+// get required action - default: homepage if not logged in, no action if logged in
+$req = Get::req('r', DOTY_MIXED, (Docebo::user()->isAnonymous() ? ($sso ? _sso_ : _homepage_) : false));
+
+if($req) {
+    
+    // handle required action
+    
+    $req = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $req);
+        
+    // allowed pages
+    
+    $allowed = array(
+        _homepage_base_,
+        _homecatalog_base_
+    );
+    $r = explode("/", $req);
+    
+    if(!in_array($r[0] . "/" . $r[1], $allowed)) {
+        
+        // reload
+        Util::jump_to(Get::rel_path("base"));
+    }
+    
+    // instance page writer
+    onecolPageWriter::createInstance();
+    
+    // get mvc structure
+    $mvc_class = ucfirst(strtolower($r[1])) . ucfirst(strtolower($r[0])) . "Controller";
+    $mvc_name = $r[1];
+    $task = $r[2];
+    
+    ob_clean();
+    
+    // execute requested task
+    $controller = new $mvc_class($mvc_name);
+    $controller->request($task);
+    
+    // add content to page
+    $GLOBALS['page']->add(ob_get_contents(), "content");
+    ob_clean();
+} else {
+    
+    // redirect to requested page (default: lms index)
+    
+    if(isset($_SESSION["login_redirect"])) {
+        
+        $url = substr_replace($_SESSION["login_redirect"], "", 0, strlen(trim(dirname($_SERVER['SCRIPT_NAME']), DIRECTORY_SEPARATOR)) + 1);
+        unset($_SESSION["login_redirect"]);
+        
+        Util::jump_to($url);
+    }
+    else {
+        
+        Util::jump_to(_folder_lms_);
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -140,12 +122,10 @@ $GLOBALS['page']->add(ob_get_contents(), 'debug');
 ob_clean();
 
 // layout
-Layout::render($layout);
+Layout::render("home");
 
 #// finalize TEST_COMPATIBILITA_PHP54
 Boot::finalize();
 
 // flush buffer
 ob_end_flush();
-
-?>

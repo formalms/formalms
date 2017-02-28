@@ -24,7 +24,7 @@ class PrecompileLms extends Model {
 	}
 
 	public function compileRequired() {
-		$check_privacy_policy = Get::sett('request_mandatory_fields_compilation', 'off') != 'off';
+		if(Get::sett('request_mandatory_fields_compilation', 'off') == 'off') return true;
 
 		$id_user = Docebo::user()->getIdSt();
 		$policy_checked = $this->getAcceptingPolicy($id_user);
@@ -34,7 +34,7 @@ class PrecompileLms extends Model {
 
 		$fields_checked = $fieldlist->checkUserMandatoryFields($id_user);
 		
-		return ((!$policy_checked && $check_privacy_policy) || !$fields_checked);
+		return (!$policy_checked || !$fields_checked);
 	}
 
 	/**
