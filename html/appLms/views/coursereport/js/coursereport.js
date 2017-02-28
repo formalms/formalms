@@ -350,8 +350,8 @@ window.CourseReport = (function ($) {
 
     $(document).ready(function () {
 
-        $('#yui-main-boot').addClass('col-md-12');
-        $('#yui-main-boot').removeClass('col-md-9');
+        //$('#yui-main-boot').addClass('col-md-12');
+        //$('#yui-main-boot').removeClass('col-md-9');
 
 
         $table = $('.js-details-table');

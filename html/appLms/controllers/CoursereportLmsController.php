@@ -1238,7 +1238,11 @@ class CoursereportLmsController extends LmsController
     function testvote()
     {
         checkPerm('mod', true, $this->_mvc_name);
+        $undo = Get::pReq('undo',DOTY_MIXED,false);
 
+        if ($undo){
+            Util::jump_to('index.php?r=coursereport/coursereport');
+        }
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
         require_once(_base_ . '/lib/lib.form.php');
@@ -2322,7 +2326,11 @@ class CoursereportLmsController extends LmsController
     function modactivity()
     {
         checkPerm('mod', true, $this->_mvc_name);
+        $undo = Get::pReq('undo',DOTY_MIXED,false);
 
+        if ($undo){
+            Util::jump_to('index.php?r=coursereport/coursereport');
+        }
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once(_base_ . '/lib/lib.form.php');
         require_once(_base_ . '/lib/lib.table.php');
@@ -2429,6 +2437,11 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('mod', true, $this->_mvc_name);
 
+        $undo = Get::pReq('undo',DOTY_MIXED,false);
+
+        if ($undo){
+            Util::jump_to('index.php?r=coursereport/coursereport');
+        }
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once(_base_ . '/lib/lib.form.php');
         require_once(_base_ . '/lib/lib.table.php');
@@ -2534,7 +2547,7 @@ class CoursereportLmsController extends LmsController
                         'title',
                         'title',
                         '255',
-                        $info_report['title'])
+                        $info_report->getTitle())
                     . Form::getTextfield(
                         $lang->def('_MAX_SCORE'),
                         'max_score',
@@ -2645,7 +2658,11 @@ class CoursereportLmsController extends LmsController
     function delactivity()
     {
         checkPerm('mod', true, $this->_mvc_name);
+        $undo = Get::pReq('undo',DOTY_MIXED,false);
 
+        if ($undo){
+            Util::jump_to('index.php?r=coursereport/coursereport');
+        }
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once(_base_ . '/lib/lib.form.php');
         require_once(_base_ . '/lib/lib.table.php');
@@ -3159,6 +3176,11 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('view', true, $this->_mvc_name);
         $responseValue = array();
+        $undo = Get::pReq('undo',DOTY_MIXED,false);
+
+        if ($undo){
+            Util::jump_to('index.php?r=coursereport/coursereport');
+        }
 
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
         require_once($GLOBALS['where_lms'].'/modules/question/class.question.php');
