@@ -37,6 +37,9 @@ class QuestBankMan {
 	function QuestBankMan() {
 		$this->_table_category = $GLOBALS['prefix_lms'].'_quest_category';
 		$this->_table_quest = $GLOBALS['prefix_lms'].'_testquest';
+		////require_once(_base_.'/lib/lib.preference.php');
+		////$userPreferencesDb = new UserPreferencesDb();
+		$this->user_language=Docebo::user()->getPreference('ui.language');
 	}
 
 	function getCategoryList($author = false) {
@@ -46,6 +49,32 @@ class QuestBankMan {
 			."FROM ".$this->_table_category." ";
 			//."WHERE author = 0 ";
 		//if($author !== false) $qtxt .= " OR author = ".(int)$author." ";
+		$re = $this->_query($qtxt);
+		while(list($id_cat, $name) = sql_fetch_row($re)) {
+
+			$cat_list[$id_cat] = $name;
+		}
+		return $cat_list;
+	}
+	function getExtraCategoriesList() {
+
+		$cat_list = array();
+		$qtxt = "  select cf.id_field, coalesce(cfl.translation, cf.code) name  from core_customfield cf";
+		$qtxt .= " left join core_customfield_lang cfl on cf.id_field = cfl.id_field and cfl.lang_code='".$this->user_language."'";
+		$qtxt .= " where cf.area_code='LO_TEST'";
+		$re = $this->_query($qtxt);
+		while(list($id_cat, $name) = sql_fetch_row($re)) {
+
+			$cat_list[$id_cat]['name'] = $name;
+		}
+		return $cat_list;
+	}
+	function getExtraCategoryList($id_common) {
+
+		$cat_list = array();
+		$qtxt = "  select cfs.id_field_son, coalesce(cfsl.translation, cfs.code) name from core_customfield_son cfs";
+		$qtxt .= " left join core_customfield_son_lang cfsl on cfs.id_field_son = cfsl.id_field_son and cfsl.lang_code='".$this->user_language."'";
+		$qtxt .= " where cfs.id_field=".$id_common;
 		$re = $this->_query($qtxt);
 		while(list($id_cat, $name) = sql_fetch_row($re)) {
 
@@ -71,34 +100,63 @@ class QuestBankMan {
 		return $quests;
 	}
 
-	function resQuestList($quest_category = false, $quest_difficult = false, $type_quest = false, $start = false, $result = false) {
+	function resQuestList($quest_category = false, $quest_difficult = false, $type_quest = false, $params_quest_category = false, $start = false, $result = false, $sort = false, $dir = false) {
 
 		$cat_list = array();
-		$qtxt = "SELECT idQuest, idCategory, type_quest, title_quest, difficult, time_assigned "
-			."FROM ".$this->_table_quest." "
+		$qtxt = "SELECT idQuest, idCategory, type_quest, title_quest, difficult, time_assigned, sequence "
+			.", coalesce(group_concat(cfe.id_field), 0) extra_fields "
+			.", coalesce(group_concat(cfe.obj_entry), 0) extra_values "
+			."FROM ".$this->_table_quest." t "
+			." left join core_customfield_entry cfe on t.idQuest = cfe.id_obj "
 			."WHERE idTest = 0 ";
 		if($quest_category != false) 		$qtxt .= " AND idCategory = '$quest_category' ";
 		if($quest_difficult != false) 	$qtxt .= " AND difficult = '$quest_difficult' ";
 		if($type_quest != false) 		$qtxt .= " AND type_quest = '$type_quest' ";
-		$qtxt .= "ORDER BY idCategory, title_quest";
-		if($start !== false) $qtxt .= " LIMIT $start,$result";
+		if($params_quest_category != false){
+		    foreach($params_quest_category as $key=>$quest_extracategory){
+			if ($quest_extracategory!=false){
+			    $qtxt .= " and idQuest in (select id_obj from core_customfield_entry cfe where 1 and cfe.id_field=$key and cfe.obj_entry=$quest_extracategory) ";
+			}
+			
+		    }
+		}
+		$qtxt .= " GROUP BY idQuest, idCategory, type_quest, title_quest, difficult, time_assigned ";
+		if($sort && $dir) $qtxt .= " ORDER BY $sort $dir ";
+		//$qtxt .= "ORDER BY idCategory, title_quest";
+		if($start !== false){
+		    //$start=0;
+		    //$result=1;
+		    $qtxt .= " LIMIT $start,$result";
+		}
 		$re = $this->_query($qtxt);
 
 		return $re;
 	}
 
-	function totalQuestList($quest_category = false, $quest_difficult = false, $type_quest = false) {
+	//todo: aggiungere parametri params...
+	function totalQuestList($quest_category = false, $quest_difficult = false, $type_quest = false, $params_quest_category = false) {
 
 		$cat_list = array();
-		$qtxt = "SELECT COUNT(*) "
-			."FROM ".$this->_table_quest." "
+		$qtxt = "SELECT idQuest, idCategory, type_quest, title_quest, difficult, time_assigned "
+			.", coalesce(group_concat(cfe.id_field), 0) extra_fields "
+			.", coalesce(group_concat(cfe.obj_entry), 0) extra_values "
+			."FROM ".$this->_table_quest." t "
+			." left join core_customfield_entry cfe on t.idQuest = cfe.id_obj "
 			."WHERE idTest = 0 ";
 		if($quest_category != false) 		$qtxt .= " AND idCategory = '$quest_category' ";
 		if($quest_difficult != false) 	$qtxt .= " AND difficult = '$quest_difficult' ";
 		if($type_quest != false) 		$qtxt .= " AND type_quest = '$type_quest' ";
-		$re = $this->_query($qtxt);
+		if($params_quest_category != false){
+		    foreach($params_quest_category as $key=>$quest_extracategory){
+			if ($quest_extracategory!=false){
+			    $qtxt .= " and idQuest in (select id_obj from core_customfield_entry cfe where 1 and cfe.id_field=$key and cfe.obj_entry=$quest_extracategory) ";
+			}
 
-		list($num) = sql_fetch_row($re);
+		    }
+		}
+		$qtxt .= " GROUP BY idQuest, idCategory, type_quest, title_quest, difficult, time_assigned ";
+		$re = $this->_query($qtxt);
+		$num = sql_num_rows($re);
 		return $num;
 	}
 
@@ -258,6 +316,23 @@ class QuestBank_Selector {
 		$aany_cat=array(0=>$this->lang->def('_ALL_QUEST_CATEGORY'));
 		$this->all_category = $aany_cat + $this->all_category;
 
+		//todo translate any
+		$str_any="Any";
+		if ($this->qb_man->user_language=='italian'){
+			$str_any="Qualsiasi";
+		}
+		$this->all_categories = $this->qb_man->getExtraCategoriesList();
+		foreach ($this->all_categories as $key => $value) {
+		    $cat = $this->qb_man->getExtraCategoryList($key);
+			$aany_cat=array(0=>$str_any.' '.$value['name']);
+		    $this->all_categories[$key]['cat']= $aany_cat + $cat;
+		    //$this->all_categories[$key]['cat']=$cat;
+		}
+		//#2269 see it2.php.net/array_unshift#78238
+		//array_unshift($this->all_category, $this->lang->def('_ALL_QUEST_CATEGORY'));
+		//$aany_cat=array(0=>$this->lang->def('_ALL_QUEST_CATEGORY'));
+		// $this->all_categories = $aany_cat + $this->all_category;
+		
 		$this->all_difficult = array(
 			0 => $this->lang->def('_ALL_DIFFICULT'),
 			5 => $this->lang->def('_VERY_HARD'),
@@ -315,6 +390,7 @@ class QuestBank_Selector {
 				.'title_quest:"'.addslashes($this->lang->def('_TITLE')).'",'
 				.'quest_category:"'.addslashes($this->lang->def('_TEST_QUEST_CATEGORY')).'",'
 				.'difficult:"'.addslashes($this->lang->def('_DIFFICULTY')).'",'
+				.'sequence:"'.addslashes('#').'",'
 				.'type_quest:"'.addslashes($this->lang->def('_TYPE')).'",'
 				.'mod_quest:"'.addslashes($this->lang->def('_MOD')).'",'
 				.'del_quest:"'.addslashes($this->lang->def('_DEL')).'",'
@@ -332,11 +408,12 @@ class QuestBank_Selector {
 			.'};';
 
 
-		$str .= 'var QB_CATEGORIES = new Array();
-			QB_CATEGORIES[0] = "'.addslashes($this->lang->def('_NONE')).'";
-		';
+		$str .= 'var QB_CATEGORIES = new Array(); ';
+		if (count($this->all_category)>1){
+		    $str .= ' QB_CATEGORIES[0] = "'.addslashes($this->lang->def('_NONE')).'"; ';
 		foreach($this->all_category as $idc => $namec) {
 			if($idc != 0) $str .= "QB_CATEGORIES[".$idc."] = '".addslashes($namec)."'; ";
+		}
 		}
 		$str .= 'var QB_DIFFICULT = new Array(5);';
 		foreach($this->all_difficult as $num => $trad) {
@@ -352,20 +429,63 @@ class QuestBank_Selector {
 			}
 		}
 		$str .= '}';
+/* */
+		$extrastr = ' var acat = new Array(); ';
+		$extrastr .= 'var QB_EXTRACATEGORY; ';
+		$extrastr .= 'var QB_EXTRACATEGORIES = new Array(); ';
+		foreach($this->all_categories as $idc => $namec) {
+		    if (count($namec['cat']) <=1){
+			continue;
+		    }
+		    
+		    $categoria=$namec['name'];
+		    $extrastr .= ' acat = new Array(); ';
+		    $extrastr .= ' acat[0] = "'.addslashes($this->lang->def('_NONE')).'";';
+		    foreach($namec['cat'] as $key => $value) {
+			if($key != 0){ 
+			    $extrastr .= " acat[".$key."] = '".addslashes($value)."'; ";
+			}
+		    }
+		    $extrastr .= ' QB_EXTRACATEGORY = {idc:"'.$idc.'", name:"'.$namec['name'].'", cat: acat}; ';
+		    $extrastr .= ' QB_EXTRACATEGORIES.push(QB_EXTRACATEGORY); ';
+		}
+ 
+ /* */
+		$str .= '; ';
+		$str .= ' '.$extrastr;
+		
+		//dynfields
+		//todo: forse si può riportare in js visto che non è dinamica
+		$extrastr = ' var fieldsDef = ["id_quest","category_quest","type_quest",{key:"title_quest", parser:YAHOO.util.DataSource.parseString},"difficult","sequence","extra_fields","extra_values"];';
+
+		$str .= ' '.$extrastr;
+		
 		return $str;
 	}
 
 	function get_filter() {
 
-		$str = $this->form->getOpenFieldset($this->lang->def('_SEARCH'), 'fieldset_search_quest')
+		$str = $this->form->getOpenFieldset($this->lang->def('_SEARCH'), 'fieldset_search_quest');
 
-			.$this->form->getDropdown($this->lang->def('_TEST_QUEST_CATEGORY'),
+		//se altro oltre any ...
+		if (count($this->all_category)>1){
+		    $str .= $this->form->getDropdown($this->lang->def('_TEST_QUEST_CATEGORY'),
 								'quest_category',
 								'quest_category',
 								$this->all_category,
-								Get::req('quest_category', DOTY_INT) )
+								Get::req('quest_category', DOTY_INT) );
+		}
+		foreach ($this->all_categories as $idcat=>$acat){
+		    if (count($acat['cat'])>1){
+			$str .= $this->form->getDropdown($acat['name'],
+								    'quest_extracategory_'.$idcat,
+								    'quest_extracategory_'.$idcat,
+								    $acat['cat'],
+								    Get::req('quest_extracategory_'.$idcat, DOTY_INT) );
+		    }
+		}
 
-			.$this->form->getDropdown($this->lang->def('_DIFFICULTY'),
+		$str .= $this->form->getDropdown($this->lang->def('_DIFFICULTY'),
 								'quest_difficult',
 								'quest_difficult',
 								$this->all_difficult,

@@ -207,9 +207,9 @@ class Choice_Question extends Question {
 				'".$_POST['title_quest']."',
 				'".(int)$_POST['difficult']."', 
 				'".(int)$_POST['time_assigned']."', 
-				'".(int)$this->_getNextSequence($idTest)."', 
+				'".(int)$_POST['sequence']."', 
 				'".$this->_getPageNumber($idTest)."',
-				'".( isset($_POST['shuffle']) ? 1 : 0 )."' ) ";
+				'".( isset($_POST['shuffle']) ? 1 : 0 )."' ) ";//'".(int)$this->_getNextSequence($idTest)."', 
 			if(!sql_query($ins_query)) {
 
 				errorCommunication($lang->def('_OPERATION_FAILURE')
@@ -218,6 +218,13 @@ class Choice_Question extends Question {
 			}
 			//find id of auto_increment colum
 			list($idQuest) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
+			
+			// Salvataggio CustomField
+			require_once(_adm_.'/lib/lib.customfield.php');
+			$extra_field = new CustomFieldList();
+			$extra_field->setFieldArea( "LO_TEST" );
+			$extra_field->storeFieldsForObj( $idQuest );
+			
 			if(!$idQuest) {
 				errorCommunication($lang->def('_OPERATION_FAILURE').getBackUi(Util::str_replace_once('&', '&amp;', $back_test), $lang->def('_BACK')));
 			}
@@ -268,6 +275,14 @@ class Choice_Question extends Question {
 			
 			.Form::getTextarea($lang->def('_QUESTION'), 'title_quest', 'title_quest', 
 				( isset($_POST['title_quest']) ? stripslashes($_POST['title_quest']) : '' ) ), 'content');
+                               
+                // Visualizzazione CustomFields
+                require_once(_adm_.'/lib/lib.customfield.php');
+                $fman = new CustomFieldList();
+                $fman->setFieldArea( "LO_TEST" );
+                $fields_mask = $fman->playFields($this->id);
+                $GLOBALS['page']->add($fields_mask, 'content');
+                        
 		if (count($categories) > 1)
 			$GLOBALS['page']->add(Form::getDropdown( $lang->def('_TEST_QUEST_CATEGORY'), 'idCategory', 'idCategory', $categories,
 				( isset($_POST['idCategory']) ? $_POST['idCategory'] : '' )), 'content');
@@ -277,6 +292,8 @@ class Choice_Question extends Question {
 			.Form::getTextfield( $lang->def('_TEST_QUEST_TIMEASS'), 'time_assigned', 'time_assigned', 5, 
 				( isset($_POST['time_assigned']) ? $_POST['time_assigned'] : '00000' ), $lang->def('_TEST_QUEST_TIMEASS'),
 			$lang->def('_SECONDS') )
+			.Form::getTextfield( $lang->def('_ORDER','manmenu'), 'sequence', 'sequence', 5, 
+				( isset($_POST['sequence']) ? $_POST['sequence'] : (int)$this->_getNextSequence($idTest) ) )
 			.'<div class="nofloat"></div><br />', 'content');
 			
 		$GLOBALS['page']->add('<table class="test_answer" cellspacing="0" summary="'.$lang->def('_TEST_ANSWER').'">'."\n"
@@ -334,6 +351,7 @@ class Choice_Question extends Question {
 				title_quest = '".$_POST['title_quest']."', 
 				difficult = '".(int)$_POST['difficult']."', 
 				time_assigned = '".(int)$_POST['time_assigned']."',
+				sequence = '".(int)$_POST['sequence']."',
 				shuffle = '".(isset($_POST['shuffle']) ? 1 : 0)."'
 			WHERE idQuest = '".(int)$this->id."'";
 			if(!sql_query($ins_query)) {
@@ -342,6 +360,13 @@ class Choice_Question extends Question {
 					.getBackUi('index.php?modname=question&amp;op=edit&amp;type_quest='
 					.$this->getQuestionType().'&amp;idQuest='.$this->id.'&amp;back_test='.$url_encode, $lang->def('_BACK')));
 			}
+			
+			// Salvataggio CustomField
+			require_once(_adm_.'/lib/lib.customfield.php');
+			$extra_field = new CustomFieldList();
+			$extra_field->setFieldArea( "LO_TEST" );
+			$extra_field->storeFieldsForObj( $this->id );
+			
 			//update answer
 			if( !isset($_POST['is_correct']) ) $_POST['is_correct'] = -1;
 			
@@ -410,8 +435,8 @@ class Choice_Question extends Question {
 		
 		//load data
 		if(!isset($_POST['answer_id'])) {
-			list($sel_cat, $quest, $sel_diff, $sel_time, $shuffle) = sql_fetch_row(sql_query("
-			SELECT idCategory, title_quest, difficult, time_assigned, shuffle 
+			list($sel_cat, $quest, $sel_diff, $sel_time, $sel_sequence, $shuffle) = sql_fetch_row(sql_query("
+			SELECT idCategory, title_quest, difficult, time_assigned, sequence, shuffle 
 			FROM ".$GLOBALS['prefix_lms']."_testquest 
 			WHERE idQuest = '".(int)$this->id."'"));
 			
@@ -453,6 +478,14 @@ class Choice_Question extends Question {
 			
 			.Form::getTextarea($lang->def('_QUESTION'), 'title_quest', 'title_quest',  
 				( isset($_POST['title_quest']) ? stripslashes($_POST['title_quest']) : $quest ) ), 'content');
+                               
+		// Visualizzazione CustomFields
+		require_once(_adm_.'/lib/lib.customfield.php');
+		$fman = new CustomFieldList();
+		$fman->setFieldArea( "LO_TEST" );
+		$fields_mask = $fman->playFields($this->id);
+		$GLOBALS['page']->add($fields_mask, 'content');
+                        
 		if (count($categories) > 1)
 			$GLOBALS['page']->add(Form::getDropdown( $lang->def('_TEST_QUEST_CATEGORY'), 'idCategory', 'idCategory', $categories,
 				( isset($_POST['idCategory']) ? $_POST['idCategory'] : $sel_cat )), 'content');
@@ -462,6 +495,8 @@ class Choice_Question extends Question {
 			.Form::getTextfield( $lang->def('_TEST_QUEST_TIMEASS'), 'time_assigned', 'time_assigned', 5, 
 				( isset($_POST['time_assigned']) ? $_POST['time_assigned'] : $sel_time ), $lang->def('_TEST_QUEST_TIMEASS'),
 				$lang->def('_SECONDS') )
+			.Form::getTextfield( $lang->def('_ORDER','manmenu'), 'sequence', 'sequence', 5, 
+				( isset($_POST['sequence']) ? $_POST['sequence'] : $sel_sequence ) )
 			.'<div class="nofloat"></div><br />', 'content');
 			
 		$GLOBALS['page']->add('<table class="test_answer" cellspacing="0" summary="'.$lang->def('_TEST_ANSWER').'">'."\n"
@@ -512,6 +547,12 @@ class Choice_Question extends Question {
 		WHERE idQuest = '".$this->id."'")) {
 			return false;
 		}
+		//remove customfield
+		if(!sql_query("
+		DELETE FROM ".$GLOBALS['prefix_fw']."_customfield_entry
+		WHERE id_obj = '".$this->id."'")) {
+			return false;
+		}
 		//remove question
 		return sql_query("
 		DELETE FROM ".$GLOBALS['prefix_lms']."_testquest 
@@ -553,6 +594,23 @@ class Choice_Question extends Question {
 		list($new_id_quest) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
 		if(!$new_id_quest) return false;
 		
+		//insert customfields
+		$re_customfields = sql_query("
+		SELECT  id_field, id_obj, obj_entry  
+		FROM ".$GLOBALS['prefix_fw']."_customfield_entry
+		WHERE id_obj = '".(int)$this->id."'
+		ORDER BY id_field");
+		while(list($id_field, $id_obj, $obj_entry) = sql_fetch_row($re_customfields)) {
+			//insert customfields
+			$ins_customfields_query = "
+			INSERT INTO ".$GLOBALS['prefix_fw']."_customfield_entry
+			( id_field, id_obj, obj_entry   ) VALUES
+			( 	'".(int)$id_field."', 
+				'".(int)$new_id_quest."', 
+				'".(int)$obj_entry."' ) ";
+			if(!sql_query($ins_customfields_query)) return false;
+                }
+                
 		//retriving new answer
 		$re_answer = sql_query("
 		SELECT idAnswer, is_correct, answer, comment, score_correct, score_incorrect 
@@ -625,7 +683,16 @@ class Choice_Question extends Question {
 			}
 		}
 		
-		$content = 
+		$content = '</br></br>';
+		// Visualizzazione CustomField
+		require_once(_adm_.'/lib/lib.customfield.php');
+		$fman = new CustomFieldList();
+		$fman->setFieldArea( "LO_TEST" );
+		$fields_mask = $fman->playFields($this->id, false, true);
+
+ 		$content .=  $fields_mask;
+                
+		$content .=
 			'<div class="play_question">'
 			.'<div>'.$lang->def('_QUEST_'.strtoupper($this->getQuestionType())).'</div>'
 			.'<div class="title_question">'.$num_quest.') '.$title_quest.'</div>'
@@ -836,7 +903,16 @@ class Choice_Question extends Question {
 		}
 		list($id_answer_do) = sql_fetch_row(sql_query($recover_answer));
 		
-		$quest = 
+		$quest = '';
+		// Visualizzazione CustomField
+		require_once(_adm_.'/lib/lib.customfield.php');
+		$fman = new CustomFieldList();
+		$fman->setFieldArea( "LO_TEST" );
+		$fields_mask = $fman->playFields((int)$this->id, false, true);
+
+ 		$quest .=  $fields_mask;
+                
+		$quest .=
 			'<div class="play_question">'
 			.'<div class="title_question">'.$num_quest.') '.$title_quest.'</div>'
 			.'<div class="answer_question">';
@@ -894,6 +970,20 @@ class Choice_Question extends Question {
 		list($new_id_quest) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
 		if(!$new_id_quest) return false;
 		
+                //customfield
+                if(is_array($raw_quest->customfield)) {
+                    foreach ($raw_quest->customfield as $field) { 
+			//insert customfield
+			$ins_cf_query = "
+			INSERT INTO ".$GLOBALS['prefix_fw']."_customfield_entry 
+			( id_field, id_obj, obj_entry ) VALUES
+			( 	'".(int)$field['idField']."', 
+				".(int)$new_id_quest.", 
+				'".(int)$field['idSon']."' ) ";
+			if(!sql_query($ins_cf_query)) return false;
+                    }
+                }
+                
 		if(!is_array($raw_quest->answers)) return $new_id_quest;
 		
 		reset($raw_quest->answers);

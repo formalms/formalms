@@ -759,6 +759,12 @@ class Question {
 			$oQuest->extra_info[] = $oAnswer;
 		}
 		
+                // Customfield
+                require_once(_adm_.'/lib/lib.customfield.php');
+                $fman = new CustomFieldList();
+                $fman->setFieldArea( "LO_TEST" );
+                $oQuest->customfield = $fman->playFieldsFlat($this->id);
+                
 		return $oQuest;
 	}
 	

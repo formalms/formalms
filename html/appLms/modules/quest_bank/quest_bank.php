@@ -52,17 +52,19 @@ function questbank(&$url) {
 
 			<input type="submit" id="export_quest" name="export_quest" value="'.$lang->def('_EXPORT').'">
 			<select id="export_quest_select" name="export_quest_select">', 'content');
+			cout('<option value="-2">'.Lang::t('_EXISTING_TEST', 'test').'</option>', 'content');
 			cout('<option value="-1">'.Lang::t('_NEW_TEST', 'test').'</option>', 'content');
 		foreach($export_f as $id_exp => $def) {
 			cout('<option value="'.$id_exp.'">'.$def.'</option>', 'content');
 		}
 		cout('</select>
 			<input type="submit" id="import_quest" name="import_quest" value="'.$lang->def('_IMPORT').'">
+			<input type="submit" id="delete_quest" name="delete_quest" value="'.$lang->def('_DEL').'">
 		</div>', 'content');
 
-	cout($qb_select->get_filter(), 'content');
-
 	cout($form->closeForm(), 'content');
+
+	cout($qb_select->get_filter(), 'content');
 
 	// -------------------------------------------------------------------
 
@@ -227,7 +229,97 @@ function exportquest(&$url) {
 
 	$quest_selection = array_filter(preg_split('/,/', $quest_selection, -1, PREG_SPLIT_NO_EMPTY));
 
-	if($file_format == -1)
+	if($file_format == -2)
+	{
+		$new_test_step = Get::pReq('new_test_step', DOTY_INT);
+		$id_test = Get::pReq('test_sel', DOTY_INT, 0);
+                
+		if (Get::req('button_undo', DOTY_MIXED, false) !== false) {
+			questbank($url);
+			return;
+		}
+
+		if($new_test_step == 2)
+		{
+			$title = trim($_POST['title']);
+			if ( $title == '' ) $title = $lang->def('_NOTITLE');
+
+			if(is_array($quest_selection) && !empty($quest_selection))
+			{
+				if ($id_test != 0)
+				{
+					//Insert the question for the test
+					$reQuest = sql_query("
+					SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
+					FROM ".$GLOBALS['prefix_lms']."_testquest AS q JOIN ".$GLOBALS['prefix_lms']."_quest_type AS t
+					WHERE q.idQuest IN (".implode(',', $quest_selection).") AND q.type_quest = t.type_quest");
+
+					while( list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest) )
+					{
+						require_once(_lms_.'/modules/question/'.$type_file);
+						$quest_obj = new $type_class( $idQuest );
+						$new_id = $quest_obj->copy($id_test);
+					}
+				}
+
+			}
+
+			questbank($url);
+		}
+		else
+		{
+			if(is_array($quest_selection) && !empty($quest_selection))
+			{
+			require_once(_lib_.'/lib.form.php');
+			
+                        $form = new Form();
+                        
+                        require_once($GLOBALS['where_lms'].'/lib/lib.orgchart.php');
+			$orgman = new OrganizationManagement($_SESSION['idCourse']);
+			$test =& $orgman->getInfoWhereType('test', $_SESSION['idCourse']);
+
+			cout(	getTitleArea( array( $lang->def('_QUEST_BANK', 'menu_course'), $lang->def('_EXPORT_QUESTIONS', 'storage') )    )
+					.'<div class="std_block yui-skin-docebo yui-skin-sam">', 'content');
+                        
+                        cout(    '<label>'.$lang->def('_SELECTTEST', 'storage').'</label></br></br>'
+                                , 'content');
+                        
+			cout(	$form->openForm('search_form', $url->getUrl(), false, 'POST')
+					.$form->getHidden('new_test_step', 'new_test_step', '2')
+					.$form->getHidden('export_quest', 'export_quest', $lang->def('_EXPORT'))
+					.$form->getHidden('export_quest_select', 'export_quest_select', $file_format)
+					.$form->getHidden('quest_category', 'quest_category', $quest_category)
+					.$form->getHidden('quest_difficult', 'quest_difficult', $quest_difficult)
+					.$form->getHidden('quest_type', 'quest_type', $quest_type)
+					.$form->getHidden('selected_quest', 'selected_quest', $_POST['selected_quest'])
+                                , 'content');
+                        
+                        
+                        foreach ($test as $t) {
+                            cout(        $form->openElementSpace()
+                                        .$form->getInputRadio('test_sel_'.$t['id_resource'], 'test_sel', $t['id_resource'], false, '')
+                                        .'<label for="test_sel_'.$t['id_resource'].'">'.$t["title"].'</label>'
+                                        .$form->closeElementSpace()
+                                    , 'content');
+                        }
+
+			cout(	         $form->openButtonSpace()
+                                
+					.$form->getButton('button_ins', 'button_ins', $lang->def('_SAVE'))
+					.$form->getButton('button_undo', 'button_undo', $lang->def('_UNDO'))
+					.$form->closeButtonSpace()
+					.$form->closeForm()
+                                , 'content');
+                        
+                        cout(	 '</div>', 'content');
+			}
+			else
+			{
+				$_SESSION['last_error'] = $lang->def('_EMPTY_SELECTION');
+				questbank($url);
+			}
+		}
+	} elseif($file_format == -1)
 	{
 		$new_test_step = Get::pReq('new_test_step', DOTY_INT);
 
@@ -316,7 +408,7 @@ function exportquest(&$url) {
 					.$form->closeButtonSpace()
 					.$form->closeForm(), 'content');
 
-					cout('<div class="std_block yui-skin-docebo yui-skin-sam">', 'content');
+			cout(	'</div>', 'content');
 			}
 			else
 			{
@@ -335,6 +427,36 @@ function exportquest(&$url) {
 	}
 }
 
+function deletequest(&$url) {
+
+	require_once(_lms_.'/lib/lib.quest_bank.php');
+
+	$lang =& DoceboLanguage::createInstance('test');
+
+	$quest_selection 	= Get::req('selected_quest', DOTY_NUMLIST, '');
+	$quest_selection = array_filter(preg_split('/,/', $quest_selection, -1, PREG_SPLIT_NO_EMPTY));
+
+        if(is_array($quest_selection) && !empty($quest_selection))
+        {
+                //delete the question
+                $reQuest = sql_query("
+                SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
+                FROM ".$GLOBALS['prefix_lms']."_testquest AS q JOIN ".$GLOBALS['prefix_lms']."_quest_type AS t
+                WHERE q.idQuest IN (".implode(',', $quest_selection).") AND q.type_quest = t.type_quest");
+
+                while( list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest) )
+                {
+                        require_once(_lms_.'/modules/question/'.$type_file);
+                        $quest_obj = new $type_class( $idQuest );
+                        $new_id = $quest_obj->del();
+                }
+
+        }
+
+        questbank($url);
+
+}
+
 function questbankDispatch($op) {
 
 	require_once(_lib_.'/lib.urlmanager.php');
@@ -344,6 +466,7 @@ function questbankDispatch($op) {
 	if(isset($_POST['undo'])) $op = 'main';
 	if(isset($_POST['import_quest'])) $op = 'importquest';
 	if(isset($_POST['export_quest'])) $op = 'exportquest';
+	if(isset($_POST['delete_quest'])) $op = 'deletequest';
 
 	switch($op) {
 		case "addquest" : {
@@ -364,6 +487,9 @@ function questbankDispatch($op) {
 			exportquest($url);
 		};break;
 
+		case "deletequest" : {
+			deletequest($url);
+		};break;
 		case "main" :
 		default: {
 			questbank($url);

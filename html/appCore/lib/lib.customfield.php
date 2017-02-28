@@ -413,12 +413,16 @@ class CustomFieldList {
 	 *
 	 * @return array with the value saved for the users
 	 **/
-	function getNumberOfObjFieldEntryData($id_field, $obj_entry) {
+	function getNumberOfObjFieldEntryData($id_field, $obj_entry, $sub_obj = NULL) {
 
 		$query = "
 		SELECT COUNT(*)
 		FROM ".$this->getFieldEntryTable() ."
-		WHERE id_field = ".(int)$id_field." AND obj_entry = ".(int)$obj_entry;
+		WHERE id_field = ".(int)$id_field." AND obj_entry = ".(int)$obj_entry."
+                AND id_field IN (SELECT id_field FROM core_customfield WHERE area_code='".$this->getFieldArea()."')";
+                if (is_array($sub_obj)){
+                    $query = $query." AND id_obj IN (".implode(",",$sub_obj).")";
+                }
 		if(!$rs = sql_query( $query )) return false;
 
 		list($num) = sql_fetch_row($rs);

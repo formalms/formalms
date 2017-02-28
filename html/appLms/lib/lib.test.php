@@ -416,6 +416,14 @@ class TestManagement {
 			if (is_array($arr)) foreach ($arr as $value) $total += $value['selected'];
 			return $total;
 		}
+		if($this->test_info['order_type'] == 4 && $this->test_info['cf_info']) {
+			require_once(_base_.'/lib/lib.json.php');
+			$json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+			$arr = $json->decode($this->test_info['cf_info']);
+			$total = 0;
+			if (is_array($arr)) foreach ($arr as $value) $total += $value['selected'];
+			return $total;
+		}
 		$query =	"SELECT COUNT(*)"
 					." FROM %lms_testquest"
 					." WHERE type_quest <> 'title'"
@@ -436,7 +444,7 @@ class TestManagement {
 			save_keep, mod_doanswer, can_travel, 
 			show_only_status, show_score, show_score_cat, show_doanswer, show_solution, 
 			time_dependent, time_assigned, penality_test, penality_time_test, penality_quest, penality_time_quest, 
-			max_attempt, hide_info, order_info,
+			max_attempt, hide_info, order_info, cf_info,
 			use_suspension, suspension_num_attempts, suspension_num_hours, suspension_prerequisites, chart_options, mandatory_answer
 		FROM %lms_test
 		WHERE idTest = '".$id_test."'";
@@ -891,6 +899,7 @@ class PlayTestManagement {
 		$shuffle_answer				= $this->test_man->getTestInfo('shuffle_answer');
 		$question_random_number	= $this->test_man->getTestInfo('question_random_number');
 		$order_info							= $this->test_man->getTestInfo('order_info');
+                $cf_info = $this->test_man->getTestInfo('cf_info');
 
 		// cast display to one quest at time if the time is by quest
 		if($time_dependent	 == 2) {
@@ -924,6 +933,11 @@ class PlayTestManagement {
 
 		if(!$display_type) {
 
+			// Patch X customfield
+                        if ($order_type > 4) {
+                            $order_type = 4;
+                        }
+			
 			// Respect page number
 			switch($order_type) {
 				case "0" : {
@@ -963,6 +977,32 @@ class PlayTestManagement {
 								$queries[] = $query_question
 									." AND q.type_quest <> 'title'  AND q.type_quest <> 'break_page' "
 									." AND q.idCategory = '".(int)$value['id_category']."' ORDER BY RAND() "
+									." LIMIT 0, ".$value['selected'];
+							}
+						}
+					}
+
+					if (count($queries)>0)
+						return "(".implode(") UNION (", $queries).") ORDER BY RAND() ";
+					else
+						return "";
+				};break;
+				case "4" : {
+
+					// Random X quest on a set of selected categories, each of N(idCategory) quests
+					require_once(_base_.'/lib/lib.json.php');
+					$json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+					$arr = $json->decode($cf_info);
+
+					$queries = array();
+					if (is_array($arr)) {
+						foreach ($arr as $value) {
+							if ((int)$value['selected']>0) {
+								$queries[] = $query_question
+									." AND q.type_quest <> 'title'  AND q.type_quest <> 'break_page' "
+									//." AND q.idCategory = '".(int)$value['id_cf_son']."' ORDER BY RAND() "
+                                                                        //q.idQuest   prefix_fw
+                                                                        ." AND q.idQuest IN ( SELECT id_obj FROM ".$GLOBALS['prefix_fw']."_customfield_entry WHERE obj_entry = '".(int)$value['id_cf_son']."' ) ORDER BY RAND() "
 									." LIMIT 0, ".$value['selected'];
 							}
 						}

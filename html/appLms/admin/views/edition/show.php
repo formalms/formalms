@@ -5,7 +5,7 @@ $title = array(	'index.php?r='.$base_link_course.'/show' => Lang::t('_COURSE', '
 echo getTitleArea($title);
 ?>
 <div class="std_block">
-<?php echo $back_link; ?>
+<?php echo $back_link; echo "-".$permissions['mod']."-"  ?>
 <?php
 
 $_columns = array(
