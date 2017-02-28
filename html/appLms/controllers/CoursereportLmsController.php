@@ -406,11 +406,11 @@ class CoursereportLmsController extends LmsController
 
                             if ($mod_perm) {
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
-                                $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdReport();
                                 $chartLinkVisible = false;
-                                $editLink = 'index.php?r=lms/coursereport/modactivityscore&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $editLink = 'index.php?r=lms/coursereport/modactivityscore&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdReport().'&source_of=' . $info_report->getSourceOf() . '&id_source=' . $info_report->getIdSource();
 
-                                $trashLink = 'index.php?r=lms/coursereport/delactivity&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdSource();
+                                $trashLink = 'index.php?r=lms/coursereport/delactivity&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdReport();
                             }
 
                             $scormItem = new ScormLms($info_report->getIdSource());
@@ -438,7 +438,7 @@ class CoursereportLmsController extends LmsController
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                 //$chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                 $chartLinkVisible = false;
-                                $editLink = 'index.php?r=lms/coursereport/modactivityscore&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdReport();
+                                $editLink = 'index.php?r=lms/coursereport/modactivityscore&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdReport();
                                 $trashLink = 'index.php?r=lms/coursereport/delactivity&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdReport();
                             }
 
@@ -2460,7 +2460,7 @@ class CoursereportLmsController extends LmsController
 
         } else {
 
-            $this->model = new CoursereportLms($_SESSION['idCourse'], $id_report, ['activity', 'scoitem'], '0');
+            $this->model = new CoursereportLms($_SESSION['idCourse'], $id_report, ['activity', 'scoitem']);
 
             $info_report = $this->model->getCourseReports()[0];
 
@@ -2518,10 +2518,10 @@ class CoursereportLmsController extends LmsController
                 $out->add(
                     Form::getLinebox(
                         $lang->def('_TITLE_ACT'),
-                        strip_tags($info_report['title']))
+                        strip_tags($info_report->getTitle()))
                     . Form::getLinebox(
                         $lang->def('_MAX_SCORE'),
-                        strip_tags($info_report['max_score']))
+                        strip_tags($info_report->getMaxScore()))
                     . Form::getLinebox(
                         $lang->def('_REQUIRED_SCORE'),
                         strip_tags($info_report->getRequiredScore()))
@@ -2540,7 +2540,7 @@ class CoursereportLmsController extends LmsController
                         'max_score',
                         'max_score',
                         '11',
-                        $info_report['max_score'])
+                        $info_report->getMaxScore())
                     . Form::getTextfield(
                         $lang->def('_REQUIRED_SCORE'),
                         'required_score',
@@ -2556,19 +2556,19 @@ class CoursereportLmsController extends LmsController
                 'weight',
                 'weight',
                 '11',
-                $info_report['weight'])
+                $info_report->getWeight())
             . Form::getDropdown(
                 $lang->def('_SHOW_TO_USER'),
                 'show_to_user',
                 'show_to_user',
                 array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
-                $info_report['show_to_user'])
+                $info_report->isShowToUser())
             . Form::getDropdown(
                 $lang->def('_USE_FOR_FINAL'),
                 'use_for_final',
                 'use_for_final',
                 array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
-                $info_report['use_for_final'])
+                $info_report->isUseForFinal())
             . Form::getCloseFieldSet()
             . Form::closeElementSpace()
         );
