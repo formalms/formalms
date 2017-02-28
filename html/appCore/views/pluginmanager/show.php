@@ -11,6 +11,7 @@ $cont_h = array(
     "Nome",
     "Versione",
     "Autore",
+    "Categoria",
     "Descrizione",
     "Azioni"
 );
@@ -59,6 +60,7 @@ foreach ($plugins as $info){
         $info['title'],
         $info['version'],
         $info['author'],
+        $info['category'],
         $info['description'],
         $actions
     ));
