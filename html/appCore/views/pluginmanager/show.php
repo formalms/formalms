@@ -47,6 +47,7 @@ foreach ($plugins as $info){
                 $actions.= '<a style="color: #c80014;" href="javascript:;">Versione più vecchia</a>';
             }
         }
+        $actions.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/showSettings'.'&plugin='.$info['name'].'">Impostazioni</a>';
         //if not in database
     } else {
         if ($info['dependencies_satisfied']){
@@ -55,7 +56,6 @@ foreach ($plugins as $info){
             $actions.='<a style="color: #C84000;" href="javascript:;'.'&plugin='.$info['name'].'">Non soddisfatte</a>';
         }
     }
-    $actions.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/showSettings'.'&plugin='.$info['name'].'">Impostazioni</a>';
     $table->addBody(array(
         $info['title'],
         $info['version'],
