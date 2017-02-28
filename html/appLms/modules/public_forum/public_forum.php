@@ -1275,7 +1275,7 @@ function thread()
         $title
     );
     $GLOBALS['page']->add(
-        getTitleArea($page_title, 'forum')
+        getTitleArea($page_title, 'forum'));
 
     $threads_order = '<div class="dropdown pull-right">
 										  <button class="btn btn-default dropdown-toggle" type="button" id="threadsOrder" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -3705,6 +3705,7 @@ function forumsearchmessage()
 
     $moderate = checkPublicForumPerm('moderate', $id_forum);
     $mod_perm = checkPerm('mod', true);
+    $write_perm = checkPublicForumPerm('view', $id_forum);
     $acl_man =& Docebo::user()->getAclManager();
 
     $tb = new Table(Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'));
