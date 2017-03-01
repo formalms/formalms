@@ -31,8 +31,16 @@ echo	Form::openForm('add_edition_form', 'index.php?r='.$base_link_edition.'/edit
 		.Form::getInputCheckbox('can_subscribe', 'can_subscribe', 1, $edition_info['can_subscribe'], false)
 		.'</div>'
 		.Form::getDatefield(Lang::t('_SUBSCRIPTION_DATE_BEGIN', 'course'), 'sub_date_begin', 'sub_date_begin', ($edition_info['sub_date_begin'] !== '' && $edition_info['sub_date_begin'] !== '0000-00-00' ? Format::date($edition_info['sub_date_begin'], 'date') : ''))
-		.Form::getDatefield(Lang::t('_SUBSCRIPTION_DATE_END', 'course'), 'sub_date_end', 'sub_date_end', ($edition_info['sub_date_end'] !== '' && $edition_info['sub_date_end'] !== '0000-00-00' ? Format::date($edition_info['sub_date_end'], 'date') : ''))
-		.Form::closeElementSpace()
+		.Form::getDatefield(Lang::t('_SUBSCRIPTION_DATE_END', 'course'), 'sub_date_end', 'sub_date_end', ($edition_info['sub_date_end'] !== '' && $edition_info['sub_date_end'] !== '0000-00-00' ? Format::date($edition_info['sub_date_end'], 'date') : ''));
+
+                // Visualizzazione CustomFields
+                require_once(_adm_.'/lib/lib.customfield.php');
+                $fman = new CustomFieldList();
+                $fman->setFieldArea( "COURSE_EDITION" );
+                $fields_mask = $fman->playFields($model->getIdEdition());
+                echo $fields_mask;
+
+            echo Form::closeElementSpace()
 		.Form::openButtonSpace()
 		.Form::getButton('mod', 'mod', Lang::t('_MOD', 'course'))
 		.Form::getButton('undo', 'undo', Lang::t('_UNDO', 'course'))
