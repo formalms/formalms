@@ -43,13 +43,21 @@ echo Form::getDropdown(Lang::t('_STATUS', 'course'), 'course_status', 'course_st
 	. Form::getDropdown(Lang::t('_COURSE_LANG_METHOD', 'course'), 'course_lang', 'course_lang', $array_lang, array_search($course['lang_code'], $array_lang))
 	. Form::getDropdown(Lang::t('_DIFFICULTY', 'course'), 'course_difficult', 'course_difficult', $difficult_lang, $course['difficult'])
 	. Form::getTextfield(Lang::t('_CREDITS', 'course'), 'credits', 'credits', '50', $course['credits'])
-	. Form::getDropdown(Lang::t('_LABELS', 'label'), 'label', 'label', $label_model->getLabelFromDropdown(true), ($id_course === false ? false : $label_model->getCourseLabel($course['idCourse'])))
+	. Form::getDropdown(Lang::t('_LABELS', 'label'), 'label', 'label', $label_model->getLabelFromDropdown(true), ($id_course === false ? false : $label_model->getCourseLabel($course['idCourse'])));
 	//. (!$classroom ? Form::getCheckbox(Lang::t('_COURSE_EDITION', 'course'), 'course_edition_yes', 'course_edition', 1, $course['course_edition'] == 1) : '' )
 	//. Form::getCloseCombo()
-	. Form::getCloseFieldset()
 
+        // Visualizzazione CustomFields
+        require_once(_adm_.'/lib/lib.customfield.php');
+        $fman = new CustomFieldList();
+        $fman->setFieldArea( "COURSE" );
+        $fields_mask = $fman->playFields($id_course);
+        //$GLOBALS['page']->add($fields_mask, 'content');
+        echo $fields_mask;
 			
-	. Form::openCollasableFieldset(Lang::t('_COURSE_SUBSCRIPTION', 'course'))
+	echo Form::getCloseFieldset();
+
+	echo Form::openCollasableFieldset(Lang::t('_COURSE_SUBSCRIPTION', 'course'))
 
 	//-----------------------COURSE SUBSCRIPTION ---------------------
 	. Form::getOpenCombo(Lang::t('_COURSE_SUBSRIBE', 'course'))

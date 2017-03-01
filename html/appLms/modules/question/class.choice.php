@@ -548,9 +548,7 @@ class Choice_Question extends Question {
 			return false;
 		}
 		//remove customfield
-		if(!sql_query("
-		DELETE FROM ".$GLOBALS['prefix_fw']."_customfield_entry
-		WHERE id_obj = '".$this->id."'")) {
+		if(!sql_query("DELETE FROM ".$GLOBALS['prefix_fw']."_customfield_entry WHERE id_field IN (SELECT id_field FROM core_customfield WHERE area_code = 'LO_TEST') AND id_obj = '".$this->id."'")) {
 			return false;
 		}
 		//remove question

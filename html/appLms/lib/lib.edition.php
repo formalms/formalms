@@ -164,7 +164,17 @@ class EditionManager
 					." (id_edition, id_course, code, name, description, status, max_num_subscribe, min_num_subscribe, price, date_begin, date_end, overbooking, can_subscribe, sub_date_begin, sub_date_end)"
 					." VALUES (NULL, '".$id_course."', '".$code."', '".$name."', '".$description."', '".$status."', '".$max_par."', '".$min_par."', '".$price."', '".$date_begin."', '".$date_end."', '".$overbooking."', '".$can_subscribe."', '".$sub_date_begin."', '".$sub_date_end."')";
 
-		return sql_query($query);
+                $ret = sql_query($query);
+                
+                $id_edition = sql_insert_id();
+                
+                // Salvataggio CustomField
+                require_once(_adm_.'/lib/lib.customfield.php');
+                $extra_field = new CustomFieldList();
+                $extra_field->setFieldArea( "COURSE_EDITION" );
+                $extra_field->storeFieldsForObj( $id_edition );
+		
+		return $ret;
 	}
 
 	public function getEditionInfo($id_edition)
@@ -270,7 +280,15 @@ class EditionManager
 					." sub_date_end = '".$sub_date_end."'"
 					." WHERE id_edition = ".(int)$id_edition;
 
-		return sql_query($query);
+                $ret = sql_query($query);
+                
+                // Salvataggio CustomField
+                require_once(_adm_.'/lib/lib.customfield.php');
+                $extra_field = new CustomFieldList();
+                $extra_field->setFieldArea( "COURSE_EDITION" );
+                $extra_field->storeFieldsForObj( $id_edition );
+		
+		return $ret;
 	}
 
 	public function delEdition($id_edition)
@@ -278,7 +296,12 @@ class EditionManager
 		$query =	"DELETE FROM ".$this->edition_table
 					." WHERE id_edition = ".(int)$id_edition;
 
-		return sql_query($query);
+                $ret = sql_query($query);
+                
+		//remove customfield
+		$ret = sql_query("DELETE FROM ".$GLOBALS['prefix_fw']."_customfield_entry WHERE id_field IN (SELECT id_field FROM core_customfield WHERE area_code = 'COURSE_EDITION') AND id_obj = '".$id_edition."'");
+
+		return $ret;
 	}
 
 
