@@ -314,7 +314,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
 	var dyncol;
         // todo: nascondere la colonna se vuoto (attenzione contiene sempre un elemento (Any))
 	if(QB_CATEGORIES.length>0) {
-            dyncol = {key:"category_quest",	label:QB_DEF.quest_category, 	formatter:this.formatCategoryQuest, sortable:true };
+            dyncol = {key:"category_quest",	label:QB_DEF.quest_category, 	formatter:this.formatCategoryQuest, sortable:false };
             myColumnDefs.push(dyncol);
         }
 
