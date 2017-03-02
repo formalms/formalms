@@ -62,9 +62,9 @@ function questbank(&$url) {
 			<input type="submit" id="delete_quest" name="delete_quest" value="'.$lang->def('_DEL').'">
 		</div>', 'content');
 
-	cout($form->closeForm(), 'content');
-
 	cout($qb_select->get_filter(), 'content');
+
+	cout($form->closeForm(), 'content');
 
 	// -------------------------------------------------------------------
 
