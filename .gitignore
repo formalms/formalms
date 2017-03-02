@@ -19,7 +19,13 @@ test/behat/behat_config.yml
 # Sezione Plugins
 html/plugins/**
 !html/plugins/ConferenceBBB
-!html/plugins/ConferenceTeleSkill
+#Report
 !html/plugins/report_user
 !html/plugins/report_aggregate
 !html/plugins/report_course
+# Authentication
+!html/plugins/FacebookAuth
+!html/plugins/FormaAuth
+!html/plugins/GoogleAuth
+!html/plugins/LinkedinAuth
+!html/plugins/TwitterAuth
