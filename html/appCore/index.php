@@ -24,6 +24,10 @@ ob_start();
 // initialize
 require(_base_.'/lib/lib.bootstrap.php');
 Boot::init(BOOT_PAGE_WR);
+
+// connect to the database
+$db =& DbConn::getInstance();
+
 // some specific lib to load
 require_once(_base_.'/lib/lib.platform.php');
 require_once(_adm_.'/lib/lib.permission.php');

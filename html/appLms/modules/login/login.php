@@ -170,13 +170,13 @@ function register() {
 
 	$link = 'http://'.$_SERVER['HTTP_HOST']
     		.( strlen(dirname($_SERVER['PHP_SELF'])) != 1 ? dirname($_SERVER['PHP_SELF']) : '' )
-			.'/index.php?modname=login&amp;op=register_opt';
+			. Get::rel_path("base") . "/index.php?r=" . _signup_;
 
 	$GLOBALS['page']->add(
 		getTitleArea(Lang::t('_REGISTER', 'register', 'lms'), 'register')
 		.'<div class="std_block">'
 		.getBackUi( 'index.php', Lang::t('_BACK', 'standard') )
-		.Form::openForm('login_confirm_form', 'index.php?modname=login&amp;op=register', false, false, 'multipart/form-data')
+		.Form::openForm('login_confirm_form', Get::rel_path("base") . "/index.php?r=" . _register_, false, false, 'multipart/form-data')
 		.$user_manager->getRegister($link)
 		.Form::closeForm()
 		.'</div>', 'content');

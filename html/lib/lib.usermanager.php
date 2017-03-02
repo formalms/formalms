@@ -1852,18 +1852,6 @@ class UserManagerRenderer {
 
 
 		$extra ='';
-		// facebook register:
-		if ($social->isActive('facebook')) {
-			require_once(_lms_."/modules/login/facebook.php");
-			if (isset($_SESSION['fb_info']) && is_array($_SESSION['fb_info']) && !isset($_POST['register'])) {
-				setFbRegData($_SESSION['fb_info']);
-			}
-			else {
-				$extra =getFbRegisterBox();
-			}
-		}
-		// ----
-
 
 		$out .= '</ul>'.$extra
 				.Form::openElementSpace('reg_form');
@@ -2088,6 +2076,18 @@ class UserManagerRenderer {
 					}
 					// end
 
+                    // Plugin Event Log register user
+                    $pg=new PluginManager('UserRegistrationEvent');
+                    $pg->run('hook');
+                    $event = new \appLms\Events\User\UserRegistrationEvent();
+
+                    $event->set_idst($request['idst']);
+                    $event->set_date(date("Y-m-d H:i:s"));
+                    $event->set_by($request['idst']);
+                    $event->set_type(\appLms\Events\User\UserRegistrationEvent::TYPE_FREEREGISTER);
+
+                    \appCore\Events\DispatcherManager::dispatch(\appLms\Events\User\UserRegistrationEvent::EVENT_NAME, $event);
+                                        
 					$out = '<div class="reg_success">'.$lang->def('_REG_YOUR_ABI_TO_ACCESS', 'register').'</div>';
 					return $out;
 			} else {

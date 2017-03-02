@@ -60,7 +60,7 @@ function loadLogin() {
 	
 	$user_manager = new UserManager();
 	
-	$user_manager->setRegisterTo('link', 'index.php?modname=login&amp;op=register');
+	$user_manager->setRegisterTo('link', Get::rel_path("base") . "/index.php?r=" . _register_);
 	$user_manager->setLostPwdTo('link', 'index.php?modname=login&amp;op=lostpwd');
 	
 	$extra = false;
