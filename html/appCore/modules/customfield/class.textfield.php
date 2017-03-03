@@ -487,7 +487,7 @@ class Field_Textfield extends Field {
 			WHERE id_obj = '".(int)$id_obj."' 
                         AND id_field = '".(int)$this->id_field."'"));
 		}
-		$obj_entry = (int)$obj_entry;
+		$obj_entry = $obj_entry;
 
 		$re_field = sql_query("
 		SELECT cl.translation
