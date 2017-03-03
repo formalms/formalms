@@ -22,6 +22,8 @@
 if(!defined("IN_FORMA") && !defined("IN_AJAX")) die('You can\'t access directly');
 if($GLOBALS['current_user']->isAnonymous()) die('You can\'t access');
 
+$sortable = array('type_quest', 'title_quest', 'difficult', 'sequence');
+
 $op = Get::gReq('op', DOTY_ALPHANUM, '');
 switch($op) {
 	case "getselected" : {
