@@ -45,7 +45,7 @@ function field_list() {
 	}
 
 	$out->setWorkingZone('content');
-	$out->add(getTitleArea($lang->def('_FIELD_MANAGER'), 'field_manager'));
+	$out->add(getTitleArea($lang->def('_CUSTOMFIELD_MANAGER', 'menu'), 'field_manager'));
 	$out->add('<div class="std_block">');
 
 	//catch possible operation result
