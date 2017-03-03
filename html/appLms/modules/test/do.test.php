@@ -771,6 +771,7 @@ function play($object_test, $id_param)
 									(function($) {
 										$(document).on('change', '.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]', function() {
                                             $('#next_page').prop('disabled', false);
+                                            $('#answer_info').hide();
 											if($('#show_result'))
 												$('#show_result').prop('disabled', false);
 											$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
@@ -778,7 +779,7 @@ function play($object_test, $id_param)
 											$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
 										});
 									})(jQuery);
-                                                                        (function($) {
+                                    (function($) {
 										$(document).on('ready', function() {
 											$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
 											$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
@@ -789,7 +790,6 @@ function play($object_test, $id_param)
 								</script>";
 
     $GLOBALS['page']->add(
-    // getTitleArea($lang->def('_TITLE').' : '.$test_info['title'], 'test', $lang->def('_TEST_INFO'))
         getTitleArea($test_info['title'], 'test', $lang->def('_TEST_INFO'))
         . '<div class="std_block">'
 
