@@ -770,23 +770,25 @@ function play($object_test, $id_param)
     $checkState = "<script type=\"text/javascript\">
 									(function($) {
 										$(document).on('change', '.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]', function() {
-                                            $('#next_page').prop('disabled', false);
-                                            $('#answer_info').hide();
-											if($('#show_result'))
-												$('#show_result').prop('disabled', false);
+                                            if (tot_question == 0 ) {
+                                                $('#next_page').prop('disabled', false);
+                                                if($('#answer_info'))
+                                                    $('#answer_info').hide();
+											    if($('#show_result'))
+												    $('#show_result').prop('disabled', false);
+                                            }        
 											$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
 											$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
 											$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
 										});
-									})(jQuery);
+									})(jQuery);   
                                     (function($) {
 										$(document).on('ready', function() {
 											$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
 											$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
 											$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
-                                                                                        
 										});
-									})(jQuery);
+									})(jQuery); 
 								</script>";
 
     $GLOBALS['page']->add(
