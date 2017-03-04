@@ -40,7 +40,9 @@ class UsermanagementAdm extends Model {
 			'approve_waiting_user'	=> 'standard/wait_alarm.png',
 			'associate_user'		=> 'standard/moduser.png',
 			// Enable orgchart nodes creation and edit permission for admins
-			//'mod_org'            => 'standard/modadmin.png'
+			'add_org'				=> 'standard/add.png',
+			'mod_org'                               => 'standard/modadmin.png',
+			'del_org'				=> 'standard/delete.png'
 		);
 	}
 
@@ -435,7 +437,7 @@ class UsermanagementAdm extends Model {
 		//retrieve which fields are required
 		$custom_fields = array_keys($fields);
 
-		if (count($users_rows) > 0) { // && !empty($custom_fields)) {
+		if (count($users_rows) > 0 && !empty($custom_fields)) {
 			//fields
 			$query_fields = "SELECT f.id_common, f.type_field, fu.id_user, fu.user_entry ".
 				" FROM %adm_field_userentry AS fu JOIN %adm_field AS f ON (fu.id_common=f.id_common) ".
@@ -474,6 +476,23 @@ class UsermanagementAdm extends Model {
 						else
 							$field_value = "";
 					} break;
+					//PURPLE fix class copy per visualizzazione corretta dei record nelle tabelle
+					case "copy": {
+						if ($field_sons === false) {
+							//retrieve translations for dropdowns fields
+							$query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '".getLanguage()."' ORDER BY idField, sequence";
+							$res_fields_sons = $this->db->query($query_fields_sons);
+							$field_sons = array();
+							while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
+								$field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
+							}
+						}
+						if (isset($field_sons[$frow->copy_of][$frow->user_entry]))
+							$field_value = $field_sons[$frow->copy_of][$frow->user_entry];
+						else
+							$field_value = "";
+					} break;
+					//END PURPLE
 					case "country": {
 						if ($countries === false) {
 							//retrieve countries names
@@ -1270,8 +1289,10 @@ class UsermanagementAdm extends Model {
 		if ($userFilter) {
 			$userlevelid = $this->getUserLevel();
 			if( $userlevelid != ADMIN_GROUP_GODADMIN ) {
+                            //if (!checkPerm('mod_org', true, 'usermanagement')){
 				$orgTree = $this->_getAdminOrgTree();
 				$is_subadmin = true;
+                            //}
 			}
 		}
 
@@ -1766,14 +1787,6 @@ class UsermanagementAdm extends Model {
 			//if node has been correctly inserted then ...
 			if ($id) {
 
-				//if the creator is a sub admin, make the folder visible for himself
-				$userlevelid = $this->getUserLevel();
-				if( $userlevelid != ADMIN_GROUP_GODADMIN ) {
-					require_once(_base_.'/lib/lib.preference.php');
-					$adminManager = new AdminPreference();
-					$adminManager->addAdminTree($id, Docebo::user()->getIdST());
-				}
-
 				//create group and descendants
 				$acl =& Docebo::user()->getACLManager();
 				$idst_oc = $acl->registerGroup('/oc_'.(int)$id, '', true);
@@ -1781,6 +1794,14 @@ class UsermanagementAdm extends Model {
 				$acl->addToGroup($acl->getGroupST('ocd_'.(int)$id_parent), $idst_ocd); //register the idst of the new branch's descendants into the parent node /ocd_
 				$acl->addToGroup($idst_ocd, $idst_oc);
 
+				//if the creator is a sub admin, make the folder visible for himself
+				$userlevelid = $this->getUserLevel();
+				if( $userlevelid != ADMIN_GROUP_GODADMIN ) {
+					require_once(_base_.'/lib/lib.preference.php');
+					$adminManager = new AdminPreference();
+					$adminManager->addAdminTree($idst_oc, Docebo::user()->getIdST());
+				}
+                                
 				// update the node inserted with the oc and ocd founded
 				$query = "UPDATE %adm_org_chart_tree "
 				."SET idst_oc = ".(int)$idst_oc.", "
@@ -2149,6 +2170,29 @@ class UsermanagementAdm extends Model {
 	}
 
 
+        public function randomPassword($idst) {
+                $new_password = $this->aclManager->random_password();
+                if($this->changePassword($idst, $new_password)){
+                    $array_subst = array(
+                            '[url]' => Get::sett('url'),
+                            '[userid]' => $userid,
+                            '[password]' => $pass
+                    );
+                    require_once(_base_.'\lib\lib.eventmanager.php');
+                    $e_msg = new EventMessageComposer();
+
+                    $e_msg->setSubjectLangText('email', '_MODIFIED_USER_SBJ', false);
+                    $e_msg->setBodyLangText('email', '_MODIFIED_USER_TEXT', $array_subst );
+                    $e_msg->setBodyLangText('email', '_PASSWORD_CHANGED', $array_subst );
+
+                    $recipients = array($idst);
+                    createNewAlert('UserMod', 'directory', 'edit', '1', 'New user created', $recipients, $e_msg, true );
+                    
+                    return true;
+                }
+                else return false;
+        }
+        
 	public function changePassword($idst, $new_password, $force_changepwd = 0) {
 		if ($idst <= 0 || $new_password == "") return false;
 		$query = "UPDATE %adm_user SET pass='".$this->aclManager->encrypt($new_password)."', force_change = '".(int)$force_changepwd."' WHERE idst=".(int)$idst;
@@ -2718,6 +2762,21 @@ class UsermanagementAdm extends Model {
 				case "date": {
 					$field_value = Format::date(substr($frow->user_entry, 0, 10), 'date');
 				} break;
+                case "copy": {
+                    if ($field_sons === false) {
+                        //retrieve translations for dropdowns fields
+                        $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '".getLanguage()."' ORDER BY idField, sequence";
+                        $res_fields_sons = $this->db->query($query_fields_sons);
+                        $field_sons = array();
+                        while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
+                            $field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
+                        }
+                    }
+                    if (isset($field_sons[$frow->copy_of][$frow->user_entry]))
+                        $field_value = $field_sons[$frow->copy_of][$frow->user_entry];
+                    else
+                        $field_value = "";
+                } break;
 				case "country": {
 					if ($countries === false) {
 						//retrieve countries names

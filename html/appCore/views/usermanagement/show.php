@@ -37,12 +37,12 @@ if ($permissions['view_org']) {
 	);
 
 	$tree_rel_action = ($permissions['add_org'] ?
-		'<a class="ico-wt-sprite subs_add" id="add_org_folder" href="ajax.adm_server.php?r='. $this->link.'/addfolder_dialog&id='.(int)$selected_orgchart.'" '
+        '<a class="ico-wt-sprite subs_add" id="add_org_folder" href="' . ($this->model->isFolderEnabled($selected_orgchart, Docebo::user()->getIdSt()) ? 'ajax.adm_server.php?r='. $this->link.'/addfolder_dialog&id='.(int)$selected_orgchart.'" ' : '" style="visibility:hidden"' )
 		.' title="'.Lang::t('_ORGCHART_ADDNODE', 'organization_chart').'">'
 		.'<span>'.Lang::t('_ORGCHART_ADDNODE', 'organization_chart').'</span>'
 		.'</a>' : '')
 		.($permissions['add_user'] ?
-		'<a class="ico-wt-sprite subs_import" id="import_users_action" href="index.php?r='. $this->link.'/importusers&id='.(int)$selected_orgchart.'" '
+		'<a class="ico-wt-sprite subs_import" id="import_users_action" href="' . ($this->model->isFolderEnabled($selected_orgchart, Docebo::user()->getIdSt()) ? 'index.php?r='. $this->link.'/importusers&id='.(int)$selected_orgchart.'" ' : '" style="visibility:hidden"' )
 		.' title="'.Lang::t('_ORG_CHART_IMPORT_USERS', 'organization_chart').'">'
 		.'<span>'.Lang::t('_ORG_CHART_IMPORT_USERS', 'organization_chart').'</span>'
 		.'</a>' : '');
@@ -280,6 +280,7 @@ UserManagement.init({
 		_EXPORT_CSV: "<?php echo Lang::t('_EXPORT_CSV', 'admin_directory'); ?>",
 		_MOD: "<?php echo Lang::t('_MOD', 'standard'); ?>",
 		_DEL: "<?php echo Lang::t('_DEL', 'standard'); ?>",
+		_GENERATE_PASSWORD: "<?php echo Lang::t('_GENERATE_PASSWORD', 'user_managment'); ?>",
 		_MORE_ACTIONS: "<?php echo Lang::t('_MORE_ACTIONS', 'admin_directory'); ?>",
 		_EMPTY_SELECTION: "<?php echo Lang::t('_EMPTY_SELECTION', 'admin_directory'); ?>",
 		_DIRECTORY_MEMBERTYPETREE: "<?php echo Lang::t('_DIRECTORY_MEMBERTYPETREE', 'admin_directory'); ?>",

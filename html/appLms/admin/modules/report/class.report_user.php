@@ -20,6 +20,7 @@ define('_RU_CATEGORY_GENERAL', 'general');
 define('_RU_CATEGORY_COMPETENCES', 'competences');
 define('_RU_CATEGORY_DELAY', 'delay');
 define('_RU_CATEGORY_LO', 'LO');
+define('_RU_CATEGORY_TESTSTAT', 'TESTSTAT');
 define('_RU_CATEGORY_SCORM', 'scorm');
 define('_RU_CATEGORY_COMMUNICATIONS', 'communications');
 define('_RU_CATEGORY_GAMES', 'games');
@@ -69,6 +70,7 @@ class Report_User extends Report {
 		//$this->_set_columns_category(_RU_CATEGORY_COMPETENCES, $this->lang->def('_RU_CAT_COMPETENCES'), 'get_competences_filter', 'show_report_competences', '_get_competences_query');
 		$this->_set_columns_category(_RU_CATEGORY_DELAY, $this->lang->def('_RU_CAT_DELAY'), 'get_delay_filter', 'show_report_delay', '_get_delay_query');
 		$this->_set_columns_category(_RU_CATEGORY_LO, $this->lang->def('_RU_CAT_LO'), 'get_LO_filter', 'show_report_LO', '_get_LO_query');
+		$this->_set_columns_category(_RU_CATEGORY_TESTSTAT, $this->lang->def('_RU_CAT_TESTSTAT'), 'get_TESTSTAT_filter', 'show_report_TESTSTAT', '_get_TESTSTAT_query');
 
 		$this->_set_columns_category(_RU_CATEGORY_COMMUNICATIONS, $this->lang->def('_RU_CAT_COMMUNICATIONS'), 'get_communications_filter', 'show_report_communications', '_get_communications_query');
 		$this->_set_columns_category(_RU_CATEGORY_GAMES, $this->lang->def('_RU_CAT_GAMES'), 'get_games_filter', 'show_report_games', '_get_games_query');
@@ -114,6 +116,21 @@ class Report_User extends Report {
 			array('key'=>'lo_status',       'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_STATUS')),
 			array('key'=>'lo_score',        'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_SCORE')),
 			array('key'=>'lo_total_time',   'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_TOTAL_TIME'))
+		);
+
+		$this->TESTSTAT_columns = array(
+			array('key'=>'userid',          'select'=>false, 'group'=>'user',   'label'=>Lang::t('_USERID', 'standard')),
+			array('key'=>'user_name',       'select'=>true,  'group'=>'user',   'label'=>Lang::t('_FULLNAME', 'standard')),
+			array('key'=>'email',           'select'=>true,  'group'=>'user',   'label'=>Lang::t('_EMAIL', 'standard')),
+			array('key'=>'suspended',       'select'=>true,  'group'=>'user',   'label'=>Lang::t('_SUSPENDED', 'standard')),
+			array('key'=>'_CUSTOM_FIELDS_', 'select'=>false, 'group'=>'user',   'label'=>false),
+			array('key'=>'course_code',     'select'=>false, 'group'=>'course', 'label'=>$this->lang->def('_CODE')),
+			array('key'=>'course_name',     'select'=>true,  'group'=>'course', 'label'=>$this->lang->def('_COURSE_NAME')),
+			array('key'=>'course_status',   'select'=>true,  'group'=>'course', 'label'=>$this->lang->def('_STATUS')),
+			array('key'=>'lo_name',         'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_TITLE')),
+			array('key'=>'lo_status',       'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_STATUS')),
+			array('key'=>'lo_score',        'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_SCORE')),
+                        array('key'=>'lo_date',         'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_DATE'))
 		);
 
 		$this->delay_columns = array(
@@ -597,6 +614,7 @@ class Report_User extends Report {
 		$box->title = $lang->def('_SELECT_THE_DATA_COL_NEEDED');
 		$box->description = false;
 		//Form::openElementSpace()
+		if (count($custom) > 0) {
 		$box->body .= Form::getOpenFieldset($lang->def('_USER_CUSTOM_FIELDS'), 'fieldset_course_fields');
         $box->body .= Form::getCheckBox(Lang::t('_LASTNAME', 'standard'), 'col_sel_lastname', 'cols[]', '_TH_LASTNAME', is_showed('_TH_LASTNAME'));             
 		$box->body .= Form::getCheckBox(Lang::t('_FIRSTNAME', 'standard'), 'col_sel_firstname', 'cols[]', '_TH_FIRSTNAME', is_showed('_TH_FIRSTNAME'));
@@ -609,7 +627,7 @@ class Report_User extends Report {
 			$box->body .= Form::getCheckBox($val['label'], 'col_custom_'.$val['id'], 'custom['.$val['id'].']', $val['id'], $ref['custom_fields'][$key]['selected']);
 		}
 		$box->body .= Form::getCloseFieldset();
-
+		}
 
 
 		$out->add('<script type="text/javascript">
@@ -1401,15 +1419,6 @@ class Report_User extends Report {
 		$fman = new FieldList();
 		$field_values = array();
 		$customcols =& $filter_columns['custom_fields'];
-        $num_row = 0;
-        foreach ($customcols as $the_idField) {
-            list($exists) = sql_fetch_row(sql_query('Select idField from core_field where idField='.$the_idField['id']));
-            if ($exists == NULL)                            
-                $customcols[$num_row]['selected'] = FALSE;
-
-            $num_row++;
-        }
-        
 		$custom_list = array();
 		foreach ($customcols as $val) {
 			if ($val['selected']) {
@@ -3762,6 +3771,567 @@ class Report_User extends Report {
 		$this->_loadEmailActions();
 	}
 
+// +++++++++++++++++++++++++++++++++
+//     TEST STAT report functions
+// +++++++++++++++++++++++++++++++++
+	function get_TESTSTAT_filter() {
+		//addCss('style_filterbox');
+
+		$back_url = $this->back_url;
+		$jump_url = $this->jump_url;
+		$next_url = $this->next_url;
+
+		require_once(_base_.'/lib/lib.form.php');
+		require_once(_lms_.'/lib/lib.course.php');
+
+		$ref =& $_SESSION['report_tempdata']['columns_filter'];
+
+		YuiLib::load();
+		Util::get_js(Get::rel_path('lms').'/admin/modules/report/courses_filter.js', true, true);
+
+		//back to columns category selection
+		if (isset($_POST['undo_filter'])) {
+			//go back at the previous step
+			Util::jump_to($back_url);
+		}
+
+		//set $_POST data in $_SESSION['report_tempdata']
+		$selector = new Selector_Course();
+		if (isset($_POST['update_tempdata'])) {
+			$selector->parseForState($_POST);
+			$temp=array(
+				//'org_chart_subdivision' 	=> (isset($_POST['org_chart_subdivision']) ? 1 : 0),
+				'all_courses' => ($_POST['all_courses']==1 ? true : false),
+				'selected_courses' => $selector->getSelection(),
+				'showed_columns' => (isset($_POST['cols']) ? $_POST['cols'] : array()),
+				'custom_fields' => array(),
+				'order_by' => Get::req('order_by', DOTY_STRING, 'userid'),
+				'order_dir' => Get::req('order_dir', DOTY_STRING, 'asc'),
+				'show_suspended' => Get::req('show_suspended', DOTY_INT, 0) > 0
+			);
+
+			foreach ($ref['custom_fields'] as $val) {
+				$temp['custom_fields'][]=array(
+					'id'=>$val['id'],
+					'label'=>$val['label'],
+					'selected'=>(isset($_POST['custom'][ $val['id'] ]) ? true : false)
+				);
+			}
+
+			$_SESSION['report_tempdata']['columns_filter'] = $temp;
+		} else {
+			//first loading of this page -> prepare $_SESSION data structure
+			//if (isset($_SESSION['report_update']) /* && is equal to id_report */) break;
+			//get users' custom fields
+			require_once(_adm_.'/lib/lib.field.php');
+			$fman = new FieldList();
+			$fields = $fman->getFlatAllFields();
+			$custom = array();
+			foreach ($fields as $key=>$val) {
+				$custom[] = array('id'=>$key, 'label'=>$val, 'selected'=>false);
+			}
+
+			if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
+				$_SESSION['report_tempdata']['columns_filter'] = array(
+					//'org_chart_subdivision' 	=> (isset($_POST['org_chart_subdivision']) ? 1 : 0),
+					'all_courses'        => false,
+					'selected_courses' 			=> $selector->getSelection(),
+					'showed_columns' 			=> array(),
+					'custom_fields'     => $custom,
+					'order_by' => 'userid',
+					'order_dir' => 'asc',
+					'show_suspended' => 'show_suspended'
+				);
+			}
+		}
+
+		//filter setting done, go to next step
+		if (isset($_POST['import_filter']) || isset($_POST['show_filter']) || isset($_POST['pre_filter'])) {
+			$temp_url = $next_url;
+			if (isset($_POST['pre_filter'])) $temp_url.='&show=1&nosave=1';
+			if (isset($_POST['show_filter'])) $temp_url.='&show=1';
+			Util::jump_to($temp_url);
+		}
+
+		cout( Form::getHidden('update_tempdata', 'update_tempdata', 1), 'content' );
+
+		$lang = $this->lang;
+
+		//box for direct course selection
+		$selection =& $ref['selected_courses'];
+		$selector->parseForState($_POST);
+		$selector->resetSelection($selection);
+		$temp = count($selection);
+
+		$box = new ReportBox('course_selector');
+		$box->title = Lang::t('_REPORT_COURSE_SELECTION', 'report');
+		$box->description = false;
+		$box->body .= '<div class="fc_filter_line filter_corr">';
+		$box->body .= '<input id="all_courses" name="all_courses" type="radio" value="1" '.($ref['all_courses'] ? 'checked="checked"' : '').' />';
+		$box->body .= ' <label for="all_courses">'.$lang->def('_ALL_COURSES').'</label>';
+		$box->body .= ' <input id="sel_courses" name="all_courses" type="radio" value="0" '.($ref['all_courses'] ? '' : 'checked="checked"').' />';
+		$box->body .= ' <label for="sel_courses">'.$lang->def('_SEL_COURSES').'</label>';
+		$box->body .= '</div>';
+
+		$box->body .= '<div id="selector_container"'.($ref['all_courses'] ? ' style="display:none"' : '').'>';
+		//$box->body .= Form::openElementSpace();
+		$box->body .= $selector->loadCourseSelector(true);
+		//$box->body .= Form::closeElementSpace();
+		$box->body .= '<br /></div>';
+		$box->footer = $lang->def('_CURRENT_SELECTION').':&nbsp;<span id="csel_foot">'.($ref['all_courses'] ? Lang::t('_ALL', 'standard') : ($temp!='' ? $temp : '0')).'</span>';
+		//.'</div>';
+		cout($box->get(), 'content');
+
+
+		cout(
+			'<script type="text/javascript">courses_count='.($temp=='' ? '0' : $temp).';'.
+			'courses_all="'.Lang::t('_ALL', 'standard').'";'."\n".
+			'YAHOO.util.Event.addListener(window, "load", courses_selector_init);</script>', 'page_head');
+
+
+		
+
+
+		function is_showed($which) {
+			if (isset($_SESSION['report_tempdata']['columns_filter'])) {
+				return in_array($which, $_SESSION['report_tempdata']['columns_filter']['showed_columns']);
+			} else return false;
+		};
+
+		//box for columns selection
+		$arr_fieldset = array(
+			'user'		=> '',
+			'course'	=> '',
+			'lo'			=> ''
+		);
+
+		$box = new ReportBox('columns_selection');
+		$box->title = $lang->def('_SELECT_THE_DATA_COL_NEEDED');
+		$box->description = false;
+
+
+		//prepare fieldsets
+		foreach($this->TESTSTAT_columns as $val) {
+			if ($val['select']) {
+				$line = Form::getCheckBox($val['label'], 'col_sel_'.$val['key'], 'cols[]', $val['key'], is_showed($val['key']));
+				switch ($val['group']) {
+					case 'user': $arr_fieldset['user'] .= $line; break;
+					case 'course': $arr_fieldset['course'] .= $line; break;
+					case 'lo': $arr_fieldset['lo'] .= $line; break;
+				}
+			} else {
+				if ($val['key'] == '_CUSTOM_FIELDS_') {
+					//custom fields
+					if (count($ref['custom_fields']) > 0) {
+						foreach ($ref['custom_fields'] as $key=>$val) {
+							$arr_fieldset['user'] .= Form::getCheckBox($val['label'], 'col_custom_'.$val['id'], 'custom['.$val['id'].']', $val['id'], $val['selected']);
+						}
+					}
+				}
+			}
+		}
+
+		//print fieldsets
+		foreach ($arr_fieldset as $fid => $fieldset) {
+			$ftitle = '';
+			switch ($fid) {
+				case 'user': {
+					$ftitle = Lang::t('_USER_CUSTOM_FIELDS', 'report');
+				} break;
+				case 'course': {
+					$ftitle = Lang::t('_COURSE_FIELDS', 'report');
+				} break;
+				case 'lo': {
+					$ftitle = Lang::t('_LEARNING_OBJECTS', 'standard');
+				} break;
+			}
+			$box->body .= Form::getOpenFieldset($ftitle, 'fieldset_'.$fid.'_fields');
+			$box->body .= $fieldset;
+			$box->body .= Form::getCloseFieldset();
+		}
+
+		cout($box->get(), 'content');
+
+
+		//other options
+		$box = new ReportBox('other_options');
+		$box->title = Lang::t('_OTHER_OPTION', 'course');
+		$box->description = false;
+
+		$sort_list = array(
+			'userid' => Lang::t('_USERID', 'standard'),
+			'firstname' => Lang::t('_FIRSTNAME', 'standard'),
+			'lastname' => Lang::t('_LASTNAME', 'standard'),
+			'email' => Lang::t('_EMAIL', 'standard'),
+			'course_code' => Lang::t('_COURSE_CODE', 'standard'),
+			'course_name' => Lang::t('_COURSE_NAME', 'standard'),
+			'object_title' => Lang::t('_LEARNING_OBJECTS', 'standard'),
+			'object_type' => Lang::t('_RU_LO_TYPES', 'report'),
+			'first_attempt' => Lang::t('_LO_COL_FIRSTATT', 'report'),
+			'last_attempt' => Lang::t('_LO_COL_LASTATT', 'report')
+		);
+		$dir_list = array(
+			'asc' => Lang::t('_ORD_ASC_TITLE', 'standard'),
+			'desc' => Lang::t('_ORD_DESC_TITLE', 'standard')
+		);
+
+		$sort_selected = array_key_exists($ref['order_by'], $sort_list) ? $ref['order_by'] : 'userid';
+		$dir_selected = array_key_exists($ref['order_dir'], $dir_list) ? $ref['order_dir'] : 'asc';
+
+		$sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
+		$box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
+
+		$box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$ref['show_suspended']);
+
+		cout($box->get(), 'content');
+	}
+
+
+
+	function show_report_TESTSTAT($report_data = NULL, $other = '') {
+		$jump_url = ''; //show_report
+
+		checkPerm('view');
+
+		$lang =& DoceboLanguage::createInstance('report', 'framework');
+
+		if (isset($_POST['send_mail_confirm']))
+		$op = 'send_mail_confirm';
+		elseif (isset($_POST['send_mail'])) {
+			$op = 'send_mail';
+		} else {
+			$op = 'show_result';
+		}
+
+		switch ($op) {
+
+			case 'send_mail_confirm': {
+				$subject = importVar('mail_object', false, '['.$lang->def('_SUBJECT').']' );//'[No subject]');
+				$body = importVar('mail_body', false, '');
+				$acl_man = new DoceboACLManager();
+				$user_info = $acl_man->getUser(getLogUserId(), false);
+				if ($user_info)
+				{
+					$sender = $user_info[ACL_INFO_EMAIL];
+				}
+				$mail_recipients = unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
+
+				// prepare intestation for email
+				$from = "From: ".$sender.$GLOBALS['mail_br'];
+				$header  = "MIME-Version: 1.0".$GLOBALS['mail_br']
+				."Content-type: text/html; charset=".getUnicode().$GLOBALS['mail_br'];
+				$header .= "Return-Path: ".Get::sett('sender_event').$GLOBALS['mail_br'];
+				$header .= "Reply-To: ".Get::sett('sender_event').$GLOBALS['mail_br'];
+				$header .= "X-Sender: ".Get::sett('sender_event').$GLOBALS['mail_br'];
+				$header .= "X-Mailer: PHP/". phpversion().$GLOBALS['mail_br'];
+
+				// send mail
+				$arr_recipients = array();
+				foreach($mail_recipients as $recipient) {
+					$rec_data = $acl_man->getUser($recipient, false);
+					//mail($rec_data[ACL_INFO_EMAIL] , stripslashes($subject), stripslashes(nl2br($body)), $from.$header."\r\n");
+					$arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
+				}
+				$mailer = DoceboMailer::getInstance();
+				$mailer->SendMail($sender, $arr_recipients, stripslashes($subject), stripslashes(nl2br($body)));
+
+				$result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
+
+				cout( $this->_get_TESTSTAT_query('html',NULL,$result) );
+			} break;
+
+			case 'send_mail': {
+				require_once(_base_.'/lib/lib.form.php');
+				$mail_recipients = Get::req('mail_recipients', DOTY_MIXED, array());
+				cout(
+				''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
+					.Form::openElementSpace()
+					.Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
+					.Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
+					.Form::getHidden('mail_recipients', 'mail_recipients', urlencode(serialize($mail_recipients)))
+					.Form::closeElementSpace()
+					.Form::openButtonSpace()
+					.Form::getButton('send_mail_confirm', 'send_mail_confirm', $lang->def('_SEND_MAIL'))
+					.Form::getButton('undo_mail', 'undo_mail', $lang->def('_UNDO'))
+					.Form::closeButtonSpace()
+					//.Form::closeForm()
+					.'</div>', 'content');
+			} break;
+
+			default: {
+				cout( $this->_get_TESTSTAT_query('html', $report_data, $other) );
+			}
+
+		}
+	}
+
+	function _get_TESTSTAT_query($type='html', $report_data = NULL, $other='') {
+		require_once(_lms_.'/admin/modules/report/report_tableprinter.php');
+
+		function is_showed($which, $data) {
+			if (isset($data['columns_filter'])) {
+				return in_array($which, $data['columns_filter']['showed_columns']);
+			} else return false;
+		};
+
+		if ($report_data==NULL) $ref =& $_SESSION['report_tempdata']; else $ref =& $report_data;
+		$_rows =& $ref['rows_filter'];
+		$_cols =& $ref['columns_filter'];
+		$acl_man = new DoceboACLManager();
+		$acl_man->include_suspended = TRUE;
+
+		$all_users   = &$_rows['all_users']; //select root & descendants from orgchart instead
+		$all_courses = &$_cols['all_courses'];
+		$courses     = &$_cols['selected_courses'];
+		$types       = &$_cols['lo_types'];
+		$milestones  = &$_cols['lo_milestones'];
+		$showed      = &$_cols['showed_columns'];
+		$customcols  = &$_cols['custom_fields'];
+		$order_by    = isset($_cols['order_by']) ? $_cols['order_by'] : 'userid';
+		$order_dir   = isset($_cols['order_dir']) ? $_cols['order_dir'] : 'asc';
+		$suspended   = isset($_cols['show_suspended']) ? (bool)$_cols['show_suspended'] : false;
+		if ($all_users) {
+			$users =& $acl_man->getAllUsersIdst();
+		} else {
+			$users =& $acl_man->getAllUsersFromSelection($_rows['users']);
+		}
+
+		$temptypes=array();
+		foreach ($types as $val) { $temptypes[]="'".$val."'"; }
+
+		$tempmilestones=array();
+		foreach ($milestones as $val) {
+			switch ($val) {
+				case _MILESTONE_NONE: { $tempmilestones[]="''"; $tempmilestones[]="'-'"; } break;
+				case _MILESTONE_START: { $tempmilestones[]="'start'"; } break;
+				case _MILESTONE_END: { $tempmilestones[]="'end'"; } break;
+			}
+		}
+
+		$colspans=array('user'=>0, 'course'=>0, 'lo'=>0);
+		foreach ($this->TESTSTAT_columns as $val) {
+			if ($val['select']) {
+				if (in_array($val['key'], $showed)) {
+					switch ($val['key']) {
+						case 'user_name': $colspans[$val['group']] += 2; break;
+						default: $colspans[$val['group']]++; break;
+					}
+				}
+			} else {
+				if ($val['key']=='_CUSTOM_FIELDS_') {
+					;//do nothing ...
+				} else {
+					$colspans[$val['group']]++;
+				}
+			}
+		}
+
+		//custom user fields
+		require_once(_adm_.'/lib/lib.field.php');
+		$fman = new FieldList();
+		$field_values = array();
+		$temp_head2 = array();
+		foreach ($customcols as $val) {
+			if ($val['selected']) {
+				$colspans['user']++;
+				$temp_head2[] = $val['label'];
+				$field_values[$val['id']] = $fman->fieldValue((int)$val['id'], $users);
+			}
+		}
+
+		$lang=$this->lang;
+
+		$head1=array();
+		$head1[] = array('colspan'=>$colspans['user'],   'value'=>$lang->def('_USER')); //_TH_USER
+		$head1[] = array('colspan'=>$colspans['course'], 'value'=>$lang->def('_COURSE')); //_TH_COURSE
+		$head1[] = array('colspan'=>$colspans['lo'],     'value'=>$lang->def('_LEARNING_OBJECTS'));
+		if ($this->use_mail)
+			$head1[] = array(
+				'style' => 'img-cell',
+				'value' => $this->_loadEmailIcon()
+			);
+
+		$head2=array();
+		foreach ($this->TESTSTAT_columns as $val) {
+			if ($val['select']) {
+				if (in_array($val['key'], $showed)) {
+					switch ($val['key']) { //manages exceptions through switch
+						case 'user_name': {
+							$head2[] = Lang::t('_LASTNAME', 'standard');
+							$head2[] = Lang::t('_FIRSTNAME', 'standard');
+						} break;
+						default: $head2[]=$val['label']; break;
+					}
+				}
+			} else {
+				if ($val['key']=='_CUSTOM_FIELDS_') {
+					foreach ($temp_head2 as $tval) {
+						$head2[] = $tval;
+					}
+				} else {
+					$head2[]=$val['label']; //label
+				}
+			}
+		}
+
+
+		if ($this->use_mail) $head2[] = '';//'<img src="'.getPathImage().'standard/email.gif"/>';//''; //header for checkbox
+
+		$buffer = new ReportTablePrinter($type);
+		$buffer->openTable('','');
+
+		$buffer->openHeader();
+		$buffer->addHeader($head1);
+		$buffer->addHeader($head2);
+		$buffer->closeHeader();
+
+		//retrieve LOs from courses
+
+		$score_arr=array(
+			'test'  => array(),
+			'scorm' => array()
+		);
+
+		//retrieve test score
+		$query = "SELECT t1.idOrg, t2.idUser, t1.idCourse, t4.score, t2.bonus_score, t2.score_status "
+			." FROM %lms_organization AS t1 "
+			." INNER JOIN %lms_testtrack AS t2 ON ( t1.objectType = 'test' "
+			." AND t1.idOrg = t2.idReference )"
+			." INNER JOIN %lms_testtrack_times t4 ON t2.idTrack = t4.idTrack "
+			." INNER JOIN %adm_user as t3 "
+			." ON t3.idst=t2.idUser ".($suspended ? "" : "AND t3.valid=1 ")
+			.(!$all_courses ? " AND t1.idCourse IN (".implode(',', $courses).") " : "" )
+			.(!$all_users ? " AND t2.idUser IN (".implode(',', $users).") " : "" )
+			.(count($tempmilestones)>0 ? " AND t1.milestone IN (".implode(',', $tempmilestones).") " : "" 
+			."ORDER BY t4.date_end ASC");
+		$res = sql_query($query);
+		$color_id=0;
+		while ($row=mysql_fetch_assoc($res)) {
+			$color="#efefef";
+			if($color_id%2==0){
+				$color="#FFF";
+			}
+			$score_arr['test'][ $row['idOrg'] ][ $row['idUser'] ].="<div style='display:inline-block; background-color: ".$color."; height: 16px;'>".($row['score']+$row['bonus_score'])."</div> ";
+			$color_id++;
+		}
+
+		//retrievescorm score
+		$query = "SELECT t1.idOrg, t2.idUser, t1.idCourse, t2.score_raw, t2.score_min, t2.score_max "
+			." FROM %lms_organization AS t1 "
+			." JOIN %lms_scorm_tracking AS t2 ON ( t1.objectType = 'scormorg' "
+			." AND t1.idOrg = t2.idReference ), %adm_user as t3 "
+			."WHERE t3.idst=t2.idUser ".($suspended ? "" : "AND t3.valid=1 ")
+			.(!$all_courses ? " AND t1.idCourse IN (".implode(',', $courses).") " : "" )
+			.(!$all_users ? " AND t2.idUser IN (".implode(',', $users).") " : "" )
+			.(count($tempmilestones)>0 ? " AND t1.milestone IN (".implode(',', $tempmilestones).") " : "" );
+		$res = sql_query($query);
+		while ($row=mysql_fetch_assoc($res)) {
+			$score_arr['scorm'][ $row['idOrg'] ][ $row['idUser'] ]=$row['score_raw'];
+		}
+
+		$buffer->openBody();
+
+		//retrieve LO types translations
+		$LO_types = $this->getLOTypesTranslations();
+
+		//retrieve LO's data
+		$_dir = "ASC";
+		switch ($order_dir) {
+			case "desc": $_dir = "DESC"; break;
+		}
+		$query_order_by = "t0.userid ".$_dir.", t1.title ".$_dir;
+		switch ($order_by) {
+			case 'firstname': $query_order_by = "t0.firstname ".$_dir.", t0.lastname, ".$_dir.", t0.userid ".$_dir.", t1.title ".$_dir; break;
+			case 'lastname': $query_order_by = "t0.lastname ".$_dir.", t0.firstname, ".$_dir.", t0.userid ".$_dir.", t1.title ".$_dir; break;
+			case 'email': $query_order_by = "t0.email ".$_dir.", t0.userid ".$_dir.", t1.title ".$_dir; break;
+			case 'course_code': $query_order_by = "t3.code ".$_dir.", t3.name ".$_dir.", t0.userid ".$_dir.", t1.title ".$_dir; break;
+			case 'course_name': $query_order_by = "t3.name ".$_dir.", t3.code ".$_dir.", t0.userid ".$_dir.", t1.title ".$_dir; break;
+			case 'object_title': $query_order_by = "t1.title ".$_dir.", t0.userid ".$_dir; break;
+			case 'object_type': $query_order_by = "t1.objectType ".$_dir.", t1.title ".$_dir.", t0.userid ".$_dir; break;
+			case 'first_attempt': $query_order_by = "t2.firstAttempt"; break;
+			case 'last_attempt': $query_order_by = "t2.dateAttempt"; break;
+		}
+
+		$query = "SELECT t0.idst as user_st, t0.userid, t0.firstname, t0.lastname, t0.email, t0.valid, "
+			." t1.idOrg, t1.objectType, t1.title, t1.idResource, t1.milestone, "
+			." t3.idCourse, t3.code, t3.name, t3.status as course_status, "
+			." t2.firstAttempt, t2.status,"
+			." t5.score, t5.date_attempt "
+			." FROM %adm_user as t0 "
+			." INNER JOIN %lms_organization as t1"
+			." INNER JOIN %lms_course as t3 ON t1.idCourse=t3.idCourse"
+			." INNER JOIN %lms_testtrack as t4 ON (t1.idOrg=t4.idReference AND t0.idst=t4.idUser)"
+                        ." INNER JOIN %lms_commontrack as t2 ON (t0.idst = t2.idUser AND t4.idReference=t2.idReference )"        
+			." INNER JOIN %lms_testtrack_times as t5 ON t4.idTrack = t5.idTrack"
+			." WHERE t1.objectType= 'test'"
+                        
+			.( $suspended ? "" : "AND t0.valid=1 ")
+			.( !$all_courses ? " AND t1.idCourse IN (".implode(',', $courses).") " : "" )
+			.( count($temptypes)>0 ? " AND t2.objectType IN (".implode(',', $temptypes).") " : "" )
+			.( !$all_users ? " AND t2.idUser IN (".implode(',', $users).") " : "" )
+			.( count($tempmilestones)>0 ? "AND t1.milestone IN (".implode(',', $tempmilestones).")" : "" )
+                        ." GROUP BY t5.score, t5.date_attempt, t1.title, user_st"
+			." ORDER BY ".$query_order_by;
+                        
+		$res = sql_query($query);
+		while ($row = mysql_fetch_assoc($res)) {
+
+			$temp=array();
+			foreach ($this->TESTSTAT_columns as $val){
+			switch ($val['key']) {
+				case 'userid': $temp[] = $acl_man->relativeId($row['userid']); break;
+				case 'user_name': {
+					if (in_array($val['key'], $showed)) {
+						$temp[] = $row['lastname'];
+						$temp[] = $row['firstname'];
+					}
+				} break;
+				case 'email': { if (in_array($val['key'], $showed)) $temp[]=$row['email']; } break;
+				case 'suspended': { if (in_array($val['key'], $showed)) $temp[]=($row['valid']>0 ? Lang::t('_NO', 'standard') : Lang::t('_YES', 'standard')); } break;
+				case '_CUSTOM_FIELDS_': {
+					foreach ($customcols as $field) {
+						if ($field['selected']) {
+							if ( isset($field_values[$field['id']][$row['user_st']]) ) {
+								$temp[] = $field_values[$field['id']][$row['user_st']];
+							} else {
+								$temp[] = '';
+							}
+						}
+					}
+				} break;
+				case 'course_code': $temp[]=$row['code']; break;
+				case 'course_name': { if (in_array($val['key'], $showed)) $temp[]=$row['name']; } break;
+				case 'course_status': { if (in_array($val['key'], $showed)) $temp[]=$this->_convertStatusCourse($row['course_status']); } break;
+				case 'lo_name': { if (in_array($val['key'], $showed)) $temp[]=$row['title']; } break;
+				case 'lo_date': { if (in_array($val['key'], $showed)) $temp[]=$this->_convertDate($row['date_attempt']); } break;
+				case 'lo_status': { if (in_array($val['key'], $showed)) $temp[]=Lang::t($row['status'], 'storage'); } break;
+				case 'lo_score': {
+					if (in_array($val['key'], $showed)) {
+                                            $temp[] = $row['score'];
+					}
+							} break;
+				default: { /*if (in_array($val['key'], $showed)) $temp[]='';*/ } break;  
+						}
+			//end switch - end for
+					}
+			if ($this->use_mail) {
+				$temp[]=//'<input type="checkbox" value="'.$row['idst'].'"/>'; //header for checkbox
+					'<div class="align_center">'.Form::getInputCheckbox('mail_'.$row['user_st'], 'mail_recipients[]', $row['user_st'], isset($_POST['select_all']), '').'</div>';
+
+			}
+
+			$buffer->addLine($temp);
+		}
+
+		$buffer->closeBody();
+		$buffer->closeTable();
+
+		$output = $buffer->get();
+
+		if ($this->use_mail) { $output .= $this->_loadEmailActions(); }
+
+		return $output;
+	}
 
 
 

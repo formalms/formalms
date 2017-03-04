@@ -141,7 +141,7 @@ class QuestionPoll {
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
 	function _checkScore( $score ) {
-		$score = preg_replace(',', '.', $score);
+		$score = preg_replace('/,/', '.', $score);
 		if( $score{0} == '.') $score = '0'.$score;
 		return $score;
 	}

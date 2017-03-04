@@ -770,24 +770,28 @@ function play($object_test, $id_param)
     $checkState = "<script type=\"text/javascript\">
 									(function($) {
 										$(document).on('change', '.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]', function() {
+                                            if (tot_question == 0 ) {
+                                                $('#next_page').prop('disabled', false);
+                                                if($('#answer_info'))
+                                                    $('#answer_info').hide();
+											    if($('#show_result'))
+												    $('#show_result').prop('disabled', false);
+                                            }        
 											$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
 											$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
 											$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
 										});
-									})(jQuery);
-                                                                        (function($) {
+									})(jQuery);   
+                                    (function($) {
 										$(document).on('ready', function() {
 											$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
 											$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
 											$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
-                                                                                        
-                                                                                        controlTotQuestion();
 										});
-									})(jQuery);
+									})(jQuery); 
 								</script>";
 
     $GLOBALS['page']->add(
-    // getTitleArea($lang->def('_TITLE').' : '.$test_info['title'], 'test', $lang->def('_TEST_INFO'))
         getTitleArea($test_info['title'], 'test', $lang->def('_TEST_INFO'))
         . '<div class="std_block">'
 
@@ -1305,8 +1309,8 @@ function showResult($object_test, $id_param)
 
     if ($test_info['show_score'] && $test_info['point_type'] != '1') {
 
-        //$GLOBALS['page']->add('<span class="test_score_note">'.$lang->def('_TEST_TOTAL_SCORE').'</span> '.($point_do + $bonus_score).' / '.$max_score.'<br />', 'content');
-        $GLOBALS['page']->add('<span class="test_score_note">' . $lang->def('_TEST_TOTAL_SCORE') . '</span> ' . ($point_do + $bonus_score) . ' / 100<br />', 'content');
+        $GLOBALS['page']->add('<span class="test_score_note">'.$lang->def('_TEST_TOTAL_SCORE').'</span> '.($point_do + $bonus_score).' / '.$max_score.'<br />', 'content');
+        //$GLOBALS['page']->add('<span class="test_score_note">' . $lang->def('_TEST_TOTAL_SCORE') . '</span> ' . ($point_do + $bonus_score) . ' / 100<br />', 'content');
         if ($num_manual != 0 && $score_status != 'valid') {
             $GLOBALS['page']->add('<br />'
                 . '<span class="test_score_note">' . $lang->def('_TEST_MANUAL_SCORE') . '</span> ' . $manual_score . ' ' . $lang->def('_TEST_SCORES') . '<br />', 'content');
@@ -1326,19 +1330,40 @@ function showResult($object_test, $id_param)
     }
     if ($test_info['show_score_cat']) {
 
-        $re_category = sql_query("
-		SELECT c.idCategory, c.name, COUNT(q.idQuest)
-		FROM " . $GLOBALS['prefix_lms'] . "_testquest AS q 
-			JOIN " . $GLOBALS['prefix_lms'] . "_quest_category AS c
-		WHERE c.idCategory = q.idCategory AND q.idTest = '" . $id_test . "' AND q.idCategory != 0 
-		GROUP BY c.idCategory 
-		ORDER BY c.name");
+         
+         /*
+        $sql_test = "
+        SELECT c.idCategory, c.name, COUNT(q.idQuest) , 
+        FROM " . $GLOBALS['prefix_lms'] . "_testquest AS q 
+            JOIN " . $GLOBALS['prefix_lms'] . "_quest_category AS c
+        WHERE c.idCategory = q.idCategory AND q.idTest = '" . $id_test . "' AND q.idCategory != 0 
+        GROUP BY c.idCategory 
+        ORDER BY c.name";
+         */
+        
+       //** LRZ    bug fix #9171    
+       //** in caso di partizioni di domande a categorie ( e no a tutte le domande della categoria)
+    $sql_test = "SELECT c.idCategory, c.name, COUNT(q.idQuest)  
+            FROM learning_testquest AS q , learning_quest_category AS c 
+            where  c.idCategory = q.idCategory 
+            AND q.idTest = ".$id_test."
+            AND q.idCategory != 0
+            
+             and idQuest in (
+             select idQuest from learning_testtrack_answer as a , learning_testtrack   as b
+             where a.idTrack = b.idTrack and idUser = ".Docebo::user()->getIdst()." )
+              GROUP BY c.idCategory 
+            ORDER BY c.name";
+                
+
+        $re_category = sql_query($sql_test);
+                                          
 
         if (sql_num_rows($re_category)) {
 
             $GLOBALS['page']->add('<br />'
                 . '<table summary="' . $lang->def('_TEST_CATEGORY_SCORE') . '" class="category_score">'
-                . '<caption>' . $lang->def('_TEST_CATEGORY_SCORE') . '</caption>'
+                . '<caption>' . $lang->def('_TEST_CATEGORY_SCORE','test') . '</caption>'
                 . '<thead>'
                 . '<tr>'
                 . '<th>' . $lang->def('_TEST_QUEST_CATEGORY') . '</th>'
@@ -1585,6 +1610,9 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
 		FROM %lms_testquest AS q JOIN %lms_quest_type AS t
 		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode($quest_see, ',') . ") 
 		ORDER BY q.sequence";
+        
+        
+        
     } else {
         $query_question = "
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
@@ -1592,6 +1620,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
 		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest 
 		ORDER BY q.sequence";
     }
+    
     $reQuest = sql_query($query_question);
     while (list($id_quest, $type_quest, $type_file, $type_class, $id_cat) = sql_fetch_row($reQuest)) {
 
@@ -1601,6 +1630,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
 
         $quest_obj = eval("return new $type_class( $id_quest );");
         $quest_point_do = $quest_obj->userScore($idTrack);
+     
         $quest_max_score = $quest_obj->getMaxScore();
         if (($type_quest != 'title') && ($type_quest != 'break_page')) {
             $review = $quest_obj->displayUserResult($idTrack,
@@ -1636,12 +1666,18 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
             $manual_score = round($manual_score + $quest_max_score, 2);
         }
 
+        
         $point_do = round($point_do + $quest_point_do, 2);
+        
         $max_score = round($max_score + $quest_max_score, 2);
         if (isset($point_do_cat[$id_cat])) {
-            $point_do_cat[$id_cat] = round($point_do + $point_do_cat[$id_cat], 2);
+            //** LRZ    bug fix #9171   
+            //$point_do_cat[$id_cat] = round(point_do + $point_do_cat[$id_cat], 2); 
+            $point_do_cat[$id_cat] = round($quest_point_do + $point_do_cat[$id_cat], 2); 
         } else {
-            $point_do_cat[$id_cat] = $point_do;
+            //** LRZ    bug fix #9171   
+            //$point_do_cat[$id_cat] = point_do;
+            $point_do_cat[$id_cat] = $quest_point_do;
         }
     }
 
@@ -1707,6 +1743,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
 		WHERE idTest = '" . $idTest . "' AND idCategory != 0");
         while (list($id_cat) = sql_fetch_row($reQuestCat)) $category[] = $id_cat;
 
+        
         if (!empty($category)) {
 
             require_once(_lms_ . '/lib/lib.questcategory.php');

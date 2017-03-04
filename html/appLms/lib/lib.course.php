@@ -840,7 +840,11 @@ class Man_Course {
             // evaluate date_begin and date_end only for active editions
             // if no editions is active returns subscription_expired
             while ($edition_elem = sql_fetch_assoc($re_edition)) {
-                if (is_null($edition_elem['date_end']) || $edition_elem['date_end'] == '0000-00-00' || strcmp(date('Y-m-d'), $edition_elem['date_end']) <= 0) {
+				$datetime1 = new DateTime('now');
+				$datetime2 = new DateTime($edition_elem['date_end']);
+            	$interval = $datetime1->getTimestamp() - $datetime2->getTimestamp();
+
+                if (is_null($edition_elem['date_end']) || $edition_elem['date_end'] == '0000-00-00 00:00:00' || $interval <= 0) {
                     $canEnd = $canEnd || true;
                 }
                 if ($canEnd && (is_null($edition_elem['date_begin']) || $edition_elem['date_begin'] == '0000-00-00' || strcmp(date('Y-m-d'), $edition_elem['date_begin']) >= 0)) {
@@ -856,8 +860,13 @@ class Man_Course {
         }
         
 		if($course['date_end'] != '0000-00-00') {
-
-			$time_end = fromDatetimeToTimestamp($course['date_end']);
+			$date01=new DateTime($course['date_end']);
+			$time_end=$date01->format('U');
+			if(isset($course['hour_end']) && $course['hour_end']!=-1){
+				$hour_end = $course['hour_end'];
+				$seconds = strtotime("1970-01-01 $hour_end UTC");
+				$time_end += seconds;
+			}
 			$exp_time = $time_end - $now;
 			if($exp_time > 0) $expiring = round($exp_time / (24*60*60));
 		}
@@ -917,9 +926,13 @@ class Man_Course {
 			if($now < $time_begin) return array('can' => false, 'reason' => 'course_date', 'expiring_in' => $expiring);
 		}
 		if($course['date_end'] != '0000-00-00') {
-
-			$time_end = fromDatetimeToTimestamp($course['date_end']);
-
+			$date01=new DateTime($course['date_end']);
+			$time_end=$date01->format('U');
+			if(isset($course['hour_end']) && $course['hour_end']!=-1){
+				$hour_end = $course['hour_end'];
+				$seconds = strtotime("1970-01-01 $hour_end UTC");
+				$time_end = (int)$time_end + (int)$seconds;
+			}
 			if($now > $time_end) return array('can' => false, 'reason' => 'course_date', 'expiring_in' => $expiring);
 		}
 		if($course['valid_time'] != '0' && $course['valid_time'] != '' && $course['date_first_access'] != '') {

@@ -21,7 +21,7 @@ echo	Form::openForm('add_edition_form', 'index.php?r='.$base_link_edition.'/add&
 		.Form::getTextfield(Lang::t('_MIN_NUM_SUBSCRIBE', 'course'), 'min_par', 'min_par', 255)
 		.Form::getTextfield(Lang::t('_COURSE_PRIZE', 'course'), 'price', 'price', 255)
 		.Form::getDatefield(Lang::t('_DATE_BEGIN', 'course'), 'date_begin', 'date_begin')
-		.Form::getDatefield(Lang::t('_DATE_END', 'course'), 'date_end', 'date_end')
+		.Form::getDatetimefield(Lang::t('_DATE_END', 'course'), 'date_end', 'date_end', '',"%d-%m-%Y %H:%M")
 		.'<div class="form_line_l">'
 		.'<p><label for="overbooking" class="floating">'.Lang::t('_ALLOW_OVERBOOKING', 'course').'</label></p>'
 		.Form::getInputCheckbox('overbooking', 'overbooking', 1, false, false)
@@ -31,8 +31,16 @@ echo	Form::openForm('add_edition_form', 'index.php?r='.$base_link_edition.'/add&
 		.Form::getInputCheckbox('can_subscribe', 'can_subscribe', 1, false, false)
 		.'</div>'
 		.Form::getDatefield(Lang::t('_SUBSCRIPTION_DATE_BEGIN', 'course'), 'sub_date_begin', 'sub_date_begin')
-		.Form::getDatefield(Lang::t('_SUBSCRIPTION_DATE_END', 'course'), 'sub_date_end', 'sub_date_end')
-		.Form::closeElementSpace()
+		.Form::getDatefield(Lang::t('_SUBSCRIPTION_DATE_END', 'course'), 'sub_date_end', 'sub_date_end');
+
+                // Visualizzazione CustomFields
+                require_once(_adm_.'/lib/lib.customfield.php');
+                $fman = new CustomFieldList();
+                $fman->setFieldArea( "COURSE_EDITION" );
+                $fields_mask = $fman->playFields($model->getIdEdition());
+                echo $fields_mask;
+
+            echo Form::closeElementSpace()
 		.Form::openButtonSpace()
 		.Form::getButton('ins', 'ins', Lang::t('_SAVE', 'course'))
 		.Form::getButton('undo', 'undo', Lang::t('_UNDO', 'course'))

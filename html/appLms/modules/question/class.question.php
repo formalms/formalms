@@ -225,7 +225,7 @@ class Question {
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
 	function _checkScore( $score ) {
-		$score = preg_replace(',', '.', $score);
+        $score = preg_replace('[,]','.', $score);
 		if( $score{0} == '.') $score = '0'.$score;
 		return $score;
 	}
@@ -759,6 +759,12 @@ class Question {
 			$oQuest->extra_info[] = $oAnswer;
 		}
 		
+                // Customfield
+                require_once(_adm_.'/lib/lib.customfield.php');
+                $fman = new CustomFieldList();
+                $fman->setFieldArea( "LO_TEST" );
+                $oQuest->customfield = $fman->playFieldsFlat($this->id);
+                
 		return $oQuest;
 	}
 	
