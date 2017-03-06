@@ -430,6 +430,24 @@ class CustomFieldList {
 	}
         
 	/**
+	 * find the number of value filled for area
+	 *
+	 * @return array with the value saved for the users
+	 **/
+	function getNumberFieldbyArea() {
+
+		$query = "
+		SELECT COUNT(*)
+		FROM ".$this->getFieldTable() ."
+		WHERE area_code='".$this->getFieldArea()."'";
+                
+		if(!$rs = sql_query( $query )) return false;
+
+		list($num) = sql_fetch_row($rs);
+		return $num;
+	}
+        
+	/**
 	 * find the value for the fields correlated with the user
 	 * @param int 		$id_user 		the idst f the user
 	 * @param array 	$arr_field 		the id of the fields
