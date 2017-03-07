@@ -756,7 +756,7 @@ class CoursereportLmsController extends LmsController
 
                                                     $value = array(
                                                         'icon' => 'cr_max_score',
-                                                        'showIcon' => true,
+                                                        'showIcon' => false,
                                                         'value' => $score,
                                                         'link' => "javascript:void(0)",
                                                         'active' => false);
@@ -796,7 +796,7 @@ class CoursereportLmsController extends LmsController
                                                 if ($score == $test_details[$id_test]['max_score']) {
                                                     $value = array(
                                                         'icon' => 'cr_max_score cr_not_passed',
-                                                        'showIcon' => true,
+                                                        'showIcon' => false,
                                                         'value' => $score,
                                                         'link' => "javascript:void(0)",
                                                         'active' => false);
