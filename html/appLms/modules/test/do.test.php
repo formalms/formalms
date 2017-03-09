@@ -784,6 +784,29 @@ function play($object_test, $id_param)
 									})(jQuery);   
                                     (function($) {
 										$(document).on('ready', function() {
+                                        
+                                            //LRZ
+                                            num_answer_radio = $('.answer_question input[type=\"radio\"]:checked').length ;     
+                                            num_answer_chk = $('.answer_question input[type=\"checkbox\"]:checked').length ;     
+                        
+                                            if((num_answer_radio +  num_answer_chk) >0){
+                                            
+                                                $('#next_page').prop('disabled', false);
+                                                    if($('#answer_info'))
+                                                        $('#answer_info').hide();
+                                                    if($('#show_result'))
+                                                        $('#show_result').prop('disabled', false);
+                                            } else {
+                                          
+                                                $('#next_page').prop('disabled', true);
+                                                    if($('#answer_info'))
+                                                        $('#answer_info').show();
+                                                    if($('#show_result'))
+                                                        $('#show_result').prop('disabled', true);                                                
+                                            
+                                            
+                                            }
+                                      
 											$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
 											$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
 											$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
@@ -874,12 +897,18 @@ function play($object_test, $id_param)
         if (($type_quest != 'break_page') && ($type_quest != 'title')) {
             ++$quest_sequence_number;
         }
-    }
+    }   
+    
+    
+    
+    
+    
+    
     if ($test_info['mandatory_answer'] == 1) {
         YuiLib::load();
         Util::get_js(Get::rel_path('lms') . '/modules/question/question.js', true, true);
         cout('<script type="text/javascript">', 'content');
-
+        
         $tot_correct_array = array();
 
         foreach ($array_answer as $id_quest => $quest_info) {
@@ -921,11 +950,17 @@ function play($object_test, $id_param)
 
         $js_array .= '}';
 
-        cout('var num_answer_control = ' . $js_array . ';' . "\n"
-            . 'var tot_question = ' . (int)$tot_question . ';' . "\n"
+        cout('
+             var num_answer_control = ' . $js_array . ';' . "\n"
+            .'var tot_question = ' . (int)$tot_question . ';' . "\n"
             . '</script>', 'content');
+    } else {
+        //** NOT MANDATORY - LRZ **
+         cout('<script type="text/javascript">', 'content');
+         cout('var tot_question = ' . (int)$tot_question . ';' . "\n"
+         . '</script>', 'content');
     }
-
+            
     $GLOBALS['page']->add('</div>'
         . '<span id="answer_info" style="color:#FF0000;width:97%;float:right;margin-bottom:5px;text-align:right;padding-right:30px;' . ($tot_question > 0 && $test_info['mandatory_answer'] == 1 ? 'display:block;' : 'display:none;') . '"><b>' . $lang->def('_NEED_ANSWER') . '</b></span>'
         . '<div class="test_button_space">', 'content');
