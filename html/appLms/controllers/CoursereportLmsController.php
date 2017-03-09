@@ -29,12 +29,9 @@ class CoursereportLmsController extends LmsController
 
     public function coursereport()
     {
-        //checkPerm('view', true, $this->_mvc_name);
-
+        checkPerm('view', true, $this->_mvc_name);
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
-
-        $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
 
         $view_perm = checkPerm('view', true, $this->_mvc_name);
         $view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
@@ -373,6 +370,12 @@ class CoursereportLmsController extends LmsController
                                 $editLink = 'index.php?r=lms/coursereport/testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                 $trashLinkVisible = false;
                             }
+                            else if ($view_perm){
+
+                                $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $event->setOverViewTestQuestionLink($chartLink);
+                                $trashLinkVisible = false;
+                            }
 
                             if (isset($test_details[$info_report->getIdSource()]['passed']) || isset($test_details[$info_report->getIdSource()]['not_passed'])) {
                                 if (!isset($test_details[$info_report->getIdSource()]['passed'])) {
@@ -406,11 +409,11 @@ class CoursereportLmsController extends LmsController
 
                             if ($mod_perm) {
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
-                                $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdReport();
                                 $chartLinkVisible = false;
-                                $editLink = 'index.php?r=lms/coursereport/modactivityscore&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $editLink = 'index.php?r=lms/coursereport/modactivityscore&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdReport().'&source_of=' . $info_report->getSourceOf() . '&id_source=' . $info_report->getIdSource();
 
-                                $trashLink = 'index.php?r=lms/coursereport/delactivity&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdSource();
+                                $trashLink = 'index.php?r=lms/coursereport/delactivity&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdReport();
                             }
 
                             $scormItem = new ScormLms($info_report->getIdSource());
@@ -438,7 +441,7 @@ class CoursereportLmsController extends LmsController
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                 //$chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                 $chartLinkVisible = false;
-                                $editLink = 'index.php?r=lms/coursereport/modactivityscore&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdReport();
+                                $editLink = 'index.php?r=lms/coursereport/modactivityscore&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdReport();
                                 $trashLink = 'index.php?r=lms/coursereport/delactivity&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdReport();
                             }
 
@@ -532,13 +535,18 @@ class CoursereportLmsController extends LmsController
 
         $redo_final = Get::pReq('redo_final', DOTY_MIXED, false);
         $round_report = Get::pReq('round_report', DOTY_MIXED, false);
+        $round_test = Get::pReq('round_test', DOTY_MIXED, false);
 
-        if ($redo_final && !$round_report) {
+        if ($redo_final && !$round_report && !$round_test) {
             $this->redofinal();
         }
 
-        if ($round_report && !$redo_final) {
+        if ($round_report && !$redo_final  && !$round_test) {
             $this->roundreport($round_report);
+        }
+
+        if ($round_test && !$redo_final  && !$round_report) {
+            $this->roundtest($round_test);
         }
 
         $this->model = new CoursereportLms($_SESSION['idCourse']);
@@ -756,7 +764,7 @@ class CoursereportLmsController extends LmsController
 
                                                     $value = array(
                                                         'icon' => 'cr_max_score',
-                                                        'showIcon' => true,
+                                                        'showIcon' => false,
                                                         'value' => $score,
                                                         'link' => "javascript:void(0)",
                                                         'active' => false);
@@ -796,7 +804,7 @@ class CoursereportLmsController extends LmsController
                                                 if ($score == $test_details[$id_test]['max_score']) {
                                                     $value = array(
                                                         'icon' => 'cr_max_score cr_not_passed',
-                                                        'showIcon' => true,
+                                                        'showIcon' => false,
                                                         'value' => $score,
                                                         'link' => "javascript:void(0)",
                                                         'active' => false);
@@ -1066,7 +1074,6 @@ class CoursereportLmsController extends LmsController
      */
     function getUserFieldsSelector() //array associativo
     {
-
         require_once(_adm_ . '/lib/lib.field.php');
 
         $fman = new FieldList();
@@ -1237,8 +1244,16 @@ class CoursereportLmsController extends LmsController
 
     function testvote()
     {
+        if (isset($_POST['view_answer'])){
+            $this->testreview();
+            return;
+        }
         checkPerm('mod', true, $this->_mvc_name);
+        $undo = Get::pReq('undo',DOTY_MIXED,false);
 
+        if ($undo){
+            Util::jump_to('index.php?r=coursereport/coursereport');
+        }
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
         require_once(_base_ . '/lib/lib.form.php');
@@ -1281,7 +1296,7 @@ class CoursereportLmsController extends LmsController
         //==========================================================================================
         // XXX: Reset track of user
         if (isset($_POST['reset_track'])) {
-            $re = saveTestUpdate($id_test, $test_man);
+            $re = $this->saveTestUpdate($id_test, $test_man);
             list($id_user,) = each($_POST['reset_track']);
 
             $user_info = $acl_man->getUser($id_user, false);
@@ -1313,7 +1328,7 @@ class CoursereportLmsController extends LmsController
         //==========================================================================================
 
         if (isset($_POST['save'])) {
-            $re = saveTestUpdate($id_test, $test_man);
+            $re = $this->saveTestUpdate($id_test, $test_man);
             Util::jump_to('index.php?r=coursereport/coursereport&resul=' . ($re ? 'ok' : 'err'));
         }
 
@@ -1601,7 +1616,11 @@ class CoursereportLmsController extends LmsController
     function testreview()
     {
         checkPerm('mod', true, $this->_mvc_name);
+        $undo = Get::pReq('undo_testreview',DOTY_MIXED,false);
 
+        if ($undo){
+            Util::jump_to('index.php?r=coursereport/testvote');
+        }
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
         require_once(_base_ . '/lib/lib.form.php');
@@ -1624,7 +1643,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Save input if needed
         if (isset($_POST['view_answer'])) {
-            $re = saveTestUpdate($id_test, $test_man);
+            $re = $this->saveTestUpdate($id_test, $test_man);
             list($id_user,) = each($_POST['view_answer']);
         } else {
             $id_user = importVar('id_user', true, 0);
@@ -1930,7 +1949,7 @@ class CoursereportLmsController extends LmsController
             . '</div>');
     }
 
-    function roundtest()
+    function roundtest($id_test)
     {
         checkPerm('mod', true, $this->_mvc_name);
 
@@ -1940,7 +1959,7 @@ class CoursereportLmsController extends LmsController
         require_once(_base_ . '/lib/lib.table.php');
 
         // XXX: Initializaing
-        $id_test = importVar('id_test', true, 0);
+        //$id_test = importVar('id_test', true, 0);
         $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
         $out =& $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -1953,7 +1972,7 @@ class CoursereportLmsController extends LmsController
         // XXX: Find test from organization
         $re = $test_man->roundTestScore($id_test);
 
-        Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
+        //Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
     function roundreport($idReport)
@@ -2322,7 +2341,11 @@ class CoursereportLmsController extends LmsController
     function modactivity()
     {
         checkPerm('mod', true, $this->_mvc_name);
+        $undo = Get::pReq('undo',DOTY_MIXED,false);
 
+        if ($undo){
+            Util::jump_to('index.php?r=coursereport/coursereport');
+        }
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once(_base_ . '/lib/lib.form.php');
         require_once(_base_ . '/lib/lib.table.php');
@@ -2429,6 +2452,11 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('mod', true, $this->_mvc_name);
 
+        $undo = Get::pReq('undo',DOTY_MIXED,false);
+
+        if ($undo){
+            Util::jump_to('index.php?r=coursereport/coursereport');
+        }
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once(_base_ . '/lib/lib.form.php');
         require_once(_base_ . '/lib/lib.table.php');
@@ -2460,7 +2488,7 @@ class CoursereportLmsController extends LmsController
 
         } else {
 
-            $this->model = new CoursereportLms($_SESSION['idCourse'], $id_report, ['activity', 'scoitem'], '0');
+            $this->model = new CoursereportLms($_SESSION['idCourse'], $id_report, ['activity', 'scoitem']);
 
             $info_report = $this->model->getCourseReports()[0];
 
@@ -2518,10 +2546,10 @@ class CoursereportLmsController extends LmsController
                 $out->add(
                     Form::getLinebox(
                         $lang->def('_TITLE_ACT'),
-                        strip_tags($info_report['title']))
+                        strip_tags($info_report->getTitle()))
                     . Form::getLinebox(
                         $lang->def('_MAX_SCORE'),
-                        strip_tags($info_report['max_score']))
+                        strip_tags($info_report->getMaxScore()))
                     . Form::getLinebox(
                         $lang->def('_REQUIRED_SCORE'),
                         strip_tags($info_report->getRequiredScore()))
@@ -2534,13 +2562,13 @@ class CoursereportLmsController extends LmsController
                         'title',
                         'title',
                         '255',
-                        $info_report['title'])
+                        $info_report->getTitle())
                     . Form::getTextfield(
                         $lang->def('_MAX_SCORE'),
                         'max_score',
                         'max_score',
                         '11',
-                        $info_report['max_score'])
+                        $info_report->getMaxScore())
                     . Form::getTextfield(
                         $lang->def('_REQUIRED_SCORE'),
                         'required_score',
@@ -2556,19 +2584,19 @@ class CoursereportLmsController extends LmsController
                 'weight',
                 'weight',
                 '11',
-                $info_report['weight'])
+                $info_report->getWeight())
             . Form::getDropdown(
                 $lang->def('_SHOW_TO_USER'),
                 'show_to_user',
                 'show_to_user',
                 array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
-                $info_report['show_to_user'])
+                $info_report->isShowToUser())
             . Form::getDropdown(
                 $lang->def('_USE_FOR_FINAL'),
                 'use_for_final',
                 'use_for_final',
                 array('true' => $lang->def('_YES'), 'false' => $lang->def('_NO')),
-                $info_report['use_for_final'])
+                $info_report->isUseForFinal())
             . Form::getCloseFieldSet()
             . Form::closeElementSpace()
         );
@@ -2645,7 +2673,11 @@ class CoursereportLmsController extends LmsController
     function delactivity()
     {
         checkPerm('mod', true, $this->_mvc_name);
+        $undo = Get::pReq('undo',DOTY_MIXED,false);
 
+        if ($undo){
+            Util::jump_to('index.php?r=coursereport/coursereport');
+        }
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once(_base_ . '/lib/lib.form.php');
         require_once(_base_ . '/lib/lib.table.php');
@@ -2757,6 +2789,7 @@ class CoursereportLmsController extends LmsController
         $out->setWorkingZone('content');
         $included_test = array();
         $mod_perm = checkPerm('mod', true);
+        $view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
         $csv = '';
 
         $acl_man = Docebo::user()->getAclManager();
@@ -3159,6 +3192,11 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('view', true, $this->_mvc_name);
         $responseValue = array();
+        $undo = Get::pReq('undo',DOTY_MIXED,false);
+
+        if ($undo){
+            Util::jump_to('index.php?r=coursereport/coursereport');
+        }
 
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
         require_once($GLOBALS['where_lms'].'/modules/question/class.question.php');
@@ -3196,7 +3234,7 @@ class CoursereportLmsController extends LmsController
             $resAnswers = Question::getTestQuestAnswerFromQuestAndStudents($quest['idQuest'],$id_students);
 
             foreach ($resAnswers as $k =>  $resAnswer){
-                $answersNew[$quest['idQuest']][$resAnswers['idAnswer']][$k] = $resAnswer;
+                $answersNew[$k] = $resAnswer;
             }
 
 
