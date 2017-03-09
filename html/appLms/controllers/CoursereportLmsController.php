@@ -29,12 +29,9 @@ class CoursereportLmsController extends LmsController
 
     public function coursereport()
     {
-        //checkPerm('view', true, $this->_mvc_name);
-
+        checkPerm('view', true, $this->_mvc_name);
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
-
-        $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
 
         $view_perm = checkPerm('view', true, $this->_mvc_name);
         $view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
@@ -373,6 +370,12 @@ class CoursereportLmsController extends LmsController
                                 $editLink = 'index.php?r=lms/coursereport/testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                 $trashLinkVisible = false;
                             }
+                            else if ($view_perm){
+
+                                $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
+                                $event->setOverViewTestQuestionLink($chartLink);
+                                $trashLinkVisible = false;
+                            }
 
                             if (isset($test_details[$info_report->getIdSource()]['passed']) || isset($test_details[$info_report->getIdSource()]['not_passed'])) {
                                 if (!isset($test_details[$info_report->getIdSource()]['passed'])) {
@@ -532,13 +535,18 @@ class CoursereportLmsController extends LmsController
 
         $redo_final = Get::pReq('redo_final', DOTY_MIXED, false);
         $round_report = Get::pReq('round_report', DOTY_MIXED, false);
+        $round_test = Get::pReq('round_test', DOTY_MIXED, false);
 
-        if ($redo_final && !$round_report) {
+        if ($redo_final && !$round_report && !$round_test) {
             $this->redofinal();
         }
 
-        if ($round_report && !$redo_final) {
+        if ($round_report && !$redo_final  && !$round_test) {
             $this->roundreport($round_report);
+        }
+
+        if ($round_test && !$redo_final  && !$round_report) {
+            $this->roundtest($round_test);
         }
 
         $this->model = new CoursereportLms($_SESSION['idCourse']);
@@ -1066,7 +1074,6 @@ class CoursereportLmsController extends LmsController
      */
     function getUserFieldsSelector() //array associativo
     {
-
         require_once(_adm_ . '/lib/lib.field.php');
 
         $fman = new FieldList();
@@ -1237,6 +1244,10 @@ class CoursereportLmsController extends LmsController
 
     function testvote()
     {
+        if (isset($_POST['view_answer'])){
+            $this->testreview();
+            return;
+        }
         checkPerm('mod', true, $this->_mvc_name);
         $undo = Get::pReq('undo',DOTY_MIXED,false);
 
@@ -1285,7 +1296,7 @@ class CoursereportLmsController extends LmsController
         //==========================================================================================
         // XXX: Reset track of user
         if (isset($_POST['reset_track'])) {
-            $re = saveTestUpdate($id_test, $test_man);
+            $re = $this->saveTestUpdate($id_test, $test_man);
             list($id_user,) = each($_POST['reset_track']);
 
             $user_info = $acl_man->getUser($id_user, false);
@@ -1317,7 +1328,7 @@ class CoursereportLmsController extends LmsController
         //==========================================================================================
 
         if (isset($_POST['save'])) {
-            $re = saveTestUpdate($id_test, $test_man);
+            $re = $this->saveTestUpdate($id_test, $test_man);
             Util::jump_to('index.php?r=coursereport/coursereport&resul=' . ($re ? 'ok' : 'err'));
         }
 
@@ -1605,7 +1616,11 @@ class CoursereportLmsController extends LmsController
     function testreview()
     {
         checkPerm('mod', true, $this->_mvc_name);
+        $undo = Get::pReq('undo_testreview',DOTY_MIXED,false);
 
+        if ($undo){
+            Util::jump_to('index.php?r=coursereport/testvote');
+        }
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
         require_once(_base_ . '/lib/lib.form.php');
@@ -1628,7 +1643,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Save input if needed
         if (isset($_POST['view_answer'])) {
-            $re = saveTestUpdate($id_test, $test_man);
+            $re = $this->saveTestUpdate($id_test, $test_man);
             list($id_user,) = each($_POST['view_answer']);
         } else {
             $id_user = importVar('id_user', true, 0);
@@ -1934,7 +1949,7 @@ class CoursereportLmsController extends LmsController
             . '</div>');
     }
 
-    function roundtest()
+    function roundtest($id_test)
     {
         checkPerm('mod', true, $this->_mvc_name);
 
@@ -1944,7 +1959,7 @@ class CoursereportLmsController extends LmsController
         require_once(_base_ . '/lib/lib.table.php');
 
         // XXX: Initializaing
-        $id_test = importVar('id_test', true, 0);
+        //$id_test = importVar('id_test', true, 0);
         $lang =& DoceboLanguage::createInstance('coursereport', 'lms');
         $out =& $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -1957,7 +1972,7 @@ class CoursereportLmsController extends LmsController
         // XXX: Find test from organization
         $re = $test_man->roundTestScore($id_test);
 
-        Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
+        //Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
     function roundreport($idReport)
@@ -2774,6 +2789,7 @@ class CoursereportLmsController extends LmsController
         $out->setWorkingZone('content');
         $included_test = array();
         $mod_perm = checkPerm('mod', true);
+        $view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
         $csv = '';
 
         $acl_man = Docebo::user()->getAclManager();
@@ -3218,7 +3234,7 @@ class CoursereportLmsController extends LmsController
             $resAnswers = Question::getTestQuestAnswerFromQuestAndStudents($quest['idQuest'],$id_students);
 
             foreach ($resAnswers as $k =>  $resAnswer){
-                $answersNew[$quest['idQuest']][$resAnswers['idAnswer']][$k] = $resAnswer;
+                $answersNew[$k] = $resAnswer;
             }
 
 
