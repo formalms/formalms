@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin_manifest>
+	<title>Twitter Auth</title>
+	<author>Joint Technologies</author>
+	<name>TwitterAuth</name>
+	<version>1.0</version>
+	<category>authentication</category>
+	<description>Twitter auth</description>
+	<link>http://www.joint-tech.it/</link>
+	<license>GNU General Public License version 2</license>
+</plugin_manifest>

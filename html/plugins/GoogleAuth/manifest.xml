@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin_manifest>
+	<title>GoogleAuth</title>
+	<name>GoogleAuth</name>
+	<author>Joint Technologies</author>
+	<version>1.0</version>
+	<category>authentication</category>
+	<description>Google auth</description>
+</plugin_manifest>

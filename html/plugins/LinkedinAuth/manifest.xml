@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin_manifest>
+	<title>LinkedinAuth</title>
+	<author>Joint Technologies</author>
+	<name>LinkedinAuth</name>
+	<version>1.0</version>
+	<license>GNU General Public License version 2</license>
+	<description>Linkedin auth</description>
+	<category>authentication</category>
+	<core>false</core>
+</plugin_manifest>

@@ -1,0 +1,1 @@
+DELETE FROM `learning_report` WHERE `learning_report`.`report_name` = 'course_report';
