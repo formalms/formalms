@@ -246,7 +246,7 @@ class DoceboUser {
 			}
 
 			//bind on server
-			$ldap_user = preg_replace( '\$user', $login, Get::sett('ldap_user_string') );
+			$ldap_user = preg_replace( '/\$user/', $login, Get::sett('ldap_user_string') );
 			if (!(@ldap_bind($ldap_conn, $ldap_user, $password))) {
 				ldap_close($ldap_conn);
 
@@ -407,7 +407,7 @@ class DoceboUser {
 
 		if(!isset($GLOBALS['user_roles'])) $this->load_user_role();
 
-		//if ($this->user_level == ADMIN_GROUP_GODADMIN && !$this->isCourseRole($roleid)) return TRUE;
+		if ($this->user_level == ADMIN_GROUP_GODADMIN && $this->aclManager->getRole(false, $roleid) === FALSE ) return TRUE;
 
 		return isset($GLOBALS['user_roles'][$roleid]);
 	}
@@ -421,11 +421,9 @@ class DoceboUser {
 
 		if(!isset($GLOBALS['user_roles'])) $this->load_user_role();
 
-		//if ($this->user_level == ADMIN_GROUP_GODADMIN && !$this->isCourseRole($roleid)) return TRUE;
-
 		foreach( $roles as $r ) {
 
-			if(isset($GLOBALS['user_roles'][$r])) return true;
+			if($this->matchUserRole($GLOBALS['user_roles'][$r])) return true;
 		}
 		return FALSE;
 	}
@@ -439,11 +437,9 @@ class DoceboUser {
 
 		if(!isset($GLOBALS['user_roles'])) $this->load_user_role();
 
-		//if ($this->user_level == ADMIN_GROUP_GODADMIN && !$this->isCourseRole($roleid)) return TRUE;
-
 		foreach( $roles as $r ) {
 
-			if(!isset($GLOBALS['user_roles'][$r])) return false;
+			if(!$this->matchUserRole($GLOBALS['user_roles'][$r])) return false;
 		}
 		return TRUE;
 	}

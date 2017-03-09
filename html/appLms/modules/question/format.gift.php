@@ -185,6 +185,45 @@ class qformat_gift {
             //return true;
         }
         
+        // Look for customfield modifier ---------------------------------------------------------
+        require_once(_adm_.'/lib/lib.customfield.php');
+        $fman = new CustomFieldList();
+        $fman->setFieldArea( "LO_TEST" );
+        $arrCustomField = $fman->playFieldsFlat();
+        
+
+        foreach ($arrCustomField as $field) { 
+
+            // $field['code']
+            // $field['id']
+            if (ereg( '^\$CUSTOMFIELD:'.$field['code'].':', $text)) {
+                $newcf = trim(substr( $text, strlen($field['code'])+strlen('\$CUSTOMFIELD:') ));
+                if ( strpos($newcf, '$CUSTOMFIELD:') === false ) {
+                    $newcf = trim(substr( $newcf, 0,  strpos($newcf, '::')));
+                } else {
+                    $newcf = trim(substr( $newcf, 0,  strpos($newcf, '$CUSTOMFIELD:')));
+                }
+                
+                $found = false;
+                
+                foreach ($field['code_value'] as $key=>$value) {
+                        //$field['code'].'_'.$key.'">'.$value.':</label> '
+                    if ($value == $newcf) {
+                        // setto l'array cf
+                        $arrValueCustomField [] = array("idField" => $field['id'], "nameField" => $field['code'], "idSon" => $key, "nameSon" => $value);
+                        $found = true;
+                    }
+                }
+                if ($found == false) {
+                    // se non lo ha trovato metto valore zero
+                    $arrValueCustomField [] = array("idField" => $field['id'], "nameField" => $field['code'], "idSon" => 0, "nameSon" => "");
+                }
+                // tolgo dalla stringa il customfield trattato
+                $text = trim(substr($text, strlen($field['code'])+strlen('\$CUSTOMFIELD:')+strlen($newcf)));
+            }
+        }
+        $question->customfield = $arrValueCustomField;
+        
         // QUESTION NAME parser --------------------------------------------------------------
         if (substr($text, 0, 2) == "::") {
             $text = substr($text, 2);
@@ -601,6 +640,13 @@ class qformat_gift {
 	        $expout .= "\$CATEGORY:$question->id_category\n";
 	    }
 		
+            // Customfield
+            if (is_array ($question->customfield)){
+                foreach ($question->customfield as $field) { 
+                    $expout .= "\$CUSTOMFIELD:".$field['code'].":".$field['code_value']."\n";
+                }
+	    }
+            
 	    // get  question text format
 	    /*$textformat = $question->textformat;
 	    $question->text = "";

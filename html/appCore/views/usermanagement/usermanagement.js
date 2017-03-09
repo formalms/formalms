@@ -177,6 +177,44 @@ var UserManagement = {
 				oDialog.call(this, e);
 			};
 
+			//multi genpwd confirm dialog
+			var multiGenPwdEvent = function(s, e, u) {
+				var body, count_sel = DataTableSelector_usertable.num_selected;
+				if (count_sel > 0) {
+					body = '<form method="POST" id="usertable_multigenpwd_dialog_form" action="'+u+'">'
+						+'<p>'+L.get('_MOD')+': '+count_sel+' '+L.get('_USERS')+'</p>'
+						+'<input type="hidden" name="users" value="'+DataTableSelector_usertable.toString()+'" />'
+						+'</form>';
+				} else {
+					body = '<p>'+L.get('_EMPTY_SELECTION')+'</p>';
+				}
+				var oDialog = CreateDialog("usertable_multiGenPwdDialog", {
+					width: "500px",
+					modal: true,
+					close: true,
+					visible: false,
+					fixedcenter: true,
+					constraintoviewport: true,
+					draggable: true,
+					hideaftersubmit: false,
+					isDynamic: false,
+					confirmOnly: (count_sel > 0 ? false : true),
+					header: L.get('_AREYOUSURE'),
+					body: body,
+					callback: function(o) {
+						if (o.list) {
+							var i;
+							for (i=0; i<o.list.length; i++)
+								DataTableSelector_usertable.remsel(o.list[i]);
+						}
+						this.destroy();
+						U.updateDeletedUsersTotal(o);
+						DataTable_usertable.refresh();
+					}
+				});
+				oDialog.call(this, e);
+			};
+
 			//multi unassoc/assoc
 			var multiUnassocEvent = function(s, e, u) {
 				var body, count_sel = DataTableSelector_usertable.num_selected;
@@ -309,9 +347,10 @@ var UserManagement = {
 				items.push({id:"opt2", text: L.get('_SUSPEND'), onclick: { fn: multiSuspendEvent, obj: "ajax.adm_server.php?r="+U.baseUrl+"/multisuspend&amp;action=0" }});
 				items.push({id:"opt3", text: L.get('_REACTIVATE'), onclick: { fn: multiSuspendEvent, obj: "ajax.adm_server.php?r="+U.baseUrl+"/multisuspend&amp;action=1" }});
 				items.push({id:"opt4", text: L.get('_MOD'), onclick: { fn: multiModifyEvent, obj: "ajax.adm_server.php?r="+U.baseUrl+"/modmultiuser" }});
+				items.push({id:"opt5", text: L.get('_GENERATE_PASSWORD'), onclick: { fn: multiGenPwdEvent, obj: "ajax.adm_server.php?r="+U.baseUrl+"/multigenpwd" }});
 			}
 			if (U.perms.del_user) {
-				items.push({id:"opt5", text: L.get('_DEL'), onclick: { fn: multiDeleteEvent, obj: "ajax.adm_server.php?r="+U.baseUrl+"/delmultiuser" }});
+				items.push({id:"opt6", text: L.get('_DEL'), onclick: { fn: multiDeleteEvent, obj: "ajax.adm_server.php?r="+U.baseUrl+"/delmultiuser" }});
 			}
 
 			if (items.length > 0) {

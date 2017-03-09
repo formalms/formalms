@@ -7,7 +7,7 @@ switch ($step) {
 		
 		echo Form::getFormHeader(Lang::t('_ASSIGN_USERS', 'admin_directory'));
 		echo Form::openForm('directory_importgroupuser', 'index.php?r='. $this->link.'/importusers', false, false, 'multipart/form-data');
-		//echo Form::getHidden('id', 'id', $id_org);
+		echo Form::getHidden('id', 'id', $id_org);
 		echo Form::getHidden('step', 'step', 2);
 		echo Form::openElementSpace();
 		echo Form::getFilefield(Lang::t('_GROUP_USER_IMPORT_FILE', 'admin_directory'), 'file_import', 'file_import');
@@ -20,19 +20,6 @@ switch ($step) {
 		), 'auto');
 		echo Form::getCheckbox(Lang::t('_GROUP_USER_IMPORT_HEADER', 'admin_directory'), 'import_first_row_header', 'import_first_row_header', 'true', true);
 		echo Form::getTextfield(Lang::t('_GROUP_USER_IMPORT_CHARSET', 'admin_directory'), 'import_charset', 'import_charset', 20, 'UTF-8');
-		echo Form::getDropdown(Lang::t('_DIRECTORY_MEMBERTYPETREE', 'admin_directory'), 'id', 'id', $orgchart_list, $id_org);
-
-		echo Form::getRadioSet(Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory'),
-			'pwd_force_change_policy',
-			'pwd_force_change_policy',
-			array(
-				Lang::t('_NO', 'standard') => 'false',
-				Lang::t('_YES', 'standard') => 'true',
-				Lang::t('_SERVERINFO', 'configuration') => 'by_setting',
-				Lang::t('_DO_NOTHING', 'preassessment') => 'do_nothing'
-			),
-			'do_nothing'
-		);
 
 		echo Form::closeElementSpace();
 		echo Form::openButtonSpace();
@@ -53,15 +40,61 @@ switch ($step) {
 		echo Form::getHidden('id', 'id', $id_org);
 		echo Form::getHidden('step', 'step', 3);
 
-		echo Form::getCheckbox(Lang::t('_SEND_ALERT', 'subscribe'), 'send_alert', 'send_alert', 1);
-		echo Form::getCheckbox(Lang::t('_TASK_INSERTED', 'iotask'), 'insert_update', 'insert_update', 1);
+		echo Form::getCheckbox(Lang::t('_SEND_NEW_CREDENTIALS_ALERT', 'user_managment'), 'send_alert', 'send_alert', 1);
+		//echo Form::getCheckbox(Lang::t('_TASK_INSERTED', 'iotask'), 'insert_update', 'insert_update', 1);
+		echo Form::getDropdown(Lang::t('_DIRECTORY_MEMBERTYPETREE', 'admin_directory'), 'id', 'id', $orgchart_list, $id_org);
+                
+                echo Form::getRadioSet(Lang::t('_ACTION_ON_USERS', 'user_managment'),
+			'action_on_users',
+			'action_on_users',
+			array(
+				//Lang::t('_CREATE_AND_UPDATE', 'user_managment') => 'create_and_update',
+				Lang::t('_ONLY_CREATE', 'user_managment') => 'only_create',
+				Lang::t('_CREATE_ALL', 'user_managment') => 'create_all',
+				Lang::t('_ONLY_UPDATE', 'user_managment') => 'only_update'
+			),
+			'only_create'
+		);
+                
+                echo Form::getRadioSet(Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory'),
+			'pwd_force_change_policy',
+			'pwd_force_change_policy',
+			array(
+				Lang::t('_NO', 'standard') => 'false',
+				Lang::t('_YES', 'standard') => 'true',
+				Lang::t('_SERVERINFO', 'configuration') => 'by_setting',
+				Lang::t('_DO_NOTHING', 'preassessment') => 'do_nothing'
+			),
+			'do_nothing'
+		);
+                
+                echo Form::getRadioSet(Lang::t('_SET_PASSWORD', 'user_managment'),
+			'set_password',
+			'set_password',
+			array(
+				Lang::t('_FROM_FILE', 'user_managment') => 'from_file',
+				Lang::t('_INSERT_EMPTY', 'user_managment') => 'insert_empty',
+				Lang::t('_INSERT_ALL', 'user_managment') => 'insert_all'
+			),
+			'from_file'
+		);
+                
+                echo Form::getRadioSet(Lang::t('_PASSWORD_TO_INSERT', 'user_managment'),
+			'password_to_insert',
+			'password_to_insert',
+			array(
+				Lang::t('_AUTOMATIC_PASSWORD', 'user_managment') => 'use_automatic_password',
+				Lang::t('_MANUAL_PASSWORD', 'user_managment').': '.Form::getInputTextfield('', 'manual_password', 'manual_password', '', '', 50) => 'use_manual_password'
+			),
+			'use_automatic_password'
+		);
+                //echo Form::getTextfield(Lang::t('_MANUAL_PASSWORD', 'user_managment'), 'manual_password', 'manual_password', 50, '');
 		
 		echo $UIMap;
 		echo Form::getHidden('filename', 'filename', $filename);
 		echo Form::getHidden('import_first_row_header', 'import_first_row_header', ($first_row_header ? 'true' : 'false'));
 		echo Form::getHidden('import_separator', 'import_separator', $separator);
 		echo Form::getHidden('import_charset', 'import_charset', $import_charset);
-		echo Form::getHidden('pwd_force_change_policy', 'pwd_force_change_policy', $pwd_force_change_policy);
 
 		echo Form::closeElementSpace();
 		echo Form::openButtonSpace();

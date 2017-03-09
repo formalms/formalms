@@ -119,6 +119,8 @@ $cfg['twig_debug'] = false;
 $cfg['do_debug']    = false;
 $cfg['session_lenght']   = (120 * 60);
 $cfg['session_save_path']  = false;
+//$cfg['session_save_handler']  = 'memcached';
+//$cfg['session_save_path']  = 'localhost:11211';
 $cfg['demo_mode']   = false;
 
 /**

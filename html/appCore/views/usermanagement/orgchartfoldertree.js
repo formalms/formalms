@@ -56,10 +56,27 @@ YAHOO.lang.extend(OrgFolderTree, FolderTree, {
 
 	clickNode: function(oNode) {
 		var id = this._getNodeId(oNode), el = YAHOO.util.Dom.get("add_org_folder");
-		if (el) el.href = el.href.replace(/id=[0-9]*/, 'id='+id);
+        
+        if (el) {
+            en = YAHOO.util.Dom.get('usertree_'+id+'_add_'+id);
+            if (en == null) { 
+                YAHOO.util.Dom.setStyle(el, "visibility", "hidden");
+            } else {
+                el.href = el.href.replace(/id=[0-9]*/, 'id='+id);
+                YAHOO.util.Dom.setStyle(el, "visibility", "visible");
+            }
+        }
 
 		el = YAHOO.util.Dom.get("import_users_action");
-		if (el) el.href = el.href.replace(/id=[0-9]*/, 'id='+id);
+        if (el) {
+            en = YAHOO.util.Dom.get('usertree_'+id+'_add_'+id);
+            if (en == null) { 
+                YAHOO.util.Dom.setStyle(el, "visibility", "hidden");
+            } else {
+                el.href = el.href.replace(/id=[0-9]*/, 'id='+id);
+                YAHOO.util.Dom.setStyle(el, "visibility", "visible");
+            }
+        }
 
 		UserManagement.selectedOrgBranch = id;
 		DataTable_usertable.refresh();

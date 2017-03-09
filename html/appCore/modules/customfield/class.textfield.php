@@ -478,21 +478,24 @@ class Field_Textfield extends Field {
 		require_once(_base_.'/lib/lib.form.php');
 
 		if( 	isset( $_POST['field_'.$this->getFieldType()] )
-			&& 	isset( $_POST['field_'.$this->getFieldType()][$this->id_common] ) ) {
-			$obj_entry = $_POST['field_'.$this->getFieldType()][$this->id_common];
+			&& 	isset( $_POST['field_'.$this->getFieldType()][$this->id_field] ) ) {
+			$obj_entry = $_POST['field_'.$this->getFieldType()][$this->id_field];
 		} else {
 			list($obj_entry) = sql_fetch_row(sql_query("
 			SELECT obj_entry
 			FROM ".$this->_getUserEntryTable()."
-			WHERE id_obj = '".(int)$id_obj."' AND
-				id_common = '".(int)$this->id_common."' AND
-				id_common_son = '0'"));
+			WHERE id_obj = '".(int)$id_obj."' 
+                        AND id_field = '".(int)$this->id_field."'"));
 		}
+		$obj_entry = $obj_entry;
 
 		$re_field = sql_query("
-		SELECT translation
-		FROM ".$this->_getMainTable()."
-		WHERE lang_code = '".getLanguage()."' AND id_common = '".(int)$this->id_common."' AND type_field = '".$this->getFieldType()."'");
+		SELECT cl.translation
+		FROM ".$this->_getMainTable()." AS c, ".$this->_getMainLangTable()." AS cl
+		WHERE c.id_field = cl.id_field
+                AND c.id_field = '".(int)$this->id_field."' 
+                AND c.type_field = '".$this->getFieldType()."' 
+                AND cl.lang_code = '".getLanguage()."'");
 		list($translation) = sql_fetch_row($re_field);
 
 		if ($value !== NULL) $obj_entry = "".$value;
@@ -501,8 +504,8 @@ class Field_Textfield extends Field {
                 if($freeze) return '<p><b>'.$translation.'</b> : '.$obj_entry.'</p>';
 
 		return Form::getTextfield($translation.( $mandatory ? ' <span class="mandatory">*</span>' : '' ),
-								'field_'.$this->getFieldType().'_'.$this->id_common,
-								'field_'.$this->getFieldType().'['.$this->id_common.']',
+								'field_'.$this->getFieldType().'_'.$this->id_field,
+								'field_'.$this->getFieldType().'['.$this->id_field.']',
 								255,
 								$obj_entry,
 								$translation );
@@ -514,10 +517,9 @@ class Field_Textfield extends Field {
 
                 list($obj_entry) = sql_fetch_row(sql_query("
                 SELECT obj_entry
-                FROM ".$this->_getObjEntryTable()."
-                WHERE id_obj = '".(int)$id_obj."' AND
-                        id_common = '".(int)$this->id_common."' AND
-                        id_common_son = '0'"));
+                FROM ".$this->_getUserEntryTable()."
+                WHERE id_obj = '".(int)$id_obj."' 
+                AND id_field = '".(int)$this->id_field."'"));
 
 		return $obj_entry;
 	}
@@ -645,30 +647,27 @@ class Field_Textfield extends Field {
 		if (($int_objid) || (empty($id_obj)))
 			$id_obj=(int)$id_obj;
 
-		if(!isset($_POST['field_'.$this->getFieldType()][$this->id_common])) return true;
+		if(!isset($_POST['field_'.$this->getFieldType()][$this->id_field])) return true;
 		$re_entry = sql_query("
 		SELECT obj_entry
 		FROM ".$this->_getObjEntryTable()."
 		WHERE id_obj = '".$id_obj."' AND
-			id_common = '".(int)$this->id_common."' AND
-			id_common_son = '0'");
+			id_field = '".(int)$this->id_field."'");
 		$some_entry = sql_num_rows($re_entry);
 		if($some_entry) {
 			if(!sql_query("
 			UPDATE ".$this->_getObjEntryTable()."
-			SET obj_entry = '".$_POST['field_'.$this->getFieldType()][$this->id_common]."'
+			SET obj_entry = '".$_POST['field_'.$this->getFieldType()][$this->id_field]."'
 			WHERE id_obj = '".$id_obj."' AND
-			id_common = '".(int)$this->id_common."' AND
-			id_common_son = '0'")) return false;
+			id_field = '".(int)$this->id_field."'")) return false;
 		} else {
 
 			if(!sql_query("
 			INSERT INTO ".$this->_getObjEntryTable()."
-			( id_obj, id_common, id_common_son, obj_entry ) VALUES
+			( id_obj, id_field, obj_entry ) VALUES
 			(	'".$id_obj."',
-				'".(int)$this->id_common."',
-				'0',
-				'".$_POST['field_'.$this->getFieldType()][$this->id_common]."')")) return false;
+				'".(int)$this->id_field."',
+				'".$_POST['field_'.$this->getFieldType()][$this->id_field]."')")) return false;
 		}
 
 		return true;

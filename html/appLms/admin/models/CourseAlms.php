@@ -692,6 +692,13 @@ Class CourseAlms extends Model
         if ($error)
             $res['err'] = '_err_course';
         else {
+            
+            // Salvataggio CustomField
+            require_once(_adm_.'/lib/lib.customfield.php');
+            $extra_field = new CustomFieldList();
+            $extra_field->setFieldArea( "COURSE" );
+            $extra_field->storeFieldsForObj( $id_course );
+    
             //AUTO SUBSCRIPTION
             if (isset($_POST['auto_subscription']) && $_POST['auto_subscription'] == 1) {
                 $userId = Docebo::user()->getIdSt();
@@ -1006,6 +1013,12 @@ Class CourseAlms extends Model
 		if($quota_exceeded)
 			$res['limit_reach'] = 1;
         
+        // Salvataggio CustomField
+        require_once(_adm_.'/lib/lib.customfield.php');
+        $extra_field = new CustomFieldList();
+        $extra_field->setFieldArea( "COURSE" );
+        $extra_field->storeFieldsForObj( $id_course );
+    
         //AUTO SUBSCRIPTION
         $userId = Docebo::user()->getIdSt();
         $userSubscribed = $this->isUserSubscribedInCourse($userId, $id_course);
@@ -1270,7 +1283,9 @@ Class CourseAlms extends Model
 		$cmodel->deleteAllCourseCompetences($id_course);
 		//--- end competences ------------------------------------------------------
 
-
+                //remove customfield
+		if(!sql_query("DELETE FROM ".$GLOBALS['prefix_fw']."_customfield_entry WHERE id_field IN (SELECT id_field FROM core_customfield WHERE area_code = 'COURSE') AND id_obj = '".$id_course."'"))
+			return false;
 
 		//--- finally delete course from courses table -----------------------------
 		if(!sql_query("DELETE FROM %lms_course WHERE idCourse = '".$id_course."'"))

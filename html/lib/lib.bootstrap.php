@@ -148,11 +148,15 @@ class Boot {
 		ini_set('session.cache_expire',     (int)$cfg['session_lenght']);
 		ini_set('session.cache_limiter',    'none');
 		ini_set('session.cookie_lifetime',  (int)$cfg['session_lenght']);
-		// ini_set('session.save_handler',     'files');
 		ini_set('session.use_only_cookies', 1);
 		ini_set('session.use_trans_sid',    0);
 		ini_set('url_rewriter.tags',        '');
 		if($cfg['session_save_path'] !== false) ini_set("session.save_path", $cfg['session_save_path']);
+        if (isset($cfg['session_save_handler']) && $cfg['session_save_handler'] === 'memcached') {
+            ini_set('session.save_handler', 'memcached');
+            ini_set('memcached.sess_prefix', $_SERVER['HTTP_HOST'].'.forma.sess.key.');
+            ini_set('memcached.sess_locking', '1');
+        }
 
 		// set default time zone TZ
 		if( ! isset($cfg['timezone']) ) {	// timezone not speficied in config

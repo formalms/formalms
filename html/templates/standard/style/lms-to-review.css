@@ -506,10 +506,14 @@ div.colored_row{height:16px;text-align:center;background:#E1EBF4;border:1px soli
 }
 
 .test_answer_space .answer_question label, .test_answer_space .answer_question label {
-	height: 16px;
-	margin: 0;
-	vertical-align: middle;
-	line-height: 14px;
+
+     margin: 0;
+    margin-bottom: 2px;
+    margin-top: -32px;
+    margin-left: 39px;
+    padding-left: 0px;
+    padding-top: 0px;
+    padding-inline-end: 281px;
 }
 
 #test_intro .pcontainer-feedback {

@@ -1,9 +1,4 @@
 <div id="middlearea" class="yui-navset">
-    <?php
-// Ale - non mi viene in mente modo più elegante :((
-// la questione è di nascondere tutto il menu in quanto il catalog è stato tirato fuori...
-   // if (!strpos($_GET['r'], 'atalog/')) {
-    ?>
 
     <?php
     $tab = array(
@@ -13,7 +8,6 @@
         'tb_classroom' => Lang::t('_CLASSROOM', 'middlearea'),
         'tb_calendar' => Lang::t('_CALENDAR', 'middlearea'),
         'tb_catalog' => Lang::t('_CATALOGUE', 'middlearea'),
-        // 'tb_library' => Lang::t('_LIBRARY', 'middlearea'),
         'tb_assessment' => Lang::t('_ASSESSMENT', 'middlearea'),
         'tb_coursepath' => Lang::t('_COURSEPATH', 'coursepath'),
         'tb_games' => Lang::t('_CONTEST', 'middlearea'),
@@ -28,7 +22,7 @@
 
         $plugins=$pluginAdm->getInstalledPlugins();
         foreach ($plugins as $plugin_name){
-            $tab["tb_".strtolower($plugin_name)]=ucfirst($plugin_name);
+            $tab["tb_".strtolower($plugin_name)]= ucfirst(Lang::t('_'.strtoupper($plugin_name),'middlearea'));
         }
     }
 
@@ -78,7 +72,6 @@
             </li>
         </ul>
     </div>
-    
     <div class="yui-content">
         <div id="tab_content" class="nested_tab">   
         

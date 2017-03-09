@@ -44,7 +44,7 @@ a{color:#333333; text-decoration:none;}
 a:hover{text-decoration:none;}
 a.nounder{text-decoration:none;}
 a.nounder:hover{text-decoration:underline;}
-a img{vertical-align:middle;}
+a img{vertical-align:middle; max-width: inherit;}
 h1 img,h2 img,h3 img,h4 img,h5 img,h6 img{vertical-align:middle;}
 /* Main Page Container */
 /*

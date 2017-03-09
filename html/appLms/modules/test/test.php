@@ -261,12 +261,6 @@ function modtestgui($object_test)
     $tab = new Table(0, $caption, $lang->def('_TEST_SUMMARY'));
 
     $tab->setColsStyle(array('image', 'image', '', 'image', 'image', 'image', 'image', 'image'));
-    $tab->addHead(
-        array($lang->def('_QUEST'), $lang->def('_TYPE'), $lang->def('_QUESTION'), $lang->def('_TEST_QUEST_ORDER'),
-            '<img src="' . getPathImage() . 'standard/down.png" alt="' . $lang->def('_DOWN') . '" longdesc="' . $lang->def('_MOVE_DOWN') . '" />',
-            '<img src="' . getPathImage() . 'standard/up.png" alt="' . $lang->def('_UP') . '" longdesc="' . $lang->def('_MOVE_UP') . '" />',
-            '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" />',
-            '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" />'));
 
     $i = 0;
     $correct_sequence = 1;
@@ -276,14 +270,48 @@ function modtestgui($object_test)
     $title_num = 1;
     $last_type = '';
     $uri_back = '&amp;back_url=' . $url_encode;
+        $first = true;
+        
+        // Customfields initialize
+	require_once(_adm_.'/lib/lib.customfield.php');
+	$fman = new CustomFieldList();
+	$fman->setFieldArea( "LO_TEST" );
+                
     while (list($id_quest, $type, $title, $sequence, $page) = sql_fetch_row($re_quest)) {
 
+		// Customfields Get
+    		$fields_mask = $fman->playFieldsFlat($id_quest);
+                
+                if ( $first ) {
+                    $arrHead = array();
+                    array_push($arrHead, $lang->def('_QUEST'), $lang->def('_TYPE'), $lang->def('_QUESTION'));
+                    // Customfields head
+                    foreach ($fields_mask as $field) { 
+                        array_push($arrHead, $field['name']);
+                    }
+                    array_push($arrHead, $lang->def('_TEST_QUEST_ORDER'), 
+                            '<img src="'.getPathImage().'standard/down.png" alt="'.$lang->def('_DOWN').'" longdesc="'.$lang->def('_MOVE_DOWN').'" />',
+                            '<img src="'.getPathImage().'standard/up.png" alt="'.$lang->def('_UP').'" longdesc="'.$lang->def('_MOVE_UP').'" />',
+                            '<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').'" />', 
+                            '<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').'" />');
+
+                    $tab->addHead($arrHead);
+                    $first = false;
+                }
+
         $last_type = $type;
-        $content = array(
-            ((($type != 'break_page') && ($type != 'title')) ? '<span class="text_bold">' . ($quest_num++) . '</span>' : ''),
+                
+                $content = array();
+                array_push($content, ( (($type != 'break_page') && ($type != 'title')) ? '<span class="text_bold">'.($quest_num++).'</span>' : '' ),
             $lang->def('_QUEST_ACRN_' . strtoupper($type)),
-            $title,
-            $sequence,
+		'<div style="width:300px;">'.$title.'</div>');
+                
+                // Customfields content
+                foreach ($fields_mask as $field) { 
+                        array_push($content, $field['value']);
+                }
+                
+                array_push($content, $sequence, 
             (($i != ($num_quest - 1)) ?
                 '<a href="index.php?modname=test&amp;op=movedown&amp;idQuest=' . $id_quest . $uri_back . '" title="' . $lang->def('_MOVE_DOWN') . '">'
                 . '<img src="' . getPathImage() . 'standard/down.png" alt="' . $lang->def('_DOWN') . ' : ' . $lang->def('_ROW') . ' ' . ($i + 1) . '" /></a>' : ''),
@@ -294,8 +322,7 @@ function modtestgui($object_test)
             ($type != 'break_page' ? '<a href="index.php?modname=test&amp;op=modquest&amp;idQuest=' . $id_quest . $uri_back . '" title="' . $lang->def('_MOD') . '">'
                 . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . ' : ' . $lang->def('_ROW') . ' ' . ($i + 1) . '" /></a>' : ''),
             '<a href="index.php?modname=test&amp;op=delquest&amp;idQuest=' . $id_quest . $uri_back . '" title="' . $lang->def('_DEL') . '">'
-            . '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . ' : ' . $lang->def('_ROW') . ' ' . ($i + 1) . '" /></a>',
-        );
+			.'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').' : '.$lang->def('_ROW').' '.($i + 1).'" /></a>');
 
         $tab->addBody($content);
         if ($sequence != $correct_sequence) $seq_error_detected = true;
@@ -783,13 +810,13 @@ function defmodality()
         $save_keep, $mod_doanswer, $can_travel,
         $show_score, $show_score_cat, $show_doanswer, $show_solution,
         $max_attempt, $hide_info,
-        $order_info, $use_suspension, $suspension_num_attempts, $suspension_num_hours, $suspension_prerequisites, $mandatory_answer, $retain_answers_history
+        $order_info, $cf_info, $use_suspension, $suspension_num_attempts, $suspension_num_hours, $suspension_prerequisites, $mandatory_answer, $retain_answers_history
         ) = sql_fetch_row(sql_query("
 	SELECT title, description, display_type, order_type, shuffle_answer, question_random_number, 
 		save_keep, mod_doanswer, can_travel, 
 		show_score, show_score_cat, show_doanswer, show_solution, 
 		max_attempt, hide_info,
-		order_info, use_suspension, suspension_num_attempts, suspension_num_hours, suspension_prerequisites, mandatory_answer, retain_answers_history
+		order_info, cf_info, use_suspension, suspension_num_attempts, suspension_num_hours, suspension_prerequisites, mandatory_answer, retain_answers_history
 	FROM %lms_test
 	WHERE idTest = '" . $idTest . "'"));
 
@@ -798,6 +825,14 @@ function defmodality()
 	FROM " . $GLOBALS['prefix_lms'] . "_testquest 
 	WHERE idTest = '" . (int)$idTest . "' AND type_quest <> 'title' AND type_quest <> 'break_page'"));
 
+	$re_quest = sql_query("
+	SELECT idQuest
+	FROM ".$GLOBALS['prefix_lms']."_testquest 
+	WHERE idTest = '".(int)$idTest."' AND type_quest <> 'title' AND type_quest <> 'break_page'");
+        while(list($idQuest) = sql_fetch_row($re_quest)) {
+                $arr_id_quest[] = $idQuest;
+        }
+	
     $GLOBALS['page']->add(
         getTitleArea($lang->def('_TEST_SECTION'), 'test')
         . '<div class="std_block">'
@@ -875,7 +910,7 @@ function defmodality()
 
     //------------------------------------------------------------------------------
     $label = '';
-    if ($has_categories) {
+        
         $category_selector = '<ul id="category_list" style="display:' . ($order_type == 3 ? "block" : "none") . '">';
         foreach ($categories as $key => $value) {
 
@@ -895,7 +930,48 @@ function defmodality()
             . $category_selector
             . Form::closeFormLine()
             . '<br />', 'content');
+
+        //Tabella Categorie
+        require_once(_adm_.'/lib/lib.customfield.php');
+        $fman = new CustomFieldList();
+        $fman->setFieldArea( "LO_TEST" );
+        $fields_mask = $fman->playFieldsFlat();
+
+	$cust_info = array();
+	if ($cf_info != '') {
+		require_once(_base_.'/lib/lib.json.php');
+		$json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+		$arr = $json->decode($cf_info);
+		if (is_array($arr)) {
+			foreach ($arr as $value) {
+				$cust_info[$value['id_cf_son']] = $value['selected'];
+			}
     }
+	}
+        
+        $cust_order_type = 4;
+        
+        foreach ($fields_mask as $field) { 
+            $cust_order_type = $cust_order_type + 1;
+            $category_selector = '<ul id="customfield_'.$field['id'].'_list" style="display:'.'"block"'.'">';
+            foreach ($field['value'] as $key=>$value) {
+                    $tot_quest = $fman->getNumberOfObjFieldEntryData($field['id'], $key, $arr_id_quest);
+                    $sel_quest = $cust_info[$key];
+                    $input_field =  Form::getInputTextfield('textfield_nowh', 'question_random_customfield_'.$key, 'question_random_customfield['.$key.']', $sel_quest, $cust_order_type, '', '');
+                    $category_selector .= '<li><label for="question_random_customfield_'.$key.'">'.$value.':</label> '
+                            .str_replace(array('[random_quest]', '[tot_quest]'), array( $input_field, $tot_quest), $lang->def('_TEST_MM1_QUESTION_RANDOM_NUMBER'))
+                            .'</li>';
+            }
+            $category_selector .= '</ul>';
+            $GLOBALS['page']->add(
+                    Form::openFormLine()
+                    .Form::getInputRadio('order_type_random_customfield'.$field['id'].'', 'order_type', $cust_order_type, $order_type == $cust_order_type, '')
+                    .'<label for="order_type_random_customfield'.$field['id'].'">'.$field["name"].'</label>'
+                    .$category_selector
+                    .Form::closeFormLine()
+                    .'<br />', 'content');
+        }
+
     //------------------------------------------------------------------------------
     /*
 	$chart_options_decoded = new stdClass();
@@ -1105,6 +1181,17 @@ function updatemodality()
         $order_info = $json->encode($arr);
     }
 
+	$cf_info = "";
+	if ($_POST['order_type'] > 4) {
+		$arr = array();
+		if (isset($_POST['question_random_customfield']) && is_array($_POST['question_random_customfield'])) {
+			foreach ($_POST['question_random_customfield'] as $key=>$value) {
+				if ((int)$value>0) $arr[] = array('id_cf_son' => $key, 'selected' => (int)$value);
+			}
+		}
+		$cf_info = $json->encode($arr);
+	}
+
     $queryString = "
 	UPDATE " . $GLOBALS['prefix_lms'] . "_test 
 	SET display_type = '" . ($_POST['display_type'] ? 1 : 0) . "', 
@@ -1114,6 +1201,7 @@ function updatemodality()
 		save_keep = '" . ($_POST['save_keep'] ? 1 : 0) . "',
 		hide_info = '" . ($_POST['mod_hide_info'] ? 1 : 0) . "',
 		order_info = '" . $order_info . "',
+		cf_info = '".$cf_info."',
 		mod_doanswer = '" . ($_POST['mod_doanswer'] ? 1 : 0) . "', 
 		can_travel = '" . ($_POST['can_travel'] ? 1 : 0) . "', 
 		show_score = '" . ($_POST['show_tot'] ? 1 : 0) . "', 
@@ -2004,7 +2092,7 @@ function doexportquestqb()
                         WHERE q.idQuest IN (" . implode(',', $quest_selection) . ") AND q.type_quest = t.type_quest");
 
         while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
-            Docebo::inc(_folder_lms_ . '/modules/question/' . $type_file);
+            require_once(Docebo::inc(_folder_lms_ . '/modules/question/' . $type_file));
             $quest_obj = new $type_class($idQuest);
             $new_id = $quest_obj->copy(0);
         }

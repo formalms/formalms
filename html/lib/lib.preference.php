@@ -1468,19 +1468,12 @@ class AdminPreference
 
 	public function addAdminTree($entries, $idst_admin)
 	{
-		if (is_numeric($entries)) $entries = array( (int)$entries );
-		if (!is_array($entries)) return false;
-		if (empty($entries)) return true;
-
 		$query = "INSERT INTO %adm_admin_tree"
-			." (idst, idstAdmin) VALUES ";
-
-		$list = array();
-		foreach ($entries as $entry) {
-			$list[] = "('".(int)$entry."', '".$idst_admin."')";
-		}
+				." (idst, idstAdmin) VALUES "
+				." ('".$entries."','".$idst_admin."')";
 
 		return sql_query($query);
+                
 	}
 
 

@@ -62,10 +62,16 @@ function select_all_filtered(e) {
 
 	// i must ask to the server for the id complete list
 	var callback = { success: callback_selectallfilter, failure: callback_selectallfilter }
-	var args = 'op=getselected'
-		+ '&quest_category=' + YAHOO.util.Dom.get('quest_category').value
-		+ '&quest_difficult=' + YAHOO.util.Dom.get('quest_difficult').value
-		+ '&quest_type=' + YAHOO.util.Dom.get('quest_type').value;
+	var args = 'op=getselected';
+        if (QB_CATEGORIES.length>0){
+            args += '&quest_category=' + YAHOO.util.Dom.get('quest_category').value;
+        }
+	args += '&quest_difficult=' + YAHOO.util.Dom.get('quest_difficult').value;
+	args += '&quest_type=' + YAHOO.util.Dom.get('quest_type').value;
+        for(i=0;i<QB_EXTRACATEGORIES.length; i++) {
+            args += '&quest_extracategory_'+QB_EXTRACATEGORIES[i].idc+'=' + YAHOO.util.Dom.get('quest_extracategory_'+QB_EXTRACATEGORIES[i].idc).value;
+        }
+        
 	var transaction = YAHOO.util.Connect.asyncRequest('POST', "ajax.server.php?plf=lms&mn=quest_bank&"+args, callback, null);
 
 	setTimeout("YAHOO.util.Connect.abort(transaction)",15000);
@@ -212,6 +218,14 @@ YAHOO.util.Event.addListener(window, "load", function() {
 
 		}
 
+        this.formatSequenceQuest = function(elCell, oRecord, oColumn, oData) {
+
+                var sequence = oRecord.getData('sequence');
+
+                elCell.innerHTML = sequence;
+
+        }
+        
 		this.formatModQuest = function(elCell, oRecord, oColumn, oData) {
 
 			elCell.innerHTML = '';
@@ -253,50 +267,117 @@ YAHOO.util.Event.addListener(window, "load", function() {
 			oDt.refresh();
 		}
 		
+        //todo: mancano tutti i controlli
+        this.formatExtraCategories = function(elCell, oRecord, oColumn, oData) {
+            var str = 'field=' + oColumn.key;//debug purpose
+            str = str + '; extra_fields=' + oRecord.getData('extra_fields')
+            str = str + '; extra_values=' + oRecord.getData('extra_values')
+            var field = oColumn.key;
+            var fields = oRecord.getData('extra_fields').split(",");
+            var values = oRecord.getData('extra_values').split(",");
+            var valore;
+            var dvalore;
+            for(i=0; i<fields.length; i++){
+                if (fields[i]==field){
+                    valore=values[i];
+                    str = str + '; valore=' + valore;
+                }
+            }
+            for(i=0; i<QB_EXTRACATEGORIES.length; i++){
+                var extracat=QB_EXTRACATEGORIES[i];
+                if (extracat.idc==field){
+                    str = str + '; name=' + extracat.name;
+                    if (extracat.cat.length>0){
+                            dvalore=extracat.cat[0];
+                    }
+                    for(j=0; j<extracat.cat.length; j++){
+                        if (j==valore){
+                            dvalore=extracat.cat[j];
+                            str = str + '; dvalore=' + dvalore;
+                        }
+
+                    }
+                }
+            }
+
+            //debug elCell.innerHTML=str; // QB_EXTRACATEGORIES[oData];
+            elCell.innerHTML=dvalore;
+        }
 		// --------------------------------------
 		
-		if(use_mod_action) {
 			var myColumnDefs = [
 				{key:"checkbox_sel",	label:QB_DEF.checkbox_sel,		formatter:this.formatCheckboxQuest },
-				{key:"category_quest",	label:QB_DEF.quest_category, 	formatter:this.formatCategoryQuest },
-				{key:"type_quest", 		label:QB_DEF.type_quest, 		formatter:this.formatTypeQuest },
-				{key:"title_quest", 	label:QB_DEF.title_quest, 		formatter:this.formatTextQuest },
-				{key:"difficult", 		label:QB_DEF.difficult, 		formatter:this.formatDifficultQuest },
-				//{key:"stat_quest", 		label:QB_DEF.stat_quest_img, 	formatter:this.formatStatQuest},
-				{key:"mod_quest", 		label:QB_DEF.mod_quest_img, 	formatter:this.formatModQuest},
-				{key:"del_quest", 		label:QB_DEF.del_quest_img, 	title: 'Delete', formatter:this.formatDelQuest}
+                {key:"type_quest", 		label:QB_DEF.type_quest, 		formatter:this.formatTypeQuest, sortable:true },
+                {key:"title_quest", 	label:QB_DEF.title_quest, 		formatter:this.formatTextQuest, sortable:true },
+                {key:"difficult", 		label:QB_DEF.difficult, 		formatter:this.formatDifficultQuest, sortable:true }
 			];
-		} else {
-			var myColumnDefs = [
-				{key:"checkbox_sel",	label:QB_DEF.checkbox_sel,		formatter:this.formatCheckboxQuest },
-				{key:"category_quest",	label:QB_DEF.quest_category, 	formatter:this.formatCategoryQuest },
-				{key:"type_quest", 		label:QB_DEF.type_quest, 		formatter:this.formatTypeQuest },
-				{key:"title_quest", 	label:QB_DEF.title_quest, 		formatter:this.formatTextQuest },
-				{key:"difficult", 		label:QB_DEF.difficult, 		formatter:this.formatDifficultQuest },
-				//{key:"stat_quest", 		label:QB_DEF.stat_quest_img, 	formatter:this.formatStatQuest}
-			];
+	var dyncol;
+        // todo: nascondere la colonna se vuoto (attenzione contiene sempre un elemento (Any))
+	if(QB_CATEGORIES.length>0) {
+            dyncol = {key:"category_quest",	label:QB_DEF.quest_category, 	formatter:this.formatCategoryQuest, sortable:false };
+            myColumnDefs.push(dyncol);
+        }
+
+        //debug purpose
+        //dyncol = {key:"extra_values", 		label:'extra'};
+        //myColumnDefs.push(dyncol);
+
+        //aggiungo tutte le colonne custom
+        //inserisco come key l'id del customfield
+        //la funzione traduce ...
+        for(i=0;i<QB_EXTRACATEGORIES.length; i++) {
+            if (QB_EXTRACATEGORIES[i].cat.length>1){
+                dyncol = {key:QB_EXTRACATEGORIES[i].idc, 		label:QB_EXTRACATEGORIES[i].name, 	formatter:this.formatExtraCategories};
+                myColumnDefs.push(dyncol);
+            }
 		}
 		
+        dyncol = {key:"sequence", label:QB_DEF.sequence, formatter:this.formatSequenceQuest, sortable:true };
+        myColumnDefs.push(dyncol);
+
 		if(use_mod_action) {
-			var t1 = {key:"mod_quest", 		label:QB_DEF.mod_quest_img, 	formatter:this.formatModQuest};
-			var t2 = {key:"del_quest", 		label:QB_DEF.del_quest_img, 	formatter:this.formatDelQuest};
-			// myColumnDefs.push(t1, t2);
+                dyncol = {key:"mod_quest", 		label:QB_DEF.mod_quest_img, 	formatter:this.formatModQuest};
+                myColumnDefs.push(dyncol);
+                dyncol = {key:"del_quest", 		label:QB_DEF.del_quest_img, 	title: 'Delete', formatter:this.formatDelQuest};
+                myColumnDefs.push(dyncol);
 		}
 		var buildQueryString = function (state,dt) {
+			var sort, dir, startIndex, results;
+			state = state || {pagination: null, sortedBy: null};
 			
-			return 'quest_category=' + YAHOO.util.Dom.get('quest_category').value
-					+ '&quest_difficult=' + YAHOO.util.Dom.get('quest_difficult').value
-					+ '&quest_type=' + YAHOO.util.Dom.get('quest_type').value
-					+ "&startIndex=" + state.pagination.recordOffset
-					+ "&results=" + state.pagination.rowsPerPage;
-		};
+			startIndex = (state.pagination) ? state.pagination.recordOffset : 0;
+			results = (state.pagination) ? state.pagination.rowsPerPage : null;
+                        if (state.sortedBy) {
+                        sort= state.sortedBy.key
+                        }
+			sort = (state.sortedBy) ? state.sortedBy.key : null;
+			dir = (state.sortedBy && state.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "asc";
+            var querystring='';
+            if (QB_CATEGORIES.length>0){
+                querystring = 'quest_category=' + YAHOO.util.Dom.get('quest_category').value;
+            }
+                querystring += '&quest_difficult=' + YAHOO.util.Dom.get('quest_difficult').value;
+                querystring += '&quest_type=' + YAHOO.util.Dom.get('quest_type').value;
+                querystring += "&startIndex=" + state.pagination.recordOffset;
+                querystring += "&results=" + state.pagination.rowsPerPage;
+                for(i=0;i<QB_EXTRACATEGORIES.length; i++) {
+                    querystring += '&quest_extracategory_'+QB_EXTRACATEGORIES[i].idc+'=' + YAHOO.util.Dom.get('quest_extracategory_'+QB_EXTRACATEGORIES[i].idc).value;
+                }
+                querystring += "&sort=" + sort;
+                querystring += "&dir=" + dir;
+                return querystring;
 		
+	};
+	var sorted_by="";
+        if (QB_CATEGORIES.length>0){
+            sorted_by="category_quest";
+        }
 		var oConfig = {
 			id: "markup",
 			ajaxUrl: "ajax.server.php?plf=lms&mn=quest_bank&",
 			columns: myColumnDefs,
-			fields: ["id_quest","category_quest","type_quest",{key:"title_quest", parser:YAHOO.util.DataSource.parseString},"difficult"],
-			sort: "category_quest",
+			fields: fieldsDef,
+			sort: sorted_by,
 			dir: "asc",
 			usePaginator: true,
 			paginatorParams: {
@@ -314,7 +395,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
 		oDs.connMethodPost = true;
 		oDs.responseSchema = {
 			resultsList: "records",
-			fields: ["id_quest","category_quest","type_quest",{key:"title_quest", parser:YAHOO.util.DataSource.parseString},"difficult"],
+			fields: fieldsDef,
 			metaFields: {
 				startIndex: "startIndex",
 				totalRecords: "totalRecords"
@@ -486,6 +567,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
 
 	var oSplitExport = new YAHOO.widget.Button("export_quest", { type: "menu", menu: "export_quest_select" });
 	var oPushImport = new YAHOO.widget.Button("import_quest");
+        var oPushDelete = new YAHOO.widget.Button("delete_quest");
 	var oSplitAddQuest = new YAHOO.widget.Button("add_quest", { type: "menu", menu: "add_test_quest" });
 
 });

@@ -22,7 +22,7 @@ $mask .= Form::getHidden('multimod_users', 'users', "");
 $mask .= Lang::t('_USERS', 'standard').': <b>'.(int)$users_count.'</b>';
 
 $mask .= $_open_table;
-
+/*
 $mask .= $_open_row.$_open_cell;
 $mask .= Form::getInputCheckbox('multimod_sel_firstname', 'multimod_sel[firstname]', 1, false, "");
 $mask .= $_close_cell.$_open_cell;
@@ -40,7 +40,7 @@ $mask .= Form::getInputCheckbox('multimod_sel_email', 'multimod_sel[email]', 1, 
 $mask .= $_close_cell.$_open_cell;
 $mask .= Form::getTextField(Lang::t('_EMAIL', 'standard'), 'email', 'email', 50, $info['email']).$_close_row;
 $mask .= $_close_cell.$_close_row;
-
+*/
 $mask .= $_open_row.$_open_cell;
 $mask .= Form::getInputCheckbox('multimod_sel_password', 'multimod_sel[password]', 1, false, "");
 $mask .= $_close_cell.$_open_cell;
@@ -50,7 +50,7 @@ $mask .= $_close_cell.$_close_row;
 $mask .= $_open_row.$_open_cell;
 $mask .= "&nbsp;";//Form::getInputCheckbox('multimod_sel_pwd_confirm', 'multimod_sel[pwd_confirm]', 1, false, "");
 $mask .= $_close_cell.$_open_cell;
-$mask .= Form::getPassword(Lang::t('_RETYPE_PASSWORD', 'profile'), 'new_password_confirm', 'new_password_confirm', 50, "");
+$mask .= Form::getPassword(Lang::t('_RETYPE_PASSWORD', 'register'), 'new_password_confirm', 'new_password_confirm', 50, "");
 $mask .= $_close_cell.$_close_row;
 
 //$mask .= $_open_row;

@@ -79,12 +79,13 @@ if(!empty($GLOBALS['modname'])) {
 }
 if($r !== '')
 {
-	$GLOBALS['page']->add(Util::get_css(Layout::path().'style/base.css', true), 'page_head');
 	$GLOBALS['page']->add(Util::get_css(Layout::path().'style/base-old-treeview.css', true), 'page_head');
 	$GLOBALS['page']->add(Util::get_css(Layout::path().'style/lms.css', true), 'page_head');
 	$GLOBALS['page']->add(Util::get_css(Layout::path().'style/lms-to-review.css', true), 'page_head');
 	$GLOBALS['page']->add(Util::get_css(Layout::path().'style/lms-menu.css', true), 'page_head');
+    $GLOBALS['page']->add(Util::get_css(Layout::path().'style/lms-home.css', true), 'page_head');    
 	$GLOBALS['page']->add(Util::get_css(Layout::path().'style/print.css', true), 'page_head');
+    
 
 	$r = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $r);
 	$r = explode('/', $r);
