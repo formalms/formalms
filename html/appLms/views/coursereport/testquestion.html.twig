@@ -12,7 +12,7 @@
     {% if ((question.type == 'upload' or question.type == 'extended_text')) %}
       <div class="table-responsive">
         <div class="panel panel-default">
-          <div class="panel-heading clearfix">{{ question.title|convert_encoding('UTF-8', 'HTML-ENTITIES') }}</div>
+          <div class="panel-heading clearfix">{{ question.title|raw }}</div>
           <table class="table table-bordered table-view " summary="" cellspacing="0">
             <thead>
             <tr class="even intest">
@@ -40,7 +40,7 @@
                     <span class="">Risposta</span>
                   </div>
                 </th>
-                <th class="image nowrap">
+                <th class="image nowrap" style="width: 40%">
                   <div class=""><span class="">Percentuale</span></div>
                 </th>
               </tr>
@@ -50,7 +50,7 @@
               <tr class="">
                 <td>
                   <div class="test-question__answer {% if (answer.showIcon) %}test-question__answer--checked{% endif %}">
-                      {{ answer.title }}
+                      {{ answer.title|raw }}
                   </div>
                 </td>
                 <td class="image nowrap">

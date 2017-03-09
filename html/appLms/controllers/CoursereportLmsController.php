@@ -640,6 +640,11 @@ class CoursereportLmsController extends LmsController
             reset($test_details);
         }
 
+        foreach ($reportsArray as $info_report) {
+            $reports_id[] = $info_report->getIdReport();
+        }
+        $reports_score =& $report_man->getReportsScores((isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
+
         $results_test = array();
         $results_activity = array();
         $results_scorm_test = array();
