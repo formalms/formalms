@@ -31,7 +31,7 @@
     {% else %}
       <div class="table-responsive">
         <div class="panel panel-default">
-          <div class="panel-heading clearfix">{{ question.title|convert_encoding('UTF-8', 'HTML-ENTITIES') }}</div>
+          <div class="panel-heading clearfix">{{ question.title|raw }}</div>
           <table class="table table-bordered table-view " summary="" cellspacing="0">
             <thead>
               <tr class="even intest">
