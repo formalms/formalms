@@ -52,3 +52,13 @@
 .test-question__bar {
     background-color: #c84000;
 }
+
+@media print {
+    .test-question__bar {
+        border-top: 3px solid #c84000;
+    }
+
+    .test-question__percent {
+        color: #000;
+    }
+}
