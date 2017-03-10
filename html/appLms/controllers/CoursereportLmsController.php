@@ -1622,16 +1622,15 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('mod', true, $this->_mvc_name);
         $undo = Get::pReq('undo_testreview',DOTY_MIXED,false);
-
+        $id_test = importVar('id_test', true, 0);
         if ($undo){
-            Util::jump_to('index.php?r=coursereport/testvote');
+            Util::jump_to('index.php?r=coursereport/testvote&id_test='.$id_test);
         }
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
         require_once(_base_ . '/lib/lib.form.php');
 
         // XXX: Initializaing
-        $id_test = importVar('id_test', true, 0);
         $id_track = importVar('idTrack', true, 0);
         $number_time = importVar('number_time', true, null);
         $delete = importVar('delete_track', false, null);
