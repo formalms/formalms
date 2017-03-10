@@ -786,27 +786,40 @@ function play($object_test, $id_param)
 										$(document).on('ready', function() {
                                         
                                             //LRZ
-                                            num_answer_radio = $('.answer_question input[type=\"radio\"]:checked').length ;     
-                                            num_answer_chk = $('.answer_question input[type=\"checkbox\"]:checked').length ;     
-                        
-                                            if((num_answer_radio +  num_answer_chk) >0){
-                                            
-                                                $('#next_page').prop('disabled', false);
-                                                    if($('#answer_info'))
-                                                        $('#answer_info').hide();
-                                                    if($('#show_result'))
-                                                        $('#show_result').prop('disabled', false);
-                                            } else {
-                                          
-                                                $('#next_page').prop('disabled', true);
-                                                    if($('#answer_info'))
-                                                        $('#answer_info').show();
-                                                    if($('#show_result'))
-                                                        $('#show_result').prop('disabled', true);                                                
-                                            
-                                            
-                                            }
-                                      
+                                            if(mandatory==true){
+                                                num_answer_radio = $('.answer_question input[type=\"radio\"]:checked').length ;     
+                                                num_answer_chk = $('.answer_question input[type=\"checkbox\"]:checked').length ;     
+                            
+                                                if((num_answer_radio +  num_answer_chk) >0){
+                                                
+                                                    $('#next_page').prop('disabled', false);
+                                                        if($('#answer_info'))
+                                                            $('#answer_info').hide();
+                                                        if($('#show_result'))
+                                                            $('#show_result').prop('disabled', false);
+                                                } else {
+                                              
+                                                    $('#next_page').prop('disabled', true);
+                                                        if($('#answer_info'))
+                                                            $('#answer_info').show();
+                                                        if($('#show_result'))
+                                                            $('#show_result').prop('disabled', true);                                                
+                                                
+                                                
+                                                }
+                                             }
+                                             
+                                             
+                                             if(mandatory==false){
+                                             
+                                                        $('#next_page').prop('disabled', false);
+                                                        if($('#answer_info'))
+                                                            $('#answer_info').hide();
+                                                        if($('#show_result'))
+                                                            $('#show_result').prop('disabled', false);
+                                             }
+                                             
+                                             
 											$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
 											$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
 											$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
@@ -953,11 +966,13 @@ function play($object_test, $id_param)
         cout('
              var num_answer_control = ' . $js_array . ';' . "\n"
             .'var tot_question = ' . (int)$tot_question . ';' . "\n"
+            .'var mandatory = true ;' . "\n"
             . '</script>', 'content');
     } else {
         //** NOT MANDATORY - LRZ **
          cout('<script type="text/javascript">', 'content');
          cout('var tot_question = ' . (int)$tot_question . ';' . "\n"
+         .'var mandatory = false ;' . "\n"
          . '</script>', 'content');
     }
             
