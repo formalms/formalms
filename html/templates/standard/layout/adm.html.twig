@@ -4,6 +4,13 @@
 <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/adm.css"/>
 <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-to-review.css"/>
 <link rel="stylesheet" type="text/css" href="../templates/standard/style/reset-fonts-grids.css" />
+
+
+<link rel="stylesheet" type="text/css" href="{{ layout_path }}style/navbar-inverse.css"/>
+<link rel="stylesheet" type="text/css" href="{{ layout_path }}style/MegaNavbar.css"/>
+<script type="text/javascript" src="{{ layout_path }}script/menu.js"></script> 
+
+
 {% endblock %}
 
 {% block javascript %}
@@ -37,7 +44,9 @@
 {{ evalPhp('Layout::zone', ['feedback']) }}
 <!-- container -->
 <div id="admcontainer">
+   
     <!-- header -->
+   <!--
     <div id="header" class="layout_header">
         {% if not evalPhp('Docebo::user').isAnonymous() %}
             <div class="user_panel">
@@ -68,6 +77,9 @@
         <div class="nofloat"></div>
         {{ evalPhp('Layout::zone', ['header']) }}
     </div>
+    -->
+
+    
     <!-- menu_over -->
     {{ evalPhp('Layout::zone', ['menu_over']) }}
     <!-- content -->

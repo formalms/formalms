@@ -16,13 +16,27 @@
 		<ul class="yui-nav">
 	
 		<?php
-			foreach($platform_list as $id => $translate)
+			foreach($platform_list as $id => $translate)  {
+                            
+                   if($translate == 'menu_user') $strHeader = Lang::t('_USER_MANAGMENT', 'menu', 'framework')   ;
+                   if($translate == 'menu_elearning') $strHeader = Lang::t('_FIRST_LINE_lms', 'menu', 'framework')   ;
+                   if($translate == 'menu_content') $strHeader = Lang::t('_CONTENTS', 'standard', 'framework')   ;
+                   if($translate == 'menu_report') $strHeader = Lang::t('_REPORT', 'standard', 'framework');
+                   if($translate == 'menu_config') $strHeader = Lang::t('_CONFIGURATION', 'menu', 'framework');
+                   
+                
+                
+                
 				echo '<li'.($id == $active_tab?' class="selected"':'').'>'
 					.'<a href="#tab_g_'.$id.'">'
-					.'<em>'.$translate.'</em>'
+					.'<em>'.$strHeader.'</em>'
 					.'</a>'
 					.'</li>';
 
+                    
+                    
+            }
+                    
 			reset($platform_list);
 		?>
 
