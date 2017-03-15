@@ -260,10 +260,10 @@ class LangAdmController extends AdmController {
 	 * Inline editor server, here we will save the new trasnslation
 	 */
 	public function saveDataTask() {
-		$id_text	= Get::req('id_text', DOTY_INT, 0);
-		$lang_code	= Get::req('lang_code', DOTY_MIXED, Lang::get() );
-		$new_value	= Get::req('new_value', DOTY_MIXED, '');
-		$old_value	= Get::req('old_value', DOTY_MIXED, '');
+		$id_text	= urldecode(Get::req('id_text', DOTY_INT, 0));
+		$lang_code	= urldecode(Get::req('lang_code', DOTY_MIXED, Lang::get() ));
+		$new_value	= urldecode(Get::req('new_value', DOTY_MIXED, ''));
+		$old_value	= urldecode(Get::req('old_value', DOTY_MIXED, ''));
 
 
 		$model = new LangAdm();
