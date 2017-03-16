@@ -1,0 +1,65 @@
+.test-question__answer {
+    position: relative;
+    padding-left: 15px;
+}
+
+.test-question__answer--checked:before {
+    content: '\f00c';
+    font-family: 'FontAwesome';
+    color: green;
+    position: absolute;
+    left: -2px;
+}
+
+.test-question__details-container {
+    display: none;
+}
+
+.test-question__details-container--is-visible {
+    display: table-row-group;
+}
+
+.test-question__show-more {
+    position: relative;
+}
+
+.test-question__show-more:before {
+    content: '\f067';
+    font-family: 'FontAwesome';
+    color: #c84000;
+    position: absolute;
+}
+
+.test-question__show-more--active:before {
+    content: '\f068';
+}
+
+.test-question__percent {
+    color: #000;
+    float: left;
+    width: 100%;
+    text-align: center;
+    z-index: 100;
+    margin: 0px;
+    padding: 0px;
+    border: 0px none;
+}
+
+.test-question__percent--white-text {
+    color: #FFF;
+}
+
+.test-question__bar {
+    background-color: #c84000;
+}
+
+@media print {
+    .test-question__bar {
+        border-top: 3px solid #c84000;
+        background-color: #fff;
+    }
+
+    .test-question__percent {
+        color: #000;
+    }
+}

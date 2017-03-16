@@ -10,10 +10,26 @@
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
+require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
+require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
 
 
 class CoursereportLms extends Model
 {
+
+    const SOURCE_OF_TEST = 'test';
+    const SOURCE_OF_SCOITEM = 'scoitem';
+    const SOURCE_OF_ACTIVITY = 'activity';
+    const SOURCE_OF_FINAL_VOTE = 'final_vote';
+
+
+    const TEST_STATUS_NOT_COMPLETED = 'not_complete';
+    const TEST_STATUS_NOT_CHECKED = 'not_checked';
+    const TEST_STATUS_NOT_PASSED = 'not_passed';
+    const TEST_STATUS_PASSED = 'passed';
+    const TEST_STATUS_DOING = 'doing';
+    const TEST_STATUS_VALID = 'valid';
+
     /**
      * @var int
      */
@@ -61,9 +77,6 @@ class CoursereportLms extends Model
         $this->idSource = $idSource;
 
         $this->courseReports = array();
-
-        $this->grabCourseReports();
-
     }
 
     /**
@@ -89,6 +102,9 @@ class CoursereportLms extends Model
      */
     public function getCourseReports()
     {
+        if (count($this->courseReports) == 0) {
+            $this->grabCourseReports();
+        }
         return $this->courseReports;
     }
 
@@ -103,29 +119,76 @@ class CoursereportLms extends Model
         return $this->reportCount;
     }
 
-    private function grabCourseReports() {
+    private function grabCourseReports()
+    {
+        $report_man = new CourseReportManager();
+        $org_tests =& $report_man->getTest();
+
+        $query_tot_report = "SELECT COUNT(*) "
+            . " FROM " . $GLOBALS['prefix_lms'] . "_coursereport "
+            . " WHERE id_course = '" . $this->idCourse . "'";
+        list($tot_report) = sql_fetch_row(sql_query($query_tot_report));
+
+        $query_tests = "SELECT id_report, id_source "
+            . " FROM " . $GLOBALS['prefix_lms'] . "_coursereport "
+            . " WHERE id_course = '" . $this->idCourse . "' AND source_of = '". SELF::SOURCE_OF_TEST."'";
+
+        $re_tests = sql_query($query_tests);
+
+        while (list($id_r, $id_t) = sql_fetch_row($re_tests)) {
+            $included_test[$id_t] = $id_t;
+            $included_test_report_id[$id_r] = $id_r;
+        }
+
+        // XXX: Update if needed
+        if ($tot_report == 0) {
+            $report_man->initializeCourseReport($org_tests);
+        }
+        else {
+
+            if (is_array($included_test)) {
+                $test_to_add = array_diff($org_tests, $included_test);
+            } else {
+                $test_to_add = $org_tests;
+            }
+
+            if (is_array($included_test)) {
+                $test_to_del = array_diff($included_test, $org_tests);
+            } else {
+                $test_to_del = $org_tests;
+            }
+
+            if (!empty($test_to_add) || !empty($test_to_del)) {
+                $report_man->addTestToReport($test_to_add, 1);
+                $report_man->delTestToReport($test_to_del);
+
+                $included_test = $org_tests;
+            }
+        }
+
+        $report_man->updateTestReport($org_tests);
+
 
         $query_report = "SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
                         FROM " . $GLOBALS['prefix_lms'] . "_coursereport
-	                    WHERE id_course = '" . $this->idCourse ."'";
+	                    WHERE id_course = '" . $this->idCourse . "'";
 
         if (!is_null($this->idReport)) {
-            $query_report .= " AND id_report = '". $this->idReport ."'";
+            $query_report .= " AND id_report = '" . $this->idReport . "'";
         }
 
         if (!is_null($this->sourceOf)) {
 
-            if (is_array($this->sourceOf)){
+            if (is_array($this->sourceOf)) {
 
-                $query_report .=" AND source_of IN ('". implode($this->sourceOf,"','") ."')";
-            }
-            else {
-                $query_report .= " AND source_of = '". $this->sourceOf ."'";
+                $query_report .= " AND source_of IN ('" . implode($this->sourceOf, "','") . "')";
+            } else {
+                $query_report .= " AND source_of = '" . $this->sourceOf . "'";
             }
         }
 
         if (!is_null($this->idSource)) {
-            $query_report .= " AND id_source = '". $this->idSource ."'";
+            $query_report .= " AND id_source = '" . $this->idSource . "'";
         }
 
         $query_report .= " ORDER BY sequence ";
@@ -138,6 +201,8 @@ class CoursereportLms extends Model
 
             $this->courseReports[] = $report;
         }
+
+
     }
 
     /**
@@ -151,8 +216,72 @@ class CoursereportLms extends Model
 
         foreach ($this->courseReports as $courseReport) {
 
-            if ($courseReport->getSourceOf() === $sourceOf){
+            if ($sourceOf === null || $courseReport->getSourceOf() === $sourceOf) {
                 $result[] = $courseReport;
+            }
+        }
+
+        return $result;
+    }
+
+
+    /**
+     * @param array $id_sources
+     */
+    public function getCourseReportsFilteredByIdSources($id_sources)
+    {
+
+        $result = array();
+
+        if ($id_sources === null || count($id_sources) == 0) {
+            return $result;
+        }
+
+        if (count($this->courseReports) == 0){
+            $this->grabCourseReports();
+        }
+
+        foreach ($this->courseReports as $info_report) {
+
+            switch ($info_report->getSourceOf()) {
+                case CoursereportLms::SOURCE_OF_TEST : {
+
+                    $testObj = Learning_Test::load($info_report->getIdSource());
+
+                    if (in_array($testObj->getObjectType() . "_" . $info_report->getIdSource(), $id_sources)) {
+                        $result[] = $info_report;
+                        if (count($result) == count($id_sources)){
+                            return $result;
+                        }
+                    }
+                }
+                    break;
+                case CoursereportLms::SOURCE_OF_SCOITEM: {
+
+                    $scormItem = new ScormLms($info_report->getIdSource());
+
+                    if (in_array($info_report->getSourceOf() . "_" . $scormItem->getIdSource(), $id_sources)) {
+
+                        $result[] = $info_report;
+                        if (count($result) == count($id_sources)){
+                            return $result;
+                        }
+                    }
+                }
+                    break;
+                case CoursereportLms::SOURCE_OF_ACTIVITY: {
+
+                    if (in_array($info_report->getSourceOf() . "_" . $info_report->getIdSource(), $id_sources)) {
+                        $result[] = $info_report;
+                        if (count($result) == count($id_sources)){
+                            return $result;
+                        }
+                    }
+                }
+                    break;
+                default: {
+
+                }
             }
         }
 
@@ -162,13 +291,14 @@ class CoursereportLms extends Model
     /**
      * @return ReportLms[]
      */
-    public function getReportsForFinal(){
+    public function getReportsForFinal()
+    {
 
         $reports = array();
 
-        foreach ($this->courseReports as $courseReport){
+        foreach ($this->courseReports as $courseReport) {
 
-            if ($courseReport->isUseForFinal() && $courseReport->getSourceOf() != 'final_vote'){
+            if ($courseReport->isUseForFinal() && $courseReport->getSourceOf() != SELF::SOURCE_OF_FINAL_VOTE) {
                 $reports[] = $courseReport;
             }
         }
@@ -185,7 +315,7 @@ class CoursereportLms extends Model
 
         $query_report = "SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
 		FROM " . $GLOBALS['prefix_lms'] . "_coursereport
-		WHERE id_course = '" . $idCourse . "' AND source_of = 'final_vote' AND id_source = '0'";
+		WHERE id_course = '" . $idCourse . "' AND source_of = '". SELF::SOURCE_OF_FINAL_VOTE ."' AND id_source = '0'";
 
         $re_report = sql_query($query_report);
 
@@ -196,5 +326,35 @@ class CoursereportLms extends Model
         }
 
         return $report;
+    }
+
+    public function getReportsId($sourceOf = null)
+    {
+        $responseArray = array();
+
+        foreach ($this->courseReports as $courseReport) {
+
+            if ($sourceOf === null || $courseReport->getSourceOf() === $sourceOf) {
+
+                $responseArray[] = $courseReport->getIdReport();
+            }
+        }
+
+        return $responseArray;
+    }
+
+    public function getSourcesId($sourceOf = null)
+    {
+        $responseArray = array();
+
+        foreach ($this->courseReports as $courseReport) {
+
+            if ($sourceOf === null || $courseReport->getSourceOf() === $sourceOf) {
+
+                $responseArray[] = $courseReport->getIdSource();
+            }
+        }
+
+        return $responseArray;
     }
 }
