@@ -56,7 +56,7 @@ class ReportLms extends Model
     {
         $this->idReport = $id_report;
         $this->title = $title;
-        $this->maxSccore = $max_score;
+        $this->maxScore = $max_score;
         $this->requiredScore = $required_score;
         $this->weight = $weight;
         $this->showToUser = $show_to_user === 'true'? true : false;

@@ -43,11 +43,11 @@
 				}, failure:	{}
 			}
 
-			var post =	"id_text=" + id_text
-						+"&lang_code=" + YAHOO.util.Dom.get('lang_code').value
-						+"&new_value=" + new_value
-						+"&old_value=" + old_value;
-
+			var post =	"id_text=" + encodeURIComponent(id_text)
+						+"&lang_code=" + encodeURIComponent(YAHOO.util.Dom.get('lang_code').value)
+						+"&new_value=" + encodeURIComponent(new_value)
+						+"&old_value=" + encodeURIComponent(old_value);
+            console.log(post)
 			var url = "ajax.adm_server.php?r=adm/lang/saveData&";
 
 			YAHOO.util.Connect.asyncRequest("POST", url, myCallback, post);
