@@ -64,33 +64,18 @@ require(_adm_.'/menu/menu_over.php');
 $GLOBALS['page']->setWorkingZone('content');
 
 // New MVC structure
-if(isset($_GET['r'])) { $GLOBALS['r'] = $_GET['r']; }
-if(isset($GLOBALS['r']) && $GLOBALS['r'] != '') {
+if(isset($_GET['r'])) { $GLOBALS['req'] = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $_GET['r']); }
+if (!empty($GLOBALS['req'])){
 
-	$request = $GLOBALS['r'];
-	$r = explode('/', $request);
-	$action = $r[1];
-	if(count($r) == 3) {
-		// Position, class and method defined in the path requested
-		$mvc =ucfirst(strtolower($r[1])). ucfirst(strtolower($r[0])).'Controller';
-		$action = $r[2];
-	} else {
-		// Only class and method defined in the path requested
-		$mvc = ''.ucfirst(strtolower($r[0])).'AdmController';
-		$action = $r[1];
-	}
-	ob_clean();
-	$controller = new $mvc( strtolower($r[1]) );
-	$controller->request($action);
+    $requesthandler = new RequestHandler($GLOBALS['req'],'adm');
+    $requesthandler->run();
+} else {
 
-	$GLOBALS['page']->add(ob_get_contents(), 'content');
-	ob_clean();
-
-} elseif($GLOBALS['modname'] != '') {
-
-	$module_cfg->loadBody();
+    // load module body
+    if(!empty($GLOBALS['modname'])) {
+        $module_cfg->loadBody();
+    }
 }
-
 // -----------------------------------------------------------------------------
 
 #// finalize TEST_COMPATIBILITA_PHP54

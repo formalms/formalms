@@ -238,6 +238,32 @@ class PluginAdm extends Model {
     }
 
     /**
+     * Remove plugin's requests from forma's requests
+     * @param $plugin_name
+     * @return reouce_id
+     */
+    private function removeRequests($plugin_name){
+        $plugin_info = $this->getPluginFromDB($plugin_name,'name');
+        return sql_query('DELETE FROM %adm_requests WHERE plugin="'.$plugin_info['plugin_id'].'"');
+    }
+
+
+    /**
+     * Remove plugin's requests from forma's requests
+     * @param $plugin_name
+     * @return reouce_id
+     */
+    /*
+    private function removeMenu($plugin_name){
+        $plugin_info = $this->getPluginFromDB($plugin_name,'name');
+        sql_query('DELETE FROM %lms_menu WHERE plugin_id="'.$plugin_info['plugin_id'].'"');
+        sql_query('DELETE FROM %lms_menu_under WHERE plugin_id="'.$plugin_info['plugin_id'].'"');
+        sql_query('DELETE FROM %adm_menu WHERE plugin_id="'.$plugin_info['plugin_id'].'"');
+        sql_query('DELETE FROM %adm_menu_under WHERE plugin_id="'.$plugin_info['plugin_id'].'"');
+    }
+    */
+
+    /**
      * Insert specified plugin in forma
      * @param $plugin_name
      * @param int $priority
@@ -278,6 +304,7 @@ class PluginAdm extends Model {
         if (!$update){
             $this->callPluginMethod($plugin_id, 'uninstall');
             $this->removeSettings($plugin_id);
+            $this->removeRequests($plugin_id);
         }
 
         $reSetting = sql_query("
@@ -298,6 +325,7 @@ class PluginAdm extends Model {
             $this->callPluginMethod($plugin_id,'activate');
         }
         else{
+            //$this->removeMenu($plugin_id);
             $this->callPluginMethod($plugin_id,'deactivate');
         }
 
