@@ -253,7 +253,7 @@ class ImportUser extends DoceboImport_Destination {
                                 $sameuserid = TRUE;
                             }
                         } else {
-                            if($field_value != $infouser->$field_id){
+                            if($field_value != $infouser->$field_id && $field_id != "pass"){
                                 $idst = FALSE;
                                 $sameuserid = TRUE;
                             }
@@ -404,7 +404,7 @@ class ImportUser extends DoceboImport_Destination {
                                 $this->last_error = 'Error on insert user';
                                 $err = true;
                             }
-                        } else if ($idst !== FALSE) {
+                        } elseif ($idst !== FALSE) {
                             $idst = FALSE;
                             $this->last_error = Lang::t('_USER_ALREADY_EXISTS', 'standard').' --> '.$userid.' | '.$firstname.' | '.$lastname.' | '.$pass.' | '.$email.' |';
                             return FALSE;
