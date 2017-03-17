@@ -195,8 +195,8 @@ class ImportUser extends DoceboImport_Destination {
 		}
 		
 		$userid		= strtolower( addslashes($this->_convert_char($row['userid'])) );
-		$firstname	= ucfirst( strtolower( addslashes($this->_convert_char($row['firstname'])) ) );
-		$lastname	= ucfirst( strtolower( addslashes($this->_convert_char($row['lastname'])) ) ); 
+		$firstname	= (Get::sett('import_ucfirst', 'on') == "on" ? ucfirst( strtolower( addslashes($this->_convert_char($row['firstname'])) ) ) : addslashes($this->_convert_char($row['firstname'])) )  ;
+		$lastname	= (Get::sett('import_ucfirst', 'on') == "on" ? ucfirst( strtolower( addslashes($this->_convert_char($row['lastname']))  ) ) : addslashes($this->_convert_char($row['lastname'] )) )  ; 
 		$pass		= addslashes($this->_convert_char($row['pass']));
 		$email		= addslashes($this->_convert_char($row['email']));
 
@@ -253,7 +253,7 @@ class ImportUser extends DoceboImport_Destination {
                                 $sameuserid = TRUE;
                             }
                         } else {
-                            if($field_value != $infouser->$field_id){
+                            if($field_value != $infouser->$field_id && $field_id != "pass"){
                                 $idst = FALSE;
                                 $sameuserid = TRUE;
                             }
@@ -404,7 +404,7 @@ class ImportUser extends DoceboImport_Destination {
                                 $this->last_error = 'Error on insert user';
                                 $err = true;
                             }
-                        } else if ($idst !== FALSE) {
+                        } elseif ($idst !== FALSE) {
                             $idst = FALSE;
                             $this->last_error = Lang::t('_USER_ALREADY_EXISTS', 'standard').' --> '.$userid.' | '.$firstname.' | '.$lastname.' | '.$pass.' | '.$email.' |';
                             return FALSE;
@@ -443,9 +443,9 @@ class ImportUser extends DoceboImport_Destination {
 		}
                         break;
                     case 'only_update':
-			if($idst !== false) {
+			if($sameuserid !== false) {
 				$result = $acl_manager->updateUser(
-                                    $idst,
+                                    $acl_manager->getUserST( $tocompare['userid']),
                                     $userid,
                                     $firstname != '' ? $firstname : FALSE,
                                     $lastname != '' ? $lastname : FALSE,

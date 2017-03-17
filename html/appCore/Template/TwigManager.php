@@ -13,7 +13,8 @@ namespace appCore\Template;
   |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
   \ ======================================================================== */
 
-class TwigManager {
+class TwigManager
+{
 
     private static $instance = null;
     private $twig = null;
@@ -21,11 +22,12 @@ class TwigManager {
     /**
      * Singleton class, the constructor is private
      */
-    private function __construct() {
+    private function __construct()
+    {
         $loader = new \Twig_Loader_Filesystem();
         $debug = \Get::cfg('twig_debug', false);
         $this->twig = new \Twig_Environment($loader, array(
-            'cache' => $debug?false:_files_ . '/tmp',
+            'cache' => $debug ? false : _files_ . '/tmp',
             'debug' => $debug
         ));
         $this->twig->addFunction('translate', new \Twig_Function_Function(function ($key, $module = false, $substitution = array(), $lang_code = false, $default = false) {
@@ -42,6 +44,9 @@ class TwigManager {
         )));
         $this->twig->addGlobal('GLOBALS', $GLOBALS);
         $this->twig->addGlobal('Docebo', Docebo);
+        if ($debug) {
+            $this->twig->addExtension(new \Twig_Extension_Debug());
+        }
     }
 
     /**
@@ -51,7 +56,8 @@ class TwigManager {
      * @return TwigManager
      * @throws Exception
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$instance == null) {
             $c = __CLASS__;
             self::$instance = new $c;
@@ -60,7 +66,8 @@ class TwigManager {
         return self::$instance;
     }
 
-    public function render($view_name, $data_for_view, $view_path = null) {
+    public function render($view_name, $data_for_view, $view_path = null)
+    {
         if ($view_path == null) {
             throw new \Exception('mvc_name cannot be null!');
         }

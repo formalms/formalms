@@ -294,7 +294,7 @@ class AdminmanagerAdmController extends AdmController
 
 	public function classlocations_setTask() {
 		if (Get::req('undo', DOTY_MIXED, false) !== false) {
-			Util::jump_to('index.php?r=adm/publicadminmanager/show');
+			Util::jump_to('index.php?r=adm/adminmanager/show');
 		}
 
 		$id_user = Get::req('id_user', DOTY_INT, 0);

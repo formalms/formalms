@@ -2051,7 +2051,7 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 
 			$html .= ''
 					.( isset($course_stats['cert_relesable']) /*&& $tot_cert != 0*/
-							? '<tr><th scope="row">'.$this->_lang->def('_CERT_RELESABLE').' :</th><td><a href="index.php?r=lms/mycertificate/show">'.$tot_cert.'</a></td></tr>'
+							? '<tr><th scope="row">'.$this->_lang->def('_CERT_RELESABLE').' :</th><td><a href="index.php?r=lms/mycertificate/show"><u><b>'.$tot_cert.'</b></u></a></td></tr>'
 							: '' )
 
 							.( $pendent != 0

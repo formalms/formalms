@@ -37,8 +37,11 @@ echo	Form::openForm('add_edition_form', 'index.php?r='.$base_link_edition.'/add&
                 require_once(_adm_.'/lib/lib.customfield.php');
                 $fman = new CustomFieldList();
                 $fman->setFieldArea( "COURSE_EDITION" );
+                if ($fman->getNumberFieldbyArea() > 0) {
                 $fields_mask = $fman->playFields($model->getIdEdition());
+                    echo "<hr>";
                 echo $fields_mask;
+                }
 
             echo Form::closeElementSpace()
 		.Form::openButtonSpace()
