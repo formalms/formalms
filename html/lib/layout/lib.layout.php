@@ -304,6 +304,8 @@
                 $retArray['resetter'] = self::GetResetter();
                 break;
              case 'adm':
+                $exclude_widget[] = 'swipe';   // do not need swipe on admin menu
+                $retArray['jqueryAddons'] = JQueryLib::loadJQueryAddons($minimized, $exclude_widget);
                 break;
              case 'lms':
                 if(!isset($_SESSION['direct_play'])) {
