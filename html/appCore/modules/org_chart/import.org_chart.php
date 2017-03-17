@@ -443,9 +443,9 @@ class ImportUser extends DoceboImport_Destination {
 		}
                         break;
                     case 'only_update':
-			if($idst !== false) {
+			if($sameuserid !== false) {
 				$result = $acl_manager->updateUser(
-                                    $idst,
+                                    $acl_manager->getUserST( $tocompare['userid']),
                                     $userid,
                                     $firstname != '' ? $firstname : FALSE,
                                     $lastname != '' ? $lastname : FALSE,
