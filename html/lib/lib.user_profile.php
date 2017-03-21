@@ -1987,10 +1987,10 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 	    if($perm_competence ) $html .= '<li><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">'.Lang::t('_COMPETENCES', 'standard').'</a></li>';
 	      
 	    if($unread_num>0 && $perm_message){
-	        $html .= '<li><a class="btn btn-default" href="index.php?modname=message&op=message&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'<b class="num_notify"><i style="font-size:.78em">'.$unread_num.'</i></b></a></li>';
+	        $html .= '<li><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'<b class="num_notify"><i style="font-size:.78em">'.$unread_num.'</i></b></a></li>';
 	    }
 	    if($unread_num==0 && $perm_message){
-	    	$html .= '<li><a class="btn btn-default" href="index.php?modname=message&op=message&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'</a></li>';
+	    	$html .= '<li><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'</a></li>';
 	    }
 		                                           
 		$html .= '</ul>';
