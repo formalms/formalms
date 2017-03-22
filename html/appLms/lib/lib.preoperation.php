@@ -35,13 +35,13 @@ if($maintenance == "on" && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODAD
 }
 
 // handling access from multiple sessions
-if(Get::sett('stop_concurrent_user') == 'on') { // if(isset($_SESSION['idCourse'])) { XXX: solo se in corso???
+if(Get::sett('stop_concurrent_user') == 'on' && isset($_SESSION['idCourse'])) {
 
     // two user logged at the same time
     if(!TrackUser::checkSession(getLogUserId())) {
-
+        
         TrackUser::resetUserSession(getLogUserId());
-        Util::jump_to(Get::rel_path("base") . "/index.php?r=" . _logout_);
+        Util::jump_to(Get::rel_path("base") . "/index.php?r=" . _stopconcurrency_);
     }
 }
 

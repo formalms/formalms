@@ -255,6 +255,8 @@ class HomepageAdmController extends AdmController {
     
     public function logout() {
         
+        $msg = Get::req("msg", DOTY_MIXED, null);
+        
         if(Docebo::user()->isAnonymous()) self::redirect();
         
         AuthenticationManager::logout();
@@ -262,8 +264,24 @@ class HomepageAdmController extends AdmController {
         $redirection = array();
         
         $redirection['req'] = _homepage_;
+        if($msg) {
+            $redirection['query'] = array(
+                "msg"  => $msg
+            );
+        } else {            
+            $redirection['query'] = array(
+                "done"  => LOGGED_OUT
+            );
+        }
+        self::redirect($redirection);
+    }
+    
+    public function stopconcurrency() {
+        
+        $redirection = array();
+        $redirection['req'] = _logout_;
         $redirection['query'] = array(
-            "done"  => LOGGED_OUT
+            "msg" => USER_CONCURRENCY
         );
         self::redirect($redirection);
     }
