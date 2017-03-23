@@ -500,6 +500,11 @@ class Track_Object {
 	function deleteTrackInfo($id_lo, $id_user) {
 		$query = "DELETE FROM ".$this->_table." WHERE idUser=".(int)$id_user." AND idReference=".(int)$id_lo;
 		$res = sql_query($query);
+        
+        $query = "DELETE FROM %lms_materials_track WHERE idUser=".(int)$id_user." AND idReference=".(int)$id_lo;
+        $res = sql_query($query);
+
+        
 		return $res;
 	}
 }
