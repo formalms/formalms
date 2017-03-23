@@ -9,7 +9,7 @@
         {% endfor %}
     </select>
 
-    <div class="button--exportcsv"><a href="index.php?r=lms/coursereport/export">EXPORT CSV</a></div>
+    <div class="button--exportcsv"><a href="index.php?r=lms/coursereport/export">{{ translate('_EXPORT_CSV','standard') }}</a></div>
 </div>
 
 <div class="table-responsive">
@@ -19,13 +19,13 @@
             <th colspan="2" class="transparent"></th>
             <th colspan="4" class="text-center">
                 {#<a class="activities-nav activities-nav--prev js-prev-activities"><i class="fa fa-chevron-left"></i></a>#}
-                ACTIVITIES
+                {{ translate('_STUDENTS_VOTE','coursereport') }}
                 {#<a class="activities-nav activities-nav--next js-next-activities"><i class="fa fa-chevron-right"></i></a>#}
             </th>
             <th class="transparent"></th>
         </tr>
         <tr>
-            <th>User</th>
+            <th>{{ translate('_STUDENTS','coursereport') }}</th>
             <th>
                 <select class="filter js-user-detail-filter is-disabled" disabled>
                 </select>
@@ -52,7 +52,7 @@
                 </select>
             </th>
 
-            <th class="text-center">Final
+            <th class="text-center">{{ translate('_FINAL_SCORE','standard') }}
                 <div class="final-buttons-container">
                     <a class="js-finals-filter round-report" href="#" data-reportid=""><i class="fa fa-calculator" aria-hidden="true"></i></a>
                     <a class="js-finals-filter redo-final" href="#" data-reportid=""><i class="fa fa-refresh" aria-hidden="true"></i></a>
