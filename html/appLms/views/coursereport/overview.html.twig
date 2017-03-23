@@ -20,24 +20,24 @@
         <thead>
             <tr>
                 <th colspan="2" class="transparent"></th>
-                <th colspan="6">INFO</th>
-                <th colspan="6">STATS</th>
+                <th colspan="6">{{ translate('_INFO','coursereport') }}</th>
+                <th colspan="6">{{ translate('_STATS','coursereport') }}</th>
                 <th class="transparent"></th>
             </tr>
             <tr>
                 <td colspan="2"></td>
-                <td>Type</td>
-                <td>Max</td>
-                <td>Required</td>
-                <td>Weight</td>
-                <td>Show</td>
-                <td>Finale</td>
-                <td>Passed Completed</td>
-                <td>Not passed incomplete</td>
-                <td>Not Checked</td>
-                <td>Average</td>
-                <td>Max Score</td>
-                <td>Min Score</td>
+                <td>{{ translate('_TYPE','standard') }}</td>
+                <td>{{ translate('_TEST_QUEST_MAXTESTSCORE','test') }}</td>
+                <td>{{ translate('_REQUIRED_SCORE','standard') }}</td>
+                <td>{{ translate('_WEIGHT','coursereport') }}</td>
+                <td>{{ translate('_SHOW_TO_USER','coursereport') }}</td>
+                <td>{{ translate('_USE_FOR_FINAL','coursereport') }}</td>
+                <td>{{ translate('_PASSED','coursereport') }}</td>
+                <td>{{ translate('_NOT_PASSED','coursereport') }}</td>
+                <td>{{ translate('_NOT_CHECKED','coursereport') }}</td>
+                <td>{{ translate('_AVERANGE','standard') }}</td>
+                <td>{{ translate('_MAX_SCORE','standard') }}</td>
+                <td>{{ translate('_MIN_SCORE','standard') }}</td>
                 <td></td>
             </tr>
         </thead>
@@ -84,16 +84,16 @@
 </div>
 
 <div class="button--add">
-  <span>ADD NEW</span>
+  <span>{{ translate('_ADD_ACTIVITY','coursereport') }}</span>
   <ul class="dropdown">
-    <li><a href="index.php?r=lms/coursereport/addactivity">NUOVA ATTIVITA'</a></li>
-    <li><a href="index.php?r=lms/coursereport/addscorm">NUOVO OGGETTO SCORM</a></li>
+    <li><a href="index.php?r=lms/coursereport/addactivity">{{ translate('_ADD_ACTIVITY_TITLE','coursereport') }}</a></li>
+    <li><a href="index.php?r=lms/coursereport/addscorm">{{ translate('_ADD_SCORM_RESULTS','coursereport') }}</a></li>
   </ul>
 </div>
 
 
 <div class="activities-container">
-  {{ dump(details['activities']) }}
+
     {% for activity in details['activities'] %}
         <div data-activityId="{{ activity.id }}" data-activityName="{{ activity.name }}"></div>
     {% endfor %}
