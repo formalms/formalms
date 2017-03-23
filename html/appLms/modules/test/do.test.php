@@ -75,7 +75,7 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
         $GLOBALS['page']->add(getErrorUi($lang->def('_TEST_TRACK_FAILURE')
             . getBackUi(Util::str_replace_once('&', '&amp;', $object_test->back_url), $lang->def('_BACK'))), 'content');
     }
-
+ 
     $track_info = Track_Test::getTrackInfoById($id_track);
 
     $test_man = new TestManagement($id_test);
