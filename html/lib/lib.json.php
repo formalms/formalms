@@ -484,6 +484,9 @@ class Services_JSON
     */
     function decode($str)
     {
+        if (function_exists('json_decode')){
+            return json_decode($str);
+        }
         $str = $this->reduce_string($str);
 
         switch (strtolower($str)) {
