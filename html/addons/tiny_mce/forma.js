@@ -56,7 +56,6 @@ tinymce.init({
 
 	height:"250px",
 	width:"100%",
-	//file_browser_callback : 'myFileBrowser'
 	file_browser_callback: function(field_name, url, type, win) {
         tinymce.activeEditor.windowManager.open({
             title: "My file browser",
@@ -70,12 +69,14 @@ tinymce.init({
     }
 });
 
+/**
+ * simple init
+ */
+
 tinymce.init({
   // General options
   mode : "textareas",
   theme : "modern",
-  /*skin : "o2k7",
-   skin_variant : "silver",*/
   editor_selector : "tinymce_simple",
   forced_root_block : false,
   force_p_newlines : false,
@@ -96,17 +97,6 @@ tinymce.init({
     { title: 'Test template 2', content: 'Test 2' }
   ],
 
-  // Theme options
-//  theme_advanced_buttons1 : "code,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-//  theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,cleanup,|,forecolor,backcolor,removeformat,|,charmap,emotions,iespell,media,|,fullscreen,attribs",
-//  theme_advanced_buttons1 : "cut,copy,paste,|"
-//  + ",undo,redo,|"
-//  + ",bold,italic,underline,strikehrough|"
-//  + ",link,unlink",
-//  theme_advanced_buttons2 : "image,media,|"
-//  + ",fontsizeselect,|"
-//  + ",forecolor,backcolor,|"
-//  + ",code",
   theme_advanced_buttons1 : "",
   theme_advanced_buttons2 : "",
   theme_advanced_buttons3 : "",
@@ -140,51 +130,3 @@ tinymce.init({
     });
   }
 });
-
-/***************
-// very old configuration - to be discontinued
-tinyMCE.init
-({
-	theme : "advanced",
-	mode : "textareas",
-	editor_selector : "tinymce_simple",
-	forced_root_block : false,
-	force_p_newlines : false,
-	force_br_newlines : true,
-	relative_urls : false,
-	remove_script_host: false,
-	plugins : "safari,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
-	theme_advanced_toolbar_location : "top",
-	theme_advanced_buttons1 : "cut,copy,paste,|"
-	+ ",undo,redo,|"
-	+ ",bold,italic,underline,|"
-	+ ",link,unlink",
-	theme_advanced_buttons2 : "image,media,|"
-	+ ",fontsizeselect,|"
-	+ ",forecolor,backcolor,|"
-	+ ",code",
-	theme_advanced_buttons3 : "",
-	height:"250px",
-	width:"100%",
-	file_browser_callback : 'myFileBrowser'
-});
-
-
-function myFileBrowser (field_name, url, type, win)
-{
-	tinyMCE.activeEditor.windowManager.open({
-        file : '../appCore/addons/mod_media/index_tiny.php' + "?type=" + type,
-        title : 'File Browser',
-        width : 800,
-        height : 600,
-        resizable : "yes",
-        inline : "yes",
-        close_previous : "no"
-    }, {
-        window : win,
-        input : field_name
-    });
-
-	return false;
-}
- ***********/
