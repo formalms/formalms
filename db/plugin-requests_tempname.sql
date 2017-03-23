@@ -5,7 +5,7 @@ CREATE TABLE `core_requests` (
   `controller` varchar(255) NOT NULL,
   `model` varchar(255) NOT NULL,
   `plugin` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 
 ALTER TABLE `core_requests`
   ADD PRIMARY KEY (`id`);
