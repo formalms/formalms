@@ -1996,6 +1996,11 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 		$html .= '</ul>';
 		$html .= '</div><br />';
 
+        $pg=new PluginManager('UserProfile');
+        foreach($pg->run('show_home') as $_html) {
+            $html .= $_html;
+        }
+
 		// box carriera
 		require_once($GLOBALS['where_lms'].'/lib/lib.middlearea.php');
 		require_once($GLOBALS['where_lms'].'/modules/course/course.php');

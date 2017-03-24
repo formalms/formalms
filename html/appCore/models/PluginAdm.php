@@ -181,7 +181,7 @@ class PluginAdm extends Model {
      * @param $fn
      * @return array
      */
-    private function importSqlFile($fn) {
+    public function importSqlFile($fn) {
         $res =array('ok'=>true, 'log'=>'');
 
         $handle = fopen($fn, "r");
