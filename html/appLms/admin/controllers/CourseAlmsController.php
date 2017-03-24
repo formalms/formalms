@@ -1167,11 +1167,8 @@ Class CourseAlmsController extends AlmsController
 													$possible_status,
 													( isset($course_ex_cert[$id_cert]) ? $course_ex_cert[$id_cert] : 0 ),
 													'' );
-<<<<<<< HEAD
-				$cont[] = (isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0 && $view_cert ? '<a href="index.php?modname='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? 'p' : '').'certificate&amp;op=view_report_certificate&amp;id_certificate='.$id_cert.'&amp;id_course='.$id_course.'&amp;from=course&amp;of_platform=lms"><b><u>' : '').( isset($released[$id_cert]) ? $released[$id_cert] : '0' ).(isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0  ? '</b></u></a>' : '');
-=======
-				$cont[] = (isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0 && $view_cert ? '<a href="index.php?modname=certificate&amp;op=view_report_certificate&amp;id_certificate='.$id_cert.'&amp;id_course='.$id_course.'&amp;from=course&amp;of_platform=lms">' : '').( isset($released[$id_cert]) ? $released[$id_cert] : '0' ).(isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0  ? '</a>' : '');
->>>>>>> ece254d... Tolta funzionalità Amministratori Pubblici (HTML+SQL)
+				$cont[] = (isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0 && $view_cert ? '<a href="index.php?modname=certificate&amp;op=view_report_certificate&amp;id_certificate='.$id_cert.'&amp;id_course='.$id_course.'&amp;from=course&amp;of_platform=lms"><b><u>' : '').( isset($released[$id_cert]) ? $released[$id_cert] : '0' ).(isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0  ? '</b></u></a>' : '');
+
 				$tb->addBody($cont);
 			}
 
