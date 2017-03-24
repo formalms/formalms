@@ -27,7 +27,7 @@ class RequestHandler {
             return false;
         }
     }
-    public function run(){
+    public function run($ajax=false){
 
         if ($this->valid()){
             $mvc_app=$this->mvc_app;
@@ -37,11 +37,16 @@ class RequestHandler {
                 $mvc_class = ucfirst(strtolower($mvc_name)) . ucfirst(strtolower($mvc_app)) . 'Controller';
                 $controller = new $mvc_class($mvc_name);
             }
-
+            if (!$ajax){
             ob_clean();
+            }
             $controller->request($task);
+            if (!$ajax){
             $GLOBALS['page']->add(ob_get_contents(), 'content');
             ob_clean();
+            } else {
+                aout(ob_get_contents());
+            }
         } else {
             throw new Exception("Request not valid");
         }

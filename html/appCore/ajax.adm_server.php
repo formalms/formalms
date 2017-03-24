@@ -36,27 +36,11 @@ $aj_file = '';
 $mn = Get::req('mn', DOTY_ALPHANUM, '');
 $plf = Get::req('plf', DOTY_ALPHANUM, ( $_SESSION['current_action_platform'] ? $_SESSION['current_action_platform'] : Get::cur_plat() ));
 
-// New MVC structure
-if(isset($_GET['r'])) {
-	$request = $_GET['r'];
-	$r = explode('/', $request);
-	$action = $r[1];
-	if(count($r) == 3) {
-		// Position, class and method defined in the path requested
-		$mvc =ucfirst(strtolower($r[1])). ucfirst(strtolower($r[0])).'Controller';
-		$action = $r[2];
-	} else {
-		// Only class and method defined in the path requested
-		$mvc = ''.ucfirst(strtolower($r[0])).'AdmController';
-		$action = $r[1];
-	}
-	ob_clean();
-	$controller = new $mvc( strtolower($r[1]) );
-	$controller->request($action);
+if(isset($_GET['r'])) { $GLOBALS['req'] = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $_GET['r']); }
+if (!empty($GLOBALS['req'])){
 
-	aout(ob_get_contents());
-	ob_clean();
-
+    $requesthandler = new RequestHandler($GLOBALS['req'],'adm');
+    $requesthandler->run(true);
 } else {
 	if($mn == '') {
 
