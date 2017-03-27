@@ -595,8 +595,8 @@ class CoursereportLmsController extends LmsController
 
         $pagesCount = ceil(count($students) / $paginationLimit);
         $nextPage = false;
-        if ($currentPage+1 < $pagesCount) {
-            $nextPage = $currentPage+1;
+        if ($currentPage + 1 < $pagesCount) {
+            $nextPage = $currentPage + 1;
         }
 
         if ($paginationLimit > 0) {
