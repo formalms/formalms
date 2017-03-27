@@ -596,7 +596,7 @@ class SettingAdm extends Model
                 };
                     break;
                 case "button" : {
-                    echo '<br/><a class="btn btn-primary" role="button" href="'.$var_value.'">'.$lang->def('_' . strtoupper($var_name)).'</a>';//($var_name,$lang->def('_' . strtoupper($var_name)),$lang->def('_' . strtoupper($var_name)));//$lang->def('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
+                    echo '<br/><a class="btn btn-default" role="button" href="'.$var_value.'">'.$lang->def('_' . strtoupper($var_name)).'</a>';//($var_name,$lang->def('_' . strtoupper($var_name)),$lang->def('_' . strtoupper($var_name)));//$lang->def('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
                 };
                     break;
 				default : {
