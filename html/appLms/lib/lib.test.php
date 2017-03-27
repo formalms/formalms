@@ -22,7 +22,7 @@ class GroupTestManagement {
 		$tests = array();
 		if(empty($id_tests)) return array();
 		$query_test = "
-		SELECT idTest, title, point_required, show_only_status, show_score, point_type,	order_type 
+		SELECT idTest, title, point_required, show_only_status, show_score, point_type,	order_type, show_in_coursereport
 		FROM ".$GLOBALS['prefix_lms']."_test 
 		WHERE idTest IN  ( ".implode(',', $id_tests)." )";
 		$re_test = sql_query($query_test);

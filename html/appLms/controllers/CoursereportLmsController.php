@@ -328,6 +328,8 @@ class CoursereportLmsController extends LmsController
 
                 if ($info_report->getSourceOf() != CoursereportLms::SOURCE_OF_FINAL_VOTE) {
 
+                    $showInDetail = false;
+
                     $passedLink = 'javascript:void(0)';
                     $notPassedLink = 'javascript:void(0)';
                     $notCheckedLink = 'javascript:void(0)';
@@ -359,6 +361,7 @@ class CoursereportLmsController extends LmsController
                             $type = ucfirst($testObj->getObjectType());
                             $id = $info_report->getIdSource();
                             $name = strip_tags($tests_info[$info_report->getIdSource()]['title']);
+                            $showInDetail = $tests_info[$info_report->getIdSource()]['show_in_coursereport'] == "0" ? false : true;
 
                             $results_activity[] = array('id' => $testObj->getObjectType() . "_" . $info_report->getIdSource(), "name" => strip_tags($tests_info[$info_report->getIdSource()]['title']));
 
@@ -468,6 +471,7 @@ class CoursereportLmsController extends LmsController
                         'weight' => $info_report->getWeight(),
                         'show' => $info_report->isShowToUser(),
                         'final' => $info_report->isUseForFinal(),
+                        'showInDetail' => $showInDetail,
                         'passed' => array(
                             'value' => $passed,
                             'link' => $passedLink,
