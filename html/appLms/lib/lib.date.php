@@ -440,7 +440,7 @@ class DateManager
 			$control = $this->removeUserFromDate($id_user, $id_date, $id_course);
 			if(!$control) {
 
-				require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
+				//require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
 				require_once(_lms_.'/lib/lib.course.php');
 
 				$docebo_course = new DoceboCourse($id_course);
