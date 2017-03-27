@@ -154,7 +154,7 @@ class CartLmsController extends LmsController {
                 $res = trim($res);                                  
 				if (strcmp($res, "VERIFIED") == 0) {
 
-					require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
+					//require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
 					require_once(_lms_.'/admin/models/TransactionAlms.php');
 
 					$trman = new TransactionAlms();

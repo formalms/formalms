@@ -836,8 +836,7 @@ class AdminPreference
 	{
 		$query =	"SELECT idst"
 					." FROM %adm_group"
-					." WHERE groupid LIKE '/framework/adminrules/%'"
-					." OR groupid LIKE '/framework/publicadminrules/%'";
+					." WHERE groupid LIKE '/framework/adminrules/%'";
 
 		$result = sql_query($query);
 		$res = array(0 => 0);

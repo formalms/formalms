@@ -3288,7 +3288,7 @@ class SubscriptionAlmsController extends AlmsController {
 			$tot_deny 		= array();
 
 			require_once(_lms_.'/lib/lib.course.php');
-			require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
+			//require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
 
 			$docebo_course = new DoceboCourse($id_course);
 

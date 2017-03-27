@@ -122,9 +122,6 @@ class User_API extends API {
 					case 'admin': 
                                             $level = ADMIN_GROUP_ADMIN;
                                             break;
-					case 'pubadmin': 
-                                            $level = ADMIN_GROUP_PUBLICADMIN;
-                                            break;
 					default:
                                             $level = ADMIN_GROUP_USER;
                                             break;

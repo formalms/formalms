@@ -153,12 +153,6 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector {
 		unset($tmp[0]);
 		$this->admin_profiles = array_flip( $tmp );
 		
-		// Cache public admin profiles
-		$this->m_ap = new PublicadminrulesAdm();
-		$tmp = $this->m_ap->getGroupForDropdown();
-		unset($tmp[0]);
-		$this->public_profiles = array_flip( $tmp );
-		
 		return true;
 	}
 	
@@ -235,25 +229,6 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector {
 					
 					$idst_profile = $this->admin_profiles[ $row['profile'] ];
 					$this->m_ar->saveSingleAdminAssociation($idst_profile, $user[ACL_INFO_IDST]);
-				};break;
-				case 'public' : {
-					
-					$level = $this->levels[ADMIN_GROUP_PUBLICADMIN];
-					if(!isset($this->public_profiles[ $row['profile'] ])) {
-						
-						$this->last_error = 'Profile not found : '.$row['profile'].'<br />';
-						return false;
-					}
-					$this->db->start_transaction();
-					
-					//remove from the user group
-					$this->aclm->removeFromGroup($this->levels[ADMIN_GROUP_USER], $user[ACL_INFO_IDST]);
-			
-					//add to the correct admin group
-					$this->aclm->addToGroup($level, $user[ACL_INFO_IDST]);
-					
-					$idst_profile = $this->public_profiles[ $row['profile'] ];
-					$this->m_ap->saveSingleAdminAssociation($idst_profile, $user[ACL_INFO_IDST]);
 				};break;
 			}
 			

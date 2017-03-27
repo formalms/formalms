@@ -1168,7 +1168,7 @@ class CourseSubscribe_Management {
 
 	function subscribeToCourse($id_user, $id_course, $id_date = 0)
 	{
-		require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
+		//require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
 		require_once (_lms_.'/lib/lib.date.php');
 		require_once (_lms_.'/lib/lib.course.php');
 

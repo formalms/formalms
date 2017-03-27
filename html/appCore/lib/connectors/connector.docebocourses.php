@@ -356,7 +356,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 				// send notify
 				if($is_add) {
 					
-					require_once($GLOBALS['where_framework'] . '/lib/lib.eventmanager.php'); 
+					require_once(_base_ . '/lib/lib.eventmanager.php');
 		
 					$msg_composer = new EventMessageComposer();
 					

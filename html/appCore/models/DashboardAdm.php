@@ -280,10 +280,6 @@ class DashboardAdm extends Model
             $idst_admin = $aclManager->getGroupST(ADMIN_GROUP_ADMIN);
             $users['admin'] = $aclManager->getGroupUMembersNumber($idst_admin);
         }
-        if (isset($stats_required['public_admin'])) {
-            $idst_padmin = $aclManager->getGroupST(ADMIN_GROUP_PUBLICADMIN);
-            $users['public_admin'] = $aclManager->getGroupUMembersNumber($idst_padmin);
-        }
         return $users;
     }
 

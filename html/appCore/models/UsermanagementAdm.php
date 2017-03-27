@@ -1020,7 +1020,6 @@ class UsermanagementAdm extends Model {
 					switch ($userdata->level) {
 						case ADMIN_GROUP_ADMIN: $level = ADMIN_GROUP_ADMIN; break;
 						case ADMIN_GROUP_GODADMIN: $level = ADMIN_GROUP_GODADMIN; break;
-						case ADMIN_GROUP_PUBLICADMIN: $level = ADMIN_GROUP_PUBLICADMIN; break;
 					}
 				}
 
@@ -1082,7 +1081,6 @@ class UsermanagementAdm extends Model {
 					switch ($userdata->level) {
 						case ADMIN_GROUP_ADMIN: $level = ADMIN_GROUP_ADMIN; break;
 						case ADMIN_GROUP_GODADMIN: $level = ADMIN_GROUP_GODADMIN; break;
-						case ADMIN_GROUP_PUBLICADMIN: $level = ADMIN_GROUP_PUBLICADMIN; break;
 						default: $level = ADMIN_GROUP_USER; break;
 					}
 					//remove user to old group
@@ -2529,7 +2527,6 @@ class UsermanagementAdm extends Model {
 			switch ($info->level) {
 				case ADMIN_GROUP_ADMIN: $level = ADMIN_GROUP_ADMIN; break;
 				case ADMIN_GROUP_GODADMIN: $level = ADMIN_GROUP_GODADMIN; break;
-				case ADMIN_GROUP_PUBLICADMIN: $level = ADMIN_GROUP_PUBLICADMIN; break;
 				case ADMIN_GROUP_USER: $level = ADMIN_GROUP_USER; break;
 				default: $level = false; break;
 			}

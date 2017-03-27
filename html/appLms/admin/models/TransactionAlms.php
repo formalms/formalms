@@ -237,7 +237,7 @@ Class TransactionAlms extends Model {
 		if ($rem_user_subscription) {
 			foreach ($transaction_info['product'] as $prod) { // remove subscription request
 
-				require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
+				//require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
 				$man_course		= new Man_Course();
 
 				if ($prod['activated'] == 0) {

@@ -228,7 +228,6 @@ function get_report_table($url='') {
 			if ($_SESSION['report_admin_filter']['author'] > 0) $qconds[] = " t1.author = ".$_SESSION['report_admin_filter']['author']." ";
 		};break;
 		case ADMIN_GROUP_ADMIN :
-		case ADMIN_GROUP_PUBLICADMIN :
 		case ADMIN_GROUP_USER :
 		default : {
 			 if ($_SESSION['report_admin_filter']['author'] > 0) {

@@ -1314,7 +1314,6 @@ class UserProfileViewer {
 			switch($acl_man->getUserLevelId($this->_user_profile->getIdUser())) {
 				case ADMIN_GROUP_GODADMIN 	: $user_level_string = $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_GODADMIN);break;
 				case ADMIN_GROUP_ADMIN 		: $user_level_string = $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_ADMIN);break;
-				case ADMIN_GROUP_PUBLICADMIN: $user_level_string = $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_PUBLICADMIN);break;
 				case ADMIN_GROUP_USER 		: $user_level_string = $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_USER);break;
 				default :$user_level_string = $acl_man->getUserLevelId($this->_user_profile->getIdUser());
 			}
@@ -1988,10 +1987,10 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 	    if($perm_competence ) $html .= '<li><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">'.Lang::t('_COMPETENCES', 'standard').'</a></li>';
 	      
 	    if($unread_num>0 && $perm_message){
-	        $html .= '<li><a class="btn btn-default" href="index.php?modname=message&op=message&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'<b class="num_notify"><i style="font-size:.78em">'.$unread_num.'</i></b></a></li>';
+	        $html .= '<li><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'<b class="num_notify"><i style="font-size:.78em">'.$unread_num.'</i></b></a></li>';
 	    }
 	    if($unread_num==0 && $perm_message){
-	    	$html .= '<li><a class="btn btn-default" href="index.php?modname=message&op=message&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'</a></li>';
+	    	$html .= '<li><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'</a></li>';
 	    }
 		                                           
 		$html .= '</ul>';
@@ -2238,7 +2237,6 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 				$level_list = array(
 					ADMIN_GROUP_GODADMIN => $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_GODADMIN),
 					ADMIN_GROUP_ADMIN	=> $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_ADMIN),
-					ADMIN_GROUP_PUBLICADMIN	=> $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_PUBLICADMIN),
 					ADMIN_GROUP_USER 	=> $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_USER)
 				);
 			} else {
