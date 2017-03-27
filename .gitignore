@@ -1,3 +1,6 @@
+#Exclude vendor
+html/vendor
+
 # Sezione html/files
 html/files/**
 !html/files/**/.htaccess
