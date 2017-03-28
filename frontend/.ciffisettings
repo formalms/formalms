@@ -1,0 +1,9 @@
+'use strict';
+
+var CiffiSettings = {
+	projectName: 'formalms',
+	assetsPath: '../web/static',
+	assetsPathName: 'static'
+};
+
+module.exports = CiffiSettings;

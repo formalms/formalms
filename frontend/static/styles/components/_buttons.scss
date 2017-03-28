@@ -1,0 +1,60 @@
+// Buttons
+//
+// Site buttons
+//
+// Style guide: 2
+
+// Button default
+//
+// Markup:
+// <a class="button" href="#">
+//  <span class="button__label">button</span>
+// </a>
+//
+// Style guide: 2.1
+.button {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  text-align: center;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 1);
+  padding: 4px 14px 8px;
+  background-color: $button-bg;
+  font-family: $font;
+  border: none;
+  box-shadow: none;
+
+  // Button default:hover
+  //
+  // Markup:
+  // <a class="button" href="#">
+  //  <span class="button__label">button</span>
+  // </a>
+  //
+  // Style guide: 2.1.1
+  .no-touch & {
+    &:hover {
+      background-color: $button-bg--hover;
+    }
+  }
+}
+
+// Button disabled
+//
+// Markup:
+// <a class="button button--disabled" href="#">
+//  <span class="button__label">button</span>
+// </a>
+//
+// Style guide: 2.2
+.button--disabled {
+  pointer-events: none;
+  background-color: $button-bg--disabled;
+}
+
+.button__label {
+  color: inherit;
+  font: inherit;
+  text-decoration: inherit;
+}

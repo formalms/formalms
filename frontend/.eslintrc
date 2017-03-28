@@ -1,0 +1,35 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "node": true,
+    "jquery": true,
+    "mocha": true
+  },
+  "extends": "eslint:recommended",
+  "globals": {},
+  "rules": {
+    "no-console": 0,
+    "strict": [
+      2,
+      "safe"
+    ],
+    "indent": [
+      2,
+      "tab",
+      {"SwitchCase":1}
+    ],
+    "linebreak-style": [
+      2,
+      "unix"
+    ],
+    "quotes": [
+      2,
+      "single"
+    ],
+    "semi": [
+      2,
+      "always"
+    ]
+  }
+}
