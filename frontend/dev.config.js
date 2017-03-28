@@ -14,7 +14,7 @@ module.exports = {
 		main: './static/scripts/main.js'
 	},
 	output: {
-		path: '../web/static',
+		path: '../html/templates/standard/static',
 		filename: '[name].js'
 	},
 	devtool: 'eval',
