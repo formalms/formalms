@@ -46,7 +46,7 @@ StdPageWriter::createInstance();
 require_once(_adm_.'/lib/lib.preoperation.php');
 
 if(empty($GLOBALS['modname']) && empty($GLOBALS['r'])) {
-	$GLOBALS['r'] = (checkPerm('view', true, 'dashboard', 'framework') ? 'adm/dashboard/show' : '');
+	$GLOBALS['req'] = (checkPerm('view', true, 'dashboard', 'framework') ? 'adm/dashboard/show' : '');
 	$_SESSION['current_action_platform'] = 'framework';
 }
 
