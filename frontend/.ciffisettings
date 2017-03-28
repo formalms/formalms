@@ -2,7 +2,7 @@
 
 var CiffiSettings = {
 	projectName: 'formalms',
-	assetsPath: '../web/static',
+	assetsPath: '../html/templates/standard/static',
 	assetsPathName: 'static'
 };
 
