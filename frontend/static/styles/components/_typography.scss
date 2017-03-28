@@ -1,0 +1,47 @@
+// Typography
+//
+// Reset and normalize typography
+//
+// Markup:
+// <h1>Title h1</h1>
+// <h2>Title h2</h2>
+// <h3>Title h3</h3>
+// <h4>Title h4</h4>
+// <h5>Title h5</h5>
+// <h6>Title h6</h6>
+// <p>paragraph</p>
+//
+// Style guide: 1
+h1, h2, h3, h4, h5, h6, p {
+  display: inline-block;
+  margin: 0 auto;
+  padding: 0;
+  font-weight: normal;
+  font-family: $font;
+}
+
+// Page title
+//
+// Default page title
+//
+// Markup:
+// <h1 class="page-title">Page title</h1>
+//
+// Style guide: 1.1
+.page-title {
+  font-weight: $heavy;
+  font-size: 32px;
+}
+
+// Page paragraph
+//
+// Default page paragraph
+//
+// Markup:
+// <p class="page-paragraph">Page paragraph</p>
+//
+// Style guide: 1.2
+.page-paragraph{
+  font-weight: $regular;
+  font-size: 16px;
+}

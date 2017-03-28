@@ -1,0 +1,92 @@
+/// assets path
+/// @type String
+/// @group path
+$assets: '';
+/// fontawesome path
+/// @type String
+/// @group path
+$fa-font-path: '#{$assets}/fonts';
+/// fontawesome font
+/// @type String
+/// @group font
+$icon: 'FontAwesome';
+/// default font
+/// @type String
+/// @group font
+$font: 'Lato', sans-serif;
+/// font weight light
+/// @type Number
+/// @group font
+$light: 300;
+/// font weight regular
+/// @type Number
+/// @group font
+$regular: 400;
+/// font weight medium
+/// @type Number
+/// @group font
+$medium: 500;
+/// font weight bold
+/// @type Number
+/// @group font
+$bold: 700;
+/// font weight heavy
+/// @type Number
+/// @group font
+$heavy: 900;
+/// main color
+/// @type rgba color
+/// @group colors
+$color-main: rgba(12, 111, 156, 1);
+/// gray color
+/// @type rgba color
+/// @group colors
+$gray: rgba(86, 86, 86, 1);
+/// facebook highlighted elements color
+/// @type rgba color
+/// @group colors
+$facebook-light: rgba(139, 157, 195, 1);
+/// facebook elements color
+/// @type rgba color
+/// @group colors
+$facebook: rgba(59, 89, 152, 1);
+/// header background color
+/// @type rgba color
+/// @group colors
+$header-bg: rgba(239, 239, 239, 1);
+/// footer background color
+/// @type rgba color
+/// @group colors
+$footer-bg: rgba(98, 98, 100, 1);
+/// button background color
+/// @type rgba color
+/// @group colors
+$button-bg: rgba(17, 136, 190, 1);
+/// button hover background color
+/// @type rgba color
+/// @group colors
+$button-bg--hover: rgba(12, 111, 156, 1);
+/// button disabled background color
+/// @type rgba color
+/// @group colors
+$button-bg--disabled: rgba(17, 136, 190, .4);
+/// input border color
+/// @type rgba color
+/// @group colors
+$input-border: rgba(205, 205, 205, 1);
+/// input error color
+/// @type rgba color
+/// @group colors
+$input-error: rgba(255, 0, 0, 1);
+/// tablet breakpoint (mobile first)
+/// @type Number + px
+/// @group breakpoint
+$tablet: 768px;
+/// ipad breakpoint (mobile first)
+/// @type Number + px
+/// @group breakpoint
+$ipad: 1024px;
+/// desktop breakpoint (mobile first)
+/// @type Number + px
+/// @group breakpoint
+$desktop: 1280px;
