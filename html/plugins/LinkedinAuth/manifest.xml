@@ -2,7 +2,7 @@
 <plugin_manifest>
 	<title>LinkedinAuth</title>
 	<author>Joint Technologies</author>
-	<name>LinkedinAuth</name>
+	<name>LinkedinAuth_</name>
 	<version>1.0</version>
 	<license>GNU General Public License version 2</license>
 	<description>Linkedin auth</description>

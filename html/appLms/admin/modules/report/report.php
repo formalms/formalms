@@ -666,6 +666,10 @@ function report_show_results($idrep = false) {
 	}
 	$pg = new PluginManager('Report');
     $obj_report = $pg->get_plugin(strtolower($class_name),array($idrep));
+    if (!$obj_report){
+        require_once(_lms_.'/admin/modules/report/'.$file_name);
+        $obj_report = new $class_name( $idrep );
+    }
 
 	$obj_report->back_url = $start_url;
 	$obj_report->jump_url = 'index.php?modname=report&op=show_results&idrep='.$idrep;

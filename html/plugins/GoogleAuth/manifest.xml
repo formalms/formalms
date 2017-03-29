@@ -2,7 +2,7 @@
 
 <plugin_manifest>
 	<title>GoogleAuth</title>
-	<name>GoogleAuth</name>
+	<name>GoogleAuth_</name>
 	<author>Joint Technologies</author>
 	<version>1.0</version>
 	<category>authentication</category>
