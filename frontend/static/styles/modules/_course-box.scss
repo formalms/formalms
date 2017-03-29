@@ -1,28 +1,111 @@
 // Course Box
 //
-// This is the course box used in My Courses and Course Catalogue
+// This is the course box used in My Courses and Course Catalogue<br />
+// <strong>NB: The 'style' attributes are just for this representation only, when implementing
+// be sure to delete them.</strong>
 //
 // Markup:
 //  <div class="col-md-3" style="width: 33%;">
 //    <div class="course-box">
-//      <div class="course-box__title"></div>
+//      <div class="course-box__title">Lorem ipsum dolor sit amet</div>
 //      <div class="course-box__img">
 //        <img src="" alt="">
 //        <div class="course-box__img-title">lorem ipsum</div>
 //      </div>
-//      <div class="course-box__owner course-box__owner--admin">Amministratore</div>
-//      <div class="course-box__desc">
+//      <div class="course-box__owner course-box__owner--admin col-md-12" style="width: 100%">Amministratore</div>
+//      <div class="course-box__desc col-md-12" style="width: 100%">
 //        Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Facilis ponatur
 //        infinito oderis obruamus. Effectices, terroribus cognosci elegans totam
 //        atilli arare p minuendas.
 //      </div>
-//      <div class="course-box__date"></div>
-//      <div class="course-box__btn"></div>
+//      <div class="course-box__date">31 agosto 2016</div>
+//      <div class="button">Entra nel corso <span>>></span> </div>
 //    </div>
 //  </div>
 //
 // Style guide: 3
 .course-box {
   width: 100%;
+  min-height: 330px;
+  padding-bottom: 30px;
+  border: 1px solid $gray-4;
+  border-radius: 5px;
+  font-family: $font;
 
+  &:hover {
+    border: 1px solid $orange;
+    box-shadow: $gray-3 0px 5px 20px 0px;
+
+    .course-box__img-title {
+      background-color: rgba(255, 108, 0, 0.5);
+    }
+  }
+}
+
+.course-box__title {
+  position: relative;
+  width: 100%;
+  height: 70px;
+  padding: 25px 30px;
+  color: $anthracite;
+  font-weight: 600;
+
+  &:after {
+    content: '';
+  }
+}
+
+.course-box__img {
+  position: relative;
+  height: 140px;
+  background: {
+    image: url(images/course-box/course-box-bg.png);
+    repeat: no-repeat;
+    size: cover;
+    position: center;
+  };
+}
+
+.course-box__img-title {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 35px;
+  padding: 12px 30px;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: $white;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+.course-box__owner {
+  position: relative;
+  padding: 30px 30px 15px 65px;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: $gray-2;
+
+  &:before {
+    content: '';
+    position: absolute;
+  }
+}
+
+.course-box__desc {
+  margin-bottom: 30px;
+  padding: 0 30px;
+  color: $gray-1;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.course-box__date {
+  float: left;
+  padding: {
+    left: 30px;
+    bottom: 30px;
+  };
+  color: $gray-2;
+  font-size: 12px;
+  font-weight: 600;
 }
