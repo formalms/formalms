@@ -1,0 +1,28 @@
+// Course Box
+//
+// This is the course box used in My Courses and Course Catalogue
+//
+// Markup:
+//  <div class="col-md-3" style="width: 33%;">
+//    <div class="course-box">
+//      <div class="course-box__title"></div>
+//      <div class="course-box__img">
+//        <img src="" alt="">
+//        <div class="course-box__img-title">lorem ipsum</div>
+//      </div>
+//      <div class="course-box__owner course-box__owner--admin">Amministratore</div>
+//      <div class="course-box__desc">
+//        Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Facilis ponatur
+//        infinito oderis obruamus. Effectices, terroribus cognosci elegans totam
+//        atilli arare p minuendas.
+//      </div>
+//      <div class="course-box__date"></div>
+//      <div class="course-box__btn"></div>
+//    </div>
+//  </div>
+//
+// Style guide: 3
+.course-box {
+  width: 100%;
+
+}

@@ -34,50 +34,50 @@ $bold: 700;
 /// @type Number
 /// @group font
 $heavy: 900;
-/// main color
+/// dark orange color, mostly used for buttons
 /// @type rgba color
 /// @group colors
-$color-main: rgba(12, 111, 156, 1);
-/// gray color
+$dark-orange: rgba(200, 64, 0, 1);
+/// orange color, mostly used for buttons hover
 /// @type rgba color
 /// @group colors
-$gray: rgba(86, 86, 86, 1);
-/// facebook highlighted elements color
+$orange: rgba(255, 108, 0, 1);
+/// ochre color, mostly used for check icons
 /// @type rgba color
 /// @group colors
-$facebook-light: rgba(139, 157, 195, 1);
-/// facebook elements color
+$dark-orange: rgba(246, 166, 35, 1);
+/// anthracite color, mostly used for text
 /// @type rgba color
 /// @group colors
-$facebook: rgba(59, 89, 152, 1);
-/// header background color
+$anthracite: rgba(34, 34, 34, 1);
+/// anthracite-light color, mostly used for alt text
 /// @type rgba color
 /// @group colors
-$header-bg: rgba(239, 239, 239, 1);
-/// footer background color
+$anthracite-light: rgba(64, 64, 64, 1);
+/// gray color, darkest
 /// @type rgba color
 /// @group colors
-$footer-bg: rgba(98, 98, 100, 1);
-/// button background color
+$gray-1: rgba(102, 102, 102, 1);
+/// gray color, normal
 /// @type rgba color
 /// @group colors
-$button-bg: rgba(17, 136, 190, 1);
-/// button hover background color
+$gray-2: rgba(153, 153, 153, 1);
+/// gray color, light
 /// @type rgba color
 /// @group colors
-$button-bg--hover: rgba(12, 111, 156, 1);
-/// button disabled background color
+$gray-3: rgba(194, 194, 194, 1);
+/// gray color, lighter
 /// @type rgba color
 /// @group colors
-$button-bg--disabled: rgba(17, 136, 190, .4);
-/// input border color
+$gray-4: rgba(236, 236, 236, 1);
+/// green color, used for buttons and checks
 /// @type rgba color
 /// @group colors
-$input-border: rgba(205, 205, 205, 1);
-/// input error color
+$green: rgba(112, 216, 0, 1);
+/// lime color, used for borders
 /// @type rgba color
 /// @group colors
-$input-error: rgba(255, 0, 0, 1);
+$lime: rgba(174, 255, 0, 1);
 /// tablet breakpoint (mobile first)
 /// @type Number + px
 /// @group breakpoint

@@ -38,7 +38,7 @@
       </li>
       <li class="kss-nav__menu-item">
         <a class="kss-nav__menu-link" href="section-3.html">
-          <span class="kss-nav__ref">3</span><span class="kss-nav__name">Router</span>
+          <span class="kss-nav__ref">3</span><span class="kss-nav__name">Course Box</span>
         </a>
       </li>
     </ul>
@@ -57,7 +57,7 @@
                   #permalink
               </span>
             </span>
-            Router
+            Course Box
           </a>
         </h1>
 
@@ -113,7 +113,7 @@
           </p>
 
           <div class="kss-description">
-            <p>JS-Router classes</p>
+            <p>This is the course box used in My Courses and Course Catalogue</p>
 
           </div>
 
@@ -126,8 +126,23 @@
 
 
           <div class="kss-modifier__example">
-             <section class="js-router--pagename js-router--is-active"></section>
- <section class="js-router--pagename js-router--is-inactive"></section>
+             <div class="col-md-3" style="width: 33%;">
+   <div class="course-box">
+     <div class="course-box__title"></div>
+     <div class="course-box__img">
+       <img src="" alt="">
+       <div class="course-box__img-title">lorem ipsum</div>
+     </div>
+     <div class="course-box__owner course-box__owner--admin">Amministratore</div>
+     <div class="course-box__desc">
+       Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Facilis ponatur
+       infinito oderis obruamus. Effectices, terroribus cognosci elegans totam
+       atilli arare p minuendas.
+     </div>
+     <div class="course-box__date"></div>
+     <div class="course-box__btn"></div>
+   </div>
+ </div>
             <div class="kss-modifier__example-footer"></div>
           </div>
 
@@ -137,12 +152,27 @@
             <summary>
                 Markup
             </summary>
-            <pre class="prettyprint linenums lang-html"><code data-language="html"> &lt;section class&#x3D;&quot;js-router--pagename js-router--is-active&quot;&gt;&lt;/section&gt;
- &lt;section class&#x3D;&quot;js-router--pagename js-router--is-inactive&quot;&gt;&lt;/section&gt;</code></pre>
+            <pre class="prettyprint linenums lang-html"><code data-language="html"> &lt;div class&#x3D;&quot;col-md-3&quot; style&#x3D;&quot;width: 33%;&quot;&gt;
+   &lt;div class&#x3D;&quot;course-box&quot;&gt;
+     &lt;div class&#x3D;&quot;course-box__title&quot;&gt;&lt;/div&gt;
+     &lt;div class&#x3D;&quot;course-box__img&quot;&gt;
+       &lt;img src&#x3D;&quot;&quot; alt&#x3D;&quot;&quot;&gt;
+       &lt;div class&#x3D;&quot;course-box__img-title&quot;&gt;lorem ipsum&lt;/div&gt;
+     &lt;/div&gt;
+     &lt;div class&#x3D;&quot;course-box__owner course-box__owner--admin&quot;&gt;Amministratore&lt;/div&gt;
+     &lt;div class&#x3D;&quot;course-box__desc&quot;&gt;
+       Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Facilis ponatur
+       infinito oderis obruamus. Effectices, terroribus cognosci elegans totam
+       atilli arare p minuendas.
+     &lt;/div&gt;
+     &lt;div class&#x3D;&quot;course-box__date&quot;&gt;&lt;/div&gt;
+     &lt;div class&#x3D;&quot;course-box__btn&quot;&gt;&lt;/div&gt;
+   &lt;/div&gt;
+ &lt;/div&gt;</code></pre>
           </details>
 
         <div class="kss-source kss-style">
-          Source: <code>components/_router.scss</code>, line 1
+          Source: <code>modules/_course-box.scss</code>, line 1
         </div>
 
     </div>
