@@ -168,26 +168,26 @@ foreach ($menu['all'] as $row) {
           // HELP DESK
          if(strrpos($row[1], 'sign')>0 ){
             cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.Lang::t('_CUSTOMER_HELP', 'customer_help').'"  >'.$row[1].'</a></li>','menu_over');
-         }else{
+         }else if ($row[2] === false){
             cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.$row[1].'"  >'.$row[1].'</a></li>','menu_over');
          } 
      }
-        if($row[2] !== false) {
-
-                cout('<div id="submenu_'.$id_m.'" >'
-                    .'<div class="bd"><ul class="first-of-type">', 'menu_over');
+        if($row[2] !== false && count($menu[ $row[2] ])!=0) {
+                cout('<li class="dropdown" id="submenu_'.$id_m.'" >'
+                    .'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.$row[1].' <span class="caret"></span></a>'
+                    .'<ul class="dropdown-menu">', 'menu_over');
                 while(list($id_m, $s_voice) = each($menu[ $row[2] ])) {
-                    cout(''
+                    cout('<li>'
                         .'<a  href="'.$s_voice[0].'"">'
                         .''.$s_voice[1].''
                         .'</a> &nbsp; '
-                        .'', 'menu_over');
+                        .'</li>', 'menu_over');
                 }
-                cout('</div>'
-                    .'</div>', 'menu_over');
+                cout('</ul>'
+                    .'</li>', 'menu_over');
             }             
 
-}  
+}    
                
 
                
