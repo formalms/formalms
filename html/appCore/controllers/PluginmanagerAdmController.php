@@ -14,7 +14,7 @@
 class PluginmanagerAdmController extends AdmController {
 
     public function showTask() {
-        $model = new PluginAdm();
+        $model = new PluginmanagerAdm();
         $plugins = $model->getPlugins();
         $this->render('show', array(
                 'model' => $model,
@@ -24,7 +24,7 @@ class PluginmanagerAdmController extends AdmController {
     }
 
     public function install() {
-        $model = new PluginAdm();
+        $model = new PluginmanagerAdm();
         $plugin = Get::req('plugin');
         $res=$model->installPlugin($plugin,0);
         if($res) {
@@ -35,7 +35,7 @@ class PluginmanagerAdmController extends AdmController {
     }
 
     public function uninstall() {
-        $model = new PluginAdm();
+        $model = new PluginmanagerAdm();
         $plugin = Get::req('plugin');
         $res=$model->uninstallPlugin($plugin);
         if($res) {
@@ -46,7 +46,7 @@ class PluginmanagerAdmController extends AdmController {
     }
 
     public function update() {
-        $model = new PluginAdm();
+        $model = new PluginmanagerAdm();
         $plugin = Get::req('plugin');
         $online = Get::req('online');
         $res=$model->updatePlugin($plugin,$online);
@@ -58,7 +58,7 @@ class PluginmanagerAdmController extends AdmController {
     }
 
     public function activate() {
-        $model = new PluginAdm();
+        $model = new PluginmanagerAdm();
         $plugin = Get::req('plugin');
         $res=$model->setupPlugin($plugin, 1);
         if($res) {
@@ -69,7 +69,7 @@ class PluginmanagerAdmController extends AdmController {
     }
 
     public function deactivate() {
-        $model = new PluginAdm();
+        $model = new PluginmanagerAdm();
         $plugin = Get::req('plugin');
         $res=$model->setupPlugin($plugin, 0);
         if($res) {
@@ -82,7 +82,7 @@ class PluginmanagerAdmController extends AdmController {
     public function showSettings(){
         $plugin = Get::req('plugin');
         $settingAdm=new SettingAdm();
-        $pg_adm=new PluginAdm();
+        $pg_adm=new PluginmanagerAdm();
         $plugin_info=$pg_adm->getPluginFromDB($plugin,'name');
         $this->render('show_settings', array(
                 'setting_adm' => $settingAdm,
