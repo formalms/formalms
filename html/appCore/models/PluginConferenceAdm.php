@@ -11,7 +11,7 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-include_once(dirname(__FILE__)."/PluginAdm.php");
+include_once(dirname(__FILE__)."/PluginmanagerAdm.php");
 
 class PluginConferenceAdm extends PluginAdm{
 

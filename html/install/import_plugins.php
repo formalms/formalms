@@ -3,7 +3,7 @@
 include('bootstrap.php');
 include _base_.'/db/lib.docebodb.php';
 include_once _lib_."/mvc/lib.model.php";
-include_once _adm_."/models/PluginAdm.php";
+include_once _adm_."/models/PluginmanagerAdm.php";
 include_once _lib_."/lib.formaplugin.php";
 
 DbConn::getInstance(false,array(
@@ -15,7 +15,7 @@ DbConn::getInstance(false,array(
 ));
 
 $GLOBALS['prefix_fw']='core';
-$pg=new PluginAdm();
+$pg=new PluginmanagerAdm();
 $plugins = $_GET['plugins'];
 $res="ok";
 foreach ($plugins as $plugin=>$core){
