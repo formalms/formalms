@@ -47,7 +47,7 @@ if(!Docebo::user()->isAnonymous()) {
     FROM ".$GLOBALS['prefix_lms']."_module AS mo
         JOIN ".$GLOBALS['prefix_lms']."_menucourse_under AS under
             ON ( mo.idModule = under.idModule)
-    WHERE module_info IN ('all', 'user', 'public_admin')   and mo.idModule not in(7,34)
+    WHERE module_info IN ('all', 'user')   and mo.idModule not in(7,34)
     ORDER BY module_info, under.sequence ";
 
                  
@@ -127,17 +127,6 @@ if(!Docebo::user()->isAnonymous()) {
     
     $menu = $event->getMenu();
     $menu_i = $event->getMenuI();
-    
-    
-    // Menu for the public admin
-    if($user_level == ADMIN_GROUP_PUBLICADMIN && !empty($menu['public_admin'])) {
-        $menu['all'][] = array(
-            '#',
-            Lang::t('_PUBLIC_ADMIN_AREA', 'menu_over'),
-            'public_admin'
-        );
-        $menu_i++;
-    }
 
     // Link for the administration
     if($user_level == ADMIN_GROUP_GODADMIN || $user_level == ADMIN_GROUP_ADMIN ) {
