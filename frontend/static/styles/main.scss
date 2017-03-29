@@ -2,9 +2,16 @@
 
 @import 'config/config';
 @import 'font-awesome/font-awesome';
+
+//UTILS
 @import 'utils/fonts';
 @import 'utils/helpers';
+
+//COMPONENTS
 @import 'components/router';
 @import 'components/typography';
 @import 'components/buttons';
+
+//MODULES
 @import 'modules/layout';
+@import 'modules/course-box';
