@@ -2261,7 +2261,8 @@ h1, h2, h3, h4, h5, h6, p {
   font-size: 9px;
   border-radius: 5px;
   box-shadow: none;
-  cursor: pointer; }
+  cursor: pointer;
+  transition: background-color 0.4s ease 0s; }
   .button:hover {
     background-color: #ff6c00;
     color: white; }
@@ -2326,7 +2327,8 @@ body {
   border: 1px solid #ececec;
   border-radius: 5px;
   font-family: "Lato", sans-serif;
-  overflow: hidden; }
+  overflow: hidden;
+  transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s; }
   .course-box:hover {
     border: 1px solid #ff6c00;
     box-shadow: #c2c2c2 0px 5px 20px 0px; }
@@ -2339,6 +2341,8 @@ body {
 .course-box__item--half {
   width: 50%;
   float: left; }
+  .course-box__item--half:last-child {
+    padding-right: 30px; }
 
 .course-box__title {
   position: relative;
@@ -2375,7 +2379,8 @@ body {
   background-color: rgba(0, 0, 0, 0.2);
   color: white;
   text-transform: uppercase;
-  font-size: 10px; }
+  font-size: 10px;
+  transition: background-color 0.4s ease 0s; }
 
 .course-box__owner {
   position: relative;

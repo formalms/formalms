@@ -98,7 +98,9 @@ function TruncateText($the_text, $size)
                                 </div>
                             </div>
                             <div class="course-box__item">
-                                <div class="course-box__owner course-box__owner--admin">Amministratore</div>
+                                <div class="course-box__owner course-box__owner--admin">
+                                    <?php echo $this->levels[$course['level']]; ?>
+                                </div>
                                 <div class="course-box__desc">
                                     <?php echo TruncateText($course['description'], 150); ?>
                                 </div>
@@ -110,18 +112,19 @@ function TruncateText($the_text, $size)
                                     </div>
                                 </div>
                                 <div class="course-box__item course-box__item--half">
-                                    <?php if (DataExists($course)) { ?>
-                                    <a class="button button--disabled">
+                                    <?php if ($course['can_enter']['can']) { ?>
+                                        <a class="button" title="<?php echo Util::purge($course['name']); ?>"
+                                           href="index.php?modname=course&amp;op=aula&amp;idCourse=<?php echo $course['idCourse']; ?>"<?php echo($course['direct_play'] == 1 && $course['level'] <= 3 && $course['first_lo_type'] == 'scormorg' ? ' rel="lightbox"' : ''); ?>>
                                        <span class="button__label">
-                                         DISABLED
+                                         <?php echo Lang::t('_USER_STATUS_ENTER', 'catalogue'); ?>
                                        </span>
-                                    </a>
+                                        </a>
                                     <?php } else { ?>
-                                    <a class="button">
-                                       <span class="button__label">
-                                         Entra nel corso
-                                       </span>
-                                    </a>
+                                        <a class="button button--disabled" href="javascript:void(0);">
+                                           <span class="button__label">
+                                             DISABLED
+                                           </span>
+                                        </a>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -183,8 +186,6 @@ function TruncateText($the_text, $size)
                                     <a href='#' class='tooltips' id='livello' title='LIVELLO'>
                                         <i class="fa fa-graduation-cap" aria-hidden="true"></i></a>
                                     <?php echo $this->levels[$course['level']]; ?>
-                                    <?php echo $this->levels[$course['level']]; ?>
-
                                 </div>
                                 <p class="text-justify-paragrafo">
                                 <p class="course_support_info1">
@@ -204,6 +205,9 @@ function TruncateText($the_text, $size)
                                 <div class="stato">
 
                                     <?php
+
+//                                    $course['user_status'] = '2';
+
                                     if ($course['user_status'] == '2')
                                         echo "<p class='completed_status'><a href='#' class='tooltips' class='stato' title='" . Lang::t('_USER_STATUS_END', 'standard') . "'><i class='fa fa-check-circle fa-2x' aria-hidden='true'></i></p></a>";
                                     if ($course['user_status'] == '1')
@@ -273,6 +277,9 @@ function TruncateText($the_text, $size)
                                 ?>
                             </div>
                         </div>
+
+
+
                         <?php /*</li>*/ ?>
                     </div>
                 <?php endforeach; ?>
