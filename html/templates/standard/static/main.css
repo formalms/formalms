@@ -2190,6 +2190,27 @@
   overflow: visible;
   clip: auto; }
 
+.course-box__item__owner--admin:before {
+  background-image: url(images/icons/icon--admin.svg); }
+
+.course-box__item__owner--ghost:before {
+  background-image: url(images/icons/icon--ghost.svg); }
+
+.course-box__item__owner--guest:before {
+  background-image: url(images/icons/icon--guest.svg); }
+
+.course-box__item__owner--menthor:before {
+  background-image: url(images/icons/icon--menthor.svg); }
+
+.course-box__item__owner--student:before {
+  background-image: url(images/icons/icon--student.svg); }
+
+.course-box__item__owner--teacher:before {
+  background-image: url(images/icons/icon--teacher.svg); }
+
+.course-box__item__owner--tutor:before {
+  background-image: url(images/icons/icon--tutor.svg); }
+
 .js-router--is-active {
   display: block; }
 
@@ -2343,9 +2364,6 @@ body {
     background-repeat: no-repeat;
     background-size: contain; }
 
-.course-box__item__owner--admin:before {
-  background-image: url(images/icons/icon--admin.svg); }
-
 .course-box__item__desc {
   margin-bottom: 30px;
   padding: 0 30px;
@@ -2354,7 +2372,10 @@ body {
   line-height: 20px; }
 
 .course-box__item__date {
-  display: inline-block;
+  padding-top: 5px;
+  padding-left: 30px;
   color: #999999;
   font-size: 12px;
   font-weight: 600; }
+
+/*# sourceMappingURL=main.css.map */
