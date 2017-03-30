@@ -11,9 +11,9 @@ $user-icons: 'admin', 'ghost', 'guest', 'menthor', 'student', 'teacher', 'tutor'
 $filter-icons: 'active', 'all', 'concluded', 'deactive', 'suspended';
 
 @each $icon in $filter-icons {
-  .course-box__item__title--#{$icon} {
-    &:before {
-      background-image: url('images/icons/course/icon--#{$icon}.svg');
+  .course-icon--#{$icon} {
+    &:after {
+      background-image: url('images/icons/course/icon--#{$icon}.png');
     }
   }
 }
