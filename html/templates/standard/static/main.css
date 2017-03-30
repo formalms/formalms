@@ -2211,6 +2211,21 @@
 .course-box__item__owner--tutor:before {
   background-image: url("images/icons/users/icon--tutor.svg"); }
 
+.course-box__item__title--active:before {
+  background-image: url("images/icons/course/icon--active.svg"); }
+
+.course-box__item__title--all:before {
+  background-image: url("images/icons/course/icon--all.svg"); }
+
+.course-box__item__title--concluded:before {
+  background-image: url("images/icons/course/icon--concluded.svg"); }
+
+.course-box__item__title--deactive:before {
+  background-image: url("images/icons/course/icon--deactive.svg"); }
+
+.course-box__item__title--suspended:before {
+  background-image: url("images/icons/course/icon--suspended.svg"); }
+
 .js-router--is-active {
   display: block; }
 
@@ -2377,5 +2392,3 @@ body {
   color: #999999;
   font-size: 12px;
   font-weight: 600; }
-
-/*# sourceMappingURL=main.css.map */
