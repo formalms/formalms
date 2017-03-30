@@ -1,6 +1,6 @@
 // Course Box
 //
-// This is the course box used in My Courses and Course Catalogue<br />
+// This is the course box used in My Courses<br />
 // <strong>NB: The 'style' attributes are just for this representation only, when implementing
 // be sure to delete them.</strong>
 //
@@ -46,6 +46,7 @@
   border-radius: 5px;
   font-family: $font;
   overflow: hidden;
+  transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s;
 
   &:hover {
     border: 1px solid $orange;
@@ -64,6 +65,10 @@
 .course-box__item--half {
   width: 50%;
   float: left;
+
+  &:last-child {
+    padding-right: 30px;
+  }
 }
 
 .course-box__title {
@@ -110,6 +115,7 @@
   color: $white;
   text-transform: uppercase;
   font-size: 10px;
+  transition: background-color 0.4s ease 0s;
 }
 
 .course-box__owner {
