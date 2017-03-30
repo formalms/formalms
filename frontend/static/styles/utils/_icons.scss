@@ -1,7 +1,7 @@
 $user-icons: 'admin', 'ghost', 'guest', 'menthor', 'student', 'teacher', 'tutor';
 
 @each $icon in $user-icons {
-  .course-box__item__owner--#{$icon} {
+  .course-box__owner--#{$icon} {
     &:before {
       background-image: url('images/icons/users/icon--#{$icon}.svg');
     }

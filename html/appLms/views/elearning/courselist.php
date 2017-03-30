@@ -79,17 +79,62 @@ function TruncateText($the_text, $size)
 
             <div class="clearfix" id='mia_area_<?php echo $stato_corso; ?>'>
                 <?php foreach ($courselist as $course) : ?>
-                    <div class="col-xs-12 col-sm-6 col-lg-3 course-block ">
+                    <div class="col-xs-12 col-sm-6 col-lg-3 course-block">
+
+                        <div class="course-box">
+                            <div class="course-box__item">
+                                <div class="course-box__title course-icon--active"><?php echo TruncateText($course['name'], 100); ?></div>
+                            </div>
+                            <div class="course-box__item">
+
+                                <?php if ($course['use_logo_in_courselist']) { ?>
+                                    <div class="course-box__img" style="background-image: url(<?php echo GetCourseImage($course, $path_course) ?>)">
+                                <?php } else { ?>
+                                        <div class="course-box__img">
+                                <?php } ?>
+                                    <div class="course-box__img-title">lorem ipsum</div>
+                                </div>
+                            </div>
+                            <div class="course-box__item">
+                                <div class="course-box__owner course-box__owner--admin">Amministratore</div>
+                                <div class="course-box__desc">
+                                    <?php echo TruncateText($course['description'], 150); ?>
+                                </div>
+                                <div class="course-box__item course-box__item--half">
+                                    <div class="course-box__date">
+                                        <?php echo GetCourseDay($course) ?>
+                                        <?php echo GetCourseMonth($course) ?>
+                                        <?php echo GetCourseYear($course) ?>
+                                    </div>
+                                </div>
+                                <div class="course-box__item course-box__item--half">
+                                    <?php if (DataExists($course)) { ?>
+                                    <a class="button button--disabled">
+                                       <span class="button__label">
+                                         DISABLED
+                                       </span>
+                                    </a>
+                                    <?php } else { ?>
+                                    <a class="button">
+                                       <span class="button__label">
+                                         Entra nel corso
+                                       </span>
+                                    </a>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div> <!-- -->
+
                         <div class="course-block-content completed_course_<?php echo $course['user_status']; ?>">
                             <div class="area1 course-cover">
                                 <a href="#">
                                     <?php if (DataExists($course)): ?>
                                         <div class="data_chiusura">
                                             <div class="corso_scaduto2">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-calendar  fa-stack-1x"></i>
-                                            <i class="fa fa-ban  fa-stack-2x text-danger"></i>
-                                        </span>
+                                                <span class="fa-stack fa-lg">
+                                                    <i class="fa fa-calendar  fa-stack-1x"></i>
+                                                    <i class="fa fa-ban  fa-stack-2x text-danger"></i>
+                                                </span>
                                             </div>
                                             <div class="giorno"><?php echo GetCourseDay($course) ?></div>
                                             <div class="mese"><?php echo GetCourseMonth($course) ?></div>
@@ -136,6 +181,8 @@ function TruncateText($the_text, $size)
                                     <a href='#' class='tooltips' id='livello' title='LIVELLO'>
                                         <i class="fa fa-graduation-cap" aria-hidden="true"></i></a>
                                     <?php echo $this->levels[$course['level']]; ?>
+                                    <?php echo $this->levels[$course['level']]; ?>
+
                                 </div>
                                 <p class="text-justify-paragrafo">
                                 <p class="course_support_info1">
@@ -144,7 +191,7 @@ function TruncateText($the_text, $size)
                                     <a href="#" class="tooltips" title="CATEGORIA DEL CORSO">
                                         <i class="fa fa-folder-open-o" aria-hidden="true"></i>
                                     </a>
-                                    <span class="categoria_corso_nome"> 
+                                    <span class="categoria_corso_nome">
                                         <?php echo GetCategory($course) ?>
                                     </span>
                                 </p>
