@@ -1,9 +1,19 @@
-$icons: 'admin', 'ghost', 'guest', 'menthor', 'student', 'teacher', 'tutor';
+$user-icons: 'admin', 'ghost', 'guest', 'menthor', 'student', 'teacher', 'tutor';
 
-@each $icon in $icons {
+@each $icon in $user-icons {
   .course-box__item__owner--#{$icon} {
     &:before {
       background-image: url('images/icons/users/icon--#{$icon}.svg');
+    }
+  }
+}
+
+$filter-icons: 'active', 'all', 'concluded', 'deactive', 'suspended';
+
+@each $icon in $filter-icons {
+  .course-box__item__title--#{$icon} {
+    &:before {
+      background-image: url('images/icons/course/icon--#{$icon}.svg');
     }
   }
 }
