@@ -7,19 +7,33 @@
 // Markup:
 //  <div class="col-md-3" style="width: 33%;">
 //    <div class="course-box">
-//      <div class="course-box__title">Lorem ipsum dolor sit amet</div>
-//      <div class="course-box__img">
-//        <img src="" alt="">
-//        <div class="course-box__img-title">lorem ipsum</div>
+//      <div class="course-box__item">
+//        <div class="course-box__item__title">Lorem ipsum dolor sit amet</div>
 //      </div>
-//      <div class="course-box__owner course-box__owner--admin col-md-12" style="width: 100%">Amministratore</div>
-//      <div class="course-box__desc col-md-12" style="width: 100%">
-//        Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Facilis ponatur
-//        infinito oderis obruamus. Effectices, terroribus cognosci elegans totam
-//        atilli arare p minuendas.
+//      <div class="course-box__item">
+//        <div class="course-box__item__img">
+//          <img src="" alt="">
+//          <div class="course-box__item__img-title">lorem ipsum</div>
+//        </div>
 //      </div>
-//      <div class="course-box__date">31 agosto 2016</div>
-//      <div class="button">Entra nel corso <span>>></span> </div>
+//      <div class="course-box__item">
+//        <div class="course-box__item__owner course-box__item__owner--admin">Amministratore</div>
+//        <div class="course-box__item__desc">
+//          Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Facilis ponatur
+//          infinito oderis obruamus. Effectices, terroribus cognosci elegans totam
+//          atilli arare p minuendas.
+//        </div>
+//        <div class="course-box__item course-box__item--half">
+//          <div class="course-box__item__date">31 agosto 2016</div>
+//        </div>
+//        <div class="course-box__item course-box__item--half">
+//          <a class="button">
+//            <span>
+//              Entra nel corso >>
+//            </span>
+//          </a>
+//        </div>
+//      </div>
 //    </div>
 //  </div>
 //
@@ -31,6 +45,7 @@
   border: 1px solid $gray-4;
   border-radius: 5px;
   font-family: $font;
+  overflow: hidden;
 
   &:hover {
     border: 1px solid $orange;
@@ -42,7 +57,16 @@
   }
 }
 
-.course-box__title {
+.course-box__item {
+  width: 100%;
+}
+
+.course-box__item--half {
+  width: 50%;
+  float: left;
+}
+
+.course-box__item__title {
   position: relative;
   width: 100%;
   height: 70px;
@@ -55,7 +79,7 @@
   }
 }
 
-.course-box__img {
+.course-box__item__img {
   position: relative;
   height: 140px;
   background: {
@@ -66,7 +90,7 @@
   };
 }
 
-.course-box__img-title {
+.course-box__item__img-title {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -78,9 +102,13 @@
   font-size: 10px;
 }
 
-.course-box__owner {
+.course-box__item__owner {
   position: relative;
-  padding: 30px 30px 15px 65px;
+  padding: {
+    top: 30px;
+    bottom: 15px;
+    left: 65px;
+  };
   font-size: 10px;
   text-transform: uppercase;
   color: $gray-2;
@@ -88,10 +116,25 @@
   &:before {
     content: '';
     position: absolute;
+    left: 30px;
+    bottom: 6px;
+    width: 30px;
+    height: 30px;
+    background: {
+      position: center;
+      repeat: no-repeat;
+      size: contain;
+    };
   }
 }
 
-.course-box__desc {
+.course-box__item__owner--admin {
+  &:before {
+    background-image: url(images/icons/icon--admin.svg);
+  }
+}
+
+.course-box__item__desc {
   margin-bottom: 30px;
   padding: 0 30px;
   color: $gray-1;
@@ -99,12 +142,8 @@
   line-height: 20px;
 }
 
-.course-box__date {
-  float: left;
-  padding: {
-    left: 30px;
-    bottom: 30px;
-  };
+.course-box__item__date {
+  display: inline-block;
   color: $gray-2;
   font-size: 12px;
   font-weight: 600;
