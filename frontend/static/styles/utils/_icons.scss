@@ -1,0 +1,26 @@
+$icons: 'admin';
+
+@each $icon in $icons {
+  .svgicon--#{$icon} {
+    display: inline-block;
+    width: 90px;
+    height: 90px;
+    background-image: url(../images/icons/#{$icon}.svg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin-bottom: em(16,16);
+    transition: all .4s linear 0s;
+
+    .no-touch & {
+      &.over:hover {
+        transition: all .4s linear 0s;
+        background-image: url(../images/icons/over/#{$icon}.svg);
+      }
+    }
+    &.tapped {
+      transition: all .4s linear 0s;
+      background-image: url(../images/icons/over/#{$icon}.svg);
+    }
+  }
+}

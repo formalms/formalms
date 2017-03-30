@@ -12,18 +12,21 @@
 // </a>
 //
 // Style guide: 2.1
-//.button {
-//  display: inline-block;
-//  width: 100%;
-//  height: auto;
-//  text-align: center;
-//  text-decoration: none;
-//  color: rgba(255, 255, 255, 1);
-//  padding: 4px 14px 8px;
-//  background-color: $button-bg;
-//  font-family: $font;
-//  border: none;
-//  box-shadow: none;
+.button {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 1);
+  padding: 8px 14px 8px;
+  background-color: $dark-orange;
+  font-family: $font;
+  font-size: 9px;
+  border-radius: 5px;
+  box-shadow: none;
+  cursor: pointer;
 
   // Button default:hover
   //
@@ -33,12 +36,12 @@
   // </a>
   //
   // Style guide: 2.1.1
-//  .no-touch & {
-//    &:hover {
-//      background-color: $button-bg--hover;
-//    }
-//  }
-//}
+  .no-touch & {
+    &:hover {
+      background-color: $orange;
+    }
+  }
+}
 
 // Button disabled
 //
@@ -48,13 +51,13 @@
 // </a>
 //
 // Style guide: 2.2
-//.button--disabled {
-//  pointer-events: none;
-//  background-color: $button-bg--disabled;
-//}
-//
-//.button__label {
-//  color: inherit;
-//  font: inherit;
-//  text-decoration: inherit;
-//}
+.button--disabled {
+  pointer-events: none;
+  background-color: $gray-3;
+}
+
+.button__label {
+  color: inherit;
+  font: inherit;
+  text-decoration: inherit;
+}
