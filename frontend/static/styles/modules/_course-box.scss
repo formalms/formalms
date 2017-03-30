@@ -128,12 +128,6 @@
   }
 }
 
-.course-box__item__owner--admin {
-  &:before {
-    background-image: url(images/icons/icon--admin.svg);
-  }
-}
-
 .course-box__item__desc {
   margin-bottom: 30px;
   padding: 0 30px;
@@ -143,7 +137,10 @@
 }
 
 .course-box__item__date {
-  display: inline-block;
+  padding: {
+    top: 5px;
+    left: 30px;
+  };
   color: $gray-2;
   font-size: 12px;
   font-weight: 600;
