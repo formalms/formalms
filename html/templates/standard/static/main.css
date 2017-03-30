@@ -2191,25 +2191,25 @@
   clip: auto; }
 
 .course-box__item__owner--admin:before {
-  background-image: url(images/icons/icon--admin.svg); }
+  background-image: url("images/icons/users/icon--admin.svg"); }
 
 .course-box__item__owner--ghost:before {
-  background-image: url(images/icons/icon--ghost.svg); }
+  background-image: url("images/icons/users/icon--ghost.svg"); }
 
 .course-box__item__owner--guest:before {
-  background-image: url(images/icons/icon--guest.svg); }
+  background-image: url("images/icons/users/icon--guest.svg"); }
 
 .course-box__item__owner--menthor:before {
-  background-image: url(images/icons/icon--menthor.svg); }
+  background-image: url("images/icons/users/icon--menthor.svg"); }
 
 .course-box__item__owner--student:before {
-  background-image: url(images/icons/icon--student.svg); }
+  background-image: url("images/icons/users/icon--student.svg"); }
 
 .course-box__item__owner--teacher:before {
-  background-image: url(images/icons/icon--teacher.svg); }
+  background-image: url("images/icons/users/icon--teacher.svg"); }
 
 .course-box__item__owner--tutor:before {
-  background-image: url(images/icons/icon--tutor.svg); }
+  background-image: url("images/icons/users/icon--tutor.svg"); }
 
 .js-router--is-active {
   display: block; }

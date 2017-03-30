@@ -62,7 +62,7 @@
     "autoprefixer": "./node_modules/postcss-cli/bin/postcss --use autoprefixer --autoprefixer.browsers 'last 12 versions' -o ../html/templates/standard/static/main.css ../html/templates/standard/static/main.css",
     "cleancss": "./node_modules/clean-css/bin/cleancss -o ../html/templates/standard/static/main.css ../html/templates/standard/static/main.css",
     "copy-fonts": "./node_modules/copyfiles/copyfiles -u 1 static/fonts/* ../html/templates/standard/static/",
-    "copy-images": "./node_modules/copyfiles/copyfiles -u 1 static/images/*.* static/images/**/*.* ../html/templates/standard/static/",
+    "copy-images": "./node_modules/copyfiles/copyfiles -u 1 static/images/*.* static/images/**/*.* static/images/**/**/*.* ../html/templates/standard/static/",
     "copy-pdf": "./node_modules/copyfiles/copyfiles -u 1 static/pdf/* ../html/templates/standard/static/",
     "copy-videos": "./node_modules/copyfiles/copyfiles -u 1 static/videos/* ../html/templates/standard/static/",
     "css": "./node_modules/node-sass/bin/node-sass static/styles/main.scss ../html/templates/standard/static/main.css",
