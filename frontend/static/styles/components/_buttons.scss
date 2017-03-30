@@ -19,7 +19,7 @@
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 1);
+  color: $white;
   padding: 8px 14px 8px;
   background-color: $dark-orange;
   font-family: $font;
@@ -36,10 +36,9 @@
   // </a>
   //
   // Style guide: 2.1.1
-  .no-touch & {
-    &:hover {
-      background-color: $orange;
-    }
+  &:hover {
+    background-color: $orange;
+    color: $white;
   }
 }
 

@@ -92,7 +92,9 @@ function TruncateText($the_text, $size)
                                 <?php } else { ?>
                                         <div class="course-box__img">
                                 <?php } ?>
-                                    <div class="course-box__img-title">lorem ipsum</div>
+                                    <div class="course-box__img-title">
+                                        <?php echo GetCategory($course) ?>
+                                    </div>
                                 </div>
                             </div>
                             <div class="course-box__item">

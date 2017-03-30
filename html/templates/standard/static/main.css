@@ -2262,8 +2262,9 @@ h1, h2, h3, h4, h5, h6, p {
   border-radius: 5px;
   box-shadow: none;
   cursor: pointer; }
-  .no-touch .button:hover {
-    background-color: #ff6c00; }
+  .button:hover {
+    background-color: #ff6c00;
+    color: white; }
 
 .button--disabled {
   pointer-events: none;
