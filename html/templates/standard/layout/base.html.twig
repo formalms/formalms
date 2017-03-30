@@ -63,20 +63,16 @@
     {% block stylesheet %}
     {% endblock %}
 
-    <!-- Restyling -->
-    <link rel="stylesheet" type="text/css" href="{{ layout_path }}static/main.css">
-    <script type="text/javascript" href="{{ layout_path }}static/main.js"></script>
-
     <!-- Custom Javascripts area -->
 
     <script type="text/javascript" src="{{ layout_path }}script/tabnav.js"></script>
 
   {% block javascript %}
     {% endblock %}
-    
 
-
-    
+    <!-- Restyling -->
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}static/main.css">
+    <script type="text/javascript" href="{{ layout_path }}static/main.js"></script>
 </head>
 <body class="yui-skin-docebo yui-skin-sam">
     <div class="container-fluid">      
