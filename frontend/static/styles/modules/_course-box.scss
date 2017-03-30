@@ -28,8 +28,8 @@
 //        </div>
 //        <div class="course-box__item course-box__item--half">
 //          <a class="button">
-//            <span>
-//              Entra nel corso >>
+//            <span class="button__label">
+//              Entra nel corso
 //            </span>
 //          </a>
 //        </div>
@@ -51,7 +51,7 @@
     border: 1px solid $orange;
     box-shadow: $gray-3 0px 5px 20px 0px;
 
-    .course-box__item\__img-title {
+    .course-box__item__img-title {
       background-color: rgba(255, 108, 0, 0.5);
     }
   }
