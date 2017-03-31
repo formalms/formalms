@@ -11,6 +11,19 @@ html/files/**
 !html/files/appLms/certificate/certificate_sample.jpg
 !html/files/appLms/label/label_image.png
 
+# Sezione Plugin
+html/plugins/**
+!html/plugins/report_course
+!html/plugins/report_aggregate
+!html/plugins/report_user
+# Authentication
+!html/plugins/FacebookAuth
+!html/plugins/FormaAuth
+!html/plugins/GoogleAuth
+!html/plugins/LinkedinAuth
+!html/plugins/TwitterAuth
+
+
 # Sezione ??? a cosa serve?
 !*/
 
