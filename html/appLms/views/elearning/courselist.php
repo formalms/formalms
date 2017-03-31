@@ -79,7 +79,7 @@ function TruncateText($the_text, $size)
 
             <div class="clearfix" id='mia_area_<?php echo $stato_corso; ?>'>
                 <?php foreach ($courselist as $course) : ?>
-                    <div class="col-xs-12 col-sm-6 col-lg-4 course-block">
+                    <div class="col-xs-10 offset-xs-1 col-sm-6 col-lg-4 course-block">
 
                         <div class="course-box"> <!-- NEW BLOCK -->
                             <div class="course-box__item">
@@ -128,7 +128,7 @@ function TruncateText($the_text, $size)
                                     <?php } ?>
                                 </div>
                             </div>
-                        </div> <!-- -->
+                        </div> <!-- END NEW BLOCK -->
 
                         <div class="course-block-content completed_course_<?php echo $course['user_status']; ?>">
                             <div class="area1 course-cover">
