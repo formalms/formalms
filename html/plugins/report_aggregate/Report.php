@@ -788,7 +788,7 @@ class Report extends \ReportPlugin{
         }
         $ref =& $_SESSION['report_tempdata']['columns_filter'];
 
-        $tree = new CourseCategoryTree('course_categories_selector', false, false, _TREE_COLUMNS_TYPE_RADIO);
+        $tree = new \CourseCategoryTree('course_categories_selector', false, false, _TREE_COLUMNS_TYPE_RADIO);
         $tree->init();
 
         if (isset($_POST['update_tempdata'])) {
