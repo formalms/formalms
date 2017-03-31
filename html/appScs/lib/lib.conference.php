@@ -15,12 +15,5 @@
  * @author Davide Anceschi
  */
 
-if(Get::cfg('enable_plugins', false)) {
+
 require_once($GLOBALS['where_scs'].'/lib/lib.conference.1.3.plugins.php');
-}
-else{
-require_once($GLOBALS['where_scs'].'/lib/lib.conference.1.2.php');
-}
-
-
-?>
