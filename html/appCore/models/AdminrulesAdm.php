@@ -330,7 +330,11 @@ class AdminrulesAdm extends Model
 								$mvc_name = ucwords($tmp[1]);
 								$perm_path = '/lms/admin/'.strtolower($mvc_name).'/';
 
-								require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                                                if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_customscripts', false) == true ){
+                                                                        require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                                                } else {
+                                                                        require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                                                }
 
 								$class_name = $mvc_name.'Alms';
 								$tmp_class = new $class_name();
