@@ -1,11 +1,17 @@
 // Course Box
 //
-// This is the course box used in My Courses<br />
+// These are the restyled course boxes<br />
+//
+// Style guide: 3
+
+// Course Box - My courses
+//
+// This is the restyled course box used in My Courses<br />
 // <strong>NB: The 'style' attributes are just for this representation only, when implementing
 // be sure to delete them.</strong>
 //
 // Markup:
-//  <div class="col-md-3" style="width: 33%;">
+//  <div style="width: 33%;">
 //    <div class="course-box">
 //      <div class="course-box__item">
 //        <div class="course-box__title course-icon--active">Lorem ipsum dolor sit amet</div>
@@ -37,7 +43,49 @@
 //    </div>
 //  </div>
 //
-// Style guide: 3
+// Style guide: 3.1
+
+// Course Box - Course Catalogue
+//
+// This is the restyled course box used in Course Catalogue<br />
+// <strong>NB: The 'style' attributes are just for this representation only, when implementing
+// be sure to delete them.</strong>
+//
+// Markup:
+//  <div style="width: 33%;">
+//    <div class="course-box">
+//      <div class="course-box__item">
+//        <div class="course-box__title course-icon--active">Lorem ipsum dolor sit amet</div>
+//      </div>
+//      <div class="course-box__item">
+//        <div class="course-box__img">
+//          <img src="" alt="">
+//          <div class="course-box__img-title">lorem ipsum</div>
+//        </div>
+//      </div>
+//      <div class="course-box__item">
+//        <div class="course-box__owner course-box__owner--admin">Amministratore</div>
+//        <div class="course-box__desc">
+//          Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Facilis ponatur
+//          infinito oderis obruamus. Effectices, terroribus cognosci elegans totam
+//          atilli arare p minuendas.
+//        </div>
+//        <div class="course-box__item course-box__item--half">
+//          <div class="course-box__date">31 agosto 2016</div>
+//        </div>
+//        <div class="course-box__item course-box__item--half">
+//          <a class="button">
+//            <span class="button__label">
+//              Entra nel corso
+//            </span>
+//          </a>
+//        </div>
+//      </div>
+//    </div>
+//  </div>
+//
+// Style guide: 3.2
+
 .course-box {
   width: 100%;
   min-height: 330px;
