@@ -304,7 +304,6 @@ class Report extends \ReportPlugin{
 
     function _get_courses_query($type = 'html', $report_data = NULL, $other = '') {
         require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
-        require_once(dirname(__FILE__).'/report_tableprinter.php');
 
         if ($report_data==NULL) $ref =& $_SESSION['report_tempdata']; else $ref =& $report_data;
 
