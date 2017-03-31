@@ -13,7 +13,7 @@
 
 include_once(dirname(__FILE__)."/PluginmanagerAdm.php");
 
-class PluginConferenceAdm extends PluginAdm{
+class PluginConferenceAdm extends PluginManagerAdm {
 
 
 	public function  __construct() {

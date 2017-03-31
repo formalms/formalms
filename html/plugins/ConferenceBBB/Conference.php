@@ -6,9 +6,12 @@
  * Time: 10.26
  */
 namespace Plugin\ConferenceBBB;
+
 use Docebo;
 use Get;
 use stdClass;
+use BigBlueButton;
+
 define("_BBB_STREAM_TIMEOUT", 30);
 define("_BBB_AUTH_CODE", 'X-BBB-Auth-Token');
 define("_BBB_AUTH_DATA", 'bbb_login_data');
