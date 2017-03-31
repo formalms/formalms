@@ -14,7 +14,7 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 \ ======================================================================== */
 require_once(_base_.'/lib/lib.mailer.php');
 require_once(_lms_.'/lib/lib.course.php');
-
+require_once(_lms_.'/admin/modules/report/report_tableprinter.php');
 
 define('_RA_CATEGORY_COURSES', 'courses');
 define('_RA_CATEGORY_COURSECATS', 'coursecategories');
@@ -840,7 +840,7 @@ class Report extends \ReportPlugin{
 
     function _get_coursecategories_query($type = 'html', $report_data = NULL, $other = '') {
         require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
-        require_once(dirname(__FILE__).'/report_tableprinter.php');
+
 
         if ($report_data==NULL) $ref =& $_SESSION['report_tempdata']; else $ref =& $report_data;
 
@@ -1291,7 +1291,6 @@ class Report extends \ReportPlugin{
 
     function _get_time_query($type = 'html', $report_data = NULL, $other = '') {
         require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
-        require_once(dirname(__FILE__).'/report_tableprinter.php');
 
         if ($report_data==NULL) $ref =& $_SESSION['report_tempdata']; else $ref =& $report_data;
 
@@ -1665,7 +1664,7 @@ class Report extends \ReportPlugin{
 
 
     function _get_communications_query($type = 'html', $report_data = NULL, $other = '') {
-        require_once(dirname(__FILE__).'/report_tableprinter.php');
+
         if ($report_data==NULL) $ref =& $_SESSION['report_tempdata']; else $ref =& $report_data;
 
         $_ERR_NOUSER = Lang::t('_EMPTY_SELECTION', 'report');
@@ -1987,7 +1986,7 @@ class Report extends \ReportPlugin{
 
 
     function _get_games_query($type = 'html', $report_data = NULL, $other = '') {
-        require_once(dirname(__FILE__).'/report_tableprinter.php');
+
         if ($report_data==NULL) $ref =& $_SESSION['report_tempdata']; else $ref =& $report_data;
 
         $_ERR_NOUSER = Lang::t('_EMPTY_SELECTION', 'report');
