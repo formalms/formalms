@@ -455,14 +455,14 @@ class Report extends \ReportPlugin{
                 $orgchart_labels = array();
                 $query = "SELECT * FROM ".$fw."_org_chart WHERE lang_code='".getLanguage()."'";
                 $res = sql_query($query);
-                while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
                     $orgchart_labels[$row['id_dir']] = $row['translation'];
                 }
 
                 $labels = array();
                 $query = "SELECT * FROM ".$fw."_group WHERE (hidden='false' OR groupid LIKE '/oc_%' OR groupid LIKE '/ocd_%') AND type='free'";
                 $res = sql_query($query);
-                while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
                     if ($row['hidden']=='false') {
                         $labels[$row['idst']] = $acl->relativeId($row['groupid']);
                     } else {
@@ -528,7 +528,7 @@ class Report extends \ReportPlugin{
                         $res = sql_query($query);
 
                         //$tot_completed = 0;
-                        while ($row = mysql_fetch_assoc($res) ) {
+						while ($row = sql_fetch_assoc($res) ) {
                             if (!isset($course_stats[$row['idCourse']][$group_id])) {
                                 $course_stats[$row['idCourse']][$group_id] = array(
                                     'completed' => 0,
@@ -614,26 +614,55 @@ class Report extends \ReportPlugin{
 
             case 'users': {
 
-                $temp = array();
-                // resolve the user selection
-                $users 	=& $acl->getAllUsersFromIdst($selection);
-                if ( $userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) { $users = array_intersect($users, $admin_users); }
-                if (count($users)<=0) {
-                    $html .= '<p>'.$this->lang->def('_EMPTY_SELECTION').'</p>';
-                    break;
+
+
+                //** LRZ - #8583
+                if($sel_all==1){
+                     $users =& $acl->getAllUsersIdst();
+
+                    require_once(_base_.'/lib/lib.userselector.php');
+                    require_once(_base_.'/lib/lib.preference.php');
+
+                    $acl_man = new \DoceboACLManager();
+                    $adminManager = new \AdminPreference();
+
+                    $admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+                    $admin_users = $acl_man->getAllUsersFromSelection($admin_users);
+                    $users = array_intersect($users, $admin_users);
+                    unset($admin_users);
+                     //***
+
+
+                }   else{
+
+                    $temp = array();
+                    // resolve the user selection
+                    $users 	=& $acl->getAllUsersFromIdst($selection);
+                    if ( $userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) { $users = array_intersect($users, $admin_users); }
+                    if (count($users)<=0) {
+                        $html .= '<p>'.$this->lang->def('_EMPTY_SELECTION').'</p>';
+                        break;
+                    }
+
                 }
+
 
                 $query = "SELECT cu.idUser, cu.idCourse, cu.status, u.userId, c.code, u.firstname, u.lastname ".
                     " FROM ( ".$lms."_courseuser as cu ".
                     " JOIN  ".$lms."_course as c ON ( cu.idCourse = c.idCourse) ) ".
                     " JOIN ".$fw."_user as u ON (cu.idUser = u.idst)  ".
                     " WHERE 1 ".
-                    " AND cu.idCourse IN (".implode(",", $courses).") ".
-                    ($sel_all ? "" : " AND idUser IN (".implode(",", $users).")")."";
+					" AND cu.idCourse IN (".implode(",", $courses).") ";
+
+                    //($sel_all ? "" : " AND idUser IN (".implode(",", $users).")")."";
+                  //** LRZ
+                  if($sel_all==1) $query = $query." AND idUser IN (".implode(",", $users).")";
+                  if($sel_all==0) $query = $query." AND idUser IN (".implode(",", $users).")";
+
 
                 $res = sql_query($query);
 
-                while ($row = mysql_fetch_array($res) ) {
+				while ($row = sql_fetch_array($res) ) {
 
                     if(!isset($temp[$row['idUser']])) {
                         $temp[$row['idUser']] = array (
@@ -878,7 +907,7 @@ class Report extends \ReportPlugin{
         $res = sql_query("SELECT * FROM ".$lms."_category ");
         $categories_names = array();
         $categories_limit = array();
-        while ($row = mysql_fetch_assoc($res)) {
+		while ($row = sql_fetch_assoc($res)) {
             $categories_names[ $row['idCategory'] ] = ($row['path']!='/root/' ? end( explode("/", $row['path'])) : Lang::t('_CATEGORY', 'admin_course_management', 'lms'));// Lang::t('_ROOT'));
             $categories_paths[ $row['idCategory'] ] = ($row['path']!='/root/' ? substr($row['path'], 5, (strlen($row['path'])-5)) : Lang::t('_CATEGORY', 'admin_course_management'));// Lang::t('_ROOT'));
             $categories_limit[ $row['idCategory'] ] = array($row['iLeft'], $row['iRight']);
@@ -990,7 +1019,7 @@ class Report extends \ReportPlugin{
                     $temp = array();
                     $total_1 = 0;
                     $total_2 = 0;
-                    while ($row = mysql_fetch_assoc($res)) {
+					while ($row = sql_fetch_assoc($res)) {
                         $iduser = $row['idUser'];
 
                         if (!isset($temp[ $iduser ]))
@@ -1070,7 +1099,7 @@ class Report extends \ReportPlugin{
                 $orgchart_labels = array();
                 $query = "SELECT * FROM ".$fw."_org_chart WHERE lang_code='".getLanguage()."'";
                 $res = sql_query($query);
-                while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
                     $orgchart_labels[$row['id_dir']] = $row['translation'];
                 }
 
@@ -1078,7 +1107,7 @@ class Report extends \ReportPlugin{
                 //$query = "SELECT * FROM ".$fw."_group WHERE (hidden='false' OR groupid LIKE '/oc_%' OR groupid LIKE '/ocd_%') AND type='free'";
                 $query = "SELECT * FROM ".$fw."_group WHERE groupid LIKE '/oc\_%' OR groupid LIKE '/ocd\_%' OR hidden = 'false' ";
                 $res = sql_query($query);
-                while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
                     if ($row['hidden']=='false') {
                         $labels[$row['idst']] = $acl->relativeId($row['groupid']);
                     } else {
@@ -1136,7 +1165,7 @@ class Report extends \ReportPlugin{
                     $temp = array();
                     $total_1 = 0;
                     $total_2 = 0;
-                    while ($row = mysql_fetch_assoc($res)) {
+					while ($row = sql_fetch_assoc($res)) {
                         $id_group = $solved_groups[ $row['idGroup'] ];
 
                         if (!isset($temp[ $id_group ]))
@@ -1351,7 +1380,7 @@ class Report extends \ReportPlugin{
 
 
                 $res = sql_query($query);
-                while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
                     //$data[ $row['idUser'] ][ $row['yearComplete'] ] = $row['complete'];
                     $idUser = $row['idUser'];
                     $year = $row['yearComplete'];
@@ -1362,7 +1391,7 @@ class Report extends \ReportPlugin{
                 $usernames = array();
                 $query = "SELECT idst, userid FROM ".$fw."_user WHERE idst IN (".implode(",", $users_list).")";
                 $res = sql_query($query);
-                while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
                     $usernames[ $row['idst'] ] = $acl->relativeId( $row['userid'] );
                 }
 
@@ -1442,7 +1471,7 @@ class Report extends \ReportPlugin{
                 $orgchart_labels = array();
                 $query = "SELECT * FROM ".$fw."_org_chart WHERE lang_code='".getLanguage()."'";
                 $res = sql_query($query);
-                while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
                     $orgchart_labels[$row['id_dir']] = $row['translation'];
                 }
 
@@ -1450,7 +1479,7 @@ class Report extends \ReportPlugin{
                 //$query = "SELECT * FROM ".$fw."_group WHERE (hidden='false' OR groupid LIKE '/oc_%' OR groupid LIKE '/ocd_%') AND type='free'";
                 $query = "SELECT * FROM ".$fw."_group WHERE groupid LIKE '/oc\_%' OR groupid LIKE '/ocd\_%' OR hidden = 'false' ";
                 $res = sql_query($query);
-                while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
                     if ($row['hidden']=='false') {
                         $labels[$row['idst']] = $acl->relativeId($row['groupid']);
                     } else {
@@ -1484,7 +1513,7 @@ class Report extends \ReportPlugin{
 
                 $data = array();
                 $res = sql_query($query);
-                while ($row = mysql_fetch_assoc($res)) {
+				while ($row = sql_fetch_assoc($res)) {
                     $idGroup = $solved_groups[ $row['idGroup'] ];
                     $year = $row['yearComplete'];
                     $month = $row['monthComplete'];
