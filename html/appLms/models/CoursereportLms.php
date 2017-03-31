@@ -129,9 +129,31 @@ class CoursereportLms extends Model
             . " WHERE id_course = '" . $this->idCourse . "'";
         list($tot_report) = sql_fetch_row(sql_query($query_tot_report));
 
+        if ($tot_report == 1) {
+
+            $query_final_tot_report = "SELECT COUNT(*) "
+                . " FROM " . $GLOBALS['prefix_lms'] . "_coursereport "
+                . " WHERE id_course = '" . $this->idCourse . "' AND source_of = '" . SELF::SOURCE_OF_FINAL_VOTE . "'";
+
+            list($final_score_report) = sql_fetch_row(sql_query($query_final_tot_report));
+
+            if ($final_score_report == 1) {
+
+                $query_remove_final_score = "DELETE FROM " . $GLOBALS['prefix_lms'] . "_coursereport "
+                    . " WHERE id_course = '" . $this->idCourse . "' AND source_of = '" . SELF::SOURCE_OF_FINAL_VOTE . "'";
+
+                sql_query($query_remove_final_score);
+            }
+
+            $query_tot_report = "SELECT COUNT(*) "
+                . " FROM " . $GLOBALS['prefix_lms'] . "_coursereport "
+                . " WHERE id_course = '" . $this->idCourse . "'";
+            list($tot_report) = sql_fetch_row(sql_query($query_tot_report));
+        }
+
         $query_tests = "SELECT id_report, id_source "
             . " FROM " . $GLOBALS['prefix_lms'] . "_coursereport "
-            . " WHERE id_course = '" . $this->idCourse . "' AND source_of = '". SELF::SOURCE_OF_TEST."'";
+            . " WHERE id_course = '" . $this->idCourse . "' AND source_of = '" . SELF::SOURCE_OF_TEST . "'";
 
         $re_tests = sql_query($query_tests);
 
@@ -143,8 +165,7 @@ class CoursereportLms extends Model
         // XXX: Update if needed
         if ($tot_report == 0) {
             $report_man->initializeCourseReport($org_tests);
-        }
-        else {
+        } else {
 
             if (is_array($included_test)) {
                 $test_to_add = array_diff($org_tests, $included_test);
@@ -237,7 +258,7 @@ class CoursereportLms extends Model
             return $result;
         }
 
-        if (count($this->courseReports) == 0){
+        if (count($this->courseReports) == 0) {
             $this->grabCourseReports();
         }
 
@@ -250,7 +271,7 @@ class CoursereportLms extends Model
 
                     if (in_array($testObj->getObjectType() . "_" . $info_report->getIdSource(), $id_sources)) {
                         $result[] = $info_report;
-                        if (count($result) == count($id_sources)){
+                        if (count($result) == count($id_sources)) {
                             return $result;
                         }
                     }
@@ -263,7 +284,7 @@ class CoursereportLms extends Model
                     if (in_array($info_report->getSourceOf() . "_" . $scormItem->getIdSource(), $id_sources)) {
 
                         $result[] = $info_report;
-                        if (count($result) == count($id_sources)){
+                        if (count($result) == count($id_sources)) {
                             return $result;
                         }
                     }
@@ -273,7 +294,7 @@ class CoursereportLms extends Model
 
                     if (in_array($info_report->getSourceOf() . "_" . $info_report->getIdSource(), $id_sources)) {
                         $result[] = $info_report;
-                        if (count($result) == count($id_sources)){
+                        if (count($result) == count($id_sources)) {
                             return $result;
                         }
                     }
@@ -315,7 +336,7 @@ class CoursereportLms extends Model
 
         $query_report = "SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
 		FROM " . $GLOBALS['prefix_lms'] . "_coursereport
-		WHERE id_course = '" . $idCourse . "' AND source_of = '". SELF::SOURCE_OF_FINAL_VOTE ."' AND id_source = '0'";
+		WHERE id_course = '" . $idCourse . "' AND source_of = '" . SELF::SOURCE_OF_FINAL_VOTE . "' AND id_source = '0'";
 
         $re_report = sql_query($query_report);
 
