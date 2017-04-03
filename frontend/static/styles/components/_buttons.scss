@@ -29,21 +29,23 @@
   cursor: pointer;
   transition: background-color 0.4s ease 0s;
 
-  // Button default:hover
-  //
-  // Markup:
-  // <a class="button" href="#">
-  //  <span class="button__label">button</span>
-  // </a>
-  //
-  // Style guide: 2.1.1
+  @include breakpoint($tablet) {
+    min-height: 40px;
+  }
+}
+
+// Button orange:hover
+//
+// Markup:
+// <a class="button button--orange-hover" href="#">
+//  <span class="button__label">button</span>
+// </a>
+//
+// Style guide: 2.1.1
+.button--orange-hover {
   &:hover {
     background-color: $orange;
     color: $white;
-  }
-
-  @include breakpoint($tablet) {
-    min-height: 40px;
   }
 }
 
@@ -56,6 +58,47 @@
 //
 // Style guide: 2.2
 .button--disabled {
+  pointer-events: none;
+  background-color: $white;
+  border: 2px solid $gray-3;
+  color: $gray-3;
+  
+  .button__label {
+    &:before {
+      content: '\f023';
+      font-family: $icon;
+      color: $gray-2;
+      padding-right: 5px;
+    }
+
+    &:after {
+      display: none;
+    }
+  }
+}
+
+// Green Button
+//
+// Markup:
+// <a class="button button--green" href="#">
+//  <span class="button__label">button</span>
+// </a>
+//
+// Style guide: 2.3
+.button--green {
+  pointer-events: none;
+  background-color: $green;
+}
+
+// Gray Button
+//
+// Markup:
+// <a class="button button--gray" href="#">
+//  <span class="button__label">button</span>
+// </a>
+//
+// Style guide: 2.4
+.button--gray {
   pointer-events: none;
   background-color: $gray-3;
 }
