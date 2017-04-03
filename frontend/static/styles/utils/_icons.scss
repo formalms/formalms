@@ -17,3 +17,13 @@ $filter-icons: 'active', 'all', 'concluded', 'deactive', 'suspended';
     }
   }
 }
+
+$calendar-icons: 'check', 'gray-cross', 'green-cross';
+
+@each $icon in $calendar-icons {
+  .calendar-icon--#{$icon} {
+    &:before {
+      background-image: url('images/icons/calendar/icon--#{$icon}.svg');
+    }
+  }
+}
