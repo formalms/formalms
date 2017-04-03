@@ -68,13 +68,21 @@ copy and rename `/test/behat/behat_config.yml.dist` and change `base_url` to you
 
 #### LMS  
 * UserListEvent
-  * Nucifora
+  * Dispatched in user export of event
+  * Used from UserDataExport Plugin
+  * Event object contains Event id and Lang.
 * TestCompletedEvent  
-  * Nucifora
+  * Dispatched when a test status is completed
+  * Used from Test 360 plugin to send message to user.
+  * Event object contains object_test, user Id and ACL manager instance.
 * TestUpdateModalityEvent
-  * Nucifora
+  * Dispatched when UpdateModality of test il called.
+  * Used from Test 360 Plugin to save more configuration showed.
+  * Event object contains POST variables passed in action.
 * TestCousereportEvent
-  * Nucifora
+  * Dispatched when cousereport overview is opened
+  * Used from Test360 Plugin to override chartlink endpoint
+  * Event object contains an Learning_Test object.
 * TestConfigurationTabsRenderEvent
   * Dispatched when the edit page of a Test object is opened.
   * Event object contains an array of the tabs rendered (key is the name of the tab and value is the html). Useful to hide or add tabs.
@@ -82,7 +90,9 @@ copy and rename `/test/behat/behat_config.yml.dist` and change `base_url` to you
   * Dispatched when the list of the Test types are requested. 
   * Event object contains an array of the Test types. Useful when a new kind of Test LO is added to the platform.
 * TestConfigurationMethodOfUseRenderEvent
-  * Nucifora
+  * Dispatched when Mode of use of test is Showed.
+  * User From Test360 to add more configurations for test.
+  * Event object contains Learning_Test object and Lang.
 * TestCreateEvent
   * Dispatched when a new Learning_Test object is created.
   * Event object contains the brand new Learning_Test object.
