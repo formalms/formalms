@@ -73,11 +73,11 @@ copy and rename `/test/behat/behat_config.yml.dist` and change `base_url` to you
   * Event object contains Event id and Lang.
 * TestCompletedEvent  
   * Dispatched when a test status is completed
-  * Used from Test 360 plugin to send message to user.
+  * Used from Test360 plugin to send message to user.
   * Event object contains object_test, user Id and ACL manager instance.
 * TestUpdateModalityEvent
   * Dispatched when UpdateModality of test il called.
-  * Used from Test 360 Plugin to save more configuration showed.
+  * Used from Test360 Plugin to save more configuration showed.
   * Event object contains POST variables passed in action.
 * TestCousereportEvent
   * Dispatched when cousereport overview is opened
@@ -91,7 +91,7 @@ copy and rename `/test/behat/behat_config.yml.dist` and change `base_url` to you
   * Event object contains an array of the Test types. Useful when a new kind of Test LO is added to the platform.
 * TestConfigurationMethodOfUseRenderEvent
   * Dispatched when Mode of use of test is Showed.
-  * User From Test360 to add more configurations for test.
+  * Used from Test360 to add more configurations for test.
   * Event object contains Learning_Test object and Lang.
 * TestCreateEvent
   * Dispatched when a new Learning_Test object is created.
