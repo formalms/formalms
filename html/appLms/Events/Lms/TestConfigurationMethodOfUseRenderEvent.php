@@ -58,9 +58,9 @@ class TestConfigurationMethodOfUseRenderEvent extends Event
         return $this->formElements;
     }
 
-    public function addFormElement($formElements)
+    public function addFormElement($formElement)
     {
-        $this->formElements = $formElements;
+        $this->formElements[] = $formElement;
     }
 
     public function getElementString()
