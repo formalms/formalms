@@ -2272,14 +2272,32 @@ h1, h2, h3, h4, h5, h6, p {
   box-shadow: none;
   cursor: pointer;
   transition: background-color 0.4s ease 0s; }
-  .button:hover {
-    background-color: #ff6c00;
-    color: white; }
   @media (min-width: 768px) {
     .button {
       min-height: 40px; } }
 
+.button--orange-hover:hover {
+  background-color: #ff6c00;
+  color: white; }
+
 .button--disabled {
+  pointer-events: none;
+  background-color: white;
+  border: 2px solid #c2c2c2;
+  color: #c2c2c2; }
+  .button--disabled .button__label:before {
+    content: '\f023';
+    font-family: "FontAwesome";
+    color: #999999;
+    padding-right: 5px; }
+  .button--disabled .button__label:after {
+    display: none; }
+
+.button--green {
+  pointer-events: none;
+  background-color: #70d800; }
+
+.button--gray {
   pointer-events: none;
   background-color: #c2c2c2; }
 
@@ -2481,5 +2499,3 @@ i + .course-box__date-box {
   margin-right: 6px;
   padding-top: 13px;
   color: #999999; }
-
-/*# sourceMappingURL=main.css.map */

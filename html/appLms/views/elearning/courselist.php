@@ -115,7 +115,7 @@ function TruncateText($the_text, $size)
                             </div>
                             <div class="course-box__item course-box__item--half">
                                 <?php if ($course['can_enter']['can']) { ?>
-                                    <a class="button" title="<?php echo Util::purge($course['name']); ?>"
+                                    <a class="button button--orange-hover" title="<?php echo Util::purge($course['name']); ?>"
                                        href="index.php?modname=course&amp;op=aula&amp;idCourse=<?php echo $course['idCourse']; ?>"<?php echo($course['direct_play'] == 1 && $course['level'] <= 3 && $course['first_lo_type'] == 'scormorg' ? ' rel="lightbox"' : ''); ?>>
                                    <span class="button__label">
                                      <?php echo Lang::t('_USER_STATUS_ENTER', 'catalogue'); ?>
