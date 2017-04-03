@@ -85,198 +85,199 @@ function TruncateText($the_text, $size)
                             <div class="course-box__item">
                                 <div class="course-box__title course-icon--active"><?php echo TruncateText($course['name'], 100); ?></div>
                             </div>
-                            <div class="course-box__item">
+                            <div class="course-box__item course-box__item--no-padding">
 
                                 <?php if ($course['use_logo_in_courselist']) { ?>
-                                    <div class="course-box__img" style="background-image: url(<?php echo GetCourseImage($course, $path_course) ?>)">
+                                <div class="course-box__img" style="background-image: url(<?php echo GetCourseImage($course, $path_course) ?>)">
                                 <?php } else { ?>
-                                        <div class="course-box__img">
+                                <div class="course-box__img">
                                 <?php } ?>
                                     <div class="course-box__img-title">
                                         <?php echo GetCategory($course) ?>
                                     </div>
                                 </div>
+
                             </div>
                             <div class="course-box__item">
-                                <div class="course-box__owner course-box__owner--admin">
+                                <div class="course-box__owner course-box__owner--<?php echo $course['level']; ?>">
                                     <?php echo $this->levels[$course['level']]; ?>
                                 </div>
                                 <div class="course-box__desc">
                                     <?php echo TruncateText($course['description'], 150); ?>
                                 </div>
-                                <div class="course-box__item course-box__item--half">
-                                    <div class="course-box__date">
-                                        <?php echo GetCourseDay($course) ?>
-                                        <?php echo GetCourseMonth($course) ?>
-                                        <?php echo GetCourseYear($course) ?>
-                                    </div>
+                            </div>
+                            <div class="course-box__item course-box__item--half">
+                                <div class="course-box__date-text">
+                                    <?php echo GetCourseDay($course) ?>
+                                    <?php echo GetCourseMonth($course) ?>
+                                    <?php echo GetCourseYear($course) ?>
                                 </div>
-                                <div class="course-box__item course-box__item--half">
-                                    <?php if ($course['can_enter']['can']) { ?>
-                                        <a class="button" title="<?php echo Util::purge($course['name']); ?>"
-                                           href="index.php?modname=course&amp;op=aula&amp;idCourse=<?php echo $course['idCourse']; ?>"<?php echo($course['direct_play'] == 1 && $course['level'] <= 3 && $course['first_lo_type'] == 'scormorg' ? ' rel="lightbox"' : ''); ?>>
+                            </div>
+                            <div class="course-box__item course-box__item--half">
+                                <?php if ($course['can_enter']['can']) { ?>
+                                    <a class="button" title="<?php echo Util::purge($course['name']); ?>"
+                                       href="index.php?modname=course&amp;op=aula&amp;idCourse=<?php echo $course['idCourse']; ?>"<?php echo($course['direct_play'] == 1 && $course['level'] <= 3 && $course['first_lo_type'] == 'scormorg' ? ' rel="lightbox"' : ''); ?>>
+                                   <span class="button__label">
+                                     <?php echo Lang::t('_USER_STATUS_ENTER', 'catalogue'); ?>
+                                   </span>
+                                    </a>
+                                <?php } else { ?>
+                                    <a class="button button--disabled" href="javascript:void(0);">
                                        <span class="button__label">
-                                         <?php echo Lang::t('_USER_STATUS_ENTER', 'catalogue'); ?>
+                                         DISABLED
                                        </span>
-                                        </a>
-                                    <?php } else { ?>
-                                        <a class="button button--disabled" href="javascript:void(0);">
-                                           <span class="button__label">
-                                             DISABLED
-                                           </span>
-                                        </a>
-                                    <?php } ?>
-                                </div>
+                                    </a>
+                                <?php } ?>
                             </div>
                         </div> <!-- END NEW BLOCK -->
 
-                        <div class="course-block-content completed_course_<?php echo $course['user_status']; ?>">
-                            <div class="area1 course-cover">
-                                <a href="#">
-                                    <?php if (DataExists($course)): ?>
-                                        <div class="data_chiusura">
-                                            <div class="corso_scaduto2">
-                                                <span class="fa-stack fa-lg">
-                                                    <i class="fa fa-calendar  fa-stack-1x"></i>
-                                                    <i class="fa fa-ban  fa-stack-2x text-danger"></i>
-                                                </span>
-                                            </div>
-                                            <div class="giorno"><?php echo GetCourseDay($course) ?></div>
-                                            <div class="mese"><?php echo GetCourseMonth($course) ?></div>
-                                            <div class="anno"><?php echo GetCourseYear($course) ?></div>
-                                        </div>
-                                    <?php endif; ?>
-                                    <div class="area2">
-                                        <h1>
-                                            <?php echo TruncateText($course['name'], 100); ?>
-                                        </h1>
-                                        <div style="clear:both;"></div>
-                                        <p class="course_support_info1">
-                                        <p class="descrizione_corso"><?php echo TruncateText($course['description'], 150); ?></p>
-                                        <p class="extra">
-                                            <span class="utenti">
-                                                <i class="fa fa-users" aria-hidden="true"></i>
-                                                    <span
-                                                        class="utenti_numero">&nbsp<?php echo $course['enrolled'] . '&nbsp;' . Lang::t('_COURSE_USERISCR', 'course') . '&nbsp;' ?></span>
-                                            </span>
-                                            <span class="stato_corso"><i class="fa fa-chevron-circle-right"
-                                                                         aria-hidden="true"></i>
-                                                <span
-                                                    class="stato_corso_stato">&nbsp<?php echo Lang::t($this->cstatus[$course['course_status']], 'course') ?></span>
-                                            </span>
-                                        </p>
-                                        </p>
-                                        <?php if (!empty($access['expiring_in']) && $access['expiring_in'] < 5) : ?>
-                                            <p class="scadenza">
-                                                <i class="fa fa-hourglass-half" aria-hidden="true"></i>&nbsp
-                                                <?php echo Lang::t('_EXPIRING_IN', 'course', array('[expiring_in]' => $access['expiring_in'])); ?>
-                                            </p>
-                                        <?php endif; ?>
-                                    </div>
-                                    <!-- COURSE IMAGE -->
-                                    <?php if ($course['use_logo_in_courselist']) : ?>
-                                        <img class="portrait" width="100%"
-                                             src="<?php echo GetCourseImage($course, $path_course) ?>" alt=""/>
-                                    <?php endif; ?>
-
-                                </a>
-                            </div>
-                            <div class="area3">
-                                <div class="studente">
-                                    <a href='#' class='tooltips' id='livello' title='LIVELLO'>
-                                        <i class="fa fa-graduation-cap" aria-hidden="true"></i></a>
-                                    <?php echo $this->levels[$course['level']]; ?>
-                                </div>
-                                <p class="text-justify-paragrafo">
-                                <p class="course_support_info1">
-                                    <!-- CODE COURSE -->
-                                <p class="categoria_corso">
-                                    <a href="#" class="tooltips" title="CATEGORIA DEL CORSO">
-                                        <i class="fa fa-folder-open-o" aria-hidden="true"></i>
-                                    </a>
-                                    <span class="categoria_corso_nome">
-                                        <?php echo GetCategory($course) ?>
-                                    </span>
-                                </p>
-                                <div style="clear:both"></div>
-                                <div>
-                                    <hr class="style7">
-                                </div>
-                                <div class="stato">
-
-                                    <?php
-
-//                                    $course['user_status'] = '2';
-
-                                    if ($course['user_status'] == '2')
-                                        echo "<p class='completed_status'><a href='#' class='tooltips' class='stato' title='" . Lang::t('_USER_STATUS_END', 'standard') . "'><i class='fa fa-check-circle fa-2x' aria-hidden='true'></i></p></a>";
-                                    if ($course['user_status'] == '1')
-                                        echo "<p class='progress_status'><a href='#' class='tooltips' id='stato' title='" . Lang::t('_USER_STATUS_BEGIN', 'standard') . "'><i class='fa fa-check-circle fa-2x'  aria-hidden='true'></i></a></p>";
-                                    if ($course['user_status'] == '0')
-                                        echo "<p class='enrolled_status'><a href='#' class='tooltips' id='stato' title='" . Lang::t('_USER_STATUS_SUBS', 'standard') . "'><i class='fa fa-check-circle fa-2x'  aria-hidden='true'></i></a></p>";
-                                    ?>
-                                </div>
-                                <?php
-                                if ((!empty($course['can_enter']['expiring_in']) && $course['can_enter']['can'] == false && $course['can_enter']['expiring_in'] <= 0) || ($course['can_enter']['expiring_in'] == 0 && $course['can_enter']['can'] == false)) {
-                                    $title = $course['can_enter']['reason'] == 'course_date' ? Lang::t('_EXPIRED', 'course') : Lang::t('_CST_CANCELLED', 'course');
-                                    ?>
-
-                                    <p class="corso_scaduto">
-                                        <a href='#' class='tooltips' id="expired" title="<?php echo $title ?>">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-calendar  fa-stack-1x"></i>
-                                            <i class="fa fa-ban  fa-stack-2x text-danger"></i>
-                                        </span></a>
-                                    </p>
-                                <?php } ?>
-
-
-                                <?php
-                                $smodel = new SubscriptionAlms();
-                                if ($smodel->isUserWaitingForSelfUnsubscribe(Docebo::user()->idst, $course['idCourse'])) {
-                                    echo '<div class="waiting_for">' . Lang::t('_UNSUBSCRIBE_REQUEST_WAITING_FOR_MODERATION', 'course') . '</div>';
-                                } else {
-                                    //auto unsubscribe management: create a link for the user in the course block
-                                    $_can_unsubscribe = ($course['auto_unsubscribe'] == 1 || $course['auto_unsubscribe'] == 2);
-                                    $_date_limit = $course['unsubscribe_date_limit'] != "" && $course['unsubscribe_date_limit'] != "0000-00-00 00:00:00"
-                                        ? $course['unsubscribe_date_limit']
-                                        : FALSE;
-                                    ?>
-                                    <?php if ($_can_unsubscribe): ?>
-                                        <div class="disiscrivi">
-                                            <p class="course_support_info">
-                                                <?php if ($_date_limit !== FALSE && $_date_limit < date("Y-m-d H:i:s")) {
-                                                    echo '';
-                                                } else { ?>
-                                                    <a class="tooltips" id="unscribe"
-                                                       href="index.php?r=elearning/self_unsubscribe&amp;id_course=<?php echo $course['idCourse']; ?>&amp;back=<?php echo Get::req('r', DOTY_STRING, ""); ?>"
-                                                       title="<?php echo Lang::t('_SELF_UNSUBSCRIBE', 'course'); ?>">
-                                                        <i class="fa fa-user-times fa-2x" aria-hidden="true"></i>
-                                                    </a>
-                                                    <?php
-                                                    if ($_date_limit) echo '&nbsp;(' . Lang::t('_UNTIL', 'standard') . ' ' . Format::date(substr($_date_limit, 0, 10), 'date') . ')';
-                                                    ?>
-                                                <?php } ?>
-                                            </p>
-                                        </div>
-
-                                    <?php endif;
-                                }
-                                unset($smodel);
-                                ?>
-                            </div>
-                            <div class="area4">
-                                <?php if ($course['can_enter']['can']) { ?>
-                                    <a class="enter_course" title="<?php echo Util::purge($course['name']); ?>"
-                                       href="index.php?modname=course&amp;op=aula&amp;idCourse=<?php echo $course['idCourse']; ?>"<?php echo($course['direct_play'] == 1 && $course['level'] <= 3 && $course['first_lo_type'] == 'scormorg' ? ' rel="lightbox"' : ''); ?>>
-                                        <?php echo Lang::t('_USER_STATUS_ENTER', 'catalogue'); ?>
-                                    </a>
-                                <?php } else {
-                                    echo '<div class="lock"><i class="fa fa-3x fa-lock" aria-hidden="true"></i></div>';
-                                }
-                                ?>
-                            </div>
-                        </div>
+<!--                        <div class="course-block-content completed_course_--><?php //echo $course['user_status']; ?><!--">-->
+<!--                            <div class="area1 course-cover">-->
+<!--                                <a href="#">-->
+<!--                                    --><?php //if (DataExists($course)): ?>
+<!--                                        <div class="data_chiusura">-->
+<!--                                            <div class="corso_scaduto2">-->
+<!--                                                <span class="fa-stack fa-lg">-->
+<!--                                                    <i class="fa fa-calendar  fa-stack-1x"></i>-->
+<!--                                                    <i class="fa fa-ban  fa-stack-2x text-danger"></i>-->
+<!--                                                </span>-->
+<!--                                            </div>-->
+<!--                                            <div class="giorno">--><?php //echo GetCourseDay($course) ?><!--</div>-->
+<!--                                            <div class="mese">--><?php //echo GetCourseMonth($course) ?><!--</div>-->
+<!--                                            <div class="anno">--><?php //echo GetCourseYear($course) ?><!--</div>-->
+<!--                                        </div>-->
+<!--                                    --><?php //endif; ?>
+<!--                                    <div class="area2">-->
+<!--                                        <h1>-->
+<!--                                            --><?php //echo TruncateText($course['name'], 100); ?>
+<!--                                        </h1>-->
+<!--                                        <div style="clear:both;"></div>-->
+<!--                                        <p class="course_support_info1">-->
+<!--                                        <p class="descrizione_corso">--><?php //echo TruncateText($course['description'], 150); ?><!--</p>-->
+<!--                                        <p class="extra">-->
+<!--                                            <span class="utenti">-->
+<!--                                                <i class="fa fa-users" aria-hidden="true"></i>-->
+<!--                                                    <span-->
+<!--                                                        class="utenti_numero">&nbsp--><?php //echo $course['enrolled'] . '&nbsp;' . Lang::t('_COURSE_USERISCR', 'course') . '&nbsp;' ?><!--</span>-->
+<!--                                            </span>-->
+<!--                                            <span class="stato_corso"><i class="fa fa-chevron-circle-right"-->
+<!--                                                                         aria-hidden="true"></i>-->
+<!--                                                <span-->
+<!--                                                    class="stato_corso_stato">&nbsp--><?php //echo Lang::t($this->cstatus[$course['course_status']], 'course') ?><!--</span>-->
+<!--                                            </span>-->
+<!--                                        </p>-->
+<!--                                        </p>-->
+<!--                                        --><?php //if (!empty($access['expiring_in']) && $access['expiring_in'] < 5) : ?>
+<!--                                            <p class="scadenza">-->
+<!--                                                <i class="fa fa-hourglass-half" aria-hidden="true"></i>&nbsp-->
+<!--                                                --><?php //echo Lang::t('_EXPIRING_IN', 'course', array('[expiring_in]' => $access['expiring_in'])); ?>
+<!--                                            </p>-->
+<!--                                        --><?php //endif; ?>
+<!--                                    </div>-->
+<!--                                    <!-- COURSE IMAGE -->-->
+<!--                                    --><?php //if ($course['use_logo_in_courselist']) : ?>
+<!--                                        <img class="portrait" width="100%"-->
+<!--                                             src="--><?php //echo GetCourseImage($course, $path_course) ?><!--" alt=""/>-->
+<!--                                    --><?php //endif; ?>
+<!---->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="area3">-->
+<!--                                <div class="studente">-->
+<!--                                    <a href='#' class='tooltips' id='livello' title='LIVELLO'>-->
+<!--                                        <i class="fa fa-graduation-cap" aria-hidden="true"></i></a>-->
+<!--                                    --><?php //echo $this->levels[$course['level']]; ?>
+<!--                                </div>-->
+<!--                                <p class="text-justify-paragrafo">-->
+<!--                                <p class="course_support_info1">-->
+<!--                                    <!-- CODE COURSE -->-->
+<!--                                <p class="categoria_corso">-->
+<!--                                    <a href="#" class="tooltips" title="CATEGORIA DEL CORSO">-->
+<!--                                        <i class="fa fa-folder-open-o" aria-hidden="true"></i>-->
+<!--                                    </a>-->
+<!--                                    <span class="categoria_corso_nome">-->
+<!--                                        --><?php //echo GetCategory($course) ?>
+<!--                                    </span>-->
+<!--                                </p>-->
+<!--                                <div style="clear:both"></div>-->
+<!--                                <div>-->
+<!--                                    <hr class="style7">-->
+<!--                                </div>-->
+<!--                                <div class="stato">-->
+<!---->
+<!--                                    --><?php
+//
+////                                    $course['user_status'] = '2';
+//
+//                                    if ($course['user_status'] == '2')
+//                                        echo "<p class='completed_status'><a href='#' class='tooltips' class='stato' title='" . Lang::t('_USER_STATUS_END', 'standard') . "'><i class='fa fa-check-circle fa-2x' aria-hidden='true'></i></p></a>";
+//                                    if ($course['user_status'] == '1')
+//                                        echo "<p class='progress_status'><a href='#' class='tooltips' id='stato' title='" . Lang::t('_USER_STATUS_BEGIN', 'standard') . "'><i class='fa fa-check-circle fa-2x'  aria-hidden='true'></i></a></p>";
+//                                    if ($course['user_status'] == '0')
+//                                        echo "<p class='enrolled_status'><a href='#' class='tooltips' id='stato' title='" . Lang::t('_USER_STATUS_SUBS', 'standard') . "'><i class='fa fa-check-circle fa-2x'  aria-hidden='true'></i></a></p>";
+//                                    ?>
+<!--                                </div>-->
+<!--                                --><?php
+//                                if ((!empty($course['can_enter']['expiring_in']) && $course['can_enter']['can'] == false && $course['can_enter']['expiring_in'] <= 0) || ($course['can_enter']['expiring_in'] == 0 && $course['can_enter']['can'] == false)) {
+//                                    $title = $course['can_enter']['reason'] == 'course_date' ? Lang::t('_EXPIRED', 'course') : Lang::t('_CST_CANCELLED', 'course');
+//                                    ?>
+<!---->
+<!--                                    <p class="corso_scaduto">-->
+<!--                                        <a href='#' class='tooltips' id="expired" title="--><?php //echo $title ?><!--">-->
+<!--                                        <span class="fa-stack fa-lg">-->
+<!--                                            <i class="fa fa-calendar  fa-stack-1x"></i>-->
+<!--                                            <i class="fa fa-ban  fa-stack-2x text-danger"></i>-->
+<!--                                        </span></a>-->
+<!--                                    </p>-->
+<!--                                --><?php //} ?>
+<!---->
+<!---->
+<!--                                --><?php
+//                                $smodel = new SubscriptionAlms();
+//                                if ($smodel->isUserWaitingForSelfUnsubscribe(Docebo::user()->idst, $course['idCourse'])) {
+//                                    echo '<div class="waiting_for">' . Lang::t('_UNSUBSCRIBE_REQUEST_WAITING_FOR_MODERATION', 'course') . '</div>';
+//                                } else {
+//                                    //auto unsubscribe management: create a link for the user in the course block
+//                                    $_can_unsubscribe = ($course['auto_unsubscribe'] == 1 || $course['auto_unsubscribe'] == 2);
+//                                    $_date_limit = $course['unsubscribe_date_limit'] != "" && $course['unsubscribe_date_limit'] != "0000-00-00 00:00:00"
+//                                        ? $course['unsubscribe_date_limit']
+//                                        : FALSE;
+//                                    ?>
+<!--                                    --><?php //if ($_can_unsubscribe): ?>
+<!--                                        <div class="disiscrivi">-->
+<!--                                            <p class="course_support_info">-->
+<!--                                                --><?php //if ($_date_limit !== FALSE && $_date_limit < date("Y-m-d H:i:s")) {
+//                                                    echo '';
+//                                                } else { ?>
+<!--                                                    <a class="tooltips" id="unscribe"-->
+<!--                                                       href="index.php?r=elearning/self_unsubscribe&amp;id_course=--><?php //echo $course['idCourse']; ?><!--&amp;back=--><?php //echo Get::req('r', DOTY_STRING, ""); ?><!--"-->
+<!--                                                       title="--><?php //echo Lang::t('_SELF_UNSUBSCRIBE', 'course'); ?><!--">-->
+<!--                                                        <i class="fa fa-user-times fa-2x" aria-hidden="true"></i>-->
+<!--                                                    </a>-->
+<!--                                                    --><?php
+//                                                    if ($_date_limit) echo '&nbsp;(' . Lang::t('_UNTIL', 'standard') . ' ' . Format::date(substr($_date_limit, 0, 10), 'date') . ')';
+//                                                    ?>
+<!--                                                --><?php //} ?>
+<!--                                            </p>-->
+<!--                                        </div>-->
+<!---->
+<!--                                    --><?php //endif;
+//                                }
+//                                unset($smodel);
+//                                ?>
+<!--                            </div>-->
+<!--                            <div class="area4">-->
+<!--                                --><?php //if ($course['can_enter']['can']) { ?>
+<!--                                    <a class="enter_course" title="--><?php //echo Util::purge($course['name']); ?><!--"-->
+<!--                                       href="index.php?modname=course&amp;op=aula&amp;idCourse=--><?php //echo $course['idCourse']; ?><!--"--><?php //echo($course['direct_play'] == 1 && $course['level'] <= 3 && $course['first_lo_type'] == 'scormorg' ? ' rel="lightbox"' : ''); ?><!-->-->
+<!--                                        --><?php //echo Lang::t('_USER_STATUS_ENTER', 'catalogue'); ?>
+<!--                                    </a>-->
+<!--                                --><?php //} else {
+//                                    echo '<div class="lock"><i class="fa fa-3x fa-lock" aria-hidden="true"></i></div>';
+//                                }
+//                                ?>
+<!--                            </div>-->
+<!--                        </div>-->
 
 
 
@@ -287,7 +288,7 @@ function TruncateText($the_text, $size)
             </div>
             <br>
 
-            <?php
+            <?php 
             // END ELEARNING
         }
         ?>
