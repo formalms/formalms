@@ -1184,7 +1184,13 @@ function showResult($object_test, $id_param)
         $quest_point_do = 0;
 
         $quest_obj = new $type_class($id_quest);
-        $quest_point_do = $quest_obj->userScore($id_track, $trackObj->getNumberOfAttempt());
+        if (!isset($_POST['show_review'])) {
+            $quest_point_do = $quest_obj->userScore($id_track, $trackObj->getNumberOfAttempt() + 1);
+        }
+        else {
+            $quest_point_do = $quest_obj->userScore($id_track, $trackObj->getNumberOfAttempt());
+        }
+
         $quest_max_score = $quest_obj->getMaxScore();
         if ($quest_obj->getScoreSetType() == 'manual') {
             ++$num_manual;
