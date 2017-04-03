@@ -2454,9 +2454,9 @@ body {
       font-size: 16px; } }
 
 .course-box__date-text {
-  padding-top: 5px;
+  padding-top: 12px;
   color: #999999;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600; }
 
 .course-box__date-box {
@@ -2499,3 +2499,5 @@ i + .course-box__date-box {
   margin-right: 6px;
   padding-top: 13px;
   color: #999999; }
+
+/*# sourceMappingURL=main.css.map */
