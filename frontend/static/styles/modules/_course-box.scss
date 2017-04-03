@@ -247,13 +247,26 @@
   margin-right: 6px;
   float: left;
   color: $gray-2;
-  font-size: 10px;
+  font-size: 13px;
   border: 1px solid $gray-3;
   border-radius: 5px;
 
   &:before {
     content: '';
     position: absolute;
+    top: 14px;
+    left: 9px;
+    width: 20px;
+    height: 20px;
+    background: {
+      position: center;
+      repeat: no-repeat;
+      size: contain;
+    };
+  }
+
+  @include breakpoint($tablet) {
+    height:50px;
   }
 }
 

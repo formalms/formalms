@@ -23,7 +23,7 @@ $calendar-icons: 'check', 'gray-cross', 'green-cross';
 @each $icon in $calendar-icons {
   .calendar-icon--#{$icon} {
     &:before {
-      background-image: url('images/icons/calendar/icon--#{$icon}.svg');
+      background-image: url('images/icons/calendar/icon-calendar--#{$icon}.svg');
     }
   }
 }
