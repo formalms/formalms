@@ -2227,13 +2227,13 @@
   background-image: url("images/icons/course/icon--suspended.png"); }
 
 .calendar-icon--check:before {
-  background-image: url("images/icons/calendar/icon--check.svg"); }
+  background-image: url("images/icons/calendar/icon-calendar--check.svg"); }
 
 .calendar-icon--gray-cross:before {
-  background-image: url("images/icons/calendar/icon--gray-cross.svg"); }
+  background-image: url("images/icons/calendar/icon-calendar--gray-cross.svg"); }
 
 .calendar-icon--green-cross:before {
-  background-image: url("images/icons/calendar/icon--green-cross.svg"); }
+  background-image: url("images/icons/calendar/icon-calendar--green-cross.svg"); }
 
 .js-router--is-active {
   display: block; }
@@ -2451,12 +2451,22 @@ body {
   margin-right: 6px;
   float: left;
   color: #999999;
-  font-size: 10px;
+  font-size: 13px;
   border: 1px solid #c2c2c2;
   border-radius: 5px; }
   .course-box__date-box:before {
     content: '';
-    position: absolute; }
+    position: absolute;
+    top: 14px;
+    left: 9px;
+    width: 20px;
+    height: 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain; }
+  @media (min-width: 768px) {
+    .course-box__date-box {
+      height: 50px; } }
 
 .course-box__date-box--end {
   color: #70d800;
@@ -2471,3 +2481,5 @@ i + .course-box__date-box {
   margin-right: 6px;
   padding-top: 13px;
   color: #999999; }
+
+/*# sourceMappingURL=main.css.map */
