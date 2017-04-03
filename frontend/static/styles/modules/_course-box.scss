@@ -71,9 +71,9 @@
 //        </div>
 //      </div>
 //      <div class="course-box__item">
-//        <div class="course-box__date-box">31 agosto 2016</div>
+//        <div class="course-box__date-box calendar-icon--check">31 agosto 2016</div>
 //        <i class="fa fa-angle-right" aria-hidden="true"></i>
-//        <div class="course-box__date-box">30 novembre 2017</div>
+//        <div class="course-box__date-box course-box__date-box--end calendar-icon--green-cross">30 novembre 2017</div>
 //      </div>
 //      <div class="course-box__item">
 //        <a class="button">
@@ -255,6 +255,11 @@
     content: '';
     position: absolute;
   }
+}
+
+.course-box__date-box--end {
+  color: $green;
+  border-color: $lime;
 }
 
 i + .course-box__date-box {

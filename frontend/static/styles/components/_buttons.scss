@@ -20,10 +20,10 @@
   text-decoration: none;
   text-transform: uppercase;
   color: $white;
-  padding: 8px 14px 8px;
+  padding: 12px 14px 12px;
   background-color: $dark-orange;
   font-family: $font;
-  font-size: 9px;
+  font-size: 12px;
   border-radius: 5px;
   box-shadow: none;
   cursor: pointer;
@@ -40,6 +40,10 @@
   &:hover {
     background-color: $orange;
     color: $white;
+  }
+
+  @include breakpoint($tablet) {
+    min-height: 40px;
   }
 }
 
