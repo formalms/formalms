@@ -2294,7 +2294,6 @@ h1, h2, h3, h4, h5, h6, p {
     display: none; }
 
 .button--green {
-  pointer-events: none;
   background-color: #70d800; }
 
 .button--gray {
@@ -2364,6 +2363,9 @@ body {
     box-shadow: #c2c2c2 0px 5px 20px 0px; }
     .course-box:hover .course-box__img-title {
       background-color: rgba(255, 108, 0, 0.5); }
+  @media (min-width: 768px) {
+    .course-box {
+      max-width: 404px; } }
 
 .course-box__item {
   width: 100%;
@@ -2461,12 +2463,11 @@ body {
 
 .course-box__date-box {
   position: relative;
-  width: 161px;
+  width: calc(50% - 10px);
   padding-top: 15px;
   padding-right: 7px;
   padding-bottom: 15px;
   padding-left: 40px;
-  margin-right: 6px;
   float: left;
   color: #999999;
   font-size: 13px;
@@ -2496,8 +2497,6 @@ i + .course-box__date-box {
 
 .course-box__date-box + i {
   float: left;
-  margin-right: 6px;
+  margin: 0 6px;
   padding-top: 13px;
   color: #999999; }
-
-/*# sourceMappingURL=main.css.map */
