@@ -281,55 +281,97 @@ $smodel = new CatalogLms();
                     $data_end_format = Format::date($data_end, 'date');
 
                     //here begins the <li> element
+
                     $html .= '
                         <div class="course-box">
                             <div class="course-box__item">
                                 <div class="course-box__title">' . $row['name'] . '</div>
                             </div>
-                            <div class="course-box__item course-box__item--no-padding">
-                                <div class="course-box__img"> 
-                                    <div class="course-box__img-title"></div>
-                                    <div class="area2 cat" >
-                                        <p class="course_support_info1">
-                                            <p class="descrizione_corso cat">' . $row['description'] . '</p>
-                                            <p class="tipo_corso">' . $img_type . '</p>
-                                        </p>    
-                                    </div>
-                                    <div class=""image_cat>'
-                        . ($row['use_logo_in_courselist'] && $row['img_course'] ? '<img class="group list-group-image" src="' . $path_course . $row['img_course'] . '" alt="' . Util::purge($row['name']) . '" />' : '')
-                        . ($row['use_logo_in_courselist'] && !$row['img_course'] ? '<img class="group list-group-image" src="' . Get::tmpl_path() . 'images/course/course_nologo.png' . '" alt="' . Util::purge($row['name']) . '" />' : '')
-                        . '         </div>
+                            <div class="course-box__item course-box__item--no-padding">';
+
+                    if ($row['use_logo_in_courselist'] && $row['img_course']) { //check per img
+                        $html .= '<div class="course-box__img" style="background-image: url(' . $path_course . $row['img_course'] . ');">';
+                    } else {
+                        $html .= '<div class="course-box__img">';
+                    }
+
+                    $html .= '
+                                    <div class="course-box__img-title">' . $img_type . '</div>
                                 </div>    
-                            </div> ';
+                            </div>
+                            <div class="course-box__item">
+                                <div class="course-box__desc">
+                                    ' . $row['description'] . '
+                                </div>
+                            </div>';
 
-                    $strClassStyle = 'style="background-color: transparent;"';
-                    if ($data_inizio != "0000-00-00" && $data_end != "0000-00-00") $strClassStyle = "";
+                    $startDate = ($data_inizio == '0000-00-00' ? false : true );
+                    $endDate = ($data_end == '0000-00-00' ? false : true );
 
-                    $html .= '<div class="edizioni_cal cat" ' . $strClassStyle . '>'
-                        . ($data_inizio != "0000-00-00" && $data_end != "0000-00-00" ?
-                            '<a href="#" class="tooltips" id="classe_data_start" title="INIZIO"><div class="edizioni_start cat"><i class="fa  fa-2x fa-calendar-check-o" aria-hidden="true"></i>' . $data_inizio_format . ' </a></div>
-                                <a href="#" class="tooltips" id="classe_data_end" title="FINE"><div class="edizioni_end cat"><i class="fa fa-2x fa-calendar-times-o" aria-hidden="true"></i>' . $data_end_format . ' </a></div>
-                                <div style="clear:both"></div>' : '')
-                        . ($data_inizio == "0000-00-00" && $data_end == "0000-00-00" ? '' : '')
-                        . ($data_inizio != "0000-00-00" && $data_end == "0000-00-00" ? '
-                                <a href="#" class="tooltips" id="classe_data_start" title="INIZIO"><div class="edizioni_start cat"><i class="fa  fa-2x fa-calendar-check-o" aria-hidden="true"></i>' . $data_inizio_format . ' </a></div><div style="clear:both"></div>' : '')
-                        . ($data_inizio == "0000-00-00" && $data_end != "0000-00-00" ? '
-                                <a href="#" class="tooltips" id="classe_data_end" title="FINE"><div class="edizioni_end cat"><i class="fa  fa-2x fa-calendar-check-o" aria-hidden="true"></i>' . $data_end_format . ' </a></div><div style="clear:both"></div>' : '') .
-                        '</div>';
+                    if ($startDate && $endDate) { //ci sono le date di inizio e fine
+                        $html .= '
+                            <div class="course-box__item">
+                                <div class="course-box__date-box calendar-icon--check">' . $data_inizio_format . '</div>
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                <div class="course-box__date-box course-box__date-box--end calendar-icon--green-cross">' . $data_end_format . '</div>
+                            </div>
+                       ';
+                    } elseif ($startDate && !$endDate) { //c'è solo la data di inizio
+                        $html .= '
+                            <div class="course-box__item">
+                                <div class="course-box__date-box calendar-icon--check">' . $data_inizio_format . '</div>
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                <div class="course-box__date-box course-box__date-box--end calendar-icon--green-cross"></div>
+                            </div>
+                       ';
+                    } elseif (!$startDate && $endDate) { //c'è solo la data di fine
+                        $html .= '
+                            <div class="course-box__item">
+                                <div class="course-box__date-box calendar-icon--check"></div>
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                <div class="course-box__date-box course-box__date-box--end calendar-icon--green-cross">' . $data_end_format . '</div>
+                            </div>
+                       ';
+                    } else { // non ci sono date, mostro i box vuoti
+                        $html .= '
+                            <div class="course-box__item">
+                                <div class="course-box__date-box calendar-icon--check"></div>
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                <div class="course-box__date-box course-box__date-box--end calendar-icon--gray-cross"></div>
+                            </div>
+                       ';
+                    }
 
-                    if ($row["course_demo"]) {
+//                    $html .= '<div class="edizioni_cal cat" ' . $strClassStyle . '>'
+//                        . ($data_inizio != "0000-00-00" && $data_end != "0000-00-00" ?
+//                                '<a href="#" class="tooltips" id="classe_data_start" title="INIZIO">
+//                                <div class="edizioni_start cat">
+//                                  <i class="fa  fa-2x fa-calendar-check-o" aria-hidden="true"></i>'
+//                                    . $data_inizio_format . '
+//                                </a>
+//                            </div>
+//                                <a href="#" class="tooltips" id="classe_data_end" title="FINE"><div class="edizioni_end cat"><i class="fa fa-2x fa-calendar-times-o" aria-hidden="true"></i>' . $data_end_format . ' </a></div>
+//                                <div style="clear:both"></div>' : '')
+//                        . ($data_inizio == "0000-00-00" && $data_end == "0000-00-00" ? '' : '')
+//                        . ($data_inizio != "0000-00-00" && $data_end == "0000-00-00" ? '
+//                                <a href="#" class="tooltips" id="classe_data_start" title="INIZIO"><div class="edizioni_start cat"><i class="fa  fa-2x fa-calendar-check-o" aria-hidden="true"></i>' . $data_inizio_format . ' </a></div><div style="clear:both"></div>' : '')
+//                        . ($data_inizio == "0000-00-00" && $data_end != "0000-00-00" ? '
+//                                <a href="#" class="tooltips" id="classe_data_end" title="FINE"><div class="edizioni_end cat"><i class="fa  fa-2x fa-calendar-check-o" aria-hidden="true"></i>' . $data_end_format . ' </a></div><div style="clear:both"></div>' : '') .
+//                        '</div>';
+
+                    if ($row["course_demo"]) { //casistica non testata
                         $html .= '<!-- DATE START - DATE END  -->
-                                         <div class="box_edizioni cat">
-                                               <div class="edizioni cat">
-                                                     <div class="edizioni_nome cat">
-                                                     ' . Lang::t('_COURSE_DEMO', 'course') . '
-                                                     </div>  
-                                                 <div class="luogo cat">  
-                                                    <a  href="index.php?r=catalog/downloadDemoMaterial&amp;course_id=' . $row['idCourse'] . '>
-                                                    <i class="fa fa-2x fa-download" aria-hidden="true"></i>&nbsp<span>' . Lang::t('_DOWNLOAD') . '</a>
-                                                 </div>                                     
-                                               </div>
-                                         </div>';
+                             <div class="box_edizioni cat">
+                                 <div class="edizioni cat">
+                                     <div class="edizioni_nome cat">
+                                         ' . Lang::t('_COURSE_DEMO', 'course') . '
+                                     </div>  
+                                     <div class="luogo cat">  
+                                         <a  href="index.php?r=catalog/downloadDemoMaterial&amp;course_id=' . $row['idCourse'] . '>
+                                         <i class="fa fa-2x fa-download" aria-hidden="true"></i>&nbsp<span>' . Lang::t('_DOWNLOAD') . '</a>
+                                     </div>                                     
+                                 </div>
+                             </div>';
                     }
                     $html .= '<div class="cbp-vm-add">                                   
                         <div>';
