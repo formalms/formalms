@@ -305,8 +305,8 @@ $smodel = new CatalogLms();
                                 </div>
                             </div>';
 
-                    $startDate = ($data_inizio == '0000-00-00' ? false : true );
-                    $endDate = ($data_end == '0000-00-00' ? false : true );
+                    $startDate = $data_inizio == '0000-00-00' ? false : true;
+                    $endDate = $data_end == '0000-00-00' ? false : true;
 
                     if ($startDate && $endDate) { //ci sono le date di inizio e fine
                         $html .= '
@@ -321,23 +321,23 @@ $smodel = new CatalogLms();
                             <div class="course-box__item">
                                 <div class="course-box__date-box calendar-icon--check">' . $data_inizio_format . '</div>
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                <div class="course-box__date-box course-box__date-box--end calendar-icon--green-cross"></div>
+                                <div class="course-box__date-box course-box__date-box--no-date calendar-icon--gray-cross"></div>
                             </div>
                        ';
                     } elseif (!$startDate && $endDate) { //c'è solo la data di fine
                         $html .= '
                             <div class="course-box__item">
-                                <div class="course-box__date-box calendar-icon--check"></div>
+                                <div class="course-box__date-box course-box__date-box--no-date calendar-icon--check"></div>
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                <div class="course-box__date-box course-box__date-box--end calendar-icon--green-cross">' . $data_end_format . '</div>
+                                <div class="course-box__date-box course-box__date-box--no-date calendar-icon--green-cross">' . $data_end_format . '</div>
                             </div>
                        ';
                     } else { // non ci sono date, mostro i box vuoti
                         $html .= '
                             <div class="course-box__item">
-                                <div class="course-box__date-box calendar-icon--check"></div>
+                                <div class="course-box__date-box course-box__date-box--no-date calendar-icon--check"></div>
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                <div class="course-box__date-box course-box__date-box--end calendar-icon--gray-cross"></div>
+                                <div class="course-box__date-box course-box__date-box--no-date calendar-icon--gray-cross"></div>
                             </div>
                        ';
                     }

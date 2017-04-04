@@ -4,7 +4,7 @@
 //
 // Style guide: 3
 
-// Course Box - My courses
+// My courses
 //
 // This is the restyled course box used in My Courses<br />
 // <strong>NB: The 'style' attributes are just for this representation only, when implementing
@@ -45,7 +45,7 @@
 //
 // Style guide: 3.1
 
-// Course Box - Course Catalogue
+// Course Catalogue
 //
 // This is the restyled course box used in Course Catalogue<br />
 // <strong>NB: The 'style' attributes are just for this representation only, when implementing
@@ -241,7 +241,6 @@
 
 .course-box__date-box {
   position: relative;
-  //width: 161px;
   width: calc(50% - 10px);
   padding: {
     top: 15px;
@@ -277,6 +276,16 @@
 .course-box__date-box--end {
   color: $green;
   border-color: $lime;
+}
+
+.course-box__date-box--no-date {
+  color: $gray-3;
+  border-color: $gray-3;
+
+  &:before {
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 i + .course-box__date-box {

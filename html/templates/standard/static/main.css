@@ -2491,6 +2491,13 @@ body {
   color: #70d800;
   border-color: #aeff00; }
 
+.course-box__date-box--no-date {
+  color: #c2c2c2;
+  border-color: #c2c2c2; }
+  .course-box__date-box--no-date:before {
+    left: 50%;
+    transform: translateX(-50%); }
+
 i + .course-box__date-box {
   margin-right: 0;
   margin-bottom: 20px; }
