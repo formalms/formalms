@@ -105,6 +105,10 @@
       background-color: rgba(255, 108, 0, 0.5);
     }
   }
+
+  @include breakpoint($tablet) {
+    max-width: 404px;
+  }
 }
 
 .course-box__item {
@@ -237,14 +241,14 @@
 
 .course-box__date-box {
   position: relative;
-  width: 161px;
+  //width: 161px;
+  width: calc(50% - 10px);
   padding: {
     top: 15px;
     right: 7px;
     bottom: 15px;
     left: 40px;
   };
-  margin-right: 6px;
   float: left;
   color: $gray-2;
   font-size: 13px;
@@ -282,7 +286,7 @@ i + .course-box__date-box {
 
 .course-box__date-box + i {
   float: left;
-  margin-right: 6px;
+  margin: 0 6px;
   padding-top: 13px;
   color: $gray-2;
 }
