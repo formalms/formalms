@@ -122,7 +122,7 @@ $GLOBALS['page']->add(ob_get_contents(), 'debug');
 ob_clean();
 
 // layout
-Layout::render("home");
+Layout::render(($r[1] === 'homecatalogue' ? "home_catalogue" : "home"));
 
 #// finalize TEST_COMPATIBILITA_PHP54
 Boot::finalize();
