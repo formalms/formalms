@@ -34,7 +34,7 @@
 //        <div class="course-box__date-text">31 agosto 2016</div>
 //      </div>
 //      <div class="course-box__item course-box__item--half course-box__item--no-padding">
-//        <a class="button button--orange-hover">
+//        <a class="button button--orange-hover" href="">
 //          <span class="button__label">
 //            Entra nel corso
 //          </span>
@@ -49,7 +49,9 @@
 //
 // This is the restyled course box used in Course Catalogue<br />
 // <strong>NB: The 'style' attributes are just for this representation only, when implementing
-// be sure to delete them.</strong>
+// be sure to delete them.</strong><br />
+// Also the id attribute of the button here is used by YUI, so when the refactor will be done<br />
+// it will likely disappear.
 //
 // Markup:
 //  <div style="max-width: 404px;">
@@ -75,8 +77,8 @@
 //        <i class="fa fa-angle-right" aria-hidden="true"></i>
 //        <div class="course-box__date-box course-box__date-box--end calendar-icon--green-cross">30 novembre 2017</div>
 //      </div>
-//      <div class="course-box__item">
-//        <a class="button button--orange-hover">
+//      <div class="course-box__item" id="">
+//        <a class="button button--orange-hover" href="">
 //          <span class="button__label">
 //            Entra nel corso
 //          </span>
