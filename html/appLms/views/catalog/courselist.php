@@ -29,39 +29,6 @@ $smodel = new CatalogLms();
     <div class="main">
         <div id="cbp-vm" class="cbp-vm-switcher">
 
-            <div class="course-box">
-                <div class="course-box__item">
-                    <div class="course-box__title">Lorem ipsum dolor sit amet</div>
-                </div>
-                <div class="course-box__item course-box__item--no-padding">
-                    <div class="course-box__img">
-                        <img src="" alt="">
-                        <div class="course-box__img-title">lorem ipsum</div>
-                    </div>
-                </div>
-                <div class="course-box__item">
-                    <div class="course-box__desc">
-                        Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Facilis ponatur
-                        infinito oderis obruamus. Effectices, terroribus cognosci elegans totam
-                        atilli arare p minuendas.
-                    </div>
-                </div>
-                <div class="course-box__item">
-                    <div class="course-box__date-box calendar-icon--check">31 agosto 2016</div>
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    <div class="course-box__date-box course-box__date-box--end calendar-icon--green-cross">30 novembre
-                        2017
-                    </div>
-                </div>
-                <div class="course-box__item">
-                    <a class="button button--orange-hover">
-                            <span class="button__label">
-                                Entra nel corso
-                            </span>
-                    </a>
-                </div>
-            </div>
-
             <ul>
                 <?php
                 while ($row = sql_fetch_assoc($result)) {
@@ -70,9 +37,11 @@ $smodel = new CatalogLms();
                     if ($row['course_type'] === 'classroom') {
                         $additional_info = '';
                         $classrooms = $smodel->classroom_man->getCourseDate($row['idCourse'], false);
-                        $action = '<div class="catalog_action" id="action_' . $row['idCourse'] . '">';
+                        $action = '<div class="course-box__item" id="action_' . $row['idCourse'] . '">';
                         if (count($classrooms) == 0)
-                            $action .= '<p class="cannot_subscribe">' . Lang::t('_NO_EDITIONS', 'catalogue') . '</p>';
+                            $action .= '<a class="button button--disabled">
+                                            <span class="button__label">' . Lang::t('_NO_EDITIONS', 'catalogue') . '</span>
+                                        </a>';
                         else {
                             //Controllo che l'utente non sia iscritto a tutte le edizioni future
                             $date_id = array();
@@ -90,8 +59,8 @@ $smodel = new CatalogLms();
                                 if (!empty($overbooking_classroom)) {
                                     $_text = ($row['selling'] == 0
                                         ? Lang::t('_SUBSCRIBE', 'catalogue')
-                                        : Lang::t('_ADD_TO_CART', 'catalogue'));
-                                    $action .= '<a href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'' . ($row['selling'] == 0 ? '0' : '1') . '\')" '
+                                        : Lang::t('_ADD_TO_CART', 'catalogue')); //TODO chiudere i pulsanti + responsive
+                                    $action .= '<a class="" href="javascript:void(0);" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'' . ($row['selling'] == 0 ? '0' : '1') . '\')" '
                                         . ' title="' . $_text . '"><p class="can_subscribe">' . $_text . '<br />'
                                         . '(' . Lang::t('_SUBSCRIBE_WITH_OVERBOOKING', 'catalogue') . ': ' . count($overbooking_classroom) . ')</p>'
                                         . '</a>';
@@ -140,7 +109,7 @@ $smodel = new CatalogLms();
 
                         $editions = $smodel->edition_man->getEditionAvailableForCourse(Docebo::user()->getIdSt(), $row['idCourse']);
 
-                        $action = '<div class="catalog_action" id="action_' . $row['idCourse'] . '">';
+                        $action = '<div class="course-box__item" id="action_' . $row['idCourse'] . '">';
                         if (count($editions) == 0)
                             $action .= '<p class="cannot_subscribe">' . Lang::t('_NO_EDITIONS', 'catalogue') . '</p>';
                         else {
@@ -176,7 +145,7 @@ $smodel = new CatalogLms();
                         $result_control = $smodel->getInfoEnroll($row['idCourse'], Docebo::user()->getIdSt());
 
 
-                        $action = '<div class="catalog_action" id="action_' . $row['idCourse'] . '">';
+                        $action = '<div class="course-box__item" id="action_' . $row['idCourse'] . '">';
                         if (sql_num_rows($result_control) > 0) {
                             // the user is enrolled in some way
                             list($status, $waiting, $level) = sql_fetch_row($result_control);
@@ -342,23 +311,6 @@ $smodel = new CatalogLms();
                        ';
                     }
 
-//                    $html .= '<div class="edizioni_cal cat" ' . $strClassStyle . '>'
-//                        . ($data_inizio != "0000-00-00" && $data_end != "0000-00-00" ?
-//                                '<a href="#" class="tooltips" id="classe_data_start" title="INIZIO">
-//                                <div class="edizioni_start cat">
-//                                  <i class="fa  fa-2x fa-calendar-check-o" aria-hidden="true"></i>'
-//                                    . $data_inizio_format . '
-//                                </a>
-//                            </div>
-//                                <a href="#" class="tooltips" id="classe_data_end" title="FINE"><div class="edizioni_end cat"><i class="fa fa-2x fa-calendar-times-o" aria-hidden="true"></i>' . $data_end_format . ' </a></div>
-//                                <div style="clear:both"></div>' : '')
-//                        . ($data_inizio == "0000-00-00" && $data_end == "0000-00-00" ? '' : '')
-//                        . ($data_inizio != "0000-00-00" && $data_end == "0000-00-00" ? '
-//                                <a href="#" class="tooltips" id="classe_data_start" title="INIZIO"><div class="edizioni_start cat"><i class="fa  fa-2x fa-calendar-check-o" aria-hidden="true"></i>' . $data_inizio_format . ' </a></div><div style="clear:both"></div>' : '')
-//                        . ($data_inizio == "0000-00-00" && $data_end != "0000-00-00" ? '
-//                                <a href="#" class="tooltips" id="classe_data_end" title="FINE"><div class="edizioni_end cat"><i class="fa  fa-2x fa-calendar-check-o" aria-hidden="true"></i>' . $data_end_format . ' </a></div><div style="clear:both"></div>' : '') .
-//                        '</div>';
-
                     if ($row["course_demo"]) { //casistica non testata
                         $html .= '<!-- DATE START - DATE END  -->
                              <div class="box_edizioni cat">
@@ -373,26 +325,29 @@ $smodel = new CatalogLms();
                                  </div>
                              </div>';
                     }
-                    $html .= '<div class="cbp-vm-add">                                   
-                        <div>';
-                    if ($str_can_enter == true && $row['status'] != CST_CONCLUDED) $html .= $action;
-                    if ($str_can_enter == false || $row['status'] == CST_CONCLUDED) $html .= "<div class='lock cat'><i class='fa fa-3x fa-lock' aria-hidden='true'></i></div>";
+
+//                    $html .= '<div class="course-box__item">';
+                    if ($str_can_enter == true && $row['status'] != CST_CONCLUDED) {
+                        $html .= $action;
+                    }
+                    if ($str_can_enter == false || $row['status'] == CST_CONCLUDED) {
+                        $html .= "<div class='lock cat'><i class='fa fa-3x fa-lock' aria-hidden='true'></i></div>";
+                    }
 
                     // in caso di corso a tempo, l utente deve potersi iscrivere, se non iscritto
                     if (($row['subscribe_method'] == 2 || $row['subscribe_method'] == 1) && $str_can_enter == false && strrpos($action, "subscribed") == false) $html .= $action;
 
-                    $html .= ' </div>    
-                     </div>                             
+                    $html .= '   
+                             
                         </div>';
-
 
                 }
 
-                if (sql_num_rows($result) <= 0)
+                if (sql_num_rows($result) <= 0) {
                     $html = '<p>' . Lang::t('_NO_CONTENT', 'standard') . '</p>';
+                }
 
-                echo $html;
-
+                echo $html; //returns course-box
 
                 ?>
             </ul>
