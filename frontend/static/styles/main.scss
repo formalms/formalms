@@ -7,6 +7,7 @@
 @import 'utils/fonts';
 @import 'utils/helpers';
 @import 'utils/icons';
+@import 'utils/grid';
 
 //COMPONENTS
 @import 'components/router';
@@ -16,3 +17,4 @@
 //MODULES
 @import 'modules/layout';
 @import 'modules/course-box';
+@import 'modules/fake-grid';

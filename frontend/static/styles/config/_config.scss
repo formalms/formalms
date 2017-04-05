@@ -98,3 +98,7 @@ $ipad: 1024px;
 /// @type Number + px
 /// @group breakpoint
 $desktop: 1280px;
+/// grid max width (mobile first)
+/// @type Number + px
+/// @group grid
+$grid-max-width: 1280px;
