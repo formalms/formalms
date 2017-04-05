@@ -184,7 +184,11 @@ class AdminrulesAdm extends Model
 								$mvc_name = ucwords($tmp[1]);
 								$perm_path = '/framework/admin/'.strtolower($mvc_name).'/';
 
-								require_once(_adm_.'/models/'.$mvc_name.'Adm.php');
+                                                                if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/models/'.$mvc_name.'Adm.php') && Get::cfg('enable_customscripts', false) == true ){
+                                                                        require_once(_base_.'/customscripts'.'/'._folder_adm_.'/models/'.$mvc_name.'Adm.php');
+                                                                } else {
+                                                                        require_once(_adm_.'/models/'.$mvc_name.'Adm.php');
+                                                                }
 
 								$class_name = $mvc_name.'Adm';
 								$tmp_class = new $class_name();
@@ -326,7 +330,11 @@ class AdminrulesAdm extends Model
 								$mvc_name = ucwords($tmp[1]);
 								$perm_path = '/lms/admin/'.strtolower($mvc_name).'/';
 
-								require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                                                if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_customscripts', false) == true ){
+                                                                        require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                                                } else {
+                                                                        require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                                                }
 
 								$class_name = $mvc_name.'Alms';
 								$tmp_class = new $class_name();
@@ -353,7 +361,13 @@ class AdminrulesAdm extends Model
 							}
 							else
 							{
-								require_once(_lms_.'/admin/class.module/'.$class_file);
+								
+                                                                
+                                                                if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
+                                                                        require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file);
+                                                                } else {
+                                                                        require_once(_lms_.'/admin/class.module/'.$class_file);
+                                                                }
 
 								$tmp_class = new $class_name();
 								$perm_path = '/lms/admin/'.strtolower($module_name).'/';

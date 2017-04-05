@@ -27,9 +27,9 @@ class PluginManager {
 
     private static function get_all_plugins($onlyActive = false){
         if (empty(self::$plugin_list)) {
-            require_once _adm_ . '/models/PluginAdm.php';
-            $pluginAdm = new PluginAdm();
-            self::$plugin_list = $pluginAdm->getPlugins($onlyActive);
+            require_once _adm_ . '/models/PluginmanagerAdm.php';
+            $PluginmanagerAdm = new PluginmanagerAdm();
+            self::$plugin_list = $PluginmanagerAdm->getPlugins($onlyActive);
         }
         return self::$plugin_list;
     }

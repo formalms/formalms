@@ -24,7 +24,7 @@ class PrecompileLms extends Model {
 	}
 
 	public function compileRequired() {
-		if(Get::sett('request_mandatory_fields_compilation', 'off') == 'off') return true;
+		if(Get::sett('request_mandatory_fields_compilation', 'off') == 'off') return false;
 
 		$id_user = Docebo::user()->getIdSt();
 		$policy_checked = $this->getAcceptingPolicy($id_user);
