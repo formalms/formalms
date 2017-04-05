@@ -153,9 +153,15 @@
   position: relative;
   width: 100%;
   height: 70px;
-  padding: 25px 0;
+  padding: {
+    top: 25px;
+    right: 15px;
+    bottom: 25px;
+  }
   color: $anthracite;
   font-weight: 600;
+  font-size: 18px;
+  line-height: 1.45;
 
   &:after {
     content: '';
@@ -202,7 +208,7 @@
     bottom: 15px;
     left: 35px;
   };
-  font-size: 10px;
+  font-size: 12px;
   text-transform: uppercase;
   color: $gray-2;
 
@@ -224,8 +230,8 @@
 .course-box__desc {
   margin-bottom: 30px;
   color: $gray-1;
-  font-size: 13px;
-  line-height: 20px;
+  font-size: 16px;
+  line-height: 1.625;
 
   @include breakpoint($tablet) {
     font-size: 16px;
@@ -237,7 +243,7 @@
     top: 12px;
   };
   color: $gray-2;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
 }
 
