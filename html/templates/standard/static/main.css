@@ -2319,7 +2319,7 @@ h1, h2, h3, h4, h5, h6, p {
   text-decoration: none;
   text-transform: uppercase;
   color: white;
-  padding: 12px 14px 12px;
+  padding: 12px 0;
   background-color: #c84000;
   font-family: "Open-sans";
   font-size: 14px;
@@ -2417,9 +2417,6 @@ body {
     box-shadow: #c2c2c2 0px 5px 20px 0px; }
     .course-box:hover .course-box__img-title {
       background-color: rgba(255, 108, 0, 0.5); }
-  @media (min-width: 768px) {
-    .course-box {
-      max-width: 404px; } }
 
 .course-box__item {
   width: 100%;
@@ -2435,14 +2432,20 @@ body {
   width: 100%;
   float: left;
   padding-left: 30px;
-  padding-right: 0; }
+  padding-right: 30px; }
   @media (min-width: 768px) {
     .course-box__item--half {
-      width: 50%; } }
+      width: 50%;
+      padding-left: 30px;
+      padding-right: 0; } }
 
 .course-box__item--half + .course-box__item--half {
-  padding-left: 0;
+  padding-left: 30px;
   padding-right: 30px; }
+  @media (min-width: 768px) {
+    .course-box__item--half + .course-box__item--half {
+      padding-left: 0;
+      padding-right: 30px; } }
 
 .course-box__title {
   position: relative;

@@ -109,7 +109,7 @@
   }
 
   @include breakpoint($tablet) {
-    max-width: 404px;
+    //max-width: 404px;
   }
 }
 
@@ -134,19 +134,30 @@
   float: left;
   padding: {
     left: 30px;
-    right: 0;
+    right: 30px;
   };
 
   @include breakpoint($tablet) {
     width: 50%;
+    padding: {
+      left: 30px;
+      right: 0;
+    };
   }
 }
 
 .course-box__item--half + .course-box__item--half {
   padding: {
-    left: 0;
+    left: 30px;
     right: 30px;
   };
+  
+  @include breakpoint($tablet) {
+    padding: {
+      left: 0;
+      right: 30px;
+    };
+  }
 }
 
 .course-box__title {
