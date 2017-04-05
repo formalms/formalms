@@ -44,7 +44,7 @@ class DoceboUserNotifier extends DoceboEventConsumer {
 
 		// recover event information
 		$arr_recipients 	= explode( ',', $event->getProperty('recipientid') );
-		$msg_composer 		= Util::unserialize(urldecode($event->getProperty('MessageComposer')));
+        $msg_composer 		= unserialize(urldecode($event->getProperty('MessageComposer')));
 		$msg_composer->after_unserialize();
 		$force_email_send 	= $event->getProperty('force_email_send');
 
