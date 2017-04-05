@@ -18,16 +18,8 @@
   float: left;
 
   @include breakpoint($ipad) {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  &:first-child:not(:last-child) {
-    padding-left: 0;
-  }
-
-  &:last-child:not(:first-child) {
-    padding-right: 0;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }
 
@@ -48,25 +40,25 @@
 
   .col--#{$i}--tablet {
     @include breakpoint($tablet) {
-      width: grid(12, $i) !important;
+      width: grid(12, $i);
     }
   }
 
   .col-gap--#{$i}--tablet {
     @include breakpoint($tablet) {
-      margin-left: grid(12, $i) !important;
+      margin-left: grid(12, $i);
     }
   }
 
   .col--#{$i}--desk {
     @include breakpoint($ipad) {
-      width: grid(12, $i) !important;
+      width: grid(12, $i);
     }
   }
 
   .col-gap--#{$i}--desk {
     @include breakpoint($ipad) {
-      margin-left: grid(12, $i) !important;
+      margin-left: grid(12, $i);
     }
   }
 }
