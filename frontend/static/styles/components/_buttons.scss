@@ -23,7 +23,7 @@
   padding: 12px 14px 12px;
   background-color: $dark-orange;
   font-family: $font;
-  font-size: 12px;
+  font-size: 14px;
   border-radius: 5px;
   box-shadow: none;
   cursor: pointer;
@@ -113,7 +113,6 @@
     content: '\f101';
     font-family: $icon;
     font-size: inherit;
-    padding-left: 5px;
     color: rgba(255, 255, 255, 0.7);
   }
 }

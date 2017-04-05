@@ -2190,6 +2190,61 @@
   overflow: visible;
   clip: auto; }
 
+@font-face {
+  font-family: 'Open-sans';
+  src: url("/templates/standard/static/fonts/OpenSans-Light.ttf");
+  font-weight: 300; }
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url("/templates/standard/static/fonts/OpenSans-LightItalic.ttf");
+  font-weight: 300;
+  font-style: italic; }
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url("/templates/standard/static/fonts/OpenSans-Regular.ttf");
+  font-weight: 400; }
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url("/templates/standard/static/fonts/OpenSans-Italic.ttf");
+  font-weight: 400;
+  font-style: italic; }
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url("/templates/standard/static/fonts/OpenSans-Semibold.ttf");
+  font-weight: 600; }
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url("/templates/standard/static/fonts/OpenSans-SemiboldItalic.ttf");
+  font-weight: 600;
+  font-style: italic; }
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url("/templates/standard/static/fonts/OpenSans-Bold.ttf");
+  font-weight: 700; }
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url("/templates/standard/static/fonts/OpenSans-BoldItalic.ttf");
+  font-weight: 700;
+  font-style: italic; }
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url("/templates/standard/static/fonts/OpenSans-ExtraBold.ttf");
+  font-weight: 800; }
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url("/templates/standard/static/fonts/OpenSans-ExtraBoldItalic.ttf");
+  font-weight: 800;
+  font-style: italic; }
+
 .course-box__owner--1:before {
   background-image: url("images/icons/users/icon--1.svg"); }
 
@@ -2246,10 +2301,10 @@ h1, h2, h3, h4, h5, h6, p {
   margin: 0 auto;
   padding: 0;
   font-weight: normal;
-  font-family: "Lato", sans-serif; }
+  font-family: "Open-sans"; }
 
 .page-title {
-  font-weight: 900;
+  font-weight: 800;
   font-size: 32px; }
 
 .page-paragraph {
@@ -2266,8 +2321,8 @@ h1, h2, h3, h4, h5, h6, p {
   color: white;
   padding: 12px 14px 12px;
   background-color: #c84000;
-  font-family: "Lato", sans-serif;
-  font-size: 12px;
+  font-family: "Open-sans";
+  font-size: 14px;
   border-radius: 5px;
   box-shadow: none;
   cursor: pointer;
@@ -2310,7 +2365,6 @@ h1, h2, h3, h4, h5, h6, p {
     content: '\f101';
     font-family: "FontAwesome";
     font-size: inherit;
-    padding-left: 5px;
     color: rgba(255, 255, 255, 0.7); }
 
 * {
@@ -2355,7 +2409,7 @@ body {
   padding-bottom: 30px;
   border: 1px solid #ececec;
   border-radius: 5px;
-  font-family: "Lato", sans-serif;
+  font-family: "Open-sans";
   overflow: hidden;
   transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s; }
   .course-box:hover {
@@ -2394,9 +2448,13 @@ body {
   position: relative;
   width: 100%;
   height: 70px;
-  padding: 25px 0;
+  padding-top: 25px;
+  padding-right: 15px;
+  padding-bottom: 25px;
   color: #222222;
-  font-weight: 600; }
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.45; }
   .course-box__title:after {
     content: '';
     width: 30px;
@@ -2432,7 +2490,7 @@ body {
   position: relative;
   padding-bottom: 15px;
   padding-left: 35px;
-  font-size: 10px;
+  font-size: 12px;
   text-transform: uppercase;
   color: #999999; }
   .course-box__owner:before {
@@ -2449,8 +2507,8 @@ body {
 .course-box__desc {
   margin-bottom: 30px;
   color: #666666;
-  font-size: 13px;
-  line-height: 20px; }
+  font-size: 16px;
+  line-height: 1.625; }
   @media (min-width: 768px) {
     .course-box__desc {
       font-size: 16px; } }
@@ -2458,7 +2516,7 @@ body {
 .course-box__date-text {
   padding-top: 12px;
   color: #999999;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600; }
 
 .course-box__date-box {
@@ -2507,3 +2565,5 @@ i + .course-box__date-box {
   margin: 0 6px;
   padding-top: 18px;
   color: #999999; }
+
+/*# sourceMappingURL=main.css.map */
