@@ -39,3 +39,42 @@ body {
 .clear {
   clear: both;
 }
+//FIXME fixare griglia
+.pn-grid {
+  padding: 0 8.33%;
+  overflow: auto;
+
+  @include breakpoint($ipad) {
+    padding: 0;
+  }
+}
+
+.pn-grid__item {
+  float: left;
+  width: 100%;
+  padding: 0 5px;
+  margin: 5px 0;
+
+  @include breakpoint($tablet) {
+    width: 50%;
+  }
+
+  @include breakpoint($ipad) {
+    width: 33.33%;
+  }
+}
+
+.pn-grid__item--catalogue {
+  float: left;
+  width: 100%;
+  padding: 0 5px;
+  margin: 5px 0;
+
+  @include breakpoint($tablet) {
+    width: 50%;
+  }
+
+  @include breakpoint($ipad) {
+    width: 50%;
+  }
+}

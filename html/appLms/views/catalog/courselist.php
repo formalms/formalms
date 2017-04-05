@@ -25,10 +25,10 @@ $smodel = new CatalogLms();
 ?>
 
 
-<div class="col-md-12" style="padding: 0;">
+<!--<div class="col-md-12">-->
 <!--    <div class="main">-->
-        <div id="cbp-vm" class="cbp-vm-switcher" style="padding: 10px 0;">
-
+        <div id="cbp-vm" class="cbp-vm-switcher">
+            <div class="pn-grid">
 <!--            <ul>-->
                 <?php
                 while ($row = sql_fetch_assoc($result)) {
@@ -260,7 +260,7 @@ $smodel = new CatalogLms();
                     //here begins the course box
 
                     $html .= '
-                    <div class="pn-grid">
+                    <div class="pn-grid__item--catalogue">
                         <div class="course-box">
                             <div class="course-box__item">
                                 <div class="course-box__title">' . $row['name'] . '</div>
@@ -347,10 +347,10 @@ $smodel = new CatalogLms();
                         $html .= $action;
                     }
                     $html .= '   
-                        </div> //closes the pn_grid
+                        </div> <!-- //closes the pn_grid__item -->
                     </div>'; //closes course-box__item
 
-                }
+                } //fine ciclo
 
                 if (sql_num_rows($result) <= 0) {
                     $html = '<p>' . Lang::t('_NO_CONTENT', 'standard') . '</p>';
@@ -366,6 +366,7 @@ $smodel = new CatalogLms();
 <!--    </div><!-- /main -->
 
 </div>
+<!--</div>-->
 
 
 
