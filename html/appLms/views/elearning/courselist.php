@@ -78,6 +78,7 @@ function TruncateText($the_text, $size)
             <h1 class="page-header"><strong><?php echo Lang::t('_ELEARNING', 'catalogue'); ?></strong></h1>
 
             <div class="clearfix" id='mia_area_<?php echo $stato_corso; ?>'>
+
                 <?php foreach ($courselist as $course) : ?>
 
                     <div class="col-xs-10 col-sm-5 col-lg-4 course-block">
@@ -134,10 +135,9 @@ function TruncateText($the_text, $size)
                         <?php /*</li>*/ ?>
                     </div>
                 <?php endforeach; ?>
+                </div>
                 <?php /*</ul>*/ ?>
-            </div>
             <br>
-
             <?php 
             // END ELEARNING
         }

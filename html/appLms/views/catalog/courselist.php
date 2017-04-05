@@ -25,11 +25,11 @@ $smodel = new CatalogLms();
 ?>
 
 
-<div class="col-md-12">
-    <div class="main">
-        <div id="cbp-vm" class="cbp-vm-switcher">
+<div class="col-md-12" style="padding: 0;">
+<!--    <div class="main">-->
+        <div id="cbp-vm" class="cbp-vm-switcher" style="padding: 10px 0;">
 
-            <ul>
+<!--            <ul>-->
                 <?php
                 while ($row = sql_fetch_assoc($result)) {
 //                    echo '<pre>'. json_encode($row) . '</pre>';
@@ -257,9 +257,10 @@ $smodel = new CatalogLms();
                     $data_inizio_format = Format::date($data_inizio, 'date');
                     $data_end_format = Format::date($data_end, 'date');
 
-                    //here begins the <li> element
+                    //here begins the course box
 
                     $html .= '
+                    <div class="pn-grid">
                         <div class="course-box">
                             <div class="course-box__item">
                                 <div class="course-box__title">' . $row['name'] . '</div>
@@ -346,7 +347,7 @@ $smodel = new CatalogLms();
                         $html .= $action;
                     }
                     $html .= '   
-                             
+                        </div> //closes the pn_grid
                     </div>'; //closes course-box__item
 
                 }
@@ -358,11 +359,11 @@ $smodel = new CatalogLms();
                 echo $html; //returns course-box
 
                 ?>
-            </ul>
+<!--            </ul>-->
 
 
         </div>
-    </div><!-- /main -->
+<!--    </div><!-- /main -->
 
 </div>
 
