@@ -177,6 +177,7 @@ class CoursereportLmsController extends LmsController
                         switch ($info_report->getSourceOf()) {
                             case CoursereportLms::SOURCE_OF_TEST : {
 
+                                $testObj = Learning_Test::load($info_report->getIdSource());
                                 if (isset($tests_score[$info_report->getIdSource()][$idst_user])) {
 
                                     $scoreStatus = $tests_score[$info_report->getIdSource()][$idst_user]['score_status'];
@@ -236,16 +237,16 @@ class CoursereportLmsController extends LmsController
                                             break;
                                     }
                                 }
-                                $results_activity[] = array('id' => CoursereportLms::SOURCE_OF_TEST . "_" . $info_report->getIdSource(), "name" => strip_tags($tests_info[$info_report->getIdSource()]['title']));
+                                $results_activity[] = array('id' => CoursereportLms::SOURCE_OF_TEST . "_" . $info_report->getIdSource(), "name" => $testObj->getTitle());
                                 if ($info_report->isUseForFinal()) {
                                     array_push($results_test, $score * $info_report->getWeight());
                                 }
-                            };
+                            }
                                 break;
                             case CoursereportLms::SOURCE_OF_SCOITEM    : {
 
 
-                            };
+                            }
                                 break;
                             case CoursereportLms::SOURCE_OF_ACTIVITY    : {
 
@@ -308,7 +309,7 @@ class CoursereportLmsController extends LmsController
                                             break;
                                     }
                                 }
-                            };
+                            }
                                 break;
                             default: {
                                 $name = "";
@@ -360,10 +361,10 @@ class CoursereportLmsController extends LmsController
 
                             $type = ucfirst($testObj->getObjectType());
                             $id = $info_report->getIdSource();
-                            $name = strip_tags($tests_info[$info_report->getIdSource()]['title']);
+                            $name = $testObj->getTitle();
                             $showInDetail = $tests_info[$info_report->getIdSource()]['show_in_coursereport'] == "0" ? false : true;
 
-                            $results_activity[] = array('id' => $testObj->getObjectType() . "_" . $info_report->getIdSource(), "name" => strip_tags($tests_info[$info_report->getIdSource()]['title']));
+                            $results_activity[] = array('id' => $testObj->getObjectType() . "_" . $info_report->getIdSource(), "name" => $name);
 
                             if ($mod_perm) {
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
@@ -733,7 +734,7 @@ class CoursereportLmsController extends LmsController
                                                         'icon' => '',
                                                         'showIcon' => false,
                                                         'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $testObj->getTitle() . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
                                                         'active' => $testObj->isRetainAnswersHistory() ? true : false);
 
                                                     $values[] = $value;
@@ -783,7 +784,7 @@ class CoursereportLmsController extends LmsController
                                                     'icon' => '',
                                                     'showIcon' => false,
                                                     'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                    'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                    'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $testObj->getTitle() . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
                                                     'active' => $testObj->isRetainAnswersHistory() ? true : false);
 
                                                 $values[] = $value;
@@ -805,7 +806,7 @@ class CoursereportLmsController extends LmsController
                                                         'icon' => 'cr_max_score',
                                                         'showIcon' => false,
                                                         'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $testObj->getTitle() . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
                                                         'active' => $testObj->isRetainAnswersHistory() ? true : false);
 
                                                     $values[] = $value;
@@ -824,7 +825,7 @@ class CoursereportLmsController extends LmsController
                                                         'icon' => '',
                                                         'showIcon' => false,
                                                         'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $testObj->getTitle() . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
                                                         'active' => $testObj->isRetainAnswersHistory() ? true : false);
 
                                                     $values[] = $value;
@@ -845,7 +846,7 @@ class CoursereportLmsController extends LmsController
                                                         'icon' => 'cr_max_score cr_not_passed',
                                                         'showIcon' => false,
                                                         'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $testObj->getTitle() . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
                                                         'active' => $testObj->isRetainAnswersHistory() ? true : false);
 
                                                     $values[] = $value;
@@ -863,7 +864,7 @@ class CoursereportLmsController extends LmsController
                                                         'icon' => 'cr_not_passed',
                                                         'showIcon' => false,
                                                         'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $testObj->getTitle() . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
                                                         'active' => $testObj->isRetainAnswersHistory() ? true : false);
 
                                                     $values[] = $value;
