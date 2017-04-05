@@ -30,7 +30,7 @@ class Module_Poll extends LmsModule {
 				$back_url = importVar('back_url');
 				
 				$object_poll = createLO( 'poll', $id_poll );
-				$object_poll->play( $id_poll, $id_param, unserialize(urldecode($back_url)) );
+				$object_poll->play( $id_poll, $id_param, Util::unserialize(urldecode($back_url)) );
 			};break;
 			default : {
 				parent::loadBody();

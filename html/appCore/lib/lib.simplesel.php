@@ -229,7 +229,7 @@ class SimpleSelector {
 		
 		$res .= $tab->getTable();
 		
-		$res.=$form->getHidden("saved_data", "saved_data", urlencode(serialize($saved_data)));
+		$res.=$form->getHidden("saved_data", "saved_data", urlencode(Util::serialize($saved_data)));
 		
 		$res.=$form->openButtonSpace();
 		$res.=$form->getButton('okselector_org', 'okselector_org', $lang->def('_CONFIRM'));
@@ -309,7 +309,7 @@ class SimpleSelector {
 
 		$res.=$tab->getTable();
 
-		$res.=$form->getHidden("saved_data", "saved_data", urlencode(serialize($saved_data)));
+		$res.=$form->getHidden("saved_data", "saved_data", urlencode(Util::serialize($saved_data)));
 
 		$res.=$form->openButtonSpace();
 		
@@ -408,7 +408,7 @@ class SimpleSelector {
 		else { // saving from simple selector
 
 			$user_list=$this->getSimpleUserList();
-			$saved_data=unserialize(urldecode($_POST["saved_data"]));
+			$saved_data=Util::unserialize(urldecode($_POST["saved_data"]));
 
 			foreach ($this->getPermList() as $key=>$val) {
 				$i=0;
@@ -455,7 +455,7 @@ class SimpleSelector {
 			$user_list[$idst] = $translation;
 		}
 		
-		$saved_data=unserialize(urldecode($_POST["saved_data"]));
+		$saved_data=Util::unserialize(urldecode($_POST["saved_data"]));
 
 		foreach ($this->getPermList() as $key=>$val) {
 			$i=0;

@@ -3002,7 +3002,7 @@ class Report extends \ReportPlugin{
         checkPerm('view');
         $view_all_perm = checkPerm('view_all', true);
 
-        require_once("report_tableprinter.php");
+        require_once(_lms_.'/admin/modules/report/report_tableprinter.php');
 
         function is_showed($which, $data) {
             if (isset($data['columns_filter'])) {
@@ -3379,7 +3379,7 @@ class Report extends \ReportPlugin{
     }
 
     function _get_communications_query($type = 'html', $report_data = NULL, $other = '') {
-        require_once(dirname(__FILE__).'/report_tableprinter.php');
+        require_once(_lms_.'/admin/modules/report/report_tableprinter.php');
 
         if ($report_data==NULL) $ref =& $_SESSION['report_tempdata']; else $ref =& $report_data;
 
@@ -3627,7 +3627,7 @@ class Report extends \ReportPlugin{
 
 
     function _get_games_query($type = 'html', $report_data = NULL, $other = '') {
-        require_once(dirname(__FILE__).'/report_tableprinter.php');
+        require_once(_lms_.'/admin/modules/report/report_tableprinter.php');
 
         if ($report_data==NULL) $ref =& $_SESSION['report_tempdata']; else $ref =& $report_data;
 

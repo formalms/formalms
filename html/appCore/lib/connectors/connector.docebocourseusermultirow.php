@@ -478,7 +478,7 @@ class DoceboConnectorUI_DoceboCourseUserMultiRowUI extends DoceboConnectorUI {
 
 		} else {
 			// get previous values
-			$this->post_params = unserialize(urldecode($post[$this->_get_base_name()]['memory']));
+			$this->post_params = Util::unserialize(urldecode($post[$this->_get_base_name()]['memory']));
 			$arr_new_params = $post[$this->_get_base_name()];
 			// overwrite with the new posted values
 			foreach($arr_new_params as $key => $val) {
@@ -536,7 +536,7 @@ class DoceboConnectorUI_DoceboCourseUserMultiRowUI extends DoceboConnectorUI {
 		// save parameters
 		$out .=  $this->form->getHidden($this->_get_base_name().'_memory',
 										$this->_get_base_name().'[memory]',
-										urlencode(serialize($this->post_params)) );
+										urlencode(Util::serialize($this->post_params)) );
 		
 		return $out;
 	}

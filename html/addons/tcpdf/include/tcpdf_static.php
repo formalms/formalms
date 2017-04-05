@@ -2457,7 +2457,7 @@ class TCPDF_STATIC {
 	 * @public static
 	 */
 	public static function serializeTCPDFtagParameters($pararray) {
-		return urlencode(serialize($pararray));
+		return urlencode(Util::serialize($pararray));
 	}
 
 	/**

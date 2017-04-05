@@ -514,10 +514,10 @@ class MyFileSelector {
 		// older selection
 		if(isset($_POST['old_selection'])) {
 			
-			$this->current_selection = unserialize(urldecode($_POST['old_selection']));
+			$this->current_selection = Util::unserialize(urldecode($_POST['old_selection']));
 		}
 		// add last selection
-		if(isset($_POST['displayed'])) $displayed = unserialize(urldecode($_POST['displayed']));
+		if(isset($_POST['displayed'])) $displayed = Util::unserialize(urldecode($_POST['displayed']));
 		else $displayed = array();
 		if(isset($_POST['new_file_selected'])) {
 			
@@ -593,8 +593,8 @@ class MyFileSelector {
 		// print selector
 		$GLOBALS['page']->add(
 			Form::getHidden('working_area', 'working_area', $active_tab)
-			.Form::getHidden('old_selection', 'old_selection', urlencode(serialize($this->current_selection)))
-			.Form::getHidden('displayed', 'displayed', urlencode(serialize($id_list)))
+			.Form::getHidden('old_selection', 'old_selection', urlencode(Util::serialize($this->current_selection)))
+			.Form::getHidden('displayed', 'displayed', urlencode(Util::serialize($id_list)))
 			.$tab_man->printTabView_Begin('', false)
 			.$tb->getTable()
 			.$tab_man->printTabView_End()

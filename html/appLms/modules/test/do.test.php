@@ -67,7 +67,7 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
     $id_test = $object_test->getId();
     $test_type = $object_test->getObjectType();
     $id_reference = getLoParam($id_param, 'idReference');
-    $url_coded = urlencode(serialize($object_test->back_url));
+    $url_coded = urlencode(Util::serialize($object_test->back_url));
     $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
 
     if ($id_track === false) {
@@ -524,7 +524,7 @@ function playTestDispatch($object_test, $id_param)
     $lang =& DoceboLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
-    $url_coded = urlencode(serialize($object_test->back_url));
+    $url_coded = urlencode(Util::serialize($object_test->back_url));
     $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
 
     if (isset($_POST['deleteandbegin'])) {
@@ -603,7 +603,7 @@ function play($object_test, $id_param)
     $lang =& DoceboLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
-    $url_coded = urlencode(serialize($object_test->back_url));
+    $url_coded = urlencode(Util::serialize($object_test->back_url));
     $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
 
     if ($id_track === false) {
@@ -1009,7 +1009,7 @@ function saveAndExit($object_test, $id_param)
     $lang =& DoceboLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
-    $url_coded = urlencode(serialize($object_test->back_url));
+    $url_coded = urlencode(Util::serialize($object_test->back_url));
     $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
 
     if ($id_track === false) {
@@ -1114,7 +1114,7 @@ function showResult($object_test, $id_param)
     $lang =& DoceboLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
-    $url_coded = urlencode(serialize($object_test->back_url));
+    $url_coded = urlencode(Util::serialize($object_test->back_url));
     $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
     $trackObj = new Track_Test($id_track);
 

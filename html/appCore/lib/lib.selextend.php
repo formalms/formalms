@@ -84,7 +84,7 @@ class ExtendSelector {
 		}
 
 		if (isset($_POST[$pfx."_selected_items"]))
-			$old_sel=unserialize(urldecode($_POST[$pfx."_selected_items"]));
+			$old_sel=Util::unserialize(urldecode($_POST[$pfx."_selected_items"]));
 		else
 			$old_sel=false;
 		foreach($valid_keys as $key=>$val) {
@@ -158,7 +158,7 @@ class ExtendSelector {
 			$serialized_var=$_POST[$pfx."_database_items"];
 
 		if (isset($serialized_var))
-			return unserialize(urldecode($serialized_var));
+			return Util::unserialize(urldecode($serialized_var));
 		else
 			return array();
 	}
@@ -212,8 +212,8 @@ class ExtendSelector {
 		require_once(_base_."/lib/lib.form.php");
 		$form=new Form();
 		$res="";
-		$res.=$form->getHidden($pfx."_selected_items", $pfx."_selected_items", urlencode(serialize($this->selected_items)));
-		$res.=$form->getHidden($pfx."_database_items", $pfx."_database_items", urlencode(serialize($this->database_items)));
+		$res.=$form->getHidden($pfx."_selected_items", $pfx."_selected_items", urlencode(Util::serialize($this->selected_items)));
+		$res.=$form->getHidden($pfx."_database_items", $pfx."_database_items", urlencode(Util::serialize($this->database_items)));
 		return $res;
 	}
 

@@ -552,7 +552,7 @@ class CatalogLmsController extends LmsController {
 			$subs_man = new CourseSubscribe_Management();
 
 			$id_path = Get::req('id_path', DOTY_INT, 0);
-			$user_selected = unserialize(urldecode(Get::req('users', DOTY_MIXED, array())));
+			$user_selected = Util::unserialize(urldecode(Get::req('users', DOTY_MIXED, array())));
 
 			$courses = $cpath_man->getAllCourses(array($id_path));
 
