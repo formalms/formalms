@@ -368,6 +368,9 @@ class CoursereportLms extends Model
     {
         $responseArray = array();
 
+        if (count($this->courseReports) == 0) {
+            $this->grabCourseReports();
+        }
         foreach ($this->courseReports as $courseReport) {
 
             if ($sourceOf === null || $courseReport->getSourceOf() === $sourceOf) {

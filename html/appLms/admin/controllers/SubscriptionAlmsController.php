@@ -1144,7 +1144,7 @@ class SubscriptionAlmsController extends AlmsController {
 				if (isset($_POST['back'])) {
 					$course_selector->parseForState($_POST);
 
-					$course_selection = urlencode(serialize($course_selector->getSelection()));
+					$course_selection = urlencode(Util::serialize($course_selector->getSelection()));
 
 					$user_selector->addFormInfo(Form::getHidden('course_selection', 'course_selection', $course_selection));
 				}
@@ -1168,7 +1168,7 @@ class SubscriptionAlmsController extends AlmsController {
 					$user_selector->resetSelection(array());
 
 				if (isset($_POST['user_selection']))
-					$user_selector->resetSelection(unserialize(urldecode($_POST['user_selection'])));
+					$user_selector->resetSelection(Util::unserialize(urldecode($_POST['user_selection'])));
 
 				$user_selector->setUserFilter('exclude', array($this->acl_man->getAnonymousId()));
 
@@ -1215,11 +1215,11 @@ class SubscriptionAlmsController extends AlmsController {
 					if (count($user_selected) == 0)
 						Util::jump_to('index.php?r='.$this->link.'/multiplesubscription');
 
-					$model->setUserData(urlencode(serialize($user_selected)));
+					$model->setUserData(urlencode(Util::serialize($user_selected)));
 				}
 				$course_selector->parseForState($_POST);
 				if (isset($_POST['course_selection']))
-					$course_selector->resetSelection(unserialize(urldecode($_POST['course_selection'])));
+					$course_selector->resetSelection(Util::unserialize(urldecode($_POST['course_selection'])));
 				elseif (isset($_POST['okselector']))
 					$course_selector->resetSelection(array());
 
@@ -1236,7 +1236,7 @@ class SubscriptionAlmsController extends AlmsController {
 				else
 				{
 					$course_selector->parseForState($_POST);
-					$course_selection = urlencode(serialize($course_selector->getSelection()));
+					$course_selection = urlencode(Util::serialize($course_selector->getSelection()));
 				}
 
 				$control = $model->controlCoursesWithEdition($course_selector->getSelection());
@@ -1247,16 +1247,16 @@ class SubscriptionAlmsController extends AlmsController {
 				}
 				else
 				{
-					$courses  = unserialize(urldecode($course_selection));
+					$courses  = Util::unserialize(urldecode($course_selection));
 					$edition_selected = array();
 
 					foreach($courses as $id_course)
 						if(isset($_POST['edition_'.$id_course]))
 							$edition_selected[$id_course] = (int)$_POST['edition_'.$id_course];
 
-					$model->loadSelectedUser(unserialize(urldecode($user_selection)));
+					$model->loadSelectedUser(Util::unserialize(urldecode($user_selection)));
 
-					$this->render('multiple_subscription_3', array('model' => $model, 'course_selection' => $course_selection, 'user_selection' => $user_selection, 'edition_selected' => urlencode(serialize($edition_selected))));
+					$this->render('multiple_subscription_3', array('model' => $model, 'course_selection' => $course_selection, 'user_selection' => $user_selection, 'edition_selected' => urlencode(Util::serialize($edition_selected))));
 				}
 				break;
 
@@ -1271,9 +1271,9 @@ class SubscriptionAlmsController extends AlmsController {
 				$course_selection = $_POST['course_selection'];
 				$edition_selected = $_POST['edition_selected'];
 
-				$user_selected = unserialize(urldecode($user_selection));
-				$course_selected = unserialize(urldecode($course_selection));
-				$edition_selected = unserialize(urldecode($edition_selected));
+				$user_selected = Util::unserialize(urldecode($user_selection));
+				$course_selected = Util::unserialize(urldecode($course_selection));
+				$edition_selected = Util::unserialize(urldecode($edition_selected));
 
 				if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 					$limited_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');

@@ -355,11 +355,11 @@ class RepoDirDb extends TreeDb {
 		if( $arrData['accessGroups'] == '' ) 
 			$arrGroups = array();
 		else
-			$arrGroups = unserialize(urldecode($arrData['accessGroups']));
+			$arrGroups = Util::unserialize(urldecode($arrData['accessGroups']));
 		if( $arrData['accessUsers'] == '' ) 
 			$arrUsers = array();
 		else
-			$arrUsers = unserialize(urldecode($arrData['accessUsers']));
+			$arrUsers = Util::unserialize(urldecode($arrData['accessUsers']));
 		$this->setAccess( $arrData['idItem'], $arrGroups, $arrUsers );
 			*/
 		/* TODO: LO management in repo
@@ -594,13 +594,13 @@ class RepoTreeView extends TreeView {
 		$printedItems = array();
 		if( isset( $arrayState[$this->id] ) ) {
 			if( isset( $arrayState[$this->id][REPO_ID_SELECTIONSTATE] )) {
-				$this->itemSelectedMulti = unserialize(urldecode($arrayState[$this->id][REPO_ID_SELECTIONSTATE]));
+				$this->itemSelectedMulti = Util::unserialize(urldecode($arrayState[$this->id][REPO_ID_SELECTIONSTATE]));
 			}
 			if( isset( $arrayState[$this->id][REPO_OP_SELECTITEM] )) {
 				$itemSelectedMulti = array_keys ( $arrayState[$this->id][REPO_OP_SELECTITEM] );
 			}
 			if( isset( $arrayState[$this->id][REPO_ID_PRINTEDITEM] )) {
-				$printedItems = unserialize(urldecode($arrayState[$this->id][REPO_ID_PRINTEDITEM]));
+				$printedItems = Util::unserialize(urldecode($arrayState[$this->id][REPO_ID_PRINTEDITEM]));
 			}
 			if( isset( $arrayState[$this->id][REPO_OP_SELECTMONO] )) {
 				$itemSelectedMulti = array($arrayState[$this->id][REPO_OP_SELECTMONO]);
@@ -888,7 +888,7 @@ class RepoTreeView extends TreeView {
 		$ot .='<input type="hidden"'
 			.' id="'.$this->id.REPO_ID_SELECTIONSTATE.'"'
 			.' name="'.$this->id.'['.REPO_ID_SELECTIONSTATE.']"'
-			.' value="'.urlencode(serialize($this->itemSelectedMulti)).'" />'."\n";
+			.' value="'.urlencode(Util::serialize($this->itemSelectedMulti)).'" />'."\n";
 		return $ot;
 	}
 	
@@ -924,7 +924,7 @@ class RepoTreeView extends TreeView {
 			$ot .='<input type="hidden"'
 				.' id="'.$this->id.'_'.REPO_ID_PRINTEDITEM.'"'
 				.' name="'.$this->id.'['.REPO_ID_PRINTEDITEM.']"'
-				.' value="'.urlencode(serialize($this->printed_items)).'" />'."\n";
+				.' value="'.urlencode(Util::serialize($this->printed_items)).'" />'."\n";
 		}
 		return $ot;
 	}

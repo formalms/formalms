@@ -680,7 +680,7 @@ class MessageModule {
 
 		if(isset($_POST['message']['recipients'])) {
 
-			$recipients = unserialize(urldecode($_POST['message']['recipients']));
+			$recipients = Util::unserialize(urldecode($_POST['message']['recipients']));
 			$user_select->resetSelection($recipients);
 		}
 
@@ -768,14 +768,14 @@ class MessageModule {
 
 			if(isset($_GET['reply_recipients'])) {
 				$user_selected = unserialize(stripslashes(urldecode($_GET['reply_recipients'])));
-				$recipients = urlencode(serialize($user_selected));
+				$recipients = urlencode(Util::serialize($user_selected));
 			} else {
 				$user_select 	= new UserSelector();
 				$user_selected = $user_select->getSelection($_POST);
-				$recipients = urlencode(serialize($user_selected));
+				$recipients = urlencode(Util::serialize($user_selected));
 			}
 		} else {
-			$user_selected = unserialize(urldecode($_POST['message']['recipients']));
+			$user_selected = Util::unserialize(urldecode($_POST['message']['recipients']));
 			$recipients = urlencode($_POST['message']['recipients']);
 		}
 
@@ -1207,8 +1207,8 @@ class MessageModule {
 			else
 			{
 				$reply_url = $this->mvc_urls
-					? 'index.php?r=message/write&reply_recipients='.urlencode(serialize($sender_arr))
-					: $um->getUrl('op=writemessage&reply_recipients='.urlencode(serialize($sender_arr)));
+					? 'index.php?r=message/write&reply_recipients='.urlencode(Util::serialize($sender_arr))
+					: $um->getUrl('op=writemessage&reply_recipients='.urlencode(Util::serialize($sender_arr)));
 				$output .= '<p class="message_reply"><a href="'.$reply_url.'">'.Lang::t('_REPLY').'</a></p>';
 			}
 		$output .= '</div>';

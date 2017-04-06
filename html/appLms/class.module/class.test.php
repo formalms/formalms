@@ -31,7 +31,7 @@ class Module_Test extends LmsModule {
 				$test_type = importVar('test_type', false, 'test');
 				
 				$object_poll = createLO( $test_type, $idTest );
-				$object_poll->play( $idTest, $id_param, unserialize(urldecode($back_url)) );
+				$object_poll->play( $idTest, $id_param, Util::unserialize(urldecode($back_url)) );
 			};break;
 			default : {
 				parent::loadBody();

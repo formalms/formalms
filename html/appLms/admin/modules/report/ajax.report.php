@@ -13,8 +13,8 @@
 
 if(Docebo::user()->isAnonymous()) die('You can\'t access');
 
-function _encode(&$data) { return serialize($data); } //{ return urlencode(serialize($data)); }
-function _decode(&$data) { return unserialize($data); } //{ return unserialize(urldecode($data)); }
+function _encode(&$data) { return serialize($data); } //{ return urlencode(Util::serialize($data)); }
+function _decode(&$data) { return unserialize($data); } //{ return Util::unserialize(urldecode($data)); }
 
 
 $rep_cat = Get::req('rep_cat', DOTY_ALPHANUM, false);

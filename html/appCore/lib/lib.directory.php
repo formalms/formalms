@@ -240,26 +240,26 @@ class PeopleListView extends ListView {
 		$out .= '<input type="hidden"'
 			.' id="'.$this->id.'_cfield_state"'
 			.' name="'.$this->id.'[cfield_state]"'
-			.' value="'.urlencode(serialize($this->cFields)).'" />'."\n";
+			.' value="'.urlencode(Util::serialize($this->cFields)).'" />'."\n";
 		$out .= '<input type="hidden"'
 			.' id="'.$this->id.'_order_state"'
 			.' name="'.$this->id.'[order_state]"'
-			.' value="'.urlencode(serialize($this->arr_fields_order)).'" />'."\n";
+			.' value="'.urlencode(Util::serialize($this->arr_fields_order)).'" />'."\n";
 		$out .= '<input type="hidden"'
 			.' id="'.DIRECTORY_ID.DIRECTORY_ID_PRINTEDITEM.'"'
 			.' name="'.DIRECTORY_ID.'['.DIRECTORY_ID_PRINTEDITEM.']"'
-			.' value="'.urlencode(serialize($this->printedItems)).'" />'."\n";
+			.' value="'.urlencode(Util::serialize($this->printedItems)).'" />'."\n";
 		// save state of custom columns
 		Docebo::user()->preference->setPreference(
 						'ui.directory.custom_columns',
-						urlencode(serialize($this->cFields)));
+						urlencode(Util::serialize($this->cFields)));
 		Docebo::user()->preference->setPreference(
 						'ui.directory.order_columns',
-						urlencode(serialize($this->arr_fields_order)));
+						urlencode(Util::serialize($this->arr_fields_order)));
 		// save state of filter
 		Docebo::user()->preference->setPreference(
 						'ui.directory.filters.current',
-						urlencode(serialize($this->arr_fields_filter)));
+						urlencode(Util::serialize($this->arr_fields_filter)));
 
 		return $out;
 	}
@@ -431,7 +431,7 @@ class PeopleListView extends ListView {
 				$this->more_filter = $arrayState[$this->id]['directory_lessmore'];
 
 			if( isset($arrayState[$this->id]['order_state']) )
-				$this->arr_fields_order = unserialize(urldecode($arrayState[$this->id]['order_state']));
+				$this->arr_fields_order = Util::unserialize(urldecode($arrayState[$this->id]['order_state']));
 
 
 			$isFieldsSet = FALSE;
@@ -460,7 +460,7 @@ class PeopleListView extends ListView {
 					break;
 					case 'cfield_state':
 						if( !$isFieldsSet )
-							$this->cFields = unserialize(urldecode($val));
+							$this->cFields = Util::unserialize(urldecode($val));
 					break;
 					case DIRECTORY_CFIELD:
 						$isFieldsSet = TRUE;
@@ -514,9 +514,9 @@ class PeopleListView extends ListView {
 			}
 		} else {
 			// default initializations
-			$this->cFields = unserialize(urldecode(Docebo::user()->preference->getPreference( 'ui.directory.custom_columns' )));
-			$this->arr_fields_order = unserialize(urldecode(Docebo::user()->preference->getPreference( 'ui.directory.order_columns' )));
-			$this->arr_fields_filter = unserialize(urldecode(Docebo::user()->preference->getPreference( 'ui.directory.filters.current' )));
+			$this->cFields = Util::unserialize(urldecode(Docebo::user()->preference->getPreference( 'ui.directory.custom_columns' )));
+			$this->arr_fields_order = Util::unserialize(urldecode(Docebo::user()->preference->getPreference( 'ui.directory.order_columns' )));
+			$this->arr_fields_filter = Util::unserialize(urldecode(Docebo::user()->preference->getPreference( 'ui.directory.filters.current' )));
 		}
 
 		// remove anonymous ================================================
@@ -1230,7 +1230,7 @@ class GroupListView extends ListView {
 		$out = '<input type="hidden"'
 			.' id="'.DIRECTORY_ID.DIRECTORY_ID_PRINTEDITEM.'"'
 			.' name="'.DIRECTORY_ID.'['.DIRECTORY_ID_PRINTEDITEM.']"'
-			.' value="'.urlencode(serialize($this->printedItems)).'" />'."\n";
+			.' value="'.urlencode(Util::serialize($this->printedItems)).'" />'."\n";
 		return $out;
 	}
 
