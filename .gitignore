@@ -20,3 +20,6 @@ test/behat/behat_config.yml
 html/plugins/**
 !html/plugins/ConferenceBBB
 !html/plugins/ConferenceTeleSkill
+
+frontend/node_modules
+courselist.php.bkp
