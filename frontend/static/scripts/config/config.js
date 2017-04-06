@@ -16,10 +16,10 @@ var Config = {
 			assetsUrl: 'http://formalms.local/static/'
 		},
 		stage: {
-			baseUrl: 'http://formalms.stage.it',
-			apiUrl: 'http://formalms.stage.it/',
-			shareUrl: 'http://formalms.stage.it/',
-			assetsUrl: 'http://formalms.stage.it/static/'
+			baseUrl: 'http://dev.formalms.org/feature/restyling-box-corsi',
+			apiUrl: 'http://dev.formalms.org/feature/restyling-box-corsi/',
+			shareUrl: 'http://dev.formalms.org/feature/restyling-box-corsi/',
+			assetsUrl: 'http://dev.formalms.org/feature/restyling-box-corsi/static/'
 		},
 		prod: {
 			baseUrl: 'http://www.formalms.it',
