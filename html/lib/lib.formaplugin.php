@@ -6,7 +6,7 @@
 
 class FormaPlugin {
     static function getName(){
-        $reflector = new ReflectionClass(static::class);
+        $reflector = new ReflectionClass( get_called_class() );
         $fn = $reflector->getFileName();
         $name=basename(dirname($fn));
         return $name;
