@@ -36,3 +36,4 @@ test/behat/behat_config.yml
 
 # Sezione Frontend
 frontend/node_modules
+courselist.php.bkp
