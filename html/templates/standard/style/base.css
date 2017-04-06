@@ -1765,9 +1765,3 @@ ul.tabs li.current{
     visibility: visible;
     opacity: 1;
 }
-
-/* FIX OVERLAY */
-
-#overlay_iframe {
-    display: none;
-}
