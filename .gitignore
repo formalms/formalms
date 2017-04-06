@@ -34,4 +34,5 @@ html/plugins/**
 html/config.php
 test/behat/behat_config.yml
 
+# Sezione Frontend
 frontend/node_modules
