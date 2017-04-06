@@ -209,13 +209,13 @@ tfoot.empty td {
     opacity: 1;
     pointer-events: auto;
     padding-bottom: 0;
-    height: 58px;
+    height: auto;
 
-    -webkit-transition: height .2s ease-in 0s;
-    -moz-transition: height .2s ease-in 0s;
-    -ms-transition: height .2s ease-in 0s;
-    -o-transition: height .2s ease-in 0s;
-    transition: height .2s ease-in 0s;
+    -webkit-transition: all .2s ease-in 0s;
+    -moz-transition: all .2s ease-in 0s;
+    -ms-transition: all .2s ease-in 0s;
+    -o-transition: all .2s ease-in 0s;
+    transition: all .2s ease-in 0s;
 }
 
 .button--add .dropdown li a {
