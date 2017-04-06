@@ -21,7 +21,7 @@
  * db name
  * charset to use in the db connection
  */
-$cfg['db_type'] = 'mysql';
+$cfg['db_type'] = '[%-DB_TYPE-%]';
 $cfg['db_host'] = '[%-DB_HOST-%]';
 $cfg['db_user'] = '[%-DB_USER-%]';
 $cfg['db_pass'] = '[%-DB_PASS-%]';

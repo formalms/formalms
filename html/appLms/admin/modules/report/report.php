@@ -71,13 +71,8 @@ function openreport($idrep=false) {
 	}
 	list($class_name, $file_name, $report_name) = sql_fetch_row($re_report);
 
-	if (file_exists(_base_ . '/customscripts/'._folder_lms_.'/admin/modules/report/'.$file_name) && Get::cfg('enable_customscripts', false) == true ){
-	    require_once(_base_ . '/customscripts/'._folder_lms_.'/admin/modules/report/'.$file_name);
-	} else {
-		require_once(_lms_.'/admin/modules/report/'.$file_name);
-	}
-	
-	$obj_report = new $class_name( $id_report );
+    $pg = new PluginManager('Report');
+    $obj_report = $pg->get_plugin(strtolower($class_name),array($id_report));
 
 	return $obj_report;
 }
@@ -363,7 +358,6 @@ function get_report_table($url='') {
 function reportlist() {
 	checkPerm('view');
 
-	require_once(_lms_.'/admin/modules/report/class.report.php'); //reportbox class
 	require_once(_lms_.'/admin/modules/report/report_schedule.php');
 	require_once(_base_.'/lib/lib.form.php');
 	require_once(_lms_.'/lib/lib.report.php');
@@ -638,11 +632,11 @@ function report_show_results($idrep = false) {
 		//['columns_filter_category'] 
 		if ($res && (sql_num_rows($res)>0)) {
 			list($class_name, $file_name) = sql_fetch_row($res);
-			if (file_exists(_base_ . '/customscripts/'._folder_lms_.'/admin/modules/report/'.$file_name) && Get::cfg('enable_customscripts', false) == true ){
+			/*if (file_exists(_base_ . '/customscripts/'._folder_lms_.'/admin/modules/report/'.$file_name) && Get::cfg('enable_customscripts', false) == true ){
 			    require_once(_base_ . '/customscripts/'._folder_lms_.'/admin/modules/report/'.$file_name);
 			} else {
 				require_once(_lms_.'/admin/modules/report/'.$file_name);
-			}
+			}*/
 		} else {
 			reportlist();
 		}
@@ -664,14 +658,19 @@ function report_show_results($idrep = false) {
 		
 		// create the report object
 		list($class_name, $file_name, $report_name, $filter_name, $filter_data, $author) = sql_fetch_row($re_report);
-		if (file_exists(_base_ . '/customscripts/'._folder_lms_.'/admin/modules/report/'.$file_name) && Get::cfg('enable_customscripts', false) == true ){
+		/*if (file_exists(_base_ . '/customscripts/'._folder_lms_.'/admin/modules/report/'.$file_name) && Get::cfg('enable_customscripts', false) == true ){
 		    require_once(_base_ . '/customscripts/'._folder_lms_.'/admin/modules/report/'.$file_name);
 		} else {
 			require_once(_lms_.'/admin/modules/report/'.$file_name);
-		}
+		}*/
 	}
-	
-	$obj_report = new $class_name( $idrep );
+	$pg = new PluginManager('Report');
+    $obj_report = $pg->get_plugin(strtolower($class_name),array($idrep));
+    if (!$obj_report){
+        require_once(_lms_.'/admin/modules/report/'.$file_name);
+        $obj_report = new $class_name( $idrep );
+    }
+
 	$obj_report->back_url = $start_url;
 	$obj_report->jump_url = 'index.php?modname=report&op=show_results&idrep='.$idrep;
 

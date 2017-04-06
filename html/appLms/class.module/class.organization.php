@@ -336,9 +336,9 @@ class Module_Organization extends LmsModule {
 				// back and out of the course
 				switch($from) {
 					case "catalogue" 	: { Util::jump_to('index.php?r=lms/catalog/show&sop=unregistercourse'); };break;
-					case "lo_plan" 		: { Util::jump_to('index.php?r='._after_login_.'&sop=unregistercourse'); };break;
-					case "lo_history" 	: { Util::jump_to('index.php?r='._after_login_.'&current_tab=lo_history&sop=unregistercourse'); };break;
-					default				: { Util::jump_to('index.php?r='._after_login_.'&sop=unregistercourse'); };break;
+					case "lo_plan" 		: { Util::jump_to('index.php?r='._lms_home_.'&sop=unregistercourse'); };break;
+					case "lo_history" 	: { Util::jump_to('index.php?r='._lms_home_.'&current_tab=lo_history&sop=unregistercourse'); };break;
+					default				: { Util::jump_to('index.php?r='._lms_home_.'&sop=unregistercourse'); };break;
 				}
 			}
 		}

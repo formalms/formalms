@@ -26,7 +26,6 @@ Boot::init(BOOT_PAGE_WR);
 // connect to the database
 $db =& DbConn::getInstance();
 
-if(Get::cfg('enable_plugins', false)) PluginManager::runPlugins();
 
 // some specific lib to load
 require_once(_lms_.'/lib/lib.istance.php');
@@ -88,35 +87,16 @@ if($module_cfg !== false && $module_cfg->hideLateralMenu()) {
 }
 
 // New MVC structure
-if(!empty($GLOBALS['req'])) {
+if (!empty($GLOBALS['req'])){
 
-	$GLOBALS['req'] = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $GLOBALS['req']);
-	$r = explode('/', $GLOBALS['req']);
-	if(count($r) == 3) {
-		// Position, class and method defined in the path requested
-		$mvc_class = ucfirst(strtolower($r[1])). ucfirst(strtolower($r[0])).'Controller';
-		$mvc_name = $r[1];
-		$task = $r[2];
-	} else {
-		// Only class and method defined in the path requested
-		$mvc_class = ''.ucfirst(strtolower($r[0])).'LmsController';
-		$mvc_name = $r[0];
-		$task = $r[1];
-	}
-	ob_clean();
-	$controller = new $mvc_class( $mvc_name );
-	$controller->request($task);
-
-	$GLOBALS['page']->add(ob_get_contents(), 'content');
-	ob_clean();
-
+    $requesthandler = new RequestHandler($GLOBALS['req'],'lms');
+    $requesthandler->run();
 } else {
 
-	// load module body
-	if(!empty($GLOBALS['modname'])) {
-		$module_cfg->loadBody();
-	}
-	
+    // load module body
+    if(!empty($GLOBALS['modname'])) {
+        $module_cfg->loadBody();
+    }
 }
 
 // -----------------------------------------------------------------------------

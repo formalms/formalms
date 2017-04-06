@@ -47,12 +47,14 @@ class DbConn {
      * @return bool|DbConn
      */
 	public static function &getInstance($link=false, $connection_parameters=array()) {
+        $db_type=Get::cfg('db_type');
 	    $host=Get::cfg('db_host');
         $user=Get::cfg('db_user');
         $pass=Get::cfg('db_pass');
         $name=Get::cfg('db_name');
-	    if (isset($connection_parameters['db_host']) && isset($connection_parameters['db_user']) && isset($connection_parameters['db_pass']) && isset($connection_parameters['db_name'])){
-            $host=$connection_parameters['db_host'];
+	    if (isset($connection_parameters['db_type']) && isset($connection_parameters['db_host']) && isset($connection_parameters['db_user']) && isset($connection_parameters['db_pass'])){
+            $db_type=$connection_parameters['db_type'];
+	        $host=$connection_parameters['db_host'];
             $user=$connection_parameters['db_user'];
             $pass=$connection_parameters['db_pass'];
             $name=$connection_parameters['db_name'];
@@ -61,8 +63,9 @@ class DbConn {
             return $link;
         }
 		if(self::$instance == NULL) {
-
-			$db_type = Get::cfg('db_type', ( function_exists('mysqli_connect') ? 'mysqli' : 'mysql' ) );
+            if(empty($db_type)){
+                $db_type = function_exists('mysqli_connect') ? 'mysqli' : 'mysql' ;
+            }
 			switch($db_type) {
 				case "mysql" : {
 

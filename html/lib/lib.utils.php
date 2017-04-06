@@ -209,7 +209,7 @@ class Util  {
 		) {
 			// Invalid request
 			if (!defined('IS_AJAX')) {
-				Util::jump_to(Get::rel_path('lms').'/index.php?modname=login&op=logout&msg=101');
+				Util::jump_to(Get::rel_path("base") . "/index.php?r=" . _logout_); // TODO: msg 101
 			}
 			Util::fatal('Security issue, the request seem invalid ! Try a new login and retry.');
 		}

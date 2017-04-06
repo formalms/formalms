@@ -306,14 +306,18 @@ class DoceboUser {
 	}
 
 
-	public static function setupUser(& $user) { //TODO: improve this; for now it is used in appLms/modules/login/login.php - 20100723
-		$user	->loadUserSectionST();
-		$user->SaveInSession();
-		$GLOBALS['current_user'] = $user;
+	public static function setupUser(&$user) {
+		
+            $user->loadUserSectionST();
+            $user->SaveInSession();
+            
+            resetTemplate();
 
-		$_SESSION['last_enter'] = $user->getLastEnter();
-		$_SESSION['user_enter_mark'] = time();
-		$user->setLastEnter(date("Y-m-d H:i:s"));
+            $GLOBALS['current_user'] = $user;
+            $_SESSION['last_enter'] = $user->getLastEnter();
+            $_SESSION['user_enter_mark'] = time();
+
+            $user->setLastEnter(date("Y-m-d H:i:s"));
 	}
 
 

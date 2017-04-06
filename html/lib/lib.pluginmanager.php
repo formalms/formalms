@@ -13,120 +13,149 @@
 
 class PluginManager {
 	protected static $plugin_list = array();
-
-	protected static $files = false;
-
+    public $category;
 	/**
 	 * Class constructor, this is a static class, don't call this
 	 */
-	public function __construct() {}
-
-	public static function find_files() {
-		
-		$files	= false;
-		$files = Docebo::cache()->get('plugin_files');
-		if($files === false) {
-
-			$files  = self::file_substituton(_plugins_);
-			Docebo::cache()->set('plugin_files', $files);
-		}
-		return $files;
-	}
-
-	public static function file_substituton($path) {
-
-		// user SPL iterator to recursive list all the plugins files
-		$dir_iterator = new RecursiveDirectoryIterator($path);
-		$iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
-
-		$plugins = array();
-		foreach ($iterator as $file) {
-			
-			if ($file->isFile()/* && (strpos($file->getPathname(), '.svn') === false) */) {
-
-				// this will be the path of the php file inside the plugin with the plugin name
-				$file_path = ltrim(str_replace(array($path, '\\'), array('', '/'), $file->getPathname()), '/');
-
-				// separate plugin name and the path of the file in order to have an array key with the
-				// file that must be included instead of the original one
-				$plugin_name = substr($file_path, 0, strpos($file_path, '/'));
-				$file_path = substr($file_path, strlen($plugin_name.'/'));
-
-				$plugins[$file_path] = $plugin_name;
-			}
-		}
-		return $plugins;
+	public function __construct($category) {
+        $this->category=$category;
     }
 
-	public static function autoload() {
-		require_once _adm_.'/models/PluginAdm.php';
-		
-		$pluginAdm = new PluginAdm();
-		$plugin_list=$pluginAdm->getInstalledPlugins();
-
-		foreach($plugin_list as $plugin_name) {
-
-			if(file_exists(_plugins_.'/'.$plugin_name.'/autoload.php')) 
-				include(_plugins_.'/'.$plugin_name.'/autoload.php');
-
-			$class_name=$plugin_name.'Plugin';
-			self::$plugin_list[$plugin_name]=$class_name;
-		}
+    public function load_lib(){
+        include(_lib_."/plugins/".$this->category."/loader.php");
     }
 
-	public static function config() {
-
-		// user SPL iterator to recursive list all the plugins files
-		$paths = glob( _plugins_.'/*' );
-		
-		$plugin_cfg = array();
-		foreach($paths as $folder) {
-			
-			$cfg = array();
-			if(file_exists($folder.'/config.php')) {
-				include( $folder.'/config.php');
-				$plugin_cfg = array_merge($plugin_cfg, $cfg);
-			} 
-		}
-		return $plugin_cfg;
+    private static function get_all_plugins($onlyActive = false){
+        if (empty(self::$plugin_list)) {
+            require_once _adm_ . '/models/PluginmanagerAdm.php';
+            $PluginmanagerAdm = new PluginmanagerAdm();
+            self::$plugin_list = $PluginmanagerAdm->getPlugins($onlyActive);
+        }
+        return self::$plugin_list;
     }
 
-    public function initPlugins(){
-
-		foreach(self::$plugin_list as $plugin_name => $class_name) {
-
-			if(file_exists(_plugins_.'/'.$plugin_name.'/'.$class_name.'.php')) 
-				include_once(_plugins_.'/'.$plugin_name.'/'.$class_name.'.php');
-
-			if (method_exists($class_name, 'init')) { 
-				call_user_func(array($class_name, 'init'), $plugin_name);
-			}
-
-		}
-    }
-
-    public function runPlugins(){
-    	foreach(self::$plugin_list as $plugin_name => $class_name) {
-			if(file_exists(_plugins_.'/'.$plugin_name.'/'.$class_name.'.php')) {
-                include_once(_plugins_ . '/' . $plugin_name . '/' . $class_name . '.php');
+    public function run_plugin($plugin,$method,$parameter=array()){
+        $category=$this->category;
+        if ($category!="") {
+            if (self::is_plugin_active($plugin)){
+                $this->load_lib();
+                if(self::include_plugin_file($plugin, 'Plugin.php')) {
+                    if(self::include_plugin_file($plugin, $category . '.php')) {
+                        $namespace_class = "Plugin\\" . $plugin. "\\" . $category;
+                        if (method_exists($namespace_class, $method)) {
+                            return call_user_func_array(array($namespace_class, $method), $parameter);
+                        }
+                    }
+                }
             }
-
-			if (method_exists($class_name, 'run')) {
-				call_user_func(array($class_name, 'run'), $plugin_name);
-			} else if (method_exists(_folder_plugins_.'\\'.$plugin_name.'\\'.$class_name, 'run')){
-				call_user_func(array(_folder_plugins_.'\\'.$plugin_name.'\\'.$class_name, 'run'), $plugin_name);
-			}
-
-		}
+        }
+        return false;
     }
 
-    public static function getPlugins($plugin_name = ""){
-    	if ($plugin_name != ""){
-    	  return self::$plugin_list[$plugin_name];
-    	}
-    	else{
-    	  return self::$plugin_list;
-    	}
+    public function run($method,$parameter=array()){
+        $return=array();
+        $category=$this->category;
+        if ($category!="") {
+            $plugin_list = self::get_all_plugins(true);
+            $this->load_lib();
+            foreach ($plugin_list as $class_name) {
+                if (self::is_plugin_active($class_name['name'])){
+                    if(self::include_plugin_file($class_name['name'], 'Plugin.php')) {
+                        if(self::include_plugin_file($class_name['name'], $category . '.php')) {
+                            $namespace_class = "Plugin\\" . $class_name['name'] . "\\" . $category;
+                            if (method_exists($namespace_class, $method)) {
+                                $return[] = call_user_func_array(array($namespace_class, $method), $parameter);
+                            }
+                        }
+                    }
+                }
+            }
+            return $return;
+        }
+        return false;
+    }
+
+    public function get_plugin($plugin,$parameter=array()){
+        $category=$this->category;
+        if ($category!="") {
+            if (self::is_plugin_active($plugin)) {
+                $this->load_lib();
+                if(self::include_plugin_file($plugin, 'Plugin.php')) {
+                    if(self::include_plugin_file($plugin, $category . '.php')) {
+                        $namespace_class = "Plugin\\" . $plugin . "\\" . $category;
+                        return new $namespace_class($parameter);
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    private static function is_plugin_active($plugin) {
+        
+        return in_array($plugin, array_column(self::get_all_plugins(true), 'name'));
+    }
+    
+    private static function include_plugin_file($plugin, $file) {
+        
+        $path = _plugins_ . '/' . $plugin . '/' . $file;
+        if(file_exists($path)) {
+            include_once($path);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    private static function get_plugin_by_request($mvc_app,$mvc_name) {
+
+        $query =  " SELECT p.name, r.controller, r.model "
+                . " FROM %adm_requests r"
+                . " INNER JOIN %adm_plugin p"
+                . "     ON r.plugin = p.plugin_id"
+                . " WHERE 1 = 1"
+                . "     AND r.app = '$mvc_app'"
+                . "     AND r.name = '$mvc_name'"
+                . "     AND p.active = 1"; // TODO: valutare se usare invece funzione is_plugin_active"
+        
+        $r = sql_query($query);        
+        list($plugin,$controller,$model) = sql_fetch_row($r);
+        return array($plugin,$controller,$model);
+    }
+    
+    public static function get_feature($mvc_app, $mvc_name) {
+        list($plugin,$controller,$model) = self::get_plugin_by_request($mvc_app,$mvc_name);
+        if(!isset($plugin) || !isset($controller) || !isset($model)) {
+            return false;
+        }
+        
+        if(!self::include_plugin_file($plugin, 'Plugin.php')) {
+            return false;
+        }
+                
+        switch(strtolower($mvc_app)) {
+            case 'adm':
+                $path_controller = _folder_adm_.'/controllers/';
+                $path_model = _folder_adm_.'/models/';
+                break;
+            case 'alms':
+                $path_controller = _folder_lms_.'/admin/controllers/';
+                $path_model = _folder_lms_.'/admin/models/';
+                break;
+            case 'lms':
+            case 'lobj':
+                $path_controller = _folder_lms_.'/controllers/';
+                $path_model = _folder_lms_.'/models/';
+                break;
+            default: return false;
+        }
+
+        if(!self::include_plugin_file($plugin, 'features/' . $path_controller . $controller . '.php')) {
+            return false;
+        }
+
+        self::include_plugin_file($plugin, 'features/' . $path_model . $model . '.php');
+        return new $controller($mvc_name);
     }
 }
 

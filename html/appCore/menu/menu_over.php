@@ -103,7 +103,7 @@ if(Docebo::user()->isLoggedIn()) {
 	// add logout voice
 	/*
 	cout('<li class="yuimenuitem">'.
-		'<a href="index.php?modname=login&amp;op=logout">'.
+		'<a href="'.Get::rel_path('base") . '/index.php?r=' . _logout_ . '">'.
 			//Get::img('menu/logout.png', '.:', 'icon').' '.
 			'<span class="admmenu_logout">'. Lang::t('_LOGOUT', 'menu', 'framework').'</span>'.
 		'</a>'.

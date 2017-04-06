@@ -1383,22 +1383,22 @@ INSERT INTO `core_platform` (`platform`, `class_file`, `class_name`, `class_file
 -- Struttura della tabella `core_plugin`
 --
 
-
 CREATE TABLE IF NOT EXISTS `core_plugin` (
   `plugin_id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `title` varchar(64) NOT NULL,
-  `code` varchar(32) NOT NULL,
-  `category` VARCHAR(255),
+  `category` varchar(255) DEFAULT NULL,
   `version` varchar(16) NOT NULL,
   `author` varchar(128) NOT NULL,
   `link` varchar(255) NOT NULL,
   `priority` int(5) NOT NULL,
   `description` text NOT NULL,
+  `regroup` int(11) NOT NULL,
   `active` int(1) NOT NULL,
+  `core` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`plugin_id`),
-  UNIQUE KEY `name` (`name`,`code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dump dei dati per la tabella `core_plugin`

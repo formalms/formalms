@@ -40,7 +40,10 @@ function validateInput(item_arr, op) {
 			disableBtnNext(!res['success']);
 
 			if (res['success']) {
-				hideWarnMsg();
+                hideWarnMsg();
+                if (res['msg']!=""){
+                    setWarnMsg(res['msg']);
+				}
 			}
 			else {
 				setWarnMsg(res['msg']);

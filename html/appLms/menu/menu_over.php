@@ -24,7 +24,7 @@ if(!Docebo::user()->isAnonymous()) {
    //** GESTIONE AREA PROFILO UTENTE **
    require_once (_lib_ . '/lib.user_profile.php');
    $profile = new UserProfile(getLogUserId());
-   $profile->init('profile', 'framework', 'index.php?r='._after_login_, 'ap');
+   $profile->init('profile', 'framework', 'index.php?r='._lms_home_, 'ap');
    $profile_box  = $profile->homeUserProfile('normal', false, false);
    $photo = $profile->homePhotoProfile('normal', false, false);
    
@@ -117,6 +117,16 @@ if(!Docebo::user()->isAnonymous()) {
             $menu_i++;
         }
     }
+    
+    
+    $pg = new PluginManager('MenuOverEvent');
+    $pg->run('hook');
+
+    $event = new \appLms\Events\Lms\MenuOverEvent($menu, $menu_i);
+    \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
+    
+    $menu = $event->getMenu();
+    $menu_i = $event->getMenuI();
 
     // Link for the administration
     if($user_level == ADMIN_GROUP_GODADMIN || $user_level == ADMIN_GROUP_ADMIN ) {
@@ -177,7 +187,7 @@ foreach ($menu['all'] as $row) {
                     .'</li>', 'menu_over');
             }             
 
-}  
+}    
                
 
                
@@ -218,7 +228,7 @@ foreach ($menu['all'] as $row) {
                                                                      <span class="glyphicon glyphicon-pencil"></span>
                                                                     </a>
                                                                     &nbsp;
-                                                                    <a title="'.Lang::t('_LOGOUT', 'standard').'" href="index.php?modname=login&amp;op=logout">
+                                                                    <a title="'.Lang::t('_LOGOUT', 'standard').'" href="'. Get::rel_path('base') . '/index.php?r=' . _logout_ . '">
                                                                     
                                                                         <span class="glyphicon glyphicon-off"></span>
                                                                         </a>
