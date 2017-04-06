@@ -211,15 +211,24 @@ window.CourseReport = (function ($) {
 
         var _parsed = [];
         var _showIcon;
+        var _isLinkActive;
+        var _link;
 
         $.each(result, function (i, elem) {
-          _showIcon = elem.showIcon;
+            _showIcon = elem.showIcon;
+            _isLinkActive = elem.active
 
-          if (_showIcon) {
-            _parsed.push('<a href="' + elem.link + '"><i class="fa fa-check"></i></a>');
-          } else {
-            _parsed.push('<a href="' + elem.link + '">' + elem.value + '</a>');
-          }
+            if (_isLinkActive) {
+                _link = elem.link;
+            } else {
+                _link = 'javascript:void(0);';
+            }
+
+            if (_showIcon) {
+              _parsed.push('<a href="' + _link + '"><i class="fa fa-check"></i></a>');
+            } else {
+              _parsed.push('<a href="' + _link + '">' + elem.value + '</a>');
+            }
 
         });
 
