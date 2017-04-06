@@ -92,8 +92,10 @@ class PluginManager {
     }
     
     private static function is_plugin_active($plugin) {
-        
-        return in_array($plugin, array_column(self::get_all_plugins(true), 'name'));
+
+        $active_plugins = array_map(function($element){return $element['name'];}, self::get_all_plugins(true));
+
+        return in_array($plugin, $active_plugins);
     }
     
     private static function include_plugin_file($plugin, $file) {
