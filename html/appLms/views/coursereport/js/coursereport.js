@@ -216,7 +216,7 @@ window.CourseReport = (function ($) {
 
         $.each(result, function (i, elem) {
             _showIcon = elem.showIcon;
-            _isLinkActive = elem.active
+            _isLinkActive = elem.active;
 
             if (_isLinkActive) {
                 _link = elem.link;
