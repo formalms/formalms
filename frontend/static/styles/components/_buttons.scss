@@ -23,14 +23,14 @@
   color: $white;
   background-color: $dark-orange;
   font-family: $font;
-  font-size: 14px;
+  font-size: 12px;
   border-radius: 5px;
   box-shadow: none;
   cursor: pointer;
   transition: background-color 0.4s ease 0s;
 
-  @include breakpoint($tablet) {
-    min-height: 40px;
+  @include breakpoint($ipad) {
+    font-size: 14px;
   }
 }
 
