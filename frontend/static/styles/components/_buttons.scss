@@ -7,12 +7,12 @@
 // Button default
 //
 // Markup:
-// <a class="button" href="#">
-//  <span class="button__label">button</span>
+// <a class="pn-button" href="#">
+//  <span class="pn-button__label">button</span>
 // </a>
 //
 // Style guide: 2.1
-.button {
+.pn-button {
   display: inline-block;
   width: 100%;
   height: auto;
@@ -37,12 +37,12 @@
 // Button orange:hover
 //
 // Markup:
-// <a class="button button--orange-hover" href="#">
-//  <span class="button__label">button</span>
+// <a class="pn-button button--orange-hover" href="#">
+//  <span class="pn-button__label">button</span>
 // </a>
 //
 // Style guide: 2.1.1
-.button--orange-hover {
+.pn-button--orange-hover {
   &:hover {
     background-color: $orange;
     color: $white;
@@ -52,18 +52,18 @@
 // Button disabled
 //
 // Markup:
-// <a class="button button--disabled" href="#">
-//  <span class="button__label">button</span>
+// <a class="pn-button button--disabled" href="#">
+//  <span class="pn-button__label">button</span>
 // </a>
 //
 // Style guide: 2.2
-.button--disabled {
+.pn-button--disabled {
   pointer-events: none;
   background-color: $white;
   border: 2px solid $gray-3;
   color: $gray-3;
   
-  .button__label {
+  .pn-button__label {
     &:before {
       content: '\f023';
       font-family: $icon;
@@ -80,29 +80,29 @@
 // Green Button
 //
 // Markup:
-// <a class="button button--green" href="#">
-//  <span class="button__label">button</span>
+// <a class="pn-button button--green" href="#">
+//  <span class="pn-button__label">button</span>
 // </a>
 //
 // Style guide: 2.3
-.button--green {
+.pn-button--green {
   background-color: $green;
 }
 
 // Gray Button
 //
 // Markup:
-// <a class="button button--gray" href="#">
-//  <span class="button__label">button</span>
+// <a class="pn-button button--gray" href="#">
+//  <span class="pn-button__label">button</span>
 // </a>
 //
 // Style guide: 2.4
-.button--gray {
+.pn-button--gray {
   pointer-events: none;
   background-color: $gray-3;
 }
 
-.button__label {
+.pn-button__label {
   position: relative;
   display: inline-block;
   color: inherit;
