@@ -71,7 +71,7 @@ function TruncateText($the_text, $size)
 
 <div id="container1_<?php echo $stato_corso; ?>">
 
-    <div id="cbp-vm">
+    <div id="cbp-vm" style="padding: 0">
 
         <?php
         if ($filter_type == "all" || $filter_type == 'elearning') { ?>
@@ -83,7 +83,7 @@ function TruncateText($the_text, $size)
                 <?php foreach ($courselist as $course) : ?>
 
                     <div class="pn-grid__item">
-<!--                    <div class="col-xs-10 col-sm-5 col-lg-4 course-block">-->
+<!--                    <div class="col-xs-10 col-sm-5 col-lg-4 course-block">//TODO add box description-->
 <!--                    <div class="col col--10 col--5--tablet col--4--desk course-block">-->
                         <div class="course-box"> <!-- NEW BLOCK -->
                             <div class="course-box__item">
