@@ -52,8 +52,8 @@ body {
 .pn-grid__item {
   float: left;
   width: 100%;
-  padding: 0 5px;
-  margin: 5px 0;
+  padding: 0 0.78%;
+  margin-bottom: 30px;
 
   @include breakpoint($tablet) {
     width: 50%;

@@ -93,7 +93,7 @@
   width: 100%;
   min-height: 330px;
   padding-bottom: 30px;
-  border: 1px solid $gray-4;
+  border: 2px solid $gray-4;
   border-radius: 5px;
   font-family: $font;
   overflow: hidden;
@@ -101,7 +101,7 @@
   max-height: 565px;
 
   &:hover {
-    border: 1px solid $orange;
+    border: 2px solid $orange;
     box-shadow: $gray-3 0px 5px 20px 0px;
 
     .course-box__img-title {
@@ -122,7 +122,8 @@
   };
 
   &:nth-child(3) {
-    padding-top: 30px;
+    padding-top: 20px;
+    min-height: 90px;
   }
 }
 
@@ -219,9 +220,10 @@
   position: relative;
   padding: {
     bottom: 15px;
-    left: 35px;
+    left: 40px;
   };
   font-size: 12px;
+  font-weight: bold;
   text-transform: uppercase;
   color: $gray-2;
 
@@ -245,7 +247,6 @@
   color: $gray-1;
   font-size: 16px;
   line-height: 1.625;
-  height: 150px;
 
   @include breakpoint($tablet) {
     font-size: 16px;
@@ -253,12 +254,10 @@
 }
 
 .course-box__date-text {
-  padding: {
-    top: 12px;
-  };
   color: $gray-2;
   font-size: 14px;
   font-weight: 600;
+  line-height: 40px;
 }
 
 .course-box__date-box {
