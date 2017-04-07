@@ -27,7 +27,7 @@ $smodel = new CatalogLms();
 
 <!--<div class="col-md-12">-->
 <!--    <div class="main">-->
-        <div id="cbp-vm" class="cbp-vm-switcher">
+        <div id="cbp-vm" class="cbp-vm-switcher" style="padding: 10px 0;">
             <div class="pn-grid">
 <!--            <ul>-->
                 <?php
