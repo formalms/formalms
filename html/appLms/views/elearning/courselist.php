@@ -119,15 +119,15 @@ function TruncateText($the_text, $size)
                             </div>
                             <div class="course-box__item course-box__item--half">
                                 <?php if ($course['can_enter']['can']) { ?>
-                                    <a class="button button--orange-hover" title="<?php echo Util::purge($course['name']); ?>"
+                                    <a class="pn-button pn-button--orange-hover" title="<?php echo Util::purge($course['name']); ?>"
                                        href="index.php?modname=course&amp;op=aula&amp;idCourse=<?php echo $course['idCourse']; ?>"<?php echo($course['direct_play'] == 1 && $course['level'] <= 3 && $course['first_lo_type'] == 'scormorg' ? ' rel="lightbox"' : ''); ?>>
-                                   <span class="button__label">
+                                   <span class="pn-button__label">
                                      <?php echo Lang::t('_USER_STATUS_ENTER', 'catalogue'); ?>
                                    </span>
                                     </a>
                                 <?php } else { ?>
-                                    <a class="button button--disabled" href="javascript:void(0);">
-                                       <span class="button__label">
+                                    <a class="pn-button pn-button--disabled" href="javascript:void(0);">
+                                       <span class="pn-button__label">
                                          DISABLED
                                        </span>
                                     </a>

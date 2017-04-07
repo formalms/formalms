@@ -39,8 +39,8 @@ $smodel = new CatalogLms();
                         $classrooms = $smodel->classroom_man->getCourseDate($row['idCourse'], false);
                         $action = '<div class="course-box__item" id="action_' . $row['idCourse'] . '">';
                         if (count($classrooms) == 0)
-                            $action .= '<a class="button button--disabled">
-                                            <span class="button__label">' . Lang::t('_NO_EDITIONS', 'catalogue') . '</span>
+                            $action .= '<a class="pn-button pn-button--disabled">
+                                            <span class="pn-button__label">' . Lang::t('_NO_EDITIONS', 'catalogue') . '</span>
                                         </a>';
                         else {
                             //Controllo che l'utente non sia iscritto a tutte le edizioni future
@@ -58,19 +58,19 @@ $smodel = new CatalogLms();
                             if (count($control) == 0) {
                                 if (!empty($overbooking_classroom)) {
                                     $_text = ($row['selling'] == 0 ? Lang::t('_SUBSCRIBE', 'catalogue') : Lang::t('_ADD_TO_CART', 'catalogue'));
-                                    $action .= '<a class="button button--green button--orange-hover" href="javascript:void(0);" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'' . ($row['selling'] == 0 ? '0' : '1') . '\')" '
-                                        . ' title="' . $_text . '"><span class="button__label">' . $_text . '<br />'
+                                    $action .= '<a class="pn-button pn-button--green pn-button--orange-hover" href="javascript:void(0);" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'' . ($row['selling'] == 0 ? '0' : '1') . '\')" '
+                                        . ' title="' . $_text . '"><span class="pn-button__label">' . $_text . '<br />'
                                         . '(' . Lang::t('_SUBSCRIBE_WITH_OVERBOOKING', 'catalogue') . ': ' . count($overbooking_classroom) . ')</span>'
                                         . '</a>';
                                 } else {
                                     if (count($user_classroom) > 0) {
-                                        $action .= '<a class="button button--orange-hover" href="index.php?modname=course&op=aula&idCourse=' . $row['idCourse'] . ' "'
-                                            . ' title="' . $_text . '"><span class="button__label">'
+                                        $action .= '<a class="pn-button pn-button--orange-hover" href="index.php?modname=course&op=aula&idCourse=' . $row['idCourse'] . ' "'
+                                            . ' title="' . $_text . '"><span class="pn-button__label">'
                                             . Lang::t('_USER_STATUS_ENTER', 'catalogue') . '</span>'
                                             . '</a>';
                                     } else {
-                                        $action .= '<a class="button button--disabled">
-                                                        <span class="button__label">' . Lang::t('_NO_AVAILABLE_EDITIONS', 'catalogue') . '</span>
+                                        $action .= '<a class="pn-button pn-button--disabled">
+                                                        <span class="pn-button__label">' . Lang::t('_NO_AVAILABLE_EDITIONS', 'catalogue') . '</span>
                                                     </a>';
                                     }
                                 }
@@ -79,16 +79,16 @@ $smodel = new CatalogLms();
                                     switch ($row['subscribe_method']) {
                                         case 2:
                                             // free
-                                            $action .= '<a class="button button--green button--orange-hover" href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'0\')" title="' . Lang::t('_SUBSCRIBE', 'catalogue') . '"><span class="button__label">' . Lang::t('_SUBSCRIBE', 'catalogue') . '</span></a>';
+                                            $action .= '<a class="pn-button pn-button--green pn-button--orange-hover" href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'0\')" title="' . Lang::t('_SUBSCRIBE', 'catalogue') . '"><span class="pn-button__label">' . Lang::t('_SUBSCRIBE', 'catalogue') . '</span></a>';
                                             break;
                                         case 1:
                                             // moderate
-                                            $action .= '<a class="button button--green button--orange-hover" href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'0\')" title="' . Lang::t('_SUBSCRIBE', 'catalogue') . '"><span class="button__label">' . Lang::t('_COURSE_S_MODERATE', 'catalogue') . '</span></a>';
+                                            $action .= '<a class="pn-button pn-button--green pn-button--orange-hover" href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'0\')" title="' . Lang::t('_SUBSCRIBE', 'catalogue') . '"><span class="pn-button__label">' . Lang::t('_COURSE_S_MODERATE', 'catalogue') . '</span></a>';
                                             break;
                                         case 0:
                                             // only admin
-                                            $action .= '<a class="button button--orange-hover">
-                                                            <span class="button__label">' . Lang::t('_COURSE_S_GODADMIN', 'catalogue') . '</span>
+                                            $action .= '<a class="pn-button pn-button--orange-hover">
+                                                            <span class="pn-button__label">' . Lang::t('_COURSE_S_GODADMIN', 'catalogue') . '</span>
                                                         </a>';
                                             break;
                                     } else {
@@ -111,8 +111,8 @@ $smodel = new CatalogLms();
 
                         $action = '<div class="course-box__item" id="action_' . $row['idCourse'] . '">';
                         if (count($editions) == 0)
-                            $action .= '<a href="javascript:void(0);" class="button button--disabled">
-                                            <p class="button__label">' . Lang::t('_NO_EDITIONS', 'catalogue') . '</p>
+                            $action .= '<a href="javascript:void(0);" class="pn-button pn-button--disabled">
+                                            <p class="pn-button__label">' . Lang::t('_NO_EDITIONS', 'catalogue') . '</p>
                                         </a>';
                         else {
                             if ($row['selling'] == 0)
@@ -153,7 +153,9 @@ $smodel = new CatalogLms();
                             list($status, $waiting, $level) = sql_fetch_row($result_control);
 
                             if ($waiting)
-                                $action .= '<p class="subscribed">' . Lang::t('_WAITING', 'catalogue') . '</p>';
+                                $action .= '<a href="javascript;void(0);" class="pn-button">
+                                                <p class="pn-button__label">' . Lang::t('_WAITING', 'catalogue') . '</p>
+                                            </a>';
                             else {
 
                                 $result_lo = $smodel->getInfoLO($row['idCourse']);
@@ -162,8 +164,8 @@ $smodel = new CatalogLms();
                                 $str_rel = "";
 
                                 if ($obj_type == "scormorg" && $level <= 3 && $row['direct_play'] == 1) $str_rel = " rel='lightbox'";
-                                $action .= '<a class="button button--orange-hover" href="index.php?modname=course&op=aula&idCourse=' . $row['idCourse'] . ' "'
-                                    . ' title="' . $_text . '"   ' . $str_rel . '><span class="button__label">'
+                                $action .= '<a class="pn-button pn-button--orange-hover" href="index.php?modname=course&op=aula&idCourse=' . $row['idCourse'] . ' "'
+                                    . ' title="' . $_text . '"   ' . $str_rel . '><span class="pn-button__label">'
                                     . Lang::t('_USER_STATUS_ENTER', 'catalogue') . '</span>'
                                     . '</a>';
 
@@ -177,8 +179,8 @@ $smodel = new CatalogLms();
                                 $control = $smodel->enrolledStudent($row['idCourse']);
                                 if ($control >= $row['max_num_subscribe']) {
                                     // the course have reached the maximum number of subscription
-                                    $action .= '<a href="javascript:void(0);" class="button button--disabled">
-                                                    <span class="button__label">' . Lang::t('_MAX_NUM_SUBSCRIBE', 'catalogue') . ' - ' . $row['max_num_subscribe'] . '</span>
+                                    $action .= '<a href="javascript:void(0);" class="pn-button pn-button--disabled">
+                                                    <span class="pn-button__label">' . Lang::t('_MAX_NUM_SUBSCRIBE', 'catalogue') . ' - ' . $row['max_num_subscribe'] . '</span>
                                                 </a>';
                                     $course_full = true;
                                 }
@@ -191,16 +193,16 @@ $smodel = new CatalogLms();
                                     switch ($row['subscribe_method']) {
                                         case 2:
                                             // free
-                                            $action .= '<a class="button button--green button--orange-hover" href="javascript:;" onclick="subscriptionPopUp(\'' . $row['idCourse'] . '\', \'0\', \'0\', \'0\')" title="' . Lang::t('_SUBSCRIBE', 'catalogue') . '"><span class="button__label">' . Lang::t('_SUBSCRIBE', 'catalogue') . '</span></a>';
+                                            $action .= '<a class="pn-button pn-button--green pn-button--orange-hover" href="javascript:;" onclick="subscriptionPopUp(\'' . $row['idCourse'] . '\', \'0\', \'0\', \'0\')" title="' . Lang::t('_SUBSCRIBE', 'catalogue') . '"><span class="pn-button__label">' . Lang::t('_SUBSCRIBE', 'catalogue') . '</span></a>';
                                             break;
                                         case 1:
                                             // moderate
-                                            $action .= '<a class="button button--green button--orange-hover" href="javascript:;" onclick="subscriptionPopUp(\'' . $row['idCourse'] . '\', \'0\', \'0\', \'0\')" title="' . Lang::t('_COURSE_S_MODERATE', 'course') . '"><span class="button__label">' . Lang::t('_COURSE_S_MODERATE', 'catalogue') . '</span></a>';
+                                            $action .= '<a class="pn-button pn-button--green pn-button--orange-hover" href="javascript:;" onclick="subscriptionPopUp(\'' . $row['idCourse'] . '\', \'0\', \'0\', \'0\')" title="' . Lang::t('_COURSE_S_MODERATE', 'course') . '"><span class="pn-button__label">' . Lang::t('_COURSE_S_MODERATE', 'catalogue') . '</span></a>';
                                             break;
                                         case 0:
                                             // only admin
-                                            $action .= '<a href="javascript:void(0);" class="button button--disabled">
-                                                            <span class="button__label">' . Lang::t('_COURSE_S_GODADMIN', 'catalogue') . '</span>
+                                            $action .= '<a href="javascript:void(0);" class="pn-button pn-button--disabled">
+                                                            <span class="pn-button__label">' . Lang::t('_COURSE_S_GODADMIN', 'catalogue') . '</span>
                                                         </a>';
                                             break;
                                     }
@@ -210,11 +212,11 @@ $smodel = new CatalogLms();
                                     $date_in_chart = array();
 
                                     if (isset($_SESSION['lms_cart'][$row['idCourse']]))
-                                        $action .= '<a href="javascript:void(0);" class="button button--orange-hover">
-                                                        <p class="button__label">' . Lang::t('_COURSE_IN_CART', 'catalogue') . '</p>
+                                        $action .= '<a href="javascript:void(0);" class="pn-button pn-button--orange-hover">
+                                                        <p class="pn-button__label">' . Lang::t('_COURSE_IN_CART', 'catalogue') . '</p>
                                                     </a>';
                                     else
-                                        $action .= '<a class="button button--green button--orange-hover" href="javascript:;" onclick="subscriptionPopUp(\'' . $row['idCourse'] . '\', \'0\', \'0\', \'1\')" title="' . Lang::t('_ADD_TO_CART', 'catalogue') . '"><soan class="button__label">' . Lang::t('_ADD_TO_CART', 'catalogue') . '</span></a>';
+                                        $action .= '<a class="pn-button pn-button--green pn-button--orange-hover" href="javascript:;" onclick="subscriptionPopUp(\'' . $row['idCourse'] . '\', \'0\', \'0\', \'1\')" title="' . Lang::t('_ADD_TO_CART', 'catalogue') . '"><span class="pn-button__label">' . Lang::t('_ADD_TO_CART', 'catalogue') . '</span></a>';
                                 }
                             }
                         }
