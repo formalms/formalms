@@ -29,7 +29,7 @@ class ElearningLms extends Model {
 	protected function _resolveOrder($t_name = array('', '')) {
 		// read order for the course from database
 		if($this->_t_order == false) {
-			
+
 			$t_order = Get::sett('tablist_mycourses', false);
 			if($t_order != false) {
 
@@ -56,11 +56,11 @@ class ElearningLms extends Model {
 		}
 		return str_replace(array('?u.', '?c.'), $t_name ,$this->_t_order);
 	}
-	
+
 	public function compileWhere($conditions, $params) {
 
 		if(!is_array($conditions)) return "1";
-		
+
 		$where = array();
 		$find = array_keys($params);
 		foreach($conditions as $key=>$value) {
@@ -71,27 +71,27 @@ class ElearningLms extends Model {
 	}
 
 	public function findAll($conditions, $params) {
-		 
+
 		$conditions[] = ' c.course_type = ":course_type" ';
 		$params[':course_type'] = 'elearning';
-		        
+
 		$db = DbConn::getInstance();
-        
-        $query =             "SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.difficult, c.status AS course_status, c.level_show_user, c.course_edition, "
+
+        $query =             "SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.box_description, c.difficult, c.status AS course_status, c.level_show_user, c.course_edition, "
             ."    c.max_num_subscribe, c.create_date, "
             ."    c.direct_play, c.img_othermaterial, c.course_demo, c.use_logo_in_courselist, c.img_course, c.lang_code, "
 			."	  c.course_vote, c.hour_end , "
             ."    c.date_begin, c.date_end, c.valid_time, c.show_result, c.userStatusOp, c.auto_unsubscribe, c.unsubscribe_date_limit, "
-            
+
             ."    cu.status AS user_status, cu.level, cu.date_inscr, cu.date_first_access, cu.date_complete, cu.waiting"
-            
+
             ." FROM %lms_course AS c "
             ." JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse)  "
             ." WHERE ".$this->compileWhere($conditions, $params)
             .($_SESSION['id_common_label'] > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '".$_SESSION['id_common_label']."')" : "")
             ." ORDER BY ".$this->_resolveOrder(array('cu', 'c'));
-        
-        
+
+
 		$query = $db->query($query);
 
 		$result = array();
@@ -101,15 +101,15 @@ class ElearningLms extends Model {
 			$data['enrolled'] = 0;
 			$data['numof_waiting'] = 0;
 			$data['first_lo_type'] = FALSE;
-			
-            
+
+
             //** name category
             $data['nameCategory'] = $this->getCategory($data['idCategory']); //$this->getCategory($data['idCategory']);
-            
+
             $courses[] = $data['idCourse'];
 			$result[$data['idCourse']] = $data;
 		}
-		
+
 		if (!empty($courses)) {
 			// find subscriptions
 			$re_enrolled = $db->query(
@@ -129,10 +129,10 @@ class ElearningLms extends Model {
             #3562 Grifo multimedia - LR
             $query_lo = "select org.idOrg, org.idCourse, org.objectType from (SELECT o.idOrg, o.idCourse, o.objectType 
                           FROM %lms_organization AS o WHERE o.objectType != '' AND o.idCourse IN (".implode(',', $courses).") ORDER BY o.path) as org 
-                          GROUP BY org.idCourse ";             
+                          GROUP BY org.idCourse ";
 
 
-              
+
 			// find first LO type
 			$re_firstlo = $db->query($query_lo);
 			while($data = $db->fetch_assoc($re_firstlo)) {
@@ -152,16 +152,16 @@ class ElearningLms extends Model {
 			." ON (cu.idCourse = c.idCourse) "
 			." WHERE cu.idUser = ".(int)$id_user." AND c.course_type = 'elearning' "
 			." ORDER BY inscr_year ASC";
-            
-            
-            
+
+
+
         $query = "SELECT DISTINCT YEAR(cu.date_inscr) AS inscr_year "
             ." FROM %lms_courseuser AS cu JOIN %lms_course AS c "
             ." ON (cu.idCourse = c.idCourse) "
            // ." WHERE cu.idUser = ".(int)$id_user." AND c.course_type = 'elearning' "
-            ." ORDER BY inscr_year ASC";            
+            ." ORDER BY inscr_year ASC";
            // die($query);
-            
+
 		$res = $db->query($query);
 		if ($res && $db->num_rows($res) > 0) {
 			while (list($inscr_year) = $db->fetch_row($res)) {
@@ -177,7 +177,7 @@ class ElearningLms extends Model {
         $db = DbConn::getInstance();
         $query = "select idCategory,path from %lms_category where idcategory in (
        select distinct idCategory from %lms_course as c,%lms_courseuser as cu where cu.idUser=".$idUser." and cu.idCourse=c.idCourse)";
-        
+
         $res = $db->query($query);
         if ($res && $db->num_rows($res) > 0) {
             $output[0] = Lang::t('_ALL_CATEGORIES', 'standard');
@@ -186,12 +186,12 @@ class ElearningLms extends Model {
             }
         }
         return $output;
-        
-        
+
+
     }
-    
-    
-    
+
+
+
 
 	public function getUserCoursePathCourses( $id_user ) {
 		require_once(_lms_.'/lib/lib.coursepath.php');
@@ -204,8 +204,8 @@ class ElearningLms extends Model {
 		}
 		return $output;
 	}
-    
-    
+
+
     private function getCategory($idCat){
         $db = DbConn::getInstance();
         $query = "select path from %lms_category where idCategory=".$idCat;
@@ -213,16 +213,16 @@ class ElearningLms extends Model {
         $path = "";
         if ($res && $db->num_rows($res) > 0) {
             list($path) = $db->fetch_row($res);
-        }    
+        }
         return $path;
-        
-        
+
+
     }
-    
-    
-    
-    
-    
-       
+
+
+
+
+
+
 
 }
