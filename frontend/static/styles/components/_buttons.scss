@@ -15,12 +15,12 @@
 .pn-button {
   display: inline-block;
   width: 100%;
-  height: auto;
+  height: 40px;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
+  line-height: 40px;
   color: $white;
-  padding: 12px 0;
   background-color: $dark-orange;
   font-family: $font;
   font-size: 14px;
@@ -114,5 +114,6 @@
     font-family: $icon;
     font-size: inherit;
     color: rgba(255, 255, 255, 0.7);
+    margin-left: 6px;
   }
 }
