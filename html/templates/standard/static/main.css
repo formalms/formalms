@@ -2712,7 +2712,6 @@ body {
   clear: both; }
 
 .pn-grid {
-  padding: 0 8.33%;
   overflow: auto; }
   @media (min-width: 1024px) {
     .pn-grid {

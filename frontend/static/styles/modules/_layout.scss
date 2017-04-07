@@ -41,7 +41,7 @@ body {
 }
 //FIXME fixare griglia
 .pn-grid {
-  padding: 0 8.33%;
+  //padding: 0 8.33%;
   overflow: auto;
 
   @include breakpoint($ipad) {
