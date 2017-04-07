@@ -137,39 +137,18 @@ class Docebo {
 	 * @return string the file to include
 	 */
 	public static function inc($file) {
-
         $file = str_replace(_base_.'/', '', $file);
-		//if(!class_exists('PluginManager', false)) return $file;
-		if(!Get::cfg('enable_plugins', false)) return _base_.'/'.$file;
-
-		$plugin_files = PluginManager::find_files();
-		
-		if(isset($plugin_files[$file])) {
-			// let's include the plugin file
-			return _plugins_.'/'.$plugin_files[$file].'/'.$file;
-		} else {
-			// my files win!
-			return _base_.'/'.$file;
-		}
+        return _base_.'/'.$file;
 	}
 
 	/**
 	 * Return an object that describe the system languages
 	 * @return DoceboLangManager
 	 */
-	public static function inc_all($file, $function = 'include') {
-
-		include( $file );
-
-		if(!Get::cfg('enable_plugins', false)) return;
-		
-		$file = str_replace(_base_.'/', '', $file);
-		$plugin_files = PluginManager::find_files();
-
-		if(isset($plugin_files[$file])) {
-			// let's include the plugin file
-			include( _plugins_.'/'.$plugin_files[$file].'/'.$file );
-		}
-	}
+    public static function inc_all($file, $function = 'include') {
+        $file = str_replace(_base_.'/', '', $file);
+        include( $file );
+        return;
+    }
 
 }

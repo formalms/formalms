@@ -83,7 +83,7 @@ class Selector_Catalogue {
 		// older selection
 		if(isset($array_state['catalogue_selected'])) {
 
-			$this->current_selection = unserialize(urldecode($array_state['catalogue_selected']));
+			$this->current_selection = Util::unserialize(urldecode($array_state['catalogue_selected']));
 		}
 		// add last selection
 		if(isset($array_state['new_catalogue_selected'])) {
@@ -96,7 +96,7 @@ class Selector_Catalogue {
 
 	function stateSelection() {
 
-		return Form::getHidden('catalogue_selected', 'catalogue_selected', urlencode(serialize($this->current_selection)) );
+		return Form::getHidden('catalogue_selected', 'catalogue_selected', urlencode(Util::serialize($this->current_selection)) );
 	}
 
 	function getSelection() {

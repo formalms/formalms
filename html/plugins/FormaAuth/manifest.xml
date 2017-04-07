@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin_manifest>
+	<title>Forma Auth</title>
+	<author>Joint Technologies</author>
+	<name>FormaAuth</name>
+	<version>1.0</version>
+	<description>forma auth</description>
+	<category>authentication</category>
+	<core>true</core>
+</plugin_manifest>

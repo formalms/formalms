@@ -87,7 +87,7 @@ if ($_SESSION['upgrade_ok']) {
 
 	if ($_SESSION['upgrade_ok']) {
 		// --- roles -----------------------------------------------------------------
-		require_once(_installer_.'/lib/lib.role.php');
+		require_once(_lib_.'/installer/lib.role.php');
 		$fn =_upgrader_.'/data/upg_data/'.$current_ver.'_role.php';
 		if (file_exists($fn)) {
 			$GLOBALS['debug'] .=  " <br/>" . "Source role-upgrade file: " . $fn ;

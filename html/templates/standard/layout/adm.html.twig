@@ -56,7 +56,7 @@
                             <span>{{ evalPhp('Lang::t', ['_PROFILE', 'profile']) }}</span>
                         </a></li>
                     <li>
-                        <a class="logout" href="index.php?modname=login&amp;op=logout">
+                        <a class="logout" href="{{ evalPhp('Get::rel_path',['base']) }}/index.php?r={{ constant('_logout_') }}">
                             <span>{{ evalPhp('Lang::t', ['_LOGOUT', 'standard']) }}</span>
                         </a></li>
                 </ul>

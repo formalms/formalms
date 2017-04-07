@@ -177,6 +177,7 @@ class CoursereportLmsController extends LmsController
                         switch ($info_report->getSourceOf()) {
                             case CoursereportLms::SOURCE_OF_TEST : {
 
+                                $testObj = Learning_Test::load($info_report->getIdSource());
                                 if (isset($tests_score[$info_report->getIdSource()][$idst_user])) {
 
                                     $scoreStatus = $tests_score[$info_report->getIdSource()][$idst_user]['score_status'];
@@ -236,16 +237,16 @@ class CoursereportLmsController extends LmsController
                                             break;
                                     }
                                 }
-                                $results_activity[] = array('id' => CoursereportLms::SOURCE_OF_TEST . "_" . $info_report->getIdSource(), "name" => strip_tags($tests_info[$info_report->getIdSource()]['title']));
+                                $results_activity[] = array('id' => CoursereportLms::SOURCE_OF_TEST . "_" . $info_report->getIdSource(), "name" => $testObj->getTitle());
                                 if ($info_report->isUseForFinal()) {
                                     array_push($results_test, $score * $info_report->getWeight());
                                 }
-                            };
+                            }
                                 break;
                             case CoursereportLms::SOURCE_OF_SCOITEM    : {
 
 
-                            };
+                            }
                                 break;
                             case CoursereportLms::SOURCE_OF_ACTIVITY    : {
 
@@ -308,7 +309,7 @@ class CoursereportLmsController extends LmsController
                                             break;
                                     }
                                 }
-                            };
+                            }
                                 break;
                             default: {
                                 $name = "";
@@ -327,6 +328,8 @@ class CoursereportLmsController extends LmsController
             foreach ($this->model->getCourseReports() as $info_report) {
 
                 if ($info_report->getSourceOf() != CoursereportLms::SOURCE_OF_FINAL_VOTE) {
+
+                    $showInDetail = false;
 
                     $passedLink = 'javascript:void(0)';
                     $notPassedLink = 'javascript:void(0)';
@@ -358,9 +361,10 @@ class CoursereportLmsController extends LmsController
 
                             $type = ucfirst($testObj->getObjectType());
                             $id = $info_report->getIdSource();
-                            $name = strip_tags($tests_info[$info_report->getIdSource()]['title']);
+                            $name = $testObj->getTitle();
+                            $showInDetail = $tests_info[$info_report->getIdSource()]['show_in_coursereport'] == "0" ? false : true;
 
-                            $results_activity[] = array('id' => $testObj->getObjectType() . "_" . $info_report->getIdSource(), "name" => strip_tags($tests_info[$info_report->getIdSource()]['title']));
+                            $results_activity[] = array('id' => $testObj->getObjectType() . "_" . $info_report->getIdSource(), "name" => $name);
 
                             if ($mod_perm) {
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
@@ -369,8 +373,7 @@ class CoursereportLmsController extends LmsController
 
                                 $editLink = 'index.php?r=lms/coursereport/testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                 $trashLinkVisible = false;
-                            }
-                            else if ($view_perm){
+                            } else if ($view_perm) {
 
                                 $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                 $event->setOverViewTestQuestionLink($chartLink);
@@ -411,7 +414,7 @@ class CoursereportLmsController extends LmsController
                                 //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                 $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdReport();
                                 $chartLinkVisible = false;
-                                $editLink = 'index.php?r=lms/coursereport/modactivityscore&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdReport().'&source_of=' . $info_report->getSourceOf() . '&id_source=' . $info_report->getIdSource();
+                                $editLink = 'index.php?r=lms/coursereport/modactivityscore&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdReport() . '&source_of=' . $info_report->getSourceOf() . '&id_source=' . $info_report->getIdSource();
 
                                 $trashLink = 'index.php?r=lms/coursereport/delactivity&type_filter=' . $type_filter . '&id_report=' . $info_report->getIdReport();
                             }
@@ -469,6 +472,7 @@ class CoursereportLmsController extends LmsController
                         'weight' => $info_report->getWeight(),
                         'show' => $info_report->isShowToUser(),
                         'final' => $info_report->isUseForFinal(),
+                        'showInDetail' => $showInDetail,
                         'passed' => array(
                             'value' => $passed,
                             'link' => $passedLink,
@@ -537,15 +541,25 @@ class CoursereportLmsController extends LmsController
         $round_report = Get::pReq('round_report', DOTY_MIXED, false);
         $round_test = Get::pReq('round_test', DOTY_MIXED, false);
 
+        $currentPage = Get::pReq('pagination', DOTY_INT, 0);
+        /**
+         * Set default students limit pagination at 200
+         **/
+        $paginationLimit = Get::pReq('limit', DOTY_INT, 200);
+
+        if ($paginationLimit == 0) {
+            $currentPage = 0;
+        }
+
         if ($redo_final && !$round_report && !$round_test) {
             $this->redofinal();
         }
 
-        if ($round_report && !$redo_final  && !$round_test) {
+        if ($round_report && !$redo_final && !$round_test) {
             $this->roundreport($round_report);
         }
 
-        if ($round_test && !$redo_final  && !$round_report) {
+        if ($round_test && !$redo_final && !$round_report) {
             $this->roundtest($round_test);
         }
 
@@ -583,6 +597,18 @@ class CoursereportLmsController extends LmsController
 
             }
         }
+
+        $pagesCount = ceil(count($students) / $paginationLimit);
+        $nextPage = false;
+        if ($currentPage + 1 < $pagesCount) {
+            $nextPage = $currentPage + 1;
+        }
+
+        if ($paginationLimit > 0) {
+
+            $students = array_slice($students, $currentPage * $paginationLimit, $currentPage * $paginationLimit + $paginationLimit, true);
+        }
+
 
         $id_students = array_keys($students);
         $students_info =& $acl_man->getUsers($id_students);
@@ -708,8 +734,8 @@ class CoursereportLmsController extends LmsController
                                                         'icon' => '',
                                                         'showIcon' => false,
                                                         'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
-                                                        'active' => true);
+                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $testObj->getTitle() . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'active' => $testObj->isRetainAnswersHistory() ? true : false);
 
                                                     $values[] = $value;
                                                 }
@@ -758,8 +784,8 @@ class CoursereportLmsController extends LmsController
                                                     'icon' => '',
                                                     'showIcon' => false,
                                                     'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                    'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
-                                                    'active' => true);
+                                                    'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $testObj->getTitle() . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                    'active' => $testObj->isRetainAnswersHistory() ? true : false);
 
                                                 $values[] = $value;
 
@@ -780,8 +806,8 @@ class CoursereportLmsController extends LmsController
                                                         'icon' => 'cr_max_score',
                                                         'showIcon' => false,
                                                         'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
-                                                        'active' => true);
+                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $testObj->getTitle() . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'active' => $testObj->isRetainAnswersHistory() ? true : false);
 
                                                     $values[] = $value;
                                                 } else {
@@ -799,8 +825,8 @@ class CoursereportLmsController extends LmsController
                                                         'icon' => '',
                                                         'showIcon' => false,
                                                         'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
-                                                        'active' => true);
+                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $testObj->getTitle() . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'active' => $testObj->isRetainAnswersHistory() ? true : false);
 
                                                     $values[] = $value;
                                                 }
@@ -820,8 +846,8 @@ class CoursereportLmsController extends LmsController
                                                         'icon' => 'cr_max_score cr_not_passed',
                                                         'showIcon' => false,
                                                         'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
-                                                        'active' => true);
+                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $testObj->getTitle() . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'active' => $testObj->isRetainAnswersHistory() ? true : false);
 
                                                     $values[] = $value;
                                                 } else {
@@ -838,8 +864,8 @@ class CoursereportLmsController extends LmsController
                                                         'icon' => 'cr_not_passed',
                                                         'showIcon' => false,
                                                         'value' => "(" . $tests_score[$info_report->getIdSource()][$idst_user]['times'] . ")",
-                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $tests_info[$info_report->getIdSource()]['title'] . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
-                                                        'active' => true);
+                                                        'link' => "index.php?r=lms/coursereport/testreport&idTest=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTest'] . "&idTrack=" . $tests_score[$info_report->getIdSource()][$idst_user]['idTrack'] . "&testName=" . $testObj->getTitle() . "&studentName=" . $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                                                        'active' => $testObj->isRetainAnswersHistory() ? true : false);
 
                                                     $values[] = $value;
                                                 }
@@ -1062,11 +1088,17 @@ class CoursereportLmsController extends LmsController
             }
         }
 
-        $resposeArray = array('details' =>
-            array(
+        $resposeArray = array(
+            'details' => array(
                 'students' => $students_array,
                 'redo-final' => array('idReport' => $info_final[0]->getIdReport()),
                 'round-report' => array('idReport' => $info_final[0]->getIdReport())
+            ),
+            'pagination' => array(
+                'currentPage' => $currentPage,
+                'nextPage' => $nextPage,
+                'currentPaginationLimit' => $paginationLimit,
+                'countPages' => $pagesCount
             )
         );
 
@@ -1249,14 +1281,14 @@ class CoursereportLmsController extends LmsController
 
     function testvote()
     {
-        if (isset($_POST['view_answer'])){
+        if (isset($_POST['view_answer'])) {
             $this->testreview();
             return;
         }
         checkPerm('mod', true, $this->_mvc_name);
-        $undo = Get::pReq('undo',DOTY_MIXED,false);
+        $undo = Get::pReq('undo', DOTY_MIXED, false);
 
-        if ($undo){
+        if ($undo) {
             Util::jump_to('index.php?r=coursereport/coursereport');
         }
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
@@ -1621,10 +1653,10 @@ class CoursereportLmsController extends LmsController
     function testreview()
     {
         checkPerm('mod', true, $this->_mvc_name);
-        $undo = Get::pReq('undo_testreview',DOTY_MIXED,false);
+        $undo = Get::pReq('undo_testreview', DOTY_MIXED, false);
         $id_test = importVar('id_test', true, 0);
-        if ($undo){
-            Util::jump_to('index.php?r=coursereport/testvote&id_test='.$id_test);
+        if ($undo) {
+            Util::jump_to('index.php?r=coursereport/testvote&id_test=' . $id_test);
         }
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
@@ -2345,9 +2377,9 @@ class CoursereportLmsController extends LmsController
     function modactivity()
     {
         checkPerm('mod', true, $this->_mvc_name);
-        $undo = Get::pReq('undo',DOTY_MIXED,false);
+        $undo = Get::pReq('undo', DOTY_MIXED, false);
 
-        if ($undo){
+        if ($undo) {
             Util::jump_to('index.php?r=coursereport/coursereport');
         }
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
@@ -2456,9 +2488,9 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('mod', true, $this->_mvc_name);
 
-        $undo = Get::pReq('undo',DOTY_MIXED,false);
+        $undo = Get::pReq('undo', DOTY_MIXED, false);
 
-        if ($undo){
+        if ($undo) {
             Util::jump_to('index.php?r=coursereport/coursereport');
         }
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
@@ -2677,9 +2709,9 @@ class CoursereportLmsController extends LmsController
     function delactivity()
     {
         checkPerm('mod', true, $this->_mvc_name);
-        $undo = Get::pReq('undo',DOTY_MIXED,false);
+        $undo = Get::pReq('undo', DOTY_MIXED, false);
 
-        if ($undo){
+        if ($undo) {
             Util::jump_to('index.php?r=coursereport/coursereport');
         }
         require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
@@ -3196,15 +3228,15 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('view', true, $this->_mvc_name);
         $responseValue = array();
-        $undo = Get::pReq('undo',DOTY_MIXED,false);
+        $undo = Get::pReq('undo', DOTY_MIXED, false);
 
-        if ($undo){
+        if ($undo) {
             Util::jump_to('index.php?r=coursereport/coursereport');
         }
 
         require_once($GLOBALS['where_lms'] . '/lib/lib.test.php');
-        require_once($GLOBALS['where_lms'].'/modules/question/class.question.php');
-        require_once($GLOBALS['where_lms'].'/class.module/track.test.php');
+        require_once($GLOBALS['where_lms'] . '/modules/question/class.question.php');
+        require_once($GLOBALS['where_lms'] . '/class.module/track.test.php');
 
         Util::get_js(Get::rel_path('base') . '/appLms/views/coursereport/js/testquestion.js', true, true);
         Util::get_css(Get::rel_path('base') . '/appLms/views/coursereport/css/testquestion.css', true, true);
@@ -3233,11 +3265,11 @@ class CoursereportLmsController extends LmsController
         $tracks = array();
         $quests = Question::getTestQuestsFromTest($idTest);
 
-        foreach ($quests as $quest){
+        foreach ($quests as $quest) {
 
-            $resAnswers = Question::getTestQuestAnswerFromQuestAndStudents($quest['idQuest'],$id_students);
+            $resAnswers = Question::getTestQuestAnswerFromQuestAndStudents($quest['idQuest'], $id_students);
 
-            foreach ($resAnswers as $k =>  $resAnswer){
+            foreach ($resAnswers as $k => $resAnswer) {
                 $answersNew[$k] = $resAnswer;
             }
 
@@ -3250,8 +3282,8 @@ class CoursereportLmsController extends LmsController
         }
 
 
-        $validIdTracks = Track_Test::getValidTestTrackFromTestAndUsers($idTest,$id_students);
-        foreach ($validIdTracks as $validIdTrack){
+        $validIdTracks = Track_Test::getValidTestTrackFromTestAndUsers($idTest, $id_students);
+        foreach ($validIdTracks as $validIdTrack) {
 
             $trackAnswers = Track_Test::getTestTrackAnswersFromTrack($validIdTrack);
 
@@ -3261,7 +3293,7 @@ class CoursereportLmsController extends LmsController
             }
         }
 
-        $total_play = Track_Test::getValidTotalPlaysTestTrackFromTestAndUsers($idTest,$id_students);
+        $total_play = Track_Test::getValidTotalPlaysTestTrackFromTestAndUsers($idTest, $id_students);
 
         foreach ($quests as $quest) {
             $question = array();
@@ -3318,13 +3350,13 @@ class CoursereportLmsController extends LmsController
 
                     $question['answers'] = $answersArray;
                 }
-                break;
+                    break;
                 case "upload":
-                case "extended_text":{
+                case "extended_text": {
                     $question["title"] = str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_LIST'));
                     $question['idQuest'] = $quest['idQuest'];
                     $question['idTest'] = $idTest;
-            }
+                }
 
                     break;
 
@@ -3357,7 +3389,7 @@ class CoursereportLmsController extends LmsController
                     break;
 
                 case "associate": {
-                    $question["title"] =  str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_CORRECT_ASS'));
+                    $question["title"] = str_replace('[title]', $quest['title_quest'], $lang->def('_TABLE_QUEST_CORRECT_ASS'));
 
                     foreach ($answersNew[$quest['idQuest']] as $answer) {
                         $answerObj = array();
@@ -3398,42 +3430,44 @@ class CoursereportLmsController extends LmsController
         $this->render('testquestion', array('data' => $responseValue));
     }
 
-    public function extendedQuestDetails() {
+    public function extendedQuestDetails()
+    {
 
-        require_once($GLOBALS['where_lms'].'/class.module/track.test.php');
+        require_once($GLOBALS['where_lms'] . '/class.module/track.test.php');
         $idTest = Get::pReq('id_test', DOTY_MIXED, 0);
-        $idQuest =  Get::pReq('id_quest', DOTY_MIXED, 0);
+        $idQuest = Get::pReq('id_quest', DOTY_MIXED, 0);
 
         $result = array('id_quest' => $idQuest);
 
         $idTracks = Track_Test::getIdTracksFromTest($idTest);
 
-        foreach ($idTracks as $idTrack){
+        foreach ($idTracks as $idTrack) {
 
-            $textEntries = TextEntry_Question::getTextEntryFromIdTrackAndIdQuest($idTrack,$idQuest);
-            foreach ($textEntries as $textEntry){
-                $result['answers'][] = array("answer"=>$textEntry);
+            $textEntries = TextEntry_Question::getTextEntryFromIdTrackAndIdQuest($idTrack, $idQuest);
+            foreach ($textEntries as $textEntry) {
+                $result['answers'][] = array("answer" => $textEntry);
             }
         }
 
         echo $this->json->encode($result);
     }
 
-    public function fileUploadQuestDetails(){
+    public function fileUploadQuestDetails()
+    {
 
-        require_once($GLOBALS['where_lms'].'/class.module/track.test.php');
+        require_once($GLOBALS['where_lms'] . '/class.module/track.test.php');
         $idTest = Get::pReq('id_test', DOTY_MIXED, 0);
-        $idQuest =  Get::pReq('id_quest', DOTY_MIXED, 0);
+        $idQuest = Get::pReq('id_quest', DOTY_MIXED, 0);
 
         $result = array('id_quest' => $idQuest);
 
         $idTracks = Track_Test::getIdTracksFromTest($idTest);
 
-        foreach ($idTracks as $idTrack){
+        foreach ($idTracks as $idTrack) {
 
-            $textEntries = TextEntry_Question::getTextEntryFromIdTrackAndIdQuest($idTrack,$idQuest);
-            foreach ($textEntries as $textEntry){
-                $result['answers'][] = array("answer"=>$textEntry, "filePath" => "index.php?modname=question&amp;op=quest_download&type_quest=upload&id_quest=".$idQuest."&id_track=".$idTrack);
+            $textEntries = TextEntry_Question::getTextEntryFromIdTrackAndIdQuest($idTrack, $idQuest);
+            foreach ($textEntries as $textEntry) {
+                $result['answers'][] = array("answer" => $textEntry, "filePath" => "index.php?modname=question&amp;op=quest_download&type_quest=upload&id_quest=" . $idQuest . "&id_track=" . $idTrack);
             }
         }
 

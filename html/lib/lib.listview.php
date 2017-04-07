@@ -177,7 +177,7 @@ class ListView {
 			$this->itemToPlay = $arrayState[$this->_getIdPlayItemId()];
 		}
 		if( isSet( $arrayState[$this->_getIdSelectItemId()] ) ) {
-			$this->itemSelected = @unserialize(urldecode($arrayState[$this->_getIdSelectItemId()]));
+			$this->itemSelected = @Util::unserialize(urldecode($arrayState[$this->_getIdSelectItemId()]));
 		}
 
 		// handle actions that change display mode (op)
@@ -235,7 +235,7 @@ class ListView {
 		$out = '<input type="hidden"'
 			.' id="'.$this->_getIdSelectItemId().'"'
 			.' name="'.$this->_getIdSelectItemId().'"'
-			.' value="'.urlencode(serialize($this->itemSelected)).'" />'."\n";
+			.' value="'.urlencode(Util::serialize($this->itemSelected)).'" />'."\n";
 		$out .= '<input type="hidden"'
 			.' id="'.$this->_getIdPlayItemId().'"'
 			.' name="'.$this->_getIdPlayItemId().'"'

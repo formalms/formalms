@@ -27,15 +27,12 @@ class TwigManager
         $loader = new \Twig_Loader_Filesystem();
         $debug = \Get::cfg('twig_debug', false);
         $this->twig = new \Twig_Environment($loader, array(
-            'cache' => $debug ? false : _files_ . '/tmp',
+            'cache' => $debug ? false : _files_ . '/cache/twig',
             'debug' => $debug
         ));
+
         $this->twig->addFunction('translate', new \Twig_Function_Function(function ($key, $module = false, $substitution = array(), $lang_code = false, $default = false) {
             return \Lang::t($key, $module, $substitution, $lang_code, $default);
-        }));
-        $this->twig->addFunction('pluginUrl', new \Twig_Function_Function(function ($resource) {
-            $plugin_files = \PluginManager::find_files();
-            return '/' . _folder_plugins_ . '/' . $plugin_files[$resource] . '/' . $resource;
         }));
         $this->twig->addFunction('evalPhp', new \Twig_Function_Function(function ($phpCode, $args = array()) {
             return call_user_func_array($phpCode, $args);
@@ -77,6 +74,11 @@ class TwigManager
         }
 
         return $this->twig->render($view_name, $data_for_view);
+    }
+
+    public static function getCacheDir()
+    {
+        return _files_ . '/cache/twig';
     }
 
 }

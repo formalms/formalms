@@ -209,7 +209,7 @@ class Util  {
 		) {
 			// Invalid request
 			if (!defined('IS_AJAX')) {
-				Util::jump_to(Get::rel_path('lms').'/index.php?modname=login&op=logout&msg=101');
+				Util::jump_to(Get::rel_path("base") . "/index.php?r=" . _logout_); // TODO: msg 101
 			}
 			Util::fatal('Security issue, the request seem invalid ! Try a new login and retry.');
 		}
@@ -421,6 +421,24 @@ class Util  {
 
 	public function objectToArray($object) { return is_object($object) ? get_object_vars($object) : false; }
 	public function arrayToObject($array) { return is_array($array) ? (object)$array : false; }
+
+    /**
+     * Used to replace serialize PHP function. (Vunerability FIX)
+     * @param mixed $string
+     * @return string
+     */
+    public static function serialize($string){
+        return json_encode($string);
+    }
+
+    /**
+     * Used to replace unserialize PHP function. (Vunerability FIX)
+     * @param $string
+     * @return array
+     */
+    public static function unserialize($string){
+        return json_decode($string,true);
+    }
 }
 
 class UIFeedback {

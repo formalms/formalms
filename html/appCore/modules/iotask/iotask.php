@@ -478,7 +478,7 @@ function ioTask_UITaskNew( &$module, $action, $subop ) {
 		$old_name = $_POST['old_name'];
 		$post_params = $_POST['task_params'];
 
-		$params = unserialize(urldecode($post_params['memory']));
+		$params = Util::unserialize(urldecode($post_params['memory']));
 		foreach($post_params as $key => $val) {
 			if( $key !== 'memory' ) {
 				$params[$key] = $val;
@@ -513,7 +513,7 @@ function ioTask_UITaskNew( &$module, $action, $subop ) {
 	$out->add($form->openForm('task_new', 'index.php?modname=iotask&op=display&addtask&gotab=tasks'));
 	$out->add($form->openElementSpace());
 
-	$out->add($form->getHidden('task_memory','task_params[memory]',urlencode(serialize($params))));
+	$out->add($form->getHidden('task_memory','task_params[memory]',urlencode(Util::serialize($params))));
 	$out->add($form->getHidden('step','step',$step));
 	$out->add($form->getHidden('old_name','old_name',$old_name));
 

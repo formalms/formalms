@@ -869,7 +869,7 @@ class Report_User extends Report {
 				{
 					$sender = $user_info[ACL_INFO_EMAIL];
 				}
-				$mail_recipients = unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
+				$mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
 
 				// prepare intestation for email
 				$from = "From: ".$sender.$GLOBALS['mail_br'];
@@ -902,7 +902,7 @@ class Report_User extends Report {
 					.Form::openElementSpace()
 					.Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
 					.Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
-					.Form::getHidden('mail_recipients', 'mail_recipients', urlencode(serialize($mail_recipients)))
+					.Form::getHidden('mail_recipients', 'mail_recipients', urlencode(Util::serialize($mail_recipients)))
 					.Form::closeElementSpace()
 					.Form::openButtonSpace()
 					.Form::getButton('send_mail_confirm', 'send_mail_confirm', $lang->def('_SEND_MAIL'))
@@ -1767,7 +1767,7 @@ class Report_User extends Report {
 				{
 					$sender = $user_info[ACL_INFO_EMAIL];
 				}
-				$mail_recipients = unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
+				$mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
 
 				// prepare intestation for email
 				$from = "From: ".$sender.$GLOBALS['mail_br'];
@@ -1802,7 +1802,7 @@ class Report_User extends Report {
 					.Form::openElementSpace()
 					.Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
 					.Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
-					.Form::getHidden('mail_recipients', 'mail_recipients', urlencode(serialize($mail_recipients)))
+					.Form::getHidden('mail_recipients', 'mail_recipients', urlencode(Util::serialize($mail_recipients)))
 					.Form::closeElementSpace()
 					.Form::openButtonSpace()
 					.Form::getButton('send_mail_confirm', 'send_mail_confirm', $lang->def('_SEND_MAIL'))
@@ -2242,7 +2242,7 @@ class Report_User extends Report {
 				{
 					$sender = $user_info[ACL_INFO_EMAIL];
 				}
-				$mail_recipients = unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
+				$mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
 
 				// prepare intestation for email
 				$from = "From: ".$sender.$GLOBALS['mail_br'];
@@ -2277,7 +2277,7 @@ class Report_User extends Report {
 					.Form::openElementSpace()
 					.Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
 					.Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
-					.Form::getHidden('mail_recipients', 'mail_recipients', urlencode(serialize($mail_recipients)))
+					.Form::getHidden('mail_recipients', 'mail_recipients', urlencode(Util::serialize($mail_recipients)))
 					.Form::closeElementSpace()
 					.Form::openButtonSpace()
 					.Form::getButton('send_mail_confirm', 'send_mail_confirm', $lang->def('_SEND_MAIL'))
@@ -2907,7 +2907,7 @@ class Report_User extends Report {
 				{
 					$sender = $user_info[ACL_INFO_EMAIL];
 				}
-				$mail_recipients = unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
+				$mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
 
 				// prepare intestation for email
 				$from = "From: ".$sender.$GLOBALS['mail_br'];
@@ -2941,7 +2941,7 @@ class Report_User extends Report {
 					.Form::openElementSpace()
 					.Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
 					.Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
-					.Form::getHidden('mail_recipients', 'mail_recipients', urlencode(serialize($mail_recipients)))
+					.Form::getHidden('mail_recipients', 'mail_recipients', urlencode(Util::serialize($mail_recipients)))
 					.Form::closeElementSpace()
 					.Form::openButtonSpace()
 					.Form::getButton('send_mail_confirm', 'send_mail_confirm', $lang->def('_SEND_MAIL'))

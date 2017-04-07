@@ -78,8 +78,8 @@ class User_API extends API {
 			(isset($userdata['force_change']) ? $userdata['force_change'] : 0)
 		);
 
-		//evento registrazione utente tramite api
-		if(Get::cfg('enable_plugins', false)) PluginManager::runPlugins();
+		$pg = new PluginManager('ApiUserRegistrationEvent');
+		$pg->run('hook');
 		$event = new \appLms\Events\Api\ApiUserRegistrationEvent();
 		$event->setId($id_user);
 		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Api\ApiUserRegistrationEvent::EVENT_NAME, $event);

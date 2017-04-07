@@ -3,7 +3,8 @@
     "require": {
         "symfony/event-dispatcher": "^2.7",
         "twig/twig": "~1.0",
-        "symfony/var-dumper": "^2.7"
+        "symfony/var-dumper": "^2.7",
+        "lusitanian/oauth": "~0.3"
     },
     "require-dev": {
         "phing/phing": "2.13.0",

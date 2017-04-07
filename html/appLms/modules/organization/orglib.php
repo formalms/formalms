@@ -609,12 +609,12 @@ class OrgDirDb extends RepoDirDb {
 			if( $arrData['accessGroups'] == '' )
 				$arrGroups = array();
 			else
-				$arrGroups = unserialize(urldecode($arrData['accessGroups']));
+				$arrGroups = Util::unserialize(urldecode($arrData['accessGroups']));
 			
 			if( $arrData['accessUsers'] == '' )
 				$arrUsers = array();
 			else
-				$arrUsers = unserialize(urldecode($arrData['accessUsers']));
+				$arrUsers = Util::unserialize(urldecode($arrData['accessUsers']));
 			
 			$this->setAccess( $arrData['idItem'], $arrGroups, $arrUsers );
 		}

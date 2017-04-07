@@ -28,11 +28,11 @@ define('_upgrader_', _base_.'/upgrade');
 
 require_once _base_.'/lib/loggers/lib.logger.php';
 
-include(_installer_.'/lib/lib.php');
-include(_installer_.'/lib/lib.lang.php');
-include(_installer_.'/lib/lib.step.php');
-include(_installer_.'/lib/lib.pagewriter.php');
-include(_installer_.'/lib/lib.template.php');
+include(_lib_.'/installer/lib.php');
+include(_lib_.'/installer/lib.lang.php');
+include(_lib_.'/installer/lib.step.php');
+include(_lib_.'/installer/lib.pagewriter.php');
+include(_lib_.'/installer/lib.template.php');
 
 PageWriter::init();
 

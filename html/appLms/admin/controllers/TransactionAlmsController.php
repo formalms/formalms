@@ -95,8 +95,30 @@ Class TransactionAlmsController extends AlmsController
 			if($this->model->saveTransaction($product_to_activate, $id_trans, $id_user))
 			{
 				$this->model->controlActivation($id_trans, (isset($_POST['not_paid'])));
-				Util::jump_to('index.php?r=alms/transaction/show&res=ok');
-			}
+                
+                $trans = $this->model->getTransactionInfo($id_trans);
+                $products = $trans['product'];
+                $trans['product'] = array();
+                foreach ($product_to_activate AS $key => $to_add) {
+                    if ($to_add) {
+                        $id = explode('_', $key);
+                        foreach ($products AS $product) {
+                            if ($product['id_course'] == $id[0] && $product['id_date'] == $id[1] && $product['id_edition'] == $id[2]) {
+                                $trans['product'][] = $product;
+                            }
+                        }
+                    }
+                }
+                
+                $pg=new PluginManager('TransactionPaidEvent');
+                $pg->run('hook');
+                
+                $event = new \appLms\Events\Transaction\TransactionPaidEvent($trans);
+                \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
+                
+                if($event->getRes()) { Util::jump_to('index.php?r=alms/transaction/show&res=ok'); }
+                else { Util::jump_to('index.php?r=alms/transaction/show&res=err'); }
+            }
 			Util::jump_to('index.php?r=alms/transaction/show&res=err');
 		}
 

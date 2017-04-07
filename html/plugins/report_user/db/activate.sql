@@ -1,0 +1,1 @@
+INSERT INTO `learning_report` (`id_report`, `report_name`, `class_name`,  `use_user_selection`, `enabled`) VALUES (NULL, 'user_report', 'report_user', 'true', '1');

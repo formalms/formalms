@@ -79,7 +79,7 @@
         <key id="admin_directory&amp;_REFUSED_USER_TEXT_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[User has not been approved]]></key>
         <key id="admin_directory&amp;_REFUSE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Refuse]]></key>
         <key id="admin_directory&amp;_REFUSE_USER_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Refuse user registration request]]></key>
-        <key id="admin_directory&amp;_SIMPLE_FILTER" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Search in fields: userID, First Name or Last Name]]></key
+        <key id="admin_directory&amp;_SIMPLE_FILTER" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Search in fields: userID, First Name or Last Name]]></key>
         <key id="admin_directory&amp;_WAITING_USER_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Users list with confirmed registration request and waiting for approval]]></key>
       </module>
       <module id="admin_lang">
@@ -294,7 +294,7 @@
         <key id="certificate&amp;_BACK_IMAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Background image]]></key>
         <key id="certificate&amp;_BASE_LANGUAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificate language]]></key>          
         <key id="certificate&amp;_CERTIFICATE_ASSIGN" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Certificate assignment]]></key>
-        <key id="certificate&amp;_CERTIFICATE_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificate template list]]></key
+        <key id="certificate&amp;_CERTIFICATE_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificate template list]]></key>
         <key id="certificate&amp;_CERTIFICATE_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificates list]]></key>
         <key id="certificate&amp;_CERTIFICATE_REPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Released certificate]]></key>
         <key id="certificate&amp;_CERTIFICATE_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificate template list]]></key>
@@ -394,7 +394,7 @@
       </module>
       <module id="code">
         <key id="code&amp;_CODE_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Code list]]></key>
-        <key id="code&amp;_CODE_USED_NUMBER" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Number of uses]]></key
+        <key id="code&amp;_CODE_USED_NUMBER" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Number of uses]]></key>
         <key id="code&amp;_UNLIMITED_USE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Unlimited use]]></key>
         <key id="code&amp;_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Used]]></key>
       </module>
@@ -874,7 +874,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="coursereport&amp;_TABLE_QUEST_CORRECT_ASS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Percentage of correct answers for link "[title]"]]></key>
         <key id="coursereport&amp;_TABLE_QUEST_CORRECT_TXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Percentage of correct answers after inserting text in phrase "[title]"]]></key>
         <key id="coursereport&amp;_TABLE_QUEST_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Insert list for question "[title]"]]></key>
-        <key id="coursereport&amp;_TEST_INFO" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Information about the test]]></key
+        <key id="coursereport&amp;_TEST_INFO" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Information about the test]]></key>
         <key id="coursereport&amp;_TITLE_ACT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Activity title]]></key>
         <key id="coursereport&amp;_TOT_QUESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Total questions]]></key>
         <key id="coursereport&amp;_TQ_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Stats for test "[test]"]]></key>
@@ -1366,7 +1366,7 @@ To change these words please go to Admin/Language management, search for <b>logi
         <key id="login&amp;_SIGN_IN" attributes="" save_date="2015-04-21 00:00:00"><![CDATA[Register]]></key>
         <key id="login&amp;_SOCIALCONNECTKO" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Social id connection failed]]></key>
         <key id="login&amp;_SOCIALCONNECTOK" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Social id connection successs]]></key>
-        <key id="login&amp;_TWO_USERS_LOGGED_WITH_SAME_USERNAME" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Another user has logged in with your username]]></key
+        <key id="login&amp;_TWO_USERS_LOGGED_WITH_SAME_USERNAME" attributes="" save_date="2016-04-13 00:00:00"><![CDATA[Another user has logged in with your username]]></key>
         <key id="login&amp;_UNKNOWNSOCIALERROR" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Unknown error in social login]]></key>
         <key id="login&amp;_UNLOGGED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[You are logged out]]></key>
       </module>

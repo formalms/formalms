@@ -60,4 +60,19 @@ define( '_files_com_',	_base_.'/'._folder_files_com_ );
 define( '_plugins_', 	_base_.'/'._folder_plugins_ );
 
 /** other nice setting */
-define( '_after_login_', 'lms/elearning/show' );
+define( '_lms_home_',           'lms/elearning/show' );
+
+define( '_homepage_base_',      'adm/homepage' );
+define( '_homecatalog_base_',   'lms/homecatalogue' );
+
+define( '_homepage_',           _homepage_base_ . '/show' );
+define( '_register_',           _homepage_base_ . '/register' );
+define( '_login_',              _homepage_base_ . '/login' );
+define( '_signup_',             _homepage_base_ . '/signup' );
+define( '_logout_',             _homepage_base_ . '/logout' );
+define( '_stopconcurrency_',    _homepage_base_ . '/stopconcurrency' );
+define( '_lostpwd_',            _homepage_base_ . '/lostpwd' );
+define( '_newpwd_',             _homepage_base_ . '/newpwd' );
+define( '_homewebpage_',        _homepage_base_ . '/webpage' );
+define( '_sso_',                _homepage_base_ . '/sso' );
+define( '_homecatalog_',        _homecatalog_base_ . '/show' );

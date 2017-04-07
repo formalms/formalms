@@ -764,7 +764,7 @@ function manprjadmin() {
 		$user_select->learning_filter = 'course';
 
 		if(isset($_POST['recipients'])) {
-			$recipients = unserialize(urldecode($_POST['recipients']));
+			$recipients = Util::unserialize(urldecode($_POST['recipients']));
 		} else {
 			$recipients = getAdminList($id);
 		}
