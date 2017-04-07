@@ -2629,14 +2629,14 @@ h1, h2, h3, h4, h5, h6, p {
   color: white;
   background-color: #c84000;
   font-family: "Open-sans";
-  font-size: 14px;
+  font-size: 12px;
   border-radius: 5px;
   box-shadow: none;
   cursor: pointer;
   transition: background-color 0.4s ease 0s; }
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .pn-button {
-      min-height: 40px; } }
+      font-size: 14px; } }
 
 .pn-button--orange-hover:hover {
   background-color: #ff6c00;
