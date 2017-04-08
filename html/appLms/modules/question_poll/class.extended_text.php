@@ -349,6 +349,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll {
 	 * 
 	 * @param  	int		$id_track		the test relative to this question
 	 * @param  	int		$num_quest		the quest sequqnce number
+     * @param  	int		$number_time	the quest attempt number
 	 * 
 	 * @return array	return an array with xhtml code in this way
 	 * 					string	'quest' 			=> the quest, 
@@ -359,7 +360,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function displayUserResult( $id_track, $num_quest, $show_solution ) {
+	function displayUserResult( $id_track, $num_quest, $show_solution, $number_time = null ) {
 		
 		$lang =& DoceboLanguage::createInstance('test');
 		
@@ -388,7 +389,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll {
 			.'</div>';
 		
 		return array(	'quest' 	=> $quest, 
-						'score'		=> $this->userScore($id_track), 
+						'score'		=> $this->userScore($id_track, $number_time),
 						'comment'	=> '',
 						'manual_assigned' => ( $manual_assigned ? true : false ) );
 	}

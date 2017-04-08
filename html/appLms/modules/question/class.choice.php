@@ -857,6 +857,7 @@ class Choice_Question extends Question {
 	 * 
 	 * @param  	int		$id_track		the test relative to this question
 	 * @param  	int		$num_quest		the quest sequqnce number
+	 * @param  	int		$number_time	the quest attempt number
 	 * 
 	 * @return array	return an array with xhtml code in this way
 	 * 					string	'quest' 	=> the quest, 
@@ -899,6 +900,7 @@ class Choice_Question extends Question {
 		if ($number_time != null){
 			$recover_answer .= " AND number_time = ".$number_time;
 		}
+
 		list($id_answer_do) = sql_fetch_row(sql_query($recover_answer));
 		
 		$quest = '';

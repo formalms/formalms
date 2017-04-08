@@ -1897,7 +1897,7 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
         if (($type_quest != 'title') && ($type_quest != 'break_page')) {
             $review = $quest_obj->displayUserResult($id_track,
                 ($type_quest != 'title' ? $quest_sequence_number++ : $quest_sequence_number),
-                $quest_sequence_number,
+                true,
                 $number_time);
 
             $report_test .= '<div class="test_quest_review_container">'

@@ -626,7 +626,7 @@ class Question {
 	 *
 	 * @param  	int		$id_track		the test relative to this question
 	 * @param  	int		$num_quest		the quest sequence number
-	 * @param  	int		$num_quest		the quest sequence number
+	 * @param  	int		$number_time	the quest attempt number
 	 *
 	 * @return array	return an array with xhtml code in this way
 	 * 					string	'quest' 	=> the quest,
