@@ -22,7 +22,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             
     public static function getLoginGUI() {
         
-        return  Form::openForm("forma_login", Get::rel_path("base") . "/index.php?r=" . _login_ . "&plugin=".Plugin::getName())
+        return  Form::openForm("login_confirm", Get::rel_path("base") . "/index.php?r=" . _login_ . "&plugin=".Plugin::getName())
                 //  . Form::getHidden("plugin", "plugin", "FormaAuth")
                   . Form::getTextfield(Lang::t("_USERNAME", "login"), "login_userid", "login_userid", 255)
                   . Form::getPassword(Lang::t("_PASSWORD", "login"), "login_pwd", "login_pwd", 255)
