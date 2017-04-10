@@ -46,7 +46,27 @@ class HomepageAdmController extends AdmController {
         } else $params['block_attempts'] = false;
         
         $params['under_maintenence'] = $this->model->isUnderMaintenence();
-        
+        $params['isCatalogToShow'] = $this->model->isCatalogToShow();
+        $params['isSelfRegistrationActive'] = $this->model->isSelfRegistrationActive();
+
+        foreach($this->model->getLoginGUI() AS $loginGUI) {
+            $params['loginGUI'] .= $loginGUI;
+        }
+
+        $external_pages = $this->model->getExternalPages();
+        $params['getExternalPages']="";
+        if(!empty($external_pages)) {
+            $params['getExternalPages'].='<ul id="main_menu">';
+            foreach ($external_pages AS $id_page => $title) {
+                $params['getExternalPages'].='<li '.($id_page == end(array_keys($external_pages)) ? 'class="last"' : '') .'>';
+                $params['getExternalPages'].='<a href="'.Get::rel_path("base") . "/index.php?r=" . _homewebpage_ . "&page=" . $id_page.'" >';
+                $params['getExternalPages'].=$title;
+                $params['getExternalPages'].='</a>';
+                $params['getExternalPages'].='</li>';
+            }
+            $params['getExternalPages'].='</ul>';
+        }
+
         $this->render("show", $params);
     }
     

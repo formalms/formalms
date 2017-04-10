@@ -1,0 +1,59 @@
+<div class="std_block">
+    <div class="content">
+        {% if under_maintenence == false %}
+            {% if isCatalogToShow != false %}
+                <div class="homecatalogue">
+                    <a href="index.php?r=<?php echo _homecatalog_; ?>">{{ translate('_CATALOGUE', 'standard') }}</a>
+                </div>
+            {% endif %}
+            <div class="login-box">
+                {% if block_attempts == false %}
+                    <h2>{{  translate('_LOGIN', 'login') }}</h2>
+                    {{ loginGUI|raw  }}
+                    {% if done != false %}
+                        <div>
+                            <b class="logout">{{ done }}</b>
+                        </div>
+                    {% endif %}
+                    {% if msg != false %}
+
+                        <div id="service_msg">
+                            <b class="login_failed">{{ message }}</b>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <h3>{{ translate('_ACCESS_LOCK', 'login') }}</h3>
+                    <p>{{ block_attempts }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="footer">
+        <div id="link">
+            {% if isSelfRegistrationActive != false and under_maintenence == false %}
+            <a class="first" href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_register_') }}">{{ translate('_REGISTER', 'login') }}</a>
+            {% endif %}
+            <a class="first" href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_lostpwd_') }}">{{ translate('_LOG_LOSTPWD', 'login') }}</a>
+        </div>
+    </div>
+    <div class="external_page">
+        {{ getExternalPages|raw }}
+    </div>
+    <div class="webcontent">
+        {% if under_maintenence == true %}
+        <div class="box">
+            <h3>{{ translate('_MAINTENANCE', 'configuration') }}</h3>
+            <div class="text">
+                {{ translate('_MAINTENANCE_TEXT', 'login')|raw }}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="box">
+            <h3>{{ translate('_HOMEPAGE', 'login') }}</h3>
+            <div class="text">
+                {{ translate('_INTRO_STD_TEXT', 'login')|raw }}
+            </div>
+        </div>
+    </div>
+</div>
