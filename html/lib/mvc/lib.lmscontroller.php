@@ -25,4 +25,8 @@ class LmsController extends Controller {
 		return _base_.'/customscripts'.'/'._folder_lms_.'/views';
 #		return _lms_.'/customscripts/views';
 	}
+
+    public function templatePath(){
+        return _base_."/templates/".getTemplate()."/layout/appCore";
+    }
 }
