@@ -426,19 +426,19 @@ class Util  {
 class UIFeedback {
 
 	static public function info($message_text, $return = false) {
-		$result = '<p class="container-feedback"><span class="ico-sprite fd_info"><span>'.Lang::t('_DETAILS').'</span></span>&nbsp;'.$message_text.'</p>';
+		$result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_info"><span>'.Lang::t('_DETAILS').'</span></span>&nbsp;'.$message_text.'</div></a>';
 		if($return) return $result;
 		cout($result, 'feedback');
 	}
 
 	static public function notice($message_text, $return = false) {
-		$result = '<p class="container-feedback"><span class="ico-sprite fd_notice"><span>'.Lang::t('_NOTICE').'</span></span>&nbsp;'.$message_text.'</p>';
+		$result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_notice"><span>'.Lang::t('_NOTICE').'</span></span>&nbsp;'.$message_text.'</div></a>';
 		if($return) return $result;
 		cout($result, 'feedback');
 	}
 
 	static public function error($message_text, $return = false) {
-		$result = '<p class="container-feedback"><span class="ico-sprite fd_notice"><span>'.Lang::t('_OPERATION_FAILURE').'</span></span>&nbsp;'.$message_text.'</p>';
+		$result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_notice"><span>'.Lang::t('_OPERATION_FAILURE').'</span></span>&nbsp;'.$message_text.'</div></a>';
 		if($return) return $result;
 		cout($result, 'feedback');
 	}
