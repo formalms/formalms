@@ -1165,9 +1165,8 @@ class CoursereportLmsController extends LmsController
         $re_testreport = sql_query($query_testreport);
 
         $test_man = new GroupTestManagement();
-        $report_man = new CourseReportManager();
-        $org_tests =& $report_man->getTest();
-        $tests_info =& $test_man->getTestInfo($org_tests);
+        $test_info =& current($test_man->getTestInfo(array($idTest)));
+        $retainAnswersHistory = (bool)$test_info['retain_answers_history'];
 
         $page_title = array(
             'index.php?r=coursereport/coursereport' => $lang->def('_TH_TEST_REPORT'),
@@ -1198,7 +1197,7 @@ class CoursereportLmsController extends LmsController
                 $i++,
                 $date_attempt,
                 $score,
-                '<a class="ico-sprite subs_chart" href="index.php?r=lms/coursereport/testreview&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>' . $lang->def('_STATISTICS') . '</span></a>',
+                $retainAnswersHistory?'<a class="ico-sprite subs_chart" href="index.php?r=lms/coursereport/testreview&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>' . $lang->def('_STATISTICS') . '</span></a>' : '',
                 '<a class="ico-sprite subs_del" href="index.php?r=lms/coursereport/testreview&delete_track=' . md5($idTest . "_" . $idUser . "_" . $number_time) . '&id_test=' . $idTest . '&id_user=' . $idUser . '&number_time=' . $number_time . '&idTrack=' . $idTrack . '"><span>' . $lang->def('_DELETE') . '</span></a>');
 
             $tb->addBody($tableBodyArray);
