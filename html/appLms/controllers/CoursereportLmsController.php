@@ -1227,9 +1227,8 @@ class CoursereportLmsController extends LmsController
         $re_testreport = sql_query($query_testreport);
 
         $test_man = new GroupTestManagement();
-        $report_man = new CourseReportManager();
-        $org_tests =& $report_man->getTest();
-        $tests_info =& $test_man->getTestInfo($org_tests);
+        $test_info =& current($test_man->getTestInfo(array($idTest)));
+        $retainAnswersHistory = (bool)$test_info['retain_answers_history'];
 
         $page_title = array(
             'index.php?r=coursereport/coursereport' => $lang->def('_TH_TEST_REPORT'),
