@@ -1215,7 +1215,7 @@ class Associate_Question extends Question {
 			$comm_corret 	= '';
 			$answer_comment = '';
 			
-			$quest .= '<div class="nofloat">'
+			$quest .= '<div>'
 					.'<div class="associate_colum_float">'.$answer.'</div>'
 					.'<div class="associate_colum_float">';
 			foreach($option_associate as $id_aa => $text ) {
