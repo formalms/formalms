@@ -14,17 +14,27 @@
 class PluginManager {
 	protected static $plugin_list = array();
     public $category;
-	/**
-	 * Class constructor, this is a static class, don't call this
-	 */
-	public function __construct($category) {
+
+    /**
+     * PluginManager constructor.
+     * @param $category
+     */
+    public function __construct($category) {
         $this->category=$category;
     }
 
+    /**
+     *  Load library of specified category
+     */
     public function load_lib(){
         include(_lib_."/plugins/".$this->category."/loader.php");
     }
 
+    /**
+     * Returns all plugins, (only active is $onlyactive set to true)
+     * @param bool $onlyActive
+     * @return array
+     */
     private static function get_all_plugins($onlyActive = false){
         if (empty(self::$plugin_list)) {
             require_once _adm_ . '/models/PluginmanagerAdm.php';
@@ -34,7 +44,17 @@ class PluginManager {
         return self::$plugin_list;
     }
 
-    public function run_plugin($plugin,$method,$parameter=array()){
+    /**
+     * Given a plugin name $plugin and a method $method it runs the static method of the
+     * specified plugin of the category set into the constructor. You can specify
+     * parameters passing it through $parameters.
+     *
+     * @param $plugin
+     * @param $method
+     * @param array $parameter
+     * @return bool|mixed
+     */
+    public function run_plugin($plugin, $method, $parameter=array()){
         $category=$this->category;
         if ($category!="") {
             if (self::is_plugin_active($plugin)){
@@ -52,7 +72,14 @@ class PluginManager {
         return false;
     }
 
-    public function run($method,$parameter=array()){
+    /**
+     * Given a method $method it runs all the static method of the category set into the
+     * constructor. You can specify parameters passing it through $parameters.
+     * @param $method
+     * @param array $parameter
+     * @return array|bool
+     */
+    public function run($method, $parameter=array()){
         $return=array();
         $category=$this->category;
         if ($category!="") {
@@ -75,7 +102,14 @@ class PluginManager {
         return false;
     }
 
-    public function get_plugin($plugin,$parameter=array()){
+    /**
+     * Given a plugin $plugin it returns an instance of the specified plugin of the category
+     * set into the constructor passing $parameters into its constructor
+     * @param $plugin
+     * @param array $parameter
+     * @return bool
+     */
+    public function get_plugin($plugin, $parameter=array()){
         $category=$this->category;
         if ($category!="") {
             if (self::is_plugin_active($plugin)) {
@@ -124,7 +158,15 @@ class PluginManager {
         list($plugin,$controller,$model) = sql_fetch_row($r);
         return array($plugin,$controller,$model);
     }
-    
+
+    /**
+     * Given a mvc app (for example lms or adm) $mvc_app and an mvc name $mvc_name, it returns
+     * an instance of the controller linked to the specified mvc app and name searching in the
+     * table core_requests.
+     * @param $mvc_app
+     * @param $mvc_name
+     * @return bool
+     */
     public static function get_feature($mvc_app, $mvc_name) {
         list($plugin,$controller,$model) = self::get_plugin_by_request($mvc_app,$mvc_name);
         if(!isset($plugin) || !isset($controller) || !isset($model)) {
