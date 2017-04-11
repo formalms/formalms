@@ -14,7 +14,7 @@
     <script type="text/javascript" src="{{ evalPhp('Get::rel_path', ['base']) }}/lib/js_utils.js"></script>    
     
         <script>
-            $('document').ready(function() {
+            $(function() {
                 $('div.menu-area a').bind('click',function(event){
                 	event.preventDefault();
                     id = $(this).attr('rel');
@@ -30,7 +30,12 @@
                     icons:false
                 });
 
-
+                // feedback
+                $('#container-feedback').click(function(){
+                   event.preventDefault();
+                    $( this ).fadeOut( 500 );
+                });
+                
             });
         </script>
         
@@ -50,9 +55,6 @@
 	<!-- blind nav -->
     {{ evalPhp('Layout::zone', ['blind_navigation']) }}
     
-		<!-- feedback -->
-    {{ evalPhp('Layout::zone', ['feedback']) }}
-    
 		<!-- container -->
 		<div id="container">
 		<!-- header -->
@@ -60,7 +62,8 @@
         
 		<!-- menu_over -->
     {{ evalPhp('Layout::zone', ['menu_over']) }}
-                
+		<!-- feedback -->
+    {{ evalPhp('Layout::zone', ['feedback']) }}
                 
                                             
 		<!-- content -->

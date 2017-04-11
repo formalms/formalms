@@ -11,118 +11,132 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-if(Docebo::user()->isLoggedIn()) {
-	
-	$lang 	=& DoceboLanguage::createInstance('menu', 'framework');
-	$p_man 	=& PlatformManager::createInstance();
-	$platforms 	= $p_man->getPlatformList();
+/**
+ * @return string The Admin User panel
+ */
+function GetAdminPanel(){
 
-	cout('<li><a href="#main_menu">'.$lang->def('_BLIND_MAIN_MENU').'</a></li>', 'blind_navigation');
-
-	cout('<div id="main_menu_container" class="layout_menu_over yuimenubar yuimenubarnav">', 'menu_over');
-	cout('<div class="bd"><ul class="first-of-type">', 'menu_over');
-
-	foreach($platforms as $p_code => $p_name) {
-
-		$menu_man =& $p_man->getPlatofmMenuInstance($p_code);
-
-		if($menu_man !== false) {
-
-			$main_voice = $menu_man->getLevelOne();
-
-			if(!empty($main_voice)) {
-
-				cout('<li class="yuimenuitem">'
-					.'<a class="yuimenuitemlabel" href="#submenu_'.$p_code.'">'
-					//.Get::img('menu/'.$p_code.'.png', '.:', 'icon')
-					.'<span class="admmenu_'.$p_code.'">'.$lang->def('_FIRST_LINE_'.$p_code).'</span>'
-					.'</a>'
-					.'<div id="submenu_'.$p_code.'" class="yuimenu"><div class="bd"><ul>',
-				'menu_over');
-
-				foreach($main_voice as $id_m => $v_main) {
-
-					$under_voice = $menu_man->getLevelTwo($id_m);
-					if(!isset($v_main['collapse']) || $v_main['collapse'] === false) {
-
-						cout('<li class="yuimenuitem">'
-							.'<a class="yuimenuitemlabel" href="#submenu_'.$p_code.'_'.$id_m.'">'
-							.$v_main['name']
-							.'</a>',
-						'menu_over');
-						if(!empty($under_voice)) cout('<div id="submenu_'.$p_code.'_'.$id_m.'" class="yuimenu"><div class="bd"><ul>', 'menu_over');
-					}
-					foreach($under_voice as $id_m => $voice) {
-
-						cout('<li class="yuimenuitem">'.
-							'<a class="yuimenuitemlabel" href="'.Util::str_replace_once('&', '&amp;',  $voice['link']).'">'.
-								$voice['name'].
-							'</a>'.
-							'</li>'
-						, 'menu_over');
-					}
-					
-					if(!isset($v_main['collapse']) || $v_main['collapse'] === false) {
-
-						if(!empty($under_voice)) cout('</ul></div></div>', 'menu_over');
-						cout('</li>',
-						'menu_over');
-					}
-				}
-				cout('</ul></div></div>'.
-					'</li>'
-				, 'menu_over');
-			}
-		}
-	}
-
-	// quick jump
-	cout('<li class="yuimenuitem">'.
-		'<a href="'.$GLOBALS['where_lms_relative'].'">'.
-			'<span class="admmenu_goto">'.$lang->def('_JUMP_TO_PLATFORM', 'menu', 'framework')
-			.' '.$lang->def('_LMS', 'platform').'</span>'.
-		'</a>',
-	'menu_over');
-	/*
-	cout('<div id="jumpto" class="yuimenu"><div class="bd"><ul>', 'menu_over');
-	foreach($platforms as $p_code => $p_name) {
-
-		if($p_code != 'scs' && $p_code != 'ecom' && $p_code != 'framework') {
-			
-			cout('<li class="yuimenuitem">'.
-				'<a href="'.$GLOBALS['where_'.$p_code.'_relative'].'">'.
-					$p_name.
-				'</a>'.
-				'</li>'
-			, 'menu_over');
-		}
-	}
-	cout('</ul></div></div>', 'menu_over');*/
-	cout('</li>', 'menu_over');
-
-	// add logout voice
-	/*
-	cout('<li class="yuimenuitem">'.
-		'<a href="'.Get::rel_path('base") . '/index.php?r=' . _logout_ . '">'.
-			//Get::img('menu/logout.png', '.:', 'icon').' '.
-			'<span class="admmenu_logout">'. Lang::t('_LOGOUT', 'menu', 'framework').'</span>'.
-		'</a>'.
-		'</li>',
-	'menu_over');*/
-	cout('</ul></div></div>', 'menu_over');
-
-	// script needed in order to render the menu
-	cout('<script type="text/javascript">'."\n".
-	"// Initialize and render the MenuBar when it is available in the page"."\n".
-	"YAHOO.util.Event.onContentReady('main_menu_container', function () {"."\n".
-	"	var oMenuBar = new YAHOO.widget.".( Lang::direction() == 'rtl' ? 'MenuBarRtl' : 'MenuBar' )."('main_menu_container', {"."\n".
-	"		maxheight : 600,minscrollheight : 550,lazyload : true"."\n".
-	"	});"."\n".
-	"oMenuBar.render();"."\n".
-	"});"."\n".
-	"".
-	'</script>', 'scripts');
-
+    return '
+        <li data-sm-reverse="true" style="float:right">
+            <a href="#"><i class="fa fa-user"></i>&nbsp;<b>'.Docebo::user()->getUserName().'</b></a>
+            <ul>
+                  <li>
+                    <a href="index.php">'.Lang::t('_DASHBOARD', 'dashboard').'</a>
+                  </li>  
+                  <li><a href="index.php?r=lms/profile/show">'.Lang::t('_PROFILE', 'profile').'</a>   
+                  </li>'.
+                        BackToLms()
+                  .'<li> 
+                    <a id="logout"  href='.Get::rel_path('base').'/index.php?r='. _logout_ .' ">                
+                        <i class="fa fa-power-off" aria-hidden="true"></i>&nbsp;'.Lang::t('_LOGOUT', 'standard').'</span>
+                    </a>
+                  </li>
+            </ul>
+          </li> <li data-sm-reverse="true" style="float:right">'.Layout::change_lang().'</li>';
+     
 }
 
-?>
+
+/**
+ * @return string The default Company Logo
+ */
+function GetCompanyLogo()
+{
+    return  '<h2 class="nav-brand"><a href="#">
+            <img width=100px src="'.Layout::path().'images/company_logo.png" alt="Left logo" />
+            </a></h2>';
+}
+
+function BackToLms(){
+    $lang     =& DoceboLanguage::createInstance('menu', 'framework');
+    return '<li>
+                <a href="'.$GLOBALS['where_lms_relative'].'"><i class="fa fa-home" aria-hidden="true"></i>&nbsp;'. 
+                    $lang->def('_LMS', 'platform').
+                '</a>
+            </li>';
+}
+
+
+/**
+ * @return array The menu label and its icon
+ * @param  int The current menu header
+ */
+function GetMenuHeader($pcode){
+    $lang =& DoceboLanguage::createInstance('menu', 'framework');
+
+    $strLabel = '';
+    $strIco='';
+    switch ($pcode) {
+        case 'menu_user':
+            $strLabel = $lang->def('_USER_MANAGMENT', 'menu', 'framework');
+            $strIco = '<i class="fa fa-users fa-fw"></i>';
+            break;
+        case 'menu_elearning':
+            $strLabel = $lang->def('_FIRST_LINE_lms', 'menu', 'framework');
+            $strIco = '<span class="glyphicon glyphicon glyphicon-education" aria-hidden="true"></span>';
+            break;
+        case 'menu_content':
+            $strLabel = $lang->def('_CONTENTS', 'standard', 'framework');
+            $strIco = '<i class="fa fa-clipboard fa-fw"></i>';
+            break;
+        case 'menu_report':
+            $strLabel = $lang->def('_REPORT', 'standard', 'framework');
+            $strIco = '<i class="fa fa-bar-chart-o fa-fw"></i>';
+            break;
+        case 'menu_config':
+            $strLabel = $lang->def('_CONFIGURATION', 'menu', 'framework');
+            $strIco = '<i class="fa fa-cogs fa-fw"></i>';
+            break;
+    }
+    return array("strLabel"=>$strLabel, "strIco"=>$strIco);
+}
+
+function AdminBar()
+{
+    $p_man 	=& PlatformManager::createInstance();
+    $platforms 	= $p_man->getPlatformList();
+    $admin_menu_bar = '<nav id="main-nav" role="navigation">'
+                    .GetCompanyLogo().
+                    '<ul id="main-menu" class="sm sm-forma">';
+
+
+    foreach ($platforms as $p_code => $p_name) {
+        $menu_man = $p_code == 'lms' ? $p_man->getPlatofmMenuInstance($p_code) : $p_man->getPlatofmMenuInstanceFramework($p_code);
+        $header = GetMenuHeader($p_code);
+
+
+        if ($menu_man !== false) {
+            $main_voice = $menu_man->getLevelOne();
+            if (!empty($main_voice)) {
+                $admin_menu_bar .= '<li><a href="#">' . $header["strIco"] . '&nbsp;' . $header["strLabel"] . '</a><ul>' . PHP_EOL;
+                foreach ($main_voice as $id_m => $v_main) {
+                    $under_voice = $menu_man->getLevelTwo($id_m);
+                    if ($v_main['collapse'] == true) {
+                        foreach ($under_voice as $id_m => $voice) {
+                            $admin_menu_bar .= '<li><a href="' . Util::str_replace_once('&', '&amp;', $voice['link']) . '" >' . $voice['name'] . '</a></li>' . PHP_EOL;
+                        }
+                    }
+
+                    if (!isset($v_main['collapse']) || $v_main['collapse'] === false) {
+                        $admin_menu_bar .= '<li><a href="#">' . $v_main["name"] . '</a>' . PHP_EOL;
+                        $admin_menu_bar .= '<ul>' . PHP_EOL;
+                        foreach ($under_voice as $id_m => $voice) {
+                            $admin_menu_bar .= '<li><a href="' . Util::str_replace_once('&', '&amp;', $voice['link']) . '" ><span class="desc">' . $voice['name'] . '</span></a></li>' . PHP_EOL;
+                        }
+                        $admin_menu_bar .= '</ul>' . PHP_EOL;
+                        $admin_menu_bar .= '</li>' . PHP_EOL;
+                    }
+
+                }
+                $admin_menu_bar .= '</ul></li>' . PHP_EOL;
+            }
+        }
+    }
+
+    $admin_menu_bar .=  GetAdminPanel();
+    $admin_menu_bar .= '</ul>'.PHP_EOL;
+    return $admin_menu_bar;
+}
+
+
+cout(AdminBar(), 'menu_over');

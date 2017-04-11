@@ -1,12 +1,14 @@
 {% extends "base.html.twig" %}
 
 {% block stylesheet %}
-<link rel="stylesheet" type="text/css" href="{{ layout_path }}style/adm.css"/>
-<link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-to-review.css"/>
-<link rel="stylesheet" type="text/css" href="../templates/standard/style/reset-fonts-grids.css" />
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/adm.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-to-review.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/reset-fonts-grids.css" />
+
 {% endblock %}
 
 {% block javascript %}
+    <script type="text/javascript" src="{{ layout_path }}script/jquery.smartmenus.js"></script>        
     <script type="text/javascript">
         YAHOO.util.Event.onDOMReady(function () {
             checkSelect(document.getElementById('course_type').value);
@@ -27,49 +29,37 @@
                 document.getElementById("auto_subscription").checked = false;
             }
         }
+         $(function() {
+          // Forma SmartMenu init
+          $('#main-menu').smartmenus({   
+            subMenusSubOffsetX: 1,
+            subMenusSubOffsetY: -8
+          });
+          // feedback
+          $('#container-feedback').click(function(){
+             event.preventDefault();
+              $( this ).fadeOut( 500 );
+          });
+        });        
+        
+        
     </script>
 {% endblock %}
 
 {% block content %}
+
+<!-- menu_over -->
+{{ evalPhp('Layout::zone', ['menu_over']) }}
+
 <!-- blind nav -->
 {{ evalPhp('Layout::zone', ['blind_navigation']) }}
-<!-- feedback -->
-{{ evalPhp('Layout::zone', ['feedback']) }}
 <!-- container -->
-<div id="admcontainer">
-    <!-- header -->
-    <div id="header" class="layout_header">
-        {% if not evalPhp('Docebo::user').isAnonymous() %}
-            <div class="user_panel">
-                <p>
-                    {% if not evalPhp('Docebo::user').isAnonymous() %}
-                    <b><span> {{ evalPhp('Lang::t', ['_WELCOME', 'profile']) }}, </span>
-                        {{ evalPhp('Docebo::user').getUserName() }}</b>
-                    {% endif %}
-                    <br/>
-                    {{ "now"|date("Y-m-d H:i:s") }}<br/>
-                    <span class="select-language">{{ evalPhp('Layout::change_lang') }}</span>
-                </p>
-                {% if not evalPhp('Docebo::user').isAnonymous() %}
-                <ul>
-                    <li><a class="identity" href="index.php?r=lms/profile/show">
-                            <span>{{ evalPhp('Lang::t', ['_PROFILE', 'profile']) }}</span>
-                        </a></li>
-                    <li>
-                        <a class="logout" href="{{ evalPhp('Get::rel_path',['base']) }}/index.php?r={{ constant('_logout_') }}">
-                            <span>{{ evalPhp('Lang::t', ['_LOGOUT', 'standard']) }}</span>
-                        </a></li>
-                </ul>
-                {% endif %}
-            </div>
-        {% endif %}
-        <img class="left_logo" src="{{ evalPhp('Layout::path') }}images/company_logo.png" alt="Left logo"/>
 
-        <div class="nofloat"></div>
-        {{ evalPhp('Layout::zone', ['header']) }}
-    </div>
-    <!-- menu_over -->
-    {{ evalPhp('Layout::zone', ['menu_over']) }}
+<div id="admcontainer">
+    
+    <!-- feedback -->
+    {{ evalPhp('Layout::zone', ['feedback']) }}
+    
     <!-- content -->
     <div class="layout_colum_container">
         {{ evalPhp('Layout::zone', ['content']) }}
