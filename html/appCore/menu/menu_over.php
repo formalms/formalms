@@ -27,7 +27,7 @@ function GetAdminPanel(){
                   </li>'.
                         BackToLms()
                   .'<li> 
-                    <a id="logout"  href="index.php?modname=login&amp;op=logout">                
+                    <a id="logout"  href='.Get::rel_path('base').'/index.php?r='. _logout_ .' ">                
                         <i class="fa fa-power-off" aria-hidden="true"></i>&nbsp;'.Lang::t('_LOGOUT', 'standard').'</span>
                     </a>
                   </li>
