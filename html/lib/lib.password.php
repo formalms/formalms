@@ -42,6 +42,12 @@ class Password {
             PASSWORD_MD5=>"password_verify_md5"
         );
     }
+
+    /**
+     * Returns the password's informations
+     * @param $password
+     * @return array
+     */
     public function info($password) {
         $result=array(
             'algorithm'=>null,
@@ -73,6 +79,11 @@ class Password {
         }
     }
 
+    /**
+     * Returns the hash of the password
+     * @param bool $algorithm
+     * @return bool|false|string
+     */
     public function hash($algorithm=false){
         if (!$algorithm){
             $algorithm=$this->algorithm_default;
@@ -101,6 +112,11 @@ class Password {
         }
     }
 
+    /**
+     * Verify the password
+     * @param $text
+     * @return int
+     */
     public function verify($text){
         $info=$this->info($text);
         $default_alg=$this->algorithm_default;
@@ -117,6 +133,11 @@ class Password {
             return PASSWORD_INCORRECT;
         }
     }
+
+    /**
+     * Returns the password policies
+     * @return PasswordPolicies
+     */
     public function policies(){
         return $this->policies;
     }
