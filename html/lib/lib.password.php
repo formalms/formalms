@@ -31,7 +31,7 @@ class Password {
     function Password($password) {
         $this->policies=PasswordPolicies::check($password);
         $this->password=$password;
-        $this->algorithm_default=Get::sett('pass_algorithm');
+        $this->algorithm_default=Get::sett('pass_algorithm', PASSWORD_MD5);
         $this->algorithm_options = array(
             PASSWORD_BCRYPT=>array(
                 'cost'=>10
