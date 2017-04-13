@@ -63,6 +63,7 @@
     position: absolute;
     padding: 0 5px 5px;
     margin-top: 50px;
+    transition: opacity .5s linear 0s;
 }
 
 .graph__content--visible {
