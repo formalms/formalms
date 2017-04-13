@@ -26,14 +26,18 @@
 			    if($translate == 'menu_config') $strHeader = Lang::t('_CONFIGURATION', 'menu', 'framework');
 
 				if ($i == 0 || $i == 2) {
-					
+					echo '<li'.($id == $active_tab?' class="active"':'').' style="display: none;" >'
+						.'<a href="#tab_g_'.$id.'" data-toggle="tab">'
+						.'<em>'.$strHeader.'</em>'
+						.'</a>'
+						.'</li>';
+				} else {
+					echo '<li'.($id == $active_tab?' class="active"':'').'>'
+						.'<a href="#tab_g_'.$id.'" data-toggle="tab">'
+						.'<em>'.$strHeader.'</em>'
+						.'</a>'
+						.'</li>';
 				}
-
-				echo '<li'.($id == $active_tab?' class="active"':'').'>'
-					.'<a href="#tab_g_'.$id.'" data-toggle="tab">'
-					.'<em>'.$strHeader.'</em>'
-					.'</a>'
-					.'</li>';
 
 				$i++;
             }
