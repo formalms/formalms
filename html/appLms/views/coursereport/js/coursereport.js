@@ -211,19 +211,12 @@ window.CourseReport = (function ($) {
 
         var _parsed = [];
         var _showIcon;
-        var _isLinkActive;
         var _link;
 
         $.each(result, function (i, elem) {
             _showIcon = elem.showIcon;
-            _isLinkActive = elem.active;
-
-            if (_isLinkActive) {
-                _link = elem.link;
-            } else {
-                _link = 'javascript:void(0);';
-            }
-
+            _link = elem.link;
+            
             if (_showIcon) {
               _parsed.push('<a href="' + _link + '"><i class="fa fa-check"></i></a>');
             } else {
