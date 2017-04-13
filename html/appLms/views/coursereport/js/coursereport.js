@@ -216,7 +216,7 @@ window.CourseReport = (function ($) {
         $.each(result, function (i, elem) {
             _showIcon = elem.showIcon;
             _link = elem.link;
-            
+
             if (_showIcon) {
               _parsed.push('<a href="' + _link + '"><i class="fa fa-check"></i></a>');
             } else {
