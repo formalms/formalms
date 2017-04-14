@@ -1,6 +1,6 @@
 ALTER TABLE `core_user` CHANGE `pass` `pass` VARCHAR(255) NOT NULL;
 
-INSERT INTO `forma_20_temp_purple`.`core_setting` (
+INSERT INTO `core_setting` (
   `param_name` ,
   `param_value` ,
   `value_type` ,
