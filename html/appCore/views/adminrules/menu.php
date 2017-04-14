@@ -16,7 +16,7 @@
 		<ul class="nav nav-tabs">
 	
 		<?php
-			$i = 0;
+
 			foreach($platform_list as $id => $translate)  {
                             
 			    if($translate == 'menu_user') $strHeader = Lang::t('_USER_MANAGMENT', 'menu', 'framework');
@@ -25,21 +25,11 @@
 			    if($translate == 'menu_report') $strHeader = Lang::t('_REPORT', 'standard', 'framework');
 			    if($translate == 'menu_config') $strHeader = Lang::t('_CONFIGURATION', 'menu', 'framework');
 
-				if ($i == 0 || $i == 2) {
-					echo '<li'.($id == $active_tab?' class="active"':'').' style="display: none;" >'
-						.'<a href="#tab_g_'.$id.'" data-toggle="tab">'
-						.'<em>'.$strHeader.'</em>'
-						.'</a>'
-						.'</li>';
-				} else {
-					echo '<li'.($id == $active_tab?' class="active"':'').'>'
-						.'<a href="#tab_g_'.$id.'" data-toggle="tab">'
-						.'<em>'.$strHeader.'</em>'
-						.'</a>'
-						.'</li>';
-				}
-
-				$i++;
+				echo '<li'.($id == $active_tab?' class="active"':'').'>'
+					.'<a href="#tab_g_'.$id.'" data-toggle="tab">'
+					.'<em>'.$strHeader.'</em>'
+					.'</a>'
+					.'</li>';
             }
                     
 			reset($platform_list);
