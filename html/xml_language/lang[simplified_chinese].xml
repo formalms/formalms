@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20150421</DATE>
+  <DATE>20170414</DATE>
   <LANG id="simplified_chinese">
     <lang_code>simplified_chinese</lang_code>
     <lang_description>&#x7B80;&#x4F53;&#x4E2D;&#x6587;</lang_description>
@@ -208,6 +208,7 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0.6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[星期]]></key>
       </module>
+      <module id="cart"/>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[加入到购物车]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[职业]]></key>
@@ -433,9 +434,9 @@
         <key id="configuration&amp;_MANDATORY_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[如果以上注册码选项之一被允许，用户被强制输入注册码（须填写代码字段）]]></key>
         <key id="configuration&amp;_MAX_EXECUTION_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["最长c_执行_时间"配置]]></key>
         <key id="configuration&amp;_MAX_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[登录尝试连续失败的最大次数（0 =无限制）]]></key>
-        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql校验]]></key>
-        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql编码]]></key>
-        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sql模式]]></key>
+        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2017-04-10 11:39:30"><![CDATA[MySQL校验]]></key>
+        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2017-04-10 11:39:36"><![CDATA[MySQL编码]]></key>
+        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2017-04-10 11:39:44"><![CDATA[SQL模式]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL版本]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[批量发送邮件间的停顿时间（秒）]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[发送邮件消息，每批发送数量为]]></key>
@@ -461,9 +462,9 @@
         <key id="configuration&amp;_PATHSCORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[保存上传的SCORM学习对象文件的路径]]></key>
         <key id="configuration&amp;_PATHSPONSOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[赞助人条幅广告]]></key>
         <key id="configuration&amp;_PATHTEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[问题”文件上传”]]></key>
-        <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Paypal货币代码]]></key>
-        <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Paypal帐户]]></key>
-        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[使用Paypal沙箱而不是真实环境（这是一个调试和测试选项）]]></key>
+        <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2017-04-10 11:51:30"><![CDATA[PayPal货币代码]]></key>
+        <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2017-04-10 11:51:26"><![CDATA[PayPal帐户]]></key>
+        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2017-04-10 11:51:35"><![CDATA[使用PayPal沙箱而不是真实环境（这是一个调试和测试选项）]]></key>
         <key id="configuration&amp;_PHPINFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[有关PHP的信息]]></key>
         <key id="configuration&amp;_PHPVERSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[PHP 版本]]></key>
         <key id="configuration&amp;_POST_MAX_SIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["post_max_size"配置]]></key>
@@ -486,7 +487,7 @@
         <key id="configuration&amp;_SAVE_LA_AFTER_MAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[是的，只有达到最大值时]]></key>
         <key id="configuration&amp;_SAVE_LA_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[是的，全部]]></key>
         <key id="configuration&amp;_SAVE_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[保存登陆尝试失败的信息]]></key>
-        <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[允许外部源直接链接到scorm章节 (sco and asset)]]></key>
+        <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2017-04-10 11:03:08"><![CDATA[允许外部源直接链接到SCORM章节 (sco and asset)]]></key>
         <key id="configuration&amp;_SECURITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[安全相关]]></key>
         <key id="configuration&amp;_SENDER_EVENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[警报消息发件人的电子邮件地址]]></key>
         <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[添加以下地址作为平台发送的所有电子邮件的抄送地址]]></key>
@@ -548,7 +549,7 @@
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[请用户选择一个不同于最后X次使用的密码]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[每个用户在我的文件区域的磁盘定额（MB）]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[使用高级登记表]]></key>
-        <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[使用DimDim Api 而非url接口]]></key>
+        <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2017-04-10 11:10:00"><![CDATA[使用DimDim API 而非URL接口]]></key>
         <key id="configuration&amp;_USE_REST_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[允许API功能]]></key>
         <key id="configuration&amp;_USE_TAG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[在论坛里允许标记功能]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Attention without these settings the social login will not work]]></key>
@@ -754,7 +755,7 @@
         <key id="coursereport&amp;_ACTIVITY_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[关于已选活动的消息]]></key>
         <key id="coursereport&amp;_ADD_ACTIVITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[新活动]]></key>
         <key id="coursereport&amp;_ADD_ACTIVITY_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[添加新活动]]></key>
-        <key id="coursereport&amp;_ADD_SCORM_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[添加Scorm成绩]]></key>
+        <key id="coursereport&amp;_ADD_SCORM_RESULTS" attributes="" save_date="2017-04-10 11:03:15"><![CDATA[添加SCORM成绩]]></key>
         <key id="coursereport&amp;_ANSWER_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[正确答案]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[该课程的测试]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[这是该课程的所有测试和学生成绩的列表]]></key>
@@ -803,7 +804,7 @@
         <key id="course_charts&amp;_ACTIVITY_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[这个图表可以让您检查在该学习时段用户看到的章节数量。]]></key>
         <key id="course_charts&amp;_CHAPTER_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[这个图表可以让您检查每个用户的所有已经完成或通过的章节。]]></key>
         <key id="course_charts&amp;_COMPLETED_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[这个图表可以让您检查该课程用户已经完成的所有章节。]]></key>
-        <key id="course_charts&amp;_NO_SCORM_IN_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[该课程中没有scorm的教学内容。]]></key>
+        <key id="course_charts&amp;_NO_SCORM_IN_COURSE" attributes="" save_date="2017-04-10 11:03:22"><![CDATA[该课程中没有SCORM的教学内容。]]></key>
         <key id="course_charts&amp;_PASSED_CHART_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[成功完成的单元]]></key>
         <key id="course_charts&amp;_SCORE_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[这个图表可以让您检查用户在每个SCORM章节所获得的成绩。]]></key>
         <key id="course_charts&amp;_TIME_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[这个图表可以让您检查用户在每个SCORM章节花费的时间。]]></key>
@@ -839,13 +840,13 @@
         <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms 网络]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[暂停的用户]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[咨询站点]]></key>
-        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LMS支持地点]]></key>
+        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:44:34"><![CDATA[forma.lms支持地点]]></key>
         <key id="dashboard&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[课程数量]]></key>
         <key id="dashboard&amp;_TOTAL_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[订购数量]]></key>
         <key id="dashboard&amp;_TOTAL_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[注册用户]]></key>
         <key id="dashboard&amp;_UNKNOWN_RELEASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[检索最新可用版本时出现错误]]></key>
-        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[formalms.org商业服务]]></key>
-        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[formalms.org开源社区]]></key>
+        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2017-04-10 12:44:17"><![CDATA[forma.lms商业服务]]></key>
+        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:44:25"><![CDATA[forma.lms开源社区]]></key>
         <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[用户信息]]></key>
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[等待订购]]></key>
       </module>
@@ -1179,7 +1180,7 @@
       <module id="kb">
         <key id="kb&amp;_CATEGORIZED_AND_UNCATEGORIZED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[显示全部]]></key>
         <key id="kb&amp;_CATEGORIZED_ONLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[仅限已分类的]]></key>
-        <key id="kb&amp;_CATEGORIZE_OBJECT_ITEMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[从scorm分类切换到章节分类]]></key>
+        <key id="kb&amp;_CATEGORIZE_OBJECT_ITEMS" attributes="" save_date="2017-04-10 11:03:47"><![CDATA[从SCORM分类切换到章节分类]]></key>
         <key id="kb&amp;_CONTAINED_IN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[包含在：]]></key>
         <key id="kb&amp;_IS_MOBILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[该资源与移动设备兼容。]]></key>
         <key id="kb&amp;_RESOURCE_ORIGINAL_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[保存在平台上的原始名称]]></key>
@@ -1955,7 +1956,7 @@
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[平均]]></key>
         <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;lt;&amp;lt; 返回]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[基本搜索]]></key>
-        <key id="standard&amp;_BBB" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Big Blue Button]]></key>
+        <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:36:06"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[由]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[日历]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[取消]]></key>
@@ -2335,7 +2336,7 @@
         <key id="storage&amp;_LONAME_item" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[上传文件]]></key>
         <key id="storage&amp;_LONAME_link" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[链接]]></key>
         <key id="storage&amp;_LONAME_poll" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[调查]]></key>
-        <key id="storage&amp;_LONAME_scoitem" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Scorm章节]]></key>
+        <key id="storage&amp;_LONAME_scoitem" attributes="" save_date="2017-04-10 11:03:32"><![CDATA[SCORM章节]]></key>
         <key id="storage&amp;_LONAME_scormorg" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SCORM]]></key>
         <key id="storage&amp;_LONAME_test" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[测试]]></key>
         <key id="storage&amp;_ORGFOLDERNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[文件夹名称]]></key>
@@ -2609,6 +2610,7 @@
       <module id="treeview">
         <key id="treeview&amp;_ALT_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[空白]]></key>
       </module>
+      <module id="user_management"/>
       <module id="user_managment">
         <key id="user_managment&amp;_DONT_USE_TREE_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[在组织树中不要使用自行注册]]></key>
         <key id="user_managment&amp;_LOG_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[登录/注册选项]]></key>

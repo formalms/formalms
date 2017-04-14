@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20150421</DATE>
+  <DATE>20170414</DATE>
   <LANG id="hungarian">
     <lang_code>hungarian</lang_code>
     <lang_description>Hungarian</lang_description>
@@ -208,6 +208,7 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0,6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[hét]]></key>
       </module>
+      <module id="cart"/>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kosárba]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Karrier]]></key>
@@ -383,7 +384,7 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[A kód modul által létrehozott kód kérése]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Legördülő menüből felhasználó által kiválasztott fa-kód kérése]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Felhasználó által beírt fa-kód kérése]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Felhasználó által beírt fa-kód és tanfolyam kód kombináció kérése. A fa-kódok és a tanfolyam kódok 10-10 karakterből állnak, így összesen 20 karakteres kód.]]></key>
+        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2017-04-10 16:39:35"><![CDATA[Felhasználó által beírt fa-kód és tanfolyam kód kombináció kérése. A fa-kódok és a tanfolyam kódok 10-10 karakterből állnak, így összesen 20 karakteres kód]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximális hallgató felhasználó]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Szobánkénti maximális felhasználó]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximális szobák]]></key>
@@ -392,7 +393,7 @@
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Egyszerű felhasználó által tervezhető konferencia korlátozása]]></key>
         <key id="configuration&amp;_CONFIGURATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Konfiguráció]]></key>
         <key id="configuration&amp;_CONF_GLOBAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Közös]]></key>
-        <key id="configuration&amp;_CONF_LMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Tanulás]]></key>
+        <key id="configuration&amp;_CONF_LMS" attributes="" save_date="2017-04-10 13:50:33"><![CDATA[E-tanulás]]></key>
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tanfolyamra feltöltött tartalmak maximális méretének korlátja (MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pénznem szimbólum (felhasználói oldalon jelenik meg)]]></key>
         <key id="configuration&amp;_DEBUG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nyomon követés beállítások]]></key>
@@ -407,7 +408,7 @@
         <key id="configuration&amp;_DOMXML" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[DOM XML státusz]]></key>
         <key id="configuration&amp;_DONT_SHOW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ne mutassa]]></key>
         <key id="configuration&amp;_DO_DEBUG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nyomon követő információk engedélyezése]]></key>
-        <key id="configuration&amp;_ECOMMERCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Kereskedelem]]></key>
+        <key id="configuration&amp;_ECOMMERCE" attributes="" save_date="2017-04-10 14:07:24"><![CDATA[E-kereskedelem]]></key>
         <key id="configuration&amp;_FIRST_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["Tanfolyam katalógus" mutatása felhasználói főoldalként]]></key>
         <key id="configuration&amp;_FTPERR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[FTP hiba]]></key>
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[FTP rendben]]></key>
@@ -418,8 +419,8 @@
         <key id="configuration&amp;_HTMLEDIT_IMAGE_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Adminisztrátor média kezelés engedélyezése a szerkesztőben]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_GODADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Szuper-adminisztrátor média kezelés engedélyezése a szerkesztőben]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Felhasználó média kezelés engedélyezése a szerkesztőben]]></key>
-        <key id="configuration&amp;_KB_FILTER_BY_USER_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tartalom könyvtár keresési eredmények között jelenjen meg az az objektum is, ami közvetlenül nem érhető el a felhasználó számára.]]></key>
-        <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tartalom könyvtár keresési eredmények között jelenjen meg az az objektum is, ami nincs teljesen kategorizálva.]]></key>
+        <key id="configuration&amp;_KB_FILTER_BY_USER_ACCESS" attributes="" save_date="2017-04-10 16:33:33"><![CDATA[Tartalom könyvtár keresési eredmények között jelenjen meg az az objektum is, ami közvetlenül nem érhető el a felhasználó számára]]></key>
+        <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2017-04-10 16:33:28"><![CDATA[Tartalom könyvtár keresési eredmények között jelenjen meg az az objektum is, ami nincs teljesen kategorizálva]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nyelv szerkesztés aktiválása (nyomon követéshez használt)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vezetéknév és keresztnév szükséges a regisztrációhoz]]></key>
         <key id="configuration&amp;_LDAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP]]></key>
@@ -433,9 +434,9 @@
         <key id="configuration&amp;_MANDATORY_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ha a fenti regisztrációs kód beállítások közül valamelyik engedélyezett, akkor a felhasználónak meg kell adnia a regisztrációs kódot (a kód mezőt ki kell tölteni)]]></key>
         <key id="configuration&amp;_MAX_EXECUTION_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["max_execution_time" beállítások]]></key>
         <key id="configuration&amp;_MAX_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Egymás utáni sikertelen bejelentkezések maximális száma (0 = nincs korlát)]]></key>
-        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql karakterkódolás (Collation)]]></key>
-        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql kódolás (Encoding)]]></key>
-        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sql mód]]></key>
+        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2017-04-10 11:42:37"><![CDATA[MySQL karakterkódolás (Collation)]]></key>
+        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2017-04-10 11:42:44"><![CDATA[MySQL kódolás (Encoding)]]></key>
+        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2017-04-10 11:42:55"><![CDATA[SQL mód]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL verzió]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Blokkok közötti szünet (másodperc)]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hírlevél üzenetek küldése blokkokban]]></key>
@@ -461,9 +462,9 @@
         <key id="configuration&amp;_PATHSCORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SCORM Learning Object (Tanulási anyagként) feltöltött fájlok elérési útvonalának mentése]]></key>
         <key id="configuration&amp;_PATHSPONSOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Szponzor bannerek]]></key>
         <key id="configuration&amp;_PATHTEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["fájl feltöltés" kérdés]]></key>
-        <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Paypal pénznem kód]]></key>
-        <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Paypal számla (email)]]></key>
-        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Paypal sandbox használata valós környezet helyett (ez egy nyomon követő és tesztelő funkció)]]></key>
+        <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2017-04-10 11:55:36"><![CDATA[PayPal pénznem kód]]></key>
+        <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2017-04-10 11:55:31"><![CDATA[PayPal számla (email)]]></key>
+        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2017-04-10 11:55:42"><![CDATA[PayPal sandbox használata valós környezet helyett (ez egy nyomon követő és tesztelő funkció)]]></key>
         <key id="configuration&amp;_PHPINFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Információ PHP-ról]]></key>
         <key id="configuration&amp;_PHPVERSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[PHP verzió]]></key>
         <key id="configuration&amp;_POST_MAX_SIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["post_max_size" beállítások]]></key>
@@ -548,9 +549,9 @@
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Felhasználó kérése, hogy olyan jelszót válasszon, amit nem használt az elmúlt X alkalommal]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lemezterület kvóta (MB) minden felhasználó "Az én fájljaim" területének]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kibővített regisztrációs formula használata]]></key>
-        <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[DimDim Api használata URL felület helyett]]></key>
+        <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2017-04-10 10:31:16"><![CDATA[DimDim API használata URL felület helyett]]></key>
         <key id="configuration&amp;_USE_REST_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[API funkcionalitás engedélyezése]]></key>
-        <key id="configuration&amp;_USE_TAG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tag-ek engedélyezése fórumokon belül.]]></key>
+        <key id="configuration&amp;_USE_TAG" attributes="" save_date="2017-04-10 16:28:58"><![CDATA[Tag-ek engedélyezése fórumokon belül]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Attention without these settings the social login will not work]]></key>
       </module>
       <module id="course">
@@ -613,8 +614,8 @@
         <key id="course&amp;_COURSE_TIME_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Idő beállítások]]></key>
         <key id="course&amp;_COURSE_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tanfolyam típusa]]></key>
         <key id="course&amp;_COURSE_TYPE_BLENDED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kevert]]></key>
-        <key id="course&amp;_COURSE_TYPE_EDITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Tanulás kiadásokkal]]></key>
-        <key id="course&amp;_COURSE_TYPE_ELEARNING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Tanulás]]></key>
+        <key id="course&amp;_COURSE_TYPE_EDITION" attributes="" save_date="2017-04-10 13:50:43"><![CDATA[E-tanulás kiadásokkal]]></key>
+        <key id="course&amp;_COURSE_TYPE_ELEARNING" attributes="" save_date="2017-04-10 13:50:38"><![CDATA[E-tanulás]]></key>
         <key id="course&amp;_COURSE_USERISCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Feliratkozott felhasználók]]></key>
         <key id="course&amp;_CREATION_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ezóta aktív:]]></key>
         <key id="course&amp;_CST_AVAILABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Elérhető]]></key>
@@ -839,13 +840,13 @@ Egyébként regisztrálni kell a rendszerünkbe az alábbi linken: <br />
         <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms hálózat]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Felfüggesztett felhasználók]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tanácsadó oldal]]></key>
-        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LMS támogatás oldal (support)]]></key>
+        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:50:08"><![CDATA[forma.lms támogatás oldal (support)]]></key>
         <key id="dashboard&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tanfolyamok száma]]></key>
         <key id="dashboard&amp;_TOTAL_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Feliratkozások száma]]></key>
         <key id="dashboard&amp;_TOTAL_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Regisztrált felhasználók]]></key>
         <key id="dashboard&amp;_UNKNOWN_RELEASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hiba történt a legfrissebb verzió letöltése közben]]></key>
-        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[formalms.org kereskedelmi szolgáltatások]]></key>
-        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[formalms.org nyílt forrású közösség]]></key>
+        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2017-04-10 12:49:25"><![CDATA[forma.lms kereskedelmi szolgáltatások]]></key>
+        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:49:33"><![CDATA[forma.lms nyílt forrású közösség]]></key>
         <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Felhasználók info]]></key>
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Feliratkozásra vár]]></key>
       </module>
@@ -1295,12 +1296,12 @@ A fenti szöveg módosításához lépj be az Adminisztrátor/Nyelv kezeléshez,
         <key id="menu&amp;_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Események]]></key>
         <key id="menu&amp;_FIELD_MANAGER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[További mezők]]></key>
         <key id="menu&amp;_FIRST_LINE_framework" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fő]]></key>
-        <key id="menu&amp;_FIRST_LINE_lms" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Tanulás]]></key>
+        <key id="menu&amp;_FIRST_LINE_lms" attributes="" save_date="2017-04-10 13:51:56"><![CDATA[E-tanulás]]></key>
         <key id="menu&amp;_IOTASK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[I/O Művelet]]></key>
         <key id="menu&amp;_JUMP_TO_PLATFORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ugrás:]]></key>
         <key id="menu&amp;_LANG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nyelv kezelés]]></key>
         <key id="menu&amp;_LISTUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Felhasználó kezelés]]></key>
-        <key id="menu&amp;_MANAGEMENT_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Learning]]></key>
+        <key id="menu&amp;_MANAGEMENT_COURSE" attributes="" save_date="2017-04-10 13:52:01"><![CDATA[E-learning]]></key>
         <key id="menu&amp;_MANAGEMENT_RESERVATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Foglalás kezelés]]></key>
         <key id="menu&amp;_MAN_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bizonyítványok kezelése]]></key>
         <key id="menu&amp;_META_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Csoportos bizonyítványok]]></key>
@@ -1957,7 +1958,7 @@ Jelszó: [password]]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Átlag]]></key>
         <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;lt;&amp;lt; Vissza]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alap keresés]]></key>
-        <key id="standard&amp;_BBB" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Big Blue Button]]></key>
+        <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:37:20"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[által]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Naptár]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Törlés]]></key>
@@ -2027,7 +2028,7 @@ Jelszó: [password]]]></key>
         <key id="standard&amp;_EDITIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kiadások]]></key>
         <key id="standard&amp;_EDIT_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pontszám szerkesztés]]></key>
         <key id="standard&amp;_EDIT_SETTINGS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beállítás szerkesztés]]></key>
-        <key id="standard&amp;_ELEARNING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Tanulás]]></key>
+        <key id="standard&amp;_ELEARNING" attributes="" save_date="2017-04-10 13:52:16"><![CDATA[E-tanulás]]></key>
         <key id="standard&amp;_EMAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Email]]></key>
         <key id="standard&amp;_EMPTY_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Üres kiválasztás]]></key>
         <key id="standard&amp;_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vége]]></key>
@@ -2611,6 +2612,7 @@ Jelszó: [password]]]></key>
       <module id="treeview">
         <key id="treeview&amp;_ALT_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Üres]]></key>
       </module>
+      <module id="user_management"/>
       <module id="user_managment">
         <key id="user_managment&amp;_DONT_USE_TREE_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ne használja az önregisztrációt a szervezeti fán]]></key>
         <key id="user_managment&amp;_LOG_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Belépés/regisztráció beállítások]]></key>

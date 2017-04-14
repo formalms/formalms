@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20150421</DATE>
+  <DATE>20170414</DATE>
   <LANG id="dutch">
     <lang_code>dutch</lang_code>
     <lang_description>Dutch</lang_description>
@@ -53,7 +53,7 @@
         <key id="admin_directory&amp;_DIRECTORY_FILTER_templatename" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Template Naam]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FILTER_userid" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruikersnaam]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FULLNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Volledige naam]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_GROUPID" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[id]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_GROUPID" attributes="" save_date="2017-04-10 15:21:40"><![CDATA[ID]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Groep type]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_FREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Open groep]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_INVISIBLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Onzichtbare groep]]></key>
@@ -64,7 +64,7 @@
         <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_PRIVATE_ALT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Admin]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUPWAIT_ACCORDECLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruikers die wachten op bevestiging van abonnement]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUP_FIELD_WRITE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruiker veld]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_ITEMID" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruiker id]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_ITEMID" attributes="" save_date="2017-04-10 14:39:19"><![CDATA[Gebruiker ID]]></key>
         <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruiker type]]></key>
         <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPETREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Node]]></key>
         <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPEUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruikerlid]]></key>
@@ -79,7 +79,7 @@
         <key id="admin_directory&amp;_REFUSED_USER_TEXT_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruiker is niet geaccepteerd]]></key>
         <key id="admin_directory&amp;_REFUSE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Weiger]]></key>
         <key id="admin_directory&amp;_REFUSE_USER_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Weiger registratie verzoek]]></key>
-        <key id="admin_directory&amp;_SIMPLE_FILTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zoek in veld gebruikers-id, voornaam of achternaam]]></key>
+        <key id="admin_directory&amp;_SIMPLE_FILTER" attributes="" save_date="2017-04-10 15:22:58"><![CDATA[Zoek in veld gebruikers ID, voornaam of achternaam]]></key>
         <key id="admin_directory&amp;_WAITING_USER_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruikerslijst met bevestigd registratie verzoek wachtende op goedkeuring]]></key>
       </module>
       <module id="admin_lang">
@@ -208,6 +208,7 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0,6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[week]]></key>
       </module>
+      <module id="cart"/>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voeg toe aan winkelwagen]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Carriere]]></key>
@@ -260,7 +261,7 @@
         <key id="certificate&amp;_CERTIFICATE_REPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uitgegeven certificaat]]></key>
         <key id="certificate&amp;_CERTIFICATE_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificaat template lijst]]></key>
         <key id="certificate&amp;_CERTIFICATE_VIEW_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uigegeven certificaten]]></key>
-        <key id="certificate&amp;_CERTIFICATE_WARNING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[BELANGRIJK: Door een limitatie van de pdf-class welke word gemaakt in toekomstige versies, adviseren wij om alleen achtergrond plaatjes te gebruiken en geen ge-embedde plaatjes binnen in html code tags te plaatsen zoals tussen: < p >, < div >, < center > etc., want dit kan foutmeldingen verorzaken.]]></key>
+        <key id="certificate&amp;_CERTIFICATE_WARNING" attributes="" save_date="2017-04-10 12:30:29"><![CDATA[BELANGRIJK: Door een limitatie van de PDF-class welke word gemaakt in toekomstige versies, adviseren wij om alleen achtergrond plaatjes te gebruiken en geen ge-embedde plaatjes binnen in HTML code tags te plaatsen zoals tussen: < p >, < div >, < center > etc., want dit kan foutmeldingen verorzaken.]]></key>
         <key id="certificate&amp;_CHOOSE_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kies het certificaat]]></key>
         <key id="certificate&amp;_CHOOSE_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kies de cursus]]></key>
         <key id="certificate&amp;_COURSE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kies de start datum]]></key>
@@ -328,7 +329,7 @@
       <module id="chat">
         <key id="chat&amp;_CHAT_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Chat met andere gebruikers in deze cusrus. Klik op onderstaande link om de chatroom de openen in een pop-up scherm]]></key>
         <key id="chat&amp;_OPENCHAT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Open chatroom (nieuw venster)]]></key>
-        <key id="chat&amp;_OPENCHAT_WA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Open chatroom (toegankelijkheids versie)(pop-up)]]></key>
+        <key id="chat&amp;_OPENCHAT_WA" attributes="" save_date="2017-04-10 15:21:51"><![CDATA[Open chatroom (toegankelijkheids versie) (pop-up)]]></key>
       </module>
       <module id="classroom">
         <key id="classroom&amp;_AVAILABLE_INSTRUMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beschikbare Hardware]]></key>
@@ -383,7 +384,7 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vraag naar code die de code module genereerd]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vraag naar een tree-code gekozen door de gebruiker uit een lijst in een dropdown menu]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vraag naar een tree-code die handmatig moet worden ingevoerd door de gebruiker]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vraag naar ee ncombinatie van een tree-code en een cursus code die handmatig moet worden ingevoerd door de gebruiker. Tree-code en cursus code moet samegesteld zijn uit 10 karakters elk, om vervolgens een code met 20 karakters te bemachtigen.]]></key>
+        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2017-04-10 16:40:20"><![CDATA[Vraag naar ee ncombinatie van een tree-code en een cursus code die handmatig moet worden ingevoerd door de gebruiker. Tree-code en cursus code moet samegesteld zijn uit 10 karakters elk, om vervolgens een code met 20 karakters te bemachtigen]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max Audio gebruikers]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximum gebruikers per room]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max rooms]]></key>
@@ -392,7 +393,7 @@
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Limiteer het aantal conferenties die ee ngebruiker kan aanmaken.]]></key>
         <key id="configuration&amp;_CONFIGURATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configuratie]]></key>
         <key id="configuration&amp;_CONF_GLOBAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Algemeen]]></key>
-        <key id="configuration&amp;_CONF_LMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Learning]]></key>
+        <key id="configuration&amp;_CONF_LMS" attributes="" save_date="2017-04-10 14:00:01"><![CDATA[E-learning]]></key>
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Limiteer de totale grote van bestanden die een gebruiker kan uploaden voor een cursus (MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Symbool voor geld (zal aan de gebruikers kant zichtbaar zijn)]]></key>
         <key id="configuration&amp;_DEBUG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Debug opties]]></key>
@@ -407,11 +408,11 @@
         <key id="configuration&amp;_DOMXML" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[DOM XML status]]></key>
         <key id="configuration&amp;_DONT_SHOW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laat niet zien]]></key>
         <key id="configuration&amp;_DO_DEBUG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zet debug informatie aan]]></key>
-        <key id="configuration&amp;_ECOMMERCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Commerce]]></key>
+        <key id="configuration&amp;_ECOMMERCE" attributes="" save_date="2017-04-10 14:07:59"><![CDATA[E-commerce]]></key>
         <key id="configuration&amp;_FIRST_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laat cursus catalogus zien als standaard pagina voor gebruikers]]></key>
         <key id="configuration&amp;_FTPERR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fout in FTP]]></key>
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[FTP OK]]></key>
-        <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Code voorzien door google]]></key>
+        <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2017-04-10 12:23:54"><![CDATA[Code voorzien door Google]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_IN_LMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zet Google Analytics aan]]></key>
         <key id="configuration&amp;_HOUR_REQUEST_LIMIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Limiet, in uren, voordat een verzoek voor inschrijving verloopt]]></key>
         <key id="configuration&amp;_HTEDITOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visuele HTML text editor]]></key>
@@ -433,13 +434,13 @@
         <key id="configuration&amp;_MANDATORY_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Als 1 van bovenstaande registratie opties aan staan dan zijn gebruikers verplicht om hun registratie code in te voeren (het code veld moet worden ingevuld)]]></key>
         <key id="configuration&amp;_MAX_EXECUTION_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configuratie van "max_execution_time"]]></key>
         <key id="configuration&amp;_MAX_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximum aantal foute login pogingen achter elkaar (0 = ongelimiteerd)]]></key>
-        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql Collatie]]></key>
-        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql Encoding]]></key>
-        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sql mode]]></key>
+        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2017-04-10 11:45:06"><![CDATA[MySQL Collatie]]></key>
+        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2017-04-10 11:45:13"><![CDATA[MySQL Encoding]]></key>
+        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2017-04-10 11:45:21"><![CDATA[SQL mode]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL versie]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pauze tussen blokken (seconden)]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Verzend nieuwsbrief berichten in blokken van]]></key>
-        <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Met domxml OFF, zullen de scorm module, taal management en videoconfereties niet werken.]]></key>
+        <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2017-04-10 10:36:23"><![CDATA[Met domxml OFF, zullen de SCORM module, taal management en videoconfereties niet werken.]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_POLL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruik "geen antwoord" optie in poll vragen]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruik "geen antwoord" optie voor vragen in tests]]></key>
         <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Als er geen enkele cursus catalogus is toegewezen aan de gebruiker, laat dan alle cursussen en curricula zien]]></key>
@@ -461,9 +462,9 @@
         <key id="configuration&amp;_PATHSCORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pad om bestanden op te slaan geupload als SCORM Learning Object]]></key>
         <key id="configuration&amp;_PATHSPONSOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sponsor banners]]></key>
         <key id="configuration&amp;_PATHTEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vraag "file upload"]]></key>
-        <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Paypal geld code]]></key>
-        <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Paypal Account]]></key>
-        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruik paypal sandbox ipv de echte omgeving (dit is ee ndenug en test optie)]]></key>
+        <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2017-04-10 11:57:18"><![CDATA[PayPal geld code]]></key>
+        <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2017-04-10 11:57:13"><![CDATA[PayPal Account]]></key>
+        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2017-04-10 11:57:25"><![CDATA[Gebruik PayPal sandbox ipv de echte omgeving (dit is ee ndenug en test optie)]]></key>
         <key id="configuration&amp;_PHPINFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Informatie over PHP]]></key>
         <key id="configuration&amp;_PHPVERSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[PHP versie]]></key>
         <key id="configuration&amp;_POST_MAX_SIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configuratie van "post_max_size"]]></key>
@@ -486,13 +487,13 @@
         <key id="configuration&amp;_SAVE_LA_AFTER_MAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ja, alleen als het maximum aantal is bereikt]]></key>
         <key id="configuration&amp;_SAVE_LA_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ja, voor alles]]></key>
         <key id="configuration&amp;_SAVE_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sla mislukte login pogingen op]]></key>
-        <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sta directe links toe van externe bronnen naar scorm hoofdstukken]]></key>
+        <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2017-04-10 10:34:51"><![CDATA[Sta directe links toe van externe bronnen naar SCORM hoofdstukken]]></key>
         <key id="configuration&amp;_SECURITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Security gerelateerd]]></key>
         <key id="configuration&amp;_SENDER_EVENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zender email adres voor waarschuwings berichten]]></key>
         <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voeg het volgende adres toe als CC voor all emails die door het platform worden verstuurd]]></key>
         <key id="configuration&amp;_SERVERINFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Server configuratie]]></key>
         <key id="configuration&amp;_SERVER_ADDR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Server adres]]></key>
-        <key id="configuration&amp;_SERVER_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Server admin mail]]></key>
+        <key id="configuration&amp;_SERVER_ADMIN" attributes="" save_date="2017-04-10 14:58:29"><![CDATA[Server admin email]]></key>
         <key id="configuration&amp;_SERVER_MYSQL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL informatie]]></key>
         <key id="configuration&amp;_SERVER_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Server naam]]></key>
         <key id="configuration&amp;_SERVER_PORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Server port]]></key>
@@ -500,7 +501,7 @@
         <key id="configuration&amp;_SESSION_IP_CONTROL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zet IP controle aan binnen sessies (gebruikers kunnen na het inloggen hun ip niet meer veranderen)]]></key>
         <key id="configuration&amp;_SHOW_AS_BLOCK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laat zien in blok]]></key>
         <key id="configuration&amp;_SHOW_AS_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laat zien als link lijst]]></key>
-        <key id="configuration&amp;_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sms]]></key>
+        <key id="configuration&amp;_SMS" attributes="" save_date="2017-04-10 11:33:35"><![CDATA[SMS]]></key>
         <key id="configuration&amp;_SMSMARKET_LOGO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[In associatie met smsmarket.it]]></key>
         <key id="configuration&amp;_SMS_BUY_RECHARGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Koop meer SMS jes]]></key>
         <key id="configuration&amp;_SMS_CELL_NUM_FIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Veld voor gsm nummer]]></key>
@@ -518,7 +519,7 @@
         <key id="configuration&amp;_SMS_GATEWAY_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gateway gebruikersnaam]]></key>
         <key id="configuration&amp;_SMS_INTERNATIONAL_PREFIX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Standaard internationale prefix]]></key>
         <key id="configuration&amp;_SMS_SENT_FROM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SMS zender]]></key>
-        <key id="configuration&amp;_SOCIAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sociale Functies]]></key>
+        <key id="configuration&amp;_SOCIAL" attributes="" save_date="2017-04-10 14:28:32"><![CDATA[Sociale functies]]></key>
         <key id="configuration&amp;_SOCIAL_FB_ACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruik de facebook interface en enkele login]]></key>
         <key id="configuration&amp;_SOCIAL_FB_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Facebook API code]]></key>
         <key id="configuration&amp;_SOCIAL_FB_SECRET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Facebook geheime code]]></key>
@@ -548,7 +549,7 @@
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vraag de gebruiker om een ander wachtwoord dan de laatste X aantal gebruikte wachtwoorden]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Disk quota (in MB) voor elke gebruiker in "Mijn bestanden"]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruik geavanceerd registratie form]]></key>
-        <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruik DimDim Api ipv url interfacing]]></key>
+        <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2017-04-10 10:28:10"><![CDATA[Gebruik DimDim API ipv URL interfacing]]></key>
         <key id="configuration&amp;_USE_REST_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zet de API functionaliteit aan]]></key>
         <key id="configuration&amp;_USE_TAG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zet de tags instelling aan voor de forums]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Attention without these settings the social login will not work]]></key>
@@ -613,8 +614,8 @@
         <key id="course&amp;_COURSE_TIME_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tijd opties]]></key>
         <key id="course&amp;_COURSE_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cursus type]]></key>
         <key id="course&amp;_COURSE_TYPE_BLENDED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Blended]]></key>
-        <key id="course&amp;_COURSE_TYPE_EDITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Learning met edities]]></key>
-        <key id="course&amp;_COURSE_TYPE_ELEARNING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Learning]]></key>
+        <key id="course&amp;_COURSE_TYPE_EDITION" attributes="" save_date="2017-04-10 14:00:11"><![CDATA[E-learning met edities]]></key>
+        <key id="course&amp;_COURSE_TYPE_ELEARNING" attributes="" save_date="2017-04-10 14:00:07"><![CDATA[E-learning]]></key>
         <key id="course&amp;_COURSE_USERISCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ingeschreven gebruikers]]></key>
         <key id="course&amp;_CREATION_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Actief sinds]]></key>
         <key id="course&amp;_CST_AVAILABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beschikbaar]]></key>
@@ -754,7 +755,7 @@ ander moet je je eerst registreren. Volg dan deze link: <br />
         <key id="coursereport&amp;_ACTIVITY_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Informatie over de geselecteerde actitiveiten]]></key>
         <key id="coursereport&amp;_ADD_ACTIVITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nieuwe activiteit]]></key>
         <key id="coursereport&amp;_ADD_ACTIVITY_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voeg nieuw activiteit toe]]></key>
-        <key id="coursereport&amp;_ADD_SCORM_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voeg Scorm Resultaten toe]]></key>
+        <key id="coursereport&amp;_ADD_SCORM_RESULTS" attributes="" save_date="2017-04-10 10:35:03"><![CDATA[Voeg SCORM Resultaten toe]]></key>
         <key id="coursereport&amp;_ANSWER_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Juiste antwoord]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Test voor deze cursus]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dit is een lijst met alle tests vor deze cursus en de resultaten voor de studenten]]></key>
@@ -803,10 +804,10 @@ ander moet je je eerst registreren. Volg dan deze link: <br />
         <key id="course_charts&amp;_ACTIVITY_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Met de kaart kun je het aantal hoofdstukken dat deze gebruiker heeft bezocht bij houden]]></key>
         <key id="course_charts&amp;_CHAPTER_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Met deze maakt kun je bijhouden welke hoofdstukken de gebruiker heeft afgerond of voor welk deze in geslaagd]]></key>
         <key id="course_charts&amp;_COMPLETED_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Met deze maakt kun je bijhouden welke hoofdstukken de gebruiker heeft afgerond]]></key>
-        <key id="course_charts&amp;_NO_SCORM_IN_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Er zijn geen scorm packages in deze cursus]]></key>
+        <key id="course_charts&amp;_NO_SCORM_IN_COURSE" attributes="" save_date="2017-04-10 10:35:13"><![CDATA[Er zijn geen SCORM packages in deze cursus]]></key>
         <key id="course_charts&amp;_PASSED_CHART_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Object succesvol afgerond]]></key>
-        <key id="course_charts&amp;_SCORE_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Met deze kaart kun je bijhouden welke score de gebruiker heeft behaald voor elk scorm hoofdstuk.]]></key>
-        <key id="course_charts&amp;_TIME_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Met deze kaart kun je bijhouden hoeveel tijd de gebruiker in een scorm hoofdstuk heeft doorgebracht]]></key>
+        <key id="course_charts&amp;_SCORE_CHART_DESCRIPTION" attributes="" save_date="2017-04-10 10:35:31"><![CDATA[Met deze kaart kun je bijhouden welke score de gebruiker heeft behaald voor elk SCORM hoofdstuk.]]></key>
+        <key id="course_charts&amp;_TIME_CHART_DESCRIPTION" attributes="" save_date="2017-04-10 10:35:22"><![CDATA[Met deze kaart kun je bijhouden hoeveel tijd de gebruiker in een SCORM hoofdstuk heeft doorgebracht]]></key>
         <key id="course_charts&amp;_TIME_CHART_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tijd]]></key>
       </module>
       <module id="course_selector">
@@ -839,13 +840,13 @@ ander moet je je eerst registreren. Volg dan deze link: <br />
         <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms network]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ge-deactiveerde gebruikers]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Consultatie site]]></key>
-        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LMS support site]]></key>
+        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:53:01"><![CDATA[forma.lms support site]]></key>
         <key id="dashboard&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aantal cursussen]]></key>
         <key id="dashboard&amp;_TOTAL_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aantal inschrijvingen]]></key>
         <key id="dashboard&amp;_TOTAL_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Geregistreerde gebruikers]]></key>
         <key id="dashboard&amp;_UNKNOWN_RELEASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fout tijdens het ophalen van e laatste versie]]></key>
-        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[formalms.org commerciele diensten]]></key>
-        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[formalms.org open source community]]></key>
+        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2017-04-10 12:52:45"><![CDATA[forma.lms commerciele diensten]]></key>
+        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:52:53"><![CDATA[forma.lms open source community]]></key>
         <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruikers info]]></key>
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Wachten op inschrijving]]></key>
       </module>
@@ -1180,7 +1181,7 @@ Wachtwoord: [password]]]></key>
       <module id="kb">
         <key id="kb&amp;_CATEGORIZED_AND_UNCATEGORIZED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laat alles zien]]></key>
         <key id="kb&amp;_CATEGORIZED_ONLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alleen gecategoriseerd]]></key>
-        <key id="kb&amp;_CATEGORIZE_OBJECT_ITEMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Schakel over van scrom naar hoofdstuk categorisering]]></key>
+        <key id="kb&amp;_CATEGORIZE_OBJECT_ITEMS" attributes="" save_date="2017-04-10 10:35:45"><![CDATA[Schakel over van SCORM naar hoofdstuk categorisering]]></key>
         <key id="kb&amp;_CONTAINED_IN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Te vinden in]]></key>
         <key id="kb&amp;_IS_MOBILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Deze bron is geschikt voor mobiel]]></key>
         <key id="kb&amp;_RESOURCE_ORIGINAL_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Originel naam opgeslagen in platform]]></key>
@@ -1228,7 +1229,7 @@ Wachtwoord: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Home page]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms is een Open Source e-Learning platform (LMS en LCMS) gebruikt in de bedrijfswereld en hogere opleidingen.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-10 14:00:18"><![CDATA[forma.lms is een Open Source e-learning platform (LMS en LCMS) gebruikt in de bedrijfswereld en hogere opleidingen.<br/>
 <br/>
 Het Platform ondersteund 25 talen, uitwisselbaar met SCORM 1.2 en 2004 standaard, en ondersteund didactische modellen, waaronder: gemengt, zelf georienteerd, samenwerkend en zelfs sociaal leren dmv Chat, Wiki, Forums en andere verschillende functies.<br/>
 <br/>
@@ -1299,12 +1300,12 @@ ingelogd met uw account]]></key>
         <key id="menu&amp;_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebeurtenissen]]></key>
         <key id="menu&amp;_FIELD_MANAGER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Extra velden]]></key>
         <key id="menu&amp;_FIRST_LINE_framework" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hoofd]]></key>
-        <key id="menu&amp;_FIRST_LINE_lms" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Learning]]></key>
+        <key id="menu&amp;_FIRST_LINE_lms" attributes="" save_date="2017-04-10 14:00:22"><![CDATA[E-learning]]></key>
         <key id="menu&amp;_IOTASK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[I/O Taken]]></key>
         <key id="menu&amp;_JUMP_TO_PLATFORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ga naar:]]></key>
         <key id="menu&amp;_LANG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Taal management]]></key>
         <key id="menu&amp;_LISTUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruiker management]]></key>
-        <key id="menu&amp;_MANAGEMENT_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Learning]]></key>
+        <key id="menu&amp;_MANAGEMENT_COURSE" attributes="" save_date="2017-04-10 14:00:26"><![CDATA[E-learning]]></key>
         <key id="menu&amp;_MANAGEMENT_RESERVATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reserveringen Management]]></key>
         <key id="menu&amp;_MAN_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificaten Management]]></key>
         <key id="menu&amp;_META_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Behaalde certificaten]]></key>
@@ -1769,7 +1770,7 @@ Je moet je account bevestigen voor je het gebruikt.]]></key>
         <key id="report&amp;_LO_COL_LASTATT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laatste poging]]></key>
         <key id="report&amp;_LO_COL_MILESTONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Milestone]]></key>
         <key id="report&amp;_LO_COL_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[L.O. type]]></key>
-        <key id="report&amp;_MAIL_BODY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mail body]]></key>
+        <key id="report&amp;_MAIL_BODY" attributes="" save_date="2017-04-10 14:58:38"><![CDATA[Email body]]></key>
         <key id="report&amp;_MUSTBEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Naar begin]]></key>
         <key id="report&amp;_NOACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Niet geactiveerd]]></key>
         <key id="report&amp;_NULL_COURSE_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Er is geen cursus geselecteerd]]></key>
@@ -1815,7 +1816,7 @@ Je moet je account bevestigen voor je het gebruikt.]]></key>
         <key id="report&amp;_SELECT_REPORT_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Selecteer verslag categorie:]]></key>
         <key id="report&amp;_SELECT_THE_DATA_COL_NEEDED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Selecteerde kolommen die je wilt zien in de verslag tabel]]></key>
         <key id="report&amp;_SEL_COURSES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Handmatige cursus selectie]]></key>
-        <key id="report&amp;_SEND_MAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Verzend e-mail]]></key>
+        <key id="report&amp;_SEND_MAIL" attributes="" save_date="2017-04-10 14:58:45"><![CDATA[Verzend email]]></key>
         <key id="report&amp;_SHOWED_COLUMNS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laat kolommen zien]]></key>
         <key id="report&amp;_SHOW_NOSAVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laat zien maar sla niet op]]></key>
         <key id="report&amp;_STATS_FIELDS_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laat cursus statistieken zien]]></key>
@@ -1882,7 +1883,7 @@ Je moet je account bevestigen voor je het gebruikt.]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maak copmplete objecten lijst]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Upload SCORM package]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SCORM]]></key>
-        <key id="scorm&amp;_SCORM_ADD_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laad scorm package]]></key>
+        <key id="scorm&amp;_SCORM_ADD_FORM" attributes="" save_date="2017-04-10 10:36:01"><![CDATA[Laad SCORM package]]></key>
       </module>
       <module id="simplesel">
         <key id="simplesel&amp;_MANUAL_SEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Geavanceerde selectie]]></key>
@@ -1895,7 +1896,7 @@ Je moet je account bevestigen voor je het gebruikt.]]></key>
         <key id="sms&amp;_ALERT_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-learning: cursus '[course]', nieuwe aankondiging: [title]]]></key>
         <key id="sms&amp;_APPROVED_SUBSCRIBED_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Je inschrijvings verzoek voor [course] is goedgekeurd door de admin]]></key>
         <key id="sms&amp;_APPROVED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Je inschrijvings verzoek is goedgekeurd]]></key>
-        <key id="sms&amp;_DELETED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-Learning: je account met naam [userid] is verwijderd]]></key>
+        <key id="sms&amp;_DELETED_USER_TEXT_SMS" attributes="sms" save_date="2017-04-10 14:00:33"><![CDATA[E-learning: je account met naam [userid] is verwijderd]]></key>
         <key id="sms&amp;_MODIFIED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Je account op site <a href="[url]">[url]</a> is gewijzigd:
 
 Gebruikersnaam: [userid]]]></key>
@@ -1961,7 +1962,7 @@ Wachtwoord: [password]]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gemiddeld]]></key>
         <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;lt;&amp;lt; Terug]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Basis zoekopdracht]]></key>
-        <key id="standard&amp;_BBB" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Big Blue Button]]></key>
+        <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:38:13"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[door]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kalender]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Annuleer]]></key>
@@ -2031,7 +2032,7 @@ Wachtwoord: [password]]]></key>
         <key id="standard&amp;_EDITIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Edities]]></key>
         <key id="standard&amp;_EDIT_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Wijzig score]]></key>
         <key id="standard&amp;_EDIT_SETTINGS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Wijzig instelling]]></key>
-        <key id="standard&amp;_ELEARNING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Learning]]></key>
+        <key id="standard&amp;_ELEARNING" attributes="" save_date="2017-04-10 14:00:50"><![CDATA[E-learning]]></key>
         <key id="standard&amp;_EMAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Email]]></key>
         <key id="standard&amp;_EMPTY_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lege selectie]]></key>
         <key id="standard&amp;_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Eind]]></key>
@@ -2341,7 +2342,7 @@ Wachtwoord: [password]]]></key>
         <key id="storage&amp;_LONAME_item" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Upload bestand]]></key>
         <key id="storage&amp;_LONAME_link" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Links]]></key>
         <key id="storage&amp;_LONAME_poll" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vragenlijst]]></key>
-        <key id="storage&amp;_LONAME_scoitem" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Scorm hoofdstuk]]></key>
+        <key id="storage&amp;_LONAME_scoitem" attributes="" save_date="2017-04-10 10:36:08"><![CDATA[SCORM hoofdstuk]]></key>
         <key id="storage&amp;_LONAME_scormorg" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SCORM]]></key>
         <key id="storage&amp;_LONAME_test" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Test]]></key>
         <key id="storage&amp;_ORGFOLDERNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Map naam]]></key>
@@ -2615,6 +2616,7 @@ Wachtwoord: [password]]]></key>
       <module id="treeview">
         <key id="treeview&amp;_ALT_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Leeg]]></key>
       </module>
+      <module id="user_management"/>
       <module id="user_managment">
         <key id="user_managment&amp;_DONT_USE_TREE_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruik geen zelf-registratie]]></key>
         <key id="user_managment&amp;_LOG_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login/registratie opties]]></key>

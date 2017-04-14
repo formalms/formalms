@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20150421</DATE>
+  <DATE>20170414</DATE>
   <LANG id="ukrainian">
     <lang_code>ukrainian</lang_code>
     <lang_description>Ukranian</lang_description>
@@ -64,7 +64,7 @@
         <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_PRIVATE_ALT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Адміністратор]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUPWAIT_ACCORDECLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Користувач очікує підтвердження реєстрації]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUP_FIELD_WRITE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Поле користувача]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_ITEMID" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[id учасника]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_ITEMID" attributes="" save_date="2017-04-10 14:49:43"><![CDATA[ID учасника]]></key>
         <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Тип учасника]]></key>
         <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPETREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Вузол]]></key>
         <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPEUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Користувач учасника]]></key>
@@ -208,6 +208,7 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0,6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[тиждень]]></key>
       </module>
+      <module id="cart"/>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Додати до картки]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Кар'єра]]></key>
@@ -383,7 +384,7 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Запит коду, створеного модулем коду]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Запит дерева коду, вибраного користувачем з випадаючого списку]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Запит дерева коду, що має бути введене безпосередньо користувачем]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Запит комбінації дерева коду та коду курсу, що мають бути введені безпосередньо корисувачем. Коди дерева та курсу мають бути скомпоновані із 10 символів кожен для того, щоб отримати код з 20 символів.]]></key>
+        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2017-04-10 16:38:27"><![CDATA[Запит комбінації дерева коду та коду курсу, що мають бути введені безпосередньо корисувачем. Коди дерева та курсу мають бути скомпоновані із 10 символів кожен для того, щоб отримати код з 20 символів]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Максимум аудіо-користувачів]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Максимум користувачів в кімнаті]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Максимум кімнат]]></key>
@@ -392,7 +393,7 @@
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Дозволена кількість конференцій, запланованих одним користувачем]]></key>
         <key id="configuration&amp;_CONFIGURATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Конфігурація]]></key>
         <key id="configuration&amp;_CONF_GLOBAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Загальні]]></key>
-        <key id="configuration&amp;_CONF_LMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Навчання]]></key>
+        <key id="configuration&amp;_CONF_LMS" attributes="" save_date="2017-04-10 13:53:09"><![CDATA[E-навчання]]></key>
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Обмеження загального розміру завантажених в курс файлів (MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Символ валюти (буде відображено користувачеві)]]></key>
         <key id="configuration&amp;_DEBUG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Налаштування відладки]]></key>
@@ -418,8 +419,8 @@
         <key id="configuration&amp;_HTMLEDIT_IMAGE_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Дозволити адміністратору управляння медіа в редакторі]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_GODADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Дозволити супер-адміністратору упралвління медіа в редакторі]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Дозволити користувачеві управління медіа в редакторі]]></key>
-        <key id="configuration&amp;_KB_FILTER_BY_USER_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Відображує в зоні відображення результатів пошуку по бібліотеці, також об’єкти, що не дступні користувачеві.]]></key>
-        <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Відображати в результатах пошуку по бібліотеці, також обєкти, що не повністю категоризовані.]]></key>
+        <key id="configuration&amp;_KB_FILTER_BY_USER_ACCESS" attributes="" save_date="2017-04-10 16:31:53"><![CDATA[Відображує в зоні відображення результатів пошуку по бібліотеці, також об’єкти, що не дступні користувачеві]]></key>
+        <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2017-04-10 16:31:49"><![CDATA[Відображати в результатах пошуку по бібліотеці, також обєкти, що не повністю категоризовані]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Активувати редагування мови (для відладки)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ім’я та прізвіще обовязкові для реєстрації]]></key>
         <key id="configuration&amp;_LDAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP]]></key>
@@ -433,13 +434,13 @@
         <key id="configuration&amp;_MANDATORY_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Якщо одина з опцій кодів реєстрації, наведених вище, увімкнена, користувачі мусять ввести код реєстрації (поле коду має бути заповнене)]]></key>
         <key id="configuration&amp;_MAX_EXECUTION_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Конфігурація "max_execution_time"]]></key>
         <key id="configuration&amp;_MAX_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Максимум послідовних невдалих спроб авторизації (0 = без обмеження)]]></key>
-        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql Collation]]></key>
-        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql Encoding]]></key>
-        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Режим Sql]]></key>
+        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2017-04-10 11:37:26"><![CDATA[MySQL Collation]]></key>
+        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2017-04-10 11:37:33"><![CDATA[MySQL Encoding]]></key>
+        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2017-04-10 11:37:42"><![CDATA[Режим SQL]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Версія MySQL]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Пауза між блоками (секунди)]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Надсилати повідомлення розсилки блоками]]></key>
-        <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Якщо domxml вимкнено, модуль scorm, керування мовами та відеоконференції не працюватимуть]]></key>
+        <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2017-04-10 10:47:22"><![CDATA[Якщо domxml вимкнено, модуль SCORM, керування мовами та відеоконференції не працюватимуть]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_POLL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Використовувати пункт "немає відповіді" в голосуваннях]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Використовувати пункт "no answer" в тестах]]></key>
         <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Якщо немає жодного каталогу курсів, призначених користувачеві, відображати  всі курси і навчальні плани]]></key>
@@ -461,9 +462,9 @@
         <key id="configuration&amp;_PATHSCORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Зберегти шлях для файлів, завантажених як навчальні об’єкти навчання SCORM Learning Object]]></key>
         <key id="configuration&amp;_PATHSPONSOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Банери спонсорів]]></key>
         <key id="configuration&amp;_PATHTEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Питання "завантаження файлів"]]></key>
-        <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Код валюти Paypal]]></key>
-        <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Рахунок Paypal]]></key>
-        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Використовувати paypal sandbox замість справжнього оточення (для відладки)]]></key>
+        <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2017-04-10 11:50:06"><![CDATA[Код валюти PayPal]]></key>
+        <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2017-04-10 11:50:02"><![CDATA[Рахунок PayPal]]></key>
+        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2017-04-10 11:50:15"><![CDATA[Використовувати PayPal sandbox замість справжнього оточення (для відладки)]]></key>
         <key id="configuration&amp;_PHPINFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Інформація про PHP]]></key>
         <key id="configuration&amp;_PHPVERSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Версія PHP]]></key>
         <key id="configuration&amp;_POST_MAX_SIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Конфігурація "post_max_size"]]></key>
@@ -486,7 +487,7 @@
         <key id="configuration&amp;_SAVE_LA_AFTER_MAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Так, тільки якщо максимальна кількість досягнута]]></key>
         <key id="configuration&amp;_SAVE_LA_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Так, для всіх]]></key>
         <key id="configuration&amp;_SAVE_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Зберігати інформацію про невдалі спроби входу]]></key>
-        <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Дозволити використання прямих посилань з зовнішніх ресурсів на статті scorm (sco and asset)]]></key>
+        <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2017-04-10 10:47:16"><![CDATA[Дозволити використання прямих посилань з зовнішніх ресурсів на статті SCORM (sco and asset)]]></key>
         <key id="configuration&amp;_SECURITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Опції безпеки]]></key>
         <key id="configuration&amp;_SENDER_EVENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Email для повідомленнь про небезпеку]]></key>
         <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Додати наступні адреси як "копія" для всіх email-повідомленнь, відісланих платформою]]></key>
@@ -500,7 +501,7 @@
         <key id="configuration&amp;_SESSION_IP_CONTROL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Увімкнути контроль за IP в межах сессій (користувач не може міняти IP після входу)]]></key>
         <key id="configuration&amp;_SHOW_AS_BLOCK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Відображати блоком]]></key>
         <key id="configuration&amp;_SHOW_AS_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Відображати списком посиланнь]]></key>
-        <key id="configuration&amp;_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sms]]></key>
+        <key id="configuration&amp;_SMS" attributes="" save_date="2017-04-10 11:35:14"><![CDATA[SMS]]></key>
         <key id="configuration&amp;_SMSMARKET_LOGO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Разом з smsmarket.it]]></key>
         <key id="configuration&amp;_SMS_BUY_RECHARGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Купити більше SMSes]]></key>
         <key id="configuration&amp;_SMS_CELL_NUM_FIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Поле номеру мобільного телефону]]></key>
@@ -548,9 +549,9 @@
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Пропонувати користувачеві вібрати пароль з списку останніх X використаних паролів]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Дискова квота (в MB) для "Моїх файлів" кожного користувача]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Використовувати розширену форму реєстрації]]></key>
-        <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Використовувати DimDim Api замість url]]></key>
+        <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2017-04-10 10:33:24"><![CDATA[Використовувати DimDim API замість URL]]></key>
         <key id="configuration&amp;_USE_REST_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Увімкнути функціонал API]]></key>
-        <key id="configuration&amp;_USE_TAG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Увімкнути теги в межах форуму.]]></key>
+        <key id="configuration&amp;_USE_TAG" attributes="" save_date="2017-04-10 16:27:44"><![CDATA[Увімкнути теги в межах форуму]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Attention without these settings the social login will not work]]></key>
       </module>
       <module id="course">
@@ -613,8 +614,8 @@
         <key id="course&amp;_COURSE_TIME_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Опції часу]]></key>
         <key id="course&amp;_COURSE_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Тип курсу]]></key>
         <key id="course&amp;_COURSE_TYPE_BLENDED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Змішаний]]></key>
-        <key id="course&amp;_COURSE_TYPE_EDITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Навчання з редагуванням]]></key>
-        <key id="course&amp;_COURSE_TYPE_ELEARNING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Навчання]]></key>
+        <key id="course&amp;_COURSE_TYPE_EDITION" attributes="" save_date="2017-04-10 13:53:21"><![CDATA[E-навчання з редагуванням]]></key>
+        <key id="course&amp;_COURSE_TYPE_ELEARNING" attributes="" save_date="2017-04-10 13:53:12"><![CDATA[E-навчання]]></key>
         <key id="course&amp;_COURSE_USERISCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Підписані користувачі]]></key>
         <key id="course&amp;_CREATION_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Активність з]]></key>
         <key id="course&amp;_CST_AVAILABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Доступний]]></key>
@@ -754,7 +755,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="coursereport&amp;_ACTIVITY_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Інформація про вибрану діяльність]]></key>
         <key id="coursereport&amp;_ADD_ACTIVITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Нова діяльність]]></key>
         <key id="coursereport&amp;_ADD_ACTIVITY_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Додати нову діяльність]]></key>
-        <key id="coursereport&amp;_ADD_SCORM_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Додати результати Scorm]]></key>
+        <key id="coursereport&amp;_ADD_SCORM_RESULTS" attributes="" save_date="2017-04-10 10:47:07"><![CDATA[Додати результати SCORM]]></key>
         <key id="coursereport&amp;_ANSWER_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Правильна відповідь]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Тест для цього курсу]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Це список всіх тестів для цього курсу і результатів студентів]]></key>
@@ -803,10 +804,10 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="course_charts&amp;_ACTIVITY_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Цей графік дозволяє вам перевірити кількість статей переглянутих користувачами за дні.]]></key>
         <key id="course_charts&amp;_CHAPTER_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Цей графік дає уяву про всі статті, завершені чі пройдені кожним користувачем.]]></key>
         <key id="course_charts&amp;_COMPLETED_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Цей графік дає уяву про всі статті, завершені чі пройдені користувачами цього курсу.]]></key>
-        <key id="course_charts&amp;_NO_SCORM_IN_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[В цьому курсі немає пакетів scorm]]></key>
+        <key id="course_charts&amp;_NO_SCORM_IN_COURSE" attributes="" save_date="2017-04-10 11:25:59"><![CDATA[В цьому курсі немає пакетів SCORM]]></key>
         <key id="course_charts&amp;_PASSED_CHART_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Об’єкт повністю завершено]]></key>
-        <key id="course_charts&amp;_SCORE_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Цей графік дозволяє перевірити оцінку, отриману користувачами за кожну статтю scorm.]]></key>
-        <key id="course_charts&amp;_TIME_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Цей графік дозволяє перевірити час, витрачений користувачами в кожній статті scorm.]]></key>
+        <key id="course_charts&amp;_SCORE_CHART_DESCRIPTION" attributes="" save_date="2017-04-10 10:46:54"><![CDATA[Цей графік дозволяє перевірити оцінку, отриману користувачами за кожну статтю SCORM.]]></key>
+        <key id="course_charts&amp;_TIME_CHART_DESCRIPTION" attributes="" save_date="2017-04-10 10:47:00"><![CDATA[Цей графік дозволяє перевірити час, витрачений користувачами в кожній статті SCORM.]]></key>
         <key id="course_charts&amp;_TIME_CHART_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Час]]></key>
       </module>
       <module id="course_selector">
@@ -839,13 +840,13 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Мережа forma.lms]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Заморозити користувачів]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Сайт консультацій]]></key>
-        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Сайт підтримки LMS]]></key>
+        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:43:53"><![CDATA[Сайт підтримки forma.lms]]></key>
         <key id="dashboard&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Кількість курсів]]></key>
         <key id="dashboard&amp;_TOTAL_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Кількість підписчиків]]></key>
         <key id="dashboard&amp;_TOTAL_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Зареєстровані користувачі]]></key>
         <key id="dashboard&amp;_UNKNOWN_RELEASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Помилка під час отримання останньої доступної версії]]></key>
-        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Комерційні сервіси formalms.org]]></key>
-        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[formalms.org open source community]]></key>
+        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2017-04-10 12:43:33"><![CDATA[Комерційні сервіси forma.lms]]></key>
+        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:43:41"><![CDATA[forma.lms open source community]]></key>
         <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Інформація про користувачів]]></key>
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Чекає на підписку]]></key>
       </module>
@@ -1179,7 +1180,7 @@ Otherwise, you must register in our system, following this link: <br />
       <module id="kb">
         <key id="kb&amp;_CATEGORIZED_AND_UNCATEGORIZED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Показати все]]></key>
         <key id="kb&amp;_CATEGORIZED_ONLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Тільки катигаризоване]]></key>
-        <key id="kb&amp;_CATEGORIZE_OBJECT_ITEMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Переключитися зі scorm-категоризації до категоризації статей]]></key>
+        <key id="kb&amp;_CATEGORIZE_OBJECT_ITEMS" attributes="" save_date="2017-04-10 11:26:10"><![CDATA[Переключитися зі SCORM-категоризації до категоризації статей]]></key>
         <key id="kb&amp;_CONTAINED_IN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Міститься в]]></key>
         <key id="kb&amp;_IS_MOBILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Цей ресурс сцміснй з мобильними.]]></key>
         <key id="kb&amp;_RESOURCE_ORIGINAL_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Оригінальне ім’я збережено в платформі]]></key>
@@ -1227,7 +1228,7 @@ Otherwise, you must register in our system, following this link: <br />
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Домашня сторінка]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms це платформа e-Навчання з відкритим кодом (LMS та LCMS) застосовується на корпоративних ринках та ринках вищої освіти.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-10 13:53:57"><![CDATA[forma.lms це платформа e-навчання з відкритим кодом (LMS та LCMS) застосовується на корпоративних ринках та ринках вищої освіти.<br/>
 <br/>
 Платформа підтримує 25 мов, сумісна з стандартами SCORM 1.2 та 2004, підтримує різні навчальні моделі, включаючи: Змішану, Самостійного навчання, Сумісного та навіть Соціального Навчання через чат, wiki, форуми та інші різноманінті функції.<br/>
 <br/>
@@ -1300,7 +1301,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="menu&amp;_JUMP_TO_PLATFORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Перейти до:]]></key>
         <key id="menu&amp;_LANG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Управління мовами]]></key>
         <key id="menu&amp;_LISTUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Управління користувачами]]></key>
-        <key id="menu&amp;_MANAGEMENT_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-Навчання]]></key>
+        <key id="menu&amp;_MANAGEMENT_COURSE" attributes="" save_date="2017-04-10 13:53:30"><![CDATA[E-навчання]]></key>
         <key id="menu&amp;_MANAGEMENT_RESERVATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Управління резервацією]]></key>
         <key id="menu&amp;_MAN_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Управління сертифікатами]]></key>
         <key id="menu&amp;_META_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Агреговані сертифікати]]></key>
@@ -1957,7 +1958,7 @@ To complete  the registration process, please click on the link below, (or copy 
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Середне значення]]></key>
         <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Черний]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Базовий пошук]]></key>
-        <key id="standard&amp;_BBB" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Big Blue Button]]></key>
+        <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:35:03"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[з боку]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Календар]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Скасувати]]></key>
@@ -2337,7 +2338,7 @@ To complete  the registration process, please click on the link below, (or copy 
         <key id="storage&amp;_LONAME_item" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Завантажити файл]]></key>
         <key id="storage&amp;_LONAME_link" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Посилання]]></key>
         <key id="storage&amp;_LONAME_poll" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Дослідження]]></key>
-        <key id="storage&amp;_LONAME_scoitem" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Стаття scorm]]></key>
+        <key id="storage&amp;_LONAME_scoitem" attributes="" save_date="2017-04-10 10:46:42"><![CDATA[Стаття SCORM]]></key>
         <key id="storage&amp;_LONAME_scormorg" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SCORM]]></key>
         <key id="storage&amp;_LONAME_test" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Тест]]></key>
         <key id="storage&amp;_ORGFOLDERNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Назва директорії]]></key>
@@ -2611,6 +2612,7 @@ To complete  the registration process, please click on the link below, (or copy 
       <module id="treeview">
         <key id="treeview&amp;_ALT_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Порожній]]></key>
       </module>
+      <module id="user_management"/>
       <module id="user_managment">
         <key id="user_managment&amp;_DONT_USE_TREE_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Не використовувати самореєстрацію в організаційному дереві]]></key>
         <key id="user_managment&amp;_LOG_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Опції входу/реєстрації]]></key>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20150421</DATE>
+  <DATE>20170414</DATE>
   <LANG id="japanese">
     <lang_code>japanese</lang_code>
     <lang_description>Japanese</lang_description>
@@ -208,6 +208,7 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0,6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[週]]></key>
       </module>
+      <module id="cart"/>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[カートに追加]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[キャリア]]></key>
@@ -433,13 +434,13 @@
         <key id="configuration&amp;_MANDATORY_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[上記登録コード有効時、ユーザは登録コードの入力を強制されます (コードフィールドが空欄になりません)]]></key>
         <key id="configuration&amp;_MAX_EXECUTION_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["max_execution_time"の設定]]></key>
         <key id="configuration&amp;_MAX_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[連続したログイン失敗回数の上限 (0 = 無制限)]]></key>
-        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql照合]]></key>
-        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysqlエンコード]]></key>
-        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sqlモード]]></key>
+        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2017-04-10 11:41:32"><![CDATA[MySQL照合]]></key>
+        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2017-04-10 11:41:39"><![CDATA[MySQLエンコード]]></key>
+        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2017-04-10 11:41:47"><![CDATA[SQLモード]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQLバージョン]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ブロック間の停止 (秒)]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ニューズレターメッセージを送るブロック]]></key>
-        <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[domxmlがOFFの場合、scormモジュールと言語管理、ビデオ会議が動作しません]]></key>
+        <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2017-04-10 11:01:04"><![CDATA[domxmlがOFFの場合、SCORMモジュールと言語管理、ビデオ会議が動作しません]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_POLL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["no answer"オプションを投票の質問に使う]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["no answer"オプションをテストの質問に使う]]></key>
         <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ユーザに単一のコースカタログが割り当てられてない場合、全てのコースとカリキュラムを表示する]]></key>
@@ -461,9 +462,9 @@
         <key id="configuration&amp;_PATHSCORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SCORMラーニングオブジェクトにアップロードされたファイルのパスを保存する]]></key>
         <key id="configuration&amp;_PATHSPONSOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[スポンサーバナー]]></key>
         <key id="configuration&amp;_PATHTEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[質問 "ファイルアップロード"]]></key>
-        <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Paypal通貨コード]]></key>
-        <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Paypalアカウント]]></key>
-        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Paypal Sandboxを本物の環境の代わりに使う (デバッグとテストのオプションです)]]></key>
+        <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2017-04-10 11:54:47"><![CDATA[PayPal通貨コード]]></key>
+        <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2017-04-10 11:54:42"><![CDATA[PayPalアカウント]]></key>
+        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2017-04-10 11:54:52"><![CDATA[PayPal Sandboxを本物の環境の代わりに使う (デバッグとテストのオプションです)]]></key>
         <key id="configuration&amp;_PHPINFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[PHPについて]]></key>
         <key id="configuration&amp;_PHPVERSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[PHPバージョン]]></key>
         <key id="configuration&amp;_POST_MAX_SIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["post_max_size"の設定]]></key>
@@ -486,10 +487,10 @@
         <key id="configuration&amp;_SAVE_LA_AFTER_MAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[はい、最大数に達した場合のみ]]></key>
         <key id="configuration&amp;_SAVE_LA_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[はい、すべてに]]></key>
         <key id="configuration&amp;_SAVE_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ログイン失敗の情報を保存]]></key>
-        <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[外部ソースからscorm chaperts (sco and asset)への直接リンクの使用を許可する]]></key>
+        <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2017-04-10 11:02:53"><![CDATA[外部ソースからSCORM chapters (sco and asset)への直接リンクの使用を許可する]]></key>
         <key id="configuration&amp;_SECURITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[セキュリティ関係]]></key>
         <key id="configuration&amp;_SENDER_EVENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[警告メッセージの送り主メールアドレス]]></key>
-        <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[次のアドレスをプラットフォームから送られたメールのCcに付加する]]></key>
+        <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2017-04-10 12:17:10"><![CDATA[次のアドレスをプラットフォームから送られたメールのCCに付加する]]></key>
         <key id="configuration&amp;_SERVERINFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[サーバ設定]]></key>
         <key id="configuration&amp;_SERVER_ADDR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[サーバアドレス]]></key>
         <key id="configuration&amp;_SERVER_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[サーバ管理者メール]]></key>
@@ -500,7 +501,7 @@
         <key id="configuration&amp;_SESSION_IP_CONTROL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[セッションのIPコントロールの有効 (ユーザはログイン後IPを変えることはできない)]]></key>
         <key id="configuration&amp;_SHOW_AS_BLOCK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ブロック表示]]></key>
         <key id="configuration&amp;_SHOW_AS_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[リンクリスト表示]]></key>
-        <key id="configuration&amp;_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sms]]></key>
+        <key id="configuration&amp;_SMS" attributes="" save_date="2017-04-10 11:34:38"><![CDATA[SMS]]></key>
         <key id="configuration&amp;_SMSMARKET_LOGO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[smsmarket.itとの協力による]]></key>
         <key id="configuration&amp;_SMS_BUY_RECHARGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SMSをもっと買う]]></key>
         <key id="configuration&amp;_SMS_CELL_NUM_FIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[携帯電話番号フィールド]]></key>
@@ -754,7 +755,7 @@
         <key id="coursereport&amp;_ACTIVITY_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[選択中の活動の情報]]></key>
         <key id="coursereport&amp;_ADD_ACTIVITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[新しい活動]]></key>
         <key id="coursereport&amp;_ADD_ACTIVITY_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[新しい活動の追加]]></key>
-        <key id="coursereport&amp;_ADD_SCORM_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Scorm Resultsの追加]]></key>
+        <key id="coursereport&amp;_ADD_SCORM_RESULTS" attributes="" save_date="2017-04-10 11:01:29"><![CDATA[SCORM Resultsの追加]]></key>
         <key id="coursereport&amp;_ANSWER_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[正しい答え]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[このコースのテスト]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[これはこのコースの全てのテストと生徒の結果のリストです]]></key>
@@ -803,10 +804,10 @@
         <key id="course_charts&amp;_ACTIVITY_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[このチャートはユーザが日常見てるチャプター数をあなたがチェックを許可します。]]></key>
         <key id="course_charts&amp;_CHAPTER_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[このチャートはあなたにユーザが修了もしくは通過したチャプターを表示します]]></key>
         <key id="course_charts&amp;_COMPLETED_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[このチャートはあなたにユーザが修了した全てのチャプターを表示します。]]></key>
-        <key id="course_charts&amp;_NO_SCORM_IN_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[このコースにはscormパッケージはありません]]></key>
+        <key id="course_charts&amp;_NO_SCORM_IN_COURSE" attributes="" save_date="2017-04-10 11:01:39"><![CDATA[このコースにはSCORMパッケージはありません]]></key>
         <key id="course_charts&amp;_PASSED_CHART_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[オブジェクトは正しく完了しました]]></key>
-        <key id="course_charts&amp;_SCORE_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[このチャートはそれぞれのscormチャプターでのユーザが得た成績のチェックを許可します。]]></key>
-        <key id="course_charts&amp;_TIME_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[このチャートはそれぞれのscromチャプターでのユーザが要した時間のチェックを許可します。]]></key>
+        <key id="course_charts&amp;_SCORE_CHART_DESCRIPTION" attributes="" save_date="2017-04-10 11:01:55"><![CDATA[このチャートはそれぞれのSCORMチャプターでのユーザが得た成績のチェックを許可します。]]></key>
+        <key id="course_charts&amp;_TIME_CHART_DESCRIPTION" attributes="" save_date="2017-04-10 11:01:47"><![CDATA[このチャートはそれぞれのSCORMチャプターでのユーザが要した時間のチェックを許可します。]]></key>
         <key id="course_charts&amp;_TIME_CHART_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[時間]]></key>
       </module>
       <module id="course_selector">
@@ -839,13 +840,13 @@
         <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms ネットワーク]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[停止ユーザ]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[コナルティングサイト]]></key>
-        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LMSサポートサイト]]></key>
+        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:48:29"><![CDATA[forma.lmsサポートサイト]]></key>
         <key id="dashboard&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[コースの数]]></key>
         <key id="dashboard&amp;_TOTAL_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[購読の数]]></key>
         <key id="dashboard&amp;_TOTAL_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[登録ユーザ]]></key>
         <key id="dashboard&amp;_UNKNOWN_RELEASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[最新版の取得の際のエラー]]></key>
-        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[formalms.org商用サービス]]></key>
-        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[formalms.orgオープンソースコミュニティ]]></key>
+        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2017-04-10 12:48:07"><![CDATA[forma.lms商用サービス]]></key>
+        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:48:16"><![CDATA[forma.lmsオープンソースコミュニティ]]></key>
         <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ユーザ情報]]></key>
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[待機中の購読]]></key>
       </module>
@@ -1179,7 +1180,7 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
       <module id="kb">
         <key id="kb&amp;_CATEGORIZED_AND_UNCATEGORIZED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[全て表示]]></key>
         <key id="kb&amp;_CATEGORIZED_ONLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[分類分けのみ]]></key>
-        <key id="kb&amp;_CATEGORIZE_OBJECT_ITEMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[scormの分類分けからチャプターの分類分けに切り替え]]></key>
+        <key id="kb&amp;_CATEGORIZE_OBJECT_ITEMS" attributes="" save_date="2017-04-10 11:02:03"><![CDATA[SCORMの分類分けからチャプターの分類分けに切り替え]]></key>
         <key id="kb&amp;_CONTAINED_IN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[含まれる]]></key>
         <key id="kb&amp;_IS_MOBILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[このリソースはモバイルコンプライアントです。]]></key>
         <key id="kb&amp;_RESOURCE_ORIGINAL_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[プラットフォームに保持される元の名前]]></key>
@@ -1550,7 +1551,7 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
         <key id="profile&amp;_DELETION_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[日付の削除]]></key>
         <key id="profile&amp;_FIELD_VALUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[フィールド内容]]></key>
         <key id="profile&amp;_FIRSTNAME_DELETER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[オペレータ名]]></key>
-        <key id="profile&amp;_FIRST_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[e-ラーニングプラットフォームへようこそ]]></key>
+        <key id="profile&amp;_FIRST_ACCESS" attributes="" save_date="2017-04-10 13:07:24"><![CDATA[E-ラーニングプラットフォームへようこそ]]></key>
         <key id="profile&amp;_FORUM_MESSAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[フォーラムポスト]]></key>
         <key id="profile&amp;_GOTO_BLOG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[[firstname]のblogに行く]]></key>
         <key id="profile&amp;_GOTO_BLOG_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ユーザblogに行く]]></key>
@@ -1957,7 +1958,7 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[平均]]></key>
         <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;lt;&amp;lt; 戻る]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[標準サーチ]]></key>
-        <key id="standard&amp;_BBB" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Big Blue Button]]></key>
+        <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:36:54"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[by]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[カレンダー]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[キャンセル]]></key>
@@ -2337,7 +2338,7 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
         <key id="storage&amp;_LONAME_item" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[アップロードファイル]]></key>
         <key id="storage&amp;_LONAME_link" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[リンク]]></key>
         <key id="storage&amp;_LONAME_poll" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[調査]]></key>
-        <key id="storage&amp;_LONAME_scoitem" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Scormチャプター]]></key>
+        <key id="storage&amp;_LONAME_scoitem" attributes="" save_date="2017-04-10 11:02:15"><![CDATA[SCORMチャプター]]></key>
         <key id="storage&amp;_LONAME_scormorg" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SCORM]]></key>
         <key id="storage&amp;_LONAME_test" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[テスト]]></key>
         <key id="storage&amp;_ORGFOLDERNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[フォルダ名]]></key>
@@ -2611,6 +2612,7 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
       <module id="treeview">
         <key id="treeview&amp;_ALT_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[空]]></key>
       </module>
+      <module id="user_management"/>
       <module id="user_managment">
         <key id="user_managment&amp;_DONT_USE_TREE_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[組織ツリーの中で自己登録を使わないでください]]></key>
         <key id="user_managment&amp;_LOG_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ログイン/登録オプション]]></key>
