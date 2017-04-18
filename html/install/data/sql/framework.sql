@@ -472,6 +472,165 @@ INSERT INTO `core_country` (`id_country`, `name_country`, `iso_code_country`, `i
 (243, 'ZAMBIA', 'ZM', 0),
 (244, 'ZIMBABWE', 'ZW', 0);
 
+
+--
+-- Struttura della tabella `core_customfield`
+--
+
+CREATE TABLE IF NOT EXISTS `core_customfield` (
+  `id_field` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) NOT NULL DEFAULT '',
+  `type_field` varchar(255) NOT NULL DEFAULT '',
+  `sequence` int(5) NOT NULL DEFAULT '0',
+  `show_on_platform` varchar(255) NOT NULL DEFAULT 'framework,',
+  `use_multilang` tinyint(1) NOT NULL DEFAULT '0',
+  `area_code` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_field`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_customfield`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_customfield_area`
+--
+
+CREATE TABLE IF NOT EXISTS `core_customfield_area` (
+  `area_code` varchar(255) NOT NULL DEFAULT '',
+  `area_name` varchar(255) NOT NULL DEFAULT '',
+  `area_table` varchar(255) NOT NULL DEFAULT '',
+  `area_field` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_customfield_area`
+--
+
+INSERT INTO `core_customfield_area` (`area_code`, `area_name`, `area_table`, `area_field`) VALUES('LO_TEST', 'Learning Object Test', '%lms_testquest', 'idQuest');
+INSERT INTO `core_customfield_area` (`area_code`, `area_name`, `area_table`, `area_field`) VALUES('COURSE', 'Course', '%lms_course', 'idCourse');
+INSERT INTO `core_customfield_area` (`area_code`, `area_name`, `area_table`, `area_field`) VALUES('COURSE_EDITION', 'Course Edition', '%lms_course_editions', 'id_edition');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_customfield_entry`
+--
+
+CREATE TABLE IF NOT EXISTS `core_customfield_entry` (
+  `id_field` varchar(11) NOT NULL DEFAULT '',
+  `id_obj` int(11) NOT NULL DEFAULT '0',
+  `obj_entry` text NOT NULL,
+  PRIMARY KEY (`id_field`,`id_obj`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_customfield_entry`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_customfield_lang`
+--
+
+CREATE TABLE IF NOT EXISTS `core_customfield_lang` (
+  `id_field` int(11) NOT NULL DEFAULT '0',
+  `lang_code` varchar(255) NOT NULL DEFAULT '',
+  `translation` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_customfield_lang`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_customfield_son`
+--
+
+CREATE TABLE IF NOT EXISTS `core_customfield_son` (
+  `id_field_son` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) NOT NULL DEFAULT '',
+  `id_field` int(11) NOT NULL DEFAULT '0',
+  `sequence` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id_field_son`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_customfield_son`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_customfield_son_lang`
+--
+
+CREATE TABLE IF NOT EXISTS `core_customfield_son_lang` (
+  `id_field_son` int(11) NOT NULL DEFAULT '0',
+  `lang_code` varchar(50) NOT NULL DEFAULT '',
+  `translation` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_customfield_son_lang`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_customfield_type`
+--
+
+CREATE TABLE IF NOT EXISTS `core_customfield_type` (
+  `type_field` varchar(255) NOT NULL DEFAULT '',
+  `type_file` varchar(255) NOT NULL DEFAULT '',
+  `type_class` varchar(255) NOT NULL DEFAULT '',
+  `type_category` varchar(255) NOT NULL DEFAULT 'standard',
+  PRIMARY KEY (`type_field`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_customfield_type`
+--
+
+INSERT INTO `core_customfield_type` (`type_field`, `type_file`, `type_class`, `type_category`) VALUES('dropdown', 'class.dropdown.php', 'Field_Dropdown', 'standard');
+INSERT INTO `core_customfield_type` (`type_field`, `type_file`, `type_class`, `type_category`) VALUES('textfield', 'class.textfield.php', 'Field_Textfield', 'standard');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_db_upgrades`
+--
+
+CREATE TABLE IF NOT EXISTS `core_db_upgrades` (
+  `script_id` int(11) NOT NULL AUTO_INCREMENT,
+  `script_name` varchar(255) NOT NULL,
+  `script_description` text,
+  `script_version` varchar(255) DEFAULT NULL,
+  `core_version` varchar(255) DEFAULT NULL,
+  `creation_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `execution_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`script_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+
+--
+-- Dump dei dati per la tabella `core_db_upgrades`
+--
+
+INSERT INTO `core_db_upgrades` (`script_id`, `script_name`, `script_description`, `script_version`, `core_version`, `creation_date`, `execution_date`) VALUES(1, 'add_log_db_upgrades.sql', 'Creazione tabella di log per script update db', '1.0', '3.0.6', '2016-10-06 08:47:53', '2016-10-06 08:47:53');
+
+
 -- --------------------------------------------------------
 
 --
@@ -569,7 +728,9 @@ INSERT INTO `core_event_class` (`idClass`, `class`, `platform`, `description`) V
 (38, 'UserApproved', 'framework', ''),
 (39, 'UserCourseBuy', 'lms', ''),
 (40, 'SettingUpdate', 'framework', ''),
-(41, 'UserNewWaiting', 'framework', '');
+(41, 'UserNewWaiting', 'framework', ''),
+(42, 'UserNewApi', 'framework', ''),
+(43, 'UserCourseInsertedApi', 'lms-a', '');
 
 -- --------------------------------------------------------
 
@@ -636,7 +797,9 @@ INSERT INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES
 (1, 41),
 (2, 3),
 (3, 3),
-(5, 40);
+(5, 40),
+(1, 42),
+(1, 43);
 
 -- --------------------------------------------------------
 
@@ -681,7 +844,9 @@ INSERT INTO `core_event_manager` (`idEventMgr`, `idClass`, `permission`, `channe
 (19, 19, 'not_used', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin,admin'),
 (38, 38, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
 (39, 39, 'not_used', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
-(41, 41, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin,admin');
+(41, 41, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'godadmin,admin'),
+(42, 42, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user'),
+(43, 43, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user');
 
 -- --------------------------------------------------------
 
@@ -929,7 +1094,6 @@ INSERT INTO `core_group` (`idst`, `groupid`, `description`, `hidden`, `type`, `s
 (2, '/ocd_0', 'Root of organization chart and descendants', 'true', 'free', ''),
 (3, '/framework/level/godadmin', 'Group of godadmins', 'true', 'free', ''),
 (4, '/framework/level/admin', 'Group of administrators', 'true', 'free', ''),
-(5, '/framework/level/publicadmin', 'Group of public admin', 'true', 'free', ''),
 (6, '/framework/level/user', 'Group of normal users', 'true', 'free', ''),
 (301, '/lms/custom/11/7', 'for custom lms menu', 'true', 'free', ''),
 (302, '/lms/custom/11/6', 'for custom lms menu', 'true', 'free', ''),
@@ -1085,37 +1249,110 @@ CREATE TABLE IF NOT EXISTS `core_lang_translation` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `core_menu`
+-- Struttura della tabella `core_menu_config`
 --
 
-CREATE TABLE IF NOT EXISTS `core_menu` (
+CREATE TABLE IF NOT EXISTS `core_menu_config` (
   `idMenu` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
   `image` varchar(255) NOT NULL DEFAULT '',
   `sequence` int(3) NOT NULL DEFAULT '0',
   `collapse` enum('true','false') NOT NULL DEFAULT 'false',
   PRIMARY KEY (`idMenu`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
--- Dump dei dati per la tabella `core_menu`
+-- Dump dei dati per la tabella `core_menu_config`
 --
 
-INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES
-(1, '', '', 1, 'true'),
-(2, '_USER_MANAGMENT', '', 2, 'false'),
-(3, '_TRASV_MANAGMENT', '', 3, 'false'),
-(4, '_ADMINISTRATORS', '', 4, 'false'),
-(5, '_LANGUAGE', '', 5, 'false'),
-(6, '', '', 6, 'true');
+INSERT INTO `core_menu_config` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(4, '_CONFIG_SYS', '', 1, 'false');
+INSERT INTO `core_menu_config` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(5, '', '', 4, 'true');
+INSERT INTO `core_menu_config` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(9, '_CONFIG_ELEARNING', '', 2, 'false');
+INSERT INTO `core_menu_config` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(10, '_FIELD_MANAGER', '', 3, 'false');
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `core_menu_under`
+-- Struttura della tabella `core_menu_content`
 --
 
-CREATE TABLE IF NOT EXISTS `core_menu_under` (
+CREATE TABLE IF NOT EXISTS `core_menu_content` (
+  `idMenu` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `image` varchar(255) NOT NULL DEFAULT '',
+  `sequence` int(3) NOT NULL DEFAULT '0',
+  `collapse` enum('true','false') NOT NULL DEFAULT 'false',
+  PRIMARY KEY (`idMenu`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_menu_content`
+--
+
+INSERT INTO `core_menu_content` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(4, '', '', 4, 'true');
+INSERT INTO `core_menu_content` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(5, '', '', 5, 'true');
+INSERT INTO `core_menu_content` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(6, '', '', 6, 'true');
+INSERT INTO `core_menu_content` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(10, '', '', 10, 'true');
+INSERT INTO `core_menu_content` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(11, '', '', 11, 'true');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_menu_elearning`
+--
+
+CREATE TABLE IF NOT EXISTS `core_menu_elearning` (
+  `idMenu` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `image` varchar(255) NOT NULL DEFAULT '',
+  `sequence` int(3) NOT NULL DEFAULT '0',
+  `collapse` enum('true','false') NOT NULL DEFAULT 'false',
+  PRIMARY KEY (`idMenu`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_menu_elearning`
+--
+
+INSERT INTO `core_menu_elearning` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(1, '_COURSES', '', 1, 'false');
+INSERT INTO `core_menu_elearning` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(2, '', '', 2, 'true');
+INSERT INTO `core_menu_elearning` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(3, '', '', 3, 'true');
+INSERT INTO `core_menu_elearning` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(4, '', '', 4, 'true');
+INSERT INTO `core_menu_elearning` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(7, '_MAN_CERTIFICATE', '', 7, 'false');
+INSERT INTO `core_menu_elearning` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(8, '_MANAGEMENT_RESERVATION', '', 8, 'false');
+INSERT INTO `core_menu_elearning` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(10, '', '', 10, 'true');
+INSERT INTO `core_menu_elearning` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(12, '', '', 12, 'true');
+INSERT INTO `core_menu_elearning` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(13, '', '', 13, 'true');
+INSERT INTO `core_menu_elearning` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(14, '', '', 14, 'true');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_menu_report`
+--
+
+CREATE TABLE IF NOT EXISTS `core_menu_report` (
+  `idMenu` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `image` varchar(255) NOT NULL DEFAULT '',
+  `sequence` int(3) NOT NULL DEFAULT '0',
+  `collapse` enum('true','false') NOT NULL DEFAULT 'false',
+  PRIMARY KEY (`idMenu`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_menu_report`
+--
+
+INSERT INTO `core_menu_report` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(2, '', '', 2, 'true');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_menu_under_config`
+--
+
+CREATE TABLE IF NOT EXISTS `core_menu_under_config` (
   `idUnder` int(11) NOT NULL AUTO_INCREMENT,
   `idMenu` int(11) NOT NULL DEFAULT '0',
   `module_name` varchar(255) NOT NULL DEFAULT '',
@@ -1128,31 +1365,182 @@ CREATE TABLE IF NOT EXISTS `core_menu_under` (
   `class_name` varchar(255) NOT NULL DEFAULT '',
   `mvc_path` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`idUnder`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
--- Dump dei dati per la tabella `core_menu_under`
+-- Dump dei dati per la tabella `core_menu_under_config`
 --
 
-INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES
-(1, 1, 'dashboard', '_DASHBOARD', '', 'view', NULL, 1, '', '', 'adm/dashboard/show'),
-(3, 2, 'groupmanagement', '_MANAGE_GROUPS', '', 'view', NULL, 2, '', '', 'adm/groupmanagement/show'),
-(4, 3, 'field_manager', '_FIELD_MANAGER', 'field_list', 'view', NULL, 3, 'class.field_manager.php', 'Module_Field_Manager', ''),
-(5, 3, 'setting', '_CONFIGURATION', '', 'view', NULL, 1, 'class.configuration.php', 'Module_Configuration', 'adm/setting/show'),
-(7, 3, 'event_manager', '_EVENTMANAGER', 'display', 'view_event_manager', NULL, 3, 'class.event_manager.php', 'Module_Event_Manager', ''),
-(8, 3, 'iotask', '_IOTASK', 'iotask', 'view', NULL, 4, 'class.iotask.php', 'Module_IOTask', ''),
-(9, 3, 'pluginmanager', '_PLUGIN_MANAGER', '', 'view', NULL, 7, '', '', 'adm/pluginmanager/show'),
-(10, 5, 'lang', '_LANG', '', 'view', NULL, 1, '', '', 'adm/lang/show'),
-(13, 6, 'newsletter', '_NEWSLETTER', 'newsletter', 'view', NULL, 1, 'class.newsletter.php', 'Module_Newsletter', ''),
-(16, 2, 'usermanagement', '_LISTUSER', '', 'view', NULL, 1, '', '', 'adm/usermanagement/show'),
-(18, 4, 'adminrules', '_ADMIN_RULES', '', 'view', NULL, 1, '', '', 'adm/adminrules/show'),
-(19, 4, 'publicadminrules', '_PUBLIC_ADMIN_RULES', '', 'view', NULL, 1, '', '', 'adm/publicadminrules/show'),
-(20, 4, 'adminmanager', '_ADMIN_MANAGER', '', 'view', NULL, 1, '', '', 'adm/adminmanager/show'),
-(21, 4, 'publicadminmanager', '_PUBLIC_ADMIN_MANAGER', '', 'view', NULL, 1, '', '', 'adm/publicadminmanager/show'),
-(22, 2, 'functionalroles', '_FUNCTIONAL_ROLE', '', 'view', NULL, 4, '', '', 'adm/functionalroles/show'),
-(23, 2, 'competences', '_COMPETENCES', '', 'view', NULL, 3, '', '', 'adm/competences/show'),
-(24, 3, 'code', '_CODE', 'list', 'view', NULL, 5, 'class.code.php', 'Module_Code', ''),
-(25, 3, 'privacypolicy', '_PRIVACYPOLICIES', '', 'view', NULL, 6, '', '', 'adm/privacypolicy/show');
+INSERT INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(1, 9, 'questcategory', '_QUESTCATEGORY', '', 'view', NULL, 4, '', '', 'alms/questcategory/show');
+INSERT INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(2, 9, 'amanmenu', '_MAN_MENU', 'mancustom', 'view', 'lms', 1, 'class.amanmenu.php', 'Module_AManmenu', '');
+INSERT INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(4, 10, 'field_manager', '_FIELD_MANAGER', 'field_list', 'view', NULL, 3, 'class.field_manager.php', 'Module_Field_Manager', '');
+INSERT INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(5, 4, 'setting', '_CONFIGURATION', '', 'view', NULL, 1, 'class.configuration.php', 'Module_Configuration', 'adm/setting/show');
+INSERT INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(6, 10, 'customfield_manager', '_CUSTOMFIELD_MANAGER', 'field_list', 'view', NULL, 8, 'class.customfield_manager.php', 'Module_Customfield_Manager', '');
+INSERT INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(7, 4, 'event_manager', '_EVENTMANAGER', 'display', 'view_event_manager', NULL, 3, 'class.event_manager.php', 'Module_Event_Manager', '');
+INSERT INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(8, 4, 'iotask', '_IOTASK', 'iotask', 'view', NULL, 4, 'class.iotask.php', 'Module_IOTask', '');
+INSERT INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(9, 4, 'pluginmanager', '_PLUGIN_MANAGER', '', 'view', NULL, 7, '', '', 'adm/pluginmanager/show');
+INSERT INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(10, 5, 'lang', '_LANG', '', 'view', NULL, 1, '', '', 'adm/lang/show');
+INSERT INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(21, 9, 'middlearea', '_MIDDLE_AREA', 'view_area', 'view', 'lms', 2, 'class.middlearea.php', 'Module_MiddleArea', '');
+INSERT INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(25, 4, 'privacypolicy', '_PRIVACYPOLICIES', '', 'view', NULL, 6, '', '', 'adm/privacypolicy/show');
+INSERT INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(31, 9, 'timeperiods', '_TIME_PERIODS', '', 'view', NULL, 5, '', '', 'alms/timeperiods/show');
+INSERT INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(33, 9, 'label', '_LABEL', '', 'view', NULL, 5, '', '', 'alms/label/show');
+INSERT INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(34, 4, 'code', '_CODE', 'list', 'view', NULL, 8, 'class.code.php', 'Module_Code', '');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_menu_under_content`
+--
+
+CREATE TABLE IF NOT EXISTS `core_menu_under_content` (
+  `idUnder` int(11) NOT NULL AUTO_INCREMENT,
+  `idMenu` int(11) NOT NULL DEFAULT '0',
+  `module_name` varchar(255) NOT NULL DEFAULT '',
+  `default_name` varchar(255) NOT NULL DEFAULT '',
+  `default_op` varchar(255) NOT NULL DEFAULT '',
+  `associated_token` varchar(255) NOT NULL DEFAULT '',
+  `of_platform` varchar(255) DEFAULT NULL,
+  `sequence` int(3) NOT NULL DEFAULT '0',
+  `class_file` varchar(255) NOT NULL DEFAULT '',
+  `class_name` varchar(255) NOT NULL DEFAULT '',
+  `mvc_path` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`idUnder`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_menu_under_content`
+--
+
+INSERT INTO `core_menu_under_content` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(5, 4, 'webpages', '_WEBPAGES', 'webpages', 'view', 'lms', 1, 'class.webpages.php', 'Module_Webpages', '');
+INSERT INTO `core_menu_under_content` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(6, 5, 'news', '_NEWS', 'news', 'view', 'lms', 2, 'class.news.php', 'Module_News', '');
+INSERT INTO `core_menu_under_content` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(13, 11, 'newsletter', '_NEWSLETTER', 'newsletter', 'view', 'lms', 1, 'class.newsletter.php', 'Module_Newsletter', '');
+INSERT INTO `core_menu_under_content` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(22, 6, 'internal_news', '_NEWS_INTERNAL', 'news', 'view', 'lms', 3, 'class.internal_news.php', 'Module_Internal_News', '');
+INSERT INTO `core_menu_under_content` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(29, 10, 'communication', '_COMMUNICATION_MAN', '', 'view', 'lms', 1, '', '', 'alms/communication/show');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_menu_under_elearning`
+--
+
+CREATE TABLE IF NOT EXISTS `core_menu_under_elearning` (
+  `idUnder` int(11) NOT NULL AUTO_INCREMENT,
+  `idMenu` int(11) NOT NULL DEFAULT '0',
+  `module_name` varchar(255) NOT NULL DEFAULT '',
+  `default_name` varchar(255) NOT NULL DEFAULT '',
+  `default_op` varchar(255) NOT NULL DEFAULT '',
+  `associated_token` varchar(255) NOT NULL DEFAULT '',
+  `of_platform` varchar(255) DEFAULT NULL,
+  `sequence` int(3) NOT NULL DEFAULT '0',
+  `class_file` varchar(255) NOT NULL DEFAULT '',
+  `class_name` varchar(255) NOT NULL DEFAULT '',
+  `mvc_path` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`idUnder`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_menu_under_elearning`
+--
+
+INSERT INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(1, 1, 'course', '_COURSES', '', 'view', NULL, 1, '', '', 'alms/course/show');
+INSERT INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(3, 1, 'coursepath', '_COURSEPATH', 'pathlist', 'view', 'lms', 2, 'class.coursepath.php', 'Module_Coursepath', '');
+INSERT INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(4, 1, 'catalogue', '_CATALOGUE', 'catlist', 'view', 'lms', 3, 'class.catalogue.php', 'Module_Catalogue', '');
+INSERT INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(10, 3, 'preassessment', '_ASSESSMENT', 'assesmentlist', 'view', NULL, 1, 'class.preassessment.php', 'Module_PreAssessment', '');
+INSERT INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(14, 7, 'certificate', '_CERTIFICATE', 'certificate', 'view', 'lms', 1, 'class.certificate.php', 'Module_Certificate', '');
+INSERT INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(17, 8, 'reservation', '_EVENTS', 'view_event', 'view', 'lms', 1, 'class.reservation.php', 'Module_Reservation', '');
+INSERT INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(18, 8, 'reservation', '_CATEGORY', 'view_category', 'view', 'lms', 2, 'class.reservation.php', 'Module_Reservation', '');
+INSERT INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(20, 8, 'reservation', '_RESERVATION', 'view_registration', 'view', 'lms', 3, 'class.reservation.php', 'Module_Reservation', '');
+INSERT INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(23, 7, 'meta_certificate', '_META_CERTIFICATE', 'meta_certificate', 'view', 'lms', 3, 'class.meta_certificate.php', 'Module_Meta_Certificate', '');
+INSERT INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(27, 2, 'location', '_LOCATION', '', 'view', NULL, 1, '', '', 'alms/location/show');
+INSERT INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(28, 4, 'games', '_CONTEST', '', 'view', NULL, 1, '', '', 'alms/games/show');
+INSERT INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(30, 12, 'kb', '_CONTENT_LIBRARY', '', 'view', NULL, 1, '', '', 'alms/kb/show');
+INSERT INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(32, 13, 'enrollrules', '_ENROLLRULES', '', 'view', NULL, 1, '', '', 'alms/enrollrules/show');
+INSERT INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(33, 14, 'transaction', '_TRANSACTION', '', 'view', NULL, 1, '', '', 'alms/transaction/show');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_menu_under_report`
+--
+
+CREATE TABLE IF NOT EXISTS `core_menu_under_report` (
+  `idUnder` int(11) NOT NULL AUTO_INCREMENT,
+  `idMenu` int(11) NOT NULL DEFAULT '0',
+  `module_name` varchar(255) NOT NULL DEFAULT '',
+  `default_name` varchar(255) NOT NULL DEFAULT '',
+  `default_op` varchar(255) NOT NULL DEFAULT '',
+  `associated_token` varchar(255) NOT NULL DEFAULT '',
+  `of_platform` varchar(255) DEFAULT NULL,
+  `sequence` int(3) NOT NULL DEFAULT '0',
+  `class_file` varchar(255) NOT NULL DEFAULT '',
+  `class_name` varchar(255) NOT NULL DEFAULT '',
+  `mvc_path` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`idUnder`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_menu_under_report`
+--
+
+INSERT INTO `core_menu_under_report` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(9, 2, 'report', '_REPORT', 'reportlist', 'view', 'lms', 1, 'class.report.php', 'Module_Report', '');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_menu_under_user`
+--
+
+CREATE TABLE IF NOT EXISTS `core_menu_under_user` (
+  `idUnder` int(11) NOT NULL AUTO_INCREMENT,
+  `idMenu` int(11) NOT NULL DEFAULT '0',
+  `module_name` varchar(255) NOT NULL DEFAULT '',
+  `default_name` varchar(255) NOT NULL DEFAULT '',
+  `default_op` varchar(255) NOT NULL DEFAULT '',
+  `associated_token` varchar(255) NOT NULL DEFAULT '',
+  `of_platform` varchar(255) DEFAULT NULL,
+  `sequence` int(3) NOT NULL DEFAULT '0',
+  `class_file` varchar(255) NOT NULL DEFAULT '',
+  `class_name` varchar(255) NOT NULL DEFAULT '',
+  `mvc_path` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`idUnder`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_menu_under_user`
+--
+
+INSERT INTO `core_menu_under_user` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(3, 7, 'groupmanagement', '_MANAGE_GROUPS', '', 'view', NULL, 1, '', '', 'adm/groupmanagement/show');
+INSERT INTO `core_menu_under_user` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(16, 1, 'usermanagement', '_LISTUSER', '', 'view', NULL, 1, '', '', 'adm/usermanagement/show');
+INSERT INTO `core_menu_under_user` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(18, 4, 'adminrules', '_ADMIN_RULES', '', 'view', NULL, 1, '', '', 'adm/adminrules/show');
+INSERT INTO `core_menu_under_user` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(20, 4, 'adminmanager', '_ADMIN_MANAGER', '', 'view', NULL, 1, '', '', 'adm/adminmanager/show');
+INSERT INTO `core_menu_under_user` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(22, 9, 'functionalroles', '_FUNCTIONAL_ROLE', '', 'view', NULL, 4, '', '', 'adm/functionalroles/show');
+INSERT INTO `core_menu_under_user` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(23, 8, 'competences', '_COMPETENCES', '', 'view', NULL, 1, '', '', 'adm/competences/show');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_menu_user`
+--
+
+CREATE TABLE IF NOT EXISTS `core_menu_user` (
+  `idMenu` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `image` varchar(255) NOT NULL DEFAULT '',
+  `sequence` int(3) NOT NULL DEFAULT '0',
+  `collapse` enum('true','false') NOT NULL DEFAULT 'false',
+  PRIMARY KEY (`idMenu`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_menu_user`
+--
+
+INSERT INTO `core_menu_user` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(1, '', '', 1, 'true');
+INSERT INTO `core_menu_user` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(4, '_ADMINISTRATORS', '', 5, 'false');
+INSERT INTO `core_menu_user` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(7, '', '', 2, 'true');
+INSERT INTO `core_menu_user` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(8, '', '', 3, 'true');
+INSERT INTO `core_menu_user` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES(9, '', '', 4, 'true');
+
 
 -- --------------------------------------------------------
 
@@ -1372,10 +1760,14 @@ CREATE TABLE IF NOT EXISTS `core_platform` (
 -- Dump dei dati per la tabella `core_platform`
 --
 
-INSERT INTO `core_platform` (`platform`, `class_file`, `class_name`, `class_file_menu`, `class_name_menu`, `class_name_menu_managment`, `file_class_config`, `class_name_config`, `var_default_template`, `class_default_admin`, `sequence`, `is_active`, `mandatory`, `dependencies`, `main`, `hidden_in_config`) VALUES
-('framework', '', '', 'class.admin_menu_fw.php', 'Admin_Framework', 'Admin_Managment_Framework', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 1, 'true', 'true', '', 'false', 'false'),
-('lms', '', '', 'class.admin_menu_lms.php', 'Admin_Lms', 'Admin_Managment_Lms', 'class.conf_lms.php', 'Config_Lms', 'defaultTemplate', 'LmsAdminModule', 2, 'true', 'false', '', 'true', 'false'),
-('scs', '', '', 'class.admin_menu_scs.php', 'Admin_Scs', '', 'class.conf_scs.php', 'Config_Scs', 'defaultTemplate', 'ScsAdminModule', 4, 'true', 'false', '', 'false', 'false');
+INSERT INTO `core_platform` (`platform`, `class_file`, `class_name`, `class_file_menu`, `class_name_menu`, `class_name_menu_managment`, `file_class_config`, `class_name_config`, `var_default_template`, `class_default_admin`, `sequence`, `is_active`, `mandatory`, `dependencies`, `main`, `hidden_in_config`) VALUES('framework', '', '', 'class.admin_menu_fw.php', 'Admin_Framework', 'Admin_Managment_Framework', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 1, 'true', 'true', '', 'false', 'false');
+INSERT INTO `core_platform` (`platform`, `class_file`, `class_name`, `class_file_menu`, `class_name_menu`, `class_name_menu_managment`, `file_class_config`, `class_name_config`, `var_default_template`, `class_default_admin`, `sequence`, `is_active`, `mandatory`, `dependencies`, `main`, `hidden_in_config`) VALUES('lms', '', '', 'class.admin_menu_lms.php', 'Admin_Lms', 'Admin_Managment_Lms', 'class.conf_lms.php', 'Config_Lms', 'defaultTemplate', 'LmsAdminModule', 2, 'true', 'false', '', 'true', 'false');
+INSERT INTO `core_platform` (`platform`, `class_file`, `class_name`, `class_file_menu`, `class_name_menu`, `class_name_menu_managment`, `file_class_config`, `class_name_config`, `var_default_template`, `class_default_admin`, `sequence`, `is_active`, `mandatory`, `dependencies`, `main`, `hidden_in_config`) VALUES('menu_config', '', '', 'class.admin_menu_admin_config.php', 'Admin_Framework_Config', 'Admin_Managment_Framework_Config', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 5, 'true', 'true', '', 'false', 'false');
+INSERT INTO `core_platform` (`platform`, `class_file`, `class_name`, `class_file_menu`, `class_name_menu`, `class_name_menu_managment`, `file_class_config`, `class_name_config`, `var_default_template`, `class_default_admin`, `sequence`, `is_active`, `mandatory`, `dependencies`, `main`, `hidden_in_config`) VALUES('menu_content', '', '', 'class.admin_menu_admin_content.php', 'Admin_Framework_Content', 'Admin_Managment_Framework_Content', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 3, 'true', 'true', '', 'false', 'false');
+INSERT INTO `core_platform` (`platform`, `class_file`, `class_name`, `class_file_menu`, `class_name_menu`, `class_name_menu_managment`, `file_class_config`, `class_name_config`, `var_default_template`, `class_default_admin`, `sequence`, `is_active`, `mandatory`, `dependencies`, `main`, `hidden_in_config`) VALUES('menu_elearning', '', '', 'class.admin_menu_admin_elearning.php', 'Admin_Framework_Elearning', 'Admin_Managment_Framework_Elearning', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 2, 'true', 'true', '', 'false', 'false');
+INSERT INTO `core_platform` (`platform`, `class_file`, `class_name`, `class_file_menu`, `class_name_menu`, `class_name_menu_managment`, `file_class_config`, `class_name_config`, `var_default_template`, `class_default_admin`, `sequence`, `is_active`, `mandatory`, `dependencies`, `main`, `hidden_in_config`) VALUES('menu_report', '', '', 'class.admin_menu_admin_report.php', 'Admin_Framework_Report', 'Admin_Managment_Framework_Report', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 4, 'true', 'true', '', 'false', 'false');
+INSERT INTO `core_platform` (`platform`, `class_file`, `class_name`, `class_file_menu`, `class_name_menu`, `class_name_menu_managment`, `file_class_config`, `class_name_config`, `var_default_template`, `class_default_admin`, `sequence`, `is_active`, `mandatory`, `dependencies`, `main`, `hidden_in_config`) VALUES('menu_user', '', '', 'class.admin_menu_admin_user.php', 'Admin_Framework_user', 'Admin_Managment_Framework_User', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 1, 'true', 'true', '', 'false', 'false');
+INSERT INTO `core_platform` (`platform`, `class_file`, `class_name`, `class_file_menu`, `class_name_menu`, `class_name_menu_managment`, `file_class_config`, `class_name_config`, `var_default_template`, `class_default_admin`, `sequence`, `is_active`, `mandatory`, `dependencies`, `main`, `hidden_in_config`) VALUES('scs', '', '', 'class.admin_menu_scs.php', 'Admin_Scs', '', 'class.conf_scs.php', 'Config_Scs', 'defaultTemplate', 'ScsAdminModule', 4, 'true', 'false', '', 'false', 'false');
 
 -- --------------------------------------------------------
 
@@ -1509,6 +1901,28 @@ INSERT INTO `core_reg_setting` (`region_id`, `val_name`, `value`) VALUES
 ('italy', 'date_format', 'd_m_Y'),
 ('italy', 'date_sep', '-'),
 ('italy', 'time_format', 'H_i');
+
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_requests`
+--
+
+CREATE TABLE IF NOT EXISTS `core_requests` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `app` varchar(10) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `controller` varchar(255) NOT NULL,
+  `model` varchar(255) NOT NULL,
+  `plugin` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+
+--
+-- Dump dei dati per la tabella `core_requests`
+--
 
 -- --------------------------------------------------------
 
@@ -1663,19 +2077,6 @@ INSERT INTO `core_role` (`idst`, `roleid`, `description`) VALUES
 (95, '/lms/course/public/public_forum/moderate', NULL),
 (96, '/lms/course/public/public_forum/upload', NULL),
 (97, '/lms/course/public/public_forum/write', NULL),
-(98, '/lms/course/public/pcourse/add', NULL),
-(99, '/lms/course/public/pcourse/del', NULL),
-(100, '/lms/course/public/pcourse/mod', NULL),
-(101, '/lms/course/public/pcourse/moderate', NULL),
-(102, '/lms/course/public/pcourse/subscribe', NULL),
-(103, '/lms/course/public/pcourse/view', NULL),
-(104, '/lms/course/public/public_newsletter_admin/view', NULL),
-(105, '/lms/course/public/public_report_admin/view', NULL),
-(106, '/lms/course/public/public_subscribe_admin/approve_waiting_user', NULL),
-(107, '/lms/course/public/public_subscribe_admin/createuser_org_chart', NULL),
-(108, '/lms/course/public/public_subscribe_admin/deluser_org_chart', NULL),
-(109, '/lms/course/public/public_subscribe_admin/edituser_org_chart', NULL),
-(110, '/lms/course/public/public_subscribe_admin/view_org_chart', NULL),
 (111, '/framework/admin/functionalroles/view', NULL),
 (112, '/framework/admin/functionalroles/mod', NULL),
 (113, '/framework/admin/functionalroles/associate_user', NULL),
@@ -1688,11 +2089,6 @@ INSERT INTO `core_role` (`idst`, `roleid`, `description`) VALUES
 (120, '/lms/admin/meta_certificate/view', NULL),
 (121, '/lms/admin/meta_certificate/mod', NULL),
 (122, '/framework/admin/usermanagement/mod_org', NULL),
-(123, '/lms/course/public/pusermanagement/view', NULL),
-(124, '/lms/course/public/pusermanagement/add', NULL),
-(125, '/lms/course/public/pusermanagement/mod', NULL),
-(126, '/lms/course/public/pusermanagement/del', NULL),
-(127, '/lms/course/public/pusermanagement/approve_waiting_user', NULL),
 (175, '/lms/course/private/advice/mod', NULL),
 (176, '/lms/course/private/advice/view', NULL),
 (177, '/lms/course/private/calendar/mod', NULL),
@@ -1749,11 +2145,16 @@ INSERT INTO `core_role` (`idst`, `roleid`, `description`) VALUES
 (228, '/lms/admin/coursecategory/add', NULL),
 (229, '/lms/admin/coursecategory/mod', NULL),
 (230, '/lms/admin/coursecategory/del', NULL),
-(272, '/lms/course/private/coursecharts/view', ''),
+(231, '/framework/admin/usermanagement/add_org', NULL),
+(232, '/framework/admin/usermanagement/mod_org', NULL),
+(233, '/framework/admin/usermanagement/del_org', NULL),
+(234, '/lms/course/private/light_repo/view_all', NULL),
+(235, '/framework/admin/customfield_manager/view', NULL),
+(236, '/framework/admin/customfield_manager/add', NULL),
+(237, '/framework/admin/customfield_manager/mod', NULL),
+(238, '/framework/admin/customfield_manager/del', NULL),
 (280, '/framework/admin/pluginmanager/view', ''),
 (11553, '/framework/admin/usermanagement/associate_user', NULL),
-(11612, '/lms/course/public/pcertificate/view', NULL),
-(11613, '/lms/course/public/pcertificate/mod', NULL),
 (11757, '/lms/course/private/coursestats/view', ''),
 (11835, '/lms/course/private/presence/view', '');
 
@@ -2127,6 +2528,14 @@ INSERT INTO `core_role_members` (`idst`, `idstMember`) VALUES
 (228, 3),
 (229, 3),
 (230, 3),
+(231, 3),
+(232, 3),
+(233, 3),
+(234, 3),
+(235, 3),
+(236, 3),
+(237, 3),
+(238, 3),
 (272, 301),
 (272, 302),
 (272, 303),
@@ -2214,6 +2623,7 @@ CREATE TABLE IF NOT EXISTS `core_rules_log` (
 --
 
 
+
 -- --------------------------------------------------------
 
 --
@@ -2226,7 +2636,7 @@ CREATE TABLE IF NOT EXISTS `core_setting` (
   `value_type` varchar(25) NOT NULL DEFAULT 'string',
   `max_size` int(3) NOT NULL DEFAULT '255',
   `pack` varchar(25) NOT NULL DEFAULT 'main',
-  `regroup` int(5) NOT NULL DEFAULT '0',
+  `regroup` int(11) NOT NULL DEFAULT '0',
   `sequence` int(5) NOT NULL DEFAULT '0',
   `param_load` tinyint(1) NOT NULL DEFAULT '1',
   `hide_in_modify` tinyint(1) NOT NULL DEFAULT '0',
@@ -2240,34 +2650,20 @@ CREATE TABLE IF NOT EXISTS `core_setting` (
 
 INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES
 ('accessibility', 'off', 'enum', 255, '0', 8, 5, 1, 0, ''),
-('bbb_server', 'http://test-install.blindsidenetworks.com/bigbluebutton/', 'string', 255, 'bbb', 6, 1, 1, 0, ''),
-('bbb_port', '80', 'string', 255, 'bbb', 6, 2, 1, 0, ''),
-('bbb_user', '', 'string', 255, 'bbb', 6, 2, 1, 0, ''),
-('bbb_salt', 'to be changed with a complex string', 'string', 255, 'bbb', 6, 3, 1, 0, ''),
-('bbb_password_moderator', 'password.moderator', 'string', 255, 'bbb', 6, 4, 1, 0, ''),
-('bbb_password_viewer', 'password.viewer', 'string', 255, 'bbb', 6, 5, 1, 0, ''),
-('bbb_max_mikes', '2', 'string', 255, 'bbb', 6, 6, 1, 0, ''),
-('bbb_max_participant', '300', 'string', 255, 'bbb', 6, 7, 1, 0, ''),
-('bbb_max_room', '999', 'string', 255, 'bbb', 6, 8, 1, 0, ''),
-('code_teleskill', '', 'string', 255, 'teleskill', 6, 3, 1, 0, ''),
+('Clear_Twig_Cache', 'index.php?r=adm/setting/clearTwigCache', 'button', 2, 'Twig Cache', 13, 0, 0, 0, ''),
 ('common_admin_session', 'on', 'enum', 3, 'security', 8, 24, 1, 0, ''),
 ('conference_creation_limit_per_user', '99999999999', 'string', 255, '0', 6, 0, 1, 0, ''),
 ('core_version', '2.0', 'string', 255, '0', 1, 0, 1, 1, ''),
-('course_block', 'off', 'enum', 3, 0, 4, 5, 1, 0, ''),
+('course_block', 'off', 'enum', 3, '0', 4, 5, 1, 0, ''),
 ('course_quota', '0', 'string', 255, '0', 4, 5, 1, 0, ''),
 ('currency_symbol', '&euro;', 'string', 10, '0', 5, 2, 1, 0, ''),
 ('customer_help_email', '', 'string', 255, '0', 3, 19, 1, 0, ''),
 ('customer_help_subj_pfx', '', 'string', 255, '0', 3, 20, 1, 0, ''),
+('custom_fields_mandatory_for_admin', 'off', 'enum', 3, 'register', 3, 21, 1, 0, ''),
 ('defaultTemplate', 'standard', 'template', 255, '0', 1, 4, 1, 0, ''),
 ('default_language', '', 'language', 255, '0', 1, 3, 1, 0, ''),
-('dimdim_max_mikes', '2', 'string', 255, 'dimdim', 6, 7, 1, 0, ''),
-('dimdim_max_participant', '300', 'string', 255, 'dimdim', 6, 6, 1, 0, ''),
-('dimdim_max_room', '99999999999', 'string', 255, 'dimdim', 6, 5, 1, 0, ''),
-('dimdim_password', '', 'password', 255, 'dimdim', 6, 2, 1, 0, ''),
-('dimdim_port', '80', 'string', 255, 'dimdim', 6, 2, 1, 0, ''),
-('dimdim_server', 'webmeeting.dimdim.com', 'string', 255, 'dimdim', 6, 1, 1, 0, ''),
-('dimdim_user', '', 'string', 255, 'dimdim', 6, 2, 1, 0, ''),
 ('do_debug', 'off', 'enum', 3, 'debug', 8, 8, 1, 0, ''),
+('file_upload_whitelist', 'exe,rar,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv', 'string', 65535, 'security', 8, 25, 1, 0, ''),
 ('first_catalogue', 'off', 'enum', 3, '0', 4, 2, 1, 0, ''),
 ('google_stat_code', '', 'textarea', 65535, '0', 10, 2, 1, 0, ''),
 ('google_stat_in_lms', '0', 'check', 1, '0', 10, 1, 1, 0, ''),
@@ -2276,6 +2672,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('htmledit_image_admin', '1', 'check', 255, '0', 8, 1, 1, 0, ''),
 ('htmledit_image_godadmin', '1', 'check', 255, '0', 8, 0, 1, 0, ''),
 ('htmledit_image_user', '1', 'check', 255, '0', 8, 2, 1, 0, ''),
+('import_ucfirst', 'on', 'enum', 3, '0', 3, 22, 1, 0, ''),
 ('kb_filter_by_user_access', 'on', 'enum', 3, 'main', 4, 10, 1, 0, ''),
 ('kb_show_uncategorized', 'on', 'enum', 3, 'main', 4, 11, 1, 0, ''),
 ('lang_check', 'off', 'enum', 3, 'debug', 8, 7, 1, 0, ''),
@@ -2294,10 +2691,12 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('no_answer_in_poll', 'off', 'enum', 3, '0', 4, 7, 1, 0, ''),
 ('no_answer_in_test', 'off', 'enum', 3, '0', 4, 6, 1, 0, ''),
 ('on_catalogue_empty', 'on', 'enum', 3, '0', 4, 3, 1, 0, ''),
-('org_name_teleskill', '', 'string', 255, 'teleskill', 6, 4, 1, 0, ''),
+('on_usercourse_empty', 'off', 'enum', 3, '0', 4, 4, 1, 0, ''),
+('orgchart_singlenode', 'off', 'enum', 3, '0', 3, 21, 1, 0, ''),
 ('owned_by', 'Copyright (c) forma.lms', 'html', 255, '0', 1, 7, 1, 0, ''),
 ('page_title', 'Forma E-learning', 'string', 255, '0', 1, 1, 1, 0, ''),
 ('pass_alfanumeric', 'off', 'enum', 3, 'password', 3, 6, 1, 0, ''),
+('pass_algorithm', '1', 'password_algorithms', 255, 'password', 3, 5, 1, 0, ''),
 ('pass_change_first_login', 'off', 'enum', 3, 'password', 3, 8, 1, 0, ''),
 ('pass_max_time_valid', '0', 'int', 4, 'password', 3, 9, 1, 0, ''),
 ('pass_min_char', '5', 'int', 2, 'password', 3, 7, 0, 0, ''),
@@ -2342,45 +2741,24 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('sms_gateway_user', '', 'string', 50, '0', 11, 4, 1, 0, ''),
 ('sms_international_prefix', '+39', 'string', 3, '0', 11, 1, 1, 0, ''),
 ('sms_sent_from', '0', 'string', 25, '0', 11, 2, 1, 0, ''),
-('social_fb_active', 'off', 'enum', 3, 'main', 12, 0, 1, 0, ''),
-('social_fb_api', '', 'string', 255, 'main', 12, 1, 1, 0, ''),
-('social_fb_secret', '', 'string', 255, 'main', 12, 2, 1, 0, ''),
-('social_google_active', 'off', 'enum', 3, 'main', 12, 9, 1, 0, ''),
-('social_google_client_id', '', 'string', 255, 'main', 12, 10, 1, 0, ''),
-('social_google_secret', '', 'string', 255, 'main', 12, 11, 1, 0, ''),
-('social_linkedin_access', '', 'string', 255, 'main', 12, 7, 1, 0, ''),
-('social_linkedin_active', 'off', 'enum', 3, 'main', 12, 6, 1, 0, ''),
-('social_linkedin_secret', '', 'string', 255, 'main', 12, 8, 1, 0, ''),
-('social_twitter_active', 'off', 'enum', 3, 'main', 12, 3, 1, 0, ''),
-('social_twitter_consumer', '', 'string', 255, 'main', 12, 4, 1, 0, ''),
-('social_twitter_secret', '', 'string', 255, 'main', 12, 5, 1, 0, ''),
 ('sso_secret', '', 'text', 255, '0', 9, 1, 1, 0, ''),
 ('sso_token', 'off', 'enum', 3, '0', 9, 0, 1, 0, ''),
 ('stop_concurrent_user', 'on', 'enum', 3, 'security', 8, 23, 1, 0, ''),
 ('tablist_mycourses', 'name,status', 'tablist_mycourses', 255, '0', 4, 1, 1, 0, ''),
-('teleskill_max_participant', '300', 'string', 255, 'teleskill', 6, 6, 1, 0, ''),
-('teleskill_max_room', '99999999999', 'string', 255, 'teleskill', 6, 5, 1, 0, ''),
+('template_domain', '', 'textarea', 65535, '0', 8, 8, 1, 0, ''),
 ('templ_use_field', '0', 'id_field', 11, '0', 1, 0, 1, 1, ''),
 ('title_organigram_chart', 'Forma', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('tracking', 'on', 'enum', 3, '0', 4, 8, 1, 0, ''),
 ('ttlSession', '4000', 'int', 5, '0', 1, 6, 1, 0, ''),
 ('url', 'http://localhost/', 'string', 255, '0', 1, 2, 1, 0, ''),
-('url_checkin_teleskill', 'http://asp.teleskill.it/tvclive/server-1-1.asp', 'string', 255, 'teleskill', 6, 1, 1, 0, ''),
-('url_videoconference_teleskill', '', 'string', 255, 'teleskill', 6, 2, 1, 0, ''),
 ('user_pwd_history_length', '3', 'int', 3, 'password', 3, 10, 1, 0, ''),
 ('user_quota', '50', 'string', 255, '0', 8, 6, 1, 0, ''),
 ('use_advanced_form', 'off', 'enum', 3, 'register', 3, 16, 1, 0, ''),
-('use_dimdim_api', 'off', 'enum', 3, 'dimdim', 6, 8, 1, 0, ''),
 ('use_rest_api', 'off', 'enum', 3, 'api', 9, 2, 1, 0, ''),
 ('use_tag', 'off', 'enum', 3, '0', 4, 5, 1, 0, ''),
 ('visuItem', '25', 'int', 3, '0', 2, 1, 1, 1, ''),
 ('visuNewsHomePage', '3', 'int', 5, '0', 1, 0, 1, 1, ''),
-('welcome_use_feed', 'on', 'enum', 3, '0', 1, 0, 1, 1, ''),
-('template_domain',  '',  'textarea',  '65535',  '0',  '8',  '8',  '1',  '0',  ''),
-('on_usercourse_empty', 'off', 'enum', 3, '0', 4, 4, 1, 0, '');
-
-INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
-VALUES ('file_upload_whitelist', 'zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv', 'string', 65535, 'security', 8, 25, 1, 0, '');
+('welcome_use_feed', 'on', 'enum', 3, '0', 1, 0, 1, 1, '');
 
 -- --------------------------------------------------------
 
@@ -2617,7 +2995,7 @@ CREATE TABLE IF NOT EXISTS `core_user` (
   `userid` varchar(255) NOT NULL DEFAULT '',
   `firstname` varchar(255) NOT NULL DEFAULT '',
   `lastname` varchar(255) NOT NULL DEFAULT '',
-  `pass` varchar(50) NOT NULL DEFAULT '',
+  `pass` varchar(255) NOT NULL DEFAULT '',
   `email` varchar(255) NOT NULL DEFAULT '',
   `avatar` varchar(255) NOT NULL DEFAULT '',
   `signature` text NOT NULL,
@@ -2734,6 +3112,7 @@ CREATE TABLE IF NOT EXISTS `core_user_temp` (
   `twitter_id` varchar(255) DEFAULT NULL,
   `linkedin_id` varchar(255) DEFAULT NULL,
   `google_id` varchar(255) DEFAULT NULL,
+  `avatar` varchar(255) NOT NULL,
   PRIMARY KEY (`idst`),
   UNIQUE KEY `userid` (`userid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
