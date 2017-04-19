@@ -249,6 +249,7 @@ CREATE TABLE IF NOT EXISTS `learning_certificate_course` (
   `id_course` int(11) NOT NULL DEFAULT '0',
   `available_for_status` tinyint(1) NOT NULL DEFAULT '0',
   `point_required` int(11) NOT NULL DEFAULT '0',
+  `minutes_required` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_certificate`,`id_course`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

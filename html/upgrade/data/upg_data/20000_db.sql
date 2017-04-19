@@ -703,6 +703,11 @@ ALTER TABLE `core_requests`
   ALTER TABLE `core_plugin` DROP `code`;
   ALTER TABLE `core_plugin`  ADD `regroup` INT(11) NOT NULL  AFTER `description`;
   ALTER TABLE `core_plugin`  ADD `core` bit(1) NOT NULL DEFAULT b'0';
+  
+  
+  INSERT INTO `core_plugin` (`name`, `title`, `category`, `version`, `author`, `link`, `priority`, `description`, `regroup`, `active`, `core`) VALUES('FormaAuth', 'Forma Auth', '', '1.0', 'Joint Technologies', '', 0, 'forma auth', 1488290190, 1, b'1');
+
+  
 
 -- Campo per i settaggi
  ALTER TABLE `core_setting` CHANGE `regroup` `regroup` INT(11) NOT NULL DEFAULT '0';
@@ -1025,6 +1030,8 @@ DROP TABLE IF EXISTS `core_menu_under`;
 DROP TABLE IF EXISTS `learning_menu`;
 DROP TABLE IF EXISTS `learning_menu_under`;
 
+
+ALTER TABLE `learning_certificate_course` ADD `minutes_required` INT( 11 ) NOT NULL DEFAULT '0';
 
 
 UPDATE core_setting 
