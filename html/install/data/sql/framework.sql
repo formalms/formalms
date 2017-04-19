@@ -1917,7 +1917,7 @@ CREATE TABLE IF NOT EXISTS `core_requests` (
   `model` varchar(255) NOT NULL,
   `plugin` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 --
@@ -2536,19 +2536,8 @@ INSERT INTO `core_role_members` (`idst`, `idstMember`) VALUES
 (236, 3),
 (237, 3),
 (238, 3),
-(272, 301),
-(272, 302),
-(272, 303),
-(272, 304),
-(272, 307),
-(272, 10893),
-(272, 10894),
-(272, 10895),
-(272, 10896),
 (280, 3),
 (11553, 3),
-(11612, 3),
-(11613, 3),
 (11757, 301),
 (11757, 302),
 (11757, 303),
