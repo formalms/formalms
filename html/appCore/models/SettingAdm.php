@@ -70,8 +70,9 @@ class SettingAdm extends Model
 
 		$group = array();
         while (list($id_regroup) = sql_fetch_row($re_regroup)) {
-
-			$group[$id_regroup] = $names[$id_regroup];
+			if (key_exists($id_regroup,$names)){
+                $group[$id_regroup] = $names[$id_regroup];
+			}
 		}
 
 		//$group['suite_man'] = 'suite_man';
