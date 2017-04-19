@@ -729,7 +729,6 @@ CREATE TABLE IF NOT EXISTS `learning_course` (
   `idCategory` int(11) NOT NULL DEFAULT '0',
   `code` varchar(50) NOT NULL DEFAULT '',
   `name` varchar(255) NOT NULL DEFAULT '',
-  `box_description` text NOT NULL,
   `description` text NOT NULL,
   `lang_code` varchar(100) NOT NULL DEFAULT '',
   `status` int(1) NOT NULL DEFAULT '0',
@@ -2091,7 +2090,6 @@ INSERT INTO `learning_module` (`idModule`, `module_name`, `default_op`, `default
 (33, 'course_autoregistration', 'course_autoregistration', '_COURSE_AUTOREGISTRATION', 'view', 'class.course_autoregistration.php', 'Module_Course_Autoregistration', 'all', ''),
 (34, 'mycompetences', 'mycompetences', '_MYCOMPETENCES', 'view', 'class.mycompetences.php', 'Module_MyCompetences', 'all', ''),
 (40, 'quest_bank', 'main', '_QUEST_BANK', 'view', 'class.quest_bank.php', 'Module_QuestBank', '', ''),
-(41, 'coursecharts', 'show', '_COURSECHART', 'view', 'class.coursecharts.php', 'Module_Coursecharts', '', 'coursecharts/show'),
 (42, 'coursestats', 'show', '_COURSESTATS', 'view', '', '', '', 'coursestats/show'),
 (45, 'presence', '', '_PRESENCE', 'view', '', '', '', 'presence/presence'),
 (46, 'course', '', '_CATALOGUE', 'view', '', '', 'all', 'lms/catalog/show');
