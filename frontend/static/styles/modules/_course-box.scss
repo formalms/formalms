@@ -270,7 +270,10 @@
   color: $gray-2;
   font-size: 14px;
   font-weight: 600;
-  line-height: 40px;
+
+  span {
+    font-weight: normal;
+  }
 }
 
 .course-box__date-box {
