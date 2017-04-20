@@ -3872,7 +3872,10 @@ body.appIsReady {
   color: #999999;
   font-size: 14px;
   font-weight: 600;
-  line-height: 40px;
+}
+
+.course-box__date-text span {
+  font-weight: normal;
 }
 
 .course-box__date-box {
