@@ -31,15 +31,14 @@ class PluginManager {
     }
 
     /**
-     * Returns all plugins, (only active is $onlyactive set to true)
-     * @param bool $onlyActive
+     * Returns all plugins
      * @return array
      */
-    private static function get_all_plugins($onlyActive = false){
+    private static function get_all_plugins(){
         if (empty(self::$plugin_list)) {
             require_once _adm_ . '/models/PluginmanagerAdm.php';
             $PluginmanagerAdm = new PluginmanagerAdm();
-            self::$plugin_list = $PluginmanagerAdm->getPlugins($onlyActive);
+            self::$plugin_list = $PluginmanagerAdm->getActivePlugins();
         }
         return self::$plugin_list;
     }
