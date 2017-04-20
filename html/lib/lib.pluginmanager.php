@@ -86,13 +86,11 @@ class PluginManager {
             $plugin_list = self::get_all_plugins(true);
             $this->load_lib();
             foreach ($plugin_list as $class_name) {
-                if (self::is_plugin_active($class_name['name'])){
-                    if(self::include_plugin_file($class_name['name'], 'Plugin.php')) {
-                        if(self::include_plugin_file($class_name['name'], $category . '.php')) {
-                            $namespace_class = "Plugin\\" . $class_name['name'] . "\\" . $category;
-                            if (method_exists($namespace_class, $method)) {
-                                $return[] = call_user_func_array(array($namespace_class, $method), $parameter);
-                            }
+                if(self::include_plugin_file($class_name['name'], 'Plugin.php')) {
+                    if(self::include_plugin_file($class_name['name'], $category . '.php')) {
+                        $namespace_class = "Plugin\\" . $class_name['name'] . "\\" . $category;
+                        if (method_exists($namespace_class, $method)) {
+                            $return[] = call_user_func_array(array($namespace_class, $method), $parameter);
                         }
                     }
                 }
@@ -200,6 +198,13 @@ class PluginManager {
 
         self::include_plugin_file($plugin, 'features/' . $path_model . $model . '.php');
         return new $controller($mvc_name);
+    }
+
+    public static function hook(){
+        $plugin_list = self::get_all_plugins(true);
+        foreach ($plugin_list as $plugin) {
+            self::include_plugin_file($plugin['name'], 'Event.php');
+        }
     }
 }
 

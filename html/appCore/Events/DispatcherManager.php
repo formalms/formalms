@@ -43,11 +43,6 @@ class DispatcherManager {
     }
 
     public static function dispatch($eventName, \Symfony\Component\EventDispatcher\Event $event = null) {
-        $pg = new \PluginManager('Event');
-        if (is_object($event)){
-            $reflect = new \ReflectionClass($event);
-            $pg->run($reflect->getShortName());
-        }
         return self::getInstance()->dispatcher->dispatch($eventName, $event);
     }
 
