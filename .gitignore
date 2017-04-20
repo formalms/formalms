@@ -22,8 +22,6 @@ html/plugins/**
 !html/plugins/GoogleAuth
 !html/plugins/LinkedinAuth
 !html/plugins/TwitterAuth
-!html/plugins/ConferenceBBB
-!html/plugins/ConferenceTeleSkill
 
 
 # Sezione ??? a cosa serve?
@@ -33,7 +31,4 @@ html/plugins/**
 .idea/
 html/config.php
 test/behat/behat_config.yml
-
-# Sezione Frontend
-frontend/node_modules
 courselist.php.bkp
