@@ -67,7 +67,7 @@ $driver=array_filter(array(
 ));
 
 
-echo '<p><label class="floating" for="db_type">DB_TYPE</label></p>'.Form::getInputDropdown('',"db_type","db_info[db_type]", $driver,$cfg['db_type']);
+echo '<p><label class="floating" for="db_type">'.Lang::t('_DB_TYPE').'</label></p>'.Form::getInputDropdown('',"db_type","db_info[db_type]", $driver,$cfg['db_type']);
 ?>
 </div>
 <?php echo Form::getTextfield(Lang::t('_DB_HOST'), "db_host", "db_info[db_host]", 255, $cfg['db_host']); ?>

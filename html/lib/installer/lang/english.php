@@ -60,6 +60,7 @@ define("_AGREE_LICENSE", "I agree with the term of the license");
 define("_TITLE_STEP4", "Step 4: Configuration");
 define("_SITE_BASE_URL", "Base url of the website");
 define("_DATABASE_INFO", "Database information");
+define("_DB_TYPE", "Type");
 define("_DB_HOST", "Address");
 define("_DB_NAME", "Database name");
 define("_DB_USERNAME", "Database user");
@@ -131,6 +132,8 @@ define("_START","Start");
 define("_END","Final");
 define("_INVALID_CONFIG_FILE", "Invalid config.php file; please make sure it is from a release matching the version specified in the \"Start\" field");
 define("_UPGRADE_NOT_NEEDED","You already have the latest version of forma.lms, no need to upgrade.");
+
+define("_USEFUL_LINKS", "Useful links");
 
 define("_COMMUNITY", "Community");
 define("_COMMERCIAL_SERVICES", "Commercial services");
