@@ -83,6 +83,7 @@ define("_CANT_SELECT_DB", "Can't select DB, please check inserted data");
 define("_CANT_CONNECT_WITH_FTP","Can't connect in ftp to the specified server, please check inserted parameters");
 define("_SQL_STRICT_MODE_WARN", "You have MySQL <a href=\"http://dev.mysql.com/doc/en/server-sql-mode.html\" target=\"_blank\">strict mode</a> enabled; forma.lms doesn't support it, so please turn it off");
 define("_SQL_STRICT_MODE", "MySQL <a href=\"http://dev.mysql.com/doc/en/server-sql-mode.html\" target=\"_blank\">strict mode</a>");
+define("_DB_WILL_BE_CREATED", "Db will be created");
 // -----------------------------------------
 define("_TITLE_STEP5", "Step 5: Configuration");
 define("_ADMIN_USER_INFO", "Information regarding the administrator user (first login)");

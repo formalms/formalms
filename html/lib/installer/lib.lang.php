@@ -52,6 +52,7 @@ Class Lang {
 			$res["de"] = "german";
 			$res["el"] = "greek";
 			//$res["hi"] = "hindi";
+			$res["he"] = "hebrew";
 			$res["hu"] = "hungarian";
 			$res["id"] = "indonesian";
 			$res["it"] = "italian";
@@ -90,6 +91,7 @@ Class Lang {
 			$res["german"] = "german";
 			$res["greek"] = "greek";
 			//$res["hindi"] = "hindi";
+			$res["hebrew"] = "hebrew";
 			$res["hungarian"] = "hungarian";
 			$res["indonesian"] = "indonesian";
 			$res["italian"] = "italian";
