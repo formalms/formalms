@@ -79,10 +79,10 @@ function TruncateText($the_text, $size)
 
             <div class="clearfix" id='mia_area_<?php echo $stato_corso; ?>'>
 
-                <div class="pn-grid">
+                <div class="forma-grid">
                 <?php foreach ($courselist as $course) : ?>
 
-                    <div class="pn-grid__item">
+                    <div class="forma-grid__item">
 <!--                    <div class="col-xs-10 col-sm-5 col-lg-4 course-block">//TODO add box description-->
 <!--                    <div class="col col--10 col--5--tablet col--4--desk course-block">-->
                         <div class="course-box"> <!-- NEW BLOCK -->
@@ -119,15 +119,15 @@ function TruncateText($the_text, $size)
                             </div>
                             <div class="course-box__item course-box__item--half">
                                 <?php if ($course['can_enter']['can']) { ?>
-                                    <a class="pn-button pn-button--orange-hover" title="<?php echo Util::purge($course['name']); ?>"
+                                    <a class="forma-button forma-button--orange-hover" title="<?php echo Util::purge($course['name']); ?>"
                                        href="index.php?modname=course&amp;op=aula&amp;idCourse=<?php echo $course['idCourse']; ?>"<?php echo($course['direct_play'] == 1 && $course['level'] <= 3 && $course['first_lo_type'] == 'scormorg' ? ' rel="lightbox"' : ''); ?>>
-                                   <span class="pn-button__label">
+                                   <span class="forma-button__label">
                                      <?php echo Lang::t('_USER_STATUS_ENTER', 'catalogue'); ?>
                                    </span>
                                     </a>
                                 <?php } else { ?>
-                                    <a class="pn-button pn-button--disabled" href="javascript:void(0);">
-                                       <span class="pn-button__label">
+                                    <a class="forma-button forma-button--disabled" href="javascript:void(0);">
+                                       <span class="forma-button__label">
                                          DISABLED
                                        </span>
                                     </a>

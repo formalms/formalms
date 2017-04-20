@@ -40,7 +40,7 @@ body {
   clear: both;
 }
 //FIXME fixare griglia
-.pn-grid {
+.forma-grid {
   //padding: 0 8.33%;
   overflow: auto;
 
@@ -49,7 +49,7 @@ body {
   }
 }
 
-.pn-grid__item {
+.forma-grid__item {
   float: left;
   width: 100%;
   padding: 0 0.78%;
@@ -64,7 +64,7 @@ body {
   }
 }
 
-.pn-grid__item--catalogue {
+.forma-grid__item--catalogue {
   float: left;
   width: 100%;
   padding: 0 0.78%;

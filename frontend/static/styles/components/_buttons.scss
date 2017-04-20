@@ -7,12 +7,12 @@
 // Button default
 //
 // Markup:
-// <a class="pn-button" href="#">
-//  <span class="pn-button__label">button</span>
+// <a class="forma-button" href="#">
+//  <span class="forma-button__label">button</span>
 // </a>
 //
 // Style guide: 2.1
-.pn-button {
+.forma-button {
   display: inline-block;
   width: 100%;
   height: 40px;
@@ -37,12 +37,12 @@
 // Button orange:hover
 //
 // Markup:
-// <a class="pn-button button--orange-hover" href="#">
-//  <span class="pn-button__label">button</span>
+// <a class="forma-button button--orange-hover" href="#">
+//  <span class="forma-button__label">button</span>
 // </a>
 //
 // Style guide: 2.1.1
-.pn-button--orange-hover {
+.forma-button--orange-hover {
   &:hover {
     background-color: $orange;
     color: $white;
@@ -52,18 +52,18 @@
 // Button disabled
 //
 // Markup:
-// <a class="pn-button button--disabled" href="#">
-//  <span class="pn-button__label">button</span>
+// <a class="forma-button button--disabled" href="#">
+//  <span class="forma-button__label">button</span>
 // </a>
 //
 // Style guide: 2.2
-.pn-button--disabled {
+.forma-button--disabled {
   pointer-events: none;
   background-color: $white;
   border: 2px solid $gray-3;
   color: $gray-3;
   
-  .pn-button__label {
+  .forma-button__label {
     &:before {
       content: '\f023';
       font-family: $icon;
@@ -80,29 +80,29 @@
 // Green Button
 //
 // Markup:
-// <a class="pn-button button--green" href="#">
-//  <span class="pn-button__label">button</span>
+// <a class="forma-button button--green" href="#">
+//  <span class="forma-button__label">button</span>
 // </a>
 //
 // Style guide: 2.3
-.pn-button--green {
+.forma-button--green {
   background-color: $green;
 }
 
 // Gray Button
 //
 // Markup:
-// <a class="pn-button button--gray" href="#">
-//  <span class="pn-button__label">button</span>
+// <a class="forma-button button--gray" href="#">
+//  <span class="forma-button__label">button</span>
 // </a>
 //
 // Style guide: 2.4
-.pn-button--gray {
+.forma-button--gray {
   pointer-events: none;
   background-color: $gray-3;
 }
 
-.pn-button__label {
+.forma-button__label {
   position: relative;
   display: inline-block;
   color: inherit;
