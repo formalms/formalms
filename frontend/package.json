@@ -77,7 +77,7 @@
     "clean-dist": "rm -rf ../html/templates/standard/static/*",
     "serve": "./node_modules/.bin/webpack-dev-server --config serve.config.js --progress --inline --hot",
     "dev": "npm run live-css-first && npm run assets && concurrently --kill-others \"npm run live-server\" \"npm run live-css\" \"npm run live-js\"",
-    "build": "npm run clean-dist && npm run css && npm run js && npm run assets && npm run css-expanded",
+    "build": "npm run clean-dist && npm run styles && npm run js && npm run assets && npm run css-expanded",
     "build-prod": "npm run test-unit && npm run clean-dist && npm run css && npm run js && npm run assets",
     "dev-unit": "./node_modules/karma/bin/karma start test/unit/cucumber.unit.js --no-single-run",
     "test-unit": "./node_modules/karma/bin/karma start test/unit/cucumber.unit.js --single-run",

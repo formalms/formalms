@@ -22,6 +22,13 @@ $html = '';
 $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse') . '/';
 $smodel = new CatalogLms();
 
+function TruncateText($the_text, $size)
+{
+    if (strlen($the_text) > $size)
+        return substr($the_text, 0, $size) . '...';
+    return $the_text;
+}
+
 ?>
 
 
@@ -281,7 +288,7 @@ $smodel = new CatalogLms();
                             </div>
                             <div class="course-box__item">
                                 <div class="course-box__desc">
-                                    ' . $row['description'] . '
+                                    ' . TruncateText($row['box_description'], 120) . '
                                 </div>
                             </div>';
 
