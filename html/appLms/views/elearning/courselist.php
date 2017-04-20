@@ -107,12 +107,12 @@ function TruncateText($the_text, $size)
                                     <?php echo $this->levels[$course['level']]; ?>
                                 </div>
                                 <div class="course-box__desc">
-<!--                                    --><?php //echo TruncateText($course['description'], 150); ?>
                                     <?php echo TruncateText($course['box_description'], 120); ?>
                                 </div>
                             </div>
                             <div class="course-box__item course-box__item--half">
                                 <div class="course-box__date-text">
+                                    <span>Data di chiusura</span><br>
                                     <?php echo GetCourseDay($course) ?>
                                     <?php echo GetCourseMonth($course) ?>
                                     <?php echo GetCourseYear($course) ?>
