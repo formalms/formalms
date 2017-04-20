@@ -121,6 +121,18 @@
     right: 30px;
   };
 
+  &:first-child {
+    height: 70px;
+
+    @include breakpoint($tablet) {
+
+    }
+
+    @include breakpoint($ipad) {
+
+    }
+  }
+
   &:nth-child(3) {
     padding-top: 20px;
     min-height: 90px;
