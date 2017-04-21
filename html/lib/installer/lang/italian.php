@@ -29,17 +29,21 @@ define("_TITLE_STEP4", "Step 4: Configurazione");
 define("_TITLE_STEP5", "Step 5: Personalizzazione dell'installazione");
 define("_TITLE_STEP6", "Step 6: Importazione database");
 define("_TITLE_STEP7", "Step 7: Importazione linguaggi");
+define("_TITLE_STEP8", "Step 8: Installazione completata");
 define("_INTRODUCTION", "Introduzione");
 define("_INSTALLATION_COMPLETED", "Installazione completata");
+define("REMOVE_INSTALL_FOLDER", "Si suggerisce di rimuovere la cartella di installazione, Forma è vulnerabile fino a quando questa è raggiungibile.");
 define("_INSTALLATION_DETAILS", "Dettagli installazione");
 
 define("_IS_PRESENT_DIRECTORIES","Sono ancora presenti delle directory non pi&ugrave; usate, ti consigliamo di cancellarle");
 define("_LACKING_DIRECTORIES","Manacano alcune directory contenenti gli applicativi della suite, senza tali cartelle non sar&agrave; possibile usare il sistema");
 define("_CANT_CONNECT_WITH_DB", "Non &egrave; stato possibile connettersi al database, controlla i parametri inseriti");
+define("_DB_NOT_EMPTY", "Il database specificato non è vuoto");
 define("_CANT_SELECT_DB", "Non &egrave; stato possibile trovare il database specificato, controlla i parametri inseriti");
 define("_CANT_CONNECT_WITH_FTP","Non &egrave; stato possibile connettersi tramite ftp al server specificato, controlla i parametri inseriti");
 define("_SQL_STRICT_MODE_WARN", "La modalit&agrave; <a href=\"http://dev.mysql.com/doc/en/server-sql-mode.html\" target=\"_blank\">strict mode</a> di MySQL &egrave; attiva; forma.lms non la supporta, ti preghiamo di disattivarla");
 define("_SQL_STRICT_MODE", "MySQL <a href=\"http://dev.mysql.com/doc/en/server-sql-mode.html\" target=\"_blank\">strict mode</a>");
+define("_DB_WILL_BE_CREATED", "Il database sarà creato");
 define("_CHECKED_DIRECTORIES","Alcune delle directory per il salvataggio dei file non esistono oppure non hanno permessi adeguati");
 define("_CHECKED_FILES","Alcuni file non hanno permessi adeguati");
 define("_EMPTY_DIRECTORIES","");
@@ -62,6 +66,7 @@ define("_FINISH", "Fine");
 
 define("_DATABASE_INFO", "Informazioni sul database");
 define("_DB_HOST", "Indirizzo");
+define("_DB_TYPE", "Tipo");
 define("_DB_NAME", "Nome database");
 define("_DB_USERNAME", "Nome utente");
 define("_DB_PASS", "Password");
@@ -185,6 +190,7 @@ define("_ALLOW_URL_INCLUDE","allow_url_include");
 define("_DANGER", "Pericolo - Settare ad OFF");
 define("_DOMXML","domxml();");
 define("_LDAP","Ldap");
+define("_FILEINFO","Supporto Fileinfo");
 define("_OPENSSL","Openssl : ");
 define("_WARINNG_SOCIAL","Considerare questa nota solo se si intende usare i login social");
 define("_ON","ON ");
@@ -234,6 +240,8 @@ define("_START","Iniziale");
 define("_END","Finale");
 define("_INVALID_CONFIG_FILE", "File config.php non valido; assicurati che sia della versione di forma.lms specificata alla voce \"Iniziale\"");
 define("_UPGRADE_NOT_NEEDED","Hai già l'ultima versione di forma.lms; non è necessario aggiornare.");
+
+define("_USEFUL_LINKS", "Link utili");
 
 define("_COMMUNITY", "Community");
 define("_COMMERCIAL_SERVICES", "Servizi commerciali");
