@@ -3,7 +3,7 @@
         {% if under_maintenence == false %}
             {% if isCatalogToShow != false %}
                 <div class="homecatalogue">
-                    <a href="index.php?r=<?php echo _homecatalog_; ?>">{{ translate('_CATALOGUE', 'standard') }}</a>
+                    <a href="index.php?r={{ constant('_homecatalog_') }}">{{ translate('_CATALOGUE', 'standard') }}</a>
                 </div>
             {% endif %}
             <div class="login-box">
