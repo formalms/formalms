@@ -94,7 +94,7 @@ else {
 </ul>
 
 <br/>
-
+<!--
 <div style='background-color: orange; padding: 10px;'>
 
     <h3><?php echo Lang::t('_WARNINGS'); ?></h3>
@@ -114,6 +114,7 @@ else {
     </ul>
 </div>
 <br>
+-->
 <h3><?php echo Lang::t('_SERVERINFO'); ?></h3>
 <ul class="info">
 	<li><?php echo Lang::t('_SERVER_SOFTWARE'); ?>: <span><?php echo $_SERVER['SERVER_SOFTWARE']; ?></span></li>
