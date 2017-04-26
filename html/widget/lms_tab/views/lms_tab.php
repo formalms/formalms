@@ -76,7 +76,8 @@
             </li>
         </ul>
     </div>
-    <div class="yui-content">
+<!--    <div class="yui-content">-->
+    <div class="">
         <div id="tab_content" class="nested_tab">   
         
         
