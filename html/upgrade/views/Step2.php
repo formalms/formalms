@@ -94,27 +94,34 @@ else {
 </ul>
 
 <br/>
-<!--
-<div style='background-color: orange; padding: 10px;'>
+<?php
 
-    <h3><?php echo Lang::t('_WARNINGS'); ?></h3>
-    <ul class="info">
-        <?php
-        if (file_exists(_upgrader_."/data/warn/20000.php")){
-            include_once(_upgrader_."/data/warn/20000.php");
-            foreach (getWarnings() as $warning){
+$end_version = $GLOBALS['cfg']['endversion'];
+if (file_exists(_upgrader_."/data/warn/".$end_version.".php")){
+    include_once(_upgrader_."/data/warn/".$end_version.".php");
+    $warnings=getWarnings();
+    if (count($warnings)!=0){
+?>
+    <div style='background-color: orange; padding: 10px;'>
+
+        <h3><?php echo Lang::t('_WARNINGS'); ?></h3>
+        <ul class="info">
+            <?php
+            foreach ($warnings as $warning){
                 echo "<li>".$warning[0];
                 if ($warning[1]){
                     echo " <input onclick='checkWarning()' class='warning_mandatory' style='float:right' type='checkbox'>";
                 }
                 echo "</li>";
             }
-        }
-        ?>
-    </ul>
-</div>
-<br>
--->
+            ?>
+        </ul>
+    </div>
+    <br>
+<?php
+    }
+}
+?>
 <h3><?php echo Lang::t('_SERVERINFO'); ?></h3>
 <ul class="info">
 	<li><?php echo Lang::t('_SERVER_SOFTWARE'); ?>: <span><?php echo $_SERVER['SERVER_SOFTWARE']; ?></span></li>
