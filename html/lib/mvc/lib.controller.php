@@ -70,7 +70,7 @@ class Controller {
 
 		return _base_.'/customscripts/views';
 	}
-	
+
 	/**
 	 * This method will render a specific view for this mvc
 	 * @param string $view_name the name of the view, must be equal to a php file inside the view folder for this mvc without the .php extension
@@ -96,30 +96,45 @@ class Controller {
             $paths[]=$this->templatePath();
         }
 		$paths[]=$this->viewPath();
-		//OVERLOAD template_engine in config $tplengine=Get::cfg('template_engine', array());
-        $tplengine['twig'] = array('ext' => '.html.twig');
 
-		foreach ($tplengine as $tplkey => $tpleng){
-			$extensions[$tplkey]=$tpleng['ext'];
-		}
-		$extensions['php']=".php";
+        $tplengine=Get::cfg('template_engine', array());
 
-		$extension="";
-		$path="";
-		$tplkey="";
-		foreach ($paths as $p){
-			foreach ($extensions as $k => $e){
-				$fullpath=$p . '/' . $this->_mvc_name . '/' . $view_name . $e;
-				if (file_exists($fullpath)){
-					$extension=$e;
-					$path=$p;
-					$tplkey=$k;
-					break;
-				}
-			}
-			if ($extension != "") break;
-		}
-		
+
+        foreach ($tplengine as $tplkey => $tpleng) {
+            if (isset($tplengine[$tplkey]['ext']) && !is_array($tplengine[$tplkey]['ext'])) {
+                $tplengine[$tplkey]['ext']=array($tplengine[$tplkey]['ext']);
+            }
+            $extensions[$tplkey]=$tplengine[$tplkey]['ext'];
+        }
+
+
+        if (isset($extensions['twig']) && !in_array(".html.twig", $extensions['twig'])){
+            $extensions['twig'][] = '.html.twig';
+        } else {
+            $extensions['twig'] = array('.html.twig' );
+        }
+
+        $extensions['php']=array(".php");
+
+
+        $extension="";
+        $path="";
+        $tplkey="";
+        foreach ($paths as $p){
+            foreach ($extensions as $k => $e){
+                foreach ($e as $ext_string) {
+                    $fullpath = $p . '/' . $this->_mvc_name . '/' . $view_name . $ext_string;
+                    if (file_exists($fullpath)) {
+                        $extension = $ext_string;
+                        $path = $p;
+                        $tplkey = $k;
+                        break;
+                    }
+                }
+            }
+            if ($extension != "") break;
+        }
+
 		switch($tplkey){
 			case "php":
 				include( Docebo::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension));
@@ -132,7 +147,7 @@ class Controller {
 				include( Docebo::inc($this->viewPath() . '/' . $this->_mvc_name . '/' . $view_name . $extension) );
 				break;
 		}
-		
+
 		if ($return) {
 			$content = ob_get_contents();
 			@ob_clean();
