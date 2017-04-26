@@ -11,6 +11,9 @@ DELETE FROM `learning_module` WHERE `module_name` = "public_newsletter_admin";
 DELETE FROM `learning_module` WHERE `module_name` = "pcertificate";
 
 
+DELETE FROM `core_role` WHERE `roleId` = "/framework/admin/publicadminmanager/mod";
+DELETE FROM `core_role` WHERE `roleId` = "/framework/admin/publicadminmanager/view";
+
 DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pusermanagement/view";
 DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pusermanagement/add";
 DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pusermanagement/mod";
