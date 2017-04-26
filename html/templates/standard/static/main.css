@@ -3474,16 +3474,22 @@ h1, h2, h3, h4, h5, h6, p {
   color: white;
   background-color: #c84000;
   font-family: "Open-sans";
-  font-size: 12px;
+  font-size: 11px;
   border-radius: 5px;
   box-shadow: none;
   cursor: pointer;
   transition: background-color 0.4s ease 0s;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .forma-button {
-    font-size: 14px;
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .forma-button {
+    font-size: 13px;
   }
 }
 
@@ -3628,6 +3634,7 @@ body.appIsReady {
 .course-box {
   width: 100%;
   min-height: 330px;
+  margin-bottom: 15px;
   padding-bottom: 30px;
   border: 2px solid #ececec;
   border-radius: 5px;
