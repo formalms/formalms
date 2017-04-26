@@ -168,6 +168,10 @@ define("_CRITICAL_ERROR_UPGRADE_SUSPENDED","Errore critico nell'aggiornamento, l
 define("_LMS_ENABLE_EVENT_UI", "Gli utenti potranno configurare quali notifiche ricevere");
 define("_LMS_ENABLE_GROUPSUB_UI", "Gli utenti potranno configurare se iscriversi o meno ai gruppi");
 
+//warnings
+define("_WARNINGS","Avvertenze");
+define("WARNING_PUB_ADMIN_DELETED","Verrano eliminati gli amministratori pubblici");
+
 // diagnostic
 define("_SERVERINFO","Informazioni sul server");
 define("_SERVER_ADDR","Indirizzo server");

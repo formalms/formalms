@@ -27,6 +27,9 @@ forma.lms is a free open source Learning Management System mantained by an itali
 		<li>Mobile devices support</li>
 	</ul>");
 // ---------------------------------------
+define("_WARNINGS","Warnings");
+define("WARNING_PUB_ADMIN_DELETED","All public admins willl be deleted");
+// ---------------------------------------
 define("_TITLE_STEP2", "Step 2: System Check");
 define("_SERVERINFO","Server information");
 define("_SERVER_SOFTWARE","Server software : ");
