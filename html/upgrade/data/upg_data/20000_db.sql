@@ -17,29 +17,11 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 -- ------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 -- 150605.view_all.sql 
 
 
 -- label
 INSERT IGNORE INTO core_lang_text(text_key, text_module, text_attributes) VALUES ('_VIEW_ALL', 'standard', '');
-
-
 
 -- 338.txt 
 ALTER TABLE  `core_user_temp` ADD  `avatar` VARCHAR( 255 ) NOT NULL;
@@ -1032,6 +1014,9 @@ DROP TABLE IF EXISTS `learning_menu_under`;
 
 
 ALTER TABLE `learning_certificate_course` ADD `minutes_required` INT( 11 ) NOT NULL DEFAULT '0';
+
+-- 10116_add_box_course_description
+ALTER TABLE `learning_course` ADD `box_description` TEXT NOT NULL AFTER `name`;
 
 
 UPDATE core_setting 

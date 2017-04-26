@@ -730,6 +730,7 @@ CREATE TABLE IF NOT EXISTS `learning_course` (
   `idCategory` int(11) NOT NULL DEFAULT '0',
   `code` varchar(50) NOT NULL DEFAULT '',
   `name` varchar(255) NOT NULL DEFAULT '',
+  `box_description` TEXT NOT NULL,
   `description` text NOT NULL,
   `lang_code` varchar(100) NOT NULL DEFAULT '',
   `status` int(1) NOT NULL DEFAULT '0',
