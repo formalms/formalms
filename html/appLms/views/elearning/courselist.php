@@ -69,9 +69,9 @@ function TruncateText($the_text, $size)
 <?php endif; ?>
 
 
-<div id="container1_<?php echo $stato_corso; ?>">
+<div class="container-fluid" id="container1_<?php echo $stato_corso; ?>">
 
-    <div id="cbp-vm" style="padding: 0">
+    <div id="row-fluid">
 
         <?php
         if ($filter_type == "all" || $filter_type == 'elearning') { ?>
@@ -79,12 +79,10 @@ function TruncateText($the_text, $size)
 
             <div class="clearfix" id='mia_area_<?php echo $stato_corso; ?>'>
 
-                <div class="forma-grid">
                 <?php foreach ($courselist as $course) : ?>
 
-                    <div class="forma-grid__item">
-<!--                    <div class="col-xs-10 col-sm-5 col-lg-4 course-block">//TODO add box description-->
-<!--                    <div class="col col--10 col--5--tablet col--4--desk course-block">-->
+                    <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-4">
+
                         <div class="course-box"> <!-- NEW BLOCK -->
                             <div class="course-box__item">
                                 <div class="course-box__title course-icon--active"><?php echo TruncateText($course['name'], 100); ?></div>
@@ -139,9 +137,8 @@ function TruncateText($the_text, $size)
                         <?php /*</li>*/ ?>
                     </div>
                 <?php endforeach; ?>
-                </div>
+                    </div>
 
-                </div>
                 <?php /*</ul>*/ ?>
             <br>
             <?php 
@@ -301,5 +298,7 @@ function TruncateText($the_text, $size)
             ?>
 
         </div>
+
     </div>
+
 </div>

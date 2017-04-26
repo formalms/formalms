@@ -32,11 +32,11 @@ function TruncateText($the_text, $size)
 ?>
 
 
-<!--<div class="col-md-12">-->
-<!--    <div class="main">-->
-        <div id="cbp-vm" class="cbp-vm-switcher" style="padding: 10px 0;">
-            <div class="forma-grid">
-<!--            <ul>-->
+
+        <div id="cbp-vm" class="container-fluid">
+<!--            <div class="forma-grid">-->
+            <div class="row-fluid">
+
                 <?php
                 while ($row = sql_fetch_assoc($result)) {
 //                    echo '<pre>'. json_encode($row) . '</pre>';
@@ -269,7 +269,7 @@ function TruncateText($the_text, $size)
                     //here begins the course box
 
                     $html .= '
-                    <div class="forma-grid__item--catalogue">
+                    <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-6">
                         <div class="course-box">
                             <div class="course-box__item">
                                 <div class="course-box__title">' . $row['name'] . '</div>
@@ -368,10 +368,9 @@ function TruncateText($the_text, $size)
                 echo $html; //returns course-box
 
                 ?>
-<!--            </ul>-->
 
 
-        </div>
+        </div> <!--  /forma-grid - /row-->
 <!--    </div><!-- /main -->
 
 </div>

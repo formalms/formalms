@@ -32,29 +32,26 @@ function courseSelection(id_course, selling)
 	var course_info = '&id_course=' + id_course + '&selling=' + selling;
 
 	YAHOO.util.Connect.asyncRequest("POST", glob_serverUrl + 'courseSelection&',
-									{
-										success: function(o)
-										{
-											var res = YAHOO.lang.JSON.parse(o.responseText);
-											if (res.success)
-											{
-												dialog.setHeader(res.title);
-												dialog.setBody(res.body);
-												if(res.footer) dialog.setFooter('<div class="align-right">'+res.footer+'</div>');
-												else dialog.setFooter('');
+			{
+					success: function(o)
+					{
+							var res = YAHOO.lang.JSON.parse(o.responseText);
+							if (res.success) {
+									dialog.setHeader(res.title);
+									dialog.setBody(res.body);
+									if(res.footer) dialog.setFooter('<div class="align-right">'+res.footer+'</div>');
+									else dialog.setFooter('');
 
-												dialog.show();
-											}
-											else
-											{
+									dialog.show();
+							}
+							else {
 
-											}
-										},
-										failure: function()
-										{
+							}
+					},
+					failure: function()	{
 
-										}
-									}, course_info);
+					}
+			}, course_info);
 }
 
 function hideDialog()
