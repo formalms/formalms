@@ -16,6 +16,7 @@ Get::title(array(
 	. Form::getTextfield(Lang::t('_CODE', 'course'), 'course_code', 'course_code', '50', $course['code'])
 	. Form::getTextfield(Lang::t('_COURSE_NAME', 'course'), 'course_name', 'course_name', '255', $course['name']);
 
+
 if ($course['course_type'] == 'classroom' && $has_editions_or_classrooms) {
 	//this is a classroom course with editions
 	echo Form::getLineBox(Lang::t('_COURSE_TYPE', 'course'), $course_type['classroom'])
@@ -32,7 +33,9 @@ echo Form::getDropdown(Lang::t('_STATUS', 'course'), 'course_status', 'course_st
 	. Form::getCheckbox(Lang::t('_DIRECT_PLAY', 'course'), 'direct_play', 'direct_play', '1', $course['direct_play'] == 1)
 	// hiding the "show results" option - is not used (missing functions)
 	//. Form::getCheckbox(Lang::t('_SHOW_RESULTS', 'course'), 'show_result', 'show_result', '1', $course['show_result'] == 1)
+    . Form::getSimpleTextarea(Lang::t('_COURSE_BOX_DESCRIPTION', 'course'), 'course_box_descr', 'course_box_descr', $course['box_description'])
 	. Form::getTextarea(Lang::t('_DESCRIPTION', 'course'), 'course_descr', 'course_descr', $course['description'])
+
 	. ( $id_course !== false && $course['course_type'] != 'elearning' ? Form::getCheckbox(Lang::t('_CASCADE_MOD_ON_EDITION', 'course'), 'cascade_on_ed', 'cascade_on_ed', 1) : '' )
 	. Form::closeElementSpace()
 	. Form::openElementSpace()
@@ -47,14 +50,6 @@ echo Form::getDropdown(Lang::t('_STATUS', 'course'), 'course_status', 'course_st
 	//. (!$classroom ? Form::getCheckbox(Lang::t('_COURSE_EDITION', 'course'), 'course_edition_yes', 'course_edition', 1, $course['course_edition'] == 1) : '' )
 	//. Form::getCloseCombo()
 
-        // Visualizzazione CustomFields
-        require_once(_adm_.'/lib/lib.customfield.php');
-        $fman = new CustomFieldList();
-        $fman->setFieldArea( "COURSE" );
-        $fields_mask = $fman->playFields($id_course);
-        //$GLOBALS['page']->add($fields_mask, 'content');
-        echo $fields_mask;
-			
 	echo Form::getCloseFieldset();
 
 	echo Form::openCollasableFieldset(Lang::t('_COURSE_SUBSCRIPTION', 'course'))
@@ -169,8 +164,21 @@ echo Form::getDropdown(Lang::t('_STATUS', 'course'), 'course_status', 'course_st
 	. Form::getExtendedFilefield(Lang::t('_COURSE_LOGO', 'course'), 'course_logo', 'course_logo', $course["img_course"])
 	. Form::getExtendedFilefield(Lang::t('_COURSE_DEMO', 'course'), 'course_demo', 'course_demo', $course["course_demo"])
 	. Form::getCheckbox(Lang::t('_USE_LOGO_IN_COURSELIST', 'course'), 'use_logo_in_courselist', 'use_logo_in_courselist', 1, $course["use_logo_in_courselist"])
-	. Form::getCloseFieldset()
-	. Form::closeElementSpace()
+	. Form::getCloseFieldset();
+    
+        // Visualizzazione CustomFields
+        require_once(_adm_.'/lib/lib.customfield.php');
+        $fman = new CustomFieldList();
+        $fman->setFieldArea( "COURSE" );
+        
+        if ($fman->getNumberFieldbyArea() > 0) {
+            $fields_mask = $fman->playFields($id_course);
+        echo Form::openCollasableFieldset(Lang::t('_CUSTOM_OPTIONS', 'course'))
+            .$fields_mask
+            .Form::getCloseFieldset();
+        }
+                
+	echo Form::closeElementSpace()
 	. Form::openButtonSpace()
     .((($_REQUEST['r'] == 'alms/course/newcourse')  || ($_REQUEST['r'] == 'alms/course/modcourse' && $row[0] == 0))? Form::getCheckbox(Lang::t('_AUTO_SUBSCRIPTION'), 	'auto_subscription', 	'auto_subscription', 	'1', true ) : '' )            
 	. Form::getButton('save', 'save', Lang::t('_SAVE'))

@@ -1,3 +1,6 @@
+#Exclude vendor
+html/vendor
+
 # Sezione html/files
 html/files/**
 !html/files/**/.htaccess
@@ -8,6 +11,19 @@ html/files/**
 !html/files/appLms/certificate/certificate_sample.jpg
 !html/files/appLms/label/label_image.png
 
+# Sezione Plugin
+html/plugins/**
+!html/plugins/report_course
+!html/plugins/report_aggregate
+!html/plugins/report_user
+# Authentication
+!html/plugins/FacebookAuth
+!html/plugins/FormaAuth
+!html/plugins/GoogleAuth
+!html/plugins/LinkedinAuth
+!html/plugins/TwitterAuth
+
+
 # Sezione ??? a cosa serve?
 !*/
 
@@ -15,8 +31,7 @@ html/files/**
 .idea/
 html/config.php
 test/behat/behat_config.yml
+courselist.php.bkp
 
-# Sezione Plugins
-html/plugins/**
-!html/plugins/ConferenceBBB
-!html/plugins/ConferenceTeleSkill
+#frontend
+frontend

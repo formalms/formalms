@@ -13,7 +13,8 @@ namespace appCore\Template;
   |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
   \ ======================================================================== */
 
-class TwigManager {
+class TwigManager
+{
 
     private static $instance = null;
     private $twig = null;
@@ -21,19 +22,17 @@ class TwigManager {
     /**
      * Singleton class, the constructor is private
      */
-    private function __construct() {
+    private function __construct()
+    {
         $loader = new \Twig_Loader_Filesystem();
         $debug = \Get::cfg('twig_debug', false);
         $this->twig = new \Twig_Environment($loader, array(
-            'cache' => $debug?false:_files_ . '/tmp',
+            'cache' => $debug ? false : _files_ . '/cache/twig',
             'debug' => $debug
         ));
+
         $this->twig->addFunction('translate', new \Twig_Function_Function(function ($key, $module = false, $substitution = array(), $lang_code = false, $default = false) {
             return \Lang::t($key, $module, $substitution, $lang_code, $default);
-        }));
-        $this->twig->addFunction('pluginUrl', new \Twig_Function_Function(function ($resource) {
-            $plugin_files = \PluginManager::find_files();
-            return '/' . _folder_plugins_ . '/' . $plugin_files[$resource] . '/' . $resource;
         }));
         $this->twig->addFunction('evalPhp', new \Twig_Function_Function(function ($phpCode, $args = array()) {
             return call_user_func_array($phpCode, $args);
@@ -42,6 +41,9 @@ class TwigManager {
         )));
         $this->twig->addGlobal('GLOBALS', $GLOBALS);
         $this->twig->addGlobal('Docebo', Docebo);
+        if ($debug) {
+            $this->twig->addExtension(new \Twig_Extension_Debug());
+        }
     }
 
     /**
@@ -51,7 +53,8 @@ class TwigManager {
      * @return TwigManager
      * @throws Exception
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$instance == null) {
             $c = __CLASS__;
             self::$instance = new $c;
@@ -60,7 +63,8 @@ class TwigManager {
         return self::$instance;
     }
 
-    public function render($view_name, $data_for_view, $view_path = null) {
+    public function render($view_name, $data_for_view, $view_path = null)
+    {
         if ($view_path == null) {
             throw new \Exception('mvc_name cannot be null!');
         }
@@ -70,6 +74,11 @@ class TwigManager {
         }
 
         return $this->twig->render($view_name, $data_for_view);
+    }
+
+    public static function getCacheDir()
+    {
+        return _files_ . '/cache/twig';
     }
 
 }

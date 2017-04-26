@@ -43,7 +43,7 @@ class Module_Course extends LmsModule {
 				
 				require_once(_base_.'/lib/lib.urlmanager.php');
 				$url =& UrlManager::getInstance('course');
-				$url->setStdQuery('r='._after_login_);
+				$url->setStdQuery('r='._lms_home_);
 				
 				mycourses($url);
 			};break;

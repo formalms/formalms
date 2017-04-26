@@ -1,0 +1,71 @@
+<div class="filter-container">
+    <select class="filter js-user-level-filter is-disabled" disabled>
+        {% for i in 0..7 %}
+            {% if loop.first %}
+                <option value="false" selected>{{ translate('_ALL') }}</option>
+            {% else %}
+                <option value="{{ loop.index0 }}">{{ translate('_LEVEL_'~loop.index0) }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+    <div class="button--exportcsv"><a href="index.php?r=lms/coursereport/export">{{ translate('_EXPORT_CSV','standard') }}</a></div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th colspan="2" class="transparent"></th>
+            <th colspan="4" class="text-center">
+                {#<a class="activities-nav activities-nav--prev js-prev-activities"><i class="fa fa-chevron-left"></i></a>#}
+                {{ translate('_STUDENTS_VOTE','coursereport') }}
+                {#<a class="activities-nav activities-nav--next js-next-activities"><i class="fa fa-chevron-right"></i></a>#}
+            </th>
+            <th class="transparent"></th>
+        </tr>
+        <tr>
+            <th>{{ translate('_STUDENTS','coursereport') }}</th>
+            <th>
+                <select class="filter js-user-detail-filter is-disabled" disabled>
+                </select>
+            </th>
+
+            <th>
+                <select class="filter js-test-filter" data-test="0">
+                    <option value="">-</option>
+                </select>
+            </th>
+            <th>
+                <select class="filter js-test-filter" data-test="1">
+                    <option value="">-</option>
+                </select>
+            </th>
+            <th>
+                <select class="filter js-test-filter" data-test="2">
+                    <option value="">-</option>
+                </select>
+            </th>
+            <th>
+                <select class="filter js-test-filter" data-test="3">
+                    <option value="">-</option>
+                </select>
+            </th>
+
+            <th class="text-center">{{ translate('_FINAL_SCORE','standard') }}
+                <div class="final-buttons-container">
+                    <a class="js-finals-filter round-report" href="#" data-reportid=""><i class="fa fa-calculator" aria-hidden="true"></i></a>
+                    <a class="js-finals-filter redo-final" href="#" data-reportid=""><i class="fa fa-refresh" aria-hidden="true"></i></a>
+                </div>
+            </th>
+        </tr>
+        </thead>
+        <tbody class="js-details-table">
+
+        </tbody>
+        <tfoot class="empty">
+        <th colspan="7" class="loading"></th>
+        </tfoot>
+    </table>
+</div>
+

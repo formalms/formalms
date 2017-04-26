@@ -249,6 +249,7 @@ CREATE TABLE IF NOT EXISTS `learning_certificate_course` (
   `id_course` int(11) NOT NULL DEFAULT '0',
   `available_for_status` tinyint(1) NOT NULL DEFAULT '0',
   `point_required` int(11) NOT NULL DEFAULT '0',
+  `minutes_required` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_certificate`,`id_course`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -729,6 +730,7 @@ CREATE TABLE IF NOT EXISTS `learning_course` (
   `idCategory` int(11) NOT NULL DEFAULT '0',
   `code` varchar(50) NOT NULL DEFAULT '',
   `name` varchar(255) NOT NULL DEFAULT '',
+  `box_description` TEXT NOT NULL,
   `description` text NOT NULL,
   `lang_code` varchar(100) NOT NULL DEFAULT '',
   `status` int(1) NOT NULL DEFAULT '0',
@@ -783,7 +785,9 @@ CREATE TABLE IF NOT EXISTS `learning_course` (
   `credits` int(11) NOT NULL DEFAULT '0',
   `auto_unsubscribe` tinyint(1) NOT NULL DEFAULT '0',
   `unsubscribe_date_limit` datetime DEFAULT NULL,
-  PRIMARY KEY (`idCourse`)
+  `id_menucustom` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idCourse`),
+  KEY `fk_menucustom` (`id_menucustom`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 --
@@ -1049,7 +1053,7 @@ CREATE TABLE IF NOT EXISTS `learning_course_editions` (
   `description` text NOT NULL,
   `status` int(1) NOT NULL DEFAULT '0',
   `date_begin` date NOT NULL DEFAULT '0000-00-00',
-  `date_end` date NOT NULL DEFAULT '0000-00-00',
+  `date_end` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `max_num_subscribe` int(11) NOT NULL DEFAULT '0',
   `min_num_subscribe` int(11) NOT NULL DEFAULT '0',
   `price` varchar(255) NOT NULL DEFAULT '',
@@ -1220,6 +1224,7 @@ CREATE TABLE IF NOT EXISTS `learning_forumthread` (
   `erased` tinyint(1) NOT NULL DEFAULT '0',
   `emoticons` varchar(255) NOT NULL DEFAULT '',
   `rilevantForum` tinyint(1) NOT NULL DEFAULT '0',
+  `privateThread` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`idThread`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
@@ -1828,42 +1833,6 @@ CREATE TABLE IF NOT EXISTS `learning_materials_track` (
 -- Dump dei dati per la tabella `learning_materials_track`
 --
 
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `learning_menu`
---
-
-CREATE TABLE IF NOT EXISTS `learning_menu` (
-  `idMenu` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `image` varchar(255) NOT NULL DEFAULT '',
-  `sequence` int(3) NOT NULL DEFAULT '0',
-  `collapse` enum('true','false') NOT NULL DEFAULT 'false',
-  PRIMARY KEY (`idMenu`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
-
---
--- Dump dei dati per la tabella `learning_menu`
---
-
-INSERT INTO `learning_menu` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES
-(1, '_MANAGEMENT_COURSE', '', 1, 'false'),
-(2, '', '', 2, 'true'),
-(3, '_ASSESSMENT', '', 3, 'false'),
-(4, '', '', 4, 'true'),
-(5, '', '', 5, 'true'),
-(6, '_CONTENTS', '', 6, 'false'),
-(7, '_MAN_CERTIFICATE', '', 7, 'false'),
-(8, '_MANAGEMENT_RESERVATION', '', 8, 'false'),
-(9, '_CONFIGURATION', '', 9, 'false'),
-(10, '', '', 10, 'true'),
-(11, '', '', 11, 'true'),
-(12, '', '', 12, 'true'),
-(13, '', '', 13, 'true'),
-(14, '', '', 14, 'true');
-
 -- --------------------------------------------------------
 
 --
@@ -1920,7 +1889,8 @@ INSERT INTO `learning_menucourse_under` (`idCourse`, `idModule`, `idMain`, `sequ
 (0, 36, 1, 2, ''),
 (0, 37, 1, 3, ''),
 (0, 38, 1, 4, ''),
-(0, 39, 1, 5, '');
+(0, 39, 1, 5, ''),
+(0, 46, 0, 3, '');
 
 -- --------------------------------------------------------
 
@@ -2035,58 +2005,6 @@ INSERT INTO `learning_menucustom_under` (`idCustom`, `idModule`, `idMain`, `sequ
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `learning_menu_under`
---
-
-CREATE TABLE IF NOT EXISTS `learning_menu_under` (
-  `idUnder` int(11) NOT NULL AUTO_INCREMENT,
-  `idMenu` int(11) NOT NULL DEFAULT '0',
-  `module_name` varchar(255) NOT NULL DEFAULT '',
-  `default_name` varchar(255) NOT NULL DEFAULT '',
-  `default_op` varchar(255) NOT NULL DEFAULT '',
-  `associated_token` varchar(255) NOT NULL DEFAULT '',
-  `of_platform` varchar(255) DEFAULT NULL,
-  `sequence` int(3) NOT NULL DEFAULT '0',
-  `class_file` varchar(255) NOT NULL DEFAULT '',
-  `class_name` varchar(255) NOT NULL DEFAULT '',
-  `mvc_path` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`idUnder`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
-
---
--- Dump dei dati per la tabella `learning_menu_under`
---
-
-INSERT INTO `learning_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES
-(1, 1, 'course', '_COURSE', '', 'view', NULL, 1, '', '', 'alms/course/show'),
-(2, 9, 'amanmenu', '_MAN_MENU', 'mancustom', 'view', NULL, 1, 'class.amanmenu.php', 'Module_AManmenu', ''),
-(3, 1, 'coursepath', '_COURSEPATH', 'pathlist', 'view', NULL, 2, 'class.coursepath.php', 'Module_Coursepath', ''),
-(4, 1, 'catalogue', '_CATALOGUE', 'catlist', 'view', NULL, 3, 'class.catalogue.php', 'Module_Catalogue', ''),
-(5, 6, 'webpages', '_WEBPAGES', 'webpages', 'view', NULL, 1, 'class.webpages.php', 'Module_Webpages', ''),
-(6, 6, 'news', '_NEWS', 'news', 'view', NULL, 2, 'class.news.php', 'Module_News', ''),
-(7, 9, 'questcategory', '_QUESTCATEGORY', '', 'view', NULL, 4, '', '', 'alms/questcategory/show'),
-(8, 1, 'coursecategory', '_COURSECATEGORY', '', 'view', NULL, 4, '', '', 'alms/coursecategory/show'),
-(9, 11, 'report', '_REPORT', 'reportlist', 'view', NULL, 1, 'class.report.php', 'Module_Report', ''),
-(10, 3, 'preassessment', '_ASSESSMENT', 'assesmentlist', 'view', NULL, 1, 'class.preassessment.php', 'Module_PreAssessment', ''),
-(14, 7, 'certificate', '_CERTIFICATE', 'certificate', 'view', NULL, 1, 'class.certificate.php', 'Module_Certificate', ''),
-(17, 8, 'reservation', '_EVENTS', 'view_event', 'view', NULL, 1, 'class.reservation.php', 'Module_Reservation', ''),
-(18, 8, 'reservation', '_CATEGORY', 'view_category', 'view', NULL, 2, 'class.reservation.php', 'Module_Reservation', ''),
-(20, 8, 'reservation', '_RESERVATION', 'view_registration', 'view', NULL, 3, 'class.reservation.php', 'Module_Reservation', ''),
-(21, 9, 'middlearea', '_MIDDLE_AREA', 'view_area', 'view', NULL, 2, 'class.middlearea.php', 'Module_MiddleArea', ''),
-(22, 6, 'internal_news', '_NEWS_INTERNAL', 'news', 'view', NULL, 3, 'class.internal_news.php', 'Module_Internal_News', ''),
-(23, 7, 'meta_certificate', '_META_CERTIFICATE', 'meta_certificate', 'view', NULL, 3, 'class.meta_certificate.php', 'Module_Meta_Certificate', ''),
-(26, 14, 'transaction', '_TRANSACTION', '', 'view', NULL, 1, '', '', 'alms/transaction/show'),
-(27, 2, 'location', '_LOCATION', '', 'view', NULL, 1, '', '', 'alms/location/show'),
-(28, 4, 'games', '_CONTEST', '', 'view', NULL, 1, '', '', 'alms/games/show'),
-(29, 5, 'communication', '_COMMUNICATION_MAN', '', 'view', NULL, 1, '', '', 'alms/communication/show'),
-(30, 12, 'kb', '_CONTENT_LIBRARY', '', 'view', NULL, 1, '', '', 'alms/kb/show'),
-(31, 9, 'timeperiods', '_TIME_PERIODS', '', 'view', NULL, 5, '', '', 'alms/timeperiods/show'),
-(32, 13, 'enrollrules', '_ENROLLRULES', '', 'view', NULL, 1, '', '', 'alms/enrollrules/show'),
-(33, 9, 'label', '_LABEL', '', 'view', NULL, 5, '', '', 'alms/label/show');
-
--- --------------------------------------------------------
-
---
 -- Struttura della tabella `learning_middlearea`
 --
 
@@ -2118,7 +2036,8 @@ INSERT INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequen
 ('tb_label', 1, 'a:0:{}',0),
 ('tb_videoconference', 1, 'a:0:{}',0),
 ('tb_kb', 0, 'a:0:{}', 0),
-('tb_home', '1', 'a:0:{}', '0');
+('tb_home', '1', 'a:0:{}', '0'),
+('mo_46', '0', 'a:0:{}', '0');
 
 -- --------------------------------------------------------
 
@@ -2163,7 +2082,7 @@ INSERT INTO `learning_module` (`idModule`, `module_name`, `default_op`, `default
 (23, 'project', 'project', '_PROJECT', 'view', 'class.project.php', 'Module_Project', '', ''),
 (24, 'groups', 'groups', '_GROUPS', 'view', 'class.groups.php', 'Module_Groups', '', ''),
 (25, 'organization', 'organization', '_ORGANIZATION', 'view', 'class.organization.php', 'Module_Organization', '', ''),
-(26, 'coursereport', 'coursereport', '_COURSEREPORT', 'view', 'class.coursereport.php', 'Module_CourseReport', '', ''),
+(26, 'coursereport', 'coursereport', '_COURSEREPORT', 'view', 'class.coursereport.php', 'Module_CourseReport', '', 'lms/coursereport/coursereport'),
 (27, 'newsletter', 'view', '_NEWSLETTER', 'view', 'class.newsletter.php', 'Module_Newsletter', '', ''),
 (28, 'manmenu', 'manmenu', '_MAN_MENU', 'view', 'class.manmenu.php', 'Module_CourseManmenu', '', ''),
 (29, 'statistic', 'statistic', '_STAT', 'view', 'class.statistic.php', 'Module_Statistic', '', ''),
@@ -2172,15 +2091,10 @@ INSERT INTO `learning_module` (`idModule`, `module_name`, `default_op`, `default
 (32, 'public_forum', 'forum', '_PUBLIC_FORUM', 'view', 'class.public_forum.php', 'Module_Public_Forum', 'all', ''),
 (33, 'course_autoregistration', 'course_autoregistration', '_COURSE_AUTOREGISTRATION', 'view', 'class.course_autoregistration.php', 'Module_Course_Autoregistration', 'all', ''),
 (34, 'mycompetences', 'mycompetences', '_MYCOMPETENCES', 'view', 'class.mycompetences.php', 'Module_MyCompetences', 'all', ''),
-(35, 'pusermanagement', '', '_PUBLIC_USER_ADMIN', 'view', '', '', 'public_admin', 'lms/pusermanagement/show'),
-(36, 'pcourse', '', '_PUBLIC_COURSE_ADMIN', 'view', '', '', 'public_admin', 'lms/pcourse/show'),
-(38, 'public_report_admin', 'reportlist', '_PUBLIC_REPORT_ADMIN', 'view', 'class.public_report_admin.php', 'Module_Public_Report_Admin', 'public_admin', ''),
-(39, 'public_newsletter_admin', 'newsletter', '_PUBLIC_NEWSLETTER_ADMIN', 'view', 'class.public_newsletter_admin.php', 'Module_Public_Newsletter_Admin', 'public_admin', ''),
 (40, 'quest_bank', 'main', '_QUEST_BANK', 'view', 'class.quest_bank.php', 'Module_QuestBank', '', ''),
-(41, 'coursecharts', 'show', '_COURSECHART', 'view', 'class.coursecharts.php', 'Module_Coursecharts', '', 'coursecharts/show'),
 (42, 'coursestats', 'show', '_COURSESTATS', 'view', '', '', '', 'coursestats/show'),
-(44, 'pcertificate', 'certificate', '_PUBLIC_CERTIFICATE_ADMIN', 'view', 'class.pcertificate.php', 'Module_Pcertificate', 'public_admin', ''),
-(45, 'presence', '', '_PRESENCE', 'view', '', '', '', 'presence/presence');
+(45, 'presence', '', '_PRESENCE', 'view', '', '', '', 'presence/presence'),
+(46, 'course', '', '_CATALOGUE', 'view', '', '', 'all', 'lms/catalog/show');
 
 -- --------------------------------------------------------
 
@@ -2304,6 +2218,7 @@ CREATE TABLE IF NOT EXISTS `learning_organization_access` (
   `idOrgAccess` int(11) NOT NULL DEFAULT '0',
   `kind` set('user','group') NOT NULL DEFAULT '',
   `value` int(11) NOT NULL DEFAULT '0',
+  `params` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idOrgAccess`,`kind`,`value`),
   KEY `idObject` (`idOrgAccess`),
   KEY `kind` (`kind`)
@@ -3126,6 +3041,7 @@ CREATE TABLE IF NOT EXISTS `learning_test` (
   `max_attempt` int(11) NOT NULL DEFAULT '0',
   `hide_info` tinyint(1) NOT NULL DEFAULT '0',
   `order_info` text NOT NULL,
+  `cf_info` text NOT NULL,
   `use_suspension` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `suspension_num_attempts` int(10) unsigned NOT NULL DEFAULT '0',
   `suspension_num_hours` int(10) unsigned NOT NULL DEFAULT '0',
@@ -3133,6 +3049,9 @@ CREATE TABLE IF NOT EXISTS `learning_test` (
   `chart_options` text NOT NULL,
   `mandatory_answer` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `score_max` int(11) NOT NULL DEFAULT '0',
+  `obj_type` varchar(45) DEFAULT 'test',
+  `retain_answers_history` tinyint(1) NOT NULL DEFAULT '0',
+  `show_in_coursereport` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`idTest`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
@@ -3270,8 +3189,9 @@ CREATE TABLE IF NOT EXISTS `learning_testtrack_answer` (
   `score_assigned` double NOT NULL DEFAULT '0',
   `more_info` longtext NOT NULL,
   `manual_assigned` tinyint(1) NOT NULL DEFAULT '0',
-  `user_answer` tinyint(1) unsigned NULL DEFAULT '0',
-  PRIMARY KEY (`idTrack`,`idQuest`,`idAnswer`)
+  `user_answer` tinyint(1) unsigned DEFAULT '0',
+  `number_time` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`idTrack`,`idQuest`,`idAnswer`,`number_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -3500,13 +3420,8 @@ CREATE TABLE IF NOT EXISTS `learning_wiki_course` (
 -- Limiti per le tabelle scaricate
 --
 
-
-
-
-
-
-
-
+ALTER TABLE `learning_course`
+  ADD CONSTRAINT `fk_menucustom` FOREIGN KEY (`id_menucustom`) REFERENCES `learning_menucustom` (`idCustom`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 
 -- --------------------------------------------------------

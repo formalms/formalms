@@ -40,7 +40,7 @@ function intro( $object_poll, $id_param ) {
 	$lang 			=& DoceboLanguage::createInstance('poll');
 	$id_poll 		= $object_poll->getId();
 	$id_reference 	= getLoParam($id_param, 'idReference');
-	$url_coded 		= urlencode(serialize($object_poll->back_url));
+	$url_coded 		= urlencode(Util::serialize($object_poll->back_url));
 	$id_track 		= retriveTrack($id_reference, $id_poll, getLogUserId());
 	
 	$poll_man 	= new PollManagement($id_poll);
@@ -97,7 +97,7 @@ function playPollDispatch( $object_poll, $id_param ) {
 	
 	$id_poll 		= $object_poll->getId();
 	$id_reference 	= getLoParam($id_param, 'idReference');
-	$url_coded 		= urlencode(serialize($object_poll->back_url));
+	$url_coded 		= urlencode(Util::serialize($object_poll->back_url));
 	$id_track 		= retriveTrack($id_reference, $id_poll, getLogUserId());
 	
 	if(isset($_POST['show_result'])) {
@@ -122,7 +122,7 @@ function play($object_poll, $id_param) {
 	$lang 			=& DoceboLanguage::createInstance('poll');
 	$id_poll 		= $object_poll->getId();
 	$id_reference 	= getLoParam($id_param, 'idReference');
-	$url_coded 		= urlencode(serialize($object_poll->back_url));
+	$url_coded 		= urlencode(Util::serialize($object_poll->back_url));
 	$id_track 		= retriveTrack($id_reference, $id_poll, getLogUserId());
 	
 	$poll_man 	= new PollManagement($id_poll);
@@ -225,7 +225,7 @@ function showResult( $object_poll, $id_param ) {
 	$lang 			=& DoceboLanguage::createInstance('poll');
 	$id_poll 		= $object_poll->getId();
 	$id_reference 	= getLoParam($id_param, 'idReference');
-	$url_coded 		= urlencode(serialize($object_poll->back_url));
+	$url_coded 		= urlencode(Util::serialize($object_poll->back_url));
 	$id_track 		= retriveTrack($id_reference, $id_poll, getLogUserId());
 	
 	Track_Poll::createTrack(	$id_reference, 

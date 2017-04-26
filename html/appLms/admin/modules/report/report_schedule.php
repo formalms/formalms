@@ -351,7 +351,6 @@ function get_schedulations_table($idrep=false) {
 	switch ($level) {
 		case ADMIN_GROUP_GODADMIN :;
 		case ADMIN_GROUP_ADMIN : break;
-		case ADMIN_GROUP_PUBLICADMIN :;
 		case ADMIN_GROUP_USER :; 
 		default : $admin_cond .= " AND t1.id_creator=".getLogUserId(); break;
 	}

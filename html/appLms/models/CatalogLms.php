@@ -411,8 +411,8 @@ class CatalogLms extends Model
 							.'&nbsp;&nbsp;<a href="javascript:;" onclick="hideDialog();"><span class="close_dialog">'.Lang::t('_UNDO', 'catalogue').'</span></a>';
 		return $res;
 	}
-	
-	
+
+
 	public function subscribeInfo($id_course, $id_date, $id_edition, $selling)
 	{
 		$res = array();

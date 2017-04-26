@@ -1,0 +1,76 @@
+<div class="page-header">
+  <h1>
+    <a href="index.php?r=lms/coursereport/coursereport">{{ translate('_COURSEREPORT', 'menu_course') }}</a>
+  </h1>
+  <ul class="breadcrumb">
+    <li>{{ data.title }}</li>
+  </ul>
+</div>
+
+<div class="std_block">
+  {% for question in data['questions'] %}
+    {% if ((question.type == 'upload' or question.type == 'extended_text')) %}
+      <div class="table-responsive">
+        <div class="panel panel-default">
+          <div class="panel-heading clearfix">{{ question.title|raw }}</div>
+          <table class="table table-bordered table-view " summary="" cellspacing="0">
+            <thead>
+            <tr class="even intest">
+              <th>
+                <span class="">{{ (question.type == 'upload') ? translate('_LOADED_FILE', 'standard') : translate('_VIEW_OPEN_QUEST', 'stats') }}</span>
+                <a href="javascript:void(0)" class="test-question__show-more js-show-more" data-idquest="{{ question.idQuest }}" data-idtest="{{ question.idTest }}" data-type="{{ (question.type == 'upload') ? 'upload' : 'extended-text' }}"></a>
+              </th>
+            </tr>
+            </thead>
+            <tbody class="test-question__details-container">
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br />
+    {% else %}
+      <div class="table-responsive">
+        <div class="panel panel-default">
+          <div class="panel-heading clearfix">{{ question.title|raw }}</div>
+          <table class="table table-bordered table-view " summary="" cellspacing="0">
+            <thead>
+              <tr class="even intest">
+                <th>
+                  <div class="">
+                    <span class=""></span>
+                  </div>
+                </th>
+                <th class="image nowrap" style="width: 40%">
+                  <div class=""><span class="">{{ translate('_PERCENTAGE', 'standard') }}</span></div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for answer in question.answers %}
+              <tr class="">
+                <td>
+                  <div class="test-question__answer {% if (answer.showIcon) %}test-question__answer--checked{% endif %}">
+                      {{ answer.title|raw }}
+                  </div>
+                </td>
+                <td class="image nowrap">
+                  <div class="">
+                    <div class="progress_bar">
+                      <div class="test-question__percent {% if (answer.percent > 55) %}test-question__percent--white-text{% endif %}">
+                        {{ answer.percent }}%
+                      </div>
+                      <div class="test-question__bar" style="width: {{ answer.percent }}%;">&nbsp;
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br />
+    {% endif %}
+  {% endfor %}
+</div>

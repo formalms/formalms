@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20150421</DATE>
+  <DATE>20170414</DATE>
   <LANG id="arabic">
     <lang_code>arabic</lang_code>
     <lang_description>&#x627;&#x644;&#x639;&#x631;&#x628;&#x64A;&#x629;</lang_description>
@@ -208,6 +208,7 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0,6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[الأسبوع]]></key>
       </module>
+      <module id="cart"/>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[أضف إلى السلة]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[مهنة]]></key>
@@ -433,9 +434,9 @@
         <key id="configuration&amp;_MANDATORY_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[إذا كان أحد الخيارات رمز التسجيل أعلاه هي مكن ، ويضطر للمستخدمين بإدخال رمز التسجيل (يجب أن يكون شغلها في حقل رمز)]]></key>
         <key id="configuration&amp;_MAX_EXECUTION_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["max_execution_time" تكوين]]></key>
         <key id="configuration&amp;_MAX_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[الحد الأقصى لعدد محاولات الدخول الفاشلة على التوالي (0 = لا يوجد حد)]]></key>
-        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql ترتيب]]></key>
-        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql  ترميز]]></key>
-        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sql  شكل]]></key>
+        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2017-04-10 11:47:07"><![CDATA[MySQL ترتيب]]></key>
+        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2017-04-10 11:47:12"><![CDATA[MySQL  ترميز]]></key>
+        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2017-04-10 11:47:18"><![CDATA[SQL  شكل]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL  الإصدار]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[(ثانية) وقفة بين الكتل]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[إرسال رسائل إخبارية في كتل]]></key>
@@ -486,7 +487,7 @@
         <key id="configuration&amp;_SAVE_LA_AFTER_MAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[الذي تم التوصل إليه هو نعم ، إلا إذا كان العدد الأقصى]]></key>
         <key id="configuration&amp;_SAVE_LA_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[نعم ، للجميع]]></key>
         <key id="configuration&amp;_SAVE_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[فشلت التي محاولات الدخول معلومات حول حفظ]]></key>
-        <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[(منظمة شانغهاى للتعاون والأصول ) chaperts السماح لاستخدام صلة مباشرة من مصادر خارجية لاس كورم]]></key>
+        <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2017-04-10 11:26:40"><![CDATA[(منظمة شانغهاى للتعاون والأصول ) chapters السماح لاستخدام صلة مباشرة من مصادر خارجية لاس كورم]]></key>
         <key id="configuration&amp;_SECURITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[بالأمن متعلق]]></key>
         <key id="configuration&amp;_SENDER_EVENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[عنوان البريد الإلكتروني المرسل للرسائل تنبيه]]></key>
         <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[من قبل النظام الأساسي المرسل لكافة البريد الإلكتروني إضافة العنوان التالي كما نسخة]]></key>
@@ -844,20 +845,20 @@
         <key id="dashboard&amp;_TOTAL_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[عدد الاشتراكات]]></key>
         <key id="dashboard&amp;_TOTAL_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[المستخدمين المسجلين]]></key>
         <key id="dashboard&amp;_UNKNOWN_RELEASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[خطأ ، في حين استرداد آخر نسخة متوفرة]]></key>
-        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[formalms.org خدمات التجارية]]></key>
-        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[formalms.org  مجتمع المصدر المفتوح]]></key>
+        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2017-04-10 12:55:15"><![CDATA[forma.lms خدمات التجارية]]></key>
+        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:55:21"><![CDATA[forma.lms  مجتمع المصدر المفتوح]]></key>
         <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[معلومات المستخدمين]]></key>
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[انتظار اشتراك]]></key>
       </module>
       <module id="email">
         <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[اعلان جديد]]></key>
-        <key id="email&amp;_ALERT_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[تم نشر اعلان جديد في سياق "[الدورة]"
+        <key id="email&amp;_ALERT_TEXT" attributes="email" save_date="2017-04-10 12:56:00"><![CDATA[تم نشر اعلان جديد في سياق "[الدورة]"
 
 Title: '[title]'
 
 [text]
 
-You can read it on forma.lms at url <a href="[url]">[url]</a>]]></key>
+You can read it on forma.lms at URL <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[طلب الموافقة على اشتراك]]></key>
         <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[لقد تمت الموافقة على طلبك  من قبل المسؤول للاشتراك في دورة يمكنك ان تدخل الدورة من خلال النقر على الرابط الموجود <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[أكد مسؤول طلب الاشتراك الخاص بك<a href="[url]">[url]</a>]]></key>
@@ -1957,7 +1958,7 @@ Username: [userid]]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[متوسط]]></key>
         <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;lt;&amp;lt; العودة]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[البحث الأساسي]]></key>
-        <key id="standard&amp;_BBB" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Big Blue Button]]></key>
+        <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:38:52"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[من قبل]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[التقويم]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[إلغاء]]></key>
@@ -2611,6 +2612,7 @@ Username: [userid]]]></key>
       <module id="treeview">
         <key id="treeview&amp;_ALT_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[فارغة]]></key>
       </module>
+      <module id="user_management"/>
       <module id="user_managment">
         <key id="user_managment&amp;_DONT_USE_TREE_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[لا تستخدم التسجيل الذاتي في شجرة التنظيم]]></key>
         <key id="user_managment&amp;_LOG_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[خيارات تسجيل الدخول /]]></key>

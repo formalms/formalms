@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20150421</DATE>
+  <DATE>20170414</DATE>
   <LANG id="finnish">
     <lang_code>finnish</lang_code>
     <lang_description>Finnish</lang_description>
@@ -64,7 +64,7 @@
         <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_PRIVATE_ALT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ylläpitäjä]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUPWAIT_ACCORDECLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjiä jotka odottavat tilausten varmistusta]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUP_FIELD_WRITE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjä kenttä]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_ITEMID" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jäsen id]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_ITEMID" attributes="" save_date="2017-04-10 14:51:51"><![CDATA[Jäsen ID]]></key>
         <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jäsentyyppi]]></key>
         <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPETREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Noodi]]></key>
         <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPEUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjäjäsen]]></key>
@@ -208,6 +208,7 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0,6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[viikko]]></key>
       </module>
+      <module id="cart"/>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lisää koriin]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ura]]></key>
@@ -383,7 +384,7 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kysy koodimoduulin kautta luotua koodia]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kysy puukodia jonka käyttäjä on valinnut valikon listasta]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kysy puukoodia jonka käyttäjän yulee syöttää manuaalisesti]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kysy yhdistelmää puukoodista ja kurssikoodista jonka käyttäjän täytyy syöttää manuaalisesti. Puu- ja kurssikoodin täytyy koostua 10:ä merkistä kumpikin, jotta saadaan 20:n merkin koodi.]]></key>
+        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2017-04-10 16:40:08"><![CDATA[Kysy yhdistelmää puukoodista ja kurssikoodista jonka käyttäjän täytyy syöttää manuaalisesti. Puu- ja kurssikoodin täytyy koostua 10:ä merkistä kumpikin, jotta saadaan 20:n merkin koodi]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimimäärä audiokäyttäjiä]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimimäärä käyttäjiä per houne]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimimäärä huoneita]]></key>
@@ -418,8 +419,8 @@
         <key id="configuration&amp;_HTMLEDIT_IMAGE_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Salli ylläpitäjän mediahallinta editorissa]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_GODADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Salli super-ylläpitäjän mediahallinta editorissa]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Salli käyttäjän mediahallinta editorissa]]></key>
-        <key id="configuration&amp;_KB_FILTER_BY_USER_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä sisältökirjaston hakutulosalueessa myös objektit jotka eivät suoraan ole käyttäjan saatavilla.]]></key>
-        <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä sisältökirjaston hakutulosalueessa myös objektit jotka eivät ole täysin kategorisoituja.]]></key>
+        <key id="configuration&amp;_KB_FILTER_BY_USER_ACCESS" attributes="" save_date="2017-04-10 16:34:21"><![CDATA[Näytä sisältökirjaston hakutulosalueessa myös objektit jotka eivät suoraan ole käyttäjan saatavilla]]></key>
+        <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2017-04-10 16:34:18"><![CDATA[Näytä sisältökirjaston hakutulosalueessa myös objektit jotka eivät ole täysin kategorisoituja]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivoi kielen editointi (debug-käyttöön)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Etunimi ja Sukunimi vaaditaan rekisteröitymiseen]]></key>
         <key id="configuration&amp;_LDAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP]]></key>
@@ -433,13 +434,13 @@
         <key id="configuration&amp;_MANDATORY_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jos jokin rekisteröintikoodivaihtoehdoista on valittu, on käyttäjien pakko syöttää rekisteröintikoodi (koodi-kenttä tulee täyttää)]]></key>
         <key id="configuration&amp;_MAX_EXECUTION_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["max_execution_time" mukautus]]></key>
         <key id="configuration&amp;_MAX_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimimäärä peräkkäisiä epäonnistuneita sisäänkirjautumisyritystä (0 = ei rajaa)]]></key>
-        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql kollaatio]]></key>
-        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql salaus]]></key>
-        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sql moodi]]></key>
+        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2017-04-10 11:44:10"><![CDATA[MySQL kollaatio]]></key>
+        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2017-04-10 11:44:18"><![CDATA[MySQL salaus]]></key>
+        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2017-04-10 11:44:25"><![CDATA[SQL moodi]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL versio]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Odotus blockien välillä (sekuntia)]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lähetä uutiskirje viestit blockeissa]]></key>
-        <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jos domxml OFF, scorm moduuli, kielten hallinta ja videokonferenssit eivät tule toimimaan]]></key>
+        <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2017-04-10 10:51:23"><![CDATA[Jos domxml OFF, SCORM moduuli, kielten hallinta ja videokonferenssit eivät tule toimimaan]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_POLL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käytä "ei vastausta" vaihtoehtoa kyselyissä]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käytä "ei vastausta" vaihtoehtoa kokeissa]]></key>
         <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jos käyttäjälle ei ole määritelty yhtään kurssiluetteloa, näytä kaikki kurssit ja opinto-ohjelmat]]></key>
@@ -461,9 +462,9 @@
         <key id="configuration&amp;_PATHSCORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tallennuspolku SCORM Oppimistavoite tiedostoille]]></key>
         <key id="configuration&amp;_PATHSPONSOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sponsorien bannerit]]></key>
         <key id="configuration&amp;_PATHTEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kysymys "file upload"]]></key>
-        <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Paypal valuuttakoodi]]></key>
-        <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Paypal tili]]></key>
-        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käytä Paypal sandboxiä eikä oikeata ympäristöä (debug ja testaus vaihtoehto)]]></key>
+        <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2017-04-10 11:56:56"><![CDATA[PayPal valuuttakoodi]]></key>
+        <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2017-04-10 11:56:52"><![CDATA[PayPal tili]]></key>
+        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2017-04-10 11:57:02"><![CDATA[Käytä PayPal sandboxiä eikä oikeata ympäristöä (debug ja testaus vaihtoehto)]]></key>
         <key id="configuration&amp;_PHPINFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tietoa PHP:stä]]></key>
         <key id="configuration&amp;_PHPVERSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[PHP versio]]></key>
         <key id="configuration&amp;_POST_MAX_SIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["post_max_size" mukautus]]></key>
@@ -486,7 +487,7 @@
         <key id="configuration&amp;_SAVE_LA_AFTER_MAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kyllä, vain jos maksimaalinen määrä saavutetaan]]></key>
         <key id="configuration&amp;_SAVE_LA_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kyllä, kaikkiin]]></key>
         <key id="configuration&amp;_SAVE_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tallenna tieto epäonnistuneista sisäänkirjautumisyrityksistä]]></key>
-        <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Salli suora linkitys ulkopuolisista lähteistä scorm lukuihin (sco ja asset)]]></key>
+        <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2017-04-10 10:51:30"><![CDATA[Salli suora linkitys ulkopuolisista lähteistä SCORM lukuihin (sco ja asset)]]></key>
         <key id="configuration&amp;_SECURITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Turvallisuuten liittyvää]]></key>
         <key id="configuration&amp;_SENDER_EVENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lähettäjän sähköpostiosoite hälytysviesteissä]]></key>
         <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lisää seuraava osoite CC:nä kaikkiin alustalla lähetettyihin sähköposteihin]]></key>
@@ -500,7 +501,7 @@
         <key id="configuration&amp;_SESSION_IP_CONTROL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[mahdollista IP-kontrolli session sisällä (käyttäjä ei voi vaihtaa IP:tä sisäänkirjautumisen jälkeen)]]></key>
         <key id="configuration&amp;_SHOW_AS_BLOCK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä blockissa]]></key>
         <key id="configuration&amp;_SHOW_AS_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä linkkilistana]]></key>
-        <key id="configuration&amp;_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sms]]></key>
+        <key id="configuration&amp;_SMS" attributes="" save_date="2017-04-10 11:33:49"><![CDATA[SMS]]></key>
         <key id="configuration&amp;_SMSMARKET_LOGO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yhteistyössä smsmarket.it]]></key>
         <key id="configuration&amp;_SMS_BUY_RECHARGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Osta lisää SMSiä]]></key>
         <key id="configuration&amp;_SMS_CELL_NUM_FIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Matkapuhelinnumero kenttä]]></key>
@@ -548,9 +549,9 @@
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pyydä käyttäjää valitsemaan salasana joka eroaa viimeisestä X edellisestä salasanasta]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Levykiintiö (MB) jokaisen käyttäjän Minun Tiedostoni alueelle]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käytä edistyneempää rekisteröintilomaketta]]></key>
-        <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käytä DimDim Api URL rajapinnan sijasta]]></key>
+        <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2017-04-10 10:30:25"><![CDATA[Käytä DimDim API URL rajapinnan sijasta]]></key>
         <key id="configuration&amp;_USE_REST_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mahdollista API toiminnallisuus]]></key>
-        <key id="configuration&amp;_USE_TAG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mahdollista tagi ominaisuus foorumeissa.]]></key>
+        <key id="configuration&amp;_USE_TAG" attributes="" save_date="2017-04-10 16:29:20"><![CDATA[Mahdollista tagi ominaisuus foorumeissa]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Attention without these settings the social login will not work]]></key>
       </module>
       <module id="course">
@@ -754,7 +755,7 @@ Muussa tapauksessa sinun tulee rekisteröityä järjestelmäämme seuraamalla t�
         <key id="coursereport&amp;_ACTIVITY_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tietoa valituista toiminnoista]]></key>
         <key id="coursereport&amp;_ADD_ACTIVITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusi toiminta]]></key>
         <key id="coursereport&amp;_ADD_ACTIVITY_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lisää uusi toiminta]]></key>
-        <key id="coursereport&amp;_ADD_SCORM_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lisää Scorm tuloksia]]></key>
+        <key id="coursereport&amp;_ADD_SCORM_RESULTS" attributes="" save_date="2017-04-10 10:51:38"><![CDATA[Lisää SCORM tuloksia]]></key>
         <key id="coursereport&amp;_ANSWER_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oikea vastaus]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämän kurssin koe]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämä on lista tämän kurssin kokeista ja opiskelijoiden tuloksista]]></key>
@@ -803,10 +804,10 @@ Muussa tapauksessa sinun tulee rekisteröityä järjestelmäämme seuraamalla t�
         <key id="course_charts&amp;_ACTIVITY_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämä kartta antaa sinun tarkistaa montako lukua käyttäjät ovat katsoneet eri päivinä.]]></key>
         <key id="course_charts&amp;_CHAPTER_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämä kartta antaa sinulle näkymän kaikista suoritetuista tai hyväksytyistä luvuista käyttäjää kohti.]]></key>
         <key id="course_charts&amp;_COMPLETED_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämä kartta antaa sinulle näkymän kurssin käyttäjien suorittamista luvuista.]]></key>
-        <key id="course_charts&amp;_NO_SCORM_IN_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tässä kurssissa ei ole scorm paketteja]]></key>
+        <key id="course_charts&amp;_NO_SCORM_IN_COURSE" attributes="" save_date="2017-04-10 10:51:45"><![CDATA[Tässä kurssissa ei ole SCORM paketteja]]></key>
         <key id="course_charts&amp;_PASSED_CHART_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objekti lisättiin onnistuneesti]]></key>
-        <key id="course_charts&amp;_SCORE_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämä kartta antaa sinun tarkistaa joka käyttäjän saavutetun tuloksen jokaisessa scorm luvussa.]]></key>
-        <key id="course_charts&amp;_TIME_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämä kartta antaa sinun tarkistaa kauanko käyttäjät viihtyvät joka scorm luvussa.]]></key>
+        <key id="course_charts&amp;_SCORE_CHART_DESCRIPTION" attributes="" save_date="2017-04-10 10:52:02"><![CDATA[Tämä kartta antaa sinun tarkistaa joka käyttäjän saavutetun tuloksen jokaisessa SCORM luvussa.]]></key>
+        <key id="course_charts&amp;_TIME_CHART_DESCRIPTION" attributes="" save_date="2017-04-10 10:51:55"><![CDATA[Tämä kartta antaa sinun tarkistaa kauanko käyttäjät viihtyvät joka SCORM luvussa.]]></key>
         <key id="course_charts&amp;_TIME_CHART_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aika]]></key>
       </module>
       <module id="course_selector">
@@ -839,13 +840,13 @@ Muussa tapauksessa sinun tulee rekisteröityä järjestelmäämme seuraamalla t�
         <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms verkko]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hyllytetyt käyttäjät]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Konsultointisivusto]]></key>
-        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LMS tukisivusto]]></key>
+        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:52:01"><![CDATA[forma.lms tukisivusto]]></key>
         <key id="dashboard&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssien määrä]]></key>
         <key id="dashboard&amp;_TOTAL_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilausten määrä]]></key>
         <key id="dashboard&amp;_TOTAL_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rekisteröityjä käyttäjiä]]></key>
         <key id="dashboard&amp;_UNKNOWN_RELEASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Virhe haettaessa viimeisintä saatavilla olevaa versiota]]></key>
-        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[formalms.org kaupalliset palvelut]]></key>
-        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[formalms.org avoimen lähdekoodin yhteisö]]></key>
+        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2017-04-10 12:51:45"><![CDATA[forma.lms kaupalliset palvelut]]></key>
+        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:51:53"><![CDATA[forma.lms avoimen lähdekoodin yhteisö]]></key>
         <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjäinfo]]></key>
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Odottavia tilauksia]]></key>
       </module>
@@ -1179,7 +1180,7 @@ Salasana: [password]]]></key>
       <module id="kb">
         <key id="kb&amp;_CATEGORIZED_AND_UNCATEGORIZED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä kaikki]]></key>
         <key id="kb&amp;_CATEGORIZED_ONLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vain kategorisoidut]]></key>
-        <key id="kb&amp;_CATEGORIZE_OBJECT_ITEMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vaihda scorm kategorisaatiosta lukujen kategorisaatioon]]></key>
+        <key id="kb&amp;_CATEGORIZE_OBJECT_ITEMS" attributes="" save_date="2017-04-10 10:52:10"><![CDATA[Vaihda SCORM kategorisaatiosta lukujen kategorisaatioon]]></key>
         <key id="kb&amp;_CONTAINED_IN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sisältyy]]></key>
         <key id="kb&amp;_IS_MOBILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämä resurssi on mobiiliyhteensopiva.]]></key>
         <key id="kb&amp;_RESOURCE_ORIGINAL_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alkuperäinen nimi tallennettu alustalle]]></key>
@@ -1878,7 +1879,7 @@ Sinun täytyy vahvistaa tilisi ennen sen käyttämistä.]]></key>
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Luo lista kaikista objekteista]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lataa ylös SCORM paketti]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SCORM]]></key>
-        <key id="scorm&amp;_SCORM_ADD_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lataa scorm paketti]]></key>
+        <key id="scorm&amp;_SCORM_ADD_FORM" attributes="" save_date="2017-04-10 10:52:19"><![CDATA[Lataa SCORM paketti]]></key>
       </module>
       <module id="simplesel">
         <key id="simplesel&amp;_MANUAL_SEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Edistynyt valinta]]></key>
@@ -1957,7 +1958,7 @@ Salasana: [password]]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Keskiarvo]]></key>
         <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;lt;&amp;lt; Takaisin]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Perushaku]]></key>
-        <key id="standard&amp;_BBB" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Big Blue Button]]></key>
+        <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:37:54"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[by]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kalenteri]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Peruuta]]></key>
@@ -2337,7 +2338,7 @@ Salasana: [password]]]></key>
         <key id="storage&amp;_LONAME_item" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lataa ylös tiedosto]]></key>
         <key id="storage&amp;_LONAME_link" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Linkit]]></key>
         <key id="storage&amp;_LONAME_poll" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kysely]]></key>
-        <key id="storage&amp;_LONAME_scoitem" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Scorm luku]]></key>
+        <key id="storage&amp;_LONAME_scoitem" attributes="" save_date="2017-04-10 10:52:27"><![CDATA[SCORM luku]]></key>
         <key id="storage&amp;_LONAME_scormorg" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SCORM]]></key>
         <key id="storage&amp;_LONAME_test" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Koe]]></key>
         <key id="storage&amp;_ORGFOLDERNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kansion nimi]]></key>
@@ -2611,6 +2612,7 @@ Salasana: [password]]]></key>
       <module id="treeview">
         <key id="treeview&amp;_ALT_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tyhjä]]></key>
       </module>
+      <module id="user_management"/>
       <module id="user_managment">
         <key id="user_managment&amp;_DONT_USE_TREE_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Älä käytä itserekisteröintiä orhanisaatiopuuhun]]></key>
         <key id="user_managment&amp;_LOG_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sisäänkirjautumis/rekisteröintivaihtoehdot]]></key>

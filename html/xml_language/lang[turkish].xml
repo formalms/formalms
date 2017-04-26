@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20150421</DATE>
+  <DATE>20170414</DATE>
   <LANG id="turkish">
     <lang_code>turkish</lang_code>
     <lang_description>Turkish</lang_description>
@@ -64,7 +64,7 @@
         <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_PRIVATE_ALT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yönetici]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUPWAIT_ACCORDECLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Abonelik teyidi için bekleyen kullanıcılar]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUP_FIELD_WRITE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcı alanı]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_ITEMID" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Üye id]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_ITEMID" attributes="" save_date="2017-04-10 14:49:56"><![CDATA[Üye ID]]></key>
         <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Üye tipi]]></key>
         <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPETREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nod]]></key>
         <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPEUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Üye kullanıcı]]></key>
@@ -208,6 +208,19 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0,6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[hafta]]></key>
       </module>
+      <module id="cart">
+        <key id="cart&amp;_CART" attributes="" save_date="2017-04-10 15:58:50"><![CDATA[Sepetim]]></key>
+        <key id="cart&amp;_COURSE_PRIZE" attributes="" save_date="2017-04-10 16:05:56"><![CDATA[Fiyat]]></key>
+        <key id="cart&amp;_DEL_SELECTED_ELEMENT" attributes="" save_date="2017-04-10 16:00:07"><![CDATA[Seçili öğeyi sil]]></key>
+        <key id="cart&amp;_EMPTY_CART" attributes="" save_date="2017-04-10 15:59:13"><![CDATA[Sepeti Boşalt]]></key>
+        <key id="cart&amp;_ORDER_NOW" attributes="" save_date="2017-04-10 16:00:34"><![CDATA[Şimdi sipariş et]]></key>
+        <key id="cart&amp;_ORDER_NUMBER" attributes="" save_date="2017-04-10 16:04:58"><![CDATA[Sipariş no:]]></key>
+        <key id="cart&amp;_PAYMENT_SELECT" attributes="" save_date="2017-04-10 16:00:59"><![CDATA[Tercih ettiğiniz ödeme seçeneğini belirleyin]]></key>
+        <key id="cart&amp;_PAY_WITH_PAYPAL" attributes="" save_date="2017-04-10 16:01:24"><![CDATA[Paypal ile öde]]></key>
+        <key id="cart&amp;_TRANS_CREATED" attributes="" save_date="2017-04-10 16:03:15"><![CDATA[İşlem oluşturuldu]]></key>
+        <key id="cart&amp;_WIRE_INFO" attributes="" save_date="2017-04-10 16:03:39"><![CDATA[Ödeme bilgileri]]></key>
+        <key id="cart&amp;_WIRE_PAYMENT_DETAILS" attributes="" save_date="2017-04-10 16:04:14"><![CDATA[Ödeme detayları]]></key>
+      </module>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sepete ekle]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kariyer]]></key>
@@ -215,12 +228,15 @@
         <key id="catalogue&amp;_CATALOGUE_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tüm kullanılabilir katalogların listesi]]></key>
         <key id="catalogue&amp;_CERT_RELESABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Karşıdan yükleme için mevcut sertifikalar]]></key>
         <key id="catalogue&amp;_CLASSROOM_LOCATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İnşa ediliyor]]></key>
+        <key id="catalogue&amp;_CONFIRM_ADD_TO_CART" attributes="" save_date="2017-04-10 15:57:14"><![CDATA[Onay: Sepete Eklensin mi?]]></key>
         <key id="catalogue&amp;_COURSEPATH_INTRO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu müfredata <b>[enrolled]</b> tane kayıtlı kullanıcı mevcut]]></key>
         <key id="catalogue&amp;_COURSEPATH_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Senin müfredatın]]></key>
+        <key id="catalogue&amp;_COURSE_ADDED_IN_CART" attributes="" save_date="2017-04-10 15:57:45"><![CDATA[Ders sepetinize eklendi]]></key>
         <key id="catalogue&amp;_COURSE_AS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[[level] seviyede olduğunuz dersler]]></key>
         <key id="catalogue&amp;_COURSE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kayıtlı olduğun dersler]]></key>
         <key id="catalogue&amp;_COURSE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tamamladığın dersler]]></key>
         <key id="catalogue&amp;_COURSE_EXPIRING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bir hafta içinde süresi dolacak dersler]]></key>
+        <key id="catalogue&amp;_COURSE_IN_CART" attributes="" save_date="2017-04-10 15:58:19"><![CDATA[Ders Sepetinizde]]></key>
         <key id="catalogue&amp;_COURSE_LIST_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seçilebilir derslerin listesi]]></key>
         <key id="catalogue&amp;_COURSE_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ders kaydı]]></key>
         <key id="catalogue&amp;_COURSE_S_GODADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sadece yönetici kayıt yapabilir]]></key>
@@ -383,7 +399,7 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kod modülü ile yaratılmış bir kod isteminde bulun]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcının açılan menü listesinden seçtiği bir ağaç kod isteminde bulun]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcı tarafından elle girilmesi gereken bir ağaç kod isteminde bulun]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcı tarafından elle girilmesi gereken ağaç kod ve ders kodu bileşimi isteminde bulun. Ağaç ve ders kodlarının her biri 10 karakterden oluşmalı ki 20 karakterlik bir kod elde edilsin.]]></key>
+        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2017-04-10 16:38:34"><![CDATA[Kullanıcı tarafından elle girilmesi gereken ağaç kod ve ders kodu bileşimi isteminde bulun. Ağaç ve ders kodlarının her biri 10 karakterden oluşmalı ki 20 karakterlik bir kod elde edilsin]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimum İşitsel kullanıcılar]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oda başına maksimum kullanıcı]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimum odalar]]></key>
@@ -418,8 +434,8 @@
         <key id="configuration&amp;_HTMLEDIT_IMAGE_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Düzenleyicide yöneticinin medya yönetiminine izin ver]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_GODADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Düzenleyicide süper-yöneticinin medya yönetiminine izin ver]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Düzenleyicide kullanıcının medya yönetiminine izin ver]]></key>
-        <key id="configuration&amp;_KB_FILTER_BY_USER_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İçerik kütüphanesi arama sonuç alanında kullanıcıya direkt açık olmayan nesneleri de göster.]]></key>
-        <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İçerik kütüphanesi arama sonuç alanında kullanıcıya tam olarak kategorilendirilmemiş nesneleri de göster.]]></key>
+        <key id="configuration&amp;_KB_FILTER_BY_USER_ACCESS" attributes="" save_date="2017-04-10 16:32:05"><![CDATA[İçerik kütüphanesi arama sonuç alanında kullanıcıya direkt açık olmayan nesneleri de göster]]></key>
+        <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2017-04-10 16:32:01"><![CDATA[İçerik kütüphanesi arama sonuç alanında kullanıcıya tam olarak kategorilendirilmemiş nesneleri de göster]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dil düzenlemeyi etkinleştir (hata ayıklama için kullanılır)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İsim ve Soyisim kayıt yapabilmek için gereklidir]]></key>
         <key id="configuration&amp;_LDAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP]]></key>
@@ -433,9 +449,9 @@
         <key id="configuration&amp;_MANDATORY_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Eğer yukarıdaki kayıt kod seçeneklerinden bir tanesi etkinleştirildiyse, kullanıcılar kayıt kodunu girmek zorundadır (kod alanı doldurulmalı)]]></key>
         <key id="configuration&amp;_MAX_EXECUTION_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["max_execution_time" ayarları]]></key>
         <key id="configuration&amp;_MAX_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimum ardarda başarısız oturum açma deneme sayısı (0 = sınırsız)]]></key>
-        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql Karşılaştırmalı Okuma]]></key>
-        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql Kodlaması]]></key>
-        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sql mod]]></key>
+        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2017-04-10 11:37:54"><![CDATA[MySQL Karşılaştırmalı Okuma]]></key>
+        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2017-04-10 11:38:02"><![CDATA[MySQL Kodlaması]]></key>
+        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2017-04-10 11:38:09"><![CDATA[SQL mod]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL sürümü]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bolklar arası duraklama (saniye)]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Haber mesajlarının gönderileceği bloklar]]></key>
@@ -461,9 +477,9 @@
         <key id="configuration&amp;_PATHSCORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SCORM Öğrenme Hedefi olarak karşıya yüklenen dosyalar için dizin yolunu kaydet]]></key>
         <key id="configuration&amp;_PATHSPONSOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sponsor manşetleri]]></key>
         <key id="configuration&amp;_PATHTEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["Dosya karşıya yükleme" sorusu]]></key>
-        <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Paypal para birimi kodu]]></key>
-        <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Paypal Hesabı]]></key>
-        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gerçek ortam yerine paypal sandbox kullanın (bu hata ayıklama ve test seçeneğidir)]]></key>
+        <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2017-04-10 11:50:29"><![CDATA[PayPal para birimi kodu]]></key>
+        <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2017-04-10 11:50:24"><![CDATA[PayPal Hesabı]]></key>
+        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2017-04-10 11:50:37"><![CDATA[Gerçek ortam yerine PayPal sandbox kullanın (bu hata ayıklama ve test seçeneğidir)]]></key>
         <key id="configuration&amp;_PHPINFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[PHP hakkında bilgi]]></key>
         <key id="configuration&amp;_PHPVERSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[PHP sürümü]]></key>
         <key id="configuration&amp;_POST_MAX_SIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["post_max_size" ayarı]]></key>
@@ -489,7 +505,7 @@
         <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SCORM bölümlerine harici kaynaklardan direkt bağlantı kullanımına izin ver (sco ve asset)]]></key>
         <key id="configuration&amp;_SECURITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Güvenlik ile ilgili]]></key>
         <key id="configuration&amp;_SENDER_EVENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uyarı mesajları için gönderici e-posta adresi]]></key>
-        <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Platform tarafından gönderilen her e-posta için belirtilen adresleri Cc'ye ekle]]></key>
+        <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2017-04-10 12:16:23"><![CDATA[Platform tarafından gönderilen her e-posta için belirtilen adresleri CC'ye ekle]]></key>
         <key id="configuration&amp;_SERVERINFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sunucu yapılandırması]]></key>
         <key id="configuration&amp;_SERVER_ADDR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sunucu adresi]]></key>
         <key id="configuration&amp;_SERVER_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sunucu yöneticisi postası]]></key>
@@ -548,9 +564,9 @@
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcının kullandığı en son X şifreden farklı bir şifre seçmesi isteminde bulun]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Her kullanıcının Dosyalarım alanı için disk kotası (MB)]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gelişmiş kayıt formunu kullan]]></key>
-        <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[URL arayüzü yerine DimDim Api kullan]]></key>
+        <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2017-04-10 10:33:08"><![CDATA[URL arayüzü yerine DimDim API kullan]]></key>
         <key id="configuration&amp;_USE_REST_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[API fonksiyonunu etkinleştir]]></key>
-        <key id="configuration&amp;_USE_TAG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Forumlar içerisinde etiket özelliğini etkinleştir.]]></key>
+        <key id="configuration&amp;_USE_TAG" attributes="" save_date="2017-04-10 16:27:50"><![CDATA[Forumlar içerisinde etiket özelliğini etkinleştir]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Attention without these settings the social login will not work]]></key>
       </module>
       <module id="course">
@@ -839,13 +855,13 @@ Ya da bu bağlantı üzerinden sistemimize kayıt olabilirsiniz: <br />
         <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms ağı]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Askıya alınmış kullanıcılar]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Danışma sitesi]]></key>
-        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LMS destek sitesi]]></key>
+        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:43:11"><![CDATA[forma.lms destek sitesi]]></key>
         <key id="dashboard&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Derslerin sayısı]]></key>
         <key id="dashboard&amp;_TOTAL_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kayıtların sayısı]]></key>
         <key id="dashboard&amp;_TOTAL_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kayıtlı kullanıcılar]]></key>
         <key id="dashboard&amp;_UNKNOWN_RELEASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hata, son mevcut sürüme ulaşılamadı]]></key>
-        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[formalms.org ticari servisler]]></key>
-        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[formalms.org açık kaynaklı topluluk]]></key>
+        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2017-04-10 12:43:00"><![CDATA[forma.lms ticari servisler]]></key>
+        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:40:51"><![CDATA[forma.lms açık kaynaklı topluluk]]></key>
         <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcıların bilgisi]]></key>
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bekleyen kayıt]]></key>
       </module>
@@ -864,7 +880,7 @@ forma.lms üzerinden <a href="[url]">[url]</a> bağlantısı üzerinden okuyabil
         <key id="email&amp;_DELETED_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Hesabınız silindi]]></key>
         <key id="email&amp;_DELETED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[<a href="[url]">[url]</a> bağlantılı ve [userid] kullanıcı adlı hesabınız silindi]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Kayıt isteği rededildi]]></key>
-        <key id="email&amp;_DENY_SUBSCRIBED_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[[course] dersi için kayıt isteğiniz yönetici tarafından <a href="[url]">[url]</a> bağlantısı ile geri çevrildi]]></key>
+        <key id="email&amp;_DENY_SUBSCRIBED_TEXT" attributes="email" save_date="2017-04-10 16:05:27"><![CDATA[[course] dersi için kayıt isteğiniz yönetici tarafından <a href="[url]">[url]</a> bağlantısı ile geri çevrildi]]></key>
         <key id="email&amp;_MODIFIED_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcı hesabı yeniden düzenlendi]]></key>
         <key id="email&amp;_MODIFIED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[<a href="[url]">[url]</a> sitesindeki hesabınız yeniden düzenlendi:
 
@@ -1939,7 +1955,7 @@ Kullanıcı adı: [userid]
         <key id="standard&amp;_ALL_PAGES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tüm sayfalar]]></key>
         <key id="standard&amp;_ALT_CHECK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kontrol et]]></key>
         <key id="standard&amp;_ALT_LESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[-]]></key>
-        <key id="standard&amp;_ALT_MORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[]]></key>
+        <key id="standard&amp;_ALT_MORE" attributes="" save_date="2017-04-10 16:02:53"><![CDATA[Alternatif metin]]></key>
         <key id="standard&amp;_ALT_ROOT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kök]]></key>
         <key id="standard&amp;_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cevap]]></key>
         <key id="standard&amp;_APPROVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Onayla]]></key>
@@ -1957,7 +1973,7 @@ Kullanıcı adı: [userid]
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ortalama]]></key>
         <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;lt;&amp;lt; Geri]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Temel arama]]></key>
-        <key id="standard&amp;_BBB" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Big Blue Button]]></key>
+        <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:35:35"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[tarafından]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Takvim]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İptal]]></key>
@@ -2611,6 +2627,7 @@ Kullanıcı adı: [userid]
       <module id="treeview">
         <key id="treeview&amp;_ALT_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Boş]]></key>
       </module>
+      <module id="user_management"/>
       <module id="user_managment">
         <key id="user_managment&amp;_DONT_USE_TREE_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Organizasyon ağacında kendi kendine kayıdı kullanmayın]]></key>
         <key id="user_managment&amp;_LOG_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oturum açma/kayıt seçenekleri]]></key>

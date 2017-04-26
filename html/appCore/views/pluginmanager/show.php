@@ -1,64 +1,69 @@
-<?php echo getTitleArea(Lang::t('_PLUGIN_LIST', 'configuration')); ?>
+<?php
+require_once(_base_.'/lib/lib.table.php');
 
-<div class="std_block">
+echo getTitleArea(Lang::t('_PLUGIN_LIST', 'configuration'));
 
-    <div id="global_conf" class="tabs-wrapper">
+$table = new Table(0, Lang::t('_PLUGIN_LIST', 'configuration'), Lang::t('_PLUGIN_LIST', 'configuration'));
 
-        <ul class="nav nav-tabs bordered">
-            <li class="dropdown">
-                <a href="javascript:void(0)" class="dropdown-toggle" role="button" data-toggle="dropdown">
-                    <span class="dropdown-title"><?php echo Lang::t('_OTHER_OPTION', 'course'); ?></span> &nbsp;<span
-                        class="caret"></span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-left tabs-dropdown">
-                    <?php
-                    while (list($id, $canonical_name) = each($plugins)) {
+$table->setTableId("table_plugin");
 
-                        echo '<li' . ((($plugins_info[$canonical_name]['id'] == $active_tab) || (!$active_tab && $id == 0)) ? ' class="active"' : '') . '>'
-                            . '<a data-toggle="tab" href="#tab_plugin_' . $id . '"><em>' . Lang::t('_' . strtoupper($canonical_name), 'configuration') . '</em></a>'
-                            . '</li>';
+$cont_h = array(
+    "Nome",
+    "Versione",
+    "Autore",
+    "Categoria",
+    "Descrizione",
+    "Azioni"
+);
+
+$type_h = array('', 'align_center', 'align_center', '', '');
+
+$table->setColsStyle($type_h);
+
+$table->addHead($cont_h);
+
+foreach ($plugins as $info){
+    $actions="";
+    //if already in database
+    if (isset($info['plugin_id'])){
+        if ($info['core']==="0"){
+            if (!$info['version_error']){
+                if (!$info['update']){
+                    $actions.='<a style="color: #C84000;" href="index.php?r=adm/pluginmanager/uninstall'.'&plugin='.$info['name'].'">Disinstalla</a>';
+                    //if active
+                    if ($info['active']=="1"){
+                        $actions.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/deactivate'.'&plugin='.$info['name'].'">Disattiva</a>';
+                        //if not active
+                    } else {
+                        $actions.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/activate'.'&plugin='.$info['name'].'">Attiva</a>';
                     }
-                    reset($plugins);
-                    ?>
-                </ul>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <?php
-            $model->plugins = $plugins;
-            while (list($id, $canonical_name) = each($plugins)) {
-
-                echo '<div id="tab_plugin_' . $id . '" class="tab-pane' . ((($plugins_info[$canonical_name]['id'] == $active_tab) || (!$active_tab && $id == 0)) ? ' active' : '') . '">'
-                    //.'<h2>'.Lang::t('_'.$plugins_info[strtoupper($canonical_name)][''], 'configuration').'</h2>'
-                    //.'<p>'.Lang::t('_CONF_DESCR_'.$id, 'configuration').'</p>'
-
-                    . Form::openForm('conf_option_' . $id, 'index.php?r=adm/pluginmanager/save');
-
-
-                $model->printPageWithElement($id, $canonical_name);
-
-                echo Form::closeElementSpace()
-                    . Form::openButtonSpace()
-                    . Form::getButton('save_config_' . $id, 'save_config', Lang::t('_SAVE', 'configuration'))
-                    . Form::getButton('undo_' . $id, 'undo', Lang::t('_UNDO', 'configuration'))
-                    . Form::closeButtonSpace()
-                    . Form::CloseForm()
-                    . '<br />'
-                    . '</div>';
+                } else {
+                    if (!class_exists('ZipArchive')){
+                        $actions.= "You can't use the online feautures<br>";
+                    }
+                    $actions.= '<a style="color: #006d07;" href="index.php?r=adm/pluginmanager/update'.'&plugin='.$info['name'].'&online='.$info['online'].'">Update</a>';
+                }
+            } else {
+                $actions.= '<a style="color: #c80014;" href="javascript:;">Versione più vecchia</a>';
             }
+        }
+        $actions.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/showSettings'.'&plugin='.$info['name'].'">Impostazioni</a>';
+        //if not in database
+    } else {
+        if ($info['dependencies_satisfied']){
+            $actions.='<a style="color: #C84000;" href="index.php?r=adm/pluginmanager/install'.'&plugin='.$info['name'].'">Installa</a>';
+        } else {
+            $actions.='<a style="color: #C84000;" href="javascript:;'.'&plugin='.$info['name'].'">Non soddisfatte</a>';
+        }
+    }
+    $table->addBody(array(
+        $info['title'],
+        $info['version'],
+        $info['author'],
+        $info['category'],
+        $info['description'],
+        $actions
+    ));
+}
 
-            ?>
-        </div>
-        <div class="nofloat">&nbsp;</div>
-    </div>
-</div>
-<script type="text/javascript">
-    /*YAHOO.util.Event.onDOMReady(function () {
-        var targets = YAHOO.util.Selector.query("span[id^=tt_target]");
-        new YAHOO.widget.Tooltip("tooltip_info", {
-            context: targets,
-            effect: {effect: YAHOO.widget.ContainerEffect.FADE, duration: 0.20}
-        });
-        new YAHOO.widget.TabView('global_conf', {orientation: 'left'});
-    });*/
-</script>
+echo $table->getTable();

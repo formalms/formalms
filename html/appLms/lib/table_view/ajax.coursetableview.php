@@ -61,9 +61,7 @@ switch ($command) {
 
 		require_once(_lms_.'/lib/lib.permission.php');
 
-		if(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN)
-			$moderate = checkPerm('moderate', true, 'public_course_admin', 'lms');
-		elseif(Docebo::user()->getUserLevelId() == ADMIN_GROUP_ADMIN)
+		if(Docebo::user()->getUserLevelId() == ADMIN_GROUP_ADMIN)
 			$moderate = checkPerm('moderate', true, 'course', 'lms');
 		else
 			$moderate = true;
@@ -82,15 +80,15 @@ switch ($command) {
 				'status'	=> $row['status'],
 
 				'waiting' => ( $row['pending'] && $moderate
-					? '<a href="index.php?modname='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? 'public_subscribe_admin' : 'subscribe').'&op=waitinguser&id_course='.$row['idCourse'].'">'.$row['pending'].'</a>'
+					? '<a href="index.php?modname=subscribe&op=waitinguser&id_course='.$row['idCourse'].'">'.$row['pending'].'</a>'
 					: '' ),
 
 				'subscriptions' => ($row['course_edition'] != 1 ? ( isset($row['subscriptions']) ? $row['subscriptions'] : 0 ) : '--'),
-				'classroom' => ($row['course_edition'] == 1 ? '<a href="index.php?r='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? '' : 'alms/').'edition/show&amp;id_course='.$row['idCourse'].'">'.(isset($num_edition[$row['idCourse']]) ? $num_edition[$row['idCourse']] : '0').'</a>' : ''),
+				'classroom' => ($row['course_edition'] == 1 ? '<a href="index.php?r=alms/edition/show&amp;id_course='.$row['idCourse'].'">'.(isset($num_edition[$row['idCourse']]) ? $num_edition[$row['idCourse']] : '0').'</a>' : ''),
 				'certificate' => true,
 				'competence' => true,
 				'menu' => true,
-				'dup' => '<a id="dup_'.$row['idCourse'].'" href="index.php?modname='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? 'public_course_admin' : 'course').'&amp;op=dup_course&id_course='.$row['idCourse'].'">'.Get::img('standard/dup.png', $lang->def('_MAKE_A_COPY')).'</a>',
+				'dup' => '<a id="dup_'.$row['idCourse'].'" href="index.php?modname=course&amp;op=dup_course&id_course='.$row['idCourse'].'">'.Get::img('standard/dup.png', $lang->def('_MAKE_A_COPY')).'</a>',
 				'mod' => true,
 				'del' => true
 			);

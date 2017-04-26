@@ -34,6 +34,9 @@ class AdmController extends Controller {
 			checkPerm('view', false, $this->_mvc_name, 'framework');
 		}
 	}
-	
+
+    public function templatePath(){
+        return _base_."/templates/".getTemplate()."/layout/appCore";
+    }
 	
 }

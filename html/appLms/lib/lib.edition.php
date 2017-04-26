@@ -139,10 +139,10 @@ class EditionManager
 				'date_end' => $date_end,
 				'students' => $num_student,
 				'num_subscription' => $num_subscription,
-				'subscription' => '<a class="nounder" href="index.php?r='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? 'lms/p' : 'alms/').'subscription/show&amp;id_course='.$id_course.'&amp;id_edition='.$id_edition.'">'
+				'subscription' => '<a class="nounder" href="index.php?r=alms/subscription/show&amp;id_course='.$id_course.'&amp;id_edition='.$id_edition.'">'
 						.$num_subscription.' '.Get::img('course/subscribe.png', Lang::t('_SUBSCRIPTION', 'course')).'</a>',
-				'edit' => '<a href="index.php?r='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? 'lms/p' : 'alms/').'edition/edit&amp;id_course='.$id_course.'&amp;id_edition='.$id_edition.'">'.Get::img('standard/edit.png', Lang::t('_MOD', 'course')).'</a>',
-				'del' => 'ajax.adm_server.php?r='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? 'lms/p' : 'alms/').'edition/del&amp;id_course='.$id_course.'&id_edition='.$id_edition);
+				'edit' => '<a href="index.php?r=alms/edition/edit&amp;id_course='.$id_course.'&amp;id_edition='.$id_edition.'">'.Get::img('standard/edit.png', Lang::t('_MOD', 'course')).'</a>',
+				'del' => 'ajax.adm_server.php?r=alms/edition/del&amp;id_course='.$id_course.'&id_edition='.$id_edition);
 		}
 
 		return $res;
@@ -502,7 +502,7 @@ class EditionManager
 							'date_complete' => $date_complete,
 							'date_begin_validity' => $date_begin_validity,
 							'date_expire_validity' => $date_expire_validity,
-							'del' => 'ajax.adm_server.php?r='.(Docebo::user()->getUserLevelId() == ADMIN_GROUP_PUBLICADMIN ? 'lms/p' : 'alms/').'subscription/delPopUp&id_course='.$id_course.'&id_edition='.$id_edition.'&id_user='.$id_user);
+							'del' => 'ajax.adm_server.php?r=alms/subscription/delPopUp&id_course='.$id_course.'&id_edition='.$id_edition.'&id_user='.$id_user);
 		}
 
 		return $res;

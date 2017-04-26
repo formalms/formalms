@@ -2,10 +2,9 @@
 <plugin_manifest>
 	<title>Conference Big Blue Button</title>
 	<author>Joint Technologies</author>
-	<code>bbb</code>
+	<name>ConferenceBBB</name>
 	<version>1.0</version>
-	<category>conference</category>
 	<description>Conference Big Blue Button</description>
-	<link>http://www.joint-tech.it/</link>
-	<license>GNU General Public License version 2</license>
+	<category>conference</category>
+	<core>true</core>
 </plugin_manifest>

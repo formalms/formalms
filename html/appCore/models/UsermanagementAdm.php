@@ -975,13 +975,21 @@ class UsermanagementAdm extends Model {
 					$acl_man->addToGroup($ocd_sn, $user_idst);
 				}
 */
+				//apply enroll rules
+				$langs = Docebo::langManager()->getAllLangCode();
+				$lang_code = ( isset($langs[(isset($_POST['user_preference']['ui.language']) ? $_POST['user_preference']['ui.language'] : 'eng')]) ? $langs[$_POST['user_preference']['ui.language']] : false );
+
+				$enrollrules = new EnrollrulesAlms();				
+                                
 				$folder_count = 0;
-				foreach ($folders as $folder)
-					if ((int)$folder > 0)
+				foreach ($folders as $folder) {
+					if ((int)$folder > 0) {
 						$folder_count++;
+                                        }
+                                }
 				reset($folders);
 
-				if($folder_count == 0)
+				if($folder_count == 0) {
 					if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 						$subadmin_folder = $this->getAdminFolder(Docebo::user()->getIdst(), true);
 						if ($subadmin_folder > 0) {
@@ -989,6 +997,7 @@ class UsermanagementAdm extends Model {
 							$folders[] = $subadmin_folder;
 						}
 					}
+                                }
 
 				if (is_array($folders) && !empty($folders)) {
 					foreach ($folders as $folder) {
@@ -998,6 +1007,8 @@ class UsermanagementAdm extends Model {
 
 							$acl_man->addToGroup($oc_sn, $user_idst);
 							$acl_man->addToGroup($ocd_sn, $user_idst);
+                                                        
+                                                        $enrollrules->newRules('_NEW_USER', array($user_idst), $lang_code, $folder);
 						}
 					}
 				}
@@ -1009,7 +1020,6 @@ class UsermanagementAdm extends Model {
 					switch ($userdata->level) {
 						case ADMIN_GROUP_ADMIN: $level = ADMIN_GROUP_ADMIN; break;
 						case ADMIN_GROUP_GODADMIN: $level = ADMIN_GROUP_GODADMIN; break;
-						case ADMIN_GROUP_PUBLICADMIN: $level = ADMIN_GROUP_PUBLICADMIN; break;
 					}
 				}
 
@@ -1028,12 +1038,6 @@ class UsermanagementAdm extends Model {
 				$fields->storeFieldsForUser($user_idst);
 
                 $result = $user_idst;
-				//apply enroll rules
-				$langs = Docebo::langManager()->getAllLangCode();
-				$lang_code = ( isset($langs[(isset($_POST['user_preference']['ui.language']) ? $_POST['user_preference']['ui.language'] : 'eng')]) ? $langs[$_POST['user_preference']['ui.language']] : false );
-
-				$enrollrules = new EnrollrulesAlms();
-				$enrollrules->newRules('_NEW_USER', array($user_idst), $lang_code, (isset($_SESSION[$this->sessionPrefix]['selected_node']) ? $_SESSION[$this->sessionPrefix]['selected_node'] : 0));
 			}
 		}
 
@@ -1077,7 +1081,6 @@ class UsermanagementAdm extends Model {
 					switch ($userdata->level) {
 						case ADMIN_GROUP_ADMIN: $level = ADMIN_GROUP_ADMIN; break;
 						case ADMIN_GROUP_GODADMIN: $level = ADMIN_GROUP_GODADMIN; break;
-						case ADMIN_GROUP_PUBLICADMIN: $level = ADMIN_GROUP_PUBLICADMIN; break;
 						default: $level = ADMIN_GROUP_USER; break;
 					}
 					//remove user to old group
@@ -2524,7 +2527,6 @@ class UsermanagementAdm extends Model {
 			switch ($info->level) {
 				case ADMIN_GROUP_ADMIN: $level = ADMIN_GROUP_ADMIN; break;
 				case ADMIN_GROUP_GODADMIN: $level = ADMIN_GROUP_GODADMIN; break;
-				case ADMIN_GROUP_PUBLICADMIN: $level = ADMIN_GROUP_PUBLICADMIN; break;
 				case ADMIN_GROUP_USER: $level = ADMIN_GROUP_USER; break;
 				default: $level = false; break;
 			}

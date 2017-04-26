@@ -91,8 +91,6 @@ class LocationAlmsController extends AlmsController {
 			switch ($ulevel) {
 				case ADMIN_GROUP_ADMIN: $amodel = new AdminmanagerAdm();
 					break;
-				case ADMIN_GROUP_PUBLICADMIN: $amodel = new PublicadminmanagerAdm();
-					break;
 			}
 			if ($amodel !== FALSE) {
 				$admin_locations = $amodel->loadClasslocationsSelection(Docebo::user()->idst);
@@ -133,8 +131,6 @@ class LocationAlmsController extends AlmsController {
 		$amodel = FALSE;
 		switch ($ulevel) {
 			case ADMIN_GROUP_ADMIN: $amodel = new AdminmanagerAdm();
-				break;
-			case ADMIN_GROUP_PUBLICADMIN: $amodel = new PublicadminmanagerAdm();
 				break;
 		}
 		if ($amodel !== FALSE) {

@@ -489,13 +489,13 @@ class QuestBank_Selector {
 								'quest_difficult',
 								'quest_difficult',
 								$this->all_difficult,
-								Get::req('quest_difficult', DOTY_ALPHANUM) )
+								Get::req('quest_difficult', DOTY_INT) )
 
 			.$this->form->getDropdown($this->lang->def('_TYPE'),
 								'quest_type',
 								'quest_type',
 								$this->all_quest_type_long,
-								Get::req('quest_type', DOTY_INT) )
+								Get::req('quest_type', DOTY_ALPHANUM) )
 
 			.$this->form->openButtonSpace('search_button')
 			.$this->form->getButton(	'quest_reset',

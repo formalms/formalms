@@ -1314,7 +1314,6 @@ class UserProfileViewer {
 			switch($acl_man->getUserLevelId($this->_user_profile->getIdUser())) {
 				case ADMIN_GROUP_GODADMIN 	: $user_level_string = $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_GODADMIN);break;
 				case ADMIN_GROUP_ADMIN 		: $user_level_string = $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_ADMIN);break;
-				case ADMIN_GROUP_PUBLICADMIN: $user_level_string = $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_PUBLICADMIN);break;
 				case ADMIN_GROUP_USER 		: $user_level_string = $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_USER);break;
 				default :$user_level_string = $acl_man->getUserLevelId($this->_user_profile->getIdUser());
 			}
@@ -1988,14 +1987,19 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 	    if($perm_competence ) $html .= '<li><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">'.Lang::t('_COMPETENCES', 'standard').'</a></li>';
 	      
 	    if($unread_num>0 && $perm_message){
-	        $html .= '<li><a class="btn btn-default" href="index.php?modname=message&op=message&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'<b class="num_notify"><i style="font-size:.78em">'.$unread_num.'</i></b></a></li>';
+	        $html .= '<li><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'<b class="num_notify"><i style="font-size:.78em">'.$unread_num.'</i></b></a></li>';
 	    }
 	    if($unread_num==0 && $perm_message){
-	    	$html .= '<li><a class="btn btn-default" href="index.php?modname=message&op=message&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'</a></li>';
+	    	$html .= '<li><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'</a></li>';
 	    }
 		                                           
 		$html .= '</ul>';
 		$html .= '</div><br />';
+
+        $pg=new PluginManager('UserProfile');
+        foreach($pg->run('show_home') as $_html) {
+            $html .= $_html;
+        }
 
 		// box carriera
 		require_once($GLOBALS['where_lms'].'/lib/lib.middlearea.php');
@@ -2009,7 +2013,7 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 			$url = $this->_url_man;
 			$course_stats = userCourseList($url, false, false);		//TODO:  review this call . use course list to compute carreer
 
-			$base_url = 'index.php?r='._after_login_.'&amp;filter=';
+			$base_url = 'index.php?r='._lms_home_.'&amp;filter=';
 			$end = 0;
 			if(isset($course_stats['with_ustatus'][_CUS_END]) && $course_stats['with_ustatus'][_CUS_END] != 0) {
 				$end = $course_stats['with_ustatus'][_CUS_END];
@@ -2051,7 +2055,7 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 
 			$html .= ''
 					.( isset($course_stats['cert_relesable']) /*&& $tot_cert != 0*/
-							? '<tr><th scope="row">'.$this->_lang->def('_CERT_RELESABLE').' :</th><td><a href="index.php?r=lms/mycertificate/show">'.$tot_cert.'</a></td></tr>'
+							? '<tr><th scope="row">'.$this->_lang->def('_CERT_RELESABLE').' :</th><td><a href="index.php?r=lms/mycertificate/show"><u><b>'.$tot_cert.'</b></u></a></td></tr>'
 							: '' )
 
 							.( $pendent != 0
@@ -2238,7 +2242,6 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 				$level_list = array(
 					ADMIN_GROUP_GODADMIN => $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_GODADMIN),
 					ADMIN_GROUP_ADMIN	=> $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_ADMIN),
-					ADMIN_GROUP_PUBLICADMIN	=> $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_PUBLICADMIN),
 					ADMIN_GROUP_USER 	=> $lv_lang->def('_DIRECTORY_'.ADMIN_GROUP_USER)
 				);
 			} else {
@@ -2417,12 +2420,12 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 			// control password
 			if(strlen($_POST['up_new_pwd']) < Get::sett('pass_min_char')) {
 
-				return $lang->def('_PASSWORD_TOO_SHORT');
+				return $this->_lang->def('_PASSWORD_TOO_SHORT');
 			}
 			if( Get::sett('pass_alfanumeric') == 'on' ) {
 				if( !preg_match('/[a-z]/i', $_POST['up_new_pwd']) || !preg_match('/[0-9]/', $_POST['up_new_pwd']) ) {
 
-					return $lang->def('_ERR_PASSWORD_MUSTBE_ALPHA');
+					return $this->_lang->def('_ERR_PASSWORD_MUSTBE_ALPHA');
 				}
 			}
 			//check password history

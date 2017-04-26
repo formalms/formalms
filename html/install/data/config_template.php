@@ -21,7 +21,7 @@
  * db name
  * charset to use in the db connection
  */
-$cfg['db_type'] = 'mysql';
+$cfg['db_type'] = '[%-DB_TYPE-%]';
 $cfg['db_host'] = '[%-DB_HOST-%]';
 $cfg['db_user'] = '[%-DB_USER-%]';
 $cfg['db_pass'] = '[%-DB_PASS-%]';
@@ -105,7 +105,7 @@ $cfg['smtp_pwd'] ='';
  *
  * If not defined (default) no alternate template engine
  */
-//$cfg['template_engine']['twig'] = array('ext' => '.twig');
+$cfg['template_engine']['twig'] = array('ext' => '.html.twig');
 
 
 /**

@@ -525,11 +525,11 @@ class TreeView_OrgView extends TreeView {
 			$ot .='<input type="hidden"'
 				.' id="'.DIRECTORY_ID.'_'.DIRECTORY_ID_PRINTEDITEM.'"'
 				.' name="'.DIRECTORY_ID.'['.DIRECTORY_ID_PRINTEDITEM.']"'
-				.' value="'.urlencode(serialize($this->printed_items)).'" />'."\n";
+				.' value="'.urlencode(Util::serialize($this->printed_items)).'" />'."\n";
 			$ot .='<input type="hidden"'
 				.' id="'.DIRECTORY_ID.'_'.DIRECTORY_ID_PRINTEDFOLD.'"'
 				.' name="'.DIRECTORY_ID.'['.DIRECTORY_ID_PRINTEDFOLD.']"'
-				.' value="'.urlencode(serialize($this->printed_items_alt)).'" />'."\n";
+				.' value="'.urlencode(Util::serialize($this->printed_items_alt)).'" />'."\n";
 		}
 		return $ot;
 	}
@@ -679,8 +679,8 @@ class TreeView_OrgView extends TreeView {
 					
 					// add to group level 
 					$this->aclManager->addToGroup($userlevel,$idst );
-					
-					if(($this->aclManager->absoluteId($userid) != $info[ACL_INFO_USERID]) || ($this->aclManager->encrypt($pass) != $info[ACL_INFO_PASS])) {
+
+					if(($this->aclManager->absoluteId($userid) != $info[ACL_INFO_USERID]) || ($this->aclManager->password_verify_update($pass, $info[ACL_INFO_PASS]))) {
 						
 						require_once(_base_.'/lib/lib.eventmanager.php'); 
 						$pl_man = PlatformManager::createInstance();
@@ -711,7 +711,7 @@ class TreeView_OrgView extends TreeView {
 
 			} else {
 				if( isset( $_POST['arr_idst_groups'] ) ) {
-					$arr_idst_groups = unserialize( urldecode( $_POST['arr_idst_groups'] ) );
+					$arr_idst_groups = Util::unserialize(urldecode( $_POST['arr_idst_groups'] ) );
 					$acl =& Docebo::user()->getACL();
 					$arr_idst_all = $acl->getArrSTGroupsST($arr_idst_groups);
 				} else {

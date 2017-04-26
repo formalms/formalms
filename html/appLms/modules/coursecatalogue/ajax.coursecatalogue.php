@@ -32,7 +32,7 @@ if(Docebo::user()->isAnonymous()) {
 	$string = $lang->def('_THANKS_LOGIN_OR_REGISTER');
 	$string = substr($string, strpos($string, '<a'));
 
-	$subst = array( '[name]' => $course_name, '[link_register]' => 'index.php?modname=login&amp;op=register' );
+	$subst = array( '[name]' => $course_name, '[link_register]' => Get::rel_path("base") . "/index.php?r=" . _register_ );
 	$value = array(
 		"next_op" 	=> '',
 		"id" 		=> 'course_editions',
@@ -245,7 +245,7 @@ if(Docebo::user()->isAnonymous()) {
 				$string = $lang->def('_THANKS_LOGIN_OR_REGISTER');
 				$string = substr($string, strpos($string, '<a'));
 
-				$subst = array( '[name]' => $course_name, '[link_register]' => 'index.php?modname=login&amp;op=register' );
+				$subst = array( '[name]' => $course_name, '[link_register]' => Get::rel_path("base") . "/index.php?r=" . _register_ );
 				$value = array(
 					"next_op" 	=> '',
 					"id" 		=> 'course_editions',
@@ -330,7 +330,7 @@ if(Docebo::user()->isAnonymous()) {
 				$string = $lang->def('_THANKS_LOGIN_OR_REGISTER');
 				$string = substr($string, strpos($string, '<a'));
 
-				$subst = array( '[name]' => $course_name, '[link_register]' => 'index.php?modname=login&amp;op=register' );
+				$subst = array( '[name]' => $course_name, '[link_register]' => Get::rel_path("base") . "/index.php?r=" . _register_ );
 				$value = array(
 					"next_op" 	=> '',
 					"id" 		=> 'course_editions',

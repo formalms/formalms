@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20150421</DATE>
+  <DATE>20170414</DATE>
   <LANG id="greek">
     <lang_code>greek</lang_code>
     <lang_description>Greek</lang_description>
@@ -208,6 +208,7 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0,6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[εβδομάδα]]></key>
       </module>
+      <module id="cart"/>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Προσθήκη στο καλάθι]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Καριέρα]]></key>
@@ -383,7 +384,7 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ζητήστε έναν κωδικό που δημιουργείται μέσω της υπομονάδας κωδικού]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ζητήστε έναν κωδικό δέντρου που επιλέγεται από το χρηστη από μια λίστα]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ζητήστε έναν κωδικό δέντρου που συμπληρώνεται χειροκίνητα από το χρηστη]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ζητήστε ένα συνδυασμό κωδικού δέντρου και κωδικού μαθήματος που εισαγάγεται χειροκινητα από το χρήστη. Ο κάθε κωδικός θα πρέπει να περιλαμβάνει τουλάχιστον 10 χαρακτήρες, ώστε ο τελικός κωδικός να είναι 20 χαρακτήρων.]]></key>
+        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2017-04-10 16:39:43"><![CDATA[Ζητήστε ένα συνδυασμό κωδικού δέντρου και κωδικού μαθήματος που εισαγάγεται χειροκινητα από το χρήστη. Ο κάθε κωδικός θα πρέπει να περιλαμβάνει τουλάχιστον 10 χαρακτήρες, ώστε ο τελικός κωδικός να είναι 20 χαρακτήρων]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Μέγιστος αριθμός χρηστών ήχου]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Μέγιστος αριθμός χρηστών ανά δωμάτιο]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Μέγιστος αριθμός δωματίων]]></key>
@@ -418,8 +419,8 @@
         <key id="configuration&amp;_HTMLEDIT_IMAGE_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Επίτρεψε στον διαχειριστή να επεξεργάζεται πολυμέσα στον επεξεργαστή]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_GODADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Επίτρεψε στον υπερ-διαχειριστή να επεξεργάζεται πολυμέσα στον επεξεργαστή]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Επίτρεψε στους χρήστες να επεξεργάζεται πολυμέσα στον επεξεργαστή]]></key>
-        <key id="configuration&amp;_KB_FILTER_BY_USER_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Εμφάνιση, στην περιοχή αποτελεσμάτων των αναζητήσεων βιβλιοθήκης υλικού, και αντικείμενα που δεν είναι άμεσα διαθέσιμα στο χρήστη.]]></key>
-        <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Εμφάνιση Show, στην περιοχή αποτελεσμάτων των αναζητήσεων βιβλιοθήκης υλικού, και αντικείμενα που δεν είναι πλήρως κατηγοριοποιημένα.]]></key>
+        <key id="configuration&amp;_KB_FILTER_BY_USER_ACCESS" attributes="" save_date="2017-04-10 16:33:42"><![CDATA[Εμφάνιση, στην περιοχή αποτελεσμάτων των αναζητήσεων βιβλιοθήκης υλικού, και αντικείμενα που δεν είναι άμεσα διαθέσιμα στο χρήστη]]></key>
+        <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2017-04-10 16:33:46"><![CDATA[Εμφάνιση Show, στην περιοχή αποτελεσμάτων των αναζητήσεων βιβλιοθήκης υλικού, και αντικείμενα που δεν είναι πλήρως κατηγοριοποιημένα]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ενεργοποίηση επεξεργασίας γλώσσεων (χρησιμοποιείται για αποσφαλμάτωση)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Απαιτείται ονοματεπώνυμο για την εγγραφή]]></key>
         <key id="configuration&amp;_LDAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP]]></key>
@@ -433,13 +434,13 @@
         <key id="configuration&amp;_MANDATORY_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Εάν μία από τις παραπάνω επιλογές κωδικών εγγραφής είναι ενεργοποιημένη, οι χρήστες αναγκάζονται να συμπληρώσουν τον κωδικό εγγραφής (το πεδίο του κωδικού πρέπει να συμπληρωθεί)]]></key>
         <key id="configuration&amp;_MAX_EXECUTION_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ρύθμιση του "max_execution_time"]]></key>
         <key id="configuration&amp;_MAX_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Μέγιστο πλήθος διαδοχικών αποτυχημένων προσπαθειών εισόδου (0 = χωρίς όριο)]]></key>
-        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql Collation]]></key>
-        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mysql Encoding]]></key>
-        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Λειτουργία Sql]]></key>
+        <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2017-04-10 11:43:07"><![CDATA[MySQL Collation]]></key>
+        <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2017-04-10 11:43:17"><![CDATA[MySQL Encoding]]></key>
+        <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2017-04-10 11:43:23"><![CDATA[Λειτουργία SQL]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Έκδοση MySQL]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Παύση μεταξύ των ομάδων (δευτερόλεπτα)]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αποστολή ενημερωτικών μηνυμάτων σε ομάδες των]]></key>
-        <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Με το domxml απενεργοποιημένο, η υπομονάδα scorm, η διαχείριση γλώσσας και οι τηλεδιασκέψεις δε θα λειτουργούν]]></key>
+        <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2017-04-10 10:56:31"><![CDATA[Με το domxml απενεργοποιημένο, η υπομονάδα SCORM, η διαχείριση γλώσσας και οι τηλεδιασκέψεις δε θα λειτουργούν]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_POLL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Χρήση επιλογής "ΔΓ/ΔΑ" στις ερωτήσεις σφυγμομετρήσεων]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Χρήση επιλογής "ΔΓ/ΔΑ" στις ερωτήσεις τεστ]]></key>
         <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Εάν κανένα μάθημα δεν έχει ανατεθεί σε ένα χρήστη, εμφάνισε όλα τα μαθήματα και τα διδακτικά προγράμματα]]></key>
@@ -461,9 +462,9 @@
         <key id="configuration&amp;_PATHSCORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Μονοπάτι αποθήκευσης για τα αρχεία που φορτώνονται ως Αντικείμενα Μάθησης SCORM (SCORM Learning Objects)]]></key>
         <key id="configuration&amp;_PATHSPONSOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Διαφημίσεις χορηγών]]></key>
         <key id="configuration&amp;_PATHTEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ερώτηση με φόρτωση αρχείου]]></key>
-        <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Κωδικός νομίσματος Paypal]]></key>
-        <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Λογαριασμός Paypal]]></key>
-        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Χρήση προσομοίωσης paypal αντί για το πραγματικό περιβάλλον (μόνο για αποσφαλμάτωση και δοκιμές)]]></key>
+        <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2017-04-10 11:55:59"><![CDATA[Κωδικός νομίσματος PayPal]]></key>
+        <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2017-04-10 11:55:55"><![CDATA[Λογαριασμός PayPal]]></key>
+        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2017-04-10 11:56:07"><![CDATA[Χρήση προσομοίωσης PayPal αντί για το πραγματικό περιβάλλον (μόνο για αποσφαλμάτωση και δοκιμές)]]></key>
         <key id="configuration&amp;_PHPINFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Πληροφορίες για την PHP]]></key>
         <key id="configuration&amp;_PHPVERSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Έκδοση PHP]]></key>
         <key id="configuration&amp;_POST_MAX_SIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ρύθμιση του "post_max_size"]]></key>
@@ -486,7 +487,7 @@
         <key id="configuration&amp;_SAVE_LA_AFTER_MAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ναι, μόνο όταν φτασθεί ο μέγιστος αριθμός]]></key>
         <key id="configuration&amp;_SAVE_LA_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ναι, για όλες]]></key>
         <key id="configuration&amp;_SAVE_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αποθήκευση πληοροφοριών για αποτυχημένες προσπάθειες εισόδου]]></key>
-        <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Επίτρεψε τη χρήση απευθείας συνδέσμου από εξωτερικές πηγές προς κεφάλαια scorm (sco και asset)]]></key>
+        <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2017-04-10 10:56:39"><![CDATA[Επίτρεψε τη χρήση απευθείας συνδέσμου από εξωτερικές πηγές προς κεφάλαια SCORM (sco και asset)]]></key>
         <key id="configuration&amp;_SECURITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Σχετικά με την ασφάλεια]]></key>
         <key id="configuration&amp;_SENDER_EVENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Διεύθυνση αποστολέα email για ειδοποιήσεις]]></key>
         <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Προσθήκη της παρακάτω διεύθυνσης ως CC (Carbon Copy) για όλα τα email που στέλνονται από την πλατφόρμα]]></key>
@@ -500,7 +501,7 @@
         <key id="configuration&amp;_SESSION_IP_CONTROL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ενεργοποίηση ελέγχου διεύθυνσης IP μέσα στις συνεδρίες (ο χρήστης δεν μπορεί να μεταβάλλει την IP του μετά την είσοδο)]]></key>
         <key id="configuration&amp;_SHOW_AS_BLOCK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Εμφάνιση σε μπλοκ]]></key>
         <key id="configuration&amp;_SHOW_AS_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Εμφάνιση ως λίστα συνδέσμων]]></key>
-        <key id="configuration&amp;_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sms]]></key>
+        <key id="configuration&amp;_SMS" attributes="" save_date="2017-04-10 11:34:14"><![CDATA[SMS]]></key>
         <key id="configuration&amp;_SMSMARKET_LOGO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Σε συνεργασία με την smsmarket.it]]></key>
         <key id="configuration&amp;_SMS_BUY_RECHARGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αγορά επιπλέον SMS]]></key>
         <key id="configuration&amp;_SMS_CELL_NUM_FIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Πεδίο αριθμού κινητού τηλεφώνου]]></key>
@@ -550,7 +551,7 @@
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Χρήση προχωρημένης φόρμας εγγραφής]]></key>
         <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Χρήση του API του DimDim αντί για διεπαφή με URL]]></key>
         <key id="configuration&amp;_USE_REST_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ενεργοποίηση της λειτουργίας API]]></key>
-        <key id="configuration&amp;_USE_TAG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ενεργοποίηση tags στο forum.]]></key>
+        <key id="configuration&amp;_USE_TAG" attributes="" save_date="2017-04-10 16:29:06"><![CDATA[Ενεργοποίηση tags στο forum]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[Attention without these settings the social login will not work]]></key>
       </module>
       <module id="course">
@@ -754,7 +755,7 @@
         <key id="coursereport&amp;_ACTIVITY_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Πληροφορίες για τις επιλεγμένες δραστηριότητες]]></key>
         <key id="coursereport&amp;_ADD_ACTIVITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Νέα δραστηριότητα]]></key>
         <key id="coursereport&amp;_ADD_ACTIVITY_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Προσθήκη νέας δραστηριότητας]]></key>
-        <key id="coursereport&amp;_ADD_SCORM_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Προσθήκη αποτελεσμάτων Scorm]]></key>
+        <key id="coursereport&amp;_ADD_SCORM_RESULTS" attributes="" save_date="2017-04-10 10:56:46"><![CDATA[Προσθήκη αποτελεσμάτων SCORM]]></key>
         <key id="coursereport&amp;_ANSWER_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Σωστή απάντηση]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Τεστ για αυτό το μάθημα]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αυτή είναι η λίστα όλων των τεστ για αυτό το μάθημα και των αποτελεσμάτων για τους μαθητές]]></key>
@@ -803,10 +804,10 @@
         <key id="course_charts&amp;_ACTIVITY_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αυτό το διάγραμμα σας επιτρέπει να ελέγξετε τον αριθμό των κεφαλαίων που βλέπουν οι χρήστες όσο περνάνε οι ημέρες.]]></key>
         <key id="course_charts&amp;_CHAPTER_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αυτό το διάγραμμα δίνει μια άποψη όλων των κεφαλαίων που έχει ολοκληρώσει ή περάσει ο κάθε χρήστης.]]></key>
         <key id="course_charts&amp;_COMPLETED_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αυτο το διάγραμμα δίνει μια άποψη όλων των κεφαλαίων που έχουν ολοκληρωθεί από τους χρήστες σε αυτό το μάθημα.]]></key>
-        <key id="course_charts&amp;_NO_SCORM_IN_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Δεμ υπάρχουν πακέτα scorm σε αυτό το μάθημα]]></key>
+        <key id="course_charts&amp;_NO_SCORM_IN_COURSE" attributes="" save_date="2017-04-10 10:56:56"><![CDATA[Δεμ υπάρχουν πακέτα SCORM σε αυτό το μάθημα]]></key>
         <key id="course_charts&amp;_PASSED_CHART_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αντικείμενο ολοκληρώθηκε με επιτυχία]]></key>
-        <key id="course_charts&amp;_SCORE_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αυτό το διάγραμμα σας επιτρέπει να ελέγξετε το βαθμό που πήραν οι χρήστες σε κάθε κεφάλαιο scorm.]]></key>
-        <key id="course_charts&amp;_TIME_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αυτό το διάγραμμα σας επιτρέπει να ελέγξετε το χρόνο που πέρασαν οι χρήστες σε κάθε κεφάλαιο scorm.]]></key>
+        <key id="course_charts&amp;_SCORE_CHART_DESCRIPTION" attributes="" save_date="2017-04-10 10:57:10"><![CDATA[Αυτό το διάγραμμα σας επιτρέπει να ελέγξετε το βαθμό που πήραν οι χρήστες σε κάθε κεφάλαιο SCORM.]]></key>
+        <key id="course_charts&amp;_TIME_CHART_DESCRIPTION" attributes="" save_date="2017-04-10 10:57:04"><![CDATA[Αυτό το διάγραμμα σας επιτρέπει να ελέγξετε το χρόνο που πέρασαν οι χρήστες σε κάθε κεφάλαιο SCORM.]]></key>
         <key id="course_charts&amp;_TIME_CHART_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Χρόνος]]></key>
       </module>
       <module id="course_selector">
@@ -844,8 +845,8 @@
         <key id="dashboard&amp;_TOTAL_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αριθμός εγγραφών]]></key>
         <key id="dashboard&amp;_TOTAL_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Εγγεγραμμένοι χρήστες]]></key>
         <key id="dashboard&amp;_UNKNOWN_RELEASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Σφάλμα κατά την ανάκτηση της πιο πρόφατης διαθέσιμης έκδοσης]]></key>
-        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Εμπορικές υπηρεσίες formalms.org]]></key>
-        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Κοινότητα Ανοιχτού Κώδικα formalms.org]]></key>
+        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2017-04-10 12:49:48"><![CDATA[Εμπορικές υπηρεσίες forma.lms]]></key>
+        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:49:54"><![CDATA[Κοινότητα Ανοιχτού Κώδικα forma.lms]]></key>
         <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Πηροφορίες χρηστών]]></key>
         <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αναμένουν εγγραφή]]></key>
       </module>
@@ -1179,7 +1180,7 @@
       <module id="kb">
         <key id="kb&amp;_CATEGORIZED_AND_UNCATEGORIZED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Εμφάνιση όλων]]></key>
         <key id="kb&amp;_CATEGORIZED_ONLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Μόνο κατηγοριοποιημένα]]></key>
-        <key id="kb&amp;_CATEGORIZE_OBJECT_ITEMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αλλαγή από κατηγοριοποίηση scorm σε κατηγοριοποίηση βάσει κεφαλαίου]]></key>
+        <key id="kb&amp;_CATEGORIZE_OBJECT_ITEMS" attributes="" save_date="2017-04-10 10:57:17"><![CDATA[Αλλαγή από κατηγοριοποίηση SCORM σε κατηγοριοποίηση βάσει κεφαλαίου]]></key>
         <key id="kb&amp;_CONTAINED_IN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Περιέχεται σε]]></key>
         <key id="kb&amp;_IS_MOBILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αυτό το υλικό είναι συμβατό με κινητές συσκευές.]]></key>
         <key id="kb&amp;_RESOURCE_ORIGINAL_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Το αρχικό όνομα που είναι αποθηκευμένο στην πλατφόρμα]]></key>
@@ -1878,7 +1879,7 @@
         <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Δημιουργία πλήρους λίστας αντικειμένων]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Φόρτωση πακέτου SCORM]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SCORM]]></key>
-        <key id="scorm&amp;_SCORM_ADD_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Άνοιγμα πακέτου scorm]]></key>
+        <key id="scorm&amp;_SCORM_ADD_FORM" attributes="" save_date="2017-04-10 10:57:28"><![CDATA[Άνοιγμα πακέτου SCORM]]></key>
       </module>
       <module id="simplesel">
         <key id="simplesel&amp;_MANUAL_SEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Προχωρημένη επιλογή]]></key>
@@ -1957,7 +1958,7 @@
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Μέση τιμή]]></key>
         <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;lt;&amp;lt; Πίσω]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Βασική αναζήτηση]]></key>
-        <key id="standard&amp;_BBB" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Big Blue Button]]></key>
+        <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:37:28"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[από]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ημερολόγιο]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ακύρωση]]></key>
@@ -2337,7 +2338,7 @@
         <key id="storage&amp;_LONAME_item" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Φόρτωση αρχείου]]></key>
         <key id="storage&amp;_LONAME_link" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Σύνδεσμοι]]></key>
         <key id="storage&amp;_LONAME_poll" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Σφυγμομέτρηση]]></key>
-        <key id="storage&amp;_LONAME_scoitem" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Κεφάλαιο Scorm]]></key>
+        <key id="storage&amp;_LONAME_scoitem" attributes="" save_date="2017-04-10 10:57:35"><![CDATA[Κεφάλαιο SCORM]]></key>
         <key id="storage&amp;_LONAME_scormorg" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SCORM]]></key>
         <key id="storage&amp;_LONAME_test" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Τεστ]]></key>
         <key id="storage&amp;_ORGFOLDERNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Όνομα φακέλου]]></key>
@@ -2611,6 +2612,7 @@
       <module id="treeview">
         <key id="treeview&amp;_ALT_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Κενό]]></key>
       </module>
+      <module id="user_management"/>
       <module id="user_managment">
         <key id="user_managment&amp;_DONT_USE_TREE_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Να μη χρησιμοποιηθεί αυτο-εγγραφή στο οργανωτικό δέντρο]]></key>
         <key id="user_managment&amp;_LOG_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ρυθμίσεις εισαγωγής/εγγραφής]]></key>

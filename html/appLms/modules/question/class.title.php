@@ -192,6 +192,7 @@ class Title_Question extends Question {
 	 * 
 	 * @param  	int		$id_track		the test relative to this question
 	 * @param  	int		$num_quest		the quest sequqnce number
+     * @param  	int		$number_time	the quest attempt number
 	 * 
 	 * @return array	return an array with xhtml code in this way
 	 * 					string	'quest' 	=> the quest, 
@@ -202,7 +203,7 @@ class Title_Question extends Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function displayUserResult( $id_track, $num_quest, $show_solution ) {
+	function displayUserResult( $id_track, $num_quest, $show_solution, $number_time = null ) {
 		$lang =& DoceboLanguage::createInstance('test');
 		
 		$quest = '';

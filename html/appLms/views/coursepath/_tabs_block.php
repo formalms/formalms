@@ -1,5 +1,5 @@
-<div class="yui-t6">
-	<div class="yui-b">
+<div class="row">
+	<div class="col-md-12">
 		<?php
 		$this->widget('lms_block', array(
 			'zone' => 'right',

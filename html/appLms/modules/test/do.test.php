@@ -67,7 +67,7 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
     $id_test = $object_test->getId();
     $test_type = $object_test->getObjectType();
     $id_reference = getLoParam($id_param, 'idReference');
-    $url_coded = urlencode(serialize($object_test->back_url));
+    $url_coded = urlencode(Util::serialize($object_test->back_url));
     $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
 
     if ($id_track === false) {
@@ -524,7 +524,7 @@ function playTestDispatch($object_test, $id_param)
     $lang =& DoceboLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
-    $url_coded = urlencode(serialize($object_test->back_url));
+    $url_coded = urlencode(Util::serialize($object_test->back_url));
     $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
 
     if (isset($_POST['deleteandbegin'])) {
@@ -603,7 +603,7 @@ function play($object_test, $id_param)
     $lang =& DoceboLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
-    $url_coded = urlencode(serialize($object_test->back_url));
+    $url_coded = urlencode(Util::serialize($object_test->back_url));
     $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
 
     if ($id_track === false) {
@@ -784,6 +784,42 @@ function play($object_test, $id_param)
 									})(jQuery);   
                                     (function($) {
 										$(document).on('ready', function() {
+                                        
+                                            //LRZ
+                                            if(mandatory==true){
+                                                num_answer_radio = $('.answer_question input[type=\"radio\"]:checked').length ;     
+                                                num_answer_chk = $('.answer_question input[type=\"checkbox\"]:checked').length ;     
+                            
+                                                if((num_answer_radio +  num_answer_chk) >0){
+                                                
+                                                    $('#next_page').prop('disabled', false);
+                                                        if($('#answer_info'))
+                                                            $('#answer_info').hide();
+                                                        if($('#show_result'))
+                                                            $('#show_result').prop('disabled', false);
+                                                } else {
+                                              
+                                                    $('#next_page').prop('disabled', true);
+                                                        if($('#answer_info'))
+                                                            $('#answer_info').show();
+                                                        if($('#show_result'))
+                                                            $('#show_result').prop('disabled', true);                                                
+                                                
+                                                
+                                                }
+                                             }
+                                             
+                                             
+                                             if(mandatory==false){
+                                             
+                                                        $('#next_page').prop('disabled', false);
+                                                        if($('#answer_info'))
+                                                            $('#answer_info').hide();
+                                                        if($('#show_result'))
+                                                            $('#show_result').prop('disabled', false);
+                                             }
+                                             
+                                             
 											$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
 											$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
 											$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
@@ -875,6 +911,8 @@ function play($object_test, $id_param)
             ++$quest_sequence_number;
         }
     }
+
+
     if ($test_info['mandatory_answer'] == 1) {
         YuiLib::load();
         Util::get_js(Get::rel_path('lms') . '/modules/question/question.js', true, true);
@@ -921,8 +959,16 @@ function play($object_test, $id_param)
 
         $js_array .= '}';
 
-        cout('var num_answer_control = ' . $js_array . ';' . "\n"
+        cout('
+             var num_answer_control = ' . $js_array . ';' . "\n"
             . 'var tot_question = ' . (int)$tot_question . ';' . "\n"
+            . 'var mandatory = true ;' . "\n"
+            . '</script>', 'content');
+    } else {
+        //** NOT MANDATORY - LRZ **
+        cout('<script type="text/javascript">', 'content');
+        cout('var tot_question = ' . (int)$tot_question . ';' . "\n"
+            . 'var mandatory = false ;' . "\n"
             . '</script>', 'content');
     }
 
@@ -963,7 +1009,7 @@ function saveAndExit($object_test, $id_param)
     $lang =& DoceboLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
-    $url_coded = urlencode(serialize($object_test->back_url));
+    $url_coded = urlencode(Util::serialize($object_test->back_url));
     $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
 
     if ($id_track === false) {
@@ -1068,7 +1114,7 @@ function showResult($object_test, $id_param)
     $lang =& DoceboLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
-    $url_coded = urlencode(serialize($object_test->back_url));
+    $url_coded = urlencode(Util::serialize($object_test->back_url));
     $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
     $trackObj = new Track_Test($id_track);
 
@@ -1134,7 +1180,21 @@ function showResult($object_test, $id_param)
         $quest_point_do = 0;
 
         $quest_obj = new $type_class($id_quest);
-        $quest_point_do = $quest_obj->userScore($id_track, $trackObj->getNumberOfAttempt() + 1);
+
+        $numberOfattempt = 0;
+
+        if ($object_test->isRetainAnswersHistory()) {
+            if (!isset($_POST['show_review'])) {
+                $numberOfattempt = $trackObj->getNumberOfAttempt() + 1;
+            } else {
+                $numberOfattempt = $trackObj->getNumberOfAttempt();
+            }
+
+        }
+
+        $quest_point_do = $quest_obj->userScore($id_track, $numberOfattempt);
+
+
         $quest_max_score = $quest_obj->getMaxScore();
         if ($quest_obj->getScoreSetType() == 'manual') {
             ++$num_manual;
@@ -1309,7 +1369,7 @@ function showResult($object_test, $id_param)
 
     if ($test_info['show_score'] && $test_info['point_type'] != '1') {
 
-        $GLOBALS['page']->add('<span class="test_score_note">'.$lang->def('_TEST_TOTAL_SCORE').'</span> '.($point_do + $bonus_score).' / '.$max_score.'<br />', 'content');
+        $GLOBALS['page']->add('<span class="test_score_note">' . $lang->def('_TEST_TOTAL_SCORE') . '</span> ' . ($point_do + $bonus_score) . ' / ' . $max_score . '<br />', 'content');
         //$GLOBALS['page']->add('<span class="test_score_note">' . $lang->def('_TEST_TOTAL_SCORE') . '</span> ' . ($point_do + $bonus_score) . ' / 100<br />', 'content');
         if ($num_manual != 0 && $score_status != 'valid') {
             $GLOBALS['page']->add('<br />'
@@ -1330,40 +1390,40 @@ function showResult($object_test, $id_param)
     }
     if ($test_info['show_score_cat']) {
 
-         
-         /*
-        $sql_test = "
-        SELECT c.idCategory, c.name, COUNT(q.idQuest) , 
-        FROM " . $GLOBALS['prefix_lms'] . "_testquest AS q 
-            JOIN " . $GLOBALS['prefix_lms'] . "_quest_category AS c
-        WHERE c.idCategory = q.idCategory AND q.idTest = '" . $id_test . "' AND q.idCategory != 0 
-        GROUP BY c.idCategory 
-        ORDER BY c.name";
-         */
-        
-       //** LRZ    bug fix #9171    
-       //** in caso di partizioni di domande a categorie ( e no a tutte le domande della categoria)
-    $sql_test = "SELECT c.idCategory, c.name, COUNT(q.idQuest)  
+
+        /*
+       $sql_test = "
+       SELECT c.idCategory, c.name, COUNT(q.idQuest) ,
+       FROM " . $GLOBALS['prefix_lms'] . "_testquest AS q
+           JOIN " . $GLOBALS['prefix_lms'] . "_quest_category AS c
+       WHERE c.idCategory = q.idCategory AND q.idTest = '" . $id_test . "' AND q.idCategory != 0
+       GROUP BY c.idCategory
+       ORDER BY c.name";
+        */
+
+        //** LRZ    bug fix #9171
+        //** in caso di partizioni di domande a categorie ( e no a tutte le domande della categoria)
+        $sql_test = "SELECT c.idCategory, c.name, COUNT(q.idQuest)  
             FROM learning_testquest AS q , learning_quest_category AS c 
-            where  c.idCategory = q.idCategory 
-            AND q.idTest = ".$id_test."
+            WHERE  c.idCategory = q.idCategory 
+            AND q.idTest = " . $id_test . "
             AND q.idCategory != 0
             
-             and idQuest in (
-             select idQuest from learning_testtrack_answer as a , learning_testtrack   as b
-             where a.idTrack = b.idTrack and idUser = ".Docebo::user()->getIdst()." )
+             AND idQuest IN (
+             SELECT idQuest FROM learning_testtrack_answer AS a , learning_testtrack   AS b
+             WHERE a.idTrack = b.idTrack AND idUser = " . Docebo::user()->getIdst() . " )
               GROUP BY c.idCategory 
             ORDER BY c.name";
-                
+
 
         $re_category = sql_query($sql_test);
-                                          
+
 
         if (sql_num_rows($re_category)) {
 
             $GLOBALS['page']->add('<br />'
                 . '<table summary="' . $lang->def('_TEST_CATEGORY_SCORE') . '" class="category_score">'
-                . '<caption>' . $lang->def('_TEST_CATEGORY_SCORE','test') . '</caption>'
+                . '<caption>' . $lang->def('_TEST_CATEGORY_SCORE', 'test') . '</caption>'
                 . '<thead>'
                 . '<tr>'
                 . '<th>' . $lang->def('_TEST_QUEST_CATEGORY') . '</th>'
@@ -1610,9 +1670,8 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
 		FROM %lms_testquest AS q JOIN %lms_quest_type AS t
 		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode($quest_see, ',') . ") 
 		ORDER BY q.sequence";
-        
-        
-        
+
+
     } else {
         $query_question = "
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
@@ -1620,7 +1679,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
 		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest 
 		ORDER BY q.sequence";
     }
-    
+
     $reQuest = sql_query($query_question);
     while (list($id_quest, $type_quest, $type_file, $type_class, $id_cat) = sql_fetch_row($reQuest)) {
 
@@ -1630,7 +1689,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
 
         $quest_obj = eval("return new $type_class( $id_quest );");
         $quest_point_do = $quest_obj->userScore($idTrack);
-     
+
         $quest_max_score = $quest_obj->getMaxScore();
         if (($type_quest != 'title') && ($type_quest != 'break_page')) {
             $review = $quest_obj->displayUserResult($idTrack,
@@ -1666,14 +1725,14 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
             $manual_score = round($manual_score + $quest_max_score, 2);
         }
 
-        
+
         $point_do = round($point_do + $quest_point_do, 2);
-        
+
         $max_score = round($max_score + $quest_max_score, 2);
         if (isset($point_do_cat[$id_cat])) {
             //** LRZ    bug fix #9171   
             //$point_do_cat[$id_cat] = round(point_do + $point_do_cat[$id_cat], 2); 
-            $point_do_cat[$id_cat] = round($quest_point_do + $point_do_cat[$id_cat], 2); 
+            $point_do_cat[$id_cat] = round($quest_point_do + $point_do_cat[$id_cat], 2);
         } else {
             //** LRZ    bug fix #9171   
             //$point_do_cat[$id_cat] = point_do;
@@ -1743,7 +1802,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
 		WHERE idTest = '" . $idTest . "' AND idCategory != 0");
         while (list($id_cat) = sql_fetch_row($reQuestCat)) $category[] = $id_cat;
 
-        
+
         if (!empty($category)) {
 
             require_once(_lms_ . '/lib/lib.questcategory.php');
@@ -1838,7 +1897,7 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
         if (($type_quest != 'title') && ($type_quest != 'break_page')) {
             $review = $quest_obj->displayUserResult($id_track,
                 ($type_quest != 'title' ? $quest_sequence_number++ : $quest_sequence_number),
-                $quest_sequence_number,
+                true,
                 $number_time);
 
             $report_test .= '<div class="test_quest_review_container">'

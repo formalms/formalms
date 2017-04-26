@@ -26,9 +26,6 @@
 /framework/admin/lang/mod
 /framework/admin/lang/view
 /framework/admin/newsletter/view
-/framework/admin/publicadminmanager/mod
-/framework/admin/publicadminmanager/view
-/framework/admin/publicadminrules/view
 /framework/admin/setting/view
 /framework/admin/usermanagement/add
 /framework/admin/usermanagement/approve_waiting_user

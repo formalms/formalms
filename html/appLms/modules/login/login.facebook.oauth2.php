@@ -51,7 +51,7 @@ try{
 			if (!empty($objUserInfo["id"])) {
 				if($_SESSION['fb_from'] == "register"){
 					$_SESSION['fb_info']=$objUserInfo;
-					Util::jump_to(Get::rel_path('base').'/index.php?modname=login&op=register');
+					Util::jump_to(Get::rel_path("base") . "/index.php?r=" . _register_);
 				    die();
 				}
 				

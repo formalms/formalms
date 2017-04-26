@@ -54,7 +54,6 @@ define("ACL_INFO_SETTING_VALUE", 9);
 define("ADMIN_GROUP_GODADMIN", "/framework/level/godadmin");
 define("ADMIN_GROUP_ADMIN", "/framework/level/admin");
 define("ADMIN_GROUP_USER", "/framework/level/user");
-define("ADMIN_GROUP_PUBLICADMIN", "/framework/level/publicadmin");
 
 /**
  * Acl management tasks class
@@ -429,7 +428,6 @@ class DoceboACLManager
             }
             if (isset($list[ADMIN_GROUP_GODADMIN])) $result[ADMIN_GROUP_GODADMIN] = $list[ADMIN_GROUP_GODADMIN];
             if (isset($list[ADMIN_GROUP_ADMIN])) $result[ADMIN_GROUP_ADMIN] = $list[ADMIN_GROUP_ADMIN];
-            if (isset($list[ADMIN_GROUP_PUBLICADMIN])) $result[ADMIN_GROUP_PUBLICADMIN] = $list[ADMIN_GROUP_PUBLICADMIN];
             if (isset($list[ADMIN_GROUP_USER])) $result[ADMIN_GROUP_USER] = $list[ADMIN_GROUP_USER];
 
             if ($flip) $result = array_flip($list); else $result = $list;
@@ -482,7 +480,11 @@ class DoceboACLManager
             $query_h = "INSERT INTO " . $GLOBALS['prefix_fw'] . "_password_history ( idst_user, pwd_date, passw, changed_by ) "
                 . "VALUES ( " . (int)$idst . ", '" . date("Y-m-d H:i:s") . "', '" . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . "', " . (int)getLogUserId() . "  )";
             $this->_executeQuery($query_h);
-            return $idst;
+            $event = new \appCore\Events\Core\User\RegisterUserEvent();
+            $event->setId($idst);
+            \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\RegisterUserEvent::EVENT_NAME, $event);
+
+            return $event->getId();
         }
         else
         {
@@ -2418,54 +2420,41 @@ class DoceboACLManager
      * @internal param int $password_ash
      * @internal param bool $alg
      */
-    function encrypt($text, $password_hash=PASSWORD_DEFAULT)
-    {
-        if ($password_hash){
-            return password_hash($text, $password_hash);
-        } else {
-            return MD5($text);
-        }
+    function encrypt($text) {
+        $password=new Password($text);
+        return $password->hash();
     }
 
     /**
-     * @param $password
+     * @param $text
      * @param $hash
-     * @param bool $test_all
-     * @return bool
-     * @internal param bool $test_also_old
-     * @internal param int $password_hash
+     * @param $idst
+     * @return bool|TRUE
+     * @internal param $password
      */
-    function password_verify($password, $hash, $test_all=false){
-        if (password_verify($password, $hash)){
-            return true;
-        } else if ($test_all){
-            return MD5($password)==$hash;
-        } else {
-            return false;
-        }
-
-    }
-
-    function password_verify_update($password, $hash, $idst){
-        if ($this->password_verify($password, $hash)){
-            return true;
-        } else if ($this->encrypt($password,false)==$hash) {
-            return true;
-            // TODO: This will be in forma.lms 2.0
-            /*
-            return $this->updateUser(
-                $idst,
-                false,
-                false,
-                false,
-                $password,
-                false,
-                FALSE,
-                false
-            );
-            */
-        } else {
-            return false;
+    function password_verify_update($text, $hash, $idst=false) {
+        $password = new Password($text);
+        switch ($password->verify($hash)){
+            case PASSWORD_INCORRECT:
+                return false;
+            case PASSWORD_CORRECT:
+                return true;
+            case PASSWORD_UPDATE:{
+                if ($idst){
+                    return $this->updateUser(
+                        $idst,
+                        false,
+                        false,
+                        false,
+                        $text,
+                        false,
+                        FALSE,
+                        false
+                    );
+                } else {
+                    return true;
+                }
+            }
         }
     }
 
@@ -2476,7 +2465,6 @@ class DoceboACLManager
         $output = array();
         $output[ADMIN_GROUP_GODADMIN] = $list[ADMIN_GROUP_GODADMIN];
         $output[ADMIN_GROUP_ADMIN] = $list[ADMIN_GROUP_ADMIN];
-        $output[ADMIN_GROUP_PUBLICADMIN] = $list[ADMIN_GROUP_PUBLICADMIN];
         $output[ADMIN_GROUP_USER] = $list[ADMIN_GROUP_USER];
 
         return $output;

@@ -12,27 +12,36 @@
 				.Form::getHidden('active_tab', 'active_tab', $active_tab);
 	?>
 
-	<div id="global_conf" class="yui-navset">
-		<ul class="yui-nav">
+	<div id="" class="">
+		<ul class="nav nav-tabs">
 	
 		<?php
-			foreach($platform_list as $id => $translate)
-				echo '<li'.($id == $active_tab?' class="selected"':'').'>'
-					.'<a href="#tab_g_'.$id.'">'
-					.'<em>'.$translate.'</em>'
+
+			foreach($platform_list as $id => $translate)  {
+                            
+			    if($translate == 'menu_user') $strHeader = Lang::t('_USER_MANAGMENT', 'menu', 'framework');
+			    if($translate == 'menu_elearning') $strHeader = Lang::t('_FIRST_LINE_lms', 'menu', 'framework');
+			    if($translate == 'menu_content') $strHeader = Lang::t('_CONTENTS', 'standard', 'framework');
+			    if($translate == 'menu_report') $strHeader = Lang::t('_REPORT', 'standard', 'framework');
+			    if($translate == 'menu_config') $strHeader = Lang::t('_CONFIGURATION', 'menu', 'framework');
+
+				echo '<li'.($id == $active_tab?' class="active"':'').'>'
+					.'<a href="#tab_g_'.$id.'" data-toggle="tab">'
+					.'<em>'.$strHeader.'</em>'
 					.'</a>'
 					.'</li>';
-
+            }
+                    
 			reset($platform_list);
 		?>
 
 		</ul>
-		<div class="yui-content">
+		<div class="tab-content">
 			<?php
 				while(list($id, $translate) = each($platform_list))
 				{
 					// print the tab content
-					echo '<div id="tab_g_'.$id.'">'
+					echo '<div class="tab-pane'.($id == $active_tab?' active':'').'" id="tab_g_'.$id.'">'
 						.Form::openElementSpace();
 
 					$model->printPageWithElement($id, $idst);

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin_manifest>
+	<title>Report aggregate</title>
+	<author>Joint Technologies</author>
+	<name>report_aggregate_</name>
+	<version>2.0</version>
+	<category>report</category>
+	<description>Report aggregate</description>
+	<link>http://www.joint-tech.it/</link>
+	<license>GNU General Public License version 2</license>
+</plugin_manifest>

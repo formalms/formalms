@@ -1075,7 +1075,7 @@ function addsubscription() {
 
 		if(!empty($classroom) || !empty($edition))
 		{
-			$user_selected_post = urlencode(serialize($user_selected));
+			$user_selected_post = urlencode(Util::serialize($user_selected));
 
 			cout(	getTitleArea( array('index.php?modname=coursepath&amp;op=pathlist' => $lang->def('_COURSEPATH'), $path_name), 'coursepath')
 					.'<div class="std_block">'
@@ -1178,7 +1178,7 @@ function addsubscriptionedition()
 	$subs_man = new CourseSubscribe_Management();
 
 	$id_path = Get::req('id_path', DOTY_INT, 0);
-	$user_selected = unserialize(urldecode(Get::req('users', DOTY_MIXED, array())));
+	$user_selected = Util::unserialize(urldecode(Get::req('users', DOTY_MIXED, array())));
 
 	$courses = $cpath_man->getAllCourses(array($id_path));
 

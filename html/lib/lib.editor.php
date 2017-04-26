@@ -97,6 +97,7 @@ function loadHtmlEditor($id_form, $id, $name, $value, $css_text, $extra_param_fo
 		//using tiny_mce
 		case 'tinymce':
 			$txt =	'<textarea id="'.$id.'" name="'.$name.'" cols="52" rows="7" class="'.($simple ? 'tinymce_simple' : 'tinymce_complex').'">'."\n"
+//			$txt =	'<textarea id="'.$id.'" name="'.$name.'" cols="52" rows="7" class="'.'tinymce_simple'.'">'."\n"
 				.$value."\n"
 				.'</textarea>'."\n";
 

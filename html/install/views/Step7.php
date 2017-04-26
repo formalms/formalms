@@ -9,6 +9,10 @@
 </ul>
 <?php endif; ?>
 
+
+<h3><?php echo Lang::t('REMOVE_INSTALL_FOLDER'); ?></h3><br>
+
+
 <h3><?php echo Lang::t('_INSTALLATION_DETAILS'); ?>:</h3>
 <ul class="info">
 	<li><?php echo Lang::t('_SITE_HOMEPAGE'); ?>: <a href="<?php echo $_SESSION['site_url']; ?>" target="_blank"><?php echo $_SESSION['site_url']; ?></a></li>
@@ -18,7 +22,7 @@
 		[ <a href="#" onclick="YAHOO.util.Dom.get('pwd').innerHTML ='<?php echo $_SESSION['adm_info']['pass']; ?>'; return false;"><?php echo Lang::t('_REVEAL_PASSWORD'); ?></a> ]
 	</li>
 </ul>
-<h3>USEFUL LINKS:</h3>
+<h3><?php echo Lang::t('_USEFUL_LINKS'); ?>:</h3>
 
 <ul class="info">
 <li><a href="http://www.formalms.org" target="_blank">Official Website</a></li>

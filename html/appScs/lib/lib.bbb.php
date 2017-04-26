@@ -25,8 +25,8 @@ class Bbb_Manager {
 	var $can_mod = false;
 
 	function Bbb_Manager() {
-		$this->server = Get::sett('bbb_server');
-		$this->port = Get::sett('bbb_port');
+		$this->server = Get::sett('ConferenceBBB_server');
+		$this->port = Get::sett('ConferenceBBB_port');
 	}
 
 	function _getRoomTable() {
@@ -185,10 +185,10 @@ class Bbb_Manager {
 
 		$name = $this->getRoomName($idConference);
 
-    $url= Get::sett('bbb_server', "");
-    $salt = Get::sett('bbb_salt', "");
-    $moderator_password = Get::sett('bbb_password_moderator', "");
-    $viewer_password = Get::sett('bbb_password_viewer', "");
+    $url= Get::sett('ConferenceBBB_server', "");
+    $salt = Get::sett('ConferenceBBB_salt', "");
+    $moderator_password = Get::sett('ConferenceBBB_password_moderator', "");
+    $viewer_password = Get::sett('ConferenceBBB_password_viewer', "");
 		$response = BigBlueButton::createMeetingArray($username, $name, null, $moderator_password, $viewer_password, $salt, 'http://'.$url, $returnurl);
 		if(checkPerm('mod', true)){
       $password = $moderator_password;
@@ -341,7 +341,7 @@ class Bbb_Manager {
 	function _api_request($service, $method, $params, $parname = false) {
 		require_once(_base_.'/lib/lib.json.php');
 		require_once(_base_.'/lib/lib.fsock_wrapper.php');
-		$server = Get::sett('bbb_server', false);
+		$server = Get::sett('ConferenceBBB_server', false);
 		$output = false;
 		$_parname = ($parname ? $parname."=" : "");
 		if ($server && $service && $method) {
@@ -367,7 +367,7 @@ class Bbb_Manager {
 						"Content-type" => "application/x-www-form-urlencoded"
 					);
 					$post = $_parname.urlencode($json->encode($params));
-					$res_json = $fsock->post_request($url, Get::sett('bbb_port', '80'), $post, $other_header);
+					$res_json = $fsock->post_request($url, Get::sett('ConferenceBBB_port', '80'), $post, $other_header);
 					if ($res_json) {
 						$output = $json->decode($res_json);
 					}
@@ -377,7 +377,7 @@ class Bbb_Manager {
 				$post = $_parname.urlencode($json->encode($params));
 				$other_header = array("Content-type" => "application/x-www-form-urlencoded");
 				if ($method != 'login') $other_header[_BBB_AUTH_CODE] = $this->get_auth_code();
-				$res_json = $fsock->post_request($url, Get::sett('bbb_port', '80'), $post, $other_header);
+				$res_json = $fsock->post_request($url, Get::sett('ConferenceBBB_port', '80'), $post, $other_header);
 				if ($res_json) {
 					$output = $json->decode($res_json);
 				}
@@ -395,8 +395,8 @@ class Bbb_Manager {
 
 	function api_login() {
 		$params = new stdClass();
-		$params->account = Get::sett('bbb_user', "");
-		$params->password = Get::sett('bbb_password', "");
+		$params->account = Get::sett('ConferenceBBB_user', "");
+		$params->password = Get::sett('ConferenceBBB_password', "");
 		$params->group = "all";
 		$res = $this->_api_request('auth', 'login', $params, 'request');
 		$output = false;
@@ -412,8 +412,8 @@ class Bbb_Manager {
 	function api_verify() {
 		$params = new stdClass();
 		$params->authToken = $this->get_auth_code();
-		$params->account = Get::sett('bbb_user', "");
-		$params->password = Get::sett('bbb_password', "");
+		$params->account = Get::sett('ConferenceBBB_user', "");
+		$params->password = Get::sett('ConferenceBBB_password', "");
 		$params->group = "all";
 		$res =  $this->_api_request('auth', 'verify', $params, 'data');
 		if ($res && $res->result) return true;
@@ -423,8 +423,8 @@ class Bbb_Manager {
 	function api_logout() {
 		$params = new stdClass();
 		$params->authToken = $this->get_auth_code();
-		$params->account = Get::sett('bbb_user', "");
-		$params->password = Get::sett('bbb_password', "");
+		$params->account = Get::sett('ConferenceBBB_user', "");
+		$params->password = Get::sett('ConferenceBBB_password', "");
 		$params->group = "all";
 		return $this->_api_request('auth', 'logout', $params, 'data');
 	}
@@ -433,7 +433,7 @@ class Bbb_Manager {
 		$params = new stdClass();
 
 		$params->ClientId = ""; //Optional - Provides the value of client ID if specifically assigned
-		$params->account = Get::sett('bbb_user', ""); //Optional - Defines the user ID with which the registered BBB user will start a meeting groupName Optional all Defines group name, default is all
+		$params->account = Get::sett('ConferenceBBB_user', ""); //Optional - Defines the user ID with which the registered BBB user will start a meeting groupName Optional all Defines group name, default is all
 		$params->roomName = $display_name; //Optional - default - Defines Room name default is "default" agenda Optional Agenda of the meeting
 		$params->meetingName = $display_name; //Optional - The name of the Meeting. Default is "From Third party Portal" displayName Optional This is to set the display name of host
 		$params->joinEmailRequired = false; //Optional - true/false - Enables you to allow the attendees to join the meeting only on entering their email addresses; If it is set to true then joining the meeting without providing the email is disabled. Default is set to false audioVideo Optional av/audio/video/none Defines the audio and video settings av "Audio Video Allowed" none Audio-Video Disabled audio Audio Only video Video Only
@@ -483,7 +483,7 @@ class Bbb_Manager {
 		$params = new stdClass();
 		$params->enterpriseName = 'bbb';
 		$params->groupName = 'all';
-		$params->accountName = Get::sett('bbb_user', "");
+		$params->accountName = Get::sett('ConferenceBBB_user', "");
 		$params->roomName = 'default';
 		$params->startDate = date("M j, Y", fromDatetimeToTimestamp($startdate));
 		$params->startHour = ($starthour > 12 ? $starthour-12 : $starthour)."";
@@ -533,7 +533,7 @@ class Bbb_Manager {
 
 		$params = new stdClass();
 
-		$params->account = Get::sett('bbb_user', "");//Optional Defines the user ID with which the registered BBB user will start a meeting
+		$params->account = Get::sett('ConferenceBBB_user', "");//Optional Defines the user ID with which the registered BBB user will start a meeting
 		$params->groupName = "all";//Optional all Defines group name, default is "all"
 		//$params->roomName = $name; //Optional default Defines Room name
 		$params->scheduleId = $info_decoded->scheduleId; //Mandatory

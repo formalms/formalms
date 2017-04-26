@@ -32,15 +32,50 @@ class SettingAdmController extends AdmController {
 		$model = new SettingAdm();
 
 		$active_tab = importVar('active_tab', false, 1);
+        $plugin = Get::req('plugin');
+
+        if ($plugin){
+
+        }
 		if($model->saveElement($active_tab)) {
-
-			Util::jump_to('index.php?r=adm/setting/show&active_tab='.$active_tab.'&result=ok');
+            if ($plugin){
+                Util::jump_to('index.php?r=adm/pluginmanager/showSettings&plugin='.$plugin.'&result=ok');
+            } else {
+                Util::jump_to('index.php?r=adm/setting/show&active_tab='.$active_tab.'&result=ok');
+            }
 		} else {
-
-			Util::jump_to('index.php?r=adm/setting/show&active_tab='.$active_tab.'&result=err');
+            if ($plugin){
+                Util::jump_to('index.php?r=adm/pluginmanager/showSettings&plugin='.$plugin.'&result=err');
+            } else {
+                Util::jump_to('index.php?r=adm/setting/show&active_tab='.$active_tab.'&result=err');
+            }
 		}
 
 	}
+
+	public function clearTwigCache(){
+
+        $twigCacheDir = \appCore\Template\TwigManager::getCacheDir();
+
+        $this->rrmdir($twigCacheDir);
+
+        Util::jump_to('index.php?r=adm/setting/show');
+    }
+
+    function rrmdir($dir) {
+        if (is_dir($dir)) {
+            $objects = scandir($dir);
+            foreach ($objects as $object) {
+                if ($object != "." && $object != "..") {
+                    if (is_dir($dir."/".$object))
+                        $this->rrmdir($dir."/".$object);
+                    else
+                        unlink($dir."/".$object);
+                }
+            }
+            rmdir($dir);
+        }
+    }
 
 }
 

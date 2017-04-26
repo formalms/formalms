@@ -71,7 +71,7 @@ class LoginLayout {
         //add self_optin to enable registration
 		if($user_manager->_option->getOption('register_type') == 'self_optin' || $user_manager->_option->getOption('register_type') == 'self' || $user_manager->_option->getOption('register_type') == 'moderate') {
 
-			$html .= '<a class="first" href="index.php?modname=login&amp;op=register">'.Lang::t('_REGISTER', 'login').'</a> ';
+			$html .= '<a class="first" href="' . Get::rel_path("base") . "/index.php?r=" . _register_ . '">'.Lang::t('_REGISTER', 'login').'</a> ';
 		}
 		$html .= '<a href="index.php?modname=login&amp;op=lostpwd">'.Lang::t('_LOG_LOSTPWD', 'login').'</a>';
 		$html .= '</div>';

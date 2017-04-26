@@ -34,6 +34,7 @@ class JQueryLib
         'fancybox',
         'swipe',
         'select'];
+        
 
 
     public static function loadJQuery($which_version = '')
@@ -70,38 +71,41 @@ class JQueryLib
     }
 
 
-    public static function loadJQueryAddons($which_version)
+    public static function loadJQueryAddons($which_version, $exclude_addons = null)
     {
 
         $local_link = "\n\t\t";
         foreach (self::$array_js_addons as $a_addon_path) {
-            $full_path = "/addons/" . self::_path . "/" . $a_addon_path . "/";
-            $addon_files = self::select_file($full_path, $which_version . '.js');
-            if (count($addon_files) > 0) {
-                foreach ($addon_files as $js_file) {
-                    $js_file = $full_path . $js_file;
-                    $local_link .= Util::get_js($js_file);
+            if (!in_array($a_addon_path, $exclude_addons)) {
+                $full_path = "/addons/" . self::_path . "/" . $a_addon_path . "/";
+                $addon_files = self::select_file($full_path, $which_version . '.js');
+                if (count($addon_files) > 0) {
+                    foreach ($addon_files as $js_file) {
+                        $js_file = $full_path . $js_file;
+                        $local_link .= Util::get_js($js_file);
+                    }
                 }
-            }
+            }  
         }
         return $local_link;
     }
 
-    public static function loadCssAddons($which_version)
+    public static function loadCssAddons($which_version, $exclude_addons = null)
     {
         
         $local_link = "\n\t\t";
         foreach (self::$array_css_addons as $a_addon_path) {
+            if (!in_array($a_addon_path, $exclude_addons)) {
+                $full_path = "/addons/" . self::_path . "/" . $a_addon_path . "/";
+                $addon_files = self::select_file($full_path, $which_version . '.css');
+                if (count($addon_files) > 0) {
+                    foreach ($addon_files as $css_file) {
+                        $css_file = $full_path . $css_file;
+                        $local_link .= Util::get_css(Get::rel_path('base'). $css_file, true);
 
-            $full_path = "/addons/" . self::_path . "/" . $a_addon_path . "/";
-            $addon_files = self::select_file($full_path, $which_version . '.css');
-            if (count($addon_files) > 0) {
-                foreach ($addon_files as $css_file) {
-                    $css_file = $full_path . $css_file;
-                    $local_link .= Util::get_css(Get::rel_path('base'). $css_file, true);
-
+                    }
                 }
-            }
+            }    
         }
         return $local_link;
     }

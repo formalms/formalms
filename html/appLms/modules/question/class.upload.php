@@ -426,6 +426,7 @@ class Upload_Question extends Question {
 	 * 
 	 * @param  	int		$id_track		the test relative to this question
 	 * @param  	int		$num_quest		the quest sequqnce number
+	 * @param  	int		$number_time	the quest attempt number
 	 * 
 	 * @return array	return an array with xhtml code in this way
 	 * 					string	'quest' 			=> the quest, 
@@ -436,7 +437,7 @@ class Upload_Question extends Question {
 	 * @access public
 	 * @author Fabio Pirovano (fabio@docebo.com)
 	 */
-	function displayUserResult( $id_track, $num_quest, $show_solution ) {
+	function displayUserResult( $id_track, $num_quest, $show_solution, $number_time = null ) {
 		$lang =& DoceboLanguage::createInstance('test');
 		
 		$quest = '';
@@ -455,6 +456,10 @@ class Upload_Question extends Question {
 		FROM ".$GLOBALS['prefix_lms']."_testtrack_answer 
 		WHERE idQuest = '".(int)$this->id."' AND 
 			idTrack = '".(int)$id_track."'";
+        if ($number_time != null){
+            $recover_answer .= " AND number_time = ".$number_time;
+        }
+
 		list($answer_do, $manual_assigned ) = sql_fetch_row(sql_query($recover_answer));
 		
 		$quest = '<div class="play_question">'
@@ -469,7 +474,7 @@ class Upload_Question extends Question {
 			.'</div>';
 			
 		return array(	'quest' 	=> $quest, 
-						'score'		=> $this->userScore($id_track), 
+						'score'		=> $this->userScore($id_track, $number_time),
 						'comment'	=> '',
 						'manual_assigned' => ( $manual_assigned ? true : false ) );
 	}

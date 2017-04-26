@@ -22,6 +22,11 @@
 		<?php echo Layout::accessibility(); ?>
 		<!-- Page Head area -->
 		<?php echo Layout::zone('page_head'); ?>
+		<!-- Restyling -->
+		<?php
+		Util::get_js(Get::rel_path('base') . '../web/static/main.js', true, true);
+		Util::get_css(Get::rel_path('base') . '../web/static/main.css', true, true);
+		?>
 	</head>
 	<body class="yui-skin-docebo yui-skin-sam">
 		<!-- blind nav -->

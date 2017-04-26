@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin_manifest>
+	<title>Report course</title>
+	<author>Joint Technologies</author>
+	<name>report_course_</name>
+	<version>1.0</version>
+	<category>report</category>
+	<description>Report course</description>
+	<link>http://www.joint-tech.it/</link>
+	<license>GNU General Public License version 2</license>
+</plugin_manifest>

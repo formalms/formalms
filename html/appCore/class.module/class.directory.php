@@ -102,10 +102,10 @@ class Module_Directory extends Module {
 				$itemSelectedMulti_alt = array_keys ( $arrayState[DIRECTORY_ID][DIRECTORY_OP_SELECTFOLD] );
 			}
 			if( isset( $arrayState[DIRECTORY_ID][DIRECTORY_ID_PRINTEDITEM] )) {
-				$printedItems = unserialize(urldecode($arrayState[DIRECTORY_ID][DIRECTORY_ID_PRINTEDITEM]));
+				$printedItems = Util::unserialize(urldecode($arrayState[DIRECTORY_ID][DIRECTORY_ID_PRINTEDITEM]));
 			}
 			if( isset( $arrayState[DIRECTORY_ID][DIRECTORY_ID_PRINTEDFOLD] )) {
-				$printedItems_alt = unserialize(urldecode($arrayState[DIRECTORY_ID][DIRECTORY_ID_PRINTEDFOLD]));
+				$printedItems_alt = Util::unserialize(urldecode($arrayState[DIRECTORY_ID][DIRECTORY_ID_PRINTEDFOLD]));
 				//print_r( $printedItems_alt );
 			}
 			if( isset( $arrayState[DIRECTORY_ID][DIRECTORY_OP_SELECTMONO] )) {
@@ -223,7 +223,7 @@ class Module_Directory extends Module {
 	}
 
 	function getPrintedItems($arrayState) {
-		return unserialize(urldecode($arrayState[DIRECTORY_ID][DIRECTORY_ID_PRINTEDITEM]));
+		return Util::unserialize(urldecode($arrayState[DIRECTORY_ID][DIRECTORY_ID_PRINTEDITEM]));
 	}
 
 	function getStartSelection() {
@@ -799,12 +799,12 @@ class Module_Directory extends Module {
 				$email = $_POST['email'];
 				// get arr_folders to know collect custom fields
 				if( $arr_idst_groups === FALSE && isset( $_POST['arr_idst_groups'] ) ) {
-					$arr_idst_groups = unserialize( urldecode( $_POST['arr_idst_groups'] ) );
+					$arr_idst_groups = Util::unserialize(urldecode( $_POST['arr_idst_groups'] ) );
 				}
 			}
 		} else {
 			if( $arr_idst_groups === FALSE && isset( $_POST['arr_idst_groups'] ) ) {
-				$arr_idst_groups = unserialize( urldecode( $_POST['arr_idst_groups'] ) );
+				$arr_idst_groups = Util::unserialize(urldecode( $_POST['arr_idst_groups'] ) );
 			}
 			if(!$arr_idst_groups) {
 				
@@ -853,7 +853,7 @@ class Module_Directory extends Module {
 		$GLOBALS['page']->add( Form::getHidden('idst', 'idst', $idst), 'content' );
 		$GLOBALS['page']->add( Form::getHidden('arr_idst_groups',
 												'arr_idst_groups',
-												urlencode(serialize($arr_idst_groups))),
+												urlencode(Util::serialize($arr_idst_groups))),
 								'content' );
 								
 		$preference = new UserPreferences(0);
@@ -2315,11 +2315,6 @@ class Module_Directory extends Module {
 		if(isset($stats_required['admin'])) {
 			$idst_admin = $this->aclManager->getGroupST(ADMIN_GROUP_ADMIN);
 			$users['admin'] 		= $this->aclManager->getGroupUMembersNumber($idst_admin);
-		}
-
-        if(isset($stats_required['public_admin'])) {
-			$idst_admin = $this->aclManager->getGroupST(ADMIN_GROUP_PUBLICADMIN);
-			$users['public_admin'] 		= $this->aclManager->getGroupUMembersNumber($idst_admin);
 		}
 		return $users;
 	}

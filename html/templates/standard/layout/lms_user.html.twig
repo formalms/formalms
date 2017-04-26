@@ -8,13 +8,20 @@
 
 {% block javascript %}
     <script type="text/javascript" src="{{ evalPhp('Get::rel_path', ['base']) }}/lib/js_utils.js"></script>
+        <script>
+            $(function() {
+                // feedback
+                $('#container-feedback').click(function(){
+                   event.preventDefault();
+                    $( this ).fadeOut( 500 );
+                });
+            });
+        </script>    
 {% endblock %}
 
 {% block content %}
     <!-- blind nav -->
     {{ evalPhp('Layout::zone', ['blind_navigation']) }}
-    <!-- feedback -->
-    {{ evalPhp('Layout::zone', ['feedback']) }}
     <!-- container -->
     <div id="container">
         
@@ -24,6 +31,9 @@
         
         <!-- menu_over -->
         <div id="menu_over" class="layout_menu_over">
+        <!-- feedback -->
+        {{ evalPhp('Layout::zone', ['feedback']) }}
+        
             {{ evalPhp('Layout::cart') }}
             {{ evalPhp('Layout::zone', ['menu_over']) }}
                     

@@ -319,8 +319,8 @@ class UsermanagementAdmController extends AdmController {
 			'results' => count($list),
 			'records' => $output_results
 		);
-		
-		if(Get::cfg('enable_plugins', false)) PluginManager::runPlugins();
+		$pg = new PluginManager('UsersManagementShowEvent');
+		$pg->run('hook');
 
 		$event = new appCore\Events\Core\UsersManagementShowEvent;
 		$event->setUsers($output['records']);
@@ -2024,7 +2024,7 @@ class UsermanagementAdmController extends AdmController {
 		//$profile->setEndUrl('index.php?modname=directory&op=org_chart#user_row_'.$id_user);
 
 		//evento mostra dettaglio profilo
-		if(Get::cfg('enable_plugins', false)) PluginManager::runPlugins();
+
 		$event = new \appCore\Events\Core\UsersManagementShowDetailsEvent();
 		$event->setProfile($profile);
 		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementShowDetailsEvent::EVENT_NAME, $event);
@@ -2483,7 +2483,8 @@ class UsermanagementAdmController extends AdmController {
 			$info->__preferences = $pref_properties;
 		}
 
-		if(Get::cfg('enable_plugins', false)) PluginManager::runPlugins();
+        $pg = new PluginManager('UsersManagementEditMultipleEvent');
+        $pg->run('hook');
 		$event = new \appCore\Events\Core\UsersManagementEditMultipleEvent();
 		$event->setUsers($users);
 		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementEditMultipleEvent::EVENT_NAME, $event);
@@ -2568,7 +2569,7 @@ class UsermanagementAdmController extends AdmController {
 		$my_level = Docebo::user()->getUserLevelId();
 		if ($my_level == ADMIN_GROUP_GODADMIN) return TRUE;
 		if ($my_level == ADMIN_GROUP_USER) return FALSE;
-		if ($my_level == ADMIN_GROUP_ADMIN || $my_level == ADMIN_GROUP_PUBLICADMIN) {
+		if ($my_level == ADMIN_GROUP_ADMIN ) {
 			if ($level_to_check == ADMIN_GROUP_USER) return TRUE;
 		}
 		return FALSE;

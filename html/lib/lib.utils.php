@@ -209,7 +209,7 @@ class Util  {
 		) {
 			// Invalid request
 			if (!defined('IS_AJAX')) {
-				Util::jump_to(Get::rel_path('lms').'/index.php?modname=login&op=logout&msg=101');
+				Util::jump_to(Get::rel_path("base") . "/index.php?r=" . _logout_); // TODO: msg 101
 			}
 			Util::fatal('Security issue, the request seem invalid ! Try a new login and retry.');
 		}
@@ -421,24 +421,42 @@ class Util  {
 
 	public function objectToArray($object) { return is_object($object) ? get_object_vars($object) : false; }
 	public function arrayToObject($array) { return is_array($array) ? (object)$array : false; }
+
+    /**
+     * Used to replace serialize PHP function. (Vunerability FIX)
+     * @param mixed $string
+     * @return string
+     */
+    public static function serialize($string){
+        return json_encode($string);
+    }
+
+    /**
+     * Used to replace unserialize PHP function. (Vunerability FIX)
+     * @param $string
+     * @return array
+     */
+    public static function unserialize($string){
+        return json_decode($string,true);
+    }
 }
 
 class UIFeedback {
 
 	static public function info($message_text, $return = false) {
-		$result = '<p class="container-feedback"><span class="ico-sprite fd_info"><span>'.Lang::t('_DETAILS').'</span></span>&nbsp;'.$message_text.'</p>';
+		$result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_info"><span>'.Lang::t('_DETAILS').'</span></span>&nbsp;'.$message_text.'</div></a>';
 		if($return) return $result;
 		cout($result, 'feedback');
 	}
 
 	static public function notice($message_text, $return = false) {
-		$result = '<p class="container-feedback"><span class="ico-sprite fd_notice"><span>'.Lang::t('_NOTICE').'</span></span>&nbsp;'.$message_text.'</p>';
+		$result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_notice"><span>'.Lang::t('_NOTICE').'</span></span>&nbsp;'.$message_text.'</div></a>';
 		if($return) return $result;
 		cout($result, 'feedback');
 	}
 
 	static public function error($message_text, $return = false) {
-		$result = '<p class="container-feedback"><span class="ico-sprite fd_notice"><span>'.Lang::t('_OPERATION_FAILURE').'</span></span>&nbsp;'.$message_text.'</p>';
+		$result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_notice"><span>'.Lang::t('_OPERATION_FAILURE').'</span></span>&nbsp;'.$message_text.'</div></a>';
 		if($return) return $result;
 		cout($result, 'feedback');
 	}
