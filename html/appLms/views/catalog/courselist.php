@@ -33,7 +33,7 @@ function TruncateText($the_text, $size)
 
 
 
-        <div id="cbp-vm" class="container-fluid" style="margin-top: 15px;">
+        <div id="cbp-vm" class="container-fluid">
 <!--            <div class="forma-grid">-->
             <div class="row-fluid">
 
