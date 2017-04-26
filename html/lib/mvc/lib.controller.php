@@ -96,7 +96,8 @@ class Controller {
             $paths[]=$this->templatePath();
         }
 		$paths[]=$this->viewPath();
-		$tplengine=Get::cfg('template_engine', array());
+		//OVERLOAD template_engine in config $tplengine=Get::cfg('template_engine', array());
+        $tplengine['twig'] = array('ext' => '.html.twig');
 
 		foreach ($tplengine as $tplkey => $tpleng){
 			$extensions[$tplkey]=$tpleng['ext'];

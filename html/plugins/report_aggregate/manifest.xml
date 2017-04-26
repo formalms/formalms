@@ -2,7 +2,7 @@
 <plugin_manifest>
 	<title>Report aggregate</title>
 	<author>Joint Technologies</author>
-	<name>report_aggregate</name>
+	<name>report_aggregate_</name>
 	<version>2.0</version>
 	<category>report</category>
 	<description>Report aggregate</description>
