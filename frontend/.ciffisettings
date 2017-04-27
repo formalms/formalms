@@ -1,9 +1,0 @@
-'use strict';
-
-var CiffiSettings = {
-	projectName: 'formalms',
-	assetsPath: '../html/templates/standard/static',
-	assetsPathName: 'static'
-};
-
-module.exports = CiffiSettings;
