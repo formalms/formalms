@@ -1018,23 +1018,6 @@ ALTER TABLE `learning_certificate_course` ADD `minutes_required` INT( 11 ) NOT N
 -- 10116_add_box_course_description
 ALTER TABLE `learning_course` ADD `box_description` TEXT NOT NULL AFTER `name`;
 
-
-UPDATE core_setting 
-SET 
-param_value = '2.0'
-WHERE
-param_name = 'core_version';
-
-
-
-
-
-
-
-
-
-
-
 -- ------------------------------------------------------------------
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
