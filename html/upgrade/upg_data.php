@@ -122,6 +122,11 @@ if ($_SESSION['upgrade_ok']) {
 if ($_SESSION['upgrade_ok']) {
 	$qtxt ="UPDATE core_setting SET param_value = '".$formalms_version."' WHERE param_name = 'core_version' ";
 	$q =sql_query($qtxt);
+        
+	//MODIFICA TEMPORANEA reset del template di default a STANDARD in futuro controllo del templates
+	$qtxt ="UPDATE core_setting SET param_value = 'standard' WHERE param_name = 'defaultTemplate' ";
+	$q =sql_query($qtxt);
+        
 }
 
 
