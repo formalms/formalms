@@ -2027,7 +2027,6 @@ INSERT INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequen
 ('mo_34', 1, 'a:0:{}',0),
 ('mo_help', 1, 'a:0:{}',0),
 ('tb_elearning', 0, 'a:0:{}', 0),
-('tb_catalog', 1, 'a:0:{}',0),
 ('tb_assessment', 1, 'a:0:{}',0),
 ('tb_classroom', 1, 'a:0:{}',0),
 ('tb_communication', 1, 'a:0:{}',0),
