@@ -1019,20 +1019,7 @@ ALTER TABLE `learning_certificate_course` ADD `minutes_required` INT( 11 ) NOT N
 ALTER TABLE `learning_course` ADD `box_description` TEXT NOT NULL AFTER `name`;
 
 
-UPDATE core_setting 
-SET 
-param_value = '2.0'
-WHERE
-param_name = 'core_version';
-
-
-
-
-
-
-
-
-
+DELETE FROM `learning_middlearea` WHERE `obj_index` = "tb_catalog";
 
 
 -- ------------------------------------------------------------------
