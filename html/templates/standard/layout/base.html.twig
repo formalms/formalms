@@ -45,8 +45,8 @@
     <!-- specific stylesheet -->    
     <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/base.css"/>    
     <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/responsive.css"/>
-     <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/font-awesome/css/font-awesome.min.css" />
-        
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/font-awesome/css/font-awesome.min.css" />
+
     <!-- to be eliminated -->    
     {{ yuiLib}}
     <!-- printer stylesheet-->
@@ -65,22 +65,39 @@
 
     <!-- Custom Javascripts area -->
 
-  <script type="text/javascript" src="{{ layout_path }}script/tabnav.js"></script>
-
+    <script type="text/javascript" src="{{ layout_path }}script/tabnav.js"></script>
 
   {% block javascript %}
     {% endblock %}
-    
 
-
-    
+    <!-- Restyling -->
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}static/main.min.css">
+    <!--
+    To use or edit the not minified css uncomment this portion of code
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}static/main.css">
+    -->
 </head>
 <body class="yui-skin-docebo yui-skin-sam">
+
     <div class="container-fluid">      
     {% block content %}
     {% endblock %}
         {{ layout_analytics|raw }}
     </div>
-                          
+
+    <div class="FAKE-GRID grid" style="display:none;">
+        <div class="FAKE-GRID__COL col col--1"></div>
+        <div class="FAKE-GRID__COL col col--1"></div>
+        <div class="FAKE-GRID__COL col col--1"></div>
+        <div class="FAKE-GRID__COL col col--1"></div>
+        <div class="FAKE-GRID__COL col col--1"></div>
+        <div class="FAKE-GRID__COL col col--1"></div>
+        <div class="FAKE-GRID__COL col col--1"></div>
+        <div class="FAKE-GRID__COL col col--1"></div>
+        <div class="FAKE-GRID__COL col col--1"></div>
+        <div class="FAKE-GRID__COL col col--1"></div>
+        <div class="FAKE-GRID__COL col col--1"></div>
+        <div class="FAKE-GRID__COL col col--1"></div>
+    </div>
 </body>
 </html>

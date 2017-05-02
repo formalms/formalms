@@ -174,6 +174,8 @@ class PluginmanagerAdm extends Model {
                             $manifest['dependencies_satisfied']=false;
                         }
                         $plugins[$file]=$manifest;
+                    } else if (key_exists("core", $manifest) && $manifest['core']==="true") {
+                        $plugins[$file]=$manifest;
                     }
                 }
             }

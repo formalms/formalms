@@ -27,6 +27,9 @@ forma.lms is a free open source Learning Management System mantained by an itali
 		<li>Mobile devices support</li>
 	</ul>");
 // ---------------------------------------
+define("_WARNINGS","Warnings");
+define("WARNING_PUB_ADMIN_DELETED","All public admins willl be deleted");
+// ---------------------------------------
 define("_TITLE_STEP2", "Step 2: System Check");
 define("_SERVERINFO","Server information");
 define("_SERVER_SOFTWARE","Server software : ");
@@ -60,6 +63,7 @@ define("_AGREE_LICENSE", "I agree with the term of the license");
 define("_TITLE_STEP4", "Step 4: Configuration");
 define("_SITE_BASE_URL", "Base url of the website");
 define("_DATABASE_INFO", "Database information");
+define("_DB_TYPE", "Type");
 define("_DB_HOST", "Address");
 define("_DB_NAME", "Database name");
 define("_DB_USERNAME", "Database user");
@@ -82,6 +86,7 @@ define("_CANT_SELECT_DB", "Can't select DB, please check inserted data");
 define("_CANT_CONNECT_WITH_FTP","Can't connect in ftp to the specified server, please check inserted parameters");
 define("_SQL_STRICT_MODE_WARN", "You have MySQL <a href=\"http://dev.mysql.com/doc/en/server-sql-mode.html\" target=\"_blank\">strict mode</a> enabled; forma.lms doesn't support it, so please turn it off");
 define("_SQL_STRICT_MODE", "MySQL <a href=\"http://dev.mysql.com/doc/en/server-sql-mode.html\" target=\"_blank\">strict mode</a>");
+define("_DB_WILL_BE_CREATED", "Db will be created");
 // -----------------------------------------
 define("_TITLE_STEP5", "Step 5: Configuration");
 define("_ADMIN_USER_INFO", "Information regarding the administrator user (first login)");
@@ -103,9 +108,7 @@ define("_DATABASE", "Database");
 define("_DB_IMPORTING", "Importing database");
 define("_LANGUAGES", "Languages");
 // -----------------------------------------
-define("_TITLE_STEP7", "Step 7: Plugin installation");
-// -----------------------------------------
-define("_TITLE_STEP8", "Step 8: Installation completed");
+define("_TITLE_STEP7", "Step 7: Installation completed");
 define("REMOVE_INSTALL_FOLDER", "It is suggested to remove the install folder, forma is vulnerable until it is reachable.");
 define("_INSTALLATION_COMPLETED", "Installation has been completed");
 define("_INSTALLATION_DETAILS", "Details");
@@ -131,6 +134,8 @@ define("_START","Start");
 define("_END","Final");
 define("_INVALID_CONFIG_FILE", "Invalid config.php file; please make sure it is from a release matching the version specified in the \"Start\" field");
 define("_UPGRADE_NOT_NEEDED","You already have the latest version of forma.lms, no need to upgrade.");
+
+define("_USEFUL_LINKS", "Useful links");
 
 define("_COMMUNITY", "Community");
 define("_COMMERCIAL_SERVICES", "Commercial services");

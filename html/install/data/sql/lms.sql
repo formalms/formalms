@@ -249,6 +249,7 @@ CREATE TABLE IF NOT EXISTS `learning_certificate_course` (
   `id_course` int(11) NOT NULL DEFAULT '0',
   `available_for_status` tinyint(1) NOT NULL DEFAULT '0',
   `point_required` int(11) NOT NULL DEFAULT '0',
+  `minutes_required` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_certificate`,`id_course`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -729,6 +730,7 @@ CREATE TABLE IF NOT EXISTS `learning_course` (
   `idCategory` int(11) NOT NULL DEFAULT '0',
   `code` varchar(50) NOT NULL DEFAULT '',
   `name` varchar(255) NOT NULL DEFAULT '',
+  `box_description` TEXT NOT NULL,
   `description` text NOT NULL,
   `lang_code` varchar(100) NOT NULL DEFAULT '',
   `status` int(1) NOT NULL DEFAULT '0',
@@ -783,7 +785,9 @@ CREATE TABLE IF NOT EXISTS `learning_course` (
   `credits` int(11) NOT NULL DEFAULT '0',
   `auto_unsubscribe` tinyint(1) NOT NULL DEFAULT '0',
   `unsubscribe_date_limit` datetime DEFAULT NULL,
-  PRIMARY KEY (`idCourse`)
+  `id_menucustom` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idCourse`),
+  KEY `fk_menucustom` (`id_menucustom`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 --
@@ -1049,7 +1053,7 @@ CREATE TABLE IF NOT EXISTS `learning_course_editions` (
   `description` text NOT NULL,
   `status` int(1) NOT NULL DEFAULT '0',
   `date_begin` date NOT NULL DEFAULT '0000-00-00',
-  `date_end` date NOT NULL DEFAULT '0000-00-00',
+  `date_end` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `max_num_subscribe` int(11) NOT NULL DEFAULT '0',
   `min_num_subscribe` int(11) NOT NULL DEFAULT '0',
   `price` varchar(255) NOT NULL DEFAULT '',
@@ -1220,6 +1224,7 @@ CREATE TABLE IF NOT EXISTS `learning_forumthread` (
   `erased` tinyint(1) NOT NULL DEFAULT '0',
   `emoticons` varchar(255) NOT NULL DEFAULT '',
   `rilevantForum` tinyint(1) NOT NULL DEFAULT '0',
+  `privateThread` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`idThread`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
@@ -1828,42 +1833,6 @@ CREATE TABLE IF NOT EXISTS `learning_materials_track` (
 -- Dump dei dati per la tabella `learning_materials_track`
 --
 
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `learning_menu`
---
-
-CREATE TABLE IF NOT EXISTS `learning_menu` (
-  `idMenu` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `image` varchar(255) NOT NULL DEFAULT '',
-  `sequence` int(3) NOT NULL DEFAULT '0',
-  `collapse` enum('true','false') NOT NULL DEFAULT 'false',
-  PRIMARY KEY (`idMenu`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
-
---
--- Dump dei dati per la tabella `learning_menu`
---
-
-INSERT INTO `learning_menu` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES
-(1, '_MANAGEMENT_COURSE', '', 1, 'false'),
-(2, '', '', 2, 'true'),
-(3, '_ASSESSMENT', '', 3, 'false'),
-(4, '', '', 4, 'true'),
-(5, '', '', 5, 'true'),
-(6, '_CONTENTS', '', 6, 'false'),
-(7, '_MAN_CERTIFICATE', '', 7, 'false'),
-(8, '_MANAGEMENT_RESERVATION', '', 8, 'false'),
-(9, '_CONFIGURATION', '', 9, 'false'),
-(10, '', '', 10, 'true'),
-(11, '', '', 11, 'true'),
-(12, '', '', 12, 'true'),
-(13, '', '', 13, 'true'),
-(14, '', '', 14, 'true');
-
 -- --------------------------------------------------------
 
 --
@@ -1920,7 +1889,8 @@ INSERT INTO `learning_menucourse_under` (`idCourse`, `idModule`, `idMain`, `sequ
 (0, 36, 1, 2, ''),
 (0, 37, 1, 3, ''),
 (0, 38, 1, 4, ''),
-(0, 39, 1, 5, '');
+(0, 39, 1, 5, ''),
+(0, 46, 0, 3, '');
 
 -- --------------------------------------------------------
 
@@ -2035,58 +2005,6 @@ INSERT INTO `learning_menucustom_under` (`idCustom`, `idModule`, `idMain`, `sequ
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `learning_menu_under`
---
-
-CREATE TABLE IF NOT EXISTS `learning_menu_under` (
-  `idUnder` int(11) NOT NULL AUTO_INCREMENT,
-  `idMenu` int(11) NOT NULL DEFAULT '0',
-  `module_name` varchar(255) NOT NULL DEFAULT '',
-  `default_name` varchar(255) NOT NULL DEFAULT '',
-  `default_op` varchar(255) NOT NULL DEFAULT '',
-  `associated_token` varchar(255) NOT NULL DEFAULT '',
-  `of_platform` varchar(255) DEFAULT NULL,
-  `sequence` int(3) NOT NULL DEFAULT '0',
-  `class_file` varchar(255) NOT NULL DEFAULT '',
-  `class_name` varchar(255) NOT NULL DEFAULT '',
-  `mvc_path` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`idUnder`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
-
---
--- Dump dei dati per la tabella `learning_menu_under`
---
-
-INSERT INTO `learning_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES
-(1, 1, 'course', '_COURSE', '', 'view', NULL, 1, '', '', 'alms/course/show'),
-(2, 9, 'amanmenu', '_MAN_MENU', 'mancustom', 'view', NULL, 1, 'class.amanmenu.php', 'Module_AManmenu', ''),
-(3, 1, 'coursepath', '_COURSEPATH', 'pathlist', 'view', NULL, 2, 'class.coursepath.php', 'Module_Coursepath', ''),
-(4, 1, 'catalogue', '_CATALOGUE', 'catlist', 'view', NULL, 3, 'class.catalogue.php', 'Module_Catalogue', ''),
-(5, 6, 'webpages', '_WEBPAGES', 'webpages', 'view', NULL, 1, 'class.webpages.php', 'Module_Webpages', ''),
-(6, 6, 'news', '_NEWS', 'news', 'view', NULL, 2, 'class.news.php', 'Module_News', ''),
-(7, 9, 'questcategory', '_QUESTCATEGORY', '', 'view', NULL, 4, '', '', 'alms/questcategory/show'),
-(8, 1, 'coursecategory', '_COURSECATEGORY', '', 'view', NULL, 4, '', '', 'alms/coursecategory/show'),
-(9, 11, 'report', '_REPORT', 'reportlist', 'view', NULL, 1, 'class.report.php', 'Module_Report', ''),
-(10, 3, 'preassessment', '_ASSESSMENT', 'assesmentlist', 'view', NULL, 1, 'class.preassessment.php', 'Module_PreAssessment', ''),
-(14, 7, 'certificate', '_CERTIFICATE', 'certificate', 'view', NULL, 1, 'class.certificate.php', 'Module_Certificate', ''),
-(17, 8, 'reservation', '_EVENTS', 'view_event', 'view', NULL, 1, 'class.reservation.php', 'Module_Reservation', ''),
-(18, 8, 'reservation', '_CATEGORY', 'view_category', 'view', NULL, 2, 'class.reservation.php', 'Module_Reservation', ''),
-(20, 8, 'reservation', '_RESERVATION', 'view_registration', 'view', NULL, 3, 'class.reservation.php', 'Module_Reservation', ''),
-(21, 9, 'middlearea', '_MIDDLE_AREA', 'view_area', 'view', NULL, 2, 'class.middlearea.php', 'Module_MiddleArea', ''),
-(22, 6, 'internal_news', '_NEWS_INTERNAL', 'news', 'view', NULL, 3, 'class.internal_news.php', 'Module_Internal_News', ''),
-(23, 7, 'meta_certificate', '_META_CERTIFICATE', 'meta_certificate', 'view', NULL, 3, 'class.meta_certificate.php', 'Module_Meta_Certificate', ''),
-(26, 14, 'transaction', '_TRANSACTION', '', 'view', NULL, 1, '', '', 'alms/transaction/show'),
-(27, 2, 'location', '_LOCATION', '', 'view', NULL, 1, '', '', 'alms/location/show'),
-(28, 4, 'games', '_CONTEST', '', 'view', NULL, 1, '', '', 'alms/games/show'),
-(29, 5, 'communication', '_COMMUNICATION_MAN', '', 'view', NULL, 1, '', '', 'alms/communication/show'),
-(30, 12, 'kb', '_CONTENT_LIBRARY', '', 'view', NULL, 1, '', '', 'alms/kb/show'),
-(31, 9, 'timeperiods', '_TIME_PERIODS', '', 'view', NULL, 5, '', '', 'alms/timeperiods/show'),
-(32, 13, 'enrollrules', '_ENROLLRULES', '', 'view', NULL, 1, '', '', 'alms/enrollrules/show'),
-(33, 9, 'label', '_LABEL', '', 'view', NULL, 5, '', '', 'alms/label/show');
-
--- --------------------------------------------------------
-
---
 -- Struttura della tabella `learning_middlearea`
 --
 
@@ -2109,7 +2027,6 @@ INSERT INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequen
 ('mo_34', 1, 'a:0:{}',0),
 ('mo_help', 1, 'a:0:{}',0),
 ('tb_elearning', 0, 'a:0:{}', 0),
-('tb_catalog', 1, 'a:0:{}',0),
 ('tb_assessment', 1, 'a:0:{}',0),
 ('tb_classroom', 1, 'a:0:{}',0),
 ('tb_communication', 1, 'a:0:{}',0),
@@ -2118,7 +2035,8 @@ INSERT INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequen
 ('tb_label', 1, 'a:0:{}',0),
 ('tb_videoconference', 1, 'a:0:{}',0),
 ('tb_kb', 0, 'a:0:{}', 0),
-('tb_home', '1', 'a:0:{}', '0');
+('tb_home', '1', 'a:0:{}', '0'),
+('mo_46', '0', 'a:0:{}', '0');
 
 -- --------------------------------------------------------
 
@@ -2163,7 +2081,7 @@ INSERT INTO `learning_module` (`idModule`, `module_name`, `default_op`, `default
 (23, 'project', 'project', '_PROJECT', 'view', 'class.project.php', 'Module_Project', '', ''),
 (24, 'groups', 'groups', '_GROUPS', 'view', 'class.groups.php', 'Module_Groups', '', ''),
 (25, 'organization', 'organization', '_ORGANIZATION', 'view', 'class.organization.php', 'Module_Organization', '', ''),
-(26, 'coursereport', 'coursereport', '_COURSEREPORT', 'view', 'class.coursereport.php', 'Module_CourseReport', '', ''),
+(26, 'coursereport', 'coursereport', '_COURSEREPORT', 'view', 'class.coursereport.php', 'Module_CourseReport', '', 'lms/coursereport/coursereport'),
 (27, 'newsletter', 'view', '_NEWSLETTER', 'view', 'class.newsletter.php', 'Module_Newsletter', '', ''),
 (28, 'manmenu', 'manmenu', '_MAN_MENU', 'view', 'class.manmenu.php', 'Module_CourseManmenu', '', ''),
 (29, 'statistic', 'statistic', '_STAT', 'view', 'class.statistic.php', 'Module_Statistic', '', ''),
@@ -2172,15 +2090,10 @@ INSERT INTO `learning_module` (`idModule`, `module_name`, `default_op`, `default
 (32, 'public_forum', 'forum', '_PUBLIC_FORUM', 'view', 'class.public_forum.php', 'Module_Public_Forum', 'all', ''),
 (33, 'course_autoregistration', 'course_autoregistration', '_COURSE_AUTOREGISTRATION', 'view', 'class.course_autoregistration.php', 'Module_Course_Autoregistration', 'all', ''),
 (34, 'mycompetences', 'mycompetences', '_MYCOMPETENCES', 'view', 'class.mycompetences.php', 'Module_MyCompetences', 'all', ''),
-(35, 'pusermanagement', '', '_PUBLIC_USER_ADMIN', 'view', '', '', 'public_admin', 'lms/pusermanagement/show'),
-(36, 'pcourse', '', '_PUBLIC_COURSE_ADMIN', 'view', '', '', 'public_admin', 'lms/pcourse/show'),
-(38, 'public_report_admin', 'reportlist', '_PUBLIC_REPORT_ADMIN', 'view', 'class.public_report_admin.php', 'Module_Public_Report_Admin', 'public_admin', ''),
-(39, 'public_newsletter_admin', 'newsletter', '_PUBLIC_NEWSLETTER_ADMIN', 'view', 'class.public_newsletter_admin.php', 'Module_Public_Newsletter_Admin', 'public_admin', ''),
 (40, 'quest_bank', 'main', '_QUEST_BANK', 'view', 'class.quest_bank.php', 'Module_QuestBank', '', ''),
-(41, 'coursecharts', 'show', '_COURSECHART', 'view', 'class.coursecharts.php', 'Module_Coursecharts', '', 'coursecharts/show'),
 (42, 'coursestats', 'show', '_COURSESTATS', 'view', '', '', '', 'coursestats/show'),
-(44, 'pcertificate', 'certificate', '_PUBLIC_CERTIFICATE_ADMIN', 'view', 'class.pcertificate.php', 'Module_Pcertificate', 'public_admin', ''),
-(45, 'presence', '', '_PRESENCE', 'view', '', '', '', 'presence/presence');
+(45, 'presence', '', '_PRESENCE', 'view', '', '', '', 'presence/presence'),
+(46, 'course', '', '_CATALOGUE', 'view', '', '', 'all', 'lms/catalog/show');
 
 -- --------------------------------------------------------
 
@@ -2304,6 +2217,7 @@ CREATE TABLE IF NOT EXISTS `learning_organization_access` (
   `idOrgAccess` int(11) NOT NULL DEFAULT '0',
   `kind` set('user','group') NOT NULL DEFAULT '',
   `value` int(11) NOT NULL DEFAULT '0',
+  `params` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idOrgAccess`,`kind`,`value`),
   KEY `idObject` (`idOrgAccess`),
   KEY `kind` (`kind`)
@@ -3126,6 +3040,7 @@ CREATE TABLE IF NOT EXISTS `learning_test` (
   `max_attempt` int(11) NOT NULL DEFAULT '0',
   `hide_info` tinyint(1) NOT NULL DEFAULT '0',
   `order_info` text NOT NULL,
+  `cf_info` text NOT NULL,
   `use_suspension` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `suspension_num_attempts` int(10) unsigned NOT NULL DEFAULT '0',
   `suspension_num_hours` int(10) unsigned NOT NULL DEFAULT '0',
@@ -3133,6 +3048,9 @@ CREATE TABLE IF NOT EXISTS `learning_test` (
   `chart_options` text NOT NULL,
   `mandatory_answer` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `score_max` int(11) NOT NULL DEFAULT '0',
+  `obj_type` varchar(45) DEFAULT 'test',
+  `retain_answers_history` tinyint(1) NOT NULL DEFAULT '0',
+  `show_in_coursereport` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`idTest`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
@@ -3270,8 +3188,9 @@ CREATE TABLE IF NOT EXISTS `learning_testtrack_answer` (
   `score_assigned` double NOT NULL DEFAULT '0',
   `more_info` longtext NOT NULL,
   `manual_assigned` tinyint(1) NOT NULL DEFAULT '0',
-  `user_answer` tinyint(1) unsigned NULL DEFAULT '0',
-  PRIMARY KEY (`idTrack`,`idQuest`,`idAnswer`)
+  `user_answer` tinyint(1) unsigned DEFAULT '0',
+  `number_time` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`idTrack`,`idQuest`,`idAnswer`,`number_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -3500,1031 +3419,8 @@ CREATE TABLE IF NOT EXISTS `learning_wiki_course` (
 -- Limiti per le tabelle scaricate
 --
 
-
-
-
-
-
--- 150605.view_all.sql 
-
-
--- label
-INSERT INTO core_lang_text(text_key, text_module, text_attributes) VALUES ('_VIEW_ALL', 'standard', '');
-
-
-
--- 338.txt 
-ALTER TABLE  `core_user_temp` ADD  `avatar` VARCHAR( 255 ) NOT NULL;
-
--- 346.sql 
-INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
-VALUES ('orgchart_singlenode', 'off', 'enum', '3', '0', '3', '21', '1', '0', '');
-
-
--- 4232.sql 
-UPDATE core_setting 
-SET 
-param_value = 'exe,rar,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv'
-WHERE
-param_name = 'file_upload_whitelist';
-
--- 4301_forum_private_thread.sql 
-ALTER TABLE `learning_forumthread` ADD COLUMN `privateThread` TINYINT(1) NOT NULL DEFAULT 0 AFTER `rilevantForum`;
-
--- 4375.sql 
-
-
--- adding catalogue link onto the top menu
-insert into  learning_module (module_name, default_name, token_associated,module_info, mvc_path ) values ('course','_CATALOGUE','view','all','lms/catalog/show');
-insert   into learning_middlearea (obj_index,disabled,idst_list,sequence)  values ('mo_46',0,'a:0:{}',0);
-insert into learning_menucourse_under (idCourse, idModule, idMain,sequence) values (0,46,0,3);
-
--- 4447.sql 
-ALTER TABLE learning_course
- ADD id_menucustom INT(11);
-ALTER TABLE learning_course
- ADD CONSTRAINT fk_menucustom FOREIGN KEY (id_menucustom) REFERENCES learning_menucustom (idCustom) ON UPDATE CASCADE ON DELETE NO ACTION;
-
-
--- 4687_forum_as_table.sql 
-DELETE FROM core_setting WHERE param_name = 'forum_as_table';
-
--- core_role_view_all.sql 
-
-
--- nuovi_tipi_di_test.sql 
-ALTER TABLE `learning_organization_access` ADD COLUMN `params` VARCHAR(255) NULL COMMENT '' AFTER `value`;
-
-ALTER TABLE `learning_test` ADD COLUMN `obj_type` VARCHAR(45) NULL DEFAULT 'test' COMMENT '' AFTER `score_max`;
-
-
--- 4303.sql 
-
-
--- Creazione permesso view_all per modulo repository
-
-insert into core_st(idst) values(null);
-
-set @v_idst=LAST_INSERT_ID();
-
-insert into core_role(idst, roleid, description) VALUES
-(@v_idst, concat('/lms/course/private/light_repo/view_all'), NULL);
-
--- 4299.sql 
-
-
-
--- Evento UserNewApi
-
-INSERT INTO `core_event_class` (`class`, `platform`, `description`) VALUES ('UserNewApi', 'framework', '');
-set @v_idst=LAST_INSERT_ID();
-
-INSERT INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES (1, @v_idst);
-
-INSERT INTO `core_event_manager` (`idClass`, `permission`, `channel`, `recipients`, `show_level`) 
-VALUES
-(@v_idst, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user');
-
-
-
-
--- Evento UserNewApi
-
-INSERT INTO `core_event_class` (`class`, `platform`, `description`) VALUES ('UserCourseInsertedApi', 'lms-a', '');
-set @v_idst=LAST_INSERT_ID();
-
-INSERT INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES (1, @v_idst);
-
-INSERT INTO `core_event_manager` (`idClass`, `permission`, `channel`, `recipients`, `show_level`) 
-VALUES
-(@v_idst, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user');
-
--- 6364.sql 
-
-DROP TABLE IF EXISTS core_db_upgrades;
-CREATE TABLE core_db_upgrades (
- script_id int(11) NOT NULL AUTO_INCREMENT,
- script_name varchar(255) NOT NULL,
- script_description text,
- script_version varchar(255),
- core_version varchar(255),
- creation_date datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
- execution_date datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
- PRIMARY KEY (script_id)
-);
-
-
-insert into core_db_upgrades (script_name, script_description, script_version, core_version, creation_date, execution_date) values ('add_log_db_upgrades.sql', 'Creazione tabella di log per script update db', '1.0', (SELECT param_value FROM core_setting WHERE param_name LIKE 'core_version'), now(), now())
-ON DUPLICATE KEY UPDATE 
-execution_date=now();
-
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_DB_UPGRADES', 'dashboard', '');
-
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_LIST_DB_UPGRADES', 'configuration', '');
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SCRIPT_ID', 'standard', '');
-
-
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SCRIPT_NAME', 'standard', '');
-
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SCRIPT_DESCRIPTION', 'standard', '');
-
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SCRIPT_VERSION', 'standard', '');
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CORE_VERSION', 'standard', '');
-
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CREATION_DATE', 'standard', '');
-
-
-
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_EXECUTION_DATE', 'standard', '');
-
-
-
-
-
--- retain_answers_history.sql 
-ALTER TABLE learning_testtrack_answer ADD COLUMN number_time TINYINT(4) NULL DEFAULT '1' COMMENT '' AFTER user_answer;
-            
-ALTER TABLE learning_test ADD COLUMN retain_answers_history TINYINT(1) NOT NULL DEFAULT '0' COMMENT '' AFTER obj_type;
-
-ALTER TABLE learning_testtrack_answer
-CHANGE COLUMN number_time number_time TINYINT(4) NOT NULL DEFAULT '1' COMMENT '' ,
-DROP PRIMARY KEY,
-ADD PRIMARY KEY (idTrack, idQuest, idAnswer, number_time)  COMMENT '';
-
--- password_algorithms.sql 
-ALTER TABLE `core_user` CHANGE `pass` `pass` VARCHAR(255) NOT NULL;
-
-INSERT INTO `core_setting` (
-  `param_name` ,
-  `param_value` ,
-  `value_type` ,
-  `max_size` ,
-  `pack` ,
-  `regroup` ,
-  `sequence` ,
-  `param_load` ,
-  `hide_in_modify` ,
-  `extra_info`
-)
-VALUES (
-  'pass_algorithm', '1', 'password_algorithms', '255', 'password', '3', '5', '1', '0', ''
-);
-
--- 4229_customfield.sql 
-
-DROP TABLE IF EXISTS `core_customfield`;
-CREATE TABLE IF NOT EXISTS `core_customfield` (
-  `id_field` int(11) NOT NULL AUTO_INCREMENT,
-  `code` varchar(255) NOT NULL DEFAULT '',
-  `type_field` varchar(255) NOT NULL DEFAULT '',
-  `sequence` int(5) NOT NULL DEFAULT '0',
-  `show_on_platform` varchar(255) NOT NULL DEFAULT 'framework,',
-  `use_multilang` tinyint(1) NOT NULL DEFAULT '0',
-  `area_code` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_field`)
-);
-
-DROP TABLE IF EXISTS `core_customfield_area`;
-CREATE TABLE IF NOT EXISTS `core_customfield_area` (
-  `area_code` varchar(255) NOT NULL DEFAULT '',
-  `area_name` varchar(255) NOT NULL DEFAULT '',
-  `area_table` varchar(255) NOT NULL DEFAULT '',
-  `area_field` varchar(255) NOT NULL DEFAULT ''
-);
-
-INSERT INTO `core_customfield_area` (`area_code`, `area_name`, `area_table`, `area_field`) VALUES('COMPETENCE_CATEGORY', 'Competence Category', '%lms_competence_category', 'id_category');
-INSERT INTO `core_customfield_area` (`area_code`, `area_name`, `area_table`, `area_field`) VALUES('LO_TEST', 'Learning Object Test', '%lms_testquest', 'idQuest');
-
-DROP TABLE IF EXISTS `core_customfield_entry`;
-CREATE TABLE IF NOT EXISTS `core_customfield_entry` (
-  `id_field` varchar(11) NOT NULL DEFAULT '',
-  `id_obj` int(11) NOT NULL DEFAULT '0',
-  `obj_entry` text NOT NULL,
-  PRIMARY KEY (`id_field`,`id_obj`)
-);
-
-DROP TABLE IF EXISTS `core_customfield_lang`;
-CREATE TABLE IF NOT EXISTS `core_customfield_lang` (
-  `id_field` int(11) NOT NULL DEFAULT '0',
-  `lang_code` varchar(255) NOT NULL DEFAULT '',
-  `translation` varchar(255) NOT NULL DEFAULT ''
-);
-
-DROP TABLE IF EXISTS `core_customfield_son`;
-CREATE TABLE IF NOT EXISTS `core_customfield_son` (
-  `id_field_son` int(11) NOT NULL AUTO_INCREMENT,
-  `code` varchar(255) NOT NULL DEFAULT '',
-  `id_field` int(11) NOT NULL DEFAULT '0',
-  `sequence` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id_field_son`)
-);
-
-DROP TABLE IF EXISTS `core_customfield_son_lang`;
-CREATE TABLE IF NOT EXISTS `core_customfield_son_lang` (
-  `id_field_son` int(11) NOT NULL DEFAULT '0',
-  `lang_code` varchar(50) NOT NULL DEFAULT '',
-  `translation` varchar(255) NOT NULL DEFAULT ''
-);
-
-DROP TABLE IF EXISTS `core_customfield_type`;
-CREATE TABLE IF NOT EXISTS `core_customfield_type` (
-  `type_field` varchar(255) NOT NULL DEFAULT '',
-  `type_file` varchar(255) NOT NULL DEFAULT '',
-  `type_class` varchar(255) NOT NULL DEFAULT '',
-  `type_category` varchar(255) NOT NULL DEFAULT 'standard',
-  PRIMARY KEY (`type_field`)
-);
-
-INSERT INTO `core_customfield_type` (`type_field`, `type_file`, `type_class`, `type_category`) VALUES('textfield', 'class.textfield.php', 'Field_Textfield', 'standard');
-INSERT INTO `core_customfield_type` (`type_field`, `type_file`, `type_class`, `type_category`) VALUES('dropdown', 'class.dropdown.php', 'Field_Dropdown', 'standard');
-
-
-
-
--- ------------------
-
-
--- MENU CUSTOM FIELD
-
-
--- ------------------
-
-
-INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`)
-VALUES(6, 3, 'customfield_manager', '_CUSTOMFIELD_MANAGER', 'field_list', 'view', NULL, 8, 'class.customfield_manager.php', 'Module_Customfield_Manager', '');
-
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CUSTOMFIELD_MANAGER', 'menu', '');
-
-
-insert into core_role values(290, '/framework/admin/customfield_manager/view', '');
-insert into core_role values(291, '/framework/admin/customfield_manager/add', '');
-insert into core_role values(292, '/framework/admin/customfield_manager/mod', '');
-insert into core_role values(293, '/framework/admin/customfield_manager/del', '');
-insert into core_role_members values(290, 3);
-insert into core_role_members values(291, 3);
-insert into core_role_members values(292, 3);
-insert into core_role_members values(293, 3);
-
-
-
--- ------------------
-
-
--- MENU CUSTOM FIELD
-
-
--- ------------------
-
--- 4229_customfield_Lang.sql 
-
-
-
--- ------------------
-
-
---        LABEL      
-
-
--- ------------------
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_ADD_NEW_CUSTOMFIELD', 'field', '');
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_RU_CAT_TESTSTAT', 'report', '');
-
-
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_EXISTING_TEST', 'test', '');
-
-
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SELECTTEST', 'storage', '');
-
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_EXPORT_QUESTIONS', 'storage', '');
-
-
-
--- 4229_customfield_test.sql 
-
-
--- ------------------
-
-
--- TAB learning_test
-
-
--- ------------------
-
-ALTER TABLE  `learning_test` ADD  `cf_info` TEXT NOT NULL AFTER  `order_info`;
-
--- 8967.sql 
-
-
--- label _ACTION_ON_USERS
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_ACTION_ON_USERS', 'user_managment', '');
-
-
-
-
--- label _CREATE_AND_UPDATE
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CREATE_AND_UPDATE', 'user_managment', '');
-
-
-
-
--- label _CREATE_ALL
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CREATE_ALL', 'user_managment', '');
-
-
-
--- label _ONLY_CREATE
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_ONLY_CREATE', 'user_managment', '');
-
-
--- label _ONLY_UPDATE
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_ONLY_UPDATE', 'user_managment', '');
-
-
-
-
-
-
-
--- label _SET_PASSWORD
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SET_PASSWORD', 'user_managment', '');
-
-
-
-
-
--- label _FROM_FILE
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_FROM_FILE', 'user_managment', '');
-
-
-
-
--- label _INSERT_EMPTY
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_INSERT_EMPTY', 'user_managment', '');
-
-
-
--- label _INSERT_ALL
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_INSERT_ALL', 'user_managment', '');
-
-
-
-
--- label _PASSWORD_TO_INSERT
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_PASSWORD_TO_INSERT', 'user_managment', '');
-
-
-
-
-
-
--- label _MANUAL_PASSWORD
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_MANUAL_PASSWORD', 'user_managment', '');
-
-
-
-
--- label _AUTOMATIC_PASSWORD
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_AUTOMATIC_PASSWORD', 'user_managment', '');
-
-
-
-
--- label _SEND_NEW_CREDENTIALS_ALERT
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SEND_NEW_CREDENTIALS_ALERT', 'user_managment', '');
-
-
-
-
-
-
-
--- label _NEED_TO_ALERT
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_NEED_TO_ALERT', 'user_managment', '');
-
-
-
-
-
--- label _NO_FILE
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_NO_FILE', 'user_managment', '');
-
-
-
-
--- label _USERID_NEEDED
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_USERID_NEEDED', 'user_managment', '');
-
-
-
-
--- label _FIELD_REPEATED
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_FIELD_REPEATED', 'user_managment', '');
-
-
-
-
-
-
--- label _GENERATE_PASSWORD
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_GENERATE_PASSWORD', 'user_managment', '');
-
-
-
-
-
-
-
--- label _USER_ALREADY_EXISTS
-                         
-INSERT INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_USER_ALREADY_EXISTS', 'standard', '');
-
-
-
-
-
-
-
--- 8996_add_simpleadmin_orgchart.sql 
-insert into core_st(idst) values(null);
-set @v_idst=LAST_INSERT_ID();
-insert into core_role(idst, roleid, description) VALUES
-(@v_idst, concat('/framework/admin/usermanagement/add_org'), NULL);
-
-insert into core_st(idst) values(null);
-set @v_idst=LAST_INSERT_ID();
-insert into core_role(idst, roleid, description) VALUES
-(@v_idst, concat('/framework/admin/usermanagement/mod_org'), NULL);
-
-insert into core_st(idst) values(null);
-set @v_idst=LAST_INSERT_ID();
-insert into core_role(idst, roleid, description) VALUES
-(@v_idst, concat('/framework/admin/usermanagement/del_org'), NULL);
-
--- 9004_chiusura_corsi_edizioni_ora.sql 
-
-
--- edition.date_end DATETIME
-ALTER TABLE  `learning_course_editions` CHANGE  `date_end`  `date_end` DATETIME NOT NULL DEFAULT  '0000-00-00 00:00:00';
-
-
--- 4229_customfield_corsi_edizioni.sql 
-INSERT INTO `core_customfield_area` (`area_code`, `area_name`, `area_table`, `area_field`) VALUES('COURSE', 'Course', '%lms_course', 'idCourse');
-INSERT INTO `core_customfield_area` (`area_code`, `area_name`, `area_table`, `area_field`) VALUES('COURSE_EDITION', 'Course Edition', '%lms_course_editions', 'id_edition');
-
-
--- 9497_import_ucfirst.sql 
-
-
--- setting
-INSERT INTO `core_setting` 
-(`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) 
-VALUES
-('import_ucfirst', 'on', 'enum', 3, '0', 3, 22, 1, 0, '');
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_IMPORT_UCFIRST', 'configuration', '');
-
-
-
-
--- coursereport_mvc.sql 
-UPDATE `learning_module` SET `mvc_path` = 'lms/coursereport/coursereport' WHERE `learning_module`.`module_name` = "coursereport" AND `learning_module`.`default_op` = "coursereport";
-
--- 9593_custom_fields_mandatory_for_admin.sql 
-INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES ('custom_fields_mandatory_for_admin', 'off', 'enum', '3', 'register', '3', '21', '1', '0', '');
-
-INSERT INTO `core_lang_text` (`text_key`, `text_module`, `text_attributes`) VALUES ('_CUSTOM_FIELDS_MANDATORY_FOR_ADMIN', 'configuration', '');
-
-
--- 4559_remove.sql 
-
-
-DELETE FROM `core_menu_under` WHERE `module_name` = "publicadminrules";
-DELETE FROM `core_menu_under` WHERE `module_name` = "publicadminmanager";
-
-
-DELETE FROM `learning_module` WHERE `module_name` = "pusermanagement";
-DELETE FROM `learning_module` WHERE `module_name` = "pcourse";
-DELETE FROM `learning_module` WHERE `module_name` = "public_report_admin";
-DELETE FROM `learning_module` WHERE `module_name` = "public_newsletter_admin";
-DELETE FROM `learning_module` WHERE `module_name` = "pcertificate";
-
-
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pusermanagement/view";
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pusermanagement/add";
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pusermanagement/mod";
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pusermanagement/del";
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pusermanagement/approve_waiting_user";
-
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pcourse/view";
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pcourse/add";
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pcourse/mod";
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pcourse/del";
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pcourse/moderate";
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pcourse/subscribe";
-
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/public_report_admin/view";
-
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/public_newsletter_admin/view";
-
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/public_subscribe_admin/approve_waiting_user";
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/public_subscribe_admin/createuser_org_chart";
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/public_subscribe_admin/deluser_org_chart";
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/public_subscribe_admin/edituser_org_chart";
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/public_subscribe_admin/view_org_chart";
-
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pcertificate/view";
-DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pcertificate/mod";
-
-DELETE FROM `core_group` WHERE `groupid` = "/framework/level/publicadmin";
-
-
--- 4560_remove_coursecharts.sql 
-
-DELETE from learning_module WHERE module_name = "coursecharts";
-
-DELETE from core_role WHERE roleid like "%coursecharts%";
-
--- plugin-requests_tempname.sql 
-CREATE TABLE `core_requests` (
-  `id` int(11) NOT NULL,
-  `app` varchar(10) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `controller` varchar(255) NOT NULL,
-  `model` varchar(255) NOT NULL,
-  `plugin` varchar(255) NOT NULL
-);
-
-ALTER TABLE `core_requests`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `core_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
--- dev-plugin-system.sql 
-
-
--- SETTINGS
-  
-
--- Campo per i plugin
---  ALTER TABLE `core_plugin`  ADD `regroup` INT(11) NOT NULL  AFTER `description`;
-  
-
--- Campo per i settaggi
- ALTER TABLE `core_setting` CHANGE `regroup` `regroup` INT(11) NOT NULL DEFAULT '0';
-
-
-
--- GENERAL
-  
-
--- Campo per i plugin "core"
---  ALTER TABLE `core_plugin` ADD `core` BIT(1) NOT NULL DEFAULT '0' AFTER `active`;
-  
-
--- Eliminato campo code ora inutile
---  ALTER TABLE `core_plugin` DROP COLUMN `code`;
-
-
-
--- REPORT
-  
-
--- Aggiungo i report come plugin
-
-  
-
--- Reset tabelle report
-
-
---  TRUNCATE `learning_report`;
-
-
---  ALTER TABLE `learning_report` DROP COLUMN `file_name`;
-
-
---  TRUNCATE `learning_report_filter`;
-
-
---  
-
--- Insert new report
-
-
---  INSERT INTO `learning_report` (`id_report`, `report_name`, `class_name`, `use_user_selection`, `enabled`) VALUES (NULL, 'user_report', 'report_user', 'true', '1'), (NULL, 'course_report', 'report_course', 'true', '1'), (NULL, 'aggregate_report', 'report_aggregate', 'true', '1');
-
-
---  
-
--- Insert new report_filters
-
-
---  INSERT INTO `learning_report_filter` (`id_filter`, `id_report`, `author`, `creation_date`, `filter_name`, `filter_data`, `is_public`, `views`) VALUES (NULL, '2', '270', '0000-00-00 00:00:00', 'Courses - Users', 'a:5:{s:9:"id_report";s:1:"4";s:11:"report_name";s:15:"Courses - Users";s:11:"rows_filter";a:2:{s:11:"all_courses";b:1;s:16:"selected_courses";a:0:{}}s:23:"columns_filter_category";s:5:"users";s:14:"columns_filter";a:6:{s:9:"time_belt";a:3:{s:10:"time_range";s:1:"0";s:10:"start_date";s:0:"";s:8:"end_date";s:0:"";}s:21:"org_chart_subdivision";i:0;s:11:"showed_cols";a:7:{i:0;s:12:"_CODE_COURSE";i:1;s:12:"_NAME_COURSE";i:2;s:6:"_INSCR";i:3;s:10:"_MUSTBEGIN";i:4;s:18:"_USER_STATUS_BEGIN";i:5;s:15:"_COMPLETECOURSE";i:6;s:14:"_TOTAL_SESSION";}s:12:"show_percent";b:1;s:9:"all_users";b:1;s:5:"users";a:0:{}}}', '1', '10'), (NULL, '1', '270', '0000-00-00 00:00:00', 'Users - Courses', 'a:5:{s:9:"id_report";s:1:"2";s:11:"report_name";s:15:"Users - Courses";s:11:"rows_filter";a:2:{s:5:"users";a:0:{}s:9:"all_users";b:1;}s:23:"columns_filter_category";s:7:"courses";s:14:"columns_filter";a:7:{s:21:"org_chart_subdivision";i:0;s:11:"all_courses";b:1;s:16:"selected_courses";a:0:{}s:11:"sub_filters";a:0:{}s:16:"filter_exclusive";s:1:"1";s:14:"showed_columns";a:12:{i:0;s:8:"_TH_CODE";i:1;s:25:"_TH_USER_INSCRIPTION_DATE";i:2;s:19:"_TH_USER_START_DATE";i:3;s:17:"_TH_USER_END_DATE";i:4;s:20:"_TH_LAST_ACCESS_DATE";i:5;s:15:"_TH_USER_STATUS";i:6;s:20:"_TH_USER_START_SCORE";i:7;s:20:"_TH_USER_FINAL_SCORE";i:8;s:21:"_TH_USER_COURSE_SCORE";i:9;s:23:"_TH_USER_NUMBER_SESSION";i:10;s:21:"_TH_USER_ELAPSED_TIME";i:11;s:18:"_TH_ESTIMATED_TIME";}s:13:"custom_fields";a:0:{}}}', '1', '3'), (NULL, '1', '270', '0000-00-00 00:00:00', 'Users - Learning Objects', 'a:5:{s:9:"id_report";s:1:"2";s:11:"report_name";s:24:"Users - Learning Objects";s:11:"rows_filter";a:2:{s:5:"users";a:0:{}s:9:"all_users";b:1;}s:23:"columns_filter_category";s:2:"LO";s:14:"columns_filter";a:6:{s:11:"all_courses";b:1;s:16:"selected_courses";a:0:{}s:8:"lo_types";a:8:{s:3:"faq";s:3:"faq";s:8:"glossary";s:8:"glossary";s:8:"htmlpage";s:8:"htmlpage";s:4:"item";s:4:"item";s:4:"link";s:4:"link";s:4:"poll";s:4:"poll";s:8:"scormorg";s:8:"scormorg";s:4:"test";s:4:"test";}s:13:"lo_milestones";a:0:{}s:14:"showed_columns";a:8:{i:0;s:9:"user_name";i:1;s:11:"course_name";i:2;s:13:"course_status";i:3;s:7:"lo_type";i:4;s:7:"lo_name";i:5;s:12:"firstAttempt";i:6;s:11:"lastAttempt";i:7;s:9:"lo_status";}s:13:"custom_fields";a:0:{}}}', '1', '0'), (NULL, '1', '270', '0000-00-00 00:00:00', 'Users - 30 Days Delay', 'a:5:{s:9:"id_report";s:1:"2";s:11:"report_name";s:21:"Users - 30 Days Delay";s:11:"rows_filter";a:2:{s:5:"users";a:0:{}s:9:"all_users";b:1;}s:23:"columns_filter_category";s:5:"delay";s:14:"columns_filter";a:9:{s:21:"report_type_completed";b:1;s:19:"report_type_started";b:1;s:21:"day_from_subscription";s:2:"30";s:20:"day_until_course_end";s:0:"";s:21:"date_until_course_end";s:0:"";s:21:"org_chart_subdivision";i:0;s:11:"all_courses";b:1;s:16:"selected_courses";a:0:{}s:14:"showed_columns";a:7:{i:0;s:9:"_LASTNAME";i:1;s:5:"_NAME";i:2;s:7:"_STATUS";i:3;s:6:"_EMAIL";i:4;s:11:"_DATE_INSCR";i:5;s:18:"_DATE_FIRST_ACCESS";i:6;s:22:"_DATE_COURSE_COMPLETED";}}}', '1', '0');
-
--- INSERT INTO `core_plugin` (`name`, `title`, `category`, `version`, `author`, `link`, `priority`, `description`, `regroup`, `active`, `core`) VALUES('FormaAuth', 'Forma Auth', '', '1.0', 'Joint Technologies', '', 0, 'forma auth', 1488290190, 1, b'1');
-
-UPDATE `core_lang_text` SET `text_key` = 'course_report' WHERE `core_lang_text`.`text_key` = 'courses_report';
-
--- 9793_show_in_coursereport.sql 
-ALTER TABLE `learning_test` ADD `show_in_coursereport` TINYINT NULL DEFAULT '0' AFTER `retain_answers_history`;
-
--- reset-twig-cache.sql 
-INSERT INTO core_setting (param_name, param_value, value_type, max_size, pack, regroup, sequence, param_load, hide_in_modify, extra_info)
-											VALUES ('Clear_Twig_Cache','index.php?r=adm/setting/clearTwigCache','button',2,'Twig Cache',13,0,0,0,'');
-
-
--- 9449_new_back_end_menu.sql 
-start transaction;
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CONFIG_SYS', 'menu', '');
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CONFIG_ELEARNING', 'menu', '');
-
-
-
-
-
--- core_platform
-INSERT INTO `core_platform` (`platform`, `class_file`, `class_name`, `class_file_menu`, `class_name_menu`, `class_name_menu_managment`, `file_class_config`, `class_name_config`, `var_default_template`, `class_default_admin`, `sequence`, `is_active`, `mandatory`, `dependencies`, `main`, `hidden_in_config`) VALUES
-('menu_user', '', '', 'class.admin_menu_admin_user.php', 'Admin_Framework_user', 'Admin_Managment_Framework_User', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 1, 'true', 'true', '', 'false', 'false'),
-('menu_elearning', '', '', 'class.admin_menu_admin_elearning.php', 'Admin_Framework_Elearning', 'Admin_Managment_Framework_Elearning', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 2, 'true', 'true', '', 'false', 'false'),
-('menu_content', '', '', 'class.admin_menu_admin_content.php', 'Admin_Framework_Content', 'Admin_Managment_Framework_Content', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 3, 'true', 'true', '', 'false', 'false'),
-('menu_report', '', '', 'class.admin_menu_admin_report.php', 'Admin_Framework_Report', 'Admin_Managment_Framework_Report', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 4, 'true', 'true', '', 'false', 'false'),
-('menu_config', '', '', 'class.admin_menu_admin_config.php', 'Admin_Framework_Config', 'Admin_Managment_Framework_Config', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 5, 'true', 'true', '', 'false', 'false');
-
-
-
---
-
-
--- USER MENU
---
-
-
-DROP TABLE IF EXISTS `core_menu_user`;
-CREATE TABLE IF NOT EXISTS `core_menu_user` (
-  `idMenu` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `image` varchar(255) NOT NULL DEFAULT '',
-  `sequence` int(3) NOT NULL DEFAULT '0',
-  `collapse` enum('true','false') NOT NULL DEFAULT 'false',
-  PRIMARY KEY (`idMenu`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
-
-
-INSERT INTO `core_menu_user` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES
-(1, '', '', 1, 'true'),
-(4, '_ADMINISTRATORS', '', 5, 'false'),
-(7, '', '', 2, 'true'),
-(8, '', '', 3, 'true'),
-(9, '', '', 4, 'true');
-
-
-DROP TABLE IF EXISTS `core_menu_under_user`;
-CREATE TABLE IF NOT EXISTS `core_menu_under_user` (
-  `idUnder` int(11) NOT NULL AUTO_INCREMENT,
-  `idMenu` int(11) NOT NULL DEFAULT '0',
-  `module_name` varchar(255) NOT NULL DEFAULT '',
-  `default_name` varchar(255) NOT NULL DEFAULT '',
-  `default_op` varchar(255) NOT NULL DEFAULT '',
-  `associated_token` varchar(255) NOT NULL DEFAULT '',
-  `of_platform` varchar(255) DEFAULT NULL,
-  `sequence` int(3) NOT NULL DEFAULT '0',
-  `class_file` varchar(255) NOT NULL DEFAULT '',
-  `class_name` varchar(255) NOT NULL DEFAULT '',
-  `mvc_path` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`idUnder`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
-
-
-INSERT INTO `core_menu_under_user` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES
-(3, 7, 'groupmanagement', '_MANAGE_GROUPS', '', 'view', NULL, 1, '', '', 'adm/groupmanagement/show'),
-(16, 1, 'usermanagement', '_LISTUSER', '', 'view', NULL, 1, '', '', 'adm/usermanagement/show'),
-(18, 4, 'adminrules', '_ADMIN_RULES', '', 'view', NULL, 1, '', '', 'adm/adminrules/show'),
-(20, 4, 'adminmanager', '_ADMIN_MANAGER', '', 'view', NULL, 1, '', '', 'adm/adminmanager/show'),
-(22, 9, 'functionalroles', '_FUNCTIONAL_ROLE', '', 'view', NULL, 4, '', '', 'adm/functionalroles/show'),
-(23, 8, 'competences', '_COMPETENCES', '', 'view', NULL, 1, '', '', 'adm/competences/show');
-
---
-
-
--- ELEARNING MENU
---
-
-DROP TABLE IF EXISTS `core_menu_elearning`;
-CREATE TABLE IF NOT EXISTS `core_menu_elearning` (
-  `idMenu` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `image` varchar(255) NOT NULL DEFAULT '',
-  `sequence` int(3) NOT NULL DEFAULT '0',
-  `collapse` enum('true','false') NOT NULL DEFAULT 'false',
-  PRIMARY KEY (`idMenu`)
-)ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
-
-
-INSERT INTO `core_menu_elearning` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES
-(1, '_COURSES', '', 1, 'false'),
-(2, '', '', 2, 'true'),
-(3, '', '', 3, 'true'),
-(4, '', '', 4, 'true'),
-(7, '_MAN_CERTIFICATE', '', 7, 'false'),
-(8, '_MANAGEMENT_RESERVATION', '', 8, 'false'),
-(10, '', '', 10, 'true'),
-(12, '', '', 12, 'true'),
-(13, '', '', 13, 'true'),
-(14, '', '', 14, 'true');
-
-
-DROP TABLE IF EXISTS `core_menu_under_elearning`;
-CREATE TABLE IF NOT EXISTS `core_menu_under_elearning` (
-  `idUnder` int(11) NOT NULL AUTO_INCREMENT,
-  `idMenu` int(11) NOT NULL DEFAULT '0',
-  `module_name` varchar(255) NOT NULL DEFAULT '',
-  `default_name` varchar(255) NOT NULL DEFAULT '',
-  `default_op` varchar(255) NOT NULL DEFAULT '',
-  `associated_token` varchar(255) NOT NULL DEFAULT '',
-  `of_platform` varchar(255) DEFAULT NULL,
-  `sequence` int(3) NOT NULL DEFAULT '0',
-  `class_file` varchar(255) NOT NULL DEFAULT '',
-  `class_name` varchar(255) NOT NULL DEFAULT '',
-  `mvc_path` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`idUnder`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
-
-
-INSERT INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES
-(1, 1, 'course', '_COURSES', '', 'view', NULL, 1, '', '', 'alms/course/show'),
-(3, 1, 'coursepath', '_COURSEPATH', 'pathlist', 'view', 'lms', 2, 'class.coursepath.php', 'Module_Coursepath', ''),
-(4, 1, 'catalogue', '_CATALOGUE', 'catlist', 'view', 'lms', 3, 'class.catalogue.php', 'Module_Catalogue', ''),
-(10, 3, 'preassessment', '_ASSESSMENT', 'assesmentlist', 'view', NULL, 1, 'class.preassessment.php', 'Module_PreAssessment', ''),
-(14, 7, 'certificate', '_CERTIFICATE', 'certificate', 'view', 'lms', 1, 'class.certificate.php', 'Module_Certificate', ''),
-(17, 8, 'reservation', '_EVENTS', 'view_event', 'view', 'lms', 1, 'class.reservation.php', 'Module_Reservation', ''),
-(18, 8, 'reservation', '_CATEGORY', 'view_category', 'view', 'lms', 2, 'class.reservation.php', 'Module_Reservation', ''),
-(20, 8, 'reservation', '_RESERVATION', 'view_registration', 'view', 'lms', 3, 'class.reservation.php', 'Module_Reservation', ''),
-(23, 7, 'meta_certificate', '_META_CERTIFICATE', 'meta_certificate', 'view', 'lms', 3, 'class.meta_certificate.php', 'Module_Meta_Certificate', ''),
-(27, 2, 'location', '_LOCATION', '', 'view', NULL, 1, '', '', 'alms/location/show'),
-(28, 4, 'games', '_CONTEST', '', 'view', NULL, 1, '', '', 'alms/games/show'),
-(30, 12, 'kb', '_CONTENT_LIBRARY', '', 'view', NULL, 1, '', '', 'alms/kb/show'),
-(32, 13, 'enrollrules', '_ENROLLRULES', '', 'view', NULL, 1, '', '', 'alms/enrollrules/show'),
-(33, 14, 'transaction', '_TRANSACTION', '', 'view', NULL, 1, '', '', 'alms/transaction/show');
-
-
-
---
-
-
--- CONTENT MENU
---
-
-DROP TABLE IF EXISTS `core_menu_content`;
-CREATE TABLE IF NOT EXISTS `core_menu_content` (
-  `idMenu` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `image` varchar(255) NOT NULL DEFAULT '',
-  `sequence` int(3) NOT NULL DEFAULT '0',
-  `collapse` enum('true','false') NOT NULL DEFAULT 'false',
-  PRIMARY KEY (`idMenu`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
-
---
-
-
--- Dump dei dati per la tabella `core_menu_content`
---
-
-INSERT INTO `core_menu_content` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES
-(4, '', '', 4, 'true'),
-(5, '', '', 5, 'true'),
-(6, '', '', 6, 'true'),
-(10, '', '', 10, 'true'),
-(11, '', '', 11, 'true');
-
-DROP TABLE IF EXISTS `core_menu_under_content`;
-CREATE TABLE IF NOT EXISTS `core_menu_under_content` (
-  `idUnder` int(11) NOT NULL AUTO_INCREMENT,
-  `idMenu` int(11) NOT NULL DEFAULT '0',
-  `module_name` varchar(255) NOT NULL DEFAULT '',
-  `default_name` varchar(255) NOT NULL DEFAULT '',
-  `default_op` varchar(255) NOT NULL DEFAULT '',
-  `associated_token` varchar(255) NOT NULL DEFAULT '',
-  `of_platform` varchar(255) DEFAULT NULL,
-  `sequence` int(3) NOT NULL DEFAULT '0',
-  `class_file` varchar(255) NOT NULL DEFAULT '',
-  `class_name` varchar(255) NOT NULL DEFAULT '',
-  `mvc_path` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`idUnder`)
-)ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
-
-INSERT INTO `core_menu_under_content` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES
-(5, 4, 'webpages', '_WEBPAGES', 'webpages', 'view', 'lms', 1, 'class.webpages.php', 'Module_Webpages', ''),
-(6, 5, 'news', '_NEWS', 'news', 'view', 'lms', 2, 'class.news.php', 'Module_News', ''),
-(13, 11, 'newsletter', '_NEWSLETTER', 'newsletter', 'view', 'lms', 1, 'class.newsletter.php', 'Module_Newsletter', ''),
-(22, 6, 'internal_news', '_NEWS_INTERNAL', 'news', 'view', 'lms', 3, 'class.internal_news.php', 'Module_Internal_News', ''),
-(29, 10, 'communication', '_COMMUNICATION_MAN', '', 'view', 'lms', 1, '', '', 'alms/communication/show');
-
-
---
-
-
---  REPORT MENU
---
-DROP TABLE IF EXISTS `core_menu_report`;
-CREATE TABLE IF NOT EXISTS `core_menu_report` (
-  `idMenu` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `image` varchar(255) NOT NULL DEFAULT '',
-  `sequence` int(3) NOT NULL DEFAULT '0',
-  `collapse` enum('true','false') NOT NULL DEFAULT 'false',
-  PRIMARY KEY (`idMenu`)
-)ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
-
-INSERT INTO `core_menu_report` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES
-(2, '', '', 2, 'true');
-
-DROP TABLE IF EXISTS `core_menu_under_report`;
-CREATE TABLE IF NOT EXISTS `core_menu_under_report` (
-  `idUnder` int(11) NOT NULL AUTO_INCREMENT,
-  `idMenu` int(11) NOT NULL DEFAULT '0',
-  `module_name` varchar(255) NOT NULL DEFAULT '',
-  `default_name` varchar(255) NOT NULL DEFAULT '',
-  `default_op` varchar(255) NOT NULL DEFAULT '',
-  `associated_token` varchar(255) NOT NULL DEFAULT '',
-  `of_platform` varchar(255) DEFAULT NULL,
-  `sequence` int(3) NOT NULL DEFAULT '0',
-  `class_file` varchar(255) NOT NULL DEFAULT '',
-  `class_name` varchar(255) NOT NULL DEFAULT '',
-  `mvc_path` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`idUnder`)
-)ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
-
-
-
-INSERT INTO `core_menu_under_report` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES
-(9, 2, 'report', '_REPORT', 'reportlist', 'view', 'lms', 1, 'class.report.php', 'Module_Report', '');
-
-
---
-
-
---  CONFIG MENU
---
-
-DROP TABLE IF EXISTS `core_menu_config`;
-CREATE TABLE IF NOT EXISTS `core_menu_config` (
-  `idMenu` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `image` varchar(255) NOT NULL DEFAULT '',
-  `sequence` int(3) NOT NULL DEFAULT '0',
-  `collapse` enum('true','false') NOT NULL DEFAULT 'false',
-  PRIMARY KEY (`idMenu`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
-
-
-INSERT INTO `core_menu_config` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES
-(4, '_CONFIG_SYS', '', 1, 'false'),
-(5, '', '', 4, 'true'),
-(9, '_CONFIG_ELEARNING', '', 2, 'false'),
-(10, '_FIELD_MANAGER', '', 3, 'false');
-
-
-DROP TABLE IF EXISTS `core_menu_under_config`;
-CREATE TABLE IF NOT EXISTS `core_menu_under_config` (
-  `idUnder` int(11) NOT NULL AUTO_INCREMENT,
-  `idMenu` int(11) NOT NULL DEFAULT '0',
-  `module_name` varchar(255) NOT NULL DEFAULT '',
-  `default_name` varchar(255) NOT NULL DEFAULT '',
-  `default_op` varchar(255) NOT NULL DEFAULT '',
-  `associated_token` varchar(255) NOT NULL DEFAULT '',
-  `of_platform` varchar(255) DEFAULT NULL,
-  `sequence` int(3) NOT NULL DEFAULT '0',
-  `class_file` varchar(255) NOT NULL DEFAULT '',
-  `class_name` varchar(255) NOT NULL DEFAULT '',
-  `mvc_path` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`idUnder`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
-
-
-INSERT INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES
-(1, 9, 'questcategory', '_QUESTCATEGORY', '', 'view', NULL, 4, '', '', 'alms/questcategory/show'),
-(2, 9, 'amanmenu', '_MAN_MENU', 'mancustom', 'view', 'lms', 1, 'class.amanmenu.php', 'Module_AManmenu', ''),
-(4, 10, 'field_manager', '_FIELD_MANAGER', 'field_list', 'view', NULL, 3, 'class.field_manager.php', 'Module_Field_Manager', ''),
-(5, 4, 'setting', '_CONFIGURATION', '', 'view', NULL, 1, 'class.configuration.php', 'Module_Configuration', 'adm/setting/show'),
-(6, 10, 'customfield_manager', '_CUSTOMFIELD_MANAGER', 'field_list', 'view', NULL, 8, 'class.customfield_manager.php', 'Module_Customfield_Manager', ''),
-(7, 4, 'event_manager', '_EVENTMANAGER', 'display', 'view_event_manager', NULL, 3, 'class.event_manager.php', 'Module_Event_Manager', ''),
-(8, 4, 'iotask', '_IOTASK', 'iotask', 'view', NULL, 4, 'class.iotask.php', 'Module_IOTask', ''),
-(9, 4, 'pluginmanager', '_PLUGIN_MANAGER', '', 'view', NULL, 7, '', '', 'adm/pluginmanager/show'),
-(10, 5, 'lang', '_LANG', '', 'view', NULL, 1, '', '', 'adm/lang/show'),
-(21, 9, 'middlearea', '_MIDDLE_AREA', 'view_area', 'view', 'lms', 2, 'class.middlearea.php', 'Module_MiddleArea', ''),
-(25, 4, 'privacypolicy', '_PRIVACYPOLICIES', '', 'view', NULL, 6, '', '', 'adm/privacypolicy/show'),
-(31, 9, 'timeperiods', '_TIME_PERIODS', '', 'view', NULL, 5, '', '', 'alms/timeperiods/show'),
-(33, 9, 'label', '_LABEL', '', 'view', NULL, 5, '', '', 'alms/label/show'),
-(34, 4, 'code', '_CODE', 'list', 'view', NULL, 8, 'class.code.php', 'Module_Code', '');
-
-
-
--- DROPPING
-
-
--- NO LONGER USEFUL TABLES
-DROP TABLE IF EXISTS `core_menu`;
-DROP TABLE IF EXISTS `core_menu_under`;
-DROP TABLE IF EXISTS `learning_menu`;
-DROP TABLE IF EXISTS `learning_menu_under`;
-
-
-
--- END
-commit;
-
-
-
+ALTER TABLE `learning_course`
+  ADD CONSTRAINT `fk_menucustom` FOREIGN KEY (`id_menucustom`) REFERENCES `learning_menucustom` (`idCustom`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 
 -- --------------------------------------------------------

@@ -2,7 +2,7 @@
 <plugin_manifest>
 	<title>Report course</title>
 	<author>Joint Technologies</author>
-	<name>report_course</name>
+	<name>report_course_</name>
 	<version>1.0</version>
 	<category>report</category>
 	<description>Report course</description>
