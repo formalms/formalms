@@ -112,7 +112,7 @@ function getTemplateList($set_keys = FALSE, $platform = FALSE) {
 	$templ = dir(_base_.'/templates/');
 	while($elem = $templ->read()) {
 
-		if((is_dir(_base_.'/templates/'.$elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem{0} != '_' ) {
+		if((is_dir(_base_.'/templates/'.$elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem{0} != '_' && file_exists(_base_.'/templates/'.$elem."/manifest.xml")) {
 
 			if (!$set_keys) $templArray[] = $elem;
 			else $templArray[$elem] = $elem;
