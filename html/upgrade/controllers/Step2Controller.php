@@ -150,6 +150,7 @@ Class Step2Controller extends StepController {
 
 		// common dir to check
 		$dir_to_check = array(
+			'files/cache',
 			'files/tmp',
 			'files/common/comment',
 			'files/common/iofiles',
@@ -183,12 +184,15 @@ Class Step2Controller extends StepController {
 						$specific_dir_to_check = array(
 							'files/' . $dirprefix .'Lms/certificate',
 							'files/' . $dirprefix .'Lms/chat',
+							'files/' . $dirprefix .'Lms/course',
 							'files/' . $dirprefix .'Lms/forum',
 							'files/' . $dirprefix .'Lms/item',
+							'files/' . $dirprefix .'Lms/htmlpages',
 							'files/' . $dirprefix .'Lms/label',
 							'files/' . $dirprefix .'Lms/message',
 							'files/' . $dirprefix .'Lms/project',
 							'files/' . $dirprefix .'Lms/repo_light',
+							'files/' . $dirprefix .'Lms/scorm'
 							'files/' . $dirprefix .'Lms/sponsor',
 							'files/' . $dirprefix .'Lms/test'
 							 );
@@ -198,8 +202,6 @@ Class Step2Controller extends StepController {
 							$specific_dir_to_check[] = 'files/' . $dirprefix .'Lms/htmlpages';
 						}
 						$empty_specific_dir_to_check = array(
-							'files/' . $dirprefix .'/course',
-							'files/' . $dirprefix .'/scorm'
 						);
 					} break;
 
