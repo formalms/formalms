@@ -111,9 +111,11 @@ function TruncateText($the_text, $size)
                             <div class="course-box__item course-box__item--half">
                                 <div class="course-box__date-text">
                                     <span>Data di chiusura</span><br>
-                                    <?php echo GetCourseDay($course) ?>
-                                    <?php echo GetCourseMonth($course) ?>
-                                    <?php echo GetCourseYear($course) ?>
+                                    <?php
+                                    if (GetCourseYear($course) > 1) {
+                                        echo GetCourseDay($course) . ' ' . GetCourseMonth($course) . ' ' . GetCourseYear($course);
+                                    }
+                                    ?>
                                 </div>
                             </div>
                             <div class="course-box__item course-box__item--half">
