@@ -75,7 +75,7 @@ html, body {}
   border-top: 2px solid #C84000;
   border-bottom: 1px solid #C84000;
   background: white;
-  z-index: 0;
+  z-index: 1;
 }
 .sm-forma a, .sm-forma a:hover, .sm-forma a:focus, .sm-forma a:active {
   padding: 13px 20px;
