@@ -144,7 +144,7 @@ class HomepageAdmController extends AdmController {
             
             case "lost_user":
                 $email = Get::req("email", DOTY_STRING);
-                if(eregi("\r", $email) || eregi("\n", $email)) { 
+                if(preg_match("\r", $email) || preg_match("\n", $email)) {
                     
                     $page = "lostpwd";
                     $params['lost_user_msg'] = Lang::t("_INVALID_EMAIL", "register");
