@@ -756,7 +756,7 @@ case 'menu_user':
                     $query =    "SELECT module_name, default_name, class_file, class_name, mvc_path"
                                 ." FROM %adm_menu_under_content"
                                 ." WHERE idMenu = '".$id_menu."'";
-
+                                
                     $result_under = sql_query($query);
 
                     if(sql_num_rows($result_under) > 0)
@@ -804,24 +804,29 @@ case 'menu_user':
                             }
                             else
                             {   
-                                if($class_file == "class.newsletter.php"){
+                               if($class_file == "class.newsletter.php"){   
+                                   
+                                    require_once(_adm_.'/class.module/'.$class_file);     
+                                    $tmp_class = new $class_name();
+                                    $perm_path = '/framework/admin/'.strtolower($module_name).'/';                                   
+                                   
                                     
-                                    require_once(_adm_.'/class.module/'.$class_file);
-                                }   else {
-                                    
+                               }   else {
                                     require_once(_lms_.'/admin/class.module/'.$class_file);    
-                                }       
+                                    $tmp_class = new $class_name();
+                                    $perm_path = '/lms/admin/'.strtolower($module_name).'/';
+   
+                               }       
+          
                                 
-                                
-                                $tmp_class = new $class_name();
-                                $perm_path = '/lms/admin/'.strtolower($module_name).'/';
-
                                 $perm = $tmp_class->getAllToken('lang');
 
+                                
                                 if(!empty($perm))
                                 {
                                     foreach($perm as $perm_name => $info)
                                     {
+                                        
                                         if(array_search($perm_name, array_keys($total_perm)) == false)
                                         {
                                             $total_perm[$perm_name] = $info['image'];
@@ -829,7 +834,7 @@ case 'menu_user':
                                             if($collapse === 'true')
                                                 $th = array(Lang::t($default_name, 'menu'));
                                         }
-
+                                    
                                         list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
                                         $module_perm[$class_name][$perm_name] = $perm_idst;
                                     }
@@ -961,6 +966,7 @@ case 'menu_user':
                                 $tmp_class = new $class_name();
                                 $perm_path = '/lms/admin/'.strtolower($module_name).'/';
 
+                                
                                 $perm = $tmp_class->getAllToken('lang');
 
                                 if(!empty($perm))
