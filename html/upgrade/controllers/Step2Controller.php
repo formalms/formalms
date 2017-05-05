@@ -192,7 +192,7 @@ Class Step2Controller extends StepController {
 							'files/' . $dirprefix .'Lms/message',
 							'files/' . $dirprefix .'Lms/project',
 							'files/' . $dirprefix .'Lms/repo_light',
-							'files/' . $dirprefix .'Lms/scorm'
+							'files/' . $dirprefix .'Lms/scorm',
 							'files/' . $dirprefix .'Lms/sponsor',
 							'files/' . $dirprefix .'Lms/test'
 							 );

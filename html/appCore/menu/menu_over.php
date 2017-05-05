@@ -20,9 +20,6 @@ function GetAdminPanel(){
         <li data-sm-reverse="true" style="float:right">
             <a href="#"><i class="fa fa-user"></i>&nbsp;<b>'.Docebo::user()->getUserName().'</b></a>
             <ul>
-                  <li>
-                    <a href="index.php">'.Lang::t('_DASHBOARD', 'dashboard').'</a>
-                  </li>  
                   <li><a href="index.php?r=lms/profile/show">'.Lang::t('_PROFILE', 'profile').'</a>   
                   </li>'.
                         BackToLms()

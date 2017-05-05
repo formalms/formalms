@@ -20,6 +20,9 @@ INSERT INTO `core_platform` (`platform`, `class_file`, `class_name`, `class_file
 ('menu_report', '', '', 'class.admin_menu_admin_report.php', 'Admin_Framework_Report', 'Admin_Managment_Framework_Report', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 4, 'true', 'true', '', 'false', 'false'),
 ('menu_config', '', '', 'class.admin_menu_admin_config.php', 'Admin_Framework_Config', 'Admin_Managment_Framework_Config', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 5, 'true', 'true', '', 'false', 'false');
 
+DELETE FROM `core_platform` WHERE `core_platform`.`platform` = 'framework';
+DELETE FROM `core_platform` WHERE `core_platform`.`platform` = 'lms';
+
 
 
 --
@@ -283,6 +286,10 @@ DROP TABLE IF EXISTS `core_menu`;
 DROP TABLE IF EXISTS `core_menu_under`;
 DROP TABLE IF EXISTS `learning_menu`;
 DROP TABLE IF EXISTS `learning_menu_under`;
+
+-- ENABLING SECOND LEVEL PERMISSION FOR THE NEW MENU STRUCTURE
+UPDATE core_menu_under_elearning set of_platform = 'lms' 
+UPDATE core_menu_under_content SET of_platform = 'framework' WHERE module_name = 'newsletter';
 
 -- END
 commit;
