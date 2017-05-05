@@ -2377,25 +2377,27 @@ function message()
             // 	.'<img src="'.getPathImage().'standard/reply.png" alt="'.$lang->def('_REPLY').' : '.strip_tags($message_info['title']).'" /> '
             // 	.$lang->def('_QUOTE').'</a></li>';
         }
+        
+        //** LRZ ticket #10514 : l'utente puo solo modificare il suo messaggio, la cancellazione, solo per chi ha i privilegi/permessi **
         if ($moderate || $mod_perm || ($m_author == getLogUserId())) {
             $action .= '<a class="btn btn-default" href="index.php?modname=public_forum&amp;op=modmessage&amp;idMessage=' . $id_message . '&amp;ini=' . $ini_page . '" title="' . $lang->def('_MOD_MESSAGE') . ' : ' . strip_tags($message_info['title']) . '">
 										<span class="glyphicon glyphicon-pencil"></span> &nbsp;
 										<span>' . $lang->def('_MOD_MESSAGE') . '</span>
 									</a>
-									<a class="btn btn-default" href="index.php?modname=public_forum&amp;op=delmessage&amp;idMessage=' . $id_message . '&amp;ini=' . $ini_page . '" title="' . $lang->def('_DEL') . ' : ' . strip_tags($message_info['title']) . '">
-										<span class="glyphicon glyphicon-remove"></span> &nbsp;
-										<span>' . $lang->def('_DEL') . '</span>
-									</a>';
+								';
 
-            // $action .= '<li><a href="index.php?modname=public_forum&amp;op=modmessage&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'" '
-            // 		.'title="'.$lang->def('_MOD_MESSAGE').' : '.strip_tags($message_info['title']).'">'
-            // 	.'<img src="'.getPathImage().'standard/edit.png" alt="'.$lang->def('_MOD').' : '.strip_tags($message_info['title']).'" /> '
-            // 	.$lang->def('_MOD').'</a></li>'
-            // 	.'<li><a href="index.php?modname=public_forum&amp;op=delmessage&amp;idMessage='.$id_message.'&amp;ini='.$ini_page.'" '
-            // 		.'title="'.$lang->def('_DEL').' : '.strip_tags($message_info['title']).'">'
-            // 	.'<img src="'.getPathImage().'standard/delete.png" alt="'.$lang->def('_DEL').' : '.strip_tags($message_info['title']).'" /> '
-            // 	.$lang->def('_DEL').'</a></li>';
-        }
+        }                                                                                                                 
+        if ($moderate || $mod_perm ) {
+            $action .= '
+                                    <a class="btn btn-default" href="index.php?modname=public_forum&amp;op=delmessage&amp;idMessage=' . $id_message . '&amp;ini=' . $ini_page . '" title="' . $lang->def('_DEL') . ' : ' . strip_tags($message_info['title']) . '">
+                                        <span class="glyphicon glyphicon-remove"></span> &nbsp;
+                                        <span>' . $lang->def('_DEL') . '</span>
+                                    </a>';
+        }        
+        
+        
+        
+        
         $action .= '</div>';
         $action .= '<div class="dropdown visible-xs pull-right">
 								<button class="btn btn-default dropdown-toggle" type="button" id="messageActions-' . $id_message . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
