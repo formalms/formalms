@@ -14,7 +14,8 @@
 // Style guide: 2.1
 .forma-button {
   display: inline-block;
-  width: 100%;
+  width: auto;
+  padding: 0 10px;
   height: 40px;
   text-align: center;
   text-decoration: none;
@@ -36,12 +37,21 @@
   @include breakpoint($desktop) {
     font-size: 13px;
   }
+
+  &:hover {
+    text-decoration: none;
+    color: $white;
+  }
+}
+
+.forma-button--full {
+  width: 100%;
 }
 
 // Button orange:hover
 //
 // Markup:
-// <a class="forma-button button--orange-hover" href="#">
+// <a class="forma-button forma-button--orange-hover" href="#">
 //  <span class="forma-button__label">button</span>
 // </a>
 //
@@ -56,7 +66,7 @@
 // Button disabled
 //
 // Markup:
-// <a class="forma-button button--disabled" href="#">
+// <a class="forma-button forma-button--disabled" href="#">
 //  <span class="forma-button__label">button</span>
 // </a>
 //
@@ -84,7 +94,7 @@
 // Green Button
 //
 // Markup:
-// <a class="forma-button button--green" href="#">
+// <a class="forma-button forma-button--green" href="#">
 //  <span class="forma-button__label">button</span>
 // </a>
 //
@@ -96,7 +106,7 @@
 // Gray Button
 //
 // Markup:
-// <a class="forma-button button--gray" href="#">
+// <a class="forma-button forma-button--gray" href="#">
 //  <span class="forma-button__label">button</span>
 // </a>
 //

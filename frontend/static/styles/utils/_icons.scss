@@ -27,3 +27,13 @@ $calendar-icons: 'check', 'gray-cross', 'green-cross';
     }
   }
 }
+
+$tab-filter-icons: 'active', 'all', 'concluded';
+
+@each $icon in $filter-icons {
+  .icon--#{$icon} {
+    &:before {
+      background-image: url('images/icons/course/icon--#{$icon}.png');
+    }
+  }
+}
