@@ -2988,6 +2988,8 @@ i + .course-box__date-box {
     color: #c84000;
     background-color: #ececec;
     border: none; }
+  .forma-nav-tabs__link:focus {
+    color: #999999; }
   .active .forma-nav-tabs__link {
     width: 100%;
     background-color: #c84000 !important;
