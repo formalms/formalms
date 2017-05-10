@@ -47,29 +47,49 @@
         <a class="kss-nav__menu-link" href="section-4.html">
           <span class="kss-nav__ref">4</span><span class="kss-nav__name">Top-bar</span>
         </a>
+            <ul class="kss-nav__menu-child">
+              <li class="kss-nav__menu-item">
+                <a class="kss-nav__menu-link" href="section-4.html#kssref-4-1">
+                  <span class="kss-nav__ref ">4.1</span
+                  ><span class="kss-nav__name">Default Tab</span>
+                </a>
+              </li>
+              <li class="kss-nav__menu-item">
+                <a class="kss-nav__menu-link" href="section-4.html#kssref-4-2">
+                  <span class="kss-nav__ref ">4.2</span
+                  ><span class="kss-nav__name">Active Tab</span>
+                </a>
+              </li>
+              <li class="kss-nav__menu-item">
+                <a class="kss-nav__menu-link" href="section-4.html#kssref-4-3">
+                  <span class="kss-nav__ref ">4.3</span
+                  ><span class="kss-nav__name">Filters</span>
+                </a>
+              </li>
+            </ul>
       </li>
     </ul>
   </nav>
 </div>
 <article role="main" class="kss-main">
 
-    <div id="kssref-3-1" class="kss-section kss-section--depth-2 is-fullscreen">
+    <div id="kssref-4" class="kss-section kss-section--depth-1 is-fullscreen">
 
       <div class="kss-style">
-        <h2 class="kss-title kss-title--level-2">
-          <a class="kss-title__permalink" href="#kssref-3-1">
+        <h1 class="kss-title kss-title--level-1">
+          <a class="kss-title__permalink" href="#kssref-4">
             <span class="kss-title__ref">
-              3.1
+              4
               <span class="kss-title__permalink-hash">
                   #permalink
               </span>
             </span>
-            My courses
+            Top-bar
           </a>
-        </h2>
+        </h1>
 
           <p class="kss-toolbar">
-            <a href="#kssref-3-1" data-kss-guides="true">
+            <a href="#kssref-4" data-kss-guides="true">
               <span class="kss-toolbar__tooltip">Toggle example guides</span>
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 64 64">
                 <rect class="kss-toolbar__icon-fill" x="5" y="35" width="5" height="9"/>
@@ -90,7 +110,7 @@
                 <rect class="kss-toolbar__icon-fill" x="20" y="54" width="9" height="5"/>
               </svg>
             </a>
-            <a href="#kssref-3-1" data-kss-markup="true">
+            <a href="#kssref-4" data-kss-markup="true">
               <span class="kss-toolbar__tooltip">Toggle HTML markup</span>
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 64 64">
                 <path class="kss-toolbar__icon-fill" d="M37.555,46.239l6.103,6.103l20.342,-20.342l-20.342,-20.342l-6.103,6.103l14.24,14.239l-14.24,14.239Z"/>
@@ -100,9 +120,7 @@
           </p>
 
           <div class="kss-description">
-            <p>This is the restyled course box used in My Courses<br />
-<strong>NB: The &#39;style&#39; attributes are just for this representation only, when implementing
-be sure to delete them.</strong><br /></p>
+            <p>This is the top-bar of the site</p>
 
           </div>
 
@@ -115,37 +133,28 @@ be sure to delete them.</strong><br /></p>
 
 
           <div class="kss-modifier__example">
-             <div style="max-width: 404px;">
-   <div class="course-box">
-     <div class="course-box__item">
-       <div class="course-box__title course-icon--active">Lorem ipsum dolor sit amet</div>
-     </div>
-     <div class="course-box__item course-box__item--no-padding">
-       <div class="course-box__img">
-         <img src="" alt="">
-         <div class="course-box__img-title">lorem ipsum</div>
-       </div>
-     </div>
-     <div class="course-box__item">
-       <div class="course-box__owner course-box__owner--5">Amministratore</div>
-       <div class="course-box__desc">
-         Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Facilis ponatur
-         infinito oderis obruamus. Effectices, terroribus cognosci elegans totam
-         atilli arare p minuendas.
-       </div>
-     </div>
-     <div class="course-box__item course-box__item--half course-box__item--no-padding">
-       <div class="course-box__date-text">31 agosto 2016</div>
-     </div>
-     <div class="course-box__item course-box__item--half course-box__item--no-padding">
-       <a class="forma-button forma-button--orange-hover" href="">
-         <span class="forma-button__label">
-           Entra nel corso
-         </span>
-       </a>
-     </div>
-   </div>
- </div>
+            <ul class="nav nav-tabs hidden-xs forma-nav-tabs__top">
+  <li class="forma-nav-tabs__tab active">
+    <a class="forma-nav-tabs__link" href="#">Home</a>
+  </li>
+  <li class="forma-nav-tabs__tab">
+    <a class="forma-nav-tabs__link" href="#">E-Learning</a>
+  </li>
+  <li class="forma-nav-tabs__tab">
+    <a class="forma-nav-tabs__link" href="#">Catalogo</a>
+  </li>
+</ul>
+<ul class="nav nav-pills forma-nav-tabs__bottom">
+  <li class="forma-nav-tabs__filter icon--all">
+    <a class="" href="#">Tutti i corsi aperti</a>
+  </li>
+  <li class="forma-nav-tabs__filter icon--concluded">
+    <a class="" href="#">Conclusi</a>
+  </li>
+  <li class="forma-nav-tabs__filter icon--active">
+    <a class="" href="#">In itinere</a>
+  </li>
+</ul>
             <div class="kss-modifier__example-footer"></div>
           </div>
 
@@ -155,41 +164,32 @@ be sure to delete them.</strong><br /></p>
             <summary>
                 Markup
             </summary>
-            <pre class="prettyprint linenums lang-html"><code data-language="html"> &lt;div style&#x3D;&quot;max-width: 404px;&quot;&gt;
-   &lt;div class&#x3D;&quot;course-box&quot;&gt;
-     &lt;div class&#x3D;&quot;course-box__item&quot;&gt;
-       &lt;div class&#x3D;&quot;course-box__title course-icon--active&quot;&gt;Lorem ipsum dolor sit amet&lt;/div&gt;
-     &lt;/div&gt;
-     &lt;div class&#x3D;&quot;course-box__item course-box__item--no-padding&quot;&gt;
-       &lt;div class&#x3D;&quot;course-box__img&quot;&gt;
-         &lt;img src&#x3D;&quot;&quot; alt&#x3D;&quot;&quot;&gt;
-         &lt;div class&#x3D;&quot;course-box__img-title&quot;&gt;lorem ipsum&lt;/div&gt;
-       &lt;/div&gt;
-     &lt;/div&gt;
-     &lt;div class&#x3D;&quot;course-box__item&quot;&gt;
-       &lt;div class&#x3D;&quot;course-box__owner course-box__owner--5&quot;&gt;Amministratore&lt;/div&gt;
-       &lt;div class&#x3D;&quot;course-box__desc&quot;&gt;
-         Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Facilis ponatur
-         infinito oderis obruamus. Effectices, terroribus cognosci elegans totam
-         atilli arare p minuendas.
-       &lt;/div&gt;
-     &lt;/div&gt;
-     &lt;div class&#x3D;&quot;course-box__item course-box__item--half course-box__item--no-padding&quot;&gt;
-       &lt;div class&#x3D;&quot;course-box__date-text&quot;&gt;31 agosto 2016&lt;/div&gt;
-     &lt;/div&gt;
-     &lt;div class&#x3D;&quot;course-box__item course-box__item--half course-box__item--no-padding&quot;&gt;
-       &lt;a class&#x3D;&quot;forma-button forma-button--orange-hover&quot; href&#x3D;&quot;&quot;&gt;
-         &lt;span class&#x3D;&quot;forma-button__label&quot;&gt;
-           Entra nel corso
-         &lt;/span&gt;
-       &lt;/a&gt;
-     &lt;/div&gt;
-   &lt;/div&gt;
- &lt;/div&gt;</code></pre>
+            <pre class="prettyprint linenums lang-html"><code data-language="html">&lt;ul class&#x3D;&quot;nav nav-tabs hidden-xs forma-nav-tabs__top&quot;&gt;
+  &lt;li class&#x3D;&quot;forma-nav-tabs__tab active&quot;&gt;
+    &lt;a class&#x3D;&quot;forma-nav-tabs__link&quot; href&#x3D;&quot;#&quot;&gt;Home&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class&#x3D;&quot;forma-nav-tabs__tab&quot;&gt;
+    &lt;a class&#x3D;&quot;forma-nav-tabs__link&quot; href&#x3D;&quot;#&quot;&gt;E-Learning&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class&#x3D;&quot;forma-nav-tabs__tab&quot;&gt;
+    &lt;a class&#x3D;&quot;forma-nav-tabs__link&quot; href&#x3D;&quot;#&quot;&gt;Catalogo&lt;/a&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul class&#x3D;&quot;nav nav-pills forma-nav-tabs__bottom&quot;&gt;
+  &lt;li class&#x3D;&quot;forma-nav-tabs__filter icon--all&quot;&gt;
+    &lt;a class&#x3D;&quot;&quot; href&#x3D;&quot;#&quot;&gt;Tutti i corsi aperti&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class&#x3D;&quot;forma-nav-tabs__filter icon--concluded&quot;&gt;
+    &lt;a class&#x3D;&quot;&quot; href&#x3D;&quot;#&quot;&gt;Conclusi&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class&#x3D;&quot;forma-nav-tabs__filter icon--active&quot;&gt;
+    &lt;a class&#x3D;&quot;&quot; href&#x3D;&quot;#&quot;&gt;In itinere&lt;/a&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
           </details>
 
         <div class="kss-source kss-style">
-          Source: <code>modules/_course-box.scss</code>, line 7
+          Source: <code>modules/_top-bar.scss</code>, line 1
         </div>
 
     </div>
