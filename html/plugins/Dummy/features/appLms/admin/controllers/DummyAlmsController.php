@@ -11,7 +11,7 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-include _plugins_.'/dummy/features/Events/DummyEvent.php';
+include _plugins_.'/Dummy/features/Events/DummyEvent.php';
 
 class DummyAlmsController extends AlmsController {
     
@@ -39,7 +39,7 @@ class DummyAlmsController extends AlmsController {
 	public function viewPath() {
 
 //		return _plugins_.'/dummy/features/'._folder_alms_.'/views';
-		return _plugins_.'/dummy/features/appLms/admin/views';
+		return _plugins_.'/Dummy/features/appLms/admin/views';
     }
 
     public function show() {
@@ -49,7 +49,7 @@ class DummyAlmsController extends AlmsController {
             return;
         }
 */
-        
+        $params['sett']=Get::sett("dummy.foo","dummy");
         $this->render('show', $params);
     }
     public function render_call() {

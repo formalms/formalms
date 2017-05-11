@@ -4,7 +4,7 @@
     
 <?php
 
-echo "ciao dummy!!!";
+echo "ciao $sett!!!";
 
 ?>
     

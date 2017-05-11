@@ -17,5 +17,6 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 class Plugin extends \FormaPlugin {
     public function install() {
         self::addRequest("alms", "dummy", "DummyAlmsController", "DummyAlms");
+        parent::addSetting('dummy.foo', 'string', 255);
     }
 }
