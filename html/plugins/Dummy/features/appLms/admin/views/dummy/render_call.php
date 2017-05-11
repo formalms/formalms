@@ -1,10 +1,10 @@
-<?php   echo "Dummy (render call) title";  ?>
+<?php   echo "page: <b>render_call</b>";  ?>
 
 <div class="std_block">
     
 <?php
-
-echo "render-call ret. dummy!!!";
+//echo __FILE__;
+echo "<hr>Hi I'm Dummy view (render-call)";
 
 ?>
     
