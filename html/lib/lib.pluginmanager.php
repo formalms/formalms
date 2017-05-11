@@ -200,7 +200,7 @@ class PluginManager {
     }
 
     public static function hook(){
-        $plugin_list = self::get_all_plugins(true);
+        $plugin_list = self::get_all_plugins();
         foreach ($plugin_list as $plugin) {
             self::include_plugin_file($plugin['name'], 'Event.php');
         }
