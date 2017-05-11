@@ -2702,7 +2702,9 @@ h1, h2, h3, h4, h5, h6, p {
 
 .bootstrap-select button {
   position: relative;
+  max-width: 100%;
   padding-right: 25px;
+  padding-left: 20px;
   border: 1px solid #ececec;
   font-family: "Open-sans";
   background-image: none;
@@ -2742,11 +2744,38 @@ h1, h2, h3, h4, h5, h6, p {
     border-bottom-left-radius: 5px !important; }
 
 .bootstrap-select.open button {
+  max-width: 100%;
   background-color: white !important;
-  border: 1px solid #ececec !important;
-  box-shadow: none !important; }
+  border: 1px solid #999999 !important;
+  box-shadow: none !important;
+  border-bottom-width: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important; }
   .bootstrap-select.open button .bs-caret {
     display: none; }
+
+.bootstrap-select .dropdown-menu {
+  max-width: 100%;
+  min-width: initial; }
+  .bootstrap-select .dropdown-menu.open {
+    width: 100%;
+    padding: 0;
+    border: 0; }
+    .bootstrap-select .dropdown-menu.open .bs-actionsbox {
+      display: none; }
+  .bootstrap-select .dropdown-menu.inner {
+    border: 1px solid #999999 !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-top-width: 0 !important;
+    width: 100%; }
+    .bootstrap-select .dropdown-menu.inner li a {
+      padding-top: 0;
+      padding-right: 0;
+      padding-bottom: 0;
+      padding-left: 20px;
+      font-family: "Open-sans";
+      font-size: 12px; }
 
 .input-group {
   position: relative;
@@ -3106,6 +3135,6 @@ i + .course-box__date-box {
         background-size: contain;
         background-repeat: no-repeat; }
       .nav.nav-pills li a:hover {
-        background-color: transparent; }
+        background-color: #c84000; }
 
 /*# sourceMappingURL=main.css.map */
