@@ -3,8 +3,10 @@
 <div class="std_block">
     
 <?php
-//echo __FILE__;
-echo "<hr>Hi I'm Dummy view (render-call)";
+
+echo "<hr>Hi I'm Dummy event (core.dummy.event) and foo property is:";
+
+echo "$foo";
 
 ?>
     

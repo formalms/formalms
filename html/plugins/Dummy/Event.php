@@ -1,5 +1,9 @@
 <?php
 
 \appCore\Events\DispatcherManager::addListener('core.dummy.event', function($event) {
-echo "<hr>Hi I'm Dummy Event (core.dummy.event): Anyone listining?<br/>";
+    $event->setFoo("Dummy name");
+});
+
+\appCore\Events\DispatcherManager::addListener(appCore\Events\Core\User\RegisterUserEvent::EVENT_NAME, function($event) {
+    error_log($event->getId());
 });
