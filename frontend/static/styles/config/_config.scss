@@ -86,6 +86,10 @@ $green: rgba(112, 216, 0, 1);
 /// @type rgba color
 /// @group colors
 $lime: rgba(174, 255, 0, 1);
+/// forma mobile breakpoint (mobile first)
+/// @type Number + px
+/// @group breakpoint
+$forma-mobile: 450px;
 /// tablet breakpoint (mobile first)
 /// @type Number + px
 /// @group breakpoint

@@ -79,7 +79,7 @@
 </style>
 
 
-<div class="quick_search_form navbar<?php echo isset($css_class) && $css_class != "" ? " " . $css_class : ""; ?>">
+<div class="quick_search_form navbar<?php echo isset($css_class) && $css_class != "" ? " " . $css_class : ""; ?> forma-quick-search-form">
     <div>
         <?php if ($common_options): ?>
             <div class="common_options">
