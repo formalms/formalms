@@ -131,6 +131,7 @@ class Controller {
                         break;
                     }
                 }
+                if ($extension != "") break;
             }
             if ($extension != "") break;
         }
