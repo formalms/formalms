@@ -191,11 +191,11 @@ class PluginManager {
             default: return false;
         }
 
-        if(!self::include_plugin_file($plugin, 'features/' . $path_controller . $controller . '.php')) {
+        if(!self::include_plugin_file($plugin, 'Features/' . $path_controller . $controller . '.php')) {
             return false;
         }
 
-        self::include_plugin_file($plugin, 'features/' . $path_model . $model . '.php');
+        self::include_plugin_file($plugin, 'Features/' . $path_model . $model . '.php');
         return new $controller($mvc_name);
     }
 
