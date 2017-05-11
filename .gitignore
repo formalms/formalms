@@ -24,7 +24,7 @@ html/plugins/**
 !html/plugins/TwitterAuth
 !html/plugins/ConferenceBBB
 !html/plugins/ConferenceTeleSkill
-!html/plugins/Dummy
+!html/plugins/Dummy/*
 
 
 # Sezione ??? a cosa serve?
