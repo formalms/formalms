@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin_manifest>
+	<title>Dummy feature</title>
+	<author>Joint Technologies</author>
+	<version>1.0</version>
+	<category>features</category>
+	<description>Dummy menu</description>
+	<link>http://www.joint-tech.it/</link>
+	<license>GNU General Public License version 2</license>
+	<name>Dummy</name>
+</plugin_manifest>
