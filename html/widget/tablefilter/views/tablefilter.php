@@ -100,21 +100,26 @@
 
                 <style type="text/css">
                     .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
-                        width: 150px;
+                        /*width: 150px;*/
                     }
 
                     .bootstrap-select.btn-group .dropdown-menu {
-                        min-width: 250px;
-
+                        /*min-width: 250px;*/
                     }
-
                 </style>
 
 
                 <?php echo $list_category ? $list_category : ""; ?>
 
-                <select id="course_search_filter_type" name="filter_type" class="selectpicker" data-width="150px"
-                        data-selected-text-format="count > 1" data-width="150px" data-actions-box="true">
+<!--                <select id="course_search_filter_type" name="filter_type" class="selectpicker" data-width="150px"-->
+<!--                        data-selected-text-format="count > 1" data-width="150px" data-actions-box="true">-->
+<!--                <option value="all">--><?php //echo $str_all; ?><!--</option>-->
+<!--                <option value="elearning" selected="selected">--><?php //echo $str_elearning; ?><!--</option>-->
+<!--                <option value="classroom">--><?php //echo $str_classroom; ?><!--</option>-->
+<!--                </select>-->
+
+                <select id="course_search_filter_type" name="filter_type" class="selectpicker" data-width="200px"
+                        data-selected-text-format="count > 1" data-actions-box="true">
                     <option value="all"><?php echo $str_all; ?></option>
                     <option value="elearning" selected="selected"><?php echo $str_elearning; ?></option>
                     <option value="classroom"><?php echo $str_classroom; ?></option>
