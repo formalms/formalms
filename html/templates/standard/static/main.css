@@ -2820,13 +2820,14 @@ h1, h2, h3, h4, h5, h6, p {
     border: none;
     background-image: none;
     background-color: transparent;
-    box-shadow: none;
-    z-index: 10; }
+    box-shadow: none; }
     .input-group .input-group-btn button .glyphicon.glyphicon-search {
       font-family: "FontAwesome";
       color: #c84000; }
       .input-group .input-group-btn button .glyphicon.glyphicon-search:before {
         content: '\f002'; }
+  .input-group .input-group-btn:last-child .btn {
+    z-index: 10; }
 
 * {
   outline: none !important;
