@@ -3127,7 +3127,8 @@ i + .course-box__date-box {
   height: 60px;
   background-color: #c84000;
   border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px; }
+  border-bottom-right-radius: 5px;
+  padding: 0 !important; }
   .nav.nav-pills li {
     position: relative;
     display: inline-block;
