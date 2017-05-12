@@ -2756,7 +2756,8 @@ h1, h2, h3, h4, h5, h6, p {
 
 .bootstrap-select .dropdown-menu {
   max-width: 100%;
-  min-width: initial; }
+  min-width: initial;
+  margin: 0; }
   .bootstrap-select .dropdown-menu.open {
     width: 100%;
     padding: 0;
@@ -2768,6 +2769,7 @@ h1, h2, h3, h4, h5, h6, p {
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
     border-top-width: 0 !important;
+    box-shadow: none;
     width: 100%; }
     .bootstrap-select .dropdown-menu.inner li a {
       padding-top: 0;
@@ -2776,6 +2778,27 @@ h1, h2, h3, h4, h5, h6, p {
       padding-left: 20px;
       font-family: "Open-sans";
       font-size: 12px; }
+  .bootstrap-select .dropdown-menu li a {
+    position: relative;
+    margin-bottom: 15px; }
+    .bootstrap-select .dropdown-menu li a:hover {
+      background-image: none;
+      background-color: white;
+      cursor: pointer; }
+    .bootstrap-select .dropdown-menu li a .glyphicon.glyphicon-ok.check-mark {
+      border: 1px solid #c2c2c2;
+      border-radius: 5px;
+      width: 20px;
+      text-align: center;
+      height: 20px;
+      position: absolute;
+      right: 20px;
+      padding-top: 2px;
+      top: -1px; }
+      .bootstrap-select .dropdown-menu li a .glyphicon.glyphicon-ok.check-mark:before {
+        content: '\f00c';
+        font-family: "FontAwesome";
+        color: #c2c2c2; }
 
 .input-group {
   position: relative;
