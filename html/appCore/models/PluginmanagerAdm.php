@@ -320,6 +320,7 @@ class PluginmanagerAdm extends Model {
      */
     public function uninstallPlugin($plugin_id, $update=false){
         if (!$update){
+            $this->setupPlugin($plugin_id, false);
             $this->callPluginMethod($plugin_id, 'uninstall');
             $this->removeSettings($plugin_id);
             $this->removeRequests($plugin_id);
