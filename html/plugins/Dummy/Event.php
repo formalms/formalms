@@ -5,5 +5,6 @@
 });
 
 \appCore\Events\DispatcherManager::addListener(appCore\Events\Core\User\RegisterUserEvent::EVENT_NAME, function($event) {
-    error_log($event->getId());
+    $query = "INSERT INTO `learning_dummy_userslog` (`username`, `timestamp`) VALUES ('".$event->getId()."', ".time().")";
+    sql_query($query);
 });
