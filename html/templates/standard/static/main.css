@@ -3107,45 +3107,12 @@ i + .course-box__date-box {
   height: 100%;
   border: 1px solid magenta; }
 
-.nav.nav-tabs.visible-xs {
-  height: 46px;
-  padding: 0 18px;
-  background-color: #c84000;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px; }
-  .nav.nav-tabs.visible-xs .dropdown {
-    width: 100%;
-    height: 100%; }
-    .nav.nav-tabs.visible-xs .dropdown .dropdown-toggle {
-      padding: 0;
-      margin: 0;
-      line-height: 44px;
-      font-family: "Open-sans";
-      font-size: 16px;
-      text-transform: uppercase;
-      color: white;
-      border: 0;
-      border-bottom: 1px solid #ff6c00; }
-      .nav.nav-tabs.visible-xs .dropdown .dropdown-toggle .caret {
-        float: right;
-        border: 0;
-        position: relative; }
-        .nav.nav-tabs.visible-xs .dropdown .dropdown-toggle .caret:before {
-          content: '\f107';
-          font-family: "FontAwesome";
-          color: #ff6c00;
-          font-size: 18px;
-          line-height: 46px;
-          position: absolute;
-          left: -11px; }
-
 .nav.nav-tabs.hidden-xs {
   border: none;
-  widows: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
-  width: 104%; }
+  width: 100%; }
   .nav.nav-tabs.hidden-xs li {
     height: 40px;
     margin-right: 9px;
@@ -3247,5 +3214,75 @@ i + .course-box__date-box {
 
 .tabs_filter {
   top: 45px !important; }
+
+.nav.nav-tabs.visible-xs {
+  height: 46px;
+  padding: 0;
+  background-color: #c84000;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px; }
+  .nav.nav-tabs.visible-xs .dropdown {
+    width: 100%;
+    height: 100%; }
+    .nav.nav-tabs.visible-xs .dropdown .dropdown-toggle {
+      width: calc(100% - 36px);
+      margin: 0 18px;
+      padding: 0;
+      line-height: 44px;
+      font-family: "Open-sans";
+      font-size: 16px;
+      text-transform: uppercase;
+      color: white;
+      border: 0;
+      border-bottom: 1px solid #ff6c00; }
+      .nav.nav-tabs.visible-xs .dropdown .dropdown-toggle:hover, .nav.nav-tabs.visible-xs .dropdown .dropdown-toggle:focus {
+        background-color: #c84000; }
+      .nav.nav-tabs.visible-xs .dropdown .dropdown-toggle .caret {
+        float: right;
+        border: 0;
+        position: relative; }
+        .nav.nav-tabs.visible-xs .dropdown .dropdown-toggle .caret:before {
+          content: '\f107';
+          font-family: "FontAwesome";
+          color: #ff6c00;
+          font-size: 18px;
+          line-height: 46px;
+          position: absolute;
+          left: -11px; }
+    .nav.nav-tabs.visible-xs .dropdown.open .dropdown-toggle {
+      background-color: transparent; }
+    .nav.nav-tabs.visible-xs .dropdown.open .dropdown-menu {
+      width: 100%;
+      padding: 0;
+      background-color: #ececec;
+      border: none;
+      box-shadow: none; }
+      .nav.nav-tabs.visible-xs .dropdown.open .dropdown-menu li a {
+        padding: 0 18px;
+        color: #999999;
+        font-family: "Open-sans";
+        line-height: 44px;
+        border-bottom: 1px solid #666666;
+        text-transform: uppercase; }
+      .nav.nav-tabs.visible-xs .dropdown.open .dropdown-menu li.active a {
+        background-image: none;
+        background-color: transparent;
+        color: #c84000;
+        font-weight: bold; }
+      .nav.nav-tabs.visible-xs .dropdown.open .dropdown-menu li:last-child a {
+        border-bottom: none; }
+
+.layout_footer {
+  padding-top: 30px;
+  border-top: 2px solid #c84000;
+  text-align: center; }
+  .layout_footer .powered_by .ownedby {
+    font-size: 14px;
+    color: #666666; }
+  .layout_footer .powered_by .poweredby {
+    font-size: 12px; }
+    .layout_footer .powered_by .poweredby a {
+      color: #c2c2c2;
+      text-decoration: none; }
 
 /*# sourceMappingURL=main.css.map */
