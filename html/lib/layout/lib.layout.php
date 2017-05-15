@@ -328,7 +328,7 @@
             $html .= '<span class="ownedby">';
             $html .= Get::sett('owned_by', 'Copyright (c) forma.lms');
             $html .= '</span>';
-            $html .= ' - ';
+            $html .= '<br />';
             $html .= '<span class="poweredby">';
             $html .= '<a href="http://www.formalms.org/" target="_blank">Powered'.' by ' . 'forma.lms CE</a>';
             $html .= '</span>';

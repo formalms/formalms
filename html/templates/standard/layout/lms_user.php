@@ -72,9 +72,7 @@
 		<!-- footer -->
 		<div id="footer" class="layout_footer">
 			<?php echo Layout::zone('footer'); ?>
-			<div class="copyright">
 				<?php echo Layout::copyright(); ?>
-			</div>
 		</div>
 		</div>
 		<!-- scripts -->
