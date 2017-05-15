@@ -16,7 +16,11 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 
 class Plugin extends \FormaPlugin {
     public function install() {
+
+        // addRequest is used to attach DummyAlmsController to the request r=alms/dummy/XXX
         self::addRequest("alms", "dummy", "DummyAlmsController", "DummyAlms");
+
+        // addSetting is used to add a new setting in forma.lms
         parent::addSetting('dummy.foo', 'string', 255);
     }
 }

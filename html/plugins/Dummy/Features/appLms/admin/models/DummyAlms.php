@@ -12,18 +12,5 @@
 \ ======================================================================== */
 
 class DummyAlms extends Model {
-    
-    public $filter;
 
-    public function __construct() {        
-        $this->filter = array();
-    }
-    
-
-    public function getPerm() {
-        return array(
-            'view'	=> 'standard/view.png',
-            'mod'	=> 'standard/mod.png'
-        );
-    }
 }

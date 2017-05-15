@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Here you can hook events
+ */
+
 \appCore\Events\DispatcherManager::addListener('core.dummy.event', function($event) {
     $event->setFoo("Dummy name");
 });

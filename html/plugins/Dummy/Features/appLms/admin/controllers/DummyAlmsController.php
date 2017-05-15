@@ -16,52 +16,33 @@ include _plugins_.'/Dummy/Features/Events/DummyEvent.php';
 class DummyAlmsController extends AlmsController {
     
     const mod_name = 'dummy';
-    
-    const dummy_url = 'index.php?r=alms/invoice/show';
-    //const templates_url = 'index.php?r=alms/dummy/templates';
-    
-    protected $json;
+
     protected $model;
-    
-    protected $permissions;
 
-    public function init() {        
-        $this->json = new Services_JSON();
+    public function init() {
+
         $this->model = new DummyAlms();
-
-        $this->permissions = array(
-            'view'      =>  checkPerm('view', TRUE, self::mod_name, 'lms'),
-            'mod'       =>  checkPerm('mod', TRUE, self::mod_name, 'lms')
-        );
     }
-    
-    // TODO: automatismo
+
+    /**
+     * Return the path to the views
+     * @return string
+     */
 	public function viewPath() {
 
-//		return _plugins_.'/dummy/features/'._folder_alms_.'/views';
 		return _plugins_.'/Dummy/Features/appLms/admin/views';
     }
 
     public function show() {
-/*
-        if(!$this->permissions['view']) {
-            getErrorUi(Lang::t('_NO_PERMISSION', 'dummy'));
-            return;
-        }
-*/
+
         $params['sett']=Get::sett("dummy.foo","dummy");
         $this->render('show', $params);
     }
+
     public function render_call() {
-/*
-        if(!$this->permissions['view']) {
-            getErrorUi(Lang::t('_NO_PERMISSION', 'dummy'));
-            return;
-        }
-*/
 
 		$event = new DummyEvent();
-		
+
 		\appCore\Events\DispatcherManager::dispatch(DummyEvent::EVENT_NAME, $event);
 
         $params['foo']=$event->getFoo();
@@ -70,5 +51,3 @@ class DummyAlmsController extends AlmsController {
     }
     
 }
-
-?>
