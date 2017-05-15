@@ -29,7 +29,7 @@ foreach ($plugins as $info){
         if ($info['core']==="0"){
             if (!$info['version_error']){
                 if (!$info['update']){
-                    $actions.='<a style="color: #C84000;" href="index.php?r=adm/pluginmanager/uninstall'.'&plugin='.$info['name'].'">Disinstalla</a>';
+                    $actions.='<a style="color: #C84000;" href="javascript:askUninstall(\'index.php?r=adm/pluginmanager/uninstall'.'&plugin='.$info['name'].'\');">Disinstalla</a>';
                     //if active
                     if ($info['active']=="1"){
                         $actions.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/deactivate'.'&plugin='.$info['name'].'">Disattiva</a>';
@@ -67,3 +67,13 @@ foreach ($plugins as $info){
 }
 
 echo $table->getTable();
+
+echo '
+<script>
+function askUninstall(link){
+    if (confirm("'.Lang::t('_PLUGIN_UNINSTALL_CONFIRMATION', 'configuration').'")) {
+        location.href=link;
+    }
+}
+</script>
+';
