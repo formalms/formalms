@@ -52,7 +52,7 @@ function getPlatformArray() {
 }
 
 
-function importSqlFile($fn) {
+function importSqlFile($fn, $allowed_err_codes = array()) {
 	$res =array('ok'=>true, 'log'=>'');
 
 	$handle = fopen($fn, "r");
@@ -68,11 +68,13 @@ function importSqlFile($fn) {
 
 		if (!empty($qtxt)) {
 
-			$q=sql_query($qtxt);
-			if (!$q) {
-				$res['log'].=sql_error()."\n";
-				$res['ok'] =FALSE;
-			}
+            $q=sql_query($qtxt);
+            if (!$q) {
+                if (!in_array(sql_errno(), $allowed_err_codes)) {
+                    $res['log'].=sql_error()."\n";
+                    $res['ok'] =FALSE;
+                }
+            }
 		}
 	}
 

@@ -60,7 +60,7 @@ if ($_SESSION['upgrade_ok']) {
 		$fn =_upgrader_.'/data/upg_data/'.$current_ver.'_db.sql';
 		if (file_exists($fn)) {
 			$GLOBALS['debug'] .=  " <br/>" . "Upgrade db with file: " . $fn ;
-			$res =importSqlFile($fn);
+			$res =importSqlFile($fn, array(1060));
 			if (!$res['ok']) {
 				$_SESSION['upgrade_ok']=false;
 			}
