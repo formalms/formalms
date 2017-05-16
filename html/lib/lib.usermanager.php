@@ -2077,8 +2077,6 @@ class UserManagerRenderer {
 					// end
 
                     // Plugin Event Log register user
-                    $pg=new PluginManager('UserRegistrationEvent');
-                    $pg->run('hook');
                     $event = new \appLms\Events\User\UserRegistrationEvent();
 
                     $event->set_idst($request['idst']);

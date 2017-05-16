@@ -109,9 +109,7 @@ Class TransactionAlmsController extends AlmsController
                         }
                     }
                 }
-                
-                $pg=new PluginManager('TransactionPaidEvent');
-                $pg->run('hook');
+
                 
                 $event = new \appLms\Events\Transaction\TransactionPaidEvent($trans);
                 \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
