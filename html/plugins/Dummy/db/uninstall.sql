@@ -1,0 +1,1 @@
+DROP TABLE learning_dummy_userslog;

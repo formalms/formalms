@@ -319,8 +319,6 @@ class UsermanagementAdmController extends AdmController {
 			'results' => count($list),
 			'records' => $output_results
 		);
-		$pg = new PluginManager('UsersManagementShowEvent');
-		$pg->run('hook');
 
 		$event = new appCore\Events\Core\UsersManagementShowEvent;
 		$event->setUsers($output['records']);
@@ -2483,8 +2481,6 @@ class UsermanagementAdmController extends AdmController {
 			$info->__preferences = $pref_properties;
 		}
 
-        $pg = new PluginManager('UsersManagementEditMultipleEvent');
-        $pg->run('hook');
 		$event = new \appCore\Events\Core\UsersManagementEditMultipleEvent();
 		$event->setUsers($users);
 		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementEditMultipleEvent::EVENT_NAME, $event);

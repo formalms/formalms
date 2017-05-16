@@ -117,10 +117,7 @@ if(!Docebo::user()->isAnonymous()) {
             $menu_i++;
         }
     }
-    
-    
-    $pg = new PluginManager('MenuOverEvent');
-    $pg->run('hook');
+
 
     $event = new \appLms\Events\Lms\MenuOverEvent($menu, $menu_i);
     \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
@@ -168,23 +165,23 @@ foreach ($menu['all'] as $row) {
           // HELP DESK
          if(strrpos($row[1], 'sign')>0 ){
             cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.Lang::t('_CUSTOMER_HELP', 'customer_help').'"  >'.$row[1].'</a></li>','menu_over');
-         }else if ($row[2] === false){
+         }else{
             cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.$row[1].'"  >'.$row[1].'</a></li>','menu_over');
          } 
      }
-        if($row[2] !== false && count($menu[ $row[2] ])!=0) {
-                cout('<li class="dropdown" id="submenu_'.$id_m.'" >'
-                    .'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.$row[1].' <span class="caret"></span></a>'
-                    .'<ul class="dropdown-menu">', 'menu_over');
+        if($row[2] !== false) {
+
+                cout('<div id="submenu_'.$id_m.'" >'
+                    .'<div class="bd"><ul class="first-of-type">', 'menu_over');
                 while(list($id_m, $s_voice) = each($menu[ $row[2] ])) {
-                    cout('<li>'
+                    cout(''
                         .'<a  href="'.$s_voice[0].'"">'
                         .''.$s_voice[1].''
                         .'</a> &nbsp; '
-                        .'</li>', 'menu_over');
+                        .'', 'menu_over');
                 }
-                cout('</ul>'
-                    .'</li>', 'menu_over');
+                cout('</div>'
+                    .'</div>', 'menu_over');
             }             
 
 }    
