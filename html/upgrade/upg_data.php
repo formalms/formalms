@@ -11,6 +11,11 @@ $enabled_step = 5;
 $current_step = Get::gReq('cur_step', DOTY_INT);
 $upg_step = Get::gReq('upg_step', DOTY_INT);
 
+// allowed err codes
+$allowed_err_codes = array();
+array_push($allowed_err_codes, 1060); // Duplicate column name
+array_push($allowed_err_codes, 1025); // Error on rename table (DROP FOREIGN KEY not exist)
+
 if ($_SESSION['start_version'] >= 3000 && $_SESSION['start_version'] < 4000) {
 	echo 'error: version (' . $_SESSION['start_version'] . ') not supported for upgrade: too old (v3)';
 	die();
@@ -60,7 +65,7 @@ if ($_SESSION['upgrade_ok']) {
 		$fn =_upgrader_.'/data/upg_data/'.$current_ver.'_db.sql';
 		if (file_exists($fn)) {
 			$GLOBALS['debug'] .=  " <br/>" . "Upgrade db with file: " . $fn ;
-			$res =importSqlFile($fn, array(1060));
+			$res =importSqlFile($fn, $allowed_err_codes);
 			if (!$res['ok']) {
 				$_SESSION['upgrade_ok']=false;
 			}
