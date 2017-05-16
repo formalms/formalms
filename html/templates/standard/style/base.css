@@ -138,6 +138,7 @@ a.no_decoration{text-decoration:none;}
 .table-actions ul.ta li{display:inline;padding:2px 4px;}
 .table-actions ul.ta li a{padding:2px 4px;text-decoration:none;background:#efefef;border:1px solid #cccccc;}
 .table-actions ul.ta li a:hover{text-decoration:underline;}
+.table-actions a {text-decoration: underline;}
 b.social-accounts-title{vertical-align:middle;}
 ul.action-list{margin:8px 0 8px;padding:0;line-height:1.6em;}
 ul.action-list li{display:-moz-inline-box;display:inline-block;padding:0px 4px;margin:4px;border:1px solid #cccccc;}
