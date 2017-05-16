@@ -3415,14 +3415,6 @@ CREATE TABLE IF NOT EXISTS `learning_wiki_course` (
 --
 
 
---
--- Limiti per le tabelle scaricate
---
-
-ALTER TABLE `learning_course`
-  ADD CONSTRAINT `fk_menucustom` FOREIGN KEY (`id_menucustom`) REFERENCES `learning_menucustom` (`idCustom`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
-
 -- --------------------------------------------------------
 
 
