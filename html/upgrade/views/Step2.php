@@ -28,6 +28,10 @@
         if (is_checked){
             disableBtnNext(false);
         }
+        
+        if (YAHOO.util.Dom.get('start_version').disabled == true){
+            disableBtnNext(true);
+        }
     }
 
 	function startVersionChange(e) {

@@ -256,11 +256,10 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 				$folderName[$lang] = addslashes($name);
 		
 		if( $arr_folder === FALSE ) {
-                    
                         //VECCHIO SISTEMA vedi Update  $id = $this->tree_view->tdb->addFolderByIdTranslation( $parent_id, $folderName );
                         require_once(_base_.'/lib/lib.usermanager.php');
                         $umodel = new UsermanagementAdm();
-                        $id = $umodel->addFolder($parent_id, $folderName, $name);
+                        $id = $umodel->addFolder($parent_id, $folderName, $row['code']);
 
 			$this->arr_folders[$path] = array( 'id' => $id, 'inserted' => TRUE );
 		} else {

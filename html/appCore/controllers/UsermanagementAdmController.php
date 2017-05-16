@@ -1819,9 +1819,9 @@ class UsermanagementAdmController extends AdmController {
 			} break;
 
 			case 3: {
-                                if (!Get::pReq('send_alert', DOTY_INT, 0) && Get::req('set_password', DOTY_STRING, 'from_file') != 'from_file') {
-                                    Util::jump_to($base_url.'&res=need_to_alert' );
-                                }
+                                //if (!Get::pReq('send_alert', DOTY_INT, 0) && Get::req('set_password', DOTY_STRING, 'from_file') != 'from_file') {
+                                //    Util::jump_to($base_url.'&res=need_to_alert' );
+                                //}
                             
 				$filename = Get::req('filename', DOTY_STRING, "");
 				if ($filename == "") return false;

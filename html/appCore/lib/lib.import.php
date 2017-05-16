@@ -504,7 +504,7 @@ class DoceboImport {
 														$combo_elements, 
 														DOCEBOIMPORT_IGNORE, 
 														"" );
-                        $table_dst_tocompare[] = $form->getInputCheckbox("import_tocompare_".$count, "import_tocompare[".$count."]", '', FALSE);
+                        $table_dst_tocompare[] = $form->getHidden("import_tocompare_".$count, "import_tocompare[".$count."]", '', TRUE);
 			$count++;
 		}
 		
@@ -587,7 +587,7 @@ class DoceboImport {
 			$row = $this->source->get_next_row();
 		}
 		if($open_transaction) Docebo::db()->commit();
-		$out[0] = $this->source->get_row_index()-1;
+		$out[0] = ( $this->source->first_row_header ? $this->source->get_row_index() - 1 : $this->source->get_row_index() );
 		return $out;
 	}
 	

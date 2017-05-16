@@ -288,9 +288,9 @@ class ImportUser extends DoceboImport_Destination {
                                 $this->last_error = 'Error on insert user';
                                 $err = true;
                             }
-                        } else if ($idst !== FALSE) {				
+                        } else if ($sameuserid == TRUE) {	//  	if ($idst !== FALSE)	
                             $result = $acl_manager->updateUser(
-                                    $idst,
+                                    $acl_manager->getUserST( $tocompare['userid']),
                                     $userid,
                                     $firstname != '' ? $firstname : FALSE,
                                     $lastname != '' ? $lastname : FALSE,

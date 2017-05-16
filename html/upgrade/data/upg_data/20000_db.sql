@@ -45,30 +45,26 @@ ALTER TABLE `learning_forumthread` ADD COLUMN `privateThread` TINYINT(1) NOT NUL
 
 
 -- adding catalogue link onto the top menu
-INSERT IGNORE INTO  learning_module (module_name, default_name, token_associated,module_info, mvc_path ) values ('course','_CATALOGUE','view','all','lms/catalog/show');
-insert   into learning_middlearea (obj_index,disabled,idst_list,sequence)  values ('mo_46',0,'a:0:{}',0);
+INSERT IGNORE INTO learning_module (module_name, default_name, token_associated,module_info, mvc_path ) values ('course','_CATALOGUE','view','all','lms/catalog/show');
+INSERT IGNORE INTO learning_middlearea (obj_index,disabled,idst_list,sequence)  values ('mo_46',0,'a:0:{}',0);
 INSERT IGNORE INTO learning_menucourse_under (idCourse, idModule, idMain,sequence) values (0,46,0,3);
 
--- 4447.sql 
-ALTER TABLE learning_course
- ADD id_menucustom INT(11);
-ALTER TABLE learning_course
- ADD CONSTRAINT fk_menucustom FOREIGN KEY (id_menucustom) REFERENCES learning_menucustom (idCustom) ON UPDATE CASCADE ON DELETE NO ACTION;
+-- 4447.sql
+ALTER TABLE learning_course ADD id_menucustom INT(11);
 
-
--- 4687_forum_as_table.sql 
+-- 4687_forum_as_table.sql
 DELETE FROM core_setting WHERE param_name = 'forum_as_table';
 
--- core_role_view_all.sql 
+-- core_role_view_all.sql
 
 
--- nuovi_tipi_di_test.sql 
+-- nuovi_tipi_di_test.sql
 ALTER TABLE `learning_organization_access` ADD COLUMN `params` VARCHAR(255) NULL COMMENT '' AFTER `value`;
 
 ALTER TABLE `learning_test` ADD COLUMN `obj_type` VARCHAR(45) NULL DEFAULT 'test' COMMENT '' AFTER `score_max`;
 
 
--- 4303.sql 
+-- 4303.sql
 
 
 -- Creazione permesso view_all per modulo repository
@@ -80,7 +76,7 @@ set @v_idst=LAST_INSERT_ID();
 INSERT IGNORE INTO core_role(idst, roleid, description) VALUES
 (@v_idst, concat('/lms/course/private/light_repo/view_all'), NULL);
 
--- 4299.sql 
+-- 4299.sql
 
 
 
@@ -91,7 +87,7 @@ set @v_idst=LAST_INSERT_ID();
 
 INSERT IGNORE INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES (1, @v_idst);
 
-INSERT IGNORE INTO `core_event_manager` (`idClass`, `permission`, `channel`, `recipients`, `show_level`) 
+INSERT IGNORE INTO `core_event_manager` (`idClass`, `permission`, `channel`, `recipients`, `show_level`)
 VALUES
 (@v_idst, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user');
 
@@ -105,14 +101,14 @@ set @v_idst=LAST_INSERT_ID();
 
 INSERT IGNORE INTO `core_event_consumer_class` (`idConsumer`, `idClass`) VALUES (1, @v_idst);
 
-INSERT IGNORE INTO `core_event_manager` (`idClass`, `permission`, `channel`, `recipients`, `show_level`) 
+INSERT IGNORE INTO `core_event_manager` (`idClass`, `permission`, `channel`, `recipients`, `show_level`)
 VALUES
 (@v_idst, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user');
 
--- 6364.sql 
+-- 6364.sql
 
 DROP TABLE IF EXISTS core_db_upgrades;
-CREATE TABLE core_db_upgrades (
+CREATE TABLE IF NOT EXISTS core_db_upgrades (
  script_id int(11) NOT NULL AUTO_INCREMENT,
  script_name varchar(255) NOT NULL,
  script_description text,
@@ -125,7 +121,7 @@ CREATE TABLE core_db_upgrades (
 
 
 INSERT IGNORE INTO core_db_upgrades (script_name, script_description, script_version, core_version, creation_date, execution_date) values ('add_log_db_upgrades.sql', 'Creazione tabella di log per script update db', '1.0', (SELECT param_value FROM core_setting WHERE param_name LIKE 'core_version'), now(), now())
-ON DUPLICATE KEY UPDATE 
+ON DUPLICATE KEY UPDATE
 execution_date=now();
 
 
@@ -187,9 +183,9 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 
 
--- retain_answers_history.sql 
+-- retain_answers_history.sql
 ALTER TABLE learning_testtrack_answer ADD COLUMN number_time TINYINT(4) NULL DEFAULT '1' COMMENT '' AFTER user_answer;
-            
+
 ALTER TABLE learning_test ADD COLUMN retain_answers_history TINYINT(1) NOT NULL DEFAULT '0' COMMENT '' AFTER obj_type;
 
 ALTER TABLE learning_testtrack_answer
@@ -197,7 +193,7 @@ CHANGE COLUMN number_time number_time TINYINT(4) NOT NULL DEFAULT '1' COMMENT ''
 DROP PRIMARY KEY,
 ADD PRIMARY KEY (idTrack, idQuest, idAnswer, number_time)  COMMENT '';
 
--- password_algorithms.sql 
+-- password_algorithms.sql
 ALTER TABLE `core_user` CHANGE `pass` `pass` VARCHAR(255) NOT NULL;
 
 INSERT IGNORE INTO `core_setting` (
@@ -216,7 +212,7 @@ VALUES (
   'pass_algorithm', '1', 'password_algorithms', '255', 'password', '3', '5', '1', '0', ''
 );
 
--- 4229_customfield.sql 
+-- 4229_customfield.sql
 
 DROP TABLE IF EXISTS `core_customfield`;
 CREATE TABLE IF NOT EXISTS `core_customfield` (
@@ -346,14 +342,14 @@ INSERT IGNORE INTO core_role_members values(@v_idst, 3);
 
 -- ------------------
 
--- 4229_customfield_Lang.sql 
+-- 4229_customfield_Lang.sql
 
 
 
 -- ------------------
 
 
---        LABEL      
+--        LABEL
 
 
 -- ------------------
@@ -390,7 +386,7 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 
 
--- 4229_customfield_test.sql 
+-- 4229_customfield_test.sql
 
 
 -- ------------------
@@ -403,36 +399,36 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 ALTER TABLE  `learning_test` ADD  `cf_info` TEXT NOT NULL AFTER  `order_info`;
 
--- 8967.sql 
+-- 8967.sql
 
 
 -- label _ACTION_ON_USERS
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_ACTION_ON_USERS', 'user_managment', '');
 
 
 
 
 -- label _CREATE_AND_UPDATE
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CREATE_AND_UPDATE', 'user_managment', '');
 
 
 
 
 -- label _CREATE_ALL
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CREATE_ALL', 'user_managment', '');
 
 
 
 -- label _ONLY_CREATE
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_ONLY_CREATE', 'user_managment', '');
 
 
 -- label _ONLY_UPDATE
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_ONLY_UPDATE', 'user_managment', '');
 
 
@@ -442,7 +438,7 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 
 -- label _SET_PASSWORD
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SET_PASSWORD', 'user_managment', '');
 
 
@@ -450,27 +446,27 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 
 -- label _FROM_FILE
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_FROM_FILE', 'user_managment', '');
 
 
 
 
 -- label _INSERT_EMPTY
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_INSERT_EMPTY', 'user_managment', '');
 
 
 
 -- label _INSERT_ALL
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_INSERT_ALL', 'user_managment', '');
 
 
 
 
 -- label _PASSWORD_TO_INSERT
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_PASSWORD_TO_INSERT', 'user_managment', '');
 
 
@@ -479,21 +475,21 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 
 -- label _MANUAL_PASSWORD
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_MANUAL_PASSWORD', 'user_managment', '');
 
 
 
 
 -- label _AUTOMATIC_PASSWORD
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_AUTOMATIC_PASSWORD', 'user_managment', '');
 
 
 
 
 -- label _SEND_NEW_CREDENTIALS_ALERT
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SEND_NEW_CREDENTIALS_ALERT', 'user_managment', '');
 
 
@@ -503,7 +499,7 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 
 -- label _NEED_TO_ALERT
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_NEED_TO_ALERT', 'user_managment', '');
 
 
@@ -511,21 +507,21 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 
 -- label _NO_FILE
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_NO_FILE', 'user_managment', '');
 
 
 
 
 -- label _USERID_NEEDED
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_USERID_NEEDED', 'user_managment', '');
 
 
 
 
 -- label _FIELD_REPEATED
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_FIELD_REPEATED', 'user_managment', '');
 
 
@@ -534,7 +530,7 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 
 -- label _GENERATE_PASSWORD
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_GENERATE_PASSWORD', 'user_managment', '');
 
 
@@ -544,7 +540,7 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 
 -- label _USER_ALREADY_EXISTS
-                         
+
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_USER_ALREADY_EXISTS', 'standard', '');
 
 
@@ -553,7 +549,7 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 
 
--- 8996_add_simpleadmin_orgchart.sql 
+-- 8996_add_simpleadmin_orgchart.sql
 INSERT IGNORE INTO core_st(idst) values(null);
 set @v_idst=LAST_INSERT_ID();
 INSERT IGNORE INTO core_role(idst, roleid, description) VALUES
@@ -572,7 +568,7 @@ INSERT IGNORE INTO core_role(idst, roleid, description) VALUES
 (@v_idst, concat('/framework/admin/usermanagement/del_org'), NULL);
 INSERT IGNORE INTO core_role_members values(@v_idst, 3);
 
--- 9004_chiusura_corsi_edizioni_ora.sql 
+-- 9004_chiusura_corsi_edizioni_ora.sql
 
 
 -- edition.date_end DATETIME
@@ -581,12 +577,12 @@ ALTER TABLE  `learning_course_editions` CHANGE  `date_end`  `date_end` DATETIME 
 
 
 
--- 9497_import_ucfirst.sql 
+-- 9497_import_ucfirst.sql
 
 
 -- setting
-INSERT IGNORE INTO `core_setting` 
-(`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) 
+INSERT IGNORE INTO `core_setting`
+(`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
 VALUES
 ('import_ucfirst', 'on', 'enum', 3, '0', 3, 22, 1, 0, '');
 
@@ -598,16 +594,16 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 
 
--- coursereport_mvc.sql 
+-- coursereport_mvc.sql
 UPDATE `learning_module` SET `mvc_path` = 'lms/coursereport/coursereport' WHERE `learning_module`.`module_name` = "coursereport" AND `learning_module`.`default_op` = "coursereport";
 
--- 9593_custom_fields_mandatory_for_admin.sql 
+-- 9593_custom_fields_mandatory_for_admin.sql
 INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES ('custom_fields_mandatory_for_admin', 'off', 'enum', '3', 'register', '3', '21', '1', '0', '');
 
 INSERT IGNORE INTO `core_lang_text` (`text_key`, `text_module`, `text_attributes`) VALUES ('_CUSTOM_FIELDS_MANDATORY_FOR_ADMIN', 'configuration', '');
 
 
--- 4559_remove.sql 
+-- 4559_remove.sql
 
 
 DELETE FROM `core_menu_under` WHERE `module_name` = "publicadminrules";
@@ -653,14 +649,14 @@ DELETE FROM `core_role` WHERE `roleId` = "/lms/course/public/pcertificate/mod";
 DELETE FROM `core_group` WHERE `groupid` = "/framework/level/publicadmin";
 
 
--- 4560_remove_coursecharts.sql 
+-- 4560_remove_coursecharts.sql
 
 DELETE from learning_module WHERE module_name = "coursecharts";
 
 DELETE from core_role WHERE roleid like "%coursecharts%";
 
--- plugin-requests_tempname.sql 
-CREATE TABLE `core_requests` (
+-- plugin-requests_tempname.sql
+CREATE TABLE IF NOT EXISTS `core_requests` (
   `id` int(11) NOT NULL,
   `app` varchar(10) NOT NULL,
   `name` varchar(255) NOT NULL,

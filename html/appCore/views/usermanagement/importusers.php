@@ -48,9 +48,9 @@ switch ($step) {
 			'action_on_users',
 			'action_on_users',
 			array(
-				//Lang::t('_CREATE_AND_UPDATE', 'user_managment') => 'create_and_update',
+				Lang::t('_CREATE_AND_UPDATE', 'user_managment') => 'create_and_update',
 				Lang::t('_ONLY_CREATE', 'user_managment') => 'only_create',
-				Lang::t('_CREATE_ALL', 'user_managment') => 'create_all',
+				//Lang::t('_CREATE_ALL', 'user_managment') => 'create_all',
 				Lang::t('_ONLY_UPDATE', 'user_managment') => 'only_update'
 			),
 			'only_create'
@@ -73,7 +73,7 @@ switch ($step) {
 			'set_password',
 			array(
 				Lang::t('_FROM_FILE', 'user_managment') => 'from_file',
-				Lang::t('_INSERT_EMPTY', 'user_managment') => 'insert_empty',
+				//Lang::t('_INSERT_EMPTY', 'user_managment') => 'insert_empty',
 				Lang::t('_INSERT_ALL', 'user_managment') => 'insert_all'
 			),
 			'from_file'
@@ -104,6 +104,22 @@ switch ($step) {
 
 		echo Form::closeForm();
 		echo '</div>';
+                
+                echo '
+                <script type="text/javascript">
+                    $(function () {
+                        $( "#directory_importgroupuser" ).submit(function( event ) {
+                            if ($("#send_alert").is(":not(:checked)") && $("input[name=set_password]:checked", "#directory_importgroupuser").val() == "insert_all"){
+                                if (confirm("'.Lang::t('_SEND_NEW_CREDENTIALS_ALERT', 'user_managment').'?")) {
+                                    $("#send_alert").prop( "checked", true );
+                                } else {
+                                    $("#send_alert").prop( "checked", false );
+                                }
+                            }
+                        });
+                    });
+                </script> ';
+                
 	} break;
 
 	//step 3 : do the import

@@ -194,6 +194,7 @@ class DoceboConnectorXmlOrgChart extends DoceboConnector {
 		}
 		$path_elem = array();
 		$path_elem[] = $elem_folder->getAttribute('name');
+        $arr_data['code']= $elem_folder->getAttribute('code');        
 		$parent = $elem_folder->parentNode;
 		while( $parent->tagName == 'folder' ) {
 			$path_elem[] = $parent->getAttribute('name');

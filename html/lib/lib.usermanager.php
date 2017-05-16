@@ -2196,7 +2196,7 @@ class UserManagerRenderer {
 			return array( 	'error' => true,
 							'msg' => $lang->def('_ERR_INVALID_MAIL') );
 		}
-		if (!preg_match("^([a-z0-9_\-]|\\.[a-z0-9_])+@(([a-z0-9_\-]|\\.-)+\\.)+[a-z]{2,8}$", $source['register']['email'])) {
+		if (!preg_match("/^([a-z0-9_\-]|\\.[a-z0-9_])+@(([a-z0-9_\-]|\\.-)+\\.)+[a-z]{2,8}$/", $source['register']['email'])) {
 			return array( 	'error' => true,
 							'msg' => $lang->def('_ERR_INVALID_MAIL') );
 		}
