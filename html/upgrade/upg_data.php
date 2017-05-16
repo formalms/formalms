@@ -17,7 +17,7 @@ $upg_step = Get::gReq('upg_step', DOTY_INT);
 // allowed err codes
 $allowed_err_codes = array();
 array_push($allowed_err_codes, 1060); // Duplicate column name
-array_push($allowed_err_codes, 1025); // Error on rename table (DROP FOREIGN KEY not exist)
+// array_push($allowed_err_codes, 1025); // Error on rename table (DROP FOREIGN KEY not exist)
 
 if ($_SESSION['start_version'] >= 3000 && $_SESSION['start_version'] < 4000) {
 	echo 'error: version (' . $_SESSION['start_version'] . ') not supported for upgrade: too old (v3)';

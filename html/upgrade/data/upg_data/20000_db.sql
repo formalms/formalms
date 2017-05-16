@@ -51,9 +51,6 @@ INSERT IGNORE INTO learning_menucourse_under (idCourse, idModule, idMain,sequenc
 
 -- 4447.sql
 ALTER TABLE learning_course ADD id_menucustom INT(11);
-ALTER TABLE learning_course DROP FOREIGN KEY fk_menucustom;
-ALTER TABLE learning_course ADD CONSTRAINT fk_menucustom FOREIGN KEY (id_menucustom) REFERENCES learning_menucustom (idCustom) ON UPDATE CASCADE ON DELETE NO ACTION;
-
 
 -- 4687_forum_as_table.sql
 DELETE FROM core_setting WHERE param_name = 'forum_as_table';
