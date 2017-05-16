@@ -1,5 +1,8 @@
 <?php
 
+// start buffer
+ob_start();
+
 include('bootstrap.php');
 require('../config.php');
 include_once(_base_."/db/lib.docebodb.php");
@@ -152,12 +155,19 @@ if ( $_SESSION['upgrade_ok'] ) {
 		$res =array('res'=>'Error', 'msg' => $GLOBALS['debug']);
 }
 
+// remove all the echo and put them in the debug zone
+$GLOBALS['page']->add(ob_get_contents(), 'debug');
+ob_clean();
 
 /**/
 require_once(_base_.'/lib/lib.json.php');
 $json = new Services_JSON();
 echo $json->encode($res);
 session_write_close();
+
+// flush buffer
+ob_end_flush();
+
 die();
 
 
