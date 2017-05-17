@@ -3826,6 +3826,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .bootstrap-select .dropdown-menu li a .glyphicon.glyphicon-ok.check-mark {
+  display: inline-block;
   width: 20px;
   height: 20px;
   margin-top: 0 !important;
@@ -3835,7 +3836,7 @@ h1, h2, h3, h4, h5, h6, p {
           border-radius: 5px;
   text-align: center;
   position: absolute;
-  right: 20px;
+  right: 20px !important;
   top: 0;
 }
 
@@ -3843,6 +3844,11 @@ h1, h2, h3, h4, h5, h6, p {
   content: '\f00c';
   font-family: "FontAwesome";
   color: #666666;
+  opacity: 0;
+}
+
+.bootstrap-select .dropdown-menu li.selected a .glyphicon.glyphicon-ok.check-mark:before {
+  opacity: 1;
 }
 
 .input-group {
