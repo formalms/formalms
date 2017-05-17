@@ -239,10 +239,10 @@ foreach ($menu['all'] as $row) {
                                               </div>   
                                           <li>
                                       </ul>
-                                      </nav><!-- /c-menu slide-right -->
+                                      </nav><!-- /c-menu slide-right end profile right panel -->
                                  </ul>
                                     </li>  
-                                    <div id="c-mask" class="c-mask"></div><!-- /c-mask -->','menu_over'); 
+                                    <div id="c-mask" class="c-mask"></div><!-- /c-mask overlay -->','menu_over');
                                                 
        
 
