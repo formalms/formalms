@@ -293,13 +293,6 @@ INSERT IGNORE INTO `core_customfield_type` (`type_field`, `type_file`, `type_cla
 
 -- ------------------
 
-
-INSERT IGNORE INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`)
-VALUES(6, 3, 'customfield_manager', '_CUSTOMFIELD_MANAGER', 'field_list', 'view', NULL, 8, 'class.customfield_manager.php', 'Module_Customfield_Manager', '');
-
-
-
-
 -- label
 INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CUSTOMFIELD_MANAGER', 'menu', '');
 
@@ -605,11 +598,6 @@ INSERT IGNORE INTO `core_lang_text` (`text_key`, `text_module`, `text_attributes
 
 -- 4559_remove.sql
 
-
-DELETE FROM `core_menu_under` WHERE `module_name` = "publicadminrules";
-DELETE FROM `core_menu_under` WHERE `module_name` = "publicadminmanager";
-
-
 DELETE FROM `learning_module` WHERE `module_name` = "pusermanagement";
 DELETE FROM `learning_module` WHERE `module_name` = "pcourse";
 DELETE FROM `learning_module` WHERE `module_name` = "public_report_admin";
@@ -683,7 +671,7 @@ ALTER TABLE `core_requests`
   ALTER TABLE `core_plugin`  ADD `core` bit(1) NOT NULL DEFAULT b'0';
   
   
-  INSERT INTO `core_plugin` (`name`, `title`, `category`, `version`, `author`, `link`, `priority`, `description`, `regroup`, `active`, `core`) VALUES('FormaAuth', 'Forma Auth', '', '1.0', 'Joint Technologies', '', 0, 'forma auth', 1488290190, 1, b'1');
+  INSERT IGNORE INTO `core_plugin` (`name`, `title`, `category`, `version`, `author`, `link`, `priority`, `description`, `regroup`, `active`, `core`) VALUES('FormaAuth', 'Forma Auth', '', '1.0', 'Joint Technologies', '', 0, 'forma auth', 1488290190, 1, b'1');
 
   
 
