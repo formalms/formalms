@@ -16,7 +16,9 @@ $upg_step = Get::gReq('upg_step', DOTY_INT);
 
 // allowed err codes
 $allowed_err_codes = array();
-array_push($allowed_err_codes, 1060); // Duplicate column name
+array_push($allowed_err_codes, 1060); // ER_DUP_FIELDNAME
+array_push($allowed_err_codes, 1068); // ER_MULTIPLE_PRI_KEY
+array_push($allowed_err_codes, 1091); // ER_CANT_DROP_FIELD_OR_KEY
 
 if ($_SESSION['start_version'] >= 3000 && $_SESSION['start_version'] < 4000) {
 	echo 'error: version (' . $_SESSION['start_version'] . ') not supported for upgrade: too old (v3)';
