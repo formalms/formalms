@@ -404,7 +404,7 @@ class ImportUser extends DoceboImport_Destination {
                                 $this->last_error = 'Error on insert user';
                                 $err = true;
                             }
-                        } elseif ($idst !== FALSE) {
+                        } elseif ($idst !== FALSE || $sameuserid) {
                             $idst = FALSE;
                             $this->last_error = Lang::t('_USER_ALREADY_EXISTS', 'standard').' --> '.$userid.' | '.$firstname.' | '.$lastname.' | '.$pass.' | '.$email.' |';
                             return FALSE;

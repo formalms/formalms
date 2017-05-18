@@ -136,6 +136,16 @@ class PluginmanagerAdm extends Model {
         }
     }
 
+    public function getActivePlugins(){
+        $query = "SELECT * FROM ".$this->table." WHERE  active=1 or core=1";
+        $re = $this->db->query($query);
+        $plugins=array();
+        while($row = sql_fetch_assoc($re)){
+            $plugins[$row['name']]=$row;
+        }
+        return $plugins;
+    }
+
     /**
      * Get plugins list (if parameter true returns only active plugins)
      * @param bool $onlyActive
@@ -310,6 +320,7 @@ class PluginmanagerAdm extends Model {
      */
     public function uninstallPlugin($plugin_id, $update=false){
         if (!$update){
+            $this->setupPlugin($plugin_id, false);
             $this->callPluginMethod($plugin_id, 'uninstall');
             $this->removeSettings($plugin_id);
             $this->removeRequests($plugin_id);

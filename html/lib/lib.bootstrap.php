@@ -252,7 +252,9 @@ class Boot {
 
 		require_once(_lib_.'/lib.acl.php');
 
-		self::log( "Prepare plugin's autoload." );
+		self::log( "Prepare plugin's listeners." );
+        PluginManager::hook();
+
 	}
 
 	/**
