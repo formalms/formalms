@@ -57,15 +57,11 @@ $menu-top-icons: 'profile', 'help-desk', 'admin';
 .icon {
   position: relative;
 
-  .header & {
-    height: 14px;
-
-    &:after {
-      content: '';
-      width: 35px;
-      height: 35px;
-      background-repeat: no-repeat;
-      background-position: center;
-    }
+  &:after {
+    content: '';
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
   }
 }
