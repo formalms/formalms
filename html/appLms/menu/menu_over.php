@@ -199,11 +199,11 @@ foreach ($menu['all'] as $row) {
                
                cout('<li>                                
                         <div id="o-wrapper" class="o-wrapper">
-                                <button id="c-button--slide-right" class="c-button" >
-                                 <a data-toggle="dropdown"  href="#" title="'.Lang::t('_PROFILE', 'menu_course').'">
-                                <table><tr><td>'. $photo.'  &nbsp;</td><td><span class="username"> '.Docebo::user()->getUserName().'</span></td></tr></table>                                                        
-                                  </a>
-                                </button>
+                            <button id="c-button--slide-right" class="c-button" >
+                                <a data-toggle="dropdown"  href="#" title="'.Lang::t('_PROFILE', 'menu_course').'">
+                                   <span class="username icon--profile"> '.Docebo::user()->getUserName().'</span>
+                                </a>
+                            </button>
                         </div>
                         <!-- /o-wrapper -->
                                     <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right">

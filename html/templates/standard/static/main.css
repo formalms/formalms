@@ -3015,6 +3015,34 @@
   background-image: url("images/icons/course/icon--suspended.png");
 }
 
+.icon--profile:after {
+  background-image: url("images/icons/top-menu/icon--profile.svg");
+}
+
+.icon--help-desk:after {
+  background-image: url("images/icons/top-menu/icon--help-desk.svg");
+}
+
+.icon--admin:after {
+  background-image: url("images/icons/top-menu/icon--admin.svg");
+}
+
+.icon {
+  position: relative;
+}
+
+.header .icon {
+  height: 14px;
+}
+
+.header .icon:after {
+  content: '';
+  width: 35px;
+  height: 35px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .grid {
   width: 100%;
   max-width: 1268px;
@@ -4534,4 +4562,98 @@ i + .course-box__date-box {
 .layout_footer .powered_by .poweredby a {
   color: #c2c2c2;
   text-decoration: none;
+}
+
+.header {
+  height: 60px;
+  padding: 8px 58px 8px 38px;
+  border-bottom: 2px solid #c84000;
+}
+
+.header .row-fluid .navbar-header .navbar-brand {
+  padding: 10px 0 0 0;
+}
+
+.header nav {
+  border: none !important;
+}
+
+.header #navbar {
+  float: right;
+  padding: 0;
+}
+
+.header #navbar li {
+  padding: 14px 20px;
+  font-family: "Open-sans";
+  text-transform: uppercase;
+  font-size: 14px;
+  border-right: 1px solid #c2c2c2;
+}
+
+.header #navbar li:first-child {
+  padding-left: 0;
+}
+
+.header #navbar li:last-child {
+  padding-right: 0;
+  border-right: none;
+}
+
+.header #navbar li a {
+  height: 14px;
+  padding: 0;
+  color: #666666;
+  -webkit-transition: color .2s ease 0s;
+  transition: color .2s ease 0s;
+  line-height: 1;
+}
+
+.header #navbar li a:hover {
+  background-color: transparent;
+  color: #ff6c00;
+}
+
+.header #navbar li .o-wrapper {
+  line-height: 1;
+}
+
+.header #navbar li .o-wrapper .c-button {
+  margin: 0;
+  padding: 0;
+  background: transparent none repeat scroll 0 0;
+  border: 0;
+}
+
+.header #navbar li .o-wrapper .c-button a {
+  line-height: 1;
+  text-decoration: none;
+}
+
+.header #navbar li .o-wrapper .c-button a .username {
+  position: relative;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.header #navbar li .o-wrapper .c-button a .username:hover:after {
+  background-image: url("images/icons/top-menu/icon--profile-hover.svg");
+  border: 1px solid #ff6c00;
+}
+
+.header #navbar li .o-wrapper .c-button a .username:after {
+  content: '';
+  position: absolute;
+  top: -7px;
+  right: -45px;
+  width: 35px;
+  height: 35px;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
+  border: 1px solid #c84000;
+  background-position: center;
+  background-size: 13px;
+  background-repeat: no-repeat;
+  -webkit-transition: border .2s ease 0s, background-image .2s ease 0s;
+  transition: border .2s ease 0s, background-image .2s ease 0s;
 }
