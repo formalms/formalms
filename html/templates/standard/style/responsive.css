@@ -155,7 +155,9 @@
 
 /* MENU */
 #container header.header {
-  border-bottom: solid 1px #ccc !important;
+  /* RESTYLING
+    border-bottom: solid 1px #ccc !important;
+  */
 }
 
 #lms_menu_container {
@@ -172,7 +174,7 @@
   float: none;
 }
 #lms_menu_container #navbar ul.nav li a {
-  line-height: 19px;
+  /*line-height: 19px;*/
 }
 @media only screen and (min-width: 768px) {
   #lms_menu_container #navbar ul.nav {

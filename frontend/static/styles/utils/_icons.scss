@@ -1,3 +1,9 @@
+// Icons
+//
+// These are the restyled icons
+//
+// Style guide: 10
+
 $user-icons: '1', '2', '3', '4', '5', '6', '7';
 
 @each $icon in $user-icons {
@@ -34,6 +40,32 @@ $tab-filter-icons: 'active', 'all', 'concluded';
   .icon--#{$icon} {
     &:before {
       background-image: url('images/icons/course/icon--#{$icon}.png');
+    }
+  }
+}
+
+$menu-top-icons: 'profile', 'help-desk', 'admin';
+
+@each $icon in $menu-top-icons {
+  .icon--#{$icon} {
+    &:after {
+      background-image: url('images/icons/top-menu/icon--#{$icon}.svg');
+    }
+  }
+}
+
+.icon {
+  position: relative;
+
+  .header & {
+    height: 14px;
+
+    &:after {
+      content: '';
+      width: 35px;
+      height: 35px;
+      background-repeat: no-repeat;
+      background-position: center;
     }
   }
 }
