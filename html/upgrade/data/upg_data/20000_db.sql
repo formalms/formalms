@@ -668,10 +668,10 @@ ALTER TABLE `core_requests`
 -- Campo per i plugin
   ALTER TABLE `core_plugin` DROP `code`;
   ALTER TABLE `core_plugin`  ADD `regroup` INT(11) NOT NULL  AFTER `description`;
-  ALTER TABLE `core_plugin`  ADD `core` bit(1) NOT NULL DEFAULT b'0';
+  ALTER TABLE `core_plugin`  ADD `core` INT(1) NOT NULL;
   
   
-  INSERT IGNORE INTO `core_plugin` (`name`, `title`, `category`, `version`, `author`, `link`, `priority`, `description`, `regroup`, `active`, `core`) VALUES('FormaAuth', 'Forma Auth', '', '1.0', 'Joint Technologies', '', 0, 'forma auth', 1488290190, 1, b'1');
+  INSERT IGNORE INTO `core_plugin` (`name`, `title`, `category`, `version`, `author`, `link`, `priority`, `description`, `regroup`, `active`, `core`) VALUES('FormaAuth', 'Forma Auth', '', '1.0', 'Joint Technologies', '', 0, 'forma auth', 1488290190, 1, 1);
 
   
 

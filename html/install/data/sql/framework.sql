@@ -1787,7 +1787,7 @@ CREATE TABLE IF NOT EXISTS `core_plugin` (
   `description` text NOT NULL,
   `regroup` int(11) NOT NULL,
   `active` int(1) NOT NULL,
-  `core` bit(1) NOT NULL DEFAULT b'0',
+  `core` int(1) NOT NULL,
   PRIMARY KEY (`plugin_id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
