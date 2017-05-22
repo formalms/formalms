@@ -488,7 +488,11 @@ case 'menu_user':
                                 $mvc_name = ucwords($tmp[1]);
                                 $perm_path = '/framework/admin/'.strtolower($mvc_name).'/';
 
-                                require_once(_adm_.'/models/'.$mvc_name.'Adm.php');
+                                if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/models/'.$mvc_name.'Adm.php') && Get::cfg('enable_customscripts', false) == true ){
+                                        require_once(_base_.'/customscripts'.'/'._folder_adm_.'/models/'.$mvc_name.'Adm.php');
+                                } else {
+                                        require_once(_adm_.'/models/'.$mvc_name.'Adm.php');
+                                }
 
                                 $class_name = $mvc_name.'Adm';
                                 $tmp_class = new $class_name();
@@ -633,7 +637,11 @@ case 'menu_user':
                                 $mvc_name = ucwords($tmp[1]);
                                 $perm_path = '/lms/admin/'.strtolower($mvc_name).'/';
 
-                                require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_customscripts', false) == true ){
+                                        require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                } else {
+                                        require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                }
 
                                 $class_name = $mvc_name.'Alms';
                                 $tmp_class = new $class_name();
@@ -777,7 +785,11 @@ case 'menu_user':
                                 $mvc_name = ucwords($tmp[1]);
                                 $perm_path = '/lms/admin/'.strtolower($mvc_name).'/';
 
-                                require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_customscripts', false) == true ){
+                                        require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                } else {
+                                        require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                }
 
                                 $class_name = $mvc_name.'Alms';
                                 $tmp_class = new $class_name();
@@ -934,7 +946,11 @@ case 'menu_user':
                                 $mvc_name = ucwords($tmp[1]);
                                 $perm_path = '/lms/admin/'.strtolower($mvc_name).'/';
 
-                                require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_customscripts', false) == true ){
+                                        require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                } else {
+                                        require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                }
 
                                 $class_name = $mvc_name.'Alms';
                                 $tmp_class = new $class_name();
@@ -1079,13 +1095,20 @@ case 'menu_user':
 
                                
                                 if($mvc_name=='Questcategory' || $mvc_name=='Timeperiods' ||  $mvc_name=='Label' ){
-                                    require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                    if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_customscripts', false) == true ){
+                                            require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                    } else {
+                                            require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                    }
                                     $class_name = $mvc_name.'Alms';
                                     $perm_path = '/lms/admin/'.strtolower($mvc_name).'/';
                                     
                                 }   else {
-                                    
-                                    require_once(_adm_.'/models/'.$mvc_name.'Adm.php');
+                                    if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/models/'.$mvc_name.'Adm.php') && Get::cfg('enable_customscripts', false) == true ){
+                                            require_once(_base_.'/customscripts'.'/'._folder_adm_.'/models/'.$mvc_name.'Adm.php');
+                                    } else {
+                                            require_once(_adm_.'/models/'.$mvc_name.'Adm.php');
+                                    }
                                     $class_name = $mvc_name.'Adm';
                                     $perm_path = '/framework/admin/'.strtolower($mvc_name).'/';
                                 }
