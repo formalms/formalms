@@ -3364,6 +3364,8 @@ i + .course-box__date-box {
           background-color: transparent;
           color: #ff6c00; }
         .header #navbar li a .icon {
+          top: 0;
+          left: 0;
           padding: 0 10px; }
           .header #navbar li a .icon.icon--help-desk:hover:after {
             border: 1px solid #ff6c00;
@@ -3380,7 +3382,7 @@ i + .course-box__date-box {
             width: 35px;
             height: 35px;
             border-radius: 50%;
-            top: -7px;
+            top: -10px;
             left: -7px;
             transition: border .2s ease 0s, background-image .2s ease 0s; }
       .header #navbar li .o-wrapper {
