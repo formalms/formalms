@@ -85,8 +85,7 @@ if(!Docebo::user()->isAnonymous()) {
         $can_admin_settings = checkRole('/framework/admin/setting/view', true);
 
         $strTxtHelp = Lang::t('_CUSTOMER_HELP', 'customer_help')."";
-//        $strHelp = "<span class='glyphicon glyphicon-question-sign'></span>";
-        $strHelp = "<span class='icon icon--help-desk'></span>";
+        $strHelp = "<span class='glyphicon glyphicon-question-sign'></span>";
 
         if ($can_send_emails) {
 
@@ -164,11 +163,10 @@ foreach ($menu['all'] as $row) {
     if( isset($_GET['id_cat']) && strpos($row[0], "catalog")>0)  $active = " class='active'";
     // ADMIN
      if(strrpos($row[0], 'appCore')>0 ){
-        cout( '<li  ><a href="'.$row[0].'" title="'.$row[1].'" title="'.Lang::t('_GO_TO_FRAMEWORK', 'menu_over').'"><span class="icon icon--admin"></span></a></li> ','menu_over');
+        cout( '<li  ><a href="'.$row[0].'" title="'.$row[1].'" title="'.Lang::t('_GO_TO_FRAMEWORK', 'menu_over').'"><span class="glyphicon glyphicon-cog"></span></a></li> ','menu_over');
      } else{
           // HELP DESK
-//         if(strrpos($row[1], 'sign')>0 ){
-         if(strrpos($row[1], 'icon')>0 ){
+         if(strrpos($row[1], 'sign')>0 ){
             cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.Lang::t('_CUSTOMER_HELP', 'customer_help').'"  >'.$row[1].'</a></li>','menu_over');
          }else if ($row[2] === false){
             cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.$row[1].'"  >'.$row[1].'</a></li>','menu_over');

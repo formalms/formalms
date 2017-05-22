@@ -48,20 +48,20 @@ $menu-top-icons: 'profile', 'help-desk', 'admin';
 
 @each $icon in $menu-top-icons {
   .icon--#{$icon} {
-    &:after {
+    &:before {
       background-image: url('images/icons/top-menu/icon--#{$icon}.svg');
     }
   }
 }
 
-.icon {
-  position: relative;
-
-  &:after {
-    content: '';
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: absolute;
-  }
-}
+//.icon {
+//  position: relative;
+//
+//  &:after {
+//    content: '';
+//    background-size: contain;
+//    background-position: center;
+//    background-repeat: no-repeat;
+//    position: absolute;
+//  }
+//}
