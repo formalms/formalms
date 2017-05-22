@@ -215,8 +215,11 @@ class AdminrulesAdm extends Model
 							}
 							else
 							{
-								require_once(_adm_.'/class.module/'.$class_file);
-
+                                                                if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
+                                                                        require_once(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/'.$class_file);
+                                                                } else {
+                                                                        require_once(_adm_.'/class.module/'.$class_file);
+                                                                }
 								$tmp_class = new $class_name();
 								$perm_path = '/framework/admin/'.strtolower($module_name).'/';
 
@@ -519,7 +522,11 @@ case 'menu_user':
                             }
                             else
                             {
-                                require_once(_adm_.'/class.module/'.$class_file);
+                                if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
+                                        require_once(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/'.$class_file);
+                                } else {
+                                        require_once(_adm_.'/class.module/'.$class_file);
+                                }
 
                                 $tmp_class = new $class_name();
                                 $perm_path = '/framework/admin/'.strtolower($module_name).'/';
@@ -668,7 +675,11 @@ case 'menu_user':
                             }
                             else
                             {
-                                require_once(_lms_.'/admin/class.module/'.$class_file);
+                                if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
+                                        require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file);
+                                } else {
+                                        require_once(_lms_.'/admin/class.module/'.$class_file);
+                                }
 
                                 $tmp_class = new $class_name();
                                 $perm_path = '/lms/admin/'.strtolower($module_name).'/';
@@ -817,14 +828,21 @@ case 'menu_user':
                             else
                             {   
                                if($class_file == "class.newsletter.php"){   
-                                   
-                                    require_once(_adm_.'/class.module/'.$class_file);     
+                                    if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
+                                            require_once(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/'.$class_file);
+                                    } else {
+                                            require_once(_adm_.'/class.module/'.$class_file);
+                                    }
                                     $tmp_class = new $class_name();
                                     $perm_path = '/framework/admin/'.strtolower($module_name).'/';                                   
                                    
                                     
                                }   else {
-                                    require_once(_lms_.'/admin/class.module/'.$class_file);    
+                                    if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
+                                            require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file);
+                                    } else {
+                                            require_once(_lms_.'/admin/class.module/'.$class_file);
+                                    }  
                                     $tmp_class = new $class_name();
                                     $perm_path = '/lms/admin/'.strtolower($module_name).'/';
    
@@ -977,7 +995,11 @@ case 'menu_user':
                             }
                             else
                             {
-                                require_once(_lms_.'/admin/class.module/'.$class_file);
+                                if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
+                                        require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file);
+                                } else {
+                                        require_once(_lms_.'/admin/class.module/'.$class_file);
+                                }
 
                                 $tmp_class = new $class_name();
                                 $perm_path = '/lms/admin/'.strtolower($module_name).'/';
@@ -1146,9 +1168,17 @@ case 'menu_user':
                             {
 
                                 if($class_file=="class.amanmenu.php" || $class_file=="class.middlearea.php" ){
-                                    require_once(_lms_.'/admin/class.module/'.$class_file);
+                                    if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
+                                            require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file);
+                                    } else {
+                                            require_once(_lms_.'/admin/class.module/'.$class_file);
+                                    }
                                 }   else {     
-                                    require_once(_adm_.'/class.module/'.$class_file);
+                                    if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
+                                            require_once(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/'.$class_file);
+                                    } else {
+                                            require_once(_adm_.'/class.module/'.$class_file);
+                                    }
                                 
                                 }
 
