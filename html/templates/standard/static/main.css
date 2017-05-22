@@ -2305,23 +2305,14 @@
 .icon--suspended:before {
   background-image: url("images/icons/course/icon--suspended.png"); }
 
-.icon--profile:after {
+.icon--profile:before {
   background-image: url("images/icons/top-menu/icon--profile.svg"); }
 
-.icon--help-desk:after {
+.icon--help-desk:before {
   background-image: url("images/icons/top-menu/icon--help-desk.svg"); }
 
-.icon--admin:after {
+.icon--admin:before {
   background-image: url("images/icons/top-menu/icon--admin.svg"); }
-
-.icon {
-  position: relative; }
-  .icon:after {
-    content: '';
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: absolute; }
 
 .grid {
   width: 100%;
@@ -3334,8 +3325,11 @@ i + .course-box__date-box {
 
 .header {
   height: 60px;
-  padding: 8px 58px 8px 38px;
+  padding: 0 36px 0 30px;
   border-bottom: 2px solid #c84000; }
+  @media (min-width: 768px) {
+    .header {
+      padding: 8px 58px 8px 38px; } }
   .header .row-fluid .navbar-header .navbar-brand {
     padding: 10px 0 0 0; }
   .header nav {
@@ -3363,28 +3357,34 @@ i + .course-box__date-box {
         .header #navbar li a:hover {
           background-color: transparent;
           color: #ff6c00; }
-        .header #navbar li a .icon {
-          top: 0;
-          left: 0;
-          padding: 0 10px; }
-          .header #navbar li a .icon.icon--help-desk:hover:after {
-            border: 1px solid #ff6c00;
-            background-image: url("images/icons/top-menu/icon--help-desk-hover.svg"); }
-          .header #navbar li a .icon.icon--help-desk:after {
-            background-size: 20px; }
-          .header #navbar li a .icon.icon--admin:hover:after {
-            border: 1px solid #ff6c00;
-            background-image: url("images/icons/top-menu/icon--admin-hover.svg"); }
-          .header #navbar li a .icon.icon--admin:after {
-            background-size: 20px; }
-          .header #navbar li a .icon:after {
-            border: 1px solid #c2c2c2;
+        .header #navbar li a .glyphicon {
+          position: relative;
+          width: 35px;
+          height: 35px; }
+          .header #navbar li a .glyphicon:hover:before {
+            border-color: #ff6c00; }
+          .header #navbar li a .glyphicon:before {
+            content: '';
+            position: absolute;
+            top: -11px;
+            left: 0;
             width: 35px;
             height: 35px;
+            display: inline-block;
+            border: 1px solid #c2c2c2;
             border-radius: 50%;
-            top: -10px;
-            left: -7px;
-            transition: border .2s ease 0s, background-image .2s ease 0s; }
+            background-size: 20px;
+            background-repeat: no-repeat;
+            background-position: center;
+            transition: border-color .2s ease 0s, background-image .2s ease 0s; }
+          .header #navbar li a .glyphicon.glyphicon-question-sign:hover:before {
+            background-image: url("images/icons/top-menu/icon--help-desk-hover.svg"); }
+          .header #navbar li a .glyphicon.glyphicon-question-sign:before {
+            background-image: url("images/icons/top-menu/icon--help-desk.svg"); }
+          .header #navbar li a .glyphicon.glyphicon-cog:hover:before {
+            background-image: url("images/icons/top-menu/icon--admin-hover.svg"); }
+          .header #navbar li a .glyphicon.glyphicon-cog:before {
+            background-image: url("images/icons/top-menu/icon--admin.svg"); }
       .header #navbar li .o-wrapper {
         line-height: 1; }
         .header #navbar li .o-wrapper .c-button {
@@ -3392,17 +3392,21 @@ i + .course-box__date-box {
           padding: 0;
           background: transparent none repeat scroll 0 0;
           border: 0; }
+          .header #navbar li .o-wrapper .c-button.open,
           .header #navbar li .o-wrapper .c-button a {
             line-height: 1;
             text-decoration: none; }
+            .header #navbar li .o-wrapper .c-button.open .username,
             .header #navbar li .o-wrapper .c-button a .username {
               position: relative;
               text-transform: uppercase;
               font-weight: bold; }
-              .header #navbar li .o-wrapper .c-button a .username:hover:after {
+              .header #navbar li .o-wrapper .c-button.open .username:hover:before,
+              .header #navbar li .o-wrapper .c-button a .username:hover:before {
                 background-image: url("images/icons/top-menu/icon--profile-hover.svg");
                 border: 1px solid #ff6c00; }
-              .header #navbar li .o-wrapper .c-button a .username:after {
+              .header #navbar li .o-wrapper .c-button.open .username:before,
+              .header #navbar li .o-wrapper .c-button a .username:before {
                 content: '';
                 position: absolute;
                 top: -7px;
