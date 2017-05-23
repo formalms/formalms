@@ -4605,6 +4605,7 @@ i + .course-box__date-box {
 @media (min-width: 768px) {
   .header .row-fluid .navbar-collapse li {
     text-transform: uppercase;
+    border-right: 1px solid #c2c2c2;
   }
 }
 
@@ -4764,12 +4765,6 @@ i + .course-box__date-box {
   line-height: 40px;
   margin-right: 40px;
   border-right: 2px solid #c2c2c2;
-}
-
-@media (min-width: 768px) {
-  .header .row-fluid .navbar-collapse.collapsing .nav.navbar-nav li a, .header .row-fluid .navbar-collapse.collapse.in .nav.navbar-nav li a {
-    border-right: none;
-  }
 }
 
 .header .row-fluid .navbar-collapse.collapsing .nav.navbar-nav li a .glyphicon, .header .row-fluid .navbar-collapse.collapse.in .nav.navbar-nav li a .glyphicon {
