@@ -713,7 +713,7 @@ class CoursestatsLmsController extends LmsController {
 			return;
 		}
 
-                require_once(_lms_.'/modules/organization/orglib.php');
+                require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
                 require_once(_lms_.'/lib/lib.param.php');
                 
                 $repoDb = new OrgDirDb($id_course);
