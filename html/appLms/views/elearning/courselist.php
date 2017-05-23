@@ -108,19 +108,23 @@ function TruncateText($the_text, $size)
                                     <?php echo TruncateText($course['box_description'], 120); ?>
                                 </div>
                             </div>
-                            <div class="course-box__item course-box__item--half">
-                                <div class="course-box__date-text">
-                                    <span>Data di chiusura</span><br>
-                                    <?php
-                                    if (GetCourseYear($course) > 1) {
-                                        echo GetCourseDay($course) . ' ' . GetCourseMonth($course) . ' ' . GetCourseYear($course);
-                                    }
-                                    ?>
-                                </div>
-                            </div>
-                            <div class="course-box__item course-box__item--half">
+                            <?php
+                            //if the date isn't set hide the html element
+
+                            if (GetCourseYear($course) > 1) {
+
+                                echo '<div class="course-box__item course-box__item--half">
+                                        <div class="course-box__date-text">
+                                          <span>Data di chiusura</span><br>';
+                                echo GetCourseDay($course) . ' ' . GetCourseMonth($course) . ' ' . GetCourseYear($course);
+                                echo '  </div>
+                                      </div>';
+                            }
+
+                            ?>
+                            <div class="course-box__item course-box__item<?php if (GetCourseYear($course) > 1) { echo '--half'; } ?>">
                                 <?php if ($course['can_enter']['can']) { ?>
-                                    <a class="forma-button forma-button--orange-hover" title="<?php echo Util::purge($course['name']); ?>"
+                                    <a class="forma-button forma-button--orange-hover forma-button--full" title="<?php echo Util::purge($course['name']); ?>"
                                        href="index.php?modname=course&amp;op=aula&amp;idCourse=<?php echo $course['idCourse']; ?>"<?php echo($course['direct_play'] == 1 && $course['level'] <= 3 && $course['first_lo_type'] == 'scormorg' ? ' rel="lightbox"' : ''); ?>>
                                    <span class="forma-button__label">
                                      <?php echo Lang::t('_USER_STATUS_ENTER', 'catalogue'); ?>
@@ -143,7 +147,7 @@ function TruncateText($the_text, $size)
 
                 <?php /*</ul>*/ ?>
             <br>
-            <?php 
+            <?php
             // END ELEARNING
         }
         ?>
