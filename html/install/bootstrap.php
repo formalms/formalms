@@ -21,6 +21,7 @@ define("_deeppath_", "../");
 require(dirname(__FILE__).'/../base.php');
 define('_installer_', _base_.'/install');
 
+include(_lib_.'/lib.forma.php');
 include(_lib_.'/lib.docebo.php');
 include(_lib_.'/installer/lib.php');
 include(_lib_.'/installer/lib.lang.php');
