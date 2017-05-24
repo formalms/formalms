@@ -18,7 +18,7 @@ class Docebo {
 	 * @var DCache
 	 */
 	protected static $_cache = null;
-	
+
 	private $_current_user = false;
 
 	private $_lang_manager = false;
@@ -54,9 +54,9 @@ class Docebo {
 	public static function aclm() {
 		return $GLOBALS['current_user']->getAclManager();
 	}
-	
+
 	/**
-	 * @return DCache 
+	 * @return DCache
 	 */
 	public static function cache() {
 		// change the cache based on the config
@@ -90,9 +90,9 @@ class Docebo {
 						self::$_cache->init();
 					}
 				};break;
-				case "dummy" : 
+				case "dummy" :
 				default: {
-					
+
 					self::$_cache = new DDummyCache();
 					self::$_cache->init();
 				}
@@ -100,13 +100,13 @@ class Docebo {
 		}
 		return self::$_cache;
 	}
-	
+
 	public static function setCourse($id_course) {
-		
+
 		require_once(_lms_.'/lib/lib.course.php');
 		$GLOBALS['course_descriptor'] = new DoceboCourse($id_course);
 	}
-	
+
 	/**
 	 * Return an object that describe the current user logged in
 	 * @return DoceboCourse
@@ -114,16 +114,16 @@ class Docebo {
 	public static function course() {
 		return ( isset($GLOBALS['course_descriptor']) ? $GLOBALS['course_descriptor'] : false );
 	}
-	
+
 	/**
 	 * Return the current database connector handler
-	 * @return DbConn 
+	 * @return DbConn
 	 */
 	public static function db() {
-		
+
 		return DbConn::getInstance();
 	}
-	
+
 	/**
 	 * Return an object that describe the system languages
 	 * @return DoceboLangManager
@@ -132,14 +132,15 @@ class Docebo {
 		return DoceboLangManager::getInstance();
 	}
 
-	/**
-	 * Return an object that describe the system languages
-	 * @return string the file to include
-	 */
-	public static function inc($file) {
-        $file = str_replace(_base_.'/', '', $file);
-        return _base_.'/'.$file;
-	}
+    /**
+     * Return an object that describe the system languages
+     * @return string the file to include
+     * @deprecated
+     */
+    public static function inc($file) {
+        return Forma::inc($file);
+    }
+
 
 	/**
 	 * Return an object that describe the system languages

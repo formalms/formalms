@@ -151,7 +151,7 @@ function docebo_autoload($classname) {
                     $c_file = $path[$loc][1].'/'.$classname.'.php';
                 }
 		//if(file_exists($c_file))
-			include_once(Docebo::inc($c_file));
+			include_once(Forma::inc($c_file));
 		return;
 	} else if(preg_match('/(Mobile|Adm|Alms|Lms|Acms|Cms|Lobj)$/', $classname, $location)) {
 		// include model file
@@ -162,7 +162,7 @@ function docebo_autoload($classname) {
                     $c_file = $path[$loc][0].'/'.$classname.'.php';
                 }
 		//if(file_exists($c_file))
-			include_once(Docebo::inc($c_file));
+			include_once(Forma::inc($c_file));
 		return;
 	}
 
@@ -172,20 +172,20 @@ function docebo_autoload($classname) {
 		if(strpos($classname, 'Controller') !== false) {
 			// include controller file
 			$c_file = $loc.'/controller/'.$classname.'.php';
-			if(file_exists($c_file)) include_once(Docebo::inc($c_file));
+			if(file_exists($c_file)) include_once(Forma::inc($c_file));
 			return;
 		} else { //if(strpos($classname, 'Model') !== false) {
 			// include model file
 			$c_file = $loc.'/model/'.$classname.'.php';
-			if(file_exists($c_file)) include_once(Docebo::inc($c_file));
+			if(file_exists($c_file)) include_once(Forma::inc($c_file));
 			return;
 		}
 	}
 	// search for a standard filename in the library
 	if(file_exists(_lib_.'/lib.'.strtolower($classname).'.php')) {
 		
-		if(!class_exists('Docebo', false)) include_once( _lib_.'/lib.'.strtolower($classname).'.php' );
-		else include_once( Docebo::inc(_lib_.'/lib.'.strtolower($classname).'.php') );
+		if(!class_exists('Forma', false)) include_once( _lib_.'/lib.'.strtolower($classname).'.php' );
+		else include_once( Forma::inc(_lib_.'/lib.'.strtolower($classname).'.php') );
 		return;
 	}
 
