@@ -2933,6 +2933,9 @@ body {
     .forma-grid__item--catalogue {
       width: 50%; } }
 
+.glyphicon {
+  -webkit-font-smoothing: auto; }
+
 .course-box {
   width: 100%;
   min-height: 330px;
@@ -3331,7 +3334,10 @@ i + .course-box__date-box {
     .header {
       padding: 8px 58px 8px 38px; } }
   .header .row-fluid .navbar-header .navbar-brand {
-    padding: 10px 0 0 0; }
+    padding: 15px 0 0 30px; }
+    @media (min-width: 768px) {
+      .header .row-fluid .navbar-header .navbar-brand {
+        padding: 10px 0 0 0; } }
   .header .row-fluid .navbar-header .navbar-toggle {
     position: relative; }
     .header .row-fluid .navbar-header .navbar-toggle.collapsed .glyphicon.glyphicon-align-justify:before {
@@ -3389,7 +3395,7 @@ i + .course-box__date-box {
             content: '';
             position: absolute;
             top: -11px;
-            left: 0;
+            right: -48px;
             width: 35px;
             height: 35px;
             display: inline-block;
@@ -3399,6 +3405,10 @@ i + .course-box__date-box {
             background-repeat: no-repeat;
             background-position: center;
             transition: border-color .2s ease 0s, background-image .2s ease 0s; }
+            @media (min-width: 768px) {
+              .header .row-fluid .navbar-collapse li a .glyphicon:before {
+                top: -24px;
+                right: 0; } }
           .header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-question-sign:hover:before {
             background-image: url("images/icons/top-menu/icon--help-desk-hover.svg"); }
           .header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-question-sign:before {
@@ -3422,6 +3432,8 @@ i + .course-box__date-box {
               text-align: center; } }
           .header .row-fluid .navbar-collapse li .o-wrapper .c-button.open,
           .header .row-fluid .navbar-collapse li .o-wrapper .c-button a {
+            width: 100%;
+            display: inline-block;
             line-height: 1;
             text-decoration: none;
             border-right: none !important; }
@@ -3430,9 +3442,15 @@ i + .course-box__date-box {
               display: none !important; }
             .header .row-fluid .navbar-collapse li .o-wrapper .c-button.open .username,
             .header .row-fluid .navbar-collapse li .o-wrapper .c-button a .username {
+              width: 100%;
               position: relative;
-              text-transform: uppercase;
-              font-weight: bold; }
+              display: inline-block;
+              font-weight: normal; }
+              @media (min-width: 768px) {
+                .header .row-fluid .navbar-collapse li .o-wrapper .c-button.open .username,
+                .header .row-fluid .navbar-collapse li .o-wrapper .c-button a .username {
+                  text-transform: uppercase;
+                  font-weight: bold; } }
               .header .row-fluid .navbar-collapse li .o-wrapper .c-button.open .username:hover:before,
               .header .row-fluid .navbar-collapse li .o-wrapper .c-button a .username:hover:before {
                 background-image: url("images/icons/top-menu/icon--profile-hover.svg");
@@ -3441,8 +3459,8 @@ i + .course-box__date-box {
               .header .row-fluid .navbar-collapse li .o-wrapper .c-button a .username:before {
                 content: '';
                 position: absolute;
-                top: -7px;
-                right: -45px;
+                top: 3px;
+                right: -48px;
                 width: 35px;
                 height: 35px;
                 border-radius: 50%;
@@ -3451,6 +3469,11 @@ i + .course-box__date-box {
                 background-size: 13px;
                 background-repeat: no-repeat;
                 transition: border .2s ease 0s, background-image .2s ease 0s; }
+                @media (min-width: 768px) {
+                  .header .row-fluid .navbar-collapse li .o-wrapper .c-button.open .username:before,
+                  .header .row-fluid .navbar-collapse li .o-wrapper .c-button a .username:before {
+                    top: -11px;
+                    right: -45px; } }
     .header .row-fluid .navbar-collapse.collapsing, .header .row-fluid .navbar-collapse.collapse.in {
       width: 100%;
       float: left;
@@ -3469,7 +3492,7 @@ i + .course-box__date-box {
           .header .row-fluid .navbar-collapse.collapsing .nav.navbar-nav li .no-border-right, .header .row-fluid .navbar-collapse.collapse.in .nav.navbar-nav li .no-border-right {
             border-right: none; }
           .header .row-fluid .navbar-collapse.collapsing .nav.navbar-nav li .no-before:before, .header .row-fluid .navbar-collapse.collapse.in .nav.navbar-nav li .no-before:before {
-            content: ''; }
+            display: none; }
           .header .row-fluid .navbar-collapse.collapsing .nav.navbar-nav li a, .header .row-fluid .navbar-collapse.collapse.in .nav.navbar-nav li a {
             height: 40px;
             position: relative;
@@ -3488,5 +3511,22 @@ i + .course-box__date-box {
               height: 40px; }
   .header nav {
     border: none !important; }
+
+.top-menu__label {
+  font-weight: normal;
+  font-family: "Open-sans"; }
+  @media (min-width: 768px) {
+    .top-menu__label {
+      font-size: 0; } }
+
+.top-menu__disclaimer {
+  margin-top: 40px;
+  margin-bottom: 6px;
+  text-align: center;
+  color: #999999;
+  font-size: 16px; }
+  @media (min-width: 768px) {
+    .top-menu__disclaimer {
+      display: none; } }
 
 /*# sourceMappingURL=main.css.map */
