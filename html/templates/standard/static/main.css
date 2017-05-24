@@ -3523,6 +3523,7 @@ i + .course-box__date-box {
   margin-top: 40px;
   margin-bottom: 6px;
   text-align: center;
+  font-family: "Open-sans";
   color: #999999;
   font-size: 16px; }
   @media (min-width: 768px) {
