@@ -3498,7 +3498,7 @@ i + .course-box__date-box {
             position: relative;
             line-height: 40px;
             margin-right: 40px;
-            border-right: 2px solid #c2c2c2; }
+            border-right: 2px solid #ececec; }
             .header .row-fluid .navbar-collapse.collapsing .nav.navbar-nav li a:before, .header .row-fluid .navbar-collapse.collapse.in .nav.navbar-nav li a:before {
               content: '\f105';
               position: absolute;
