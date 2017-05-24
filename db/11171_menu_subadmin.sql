@@ -7,7 +7,7 @@ UPDATE `core_menu_under_config` SET `of_platform` = 'lms' WHERE `core_menu_under
 
 
 -- AREA ELERNING
-UPDATE core_menu_under_elearning set default_op = 'lms';
+UPDATE core_menu_under_elearning set of_platform = 'lms';
 
 -- NEWSLETTER
 UPDATE core_menu_under_content SET of_platform = 'framework' WHERE module_name = 'newsletter';
