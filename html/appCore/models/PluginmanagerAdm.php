@@ -116,11 +116,11 @@ class PluginmanagerAdm extends Model {
     private function check_dependencies($manifest){
         if ($manifest) {
             $dependencies=@$manifest['dependencies'];
-            $plugin_list = self::scan_dir();
+            $plugin_list = self::getActivePlugins();
             $check = true;
             if (isset($dependencies)) {
                 foreach ($dependencies as $name => $version) {
-                    if (in_array($name, $plugin_list)) {
+                    if (key_exists($name, $plugin_list)) {
                         $dependant_manifest=$this->readPluginManifest($name);
                         if (version_compare($version, $dependant_manifest['version']) > 0) {
                             $check = false;
