@@ -817,20 +817,20 @@ CREATE TABLE IF NOT EXISTS `core_menu_under_elearning` (
 
 
 INSERT IGNORE INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES
-(1, 1, 'course', '_COURSES', '', 'view', NULL, 1, '', '', 'alms/course/show'),
+(1, 1, 'course', '_COURSES', '', 'view', 'lms', 1, '', '', 'alms/course/show'),
 (3, 1, 'coursepath', '_COURSEPATH', 'pathlist', 'view', 'lms', 2, 'class.coursepath.php', 'Module_Coursepath', ''),
 (4, 1, 'catalogue', '_CATALOGUE', 'catlist', 'view', 'lms', 3, 'class.catalogue.php', 'Module_Catalogue', ''),
-(10, 3, 'preassessment', '_ASSESSMENT', 'assesmentlist', 'view', NULL, 1, 'class.preassessment.php', 'Module_PreAssessment', ''),
+(10, 3, 'preassessment', '_ASSESSMENT', 'assesmentlist', 'view', 'lms', 1, 'class.preassessment.php', 'Module_PreAssessment', ''),
 (14, 7, 'certificate', '_CERTIFICATE', 'certificate', 'view', 'lms', 1, 'class.certificate.php', 'Module_Certificate', ''),
 (17, 8, 'reservation', '_EVENTS', 'view_event', 'view', 'lms', 1, 'class.reservation.php', 'Module_Reservation', ''),
 (18, 8, 'reservation', '_CATEGORY', 'view_category', 'view', 'lms', 2, 'class.reservation.php', 'Module_Reservation', ''),
 (20, 8, 'reservation', '_RESERVATION', 'view_registration', 'view', 'lms', 3, 'class.reservation.php', 'Module_Reservation', ''),
 (23, 7, 'meta_certificate', '_META_CERTIFICATE', 'meta_certificate', 'view', 'lms', 3, 'class.meta_certificate.php', 'Module_Meta_Certificate', ''),
-(27, 2, 'location', '_LOCATION', '', 'view', NULL, 1, '', '', 'alms/location/show'),
-(28, 4, 'games', '_CONTEST', '', 'view', NULL, 1, '', '', 'alms/games/show'),
-(30, 12, 'kb', '_CONTENT_LIBRARY', '', 'view', NULL, 1, '', '', 'alms/kb/show'),
-(32, 13, 'enrollrules', '_ENROLLRULES', '', 'view', NULL, 1, '', '', 'alms/enrollrules/show'),
-(33, 14, 'transaction', '_TRANSACTION', '', 'view', NULL, 1, '', '', 'alms/transaction/show');
+(27, 2, 'location', '_LOCATION', '', 'view', 'lms', 1, '', '', 'alms/location/show'),
+(28, 4, 'games', '_CONTEST', '', 'view', 'lms', 1, '', '', 'alms/games/show'),
+(30, 12, 'kb', '_CONTENT_LIBRARY', '', 'view', 'lms', 1, '', '', 'alms/kb/show'),
+(32, 13, 'enrollrules', '_ENROLLRULES', '', 'view', 'lms', 1, '', '', 'alms/enrollrules/show'),
+(33, 14, 'transaction', '_TRANSACTION', '', 'view', 'lms', 1, '', '', 'alms/transaction/show');
 
 
 
@@ -882,7 +882,7 @@ CREATE TABLE IF NOT EXISTS `core_menu_under_content` (
 INSERT IGNORE INTO `core_menu_under_content` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES
 (5, 4, 'webpages', '_WEBPAGES', 'webpages', 'view', 'lms', 1, 'class.webpages.php', 'Module_Webpages', ''),
 (6, 5, 'news', '_NEWS', 'news', 'view', 'lms', 2, 'class.news.php', 'Module_News', ''),
-(13, 11, 'newsletter', '_NEWSLETTER', 'newsletter', 'view', 'lms', 1, 'class.newsletter.php', 'Module_Newsletter', ''),
+(13, 11, 'newsletter', '_NEWSLETTER', 'newsletter', 'view', 'framework', 1, 'class.newsletter.php', 'Module_Newsletter', ''),
 (22, 6, 'internal_news', '_NEWS_INTERNAL', 'news', 'view', 'lms', 3, 'class.internal_news.php', 'Module_Internal_News', ''),
 (29, 10, 'communication', '_COMMUNICATION_MAN', '', 'view', 'lms', 1, '', '', 'alms/communication/show');
 
@@ -946,6 +946,7 @@ CREATE TABLE IF NOT EXISTS `core_menu_config` (
 
 
 INSERT IGNORE INTO `core_menu_config` (`idMenu`, `name`, `image`, `sequence`, `collapse`) VALUES
+(1, '', '', 1, 'true'),
 (4, '_CONFIG_SYS', '', 1, 'false'),
 (5, '', '', 4, 'true'),
 (9, '_CONFIG_ELEARNING', '', 2, 'false'),
@@ -970,7 +971,7 @@ CREATE TABLE IF NOT EXISTS `core_menu_under_config` (
 
 
 INSERT IGNORE INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES
-(1, 9, 'questcategory', '_QUESTCATEGORY', '', 'view', NULL, 4, '', '', 'alms/questcategory/show'),
+(1, 9, 'questcategory', '_QUESTCATEGORY', '', 'view', 'lms', 4, '', '', 'alms/questcategory/show'),
 (2, 9, 'amanmenu', '_MAN_MENU', 'mancustom', 'view', 'lms', 1, 'class.amanmenu.php', 'Module_AManmenu', ''),
 (4, 10, 'field_manager', '_FIELD_MANAGER', 'field_list', 'view', NULL, 3, 'class.field_manager.php', 'Module_Field_Manager', ''),
 (5, 4, 'setting', '_CONFIGURATION', '', 'view', NULL, 1, 'class.configuration.php', 'Module_Configuration', 'adm/setting/show'),
@@ -981,9 +982,10 @@ INSERT IGNORE INTO `core_menu_under_config` (`idUnder`, `idMenu`, `module_name`,
 (10, 5, 'lang', '_LANG', '', 'view', NULL, 1, '', '', 'adm/lang/show'),
 (21, 9, 'middlearea', '_MIDDLE_AREA', 'view_area', 'view', 'lms', 2, 'class.middlearea.php', 'Module_MiddleArea', ''),
 (25, 4, 'privacypolicy', '_PRIVACYPOLICIES', '', 'view', NULL, 6, '', '', 'adm/privacypolicy/show'),
-(31, 9, 'timeperiods', '_TIME_PERIODS', '', 'view', NULL, 5, '', '', 'alms/timeperiods/show'),
-(33, 9, 'label', '_LABEL', '', 'view', NULL, 5, '', '', 'alms/label/show'),
-(34, 4, 'code', '_CODE', 'list', 'view', NULL, 8, 'class.code.php', 'Module_Code', '');
+(31, 9, 'timeperiods', '_TIME_PERIODS', '', 'view', 'lms', 5, '', '', 'alms/timeperiods/show'),
+(33, 9, 'label', '_LABEL', '', 'view', 'lms', 5, '', '', 'alms/label/show'),
+(34, 4, 'code', '_CODE', 'list', 'view', NULL, 8, 'class.code.php', 'Module_Code', ''),
+(35, 1, 'dashboard', '_DASHBOARD', '', 'view', NULL, 1, '', '', 'adm/dashboard/show');
 
 
 
