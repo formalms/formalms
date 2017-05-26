@@ -71,23 +71,32 @@ if (preg_match('/^(.*)!(DELETE|PUT|GET|POST|OPTIONS|HEAD|TRACE|CONNECT)$/', $res
 }
 
 // set the output data type (XML or JSON for now)
-$GLOBALS['REST_API_ACCEPT']='';
-$matches = array();
-if (preg_match('/^(.*)\.(xml|json)$/', $rest_params[$last_index], $matches)) {
-	$rest_params[$last_index] = $matches[1];
-	$GLOBALS['REST_API_ACCEPT'] = $matches[2];
-} else {
-	$GLOBALS['REST_API_ACCEPT'] = 'xml';
+switch($_SERVER['HTTP_ACCEPT']) {
+    case _MIME_TYPE_JSON:
+        $GLOBALS['REST_API_ACCEPT'] = _REST_OUTPUT_JSON;
+        break;
+    case _MIME_TYPE_XML:
+        $GLOBALS['REST_API_ACCEPT'] = _REST_OUTPUT_XML;
+        break;
+    default:
+        $matches = array();
+        if (preg_match('/^(.*)\.(xml|json)$/', $rest_params[$last_index], $matches)) {
+            // backward compatibility way
+            $rest_params[$last_index] = $matches[1];
+            $GLOBALS['REST_API_ACCEPT'] = $matches[2];
+        } else {
+            $GLOBALS['REST_API_ACCEPT'] = _REST_OUTPUT_XML;
+        }
+        break;
 }
 
 //set MIME type
 $content_type = '';
 switch ($GLOBALS['REST_API_ACCEPT']) {
-	case _REST_OUTPUT_JSON: { $content_type = 'application/json'; } break;
-	case _REST_OUTPUT_XML:  { $content_type = 'application/xml';  } break;
+	case _REST_OUTPUT_JSON: { $content_type = _MIME_TYPE_JSON; } break;
+	case _REST_OUTPUT_XML:
 	default: {
-		$GLOBALS['REST_API_ACCEPT'] = _REST_OUTPUT_XML;
-		$content_type = 'application/xml';
+		$content_type = _MIME_TYPE_XML;
 	} break;
 }
 header('Content-type:'.$content_type.'; charset=utf-8');
