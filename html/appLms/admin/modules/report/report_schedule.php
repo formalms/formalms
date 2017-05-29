@@ -279,7 +279,7 @@ function modify_schedulation() {
 function schedule_report() {
 	$idrep = Get::req('idrep', DOTY_INT, false);
 	$step = Get::req('next_step', DOTY_STRING, '');
-	
+    checkReport($idrep);
 	if ($step=='sched_setrecipients') {
 		schedule_recipients($idrep);
 	} else {

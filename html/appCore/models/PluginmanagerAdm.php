@@ -116,11 +116,11 @@ class PluginmanagerAdm extends Model {
     private function check_dependencies($manifest){
         if ($manifest) {
             $dependencies=@$manifest['dependencies'];
-            $plugin_list = self::scan_dir();
+            $plugin_list = self::getActivePlugins();
             $check = true;
             if (isset($dependencies)) {
                 foreach ($dependencies as $name => $version) {
-                    if (in_array($name, $plugin_list)) {
+                    if (key_exists($name, $plugin_list)) {
                         $dependant_manifest=$this->readPluginManifest($name);
                         if (version_compare($version, $dependant_manifest['version']) > 0) {
                             $check = false;
@@ -291,6 +291,9 @@ class PluginmanagerAdm extends Model {
      */
     function installPlugin($plugin_name, $priority=0, $update=false, $core=0){
         $plugin_info=$this->readPluginManifest($plugin_name);
+        if ($plugin_info['core']=="true"){
+            $core=1;
+        }
         //FORMA_PLUGIN: QUI AGGIUNGERE IL CONTROLLO DELLA VERSIONE
         $query = "insert into ".$this->table."
 				values(null,'".addslashes($plugin_name)."', '".addslashes($plugin_info['title'])."', '".addslashes($plugin_info['category'])."',

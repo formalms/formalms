@@ -384,6 +384,13 @@ function reportlist() {
 
 	$lang =& DoceboLanguage::createInstance('report');
 
+    $error = Get::req('err', DOTY_STRING, false);
+    switch ($error) {
+        case 'plugin': {
+            cout( getErrorUi($lang->def('_ERROR_NOTEXISTS')) );
+        } break;
+    }
+
 	cout(getTitleArea($lang->def('_REPORT'), 'report'));
 	cout('<div class="std_block">');
 	//cout(get_report_steplist($step_index));
@@ -658,6 +665,7 @@ function report_show_results($idrep = false) {
 		}
 	
 	} else {
+        checkReport($idrep);
 		/// find main class report filename and report info
 		$query_report = "
 		SELECT r.class_name, r.file_name, r.report_name, f.filter_name, f.filter_data, f.author
@@ -742,7 +750,7 @@ function report_open_filter() {
 	$url='index.php?modname=report&op=reportlist';
 	$filter_id = Get::req('idrep', DOTY_INT, false);
 	$action = Get::req('action', DOTY_STRING, '');
-	if (!$filter_id) { Util::jump_to($url); return false; }
+	if ( !$filter_id || !checkReport($filter_id) )  { Util::jump_to($url); return false; }
 
 	switch ($action) {
 		case 'schedule': {

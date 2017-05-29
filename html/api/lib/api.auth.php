@@ -32,6 +32,7 @@ class Auth_API extends API {
 		switch (Get::sett('rest_auth_method')) {
 			case _AUTH_UCODE: { $result = _AUTH_UCODE_DESC; } break;
 			case _AUTH_TOKEN: { $result = _AUTH_TOKEN_DESC; } break;
+			case _AUTH_SECRET_KEY: { $result = _AUTH_SECRET_KEY_DESC; } break;
 		}
 		$mode = array( 'success'=>($result != ''), 'method'=>$result );
 		return $mode;
