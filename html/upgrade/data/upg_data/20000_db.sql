@@ -716,7 +716,8 @@ INSERT IGNORE INTO `core_platform` (`platform`, `class_file`, `class_name`, `cla
 ('menu_report', '', '', 'class.admin_menu_admin_report.php', 'Admin_Framework_Report', 'Admin_Managment_Framework_Report', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 4, 'true', 'true', '', 'false', 'false'),
 ('menu_config', '', '', 'class.admin_menu_admin_config.php', 'Admin_Framework_Config', 'Admin_Managment_Framework_Config', 'class.conf_fw.php', 'Config_Framework', 'defaultTemplate', 'Module', 5, 'true', 'true', '', 'false', 'false');
 
-
+DELETE FROM `core_platform` WHERE `core_platform`.`platform` = 'framework';
+DELETE FROM `core_platform` WHERE `core_platform`.`platform` = 'lms';
 
 --
 
@@ -820,7 +821,6 @@ INSERT IGNORE INTO `core_menu_under_elearning` (`idUnder`, `idMenu`, `module_nam
 (1, 1, 'course', '_COURSES', '', 'view', 'lms', 1, '', '', 'alms/course/show'),
 (3, 1, 'coursepath', '_COURSEPATH', 'pathlist', 'view', 'lms', 2, 'class.coursepath.php', 'Module_Coursepath', ''),
 (4, 1, 'catalogue', '_CATALOGUE', 'catlist', 'view', 'lms', 3, 'class.catalogue.php', 'Module_Catalogue', ''),
-(10, 3, 'preassessment', '_ASSESSMENT', 'assesmentlist', 'view', 'lms', 1, 'class.preassessment.php', 'Module_PreAssessment', ''),
 (14, 7, 'certificate', '_CERTIFICATE', 'certificate', 'view', 'lms', 1, 'class.certificate.php', 'Module_Certificate', ''),
 (17, 8, 'reservation', '_EVENTS', 'view_event', 'view', 'lms', 1, 'class.reservation.php', 'Module_Reservation', ''),
 (18, 8, 'reservation', '_CATEGORY', 'view_category', 'view', 'lms', 2, 'class.reservation.php', 'Module_Reservation', ''),
