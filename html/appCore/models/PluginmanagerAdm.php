@@ -291,6 +291,9 @@ class PluginmanagerAdm extends Model {
      */
     function installPlugin($plugin_name, $priority=0, $update=false, $core=0){
         $plugin_info=$this->readPluginManifest($plugin_name);
+        if ($plugin_info['core']=="true"){
+            $core=1;
+        }
         //FORMA_PLUGIN: QUI AGGIUNGERE IL CONTROLLO DELLA VERSIONE
         $query = "insert into ".$this->table."
 				values(null,'".addslashes($plugin_name)."', '".addslashes($plugin_info['title'])."', '".addslashes($plugin_info['category'])."',
