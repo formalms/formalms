@@ -85,40 +85,35 @@ class Lms_BlockWidget_menu extends Widget {
 	
 	// box iscrizione corso
 	public function subscribe_course() {
-		
-        
         require_once (_base_ . '/lib/lib.form.php');
-		
+        $html = '';
+        $ma = new Man_MiddleArea ();
+        if ($ma->currentCanAccessObj ( 'course' )){
+        $html .=  '<div class="inline_block">';
+                        $str_code = Lang::t('_TIT_SUBSCRIPTION_BY_CODE', 'catalogue');
+                        $form = new Form ();
+                        $op = $form->openForm ( 'course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=subscribe' );
 
-            $ma = new Man_MiddleArea ();
-            if ($ma->currentCanAccessObj ( 'course' )){
-            $html .=  '<div class="inline_block">';
-                            $str_code = Lang::t('_TIT_SUBSCRIPTION_BY_CODE', 'catalogue');
-		                    $form = new Form ();
-		                    $op = $form->openForm ( 'course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=subscribe' );
-                            
-                            $it = $form->getInputTextfield ( Lang::t('_LBL_CODE', 'standard'), 'course_autoregistration_code', 'course_autoregistration_code', '','',30, ' size=30 placeholder="'.$str_code.'"' );
-		                    //$it = $form->getTextfield ( Lang::t('_LBL_CODE', 'standard'), 'course_autoregistration_code', 'course_autoregistration_code', '100');
-                           // echo Form::getInputTextfield("search_t", $id."_filter_text", "filter_text", $filter_text, '', 255, 'placeholder='.$str_search );
-		                    
-                            $sb = $form->getButton ( 'subscribe_info', 'subscribe_info', Lang::t('_LBL_SEND', 'standard') );
-		                    $cf = $form->closeForm ();
-		                    
-		                    $html .= '
-                                             <div class="content">
-                                    <div>
-                                            <div class="form_line_l">
-                                            <p><div >'. $op . $it . '' . $sb . $cf . '</div></p>      
-                                ';
-                                
-                                
-                                $html .= '</div>
-                                
-                                                   </div>
-                                    </div>
-                            </div>
-                                ';
-            }         
+                        $it = $form->getInputTextfield ( Lang::t('_LBL_CODE', 'standard'), 'course_autoregistration_code', 'course_autoregistration_code', '','',30, ' size=30 placeholder="'.$str_code.'"' );
+                        //$it = $form->getTextfield ( Lang::t('_LBL_CODE', 'standard'), 'course_autoregistration_code', 'course_autoregistration_code', '100');
+                       // echo Form::getInputTextfield("search_t", $id."_filter_text", "filter_text", $filter_text, '', 255, 'placeholder='.$str_search );
+
+                        $sb = $form->getButton ( 'subscribe_info', 'subscribe_info', Lang::t('_LBL_SEND', 'standard') );
+                        $cf = $form->closeForm ();
+
+        $html .= '
+                      <div class="content">
+                          <div>
+                              <div class="form_line_l">
+                                  <p>
+                                      <div >'. $op . $it . '' . $sb . $cf . '</div>
+                                  </p>
+                              </div>
+                          </div>
+                      </div>
+                 </div>
+            ';
+        }
             
 		//echo $html;
         return $html;
