@@ -361,18 +361,22 @@ class UserProfile {
 									$this->_std_query,
 									$this->_varname_action  );
 				return $ext_prof->getProfile();
-			};break;
+			};
+			break;
 			// display the mod info gui -------------------------------
 			case "mod_profile" : {
 				return $this->getModUser();
-			};break;
+			};
+			break;
 			case "mod_password" : {
 				return $this->_up_viewer->getUserPwdModUi();
-			};break;
+			};
+			break;
 
 			case "mod_policy" : {
 				return $this->_up_viewer->modUserPolicyGui();
-			};break;
+			};
+			break;
 			// save modified info of the user -------------------------
 			case "save_policy" : {
 
@@ -389,7 +393,8 @@ class UserProfile {
 					return getErrorUi($this->_lang->def('_FAILSAVEPOLICY'))
 						.$this->_up_viewer->modUserPolicyGui();
 				}
-			};break;
+			};
+			break;
 			// save modified info of the user -------------------------
 			case "saveinfo" : {
 
@@ -1789,7 +1794,7 @@ class UserProfileViewer {
 	}
 
     
-function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
+    function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 
         $this->loadUserData($this->getViewer());
         $acl_man     =& Docebo::user()->getAclManager();
@@ -1803,323 +1808,265 @@ function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
                     : '<img width="30px" width="30px"  class="avatar" src="'.getPathImage().'standard/user.png" alt="'.$this->_lang->def('_NOAVATAR').'" /> ' )
             .'';
                 return $html;
-}           
-    
-    
-	function homeUserProfile($picture = false, $viewer = false, $intest = false) {
+}
 
-		$this->loadUserData($this->getViewer());
-		$acl_man 	=& Docebo::user()->getAclManager();
-		list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
 
-		$html = '<div class="up_dashboard"><div class="content">';
+    function homeUserProfile($picture = false, $viewer = false, $intest = false) { //crea la parte del profilo riguardante la foto e i certificati/messaggi
 
-        /*
-		$html .= '<p class="logo">'
-				.( ($this->user_info[ACL_INFO_AVATAR] != "")
-					? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed')
-					: '<img class="boxed" src="'.getPathImage().'standard/user.png" alt="'.$this->_lang->def('_NOAVATAR').'" />' )
-			.'</p>';
+        $this->loadUserData($this->getViewer());
+        $acl_man =& Docebo::user()->getAclManager();
+        list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
 
-		$html .= ''
-				.'<p class="userinfo">'
-					.'<b>'.$this->_lang->def('_USERNAME').'</b><br/> '.$this->acl_man->relativeId($this->user_info[ACL_INFO_USERID])
-				.'</p>'
-				.'<p class="userinfo">'
-					.'<b>'.$this->_lang->def('_LASTNAME').'</b><br/> '.$this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME])
-				.'</p>'
-				.'<p class="userinfo">'
-					.'<b>'.$this->_lang->def('_FIRSTNAME').'</b><br/> '.$this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
-				.'</p>'
-				.'<p class="userinfo">'
-					.'<b>'.$this->_lang->def('_EMAIL').'</b><br/> '
-					.( $this->user_info[ACL_INFO_EMAIL] !== false
-						? '<a href="mailto:'.$this->user_info[ACL_INFO_EMAIL].'">'.$this->user_info[ACL_INFO_EMAIL].'</a>'
-						: $this->_lang->def('_HIDDEN')
-					)
-				.'</p>'
-			.'<div class="nofloat"></div>';
-        */
-            $ma = new Man_MiddleArea();
-          if($ma->currentCanAccessObj('mo_message')) {
-                  $perm_message = true;
-                require_once($GLOBALS['where_framework'].'/lib/lib.message.php');
-                $msg = new Man_Message();
-                $unread_num = $msg->getCountUnreaded(getLogUserId(), array(), '', true);                  
-          }  
-          
-          if($ma->currentCanAccessObj('mo_7')) {
-                  $perm_certificate = true;   
-          }           
-          
-          
-          if($ma->currentCanAccessObj('mo_34')) {
-                  $perm_competence = true;
-          }           
-          
-            $html .= '<p class="logo">'
-                .( ($this->user_info[ACL_INFO_AVATAR] != "")
-                    ? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed')
-                    : '<img class="boxed" src="'.getPathImage().'standard/user.png" alt="'.$this->_lang->def('_NOAVATAR').'" />' )
-            .'</p>'
-            .'<p class="userinfo"><b><a href="index.php?r=lms/profile/show">'
-                    .$this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]).' '.$this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
-                .'</a></b>
+        $html = '<div class="up_dashboard"><div class="content">';
+
+        $ma = new Man_MiddleArea();
+        if ($ma->currentCanAccessObj('mo_message')) {
+            $perm_message = true;
+            require_once($GLOBALS['where_framework'] . '/lib/lib.message.php');
+            $msg = new Man_Message();
+            $unread_num = $msg->getCountUnreaded(getLogUserId(), array(), '', true);
+        }
+
+        if ($ma->currentCanAccessObj('mo_7')) {
+            $perm_certificate = true;
+        }
+
+
+        if ($ma->currentCanAccessObj('mo_34')) {
+            $perm_competence = true;
+        }
+
+        $html .= '<p class="logo">'
+            . (($this->user_info[ACL_INFO_AVATAR] != "") ? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed') : '<img class="boxed" src="' . getPathImage() . 'standard/user.png" alt="' . $this->_lang->def('_NOAVATAR') . '" />')
+            . '</p>
+               <p class="userinfo">
+               <a href="index.php?r=lms/profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
+                   <span class="glyphicon glyphicon-pencil"></span>
+               </a>
+            
+            <b><a href="index.php?r=lms/profile/show">'
+            . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
+            . '</a></b>
                 <br><i style="font-size:.88em">
-                 <a href="mailto:'.$this->user_info[ACL_INFO_EMAIL].'">'.$this->user_info[ACL_INFO_EMAIL].'</a>
+                 <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
                  </i>
                 </p>';
 
-          //       <ul class="nav nav-pills nav-stacked">
-          //       ';
-          //       if($perm_certificate) $html .= '<li><a href="index.php?r=lms/mycertificate/show">'.Lang::t('_MY_CERTIFICATE', 'menu_over').'</a></li> ';
-          //       if($perm_competence ) $html .= '<li><a href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">'.Lang::t('_COMPETENCES', 'standard').'</a></li>  ';
-                
-          //       if($unread_num>0 && $perm_message){
-          //                 $html .= '<li><a href="index.php?modname=message&op=message&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'<b class="num_notify"><i style="font-size:.78em">'.$unread_num.'</i></b></a> </li> ';
-          //       }
-          //       if($unread_num==0 && $perm_message){
-          //                 $html .= '<li><a href="index.php?modname=message&op=message&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'</a> </li> ';
-          //       }
-                
-                                                       
-          // $html .= '</ul>';
-            
-                //  .'<div class="nofloat"></div>';
-                  
-		$social =new Social();
-		if ($social->enabled()) {
-			if (!$social->allConnected()) {
-				$html.='<b class="social-accounts-title">'.Lang::t('_CONNECT_YOUR_ACCOUNT_WITH', 'social').'</b>';
-				$html.='<ul class="social-accounts">';
-				if ($social->isActive('facebook') && !$social->connectedToUser('facebook')) {
-					$social =new Social();
-					$social->includeFacebookLib();
+        $social = new Social();
+        if ($social->enabled()) {
+            if (!$social->allConnected()) {
+                $html .= '<b class="social-accounts-title">' . Lang::t('_CONNECT_YOUR_ACCOUNT_WITH', 'social') . '</b>';
+                $html .= '<ul class="social-accounts">';
+                if ($social->isActive('facebook') && !$social->connectedToUser('facebook')) {
+                    $social = new Social();
+                    $social->includeFacebookLib();
 
-					$client_id = Get::sett('social_fb_api');
-					$client_secret = Get::sett('social_fb_secret');
-					$redirect_uri = Get::sett('url').'index.php?modname=login&op=facebook_login';
-					
-					$serviceFactory = new \OAuth\ServiceFactory();
-					$storage = new Session(false);
-					$credentials = new Credentials(
-							$client_id,
-							$client_secret,
-							$redirect_uri
-					);
-					
-					$facebookService = $serviceFactory->createService('facebook', $credentials, $storage, array()); //, 'userinfo_profile'
-					$loginUrl = $facebookService->getAuthorizationUri();
+                    $client_id = Get::sett('social_fb_api');
+                    $client_secret = Get::sett('social_fb_secret');
+                    $redirect_uri = Get::sett('url') . 'index.php?modname=login&op=facebook_login';
 
-					$html.='<li><a href="'.$loginUrl.'" '.
-						'title="'.Lang::t('_CONNECT', 'social').': '.Lang::t('_FACEBOOK', 'social').'"><span>'.
-						Get::img('social/facebook.png', Lang::t('_FACEBOOK', 'social')).'</span></a></li>';
-				}
-				if ($social->isActive('twitter') && !$social->connectedToUser('twitter')) {
-					$html.='<li><a href="'.Get::sett('url').'index.php?modname=login&amp;op=twitter_login&amp;connect=1" '.
-						'title="'.Lang::t('_CONNECT', 'social').': '.Lang::t('_TWITTER', 'social').'"><span>'.
-						Get::img('social/twitter.png', Lang::t('_TWITTER', 'social')).'</span></a></li>';
-				}
-				if ($social->isActive('linkedin') && !$social->connectedToUser('linkedin')) {
-					$html.='<li><a href="'.Get::sett('url').'index.php?modname=login&amp;op=linkedin_login&amp;connect=1" '.
-						'title="'.Lang::t('_CONNECT', 'social').': '.Lang::t('_LINKEDIN', 'social').'"><span>'.
-						Get::img('social/linkedin.png', Lang::t('_LINKEDIN', 'social')).'</span></a></li>';
-				}
-				if ($social->isActive('google') && !$social->connectedToUser('google')) {
-					$html.='<li><a href="'.Get::sett('url').'index.php?modname=login&amp;op=google_login&amp;connect=1" '.
-						'title="'.Lang::t('_CONNECT', 'social').': '.Lang::t('_GOOGLE', 'social').'"><span>'.
-						Get::img('social/google.png', $this->user_info[ACL_INFO_GOOGLE_ID]).'</span></a></li>';
-				}
-				$html.='</ul><br/>';
-			}
+                    $serviceFactory = new \OAuth\ServiceFactory();
+                    $storage = new Session(false);
+                    $credentials = new Credentials(
+                        $client_id,
+                        $client_secret,
+                        $redirect_uri
+                    );
 
-			if ($social->someConnected()) {
-				$html.='<b class="social-accounts-title">'.Lang::t('_CONNECTED_ACCOUNTS', 'social').'</b>';
-				$html.='<ul class="social-accounts">';
-				if ($social->connectedToUser('facebook')) {
-					$html.='<li><a id="disconnect_facebook" href="index.php?r=SocialConnect/disconnect&amp;network=facebook" '.
-						'title="'.Lang::t('_DISCONNECT', 'social').': '.Lang::t('_FACEBOOK', 'social').'"><span>'.
-						Get::img('social/facebook.png', Lang::t('_FACEBOOK', 'social')).'</span></a></li>';
-				}
-				if ($social->connectedToUser('twitter')) {
-					$html.='<li><a id="disconnect_twitter" href="index.php?r=SocialConnect/disconnect&amp;network=twitter" '.
-						'title="'.Lang::t('_DISCONNECT', 'social').': '.Lang::t('_TWITTER', 'social').'"><span>'.
-						Get::img('social/twitter.png', Lang::t('_TWITTER', 'social')).'</span></a></li>';
-				}
-				if ($social->connectedToUser('linkedin')) {
-					$html.='<li><a id="disconnect_linkedin" href="index.php?r=SocialConnect/disconnect&amp;network=linkedin" '.
-						'title="'.Lang::t('_DISCONNECT', 'social').': '.Lang::t('_LINKEDIN', 'social').'"><span>'.
-						Get::img('social/linkedin.png', Lang::t('_LINKEDIN', 'social')).'</span></a></li>';
-				}
-				if ($social->connectedToUser('google')) {
-					$html.='<li><a id="disconnect_google" href="index.php?r=SocialConnect/disconnect&amp;network=google" '.
-						'title="'.Lang::t('_DISCONNECT', 'social').': '.Lang::t('_GOOGLE', 'social').'"><span>'.
-						Get::img('social/google.png', $this->user_info[ACL_INFO_GOOGLE_ID]).'</span></a></li>';
-				}
-				$html.='</ul>';
-			}
+                    $facebookService = $serviceFactory->createService('facebook', $credentials, $storage, array()); //, 'userinfo_profile'
+                    $loginUrl = $facebookService->getAuthorizationUri();
 
-			/* $html.=Util::widget('dialog', array(
-				'id' => 'confirm_disconnect',
-				'dynamicContent' => false,
-				'body'=>'mm',
-				'directSubmit'=>true,
-				'ajaxUrl' => '"ajax.adm_server.php?r=alms/enrollrules/add"',
-				'dynamicAjaxUrl' => true,
-				'callback' => 'function() {
-					this.destroy();
-				}',
-				'callEvents' => array(
-					array('caller' => 'disconnect_facebook', 'event' => 'click'),
-					array('caller' => 'disconnect_twitter', 'event' => 'click'),
-					array('caller' => 'disconnect_linkedin', 'event' => 'click'),
-					array('caller' => 'disconnect_google', 'event' => 'click'),
-				)
-			), true); */
+                    $html .= '<li><a href="' . $loginUrl . '" ' .
+                        'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_FACEBOOK', 'social') . '"><span>' .
+                        Get::img('social/facebook.png', Lang::t('_FACEBOOK', 'social')) . '</span></a></li>';
+                }
+                if ($social->isActive('twitter') && !$social->connectedToUser('twitter')) {
+                    $html .= '<li><a href="' . Get::sett('url') . 'index.php?modname=login&amp;op=twitter_login&amp;connect=1" ' .
+                        'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_TWITTER', 'social') . '"><span>' .
+                        Get::img('social/twitter.png', Lang::t('_TWITTER', 'social')) . '</span></a></li>';
+                }
+                if ($social->isActive('linkedin') && !$social->connectedToUser('linkedin')) {
+                    $html .= '<li><a href="' . Get::sett('url') . 'index.php?modname=login&amp;op=linkedin_login&amp;connect=1" ' .
+                        'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_LINKEDIN', 'social') . '"><span>' .
+                        Get::img('social/linkedin.png', Lang::t('_LINKEDIN', 'social')) . '</span></a></li>';
+                }
+                if ($social->isActive('google') && !$social->connectedToUser('google')) {
+                    $html .= '<li><a href="' . Get::sett('url') . 'index.php?modname=login&amp;op=google_login&amp;connect=1" ' .
+                        'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '"><span>' .
+                        Get::img('social/google.png', $this->user_info[ACL_INFO_GOOGLE_ID]) . '</span></a></li>';
+                }
+                $html .= '</ul><br/>';
+            }
 
-		}
+            if ($social->someConnected()) {
+                $html .= '<b class="social-accounts-title">' . Lang::t('_CONNECTED_ACCOUNTS', 'social') . '</b>';
+                $html .= '<ul class="social-accounts">';
+                if ($social->connectedToUser('facebook')) {
+                    $html .= '<li><a id="disconnect_facebook" href="index.php?r=SocialConnect/disconnect&amp;network=facebook" ' .
+                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_FACEBOOK', 'social') . '"><span>' .
+                        Get::img('social/facebook.png', Lang::t('_FACEBOOK', 'social')) . '</span></a></li>';
+                }
+                if ($social->connectedToUser('twitter')) {
+                    $html .= '<li><a id="disconnect_twitter" href="index.php?r=SocialConnect/disconnect&amp;network=twitter" ' .
+                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_TWITTER', 'social') . '"><span>' .
+                        Get::img('social/twitter.png', Lang::t('_TWITTER', 'social')) . '</span></a></li>';
+                }
+                if ($social->connectedToUser('linkedin')) {
+                    $html .= '<li><a id="disconnect_linkedin" href="index.php?r=SocialConnect/disconnect&amp;network=linkedin" ' .
+                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_LINKEDIN', 'social') . '"><span>' .
+                        Get::img('social/linkedin.png', Lang::t('_LINKEDIN', 'social')) . '</span></a></li>';
+                }
+                if ($social->connectedToUser('google')) {
+                    $html .= '<li><a id="disconnect_google" href="index.php?r=SocialConnect/disconnect&amp;network=google" ' .
+                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '"><span>' .
+                        Get::img('social/google.png', $this->user_info[ACL_INFO_GOOGLE_ID]) . '</span></a></li>';
+                }
+                $html .= '</ul>';
+            }
 
-		$html .= '</div><br />';
+        }
 
-		$html .= '<ul class="nav nav-pills nav-stacked">';
+        $html .= '</div><br />';
 
-	    if($perm_certificate) $html .= '<li><a class="btn btn-default" href="index.php?r=lms/mycertificate/show">'.Lang::t('_MY_CERTIFICATE', 'menu_over').'</a></li>';
-	    if($perm_competence ) $html .= '<li><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">'.Lang::t('_COMPETENCES', 'standard').'</a></li>';
-	      
-	    if($unread_num>0 && $perm_message){
-	        $html .= '<li><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'<b class="num_notify"><i style="font-size:.78em">'.$unread_num.'</i></b></a></li>';
-	    }
-	    if($unread_num==0 && $perm_message){
-	    	$html .= '<li><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">'.Lang::t('_MESSAGES', 'standard').'</a></li>';
-	    }
-		                                           
-		$html .= '</ul>';
-		$html .= '</div><br />';
+        $html .= '<ul class="nav nav-pills nav-stacked">';
 
-        $pg=new PluginManager('UserProfile');
-        foreach($pg->run('show_home') as $_html) {
+        if ($perm_certificate) $html .= '<li><a class="btn btn-default" href="index.php?r=lms/mycertificate/show">' . Lang::t('_MY_CERTIFICATE', 'menu_over') . '</a></li>';
+        if ($perm_competence) $html .= '<li><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></li>';
+
+        if ($unread_num > 0 && $perm_message) {
+            $html .= '<li><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">' . Lang::t('_MESSAGES', 'standard') . '<b class="num_notify"><i style="font-size:.78em">' . $unread_num . '</i></b></a></li>';
+        }
+        if ($unread_num == 0 && $perm_message) {
+            $html .= '<li><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">' . Lang::t('_MESSAGES', 'standard') . '</a></li>';
+        }
+
+        $html .= '</ul>';
+        $html .= '</div><br />';
+
+        $pg = new PluginManager('UserProfile');
+        foreach ($pg->run('show_home') as $_html) {
             $html .= $_html;
         }
 
-		// box carriera
-		require_once($GLOBALS['where_lms'].'/lib/lib.middlearea.php');
-		require_once($GLOBALS['where_lms'].'/modules/course/course.php');
-		$ma = new Man_MiddleArea();
-		$access_career                          = $ma->currentCanAccessObj('career');
+        // box carriera
+        require_once($GLOBALS['where_lms'] . '/lib/lib.middlearea.php');
+        require_once($GLOBALS['where_lms'] . '/modules/course/course.php');
+        $ma = new Man_MiddleArea();
+        $access_career = $ma->currentCanAccessObj('career');
 
-		//if($this->acl_man->relativeId($this->user_info[ACL_INFO_USERID]) == 'alberto' && $access_career) {
-		if($access_career) {
+        //if($this->acl_man->relativeId($this->user_info[ACL_INFO_USERID]) == 'alberto' && $access_career) {
+        if ($access_career) {
 
-			$url = $this->_url_man;
-			$course_stats = userCourseList($url, false, false);		//TODO:  review this call . use course list to compute carreer
+            $url = $this->_url_man;
+            $course_stats = userCourseList($url, false, false);        //TODO:  review this call . use course list to compute carreer
 
-			$base_url = 'index.php?r='._lms_home_.'&amp;filter=';
-			$end = 0;
-			if(isset($course_stats['with_ustatus'][_CUS_END]) && $course_stats['with_ustatus'][_CUS_END] != 0) {
-				$end = $course_stats['with_ustatus'][_CUS_END];
-			}
+            $base_url = 'index.php?r=' . _lms_home_ . '&amp;filter=';
+            $end = 0;
+            if (isset($course_stats['with_ustatus'][_CUS_END]) && $course_stats['with_ustatus'][_CUS_END] != 0) {
+                $end = $course_stats['with_ustatus'][_CUS_END];
+            }
 
-			$html .= '<div class="inline_block">'
-					.'<h2 class="heading">'.$this->_lang->def('_CAREER').'</h2>'
-							.'<div class="content">'
-									.'<div class="course_stat">'
-											.'<table summary="">'
+            $html .= '<div class="inline_block">'
+                . '<h2 class="heading">' . $this->_lang->def('_CAREER') . '</h2>'
+                . '<div class="content">'
+                . '<div class="course_stat">'
+                . '<table summary="">'
 
-													.'<tr><th scope="row">'.$this->_lang->def('_TOTAL_COURSE').' :</th><td>'.($course_stats['total'] - $end).'</td></tr>'
+                . '<tr><th scope="row">' . $this->_lang->def('_TOTAL_COURSE') . ' :</th><td>' . ($course_stats['total'] - $end) . '</td></tr>'
 
-															.( isset($course_stats['with_ustatus'][_CUS_END]) && $course_stats['with_ustatus'][_CUS_END] != 0
-																	? '<tr><th scope="row">'.$this->_lang->def('_COURSE_END').' :</th><td>'.$course_stats['with_ustatus'][_CUS_END].'</td></tr>'
-																	: '' )
+                . (isset($course_stats['with_ustatus'][_CUS_END]) && $course_stats['with_ustatus'][_CUS_END] != 0
+                    ? '<tr><th scope="row">' . $this->_lang->def('_COURSE_END') . ' :</th><td>' . $course_stats['with_ustatus'][_CUS_END] . '</td></tr>'
+                    : '')
 
-																	.( isset($course_stats['expiring']) && $course_stats['expiring'] != 0
-																			? '<tr><th scope="row">'.$this->_lang->def('_COURSE_EXPIRING').' :</th><td>'.$course_stats['expiring'].'</td></tr>'
-																			: '' );
+                . (isset($course_stats['expiring']) && $course_stats['expiring'] != 0
+                    ? '<tr><th scope="row">' . $this->_lang->def('_COURSE_EXPIRING') . ' :</th><td>' . $course_stats['expiring'] . '</td></tr>'
+                    : '');
 
-			if(count($course_stats['with_ulevel']) > 1) {
+            if (count($course_stats['with_ulevel']) > 1) {
 
-				require_once($GLOBALS['where_lms'].'/lib/lib.levels.php');
-				$lvl = CourseLevel::getLevels();
-				foreach($course_stats['with_ulevel'] as $lvl_num => $quantity) {
+                require_once($GLOBALS['where_lms'] . '/lib/lib.levels.php');
+                $lvl = CourseLevel::getLevels();
+                foreach ($course_stats['with_ulevel'] as $lvl_num => $quantity) {
 
-					$html .= ''
-							.'<tr><th scope="row">'.str_replace('[level]', $lvl[$lvl_num], $this->_lang->def('_COURSE_AS') ).' :</th><td>'.$quantity.'</td></tr>';
-				} //end foreach
+                    $html .= ''
+                        . '<tr><th scope="row">' . str_replace('[level]', $lvl[$lvl_num], $this->_lang->def('_COURSE_AS')) . ' :</th><td>' . $quantity . '</td></tr>';
+                } //end foreach
 
-			}
-                        
-                        require_once($GLOBALS['where_lms'].'/lib/lib.certificate.php');
-                        $cert = new Certificate();
-                        
-                        $filter['id_user'] = $this->_id_user;
-                        $tot_cert = $cert->countAssignment($filter) + $cert->countMetaAssignment($filter);
+            }
 
-			$html .= ''
-					.( isset($course_stats['cert_relesable']) /*&& $tot_cert != 0*/
-							? '<tr><th scope="row">'.$this->_lang->def('_CERT_RELESABLE').' :</th><td><a href="index.php?r=lms/mycertificate/show"><u><b>'.$tot_cert.'</b></u></a></td></tr>'
-							: '' )
+            require_once($GLOBALS['where_lms'] . '/lib/lib.certificate.php');
+            $cert = new Certificate();
 
-							.( $pendent != 0
-									? '<tr><th scope="row">'.$this->_lang->def('_FRIEND_PENDENT').' :</th><td><a href="index.php?modname=myfriends&amp;op=myfriends">'.$pendent.'</a></td></tr>'
-									: '' )
+            $filter['id_user'] = $this->_id_user;
+            $tot_cert = $cert->countAssignment($filter) + $cert->countMetaAssignment($filter);
 
-									.'</table>'
-											.'</div>'
-													.'</div>'
-															.'</div>';
+            $html .= ''
+                . (isset($course_stats['cert_relesable']) /*&& $tot_cert != 0*/
+                    ? '<tr><th scope="row">' . $this->_lang->def('_CERT_RELESABLE') . ' :</th><td><a href="index.php?r=lms/mycertificate/show"><u><b>' . $tot_cert . '</b></u></a></td></tr>'
+                    : '')
 
-		}
+                . ($pendent != 0
+                    ? '<tr><th scope="row">' . $this->_lang->def('_FRIEND_PENDENT') . ' :</th><td><a href="index.php?modname=myfriends&amp;op=myfriends">' . $pendent . '</a></td></tr>'
+                    : '')
 
-		/*
-		$html = '<div class="user_presentation">'."\n"
+                . '</table>'
+                . '</div>'
+                . '</div>'
+                . '</div>';
 
-			.( $intest
-				? '<div class="mini_block">'."\n\t"
-						.'<h1>'."\n\t\t"
-							.$this->_lang->def('_WELCOME').'<br/>'."\n\t\t"
-							.'<span>'.$this->resolveUsername().'</span>'."\n\t"
-						.'</h1>'."\n\t"
-						.'<div class="spacer"></div>'."\n\t"
-					.'</div>'."\n"
+        }
 
-				: '' );
+        /*
+        $html = '<div class="user_presentation">'."\n"
 
-		if($this->_user_profile->useAvatar()) {
-			$html .= '<div class="mini_block avatar_photo">'."\n\t";
-		}
-		if($this->_user_profile->useAvatar()) {
+            .( $intest
+                ? '<div class="mini_block">'."\n\t"
+                        .'<h1>'."\n\t\t"
+                            .$this->_lang->def('_WELCOME').'<br/>'."\n\t\t"
+                            .'<span>'.$this->resolveUsername().'</span>'."\n\t"
+                        .'</h1>'."\n\t"
+                        .'<div class="spacer"></div>'."\n\t"
+                    .'</div>'."\n"
 
-			$html .= '<p>'."\n\t"
-						.( ($this->user_info[ACL_INFO_AVATAR] != "")
-							? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed')
-							: '<img class="boxed" src="'.getPathImage().'standard/user.png" alt="'.$this->_lang->def('_NOAVATAR').'" />' )."\n\t\t"
-						.'<br />'."\n\t\t"
-						.$this->_lang->def('_AVATAR')."\n\t\t"
-					.'</p>'."\n\t";
-		}
-		if($this->_user_profile->useAvatar()) {
+                : '' );
 
-			$html .= '<div class="nofloat"></div>'."\n\t"
-					.'<div class="spacer"></div>'."\n"
-					.'</div>'."\n";
-		}
+        if($this->_user_profile->useAvatar()) {
+            $html .= '<div class="mini_block avatar_photo">'."\n\t";
+        }
+        if($this->_user_profile->useAvatar()) {
 
-		$html .= '<div class="mini_block">'."\n\t"
-				.'<p class="userinfo">'."\n\t\t"
-					.'<b>'.$this->_lang->def('_USERNAME').':</b> '.$this->acl_man->relativeId($this->user_info[ACL_INFO_USERID])
-				.'</p>'."\n\t"
-				.'<p class="userinfo">'."\n\t\t"
-					.'<b>'.$this->_lang->def('_EMAIL').':</b> '
-					.( $this->user_info[ACL_INFO_EMAIL] !== false
-						? '<a href="mailto:'.$this->user_info[ACL_INFO_EMAIL].'">'.$this->user_info[ACL_INFO_EMAIL].'</a>'
-						: $this->_lang->def('_HIDDEN')
-					)."\n\t"
-				.'</p>'."\n\t"
-			.'</div>'."\n"
+            $html .= '<p>'."\n\t"
+                        .( ($this->user_info[ACL_INFO_AVATAR] != "")
+                            ? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed')
+                            : '<img class="boxed" src="'.getPathImage().'standard/user.png" alt="'.$this->_lang->def('_NOAVATAR').'" />' )."\n\t\t"
+                        .'<br />'."\n\t\t"
+                        .$this->_lang->def('_AVATAR')."\n\t\t"
+                    .'</p>'."\n\t";
+        }
+        if($this->_user_profile->useAvatar()) {
 
-		.'</div>'."\n";
-*/
-		return $html;
-	}
+            $html .= '<div class="nofloat"></div>'."\n\t"
+                    .'<div class="spacer"></div>'."\n"
+                    .'</div>'."\n";
+        }
+
+        $html .= '<div class="mini_block">'."\n\t"
+                .'<p class="userinfo">'."\n\t\t"
+                    .'<b>'.$this->_lang->def('_USERNAME').':</b> '.$this->acl_man->relativeId($this->user_info[ACL_INFO_USERID])
+                .'</p>'."\n\t"
+                .'<p class="userinfo">'."\n\t\t"
+                    .'<b>'.$this->_lang->def('_EMAIL').':</b> '
+                    .( $this->user_info[ACL_INFO_EMAIL] !== false
+                        ? '<a href="mailto:'.$this->user_info[ACL_INFO_EMAIL].'">'.$this->user_info[ACL_INFO_EMAIL].'</a>'
+                        : $this->_lang->def('_HIDDEN')
+                    )."\n\t"
+                .'</p>'."\n\t"
+            .'</div>'."\n"
+
+        .'</div>'."\n";
+    */
+        return $html;
+    }
 
 
 	/**

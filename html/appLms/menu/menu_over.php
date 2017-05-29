@@ -146,7 +146,9 @@ $str_menu_over = '<header class="header white-bg">
                    <nav> 
                     <div class="row-fluid" id="lms_menu_container" >
                       <div class="navbar-header" >
-                        <a class="navbar-brand" href="?r=elearning/show&sop=unregistercourse"><img class="left_logo" width="120" src="'. Layout::path().'/images/company_logo.png" alt="logo di sinistra"/></a> 
+                        <a class="navbar-brand" href="?r=elearning/show&sop=unregistercourse">
+                          <img class="left_logo" width="120" src="'. Layout::path().'/images/company_logo.png" alt="logo di sinistra"/>
+                        </a> 
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                           <span  class="glyphicon glyphicon-align-justify"></span>
                         </button>  
@@ -200,7 +202,8 @@ foreach ($menu['all'] as $row) {
                 cout('<li><a href="index.php?r=cart/show" id="cart_action" title="'.Lang::t("_CART", "cart").'"><span  class="glyphicon glyphicon-shopping-cart"><sub id="cart_element" class="num_notify_bar">'.Learning_Cart::cartItemCount().'</sub></span></a></li>' ,'menu_over')  ;
               }
 
-               cout('<li>                                
+               cout('
+                    <li>                                
                         <div id="o-wrapper" class="o-wrapper">
                             <button id="c-button--slide-right" class="c-button" >
                                 <a data-toggle="dropdown"  href="#" title="'.Lang::t('_PROFILE', 'menu_course').'">
@@ -209,48 +212,53 @@ foreach ($menu['all'] as $row) {
                             </button>
                         </div>
                         <!-- /o-wrapper -->
-                                  <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right">
-                                      <button class="c-menu__close">'.Lang::t('_HIDETREE', 'organization').'</button>
-                                      <ul class="c-menu__items">
-                                          <li class="c-menu__item">
-                                          <div class="col-md-12">
-                                          <br>
-                                                             <table width="10%" border="0">
-                                                                <tr align="left">
-                                                                    <td><span class="select-language">'. Layout::change_lang().'</span></td>
-                                                                   <td align="center">                                                                                                                                                                                   
-                                                                    </td>
-                                                            </tr></table>
-                                                            
-                                                            <p align=right>
-                                                            
-                                                                    <a href="index.php?r=lms/profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
-                                                                     <span class="glyphicon glyphicon-pencil"></span>
-                                                                    </a>
-                                                                    &nbsp;
-                                                                    <a title="'.Lang::t('_LOGOUT', 'standard').'" href="'. Get::rel_path('base') . '/index.php?r=' . _logout_ . '">
-                                                                    
-                                                                        <span class="glyphicon glyphicon-off"></span>
-                                                                        </a>
-                                                              
-                                                            </p>
-                                                            '.$profile_box.'                                               
-                                                             <div >&nbsp;</div>   
-                                                            '.$subscribe_course.'
-                                                            '.$news.'
-                                                            '.$credits.'
-                                              </div>   
-                                          <li>
-                                      </ul>
-                                      </nav><!-- /c-menu slide-right end profile right panel -->
-                                 </ul>
-                                    </li>
-                                      
-                                    <div class="top-menu__disclaimer">Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</div>
-
-                                    <div id="c-mask" class="c-mask"></div><!-- /c-mask overlay -->','menu_over');
-
-
+                        <div id="c-menu--slide-right" class="c-menu c-menu--slide-right user-panel">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <button class="c-menu__close">'.Lang::t('_HIDETREE', 'organization').'</button><!-- pulsante nascondi menu -->      
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <a title="'.Lang::t('_LOGOUT', 'standard').'" href="'. Get::rel_path('base') . '/index.php?r=' . _logout_ . '">
+                                            <span class="glyphicon glyphicon-off"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        '.$profile_box.'                                               
+                                        '.$subscribe_course.'
+                                        '.$news.'
+                                        '.$credits.'
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <p>Lingua</p>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <ul class="link_list_inline" id="language_selection">
+                                                  <li>
+                                                    <a class="lang-sprite lang_english" href="index.php?special=changelang&new_lang=english" title="English"></a>
+                                                  </li>
+                                                  <li>
+                                                    <a class="lang-sprite lang_finnish" href="index.php?special=changelang&new_lang=finnish" title="Finnish"></a>
+                                                  </li>
+                                                  <li>
+                                                    <a class="lang-sprite lang_italian current" href="index.php?special=changelang&new_lang=italian" title="Italiano"></a>
+                                                  </li>
+                                                  <li>
+                                                    <a class="lang-sprite lang_spanish" href="index.php?special=changelang&new_lang=spanish" title="Spanish"></a>
+                                                  </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /c-menu slide-right end profile right panel -->
+                    </li>
+               </ul>
+               <div class="top-menu__disclaimer">Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</div>
+               <div id="c-mask" class="c-mask"></div><!-- /c-mask overlay -->','menu_over');
 
           cout('</div>
                 <!--/.nav-collapse -->
