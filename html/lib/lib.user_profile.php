@@ -1927,20 +1927,20 @@ class UserProfileViewer {
 
         $html .= '</div>';
 
-        $html .= '<ul class="nav nav-pills">'; //pulsanti certificati-messaggi
+        $html .= '<div class="row">'; //pulsanti certificati-messaggi
 
-        if ($perm_certificate) $html .= '<li><a class="btn btn-default" href="index.php?r=lms/mycertificate/show">' . Lang::t('_MY_CERTIFICATE', 'menu_over') . '</a></li>';
-        if ($perm_competence) $html .= '<li><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></li>';
+        if ($perm_certificate) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=lms/mycertificate/show">' . Lang::t('_MY_CERTIFICATE', 'menu_over') . '</a></div>';
+        if ($perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
 
 
         if ($unread_num > 0 && $perm_message) {
-            $html .= '<li><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">' . Lang::t('_MESSAGES', 'standard') . '<b class="num_notify"><i style="font-size:.78em">' . $unread_num . '</i></b></a></li>';
+            $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">' . Lang::t('_MESSAGES', 'standard') . '<b class="num_notify"><i style="font-size:.78em">' . $unread_num . '</i></b></a></div>';
         }
         if ($unread_num == 0 && $perm_message) {
-            $html .= '<li><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">' . Lang::t('_MESSAGES', 'standard') . '</a></li>';
+            $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">' . Lang::t('_MESSAGES', 'standard') . '</a></div>';
         }
 
-        $html .= '</ul>'; //chiusura pulsanti certificati-messaggi
+        $html .= '</div>'; //chiusura pulsanti certificati-messaggi
         $html .= '</div><br />'; //chiusura up_dashboard
 
         $pg = new PluginManager('UserProfile');
