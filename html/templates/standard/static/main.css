@@ -4915,7 +4915,6 @@ i + .course-box__date-box {
 
 .user-panel .container-fluid .row {
   margin: 0;
-  border-bottom: 1px solid red;
 }
 
 .user-panel .container-fluid .row:first-child {
@@ -4924,13 +4923,17 @@ i + .course-box__date-box {
   border-bottom: 1px solid #c2c2c2;
 }
 
-.user-panel .container-fluid .row:first-child span {
-  width: 100%;
+.user-panel .container-fluid .row:first-child a span {
+  width: auto;
   font-family: "Open-sans";
   color: #999999;
   line-height: 32px;
   font-size: 12px;
   text-transform: uppercase;
+}
+
+.user-panel .container-fluid .row:first-child .col-xs-6 {
+  text-align: left;
 }
 
 .user-panel .container-fluid .row:first-child .col-xs-6 + .col-xs-6 {
@@ -4944,6 +4947,9 @@ i + .course-box__date-box {
 .user-panel .container-fluid .row:first-child .glyphicon:before {
   content: '';
   position: absolute;
+  -webkit-border-radius: 0;
+          border-radius: 0;
+  border: none;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -4958,7 +4964,9 @@ i + .course-box__date-box {
 .user-panel .container-fluid .row:first-child .glyphicon.glyphicon-remove:before {
   width: 30px;
   height: 30px;
+  top: 0;
   left: 0;
+  right: inherit;
   background-image: url("images/icons/user-panel/icon--up-close.png");
 }
 
@@ -4971,6 +4979,7 @@ i + .course-box__date-box {
   height: 16px;
   top: 7px;
   right: 0;
+  left: inherit;
   background-image: url("images/icons/user-panel/icon--up-logout.png");
 }
 

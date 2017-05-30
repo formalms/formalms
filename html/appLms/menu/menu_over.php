@@ -215,11 +215,11 @@ foreach ($menu['all'] as $row) {
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-xs-6">
-                                            <a href="javascript:void(0)" class="c-menu__close">'.Lang::t('_HIDETREE', 'organization').'</a><!-- pulsante nascondi menu -->      
+                                            <a href="javascript:void(0)" class="c-menu__close"><span class="glyphicon glyphicon-remove">'.Lang::t('_HIDETREE', 'organization').'</span></a><!-- pulsante nascondi menu -->      
                                         </div>
                                         <div class="col-xs-6">
                                             <a title="'.Lang::t('_LOGOUT', 'standard').'" href="'. Get::rel_path('base') . '/index.php?r=' . _logout_ . '">
-                                                <span class="glyphicon glyphicon-off"></span>
+                                                <span class="glyphicon glyphicon-off">'.Lang::t('_LOGOUT', 'standard').'</span>
                                             </a>
                                         </div>
                                     </div>
