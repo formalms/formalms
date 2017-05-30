@@ -153,9 +153,8 @@ $str_menu_over = '<header class="header white-bg">
                           <span  class="glyphicon glyphicon-align-justify"></span>
                         </button>  
                       </div>        
-                      <div id="navbar" class="navbar-collapse collapse " >
-                      <div>                      
-                      <ul class="nav navbar-nav" >';
+                      <div id="navbar" class="navbar-collapse collapse" >
+                        <ul class="nav navbar-nav" >';
 
 cout($str_menu_over,'menu_over');
 
@@ -203,66 +202,78 @@ foreach ($menu['all'] as $row) {
               }
 
                cout('
-                    <li>                                
-                        <div id="o-wrapper" class="o-wrapper">
-                            <button id="c-button--slide-right" class="c-button" >
-                                <a data-toggle="dropdown"  href="#" title="'.Lang::t('_PROFILE', 'menu_course').'">
-                                   <span class="username icon--profile"> '.Docebo::user()->getUserName().'</span>
-                                </a>
-                            </button>
-                        </div>
-                        <!-- /o-wrapper -->
-                        <div id="c-menu--slide-right" class="c-menu c-menu--slide-right user-panel">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <button class="c-menu__close">'.Lang::t('_HIDETREE', 'organization').'</button><!-- pulsante nascondi menu -->      
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <a title="'.Lang::t('_LOGOUT', 'standard').'" href="'. Get::rel_path('base') . '/index.php?r=' . _logout_ . '">
-                                            <span class="glyphicon glyphicon-off"></span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        '.$profile_box.'                                               
-                                        '.$subscribe_course.'
-                                        '.$news.'
-                                        '.$credits.'
-                                        <div class="row">
-                                            <div class="col-xs-6">
-                                                <p>Lingua</p>
-                                            </div>
-                                            <div class="col-xs-6">
-                                                <ul class="link_list_inline" id="language_selection">
-                                                  <li>
-                                                    <a class="lang-sprite lang_english" href="index.php?special=changelang&new_lang=english" title="English"></a>
-                                                  </li>
-                                                  <li>
-                                                    <a class="lang-sprite lang_finnish" href="index.php?special=changelang&new_lang=finnish" title="Finnish"></a>
-                                                  </li>
-                                                  <li>
-                                                    <a class="lang-sprite lang_italian current" href="index.php?special=changelang&new_lang=italian" title="Italiano"></a>
-                                                  </li>
-                                                  <li>
-                                                    <a class="lang-sprite lang_spanish" href="index.php?special=changelang&new_lang=spanish" title="Spanish"></a>
-                                                  </li>
-                                                </ul>
-                                            </div>
+                        <li>                                
+                            <div id="o-wrapper" class="o-wrapper">
+                                <button id="c-button--slide-right" class="c-button" >
+                                    <a data-toggle="dropdown"  href="#" title="'.Lang::t('_PROFILE', 'menu_course').'">
+                                       <span class="username icon--profile"> '.Docebo::user()->getUserName().'</span>
+                                    </a>
+                                </button>
+                            </div>
+                            <!-- /o-wrapper -->
+                            <div id="c-menu--slide-right" class="c-menu c-menu--slide-right user-panel">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <a href="javascript:void(0)" class="c-menu__close">'.Lang::t('_HIDETREE', 'organization').'</a><!-- pulsante nascondi menu -->      
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <a title="'.Lang::t('_LOGOUT', 'standard').'" href="'. Get::rel_path('base') . '/index.php?r=' . _logout_ . '">
+                                                <span class="glyphicon glyphicon-off"></span>
+                                            </a>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div><!-- /c-menu slide-right end profile right panel -->
-                    </li>
-               </ul>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            '.$profile_box.' 
+                                        </div> <!-- end col xs-12 -->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            '.$subscribe_course.'
+                                        </div> <!-- end col xs-12 -->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            '.$news.'
+                                        </div> <!-- end col xs-12 -->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            '.$credits.'
+                                        </div> <!-- end col xs-12 -->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <p>Lingua</p>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <ul class="list-inline" id="language_selection">
+                                              <li>
+                                                <a class="lang-sprite lang_english" href="index.php?special=changelang&new_lang=english" title="English"></a>
+                                              </li>
+                                              <li>
+                                                <a class="lang-sprite lang_finnish" href="index.php?special=changelang&new_lang=finnish" title="Finnish"></a>
+                                              </li>
+                                              <li>
+                                                <a class="lang-sprite lang_italian current" href="index.php?special=changelang&new_lang=italian" title="Italiano"></a>
+                                              </li>
+                                              <li>
+                                                <a class="lang-sprite lang_spanish" href="index.php?special=changelang&new_lang=spanish" title="Spanish"></a>
+                                              </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div> <!-- /container-fluid -->
+                            </div><!-- /c-menu slide-right end profile right panel -->
+                        </li>
+                   </ul>
+               </div>
                <div class="top-menu__disclaimer">Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</div>
                <div id="c-mask" class="c-mask"></div><!-- /c-mask overlay -->','menu_over');
 
-          cout('</div>
+        cout('</div>
                 <!--/.nav-collapse -->
-                </div><!--/.container-fluid -->    
                 </nav>
                 </header><br><br><br><br>','menu_over');
 

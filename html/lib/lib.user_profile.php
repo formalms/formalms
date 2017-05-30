@@ -1817,7 +1817,9 @@ class UserProfileViewer {
         $acl_man =& Docebo::user()->getAclManager();
         list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
 
-        $html = '<div class="up_dashboard"><div class="content">';
+        $html = '
+                  <div class="container-fluid">
+                      <div class="row">';
 
         $ma = new Man_MiddleArea();
         if ($ma->currentCanAccessObj('mo_message')) {
@@ -1831,26 +1833,23 @@ class UserProfileViewer {
             $perm_certificate = true;
         }
 
-
         if ($ma->currentCanAccessObj('mo_34')) {
             $perm_competence = true;
         }
 
-        $html .= '<p class="logo">'
-            . (($this->user_info[ACL_INFO_AVATAR] != "") ? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed') : '<img class="boxed" src="' . getPathImage() . 'standard/user.png" alt="' . $this->_lang->def('_NOAVATAR') . '" />')
-            . '</p>
-               <p class="userinfo">
-               <a href="index.php?r=lms/profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
-                   <span class="glyphicon glyphicon-pencil"></span>
-               </a>
-            
-            <b><a href="index.php?r=lms/profile/show">'
-            . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
-            . '</a></b>
-                <br><i style="font-size:.88em">
-                 <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
-                 </i>
-                </p>';
+        $html .= '<div class="col-xs-5">'
+                    . (($this->user_info[ACL_INFO_AVATAR] != "") ? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed') : '<img class="boxed" src="' . getPathImage() . 'standard/user.png" alt="' . $this->_lang->def('_NOAVATAR') . '" />')
+                . '</div>
+                    <div class="col-xs-7">
+                       <a href="index.php?r=lms/profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
+                           <span class="glyphicon glyphicon-pencil"></span>
+                       </a>
+                       <a href="index.php?r=lms/profile/show">'
+                           . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
+                       . '</a>
+                       <br>
+                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
+                    </div>';
 
         $social = new Social();
         if ($social->enabled()) {
@@ -1926,12 +1925,13 @@ class UserProfileViewer {
 
         }
 
-        $html .= '</div><br />';
+        $html .= '</div>';
 
-        $html .= '<ul class="nav nav-pills nav-stacked">';
+        $html .= '<ul class="nav nav-pills">'; //pulsanti certificati-messaggi
 
         if ($perm_certificate) $html .= '<li><a class="btn btn-default" href="index.php?r=lms/mycertificate/show">' . Lang::t('_MY_CERTIFICATE', 'menu_over') . '</a></li>';
         if ($perm_competence) $html .= '<li><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></li>';
+
 
         if ($unread_num > 0 && $perm_message) {
             $html .= '<li><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">' . Lang::t('_MESSAGES', 'standard') . '<b class="num_notify"><i style="font-size:.78em">' . $unread_num . '</i></b></a></li>';
@@ -1940,8 +1940,8 @@ class UserProfileViewer {
             $html .= '<li><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">' . Lang::t('_MESSAGES', 'standard') . '</a></li>';
         }
 
-        $html .= '</ul>';
-        $html .= '</div><br />';
+        $html .= '</ul>'; //chiusura pulsanti certificati-messaggi
+        $html .= '</div><br />'; //chiusura up_dashboard
 
         $pg = new PluginManager('UserProfile');
         foreach ($pg->run('show_home') as $_html) {
