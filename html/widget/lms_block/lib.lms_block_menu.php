@@ -152,7 +152,8 @@ class Lms_BlockWidget_menu extends Widget {
 		        if (! sql_num_rows ( $re_news )) {
 			        $html .= Lang::t ( '_NO_CONTENT', 'catalogue' );
 		        }
-		        $html .= '</div>';
+		        $html .= '</div>
+                          </div>';
         
         }
         
