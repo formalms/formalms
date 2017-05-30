@@ -218,11 +218,12 @@ function show_personal_media(& $out, & $lang) {
 
 	if(isset($_GET['result'])) {
 		switch($_GET['result']) {
-			case "invalid_ext" : $GLOBALS['page']->add(getErrorUi($lang->def('_INVALID_EXTENSION')));break;
-			case "upload_err" 	: $GLOBALS['page']->add(getErrorUi($lang->def('_ERROR_UPLOAD')));break;
-			case "upload_ok" 	: $GLOBALS['page']->add(getResultUi($lang->def('_OPERATION_SUCCESSFUL')));break;
+			case "invalid_ext" : $GLOBALS['page']->add($lang->def('_INVALID_EXTENSION'));break;
+			case "upload_err" 	: $GLOBALS['page']->add($lang->def('_ERROR_UPLOAD'));break;
+			case "upload_ok" 	: $GLOBALS['page']->add($lang->def('_OPERATION_SUCCESSFUL'));break;
 		}
 	}
+    $GLOBALS['page']->add("<hr>");
 	$GLOBALS['page']->add($tab->getTable());
 }
 
