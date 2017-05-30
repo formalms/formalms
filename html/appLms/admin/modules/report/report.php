@@ -815,6 +815,7 @@ function schedulelist() {
 				$lang->def('_SCHEDULE').'"<b>'.getReportNameById($idrep).'</b>"' ) ) );
 
 	cout('<div class="std_block">');
+	cout('<p><span class="glyphicon glyphicon-warning-sign"></span> '.$lang->def('_WARNING_REPORT').'<p><hr>');
 	cout(get_schedulations_table($idrep));
 
 	cout( '</div>', 'content' ); //std_block div
