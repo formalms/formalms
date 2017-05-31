@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170414</DATE>
+  <DATE>20170531</DATE>
   <LANG id="czech">
     <lang_code>czech</lang_code>
     <lang_description>Czech</lang_description>
@@ -39,7 +39,7 @@
         <key id="admin_directory&amp;_DECLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zamítnuto]]></key>
         <key id="admin_directory&amp;_DIRECOTRY_SELFREGISTERED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sebe registrace]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/admin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Administrátor]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_/framework/level/godadmin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Super admininistrátor]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_/framework/level/godadmin" attributes="" save_date="2017-04-19 12:56:49"><![CDATA[Super-admininistrátor]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/publicadmin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Veřejný administrátor]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/user" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uživatel]]></key>
         <key id="admin_directory&amp;_DIRECTORY_ASSIGNFIELDGROUP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Přiřadit pole]]></key>
@@ -208,7 +208,9 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0,6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[týden]]></key>
       </module>
-      <module id="cart"/>
+      <module id="cart">
+        <key id="cart&amp;_CODE" attributes="" save_date="2017-05-08 14:24:15"><![CDATA[Kód]]></key>
+      </module>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Přidat do košíku]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kariéra]]></key>
@@ -248,6 +250,7 @@
         <key id="catalogue&amp;_TAB_VIEW_MOSTPOPULAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nejpopulárnější]]></key>
         <key id="catalogue&amp;_TAB_VIEW_RECENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nejnovější]]></key>
         <key id="catalogue&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Celkový počet kurzů kde kterým jse zapsaný/á]]></key>
+        <key id="catalogue&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:46:53"><![CDATA[Vstoupit]]></key>
         <key id="catalogue&amp;_WAITING_APPROVAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Čekám na potvrzení]]></key>
         <key id="catalogue&amp;_WORD_TO_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vyhledávání pomocí slov]]></key>
       </module>
@@ -378,6 +381,7 @@
       </module>
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivovat funkci pro usnadnění přístupu]]></key>
+        <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2017-05-05 17:49:46"><![CDATA[Konfigurace "allow_url_fopen" funkce]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Konfigurace "allow_url_include" funkce]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
         <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> a <abbr title="Single Sign On">SSO</abbr>]]></key>
@@ -388,6 +392,7 @@
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximum audio uživatelů]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximální počet uživatelů v místnosti]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximální počet místností]]></key>
+        <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="2017-05-05 17:23:52"><![CDATA[BigBlueButton adresa serveru]]></key>
         <key id="configuration&amp;_CODE_TELESKILL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kód zákazníka]]></key>
         <key id="configuration&amp;_COMMON_ADMIN_SESSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sjednotit administrátorské a veřejné sekce]]></key>
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Omezit počet konferencí, které může jeden uživatel naplánovat]]></key>
@@ -672,6 +677,7 @@
         <key id="course&amp;_PAUSE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pozastavit konec]]></key>
         <key id="course&amp;_PERMCLOSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Celková metoda kurzu]]></key>
         <key id="course&amp;_PROGRESS_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objekty]]></key>
+        <key id="course&amp;_PROGRESS_BAR_TEXT" attributes="" save_date="2017-05-08 12:16:04"><![CDATA[Postup]]></key>
         <key id="course&amp;_PROGRESS_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dokočený]]></key>
         <key id="course&amp;_PROGRESS_FAILED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Neúspěšný]]></key>
         <key id="course&amp;_PROGRESS_INCOMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nedokončený]]></key>
@@ -796,7 +802,7 @@ V opačném případě se musíte zaregistrovat do našeho systému, na tomto od
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Přidat nový kurz]]></key>
-        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;gt;&amp;gt;Zpět do "Mé kurzy"]]></key>
+        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2017-05-08 12:26:03"><![CDATA[&gt;&gt; Zpět do "Mé kurzy"]]></key>
         <key id="course_autoregistration&amp;_CODE_ALREDY_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tento kód jste již použil]]></key>
         <key id="course_autoregistration&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kód]]></key>
       </module>
@@ -909,6 +915,7 @@ Password: [password]]]></key>
         <key id="email&amp;_WAITING_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Nový uživatel na <a href="[url]">[url]</a> čeká na schválení]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Obdržel jste novou zprávu]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Obdržel jste novou zprávu ve e-studijním systému na <a href="[url]">[url]</a> v kurzu [course] od uživatele [from]]]></key>
+        <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2017-05-08 13:57:13"><![CDATA[Obdržel jste novou zprávu ve e-studijním systému na <a href="[url]">[url]</a> v kurzu <b>[course]</b> od uživatele [from]]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_BASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Základna]]></key>
@@ -942,9 +949,9 @@ Password: [password]]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_framework" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appCore]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms-a" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS-A]]></key>
-        <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Moderátoři a Super Administrátoři]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2017-04-19 12:57:00"><![CDATA[Moderátoři a Super-Administrátoři]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Instruktoři]]></key>
-        <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Instruktoři a Super Administrátoři]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2017-04-19 12:56:55"><![CDATA[Instruktoři a Super-Administrátoři]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uživatel]]></key>
         <key id="event_manager&amp;_EVENT_SETTINGS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nástavení události]]></key>
       </module>
@@ -1228,9 +1235,9 @@ Password: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Domovská stráka]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms je Open Source e-studijní platforma (LMS a LCMS) používaná v korporačních a univerzitních trzích.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:17:43"><![CDATA[forma.lms je Open Source e-studijní platforma (LMS a LCMS) používaná v korporačních a univerzitních trzích.<br/>
 <br/>
-Platforma podporuje 25 jazykům, je v souladu se SCORM 1.2 a 2004 standarty, a odlišné výučné modely, vč.: Smíšené, ve vlastní režii, spolupráce a dokonce sociální studium pomocí Chatu, Wikipedie, Fóra a dalších funkcí.<br/>
+Platforma podporuje 26 jazykům, je v souladu se SCORM 1.2 a 2004 standarty, a odlišné výučné modely, vč.: Smíšené, ve vlastní režii, spolupráce a dokonce sociální studium pomocí Chatu, Wikipedie, Fóra a dalších funkcí.<br/>
 <br/>
 <br/>
 Pro změnu těchto slov jděte do Správy Administrace/Jazyků, vyhledejte <b>příhlášení</b> a upravte  klíč <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1538,6 +1545,7 @@ Pro změnu těchto slov jděte do Správy Administrace/Jazyků, vyhledejte <b>p�
         <key id="profile&amp;_ACTIVITY_OF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivita [firstname]]]></key>
         <key id="profile&amp;_AVATAR_PHOTO_INSTRUCTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pouze png, gif a jpg formáty obrázků jsou povoleny pro upload. Pokuď velikost překročí [max_px] pixulů, bude foto automaticky upraveno.<br />
 Prosím nenahrávejte urážlivé obrázky.]]></key>
+        <key id="profile&amp;_CAREER" attributes="" save_date="2017-05-08 16:08:27"><![CDATA[Kariéra]]></key>
         <key id="profile&amp;_CHANGEPASSWORD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Změnit heslo]]></key>
         <key id="profile&amp;_CHANGEPOLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Viditelnost pole]]></key>
         <key id="profile&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Komunita]]></key>
@@ -1723,7 +1731,7 @@ Musíte potvrdit svůj účet před použitím.]]></key>
       </module>
       <module id="report">
         <key id="report&amp;aggregate_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Shromažďování dat o uživatelích a kurzech]]></key>
-        <key id="report&amp;courses_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurzy]]></key>
+        <key id="report&amp;course_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurzy]]></key>
         <key id="report&amp;ORG_CHART_SUBDIVISION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rozdělit údaje v souladu s organizačním schématem]]></key>
         <key id="report&amp;REPORT_SHOW_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ukázat výsledky]]></key>
         <key id="report&amp;user_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uživatelé]]></key>
@@ -1855,6 +1863,7 @@ Musíte potvrdit svůj účet před použitím.]]></key>
         <key id="reservation&amp;_RESERVATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rezervace]]></key>
         <key id="reservation&amp;_RESERVATION_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Správa kategorií]]></key>
         <key id="reservation&amp;_RESERVATION_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dostupné události]]></key>
+        <key id="reservation&amp;_RESERVATION_MAIL_SEND" attributes="" save_date="2017-05-12 15:29:29"><![CDATA[Poslat email]]></key>
         <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Má registrace]]></key>
         <key id="reservation&amp;_RESERVATION_PAST_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uplynulé události]]></key>
         <key id="reservation&amp;_RESERVATION_SUBSCRIBED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Spravovat události]]></key>
@@ -1956,12 +1965,13 @@ Heslo: [password]]]></key>
         <key id="standard&amp;_AUTODETECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Automatická detekce]]></key>
         <key id="standard&amp;_AVATAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avatar]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Průměr]]></key>
-        <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;lt;&amp;lt; Zpět]]></key>
+        <key id="standard&amp;_BACK" attributes="" save_date="2017-05-08 12:26:15"><![CDATA[&lt;&lt; Zpět]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Základní vyhledávání]]></key>
         <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:38:21"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[od]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kalendář]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zrušit]]></key>
+        <key id="standard&amp;_CAREER" attributes="" save_date="2017-05-08 16:08:28"><![CDATA[Kariéra]]></key>
         <key id="standard&amp;_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Katalog kurzu]]></key>
         <key id="standard&amp;_CATEGORIZATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kategorizace]]></key>
         <key id="standard&amp;_CATEGORIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kategorizovat]]></key>
@@ -2144,6 +2154,7 @@ Heslo: [password]]]></key>
         <key id="standard&amp;_NEW_FOLDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nový soubor]]></key>
         <key id="standard&amp;_NEW_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nový uživatel]]></key>
         <key id="standard&amp;_NEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Další]]></key>
+        <key id="standard&amp;_NEXT_B" attributes="" save_date="2017-05-12 18:07:37"><![CDATA[Další >>]]></key>
         <key id="standard&amp;_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ne]]></key>
         <key id="standard&amp;_NONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Žádný]]></key>
         <key id="standard&amp;_NOTES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Poznámky]]></key>
@@ -2265,6 +2276,7 @@ Heslo: [password]]]></key>
         <key id="standard&amp;_USER_STATUS_CANCELLED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Smazán]]></key>
         <key id="standard&amp;_USER_STATUS_CONFIRMED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zapisy k potvrzení]]></key>
         <key id="standard&amp;_USER_STATUS_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dokořeno]]></key>
+        <key id="standard&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:46:50"><![CDATA[Vstoupit]]></key>
         <key id="standard&amp;_USER_STATUS_RESERVED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rezervováno]]></key>
         <key id="standard&amp;_USER_STATUS_SUBS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zapsán]]></key>
         <key id="standard&amp;_USER_STATUS_SUSPEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Suspendován]]></key>
@@ -2426,7 +2438,7 @@ Heslo: [password]]]></key>
         <key id="test&amp;_NEW_SCORE_FOR_QUESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Přiřadit nové skóre pto tuto otázku]]></key>
         <key id="test&amp;_NEW_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jako nový test]]></key>
         <key id="test&amp;_ORDER_TYPE_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Náhodný výběr v kategorii]]></key>
-        <key id="test&amp;_ORDER_TYPE_RANDOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[(podskupina otázky)]]></key>
+        <key id="test&amp;_ORDER_TYPE_RANDOM" attributes="" save_date="2017-04-19 12:36:20"><![CDATA[(Podskupina otázky)]]></key>
         <key id="test&amp;_QUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Otázka]]></key>
         <key id="test&amp;_QUEST_ACRN_ASSOCIATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[AS]]></key>
         <key id="test&amp;_QUEST_ACRN_BREAK_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[BR]]></key>
@@ -2468,7 +2480,7 @@ Heslo: [password]]]></key>
         <key id="test&amp;_TEST_ADD_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ukázat popis studentům před zahájením testu]]></key>
         <key id="test&amp;_TEST_ADD_ONE_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Přidat další odpověď]]></key>
         <key id="test&amp;_TEST_AFTER_QUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[po řádku]]></key>
-        <key id="test&amp;_TEST_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Odpověď :]]></key>
+        <key id="test&amp;_TEST_ANSWER" attributes="" save_date="2017-04-19 12:37:07"><![CDATA[Odpověď:]]></key>
         <key id="test&amp;_TEST_ANSWER_CHECK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vybrat]]></key>
         <key id="test&amp;_TEST_ANSWER_NOTCHECK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nyvybraný]]></key>
         <key id="test&amp;_TEST_ASSOCIATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Správná asociace]]></key>
@@ -2515,8 +2527,8 @@ Heslo: [password]]]></key>
         <key id="test&amp;_TEST_MM4_SHOWSOL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zobrazit správné odpovědi]]></key>
         <key id="test&amp;_TEST_MM4_SHOWTOT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zobrazit konečné skóre]]></key>
         <key id="test&amp;_TEST_MM_FOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[3 - Detaily zobrazeny na konci pokusu]]></key>
-        <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - nastavit zobrazení otázek]]></key>
-        <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[2-  nastavit volby pokusů]]></key>
+        <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2017-04-19 12:36:34"><![CDATA[1 - Nastavit zobrazení otázek]]></key>
+        <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2017-04-19 12:36:43"><![CDATA[2 - Nastavit volby pokusů]]></key>
         <key id="test&amp;_TEST_MODALITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Volby testu]]></key>
         <key id="test&amp;_TEST_MOD_DOANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Můžete upravit odpověď]]></key>
         <key id="test&amp;_TEST_MOD_DOANSWER_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nemůžete upravit odpověď]]></key>
@@ -2533,7 +2545,7 @@ Heslo: [password]]]></key>
         <key id="test&amp;_TEST_PM_DIFFICULT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Odlišná částka v pořadí podle obtížnosti otázky]]></key>
         <key id="test&amp;_TEST_PM_EQUALTOALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Stejný bod za každou otázku (celkové skóre/počet otázek)]]></key>
         <key id="test&amp;_TEST_PM_MANUAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vybrat skóre pro každou otázku]]></key>
-        <key id="test&amp;_TEST_PM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - nastavit výpočet konečného skóre]]></key>
+        <key id="test&amp;_TEST_PM_ONE" attributes="" save_date="2017-04-19 12:36:29"><![CDATA[1 - Nastavit výpočet konečného skóre]]></key>
         <key id="test&amp;_TEST_PM_SETPOINT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nastavit preference pro skóre]]></key>
         <key id="test&amp;_TEST_PM_SUBD_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Distribuovaný]]></key>
         <key id="test&amp;_TEST_PM_TWO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[2 - Nastavit skóre pro každou otázku]]></key>

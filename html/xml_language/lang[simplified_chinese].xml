@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170414</DATE>
+  <DATE>20170531</DATE>
   <LANG id="simplified_chinese">
     <lang_code>simplified_chinese</lang_code>
     <lang_description>&#x7B80;&#x4F53;&#x4E2D;&#x6587;</lang_description>
@@ -208,7 +208,9 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0.6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[星期]]></key>
       </module>
-      <module id="cart"/>
+      <module id="cart">
+        <key id="cart&amp;_CODE" attributes="" save_date="2017-05-08 14:27:37"><![CDATA[代码]]></key>
+      </module>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[加入到购物车]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[职业]]></key>
@@ -248,6 +250,7 @@
         <key id="catalogue&amp;_TAB_VIEW_MOSTPOPULAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[最热门的]]></key>
         <key id="catalogue&amp;_TAB_VIEW_RECENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[最新的]]></key>
         <key id="catalogue&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[您订购的课程总数]]></key>
+        <key id="catalogue&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:54:36"><![CDATA[输入]]></key>
         <key id="catalogue&amp;_WAITING_APPROVAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[等待批准]]></key>
         <key id="catalogue&amp;_WORD_TO_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[按词查找]]></key>
       </module>
@@ -796,7 +799,7 @@
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[添加新课程]]></key>
-        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;gt;&amp;gt; 返回到 "我的课程区域"]]></key>
+        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2017-05-08 12:34:50"><![CDATA[&gt;&gt; 返回到 "我的课程区域"]]></key>
         <key id="course_autoregistration&amp;_CODE_ALREDY_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[您已经使用了该代码]]></key>
         <key id="course_autoregistration&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[代码]]></key>
       </module>
@@ -909,6 +912,7 @@
         <key id="email&amp;_WAITING_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[<a href="[url]">[url]</a>有个新用户在等待批准]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[您收到新消息]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[您收到网络学习系统<a href="[url]">[url]</a>课程[course]中来自用户[from]的新消息。]]></key>
+        <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2017-05-08 14:04:09"><![CDATA[您收到网络学习系统<a href="[url]">[url]</a>课程<b>[course]</b>中来自用户[from]的新消息。]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_BASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[基础]]></key>
@@ -985,7 +989,7 @@
         <key id="field&amp;_NEW_SKYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[新字段Skype帐户]]></key>
         <key id="field&amp;_NEW_TEXTFIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[新文本字段]]></key>
         <key id="field&amp;_NEW_UPLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[新文件字段]]></key>
-        <key id="field&amp;_NEW_YAHOO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[新字段yahoo帐户]]></key>
+        <key id="field&amp;_NEW_YAHOO" attributes="" save_date="2017-05-12 12:16:22"><![CDATA[新字段Yahoo帐户]]></key>
         <key id="field&amp;_NEW_YESNO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[新字段 是/否]]></key>
         <key id="field&amp;_NOT_DO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[未完成]]></key>
         <key id="field&amp;_NO_FILE_UPLOADED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[没有加载文件]]></key>
@@ -1228,9 +1232,9 @@
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[主页]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms是一个开源的网络学习平台(LMS和LCMS)，被广泛用于公司和高等教育领域。<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:22:32"><![CDATA[forma.lms是一个开源的网络学习平台(LMS和LCMS)，被广泛用于公司和高等教育领域。<br/>
 <br/>
-该平台支持25中语言，与SCORM 1.2 和 2004 标准兼容，支持不同的教学模式，包括：混合式学习，自学，协作学习，以及通过聊天、维基、论坛和其它不同方法进行的社会学习。<br/>
+该平台支持26中语言，与SCORM 1.2 和 2004 标准兼容，支持不同的教学模式，包括：混合式学习，自学，协作学习，以及通过聊天、维基、论坛和其它不同方法进行的社会学习。<br/>
 <br/>
 <br/>
 要修改这些词汇，请到管理员与语言管理部分，找到<b>登陆</b>与编辑键 <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1538,6 +1542,7 @@
         <key id="profile&amp;_ACTIVITY_OF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[[firstname]的活动]]></key>
         <key id="profile&amp;_AVATAR_PHOTO_INSTRUCTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[只允许上传png、gif和jpg格式的图像。如果大小超过[max_px]像素，将自动调整大小。<br />
 请不要上传令人不快的图像。]]></key>
+        <key id="profile&amp;_CAREER" attributes="" save_date="2017-05-08 16:06:56"><![CDATA[职业]]></key>
         <key id="profile&amp;_CHANGEPASSWORD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[修改密码]]></key>
         <key id="profile&amp;_CHANGEPOLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[字段可见性]]></key>
         <key id="profile&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[社区]]></key>
@@ -1721,12 +1726,12 @@
       </module>
       <module id="report">
         <key id="report&amp;aggregate_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[按用户与课程数据聚合]]></key>
-        <key id="report&amp;courses_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[课程]]></key>
+        <key id="report&amp;course_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[课程]]></key>
         <key id="report&amp;ORG_CHART_SUBDIVISION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[根据机构图表细分数据]]></key>
         <key id="report&amp;REPORT_SHOW_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[显示结果]]></key>
         <key id="report&amp;user_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[用户]]></key>
         <key id="report&amp;_AGGREGATE_ON" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[聚合数据，按]]></key>
-        <key id="report&amp;_BACK_TO_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<<回到报告列表]]></key>
+        <key id="report&amp;_BACK_TO_LIST" attributes="" save_date="2017-05-08 12:35:05"><![CDATA[<< 回到报告列表]]></key>
         <key id="report&amp;_CHOOSE_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[选择显示的时间范围]]></key>
         <key id="report&amp;_CHOOSE_USER_FOR_REPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[选择要分析的用户]]></key>
         <key id="report&amp;_COMPETENCESFILTER_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[能力筛选设置]]></key>
@@ -1801,7 +1806,7 @@
         <key id="report&amp;_RU_CAT_LO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[将用户与学习目标相联系]]></key>
         <key id="report&amp;_RU_LO_MILESTONES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[选择里程碑]]></key>
         <key id="report&amp;_RU_LO_TYPES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[学习目标类型]]></key>
-        <key id="report&amp;_SAVE_AND_BACK_TO_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<<保存并回到报告列表]]></key>
+        <key id="report&amp;_SAVE_AND_BACK_TO_LIST" attributes="" save_date="2017-05-08 12:35:09"><![CDATA[<< 保存并回到报告列表]]></key>
         <key id="report&amp;_SAVE_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[保存并回到列表]]></key>
         <key id="report&amp;_SAVE_SCHED_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[描述：]]></key>
         <key id="report&amp;_SAVE_SHOW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[保存并显示]]></key>
@@ -1853,6 +1858,7 @@
         <key id="reservation&amp;_RESERVATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[预订]]></key>
         <key id="reservation&amp;_RESERVATION_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[类别管理]]></key>
         <key id="reservation&amp;_RESERVATION_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[可参与的活动]]></key>
+        <key id="reservation&amp;_RESERVATION_MAIL_SEND" attributes="" save_date="2017-05-12 15:34:55"><![CDATA[发送电子邮件]]></key>
         <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[我的注册]]></key>
         <key id="reservation&amp;_RESERVATION_PAST_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[过去的活动]]></key>
         <key id="reservation&amp;_RESERVATION_SUBSCRIBED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[管理事件]]></key>
@@ -1954,12 +1960,13 @@
         <key id="standard&amp;_AUTODETECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[自动检测]]></key>
         <key id="standard&amp;_AVATAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[身份标识]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[平均]]></key>
-        <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;lt;&amp;lt; 返回]]></key>
+        <key id="standard&amp;_BACK" attributes="" save_date="2017-05-08 12:35:19"><![CDATA[&lt;&lt; 返回]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[基本搜索]]></key>
         <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:36:06"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[由]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[日历]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[取消]]></key>
+        <key id="standard&amp;_CAREER" attributes="" save_date="2017-05-08 16:06:58"><![CDATA[职业]]></key>
         <key id="standard&amp;_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[课程目录]]></key>
         <key id="standard&amp;_CATEGORIZATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[分类]]></key>
         <key id="standard&amp;_CATEGORIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[分类]]></key>
@@ -2263,6 +2270,7 @@
         <key id="standard&amp;_USER_STATUS_CANCELLED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[已删除]]></key>
         <key id="standard&amp;_USER_STATUS_CONFIRMED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[待确认的订阅]]></key>
         <key id="standard&amp;_USER_STATUS_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[完成]]></key>
+        <key id="standard&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:54:33"><![CDATA[输入]]></key>
         <key id="standard&amp;_USER_STATUS_RESERVED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[保留]]></key>
         <key id="standard&amp;_USER_STATUS_SUBS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[已预订]]></key>
         <key id="standard&amp;_USER_STATUS_SUSPEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[暂停]]></key>
@@ -2514,7 +2522,7 @@
         <key id="test&amp;_TEST_MM4_SHOWTOT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[显示最终成绩（如果可计算的话）]]></key>
         <key id="test&amp;_TEST_MM_FOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[3 - 在尝试结束时显示详细情况]]></key>
         <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - 设置问题的可见性]]></key>
-        <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[2    设置尝试选项]]></key>
+        <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2017-04-19 12:49:32"><![CDATA[2 - 设置尝试选项]]></key>
         <key id="test&amp;_TEST_MODALITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[测试选项]]></key>
         <key id="test&amp;_TEST_MOD_DOANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[您可以编辑答案]]></key>
         <key id="test&amp;_TEST_MOD_DOANSWER_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[您<span class="text_bold">不能</span>编辑答案]]></key>
