@@ -1797,7 +1797,7 @@ class UserProfileViewer {
     function homePhotoProfile($picture = false, $viewer = false, $intest = false) {
 
         $this->loadUserData($this->getViewer());
-        $acl_man     =& Docebo::user()->getAclManager();
+        $acl_man=& Docebo::user()->getAclManager();
         list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
 
         $html = '';
@@ -1838,18 +1838,18 @@ class UserProfileViewer {
         }
 
         $html .= '<div class="col-xs-5">'
-                    . (($this->user_info[ACL_INFO_AVATAR] != "") ? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed') : '<img class="boxed" src="' . getPathImage() . 'standard/user.png" alt="' . $this->_lang->def('_NOAVATAR') . '" />')
+                    . (($this->user_info[ACL_INFO_AVATAR] != "") ? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed') : '<div class="boxed" style="background-image: url(' . getPathRestylingImage() . ')images/icons/user-panel/icon--up-photo-placeholder.png"></div>')
                 . '</div>
-                    <div class="col-xs-7">
-                       <a href="index.php?r=lms/profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
-                           <span class="glyphicon glyphicon-pencil"></span>
-                       </a>
-                       <a href="index.php?r=lms/profile/show">'
-                           . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
-                       . '</a>
-                       <br>
-                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
-                    </div>';
+                   <div class="col-xs-7">
+                      <a href="index.php?r=lms/profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
+                          <span class="glyphicon glyphicon-pencil">'.Lang::t('_PROFILE', 'profile').'</span>
+                      </a>
+                      <a href="index.php?r=lms/profile/show">'
+                          . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
+                      . '</a>
+                      <br>
+                      <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
+                   </div>';
 
         $social = new Social();
         if ($social->enabled()) {
@@ -1925,7 +1925,7 @@ class UserProfileViewer {
 
         }
 
-        $html .= '</div>';
+        $html .= '</div>'; // ./row
 
         $html .= '<div class="row">'; //pulsanti certificati-messaggi
 
