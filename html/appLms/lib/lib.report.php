@@ -394,6 +394,7 @@ function checkReport($id_filter){
     if (sql_num_rows($qry)==0){
         Util::jump_to('index.php?modname=report&op=reportlist&err=plugin');
     }
+    return true;
 }
 
 ?>
