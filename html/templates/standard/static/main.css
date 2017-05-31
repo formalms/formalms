@@ -4899,6 +4899,7 @@ i + .course-box__date-box {
       -ms-transform: translateX(320px);
           transform: translateX(320px);
   font-family: "Open-sans";
+  text-align: left;
 }
 
 .user-panel .c-menu__close {
@@ -5023,6 +5024,7 @@ i + .course-box__date-box {
   display: block;
   width: 100%;
   margin-bottom: 5px;
+  text-transform: none;
 }
 
 .user-panel .container-fluid .row:nth-child(2) .col-xs-12 .container-fluid .row:first-child .col-xs-7 a:first-child {
@@ -5034,7 +5036,6 @@ i + .course-box__date-box {
   height: 17px;
   line-height: 16px;
   padding-left: 25px;
-  text-transform: none;
 }
 
 .user-panel .container-fluid .row:nth-child(2) .col-xs-12 .container-fluid .row:first-child .col-xs-7 a:first-child .glyphicon.glyphicon-pencil:before {

@@ -1847,13 +1847,13 @@ class UserProfileViewer {
                       <a href="index.php?r=lms/profile/show">'
                           . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
                       . '</a>
-                      <br>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
                    </div>';
 
         $social = new Social();
         if ($social->enabled()) {
             if (!$social->allConnected()) {
+                $html .= '<div class="col-xs-12">';
                 $html .= '<b class="social-accounts-title">' . Lang::t('_CONNECT_YOUR_ACCOUNT_WITH', 'social') . '</b>';
                 $html .= '<ul class="social-accounts">';
                 if ($social->isActive('facebook') && !$social->connectedToUser('facebook')) {
@@ -1894,10 +1894,11 @@ class UserProfileViewer {
                         'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '"><span>' .
                         Get::img('social/google.png', $this->user_info[ACL_INFO_GOOGLE_ID]) . '</span></a></li>';
                 }
-                $html .= '</ul><br/>';
+                $html .= '</ul></div>'; // ./col-xs-12
             }
 
             if ($social->someConnected()) {
+                $html .= '<div class="col-xs-12">';
                 $html .= '<b class="social-accounts-title">' . Lang::t('_CONNECTED_ACCOUNTS', 'social') . '</b>';
                 $html .= '<ul class="social-accounts">';
                 if ($social->connectedToUser('facebook')) {
@@ -1920,7 +1921,7 @@ class UserProfileViewer {
                         'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '"><span>' .
                         Get::img('social/google.png', $this->user_info[ACL_INFO_GOOGLE_ID]) . '</span></a></li>';
                 }
-                $html .= '</ul>';
+                $html .= '</ul></div>'; // ./col-xs-12
             }
 
         }
