@@ -26,6 +26,10 @@ class Learning_Test extends Learning_Object {
 
 	var $retain_answers_history = false;
 
+	protected $mandatory_answer = false;
+
+	protected $hide_info = false;
+
 	var $idCourse;
 
 	var $idOrg;
@@ -361,6 +365,38 @@ class Learning_Test extends Learning_Object {
 	{
 		$this->retain_answers_history = $retain_answers_history;
 	}
+
+    /**
+     * @return boolean
+     */
+    public function isMandatoryAnswer()
+    {
+        return $this->mandatory_answer;
+    }
+
+    /**
+     * @param boolean $mandatory_answer
+     */
+    public function setMandatoryAnswer($mandatory_answer)
+    {
+        $this->mandatory_answer = $mandatory_answer;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isHideInfo()
+    {
+        return $this->hide_info;
+    }
+
+    /**
+     * @param boolean $hide_info
+     */
+    public function setHideInfo($hide_info)
+    {
+        $this->hide_info = $hide_info;
+    }
 
 	/**
 	 * @return mixed
