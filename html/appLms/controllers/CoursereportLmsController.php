@@ -841,7 +841,7 @@ class CoursereportLmsController extends LmsController
 											
 											$score = $tests_score[ $info_report->getIdSource () ][ $idst_user ][ 'score' ];
 											
-											if ($testObj->obj_type == 'test360') {
+                                            /*if ($testObj->obj_type == 'test360') {
 												
 												$value = array (
 													'icon' => 'ico-wt-sprite' ,
@@ -861,7 +861,8 @@ class CoursereportLmsController extends LmsController
 												
 												$values[] = $value;
 												
-											} else if ($score >= $info_report->getRequiredScore ()) {
+                                            } else */
+                                            if ($score >= $info_report->getRequiredScore ()) {
 												
 												if ($score == $test_details[ $info_report->getIdSource () ][ 'max_score' ]) {
 													
