@@ -1817,9 +1817,8 @@ class UserProfileViewer {
         $acl_man =& Docebo::user()->getAclManager();
         list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
 
-        $html = '
-                  <div class="container-fluid">
-                      <div class="row">';
+        //$html = ' <div class="container-fluid"> <div class="row">';
+        $html = '<div class="row">';
 
         $ma = new Man_MiddleArea();
         if ($ma->currentCanAccessObj('mo_message')) {
@@ -1848,11 +1847,15 @@ class UserProfileViewer {
                           . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
                       . '</a>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
-                   </div>';
+                   </div>'; // /col-xs-7
+
+        $html .= '</div>'; // /row
+
 
         $social = new Social();
         if ($social->enabled()) {
             if (!$social->allConnected()) {
+                $html .= '<div class="row">';
                 $html .= '<div class="col-xs-12">';
                 $html .= '<b class="social-accounts-title">' . Lang::t('_CONNECT_YOUR_ACCOUNT_WITH', 'social') . '</b>';
                 $html .= '<ul class="social-accounts">';
@@ -1901,10 +1904,13 @@ class UserProfileViewer {
                                   </a>
                               </li>';
                 }
-                $html .= '</ul></div>'; // ./col-xs-12
+                $html .= '</ul>
+                        </div>
+                        </div>'; // ./col-xs-12 ./row
             }
 
             if ($social->someConnected()) {
+                $html .= '<div class="row">';
                 $html .= '<div class="col-xs-12">';
                 $html .= '<b class="social-accounts-title">' . Lang::t('_CONNECTED_ACCOUNTS', 'social') . '</b>';
                 $html .= '<ul class="social-accounts">';
@@ -1927,12 +1933,12 @@ class UserProfileViewer {
                         'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '"><span>' .
                         Get::img('social/google.png', $this->user_info[ACL_INFO_GOOGLE_ID]) . '</span></a></li>';
                 }
-                $html .= '</ul></div>'; // ./col-xs-12
+                $html .= '</ul>
+                        </div>
+                        </div>'; // ./col-xs-12 ./row
             }
 
         }
-
-        $html .= '</div>'; // ./row
 
         $html .= '<div class="row">'; //pulsanti certificati-messaggi
 
@@ -1948,7 +1954,6 @@ class UserProfileViewer {
         }
 
         $html .= '</div>'; //chiusura pulsanti certificati-messaggi
-        $html .= '</div><br />'; //chiusura up_dashboard
 
         $pg = new PluginManager('UserProfile');
         foreach ($pg->run('show_home') as $_html) {
@@ -1961,7 +1966,6 @@ class UserProfileViewer {
         $ma = new Man_MiddleArea();
         $access_career = $ma->currentCanAccessObj('career');
 
-        //if($this->acl_man->relativeId($this->user_info[ACL_INFO_USERID]) == 'alberto' && $access_career) {
         if ($access_career) {
 
             $url = $this->_url_man;
@@ -1973,13 +1977,19 @@ class UserProfileViewer {
                 $end = $course_stats['with_ustatus'][_CUS_END];
             }
 
-            $html .= '<div class="inline_block">'
-                . '<h2 class="heading">' . $this->_lang->def('_CAREER') . '</h2>'
-                . '<div class="content">'
-                . '<div class="course_stat">'
-                . '<table summary="">'
+            $html .= '<div class="row">';
+            $html .= '<div class="col-xs-12">'
+                . '<h2>' . $this->_lang->def('_CAREER') . '</h2>'
+                . '<ul class="list-group">'
+                . '<li class="list-group-item">'
+                . $this->_lang->def('_TOTAL_COURSE') . '<span class="badge">' . ($course_stats['total'] - $end) . '</span>'
+                . '</li>'
 
-                . '<tr><th scope="row">' . $this->_lang->def('_TOTAL_COURSE') . ' :</th><td>' . ($course_stats['total'] - $end) . '</td></tr>'
+//                . '<div class="content">'
+                //. '<div class="course_stat">'
+                //. '<table summary="">'
+
+                //. '<tr><th scope="row">' . $this->_lang->def('_TOTAL_COURSE') . ' :</th><td>' . ($course_stats['total'] - $end) . '</td></tr>'
 
                 . (isset($course_stats['with_ustatus'][_CUS_END]) && $course_stats['with_ustatus'][_CUS_END] != 0
                     ? '<tr><th scope="row">' . $this->_lang->def('_COURSE_END') . ' :</th><td>' . $course_stats['with_ustatus'][_CUS_END] . '</td></tr>'
@@ -2016,62 +2026,14 @@ class UserProfileViewer {
                     ? '<tr><th scope="row">' . $this->_lang->def('_FRIEND_PENDENT') . ' :</th><td><a href="index.php?modname=myfriends&amp;op=myfriends">' . $pendent . '</a></td></tr>'
                     : '')
 
-                . '</table>'
-                . '</div>'
-                . '</div>'
-                . '</div>';
+                //. '</table>'
+                //. '</div>' // ./course-stat
+                . '</ul>' // ./content
+                . '</div>' // ./col-xs-12
+                . '</div>'; // ./row
 
         }
 
-        /*
-        $html = '<div class="user_presentation">'."\n"
-
-            .( $intest
-                ? '<div class="mini_block">'."\n\t"
-                        .'<h1>'."\n\t\t"
-                            .$this->_lang->def('_WELCOME').'<br/>'."\n\t\t"
-                            .'<span>'.$this->resolveUsername().'</span>'."\n\t"
-                        .'</h1>'."\n\t"
-                        .'<div class="spacer"></div>'."\n\t"
-                    .'</div>'."\n"
-
-                : '' );
-
-        if($this->_user_profile->useAvatar()) {
-            $html .= '<div class="mini_block avatar_photo">'."\n\t";
-        }
-        if($this->_user_profile->useAvatar()) {
-
-            $html .= '<p>'."\n\t"
-                        .( ($this->user_info[ACL_INFO_AVATAR] != "")
-                            ? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed')
-                            : '<img class="boxed" src="'.getPathImage().'standard/user.png" alt="'.$this->_lang->def('_NOAVATAR').'" />' )."\n\t\t"
-                        .'<br />'."\n\t\t"
-                        .$this->_lang->def('_AVATAR')."\n\t\t"
-                    .'</p>'."\n\t";
-        }
-        if($this->_user_profile->useAvatar()) {
-
-            $html .= '<div class="nofloat"></div>'."\n\t"
-                    .'<div class="spacer"></div>'."\n"
-                    .'</div>'."\n";
-        }
-
-        $html .= '<div class="mini_block">'."\n\t"
-                .'<p class="userinfo">'."\n\t\t"
-                    .'<b>'.$this->_lang->def('_USERNAME').':</b> '.$this->acl_man->relativeId($this->user_info[ACL_INFO_USERID])
-                .'</p>'."\n\t"
-                .'<p class="userinfo">'."\n\t\t"
-                    .'<b>'.$this->_lang->def('_EMAIL').':</b> '
-                    .( $this->user_info[ACL_INFO_EMAIL] !== false
-                        ? '<a href="mailto:'.$this->user_info[ACL_INFO_EMAIL].'">'.$this->user_info[ACL_INFO_EMAIL].'</a>'
-                        : $this->_lang->def('_HIDDEN')
-                    )."\n\t"
-                .'</p>'."\n\t"
-            .'</div>'."\n"
-
-        .'</div>'."\n";
-    */
         return $html;
     }
 
