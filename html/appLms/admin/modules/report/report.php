@@ -33,7 +33,7 @@ function unload_filter($temp=false) {
 function load_filter($id, $tempdata=false, $update=false) {
 	
 	if ($id==false) return;
-
+    checkReport($id);
 	require_once(_lms_.'/lib/lib.report.php');
 	
 	$row = sql_fetch_assoc(sql_query("SELECT * FROM %lms_report_filter WHERE id_filter=$id"));
@@ -750,7 +750,7 @@ function report_open_filter() {
 	$url='index.php?modname=report&op=reportlist';
 	$filter_id = Get::req('idrep', DOTY_INT, false);
 	$action = Get::req('action', DOTY_STRING, '');
-	if ( !$filter_id || !checkReport($filter_id) )  { Util::jump_to($url); return false; }
+	if ( !$filter_id )  { Util::jump_to($url); return false; }
 
 	switch ($action) {
 		case 'schedule': {
