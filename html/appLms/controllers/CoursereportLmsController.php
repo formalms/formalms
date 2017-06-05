@@ -728,7 +728,6 @@ class CoursereportLmsController extends LmsController
 				
 				$student = [];
 				$student[ 'name' ] = $user_name;
-                    'lastenter' => $user_info[ ACL_INFO_LASTENTER ] ,
 				
 				$fman = new FieldList();
 				
@@ -788,9 +787,9 @@ class CoursereportLmsController extends LmsController
 								if (isset($tests_score[ $info_report->getIdSource () ][ $idst_user ])) {
 									switch ($tests_score[ $info_report->getIdSource () ][ $idst_user ][ 'score_status' ]) {
 										case CoursereportLms::TEST_STATUS_NOT_COMPLETED : {
+                                            
 											
-                                            /*
-                                            if ($testObj->obj_type == 'test360') {
+                                            /*if ($testObj->obj_type == 'test360') {
 												$score = $tests_score[ $info_report->getIdSource () ][ $idst_user ][ 'score' ];
 												
 												$value = array (
