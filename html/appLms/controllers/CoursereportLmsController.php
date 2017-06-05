@@ -777,7 +777,7 @@ class CoursereportLmsController extends LmsController
 						
 						$testObj = Learning_Test::load ($info_report->getIdSource ());
 						
-                        $courseReportDetailEvent = new \appLms\Events\Lms\CourseReportDetailEvent($testObj , $tests_score , $info_report , $idst_user);
+                        $courseReportDetailEvent = new \appLms\Events\Lms\CourseReportDetailEvent($testObj , $tests_score , $info_report , $idst_user, $acl_man, $user_info);
                         
 						switch ($info_report->getSourceOf ()) {
 							
@@ -789,7 +789,8 @@ class CoursereportLmsController extends LmsController
 									switch ($tests_score[ $info_report->getIdSource () ][ $idst_user ][ 'score_status' ]) {
 										case CoursereportLms::TEST_STATUS_NOT_COMPLETED : {
 											
-                                            /*if ($testObj->obj_type == 'test360') {
+                                            /*
+                                            if ($testObj->obj_type == 'test360') {
 												$score = $tests_score[ $info_report->getIdSource () ][ $idst_user ][ 'score' ];
 												
 												$value = array (

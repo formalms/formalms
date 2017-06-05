@@ -32,7 +32,17 @@ class CourseReportDetailEvent extends Event
     /**
      * @var array
      */
-    protected  $values = [];
+    protected $values = [];
+    
+    /**
+     * @var
+     */
+    protected $aclMan;
+    
+    /**
+     * @var
+     */
+    protected $userInfo;
     
     
     /**
@@ -42,12 +52,14 @@ class CourseReportDetailEvent extends Event
      * @param $info_report
      * @param $idst_user
      */
-    public function __construct ($testObj , $tests_score , $info_report , $idst_user)
+    public function __construct ($testObj , $tests_score , $info_report , $idst_user , $acl_man , $user_info)
     {
         $this->testObj = $testObj;
         $this->testsScore = $tests_score;
         $this->info_report = $info_report;
         $this->userId = $idst_user;
+        $this->aclMan = $acl_man;
+        $this->userInfo = $user_info;
     }
     
     /**
@@ -105,7 +117,7 @@ class CourseReportDetailEvent extends Event
     public function setTestsScore ($testsScore)
     {
         $this->testsScore = $testsScore;
-    
+        
         return $this;
     }
     
@@ -125,7 +137,7 @@ class CourseReportDetailEvent extends Event
     public function setInfoReport ($info_report)
     {
         $this->info_report = $info_report;
-    
+        
         return $this;
     }
     
@@ -153,8 +165,49 @@ class CourseReportDetailEvent extends Event
      * @param $value mixed
      * @return CourseReportDetailEvent
      */
-    public function addValue($value){
+    public function addValue ($value)
+    {
         $this->values[] = $value;
+        
+        return $this;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getAclMan ()
+    {
+        return $this->aclMan;
+    }
+    
+    /**
+     * @param mixed $aclMan
+     *
+     * @return CourseReportDetailEvent
+     */
+    public function setAclMan ($aclMan)
+    {
+        $this->aclMan = $aclMan;
+        
+        return $this;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getUserInfo ()
+    {
+        return $this->userInfo;
+    }
+    
+    /**
+     * @param mixed $userInfo
+     *
+     * @return CourseReportDetailEvent
+     */
+    public function setUserInfo ($userInfo)
+    {
+        $this->userInfo = $userInfo;
         
         return $this;
     }
