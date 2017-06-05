@@ -42,6 +42,12 @@
     text-decoration: none;
     color: $white;
   }
+
+  .user-panel & {
+    height: auto;
+    line-height: 1;
+    font-size: 12px;
+  }
 }
 
 .forma-button--full {
@@ -114,6 +120,28 @@
 .forma-button--gray {
   pointer-events: none;
   background-color: $gray-3;
+}
+
+// Black Button
+//
+// Markup:
+// <a class="forma-button forma-button--black" href="#">
+//  <span class="forma-button__label">button</span>
+// </a>
+//
+// Style guide: 2.5
+.forma-button--black {
+  background-color: $black;
+
+  .forma-button__label {
+    &:after {
+      display: none;
+    }
+  }
+
+  .user-panel & {
+    padding: 7px 9px;
+  }
 }
 
 .forma-button__label {

@@ -1874,25 +1874,32 @@ class UserProfileViewer {
 
                     $facebookService = $serviceFactory->createService('facebook', $credentials, $storage, array()); //, 'userinfo_profile'
                     $loginUrl = $facebookService->getAuthorizationUri();
-
-                    $html .= '<li><a href="' . $loginUrl . '" ' .
-                        'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_FACEBOOK', 'social') . '"><span>' .
-                        Get::img('social/facebook.png', Lang::t('_FACEBOOK', 'social')) . '</span></a></li>';
+                    $html .= '<li> 
+                                  <a class="facebook" href="' . $loginUrl . '" title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_FACEBOOK', 'social') . '">
+                                      <i class="fa fa-facebook"></i>
+                                  </a>
+                              </li>';
                 }
                 if ($social->isActive('twitter') && !$social->connectedToUser('twitter')) {
-                    $html .= '<li><a href="' . Get::sett('url') . 'index.php?modname=login&amp;op=twitter_login&amp;connect=1" ' .
-                        'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_TWITTER', 'social') . '"><span>' .
-                        Get::img('social/twitter.png', Lang::t('_TWITTER', 'social')) . '</span></a></li>';
+                    $html .= '<li>
+                                  <a class="titter" href="' . Get::sett('url') . 'index.php?modname=login&amp;op=twitter_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_TWITTER', 'social') . '">
+                                      <i class="fa fa-twitter"></i>
+                                  </a>
+                              </li>';
                 }
                 if ($social->isActive('linkedin') && !$social->connectedToUser('linkedin')) {
-                    $html .= '<li><a href="' . Get::sett('url') . 'index.php?modname=login&amp;op=linkedin_login&amp;connect=1" ' .
-                        'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_LINKEDIN', 'social') . '"><span>' .
-                        Get::img('social/linkedin.png', Lang::t('_LINKEDIN', 'social')) . '</span></a></li>';
+                    $html .= '<li>
+                                  <a class="linkedin" href="' . Get::sett('url') . 'index.php?modname=login&amp;op=linkedin_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_LINKEDIN', 'social') . '"> 
+                                      <i class="fa fa-linkedin"></i>                                  
+                                  </a>
+                              </li>';
                 }
                 if ($social->isActive('google') && !$social->connectedToUser('google')) {
-                    $html .= '<li><a href="' . Get::sett('url') . 'index.php?modname=login&amp;op=google_login&amp;connect=1" ' .
-                        'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '"><span>' .
-                        Get::img('social/google.png', $this->user_info[ACL_INFO_GOOGLE_ID]) . '</span></a></li>';
+                    $html .= '<li>
+                                  <a class="google-plus" href="' . Get::sett('url') . 'index.php?modname=login&amp;op=google_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '">
+                                      <i class="fa fa-google-plus"></i>
+                                  </a>
+                              </li>';
                 }
                 $html .= '</ul></div>'; // ./col-xs-12
             }
@@ -1903,8 +1910,7 @@ class UserProfileViewer {
                 $html .= '<ul class="social-accounts">';
                 if ($social->connectedToUser('facebook')) {
                     $html .= '<li><a id="disconnect_facebook" href="index.php?r=SocialConnect/disconnect&amp;network=facebook" ' .
-                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_FACEBOOK', 'social') . '"><span>' .
-                        Get::img('social/facebook.png', Lang::t('_FACEBOOK', 'social')) . '</span></a></li>';
+                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_FACEBOOK', 'social') . '"> </a></li>';
                 }
                 if ($social->connectedToUser('twitter')) {
                     $html .= '<li><a id="disconnect_twitter" href="index.php?r=SocialConnect/disconnect&amp;network=twitter" ' .
@@ -1930,15 +1936,15 @@ class UserProfileViewer {
 
         $html .= '<div class="row">'; //pulsanti certificati-messaggi
 
-        if ($perm_certificate) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=lms/mycertificate/show">' . Lang::t('_MY_CERTIFICATE', 'menu_over') . '</a></div>';
-        if ($perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
+        if ($perm_certificate) $html .= '<div class="col-xs-4"><a class="btn btn-default forma-button forma-button--black" href="index.php?r=lms/mycertificate/show">' . Lang::t('_MY_CERTIFICATE', 'menu_over') . '</a></div>';
+        if ($perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default forma-button forma-button--black" href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
 
 
         if ($unread_num > 0 && $perm_message) {
-            $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">' . Lang::t('_MESSAGES', 'standard') . '<b class="num_notify"><i style="font-size:.78em">' . $unread_num . '</i></b></a></div>';
+            $html .= '<div class="col-xs-4"><a class="btn btn-default forma-button forma-button--black" href="index.php?r=message/show&sop=unregistercourse">' . Lang::t('_MESSAGES', 'standard') . '<b class="num_notify"><i style="font-size:.78em">' . $unread_num . '</i></b></a></div>';
         }
         if ($unread_num == 0 && $perm_message) {
-            $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">' . Lang::t('_MESSAGES', 'standard') . '</a></div>';
+            $html .= '<div class="col-xs-4"><a class="btn btn-default forma-button forma-button--black" href="index.php?r=message/show&sop=unregistercourse">' . Lang::t('_MESSAGES', 'standard') . '</a></div>';
         }
 
         $html .= '</div>'; //chiusura pulsanti certificati-messaggi
