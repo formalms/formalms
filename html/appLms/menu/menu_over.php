@@ -268,8 +268,8 @@ foreach ($menu['all'] as $row) {
                             </div><!-- /c-menu slide-right end profile right panel -->
                         </li>
                    </ul>
+                   <div class="top-menu__disclaimer">Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</div>
                </div>
-               <div class="top-menu__disclaimer">Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</div>
                <div id="c-mask" class="c-mask"></div><!-- /c-mask overlay -->','menu_over');
 
         cout('</div>
