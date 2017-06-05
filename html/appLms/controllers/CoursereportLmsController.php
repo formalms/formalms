@@ -788,8 +788,8 @@ class CoursereportLmsController extends LmsController
 									switch ($tests_score[ $info_report->getIdSource () ][ $idst_user ][ 'score_status' ]) {
 										case CoursereportLms::TEST_STATUS_NOT_COMPLETED : {
                                             
-											
-                                            /*if ($testObj->obj_type == 'test360') {
+                                            /*
+                                            if ($testObj->obj_type == 'test360') {
 												$score = $tests_score[ $info_report->getIdSource () ][ $idst_user ][ 'score' ];
 												
 												$value = array (
