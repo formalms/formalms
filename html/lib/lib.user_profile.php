@@ -1851,94 +1851,94 @@ class UserProfileViewer {
 
         $html .= '</div>'; // /row
 
-
-        $social = new Social();
-        if ($social->enabled()) {
-            if (!$social->allConnected()) {
-                $html .= '<div class="row">';
-                $html .= '<div class="col-xs-12">';
-                $html .= '<b class="social-accounts-title">' . Lang::t('_CONNECT_YOUR_ACCOUNT_WITH', 'social') . '</b>';
-                $html .= '<ul class="social-accounts">';
-                if ($social->isActive('facebook') && !$social->connectedToUser('facebook')) {
-                    $social = new Social();
-                    $social->includeFacebookLib();
-
-                    $client_id = Get::sett('social_fb_api');
-                    $client_secret = Get::sett('social_fb_secret');
-                    $redirect_uri = Get::sett('url') . 'index.php?modname=login&op=facebook_login';
-
-                    $serviceFactory = new \OAuth\ServiceFactory();
-                    $storage = new Session(false);
-                    $credentials = new Credentials(
-                        $client_id,
-                        $client_secret,
-                        $redirect_uri
-                    );
-
-                    $facebookService = $serviceFactory->createService('facebook', $credentials, $storage, array()); //, 'userinfo_profile'
-                    $loginUrl = $facebookService->getAuthorizationUri();
-                    $html .= '<li> 
-                                  <a class="facebook" href="' . $loginUrl . '" title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_FACEBOOK', 'social') . '">
-                                      <i class="fa fa-facebook"></i>
-                                  </a>
-                              </li>';
-                }
-                if ($social->isActive('twitter') && !$social->connectedToUser('twitter')) {
-                    $html .= '<li>
-                                  <a class="titter" href="' . Get::sett('url') . 'index.php?modname=login&amp;op=twitter_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_TWITTER', 'social') . '">
-                                      <i class="fa fa-twitter"></i>
-                                  </a>
-                              </li>';
-                }
-                if ($social->isActive('linkedin') && !$social->connectedToUser('linkedin')) {
-                    $html .= '<li>
-                                  <a class="linkedin" href="' . Get::sett('url') . 'index.php?modname=login&amp;op=linkedin_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_LINKEDIN', 'social') . '"> 
-                                      <i class="fa fa-linkedin"></i>                                  
-                                  </a>
-                              </li>';
-                }
-                if ($social->isActive('google') && !$social->connectedToUser('google')) {
-                    $html .= '<li>
-                                  <a class="google-plus" href="' . Get::sett('url') . 'index.php?modname=login&amp;op=google_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '">
-                                      <i class="fa fa-google-plus"></i>
-                                  </a>
-                              </li>';
-                }
-                $html .= '</ul>
-                        </div>
-                        </div>'; // ./col-xs-12 ./row
-            }
-
-            if ($social->someConnected()) {
-                $html .= '<div class="row">';
-                $html .= '<div class="col-xs-12">';
-                $html .= '<b class="social-accounts-title">' . Lang::t('_CONNECTED_ACCOUNTS', 'social') . '</b>';
-                $html .= '<ul class="social-accounts">';
-                if ($social->connectedToUser('facebook')) {
-                    $html .= '<li><a id="disconnect_facebook" href="index.php?r=SocialConnect/disconnect&amp;network=facebook" ' .
-                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_FACEBOOK', 'social') . '"> </a></li>';
-                }
-                if ($social->connectedToUser('twitter')) {
-                    $html .= '<li><a id="disconnect_twitter" href="index.php?r=SocialConnect/disconnect&amp;network=twitter" ' .
-                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_TWITTER', 'social') . '"><span>' .
-                        Get::img('social/twitter.png', Lang::t('_TWITTER', 'social')) . '</span></a></li>';
-                }
-                if ($social->connectedToUser('linkedin')) {
-                    $html .= '<li><a id="disconnect_linkedin" href="index.php?r=SocialConnect/disconnect&amp;network=linkedin" ' .
-                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_LINKEDIN', 'social') . '"><span>' .
-                        Get::img('social/linkedin.png', Lang::t('_LINKEDIN', 'social')) . '</span></a></li>';
-                }
-                if ($social->connectedToUser('google')) {
-                    $html .= '<li><a id="disconnect_google" href="index.php?r=SocialConnect/disconnect&amp;network=google" ' .
-                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '"><span>' .
-                        Get::img('social/google.png', $this->user_info[ACL_INFO_GOOGLE_ID]) . '</span></a></li>';
-                }
-                $html .= '</ul>
-                        </div>
-                        </div>'; // ./col-xs-12 ./row
-            }
-
-        }
+        //TODO check per il layout
+//        $social = new Social();
+//        if ($social->enabled()) {
+//            if (!$social->allConnected()) {
+//                $html .= '<div class="row">';
+//                $html .= '<div class="col-xs-12">';
+//                $html .= '<b class="social-accounts-title">' . Lang::t('_CONNECT_YOUR_ACCOUNT_WITH', 'social') . '</b>';
+//                $html .= '<ul class="social-accounts">';
+//                if ($social->isActive('facebook') && !$social->connectedToUser('facebook')) {
+//                    $social = new Social();
+//                    $social->includeFacebookLib();
+//
+//                    $client_id = Get::sett('social_fb_api');
+//                    $client_secret = Get::sett('social_fb_secret');
+//                    $redirect_uri = Get::sett('url') . 'index.php?modname=login&op=facebook_login';
+//
+//                    $serviceFactory = new \OAuth\ServiceFactory();
+//                    $storage = new Session(false);
+//                    $credentials = new Credentials(
+//                        $client_id,
+//                        $client_secret,
+//                        $redirect_uri
+//                    );
+//
+//                    $facebookService = $serviceFactory->createService('facebook', $credentials, $storage, array()); //, 'userinfo_profile'
+//                    $loginUrl = $facebookService->getAuthorizationUri();
+//                    $html .= '<li>
+//                                  <a class="facebook" href="' . $loginUrl . '" title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_FACEBOOK', 'social') . '">
+//                                      <i class="fa fa-facebook"></i>
+//                                  </a>
+//                              </li>';
+//                }
+//                if ($social->isActive('twitter') && !$social->connectedToUser('twitter')) {
+//                    $html .= '<li>
+//                                  <a class="titter" href="' . Get::sett('url') . 'index.php?modname=login&amp;op=twitter_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_TWITTER', 'social') . '">
+//                                      <i class="fa fa-twitter"></i>
+//                                  </a>
+//                              </li>';
+//                }
+//                if ($social->isActive('linkedin') && !$social->connectedToUser('linkedin')) {
+//                    $html .= '<li>
+//                                  <a class="linkedin" href="' . Get::sett('url') . 'index.php?modname=login&amp;op=linkedin_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_LINKEDIN', 'social') . '">
+//                                      <i class="fa fa-linkedin"></i>
+//                                  </a>
+//                              </li>';
+//                }
+//                if ($social->isActive('google') && !$social->connectedToUser('google')) {
+//                    $html .= '<li>
+//                                  <a class="google-plus" href="' . Get::sett('url') . 'index.php?modname=login&amp;op=google_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '">
+//                                      <i class="fa fa-google-plus"></i>
+//                                  </a>
+//                              </li>';
+//                }
+//                $html .= '</ul>
+//                        </div>
+//                        </div>'; // ./col-xs-12 ./row
+//            }
+//
+//            if ($social->someConnected()) {
+//                $html .= '<div class="row">';
+//                $html .= '<div class="col-xs-12">';
+//                $html .= '<b class="social-accounts-title">' . Lang::t('_CONNECTED_ACCOUNTS', 'social') . '</b>';
+//                $html .= '<ul class="social-accounts">';
+//                if ($social->connectedToUser('facebook')) {
+//                    $html .= '<li><a id="disconnect_facebook" href="index.php?r=SocialConnect/disconnect&amp;network=facebook" ' .
+//                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_FACEBOOK', 'social') . '"> </a></li>';
+//                }
+//                if ($social->connectedToUser('twitter')) {
+//                    $html .= '<li><a id="disconnect_twitter" href="index.php?r=SocialConnect/disconnect&amp;network=twitter" ' .
+//                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_TWITTER', 'social') . '"><span>' .
+//                        Get::img('social/twitter.png', Lang::t('_TWITTER', 'social')) . '</span></a></li>';
+//                }
+//                if ($social->connectedToUser('linkedin')) {
+//                    $html .= '<li><a id="disconnect_linkedin" href="index.php?r=SocialConnect/disconnect&amp;network=linkedin" ' .
+//                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_LINKEDIN', 'social') . '"><span>' .
+//                        Get::img('social/linkedin.png', Lang::t('_LINKEDIN', 'social')) . '</span></a></li>';
+//                }
+//                if ($social->connectedToUser('google')) {
+//                    $html .= '<li><a id="disconnect_google" href="index.php?r=SocialConnect/disconnect&amp;network=google" ' .
+//                        'title="' . Lang::t('_DISCONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '"><span>' .
+//                        Get::img('social/google.png', $this->user_info[ACL_INFO_GOOGLE_ID]) . '</span></a></li>';
+//                }
+//                $html .= '</ul>
+//                        </div>
+//                        </div>'; // ./col-xs-12 ./row
+//            }
+//
+//        }
 
         $html .= '<div class="row">'; //pulsanti certificati-messaggi
 
@@ -1991,12 +1991,20 @@ class UserProfileViewer {
 
                 //. '<tr><th scope="row">' . $this->_lang->def('_TOTAL_COURSE') . ' :</th><td>' . ($course_stats['total'] - $end) . '</td></tr>'
 
+//                . (isset($course_stats['with_ustatus'][_CUS_END]) && $course_stats['with_ustatus'][_CUS_END] != 0
+//                    ? '<tr><th scope="row">' . $this->_lang->def('_COURSE_END') . ' :</th><td>' . $course_stats['with_ustatus'][_CUS_END] . '</td></tr>'
+//                    : '')
+
                 . (isset($course_stats['with_ustatus'][_CUS_END]) && $course_stats['with_ustatus'][_CUS_END] != 0
-                    ? '<tr><th scope="row">' . $this->_lang->def('_COURSE_END') . ' :</th><td>' . $course_stats['with_ustatus'][_CUS_END] . '</td></tr>'
+                    ? '<li class="list-group-item">' . $this->_lang->def('_COURSE_END') . '<span class="badge">' . $course_stats['with_ustatus'][_CUS_END] . '</span></li>'
                     : '')
 
+//                . (isset($course_stats['expiring']) && $course_stats['expiring'] != 0
+//                    ? '<tr><th scope="row">' . $this->_lang->def('_COURSE_EXPIRING') . ' :</th><td>' . $course_stats['expiring'] . '</td></tr>'
+//                    : '');
+
                 . (isset($course_stats['expiring']) && $course_stats['expiring'] != 0
-                    ? '<tr><th scope="row">' . $this->_lang->def('_COURSE_EXPIRING') . ' :</th><td>' . $course_stats['expiring'] . '</td></tr>'
+                    ? '<li class="list-group-item">' . $this->_lang->def('_COURSE_EXPIRING') . '<span class="badge">' . $course_stats['expiring'] . '</span></li>'
                     : '');
 
             if (count($course_stats['with_ulevel']) > 1) {
@@ -2005,8 +2013,8 @@ class UserProfileViewer {
                 $lvl = CourseLevel::getLevels();
                 foreach ($course_stats['with_ulevel'] as $lvl_num => $quantity) {
 
-                    $html .= ''
-                        . '<tr><th scope="row">' . str_replace('[level]', $lvl[$lvl_num], $this->_lang->def('_COURSE_AS')) . ' :</th><td>' . $quantity . '</td></tr>';
+                    $html .= '<li class="list-group-item">' . str_replace('[level]', $lvl[$lvl_num], $this->_lang->def('_COURSE_AS')) . '<span class="badge">' . $quantity . '</span></li>';
+//                        . '<tr><th scope="row">' . str_replace('[level]', $lvl[$lvl_num], $this->_lang->def('_COURSE_AS')) . ' :</th><td>' . $quantity . '</td></tr>';
                 } //end foreach
 
             }
@@ -2018,12 +2026,20 @@ class UserProfileViewer {
             $tot_cert = $cert->countAssignment($filter) + $cert->countMetaAssignment($filter);
 
             $html .= ''
+//                . (isset($course_stats['cert_relesable']) /*&& $tot_cert != 0*/
+//                    ? '<tr><th scope="row">' . $this->_lang->def('_CERT_RELESABLE') . ' :</th><td><a href="index.php?r=lms/mycertificate/show"><u><b>' . $tot_cert . '</b></u></a></td></tr>'
+//                    : '')
+
                 . (isset($course_stats['cert_relesable']) /*&& $tot_cert != 0*/
-                    ? '<tr><th scope="row">' . $this->_lang->def('_CERT_RELESABLE') . ' :</th><td><a href="index.php?r=lms/mycertificate/show"><u><b>' . $tot_cert . '</b></u></a></td></tr>'
+                    ? '<li class="list-group-item">' . $this->_lang->def('_CERT_RELESABLE') . '<span class="badge"><a href="index.php?r=lms/mycertificate/show">' . $tot_cert . '</a></span></li>'
                     : '')
 
+//                . ($pendent != 0
+//                    ? '<tr><th scope="row">' . $this->_lang->def('_FRIEND_PENDENT') . ' :</th><td><a href="index.php?modname=myfriends&amp;op=myfriends">' . $pendent . '</a></td></tr>'
+//                    : '')
+
                 . ($pendent != 0
-                    ? '<tr><th scope="row">' . $this->_lang->def('_FRIEND_PENDENT') . ' :</th><td><a href="index.php?modname=myfriends&amp;op=myfriends">' . $pendent . '</a></td></tr>'
+                    ? '<li class="list-group-item">' . $this->_lang->def('_FRIEND_PENDENT') . '<span class="badge"><a href="index.php?modname=myfriends&amp;op=myfriends">' . $pendent . '</a></span></li>'
                     : '')
 
                 //. '</table>'
