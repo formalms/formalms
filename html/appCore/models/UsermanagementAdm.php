@@ -285,9 +285,9 @@ class UsermanagementAdm extends Model {
 			if($is_subadmin) {
 				$id_groups = $admin_info['groups'];
 				if (empty($id_groups)) $id_groups = $this->_getRootGroups();
-			} else {
+			} /*else {
 				$id_groups = $this->_getOrgGroups(0, true);
-			}
+			}*/
 		}
 
 		//user levels
@@ -298,9 +298,14 @@ class UsermanagementAdm extends Model {
 		switch ($query_type) {
 			//query with sorting on standard core_user field
 			case 'standard': {
-				$query = "SELECT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid "
-					." FROM %adm_user as u "
-					." WHERE u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN ( ".implode(",", $id_groups)." )  "// )
+				$query = "SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid "
+					." FROM %adm_user as u ";
+                                if($idOrg || $is_subadmin) {
+                                    $query .=   " JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ".implode(",", $id_groups)." ))"
+                                              . " AS uit ON uit.idstMember = u.idst";
+                                }
+                                $query .=" WHERE (1 = 1"
+					//." WHERE u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN ( ".implode(",", $id_groups)." )  "// )
 					.$queryUserFilter_1
 					.($useSuspended ? "" : " AND u.valid = 1 ")." "
 					.($useAnonymous ? "" : " AND u.userid <> '/Anonymous' ")." ";
@@ -320,12 +325,14 @@ class UsermanagementAdm extends Model {
 			//query with sorting on a custom field (like texts)
 			case 'custom': {
 
-				$query = "SELECT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid "
-					." FROM %adm_user as u LEFT JOIN %adm_field_userentry as f ON (u.idst=f.id_user AND f.id_common=".(int)$sort.") "
-					." WHERE u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE idst IN ( ".implode(",", $id_groups)." ) ";
-
-				$query .=
-					$queryUserFilter_2
+				$query = "SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid "
+					." FROM %adm_user as u LEFT JOIN %adm_field_userentry as f ON (u.idst=f.id_user AND f.id_common=".(int)$sort.") ";
+                                if($idOrg || $is_subadmin) {
+                                    $query .=   " JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ".implode(",", $id_groups)." ))"
+                                              . " AS uit ON uit.idstMember = u.idst";
+                                }
+                                $query .=" WHERE (1 = 1"
+					.$queryUserFilter_2
 					.($useSuspended ? "" : " AND u.valid = 1 ")." "
 					.($useAnonymous ? "" : " AND u.userid <> '/Anonymous' ")." ";
 
@@ -350,8 +357,11 @@ class UsermanagementAdm extends Model {
 					." LEFT JOIN (%adm_field_userentry as f LEFT JOIN %adm_field_son as fs "
 					." ON (f.user_entry = fs.id_common_son AND f.id_common = fs.idField AND fs.lang_code='".getLanguage()."')) "
 					." ON (u.idst=f.id_user AND f.id_common=".(int)$sort.") ";
-
-				$query .= " WHERE gm.idst IN ( ".implode(",", $id_groups)." ) "
+                                if($idOrg || $is_subadmin) {
+                                    $query .=   " JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ".implode(",", $id_groups)." ))"
+                                              . " AS uit ON uit.idstMember = u.idst";
+                                }
+                                $query .=" WHERE (1 = 1"
 					.$queryUserFilter_3
 					.($useSuspended ? "" : " AND u.valid = 1 ")." "
 					.($useAnonymous ? "" : " AND u.userid <> '/Anonymous' ")." ";
@@ -371,10 +381,14 @@ class UsermanagementAdm extends Model {
 
 			//query with sorting on user level
 			case 'level': {
-				$query = "SELECT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid "
+				$query = "SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid "
 					." FROM %adm_user as u JOIN %adm_group_members AS gm "
-					." ON (u.idst = gm.idstMember AND gm.idst IN (".implode(",", array_values($levels_idst)).")) "
-					." WHERE u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN ( ".implode(",", $id_groups)." )  "// )
+					." ON (u.idst = gm.idstMember AND gm.idst IN (".implode(",", array_values($levels_idst)).")) ";
+                                if($idOrg || $is_subadmin) {
+                                    $query .=   " JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ".implode(",", $id_groups)." ))"
+                                              . " AS uit ON uit.idstMember = u.idst";
+                                }
+                                $query .=" WHERE (1 = 1"
 					.$queryUserFilter_1
 					.($useSuspended ? "" : " AND u.valid = 1 ")." "
 					.($useAnonymous ? "" : " AND u.userid <> '/Anonymous' ")." ";
@@ -394,10 +408,14 @@ class UsermanagementAdm extends Model {
 			//query with sorting on user language
 			case 'language': {
 				$levels_idst = array_values( $this->aclManager->getAdminLevels() );
-				$query = "SELECT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid "
+				$query = "SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid "
 					." FROM %adm_user as u LEFT JOIN %adm_setting_user AS su "
-					." ON (u.idst = su.id_user AND su.path_name = 'ui.language') "
-					." WHERE u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN ( ".implode(",", $id_groups)." )  "// )
+					." ON (u.idst = su.id_user AND su.path_name = 'ui.language') ";
+                                if($idOrg || $is_subadmin) {
+                                    $query .=   " JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ".implode(",", $id_groups)." ))"
+                                              . " AS uit ON uit.idstMember = u.idst";
+                                }
+                                $query .=" WHERE (1 = 1"
 					.$queryUserFilter_1
 					.($useSuspended ? "" : " AND u.valid = 1 ")." "
 					.($useAnonymous ? "" : " AND u.userid <> '/Anonymous' ")." ";
@@ -589,9 +607,9 @@ class UsermanagementAdm extends Model {
 			if($is_subadmin) {
 				$id_groups = $admin_info['groups'];
 				if (empty($id_groups)) $id_groups = $this->_getRootGroups();
-			} else {
+			} /*else {
 				$id_groups = $this->_getOrgGroups(0, true);
-			}
+			}*/
 		}
 
 		$is_dynfiltered = false;
@@ -617,10 +635,13 @@ class UsermanagementAdm extends Model {
 		} //else: no filter to apply
 
 		$filtered_query = " select COUNT(DISTINCT u.idst) "
-				." from %adm_user as u join %adm_group_members as gm on (u.idst = gm.idstMember) "
-				." and gm.idst IN (".implode(",", $id_groups).") "
+				." from %adm_user as u ";
+                                if($idOrg || $is_subadmin) {
+                                    $filtered_query .= " join %adm_group_members as gm on (u.idst = gm.idstMember) and gm.idst IN (".implode(",", $id_groups).") ";
+                                }
+                                $filtered_query .= " WHERE 1 = 1 ";
 
-				.$queryUserFilter
+				$filtered_query .=$queryUserFilter
 				.($useSuspended ? "" : " AND u.valid = 1 " )
 				.($useAnonymous ? "" : " AND u.userid <> '/Anonymous' ");
 
