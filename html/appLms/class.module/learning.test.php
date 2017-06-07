@@ -26,9 +26,9 @@ class Learning_Test extends Learning_Object {
 
 	var $retain_answers_history = false;
 
-	protected $mandatory_answer = false;
+	var $mandatory_answer = false;
 
-	protected $hide_info = false;
+	var $hide_info = false;
 
 	var $idCourse;
 
