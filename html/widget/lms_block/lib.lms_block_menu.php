@@ -36,14 +36,8 @@ class Lms_BlockWidget_menu extends Widget {
 			$this->block_list ['course'] = true;
 		
 		if (isset ( $this->block_list ['user_details_full'] )) {
-			
-			/*
-			 * echo '<div class="inline_block">' .'<div class="content">';
-			 */
+
 			$this->user_details_full ( $this->link );
-			/*
-			 * echo '</div>' .'</div>';
-			 */
 		}
 		if (isset ( $this->block_list ['labels'] )) {
 			echo '<div class="inline_block">';
@@ -89,33 +83,26 @@ class Lms_BlockWidget_menu extends Widget {
         $html = '';
         $ma = new Man_MiddleArea ();
         if ($ma->currentCanAccessObj ( 'course' )){
-        $html .=  '<div class="inline_block">';
-                        $str_code = Lang::t('_TIT_SUBSCRIPTION_BY_CODE', 'catalogue');
-                        $form = new Form ();
-                        $op = $form->openForm ( 'course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=subscribe' );
 
-                        $it = $form->getInputTextfield ( Lang::t('_LBL_CODE', 'standard'), 'course_autoregistration_code', 'course_autoregistration_code', '','',30, ' size=30 placeholder="'.$str_code.'"' );
-                        //$it = $form->getTextfield ( Lang::t('_LBL_CODE', 'standard'), 'course_autoregistration_code', 'course_autoregistration_code', '100');
-                       // echo Form::getInputTextfield("search_t", $id."_filter_text", "filter_text", $filter_text, '', 255, 'placeholder='.$str_search );
+            $str_code = Lang::t('_TIT_SUBSCRIPTION_BY_CODE', 'catalogue');
+            $form = new Form ();
+            $openForm = $form->openForm ( 'course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=subscribe' );
 
-                        $sb = $form->getButton ( 'subscribe_info', 'subscribe_info', Lang::t('_LBL_SEND', 'standard') );
-                        $cf = $form->closeForm ();
+            $inputText = $form->getInputTextfield ( Lang::t('_LBL_CODE', 'standard'), 'course_autoregistration_code', 'course_autoregistration_code', '','',30, ' size=30 placeholder="'.$str_code.'"' );
 
-        $html .= '
-                      <div class="content">
-                          <div>
-                              <div class="form_line_l">
-                                  <p>
-                                      <div >'. $op . $it . '' . $sb . $cf . '</div>
-                                  </p>
-                              </div>
-                          </div>
+            $submitButton = $form->getButton ( 'subscribe_info', 'subscribe_info', Lang::t('_LBL_SEND', 'standard') );
+            $closeForm = $form->closeForm ();
+
+            $html .= '<div class="input-group">
+                           '. $openForm . $inputText . '
+                           <div class="input-group-btn">
+                           ' . $submitButton  . '
+                           </div>
+                           ' . $closeForm . '
                       </div>
-                 </div>
             ';
         }
             
-		//echo $html;
         return $html;
 	}
 	// END
@@ -126,7 +113,7 @@ class Lms_BlockWidget_menu extends Widget {
             $ma = new Man_MiddleArea ();
             if ($ma->currentCanAccessObj ( 'news' )){
             
-                    $html .= '<div class="inline_block">' ;        
+                $html .= '<div class="inline_block">' ;
                 
 		        $html  .= '<h2 class="heading">' . Lang::t ( '_NEWS', 'catalogue' ) . '</h2>' . '<div class="content">';
 		        
