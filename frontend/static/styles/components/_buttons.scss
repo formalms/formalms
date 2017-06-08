@@ -130,19 +130,20 @@
 // </a>
 //
 // Style guide: 2.5
-.forma-button--black {
-  background-color: $black;
-
-  .forma-button__label {
-    &:after {
-      display: none;
-    }
-  }
-
-  .user-panel & {
-    padding: 7px 9px;
-  }
-}
+//.forma-button--black {
+//  background-color: $black;
+//
+//  .forma-button__label {
+//    &:after {
+//      display: none;
+//    }
+//  }
+//
+//  .user-panel & {
+//    padding: 7px 9px;
+//    border: 0;
+//  }
+//}
 
 .forma-button__label {
   position: relative;
@@ -157,5 +158,44 @@
     font-size: inherit;
     color: rgba(255, 255, 255, 0.7);
     margin-left: 6px;
+  }
+}
+
+/* NEW TEST */
+
+input[type='submit'].btn.btn-default {
+
+  .user-panel & {
+    font-family: $font;
+    background-color: $anthracite-light;
+    text-transform: uppercase;
+    color: $white;
+    background-image: none;
+    border: 0;
+    border-radius: 5px!important;
+    font-size: 12px;
+    line-height: 25px;
+    height: 25px;
+    text-shadow: none;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+a.btn.btn-default {
+
+  .user-panel & {
+    background-image: none;
+    line-height: 25px;
+    padding-top: 0;
+    padding-bottom: 0;
+    font-family: $font;
+    text-transform: uppercase;
+    font-size: 12px;
+    background-color: $black;
+    text-shadow: none;
+    color: $white;
+    border: 0;
+    border-radius: 5px;
   }
 }
