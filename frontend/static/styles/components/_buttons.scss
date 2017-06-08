@@ -184,9 +184,12 @@ input[type='submit'].btn.btn-default {
 
 a.btn.btn-default {
 
-  .user-panel & {
+  .user-panel .row & {
+    width: 100%;
+    display: inline-block;
     background-image: none;
     line-height: 25px;
+    height: 25px;
     padding-top: 0;
     padding-bottom: 0;
     font-family: $font;
@@ -197,5 +200,10 @@ a.btn.btn-default {
     color: $white;
     border: 0;
     border-radius: 5px;
+
+    &:hover {
+      background-color: $black;
+      color: $white;
+    }
   }
 }
