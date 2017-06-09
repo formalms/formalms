@@ -106,7 +106,8 @@ class Lms_BlockWidget_menu extends Widget {
         return $html;
 	}
 	// END
-	
+
+    // news section
 	public function news($link) {
        
        $html = "";
@@ -126,6 +127,8 @@ class Lms_BlockWidget_menu extends Widget {
 		        OR language = 'all'
 		        ORDER BY important DESC, publish_date DESC ";
 		        $re_news = sql_query ( $query_news );
+
+                //loop per creare l'elemento news
 		        
 		        while ( list ( $id_news, $publish_date, $title, $short_desc, $impo, $viewer ) = sql_fetch_row ( $re_news ) ) {
 			        
@@ -133,7 +136,8 @@ class Lms_BlockWidget_menu extends Widget {
 			        $intersect = array_intersect ( $user_assigned, $viewer );
 			        if (! empty ( $intersect ) || empty ( $viewer )) {
 				        
-				        $html .= '<h3>' . $title . '</h3>' . '<div class="news_textof">' . '<span class="news_data">' . Format::date ( $publish_date, 'date' ) . ' - </span>' . $short_desc . '</div>';
+				        $html .= '<h3>' . $title . '</h3>' .
+                                    '<div class="news_textof">' . '<span class="news_data">' . Format::date ( $publish_date, 'date' ) . ' - </span>' . $short_desc . '</div>';
 			        }
 		        } // end news display
 		        if (! sql_num_rows ( $re_news )) {
@@ -148,12 +152,14 @@ class Lms_BlockWidget_menu extends Widget {
         
         return $html;
 	}
+
 	public function label() {
 		require_once (_lms_ . '/admin/models/LabelAlms.php');
 		$label_model = new LabelAlms ();
 		
 		echo '<h2 class="heading">' . Lang::t ( '_LABEL', 'catalogue' ) . '</h2>' . '<div class="content">' . Form::openForm ( 'label_form', 'index.php?r=elearning/show' ) . Form::getDropdown ( Lang::t ( '_LABELS', 'catalogue' ), 'id_common_label_dd', 'id_common_label', $label_model->getDropdownLabelForUser ( Docebo::user ()->getId () ), ($_SESSION ['id_common_label'] == - 1 ? - 2 : $_SESSION ['id_common_label']) ) . Form::closeForm () . '<script type="text/javascript">' . 'var dd = YAHOO.util.Dom.get(\'id_common_label_dd\');' . 'YAHOO.util.Event.onDOMReady(YAHOO.util.Event.addListener(dd, "change", function(e){var form = YAHOO.util.Dom.get(\'label_form\');form.submit();}));' . '</script>' . '</div>';
 	}
+
 	public function credits() {
 		$str = '<h2 class="heading">' . Lang::t ( '_CREDITS', 'catalogue' ) . '</h2>' . '<div class="content">';
 		$period_start = '';
