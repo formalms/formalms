@@ -11,17 +11,18 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-abstract class AdmPluginController extends AdmController {
+class Forma {
 
-	protected $_mvc_name = 'admplugincontroller';
-	protected $_plugin_name = '';
-
-	public function viewPath() {
-		return _plugins_.'/'.$this->_plugin_name.'/'._folder_adm_.'/views/';
-	}
-
-	public function viewCustomscriptsPath() {
-		return _plugins_.'/'.$this->_plugin_name.'/customscripts/'._folder_adm_.'/views/';
-	}
-
+    /**
+     * @param $file
+     * @return string
+     */
+    public static function inc($file) {
+        $file = str_replace(_base_.'/', '', $file);
+        if (file_exists(_base_.'/customscripts'.'/'.$file) && Get::cfg('enable_customscripts', false) == true ){
+            return _base_.'/customscripts'.'/'.$file;
+        } else {
+            return _base_.'/'.$file;
+        }
+    }
 }

@@ -72,16 +72,16 @@ function organization( &$treeView ) {
 			organization_categorize_sco();
 		break;
 		case 'org_properties':
-		case 'org_opproperties':
-			// organization_rules( $treeView, $treeView->opContextId );
-			require_once(dirname(__FILE__).'/orgprop.php');
-			organization_property( $treeView, $treeView->opContextId );
-		break;
-		case 'org_opaccess':
-		case 'org_access':
-			require_once(dirname(__FILE__).'/orgprop.php');
-			organization_access( $treeView, $treeView->opContextId );
-		break;
+        case 'org_opproperties':
+            // organization_rules( $treeView, $treeView->opContextId );
+            require_once( Forma::inc( _lms_.'/modules/organization/orgprop.php' ) );
+            organization_property( $treeView, $treeView->opContextId );
+            break;
+        case 'org_opaccess':
+        case 'org_access':
+            require_once( Forma::inc( _lms_.'/modules/organization/orgprop.php' ) );
+            organization_access( $treeView, $treeView->opContextId );
+            break;
 		case 'save': 
 			$treeView->tdb->modifyItem( $_POST, false, true );
 			organization_display( $treeView );

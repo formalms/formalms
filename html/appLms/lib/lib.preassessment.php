@@ -139,7 +139,7 @@ class AssessmentList {
 
 				$id_test = sql_insert_id();
 				if ($id_test) {
-					require_once(_lms_.'/modules/organization/orglib.php');
+                    require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
 					$odb= new OrgDirDb($id_course);
 					$odb->addItem(0, $assessment_data['name'], 'test', $id_test, '0', '0', getLogUserId(), '1.0', '_DIFFICULT_MEDIUM', '', '', '', '', date('Y-m-d H:i:s'));
 				} else {

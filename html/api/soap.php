@@ -27,6 +27,10 @@ Boot::init(BOOT_DATETIME);
 
 // -----------------------------------------------------------------------------
 
+if(Get::sett('use_rest_api', 'off') != 'on') {
+	die('Error: API not enabled.');
+}
+
 $GLOBALS['output'] = '';
 function soap_cout($string) { $GLOBALS['output'] .= $string; }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170414</DATE>
+  <DATE>20170531</DATE>
   <LANG id="dutch">
     <lang_code>dutch</lang_code>
     <lang_description>Dutch</lang_description>
@@ -39,7 +39,7 @@
         <key id="admin_directory&amp;_DECLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Geweigerd]]></key>
         <key id="admin_directory&amp;_DIRECOTRY_SELFREGISTERED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zelf registratie]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/admin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Administrator]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_/framework/level/godadmin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Super admin]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_/framework/level/godadmin" attributes="" save_date="2017-04-19 12:57:09"><![CDATA[Super-admin]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/publicadmin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Publieke administrator]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/user" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[User]]></key>
         <key id="admin_directory&amp;_DIRECTORY_ASSIGNFIELDGROUP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Toewijs veld]]></key>
@@ -161,8 +161,8 @@
         <key id="calendar&amp;_DEF_DATE_FORMAT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[%d-%m-%Y]]></key>
         <key id="calendar&amp;_FEB" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Feb]]></key>
         <key id="calendar&amp;_FEBRUARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Februari]]></key>
-        <key id="calendar&amp;_FRI" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[vr]]></key>
-        <key id="calendar&amp;_FRIDAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[vrijdag]]></key>
+        <key id="calendar&amp;_FRI" attributes="" save_date="2017-05-05 17:28:21"><![CDATA[Vr]]></key>
+        <key id="calendar&amp;_FRIDAY" attributes="" save_date="2017-05-05 17:29:48"><![CDATA[Vrijdag]]></key>
         <key id="calendar&amp;_GENERIC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Standaard]]></key>
         <key id="calendar&amp;_GO_TODAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[vandaag]]></key>
         <key id="calendar&amp;_JAN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jan]]></key>
@@ -175,8 +175,8 @@
         <key id="calendar&amp;_MARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maart]]></key>
         <key id="calendar&amp;_MAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mei]]></key>
         <key id="calendar&amp;_MEETING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Samenkomst]]></key>
-        <key id="calendar&amp;_MON" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ma]]></key>
-        <key id="calendar&amp;_MONDAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maandag]]></key>
+        <key id="calendar&amp;_MON" attributes="" save_date="2017-05-05 17:28:03"><![CDATA[Ma]]></key>
+        <key id="calendar&amp;_MONDAY" attributes="" save_date="2017-05-05 17:29:30"><![CDATA[Maandag]]></key>
         <key id="calendar&amp;_NEXT_MONTH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Volgende maand]]></key>
         <key id="calendar&amp;_NEXT_YEAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Volgend jaar]]></key>
         <key id="calendar&amp;_NOV" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nov]]></key>
@@ -191,24 +191,27 @@
         <key id="calendar&amp;_PUBLIC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Publiek]]></key>
         <key id="calendar&amp;_PUBLISHING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aan het uitgeven]]></key>
         <key id="calendar&amp;_SAT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Za]]></key>
-        <key id="calendar&amp;_SATURDAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[zaterdag]]></key>
+        <key id="calendar&amp;_SATURDAY" attributes="" save_date="2017-05-05 17:30:10"><![CDATA[Zaterdag]]></key>
         <key id="calendar&amp;_SEP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sep]]></key>
         <key id="calendar&amp;_SEPTEMBER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[September]]></key>
         <key id="calendar&amp;_SUN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zo]]></key>
-        <key id="calendar&amp;_SUNDAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[zondag]]></key>
-        <key id="calendar&amp;_THU" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Do]]></key>
-        <key id="calendar&amp;_THURSDAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[donderdag]]></key>
+        <key id="calendar&amp;_SUNDAY" attributes="" save_date="2017-05-05 17:30:03"><![CDATA[Zondag]]></key>
+        <key id="calendar&amp;_THU" attributes="" save_date="2017-05-05 17:27:57"><![CDATA[Do]]></key>
+        <key id="calendar&amp;_THURSDAY" attributes="" save_date="2017-05-05 17:29:25"><![CDATA[Donderdag]]></key>
         <key id="calendar&amp;_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[uur:]]></key>
         <key id="calendar&amp;_TODAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[vandaag]]></key>
         <key id="calendar&amp;_TT_DATE_FORMAT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[%a:%b:%e]]></key>
-        <key id="calendar&amp;_TUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[di]]></key>
-        <key id="calendar&amp;_TUESDAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[dinsdag]]></key>
+        <key id="calendar&amp;_TUE" attributes="" save_date="2017-05-05 17:28:10"><![CDATA[Di]]></key>
+        <key id="calendar&amp;_TUESDAY" attributes="" save_date="2017-05-05 17:29:37"><![CDATA[Dinsdag]]></key>
         <key id="calendar&amp;_WED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Wo]]></key>
-        <key id="calendar&amp;_WEDNESDAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[woensdag]]></key>
+        <key id="calendar&amp;_WEDNESDAY" attributes="" save_date="2017-05-05 17:29:43"><![CDATA[Woensdag]]></key>
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0,6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[week]]></key>
       </module>
-      <module id="cart"/>
+      <module id="cart">
+        <key id="cart&amp;_CART" attributes="" save_date="2017-05-08 14:11:46"><![CDATA[Winkelwagen]]></key>
+        <key id="cart&amp;_CODE" attributes="" save_date="2017-05-08 14:19:41"><![CDATA[Code]]></key>
+      </module>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voeg toe aan winkelwagen]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Carriere]]></key>
@@ -248,6 +251,7 @@
         <key id="catalogue&amp;_TAB_VIEW_MOSTPOPULAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meest populair]]></key>
         <key id="catalogue&amp;_TAB_VIEW_RECENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meest recent]]></key>
         <key id="catalogue&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Totaal aantal cursussen waar je ingeschreven staat]]></key>
+        <key id="catalogue&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:50:34"><![CDATA[Enter]]></key>
         <key id="catalogue&amp;_WAITING_APPROVAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Wachten op goedkeuring]]></key>
         <key id="catalogue&amp;_WORD_TO_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zoek naar woord]]></key>
       </module>
@@ -256,6 +260,7 @@
         <key id="certificate&amp;_ALT_TAKE_A_COPY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Publiceer a meta-certificaat kopie]]></key>
         <key id="certificate&amp;_BACK_IMAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Achtergrond plaatje]]></key>
         <key id="certificate&amp;_BASE_LANGUAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificaat taal]]></key>
+        <key id="certificate&amp;_CERTIFICATE_ASSIGN" attributes="" save_date="2017-05-05 17:45:03"><![CDATA[Certificaat toewijzing]]></key>
         <key id="certificate&amp;_CERTIFICATE_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificaat template lijst]]></key>
         <key id="certificate&amp;_CERTIFICATE_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificaten lijst]]></key>
         <key id="certificate&amp;_CERTIFICATE_REPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uitgegeven certificaat]]></key>
@@ -378,6 +383,7 @@
       </module>
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Activeer toegankelijkheid functies]]></key>
+        <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2017-05-05 17:50:03"><![CDATA[Configuratie van "allow_url_fopen"]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configuratie van "allow_url_include"]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
         <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
@@ -388,6 +394,7 @@
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max Audio gebruikers]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximum gebruikers per room]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max rooms]]></key>
+        <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="2017-05-05 17:14:21"><![CDATA[BigBlueButton server adres]]></key>
         <key id="configuration&amp;_CODE_TELESKILL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Klant code]]></key>
         <key id="configuration&amp;_COMMON_ADMIN_SESSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Verenig admin en publieke sessies]]></key>
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Limiteer het aantal conferenties die ee ngebruiker kan aanmaken.]]></key>
@@ -425,7 +432,7 @@
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voornaam en achternaam zijn verplicht om te kunnen registreren]]></key>
         <key id="configuration&amp;_LDAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP]]></key>
         <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP port (normaal gezien 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP server]]></key>
+        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2017-05-05 17:14:34"><![CDATA[LDAP server adres]]></key>
         <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Activeer LDAP authenticatie]]></key>
         <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruikersnaam voor LDAP gebruikers, gebruik, gebruik $user als gebruikersnaam.<br />vb: $user@domain2.domain1 (for: W2k3)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configuratie van "magic_quotes_gpc"]]></key>
@@ -672,6 +679,7 @@
         <key id="course&amp;_PAUSE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pauze stop]]></key>
         <key id="course&amp;_PERMCLOSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Complete cursus methode]]></key>
         <key id="course&amp;_PROGRESS_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objecten]]></key>
+        <key id="course&amp;_PROGRESS_BAR_TEXT" attributes="" save_date="2017-05-08 12:16:44"><![CDATA[Voortgang]]></key>
         <key id="course&amp;_PROGRESS_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Afgerond]]></key>
         <key id="course&amp;_PROGRESS_FAILED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gezakt]]></key>
         <key id="course&amp;_PROGRESS_INCOMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Niet af]]></key>
@@ -796,7 +804,7 @@ ander moet je je eerst registreren. Volg dan deze link: <br />
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voeg nieuwe cursus toe]]></key>
-        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;gt;&amp;gt; Terug naar "Mijn cursussen"]]></key>
+        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2017-05-08 12:26:35"><![CDATA[&gt;&gt; Terug naar "Mijn cursussen"]]></key>
         <key id="course_autoregistration&amp;_CODE_ALREDY_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Je hebt deze code al gebruikt]]></key>
         <key id="course_autoregistration&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Code]]></key>
       </module>
@@ -886,7 +894,7 @@ Gebruikersnaam: [userid]]]></key>
 
  Titel: [thread_title]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Nieuwe gebruiker heeft zich ingeschreven voor een cursus]]></key>
-        <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[At url : <a href="[url]">[url]</a> Nieuwe gebruiker heeft zich ingeschreven voor cursus : [course]]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2017-05-05 17:14:52"><![CDATA[At URL: <a href="[url]">[url]</a> Nieuwe gebruiker heeft zich ingeschreven voor cursus: [course]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Gebruiker wacht op goedkeuring van inschrijving]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Nieuwe gebruiker ingeschreven voor cursus '[course]' en wacht op goedkeuring
 
@@ -910,6 +918,7 @@ Wachtwoord: [password]]]></key>
         <key id="email&amp;_WAITING_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Er is een nieuwe gebruiker op <a href="[url]">[url]</a> die wacht op goedkeuring]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Je hebt een nieuw bericht]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Je hebt een nieuw bericht in het e-learning systeem op <a href="[url]">[url]</a> in cursus [course] van gebruiker [from]]]></key>
+        <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2017-05-08 13:57:42"><![CDATA[Je hebt een nieuw bericht in het e-learning systeem op <a href="[url]">[url]</a> in cursus <b>[course]</b> van gebruiker [from]]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_BASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Base]]></key>
@@ -943,9 +952,9 @@ Wachtwoord: [password]]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_framework" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appCore]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms-a" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS-A]]></key>
-        <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Moderators en Super Admins]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2017-04-19 12:57:20"><![CDATA[Moderators en Super-Admins]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Instructeurs]]></key>
-        <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Instructeurs and Super Admins]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2017-04-19 12:57:15"><![CDATA[Instructeurs and Super-Admins]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruikers]]></key>
         <key id="event_manager&amp;_EVENT_SETTINGS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebeurtenis instellingen]]></key>
       </module>
@@ -986,7 +995,7 @@ Wachtwoord: [password]]]></key>
         <key id="field&amp;_NEW_SKYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nieuw Skype account veld]]></key>
         <key id="field&amp;_NEW_TEXTFIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nieuw text veld]]></key>
         <key id="field&amp;_NEW_UPLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nieuw bestand veld]]></key>
-        <key id="field&amp;_NEW_YAHOO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nieuw yahoo account vald]]></key>
+        <key id="field&amp;_NEW_YAHOO" attributes="" save_date="2017-05-12 12:13:49"><![CDATA[Nieuw Yahoo account vald]]></key>
         <key id="field&amp;_NEW_YESNO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nieuw veld ja / nee]]></key>
         <key id="field&amp;_NOT_DO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Niet afgerond]]></key>
         <key id="field&amp;_NO_FILE_UPLOADED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Geen file geladen]]></key>
@@ -1229,9 +1238,9 @@ Wachtwoord: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Home page]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-10 14:00:18"><![CDATA[forma.lms is een Open Source e-learning platform (LMS en LCMS) gebruikt in de bedrijfswereld en hogere opleidingen.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:17:55"><![CDATA[forma.lms is een Open Source e-learning platform (LMS en LCMS) gebruikt in de bedrijfswereld en hogere opleidingen.<br/>
 <br/>
-Het Platform ondersteund 25 talen, uitwisselbaar met SCORM 1.2 en 2004 standaard, en ondersteund didactische modellen, waaronder: gemengt, zelf georienteerd, samenwerkend en zelfs sociaal leren dmv Chat, Wiki, Forums en andere verschillende functies.<br/>
+Het Platform ondersteund 26 talen, uitwisselbaar met SCORM 1.2 en 2004 standaard, en ondersteund didactische modellen, waaronder: gemengt, zelf georienteerd, samenwerkend en zelfs sociaal leren dmv Chat, Wiki, Forums en andere verschillende functies.<br/>
 <br/>
 <br/>
 Om deze woorden te veranderenga naar Admin/talen management, zoek naar <b>login</b> en wijzig sleutel <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1542,6 +1551,7 @@ ingelogd met uw account]]></key>
         <key id="profile&amp;_ACTIVITY_OF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[[firstname]'s activiteit]]></key>
         <key id="profile&amp;_AVATAR_PHOTO_INSTRUCTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alleen png, gif en jpg iformats zijn toegestaan. Als deze te groot zijn in pixels ( [max_px] ) word deze geschaald<br />
 Upload geen schokkerende plaatjes alsjeblieft.]]></key>
+        <key id="profile&amp;_CAREER" attributes="" save_date="2017-05-08 16:04:39"><![CDATA[Carriere]]></key>
         <key id="profile&amp;_CHANGEPASSWORD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Wijzig wachtwoord]]></key>
         <key id="profile&amp;_CHANGEPOLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Velden zichtbaarheid]]></key>
         <key id="profile&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Community]]></key>
@@ -1727,7 +1737,7 @@ Je moet je account bevestigen voor je het gebruikt.]]></key>
       </module>
       <module id="report">
         <key id="report&amp;aggregate_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Data aggregatie op gebruikers en cursus]]></key>
-        <key id="report&amp;courses_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cursussen]]></key>
+        <key id="report&amp;course_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cursussen]]></key>
         <key id="report&amp;ORG_CHART_SUBDIVISION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ondervedeel data aan de hand van de organisatie kaart]]></key>
         <key id="report&amp;REPORT_SHOW_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laat resultaten zien]]></key>
         <key id="report&amp;user_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruikers]]></key>
@@ -1859,6 +1869,7 @@ Je moet je account bevestigen voor je het gebruikt.]]></key>
         <key id="reservation&amp;_RESERVATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reservering]]></key>
         <key id="reservation&amp;_RESERVATION_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Categorie management]]></key>
         <key id="reservation&amp;_RESERVATION_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beschikbare gebeurtenissen]]></key>
+        <key id="reservation&amp;_RESERVATION_MAIL_SEND" attributes="" save_date="2017-05-12 15:28:05"><![CDATA[Verzend email]]></key>
         <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mijn Registratie]]></key>
         <key id="reservation&amp;_RESERVATION_PAST_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Afgelopen gebeurtenissen]]></key>
         <key id="reservation&amp;_RESERVATION_SUBSCRIBED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Manage gebeurtenissen]]></key>
@@ -1960,12 +1971,13 @@ Wachtwoord: [password]]]></key>
         <key id="standard&amp;_AUTODETECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Auto-detecteer]]></key>
         <key id="standard&amp;_AVATAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avatar]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gemiddeld]]></key>
-        <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;lt;&amp;lt; Terug]]></key>
+        <key id="standard&amp;_BACK" attributes="" save_date="2017-05-08 12:26:46"><![CDATA[&lt;&lt; Terug]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Basis zoekopdracht]]></key>
         <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:38:13"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[door]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kalender]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Annuleer]]></key>
+        <key id="standard&amp;_CAREER" attributes="" save_date="2017-05-08 16:04:36"><![CDATA[Carriere]]></key>
         <key id="standard&amp;_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cursus catalogus]]></key>
         <key id="standard&amp;_CATEGORIZATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Categorisatie]]></key>
         <key id="standard&amp;_CATEGORIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Categoriseer]]></key>
@@ -2126,7 +2138,7 @@ Wachtwoord: [password]]]></key>
         <key id="standard&amp;_MONTH_06" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Juni]]></key>
         <key id="standard&amp;_MONTH_07" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Juli]]></key>
         <key id="standard&amp;_MONTH_08" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Augustus]]></key>
-        <key id="standard&amp;_MONTH_09" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Septemberer]]></key>
+        <key id="standard&amp;_MONTH_09" attributes="" save_date="2017-05-05 16:08:59"><![CDATA[September]]></key>
         <key id="standard&amp;_MONTH_10" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oktober]]></key>
         <key id="standard&amp;_MONTH_11" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[November]]></key>
         <key id="standard&amp;_MONTH_12" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[December]]></key>
@@ -2148,6 +2160,7 @@ Wachtwoord: [password]]]></key>
         <key id="standard&amp;_NEW_FOLDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nieuwe map]]></key>
         <key id="standard&amp;_NEW_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nieuwe gebruiker]]></key>
         <key id="standard&amp;_NEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Volgende]]></key>
+        <key id="standard&amp;_NEXT_B" attributes="" save_date="2017-05-12 18:07:53"><![CDATA[Volgende >>]]></key>
         <key id="standard&amp;_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nee]]></key>
         <key id="standard&amp;_NONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Geen]]></key>
         <key id="standard&amp;_NOTES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aantekeningen]]></key>
@@ -2269,6 +2282,7 @@ Wachtwoord: [password]]]></key>
         <key id="standard&amp;_USER_STATUS_CANCELLED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Verwijderd]]></key>
         <key id="standard&amp;_USER_STATUS_CONFIRMED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inschrijvingen om te bevestigen]]></key>
         <key id="standard&amp;_USER_STATUS_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Afgerond]]></key>
+        <key id="standard&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:50:30"><![CDATA[Enter]]></key>
         <key id="standard&amp;_USER_STATUS_RESERVED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gereserveerd]]></key>
         <key id="standard&amp;_USER_STATUS_SUBS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ingeschreven]]></key>
         <key id="standard&amp;_USER_STATUS_SUSPEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ge-deactiveerd]]></key>
@@ -2430,7 +2444,7 @@ Wachtwoord: [password]]]></key>
         <key id="test&amp;_NEW_SCORE_FOR_QUESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Wijs nieuwe score toe aan deze vraag]]></key>
         <key id="test&amp;_NEW_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Als nieuwe test]]></key>
         <key id="test&amp;_ORDER_TYPE_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Willkeurige keuze per categorie]]></key>
-        <key id="test&amp;_ORDER_TYPE_RANDOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[(sub-groep of vraag)]]></key>
+        <key id="test&amp;_ORDER_TYPE_RANDOM" attributes="" save_date="2017-04-19 12:30:47"><![CDATA[(Sub-groep of vraag)]]></key>
         <key id="test&amp;_QUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vraag]]></key>
         <key id="test&amp;_QUEST_ACRN_ASSOCIATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[AS]]></key>
         <key id="test&amp;_QUEST_ACRN_BREAK_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[BR]]></key>
@@ -2472,7 +2486,7 @@ Wachtwoord: [password]]]></key>
         <key id="test&amp;_TEST_ADD_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Omschrijving word getoond voor de test begint]]></key>
         <key id="test&amp;_TEST_ADD_ONE_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voeg nog een antwoord toe]]></key>
         <key id="test&amp;_TEST_AFTER_QUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[na rij]]></key>
-        <key id="test&amp;_TEST_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Antwoorden :]]></key>
+        <key id="test&amp;_TEST_ANSWER" attributes="" save_date="2017-04-19 12:31:13"><![CDATA[Antwoorden:]]></key>
         <key id="test&amp;_TEST_ANSWER_CHECK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Geselecteerd]]></key>
         <key id="test&amp;_TEST_ANSWER_NOTCHECK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Niet geselecteerd]]></key>
         <key id="test&amp;_TEST_ASSOCIATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Verbeter asociatie]]></key>
@@ -2519,8 +2533,8 @@ Wachtwoord: [password]]]></key>
         <key id="test&amp;_TEST_MM4_SHOWSOL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laat juiste antwoorden zien.]]></key>
         <key id="test&amp;_TEST_MM4_SHOWTOT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laat uiteindelijke score zien (als het berekenbaar is)]]></key>
         <key id="test&amp;_TEST_MM_FOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[3 - Details getoond aan het einde van de poging]]></key>
-        <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - stel vraag visualisatie in]]></key>
-        <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[2-  Stel pogingen optie in]]></key>
+        <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2017-04-19 12:30:59"><![CDATA[1 - Stel vraag visualisatie in]]></key>
+        <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2017-04-19 12:31:03"><![CDATA[2 -  Stel pogingen optie in]]></key>
         <key id="test&amp;_TEST_MODALITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Test opties]]></key>
         <key id="test&amp;_TEST_MOD_DOANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Je kunt het antwoord wijzigen]]></key>
         <key id="test&amp;_TEST_MOD_DOANSWER_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Je <span class="text_bold">can't</span>  wijzigt het antwoord]]></key>
@@ -2537,7 +2551,7 @@ Wachtwoord: [password]]]></key>
         <key id="test&amp;_TEST_PM_DIFFICULT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ander getal betreffende vraag moeilijkheidsgraad]]></key>
         <key id="test&amp;_TEST_PM_EQUALTOALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zelfde punt voor elke vraag (totale score/aantal vragen)]]></key>
         <key id="test&amp;_TEST_PM_MANUAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kies score voor elke vraag]]></key>
-        <key id="test&amp;_TEST_PM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - stel uiteindelijke berekening in]]></key>
+        <key id="test&amp;_TEST_PM_ONE" attributes="" save_date="2017-04-19 12:30:53"><![CDATA[1 - Stel uiteindelijke berekening in]]></key>
         <key id="test&amp;_TEST_PM_SETPOINT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Stel score voorkeuren in]]></key>
         <key id="test&amp;_TEST_PM_SUBD_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gediustributeerd door]]></key>
         <key id="test&amp;_TEST_PM_TWO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[2 - Stel score in voor elke vraag]]></key>

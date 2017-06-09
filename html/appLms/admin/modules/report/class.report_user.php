@@ -371,10 +371,10 @@ class Report_User extends Report {
 				$opt_type[$fd['key']] = $fd['type'];
 			}
 
-			if (isset($_POST['courses_filter'])) {
-				while(list($ind, $filter_data) = each($_POST['courses_filter'])) {
+			if (isset($_REQUEST['courses_filter'])) {
+				while(list($ind, $filter_data) = each($_REQUEST['courses_filter'])) {
 					if($opt_type[$filter_data['option']] == _FILTER_DATE) {
-						$_POST['courses_filter'][$ind]['value'] = Format::dateDb($filter_data['value'], 'date');
+						$_REQUEST['courses_filter'][$ind]['value'] = Format::dateDb($filter_data['value'], 'date');
 					}
 				}
 			}
@@ -383,7 +383,7 @@ class Report_User extends Report {
 				'org_chart_subdivision'			=> (isset($_POST['org_chart_subdivision']) ? 1 : 0),
 				'all_courses'								=> ($_POST['all_courses']==1 ? true : false),
 				'selected_courses'					=> $selector->getSelection(),
-				'sub_filters'								=> (isset($_POST['courses_filter']) ? $_POST['courses_filter'] : array()),
+				'sub_filters'								=> (isset($_REQUEST['courses_filter']) ? $_REQUEST['courses_filter'] : array()),
 				'filter_exclusive'					=> ( isset($_POST['filter_exclusive']) ? $_POST['filter_exclusive'] : false ),
 				'showed_columns'						=> (isset($_POST['cols']) ? $_POST['cols'] : array()),
 				'order_by'									=> (isset($_POST['order_by']) ? $_POST['order_by'] : 'userid'),

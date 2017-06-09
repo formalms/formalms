@@ -251,3 +251,5 @@ define("_COMMUNITY", "Community");
 define("_COMMERCIAL_SERVICES", "Servizi commerciali");
 define("_DATABASE", "Database");
 define("_MIME_CONTENT_TYPE", "Supporto mime_content_type()");
+
+define("_ASSESSMENT_FUNCTION_REMOVED", "La funzione assessment è stata rimossa");

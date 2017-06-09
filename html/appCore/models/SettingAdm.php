@@ -555,7 +555,8 @@ class SettingAdm extends Model
 				case "rest_auth_sel_method": {
 					$value_set = array(
                         $lang->def('_REST_AUTH_CODE') => 0,
-                        $lang->def('_REST_AUTH_TOKEN') => 1
+                        $lang->def('_REST_AUTH_TOKEN') => 1,
+                        $lang->def('_REST_AUTH_SECRET_KEY') => 2
 					);
                     echo Form::getRadioSet($lang->def('_REST_AUTH_METHOD'), $var_name, 'option[' . $var_name . ']', $value_set, $var_value, $i_after);
                 }

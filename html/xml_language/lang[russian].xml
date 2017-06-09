@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170414</DATE>
+  <DATE>20170531</DATE>
   <LANG id="russian">
     <lang_code>russian</lang_code>
     <lang_description>Russian</lang_description>
@@ -39,7 +39,7 @@
         <key id="admin_directory&amp;_DECLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Отклонен]]></key>
         <key id="admin_directory&amp;_DIRECOTRY_SELFREGISTERED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Самостоятельная регистрация]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/admin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Администратор]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_/framework/level/godadmin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Супер администратор]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_/framework/level/godadmin" attributes="" save_date="2017-04-19 12:59:57"><![CDATA[Супер-администратор]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/publicadmin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Общий администратор]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/user" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Пльзователь]]></key>
         <key id="admin_directory&amp;_DIRECTORY_ASSIGNFIELDGROUP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Назначить поле]]></key>
@@ -208,7 +208,9 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0,6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[неделя]]></key>
       </module>
-      <module id="cart"/>
+      <module id="cart">
+        <key id="cart&amp;_CODE" attributes="" save_date="2017-05-08 14:27:04"><![CDATA[Код]]></key>
+      </module>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Добавить к карточке]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Карьера]]></key>
@@ -248,6 +250,7 @@
         <key id="catalogue&amp;_TAB_VIEW_MOSTPOPULAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Наиболее популярные]]></key>
         <key id="catalogue&amp;_TAB_VIEW_RECENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Наиболее свежие]]></key>
         <key id="catalogue&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Общее число курсов на которые Вы подписаны]]></key>
+        <key id="catalogue&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:54:23"><![CDATA[Ввод]]></key>
         <key id="catalogue&amp;_WAITING_APPROVAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ожидание одобрения]]></key>
         <key id="catalogue&amp;_WORD_TO_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Искать по словам]]></key>
       </module>
@@ -378,6 +381,7 @@
       </module>
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Активировать функцию доступности]]></key>
+        <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2017-05-05 17:53:52"><![CDATA[Конфигурирование "allow_url_fopen"]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Конфигурирование "allow_url_include"]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Интерфейс программирования приложений">API</abbr>]]></key>
         <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Интерфейс программирования приложений">API</abbr> и <abbr title="Однократная регистрация">SSO</abbr>]]></key>
@@ -672,6 +676,7 @@
         <key id="course&amp;_PAUSE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Окончание паузы]]></key>
         <key id="course&amp;_PERMCLOSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Метод завершения курса]]></key>
         <key id="course&amp;_PROGRESS_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Объекты]]></key>
+        <key id="course&amp;_PROGRESS_BAR_TEXT" attributes="" save_date="2017-05-08 12:19:10"><![CDATA[Прогресс]]></key>
         <key id="course&amp;_PROGRESS_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Завершен(о)]]></key>
         <key id="course&amp;_PROGRESS_FAILED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Провален]]></key>
         <key id="course&amp;_PROGRESS_INCOMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Не завершено]]></key>
@@ -796,7 +801,7 @@
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Добавить новый курс]]></key>
-        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;gt;&amp;gt; азад к  "Моим курсам"]]></key>
+        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2017-05-08 12:33:59"><![CDATA[&gt;&gt; азад к  "Моим курсам"]]></key>
         <key id="course_autoregistration&amp;_CODE_ALREDY_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Вы уже использовали этот код]]></key>
         <key id="course_autoregistration&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Код]]></key>
       </module>
@@ -909,6 +914,7 @@
         <key id="email&amp;_WAITING_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Новый пользователь на <a href="[url]">[url]</a> ожидает одобрения]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Вы только что получили новое сообщение]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Вы только что получили новое сообщение в системе электронного обучения на <a href="[url]">[url]</a> в курсе [course] от пользователя [from]]]></key>
+        <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2017-05-08 14:03:44"><![CDATA[Вы только что получили новое сообщение в системе электронного обучения на <a href="[url]">[url]</a> в курсе <b>[course]</b> от пользователя [from]]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_BASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Основа]]></key>
@@ -1228,9 +1234,9 @@
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Домашняя страница]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms это платформа электронного обучения с открытым кодом (LMS и LCMS) используемая на рынке высшего и корпоративного образования.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:22:16"><![CDATA[forma.lms это платформа электронного обучения с открытым кодом (LMS и LCMS) используемая на рынке высшего и корпоративного образования.<br/>
 <br/>
-Платформа поддерживает 25 языков, совместима со стандартами SCORM 1.2 и 2004, и поддерживает различные модели обучения, включающие: Смешанное, Самообучение, Объединенное и даже социальное, посредством Чатов, Вики, форумов и другие различные функции.<br/>
+Платформа поддерживает 26 языков, совместима со стандартами SCORM 1.2 и 2004, и поддерживает различные модели обучения, включающие: Смешанное, Самообучение, Объединенное и даже социальное, посредством Чатов, Вики, форумов и другие различные функции.<br/>
 <br/>
 <br/>
 Чтобы изменить эти слова, обратитесь к управлению языками, найдите <b>login</b> и редактируйте ключ <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1538,6 +1544,7 @@
         <key id="profile&amp;_ACTIVITY_OF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[[firstname] активность]]></key>
         <key id="profile&amp;_AVATAR_PHOTO_INSTRUCTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Разрешена загрузка только файлов вормата png, gif и jpg. Если размер превышает [max_px] пикселей, он будет изменен автоматически.<br />
 Пожалуйста, не загружайте оскорбительную графику.]]></key>
+        <key id="profile&amp;_CAREER" attributes="" save_date="2017-05-08 16:06:06"><![CDATA[Карьера]]></key>
         <key id="profile&amp;_CHANGEPASSWORD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Изменить пароль]]></key>
         <key id="profile&amp;_CHANGEPOLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Видимость полей]]></key>
         <key id="profile&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Сообщество]]></key>
@@ -1723,7 +1730,7 @@
       </module>
       <module id="report">
         <key id="report&amp;aggregate_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Концентрация данных для курса или пользователя]]></key>
-        <key id="report&amp;courses_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Курсы]]></key>
+        <key id="report&amp;course_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Курсы]]></key>
         <key id="report&amp;ORG_CHART_SUBDIVISION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Подразделение данных согласно организационной диаграмме]]></key>
         <key id="report&amp;REPORT_SHOW_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Показать результаты]]></key>
         <key id="report&amp;user_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Пользователи]]></key>
@@ -1855,6 +1862,7 @@
         <key id="reservation&amp;_RESERVATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Резервирование]]></key>
         <key id="reservation&amp;_RESERVATION_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Управление категорией]]></key>
         <key id="reservation&amp;_RESERVATION_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Доступные события]]></key>
+        <key id="reservation&amp;_RESERVATION_MAIL_SEND" attributes="" save_date="2017-05-12 15:35:10"><![CDATA[Отправить эл.письмо]]></key>
         <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Моя регистрация]]></key>
         <key id="reservation&amp;_RESERVATION_PAST_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Прошедшие события]]></key>
         <key id="reservation&amp;_RESERVATION_SUBSCRIBED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Управление событиями]]></key>
@@ -1956,12 +1964,13 @@
         <key id="standard&amp;_AUTODETECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Автоопределение]]></key>
         <key id="standard&amp;_AVATAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Образ]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Среднее]]></key>
-        <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;lt;&amp;lt; Назад]]></key>
+        <key id="standard&amp;_BACK" attributes="" save_date="2017-05-08 12:34:30"><![CDATA[&lt;&lt; Назад]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Базовый поиск]]></key>
         <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:36:18"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Календарь]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Отмена]]></key>
+        <key id="standard&amp;_CAREER" attributes="" save_date="2017-05-08 16:06:08"><![CDATA[Карьера]]></key>
         <key id="standard&amp;_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Каталог курсов]]></key>
         <key id="standard&amp;_CATEGORIZATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Категоризация]]></key>
         <key id="standard&amp;_CATEGORIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Категоризировать]]></key>
@@ -1990,7 +1999,7 @@
         <key id="standard&amp;_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Курс]]></key>
         <key id="standard&amp;_COURSEPATH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Программа обучения]]></key>
         <key id="standard&amp;_COURSES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Курсы]]></key>
-        <key id="standard&amp;_COURSE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[КОд курса]]></key>
+        <key id="standard&amp;_COURSE_CODE" attributes="" save_date="2017-05-08 14:27:13"><![CDATA[Код курса]]></key>
         <key id="standard&amp;_COURSE_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Список курсов]]></key>
         <key id="standard&amp;_COURSE_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Название курса]]></key>
         <key id="standard&amp;_COURSE_S_FREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Свободно]]></key>
@@ -2144,6 +2153,7 @@
         <key id="standard&amp;_NEW_FOLDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Новая папка]]></key>
         <key id="standard&amp;_NEW_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Новый пользователь]]></key>
         <key id="standard&amp;_NEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[След.]]></key>
+        <key id="standard&amp;_NEXT_B" attributes="" save_date="2017-05-12 18:10:06"><![CDATA[След. >>]]></key>
         <key id="standard&amp;_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Нет]]></key>
         <key id="standard&amp;_NONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Нет]]></key>
         <key id="standard&amp;_NOTES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Заметки]]></key>
@@ -2265,6 +2275,7 @@
         <key id="standard&amp;_USER_STATUS_CANCELLED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Удален]]></key>
         <key id="standard&amp;_USER_STATUS_CONFIRMED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Подписки к утверждению]]></key>
         <key id="standard&amp;_USER_STATUS_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Завершен]]></key>
+        <key id="standard&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:54:20"><![CDATA[Ввод]]></key>
         <key id="standard&amp;_USER_STATUS_RESERVED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Зарезервирован]]></key>
         <key id="standard&amp;_USER_STATUS_SUBS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Подписан]]></key>
         <key id="standard&amp;_USER_STATUS_SUSPEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Отложен]]></key>
@@ -2426,7 +2437,7 @@
         <key id="test&amp;_NEW_SCORE_FOR_QUESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Назначить новые баллы этому вопросу]]></key>
         <key id="test&amp;_NEW_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Как новый тест]]></key>
         <key id="test&amp;_ORDER_TYPE_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Случайный выбор по категориям]]></key>
-        <key id="test&amp;_ORDER_TYPE_RANDOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[(подгруппа вопроса)]]></key>
+        <key id="test&amp;_ORDER_TYPE_RANDOM" attributes="" save_date="2017-04-19 12:48:42"><![CDATA[(Подгруппа вопроса)]]></key>
         <key id="test&amp;_QUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Вопрос]]></key>
         <key id="test&amp;_QUEST_ACRN_ASSOCIATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[AS]]></key>
         <key id="test&amp;_QUEST_ACRN_BREAK_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[BR]]></key>
@@ -2515,8 +2526,8 @@
         <key id="test&amp;_TEST_MM4_SHOWSOL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Показать верные ответы]]></key>
         <key id="test&amp;_TEST_MM4_SHOWTOT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Показать конечные баллы (если вычислимо)]]></key>
         <key id="test&amp;_TEST_MM_FOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[3 - Информация показана в конце попытки]]></key>
-        <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - установить отображение вопросов]]></key>
-        <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[2-  установить настройки попыток]]></key>
+        <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2017-04-19 12:48:05"><![CDATA[1 - Установить отображение вопросов]]></key>
+        <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2017-04-19 12:47:53"><![CDATA[2 - Установить настройки попыток]]></key>
         <key id="test&amp;_TEST_MODALITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Опции теста]]></key>
         <key id="test&amp;_TEST_MOD_DOANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Вы можете редактировать ответ]]></key>
         <key id="test&amp;_TEST_MOD_DOANSWER_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Вы <span class="text_bold">не можете</span>  редактировать ответ]]></key>
@@ -2533,7 +2544,7 @@
         <key id="test&amp;_TEST_PM_DIFFICULT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Различная величина в засвисимости от сложности вопроса]]></key>
         <key id="test&amp;_TEST_PM_EQUALTOALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Одинаковое число за каждый вопрос (итоговое число/число вопросов)]]></key>
         <key id="test&amp;_TEST_PM_MANUAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Выберите число за каждый вопрос]]></key>
-        <key id="test&amp;_TEST_PM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - установить окончательный подсчет баллов]]></key>
+        <key id="test&amp;_TEST_PM_ONE" attributes="" save_date="2017-04-19 12:48:10"><![CDATA[1 - Установить окончательный подсчет баллов]]></key>
         <key id="test&amp;_TEST_PM_SETPOINT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Установить предпочтения для подсчета]]></key>
         <key id="test&amp;_TEST_PM_SUBD_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Распространяется через]]></key>
         <key id="test&amp;_TEST_PM_TWO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[2 - Установить счет баллов за каждый вопрос]]></key>
@@ -2593,9 +2604,9 @@
         <key id="test&amp;_TEST_TM2_SETTIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[применить и установить время]]></key>
         <key id="test&amp;_TEST_TM2_SUBD_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Распространяется:]]></key>
         <key id="test&amp;_TEST_TM_FOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Установить время, назначенное вопросу]]></key>
-        <key id="test&amp;_TEST_TM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - установить время теста]]></key>
+        <key id="test&amp;_TEST_TM_ONE" attributes="" save_date="2017-04-19 12:48:14"><![CDATA[1 - Установить время теста]]></key>
         <key id="test&amp;_TEST_TM_THREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Установить время для каждого вопроса]]></key>
-        <key id="test&amp;_TEST_TM_TWO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[2 - установить общее время на попытку]]></key>
+        <key id="test&amp;_TEST_TM_TWO" attributes="" save_date="2017-04-19 12:48:00"><![CDATA[2 - Установить общее время на попытку]]></key>
         <key id="test&amp;_TEST_TOTAL_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Общий счет баллов:]]></key>
         <key id="test&amp;_TEST_YOUCANNOT_SAVEKEEP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Этот тест не поддерживает затребованное действие]]></key>
         <key id="test&amp;_TIME_ELAPSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Время потраченное]]></key>

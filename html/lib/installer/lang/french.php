@@ -107,3 +107,5 @@ define("_UPG_CONFIG_NOT_SAVED", "Le processus de mise à jour du fichier config.
 define("_UPGRADING", "Mise à jour en cours");
 define("_UPGRADING_LANGUAGES", "Mise à jour des langues");
 define("_UPGRADE_COMPLETE", "Mise à jour terminée");
+
+define("_ASSESSMENT_FUNCTION_REMOVED", "La fonction d'évaluation a été supprimé");

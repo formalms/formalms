@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170414</DATE>
+  <DATE>20170531</DATE>
   <LANG id="finnish">
     <lang_code>finnish</lang_code>
     <lang_description>Finnish</lang_description>
@@ -39,7 +39,7 @@
         <key id="admin_directory&amp;_DECLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Evätty]]></key>
         <key id="admin_directory&amp;_DIRECOTRY_SELFREGISTERED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Itserekisteröinti]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/admin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ylläpitäjä]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_/framework/level/godadmin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Superylläpitäjä]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_/framework/level/godadmin" attributes="" save_date="2017-04-19 12:57:41"><![CDATA[Super-ylläpitäjä]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/publicadmin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yleinen ylläpitäjä]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/user" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjä]]></key>
         <key id="admin_directory&amp;_DIRECTORY_ASSIGNFIELDGROUP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Määritä kenttä]]></key>
@@ -208,25 +208,57 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0,6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[viikko]]></key>
       </module>
-      <module id="cart"/>
+      <module id="cart">
+        <key id="cart&amp;_CART" attributes="" save_date="2017-05-18 13:34:43"><![CDATA[Ostoskärry]]></key>
+        <key id="cart&amp;_CLASSROOM_COURSE" attributes="" save_date="2017-05-18 13:34:32"><![CDATA[Luokkahuonekurssi]]></key>
+        <key id="cart&amp;_CODE" attributes="" save_date="2017-05-08 14:25:14"><![CDATA[Koodi]]></key>
+        <key id="cart&amp;_COURSE_PRIZE" attributes="" save_date="2017-05-18 13:34:53"><![CDATA[Kurssin hinta]]></key>
+        <key id="cart&amp;_COURSE_TYPE" attributes="" save_date="2017-05-18 13:35:00"><![CDATA[Kurssin tyyppi]]></key>
+        <key id="cart&amp;_DATE_BEGIN" attributes="" save_date="2017-05-18 13:35:09"><![CDATA[Aloituspäivä]]></key>
+        <key id="cart&amp;_DATE_END" attributes="" save_date="2017-05-18 13:35:19"><![CDATA[Lopetuspäivä]]></key>
+        <key id="cart&amp;_DEL_SELECTED_ELEMENT" attributes="" save_date="2017-05-18 13:35:35"><![CDATA[Poista valittu kohde]]></key>
+        <key id="cart&amp;_EMPTY_CART" attributes="" save_date="2017-05-18 13:35:45"><![CDATA[Tyhjennä ostoskori]]></key>
+        <key id="cart&amp;_LEARNING_COURSE" attributes="" save_date="2017-05-18 13:36:02"><![CDATA[Verkko-oppimiskurssi]]></key>
+        <key id="cart&amp;_NAME" attributes="" save_date="2017-05-18 13:36:08"><![CDATA[Nimi]]></key>
+        <key id="cart&amp;_ORDER_NOW" attributes="" save_date="2017-05-18 13:36:14"><![CDATA[Tilaa nyt]]></key>
+        <key id="cart&amp;_ORDER_NUMBER" attributes="" save_date="2017-05-18 13:36:21"><![CDATA[Tilausnumero]]></key>
+        <key id="cart&amp;_PAYMENT_SELECT" attributes="" save_date="2017-05-18 13:36:31"><![CDATA[Valitse maksutapa]]></key>
+        <key id="cart&amp;_PAY_WITH_PAYPAL" attributes="" save_date="2017-05-18 13:37:02"><![CDATA[PayPal maksu]]></key>
+        <key id="cart&amp;_TOTAL" attributes="" save_date="2017-05-18 13:37:14"><![CDATA[Yhteensä]]></key>
+        <key id="cart&amp;_TRANS_CREATED" attributes="" save_date="2017-05-18 13:37:26"><![CDATA[Maksutapahtuma luotu]]></key>
+        <key id="cart&amp;_WIRE_INFO" attributes="" save_date="2017-05-18 13:37:35"><![CDATA[Maksun tiedot]]></key>
+        <key id="cart&amp;_WIRE_PAYMENT" attributes="" save_date="2017-05-18 13:37:43"><![CDATA[Pankkisiirto]]></key>
+        <key id="cart&amp;_WIRE_PAYMENT_DETAILS" attributes="" save_date="2017-05-18 13:37:55"><![CDATA[Maksun tiedot]]></key>
+      </module>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lisää koriin]]></key>
+        <key id="catalogue&amp;_ALL_EDITION_BUYED" attributes="" save_date="2017-05-18 13:38:19"><![CDATA[Olet ostanut kaikki saatavilla olevat versiot]]></key>
+        <key id="catalogue&amp;_CALENDAR" attributes="" save_date="2017-05-18 13:38:27"><![CDATA[Katalooki]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ura]]></key>
         <key id="catalogue&amp;_CATALOGUE_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valitse luettelot]]></key>
         <key id="catalogue&amp;_CATALOGUE_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Listaa kaikki saatavissa olevat luettelot]]></key>
         <key id="catalogue&amp;_CERT_RELESABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ladattavissa olevat todistukset]]></key>
+        <key id="catalogue&amp;_CLASSROOM_IN_CART" attributes="" save_date="2017-05-18 13:59:59"><![CDATA[Luokkahuone ostoskärryssä]]></key>
         <key id="catalogue&amp;_CLASSROOM_LOCATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rakennus]]></key>
+        <key id="catalogue&amp;_CONFIRM_ADD_TO_CART" attributes="" save_date="2017-05-18 14:00:12"><![CDATA[Vahvista: lisää ostoskoriin?]]></key>
+        <key id="catalogue&amp;_CONFIRM_SUBSCRIPTION" attributes="" save_date="2017-05-18 13:38:48"><![CDATA[Vahvista tilaus]]></key>
         <key id="catalogue&amp;_COURSEPATH_INTRO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tässä opinto-ohjelmassa on <b>[enrolled]</b> tilannutta käyttäjää]]></key>
         <key id="catalogue&amp;_COURSEPATH_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[opinto-ohjelmasi]]></key>
+        <key id="catalogue&amp;_COURSEPATH_SUBSCRIBE_WIN_TIT" attributes="" save_date="2017-05-18 14:49:11"><![CDATA[Opinto-ohjelman tilaus]]></key>
+        <key id="catalogue&amp;_COURSEPATH_SUBSCRIBE_WIN_TXT" attributes="" save_date="2017-05-18 13:39:10"><![CDATA[Vahvista tilauksesi tähän kurssipolkuun:]]></key>
+        <key id="catalogue&amp;_COURSE_ADDED_IN_CART" attributes="" save_date="2017-05-18 13:39:23"><![CDATA[Kurssi lisätty ostoskoriin]]></key>
         <key id="catalogue&amp;_COURSE_AS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssit jossa sinä olet [level]]]></key>
         <key id="catalogue&amp;_COURSE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssit jotka olet tilannut]]></key>
         <key id="catalogue&amp;_COURSE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssit jotka olet suorittanut]]></key>
         <key id="catalogue&amp;_COURSE_EXPIRING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssit jotka vanhentuvat viikon sisällä]]></key>
+        <key id="catalogue&amp;_COURSE_IN_CART" attributes="" save_date="2017-05-18 13:39:32"><![CDATA[Kurssi ostoskorissa]]></key>
         <key id="catalogue&amp;_COURSE_LIST_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista saatavilla olevista kursseista]]></key>
         <key id="catalogue&amp;_COURSE_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssin tilaus]]></key>
         <key id="catalogue&amp;_COURSE_S_GODADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vain ylläpitäjä voi tilata]]></key>
+        <key id="catalogue&amp;_COURSE_S_MODERATE" attributes="" save_date="2017-05-18 14:00:52"><![CDATA[Tilauksesi tähän kurssiin tarvitsee ylläpitäjän hyväksynnän]]></key>
         <key id="catalogue&amp;_COURSE_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssityyppi]]></key>
         <key id="catalogue&amp;_COURSE_YOU_CAN_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mahdolliset kurssit]]></key>
+        <key id="catalogue&amp;_ELEARNING" attributes="" save_date="2017-05-18 13:39:41"><![CDATA[Verkko-oppiminen]]></key>
         <key id="catalogue&amp;_ENTRY_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssit ja opinto-ohjelmat]]></key>
         <key id="catalogue&amp;_ENTRY_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssit ja opinto-ohjelmat jotka on liitetty tähän luetteloon]]></key>
         <key id="catalogue&amp;_FILTER_DATE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aloituskurssit]]></key>
@@ -236,6 +268,7 @@
         <key id="catalogue&amp;_METHOD_MANUAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Manualaalinen tilaus]]></key>
         <key id="catalogue&amp;_MOD_ENTRY_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä luettelon elementit]]></key>
         <key id="catalogue&amp;_NEW_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusi luettelo]]></key>
+        <key id="catalogue&amp;_NO_AVAILABLE_EDITIONS" attributes="" save_date="2017-05-18 13:39:59"><![CDATA[Ei versiota saatavilla]]></key>
         <key id="catalogue&amp;_NO_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ei kursseja saatavilla]]></key>
         <key id="catalogue&amp;_NO_COURSE_FOUND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssia ei löytynyt]]></key>
         <key id="catalogue&amp;_NO_EDITIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tästä kurssista ei ole versioita.]]></key>
@@ -243,11 +276,15 @@
         <key id="catalogue&amp;_REMOVE_ENTRY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Poista luettelosta]]></key>
         <key id="catalogue&amp;_RESERVE_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Varaa]]></key>
         <key id="catalogue&amp;_SHOPPING_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ostoskärry]]></key>
+        <key id="catalogue&amp;_SHOW_EDITIONS" attributes="" save_date="2017-05-18 13:40:10"><![CDATA[Näytä versiot]]></key>
         <key id="catalogue&amp;_SUBSCRIBE_COURSE_T" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilaa tämä kurssi]]></key>
         <key id="catalogue&amp;_TAB_VIEW_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[kategorian mukaan]]></key>
         <key id="catalogue&amp;_TAB_VIEW_MOSTPOPULAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Suosituimmat]]></key>
         <key id="catalogue&amp;_TAB_VIEW_RECENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusimmat]]></key>
+        <key id="catalogue&amp;_TIT_SUBSCRIPTION_BY_CODE" attributes="" save_date="2017-05-18 14:01:05"><![CDATA[Syötä tilauskoodi]]></key>
         <key id="catalogue&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kokonaismäärä kursseja joille olet ilmoittautunut]]></key>
+        <key id="catalogue&amp;_TXT_SUBSCRIPTION_BY_CODE" attributes="" save_date="2017-05-18 14:11:01"><![CDATA[Jos sait kurssikoodin, käytä tätä lomaketta tullaksesi automaattisesti lisätyksi kurssille:]]></key>
+        <key id="catalogue&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:51:06"><![CDATA[Sisäään]]></key>
         <key id="catalogue&amp;_WAITING_APPROVAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Odottaa hyväksyntää]]></key>
         <key id="catalogue&amp;_WORD_TO_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hae sanalla]]></key>
       </module>
@@ -256,6 +293,8 @@
         <key id="certificate&amp;_ALT_TAKE_A_COPY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Julkaise meta-sertifikaatin kopio]]></key>
         <key id="certificate&amp;_BACK_IMAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Taustakuva]]></key>
         <key id="certificate&amp;_BASE_LANGUAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifikaatin kieli]]></key>
+        <key id="certificate&amp;_CERTIFICATES_GENERATION" attributes="" save_date="2017-05-18 13:40:21"><![CDATA[Sertifikaattien luonti]]></key>
+        <key id="certificate&amp;_CERTIFICATE_ASSIGN" attributes="" save_date="2017-05-18 13:40:36"><![CDATA[Sertifikaattien antaminen]]></key>
         <key id="certificate&amp;_CERTIFICATE_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifikaattimallilista]]></key>
         <key id="certificate&amp;_CERTIFICATE_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifikaattilista]]></key>
         <key id="certificate&amp;_CERTIFICATE_REPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Julkaistut sertifikaatit]]></key>
@@ -336,11 +375,18 @@
         <key id="classroom&amp;_BUILDING_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Huone]]></key>
         <key id="classroom&amp;_CAPACITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kapasitetti]]></key>
         <key id="classroom&amp;_CITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kaupunki]]></key>
+        <key id="classroom&amp;_CLASSROOM" attributes="" save_date="2017-05-18 13:40:42"><![CDATA[Luokkahuone]]></key>
+        <key id="classroom&amp;_CLASSROOM_CAPTION" attributes="" save_date="2017-05-18 14:01:16"><![CDATA[Luokkahuoneen otsikko]]></key>
+        <key id="classroom&amp;_DEL_CLASSROOM" attributes="" save_date="2017-05-18 13:40:51"><![CDATA[Poista luokkahuone]]></key>
         <key id="classroom&amp;_DISPOSITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Layout]]></key>
         <key id="classroom&amp;_FAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Faxi]]></key>
         <key id="classroom&amp;_INSTRUMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Luokkahuoneen laitteisto]]></key>
+        <key id="classroom&amp;_LOCATION_INFO" attributes="" save_date="2017-05-18 13:40:59"><![CDATA[Sijaintitieto]]></key>
+        <key id="classroom&amp;_MOD_CLASSROOM" attributes="" save_date="2017-05-18 13:41:07"><![CDATA[Muokkaa luokkahuonetta]]></key>
+        <key id="classroom&amp;_NEW_CLASSROOM" attributes="" save_date="2017-05-18 13:41:14"><![CDATA[Uusi luokkahuone]]></key>
         <key id="classroom&amp;_PHONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Puhelinnumero]]></key>
         <key id="classroom&amp;_PHOTO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kuva]]></key>
+        <key id="classroom&amp;_RESERVATION_INFO_LOCATION" attributes="" save_date="2017-05-18 13:41:25"><![CDATA[Tapahtuman sijaintitieto]]></key>
         <key id="classroom&amp;_RESPONSABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Viittaa]]></key>
         <key id="classroom&amp;_STATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lääni]]></key>
         <key id="classroom&amp;_STREET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Katu]]></key>
@@ -364,6 +410,9 @@
         <key id="competences&amp;_DATE_OBTAINED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hankittu]]></key>
         <key id="competences&amp;_EXPIRATION_DAYS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vanhentuu (päivän) jälkeen]]></key>
         <key id="competences&amp;_TYPE_FLAG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lippu]]></key>
+        <key id="competences&amp;_WITH_COURSE_ASSOCIATIONS" attributes="" save_date="2017-05-18 13:41:56"><![CDATA[Pätevyys kursseihin liitetty]]></key>
+        <key id="competences&amp;_WITH_FNCROLE_ASSOCIATIONS" attributes="" save_date="2017-05-18 14:49:52"><![CDATA[Pätevyys roolien kanssa liitetty]]></key>
+        <key id="competences&amp;_WITH_USER_ASSOCIATIONS" attributes="" save_date="2017-05-18 14:50:08"><![CDATA[Pätevyys käyttäjien kanssa liitetty]]></key>
       </module>
       <module id="conference">
         <key id="conference&amp;_AT_HOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tunti:]]></key>
@@ -378,7 +427,9 @@
       </module>
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivoi saavutettavuusominaisuudet]]></key>
+        <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2017-05-05 17:50:35"><![CDATA[Mukauta "allow_url_fopen"]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mukauta "allow_url_include"]]></key>
+        <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2017-05-18 14:11:23"><![CDATA[On jo tilattu]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
         <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kysy koodimoduulin kautta luotua koodia]]></key>
@@ -388,14 +439,20 @@
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimimäärä audiokäyttäjiä]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimimäärä käyttäjiä per houne]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimimäärä huoneita]]></key>
+        <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="2017-05-05 17:21:59"><![CDATA[BigBlueButton palvelimen osoite]]></key>
         <key id="configuration&amp;_CODE_TELESKILL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Asiakaskoodi]]></key>
         <key id="configuration&amp;_COMMON_ADMIN_SESSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yhdistä ylläpito ja yleinen sessio]]></key>
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Raja määrälle konferensseja joita yksi käyttäjä voi suunnitella]]></key>
         <key id="configuration&amp;_CONFIGURATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Asetukset]]></key>
+        <key id="configuration&amp;_CONFIRM_REGISTER_TYPE_SELF" attributes="" save_date="2017-05-18 14:13:39"><![CDATA[HUOMIO: ilman sähköpostivarmistusta käyttäjän sähköpostitiliä ei tarkisteta, mikä saattaa aikaasaada aiheettomia rekisteröintejä.]]></key>
         <key id="configuration&amp;_CONF_GLOBAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yleiset]]></key>
         <key id="configuration&amp;_CONF_LMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Verkko-oppiminen]]></key>
+        <key id="configuration&amp;_COURSE_BLOCK" attributes="" save_date="2017-05-18 13:43:13"><![CDATA[Näytä luettelo kotisivulla]]></key>
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Raja kurssille ladatun sisäällön kokonaiskoolle (MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valuuttasymboli (näytetään käyttäjän vierellä)]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2017-05-18 13:43:25"><![CDATA[Tuen sähköposti]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PFX" attributes="" save_date="2017-05-18 13:43:53"><![CDATA[Tuen sähköpostin aiheen etuliite]]></key>
+        <key id="configuration&amp;_CUSTOM_FIELDS_MANDATORY_FOR_ADMIN" attributes="" save_date="2017-05-18 13:44:12"><![CDATA[Pakolliset muokatut kentät]]></key>
         <key id="configuration&amp;_DEBUG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Debug vaihtoehdot]]></key>
         <key id="configuration&amp;_DEFAULTTEMPLATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oletusmalli]]></key>
         <key id="configuration&amp;_DIMDIM_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimimäärä audiokäyttäjiä]]></key>
@@ -425,11 +482,13 @@
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Etunimi ja Sukunimi vaaditaan rekisteröitymiseen]]></key>
         <key id="configuration&amp;_LDAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP]]></key>
         <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP portti (yleensä 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP palvelin]]></key>
+        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2017-05-05 17:22:17"><![CDATA[LDAP palvelimen osoite]]></key>
         <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivoi LDAP varmentaminen]]></key>
         <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjänimi LDAP käyttäjille, käytä $user käyttäjänimenä.<br />Ex. $user@domain2.domain1 (for: W2k3)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["magic_quotes_gpc" mukautus]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rekisteröinnit ja kadonneen salasanan sähköpostilähetys]]></key>
+        <key id="configuration&amp;_MAINTENANCE" attributes="" save_date="2017-05-18 13:44:23"><![CDATA[Huoltotila]]></key>
+        <key id="configuration&amp;_MAINTENANCE_PW" attributes="" save_date="2017-05-18 13:44:31"><![CDATA[Huoltotilan salasana]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ylesíset asetukset]]></key>
         <key id="configuration&amp;_MANDATORY_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jos jokin rekisteröintikoodivaihtoehdoista on valittu, on käyttäjien pakko syöttää rekisteröintikoodi (koodi-kenttä tulee täyttää)]]></key>
         <key id="configuration&amp;_MAX_EXECUTION_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["max_execution_time" mukautus]]></key>
@@ -437,6 +496,7 @@
         <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2017-04-10 11:44:10"><![CDATA[MySQL kollaatio]]></key>
         <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2017-04-10 11:44:18"><![CDATA[MySQL salaus]]></key>
         <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2017-04-10 11:44:25"><![CDATA[SQL moodi]]></key>
+        <key id="configuration&amp;_MYSQL_TIMEZONE" attributes="" save_date="2017-05-18 13:44:54"><![CDATA[MySQL aikavyöhyke]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL versio]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Odotus blockien välillä (sekuntia)]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lähetä uutiskirje viestit blockeissa]]></key>
@@ -444,7 +504,10 @@
         <key id="configuration&amp;_NO_ANSWER_IN_POLL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käytä "ei vastausta" vaihtoehtoa kyselyissä]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käytä "ei vastausta" vaihtoehtoa kokeissa]]></key>
         <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jos käyttäjälle ei ole määritelty yhtään kurssiluetteloa, näytä kaikki kurssit ja opinto-ohjelmat]]></key>
+        <key id="configuration&amp;_ON_USERCOURSE_EMPTY" attributes="" save_date="2017-05-18 13:45:41"><![CDATA[Siirrä käyttäjä kurssiluetteloon, jos käyttäjä ei ole tilannut yhtään kurssia]]></key>
+        <key id="configuration&amp;_ORGCHART_SINGLENODE" attributes="" save_date="2017-05-18 13:46:40"><![CDATA[Rajoita käyttäjä kuulumaan vain yhteen organisaation osaan]]></key>
         <key id="configuration&amp;_ORG_NAME_TELESKILL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Organisaation nimi konferenssissa]]></key>
+        <key id="configuration&amp;_OWNED_BY" attributes="" save_date="2017-05-18 13:46:49"><![CDATA[Sivuston omistaja]]></key>
         <key id="configuration&amp;_PAGE_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sivun otsikko (näkyy käyttäjän selaimessa)]]></key>
         <key id="configuration&amp;_PASS_ALFANUMERIC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Salasanan tulee koostua kirjaimista ja numeroista]]></key>
         <key id="configuration&amp;_PASS_CHANGE_FIRST_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pakota käyttäjät vaihtamaan salasanansa ensimmäisellä sisäänkirjautumiskerralla]]></key>
@@ -467,6 +530,7 @@
         <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2017-04-10 11:57:02"><![CDATA[Käytä PayPal sandboxiä eikä oikeata ympäristöä (debug ja testaus vaihtoehto)]]></key>
         <key id="configuration&amp;_PHPINFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tietoa PHP:stä]]></key>
         <key id="configuration&amp;_PHPVERSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[PHP versio]]></key>
+        <key id="configuration&amp;_PHP_TIMEZONE" attributes="" save_date="2017-05-18 13:47:00"><![CDATA[Sivuston aikavyöhyke]]></key>
         <key id="configuration&amp;_POST_MAX_SIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["post_max_size" mukautus]]></key>
         <key id="configuration&amp;_PRIVACY_POLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tietosuojakäytäntö TÄYTYY hyväksyä]]></key>
         <key id="configuration&amp;_PROFILE_ONLY_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rajoita käyttäjä vain vaihtamaan salasana (poista käytöstä laajennettu profiili)]]></key>
@@ -476,6 +540,7 @@
         <key id="configuration&amp;_REGISTER_TYPE_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vain ylläpitäjän toimesta]]></key>
         <key id="configuration&amp;_REGISTER_TYPE_MODERATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valvottu itse-rekisteröinti]]></key>
         <key id="configuration&amp;_REGISTER_TYPE_SELF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vapaa itse-rekisteröinti]]></key>
+        <key id="configuration&amp;_REGISTER_TYPE_SELF_OPTIN" attributes="" save_date="2017-05-18 13:47:24"><![CDATA[Vapaa rekisteröinti sähköposti vahvistuksella]]></key>
         <key id="configuration&amp;_REGISTRATION_CODE_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rekisteröintikoodin käyttö]]></key>
         <key id="configuration&amp;_REQUEST_MANDATORY_FIELDS_COMPILATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sisäänkirjautumisen yhteydessä käyttäjää pyydetään täyttämään vaaditut kentät profiilissaan.]]></key>
         <key id="configuration&amp;_REST_AUTH_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yksi koodi alustalle]]></key>
@@ -570,6 +635,7 @@
         <key id="course&amp;_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rekisteröintikoodi]]></key>
         <key id="course&amp;_BACK_TO_ADMINISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Takaisin ylläpito-alueelle]]></key>
         <key id="course&amp;_BUY_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sallittu ostaa tämä kurssi]]></key>
+        <key id="course&amp;_CALENDAR_CLASSROOM_EDITION" attributes="" save_date="2017-05-18 14:50:58"><![CDATA[Kalenterin luokkahuone versio]]></key>
         <key id="course&amp;_CAN_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilaa]]></key>
         <key id="course&amp;_CASCADE_MOD_ON_EDITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kopio muutokset muihin versioihin]]></key>
         <key id="course&amp;_CATEGORY_PATH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Olet sisällä]]></key>
@@ -577,12 +643,15 @@
         <key id="course&amp;_CERTIFICATE_ASSIGN_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifikaatin määritys]]></key>
         <key id="course&amp;_CERTIFICATE_EX_ASSIGN_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Huippuosaamis-sertifikaatin määritys]]></key>
         <key id="course&amp;_CERTIFICATE_LANGUAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifikaatin kieli]]></key>
+        <key id="course&amp;_CERTIFICATE_NAME" attributes="" save_date="2017-05-18 13:47:41"><![CDATA[Sertifikaatti]]></key>
+        <key id="course&amp;_CERTIFICATE_RELEASE" attributes="" save_date="2017-05-18 14:51:19"><![CDATA[Sertifikaattien julkaisu]]></key>
         <key id="course&amp;_CERTIFICATE_RELEASED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Julkaistujen sertifikaattien määrä]]></key>
         <key id="course&amp;_CLASSROOMTOCOURSE_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Luokkahuone -> Kurssi assosiaatio]]></key>
         <key id="course&amp;_CLASSROOM_EDITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Luokkahuoneet/Versiot]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Varoitus; jotkin luokkahuoneet ovat jo muiden kurssien käytössä]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Luokka käytössä]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tietosi tallennetaan.]]></key>
+        <key id="course&amp;_COPY_SUBSCRIPTION_TO_COURSE" attributes="" save_date="2017-05-18 14:14:06"><![CDATA[Kopioi tilaukset kurssille]]></key>
         <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aikaistettu maksu %]]></key>
         <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssin automaattisen tilauksen koodi]]></key>
         <key id="course&amp;_COURSE_CONTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Saatavilla olevat kurssit]]></key>
@@ -615,7 +684,7 @@
         <key id="course&amp;_COURSE_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssityyppi]]></key>
         <key id="course&amp;_COURSE_TYPE_BLENDED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seka]]></key>
         <key id="course&amp;_COURSE_TYPE_EDITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Verkko-oppiminen versioiden kanssa]]></key>
-        <key id="course&amp;_COURSE_TYPE_ELEARNING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Verrko-oppiminen]]></key>
+        <key id="course&amp;_COURSE_TYPE_ELEARNING" attributes="" save_date="2017-05-18 15:31:12"><![CDATA[Verkko-oppiminen]]></key>
         <key id="course&amp;_COURSE_USERISCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilaavat käyttäjät]]></key>
         <key id="course&amp;_CREATION_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivoitunut]]></key>
         <key id="course&amp;_CST_AVAILABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Saatavilla]]></key>
@@ -631,6 +700,7 @@
         <key id="course&amp;_DOWNLOAD_MATERIALS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä materiaali]]></key>
         <key id="course&amp;_EDTION_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[alkaa <b>[date_begin]</b> ja loppuu <b>[date_end]</b>]]></key>
         <key id="course&amp;_ENDOBJECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objekti on määritelty lopulliseksi]]></key>
+        <key id="course&amp;_EXPIRED" attributes="" save_date="2017-05-18 14:14:19"><![CDATA[Pääsy kurssille on vanhentunut]]></key>
         <key id="course&amp;_EXPIRING_IN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämä kurssi vanhentuun <b>[expiring_in]</b> päivän kuluttua]]></key>
         <key id="course&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tiedostoja ei ole määritelty]]></key>
         <key id="course&amp;_FILTER_FLATVIEW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Litteä näkymä]]></key>
@@ -672,6 +742,7 @@
         <key id="course&amp;_PAUSE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tauon loppu]]></key>
         <key id="course&amp;_PERMCLOSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Täysi kurssimetodi]]></key>
         <key id="course&amp;_PROGRESS_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objektit]]></key>
+        <key id="course&amp;_PROGRESS_BAR_TEXT" attributes="" save_date="2017-05-18 14:14:39"><![CDATA[edistyminen]]></key>
         <key id="course&amp;_PROGRESS_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Suoritettu loppuun]]></key>
         <key id="course&amp;_PROGRESS_FAILED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hylätty]]></key>
         <key id="course&amp;_PROGRESS_INCOMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ei suoritettu]]></key>
@@ -683,6 +754,7 @@
         <key id="course&amp;_SC_EVERYWHERE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kaikki, ja näytä kotisivulla]]></key>
         <key id="course&amp;_SC_ONLYINSC_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vain kurssin tilanneet käyttäjät]]></key>
         <key id="course&amp;_SC_ONLY_IN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vain sisäänkirjautuneet käyttäjät]]></key>
+        <key id="course&amp;_SELECT_DAYS_COURSE" attributes="" save_date="2017-05-18 14:51:32"><![CDATA[Valitse kurssin päivät]]></key>
         <key id="course&amp;_SELF_UNSUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Poista kurssin tilaus]]></key>
         <key id="course&amp;_SHOW_ADVANCED_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kehittyneempi kurssi-info]]></key>
         <key id="course&amp;_SHOW_COUNT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä vain yhteydessä olevien käyttäjien määrä, mutta älä käytä Instant Messengeriä]]></key>
@@ -700,8 +772,11 @@
         <key id="course&amp;_SUBSCRIBE_METHOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilaustapa]]></key>
         <key id="course&amp;_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilaus]]></key>
         <key id="course&amp;_SUBSCRIPTION_CLOSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilaukset on suljettu]]></key>
+        <key id="course&amp;_SUBSCRIPTION_CORRECT" attributes="" save_date="2017-05-18 13:47:53"><![CDATA[Tilaus onnistunut]]></key>
         <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Keneltä]]></key>
+        <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN_FROM" attributes="" save_date="2017-05-18 13:48:09"><![CDATA[Rekisteröinti on auki ]]></key>
         <key id="course&amp;_SUBSCRIPTION_DATE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kenelle]]></key>
+        <key id="course&amp;_SUBSCRIPTION_ERROR" attributes="" save_date="2017-05-18 13:48:24"><![CDATA[Virhe tilausta tehdessä]]></key>
         <key id="course&amp;_SUBSCRIPTION_IN_PERIOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilaus on saatavilla seuraavana ajanjaksona]]></key>
         <key id="course&amp;_SUBSCRIPTION_OPEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilaukset ovat avoinna]]></key>
         <key id="course&amp;_THANKS_LOGIN_OR_REGISTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Olet pyytänyt saada ostaa kurssin: <b>[name]</b><br />
@@ -718,6 +793,7 @@ Muussa tapauksessa sinun tulee rekisteröityä järjestelmäämme seuraamalla t�
         <key id="course&amp;_T_USER_STATUS_RESERVED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Varattu]]></key>
         <key id="course&amp;_T_USER_STATUS_SUBS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Et vilä aloittanut tähän kurssiin osallistumista]]></key>
         <key id="course&amp;_UNLIMITED_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ei levytilarajaa]]></key>
+        <key id="course&amp;_UNSUBSCRIBE_DATE_LIMIT" attributes="" save_date="2017-05-18 14:51:58"><![CDATA[Kurssin peruutuksen päivämäärä raja]]></key>
         <key id="course&amp;_UNSUBSCRIBE_REQUESTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilausten poistopyynnöt]]></key>
         <key id="course&amp;_UNSUBSCRIBE_REQUEST_WAITING_FOR_MODERATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilausten poistopyynnöt odottavat hyväksyntää]]></key>
         <key id="course&amp;_USED_DISK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämän kurssin käyttämä levytila]]></key>
@@ -788,6 +864,7 @@ Muussa tapauksessa sinun tulee rekisteröityä järjestelmäämme seuraamalla t�
         <key id="coursereport&amp;_TABLE_QUEST_CORRECT_TXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Prosenttiosuus oikeita vastauksia tekstin lauseeseen lisäämisen jälkeen "[title]"]]></key>
         <key id="coursereport&amp;_TABLE_QUEST_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lisää lista kysymykselle "[title]"]]></key>
         <key id="coursereport&amp;_TEST_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tietoa kokeesta]]></key>
+        <key id="coursereport&amp;_TH_TEST_REPORT" attributes="" save_date="2017-05-18 13:48:37"><![CDATA[Testiraportti]]></key>
         <key id="coursereport&amp;_TITLE_ACT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Toiminnan otsikko]]></key>
         <key id="coursereport&amp;_TOT_QUESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kysymyksiä yhteensä]]></key>
         <key id="coursereport&amp;_TQ_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilastoja kokeelle "[test]"]]></key>
@@ -796,8 +873,9 @@ Muussa tapauksessa sinun tulee rekisteröityä järjestelmäämme seuraamalla t�
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lisää uusi kurssi]]></key>
-        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;gt;&amp;gt; Takaisin "Omat kurssit alueelle"]]></key>
+        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2017-05-08 12:27:55"><![CDATA[&gt;&gt; Takaisin "Omat kurssit alueelle"]]></key>
         <key id="course_autoregistration&amp;_CODE_ALREDY_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Olet jo käyttänyt tämän koodin]]></key>
+        <key id="course_autoregistration&amp;_CODE_NOT_VALID" attributes="" save_date="2017-05-18 14:14:57"><![CDATA[Koodi ei kelvollinen]]></key>
         <key id="course_autoregistration&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Koodi]]></key>
       </module>
       <module id="course_charts">
@@ -821,6 +899,7 @@ Muussa tapauksessa sinun tulee rekisteröityä järjestelmäämme seuraamalla t�
         <key id="dashboard&amp;_ACTIVE_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktiiviset kurssit]]></key>
         <key id="dashboard&amp;_ACTIVE_SEVEN_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssit jotka aktivoituvat seuraavan 7 päivän aikana]]></key>
         <key id="dashboard&amp;_ADMIN_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ylläpitokäyttäjät]]></key>
+        <key id="dashboard&amp;_CHOOSE_EXPORT_FORMAT" attributes="" save_date="2017-05-18 13:48:59"><![CDATA[Valitse vientimuoto]]></key>
         <key id="dashboard&amp;_CORE_VERSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Asennetut versiot]]></key>
         <key id="dashboard&amp;_COURSES_PANEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Infoa kursseista]]></key>
         <key id="dashboard&amp;_DASHBOARD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tervetuloa sivu]]></key>
@@ -828,6 +907,7 @@ Muussa tapauksessa sinun tulee rekisteröityä järjestelmäämme seuraamalla t�
         <key id="dashboard&amp;_FOLLOW_US" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seuraa meitä]]></key>
         <key id="dashboard&amp;_INACTIVE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inaktiiviset käyttäjät (vähintään kuukauden ajan)]]></key>
         <key id="dashboard&amp;_LAST_RELEASED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Viimeisin julkaistu versio]]></key>
+        <key id="dashboard&amp;_LIBRARY" attributes="" save_date="2017-05-18 13:49:07"><![CDATA[Kirjasto]]></key>
         <key id="dashboard&amp;_MONITOR_PRINT_CERTIFICATE_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lataa tai luo sertifikaatti]]></key>
         <key id="dashboard&amp;_NEW_RELEASE_AVAILABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusi versio on ladattavissa]]></key>
         <key id="dashboard&amp;_ONLINE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Online käyttäjät]]></key>
@@ -866,6 +946,7 @@ Voit lukea sen osoitteessa <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_DELETED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Tilisi sivustolla <a href="[url]">[url]</a> käyttäjänimellä [userid] on poistettu]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Tilauspyyntö evätty]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Tilauspyyntösi kurssille [course] evättiin ylläpitäjän toimesta osoitteessa <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_EVENT_CLASS_UserCourseBuy" attributes="" save_date="2017-05-18 13:49:20"><![CDATA[Käyttäjä osti kurssin]]></key>
         <key id="email&amp;_MODIFIED_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjätiliä on muokattu]]></key>
         <key id="email&amp;_MODIFIED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Tilisiä sivustolla <a href="[url]">[url]</a> on muokattu :
 
@@ -890,6 +971,10 @@ Käyttäjänimi: [userid]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Uusi käyttäjä tilasi kurssin '[course]' ja odottaa hyväksyntää.
 
 <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_SUBJECT" attributes="" save_date="2017-05-18 14:23:08"><![CDATA[Käyttäjä odottaa tilauksen lopetuksen hyväksyntää]]></key>
+        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_SUBJECT_SMS" attributes="" save_date="2017-05-18 14:15:18"><![CDATA[Peruutuspyyntö kurssilta]]></key>
+        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_TEXT" attributes="" save_date="2017-05-18 14:24:26"><![CDATA[Uusi käyttäjä peruutti kurssin "[course]" tilauksen ja odottaa peruutuksen hyväksyntää.[url]]]></key>
+        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_TEXT_SMS" attributes="" save_date="2017-05-18 14:25:01"><![CDATA[Käyttäjä on pyytänyt kurssin peruuttamista]]></key>
         <key id="email&amp;_PASSWORD_CHANGED" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[ja salasanasi on muutettu seuraavaksi: [password]]]></key>
         <key id="email&amp;_REFUSED_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjää ei ole hyväksytty]]></key>
         <key id="email&amp;_REFUSED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Sivun [url] ylläpitäjä ei ole hyväksynyt tilauspyyntöäsi]]></key>
@@ -905,13 +990,20 @@ Salasana: [password]]]></key>
         <key id="email&amp;_TO_APPROVE_GROUP_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Uuden käyttäjän tilaus valvottuun ryhmään odottaa hyväksyntää osoitteessa <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_TO_APPROVE_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Uusi käyttäjä odottaa hyväksyntää]]></key>
         <key id="email&amp;_TO_APPROVE_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Uusi käyttäjä on rekisteröitynyt osoitteessa [url] ja odottaa hyväksyntääsi]]></key>
+        <key id="email&amp;_TO_NEW_USER_SBJ" attributes="email" save_date="2017-05-18 14:02:04"><![CDATA[Uusi käyttäjä tilannut]]></key>
+        <key id="email&amp;_TO_NEW_USER_TEXT" attributes="email" save_date="2017-05-18 14:02:16"><![CDATA[Uusi käyttäjä tilannut]]></key>
+        <key id="email&amp;_USER_END_COURSE_SBJ" attributes="" save_date="2017-05-18 14:03:10"><![CDATA[Käyttäjä on suorittanut [course] -kurssin forma.lms alustalla]]></key>
+        <key id="email&amp;_USER_END_COURSE_TEXT" attributes="" save_date="2017-05-18 14:26:36"><![CDATA[Käyttäjä [user] on suorittanut kurssin forma.lms alustalla]]></key>
+        <key id="email&amp;_USER_END_COURSE_TEXT_SMS" attributes="" save_date="2017-05-18 14:27:16"><![CDATA[Käyttäjä on suorittanut kurssin [course] forma.lms alustalla]]></key>
         <key id="email&amp;_WAITING_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjä on rekisteröitynyt ja odottaa hyväksyntääsi]]></key>
         <key id="email&amp;_WAITING_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Uusi käyttäjä osoitteessa  <a href="[url]">[url]</a> odottaa hyväksyntää]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Olet saanut uuden viestin]]></key>
-        <key id="email&amp;_YOU_RECIVE_MSG_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Olet saanut uuden viestin verrko-oppimisjärjestelmässä osoitteessa <a href="[url]">[url]</a> kurssissa [course] käyttäjältä [from]]]></key>
+        <key id="email&amp;_YOU_RECIVE_MSG_TEXT" attributes="email" save_date="2017-05-18 15:31:34"><![CDATA[Olet saanut uuden viestin verkko-oppimisjärjestelmässä osoitteessa <a href="[url]">[url]</a> kurssissa [course] käyttäjältä [from]]]></key>
+        <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2017-05-18 15:31:22"><![CDATA[Olet saanut uuden viestin verkko-oppimisjärjestelmässä osoitteessa <a href="[url]">[url]</a> kurssissa <b>[course]</b> käyttäjältä [from]]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_BASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Perusta]]></key>
+        <key id="enrollrules&amp;_ENTITY" attributes="" save_date="2017-05-18 14:52:16"><![CDATA[Kokonaisuus]]></key>
         <key id="enrollrules&amp;_SHOW_LOGS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä logit]]></key>
       </module>
       <module id="event_manager">
@@ -929,13 +1021,16 @@ Salasana: [password]]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseInsertModerate" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjä odotta tilausta kurssille]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseLevelChanged" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjän tasoa on muutettu kurssissa]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemoved" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjä poisti kurssin tilauksen]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemovedModerate" attributes="" save_date="2017-05-18 14:27:49"><![CDATA[Käyttäjä odottaa kurssitilauksen peruuttamista]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserDel" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjä on poistettu]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserGroupInsert" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjä liittyi ryhmään]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserGroupModerated" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjä odottaa liittymistä ryhmään]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserGroupRemove" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjä on poistettu ryhmästä]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserMod" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjää on muutettu]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNew" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjä on luotu]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserNew2" attributes="" save_date="2017-05-18 14:29:20"><![CDATA[Uusi käyttäjä on rekisteröitynyt "vapaan automaattirekisteröinnin" tai "vapaa automaattirekisteröinti sähköpostivarmistuksella" -toimintojen kautta]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNewModerated" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjä odottaa hyväksyntää alustaliittymässä]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserNewWaiting" attributes="" save_date="2017-05-18 14:29:32"><![CDATA[Uusi käyttäjä odottamassa hyväksyntää]]></key>
         <key id="event_manager&amp;_EVENT_MANAGER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tapahtumanhallinta]]></key>
         <key id="event_manager&amp;_EVENT_PERM_NOTUSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ei käytetty]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alusta]]></key>
@@ -960,9 +1055,11 @@ Salasana: [password]]]></key>
         <key id="faq&amp;_TERM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sana]]></key>
       </module>
       <module id="field">
+        <key id="field&amp;_ADD_NEW_CUSTOMFIELD" attributes="" save_date="2017-05-18 14:15:45"><![CDATA[Lisää uusi räätälöity kenttä]]></key>
         <key id="field&amp;_ADD_NEW_FIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lisää uusi mukautettu kenttä]]></key>
         <key id="field&amp;_ALL_FIELD_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kaikentyyppiset kentät]]></key>
         <key id="field&amp;_CODICEFISCALE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Finanssikoodi]]></key>
+        <key id="field&amp;_COPY" attributes="" save_date="2017-05-18 14:03:27"><![CDATA[Kopio]]></key>
         <key id="field&amp;_COUNTRY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maa]]></key>
         <key id="field&amp;_DROPDOWN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pudotuskenttä]]></key>
         <key id="field&amp;_DROPDOWN_ELEMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Elementin nimi]]></key>
@@ -976,6 +1073,7 @@ Salasana: [password]]]></key>
         <key id="field&amp;_FREETEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vapaa tekstikenttä]]></key>
         <key id="field&amp;_GMAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gmail tili]]></key>
         <key id="field&amp;_ICQ" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ICQ tili]]></key>
+        <key id="field&amp;_LABEL_ALERT" attributes="" save_date="2017-05-18 14:03:37"><![CDATA[Huomio:]]></key>
         <key id="field&amp;_MSN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MSN tili]]></key>
         <key id="field&amp;_NEW_DATEFIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusi päivämääräkenttä]]></key>
         <key id="field&amp;_NEW_DROPDOWN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusi pudotuskenttä]]></key>
@@ -985,7 +1083,7 @@ Salasana: [password]]]></key>
         <key id="field&amp;_NEW_SKYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusi kenttä Skype tili]]></key>
         <key id="field&amp;_NEW_TEXTFIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusi tekstikenttä]]></key>
         <key id="field&amp;_NEW_UPLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusi tiedostokenttä]]></key>
-        <key id="field&amp;_NEW_YAHOO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusi kenttä yahoo tili]]></key>
+        <key id="field&amp;_NEW_YAHOO" attributes="" save_date="2017-05-12 12:14:42"><![CDATA[Uusi kenttä Yahoo tili]]></key>
         <key id="field&amp;_NEW_YESNO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusi kenttä kyllä / ei]]></key>
         <key id="field&amp;_NOT_DO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ei valmis]]></key>
         <key id="field&amp;_NO_FILE_UPLOADED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ei tiedostoa ladattuna]]></key>
@@ -1070,6 +1168,7 @@ Salasana: [password]]]></key>
         <key id="glossary&amp;_ADDTERM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lisää sana]]></key>
         <key id="glossary&amp;_GLOSSARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sanalista]]></key>
         <key id="glossary&amp;_GLOSSARY_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ilmaisulista sanalistassa]]></key>
+        <key id="glossary&amp;_PRIVATE_THREAD" attributes="" save_date="2017-05-18 14:03:50"><![CDATA[Yksityinen ketju]]></key>
         <key id="glossary&amp;_TERM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sana]]></key>
         <key id="glossary&amp;_TERMDESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sanan kuvaus]]></key>
         <key id="glossary&amp;_TERMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ilmaisut]]></key>
@@ -1107,8 +1206,11 @@ Salasana: [password]]]></key>
         <key id="htmlfront&amp;_HTMLFRONT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Johdanto]]></key>
       </module>
       <module id="htmlpage">
+        <key id="htmlpage&amp;_ATTACH_TITLE" attributes="" save_date="2017-05-18 14:16:38"><![CDATA[Liitteet]]></key>
         <key id="htmlpage&amp;_BACKTOTOP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Peruuta]]></key>
         <key id="htmlpage&amp;_SECT_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[HTML sivu]]></key>
+        <key id="htmlpage&amp;_TYPE_VIDEO_HIGH" attributes="" save_date="2017-05-18 14:03:55"><![CDATA[Korkea]]></key>
+        <key id="htmlpage&amp;_TYPE_VIDEO_LOW" attributes="" save_date="2017-05-18 14:03:59"><![CDATA[Matala]]></key>
       </module>
       <module id="iotask">
         <key id="iotask&amp;_ACCESSTYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pääsy]]></key>
@@ -1178,12 +1280,15 @@ Salasana: [password]]]></key>
         <key id="item&amp;_SECTIONNAME_ITEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lataa ylös tiedostot]]></key>
       </module>
       <module id="kb">
+        <key id="kb&amp;_BY_INSTRUCTOR" attributes="" save_date="2017-05-18 14:30:00"><![CDATA[Opettaja]]></key>
+        <key id="kb&amp;_BY_STUDENT" attributes="" save_date="2017-05-18 14:30:06"><![CDATA[Opiskelija]]></key>
         <key id="kb&amp;_CATEGORIZED_AND_UNCATEGORIZED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä kaikki]]></key>
         <key id="kb&amp;_CATEGORIZED_ONLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vain kategorisoidut]]></key>
         <key id="kb&amp;_CATEGORIZE_OBJECT_ITEMS" attributes="" save_date="2017-04-10 10:52:10"><![CDATA[Vaihda SCORM kategorisaatiosta lukujen kategorisaatioon]]></key>
         <key id="kb&amp;_CONTAINED_IN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sisältyy]]></key>
         <key id="kb&amp;_IS_MOBILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämä resurssi on mobiiliyhteensopiva.]]></key>
         <key id="kb&amp;_RESOURCE_ORIGINAL_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alkuperäinen nimi tallennettu alustalle]]></key>
+        <key id="kb&amp;_SELECTED_DROP_DOWN" attributes="" save_date="2017-05-18 14:30:46"><![CDATA[Valitse alasvetovalikosta]]></key>
         <key id="kb&amp;_SET_AS_NORMAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vain liittyvät käyttäjät voivat nähdä objektin]]></key>
         <key id="kb&amp;_SET_VISIBLE_TO_EVERYONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kaikki voivat päästä tähän objektiin]]></key>
         <key id="kb&amp;_UNCATEGORIZED_ONLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vain kategorisoimattomat]]></key>
@@ -1227,10 +1332,11 @@ Salasana: [password]]]></key>
         <key id="link&amp;_TERM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sanat]]></key>
       </module>
       <module id="login">
+        <key id="login&amp;_ACCESS_LOCK" attributes="" save_date="2017-05-18 14:30:16"><![CDATA[Pääsy estetty]]></key>
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kotisivu]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms on avoimen lähdekoodin verkko-oppimisalusta (LMS ja LCMS) jota käytetään yritys- ja korkeakoulutusmarkkinoilla.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:18:35"><![CDATA[forma.lms on avoimen lähdekoodin verkko-oppimisalusta (LMS ja LCMS) jota käytetään yritys- ja korkeakoulutusmarkkinoilla.<br/>
 <br/>
-Alusta tukee 25 kieltä, ja on yhteensopiva SCORM 1.2 ja 2004 standardien kanssa, ja tukee eri oppimismalleja, kuten: sekaoppiminen, itseohjaava oppiminen, yhteistyöoppiminen ja sosiaalinen oppiminen chatin, wikin foorumien ja muiden toimintojen kautta.<br/>
+Alusta tukee 26 kieltä, ja on yhteensopiva SCORM 1.2 ja 2004 standardien kanssa, ja tukee eri oppimismalleja, kuten: sekaoppiminen, itseohjaava oppiminen, yhteistyöoppiminen ja sosiaalinen oppiminen chatin, wikin foorumien ja muiden toimintojen kautta.<br/>
 <br/>
 <br/>
 Muuttaaksesi näitä sanoja mene Ylläpito/kielihallintaan, etsi <b>login</b> ja muuta avainta <b>_INTRO_STD_TEXT</b>]]></key>
@@ -1240,6 +1346,7 @@ Muuttaaksesi näitä sanoja mene Ylläpito/kielihallintaan, etsi <b>login</b> ja
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Helppopääsyinen sisäänkirjautuminen]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sisäänkirjautuminen]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kirjaudu sisään käyttäen]]></key>
+        <key id="login&amp;_LOG_IN" attributes="" save_date="2017-05-18 14:04:10"><![CDATA[Kirjaudu]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kadonnut salasana]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Täytä tähän kenttään käyttäjätunnuksesi ja saat sähköpostin (rekisteröityyn sähkopostiosoitteesesi) joka sisältää ohjeet uuden salasanan luontiin.]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Täytä tähän kenttään sähköpostiosoite jonka annoit rekisteröintiprosessin aikana ja saat sähköpostin joka sisältää käyttäjätunnuksesi tälle sivustolle.]]></key>
@@ -1249,8 +1356,11 @@ Muuttaaksesi näitä sanoja mene Ylläpito/kielihallintaan, etsi <b>login</b> ja
         <key id="login&amp;_PASSNOMATCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tarjoamasi salasanat eivät ole samat tai salasanakenttä on tyhjä.]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ole ystävällinen ja [login] tai [signin] ostaaksesi tai jatkaaksesi tämän kurssin kanssa]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE_NO_REG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ole ystävällinen ja [login]  ostaaksesi tai jatkaaksesi tämän kurssin kanssa]]></key>
+        <key id="login&amp;_REGISTER_WITH_FACEBOOK" attributes="" save_date="2017-05-18 14:17:26"><![CDATA[Rekisteröi Facebook -tilillä]]></key>
         <key id="login&amp;_REG_ELAPSEDREQUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämä pyyntö on vanhentunut.]]></key>
         <key id="login&amp;_REG_PRIVACY_POLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tietosuojakäytäntö]]></key>
+        <key id="login&amp;_SESSION_EXPIRED" attributes="" save_date="2017-05-18 14:31:01"><![CDATA[Istunto päättynyt]]></key>
+        <key id="login&amp;_SIGN_IN" attributes="" save_date="2017-05-18 14:04:21"><![CDATA[Rekisteröidy]]></key>
         <key id="login&amp;_TWO_USERS_LOGGED_WITH_SAME_USERNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Toinen käyttäjä on kirjautunut sisään käyttäjänimelläsi]]></key>
         <key id="login&amp;_UNLOGGED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Olet kirjautunut ulos]]></key>
       </module>
@@ -1291,6 +1401,8 @@ Muuttaaksesi näitä sanoja mene Ylläpito/kielihallintaan, etsi <b>login</b> ja
         <key id="menu&amp;_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifikaatit]]></key>
         <key id="menu&amp;_COMMUNICATION_MAN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kommunikaatiot]]></key>
         <key id="menu&amp;_CONFIGURATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Asetukset]]></key>
+        <key id="menu&amp;_CONFIG_ELEARNING" attributes="" save_date="2017-05-18 14:04:58"><![CDATA[Verkko-oppimisen konfiguraatio]]></key>
+        <key id="menu&amp;_CONFIG_SYS" attributes="" save_date="2017-05-18 14:04:47"><![CDATA[Järjestelmän konfiguraatio]]></key>
         <key id="menu&amp;_DASHBOARD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tervetuloa sivu]]></key>
         <key id="menu&amp;_EVENTMANAGER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tapahtuman hallinta]]></key>
         <key id="menu&amp;_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tapahtuma]]></key>
@@ -1309,6 +1421,8 @@ Muuttaaksesi näitä sanoja mene Ylläpito/kielihallintaan, etsi <b>login</b> ja
         <key id="menu&amp;_MODULE_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Moduulin nimi]]></key>
         <key id="menu&amp;_NEWS_INTERNAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hallinnoi uutisia käyttäjäalueessa]]></key>
         <key id="menu&amp;_PLAYERTEMPLATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mallisoitin]]></key>
+        <key id="menu&amp;_PLUGIN_MANAGER" attributes="" save_date="2017-05-18 14:52:44"><![CDATA[Liitäntöjen hallinta]]></key>
+        <key id="menu&amp;_PRIVACYPOLICIES" attributes="" save_date="2017-05-18 14:53:03"><![CDATA[Tietosuojakäytännöt]]></key>
         <key id="menu&amp;_PUBLIC_ADMIN_MANAGER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yleisten ylläpitäjien hallinta]]></key>
         <key id="menu&amp;_PUBLIC_ADMIN_RULES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yleisten ylläpitäjien profiilit]]></key>
         <key id="menu&amp;_QUESTCATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kysymyskategoria]]></key>
@@ -1321,6 +1435,10 @@ Muuttaaksesi näitä sanoja mene Ylläpito/kielihallintaan, etsi <b>login</b> ja
         <key id="menu&amp;_WEBPAGES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Verkkosivut]]></key>
       </module>
       <module id="menu_course">
+        <key id="menu_course&amp;Collaborative Area" attributes="" save_date="2017-05-18 14:31:25"><![CDATA[Yhteistyöalue]]></key>
+        <key id="menu_course&amp;Stat Area" attributes="" save_date="2017-05-18 14:53:11"><![CDATA[Tilastot]]></key>
+        <key id="menu_course&amp;Student Area" attributes="" save_date="2017-05-18 13:49:44"><![CDATA[Opiskelija-alue]]></key>
+        <key id="menu_course&amp;Teacher Area" attributes="" save_date="2017-05-18 13:49:51"><![CDATA[Opettaja-alue]]></key>
         <key id="menu_course&amp;_ADVICE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ilmoitukset]]></key>
         <key id="menu_course&amp;_COURSECHART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssin kartat]]></key>
         <key id="menu_course&amp;_COURSEREPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Todistus]]></key>
@@ -1350,6 +1468,7 @@ Muuttaaksesi näitä sanoja mene Ylläpito/kielihallintaan, etsi <b>login</b> ja
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yhteisö]]></key>
         <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivoi kurssi]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ylläpitoalue]]></key>
+        <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2017-05-18 14:32:57"><![CDATA[Kirjoittaminen]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kampus]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yleinen valikko]]></key>
         <key id="menu_over&amp;_MYCOMPETENCES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pätevyydet]]></key>
@@ -1387,6 +1506,7 @@ Muuttaaksesi näitä sanoja mene Ylläpito/kielihallintaan, etsi <b>login</b> ja
         <key id="middlearea&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valitse kuka voi nähdä tämän blokin]]></key>
         <key id="middlearea&amp;_COMPLETE_USER_PROFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Koko käyttäjäprofiili]]></key>
         <key id="middlearea&amp;_ENABLE_AREA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tee blokki näkyväksi]]></key>
+        <key id="middlearea&amp;_HOME" attributes="" save_date="2017-05-18 13:49:56"><![CDATA[Koti]]></key>
         <key id="middlearea&amp;_MIDDLE_AREA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sisäinen alue]]></key>
         <key id="middlearea&amp;_SIMPLE_USER_PROFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yksinkertaistettu käyttäjäprofiili]]></key>
       </module>
@@ -1405,6 +1525,7 @@ Muuttaaksesi näitä sanoja mene Ylläpito/kielihallintaan, etsi <b>login</b> ja
         <key id="organization&amp;_CONFIRM_EXIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Edistymisesi tallennetaan.]]></key>
         <key id="organization&amp;_HIDETREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Piilota valikko]]></key>
         <key id="organization&amp;_LOCKED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Estetty]]></key>
+        <key id="organization&amp;_NO_TEST_STATS" attributes="" save_date="2017-05-18 14:32:35"><![CDATA[Tilastot eivät saatavilla.]]></key>
         <key id="organization&amp;_OBJECTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tavoite]]></key>
         <key id="organization&amp;_ORGANIZATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Luennot]]></key>
         <key id="organization&amp;_ORGISTERMINATOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objektin loppumerkki]]></key>
@@ -1531,22 +1652,29 @@ Muuttaaksesi näitä sanoja mene Ylläpito/kielihallintaan, etsi <b>login</b> ja
       <module id="preferences">
         <key id="preferences&amp;_TEMPLATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Malli]]></key>
       </module>
-      <module id="privacypolicies"/>
+      <module id="privacypolicies">
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES" attributes="" save_date="2017-05-18 14:33:18"><![CDATA[Tietosuojakäytäntö]]></key>
+      </module>
       <module id="profile">
         <key id="profile&amp;_ACCESS_COUNT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sisäänkirjautumiset]]></key>
         <key id="profile&amp;_ACCESS_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssiin käytetty aika]]></key>
         <key id="profile&amp;_ACTIVITY_OF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[[firstname]:n toiminta]]></key>
         <key id="profile&amp;_AVATAR_PHOTO_INSTRUCTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ainoastaan png, gif ja jpg kuvaformaatit ovat sallittuja ylösladattaviksi. Jos koko ylittää [max_px] pikseliä sen koko muutetaan automaattisesti.<br />
 Olkaa ystävällisiä älkääkä ladatko ylös loukkavia kuvia.]]></key>
+        <key id="profile&amp;_CAREER" attributes="" save_date="2017-05-08 16:08:04"><![CDATA[Ura]]></key>
+        <key id="profile&amp;_CERT_RELESABLE" attributes="" save_date="2017-05-18 13:50:12"><![CDATA[Saatavilla olevat sertifikaatit]]></key>
         <key id="profile&amp;_CHANGEPASSWORD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vaihda salasana]]></key>
         <key id="profile&amp;_CHANGEPOLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kenttien näkyvyys]]></key>
         <key id="profile&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yhteisö]]></key>
         <key id="profile&amp;_COMPETENCE_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Taidon nimi]]></key>
         <key id="profile&amp;_COMPETENCE_SCORE_GOT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Saavutetut tulokset]]></key>
         <key id="profile&amp;_CONTACTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kontaktit]]></key>
+        <key id="profile&amp;_COURSE_AS" attributes="" save_date="2017-05-18 13:50:40"><![CDATA[Tilatut kurssit]]></key>
         <key id="profile&amp;_COURSE_AS_MENTOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssiin ilmoittauduttu mentorina]]></key>
         <key id="profile&amp;_COURSE_AS_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssiin ilmoittauduttu opettajana]]></key>
         <key id="profile&amp;_COURSE_AS_TUTOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssiin ilmoittauduttu tutorina]]></key>
+        <key id="profile&amp;_COURSE_END" attributes="" save_date="2017-05-18 13:50:20"><![CDATA[Suoritetut kurssit]]></key>
+        <key id="profile&amp;_COURSE_EXPIRING" attributes="" save_date="2017-05-18 13:50:30"><![CDATA[Vanhentuvat kurssit]]></key>
         <key id="profile&amp;_DELETED_USER_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Poista käyttäjälista]]></key>
         <key id="profile&amp;_DELETION_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Poista päivämäärä]]></key>
         <key id="profile&amp;_FIELD_VALUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kentän sisältö]]></key>
@@ -1577,6 +1705,7 @@ Olkaa ystävällisiä älkääkä ladatko ylös loukkavia kuvia.]]></key>
         <key id="profile&amp;_PRIVATE_MESSAGE_FROM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Salli yksityisviestit seuraavilta]]></key>
         <key id="profile&amp;_PROFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjäprofiili]]></key>
         <key id="profile&amp;_REGISTER_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Liittynyt]]></key>
+        <key id="profile&amp;_REG_PASS_MUST_DIFF" attributes="" save_date="2017-05-18 14:34:15"><![CDATA[Uusi salasana pitää erota aikaisemmin käytetyistä]]></key>
         <key id="profile&amp;_SCORE_FINAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lopullinen koetulos]]></key>
         <key id="profile&amp;_SCORE_INIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alun koetulos]]></key>
         <key id="profile&amp;_SHARED_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jaetut tiedostot]]></key>
@@ -1585,6 +1714,7 @@ Olkaa ystävällisiä älkääkä ladatko ylös loukkavia kuvia.]]></key>
         <key id="profile&amp;_TEACHER_PROFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Opettajan profiili]]></key>
         <key id="profile&amp;_TEACHER_PUBLICATIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Julkaisut]]></key>
         <key id="profile&amp;_TITLE_CHANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Salasanasi on vanhentunut]]></key>
+        <key id="profile&amp;_TOTAL_COURSE" attributes="" save_date="2017-05-18 14:36:08"><![CDATA[Yhteensä kursseja]]></key>
         <key id="profile&amp;_UNLIMITED_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ei määriteltyjä rajoja]]></key>
         <key id="profile&amp;_UP_OFFLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjä ei ole sisäänkirjaantunut]]></key>
         <key id="profile&amp;_USERCOMPETENCES_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Taidot]]></key>
@@ -1650,11 +1780,14 @@ Olkaa ystävällisiä älkääkä ladatko ylös loukkavia kuvia.]]></key>
         <key id="register&amp;_ERR_DUPLICATE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämä käyttäjänimi ei ole saatavilla, valitse toinen]]></key>
         <key id="register&amp;_ERR_INVALID_MAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sinun täytyy syöttää aito sähköpostiosoite]]></key>
         <key id="register&amp;_ERR_INVALID_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjänimi on tyhjä tai epäpätevä]]></key>
+        <key id="register&amp;_ERR_PASSWORD_MIN_LENGTH" attributes="" save_date="2017-05-18 14:36:49"><![CDATA[Salasanan tulee sisältää vähimmäismäärä merkkejä]]></key>
         <key id="register&amp;_ERR_PASSWORD_MUSTBE_ALPHA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Salsanan pitää sisältää kirjaimia ja numeroita]]></key>
+        <key id="register&amp;_ERR_PASSWORD_MUSTBE_TEXT" attributes="" save_date="2017-05-18 14:37:23"><![CDATA[Salasanan tulee sisältää vain kirjaimia]]></key>
         <key id="register&amp;_ERR_PASSWORD_NO_MATCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Salasana ei ole sama kuin toinen syötetty salasana]]></key>
         <key id="register&amp;_ERR_POLICY_NOT_CHECKED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sinnun täytyy hyväksyä tietosuojakäytännöt rekisteröityäksesi]]></key>
         <key id="register&amp;_ERR_PWD_OLD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vanha salasana on väärin]]></key>
         <key id="register&amp;_FIRST_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämä on ensimmäinen kerta kun kirjaudut sisään järjestelmään. Muuta väliaikainen salasanasi]]></key>
+        <key id="register&amp;_FORCE_CHANGE" attributes="" save_date="2017-05-18 14:05:22"><![CDATA[Ole hyvä ja valitse uusi salasana]]></key>
         <key id="register&amp;_GOTO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Takaisin sisäänkirjautumissivulle]]></key>
         <key id="register&amp;_GROUPS_FIELDS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämä on kenttä joka on yhdistetty valittuun ryhmään]]></key>
         <key id="register&amp;_IMGSECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rekisteröinti]]></key>
@@ -1673,6 +1806,7 @@ Olkaa ystävällisiä älkääkä ladatko ylös loukkavia kuvia.]]></key>
         <key id="register&amp;_LOST_USERID_MAILTEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjänimesi sivuston [url] yhteisöön on [userid]]]></key>
         <key id="register&amp;_LOST_USERID_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Palauta käyttäjänimi]]></key>
         <key id="register&amp;_MAIL_OBJECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vahvista rekisteröintipyyntösi]]></key>
+        <key id="register&amp;_MAIL_OBJECT_SELF" attributes="" save_date="2017-05-18 13:51:09"><![CDATA[Onnittelut! Teit juuri rekisteröinnin]]></key>
         <key id="register&amp;_MAIL_SEND_SUCCESSFUL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kiitos! Olemme lähettäneet sinulle sähköpostin joka siältää käyttäjänimesi.]]></key>
         <key id="register&amp;_MAIL_SEND_SUCCESSFUL_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kiitos! Olemme lähettäneet sinulle sähköpostin joka sisältää linkin salasanan palauttamiseksi.]]></key>
         <key id="register&amp;_NEWPWDVALID" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusi salasanasi on voimassa [valid_for_day] päivää.]]></key>
@@ -1693,11 +1827,18 @@ Viedäksesi rekisteröinnin loppuun, klikkaa allaolevaa linkkiä (tai kopioi se 
 <a href="[link]">[link]</a><br />
 <br />
 Tämä pyyntö on voimassa seuraavat [hour] tuntia]]></key>
+        <key id="register&amp;_REG_MAIL_TEXT_SELF" attributes="" save_date="2017-05-18 14:39:24"><![CDATA[Vastaanotimme rekisteröintipyyntösi seuraavilla tiedoilla:<br/>
+<br/>
+
+UserID: [userid]<br/>
+Password: 
+[password]]]></key>
         <key id="register&amp;_REG_MANDATORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sinun täytyy täyttää pakolliset kentät, merkitty merkillä [mandatory]]]></key>
         <key id="register&amp;_REG_NOTE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tältä sivulta voit rekisteröity alustalle; seuraa ohjeita ja täytä kentät oikeellisesti.]]></key>
         <key id="register&amp;_REG_NOT_ACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rekisteröinti ei ole aktiivinen]]></key>
         <key id="register&amp;_REG_PASS_MIN_CHAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Salasanan täytyy sisältää vähintään <b>[min_char] merkkiä</b>]]></key>
         <key id="register&amp;_REG_PASS_MUST_BE_ALPNUM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Salasanan täytyy sisältää <b>kirjaimia</b> ja <b>numeroita</b>]]></key>
+        <key id="register&amp;_REG_PASS_MUST_DIFF" attributes="" save_date="2017-05-18 14:39:41"><![CDATA[Uusi salasana pitää olla erilainen]]></key>
         <key id="register&amp;_REG_PRESONAL_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivointikoodi]]></key>
         <key id="register&amp;_REG_PRIVACY_ACCEPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hyväksyn tietosuojakäytäntöjen ehdot]]></key>
         <key id="register&amp;_REG_PRIVACY_POLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kaikki tieto jonka kokoamme joka liittyy tunnistettavissa olevaan henkilöön käytetään vain seuraten tässä määriteltäviä tapoja ja tarkoituksia jotka käyttäjä tässä lain edellyttämällä tavalla hyväksyy <br><br>&#xD;
@@ -1712,6 +1853,7 @@ Tätä tietoa käsiteltäessä tarkkuus ja täsmällisyys toteutetaan jotta käy
         <key id="register&amp;_REG_SUCCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kiitos rekisteröintipyynnöstäsi yhteisöömme.
 Taataksemme yksityisyytesi tulet saamaan sähköpostin joka sisältää vahvistuslinkin.
 Sinun täytyy vahvistaa tilisi ennen sen käyttämistä.]]></key>
+        <key id="register&amp;_REG_SUCCESS_SELF" attributes="" save_date="2017-05-18 14:40:33"><![CDATA[Kiitos rekisteröinnistä, saat pian vahvistusviestinsähköpostiin tarvittavine tietoineen]]></key>
         <key id="register&amp;_REG_USERID_DEF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[käyttäjänimesi]]></key>
         <key id="register&amp;_REG_WAIT_FOR_ADMIN_OK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rekisteröintisi on vahvistettu, tulet saamaan sähjopostin heti kun ylläpitäjä on hyväksynyt sen]]></key>
         <key id="register&amp;_REG_YOUR_ABI_TO_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rekisteröinti vahvistettu]]></key>
@@ -1723,7 +1865,7 @@ Sinun täytyy vahvistaa tilisi ennen sen käyttämistä.]]></key>
       </module>
       <module id="report">
         <key id="report&amp;aggregate_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tiedon aggregointi käyttäjistä ja kursseista]]></key>
-        <key id="report&amp;courses_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssit]]></key>
+        <key id="report&amp;course_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssit]]></key>
         <key id="report&amp;ORG_CHART_SUBDIVISION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hienojaa tieto organisaatiokartan mukaan]]></key>
         <key id="report&amp;REPORT_SHOW_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä tulokset]]></key>
         <key id="report&amp;user_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjät]]></key>
@@ -1746,6 +1888,8 @@ Sinun täytyy vahvistaa tilisi ennen sen käyttämistä.]]></key>
         <key id="report&amp;_COURSE_FIELDS_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä käyttäjän tiedot kursseista]]></key>
         <key id="report&amp;_COURSE_STARTED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjät jotka eivät ole aloittaneet kurssia]]></key>
         <key id="report&amp;_CREATION_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Luontipäivämäärä]]></key>
+        <key id="report&amp;_CRON_REPORT_MAIL_BODY" attributes="" save_date="2017-05-18 15:00:19"><![CDATA[CRON raportin sähköpostirunko]]></key>
+        <key id="report&amp;_CRON_REPORT_MAIL_SUBJECT" attributes="" save_date="2017-05-18 15:00:32"><![CDATA[CRON raportin sähköpostiaihe]]></key>
         <key id="report&amp;_CURRENT_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nykyinen valinta]]></key>
         <key id="report&amp;_CUSTOM_BELT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjän määrittämä aikajakso]]></key>
         <key id="report&amp;_DATE_COURSE_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Loppuunsuorittamispäivämäärä]]></key>
@@ -1769,6 +1913,7 @@ Sinun täytyy vahvistaa tilisi ennen sen käyttämistä.]]></key>
         <key id="report&amp;_MAIL_BODY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Postin sisältö]]></key>
         <key id="report&amp;_MUSTBEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aluksi]]></key>
         <key id="report&amp;_NOACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ei aktivoitu]]></key>
+        <key id="report&amp;_NO_USER_FOUND" attributes="" save_date="2017-05-18 13:51:21"><![CDATA[Käyttäjää ei löytynyt]]></key>
         <key id="report&amp;_NULL_COURSE_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yhtään kurssia ei ole valittu]]></key>
         <key id="report&amp;_NULL_REPORT_RESULT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yhtään tulosta ei löytynyt.]]></key>
         <key id="report&amp;_NULL_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yhtään arvoa ei ole valittu]]></key>
@@ -1801,6 +1946,7 @@ Sinun täytyy vahvistaa tilisi ennen sen käyttämistä.]]></key>
         <key id="report&amp;_RU_CAT_DELAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tee viiveanalyysi]]></key>
         <key id="report&amp;_RU_CAT_GAMES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yhdistää käyttäjät yrityskilpailuun]]></key>
         <key id="report&amp;_RU_CAT_LO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yhdistää käyttäjät oppimisobjekteihin]]></key>
+        <key id="report&amp;_RU_CAT_TESTSTAT" attributes="" save_date="2017-05-18 14:53:24"><![CDATA[Testiin liittyvät käyttäjät]]></key>
         <key id="report&amp;_RU_LO_MILESTONES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valitse virstanpylväät]]></key>
         <key id="report&amp;_RU_LO_TYPES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oppimisobjektityypit]]></key>
         <key id="report&amp;_SAVE_AND_BACK_TO_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<< TALLENNA ja takaisin raporttilistaan]]></key>
@@ -1818,6 +1964,7 @@ Sinun täytyy vahvistaa tilisi ennen sen käyttämistä.]]></key>
         <key id="report&amp;_STATS_FIELDS_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä tilastoja kursseista]]></key>
         <key id="report&amp;_TAB_REP_CREATOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Luonnut]]></key>
         <key id="report&amp;_TAB_REP_PUBLIC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yleinen]]></key>
+        <key id="report&amp;_TH_COURSELABEL" attributes="" save_date="2017-05-18 15:01:20"><![CDATA[Luokittelu]]></key>
         <key id="report&amp;_TH_COURSEPATH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Polku]]></key>
         <key id="report&amp;_TH_ESTIMATED_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Arvioitu aika]]></key>
         <key id="report&amp;_TH_USER_COURSE_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssin tulos]]></key>
@@ -1836,13 +1983,16 @@ Sinun täytyy vahvistaa tilisi ennen sen käyttämistä.]]></key>
         <key id="reservation&amp;_AREYOUSURE_ADD_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oletko varma että haluat rekisteröidä tämän tapahtuman?]]></key>
         <key id="reservation&amp;_AREYOUSURE_DEL_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oletko varma että haluat peruuttaa tämän rekisteröinnin?]]></key>
         <key id="reservation&amp;_AVAILABLE_PLACES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Saatavilla]]></key>
+        <key id="reservation&amp;_BODY_DELSUBSCRIPTION" attributes="" save_date="2017-05-18 14:40:55"><![CDATA[Tapahtuman tilaus peruttu]]></key>
         <key id="reservation&amp;_CANCEL_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Peruuta Rekisteröinti]]></key>
         <key id="reservation&amp;_CATEGORY_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kategoriat]]></key>
         <key id="reservation&amp;_CATEGORY_GESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hallinnoi kategoriaa]]></key>
         <key id="reservation&amp;_CATEGORY_MAX_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max Tapahtumia kategorialle]]></key>
         <key id="reservation&amp;_CHOOSE_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilaa käyttäjille]]></key>
+        <key id="reservation&amp;_CONFIRM_DATA" attributes="" save_date="2017-05-18 14:41:07"><![CDATA[Ole hyvä ja vahvista tietosi]]></key>
         <key id="reservation&amp;_DEADLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Deadline]]></key>
         <key id="reservation&amp;_DEL_EVENT_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rekisteröi tämä tapahtuma sen sijaan]]></key>
+        <key id="reservation&amp;_DEL_SUBSCRIPTION_TITLE" attributes="" save_date="2017-05-18 14:05:55"><![CDATA[Peruuta varaus]]></key>
         <key id="reservation&amp;_EVENT_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tapahtumalista]]></key>
         <key id="reservation&amp;_FROM_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ajasta]]></key>
         <key id="reservation&amp;_LOCATION_GESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laboratoriohallinta]]></key>
@@ -1855,12 +2005,16 @@ Sinun täytyy vahvistaa tilisi ennen sen käyttämistä.]]></key>
         <key id="reservation&amp;_RESERVATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Varaus]]></key>
         <key id="reservation&amp;_RESERVATION_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kategorianhallinta]]></key>
         <key id="reservation&amp;_RESERVATION_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Saatavilla olevat tapahtumat]]></key>
+        <key id="reservation&amp;_RESERVATION_MAIL_SEND" attributes="" save_date="2017-05-12 15:29:56"><![CDATA[Lähetä sähköpostia]]></key>
         <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rekisteröintini]]></key>
         <key id="reservation&amp;_RESERVATION_PAST_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vanhat tapahtumat]]></key>
+        <key id="reservation&amp;_RESERVATION_PROFILE_MODIFY" attributes="" save_date="2017-05-18 14:05:49"><![CDATA[Varaus]]></key>
         <key id="reservation&amp;_RESERVATION_SUBSCRIBED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hallinnoi tapahtumia]]></key>
         <key id="reservation&amp;_RESERVATION_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista nykyisistä varauksista]]></key>
         <key id="reservation&amp;_ROOM_FULL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[TÄYNNÄ]]></key>
+        <key id="reservation&amp;_SAVE" attributes="" save_date="2017-05-18 14:41:15"><![CDATA[Muokkaa tapahtumaa]]></key>
         <key id="reservation&amp;_SET_ROOM_VIEW_PERM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kuka voi varata tämän tapahtuman]]></key>
+        <key id="reservation&amp;_SUBJECT_DELSUBSCRIPTION" attributes="" save_date="2017-05-18 14:41:45"><![CDATA[Peruuta tapahtuman tilaus]]></key>
         <key id="reservation&amp;_SUBSCRIBE_EVENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilaa käyttäjille]]></key>
         <key id="reservation&amp;_SWITCH_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vaihda (valitse tämä tapahtuma jonkin toisen sijaan)]]></key>
         <key id="reservation&amp;_TO_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Loppumisaika]]></key>
@@ -1907,8 +2061,10 @@ Käyttäjänimi: [userid]
 Salasana: [password]]]></key>
         <key id="sms&amp;_TO_APPROVE_GROUP_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Uuden käyttäjän liittyminen valvottuun ryhmään odottaa hyväksyntää]]></key>
         <key id="sms&amp;_TO_APPROVE_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Uusi käyttäjä on rekisteröitynyt ja odottaa hyväksyntää]]></key>
+        <key id="sms&amp;_TO_NEW_USER_TEXT_SMS" attributes="sms" save_date="2017-05-18 13:55:45"><![CDATA[Uusi käyttäjä rekisteröity]]></key>
         <key id="sms&amp;_WAITING_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Uusi käyttäjä odottaa hyväksyntää]]></key>
         <key id="sms&amp;_YOU_RECIVE_MSG_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Olet saanut uuden viestin verkko-oppimisjärjestelmässä kurssilla [course] käyttäjältä [from]]]></key>
+        <key id="sms&amp;_YOU_RECIVE_MSG_TEXT_SMS_COURSE" attributes="" save_date="2017-05-18 14:43:00"><![CDATA[Olet saanut uuden viestin verkko-oppimisalustan kurssin [course] käyttäjältä [from]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yhdistettyjä tilejä:]]></key>
@@ -1923,6 +2079,7 @@ Salasana: [password]]]></key>
         <key id="standard&amp;not attempted" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ei yritetty]]></key>
         <key id="standard&amp;not_attempted" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ei yritetty]]></key>
         <key id="standard&amp;passed" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Läpäisty]]></key>
+        <key id="standard&amp;PREV_B_" attributes="" save_date="2017-05-18 13:55:51"><![CDATA[Edellinen]]></key>
         <key id="standard&amp;_ACCESSES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pääsyt]]></key>
         <key id="standard&amp;_ACTIVATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivoi]]></key>
         <key id="standard&amp;_ACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktiivinen]]></key>
@@ -1954,15 +2111,19 @@ Salasana: [password]]]></key>
         <key id="standard&amp;_ATTENDANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Osaanotto]]></key>
         <key id="standard&amp;_AUTHOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kirjoittaja]]></key>
         <key id="standard&amp;_AUTODETECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Havaitse automaattisesti]]></key>
+        <key id="standard&amp;_AUTO_SUBSCRIPTION" attributes="" save_date="2017-05-18 14:06:07"><![CDATA[Automaattinen tilaus]]></key>
         <key id="standard&amp;_AVATAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avatar]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Keskiarvo]]></key>
-        <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;lt;&amp;lt; Takaisin]]></key>
+        <key id="standard&amp;_BACK" attributes="" save_date="2017-05-08 12:28:04"><![CDATA[&lt;&lt; Takaisin]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Perushaku]]></key>
         <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:37:54"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[by]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kalenteri]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Peruuta]]></key>
-        <key id="standard&amp;_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurrsiluettelo]]></key>
+        <key id="standard&amp;_CAREER" attributes="" save_date="2017-05-08 16:08:06"><![CDATA[Ura]]></key>
+        <key id="standard&amp;_CATALOGUE" attributes="" save_date="2017-05-18 13:28:34"><![CDATA[Kurssiluettelo]]></key>
+        <key id="standard&amp;_CATALOGUE2" attributes="" save_date="2017-05-18 13:56:08"><![CDATA[Kurssiluettelo]]></key>
+        <key id="standard&amp;_CATALOGUE_NEW" attributes="" save_date="2017-05-18 13:56:27"><![CDATA[Kalenteri]]></key>
         <key id="standard&amp;_CATEGORIZATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kategorisointi]]></key>
         <key id="standard&amp;_CATEGORIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kategorisoi]]></key>
         <key id="standard&amp;_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kategoria]]></key>
@@ -1984,17 +2145,23 @@ Salasana: [password]]]></key>
         <key id="standard&amp;_CONNECTION_ERROR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yhteysvirhe]]></key>
         <key id="standard&amp;_CONTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sisältää]]></key>
         <key id="standard&amp;_CONTENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sisällöt]]></key>
+        <key id="standard&amp;_CONTENT_FILE_MANAGER" attributes="" save_date="2017-05-18 14:59:56"><![CDATA[Sisältötiedostojen hallinta]]></key>
         <key id="standard&amp;_CONTENT_LIBRARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sisältökirjasto]]></key>
         <key id="standard&amp;_CONTEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kilpailu]]></key>
         <key id="standard&amp;_CONTINUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jatka]]></key>
+        <key id="standard&amp;_CORE_VERSION" attributes="" save_date="2017-05-18 15:00:05"><![CDATA[Ytimen versio]]></key>
         <key id="standard&amp;_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssi]]></key>
+        <key id="standard&amp;_COURSECATEGORY" attributes="" save_date="2017-05-18 13:56:36"><![CDATA[Kurssikategoriat]]></key>
         <key id="standard&amp;_COURSEPATH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Opinto-ohjelmat]]></key>
         <key id="standard&amp;_COURSES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssit]]></key>
         <key id="standard&amp;_COURSE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssikoodi]]></key>
         <key id="standard&amp;_COURSE_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssilista]]></key>
         <key id="standard&amp;_COURSE_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssinimi]]></key>
+        <key id="standard&amp;_COURSE_STATUS" attributes="" save_date="2017-05-18 13:56:45"><![CDATA[Kurssi on suljettu]]></key>
         <key id="standard&amp;_COURSE_S_FREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vapaa]]></key>
+        <key id="standard&amp;_COURSE_VALID_TIME" attributes="" save_date="2017-05-18 14:06:40"><![CDATA[Aikaraja ylitetty]]></key>
         <key id="standard&amp;_CREATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Luo]]></key>
+        <key id="standard&amp;_CREATION_DATE" attributes="" save_date="2017-05-18 13:56:57"><![CDATA[Luontipäivä]]></key>
         <key id="standard&amp;_CREDITS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Credits]]></key>
         <key id="standard&amp;_CURRENT_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nykyinen tiedosto]]></key>
         <key id="standard&amp;_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Päivämäärä]]></key>
@@ -2002,7 +2169,7 @@ Salasana: [password]]]></key>
         <key id="standard&amp;_DATE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Päivämäärä loppu]]></key>
         <key id="standard&amp;_DATE_FIRST_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ensimmäisen pääsyn päivämäärä]]></key>
         <key id="standard&amp;_DATE_FORMAT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Päivämäärän muoto]]></key>
-        <key id="standard&amp;_DATE_LAST_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Viimeisen pääsyn päivämäärä]]></key>
+        <key id="standard&amp;_DATE_LAST_ACCESS" attributes="" save_date="2017-05-18 15:02:37"><![CDATA[Viimeksi kirjauduttu]]></key>
         <key id="standard&amp;_DAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Päivä]]></key>
         <key id="standard&amp;_DAYS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Päiv(i)ä]]></key>
         <key id="standard&amp;_DEACTIVATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Deaktivoi]]></key>
@@ -2044,6 +2211,7 @@ Salasana: [password]]]></key>
         <key id="standard&amp;_ERROR_NONAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sinun täytyy täyttää nimi]]></key>
         <key id="standard&amp;_ERROR_UPLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Virhe ladattaessa objektia, objektia ei ladattu ylös]]></key>
         <key id="standard&amp;_EVENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tapahtuma]]></key>
+        <key id="standard&amp;_EXECUTION_DATE" attributes="" save_date="2017-05-18 14:43:26"><![CDATA[Suorituspäivä]]></key>
         <key id="standard&amp;_EXPAND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laajenna]]></key>
         <key id="standard&amp;_EXPIRATION_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vanhentuu]]></key>
         <key id="standard&amp;_EXPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vie]]></key>
@@ -2055,6 +2223,7 @@ Salasana: [password]]]></key>
         <key id="standard&amp;_FIELD_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kentän nimi]]></key>
         <key id="standard&amp;_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tiedosto]]></key>
         <key id="standard&amp;_FILENAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tiedostonnimi]]></key>
+        <key id="standard&amp;_FILE_MANAGER" attributes="" save_date="2017-05-18 14:53:58"><![CDATA[Tiedostohallinta]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Suodata]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kaikkien ehtojen täytyy täyttyä]]></key>
         <key id="standard&amp;_FILTER_ONE_COND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vähintään yhden ehdon täytyy täyttyä]]></key>
@@ -2067,10 +2236,14 @@ Salasana: [password]]]></key>
         <key id="standard&amp;_FUNCTIONAL_ROLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yrityksen roolit]]></key>
         <key id="standard&amp;_GAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Puute]]></key>
         <key id="standard&amp;_GOOGLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Google]]></key>
+        <key id="standard&amp;_GRADIMENTO" attributes="" save_date="2017-05-18 13:57:39"><![CDATA[Arviointi]]></key>
         <key id="standard&amp;_GROUPS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ryhmät]]></key>
         <key id="standard&amp;_HEIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Korkeus]]></key>
+        <key id="standard&amp;_HELP" attributes="" save_date="2017-05-18 13:57:29"><![CDATA[Apua]]></key>
         <key id="standard&amp;_HIDDEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Piiloitettu]]></key>
         <key id="standard&amp;_HISTORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Historia]]></key>
+        <key id="standard&amp;_HOME" attributes="" save_date="2017-05-18 14:43:33"><![CDATA[Kotisivu]]></key>
+        <key id="standard&amp;_HOME_TAB" attributes="" save_date="2017-05-18 13:57:47"><![CDATA[Kotiruutu]]></key>
         <key id="standard&amp;_HOURS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tuntia]]></key>
         <key id="standard&amp;_IMAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kuva]]></key>
         <key id="standard&amp;_IMAGES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kuvat]]></key>
@@ -2087,8 +2260,11 @@ Salasana: [password]]]></key>
         <key id="standard&amp;_LABELS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Etiketit]]></key>
         <key id="standard&amp;_LANGUAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kieli]]></key>
         <key id="standard&amp;_LASTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sukunimi]]></key>
+        <key id="standard&amp;_LBL_CODE" attributes="" save_date="2017-05-18 13:57:21"><![CDATA[Syötä koodi]]></key>
+        <key id="standard&amp;_LBL_SEND" attributes="" save_date="2017-05-18 13:57:15"><![CDATA[Tilaa]]></key>
         <key id="standard&amp;_LEARNING_OBJECTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oppimisobjektit]]></key>
         <key id="standard&amp;_LEVEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Taso]]></key>
+        <key id="standard&amp;_LIBRARY" attributes="" save_date="2017-05-18 13:57:09"><![CDATA[Kirjasto]]></key>
         <key id="standard&amp;_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Linkki]]></key>
         <key id="standard&amp;_LINKEDIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Linkedin]]></key>
         <key id="standard&amp;_LOADED_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ylösladatut tiedostot]]></key>
@@ -2144,6 +2320,7 @@ Salasana: [password]]]></key>
         <key id="standard&amp;_NEW_FOLDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusi hakemisto]]></key>
         <key id="standard&amp;_NEW_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusi käyttäjä]]></key>
         <key id="standard&amp;_NEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seuraava]]></key>
+        <key id="standard&amp;_NEXT_B" attributes="" save_date="2017-05-12 18:08:09"><![CDATA[Seuraava >>]]></key>
         <key id="standard&amp;_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ei]]></key>
         <key id="standard&amp;_NONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ei yhtään]]></key>
         <key id="standard&amp;_NOTES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Muistiinpanot]]></key>
@@ -2166,6 +2343,7 @@ Salasana: [password]]]></key>
         <key id="standard&amp;_OPEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avaa]]></key>
         <key id="standard&amp;_OPERATION_FAILURE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Virhe käsiteltäessä pyydettyä toimintoa]]></key>
         <key id="standard&amp;_OPERATION_SUCCESSFUL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Toiminto suoritettiin onnistuneesti]]></key>
+        <key id="standard&amp;_OPERATION_SUCCESSFULPWD" attributes="" save_date="2017-05-18 14:43:45"><![CDATA[Onnistunut salasanan vaihto]]></key>
         <key id="standard&amp;_ORDER_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Järjestä]]></key>
         <key id="standard&amp;_ORD_ASC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Järjestä nousevasti]]></key>
         <key id="standard&amp;_ORD_ASC_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nouseva järjestys]]></key>
@@ -2180,10 +2358,13 @@ Salasana: [password]]]></key>
         <key id="standard&amp;_PLANNED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Suunniteltu]]></key>
         <key id="standard&amp;_PLAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Soita]]></key>
         <key id="standard&amp;_PLAY_CHANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Katsomiskerrat]]></key>
+        <key id="standard&amp;_PRECOMPILE" attributes="" save_date="2017-05-18 13:58:00"><![CDATA[Täydennä puuttuvat kentät]]></key>
         <key id="standard&amp;_PREREQUISITES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Edellytykset]]></key>
+        <key id="standard&amp;_PRESENCE" attributes="" save_date="2017-05-18 14:43:51"><![CDATA[Tilatieto]]></key>
         <key id="standard&amp;_PREV" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Edellinen]]></key>
         <key id="standard&amp;_PREVELEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Edellinen alkio]]></key>
         <key id="standard&amp;_PREVIEW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Esikatselu]]></key>
+        <key id="standard&amp;_PREV_B" attributes="" save_date="2017-05-18 13:58:29"><![CDATA[Edellinen]]></key>
         <key id="standard&amp;_PREV_STEP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Edellinen]]></key>
         <key id="standard&amp;_PROGRESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Edistyminen]]></key>
         <key id="standard&amp;_PROPERTIES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ominaisuudet]]></key>
@@ -2196,6 +2377,7 @@ Salasana: [password]]]></key>
         <key id="standard&amp;_RECIPIENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vastaanottajat]]></key>
         <key id="standard&amp;_REGISTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rekisteröi]]></key>
         <key id="standard&amp;_REGISTER_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Liittymispäivämäärä]]></key>
+        <key id="standard&amp;_REMEMBER_ME" attributes="" save_date="2017-05-18 13:58:14"><![CDATA[Muista minut]]></key>
         <key id="standard&amp;_REMOVE_FROM_NODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Poista noodista]]></key>
         <key id="standard&amp;_REPLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vastaa]]></key>
         <key id="standard&amp;_REPOPASTELO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Liitä oppimisobjekti]]></key>
@@ -2203,15 +2385,22 @@ Salasana: [password]]]></key>
         <key id="standard&amp;_REQUIRED_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vaaditut tulokset]]></key>
         <key id="standard&amp;_RESET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Palauta]]></key>
         <key id="standard&amp;_ROLLBACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vie takaisin]]></key>
+        <key id="standard&amp;_ROOT" attributes="" save_date="2017-05-18 14:54:05"><![CDATA[juuri]]></key>
         <key id="standard&amp;_ROW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rivi]]></key>
         <key id="standard&amp;_SAVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tallenna muutokset]]></key>
         <key id="standard&amp;_SCHEDULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[AIkataulu]]></key>
         <key id="standard&amp;_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tulos]]></key>
+        <key id="standard&amp;_SCORE_LAST_TEST" attributes="" save_date="2017-05-18 14:55:41"><![CDATA[Viimeisimmän testin pisteet]]></key>
+        <key id="standard&amp;_SCRIPT_DESCRIPTION" attributes="" save_date="2017-05-18 13:59:05"><![CDATA[Skriptin ID]]></key>
+        <key id="standard&amp;_SCRIPT_NAME" attributes="" save_date="2017-05-18 13:58:52"><![CDATA[Skriptin nimi]]></key>
+        <key id="standard&amp;_SCRIPT_VERSION" attributes="" save_date="2017-05-18 13:58:59"><![CDATA[Skriptin versio]]></key>
         <key id="standard&amp;_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Haku]]></key>
         <key id="standard&amp;_SECONDS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[sekuntia]]></key>
         <key id="standard&amp;_SELECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valitse]]></key>
         <key id="standard&amp;_SELECTED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valitut alkiot]]></key>
         <key id="standard&amp;_SELECT_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valitse kaikki]]></key>
+        <key id="standard&amp;_SELECT_LIBRARY" attributes="" save_date="2017-05-18 13:59:21"><![CDATA[Valitse tarkasteltava kirjasto]]></key>
+        <key id="standard&amp;_SELECT_VIDEO_TYPE" attributes="" save_date="2017-05-18 14:44:07"><![CDATA[Valitse kaistanleveys]]></key>
         <key id="standard&amp;_SEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lähetä]]></key>
         <key id="standard&amp;_SENDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lähettäjä]]></key>
         <key id="standard&amp;_SEND_TO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lähetä kenelle]]></key>
@@ -2219,6 +2408,7 @@ Salasana: [password]]]></key>
         <key id="standard&amp;_SHORTDESC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lyhyt kuvaus]]></key>
         <key id="standard&amp;_SHOW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä]]></key>
         <key id="standard&amp;_SHOW_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tulokset]]></key>
+        <key id="standard&amp;_SHOW_STATISTICS" attributes="" save_date="2017-05-18 14:55:09"><![CDATA[Näytä kaaviot]]></key>
         <key id="standard&amp;_SIGNATURE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nimikirjoitus]]></key>
         <key id="standard&amp;_SORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Järjestä mukaan]]></key>
         <key id="standard&amp;_STANDINGS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sijoitukset]]></key>
@@ -2233,6 +2423,7 @@ Salasana: [password]]]></key>
         <key id="standard&amp;_SUBJECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aihe]]></key>
         <key id="standard&amp;_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilaa]]></key>
         <key id="standard&amp;_SUBSCRIBED_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilannut]]></key>
+        <key id="standard&amp;_SUBSCRIBE_COURSE" attributes="" save_date="2017-05-18 14:44:12"><![CDATA[Kurssitilaus]]></key>
         <key id="standard&amp;_SUSPEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hyllytä]]></key>
         <key id="standard&amp;_SUSPENDED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hyllytetty]]></key>
         <key id="standard&amp;_TABS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tabit]]></key>
@@ -2261,16 +2452,19 @@ Salasana: [password]]]></key>
         <key id="standard&amp;_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjä]]></key>
         <key id="standard&amp;_USERNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjänimi]]></key>
         <key id="standard&amp;_USERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjät]]></key>
+        <key id="standard&amp;_USER_ALREADY_EXISTS" attributes="" save_date="2017-05-18 14:44:27"><![CDATA[Käyttäjä on jo olemassa]]></key>
         <key id="standard&amp;_USER_STATUS_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käynnissä]]></key>
         <key id="standard&amp;_USER_STATUS_CANCELLED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Poistettu]]></key>
         <key id="standard&amp;_USER_STATUS_CONFIRMED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilauksia vahvistettavina]]></key>
         <key id="standard&amp;_USER_STATUS_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Loppuunviety]]></key>
+        <key id="standard&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:51:02"><![CDATA[Sisäään]]></key>
         <key id="standard&amp;_USER_STATUS_RESERVED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Varattu]]></key>
         <key id="standard&amp;_USER_STATUS_SUBS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilattu]]></key>
         <key id="standard&amp;_USER_STATUS_SUSPEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hyllytetty]]></key>
         <key id="standard&amp;_VERSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Versio]]></key>
         <key id="standard&amp;_VIDEOCONFERENCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Videokonferenssi]]></key>
         <key id="standard&amp;_VIEW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä]]></key>
+        <key id="standard&amp;_VIEW_ALL" attributes="" save_date="2017-05-18 14:06:54"><![CDATA[Näytä kaikki]]></key>
         <key id="standard&amp;_VIEW_PERMISSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Muokka näkymäoikeuksia]]></key>
         <key id="standard&amp;_WAITING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Odottaa]]></key>
         <key id="standard&amp;_WAITING_USERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Odottaa käyttäjiä]]></key>
@@ -2316,10 +2510,13 @@ Salasana: [password]]]></key>
         <key id="statistic&amp;_WEEK_DAY_6_SHORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lau]]></key>
       </module>
       <module id="stats">
+        <key id="stats&amp;_FILTEREDITIONSELECTONEOPTION" attributes="" save_date="2017-05-18 14:44:40"><![CDATA[Valitse yksi vaihtoehto]]></key>
+        <key id="stats&amp;_FILTEREDITIONSELECTTITLE" attributes="" save_date="2017-05-18 14:45:07"><![CDATA[Suodata version mukaan]]></key>
         <key id="stats&amp;_FILTEROBJECTFINISHED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä vain käyttäjät jotka ovat katsoneet vähintään yhdfen oppimisobjektin]]></key>
         <key id="stats&amp;_FILTERSTATUSSELECTONEOPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kaikki statukset]]></key>
         <key id="stats&amp;_ORGPLAYTITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilastot objektin mukaan]]></key>
         <key id="stats&amp;_PROGRESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objektit]]></key>
+        <key id="stats&amp;_SHOW_STATISTICS" attributes="" save_date="2017-05-18 14:45:19"><![CDATA[Näytä tilastot]]></key>
         <key id="stats&amp;_STATFORUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjätilastot]]></key>
         <key id="stats&amp;_STATISTIC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilastot]]></key>
         <key id="stats&amp;_STATNOTRACKFORUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ei tietoja käyttäjästä/luennosta]]></key>
@@ -2328,8 +2525,11 @@ Salasana: [password]]]></key>
         <key id="stats&amp;_STATSUSERITEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilastot opiskelijan/objektin mukaan]]></key>
         <key id="stats&amp;_STATS_FULLNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Koko nimi]]></key>
         <key id="stats&amp;_STATS_USERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjien tilastot]]></key>
+        <key id="stats&amp;_VIEW_OPEN_QUEST" attributes="" save_date="2017-05-18 14:45:34"><![CDATA[Näytä vastaukset avoimiin kysymyksiin]]></key>
       </module>
       <module id="storage">
+        <key id="storage&amp;_EXPORT_QUESTIONS" attributes="" save_date="2017-05-18 14:45:42"><![CDATA[Vie kysymykset]]></key>
+        <key id="storage&amp;_HELP" attributes="" save_date="2017-05-18 14:45:49"><![CDATA[Apua]]></key>
         <key id="storage&amp;_HOMEREPOROOTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objektini]]></key>
         <key id="storage&amp;_LOCKED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lukittu]]></key>
         <key id="storage&amp;_LONAME_faq" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[UKK]]></key>
@@ -2347,12 +2547,15 @@ Salasana: [password]]]></key>
         <key id="storage&amp;_ORGPLAYTITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Soita objekti]]></key>
         <key id="storage&amp;_ORGROOTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssiobjektit]]></key>
         <key id="storage&amp;_PUBREPOROOTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jaetut objektit]]></key>
+        <key id="storage&amp;_REMEMBER_ME" attributes="" save_date="2017-05-18 14:17:55"><![CDATA[Muista minut]]></key>
         <key id="storage&amp;_RENAMEFOLDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nimeä uudelleen]]></key>
         <key id="storage&amp;_REPOCOPYLO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kopioi oppimisobjekti]]></key>
         <key id="storage&amp;_REPOCREATELO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusi oppimisobjekti]]></key>
         <key id="storage&amp;_REPOSELECTDESTINATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valitse kohde :]]></key>
         <key id="storage&amp;_RULES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Katsomissäännöt]]></key>
         <key id="storage&amp;_SELECTLO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valitse oppimisobjekti]]></key>
+        <key id="storage&amp;_SELECTTEST" attributes="" save_date="2017-05-18 14:18:05"><![CDATA[Valitse testi:]]></key>
+        <key id="storage&amp;_SELECT_VIDEO_TYPE" attributes="" save_date="2017-05-18 14:45:59"><![CDATA[Valitse kaistanleveys]]></key>
         <key id="storage&amp;_TARGETMOVEFOLDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valitse kohdehakemisto]]></key>
       </module>
       <module id="subscribe">
@@ -2360,8 +2563,11 @@ Salasana: [password]]]></key>
         <key id="subscribe&amp;_BEFORE_THIS_APPROVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käyttäjän tilaus kurssille vahvistetaan vasta ylläpitäjän hyväksynnän jälkeen]]></key>
         <key id="subscribe&amp;_CAPTION_SELECT_LEVELS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valitse valitun käyttäjän taso]]></key>
         <key id="subscribe&amp;_CHOOSE_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valitsee tilaavat opiskelijat kurssille]]></key>
+        <key id="subscribe&amp;_COPY" attributes="" save_date="2017-05-18 14:18:13"><![CDATA[Kopio]]></key>
+        <key id="subscribe&amp;_COPY_TO_COURSE" attributes="" save_date="2017-05-18 14:18:57"><![CDATA[Kopio tilaukset]]></key>
         <key id="subscribe&amp;_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Korjaa tilaus]]></key>
         <key id="subscribe&amp;_DATE_BEGIN_VALIDITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Akttivinen alkaen]]></key>
+        <key id="subscribe&amp;_DATE_COMPLETE" attributes="" save_date="2017-05-18 14:19:16"><![CDATA[Suorituspäivä]]></key>
         <key id="subscribe&amp;_DATE_EXPIRE_VALIDITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktiivinen kunnes]]></key>
         <key id="subscribe&amp;_DATE_FIRST_COMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ensimmäisen valmistumisen päivämäärä]]></key>
         <key id="subscribe&amp;_DATE_LAST_COMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Viimeisen valmistumisen päivämäärä]]></key>
@@ -2376,6 +2582,8 @@ Salasana: [password]]]></key>
         <key id="subscribe&amp;_INSER_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lisäyksen status]]></key>
         <key id="subscribe&amp;_JUSTIFIED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kyllä, oikeutettu]]></key>
         <key id="subscribe&amp;_LEVEL_TO_IMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tuotavien käyttäjien taso]]></key>
+        <key id="subscribe&amp;_MOVE" attributes="" save_date="2017-05-18 14:07:11"><![CDATA[Siirrä]]></key>
+        <key id="subscribe&amp;_MOVE_TO_COURSE" attributes="" save_date="2017-05-18 14:07:20"><![CDATA[Siirrä tilaukset]]></key>
         <key id="subscribe&amp;_NOT_EXPIRED_WITHOUT_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ei vanhentumista]]></key>
         <key id="subscribe&amp;_NOT_EXPIRED_WITH_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ei vanhentunut]]></key>
         <key id="subscribe&amp;_NOT_JUSTIFIED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kyllä, ei oikeutettu]]></key>
@@ -2386,6 +2594,7 @@ Salasana: [password]]]></key>
         <key id="subscribe&amp;_SEND_ALERT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lähetä varoitus tilaaville käyttäjille]]></key>
         <key id="subscribe&amp;_SHOW_ONLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä vain]]></key>
         <key id="subscribe&amp;_STATUS_TO_IMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tuotavien käyttäjien status]]></key>
+        <key id="subscribe&amp;_SUBSCRIBE" attributes="" save_date="2017-05-18 14:07:25"><![CDATA[Tilaa]]></key>
         <key id="subscribe&amp;_SUBSCRIBE_ACCEPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vahvistusteksti (lähetetään käyttäjälle)]]></key>
         <key id="subscribe&amp;_SUBSCRIBE_REFUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ei hyväksytty teksti (lähetetään käyttäjälle)]]></key>
         <key id="subscribe&amp;_SUMMARY_SELECT_LEVEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista valituista käyttäjistä, valitse taso]]></key>
@@ -2397,7 +2606,11 @@ Salasana: [password]]]></key>
         <key id="subscribe&amp;_WAIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Älä tee mitään]]></key>
         <key id="subscribe&amp;_YOUCANSUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voit tilata ainoastaan [user_subscribe_limit] ennen kuin tilausrajasi tulee vastaan]]></key>
       </module>
-      <module id="subscription"/>
+      <module id="subscription">
+        <key id="subscription&amp;_CONFIRM_SUBSCRIPTION" attributes="" save_date="2017-05-18 14:07:34"><![CDATA[Vahvista tilaus]]></key>
+        <key id="subscription&amp;_IMPORT_FILE" attributes="" save_date="2017-05-18 14:19:29"><![CDATA[CSV tiedoston tuominen]]></key>
+        <key id="subscription&amp;_IMPORT_HEADER" attributes="" save_date="2017-05-18 14:19:48"><![CDATA[Haluatko sisällyttää otsikon?]]></key>
+      </module>
       <module id="sysforum">
         <key id="sysforum&amp;_ADDMESSAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusi viesti]]></key>
         <key id="sysforum&amp;_LOCKEDMESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämä viesti on lukittu]]></key>
@@ -2412,21 +2625,25 @@ Salasana: [password]]]></key>
         <key id="test&amp;_ALL_DIFFICULT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kaikki vaikeustasot]]></key>
         <key id="test&amp;_ALL_QUEST_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kaikki kategoriat]]></key>
         <key id="test&amp;_ALL_QUEST_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[All types]]></key>
+        <key id="test&amp;_ATTEMPTS_REMAINING_BEFORE_SUSPENSION" attributes="" save_date="2017-05-18 14:46:39"><![CDATA[Yrityksiä jäljellä ennen keskeytystä]]></key>
         <key id="test&amp;_BONUS_SCORE_FOR_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tähän kokeeseen määritelty bonus (pyöristävällä tai mauaalisella muunnoksella)]]></key>
         <key id="test&amp;_CURRENT_SELECTION_COUNT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valittu vastaus]]></key>
         <key id="test&amp;_DESELECT_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Poista sivun valinta]]></key>
         <key id="test&amp;_EMPTY_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tyhjä vastaus]]></key>
+        <key id="test&amp;_EXISTING_TEST" attributes="" save_date="2017-05-18 14:20:03"><![CDATA[Olemassa olevaan testiin]]></key>
         <key id="test&amp;_FEEDBACK_MANAGEMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Palautteen hallinta]]></key>
         <key id="test&amp;_FEEDBACK_TEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tekstipalaute]]></key>
         <key id="test&amp;_GIFT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LAHJA]]></key>
         <key id="test&amp;_HARD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vaikea]]></key>
         <key id="test&amp;_MANDATORY_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pyydä käyttäjää vastaamaan kaikkiin kysymyksiin]]></key>
         <key id="test&amp;_MAX_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimimäärä mahdollista koevastausta (aseta 0 poistaaksesi rajoitukset)]]></key>
+        <key id="test&amp;_MAX_ATTEMPT_REACH" attributes="" save_date="2017-05-18 14:59:09"><![CDATA[Suurin määrä yrityksiä on saavutettu.]]></key>
         <key id="test&amp;_NEED_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sinun täytyy vastata kaikkiin kysymyksiin jatkaaksesi koetta.]]></key>
         <key id="test&amp;_NEW_SCORE_FOR_QUESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Määritä uusi tulos tähän kysymykseen]]></key>
         <key id="test&amp;_NEW_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uutena kokeena]]></key>
+        <key id="test&amp;_NUMBER_OF_ATTEMPT" attributes="" save_date="2017-05-18 14:59:38"><![CDATA[Jäljellä olevien yritysten määrä [remaining_attempt]]]></key>
         <key id="test&amp;_ORDER_TYPE_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Satunnaisvalinta kategoriaa kohden]]></key>
-        <key id="test&amp;_ORDER_TYPE_RANDOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[(kysymysten aliryhmä)]]></key>
+        <key id="test&amp;_ORDER_TYPE_RANDOM" attributes="" save_date="2017-04-19 12:38:59"><![CDATA[(Kysymysten aliryhmä)]]></key>
         <key id="test&amp;_QUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kysymys]]></key>
         <key id="test&amp;_QUEST_ACRN_ASSOCIATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[AS]]></key>
         <key id="test&amp;_QUEST_ACRN_BREAK_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[BR]]></key>
@@ -2460,6 +2677,7 @@ Salasana: [password]]]></key>
         <key id="test&amp;_QUEST_TM2_SETSCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aseta tulos]]></key>
         <key id="test&amp;_QUEST_TM2_SETTIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aseta aika:]]></key>
         <key id="test&amp;_QUEST_UPLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lataa ylös tiedosto]]></key>
+        <key id="test&amp;_RESTART_INFO" attributes="" save_date="2017-05-18 14:56:14"><![CDATA[Aloita testin suorittaminen alusta]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valitse sivu]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hyllytä koe seuraavan määrän epäonnistumisia jälkeen]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hyllytä koe seuraaviksi määräksi tunteja]]></key>
@@ -2515,8 +2733,8 @@ Salasana: [password]]]></key>
         <key id="test&amp;_TEST_MM4_SHOWSOL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä oikeat vastaukset]]></key>
         <key id="test&amp;_TEST_MM4_SHOWTOT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Näytä lopullinen tulos (jos laskettavissa)]]></key>
         <key id="test&amp;_TEST_MM_FOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[3 - Yksityiskohdat näytetään yrityksen lopussa]]></key>
-        <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - aseta kysymysten visualisointi]]></key>
-        <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[2-  aseta yritysvaihtoehdot]]></key>
+        <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2017-04-19 12:39:11"><![CDATA[1 - Aseta kysymysten visualisointi]]></key>
+        <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2017-04-19 12:39:24"><![CDATA[2 - Aseta yritysvaihtoehdot]]></key>
         <key id="test&amp;_TEST_MODALITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Koevaihtoehdot]]></key>
         <key id="test&amp;_TEST_MOD_DOANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voit muokata vastauksia]]></key>
         <key id="test&amp;_TEST_MOD_DOANSWER_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<span class="text_bold">Et</span> voi muokata vastauksia]]></key>
@@ -2533,7 +2751,7 @@ Salasana: [password]]]></key>
         <key id="test&amp;_TEST_PM_DIFFICULT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Eri määrä kysymyksen vaikeustason mukaan]]></key>
         <key id="test&amp;_TEST_PM_EQUALTOALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Samat pisteet kaikiksta kysymyksistö (yhteistulos/kysymysten määrä)]]></key>
         <key id="test&amp;_TEST_PM_MANUAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valitse joka kysymyksen tulos]]></key>
-        <key id="test&amp;_TEST_PM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - asete lopullisen tuloksen laskenta]]></key>
+        <key id="test&amp;_TEST_PM_ONE" attributes="" save_date="2017-04-19 12:39:17"><![CDATA[1 - Asete lopullisen tuloksen laskenta]]></key>
         <key id="test&amp;_TEST_PM_SETPOINT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aseta tulosasetukset]]></key>
         <key id="test&amp;_TEST_PM_SUBD_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Levittänyt]]></key>
         <key id="test&amp;_TEST_PM_TWO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[2 - Aseta tulos joka kysymykselle]]></key>
@@ -2572,6 +2790,8 @@ Salasana: [password]]]></key>
         <key id="test&amp;_TEST_SHOW_SOLUTION_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<span class="text_bold">Et</span> saa tietää oikeita vastauksia kokeen suorittamisen jälkeen]]></key>
         <key id="test&amp;_TEST_SUB_ONE_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Poista viimeisin vastaus]]></key>
         <key id="test&amp;_TEST_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kokeen kysymyslista]]></key>
+        <key id="test&amp;_TEST_SUSPENDED" attributes="" save_date="2017-05-18 14:47:09"><![CDATA[Testi on keskeytetty]]></key>
+        <key id="test&amp;_TEST_SUSPENDED_UNTIL" attributes="" save_date="2017-05-18 14:56:49"><![CDATA[Testi on keskeytetty kunnes]]></key>
         <key id="test&amp;_TEST_TEXT_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[vastauslista]]></key>
         <key id="test&amp;_TEST_TE_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valitse oikea sana]]></key>
         <key id="test&amp;_TEST_TIME_ASSIGNED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kokeen aikaraja : <b>[time_assigned] minuuttia</b>]]></key>
@@ -2593,16 +2813,18 @@ Salasana: [password]]]></key>
         <key id="test&amp;_TEST_TM2_SETTIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sovella ja aseta aika]]></key>
         <key id="test&amp;_TEST_TM2_SUBD_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Levittänyt]]></key>
         <key id="test&amp;_TEST_TM_FOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aseta kysymyksille määrätty aika]]></key>
-        <key id="test&amp;_TEST_TM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - aseta koeaika]]></key>
+        <key id="test&amp;_TEST_TM_ONE" attributes="" save_date="2017-04-19 12:39:05"><![CDATA[1 - Aseta koeaika]]></key>
         <key id="test&amp;_TEST_TM_THREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aseta aika joka kysymykselle]]></key>
         <key id="test&amp;_TEST_TM_TWO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[2 - Aseta yhteisaika yrityksille]]></key>
         <key id="test&amp;_TEST_TOTAL_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yhteistulos:]]></key>
         <key id="test&amp;_TEST_YOUCANNOT_SAVEKEEP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämä koe ei tue toivottua toimintoa]]></key>
         <key id="test&amp;_TIME_ELAPSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aikaa kulunut]]></key>
         <key id="test&amp;_TIME_LEFT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aikaa jäljellä]]></key>
+        <key id="test&amp;_UNREACHED_PREREQUISITES" attributes="" save_date="2017-05-18 14:47:23"><![CDATA[Et suorittanut esivaatimuksia]]></key>
         <key id="test&amp;_USE_SUSPENSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käytä kokeen keskeytystä]]></key>
         <key id="test&amp;_VERY_HARD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Erittäin vaikea]]></key>
         <key id="test&amp;_YES_IF_PASSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kyllä, jos koe on läpäisty]]></key>
+        <key id="test&amp;_YOU_HAVE_PASS_THIS_TEST" attributes="" save_date="2017-05-18 14:20:16"><![CDATA[Läpäisit testin]]></key>
       </module>
       <module id="transaction">
         <key id="transaction&amp;_MARK_AS_PAID" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Merkitse maksetuksi]]></key>
@@ -2612,15 +2834,35 @@ Salasana: [password]]]></key>
       <module id="treeview">
         <key id="treeview&amp;_ALT_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tyhjä]]></key>
       </module>
-      <module id="user_management"/>
+      <module id="user_management">
+        <key id="user_management&amp;_REG_BUTTON" attributes="" save_date="2017-05-18 14:20:21"><![CDATA[Mitkä]]></key>
+      </module>
       <module id="user_managment">
+        <key id="user_managment&amp;_ACTION_ON_USERS" attributes="" save_date="2017-05-18 14:58:32"><![CDATA[Käyttäjien toimet]]></key>
+        <key id="user_managment&amp;_AUTOMATIC_PASSWORD" attributes="" save_date="2017-05-18 14:07:58"><![CDATA[Automaattinen salasana]]></key>
+        <key id="user_managment&amp;_CREATE_ALL" attributes="" save_date="2017-05-18 14:08:07"><![CDATA[Luo kaikki]]></key>
+        <key id="user_managment&amp;_CREATE_AND_UPDATE" attributes="" save_date="2017-05-18 14:08:15"><![CDATA[Luo ja päivitä]]></key>
         <key id="user_managment&amp;_DONT_USE_TREE_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Älä käytä itserekisteröintiä orhanisaatiopuuhun]]></key>
+        <key id="user_managment&amp;_FIELD_REPEATED" attributes="" save_date="2017-05-18 14:48:38"><![CDATA[Et voi tuoda samaa saraketta useaan kertaan]]></key>
+        <key id="user_managment&amp;_FROM_FILE" attributes="" save_date="2017-05-18 14:08:28"><![CDATA[Lataa salasana tiedostosta]]></key>
+        <key id="user_managment&amp;_GENERATE_PASSWORD" attributes="" save_date="2017-05-18 14:09:04"><![CDATA[Luo salasana]]></key>
+        <key id="user_managment&amp;_INSERT_ALL" attributes="" save_date="2017-05-18 14:48:02"><![CDATA[Lisää kaikille]]></key>
+        <key id="user_managment&amp;_INSERT_EMPTY" attributes="" save_date="2017-05-18 14:58:50"><![CDATA[Lisää salasana missä kenttä on tyhjä]]></key>
         <key id="user_managment&amp;_LOG_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sisäänkirjautumis/rekisteröintivaihtoehdot]]></key>
+        <key id="user_managment&amp;_MANUAL_PASSWORD" attributes="" save_date="2017-05-18 14:57:13"><![CDATA[Manuaalinen salasana]]></key>
+        <key id="user_managment&amp;_NEED_TO_ALERT" attributes="" save_date="2017-05-18 14:58:14"><![CDATA[Sinun täytyy valita hälytyksen lähettäminen käyttäjille, jos salasana on valittuna]]></key>
+        <key id="user_managment&amp;_NO_FILE" attributes="" save_date="2017-05-18 14:09:18"><![CDATA[Tiedostoa ei ladattu]]></key>
         <key id="user_managment&amp;_NO_VALUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yhtään valintaa ei ole tehty]]></key>
+        <key id="user_managment&amp;_ONLY_CREATE" attributes="" save_date="2017-05-18 14:20:42"><![CDATA[Luo ainoastaan]]></key>
+        <key id="user_managment&amp;_ONLY_UPDATE" attributes="" save_date="2017-05-18 14:09:36"><![CDATA[Päivitys ainoastaan]]></key>
+        <key id="user_managment&amp;_PASSWORD_TO_INSERT" attributes="" save_date="2017-05-18 14:21:09"><![CDATA[Syötettävä salasana]]></key>
         <key id="user_managment&amp;_REACH_NUMBERS_OF_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Olet epäonnistunut sisäänkirjaantumisessa [attempt] kertaa, turvallisuussyistä odota [time] minuuttia enne kuin yrität uudelleen]]></key>
         <key id="user_managment&amp;_REGISTER_TYPE_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vain ylläpitäjän toimesta]]></key>
         <key id="user_managment&amp;_REGISTER_TYPE_MODERATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valvottu itserekisteröinti]]></key>
         <key id="user_managment&amp;_REGISTER_TYPE_SELF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vapaa itserekisteröinti]]></key>
+        <key id="user_managment&amp;_SEND_NEW_CREDENTIALS_ALERT" attributes="" save_date="2017-05-18 14:21:30"><![CDATA[Lähetä uudet kirjautumistunnukset käyttäjille]]></key>
+        <key id="user_managment&amp;_SET_PASSWORD" attributes="" save_date="2017-05-18 14:09:27"><![CDATA[Aseta salasana]]></key>
+        <key id="user_managment&amp;_USERID_NEEDED" attributes="" save_date="2017-05-18 14:22:12"><![CDATA[Userid tarvitaan tuomiseen ja valintaan vertailua varten]]></key>
         <key id="user_managment&amp;_USE_WITH_MANUALEINSERT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilauskoodin manuaalinen syöttö]]></key>
         <key id="user_managment&amp;_USE_WITH_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilauskoodin valinta pudotusvalikosta]]></key>
       </module>

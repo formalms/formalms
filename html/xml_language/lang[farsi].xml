@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170414</DATE>
+  <DATE>20170531</DATE>
   <LANG id="farsi">
     <lang_code>farsi</lang_code>
     <lang_description>Farsi</lang_description>
@@ -208,7 +208,9 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0,6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[هفته]]></key>
       </module>
-      <module id="cart"/>
+      <module id="cart">
+        <key id="cart&amp;_CODE" attributes="" save_date="2017-05-08 14:24:54"><![CDATA[کد]]></key>
+      </module>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[افزودن به سبد]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[پیشه]]></key>
@@ -248,6 +250,7 @@
         <key id="catalogue&amp;_TAB_VIEW_MOSTPOPULAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[محبوب ترین ها]]></key>
         <key id="catalogue&amp;_TAB_VIEW_RECENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[جدیدترین ها]]></key>
         <key id="catalogue&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[کل دوره هایی که مشترک شده اید]]></key>
+        <key id="catalogue&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:50:50"><![CDATA[وارد شدن]]></key>
         <key id="catalogue&amp;_WAITING_APPROVAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[منتظر تایید]]></key>
         <key id="catalogue&amp;_WORD_TO_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[جستجو بر حسب واژه]]></key>
       </module>
@@ -378,6 +381,7 @@
       </module>
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[فعال سازی ویژگی های خاص افراد کم توان]]></key>
+        <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2017-05-05 17:50:22"><![CDATA[پیکربندی "allow_url_fopen"]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[پیکربندی "allow_url_include"]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[دوکبو <abbr title="واسط برنامه نویسی">API</abbr>]]></key>
         <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[دوکبو <abbr title="واسط برنامه نویسی">API</abbr> و <abbr title="تک ورود">SSO</abbr>]]></key>
@@ -891,6 +895,7 @@
         <key id="email&amp;_WAITING_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[کاربر جدیدی در <a href="[url]">[url]</a> منتظر تایید است]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[پیام جدیدی دریافت کرده اید]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[پیام جدیدی در سامانه یادگیری الکترونیک در <a href="[url]">[url]</a> در دوره [course] از کاربر [from] دریافت کرده اید]]></key>
+        <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2017-05-08 13:58:13"><![CDATA[پیام جدیدی در سامانه یادگیری الکترونیک در <a href="[url]">[url]</a> در دوره <b>[course]</b> از کاربر [from] دریافت کرده اید]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_BASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[پایگاه]]></key>
@@ -1210,7 +1215,7 @@
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[صفحه خانه]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[دوکبو یک تریبون متن باز یادگیری الکترونیک (LMS و LCMS) است که در شرکت ها و آموزش عالی استفاده می شود. <br.> <br/> این تریبون از 25 زبان پشتیبانی می کند، با استانداردهای اسکورم 1.2 و 2004 سازگار است، و از مدل های آموزشی مختلف پشتیبانی می کند، از جمله: تلفیقی، خودگردان، همکارانه و حتی یادگیری اجتماعی از طریق گپ، ویکی، تالارهای گفتگو و کارکردهای دیگر. <br/> <br/> <br/> برای تغییر این واژه ها لطفا بروید به مدیر/ تنظیم زبان، <b>login</b> را جستجو کنید و کلید <b>_INTRO_STD_TEXT</b> را ویرایش کنید]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:18:21"><![CDATA[دوکبو یک تریبون متن باز یادگیری الکترونیک (LMS و LCMS) است که در شرکت ها و آموزش عالی استفاده می شود. <br.> <br/> این تریبون از 26 زبان پشتیبانی می کند، با استانداردهای اسکورم 1.2 و 2004 سازگار است، و از مدل های آموزشی مختلف پشتیبانی می کند، از جمله: تلفیقی، خودگردان، همکارانه و حتی یادگیری اجتماعی از طریق گپ، ویکی، تالارهای گفتگو و کارکردهای دیگر. <br/> <br/> <br/> برای تغییر این واژه ها لطفا بروید به مدیر/ تنظیم زبان، <b>login</b> را جستجو کنید و کلید <b>_INTRO_STD_TEXT</b> را ویرایش کنید]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[پرش به فرم ورود]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[تایید LDAP فعال است، اگر کارکرد موجود نیست، لطفا با مدیر خود تماس بگیرید]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ورود]]></key>
@@ -1514,6 +1519,7 @@
         <key id="profile&amp;_ACCESS_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[زمان دوره]]></key>
         <key id="profile&amp;_ACTIVITY_OF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[فعالیت [firstname]]]></key>
         <key id="profile&amp;_AVATAR_PHOTO_INSTRUCTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[فقط قالب های تصویری png، gif و jpg برای بارگذاری مجاز است. اگر اندازه تصویر از [max_px] پیکسل بیشتر شود، اندازه آن خود به خود تغییر می کند.<br /> لطفا تصاویر مستهجن بارگذاری نکنید.]]></key>
+        <key id="profile&amp;_CAREER" attributes="" save_date="2017-05-08 16:08:13"><![CDATA[پیشه]]></key>
         <key id="profile&amp;_CHANGEPASSWORD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[تغییر گذرواژه]]></key>
         <key id="profile&amp;_CHANGEPOLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[رؤیت پذیری مکانه ها]]></key>
         <key id="profile&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[انجمن]]></key>
@@ -1689,7 +1695,7 @@
       </module>
       <module id="report">
         <key id="report&amp;aggregate_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[جمع آوری داده های مربوط به کاربران و دوره]]></key>
-        <key id="report&amp;courses_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[دوره ها]]></key>
+        <key id="report&amp;course_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[دوره ها]]></key>
         <key id="report&amp;ORG_CHART_SUBDIVISION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[تقسیم داده ها مطابق نمودار سازمانی]]></key>
         <key id="report&amp;REPORT_SHOW_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[نمایش نتایج]]></key>
         <key id="report&amp;user_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[کاربران]]></key>
@@ -1821,6 +1827,7 @@
         <key id="reservation&amp;_RESERVATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[رزرواسیون]]></key>
         <key id="reservation&amp;_RESERVATION_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[مدیریت دسته ها]]></key>
         <key id="reservation&amp;_RESERVATION_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[رویدادهای موجود]]></key>
+        <key id="reservation&amp;_RESERVATION_MAIL_SEND" attributes="" save_date="2017-05-12 15:29:46"><![CDATA[ارسال رایانامه]]></key>
         <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ثبت نام من]]></key>
         <key id="reservation&amp;_RESERVATION_PAST_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[رویدادهای گذشته]]></key>
         <key id="reservation&amp;_RESERVATION_SUBSCRIBED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[مدیریت رویدادها]]></key>
@@ -1918,12 +1925,13 @@
         <key id="standard&amp;_AUTODETECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[تشخیص خودکار]]></key>
         <key id="standard&amp;_AVATAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[چهرک]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[میانگین]]></key>
-        <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;lt;&amp;lt; بازگشت]]></key>
+        <key id="standard&amp;_BACK" attributes="" save_date="2017-05-08 12:27:29"><![CDATA[&lt;&lt; بازگشت]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[جستجوی ساده]]></key>
         <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:38:02"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[توسط]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[تقویم]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[لغو]]></key>
+        <key id="standard&amp;_CAREER" attributes="" save_date="2017-05-08 16:08:16"><![CDATA[پیشه]]></key>
         <key id="standard&amp;_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[بروشور دوره]]></key>
         <key id="standard&amp;_CATEGORIZATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[دسته بندی]]></key>
         <key id="standard&amp;_CATEGORIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[دسته بندی]]></key>
@@ -2227,6 +2235,7 @@
         <key id="standard&amp;_USER_STATUS_CANCELLED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[حذف شد]]></key>
         <key id="standard&amp;_USER_STATUS_CONFIRMED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[اشتراک های موجود برای تایید]]></key>
         <key id="standard&amp;_USER_STATUS_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[تمام شد]]></key>
+        <key id="standard&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:50:47"><![CDATA[وارد شدن]]></key>
         <key id="standard&amp;_USER_STATUS_RESERVED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[رزرو شد]]></key>
         <key id="standard&amp;_USER_STATUS_SUBS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[اشتراک انجام شد]]></key>
         <key id="standard&amp;_USER_STATUS_SUSPEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[تعلیق شد]]></key>

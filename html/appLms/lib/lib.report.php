@@ -388,4 +388,13 @@ function getGamesTable($selected = false) {
 		return $table->getTable();
 }
 
+function checkReport($id_filter){
+    $qry = sql_query("SELECT r.id_report FROM %lms_report_filter rf JOIN %lms_report r ON rf.id_report = r.id_report WHERE id_filter=$id_filter");
+
+    if (sql_num_rows($qry)==0){
+        Util::jump_to('index.php?modname=report&op=reportlist&err=plugin');
+    }
+    return true;
+}
+
 ?>
