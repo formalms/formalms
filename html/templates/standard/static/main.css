@@ -2766,7 +2766,8 @@ h1, h2, h3, h4, h5, h6, p {
   .user-panel .carousel span {
     display: block;
     font-family: "Open-sans";
-    font-size: 16px; }
+    font-size: 14px;
+    color: #666666; }
   .user-panel .carousel h3 {
     text-transform: uppercase; }
   .user-panel .carousel .carousel-inner,
@@ -2778,7 +2779,7 @@ h1, h2, h3, h4, h5, h6, p {
     padding-left: 20px;
     position: absolute;
     bottom: 0;
-    font-size: 14px;
+    font-size: 12px;
     color: #c2c2c2; }
     .user-panel .carousel span:before {
       content: '';
