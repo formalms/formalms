@@ -190,10 +190,6 @@ foreach ($menu['all'] as $row) {
 
 }
 
-
-
-               // shopping cart
-              // cout( '<li  ><a href="" title="'.Lang::t("_CART", "cart").'"><span class="glyphicon glyphicon-shopping-cart"></span></a></li> ','menu_over');
               require_once(_lms_.'/lib/lib.cart.php');
               Learning_Cart::init();
               $num_item = Learning_Cart::cartItemCount();
