@@ -1818,7 +1818,7 @@ class UserProfileViewer {
         list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
 
         //$html = ' <div class="container-fluid"> <div class="row">';
-        $html = '<div class="row">';
+        $html = '<div class="row profile">';
 
         $ma = new Man_MiddleArea();
         if ($ma->currentCanAccessObj('mo_message')) {
@@ -1855,7 +1855,7 @@ class UserProfileViewer {
         $social = new Social();
         if ($social->enabled()) {
             if (!$social->allConnected()) {
-                $html .= '<div class="row">';
+                $html .= '<div class="row social">';
                 $html .= '<div class="col-xs-12">';
                 $html .= '<b class="social-accounts-title">' . Lang::t('_CONNECT_YOUR_ACCOUNT_WITH', 'social') . '</b>';
                 $html .= '<ul class="social-accounts">';
@@ -1910,7 +1910,7 @@ class UserProfileViewer {
             }
 
             if ($social->someConnected()) {
-                $html .= '<div class="row">';
+                $html .= '<div class="row social">';
                 $html .= '<div class="col-xs-12">';
                 $html .= '<b class="social-accounts-title">' . Lang::t('_CONNECTED_ACCOUNTS', 'social') . '</b>';
                 $html .= '<ul class="social-accounts">';
@@ -1940,7 +1940,7 @@ class UserProfileViewer {
 
         }
 
-        $html .= '<div class="row">'; //pulsanti certificati-messaggi
+        $html .= '<div class="row comunication">'; //pulsanti certificati-messaggi
 
         if ($perm_certificate) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=lms/mycertificate/show">' . Lang::t('_MY_CERTIFICATE', 'menu_over') . '</a></div>';
         if ($perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
@@ -1977,7 +1977,7 @@ class UserProfileViewer {
                 $end = $course_stats['with_ustatus'][_CUS_END];
             }
 
-            $html .= '<div class="row">';
+            $html .= '<div class="row career">';
             $html .= '<div class="col-xs-12">'
                 . '<h2>' . $this->_lang->def('_CAREER') . '</h2>'
                 . '<ul class="list-group">'

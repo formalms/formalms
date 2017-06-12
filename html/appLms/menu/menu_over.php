@@ -228,22 +228,22 @@ foreach ($menu['all'] as $row) {
                                             '.$profile_box.' 
                                         <!--</div>-->  <!-- end col xs-12 -->
                                     <!-- </div> -->
-                                    <div class="row">
+                                    <div class="row course-subscription">
                                         <div class="col-xs-12">
                                             '.$subscribe_course.'
                                         </div> <!-- end col xs-12 -->
                                     </div>
-                                    <div class="row">
+                                    <div class="row news">
                                         <div class="col-xs-12">
                                             '.$news.'
                                         </div> <!-- end col xs-12 -->
                                     </div>
-                                    <div class="row">
+                                    <div class="row credits">
                                         <div class="col-xs-12">
                                             '.$credits.'
                                         </div> <!-- end col xs-12 -->
                                     </div>
-                                    <div class="row">
+                                    <div class="row lang">
                                         <div class="col-xs-6">
                                             <p>Lingua</p>
                                         </div>
