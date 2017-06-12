@@ -109,47 +109,80 @@ class Lms_BlockWidget_menu extends Widget {
 
     // news section
 	public function news($link) {
-       
-       $html = "";
-            $ma = new Man_MiddleArea ();
-            if ($ma->currentCanAccessObj ( 'news' )){
-            
-                $html .= '<div class="inline_block">' ;
-                
-		        $html  .= '<h2 class="heading">' . Lang::t ( '_NEWS', 'catalogue' ) . '</h2>' . '<div class="content">';
-		        
-		        $user_assigned = Docebo::user ()->getArrSt ();
-		        
-		        $query_news = "
-		        SELECT idNews, publish_date, title, short_desc, important, viewer
-		        FROM %lms_news_internal
-		        WHERE language = '" . getLanguage () . "'
-		        OR language = 'all'
-		        ORDER BY important DESC, publish_date DESC ";
-		        $re_news = sql_query ( $query_news );
+        $html = "";
+        $ma = new Man_MiddleArea ();
+        $count = 0;
 
-                //loop per creare l'elemento news
-		        
-		        while ( list ( $id_news, $publish_date, $title, $short_desc, $impo, $viewer ) = sql_fetch_row ( $re_news ) ) {
-			        
-			        $viewer = (is_string ( $viewer ) && $viewer != false ? unserialize ( $viewer ) : array ());
-			        $intersect = array_intersect ( $user_assigned, $viewer );
-			        if (! empty ( $intersect ) || empty ( $viewer )) {
-				        
-				        $html .= '<h3>' . $title . '</h3>' .
-                                    '<div class="news_textof">' . '<span class="news_data">' . Format::date ( $publish_date, 'date' ) . ' - </span>' . $short_desc . '</div>';
-			        }
-		        } // end news display
-		        if (! sql_num_rows ( $re_news )) {
-			        $html .= Lang::t ( '_NO_CONTENT', 'catalogue' );
-		        }
-		        $html .= '</div>
-                          </div>';
-        
+        if ($ma->currentCanAccessObj ( 'news' )){
+            $user_assigned = Docebo::user ()->getArrSt ();
+            $query_news = "
+            SELECT idNews, publish_date, title, short_desc, important, viewer
+            FROM %lms_news_internal
+            WHERE language = '" . getLanguage () . "'
+            OR language = 'all'
+            ORDER BY important DESC, publish_date DESC ";
+            $re_news = sql_query ( $query_news );
+            $newsRows = sql_num_rows($re_news);
+
+            //loop per creare l'elemento news
+
+            $html .= '<h2 class="heading">' . Lang::t ( '_NEWS', 'catalogue' ) . '</h2>';
+            $html .= '<div id="user-panel-carousel" class="carousel slide carousel-fade" data-ride="carousel">';
+            $html .= '<ol class="carousel-indicators">';
+
+            while ($count < $newsRows) {
+
+                if ($count === 0) {
+                    $html .= '<li class="active" data-target="#user-panel-carousel" data-slide-to="' . $count . '"></li>';
+                } else {
+                    $html .= '<li class="" data-target="#user-panel-carousel" data-slide-to="' . $count . '"></li>';
+                }
+
+                $count++;
+            }
+
+            $html .= '</ol>';
+
+            $count = 0;
+
+            $html .= '<div class="carousel-inner" role="listbox">';
+
+            while (list($id_news, $publish_date, $title, $short_desc, $impo, $viewer) = sql_fetch_row ($re_news)) {
+
+                $viewer = (is_string ( $viewer ) && $viewer != false ? unserialize ( $viewer ) : array ());
+                $intersect = array_intersect ( $user_assigned, $viewer );
+                if (! empty ( $intersect ) || empty ( $viewer )) {
+
+                    if ($count === 0) {
+                        $html .= '<div class="item active">
+                                    <h3>' . $title . '</h3>
+                                    <p>' . $short_desc . '</p>
+                                    <span>' . Format::date ( $publish_date, 'date' ) . '</span>
+                                  </div>';
+                    } else {
+                        $html .= '<div class="item">
+                                    <h3>' . $title . '</h3>
+                                    <p>' . $short_desc . '</p>
+                                    <span>' . Format::date ( $publish_date, 'date' ) . '</span>
+                                  </div>
+                                    ';
+                    }
+
+//                    $html .= '<h3>' . $title . '</h3>' .
+//                                '<div class="news_textof">' . '<span class="news_data">' . Format::date ( $publish_date, 'date' ) . ' - </span>' . $short_desc . '</div>';
+                }
+
+                $count++;
+
+            } // end news display
+
+            if (! sql_num_rows ( $re_news )) {
+                $html .= Lang::t ( '_NO_CONTENT', 'catalogue' );
+            }
+
+            $html .= '</div>';
+            $html .= '</div>'; //chiudo il carosello
         }
-        
-        
-        
         return $html;
 	}
 
