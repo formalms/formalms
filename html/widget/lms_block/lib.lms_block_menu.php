@@ -167,9 +167,6 @@ class Lms_BlockWidget_menu extends Widget {
                                   </div>
                                     ';
                     }
-
-//                    $html .= '<h3>' . $title . '</h3>' .
-//                                '<div class="news_textof">' . '<span class="news_data">' . Format::date ( $publish_date, 'date' ) . ' - </span>' . $short_desc . '</div>';
                 }
 
                 $count++;

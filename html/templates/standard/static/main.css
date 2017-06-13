@@ -4846,6 +4846,40 @@ header.header nav {
   display: none;
 }
 
+.user-panel .container-fluid .row.lang .col-xs-6:first-child {
+  padding: 0 9px 0 9px;
+}
+
+.user-panel .container-fluid .row.lang .col-xs-6:first-child p {
+  font-family: "Open-sans";
+  color: #c2c2c2;
+  line-height: 40px;
+}
+
+.user-panel .container-fluid .row.lang .col-xs-6:last-child {
+  padding: 0 11px 0 20px;
+}
+
+.user-panel .container-fluid .row.lang .col-xs-6:last-child .list-inline {
+  margin: 0;
+  line-height: 40px;
+}
+
+.user-panel .container-fluid .row.lang .col-xs-6:last-child .list-inline li {
+  padding: 0;
+  margin-right: 10px;
+  border: none;
+}
+
+.user-panel .container-fluid .row.lang .col-xs-6:last-child .list-inline li:nth-child(4n) {
+  margin-right: 0;
+}
+
+.user-panel .container-fluid .row.lang .col-xs-6:last-child .list-inline li a.lang-sprite {
+  width: 19px;
+  height: 14px;
+}
+
 .user-panel .container-fluid .row .col-xs-6 {
   padding: 0;
 }
