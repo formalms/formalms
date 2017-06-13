@@ -241,23 +241,10 @@ foreach ($menu['all'] as $row) {
                                     </div>
                                     <div class="row lang">
                                         <div class="col-xs-6">
-                                            <p>Lingua</p>
+                                            <p>' . Lang::t('_CHANGELANG', 'register') . '</p>
                                         </div>
                                         <div class="col-xs-6">
-                                            <ul class="list-inline" id="language_selection">
-                                              <li>
-                                                <a class="lang-sprite lang_english" href="index.php?special=changelang&new_lang=english" title="English"></a>
-                                              </li>
-                                              <li>
-                                                <a class="lang-sprite lang_finnish" href="index.php?special=changelang&new_lang=finnish" title="Finnish"></a>
-                                              </li>
-                                              <li>
-                                                <a class="lang-sprite lang_italian current" href="index.php?special=changelang&new_lang=italian" title="Italiano"></a>
-                                              </li>
-                                              <li>
-                                                <a class="lang-sprite lang_spanish" href="index.php?special=changelang&new_lang=spanish" title="Spanish"></a>
-                                              </li>
-                                            </ul>
+                                            ' . Layout::buildLanguages() . '
                                         </div>
                                     </div>
                                 </div> <!-- /container-fluid -->
