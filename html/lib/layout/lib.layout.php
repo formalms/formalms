@@ -169,10 +169,10 @@
         foreach($lang_list as $lang) {
 
             $html .= '<li><a class="lang-sprite lang_'.strtolower( str_replace(' ', '_', $lang->lang_code) ).($lang->lang_code == $lang_sel ? ' current' : '' ).'"'
-                .'href=\"'.( isset($args['redirect_on']) ? $args['redirect_on'] : 'index.php' )
+                .'href="'.( isset($args['redirect_on']) ? $args['redirect_on'] : 'index.php' )
                 .'?'//.($r !== '' ? '?r='.$r.'&amp;' : '?')
                 .($server_query_string !== "" ? str_replace('&', '&amp;', $server_query_string).'&amp;' : "")
-                .'special=changelang&new_lang='.rawurlencode($lang->lang_code).'\" title=\"'.$lang->lang_description.'\">'
+                .'special=changelang&new_lang='.rawurlencode($lang->lang_code).'" title="'.$lang->lang_description.'">'
                 .'</a></li>';
 
         }
