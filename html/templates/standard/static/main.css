@@ -4517,7 +4517,8 @@ header.header nav {
 
 .user-panel {
   width: 100%;
-  height: 840px;
+  height: -webkit-calc(100% - 70px);
+  height: calc(100% - 70px);
   top: 60px;
   overflow: scroll;
   background-color: #ececec;
