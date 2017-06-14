@@ -144,7 +144,7 @@ class CourseReportDetailEvent extends Event
     /**
      * @return array
      */
-    public function getValues (): array
+    public function getValues ()
     {
         return $this->values;
     }
@@ -154,7 +154,7 @@ class CourseReportDetailEvent extends Event
      *
      * @return CourseReportDetailEvent
      */
-    public function setValues (array $values)
+    public function setValues ($values)
     {
         $this->values = $values;
         

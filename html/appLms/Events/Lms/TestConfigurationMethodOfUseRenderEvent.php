@@ -72,7 +72,7 @@ class TestConfigurationMethodOfUseRenderEvent extends Event
      * @param integer $section
      * @return array
      */
-    public function getFormElementsForSection (int $section)
+    public function getFormElementsForSection ( $section)
     {
         if (isset($this->formElementsSections[ $section ])) {
             return $this->formElementsSections[ $section ];
@@ -80,7 +80,7 @@ class TestConfigurationMethodOfUseRenderEvent extends Event
         return [];
     }
     
-    public function addFormElementForSection ($formElement ,int $section)
+    public function addFormElementForSection ($formElement , $section)
     {
         $this->formElementsSections[ $section ][] = $formElement;
     }

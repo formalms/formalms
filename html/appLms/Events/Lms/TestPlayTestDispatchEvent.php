@@ -96,7 +96,7 @@ class TestPlayTestDispatchEvent extends Event
     /**
      * @return string
      */
-    public function getDispatchAction (): string
+    public function getDispatchAction ()
     {
         return $this->dispatchAction;
     }
@@ -106,7 +106,7 @@ class TestPlayTestDispatchEvent extends Event
      *
      * @return TestPlayTestDispatchEvent
      */
-    public function setDispatchAction (string $dispatchAction)
+    public function setDispatchAction ($dispatchAction)
     {
         $this->dispatchAction = $dispatchAction;
         
