@@ -207,7 +207,25 @@ foreach ($menu['all'] as $row) {
                                 </button>
                             </div>
                             <!-- /o-wrapper -->
-                            <div id="c-menu--slide-right" class="c-menu c-menu--slide-right user-panel">
+                            
+                        </li>
+                   </ul>
+                   <div class="top-menu__disclaimer">Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</div>
+               </div>
+               <div id="c-mask" class="c-mask"></div><!-- /c-mask overlay -->','menu_over');
+
+    /*
+     *  SPOSTATO C-MENU DA RIGA 210 A RIGA 221 (DOPO I BR DELL'HEADER)
+     *
+     */
+
+        cout('</div>
+                <!--/.nav-collapse -->
+                </nav>
+                </header><br><br><br><br>
+                
+                
+                <div id="c-menu--slide-right" class="c-menu c-menu--slide-right user-panel">
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-xs-6">
@@ -247,18 +265,16 @@ foreach ($menu['all'] as $row) {
                                             ' . Layout::buildLanguages() . '
                                         </div>
                                     </div>
+                                    <div class="row footer">
+                                        <div class="col-xs-12">
+                                          <p>Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</p>
+                                        </div>
+                                    </div>
                                 </div> <!-- /container-fluid -->
                             </div><!-- /c-menu slide-right end profile right panel -->
-                        </li>
-                   </ul>
-                   <div class="top-menu__disclaimer">Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</div>
-               </div>
-               <div id="c-mask" class="c-mask"></div><!-- /c-mask overlay -->','menu_over');
-
-        cout('</div>
-                <!--/.nav-collapse -->
-                </nav>
-                </header><br><br><br><br>','menu_over');
+                
+                
+                ','menu_over');
 
         $idst = getLogUserId();
         $acl_man = Docebo::user()->getAclManager();
