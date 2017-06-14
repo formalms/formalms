@@ -1,6 +1,5 @@
 <?php
 
-namespace appLms\models;
 
 defined("IN_FORMA") or die('Direct access is forbidden.');
 
