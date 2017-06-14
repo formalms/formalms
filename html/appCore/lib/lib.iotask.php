@@ -58,6 +58,8 @@ define( 'CONNMGR_TASK_MAP', 7 );
 /** index for last execution in array returned by get_first/next_task/get_task_byname **/
 define( 'CONNMGR_TASK_LAST_EXECUTION', 8 );
 
+define( 'CONNMGR_TASK_SEQUENCE', 9 );
+
 /** constant for import type = import only **/
 define( 'TASK_IMPORT_TYPE_INSERTONLY', '1' );
 /** constant for import type = import remove **/
@@ -323,7 +325,7 @@ class DoceboConnectionManager {
 	 * @access public
 	 **/
 	function get_first_task() {
-		$query = "SELECT name, description, conn_source, conn_destination, schedule_type, schedule, import_type, map, last_execution
+		$query = "SELECT name, description, conn_source, conn_destination, schedule_type, schedule, import_type, map, last_execution, sequence
 		FROM ".$GLOBALS['prefix_fw']."_task
 		ORDER BY sequence ";
 		$this->rs_task = sql_query($query);
@@ -361,9 +363,9 @@ class DoceboConnectionManager {
 	 * @param string $task_name the name of the task
 	 * @return array the task properties of task named $task_name
 	 */
-	function get_task_byname($task_name) {
+	function get_task_byID($task_id) {
 		$query = "SELECT name, description, conn_source, conn_destination, schedule_type, schedule, import_type, map, last_execution FROM ".$GLOBALS['prefix_fw']."_task"
-				." WHERE name = '$task_name'";
+				." WHERE sequence = $task_id";
 
 		$rs_task = sql_query($query);
 		if( $rs_task === FALSE )
@@ -377,6 +379,7 @@ class DoceboConnectionManager {
 		$arr_result[CONNMGR_TASK_SCHEDULE] = array('qt' => $schedule[0], 'um' => $schedule[1]);
 		return $arr_result;
 	}
+    
 
 	/**
 	 * check if task is to do
@@ -500,10 +503,10 @@ class DoceboConnectionManager {
 		}
 	}
 
-	function set_execution_time( $name ) {
+	function set_execution_time( $idSeq ) {
 		$query = "UPDATE ".$GLOBALS['prefix_fw']."_task SET"
 				." last_execution = NOW()"
-				." WHERE name = '".$name."'";
+				." WHERE sequence = ".$idSeq;
 		if( sql_query($query) ) {
 			return TRUE;
 		} else {
@@ -560,9 +563,9 @@ class DoceboImport {
 	var $destination = NULL;
 	var $import_map = NULL;
 
-	function execute_task( $name ) {
+	function execute_task( $taskID ) {
 		$connMgr = new DoceboConnectionManager();
-		$params = $connMgr->get_task_byname($name);
+		$params = $connMgr->get_task_byID($taskID);
 		$source =& $connMgr->create_connection_byname($params[CONNMGR_TASK_SOURCE]);
 		$destination =& $connMgr->create_connection_byname($params[CONNMGR_TASK_DESTINATION]);
 		$lang =& DoceboLanguage::createInstance('iotask', 'framework');
@@ -580,7 +583,7 @@ class DoceboImport {
 		$this->set_destination($destination);
 		$this->set_map($params[CONNMGR_TASK_MAP]);
 		$result = $this->doImport($params[CONNMGR_TASK_IMPORT_TYPE]);
-		$connMgr->set_execution_time($name);
+		$connMgr->set_execution_time($taskID);
 		return $result;
 	}
 
@@ -697,8 +700,9 @@ class DoceboImport {
 				$pk = array(); 	// a primary keys is an array of arrays
 								// any element array is
 								// array( dst_colnameX => pk1, dst_colnameY => pk2 )
+                                                                 
 				for( $index = 0; $index < count($this->import_map); $index++ ) {
-					if( $this->import_map[$index] != DOCEBOIMPORT_IGNORE ) {
+					if( $this->import_map[$index]['map'] != DOCEBOIMPORT_IGNORE ) {
 						$insrow[$this->import_map[$index]['map']] = $row[$index];
 						if( isset($this->import_map[$index]['pk']) )
 							if( $this->import_map[$index]['pk'] == '1' ) {

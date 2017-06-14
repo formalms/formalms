@@ -414,19 +414,19 @@ function ioTask_UITaskList( &$module ) {
 			$cont[] = '';
 		$cont[] = '<input type="image" '
 				 .'id="run_'.$conn[CONNMGR_TASK_NAME].'" '
-				 .'name="action[run_task]['.$conn[CONNMGR_TASK_NAME].']" '
+				 .'name="action[run_task]['.$conn[CONNMGR_TASK_SEQUENCE].']" '
 				 .'src="'.getPathImage().'/standard/play.png"'
 				 .'alt="'.$lang->def('_TASK_RUN').'"'
 				 .'title="'.$lang->def('_TASK_RUN').': '.$conn[CONNMGR_TASK_NAME].'" />';
 		$cont[] = '<input type="image" '
 				 .'id="modifiy_'.$conn[CONNMGR_TASK_NAME].'" '
-				 .'name="action[edit_task]['.$conn[CONNMGR_TASK_NAME].']" '
+				 .'name="action[edit_task]['.$conn[CONNMGR_TASK_SEQUENCE].']" '
 				 .'src="'.getPathImage().'/standard/edit.png"'
 				 .'alt="'.$lang->def('_MOD').'"'
 				 .'title="'.$lang->def('_MOD').': '.$conn[CONNMGR_TASK_NAME].'" />';
 		$cont[] = '<input type="image" '
 				 .'id="delete_'.$conn[CONNMGR_TASK_NAME].'" '
-				 .'name="action[delete_task]['.$conn[CONNMGR_TASK_NAME].']" '
+				 .'name="action[delete_task]['.$conn[CONNMGR_TASK_SEQUENCE].']" '
 				 .'src="'.getPathImage().'/standard/cancel.png"'
 				 .'alt="'.$lang->def('_TASK_DEL').'"'
 				 .'title="'.$lang->def('_TASK_DEL').': '.$conn[CONNMGR_TASK_NAME].'" />';
@@ -459,8 +459,7 @@ function ioTask_UITaskNew( &$module, $action, $subop ) {
 	
 	$old_name = "";
 	if($subop == 'edit_task') {
-		$old_name = key($action);
-		$params = $connMgr->get_task_byname($old_name);
+		$params = $connMgr->get_task_byID(key($action));
 	} else {
 		$params = array(CONNMGR_TASK_NAME => $lang->def('_TASK_NAME_EXAMPLE'),
 						CONNMGR_TASK_DESCRIPTION => '',
@@ -679,7 +678,7 @@ function ioTask_UITaskDelete( &$module, $action ) {
 		}
 	}
 	
-	$params = $connMgr->get_task_byname(key($action));
+	$params = $connMgr->get_task_byID(key($action));
 	$task_name = $params[CONNMGR_TASK_NAME];
 
 	$out->setWorkingZone('content');
@@ -713,7 +712,7 @@ function ioTask_UITaskRun( &$module, $action ) {
 	$form = new Form();
 	$dimport = new DoceboImport();
 
-	$params = $connMgr->get_task_byname(key($action));
+	$params = $connMgr->get_task_byID(key($action));
 	$task_name = $params[CONNMGR_TASK_NAME];
 
 	$out->setWorkingZone('content');
@@ -726,7 +725,7 @@ function ioTask_UITaskRun( &$module, $action ) {
 	$out->add($form->openElementSpace());
 	$out->add($form->getHidden('task_name', 'task_name', $task_name));
 
-	$report = $dimport->execute_task($task_name);
+	$report = $dimport->execute_task(key($action));
 	if( !is_array($report) ) {
 		$out->add($report);
 	} else {

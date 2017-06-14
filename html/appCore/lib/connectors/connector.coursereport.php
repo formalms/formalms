@@ -283,7 +283,7 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 		
 		$row = false;
 		if($this->first_row) return $this->first_row;
-		if(!empty($this->id_courses)) return $row;
+		if(empty($this->id_courses)) return $row;
 		
 		list($idc, $course_info) = each($this->id_courses);
 		
