@@ -3910,6 +3910,10 @@ body.appIsReady {
   -webkit-font-smoothing: auto;
 }
 
+.no-scroll {
+  overflow: hidden;
+}
+
 .course-box {
   width: 100%;
   min-height: 330px;
@@ -4522,9 +4526,9 @@ header.header nav {
   top: 60px;
   overflow: scroll;
   background-color: #ececec;
-  -webkit-transform: translateX(350px);
-      -ms-transform: translateX(350px);
-          transform: translateX(350px);
+  -webkit-transform: translateX(100%);
+      -ms-transform: translateX(100%);
+          transform: translateX(100%);
   font-family: "Open-sans";
   text-align: left;
   -webkit-border-radius: 0;
@@ -4541,6 +4545,9 @@ header.header nav {
             border-radius: 5px;
     -webkit-box-shadow: #c2c2c2 0px 5px 20px 0px;
             box-shadow: #c2c2c2 0px 5px 20px 0px;
+    -webkit-transform: translateX(350px);
+        -ms-transform: translateX(350px);
+            transform: translateX(350px);
   }
 }
 
@@ -5039,7 +5046,7 @@ header.header nav {
 }
 
 .user-panel .container-fluid .row.footer {
-  margin-top: 40px;
+  margin: 30px 0;
   text-align: center;
   font-family: "Open-sans";
   color: #999999;

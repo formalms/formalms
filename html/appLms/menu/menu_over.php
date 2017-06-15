@@ -222,7 +222,8 @@ foreach ($menu['all'] as $row) {
         cout('</div>
                 <!--/.nav-collapse -->
                 </nav>
-                </header><br><br><br><br>
+                
+                
                 
                 
                 <div id="c-menu--slide-right" class="c-menu c-menu--slide-right user-panel">
@@ -272,6 +273,15 @@ foreach ($menu['all'] as $row) {
                                     </div>
                                 </div> <!-- /container-fluid -->
                             </div><!-- /c-menu slide-right end profile right panel -->
+                
+                
+                
+                
+                
+                </header><br><br><br><br>
+                
+                
+                
                 
                 
                 ','menu_over');
