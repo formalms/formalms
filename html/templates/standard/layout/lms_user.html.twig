@@ -42,7 +42,8 @@
     
         
         <!-- content  -->   
-        <div class="layout_colum_container">
+        {#{{ <div class="layout_colum_container"> }}#}
+        <div class="container-fluid">
             {{ evalPhp('Layout::zone', ['content']) }}
             
             <div class="nofloat"></div>
