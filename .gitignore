@@ -1,5 +1,5 @@
 #Exclude vendor
-html/vendor
+html/vendor/**
 !html/vendor/keep
 
 # Sezione html/files
