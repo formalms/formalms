@@ -108,7 +108,7 @@ class ElearningLmsController extends LmsController {
 			{
 				$conditions_t[] = "cu.idCourse NOT IN (".implode(",", $cp_courses).")";
 			}
-
+            
 			$courselist_t = $model->findAll($conditions_t, $params_t);
 
 			if(empty($courselist_t))
@@ -149,8 +149,9 @@ class ElearningLmsController extends LmsController {
 		}
 		else
 		{
-			if(!empty($block_list))
+			if(!empty($block_list)){
 				$this->render('_tabs_block', array('block_list' => $block_list));
+            }
 			else
 				$this->render('_tabs', array());
 		}
@@ -532,12 +533,14 @@ class ElearningLmsController extends LmsController {
         $filter_type = "".Get::req('filter_type', DOTY_STRING, "");      
         $filter_cat = Get::req('filter_cat', DOTY_STRING, "");
         $filter_year = Get::req('filter_year', DOTY_STRING, 0);
+        $filter_status = Get::req('filter_status', DOTY_STRING, "");
+        
   
         
        // echo "filter_type = ".$filter_type;
        // echo "<br>filter_cat = ".$filter_cat;
        // echo "<br>filter_year = ".$filter_year;
-        
+       // echo "<br>filter_status = ".$filter_status;
 
         //$vett_year = str_split(",");
   
@@ -566,6 +569,16 @@ class ElearningLmsController extends LmsController {
         }        
         
         
+        if ( $filter_status != "" && $filter_status != "all" ) {
+            $conditions[] = "(cu.status in (".$filter_status.") )";
+        } 
+         
+        if ( $filter_status == "all") {
+            $conditions[] = "(cu.status >=0 )";
+        }          
+         
+        
+       // var_dump($conditions);
         
         // e-learning filter
         if (  strrpos($filter_type,"elearning")>=0 ) {    
@@ -614,6 +627,17 @@ class ElearningLmsController extends LmsController {
        if (!empty($filter_cat)) {
             $conditions[] = "(c.idCategory in (".$filter_cat.") )";
         }             
+        
+        
+        // status search
+        if ( $filter_status != "" && $filter_status != "all" ) {
+            $conditions[] = "(cu.status in (".$filter_status.") )";
+        } 
+         
+        if ( $filter_status == "all") {
+            $conditions[] = "(cu.status >=0 )";
+        }         
+        
         
         
         $cp_courses = $modelClassroom->getUserCoursePathCourses( Docebo::user()->getIdst() );

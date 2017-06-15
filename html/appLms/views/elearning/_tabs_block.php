@@ -1,9 +1,9 @@
 <div class="row">
 	
 	<div class="col-md-12">
-		<div class="">
+	
 
-			<div class="middlearea_container">
+			<div class="middlearea_container" >
                       
 				<?php
 
@@ -12,36 +12,43 @@
 	     			'close' => false
 	    		));
 
-	    	    // select years
-				$_model = new ElearningLms();
-				$_auxiliary = Form::getInputDropdown('', 'course_search_filter_year', 'filter_year', $_model->getFilterYears(Docebo::user()->getIdst()), 0, '');
-//                $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="150px"  data-actions-box="true"', $_auxiliary);
-                $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="175px"  data-actions-box="true"', $_auxiliary);
-
-                $_list_category = Form::getInputDropdown('', 'course_search_filter_cat', 'filter_cat', $_model->getListCategory(Docebo::user()->getIdst()), 0, '');
-//                $_list_category = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="150px" multiple data-actions-box="true"', $_list_category);
-                $_list_category = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="175px" multiple data-actions-box="true"', $_list_category);
-
-				$this->widget('tablefilter', array(
-					'id' => 'course_search',
-					'filter_text' => "",
-                    'list_category' => $_list_category,
-					// 'auxiliary_filter' => Lang::t('_SEARCH', 'standard').":&nbsp;&nbsp;&nbsp;".$_auxiliary,
-					'auxiliary_filter' => $_auxiliary,
-					'js_callback_set' => 'course_search_callback_set',
-					'js_callback_reset' => 'course_search_callback_reset',
-					'css_class' => 'tabs_filter'
-				));
-
 				$w->endWidget();
 
+                
+                
+                // select status course
+                $_model = new ElearningLms();
+                $_auxiliary = Form::getInputDropdown('', 'course_search_filter_status', 'filter_status', $_model->getFilterStatusCourse(Docebo::user()->getIdst()),Lang::t('_ALL_OPEN', 'course'), '');
+                $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 0" data-width="150px"  data-actions-box="true"', $_auxiliary);
+                
+                // select year
+                $_auxiliary = $_auxiliary. "&nbsp;" . Form::getInputDropdown('', 'course_search_filter_year', 'filter_year', $_model->getFilterYears(Docebo::user()->getIdst()), 0, '');
+                $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="150px"  data-actions-box="true"', $_auxiliary);
+                                                       
+                $_list_category = Form::getInputDropdown('', 'course_search_filter_cat', 'filter_cat', $_model->getListCategory(Docebo::user()->getIdst()), 0, '');
+                $_list_category = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="150px" multiple data-actions-box="true"', $_list_category);
+                
+                $this->widget('tablefilter', array(
+                    'id' => 'course_search',
+                    'filter_text' => "",
+                    'list_category' => $_list_category,
+                    // 'auxiliary_filter' => Lang::t('_SEARCH', 'standard').":&nbsp;&nbsp;&nbsp;".$_auxiliary,
+                    'auxiliary_filter' => $_auxiliary,
+                    'js_callback_set' => 'course_search_callback_set',
+                    'js_callback_reset' => 'course_search_callback_reset',
+                    'css_class' => 'nav'
+                    
+                ));                
+                
+                
 				?>
                 
 			</div>
 
-		</div>
+	
 	</div>
     
+    <!--
     <div class="col-md-4" >
     
         <?php
@@ -53,101 +60,47 @@
         ?>
 
     </div>
+    -->
       
-	<div class="nofloat"></div>
+	<div class="nofloat" ></div>
+    
+    
+ <!-- DIV CONTENT COURSE-LIST  -->       
+<div  class="col-md-12" id="div_course">
+    <br><p align="center"><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p>
 </div>
+ 
+    
+
 
 
 
 <script type="text/javascript">
 	var lb = new LightBox();
 	lb.back_url = 'index.php?r=elearning/show&sop=unregistercourse';
-     var tabView = new YAHOO.widget.TabView();
+    var tabView = new YAHOO.widget.TabView();
+                
 
+     
 
-	var mytab = new YAHOO.widget.Tab({
-	    label: '<?php echo Lang::t('_ALL_OPEN', 'course'); ?>',
-	    dataSrc: 'ajax.server.php?r=elearning/all&rnd=<?php echo time(); ?>',
-	    cacheData: true,
-	    loadMethod: "POST"
-	});
-	mytab.addListener('contentChange', function() {
-		lb.init();
-		this.set("cacheData", true);
-	});
-	// COMMENTATO
-    tabView.addTab(mytab, 0);
-         
+    <?php 
+    define("IS_AJAX", true);
+    ?>
+          
     
-	<?php if($this->isTabActive('new')): ?>
-	mytab = new YAHOO.widget.Tab({
-	    label: '<?php echo Lang::t('_NEW', 'course'); ?>',
-	    dataSrc: 'ajax.server.php?r=elearning/new&rnd=<?php echo time(); ?>',
-	    cacheData: true,
-	    loadMethod: "POST"
-	});
-    
-	mytab.addListener('contentChange', function() {
-		lb.init();
-		this.set("cacheData", true);
-	});
-    // COMMENTATO
-	tabView.addTab(mytab, 1);
-	<?php endif; ?>
-
-	<?php if($this->isTabActive('inprogress')): ?>
-	mytab = new YAHOO.widget.Tab({
-	    label: '<?php echo Lang::t('_USER_STATUS_BEGIN', 'course'); ?>',
-	    dataSrc: 'ajax.server.php?r=elearning/inprogress&rnd=<?php echo time(); ?>',
-	    cacheData: true,
-	    loadMethod: "POST"
-	});
-    
-
-	mytab.addListener('contentChange', function() {
-		lb.init();
-		this.set("cacheData", true);
-	});
-    
-    // COMMENTATO
-	tabView.addTab(mytab, 2);
-	<?php endif; ?>
-
-	<?php if($this->isTabActive('completed')): ?>
-	mytab = new YAHOO.widget.Tab({
-	    label: '<?php echo Lang::t('_COMPLETED', 'course'); ?>',
-	    dataSrc: 'ajax.server.php?r=elearning/completed&rnd=<?php echo time(); ?>',
-	    cacheData: true,
-	    loadMethod: "POST"
-	});
-	mytab.addListener('contentChange', function() {
-		lb.init();
-		this.set("cacheData", true);
-	});
-	
-    // COMMENTATO
-    tabView.addTab(mytab, 3);
-	<?php endif; ?>
-
-	<?php if($this->isTabActive('suggested') && false): ?>
-	mytab = new YAHOO.widget.Tab({
-	    label: '<?php echo Lang::t('_SUGGESTED', 'course'); ?>',
-	    dataSrc: 'ajax.server.php?r=elearning/suggested&rnd=<?php echo time(); ?>',
-	    cacheData: true,
-	    loadMethod: "POST"
-	});
-	mytab.addListener('contentChange', function() {
-		lb.init();
-		this.set("cacheData", true);
-	});
-	tabView.addTab(mytab, 4);
-	<?php endif; ?>
-
-	tabView.appendTo('tab_content');
-	tabView.getTab(0).addClass('first');
-	tabView.set('activeIndex', 0);
-
-    
+            var posting = $.get(
+                             'ajax.server.php?r=elearning/all&rnd=<?php echo time(); ?>',
+                             {
+                               
+                             }
+                  )
+                  
+            posting.done(function(responseText){
+          
+                    $("#div_course").html(responseText);    
+                  })
+                      
+                   
     
     function getSelectedOptions(sel, fn) {
         var opts = [], opt;
@@ -175,43 +128,43 @@
     
     
 	function course_search_callback_set() {
-		var i, tabs = tabView.get("tabs"), activeTab = tabView.get("activeTab");
-		var ft = YAHOO.util.Dom.get("course_search_filter_text").value;
-		//var fy = YAHOO.util.Dom.get("course_search_filter_year").value;
-        
-        // aggiunta filtro tipo corso 
-        var ftype = YAHOO.util.Dom.get("course_search_filter_type");
-        var opts = getSelectedOptions( ftype );
-        var json_type = opts.toString();           
-        
-        
-        var fcat = YAHOO.util.Dom.get("course_search_filter_cat");
-        var opts = getSelectedOptions(fcat);
-        var json_cat = opts.toString();      
+		var i;
 
+        var ft = $("#course_search_filter_text").val();
+        
+   
+        var json_type = $("#course_search_filter_type option:selected").val();
+        
+
+        var json_cat = $("#course_search_filter_cat option:selected").val();        
+        
+        
+ 
+         var json_year = $("#course_search_filter_year option:selected").val();            
          
-        var fy = YAHOO.util.Dom.get("course_search_filter_year");
-        var opts = getSelectedOptions(fy);
-        var json_year = opts.toString();             
-         
-                 
-		for (i=0; i<tabs.length; i++) {
-			tabs[i].set("postData", "filter_text="+ft+"&filter_year=" + json_year + "&filter_type=" + json_type + "&filter_cat=" + json_cat);
-			tabs[i].set("cacheData", false);
-		}
-		tabView.selectTab( tabView.getTabIndex(activeTab) );
-		activeTab.set("cacheData", false);
+
+        
+        var json_status = $("#course_search_filter_status option:selected").val();          
+
+        $("#div_course").html("<br><p align='center'><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p>");
+        var posting = $.get(
+                             'ajax.server.php?r=elearning/all&rnd=<?php echo time(); ?>&filter_text=' + ft + '&filter_type=' + json_type + '&filter_cat=' + json_cat + '&filter_status=' + json_status + '&filter_year=' + json_year   ,
+                             {
+                               
+                             }
+                  )
+                  
+            posting.done(function(responseText){
+                    $("#div_course").html(responseText);    
+                  })        
+        
+        
+        
 	}
 
 	function course_search_callback_reset() {
-		var i, tabs = tabView.get("tabs"), activeTab = tabView.get("activeTab");
-		YAHOO.util.Dom.get("course_search_filter_text").value = "";
-		YAHOO.util.Dom.get("course_search_filter_year").selectedIndex = 0;
-		for (i=0; i<tabs.length; i++) {
-			tabs[i].set("postData", "");
-			tabs[i].set("cacheData", false);
-		}
-		tabView.selectTab( tabView.getTabIndex(activeTab) );
-		activeTab.set("cacheData", false);
+
 	}
 </script>
+
+
