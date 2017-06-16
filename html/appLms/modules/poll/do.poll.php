@@ -23,7 +23,7 @@ function retriveTrack($id_reference, $id_poll, $id_user) {
                 require_once(_lms_.'/class.module/track.poll.php');
                 $itemtrack = new Track_Poll(null);
 		
-                list( $exist, $idTrack ) = $itemtrack->getIdTrack( $idReference, $id_user, $id_poll, TRUE );
+                list( $exist, $idTrack ) = $itemtrack->getIdTrack( $id_reference, $id_user, $id_poll, TRUE );
                 return $idTrack;
 	} 
 	return false;
