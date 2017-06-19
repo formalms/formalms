@@ -2247,6 +2247,8 @@ Password: [password]]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Filter by]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[All conditions must be satisfied]]></key>
         <key id="standard&amp;_FILTER_ONE_COND" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[At least one condition must be satisfied]]></key>
+        <key id="standard&amp;_FILTER_TAB_OPEN" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Open all filters]]></key>
+        <key id="standard&amp;_FILTER_TAB_CLOSE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Close all filters]]></key>
         <key id="standard&amp;_FINAL_SCORE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Final score]]></key>
         <key id="standard&amp;_FIRSTNAME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[First name]]></key>
         <key id="standard&amp;_FIX_SEQUENCE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Fix sequence error]]></key>

@@ -12,7 +12,7 @@ var Page = (function () {
 
 	function setInteractions() {
 		$('.o-wrapper').on('click', function () {
-			console.log('lock');
+//			console.log('lock');
 
 			if ($(this).hasClass('open')) {
 				setScroll('.header', 'unlock');
@@ -25,7 +25,7 @@ var Page = (function () {
 
 	function Page() {
 
-		console.log('asd');
+//		console.log('asd');
 
 		setInteractions();
 	}

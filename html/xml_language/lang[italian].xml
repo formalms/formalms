@@ -2243,6 +2243,8 @@ Password: [password]]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Filtra per]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Tutte le condizioni devono essere soddisfatte]]></key>
         <key id="standard&amp;_FILTER_ONE_COND" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Almeno una condizione deve essere soddisfatta]]></key>
+        <key id="standard&amp;_FILTER_TAB_OPEN" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Apri tutti i filtri]]></key>
+        <key id="standard&amp;_FILTER_TAB_CLOSE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Chiudi tutti i filtri]]></key>
         <key id="standard&amp;_FINAL_SCORE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Punteggio finale]]></key>
         <key id="standard&amp;_FIRSTNAME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Nome]]></key>
         <key id="standard&amp;_FIX_SEQUENCE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Correggi errori di sequenza]]></key>
