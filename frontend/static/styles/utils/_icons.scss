@@ -36,7 +36,7 @@ $calendar-icons: 'check', 'gray-cross', 'green-cross';
 
 $tab-filter-icons: 'all', '0', '1', '2';
 
-@each $icon in $filter-icons {
+@each $icon in $tab-filter-icons {
   .icon--filter-#{$icon} {
     &:before {
       background-image: url('images/icons/course-filter/icon--filter-#{$icon}.png');

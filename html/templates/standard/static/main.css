@@ -2995,24 +2995,20 @@
   background-image: url("images/icons/calendar/icon-calendar--green-cross.svg");
 }
 
-.icon--filter-active:before {
-  background-image: url("images/icons/course-filter/icon--filter-active.png");
-}
-
 .icon--filter-all:before {
   background-image: url("images/icons/course-filter/icon--filter-all.png");
 }
 
-.icon--filter-concluded:before {
-  background-image: url("images/icons/course-filter/icon--filter-concluded.png");
+.icon--filter-0:before {
+  background-image: url("images/icons/course-filter/icon--filter-0.png");
 }
 
-.icon--filter-deactive:before {
-  background-image: url("images/icons/course-filter/icon--filter-deactive.png");
+.icon--filter-1:before {
+  background-image: url("images/icons/course-filter/icon--filter-1.png");
 }
 
-.icon--filter-suspended:before {
-  background-image: url("images/icons/course-filter/icon--filter-suspended.png");
+.icon--filter-2:before {
+  background-image: url("images/icons/course-filter/icon--filter-2.png");
 }
 
 .icon--profile:before {
