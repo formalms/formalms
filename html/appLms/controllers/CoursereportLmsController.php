@@ -16,15 +16,39 @@ require_once (_base_ . '/lib/lib.json.php');
 
 class CoursereportLmsController extends LmsController
 {
+	private $baseUserFieldListArray;
+	
+	private $completeFieldListArray;
 	
 	public function init ()
 	{
+		require_once (_adm_ . '/lib/lib.field.php');
+		
+		
 		$this->json = new Services_JSON();
 		$this->_mvc_name = "coursereport";
 		$this->permissions = array (
 			'view' => true ,
 			'mod' => true
 		);
+		
+		$this->baseUserFieldListArray = array (
+			'id' => Lang::t ('_USER_ID' , 'standard') ,
+			'userid' => Lang::t ('_USERNAME' , 'standard') ,
+			'firstname' => Lang::t ('_FIRSTNAME' , 'standard') ,
+			'lastname' => Lang::t ('_LASTNAME' , 'standard') ,
+			'email' => Lang::t ('_EMAIL' , 'standard') ,
+			'lastenter' => Lang::t ('_DATE_LAST_ACCESS' , 'profile') ,
+			'register_date' => Lang::t ('_DIRECTORY_FILTER_register_date' , 'admin_directory') );
+		
+		$this->completeFieldListArray = $this->baseUserFieldListArray;
+		
+		$fman = new FieldList();
+		$fields = $fman->getFlatAllFields (array ( 'framework' , 'lms' ));
+		
+		foreach ($fields as $key => $val) {
+			$this->completeFieldListArray[ "$key" ] = $val;
+		}
 	}
 	
 	public function coursereport ()
@@ -83,11 +107,11 @@ class CoursereportLmsController extends LmsController
 		$reports_scores =& $report_man->getReportsScores ((isset($included_test_report_id) && is_array ($included_test_report_id) ? array_diff ($reports_id , $included_test_report_id) : $reports_id) , $id_students);
 		
 		// XXX: Calculate statistic
-		$test_details = array ();
+		$test_details = [];
 		
 		if (is_array ($included_test)) {
-			while (list($id_test , $users_result) = each ($tests_score)) {
-				while (list($id_user , $single_test) = each ($users_result)) {
+			foreach ($tests_score as $id_test => $users_result) {
+				foreach ($users_result as $id_user => $single_test) {
 					if ($single_test[ 'score_status' ] == 'valid') {
 						// max
 						if (! isset($test_details[ $id_test ][ 'max_score' ])) {
@@ -119,7 +143,7 @@ class CoursereportLmsController extends LmsController
 					}
 				}
 			}
-			while (list($id_test , $single_detail) = each ($test_details)) {
+			foreach ($test_details as $id_test => $single_detail) {
 				if (isset($single_detail[ 'num_result' ])) {
 					$test_details[ $id_test ][ 'average' ] /= $test_details[ $id_test ][ 'num_result' ];
 				}
@@ -127,9 +151,12 @@ class CoursereportLmsController extends LmsController
 			reset ($test_details);
 		}
 		
+		
 		$report_details = array ();
-		while (list($id_report , $users_result) = each ($reports_scores)) {
-			while (list($id_user , $single_report) = each ($users_result)) {
+		//while (list($id_report , $users_result) = each ($reports_scores)) {
+		foreach ($reports_scores as $id_report => $users_result) {
+			//while (list($id_user , $single_report) = each ($users_result)) {
+			foreach ($users_result as $id_user => $single_report) {
 				if ($single_report[ 'score_status' ] == 'valid') {
 					// max
 					if (! isset($report_details[ $id_report ][ 'max_score' ]))
@@ -157,18 +184,22 @@ class CoursereportLmsController extends LmsController
 				}
 			}
 		}
-		while (list($id_report , $single_detail) = each ($report_details)) {
+		//while (list($id_report , $single_detail) = each ($report_details)) {
+		foreach ($report_details as $id_report => $single_detail) {
 			if (isset($single_detail[ 'num_result' ])) {
 				$report_details[ $id_report ][ 'average' ] /= $report_details[ $id_report ][ 'num_result' ];
 			}
 		}
+		
 		reset ($report_details);
+		
 		
 		$total_weight = 0;
 		
 		$tests = array ();
 		if (! empty($students_info)) {
-			while (list($idst_user , $user_info) = each ($students_info)) {
+			//while (list($idst_user , $user_info) = each ($students_info)) {
+			foreach ($students_info as $idst_user => $user_info) {
 				
 				foreach ($this->model->getCourseReports () as $info_report) {
 					
@@ -239,7 +270,7 @@ class CoursereportLmsController extends LmsController
 								}
 								$results_activity[] = array ( 'id' => CoursereportLms::SOURCE_OF_TEST . "_" . $info_report->getIdSource () , "name" => $testObj->getTitle () );
 								if ($info_report->isUseForFinal ()) {
-									array_push ($results_test , $score * $info_report->getWeight ());
+									$results_test[] = $score * $info_report->getWeight ();
 								}
 							}
 								break;
@@ -332,7 +363,7 @@ class CoursereportLmsController extends LmsController
 					$showInDetail = false;
 					
 					$passedLink = 'javascript:void(0)';
-                    $passedLinkActive = false;
+					$passedLinkActive = false;
 					$notPassedLink = 'javascript:void(0)';
 					$notPassedLinkActive = false;
 					$notCheckedLink = 'javascript:void(0)';
@@ -346,7 +377,7 @@ class CoursereportLmsController extends LmsController
 					$trashLink = 'javascript:void(0)';
 					$trashLinkVisible = true;
 					
-					$passed = "-";
+					$passed = '-';
 					$notPassed = "-";
 					$notChecked = "-";
 					$average = "-";
@@ -479,20 +510,20 @@ class CoursereportLmsController extends LmsController
 						'passed' => array (
 							'value' => $passed ,
 							'link' => $passedLink ,
-                            'visible' => true,
-                            'active' => $passedLinkActive
+							'visible' => true ,
+							'active' => $passedLinkActive
 						) ,
 						'not_passed' => array (
 							'value' => $notPassed ,
 							'link' => $notPassedLink ,
-                            'visible' => true,
+							'visible' => true ,
 							'active' => $notPassedLinkActive
-                        
+						
 						) ,
 						'not_checked' => array (
 							'value' => $notChecked ,
 							'link' => $notCheckedLink ,
-                            'visible' => true,
+							'visible' => true ,
 							'active' => $notCheckedLinkActive
 						) ,
 						'average' => $average ,
@@ -539,7 +570,7 @@ class CoursereportLmsController extends LmsController
 		$this->render ('coursereport' , $ajaxResponse);
 	}
 	
-    public function getDetailCourseReport () //ajax json
+	public function getDetailCourseReport () //ajax json
 	{
 		require_once ($GLOBALS[ 'where_lms' ] . '/lib/lib.course.php');
 		require_once (_adm_ . '/lib/lib.field.php');
@@ -623,8 +654,10 @@ class CoursereportLmsController extends LmsController
 		$reportsArrayTest = $this->model->getReportsFilteredBySourceOf (CoursereportLms::SOURCE_OF_TEST);
 		
 		foreach ($reportsArrayTest as $reportLms) {
-			$included_test[ $reportLms->getIdSource () ] = $reportLms->getIdSource ();
-			$included_test_report_id[ $reportLms->getIdReport () ] = $reportLms->getIdReport ();
+			$idSource = $reportLms->getIdSource ();
+			$idReport = $reportLms->getIdSource ();
+			$included_test[ $idSource ] = $idSource;
+			$included_test_report_id[ $idReport ] = $idReport;
 		}
 		
 		$tests_score =& $test_man->getTestsScores ($included_test , $id_students);
@@ -632,8 +665,8 @@ class CoursereportLmsController extends LmsController
 		$test_details = array ();
 		
 		if (is_array ($included_test)) {
-			while (list($id_test , $users_result) = each ($tests_score)) {
-				while (list($id_user , $single_test) = each ($users_result)) {
+			foreach ($tests_score as $id_test => $users_result) {
+				foreach ($users_result as $id_user => $single_test) {
 					if ($single_test[ 'score_status' ] == 'valid') {
 						// max
 						if (! isset($test_details[ $id_test ][ 'max_score' ])) {
@@ -665,7 +698,7 @@ class CoursereportLmsController extends LmsController
 					}
 				}
 			}
-			while (list($id_test , $single_detail) = each ($test_details)) {
+			foreach ($test_details as $id_test => $single_detail) {
 				if (isset($single_detail[ 'num_result' ])) {
 					$test_details[ $id_test ][ 'average' ] /= $test_details[ $id_test ][ 'num_result' ];
 				}
@@ -686,27 +719,56 @@ class CoursereportLmsController extends LmsController
 		if (! empty($students_info)) {
 			require_once ($GLOBALS[ 'where_lms' ] . '/class.module/learning.test.php');
 			
-			while (list($idst_user , $user_info) = each ($students_info)) {
+			//while (list($idst_user , $user_info) = each ($students_info)) {
+			foreach ($students_info as $idst_user => $user_info) {
 				
 				$user_name = ($user_info[ ACL_INFO_LASTNAME ] . $user_info[ ACL_INFO_FIRSTNAME ]
 					? $user_info[ ACL_INFO_LASTNAME ] . ' ' . $user_info[ ACL_INFO_FIRSTNAME ]
 					: $acl_man->relativeId ($user_info[ ACL_INFO_USERID ]));
 				
-				$student = array (
-					'id' => $user_info[ ACL_INFO_IDST ] ,
-					'userid' => $user_info[ ACL_INFO_USERID ] ,
-					'firstname' => $user_info[ ACL_INFO_FIRSTNAME ] ,
-					'lastname' => $user_info[ ACL_INFO_LASTNAME ] ,
-					'email' => $user_info[ ACL_INFO_EMAIL ] ,
-					'register_date' => $user_info[ ACL_INFO_REGISTER_DATE ] ,
-					'lastenter' => $user_info[ ACL_INFO_LASTENTER ] ,
-				
-				);
-				
+				$student = [];
 				$student[ 'name' ] = $user_name;
+				
+				$fman = new FieldList();
+				
+				foreach ($this->completeFieldListArray as $key => $translate) {
+					
+					$studendVal = '';
+					switch ($key) {
+						case 'id':
+							$studendVal = $user_info[ ACL_INFO_IDST ];
+							break;
+						case 'userid':
+							$studendVal = $user_info[ ACL_INFO_USERID ];
+							break;
+						case 'firstname':
+							$studendVal = $user_info[ ACL_INFO_FIRSTNAME ];
+							break;
+						case 'lastname':
+							$studendVal = $user_info[ ACL_INFO_LASTNAME ];
+							break;
+						case 'email':
+							$studendVal = $user_info[ ACL_INFO_EMAIL ];
+							break;
+						case 'register_date':
+							$studendVal = $user_info[ ACL_INFO_REGISTER_DATE ];
+							break;
+						case 'lastenter':
+							$studendVal = $user_info[ ACL_INFO_LASTENTER ];
+							break;
+						default:
+							$fieldEntries = $fman->getUsersFieldEntryData ($user_info[ ACL_INFO_IDST ] , $key , true);
+							
+							$studendVal = $fieldEntries[ $user_info[ 0 ] ][ $key ];
+							break;
+					}
+					
+					$student[ $key ] = $studendVal;
+				}
 				
 				$student[ 'activities_results' ] = array ();
 				$student[ 'total_result' ] = '-';
+				
 				
 				foreach ($reportsArray as $info_report) {
 					
@@ -1054,7 +1116,7 @@ class CoursereportLmsController extends LmsController
 		
 		$final_score = array ();
 		
-		while (list(, $id_user) = each ($id_students)) {
+		foreach ($id_students as $id_user) {
 			$user_score = 0;
 			
 			foreach ($reports as $info_report) {
@@ -1110,45 +1172,18 @@ class CoursereportLmsController extends LmsController
 		);
 		
 		echo $this->json->encode ($resposeArray);
-//        return $resposeArray;
 	}
 	
 	/**
 	 * Restituisce i campi utente
 	 */
-    public function getUserFieldsSelector () //array associativo
+	public function getUserFieldsSelector () //array associativo
 	{
-		require_once (_adm_ . '/lib/lib.field.php');
-		
-		$fman = new FieldList();
-		$fields = $fman->getFlatAllFields (array ( 'framework' , 'lms' ));
-		
-		$field_list = array (
-			'userid' => Lang::t ('_USERNAME' , 'standard') ,
-			'firstname' => Lang::t ('_FIRSTNAME' , 'standard') ,
-			'lastname' => Lang::t ('_LASTNAME' , 'standard') ,
-			'email' => Lang::t ('_EMAIL' , 'standard') ,
-			'lastenter' => Lang::t ('_DATE_LAST_ACCESS' , 'profile') ,
-			'register_date' => Lang::t ('_DIRECTORY_FILTER_register_date' , 'admin_directory') ,
-			'language' => Lang::t ('_LANGUAGE' , 'standard') ,
-			'level' => Lang::t ('_LEVEL' , 'standard')
-		);
-		$field_list = $field_list + $fields;
-		
-		/*$js_arr = array();
-        foreach ($field_list as $key => $value) {
-            $js_arr[] = $key . ': ' . json_encode($value);
-        }
-        $f_list_js = '{' . implode(',', $js_arr) . '}';
-
-        $myList = json_encode($field_list);
-        */
-		
-		echo $this->json->encode ($field_list);
+		echo $this->json->encode ($this->completeFieldListArray);
 	}
 	
 	
-    public function testreport ()
+	public function testreport ()
 	{
 		require_once ($GLOBALS[ 'where_lms' ] . '/lib/lib.coursereport.php');
 		require_once ($GLOBALS[ 'where_lms' ] . '/lib/lib.test.php');
@@ -1218,7 +1253,7 @@ class CoursereportLmsController extends LmsController
 		
 	}
 	
-    public function scormreport ($idTest)
+	public function scormreport ($idTest)
 	{
 		checkPerm ('view' , true , $this->_mvc_name);
 		require_once ($GLOBALS[ 'where_lms' ] . '/lib/lib.coursereport.php');
@@ -1256,7 +1291,7 @@ class CoursereportLmsController extends LmsController
 		$out->add ($tb->getTable () . '</div>' , 'content');
 	}
 	
-    public function saveTestUpdate ($id_test , &$test_man)
+	public function saveTestUpdate ($id_test , &$test_man)
 	{
 		// Save report modification
 		if (isset($_POST[ 'user_score' ])) {
@@ -1284,7 +1319,7 @@ class CoursereportLmsController extends LmsController
 		return $re;
 	}
 	
-    public function testvote ()
+	public function testvote ()
 	{
 		if (isset($_POST[ 'view_answer' ])) {
 			$this->testreview ();
@@ -1574,7 +1609,7 @@ class CoursereportLmsController extends LmsController
 			. '</div>');
 	}
 	
-    public function testDetail ()
+	public function testDetail ()
 	{
 		checkPerm ('mod' , true , $this->_mvc_name);
 		
@@ -1655,7 +1690,7 @@ class CoursereportLmsController extends LmsController
 		}
 	}
 	
-    public function testreview ()
+	public function testreview ()
 	{
 		checkPerm ('mod' , true , $this->_mvc_name);
 		$undo = Get::pReq ('undo_testreview' , DOTY_MIXED , false);
@@ -1790,7 +1825,7 @@ class CoursereportLmsController extends LmsController
 	/**
 	 * Mostra la view di riepilogo del test con il pulsante per l'eliminazione del test.
 	 */
-    public function testdelete ()
+	public function testdelete ()
 	{
 		
 		checkPerm ('mod' , true , $this->_mvc_name);
@@ -1832,7 +1867,7 @@ class CoursereportLmsController extends LmsController
 		}
 	}
 	
-    public function finalvote ()
+	public function finalvote ()
 	{
 		checkPerm ('mod' , true , $this->_mvc_name);
 		
@@ -1990,7 +2025,7 @@ class CoursereportLmsController extends LmsController
 			. '</div>');
 	}
 	
-    public function roundtest ($id_test)
+	public function roundtest ($id_test)
 	{
 		checkPerm ('mod' , true , $this->_mvc_name);
 		
@@ -2016,7 +2051,7 @@ class CoursereportLmsController extends LmsController
 		//Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
 	}
 	
-    public function roundreport ($idReport)
+	public function roundreport ($idReport)
 	{
 		checkPerm ('mod' , true , $this->_mvc_name);
 		
@@ -2047,7 +2082,7 @@ class CoursereportLmsController extends LmsController
 	 *    sum( max_score[n] * weight[n] )
 	 */
 	
-    public function redofinal ()
+	public function redofinal ()
 	{
 		checkPerm ('mod' , true , $this->_mvc_name);
 		
@@ -2168,12 +2203,12 @@ class CoursereportLmsController extends LmsController
 		}
 	}
 	
-    public function addscorm ()
+	public function addscorm ()
 	{
 		$this->modscorm ();
 	}
 	
-    public function modscorm ()
+	public function modscorm ()
 	{
 		checkPerm ('mod' , true , $this->_mvc_name);
 		
@@ -2276,11 +2311,11 @@ class CoursereportLmsController extends LmsController
 		}
 		
 		if (isset($_POST[ 'filtra' ])) {
-			if ($_POST[ 'source_of' ] == 'scoitem' && is_numeric ($_POST[ 'title' ])) {//richiesto lo scorm item
-				$query_report = "
-			SELECT  title
-			FROM " . $GLOBALS[ 'prefix_lms' ] . "_organization
-			WHERE objectType='scormorg' AND idResource=" . (int) $_POST[ 'title' ] . "";
+			if ($_POST[ 'source_of' ] === 'scoitem' && is_numeric ($_POST[ 'title' ])) {
+				//richiesto lo scorm item
+				$query_report = "SELECT  title FROM " . $GLOBALS[ 'prefix_lms' ] . "_organization
+								WHERE objectType='scormorg' AND idResource=" . (int) $_POST[ 'title' ];
+				
 				$risultato = sql_query ($query_report);
 				$titolo = sql_fetch_assoc ($risultato);
 				$titolo = $titolo[ 'title' ];
@@ -2340,10 +2375,9 @@ class CoursereportLmsController extends LmsController
 		);
 		
 		if (! isset($_POST[ 'filtra' ])) {
-			$query_report = "
-			SELECT  idResource,title
-			FROM " . $GLOBALS[ 'prefix_lms' ] . "_organization
-			WHERE objectType='scormorg' AND idCourse=" . $_SESSION[ 'idCourse' ] . "";
+			$query_report = 'SELECT  idResource,title FROM ' . $GLOBALS[ 'prefix_lms' ] . "_organization
+			WHERE objectType='scormorg' AND idCourse=" . $_SESSION[ 'idCourse' ];
+			
 			$risultato = sql_query ($query_report);
 			while ($scorm = sql_fetch_assoc ($risultato))
 				$array_scorm[ $scorm[ 'idResource' ] ] = $scorm[ 'title' ];
@@ -2374,12 +2408,12 @@ class CoursereportLmsController extends LmsController
 		}
 	}
 	
-    public function addactivity ()
+	public function addactivity ()
 	{
 		$this->modactivity ();
 	}
 	
-    public function modactivity ()
+	public function modactivity ()
 	{
 		checkPerm ('mod' , true , $this->_mvc_name);
 		$undo = Get::pReq ('undo' , DOTY_MIXED , false);
@@ -2489,7 +2523,7 @@ class CoursereportLmsController extends LmsController
 			. '</div>');
 	}
 	
-    public function modactivityscore ()
+	public function modactivityscore ()
 	{
 		checkPerm ('mod' , true , $this->_mvc_name);
 		
@@ -2565,8 +2599,8 @@ class CoursereportLmsController extends LmsController
 				WHERE id_course = '" . $_SESSION[ 'idCourse' ] . "' AND id_report = '" . $id_report . "'";
 					$re = sql_query ($query_upd_report);
 					
-					$re = $report_man->saveReportScore ($id_report , $_POST[ 'user_score' ] , $_POST[ 'date_attempt' ] , $_POST[ 'comment' ]);
-					Util::jump_to ('index.php?r=coursereport/coursereport&result=' . ($re ? 'ok' : 'err'));
+					$response = $report_man->saveReportScore ($id_report , $_POST[ 'user_score' ] , $_POST[ 'date_attempt' ] , $_POST[ 'comment' ]);
+					Util::jump_to ('index.php?r=coursereport/coursereport&result=' . ($response ? 'ok' : 'err'));
 				}
 			} else {
 				$out->add (getErrorUi ($re_check[ 'message' ]));
@@ -2711,7 +2745,7 @@ class CoursereportLmsController extends LmsController
 		
 	}
 	
-    public function delactivity ()
+	public function delactivity ()
 	{
 		checkPerm ('mod' , true , $this->_mvc_name);
 		$undo = Get::pReq ('undo' , DOTY_MIXED , false);
@@ -2774,7 +2808,7 @@ class CoursereportLmsController extends LmsController
 			. '</div>');
 	}
 	
-    public function movereport ($direction)
+	public function movereport ($direction)
 	{
 		checkPerm ('mod' , true , $this->_mvc_name);
 		
@@ -2817,7 +2851,7 @@ class CoursereportLmsController extends LmsController
 		Util::jump_to ('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
 	}
 	
-    public function export ()
+	public function export ()
 	{
 		checkPerm ('view' , true , $this->_mvc_name);
 		require_once ($GLOBALS[ 'where_lms' ] . '/lib/lib.coursereport.php');
@@ -3229,7 +3263,7 @@ class CoursereportLmsController extends LmsController
 	}
 	
 	
-    public function testQuestion ()
+	public function testQuestion ()
 	{
 		checkPerm ('view' , true , $this->_mvc_name);
 		$responseValue = array ();
@@ -3338,7 +3372,7 @@ class CoursereportLmsController extends LmsController
 						}
 						if ($answer[ 'idAnswer' ] == 0 && $i < $total_play) {
 							//			if ($i < $total_play) {
-							$answer_given = $answer_given + ($total_play - $i);
+							$answer_given += ($total_play - $i);
 						}
 						
 						if ($total_play > 0)
@@ -3479,7 +3513,7 @@ class CoursereportLmsController extends LmsController
 		echo $this->json->encode ($result);
 	}
 	
-    public function testQuestionOld ()
+	public function testQuestionOld ()
 	{
 		$responseValue = array ();
 		
@@ -3661,7 +3695,7 @@ class CoursereportLmsController extends LmsController
 						}
 						if ($answer[ 'idAnswer' ] == 0 && $i < $total_play) {
 							//			if ($i < $total_play) {
-							$answer_given = $answer_given + ($total_play - $i);
+							$answer_given += ($total_play - $i);
 						}
 						if ($total_play > 0)
 							$percentage = ($answer_given / $total_play) * 100;
@@ -3767,7 +3801,7 @@ class CoursereportLmsController extends LmsController
 	}
 	
 	
-    public function showchart ()
+	public function showchart ()
 	{
 		require_once (_lms_ . '/modules/test/charts.test.php');
 		
@@ -3805,4 +3839,3 @@ class CoursereportLmsController extends LmsController
 	}
 }
 
-?>
