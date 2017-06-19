@@ -31,11 +31,11 @@ window.CourseReport = (function ($) {
         var _maxCol = 4;
 
         $.each(tests, function (i, elem) {
-          _data['selected_tests'].push(elem.id);
+            _data['selected_tests'].push(elem.id);
 
-          if (i > (_maxCol-1)) {
-            return false;
-          }
+            if (i > (_maxCol - 1)) {
+                return false;
+            }
         });
 
         /* FAKE DA IMPOSTARE DINAMICAMENTE IN CASO DI CLICK SU ROUND REPORT*/
@@ -87,11 +87,12 @@ window.CourseReport = (function ($) {
         var _name, _id;
 
         $elem.children('div').each(function (i, elem) {
-          _name = $(elem).data('activityid');
-          _id = $(elem).data('activityname');
-          _activities.push({
-            "name": $(elem).data('activityname'),
-            "id": $(elem).data('activityid')});
+            _name = $(elem).data('activityid');
+            _id = $(elem).data('activityname');
+            _activities.push({
+                "name": $(elem).data('activityname'),
+                "id": $(elem).data('activityid')
+            });
         });
 
         return _activities;
@@ -109,8 +110,8 @@ window.CourseReport = (function ($) {
         var _activitiesResults = [];
 
         _test.push({
-          "name": testName,
-          "id": testId
+            "name": testName,
+            "id": testId
         });
 
         loadUserData(function (data) {
@@ -123,14 +124,14 @@ window.CourseReport = (function ($) {
                 _testResult = parseResult(elem.activities_results[0]);
 
                 _activitiesResults.push({
-                  'result': _testResult,
-                  'user': _studentId
+                    'result': _testResult,
+                    'user': _studentId
                 });
 
             });
 
             $.each(_activitiesResults, function (i, elem) {
-              $('.student[data-student="' + elem.user + '"]').children('.student__test-result--' + column).html(elem.result);
+                $('.student[data-student="' + elem.user + '"]').children('.student__test-result--' + column).html(elem.result);
             });
 
         }, _test);
@@ -211,18 +212,28 @@ window.CourseReport = (function ($) {
 
         var _parsed = [];
         var _showIcon;
+        var _active;
         var _link;
 
         $.each(result, function (i, elem) {
             _showIcon = elem.showIcon;
+            _active = elem.active;
             _link = elem.link;
 
+            if (_active) {
             if (_showIcon) {
-              _parsed.push('<a href="' + _link + '"><i class="fa fa-check"></i></a>');
+                _parsed.push('<a href="' + _link + '"><i class="fa fa-check"></i></a>');
             } else {
-              _parsed.push('<a href="' + _link + '">' + elem.value + '</a>');
+                _parsed.push('<a href="' + _link + '">' + elem.value + '</a>');
             }
-
+            }
+            else {
+                if (_showIcon) {
+                    _parsed.push('<span><i class="fa fa-check"></i></span>');
+                } else {
+                    _parsed.push('<span>' + elem.value + '</span>');
+                }
+            }
         });
 
         return _parsed.join(' ');
@@ -335,9 +346,9 @@ window.CourseReport = (function ($) {
     };
 
     var setInteractions = function () {
-        
-        var fixHelper = function(e, ui) {
-            ui.children().each(function() {
+
+        var fixHelper = function (e, ui) {
+            ui.children().each(function () {
                 $(this).width($(this).width());
             });
             return ui;
@@ -393,7 +404,7 @@ window.CourseReport = (function ($) {
         });
 
         $('.js-user-level-filter').on('change', function () {
-           filterUsersByLevel($(this).val());
+            filterUsersByLevel($(this).val());
         });
 
         $('.js-user-detail-filter').on('change', function () {

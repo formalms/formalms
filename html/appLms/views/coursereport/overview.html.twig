@@ -1,45 +1,45 @@
 <div class="table-responsive">
     <table class="table table-bordered">
         <colgroup>
-          <col style="width: 30px">
-          <col style="width: 200px">
-          <col style="width: 75px">
-          <col style="width: 75px">
-          <col style="width: 75px">
-          <col style="width: 75px">
-          <col style="width: 75px">
-          <col style="width: 75px">
-          <col style="width: 85px">
-          <col style="width: 85px">
-          <col style="width: 75px">
-          <col style="width: 75px">
-          <col style="width: 75px">
-          <col style="width: 75px">
-          <col style="width: 85px">
+            <col style="width: 30px">
+            <col style="width: 200px">
+            <col style="width: 75px">
+            <col style="width: 75px">
+            <col style="width: 75px">
+            <col style="width: 75px">
+            <col style="width: 75px">
+            <col style="width: 75px">
+            <col style="width: 85px">
+            <col style="width: 85px">
+            <col style="width: 75px">
+            <col style="width: 75px">
+            <col style="width: 75px">
+            <col style="width: 75px">
+            <col style="width: 85px">
         </colgroup>
         <thead>
-            <tr>
-                <th colspan="2" class="transparent"></th>
-                <th colspan="6">{{ translate('_INFO','coursereport') }}</th>
-                <th colspan="6">{{ translate('_DETAILS','standard') }}</th>
-                <th class="transparent"></th>
-            </tr>
-            <tr>
-                <td colspan="2"></td>
-                <td>{{ translate('_TYPE','standard') }}</td>
-                <td>{{ translate('_TEST_QUEST_MAXTESTSCORE','test') }}</td>
-                <td>{{ translate('_REQUIRED_SCORE','standard') }}</td>
-                <td>{{ translate('_WEIGHT','coursereport') }}</td>
-                <td>{{ translate('_SHOW_TO_USER','coursereport') }}</td>
-                <td>{{ translate('_USE_FOR_FINAL','coursereport') }}</td>
-                <td>{{ translate('_PASSED','coursereport') }}</td>
-                <td>{{ translate('_NOT_PASSED','coursereport') }}</td>
-                <td>{{ translate('_NOT_CHECKED','coursereport') }}</td>
-                <td>{{ translate('_AVERANGE','standard') }}</td>
-                <td>{{ translate('_MAX_SCORE','standard') }}</td>
-                <td>{{ translate('_MIN_SCORE','standard') }}</td>
-                <td></td>
-            </tr>
+        <tr>
+            <th colspan="2" class="transparent"></th>
+            <th colspan="6">{{ translate('_INFO','coursereport') }}</th>
+            <th colspan="6">{{ translate('_DETAILS','standard') }}</th>
+            <th class="transparent"></th>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td>{{ translate('_TYPE','standard') }}</td>
+            <td>{{ translate('_TEST_QUEST_MAXTESTSCORE','test') }}</td>
+            <td>{{ translate('_REQUIRED_SCORE','standard') }}</td>
+            <td>{{ translate('_WEIGHT','coursereport') }}</td>
+            <td>{{ translate('_SHOW_TO_USER','coursereport') }}</td>
+            <td>{{ translate('_USE_FOR_FINAL','coursereport') }}</td>
+            <td>{{ translate('_PASSED','coursereport') }}</td>
+            <td>{{ translate('_NOT_PASSED','coursereport') }}</td>
+            <td>{{ translate('_NOT_CHECKED','coursereport') }}</td>
+            <td>{{ translate('_AVERANGE','standard') }}</td>
+            <td>{{ translate('_MAX_SCORE','standard') }}</td>
+            <td>{{ translate('_MIN_SCORE','standard') }}</td>
+            <td></td>
+        </tr>
         </thead>
         <tbody class="course-sortable">
         {% for test in overview['tests'] %}
@@ -60,35 +60,55 @@
                 {% else %}
                     <td class="text-center table-cell"><i class="fa fa-close"></i></td>
                 {% endif %}
-                <td class="table-cell"><a href="{{ test.passed.link }}">{{ test.passed.value }}</a></td>
-                <td class="table-cell"><a href="{{ test.not_passed.link }}">{{ test.not_passed.value }}</a></td>
-                <td class="table-cell"><a href="{{ test.not_checked.link }}">{{ test.not_checked.value }}</a></td>
+                <td class="table-cell">
+                    {% if test.passed.active %}
+                        <a href="{{ test.passed.link }}">{{ test.passed.value }}</a>
+                    {% else %}
+                        {{ test.passed.value }}
+                    {% endif %}
+                </td>
+                <td class="table-cell">
+                    {% if test.not_passed.active %}
+                        <a href="{{ test.not_passed.link }}">{{ test.not_passed.value }}</a>
+                    {% else %}
+                        {{ test.not_passed.value }}
+                    {% endif %}
+                </td>
+                <td class="table-cell">
+                    {% if test.not_checked.active %}
+                        <a href="{{ test.not_checked.link }}">{{ test.not_checked.value }}</a>
+                    {% else %}
+                        {{ test.not_checked.value }}
+                    {% endif %}
+                </td>
                 <td class="table-cell">{{ test.average }}</td>
                 <td class="table-cell">{{ test.max_score }}</td>
                 <td class="table-cell">{{ test.min_score }}</td>
                 <td class="actions">
                     {% for action in test.actions %}
-                      {% if action.visible %}
-                        <a href="{{ action.link }}"><i class="fa fa-{{ action.icon }}"></i></a>
-                      {% endif %}
+                        {% if action.visible %}
+                            <a href="{{ action.link }}"><i class="fa fa-{{ action.icon }}"></i></a>
+                        {% endif %}
                     {% endfor %}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
         <tfoot class="empty">
-            <th colspan="15"></th>
+        <th colspan="15"></th>
         </tfoot>
     </table>
 
 </div>
 
 <div class="button--add">
-  <span>{{ translate('_ADD_ACTIVITY','coursereport') }}</span>
-  <ul class="dropdown">
-    <li><a href="index.php?r=lms/coursereport/addactivity">{{ translate('_ADD_ACTIVITY_TITLE','coursereport') }}</a></li>
-    <li><a href="index.php?r=lms/coursereport/addscorm">{{ translate('_ADD_SCORM_RESULTS','coursereport') }}</a></li>
-  </ul>
+    <span>{{ translate('_ADD_ACTIVITY','coursereport') }}</span>
+    <ul class="dropdown">
+        <li><a href="index.php?r=lms/coursereport/addactivity">{{ translate('_ADD_ACTIVITY_TITLE','coursereport') }}</a>
+        </li>
+        <li><a href="index.php?r=lms/coursereport/addscorm">{{ translate('_ADD_SCORM_RESULTS','coursereport') }}</a>
+        </li>
+    </ul>
 </div>
 
 
@@ -101,6 +121,6 @@
 
 <script type="text/javascript">
 
-  activities = {{ details|json_encode(constant('JSON_HEX_APOS')) | raw }};
+    activities = {{ details|json_encode(constant('JSON_HEX_APOS')) | raw }};
 
 </script>
