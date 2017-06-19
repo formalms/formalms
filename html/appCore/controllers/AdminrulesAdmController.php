@@ -204,7 +204,7 @@ class AdminrulesAdmController extends AdmController
 			Util::jump_to('index.php?r=adm/adminrules/show');
 
 		$idst = Get::req('idst', DOTY_INT, 0);
-		$active_tab = Get::req('active_tab', DOTY_MIXED, 'framework');
+		$active_tab = Get::req('active_tab', DOTY_MIXED, 'menu_user');
 
 		$pm =& PlatformManager::createInstance();
 		$platform_list = $pm->getPlatformList();
