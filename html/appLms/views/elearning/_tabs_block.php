@@ -3,7 +3,7 @@
 	<div class="col-md-12">
 	
 
-			<div class="middlearea_container" >
+<!--			<div class="middlearea_container" >-->
                       
 				<?php
 
@@ -18,16 +18,17 @@
                 
                 // select status course
                 $_model = new ElearningLms();
-                $_auxiliary = Form::getInputDropdown('', 'course_search_filter_status', 'filter_status', $_model->getFilterStatusCourse(Docebo::user()->getIdst()),Lang::t('_ALL_OPEN', 'course'), '');
-                $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 0" data-width="150px"  data-actions-box="true"', $_auxiliary);
+
+//                $_auxiliary = Form::getInputDropdown('', 'course_search_filter_status', 'filter_status', $_model->getFilterStatusCourse(Docebo::user()->getIdst()),Lang::t('_ALL_OPEN', 'course'), '');
+//                $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 0" data-width=""  data-actions-box="true"', $_auxiliary);
                 
                 // select year
                 $_auxiliary = $_auxiliary. "&nbsp;" . Form::getInputDropdown('', 'course_search_filter_year', 'filter_year', $_model->getFilterYears(Docebo::user()->getIdst()), 0, '');
-                $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="150px"  data-actions-box="true"', $_auxiliary);
+                $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width=""  data-actions-box="true"', $_auxiliary);
                                                        
                 $_list_category = Form::getInputDropdown('', 'course_search_filter_cat', 'filter_cat', $_model->getListCategory(Docebo::user()->getIdst()), 0, '');
-                $_list_category = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="150px" multiple data-actions-box="true"', $_list_category);
-                
+                $_list_category = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="" multiple data-actions-box="true"', $_list_category);
+
                 $this->widget('tablefilter', array(
                     'id' => 'course_search',
                     'filter_text' => "",
@@ -43,7 +44,7 @@
                 
 				?>
                 
-			</div>
+<!--			</div>-->
 
 	
 	</div>
