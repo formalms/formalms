@@ -368,7 +368,7 @@ function exportquest(&$url) {
 
 					//Adding the item to the tree
 
-					require_once(_lms_.'/modules/organization/orglib.php');
+                    require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
 
 					$odb= new OrgDirDb($_SESSION['idCourse']);
 

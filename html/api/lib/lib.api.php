@@ -27,6 +27,9 @@ define('_AUTH_SECRET_KEY_DESC', 'SECRET_KEY');
 define('_REST_OUTPUT_XML', 'xml');
 define('_REST_OUTPUT_JSON', 'json');
 
+define('_MIME_TYPE_XML', 'application/xml');
+define('_MIME_TYPE_JSON', 'application/json');
+
 // xml export function
 define('_XML_VERSION', '1.0');
 define('_XML_ENCODING', 'UTF-8');

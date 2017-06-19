@@ -2076,16 +2076,7 @@ class UserManagerRenderer {
 					}
 					// end
 
-                    // Plugin Event Log register user
-                    $event = new \appLms\Events\User\UserRegistrationEvent();
 
-                    $event->set_idst($request['idst']);
-                    $event->set_date(date("Y-m-d H:i:s"));
-                    $event->set_by($request['idst']);
-                    $event->set_type(\appLms\Events\User\UserRegistrationEvent::TYPE_FREEREGISTER);
-
-                    \appCore\Events\DispatcherManager::dispatch(\appLms\Events\User\UserRegistrationEvent::EVENT_NAME, $event);
-                                        
 					$out = '<div class="reg_success">'.$lang->def('_REG_YOUR_ABI_TO_ACCESS', 'register').'</div>';
 					return $out;
 			} else {

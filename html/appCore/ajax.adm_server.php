@@ -49,8 +49,12 @@ if (!empty($GLOBALS['req'])){
 		$aj_file = $GLOBALS['where_'.$plf].'/lib/'.( $sf ? $sf.'/' : '' ).'ajax.'.$fl.'.php';
 	} else {
 
-		if($plf == 'framework') $aj_file = $GLOBALS['where_'.$plf].'/modules/'.$mn.'/ajax.'.$mn.'.php';
-		else $aj_file = $GLOBALS['where_'.$plf].'/admin/modules/'.$mn.'/ajax.'.$mn.'.php';
+		if($plf == 'framework'){
+                    $aj_file = $GLOBALS['where_'.$plf].'/modules/'.$mn.'/ajax.'.$mn.'.php';
+                }
+		else{
+                    $aj_file = $GLOBALS['where_'.$plf].'/admin/modules/'.$mn.'/ajax.'.$mn.'.php';
+                }
 	}
 
 	include($aj_file);

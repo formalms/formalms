@@ -42,8 +42,11 @@ $GLOBALS['op']		= Get::req('op', DOTY_ALPHANUM, '');
 // create instance of StdPageWriter
 StdPageWriter::createInstance();
 
-
-require_once(_adm_.'/lib/lib.preoperation.php');
+if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/lib/lib.preoperation.php') && Get::cfg('enable_customscripts', false) == true ){
+        require_once(_base_.'/customscripts'.'/'._folder_adm_.'/lib/lib.preoperation.php');
+} else {
+        require_once(_adm_.'/lib/lib.preoperation.php');
+}
 
 if(empty($GLOBALS['modname']) && empty($GLOBALS['r'])) {
 	$GLOBALS['req'] = (checkPerm('view', true, 'dashboard', 'framework') ? 'adm/dashboard/show' : '');

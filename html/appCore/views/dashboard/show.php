@@ -352,9 +352,8 @@
                 <div class="graph graph--users">
                     <div class="graph__nav">
                         <ul>
-                            <li class="js-dashboard-graph graph__label selected" data-tab="accesses">Accessi</li>
-                            <li class="js-dashboard-graph graph__label" data-tab="registeredusers">Utenti Registrati
-                            </li>
+                            <li class="js-dashboard-graph graph__label selected" data-tab="accesses"><?php echo Lang::t('_ACCESSES', 'standard')  ?></li>
+                            <li class="js-dashboard-graph graph__label" data-tab="registeredusers"><?php echo Lang::t('_TOTAL_USER', 'dashboard') ?></li>
                         </ul>
                     </div>
                     <div class="graph__container">
@@ -412,9 +411,9 @@
                     <div class="graph graph--users js-graph-courses">
                         <div class="graph__nav">
                             <ul>
-                                <li class="js-dashboard-graph graph__label selected" data-tab="registered">Accessi</li>
-                                <li class="js-dashboard-graph graph__label" data-tab="ongoing">In itinere</li>
-                                <li class="js-dashboard-graph graph__label" data-tab="finished">Finito</li>
+                                <li class="js-dashboard-graph graph__label selected" data-tab="registered"><?php echo Lang::t('_ACCESSES', 'standard')  ?></li>
+                                <li class="js-dashboard-graph graph__label" data-tab="ongoing"><?php echo Lang::t('_USER_STATUS_BEGIN', 'standard')  ?></li>
+                                <li class="js-dashboard-graph graph__label" data-tab="finished"><?php echo Lang::t('_USER_STATUS_END', 'standard')  ?></li>
                             </ul>
                         </div>
                         <div class="graph__container">

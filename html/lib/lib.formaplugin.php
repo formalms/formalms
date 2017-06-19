@@ -4,7 +4,28 @@
  * Interface for Forma Plugins 
  */
 
-class FormaPlugin {
+abstract class FormaPlugin {
+
+    public function install()
+    {
+        //code executed after install
+    }
+
+    public function uninstall()
+    {
+        //code executed after uninstall
+    }
+
+    public function activate()
+    {
+        //code executed after activation
+    }
+
+    public function deactivate()
+    {
+        //code executed after deactivation
+    }
+
     static function getName(){
         $reflector = new ReflectionClass( get_called_class() );
         $fn = $reflector->getFileName();
@@ -19,6 +40,17 @@ class FormaPlugin {
         sql_query($query_insert_string);
         return true;
     }
+
+    /**
+     * Add a route to the specified controller to handle the request
+     *
+     * @param $app
+     * @param $name
+     * @param $controller
+     * @param $model
+     *
+     * @return bool
+     */
     public function addRequest($app, $name, $controller, $model){
         $pg_adm=new PluginmanagerAdm();
         $plugin_info=$pg_adm->getPluginFromDB(self::getName(),'name');

@@ -34,7 +34,7 @@ class PluginManager {
      * Returns all plugins
      * @return array
      */
-    private static function get_all_plugins(){
+    public static function get_all_plugins(){
         if (empty(self::$plugin_list)) {
             require_once _adm_ . '/models/PluginmanagerAdm.php';
             $PluginmanagerAdm = new PluginmanagerAdm();

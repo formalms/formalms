@@ -471,7 +471,11 @@ class ImportUser extends DoceboImport_Destination {
                         break;
                 }
                 
-		if($idst !== false) {
+		if($idst !== false || $sameuserid == TRUE) {
+                    
+                        if ($idst == FALSE && $sameuserid == TRUE) {
+                            $idst = $acl_manager->getUserST( $tocompare['userid'] );
+                        }
 			
 			$result = TRUE;
 			$this->idst_imported[$idst] = $idst;

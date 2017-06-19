@@ -165,26 +165,26 @@ foreach ($menu['all'] as $row) {
           // HELP DESK
          if(strrpos($row[1], 'sign')>0 ){
             cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.Lang::t('_CUSTOMER_HELP', 'customer_help').'"  >'.$row[1].'</a></li>','menu_over');
-         }else{
+         }else if ($row[2] === false){
             cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.$row[1].'"  >'.$row[1].'</a></li>','menu_over');
          } 
      }
-        if($row[2] !== false) {
-
-                cout('<div id="submenu_'.$id_m.'" >'
-                    .'<div class="bd"><ul class="first-of-type">', 'menu_over');
+        if($row[2] !== false && count($menu[ $row[2] ])!=0) {
+                cout('<li class="dropdown" id="submenu_'.$id_m.'" >'
+                    .'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.$row[1].' <span class="caret"></span></a>'
+                    .'<ul class="dropdown-menu">', 'menu_over');
                 while(list($id_m, $s_voice) = each($menu[ $row[2] ])) {
-                    cout(''
+                    cout('<li>'
                         .'<a  href="'.$s_voice[0].'"">'
                         .''.$s_voice[1].''
                         .'</a> &nbsp; '
-                        .'', 'menu_over');
+                        .'</li>', 'menu_over');
                 }
-                cout('</div>'
-                    .'</div>', 'menu_over');
+                cout('</ul>'
+                    .'</li>', 'menu_over');
             }             
 
-}    
+}   
                
 
                
@@ -315,7 +315,7 @@ foreach ($menu['all'] as $row) {
                       <td><textarea id="msg" name="msg" class="txtarea" placeholder="'.Lang::t('_WRITE_ASK_A_FRIEND', 'profile').'"></textarea></td>
                 </tr>
                 <tr>
-                      <td><label for="copia">Invia una copia per conoscenza</label></td>
+                      <td><label for="copia">'.Lang::t('_SEND_MESSAGE_COPY','message').'</label></td>
                       <td>   <input id="copia" name="copia" checked data-toggle="toggle" data-on="'.Lang::t('_GROUP_FIELD_NORMAL', 'admin_directory').'"  data-size="small" data-off="'.Lang::t('_NO', 'standard').'" data-onstyle="success" data-offstyle="danger" type="checkbox">
                    
                       </td>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170414</DATE>
+  <DATE>20170531</DATE>
   <LANG id="japanese">
     <lang_code>japanese</lang_code>
     <lang_description>Japanese</lang_description>
@@ -208,7 +208,9 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[0,6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[週]]></key>
       </module>
-      <module id="cart"/>
+      <module id="cart">
+        <key id="cart&amp;_CODE" attributes="" save_date="2017-05-08 14:26:08"><![CDATA[コード]]></key>
+      </module>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[カートに追加]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[キャリア]]></key>
@@ -248,6 +250,7 @@
         <key id="catalogue&amp;_TAB_VIEW_MOSTPOPULAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[人気]]></key>
         <key id="catalogue&amp;_TAB_VIEW_RECENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[最新]]></key>
         <key id="catalogue&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[あなたの購読中のコース数]]></key>
+        <key id="catalogue&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:52:50"><![CDATA[入る]]></key>
         <key id="catalogue&amp;_WAITING_APPROVAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[承認待ち]]></key>
         <key id="catalogue&amp;_WORD_TO_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[単語で検索]]></key>
       </module>
@@ -378,6 +381,7 @@
       </module>
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[アクセシビリティ昨日の実効化]]></key>
+        <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2017-05-05 17:52:10"><![CDATA["allow_url_fopen"の設定]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["allow_url_include"の設定]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
         <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> と <abbr title="Single Sign On">SSO</abbr>]]></key>
@@ -796,7 +800,7 @@
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[新コース追加]]></key>
-        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;gt;&amp;gt; "マイコースエリア"に戻る]]></key>
+        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2017-05-08 12:30:32"><![CDATA[&gt;&gt; "マイコースエリア"に戻る]]></key>
         <key id="course_autoregistration&amp;_CODE_ALREDY_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[あなたはこのコードをすでに使っています]]></key>
         <key id="course_autoregistration&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[コード]]></key>
       </module>
@@ -909,6 +913,7 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
         <key id="email&amp;_WAITING_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[<a href="[url]">[url]</a>で承認待ちの新ユーザがいます]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[あなたに新メッセージが届きました]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[コース[course]のユーザ[from]から<a href="[url]">[url]</a>のE-ラーニングシステムで、あなたに新メッセージが届きました]]></key>
+        <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2017-05-08 14:02:03"><![CDATA[コース<b>[course]</b>のユーザ[from]から<a href="[url]">[url]</a>のE-ラーニングシステムで、あなたに新メッセージが届きました]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_BASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[基本]]></key>
@@ -1228,9 +1233,9 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ホームページ]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms はオープンソースのe-ラーニングプラットフォームです(LMS and LCMS)。企業や高等教育の場で利用されます。<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:21:03"><![CDATA[forma.lms はオープンソースのe-ラーニングプラットフォームです(LMS and LCMS)。企業や高等教育の場で利用されます。<br/>
 <br/>
-このプラットフォームは 25 の言語をサポートし、SCORM 1.2, 2004 スタンダードに準拠し、ブレンド、セルフトレーニング、コラボレート等、複数の教育法をサポートし、チャット、ウィキ、フォーラム等を用いたソーシャルラーニングといった機能を持ちます。<br/>
+このプラットフォームは 26 の言語をサポートし、SCORM 1.2, 2004 スタンダードに準拠し、ブレンド、セルフトレーニング、コラボレート等、複数の教育法をサポートし、チャット、ウィキ、フォーラム等を用いたソーシャルラーニングといった機能を持ちます。<br/>
 <br/>
 <br/>
 これらの語を変える場合、管理者/言語の管理を参照し、<b>ログイン</b>を探し、<b>_INTRO_STD_TEXT</b>キーを変更してください]]></key>
@@ -1538,6 +1543,7 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
         <key id="profile&amp;_ACTIVITY_OF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[[firstname]の活動]]></key>
         <key id="profile&amp;_AVATAR_PHOTO_INSTRUCTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[PNG, GIF, JPGの画像フォーマットがアップロード可能です。 大きさが[max_px]ピクセルを超える場合、自動的に縮小されます。<br />
 不快な画像はアップロードしないでください。]]></key>
+        <key id="profile&amp;_CAREER" attributes="" save_date="2017-05-08 16:07:16"><![CDATA[キャリア]]></key>
         <key id="profile&amp;_CHANGEPASSWORD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[パスワード変更]]></key>
         <key id="profile&amp;_CHANGEPOLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[フィールド表示]]></key>
         <key id="profile&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[コミュニティ]]></key>
@@ -1723,7 +1729,7 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
       </module>
       <module id="report">
         <key id="report&amp;aggregate_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ユーザとコースのデータ集積]]></key>
-        <key id="report&amp;courses_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[コース]]></key>
+        <key id="report&amp;course_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[コース]]></key>
         <key id="report&amp;ORG_CHART_SUBDIVISION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[組織図に沿ってデータを分割]]></key>
         <key id="report&amp;REPORT_SHOW_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[結果表示]]></key>
         <key id="report&amp;user_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ユーザ]]></key>
@@ -1855,6 +1861,7 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
         <key id="reservation&amp;_RESERVATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[予約]]></key>
         <key id="reservation&amp;_RESERVATION_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[カテゴリー管理]]></key>
         <key id="reservation&amp;_RESERVATION_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[利用可能イベント]]></key>
+        <key id="reservation&amp;_RESERVATION_MAIL_SEND" attributes="" save_date="2017-05-12 15:31:49"><![CDATA[e-mailを送る]]></key>
         <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[マイ登録]]></key>
         <key id="reservation&amp;_RESERVATION_PAST_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[過去のイベント]]></key>
         <key id="reservation&amp;_RESERVATION_SUBSCRIBED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[イベント管理]]></key>
@@ -1956,12 +1963,13 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
         <key id="standard&amp;_AUTODETECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[自動認識]]></key>
         <key id="standard&amp;_AVATAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[アバター]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[平均]]></key>
-        <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;lt;&amp;lt; 戻る]]></key>
+        <key id="standard&amp;_BACK" attributes="" save_date="2017-05-08 12:30:43"><![CDATA[&lt;&lt; 戻る]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[標準サーチ]]></key>
         <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:36:54"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[by]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[カレンダー]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[キャンセル]]></key>
+        <key id="standard&amp;_CAREER" attributes="" save_date="2017-05-08 16:07:18"><![CDATA[キャリア]]></key>
         <key id="standard&amp;_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[コースカタログ]]></key>
         <key id="standard&amp;_CATEGORIZATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[分類分け]]></key>
         <key id="standard&amp;_CATEGORIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[分類分け]]></key>
@@ -2265,6 +2273,7 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
         <key id="standard&amp;_USER_STATUS_CANCELLED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[削除]]></key>
         <key id="standard&amp;_USER_STATUS_CONFIRMED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[承認]]></key>
         <key id="standard&amp;_USER_STATUS_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[完了]]></key>
+        <key id="standard&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:52:47"><![CDATA[入る]]></key>
         <key id="standard&amp;_USER_STATUS_RESERVED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[予約]]></key>
         <key id="standard&amp;_USER_STATUS_SUBS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[購読]]></key>
         <key id="standard&amp;_USER_STATUS_SUSPEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[停止]]></key>
@@ -2502,7 +2511,7 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
         <key id="test&amp;_TEST_MM1_ANSWER_RANDOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ランダム (問題タイプが許す場合)]]></key>
         <key id="test&amp;_TEST_MM1_ANSWER_SEQUENCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[順番に並べる]]></key>
         <key id="test&amp;_TEST_MM1_GROUPING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[問題を何ページかにまとめる (ページブレイクでまとめる)]]></key>
-        <key id="test&amp;_TEST_MM1_ONEFORPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1ページ1問題表示する]]></key>
+        <key id="test&amp;_TEST_MM1_ONEFORPAGE" attributes="" save_date="2017-04-19 12:45:30"><![CDATA[1 - ページ1問題表示する]]></key>
         <key id="test&amp;_TEST_MM1_QUESTION_RANDOM_NUMBER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<b>[tot_quest]</b>中[random_quest]のランダム選択問題が利用可能です。]]></key>
         <key id="test&amp;_TEST_MM1_RANDOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[(全問題) ランダム (ページブレイクでまとめる)]]></key>
         <key id="test&amp;_TEST_MM1_SEQUENCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[(全問題) 順番に並べる]]></key>
@@ -2516,7 +2525,7 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
         <key id="test&amp;_TEST_MM4_SHOWTOT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[最終成績の表示 (計算可能な場合)]]></key>
         <key id="test&amp;_TEST_MM_FOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[3 - 試行の終わりに詳細表示]]></key>
         <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - 問題の視覚化をセット]]></key>
-        <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[2-  試行のオプションをセット]]></key>
+        <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2017-04-19 12:45:22"><![CDATA[2 - 試行のオプションをセット]]></key>
         <key id="test&amp;_TEST_MODALITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[テストオプション]]></key>
         <key id="test&amp;_TEST_MOD_DOANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[あなたは回答を編集可能です]]></key>
         <key id="test&amp;_TEST_MOD_DOANSWER_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[あなたは回答を編集<span class="text_bold">不能</span>です]]></key>
