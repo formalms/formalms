@@ -309,7 +309,7 @@ function forum()
 			<div class="dropdown col-xs-5 col-sm-4 hidden-lg pull-left">
 					<button class="btn btn-default dropdown-toggle" type="button" id="tableActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 					  <span class="glyphicon glyphicon-cog"></span> &nbsp;
-					  Operazioni &nbsp;
+					  ' . $lang->def('_OPERATIONS') . ' &nbsp;
 					  <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu dropdown-menu-left" aria-labelledby="tableActions">
@@ -1371,7 +1371,7 @@ function thread()
     $text_inner .= '<div class="dropdown col-xs-5 col-sm-4 hidden-lg pull-left">
 										<button class="btn btn-default dropdown-toggle" type="button" id="tableActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 										  <span class="glyphicon glyphicon-cog"></span> &nbsp;
-										  Operazioni &nbsp;
+										  ' . $lang->def('_OPERATIONS') . ' &nbsp;
 										  <span class="caret"></span>
 										</button>
 										<ul class="dropdown-menu dropdown-menu-left" aria-labelledby="tableActions">';
@@ -2665,7 +2665,7 @@ function message()
     $text_inner = '<div class="dropdown col-xs-5 col-sm-4 pull-left">
 										<button class="btn btn-default dropdown-toggle" type="button" id="tableActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 										  <span class="glyphicon glyphicon-cog"></span> &nbsp;
-										  Operazioni &nbsp;
+										  ' . $lang->def('_OPERATIONS') . ' &nbsp;
 										  <span class="caret"></span>
 										</button>
 										<ul class="dropdown-menu dropdown-menu-left" aria-labelledby="tableActions">';
@@ -4635,7 +4635,7 @@ function forumsearchmessage()
     $text_inner .= '<div class="dropdown col-xs-5 col-sm-4 hidden-lg pull-left">
 										<button class="btn btn-default dropdown-toggle" type="button" id="tableActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 										  <span class="glyphicon glyphicon-cog"></span> &nbsp;
-										  Operazioni &nbsp;
+										  ' . $lang->def('_OPERATIONS') . ' &nbsp;
 										  <span class="caret"></span>
 										</button>
 										<ul class="dropdown-menu dropdown-menu-left" aria-labelledby="tableActions">';
