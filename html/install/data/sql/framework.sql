@@ -1795,6 +1795,7 @@ CREATE TABLE IF NOT EXISTS `core_plugin` (
 -- Dump dei dati per la tabella `core_plugin`
 --
 
+INSERT IGNORE INTO `core_plugin` (`name`, `title`, `category`, `version`, `author`, `link`, `priority`, `description`, `active`, `core`) VALUES ('FormaAuth', 'Forma Auth', '', '1.0', 'Joint Technologies', '', '0', 'forma auth', '1', b'1');
 
 -- --------------------------------------------------------
 

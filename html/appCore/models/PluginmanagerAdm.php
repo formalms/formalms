@@ -16,10 +16,14 @@ class PluginmanagerAdm extends Model {
 
 	protected $db;
     protected $table;
+    protected $plugin_core;
 
     public function  __construct() {
         $this->db = DbConn::getInstance();
         $this->table = $GLOBALS['prefix_fw'].'_plugin';
+        $this->plugin_core = array(
+            "FormaAuth"
+        );
     }
 
     public function getPerm()	{
@@ -141,9 +145,23 @@ class PluginmanagerAdm extends Model {
         $re = $this->db->query($query);
         $plugins=array();
         while($row = sql_fetch_assoc($re)){
-            $plugins[$row['name']]=$row;
+            if ($row['core']==1){
+                if ( $row['active']==1 ){
+                    $plugins[$row['name']]=$row;
+                } else {
+                    $plugins[$row['name']]=false;
+                }
+            } else {
+                $plugins[$row['name']]=$row;
+            }
         }
-        return $plugins;
+        foreach ( $this->plugin_core as $core_name ){
+            if (!key_exists($core_name, $plugins)){
+                $manifest = $this->readPluginManifest($core_name);
+                $plugins[$manifest['name']]=$manifest;
+            }
+        }
+        return array_filter($plugins);
     }
 
     /**
@@ -183,8 +201,6 @@ class PluginmanagerAdm extends Model {
                         } else {
                             $manifest['dependencies_satisfied']=false;
                         }
-                        $plugins[$file]=$manifest;
-                    } else if (key_exists("core", $manifest) && $manifest['core']==="true") {
                         $plugins[$file]=$manifest;
                     }
                 }
