@@ -99,22 +99,18 @@
                     $statusFilters = $_model->getFilterStatusCourse(Docebo::user()->getIdst());
 
                     while( list($key, $value) = each($statusFilters) ) {
-                        //var_dump($key); //all - 0 - 1 - 2
-//                        var_dump($value);
-//                        echo '<br>';
-
 
                         $html_code .= '	<option value="'.$key.'"'
                         .((string)$key == (string)$selected ? ' selected="selected"' : '' )
                         .'>'.$value.'</option>'."\n";
 
                         if ($count === 0) {
-                            $html = '<li class="first" data-value="' . $key . '">';
+                            $html = '<li class="selected js-label-menu-filter" data-value="' . $key . '">';
                         } else {
-                            $html = '<li class="" data-value="' . $key . '">';
+                            $html = '<li class="js-label-menu-filter" data-value="' . $key . '">';
                         }
 
-                        $html .= '<a class="icon--filter-' . $key . '" href="#">' . $value . '</a>';
+                        $html .= '<a class="icon--filter-' . $key . '" href="#" >' . $value . '</a>';
                         $html .= '</li>';
 
                         echo $html;
@@ -123,43 +119,16 @@
                     }
 
                     ?>
-<!--                    <li class="" data-value="">-->
-<!--                        <a class="icon--all" href="#"></a>-->
-<!--                    </li>-->
-<!--                    <li class="">-->
-<!--                        <a class="icon--concluded" href="#">Conclusi</a>-->
-<!--                    </li>-->
-<!--                    <li class="">-->
-<!--                        <a class="icon--active" href="#">In itinere</a>-->
-<!--                    </li>-->
-
-
                 </ul>
 
-
                 <div class="collapse navbar-collapse" id="filter-container">
-
                     <div class="simple_search_box" id="<?php echo $id; ?>_simple_filter_options" style="display: block;">
-
                         <?php $str_search = Lang::t("_SEARCH", 'standard'); ?>
                         <?php $str_elearning = Lang::t("_COURSE_TYPE_ELEARNING", 'course'); ?>
                         <?php $str_classroom = Lang::t("_CLASSROOM_COURSE", 'cart'); ?>
                         <?php $str_all = Lang::t("_ALL", 'standard'); ?>
 
                         <div class="navbar-form form-group">
-
-                            <?php
-                            //            <span class="navbar-text">Filtra:</span>
-                            //                <style type="text/css">
-                            //                    .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
-                            //                /*width: 150px;*/
-                            //            }
-                            //
-                            //                    .bootstrap-select.btn-group .dropdown-menu {
-                            //                /*min-width: 250px;*/
-                            //            }
-                            //                </style>
-                            ?>
 
                             <?php echo $list_category ? $list_category : ""; ?>
 
