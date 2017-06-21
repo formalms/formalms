@@ -89,7 +89,7 @@
         <?php endif; ?>
 
         <nav class="navbar">
-            <div class="container-fluid">
+<!--            <div class="container-fluid">-->
 
                 <ul class="nav nav-pills">
 
@@ -133,7 +133,7 @@
                             <?php echo $list_category ? $list_category : ""; ?>
 
 
-                            <select id="course_search_filter_type" name="filter_type" class="selectpicker" data-width="200px"
+                            <select id="course_search_filter_type" name="filter_type" class="selectpicker" data-width=""
                                     data-selected-text-format="count > 1" data-actions-box="true">
                                 <option value="all"><?php echo $str_all; ?></option>
                                 <option value="elearning" selected="selected"><?php echo $str_elearning; ?></option>
@@ -179,7 +179,7 @@
                         </span>
                     </button>
                 </div>
-            </div>
+<!--            </div>-->
         </nav>
 
 

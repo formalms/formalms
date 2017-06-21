@@ -3713,17 +3713,27 @@ h1, h2, h3, h4, h5, h6, p {
 .forma-quick-search-form .bootstrap-select {
   width: 100%;
   margin: 0;
+  height: 40px;
+  margin-top: 10px;
+  margin-left: 0;
+  margin-bottom: 0;
+  margin-right: 0;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .forma-quick-search-form .bootstrap-select {
-    margin-left: 7px !important;
+    width: 250px;
+    margin-top: 0;
+    margin-left: 0;
+    margin-bottom: 0;
+    margin-right: 7px;
   }
 }
 
 .forma-quick-search-form .bootstrap-select button.btn.dropdown-toggle {
   position: relative;
   max-width: 100%;
+  height: 100%;
   padding-right: 25px;
   padding-left: 20px;
   border: 1px solid #ececec;
@@ -3751,7 +3761,7 @@ h1, h2, h3, h4, h5, h6, p {
   position: absolute;
   right: 20px;
   top: 0;
-  line-height: 34px;
+  line-height: 40px;
 }
 
 .forma-quick-search-form .bootstrap-select button.btn.dropdown-toggle .bs-caret .caret {
@@ -3918,10 +3928,20 @@ h1, h2, h3, h4, h5, h6, p {
   position: relative;
   -webkit-border-radius: 5px;
           border-radius: 5px;
-  width: 234px;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .forma-quick-search-form .input-group {
+    width: 234px;
+  }
 }
 
 .forma-quick-search-form .input-group input {
+  width: 100%;
+  height: 100%;
   -webkit-border-radius: 5px !important;
           border-radius: 5px !important;
   border: 2px solid #ff6c00;
@@ -3939,9 +3959,10 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .forma-quick-search-form .input-group .input-group-btn {
-  position: relative;
-  left: -25px;
+  position: absolute;
+  right: 25px;
   padding: 0;
+  line-height: 40px;
 }
 
 .forma-quick-search-form .input-group .input-group-btn button {
@@ -4496,7 +4517,10 @@ i + .course-box__date-box {
           border-bottom-left-radius: 5px;
   -webkit-border-bottom-right-radius: 5px;
           border-bottom-right-radius: 5px;
-  padding: 0;
+  padding-top: 0;
+  padding-right: 20px;
+  padding-bottom: 0;
+  padding-left: 0;
 }
 
 @media (min-width: 768px) {
@@ -4673,6 +4697,9 @@ i + .course-box__date-box {
 .simple_search_box .navbar-form {
   border: 0;
   padding: 0 18px;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  margin: 0;
 }
 
 @media (min-width: 768px) {
@@ -4683,6 +4710,9 @@ i + .course-box__date-box {
 
 .forma-quick-search-form .navbar-collapse {
   padding: 0;
+  border: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 .forma-quick-search-form .navbar-collapse.collapsing + .navbar-header .filter-open,
@@ -4700,6 +4730,10 @@ i + .course-box__date-box {
   display: none;
 }
 
+.forma-quick-search-form .navbar-collapse.in {
+  overflow-y: visible;
+}
+
 .forma-quick-search-form .collapse.navbar-collapse.in + .navbar-header .filter-open {
   display: none;
 }
@@ -4715,6 +4749,16 @@ i + .course-box__date-box {
 .forma-quick-search-form .navbar {
   margin: 0;
   border: none;
+}
+
+.forma-quick-search-form .navbar .navbar-header {
+  padding: 20px;
+}
+
+@media (min-width: 1024px) {
+  .forma-quick-search-form .navbar .navbar-header {
+    padding: 0;
+  }
 }
 
 .forma-quick-search-form .filter-label {
