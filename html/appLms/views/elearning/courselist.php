@@ -81,11 +81,15 @@ function TruncateText($the_text, $size)
 
                 <?php foreach ($courselist as $course) : ?>
 
+<!--                <pre>-->
+<!--                --><?php //var_dump($course); ?>
+<!--                </pre>-->
                     <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-4">
 
                         <div class="course-box"> <!-- NEW BLOCK -->
                             <div class="course-box__item">
-                                <div class="course-box__title course-icon--active"><?php echo TruncateText($course['name'], 100); ?></div>
+<!--                                <div class="course-box__title course-icon--active">--><?php //echo TruncateText($course['name'], 100); ?><!--</div>-->
+                                <div class="course-box__title icon--filter-<?php echo $course['user_status']; ?>"><?php echo TruncateText($course['name'], 100); ?></div>
                             </div>
                             <div class="course-box__item course-box__item--no-padding">
 
