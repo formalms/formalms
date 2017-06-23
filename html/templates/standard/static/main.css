@@ -4194,6 +4194,10 @@ body.appIsReady {
   overflow: hidden;
 }
 
+#middlearea.yui-navset {
+  margin-top: 80px;
+}
+
 .course-box {
   width: 100%;
   min-height: 330px;
@@ -4847,7 +4851,7 @@ header.header {
   height: 60px;
   padding: 0;
   border-bottom: 2px solid #c84000;
-  position: absolute;
+  position: fixed;
 }
 
 @media (min-width: 768px) {
