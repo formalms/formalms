@@ -281,11 +281,8 @@
   position: relative;
   width: calc(50% - 10px);
   height: 50px;
-  padding: {
-    top: 15px;
-    bottom: 15px;
-    left: 40px;
-  };
+  padding-left: 40px;
+  line-height: 50px;
   float: left;
   color: $gray-2;
   font-size: 12px;
