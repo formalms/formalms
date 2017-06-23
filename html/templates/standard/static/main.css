@@ -3573,7 +3573,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 .forma-button {
   display: inline-block;
-  width: auto;
+  width: 100%;
   padding: 0 10px;
   height: 40px;
   text-align: center;
