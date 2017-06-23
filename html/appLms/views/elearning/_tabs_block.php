@@ -134,7 +134,7 @@
 
         
 //        var json_status = $("#course_search_filter_status option:selected").val();
-        var json_status = $('li.selected').attr('data-value');
+        var json_status = $('.js-label-menu-filter.selected').attr('data-value');
 
         $("#div_course").html("<br><p align='center'><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p>");
         var posting = $.get( 'ajax.server.php?r=elearning/all&rnd=<?php echo time(); ?>&filter_text=' + ft + '&filter_type=' + json_type + '&filter_cat=' + json_cat + '&filter_status=' + json_status + '&filter_year=' + json_year, {}
