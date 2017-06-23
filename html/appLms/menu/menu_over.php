@@ -222,10 +222,7 @@ foreach ($menu['all'] as $row) {
         cout('</div>
                 <!--/.nav-collapse -->
                 </nav>
-                
-                
-                
-                
+               
                 <div id="c-menu--slide-right" class="c-menu c-menu--slide-right user-panel">
                                 <div class="container-fluid">
                                     <div class="row">
@@ -274,17 +271,7 @@ foreach ($menu['all'] as $row) {
                                 </div> <!-- /container-fluid -->
                             </div><!-- /c-menu slide-right end profile right panel -->
                 
-                
-                
-                
-                
-                </header><br><br><br><br>
-                
-                
-                
-                
-                
-                ','menu_over');
+                </header>','menu_over');
 
         $idst = getLogUserId();
         $acl_man = Docebo::user()->getAclManager();
