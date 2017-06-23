@@ -82,105 +82,99 @@
 
 
 <div class="quick_search_form navbar<?php echo isset($css_class) && $css_class != "" ? " " . $css_class : ""; ?> forma-quick-search-form">
-        <?php if ($common_options): ?>
-            <div class="common_options">
-                <?php echo $common_options; ?>
-            </div>
-        <?php endif; ?>
+    <?php if ($common_options): ?>
+        <div class="common_options">
+            <?php echo $common_options; ?>
+        </div>
+    <?php endif; ?>
 
-        <nav class="navbar">
+    <nav class="navbar">
 <!--            <div class="container-fluid">-->
+        <div class="collapse navbar-collapse" id="filter-container">
+            <div class="simple_search_box" id="<?php echo $id; ?>_simple_filter_options" style="display: block;">
+                <?php $str_search = Lang::t("_SEARCH", 'standard'); ?>
+                <?php $str_elearning = Lang::t("_COURSE_TYPE_ELEARNING", 'course'); ?>
+                <?php $str_classroom = Lang::t("_CLASSROOM_COURSE", 'cart'); ?>
+                <?php $str_all = Lang::t("_ALL", 'standard'); ?>
 
-                <ul class="nav nav-pills">
+                <div class="navbar-form form-group">
 
-                    <?php
-                    $_model = new ElearningLms();
-                    $count = 0;
-                    $statusFilters = $_model->getFilterStatusCourse(Docebo::user()->getIdst());
+                    <?php echo $list_category ? $list_category : ""; ?>
 
-                    while( list($key, $value) = each($statusFilters) ) {
+                    <select id="course_search_filter_type" name="filter_type" class="selectpicker" data-width=""
+                            data-selected-text-format="count > 1" data-actions-box="true">
+                        <option value="all"><?php echo $str_all; ?></option>
+                        <option value="elearning" selected="selected"><?php echo $str_elearning; ?></option>
+                        <option value="classroom"><?php echo $str_classroom; ?></option>
+                    </select>
 
-                        $html_code .= '	<option value="'.$key.'"'
-                        .((string)$key == (string)$selected ? ' selected="selected"' : '' )
-                        .'>'.$value.'</option>'."\n";
+                    <?php echo $auxiliary_filter ? $auxiliary_filter : ""; ?>
 
-                        if ($count === 0) {
-                            $html = '<li class="selected js-label-menu-filter" data-value="' . $key . '">';
-                        } else {
-                            $html = '<li class="js-label-menu-filter" data-value="' . $key . '">';
-                        }
+                    <script>
+                        $('.selectpicker').selectpicker({
+                            selectAllText: '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>',
+                            deselectAllText: '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',
+                            noneSelectedText: '<?php echo Lang::t('_SELECTED', 'course'); ?>',
+                            countSelectedText: '{0} selezioni'
+                        });
+                    </script>
 
-                        $html .= '<a class="icon--filter-' . $key . '" href="#" >' . $value . '</a>';
-                        $html .= '</li>';
-
-                        echo $html;
-
-                        $count++;
-                    }
-
-                    ?>
-                </ul>
-
-                <div class="collapse navbar-collapse" id="filter-container">
-                    <div class="simple_search_box" id="<?php echo $id; ?>_simple_filter_options" style="display: block;">
-                        <?php $str_search = Lang::t("_SEARCH", 'standard'); ?>
-                        <?php $str_elearning = Lang::t("_COURSE_TYPE_ELEARNING", 'course'); ?>
-                        <?php $str_classroom = Lang::t("_CLASSROOM_COURSE", 'cart'); ?>
-                        <?php $str_all = Lang::t("_ALL", 'standard'); ?>
-
-                        <div class="navbar-form form-group">
-
-                            <?php echo $list_category ? $list_category : ""; ?>
-
-
-                            <select id="course_search_filter_type" name="filter_type" class="selectpicker" data-width=""
-                                    data-selected-text-format="count > 1" data-actions-box="true">
-                                <option value="all"><?php echo $str_all; ?></option>
-                                <option value="elearning" selected="selected"><?php echo $str_elearning; ?></option>
-                                <option value="classroom"><?php echo $str_classroom; ?></option>
-                            </select>
-
-
-                            <?php echo $auxiliary_filter ? $auxiliary_filter : ""; ?>
-
-
-                            <script>
-                                $('.selectpicker').selectpicker({
-                                    selectAllText: '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>',
-                                    deselectAllText: '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',
-                                    noneSelectedText: '<?php echo Lang::t('_SELECTED', 'course'); ?>',
-                                    countSelectedText: '{0} selezioni'
-                                });
-                            </script>
-
-
-                            <div class="input-group">
-                                <?php echo Form::getInputTextfield("form-control", $id . "_filter_text", "filter_text", $filter_text, '', 255, 'equired data-toggle="popover" data-content="' . Lang::t('_INSERT', 'standard') . " " . strtolower(Lang::t('_COURSE_NAME', 'standard')) . '" placeholder=' . $str_search); ?>
-                                <div class="input-group-btn">
-                                    <button type="submit" class="btn btn-default" id="<?php echo $id . "_filter_set"; ?>"
-                                            name="filter_set" title="<?php echo Lang::t('_SEARCH', 'standard'); ?>">
-                                        <span class="glyphicon glyphicon-search"></span>
-                                    </button>
-                                </div>
-                            </div>
-
+                    <div class="input-group">
+                        <?php echo Form::getInputTextfield("form-control", $id . "_filter_text", "filter_text", $filter_text, '', 255, 'equired data-toggle="popover" data-content="' . Lang::t('_INSERT', 'standard') . " " . strtolower(Lang::t('_COURSE_NAME', 'standard')) . '" placeholder=' . $str_search); ?>
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default" id="<?php echo $id . "_filter_set"; ?>"
+                                    name="filter_set" title="<?php echo Lang::t('_SEARCH', 'standard'); ?>">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
                         </div>
-
                     </div>
+                </div>
+            </div>
+        </div>
 
-                </div>
-                <div class="navbar-header">
-                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#filter-container">
-                        <span class="filter-label filter-open">
-                            <?php echo Lang::t("_FILTER_TAB_OPEN", 'standard'); ?>
-                        </span>
-                        <span class="filter-label filter-closed">
-                            <?php echo Lang::t("_FILTER_TAB_CLOSE", 'standard'); ?>
-                        </span>
-                    </button>
-                </div>
+        <ul class="nav nav-pills">
+
+            <?php
+            $_model = new ElearningLms();
+            $count = 0;
+            $statusFilters = $_model->getFilterStatusCourse(Docebo::user()->getIdst());
+
+            while( list($key, $value) = each($statusFilters) ) {
+
+                $html_code .= '	<option value="'.$key.'"'
+                    .((string)$key == (string)$selected ? ' selected="selected"' : '' )
+                    .'>'.$value.'</option>'."\n";
+
+                if ($count === 0) {
+                    $html = '<li class="selected js-label-menu-filter" data-value="' . $key . '">';
+                } else {
+                    $html = '<li class="js-label-menu-filter" data-value="' . $key . '">';
+                }
+
+                $html .= '<a class="icon--filter-' . $key . '" href="#" >' . $value . '</a>';
+                $html .= '</li>';
+
+                echo $html;
+
+                $count++;
+            }
+
+            ?>
+        </ul>
+
+
+        <div class="navbar-header">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#filter-container">
+                <span class="filter-label filter-open">
+                    <?php echo Lang::t("_FILTER_TAB_OPEN", 'standard'); ?>
+                </span>
+                <span class="filter-label filter-closed">
+                    <?php echo Lang::t("_FILTER_TAB_CLOSE", 'standard'); ?>
+                </span>
+            </button>
+        </div>
 <!--            </div>-->
-        </nav>
+    </nav>
 
 
 
