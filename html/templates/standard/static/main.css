@@ -4198,6 +4198,10 @@ body.appIsReady {
   margin-top: 80px;
 }
 
+.middlearea_container {
+  margin-top: 80px;
+}
+
 .course-box {
   width: 100%;
   min-height: 330px;
@@ -4371,9 +4375,8 @@ body.appIsReady {
   width: -webkit-calc(50% - 10px);
   width: calc(50% - 10px);
   height: 50px;
-  padding-top: 15px;
-  padding-bottom: 15px;
   padding-left: 40px;
+  line-height: 50px;
   float: left;
   color: #999999;
   font-size: 12px;
@@ -5742,4 +5745,9 @@ header.header nav {
 
 .social-accounts {
   display: none !important;
+}
+
+.aside .indent {
+  margin-left: 10px;
+  margin-right: 10px;
 }
