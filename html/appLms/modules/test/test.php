@@ -306,7 +306,7 @@ function modtestgui($object_test)
         $content = array();
         array_push($content, ((($type != 'break_page') && ($type != 'title')) ? '<span class="text_bold">' . ($quest_num++) . '</span>' : ''),
             $lang->def('_QUEST_ACRN_' . strtoupper($type)),
-            '' . $title . '');
+            '' . $title . ''); 
 
         // Customfields content
         foreach ($fields_mask as $field) {
