@@ -448,7 +448,7 @@ div.colored_row{height:16px;text-align:center;background:#E1EBF4;border:1px soli
 }
 
 .test_answer_space .answer_question .input-wrapper input[type="radio"], .test_answer_space .answer_question .input-wrapper input[type="checkbox"] {
-		width: 14px;
+		width: 81px;
 		height: 14px;
     margin: 0;
     position: relative;
@@ -510,7 +510,7 @@ div.colored_row{height:16px;text-align:center;background:#E1EBF4;border:1px soli
      margin: 0;
     margin-bottom: 2px;
     margin-top: -32px;
-    margin-left: 39px;
+    margin-left: -31px;
     padding-left: 0px;
     padding-top: 0px;
     padding-inline-end: 281px;
