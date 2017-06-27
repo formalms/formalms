@@ -1,10 +1,19 @@
 
-FORMA LMS
+forma.lms
 
 RELEASE CHANGELOG
+---------------------------------------------------------------------------------------
+forma.lms 1.4.3
+---------------------------------------------------------------------------------------
+Released: 2017-06-13
+
+5481 | Bug | Scorm does not send tracing data on exit
+10621| Bug | Execution API disabled or width key invalid
+7384 | Bug | Security Vulnerability local file inclusion
+11211| Bug | Security Vulnerability in phpmailer
 
 ---------------------------------------------------------------------------------------
-FORMA 1.4.2
+forma.lms 1.4.2
 ---------------------------------------------------------------------------------------
 Released: 2016-05-12
 
@@ -14,7 +23,7 @@ Released: 2016-05-12
 4223 | Bug | Fix some error in admin dashboard
 
 ---------------------------------------------------------------------------------------
-FORMA 1.4.1
+forma.lms 1.4.1
 ---------------------------------------------------------------------------------------
 Released: 2015-06-25
 
@@ -27,13 +36,13 @@ Released: 2015-06-25
 4168 | Change Request | User attributes in report generation
 
 ---------------------------------------------------------------------------------------
-FORMA 1.4
+forma.lms 1.4
 ---------------------------------------------------------------------------------------
 Released: 2015-04-21
 
 3809 | Bug | Blank page on certificate creation
 3811 | Bug | Helpdesk popup not working on php 5.2
-4024 | Bug | Social account linked to forma account not displayd in personal info box
+4024 | Bug | Social account linked to forma.lms account not displayd in personal info box
 1455 | Bug | Wrong message when blocking registration requests to waiting users [1.1]
 1780 | Bug | Certificates - Empty values in classroom course variables
 2095 | Bug | Test - Impossible change suspension option
@@ -82,7 +91,7 @@ Released: 2015-04-21
 
 
 ---------------------------------------------------------------------------------------
-FORMA 1.3
+forma.lms 1.3
 ---------------------------------------------------------------------------------------
 Released: 2014-11-14
 
@@ -137,7 +146,7 @@ Released: 2014-11-14
 
 
 ---------------------------------------------------------------------------------------
-FORMA 1.2
+forma.lms 1.2
 ---------------------------------------------------------------------------------------
 Released: 2014-05-30
 
@@ -197,7 +206,7 @@ Released: 2014-05-30
 3057 | Change Request | BigBlueButton integration
 
 ---------------------------------------------------------------------------------------
-FORMA 1.1
+forma.lms 1.1
 ---------------------------------------------------------------------------------------
 Released: 2014-02-18
 
@@ -253,7 +262,7 @@ Released: 2014-02-18
 
 
 ---------------------------------------------------------------------------------------
-FORMA 1.0
+forma.lms 1.0
 ---------------------------------------------------------------------------------------
 Released: 2013-10-30
 
@@ -286,7 +295,7 @@ Bug #516: Upgrader - Missing db inserts upgrading from docebo 3.6
 Bug #523: Charset error in report export
 Bug #525: Editing existing csv connection
 Bug #537: Rebranding - Logo e favicon
-Bug #538: Rebranding - Set e controllo versione Forma
+Bug #538: Rebranding - Set e controllo versione forma.lms
 Bug #539: Verifiche controllo versione PHP
 Bug #803: JSON Error when closing subscribe dialog
 Bug #806: Blank page on course stats filtering with editions
@@ -316,7 +325,7 @@ Change Request #495: Scorm stats for admins
 Change Request #502: TinyMCE - Updated to ver. 3.5.8
 Change Request #503: Code Rebranding
 Change Request #504: File System: doceboLms/doceboCore folders renamed
-Change Request #505: New Forma Credits
+Change Request #505: New forma.lms Credits
 Change Request #507: Removed hidden call to old docebo servers
 Change Request #513: Added and fixed many translation keys (IT & EN)
 Change Request #518: Updated platform upgrade wizard
@@ -327,7 +336,7 @@ Change Request #527: Message priority (completed missing features)
 Change Request #575: Restyling Template
 Change Request #805: New paypal procedures
 Change Request #1032: Updated file extension whitelist
-Change Request #1076: New links to Forma sites in admin dashboard
+Change Request #1076: New links to forma.lms sites in admin dashboard
 
 
 ---------------------------------------------------------------------------------------

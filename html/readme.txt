@@ -1,5 +1,5 @@
 /* ======================================================================== \
-|   FORMA - The E-Learning Suite                                            |
+|   forma.lms - The E-Learning Suite                                        |
 |                                                                           |
 |   Copyright (c) 2013 (Forma)                                              |
 |   http://www.formalms.org                                                 |
@@ -10,8 +10,8 @@
 \ ======================================================================== */
 
 -----------------------------------------------------------------------------
-FORMALMS 1.4.2
-Relase date: 2016 May 12
+forma.lms 1.4.3
+Relase date: 2017 June 26
 -----------------------------------------------------------------------------
 
 
@@ -24,16 +24,17 @@ Index
 2.   Requirements
 3.   Installation procedure
 4.   Upgrade procedure
-4.1  Upgrade from docebo ce 3.x to FormaLMS 1.x
+4.1  Upgrade from docebo ce 3.x to forma.lms 1.x
 5.   Loading a new language
 6.   Other
 
 
 ------------------------------------------------------------------------------
 
-0   New in these release (1.4.1)
+0   New in these release (1.4.3)
 
-This is a maintenance release for fixing vulnerability issues
+release 1.4.1 1.4.2 and 1.4.3 are maintenance release for fixing vulnerability issues
+
 
 0.1 New in these release (1.4)
 
@@ -125,7 +126,7 @@ At the end step of install procedure, the system will load XML file languages fo
 you loaded in the system.
 Depending on number of languagse, this operation can take some time in order to complete
 
-4.1 Upgrade from docebo ce 3.x and docebo ce 4.x  to FormaLMS 1.x
+4.1 Upgrade from docebo ce 3.x and docebo ce 4.x  to forma.lms 1.x
 
 You can directly upgrade your old docebo (either series 3.6.x and 4.x) installations to forma.lms 1.x
 The config.php file is completly changed from D36 and with more config options since D4.x

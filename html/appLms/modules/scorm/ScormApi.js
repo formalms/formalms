@@ -259,7 +259,7 @@ ScormApi.prototype.LMSFinish = function( param ) {
 	return result;
 }
  
-ScormApi.prototype.LMSCommit = function( param ) {
+ScormApi.prototype.LMSCommit = function( param , callback) {
  	// nothing to do
 	if( this.dbgLevel > 0 ) 
 		this.dbgPrint( '+LMSCommit("' + param + '"); [' + this.idUser + ',' + this.idReference + ',' + this.idscorm_item + ']' );
@@ -268,7 +268,7 @@ ScormApi.prototype.LMSCommit = function( param ) {
 	var result = "";
 	if( this.transmission_start_cb != null )
 		this.transmission_start_cb();
-	result = this.commonLMSCommit(); 
+	result = this.commonLMSCommit("", callback);
 	if( this.transmission_end_cb != null )
 		this.transmission_end_cb();
 	
@@ -498,7 +498,7 @@ ScormApi.prototype.commonLMSSetValue = function( param, value ) {
 	}
 } 
 
-ScormApi.prototype.commonLMSCommit = function( param ) {
+ScormApi.prototype.commonLMSCommit = function( param , callback ) {
     /*if( this['xmlhttp'] == null ) {
 		this.xmlhttp = this.CreateXmlHttpRequest();
 	}
@@ -538,6 +538,9 @@ ScormApi.prototype.commonLMSCommit = function( param ) {
 			var errorCode = xmldoc.getElementsByTagName("error").item(0).firstChild;
 			var errorText = xmldoc.getElementsByTagName("errorString").item(0).firstChild;
 			if( status.nodeValue == "success" ) {
+				if (callback) {
+					callback();
+				}
 				return "true";
 			} else {
 				this.setError(errorCode == null ? "102":errorCode.nodeValue);

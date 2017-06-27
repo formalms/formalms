@@ -26,6 +26,10 @@ Boot::init(BOOT_DATETIME);
 
 // -----------------------------------------------------------------------------
 
+if(Get::sett('use_rest_api', 'off') != 'on') {
+	die('Error: API not enabled.');
+}
+
 require_once(_base_.'/api/lib/lib.api.php');
 require_once(_base_.'/api/lib/lib.rest.php');
  
