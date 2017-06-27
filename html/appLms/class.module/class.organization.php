@@ -262,7 +262,7 @@ class Module_Organization extends LmsModule {
             if( Track_Object::isPrerequisitesSatisfied(
 					$folder->otherValues[ORGFIELDPREREQUISITES],
 					getLogUserId() )  || (isset($_GET['edit']) && $_GET['edit'])  ) {
-				$lo->play(  $idItem,
+				$lo->play(  $idItem, 
 							$folder->otherValues[ORGFIELDIDPARAM],
 							$back_url );
 			} else {
