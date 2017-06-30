@@ -58,7 +58,8 @@ class DoceboConnectorCourseExport extends DoceboConnector {
 	
 	var $tot_row;
 	
-	// name, type
+	// name, type 
+        // COURSE_TYPE, COURSE_EDITION
  	var $all_cols = array( 
 		array( 'code', 'text' ), 
 		array( 'name', 'text' ), 
@@ -81,12 +82,14 @@ class DoceboConnectorCourseExport extends DoceboConnector {
 		array( 'selling', 'int' ), 
 		array( 'prize', 'int' ),
 		array( 'create_date', 'date' ),
-		array( 'id_course', 'int' )
+		array( 'id_course', 'int' ), 
+		array( 'course_type', 'dropdown' ), 
+		array( 'course_edition', 'int' )             
 	);
 		
 	var $default_cols = array(	'description' 		=> '', 
 								'lang_code' 		=> '', 
-								'status' 			=> '0', 
+								'status' 		=> '0', 
 								'subscribe_method' 	=> '', 
 								'permCloseLO' 		=> '', 
 								'difficult' 		=> 'medium', 
@@ -96,15 +99,17 @@ class DoceboConnectorCourseExport extends DoceboConnector {
 								'show_extra_info' 	=> '0', 
 								'show_rules' 		=> '0', 
 								'date_begin' 		=> '0000-00-00', 
-								'date_end' 			=> '0000-00-00', 
+								'date_end' 		=> '0000-00-00', 
 								'valid_time' 		=> '0', 
-								'min_num_subscribe' => '0', 
-								'max_num_subscribe' => '0', 
-								'selling' 			=> '0', 
-								'prize' 			=> '',
+								'min_num_subscribe'     => '0', 
+								'max_num_subscribe'     => '0', 
+								'selling' 		=> '0', 
+								'prize' 		=> '',
 								'create_date'		=> '0000-00-00',
-								'id_course'			=> '0');
-	
+								'id_course'		=> '0',
+                                                                'course_type'           => 'elearning',
+                                                                'course_edition'        => '0');         
+
 	
 	/**
 	 * This constructor require the source file name
@@ -163,7 +168,7 @@ class DoceboConnectorCourseExport extends DoceboConnector {
 		
 		$this->tot_row = $number_of_course;
 		
-		$query = 	"SELECT `code`, `name`, `description`, `lang_code`, `status`, `subscribe_method`, `mediumTime`, `permCloseLO`, `difficult`, `show_progress`, `show_time`, `show_extra_info`, `show_rules`, `date_begin`, `date_end`, `valid_time`, `max_num_subscribe`, `min_num_subscribe`, `selling`, `prize`, `create_date`, `idCourse`"
+		$query = 	"SELECT `code`, `name`, `description`, `lang_code`, `status`, `subscribe_method`, `mediumTime`, `permCloseLO`, `difficult`, `show_progress`, `show_time`, `show_extra_info`, `show_rules`, `date_begin`, `date_end`, `valid_time`, `max_num_subscribe`, `min_num_subscribe`, `selling`, `prize`, `create_date`, `idCourse`, `course_type`, `course_edition`"
 					." FROM ".$GLOBALS['prefix_lms']."_course"
 					." ORDER BY name";
 		
@@ -196,7 +201,10 @@ class DoceboConnectorCourseExport extends DoceboConnector {
 			$data[$counter][] = 'selling';
 			$data[$counter][] = 'prize';
 			$data[$counter][] = 'create_date';
-			
+                        $data[$counter][] = 'idCourse';
+			$data[$counter][] = 'course_type';
+			$data[$counter][] = 'course_edition';
+                        
 			$counter++;
 		}
 		
@@ -224,7 +232,8 @@ class DoceboConnectorCourseExport extends DoceboConnector {
 			$data[$counter][] = $row[19];
 			$data[$counter][] = $row[20];
 			$data[$counter][] = $row[21];
-			
+			$data[$counter][] = $row[22];
+			$data[$counter][] = $row[23];                        
 			$counter++;
 		}
 		$counter--;
