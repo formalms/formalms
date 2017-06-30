@@ -212,37 +212,45 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 		$this->index = 0;
 		$this->eof = true;
 		
-		$match = array();
-		$this->org_chart_name = array();
-		$this->org_chart_group = array();
-		$this->user_org_chart = array();
+		if ($this->org_chart_destination == 0) {
+            $q = "SELECT idst from core_user";
+            $r =  sql_query($q);
+             while(list($idstMember) = sql_fetch_row($r)) {
+                    $this->user_org_chart[$idstMember][0] = 0;
+             }
+        } else {
+            $match = array();
+		    $this->org_chart_name = array();
+		    $this->org_chart_group = array();
+		    $this->user_org_chart = array();
 
-		// cache org_chart group
-		$this->org_chart_group = $aclManager->getBasePathGroupST('/oc');
+		    // cache org_chart group
+		    $this->org_chart_group = $aclManager->getBasePathGroupST('/oc');
 
-		$query = " SELECT id_dir, translation "
-				." FROM ".$GLOBALS['prefix_fw']."_org_chart"
-				." WHERE lang_code = '".getLanguage()."'";
-		$result = sql_query($query);
-		while(list($id_dir, $dir_name) = sql_fetch_row($result)) {
-		
-			$valid = preg_match('/'.$this->preg_match_folder.'/i', $dir_name, $match);
-			if($valid) $dir_name = $match[1];
-		
-			$this->org_chart_name[$dir_name] = $id_dir;
-			$idst_group = $this->org_chart_group['/oc_'.$id_dir];
-						
-			$query_idstMember = "SELECT idstMember"
-								." FROM ".$GLOBALS['prefix_fw']."_group_members "
-								." WHERE idst = '".$idst_group."'";
-			$re = sql_query($query_idstMember);
-			while(list($idstMember) = sql_fetch_row($re)) {
-				
-				if(!isset($this->user_org_chart[$idstMember])) $this->user_org_chart[$idstMember] = array();
-				$this->user_org_chart[$idstMember][$id_dir] = $id_dir;
-			}
-			
-		}
+		    $query = " SELECT id_dir, translation "
+				    ." FROM ".$GLOBALS['prefix_fw']."_org_chart"
+				    ." WHERE lang_code = '".getLanguage()."'";
+		    $result = sql_query($query);
+		    while(list($id_dir, $dir_name) = sql_fetch_row($result)) {
+                if ($id_dir == $this->org_chart_destination) {		
+			        $valid = preg_match('/'.$this->preg_match_folder.'/i', $dir_name, $match);
+			        if($valid) $dir_name = $match[1];
+		        
+			        $this->org_chart_name[$dir_name] = $id_dir;
+			        $idst_group = $this->org_chart_group['/oc_'.$id_dir];
+						        
+			        $query_idstMember = "SELECT idstMember"
+								        ." FROM ".$GLOBALS['prefix_fw']."_group_members "
+								        ." WHERE idst = '".$idst_group."'";
+			        $re = sql_query($query_idstMember);
+			        while(list($idstMember) = sql_fetch_row($re)) {
+				        
+				        if(!isset($this->user_org_chart[$idstMember])) $this->user_org_chart[$idstMember] = array();
+				        $this->user_org_chart[$idstMember][$id_dir] = $id_dir;
+			        }
+                }
+		    }
+        }    
 		return TRUE;
 	}
 	
@@ -288,19 +296,11 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 	}
 	
 	function get_next_row() {
-		
-		if($this->data === false) {
-			$pdr = new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
-			
-			if( $this->tree != 0 ) {
 
-				//list($this->tree_desc) = $this->tree_view->tdb->getDescendantsSTFromST(array($this->tree));
-				$pdr->setGroupFilter($this->tree, true);				
-			}
-			
-			$this->data = $pdr->getRows();
-		}
-		
+		$pdr = new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
+        $pdr->idFilters = array(key($this->user_org_chart));
+        next($this->user_org_chart);            
+        $this->data = $pdr->getRows();
 		$row = sql_fetch_row($this->data); //print_r($row);
 		if($row == false) {
 			$this->eof = true;
@@ -323,7 +323,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector {
 					case "userid" : 	{ $export[] = substr($row[1], 1);  };break;
 					case "firstname" : 	{ $export[] = $row[2]; };break;
 					case "lastname" : 	{ $export[] = $row[3]; };break;
-					case "pass" : 		{ $export[] = ''; };break;
+					case "pass" : 		{ $export[] = '*****'; };break;
 					case "email" : 		{ $export[] = $row[4]; };break;
 					case "signature" : 	{ $export[] = $row[6]; };break;
 				}

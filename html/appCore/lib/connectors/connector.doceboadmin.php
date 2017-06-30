@@ -91,12 +91,20 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector {
 				DOCEBOIMPORT_DEFAULT		=> 'root'
 			),
 			array(
-				DOCEBOIMPORT_COLNAME		=> Lang::t('courses'),
-				DOCEBOIMPORT_COLID			=> 'courses',
+				DOCEBOIMPORT_COLNAME		=> Lang::t('_COURSEPATH'),
+				DOCEBOIMPORT_COLID			=> 'course_path',
 				DOCEBOIMPORT_COLMANDATORY	=> false,
 				DOCEBOIMPORT_DATATYPE		=> 'text',
 				DOCEBOIMPORT_DEFAULT		=> 'root'
-			)
+			),
+            array(
+                DOCEBOIMPORT_COLNAME        => Lang::t('_CATALOGUE'),
+                DOCEBOIMPORT_COLID            => 'course_cat',
+                DOCEBOIMPORT_COLMANDATORY    => false,
+                DOCEBOIMPORT_DATATYPE        => 'text',
+                DOCEBOIMPORT_DEFAULT        => 'root'
+            )
+            
 		);
 	}
 
@@ -219,7 +227,7 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector {
 						return false;
 					}
 					
-					$this->db->start_transaction();
+                    $this->db->start_transaction();
 					
 					//remove from the user group
 					$this->aclm->removeFromGroup($this->levels[ADMIN_GROUP_USER], $user[ACL_INFO_IDST]);
@@ -246,15 +254,21 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector {
 				$this->last_error = 'Users to manage not found <br />';
 			}
 			
-			// associated courses ?
-			if($row['courses'] == 'root') {
-				
+			// associated courses by path
+			if($row['course_path'] == 'root') {
 				$this->preference->saveAdminCourse($user[ACL_INFO_IDST],  array(0), array(), array());
-			} else {
-				
-				$this->last_error = 'Course association not found <br />';
+			} elseif($row['course_path']!='') {
+				$this->preference->saveAdminCourse($user[ACL_INFO_IDST],  array(), array($this->getIDbyName($row['course_path'],'course_path')), array());
 			}
-			
+
+            
+            // associated courses by catalogue
+            if($row['course_cat'] == 'root') {
+                $this->preference->saveAdminCourse($user[ACL_INFO_IDST],  array(0), array(), array());
+            } elseif($row['course_cat']!='') {
+                $this->preference->saveAdminCourse($user[ACL_INFO_IDST],  array(), array(), array($this->getIDbyName($row['course_cat'],'course_cat') ));
+            }            
+            
 			$this->db->commit();
 			return true;
 		} else {
@@ -274,6 +288,24 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector {
 		return $this->last_error;
 	}
 
+    
+    private function getIDbyName($strName,$typeC){
+       if($typeC == "course_cat"){
+           $sql = "Select idCatalogue from learning_catalogue where name='".addslashes($strName)."'";
+       } 
+       
+       if($typeC=="course_path"){
+            $sql = "Select id_path from learning_coursepath where path_name='".addslashes($strName)."'";
+       }
+       
+          
+      list($idRet) = sql_fetch_row(sql_query($sql));  
+        
+        
+      return $idRet;  
+        
+    }
+    
 }
 
 /**
