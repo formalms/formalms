@@ -115,19 +115,18 @@ class DoceboConnectorUserReport extends DoceboConnector {
 		$this->lang = DoceboLanguage::createInstance('ru_report');
 		
 
-$query_course_user =    "
-        SELECT u.idst, REPLACE(u.userid,'/','') login, CONCAT (u.firstname, ' ', u.lastname) user_name , c.idCourse id_course,
-        cat.path category, c.code, c.name course, c.status course_status,
-        cu.date_inscr subscribe_date,
-        cu.date_first_access  begin_date,
-        cu.date_complete  complete_date,
-        cu.status  user_status,
-        cu.score_given  score 
-        FROM  learning_courseuser AS cu, 
-              learning_course AS c, 
-              core_user AS u,
-             learning_category  as cat
-        WHERE cu.idCourse = c.idCourse and u.idst = cu.idUser and c.idCategory = cat.idCategory
+        $query_course_user =    "
+                SELECT u.idst, REPLACE(u.userid,'/','') login, CONCAT (u.firstname, ' ', u.lastname) user_name , c.idCourse id_course,
+                cat.path category, c.code, c.name course, c.status course_status,
+                cu.date_inscr subscribe_date,
+                cu.date_first_access  begin_date,
+                cu.date_complete  complete_date,
+                cu.status  user_status,
+                cu.score_given  score 
+                FROM  learning_courseuser AS cu 
+                join learning_course as c on cu.idCourse = c.idCourse
+                join core_user as u on cu.idUser = u.idst
+                left join learning_category as cat on c.idCategory = cat.idCategory
          ";    
             
 		$this->_query_result = sql_query($query_course_user);

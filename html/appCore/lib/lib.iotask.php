@@ -447,6 +447,20 @@ class DoceboConnectionManager {
 			return FALSE;
 		}
 	}
+    
+    function delete_task_byid( $id_task ) {
+        $lang =& $this->get_lang();
+        $query = "DELETE FROM ".$GLOBALS['prefix_fw']."_task"
+                ." WHERE sequence = ".$id_task;
+        if( sql_query($query) )
+            return TRUE;
+        else {
+            $this->last_error = sql_error();
+            return FALSE;
+        }
+    }
+
+    
 
 	/**
 	 * save a new task or update an old task

@@ -460,6 +460,7 @@ function ioTask_UITaskNew( &$module, $action, $subop ) {
 	$old_name = "";
 	if($subop == 'edit_task') {
 		$params = $connMgr->get_task_byID(key($action));
+        $old_name = $params[0];
 	} else {
 		$params = array(CONNMGR_TASK_NAME => $lang->def('_TASK_NAME_EXAMPLE'),
 						CONNMGR_TASK_DESCRIPTION => '',
@@ -671,15 +672,14 @@ function ioTask_UITaskDelete( &$module, $action ) {
 
 	if( is_array($action) ) {
 		if( key($action) == '--confirm--' ) {
-			if( $connMgr->delete_task_byname( $_POST['task_name'] ) )
+            if( $connMgr->delete_task_byid( $_POST['task_id'] ) )
 				Util::jump_to( 'index.php?modname=iotask&op=display&deletetaskok&gotab=tasks' );
 			else
 				Util::jump_to( 'index.php?modname=iotask&op=display&deletetaskerror&gotab=tasks' );
 		}
 	}
 	
-	$params = $connMgr->get_task_byID(key($action));
-	$task_name = $params[CONNMGR_TASK_NAME];
+    $task_id = key($action);
 
 	$out->setWorkingZone('content');
 	$out->add(getTitleArea($lang->def('_TASKS'), 'iotask'));
@@ -688,7 +688,7 @@ function ioTask_UITaskDelete( &$module, $action ) {
 	
 	$out->add($form->getFormHeader($lang->def('_TASK_DEL')));
 	$out->add($form->openForm('task_delete', 'index.php?modname=iotask&op=display&gotab=tasks'));
-	$out->add($form->getHidden('task_name', 'task_name', $task_name));
+    $out->add($form->getHidden('task_id', 'task_id', $task_id));
 	$out->add(getDeleteUi(	$lang->def('_CONFIRM_DELETION'),
 							str_replace('%name%',$task_name,$lang->def('_AREYOUSURE') ), 
 							FALSE,
