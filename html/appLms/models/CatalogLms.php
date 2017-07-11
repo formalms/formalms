@@ -78,7 +78,7 @@ class CatalogLms extends Model
     }
     
     
-	public function getCourseList($type = '', $page = 1)
+	public function getCourseList($type = '', $page = 1, $id_catalog)
 	{
         require_once(_lms_.'/lib/lib.catalogue.php');
 		$cat_man = new Catalogue_Manager();
@@ -174,6 +174,32 @@ class CatalogLms extends Model
 		$limit = ($page - 1) * Get::sett('visuItem');
 		$id_cat = Get::req('id_cat', DOTY_INT, 0);
 
+        //**********************
+         #12190 - Catalogo corsi , filtro dei corsi anche per utente associati a cataloghi
+         
+        require_once(_lms_.'/lib/lib.catalogue.php');
+        $cat_man = new Catalogue_Manager();        
+
+        $user_groups = Docebo::user()->getArrSt();
+  
+        $query_cat_user = "
+        SELECT DISTINCT ce.idEntry
+        FROM ".$cat_man->_getCataEntryTable()." AS ce
+            JOIN ".$cat_man->_getCataMemberTable()." AS cm
+        WHERE ce.type_of_entry = 'course' AND
+            ce.idCatalogue = cm.idCatalogue AND
+            cm.idst_member IN (".implode(',', $user_groups).") ";
+   
+        if(intval($id_catalog)>0){
+           $query_cat_user = $query_cat_user. " and ce.idCatalogue=".$id_catalog  ;
+            
+        }
+            
+        //**********************
+
+
+        
+        
 		$query =	"SELECT *"
 					." FROM %lms_course"
 					." WHERE status NOT IN (".CST_PREPARATION.", ".CST_CONCLUDED.", ".CST_CANCELLED.")"
@@ -185,8 +211,10 @@ class CatalogLms extends Model
                     
 					.$filter
 					.($id_cat > 0 ? " AND idCategory = ".(int)$id_cat : '')
+                    ." and idCourse in (".$query_cat_user.")"
 					." ORDER BY name";
 
+                    
 		$result = sql_query($query);
         return $result; 
         
@@ -308,7 +336,7 @@ class CatalogLms extends Model
 					.$filter
 					.($id_cat > 0 ? " AND idCategory = ".(int)$id_cat : '')
 					." ORDER BY name";
-
+                      
 		list($res) = sql_fetch_row(sql_query($query));
 
 		return $res;
@@ -784,17 +812,26 @@ class CatalogLms extends Model
                 $this->the_tree = [];
                 $this->children = $this->getMinorCategoryTree($a_top_cat_key);
                 $this->GetChildTree(array_keys($this->children));
+                      
+                
                 if (count($this->the_tree)>0) {
                     $global_tree[] = array('text'=>$this->the_tree[0]['text'], 'nodes'=>$this->the_tree[0]['nodes'], "href" => "index.php?r=catalog/allCourse&id_cat=".$a_top_cat_key, "id_cat" => $a_top_cat_key);
                 } else {
-                    $global_tree[] = array('text'=>$val, "href" => "index.php?r=catalog/allCourse&id_cat=".$a_top_cat_key, "id_cat" => $a_top_cat_key);
+                    
+                    $num_course = $this->getCourseCatalog($a_top_cat_key);
+                    
+                    
+                    // no fogli
+                    if($num_course >0) {
+                        $global_tree[] = array('text'=>$val." <p class='text-success'>(".$num_course.")</p>", "href" => "index.php?r=catalog/allCourse&id_cat=".$a_top_cat_key, "id_cat" => $a_top_cat_key);
+                    }
                 }    
             }
             return  $global_tree;              
             
               
         }
-
+             
         public function getMinorCategoryTree($id_cat){
             $query_i =    "SELECT iLeft, iRight, idCategory"
             ." FROM %lms_category"
@@ -824,18 +861,33 @@ class CatalogLms extends Model
 
         private function GetChildTree($array_k){
             $leaves = [];       
+            $del_leave = 0;
             foreach ($array_k as $single_key) {
-                if (is_array($this->children[$single_key]['son'])) {
+
+                $num_course = $this->getCourseCatalog($this->children[$single_key]['id_cat']);
+
+                if (is_array($this->children[$single_key]['son']) ) {
                     $this->tree_deep++;
                     $b = $this->GetChildTree(array_keys($this->children[$single_key]['son']));
                     
-                    $leaves[] = array('text'=>$this->children[$single_key]['name'], 'nodes'=>$b, "href" => "index.php?r=catalog/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat'] );
-                    if  ($this->tree_deep==0){
-                        $this->the_tree[] = array('text'=>$leaves[0]['text'], 'nodes'=>$leaves[0]['nodes'], "href" => "index.php?r=catalog/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat'] );
+                    // genitore 
+                //    if($del_leave==true && $num_course>0){
+                        $leaves[] = array('text'=>$this->children[$single_key]['name']." (".$num_course.")", 'nodes'=>$b, "href" => "index.php?r=catalog/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat'] );
+                //    }
+   
+                    if  ($this->tree_deep==0 ){
+                        $this->the_tree[] = array('text'=>$leaves[0]['text']."  ", 'nodes'=>$leaves[0]['nodes'], "href" => "index.php?r=catalog/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat'] );
                         $this->tree_deep = 0;                   
-                    }
+                    }  
                 } else {
-                    $leaves[] = array('text'=>$this->children[$single_key]['name'],  "href" => "index.php?r=catalog/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat']);
+                    // foglia di un nodo genitore 
+                   // if($num_course > 0){ 
+                        $del_leave = 1;
+                        $leaves[] = array('text'=>$this->children[$single_key]['name']."  (".$num_course.")",  "href" => "index.php?r=catalog/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat']);
+                   // }else{
+                        // rimuovi ultimo elemento inserito come genitore in tree_deep
+                      //  array_pop($this->the_tree);
+                    //}
                 }
                 if (array_key_exists($single_key, $this->children)) {
                     unset($this->children[$single_key]);   
@@ -849,8 +901,56 @@ class CatalogLms extends Model
     
     
     
-    
-    
+   
+   
+   function getCourseCatalog($id_cat){
+        require_once(_lms_.'/lib/lib.catalogue.php');
+        $cat_man = new Catalogue_Manager();        
+        $id_catalog = $_GET['id_cata'] ;
+        
+        
+        $user_groups = Docebo::user()->getArrSt();
+          
+        $query_cat_user = "
+        SELECT DISTINCT ce.idEntry
+        FROM ".$cat_man->_getCataEntryTable()." AS ce
+            JOIN ".$cat_man->_getCataMemberTable()." AS cm
+        WHERE ce.type_of_entry = 'course' AND
+            ce.idCatalogue = cm.idCatalogue AND
+            cm.idst_member IN (".implode(',', $user_groups).") ";
+   
+        if(intval($id_catalog)>0){
+           $query_cat_user = $query_cat_user. " and ce.idCatalogue=".$id_catalog ;
+            
+        }
+            
+
+        
+        $query =    "SELECT count(*) as c "
+                    ." FROM %lms_course"
+                    ." WHERE status NOT IN (".CST_PREPARATION.", ".CST_CONCLUDED.", ".CST_CANCELLED.")"
+                    ." AND course_type <> 'assessment'"
+                    ." AND (                       
+                        (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '".date('Y-m-d')."') AND (sub_start_date = '0000-00-00' OR '".date('Y-m-d')."' >= sub_start_date)) OR
+                        (can_subscribe=1)
+                    ) "
+                    
+                    .($id_cat > 0 ? " AND idCategory = ".(int)$id_cat : '')
+                    ." and idCourse in (".$query_cat_user.")"
+                    ." ORDER BY name";       
+       
+       
+       list($c) = sql_fetch_row(sql_query($query));
+       
+     //  $c = "<p class='text-success'>(".$c.")</p>";
+       
+       return $c;    
+       
+       
+   }
+   
+   
+      
 }
 
 ?>

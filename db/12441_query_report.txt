@@ -1,0 +1,22 @@
+
+
+-- QUERY PER INTEGRAZIONI TESTI DEL REPORT UTENTI/CORSI 
+
+INSERT IGNORE INTO core_lang_text(text_key,text_module) VALUES ('_GRAPHIC_REPORT','standard');
+INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text, save_date) VALUES ((select id_text from core_lang_text WHERE text_key = '_GRAPHIC_REPORT' AND text_module = 'standard'), 'italian', 'Grafico', now() );
+
+
+INSERT IGNORE INTO core_lang_text(text_key,text_module) VALUES ('_NUM_LO','standard');
+INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text, save_date) VALUES ((select id_text from core_lang_text WHERE text_key = '_NUM_LO' AND text_module = 'standard'), 'italian', 'Numero materiali', now() );
+
+
+INSERT IGNORE INTO core_lang_text(text_key,text_module) VALUES ('_NUM_LO_COMPL','standard');
+INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text, save_date) VALUES ((select id_text from core_lang_text WHERE text_key = '_NUM_LO_COMPL' AND text_module = 'standard'), 'italian', 'Materiali completati/superati', now() );
+
+
+INSERT IGNORE INTO core_lang_text(text_key,text_module) VALUES ('_PERC_COMPL','standard');
+INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text, save_date) VALUES ((select id_text from core_lang_text WHERE text_key = '_PERC_COMPL' AND text_module = 'standard'), 'italian', 'Percentuale completamento', now() );
+
+
+INSERT IGNORE INTO core_lang_text(text_key,text_module) VALUES ('_LO_COMPL','standard');
+INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text, save_date) VALUES ((select id_text from core_lang_text WHERE text_key = '_LO_COMPL' AND text_module = 'standard'), 'italian', 'Materiali completati', now() );
