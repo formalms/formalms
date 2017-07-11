@@ -63,38 +63,28 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 	
 	// name, type
  	var $all_cols = array( 
-		array( 'id_user', 'text' ), 
-		array( 'userid', 'text' ), 
-		array( 'name', 'text' ), 
-		array( 'id_course', 'text' ), 
-		array( 'category', 'text' ), 
-		array( 'course', 'text' ), 
-		array( 'coursestatus', 'text' ), 
-		array( 'subscribe_date', 'datetime' ), 
-		array( 'begin_date', 'datetime' ), 
-		array( 'complete_date', 'datetime' ), 
-		array( 'last_access', 'datetime' ), 
-		array( 'user_status', 'text' ), 
-		array( 'number_of_access', 'int' ), 
-		array( 'total_time', 'time' ), 
-		array( 'begin_test_score', 'text' ), 
-		array( 'end_test_score', 'text' )
+        array( 'code', 'text' ), 
+        array( 'name', 'text' ), 
+		array( 'enrolled_number', 'int' ), 
+        array( 'no_begin', 'int' ),         
+		array( 'no_begin_perc', 'text' ), 
+        array( 'begin', 'int' ),         
+		array( 'begin_perc', 'text' ),
+        array( 'end_course', 'int' ), 
+		array( 'end_course_perc', 'text' ), 
+		array( 'time_in_course', 'text' ), 
 	);
 		
-	var $default_cols = array(	'id_user' 			=> '0', 
-								'userid' 			=> '', 
-								'name' 				=> '', 
-								'id_course' 		=> '0', 
-								'category'			=> '',
-								'course' 			=> '', 
-								'coursestatus' 		=> '', 
-								'subscribe_date' 	=> '0000-00-00 00:00:00', 
-								'begin_date' 		=> '0000-00-00 00:00:00', 
-								'complete_date' 	=> '0000-00-00 00:00:00', 
-								'last_access' 		=> '0000-00-00 00:00:00', 
-								'user_status' 		=> '', 
-								'number_of_access' 	=> '0', 
-								'total_time' 		=> '00:00:00' );
+	var $default_cols = array(	'code' 			=> '', 
+								'name' 			=> '', 
+								'enrolled_number' 		=> '0',
+                                'no_begin'            => '0',                                
+                                'no_begin_perc'            => '0%',
+								'begin'			=> '0',
+                                'begin_perc'     => '0%', 
+                                'end_course'   => '0', 
+                                'end_course_perc' 			=> '0%', 
+								'time_in_course' 		=> '00:00:00' );
 	
 	
 	/**
@@ -196,7 +186,6 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 			$query_time = "
 			SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) 
 			FROM ".$GLOBALS['prefix_lms']."_tracksession 
-			WHERE idUser IN ( ".implode(',', $effective_user)." )
 			GROUP BY idCourse ";
 			
 			$re_time = sql_query($query_time);
@@ -283,13 +272,15 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 		
 		$row = false;
 		if($this->first_row) return $this->first_row;
-		if(!empty($this->id_courses)) return $row;
+		if(empty($this->id_courses)) return $row;
 		
-		list($idc, $course_info) = each($this->id_courses);
+        $idc = key($this->id_courses);        
+        $course_info = current($this->id_courses);        
+       
 		
 		$row = array(
-			$course_info['name'], 
-			$course_info['code'] );
+			$course_info['code'], 
+			$course_info['name'] );
 		if( isset($this->num_iscr[$idc]) ) {	
 			
 			$row[] = $this->num_iscr[$idc];
@@ -302,8 +293,8 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 				$row[] = number_format($perc , 2, '.', '').'%';
 			} else {
 				
-				$row[] = '';
-				$row[] = '';
+				$row[] = '0';
+				$row[] = '0%';
 			}
 				
 			//begin
@@ -314,8 +305,8 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 				$row[] = number_format($perc , 2, '.', '').'%';
 			} else {
 			
-				$row[] = '';
-				$row[] = '';
+				$row[] = '0';
+				$row[] = '0%';
 			}
 				
 			//end course
@@ -326,26 +317,27 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 				$row[] = number_format($perc , 2, '.', '').'%';
 			} else {
 			
-				$row[] = '';
-				$row[] = '';
+				$row[] = '0';
+				$row[] = '0%';
 			}
-			if(isset($time_in_course[$idc])) {
+			if(isset($this->time_in_course[$idc])) {
 				
 				$row[] = ((int)($this->time_in_course[$idc]/3600)).'h '
 					.substr('0'.((int)(($this->time_in_course[$idc]%3600)/60)),-2).'m '
 					.substr('0'.((int)($this->time_in_course[$idc]%60)),-2).'s ';
 			} else {
 				
-				$row[] = '';
+				$row[] = '-';
 			}
 		} else {
-			$row[] = '';
-			$row[] = '';
-			$row[] = '';
-			$row[] = '';
-			$row[] = '';
-			$row[] = '';
-			$row[] = '';
+			$row[] = '0';
+			$row[] = '0';
+			$row[] = '0%';
+			$row[] = '0';
+			$row[] = '0%';
+			$row[] = '0';
+			$row[] = '0%';
+            $row[] = '-';            
 		}
 		$this->_first_row = $row;
 		return $row;
@@ -354,18 +346,17 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 	function get_next_row() {
 		
 		$row = array();
-		if(!current($this->id_courses)) {
-			$this->_readed_end = true;
-			return FALSE;
-		}
-		$this->row_index++;
-		
-		
-		list($idc, $course_info) = each($this->id_courses);
+        $course_info = next($this->id_courses);            
+        if (!$course_info) {
+            $this->_readed_end = true;
+            return FALSE;
+        }  
+        $this->row_index++;
+        $idc = key($this->id_courses);
 		
 		$row = array(
-			$course_info['name'], 
-			$course_info['code'] );
+			$course_info['code'], 
+			$course_info['name'] );
 		if( isset($this->num_iscr[$idc]) ) {	
 			
 			$row[] = $this->num_iscr[$idc];
@@ -378,8 +369,8 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 				$row[] = number_format($perc , 2, '.', '').'%';
 			} else {
 				
-				$row[] = '';
-				$row[] = '';
+				$row[] = '0';
+				$row[] = '0%';
 			}
 				
 			//begin
@@ -390,8 +381,8 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 				$row[] = number_format($perc , 2, '.', '').'%';
 			} else {
 			
-				$row[] = '';
-				$row[] = '';
+				$row[] = '0';
+				$row[] = '0%';
 			}
 				
 			//end course
@@ -402,26 +393,27 @@ class DoceboConnectorCourseReport extends DoceboConnector {
 				$row[] = number_format($perc , 2, '.', '').'%';
 			} else {
 			
-				$row[] = '';
-				$row[] = '';
+				$row[] = '0';
+				$row[] = '0%';
 			}
-			if(isset($time_in_course[$idc])) {
+			if(isset($this->time_in_course[$idc])) {
 				
 				$row[] = ((int)($this->time_in_course[$idc]/3600)).'h '
 					.substr('0'.((int)(($this->time_in_course[$idc]%3600)/60)),-2).'m '
 					.substr('0'.((int)($this->time_in_course[$idc]%60)),-2).'s ';
 			} else {
 				
-				$row[] = '';
+				$row[] = '-';
 			}
 		} else {
-			$row[] = '';
-			$row[] = '';
-			$row[] = '';
-			$row[] = '';
-			$row[] = '';
-			$row[] = '';
-			$row[] = '';
+            $row[] = '0';
+            $row[] = '0';
+            $row[] = '0%';
+            $row[] = '0';
+            $row[] = '0%';
+            $row[] = '0';
+            $row[] = '0%';
+            $row[] = '-';            
 		}
 		return $row;
 	}

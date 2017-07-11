@@ -414,19 +414,19 @@ function ioTask_UITaskList( &$module ) {
 			$cont[] = '';
 		$cont[] = '<input type="image" '
 				 .'id="run_'.$conn[CONNMGR_TASK_NAME].'" '
-				 .'name="action[run_task]['.$conn[CONNMGR_TASK_NAME].']" '
+				 .'name="action[run_task]['.$conn[CONNMGR_TASK_SEQUENCE].']" '
 				 .'src="'.getPathImage().'/standard/play.png"'
 				 .'alt="'.$lang->def('_TASK_RUN').'"'
 				 .'title="'.$lang->def('_TASK_RUN').': '.$conn[CONNMGR_TASK_NAME].'" />';
 		$cont[] = '<input type="image" '
 				 .'id="modifiy_'.$conn[CONNMGR_TASK_NAME].'" '
-				 .'name="action[edit_task]['.$conn[CONNMGR_TASK_NAME].']" '
+				 .'name="action[edit_task]['.$conn[CONNMGR_TASK_SEQUENCE].']" '
 				 .'src="'.getPathImage().'/standard/edit.png"'
 				 .'alt="'.$lang->def('_MOD').'"'
 				 .'title="'.$lang->def('_MOD').': '.$conn[CONNMGR_TASK_NAME].'" />';
 		$cont[] = '<input type="image" '
 				 .'id="delete_'.$conn[CONNMGR_TASK_NAME].'" '
-				 .'name="action[delete_task]['.$conn[CONNMGR_TASK_NAME].']" '
+				 .'name="action[delete_task]['.$conn[CONNMGR_TASK_SEQUENCE].']" '
 				 .'src="'.getPathImage().'/standard/cancel.png"'
 				 .'alt="'.$lang->def('_TASK_DEL').'"'
 				 .'title="'.$lang->def('_TASK_DEL').': '.$conn[CONNMGR_TASK_NAME].'" />';
@@ -459,8 +459,8 @@ function ioTask_UITaskNew( &$module, $action, $subop ) {
 	
 	$old_name = "";
 	if($subop == 'edit_task') {
-		$old_name = key($action);
-		$params = $connMgr->get_task_byname($old_name);
+		$params = $connMgr->get_task_byID(key($action));
+        $old_name = $params[0];
 	} else {
 		$params = array(CONNMGR_TASK_NAME => $lang->def('_TASK_NAME_EXAMPLE'),
 						CONNMGR_TASK_DESCRIPTION => '',
@@ -672,15 +672,14 @@ function ioTask_UITaskDelete( &$module, $action ) {
 
 	if( is_array($action) ) {
 		if( key($action) == '--confirm--' ) {
-			if( $connMgr->delete_task_byname( $_POST['task_name'] ) )
+            if( $connMgr->delete_task_byid( $_POST['task_id'] ) )
 				Util::jump_to( 'index.php?modname=iotask&op=display&deletetaskok&gotab=tasks' );
 			else
 				Util::jump_to( 'index.php?modname=iotask&op=display&deletetaskerror&gotab=tasks' );
 		}
 	}
 	
-	$params = $connMgr->get_task_byname(key($action));
-	$task_name = $params[CONNMGR_TASK_NAME];
+    $task_id = key($action);
 
 	$out->setWorkingZone('content');
 	$out->add(getTitleArea($lang->def('_TASKS'), 'iotask'));
@@ -689,7 +688,7 @@ function ioTask_UITaskDelete( &$module, $action ) {
 	
 	$out->add($form->getFormHeader($lang->def('_TASK_DEL')));
 	$out->add($form->openForm('task_delete', 'index.php?modname=iotask&op=display&gotab=tasks'));
-	$out->add($form->getHidden('task_name', 'task_name', $task_name));
+    $out->add($form->getHidden('task_id', 'task_id', $task_id));
 	$out->add(getDeleteUi(	$lang->def('_CONFIRM_DELETION'),
 							str_replace('%name%',$task_name,$lang->def('_AREYOUSURE') ), 
 							FALSE,
@@ -713,7 +712,7 @@ function ioTask_UITaskRun( &$module, $action ) {
 	$form = new Form();
 	$dimport = new DoceboImport();
 
-	$params = $connMgr->get_task_byname(key($action));
+	$params = $connMgr->get_task_byID(key($action));
 	$task_name = $params[CONNMGR_TASK_NAME];
 
 	$out->setWorkingZone('content');
@@ -726,7 +725,7 @@ function ioTask_UITaskRun( &$module, $action ) {
 	$out->add($form->openElementSpace());
 	$out->add($form->getHidden('task_name', 'task_name', $task_name));
 
-	$report = $dimport->execute_task($task_name);
+	$report = $dimport->execute_task(key($action));
 	if( !is_array($report) ) {
 		$out->add($report);
 	} else {

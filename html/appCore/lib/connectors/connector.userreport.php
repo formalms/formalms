@@ -39,8 +39,6 @@ class DoceboConnectorUserReport extends DoceboConnector {
 	var $first_row = false;
 	
 	var $acl_man;
-	var $users_info;
-	var $category_list;
 	var $time_list;
 	var $session_list;
 	var $lastaccess_list;
@@ -48,39 +46,33 @@ class DoceboConnectorUserReport extends DoceboConnector {
 	// name, type
  	var $all_cols = array( 
 		array( 'id_user', 'text' ), 
-		array( 'userid', 'text' ), 
-		array( 'name', 'text' ), 
+		array( 'login', 'text' ), 
+		array( 'user_name', 'text' ), 
 		array( 'id_course', 'text' ), 
 		array( 'category', 'text' ), 
+        array( 'code', 'text' ),         
 		array( 'course', 'text' ), 
-		array( 'coursestatus', 'text' ), 
+		array( 'course_status', 'text' ), 
 		array( 'subscribe_date', 'datetime' ), 
 		array( 'begin_date', 'datetime' ), 
 		array( 'complete_date', 'datetime' ), 
-		array( 'last_access', 'datetime' ), 
 		array( 'user_status', 'text' ), 
-		array( 'number_of_access', 'int' ), 
-		array( 'total_time', 'time' ), 
-		array( 'begin_test_score', 'text' ), 
-		array( 'end_test_score', 'text' )
+		array( 'score', 'text' )
 	);
 		
 	var $default_cols = array(	'id_user' 			=> '0', 
-								'userid' 			=> '', 
-								'name' 				=> '', 
+								'login' 			=> '', 
+								'user_name' 				=> '', 
 								'id_course' 		=> '0', 
 								'category'			=> '',
+                                'code'            => '',                                
 								'course' 			=> '', 
-								'coursestatus' 		=> '', 
+								'course_status' 		=> '', 
 								'subscribe_date' 	=> '0000-00-00 00:00:00', 
 								'begin_date' 		=> '0000-00-00 00:00:00', 
 								'complete_date' 	=> '0000-00-00 00:00:00', 
-								'last_access' 		=> '0000-00-00 00:00:00', 
 								'user_status' 		=> '', 
-								'number_of_access' 	=> '0', 
-								'total_time' 		=> '00:00:00', 
-								'begin_test_score' 	=> 'n.a.', 
-								'end_test_score' 	=> 'n.a.' );
+								'score' 	=> '' );
 	
 	
 	/**
@@ -122,34 +114,21 @@ class DoceboConnectorUserReport extends DoceboConnector {
 		
 		$this->lang = DoceboLanguage::createInstance('ru_report');
 		
-		// perform the query for data retriving
-		
-		$course_man = new Man_Course();
-		$this->acl_man 	= new DoceboACLManager();
-		$p_dr 		= new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
-		$re_people = $p_dr->getAllRowsIdst();
-		
-		$this->_query_result = false;
-		$this->_readed_end = false;
-		$this->row_index = 0;
-		
-		$user_selected = array();
-		if(!$re_people) {
-			
-			$this->_readed_end = true;
-			return TRUE;
-		}
-		
-		
-		// find some information
-		
-		$query_course_user = "
-		SELECT cu.idUser, c.idCourse, c.code, c.name, cu.status 
-		FROM  ".$GLOBALS['prefix_lms']."_courseuser AS cu 
-			JOIN ".$GLOBALS['prefix_lms']."_course AS c 
-		WHERE cu.idCourse = c.idCourse 
-			AND cu.idUser IN ( ".implode(',', $user_selected)." ) 
-			AND cu.status = '"._CUS_END."' ";
+
+        $query_course_user =    "
+                SELECT u.idst, REPLACE(u.userid,'/','') login, CONCAT (u.firstname, ' ', u.lastname) user_name , c.idCourse id_course,
+                cat.path category, c.code, c.name course, c.status course_status,
+                cu.date_inscr subscribe_date,
+                cu.date_first_access  begin_date,
+                cu.date_complete  complete_date,
+                cu.status  user_status,
+                cu.score_given  score 
+                FROM  learning_courseuser AS cu 
+                join learning_course as c on cu.idCourse = c.idCourse
+                join core_user as u on cu.idUser = u.idst
+                left join learning_category as cat on c.idCategory = cat.idCategory
+         ";    
+            
 		$this->_query_result = sql_query($query_course_user);
 		
 		if(!$this->_query_result) {
@@ -258,28 +237,23 @@ class DoceboConnectorUserReport extends DoceboConnector {
 		}
 		$this->row_index++;
 		
-		list($id_user, $id_course, $id_category, $name, $status,
-			$status_user, $date_inscr, $date_first_access, $date_complete) = $result;
+		list($id_user, $login, $user_name, $id_course, $category,
+			$code, $name, $course_status, $subscribe_date, $date_first_access, $date_complete, $status_user, $score) = $result;
 		
 		$row = array(
 			$id_user, 
-			$this->acl_man->relativeId($this->users_info[$id_user][ACL_INFO_USERID]), 
-			$this->users_info[$id_user][ACL_INFO_LASTNAME], 
-			$this->users_info[$id_user][ACL_INFO_FIRSTNAME], 
-			$id_course, 
-			$this->category_list[$id_category], 
+			$login,
+            $user_name,
+			$id_course,
+            $category,
+            $code, 
 			$name, 
-			$this->_converStatusCourse($status), 
-			$date_inscr, 
+			$this->_converStatusCourse($course_status), 
+			$subscribe_date, 
 			( $date_first_access !== NULL ? $date_first_access : '&nbsp;'), 
 			( $date_complete !== NULL ? $date_complete : '&nbsp;'), 
-			( isset($this->lastaccess_list[$id_user.'_'.$id_course]) ? $this->lastaccess_list[$id_user.'_'.$id_course] : '' ), 
-			$this->_convertStatusUser($status_user), 
-			( isset($this->session_list[$id_user.'_'.$id_course]) ? $this->session_list[$id_user.'_'.$id_course] : '' ), 
-			( isset($this->time_list[$id_user.'_'.$id_course]) ? 
-				substr('0'.((int)($this->time_list[$id_user.'_'.$id_course]/3600)),-2).'h '
-				.substr('0'.((int)(($this->time_list[$id_user.'_'.$id_course]%3600)/60)),-2).'m '
-				.substr('0'.((int)($this->time_list[$id_user.'_'.$id_course]%60)),-2).'s ' : '' )
+			$this->_convertStatusUser($status_user),
+            $score 
 		);
 		
 		return $row;
@@ -297,29 +271,25 @@ class DoceboConnectorUserReport extends DoceboConnector {
 		}
 		$this->row_index++;
 		
-		list($id_user, $id_course, $id_category, $name, $status,
-			$status_user, $date_inscr, $date_first_access, $date_complete) = $result;
-		
-		$row = array(
-			$id_user, 
-			$this->acl_man->relativeId($this->users_info[$id_user][ACL_INFO_USERID]), 
-			$this->users_info[$id_user][ACL_INFO_LASTNAME], 
-			$this->users_info[$id_user][ACL_INFO_FIRSTNAME], 
-			$id_course, 
-			$this->category_list[$id_category], 
-			$name, 
-			$this->_converStatusCourse($status), 
-			$date_inscr, 
-			( $date_first_access !== NULL ? $date_first_access : '&nbsp;'), 
-			( $date_complete !== NULL ? $date_complete : '&nbsp;'), 
-			( isset($this->lastaccess_list[$id_user.'_'.$id_course]) ? $this->lastaccess_list[$id_user.'_'.$id_course] : '' ), 
-			$this->_convertStatusUser($status_user), 
-			( isset($this->session_list[$id_user.'_'.$id_course]) ? $this->session_list[$id_user.'_'.$id_course] : '' ), 
-			( isset($this->time_list[$id_user.'_'.$id_course]) ? 
-				substr('0'.((int)($this->time_list[$id_user.'_'.$id_course]/3600)),-2).'h '
-				.substr('0'.((int)(($this->time_list[$id_user.'_'.$id_course]%3600)/60)),-2).'m '
-				.substr('0'.((int)($this->time_list[$id_user.'_'.$id_course]%60)),-2).'s ' : '' )
-		);
+        list($id_user, $login, $user_name, $id_course, $category,
+            $code, $name, $course_status, $subscribe_date, $date_first_access, $date_complete, $status_user, $score) = $result;
+        
+        $row = array(
+            $id_user, 
+            $login,
+            $user_name,
+            $id_course,
+            $category,
+            $code, 
+            $name, 
+            $this->_converStatusCourse($course_status), 
+            $subscribe_date, 
+            ( $date_first_access !== NULL ? $date_first_access : '&nbsp;'), 
+            ( $date_complete !== NULL ? $date_complete : '&nbsp;'), 
+            $this->_convertStatusUser($status_user),
+            $score 
+        );
+
 		return $row;
 	}
 	

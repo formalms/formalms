@@ -59,6 +59,8 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 	var $course_cache = false;
 	var $userid_cache = false;
 	
+	var $first_row_header = '1';
+	
 	/**
 	 * constructor
 	 * @param array params	 
@@ -100,7 +102,8 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 						'description' => $this->description,
 						'readwrite' => $this->readwrite,
 						'sendnotify' => $this->sendnotify, 
-						'on_delete' => $this->on_delete );
+						'on_delete' => $this->on_delete,
+                        'first_row_header' => $this->first_row_header );
 	}
 	
 	/**
@@ -115,7 +118,65 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 	/**
 	 * execute the connection to source
 	**/
-	function connect() {}
+	function connect() {
+        
+		$this->lang = DoceboLanguage::createInstance('rg_report');
+		
+		$this->_readed_end = false;
+		$this->today = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+		$this->position = 1;
+        
+        $query = "SELECT COUNT(*) FROM %lms_courseuser";
+		
+		list($tot_row) = sql_fetch_row(sql_query($query));
+		
+		$this->tot_row = $tot_row;
+		
+		$query =  " SELECT"
+                . "     c.code"
+                . "   , u.userid"
+                . "   , cu.level"
+                . "   , cu.date_inscr"
+                . "   , cu.date_complete"
+                . " FROM %lms_courseuser cu"
+                . " INNER JOIN %lms_course c"
+                . "     ON cu.idCourse = c.idCourse"
+                . " INNER JOIN %adm_user u"
+                . "     ON cu.idUser = u.idst";
+		
+		$result = sql_query($query);
+		
+		$data = array();
+		
+		$counter = 0;
+		
+		if($this->first_row_header)
+		{
+			$data[$counter][] = 'code';
+			$data[$counter][] = 'userid';
+			$data[$counter][] = 'level';
+			$data[$counter][] = 'date_subscription';
+			$data[$counter][] = 'last_finish';
+			
+			$counter++;
+		}
+		
+		while($row = sql_fetch_array($result))
+		{
+			$data[$counter][] = $row[0];
+			$data[$counter][] = substr($row[1], 1);
+			$data[$counter][] = $row[2];
+			$data[$counter][] = $row[3];
+			$data[$counter][] = $row[4];
+			
+			$counter++;
+		}
+		$counter--;
+		$this->all_data = $data;
+		
+		return true;
+        
+    }
 	
 	/**
 	 * execute the close of the connection 
@@ -163,22 +224,56 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector {
 	}
 
 	function get_first_row() {
-		return false;
+		if($this->first_row) return $this->first_row;
+		$this->first_row = $this->all_data[0];
+		return $this->first_row;
     }
 	
 
 	function get_next_row() {
-		return false;
+		$row = array();
+		if($this->first_row_header)
+		{
+			if($this->tot_row >= $this->position)
+			{
+				$row = $this->all_data[$this->position];
+				
+				$this->position++;
+				
+				return $row;
+			}
+			else
+			{
+				$this->_readed_end = true;
+				return false;
+			}
+		}
+		else
+		{
+			if($this->tot_row > $this->position)
+			{
+				$row = $this->all_data[$this->position];
+				
+				$this->position++;
+				
+				return $row;
+			}
+			else
+			{
+				$this->_readed_end = true;
+				return false;
+			}
+		}
 	}
 	
 
 	function is_eof() {
-		return false;
+		return $this->_readed_end;
 	}
 	
 
 	function get_row_index() {
-		return false;
+		return $this->position;
 
     }
 	
@@ -507,6 +602,13 @@ class DoceboConnectorUI_DoceboCourseUserUI extends DoceboConnectorUI {
 											array( 	$this->lang->def('_SEND')  => '1', 
 													$this->lang->def('_DONTSEND') => '2'), 
 											$this->post_params['sendnotify']);
+		
+		$out .= $this->form->getRadioSet( 	$this->lang->def('_FIRST_ROW_HEADER'),
+											$this->_get_base_name().'_first_row_header',
+											$this->_get_base_name().'[first_row_header]',
+											array( 	$this->lang->def('_YES') => '1',
+													$this->lang->def('_NO') => '0'),
+											$this->post_params['first_row_header']);
 											
 		return $out;
 	}
