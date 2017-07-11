@@ -831,7 +831,7 @@ class CatalogLms extends Model
             
               
         }
-
+             
         public function getMinorCategoryTree($id_cat){
             $query_i =    "SELECT iLeft, iRight, idCategory"
             ." FROM %lms_category"

@@ -457,7 +457,7 @@ class CatalogLmsController extends LmsController {
 
 				$array_user[] = $array_user[0];
 				unset($array_user[0]);
-
+ 
 				$control_user = array_search(getLogUserId(), $array_user);
 
 				$query =	"SELECT COUNT(*)"

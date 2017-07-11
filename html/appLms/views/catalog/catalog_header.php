@@ -99,7 +99,7 @@
           return "";
         }
 
-
+ 
    
      // select by course type
     function loadCourseType(){
