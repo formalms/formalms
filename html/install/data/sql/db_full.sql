@@ -2911,8 +2911,8 @@ CREATE TABLE IF NOT EXISTS `core_task` (
   `import_type` varchar(50) NOT NULL DEFAULT '',
   `map` text NOT NULL,
   `last_execution` datetime DEFAULT NULL,
-  `sequence` int(3) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`name`)
+  `sequence` int(3) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`sequence`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
