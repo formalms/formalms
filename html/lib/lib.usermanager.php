@@ -1493,49 +1493,7 @@ class UserManagerRenderer {
 		// register as temporary user and send mail
 		$acl_man 	=& Docebo::user()->getAclManager();
 		$iduser="";
-		//avatar
-		require_once(_base_.'/lib/lib.user_profile.php');
-		$userprofiledata = new UserProfileData();
-		$file_descriptor=$_FILES['up_avatar'];
-		if ($file_descriptor['name']!=""){
-				
-			require_once(_base_.'/lib/lib.upload.php');
-			require_once(_base_.'/lib/lib.multimedia.php');
-				
-			$savefile = $id_user.'a_'.mt_rand(0,100).'_'.time().'_'.$file_descriptor['name'];
-			if(file_exists($GLOBALS['where_files_relative'].'/appCore/'.Get::sett('pathphoto').$savefile)) return false;
-				
-			sl_open_fileoperations();
-			if(createImageFromTmp(	$file_descriptor['tmp_name'],
-					'/appCore/'.Get::sett('pathphoto').$savefile,
-					$file_descriptor['name'],
-					$max_width,
-					$max_height,
-					true ) != 0) {
-							
-						sl_close_fileoperations();
-						return false;
-					}
-					sl_close_fileoperations();
-					if(!$iduser = $acl_man->registerTempUser(
-						$_POST['register']['userid'],
-						$_POST['register']['firstname'],
-						$_POST['register']['lastname'],
-						$_POST['register']['pwd'],
-						$_POST['register']['email'],
-						$random_code,
-						0,
-						'',
-						'',
-						'',
-						'',
-						$savefile)) {
-								sl_unlink(substr($this->getPAPath(), 1).$savefile);
-								return false;
-							}
-							
-							//$userprofiledata->saveAvatarData($iduser, $_FILES['up_avatar'], 150, 150);
-		} else {
+
 			$iduser = $acl_man->registerTempUser(
 				$_POST['register']['userid'],
 				$_POST['register']['firstname'],
@@ -1544,8 +1502,7 @@ class UserManagerRenderer {
 				$_POST['register']['email'],
 				$random_code
 			);
-		}
-
+		
 		if($iduser === false) {
 
 			$out .= '<div class="reg_err_data">'
@@ -1855,12 +1812,8 @@ class UserManagerRenderer {
 
 		$out .= '</ul>'.$extra
 				.Form::openElementSpace('reg_form');
-		
-		$html .= Form::getFilefield(	"Avatar",
-										'up_avatar',
-										'up_avatar');
 	
-		$out .= $html;
+
 		$out .= Form::getTextfield($lang->def('_USERNAME').' '.$mand_sym,
 									'register_userid',
 									'register[userid]',
@@ -2076,16 +2029,7 @@ class UserManagerRenderer {
 					}
 					// end
 
-                    // Plugin Event Log register user
-                    $event = new \appLms\Events\User\UserRegistrationEvent();
 
-                    $event->set_idst($request['idst']);
-                    $event->set_date(date("Y-m-d H:i:s"));
-                    $event->set_by($request['idst']);
-                    $event->set_type(\appLms\Events\User\UserRegistrationEvent::TYPE_FREEREGISTER);
-
-                    \appCore\Events\DispatcherManager::dispatch(\appLms\Events\User\UserRegistrationEvent::EVENT_NAME, $event);
-                                        
 					$out = '<div class="reg_success">'.$lang->def('_REG_YOUR_ABI_TO_ACCESS', 'register').'</div>';
 					return $out;
 			} else {

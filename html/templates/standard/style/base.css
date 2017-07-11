@@ -157,7 +157,7 @@ ul.social-accounts li span{vertical-align:middle;}
 .lang-sprite span, .ico-wt-sprite span, .ico-sprite span{padding:0 0 2px 20px;overflow:hidden;}
 .lang-sprite{background:url(../images/ico_lang.png) 0 0 no-repeat;}
 .lang-sprite span{padding:0 0 2px 25px;overflow:hidden;}
-.ico-wt-sprite{padding:1px 4px 2px;}
+.ico-wt-sprite{padding:1px 25px 2px;}
 .ico-wt-sprite span{padding:1px 1px 2px 18px;text-decoration:underline;}
 .ico-wt-sprite:hover span,.lang-sprite:hover span,.ico-sprite:hover span{text-decoration:none;}
 

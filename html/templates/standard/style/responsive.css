@@ -4,6 +4,8 @@
 }
 .table-responsive {
     border: none;
+    width: unset; 
+    
 }
 .table-actions {
     float: none !important;

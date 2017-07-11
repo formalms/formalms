@@ -903,6 +903,12 @@ class Choice_Question extends Question {
 
 		list($id_answer_do) = sql_fetch_row(sql_query($recover_answer));
 		
+        
+        //**  recorver status test ** #11961 - Errata visualizzazione risposte corrette nei test
+        $sql = "select status from ".$GLOBALS['prefix_lms']."_commontrack where idUser=".Docebo::user()->getIdSt()." and idTrack=".$id_track;
+        list($status_test) = sql_fetch_row(sql_query($sql));
+        
+        
 		$quest = '';
 		// Visualizzazione CustomField
 		require_once(_adm_.'/lib/lib.customfield.php');
@@ -930,10 +936,17 @@ class Choice_Question extends Question {
 				}
 				$quest .= '<br />';
 			} else {
-				if($is_correct && $show_solution) {
-					$com_is_correct .= '<span class="text_bold">'.$lang->def('_TEST_NOT_THECORRECT').' : </span>'.$answer.'<br />';
-				}
-				$quest .= '<img src="'.getPathImage().'standard/dot_uns.png" title="'.$lang->def('_TEST_ANSWER_NOTCHECK').'" '
+				
+                /* if($is_correct && $show_solution) {	*/
+                
+                if(($status_test=='passed' && $show_solution==2) || ($show_solution==1)) {
+                    $com_is_correct .= '<span class="text_bold">'.$lang->def('_TEST_NOT_THECORRECT').' : </span>'.$answer.'<br />';
+                }
+                
+                
+                
+                
+                $quest .= '<img src="'.getPathImage().'standard/dot_uns.png" title="'.$lang->def('_TEST_ANSWER_NOTCHECK').'" '
 					.'alt="'.$lang->def('_TEST_ANSWER_NOTCHECK').'" />&nbsp;'
 					.$answer.'<br />';
 			}
@@ -941,7 +954,8 @@ class Choice_Question extends Question {
 		$quest .= '</div>'
 			.'</div>';
 		
-		return array(	'quest' 	=> $quest, 
+        
+		return array(	'quest' 	=> $quest,                                                              
 						'score'		=> $this->userScore($id_track, $number_time),
 						'comment'	=> ( $com_is_correct != '' ? $com_is_correct.'<br />' : '' ).$comment );
 	}

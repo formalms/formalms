@@ -671,7 +671,7 @@ ALTER TABLE `core_requests`
   ALTER TABLE `core_plugin`  ADD `core` INT(1) NOT NULL;
   
   
-  INSERT IGNORE INTO `core_plugin` (`name`, `title`, `category`, `version`, `author`, `link`, `priority`, `description`, `regroup`, `active`, `core`) VALUES('FormaAuth', 'Forma Auth', '', '1.0', 'Joint Technologies', '', 0, 'forma auth', 1488290190, 1, 1);
+  INSERT IGNORE INTO `core_plugin` (`name`, `title`, `category`, `version`, `author`, `link`, `priority`, `description`, `active`, `core`) VALUES('FormaAuth', 'Forma Auth', '', '1.0', 'Joint Technologies', '', 0, 'forma auth', 1, 1);
 
   
 

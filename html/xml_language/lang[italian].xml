@@ -1159,6 +1159,7 @@ Title: [thread_title]]]></key>
         <key id="forum&amp;_NUMREPLY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Risposte]]></key>
         <key id="forum&amp;_NUMTHREAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Discussioni]]></key>
         <key id="forum&amp;_NUMVIEW" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Visto]]></key>
+        <key id="forum&amp;_OPERATIONS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Operazioni]]></key>
         <key id="forum&amp;_QUOTE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Rispondi citando]]></key>
         <key id="forum&amp;_RESTOREINSERT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Ripristina discussione]]></key>
         <key id="forum&amp;_SEARCH_LABEL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Cerca questo argomento]]></key>
@@ -2478,6 +2479,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_USERNAME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Username]]></key>
         <key id="standard&amp;_USERS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Utenti]]></key>
         <key id="standard&amp;_USER_ALREADY_EXISTS" attributes="" save_date="2017-05-05 11:47:59"><![CDATA[Utente esistente]]></key>
+        <key id="standard&amp;_USER_ID" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[ID Utente]]></key>
         <key id="standard&amp;_USER_RELEASE" attributes="" save_date="2017-04-14 12:14:22"><![CDATA[User release]]></key>
         <key id="standard&amp;_USER_STATUS_BEGIN" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[In itinere]]></key>
         <key id="standard&amp;_USER_STATUS_CANCELLED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Cancellato]]></key>

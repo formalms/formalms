@@ -2410,10 +2410,10 @@ function isUserCourseSubcribed($id_user, $id_course, $edition_id=FALSE) {
 
 function logIntoCourse($id_course, $gotofirst_page = true) {
 
+	require_once(_lms_.'/lib/lib.track_user.php');
+
 	// Reset previous opened track session if any
 	if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
-
-		require_once(_lms_.'/lib/lib.track_user.php');
 		TrackUser::setActionTrack(getLogUserId(), $_SESSION['idCourse'], '', '');
 	}
 	// Unset possibile previous session setting
@@ -2636,6 +2636,8 @@ function getModuleFromId($id_module) {
  *					indicate in idMain  array( [idMain], [modulename], [op] )
  **/
 function firstPage( $idMain = false ) {
+    
+    require_once(_lms_ . '/lib/lib.permission.php');
 
 	$query_main = "
 	SELECT module.idModule, main.idMain, module.module_name, module.default_op, module.token_associated

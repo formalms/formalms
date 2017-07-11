@@ -808,6 +808,14 @@ class ChoiceMultiple_Question extends Question {
             $recover_answer .= " AND number_time = ".$number_time;
         }
 
+        
+        //**  recorver status test ** #11961 - Errata visualizzazione risposte corrette nei test
+        $sql = "select status from ".$GLOBALS['prefix_lms']."_commontrack where idUser=".Docebo::user()->getIdSt()." and idTrack=".$id_track;
+        list($status_test) = sql_fetch_row(sql_query($sql));
+                
+        
+        
+        
 		$re_answer_do = sql_query($recover_answer);
 		while(list($id_a) = sql_fetch_row($re_answer_do)) {
 			$answer_do[$id_a] = 1;
@@ -836,7 +844,8 @@ class ChoiceMultiple_Question extends Question {
 
 			} else{
 				
-				if($is_correct && $show_solution) {
+				//if($is_correct && $show_solution) {
+                 if(($status_test=='passed' && $show_solution==2) || ($show_solution==1)) {
 					$com_is_correct .= '<span class="text_bold">'.$lang->def('_TEST_NOT_THECORRECT').' : </span>'.$answer.'<br />';
 				}
 				$quest .= '<img src="'.getPathImage().'standard/dot_uns.png" title="'.$lang->def('_TEST_ANSWER_NOTCHECK').'" '

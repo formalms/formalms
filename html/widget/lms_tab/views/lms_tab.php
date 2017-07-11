@@ -16,6 +16,20 @@
         'tb_kb' => Lang::t('_CONTENT_LIBRARY', 'middlearea')
     );
 
+    
+ if(Get::cfg('enable_plugins', false)){
+        $pl = new PluginManager();
+        $list_pl = $pl->get_all_plugins();
+        
+        foreach ($list_pl as $key){
+            $plugin_name = strtolower ($key['name']);
+            $tab["tb_".$plugin_name] = Lang::t('_'.strtoupper ($key['name']), 'middlearea');
+        }     
+ }    
+    
+    
+    
+    
     $query_menu = "SELECT obj_index from %lms_middlearea where obj_index like 'tb_%' ORDER BY sequence";
     $re_tablist = sql_query($query_menu);
 

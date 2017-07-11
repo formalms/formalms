@@ -725,14 +725,14 @@ class UserProfile {
 		require_once(_base_.'/lib/lib.platform.php');
 		$pl_man =& PlatformManager::CreateInstance();
 
-		if($pl_man->isLoaded('lms')) {
+		//if($pl_man->isLoaded('lms')) {
 
 			//if($this->_up_data_man->isTeacher($this->_id_user)) {
 
 				$user_stat = $this->_up_data_man->getUserCourseStat($this->_id_user);
 				return $this->_up_viewer->getUserCourseStatUi($user_stat);
 			//}
-		}
+		//}
 		return '';
 	}
 
@@ -746,11 +746,11 @@ class UserProfile {
 		require_once(_base_.'/lib/lib.platform.php');
 		$pl_man =& PlatformManager::CreateInstance();
 
-		if($pl_man->isLoaded('lms')) {
+	//	if($pl_man->isLoaded('lms')) {
 				$user_comp = $this->_up_data_man->getUserCompetences($this->_id_user);
 				return $this->_up_viewer->getUserCompetences($user_comp);
-		}
-		return '';
+		//}
+		//return '';
 	}
 
 	 /**
@@ -763,11 +763,11 @@ class UserProfile {
 		require_once(_base_.'/lib/lib.platform.php');
 		$pl_man =& PlatformManager::CreateInstance();
 
-		if($pl_man->isLoaded('lms')) {
+		//if($pl_man->isLoaded('lms')) {
 				$user_fncroles = $this->_up_data_man->getUserFunctionalRoles($this->_id_user);
 				return $this->_up_viewer->getUserFunctionalRoles($user_fncroles);
-		}
-		return '';
+		//}
+		//return '';
 	}
 
 
@@ -777,11 +777,11 @@ class UserProfile {
 		require_once(_base_.'/lib/lib.platform.php');
 		$pl_man =& PlatformManager::CreateInstance();
 
-		if($pl_man->isLoaded('lms')) {
+		//if($pl_man->isLoaded('lms')) {
 				$user_groups = $this->_up_data_man->getUserGroupsList($this->_id_user);
 				return $this->_up_viewer->getUserGroupsList($user_groups);
-		}
-		return '';
+		//}
+		//return '';
 	}
 
 }
