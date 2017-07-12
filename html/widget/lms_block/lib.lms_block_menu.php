@@ -90,7 +90,7 @@ class Lms_BlockWidget_menu extends Widget {
 
             $inputText = $form->getInputTextfield ( Lang::t('_LBL_CODE', 'standard'), 'course_autoregistration_code', 'course_autoregistration_code', '','',30, ' size=30 placeholder="'.$str_code.'"' );
 
-            $submitButton = $form->getButton ( 'subscribe_info', 'subscribe_info', Lang::t('_LBL_SEND', 'standard') );
+            $submitButton = $form->getButton ( 'subscribe_info', 'subscribe_info', Lang::t('_LBL_SEND', 'standard'), 'button btn btn-default' );
             $closeForm = $form->closeForm ();
 
             $html .= '<div class="input-group">
