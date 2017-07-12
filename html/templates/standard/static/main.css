@@ -5210,7 +5210,7 @@ header.header nav {
 @media (min-width: 768px) {
   .user-panel {
     width: 320px;
-    height: 712px;
+    height: auto;
     background-color: white;
     -webkit-border-radius: 5px;
             border-radius: 5px;
