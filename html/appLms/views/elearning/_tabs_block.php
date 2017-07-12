@@ -4,7 +4,41 @@
 	
 
 <!--			<div class="middlearea_container" >-->
-                      
+
+
+                <?php
+                $_model = new ElearningLms();
+                $count = 0;
+                $statusFilters = $_model->getFilterStatusCourse(Docebo::user()->getIdst());
+
+                $html = '<ul class="nav nav-pills">';
+
+                while( list($key, $value) = each($statusFilters) ) {
+
+                    $html_code .= '	<option value="'.$key.'"'
+                        .((string)$key == (string)$selected ? ' selected="selected"' : '' )
+                        .'>'.$value.'</option>'."\n";
+
+                    if ($count === 0) {
+                        $html .= '<li class="selected js-label-menu-filter" data-value="' . $key . '">';
+                    } else {
+                        $html .= '<li class="js-label-menu-filter" data-value="' . $key . '">';
+                    }
+
+                    $html .= '<a class="icon--filter-' . $key . '" href="#" >' . $value . '</a>';
+                    $html .= '</li>';
+
+            //                echo $html;
+
+                    $count++;
+                }
+
+                $html .= '</ul>';
+
+                $inline_filters = $html;
+
+                ?>
+
 				<?php
 
 				$w = $this->widget('lms_tab', array(
@@ -14,14 +48,9 @@
 
 				$w->endWidget();
 
-
-                
                 // select status course
                 $_model = new ElearningLms();
 
-//                $_auxiliary = Form::getInputDropdown('', 'course_search_filter_status', 'filter_status', $_model->getFilterStatusCourse(Docebo::user()->getIdst()),Lang::t('_ALL_OPEN', 'course'), '');
-//                $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 0" data-width=""  data-actions-box="true"', $_auxiliary);
-                
                 // select year
                 $_auxiliary = $_auxiliary. Form::getInputDropdown('', 'course_search_filter_year', 'filter_year', $_model->getFilterYears(Docebo::user()->getIdst()), 0, '');
                 $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width=""  data-actions-box="true"', $_auxiliary);
@@ -35,15 +64,13 @@
                     'list_category' => $_list_category,
                     // 'auxiliary_filter' => Lang::t('_SEARCH', 'standard').":&nbsp;&nbsp;&nbsp;".$_auxiliary,
                     'auxiliary_filter' => $_auxiliary,
+                    'inline_filters' => $inline_filters,
                     'js_callback_set' => 'course_search_callback_set',
                     'js_callback_reset' => 'course_search_callback_reset',
                     'css_class' => 'nav'
-                    
-                ));                
-                
-                
+                ));
 				?>
-                
+
 <!--			</div>-->
 
 	

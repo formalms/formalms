@@ -132,36 +132,7 @@
             </div>
         </div>
 
-        <ul class="nav nav-pills">
-
-            <?php
-            $_model = new ElearningLms();
-            $count = 0;
-            $statusFilters = $_model->getFilterStatusCourse(Docebo::user()->getIdst());
-
-            while( list($key, $value) = each($statusFilters) ) {
-
-                $html_code .= '	<option value="'.$key.'"'
-                    .((string)$key == (string)$selected ? ' selected="selected"' : '' )
-                    .'>'.$value.'</option>'."\n";
-
-                if ($count === 0) {
-                    $html = '<li class="selected js-label-menu-filter" data-value="' . $key . '">';
-                } else {
-                    $html = '<li class="js-label-menu-filter" data-value="' . $key . '">';
-                }
-
-                $html .= '<a class="icon--filter-' . $key . '" href="#" >' . $value . '</a>';
-                $html .= '</li>';
-
-                echo $html;
-
-                $count++;
-            }
-
-            ?>
-        </ul>
-
+        <?php echo $inline_filters ? $inline_filters : ''; ?>
 
         <div class="navbar-header">
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#filter-container">

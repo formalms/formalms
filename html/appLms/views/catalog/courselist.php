@@ -33,9 +33,10 @@ function TruncateText($the_text, $size)
 
 
 
-        <div id="cbp-vm" class="container-fluid" style="margin-top: 15px;">
+<!--        <div id="cbp-vm" class="container-fluid" style="margin-top: 15px;">-->
+        <div id="cbp-vm" class="" style="margin-top: 15px;">
 <!--            <div class="forma-grid">-->
-            <div class="row-fluid">
+            <div class="row">
 
                 <?php
                 while ($row = sql_fetch_assoc($result)) {
@@ -329,7 +330,7 @@ function TruncateText($the_text, $size)
                        ';
                     }
 
-                    if ($row["course_demo"]) { //casistica non testata
+                    if ($row["course_demo"]) { //casistica non testata TODO: FIXME
                         $html .= '<!-- DATE START - DATE END  -->
                              <div class="box_edizioni cat">
                                  <div class="edizioni cat">
