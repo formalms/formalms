@@ -69,9 +69,9 @@ function TruncateText($the_text, $size)
 <?php endif; ?>
 
 
-<div id="container1_<?php echo $stato_corso; ?>">
+<div class="container-fluid" id="container1_<?php echo $stato_corso; ?>">
 
-    <div id="cbp-vm" style="padding: 0">
+    <div id="row-fluid">
 
         <?php
         if ($filter_type == "all" || $filter_type == 'elearning') { ?>
@@ -79,15 +79,17 @@ function TruncateText($the_text, $size)
 
             <div class="clearfix" id='mia_area_<?php echo $stato_corso; ?>'>
 
-                <div class="forma-grid">
                 <?php foreach ($courselist as $course) : ?>
 
-                    <div class="forma-grid__item">
-<!--                    <div class="col-xs-10 col-sm-5 col-lg-4 course-block">//TODO add box description-->
-<!--                    <div class="col col--10 col--5--tablet col--4--desk course-block">-->
+<!--                <pre>-->
+<!--                --><?php //var_dump($course); ?>
+<!--                </pre>-->
+                    <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-4">
+
                         <div class="course-box"> <!-- NEW BLOCK -->
                             <div class="course-box__item">
-                                <div class="course-box__title course-icon--active"><?php echo TruncateText($course['name'], 100); ?></div>
+<!--                                <div class="course-box__title course-icon--active">--><?php //echo TruncateText($course['name'], 100); ?><!--</div>-->
+                                <div class="course-box__title icon--filter-<?php echo $course['user_status']; ?>"><?php echo TruncateText($course['name'], 100); ?></div>
                             </div>
                             <div class="course-box__item course-box__item--no-padding">
 
@@ -107,20 +109,26 @@ function TruncateText($the_text, $size)
                                     <?php echo $this->levels[$course['level']]; ?>
                                 </div>
                                 <div class="course-box__desc">
-<!--                                    --><?php //echo TruncateText($course['description'], 150); ?>
                                     <?php echo TruncateText($course['box_description'], 120); ?>
                                 </div>
                             </div>
-                            <div class="course-box__item course-box__item--half">
-                                <div class="course-box__date-text">
-                                    <?php echo GetCourseDay($course) ?>
-                                    <?php echo GetCourseMonth($course) ?>
-                                    <?php echo GetCourseYear($course) ?>
-                                </div>
-                            </div>
-                            <div class="course-box__item course-box__item--half">
+                            <?php
+                            //if the date isn't set hide the html element
+
+                            if (GetCourseYear($course) > 1) {
+
+                                echo '<div class="course-box__item course-box__item--half">
+                                        <div class="course-box__date-text">
+                                          <span>Data di chiusura</span><br>';
+                                echo GetCourseDay($course) . ' ' . GetCourseMonth($course) . ' ' . GetCourseYear($course);
+                                echo '  </div>
+                                      </div>';
+                            }
+
+                            ?>
+                            <div class="course-box__item course-box__item<?php if (GetCourseYear($course) > 1) { echo '--half'; } ?>">
                                 <?php if ($course['can_enter']['can']) { ?>
-                                    <a class="forma-button forma-button--orange-hover" title="<?php echo Util::purge($course['name']); ?>"
+                                    <a class="forma-button forma-button--orange-hover forma-button--full" title="<?php echo Util::purge($course['name']); ?>"
                                        href="index.php?modname=course&amp;op=aula&amp;idCourse=<?php echo $course['idCourse']; ?>"<?php echo($course['direct_play'] == 1 && $course['level'] <= 3 && $course['first_lo_type'] == 'scormorg' ? ' rel="lightbox"' : ''); ?>>
                                    <span class="forma-button__label">
                                      <?php echo Lang::t('_USER_STATUS_ENTER', 'catalogue'); ?>
@@ -139,12 +147,11 @@ function TruncateText($the_text, $size)
                         <?php /*</li>*/ ?>
                     </div>
                 <?php endforeach; ?>
-                </div>
+                    </div>
 
-                </div>
                 <?php /*</ul>*/ ?>
             <br>
-            <?php 
+            <?php
             // END ELEARNING
         }
         ?>
@@ -301,5 +308,7 @@ function TruncateText($the_text, $size)
             ?>
 
         </div>
+
     </div>
+
 </div>

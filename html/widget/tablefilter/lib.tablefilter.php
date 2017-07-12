@@ -22,6 +22,8 @@ class TablefilterWidget extends Widget {
 	public $advanced_filter_active = false;
 	public $css_class = false;
 
+    public $inline_filters = '';
+
 	public $js_callback_set = false;
 	public $js_callback_reset = false;
 
@@ -49,15 +51,15 @@ class TablefilterWidget extends Widget {
 			'filter_text' => (string)$this->filter_text,
             'list_category' => $this->list_category,
 			'auxiliary_filter' => $this->auxiliary_filter,
+            'inline_filters' => $this->inline_filters,
 			'common_options' => $this->common_options,
-			'advanced_filter_content' =>  $this->advanced_filter_content,
+			'advanced_filter_content' => $this->advanced_filter_content,
 			'advanced_filter_active' => $this->advanced_filter_active,
 			'css_class' => $this->css_class,
 			'js_callback_set' => $this->js_callback_set,
 			'js_callback_reset' => $this->js_callback_reset
 		));
 	}
-
 }
 
 ?>

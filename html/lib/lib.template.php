@@ -195,6 +195,14 @@ function getPathImage($platform = false) {
 }
 
 /**
+ * @return string 	this function is added in 31/05/2017 and it returns the relative address of the restyling images directory
+ */
+function getPathRestylingImage($platform = false) {
+
+    return getPathTemplate($platform).'static/';
+}
+
+/**
  * @param string	$text		The title of the area
  * @param string	$image		the name of the gif in tampltes/xxx/images/area_title/
  * @param string	$alt_image	The alt for the image [deprecated, not used]
