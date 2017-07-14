@@ -1571,7 +1571,8 @@ class UserManagerRenderer {
 
 		// FIX BUG 399
 		//$link = str_replace('&amp;', '&', $opt_link.( strpos($opt_link, '?') === false ? '?' : '&' ).'random_code='.$random_code);
-		$link = Get::sett('url', '').'index.php?modname=login&op=register_opt&random_code='.$random_code;
+		//$link = Get::sett('url', '').'index.php?modname=login&op=register_opt&random_code='.$random_code;
+                $link = Get::sett('url', '').'index.php?r=adm/homepage/signup&random_code='.$random_code;
 		// END FIX BUG 399
 
 		$text = $lang->def('_REG_MAIL_TEXT');
