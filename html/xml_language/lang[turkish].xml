@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170531</DATE>
+  <DATE>20170713</DATE>
   <LANG id="turkish">
     <lang_code>turkish</lang_code>
     <lang_description>Turkish</lang_description>
@@ -601,7 +601,7 @@
         <key id="course&amp;_CLASSROOM_OCCUPATED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uyarı: bazı sınıflar diğer dersler ile hali hazırda dolu]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sınıf dolu]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Veriniz kaydedilecek.]]></key>
-        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gelişmiş ödeme %]]></key>
+        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2017-06-19 11:40:10"><![CDATA[Gelişmiş ödeme]]></key>
         <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bir derse otomatik kayıt için kod]]></key>
         <key id="course&amp;_COURSE_CONTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seçilebilir dersler]]></key>
         <key id="course&amp;_COURSE_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ders süresi: <b>[date_begin]</b> tarihinden <b>[date_end]</b> tarihine.]]></key>
@@ -2501,7 +2501,7 @@ Kullanıcı adı: [userid]
         <key id="test&amp;_TEST_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Başlamak için tıkla]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bi sonraki ya da önceki sayfaya atlayabilirsiniz (eğer testin birden çok sayfası varsa)]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bir sonraki ya da önceki sayfaya atlaya<b>maz</b>sınız (eğer testin birden çok sayfası varsa bile)]]></key>
-        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Teste mevcut tüm soruların tam listesi. ( %tot_page% sayfada %tot_element% öğe)]]></key>
+        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2017-07-05 12:09:26"><![CDATA[Teste mevcut tüm soruların tam listesi ( %tot_page% sayfada %tot_element% öğe)]]></key>
         <key id="test&amp;_TEST_COMPILE_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zaman yönetimi]]></key>
         <key id="test&amp;_TEST_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Test bitti]]></key>
         <key id="test&amp;_TEST_CONTINUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Teste devam et]]></key>

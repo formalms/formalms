@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170531</DATE>
+  <DATE>20170713</DATE>
   <LANG id="spanish">
     <lang_code>spanish</lang_code>
     <lang_description>Spanish</lang_description>
@@ -347,9 +347,9 @@
         <key id="certificate&amp;_TAKE_A_COPY" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Descargar copia del certificado]]></key>
         <key id="certificate&amp;_TEMPLATE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Plantilla]]></key>
         <key id="certificate&amp;_TEST_SCORE_FINAL" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Puntuación final del objecto de aprendizaje]]></key>
-        <key id="certificate&amp;_TEST_SCORE_FINAL_MAX" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Máxima puntuación final del Learning Object]]></key>
-        <key id="certificate&amp;_TEST_SCORE_START" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Puntuación inicial del Learning Object]]></key>
-        <key id="certificate&amp;_TEST_SCORE_START_MAX" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Máxima puntuación inicial del Learning Object]]></key>
+        <key id="certificate&amp;_TEST_SCORE_FINAL_MAX" attributes="" save_date="2017-07-05 13:00:27"><![CDATA[Máxima puntuación final del objecto de aprendizaje]]></key>
+        <key id="certificate&amp;_TEST_SCORE_START" attributes="" save_date="2017-07-05 13:00:20"><![CDATA[Puntuación inicial del objecto de aprendizaje]]></key>
+        <key id="certificate&amp;_TEST_SCORE_START_MAX" attributes="" save_date="2017-07-05 13:00:32"><![CDATA[Máxima puntuación inicial del objecto de aprendizaje]]></key>
         <key id="certificate&amp;_TITLE_ASSIGN_META_CERTIFICATE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Asignar meta-certificado]]></key>
         <key id="certificate&amp;_TITLE_CERTIFICATE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Gestión de certificados]]></key>
         <key id="certificate&amp;_TITLE_CREATE_META_CERTIFICATE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Meta-certificados disponibles para ser publicados]]></key>
@@ -669,7 +669,7 @@
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Clase ocupada]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Tus datos serán salvados.]]></key>
         <key id="course&amp;_COPY_SUBSCRIPTION_TO_COURSE" attributes="" save_date="2016-12-01 09:32:47"><![CDATA[Copiar suscripciones al curso]]></key>
-        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Pago avanzado %]]></key>
+        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2017-06-19 11:40:23"><![CDATA[Pago avanzado]]></key>
         <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Código para la suscripción automática a un curso]]></key>
         <key id="course&amp;_COURSE_CONTENT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Cursos disponibles]]></key>
         <key id="course&amp;_COURSE_DATE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Duración del curso: de <b>[date_begin]</b> a <b>[date_end]</b>.]]></key>
@@ -1462,7 +1462,7 @@ La plataforma cuenta con cursos interactivos, así como herramientas web que lle
         <key id="menu_course&amp;_ADVICE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Anuncios]]></key>
         <key id="menu_course&amp;_COURSECHART" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Tablas del curso]]></key>
         <key id="menu_course&amp;_COURSEREPORT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Libro de calificaciones]]></key>
-        <key id="menu_course&amp;_COURSESTATS" attributes="" save_date="2016-12-01 08:31:07"><![CDATA[Tabla usuario/objetos]]></key>
+        <key id="menu_course&amp;_COURSESTATS" attributes="" save_date="2017-07-07 16:11:42"><![CDATA[Tabla usuarios/objetos]]></key>
         <key id="menu_course&amp;_EPORTFOLIO" attributes="" save_date="2016-12-01 09:56:31"><![CDATA[E-Portafolio]]></key>
         <key id="menu_course&amp;_GRADEBOOK" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Tarjeta de reporte]]></key>
         <key id="menu_course&amp;_GROUPS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Gestor de grupo]]></key>
@@ -1497,7 +1497,7 @@ La plataforma cuenta con cursos interactivos, así como herramientas web que lle
         <key id="menu_over&amp;_MY_CERTIFICATE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Mis certificados]]></key>
         <key id="menu_over&amp;_PUBLIC_ADMIN_AREA" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Gestión]]></key>
         <key id="menu_over&amp;_PUBLIC_CERTIFICATE_ADMIN" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Certificados]]></key>
-        <key id="menu_over&amp;_PUBLIC_COURSE_ADMIN" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Gestion de curso]]></key>
+        <key id="menu_over&amp;_PUBLIC_COURSE_ADMIN" attributes="" save_date="2017-07-05 12:13:44"><![CDATA[Gestión de curso]]></key>
         <key id="menu_over&amp;_PUBLIC_FORUM" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Comunidad]]></key>
         <key id="menu_over&amp;_PUBLIC_NEWSLETTER_ADMIN" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Boletín de noticias]]></key>
         <key id="menu_over&amp;_PUBLIC_REPORT_ADMIN" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Reporte]]></key>
@@ -1517,6 +1517,7 @@ La plataforma cuenta con cursos interactivos, así como herramientas web que lle
         <key id="message&amp;_OUTBOX" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Enviado]]></key>
         <key id="message&amp;_PRIORITY" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Prioridad]]></key>
         <key id="message&amp;_REFRESH" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Actualizar]]></key>
+        <key id="message&amp;_SEND_MESSAGE_COPY" attributes="" save_date="2017-05-31 10:50:20"><![CDATA[Enviar mensaje en copia]]></key>
         <key id="message&amp;_TITLE_READ" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Mensaje leido]]></key>
         <key id="message&amp;_VERYHIGH" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Muy alto]]></key>
         <key id="message&amp;_VERYLOW" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Muy bajo]]></key>
@@ -1907,7 +1908,7 @@ Tiene que confirmar su cuenta antes de usarla]]></key>
         <key id="report&amp;_COURSE_FIELDS_INFO" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Mostrar informacion de los usuarios sobre los cursos]]></key>
         <key id="report&amp;_COURSE_STARTED" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Usuarios que no han comenzado el curso]]></key>
         <key id="report&amp;_CREATION_DATE" attributes="" save_date="2017-05-26 17:19:37"><![CDATA[Fecha de creación]]></key>
-        <key id="report&amp;_CRON_REPORT_MAIL_BODY" attributes="" save_date="2016-12-07 07:31:29"><![CDATA[Fecha en que el informe està programado]]></key>
+        <key id="report&amp;_CRON_REPORT_MAIL_BODY" attributes="" save_date="2017-05-31 11:05:36"><![CDATA[Fecha en que el informe está programado]]></key>
         <key id="report&amp;_CRON_REPORT_MAIL_SUBJECT" attributes="" save_date="2016-12-07 07:30:07"><![CDATA[Enviar el informe programado]]></key>
         <key id="report&amp;_CURRENT_SELECTION" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Seleccion actual]]></key>
         <key id="report&amp;_CUSTOM_BELT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Rango de tiempo definido por el usuario]]></key>
@@ -1995,6 +1996,7 @@ Tiene que confirmar su cuenta antes de usarla]]></key>
         <key id="report&amp;_TIME_PERIOD_FILTER" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Filtrar para periodos de tiempo]]></key>
         <key id="report&amp;_TOTAL_SESSION" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Hora]]></key>
         <key id="report&amp;_USER_CUSTOM_FIELDS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Mostrar campos personalizados de usuarios]]></key>
+        <key id="report&amp;_WARNING_REPORT" attributes="" save_date="2017-05-31 11:06:34"><![CDATA[Usuarios verán el reporte como el suo generator]]></key>
       </module>
       <module id="reservation">
         <key id="reservation&amp;_ADD_USER" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Añadir usuarios]]></key>
@@ -2011,7 +2013,7 @@ Tiene que confirmar su cuenta antes de usarla]]></key>
         <key id="reservation&amp;_CONFIRM_DATA" attributes="" save_date="2016-12-01 07:58:45"><![CDATA[Confirme su información]]></key>
         <key id="reservation&amp;_DEADLINE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Fecha límite]]></key>
         <key id="reservation&amp;_DEL_EVENT_REGISTRATION" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Registrar este evento en lugar de]]></key>
-        <key id="reservation&amp;_DEL_SUBSCRIPTION_TITLE" attributes="" save_date="2016-12-01 07:58:54"><![CDATA[Cancele Reserva]]></key>
+        <key id="reservation&amp;_DEL_SUBSCRIPTION_TITLE" attributes="" save_date="2017-06-23 13:59:37"><![CDATA[Cancele reserva]]></key>
         <key id="reservation&amp;_EVENT_CAPTION" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Lista de eventos]]></key>
         <key id="reservation&amp;_FROM_TIME" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Desde]]></key>
         <key id="reservation&amp;_LOCATION_GESTION" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Gestor del laboratorio]]></key>
@@ -2025,7 +2027,7 @@ Tiene que confirmar su cuenta antes de usarla]]></key>
         <key id="reservation&amp;_RESERVATION_CAPTION" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Gestor de categorias]]></key>
         <key id="reservation&amp;_RESERVATION_EVENTS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Eventos disponibles]]></key>
         <key id="reservation&amp;_RESERVATION_MAIL_SEND" attributes="" save_date="2016-12-01 07:59:12"><![CDATA[Envío de mail]]></key>
-        <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Mi Matrícula]]></key>
+        <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2017-06-23 13:59:44"><![CDATA[Mi matrícula]]></key>
         <key id="reservation&amp;_RESERVATION_PAST_EVENTS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Eventos pasados]]></key>
         <key id="reservation&amp;_RESERVATION_PROFILE_MODIFY" attributes="" save_date="2016-12-01 08:05:03"><![CDATA[Reservación]]></key>
         <key id="reservation&amp;_RESERVATION_SUBSCRIBED_USER" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Gestor de eventos]]></key>
@@ -2292,9 +2294,9 @@ Contraseña: [password]]]></key>
         <key id="standard&amp;_LOGOUT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Salir]]></key>
         <key id="standard&amp;_LOG_USERS_TO_FNCROLE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Asignacion de usuarios a un rol funcional]]></key>
         <key id="standard&amp;_LOG_USERS_TO_GROUP" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Asignacion de usuarios a un grupo]]></key>
-        <key id="standard&amp;_MAKE_A_COPY" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Hcer una copia]]></key>
+        <key id="standard&amp;_MAKE_A_COPY" attributes="" save_date="2017-07-10 12:36:45"><![CDATA[Hacer una copia]]></key>
         <key id="standard&amp;_MANAGE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Gestionar]]></key>
-        <key id="standard&amp;_MANAGE_GROUPS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Gestion de grupos]]></key>
+        <key id="standard&amp;_MANAGE_GROUPS" attributes="" save_date="2017-07-05 12:13:39"><![CDATA[Gestión de grupos]]></key>
         <key id="standard&amp;_MANDATORY" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Obligatorio]]></key>
         <key id="standard&amp;_MANUAL" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Manual]]></key>
         <key id="standard&amp;_MAN_MENU" attributes="" save_date="2017-05-24 09:35:59"><![CDATA[Gestionar menú]]></key>
@@ -2542,7 +2544,7 @@ Contraseña: [password]]]></key>
         <key id="stats&amp;_STATISTIC" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Estadísticas]]></key>
         <key id="stats&amp;_STATNOTRACKFORUSER" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[No hay datos para el usuario/clase]]></key>
         <key id="stats&amp;_STATSFORITEM" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[para la clase]]></key>
-        <key id="stats&amp;_STATSITEM" attributes="" save_date="2017-05-26 12:09:25"><![CDATA[Estadísticas por objeto:]]></key>
+        <key id="stats&amp;_STATSITEM" attributes="" save_date="2017-07-07 15:56:13"><![CDATA[Estadísticas por objeto: ]]></key>
         <key id="stats&amp;_STATSUSERITEM" attributes="" save_date="2017-05-26 12:09:20"><![CDATA[Estadísticas por Estudiante/Objeto:]]></key>
         <key id="stats&amp;_STATS_FULLNAME" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Nombre completo]]></key>
         <key id="stats&amp;_STATS_USERS" attributes="" save_date="2017-05-26 12:09:32"><![CDATA[Estadísticas de usuario]]></key>
@@ -2715,7 +2717,7 @@ Contraseña: [password]]]></key>
         <key id="test&amp;_TEST_BEGIN" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Haga Click para comenzar]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Usted puede pasar a la página siguiente o a la anterior (si la prueba tiene múltiples páginas)]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL_NO" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Usted puede <b>not</b> pasar a la página siguiente o a la anterior (si la prueba tiene múltiples páginas)]]></key>
-        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Lista completa de preguntas disponibles en la prueba. ( %tot_element% elementos en %tot_page% páginas)]]></key>
+        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2017-07-05 12:10:52"><![CDATA[Lista completa de preguntas disponibles en la prueba ( %tot_element% elementos en %tot_page% páginas)]]></key>
         <key id="test&amp;_TEST_COMPILE_TIME" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Administración de tiempo]]></key>
         <key id="test&amp;_TEST_COMPLETED" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Prueba completada]]></key>
         <key id="test&amp;_TEST_CONTINUE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Reanudar prueba]]></key>
@@ -2776,15 +2778,15 @@ Contraseña: [password]]]></key>
         <key id="test&amp;_TEST_PM_SETPOINT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Ajustar las preferencias de puntuación]]></key>
         <key id="test&amp;_TEST_PM_SUBD_BY" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Distribuido por]]></key>
         <key id="test&amp;_TEST_PM_TWO" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[2 - Ajustar puntuación para cada pregunta]]></key>
-        <key id="test&amp;_TEST_POINT_ASSIGNEMENT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Puntos de administración]]></key>
-        <key id="test&amp;_TEST_POINT_MANAGEMENT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Puntos de gestión]]></key>
+        <key id="test&amp;_TEST_POINT_ASSIGNEMENT" attributes="" save_date="2017-07-05 12:14:41"><![CDATA[Administración de puntuación]]></key>
+        <key id="test&amp;_TEST_POINT_MANAGEMENT" attributes="" save_date="2017-07-05 12:14:55"><![CDATA[Gestión de puntuación]]></key>
         <key id="test&amp;_TEST_PREV_PAGE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Página anterior]]></key>
         <key id="test&amp;_TEST_QUESTION_NUMBER" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[La prueba tiene <b>[question_number]</b> preguntas]]></key>
         <key id="test&amp;_TEST_QUEST_CATEGORY" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Categoría de la pregunta]]></key>
         <key id="test&amp;_TEST_QUEST_ELEM" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[elemento]]></key>
         <key id="test&amp;_TEST_QUEST_ELEMENTS_A" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Grupo A de elementos]]></key>
         <key id="test&amp;_TEST_QUEST_ELEMENTS_B" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Grupo B de elementos]]></key>
-        <key id="test&amp;_TEST_QUEST_ELEM_NUM" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[No. de elementos]]></key>
+        <key id="test&amp;_TEST_QUEST_ELEM_NUM" attributes="" save_date="2017-07-05 12:25:15"><![CDATA[Num. de elementos]]></key>
         <key id="test&amp;_TEST_QUEST_MAXTESTSCORE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Máxima puntuación de la prueba]]></key>
         <key id="test&amp;_TEST_QUEST_NEWMAXTESTSCORE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Nueva puntuación máxima]]></key>
         <key id="test&amp;_TEST_QUEST_ORDER" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Orden]]></key>

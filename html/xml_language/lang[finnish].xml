@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170531</DATE>
+  <DATE>20170713</DATE>
   <LANG id="finnish">
     <lang_code>finnish</lang_code>
     <lang_description>Finnish</lang_description>
@@ -652,7 +652,7 @@
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Luokka käytössä]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tietosi tallennetaan.]]></key>
         <key id="course&amp;_COPY_SUBSCRIPTION_TO_COURSE" attributes="" save_date="2017-05-18 14:14:06"><![CDATA[Kopioi tilaukset kurssille]]></key>
-        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aikaistettu maksu %]]></key>
+        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2017-06-19 11:38:34"><![CDATA[Aikaistettu maksu]]></key>
         <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssin automaattisen tilauksen koodi]]></key>
         <key id="course&amp;_COURSE_CONTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Saatavilla olevat kurssit]]></key>
         <key id="course&amp;_COURSE_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurssin kesto: alkaa <b>[date_begin]</b> loppuu <b>[date_end]</b>.]]></key>
@@ -2694,7 +2694,7 @@ Salasana: [password]]]></key>
         <key id="test&amp;_TEST_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Klikkaa aloittaaksesi]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voit siirtyä seuraavalle tai edelliselle sivulle (jos kokeessa on monta sivua)]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<b>Et</b> voi siirtyä seuraavalle tai edelliselle sivulle (jos kokeessa on monta sivua)]]></key>
-        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Täysi lista kokeessa saatavilla olevista kysymyksistä. ( %tot_element% alkiota %tot_page% sivulla)]]></key>
+        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2017-07-05 12:07:39"><![CDATA[Täysi lista kokeessa saatavilla olevista kysymyksistä ( %tot_element% alkiota %tot_page% sivulla)]]></key>
         <key id="test&amp;_TEST_COMPILE_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ajanhallinta]]></key>
         <key id="test&amp;_TEST_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Koe suoritettu]]></key>
         <key id="test&amp;_TEST_CONTINUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Palauta koe]]></key>
@@ -2763,7 +2763,7 @@ Salasana: [password]]]></key>
         <key id="test&amp;_TEST_QUEST_ELEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[alkio]]></key>
         <key id="test&amp;_TEST_QUEST_ELEMENTS_A" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ryhmä A alkiot]]></key>
         <key id="test&amp;_TEST_QUEST_ELEMENTS_B" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ryhmä B alkiot]]></key>
-        <key id="test&amp;_TEST_QUEST_ELEM_NUM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[N. alkiot]]></key>
+        <key id="test&amp;_TEST_QUEST_ELEM_NUM" attributes="" save_date="2017-07-05 12:35:24"><![CDATA[Mää. alkiot]]></key>
         <key id="test&amp;_TEST_QUEST_MAXTESTSCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimi koetulos]]></key>
         <key id="test&amp;_TEST_QUEST_NEWMAXTESTSCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uusi maksimitulos]]></key>
         <key id="test&amp;_TEST_QUEST_ORDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Järjestys]]></key>

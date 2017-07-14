@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170531</DATE>
+  <DATE>20170713</DATE>
   <LANG id="greek">
     <lang_code>greek</lang_code>
     <lang_description>Greek</lang_description>
@@ -588,7 +588,7 @@
         <key id="course&amp;_CLASSROOM_OCCUPATED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Προσοχή: μερικές τάξεις ήδη χρησιμοποποιούνται από άλλα μαθήματα]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Η τάξη χρησιμοποιείται]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Τα δεδομένα σας θα αποθηκευθούν.]]></key>
-        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Προκαταβολή %]]></key>
+        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2017-06-19 11:38:58"><![CDATA[Προκαταβολή]]></key>
         <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Κωδικός για την αυτόματη εγγραφή σε ένα μάθημα]]></key>
         <key id="course&amp;_COURSE_CONTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Διαθέσιμα μαθήματα]]></key>
         <key id="course&amp;_COURSE_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Διάρκεια μαθήματος: από <b>[date_begin]</b> έως <b>[date_end]</b>.]]></key>
@@ -2487,7 +2487,7 @@
         <key id="test&amp;_TEST_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Πατήστε να να ξεκινήσετε]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Μπορείτε να μεταβείτε στην επόμενη ή την προηγούμενη σελίδα (εάν το τεστ έχει πολλαπλές σελίδες)]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<b>Δεν</b> μπορείτε να μεταβείτε στην επόμενη ή την προηγούμενη σελίδα (εάν το τεστ έχει πολλαπλές σελίδες)]]></key>
-        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Πλήρης λίστα των ερωτήσεων που είναι διαθέσιμες στο τεστ. ( %tot_element% στιχεία σε %tot_page% σελίδες)]]></key>
+        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2017-07-05 12:08:02"><![CDATA[Πλήρης λίστα των ερωτήσεων που είναι διαθέσιμες στο τεστ ( %tot_element% στιχεία σε %tot_page% σελίδες)]]></key>
         <key id="test&amp;_TEST_COMPILE_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Διαχείριση χρόνου]]></key>
         <key id="test&amp;_TEST_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Το τεστ ολοκληρώθηκε]]></key>
         <key id="test&amp;_TEST_CONTINUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Συνέχεια του τεστ]]></key>

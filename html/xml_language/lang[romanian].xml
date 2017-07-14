@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170531</DATE>
+  <DATE>20170713</DATE>
   <LANG id="romanian">
     <lang_code>romanian</lang_code>
     <lang_description>Romanian</lang_description>
@@ -588,7 +588,7 @@
         <key id="course&amp;_CLASSROOM_OCCUPATED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avertizare: unele clase sunt deja ocpuate de alte cursuri]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Clasa ocupata]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Datele tale vor fi salvate.]]></key>
-        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Plata avansata %]]></key>
+        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2017-06-19 11:40:43"><![CDATA[Plata avansata]]></key>
         <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cod pentru subscriere automata la curs]]></key>
         <key id="course&amp;_COURSE_CONTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cursuri disponibile]]></key>
         <key id="course&amp;_COURSE_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Durata cursului: de la <b>[date_begin]</b> la <b>[date_end]</b>.]]></key>
@@ -2486,9 +2486,9 @@ Parola: [password]]]></key>
         <key id="test&amp;_TEST_ASSOCIATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Asociere corecta]]></key>
         <key id="test&amp;_TEST_BACK_TO_SETTIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inapoi la scorul administrarii paginii]]></key>
         <key id="test&amp;_TEST_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Click pentru a incepe]]></key>
-        <key id="test&amp;_TEST_CAN_TRAVEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Poti sari la urmatoarea sau la paginile anterioare(daca testul are pagini multiple)]]></key>
+        <key id="test&amp;_TEST_CAN_TRAVEL" attributes="" save_date="2017-07-05 12:10:07"><![CDATA[Poti sari la urmatoarea sau la paginile anterioare (daca testul are pagini multiple)]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Poti <b>not</b> sari la urmatoarea sau la paginile anterioare (daca testul are pagini multiple)]]></key>
-        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Completeaza lista intrebarilor disponibile din test. ( %tot_element% elemente in %tot_page% pagini)]]></key>
+        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2017-07-05 12:10:02"><![CDATA[Completeaza lista intrebarilor disponibile din test ( %tot_element% elemente in %tot_page% pagini)]]></key>
         <key id="test&amp;_TEST_COMPILE_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Timp de administrare]]></key>
         <key id="test&amp;_TEST_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Test terminat]]></key>
         <key id="test&amp;_TEST_CONTINUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rezuma testul]]></key>
