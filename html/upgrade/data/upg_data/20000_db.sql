@@ -196,6 +196,8 @@ ADD PRIMARY KEY (idTrack, idQuest, idAnswer, number_time)  COMMENT '';
 -- password_algorithms.sql
 ALTER TABLE `core_user` CHANGE `pass` `pass` VARCHAR(255) NOT NULL;
 
+ALTER TABLE `core_user_temp` CHANGE `pass` `pass` VARCHAR(255) NOT NULL;
+
 INSERT IGNORE INTO `core_setting` (
   `param_name` ,
   `param_value` ,

@@ -3084,7 +3084,7 @@ CREATE TABLE IF NOT EXISTS `core_user_temp` (
   `userid` varchar(255) NOT NULL DEFAULT '',
   `firstname` varchar(100) NOT NULL DEFAULT '',
   `lastname` varchar(100) NOT NULL DEFAULT '',
-  `pass` varchar(50) NOT NULL DEFAULT '',
+  `pass` varchar(255) NOT NULL DEFAULT '',
   `email` varchar(255) NOT NULL DEFAULT '',
   `language` varchar(50) NOT NULL DEFAULT '',
   `request_on` datetime DEFAULT '0000-00-00 00:00:00',
