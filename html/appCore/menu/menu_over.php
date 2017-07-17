@@ -20,16 +20,16 @@ function GetAdminPanel(){
         <li data-sm-reverse="true" style="float:right">
             <a href="#"><i class="fa fa-user"></i>&nbsp;<b>'.Docebo::user()->getUserName().'</b></a>
             <ul>
-                  <li><a href="index.php?r=lms/profile/show">'.Lang::t('_PROFILE', 'profile').'</a>   
-                  </li>'.
-                        BackToLms()
-                  .'<li> 
+                  <li>
+                        <a href="index.php?r=lms/profile/show">'.Lang::t('_PROFILE', 'profile').'</a>   
+                  </li>
+                  <li> 
                     <a id="logout"  href='.Get::rel_path('base').'/index.php?r='. _logout_ .' ">                
                         <i class="fa fa-power-off" aria-hidden="true"></i>&nbsp;'.Lang::t('_LOGOUT', 'standard').'</span>
                     </a>
                   </li>
             </ul>
-          </li> <li data-sm-reverse="true" style="float:right">'.Layout::change_lang().'</li>';
+          </li>'.BackToLms();
      
 }
 
@@ -37,16 +37,17 @@ function GetAdminPanel(){
 /**
  * @return string The default Company Logo
  */
-function GetCompanyLogo()
-{
-    return  '<h2 class="nav-brand"><a href="#">
+function GetCompanyLogo(){
+    
+    return  '<a href="index.php?r=adm/dashboard/show">
             <img width=100px src="'.Layout::path().'images/company_logo.png" alt="Left logo" />
-            </a></h2>';
+            </a>';
 }
+
 
 function BackToLms(){
     $lang     =& DoceboLanguage::createInstance('menu', 'framework');
-    return '<li>
+    return '<li data-sm-reverse="true" style="float:right">
                 <a href="'.$GLOBALS['where_lms_relative'].'"><i class="fa fa-home" aria-hidden="true"></i>&nbsp;'. 
                     $lang->def('_LMS', 'platform').
                 '</a>
@@ -92,9 +93,9 @@ function AdminBar()
 {
     $p_man 	=& PlatformManager::createInstance();
     $platforms 	= $p_man->getPlatformList();
-    $admin_menu_bar = '<nav id="main-nav" role="navigation">'
-                    .GetCompanyLogo().
-                    '<ul id="main-menu" class="sm sm-forma">';
+    $admin_menu_bar = '<nav id="main-nav" role="navigation">
+                        <ul id="main-menu" class="sm sm-forma">
+                        <li>'.GetCompanyLogo().'</li>';
 
 
     foreach ($platforms as $p_code => $p_name) {
