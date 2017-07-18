@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170531</DATE>
+  <DATE>20170713</DATE>
   <LANG id="czech">
     <lang_code>czech</lang_code>
     <lang_description>Czech</lang_description>
@@ -588,7 +588,7 @@
         <key id="course&amp;_CLASSROOM_OCCUPATED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Upozornění: některé učebny jsou již obsazeny jinými kurzy]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Učebna obsazena]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vaše informace budou uloženy.]]></key>
-        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zálohy %]]></key>
+        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2017-06-19 11:38:05"><![CDATA[Zálohy]]></key>
         <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kód pro automatický zápis do kurzu]]></key>
         <key id="course&amp;_COURSE_CONTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Volné kurzy]]></key>
         <key id="course&amp;_COURSE_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Délka kurzu: od <b>[date_begin]</b> do <b>[date_end]</b>.]]></key>
@@ -2488,7 +2488,7 @@ Heslo: [password]]]></key>
         <key id="test&amp;_TEST_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Klikněte pro zahájení]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Můžete přeskočit na další nebo předchozí stránku (v případě, že test má více stránek)]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nemůžete přeskočit na další nebo předchozí stránku (v případě, že test má více stránek)]]></key>
-        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Completní seznam otázek dostupných pro tento test. ( %tot_element% prvků ve %tot_page% stránkách)]]></key>
+        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2017-07-05 12:06:59"><![CDATA[Completní seznam otázek dostupných pro tento test ( %tot_element% prvků ve %tot_page% stránkách)]]></key>
         <key id="test&amp;_TEST_COMPILE_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Správa času]]></key>
         <key id="test&amp;_TEST_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Test dokočen]]></key>
         <key id="test&amp;_TEST_CONTINUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pokračovat v testu]]></key>

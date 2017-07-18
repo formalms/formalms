@@ -232,6 +232,8 @@ class Module_Organization extends LmsModule {
 			return;
 		}
 
+        
+   
 		if($GLOBALS['op'] == 'custom_playitem') {
 
 			require_once($GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
@@ -255,10 +257,12 @@ class Module_Organization extends LmsModule {
 						.$id_item;
 			}
 			require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
-			if( Track_Object::isPrerequisitesSatisfied(
+	
+    		 //#11944 ,  can view LO by teacher
+            if( Track_Object::isPrerequisitesSatisfied(
 					$folder->otherValues[ORGFIELDPREREQUISITES],
-					getLogUserId() ) ) {
-				$lo->play(  $idItem,
+					getLogUserId() )  || (isset($_GET['edit']) && $_GET['edit'])  ) {
+				$lo->play(  $idItem, 
 							$folder->otherValues[ORGFIELDIDPARAM],
 							$back_url );
 			} else {
@@ -267,6 +271,8 @@ class Module_Organization extends LmsModule {
 
 			return;
 		}
+        
+        
 		// tree indipendent play end --------------------------------------------
 		if($GLOBALS['op'] == 'custom_enditem') {
 

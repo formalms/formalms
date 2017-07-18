@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170531</DATE>
+  <DATE>20170713</DATE>
   <LANG id="swedish">
     <lang_code>swedish</lang_code>
     <lang_description>Swedish</lang_description>
@@ -590,7 +590,7 @@
         <key id="course&amp;_CLASSROOM_OCCUPATED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Varning: vissa klassrum är redan upptagna av andra kurser]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Klass upptagen]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Din data kommer att sparas.]]></key>
-        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Förtidigad betalning %]]></key>
+        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2017-06-19 11:40:17"><![CDATA[Förtidigad betalning]]></key>
         <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kod för automatisk beställning av kursen]]></key>
         <key id="course&amp;_COURSE_CONTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tillgängliga kurser]]></key>
         <key id="course&amp;_COURSE_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kursens vidd: från <b>[date_begin]</b> till <b>[date_end]</b>.]]></key>
@@ -2490,7 +2490,7 @@ Lösenord: [password]]]></key>
         <key id="test&amp;_TEST_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Klicka för att börja]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du kan hoppa till nästa eller föregående sida (om provet har flera sidor)]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du kan <b>inte</b> hoppa till nästa eller föregående sida (om provet har flera sidor)]]></key>
-        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fullständig lista på frågor finns tillgänglig i provet. ( %tot_element% element på %tot_page% sidor)]]></key>
+        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2017-07-05 12:09:36"><![CDATA[Fullständig lista på frågor finns tillgänglig i provet ( %tot_element% element på %tot_page% sidor)]]></key>
         <key id="test&amp;_TEST_COMPILE_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tidsadministration]]></key>
         <key id="test&amp;_TEST_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Prov slutfört]]></key>
         <key id="test&amp;_TEST_CONTINUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Återuppta provet]]></key>
@@ -2559,7 +2559,7 @@ Lösenord: [password]]]></key>
         <key id="test&amp;_TEST_QUEST_ELEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[element]]></key>
         <key id="test&amp;_TEST_QUEST_ELEMENTS_A" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Grupp A element]]></key>
         <key id="test&amp;_TEST_QUEST_ELEMENTS_B" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Grupp B element]]></key>
-        <key id="test&amp;_TEST_QUEST_ELEM_NUM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[N. element]]></key>
+        <key id="test&amp;_TEST_QUEST_ELEM_NUM" attributes="" save_date="2017-07-05 12:25:07"><![CDATA[Num. element]]></key>
         <key id="test&amp;_TEST_QUEST_MAXTESTSCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximalt provresultat]]></key>
         <key id="test&amp;_TEST_QUEST_NEWMAXTESTSCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nytt max resultat]]></key>
         <key id="test&amp;_TEST_QUEST_ORDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ordning]]></key>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170531</DATE>
+  <DATE>20170713</DATE>
   <LANG id="hebrew">
     <lang_code>hebrew</lang_code>
     <lang_description>&#x5E2;&#x5D1;&#x5E8;&#x5D9;&#x5EA;</lang_description>
@@ -609,7 +609,7 @@
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2016-12-14 21:16:07"><![CDATA[כיתה תפוסה]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2016-12-15 16:34:31"><![CDATA[נתוניך ישמרו.]]></key>
         <key id="course&amp;_COPY_SUBSCRIPTION_TO_COURSE" attributes="" save_date="2016-12-14 21:17:23"><![CDATA[העתק הרשמות לקורס]]></key>
-        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2016-12-14 21:11:48"><![CDATA[% תשלום מראש]]></key>
+        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2017-06-19 11:39:08"><![CDATA[תשלום מראש]]></key>
         <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2016-12-14 21:16:28"><![CDATA[קוד הרשמה אוטומטית לקורס]]></key>
         <key id="course&amp;_COURSE_CONTENT" attributes="" save_date="2016-12-14 21:14:02"><![CDATA[קורסים זמינים]]></key>
         <key id="course&amp;_COURSE_DATE" attributes="" save_date="2016-12-14 21:17:40"><![CDATA[משך הקורס: מ- [date_begin] עד [date_end].]]></key>
@@ -2565,7 +2565,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="test&amp;_TEST_BEGIN" attributes="" save_date="2016-12-16 19:34:20"><![CDATA[לחץ כדי להתחיל]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL" attributes="" save_date="2016-12-16 19:50:19"><![CDATA[באפשרותך לעבור לדף הבא או הקודם.]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL_NO" attributes="" save_date="2016-12-16 19:50:06"><![CDATA[אין באפשרותך לעבור לדף הקודם או הבא (אם למבחן יש מספר דפים)]]></key>
-        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2016-12-16 19:34:28"><![CDATA[הרשימה המלאה של השאלות הזמינות במהלך המבחן. ( %tot_element% elements in %tot_page% pages)]]></key>
+        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2017-07-05 12:08:16"><![CDATA[הרשימה המלאה של השאלות הזמינות במהלך המבחן ( %tot_element% elements in %tot_page% pages)]]></key>
         <key id="test&amp;_TEST_COMPILE_TIME" attributes="" save_date="2016-12-16 19:47:39"><![CDATA[מנהלן זמן]]></key>
         <key id="test&amp;_TEST_COMPLETED" attributes="" save_date="2016-12-16 19:46:12"><![CDATA[מבחן הושלם]]></key>
         <key id="test&amp;_TEST_CONTINUE" attributes="" save_date="2016-12-16 19:42:44"><![CDATA[המשך מבחן]]></key>

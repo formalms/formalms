@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170531</DATE>
+  <DATE>20170713</DATE>
   <LANG id="japanese">
     <lang_code>japanese</lang_code>
     <lang_description>Japanese</lang_description>
@@ -587,7 +587,7 @@
         <key id="course&amp;_CLASSROOM_OCCUPATED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[警告: いくつかの教室がすでに他のコースにより占有されています]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[占有済みクラス]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[あなたのデータはセーブされます]]></key>
-        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[前払い %]]></key>
+        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2017-06-19 11:39:38"><![CDATA[前払い]]></key>
         <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[自動コース購読のコード]]></key>
         <key id="course&amp;_COURSE_CONTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[利用可能なコース]]></key>
         <key id="course&amp;_COURSE_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[コース期間: <b>[date_begin]</b> から <b>[date_end]</b>]]></key>
@@ -2554,7 +2554,7 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
         <key id="test&amp;_TEST_QUEST_ELEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[要素]]></key>
         <key id="test&amp;_TEST_QUEST_ELEMENTS_A" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[グループA要素]]></key>
         <key id="test&amp;_TEST_QUEST_ELEMENTS_B" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[グループB要素]]></key>
-        <key id="test&amp;_TEST_QUEST_ELEM_NUM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[N. 要素]]></key>
+        <key id="test&amp;_TEST_QUEST_ELEM_NUM" attributes="" save_date="2017-07-05 12:36:03"><![CDATA[Num. 要素]]></key>
         <key id="test&amp;_TEST_QUEST_MAXTESTSCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[最高テスト成績]]></key>
         <key id="test&amp;_TEST_QUEST_NEWMAXTESTSCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[新最高成績]]></key>
         <key id="test&amp;_TEST_QUEST_ORDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[オーダー]]></key>

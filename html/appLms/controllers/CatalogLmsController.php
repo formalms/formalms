@@ -68,7 +68,7 @@ class CatalogLmsController extends LmsController {
 
 		echo '<div class="middlearea_container">';
 
-        $this->render('catalog_header');
+        $this->render('catalog_header', array("user_catalogue" => $user_catalogue));
         $this->render('catalog_tree', array('model' => $this->model, 'id_cat=' => $id_cat));
          
            /*
@@ -105,8 +105,10 @@ class CatalogLmsController extends LmsController {
        $typeCourse = Get::req('type_course', DOTY_STRING, '');
        $val_enroll = Get::req('val_enroll', DOTY_STRING, '');
        $val_enroll_not = Get::req('val_enroll_not', DOTY_STRING, '');
+       
+       $id_catalog = Get::req('id_cata', DOTY_INT, 0);          
               
-       $result = $this->model->getCourseList($typeCourse,1,$val_enroll, $val_enroll_not);
+       $result = $this->model->getCourseList($typeCourse,1,$id_catalog);
        $this->render('courselist', array( "result" => $result));
 
     }    
@@ -455,7 +457,7 @@ class CatalogLmsController extends LmsController {
 
 				$array_user[] = $array_user[0];
 				unset($array_user[0]);
-
+ 
 				$control_user = array_search(getLogUserId(), $array_user);
 
 				$query =	"SELECT COUNT(*)"

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170531</DATE>
+  <DATE>20170713</DATE>
   <LANG id="german">
     <lang_code>german</lang_code>
     <lang_description>German</lang_description>
@@ -79,7 +79,7 @@
         <key id="admin_directory&amp;_REFUSED_USER_TEXT_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Benutzer wurde nicht akzeptiert]]></key>
         <key id="admin_directory&amp;_REFUSE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ablehnen]]></key>
         <key id="admin_directory&amp;_REFUSE_USER_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Anfrage f&uuml;r Benutzerregistration ablehnen]]></key>
-        <key id="admin_directory&amp;_SIMPLE_FILTER" attributes="" save_date="2017-04-10 15:33:42"><![CDATA[Suche in Feld Benutzer ID, Vorname oder Nachname]]></key>
+        <key id="admin_directory&amp;_SIMPLE_FILTER" attributes="" save_date="2017-07-07 12:53:33"><![CDATA[Suche in Feld Benutzername, Vorname oder Nachname]]></key>
         <key id="admin_directory&amp;_WAITING_USER_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Benutzerliste mit best&auml;tigten und auf Best&auml;tigung wartenden Registrationsanfragen]]></key>
       </module>
       <module id="admin_lang">
@@ -493,7 +493,7 @@ Einf&uuml;ge den hier und Sie werden automatisch in den Kurs eingeschrieben ]]><
         <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP Port (gew&ouml;hnlich 389)]]></key>
         <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2017-05-05 17:07:10"><![CDATA[LDAP Serveradresse]]></key>
         <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktiviere LDAP Authentifizierung]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Benutzername f&uuml;r LDAP Benutzer, benutze $user f&uuml;r den Benutzernamen.<br />z.B. $user@domain2.domain1 (f&uuml;r: W2k3)]]></key>
+        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2017-07-07 12:58:15"><![CDATA[Benutzername f&uuml;r LDAP Benutzer, benutze $user f&uuml;r den Benutzernamen.<br />z.B. $user@domain2.domain1 (f&uuml;r: W2k3)]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2017-05-15 16:43:37"><![CDATA[DB SQL Script Log]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Konfiguration von "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registrationen und Versendung verlorener Passworte]]></key>
@@ -519,7 +519,7 @@ Einf&uuml;ge den hier und Sie werden automatisch in den Kurs eingeschrieben ]]><
         <key id="configuration&amp;_ORGCHART_SINGLENODE" attributes="" save_date="2017-05-15 16:38:19"><![CDATA[Begrenze den Benutzer auf einen Knoten des
 Organisationsdiagramms]]></key>
         <key id="configuration&amp;_ORG_NAME_TELESKILL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Organisationsname f&uuml;r Konferenzen]]></key>
-        <key id="configuration&amp;_OWNED_BY" attributes="" save_date="2017-05-15 10:50:33"><![CDATA[Webseite besitzer]]></key>
+        <key id="configuration&amp;_OWNED_BY" attributes="" save_date="2017-06-21 12:24:12"><![CDATA[Webseite Besitzer]]></key>
         <key id="configuration&amp;_PAGE_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seitentitel (erscheint im Browser des Benutzers)]]></key>
         <key id="configuration&amp;_PASS_ALFANUMERIC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Passwort muss aus Buchstaben und Zahlen bestehen]]></key>
         <key id="configuration&amp;_PASS_CHANGE_FIRST_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Benutzer zum &Auml;ndern des Passworts nach dem ersten Login zwingen]]></key>
@@ -671,7 +671,7 @@ Organisationsdiagramms]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2017-05-08 15:35:29"><![CDATA[Klassenraum besetzt]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ihre Daten werden gespeichert.]]></key>
         <key id="course&amp;_COPY_SUBSCRIPTION_TO_COURSE" attributes="" save_date="2017-05-15 15:59:21"><![CDATA[Einschreibungen zu Kurs hinzuf&uuml;gen]]></key>
-        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vorrauszahlung %]]></key>
+        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2017-06-19 11:38:48"><![CDATA[Vorrauszahlung]]></key>
         <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Code f&uuml;r die automatische Einschreibung in einen Kurs]]></key>
         <key id="course&amp;_COURSE_CONTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Verf&uuml;gbare Kurse]]></key>
         <key id="course&amp;_COURSE_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kursdauer: von <b>[date_begin]</b> bis <b>[date_end]</b>.]]></key>
@@ -793,7 +793,7 @@ Organisationsdiagramms]]></key>
         <key id="course&amp;_SUBSCRIPTION_CLOSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Einschreibung geschlossen]]></key>
         <key id="course&amp;_SUBSCRIPTION_CORRECT" attributes="" save_date="2017-05-12 17:50:48"><![CDATA[Erfolgreiche Einschreibung]]></key>
         <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Von]]></key>
-        <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN_FROM" attributes="" save_date="2017-05-15 16:20:46"><![CDATA[]]></key>
+        <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN_FROM" attributes="" save_date="2017-06-19 13:14:58"><![CDATA[Die Einschreibun ist offen schon seit]]></key>
         <key id="course&amp;_SUBSCRIPTION_DATE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[An]]></key>
         <key id="course&amp;_SUBSCRIPTION_ERROR" attributes="" save_date="2017-05-12 17:53:39"><![CDATA[Fehler bei der Einschreibung ]]></key>
         <key id="course&amp;_SUBSCRIPTION_IN_PERIOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Einschreibung ist w&auml;hrend der folgenden Zeit erlaubt]]></key>
@@ -1081,7 +1081,7 @@ Passwort: [password]]]></key>
         <key id="field&amp;_ADD_NEW_FIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Neue benutzerdefiniertes Feld hinzuf&uuml;gen]]></key>
         <key id="field&amp;_ALL_FIELD_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alle Arten der Felder]]></key>
         <key id="field&amp;_CODICEFISCALE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fiskalcode]]></key>
-        <key id="field&amp;_COPY" attributes="" save_date="2017-05-17 17:00:43"><![CDATA[Kopie]]></key>
+        <key id="field&amp;_COPY" attributes="" save_date="2017-07-10 12:35:46"><![CDATA[Hinzuf&uuml;gen]]></key>
         <key id="field&amp;_COUNTRY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Land]]></key>
         <key id="field&amp;_DROPDOWN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dropdown Feld]]></key>
         <key id="field&amp;_DROPDOWN_ELEMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Element Name]]></key>
@@ -1373,9 +1373,9 @@ Um diese Worte zu &auml;ndern, gehen Sie bitte auf Admin/Sprachverwaltung, suche
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login mit]]></key>
         <key id="login&amp;_LOG_IN" attributes="" save_date="2017-05-08 15:02:44"><![CDATA[Login]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Verlorenes Passwort]]></key>
-        <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Geben Sie Ihre Benutzer ID ein, und Ihnen wird eine eMail (an Ihre Registrationsadresse) gesendet. Diese eMail enth&auml;lt Anweisungen, wie Sie ein neues Passwort generieren.]]></key>
+        <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2017-07-07 12:58:44"><![CDATA[Geben Sie Ihren Benutzernamen ein, und Ihnen wird eine eMail (an Ihre Registrationsadresse) gesendet. Diese eMail enth&auml;lt Anweisungen, wie Sie ein neues Passwort generieren.]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Geben Sie in dieses Feld die eMail Adresse ein, die Sie bei der Registration angegeben haben, und Sie erhalten eine eMail mit Ihrem Benutzernamen auf dieser Seite.]]></key>
-        <key id="login&amp;_LOST_TITLE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ich habe meinen Benutzernamen vergessen]]></key>
+        <key id="login&amp;_LOST_TITLE_USER" attributes="" save_date="2017-07-07 12:58:49"><![CDATA[Ich habe meinen Benutzernamen vergessen]]></key>
         <key id="login&amp;_MAINTENANCE_TEXT" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[System in mainteinance mode.<br/><br/>To change these text please go to Admin/Language management, search for login and edit the key _MAINTENANCE_TEXT]]></key>
         <key id="login&amp;_NOACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zugriff verweigert, bitte &uuml;berpr&uuml;fen Sie Ihr Passwort]]></key>
         <key id="login&amp;_PASSNOMATCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Die zwei eingegebenen Passw&ouml;rter sind nicht gleich oder das Passwortfeld ist leer.]]></key>
@@ -1388,7 +1388,7 @@ Um diese Worte zu &auml;ndern, gehen Sie bitte auf Admin/Sprachverwaltung, suche
         <key id="login&amp;_SIGN_IN" attributes="" save_date="2017-05-15 12:45:55"><![CDATA[Registrierung]]></key>
         <key id="login&amp;_SOCIALCONNECTKO" attributes="" save_date="2017-05-17 17:57:12"><![CDATA[ Verbindung zum sozial Netzwerk fehlgeschlagen ]]></key>
         <key id="login&amp;_SOCIALCONNECTOK" attributes="" save_date="2017-05-17 17:57:06"><![CDATA[Erfolgreiche Verbindung zum sozial Netzwerk]]></key>
-        <key id="login&amp;_TWO_USERS_LOGGED_WITH_SAME_USERNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ein anderer Benutzer hat sich mit Ihrem Benutzernamen angemeldet]]></key>
+        <key id="login&amp;_TWO_USERS_LOGGED_WITH_SAME_USERNAME" attributes="" save_date="2017-07-07 12:58:33"><![CDATA[Ein anderer Benutzer hat sich mit Ihrem Benutzernamen angemeldet]]></key>
         <key id="login&amp;_UNKNOWNGOOGLERROR" attributes="" save_date="2017-05-12 17:56:35"><![CDATA[Unbekannte Fehler beim Google Login]]></key>
         <key id="login&amp;_UNKNOWNSOCIALERROR" attributes="" save_date="2017-05-17 17:58:43"><![CDATA[Unbekannte Fehler beim Login in soziales Netzwerk]]></key>
         <key id="login&amp;_UNLOGGED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sie sind abgemeldet]]></key>
@@ -1527,6 +1527,7 @@ Um diese Worte zu &auml;ndern, gehen Sie bitte auf Admin/Sprachverwaltung, suche
         <key id="message&amp;_OUTBOX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Versendet]]></key>
         <key id="message&amp;_PRIORITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Priorit&auml;t]]></key>
         <key id="message&amp;_REFRESH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktualisieren]]></key>
+        <key id="message&amp;_SEND_MESSAGE_COPY" attributes="" save_date="2017-05-31 10:57:44"><![CDATA[Eine Cc Nachricht senden]]></key>
         <key id="message&amp;_TITLE_READ" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nachricht gelesen]]></key>
         <key id="message&amp;_VERYHIGH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sehr hoch]]></key>
         <key id="message&amp;_VERYLOW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sehr niedrig]]></key>
@@ -1807,7 +1808,7 @@ Bitte keine anst&ouml;&szlig;igen Bilder hochladen.]]></key>
         <key id="register&amp;_CHANGELANG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sprache &auml;ndern]]></key>
         <key id="register&amp;_CHOOSE_NEW_PASSWORD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Neues Passwort w&auml;hlen]]></key>
         <key id="register&amp;_ERR_DUPLICATE_MAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Diese eMail Adresse wird bereits von einem anderen Benutzer genutzt.]]></key>
-        <key id="register&amp;_ERR_DUPLICATE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Die Benutzer ID ist nicht verf&uuml;gbar, w&auml;hlen Sie eine andere]]></key>
+        <key id="register&amp;_ERR_DUPLICATE_USER" attributes="" save_date="2017-07-07 12:54:13"><![CDATA[Der Benutzername ist nicht verf&uuml;gbar, w&auml;hlen Sie eine andere]]></key>
         <key id="register&amp;_ERR_INVALID_MAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sie m&uuml;ssen eine g&uuml;ltige eMail Adresse eingeben]]></key>
         <key id="register&amp;_ERR_INVALID_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Benutzername ist leer oder ung&uuml;ltig]]></key>
         <key id="register&amp;_ERR_PASSWORD_MIN_LENGTH" attributes="" save_date="2017-05-19 10:57:14"><![CDATA[Das Passwort muss eine Mindestzahl von Buchstaben enthalten]]></key>
@@ -1821,11 +1822,11 @@ Bitte keine anst&ouml;&szlig;igen Bilder hochladen.]]></key>
         <key id="register&amp;_GOTO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zur&uuml;ck zur Loginseite]]></key>
         <key id="register&amp;_GROUPS_FIELDS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dies ist das Feld, das mit der gew&auml;hlten Gruppe verbunden ist]]></key>
         <key id="register&amp;_IMGSECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registration]]></key>
-        <key id="register&amp;_INEXISTENT_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Die eingegebene Benutzer ID existiert nicht. Bitte &uuml;berpr&uuml;fen und erneut versuchen]]></key>
+        <key id="register&amp;_INEXISTENT_USER" attributes="" save_date="2017-07-07 12:54:08"><![CDATA[Der eingegebene Benutzername existiert nicht. Bitte &uuml;berpr&uuml;fen und erneut versuchen]]></key>
         <key id="register&amp;_INVALID_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivierungscode ist nicht g&uuml;ltig]]></key>
         <key id="register&amp;_INVALID_RANDOM_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Der Sicherheitscode ist ung&uuml;ltig]]></key>
         <key id="register&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zur&uuml;ck zum Login]]></key>
-        <key id="register&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Wenn Sie Ihr Passwort vergessen haben, geben Sie Ihre Benutzer ID in das Feld unten ein und Sie bekommen eine eMail mit Anweisungen]]></key>
+        <key id="register&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2017-07-07 12:59:54"><![CDATA[Wenn Sie Ihr Passwort vergessen haben, geben Sie Ihren Benutzernamen in das Feld unten ein und Sie bekommen eine eMail mit Anweisungen]]></key>
         <key id="register&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Wenn Sie Ihren Benutzernamen vergessen haben, geben Sie unten Ihre eMail Adresse ein, und Sie erhalten eine eMail]]></key>
         <key id="register&amp;_LOST_PWD_MAILTEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dies ist der Prozess um ein neues Passwort f&uuml;r den Benutzer mit dieser eMail zu erstellen. Klicken Sie auf den folgenden Link um ein neues Passwort zu generieren.<br/>
 <br/>
@@ -1841,15 +1842,15 @@ Bitte keine anst&ouml;&szlig;igen Bilder hochladen.]]></key>
         <key id="register&amp;_MAIL_SEND_SUCCESSFUL_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vielen Dank! Wir haben Ihnen eine eMail mit einem Link gesendet, um Ihr Passwort wiederherzustellen.]]></key>
         <key id="register&amp;_NEWPWDVALID" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ihr neues Passwort ist f&uuml;r [valid_for_day] Tage g&uuml;ltig.]]></key>
         <key id="register&amp;_NEW_PASSWORD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Neues Passwort]]></key>
-        <key id="register&amp;_NOTE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Leerzeichen vor und nach dem Benutzer ID Feld sind nicht g&uuml;ltig und werden entfernt]]></key>
+        <key id="register&amp;_NOTE" attributes="" save_date="2017-07-07 12:55:21"><![CDATA[Leerzeichen vor und nach dem Benutzername Feld sind nicht g&uuml;ltig und werden entfernt]]></key>
         <key id="register&amp;_OLD_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ihr altes Passwort]]></key>
         <key id="register&amp;_PASSWORD_TOO_SHORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Passwort zu kurz]]></key>
         <key id="register&amp;_REG_CONFIRM_FAILED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Die Best&auml;tigung Ihres Benutzerkontos ist fehlgeschlagen]]></key>
         <key id="register&amp;_REG_ELAPSEDREQUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Die Anfrage ist nicht g&uuml;ltig, weil die G&uuml;ltigkeitsdauer abgelaufen ist]]></key>
         <key id="register&amp;_REG_HOUR_REQUEST_LIMIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Diese Anfrage l&auml;uft nach <b>[hour] Stunden</b> ab]]></key>
-        <key id="register&amp;_REG_MAIL_TEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Wir haben Ihre Anfrage mit folgenden Informationen erhalten:<br />
+        <key id="register&amp;_REG_MAIL_TEXT" attributes="" save_date="2017-06-23 15:13:58"><![CDATA[Wir haben Ihre Anfrage mit folgenden Informationen erhalten:<br />
 <br />
-Benutzer ID : [userid]<br />
+Benutzername : [userid]<br />
 Passwort : [password]<br />
 <br />
 Klicken Sie auf folgenden Link, um Ihre Registration abzuschlie&szlig;en (oder kopieren Sie ihn in die Adresszeile Ihres Browsers)<br />
@@ -1857,9 +1858,9 @@ Klicken Sie auf folgenden Link, um Ihre Registration abzuschlie&szlig;en (oder k
 <a href="[link]">[link]</a><br />
 <br />
 Die Anfrage ist f&uuml;r die n&auml;chsten [hour] Stunden g&uuml;ltig]]></key>
-        <key id="register&amp;_REG_MAIL_TEXT_SELF" attributes="" save_date="2017-05-08 15:06:50"><![CDATA[Wir haben Ihre Anfrage mit folgenden Informationen erhalten:<br />
+        <key id="register&amp;_REG_MAIL_TEXT_SELF" attributes="" save_date="2017-06-23 15:14:06"><![CDATA[Wir haben Ihre Anfrage mit folgenden Informationen erhalten:<br />
 <br />
-Benutzer ID : [userid]<br />
+Benutzername : [userid]<br />
 Passwort : [password]<br />]]></key>
         <key id="register&amp;_REG_MANDATORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sie m&uuml;ssen die Pflichtfelder ausf&uuml;llen, die mit dem Symbol [mandatory] markiert sind]]></key>
         <key id="register&amp;_REG_NOTE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Auf dieser Seite k&ouml;nnen Sie sich f&uuml;r die Plattform registrieren; folgen Sie den folgenden Anweisungen und f&uuml;llen Sie die Felder entsprechend aus.]]></key>
@@ -2003,6 +2004,7 @@ Sie werden eine eMail mit Ihren Informationen erhalten.]]></key>
         <key id="report&amp;_TIME_PERIOD_FILTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Filter f&uuml;r Zeitabschnitte]]></key>
         <key id="report&amp;_TOTAL_SESSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zeit]]></key>
         <key id="report&amp;_USER_CUSTOM_FIELDS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zeige benutzerdefinierte Felder]]></key>
+        <key id="report&amp;_WARNING_REPORT" attributes="" save_date="2017-05-31 11:13:55"><![CDATA[Benutzer werden den Bericht sowie seinen Generator sehen ]]></key>
       </module>
       <module id="reservation">
         <key id="reservation&amp;_ADD_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Benutzer hinzuf&uuml;gen]]></key>
@@ -2033,7 +2035,7 @@ Sie werden eine eMail mit Ihren Informationen erhalten.]]></key>
         <key id="reservation&amp;_RESERVATION_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kategorieverwaltung]]></key>
         <key id="reservation&amp;_RESERVATION_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Verf&uuml;gbare Ereignisse]]></key>
         <key id="reservation&amp;_RESERVATION_MAIL_SEND" attributes="" save_date="2017-05-08 14:43:15"><![CDATA[eMail senden]]></key>
-        <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meine Registration]]></key>
+        <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2017-07-05 12:46:42"><![CDATA[Meine Registration]]></key>
         <key id="reservation&amp;_RESERVATION_PAST_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vergangene Ereignisse]]></key>
         <key id="reservation&amp;_RESERVATION_PROFILE_MODIFY" attributes="" save_date="2017-05-19 14:35:47"><![CDATA[Reservierung]]></key>
         <key id="reservation&amp;_RESERVATION_SUBSCRIBED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ereignisse verwalten]]></key>
@@ -2261,7 +2263,7 @@ Passwort: [password]]]></key>
         <key id="standard&amp;_FUNCTIONAL_ROLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Firmenrollen]]></key>
         <key id="standard&amp;_GAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[L&uuml;cke]]></key>
         <key id="standard&amp;_GOOGLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Google]]></key>
-        <key id="standard&amp;_GRADIMENTO" attributes="" save_date="2017-05-19 14:35:05"><![CDATA[Billigung]]></key>
+        <key id="standard&amp;_GRADIMENTO" attributes="" save_date="2017-07-12 17:58:22"><![CDATA[Geschmack]]></key>
         <key id="standard&amp;_GROUPS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gruppen]]></key>
         <key id="standard&amp;_HEIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[H&ouml;he]]></key>
         <key id="standard&amp;_HELP" attributes="" save_date="2017-05-08 15:10:52"><![CDATA[Hilfe]]></key>
@@ -2548,11 +2550,11 @@ Passwort: [password]]]></key>
         <key id="stats&amp;_STATISTIC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Statistiken]]></key>
         <key id="stats&amp;_STATNOTRACKFORUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Keine Daten f&uuml;r Benutzer/Stunde]]></key>
         <key id="stats&amp;_STATSFORITEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[f&uuml;r Stunde]]></key>
-        <key id="stats&amp;_STATSITEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Statistik f&uuml;r Objekt:]]></key>
+        <key id="stats&amp;_STATSITEM" attributes="" save_date="2017-07-07 15:56:07"><![CDATA[Statistik f&uuml;r Objekt: ]]></key>
         <key id="stats&amp;_STATSUSERITEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Statistik f&uuml;r Student/Objekt]]></key>
         <key id="stats&amp;_STATS_FULLNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gesamter Name]]></key>
         <key id="stats&amp;_STATS_USERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Benutzerstatistiken]]></key>
-        <key id="stats&amp;_VIEW_OPEN_QUEST" attributes="" save_date="2017-05-17 15:18:50"><![CDATA[die Antworten der Textfragen anzeigen]]></key>
+        <key id="stats&amp;_VIEW_OPEN_QUEST" attributes="" save_date="2017-06-21 10:28:01"><![CDATA[Die Antworten der Textfragen anzeigen]]></key>
       </module>
       <module id="storage">
         <key id="storage&amp;_EXPORT_QUESTIONS" attributes="" save_date="2017-05-15 11:54:34"><![CDATA[Fragen exportieren]]></key>
@@ -2590,7 +2592,7 @@ Passwort: [password]]]></key>
         <key id="subscribe&amp;_BEFORE_THIS_APPROVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Die Einschreibung des Benutzers in diesen Kurs wird erst nach Best&auml;tigung des Administrators akzeptiert]]></key>
         <key id="subscribe&amp;_CAPTION_SELECT_LEVELS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Stufe f&uuml;r den gew&auml;hlten Benutzer w&auml;hlen]]></key>
         <key id="subscribe&amp;_CHOOSE_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[W&auml;hle die Studenten, die in den Kurs eingeschrieben werden sollen]]></key>
-        <key id="subscribe&amp;_COPY" attributes="" save_date="2017-05-08 15:22:37"><![CDATA[Kopie]]></key>
+        <key id="subscribe&amp;_COPY" attributes="" save_date="2017-07-10 12:37:28"><![CDATA[Hinzuf&uuml;gen]]></key>
         <key id="subscribe&amp;_COPY_TO_COURSE" attributes="" save_date="2017-05-17 17:01:45"><![CDATA[Einschreibungen kopieren]]></key>
         <key id="subscribe&amp;_CORRECT" attributes="" save_date="2017-05-08 15:46:06"><![CDATA[Korrekte Einschreibung]]></key>
         <key id="subscribe&amp;_DATE_BEGIN_VALIDITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktiv ab]]></key>
@@ -2721,7 +2723,7 @@ Passwort: [password]]]></key>
         <key id="test&amp;_TEST_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Klicken um anzufangen]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sie k&ouml;nnen zur n&auml;chsten oder vorherigen Seite springen (wenn der Test mehrere Seiten hat)]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sie k&ouml;nnen <b>nicht</b> zur n&auml;chsten oder vorherigen Seite springen (wenn der Test mehrere Seiten hat)]]></key>
-        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Komplette Liste der verf&uuml;gbaren Fragen im Test. ( %tot_element% Elemente auf %tot_page% Seiten)]]></key>
+        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2017-07-05 10:46:30"><![CDATA[Komplette Liste der verf&uuml;gbaren Fragen im Test ( %tot_element% Elemente auf %tot_page% Seiten)]]></key>
         <key id="test&amp;_TEST_COMPILE_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zeitverwaltung]]></key>
         <key id="test&amp;_TEST_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Test abgeschlossen]]></key>
         <key id="test&amp;_TEST_CONTINUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Test fortsetzen]]></key>
@@ -2762,7 +2764,7 @@ Passwort: [password]]]></key>
         <key id="test&amp;_TEST_MM_FOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[3 - Details, die am Ende gezeigt werden]]></key>
         <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - Visualisierung der Frage einstellen]]></key>
         <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2017-04-19 12:30:31"><![CDATA[2 -  Versuchsoptionen setzen]]></key>
-        <key id="test&amp;_TEST_MODALITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[testoptionen]]></key>
+        <key id="test&amp;_TEST_MODALITY" attributes="" save_date="2017-07-05 10:45:03"><![CDATA[Testoptionen]]></key>
         <key id="test&amp;_TEST_MOD_DOANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sie k&ouml;nnen die Antworten ver&auml;ndern]]></key>
         <key id="test&amp;_TEST_MOD_DOANSWER_NO" attributes="" save_date="2017-05-08 17:59:01"><![CDATA[Sie k&ouml;nnen die Antworten <span class="text_bold">nicht</span> ver&auml;ndern]]></key>
         <key id="test&amp;_TEST_MOVEQUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Positionszeile]]></key>
@@ -2790,7 +2792,7 @@ Passwort: [password]]]></key>
         <key id="test&amp;_TEST_QUEST_ELEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Element]]></key>
         <key id="test&amp;_TEST_QUEST_ELEMENTS_A" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Elemente der Gruppe A]]></key>
         <key id="test&amp;_TEST_QUEST_ELEMENTS_B" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Elemente der Gruppe B]]></key>
-        <key id="test&amp;_TEST_QUEST_ELEM_NUM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[N. Elemente]]></key>
+        <key id="test&amp;_TEST_QUEST_ELEM_NUM" attributes="" save_date="2017-07-05 12:24:21"><![CDATA[Num. Elemente]]></key>
         <key id="test&amp;_TEST_QUEST_MAXTESTSCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[H&ouml;chstpunktzahl]]></key>
         <key id="test&amp;_TEST_QUEST_NEWMAXTESTSCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Neue H&ouml;chstpunktzahl]]></key>
         <key id="test&amp;_TEST_QUEST_ORDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reihenfolge]]></key>
@@ -2889,7 +2891,7 @@ Passwort: [password]]]></key>
         <key id="user_managment&amp;_REGISTER_TYPE_SELF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Freie Selbstregistration]]></key>
         <key id="user_managment&amp;_SEND_NEW_CREDENTIALS_ALERT" attributes="" save_date="2017-05-19 10:02:37"><![CDATA[Logininformationen an Nutzer senden]]></key>
         <key id="user_managment&amp;_SET_PASSWORD" attributes="" save_date="2017-05-12 15:15:43"><![CDATA[Passwort einrichten]]></key>
-        <key id="user_managment&amp;_USERID_NEEDED" attributes="" save_date="2017-05-19 13:16:42"><![CDATA[Das Benutzer ID Feld muss importiert und gew&auml;hlt f&uuml;r Vergleich werden ]]></key>
+        <key id="user_managment&amp;_USERID_NEEDED" attributes="" save_date="2017-07-07 12:54:31"><![CDATA[Das Benutzername Feld muss importiert und gew&auml;hlt f&uuml;r Vergleich werden ]]></key>
         <key id="user_managment&amp;_USE_WITH_MANUALEINSERT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Einschreibungscode manuell eingegeben]]></key>
         <key id="user_managment&amp;_USE_WITH_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Einschreibungscode aus Dropdown Men&uuml; gew&auml;hlt]]></key>
       </module>

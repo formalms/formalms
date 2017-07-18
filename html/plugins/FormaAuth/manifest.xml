@@ -6,5 +6,4 @@
 	<version>1.0</version>
 	<description>forma auth</description>
 	<category>authentication</category>
-	<core>true</core>
 </plugin_manifest>

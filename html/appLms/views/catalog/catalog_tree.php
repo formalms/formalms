@@ -29,6 +29,7 @@
             <div>
                
       <?php  }  ?>
+       
       
       
       <script type="text/javascript">
@@ -43,6 +44,7 @@
                               r:'catalog/allCourseForma',
                               id_cat:id_cat,
                               type_course: type_course,  
+                              id_cata: <?php echo Get::req('id_cata', DOTY_INT, 0);   ?> ,
                              }
                   );
                   posting.done(function(responseText){

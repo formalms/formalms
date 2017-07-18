@@ -614,7 +614,7 @@ class Report_User extends Report {
 		$box->title = $lang->def('_SELECT_THE_DATA_COL_NEEDED');
 		$box->description = false;
 		//Form::openElementSpace()
-		if (count($custom) > 0) {
+
 		$box->body .= Form::getOpenFieldset($lang->def('_USER_CUSTOM_FIELDS'), 'fieldset_course_fields');
         $box->body .= Form::getCheckBox(Lang::t('_LASTNAME', 'standard'), 'col_sel_lastname', 'cols[]', '_TH_LASTNAME', is_showed('_TH_LASTNAME'));             
 		$box->body .= Form::getCheckBox(Lang::t('_FIRSTNAME', 'standard'), 'col_sel_firstname', 'cols[]', '_TH_FIRSTNAME', is_showed('_TH_FIRSTNAME'));
@@ -622,12 +622,13 @@ class Report_User extends Report {
 		$box->body .= Form::getCheckBox(Lang::t('_REGISTER_DATE', 'standard'), 'col_sel_register_date', 'cols[]', '_TH_REGISTER_DATE', is_showed('_TH_REGISTER_DATE'));
 		$box->body .= Form::getCheckBox(Lang::t('_SUSPENDED', 'standard'), 'col_sel_suspended', 'cols[]', '_TH_SUSPENDED', is_showed('_TH_SUSPENDED'));
 		$box->body .= Form::getCheckBox(Lang::t('_ORGCHART', 'standard'), 'col_sel_organization_chart', 'cols[]', '_TH_ORGANIZATION_CHART', is_showed('_TH_ORGANIZATION_CHART'));
-                
+		if (count($custom) > 0) {
 		foreach ($custom as $key=>$val) {
 			$box->body .= Form::getCheckBox($val['label'], 'col_custom_'.$val['id'], 'custom['.$val['id'].']', $val['id'], $ref['custom_fields'][$key]['selected']);
 		}
-		$box->body .= Form::getCloseFieldset();
 		}
+		$box->body .= Form::getCloseFieldset();
+
 
 
 		$out->add('<script type="text/javascript">
@@ -687,8 +688,19 @@ class Report_User extends Report {
 		.Form::getCheckBox($lang->def('_TH_USER_NUMBER_SESSION'), 'user_number_session', 'cols[]', '_TH_USER_NUMBER_SESSION', is_showed('_TH_USER_NUMBER_SESSION'))
 		.Form::getCheckBox($lang->def('_TOTAL_TIME'), 'user_elapsed_time', 'cols[]', '_TH_USER_ELAPSED_TIME', is_showed('_TH_USER_ELAPSED_TIME'))
 		.Form::getCheckBox($lang->def('_TH_ESTIMATED_TIME'), 'estimated_time', 'cols[]', '_TH_ESTIMATED_TIME', is_showed('_TH_ESTIMATED_TIME'))
-		.Form::getCloseFieldset();
+		.Form::getCloseFieldset()
 
+         //** LUCA
+        .Form::getOpenFieldset($lang->def('_PROGRESS'), 'fieldset_course_fields')
+        .Form::getCheckBox($lang->def('_PERCENTAGE'), 'perc_lo', 'cols[]', '_TH_PERC_LO', is_showed('_TH_PERC_LO'))
+        .Form::getCheckBox($lang->def('_GRAPHIC_REPORT'), 'perc_lo', 'cols[]', '_TH_PERC_LO_GRAPH', is_showed('_TH_PERC_LO_GRAPH'))
+        
+       
+        .Form::getCloseFieldset();            
+        
+        
+        
+        
 		cout($box->get());
 
 
@@ -1462,7 +1474,23 @@ class Report_User extends Report {
 		if (in_array('_TH_USER_NUMBER_SESSION', $cols)) { $th2[] = $lang->def('_TH_USER_NUMBER_SESSION'); $colspan2++; }
 		if (in_array('_TH_USER_ELAPSED_TIME', $cols)) { $th2[] = $lang->def('_TOTAL_TIME'); $colspan2++; }
 		if (in_array('_TH_ESTIMATED_TIME', $cols)) { $th2[] = $lang->def('_TH_ESTIMATED_TIME'); $colspan2++; }
-		//checkbox for mail
+		
+        
+                                              
+                // Luca
+      if (in_array('_TH_PERC_LO', $cols)) { 
+            $th2[] = $lang->def('_PERCENTAGE'); $colspanLO++; 
+        }    
+  
+        if (in_array('_TH_PERC_LO_GRAPH', $cols)) { 
+            $th2[] = $lang->def('_GRAPHIC_REPORT')."&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  "; $colspanLO++; 
+        }
+        
+        
+        
+        
+        
+        //checkbox for mail
 		if ($this->use_mail) $th2[] = array(
 			'style' => 'img-cell',
 			'value' => $this->_loadEmailIcon()
@@ -1475,6 +1503,10 @@ class Report_User extends Report {
 		$th1[] = array('colspan'=>$colspan2, 'value'=>$lang->def('_STATUS'));
 		//$th1[] = '';
 
+        // Luca
+        $th1[] = array('colspan'=>$colspanLO, 'value'=> $lang->def('_PROGRESS') );        
+        
+        
 		$buffer->openHeader();
 		$buffer->addHeader($th1);
 		$buffer->addHeader($th2);
@@ -1485,6 +1517,17 @@ class Report_User extends Report {
 		$i = 0;
 		$count_rows = 0;
 
+        
+// Luca 
+        cout('
+        
+           
+
+
+                ','scripts');          
+        
+        
+        
 		$buffer->openBody();
 		$exclusive = ($filter_columns['filter_exclusive']==1 ? true : false); //1 if exclusive, 0 if inclusive
 		while($sql_row =  sql_fetch_array($re_course_user) ) {
@@ -1665,6 +1708,54 @@ class Report_User extends Report {
 
 				if (in_array('_TH_ESTIMATED_TIME', $cols)) $row[] = $medium_time.'h';
 
+                
+
+                
+                // Luca
+             if (in_array('_TH_PERC_LO', $cols)){ 
+                    $tot_lo = $this->getTotLO($id_user, $id_course);
+                    $tot_compl_sup = $this->getPercLO($id_user,$id_course); 
+                    $per_compl = round(($tot_compl_sup/$tot_lo)*100)  ;                    
+                    
+                    $row[] =  $per_compl."%";
+                
+                }                
+                        
+                if (in_array('_TH_PERC_LO_GRAPH', $cols)){ 
+                    
+                    $tot_lo = $this->getTotLO($id_user, $id_course);
+                    $tot_compl_sup = $this->getPercLO($id_user,$id_course); 
+                    $per_compl = round(($tot_compl_sup/$tot_lo)*100)  ;
+                    
+                    $str_color_bar = 'warning';
+                    if($per_compl==100) $str_color_bar = 'success';
+                    
+                    
+                    $list_mat = $this->listLoCompleted($id_user, $id_course);
+                    
+                    $row[] = '  
+        
+                                 <div class="progress" style=" cursor: pointer;">
+                                      <div class="progress-bar progress-bar-'.$str_color_bar.'"
+                                           role="progressbar" 
+                                           aria-valuenow="'.$per_compl.'" 
+                                           aria-valuemin="0" 
+                                           aria-valuemax="100" 
+                                           style="width: '.$per_compl.'%;"                        
+                                            >
+                                        <span class="sr-only" >&nbsp;</span>
+                                      </div>
+                                 </div>                                   
+                                                 
+                                      
+                    
+                                   ';
+                                   
+                }                    
+              
+              
+                
+                
 				//checkbox for mail
 				if ($this->use_mail) $row[] = '<div class="align_center">'.Form::getInputCheckbox('mail_'.$id_user, 'mail_recipients[]', $id_user, isset($_POST['select_all']), '').'</div>';
 				$buffer->addLine($row);
@@ -1680,6 +1771,13 @@ class Report_User extends Report {
 
 		YuiLib::load(array('selector' => 'selector-beta-min.js'));
 		
+        
+        
+      
+        
+        
+        
+        
 		if ($this->use_mail) {
 			cout('<script type="text/javascript">
 					function _getAllCheckBoxes() {
@@ -1741,6 +1839,56 @@ class Report_User extends Report {
 	//competences section **********************************************************
 
 
+    
+    
+   // Luca
+    function getTotLO($idUser, $idCourse){    
+          $query = "select count(*) as tot_lo from learning_organization where idCourse=".$idCourse." " ;
+                                          
+          $res = $this->db->query($query);
+          list($tot_lo) = $this->db->fetch_row($res)  ;
+          
+          return $tot_lo;
+
+    }
+    
+    function getPercLO($idUser, $idCourse){
+         $query = "select count(*) as tot_lo from learning_commontrack 
+         where idUser=".$idUser." 
+         and idReference in (select idOrg from learning_organization where idCourse=".$idCourse." )
+         and status in ('completed','passed') 
+         
+         ";
+                                          
+          $res = $this->db->query($query);
+          list($tot_lo) = $this->db->fetch_row($res)  ;
+          
+          return $tot_lo;
+
+    }    
+    
+    
+    function listLoCompleted($id_user, $id_course){
+         $query = "select title, last_complete from learning_organization,  learning_commontrack
+                    where  idOrg = idReference and idCourse=".$id_course." and learning_commontrack.idUser=".$id_user." and learning_commontrack.status in ('completed', 'passed') order by last_complete";
+        
+        
+        $res = $this->db->query($query);
+        $cont=0;
+        $str_lo = '<ul class="list-group" type="circle">';
+        while (list($title, $last_complete) = $this->db->fetch_row($res))  {
+            $str_lo = $str_lo."<li class='list-group-item'>". $last_complete. "    -    ".addslashes($title)."</li>";   
+            $cont++;     
+        }     
+        if($cont==0) $str_lo = "-";
+        
+        $str_lo = $str_lo."</ul>";
+        
+        return  $str_lo;
+        
+    }    
+    
+    
 	function show_report_competences($report_data = NULL, $other = '') {
 		$jump_url = ''; //show_report
 

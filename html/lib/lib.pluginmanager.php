@@ -38,7 +38,7 @@ class PluginManager {
         if (empty(self::$plugin_list)) {
             require_once _adm_ . '/models/PluginmanagerAdm.php';
             $PluginmanagerAdm = new PluginmanagerAdm();
-            self::$plugin_list = $PluginmanagerAdm->getPlugins(true);
+            self::$plugin_list = $PluginmanagerAdm->getActivePlugins();
         }
         return self::$plugin_list;
     }
@@ -122,7 +122,7 @@ class PluginManager {
         return false;
     }
     
-    private static function is_plugin_active($plugin) {
+    public static function is_plugin_active($plugin) {
 
         $active_plugins = array_map(function($element){return $element['name'];}, self::get_all_plugins(true));
 

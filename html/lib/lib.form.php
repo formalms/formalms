@@ -1279,7 +1279,8 @@ class Form {
 		$css_button = ($css_button === FALSE ? 'button' : $css_button);
 		return '<input type="'.($is_submit ? 'submit' : 'button').'" '
 				// ."\n\t".'class="'.$css_button.'" '
-				."\n\t".'class="'.$css_button.' btn btn-default" '
+				//."\n\t".'class="'.$css_button.' btn btn-default" '
+                ."\n\t".'class="'.$css_button.' btn " '    // #10984
 				."\n\t".'id="'.$id.'" '
 				."\n\t".'name="'.$name.'" '
 				."\n\t".'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';

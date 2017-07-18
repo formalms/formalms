@@ -157,7 +157,7 @@ ul.social-accounts li span{vertical-align:middle;}
 .lang-sprite span, .ico-wt-sprite span, .ico-sprite span{padding:0 0 2px 20px;overflow:hidden;}
 .lang-sprite{background:url(../images/ico_lang.png) 0 0 no-repeat;}
 .lang-sprite span{padding:0 0 2px 25px;overflow:hidden;}
-.ico-wt-sprite{padding:1px 4px 2px;}
+.ico-wt-sprite{padding:1px 25px 2px;}
 .ico-wt-sprite span{padding:1px 1px 2px 18px;text-decoration:underline;}
 .ico-wt-sprite:hover span,.lang-sprite:hover span,.ico-sprite:hover span{text-decoration:none;}
 
@@ -367,7 +367,8 @@ ul.style_none li{list-style:none; }
 .cancel_filter{border-width:0;height:16px;margin:0;width:16px;overflow:hidden;cursor:pointer;vertical-align:text-bottom;}
 .view_button{background:url(../images/standard/view.png) center center no-repeat;text-align:left;text-indent:-10em;overflow:hidden;*margin-left:10em;*padding:0 3em;white-space:nowrap; width:20px; height:18px;}
 /* quick search form */
-.quick_search_form{margin:10px 0;text-align:right;float:right;}
+/*.quick_search_form{margin:10px 0;text-align:right;float:right;}*/
+.quick_search_form{margin:0;text-align:right;float:right; width:100% ; background-color: #C84000;}
 .quick_search_form .search_t{float:left;}
 .qsf_left{text-align:left;display:inline-block;float:left;}
 .yui-skin-docebo .quick_search_form .yui-ac{width:15em;display:inline;}
