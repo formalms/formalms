@@ -1,0 +1,22 @@
+/// This set/remove element aspect ratio
+/// @param {number} $w - element width
+/// @param {number} $h - element height
+/// @example scss - Set aspect ratio
+///   @include ratio(16,9);
+/// @example scss - Remove aspect ratio
+///   @include ratio(0,0);
+/// @group helpers
+@mixin ratio($w,$h) {
+  @if $w == 0 {
+    &:before {
+      display: none;
+    }
+  } @else {
+    &:before {
+      display: block;
+      content: '';
+      width: 100%;
+      padding-bottom: ($h/$w)*100%;
+    }
+  }
+}
