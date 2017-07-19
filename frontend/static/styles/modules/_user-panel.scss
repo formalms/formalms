@@ -1,0 +1,655 @@
+// User Panel
+//
+// This is the user panel
+//
+// Style guide: 7
+
+// User Panel
+//
+// Remove the inline style when implementing
+//
+// Markup:
+// <div style="max-width: 450px; border-top: 1px outset black; position: relative; min-width: 320px; height: 900px;">
+//   <p style="width: 100%; line-height: 70px; text-align: center;">TOP MENU</p>
+//   <div id="c-menu--slide-right" class="c-menu c-menu--slide-right user-panel is-active" style="position: absolute;">
+//     <div class="container-fluid">
+//       <div class="row">
+//         <div class="col-xs-6">
+//           <a href="javascript:void(0)" class="c-menu__close">
+//             <span class="glyphicon glyphicon-remove">Nascondi menu</span>
+//           </a><!-- pulsante nascondi menu -->
+//         </div>
+//         <div class="col-xs-6">
+//           <a title="Esci" href=".././index.php?r=adm/homepage/logout">
+//             <span class="glyphicon glyphicon-off">Esci</span>
+//           </a>
+//         </div>
+//       </div>
+//       <div class="row profile">
+//         <div class="col-xs-5">
+//           <div class="boxed" style="background-image: url(../../../templates/standard/static/images/icons/user-panel/icon--up-photo-placeholder.png)"></div>
+//         </div>
+//         <div class="col-xs-7">
+//           <a href="index.php?r=lms/profile/show" title="Profilo utente">
+//             <span class="glyphicon glyphicon-pencil">Profilo utente</span>
+//           </a>
+//           <a href="index.php?r=lms/profile/show">Amministratore Super</a>
+//           <a href="mailto:admin@joint-tech.it">admin@joint-tech.it</a>
+//         </div>
+//       </div>
+//       <div class="row comunication">
+//         <div class="col-xs-4">
+//           <a class="btn btn-default" href="index.php?r=lms/mycertificate/show">Certificati</a>
+//         </div>
+//         <div class="col-xs-4">
+//           <a class="btn btn-default" href="index.php?r=message/show&amp;sop=unregistercourse">Messaggi</a>
+//         </div>
+//       </div>
+//       <div class="row career">
+//         <div class="col-xs-12">
+//           <h2 class="heading">Carriera</h2>
+//           <ul class="list-group">
+//             <li class="list-group-item">
+//               Corsi totali: <span class="badge">6</span>
+//             </li>
+//             <li class="list-group-item">
+//               Corsi in cui sei studende: <span class="badge">2</span>
+//             </li>
+//             <li class="list-group-item">
+//               Corsi in cui sei amministratore: <span class="badge">4</span>
+//             </li>
+//             <li class="list-group-item">
+//               Certificati Disponibili: <span class="badge"><a href="index.php?r=lms/mycertificate/show">3</a></span>
+//             </li>
+//           </ul>
+//         </div>
+//       </div>
+//       <div class="row course-subscription">
+//         <div class="col-xs-12">
+//           <div class="input-group">
+//             <form class="std_form" id="course_autoregistration" method="post" action="index.php?modname=course_autoregistration&op=subscribe">
+//               <input type="hidden" id="authentic_request_course_autoregistration" name="authentic_request" value="4faedccece387d29f8b440ef08b44dfa">
+//               <input type="text" class="form-control" id="course_autoregistration_code" name="course_autoregistration_code" value="" maxlength="30" alt="" size="30" placeholder="Iscrizione con codice">
+//               <div class="input-group-btn">
+//                 <input type="submit" class="btn btn-default" id="subscribe_info" name="subscribe_info" value="Iscriviti">
+//               </div>
+//             </form>
+//           </div>
+//         </div> <!-- end col xs-12 -->
+//       </div>
+//       <div class="row news"> <!-- news carousel -->
+//         <div class="col-xs-12">
+//           <h2 class="heading">News</h2>
+//           <div id="user-panel-carousel" class="carousel slide carousel-fade" data-ride="carousel">
+//             <ol class="carousel-indicators">
+//               <li data-target="#user-panel-carousel" data-slide-to="0" class="active"></li>
+//               <li data-target="#user-panel-carousel" data-slide-to="1"></li>
+//             </ol>
+//             <div class="carousel-inner" role="listbox">
+//               <div class="item active">
+//                 <h3>notizia 1</h3>
+//                 <p>Lorem ipsum testo notizia 1</p>
+//                 <span>12-11-2016</span>
+//               </div>
+//               <div class="item">
+//                 <h3>notizia 2</h3>
+//                 <p>Lorem ipsum dolor sit amet per il testo più lungo di notizia 2</p>
+//                 <span>11-03-2013</span>
+//               </div>
+//             </div>
+//           </div>
+//         </div> <!-- end col xs-12 -->
+//       </div>
+//       <div class="row credits"> <!-- periodi temporali -->
+//          <div class="col-xs-12">
+//         </div> <!-- end col xs-12 -->
+//       </div>
+//       <div class="row lang"> <!-- lang select -->
+//         <div class="col-xs-6">
+//           <p>Lingua</p>
+//         </div>
+//         <div class="col-xs-6">
+//           <ul class="list-inline" id="language_selection">
+//             <li>
+//               <a class="lang-sprite lang_english" href="index.php?special=changelang&amp;new_lang=english" title="English"></a>
+//              </li>
+//             <li>
+//               <a class="lang-sprite lang_finnish" href="index.php?special=changelang&amp;new_lang=finnish" title="Finnish"></a>
+//             </li>
+//             <li>
+//               <a class="lang-sprite lang_italian current" href="index.php?special=changelang&amp;new_lang=italian" title="Italiano"></a>
+//              </li>
+//             <li>
+//               <a class="lang-sprite lang_spanish" href="index.php?special=changelang&amp;new_lang=spanish" title="Spanish"></a>
+//             </li>
+//           </ul>
+//         </div>
+//       </div>
+//       <div class="row footer"
+//         <div class="col-xs-12">
+//           <p>Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</p>
+//         </div>
+//       </div>
+//     </div> <!-- /container-fluid -->
+//   </div> <!-- /c-menu -->
+// </div>
+//
+// Style guide: 7.1
+.user-panel {
+  width: 100%;
+  //height: 840px;
+  height: calc(100% - 70px);
+  top: 60px;
+  overflow: scroll;
+  background-color: $gray-4;
+  transform: translateX(100%);
+  font-family: $font;
+  text-align: left;
+  border-radius: 0;
+  z-index: 9000;
+
+  @include breakpoint($tablet) {
+    width: 320px;
+    //height: 712px;
+    height: auto;
+    background-color: $white;
+    border-radius: 5px;
+    box-shadow: $gray-3 0px 5px 20px 0px;
+    transform: translateX(350px);
+  }
+
+
+  .c-menu__close {
+    background-color: transparent;
+
+    span {
+      padding-left: 39px;
+    }
+  }
+
+  .container-fluid {
+    padding: 0 15px;
+    background-color: $gray-4;
+
+    @include breakpoint($tablet) {
+      background-color: transparent;
+      padding: 0 9px;
+      //background-color: $gray-5;
+    }
+
+    .row {
+      margin: 0;
+      padding: 0 15px;
+
+      @include breakpoint($tablet) {
+        padding: 0;
+      }
+
+      &:first-child {
+        padding: 9px 25px 9px 0;
+        height: 50px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+
+        @include breakpoint($tablet) {
+          border-bottom: 1px solid $gray-3;
+          margin-top: 0;
+          margin-bottom: 0;
+          padding: 9px 0;
+        }
+
+        a {
+          span {
+            width: auto;
+            font-family: $font;
+            color: $gray-2;
+            line-height: 32px;
+            font-size: 12px;
+            text-transform: uppercase;
+          }
+        }
+
+        .col-xs-6 {
+          text-align: left;
+        }
+
+        .col-xs-6 + .col-xs-6 {
+          text-align: right;
+
+          span {
+            padding-right: 25px;
+          }
+        }
+
+        .glyphicon {
+          &:before {
+            content: '';
+            position: absolute;
+            border-radius: 0;
+            border: none;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            transition: background-image .2s ease 0s;
+          }
+        }
+
+        .glyphicon.glyphicon-remove {
+          //width: 100%;
+          width: auto;
+
+          &:hover {
+            &:before {
+              @include breakpoint($tablet) {
+                background-image: url('#{$assets}images/icons/user-panel/icon--up-close-hover.png');
+              }
+            }
+          }
+
+          &:before {
+            content: '\f053';
+            width: 30px;
+            height: 30px;
+            top: 0;
+            left: 0;
+            right: inherit;
+            font-family: $icon;
+            color: $dark-orange;
+            text-align: center;
+
+            @include breakpoint($tablet) {
+              content: '';
+              width: 30px;
+              height: 30px;
+              background-image: url('#{$assets}images/icons/user-panel/icon--up-close.png');
+            }
+          }
+        }
+
+        .glyphicon.glyphicon-off {
+          //width: 80%;
+          width: auto;
+
+          &:hover {
+            &:before {
+              background-image: url('#{$assets}images/icons/user-panel/icon--up-logout-hover.png');
+            }
+          }
+
+          &:before {
+            width: 19px;
+            height: 16px;
+            top: 7px;
+            right: 0;
+            left: inherit;
+            background-image: url('#{$assets}images/icons/user-panel/icon--up-logout.png');
+          }
+        }
+      }
+
+      &.profile {
+        min-height: 116px;
+        padding-bottom: 15px;
+        padding-top: 19px;
+        border: none;
+        background-color: $white;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+
+        @include breakpoint($tablet) {
+          background-color: transparent;
+          border-radius: 0;
+        }
+
+        .col-xs-5 {
+
+          padding-left: 9px;
+          padding-right: 0;
+
+          .boxed {
+            width: 97px;
+            height: 97px;
+            padding: 0;
+            border: none;
+            background-image: url('#{$assets}images/icons/user-panel/icon--up-photo-placeholder.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+          }
+        }
+
+        .col-xs-7 {
+          padding: 17px 0 0 0;
+          text-align: left;
+
+          a {
+            //display: block;
+            display: inline-block;
+            //width: 100%;
+            width: auto;
+            margin-bottom: 5px;
+            text-transform: none;
+
+            &:first-child {
+              height: 17px;
+              color: $gray-3;
+
+              .glyphicon.glyphicon-pencil {
+                width: 100%;
+                height: 17px;
+                line-height: 16px;
+                padding-left: 25px;
+                font-family: $font;
+                border-radius: 0;
+
+                &:before {
+                  content: '';
+                  border: none;
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  background-image: url('#{$assets}images/icons/user-panel/icon--up-edit.png');
+                  background-size: contain;
+                  background-repeat: no-repeat;
+                  background-position: center;
+                  width: 16px;
+                  height: 17px;
+                  border-radius: 0;
+                }
+              }
+            }
+
+            &:nth-child(2) {
+              color: $gray-1;
+              font-weight: bold;
+              font-size: 12px;
+
+
+              @include breakpoint($tablet){
+                font-size: 14px;
+              }
+            }
+
+            &:last-child {
+              color: $gray-1;
+              font-size: 12px;
+
+              @include breakpoint($tablet){
+                font-size: 14px;
+              }
+            }
+          }
+        }
+      }
+
+      &.social { //social
+        display: none;
+      }
+
+      &.comunication {
+        padding-bottom: 20px;
+        background-color: $white;
+
+        @include breakpoint($tablet) {
+          background-color: transparent;
+        }
+
+        .col-xs-4 {
+          padding: 0 9px 0 9px;
+
+          a {
+            padding: 0;
+          }
+        }
+      }
+
+      &.career { //tabella carriera
+        background-color: $white;
+
+        @include breakpoint($tablet) {
+          background-color: transparent;
+        }
+
+        .col-xs-12 {
+          padding: 0 9px 0 9px;
+
+          h2 {
+            width: auto;
+            padding-right: 10px;
+            position: relative;
+            font-weight: bold;
+            background-color: $white;
+            overflow: hidden;
+            font-size: 16px;
+            text-transform: none;
+            z-index: 20;
+          }
+
+          .list-group {
+            border-radius: 0;
+            box-shadow: none;
+            list-style: none;
+            position: relative;
+
+            &:before {
+              content: '';
+              background-color: $gray-4;
+              width: 100%;
+              height: 1px;
+              position: absolute;
+              top: -8px;
+              right: 0;
+            }
+
+            .list-group-item {
+              padding: 5px 7px 5px 9px;
+              border: 0;
+              position: relative;
+              font-size: 14px;
+
+              &:before {
+                content: '\f111';
+                font-family: $icon;
+                color: $dark-orange;
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 5px;
+              }
+
+              .badge {
+                background-color: $white;
+                color: $black;
+                padding: 0;
+                font-size: 14px;
+
+                a {
+                  &:hover {
+                    color: $black;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &.course-subscription { //iscrizione al corso
+        background-color: $white;
+
+        @include breakpoint($tablet) {
+          margin: 0 -9px 0 -9px;
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+          background-color: $gray-5;
+        }
+
+        .col-xs-12 {
+          padding: 20px 9px;
+          position: relative;
+          background-color: $gray-5;
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+
+          @include breakpoint($tablet) {
+            background-color: transparent;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+          }
+
+          .input-group {
+
+            width: 100%;
+
+            .form-control {
+              border-radius: 5px;
+              height: 40px;
+
+              &:focus {
+                border-color: $orange;
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px $orange;
+              }
+
+              &::-webkit-input-placeholder,
+              &::-moz-placeholder,
+              &:-ms-input-placeholder,
+              &:-moz-placeholder {
+                font-style: italic;
+              }
+            }
+
+            .input-group-btn {
+              width: auto;
+              position: absolute;
+              right: 9px;
+              top: 7px;
+              z-index: 10;
+            }
+          }
+        }
+      }
+
+      &.news { //news carousel
+        background-color: $white;
+        margin: 0;
+
+        @include breakpoint($tablet) {
+          margin: 0 -9px 0 -9px;
+          background-color: $gray-5;
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
+        }
+
+        h2 {
+          width: auto;
+          padding-right: 10px;
+          position: relative;
+          font-weight: bold;
+          overflow: hidden;
+          font-size: 16px;
+          text-transform: none;
+          background-color: $gray-5;
+          z-index: 20;
+        }
+
+        .col-xs-12 {
+          background-color: $gray-5;
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
+
+          @include breakpoint($tablet) {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+        }
+      }
+
+      &.credits {
+        display: none;
+      }
+
+      &.lang {
+        background-color: $white;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+
+        @include breakpoint($tablet) {
+          background-color: transparent;
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+
+        .col-xs-6 {
+          &:first-child {
+            padding: 0 9px 0 9px;
+
+            p {
+              font-family: $font;
+              color: $gray-3;
+              line-height: 40px;
+            }
+          }
+
+          &:last-child {
+            padding: 0 11px 0 20px;
+            .list-inline {
+              margin: 0;
+              line-height: 40px;
+
+              li {
+                padding: 0;
+                margin-left: 10px;
+                border: none;
+
+                &:first-child {
+                  margin-left: 0;
+                }
+
+                &:nth-child(4n + 1) {
+                  margin-left: 0;
+                  clear: both;
+                }
+
+                a.lang-sprite {
+                  width: 19px;
+                  height: 14px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &.footer {
+        margin: 30px 0;
+        text-align: center;
+        font-family: $font;
+        color: $gray-2;
+        font-size: 16px;
+
+        @include breakpoint($tablet) {
+          display: none;
+        }
+      }
+
+      .col-xs-6 {
+        padding: 0;
+      }
+    }
+  }
+}
+
+.c-mask {
+  background-color: transparent;
+}
+
+/* TEMPORARY STYLES */
+
+.social-accounts-title {
+  display: none;
+}
+
+.social-accounts {
+  display: none!important;
+}

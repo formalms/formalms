@@ -1,0 +1,124 @@
+/// assets path
+/// @type String
+/// @group path
+$assets: '';
+/// fontawesome path
+/// @type String
+/// @group path
+$fa-font-path: '#{$assets}fonts';
+/// fontawesome font
+/// @type String
+/// @group font
+$icon: 'FontAwesome';
+/// default font
+/// @type String
+/// @group font
+$font: 'Open-sans';
+/// font weight light
+/// @type Number
+/// @group font
+$light: 300;
+/// font weight regular
+/// @type Number
+/// @group font
+$regular: 400;
+/// font weight medium
+/// @type Number
+/// @group font
+$semi-bold: 600;
+/// font weight bold
+/// @type Number
+/// @group font
+$bold: 700;
+/// font weight heavy
+/// @type Number
+/// @group font
+$extra-bold: 800;
+/// white color
+/// @type rgba color
+/// @group colors
+$white: rgba(255, 255, 255, 1);
+/// white color opacity
+/// @type rgba color
+/// @group colors
+$white-opacity-3: rgba(255, 255, 255, .3);
+/// black color
+/// @type rgba color
+/// @group colors
+$black: rgba(0, 0, 0, 1);
+/// dark orange color, mostly used for buttons
+/// @type rgba color
+/// @group colors
+$dark-orange: rgba(200, 64, 0, 1);
+/// orange color, mostly used for buttons hover
+/// @type rgba color
+/// @group colors
+$orange: rgba(255, 108, 0, 1);
+/// orange hover color used in the coursebox module
+/// @type rgba color
+/// @group colors
+$orange--hover: rgba(255, 108, 0, .5);
+/// orange hover color used in the coursebox module
+/// @type rgba color
+/// @group colors
+$black-opacity-2: rgba(0, 0, 0, 0.2);
+/// ochre color, mostly used for check icons
+/// @type rgba color
+/// @group colors
+$ochre: rgba(246, 166, 35, 1);
+/// anthracite color, mostly used for text
+/// @type rgba color
+/// @group colors
+$anthracite: rgba(34, 34, 34, 1);
+/// anthracite-light color, mostly used for alt text
+/// @type rgba color
+/// @group colors
+$anthracite-light: rgba(64, 64, 64, 1);
+/// gray color, darkest
+/// @type rgba color
+/// @group colors
+$gray-1: rgba(102, 102, 102, 1);
+/// gray color, normal
+/// @type rgba color
+/// @group colors
+$gray-2: rgba(153, 153, 153, 1);
+/// gray color, light
+/// @type rgba color
+/// @group colors
+$gray-3: rgba(194, 194, 194, 1);
+/// gray color, lighter
+/// @type rgba color
+/// @group colors
+$gray-4: rgba(236, 236, 236, 1);
+/// gray color, lighter
+/// @type rgba color
+/// @group colors
+$gray-5: rgba(246, 246, 246, 1);
+/// green color, used for buttons and checks
+/// @type rgba color
+/// @group colors
+$green: rgba(112, 216, 0, 1);
+/// lime color, used for borders
+/// @type rgba color
+/// @group colors
+$lime: rgba(174, 255, 0, 1);
+/// forma mobile breakpoint (mobile first)
+/// @type Number + px
+/// @group breakpoint
+$forma-mobile: 450px;
+/// tablet breakpoint (mobile first)
+/// @type Number + px
+/// @group breakpoint
+$tablet: 768px;
+/// ipad breakpoint (mobile first)
+/// @type Number + px
+/// @group breakpoint
+$ipad: 1024px;
+/// desktop breakpoint (mobile first)
+/// @type Number + px
+/// @group breakpoint
+$desktop: 1280px;
+/// grid max width (mobile first)
+/// @type Number + px
+/// @group grid
+$grid-max-width: 1268px;
