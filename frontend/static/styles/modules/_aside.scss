@@ -1,0 +1,124 @@
+// Aside
+//
+// Aside menù
+//
+// Style guide: 8
+
+// Aside
+//
+// Markup:
+// <div class="col-md-4">
+//   <div id="treeview1" class="treeview aside">
+//     <ul class="list-group">
+//       <li class="list-group-item node-treeview1 node-checked node-selected" data-nodeid="0" style="color:#FFFFFF;background-color:#C84000;">
+//         <span class="icon expand-icon glyphicon glyphicon-chevron-down"></span>
+//         <span class="icon node-icon"></span>
+//         Tutti i corsi
+//       </li>
+//       <li class="list-group-item node-treeview1" data-nodeid="1">
+//         <span class="indent"></span>
+//         <span class="icon expand-icon glyphicon glyphicon-chevron-right"></span>
+//         <span class="icon node-icon"></span>
+//         COMMERCIALE
+//       </li>
+//       <li class="list-group-item node-treeview1" data-nodeid="5">
+//         <span class="indent"></span>
+//         <span class="icon expand-icon glyphicon glyphicon-chevron-right"></span>
+//         <span class="icon node-icon"></span>
+//         COMUNICAZIONE
+//       </li>
+//       <li class="list-group-item node-treeview1" data-nodeid="12">
+//         <span class="indent"></span>
+//         <span class="icon glyphicon"></span>
+//         <span class="icon node-icon"></span>
+//         Edizioni
+//       </li>
+//       <li class="list-group-item node-treeview1 node-selected" data-nodeid="13" style="color:#FFFFFF;background-color:#C84000;">
+//         <span class="indent"></span>
+//         <span class="icon expand-icon glyphicon glyphicon-chevron-down"></span>
+//         <span class="icon node-icon"></span>
+//         GESTIONALE
+//       </li>
+//       <li class="list-group-item node-treeview1" data-nodeid="14">
+//         <span class="indent"></span>
+//         <span class="indent"></span>
+//         <span class="icon glyphicon"></span>
+//         <span class="icon node-icon"></span>
+//         categoria xxxy
+//       </li>
+//       <li class="list-group-item node-treeview1" data-nodeid="15">
+//         <span class="indent"></span>
+//         <span class="icon glyphicon"></span>
+//         <span class="icon node-icon"></span>
+//         MANAGEMENT
+//       </li>
+//       <li class="list-group-item node-treeview1" data-nodeid="16">
+//         <span class="indent"></span>
+//         <span class="icon glyphicon"></span>
+//         <span class="icon node-icon"></span>
+//         Office
+//       </li>
+//       <li class="list-group-item node-treeview1" data-nodeid="17">
+//         <span class="indent"></span>
+//         <span class="icon glyphicon"></span>
+//         <span class="icon node-icon"></span>
+//         ON BOARDING
+//       </li>
+//       <li class="list-group-item node-treeview1" data-nodeid="18">
+//         <span class="indent"></span>
+//         <span class="icon glyphicon"></span>
+//         <span class="icon node-icon"></span>
+//         Stand Virtuale
+//       </li>
+//     </ul>
+//   </div>
+// </div>
+//
+// Style guide: 8.1
+
+.aside {
+
+  padding: 20px;
+  border: 2px solid $gray-4;
+  border-radius: 5px;
+  font-family: $font;
+
+  .indent {
+    display: none;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .icon {
+    display: none;
+  }
+
+  .list-group-item {
+    height: 40px;
+    margin-bottom: 10px;
+    padding: {
+      top: 0;
+      right: 12px;
+      bottom: 0;
+      left: 20px;
+    };
+    line-height: 40px;
+    position: relative;
+
+    &:before {
+      content: '';
+      width: 25px;
+      height: 18px;
+      background-image: url('#{$assets}images/icons/aside/icon--aside-arrow-right');
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+      position: absolute;
+      right: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
