@@ -77,6 +77,9 @@
     To use or edit the not minified css uncomment this portion of code
     <link rel="stylesheet" type="text/css" href="{{ layout_path }}static/main.css">
     -->
+    {% if custom_css_path is defined %}
+    <link rel="stylesheet" type="text/css" href="{{ custom_css_path }}" />
+    {% endif %}
 </head>
 <body class="yui-skin-docebo yui-skin-sam">
 
