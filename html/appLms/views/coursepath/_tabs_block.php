@@ -27,7 +27,7 @@
 				$this->widget('tablefilter', array(
 					'id' => 'course_search',
 					'filter_text' => "",
-					'auxiliary_filter' => Lang::t('_SEARCH', 'standard').":&nbsp;&nbsp;&nbsp;".$_auxiliary,
+					'auxiliary_filter' => $_auxiliary,
 					'js_callback_set' => 'course_search_callback_set',
 					'js_callback_reset' => 'course_search_callback_reset',
 					'css_class' => 'tabs_filter'
