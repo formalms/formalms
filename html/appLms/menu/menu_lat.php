@@ -414,7 +414,7 @@ if(!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
                                 
 		} else {
 			// MENU OVER
-			cout('<div class="row">','menu_over');               
+			cout('<div class="row" style="padding-top:80px;">','menu_over');
 			  cout('<div class="col-sm-3">'.$logo_panel.'</div>','menu_over'); 
 			
 			  cout('<div class="col-sm-9" >','menu_over');
