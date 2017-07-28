@@ -152,3 +152,11 @@ div.coursepath_details{background-color:#f7f7f7;border-top:3px solid #d1d1d1;bor
     padding: 0px 0px;
     width: 100%;
 }
+
+.forum__remaining-thread {
+    background-color: #FF0602;
+}
+
+.forum__remaining-thread > span {
+    font-weight: bold;
+}
