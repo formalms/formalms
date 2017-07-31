@@ -33,7 +33,7 @@
                             <li><a href="#" id="folder_<?php echo $folder['id']; ?>"><?php echo $folder['name']; ?></a></li>
                         <?php endforeach; ?>
                     </ul>
-                </div>    
+                </div>
                     
                     
 						<div class="col-md-8">
