@@ -45,27 +45,30 @@
 		<link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}static/main.css" />
 		<script type="text/js" src="{{ evalPhp('Layout::path') }}static/main.js"></script>
 	</head>
-	<body class="login row-fluid">
+	<body class="homepage">
 
-		<div class="login__content">
-			<!-- blind nav -->
-			{{ evalPhp('Layout::zone', ['blind_navigation']) }}
-			<!-- header -->
-			<div class="header">
-				<div class="select-language">
-					{{ evalPhp('Lang::t', ['_CHANGELANG', 'register']) }}: {{ evalPhp('Layout::change_lang') }}
-				</div>
-				<!-- <h1 id="main_title"><a href="index.php"><?php echo Lang::t('_MAIN_TITLE', 'login'); ?></a></h1>-->
-				<a href="index.php"><img class="left_logo" src="{{ evalPhp('Layout::path') }}images/company_logo.png" alt="Left logo" /></a>
-				<div class="nofloat"></div>
-				<div class="divider"></div>
-			</div>
-			<div class="webcontent">
-				{{ evalPhp('Layout::zone', ['content']) }}
-			</div>
+		<div class="homepage__content">
+			{{ evalPhp('Layout::zone', ['content']) }}
 		</div>
+
+		{#
+		<!-- blind nav -->
+		{{ evalPhp('Layout::zone', ['blind_navigation']) }}
+		<!-- header -->
+		<div class="header">
+			<div class="select-language">
+				{{ evalPhp('Lang::t', ['_CHANGELANG', 'register']) }}: {{ evalPhp('Layout::change_lang') }}
+			</div>
+			<!-- <h1 id="main_title"><a href="index.php"><?php echo Lang::t('_MAIN_TITLE', 'login'); ?></a></h1>-->
+			<a href="index.php"><img class="left_logo" src="{{ evalPhp('Layout::path') }}images/company_logo.png" alt="Left logo" /></a>
+		</div>
+		<div class="webcontent">
+			{{ evalPhp('Layout::zone', ['content']) }}
+		</div>
+		#}
+
 		<!-- footer -->
-		<div class="footer">
+		<div class="homepage__footer">
 			{{ evalPhp('Layout::zone', ['footer']) }}
 			{{ evalPhp('Layout::copyright') }}
 		</div>
