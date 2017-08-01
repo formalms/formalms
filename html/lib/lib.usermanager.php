@@ -1321,6 +1321,7 @@ class UserManagerRenderer {
 				$out .= $this->_first_of_all($options, $platform);
 			};break;
 		}
+
 		return $out;
 	}
 
