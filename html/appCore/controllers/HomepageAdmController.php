@@ -131,6 +131,10 @@ class HomepageAdmController extends AdmController {
         
         $this->render("register");
     }
+
+	public function newRegister() {
+		$this->render("new-register", []);
+	}
     
     public function lostPwd() {
         
