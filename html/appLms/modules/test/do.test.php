@@ -107,6 +107,9 @@ function intro ($object_test , $id_param , $deleteLastTrack = false)
 	$maxAttempts = false;
 	
 	//--- check max attempts
+    /**
+     * @todo rimuovere test360
+     */
 	if (method_exists ($object_test , 'checkMaxDailyAttempts')) {
 		
 		$maxAttempts = $object_test->checkMaxDailyAttempts ($id_track);
