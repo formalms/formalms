@@ -5763,40 +5763,41 @@ header.header nav {
 }
 
 .aside .indent {
-  display: block;
-  margin-left: 10px;
-  margin-right: 10px;
+  display: inline;
+  width: 20px;
+  height: 20px;
 }
 
-.aside .icon {
+.aside .icon.expand-icon {
   width: 10px;
   height: 15px;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-      -ms-transform: translateY(-50%);
-          transform: translateY(-50%);
+  margin-right: 5px;
+  display: inline;
+  position: relative;
+  z-index: 9999;
 }
 
-.aside .icon:before {
+.aside .icon.expand-icon:before {
   content: '';
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   position: absolute;
+  top: 2px;
 }
 
-.aside .icon.glyphicon-chevron-right:before {
+.aside .icon.expand-icon.glyphicon-chevron-right:before {
   width: 10px;
   height: 15px;
   background-image: url("images/icons/aside/icon--arrow-right.svg");
-  left: 20px;
+  left: -20px;
 }
 
-.aside .icon.glyphicon-chevron-down:before {
+.aside .icon.expand-icon.glyphicon-chevron-down:before {
   width: 23px;
   height: 14px;
   background-image: url("images/icons/aside/icon--arrow-down.svg");
-  left: 10px;
+  left: -30px;
 }
 
 .aside .list-group {
@@ -5811,7 +5812,7 @@ header.header nav {
   padding-top: 0;
   padding-right: 12px;
   padding-bottom: 0;
-  padding-left: 55px;
+  padding-left: 20px;
   line-height: 40px;
   position: relative;
   -webkit-border-radius: 5px;
@@ -5828,6 +5829,14 @@ header.header nav {
   cursor: pointer;
   background-color: #c84000 !important;
   color: white !important;
+}
+
+.aside .list-group-item:first-child {
+  padding-left: 35px;
+}
+
+.aside .list-group-item:first-child .glyphicon-chevron-down:before {
+  left: -25px;
 }
 
 .aside .node-checked {
