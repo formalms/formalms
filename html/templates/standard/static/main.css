@@ -5819,6 +5819,9 @@ header.header nav {
           border-radius: 5px;
   -webkit-transition: all 0.2s ease-in 0s;
   transition: all 0.2s ease-in 0s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .aside .list-group-item:last-child {
