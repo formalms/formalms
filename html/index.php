@@ -56,7 +56,7 @@ if($maintenance == "on") {
 $sso = Get::req("login_user", DOTY_MIXED, false) && Get::req("time", DOTY_MIXED, false) && Get::req("token", DOTY_MIXED, false);
 
 // get required action - default: homepage if not logged in, no action if logged in
-$req = Get::req('r', DOTY_MIXED, (Docebo::user()->isAnonymous() ? ($sso ? _sso_ : _homepage_) : false));
+$req = Get::req('r', DOTY_MIXED, ($sso ? _sso_ : (Docebo::user()->isAnonymous() ? _homepage_ : false)));
 
 if($req) {
     
