@@ -77,20 +77,53 @@
 // Style guide: 8.1
 
 .aside {
-
   padding: 20px;
   border: 2px solid $gray-4;
   border-radius: 5px;
   font-family: $font;
 
   .indent {
-    display: none;
+    display: block;
     margin-left: 10px;
     margin-right: 10px;
   }
 
   .icon {
-    display: none;
+    width: 10px;
+    height: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    &:before {
+      content: '';
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: absolute;
+    }
+
+    &.glyphicon-chevron-right {
+      &:before {
+        width: 10px;
+        height: 15px;
+        background-image: url('#{$assets}images/icons/aside/icon--arrow-right.svg');
+        left: 20px;
+      }
+    }
+
+    &.glyphicon-chevron-down {
+      &:before {
+        width: 23px;
+        height: 14px;
+        background-image: url('#{$assets}images/icons/aside/icon--arrow-down.svg');
+        left: 10px;
+      }
+    }
+  }
+
+  .list-group {
+    box-shadow: none;
+    margin-bottom: 0;
   }
 
   .list-group-item {
@@ -100,25 +133,28 @@
       top: 0;
       right: 12px;
       bottom: 0;
-      left: 20px;
+      left: 55px;
     };
     line-height: 40px;
     position: relative;
-
-    &:before {
-      content: '';
-      width: 25px;
-      height: 18px;
-      background-image: url('#{$assets}images/icons/aside/icon--aside-arrow-right');
-      background-position: center;
-      background-size: contain;
-      background-repeat: no-repeat;
-      position: absolute;
-      right: 0;
-    }
+    border-radius: 5px;
+    transition: $transition-base;
 
     &:last-child {
       margin-bottom: 0;
     }
+
+    &.node-treeview1 {
+      &:hover {
+        cursor: pointer;
+        background-color: $dark-orange!important;
+        color: $white!important;
+      }
+    }
+  }
+  
+  .node-checked {
+    background-color: $white!important;
+    color: $black!important;
   }
 }
