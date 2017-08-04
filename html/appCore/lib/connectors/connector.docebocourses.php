@@ -266,7 +266,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 			SET idCategory = '0', 
 				code = '".addslashes($row['code'])."', 
 				name = '".addslashes($row['name'])."', 
-				description = '".$row['description']."', 
+				description = '".addslashes($row['description'])."', 
 				lang_code = '".$row['lang_code']."', 
 				status = '".$row['status']."', 
 				subscribe_method = '".$row['subscribe_method']."',
@@ -332,7 +332,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 			UPDATE ".$GLOBALS['prefix_lms']."_course 
 			SET code = '".addslashes($row['code'])."', 
 				name = '".addslashes($row['name'])."', 
-				description = '".$row['description']."', 
+				description = '".addslashes($row['description'])."', 
 				lang_code = '".$row['lang_code']."', 
 				status = '".$row['status']."', 
 				subscribe_method = '".$row['subscribe_method']."',
