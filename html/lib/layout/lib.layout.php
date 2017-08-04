@@ -298,9 +298,10 @@
         $retArray['jqueryAddons'] = JQueryLib::loadJQueryAddons($minimized);
         $retArray['cssAddons'] = JQueryLib::loadCssAddons($minimized);
 
-        $customCssPath = Get::rel_path('base').'/templates/'.getTemplate().'/style/custom.css';
-        $retArray['custom_css_path'] = str_replace('/./', '/', $customCssPath);
-
+        if (file_exists(_base_.'/templates/'.getTemplate().'/style/custom.css')){
+            $customCssPath = Get::rel_path('base').'/templates/'.getTemplate().'/style/custom.css';
+            $retArray['custom_css_path'] = str_replace('/./', '/', $customCssPath);
+        }
         switch($whichLayout){
             case 'home':
                 $retArray['jqueryAddons'] = '';

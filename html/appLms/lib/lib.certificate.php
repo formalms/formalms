@@ -38,14 +38,105 @@ define("ASSIGN_CERT_SENDNAME", 		5);
 
 class Certificate {
 
-        function countAssignment($filter){                
+    public function findAll($filter, $pagination)
+    {
+        list($aval_status, $minutes_required) = sql_fetch_row(
+            sql_query(
+                "SELECT available_for_status, minutes_required FROM %lms_certificate_course as cc"
+                . " WHERE id_course=" . $filter['id_course']
+                . isset($filter['id_certificate']) ? " AND id_certificate = " . $filter['id_certificate'] : ""
+            )
+        );
+
+        $whereConditions = "";
+        if (isset($filter['search_filter'])) {
+            $whereConditions .= " AND (u.userid LIKE '%" . $filter['search_filter'] . "%' OR"
+                . " u.lastname LIKE '%" . $filter['search_filter'] . "%' OR"
+                . " u.firstname LIKE '%" . $filter['search_filter'] . "%' ) ";
+        }
+
+        if ($minutes_required > 0) {
+            $whereConditions .= " AND ("
+                . " ca.on_date IS NOT NULL OR (("
+                . " SELECT SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)))"
+                . " FROM " . $GLOBALS['prefix_lms'] . "_tracksession"
+                . " WHERE idCourse = cu.idCourse AND idUser = cu.idUser )"
+                . " / 60 ) >= " . $minutes_required
+                . ") ";
+        }
+
+        if ($filter['only_released']) {
+            $whereConditions .= " AND ca.on_date " . ($filter['only_released'] == 1 ? "IS NOT NULL " : "IS NULL ");
+        }
+
+        //apply sub admin filters, if needed
+        $userLevelId = Docebo::user()->getUserLevelId();
+        if ($userLevelId != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+            require_once(_base_ . '/lib/lib.preference.php');
+            $adminManager = new AdminPreference();
+            $admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+            $whereConditions .= " AND cu.idUser IN (" . implode(',', $admin_users) . ")";
+        }
+
+        switch ($aval_status) {
+            case AVS_ASSIGN_FOR_ALL_STATUS        : {
+                $aval_status = " 1 ";
+            };
+                break;
+            case AVS_ASSIGN_FOR_STATUS_INCOURSE : {
+                $aval_status = " cu.status = " . _CUS_BEGIN . " ";
+            };
+                break;
+            case AVS_ASSIGN_FOR_STATUS_COMPLETED : {
+                $aval_status = " cu.status = " . _CUS_END . " ";
+            };
+                break;
+        }
+
+        $dynUserFiltersCondition = is_array($filter['idsts']) ? " AND u.idst IN (" . implode(',', $filter['idsts']) . ")" : "";
+
+        $select = "SELECT u.idst, u.userid, u.firstname, u.lastname, cu.date_complete, ca.on_date, cu.idUser as id_user,"
+            . " cu.status , cu.idCourse, cc.id_certificate, c.name as name_certificate";
+        $from = " FROM ( %adm_user as u JOIN %lms_courseuser as cu ON (u.idst = cu.idUser) )"
+            . " JOIN %lms_certificate_course as cc ON cc.id_course = cu.idCourse"
+            . " JOIN %lms_certificate as c ON c.id_certificate = cc.id_certificate"
+            . " LEFT JOIN %lms_certificate_assign as ca ON"
+            . " ( ca.id_course = cu.idCourse AND ca.id_user=cu.idUser AND ca.id_certificate = cc.id_certificate )"
+            . " LEFT JOIN ("
+            . " SELECT iduser, idcourse, SUM( (UNIX_TIMESTAMP( lastTime ) - UNIX_TIMESTAMP( enterTime ) ) ) elapsed"
+            . " FROM %lms_tracksession group by iduser, idcourse) t_elapsed on t_elapsed.idcourse=cu.idCourse and cu.idUser = t_elapsed.idUser";
+        $where = " WHERE 1=1"
+            . (isset($aval_status) ? " AND " . $aval_status : "")
+            . ($filter['id_certificate'] ? " AND cc.id_certificate = " . $filter['id_certificate'] : "")
+            . " AND coalesce(elapsed,0) >= coalesce(cc.minutes_required,0) * 60 "
+            . " AND cu.idCourse='" . $filter['id_course'] . "' " . $whereConditions
+            . $dynUserFiltersCondition;
+
+        $orderBy = " ORDER BY u.userid, c.name LIMIT " . $pagination['offset'] . ", " . $pagination['num_rows'];
+
+        $res = sql_query($select . $from . $where . $orderBy);
+        $assignment = [];
+        while ($row = sql_fetch_assoc($res)) {
+            $assignment[] = $row;
+        }
+
+        $res = sql_query("SELECT u.idst " . $from . $where);
+        $totalrows = [];
+        while ($row = sql_fetch_row($res)) {
+            $totalrows[] = current($row);
+        }
+
+        return array($assignment, $totalrows);
+    }
+
+        function countAssignment($filter){
                 return count($this->getAssignment($filter));
         }
-    
-        function getAssignment($filter, $pagination = false){   
+
+        function getAssignment($filter, $pagination = false){
                 $assigned = $this->getAssigned($filter);
                 $assignable = $this->getAssignable($filter);
-                
+
                 $assignment = array();
                 foreach ($assigned AS $as){
                     $assignment[] = $as;
@@ -53,7 +144,7 @@ class Certificate {
                 foreach ($assignable AS $as){
                     $assignment[] = $as;
                 }
-                
+
                 $paginated_assignment = array();
                 if($pagination) {
                     $offset = $pagination["offset"];
@@ -68,7 +159,7 @@ class Certificate {
         }
 
         function getAssigned($filter){
-                $query = "      SELECT ca.id_certificate, ca.id_course," 
+                $query = "      SELECT ca.id_certificate, ca.id_course,"
                             ."	ca.id_user, SUBSTRING(u.userid, 2) AS username,"
                             ."	u.lastname, u.firstname, co.code, cc.available_for_status,"
                             ."  co.name AS course_name, ce.name AS cert_name,"
@@ -80,22 +171,22 @@ class Certificate {
                             ."      LEFT JOIN %lms_course AS co"
                             ."      ON ca.id_course = co.idCourse"
                             ."      LEFT JOIN %lms_courseuser AS cu"
-                            ."      ON ca.id_user = cu.idUser" 
+                            ."      ON ca.id_user = cu.idUser"
                             ."          AND ca.id_course  = cu.idCourse"
-                            ."      LEFT JOIN %lms_certificate_course AS cc" 
+                            ."      LEFT JOIN %lms_certificate_course AS cc"
                             ."      ON ca.id_certificate = cc.id_certificate"
                             ."          AND ca.id_course  = cc.id_course"
                             ."      LEFT JOIN %adm_user AS u"
                             ."      ON ca.id_user = u.idst"
                             ."	WHERE 1 = 1";
                 if (isset($filter['id_certificate'])) {
-                        $query .= " AND ca.id_certificate = ".$filter['id_certificate'];	
+                        $query .= " AND ca.id_certificate = ".$filter['id_certificate'];
                 }
                 if (isset($filter['id_course'])) {
-                        $query .= " AND ca.id_course = ".$filter['id_course'];	
+                        $query .= " AND ca.id_course = ".$filter['id_course'];
                 }
                 if (isset($filter['id_user'])) {
-                        $query .= " AND ca.id_user = ".$filter['id_user'];	
+                        $query .= " AND ca.id_user = ".$filter['id_user'];
                 }
             if (isset($filter['search'])) {
                     $query .= " AND (1 = 0";
@@ -131,7 +222,7 @@ class Certificate {
                             require_once(_base_.'/lib/lib.preference.php');
                             $adminManager = new AdminPreference();
                             $query .= " AND ".$adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');
-                    }                        	
+                    }
                 }
 
         $assigned = array();
@@ -143,12 +234,12 @@ class Certificate {
         }
 
         function getAssignable($filter){
-                $query = "	SELECT ce.id_certificate, co.idCourse AS id_course," 
+                $query = "	SELECT ce.id_certificate, co.idCourse AS id_course,"
                             ."	u.idst AS id_user, SUBSTRING(u.userid, 2) AS username,"
                             ."	u.lastname, u.firstname, co.code, cc.available_for_status,"
                             ."  co.name AS course_name, ce.name AS cert_name,"
                             ."	cu.status, co.date_begin, co.date_end, cu.date_inscr,"
-                            ."	cu.date_complete, NULL AS on_date, NULL AS cert_file"         
+                            ."	cu.date_complete, NULL AS on_date, NULL AS cert_file"
                             ."	FROM %lms_certificate_course AS cc"
                             ."      JOIN %lms_certificate AS ce"
                             ."      ON cc.id_certificate = ce.id_certificate"
@@ -158,9 +249,9 @@ class Certificate {
                             ."      ON co.idCourse = cu.idCourse"
                             ."          AND ("
                             ."              (cc.available_for_status = 1 AND cu.status >= 0 AND cu.status <= 2)"
-                            ."              OR (cc.available_for_status = 2 AND cu.status >= 1 AND cu.status <= 2)" 
+                            ."              OR (cc.available_for_status = 2 AND cu.status >= 1 AND cu.status <= 2)"
                             ."              OR (cc.available_for_status = 3 AND cu.status = 2)"
-                            ."          )" 
+                            ."          )"
                             ."      JOIN %adm_user AS u"
                             ."      ON cu.idUser = u.idst"
                             ."	WHERE (cc.id_certificate, co.idCourse, cu.idUser) NOT IN ("
@@ -168,13 +259,13 @@ class Certificate {
                             ."      FROM %lms_certificate_assign AS ca"
                             ."	)";
                 if (isset($filter['id_certificate'])) {
-                        $query .= " AND cc.id_certificate = ".$filter['id_certificate'];	
+                        $query .= " AND cc.id_certificate = ".$filter['id_certificate'];
                 }
                 if (isset($filter['id_course'])) {
-                        $query .= " AND co.idCourse = ".$filter['id_course'];	
+                        $query .= " AND co.idCourse = ".$filter['id_course'];
                 }
                 if (isset($filter['id_user'])) {
-                        $query .= " AND cu.idUser = ".$filter['id_user'];	
+                        $query .= " AND cu.idUser = ".$filter['id_user'];
                 }
             if (isset($filter['search'])) {
                     $query .= " AND (1 = 0";
@@ -210,7 +301,7 @@ class Certificate {
                             require_once(_base_.'/lib/lib.preference.php');
                             $adminManager = new AdminPreference();
                             $query .= " AND ".$adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');
-                    }                        	
+                    }
                 }
 
         $assignable = array();
