@@ -368,7 +368,7 @@ ul.style_none li{list-style:none; }
 .view_button{background:url(../images/standard/view.png) center center no-repeat;text-align:left;text-indent:-10em;overflow:hidden;*margin-left:10em;*padding:0 3em;white-space:nowrap; width:20px; height:18px;}
 /* quick search form */
 /*.quick_search_form{margin:10px 0;text-align:right;float:right;}*/
-.quick_search_form{margin:0;text-align:right;float:right; width:100% ; background-color: #C84000;}
+.quick_search_form{margin:0;text-align:right;float:right; background-color: #C84000;}
 .quick_search_form .search_t{float:left;}
 .qsf_left{text-align:left;display:inline-block;float:left;}
 .yui-skin-docebo .quick_search_form .yui-ac{width:15em;display:inline;}
