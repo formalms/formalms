@@ -194,7 +194,7 @@ function TruncateText($the_text, $size)
 
 
 <!--        </div>-->
-<!--    </div><!-- /main -->-->
+<!--    </div><!-- /main -->
 
 
 </div>
