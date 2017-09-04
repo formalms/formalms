@@ -174,9 +174,9 @@ function TruncateText($the_text, $size)
                     // in caso di corso a tempo, l utente deve potersi iscrivere, se non iscritto
                     if (($row['subscribe_method'] == 2 || $row['subscribe_method'] == 1) && $str_can_enter == false && strrpos($action, "subscribed") == false) $html .= $action;
 
-                    $html .= ' </div>    
-                     </div>                             
-                        </li>';
+//                    $html .= ' </div>
+//                     </div>
+//                        </li>';
 
 
                 }
