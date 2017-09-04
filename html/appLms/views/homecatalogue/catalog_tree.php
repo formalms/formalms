@@ -33,8 +33,8 @@ cout(Util::get_js(Get::rel_path('lms') . '/views/homecatalogue/homecatalogue.js'
                 var type_course = "";
 
 
-//                     var glob_serverUrl = "./appLms/ajax.server.php?r=homecatalogue/"; //preview
-                var glob_serverUrl = "./ajax.server.php?r=homecatalogue/";
+                     var glob_serverUrl = "./appLms/ajax.server.php?r=homecatalogue/"; //preview
+//                var glob_serverUrl = "./ajax.server.php?r=homecatalogue/";
                 url = glob_serverUrl + "allCourseForma&id_cat=" + id_cat + "&type_course=" + type_course;
 
 
