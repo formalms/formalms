@@ -25,11 +25,13 @@ $smodel = new CatalogLms();
                     if ($row['course_type'] === 'classroom') {
                         $classrooms = $smodel->classroom_man->getCourseDate($row['idCourse'], false);
                         if (count($classrooms) > 0) {
-                            $action = '<div class="catalog_action" style="top:5px;" id="action_' . $row['idCourse'] . '">'
-                                . '<a href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'0\')" title="' . Lang::t('_SHOW_EDITIONS', 'catalogue') . '"><p class="can_subscribe">' . Lang::t('_SHOW_EDITIONS', 'catalogue') . '</p></a>'
+                            $action = '<div class="course-box__item" style="top:5px;" id="action_' . $row['idCourse'] . '">'
+                                . '<a class="forma-button forma-button--green forma-button--orange-hover" href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'0\')" title="' . Lang::t('_SHOW_EDITIONS', 'catalogue') . '">'
+                                . '<span class="forma-button__label">' . Lang::t('_SHOW_EDITIONS', 'catalogue') . '</span>'
+                                . '</a>'
                                 . '</div>';
                         } else {
-                            $action = '<div class="catalog_action" style="top:5px;">'
+                            $action = '<div class="course-box__item" style="top:5px;">'
                                 . Lang::t('_NO_AVAILABLE_EDITIONS', 'catalogue')
                                 . '</div>';
                         }
@@ -79,26 +81,51 @@ $smodel = new CatalogLms();
                     $data_inizio_format = Format::date($data_inizio, 'date');
                     $data_end_format = Format::date($data_end, 'date');
 
+                    //here begins the course box
+//
+//                    $html .= '<li>
+//                                <div class="cbp-vm-image" >
+//                                    <div class="area1 course-cover cat">
+//                                        <a href="#">
+//                                            <div class="area2 cat" style="z-index:1" >
+//                                                <h1>' . $row['name'] . '</h1>
+//                                                <div style="clear:both;"></div>
+//                                                <p class="course_support_info1">
+//                                                    <p class="descrizione_corso cat">' . $row['description'] . '</p>
+//                                                    <p class="tipo_corso">' . $img_type_ico . '</p>
+//                                                </p>
+//                                             </div>
+//                                            <div class=""image_cat>'
+//                                . ($row['use_logo_in_courselist'] && $row['img_course'] ? '<img class="group list-group-image" src="' . Get::sett('url') . $path_course . $row['img_course'] . '" alt="' . Util::purge($row['name']) . '" />' : '')
+//                                . ($row['use_logo_in_courselist'] && !$row['img_course'] ? '<img class="group list-group-image" src="' . Get::sett('url') . '/templates/' . Get::sett('defaultTemplate') . '/images/course/course_nologo.png' . '" alt="' . Util::purge($row['name']) . '" />' : '')
+//                                . '</div>
+//                                        </a>
+//                                    </div>
+//                                </div> ';
 
-                    $html .= '<li>
-                                <div class="cbp-vm-image" >
-                                    <div class="area1 course-cover cat"> 
-                                        <a href="#">
-                                            <div class="area2 cat" style="z-index:1" >
-                                                <h1>' . $row['name'] . '</h1>
-                                                <div style="clear:both;"></div>
-                                                <p class="course_support_info1">
-                                                    <p class="descrizione_corso cat">' . $row['description'] . '</p>
-                                                    <p class="tipo_corso">' . $img_type_ico . '</p>
-                                                </p>    
-                                             </div>
-                                            <div class=""image_cat>'
-                                . ($row['use_logo_in_courselist'] && $row['img_course'] ? '<img class="group list-group-image" src="' . Get::sett('url') . $path_course . $row['img_course'] . '" alt="' . Util::purge($row['name']) . '" />' : '')
-                                . ($row['use_logo_in_courselist'] && !$row['img_course'] ? '<img class="group list-group-image" src="' . Get::sett('url') . '/templates/' . Get::sett('defaultTemplate') . '/images/course/course_nologo.png' . '" alt="' . Util::purge($row['name']) . '" />' : '')
-                                . '</div>
-                                        </a>  
-                                    </div>    
-                                </div> ';
+                    $html .= '
+                    <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-6">
+                        <div class="course-box">
+                            <div class="course-box__item">
+                                <div class="course-box__title">' . $row['name'] . '</div>
+                            </div>
+                            <div class="course-box__item course-box__item--no-padding">';
+
+                    if ($row['use_logo_in_courselist'] && $row['img_course']) { //check per img
+                        $html .= '<div class="course-box__img" style="background-image: url(' . $path_course . $row['img_course'] . ');">';
+                    } else {
+                        $html .= '<div class="course-box__img">';
+                    }
+
+                    $html .= '
+                                    <div class="course-box__img-title">' . $img_type . '</div>
+                                </div>    
+                            </div>
+                            <div class="course-box__item">
+                                <div class="course-box__desc">
+                                    ' . TruncateText($row['box_description'], 120) . '
+                                </div>
+                            </div>';
 
                     $strClassStyle = 'style="background-color: transparent;"';
                     if ($data_inizio != "0000-00-00" && $data_end != "0000-00-00") $strClassStyle = "";
