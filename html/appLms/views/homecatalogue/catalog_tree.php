@@ -13,7 +13,7 @@
                 
       <div class="row">
             <div class="col-sm-3">
-                <div id="treeview" class=""></div>
+                <div id="treeview" class="aside"></div>
             </div>    
             <div class="col-sm-9" id="div_course"><br><p align="center"><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p></div>
       
