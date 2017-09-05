@@ -3994,6 +3994,10 @@ h1, h2, h3, h4, h5, h6, p {
   z-index: 10;
 }
 
+.external-catalogue .form-control {
+  margin-top: 15px;
+}
+
 .user-panel .carousel {
   position: relative;
   width: 100%;
@@ -5845,4 +5849,12 @@ header.header nav {
 .aside .node-checked {
   background-color: white !important;
   color: black !important;
+}
+
+.external-catalogue .middlearea_container {
+  margin-top: 0;
+}
+
+.external-catalogue .left_logo {
+  margin: 20px 0;
 }

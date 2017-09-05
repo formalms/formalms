@@ -104,11 +104,11 @@
 }
 </style>
 
-<!--<a href="index.php">-->
-<!--    <img class="left_logo" src="--><?php //echo Layout::path();?><!--images/company_logo.png" alt="Left logo" />-->
-<!--</a>-->
+<a href="index.php">
+    <img class="left_logo" src="<?php echo Layout::path();?>images/company_logo.png" alt="Left logo" />
+</a>
 <!--<div class="divider"></div>-->
-<div class="tab_subnav">
+<div class="tab_subnav forma-quick-search-forma">
     <ul class="nav nav-pills" >
         <li>
             <select class='form-control' id="typeCourse" onchange="javascript:loadCourseType();">
