@@ -496,8 +496,8 @@ case 'menu_user':
                                 } else {
                                       //  require_once(_adm_.'/models/'.$mvc_name.'Adm.php');
                                     // manage menu from plugin: LR - #11123 
-                                    if(file_exists(_plugins_.'/'.$mvc_name.'/features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_plugins', false) == true ){
-                                        require_once(_plugins_.'/'.$mvc_name.'/features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                    if(file_exists(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_plugins', false) == true ){
+                                        require_once(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
                                     }  else{
                                         require_once(_adm_.'/models/'.$mvc_name.'Adm.php');
                                     }                                         
@@ -656,8 +656,8 @@ case 'menu_user':
                                         require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
                                 } else {
                                        // require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                         if(file_exists(_plugins_.'/'.$mvc_name.'/features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_plugins', false) == true ){
-                                                    require_once(_plugins_.'/'.$mvc_name.'/features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                         if(file_exists(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_plugins', false) == true ){
+                                                    require_once(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
                                                 }  else{
                                                     require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
                                                 }                                       
@@ -815,8 +815,8 @@ case 'menu_user':
                                         require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
                                 } else {
                                        // require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                    if(file_exists(_plugins_.'/'.$mvc_name.'/features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_plugins', false) == true ){
-                                        require_once(_plugins_.'/'.$mvc_name.'/features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                    if(file_exists(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_plugins', false) == true ){
+                                        require_once(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
                                     }  else{
                                         require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
                                     }                                       
@@ -990,8 +990,8 @@ case 'menu_user':
                                         require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
                                 } else {
                                       //  require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                       if(file_exists(_plugins_.'/'.$mvc_name.'/features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_plugins', false) == true ){
-                                            require_once(_plugins_.'/'.$mvc_name.'/features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                       if(file_exists(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_plugins', false) == true ){
+                                            require_once(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
                                         }  else{
                                             require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
                                         }                                       
@@ -1157,8 +1157,8 @@ case 'menu_user':
                                             require_once(_base_.'/customscripts'.'/'._folder_adm_.'/models/'.$mvc_name.'Adm.php');
                                     } else {
                                           //  require_once(_adm_.'/models/'.$mvc_name.'Adm.php');
-                                          if(file_exists(_plugins_.'/'.$mvc_name.'/features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_plugins', false) == true ){
-                                                require_once(_plugins_.'/'.$mvc_name.'/features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
+                                          if(file_exists(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_plugins', false) == true ){
+                                                require_once(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
                                             }  else{
                                                  require_once(_adm_.'/models/'.$mvc_name.'Adm.php');
                                             }                                           
