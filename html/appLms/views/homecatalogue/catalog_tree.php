@@ -11,10 +11,10 @@ cout(Util::get_js(Get::rel_path('lms') . '/views/homecatalogue/homecatalogue.js'
 
 
 <div class="row">
-    <div class="col-sm-3">
+    <div class="col-sm-4">
         <div id="treeview1" class="aside"></div>
     </div>
-    <div class="col-sm-9" id="div_course">
+    <div class="col-sm-8" id="div_course" style="padding-top: 15px;">
         <br>
         <p align="center"><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p>
     </div>
