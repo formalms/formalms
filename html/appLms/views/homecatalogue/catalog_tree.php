@@ -44,7 +44,7 @@ cout(Util::get_js(Get::rel_path('lms') . '/views/homecatalogue/homecatalogue.js'
 
         .done(function (data) {
             if (console && console.log) {
-                console.log("risposta del ajax:", data);
+//                console.log("risposta del ajax:", data);
                 $("#div_course").html(data);
             }
         });
