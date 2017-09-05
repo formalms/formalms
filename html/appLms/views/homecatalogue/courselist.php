@@ -54,14 +54,18 @@ function TruncateText($the_text, $size)
                         </div>';
                 }
             } else {
-                $login_link = '<a class="forma-button forma-button--green forma-button--orange-hover" href="index.php"> Login</a>';
+                // testo login
+                $linkTitle = str_replace(array('[login]', '[signin]'), array($login_link, $signin_link), ($register_type === 'self' || $register_type === 'self_optin' || $register_type === 'moderate' ? Lang::t('_REGISTER_FOR_COURSE', 'login') : Lang::t('_REGISTER_FOR_COURSE_NO_REG', 'login')));
+
+                $login_link = '<a class="forma-button forma-button--green forma-button--orange-hover" href="index.php" title="login">Login</a>';
 //                $action = '<div class="can_subscribe" style="top:5px;" id="action_' . $row['idCourse'] . '">'
 //                    . str_replace(array('[login]', '[signin]'), array($login_link, $signin_link), ($register_type === 'self' || $register_type === 'self_optin' || $register_type === 'moderate' ? Lang::t('_REGISTER_FOR_COURSE', 'login') : Lang::t('_REGISTER_FOR_COURSE_NO_REG', 'login')))
 //                    . '</div>';
 
                 $action = '
                     <div class="course-box__item" id="action_' . $row['idCourse'] . '">'
-                    . str_replace(array('[login]', '[signin]'), array($login_link, $signin_link), ($register_type === 'self' || $register_type === 'self_optin' || $register_type === 'moderate' ? Lang::t('_REGISTER_FOR_COURSE', 'login') : Lang::t('_REGISTER_FOR_COURSE_NO_REG', 'login')))
+//                    . str_replace(array('[login]', '[signin]'), array($login_link, $signin_link), ($register_type === 'self' || $register_type === 'self_optin' || $register_type === 'moderate' ? Lang::t('_REGISTER_FOR_COURSE', 'login') : Lang::t('_REGISTER_FOR_COURSE_NO_REG', 'login')))
+                    . $login_link
                     . '</div>';
             }
 
