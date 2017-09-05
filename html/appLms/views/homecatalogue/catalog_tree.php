@@ -12,90 +12,82 @@ cout(Util::get_js(Get::rel_path('lms') . '/views/homecatalogue/homecatalogue.js'
 
 <div class="row">
     <div class="col-sm-3">
-        <div id="treeview" class="aside"></div>
+        <div id="treeview1" class="aside"></div>
     </div>
-    <div class="col-sm-9" id="div_course"><br>
-        <p align="center"><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p></div>
-
-    <div>
-
-
-        <script type="text/javascript">
+    <div class="col-sm-9" id="div_course">
+        <br>
+        <p align="center"><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p>
+    </div>
+<div>
 
 
-            callAjaxCatalog(0);
-            function callAjaxCatalog(id_cat) {
-
-                str_loading = "<?php echo Layout::path() ?>images/standard/loadbar.gif";
-                $("#div_course").html("<br><p align='center'><img src='" + str_loading + "'></p>");
-
-                scriviCookie('id_current_cat', id_cat, 60);
-                var type_course = "";
+<script type="text/javascript">
 
 
-                     var glob_serverUrl = "./appLms/ajax.server.php?r=homecatalogue/"; //preview
-//                var glob_serverUrl = "./ajax.server.php?r=homecatalogue/";
-                url = glob_serverUrl + "allCourseForma&id_cat=" + id_cat + "&type_course=" + type_course;
+    callAjaxCatalog(0);
+    function callAjaxCatalog(id_cat) {
 
+        str_loading = "<?php echo Layout::path() ?>images/standard/loadbar.gif";
+        $("#div_course").html("<br><p align='center'><img src='" + str_loading + "'></p>");
 
-                $.ajax({
-                    url: url
-                })
+        scriviCookie('id_current_cat', id_cat, 60);
+        var type_course = "";
+        var glob_serverUrl = "./appLms/ajax.server.php?r=homecatalogue/"; //preview
+        // l'indirizzo da usare cambia in base al db usato FIXME
+//                var glob_serverUrl = "./ajax.server.php?r=homecatalogue/"; //locale
 
+        url = glob_serverUrl + "allCourseForma&id_cat=" + id_cat + "&type_course=" + type_course;
 
-                    .done(function (data) {
-                        if (console && console.log) {
-                            console.log("risposta del ajax:", data);
-                            $("#div_course").html(data);
-                        }
-                    });
+        $.ajax({
+            url: url
+        })
 
-
+        .done(function (data) {
+            if (console && console.log) {
+                console.log("risposta del ajax:", data);
+                $("#div_course").html(data);
             }
+        });
+    }
 
 
-            var category_tree = [
-                {
-                    text: " &nbsp;&nbsp;<?php echo Lang::t('_CATEGORY') ?>",
-                    href: "#Categoria",
-                    id_cat: 0,
-                    state: {
-                        checked: true,
-                        selected: true
-                    },
-                    showIcon: true,
-                    nodes:<?php echo $a_node  ?>
-                }
+    var category_tree = [
+        {
+            text: " &nbsp;&nbsp;<?php echo Lang::t('_CATEGORY') ?>",
+            href: "#Categoria",
+            id_cat: 0,
+            state: {
+                checked: true,
+                selected: true
+            },
+            showIcon: true,
+            nodes:<?php echo $a_node  ?>
+        }
 
-            ];
+    ];
 
+    $("#treeview1").treeview({
+        data: category_tree,
+        enableLinks: false,
+        backColor: "#ffffff",
+        color: "#000000",
+        levels: 2,
+        onhoverColor: '#F5F5F5',
+        showTags: true,
+        multiSelect: false,
+        selectedBackColor: "#C84000",
 
-            $("#treeview").treeview({
-                data: category_tree,
-                enableLinks: false,
-                backColor: "#ffffff",
-                color: "#000000",
-                levels: 2,
-                onhoverColor: '#F5F5F5',
-                showTags: true,
-                multiSelect: false,
-                selectedBackColor: "#C84000",
+        onNodeSelected: function (event, node) {
+            id_category = node.id_cat;
+            // chiamo ajax per caricare i corsi della categoria
+            callAjaxCatalog(id_category);
 
-                onNodeSelected: function (event, node) {
-                    id_category = node.id_cat;
-                    // chiamo ajax per caricare i corsi della categoria
-                    callAjaxCatalog(id_category);
-
-                },
-                onNodeUnselected: function (event, node) {
-                    console.log("deselezionato");
-                }
-
-
-            });
+        },
+        onNodeUnselected: function (event, node) {
+            console.log("deselezionato");
+        }
+    });
+</script>
 
 
-        </script>
-
-  
 
