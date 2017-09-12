@@ -1,0 +1,62 @@
+<header class="homepage__wrapper homepage__wrapper--header">
+	<a href="index.php">
+		<img class="left_logo" src="{{ evalPhp('Layout::path') }}images/company_logo.png" alt="Left logo" />
+	</a>
+
+	<a class="forma-button forma-button--orange pull-right" href="#" style="width:239px;">CATALOGO CORSI</a>
+</header>
+
+<main>
+	<div class="homepage__wrapper homepage__wrapper--gray homepage__back">
+		<a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php">
+			<span class="fa fa-chevron-left"></span> {{ evalPhp('Lang::t', ['_BACK', 'standard']) }}
+		</a>
+	</div>
+	<div class="homepage__wrapper homepage__wrapper--gray">
+		<p>Questi campi sono associati ai gruppi scelti</p>
+	</div>
+
+	<form class="homepage__form">
+		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
+			<div class="col-xs-12 col-sm-6">
+				<input class="form-control" type="text" placeholder="Test">
+			</div>
+		</div>
+		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
+			<div class="col-xs-12 col-sm-6">
+				<input class="form-control" type="text" placeholder="Genere">
+			</div>
+		</div>
+		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
+			<div class="col-xs-12 col-sm-6">
+				<input class="form-control" type="text" placeholder="Luogo di nascita*">
+			</div>
+		</div>
+		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
+			<div class="forma-custom-file-input col-xs-12 col-sm-6">
+				<input class="form-control" type="file" placeholder="Carica file (max 100Mb)">
+			</div>
+		</div>
+		<div class="homepage__wrapper row">
+			<div class="col-xs-12 col-sm-6 col-sm-offset-3">
+				<br/>
+				<p>Hai riscontrato qualche problema? <a href="#"><strong>Contattaci</strong></a></p>
+				<a class="forma-button forma-button--orange" href="#">Vai alla Homepage</a>
+			</div>
+		</div>
+		<div class="homepage__wrapper homepage__wrapper--social row">
+			<ul>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+	</form>
+</main>
+
+<footer class="homepage__wrapper homepage__wrapper--footer">
+	<nav class="homepage__links">
+		<a href="#">Lorem ipsum #1</a>
+		<a href="#">Lorem ipsum #2</a>
+	</nav>
+</footer>
