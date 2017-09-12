@@ -1,38 +1,58 @@
-<div class="homepage__row homepage__row--gray homepage__back">
-	<a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php">
-		<span class="fa fa-chevron-left"></span> {{ evalPhp('Lang::t', ['_BACK', 'standard']) }}
+<header class="homepage__wrapper homepage__wrapper--header">
+	<a href="index.php">
+		<img class="left_logo" src="{{ evalPhp('Layout::path') }}images/company_logo.png" alt="Left logo" />
 	</a>
-</div>
-<div class="homepage__row homepage__row--gray">
-	<p>Questi campi sono associati ai gruppi scelti</p>
-</div>
-<form class="homepage__form">
-	<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
-		<div class="col-xs-12 col-sm-6">
-			<input class="form-control" type="text" placeholder="Test">
+
+	<a class="forma-button forma-button--orange pull-right" href="#" style="width:239px;">CATALOGO CORSI</a>
+</header>
+
+<main>
+	<div class="homepage__wrapper homepage__wrapper--gray homepage__back">
+		<a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php">
+			<span class="fa fa-chevron-left"></span> {{ evalPhp('Lang::t', ['_BACK', 'standard']) }}
+		</a>
+	</div>
+	<div class="homepage__wrapper homepage__wrapper--gray">
+		<p>Questi campi sono associati ai gruppi scelti</p>
+	</div>
+
+	<form class="homepage__form">
+		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
+			<div class="col-xs-12 col-sm-6">
+				<input class="form-control" type="text" placeholder="Test">
+			</div>
 		</div>
-	</div>
-	<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
-		<div class="col-xs-12 col-sm-6">
-			<input class="form-control" type="text" placeholder="Genere">
+		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
+			<div class="col-xs-12 col-sm-6">
+				<input class="form-control" type="text" placeholder="Genere">
+			</div>
 		</div>
-	</div>
-	<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
-		<div class="col-xs-12 col-sm-6">
-			<input class="form-control" type="text" placeholder="Luogo di nascita*">
+		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
+			<div class="col-xs-12 col-sm-6">
+				<input class="form-control" type="text" placeholder="Luogo di nascita*">
+			</div>
 		</div>
-	</div>
-	<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
-		<div class="forma-custom-file-input col-xs-12 col-sm-6">
-			<input class="form-control" type="file" placeholder="Carica file (max 100Mb)">
+		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
+			<div class="forma-custom-file-input col-xs-12 col-sm-6">
+				<input class="form-control" type="file" placeholder="Carica file (max 100Mb)">
+			</div>
 		</div>
-	</div>
-	<div class="homepage__row row">
-		<div class="col-xs-12 col-sm-6 col-sm-offset-3">
-			<button type="submit" class="forma-button forma-button--black">Registrati</button>
+		<div class="homepage__wrapper row">
+			<div class="col-xs-12 col-sm-6 col-sm-offset-3">
+				<button type="submit" class="forma-button forma-button--black">Registrati</button>
+			</div>
 		</div>
-	</div>
-	<div class="homepage__row homepage__links">
-		<a href="#"><em>Effettua il LOGIN</em></a>
-	</div>
-</form>
+		<div class="homepage__wrapper">
+			<div class="homepage__links">
+				<a href="#"><em>Effettua il LOGIN</em></a>
+			</div>
+		</div>
+	</form>
+</main>
+
+<footer class="homepage__wrapper homepage__wrapper--footer">
+	<nav class="homepage__links">
+		<a href="#">Lorem ipsum #1</a>
+		<a href="#">Lorem ipsum #2</a>
+	</nav>
+</footer>
