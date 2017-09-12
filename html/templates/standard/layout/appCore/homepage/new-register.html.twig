@@ -2,6 +2,8 @@
 	<a href="index.php">
 		<img class="left_logo" src="{{ evalPhp('Layout::path') }}images/company_logo.png" alt="Left logo" />
 	</a>
+
+	<a class="forma-button forma-button--white forma-button--border pull-right" href="#" style="width:239px;">CATALOGO CORSI</a>
 </header>
 
 <main>
@@ -15,7 +17,7 @@
 	</div>
 
 	<form class="homepage__form">
-		<div class="homepage__wrapper homepage__wrapper--gray row-fluid">
+		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
 			<div class="col-xs-12 col-sm-6">
 				<input class="form-control" type="text" placeholder="Username*">
 			</div>
@@ -23,7 +25,7 @@
 				<input class="form-control" type="text" placeholder="Email*">
 			</div>
 		</div>
-		<div class="homepage__wrapper homepage__wrapper--gray row-fluid">
+		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
 			<div class="col-xs-12 col-sm-4">
 				<input class="form-control" type="text" placeholder="Nome">
 			</div>
@@ -36,7 +38,7 @@
 				</select>
 			</div>
 		</div>
-		<div class="homepage__wrapper homepage__wrapper--gray row-fluid">
+		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
 			<div class="col-xs-12 col-sm-6">
 				<input class="form-control" type="text" placeholder="Password* (min 5 caratteri)">
 			</div>
@@ -44,13 +46,61 @@
 				<input class="form-control" type="text" placeholder="Conferma password*">
 			</div>
 		</div>
+		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
+			<div class="col-xs-12 col-sm-6">
+				<input class="form-control" type="date" placeholder="gg / mm / aaaa">
+			</div>
+		</div>
+		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
+			<div class="col-xs-12 col-sm-6">
+				<select class="form-control">
+					<option value="">Professione*</option>
+				</select>
+			</div>
+		</div>
+		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray">
+			<p>La invitiamo a verificare che la Sua professione e la Sua disciplina corrispondano alla/e professione/i e disciplina/e per le quali il corso è stato accreditato, per poter acquisire i crediti ECM</p>
+		</div>
+		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
+			<div class="col-xs-12 col-sm-6">
+				<select class="form-control">
+					<option value="">Occupazione*</option>
+				</select>
+			</div>
+		</div>
 		<div class="homepage__wrapper homepage__wrapper--gray">
 			Seleziona i gruppi di cui vuoi fare parte
+		</div>
+		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
+			<div class="col-xs-12 col-sm-3">
+				<input type="checkbox"><label class="checkbox-inline">Lorem ipsum</label>
+			</div>
+			<div class="col-xs-12 col-sm-3">
+				<input type="checkbox"><label class="checkbox-inline">Lorem ipsum</label>
+			</div>
+			<div class="col-xs-12 col-sm-3">
+				<input type="checkbox"><label class="checkbox-inline">Lorem ipsum</label>
+			</div>
+			<div class="col-xs-12 col-sm-3">
+				<input type="checkbox"><label class="checkbox-inline">Lorem ipsum</label>
+			</div>
 		</div>
 		<div class="homepage__wrapper homepage__wrapper--form-disclaimer">
 			<p>Qualsiasi dato, da noi raccolto, che sia idoneo ad identificare una persona, sarà usato solo nel rispetto delle procedure e per lo scopo dichiarato alla persona interessata, ed a condizione che quest'ultima, nei casi previsti dalla legge, lo abbia espressamente autorizzato. - Login e accesso alle aree riservate - Newsletter - Contenuto personalizzato Nella conservazione dei dati verranno osservate accuratezza e precisione per garantire l'integrità e la qualità dei dati trattati. Per qualsiasi informazione aggiuntiva contattateci.</p>
 		</div>
-		<div class="homepage__wrapper"></div>
+		<div class="homepage__wrapper">
+			<input type="checkbox"><label class="checkbox-inline">Avendo preso visione dell'informativa sopra menzionata,<br/>acconsento al trattamento dei <strong>dati personali</strong>.</label>
+		</div>
+		<div class="homepage__wrapper row">
+			<div class="col-xs-12 col-sm-6 col-sm-offset-3">
+				<button type="submit" class="forma-button forma-button--black">Registrati</button>
+			</div>
+		</div>
+		<div class="homepage__wrapper">
+			<div class="homepage__links">
+				<a href="#"><em>Effettua il LOGIN</em></a>
+			</div>
+		</div>
 	</form>
 </main>
 

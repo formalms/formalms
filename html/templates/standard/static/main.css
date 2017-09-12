@@ -3574,18 +3574,20 @@ h1, h2, h3, h4, h5, h6, p {
 .forma-button {
   display: inline-block;
   width: 100%;
-  padding: 0;
-  height: 40px;
+  padding: 14px 20px;
+  min-height: 40px;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
-  line-height: 40px;
+  line-height: 12px;
   color: white;
   background-color: #c84000;
   font-family: "Open-sans";
   font-size: 11px;
+  border: none;
   -webkit-border-radius: 5px;
           border-radius: 5px;
+  outline: none;
   -webkit-box-shadow: none;
           box-shadow: none;
   cursor: pointer;
@@ -3614,10 +3616,6 @@ h1, h2, h3, h4, h5, h6, p {
   height: auto;
   line-height: 1;
   font-size: 12px;
-}
-
-.forma-button--full {
-  width: 100%;
 }
 
 .forma-button--orange-hover:hover {
@@ -3650,6 +3648,32 @@ h1, h2, h3, h4, h5, h6, p {
 .forma-button--gray {
   pointer-events: none;
   background-color: #c2c2c2;
+}
+
+.forma-button--black {
+  background-color: black;
+}
+
+.forma-button--black .forma-button__label:after {
+  display: none;
+}
+
+.user-panel .forma-button--black {
+  padding: 7px 9px;
+  border: 0;
+}
+
+.forma-button--white {
+  background-color: white;
+  color: #c84000;
+}
+
+.forma-button--white:hover {
+  color: #c84000;
+}
+
+.forma-button--border {
+  border: solid 2px #c84000;
 }
 
 .forma-button__label {
@@ -5764,6 +5788,16 @@ body.homepage {
   background-color: red;
 }
 
+.homepage__wrapper--header {
+  border-bottom: solid 3px #c84000;
+}
+
+@media (min-width: 768px) {
+  .homepage__wrapper--header {
+    border: none;
+  }
+}
+
 .homepage__content {
   width: 100%;
   max-width: 760px;
@@ -5789,8 +5823,10 @@ body.homepage {
   text-align: center;
 }
 
-.homepage__wrapper.row-fluid {
-  padding: 10px 15px;
+@media (min-width: 768px) {
+  .homepage__wrapper.row-fluid {
+    padding: 10px 15px;
+  }
 }
 
 .homepage__form {
@@ -5826,7 +5862,18 @@ body.homepage {
   text-align: left;
 }
 
+.homepage__wrapper--form > * {
+  margin-top: 10px;
+}
+
+@media (min-width: 768px) {
+  .homepage__wrapper--form > * {
+    margin-top: 0;
+  }
+}
+
 .homepage__wrapper--form-disclaimer {
+  margin: 5px 0 10px;
   font-style: italic;
   color: #D0D0D0;
 }
@@ -5853,15 +5900,13 @@ body.homepage {
 }
 
 .homepage__links {
-  padding: 10px 0 20px;
   margin-top: 12px;
-  border-top: solid 2px #C84000;
 }
 
 .homepage__links > a {
   display: inline-block;
-  font-weight: bold;
   line-height: 1;
+  font-size: 12px;
   text-decoration: underline;
   color: #666666;
 }
@@ -5871,6 +5916,31 @@ body.homepage {
   border-left: solid 2px currentColor;
 }
 
+.homepage__wrapper--footer .homepage__links > a {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.homepage__wrapper--footer .homepage__links {
+  padding: 10px 0 20px;
+  border-top: solid 2px #C84000;
+}
+
 .homepage__footer .poweredby {
   font-size: 11px;
+}
+
+.homepage__wrapper .checkbox-inline {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #717171;
+}
+
+.homepage__wrapper--form .checkbox-inline {
+  font-size: 14px;
+  color: #C4C2C2;
+}
+
+.homepage__wrapper .forma-button[type="submit"] {
+  margin-top: 10px;
 }

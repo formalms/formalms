@@ -16,17 +16,19 @@
   display: inline-block;
   width: 100%;
   //padding: 0 10px;
-  padding: 0;
-  height: 40px;
+  padding: 14px 20px;
+  min-height: 40px;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
-  line-height: 40px;
+  line-height: 12px;
   color: $white;
   background-color: $dark-orange;
   font-family: $font;
   font-size: 11px;
+  border: none;
   border-radius: 5px;
+  outline: none;
   box-shadow: none;
   cursor: pointer;
   transition: background-color 0.4s ease 0s;
@@ -49,10 +51,6 @@
     line-height: 1;
     font-size: 12px;
   }
-}
-
-.forma-button--full {
-  width: 100%;
 }
 
 // Button orange:hover
@@ -131,20 +129,49 @@
 // </a>
 //
 // Style guide: 2.5
-//.forma-button--black {
-//  background-color: $black;
+.forma-button--black {
+  background-color: $black;
+
+  .forma-button__label {
+    &:after {
+      display: none;
+    }
+  }
+
+  .user-panel & {
+    padding: 7px 9px;
+    border: 0;
+  }
+}
+
+// White Button
 //
-//  .forma-button__label {
-//    &:after {
-//      display: none;
-//    }
-//  }
+// Markup:
+// <a class="forma-button forma-button--white" href="#">
+//  <span class="forma-button__label">button</span>
+// </a>
 //
-//  .user-panel & {
-//    padding: 7px 9px;
-//    border: 0;
-//  }
-//}
+// Style guide: 2.7
+.forma-button--white {
+  background-color: $white;
+  color: $dark-orange;
+
+  &:hover {
+	color: $dark-orange;
+  }
+}
+
+// Bordered Button
+//
+// Markup:
+// <a class="forma-button forma-button--border" href="#">
+//  <span class="forma-button__label">button</span>
+// </a>
+//
+// Style guide: 2.7
+.forma-button--border {
+  border: solid 2px $dark-orange;
+}
 
 .forma-button__label {
   position: relative;
