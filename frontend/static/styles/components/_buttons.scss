@@ -173,6 +173,25 @@
   border: solid 2px $dark-orange;
 }
 
+// Orange bordered Button
+//
+// Markup:
+// <a class="forma-button forma-button--white" href="#">
+//  <span class="forma-button__label">button</span>
+// </a>
+//
+// Style guide: 2.8
+.forma-button--orange {
+  border: solid 2px $orange;
+  background-color: $white;
+  color: $orange;
+
+  &:hover {
+	background-color: $orange;
+	color: $white;
+  }
+}
+
 .forma-button__label {
   position: relative;
   display: inline-block;

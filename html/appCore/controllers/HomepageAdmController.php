@@ -132,9 +132,17 @@ class HomepageAdmController extends AdmController {
         $this->render("register");
     }
 
+	/* New homepage/login/registration layout testers (to be removed after integration) */
 	public function newRegister() {
 		$this->render("new-register", []);
 	}
+	public function newRegisterStep2() {
+		$this->render("new-register-step2", []);
+	}
+	public function newRegisterTYP() {
+		$this->render("new-register-typ", []);
+	}
+	/* homepage/login/registration testers end */
     
     public function lostPwd() {
         
