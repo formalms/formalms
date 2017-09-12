@@ -7,51 +7,29 @@
 </header>
 
 <main>
-	<div class="homepage__wrapper homepage__wrapper--gray homepage__back">
-		<a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php">
-			<span class="fa fa-chevron-left"></span> {{ evalPhp('Lang::t', ['_BACK', 'standard']) }}
-		</a>
-	</div>
 	<div class="homepage__wrapper homepage__wrapper--gray">
-		<p>Questi campi sono associati ai gruppi scelti</p>
+		<div><i class="fa fa-check"></i></div>
+		<p>
+			<strong>Grazie</strong> per aver richiesto l'iscrizione alla nostra community<br/>
+			Ti è stata inviata una email con i tuoi dati di registrazione.
+		</p>
+		<br/><br/>
 	</div>
-
-	<form class="homepage__form">
-		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
-			<div class="col-xs-12 col-sm-6">
-				<input class="form-control" type="text" placeholder="Test">
-			</div>
+	<div class="homepage__wrapper row">
+		<div class="col-xs-12 col-sm-6 col-sm-offset-3">
+			<br/>
+			<p>Hai riscontrato qualche problema? <a href="#"><strong>Contattaci</strong></a></p>
+			<a class="forma-button forma-button--orange" href="#">Vai alla Homepage</a>
 		</div>
-		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
-			<div class="col-xs-12 col-sm-6">
-				<input class="form-control" type="text" placeholder="Genere">
-			</div>
-		</div>
-		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
-			<div class="col-xs-12 col-sm-6">
-				<input class="form-control" type="text" placeholder="Luogo di nascita*">
-			</div>
-		</div>
-		<div class="homepage__wrapper homepage__wrapper--form homepage__wrapper--gray row-fluid">
-			<div class="forma-custom-file-input col-xs-12 col-sm-6">
-				<input class="form-control" type="file" placeholder="Carica file (max 100Mb)">
-			</div>
-		</div>
-		<div class="homepage__wrapper row">
-			<div class="col-xs-12 col-sm-6 col-sm-offset-3">
-				<br/>
-				<p>Hai riscontrato qualche problema? <a href="#"><strong>Contattaci</strong></a></p>
-				<a class="forma-button forma-button--orange" href="#">Vai alla Homepage</a>
-			</div>
-		</div>
-		<div class="homepage__wrapper homepage__wrapper--social row">
-			<ul>
-				<li></li>
-				<li></li>
-				<li></li>
-			</ul>
-		</div>
-	</form>
+	</div>
+	<div class="homepage__social">
+		<ul>
+			<li><a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
+			<li><a href="#" target="_blank"><i class="fa fa-twitter-square"></i></a></li>
+			<li><a href="#" target="_blank"><i class="fa fa-google-plus-square"></i></a></li>
+			<li><a href="#" target="_blank"><i class="fa fa-linkedin-square"></i></a></li>
+		</ul>
+	</div>
 </main>
 
 <footer class="homepage__wrapper homepage__wrapper--footer">
