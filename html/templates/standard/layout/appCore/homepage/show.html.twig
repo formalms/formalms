@@ -1,59 +1,61 @@
-<div class="std_block">
-	<div class="content">
-		{% if under_maintenence == false %}
-			{% if isCatalogToShow != false %}
-				<div class="homecatalogue">
-					<a href="index.php?r={{ constant('_homecatalog_') }}">{{ translate('_CATALOGUE', 'standard') }}</a>
+<div class="homepage__row homepage__row--gray">
+	<div class="col-xs-6">
+		{% if block_attempts == false %}
+			{{ loginGUI|raw  }}
+			{% if done != false %}
+				<div><b class="logout">{{ done }}</b></div>
+			{% endif %}
+			{% if msg != false %}
+				<div id="service_msg">
+					<b class="login_failed">{{ msg }}</b>
 				</div>
 			{% endif %}
-			<div class="login-box">
-				{% if block_attempts == false %}
-					<h2>{{  translate('_LOGIN', 'login') }}</h2>
-					{{ loginGUI|raw  }}
-					{% if done != false %}
-						<div>
-							<b class="logout">{{ done }}</b>
-						</div>
-					{% endif %}
-					{% if msg != false %}
-
-						<div id="service_msg">
-							<b class="login_failed">{{ msg }}</b>
-						</div>
-					{% endif %}
-				{% else %}
-					<h3>{{ translate('_ACCESS_LOCK', 'login') }}</h3>
-					<p>{{ block_attempts }}</p>
-				{% endif %}
-			</div>
+		{% else %}
+			<h3>{{ translate('_ACCESS_LOCK', 'login') }}</h3>
+			<p>{{ block_attempts }}</p>
 		{% endif %}
 	</div>
-	<div class="footer">
-		<div id="link">
-			{% if isSelfRegistrationActive != false and under_maintenence == false %}
-				<a class="first" href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_register_') }}">{{ translate('_REGISTER', 'login') }}</a>
-			{% endif %}
-			<a class="first" href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_lostpwd_') }}">{{ translate('_LOG_LOSTPWD', 'login') }}</a>
-		</div>
-	</div>
-	<div class="external_page">
-		{{ getExternalPages|raw }}
-	</div>
-	<div class="webcontent">
-		{% if under_maintenence == true %}
-			<div class="box">
-				<h3>{{ translate('_MAINTENANCE', 'configuration') }}</h3>
-				<div class="text">
-					{{ translate('_MAINTENANCE_TEXT', 'login')|raw }}
-				</div>
-			</div>
-		{% endif %}
+</div>
+<div class="homepage__row">
+	<br/>
+	<h3>forma.lms è un sistema open source per l'e-learning (LMS e LCMS) utilizzato nelle più grandi organizzazioni e università.</h3>
+</div>
+<div class="homepage__row">
+	<br/>
+	<p>Il sistema, rilasciato in 25 lingue è composto da 53 funzioni tra cui Wiki, Forum, Project Manager, supporta lo standard SCORM 1.2 e 2004 ed è configurabile per adattarsi al modello didattico desiderato (autoapprendimento, blended learning, didattica collaborativa, social e-learning).</p>
+</div>
+<div class="homepage__row">
+	<a class="forma-button forma-button--orange" href="#">Leggi tutto</a>
+	<br/><br/>
+</div>
 
+{#
+<div class="footer">
+	<div id="link">
+		{% if isSelfRegistrationActive != false and under_maintenence == false %}
+			<a class="first" href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_register_') }}">{{ translate('_REGISTER', 'login') }}</a>
+		{% endif %}
+		<a class="first" href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_lostpwd_') }}">{{ translate('_LOG_LOSTPWD', 'login') }}</a>
+	</div>
+</div>
+<div class="external_page">
+	{{ getExternalPages||raw }}
+</div>
+<div class="webcontent">
+	{% if under_maintenence == true %}
 		<div class="box">
-			<h3>{{ translate('_HOMEPAGE', 'login') }}</h3>
+			<h3>{{ translate('_MAINTENANCE', 'configuration') }}</h3>
 			<div class="text">
-				{{ translate('_INTRO_STD_TEXT', 'login')|raw }}
+				{{ translate('_MAINTENANCE_TEXT', 'login')|raw }}
 			</div>
+		</div>
+	{% endif %}
+
+	<div class="box">
+		<h3>{{ translate('_HOMEPAGE', 'login') }}</h3>
+		<div class="text">
+			{{ translate('_INTRO_STD_TEXT', 'login')|raw }}
 		</div>
 	</div>
 </div>
+#}
