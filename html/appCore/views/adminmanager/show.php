@@ -6,6 +6,7 @@
 
 $this->widget('tablefilter', array(
 	'id' => 'adminmanager',
+	'css_class' => 'forma-quick-search-form--transparent',
 	'filter_text' => $filter_text,
 	'js_callback_set' => 'AdminManagement.setFilter',
 	'js_callback_reset' => 'AdminManagement.resetFilter'
