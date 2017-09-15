@@ -312,7 +312,7 @@ class Boot {
 		if($session_time_passed > $session_time && isset($_SESSION['logged_in']) && $_SESSION['logged_in'])
 		{
 			session_destroy();
-			Util::jump_to('../index.php?msg=103');
+			Util::jump_to(Get::rel_path('base').'/index.php?msg=103');
 		}
 
 		$_SESSION['session_timeout'] = time();
@@ -340,7 +340,8 @@ class Boot {
 
 			if(Docebo::user()->isLoggedIn() && (Docebo::user()->getLogIp() != $_SERVER['REMOTE_ADDR']))
 			{
-				Util::jump_to('../index.php?msg=104');
+				session_destroy();
+				Util::jump_to(Get::rel_path('base').'/index.php?msg=104');
 				//Util::fatal("logip: ".Docebo::user()->getLogIp()."<br/>"."addr: ".$_SERVER['REMOTE_ADDR']."<br/>".'Ip incoherent!');
 				//unlog the user
 				die();

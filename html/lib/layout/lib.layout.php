@@ -297,13 +297,13 @@
         $retArray['boostrap'] = JQueryLib::loadBootstrap($minimized);
         $retArray['jqueryAddons'] = JQueryLib::loadJQueryAddons($minimized);
         $retArray['cssAddons'] = JQueryLib::loadCssAddons($minimized);
-                
-        
 
+        if (file_exists(_base_.'/templates/'.getTemplate().'/style/custom.css')){
+            $customCssPath = Get::rel_path('base').'/templates/'.getTemplate().'/style/custom.css';
+            $retArray['custom_css_path'] = str_replace('/./', '/', $customCssPath);
+        }
         switch($whichLayout){
-            case 'home_login':
-                $retArray['jqueryLib'] = '';
-                $retArray['boostrap'] = '';
+            case 'home':
                 $retArray['jqueryAddons'] = '';
                 $retArray['cssAddons'] = '';
             
