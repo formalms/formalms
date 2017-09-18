@@ -180,9 +180,17 @@ class API {
 	static public function Execute($auth_code, $module, $function, $params) {
 
 		$class_name = $module.'_API';
-
-		//require_once(_base_.'/api/lib/api.'.$module.'.php');
-		require_once(Docebo::inc(_base_.'/api/lib/api.'.$module.'.php'));
+        $file_name = Docebo::inc(_base_.'/api/lib/api.'.$module.'.php');
+        
+        if(!file_exists($file_name)) {
+            return false;
+        }
+        
+		require_once($file_name);
+        
+        if(!class_exists($class_name)) {
+            return false;
+        }
 
 		$api_obj = new $class_name();
 
