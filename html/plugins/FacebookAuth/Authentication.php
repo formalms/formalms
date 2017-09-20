@@ -23,12 +23,13 @@ use Lang;
 class Authentication extends \PluginAuthentication implements \PluginAuthenticationInterface {
     
     public static function getLoginGUI() {
-        
+
+        $form = '';
         if(isset($_SESSION['social'])) {
             
             if($_SESSION['social']['plugin'] == Plugin::getName()) {
                 
-                return Get::img("social/facebook-24.png") . " "
+                $form = Get::img("social/facebook-24.png") . " "
                         . Lang::t("_YOU_ARE_CONNECTING_SOCIAL_ACCOUNT", "social")
                         . " <b>" . $_SESSION['social']['data']['name'] . "</b>"
                         . Form::openForm("cancel_social", Get::rel_path("base"))
@@ -43,10 +44,16 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
 
             $url = $facebook_service->getAuthorizationUri();
 
-            return  "<a href='" . $url . "'>"
+            $form =  "<a href='" . $url . "'>"
                       . Get::img("social/facebook-24.png")
                   . "</a>";
         }
+
+        return [
+            'name' => 'FacebookAuth',
+            'type' => self::AUTH_TYPE_SOCIAL,
+            'form' => $form
+            ];
     }
     
     public static function getUserFromLogin() {
