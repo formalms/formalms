@@ -50,21 +50,20 @@ class HomepageAdmController extends AdmController {
         $params['isSelfRegistrationActive'] = $this->model->isSelfRegistrationActive();
 
         foreach($this->model->getLoginGUI() AS $loginGUI) {
-            $params['loginGUI'] .= $loginGUI;
+            $params[$loginGUI['type']][] = $loginGUI;
         }
 
+
+
         $external_pages = $this->model->getExternalPages();
-        $params['getExternalPages']="";
+        $params['getExternalPages']=[];
         if(!empty($external_pages)) {
-            $params['getExternalPages'].='<ul id="main_menu">';
             foreach ($external_pages AS $id_page => $title) {
-                $params['getExternalPages'].='<li '.($id_page == end(array_keys($external_pages)) ? 'class="last"' : '') .'>';
-                $params['getExternalPages'].='<a href="'.Get::rel_path("base") . "/index.php?r=" . _homewebpage_ . "&page=" . $id_page.'" >';
-                $params['getExternalPages'].=$title;
-                $params['getExternalPages'].='</a>';
-                $params['getExternalPages'].='</li>';
+
+                $externalPage = ['id' => $id_page, 'link' =>  Get::rel_path("base") . "/index.php?r=" . _homewebpage_ . "&page=" . $id_page, $title => $title];
+
+                $params['getExternalPages'][] = $externalPage;
             }
-            $params['getExternalPages'].='</ul>';
         }
 
         $this->render("show", $params);
@@ -123,13 +122,23 @@ class HomepageAdmController extends AdmController {
         
         return $msg_output;
     }
-    
-    public function register() {
-        
-        if(!Docebo::user()->isAnonymous()) self::redirect();
-        if(!$this->model->isSelfRegistrationActive()) self::redirect();
-        
-        $this->render("register");
+
+    public function register()
+    {
+
+        if (!Docebo::user()->isAnonymous()) self::redirect();
+        if (!$this->model->isSelfRegistrationActive()) self::redirect();
+        $dataView = [];
+
+        $registerForm = Form::openForm('register', Get::rel_path('base') . '/index.php?r=' . _register_)
+            . $this->model->getRegisterForm()
+            . Form::closeForm();
+
+        $dataView['form'] = $registerForm;
+        $dataView['loginAction'] = Get::rel_path('base') . '/index.php?r=' . _login_;
+        $dataView['lostPwdAction'] = Get::rel_path('base') . '/index.php?r=' . _lostpwd_;
+
+        $this->render('new-register', $dataView);
     }
 
 	/* New homepage/login/registration layout testers (to be removed after integration) */
