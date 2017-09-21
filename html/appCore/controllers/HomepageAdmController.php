@@ -138,7 +138,7 @@ class HomepageAdmController extends AdmController {
         $dataView['loginAction'] = Get::rel_path('base') . '/index.php?r=' . _login_;
         $dataView['lostPwdAction'] = Get::rel_path('base') . '/index.php?r=' . _lostpwd_;
 
-        $this->render('new-register', $dataView);
+        $this->render('register', $dataView);
     }
 
 	/* New homepage/login/registration layout testers (to be removed after integration) */
