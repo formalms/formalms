@@ -130,7 +130,7 @@ class HomepageAdmController extends AdmController {
         if (!$this->model->isSelfRegistrationActive()) self::redirect();
         $dataView = [];
 
-        $registerForm = Form::openForm('register', Get::rel_path('base') . '/index.php?r=' . _register_)
+        $registerForm = Form::openForm('register', Get::rel_path('base') . '/index.php?r=' . _register_,' homepage__form ')
             . $this->model->getRegisterForm()
             . Form::closeForm();
 
