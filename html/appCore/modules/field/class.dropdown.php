@@ -277,7 +277,7 @@ class Field_Dropdown extends Field {
 	 *
 	 * @access public
 	 */
-	function play( $id_user, $freeze, $mandatory = false, $do_not_show_label = false, $value = NULL) {
+	function play( $id_user, $freeze, $mandatory = false, $do_not_show_label = false, $value = NULL, $registrationLayout =false) {
 		require_once(_base_.'/lib/lib.form.php');
 
 		if( 	isset( $_POST['field_'.$this->getFieldType()] )
@@ -313,6 +313,22 @@ class Field_Dropdown extends Field {
 		}
 
 		if ($value !== NULL) $user_entry = (int)$value;
+
+        if ($registrationLayout) {
+
+            $formField = '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">'
+                . '<div class="col-xs-12 col-sm-6">'
+                . Form::getInputDropdown(
+                    '',
+                    'field_' . $this->getFieldType() . '_' . $this->id_common,
+                    'field_' . $this->getFieldType() . '[' . $this->id_common . ']',
+                    $option,
+                    (int)$user_entry,
+                    '',
+                    true) . '</div></div>';
+
+            return $formField;
+        }
 
 		if($freeze) return Form::getLineBox($translation.' : ', $option[$user_entry]);
 

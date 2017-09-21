@@ -344,55 +344,105 @@ class Field_YesNo extends Field {
 	 *
 	 * @access public
 	 */
-	function play($id_user, $freeze, $mandatory = false, $do_not_show_label = false, $value = NULL) {
+    function play($id_user, $freeze, $mandatory = false, $do_not_show_label = false, $value = NULL, $registrationLayout = false)
+    {
 
-		$lang =& DoceboLanguage::createInstance('field', 'framework');
+        $lang =& DoceboLanguage::createInstance('field', 'framework');
 
-		require_once(_base_.'/lib/lib.form.php');
+        require_once(_base_ . '/lib/lib.form.php');
 
-		if( 	isset( $_POST['field_'.$this->getFieldType()] )
-			&& 	isset( $_POST['field_'.$this->getFieldType()][$this->id_common] ) ) {
-			$user_entry = $_POST['field_'.$this->getFieldType()][$this->id_common];
-		} else {
-			list($user_entry) = sql_fetch_row(sql_query("
+        if (isset($_POST['field_' . $this->getFieldType()])
+            && isset($_POST['field_' . $this->getFieldType()][$this->id_common])) {
+            $user_entry = $_POST['field_' . $this->getFieldType()][$this->id_common];
+        } else {
+            list($user_entry) = sql_fetch_row(sql_query("
 			SELECT user_entry
-			FROM ".$this->_getUserEntryTable()."
-			WHERE id_user = '".(int)$id_user."' AND
-				id_common = '".(int)$this->id_common."' AND
+			FROM " . $this->_getUserEntryTable() . "
+			WHERE id_user = '" . (int)$id_user . "' AND
+				id_common = '" . (int)$this->id_common . "' AND
 				id_common_son = '0'"));
-		}
-		$re_field = sql_query("
+        }
+        $re_field = sql_query("
 		SELECT translation
-		FROM ".$this->_getMainTable()."
-		WHERE lang_code = '".getLanguage()."' AND id_common = '".(int)$this->id_common."' AND type_field = '".$this->getFieldType()."'");
-		list($translation) = sql_fetch_row($re_field);
+		FROM " . $this->_getMainTable() . "
+		WHERE lang_code = '" . getLanguage() . "' AND id_common = '" . (int)$this->id_common . "' AND type_field = '" . $this->getFieldType() . "'");
+        list($translation) = sql_fetch_row($re_field);
 
-		switch((int)$user_entry) {
-			case 1 : $field_value = $lang->def('_YES');break;
-			case 2 : $field_value = $lang->def('_NO');break;
-			default: $field_value = $lang->def('_NOT_ASSIGNED');break;
-		}
+        switch ((int)$user_entry) {
+            case 1 :
+                $field_value = $lang->def('_YES');
+                break;
+            case 2 :
+                $field_value = $lang->def('_NO');
+                break;
+            default:
+                $field_value = $lang->def('_NOT_ASSIGNED');
+                break;
+        }
 
-		if ($value !== NULL) {
-			switch((int)$value) {
-				case 1 : $field_value = $lang->def('_YES');break;
-				case 2 : $field_value = $lang->def('_NO');break;
-				default: $field_value = $lang->def('_NOT_ASSIGNED');break;
-			}
-		}
+        if ($value !== NULL) {
+            switch ((int)$value) {
+                case 1 :
+                    $field_value = $lang->def('_YES');
+                    break;
+                case 2 :
+                    $field_value = $lang->def('_NO');
+                    break;
+                default:
+                    $field_value = $lang->def('_NOT_ASSIGNED');
+                    break;
+            }
+        }
 
-		if($freeze) return Form::getLineBox($translation.' : ', $field_value);
+        if ($registrationLayout) {
 
-		return Form::getRadioSet(	$translation.( $mandatory ? ' <span class="mandatory">*</span>' : '' ),
-									'field_'.$this->getFieldType().'_'.$this->id_common,
-									'field_'.$this->getFieldType().'['.$this->id_common.']',
-									array( 	$lang->def('_YES') => 1,
-											$lang->def('_NO') => 2,
-											$lang->def('_NOT_ASSIGNED') => 0) ,
-									(int)$user_entry,
-									'',
-									'');
-	}
+
+            $formField = '<div class="homepage__row homepage__row--gray">'
+                . $translation . ($mandatory ? ' <span class="mandatory">*</span>' : '')
+                . '</div>'
+                . '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';
+
+
+            $all_value = [
+                $lang->def('_YES') => 1,
+                $lang->def('_NO') => 2,
+                $lang->def('_NOT_ASSIGNED') => 0
+            ];
+
+            $count = 0;
+            $id = 'field_' . $this->getFieldType() . '_' . $this->id_common . '_' . $count;
+            foreach ($all_value as $label_item => $val_item) {
+                $formField .= '<div class="col-xs-12 col-sm-3">';
+                $formField .= Form::getInputRadio(
+                    $id,
+                    'field_' . $this->getFieldType() . '[' . $this->id_common . ']',
+                    $val_item,
+                    $val_item == (int)$user_entry,
+                    '');
+                $formField .= '<label class="checkbox-inline" for="' . $id . '_' . $count . '">' . $label_item . '</label>';
+
+                $formField .= '</div>';
+                $count++;
+            }
+
+            $formField .= '</div>';
+
+            return $formField;
+
+        }
+
+        if ($freeze) return Form::getLineBox($translation . ' : ', $field_value);
+
+        return Form::getRadioSet($translation . ($mandatory ? ' <span class="mandatory">*</span>' : ''),
+            'field_' . $this->getFieldType() . '_' . $this->id_common,
+            'field_' . $this->getFieldType() . '[' . $this->id_common . ']',
+            array($lang->def('_YES') => 1,
+                $lang->def('_NO') => 2,
+                $lang->def('_NOT_ASSIGNED') => 0),
+            (int)$user_entry,
+            '',
+            '');
+    }
 
 	/**
 	 * display the field for filters
@@ -683,12 +733,12 @@ class Field_YesNo extends Field {
       }    
     ';
   }
-  
+
 	function checkUserField($value, $filter) {
 		return (in_array($value, explode(',', $filter)));
 	}
-  
-  
+
+
 	function getFieldQuery($filter) { //0:not do; 1:yes; 2:no
 
 		$yes_trans = strtolower(def('_YES'));

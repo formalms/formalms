@@ -332,7 +332,7 @@ class Field_Freetext extends Field {
 	 *
 	 * @access public
 	 */
-	function play( $id_user, $freeze, $mandatory = false, $do_not_show_label = false, $value = NULL ) {
+	function play( $id_user, $freeze, $mandatory = false, $do_not_show_label = false, $value = NULL, $registrationLayout=false ) {
 		require_once(_base_.'/lib/lib.form.php');
 
 		if( 	isset( $_POST['field_'.$this->getFieldType()] )
@@ -353,6 +353,23 @@ class Field_Freetext extends Field {
 		list($translation) = sql_fetch_row($re_field);
 
 		if ($value !== NULL) $user_entry = "".$value;
+
+        if ($registrationLayout) {
+
+            $formField = '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">'
+                . '<div class="col-xs-12 col-sm-12">' .
+                Form::getInputTextarea(
+                    'field_' . $this->getFieldType() . '_' . $this->id_common,
+                    'field_' . $this->getFieldType() . '[' . $this->id_common . ']',
+                    $user_entry,
+                    '',
+                    5,
+                    22,
+                    'placeholder="' . $translation . ($mandatory ? ' *' : '') . '"'
+                ) . '</div></div>';
+
+            return $formField;
+        }
 
 		if($freeze) return Form::getLineBox($translation.' : ', $user_entry);
 

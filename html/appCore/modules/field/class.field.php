@@ -422,13 +422,13 @@ class Field {
 	 *
 	 * @access public
 	 */
-	function play( $id_user, $freeze, $mandatory = false, $do_not_show_label = false, $value = NULL) {
+	function play( $id_user, $freeze, $mandatory = false, $do_not_show_label = false, $value = NULL, $registrationLayout = false) {
 
 		return '';
 	}
 
 
-	function multiLangPlay($id_user, $freeze, $mandatory = false, $value = NULL) {
+	function multiLangPlay($id_user, $freeze, $mandatory = false, $value = NULL, $registrationLayout = false) {
 		return $this->play($id_user, $freeze, $mandatory, $value);
 	}
 

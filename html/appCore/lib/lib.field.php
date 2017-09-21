@@ -784,7 +784,7 @@ class FieldList {
 	 *					from $idst_user
  	 * @return html with the form code for play a set of fields
 	 **/
-	function playFieldsForUser($idst_user, $arr_idst = FALSE, $freeze = FALSE, $add_root = TRUE, $useraccess = FALSE, $separate_output = FALSE, $check_precompiled = FALSE ) {
+	public function playFieldsForUser($idst_user, $arr_idst = FALSE, $freeze = FALSE, $add_root = TRUE, $useraccess = FALSE, $separate_output = FALSE, $check_precompiled = FALSE, $registrationLayout = false) {
 
 		$acl =& Docebo::user()->getACL();
 		if( $arr_idst === FALSE )
@@ -806,7 +806,7 @@ class FieldList {
 				."	 AND ft.type_field = tft.type_field"
 				."   AND ft.id_common = gft.id_field"
 				."   AND gft.idst IN ('".implode("','", $arr_idst)."')";
-;
+
 		if($useraccess !== 'false' && is_array($useraccess)) {
 			$query .= " AND ( ";
 			$first = true;
@@ -829,6 +829,7 @@ class FieldList {
 		}
 
 		if(!sql_num_rows($re_fields)) return '';
+
 		while(list($id_common, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
 
 			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
@@ -839,11 +840,11 @@ class FieldList {
 			$field_obj->setMainTable($this->getFieldTable());
 			if (!$this->getUseMultiLang()) {
 				$precompiled_value =  is_array($precompiled) && isset($precompiled[$id_common]) ? $precompiled[$id_common] : NULL;
-				$play_txt[$id_common] = $field_obj->play( $idst_user, $freeze, $this->_mandatoryField($mandatory), false, $precompiled_value);
+				$play_txt[$id_common] = $field_obj->play( $idst_user, $freeze, $this->_mandatoryField($mandatory), false, $precompiled_value, $registrationLayout);
 			}
 			else {
 				$precompiled_value =  is_array($precompiled) && isset($precompiled[$id_common]) ? $precompiled[$id_common] : NULL;
-				$play_txt[$id_common] = $field_obj->multiLangPlay( $idst_user, $freeze, $this->_mandatoryField($mandatory), false, $precompiled_value);
+				$play_txt[$id_common] = $field_obj->multiLangPlay( $idst_user, $freeze, $this->_mandatoryField($mandatory), false, $precompiled_value, $registrationLayout);
 			}
 		}
 		

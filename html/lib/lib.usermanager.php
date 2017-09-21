@@ -1891,38 +1891,14 @@ class UserManagerRenderer
         $mand_symbol = '*';
         $mand_span = '<span class="mandatory">' . $mand_symbol . '</span>';
 
-        /*$out .= '<div class="reg_note">'
-				.$lang->def('_REG_NOTE')
-				.'</div>'
-				.'<ul class="reg_instruction">'
-				.'<li>'.str_replace('[mandatory]', $mand_span, $lang->def('_REG_MANDATORY')).'</li>';
-
-		if($options['pass_min_char']) {
-			$out .= '<li>'.str_replace('[min_char]', $options['pass_min_char'], $lang->def('_REG_PASS_MIN_CHAR')).'</li>';
-		}
-		if($options['pass_alfanumeric'] == 'on') {
-			$out .= '<li>'.$lang->def('_REG_PASS_MUST_BE_ALPNUM').'</li>';
-		}
-		//$out .= '<li>'.str_replace('[hour]', $options['hour_request_limit'], $lang->def('_REG_HOUR_REQUEST_LIMIT')).'</li>';
-		if($options['privacy_policy'] == 'on') {
-			$out .= '<li>'.$lang->def('_REG_REMEMBER_PRIVACY').'</li>';
-		}
-
-
-		$extra ='';
-
-		$out .= '</ul>'.$extra
-				.Form::openElementSpace('reg_form');*/
-
-
         $out .= '<div class="homepage__row homepage__row--gray homepage__back">
 	                <a href="./index.php">
-		                <span class="fa fa-chevron-left"></span>'.$lang->def('_BACK','standard').'
+		                <span class="fa fa-chevron-left"></span>' . $lang->def('_BACK', 'standard') . '
 	                </a>
                 </div>';
 
         $out .= '<div class="homepage__row homepage__row--gray">
-	                <p>'.$lang->def('_REG_NOTE').'</p>
+	                <p>' . $lang->def('_REG_NOTE') . '</p>
                 </div>';
 
         $lang_sel = getLanguage();
@@ -2027,35 +2003,34 @@ class UserManagerRenderer
             case "code_module" :
             case "tree_man" : {
                 // we must ask the user to insert a manual code
-            $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
+                $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
                             <div class="col-xs-12 col-sm-6">';
-            $out .= Form::getInputTextfield(
-                'form-control',
-                'reg_code',
-                'reg_code',
-                Get::req('reg_code', DOTY_MIXED, ''),
-                '',
-                24,
-                'placeholder="' . $lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_symbol : '') . '"');
+                $out .= Form::getInputTextfield(
+                    'form-control',
+                    'reg_code',
+                    'reg_code',
+                    Get::req('reg_code', DOTY_MIXED, ''),
+                    '',
+                    24,
+                    'placeholder="' . $lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_symbol : '') . '"');
 
-            $out .='</div>
+                $out .= '</div>
                 </div>';
-                //$out .= Form::getTextfield($lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_span : ''), 'reg_code', 'reg_code', 24, Get::req('reg_code', DOTY_MIXED, ''));
             };
                 break;
             case "tree_drop" : {
                 // we must show to the user a selection of code
                 $uma = new UsermanagementAdm();
                 $tree_names = ['-' => $lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_span : '')];
-                $tree_names = array_merge($tree_names,$uma->getAllFolderNames(true));
+                $tree_names = array_merge($tree_names, $uma->getAllFolderNames(true));
                 $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
                             <div class="col-xs-12 col-sm-6">'
                     . Form::getInputDropdown(
-                        $lang->def('_CODE'),
+                        'form-control',
                         'reg_code',
                         'reg_code',
                         $tree_names,
-                        Get::req('reg_code', DOTY_MIXED, ''),'',true) .
+                        Get::req('reg_code', DOTY_MIXED, ''), '', true) .
                     '</div>
                 </div>';
             };
@@ -2063,64 +2038,74 @@ class UserManagerRenderer
         }
 
 
-
-
-
-
         if ($options['use_advanced_form'] == 'off') {
 
             $extra_field = new FieldList();
-            $out .= $extra_field->playFieldsForUser(0, false, false);
-        }
+            $extraFiledsOut = $extra_field->playFieldsForUser(0, false, false,true,false,false,false,true);
 
-
-
-
-
-
-
-        $out .= '<div class="reg_title_privacy">' . $lang->def('_REG_PRIVACY_POLICY_TILTE') . '</div>'
-            . '<div class="privacy_box">'
-            . $lang->def('_REG_PRIVACY_POLICY')
-            . '</div>';
-        if ($options['privacy_policy'] == 'on') {
-            $out .= Form::getCheckbox($lang->def('_REG_PRIVACY_ACCEPT'), 'register_privacy', 'register[privacy]',
-                'ok', isset($_POST['register']['privacy']));
-        }
-
-        if ($options['use_advanced_form'] == 'on') {
+            $out .= $extraFiledsOut;
+        } else if ($options['use_advanced_form'] == 'on') {
 
             $acl_man =& Docebo::user()->getAclManager();
             $groups =& $acl_man->getAllGroupsId(array('free', 'moderate'));
+
             if (!empty($groups)) {
 
-                $tb = new Table(0, $lang->def('_SELECT_GROUP'), $lang->def('_SELECT_GROUP_SUMMARY'));
+                $out .= '<div class="homepage__row homepage__row--gray">'
+                    . $lang->def('_SUBSCRIBE')
+                    . '</div>'
+                    . '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';
 
-                $type_h = array('image', 'nowrap', '');
-                $cont_h = array('<span class="access-only">' . $lang->def('_SUBSCRIBE') . '</span>',
-                    $lang->def('_NAME'),
-                    $lang->def('_DESCRIPTION'));
-                $tb->setColsStyle($type_h);
-                $tb->addHead($cont_h);
-                while (list($id, $info) = each($groups)) {
 
-                    $cont = array(
-                        Form::getInputCheckbox('group_sel_' . $id,
+                foreach ($groups as $id => $info) {
+
+                    $out .= '<div class="col-xs-12 col-sm-3">'
+                        . Form::getInputCheckbox('group_sel_' . $id,
                             'group_sel[]',
                             $id,
                             isset($_POST['group_sel'][$id]),
-                            ''),
-                        '<label for="group_sel_' . $id . '">' . $info['type_ico'] . ' ' . $info['groupid'] . '</label>',
-                        $info['description']);
-                    $tb->addBody($cont);
+                            '')
+                        . '<label class="checkbox-inline" for="group_sel_' . $id . '"for="group_sel_' . $id . '">' . $info['type_ico'] . ' ' . $info['groupid'] . '</label>
+		                </div>';
+
+
                 }
-                $out .= $tb->getTable();
+                $out .= '</div>';
             }
         }
-        $out .= Form::closeElementSpace()
+
+        $out .= '<div class="homepage__row homepage__row--form-disclaimer"> '
+            . '<p>' . $lang->def('_REG_PRIVACY_POLICY') . '</p>'
+            . '</div>';
+
+
+        if ($options['privacy_policy'] == 'on') {
+            $out .= '<div class="homepage__row">'
+                . Form::getInputCheckbox(
+                    'register_privacy',
+                    'register[privacy]',
+                    'ok',
+                    isset($_POST['register']['privacy']),
+                    '')
+                . '<label class="checkbox-inline">' . $lang->def('_REG_PRIVACY_ACCEPT') . '</label>'
+                . '</div>';
+        }
+
+        $out .= '<div class="homepage__row row">'
+            . '<div class="col-xs-12 col-sm-6 col-sm-offset-3">'
+            //. '<button type="submit" class="forma-button forma-button--black">Registrati</button>'
+            . Form::getButton('reg_button', 'reg_button', $lang->def('_REGISTER'), ' forma-button forma-button--black ')
+            . '</div>'
+            . '</div>';
+
+        $out .= '<div class="homepage__row homepage__links">'
+            . '<a href="/index.php"><em>'.$lang->def('_LOGIN').'</em></a>'
+            . '</div>';
+
+        /*$out .= Form::closeElementSpace()
             . Form::openButtonSpace('reg_form_button')
             . Form::getButton('reg_button', 'reg_button', $lang->def('_REGISTER'))
-            . Form::closeButtonSpace();
+            . Form::closeButtonSpace();*/
         return $out;
     }
 
