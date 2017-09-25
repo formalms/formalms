@@ -82,8 +82,21 @@ if(isset($_SESSION['must_renew_pwd']) && $_SESSION['must_renew_pwd'] == 1
         
     } else {
         
-        // show lms homepage
-        $GLOBALS['req'] = _lms_home_;
+        // select default home page
+        
+        $array_tab['tb_classroom']  = 'classroom/show';
+        $array_tab['tb_communication']  = 'communication/show';
+        $array_tab['tb_coursepath']  = 'coursepath/show';
+        $array_tab['tb_elearning']  = 'elearning/show';
+        $array_tab['tb_games']  = 'games/show';
+        $array_tab['tb_home']  = 'home/show';
+        $array_tab['tb_kb']  = 'kb/show';
+        $array_tab['tb_label']  = 'label/show';
+        $array_tab['tb_videoconference']  = 'videoconference/show';        
+        
+        $query = " SELECT obj_index from %lms_middlearea where is_home=1";
+        list($tb_home) = sql_fetch_row(sql_query($query));
+        $GLOBALS['req'] =  (Get::sett('first_catalogue') == 'off'? $array_tab[$tb_home]: 'lms/catalog/show');
     }
 }
 

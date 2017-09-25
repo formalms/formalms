@@ -68,7 +68,44 @@ class Man_MiddleArea {
 		return true;
 	}
 	
-	public function setObjIdstList($obj_index, $idst_list) {
+	public function setHomePage($obj_index){
+        
+        $array_tab['tb_classroom']  = 'classroom/show';
+        $array_tab['tb_communication']  = 'communication/show';
+        $array_tab['tb_coursepath']  = 'coursepath/show';
+        $array_tab['tb_elearning']  = 'elearning/show';
+        $array_tab['tb_games']  = 'games/show';
+        $array_tab['tb_home']  = 'home/show';
+        $array_tab['tb_kb']  = 'kb/show';
+        $array_tab['tb_label']  = 'label/show';
+        $array_tab['tb_videoconference']  = 'videoconference/show'; 
+        //  plugin added tab cannot be home 
+        if (array_key_exists($obj_index, $array_tab )) {
+            $query = "UPDATE ".$this->_tableMA()."
+            SET is_home = 0
+            WHERE obj_index like 'tb%'";
+            $this->_query($query);
+            
+            $query = "UPDATE ".$this->_tableMA()."
+            SET is_home = 1
+            WHERE obj_index = '$obj_index'";
+            $this->_query($query);
+            
+            if ($this->isDisabled($obj_index)) {
+                $query = "UPDATE ".$this->_tableMA()." 
+                SET disabled = 0 
+                WHERE obj_index = '".$obj_index."' ";
+                $re_query = $this->_query($query);
+            }
+             
+             
+             $query = "update ".$GLOBALS['prefix_lms']."_module set mvc_path ='".$array_tab[$obj_index]."' where idModule=1";
+             $this->_query($query);         
+        }                
+
+    }
+    
+    public function setObjIdstList($obj_index, $idst_list) {
 		
 		$idst_list = serialize($idst_list);
 		

@@ -2013,6 +2013,7 @@ CREATE TABLE IF NOT EXISTS `learning_middlearea` (
   `disabled` tinyint(1) NOT NULL DEFAULT '0',
   `idst_list` text NOT NULL,
   `sequence` INT( 5 ) NOT NULL,
+  `is_home` tinyint(4) NOT NULL DEFAULT '0',    
   PRIMARY KEY (`obj_index`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -2020,22 +2021,22 @@ CREATE TABLE IF NOT EXISTS `learning_middlearea` (
 -- Dump dei dati per la tabella `learning_middlearea`
 --
 
-INSERT INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequence`) VALUES
-('credits', 1, 'a:0:{}',0),
-('mo_32', 1, 'a:0:{}',0),
-('mo_33', 1, 'a:0:{}',0),
-('mo_34', 1, 'a:0:{}',0),
-('mo_help', 1, 'a:0:{}',0),
-('tb_elearning', 0, 'a:0:{}', 0),
- ('tb_classroom', 1, 'a:0:{}',0),
-('tb_communication', 1, 'a:0:{}',0),
-('tb_coursepath', 1, 'a:0:{}',0),
-('tb_games', 1, 'a:0:{}',0),
-('tb_label', 1, 'a:0:{}',0),
-('tb_videoconference', 1, 'a:0:{}',0),
-('tb_kb', 0, 'a:0:{}', 0),
-('tb_home', '1', 'a:0:{}', '0'),
-('mo_46', '0', 'a:0:{}', '0');
+INSERT INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequence`, `is_home`) VALUES
+('credits', 1, 'a:0:{}',0,0),
+('mo_32', 1, 'a:0:{}',0,0),
+('mo_33', 1, 'a:0:{}',0,0),
+('mo_34', 1, 'a:0:{}',0,0),
+('mo_help', 1, 'a:0:{}',0,0),
+('tb_elearning', 0, 'a:0:{}', 0,1),
+ ('tb_classroom', 1, 'a:0:{}',0,0),
+('tb_communication', 1, 'a:0:{}',0,0),
+('tb_coursepath', 1, 'a:0:{}',0,0),
+('tb_games', 1, 'a:0:{}',0,0),
+('tb_label', 1, 'a:0:{}',0,0),
+('tb_videoconference', 1, 'a:0:{}',0,0),
+('tb_kb', 0, 'a:0:{}', 0,0),
+('tb_home', '1', 'a:0:{}', '0',0),
+('mo_46', '0', 'a:0:{}', '0',0);
 
 -- --------------------------------------------------------
 
