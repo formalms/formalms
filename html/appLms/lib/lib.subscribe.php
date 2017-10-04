@@ -528,6 +528,42 @@ class CourseSubscribe_Manager
 		return $this->db->query($query);
 	}
 
+	
+	public function resetValidityDateBegin($id_course, $id_edition, $id_user) {
+		if ($id_course <= 0 || $id_user <= 0) return false;
+
+		$query = "UPDATE %lms_courseuser SET date_begin_validity = NULL "
+			." WHERE idCourse = ".(int)$id_course
+			.((int)$id_edition > 0 ? " AND edition_id = ".(int)$id_edition : "");
+
+			if (is_array($id_user)) {
+				$query .= " AND idUser IN (".implode(',', $id_user).")";
+			} else {
+				$query .= " AND idUser = ".(int)$id_user;
+			}
+		$res = sql_query($query);
+
+		return $res ? true : false;
+	}
+
+	
+	public function resetValidityDateExpire($id_course, $id_edition, $id_user) {
+		if ($id_course <= 0 || $id_user <= 0) return false;
+
+		$query = "UPDATE %lms_courseuser SET date_expire_validity = NULL "
+			." WHERE idCourse = ".(int)$id_course
+			.((int)$id_edition > 0 ? " AND edition_id = ".(int)$id_edition : "");
+
+		if (is_array($id_user)) {
+			$query .= "  AND idUser IN (".implode(',', $id_user).")";
+		} else {
+			$query .= "  AND idUser = ".(int)$id_user;
+		}
+		$res = sql_query($query);
+
+		return $res ? true : false;
+	}
+	
 
 	public function saveTrackStatusChange($idUser, $idCourse, $status)
 	{

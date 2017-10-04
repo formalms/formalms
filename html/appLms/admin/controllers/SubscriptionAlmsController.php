@@ -1049,8 +1049,10 @@ class SubscriptionAlmsController extends AlmsController {
 			$set_status = Get::req('multimod_status_set', DOTY_INT, 0);
 			$set_date_begin = Get::req('multimod_date_begin_set', DOTY_INT, 0);
 			$set_date_expire = Get::req('multimod_date_expire_set', DOTY_INT, 0);
+			$reset_date_begin = Get::req('multimod_date_begin_reset', DOTY_INT, 0);
+			$reset_date_expire = Get::req('multimod_date_expire_reset', DOTY_INT, 0);
 
-			if ($set_level <= 0 && $set_status <= 0 && $set_date_begin <= 0 && $set_date_expire <= 0) {
+			if ($set_level <= 0 && $set_status <= 0 && $set_date_begin <= 0 && $set_date_expire <= 0 && $reset_date_begin <= 0 && $reset_date_expire <= 0) {
 				$output['success'] = false;
 				$output['message'] = UIFeedback::info($this->_getMessage('no options selected'), true);
 			} else {
@@ -1088,7 +1090,17 @@ class SubscriptionAlmsController extends AlmsController {
 					$res4 = $sman->updateUserDateExpireValidityInCourse($users_list, $this->id_course, Format::dateDb($new_date_expire, 'date'));
 				}
 
-				$success = $res1 && $res2 && $res3 && $res4;
+				$res5 = true;
+				if ($reset_date_begin > 0) {
+					$res5 = $sman->resetValidityDateBegin($this->id_course, 0, $users_list);//$this->id_edition
+				}
+				
+				$res6 = true;
+				if ($reset_date_expire > 0) {
+					$res6 = $sman->resetValidityDateExpire($this->id_course, 0, $users_list);//$this->id_edition
+				}
+				
+				$success = $res1 && $res2 && $res3 && $res4 && $res5 && $res6;
 				$output['success'] = $success;
 				if (!$success) {
 					$message = "";
