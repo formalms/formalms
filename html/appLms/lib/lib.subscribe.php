@@ -496,6 +496,22 @@ class CourseSubscribe_Manager
 		return $this->db->query($query);
 	}
 
+	public function updateUserDateBeginValidityInCourse($id_user, $id_course, $new_date_begin) {
+		$_new_date = $new_date_begin ? "'".$new_date_begin."'" : "NULL";
+		$query =	"UPDATE ".$this->subscribe_table
+					." SET date_begin_validity = ".$_new_date
+					." WHERE idCourse = ".(int)$id_course
+					." AND idUser ";
+
+		if (is_array($id_user)) {
+			$query .= " IN (".implode(',', $id_user).")";
+		} else {
+			$query .= " = ".(int)$id_user;
+		}
+
+		return $this->db->query($query);
+	}
+	
 	public function updateUserDateExpireValidityInCourse($id_user, $id_course, $new_date_expire) {
 		$_new_date = $new_date_expire ? "'".$new_date_expire."'" : "NULL";
 		$query =	"UPDATE ".$this->subscribe_table

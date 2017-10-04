@@ -738,8 +738,8 @@ class SubscriptionAlmsController extends AlmsController {
 		}
 
 		//Update info
-		$new_value = Get::req('new_value', DOTY_INT, '');
-		$old_value = Get::req('old_value', DOTY_INT, '');
+		$new_value = Get::req('new_value', DOTY_STRING, '');//DOTY_MIXED  DOTY_INT
+		$old_value = Get::req('old_value', DOTY_STRING, '');//DOTY_MIXED  DOTY_INT
 		$col = Get::req('col', DOTY_STRING, '');
 
 		if ($new_value === $old_value) {
@@ -787,7 +787,18 @@ class SubscriptionAlmsController extends AlmsController {
 						else
 							echo $this->json->encode(array('succes' => false));
 					} break;
-
+				case 'date_begin': {
+						if ($this->model->updateUserDateBeginValidity($id_user, Format::dateDb($new_value, 'date')))
+							echo $this->json->encode(array('succes' => true));
+						else
+							echo $this->json->encode(array('succes' => false));
+					} break;
+				case 'date_expire': {
+						if ($this->model->updateUserDateExpireValidity($id_user, Format::dateDb($new_value, 'date')))
+							echo $this->json->encode(array('succes' => true));
+						else
+							echo $this->json->encode(array('succes' => false));
+					} break;
 				default: {
 						echo $this->json->encode(array('succes' => false));
 					}
