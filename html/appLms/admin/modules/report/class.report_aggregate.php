@@ -395,7 +395,7 @@ class Report_Aggregate extends Report {
 				if(!empty($admin_courses['coursepath']))
 				{
 					require_once(_lms_.'/lib/lib.coursepath.php');
-					$path_man = new Catalogue_Manager();
+					$path_man = new CoursePath_Manager();
 					$coursepath_course =& $path_man->getAllCourses($admin_courses['coursepath']);
 					$array_courses = array_merge($array_courses, $coursepath_course);
 				}
