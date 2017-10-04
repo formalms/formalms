@@ -457,7 +457,7 @@ Class SubscriptionAlms extends Model
 
 		$query = "UPDATE %lms_courseuser SET date_begin_validity = NULL, date_expire_validity = NULL "
 			." WHERE idCourse = ".(int)$id_course." AND idUser = ".(int)$id_user." "
-			.((int)$id_edition > 0 ? " AND edition_id = ".(int)$id_edition : "");
+			;//.((int)$id_edition > 0 ? " AND edition_id = ".(int)$id_edition : "");
 		$res = sql_query($query);
 
 		return $res ? true : false;
