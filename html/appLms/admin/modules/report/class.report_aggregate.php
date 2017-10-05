@@ -421,6 +421,7 @@ class Report_Aggregate extends Report {
 			}
 
 			unset($admin_courses);
+			$courses = $course_selected;
 		}
 
 
