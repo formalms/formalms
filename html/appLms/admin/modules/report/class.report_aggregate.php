@@ -242,7 +242,7 @@ class Report_Aggregate extends Report {
 		), array(
 			'/assets/skins/sam' => 'skin.css'
 		));
-		addJs($GLOBALS['where_lms_relative'].'/admin/modules/report/','courses_filter.js');
+		Util::get_js(Get::rel_path('lms').'/admin/modules/report/courses_filter.js', true, true);
 
 		cout('<script type="text/javascript"> '."\n".
 		'var courses_count="'.($temp!='' ? $temp : '0').'";'."\n".
@@ -1327,7 +1327,7 @@ class Report_Aggregate extends Report {
 			require_once(_base_.'/lib/lib.preference.php');
 			$adminManager = new AdminPreference();
 			$admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
-			$admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
+			$admin_users = $acl->getAllUsersFromIdst($admin_tree);
 			$admin_users = array_unique($admin_users);
 		}
 
