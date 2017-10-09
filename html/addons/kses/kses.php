@@ -248,14 +248,16 @@ function kses_version() {
   return '0.2.2';
 } # function kses_version
 
-function kses_split($string, $allowed_html, $allowed_protocols) {
-  return preg_replace('%(<'.   # EITHER: <
-                      '[^>]*'. # things that aren't >
-                      '(>|$)'. # > or end of string
-                      '|>)%e', # OR: just a >
-                      "kses_split2('\\1', \$allowed_html, ".
-                      '$allowed_protocols)',
-                      $string);
+function kses_split($string, $allowed_html, $allowed_protocols)
+{
+    $callback = function ($matches) use ($allowed_html, $allowed_protocols)
+    { return kses_split2($matches[1], $allowed_html, $allowed_protocols); };
+    return preg_replace_callback('%(<'.   # EITHER: <
+        '[^>]*'. # things that aren't >
+        '(>|$)'. # > or end of string
+        '|>)%', # OR: just a >
+        $callback,
+        $string);
 } # function kses_split
 
 function kses_split2($string, $allowed_html, $allowed_protocols) {
@@ -603,8 +605,7 @@ function kses_normalize_entities($string) {
 
   $string = preg_replace('/&amp;([A-Za-z][A-Za-z0-9]{0,19});/',
                          '&\\1;', $string);
-  $string = preg_replace('/&amp;#0*([0-9]{1,5});/e',
-                         'kses_normalize_entities2("\\1")', $string);
+  $string = preg_replace_callback('/&amp;#0*([0-9]{1,5});/', function ($m){ return kses_normalize_entities2($m[1]);}, $string);
   $string = preg_replace('/&amp;#([Xx])0*(([0-9A-Fa-f]{2}){1,2});/',
                          '&#\\1\\2;', $string);
 

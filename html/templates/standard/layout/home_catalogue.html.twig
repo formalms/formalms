@@ -6,44 +6,44 @@
 {% endblock %}
 
                                 
-     {% block content %}
-     
-        {{ evalPhp('Layout::zone', ['meta']) }}
-        {{ evalPhp('Layout::meta') }}
-        {{ evalPhp('Layout::rtl') }}
-		
-        <!-- specific stylesheet -->
+{% block content %}
 
-		
+  {{ evalPhp('Layout::zone', ['meta']) }}
+  {{ evalPhp('Layout::meta') }}
+  {{ evalPhp('Layout::rtl') }}
 
-		<!-- blind nav -->
-        {{ evalPhp('Layout::zone', ['blind_navigation']) }}
-        
-		<div class="webcontent-catalogue">
-        {{ evalPhp('Layout::zone', ['content']) }}    
-		</div>
-	
-  	<!-- footer -->
-		<div class="footer-catalogue">
-          {{ evalPhp('Layout::zone', ['footer']) }}
+  <!-- specific stylesheet -->
 
 
-            {{ evalPhp('Layout::copyright') }}
+
+  <!-- blind nav -->
+  {{ evalPhp('Layout::zone', ['blind_navigation']) }}
+
+  {#<div class="webcontent-catalogue">#}
+  <div id="container">
+    <div class="container-fluid external-catalogue">
+
+      {{ evalPhp('Layout::zone', ['content']) }}
+
+    </div>
+
+    <!-- footer -->
+    <div class="layout_footer">
+      {{ evalPhp('Layout::zone', ['footer']) }}
+      {{ evalPhp('Layout::copyright') }}
+    </div>
+  </div>
+
+  <!-- def lang -->
+  {{ evalPhp('Layout::zone', ['def_lang']) }}
+
+  <!-- scripts -->
+  {{ evalPhp('Layout::zone', ['scripts']) }}
+
+  <!-- end scripts -->
+  {{ evalPhp('Layout::zone', ['debug']) }}
+
+  {{ evalPhp('Layout::analytics') }}
 
 
-		</div>
-	
-  
-  	<!-- def lang -->
-    {{ evalPhp('Layout::zone', ['def_lang']) }}
-    
-		<!-- scripts -->
-    {{ evalPhp('Layout::zone', ['scripts']) }}
-    
-		<!-- end scripts -->
-     {{ evalPhp('Layout::zone', ['debug']) }}
-     
-    {{ evalPhp('Layout::analytics') }}
-	
-  
-  {% endblock %}  
+{% endblock %}

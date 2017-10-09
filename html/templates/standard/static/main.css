@@ -3994,6 +3994,10 @@ h1, h2, h3, h4, h5, h6, p {
   z-index: 10;
 }
 
+.external-catalogue .form-control {
+  margin-top: 15px;
+}
+
 .user-panel .carousel {
   position: relative;
   width: 100%;
@@ -4728,6 +4732,8 @@ i + .course-box__date-box {
           border-top-left-radius: 0;
   -webkit-border-top-right-radius: 0;
           border-top-right-radius: 0;
+  background-color: #c84000;
+  padding: 0;
 }
 
 .forma-quick-search-form .navbar-collapse {
@@ -5750,4 +5756,105 @@ header.header nav {
 
 .social-accounts {
   display: none !important;
+}
+
+.aside {
+  padding: 20px;
+  border: 2px solid #ececec;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+  font-family: "Open-sans";
+}
+
+.aside .indent {
+  display: inline;
+  width: 20px;
+  height: 20px;
+}
+
+.aside .icon.expand-icon {
+  width: 10px;
+  height: 15px;
+  margin-right: 5px;
+  display: inline;
+  position: relative;
+  z-index: 9999;
+}
+
+.aside .icon.expand-icon:before {
+  content: '';
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 2px;
+}
+
+.aside .icon.expand-icon.glyphicon-chevron-right:before {
+  width: 10px;
+  height: 15px;
+  background-image: url("images/icons/aside/icon--arrow-right.svg");
+  left: -20px;
+}
+
+.aside .icon.expand-icon.glyphicon-chevron-down:before {
+  width: 23px;
+  height: 14px;
+  background-image: url("images/icons/aside/icon--arrow-down.svg");
+  left: -30px;
+}
+
+.aside .list-group {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  margin-bottom: 0;
+}
+
+.aside .list-group-item {
+  height: 40px;
+  margin-bottom: 10px;
+  padding-top: 0;
+  padding-right: 12px;
+  padding-bottom: 0;
+  padding-left: 20px;
+  line-height: 40px;
+  position: relative;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+  -webkit-transition: all 0.2s ease-in 0s;
+  transition: all 0.2s ease-in 0s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.aside .list-group-item:last-child {
+  margin-bottom: 0;
+}
+
+.aside .list-group-item.node-treeview1:hover {
+  cursor: pointer;
+  background-color: #c84000 !important;
+  color: white !important;
+}
+
+.aside .list-group-item:first-child {
+  padding-left: 35px;
+}
+
+.aside .list-group-item:first-child .glyphicon-chevron-down:before {
+  left: -25px;
+}
+
+.aside .node-checked {
+  background-color: white !important;
+  color: black !important;
+}
+
+.external-catalogue .middlearea_container {
+  margin-top: 0;
+}
+
+.external-catalogue .left_logo {
+  margin: 20px 0;
 }

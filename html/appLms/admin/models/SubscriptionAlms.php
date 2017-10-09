@@ -313,6 +313,18 @@ Class SubscriptionAlms extends Model
 		return $subscribe_man->updateUserLeveInCourse($id_user, $this->id_course, $new_level);
 	}
 
+	public function updateUserDateBeginValidity($id_user, $new_date_begin) {
+		require_once(_lms_.'/lib/lib.subscribe.php');
+		$subscribe_man = new CourseSubscribe_Manager();
+		return $subscribe_man->updateUserDateBeginValidityInCourse($id_user, $this->id_course, $new_date_begin);
+	}
+	
+	public function updateUserDateExpireValidity($id_user, $new_date_expire) {
+		require_once(_lms_.'/lib/lib.subscribe.php');
+		$subscribe_man = new CourseSubscribe_Manager();
+		return $subscribe_man->updateUserDateExpireValidityInCourse($id_user, $this->id_course, $new_date_expire);
+	}
+	
 	public function updateUserStatus($id_user, $new_status)
 	{
 		if($this->id_edition != 0)
@@ -445,7 +457,7 @@ Class SubscriptionAlms extends Model
 
 		$query = "UPDATE %lms_courseuser SET date_begin_validity = NULL, date_expire_validity = NULL "
 			." WHERE idCourse = ".(int)$id_course." AND idUser = ".(int)$id_user." "
-			.((int)$id_edition > 0 ? " AND edition_id = ".(int)$id_edition : "");
+			;//.((int)$id_edition > 0 ? " AND edition_id = ".(int)$id_edition : "");
 		$res = sql_query($query);
 
 		return $res ? true : false;

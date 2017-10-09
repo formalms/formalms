@@ -212,6 +212,7 @@ ul.social-accounts li span{vertical-align:middle;}
 .subs_competence_grey{background-position:0 -980px;}
 .subs_location{background-position:0 -1000px;}
 .subs_print{background-position:0 -1020px;}
+.subs_location_green{background-position:0 -1040px;}
 
 .lang_arabic{background-position:0 -20px;}
 .lang_bosnian{background-position:0 -40px;}
@@ -370,6 +371,7 @@ ul.style_none li{list-style:none; }
 /*.quick_search_form{margin:10px 0;text-align:right;float:right;}*/
 .quick_search_form{margin:0;text-align:right;float:right;}
 .quick_search_form .search_t{float:left;}
+.quick_search_form #course_filter{width: 50%; float: left;}
 #admcontainer [id$="_table_container"]{clear:both;}/* fixes .quick_search_form overlap above admin tables */
 .forma-quick-search-form{width:100%;background-color:#C84000;}
 .forma-quick-search-form--transparent{width:100%;background-color:transparent;}
@@ -1749,7 +1751,7 @@ ul.tabs li.current{
 		
 .glyphicon.cat {font-size:20px}
 
-#treeview1 {margin:10px 0}
+#treeview1 {margin:15px 0}
 
 @media (min-width: 992px){
 .col-md-12 {
