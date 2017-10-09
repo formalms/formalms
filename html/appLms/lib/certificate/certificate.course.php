@@ -26,6 +26,7 @@ class CertificateSubs_Course extends CertificateSubstitution {
 			$subs['[course_code]'] 			= $lang->def('_COURSE_CODE');
 			$subs['[course_name]'] 			= $lang->def('_COURSE_NAME');
 			$subs['[course_description]'] 	= $lang->def('_COURSE_DESCRIPTION');
+            $subs['[file_number]'] 			= $lang->def('_COURSE_FILE_NUMBER');
 			$subs['[date_begin]'] 			= $lang->def('_COURSE_BEGIN');
 			$subs['[date_end]'] 			= $lang->def('_COURSE_END');
 			$subs['[medium_time]'] 			= $lang->def('_COURSE_MEDIUM_TIME');
@@ -94,7 +95,7 @@ class CertificateSubs_Course extends CertificateSubstitution {
 
 			$subs['[course_code]'] 			= $man_course->getValue('code');
 			$subs['[course_name]'] 			= $man_course->getValue('name');
-
+            $subs['[file_number]'] 			= time();
 			$subs['[date_begin]'] 			= Format::date($man_course->getValue('date_begin'), 'date');
 			$subs['[date_end]'] 			= Format::date($man_course->getValue('date_end'), 'date');
 
