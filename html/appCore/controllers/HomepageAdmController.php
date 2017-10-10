@@ -66,6 +66,9 @@ class HomepageAdmController extends AdmController {
             }
         }
 
+        $params['lostPwdAction'] = Get::rel_path('base') . '/index.php?r=' . _lostpwd_;
+        $params['register'] = Get::rel_path('base') . '/index.php?r=' . _register_;
+
         $this->render("show", $params);
     }
     
