@@ -207,16 +207,22 @@ class AdminrulesAdmController extends AdmController
 		$idst = Get::req('idst', DOTY_INT, 0);
 		$active_tab = Get::req('active_tab', DOTY_MIXED, 'menu_user');
 
-		$pm =& MenuManager::createInstance();
-		$platform_list = $pm->getPlatformList();
-		
-		if(isset($platform_list['scs'])){
-			unset($platform_list['scs']);
-                }
+    $current_platform=$_SESSION['current_action_platform'];
 
-		if(isset($platform_list['ecom'])){
-			unset($platform_list['ecom']);
-                }
+//    $p_man 	=& MenuManager::createInstance($current_platform);
+//    $lang =& DoceboLanguage::createInstance('menu', 'framework');
+		$pm =& MenuManager::createInstance($current_platform);
+//		$platform_list = $pm->getPlatformList();
+//		
+//		if(isset($platform_list['scs'])){
+//			unset($platform_list['scs']);
+//                }
+//
+//		if(isset($platform_list['ecom'])){
+//			unset($platform_list['ecom']);
+//                }
+    //Level0
+    $menus 	= $pm->getLevel();
 
 		$result_message = "";
 		if(isset($_POST['save']))
@@ -236,7 +242,7 @@ class AdminrulesAdmController extends AdmController
 
 		$this->render('menu', array(
 				'idst' => $idst,
-				'platform_list' => $platform_list,
+				'platform_list' => $menus,
 				'active_tab' => $active_tab,
 				'model' => $this->model,
 				'save_res' => $result_message

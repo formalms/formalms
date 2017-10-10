@@ -154,7 +154,7 @@ class AdminrulesAdm extends Model
 
 				$query =	"SELECT idMenu, name, collapse"
 							." FROM %adm_menu"
-							." WHERE name='".$id."'"
+							." WHERE idParent='".$id."'"
 							." ORDER BY sequence";
 
 				$result = sql_query($query);
