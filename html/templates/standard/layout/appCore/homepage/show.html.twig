@@ -1,6 +1,6 @@
-<div class="homepage__row homepage__row--gray">
+<div class="homepage__row homepage__row--login homepage__row--gray">
     {% if baseLogin is defined %}
-        <div class="col-xs-6">
+        <div class="col-xs-12 col-sm-6{% if socialLogin is not defined %} col-sm-offset-3{% endif %}">
             {% if block_attempts == false %}
 
                 {% for login in baseLogin %}
@@ -8,7 +8,9 @@
                 {% endfor %}
 
                 {% if done != false %}
-                    <div><b class="logout">{{ done }}</b></div>
+                    <div>
+						<b class="logout">{{ done }}</b>
+					</div>
                 {% endif %}
                 {% if msg != false %}
                     <div id="service_msg">
@@ -19,13 +21,32 @@
                 <h3>{{ translate('_ACCESS_LOCK', 'login') }}</h3>
                 <p>{{ block_attempts }}</p>
             {% endif %}
+			{% if socialLogin is not defined %}
+				<nav class="homepage__links">
+					<a href="#">Registrati</a>
+					<a href="#">Recupera Password</a>
+				</nav>
+			{% endif %}
         </div>
     {% endif %}
     {% if socialLogin is defined %}
-        <div class="col-xs-6">
-            {% for login in socialLogin %}
-                {{ login.form|raw }}
-            {% endfor %}
+        <div class="col-xs-12 col-sm-6">
+
+			<div class="social-login">
+				<p class="social-login__title">
+					<span>oppure effettua login con i social</span>
+				</p>
+				<div class="social-login__list">
+					{% for login in socialLogin %}
+						{{ login.form|raw }}
+					{% endfor %}
+				</div>
+			</div>
+
+			<nav class="homepage__links">
+				<a href="#">Registrati</a>
+				<a href="#">Recupera Password</a>
+			</nav>
         </div>
     {% endif %}
 </div>
