@@ -186,51 +186,32 @@
     * @return <string>
     */
     public static function change_lang() {
-
-        $r = Get::req('r', DOTY_MIXED, '');
-        $lang_sel = Lang::get();
         $lang_model = new LangAdm();
         $lang_list = $lang_model->getLangListNoStat(false,false,'lang_description','ASC');
 
         $server_query_string = $_SERVER['QUERY_STRING'];
         $pos = strpos($server_query_string, 'special=changelang&new_lang=');
+
         if ($pos !== FALSE) {
             if($pos == 0) $pos = 1;
             if ($server_query_string{$pos - 1} == '&') $pos = $pos - 1;
             $server_query_string = substr($server_query_string, 0, $pos);
         }
 
-        $js = '<ul class=\"link_list_inline\" id=\"language_selection\">';
-        foreach($lang_list as $lang) {
+		$html = '<div class="dropdown">';
+		$html .= '<a id="change_language" class="dropdown-toggle" href="#" data-toggle="dropdown">'.Lang::get().'</a>';
+		$html .= '<div class="dropdown-menu" aria-labelledby="change_language">';
 
-            $js .= '<li><a class=\"lang-sprite lang_'.strtolower( str_replace(' ', '_', $lang->lang_code) ).($lang->lang_code == $lang_sel ? ' current' : '' ).'\"'
-            .'href=\"'.( isset($args['redirect_on']) ? $args['redirect_on'] : 'index.php' )
-            .'?'//.($r !== '' ? '?r='.$r.'&amp;' : '?')
-            .($server_query_string !== "" ? str_replace('&', '&amp;', $server_query_string).'&amp;' : "")
-            .'special=changelang&amp;new_lang='.rawurlencode($lang->lang_code).'\" title=\"'.$lang->lang_description.'\">'
-            .'<span>'.$lang->lang_description.'</span>'
-            .'</a></li>';
-            // ('.$lang->lang_browsercode.')
-        }
-        // lang_code, lang_description, lang_direction, lang_browsercode
-        $js .= '</ul><div class=\"nofloat\"></div>';
+		foreach($lang_list as $lang) {
+			$href = isset($args['redirect_on']) ? $args['redirect_on'] : 'index.php';
+			$href .= '?' . $server_query_string !== '' ? str_replace('&', '&amp;', $server_query_string).'&amp;' : '';
+			$href .= 'special=changelang&amp;new_lang='.rawurlencode($lang->lang_code);
+			$html .= '<a class="dropdown-item" href="' . $href . '" title="' . $lang->lang_description . '">' . $lang->lang_description . '</a>';
+		}
 
-        $html = '<a id="change_language" href="#">'.Lang::get().'</a>'
+		$html .= '</div>';
+		$html .= '</div>';
 
-        .'<script type="text/javascript">
-        var lang_setup = new YAHOO.widget.Panel("language_setup", {
-        context:["change_language","tr","br", ["beforeShow", "windowResize"]],
-        constraintoviewport: true,
-        width: \'600px\',
-        modal: true,
-        close: true,
-        visible: false,
-        draggable: false
-        } );
-        lang_setup.setBody("'.$js.'");
-        lang_setup.render(document.body);
-        YAHOO.util.Event.addListener("change_language", "click", lang_setup.show, lang_setup, true);
-        </script>';
         return $html;
     }
 
