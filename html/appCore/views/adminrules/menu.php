@@ -19,11 +19,12 @@
 
 			foreach($platform_list as $id => $translate)  {
                             
-			    if($translate == 'menu_user') $strHeader = Lang::t('_USER_MANAGMENT', 'menu', 'framework');
-			    if($translate == 'menu_elearning') $strHeader = Lang::t('_FIRST_LINE_lms', 'menu', 'framework');
-			    if($translate == 'menu_content') $strHeader = Lang::t('_CONTENTS', 'standard', 'framework');
-			    if($translate == 'menu_report') $strHeader = Lang::t('_REPORT', 'standard', 'framework');
-			    if($translate == 'menu_config') $strHeader = Lang::t('_CONFIGURATION', 'menu', 'framework');
+//			    if($translate == 'menu_user') $strHeader = Lang::t('_USER_MANAGMENT', 'menu', 'framework');
+//			    if($translate == 'menu_elearning') $strHeader = Lang::t('_FIRST_LINE_lms', 'menu', 'framework');
+//			    if($translate == 'menu_content') $strHeader = Lang::t('_CONTENTS', 'standard', 'framework');
+//			    if($translate == 'menu_report') $strHeader = Lang::t('_REPORT', 'standard', 'framework');
+//			    if($translate == 'menu_config') $strHeader = Lang::t('_CONFIGURATION', 'menu', 'framework');
+                            $strHeader = $translate['name'];
 
 				echo '<li'.($id == $active_tab?' class="active"':'').'>'
 					.'<a href="#tab_g_'.$id.'" data-toggle="tab">'
