@@ -198,29 +198,33 @@ class AdminrulesAdmController extends AdmController
 
 	public function menu()
 	{
-		require_once(_base_.'/lib/lib.platform.php');
+		require_once(_base_.'/lib/lib.menu.php');
 
-		if(isset($_POST['back']))
+		if(isset($_POST['back'])){
 			Util::jump_to('index.php?r=adm/adminrules/show');
+                }
 
 		$idst = Get::req('idst', DOTY_INT, 0);
 		$active_tab = Get::req('active_tab', DOTY_MIXED, 'menu_user');
 
-		$pm =& PlatformManager::createInstance();
+		$pm =& MenuManager::createInstance();
 		$platform_list = $pm->getPlatformList();
 		
-		if(isset($platform_list['scs']))
+		if(isset($platform_list['scs'])){
 			unset($platform_list['scs']);
+                }
 
-		if(isset($platform_list['ecom']))
+		if(isset($platform_list['ecom'])){
 			unset($platform_list['ecom']);
+                }
 
 		$result_message = "";
 		if(isset($_POST['save']))
 		{
 			$adm_perm = array();
-			if(isset($_POST['adm_perm']))
+			if(isset($_POST['adm_perm'])){
 				$adm_perm = array_keys($_POST['adm_perm']);
+                        }
 
 			$res = $this->model->saveAdminPerm($idst, $adm_perm);
 			$result_message = $res

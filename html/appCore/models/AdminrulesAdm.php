@@ -147,20 +147,21 @@ class AdminrulesAdm extends Model
 			'del_org' => 'ico-sprite subs_del'
 		);
 
-		switch($id)
-		{
-			case 'framework':
+//NOSWITCH		switch($id)
+//NOSWITCH		{
+//NOSWITCH			case 'framework':
 				require_once(_base_.'/lib/lib.table.php');
 
 				$query =	"SELECT idMenu, name, collapse"
 							." FROM %adm_menu"
+							." WHERE name='".$id."'"
 							." ORDER BY sequence";
 
 				$result = sql_query($query);
 
 				while(list($id_menu, $name, $collapse) = sql_fetch_row($result))
 				{
-					$query =	"SELECT module_name, default_name, class_file, class_name, mvc_path"
+					$query =	"SELECT module_name, default_name, class_file, class_name, mvc_path, of_platform"
 								." FROM %adm_menu_under"
 								." WHERE idMenu = '".$id_menu."'";
 
@@ -176,21 +177,43 @@ class AdminrulesAdm extends Model
 						$total_perm = array();
 						$module_perm = array();
 
-						while(list($module_name, $default_name, $class_file, $class_name, $mvc_path) = sql_fetch_row($result_under))
+						while(list($module_name, $default_name, $class_file, $class_name, $mvc_path, $of_platform) = sql_fetch_row($result_under))
 						{
-							if($mvc_path !== '')
+							if($module_name && ($mvc_path !== ''))
 							{
 								$tmp = explode('/', $mvc_path);
+								$platform_name = $tmp[0];
 								$mvc_name = ucwords($tmp[1]);
-								$perm_path = '/framework/admin/'.strtolower($mvc_name).'/';
+                                                                switch($platform_name){
+                                                                    case 'alms':
+                                                                        $folder_abspath=_lms_.'/admin';
+                                                                        $folder_name=_folder_lms_;
+                                                                        $perm_base ='/lms/admin/';
+                                                                        $suffix = 'Alms';
+                                                                        break;
+                                                                    case 'lms':
+                                                                        $folder_abspath=_lms_;
+                                                                        $folder_name=_folder_lms_;
+                                                                        $perm_base ='/lms/admin/';
+                                                                        $suffix = 'Lms';
+                                                                        break;
+                                                                    case 'adm':
+                                                                        $folder_abspath=_adm_;
+                                                                        $folder_name=_folder_adm_;
+                                                                        $perm_base ='/framework/admin/';
+                                                                        $suffix = 'Adm';
+                                                                        break;
+                                                                }
+								$perm_path = $perm_base.strtolower($mvc_name).'/';
 
-                                                                if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/models/'.$mvc_name.'Adm.php') && Get::cfg('enable_customscripts', false) == true ){
-                                                                        require_once(_base_.'/customscripts'.'/'._folder_adm_.'/models/'.$mvc_name.'Adm.php');
+                                                                if (file_exists(_base_.'/customscripts'.'/'.$folder_name.'/models/'.$mvc_name.$suffix.'.php') && Get::cfg('enable_customscripts', false) == true ){
+                                                                        require_once(_base_.'/customscripts'.'/'.$folder_name.'/models/'.$mvc_name.$suffix.'.php');
                                                                 } else {
-                                                                        require_once(_adm_.'/models/'.$mvc_name.'Adm.php');
+                                                                    $p=$folder_abspath.'/models/'.$mvc_name.'Adm.php';
+                                                                        require_once($folder_abspath.'/models/'.$mvc_name.$suffix.'.php');
                                                                 }
 
-								$class_name = $mvc_name.'Adm';
+								$class_name = $mvc_name.$suffix;
 								$tmp_class = new $class_name();
 
 								$perm = $tmp_class->getPerm();
@@ -204,7 +227,7 @@ class AdminrulesAdm extends Model
 											$total_perm[$perm_name] = $img;
 
 											if($collapse === 'true')
-												$th = array(Lang::t($default_name, 'menu'));
+												$th = array('');//array(Lang::t($default_name, 'menu'));
 										}
 
 										list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
@@ -213,15 +236,50 @@ class AdminrulesAdm extends Model
 									}
 								}
 							}
-							else
+							elseif ($module_name)
 							{
-                                                                if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
-                                                                        require_once(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/'.$class_file);
-                                                                } else {
-                                                                        require_once(_adm_.'/class.module/'.$class_file);
+                                                                switch($of_platform){
+                                                                    case 'lms':
+                                                                        $folder_abspath=_lms_.'/admin';
+                                                                        $folder_name=_folder_lms_;
+                                                                        $perm_base ='/lms/admin/';
+                                                                        $suffix = 'Lms';
+                                                                        break;
+                                                                    case 'framework':
+                                                                        $folder_abspath=_adm_;
+                                                                        $folder_name=_folder_adm_;
+                                                                        $perm_base ='/framework/admin/';
+                                                                        $suffix = 'Adm';
+                                                                        break;
                                                                 }
+/*
+$perm_path = $perm_base.strtolower($mvc_name).'/';
+
+if (file_exists(_base_.'/customscripts'.'/'.$folder_name.'/models/'.$mvc_name.$suffix.'.php') && Get::cfg('enable_customscripts', false) == true ){
+        require_once(_base_.'/customscripts'.'/'.$folder_name.'/models/'.$mvc_name.$suffix.'.php');
+} else {
+    $p=$folder_abspath.'/models/'.$mvc_name.'Adm.php';
+        require_once($folder_abspath.'/models/'.$mvc_name.$suffix.'.php');
+}
+
+$class_name = $mvc_name.$suffix;
+*/
+                                                                if (file_exists(_base_.'/customscripts'.'/'.$folder_name.'/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
+                                                                        require_once(_base_.'/customscripts'.'/'.$folder_name.'/class.module/'.$class_file);
+                                                                } else {
+                                                                    if (file_exists($folder_abspath.'/class.module/'.$class_file)){
+                                                                        require_once($folder_abspath.'/class.module/'.$class_file);
+                                                                    }
+                                                                    else{
+                                                                        $a=$a;
+                                                                        $a=$class_file;
+                                                                        $p=$folder_abspath.'/class.module/'.$class_file;
+                                                                        continue;
+                                                                    }
+                                                                }
+
 								$tmp_class = new $class_name();
-								$perm_path = '/framework/admin/'.strtolower($module_name).'/';
+								$perm_path = $perm_base.strtolower($module_name).'/';
 
 								$perm = $tmp_class->getAllToken('lang');
 
@@ -234,7 +292,7 @@ class AdminrulesAdm extends Model
 											$total_perm[$perm_name] = $info['image'];
 
 											if($collapse === 'true')
-												$th = array(Lang::t($default_name, 'menu'));
+												$th = array('');//array(Lang::t($default_name, 'menu'));
 										}
 
 										list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
@@ -260,34 +318,46 @@ class AdminrulesAdm extends Model
 
 							while(list($module_name, $default_name, $class_file, $class_name, $mvc_path) = sql_fetch_row($result_under))
 							{
-								if($mvc_path !== '')
+								if($module_name && ($mvc_path !== ''))
 								{
 									$tmp = explode('/', $mvc_path);
 									$mvc_name = ucwords($tmp[1]);
+                                                                        
+									$print_content = false;
 
 									$content = array(Lang::t($default_name, 'menu'));
 
 									foreach($total_perm as $perm => $img)
-										if(isset($module_perm[$mvc_name][$perm]))
+										if(isset($module_perm[$mvc_name][$perm])){
 											$content[] = Form::getInputCheckbox('adm_perm_'.$module_perm[$mvc_name][$perm], 'adm_perm['.$module_perm[$mvc_name][$perm].']', '1', (isset($adm_old_perm[$module_perm[$mvc_name][$perm]])), '');
-										else
+                                                                                        $print_content = true;
+									} else {
 											$content[] = '';
-
+                                                                        }
 									reset($total_perm);
-									$tb->addBody($content);
+									if ( $print_content == true) {
+										$tb->addBody($content);
+									}
+                                                                        
 								}
-								else
+								elseif ($module_name)
 								{
+									$print_content = false;
+                                                                        
 									$content = array(Lang::t($default_name, 'menu'));
 
 									foreach($total_perm as $perm => $img)
-										if(isset($module_perm[$class_name][$perm]))
+										if(isset($module_perm[$class_name][$perm])) {
 											$content[] = Form::getInputCheckbox('adm_perm_'.$module_perm[$class_name][$perm], 'adm_perm['.$module_perm[$class_name][$perm].']', '1', (isset($adm_old_perm[$module_perm[$class_name][$perm]])), '');
-										else
+                                                                                        $print_content = true;
+										} else {
 											$content[] = '';
-
+										}
 									reset($total_perm);
-									$tb->addBody($content);
+									
+									if ( $print_content == true) {
+									    $tb->addBody($content);
+									}
 								}
 							}//End while 2
 
@@ -295,1014 +365,8 @@ class AdminrulesAdm extends Model
 									.'<br/><br/>';
 						}
 					}
-				}//End while
-			break;
-
-			case 'lms':
-				require_once(_base_.'/lib/lib.table.php');
-
-				$query =	"SELECT idMenu, name, collapse"
-							." FROM %lms_menu"
-							." ORDER BY sequence";
-
-				$result = sql_query($query);
-
-				while(list($id_menu, $name, $collapse) = sql_fetch_row($result))
-				{
-					$query =	"SELECT module_name, default_name, class_file, class_name, mvc_path"
-								." FROM %lms_menu_under"
-								." WHERE idMenu = '".$id_menu."'";
-
-					$result_under = sql_query($query);
-
-					if(sql_num_rows($result_under) > 0)
-					{
-						$tb = new Table(NULL);
-
-						$th = array(Lang::t($name, 'menu'));
-						$ts = array('');
-
-						$total_perm = array();
-						$module_perm = array();
-
-						while(list($module_name, $default_name, $class_file, $class_name, $mvc_path) = sql_fetch_row($result_under))
-						{
-							if($mvc_path !== '')
-							{
-								$tmp = explode('/', $mvc_path);
-								$mvc_name = ucwords($tmp[1]);
-								$perm_path = '/lms/admin/'.strtolower($mvc_name).'/';
-
-                                                                if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_customscripts', false) == true ){
-                                                                        require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                                                } else {
-                                                                        require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                                                }
-
-								$class_name = $mvc_name.'Alms';
-								$tmp_class = new $class_name();
-
-								$perm = $tmp_class->getPerm();
-
-								if(!empty($perm))
-								{
-									foreach($perm as $perm_name => $img)
-									{
-										if(array_search($perm_name, array_keys($total_perm)) == false)
-										{
-											$total_perm[$perm_name] = $img;
-
-											if($collapse === 'true')
-												$th = array(Lang::t($default_name, 'menu'));
-										}
-
-										list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
-
-										$module_perm[$mvc_name][$perm_name] = $perm_idst;
-									}
-								}
-							}
-							else
-							{
-								
-                                                                
-                                                                if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
-                                                                        require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file);
-                                                                } else {
-                                                                        require_once(_lms_.'/admin/class.module/'.$class_file);
-                                                                }
-
-								$tmp_class = new $class_name();
-								$perm_path = '/lms/admin/'.strtolower($module_name).'/';
-
-								$perm = $tmp_class->getAllToken('lang');
-
-								if(!empty($perm))
-								{
-									foreach($perm as $perm_name => $info)
-									{
-										if(array_search($perm_name, array_keys($total_perm)) == false)
-										{
-											$total_perm[$perm_name] = $info['image'];
-
-											if($collapse === 'true')
-												$th = array(Lang::t($default_name, 'menu'));
-										}
-
-										list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
-										$module_perm[$class_name][$perm_name] = $perm_idst;
-									}
-								}
-							}
-						}//End while 1
-
-						if(!empty($total_perm))
-						{
-							foreach($total_perm as $perm => $img)
-							{
-								$th[] = '<span class="'.$array_image[$perm].'" title="'.Lang::t('_'.strtoupper($perm), 'menu').'"><span>'.Lang::t('_'.strtoupper($perm), 'menu').'</span></span>';
-								$ts[] = 'image';
-							}
-
-							$tb->addHead($th);
-							$tb->setColsStyle($ts);
-
-							$result_under = sql_query($query);
-
-							while(list($module_name, $default_name, $class_file, $class_name, $mvc_path) = sql_fetch_row($result_under))
-							{
-								if($mvc_path !== '')
-								{
-									$tmp = explode('/', $mvc_path);
-									$mvc_name = ucwords($tmp[1]);
-
-									$content = array(Lang::t($default_name, 'menu'));
-
-									foreach($total_perm as $perm => $img)
-										if(isset($module_perm[$mvc_name][$perm]))
-											$content[] = Form::getInputCheckbox('adm_perm_'.$module_perm[$mvc_name][$perm], 'adm_perm['.$module_perm[$mvc_name][$perm].']', '1', (isset($adm_old_perm[$module_perm[$mvc_name][$perm]])), '');
-										else
-											$content[] = '';
-
-									reset($total_perm);
-									$tb->addBody($content);
-								}
-								else
-								{
-									$content = array(Lang::t($default_name, 'menu'));
-
-									foreach($total_perm as $perm => $img)
-										if(isset($module_perm[$class_name][$perm]))
-											$content[] = Form::getInputCheckbox('adm_perm_'.$module_perm[$class_name][$perm], 'adm_perm['.$module_perm[$class_name][$perm].']', '1', (isset($adm_old_perm[$module_perm[$class_name][$perm]])), '');
-										else
-											$content[] = '';
-
-									reset($total_perm);
-									$tb->addBody($content);
-								}
-							}//End while 2
-
-							echo	$tb->getTable()
-									.'<br/><br/>';
-						}
-					}
-				}//End while
-			break;
-
-			case 'scs':
-				echo 'scs';
-			break;
-			case 'ecom':
-				echo 'ecom';
-			break;
-            
-case 'menu_user':
-                require_once(_base_.'/lib/lib.table.php');
-
-                $query =    "SELECT idMenu, name, collapse"
-                            ." FROM %adm_menu_user"
-                            ." ORDER BY sequence";
-
-                $result = sql_query($query);
-
-                while(list($id_menu, $name, $collapse) = sql_fetch_row($result))
-                {
-                    $query =    "SELECT module_name, default_name, class_file, class_name, mvc_path"
-                                ." FROM %adm_menu_under_user"
-                                ." WHERE idMenu = '".$id_menu."'";
-
-                    $result_under = sql_query($query);
-
-                    if(sql_num_rows($result_under) > 0)
-                    {
-                        $tb = new Table(NULL);
-
-                        $th = array(Lang::t($name, 'menu'));
-                        $ts = array('');
-
-                        $total_perm = array();
-                        $module_perm = array();
-
-                        while(list($module_name, $default_name, $class_file, $class_name, $mvc_path) = sql_fetch_row($result_under))
-                        {
-                            if($mvc_path !== '')
-                            {
-                                $tmp = explode('/', $mvc_path);
-                                $mvc_name = ucwords($tmp[1]);
-                                $perm_path = '/framework/admin/'.strtolower($mvc_name).'/';
-
-                                if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/models/'.$mvc_name.'Adm.php') && Get::cfg('enable_customscripts', false) == true ){
-                                        require_once(_base_.'/customscripts'.'/'._folder_adm_.'/models/'.$mvc_name.'Adm.php');
-                                } else {
-                                      //  require_once(_adm_.'/models/'.$mvc_name.'Adm.php');
-                                    // manage menu from plugin: LR - #11123 
-                                    if(file_exists(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_plugins', false) == true ){
-                                        require_once(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                    }  else{
-                                        require_once(_adm_.'/models/'.$mvc_name.'Adm.php');
-                                    }                                         
-                                      
-                                      
-                                }
-
-                                $class_name = $mvc_name.'Adm';
-                                $tmp_class = new $class_name();
-
-                                $perm = $tmp_class->getPerm();
-
-                                if(!empty($perm))
-                                {
-                                    foreach($perm as $perm_name => $img)
-                                    {
-                                        if(array_search($perm_name, array_keys($total_perm)) == false)
-                                        {
-                                            $total_perm[$perm_name] = $img;
-
-                                            if($collapse === 'true')
-                                                $th = array(Lang::t($default_name, 'menu'));
-                                        }
-
-                                        list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
-
-                                        $module_perm[$mvc_name][$perm_name] = $perm_idst;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
-                                        require_once(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/'.$class_file);
-                                } else {
-                                        require_once(_adm_.'/class.module/'.$class_file);
-                                }
-
-                                $tmp_class = new $class_name();
-                                $perm_path = '/framework/admin/'.strtolower($module_name).'/';
-
-                                $perm = $tmp_class->getAllToken('lang');
-
-                                if(!empty($perm))
-                                {
-                                    foreach($perm as $perm_name => $info)
-                                    {
-                                        if(array_search($perm_name, array_keys($total_perm)) == false)
-                                        {
-                                            $total_perm[$perm_name] = $info['image'];
-
-                                            if($collapse === 'true')
-                                                $th = array(Lang::t($default_name, 'menu'));
-                                        }
-
-                                        list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
-                                        $module_perm[$class_name][$perm_name] = $perm_idst;
-                                    }
-                                }
-                            }
-                        }//End while 1
-
-                        if(!empty($total_perm))
-                        {
-                            foreach($total_perm as $perm => $img)
-                            {
-                                $classname = (isset($array_image[$perm]) ? $array_image[$perm] : "ico-sprite");
-                                $th[] = '<span class="'.$classname.'" title="'.Lang::t('_'.strtoupper($perm), 'menu').'"><span>'.Lang::t('_'.strtoupper($perm), 'menu').'</span></span>';
-                                $ts[] = 'image';
-                            }
-
-                            $tb->addHead($th);
-                            $tb->setColsStyle($ts);
-
-                            $result_under = sql_query($query);
-
-                            while(list($module_name, $default_name, $class_file, $class_name, $mvc_path) = sql_fetch_row($result_under))
-                            {
-                                if($mvc_path !== '')
-                                {
-                                    $tmp = explode('/', $mvc_path);
-                                    $mvc_name = ucwords($tmp[1]);
-
-                                    $content = array(Lang::t($default_name, 'menu'));
-
-                                    foreach($total_perm as $perm => $img)
-                                        if(isset($module_perm[$mvc_name][$perm]))
-                                            $content[] = Form::getInputCheckbox('adm_perm_'.$module_perm[$mvc_name][$perm], 'adm_perm['.$module_perm[$mvc_name][$perm].']', '1', (isset($adm_old_perm[$module_perm[$mvc_name][$perm]])), '');
-                                        else
-                                            $content[] = '';
-
-                                    reset($total_perm);
-                                    $tb->addBody($content);
-                                }
-                                else
-                                {
-                                    $content = array(Lang::t($default_name, 'menu'));
-
-                                    foreach($total_perm as $perm => $img)
-                                        if(isset($module_perm[$class_name][$perm]))
-                                            $content[] = Form::getInputCheckbox('adm_perm_'.$module_perm[$class_name][$perm], 'adm_perm['.$module_perm[$class_name][$perm].']', '1', (isset($adm_old_perm[$module_perm[$class_name][$perm]])), '');
-                                        else
-                                            $content[] = '';
-
-                                    reset($total_perm);
-                                    $tb->addBody($content);
-                                }
-                            }//End while 2
-
-                            echo    $tb->getTable()
-                                    .'<br/><br/>';
-                        }
-                    }
-                }//End while
-            break;            
-            
-
-
-
-            case 'menu_elearning':
-                require_once(_base_.'/lib/lib.table.php');
-
-                $query =    "SELECT idMenu, name, collapse"
-                            ." FROM %adm_menu_elearning"
-                            ." ORDER BY sequence";
-
-                $result = sql_query($query);
-
-                while(list($id_menu, $name, $collapse) = sql_fetch_row($result))
-                {
-                    $query =    "SELECT module_name, default_name, class_file, class_name, mvc_path"
-                                ." FROM %adm_menu_under_elearning"
-                                ." WHERE idMenu = '".$id_menu."'";
-
-                    $result_under = sql_query($query);
-
-                    if(sql_num_rows($result_under) > 0)
-                    {
-                        $tb = new Table(NULL);
-
-                        $th = array(Lang::t($name, 'menu'));
-                        $ts = array('');
-
-                        $total_perm = array();
-                        $module_perm = array();
-
-                        while(list($module_name, $default_name, $class_file, $class_name, $mvc_path) = sql_fetch_row($result_under))
-                        {
-                            if($mvc_path !== '')
-                            {
-                                $tmp = explode('/', $mvc_path);
-                                $mvc_name = ucwords($tmp[1]);
-                                $perm_path = '/lms/admin/'.strtolower($mvc_name).'/';
-
-                                if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_customscripts', false) == true ){
-                                        require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                } else {
-                                       // require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                         if(file_exists(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_plugins', false) == true ){
-                                                    require_once(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                                }  else{
-                                                    require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                                }                                       
-                                       
-                                       
-                                }
-
-                                $class_name = $mvc_name.'Alms';
-                                $tmp_class = new $class_name();
-
-                                $perm = $tmp_class->getPerm();
-
-                                if(!empty($perm))
-                                {
-                                    foreach($perm as $perm_name => $img)
-                                    {
-                                        if(array_search($perm_name, array_keys($total_perm)) == false)
-                                        {
-                                            $total_perm[$perm_name] = $img;
-
-                                            if($collapse === 'true')
-                                                $th = array(Lang::t($default_name, 'menu'));
-                                        }
-
-                                        list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
-
-                                        $module_perm[$mvc_name][$perm_name] = $perm_idst;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
-                                        require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file);
-                                } else {
-                                        require_once(_lms_.'/admin/class.module/'.$class_file);
-                                }
-
-                                $tmp_class = new $class_name();
-                                $perm_path = '/lms/admin/'.strtolower($module_name).'/';
-
-                                $perm = $tmp_class->getAllToken('lang');
-
-                                if(!empty($perm))
-                                {
-                                    foreach($perm as $perm_name => $info)
-                                    {
-                                        if(array_search($perm_name, array_keys($total_perm)) == false)
-                                        {
-                                            $total_perm[$perm_name] = $info['image'];
-
-                                            if($collapse === 'true')
-                                                $th = array(Lang::t($default_name, 'menu'));
-                                        }
-
-                                        list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
-                                        $module_perm[$class_name][$perm_name] = $perm_idst;
-                                    }
-                                }
-                            }
-                        }//End while 1
-
-                        if(!empty($total_perm))
-                        {
-                            foreach($total_perm as $perm => $img)
-                            {
-                                $th[] = '<span class="'.$array_image[$perm].'" title="'.Lang::t('_'.strtoupper($perm), 'menu').'"><span>'.Lang::t('_'.strtoupper($perm), 'menu').'</span></span>';
-                                $ts[] = 'image';
-                            }
-
-                            $tb->addHead($th);
-                            $tb->setColsStyle($ts);
-
-                            $result_under = sql_query($query);
-
-                            while(list($module_name, $default_name, $class_file, $class_name, $mvc_path) = sql_fetch_row($result_under))
-                            {
-                                if($mvc_path !== '')
-                                {
-                                    $tmp = explode('/', $mvc_path);
-                                    $mvc_name = ucwords($tmp[1]);
-
-                                    $content = array(Lang::t($default_name, 'menu'));
-
-                                    foreach($total_perm as $perm => $img)
-                                        if(isset($module_perm[$mvc_name][$perm]))
-                                            $content[] = Form::getInputCheckbox('adm_perm_'.$module_perm[$mvc_name][$perm], 'adm_perm['.$module_perm[$mvc_name][$perm].']', '1', (isset($adm_old_perm[$module_perm[$mvc_name][$perm]])), '');
-                                        else
-                                            $content[] = '';
-
-                                    reset($total_perm);
-                                    $tb->addBody($content);
-                                }
-                                else
-                                {
-                                    $content = array(Lang::t($default_name, 'menu'));
-
-                                    foreach($total_perm as $perm => $img)
-                                        if(isset($module_perm[$class_name][$perm]))
-                                            $content[] = Form::getInputCheckbox('adm_perm_'.$module_perm[$class_name][$perm], 'adm_perm['.$module_perm[$class_name][$perm].']', '1', (isset($adm_old_perm[$module_perm[$class_name][$perm]])), '');
-                                        else
-                                            $content[] = '';
-
-                                    reset($total_perm);
-                                    $tb->addBody($content);
-                                }
-                            }//End while 2
-
-                            echo    $tb->getTable()
-                                    .'<br/><br/>';
-                        }
-                    }
-                }//End while
-            break;;
-
-            
-            
-
-            case 'menu_content':
-                require_once(_base_.'/lib/lib.table.php');
-
-                $query =    "SELECT idMenu, name, collapse"
-                            ." FROM %adm_menu_content"
-                            ." ORDER BY sequence";
-
-                $result = sql_query($query);
-
-                while(list($id_menu, $name, $collapse) = sql_fetch_row($result))
-                {
-                    $query =    "SELECT module_name, default_name, class_file, class_name, mvc_path"
-                                ." FROM %adm_menu_under_content"
-                                ." WHERE idMenu = '".$id_menu."'";
-                                
-                    $result_under = sql_query($query);
-
-                    if(sql_num_rows($result_under) > 0)
-                    {
-                        $tb = new Table(NULL);
-
-                        $th = array(Lang::t($name, 'menu'));
-                        $ts = array('');
-
-                        $total_perm = array();
-                        $module_perm = array();
-
-                        while(list($module_name, $default_name, $class_file, $class_name, $mvc_path) = sql_fetch_row($result_under))
-                        {
-                            if($mvc_path !== '')
-                            {
-                                $tmp = explode('/', $mvc_path);
-                                $mvc_name = ucwords($tmp[1]);
-                                $perm_path = '/lms/admin/'.strtolower($mvc_name).'/';
-
-                                if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_customscripts', false) == true ){
-                                        require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                } else {
-                                       // require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                    if(file_exists(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_plugins', false) == true ){
-                                        require_once(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                    }  else{
-                                        require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                    }                                       
-                                       
-                                       
-                                }
-
-                                $class_name = $mvc_name.'Alms';
-                                $tmp_class = new $class_name();
-
-                                $perm = $tmp_class->getPerm();
-
-                                if(!empty($perm))
-                                {
-                                    foreach($perm as $perm_name => $img)
-                                    {
-                                        if(array_search($perm_name, array_keys($total_perm)) == false)
-                                        {
-                                            $total_perm[$perm_name] = $img;
-
-                                            if($collapse === 'true')
-                                                $th = array(Lang::t($default_name, 'menu'));
-                                        }
-
-                                        list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
-
-                                        $module_perm[$mvc_name][$perm_name] = $perm_idst;
-                                    }
-                                }
-                            }
-                            else
-                            {   
-                               if($class_file == "class.newsletter.php"){   
-                                    if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
-                                            require_once(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/'.$class_file);
-                                    } else {
-                                            require_once(_adm_.'/class.module/'.$class_file);
-                                    }
-                                    $tmp_class = new $class_name();
-                                    $perm_path = '/framework/admin/'.strtolower($module_name).'/';                                   
-                                   
-                                    
-                               }   else {
-                                    if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
-                                            require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file);
-                                    } else {
-                                            require_once(_lms_.'/admin/class.module/'.$class_file);
-                                    }  
-                                    $tmp_class = new $class_name();
-                                    $perm_path = '/lms/admin/'.strtolower($module_name).'/';
-   
-                               }       
-          
-                                
-                                $perm = $tmp_class->getAllToken('lang');
-
-                                
-                                if(!empty($perm))
-                                {
-                                    foreach($perm as $perm_name => $info)
-                                    {
-                                        
-                                        if(array_search($perm_name, array_keys($total_perm)) == false)
-                                        {
-                                            $total_perm[$perm_name] = $info['image'];
-
-                                            if($collapse === 'true')
-                                                $th = array(Lang::t($default_name, 'menu'));
-                                        }
-                                    
-                                        list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
-                                        $module_perm[$class_name][$perm_name] = $perm_idst;
-                                    }
-                                }
-                            }
-                        }//End while 1
-
-                        if(!empty($total_perm))
-                        {
-                            foreach($total_perm as $perm => $img)
-                            {
-                                $th[] = '<span class="'.$array_image[$perm].'" title="'.Lang::t('_'.strtoupper($perm), 'menu').'"><span>'.Lang::t('_'.strtoupper($perm), 'menu').'</span></span>';
-                                $ts[] = 'image';
-                            }
-
-                            $tb->addHead($th);
-                            $tb->setColsStyle($ts);
-
-                            $result_under = sql_query($query);
-
-                            while(list($module_name, $default_name, $class_file, $class_name, $mvc_path) = sql_fetch_row($result_under))
-                            {
-                                if($mvc_path !== '')
-                                {
-                                    $tmp = explode('/', $mvc_path);
-                                    $mvc_name = ucwords($tmp[1]);
-
-                                    $content = array(Lang::t($default_name, 'menu'));
-
-                                    foreach($total_perm as $perm => $img)
-                                        if(isset($module_perm[$mvc_name][$perm]))
-                                            $content[] = Form::getInputCheckbox('adm_perm_'.$module_perm[$mvc_name][$perm], 'adm_perm['.$module_perm[$mvc_name][$perm].']', '1', (isset($adm_old_perm[$module_perm[$mvc_name][$perm]])), '');
-                                        else
-                                            $content[] = '';
-
-                                    reset($total_perm);
-                                    $tb->addBody($content);
-                                }
-                                else
-                                {
-                                    $content = array(Lang::t($default_name, 'menu'));
-
-                                    foreach($total_perm as $perm => $img)
-                                        if(isset($module_perm[$class_name][$perm]))
-                                            $content[] = Form::getInputCheckbox('adm_perm_'.$module_perm[$class_name][$perm], 'adm_perm['.$module_perm[$class_name][$perm].']', '1', (isset($adm_old_perm[$module_perm[$class_name][$perm]])), '');
-                                        else
-                                            $content[] = '';
-
-                                    reset($total_perm);
-                                    $tb->addBody($content);
-                                }
-                            }//End while 2
-
-                            echo    $tb->getTable()
-                                    .'<br/><br/>';
-                        }
-                    }
-                }//End while
-            break;;            
-            
-            
- 
- 
- 
-  case 'menu_report':
-                require_once(_base_.'/lib/lib.table.php');
-
-                $query =    "SELECT idMenu, name, collapse"
-                            ." FROM %adm_menu_report"
-                            ." ORDER BY sequence";
-
-                $result = sql_query($query);
-
-                while(list($id_menu, $name, $collapse) = sql_fetch_row($result))
-                {
-                    $query =    "SELECT module_name, default_name, class_file, class_name, mvc_path"
-                                ." FROM %adm_menu_under_report"
-                                ." WHERE idMenu = '".$id_menu."'";
-
-                    $result_under = sql_query($query);
-
-                    if(sql_num_rows($result_under) > 0)
-                    {
-                        $tb = new Table(NULL);
-
-                        $th = array(Lang::t($name, 'menu'));
-                        $ts = array('');
-
-                        $total_perm = array();
-                        $module_perm = array();
-
-                        while(list($module_name, $default_name, $class_file, $class_name, $mvc_path) = sql_fetch_row($result_under))
-                        {
-                            if($mvc_path !== '')
-                            {
-                                $tmp = explode('/', $mvc_path);
-                                $mvc_name = ucwords($tmp[1]);
-                                $perm_path = '/lms/admin/'.strtolower($mvc_name).'/';
-
-                                if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_customscripts', false) == true ){
-                                        require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                } else {
-                                      //  require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                       if(file_exists(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_plugins', false) == true ){
-                                            require_once(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                        }  else{
-                                            require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                        }                                       
-                                }
-
-                                $class_name = $mvc_name.'Alms';
-                                $tmp_class = new $class_name();
-
-                                $perm = $tmp_class->getPerm();
-
-                                if(!empty($perm))
-                                {
-                                    foreach($perm as $perm_name => $img)
-                                    {
-                                        if(array_search($perm_name, array_keys($total_perm)) == false)
-                                        {
-                                            $total_perm[$perm_name] = $img;
-
-                                            if($collapse === 'true')
-                                                $th = array(Lang::t($default_name, 'menu'));
-                                        }
-
-                                        list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
-
-                                        $module_perm[$mvc_name][$perm_name] = $perm_idst;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
-                                        require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file);
-                                } else {
-                                        require_once(_lms_.'/admin/class.module/'.$class_file);
-                                }
-
-                                $tmp_class = new $class_name();
-                                $perm_path = '/lms/admin/'.strtolower($module_name).'/';
-
-                                
-                                $perm = $tmp_class->getAllToken('lang');
-
-                                if(!empty($perm))
-                                {
-                                    foreach($perm as $perm_name => $info)
-                                    {
-                                        if(array_search($perm_name, array_keys($total_perm)) == false)
-                                        {
-                                            $total_perm[$perm_name] = $info['image'];
-
-                                            if($collapse === 'true')
-                                                $th = array(Lang::t($default_name, 'menu'));
-                                        }
-
-                                        list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
-                                        $module_perm[$class_name][$perm_name] = $perm_idst;
-                                    }
-                                }
-                            }
-                        }//End while 1
-
-                        if(!empty($total_perm))
-                        {
-                            foreach($total_perm as $perm => $img)
-                            {
-                                $th[] = '<span class="'.$array_image[$perm].'" title="'.Lang::t('_'.strtoupper($perm), 'menu').'"><span>'.Lang::t('_'.strtoupper($perm), 'menu').'</span></span>';
-                                $ts[] = 'image';
-                            }
-
-                            $tb->addHead($th);
-                            $tb->setColsStyle($ts);
-
-                            $result_under = sql_query($query);
-
-                            while(list($module_name, $default_name, $class_file, $class_name, $mvc_path) = sql_fetch_row($result_under))
-                            {
-                                if($mvc_path !== '')
-                                {
-                                    $tmp = explode('/', $mvc_path);
-                                    $mvc_name = ucwords($tmp[1]);
-
-                                    $content = array(Lang::t($default_name, 'menu'));
-
-                                    foreach($total_perm as $perm => $img)
-                                        if(isset($module_perm[$mvc_name][$perm]))
-                                            $content[] = Form::getInputCheckbox('adm_perm_'.$module_perm[$mvc_name][$perm], 'adm_perm['.$module_perm[$mvc_name][$perm].']', '1', (isset($adm_old_perm[$module_perm[$mvc_name][$perm]])), '');
-                                        else
-                                            $content[] = '';
-
-                                    reset($total_perm);
-                                    $tb->addBody($content);
-                                }
-                                else
-                                {
-                                    $content = array(Lang::t($default_name, 'menu'));
-
-                                    foreach($total_perm as $perm => $img)
-                                        if(isset($module_perm[$class_name][$perm]))
-                                            $content[] = Form::getInputCheckbox('adm_perm_'.$module_perm[$class_name][$perm], 'adm_perm['.$module_perm[$class_name][$perm].']', '1', (isset($adm_old_perm[$module_perm[$class_name][$perm]])), '');
-                                        else
-                                            $content[] = '';
-
-                                    reset($total_perm);
-                                    $tb->addBody($content);
-                                }
-                            }//End while 2
-
-                            echo    $tb->getTable()
-                                    .'<br/><br/>';
-                        }
-                    }
-                }//End while
-            break;;         
- 
- 
- case 'menu_config':
-                require_once(_base_.'/lib/lib.table.php');
-
-                $query =    "SELECT idMenu, name, collapse"
-                            ." FROM %adm_menu_config"
-                            ." ORDER BY sequence";
-
-                $result = sql_query($query);
-
-                while(list($id_menu, $name, $collapse) = sql_fetch_row($result))
-                {
-                    $query =    "SELECT module_name, default_name, class_file, class_name, mvc_path"
-                                ." FROM %adm_menu_under_config"
-                                ." WHERE idMenu = '".$id_menu."'";
-
-                    $result_under = sql_query($query);
-
-                    if(sql_num_rows($result_under) > 0)
-                    {
-                        $tb = new Table(NULL);
-
-                        $th = array(Lang::t($name, 'menu'));
-                        $ts = array('');
-
-                        $total_perm = array();
-                        $module_perm = array();
-
-                        while(list($module_name, $default_name, $class_file, $class_name, $mvc_path) = sql_fetch_row($result_under))
-                        {
-                            if($mvc_path !== '')
-                            {
-                                $tmp = explode('/', $mvc_path);
-                                $mvc_name = ucwords($tmp[1]);
-                               // $perm_path = '/framework/admin/'.strtolower($mvc_name).'/';
-
-                               
-                                if($mvc_name=='Questcategory' || $mvc_name=='Timeperiods' ||  $mvc_name=='Label' ){
-                                    if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_customscripts', false) == true ){
-                                            require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                    } else {
-                                            require_once(_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                    }
-                                    $class_name = $mvc_name.'Alms';
-                                    $perm_path = '/lms/admin/'.strtolower($mvc_name).'/';
-                                    
-                                }   else {
-                                    if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/models/'.$mvc_name.'Adm.php') && Get::cfg('enable_customscripts', false) == true ){
-                                            require_once(_base_.'/customscripts'.'/'._folder_adm_.'/models/'.$mvc_name.'Adm.php');
-                                    } else {
-                                          //  require_once(_adm_.'/models/'.$mvc_name.'Adm.php');
-                                          if(file_exists(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php') && Get::cfg('enable_plugins', false) == true ){
-                                                require_once(_plugins_.'/'.$mvc_name.'/Features/'._folder_lms_.'/admin/models/'.$mvc_name.'Alms.php');
-                                            }  else{
-                                                 require_once(_adm_.'/models/'.$mvc_name.'Adm.php');
-                                            }                                           
-                                          
-                                          
-                                    }
-                                    $class_name = $mvc_name.'Adm';
-                                    $perm_path = '/framework/admin/'.strtolower($mvc_name).'/';
-                                }
-                                
-         
-                                $tmp_class = new $class_name();
-
-                                $perm = $tmp_class->getPerm();
-
-                                
-                                if(!empty($perm))
-                                {
-                                
-                                    
-                                
-                                    foreach($perm as $perm_name => $img)
-                                    {
-                                    
-                                        if(array_search($perm_name, array_keys($total_perm)) == false)
-                                        {
-                                            $total_perm[$perm_name] = $img;
-                                          
-                                
-                                            if($collapse === 'true')
-                                                $th = array(Lang::t($default_name, 'menu'));
-                                        }
-
-                                        list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
-
-                                        $module_perm[$mvc_name][$perm_name] = $perm_idst;
-                                    }
-                                }
-                            }
-                            else
-                            {
-
-                                if($class_file=="class.amanmenu.php" || $class_file=="class.middlearea.php" ){
-                                    if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
-                                            require_once(_base_.'/customscripts'.'/'._folder_lms_.'/admin/class.module/'.$class_file);
-                                    } else {
-                                            require_once(_lms_.'/admin/class.module/'.$class_file);
-                                    }
-                                }   else {     
-                                    if (file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
-                                            require_once(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/'.$class_file);
-                                    } else {
-                                            require_once(_adm_.'/class.module/'.$class_file);
-                                    }
-                                
-                                }
-
-                                $tmp_class = new $class_name();
-                                
-                                
-                                $perm_path = '/framework/admin/'.strtolower($module_name).'/';
-
-                                if($module_name == 'middlearea' || $module_name == 'amanmenu'  ){
-                                     $perm_path = '/lms/admin/'.strtolower($module_name).'/';
-                                }
-                                
-                                $perm = $tmp_class->getAllToken('lang');
-
-                                if(!empty($perm))
-                                {
-                                    foreach($perm as $perm_name => $info)
-                                    {
-                                        if(array_search($perm_name, array_keys($total_perm)) == false)
-                                        {
-                                            $total_perm[$perm_name] = $info['image'];
-
-                                            if($collapse === 'true')
-                                                $th = array(Lang::t($default_name, 'menu'));
-                                        }
-
-                                        list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
-                                        $module_perm[$class_name][$perm_name] = $perm_idst;
-                                    }
-                                }
-                            }
-                        }//End while 1
-
-                        
-               
-                        
-                        if(!empty($total_perm))
-                        {
-                            foreach($total_perm as $perm => $img)
-                            {
-                                $classname = (isset($array_image[$perm]) ? $array_image[$perm] : "ico-sprite");
-                                $th[] = '<span class="'.$classname.'" title="'.Lang::t('_'.strtoupper($perm), 'menu').'"><span>'.Lang::t('_'.strtoupper($perm), 'menu').'</span></span>';
-                                $ts[] = 'image';
-                            }
-
-                            $tb->addHead($th);
-                            $tb->setColsStyle($ts);
-
-                            $result_under = sql_query($query);
-
-                            while(list($module_name, $default_name, $class_file, $class_name, $mvc_path) = sql_fetch_row($result_under))
-                            {
-                                if($mvc_path !== '')
-                                {
-                                    $tmp = explode('/', $mvc_path);
-                                    $mvc_name = ucwords($tmp[1]);
-
-                                    $content = array(Lang::t($default_name, 'menu'));
-
-                                    foreach($total_perm as $perm => $img)
-                                        if(isset($module_perm[$mvc_name][$perm]))
-                                            $content[] = Form::getInputCheckbox('adm_perm_'.$module_perm[$mvc_name][$perm], 'adm_perm['.$module_perm[$mvc_name][$perm].']', '1', (isset($adm_old_perm[$module_perm[$mvc_name][$perm]])), '');
-                                        else
-                                            $content[] = '';
-
-                                    reset($total_perm);
-                                    $tb->addBody($content);
-                                }
-                                else
-                                {
-                                    $content = array(Lang::t($default_name, 'menu'));
-
-                                    foreach($total_perm as $perm => $img)
-                                        if(isset($module_perm[$class_name][$perm]))
-                                            $content[] = Form::getInputCheckbox('adm_perm_'.$module_perm[$class_name][$perm], 'adm_perm['.$module_perm[$class_name][$perm].']', '1', (isset($adm_old_perm[$module_perm[$class_name][$perm]])), '');
-                                        else
-                                            $content[] = '';
-
-                                    reset($total_perm);
-                                    $tb->addBody($content);
-                                }
-                            }//End while 2
-
-                            echo    $tb->getTable()
-                                    .'<br/><br/>';
-                        }
-                    }
-                }//End while
-            break;
-  
+//NOSWITCH				}//End while
+//NOSWITCH			break;
  
 		}
 	}
