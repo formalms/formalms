@@ -1387,12 +1387,12 @@ class UserManagerRenderer
         switch ($do) {
             case "opt_in" : {
                 $this->error = false;
-                $out .= $this->_opt_in($options, $platform, $opt_link);
+                $errors = $this->_opt_in($options, $platform, $opt_link);
                 if ($this->error) {
                     if ($options['use_advanced_form'] == 'on' || Get::sett('register_with_code') == 'on') {
-                        $out .= $this->_special_field($options, $platform, $opt_link);
+                        $out .= $this->_special_field($options, $platform, $opt_link,$errors);
                     } else {
-                        $out .= $this->_first_of_all($options, $platform);
+                        $out .= $this->_first_of_all($options, $platform,$errors);
                     }
                 }
             };
@@ -1401,7 +1401,9 @@ class UserManagerRenderer
 
                 $this->error = false;
                 $out .= $this->_special_field($options, $platform, $opt_link);
-                if ($this->error) $out .= $this->_first_of_all($options, $platform);
+                if ($this->error){
+                    $out .= $this->_first_of_all($options, $platform);
+                }
             };
                 break;
             case "first_of_all" : {
@@ -1575,11 +1577,12 @@ class UserManagerRenderer
 
         // Check for error
         $out = '';
-        $error = $this->_checkField($_POST, $options, $platform, true);
-        if ($error['error']) {
+        $postRequest = $_POST;
+        $errors = $this->_checkField($postRequest, $options, $platform, true);
+        if (is_array($errors) && count($errors) > 0) {
 
             $this->error = true;
-            return '<div class="reg_err_data">' . $error['msg'] . '</div>';
+            return $errors;
         }
 
         // Insert temporary
@@ -1738,7 +1741,7 @@ class UserManagerRenderer
         return $out;
     }
 
-    function _special_field($options, $platform, $opt_link)
+    function _special_field($options, $platform, $opt_link,$errors = [])
     {
 
         $lang =& DoceboLanguage::createInstance('register', $platform);
@@ -1876,7 +1879,7 @@ class UserManagerRenderer
         return $out;
     }
 
-    private function _first_of_all($options, $platform)
+    private function _first_of_all($options, $platform, $errors = [])
     {
 
         $social = new Social();
@@ -1910,50 +1913,87 @@ class UserManagerRenderer
             $full_langs[$v] = $v;
         }
 
-        $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
-                    <div class="col-xs-12 col-sm-6">'
+        /** FIRST ROW */
+        $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';
+
+        /** USER ID */
+        $error = (isset($errors) && $errors['userid']);
+        $errorMessage = $errors['userid']['msg'];
+        $out .= '<div class="col-xs-12 col-sm-6">'
             . Form::getInputTextfield(
-                'form-control',
+                'form-control ' . ($error ? 'has-error' : ''),
                 'register_userid',
                 'register[userid]',
                 (isset($_POST['register']['userid']) ? stripslashes($_POST['register']['userid']) : ''),
                 '',
                 255,
-                'placeholder="' . $lang->def('_USERNAME') . ' ' . $mand_symbol . '"') .
-            '</div>
-                    <div class="col-xs-12 col-sm-6">'
+                'placeholder="' . $lang->def('_USERNAME') . ' ' . $mand_symbol . '"');
+
+        if ($error) {
+            $out .= '<small class="form-text">* ' . $errorMessage . '</small>';
+        }
+        $out .= '</div>';
+
+        /** EMAIL */
+        $error = (isset($errors) && $errors['email']);
+        $errorMessage = $errors['email']['msg'];
+        $out .= '<div class="col-xs-12 col-sm-6">'
             . Form::getInputTextfield(
-                'form-control',
+                'form-control ' . ($error ? 'has-error' : ''),
                 'register_email',
                 'register[email]',
                 (isset($_POST['register']['email']) ? stripslashes($_POST['register']['email']) : ''),
                 '',
                 255,
-                'placeholder="' . $lang->def('_EMAIL') . ' ' . $mand_symbol . '"') .
-            '</div>
-                </div>
-                <div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
-		            <div class="col-xs-12 col-sm-4">'
+                'placeholder="' . $lang->def('_EMAIL') . ' ' . $mand_symbol . '"');
+        if ($error) {
+            $out .= '<small class="form-text">* ' . $errorMessage . '</small>';
+        }
+
+        $out .= '</div>';
+
+        $out .= '</div>';
+        /** END FIRST ROW */
+
+        /** SECOND ROW */
+        $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';
+
+        /** FIRST NAME */
+        $error = (isset($errors) && $errors['firstname']);
+        $errorMessage = $errors['firstname']['msg'];
+        $out .= '<div class="col-xs-12 col-sm-4">'
             . Form::getInputTextfield(
-                'form-control',
+                'form-control '.($error ? 'has-error' : ''),
                 'register_firstname',
                 'register[firstname]',
                 (isset($_POST['register']['firstname']) ? stripslashes($_POST['register']['firstname']) : ''),
                 '',
                 255,
-                'placeholder="' . $lang->def('_FIRSTNAME') . ($options['lastfirst_mandatory'] == 'on' ? ' ' . $mand_symbol : '') . '"') .
-            '</div>
-                    <div class="col-xs-12 col-sm-4">'
+                'placeholder="' . $lang->def('_FIRSTNAME') . ($options['lastfirst_mandatory'] == 'on' ? ' ' . $mand_symbol : '') . '"');
+        if ($error) {
+            $out .= '<small class="form-text">* ' . $errorMessage . '</small>';
+        }
+
+        $out .= '</div>';
+
+        $error = (isset($errors) && $errors['lastname']);
+        $errorMessage = $errors['lastname']['msg'];
+        $out .= '<div class="col-xs-12 col-sm-4">'
             . Form::getInputTextfield(
-                'form-control',
+                'form-control '.($error ? 'has-error' : ''),
                 'register_lastname',
                 'register[lastname]',
                 (isset($_POST['register']['lastname']) ? stripslashes($_POST['register']['lastname']) : ''),
                 '',
                 255,
-                'placeholder="' . $lang->def('_LASTNAME') . ($options['lastfirst_mandatory'] == 'on' ? ' ' . $mand_symbol : '') . '"') .
-            '</div>
-                    <div class="col-xs-12 col-sm-4">'
+                'placeholder="' . $lang->def('_LASTNAME') . ($options['lastfirst_mandatory'] == 'on' ? ' ' . $mand_symbol : '') . '"');
+        if ($error) {
+            $out .= '<small class="form-text">* ' . $errorMessage . '</small>';
+        }
+
+        $out .= '</div>';
+
+        $out .= '<div class="col-xs-12 col-sm-4">'
             . Form::getInputDropdown(
                 $lang->def('_LANGUAGE'),
                 'new_lang',
@@ -1963,31 +2003,49 @@ class UserManagerRenderer
                 '',
                 '',
                 ' onchange="submit();"') .
-            '</div>
-                </div>';
+            '</div>';
 
-        $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
-                    <div class="col-xs-12 col-sm-6">'
+        $out .= '</div>';
+        /** END SECOND ROW */
+
+        /** THIRD ROW */
+        $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';
+
+        $error = (isset($errors) && $errors['pwd']);
+        $errorMessage = $errors['pwd']['msg'];
+        $out .= '<div class="col-xs-12 col-sm-6">'
             . Form::getInputPassword(
-                'form-control',
+                'form-control '.($error ? 'has-error' : ''),
                 'register_pwd',
                 'register[pwd]',
                 '',
                 255,
                 'placeholder="' . $lang->def('_PASSWORD') . ' ' . $mand_symbol . '"'
-            ) .
-            '</div>
-                    <div class="col-xs-12 col-sm-6">'
+            );
+        if ($error) {
+            $out .= '<small class="form-text">* ' . $errorMessage . '</small>';
+        }
+
+        $out .= '</div>';
+
+
+        $out .= '<div class="col-xs-12 col-sm-6">'
             . Form::getInputPassword(
-                'form-control',
+                'form-control '.($error ? 'has-error' : ''),
                 'register_pwd_retype',
                 'register[pwd_retype]',
                 '',
                 255,
                 'placeholder="' . $lang->def('_RETYPE_PASSWORD') . ' ' . $mand_symbol . '"'
-            ) .
-            '</div>
-                </div>';
+            );
+        if ($error) {
+            $out .= '<small class="form-text">* ' . $errorMessage . '</small>';
+        }
+
+        $out .= '</div>';
+
+        $out .= '</div>';
+        /** END THIRD ROW */
 
         $out .= Form::getHidden('sop', 'sop', 'changelang');
 
@@ -2041,7 +2099,7 @@ class UserManagerRenderer
         if ($options['use_advanced_form'] == 'off') {
 
             $extra_field = new FieldList();
-            $extraFiledsOut = $extra_field->playFieldsForUser(0, false, false,true,false,false,false,true);
+            $extraFiledsOut = $extra_field->playFieldsForUser(0, false, false,true,false,false,false,true, $errors);
 
             $out .= $extraFiledsOut;
         } else if ($options['use_advanced_form'] == 'on') {
@@ -2080,6 +2138,9 @@ class UserManagerRenderer
 
 
         if ($options['privacy_policy'] == 'on') {
+
+            $error = (isset($errors) && $errors['pwd']);
+            $errorMessage = $errors['pwd']['msg'];
             $out .= '<div class="homepage__row">'
                 . Form::getInputCheckbox(
                     'register_privacy',
@@ -2101,11 +2162,7 @@ class UserManagerRenderer
         $out .= '<div class="homepage__row homepage__links">'
             . '<a href="/index.php"><em>'.$lang->def('_LOGIN').'</em></a>'
             . '</div>';
-
-        /*$out .= Form::closeElementSpace()
-            . Form::openButtonSpace('reg_form_button')
-            . Form::getButton('reg_button', 'reg_button', $lang->def('_REGISTER'))
-            . Form::closeButtonSpace();*/
+        
         return $out;
     }
 
@@ -2287,54 +2344,73 @@ class UserManagerRenderer
 
         $lang =& DoceboLanguage::createInstance('register', $platform);
 
+        $errors = [];
+
         // control if the inserted data is valid
         if ($options['privacy_policy'] == 'on') {
             if (!isset($source['register']['privacy'])) {
 
-                return array('error' => true,
-                    'msg' => $lang->def('_ERR_POLICY_NOT_CHECKED'));
+                $error = ['error' => true,
+                    'msg' => $lang->def('_ERR_POLICY_NOT_CHECKED')];
+
+                $errors['privacy'] = $error;
 
             } elseif ($source['register']['privacy'] != 'ok') {
 
-                return array('error' => true,
-                    'msg' => $lang->def('_ERR_POLICY_NOT_CHECKED'));
+                $error = ['error' => true,
+                    'msg' => $lang->def('_ERR_POLICY_NOT_CHECKED')];
+
+                $errors['privacy'] = $error;
             }
+
         }
 
         // control mail is correct
         if ($source['register']['email'] == '') {
-            return array('error' => true,
-                'msg' => $lang->def('_ERR_INVALID_MAIL'));
+            $error = ['error' => true,
+                'msg' => $lang->def('_ERR_INVALID_MAIL')];
+
+            $errors['email'] = $error;
         }
         if (!preg_match("/^([a-z0-9_\-]|\\.[a-z0-9_])+@(([a-z0-9_\-]|\\.-)+\\.)+[a-z]{2,8}$/", $source['register']['email'])) {
-            return array('error' => true,
-                'msg' => $lang->def('_ERR_INVALID_MAIL'));
+            $error =  ['error' => true,
+                'msg' => $lang->def('_ERR_INVALID_MAIL')];
+
+            $errors['email'] = $error;
         }
         if (preg_match("[\r\n]+", $source['register']['email'])) {
-            return array('error' => true,
-                'msg' => $lang->def('_ERR_INVALID_MAIL'));
+            $error = ['error' => true,
+                'msg' => $lang->def('_ERR_INVALID_MAIL')];
+
+            $errors['email'] = $error;
         }
 
         $acl_man =& Docebo::user()->getAclManager();
 
         if ($acl_man->getUserByEmail($source['register']['email']) !== false) {
 
-            return array('error' => true,
-                'msg' => $lang->def('_ERR_DUPLICATE_MAIL'));
+            $error = ['error' => true,
+                'msg' => $lang->def('_ERR_DUPLICATE_MAIL')];
+
+            $errors['email'] = $error;
         }
 
         if (($tuser = $acl_man->getTempUserByEmail($source['register']['email'])) !== false) {
 
             $msg = $lang->def('_ERR_DUPLICATE_RESEND');
-            return array('error' => true,
-                'msg' => $msg);
+            $error = ['error' => true,
+                'msg' => $msg];
+
+            $errors['email'] = $error;
 
         }
         // check if userid has been inserted
         if ($source['register']['userid'] == '' || $source['register']['userid'] == $lang->def('_REG_USERID_DEF')) {
 
-            return array('error' => true,
-                'msg' => $lang->def('_ERR_INVALID_USER'));
+            $error = ['error' => true,
+                'msg' => $lang->def('_ERR_INVALID_USER')];
+
+            $errors['userid'] = $error;
         }
 
         // control if userid is duplicate
@@ -2342,48 +2418,61 @@ class UserManagerRenderer
         $temp_user = $acl_man->getTempUserInfo($source['register']['userid']);
         if ($user !== false || $temp_user !== false) {
 
-            return array('error' => true,
-                'msg' => $lang->def('_ERR_DUPLICATE_USER'));
+            $error = ['error' => true,
+                'msg' => $lang->def('_ERR_DUPLICATE_USER')];
+
+            $errors['userid'] = $error;
         }
 
         // control password
         if (strlen($_POST['register']['pwd']) < $options['pass_min_char']) {
 
-            return array('error' => true,
-                'msg' => $lang->def('_PASSWORD_TOO_SHORT'));
+            $error = ['error' => true,
+                'msg' => $lang->def('_PASSWORD_TOO_SHORT')];
+
+            $errors['pwd'] = $error;
         }
         if ($_POST['register']['pwd'] != $source['register']['pwd_retype']) {
 
-            return array('error' => true,
-                'msg' => $lang->def('_ERR_PASSWORD_NO_MATCH'));
+            $error = ['error' => true,
+                'msg' => $lang->def('_ERR_PASSWORD_NO_MATCH')];
+
+            $errors['pwd'] = $error;
         }
         if ($options['pass_alfanumeric'] == 'on') {
             if (!preg_match('/[a-z]/i', $source['register']['pwd']) || !preg_match('/[0-9]/', $source['register']['pwd'])) {
 
-                return array('error' => true,
-                    'msg' => $lang->def('_ERR_PASSWORD_MUSTBE_ALPHA'));
+                $error = ['error' => true,
+                    'msg' => $lang->def('_ERR_PASSWORD_MUSTBE_ALPHA')];
+
+                $errors['pwd'] = $error;
             }
         }
 
         if ($options['lastfirst_mandatory'] == 'on') {
             if (trim($source['register']['firstname']) == '' || trim($source['register']['lastname']) == '') {
 
-                return array('error' => true,
-                    'msg' => $lang->def('_SOME_MANDATORY_EMPTY'));
+                $error = ['error' => true,
+                    'msg' => $lang->def('_SOME_MANDATORY_EMPTY')];
+
+                $errors['firstname'] = $error;
+
+                $errors['lastname'] = $error;
             }
         }
 
         if ($control_extra_field) {
             $extra_field = new FieldList();
-            $re_filled = $extra_field->isFilledFieldsForUser(0, (isset($_POST['group_sel_implode']) ? explode(',', $_POST['group_sel_implode']) : false));
+            $re_filled = $extra_field->isFilledFieldsForUserInRegistration(0, (isset($_POST['group_sel_implode']) ? explode(',', $_POST['group_sel_implode']) : false));
             if ($re_filled !== true) {
 
-                return array('error' => true,
-                    'msg' => implode('<br/>', $re_filled));
+                foreach ($re_filled as $key => $value){
+                    $errors[$key] = $value;
+                }
             }
         }
 
-        return array('error' => false, 'msg' => '');
+        return $errors;
     }
 
     /**
