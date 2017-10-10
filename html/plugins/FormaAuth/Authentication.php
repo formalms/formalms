@@ -28,9 +28,11 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             'type' => self::AUTH_TYPE_BASE,
             'form' => Form::openForm("login_confirm", Get::rel_path("base") . "/index.php?r=" . _login_ . "&plugin=" . Plugin::getName())
                 //  . Form::getHidden("plugin", "plugin", "FormaAuth")
-                . Form::getTextfield(Lang::t("_USERNAME", "login"), "login_userid", "login_userid", 255)
-                . Form::getPassword(Lang::t("_PASSWORD", "login"), "login_pwd", "login_pwd", 255)
-                . Form::getButton("login", "login", Lang::t("_LOGIN", "login"))
+				//  . Form::getTextfield(Lang::t("_USERNAME", "login"), "login_userid", "login_userid", 255)
+				. Form::getInputTextfield('', 'login_userid', 'login_userid', '', '', 255, 'placeholder="' . Lang::t("_USERNAME", "login") . '"')
+				//  . Form::getPassword(Lang::t("_PASSWORD", "login"), "login_pwd", "login_pwd", 255)
+				. Form::getInputPassword('', 'login_pwd', 'login_pwd', '', 255, 'placeholder="' . Lang::t("_PASSWORD", "login") . '"')
+                . Form::getButton("login", "login", Lang::t("_LOGIN", "login"), 'forma-button forma-button--black')
                 . Form::closeForm()
         ];
     }
