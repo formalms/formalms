@@ -45,8 +45,9 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             $url = $facebook_service->getAuthorizationUri();
 
             $form =  "<a href='" . $url . "'>"
-                      . Get::img("social/facebook-24.png")
-                  . "</a>";
+				  // . Get::img("social/facebook-24.png")
+					. '<i class="fa fa-facebook"></i>'
+                  	. "</a>";
         }
 
         return [
