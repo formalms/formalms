@@ -426,7 +426,7 @@ class Field_Country extends Field {
 	 *
 	 * @access public
 	 */
-	function play( $id_user, $freeze, $mandatory = false, $do_not_show_label = false, $value = NULL, $registrationLayout = false) {
+	function play( $id_user, $freeze, $mandatory = false, $do_not_show_label = false, $value = NULL, $registrationLayout = false, $registrationErrors = false) {
 		require_once(_base_.'/lib/lib.form.php');
 
 		if( 	isset( $_POST['field_'.$this->getFieldType()] )
@@ -475,16 +475,28 @@ class Field_Country extends Field {
 
         if ($registrationLayout) {
 
-            $formField = '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">'
-                . '<div class="col-xs-12 col-sm-6">'
-                . Form::getInputDropdown(
-                    '',
+            $error = (isset($registrationErrors) && $registrationErrors[$this->id_common]);
+            $errorMessage = $registrationErrors[$this->id_common]['msg'];
+
+            $formField = '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';
+
+            $formField .= '<div class="col-xs-12 col-sm-6">';
+
+            $formField .= Form::getInputDropdown(
+                    'form-control '.($error ? 'has-error' : ''),
                     'field_' . $this->getFieldType() . '_' . $this->id_common,
                     'field_' . $this->getFieldType() . '[' . $this->id_common . ']',
                     $this->_options,
                     (int)$user_entry,
                     '',
-                    true) . '</div></div>';
+                    true);
+
+            if ($error) {
+                $formField .= '<small class="form-text">* ' . $errorMessage . '</small>';
+            }
+
+            $formField .= '</div>';
+            $formField .= '</div>';
 
             return $formField;
         }
