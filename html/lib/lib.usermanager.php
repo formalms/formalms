@@ -2125,8 +2125,6 @@ class UserManagerRenderer
                             '')
                         . '<label class="checkbox-inline" for="group_sel_' . $id . '"for="group_sel_' . $id . '">' . $info['type_ico'] . ' ' . $info['groupid'] . '</label>
 		                </div>';
-
-
                 }
                 $out .= '</div>';
             }
@@ -2139,8 +2137,8 @@ class UserManagerRenderer
 
         if ($options['privacy_policy'] == 'on') {
 
-            $error = (isset($errors) && $errors['pwd']);
-            $errorMessage = $errors['pwd']['msg'];
+            $error = (isset($errors) && $errors['privacy']);
+            $errorMessage = $errors['privacy']['msg'];
             $out .= '<div class="homepage__row">'
                 . Form::getInputCheckbox(
                     'register_privacy',

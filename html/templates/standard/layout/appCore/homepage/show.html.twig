@@ -23,8 +23,10 @@
             {% endif %}
 			{% if socialLogin is not defined %}
 				<nav class="homepage__links">
-					<a href="#">Registrati</a>
-					<a href="#">Recupera Password</a>
+                    {% if isSelfRegistrationActive != false %}
+                        <a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_register_') }}">{{ translate('_REGISTER', 'login') }}</a>
+                    {% endif %}
+                    <a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_lostpwd_') }}">{{ translate('_LOG_LOSTPWD', 'login') }}</a>
 				</nav>
 			{% endif %}
         </div>
@@ -44,8 +46,10 @@
 			</div>
 
 			<nav class="homepage__links">
-				<a href="#">Registrati</a>
-				<a href="#">Recupera Password</a>
+                {% if isSelfRegistrationActive != false %}
+                    <a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_register_') }}">{{ translate('_REGISTER', 'login') }}</a>
+                {% endif %}
+                <a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_lostpwd_') }}">{{ translate('_LOG_LOSTPWD', 'login') }}</a>
 			</nav>
         </div>
     {% endif %}
