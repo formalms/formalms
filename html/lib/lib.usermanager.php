@@ -1401,7 +1401,8 @@ class UserManagerRenderer
 
                 }
 
-                $this->_opt_in($options, $platform, $opt_link);
+                $result = $this->_opt_in($options, $platform, $opt_link);
+                return $result;
                 if ($this->error) {
                     if ($options['use_advanced_form'] == 'on' || Get::sett('register_with_code') == 'on') {
                         $out .= $this->_special_field($options, $platform, $opt_link, $errors);
@@ -1606,7 +1607,7 @@ class UserManagerRenderer
         $lang =& DoceboLanguage::createInstance('register', $platform);
 
         // Check for error
-        $out = '';
+        $errors = [];
 
 
         // Insert temporary
@@ -1626,11 +1627,11 @@ class UserManagerRenderer
 
         if ($iduser === false) {
 
-            $out .= '<div class="reg_err_data">'
-                . $lang->def('_OPERATION_FAILURE')
-                . '</div>';
             $this->error = true;
-            return $out;
+
+            $errors = ['error' => $this->error ,'msg' => $lang->def('_OPERATION_FAILURE')];
+
+            return $errors;
         }
 
         // facebook register:
@@ -1723,14 +1724,12 @@ class UserManagerRenderer
                 $acl_man->deleteTempUser($iduser);
 
                 $this->error = true;
-                $out .= '<div class="reg_err_data">'
-                    . $lang->def('_OPERATION_FAILURE')
-                    . '</div>';
-            } else {
+                $errors = ['registration' => false, 'error' => $this->error ,'msg' => $lang->def('_OPERATION_FAILURE')];
 
-                $out .= '<div class="reg_success">'
-                    . $lang->def('_REG_SUCCESS')
-                    . '</div>';
+            } else {
+                $this->error = false;
+                $errors = ['registration' => true, 'error' => $this->error ,'msg' => $lang->def('_REG_SUCCESS')];
+
             }
         }
         //end
@@ -1750,19 +1749,17 @@ class UserManagerRenderer
 
             $mailer = DoceboMailer::getInstance();
             if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, false, false)) {
-                $out .= '<div class="reg_err_data">'
-                    . $lang->def('_OPERATION_FAILURE')
-                    . '</div>';
+                $this->error = true;
+                $errors = ['registration' => false, 'error' => $this->error ,'msg' => $lang->def('_OPERATION_FAILURE')];
             } else {
+                $this->error = false;
                 $this->confirmRegister($this->_platform, $options);
-                $out .= '<div class="reg_success">'
-                    . $lang->def('_REG_SUCCESS_SELF')
-                    . '</div>';
+                $errors = ['registration' => true, 'error' => $this->error ,'msg' => $lang->def('_REG_SUCCESS')];
             }
 
         }
         //end
-        return $out;
+        return $errors;
     }
 
     function _special_field($options, $platform, $opt_link, $errors)
