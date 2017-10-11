@@ -89,7 +89,7 @@ class PluginManager {
                     if(self::include_plugin_file($class_name['name'], $category . '.php')) {
                         $namespace_class = "Plugin\\" . $class_name['name'] . "\\" . $category;
                         if (method_exists($namespace_class, $method)) {
-                            $return[] = call_user_func_array(array($namespace_class, $method), $parameter);
+                            $return[$class_name['name']] = call_user_func_array(array($namespace_class, $method), $parameter);
                         }
                     }
                 }
