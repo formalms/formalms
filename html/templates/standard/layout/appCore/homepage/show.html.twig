@@ -2,11 +2,9 @@
     {% if baseLogin is defined %}
         <div class="col-xs-12 col-sm-6{% if socialLogin is not defined %} col-sm-offset-3{% endif %}">
             {% if block_attempts == false %}
-
                 {% for login in baseLogin %}
                     {{ login.form|raw }}
                 {% endfor %}
-
                 {% if done != false %}
                     <div>
 						<b class="logout">{{ done }}</b>
@@ -33,7 +31,6 @@
     {% endif %}
     {% if socialLogin is defined %}
         <div class="col-xs-12 col-sm-6">
-
 			<div class="social-login">
 				<p class="social-login__title">
 					<span>oppure effettua login con i social</span>
@@ -44,7 +41,6 @@
 					{% endfor %}
 				</div>
 			</div>
-
 			<nav class="homepage__links">
                 {% if isSelfRegistrationActive != false %}
                     <a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php?r={{ constant('_register_') }}">{{ translate('_REGISTER', 'login') }}</a>
@@ -68,6 +64,16 @@
 <div class="homepage__row">
     <a class="forma-button forma-button--orange" href="#">Leggi tutto</a>
     <br/><br/>
+</div>
+
+<div class="homepage__row homepage__row--footer">
+	<nav class="homepage__links">
+		{% if externalPages is defined %}
+			{% for externalPage in externalPages %}
+				<a href="{{ externalPage.link }}">{{ externalPage.title }}</a>
+			{% endfor %}
+		{% endif %}
+	</nav>
 </div>
 
 {#
