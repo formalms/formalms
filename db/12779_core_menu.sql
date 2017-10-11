@@ -1,4 +1,4 @@
-drop TABLE `core_menu`;
+drop TABLE if exists `core_menu`;
 /*
 idMenu	int(11)	NO	PRI		auto_increment
 name	varchar(255)	NO			
@@ -33,10 +33,10 @@ insert into core_menu(idmenu, name, sequence, is_active, image) VALUES
 insert into core_menu(idmenu, idparent, name, sequence) VALUES
 (40, 4, '_REPORT', 1), 
 (11, 1, '_LISTUSER', 1), 
-(12, 1, '_MANAGE_GROUPS', 1), 
-(13, 1, '_COMPETENCES', 1), 
+(12, 1, '_MANAGE_GROUPS', 2), 
+(13, 1, '_COMPETENCES', 3), 
 (14, 1, '_FUNCTIONAL_ROLE', 4), 
-(15, 1, '_ADMINISTRATORS', 1), 
+(15, 1, '_ADMINISTRATORS', 5), 
 (21, 2, '_COURSES', 1), 
 (22, 2, '_LOCATION', 2), 
 (23, 2, '_CONTEST', 3), 
@@ -48,15 +48,15 @@ insert into core_menu(idmenu, idparent, name, sequence) VALUES
 (31, 3, '_WEBPAGES', 1), 
 (32, 3, '_NEWS', 2), 
 (33, 3, '_NEWS_INTERNAL', 3), 
-(34, 3, '_COMMUNICATION_MAN', 1), 
-(35, 3, '_NEWSLETTER', 1), 
+(34, 3, '_COMMUNICATION_MAN', 4), 
+(35, 3, '_NEWSLETTER', 5), 
 (50, 5, '_FIELD_MANAGER', 4), 
 (51, 5, '_DASHBOARD', 1), 
-(52, 5, '_CONFIG_SYS', 1), 
+(52, 5, '_CONFIG_SYS', 2), 
 (55, 5, '_LANG', 5), 
 (59, 5, '_CONFIG_ELEARNING', 3), 
 (151, 15, '_ADMIN_RULES', 1), 
-(152, 15, '_ADMIN_MANAGER', 1), 
+(152, 15, '_ADMIN_MANAGER', 2), 
 (211, 21, '_COURSES', 1), 
 (212, 21, '_COURSEPATH', 2), 
 (213, 21, '_CATALOGUE', 3), 
@@ -79,7 +79,7 @@ insert into core_menu(idmenu, idparent, name, sequence) VALUES
 (594, 59, '_TIME_PERIODS', 4), 
 (595, 59, '_LABEL', 5);
 
-drop TABLE `core_menu_under`;
+drop TABLE if exists `core_menu_under`;
 
 CREATE TABLE `core_menu_under` (
   `idUnder` int(11) NOT NULL AUTO_INCREMENT,
