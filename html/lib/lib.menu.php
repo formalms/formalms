@@ -94,7 +94,7 @@ class MenuManager {
                 if(!isset($menu[$idUnder]) && checkPerm($token, true, $module_name, ( $of_platform === NULL ? $this->platform : $of_platform ) )) {
 
                     $menu['name'] = ( $name != '' ? $lang->def($name)  : '' );
-                    $menu['image'] = 'area_title/'.$image;
+                    $menu['image'] = $image;//'area_title/'.
                     $menu['collapse'] = ( $collapse == 'true' ? true : false );
                     $menu['of_platform'] = ( $of_platform === NULL ? $this->platform : $of_platform );
                     //$menu['link'] = 'index.php?op=change_main&new_main='.$id_main.'&of_platform='.( $of_platform === NULL ? $this->platform : $of_platform );
