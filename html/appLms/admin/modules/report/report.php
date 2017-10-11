@@ -33,7 +33,7 @@ function unload_filter($temp=false) {
 function load_filter($id, $tempdata=false, $update=false) {
 	
 	if ($id==false) return;
-
+    checkReport($id);
 	require_once(_lms_.'/lib/lib.report.php');
 	
 	$row = sql_fetch_assoc(sql_query("SELECT * FROM %lms_report_filter WHERE id_filter=$id"));
@@ -384,6 +384,13 @@ function reportlist() {
 
 	$lang =& DoceboLanguage::createInstance('report');
 
+    $error = Get::req('err', DOTY_STRING, false);
+    switch ($error) {
+        case 'plugin': {
+            cout( getErrorUi($lang->def('_ERROR_NOTEXISTS')) );
+        } break;
+    }
+
 	cout(getTitleArea($lang->def('_REPORT'), 'report'));
 	cout('<div class="std_block">');
 	//cout(get_report_steplist($step_index));
@@ -658,6 +665,7 @@ function report_show_results($idrep = false) {
 		}
 	
 	} else {
+        checkReport($idrep);
 		/// find main class report filename and report info
 		$query_report = "
 		SELECT r.class_name, r.file_name, r.report_name, f.filter_name, f.filter_data, f.author
@@ -742,7 +750,7 @@ function report_open_filter() {
 	$url='index.php?modname=report&op=reportlist';
 	$filter_id = Get::req('idrep', DOTY_INT, false);
 	$action = Get::req('action', DOTY_STRING, '');
-	if (!$filter_id) { Util::jump_to($url); return false; }
+	if ( !$filter_id )  { Util::jump_to($url); return false; }
 
 	switch ($action) {
 		case 'schedule': {
@@ -807,6 +815,7 @@ function schedulelist() {
 				$lang->def('_SCHEDULE').'"<b>'.getReportNameById($idrep).'</b>"' ) ) );
 
 	cout('<div class="std_block">');
+	cout('<p><span class="glyphicon glyphicon-warning-sign"></span> '.$lang->def('_WARNING_REPORT').'<p><hr>');
 	cout(get_schedulations_table($idrep));
 
 	cout( '</div>', 'content' ); //std_block div

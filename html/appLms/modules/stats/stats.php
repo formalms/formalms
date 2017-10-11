@@ -13,7 +13,7 @@
 
 if(!Docebo::user()->isLoggedIn() || !isset($_SESSION['idCourse'])) die( "You can't access to oragnization");
 
-require_once( _lms_.'/modules/organization/orglib.php' );
+require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
 require_once( _lms_.'/lib/lib.stats.php' );
 
 Util::get_css('lms-scormplayer.css', false, true);
@@ -43,7 +43,34 @@ class StatOrg_TreeDb extends OrgDirDb {
 		} else
 			return "";
 	}
-	function _getFilter($tname = FALSE) {
+
+    function _getOtherFields($tname = FALSE) {
+        if( $tname === FALSE )
+            return ", title, objectType, idResource, idCategory, idUser, "
+                ."idAuthor, version, difficult, description, language, "
+                ."resource, objective, dateInsert, isTerminator, idParam, visible, milestone, width, height, publish_from, publish_to, access, publish_for ";
+        else
+            return   ", ".$tname.".title,".$tname.".objectType,"
+                .$tname.".idResource, ".$tname.".idCategory, "
+                .$tname.".idUser, ".$tname.".idAuthor, ".$tname.".version, "
+                .$tname.".difficult, ".$tname.".description, "
+                .$tname.".language, ".$tname.".resource, "
+                .$tname.".objective, ".$tname.".dateInsert , "
+                .$tname.".idCourse,"
+                .$tname.".prerequisites, "
+                .$tname.".isTerminator, "
+                .$tname.".idParam, "
+                .$tname.".visible, "
+                .$tname.".milestone, "
+                .$tname.".width,"
+                .$tname.".height, "
+                .$tname.".publish_from, "
+                .$tname.".publish_to, "
+                .$tname.".access, "
+                .$tname.".publish_for ";
+    }
+
+    function _getFilter($tname = FALSE) {
 		$prefix = $GLOBALS['prefix_lms'];
 		$result = "";
 		if( $tname === FALSE ) {

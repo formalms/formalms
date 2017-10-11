@@ -1,5 +1,8 @@
 <?php
 
+// start buffer
+ob_start();
+
 include('bootstrap.php');
 require('../config.php');
 include_once(_base_."/db/lib.docebodb.php");
@@ -10,6 +13,12 @@ sql_query("SET CHARACTER SET 'utf8'");
 $enabled_step = 5;
 $current_step = Get::gReq('cur_step', DOTY_INT);
 $upg_step = Get::gReq('upg_step', DOTY_INT);
+
+// allowed err codes
+$allowed_err_codes = array();
+array_push($allowed_err_codes, 1060); // ER_DUP_FIELDNAME
+array_push($allowed_err_codes, 1068); // ER_MULTIPLE_PRI_KEY
+array_push($allowed_err_codes, 1091); // ER_CANT_DROP_FIELD_OR_KEY
 
 if ($_SESSION['start_version'] >= 3000 && $_SESSION['start_version'] < 4000) {
 	echo 'error: version (' . $_SESSION['start_version'] . ') not supported for upgrade: too old (v3)';
@@ -60,7 +69,7 @@ if ($_SESSION['upgrade_ok']) {
 		$fn =_upgrader_.'/data/upg_data/'.$current_ver.'_db.sql';
 		if (file_exists($fn)) {
 			$GLOBALS['debug'] .=  " <br/>" . "Upgrade db with file: " . $fn ;
-			$res =importSqlFile($fn, array(1060));
+			$res =importSqlFile($fn, $allowed_err_codes);
 			if (!$res['ok']) {
 				$_SESSION['upgrade_ok']=false;
 			}
@@ -147,12 +156,19 @@ if ( $_SESSION['upgrade_ok'] ) {
 		$res =array('res'=>'Error', 'msg' => $GLOBALS['debug']);
 }
 
+// remove all the echo and put them in the debug zone
+$GLOBALS['page']->add(ob_get_contents(), 'debug');
+ob_clean();
 
 /**/
 require_once(_base_.'/lib/lib.json.php');
 $json = new Services_JSON();
 echo $json->encode($res);
 session_write_close();
+
+// flush buffer
+ob_end_flush();
+
 die();
 
 

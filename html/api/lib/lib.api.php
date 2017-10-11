@@ -27,6 +27,9 @@ define('_AUTH_SECRET_KEY_DESC', 'SECRET_KEY');
 define('_REST_OUTPUT_XML', 'xml');
 define('_REST_OUTPUT_JSON', 'json');
 
+define('_MIME_TYPE_XML', 'application/xml');
+define('_MIME_TYPE_JSON', 'application/json');
+
 // xml export function
 define('_XML_VERSION', '1.0');
 define('_XML_ENCODING', 'UTF-8');
@@ -177,9 +180,17 @@ class API {
 	static public function Execute($auth_code, $module, $function, $params) {
 
 		$class_name = $module.'_API';
-
-		//require_once(_base_.'/api/lib/api.'.$module.'.php');
-		require_once(Docebo::inc(_base_.'/api/lib/api.'.$module.'.php'));
+        $file_name = Docebo::inc(_base_.'/api/lib/api.'.$module.'.php');
+        
+        if(!file_exists($file_name)) {
+            return false;
+        }
+        
+		require_once($file_name);
+        
+        if(!class_exists($class_name)) {
+            return false;
+        }
 
 		$api_obj = new $class_name();
 

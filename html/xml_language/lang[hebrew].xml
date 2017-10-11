@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170414</DATE>
+  <DATE>20170713</DATE>
   <LANG id="hebrew">
     <lang_code>hebrew</lang_code>
     <lang_description>&#x5E2;&#x5D1;&#x5E8;&#x5D9;&#x5EA;</lang_description>
@@ -208,7 +208,9 @@
         <key id="calendar&amp;_WEEKEND" attributes="" save_date="2015-09-08 18:15:36"><![CDATA[0,6]]></key>
         <key id="calendar&amp;_WK" attributes="" save_date="2016-12-12 20:04:48"><![CDATA[שבוע]]></key>
       </module>
-      <module id="cart"/>
+      <module id="cart">
+        <key id="cart&amp;_CODE" attributes="" save_date="2017-05-08 14:23:04"><![CDATA[קוד]]></key>
+      </module>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2016-12-12 20:07:00"><![CDATA[הוסף לסל]]></key>
         <key id="catalogue&amp;_CALENDAR" attributes="" save_date="2016-12-12 20:07:30"><![CDATA[קטלוג]]></key>
@@ -387,6 +389,7 @@
       </module>
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2016-12-12 21:02:04"><![CDATA[הפעל תכונות נגישות]]></key>
+        <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2017-05-05 17:51:21"><![CDATA[הגדרות "allow_url_fopen"]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2016-12-14 21:08:13"><![CDATA[הגדרות "allow_url_include"]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2017-04-14 11:32:02"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
         <key id="configuration&amp;_API_SSO" attributes="" save_date="2017-04-14 11:32:14"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
@@ -443,7 +446,7 @@
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2016-12-14 20:43:04"><![CDATA[יש צורך בשם פרטי ושם משפחה על מנת להירשם]]></key>
         <key id="configuration&amp;_LDAP" attributes="" save_date="2015-09-08 18:15:37"><![CDATA[LDAP]]></key>
         <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2016-12-14 20:46:03"><![CDATA[פורט LDAP (בדרך כלל 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2016-12-14 20:46:11"><![CDATA[שרת LDAP]]></key>
+        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2017-05-05 17:20:37"><![CDATA[כתובת שרת LDAP]]></key>
         <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2016-12-12 21:02:20"><![CDATA[הפעל אימות LDAP]]></key>
         <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2016-12-14 21:06:52"><![CDATA[שם משתמש עבור משתמש LDAP, כתוב user$ עבור שם המשתמש.]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2016-12-12 21:10:45"><![CDATA[הגדרות "magic_quotes_gpc"]]></key>
@@ -606,7 +609,7 @@
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2016-12-14 21:16:07"><![CDATA[כיתה תפוסה]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2016-12-15 16:34:31"><![CDATA[נתוניך ישמרו.]]></key>
         <key id="course&amp;_COPY_SUBSCRIPTION_TO_COURSE" attributes="" save_date="2016-12-14 21:17:23"><![CDATA[העתק הרשמות לקורס]]></key>
-        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2016-12-14 21:11:48"><![CDATA[% תשלום מראש]]></key>
+        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2017-06-19 11:39:08"><![CDATA[תשלום מראש]]></key>
         <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2016-12-14 21:16:28"><![CDATA[קוד הרשמה אוטומטית לקורס]]></key>
         <key id="course&amp;_COURSE_CONTENT" attributes="" save_date="2016-12-14 21:14:02"><![CDATA[קורסים זמינים]]></key>
         <key id="course&amp;_COURSE_DATE" attributes="" save_date="2016-12-14 21:17:40"><![CDATA[משך הקורס: מ- [date_begin] עד [date_end].]]></key>
@@ -926,7 +929,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="email&amp;_WAITING_USER_TEXT" attributes="email" save_date="2016-12-15 20:18:32"><![CDATA[יש משתמש חדש ב [url] שממתין לאישור]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2016-12-15 20:19:53"><![CDATA[קיבלת הודעה חדשה]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT" attributes="email" save_date="2016-12-15 20:20:02"><![CDATA[קיבלת הודעה חדשה במערכת הלימוד המקוון שלנו [url] בקורס [course] מהמשתמש [from]]]></key>
-        <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2016-12-15 20:20:10"><![CDATA[קיבלת הודעה חדשה במערכת הלימוד המקוון שלנו [url] בקורס [course] מהמשתמש [from]]]></key>
+        <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2017-05-08 14:00:18"><![CDATA[קיבלת הודעה חדשה במערכת הלימוד המקוון שלנו [url] בקורס <b>[course]</b> מהמשתמש [from]]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_BASE" attributes="" save_date="2016-12-15 20:21:23"><![CDATA[בסיס]]></key>
@@ -1763,7 +1766,7 @@ Otherwise, you must register in our system, following this link: <br />
       </module>
       <module id="report">
         <key id="report&amp;aggregate_report" attributes="" save_date="2016-12-16 20:48:09"><![CDATA[צבירת נתונים על משתמשים וקורסים]]></key>
-        <key id="report&amp;courses_report" attributes="" save_date="2016-08-02 14:03:03"><![CDATA[קורסים]]></key>
+        <key id="report&amp;course_report" attributes="" save_date="2016-08-02 14:03:03"><![CDATA[קורסים]]></key>
         <key id="report&amp;ORG_CHART_SUBDIVISION" attributes="" save_date="2016-12-16 20:58:44"><![CDATA[סעף את הנתונים לפי התרשים הארגוני]]></key>
         <key id="report&amp;REPORT_SHOW_RESULTS" attributes="" save_date="2016-12-16 20:58:16"><![CDATA[הצג תוצאות]]></key>
         <key id="report&amp;user_report" attributes="" save_date="2016-12-16 20:59:54"><![CDATA[משתמשים]]></key>
@@ -2562,7 +2565,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="test&amp;_TEST_BEGIN" attributes="" save_date="2016-12-16 19:34:20"><![CDATA[לחץ כדי להתחיל]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL" attributes="" save_date="2016-12-16 19:50:19"><![CDATA[באפשרותך לעבור לדף הבא או הקודם.]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL_NO" attributes="" save_date="2016-12-16 19:50:06"><![CDATA[אין באפשרותך לעבור לדף הקודם או הבא (אם למבחן יש מספר דפים)]]></key>
-        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2016-12-16 19:34:28"><![CDATA[הרשימה המלאה של השאלות הזמינות במהלך המבחן. ( %tot_element% elements in %tot_page% pages)]]></key>
+        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2017-07-05 12:08:16"><![CDATA[הרשימה המלאה של השאלות הזמינות במהלך המבחן ( %tot_element% elements in %tot_page% pages)]]></key>
         <key id="test&amp;_TEST_COMPILE_TIME" attributes="" save_date="2016-12-16 19:47:39"><![CDATA[מנהלן זמן]]></key>
         <key id="test&amp;_TEST_COMPLETED" attributes="" save_date="2016-12-16 19:46:12"><![CDATA[מבחן הושלם]]></key>
         <key id="test&amp;_TEST_CONTINUE" attributes="" save_date="2016-12-16 19:42:44"><![CDATA[המשך מבחן]]></key>

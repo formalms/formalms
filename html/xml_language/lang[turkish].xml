@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170414</DATE>
+  <DATE>20170713</DATE>
   <LANG id="turkish">
     <lang_code>turkish</lang_code>
     <lang_description>Turkish</lang_description>
@@ -39,7 +39,7 @@
         <key id="admin_directory&amp;_DECLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reddedildi]]></key>
         <key id="admin_directory&amp;_DIRECOTRY_SELFREGISTERED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kendi kendine kayıt]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/admin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yönetici]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_/framework/level/godadmin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Süper yönetici]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_/framework/level/godadmin" attributes="" save_date="2017-04-19 13:00:39"><![CDATA[Süper-yönetici]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/publicadmin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Açık yönetici]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/user" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcı]]></key>
         <key id="admin_directory&amp;_DIRECTORY_ASSIGNFIELDGROUP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alan ata]]></key>
@@ -210,6 +210,7 @@
       </module>
       <module id="cart">
         <key id="cart&amp;_CART" attributes="" save_date="2017-04-10 15:58:50"><![CDATA[Sepetim]]></key>
+        <key id="cart&amp;_CODE" attributes="" save_date="2017-05-08 14:28:01"><![CDATA[Kod]]></key>
         <key id="cart&amp;_COURSE_PRIZE" attributes="" save_date="2017-04-10 16:05:56"><![CDATA[Fiyat]]></key>
         <key id="cart&amp;_DEL_SELECTED_ELEMENT" attributes="" save_date="2017-04-10 16:00:07"><![CDATA[Seçili öğeyi sil]]></key>
         <key id="cart&amp;_EMPTY_CART" attributes="" save_date="2017-04-10 15:59:13"><![CDATA[Sepeti Boşalt]]></key>
@@ -263,6 +264,7 @@
         <key id="catalogue&amp;_TAB_VIEW_MOSTPOPULAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[En gözde]]></key>
         <key id="catalogue&amp;_TAB_VIEW_RECENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[En güncel]]></key>
         <key id="catalogue&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kayıt olduğunuz toplam ders sayısı]]></key>
+        <key id="catalogue&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:55:09"><![CDATA[Gir]]></key>
         <key id="catalogue&amp;_WAITING_APPROVAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Onay için bekleniyor]]></key>
         <key id="catalogue&amp;_WORD_TO_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kelimeye göre ara]]></key>
       </module>
@@ -393,6 +395,7 @@
       </module>
       <module id="configuration">
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Erişilebilirlik özelliklerini etkinleştir]]></key>
+        <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2017-05-05 17:53:12"><![CDATA["allow_url_fopen" ayarları]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["allow_url_include" ayarları]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
         <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> ve <abbr title="Single Sign On">SSO</abbr>]]></key>
@@ -598,7 +601,7 @@
         <key id="course&amp;_CLASSROOM_OCCUPATED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uyarı: bazı sınıflar diğer dersler ile hali hazırda dolu]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sınıf dolu]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Veriniz kaydedilecek.]]></key>
-        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gelişmiş ödeme %]]></key>
+        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2017-06-19 11:40:10"><![CDATA[Gelişmiş ödeme]]></key>
         <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bir derse otomatik kayıt için kod]]></key>
         <key id="course&amp;_COURSE_CONTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seçilebilir dersler]]></key>
         <key id="course&amp;_COURSE_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ders süresi: <b>[date_begin]</b> tarihinden <b>[date_end]</b> tarihine.]]></key>
@@ -687,6 +690,7 @@
         <key id="course&amp;_PAUSE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Duraklamayı sonlandır]]></key>
         <key id="course&amp;_PERMCLOSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tüm ders yöntemi]]></key>
         <key id="course&amp;_PROGRESS_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hedefler]]></key>
+        <key id="course&amp;_PROGRESS_BAR_TEXT" attributes="" save_date="2017-05-08 12:20:14"><![CDATA[Gelişmeyi ]]></key>
         <key id="course&amp;_PROGRESS_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tamamlandı]]></key>
         <key id="course&amp;_PROGRESS_FAILED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Başarısız]]></key>
         <key id="course&amp;_PROGRESS_INCOMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tamamlanmadı]]></key>
@@ -811,7 +815,7 @@ Ya da bu bağlantı üzerinden sistemimize kayıt olabilirsiniz: <br />
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yeni ders ekle]]></key>
-        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;gt;&amp;gt; "Dersim Alanı"na geri dön]]></key>
+        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2017-05-08 12:36:59"><![CDATA[&gt;&gt; "Dersim Alanı"na geri dön]]></key>
         <key id="course_autoregistration&amp;_CODE_ALREDY_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu kodu daha önce kullandınız]]></key>
         <key id="course_autoregistration&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kod]]></key>
       </module>
@@ -924,6 +928,7 @@ Kullanıcı Adı: [userid]
         <key id="email&amp;_WAITING_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[<a href="[url]">[url]</a> adresinde yeni bir kullanıcı var ve onay bekliyor]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Yeni bir mesajınız var]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[[from] kullanıcısından <a href="[url]">[url]</a> adresindeki [course] dersindeki e-öğrenme sisteminden yeni bir mesajınız var]]></key>
+        <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2017-05-08 14:05:13"><![CDATA[[from] kullanıcısından <a href="[url]">[url]</a> adresindeki <b>[course]</b> dersindeki e-öğrenme sisteminden yeni bir mesajınız var]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_BASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Temel]]></key>
@@ -957,9 +962,9 @@ Kullanıcı Adı: [userid]
         <key id="event_manager&amp;_EVENT_PLATFORM_framework" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appCore]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms-a" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS-A]]></key>
-        <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Başkanlar ve Süper Yöneticiler]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2017-04-19 13:00:49"><![CDATA[Başkanlar ve Süper-Yöneticiler]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Eğitmenler]]></key>
-        <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Eğitmenler ve Süper Yöneticiler]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2017-04-19 13:00:44"><![CDATA[Eğitmenler ve Süper-Yöneticiler]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcı]]></key>
         <key id="event_manager&amp;_EVENT_SETTINGS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Etkinlik ayarları]]></key>
       </module>
@@ -1243,9 +1248,9 @@ Kullanıcı Adı: [userid]
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ana sayfa]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms, ticari ve yüksek öğretim pazarında kullanılan Açık Kaynaklı e-Öğrenme platformudur (LMS ve LCMS).<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:23:10"><![CDATA[forma.lms, ticari ve yüksek öğretim pazarında kullanılan Açık Kaynaklı e-Öğrenme platformudur (LMS ve LCMS).<br/>
 <br/>
-Platform 25 farklı dili destekliyor, SCORM 1.2 ve 2004 standardları ile uyumlu, ve farklı öğretici modelleri destekliyor, örneğin: Harmanlanmış, Kendi-Yönlendirilmiş, Ortaklaşa ve hatta Chat, Wiki, Forums üzerinden Sosyal Öğrenme ve diğer çeşitli fonksiyonlar.<br/>
+Platform 26 farklı dili destekliyor, SCORM 1.2 ve 2004 standardları ile uyumlu, ve farklı öğretici modelleri destekliyor, örneğin: Harmanlanmış, Kendi-Yönlendirilmiş, Ortaklaşa ve hatta Chat, Wiki, Forums üzerinden Sosyal Öğrenme ve diğer çeşitli fonksiyonlar.<br/>
 <br/>
 <br/>
 Bu kelimeleri değiştirmek için lütfen Admin/Language yönetimine gidin, <b>login</b> arayın ve <b>_INTRO_STD_TEXT</b> anahtarını değiştirin]]></key>
@@ -1553,6 +1558,7 @@ Bu kelimeleri değiştirmek için lütfen Admin/Language yönetimine gidin, <b>l
         <key id="profile&amp;_ACTIVITY_OF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[[firstname]'nin aktivitesi]]></key>
         <key id="profile&amp;_AVATAR_PHOTO_INSTRUCTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Karşıya yükleme için sadece png, gif ve jpg resim biçimleri kullanılabilir. Eğer boyut [max_px] pixeli geçerse otomatik olarak tekrardan boyutlandırılacak.<br />
 Lütfen ofansif resimler yüklemeyin.]]></key>
+        <key id="profile&amp;_CAREER" attributes="" save_date="2017-05-08 16:06:39"><![CDATA[Kariyer]]></key>
         <key id="profile&amp;_CHANGEPASSWORD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Şifre değiştir]]></key>
         <key id="profile&amp;_CHANGEPOLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alanlar görünür]]></key>
         <key id="profile&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Topluluk]]></key>
@@ -1738,7 +1744,7 @@ Hesabınızı kullanmadan önce doğrulamanız gerekiyor.]]></key>
       </module>
       <module id="report">
         <key id="report&amp;aggregate_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcılarda ve derste veri toplama]]></key>
-        <key id="report&amp;courses_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dersler]]></key>
+        <key id="report&amp;course_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dersler]]></key>
         <key id="report&amp;ORG_CHART_SUBDIVISION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Veriyi organizasyon şemasına göre alt bölümlere ayır]]></key>
         <key id="report&amp;REPORT_SHOW_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sonuçları göster]]></key>
         <key id="report&amp;user_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcılar]]></key>
@@ -1827,7 +1833,7 @@ Hesabınızı kullanmadan önce doğrulamanız gerekiyor.]]></key>
         <key id="report&amp;_SELECT_REPORT_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rapor kategorisi seç:]]></key>
         <key id="report&amp;_SELECT_THE_DATA_COL_NEEDED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rapor tablosunda görmek istediğiniz kolonları seçin]]></key>
         <key id="report&amp;_SEL_COURSES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Derslerin elle seçimi]]></key>
-        <key id="report&amp;_SEND_MAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[e-posta gönder]]></key>
+        <key id="report&amp;_SEND_MAIL" attributes="" save_date="2017-05-12 15:33:57"><![CDATA[E-posta gönder]]></key>
         <key id="report&amp;_SHOWED_COLUMNS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kolonları göster]]></key>
         <key id="report&amp;_SHOW_NOSAVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Göster ama kaydetme]]></key>
         <key id="report&amp;_STATS_FIELDS_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dersler hakkında istatistik göster]]></key>
@@ -1870,6 +1876,7 @@ Hesabınızı kullanmadan önce doğrulamanız gerekiyor.]]></key>
         <key id="reservation&amp;_RESERVATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rezervasyon]]></key>
         <key id="reservation&amp;_RESERVATION_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kategori yönetimi]]></key>
         <key id="reservation&amp;_RESERVATION_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Geçeli Etkinlikler]]></key>
+        <key id="reservation&amp;_RESERVATION_MAIL_SEND" attributes="" save_date="2017-05-12 15:34:03"><![CDATA[E-posta gönder]]></key>
         <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kayıtlarım]]></key>
         <key id="reservation&amp;_RESERVATION_PAST_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Geçmiş Etkinlikler]]></key>
         <key id="reservation&amp;_RESERVATION_SUBSCRIBED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Etkinlikleri Yönet]]></key>
@@ -1971,12 +1978,13 @@ Kullanıcı adı: [userid]
         <key id="standard&amp;_AUTODETECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Otomatik-algıla]]></key>
         <key id="standard&amp;_AVATAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avatar]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ortalama]]></key>
-        <key id="standard&amp;_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&amp;lt;&amp;lt; Geri]]></key>
+        <key id="standard&amp;_BACK" attributes="" save_date="2017-05-08 12:37:08"><![CDATA[&lt;&lt; Geri]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Temel arama]]></key>
         <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:35:35"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[tarafından]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Takvim]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İptal]]></key>
+        <key id="standard&amp;_CAREER" attributes="" save_date="2017-05-08 16:06:41"><![CDATA[Kariyer]]></key>
         <key id="standard&amp;_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ders katalogu]]></key>
         <key id="standard&amp;_CATEGORIZATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kategorilendirme]]></key>
         <key id="standard&amp;_CATEGORIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kategorilendir]]></key>
@@ -2159,6 +2167,7 @@ Kullanıcı adı: [userid]
         <key id="standard&amp;_NEW_FOLDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yeni dizin]]></key>
         <key id="standard&amp;_NEW_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yeni kullanıcı]]></key>
         <key id="standard&amp;_NEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sonraki]]></key>
+        <key id="standard&amp;_NEXT_B" attributes="" save_date="2017-05-12 18:10:40"><![CDATA[Sonraki >>]]></key>
         <key id="standard&amp;_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hayır]]></key>
         <key id="standard&amp;_NONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hiçbiri]]></key>
         <key id="standard&amp;_NOTES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Notlar]]></key>
@@ -2280,6 +2289,7 @@ Kullanıcı adı: [userid]
         <key id="standard&amp;_USER_STATUS_CANCELLED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Silinmiş]]></key>
         <key id="standard&amp;_USER_STATUS_CONFIRMED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Doğrulanacak kayıtlar]]></key>
         <key id="standard&amp;_USER_STATUS_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tamamlandı]]></key>
+        <key id="standard&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:55:06"><![CDATA[Gir]]></key>
         <key id="standard&amp;_USER_STATUS_RESERVED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rezerve edildi]]></key>
         <key id="standard&amp;_USER_STATUS_SUBS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kayıtlı]]></key>
         <key id="standard&amp;_USER_STATUS_SUSPEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Askıya alınmış]]></key>
@@ -2491,7 +2501,7 @@ Kullanıcı adı: [userid]
         <key id="test&amp;_TEST_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Başlamak için tıkla]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bi sonraki ya da önceki sayfaya atlayabilirsiniz (eğer testin birden çok sayfası varsa)]]></key>
         <key id="test&amp;_TEST_CAN_TRAVEL_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bir sonraki ya da önceki sayfaya atlaya<b>maz</b>sınız (eğer testin birden çok sayfası varsa bile)]]></key>
-        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Teste mevcut tüm soruların tam listesi. ( %tot_page% sayfada %tot_element% öğe)]]></key>
+        <key id="test&amp;_TEST_CAPTION" attributes="" save_date="2017-07-05 12:09:26"><![CDATA[Teste mevcut tüm soruların tam listesi ( %tot_page% sayfada %tot_element% öğe)]]></key>
         <key id="test&amp;_TEST_COMPILE_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zaman yönetimi]]></key>
         <key id="test&amp;_TEST_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Test bitti]]></key>
         <key id="test&amp;_TEST_CONTINUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Teste devam et]]></key>
@@ -2530,8 +2540,8 @@ Kullanıcı adı: [userid]
         <key id="test&amp;_TEST_MM4_SHOWSOL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Doğru cevapları göster]]></key>
         <key id="test&amp;_TEST_MM4_SHOWTOT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Final notunu göster (hesaplanabiliyorsa)]]></key>
         <key id="test&amp;_TEST_MM_FOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[3 - Detaylara denemenin sonunda gözükür]]></key>
-        <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - soruların görselliğini düzenle]]></key>
-        <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[2-  denemeler seçeneğini düzenle]]></key>
+        <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2017-04-19 12:50:59"><![CDATA[1 - Soruların görselliğini düzenle]]></key>
+        <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2017-04-19 12:51:14"><![CDATA[2 - Denemeler seçeneğini düzenle]]></key>
         <key id="test&amp;_TEST_MODALITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Test seçenekleri]]></key>
         <key id="test&amp;_TEST_MOD_DOANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cevabı düzenleyebilirsiniz]]></key>
         <key id="test&amp;_TEST_MOD_DOANSWER_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cevabı düzenleye<span class="text_bold">mez</span>siniz]]></key>
@@ -2548,7 +2558,7 @@ Kullanıcı adı: [userid]
         <key id="test&amp;_TEST_PM_DIFFICULT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Soru zorlukları için farklı miktarlar]]></key>
         <key id="test&amp;_TEST_PM_EQUALTOALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Her soru için eş puan (toplam not/soru sayısı)]]></key>
         <key id="test&amp;_TEST_PM_MANUAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Her sorunun puanını belirle]]></key>
-        <key id="test&amp;_TEST_PM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - final not hesabını düzenle]]></key>
+        <key id="test&amp;_TEST_PM_ONE" attributes="" save_date="2017-04-19 12:50:54"><![CDATA[1 - Final not hesabını düzenle]]></key>
         <key id="test&amp;_TEST_PM_SETPOINT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Not seçeneklerini düzenle]]></key>
         <key id="test&amp;_TEST_PM_SUBD_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dağıtımcı]]></key>
         <key id="test&amp;_TEST_PM_TWO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[2 - Her sorunun notunu düzenle]]></key>
@@ -2608,7 +2618,7 @@ Kullanıcı adı: [userid]
         <key id="test&amp;_TEST_TM2_SETTIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uygula ve zamanı ata]]></key>
         <key id="test&amp;_TEST_TM2_SUBD_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dağıtıcı]]></key>
         <key id="test&amp;_TEST_TM_FOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sorulara atanan süreyi düzenle]]></key>
-        <key id="test&amp;_TEST_TM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - test süresini belirle]]></key>
+        <key id="test&amp;_TEST_TM_ONE" attributes="" save_date="2017-04-19 12:51:04"><![CDATA[1 - Test süresini belirle]]></key>
         <key id="test&amp;_TEST_TM_THREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Her soru için zaman belirle]]></key>
         <key id="test&amp;_TEST_TM_TWO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[2 - Deneme için toplam süreyi belirle]]></key>
         <key id="test&amp;_TEST_TOTAL_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Toplam not:]]></key>

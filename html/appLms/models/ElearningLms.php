@@ -171,6 +171,42 @@ class ElearningLms extends Model {
 		return $output;
 	}
 
+    
+    //** Calculates the course states **
+    public function getFilterStatusCourse($id_user) {
+     
+     
+        $output['all'] = Lang::t('_ALL_OPEN', 'course');
+     
+        $db = DbConn::getInstance();
+
+
+        $query = "SELECT DISTINCT cu.status AS status_course "
+            ." FROM %lms_courseuser AS cu JOIN %lms_course AS c "
+            ." ON (cu.idCourse = c.idCourse) "
+            ." WHERE cu.idUser = ".(int)$id_user."  "
+            ." ORDER BY cu.status ASC";
+
+            
+ 
+            
+        $res = $db->query($query);
+        if ($res && $db->num_rows($res) > 0) {
+            while (list($status_course) = $db->fetch_row($res)) {
+                
+                if($status_course==0) $str_status_course =  Lang::t('_NEW', 'course');
+                if($status_course==1) $str_status_course =  Lang::t('_USER_STATUS_BEGIN', 'course');
+                if($status_course==2) $str_status_course =  Lang::t('_COMPLETED', 'course');;
+                
+                if($status_course>=0) $output[$status_course] = $str_status_course;
+            }
+        }
+        return $output;
+    }    
+    
+    
+    
+    
 
     // LR: list category of subscription
     public function getListCategory($idUser){

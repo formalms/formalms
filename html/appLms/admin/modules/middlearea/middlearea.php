@@ -24,12 +24,12 @@ function view_area() {
 		JOIN %lms_menucourse_under AS under
 	WHERE mo.idModule = under.idModule
 		AND mo.module_info IN ('all','user')
-		AND mvc_path <> 'elearning/show'
 	ORDER BY under.sequence";
 	$re_menu_voice = sql_query($query_menu);
 
 	$base_url = 'index.php?modname=middlearea&amp;op=select_permission&amp;load=1&amp;obj_index=';
 	$second_url = 'index.php?modname=middlearea&amp;op=switch_active&amp;obj_index=';
+    $third_url = 'index.php?modname=middlearea&amp;op=set_home&amp;obj_index=';
 
 	$ma = new Man_MiddleArea();
 	$disabled_list = $ma->getDisabledList();
@@ -69,20 +69,33 @@ function view_area() {
 		'tb_games' => Lang::t('_CONTEST', 'middlearea'),
 		'tb_communication' => Lang::t('_COMMUNICATIONS', 'middlearea'),
 		'tb_videoconference' => Lang::t('_VIDEOCONFERENCE', 'middlearea'),
-		'tb_kb' => Lang::t('_CONTENT_LIBRARY', 'middlearea')
+		'tb_kb' => Lang::t('_CONTENT_LIBRARY', 'middlearea')  
 	);
 
-	$query_menu = "SELECT obj_index from %lms_middlearea where obj_index like 'tb_%' ORDER BY sequence";
+    
+ if(Get::cfg('enable_plugins', false)){
+        $pl = new PluginManager();
+        $list_pl = $pl->get_all_plugins();
+        
+        foreach ($list_pl as $key){
+            $plugin_name = strtolower ($key['name']);
+            $tab["tb_".$plugin_name] = Lang::t('_'.strtoupper ($key['name']), 'middlearea');
+        }     
+ }    
+    
+
+	$query_menu = "SELECT obj_index, is_home from %lms_middlearea where obj_index like 'tb_%' ORDER BY sequence";
 	$re_tablist = sql_query($query_menu);
 
-	while(list($obj_index) = sql_fetch_row($re_tablist)) {
+	while(list($obj_index, $is_home) = sql_fetch_row($re_tablist)) {
 		$id = $obj_index;
 		$name = $tab[$id];
 
 		$tab_list .= '<li id="'.$id.'">'
-			.'<span>'.$name.'</span>'
+            .'<a class="ico-sprite subs_location'.($is_home ? '_green':'').'" href="'.$third_url.$id.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
+			.' <span>'.$name.'</span>'
 			.' <a class="ico-sprite subs_users" href="'.$base_url.$id.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
-			.' <a class="ico-sprite subs_'.( isset($disabled_list[$id]) ? 'noac' : 'actv' ).'" href="'.$second_url.$id.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
+			.' <a class="ico-sprite subs_'.( isset($disabled_list[$id]) ? 'noac' : 'actv' ).'" href="'.($is_home? "":$second_url.$id).'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
 			.'</li>';
 	}
 	// Block List
@@ -194,6 +207,20 @@ function switch_active() {
 	Util::jump_to('index.php?modname=middlearea&amp;op=view_area&amp;result='.($re ? 'ok' : 'err' ));
 }
 
+
+
+function set_home_page(){
+    require_once($GLOBALS['where_lms'].'/lib/lib.middlearea.php');
+
+    $man_ma = new Man_MiddleArea();
+    $obj_index = importVar('obj_index', false, '');
+    $selected = $man_ma->setHomePage($obj_index);
+    Util::jump_to('index.php?modname=middlearea&amp;op=view_area&amp;result=ok');
+    
+}
+
+
+
 function select_permission() {
 	checkPerm('view');
 
@@ -286,6 +313,9 @@ function MiddleAreaDispatch($op) {
 		case "switch_active" : {
 			switch_active();
 		};break;
+        case "set_home": {
+            set_home_page();
+        }
 		case "view_area" :
 		default : {
 			//view_area();

@@ -89,13 +89,13 @@ class Folder {
 	}
 
 	function getChildrens() {
-		$rs = $this->tbd->getChildrens( $this );
-		$coll = new FoldersCollection( $this->tbd, $rs, false, $this->nested );
+		$rs = $this->tdb->getChildrens( $this );
+		$coll = new FoldersCollection( $this->tdb, $rs, false, $this->nested );
 		return $coll;
 	}
 
 	function rename( $newFolderName ) {
-		$this->tbd->renameFolder( $this, $newFolderName );
+		$this->tdb->renameFolder( $this, $newFolderName );
 	}
 
 	function delete() {

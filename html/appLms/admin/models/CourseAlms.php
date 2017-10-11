@@ -418,7 +418,7 @@ Class CourseAlms extends Model
 
         $boxDescription = Get::pReq('course_box_descr', DOTY_STRING, "");
 
-        if(strlen($boxDescription) > SELF::boxDescrMaxLimit){
+        if(strlen($boxDescription) > self::boxDescrMaxLimit){
             $res['err'] = '_err_course_box_descr_max_limit';
 
             return $res;
@@ -719,7 +719,7 @@ Class CourseAlms extends Model
 
         $boxDescription = Get::pReq('course_box_descr', DOTY_STRING, "");
 
-        if(strlen($boxDescription) > SELF::boxDescrMaxLimit){
+        if(strlen($boxDescription) > self::boxDescrMaxLimit){
             $res['err'] = '_err_course_box_descr_max_limit';
 
             return $res;

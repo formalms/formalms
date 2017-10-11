@@ -1,13 +1,16 @@
 <?php
+
 namespace appLms\Events\Lms;
 
 use Symfony\Component\EventDispatcher\Event;
 
 class TestConfigurationMethodOfUseRenderEvent extends Event
 {
+    const EVENT_SECTION_BASE = 0;
+    
     const EVENT_NAME = 'lms.test.configuration_method_of_use_render';
-
-    protected $formElements;
+    
+    protected $formElementsSections;
     /**
      * @var null
      */
@@ -16,62 +19,83 @@ class TestConfigurationMethodOfUseRenderEvent extends Event
      * @var null
      */
     protected $lang = null;
-
-    public function __construct($object_test, $lang)
+    
+    public function __construct ($object_test , $lang)
     {
         $this->object_test = $object_test;
         $this->lang = $lang;
-
-        $this->formElements = array();
-
+        
+        $this->formElementsSections[ SELF::EVENT_SECTION_BASE ] = [];
+        
     }
-
+    
     /**
      * @return null
      */
-    public function getLang()
+    public function getLang ()
     {
         return $this->lang;
     }
-
+    
     /**
      * @return null
      */
-    public function getObjectTest()
+    public function getObjectTest ()
     {
         return $this->object_test;
     }
-
+    
+    public function resetFormElementsForSection ($section)
+    {
+        $this->formElementsSections[ $section ] = [];
+    }
+    
+    
     /**
      * @param array $formElements
+     * @param integer $section
      */
-    public function setFormElements($formElements)
+    public function setFormElementsForSection (array $formElements , int $section)
     {
-        $this->formElements = $formElements;
+        $this->formElementsSections[ $section ] = $formElements;
     }
-
+    
     /**
      * @return array
      */
-    public function getFormElements()
+    public function getFormElements ()
     {
         return $this->formElements;
     }
-
-    public function addFormElement($formElement)
+    
+    /**
+     * @param integer $section
+     * @return array
+     */
+    public function getFormElementsForSection ( $section)
     {
-        $this->formElements[] = $formElement;
+        if (isset($this->formElementsSections[ $section ])) {
+            return $this->formElementsSections[ $section ];
+        }
+        return [];
     }
-
-    public function getElementString()
+    
+    public function addFormElementForSection ($formElement , $section)
+    {
+        $this->formElementsSections[ $section ][] = $formElement;
+    }
+    
+    public function getElementString ()
     {
         $formString = "";
-
-        foreach ($this->formElements as $formElement) {
-            $formString .= $formElement;
+        
+        foreach ($this->formElementsSections as $section => $formElements) {
+            foreach ($formElements as $formElement) {
+                $formString .= $formElement;
+            }
         }
-
+        
         return $formString;
     }
-
+    
 }

@@ -227,12 +227,11 @@ class DoceboUser {
 		$user_info = $user_manager->getUser(false, $login);
 		// first login
 
-		$ret_value = false;
 		if( $user_info === false )
-			return $ret_value;
+			return false;
 
 		if( $user_info[ACL_INFO_VALID] != '1' )
-			return $ret_value;
+			return false;
 
 		if(Get::sett('ldap_used') == 'on') {
 
@@ -253,7 +252,7 @@ class DoceboUser {
 				// Edited by Claudio Redaelli
 				if (Get::sett('ldap_alternate_check') == 'on') {
 					if(!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST]))
-						return $ret_value;
+						return false;
 				} else {
 					$false_public = FALSE;
 					return $false_public;
@@ -264,7 +263,7 @@ class DoceboUser {
 
 		} elseif(!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST])) {
 
-			return $ret_value;
+			return false;
 		}
 		unset($_SESSION[$prefix."_idst"]);
 		$du = new DoceboUser( $login, $prefix );

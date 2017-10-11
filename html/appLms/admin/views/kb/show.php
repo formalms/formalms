@@ -47,7 +47,7 @@
 	}
 
 	function fv_switch(elLiner, oRecord, oColumn, oData) {
-		var title = oData>0 ? '<?php echo addslashes(Lang::t('_SET_AS_NORMAL', 'kb')); ?>' : '<?php echo addslashes(Lang::t('_SET_VISIBLE_TO_EVERYONE', 'kb')); ?>';
+		var title = parseInt(oData)==0 ? '<?php echo addslashes(Lang::t('_SET_AS_NORMAL', 'kb')); ?>' : '<?php echo addslashes(Lang::t('_SET_VISIBLE_TO_EVERYONE', 'kb')); ?>';
 		var r_name = oRecord.getData("r_name");
 		elLiner.innerHTML = '<a id="fv_switch_'+oRecord.getData("res_id")+'" class="ico-sprite subs_'+(oData>0 ? 'actv' : 'noac')+'" '
 			+' href="ajax.adm_server.php?r=alms/kb/fvSwitch&id='+oRecord.getData("res_id")+'&is_active='+(oData)+'" '

@@ -36,14 +36,8 @@ class Lms_BlockWidget_menu extends Widget {
 			$this->block_list ['course'] = true;
 		
 		if (isset ( $this->block_list ['user_details_full'] )) {
-			
-			/*
-			 * echo '<div class="inline_block">' .'<div class="content">';
-			 */
+
 			$this->user_details_full ( $this->link );
-			/*
-			 * echo '</div>' .'</div>';
-			 */
 		}
 		if (isset ( $this->block_list ['labels'] )) {
 			echo '<div class="inline_block">';
@@ -85,92 +79,117 @@ class Lms_BlockWidget_menu extends Widget {
 	
 	// box iscrizione corso
 	public function subscribe_course() {
-		
-        
         require_once (_base_ . '/lib/lib.form.php');
-		
+        $html = '';
+        $ma = new Man_MiddleArea ();
+        if ($ma->currentCanAccessObj ( 'course' )){
 
-            $ma = new Man_MiddleArea ();
-            if ($ma->currentCanAccessObj ( 'course' )){
-            $html .=  '<div class="inline_block">';
-                            $str_code = Lang::t('_TIT_SUBSCRIPTION_BY_CODE', 'catalogue');
-		                    $form = new Form ();
-		                    $op = $form->openForm ( 'course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=subscribe' );
-                            
-                            $it = $form->getInputTextfield ( Lang::t('_LBL_CODE', 'standard'), 'course_autoregistration_code', 'course_autoregistration_code', '','',30, ' size=30 placeholder="'.$str_code.'"' );
-		                    //$it = $form->getTextfield ( Lang::t('_LBL_CODE', 'standard'), 'course_autoregistration_code', 'course_autoregistration_code', '100');
-                           // echo Form::getInputTextfield("search_t", $id."_filter_text", "filter_text", $filter_text, '', 255, 'placeholder='.$str_search );
-		                    
-                            $sb = $form->getButton ( 'subscribe_info', 'subscribe_info', Lang::t('_LBL_SEND', 'standard') );
-		                    $cf = $form->closeForm ();
-		                    
-		                    $html .= '
-                                             <div class="content">
-                                    <div>
-                                            <div class="form_line_l">
-                                            <p><div >'. $op . $it . '' . $sb . $cf . '</div></p>      
-                                ';
-                                
-                                
-                                $html .= '</div>
-                                
-                                                   </div>
-                                    </div>
-                            </div>
-                                ';
-            }         
+            $str_code = Lang::t('_TIT_SUBSCRIPTION_BY_CODE', 'catalogue');
+            $form = new Form ();
+            $openForm = $form->openForm ( 'course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=subscribe' );
+
+            $inputText = $form->getInputTextfield ( Lang::t('_LBL_CODE', 'standard'), 'course_autoregistration_code', 'course_autoregistration_code', '','',30, ' size=30 placeholder="'.$str_code.'"' );
+
+            $submitButton = $form->getButton ( 'subscribe_info', 'subscribe_info', Lang::t('_LBL_SEND', 'standard'), 'button btn btn-default' );
+            $closeForm = $form->closeForm ();
+
+            $html .= '<div class="input-group">
+                           '. $openForm . $inputText . '
+                           <div class="input-group-btn">
+                           ' . $submitButton  . '
+                           </div>
+                           ' . $closeForm . '
+                      </div>
+            ';
+        }
             
-		//echo $html;
         return $html;
 	}
 	// END
-	
+
+    // news section
 	public function news($link) {
-       
-       $html = "";
-            $ma = new Man_MiddleArea ();
-            if ($ma->currentCanAccessObj ( 'news' )){
-            
-                    $html .= '<div class="inline_block">' ;        
-                
-		        $html  .= '<h2 class="heading">' . Lang::t ( '_NEWS', 'catalogue' ) . '</h2>' . '<div class="content">';
-		        
-		        $user_assigned = Docebo::user ()->getArrSt ();
-		        
-		        $query_news = "
-		        SELECT idNews, publish_date, title, short_desc, important, viewer
-		        FROM %lms_news_internal
-		        WHERE language = '" . getLanguage () . "'
-		        OR language = 'all'
-		        ORDER BY important DESC, publish_date DESC ";
-		        $re_news = sql_query ( $query_news );
-		        
-		        while ( list ( $id_news, $publish_date, $title, $short_desc, $impo, $viewer ) = sql_fetch_row ( $re_news ) ) {
-			        
-			        $viewer = (is_string ( $viewer ) && $viewer != false ? unserialize ( $viewer ) : array ());
-			        $intersect = array_intersect ( $user_assigned, $viewer );
-			        if (! empty ( $intersect ) || empty ( $viewer )) {
-				        
-				        $html .= '<h3>' . $title . '</h3>' . '<div class="news_textof">' . '<span class="news_data">' . Format::date ( $publish_date, 'date' ) . ' - </span>' . $short_desc . '</div>';
-			        }
-		        } // end news display
-		        if (! sql_num_rows ( $re_news )) {
-			        $html .= Lang::t ( '_NO_CONTENT', 'catalogue' );
-		        }
-		        $html .= '</div>';
-        
+        $html = "";
+        $ma = new Man_MiddleArea ();
+        $count = 0;
+
+        if ($ma->currentCanAccessObj ( 'news' )){
+            $user_assigned = Docebo::user ()->getArrSt ();
+            $query_news = "
+            SELECT idNews, publish_date, title, short_desc, important, viewer
+            FROM %lms_news_internal
+            WHERE language = '" . getLanguage () . "'
+            OR language = 'all'
+            ORDER BY important DESC, publish_date DESC ";
+            $re_news = sql_query ( $query_news );
+            $newsRows = sql_num_rows($re_news);
+
+            //loop per creare l'elemento news
+
+            $html .= '<h2 class="heading">' . Lang::t ( '_NEWS', 'catalogue' ) . '</h2>';
+            $html .= '<div id="user-panel-carousel" class="carousel slide carousel-fade" data-ride="carousel">';
+            $html .= '<ol class="carousel-indicators">';
+
+            while ($count < $newsRows) {
+
+                if ($count === 0) {
+                    $html .= '<li class="active" data-target="#user-panel-carousel" data-slide-to="' . $count . '"></li>';
+                } else {
+                    $html .= '<li class="" data-target="#user-panel-carousel" data-slide-to="' . $count . '"></li>';
+                }
+
+                $count++;
+            }
+
+            $html .= '</ol>';
+
+            $count = 0;
+
+            $html .= '<div class="carousel-inner" role="listbox">';
+
+            while (list($id_news, $publish_date, $title, $short_desc, $impo, $viewer) = sql_fetch_row ($re_news)) {
+
+                $viewer = (is_string ( $viewer ) && $viewer != false ? unserialize ( $viewer ) : array ());
+                $intersect = array_intersect ( $user_assigned, $viewer );
+                if (! empty ( $intersect ) || empty ( $viewer )) {
+
+                    if ($count === 0) {
+                        $html .= '<div class="item active">
+                                    <h3>' . $title . '</h3>
+                                    <p>' . $short_desc . '</p>
+                                    <span>' . Format::date ( $publish_date, 'date' ) . '</span>
+                                  </div>';
+                    } else {
+                        $html .= '<div class="item">
+                                    <h3>' . $title . '</h3>
+                                    <p>' . $short_desc . '</p>
+                                    <span>' . Format::date ( $publish_date, 'date' ) . '</span>
+                                  </div>
+                                    ';
+                    }
+                }
+
+                $count++;
+
+            } // end news display
+
+            if (! sql_num_rows ( $re_news )) {
+                $html .= Lang::t ( '_NO_CONTENT', 'catalogue' );
+            }
+
+            $html .= '</div>';
+            $html .= '</div>'; //chiudo il carosello
         }
-        
-        
-        
         return $html;
 	}
+
 	public function label() {
 		require_once (_lms_ . '/admin/models/LabelAlms.php');
 		$label_model = new LabelAlms ();
 		
 		echo '<h2 class="heading">' . Lang::t ( '_LABEL', 'catalogue' ) . '</h2>' . '<div class="content">' . Form::openForm ( 'label_form', 'index.php?r=elearning/show' ) . Form::getDropdown ( Lang::t ( '_LABELS', 'catalogue' ), 'id_common_label_dd', 'id_common_label', $label_model->getDropdownLabelForUser ( Docebo::user ()->getId () ), ($_SESSION ['id_common_label'] == - 1 ? - 2 : $_SESSION ['id_common_label']) ) . Form::closeForm () . '<script type="text/javascript">' . 'var dd = YAHOO.util.Dom.get(\'id_common_label_dd\');' . 'YAHOO.util.Event.onDOMReady(YAHOO.util.Event.addListener(dd, "change", function(e){var form = YAHOO.util.Dom.get(\'label_form\');form.submit();}));' . '</script>' . '</div>';
 	}
+
 	public function credits() {
 		$str = '<h2 class="heading">' . Lang::t ( '_CREDITS', 'catalogue' ) . '</h2>' . '<div class="content">';
 		$period_start = '';

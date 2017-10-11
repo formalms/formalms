@@ -27,44 +27,33 @@ Boot::init(BOOT_DATETIME);
 // not a pagewriter but something similar
 $GLOBALS['operation_result'] = '';
 if(!function_exists("aout")) {
-	function aout($string) { $GLOBALS['operation_result'] .= $string; }
+    function aout($string) { $GLOBALS['operation_result'] .= $string; }
 }
 require_once(_lms_.'/lib/lib.permission.php');
 
 // load the correct module
 $aj_file = '';
+$mn = Get::req('mn', DOTY_ALPHANUM, '');
+$plf = Get::req('plf', DOTY_ALPHANUM, ( $_SESSION['current_action_platform'] ? $_SESSION['current_action_platform'] : Get::cur_plat() ));
 
-if(isset($_GET['r'])) {
-	$request = $_GET['r'];
-	$r = explode('/', $request);
-	$mvc = ucfirst($r[0]).( count($r) == 2 ? 'Lms' : '' ).'Controller';
-	$action = $r[1];
+if(isset($_GET['r'])) { $GLOBALS['req'] = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $_GET['r']); }
+if (!empty($GLOBALS['req'])){
 
-	$controller = new $mvc( strtolower($r[0]) );
-	ob_clean();
-	$controller->request($action);
-
-	aout(ob_get_contents());
-	ob_clean();
-
+    $requesthandler = new RequestHandler($GLOBALS['req'],'lms');
+    $requesthandler->run(true);
 } else {
-	$mn = Get::req('mn', DOTY_ALPHANUM, '');
-	$plf = Get::req('plf', DOTY_ALPHANUM, ( !empty($_SESSION['current_action_platform']) ? $_SESSION['current_action_platform'] : Get::cur_plat() ));
+    if($mn == '') {
 
-	if($mn == '') {
+        $fl = Get::req('file', DOTY_ALPHANUM, '');
+        $sf = Get::req('sf', DOTY_ALPHANUM, '');
+        $aj_file = $GLOBALS['where_'.$plf].'/lib/'.( $sf ? $sf.'/' : '' ).'ajax.'.$fl.'.php';
+    } else {
 
-		$fl = Get::req('file', DOTY_ALPHANUM, '');
-		$sf = Get::req('sf', DOTY_ALPHANUM, '');
-		$aj_file = $GLOBALS['where_'.$plf].'/lib/'.( $sf ? $sf.'/' : '' ).'ajax.'.$fl.'.php';
-	} else {
-
-		if($plf == 'framework') $aj_file = $GLOBALS['where_'.$plf].'/modules/'.$mn.'/ajax.'.$mn.'.php';
-		else $aj_file = $GLOBALS['where_'.$plf].'/modules/'.$mn.'/ajax.'.$mn.'.php';
-	}
-	
-	include( Docebo::inc($aj_file) );
+        if($plf == 'framework') $aj_file = $GLOBALS['where_'.$plf].'/modules/'.$mn.'/ajax.'.$mn.'.php';
+        else $aj_file = $GLOBALS['where_'.$plf].'/modules/'.$mn.'/ajax.'.$mn.'.php';
+    }
 }
-
+include($aj_file);
 
 // finalize
 Boot::finalize();

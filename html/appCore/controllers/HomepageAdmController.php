@@ -403,10 +403,10 @@ class HomepageAdmController extends AdmController {
 
             switch($next_action) {
                 case "organization":
-                    $_SESSION["login_redirect"] = Get::rel_path("lms") . "index.php?modname=organization&op=custom_playitem&id_item=" . $id_item;
+                    $_SESSION["login_redirect"] = trim(dirname($_SERVER['SCRIPT_NAME']), DIRECTORY_SEPARATOR) . "/" . _folder_lms_ . "/index.php?modname=organization&op=custom_playitem&id_item=" . $id_item;
                     break;
                 case "playsco":
-                    $_SESSION["login_redirect"] = Get::rel_path("lms") . "index.php?modname=organization&op=custom_playitem&id_course=" . $id_course
+                    $_SESSION["login_redirect"] = trim(dirname($_SERVER['SCRIPT_NAME']), DIRECTORY_SEPARATOR) . "/" . _folder_lms_ . "/index.php?modname=organization&op=custom_playitem&id_course=" . $id_course
                             . "&courseid=" . $id_course . "&id_item=" . $id_item . "&start_from_chapter=" . $chapter . "&collapse_menu=1";
                     break;
             }

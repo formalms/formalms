@@ -404,7 +404,7 @@ class ImportUser extends DoceboImport_Destination {
                                 $this->last_error = 'Error on insert user';
                                 $err = true;
                             }
-                        } elseif ($idst !== FALSE) {
+                        } elseif ($idst !== FALSE || $sameuserid) {
                             $idst = FALSE;
                             $this->last_error = Lang::t('_USER_ALREADY_EXISTS', 'standard').' --> '.$userid.' | '.$firstname.' | '.$lastname.' | '.$pass.' | '.$email.' |';
                             return FALSE;
@@ -471,7 +471,11 @@ class ImportUser extends DoceboImport_Destination {
                         break;
                 }
                 
-		if($idst !== false) {
+		if($idst !== false || $sameuserid == TRUE) {
+                    
+                        if ($idst == FALSE && $sameuserid == TRUE) {
+                            $idst = $acl_manager->getUserST( $tocompare['userid'] );
+                        }
 			
 			$result = TRUE;
 			$this->idst_imported[$idst] = $idst;

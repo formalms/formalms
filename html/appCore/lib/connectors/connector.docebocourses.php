@@ -46,14 +46,18 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 		array( 'valid_time', 'int' ), 
 		array( 'max_num_subscribe', 'int' ), 
 		array( 'selling', 'int' ), 
-		array( 'prize', 'int' )
+		array( 'prize', 'int' ),
+            //lp
+		array( 'course_type', 'dropdown' ), 
+		array( 'course_edition', 'int' ), 
+            
 	);
 	
 	var $mandatory_cols = array('code', 'name');
 	
 	var $default_cols = array(	'description' 		=> '', 
 								'lang_code' 		=> '', 
-								'status' 			=> '0', 
+								'status' 		=> '0', 
 								'subscribe_method' 	=> '', 
 								'permCloseLO' 		=> '', 
 								'difficult' 		=> 'medium', 
@@ -62,11 +66,13 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 								'show_extra_info' 	=> '0', 
 								'show_rules' 		=> '0', 
 								'date_begin' 		=> '0000-00-00', 
-								'date_end' 			=> '0000-00-00', 
+								'date_end' 		=> '0000-00-00', 
 								'valid_time' 		=> '0', 
-								'max_num_subscribe' => '0', 
-								'selling' 			=> '0', 
-								'prize' 			=> '');
+								'max_num_subscribe'     => '0', 
+								'selling' 		=> '0', 
+								'prize' 		=> '',
+                                                                'course_type'           => 'elearning',
+                                                                'course_edition'        => '0');
 	
 	var $valid_filed_type 		= array( 'text','date','dropdown','yesno');
 	
@@ -222,11 +228,11 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 		
 		$id_course = false;
 		
-		if($row['code'] == '') 				$row['code'] = $this->default_cols['code'];
-		if($row['name'] == '') 				$row['name'] = $this->default_cols['name'];
+		if($row['code'] == '') 			$row['code'] = $this->default_cols['code'];
+		if($row['name'] == '') 			$row['name'] = $this->default_cols['name'];
 		if($row['description'] == '') 		$row['description'] = $this->default_cols['description'];
 		if($row['lang_code'] == '') 		$row['lang_code'] = $this->default_cols['lang_code'];
-		if($row['status'] == '') 			$row['status'] = $this->default_cols['status'];
+		if($row['status'] == '') 		$row['status'] = $this->default_cols['status'];
 		if($row['subscribe_method'] == '') 	$row['subscribe_method'] = $this->default_cols['subscribe_method'];
 		if($row['permCloseLO'] == '') 		$row['permCloseLO'] = $this->default_cols['permCloseLO'];
 		if($row['difficult'] == '') 		$row['difficult'] = $this->default_cols['difficult'];
@@ -235,12 +241,13 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 		if($row['show_extra_info'] == '') 	$row['show_extra_info'] = $this->default_cols['show_extra_info'];
 		if($row['show_rules'] == '') 		$row['show_rules'] = $this->default_cols['show_rules'];
 		if($row['date_begin'] == '') 		$row['date_begin'] = $this->default_cols['date_begin'];
-		if($row['date_end'] == '') 			$row['date_end'] = $this->default_cols['date_end'];
+		if($row['date_end'] == '') 		$row['date_end'] = $this->default_cols['date_end'];
 		if($row['valid_time'] == '') 		$row['valid_time'] = $this->default_cols['valid_time'];
-		if($row['max_num_subscribe'] == '') $row['max_num_subscribe'] = $this->default_cols['max_num_subscribe'];
-		if($row['prize'] == '') 			$row['prize'] = $this->default_cols['prize'];
-		if($row['selling'] == '') 			$row['selling'] = $this->default_cols['selling'];
-		
+		if($row['max_num_subscribe'] == '')     $row['max_num_subscribe'] = $this->default_cols['max_num_subscribe'];
+		if($row['prize'] == '') 		$row['prize'] = $this->default_cols['prize'];
+		if($row['selling'] == '') 		$row['selling'] = $this->default_cols['selling'];
+		if($row['course_type'] == '') 		$row['course_type'] = $this->default_cols['course_type'];
+                if($row['course_edition'] == '') 	$row['course_edition'] = $this->default_cols['course_edition'];
 		// check if the course identified by the pk alredy exits
 		$id_course = $this->get_row_by_pk($pk);
 		if($id_course === false) {
@@ -259,7 +266,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 			SET idCategory = '0', 
 				code = '".addslashes($row['code'])."', 
 				name = '".addslashes($row['name'])."', 
-				description = '".$row['description']."', 
+				description = '".addslashes($row['description'])."', 
 				lang_code = '".$row['lang_code']."', 
 				status = '".$row['status']."', 
 				subscribe_method = '".$row['subscribe_method']."',
@@ -274,8 +281,10 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 				valid_time = '".$row['valid_time']."',
 				max_num_subscribe = '".$row['max_num_subscribe']."', 
 				prize = '".$row['prize']."',
-				selling = '".$row['selling']."',
-				imported_from_connection = '".$this->get_name()."'";
+				selling = '".$row['selling']."',                                    
+				course_type = '".$row['course_type']."', 
+				course_edition = '".$row['course_edition']."',                                     
+				imported_from_connection = '".$this->get_name()."'"; 
 			
 			if(!sql_query($query_course)) {
 				$this->last_error = 'Error in insert query : ( '.sql_error().' )'
@@ -323,7 +332,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 			UPDATE ".$GLOBALS['prefix_lms']."_course 
 			SET code = '".addslashes($row['code'])."', 
 				name = '".addslashes($row['name'])."', 
-				description = '".$row['description']."', 
+				description = '".addslashes($row['description'])."', 
 				lang_code = '".$row['lang_code']."', 
 				status = '".$row['status']."', 
 				subscribe_method = '".$row['subscribe_method']."',
@@ -338,7 +347,9 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 				valid_time = '".$row['valid_time']."',
 				max_num_subscribe = '".$row['max_num_subscribe']."', 
 				prize = '".$row['prize']."',
-				selling = '".$row['selling']."'
+				selling = '".$row['selling']."',
+                                course_type = '".$row['course_type']."', 
+				course_edition = '".$row['course_edition']."'
 			WHERE idCourse = '".$id_course."'";
 			
 			if(!sql_query($query_course)){

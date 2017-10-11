@@ -792,6 +792,11 @@ class InlineChoice_Question extends Question {
         }
 
 		list($id_answer_do) = sql_fetch_row(sql_query($recover_answer));
+
+        //**  recorver status test ** #11961 - Errata visualizzazione risposte corrette nei test
+        $sql = "select status from ".$GLOBALS['prefix_lms']."_commontrack where idUser=".Docebo::user()->getIdSt()." and idTrack=".$id_track;
+        list($status_test) = sql_fetch_row(sql_query($sql));
+
 		
 		$select = (Get::sett('no_answer_in_test') == 'on' ? '<span class="text_bold">'.$lang->def('_NO_ANSWER').'</span>' : '');
 		while(list($id_answer, $answer, $is_correct, $com) = sql_fetch_row($re_answer)){
@@ -804,7 +809,9 @@ class InlineChoice_Question extends Question {
 					$select .= '&nbsp;<span class="test_answer_incorrect">'.$lang->def('_TEST_INCORRECT').'</span>';
 					$comment = $com;
 				}
-			} elseif($is_correct && $show_solution) {
+		//	} elseif($is_correct && $show_solution) {
+        } elseif(($status_test=='passed' && $show_solution==2) || ($show_solution==1)) {
+        
 				$com_is_correct = '<span class="text_bold">'.$lang->def('_TEST_NOT_THECORRECT').' : </span>'.$answer.'<br />';
 			}
 		}

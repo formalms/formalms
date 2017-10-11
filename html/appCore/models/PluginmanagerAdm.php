@@ -16,10 +16,14 @@ class PluginmanagerAdm extends Model {
 
 	protected $db;
     protected $table;
+    protected $plugin_core;
 
     public function  __construct() {
         $this->db = DbConn::getInstance();
         $this->table = $GLOBALS['prefix_fw'].'_plugin';
+        $this->plugin_core = array(
+            "FormaAuth"
+        );
     }
 
     public function getPerm()	{
@@ -113,21 +117,27 @@ class PluginmanagerAdm extends Model {
         return array_diff(scandir(_base_.'/plugins/'), array('..', '.'));
     }
 
-    private function check_dependencies($manifest){
+    private function check_dependencies($manifest, $dependence = false){
         if ($manifest) {
             $dependencies=@$manifest['dependencies'];
-            $plugin_list = self::scan_dir();
+            $plugin_list = self::getActivePlugins();
+            if ($dependence){
+                unset($plugin_list[$dependence]);
+            }
             $check = true;
             if (isset($dependencies)) {
                 foreach ($dependencies as $name => $version) {
-                    if (in_array($name, $plugin_list)) {
+                    if (key_exists($name, $plugin_list)) {
                         $dependant_manifest=$this->readPluginManifest($name);
                         if (version_compare($version, $dependant_manifest['version']) > 0) {
-                            $check = false;
+                            $check = $manifest['dependencies'];
                             break;
                         }
                     } else {
-                        $check = false;
+                        $check = $manifest['dependencies'];
+                        if ($dependence){
+                            $check = array("name"=> $manifest['name'], "version" => $manifest['version']);
+                        }
                         break;
                     }
                 }
@@ -136,14 +146,68 @@ class PluginmanagerAdm extends Model {
         }
     }
 
+    private function is_dependence($name){
+        $dependencies = array();
+        foreach ( self::getInstalledPlugins() as $file => $content){
+
+            $manifest = $this->readPluginManifest($file);
+            if (is_array($dependence = $this->check_dependencies($manifest, $name) ) ){
+                $dependencies[$dependence['name']] = $dependence['version'];
+            }
+        }
+        if (count($dependencies)>0){
+            return $dependencies;
+        } else {
+            return false;
+        }
+    }
+
+    public function getInstalledPlugins(){
+        $query = "SELECT * FROM ".$this->table;
+        $re = $this->db->query($query);
+        $plugins=array();
+        while($row = sql_fetch_assoc($re)){
+            if ($row['core']==1){
+                if ( $row['active']==1 ){
+                    $plugins[$row['name']]=$row;
+                } else {
+                    $plugins[$row['name']]=false;
+                }
+            } else {
+                $plugins[$row['name']]=$row;
+            }
+        }
+        foreach ( $this->plugin_core as $core_name ){
+            if (!key_exists($core_name, $plugins)){
+                $manifest = $this->readPluginManifest($core_name);
+                $plugins[$manifest['name']]=$manifest;
+            }
+        }
+        return array_filter($plugins);
+    }
+
     public function getActivePlugins(){
         $query = "SELECT * FROM ".$this->table." WHERE  active=1 or core=1";
         $re = $this->db->query($query);
         $plugins=array();
         while($row = sql_fetch_assoc($re)){
-            $plugins[$row['name']]=$row;
+            if ($row['core']==1){
+                if ( $row['active']==1 ){
+                    $plugins[$row['name']]=$row;
+                } else {
+                    $plugins[$row['name']]=false;
+                }
+            } else {
+                $plugins[$row['name']]=$row;
+            }
         }
-        return $plugins;
+        foreach ( $this->plugin_core as $core_name ){
+            if (!key_exists($core_name, $plugins)){
+                $manifest = $this->readPluginManifest($core_name);
+                $plugins[$manifest['name']]=$manifest;
+            }
+        }
+        return array_filter($plugins);
     }
 
     /**
@@ -154,13 +218,17 @@ class PluginmanagerAdm extends Model {
     public function getPlugins($onlyActive=false){
         $plugins=array();
         $dp=opendir(_base_."/plugins/");
+        //read each plugin in folder
         while ($file = readdir($dp)){
             if(!preg_match("/^\./",$file)) {
                 $manifest=$this->readPluginManifest($file);
+                //accept only plugins where manifest name is the folder name
                 if ($manifest['name']==$file){
                     $info=$this->getPluginFromDB($file,'name');
+                    //if plugin is installed
                     if ($info){
                         $info['version_error']=false;
+                        // check plugin version
                         if ($this->isNewerVersion($info['version'],$manifest['version'])){
                             $info['update']=true;
                             $info['online']=false;
@@ -171,20 +239,23 @@ class PluginmanagerAdm extends Model {
                             $info['online']=true;
                         }
                         if (!$onlyActive){
+                            //check if plugin is a dependence for other plugins
+                            $info['dependence_of'] = $this->is_dependence($info['name']);
+
                             $plugins[$file]=$info;
                         } else {
                             if ($info['active']==1){
                                 $plugins[$file]=$info;
                             }
                         }
+                    // if plugin is not installed
                     } else if (!$onlyActive){
-                        if ($this->check_dependencies($manifest)){
-                            $manifest['dependencies_satisfied']=true;
+                        // check if plugin depends from other plugins
+                        if (!is_array($dependencies = $this->check_dependencies($manifest))){
+                            $manifest['dependencies_unsatisfied']=false;
                         } else {
-                            $manifest['dependencies_satisfied']=false;
+                            $manifest['dependencies_unsatisfied']=$dependencies;
                         }
-                        $plugins[$file]=$manifest;
-                    } else if (key_exists("core", $manifest) && $manifest['core']==="true") {
                         $plugins[$file]=$manifest;
                     }
                 }
@@ -291,6 +362,9 @@ class PluginmanagerAdm extends Model {
      */
     function installPlugin($plugin_name, $priority=0, $update=false, $core=0){
         $plugin_info=$this->readPluginManifest($plugin_name);
+        if ($plugin_info['core']=="true"){
+            $core=1;
+        }
         //FORMA_PLUGIN: QUI AGGIUNGERE IL CONTROLLO DELLA VERSIONE
         $query = "insert into ".$this->table."
 				values(null,'".addslashes($plugin_name)."', '".addslashes($plugin_info['title'])."', '".addslashes($plugin_info['category'])."',

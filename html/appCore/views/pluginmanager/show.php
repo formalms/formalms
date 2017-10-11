@@ -8,12 +8,14 @@ $table = new Table(0, Lang::t('_PLUGIN_LIST', 'configuration'), Lang::t('_PLUGIN
 $table->setTableId("table_plugin");
 
 $cont_h = array(
-    "Nome",
-    "Versione",
-    "Autore",
-    "Categoria",
-    "Descrizione",
-    "Azioni"
+    Lang::t('_PLUGIN_NAME', 'configuration'),
+    Lang::t('_PLUGIN_VERSION', 'configuration'),
+    Lang::t('_PLUGIN_AUTHOR', 'configuration'),
+    Lang::t('_PLUGIN_CATEGORY', 'configuration'),
+    Lang::t('_PLUGIN_DESCRIPTION', 'configuration'),
+    "",
+    "",
+    ""
 );
 
 $type_h = array('', 'align_center', 'align_center', '', '');
@@ -23,37 +25,55 @@ $table->setColsStyle($type_h);
 $table->addHead($cont_h);
 
 foreach ($plugins as $info){
-    $actions="";
+    $errors="";
+    $settings="";
+    $install="";
+    $activate="";
     //if already in database
     if (isset($info['plugin_id'])){
         if ($info['core']==="0"){
             if (!$info['version_error']){
-                if (!$info['update']){
-                    $actions.='<a style="color: #C84000;" href="javascript:askUninstall(\'index.php?r=adm/pluginmanager/uninstall'.'&plugin='.$info['name'].'\');">Disinstalla</a>';
+                if ($info['dependence_of']){
+                    $dependencies = "";
+                    foreach ($info['dependence_of'] as $k => $v){
+                        $dependencies .= "\n".$k.": ".$v;
+                    }
+                    $install.='<div style="color: grey; cursor: help;" title="'.Lang::t('_PLUGIN_ERROR_UNINSTALL_DEPENDENCE', 'configuration').' '.$dependencies.'">'.Lang::t('_PLUGIN_UNINSTALL', 'configuration').'</div>';
+                    $activate = '<div style="color: grey;cursor: help;" title="'.Lang::t('_PLUGIN_ERROR_DEACTIVATE_DEPENDENCE', 'configuration').' '.$dependencies.'">'.Lang::t('_PLUGIN_DEACTIVATE', 'configuration').'</div>';
+                } else if ($info['update']){
+                    $error="";
+                    if (!class_exists('ZipArchive')){
+                        $error.= Lang::t('_PLUGIN_ERROR_NOT_ONLINE_UPDATE', 'configuration')."<br>";
+                    }
+                    $install.= '<a title="'.$error.'" style="color: #006d07;" href="index.php?r=adm/pluginmanager/update'.'&plugin='.$info['name'].'&online='.$info['online'].'">'.Lang::t('_PLUGIN_UPDATE', 'configuration').'</a>';
+                } else {
+                    $install.='<a style="color: #C84000;" href="javascript:askUninstall(\'index.php?r=adm/pluginmanager/uninstall'.'&plugin='.$info['name'].'\');">'.Lang::t('_PLUGIN_UNINSTALL', 'configuration').'</a>';
                     //if active
                     if ($info['active']=="1"){
-                        $actions.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/deactivate'.'&plugin='.$info['name'].'">Disattiva</a>';
+                        $activate.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/deactivate'.'&plugin='.$info['name'].'">'.Lang::t('_PLUGIN_DEACTIVATE', 'configuration').'</a>';
                         //if not active
                     } else {
-                        $actions.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/activate'.'&plugin='.$info['name'].'">Attiva</a>';
+                        $activate.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/activate'.'&plugin='.$info['name'].'">'.Lang::t('_PLUGIN_ACTIVATE', 'configuration').'</a>';
                     }
-                } else {
-                    if (!class_exists('ZipArchive')){
-                        $actions.= "You can't use the online feautures<br>";
-                    }
-                    $actions.= '<a style="color: #006d07;" href="index.php?r=adm/pluginmanager/update'.'&plugin='.$info['name'].'&online='.$info['online'].'">Update</a>';
                 }
             } else {
-                $actions.= '<a style="color: #c80014;" href="javascript:;">Versione più vecchia</a>';
+                $errors.= '<a style="color: #c80014;" href="javascript:;">'.Lang::t('_PLUGIN_ERROR_OLD_VERSION', 'configuration').'</a>';
             }
+        } else {
+            $install.='<div style="color: grey;cursor: help;"title="'.Lang::t('_PLUGIN_ERROR_CORE_UNINSTALL', 'configuration').'">'.Lang::t('_PLUGIN_UNINSTALL', 'configuration').'</div>';
+            $activate = '<div style="color: grey;cursor: help;" title="'.Lang::t('_PLUGIN_ERROR_CORE_DEACTIVATE', 'configuration').'">'.Lang::t('_PLUGIN_DEACTIVATE', 'configuration').'</div>';
         }
-        $actions.=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/showSettings'.'&plugin='.$info['name'].'">Impostazioni</a>';
+        $settings=' <a style="color: #C84000;" href="index.php?r=adm/pluginmanager/showSettings'.'&plugin='.$info['name'].'">'.Lang::t('_PLUGIN_SETTINGS', 'configuration').'</a>';
         //if not in database
     } else {
-        if ($info['dependencies_satisfied']){
-            $actions.='<a style="color: #C84000;" href="index.php?r=adm/pluginmanager/install'.'&plugin='.$info['name'].'">Installa</a>';
+        if (!$info['dependencies_unsatisfied']){
+            $install.='<a style="color: #C84000;" href="index.php?r=adm/pluginmanager/install'.'&plugin='.$info['name'].'">'.Lang::t('_PLUGIN_INSTALL', 'configuration').'</a>';
         } else {
-            $actions.='<a style="color: #C84000;" href="javascript:;'.'&plugin='.$info['name'].'">Non soddisfatte</a>';
+            $dependencies = "";
+            foreach ($info['dependencies_unsatisfied'] as $k => $v){
+                $dependencies .= "\n".$k.": ".$v;
+            }
+            $install.='<div style="color: grey;cursor: help;" title="'.Lang::t('_PLUGIN_ERROR_NO_DEPENDENCIES', 'configuration').':'.$dependencies.'">'.Lang::t('_PLUGIN_INSTALL', 'configuration').'</div>';
         }
     }
     $table->addBody(array(
@@ -62,7 +82,9 @@ foreach ($plugins as $info){
         $info['author'],
         $info['category'],
         $info['description'],
-        $actions
+        $settings,
+        $install,
+        $activate
     ));
 }
 

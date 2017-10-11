@@ -102,6 +102,13 @@ INSERT IGNORE INTO core_lang_text(text_key, text_module, text_attributes) VALUES
 -- translation
 -- INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text) VALUES ((SELECT id_text FROM core_lang_text where text_key = '_BBB_PORT'), 'english', 'Server port BigBlueButton');
 
+--
+-- ------------
+-- create indexes  lack
+
+ALTER TABLE learning_certificate_assign ADD INDEX `id_course` ( `id_course` );
+ALTER TABLE learning_certificate_assign ADD INDEX `id_user` ( `id_user` ) ;
+
 -- ------------------------------------------------------------------
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

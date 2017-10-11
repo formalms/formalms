@@ -16,7 +16,7 @@
 if(!Docebo::user()->isAnonymous()) {
     YuiLib::load('base,menu');
     require_once(_lms_.'/lib/lib.middlearea.php');
-    
+
    require_once('../widget/lms_block/lib.lms_block_menu.php');
    require_once(_lms_.'/lib/lib.course.php');
    $widget = new  Lms_BlockWidget_menu() ;
@@ -27,13 +27,13 @@ if(!Docebo::user()->isAnonymous()) {
    $profile->init('profile', 'framework', 'index.php?r='._lms_home_, 'ap');
    $profile_box  = $profile->homeUserProfile('normal', false, false);
    $photo = $profile->homePhotoProfile('normal', false, false);
-   
+
    $credits = $widget->credits();
    $career = $widget->career();
    $subscribe_course = $widget->subscribe_course();
    $news = $widget->news();
-   
-   
+
+
     $ma = new Man_MiddleArea();
 
     if (!$ma->currentCanAccessObj('credits')) {
@@ -50,21 +50,21 @@ if(!Docebo::user()->isAnonymous()) {
     WHERE module_info IN ('all', 'user')   and mo.idModule not in(7,34)
     ORDER BY module_info, under.sequence ";
 
-                 
+
 
 
     $menu = array();
     $re_menu_voice = sql_query($query_menu);
     while(list($id_m, $module_name, $def_op, $mvc_path, $default_name, $token, $m_info) = sql_fetch_row($re_menu_voice)) {
 
-        
+
         if($ma->currentCanAccessObj('mo_'.$id_m) && checkPerm($token, true, $module_name,  true)) {
 
 
             // if e-learning tab disabled, show classroom courses
             if ($module_name ==='course' && !$ma->currentCanAccessObj('tb_elearning'))
                 $mvc_path = 'lms/classroom/show';
-            
+
             $menu[$m_info][$id_m] = array(
                 'index.php?'.( $mvc_path ? 'r='.$mvc_path : 'modname='.$module_name.'&amp;op='.$def_op ).'&amp;sop=unregistercourse',
                 Lang::t($default_name, 'menu_over'),
@@ -76,7 +76,7 @@ if(!Docebo::user()->isAnonymous()) {
     if(isset($menu['all'])) $menu_i = count($menu['all'])-1;
     else $menu_i = -1;
     $setup_menu = '';
-   
+
     // Customer help
 
     if ($ma->currentCanAccessObj('mo_help') ) {
@@ -85,15 +85,15 @@ if(!Docebo::user()->isAnonymous()) {
         $can_admin_settings = checkRole('/framework/admin/setting/view', true);
 
         $strTxtHelp = Lang::t('_CUSTOMER_HELP', 'customer_help')."";
-        $strHelp = "<span class='glyphicon glyphicon-question-sign'></span>";
-        
+        $strHelp = "<span class='glyphicon glyphicon-question-sign top-menu__label'>". $strTxtHelp ."</span>";
+
         if ($can_send_emails) {
 
-           
+
             cout(Util::get_js(Get::rel_path('base').'/lib/js_utils.js', true), 'scripts');
             cout(Util::get_js(Get::rel_path('lms').'/modules/customer_help/customer_help.js', true), 'scripts');
 
-            
+
             cout('<script type="text/javascript">'.
                 ' var CUSTOMER_HELP_AJAX_URL = "ajax.server.php?mn=customer_help&plf=lms&op=getdialog"; '.
                 ' var ICON_LOADING = "'.Get::tmpl_path().'images/standard/loadbar.gif"; '.
@@ -107,21 +107,24 @@ if(!Docebo::user()->isAnonymous()) {
                 '}); '
                 .'</script>'
             , 'scripts');
-              
-            $menu['all'][] = array('#inline',$strHelp,'modalbox');
+
+            $menu['all'][] = array('#inline',$strHelp,'modalbox no-border-right no-before');
             $customer_help = ++$menu_i;
             $setup_menu .= " oMenuBar.getItem($customer_help).subscribe('click', CustomerHelpShowPopUp);";
         } else {
            // nessun email per help desk
-            $menu['all'][] = array('#inline_no_help',$strHelp,'modalbox');
+            $menu['all'][] = array('#inline_no_help',$strHelp,'modalbox no-border-right');
             $menu_i++;
         }
     }
 
 
+    $pg = new PluginManager('MenuOverEvent');
+    $pg->run('hook');
+
     $event = new \appLms\Events\Lms\MenuOverEvent($menu, $menu_i);
     \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
-    
+
     $menu = $event->getMenu();
     $menu_i = $event->getMenuI();
 
@@ -143,121 +146,139 @@ $str_menu_over = '<header class="header white-bg">
                    <nav> 
                     <div class="row-fluid" id="lms_menu_container" >
                       <div class="navbar-header" >
-                        <a class="navbar-brand" href="?r=elearning/show&sop=unregistercourse"><img class="left_logo" width="120" src="'. Layout::path().'/images/company_logo.png" alt="logo di sinistra"/></a> 
+                        <a class="navbar-brand" href="?r=elearning/show&sop=unregistercourse">
+                          <img class="left_logo" width="120" src="'. Layout::path().'/images/company_logo.png" alt="logo di sinistra"/>
+                        </a> 
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                           <span  class="glyphicon glyphicon-align-justify"></span>
                         </button>  
                       </div>        
-                      <div id="navbar" class="navbar-collapse collapse " >
-                      <div>                      
-                      <ul class="nav navbar-nav" >';
+                      <div id="navbar" class="navbar-collapse collapse" >
+                        <ul class="nav navbar-nav" >';
 
-cout($str_menu_over,'menu_over');         
-                      
+cout($str_menu_over,'menu_over');
+
 foreach ($menu['all'] as $row) {
     $active = "";
     if(strrpos($row[0], $_GET['r'])>0 || strrpos($row[0], $_GET['modname'])>0) $active = " class='active'";
     if( isset($_GET['id_cat']) && strpos($row[0], "catalog")>0)  $active = " class='active'";
     // ADMIN
-     if(strrpos($row[0], 'appCore')>0 ){
-        cout( '<li  ><a href="'.$row[0].'" title="'.$row[1].'" title="'.Lang::t('_GO_TO_FRAMEWORK', 'menu_over').'"><span class="glyphicon glyphicon-cog"></span></a></li> ','menu_over'); 
-     } else{
-          // HELP DESK
-         if(strrpos($row[1], 'sign')>0 ){
-            cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.Lang::t('_CUSTOMER_HELP', 'customer_help').'"  >'.$row[1].'</a></li>','menu_over');
-         }else{
-            cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.$row[1].'"  >'.$row[1].'</a></li>','menu_over');
-         } 
-     }
-        if($row[2] !== false) {
+    if(strrpos($row[0], 'appCore')>0 ){
+       cout( '<li><a class="no-border-right no-before" href="'.$row[0].'" title="'.$row[1].'" title="'.Lang::t('_GO_TO_FRAMEWORK', 'menu_over').'"><span class="glyphicon glyphicon-cog top-menu__label">'.Lang::t('_GO_TO_FRAMEWORK', 'menu_over').'</span></a></li> ','menu_over');
+    } else{
+         // HELP DESK
+        if(strrpos($row[1], 'sign')>0 ){
+           cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.Lang::t('_CUSTOMER_HELP', 'customer_help').'">'.$row[1].'</a></li>','menu_over');
+        }else if ($row[2] === false){
+           cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.$row[1].'"  >'.$row[1].'</a></li>','menu_over');
+        }
+    }
+    if($row[2] !== false && count($menu[ $row[2] ])!=0) {
+            cout('<li class="dropdown" id="submenu_'.$id_m.'" >'
+                .'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.$row[1].' <span class="caret"></span></a>'
+                .'<ul class="dropdown-menu">', 'menu_over');
+            while(list($id_m, $s_voice) = each($menu[ $row[2] ])) {
+                cout('<li>'
+                    .'<a  href="'.$s_voice[0].'"">'
+                    .''.$s_voice[1].''
+                    .'</a> &nbsp; '
+                    .'</li>', 'menu_over');
+            }
+            cout('</ul>'
+                .'</li>', 'menu_over');
+        }
 
-                cout('<div id="submenu_'.$id_m.'" >'
-                    .'<div class="bd"><ul class="first-of-type">', 'menu_over');
-                while(list($id_m, $s_voice) = each($menu[ $row[2] ])) {
-                    cout(''
-                        .'<a  href="'.$s_voice[0].'"">'
-                        .''.$s_voice[1].''
-                        .'</a> &nbsp; '
-                        .'', 'menu_over');
-                }
-                cout('</div>'
-                    .'</div>', 'menu_over');
-            }             
+}
 
-}    
-               
-
-               
-               // shopping cart
-              // cout( '<li  ><a href="" title="'.Lang::t("_CART", "cart").'"><span class="glyphicon glyphicon-shopping-cart"></span></a></li> ','menu_over'); 
               require_once(_lms_.'/lib/lib.cart.php');
               Learning_Cart::init();
               $num_item = Learning_Cart::cartItemCount();
               if($num_item>0){
                 cout('<li><a href="index.php?r=cart/show" id="cart_action" title="'.Lang::t("_CART", "cart").'"><span  class="glyphicon glyphicon-shopping-cart"><sub id="cart_element" class="num_notify_bar">'.Learning_Cart::cartItemCount().'</sub></span></a></li>' ,'menu_over')  ;
-              } 
-               
-               cout('<li>                                
-                        <div id="o-wrapper" class="o-wrapper">
-                                <button id="c-button--slide-right" class="c-button" >
-                                 <a data-toggle="dropdown"  href="#" title="'.Lang::t('_PROFILE', 'menu_course').'">
-                                <table><tr><td>'. $photo.'  &nbsp;</td><td><span class="username"> '.Docebo::user()->getUserName().'</span></td></tr></table>                                                        
-                                  </a>
-                                </button>
-                        </div>
-                        <!-- /o-wrapper -->
-                                    <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right">
-                                      <button class="c-menu__close">'.Lang::t('_HIDETREE', 'organization').'</button>
-                                      <ul class="c-menu__items">
-                                          <li class="c-menu__item">
-                                           <div class="col-md-12">
-                                           <br>
-                                                             <table width="10%" border="0">
-                                                                <tr align="left">
-                                                                    <td><span class="select-language">'. Layout::change_lang().'</span></td>
-                                                                   <td align="center">                                                                                                                                                                                   
-                                                                    </td>
-                                                            </tr></table>
-                                                            
-                                                            <p align=right>
-                                                            
-                                                                    <a href="index.php?r=lms/profile/show" title="'.Lang::t('_PROFILE', 'profile').'">
-                                                                     <span class="glyphicon glyphicon-pencil"></span>
-                                                                    </a>
-                                                                    &nbsp;
-                                                                    <a title="'.Lang::t('_LOGOUT', 'standard').'" href="'. Get::rel_path('base') . '/index.php?r=' . _logout_ . '">
-                                                                    
-                                                                        <span class="glyphicon glyphicon-off"></span>
-                                                                        </a>
-                                                              
-                                                            </p>
-                                                            '.$profile_box.'                                               
-                                                             <div >&nbsp;</div>   
-                                                            '.$subscribe_course.'
-                                                            '.$news.'
-                                                            '.$credits.'
-                                              </div>   
-                                          <li>
-                                      </ul>
-                                      </nav><!-- /c-menu slide-right -->
-                                 </ul>
-                                    </li>  
-                                    <div id="c-mask" class="c-mask"></div><!-- /c-mask -->','menu_over'); 
-                                                
-       
+              }
 
-          cout('</div>
+               cout('
+                        <li>                                
+                            <div id="o-wrapper" class="o-wrapper">
+                                <button id="c-button--slide-right" class="c-button" >
+                                    <a data-toggle="dropdown"  href="#" title="'.Lang::t('_PROFILE', 'menu_course').'">
+                                       <span class="username icon--profile"> '.Docebo::user()->getUserName().'</span>
+                                    </a>
+                                </button>
+                            </div>
+                            <!-- /o-wrapper -->
+                            
+                        </li>
+                   </ul>
+                   <div class="top-menu__disclaimer">Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</div>
+               </div>
+               <div id="c-mask" class="c-mask"></div><!-- /c-mask overlay -->','menu_over');
+
+    /*
+     *  SPOSTATO C-MENU DA RIGA 210 A RIGA 221 (DOPO I BR DELL'HEADER)
+     *
+     */
+
+        cout('</div>
                 <!--/.nav-collapse -->
-                </div><!--/.container-fluid -->    
                 </nav>
-                </header><br><br><br><br>','menu_over');  
-                      
+               
+                <div id="c-menu--slide-right" class="c-menu c-menu--slide-right user-panel">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <a href="javascript:void(0)" class="c-menu__close"><span class="glyphicon glyphicon-remove">'.Lang::t('_HIDETREE', 'organization').'</span></a><!-- pulsante nascondi menu -->      
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <a title="'.Lang::t('_LOGOUT', 'standard').'" href="'. Get::rel_path('base') . '/index.php?r=' . _logout_ . '">
+                                                <span class="glyphicon glyphicon-off">'.Lang::t('_LOGOUT', 'standard').'</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!--<div class="row"> -->
+                                        <!--<div class="col-xs-12">-->
+                                            '.$profile_box.' 
+                                        <!--</div>-->  <!-- end col xs-12 -->
+                                    <!-- </div> -->
+                                    <div class="row course-subscription">
+                                        <div class="col-xs-12">
+                                            '.$subscribe_course.'
+                                        </div> <!-- end col xs-12 -->
+                                    </div>
+                                    <div class="row news">
+                                        <div class="col-xs-12">
+                                            '.$news.'
+                                        </div> <!-- end col xs-12 -->
+                                    </div>
+                                    <div class="row credits">
+                                        <div class="col-xs-12">
+                                            '.$credits.'
+                                        </div> <!-- end col xs-12 -->
+                                    </div>
+                                    <div class="row lang">
+                                        <div class="col-xs-6">
+                                            <p>' . Lang::t('_CHANGELANG', 'register') . '</p>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            ' . Layout::buildLanguages() . '
+                                        </div>
+                                    </div>
+                                    <div class="row footer">
+                                        <div class="col-xs-12">
+                                          <p>Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</p>
+                                        </div>
+                                    </div>
+                                </div> <!-- /container-fluid -->
+                            </div><!-- /c-menu slide-right end profile right panel -->
+                
+                </header>','menu_over');
+
         $idst = getLogUserId();
         $acl_man = Docebo::user()->getAclManager();
         $user_info = $acl_man->getUser($idst, false);
-        $user_email = $user_info[ACL_INFO_EMAIL]; 
-  
-     
+        $user_email = $user_info[ACL_INFO_EMAIL];
+
+
     cout('<!-- hidden inline form -->
             <div id="inline" >
                 <form id="contact" name="contact" action="#" method="post"  style="width: 470px;" role="form" style="display: block;"> 
@@ -341,7 +362,7 @@ foreach ($menu['all'] as $row) {
      </form>                    
 </div>','menu_over')   ;
 
-    
+
 
 
 
@@ -361,9 +382,9 @@ cout('<!-- hidden inline form -->
 
 
 
-}    
+}
 
-     
+
 ?>
 
 

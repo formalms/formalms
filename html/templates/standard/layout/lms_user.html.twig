@@ -32,10 +32,9 @@
         <!-- menu_over -->
         <div id="menu_over" class="layout_menu_over">
         <!-- feedback -->
-        {{ evalPhp('Layout::zone', ['feedback']) }}
-        
-            {{ evalPhp('Layout::cart') }}
-            {{ evalPhp('Layout::zone', ['menu_over']) }}
+          {{ evalPhp('Layout::zone', ['feedback']) }}
+          {{ evalPhp('Layout::cart') }}
+          {{ evalPhp('Layout::zone', ['menu_over']) }}
                     
         </div>
         
@@ -43,7 +42,8 @@
     
         
         <!-- content  -->   
-        <div class="layout_colum_container">
+        {#{{ <div class="layout_colum_container"> }}#}
+        <div class="container-fluid">
             {{ evalPhp('Layout::zone', ['content']) }}
             
             <div class="nofloat"></div>
@@ -52,9 +52,7 @@
         <!-- footer  -->
         <div id="footer" class="layout_footer">
             {{ evalPhp('Layout::zone', ['footer']) }}
-            <div class="copyright">
                 {{ evalPhp('Layout::copyright') }}
-            </div>
         </div>
         
         

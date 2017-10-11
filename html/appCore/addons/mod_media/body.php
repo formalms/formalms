@@ -157,7 +157,7 @@ function show_personal_media(& $out, & $lang) {
 	$head_type = array('preview80', 'image', '', 'image', 'image');
 
 	$tab->setColsStyle($head_type);
-	$tab->addHead($head);
+	$tab->addHead($head, '');
 
 	$path =(strlen(dirname($_SERVER['PHP_SELF'])) != 1 ? dirname($_SERVER['PHP_SELF']) : '' ).'/';
 	$path.=$GLOBALS["where_files_relative"];
@@ -218,11 +218,12 @@ function show_personal_media(& $out, & $lang) {
 
 	if(isset($_GET['result'])) {
 		switch($_GET['result']) {
-			case "invalid_ext" : $GLOBALS['page']->add(getErrorUi($lang->def('_INVALID_EXTENSION')));break;
-			case "upload_err" 	: $GLOBALS['page']->add(getErrorUi($lang->def('_ERROR_UPLOAD')));break;
-			case "upload_ok" 	: $GLOBALS['page']->add(getResultUi($lang->def('_OPERATION_SUCCESSFUL')));break;
+			case "invalid_ext" : $GLOBALS['page']->add($lang->def('_INVALID_EXTENSION'));break;
+			case "upload_err" 	: $GLOBALS['page']->add($lang->def('_ERROR_UPLOAD'));break;
+			case "upload_ok" 	: $GLOBALS['page']->add($lang->def('_OPERATION_SUCCESSFUL'));break;
 		}
 	}
+    $GLOBALS['page']->add("<hr>");
 	$GLOBALS['page']->add($tab->getTable());
 }
 
@@ -291,8 +292,8 @@ function ins_personal_media() {
 	}
 
 	if (!$is_streaming) {
-		$valid_ext = array("png", "mng", "gif", "jpg", "jpeg"
-			, "wmv", "flv", "mov", "mp3", "swf", "mp4");
+        
+        $valid_ext = explode(",", Get::sett('file_upload_whitelist',''));
 		$ext = strtolower(end(explode(".", $fname)));
 		if (!in_array($ext, $valid_ext))
 			Util::jump_to($url.'&result=invalid_ext');

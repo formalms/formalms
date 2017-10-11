@@ -147,6 +147,41 @@
     }
 
     /**
+     * Build the restyled layout for lang selection
+     * @return <string>
+     */
+    public static function buildLanguages() {
+
+        $r = Get::req('r', DOTY_MIXED, '');
+        $lang_sel = Lang::get();
+        $lang_model = new LangAdm();
+        $lang_list = $lang_model->getLangListNoStat(false,false,'lang_description','ASC');
+
+        $server_query_string = $_SERVER['QUERY_STRING'];
+        $pos = strpos($server_query_string, 'special=changelang&new_lang=');
+        if ($pos !== FALSE) {
+            if($pos == 0) $pos = 1;
+            if ($server_query_string{$pos - 1} === '&') $pos = $pos - 1;
+            $server_query_string = substr($server_query_string, 0, $pos);
+        }
+
+        $html = '<ul class="list-inline" id="language_selection">';
+        foreach($lang_list as $lang) {
+
+            $html .= '<li><a class="lang-sprite lang_'.strtolower( str_replace(' ', '_', $lang->lang_code) ).($lang->lang_code == $lang_sel ? ' current' : '' ).'"'
+                .'href="'.( isset($args['redirect_on']) ? $args['redirect_on'] : 'index.php' )
+                .'?'//.($r !== '' ? '?r='.$r.'&amp;' : '?')
+                .($server_query_string !== "" ? str_replace('&', '&amp;', $server_query_string).'&amp;' : "")
+                .'special=changelang&new_lang='.rawurlencode($lang->lang_code).'" title="'.$lang->lang_description.'">'
+                .'</a></li>';
+
+        }
+        $html .= '</ul>';
+
+        return $html;
+    }
+
+    /**
     * Return the complete code for change lang dropdown
     * @return <string>
     */
@@ -262,13 +297,13 @@
         $retArray['boostrap'] = JQueryLib::loadBootstrap($minimized);
         $retArray['jqueryAddons'] = JQueryLib::loadJQueryAddons($minimized);
         $retArray['cssAddons'] = JQueryLib::loadCssAddons($minimized);
-                
-        
 
+        if (file_exists(_base_.'/templates/'.getTemplate().'/style/custom.css')){
+            $customCssPath = Get::rel_path('base').'/templates/'.getTemplate().'/style/custom.css';
+            $retArray['custom_css_path'] = str_replace('/./', '/', $customCssPath);
+        }
         switch($whichLayout){
-            case 'home_login':
-                $retArray['jqueryLib'] = '';
-                $retArray['boostrap'] = '';
+            case 'home':
                 $retArray['jqueryAddons'] = '';
                 $retArray['cssAddons'] = '';
             
@@ -328,7 +363,7 @@
             $html .= '<span class="ownedby">';
             $html .= Get::sett('owned_by', 'Copyright (c) forma.lms');
             $html .= '</span>';
-            $html .= ' - ';
+            $html .= '<br />';
             $html .= '<span class="poweredby">';
             $html .= '<a href="http://www.formalms.org/" target="_blank">Powered'.' by ' . 'forma.lms CE</a>';
             $html .= '</span>';

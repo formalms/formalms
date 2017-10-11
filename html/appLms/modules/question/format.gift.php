@@ -171,10 +171,15 @@ class qformat_gift {
         $text = $this->escapedchar_pre($text);
 
         // Look for category modifier ---------------------------------------------------------
-        if (preg_match( '^\$CATEGORY:', $text)) {
+        if (preg_match( '/^\$CATEGORY:/', $text)) {
             // $newcategory = $matches[1];
             $newcategory = trim(substr( $text, 10 ));
-            $newcategory = trim(substr( $newcategory, 0,  strpos($newcategory, "::")));
+			
+			if ( strpos($newcategory, '$CUSTOMFIELD:') === false ) {
+				$newcategory = trim(substr( $newcategory, 0,  strpos($newcategory, "::")));
+			} else {
+				$newcategory = trim(substr( $newcategory, 0,  strpos($newcategory, '$CUSTOMFIELD:')));
+			}
 			
             $question->setCategoryFromName($newcategory);
             $text = trim(substr($text, 10+strlen($newcategory)));
@@ -196,7 +201,7 @@ class qformat_gift {
 
             // $field['code']
             // $field['id']
-            if (ereg( '^\$CUSTOMFIELD:'.$field['code'].':', $text)) {
+            if (preg_match( '/^\$CUSTOMFIELD:'.$field['code'].':/', $text)) {
                 $newcf = trim(substr( $text, strlen($field['code'])+strlen('\$CUSTOMFIELD:') ));
                 if ( strpos($newcf, '$CUSTOMFIELD:') === false ) {
                     $newcf = trim(substr( $newcf, 0,  strpos($newcf, '::')));
