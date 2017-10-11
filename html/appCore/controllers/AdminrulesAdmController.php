@@ -205,7 +205,7 @@ class AdminrulesAdmController extends AdmController
                 }
 
 		$idst = Get::req('idst', DOTY_INT, 0);
-		$active_tab = Get::req('active_tab', DOTY_MIXED, 'menu_user');
+		$active_tab = Get::req('active_tab', DOTY_MIXED, 1);
 
     $current_platform=$_SESSION['current_action_platform'];
 
