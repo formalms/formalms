@@ -48,7 +48,7 @@ class UsermanagementAdmController extends AdmController {
 			'associate_user'		=> checkPerm('associate_user', true, 'usermanagement')
 		);
 
-		
+
 		// Check if the user admin has reached the max number of users he can create
 		if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 			$admin_pref =new AdminPreference();
@@ -97,7 +97,7 @@ class UsermanagementAdmController extends AdmController {
 
 		$fman = new FieldList();
 		$fields = $fman->getFlatAllFields(array('framework', 'lms'));
-		
+
 		$f_list = array(
 			'email'			=> Lang::t('_EMAIL', 'standard'),
 			'lastenter'		=> Lang::t('_DATE_LAST_ACCESS', 'profile'),
@@ -136,25 +136,25 @@ class UsermanagementAdmController extends AdmController {
 		switch ($res) {
 			case 'ok_assignuser': $message = getResultUi(Lang::t('_OPERATION_SUCCESSFUL', 'standard')); break;
 			case 'err_assignuser': $message = getErrorUi(Lang::t('_GROUP_USERASSIGN_ERROR', 'admin_directory')); break;
-                        case 'no_file': $message = getErrorUi(Lang::t('_NO_FILE', 'user_managment')); break;
-                        case 'need_to_alert': $message = getErrorUi(Lang::t('_NEED_TO_ALERT', 'user_managment')); break;
-                        case 'userid_needed': $message = getErrorUi(Lang::t('_USERID_NEEDED', 'user_managment')); break;
-                        case 'field_repeated': $message = getErrorUi(Lang::t('_FIELD_REPEATED', 'user_managment')); break;
+			case 'no_file': $message = getErrorUi(Lang::t('_NO_FILE', 'user_managment')); break;
+			case 'need_to_alert': $message = getErrorUi(Lang::t('_NEED_TO_ALERT', 'user_managment')); break;
+			case 'userid_needed': $message = getErrorUi(Lang::t('_USERID_NEEDED', 'user_managment')); break;
+			case 'field_repeated': $message = getErrorUi(Lang::t('_FIELD_REPEATED', 'user_managment')); break;
 
-                        case 'err_alreadyassigned': {                            
-                            $countassigned = Get::req('count', DOTY_STRING, '');
-                            $id_first = Get::req('id_first', DOTY_STRING, '');
-                            $profile_user = $this->model->getProfileData($id_first);
-                            
-                            if($countassigned == 1) {                            
-                                $message = getErrorUi(Lang::t('_USER').' '.$profile_user->firstname.' '.$profile_user->lastname.' '.Lang::t('_ALREADY_ASSIGNED', 'admin_directory'));
-                            } else {
-                                $message = getErrorUi($countassigned.' '.Lang::t('_USERS_ALREADY_ASSIGNED', 'admin_directory').' ('.$profile_user->firstname.' '.$profile_user->lastname.'...)');
-                            }
-                            break;
-                        }
+			case 'err_alreadyassigned': {
+				$countassigned = Get::req('count', DOTY_STRING, '');
+				$id_first = Get::req('id_first', DOTY_STRING, '');
+				$profile_user = $this->model->getProfileData($id_first);
+
+				if($countassigned == 1) {
+					$message = getErrorUi(Lang::t('_USER').' '.$profile_user->firstname.' '.$profile_user->lastname.' '.Lang::t('_ALREADY_ASSIGNED', 'admin_directory'));
+				} else {
+					$message = getErrorUi($countassigned.' '.Lang::t('_USERS_ALREADY_ASSIGNED', 'admin_directory').' ('.$profile_user->firstname.' '.$profile_user->lastname.'...)');
+				}
+				break;
+			}
 			default: $message = "";
-		}		
+		}
 
 		$root_node_actions = $this->_getNodeActions(0);
 
@@ -231,12 +231,12 @@ class UsermanagementAdmController extends AdmController {
 		}
 
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
-		
+
 		$searchFilter = array(
 			'text' => $filter_text,
 			'suspended' => (Get::req('suspended', DOTY_INT, 1)>0 ? true : false)
 		);
-		
+
 		$dyn_filter = $this->_getDynamicFilter(Get::req('dyn_filter', DOTY_STRING, ''));
 		if ($dyn_filter !== false) {
 			$searchFilter['dyn_filter'] = $dyn_filter;
@@ -267,9 +267,9 @@ class UsermanagementAdmController extends AdmController {
 		$fman = new FieldList();
 		$date_fields = $fman->getFieldsByType("date");
 
-        $users = $this->model->getAllUsers($idOrg, $descendants, $searchFilter, true);
+		$users = $this->model->getAllUsers($idOrg, $descendants, $searchFilter, true);
 
-        $user_entry_data = $fman->getUsersFieldEntryData($users);
+		$user_entry_data = $fman->getUsersFieldEntryData($users);
 
 		$output_results = array();
 		if (is_array($list) && count($list)>0) {
@@ -295,14 +295,14 @@ class UsermanagementAdmController extends AdmController {
 					} else {
 						$name = $value;
 					}
-					
+
 					//check if we must perform some post-format on retrieved field values
 					$content = (isset($record[$name]) ? $record[$name] : '');
 					if ($name == 'register_date') $content = Format::date($content, 'datetime');
 					if ($name == 'lastenter') $content = Format::date($content, 'datetime');
 					if ($name == 'level' && $content != '') $content = Lang::t('_DIRECTORY_'.$content, 'admin_directory');
 					if (!empty($date_fields) && in_array($value, $date_fields)) $content = Format::date(substr($content, 0, 10), 'date');
-                    if ($name == '_custom_'.$value) $content = $user_entry_data[(int)$record['idst']][$value];
+					if ($name == '_custom_'.$value) $content = $user_entry_data[(int)$record['idst']][$value];
 					$record_row['_dyn_field_'.$i] = $content;
 				}
 
@@ -444,7 +444,7 @@ class UsermanagementAdmController extends AdmController {
 
 
 	protected function echoResult($output) {
-		
+
 		if (Util::getIsAjaxRequest()) {
 			if ($output['success']) {
 				$output['message'] = UIFeedback::pinfo($output['message']);
@@ -477,7 +477,7 @@ class UsermanagementAdmController extends AdmController {
 		$userid = Get::req('username', DOTY_STRING, '');
 		$password = Get::Req('password', DOTY_STRING, '');
 		$password_confirm = Get::req('password_confirm', DOTY_STRING, '');
-		
+
 		$output = array();
 
 		if ($userid == '') {
@@ -486,7 +486,7 @@ class UsermanagementAdmController extends AdmController {
 			echo $this->echoResult($output);
 			return;
 		}
-		
+
 		if ($password != $password_confirm) {
 			$output['success'] = false;
 			$output['message'] = Lang::t('_ERR_PASSWORD_NO_MATCH', 'register');
@@ -500,7 +500,7 @@ class UsermanagementAdmController extends AdmController {
 		$userdata->lastname = trim(Get::req('lastname', DOTY_STRING, ''));
 		$userdata->email = trim(Get::req('email', DOTY_STRING, ''));
 		$userdata->password = $password;
-		$userdata->force_change = trim(Get::Req('force_changepwd', DOTY_INT, 0));	
+		$userdata->force_change = trim(Get::Req('force_changepwd', DOTY_INT, 0));
 		/* $userdata->facebook_id = Get::pReq('facebook_id', DOTY_STRING, '');
 		$userdata->twitter_id = Get::pReq('twitter_id', DOTY_STRING, '');
 		$userdata->linkedin_id = Get::pReq('linkedin_id', DOTY_STRING, '');
@@ -511,7 +511,7 @@ class UsermanagementAdmController extends AdmController {
 		else {
 			$userdata->level = ADMIN_GROUP_USER;
 		}
-		
+
 		if (!$this->model->checkUserid($userdata->userid)) {
 			$output['success'] = false;
 			$output['message'] = Lang::t('_USERID_DUPLICATE', 'organization_chart');
@@ -563,9 +563,9 @@ class UsermanagementAdmController extends AdmController {
 			$recipients = array($idst);
 
 			if(!empty($recipients)) {
-					createNewAlert(	'UserNew', 'directory', 'edit', '1', 'New user created',
-								$recipients, $e_msg  );
-					ob_clean();
+				createNewAlert(	'UserNew', 'directory', 'edit', '1', 'New user created',
+					$recipients, $e_msg  );
+				ob_clean();
 			}
 
 
@@ -628,7 +628,7 @@ class UsermanagementAdmController extends AdmController {
 			echo $this->json->encode(array('success'=>false, 'message'=>'invalid user id'));
 			return;
 		}
-		
+
 		$userid = Get::req('username', DOTY_STRING, '');
 		$new_password = Get::Req('new_password', DOTY_STRING, '');
 		$new_password_confirm = Get::req('new_password_confirm', DOTY_STRING, '');
@@ -806,15 +806,15 @@ class UsermanagementAdmController extends AdmController {
 		$output = array();
 		if ($users!="") {
 			$arr_users = explode(',', $users);
-                        $output['success'] = true;
-                        foreach ($arr_users AS $user){
-                            if(!$this->model->randomPassword($user)){
-                                $output['success'] = false;
-                            }
-                        }
-                        if (!$output['success']){
-                            $output['message'] = Lang::t('_OPERATION_FAILURE', 'standard');
-                        }
+			$output['success'] = true;
+			foreach ($arr_users AS $user){
+				if(!$this->model->randomPassword($user)){
+					$output['success'] = false;
+				}
+			}
+			if (!$output['success']){
+				$output['message'] = Lang::t('_OPERATION_FAILURE', 'standard');
+			}
 		} else {
 			$output['success'] = false;
 			$output['message'] = Lang::t('_EMPTY_SELECTION', 'admin_directory');
@@ -1022,7 +1022,7 @@ class UsermanagementAdmController extends AdmController {
 				}
 				echo $this->json->encode($output);
 			} break;
-			
+
 			default: {
 				$output = array();
 				$output['success'] = false;
@@ -1117,7 +1117,7 @@ class UsermanagementAdmController extends AdmController {
 				'alt' => ''
 			);
 		}
-                
+
 		return $actions;
 	}
 
@@ -1265,7 +1265,7 @@ class UsermanagementAdmController extends AdmController {
 		if ($id > 0) {
 			require_once(_adm_.'/lib/lib.directory.php');
 			require_once(_adm_.'/class.module/class.directory.php');
-                        
+
 			$aclm = Docebo::user()->getAclManager();
 			$selector = new UserSelector();
 			$selector->use_suspended = true;
@@ -1277,27 +1277,27 @@ class UsermanagementAdmController extends AdmController {
 				Util::jump_to($back_url);
 			} elseif ($save) {
 				$selection = $selector->getSelection($_POST);
-                                
-                                $singlenode = Get::sett('orgchart_singlenode', '');
-                                if ($singlenode){ // se in configuazione è impostata l'univocita della posizione nell'organigramma per l'utente
-                                    // eseguo il controllo ed eventualmente do l'errore
-                                    require_once(_lib_.'/lib.user_profile.php');
-                                    require_once(_adm_.'/modules/org_chart/tree.org_chart.php');
 
-                                    $treedborgdb = new TreeDb_OrgDb();
-                                    $alreadyassigned = array();
-                                    foreach ($selection as $sel_user){
-                                        $user_org = $this->model->getUserFolders($sel_user);
-                                        $folder_id = $treedborgdb->getFoldersIdFromIdst(array_keys($user_org));                                        
-                                        if(count($folder_id) && (count($folder_id) > 1 || $id != reset($folder_id))){
-                                            $alreadyassigned[] = $sel_user;
-                                        }
-                                    }
-                                    if(count($alreadyassigned)) {
-                                        Util::jump_to($next_url.'&res=err_alreadyassigned&count='.count($alreadyassigned).'&id_first='.$alreadyassigned[0]);
-                                    }
-                                }
-                                
+				$singlenode = Get::sett('orgchart_singlenode', '');
+				if ($singlenode){ // se in configuazione è impostata l'univocita della posizione nell'organigramma per l'utente
+					// eseguo il controllo ed eventualmente do l'errore
+					require_once(_lib_.'/lib.user_profile.php');
+					require_once(_adm_.'/modules/org_chart/tree.org_chart.php');
+
+					$treedborgdb = new TreeDb_OrgDb();
+					$alreadyassigned = array();
+					foreach ($selection as $sel_user){
+						$user_org = $this->model->getUserFolders($sel_user);
+						$folder_id = $treedborgdb->getFoldersIdFromIdst(array_keys($user_org));
+						if(count($folder_id) && (count($folder_id) > 1 || $id != reset($folder_id))){
+							$alreadyassigned[] = $sel_user;
+						}
+					}
+					if(count($alreadyassigned)) {
+						Util::jump_to($next_url.'&res=err_alreadyassigned&count='.count($alreadyassigned).'&id_first='.$alreadyassigned[0]);
+					}
+				}
+
 				$res = $this->model->assignUsers($id, $selection);
 
 				if($res) {
@@ -1509,7 +1509,7 @@ class UsermanagementAdmController extends AdmController {
 			// apply enroll rules
 			$lang_code = $acl_man->getSettingValueOfUsers('ui.language', array($id_user));
 			$lang_code = ( $lang_code ? $lang_code : getDefaultLanguage() );
-			
+
 			$enrollrules = new EnrollrulesAlms();
 			$enrollrules->applyRules(array($id_user), $lang_code, $id_org);
 			$enrollrules->applyRulesMultiLang('_USER_ASSIGNED_TO_TREE', array($id_user), $id_org);
@@ -1657,7 +1657,7 @@ class UsermanagementAdmController extends AdmController {
 			echo $this->json->encode($output);
 			return;
 		}
-		
+
 		if ($new_password != $confirm_password) {
 			$output['success'] = false;
 			$output['message'] = UIFeedback::perror(Lang::t('_ERR_PASSWORD_NO_MATCH', 'register'));
@@ -1744,7 +1744,7 @@ class UsermanagementAdmController extends AdmController {
 
 			case 2: {
 				$params['orgchart_list'] = $this->model->getOrgChartDropdownList(Docebo::user()->getIdSt());
-                                
+
 				require_once(_base_.'/lib/lib.upload.php');
 
 				// ----------- file upload -----------------------------------------
@@ -1817,10 +1817,10 @@ class UsermanagementAdmController extends AdmController {
 			} break;
 
 			case 3: {
-                                //if (!Get::pReq('send_alert', DOTY_INT, 0) && Get::req('set_password', DOTY_STRING, 'from_file') != 'from_file') {
-                                //    Util::jump_to($base_url.'&res=need_to_alert' );
-                                //}
-                            
+				//if (!Get::pReq('send_alert', DOTY_INT, 0) && Get::req('set_password', DOTY_STRING, 'from_file') != 'from_file') {
+				//    Util::jump_to($base_url.'&res=need_to_alert' );
+				//}
+
 				$filename = Get::req('filename', DOTY_STRING, "");
 				if ($filename == "") return false;
 				$separator = Get::req('import_separator', DOTY_STRING, ',');
@@ -1852,17 +1852,17 @@ class UsermanagementAdmController extends AdmController {
 				$importer->setDestination( $dst );
 
 				$importer->parseMap();
-                                if (!in_array('userid', $importer->import_map) 
-                                        || !in_array(array_search('userid', $importer->import_map), array_keys($importer->import_tocompare))) {
-                                    Util::jump_to($base_url.'&res=userid_needed' );
-                                }
-                                
-                                foreach($importer->import_map AS $im){
-                                    if($im != DOCEBOIMPORT_IGNORE && count(array_keys($importer->import_map, $im)) > 1){
-                                        Util::jump_to($base_url.'&res=field_repeated' );
-                                    }
-                                }
-                                
+				if (!in_array('userid', $importer->import_map)
+					|| !in_array(array_search('userid', $importer->import_map), array_keys($importer->import_tocompare))) {
+					Util::jump_to($base_url.'&res=userid_needed' );
+				}
+
+				foreach($importer->import_map AS $im){
+					if($im != DOCEBOIMPORT_IGNORE && count(array_keys($importer->import_map, $im)) > 1){
+						Util::jump_to($base_url.'&res=field_repeated' );
+					}
+				}
+
 				$results = $importer->doImport();
 
 				$users = $dst->getNewImportedIdst();
@@ -1875,7 +1875,7 @@ class UsermanagementAdmController extends AdmController {
 
 				$src->close();
 				$dst->close();
-				
+
 				$buffer = "";
 				if (count($results) > 1) {
 					require_once(_base_.'/lib/lib.table.php');
@@ -1898,7 +1898,7 @@ class UsermanagementAdmController extends AdmController {
 					}
 					$buffer .= $table->getTable();
 				}
-				
+
 				if($buffer === '')
 					$buffer = '<br/><br/>';
 
@@ -1906,7 +1906,7 @@ class UsermanagementAdmController extends AdmController {
 				$params['resultUi'] = Lang::t('_IMPORT', 'standard').': <b>'.( $first_row_header ? $results[0] - 1 : $results[0] ).'</b><br />';
 				$params['results'] = $results;
 				$params['table'] = $buffer;
-				
+
 				// remove uploaded file:
 				require_once(_base_.'/lib/lib.upload.php');
 				sl_open_fileoperations();
@@ -1916,7 +1916,7 @@ class UsermanagementAdmController extends AdmController {
 
 		}
 
-		$this->render('importusers', $params);	
+		$this->render('importusers', $params);
 	}
 
 	protected function _formatCsvValue($value, $delimiter) {
@@ -2037,7 +2037,7 @@ class UsermanagementAdmController extends AdmController {
 			'json' => $this->json
 		));
 	}
-	
+
 	public function editprofile() {
 		//check permissions
 		if (!$this->permissions['mod_user']) {
@@ -2045,7 +2045,7 @@ class UsermanagementAdmController extends AdmController {
 			echo $this->json->encode($output);
 			return;
 		}
-		
+
 		require_once(_base_.'/lib/lib.user_profile.php');
 
 		$id_user = Get::req('id_user', DOTY_INT, -1);
@@ -2057,14 +2057,12 @@ class UsermanagementAdmController extends AdmController {
 			echo '<br />'
 				.'<div class="std_block">'
 				.getBackUi('index.php?r='.$this->link.'/show', Lang::t('_BACK', 'standard') )
-				
+
 				.$profile->performAction()
 
 				.'</div>';
 		}
 	}
-
-
 
 	public function show_waitingTask() {
 		//check permissions
@@ -2228,6 +2226,7 @@ class UsermanagementAdmController extends AdmController {
 					'firstname' => Layout::highlight($record->firstname, $filter),
 					'lastname' => Layout::highlight($record->lastname, $filter),
 					'email' => Layout::highlight($record->email, $filter),
+					'confirmed' => Layout::highlight($record->confirmed, $filter),
 					'insert_date' => Format::date($record->insert_date, 'datetime'),
 					'inserted_by' => $_inserted_by,
 					'del' => 'ajax.adm_server.php?r='.$this->link.'/delete_waiting&id_user='.(int)$record->idst
@@ -2318,7 +2317,7 @@ class UsermanagementAdmController extends AdmController {
 		}
 		echo $this->json->encode($output);
 	}
-	
+
 
 	public function multimodTask() {
 		if (!$this->permissions['mod_user']) {
@@ -2453,7 +2452,7 @@ class UsermanagementAdmController extends AdmController {
 		if (isset($sel_properties['linkedin_id'])) $info->linkedin_id = Get::req('linkedin_id', DOTY_STRING, "");
 		if (isset($sel_properties['google_id'])) $info->google_id = Get::req('google_id', DOTY_STRING, "");
 		*/
-		
+
 		if (!empty($field_properties)) {
 			require_once(_adm_.'/lib/lib.field.php');
 			$fields = new FieldList();
@@ -2485,7 +2484,7 @@ class UsermanagementAdmController extends AdmController {
 		$event->setUsers($users);
 		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementEditMultipleEvent::EVENT_NAME, $event);
 		$users = $event->getUsers();
-		
+
 		$res = $this->model->updateMultipleUsers($users, $info);
 
 		if (!$res) {
