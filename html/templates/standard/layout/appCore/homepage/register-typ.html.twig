@@ -1,8 +1,7 @@
 <div class="homepage__row homepage__row--gray">
 	<div><i class="fa fa-check"></i></div>
 	<p>
-		<strong>Grazie</strong> per aver richiesto l'iscrizione alla nostra community<br/>
-		Ti è stata inviata una email con i tuoi dati di registrazione.
+		{{ message }}
 	</p>
 	<br/><br/>
 </div>
@@ -10,7 +9,7 @@
 	<div class="col-xs-12 col-sm-6 col-sm-offset-3">
 		<br/>
 		<p>Hai riscontrato qualche problema? <a href="#"><strong>Contattaci</strong></a></p>
-		<a class="forma-button forma-button--orange" href="#">Vai alla Homepage</a>
+		<a class="forma-button forma-button--orange" href="{{ loginAction }}">Vai alla Homepage</a>
 	</div>
 </div>
 <div class="homepage__row homepage__row--social">
