@@ -199,7 +199,7 @@
         }
 
 		$html = '<div class="dropdown">';
-		$html .= '<a id="change_language" class="dropdown-toggle" href="#" data-toggle="dropdown">'.Lang::get().'</a>';
+		$html .= '<a id="change_language" class="dropdown-toggle" href="#" data-toggle="dropdown">'.Lang::get().'<i class="fa fa-chevron-down"></i></a>';
 		$html .= '<div class="dropdown-menu" aria-labelledby="change_language">';
 
 		foreach($lang_list as $lang) {
