@@ -56,13 +56,13 @@ class HomepageAdmController extends AdmController {
 
 
         $external_pages = $this->model->getExternalPages();
-        $params['getExternalPages']=[];
+        $params['externalPages']=[];
         if(!empty($external_pages)) {
             foreach ($external_pages AS $id_page => $title) {
 
-                $externalPage = ['id' => $id_page, 'link' =>  Get::rel_path("base") . "/index.php?r=" . _homewebpage_ . "&page=" . $id_page, $title => $title];
+                $externalPage = ['id' => $id_page, 'link' =>  Get::rel_path("base") . "/index.php?r=" . _homewebpage_ . "&page=" . $id_page, 'title' => $title];
 
-                $params['getExternalPages'][] = $externalPage;
+                $params['externalPages'][] = $externalPage;
             }
         }
 
@@ -140,6 +140,17 @@ class HomepageAdmController extends AdmController {
         $dataView['form'] = $registerForm;
         $dataView['loginAction'] = Get::rel_path('base') . '/index.php?r=' . _login_;
         $dataView['lostPwdAction'] = Get::rel_path('base') . '/index.php?r=' . _lostpwd_;
+
+        $external_pages = $this->model->getExternalPages();
+        $dataView['externalPages']=[];
+        if(!empty($external_pages)) {
+            foreach ($external_pages AS $id_page => $title) {
+
+                $externalPage = ['id' => $id_page, 'link' =>  Get::rel_path("base") . "/index.php?r=" . _homewebpage_ . "&page=" . $id_page, 'title' => $title];
+
+                $dataView['externalPages'][] = $externalPage;
+            }
+        }
 
         $this->render('register', $dataView);
     }
