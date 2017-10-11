@@ -1,0 +1,13 @@
+<div class="homepage__row homepage__row--gray">
+    <h1 id="home_page">{{ title }}</h1>
+    <div class="home_textof">{{ description|raw }}</div>
+</div>
+<div class="homepage__row homepage__row--footer">
+    <nav class="homepage__links">
+        {% if externalPages is defined %}
+        {% for externalPage in externalPages %}
+        <a href="{{ externalPage.link }}">{{ externalPage.title }}</a>
+        {% endfor %}
+        {% endif %}
+    </nav>
+</div>
