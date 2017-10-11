@@ -1,2 +1,4 @@
-INSERT INTO `core_lang_text` (`id_text`, `text_key`, `text_module`, `text_attributes`) VALUES (2678, '_COURSE_FILE_NUMBER', 'standard', '');
-INSERT INTO `core_lang_translation` (`id_text`, `lang_code`, `translation_text`, `save_date`) VALUES ('2678', 'italian', 'Numero file certificato', '2017-09-13 06:00:00'), ('2678', 'english', 'Certificate number', '2017-09-13 07:05:16');
+INSERT IGNORE INTO `core_lang_text` (`text_key`, `text_module`, `text_attributes`) VALUES ( '_COURSE_FILE_NUMBER', 'standard', '');
+-- translation
+INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text, save_date) VALUES ((SELECT id_text FROM core_lang_text WHERE text_key = '_COURSE_FILE_NUMBER' AND text_module = 'standard'), 'english', 'Certificate number', now() );
+INSERT IGNORE INTO core_lang_translation (id_text, lang_code, translation_text, save_date) VALUES ((SELECT id_text FROM core_lang_text WHERE text_key = '_COURSE_FILE_NUMBER' AND text_module = 'standard'), 'italian', 'Numero file certificato', now() );
