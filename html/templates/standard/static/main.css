@@ -4824,6 +4824,8 @@ i + .course-box__date-box {
           border-top-left-radius: 0;
   -webkit-border-top-right-radius: 0;
           border-top-right-radius: 0;
+  background-color: #c84000;
+  padding: 0;
 }
 
 .forma-quick-search-form .navbar-collapse {
