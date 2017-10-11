@@ -146,11 +146,11 @@ drop table if exists core_menu_under_config, core_menu_under_content, core_menu_
 drop table if exists core_menu_config, core_menu_content, core_menu_elearning, core_menu_report, core_menu_user;
 
 -- Test report
- delete from core_menu_under where idmenu not in (4, 40);
- delete from core_menu where idmenu not in (4, 40);
+-- delete from core_menu_under where idmenu not in (4, 40);
+-- delete from core_menu where idmenu not in (4, 40);
  
- delete from core_menu_under where idmenu not in (4);
- delete from core_menu where idmenu not in (4);
+-- delete from core_menu_under where idmenu not in (4);
+-- delete from core_menu where idmenu not in (4);
 
 -- Test user
 -- delete from core_menu_under where idmenu not in (1, 11, 15, 151);
