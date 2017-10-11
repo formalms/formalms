@@ -187,7 +187,7 @@ class PluginmanagerAdm extends Model {
     }
 
     public function getActivePlugins(){
-        $query = "SELECT * FROM ".$this->table." WHERE  active=1 or core=1";
+        $query = "SELECT * FROM ".$this->table." WHERE  active=1 or core=1 ORDER BY priority ASC";
         $re = $this->db->query($query);
         $plugins=array();
         while($row = sql_fetch_assoc($re)){
