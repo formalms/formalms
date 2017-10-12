@@ -418,6 +418,7 @@ class Field_YesNo extends Field {
                     'field_' . $this->getFieldType() . '[' . $this->id_common . ']',
                     $val_item,
                     $val_item == (int)$user_entry,
+                    '',
                     '');
                 $formField .= '<label class="checkbox-inline" for="' . $id . '_' . $count . '">' . $label_item . '</label>';
 

@@ -993,9 +993,9 @@ class Form {
 	 *
 	 * @return string with the html code for the input type="radio" element
 	 */
-	public static function getInputRadio( $id, $name, $value, $is_checked, $other_param ) {
+	public static function getInputRadio( $id, $name, $value, $is_checked, $other_param,$class = 'radio' ) {
 
-		return '<input class="radio" type="radio" id="'.$id.'" name="'.$name.'" value="'.$value.'"'
+		return '<input class="'.$class.'" type="radio" id="'.$id.'" name="'.$name.'" value="'.$value.'"'
 		.( $is_checked ? 'checked="checked"' : '' )
 		.( $other_param != '' ? ' '.$other_param : '' ).' />';
 	}
