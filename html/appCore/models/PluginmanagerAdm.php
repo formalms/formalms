@@ -118,32 +118,45 @@ class PluginmanagerAdm extends Model {
     }
 
     private function check_dependencies($manifest, $dependence = false){
-        if ($manifest) {
-            $dependencies=@$manifest['dependencies'];
+        $forma_version = Get::sett("core_version");
+        $check = array();
+        if (key_exists('forma_version',$manifest)) {
+            if(key_exists('min',$manifest['forma_version'])){
+                if (version_compare($forma_version, $manifest['forma_version']['min']) < 0) {
+                    $check = array("forma.lms"=> $manifest['forma_version']['min']);
+                }
+            }
+            if(key_exists('max',$manifest['forma_version'])){
+                if (version_compare($manifest['forma_version']['max'], $forma_version) < 0) {
+                    $check = array("name"=> "forma.lms", "version" => $manifest['forma_version']['max']);
+                }
+            }
+        }
+        if (key_exists('dependecies',$manifest)) {
+            $dependencies=$manifest['dependencies'];
             $plugin_list = self::getActivePlugins();
             if ($dependence){
                 unset($plugin_list[$dependence]);
             }
-            $check = true;
             if (isset($dependencies)) {
                 foreach ($dependencies as $name => $version) {
                     if (key_exists($name, $plugin_list)) {
                         $dependant_manifest=$this->readPluginManifest($name);
                         if (version_compare($version, $dependant_manifest['version']) > 0) {
-                            $check = $manifest['dependencies'];
+                            $check = array_merge($dependencies,$check);
                             break;
                         }
                     } else {
-                        $check = $manifest['dependencies'];
+                        $check = array_merge($dependencies,$check);
                         if ($dependence){
-                            $check = array("name"=> $manifest['name'], "version" => $manifest['version']);
+                            $check = $check = array_merge(array("name"=> $manifest['name'], "version" => $manifest['version']),$check);
                         }
                         break;
                     }
                 }
             }
-            return $check;
         }
+        return $check;
     }
 
     private function is_dependence($name){
