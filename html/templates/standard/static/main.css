@@ -5950,7 +5950,12 @@ header.header nav {
 .select-language .dropdown-item {
   display: block;
   padding: 0 8px;
+  text-decoration: none !important;
   color: black;
+}
+
+.select-language .dropdown-item:hover {
+  color: #ff6c00;
 }
 
 body.homepage {
@@ -6014,6 +6019,15 @@ body.homepage {
 
 .homepage__row.clearfix {
   overflow: visible;
+}
+
+.homepage__row h3 {
+  font-size: 18px;
+}
+
+.homepage__row p {
+  font-size: 12px;
+  color: #666;
 }
 
 .homepage__row--header {
@@ -6171,9 +6185,22 @@ body.homepage {
   margin-top: 15px;
 }
 
+.homepage .forma-button--black {
+  -webkit-transition: background-color .25s ease 0s;
+  transition: background-color .25s ease 0s;
+}
+
+.homepage .forma-button--black:hover {
+  background-color: #ff6c00;
+}
+
 .homepage__row--login .form-control, .homepage__row--login .logout, .homepage__row--login .login_failed {
   display: block;
   margin-top: 15px;
+}
+
+.homepage__row--login .logout, .homepage__row--login .login_failed {
+  color: #ff6c00;
 }
 
 .homepage__row--form .form-control.has-error {
