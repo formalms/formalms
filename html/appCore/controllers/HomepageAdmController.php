@@ -331,6 +331,12 @@ class HomepageAdmController extends AdmController {
             );
             self::redirect($redirection);            
         }
+        
+        if(Docebo::user()->isLoggedIn()) {
+            AuthenticationManager::logout();
+            header("Location: " . $_SERVER['REQUEST_URI']);
+            exit;
+        }
 
         $time           = Get::req('time', DOTY_MIXED, '');
         $secret         = Get::sett('sso_secret', "8ca0f69afeacc7022d1e589221072d6bcf87e39c"); // XXX: <- orribile questo default
