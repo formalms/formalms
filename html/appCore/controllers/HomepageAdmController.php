@@ -13,7 +13,7 @@
 
 class HomepageAdmController extends AdmController
 {
-
+    /** @var HomepageAdm */
     public $model;
 
     public function init()

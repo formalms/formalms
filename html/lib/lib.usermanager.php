@@ -2137,20 +2137,22 @@ class UserManagerRenderer
                 $out .= '<div class="homepage__row homepage__row--gray">'
                     . $lang->def('_SUBSCRIBE')
                     . '</div>'
-                    . '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';
-
-
+                    . '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid clearfix">';
+                
                 foreach ($groups as $id => $info) {
 
-                    $out .= '<div class="col-xs-12 col-sm-3">'
-                        . Form::getInputCheckbox('group_sel_' . $id,
+                    $out .= '<div class="col-xs-12 col-sm-3 has-forma-tooltip">';
+
+                    $out .= Form::getInputCheckbox('group_sel_' . $id,
                             'group_sel[]',
                             $id,
                             isset($_POST['group_sel'][$id]),
                             '')
-                        . '<label class="checkbox-inline" for="group_sel_' . $id . '"for="group_sel_' . $id . '">' . $info['type_ico'] . ' ' . $info['groupid'] . '</label>
-		                </div>';
+                        . '<label class="checkbox-inline" for="group_sel_' . $id . '"for="group_sel_' . $id . '">' . $info['type_ico'] . ' ' . $info['groupid'] . '</label>'
+                        .'<div class="forma-tooltip">'.$info['description'].'</div>'
+		                .'</div>';
                 }
+
                 $out .= '</div>';
             }
         }
