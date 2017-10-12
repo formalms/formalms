@@ -156,7 +156,7 @@ class PluginmanagerAdm extends Model {
                 }
             }
         }
-        return $check;
+        return ( count($check) > 0) ? $check : false;
     }
 
     private function is_dependence($name){
