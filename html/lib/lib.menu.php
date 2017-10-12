@@ -189,7 +189,114 @@ $class_menu_name = $this->menu[$menu]['class_name_menu'] != '' ? $this->menu[$me
 			}
 		}
 		return $html;
-	}
+    }
+    
+    public static function addMenuChild($name, $mvcPath, $parent=false, $icon='', $is_active=true, $idPlugin=null){
+
+        // Check if $name contains only alphanumeric characters or undescores.
+        if(preg_match('/[^a-z_\-0-9]/i', $name)){
+            return false;
+        }
+
+        $idPlugin = (int)$idPlugin;
+
+        $idParent = 'NULL';
+        
+        $is_active = ($is_active) ? 'true' : 'false';
+
+        // Get idMenu
+        if($parent){
+            $idParentQuery = " SELECT idMenu FROM core_menu WHERE name = '$parent' ";
+            $idParentResult = sql_query($idParentQuery);
+            if($idParentResult){
+                if($idParentRow = sql_fetch_row($idParentResult)){
+                    $idParent = $idParentRow[0];
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        // Get sequence
+        $where = ' idParent ';
+        if($idParent!='NULL'){
+            $where .= "= $idParent ";
+        } else{
+            $where .= "IS NULL ";
+        }
+        $sequence = null;
+        $sequenceQuery = " SELECT max(sequence)+1 FROM core_menu WHERE $where ";
+        $sequenceResult = sql_query($sequenceQuery);
+        if($sequenceResult){
+            if($sequenceRow = sql_fetch_row($sequenceResult)){
+                $sequence = $sequenceRow[0];
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        // Insert into core_menu
+        $queryMenu = "INSERT INTO 
+            %adm_menu(
+                idparent,
+                name,
+                sequence,
+                is_active,
+                image,
+                idPlugin
+            )
+        VALUES
+            (
+                $idParent,
+                '$name',
+                $sequence,
+                '$is_active',
+                '$icon',
+                $idPlugin
+            )
+        ";
+
+        // Insert into core_menu_under
+        if(sql_query($queryMenu)){
+            $idMenu = sql_insert_id();
+            $queryMenuUnder = "INSERT INTO 
+                %adm_menu_under(
+                    idMenu,
+                    default_name,
+                    default_op,
+                    associated_token,
+                    of_platform,
+                    sequence,
+                    class_file,
+                    class_name,
+                    mvc_path
+                ) 
+            VALUES
+                (
+                    $idMenu,
+                    '$name',
+                    '',
+                    'view',
+                    NULL,
+                    1,
+                    '',
+                    '',
+                    '$mvcPath'
+                )
+            ";
+            if(sql_query($queryMenuUnder)){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 
     
     

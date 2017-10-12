@@ -59,28 +59,12 @@ abstract class FormaPlugin {
         sql_query($query_insert_string);
         return true;
     }
-/*
-    public function addCollapsedMenu($app, $default_name, $image, $module, $request){
+
+    function addCoreMenu($name, $mvcPath, $parent=false, $icon='', $is_active=false){
         $pg_adm=new PluginmanagerAdm();
         $plugin_info=$pg_adm->getPluginFromDB(self::getName(),'name');
-        $query_insert_menu_string="INSERT %".$app."_menu (name, image, sequence, collapse, plugin_id) VALUES ";
-        $query_insert_menu_string.="('".$default_name."','".$image."',(SELECT MAX(sequence) FROM learning_menu T ) +1 ,'true',".$plugin_info['plugin_id'].")";
-        $check=sql_query($query_insert_menu_string);
-
-        $query_insert_menu_under_string="INSERT %".$app."_menu_under (idMenu, module_name, default_name, associated_token, sequence, mvc_path, plugin_id) VALUES ";
-        $query_insert_menu_under_string.="(LAST_INSERT_ID(),'".$module."','".$default_name."','view',1,'".$request."',".$plugin_info['plugin_id'].")";
-        $check=sql_query($query_insert_menu_under_string);
-
-        return true;
+        include_once _lib_.'/lib.menu.php';
+        MenuManager::addMenuChild($name, $mvcPath, $parent, $icon, $is_active, $plugin_info['plugin_id']);
     }
 
-    public function addMenu($app, $default_name, $image, $menu_under_array) {
-        $pg_adm=new PluginmanagerAdm();
-        $plugin_info=$pg_adm->getPluginFromDB(self::getName(),'name');
-        $query_insert_menu_string="INSERT %".$app."_menu (name, image, sequence, collapse, plugin_id) VALUES ";
-        $query_insert_menu_string.="('".$default_name."','".$image."',(SELECT MAX(sequence) FROM learning_menu T ) +1 ,'false',".$plugin_info['plugin_id'].")";
-        $check=sql_query($query_insert_menu_string);
-        foreach ($menu_under_array)
-    }
-*/
 }
