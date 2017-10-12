@@ -1629,7 +1629,7 @@ class UserManagerRenderer
 
             $this->error = true;
 
-            $errors = ['error' => $this->error ,'msg' => $lang->def('_OPERATION_FAILURE')];
+            $errors = ['error' => $this->error, 'msg' => $lang->def('_OPERATION_FAILURE')];
 
             return $errors;
         }
@@ -1724,11 +1724,11 @@ class UserManagerRenderer
                 $acl_man->deleteTempUser($iduser);
 
                 $this->error = true;
-                $errors = ['registration' => false, 'error' => $this->error ,'msg' => $lang->def('_OPERATION_FAILURE')];
+                $errors = ['registration' => false, 'error' => $this->error, 'msg' => $lang->def('_OPERATION_FAILURE')];
 
             } else {
                 $this->error = false;
-                $errors = ['registration' => true, 'error' => $this->error ,'msg' => $lang->def('_REG_SUCCESS')];
+                $errors = ['registration' => true, 'error' => $this->error, 'msg' => $lang->def('_REG_SUCCESS')];
 
             }
         }
@@ -1750,11 +1750,11 @@ class UserManagerRenderer
             $mailer = DoceboMailer::getInstance();
             if (!$mailer->SendMail($admin_mail, $_POST['register']['email'], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, false, false)) {
                 $this->error = true;
-                $errors = ['registration' => false, 'error' => $this->error ,'msg' => $lang->def('_OPERATION_FAILURE')];
+                $errors = ['registration' => false, 'error' => $this->error, 'msg' => $lang->def('_OPERATION_FAILURE')];
             } else {
                 $this->error = false;
                 $this->confirmRegister($this->_platform, $options);
-                $errors = ['registration' => true, 'error' => $this->error ,'msg' => $lang->def('_REG_SUCCESS')];
+                $errors = ['registration' => true, 'error' => $this->error, 'msg' => $lang->def('_REG_SUCCESS')];
             }
 
         }
@@ -2149,8 +2149,8 @@ class UserManagerRenderer
                             isset($_POST['group_sel'][$id]),
                             '')
                         . '<label class="checkbox-inline" for="group_sel_' . $id . '"for="group_sel_' . $id . '">' . $info['type_ico'] . ' ' . $info['groupid'] . '</label>'
-                        .'<div class="forma-tooltip">'.$info['description'].'</div>'
-		                .'</div>';
+                        . '<div class="forma-tooltip">' . $info['description'] . '</div>'
+                        . '</div>';
                 }
 
                 $out .= '</div>';
@@ -2185,7 +2185,7 @@ class UserManagerRenderer
             . '</div>';
 
         $out .= '<div class="homepage__row homepage__links">'
-            . '<a href="/index.php"><em>' . $lang->def('_LOGIN') . '</em></a>'
+            . '<a href="' . Get::rel_path("base") . '/index.php"><em>' . $lang->def('_LOGIN') . '</em></a>'
             . '</div>';
 
         return $out;
