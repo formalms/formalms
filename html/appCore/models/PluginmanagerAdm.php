@@ -323,7 +323,7 @@ class PluginmanagerAdm extends Model {
      * @return reouce_id
      */
     private function removeSettings($plugin_name){
-        return sql_query('DELETE FROM %adm_setting WHERE pack="'.$plugin_name.'"');
+        return (bool)sql_query('DELETE FROM %adm_setting WHERE pack="'.$plugin_name.'"');
     }
 
     /**
@@ -333,24 +333,64 @@ class PluginmanagerAdm extends Model {
      */
     private function removeRequests($plugin_name){
         $plugin_info = $this->getPluginFromDB($plugin_name,'name');
-        return sql_query('DELETE FROM %adm_requests WHERE plugin="'.$plugin_info['plugin_id'].'"');
+        return (bool)sql_query('DELETE FROM %adm_requests WHERE plugin="'.$plugin_info['plugin_id'].'"');
+    }
+
+    private function getIdMenu($plugin_name){
+        $plugin_info = $this->getPluginFromDB($plugin_name,'name');
+        $idMenu = null;
+        // Get idMenu
+        $idMenuQuery = "SELECT idMenu FROM %adm_menu WHERE idPlugin = '".$plugin_info['plugin_id']."'";
+        $idMenuResult = sql_query($idMenuQuery);
+        if($idMenuResult){
+            if($idMenuRow = sql_fetch_row($idMenuResult)){
+                return $idMenuRow[0];
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    
+
+    /**
+     * Activate plugin's menu
+     * @param $plugin_name
+     * @return reouce_id
+     */
+    private function activateMenu($plugin_name){
+        $idMenu = $this->getIdMenu($plugin_name);
+        $updateQuery = "UPDATE %adm_menu SET is_active = 'true' WHERE idMenu = $idMenu ";
+        return (bool)sql_query($updateQuery);
+    }
+
+    /**
+     * Deactivate plugin's menu
+     * @param $plugin_name
+     * @return reouce_id
+     */
+    private function deactivateMenu($plugin_name){
+        $idMenu = $this->getIdMenu($plugin_name);
+        return (bool)sql_query("UPDATE %adm_menu SET is_active = 'false' WHERE idMenu = $idMenu ");
     }
 
 
     /**
-     * Remove plugin's requests from forma's requests
+     * Remove plugin's menu
      * @param $plugin_name
      * @return reouce_id
      */
-    /*
     private function removeMenu($plugin_name){
-        $plugin_info = $this->getPluginFromDB($plugin_name,'name');
-        sql_query('DELETE FROM %lms_menu WHERE plugin_id="'.$plugin_info['plugin_id'].'"');
-        sql_query('DELETE FROM %lms_menu_under WHERE plugin_id="'.$plugin_info['plugin_id'].'"');
-        sql_query('DELETE FROM %adm_menu WHERE plugin_id="'.$plugin_info['plugin_id'].'"');
-        sql_query('DELETE FROM %adm_menu_under WHERE plugin_id="'.$plugin_info['plugin_id'].'"');
+        $idMenu = $this->getIdMenu($plugin_name);
+
+        if(sql_query("DELETE FROM %adm_menu_under WHERE idMenu = $idMenu ")){
+            if(sql_query("DELETE FROM %adm_menu WHERE idMenu = $idMenu ")){
+                return true;
+            }
+        }
+        return false;
     }
-    */
 
     /**
      * Insert specified plugin in forma
@@ -398,6 +438,7 @@ class PluginmanagerAdm extends Model {
             $this->callPluginMethod($plugin_id, 'uninstall');
             $this->removeSettings($plugin_id);
             $this->removeRequests($plugin_id);
+            $this->removeMenu($plugin_id);
         }
 
         $reSetting = sql_query("
@@ -416,10 +457,11 @@ class PluginmanagerAdm extends Model {
     public function setupPlugin($plugin_id, $active){
         if($active == 1){
             $this->callPluginMethod($plugin_id,'activate');
+            $this->activateMenu($plugin_id);
         }
         else{
-            //$this->removeMenu($plugin_id);
             $this->callPluginMethod($plugin_id,'deactivate');
+            $this->deactivateMenu($plugin_id);
         }
 
         $reSetting = sql_query("
