@@ -15,6 +15,7 @@ CREATE TABLE `core_menu` (
   `is_active` enum('true','false') NOT NULL DEFAULT 'true',
   `collapse` enum('true','false') NOT NULL DEFAULT 'true', -- false
   `idParent` int(11) NULL,
+  `idPlugin` int(11) NULL,
   PRIMARY KEY (`idmenu`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
