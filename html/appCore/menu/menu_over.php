@@ -55,7 +55,7 @@ function BackToLms(){
 function AdminBar()
 {
     $amenu=array();
-    $current_platform=$_SESSION['current_action_platform'];
+    $current_platform = "framework";//$_SESSION['current_action_platform'];
 
     $p_man 	=& MenuManager::createInstance($current_platform);
     $lang =& DoceboLanguage::createInstance('menu', 'framework');
@@ -74,7 +74,7 @@ function AdminBar()
     foreach ($menus as $p_code => $p_name) {
 //        $menu_man=$p_man->getPlatofmMenuInstanceFramework($p_code);
         
-        $strLabel = $lang->def($p_name['name'], 'menu', $current_platform);
+        $strLabel = $p_name['name'];//$lang->def($p_name['name'], 'menu', $current_platform);
         $strIco = $p_name['image'];
         $admin_menu_bar .= '<li><a href="#">' . $strIco . '&nbsp;' . $strLabel . '</a><ul>' . PHP_EOL;
 
