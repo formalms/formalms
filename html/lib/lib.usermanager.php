@@ -2138,7 +2138,7 @@ class UserManagerRenderer
                     . $lang->def('_SUBSCRIBE')
                     . '</div>'
                     . '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid clearfix">';
-                
+
                 foreach ($groups as $id => $info) {
 
                     $out .= '<div class="col-xs-12 col-sm-3 has-forma-tooltip">';
