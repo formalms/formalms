@@ -45,12 +45,6 @@
     left: 20px;
 }
 
-
-</style>
-         
-
-<style>
-
 .show-on-hover:hover > ul.dropdown-menu {
     display: block;    
 }
@@ -110,72 +104,68 @@
          callAjaxCatalog(leggiCookie('id_current_cat'))
     }
 
-   
-
-</script>
-
-
-<script type='text/javascript'>
-
-      $("select#typeCourse").val(leggiCookie('type_course'))
-</script>
-            
-            
-                          
-  <script>
-  
-$(document).ready(function(){
-      $('body').append('<div id="toTop" class="btn btn-info"><span class="glyphicon glyphicon-chevron-up"></span><?php echo Lang::t('_BACKTOTOP','faq') ?></div>');
-        $(window).scroll(function () {
-            if ($(this).scrollTop() != 0) {
-                $('#toTop').fadeIn();
-            } else {
-                $('#toTop').fadeOut();
-            }
-        }); 
-    $('#toTop').click(function(){
-        $("html, body").animate({ scrollTop: 0 }, 1000);
-        return false;
+    $("select#typeCourse").val(leggiCookie('type_course'))
+ 
+    $(document).ready(function(){
+          $('body').append('<div id="toTop" class="btn btn-info"><span class="glyphicon glyphicon-chevron-up"></span><?php echo Lang::t('_BACKTOTOP','faq') ?></div>');
+            $(window).scroll(function () {
+                if ($(this).scrollTop() != 0) {
+                    $('#toTop').fadeIn();
+                } else {
+                    $('#toTop').fadeOut();
+                }
+            }); 
+        $('#toTop').click(function(){
+            $("html, body").animate({ scrollTop: 0 }, 1000);
+            return false;
+        });
     });
-});
   
-  
-  
-        </script>  
+ </script>  
 
 
 <div class="tabs-wrapper">
                 <ul class="nav nav-tabs hidden-xs">
-                <?php
-                  if(intval($_GET['id_cata'])==0 ){
-                      echo '<li class="active" >';
-                  } else {
-                      
-                      echo '<li >';
-                  } 
-                ?>
-                
+                    <?php
                     
-                        <a href="index.php?r=catalog/show&amp;id_cata=0"><?php echo Lang::t('_CATALOGUE');?></a>
-                  </li>
+                    
+                    if (Get::sett('on_catalogue_empty')=='on' ) {
+                        if (count($user_catalogue)==0) {
+                            echo '<li class="active" ><a href="index.php?r=catalog/show&amp;id_cata=0">'.Lang::t('_CATALOGUE').'</a></li>';
+                        } else {
+                            GetMyFirstCatalogue($user_catalogue);   
+                        }    
+                     } else {
+                        if (!$catalogue_exist) {
+                            echo '<li class="active" ><a href="index.php?r=catalog/show&amp;id_cata=0">'.Lang::t('_CATALOGUE').'</a></li>';
+                        } else {
+                            if (count($user_catalogue) > 0) {
+                                GetMyFirstCatalogue($user_catalogue);
+                            }
+                        }
+                    }
+                    
+                    
+                    function GetMyFirstCatalogue($user_catalogue){
+                            $i = 0;
+                            foreach ($user_catalogue as $id_catalogue => $cat_info){
+                                if ((is_null($_GET['id_cata']) && $i ==0 ) || (intval($_GET['id_cata'])==$id_catalogue) ){
+                                    $active = "class='active'";
+                                    $i = 1;
+                                }
+                                echo '<li '.$active.' >'
+                                . '<a href="index.php?r=catalog/show&amp;id_cata=' . $id_catalogue . '">'
+                                . '' . $cat_info['name'] . ''
+                                . '</a>'
+                                . '</li>';
+                                $active = '';
+                            }
+                            return;  
+                    }
+                    
+                    ?>
 
-                <?php
-               
-                    foreach ($user_catalogue as $id_catalogue => $cat_info){
-                        $str_class = "";
-                        if($_GET['id_cata'] == $id_catalogue ) $str_class='active';
-                    
-                    
-                       echo '<li class="'.$str_class.'">'
-                        . '<a href="index.php?r=catalog/show&amp;id_cata=' . $id_catalogue . '">'
-                        . '' . $cat_info['name'] . ''
-                        . '</a>'
-                        . '</li>';
-                    
-                    }  
-                 ?>
-                   
-                              </ul>            
+                </ul>            
                 
 </div>
     <div class="tab_subnav">

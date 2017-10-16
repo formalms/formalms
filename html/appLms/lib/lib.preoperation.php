@@ -96,7 +96,24 @@ if(isset($_SESSION['must_renew_pwd']) && $_SESSION['must_renew_pwd'] == 1
         
         $query = " SELECT obj_index from %lms_middlearea where is_home=1";
         list($tb_home) = sql_fetch_row(sql_query($query));
-        $GLOBALS['req'] =  (Get::sett('first_catalogue') == 'off'? $array_tab[$tb_home]: 'lms/catalog/show');
+       if (Get::sett('home_page_option') == 'catalogue') {
+           $GLOBALS['req'] = 'lms/catalog/show';
+       } else{
+           if (Get::sett('on_usercourse_empty')=='off'){
+              $GLOBALS['req'] = $array_tab[$tb_home]; 
+           } else {
+                $a= Docebo::user()->getIdSt();
+                $q = 'Select count(\'x\') from learning_courseuser where idUser ='.$a;
+                list($n) = sql_fetch_row(sql_query($q));
+                if ($n == 0) { //showing catalogue if no enrollment
+                    $GLOBALS['req'] = 'lms/catalog/show'; 
+                }  else { 
+                    $GLOBALS['req'] =  $array_tab[$tb_home];
+                }
+           }
+          
+       }
+       
     }
 }
 

@@ -33,8 +33,6 @@ cout(Util::get_js(Get::rel_path('lms') . '/views/homecatalogue/homecatalogue.js'
         scriviCookie('id_current_cat', id_cat, 60);
         var type_course = "";
         var glob_serverUrl = "./appLms/ajax.server.php?r=homecatalogue/"; //preview
-        // l'indirizzo da usare cambia in base al db usato FIXME
-//                var glob_serverUrl = "./ajax.server.php?r=homecatalogue/"; //locale
 
         url = glob_serverUrl + "allCourseForma&id_cat=" + id_cat + "&type_course=" + type_course;
 
@@ -44,7 +42,6 @@ cout(Util::get_js(Get::rel_path('lms') . '/views/homecatalogue/homecatalogue.js'
 
         .done(function (data) {
             if (console && console.log) {
-//                console.log("risposta del ajax:", data);
                 $("#div_course").html(data);
             }
         });
@@ -79,7 +76,6 @@ cout(Util::get_js(Get::rel_path('lms') . '/views/homecatalogue/homecatalogue.js'
 
         onNodeSelected: function (event, node) {
             id_category = node.id_cat;
-            // chiamo ajax per caricare i corsi della categoria
             callAjaxCatalog(id_category);
 
         },

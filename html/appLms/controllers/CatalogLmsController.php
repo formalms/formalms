@@ -48,50 +48,14 @@ class CatalogLmsController extends LmsController {
 
 	public function allCourse()
 	{
-		require_once(_base_.'/lib/lib.navbar.php');
-		require_once(_lms_.'/lib/lib.middlearea.php');
-		$active_tab = 'all';
-		$action = Get::req('action', DOTY_STRING, '');
-
-		$page = Get::req('page', DOTY_INT, 1);
-		$id_cat = Get::req('id_cat', DOTY_INT, 0);
-        
-		$nav_bar = new NavBar('page', Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
-
-		$nav_bar->setLink('index.php?r=catalog/allCourse'.($id_cat > 1 ? '&amp;id_cat='.$id_cat : ''));
-
-		$html = $this->model->getCourseList($active_tab, $page);
+		$id_cat = Get::req('id_cata', DOTY_INT, 0);
+        $typeCourse = Get::req('type_course', DOTY_STRING, '');
+        $catalogue_exist = $this->model->CatalogueExist();
 		$user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
-		$user_coursepath = $this->model->getUserCoursepath(Docebo::user()->getIdSt());
-
-		$ma = new Man_MiddleArea();
-
 		echo '<div class="middlearea_container">';
 
-        $this->render('catalog_header', array("user_catalogue" => $user_catalogue));
-        $this->render('catalog_tree', array('model' => $this->model, 'id_cat=' => $id_cat));
-         
-           /*
-		$lmstab = $this->widget('lms_tab', array(
-								'active' => 'catalog',
-								'close' => false));
-
-		$this->render('tab_start', array(	'user_catalogue' => $user_catalogue,
-											'active_tab' => $active_tab,
-											'user_coursepath' => $user_coursepath,
-											'std_link' => 'index.php?r=catalog/allCourse'.($page > 1 ? '&amp;page='.$page : ''),
-											'model' => $this->model,
-											'ma' => $ma));
-                                            
-                                            
-        $this->render('tab_end', array(    'std_link' => 'index.php?r=catalog/allCourse'.($page > 1 ? '&amp;page='.$page : ''),    'model' => $this->model));
-
-		$this->render('courselist', array(	'html' => $html,
-											'nav_bar' => $nav_bar));
-
-		$lmstab->endWidget();
-         */
-         
+        $this->render('catalog_header', array("user_catalogue" => $user_catalogue, 'catalogue_exist'=>$catalogue_exist));
+        $this->render('catalog_tree', array('model' => $this->model, 'user_catalogue' => $user_catalogue, 'id_catalogue' => $id_cat, 'catalogue_exist'=>$catalogue_exist));
                       
 		echo '</div>';
 	}
@@ -101,14 +65,14 @@ class CatalogLmsController extends LmsController {
     public function allCourseForma()
     {
   
-       $id_cat = Get::req('id_cat', DOTY_INT, 0);     
+       $id_category = Get::req('id_category', DOTY_INT, 0);     
        $typeCourse = Get::req('type_course', DOTY_STRING, '');
        $val_enroll = Get::req('val_enroll', DOTY_STRING, '');
        $val_enroll_not = Get::req('val_enroll_not', DOTY_STRING, '');
        
-       $id_catalog = Get::req('id_cata', DOTY_INT, 0);          
+       $id_catalogue = Get::req('id_catalogue', DOTY_INT, 0);          
               
-       $result = $this->model->getCourseList($typeCourse,1,$id_catalog);
+       $result = $this->model->getCourseList($typeCourse,1,$id_catalogue, $id_category);
        $this->render('courselist', array( "result" => $result));
 
     }    
@@ -562,40 +526,6 @@ class CatalogLmsController extends LmsController {
 
 			$re &= $subs_man->multipleSubscribe($users_subsc, $courses, 3);
 		}
-/*
-		qui non posso intervenire, si devono scegliere gli assesment e le edizioni... da admin ci sono form
-
-		$course_man = new Man_Course();
-		$assessment = $course_man->getAllCourses(false, 'assessment', $courses);
-		$classroom = $course_man->getAllCourses(false, 'classroom', $courses);
-		$edition = $course_man->getAllCourses(false, 'edition', $courses);
-
-
-		if(!empty($assessment))
-		{
-			foreach($assessment as $id_assessment => $assessment_info)
-				sql_query("INSERT INTO %lms_assessment_user (id_assessment, id_user, type_of) VALUES ('".$id_assessment."', '".$id_user."', 'user')");
-
-			reset($assessment);
-		}
-
-		if(!empty($array_id_date))
-		{
-			foreach($array_id_date as $id_date)
-				$date_man->addUserToDate($id_date, $id_user, Docebo::user()->getIdSt());
-
-			reset($array_id_date);
-		}
-
-		if(!empty($array_id_edition))
-		{
-			foreach($array_id_edition as $id_edition)
-				$edition_man->addUserToEdition($id_edition, $id_user, Docebo::user()->getIdSt());
-
-			reset($array_id_edition);
-		}
-
-*/
 
 		$res['success'] = true;
 		if($waiting == 1)

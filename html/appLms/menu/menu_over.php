@@ -64,9 +64,10 @@ if(!Docebo::user()->isAnonymous()) {
             // if e-learning tab disabled, show classroom courses
             if ($module_name ==='course' && !$ma->currentCanAccessObj('tb_elearning'))
                 $mvc_path = 'lms/classroom/show';
-
+                
+            
             $menu[$m_info][$id_m] = array(
-                'index.php?'.( $mvc_path ? 'r='.$mvc_path : 'modname='.$module_name.'&amp;op='.$def_op ).'&amp;sop=unregistercourse',
+                'index.php?'.( $mvc_path ? 'r='.$mvc_path : 'modname='.$module_name.'&amp;op='.$def_op ),
                 Lang::t($default_name, 'menu_over'),
                 false ,
                 $id_m
