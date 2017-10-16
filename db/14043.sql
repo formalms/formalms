@@ -21,24 +21,24 @@ update core_setting set sequence = 13 where param_name = 'course_block';
 
 
 
-insert into core_lang_text (text_key, text_module, text_attributes) VALUES ('_HOME_PAGE', 'configuration', '')
+insert into core_lang_text (text_key, text_module, text_attributes) VALUES ('_HOME_PAGE', 'configuration', '');
 
 insert into core_lang_translation (id_text, lang_code, translation_text, save_date) 
-VALUES (SELECT id_text FROM core_lang_text where text_key = '_HOME_PAGE' and text_module = 'configuration'), 'italian', 'Home page', now())
+VALUES ((SELECT id_text FROM core_lang_text where text_key = '_HOME_PAGE' and text_module = 'configuration'), 'italian', 'Home page', now());
 
 insert into core_lang_translation (id_text, lang_code, translation_text, save_date) 
-VALUES (SELECT id_text FROM core_lang_text where text_key = '_HOME_PAGE' and text_module = 'configuration'), 'english', 'Home page', now())
+VALUES ((SELECT id_text FROM core_lang_text where text_key = '_HOME_PAGE' and text_module = 'configuration'), 'english', 'Home page', now());
 
 --
 
-insert into core_lang_text (text_key, text_module, text_attributes) VALUES ('_MY_COURSES', 'configuration', '')
+insert into core_lang_text (text_key, text_module, text_attributes) VALUES ('_MY_COURSES', 'configuration', '');
 
 insert into core_lang_translation (id_text, lang_code, translation_text, save_date) 
-VALUES (SELECT id_text FROM core_lang_text where text_key = '_MY_COURSES' and text_module = 'configuration'), 'italian', 'I miei corsi', now())
+VALUES ((SELECT id_text FROM core_lang_text where text_key = '_MY_COURSES' and text_module = 'configuration'), 'italian', 'I miei corsi', now());
 
 insert into core_lang_translation (id_text, lang_code, translation_text, save_date) 
-VALUES (SELECT id_text FROM core_lang_text where text_key = '_MY_COURSES' and text_module = 'configuration'), 'english', 'My courses', now())
+VALUES ((SELECT id_text FROM core_lang_text where text_key = '_MY_COURSES' and text_module = 'configuration'), 'english', 'My courses', now());
 
 
-update core_lang_translation set translation_text = 'Attiva elenco corsi in pagina di login' where translation_text = 'Attiva elenco corsi in home page'
-update core_lang_translation set translation_text = 'Show catalogue in login page' where translation_text = 'Show catalogue in home page'
+update core_lang_translation set translation_text = 'Attiva elenco corsi in pagina di login' where translation_text = 'Attiva elenco corsi in home page';
+update core_lang_translation set translation_text = 'Show catalogue in login page' where translation_text = 'Show catalogue in home page';
