@@ -58,6 +58,13 @@
 	</div>
 </div>
 <script type="text/javascript">
+$(function(){
+    // check on page reload
+    if ($("#home_page_option").val() == 'catalogue'){
+        $("#on_usercourse_empty_on").attr("disabled", true);
+    }
+})
+
 $( "#home_page_option" ).change(function() {
    if ($( this ).val() == 'catalogue') {
       $("#on_usercourse_empty_on").prop('checked', false)
