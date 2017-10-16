@@ -406,6 +406,32 @@ class PluginmanagerAdm extends Model {
         return false;
     }
 
+    function installTranslations($plugin_name){
+        $plugin_info = $this->getPluginFromDB($plugin_name,'name');
+        $check = true;
+        $path = _base_."/plugins/".$plugin_name."/translations/";
+        $dp=opendir($path);
+        while ($file = readdir($dp)){
+            if(!preg_match("/^\./",$file)) {
+                $lang_file	= $path.$file;
+                $model = new LangAdm();
+                $check = $model->importTranslation($lang_file, true, false, $plugin_info['plugin_id']);
+                if(!$check){
+                    break;
+                }
+            }
+        }
+        return $check;
+    }
+
+    function removeTranslations($plugin_name){
+        $plugin_info = $this->getPluginFromDB($plugin_name,'name');
+        $idPlugin = $plugin_info['plugin_id'];
+        $plugin_name = strtoupper($plugin_name);
+        $queryKey = " DELETE FROM %adm_lang_text WHERE plugin_id = $idPlugin ";
+        return sql_query($queryKey) ? true : false;
+    }
+
     /**
      * Insert specified plugin in forma
      * @param $plugin_name
@@ -429,6 +455,7 @@ class PluginmanagerAdm extends Model {
             if ($result){
                 if (!$update){
                     $this->callPluginMethod($plugin_name, 'install');
+                    $this->installTranslations($plugin_name);
                 }
                 return $plugin_info;
             } else {
@@ -452,6 +479,7 @@ class PluginmanagerAdm extends Model {
             $this->callPluginMethod($plugin_id, 'uninstall');
             $this->removeSettings($plugin_id);
             $this->removeRequests($plugin_id);
+            $this->removeTranslations($plugin_id);
             $this->removeMenu($plugin_id);
         }
 
