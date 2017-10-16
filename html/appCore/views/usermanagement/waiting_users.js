@@ -108,6 +108,11 @@ var WaitingManagement = {
 				+'<span>'+WaitingManagement.oLangs.get('_CONFIRM')+': '+oRecord.getData("userid")+'</span></a>';
 	},
 
+    statusFormatter: function(elLiner, oRecord, oColumn, oData) {
+        var status = oRecord.getData("confirmed") === "1" ? WaitingManagement.oLangs.get('_LINK_CONFIRMED') : WaitingManagement.oLangs.get('_LINK_NOT_CONFIRMED');
+        elLiner.innerHTML = '<span>'+status+'</span>';
+    },
+
 	labelFormatter: function(elLiner, oRecord, oColumn, oData) {
 		elLiner.innerHTML = '<label for="waitingtable_sel_'+oRecord.getData("id")+'">'+oData+'</label>';
 	},

@@ -2245,7 +2245,7 @@ class UsermanagementAdm extends Model {
 		$idst_usergroup = $this->aclManager->getGroupST($this->aclManager->relativeId(ADMIN_GROUP_USER));
 		$idst_oc = $this->aclManager->getGroupST('oc_0');
 		$idst_ocd = $this->aclManager->getGroupST('ocd_0');
-		$uinfo = $this->aclManager->getTempUsers($arr_idst, true);
+		$uinfo = $this->aclManager->getTempUsers($arr_idst, false);
 		$approved = array();
 
 		while (list(,$idst) = each($arr_idst)) {
@@ -2324,7 +2324,7 @@ class UsermanagementAdm extends Model {
 	public function getWaitingUsersTotal($filter = false) {
 		$query = "SELECT COUNT(*) "
 			." FROM %adm_user_temp as w LEFT JOIN %adm_user as u ON (w.create_by_admin = u.idst)"
-			." WHERE w.confirmed > 0 ";
+            ." WHERE (w.confirmed > 0 OR  w.confirmed = 0)";
 
 		if ($filter) {
 			$query .= " AND (w.userid LIKE '%".$filter."%' "
@@ -2365,15 +2365,16 @@ class UsermanagementAdm extends Model {
 				case 'firstname': $sort = 'w.lastname '.$dir.', w.firstname'; break;
 				case 'lastname': $sort = 'w.firstname '.$dir.', w.lastname'; break;
 				case 'email': $sort = 'w.email'; break;
+                case 'confirmed': $sort = 'w.confirmed'; break;
 				case 'insert_date': $sort = 'insert_date'; break;
 				case 'insert_by': $sort = 'insert_by'; break;
 			}
 		}
 
 
-		$query = "SELECT w.idst, w.userid, w.firstname, w.lastname, w.email, w.request_on as insert_date, u.userid as inserted_by "
+		$query = "SELECT w.idst, w.userid, w.firstname, w.lastname, w.email, w.confirmed, w.request_on as insert_date, u.userid as inserted_by "
 			." FROM %adm_user_temp as w LEFT JOIN %adm_user as u ON (w.create_by_admin = u.idst) "
-			." WHERE w.confirmed > 0 ";
+            ." WHERE (w.confirmed > 0 OR  w.confirmed = 0)";
 
 		if ($filter) {
 			$query .= " AND (w.userid LIKE '%".$filter."%' "
