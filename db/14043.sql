@@ -3,12 +3,14 @@
 INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES
 ('home_page_option', 'catalogue', 'home_page_option', 255, '0', 4, 1, 1, 0, '');
 
+INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES
+('hide_empty_category', 'on', 'enum', 3, '0', 4, 5, 1, 0, '');
+
 DELETE from core_setting where param_name = 'first_catalogue';
 
 update core_setting set sequence = 2 where param_name = 'on_usercourse_empty'; 
 update core_setting set sequence = 3 where param_name = 'tablist_mycourses'; 
 update core_setting set sequence = 4 where param_name = 'on_catalogue_empty'; 
-update core_setting set sequence = 5 where param_name = 'hide_empty_category'; 
 update core_setting set sequence = 6 where param_name = 'use_tag'; 
 update core_setting set sequence = 7 where param_name = 'course_quota';
 update core_setting set sequence = 8 where param_name = 'no_answer_in_test';
