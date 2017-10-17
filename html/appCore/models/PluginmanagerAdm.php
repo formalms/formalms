@@ -360,9 +360,9 @@ class PluginmanagerAdm extends Model {
      * @return reouce_id
      */
     private function activateMenu($plugin_name){
-        $idMenu = $this->getIdMenu($plugin_name);
-        $updateQuery = "UPDATE %adm_menu SET is_active = 'true' WHERE idMenu = $idMenu ";
-        return (bool)sql_query($updateQuery);
+        $plugin_info = $this->getPluginFromDB($plugin_name,'name');
+        $plugin_id = $plugin_info['plugin_id'];
+        return (bool)sql_query("UPDATE %adm_menu SET is_active = 'true' WHERE idPlugin = $plugin_id ");
     }
 
     /**
@@ -371,8 +371,9 @@ class PluginmanagerAdm extends Model {
      * @return reouce_id
      */
     private function deactivateMenu($plugin_name){
-        $idMenu = $this->getIdMenu($plugin_name);
-        return (bool)sql_query("UPDATE %adm_menu SET is_active = 'false' WHERE idMenu = $idMenu ");
+        $plugin_info = $this->getPluginFromDB($plugin_name,'name');
+        $plugin_id = $plugin_info['plugin_id'];
+        return (bool)sql_query("UPDATE %adm_menu SET is_active = 'false' WHERE idPlugin = $plugin_id ");
     }
 
 
@@ -382,10 +383,10 @@ class PluginmanagerAdm extends Model {
      * @return reouce_id
      */
     private function removeMenu($plugin_name){
-        $idMenu = $this->getIdMenu($plugin_name);
-
-        if(sql_query("DELETE FROM %adm_menu_under WHERE idMenu = $idMenu ")){
-            if(sql_query("DELETE FROM %adm_menu WHERE idMenu = $idMenu ")){
+        $plugin_info = $this->getPluginFromDB($plugin_name,'name');
+        $plugin_id = $plugin_info['plugin_id'];
+        if(sql_query("DELETE FROM %adm_menu_under WHERE idMenu IN ( SELECT idMenu FROM %adm_menu WHERE idPlugin = $plugin_id ) ")){
+            if(sql_query("DELETE FROM %adm_menu WHERE idPlugin = $plugin_id ")){
                 return true;
             }
         }
