@@ -227,11 +227,16 @@ $class_menu_name = $this->menu[$menu]['class_name_menu'] != '' ? $this->menu[$me
             $where .= "IS NULL ";
         }
         $sequence = null;
-        $sequenceQuery = " SELECT max(sequence)+1 FROM core_menu WHERE $where ";
+        $sequenceQuery = " SELECT max(sequence)+1, count(sequence) as count FROM core_menu WHERE $where ";
         $sequenceResult = sql_query($sequenceQuery);
         if($sequenceResult){
             if($sequenceRow = sql_fetch_row($sequenceResult)){
-                $sequence = $sequenceRow[0];
+                if($sequenceRow[1]>0){
+                    $sequence = $sequenceRow[0];
+                } else {
+                    $sequence = 1;
+                }
+                
             } else {
                 return false;
             }
@@ -259,7 +264,7 @@ $class_menu_name = $this->menu[$menu]['class_name_menu'] != '' ? $this->menu[$me
                 $idPlugin
             )
         ";
-
+        
         // Insert into core_menu_under
         if(sql_query($queryMenu)){
             $idMenu = sql_insert_id();
