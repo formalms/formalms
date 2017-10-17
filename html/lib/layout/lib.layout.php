@@ -216,8 +216,6 @@
 //		echo var_dump($href);
 //        die();
 
-        //index.php?s&special=changelang&new_lang=finnish
-
 		$html .= '</div>';
 		$html .= '</div>';
 

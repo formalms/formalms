@@ -6222,3 +6222,21 @@ body.homepage {
   font-size: 54px;
   color: #70d800;
 }
+
+.homepage__text {
+  color: #404040;
+  font-size: 16px;
+}
+
+.homepage__row .homepage__text--title {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.homepage__text--justified {
+  text-align: justify;
+}
+
+.homepage__text--centered {
+  text-align: center;
+}
