@@ -6233,6 +6233,11 @@ body.homepage {
   margin-bottom: 30px;
 }
 
+.homepage__row .homepage__text--description {
+  margin-top: 10px;
+  margin-bottom: 70px;
+}
+
 .homepage__text--justified {
   text-align: justify;
 }
