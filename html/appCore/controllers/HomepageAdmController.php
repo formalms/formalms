@@ -191,6 +191,11 @@ class HomepageAdmController extends AdmController
         $this->render("new-register-typ", []);
     }
 
+    public function newLostPwd()
+    {
+        $this->render("new-lostpwd", []);
+    }
+
     /* homepage/login/registration testers end */
 
     public function lostPwd()

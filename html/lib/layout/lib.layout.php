@@ -193,8 +193,12 @@
         $pos = strpos($server_query_string, 'special=changelang&new_lang=');
 
         if ($pos !== FALSE) {
-            if($pos == 0) $pos = 1;
-            if ($server_query_string{$pos - 1} == '&') $pos = $pos - 1;
+            if ($pos == 0) {
+                $pos = 1;
+            }
+            if ($server_query_string[$pos - 1] === '&') {
+                $pos = $pos - 1;
+            }
             $server_query_string = substr($server_query_string, 0, $pos);
         }
 
@@ -204,10 +208,15 @@
 
 		foreach($lang_list as $lang) {
 			$href = isset($args['redirect_on']) ? $args['redirect_on'] : 'index.php';
-			$href .= '?' . $server_query_string !== '' ? str_replace('&', '&amp;', $server_query_string).'&amp;' : '';
-			$href .= 'special=changelang&amp;new_lang='.rawurlencode($lang->lang_code);
+//			$href .= '?' . $server_query_string !== '' ? str_replace('&', '&amp;', $server_query_string).'&amp;' : '';
+			$href .= '?s&special=changelang&amp;new_lang='.rawurlencode($lang->lang_code);
 			$html .= '<a class="dropdown-item" href="' . $href . '" title="' . $lang->lang_description . '">' . $lang->lang_description . '</a>';
 		}
+
+//		echo var_dump($href);
+//        die();
+
+        //index.php?s&special=changelang&new_lang=finnish
 
 		$html .= '</div>';
 		$html .= '</div>';
