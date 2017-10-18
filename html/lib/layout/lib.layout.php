@@ -186,6 +186,7 @@
     * @return <string>
     */
     public static function change_lang() {
+        $lang_sel = Lang::get();
         $lang_model = new LangAdm();
         $lang_list = $lang_model->getLangListNoStat(false,false,'lang_description','ASC');
 
@@ -206,11 +207,13 @@
 		$html .= '<a id="change_language" class="dropdown-toggle" href="#" data-toggle="dropdown">'.Lang::get().'<i class="fa fa-chevron-down"></i></a>';
 		$html .= '<div class="dropdown-menu" aria-labelledby="change_language">';
 
-		foreach($lang_list as $lang) {
-			$href = isset($args['redirect_on']) ? $args['redirect_on'] : 'index.php';
+		foreach($lang_list as $keyLang => $lang) {
+		    if($keyLang !== $lang_sel) {
+                $href = isset($args['redirect_on']) ? $args['redirect_on'] : 'index.php';
 //			$href .= '?' . $server_query_string !== '' ? str_replace('&', '&amp;', $server_query_string).'&amp;' : '';
-			$href .= '?s&special=changelang&amp;new_lang='.rawurlencode($lang->lang_code);
-			$html .= '<a class="dropdown-item" href="' . $href . '" title="' . $lang->lang_description . '">' . $lang->lang_description . '</a>';
+                $href .= '?s&special=changelang&amp;new_lang=' . rawurlencode($lang->lang_code);
+                $html .= '<a class="dropdown-item" href="' . $href . '" title="' . $lang->lang_description . '">' . $lang->lang_description . '</a>';
+            }
 		}
 
 //		echo var_dump($href);
