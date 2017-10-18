@@ -215,7 +215,12 @@ class HomepageAdm extends Model {
         
         return isset($GLOBALS['block_for_maintenance']) && $GLOBALS['block_for_maintenance'];
     }
-    
+
+    public static function staticIsCatalogToShow() {
+
+        return Get::sett('course_block', "on") == "on";
+    }
+
     public function isCatalogToShow() {
         
         return Get::sett('course_block', "on") == "on";
