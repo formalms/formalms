@@ -204,8 +204,29 @@ class HomepageAdmController extends AdmController
         if (!Docebo::user()->isAnonymous()) self::redirect();
 
         $action = Get::req("action", DOTY_MIXED, null);
-        $params = array();
+        $params = [];
         $res = null;
+
+        $ldapEnabled = Get::sett("ldap_used") == "on";
+        $lostUsernameForm = Form::openForm("lost_user", Get::rel_path("base") . "/index.php?r=" . _lostpwd_)
+            . Form::openElementSpace("form_right")
+            . Form::getHidden("lost_user_action", "action", "lost_user")
+            . Form::getLabel("email", "<span style='float:left;'>" . $lost_user_msg . "</span>" . Lang::t("_EMAIL", "register"), "text_bold")
+            . Form::getInputTextfield("textfield", "lost_user_email", "email", "", strip_tags(Lang::t("_EMAIL", "register")), 255, "")
+            . Form::getButton("lost_user_send", "send", Lang::t("_SEND", "register"), "button_nowh")
+            . Form::closeElementSpace()
+            . Form::closeForm();
+
+
+        $params['backUi'] = getBackUi("index.php", Lang::t("_BACK", "standard"));
+
+        $params['lost_username'] = [
+            'title' => Lang::t("_LOST_TITLE_USER", "register"),
+            'istruction' => Lang::t("_LOST_INSTRUCTION_USER", "register"),
+            'ldapEnabled' => $ldapEnabled,
+            'ldapTitle' => Lang::t("_LDAPACTIVE", "register"),
+            'form' => $lostUsernameForm
+        ];
 
         switch ($action) {
 
