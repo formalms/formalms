@@ -1,0 +1,19 @@
+{{ titleArea|raw }}
+<div class="std_block">
+    {{ backUi|raw }}
+    <div class="lostpwd_box">
+        <span class="text_bold">{{ lost_username.title }} - </span>{{ lost_username.istruction }}
+        {% if lost_username.ldap == true %}
+            <div class="form_right">
+                <span class="font_red">{{ lost_username.ldap_title }}</span>
+            </div>
+        {% else %}
+            {{ lost_username.form|raw }}
+        {% endif %}
+    </div>
+    <div class="lostpwd_box">
+        <span class="text_bold">{{ lost_pwd.title }} - </span>{{ lost_pwd.istruction }}
+        {{ lost_pwd.form|raw }}
+    </div>
+</div>
+</div>
