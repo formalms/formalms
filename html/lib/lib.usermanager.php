@@ -2140,17 +2140,20 @@ class UserManagerRenderer
                     . '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid clearfix">';
 
                 foreach ($groups as $id => $info) {
-
-                    $out .= '<div class="col-xs-12 col-sm-3 has-forma-tooltip">';
+                    $hasDescription = ('' !== $info['description'] && null !== $info['description']);
+                    $out .= '<div class="col-xs-12 col-sm-3 ' . ($hasDescription ? 'has-forma-tooltip' : '') . '">';
 
                     $out .= Form::getInputCheckbox('group_sel_' . $id,
                             'group_sel[]',
                             $id,
                             isset($_POST['group_sel'][$id]),
                             '')
-                        . '<label class="checkbox-inline" for="group_sel_' . $id . '"for="group_sel_' . $id . '">' . $info['type_ico'] . ' ' . $info['groupid'] . '</label>'
-                        . '<div class="forma-tooltip">' . $info['description'] . '</div>'
-                        . '</div>';
+                        . '<label class="checkbox-inline" for="group_sel_' . $id . '"for="group_sel_' . $id . '">' . $info['type_ico'] . ' ' . $info['groupid'] . '</label>';
+
+                    if ($hasDescription) {
+                        $out .= '<div class="forma-tooltip">' . $info['description'] . '</div>';
+                    }
+                    $out .= '</div>';
                 }
 
                 $out .= '</div>';
