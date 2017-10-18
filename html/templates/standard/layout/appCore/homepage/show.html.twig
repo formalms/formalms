@@ -57,12 +57,22 @@
 </div>
 <div class="homepage__row">
     <br/>
-    <p style="line-height: 26px;">Il sistema, rilasciato in 25 lingue è composto da 53 funzioni tra cui Wiki, Forum, Project Manager, supporta lo
-        standard SCORM 1.2 e 2004 ed è configurabile per adattarsi al modello didattico desiderato (autoapprendimento,
-        blended learning, didattica collaborativa, social e-learning).</p>
+      <div class="collapse homepage__collapsed-text js-collapsed-text" id="description">
+        <p style="line-height: 26px;">
+          Il sistema, rilasciato in 25 lingue è composto da 53 funzioni tra cui Wiki, Forum, Project Manager, supporta lo
+          standard SCORM 1.2 e 2004 ed è configurabile per adattarsi al modello didattico desiderato (autoapprendimento,
+          blended learning, didattica collaborativa, social e-learning).
+          Il sistema, rilasciato in 25 lingue è composto da 53 funzioni tra cui Wiki, Forum, Project Manager, supporta lo
+          standard SCORM 1.2 e 2004 ed è configurabile per adattarsi al modello didattico desiderato (autoapprendimento,
+          blended learning, didattica collaborativa, social e-learning).
+          Il sistema, rilasciato in 25 lingue è composto da 53 funzioni tra cui Wiki, Forum, Project Manager, supporta lo
+          standard SCORM 1.2 e 2004 ed è configurabile per adattarsi al modello didattico desiderato (autoapprendimento,
+          blended learning, didattica collaborativa, social e-learning).
+        </p>
+      </div>
 </div>
 <div class="homepage__row">
-    <a class="forma-button forma-button--orange" href="#">Leggi tutto</a>
+    <a class="forma-button forma-button--orange is-hidden js-show-collapsed-text" data-toggle="collapse" data-target="#description" href="#">Leggi tutto</a>
     <br/><br/>
 </div>
 <div class="homepage__row homepage__row--footer">
@@ -74,3 +84,16 @@
         {% endif %}
     </nav>
 </div>
+
+<script>
+  $(document).ready(function () {
+    var $elem = $('.js-collapsed-text');
+    var _textHeight = $elem.children('p').height();
+    var _containerHeight = $elem.height();
+    var $btn = $('.js-show-collapsed-text');
+
+    if (_textHeight > _containerHeight) {
+      $btn.removeClass('is-hidden');
+    }
+  });
+</script>
