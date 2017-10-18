@@ -21,7 +21,7 @@
         ?>
     </div>
     <div class="lostpwd_box">
-	<span class="text_bold"> {{evalPhp('Lang::t', ["_LOST_TITLE_PWD", "register"])}} - </span><?php echo Lang::t("_LOST_INSTRUCTION_PWD", "register"); ?>
+	<span class="text_bold"> {{evalPhp('Lang::t', ["_LOST_TITLE_PWD", "register"]) }} - </span> {{ evalPhp('Lang::t', ["_LOST_INSTRUCTION_PWD", "register"]) }}
         <?php
         echo    Form::openForm("lost_pwd", Get::rel_path("base") . "/index.php?r=" . _lostpwd_)
                   . Form::openElementSpace("form_right")
