@@ -3618,6 +3618,11 @@ h1, h2, h3, h4, h5, h6, p {
   font-size: 12px;
 }
 
+.forma-button.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
 .forma-button--orange-hover:hover {
   background-color: #ff6c00;
   color: white;
@@ -6244,4 +6249,14 @@ body.homepage {
 
 .homepage__text--centered {
   text-align: center;
+}
+
+.homepage__collapsed-text {
+  height: 75px;
+  min-height: 75px;
+  display: block;
+}
+
+.homepage__collapsed-text.in {
+  height: auto;
 }

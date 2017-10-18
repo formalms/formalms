@@ -51,6 +51,11 @@
     line-height: 1;
     font-size: 12px;
   }
+
+  &.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 // Button orange:hover
