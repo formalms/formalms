@@ -59,9 +59,7 @@
 			<div class="select-language">
 				<span class="hidden-xs">{{ evalPhp('Lang::t', ['_CHANGELANG', 'register']) }}: </span>{{ evalPhp('Layout::change_lang') }}
 			</div>
-			{% if isCatalogToShow != false %}
-				<a class="forma-button forma-button--orange hidden-xs" href="index.php?r={{ constant('_homecatalog_') }}">{{ translate('_CATALOGUE', 'standard') }}</a>
-			{% endif %}
+            {{ evalPhp('Layout::get_catalogue')  }}
 		</div>
 	</div>
 	{{ evalPhp('Layout::zone', ['content']) }}
