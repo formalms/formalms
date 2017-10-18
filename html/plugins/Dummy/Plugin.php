@@ -17,6 +17,12 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 class Plugin extends \FormaPlugin {
     public function install() {
 
+        self::addCoreMenu("_DUMMY_MENU_BUTTON", "", false, '', false);
+        self::addCoreMenu("_DUMMY_MENU_ARROW", "", "_DUMMY_MENU_BUTTON", '', false);
+        self::addCoreMenu("_DUMMY_MENU_UNDER", "alms/dummy/show", "_DUMMY_MENU_ARROW", '', false);
+        self::addCoreMenu("_DUMMY_MENU_RENDER_CALL", "alms/dummy/render_call", "_DUMMY_MENU_BUTTON", '', false);
+        //self::addCoreMenu("_TEST_MENU_ONLY", "", false, '', false);
+
         // addRequest is used to attach DummyAlmsController to the request r=alms/dummy/XXX
         self::addRequest("alms", "dummy", "DummyAlmsController", "DummyAlms");
 

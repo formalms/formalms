@@ -1,1 +1,0 @@
-delete from `core_menu_under_content` where `idUnder` in (998, 999);
