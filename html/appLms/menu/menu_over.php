@@ -67,7 +67,7 @@ if(!Docebo::user()->isAnonymous()) {
                 
             
             $menu[$m_info][$id_m] = array(
-                'index.php?'.( $mvc_path ? 'r='.$mvc_path : 'modname='.$module_name.'&amp;op='.$def_op ),
+                'index.php?'.( $mvc_path ? 'r='.$mvc_path : 'modname='.$module_name.'&amp;op='.$def_op ).'&amp;sop=unregistercourse',
                 Lang::t($default_name, 'menu_over'),
                 false ,
                 $id_m
