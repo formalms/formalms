@@ -3623,6 +3623,13 @@ h1, h2, h3, h4, h5, h6, p {
   visibility: hidden;
 }
 
+.forma-button.thin {
+  height: 25px;
+  min-height: 25px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .forma-button--orange-hover:hover {
   background-color: #ff6c00;
   color: white;
@@ -6190,6 +6197,12 @@ body.homepage {
   margin-top: 0;
 }
 
+@media (min-width: 768px) {
+  .homepage__form--lost-pwd .forma-button[type="submit"] {
+    margin-top: 5px;
+  }
+}
+
 .homepage__row a.forma-button {
   width: auto;
   margin-top: 15px;
@@ -6268,4 +6281,13 @@ body.homepage {
 
 .homepage__collapsed-text.in {
   height: auto;
+}
+
+/********************************/
+.content-margin {
+  margin-top: 5px;
+}
+
+.no-padding {
+  padding: 0;
 }

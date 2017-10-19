@@ -58,7 +58,13 @@
   }
 
   &.thin {
-
+    height: 25px;
+    min-height: 25px;
+    padding: {
+      top: 0;
+      bottom: 0;
+    }
+    //line-height: 25px;
   }
 }
 
