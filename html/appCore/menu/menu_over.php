@@ -76,12 +76,13 @@ function AdminBar()
         
         $strLabel = $p_name['name'];//$lang->def($p_name['name'], 'menu', $current_platform);
         $strIco = $p_name['image'];
+        $strLink = Util::str_replace_once('&', '&amp;', $p_name['link']);
 
         $idmenu=$p_man->menu[$p_code]['idMenu'];
         //Level1
         $main_voice = $p_man->getLevel($idmenu);
         if (!empty($main_voice)) {
-            $admin_menu_bar .= '<li><a href="#">' . $strIco . '&nbsp;' . $strLabel . '</a>' . PHP_EOL;
+            $admin_menu_bar .= '<li><a href="'. ($strLink != '' ? $strLink : '#' ) . '">' . $strIco . '&nbsp;' . $strLabel . '</a>' . PHP_EOL;
             $admin_menu_bar .= '<ul>' . PHP_EOL;
             foreach ($main_voice as $id_m => $v_main) {
                 $admin_menu_bar .= '<li>';
@@ -103,7 +104,7 @@ function AdminBar()
         }
         else{
             $admin_menu_bar .= '<li>';
-            $admin_menu_bar .= '<a href="' . Util::str_replace_once('&', '&amp;', $p_name['link']) . '" >' . $p_name['name'] . '</a>';
+            $admin_menu_bar .= '<a href="'. ($strLink != '' ? $strLink : '#' ) . '">' . $strIco . '&nbsp;' . $strLabel . '</a>';
             $admin_menu_bar .= '</li>';
         }
     }
