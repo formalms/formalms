@@ -2935,6 +2935,31 @@
   font-style: italic;
 }
 
+.is-hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.not-displayed {
+  display: none;
+}
+
+.collapse-wrapper {
+  width: auto;
+  margin: 0 auto;
+}
+
+.icon {
+  position: relative;
+  -webkit-transition: all 0.2s ease-in 0s;
+  transition: all 0.2s ease-in 0s;
+}
+
+.icon:before {
+  content: '';
+  position: absolute;
+}
+
 .course-box__owner--1:before {
   background-image: url("images/icons/users/icon--1.svg");
 }
@@ -3612,6 +3637,10 @@ h1, h2, h3, h4, h5, h6, p {
   color: white;
 }
 
+.forma-button:focus {
+  text-decoration: none;
+}
+
 .user-panel .forma-button {
   height: auto;
   line-height: 1;
@@ -3628,6 +3657,10 @@ h1, h2, h3, h4, h5, h6, p {
   min-height: 25px;
   padding-top: 0;
   padding-bottom: 0;
+}
+
+.course-box .forma-button {
+  padding: 14px 0;
 }
 
 .forma-button--orange-hover:hover {
@@ -3684,6 +3717,10 @@ h1, h2, h3, h4, h5, h6, p {
   color: #c84000;
 }
 
+.forma-button--white:focus {
+  color: #c84000;
+}
+
 .forma-button--border {
   border: solid 2px #c84000;
 }
@@ -3697,6 +3734,14 @@ h1, h2, h3, h4, h5, h6, p {
 .forma-button--orange:hover {
   background-color: #ff6c00;
   color: white;
+}
+
+.forma-button--orange:hover:focus {
+  color: white;
+}
+
+.forma-button--orange:focus {
+  color: #ff6c00;
 }
 
 .forma-button__label {
@@ -6075,6 +6120,28 @@ body.homepage {
   background-color: white;
 }
 
+body.homepage .collapse-wrapper {
+  height: 80px;
+}
+
+body.homepage .collapse-wrapper .icon {
+  display: none;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+body.homepage .in + .collapse-wrapper .icon {
+  display: block;
+}
+
+body.homepage .in + .collapse-wrapper .forma-button {
+  display: none;
+}
+
 .homepage__footer {
   padding: 30px 0;
   text-align: center;
@@ -6370,6 +6437,7 @@ body.homepage {
   height: 75px;
   min-height: 75px;
   display: block;
+  overflow: hidden;
 }
 
 .homepage__collapsed-text.in {
@@ -6383,4 +6451,27 @@ body.homepage {
 
 .no-padding {
   padding: 0;
+}
+
+/*******************************/
+.homepage .icon--close {
+  padding-left: 40px;
+  cursor: pointer;
+  width: 95px;
+  font-family: "Open-sans";
+  color: #666;
+  padding-top: 5px;
+}
+
+.icon--close:hover:before {
+  background-image: url("images/icons/user-panel/icon--up-close-hover.png");
+}
+
+.icon--close:before {
+  top: 0;
+  left: 0;
+  right: inherit;
+  width: 30px;
+  height: 30px;
+  background-image: url("images/icons/user-panel/icon--up-close.png");
 }
