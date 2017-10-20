@@ -15,7 +15,6 @@
 .forma-button {
   display: inline-block;
   width: 100%;
-  //padding: 0 10px;
   padding: 14px 20px;
   min-height: 40px;
   text-align: center;
@@ -46,6 +45,10 @@
     color: $white;
   }
 
+  &:focus {
+    text-decoration: none;
+  }
+
   .user-panel & {
     height: auto;
     line-height: 1;
@@ -65,6 +68,10 @@
       bottom: 0;
     }
     //line-height: 25px;
+  }
+
+  .course-box & {
+    padding: 14px 0;
   }
 }
 
@@ -174,6 +181,10 @@
   &:hover {
 	color: $dark-orange;
   }
+
+  &:focus {
+    color: $dark-orange;
+  }
 }
 
 // Bordered Button
@@ -204,6 +215,14 @@
   &:hover {
 	background-color: $orange;
 	color: $white;
+
+    &:focus {
+      color: $white;
+    }
+  }
+
+  &:focus {
+    color: $orange;
   }
 }
 
