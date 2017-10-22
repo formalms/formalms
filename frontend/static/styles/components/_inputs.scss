@@ -307,6 +307,13 @@
 
     @include breakpoint($tablet) {
       width: 234px;
+      float: left;
+      margin-top: 10px;
+    }
+
+    @include breakpoint($ipad) {
+      float: none;
+      margin-top: 0;
     }
 
     input {
