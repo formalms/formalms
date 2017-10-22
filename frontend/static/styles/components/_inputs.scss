@@ -38,7 +38,7 @@
       margin: {
         top: 0;
         left: 0;
-        bottom: 0;
+        bottom: 10px!important;
         right: 7px;
       };
       float: left;
@@ -308,12 +308,10 @@
     @include breakpoint($tablet) {
       width: 234px;
       float: left;
-      margin-top: 10px;
     }
 
     @include breakpoint($ipad) {
       float: none;
-      margin-top: 0;
     }
 
     input {
