@@ -11328,7 +11328,7 @@ h1, h2, h3, h4, h5, h6, p {
 .forma-button {
   display: inline-block;
   width: 100%;
-  padding: 14px;
+  padding: 14px 20px;
   min-height: 40px;
   text-align: center;
   text-decoration: none;
@@ -11389,6 +11389,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 .course-box .forma-button {
   padding: 14px 0;
+  max-height: 40px;
 }
 
 .forma-button--orange-hover:hover {
@@ -11412,6 +11413,10 @@ h1, h2, h3, h4, h5, h6, p {
 
 .forma-button--disabled .forma-button__label:after {
   display: none;
+}
+
+.course-box .forma-button--disabled {
+  padding: 10px 0;
 }
 
 .forma-button--green {
@@ -11543,7 +11548,7 @@ h1, h2, h3, h4, h5, h6, p {
     width: 200px !important;
     margin-top: 0;
     margin-left: 0;
-    margin-bottom: 0;
+    margin-bottom: 10px !important;
     margin-right: 7px;
     float: left;
   }
@@ -11745,14 +11750,12 @@ h1, h2, h3, h4, h5, h6, p {
   .forma-quick-search-form .input-group {
     width: 234px;
     float: left;
-    margin-top: 10px;
   }
 }
 
 @media (min-width: 1024px) {
   .forma-quick-search-form .input-group {
     float: none;
-    margin-top: 0;
   }
 }
 
@@ -13885,6 +13888,7 @@ body.homepage .in + .collapse-wrapper .forma-button {
   height: auto;
   padding-top: 15px;
   padding-bottom: 15px;
+  margin-bottom: 12px;
   overflow: visible;
   background-color: transparent;
   border-bottom: solid 3px #c84000;
@@ -13959,6 +13963,7 @@ body.homepage .in + .collapse-wrapper .forma-button {
 
 .homepage__links {
   margin-top: 12px;
+  margin-bottom: 12px;
   font-size: 0;
 }
 
@@ -14124,7 +14129,7 @@ body.homepage .in + .collapse-wrapper .forma-button {
 
 /********************************/
 .content-margin {
-  margin-top: 5px;
+  margin-top: 15px;
 }
 
 .no-padding {
