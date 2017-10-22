@@ -1,5 +1,8 @@
 @import '../../node_modules/breakpoint-sass/stylesheets/breakpoint';
 
+@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap-sprockets.scss';
+@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap.scss';
+
 @import 'config/config';
 @import 'font-awesome/font-awesome';
 
@@ -25,9 +28,9 @@
 @import 'modules/footer';
 @import 'modules/top-menu';
 @import 'modules/user-panel';
-@import 'modules/aside';
 @import 'modules/social-login';
 @import 'modules/select-language';
+@import 'modules/aside';
 
 //PAGES
 @import 'pages/homepage';
