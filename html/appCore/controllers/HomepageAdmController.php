@@ -208,18 +208,51 @@ class HomepageAdmController extends AdmController
         $res = null;
 
         $ldapEnabled = Get::sett("ldap_used") == "on";
-        $lostUsernameForm = Form::openForm("lost_user", Get::rel_path("base") . "/index.php?r=" . _lostpwd_)
-            . Form::openElementSpace("form_right")
+
+        $mand_symbol = '*';
+
+        $lostUsernameForm = '<div class="homepage__row homepage__row--gray homepage__row--form row-fluid">'
+        . Form::openForm("lost_user", Get::rel_path("base") . "/index.php?r=" . _lostpwd_)
+
             . Form::getHidden("lost_user_action", "action", "lost_user")
-            . Form::getLabel("email", "<span style='float:left;'>" . $lost_user_msg . "</span>" . Lang::t("_EMAIL", "register"), "text_bold")
-            . Form::getInputTextfield("textfield", "lost_user_email", "email", "", strip_tags(Lang::t("_EMAIL", "register")), 255, "")
-            . Form::getButton("lost_user_send", "send", Lang::t("_SEND", "register"), "button_nowh")
-            . Form::closeElementSpace()
+            . '<div class="col-xs-12 col-sm-5">'
+            . Form::getInputTextfield(
+                'form-control ',
+                'lost_user_email',
+                'email',
+                '',
+                strip_tags(Lang::t("_EMAIL", "register")),
+                255,
+                'placeholder="' . Lang::t("_EMAIL", "register") . ' ' . $mand_symbol . '"')
+            . '</div>'
+            . '<div class="col-xs-12 col-sm-2">'
+            . Form::getButton("lost_user_send", "send", Lang::t("_SEND", "register"), "forma-button forma-button--black thin")
+            . '</div>'
             . Form::closeForm();
 
+        $lostPwdForm = '<div class="homepage__row homepage__row--gray homepage__row--form row-fluid">'
+            . Form::openForm("lost_pwd", Get::rel_path("base") . "/index.php?r=" . _lostpwd_)
+            . Form::getHidden("lost_pwd_action", "action", "lost_pwd")
+            . '<div class="col-xs-12 col-sm-5">'
+            . Form::getInputTextfield(
+                'form-control ',
+                'lost_pwd_userid',
+                'userid',
+                '',
+                strip_tags(Lang::t("_USERNAME", "register")),
+                255,
+                'placeholder="' . Lang::t("_USERNAME", "register") . ' ' . $mand_symbol . '"')
+            . '</div>'
+            . '<div class="col-xs-12 col-sm-2">'
+            . Form::getButton("lost_pwd_send", "send", Lang::t("_SEND", "register"), "forma-button forma-button--black thin")
+            . '</div>'
+            . Form::closeForm() .
+            '</div>';
 
-        $params['backUi'] = getBackUi("index.php", Lang::t("_BACK", "standard"));
-        $params['titleArea'] = getTitleArea(Lang::t("_LOGIN", "login"));
+
+        $params['back']['title'] = Lang::t("_BACK", "standard");
+        $params['back']['link'] = ".index.php";
+        $params['titleArea'] = Lang::t("_LOGIN", "login");
 
         $params['lost_username'] = [
             'title' => Lang::t("_LOST_TITLE_USER", "register"),
@@ -232,14 +265,7 @@ class HomepageAdmController extends AdmController
         $params['lost_pwd'] = [
             'title' => Lang::t("_LOST_TITLE_PWD", "register"),
             'istruction' => Lang::t("_LOST_INSTRUCTION_PWD", "register"),
-            'form' => Form::openForm("lost_pwd", Get::rel_path("base") . "/index.php?r=" . _lostpwd_)
-                . Form::openElementSpace("form_right")
-                . Form::getHidden("lost_pwd_action", "action", "lost_pwd")
-                . Form::getLabel("userid", "<span style='float:left;'>" . $lost_pwd_msg . "</span>" . Lang::t("_USERNAME", "register"), "text_bold")
-                . Form::getInputTextfield("textfield", "lost_pwd_userid", "userid", "", strip_tags(Lang::t("_USERNAME", "register")), 255, "")
-                . Form::getButton("lost_pwd_send", "send", Lang::t("_SEND", "register"), "button_nowh")
-                . Form::closeElementSpace()
-                . Form::closeForm()
+            'form' => $lostPwdForm
         ];
 
         switch ($action) {
