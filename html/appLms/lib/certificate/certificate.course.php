@@ -95,7 +95,7 @@ class CertificateSubs_Course extends CertificateSubstitution {
 
 			$subs['[course_code]'] 			= $man_course->getValue('code');
 			$subs['[course_name]'] 			= $man_course->getValue('name');
-            $subs['cert_number]'] 			= $this->id_user.'-'.time();
+            $subs['[cert_number]'] 			= $this->id_user.'-'.time();
 			$subs['[date_begin]'] 			= Format::date($man_course->getValue('date_begin'), 'date');
 			$subs['[date_end]'] 			= Format::date($man_course->getValue('date_end'), 'date');
 
