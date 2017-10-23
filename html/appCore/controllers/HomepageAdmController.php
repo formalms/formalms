@@ -170,34 +170,6 @@ class HomepageAdmController extends AdmController
         $this->render('register', $dataView);
     }
 
-    /* New homepage/login/registration layout testers (to be removed after integration) */
-    public function newLogin()
-    {
-        $this->render("new-login", []);
-    }
-
-    public function newRegister()
-    {
-        $this->render("new-register", []);
-    }
-
-    public function newRegisterStep2()
-    {
-        $this->render("new-register-step2", []);
-    }
-
-    public function newRegisterTYP()
-    {
-        $this->render("new-register-typ", []);
-    }
-
-    public function newLostPwd()
-    {
-        $this->render("new-lostpwd", []);
-    }
-
-    /* homepage/login/registration testers end */
-
     public function lostPwd()
     {
 
@@ -446,6 +418,19 @@ class HomepageAdmController extends AdmController
 
         $params = array();
         list($params['title'], $params['description']) = $this->model->getWebPage($id_page);
+
+        $external_pages = $this->model->getExternalPages();
+        $params['externalPages'] = [];
+
+        if (!empty($external_pages)) {
+            foreach ($external_pages AS $id_page => $title) {
+
+                $externalPage = ['id' => $id_page, 'link' => Get::rel_path("base") . "/index.php?r=" . _homewebpage_ . "&page=" . $id_page, 'title' => $title];
+
+                $params['externalPages'][] = $externalPage;
+            }
+        }
+
 
         $this->render("webpage", $params);
     }
