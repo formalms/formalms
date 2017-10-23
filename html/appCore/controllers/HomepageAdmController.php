@@ -251,7 +251,7 @@ class HomepageAdmController extends AdmController
 
 
         $params['back']['title'] = Lang::t("_BACK", "standard");
-        $params['back']['link'] = ".index.php";
+        $params['back']['link'] = "./index.php";
         $params['titleArea'] = Lang::t("_LOGIN", "login");
 
         $params['lost_username'] = [
