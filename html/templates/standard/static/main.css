@@ -14158,3 +14158,372 @@ body.homepage .in + .collapse-wrapper .forma-button {
   height: 30px;
   background-image: url("images/icons/user-panel/icon--up-close.png");
 }
+
+body.homepage {
+  height: auto;
+  max-height: inherit;
+  overflow: auto;
+  position: relative;
+  background-image: url("images/login/bg.jpg");
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-color: white;
+}
+
+body.homepage .collapse-wrapper {
+  height: 80px;
+}
+
+body.homepage .collapse-wrapper .icon {
+  display: none;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+body.homepage .in + .collapse-wrapper .icon {
+  display: block;
+}
+
+body.homepage .in + .collapse-wrapper .forma-button {
+  display: none;
+}
+
+.homepage__footer {
+  padding: 30px 0;
+  text-align: center;
+  color: white;
+}
+
+.homepage__footer a {
+  color: white;
+}
+
+.homepage__content {
+  width: 100%;
+  max-width: 760px;
+  position: relative;
+  margin: 0 auto;
+  background-color: white;
+  -webkit-box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.15);
+          box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.15);
+}
+
+@media (min-width: 768px) {
+  .homepage__content {
+    margin: 128px auto 0;
+    border-radius: 5px;
+  }
+}
+
+.homepage__row {
+  padding: 0 14px;
+  overflow: hidden;
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .homepage__row {
+    padding: 0 30px;
+  }
+}
+
+@media (min-width: 768px) {
+  .homepage__row.row-fluid {
+    padding: 10px 15px;
+  }
+}
+
+.homepage__row.clearfix {
+  overflow: visible;
+}
+
+.homepage__row h3 {
+  font-size: 18px;
+}
+
+.homepage__row p {
+  font-size: 12px;
+  color: #666;
+  width: 100%;
+}
+
+.homepage__row--header {
+  height: auto;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-bottom: 12px;
+  overflow: visible;
+  background-color: transparent;
+  border-bottom: solid 3px #c84000;
+  position: relative;
+  text-align: left;
+}
+
+@media (min-width: 768px) {
+  .homepage__row--header {
+    padding-top: 38px;
+    padding-bottom: 34px;
+    border: none;
+  }
+}
+
+.homepage__row--login {
+  padding-top: 32px;
+  padding-bottom: 47px;
+}
+
+.homepage__row--gray {
+  background-color: #f6f6f6;
+}
+
+.homepage__row--form {
+  text-align: left;
+}
+
+.homepage__row--form > * {
+  margin-top: 10px;
+}
+
+@media (min-width: 768px) {
+  .homepage__row--form > * {
+    margin-top: 0;
+  }
+}
+
+.homepage__row--form-disclaimer {
+  margin: 5px 0 10px;
+  font-size: 12px;
+  font-style: italic;
+  color: #D0D0D0;
+}
+
+.homepage__back {
+  font-weight: bold;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.homepage__back a {
+  display: block;
+  padding: 10px 0;
+  color: inherit;
+}
+
+.homepage__back a:hover {
+  text-decoration: none;
+}
+
+.homepage__back .fa {
+  color: #FF6C00;
+}
+
+.homepage__form {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+.homepage__links {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  font-size: 0;
+}
+
+.homepage__links > a {
+  display: inline-block;
+  margin: 0 4px;
+  line-height: 1;
+  font-size: 12px;
+  text-decoration: underline;
+  color: #666666;
+}
+
+.homepage__links > a:nth-child(n+2) {
+  padding-left: 8px;
+  border-left: solid 2px currentColor;
+}
+
+.homepage__row--login .homepage__links > a {
+  font-size: 14px;
+}
+
+.homepage__row--footer .homepage__links > a {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.homepage__row--footer .homepage__links {
+  padding: 10px 0 20px;
+  border-top: solid 2px #C84000;
+}
+
+.homepage__row--header .pull-right {
+  text-align: right;
+}
+
+.homepage .left_logo {
+  height: 30px;
+}
+
+@media (min-width: 768px) {
+  .homepage .left_logo {
+    height: 54px;
+  }
+}
+
+.homepage__footer .poweredby {
+  font-size: 11px;
+}
+
+.homepage__row .checkbox-inline {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #717171;
+}
+
+.homepage__row--form .checkbox-inline {
+  font-size: 14px;
+  color: #C4C2C2;
+}
+
+.homepage .forma-button {
+  font-weight: bold;
+}
+
+.homepage__row--header .forma-button {
+  width: 239px;
+}
+
+.homepage__row .forma-button[type="submit"] {
+  margin-top: 15px;
+}
+
+.homepage__form--lost-pwd .forma-button[type="submit"] {
+  margin-top: 0;
+}
+
+@media (min-width: 768px) {
+  .homepage__form--lost-pwd .forma-button[type="submit"] {
+    margin-top: 5px;
+  }
+}
+
+.homepage__row a.forma-button {
+  width: auto;
+  margin-top: 15px;
+}
+
+.homepage .forma-button--black {
+  -webkit-transition: background-color .25s ease 0s;
+  transition: background-color .25s ease 0s;
+}
+
+.homepage .forma-button--black:hover {
+  background-color: #ff6c00;
+}
+
+.homepage__row--login .form-control, .homepage__row--login .logout, .homepage__row--login .login_failed {
+  display: block;
+  margin-top: 15px;
+}
+
+.homepage__row--login .logout, .homepage__row--login .login_failed {
+  color: #ff6c00;
+}
+
+.homepage__row--form .form-control.has-error {
+  border: solid 2px #ff6c00;
+}
+
+.homepage__row--form .form-text {
+  display: none;
+  margin-top: 4px;
+  color: #ff6c00;
+}
+
+.homepage__row--form .has-error + .form-text {
+  display: block;
+}
+
+.homepage .fa-check {
+  margin: 20px auto;
+  font-size: 54px;
+  color: #70d800;
+}
+
+.homepage__text {
+  color: #404040;
+  font-size: 16px;
+}
+
+.homepage__row .homepage__text--title {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.homepage__row .homepage__text--description {
+  margin-top: 10px;
+  margin-bottom: 70px;
+}
+
+.homepage__text--justified {
+  text-align: justify;
+}
+
+.homepage__text--centered {
+  text-align: center;
+}
+
+.homepage__text--left {
+  text-align: left;
+}
+
+.homepage__collapsed-text {
+  height: 75px;
+  min-height: 75px;
+  display: block;
+  overflow: hidden;
+}
+
+.homepage__collapsed-text.in {
+  height: auto;
+}
+
+/********************************/
+.content-margin {
+  margin-top: 15px;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+/*******************************/
+.homepage .icon--close {
+  padding-left: 40px;
+  cursor: pointer;
+  width: 95px;
+  font-family: "Open-sans";
+  color: #666;
+  padding-top: 5px;
+}
+
+.icon--close:hover:before {
+  background-image: url("images/icons/user-panel/icon--up-close-hover.png");
+}
+
+.icon--close:before {
+  top: 0;
+  left: 0;
+  right: inherit;
+  width: 30px;
+  height: 30px;
+  background-image: url("images/icons/user-panel/icon--up-close.png");
+}
