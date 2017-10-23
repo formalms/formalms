@@ -92,8 +92,9 @@ class ElearningLmsController extends LmsController {
 
 
 		$model = new ElearningLms();
-
-		if(Get::sett('on_usercourse_empty') === 'on')
+        
+        // update behavior for on_usercourse_empty: applies only after login
+		if(Get::sett('on_usercourse_empty') === 'on' && !$_SESSION["logged_in"])
 		{
 			$conditions_t = array(
 				'cu.iduser = :id_user'
@@ -112,7 +113,7 @@ class ElearningLmsController extends LmsController {
 			$courselist_t = $model->findAll($conditions_t, $params_t);
 
 			if(empty($courselist_t))
-				Util::jump_to('index.php?r=lms/catalog/show&sop=unregistercourse');
+				Util::jump_to('index.php?r=lms/catalog/show&op=unregistercourse');
 		}
 
 		require_once(_lms_.'/lib/lib.middlearea.php');

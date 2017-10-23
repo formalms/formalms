@@ -69,13 +69,13 @@ function TruncateText($the_text, $size)
 <?php endif; ?>
 
 
-<div class="container-fluid" id="container1_<?php echo $stato_corso; ?>">
+<div id="container1_<?php echo $stato_corso; ?>">
 
     <div id="row-fluid">
 
         <?php
         if ($filter_type == "all" || $filter_type == 'elearning') { ?>
-            <h1 class="page-header"><strong><?php echo Lang::t('_ELEARNING', 'catalogue'); ?></strong></h1>
+            <h1 class="page-header col-xs-12"><strong><?php echo Lang::t('_ELEARNING', 'catalogue'); ?></strong></h1>
 
             <div class="clearfix" id='mia_area_<?php echo $stato_corso; ?>'>
 
@@ -84,7 +84,7 @@ function TruncateText($the_text, $size)
 <!--                <pre>-->
 <!--                --><?php //var_dump($course); ?>
 <!--                </pre>-->
-                    <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-4">
+                    <div class="col-xs-12 col-md-4">
 
                         <div class="course-box"> <!-- NEW BLOCK -->
                             <div class="course-box__item">

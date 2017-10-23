@@ -179,7 +179,7 @@ class Selector_Course {
 		$tb->initNavBar('ini', 'button');
 		$ini = $tb->getSelectedElement();
 
-		$category_selected 	= $this->treeview->getSelectedFolderId();
+		$category_selected 	= ($this->treeview->getSelectedFolderId() != $this->treeview->GetRootName() ? $this->treeview->getSelectedFolderId() : "0" );
 		if($this->filter['course_flat']) {
 			$id_categories 		= $this->treeDB->getDescendantsId($this->treeDB->getFolderById($category_selected));
 			$id_categories[] 	= $category_selected;

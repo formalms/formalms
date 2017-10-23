@@ -335,7 +335,6 @@
                             <?php if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN): ?>
                                 <li><?php echo Lang::t('_SUPERADMIN_USER', 'dashboard') . ': <b>' . $user_stats['superadmin'] . '</b>;'; ?></li>
                                 <li><?php echo Lang::t('_ADMIN_USER', 'dashboard') . ': <b>' . $user_stats['admin'] . '</b>;'; ?></li>
-                                <li><?php echo Lang::t('_PUBLIC_ADMIN_USER', 'dashboard') . ': <b>' . $user_stats['public_admin'] . '</b>;'; ?></li>
                             <?php else: ?>
                                 <li><?php echo Lang::t('_INACTIVE_USER', 'dashboard') . ': <b>' . $user_stats['inactive_30d'] . '</b>;'; ?></li>
                                 <li><?php echo Lang::t('_ONLINE_USER', 'dashboard') . ': <b>' . $user_stats['now_online'] . '</b>;'; ?></li>

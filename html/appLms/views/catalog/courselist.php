@@ -231,8 +231,6 @@ function TruncateText($the_text, $size)
                         $action .= '</div>';
                     }
 
-                    $arr_cat = $smodel->getMinorCategoryTree((int)$row['idCategory']);
-
 
                     if ($row['course_type'] == "elearning") $img_type = "<span class='elearning'><i class='fa fa-graduation-cap'></i>&nbsp;" . Lang::t('_LEARNING_COURSE', 'cart') . "</span>";
                     if ($row['course_type'] == "classroom") $img_type = "<span class='classroom'><i class='fa fa-university'></i>&nbsp;" . Lang::t('_CLASSROOM_COURSE', 'cart') . "</span>";

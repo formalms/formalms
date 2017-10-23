@@ -496,6 +496,22 @@ class CourseSubscribe_Manager
 		return $this->db->query($query);
 	}
 
+	public function updateUserDateBeginValidityInCourse($id_user, $id_course, $new_date_begin) {
+		$_new_date = $new_date_begin ? "'".$new_date_begin."'" : "NULL";
+		$query =	"UPDATE ".$this->subscribe_table
+					." SET date_begin_validity = ".$_new_date
+					." WHERE idCourse = ".(int)$id_course
+					." AND idUser ";
+
+		if (is_array($id_user)) {
+			$query .= " IN (".implode(',', $id_user).")";
+		} else {
+			$query .= " = ".(int)$id_user;
+		}
+
+		return $this->db->query($query);
+	}
+	
 	public function updateUserDateExpireValidityInCourse($id_user, $id_course, $new_date_expire) {
 		$_new_date = $new_date_expire ? "'".$new_date_expire."'" : "NULL";
 		$query =	"UPDATE ".$this->subscribe_table
@@ -512,6 +528,42 @@ class CourseSubscribe_Manager
 		return $this->db->query($query);
 	}
 
+	
+	public function resetValidityDateBegin($id_course, $id_edition, $id_user) {
+		if ($id_course <= 0 || $id_user <= 0) return false;
+
+		$query = "UPDATE %lms_courseuser SET date_begin_validity = NULL "
+			." WHERE idCourse = ".(int)$id_course
+			.((int)$id_edition > 0 ? " AND edition_id = ".(int)$id_edition : "");
+
+			if (is_array($id_user)) {
+				$query .= " AND idUser IN (".implode(',', $id_user).")";
+			} else {
+				$query .= " AND idUser = ".(int)$id_user;
+			}
+		$res = sql_query($query);
+
+		return $res ? true : false;
+	}
+
+	
+	public function resetValidityDateExpire($id_course, $id_edition, $id_user) {
+		if ($id_course <= 0 || $id_user <= 0) return false;
+
+		$query = "UPDATE %lms_courseuser SET date_expire_validity = NULL "
+			." WHERE idCourse = ".(int)$id_course
+			.((int)$id_edition > 0 ? " AND edition_id = ".(int)$id_edition : "");
+
+		if (is_array($id_user)) {
+			$query .= "  AND idUser IN (".implode(',', $id_user).")";
+		} else {
+			$query .= "  AND idUser = ".(int)$id_user;
+		}
+		$res = sql_query($query);
+
+		return $res ? true : false;
+	}
+	
 
 	public function saveTrackStatusChange($idUser, $idCourse, $status)
 	{

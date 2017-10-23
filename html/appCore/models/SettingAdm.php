@@ -459,81 +459,21 @@ class SettingAdm extends Model
 												$i_after);
                 };
                     break;
-/*
-				case "tablist_coursecatalogue" : {
-
-					$lang_c 	=& DoceboLanguage::createInstance('catalogue', 'lms');
-
-					$tab_selected = Util::unserialize(urldecode($var_value));
-
-					$tab_list = array(
-						'time' 		=> $lang_c->def('_TAB_VIEW_TIME'),
-						'category' 	=> $lang_c->def('_TAB_VIEW_CATEGORY'),
-						'all' 		=> $lang_c->def('_ALL')
-					);
-					if(Get::sett('use_coursepath') == '1') {
-						$tab_list['pathcourse'] = $lang_c->def('_COURSEPATH');
-					}
-					if(Get::sett('use_social_courselist') == 'on') {
-						$tab_list['mostscore'] 	= $lang_c->def('_TAB_VIEW_MOSTSCORE');
-						$tab_list['popular'] 	= $lang_c->def('_TAB_VIEW_MOSTPOPULAR');
-						$tab_list['recent'] 	= $lang_c->def('_TAB_VIEW_RECENT');
-					}
-
-					foreach($tab_list as $tab_code => $name) {
-
-						echo Form::getCheckbox( $name , 'tablist_'.$tab_code, 'tablist['.$tab_code.']', 1, isset($tab_selected[$tab_code]), '', $i_after);
-					}
-
-				};break;
-
-				case "first_coursecatalogue_tab" : {
-
-					$lang_c 	=& DoceboLanguage::createInstance('catalogue', 'lms');
-
-					$tab_list = array(
-						'time' 		=> $lang_c->def('_TAB_VIEW_TIME'),
-						'category' 	=> $lang_c->def('_TAB_VIEW_CATEGORY'),
-						'all' 		=> $lang_c->def('_ALL')
-					);
-					if(Get::sett('use_coursepath') == '1') {
-						$tab_list['pathcourse'] = $lang_c->def('_COURSEPATH');
-					}
-					if(Get::sett('use_social_courselist') == 'on') {
-						$tab_list['mostscore'] 	= $lang_c->def('_TAB_VIEW_MOSTSCORE');
-						$tab_list['popular'] 	= $lang_c->def('_TAB_VIEW_MOSTPOPULAR');
-						$tab_list['recent'] 	= $lang_c->def('_TAB_VIEW_RECENT');
-					}
-
-					echo Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
-												$var_name,
-												'option['.$var_name.']',
-												$tab_list,
-												$var_value,
-												$i_after);
-
-				};break;
-*/
 				case "tablist_mycourses" : {
-				  //$var_value=deformat($var_value);
                     $arr_value = explode(',', $var_value);
-				  //$arr_value=array();
-
                     $tab_list = array();
-				  $tab_list[''] = $lang->def('_NONE');
-				  $tab_list['status'] = $lang->def('_STATUS');
-				  $tab_list['name'] = $lang->def('_NAME');
-				  $tab_list['code'] = $lang->def('_CODE');
+                  $tab_list['status'] = $lang->def('_STATUS');
+                  $tab_list['name'] = $lang->def('_NAME');
+                  $tab_list['code'] = $lang->def('_CODE');
 
-                    echo '<div class="form_line_l"><p>' .
-                        '<label class="floating">' . $lang->def('_' . strtoupper($var_name)) . '</label></p>';
-                    for ($i = 0; $i < 3; $i++) {
+                  echo '<div class="form_line_l"><p>' .
+                       '<label class="floating">' . $lang->def('_' . strtoupper($var_name)) . '</label></p>';
+                  for ($i = 0; $i < 3; $i++) {
                         echo Form::getInputDropdown('dropdown', $var_name . '_' . $i,
-													"mycourses[$i]", $tab_list,
-                            (isset($arr_value[$i]) ? $arr_value[$i] : ''), '');
-							}
-							echo $i_after
-                        . '</div>';
+                                                    "mycourses[$i]", $tab_list,
+                                                    (isset($arr_value[$i]) ? $arr_value[$i] : ''), '');
+                  }
+                  echo $i_after. '</div>';
                 };
                     break;
 				case "point_field" : {
@@ -561,7 +501,20 @@ class SettingAdm extends Model
                     echo Form::getRadioSet($lang->def('_REST_AUTH_METHOD'), $var_name, 'option[' . $var_name . ']', $value_set, $var_value, $i_after);
                 }
                     break;
+                    
+                case "home_page_option": {
+                  $tab_list = array();
+                  $tab_list['my_courses'] = Lang::t('_MY_COURSES');
+                  $tab_list['catalogue'] = Lang::t('_CATALOGUE');
+                  $which_home = $var_value;
 
+                    echo '<div class="form_line_l"><p><b>' .
+                        Lang::t('_HOME_PAGE').'</b></p>';
+                    echo Form::getInputDropdown('dropdown', $var_name, $var_name, $tab_list, $var_value, '')
+                    . '</div><p>&nbsp;</p>';
+                    
+                }    
+                    break;
 				// Common types
 				case "password" : {
                     echo Form::getPassword($lang->def('_' . strtoupper($var_name)),
@@ -586,7 +539,17 @@ class SettingAdm extends Model
 
                 }
                     break;
-				case "menuvoice" :
+				
+                case "on_usercourse_empty": {
+                    if ($which_home == 'my_courses') {
+                        echo Form::getCheckbox($lang->def('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
+                    } else {
+                        echo Form::getCheckbox($lang->def('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', false, 'disabled', '', ' ' . $i_after);
+                    }                           
+                }
+                    break;
+                
+                case "menuvoice" :
 				case "menuvoice_course_public" :
 
 				case "check" : {
@@ -696,16 +659,26 @@ class SettingAdm extends Model
 					$new_value = urlencode(Util::serialize($tab_selected));
 				};break;
 
-				case "tablist_mycourses" : {
+				case "tablist_mycourses" : {                    
                     $temp_arr = array();
                     for ($i = 0; $i < 3; $i++) {
-						$temp_var = $_POST['mycourses'][$i];
+                        $temp_var = $_POST['mycourses'][$i];
                         if ($temp_var != '' && !in_array($temp_var, $temp_arr)) //avoid repeated params
-							$temp_arr[] = $temp_var;
-					}
+                            $temp_arr[] = $temp_var;
+                    }
                     $new_value = implode(',', $temp_arr);
                 };
-                    break;
+                break;
+                case "home_page_option" :{
+                        // setting enabled in middle_area options
+                       $new_value =  $_POST['home_page_option'];
+                       require_once(_lms_.'/lib/lib.middlearea.php');
+                       $ma = new Man_MiddleArea();                       
+                       $which_home = ($new_value == 'catalogue'? 'mo_46': 'mo_1');
+                       $ma->setHomePageMenu($which_home);
+                      
+                };
+                break;
 
 				//if is int cast it
 				case "language" : {
@@ -723,9 +696,13 @@ class SettingAdm extends Model
                 };
                     break;
 				//if is enum switch value to on or off
-				case "enum" : {
-                    if (isset($_POST['option'][$var_name])) $new_value = 'on';
-					else $new_value = 'off';
+				case "on_usercourse_empty":
+                case "enum" : {
+                    if (isset($_POST['option'][$var_name])) {
+                        $new_value = 'on';   
+                    } else {
+                        $new_value = 'off';   
+                    }
                 };
                     break;
 				case "check" : {
@@ -738,7 +715,6 @@ class SettingAdm extends Model
                     require_once($GLOBALS['where_framework'] . '/lib/lib.menu.php');
 					$menu_man = new MenuManager();
                     if (isset($_POST['option'][$var_name]) && $_POST['option'][$var_name] == 1) {
-
                         $menu_man->addPerm(ADMIN_GROUP_GODADMIN, '/framework/admin' . $extra_info);
 						$new_value = 1;
 					} else {

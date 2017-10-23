@@ -58,21 +58,19 @@
 	</div>
 </div>
 <script type="text/javascript">
-// YAHOO.util.Event.onDOMReady(function(){
-// 	var targets =  YAHOO.util.Selector.query("span[id^=tt_target]");
-// 	new YAHOO.widget.Tooltip("tooltip_info", {
-// 		context:targets,
-// 		effect:{effect:YAHOO.widget.ContainerEffect.FADE, duration:0.20}
-// 	});
-// 	new YAHOO.widget.TabView('global_conf', {orientation:'left'});
-    
-//     var myEl = document.getElementById('register_type_self');
+$(function(){
+    // check on page reload
+    if ($("#home_page_option").val() == 'catalogue'){
+        $("#on_usercourse_empty_on").attr("disabled", true);
+    }
+})
 
-//     YAHOO.util.Event.addListener("register_type_self", "click", function(e){
-//         if (!confirm('<?php echo addslashes(Lang::t('_CONFIRM_REGISTER_TYPE_SELF', 'configuration')) ?>')){
-//             e.preventDefault();
-//             e.stopPropagation();
-//         }
-//     });
-// });
+$( "#home_page_option" ).change(function() {
+   if ($( this ).val() == 'catalogue') {
+      $("#on_usercourse_empty_on").prop('checked', false)
+      $("#on_usercourse_empty_on").attr("disabled", true);
+   } else {
+       $("#on_usercourse_empty_on").attr("disabled", false);
+   }
+});
 </script>

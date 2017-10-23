@@ -82,8 +82,38 @@ if(isset($_SESSION['must_renew_pwd']) && $_SESSION['must_renew_pwd'] == 1
         
     } else {
         
-        // show lms homepage
-        $GLOBALS['req'] = _lms_home_;
+        // select default home page
+        
+        $array_tab['tb_classroom']  = 'classroom/show';
+        $array_tab['tb_communication']  = 'communication/show';
+        $array_tab['tb_coursepath']  = 'coursepath/show';
+        $array_tab['tb_elearning']  = 'elearning/show';
+        $array_tab['tb_games']  = 'games/show';
+        $array_tab['tb_home']  = 'home/show';
+        $array_tab['tb_kb']  = 'kb/show';
+        $array_tab['tb_label']  = 'label/show';
+        $array_tab['tb_videoconference']  = 'videoconference/show';        
+        
+        $query = " SELECT obj_index from %lms_middlearea where is_home=1";
+        list($tb_home) = sql_fetch_row(sql_query($query));
+       if (Get::sett('home_page_option') == 'catalogue') {
+           $GLOBALS['req'] = 'lms/catalog/show';
+       } else{
+           if (Get::sett('on_usercourse_empty')=='off'){
+              $GLOBALS['req'] = $array_tab[$tb_home]; 
+           } else {
+                $a= Docebo::user()->getIdSt();
+                $q = 'Select count(\'x\') from learning_courseuser where idUser ='.$a;
+                list($n) = sql_fetch_row(sql_query($q));
+                if ($n == 0) { //showing catalogue if no enrollment
+                    $GLOBALS['req'] = 'lms/catalog/show'; 
+                }  else { 
+                    $GLOBALS['req'] =  $array_tab[$tb_home];
+                }
+           }
+          
+       }
+       
     }
 }
 

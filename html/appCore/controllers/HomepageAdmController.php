@@ -251,7 +251,7 @@ class HomepageAdmController extends AdmController
 
 
         $params['back']['title'] = Lang::t("_BACK", "standard");
-        $params['back']['link'] = ".index.php";
+        $params['back']['link'] = "./index.php";
         $params['titleArea'] = Lang::t("_LOGIN", "login");
 
         $params['lost_username'] = [
@@ -465,6 +465,12 @@ class HomepageAdmController extends AdmController
                 "msg" => ACCESS_FAILURE // XXX: o SSO_FAILURE?
             );
             self::redirect($redirection);
+        }
+        
+        if(Docebo::user()->isLoggedIn()) {
+            AuthenticationManager::logout();
+            header("Location: " . $_SERVER['REQUEST_URI']);
+            exit;
         }
 
         $time = Get::req('time', DOTY_MIXED, '');

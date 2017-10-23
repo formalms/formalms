@@ -8,7 +8,7 @@ var all_ok = true, all_finished = false;
 function send_download(e, args) {
     if (args.type=="total") initializeTotalSelection(true);
     if (args.type=="single") initializeSingleSelection(args.scope, true);
-    window.location = '//' + window.location.hostname + '/appCore/index.php?modname=certificate&op=send_zip_certificates&list='+list+'&list_cert='+list_cert+'&id_course='+glob_id_course;
+    window.location = '//' + window.location.hostname + window.location.pathname + '?modname=certificate&op=send_zip_certificates&list='+list+'&list_cert='+list_cert+'&id_course='+glob_id_course;
 }
 
 function send_print(e, args) {

@@ -22,8 +22,9 @@ class CatalogLms extends Model
 
     /* category handling */
     var $children;
-    var $the_tree;
-    var $tree_deep;
+    var $show_all_category;
+    var $current_catalogue;
+
 
 	public function  __construct()
 	{
@@ -42,6 +43,9 @@ class CatalogLms extends Model
 								CST_CANCELLED 	=> '_CST_CANCELLED');
 
 		$this->acl_man =& Docebo::user()->getAclManager();
+        $this->show_all_category = Get::sett('hide_empty_category')=='off';
+        
+        $this->current_catalogue = 0;
 	}
 
     
@@ -78,12 +82,22 @@ class CatalogLms extends Model
     }
     
     
-	public function getCourseList($type = '', $page = 1, $id_catalog)
+	public function getCourseList($type = '', $page = 1, $id_catalog, $id_category)
 	{
         require_once(_lms_.'/lib/lib.catalogue.php');
 		$cat_man = new Catalogue_Manager();
 
-		$user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+		//$user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+        $category_filter = ($id_category==0 || $id_category==null? '':' and idCategory='.$id_category);
+        $cat_list_filter = "";
+        if ($id_catalog > 0 ) {
+            $q = "select idEntry from learning_catalogue_entry where idCatalogue=".$id_catalog." and type_of_entry='course'";
+            $r = sql_query($q);
+            while(list($idcat) = sql_fetch_row($r)) {
+                $cat_array[] = $idcat;
+            }    
+            $cat_list_filter =  " and idCourse in (".implode(",", $cat_array).")";  
+        } 
 
 		switch($type)
 		{
@@ -100,8 +114,6 @@ class CatalogLms extends Model
 
 						$courses = array_merge($courses, $catalogue_course);
 					}
-
-					//$filter .= " AND idCourse IN (".implode(',', $courses).")";
 				}
 			break;
 			case 'classroom':
@@ -117,8 +129,6 @@ class CatalogLms extends Model
 
 						$courses = array_merge($courses, $catalogue_course);
 					}
-
-					//$filter .= " AND idCourse IN (".implode(',', $courses).")";
 				}
 			break;
 			case 'new':
@@ -167,37 +177,8 @@ class CatalogLms extends Model
 			break;
 		}
 
-		if(count($user_catalogue) == 0 && Get::sett('on_catalogue_empty', 'off') == 'off') {
-			$filter = " AND 0 "; //query won't return any results with this setting
-		}
-
-		$limit = ($page - 1) * Get::sett('visuItem');
-		$id_cat = Get::req('id_cat', DOTY_INT, 0);
-
-        //**********************
-         #12190 - Catalogo corsi , filtro dei corsi anche per utente associati a cataloghi
-         
-        require_once(_lms_.'/lib/lib.catalogue.php');
-        $cat_man = new Catalogue_Manager();        
-
-        $user_groups = Docebo::user()->getArrSt();
-  
-        $query_cat_user = "
-        SELECT DISTINCT ce.idEntry
-        FROM ".$cat_man->_getCataEntryTable()." AS ce
-            JOIN ".$cat_man->_getCataMemberTable()." AS cm
-        WHERE ce.type_of_entry = 'course' AND
-            ce.idCatalogue = cm.idCatalogue AND
-            cm.idst_member IN (".implode(',', $user_groups).") ";
+		
    
-        if(intval($id_catalog)>0){
-           $query_cat_user = $query_cat_user. " and ce.idCatalogue=".$id_catalog  ;
-            
-        }
-            
-        //**********************
-
-
         
         
 		$query =	"SELECT *"
@@ -205,13 +186,13 @@ class CatalogLms extends Model
 					." WHERE status NOT IN (".CST_PREPARATION.", ".CST_CONCLUDED.", ".CST_CANCELLED.")"
 					." AND course_type <> 'assessment'"
 					." AND (                       
-						(can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '".date('Y-m-d')."') AND (sub_start_date = '0000-00-00' OR '".date('Y-m-d')."' >= sub_start_date)) OR
+						(can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '".date('Y-m-d')."') AND
+                         (sub_start_date = '0000-00-00' OR '".date('Y-m-d')."' >= sub_start_date)) OR
                         (can_subscribe=1)
 					) "
-                    
 					.$filter
-					.($id_cat > 0 ? " AND idCategory = ".(int)$id_cat : '')
-                    ." and idCourse in (".$query_cat_user.")"
+                    .$category_filter
+                    .$cat_list_filter
 					." ORDER BY name";
 
                     
@@ -697,256 +678,175 @@ class CatalogLms extends Model
 		}
 	}
 
-	public function getMajorCategory($std_link, $only_son = false)
-	{
-		$query =	"SELECT idCategory, path, lev"
-					." FROM %lms_category"
-					." WHERE lev = 1"
-					." ORDER BY path";
 
-		$result = sql_query($query);
-		$res = array();
+    public function CatalogueExist(){
+        $r = sql_query("select count('s') from learning_catalogue");
+        list($t) = sql_fetch_row($r);
+        return $t > 0;
+    }
 
-		while(list($id_cat, $path, $level) = sql_fetch_row($result))
-		{
-			$name = end(explode('/', $path));
-			$res[$id_cat] = $name;
-		}
-
-		return $res;
-	}
-
-	public function getMinorCategory($std_link)
-	{
-		$query =	"SELECT idCategory, path, idParent, lev"
-					." FROM %lms_category";
-
-		$id_cat = Get::req('id_cat', DOTY_INT, 0);
-		$level = 1;
-
-		if($id_cat > 0)
-		{
-			$query_i =	"SELECT iLeft, iRight, lev"
-						." FROM %lms_category"
-						." WHERE idCategory = ".(int)$id_cat;
-
-			list($i_left, $i_right, $lev) = sql_fetch_row(sql_query($query_i));
-
-			$level = $lev + 1;
-
-			$query .=	" WHERE iLeft > ".(int)$i_left
-						." AND iRight < ".$i_right;
-		}
-		else
-			$query .=	" WHERE lev IN (".$level.", ".($level + 1).")";
-
-		$query .= " ORDER BY path";
-
-		$result = sql_query($query);
-		$res = array();
-
-		while(list($id_cat, $path, $id_parent, $lev) = sql_fetch_row($result))
-		{
-			$name = end(explode('/', $path));
-
-			if($level == $lev)
-				$res[$id_cat]['name'] = $name;
-			else
-				$res[$id_parent]['son'][$id_cat] = $name;
-		}
-
-		return $res;
-	}
-
-	public function getBreadCrumbs($std_link)
-	{
-		$id_cat = Get::req('id_cat', DOTY_INT, 0);
-		$res = '<ul class="navigation">';
-
-		if($id_cat > 0)
-		{
-			$res .= '<li><a href="'.$std_link.'">'.Lang::t('_ALL_CATEGORIES', 'catalog').'</a></li>';
-
-			$query =	"SELECT iLeft, iRight, path"
-						." FROM %lms_category"
-						."  WHERE idCategory = ".(int)$id_cat;
-
-			list($i_left, $i_right, $path_t) = sql_fetch_row(sql_query($query));
-
-			$query =	"SELECT idCategory, path"
-						." FROM %lms_category"
-						." WHERE iLeft < ".(int)$i_left
-						." AND iRight > ".(int)$i_right
-						." ORDER BY path";
-
-			$result = sql_query($query);
-
-			while(list($id_cat_t, $path) = sql_fetch_row($result))
-			{
-				$name = end(explode('/', $path));
-				$res .= ' > <li><a href="'.$std_link.'&amp;id_cat='.$id_cat_t.'">'.$name.'</a></li>';
-			}
-
-			$name = end(explode('/', $path_t));
-
-			$res .= ' > <li>'.$name.'</li>';
-		}
-		else
-		{
-			$res .= '<li>'.Lang::t('_ALL_CATEGORIES', 'catalog').'</li>';
-		}
-
-		$res .= '</ul>';
-
-		return $res;
-	}
-    
-    
-    
-    
-        public function GetGlobalJsonTree(){
-            $global_tree = [];
+    public function GetGlobalJsonTree($id_catalogue){
+            $this->current_catalogue = $id_catalogue;
             $top_category = $this->getMajorCategory();
+            $global_tree = [];       
             foreach ($top_category as $a_top_cat_key=>$val) {
-                $this->tree_deep = 0;
-                $this->the_tree = [];
                 $this->children = $this->getMinorCategoryTree($a_top_cat_key);
-                $this->GetChildTree(array_keys($this->children));
-                      
-                
-                if (count($this->the_tree)>0) {
-                    $global_tree[] = array('text'=>$this->the_tree[0]['text'], 'nodes'=>$this->the_tree[0]['nodes'], "href" => "index.php?r=catalog/allCourse&id_cat=".$a_top_cat_key, "id_cat" => $a_top_cat_key);
+               if (count($this->children)) {
+                        $global_tree[] = array('text'=>$val, "id_cat" => $a_top_cat_key, 'nodes'=>$this->children);
                 } else {
-                    
-                    $num_course = $this->getCourseCatalog($a_top_cat_key);
-                    
-                    
-                    // no fogli
-                    if($num_course >0) {
-                        $global_tree[] = array('text'=>$val." <p class='text-success'>(".$num_course.")</p>", "href" => "index.php?r=catalog/allCourse&id_cat=".$a_top_cat_key, "id_cat" => $a_top_cat_key);
-                    }
+                        if ($this->CategoryHasCourse($a_top_cat_key))
+                            $global_tree[] = array('text'=>$val,  "id_cat" => $a_top_cat_key);
                 }    
             }
-            return  $global_tree;              
-            
+            return $global_tree;              
               
+    }
+    
+
+        
+    public function getMajorCategory($std_link, $only_son = false)
+    {
+        $query =    "SELECT idCategory, path, lev"
+                    ." FROM %lms_category"
+                    ." WHERE lev = 1"
+                    ." ORDER BY path";
+
+        $result = sql_query($query);
+        $res = array();
+
+        while(list($id_cat, $path, $level) = sql_fetch_row($result))
+        {
+            $name = end(explode('/', $path));
+            $res[$id_cat] = $name;
         }
-             
-        public function getMinorCategoryTree($id_cat){
+
+        return $res;
+    }
+        
+
+        /*
+            to be improved: handles only untill 4 deep level
+        */
+        public function getMinorCategoryTree($top_cat){
             $query_i =    "SELECT iLeft, iRight, idCategory"
             ." FROM %lms_category"
-            ." WHERE idCategory = ".(int)$id_cat;
+            ." WHERE idCategory = ".$top_cat;
             list($i_left, $i_right) = sql_fetch_row(sql_query($query_i));
 
             $query =    "SELECT idCategory, path, idParent, lev"
             ." FROM %lms_category"
-            ." WHERE iLeft >= ".(int)$i_left
-            ." AND iRight <= ".$i_right
-            ." ORDER BY lev";
+            ." WHERE iLeft > ".(int)$i_left
+            ." AND iRight < ".$i_right
+            ." ORDER BY lev desc";
             $result = sql_query($query);
             $res = array();
 
             while(list($id_cat, $path, $id_parent, $lev) = sql_fetch_row($result)){
                 $name = end(explode('/', $path));
+                
+                if ($id_parent == $top_cat) {
+                    if ($this->CategoryHasCourse($id_cat) || array_key_exists($id_cat, $res)) { // has courses or has children nodes
+                        $res[$id_cat]['text'] = $name;
+                        $res[$id_cat]['id_cat']=$id_cat;
+                    }
+                    
+                    // do not has courses and his child do not has courses, but the child of its child, yes 
+                    if ($this->categoryHasChild($id_cat) ) {
+                        $first_lev_child = $this->GetChildCategory($id_cat);
+                        foreach($first_lev_child as $k=>$v ) {
+                            if (array_key_exists ( $v, $res)) {
+                                $res[$id_cat]['text'] = $name;
+                                $res[$id_cat]['id_cat']=$id_cat;
+                                $res[$id_cat]['nodes'][$v] = $res[$v];
+                                unset($res[$v]);
+                            }
+                        }    
+                        
+                    }
+                } else {
+                
+                    if ($this->CategoryHasCourse($id_cat)) {
+                            $res[$id_parent]['nodes'][$id_cat]['text'] = $name;
+                            $res[$id_parent]['nodes'][$id_cat]['id_cat'] = $id_cat;
+                    }       
+                    
+                    if (array_key_exists($id_cat, $res)) { // do not have courses but has children nodes
+                        $res[$id_cat]['text'] = $name;
+                        $res[$id_cat]['id_cat']=$id_cat;
+                    } else {
+                    // do not has courses and his child do not has courses, but the child of its child, yes   
+                        if ($this->categoryHasChild($id_cat) ) {
+                            $first_lev_child = $this->GetChildCategory($id_cat);
+                            foreach($first_lev_child as $k=>$v ) {
+                                if (array_key_exists ( $v, $res)) {
+                                    $res[$id_cat]['text'] = $name;
+                                    $res[$id_cat]['id_cat']=$id_cat;
+                                    $res[$id_cat]['nodes'][$v] = $res[$v];
+                                    unset($res[$v]);
+                                }
+                            }    
+                        }
+                    }    
 
-                $res[$id_cat]['name'] = $name;
-                $res[$id_cat]['id_cat'] = $id_cat;
-                if($id_parent != 0) {
-                    $res[$id_parent]['son'][$id_cat] = $name;
-                }    
+                }
+                    
             }
             return $res;            
 
         }        
 
-        private function GetChildTree($array_k){
-            $leaves = [];       
-            $del_leave = 0;
-            foreach ($array_k as $single_key) {
-
-                $num_course = $this->getCourseCatalog($this->children[$single_key]['id_cat']);
-
-                if (is_array($this->children[$single_key]['son']) ) {
-                    $this->tree_deep++;
-                    $b = $this->GetChildTree(array_keys($this->children[$single_key]['son']));
-                    
-                    // genitore 
-                //    if($del_leave==true && $num_course>0){
-                        $leaves[] = array('text'=>$this->children[$single_key]['name']." (".$num_course.")", 'nodes'=>$b, "href" => "index.php?r=catalog/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat'] );
-                //    }
-   
-                    if  ($this->tree_deep==0 ){
-                        $this->the_tree[] = array('text'=>$leaves[0]['text']."  ", 'nodes'=>$leaves[0]['nodes'], "href" => "index.php?r=catalog/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat'] );
-                        $this->tree_deep = 0;                   
-                    }  
-                } else {
-                    // foglia di un nodo genitore 
-                   // if($num_course > 0){ 
-                        $del_leave = 1;
-                        $leaves[] = array('text'=>$this->children[$single_key]['name']."  (".$num_course.")",  "href" => "index.php?r=catalog/allCourse&id_cat=".$this->children[$single_key]['id_cat'],"id_cat" => $this->children[$single_key]['id_cat']);
-                   // }else{
-                        // rimuovi ultimo elemento inserito come genitore in tree_deep
-                      //  array_pop($this->the_tree);
-                    //}
-                }
-                if (array_key_exists($single_key, $this->children)) {
-                    unset($this->children[$single_key]);   
-                }
-            }
-            
-            
-            $this->tree_deep--;
-            return $leaves;
-        }     
-    
-    
-    
-   
-   
-   function getCourseCatalog($id_cat){
-        require_once(_lms_.'/lib/lib.catalogue.php');
-        $cat_man = new Catalogue_Manager();        
-        $id_catalog = $_GET['id_cata'] ;
-        
-        
-        $user_groups = Docebo::user()->getArrSt();
-          
-        $query_cat_user = "
-        SELECT DISTINCT ce.idEntry
-        FROM ".$cat_man->_getCataEntryTable()." AS ce
-            JOIN ".$cat_man->_getCataMemberTable()." AS cm
-        WHERE ce.type_of_entry = 'course' AND
-            ce.idCatalogue = cm.idCatalogue AND
-            cm.idst_member IN (".implode(',', $user_groups).") ";
-   
-        if(intval($id_catalog)>0){
-           $query_cat_user = $query_cat_user. " and ce.idCatalogue=".$id_catalog ;
-            
+        private function GetChildCategory($p){
+            $query =    "SELECT idCategory"
+            ." FROM %lms_category"
+            ." WHERE idParent = ".(int)$p;
+            $rs = sql_query($query);
+             while(list($id_cat) = sql_fetch_row($rs)){
+                 $retval[] = $id_cat;
+             }
+             return $retval;
         }
-            
-
         
-        $query =    "SELECT count(*) as c "
-                    ." FROM %lms_course"
-                    ." WHERE status NOT IN (".CST_PREPARATION.", ".CST_CONCLUDED.", ".CST_CANCELLED.")"
-                    ." AND course_type <> 'assessment'"
-                    ." AND (                       
-                        (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '".date('Y-m-d')."') AND (sub_start_date = '0000-00-00' OR '".date('Y-m-d')."' >= sub_start_date)) OR
-                        (can_subscribe=1)
-                    ) "
-                    
-                    .($id_cat > 0 ? " AND idCategory = ".(int)$id_cat : '')
-                    ." and idCourse in (".$query_cat_user.")"
-                    ." ORDER BY name";       
+   
+   
+   private function CategoryHasCourse($id_cat){
+        
+       if ($this->current_catalogue == 0) {
+           $query =    "SELECT count(*) as c "
+                        ." FROM %lms_course"
+                        ." WHERE status NOT IN (".CST_PREPARATION.", ".CST_CONCLUDED.", ".CST_CANCELLED.")"
+                        ." AND course_type <> 'assessment'"
+                        ." AND (                       
+                            (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '".date('Y-m-d')."') AND (sub_start_date = '0000-00-00' OR '".date('Y-m-d')."' >= sub_start_date)) OR
+                            (can_subscribe=1)
+                        ) AND idCategory = ".(int)$id_cat;
+       } else {
+           $query =    "SELECT count(*) as c "
+                        ." FROM learning_course, learning_catalogue_entry"
+                        ." WHERE status NOT IN (".CST_PREPARATION.", ".CST_CONCLUDED.", ".CST_CANCELLED.")"
+                        ." AND course_type <> 'assessment'"
+                        ." AND (                       
+                            (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '".date('Y-m-d')."') AND (sub_start_date = '0000-00-00' OR '".date('Y-m-d')."' >= sub_start_date)) OR
+                            (can_subscribe=1)
+                        ) AND idCategory = ".(int)$id_cat
+                        ." AND idCatalogue = ".(int)$this->current_catalogue
+                        . " AND learning_catalogue_entry.idEntry=learning_course.idCourse";
+           
+       }                
        
        
        list($c) = sql_fetch_row(sql_query($query));
        
-     //  $c = "<p class='text-success'>(".$c.")</p>";
+       return ($c>0 || $this->show_all_category);    
        
-       return $c;    
-       
-       
+   }
+   
+   private function categoryHasChild($id_cat) {
+            $query_i =    "SELECT iLeft, iRight, idCategory"
+            ." FROM %lms_category"
+            ." WHERE idCategory = ".(int)$id_cat;
+            list($i_left, $i_right) = sql_fetch_row(sql_query($query_i));
+            
+            return ($i_right - $i_left > 1 || $this->show_all_category );
    }
    
    
