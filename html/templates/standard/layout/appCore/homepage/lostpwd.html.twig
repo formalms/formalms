@@ -1,6 +1,6 @@
 <div class="homepage__row homepage__row--gray homepage__back">
-    <a href="./index.php">
-        <span class="fa fa-chevron-left"></span> Indietro
+    <a href="{{ back.link }}">
+        <span class="fa fa-chevron-left"></span> {{ back.title|raw }}
     </a>
 </div>
 <div class="homepage__row homepage__row--gray">
@@ -10,38 +10,24 @@
 </div>
 <div class="homepage__row homepage__row--gray">
     <p class="homepage__text homepage__text--left">
-        <strong>Ho perso il mio username</strong><br>
-        Se hai perso il tuo username inserisci nel campo qui
-        sotto l'email con cui ti sei registrato, ti verrà inviata una email per ricordartelo
+        <strong>{{ lost_username.title }}</strong><br>
+        {{ lost_username.istruction }}
     </p>
 </div>
 <div class="homepage__form homepage__form--lost-pwd">
-    <div class="homepage__row homepage__row--gray homepage__row--form row-fluid">
-        <div class="col-xs-12 col-sm-5">
-            <input class="form-control" type="text" placeholder="Inserisci qui la tua email">
-        </div>
-        <div class="col-xs-12 col-sm-2">
-            <button type="submit" class="forma-button forma-button--black thin">Invia</button>
-        </div>
-
-    </div>
+    {{ lost_username.form|raw }}
 </div>
 <div class="homepage__row homepage__row--gray">
     <br>
     <p class="homepage__text homepage__text--left">
-        <strong>Ho perso la password</strong><br>
-        Se hai perso la password inserisci qui il tuo username, riceverai una email con le istruzioni successive
+
+        <strong>{{ lost_pwd.title }}</strong><br>
+        {{ lost_pwd.istruction }}
+
     </p>
 </div>
 <div class="homepage__form homepage__form--lost-pwd">
-    <div class="homepage__row homepage__row--gray homepage__row--form row-fluid">
-        <div class="col-xs-12 col-sm-5">
-            <input class="form-control" type="text" placeholder="Inserisci qui il tuo username">
-        </div>
-        <div class="col-xs-12 col-sm-2">
-            <button type="submit" class="forma-button forma-button--black thin">Invia</button>
-        </div>
-    </div>
+    {{ lost_pwd.form|raw }}
 </div>
 <br>
 <div class="homepage__row homepage__row--footer">
@@ -53,23 +39,3 @@
         {% endif %}
     </nav>
 </div>
-
-{#{{ titleArea|raw }}#}
-{#<div class="std_block">#}
-    {#{{ backUi|raw }}#}
-    {#<div class="lostpwd_box">#}
-        {#<span class="text_bold">{{ lost_username.title }} - </span>{{ lost_username.istruction }}#}
-        {#{% if lost_username.ldap == true %}#}
-            {#<div class="form_right">#}
-                {#<span class="font_red">{{ lost_username.ldap_title }}</span>#}
-            {#</div>#}
-        {#{% else %}#}
-            {#{{ lost_username.form|raw }}#}
-        {#{% endif %}#}
-    {#</div>#}
-    {#<div class="lostpwd_box">#}
-        {#<span class="text_bold">{{ lost_pwd.title }} - </span>{{ lost_pwd.istruction }}#}
-        {#{{ lost_pwd.form|raw }}#}
-    {#</div>#}
-{#</div>#}
-
