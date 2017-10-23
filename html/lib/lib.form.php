@@ -727,22 +727,33 @@ class Form {
 	 * @param string $css_dropdown 	the css class for the select element
 	 * @param string $id 			the id of the element
 	 * @param string $name 			the name of the element
-	 * @param string $all_value 	the possible value of the textfield
+	 * @param array $all_value 	the possible value of the textfield
 	 * @param string $selected 		the element selected
 	 * @param string $other_param 	other element for the tag
+	 * @param bool $withPlaceholder disable the first element
 	 *
 	 * @return string with the html code for the select element
 	 */
-	public static function getInputDropdown( $css_dropdown, $id, $name, $all_value, $selected, $other_param ) {
+	public static function getInputDropdown( $css_dropdown, $id, $name, $all_value, $selected, $other_param, $withPlaceholder = false ) {
 
 		$html_code = '<select class="form-control '.$css_dropdown.'" '
 				."\n\t".'id="'.$id.'" '
 				."\n\t".'name="'.$name.'"  '.$other_param.'>'."\n";
+		$i = 0;
 		if( is_array($all_value) ) {
-			while( list($key, $value) = each($all_value) ) {
+			foreach ($all_value as $key => $value) {
+
+				if ($withPlaceholder && $i == 0){
+                    $html_code .= '	<option value="'.$key.'"  disabled'
+                        .( (((string)$selected) == "" || (string)$key == (string)$selected) ? ' selected="selected"' : '' )
+                        .'>'.$value.'</option>'."\n";
+				}
+				else {
 				$html_code .= '	<option value="'.$key.'"'
 						.((string)$key == (string)$selected ? ' selected="selected"' : '' )
 						.'>'.$value.'</option>'."\n";
+                }
+                $i++;
 			}
 		}
 		$html_code .= '</select>';
@@ -982,9 +993,9 @@ class Form {
 	 *
 	 * @return string with the html code for the input type="radio" element
 	 */
-	public static function getInputRadio( $id, $name, $value, $is_checked, $other_param ) {
+	public static function getInputRadio( $id, $name, $value, $is_checked, $other_param,$class = 'radio' ) {
 
-		return '<input class="radio" type="radio" id="'.$id.'" name="'.$name.'" value="'.$value.'"'
+		return '<input class="'.$class.'" type="radio" id="'.$id.'" name="'.$name.'" value="'.$value.'"'
 		.( $is_checked ? 'checked="checked"' : '' )
 		.( $other_param != '' ? ' '.$other_param : '' ).' />';
 	}

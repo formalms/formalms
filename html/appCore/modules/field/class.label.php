@@ -326,7 +326,7 @@ class Field_Textlabel extends Field {
     *
     * @access public
     */
-    function play($id_user, $do_not_show_label = false, $value = NULL) {
+    function play( $id_user, $freeze, $mandatory = false, $do_not_show_label = false, $value = NULL, $registrationLayout=false ) {
 
             require_once(_base_.'/lib/lib.form.php');
 
@@ -349,6 +349,16 @@ class Field_Textlabel extends Field {
             list($translation) = sql_fetch_row($re_field);
 
             if ($value !== NULL) $user_entry = "".$value;
+
+
+        if ($registrationLayout) {
+
+            $formField = '<div class="homepage__row homepage__row--form homepage__row--gray">'
+                .'<p>'.$translation.'</p>'
+                .'</div>';
+
+            return $formField;
+        }
 
             return Form::getTextLabel($translation);
     }

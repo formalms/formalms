@@ -104,11 +104,40 @@
 }
 </style>
 
-<a href="index.php">
-    <img class="left_logo" src="<?php echo Layout::path();?>images/company_logo.png" alt="Left logo" />
-</a>
+<!--<a href="index.php">-->
+<!--    <img class="left_logo" src="--><?php //echo Layout::path();?><!--images/company_logo.png" alt="Left logo" />-->
+<!--</a>-->
+
+<header class="header white-bg header--external-catalogue">
+    <!-- Static navbar -->
+    <nav>
+        <div class="row-fluid" id="lms_menu_container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="?r=elearning/show&amp;sop=unregistercourse">
+                    <img class="left_logo" width="120" src="<?php echo Layout::path(); ?>images/company_logo.png" alt="logo di sinistra">
+                </a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="glyphicon glyphicon-align-justify"></span>
+                </button>
+            </div>
+
+            <div id="c-mask" class="c-mask"></div><!-- /c-mask overlay --></div>
+        <!--/.nav-collapse -->
+    </nav>
+
+    <!-- /c-menu slide-right end profile right panel -->
+
+</header>
+
 <!--<div class="divider"></div>-->
-<div class="tab_subnav forma-quick-search-forma">
+<div class="tabs-wrapper">
+    <ul class="nav nav-tabs hidden-xs">
+        <li class="active">
+            <a href="index.php?r=catalog/show&amp;id_cata=0">Catalogo Corsi</a>
+        </li>
+    </ul>
+</div>
+<div class="tab_subnav forma-quick-search-form">
     <ul class="nav nav-pills" >
         <li>
             <select class='form-control' id="typeCourse" onchange="javascript:loadCourseType();">

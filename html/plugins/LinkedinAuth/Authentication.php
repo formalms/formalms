@@ -26,12 +26,13 @@ use Docebo;
 class Authentication extends \PluginAuthentication implements \PluginAuthenticationInterface {
     
     public static function getLoginGUI() {
-        
+
+        $form = '';
         if(isset($_SESSION['social'])) {
             
             if($_SESSION['social']['plugin'] == Plugin::getName()) {
-                
-                return Get::img("social/linkedin-24.png") . " "
+
+                $form = Get::img("social/linkedin-24.png") . " "
                         . Lang::t("_YOU_ARE_CONNECTING_SOCIAL_ACCOUNT", "social")
                         . " <b>" . $_SESSION['social']['data']['firstName'] . " " . $_SESSION['social']['data']['lastName'] . "</b>"
                         . Form::openForm("cancel_social", Get::rel_path("base"))
@@ -46,10 +47,17 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
 
             $url = $linkedin_service->getAuthorizationUri();
 
-            return  "<a href='" . $url . "'>"
-                      . Get::img("social/linkedin-24.png")
-                  . "</a>";
+            $form =  "<a href='" . $url . "'>"
+					// . Get::img("social/linkedin-24.png")
+					. '<i class="fa fa-linkedin"></i>'
+                  	. "</a>";
         }
+
+        return [
+            'name' => 'LinkedinAuth',
+            'type' => self::AUTH_TYPE_SOCIAL,
+            'form' => $form
+        ];
     }
     
     public static function getUserFromLogin() {

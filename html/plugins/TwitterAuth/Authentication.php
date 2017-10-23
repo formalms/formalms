@@ -55,8 +55,9 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             }
 
             return  "<a href='" . $url . "'>"
-                      . Get::img("social/twitter-24.png")
-                  . "</a>";
+				  // . Get::img("social/twitter-24.png")
+					. '<i class="fa fa-twitter"></i>'
+                  	. "</a>";
         }
     }
     
