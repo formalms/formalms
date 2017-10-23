@@ -12731,6 +12731,12 @@ header.header {
   }
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+  header.header .row-fluid .navbar-header {
+    width: 100%;
+  }
+}
+
 header.header .row-fluid .navbar-header .navbar-brand {
   padding: 15px 0 0 30px;
 }
@@ -12743,6 +12749,15 @@ header.header .row-fluid .navbar-header .navbar-brand {
 
 header.header .row-fluid .navbar-header .navbar-toggle {
   position: relative;
+  -webkit-transition: all 0.2s ease-in 0s;
+  transition: all 0.2s ease-in 0s;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  header.header .row-fluid .navbar-header .navbar-toggle {
+    display: block !important;
+    margin-top: 0;
+  }
 }
 
 header.header .row-fluid .navbar-header .navbar-toggle.collapsed .glyphicon.glyphicon-align-justify:before {
@@ -12764,13 +12779,17 @@ header.header .row-fluid .navbar-header .navbar-toggle .glyphicon.glyphicon-alig
   background-repeat: no-repeat;
   background-position: center;
   background-image: url("images/icons/icon--hamburger-mobile-cross.svg");
-  -webkit-transition: background-image .2s ease 0s, width .2s ease 0s, height .2s ease 0s, top .2s ease 0s, right .2s ease 0s;
-  transition: background-image .2s ease 0s, width .2s ease 0s, height .2s ease 0s, top .2s ease 0s, right .2s ease 0s;
 }
 
 header.header .row-fluid .navbar-collapse {
   float: right;
   padding: 0;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  header.header .row-fluid .navbar-collapse {
+    margin-top: 1px !important;
+  }
 }
 
 header.header .row-fluid .navbar-collapse li {
@@ -12783,6 +12802,12 @@ header.header .row-fluid .navbar-collapse li {
   header.header .row-fluid .navbar-collapse li {
     text-transform: uppercase;
     border-right: 1px solid #c2c2c2;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  header.header .row-fluid .navbar-collapse li {
+    display: block !important;
   }
 }
 
@@ -12839,7 +12864,7 @@ header.header .row-fluid .navbar-collapse li a .glyphicon:before {
   transition: border-color .2s ease 0s, background-image .2s ease 0s;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   header.header .row-fluid .navbar-collapse li a .glyphicon:before {
     top: -24px;
     right: 0;
@@ -12876,7 +12901,7 @@ header.header .row-fluid .navbar-collapse li .o-wrapper .c-button {
   text-align: left;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   header.header .row-fluid .navbar-collapse li .o-wrapper .c-button {
     width: auto;
     text-align: center;
@@ -12906,7 +12931,7 @@ header.header .row-fluid .navbar-collapse li .o-wrapper .c-button a {
   border-right: none !important;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   header.header .row-fluid .navbar-collapse li .o-wrapper .c-button.open,
   header.header .row-fluid .navbar-collapse li .o-wrapper .c-button a {
     width: auto;
@@ -12957,7 +12982,7 @@ header.header .row-fluid .navbar-collapse li .o-wrapper .c-button a .username:be
   transition: border .2s ease 0s, background-image .2s ease 0s;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   header.header .row-fluid .navbar-collapse li .o-wrapper .c-button.open .username:before,
   header.header .row-fluid .navbar-collapse li .o-wrapper .c-button a .username:before {
     top: -11px;
@@ -12969,6 +12994,12 @@ header.header .row-fluid .navbar-collapse li .o-wrapper.has-slide-right .c-butto
   text-align: left;
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+  header.header .row-fluid .navbar-collapse.collapse {
+    display: none !important;
+  }
+}
+
 header.header .row-fluid .navbar-collapse.collapse.in {
   overflow-y: visible;
   max-height: 685px;
@@ -12977,13 +13008,25 @@ header.header .row-fluid .navbar-collapse.collapse.in {
 header.header .row-fluid .navbar-collapse.collapsing, header.header .row-fluid .navbar-collapse.collapse.in {
   width: 100%;
   float: left;
-  margin-top: 7px;
+  margin-top: 5px;
   padding: 20px;
   background-color: #ececec;
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+  header.header .row-fluid .navbar-collapse.collapsing, header.header .row-fluid .navbar-collapse.collapse.in {
+    display: block !important;
+  }
+}
+
 header.header .row-fluid .navbar-collapse.collapsing .nav.navbar-nav, header.header .row-fluid .navbar-collapse.collapse.in .nav.navbar-nav {
   margin: 0;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  header.header .row-fluid .navbar-collapse.collapsing .nav.navbar-nav, header.header .row-fluid .navbar-collapse.collapse.in .nav.navbar-nav {
+    text-align: left !important;
+  }
 }
 
 header.header .row-fluid .navbar-collapse.collapsing .nav.navbar-nav li, header.header .row-fluid .navbar-collapse.collapse.in .nav.navbar-nav li {
@@ -12993,6 +13036,12 @@ header.header .row-fluid .navbar-collapse.collapsing .nav.navbar-nav li, header.
   background-color: white;
   border-radius: 5px;
   font-weight: bold;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  header.header .row-fluid .navbar-collapse.collapsing .nav.navbar-nav li, header.header .row-fluid .navbar-collapse.collapse.in .nav.navbar-nav li {
+    display: block;
+  }
 }
 
 header.header .row-fluid .navbar-collapse.collapsing .nav.navbar-nav li .no-border-right, header.header .row-fluid .navbar-collapse.collapse.in .nav.navbar-nav li .no-border-right {
@@ -13034,7 +13083,7 @@ header.header nav {
   font-family: "Open-sans";
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .top-menu__label {
     font-size: 0;
   }
@@ -13049,7 +13098,7 @@ header.header nav {
   font-size: 16px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .top-menu__disclaimer {
     display: none;
   }
