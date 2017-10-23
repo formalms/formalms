@@ -4,7 +4,7 @@
  * Interface to implement for auth-type plugins.
  */
 interface PluginAuthenticationInterface {
-    
+
     /*
      * Function creating the login GUI.
      */
@@ -23,7 +23,10 @@ use appCore\Events;
  * Plugins must implement PluginAuthInterface.
  */
 abstract class PluginAuthentication extends FormaPlugin {
-    
+
+    const AUTH_TYPE_BASE  = 'baseLogin';
+    const AUTH_TYPE_SOCIAL = 'socialLogin';
+
     public function __construct() {
         
     }

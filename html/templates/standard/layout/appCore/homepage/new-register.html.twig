@@ -1,0 +1,97 @@
+<div class="homepage__row homepage__row--gray homepage__back">
+	<a href="{{ evalPhp('Get::rel_path', ['base']) }}/index.php">
+		<span class="fa fa-chevron-left"></span> {{ evalPhp('Lang::t', ['_BACK', 'standard']) }}
+	</a>
+</div>
+<div class="homepage__row homepage__row--gray">
+	<p>Da questa pagina ti puoi registrare alla piattaforma, segui le <strong>istruzioni</strong> qui sotto e riempi correttamente i campi per completare la registrazione.</p>
+</div>
+<form class="homepage__form">
+	<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
+		<div class="col-xs-12 col-sm-6">
+			<input class="form-control has-error" type="text" placeholder="Username*">
+			<small class="form-text">* Username errata</small>
+		</div>
+		<div class="col-xs-12 col-sm-6">
+			<input class="form-control" type="text" placeholder="Email*">
+		</div>
+	</div>
+	<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
+		<div class="col-xs-12 col-sm-4">
+			<input class="form-control" type="text" placeholder="Nome">
+		</div>
+		<div class="col-xs-12 col-sm-4">
+			<input class="form-control" type="text" placeholder="Cognome">
+		</div>
+		<div class="col-xs-12 col-sm-4">
+			<select class="form-control">
+				<option value="">Lingua</option>
+			</select>
+		</div>
+	</div>
+	<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
+		<div class="col-xs-12 col-sm-6">
+			<input class="form-control" type="text" placeholder="Password* (min 5 caratteri)">
+		</div>
+		<div class="col-xs-12 col-sm-6">
+			<input class="form-control" type="text" placeholder="Conferma password*">
+		</div>
+	</div>
+	<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
+		<div class="col-xs-12 col-sm-6">
+			<input class="form-control" type="date" placeholder="gg / mm / aaaa">
+		</div>
+	</div>
+	<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
+		<div class="col-xs-12 col-sm-6">
+			<select class="form-control">
+				<option value="">Professione*</option>
+			</select>
+		</div>
+	</div>
+	<div class="homepage__row homepage__row--form homepage__row--gray">
+		<p>La invitiamo a verificare che la Sua professione e la Sua disciplina corrispondano alla/e professione/i e disciplina/e per le quali il corso è stato accreditato, per poter acquisire i crediti ECM</p>
+	</div>
+	<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
+		<div class="col-xs-12 col-sm-6">
+			<select class="form-control">
+				<option value="">Occupazione*</option>
+			</select>
+		</div>
+	</div>
+	<div class="homepage__row homepage__row--gray">
+		Seleziona i gruppi di cui vuoi fare parte
+	</div>
+	<div class="homepage__row homepage__row--form homepage__row--gray row-fluid clearfix">
+		<div class="col-xs-12 col-sm-3 has-forma-tooltip">
+			<input type="checkbox"><label class="checkbox-inline">Lorem ipsum</label>
+			<div class="forma-tooltip">Qua va inserita la descrizione del gruppo a cui si vuole fare parte</div>
+		</div>
+		<div class="col-xs-12 col-sm-3 has-forma-tooltip">
+			<input type="checkbox"><label class="checkbox-inline">Lorem ipsum</label>
+			<div class="forma-tooltip">Qua va inserita la descrizione del gruppo a cui si vuole fare parte</div>
+		</div>
+		<div class="col-xs-12 col-sm-3 has-forma-tooltip">
+			<input type="checkbox"><label class="checkbox-inline">Lorem ipsum</label>
+			<div class="forma-tooltip">Qua va inserita la descrizione del gruppo a cui si vuole fare parte</div>
+		</div>
+		<div class="col-xs-12 col-sm-3 has-forma-tooltip">
+			<input type="checkbox"><label class="checkbox-inline">Lorem ipsum</label>
+			<div class="forma-tooltip">Qua va inserita la descrizione del gruppo a cui si vuole fare parte</div>
+		</div>
+	</div>
+	<div class="homepage__row homepage__row--form-disclaimer">
+		<p>Qualsiasi dato, da noi raccolto, che sia idoneo ad identificare una persona, sarà usato solo nel rispetto delle procedure e per lo scopo dichiarato alla persona interessata, ed a condizione che quest'ultima, nei casi previsti dalla legge, lo abbia espressamente autorizzato. - Login e accesso alle aree riservate - Newsletter - Contenuto personalizzato Nella conservazione dei dati verranno osservate accuratezza e precisione per garantire l'integrità e la qualità dei dati trattati. Per qualsiasi informazione aggiuntiva contattateci.</p>
+	</div>
+	<div class="homepage__row">
+		<input type="checkbox"><label class="checkbox-inline">Avendo preso visione dell'informativa sopra menzionata,<br/>acconsento al trattamento dei <strong>dati personali</strong>.</label>
+	</div>
+	<div class="homepage__row row">
+		<div class="col-xs-12 col-sm-6 col-sm-offset-3">
+			<button type="submit" class="forma-button forma-button--black">Registrati</button>
+		</div>
+	</div>
+	<div class="homepage__row homepage__links">
+		<a href="#"><em>Effettua il LOGIN</em></a>
+	</div>
+</form>
