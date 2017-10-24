@@ -1,49 +1,81 @@
-{% extends "base.html.twig" %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ evalPhp('Layout::lang_code') }}">
+<head>
+	<!--Fix funzionamento scorm su IE9-->
+	<meta http-equiv="x-ua-compatible" content="IE=9" />
+	<!--END -->
 
-{% block stylesheet %}
-    <link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/lms-home.css"/>
-{% endblock %}
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block javascript %}
-{% endblock %}
+	<title>{{ evalPhp('Layout::title') }}</title>
+	{{ evalPhp('Layout::zone', ['meta']) }}
+	<link rel="shortcut icon" href="{{ evalPhp('Layout::path') }}images/favicon.png" type="image/png" />
+	<link rel="shortcut icon" href="{{ evalPhp('Layout::path') }}images/favicon.ico" />
+	<!-- reset and font stylesheet -->
+	{{ evalPhp('Layout::resetter') }}
+	<!-- common stylesheet -->
+	<link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/base.css" />
+	<link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/lms-home.css" />
+	{{ evalPhp('Layout::rtl') }}
+	<!-- specific stylesheet -->
+	{{ evalPhp('YuiLib::load', ['base']) }}
+	<!-- printer stylesheet-->
+	{{ evalPhp('Layout::accessibility') }}
+	<!-- Page Head area -->
+	{{ evalPhp('Layout::zone', ['page_head']) }}
 
-{% block content %}
+	<!-- JQuery, Bootstrap  -->
+	{% block jquery_core %}
+		{{ jqueryLib|raw }}
+	{% endblock %}
 
-    <!-- blind nav -->
-    {{ evalPhp('Layout::zone', ['blind_navigation']) }}
-    <!-- header -->
-    <div class="header">
-        <div class="select-language">
-            {{ changeLanguage_text }}: {{ changeLanguageBox|raw }}
-        </div>
-        <a href="index.php"><img class="left_logo" src="{{ layout_path }}images/company_logo.png" alt="Left logo"/></a>
-        <div class="nofloat"></div>
-    </div>
-    <div class="webcontent">
-        {{ evalPhp('Layout::zone', ['content']) }}
-    </div>
-    <!-- footer -->
-    <div class="footer">
-        {{layout_zone_footer | raw}}
-        {#{{ login_links|raw }}#}
-        <div class="copyright">
-            {{ copyright|raw }}
-        </div>
-    </div>
+	{% block bootstrap %}
+		{{ boostrap|raw }}
+	{% endblock %}
 
-    <!-- def lang -->
-    {{ evalPhp('Layout::zone', ['def_lang']) }}
-    <!-- scripts -->
-    {{ evalPhp('Layout::zone', ['scripts']) }}
-    <!-- end scripts -->
-    {{ evalPhp('Layout::zone', ['debug']) }}
+	{% block jquery_addons %}
+		<!-- addons: js -->
+		{{ jqueryAddons|raw }}
+	{% endblock %}
 
-    <script type="text/javascript">
-        window.onload = function () {
-            try {
-                window.document.getElementById('login_userid').focus();
-            } catch (e) {
-            }
-        }
-    </script>
-{% endblock %}
+	{% block css_addons %}
+		<!-- addons: css -->
+		{{ cssAddons|raw }}
+	{% endblock %}
+
+	<!-- Restyling -->
+	<link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}static/main.css" />
+	<script type="text/js" src="{{ evalPhp('Layout::path') }}static/main.js"></script>
+</head>
+<body class="homepage js-router--homepage">
+{% if under_maintenence == false %}
+<!-- content -->
+<main class="homepage__content content-margin">
+	<div class="homepage__row homepage__row--header">
+		<a href="index.php">
+			<img class="left_logo" src="{{ evalPhp('Layout::path') }}images/company_logo.png" alt="Left logo" />
+		</a>
+		<div class="pull-right">
+			<div class="select-language">
+				<span class="hidden-xs">{{ evalPhp('Lang::t', ['_CHANGELANG', 'register']) }}: </span>{{ evalPhp('Layout::change_lang') }}
+			</div>
+            {{ evalPhp('Layout::get_catalogue')  }}
+		</div>
+	</div>
+	{{ evalPhp('Layout::zone', ['content']) }}
+</main>
+<!-- footer -->
+<footer class="homepage__footer">
+	{{ evalPhp('Layout::zone', ['footer']) }}
+	{{ evalPhp('Layout::copyright') }}
+</footer>
+{% endif %}
+<!-- def lang -->
+{{ evalPhp('Layout::zone', ['def_lang']) }}
+<!-- scripts -->
+{{ evalPhp('Layout::zone', ['scripts']) }}
+<!-- end scripts -->
+{{ evalPhp('Layout::zone', ['debug']) }}
+{{ evalPhp('Layout::analytics') }}
+</body>
+</html>

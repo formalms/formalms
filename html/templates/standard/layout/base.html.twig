@@ -27,20 +27,18 @@
     {% endblock %}
 
     {% block bootstrap %}
-    {{ boostrap|raw }}    
+    {#{{ boostrap|raw }}#}
     {% endblock %}
     
     {% block jquery_addons %}
     <!-- addons: js -->    
     {{ jqueryAddons|raw }}    
     {% endblock %}
-    
-    
+
     {% block css_addons %}
     <!-- addons: css -->    
     {{ cssAddons|raw }}    
     {% endblock %}
-
 
     <!-- specific stylesheet -->    
     <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/base.css"/>    

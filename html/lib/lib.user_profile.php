@@ -1942,8 +1942,8 @@ class UserProfileViewer {
 
         $html .= '<div class="row comunication">'; //pulsanti certificati-messaggi
 
-        if ($perm_certificate) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=lms/mycertificate/show">' . Lang::t('_MY_CERTIFICATE', 'menu_over') . '</a></div>';
-        if ($perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&sop=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
+        if ($perm_certificate) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=lms/mycertificate/show&sop=unregistercourse">' . Lang::t('_MY_CERTIFICATE', 'menu_over') . '</a></div>';
+        if ($perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&op=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
 
 
         if ($unread_num > 0 && $perm_message) {
@@ -3757,7 +3757,7 @@ class UserProfileData {
 				if($this->getVisibilityResponse($fal[$id], $id_user, $viewer, $is_teacher, $is_friend)) {
 
 					$ob =& $field_man->getFieldInstance($id, $arr_value[5], $arr_value[6]);
-					$field[$id] = array(	'name' 	=> $arr_value[0],
+                    $field[$id] = array(    'name'  => $arr_value[0],
 											'value' => $arr_value[1],
 											'href' 	=> $ob->getIMBrowserHref($id_user, $arr_value[1]),
 											'image' => $ob->getIMBrowserImageSrc($id_user, $arr_value[1]),
