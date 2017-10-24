@@ -512,14 +512,6 @@ class TreeView {
 		$level = 0;
 		$count = 0;
 
-		// $tree .= '<div class="TreeViewContainer">'."\n";
-		$tree .= '<div class="panel panel-default panel-treeview">'."\n";
-
-		$tree .= '<div class="panel-heading">';
-		$tree .= $this->printElement($stack, $level);
-		$tree .= '</div>';
-		
-		$tree .= '<table class="table table-striped table-hover">'."\n";
 		$folder = $this->tdb->getRootFolder();
 		$stack[$level] = array();
 		$stack[$level]['folder'] = $folder;
@@ -529,10 +521,13 @@ class TreeView {
 		$stack[$level]['isExpanded'] = FALSE;
 		$stack[$level]['idSeq'] = $folder->id;
 		$stack[$level]['isFirst'] = $isFirst;
+        
+        $tree .= '<div class="panel panel-default panel-treeview">'."\n";
+        $tree .= '<div class="panel-heading">';
+        $tree .= $this->printElement($stack, $level);
+        $tree .= '</div>';
+        $tree .= '<table class="table table-striped table-hover">'."\n"; 
 
-		// $tree .= '<div class="TreeViewRowOdd" id="row_'.$stack[$level]['idSeq'].'">';
-		// $tree .= $this->printElement($stack, $level);
-		// $tree .= '</div>';
 
 		$level++;
 
