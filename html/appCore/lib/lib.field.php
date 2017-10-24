@@ -199,20 +199,20 @@ class FieldList {
 
   function getAllFieldsInfo($lang_code = false) {
     $db = DbConn::getInstance();
-		
+
     if( $lang_code === false )
 			$lang_code = getLanguage();
-		
+
 		$query = "SELECT ft.id_common, ft.type_field, ft.translation, tft.type_file, tft.type_class "
 					."  FROM ".$this->getFieldTable() ." AS ft "
 					."  JOIN ".$this->getTypeFieldTable(). " AS tft ON ( tft.type_field = ft.type_field ) "
 					."  WHERE lang_code = '".$lang_code."' ORDER BY sequence ";
-		
+
     if(!$rs = $db->query($query))  {
 			$false_var = NULL;
 			return $false_var;
 		}
-		
+
 		$output = array();
     while (list( $id_common, $type_field, $name_field, $type_file, $type_class ) = $db->fetch_row( $rs )) {
 			$output[] = array(
@@ -309,7 +309,7 @@ class FieldList {
 				."ORDER BY ft.sequence";
 
 		$rs = sql_query( $query );
-		
+
 
 		$result = array();
 		while(list($id_common, $type_field, $type_file, $type_class, $translation, $mandatory, $useraccess) = sql_fetch_row($rs)) {
@@ -404,7 +404,7 @@ class FieldList {
 		WHERE id_user = '".(int)$id_user."' ";
 		if($arr_field) $query .= " AND id_common IN ( ".implode(',', $arr_field)." ) ";
 		$rs = sql_query( $query );
-		
+
 		$result = array();
 		while( list($id, $value) = sql_fetch_row($rs) )
 			$result[$id] = $value;
@@ -495,7 +495,7 @@ class FieldList {
 			$result[] = $owner;
 		return $result;
 	}
-	
+
 	/**
 	 * find the id of the entity that have the given value for the given field
 	 * @param int 		$id_field 			the id of the field
@@ -546,7 +546,7 @@ class FieldList {
 				." ORDER BY ft.sequence";
 
 		$rs = sql_query($query);
-		
+
 		if( sql_num_rows($rs) < 1 )
 			return 'NULL';
 		list( $type_file, $type_class ) = sql_fetch_row( $rs );
@@ -598,7 +598,7 @@ class FieldList {
 		$play_txt = '';
 		$re_fields = sql_query($query);
 		if(!sql_num_rows($re_fields)) return '';
-		
+
 		while(list($id_common, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
 
 			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
@@ -630,7 +630,7 @@ class FieldList {
 		$rs = sql_query($query);
 		if(!$rs)
 			return $res;
-		
+
 		if( sql_num_rows($rs) < 1 ){
 			return $res;
 		}
@@ -667,7 +667,7 @@ class FieldList {
 		$rs = sql_query($query);
 		if($rs == false)
 			return 'NULL';
-		
+
 		if( sql_num_rows($rs) < 1 )
 			return 'NULL';
 
@@ -714,12 +714,12 @@ class FieldList {
 		$rs = sql_query($query);
 		if($rs == false)
 			return 'NULL';
-		
+
 		if( sql_num_rows($rs) < 1 )
 			return 'NULL';
 
 		list( $id_common, $type_file, $type_class ) = sql_fetch_row( $rs );
-			
+
 			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
 		$quest_obj = new $type_class( $id_common );
 		if( $this->field_entry_table !== FALSE )
@@ -758,7 +758,7 @@ class FieldList {
 				." ORDER BY ft.sequence";
 
 		$rs = sql_query($query);
-		
+
 		if( sql_num_rows($rs) < 1 )
 			return 'NULL';
 		list( $type_file, $type_class ) = sql_fetch_row( $rs );
@@ -784,72 +784,73 @@ class FieldList {
 	 *					from $idst_user
  	 * @return html with the form code for play a set of fields
 	 **/
-	function playFieldsForUser($idst_user, $arr_idst = FALSE, $freeze = FALSE, $add_root = TRUE, $useraccess = FALSE, $separate_output = FALSE, $check_precompiled = FALSE ) {
+    public function playFieldsForUser($idst_user, $arr_idst = FALSE, $freeze = FALSE, $add_root = TRUE, $useraccess = FALSE, $separate_output = FALSE, $check_precompiled = FALSE, $registrationLayout = false, $registrationErrors = false)
+    {
 
-		$acl =& Docebo::user()->getACL();
-		if( $arr_idst === FALSE )
-			$arr_idst = $acl->getArrSTGroupsST($acl->getUserGroupsST($idst_user));
+        $acl =& Docebo::user()->getACL();
+        if ($arr_idst === FALSE)
+            $arr_idst = $acl->getArrSTGroupsST($acl->getUserGroupsST($idst_user));
 
-		if( $add_root ) {
-			$acl_man =& $acl->getAclManager();
-			$tmp = $acl_man->getGroup( false, '/oc_0' );
-			$arr_idst[] = $tmp[0];
-			$tmp = $acl_man->getGroup( false, '/ocd_0' );
-			$arr_idst[] = $tmp[0];
-		}
+        if ($add_root) {
+            $acl_man =& $acl->getAclManager();
+            $tmp = $acl_man->getGroup(false, '/oc_0');
+            $arr_idst[] = $tmp[0];
+            $tmp = $acl_man->getGroup(false, '/ocd_0');
+            $arr_idst[] = $tmp[0];
+        }
 
-		$query = "SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class, gft.mandatory"
-				."  FROM ( ".$this->getFieldTable() ." AS ft"
-				."  JOIN ".$this->getTypeFieldTable(). " AS tft )"
-				."  JOIN ".$this->getGroupFieldsTable(). " AS gft"
-				." WHERE ft.lang_code = '".getLanguage()."'"
-				."	 AND ft.type_field = tft.type_field"
-				."   AND ft.id_common = gft.id_field"
-				."   AND gft.idst IN ('".implode("','", $arr_idst)."')";
-;
-		if($useraccess !== 'false' && is_array($useraccess)) {
-			$query .= " AND ( ";
-			$first = true;
-			foreach($useraccess AS $k => $v) {
-				if(!$first) $query .= " OR ";
-				else $first = false;
-				$query .= " gft.useraccess = '".$v."' ";
-			}
-			$query .=" ) ";
-		}
-		$query .=" GROUP BY ft.id_common "
-				." ORDER BY ft.sequence, gft.idst, gft.id_field";
+        $query = "SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class, gft.mandatory"
+            . "  FROM ( " . $this->getFieldTable() . " AS ft"
+            . "  JOIN " . $this->getTypeFieldTable() . " AS tft )"
+            . "  JOIN " . $this->getGroupFieldsTable() . " AS gft"
+            . " WHERE ft.lang_code = '" . getLanguage() . "'"
+            . "	 AND ft.type_field = tft.type_field"
+            . "   AND ft.id_common = gft.id_field"
+            . "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')";
 
-		$play_txt = array();
-		$re_fields = sql_query($query);
-		
-		$precompiled = FALSE;
-		if ($check_precompiled > 0) {
-			$precompiled = $this->getInheritedAdminFields($check_precompiled);
-		}
+        if ($useraccess !== 'false' && is_array($useraccess)) {
+            $query .= " AND ( ";
+            $first = true;
+            foreach ($useraccess AS $k => $v) {
+                if (!$first) $query .= " OR ";
+                else $first = false;
+                $query .= " gft.useraccess = '" . $v . "' ";
+            }
+            $query .= " ) ";
+        }
+        $query .= " GROUP BY ft.id_common "
+            . " ORDER BY ft.sequence, gft.idst, gft.id_field";
 
-		if(!sql_num_rows($re_fields)) return '';
-		while(list($id_common, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
+        $play_txt = array();
+        $re_fields = sql_query($query);
 
-			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
-			$field_obj = eval("return new $type_class( $id_common );");
-			if( $this->field_entry_table !== FALSE )
-				$field_obj->setFieldEntryTable($this->field_entry_table);
+        $precompiled = FALSE;
+        if ($check_precompiled > 0) {
+            $precompiled = $this->getInheritedAdminFields($check_precompiled);
+        }
 
-			$field_obj->setMainTable($this->getFieldTable());
-			if (!$this->getUseMultiLang()) {
-				$precompiled_value =  is_array($precompiled) && isset($precompiled[$id_common]) ? $precompiled[$id_common] : NULL;
-				$play_txt[$id_common] = $field_obj->play( $idst_user, $freeze, $this->_mandatoryField($mandatory), false, $precompiled_value);
-			}
-			else {
-				$precompiled_value =  is_array($precompiled) && isset($precompiled[$id_common]) ? $precompiled[$id_common] : NULL;
-				$play_txt[$id_common] = $field_obj->multiLangPlay( $idst_user, $freeze, $this->_mandatoryField($mandatory), false, $precompiled_value);
-			}
-		}
-		
-		return $separate_output ? $play_txt : implode("", array_values($play_txt));
-	}
-	
+        if (!sql_num_rows($re_fields)) return '';
+
+        while (list($id_common, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
+
+            require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+            $field_obj = eval("return new $type_class( $id_common );");
+            if ($this->field_entry_table !== FALSE)
+                $field_obj->setFieldEntryTable($this->field_entry_table);
+
+            $field_obj->setMainTable($this->getFieldTable());
+            if (!$this->getUseMultiLang()) {
+                $precompiled_value = is_array($precompiled) && isset($precompiled[$id_common]) ? $precompiled[$id_common] : NULL;
+                $play_txt[$id_common] = $field_obj->play($idst_user, $freeze, $this->_mandatoryField($mandatory), false, $precompiled_value, $registrationLayout,$registrationErrors);
+            } else {
+                $precompiled_value = is_array($precompiled) && isset($precompiled[$id_common]) ? $precompiled[$id_common] : NULL;
+                $play_txt[$id_common] = $field_obj->multiLangPlay($idst_user, $freeze, $this->_mandatoryField($mandatory), false, $precompiled_value, $registrationLayout,$registrationErrors);
+            }
+        }
+
+        return $separate_output ? $play_txt : implode("", array_values($play_txt));
+    }
+
 	/**
 	 * @param array $idst_user_arr idst to be associated to the user
 	 * @param int $id_field_arr id of the field to get
@@ -895,7 +896,7 @@ class FieldList {
 
 		$play_txt = '';
 		$re_fields = sql_query($query);
-		
+
 
 
 		while(list($id_common, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
@@ -916,7 +917,7 @@ class FieldList {
 
 		return $play_txt;
 	}
-	
+
 	/**
 	 * @param int $id_st idst to be associated to the user
 	 * @param array $arr_idst (optional) array of idst of groups
@@ -945,7 +946,7 @@ class FieldList {
 				."   AND gft.idst IN ('".implode("','", $arr_idst)."')"
 				." GROUP BY ft.id_common ";
 
-		
+
 
 		$error_message = array();
 
@@ -978,6 +979,87 @@ class FieldList {
 		if(empty($error_message)) return true;
 		return $error_message;
 	}
+
+    /**
+     * @param int $id_st idst to be associated to the user
+     * @param array $arr_idst (optional) array of idst of groups
+     *					if this parameter is skipped the groups will be taken
+     *					from $idst_user
+     * @return TRUE if all the mandatory field is filled and all field is valid, an array with the error messsage
+     **/
+    public function isFilledFieldsForUserInRegistration($idst_user, $arr_idst = FALSE ) {
+
+        $acl =& Docebo::user()->getACL();
+        if( $arr_idst === FALSE )
+            $arr_idst = $acl->getUserGroupsST($idst_user);
+        $acl_man =& $acl->getAclManager();
+        $tmp = $acl_man->getGroup( false, '/oc_0' );
+        $arr_idst[] = $tmp[0];
+        $tmp = $acl_man->getGroup( false, '/ocd_0' );
+        $arr_idst[] = $tmp[0];
+
+        $query = "SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class, gft.mandatory"
+            ."  FROM ( ".$this->getFieldTable() ." AS ft"
+            ."  JOIN ".$this->getTypeFieldTable(). " AS tft )"
+            ."  JOIN ".$this->getGroupFieldsTable(). " AS gft"
+            ." WHERE ft.lang_code = '".getLanguage()."'"
+            ."	 AND ft.type_field = tft.type_field"
+            ."   AND ft.id_common = gft.id_field"
+            ."   AND gft.idst IN ('".implode("','", $arr_idst)."')"
+            ." GROUP BY ft.id_common ";
+
+
+
+        $error_message = array();
+
+        $mandatory_filled 	= true;
+        $field_valid 		= true;
+        $re_fields 			= sql_query($query);
+        while(list($id_common, $type_field, $type_file, $type_class, $is_mandatory) = sql_fetch_row($re_fields)) {
+
+            require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+            $quest_obj = new $type_class( $id_common );
+
+            if( $this->field_entry_table !== FALSE )
+                $quest_obj->setFieldEntryTable($this->field_entry_table);
+
+            $quest_obj->setMainTable($this->getFieldTable());
+
+            if(!$quest_obj->isValid( $idst_user )) {
+
+                $error_text = $quest_obj->getLastError();
+                if($error_text !== false) {
+                	$error_message[$id_common] = [
+                		'error' => true,
+                        'msg' => str_replace('[field_name]', $quest_obj->getFieldName(), $error_text)];
+                }
+                else {
+                    $error_message[$id_common] = [
+                    	'error' => true,
+                        'msg' => str_replace('[field_name]', $quest_obj->getFieldName(), Lang::t('_FIELD_VALUE_NOT_VALID', 'field', 'framework'))
+						];
+				};
+
+            } elseif($is_mandatory == 'true' && !$quest_obj->isFilled( $idst_user ) ) {
+
+                $error_text = $quest_obj->getLastError();
+                if($error_text !== false) {
+                    $error_message[$id_common] = [
+                    	'error' => true,
+                        'msg' => str_replace('[field_name]', $quest_obj->getFieldName(), $error_text)];
+                }
+                else {
+                    $error_message[$id_common] = [
+                    	'error' => true,
+                        'msg' =>str_replace('[field_name]', $quest_obj->getFieldName(), Lang::t('_SOME_MANDATORY_EMPTY', 'register', 'framework'))
+					];
+                }
+            }
+        }
+        if(empty($error_message)) return true;
+
+        return $error_message;
+    }
 
 	/**
 	 * @param int $id_st idst to be associated to the user
@@ -1036,7 +1118,7 @@ class FieldList {
  	 * @return TRUE if success, FALSE otherwise
 	 **/
 	function storeDirectFieldsForUser($idst_user, $arr_fields, $is_id = FALSE, $int_userid=TRUE) {
-		
+
 		//return is_numeric($idst_user) && (int)$idst_user > 0 ? $this->storeDirectFieldsForUsers((int)$idst_user, $arr_fields, $is_id, $int_userid) : FALSE;
 
 		$acl = Docebo::user()->getACL();
@@ -1149,7 +1231,7 @@ class FieldList {
 		$play_txt = '';
 		$play_arr=array();
 		$re_fields = sql_query($query);
-		
+
 		while(list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
 
 			if ((isset($custom_mandatory[$id_common])) && ($custom_mandatory[$id_common]))
@@ -1346,13 +1428,13 @@ class FieldList {
 	}
 
 	function quickRemoveUserEntry($idst_user) {
-		
+
 		$query_del = "DELETE FROM %adm_field_userentry 
 			WHERE id_user = '".(int)$idst_user."'";
-		
+
 		return sql_query($query_del);
 	}
-	
+
 	/**
 	 * @param int 	$idst_user 	the user
 	 * @param int 	$id_group 	cast the delete action only to the field of this group
@@ -1391,8 +1473,8 @@ class FieldList {
 				if(!isset($all_field[$id])) $to_remove[] = $id;
 			}
 		}
-		
-		
+
+
 		if(empty($to_remove)) { // no group or fields specified, so we remove all..
 			//return $save_result;
 
@@ -1404,7 +1486,7 @@ class FieldList {
 				." GROUP BY ft.id_common ";
 		}
 		else {	// remove specific fields
-		
+
 			$query = "SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class"
 					."  FROM ( ".$this->getFieldTable() ." AS ft"
 					."  JOIN ".$this->getTypeFieldTable(). " AS tft )"
@@ -1548,15 +1630,15 @@ class FieldList {
 
 		return $res;
 	}
-	
+
 	function getFieldIdCommonFromTranslation($translation) {
-		
+
 		$query = "SELECT id_common" .
 			" FROM ".$this->getFieldTable()."" .
 			" WHERE translation LIKE '".$translation."'";
-  
+
 		list($res) = sql_fetch_row(sql_query($query));
-  
+
   		return $res;
 	}
 

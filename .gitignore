@@ -11,7 +11,10 @@ html/files/**
 !html/files/common/iofiles/demo_tree_20060413_234612.xml
 !html/files/appLms/certificate/certificate_sample.jpg
 !html/files/appLms/label/label_image.png
-
+# Sezione html/templates
+html/templates/**
+!html/templates/standard/
+html/templates/standard/style/custom.css
 # Sezione Plugin
 html/plugins/**
 !html/plugins/report_course

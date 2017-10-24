@@ -171,6 +171,7 @@ class TreeView {
 		return ($this->selectedFolder != 0);
 	}
 	function getSelectedFolderData() { return $this->selectedFolderData; }
+	function getRootName() { return $this->rootname; }
 
 	//function getItemToShow() {	return $this->itemToShow; }
 	function getItemToPlay() {	return (int)$this->itemToPlay; }

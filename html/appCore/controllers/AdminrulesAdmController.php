@@ -92,7 +92,7 @@ class AdminrulesAdmController extends AdmController
 					.Form::closeForm();
 
 			$output['success'] = true;
-			$output['header'] = Lang::t('_MOD', 'adminrules').'&nbsp;';
+			$output['header'] = Lang::t('_ADD', 'adminrules').'&nbsp;';
 			$output['body'] = $body;
 
 			echo $this->json->encode($output);
