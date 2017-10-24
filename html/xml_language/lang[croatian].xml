@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170713</DATE>
+  <DATE>20171024</DATE>
   <LANG id="croatian">
     <lang_code>croatian</lang_code>
     <lang_description>Croatian</lang_description>
@@ -1579,8 +1579,8 @@ Molimo da ne uploadujete nedolične slike.]]></key>
         <key id="profile&amp;_OLDPASSWRONG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Unesena zaporka nije Vaša]]></key>
         <key id="profile&amp;_OLD_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Stara zaporka]]></key>
         <key id="profile&amp;_OTHER_POLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ostale opcije]]></key>
-        <key id="profile&amp;_PFL_POLICY_NOONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[nitko]]></key>
-        <key id="profile&amp;_PFL_POLICY_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[predavači]]></key>
+        <key id="profile&amp;_PFL_POLICY_NOONE" attributes="" save_date="2017-09-15 14:54:32"><![CDATA[Nitko]]></key>
+        <key id="profile&amp;_PFL_POLICY_TEACHER" attributes="" save_date="2017-09-15 14:54:42"><![CDATA[Predavači]]></key>
         <key id="profile&amp;_POLICY_ASSIGNED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pravilo dodijeljeno polju]]></key>
         <key id="profile&amp;_PRIVATE_MESSAGE_FROM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Prihvati privatne poruke od]]></key>
         <key id="profile&amp;_PROFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Korisnički profil]]></key>

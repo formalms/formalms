@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170713</DATE>
+  <DATE>20171024</DATE>
   <LANG id="indonesian">
     <lang_code>indonesian</lang_code>
     <lang_description>Indonesian</lang_description>
@@ -1578,8 +1578,8 @@ Tolong jangan unggah gambar-gambar yang tidak seronoh.]]></key>
         <key id="profile&amp;_OLDPASSWRONG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Password yang dimasukkan bukan milik anda]]></key>
         <key id="profile&amp;_OLD_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Password sebelumnya]]></key>
         <key id="profile&amp;_OTHER_POLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pilihan lain]]></key>
-        <key id="profile&amp;_PFL_POLICY_NOONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[tak satu pun]]></key>
-        <key id="profile&amp;_PFL_POLICY_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[pengajar]]></key>
+        <key id="profile&amp;_PFL_POLICY_NOONE" attributes="" save_date="2017-09-15 14:59:07"><![CDATA[Tak satu pun]]></key>
+        <key id="profile&amp;_PFL_POLICY_TEACHER" attributes="" save_date="2017-09-15 14:59:14"><![CDATA[Pengajar]]></key>
         <key id="profile&amp;_POLICY_ASSIGNED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aturan ditetapkan pada kolom]]></key>
         <key id="profile&amp;_PRIVATE_MESSAGE_FROM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Terima pm dari]]></key>
         <key id="profile&amp;_PROFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Profil user]]></key>

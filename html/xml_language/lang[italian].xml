@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170713</DATE>
+  <DATE>20171024</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -543,6 +543,25 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_PHPINFO" attributes="" save_date="2017-03-15 11:47:33"><![CDATA[Informazioni su PHP]]></key>
         <key id="configuration&amp;_PHPVERSION" attributes="" save_date="2017-03-15 11:47:44"><![CDATA[Versione del PHP]]></key>
         <key id="configuration&amp;_PHP_TIMEZONE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione Timezone]]></key>
+        <key id="configuration&amp;_PLUGIN_ACTIVATE" attributes="" save_date="2017-07-31 10:52:23"><![CDATA[Attivazione]]></key>
+        <key id="configuration&amp;_PLUGIN_AUTHOR" attributes="" save_date="2017-07-31 10:52:27"><![CDATA[Autore]]></key>
+        <key id="configuration&amp;_PLUGIN_CATEGORY" attributes="" save_date="2017-07-31 10:52:34"><![CDATA[Categoria]]></key>
+        <key id="configuration&amp;_PLUGIN_DEACTIVATE" attributes="" save_date="2017-07-31 10:52:41"><![CDATA[Disattivazione]]></key>
+        <key id="configuration&amp;_PLUGIN_DESCRIPTION" attributes="" save_date="2017-07-31 10:52:47"><![CDATA[Descrizione]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_CORE_DEACTIVATE" attributes="" save_date="2017-07-31 10:55:14"><![CDATA[Il plugin appartiene al core e non può essere disattivato]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_CORE_UNINSTALL" attributes="" save_date="2017-07-31 10:55:27"><![CDATA[Il plugin appartiene al core e non può essere disinstallato]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_DEACTIVATE_DEPENDENCE" attributes="" save_date="2017-07-31 10:59:28"><![CDATA[Il plugin ha plugin dipendenti e non può essere disattivato]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_NOT_ONLINE_UPDATE" attributes="" save_date="2017-07-31 10:55:54"><![CDATA[L'aggiornamento online del plugin non è disponibile]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_NO_DEPENDENCIES" attributes="" save_date="2017-07-31 11:00:05"><![CDATA[Il plugin dipendende da altri plugin mancanti e non può essere installato]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_OLD_VERSION" attributes="" save_date="2017-07-31 10:58:13"><![CDATA[La versione del plugin è incompatibile con la versione corrente di forma.lms]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_UNINSTALL_DEPENDENCE" attributes="" save_date="2017-07-31 10:58:54"><![CDATA[Il plugin ha plugin dipendenti e non può essere disinstallato]]></key>
+        <key id="configuration&amp;_PLUGIN_INSTALL" attributes="" save_date="2017-07-31 10:52:54"><![CDATA[Installazione]]></key>
+        <key id="configuration&amp;_PLUGIN_NAME" attributes="" save_date="2017-07-31 10:43:08"><![CDATA[Nome]]></key>
+        <key id="configuration&amp;_PLUGIN_SETTINGS" attributes="" save_date="2017-07-31 10:53:01"><![CDATA[Configurazione]]></key>
+        <key id="configuration&amp;_PLUGIN_UNINSTALL" attributes="" save_date="2017-07-31 10:53:14"><![CDATA[Disinstallazione]]></key>
+        <key id="configuration&amp;_PLUGIN_UNINSTALL_CONFIRMATION" attributes="" save_date="2017-07-31 11:14:25"><![CDATA[Confermi la disinstallazione del plugin?]]></key>
+        <key id="configuration&amp;_PLUGIN_UPDATE" attributes="" save_date="2017-07-31 10:53:21"><![CDATA[Aggiornamento]]></key>
+        <key id="configuration&amp;_PLUGIN_VERSION" attributes="" save_date="2017-07-31 10:42:24"><![CDATA[Versione]]></key>
         <key id="configuration&amp;_POST_MAX_SIZE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "post_max_size"]]></key>
         <key id="configuration&amp;_PRIVACY_POLICY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[La privacy policy DEVE essere accettata]]></key>
         <key id="configuration&amp;_PROFILE_ONLY_PWD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Limita le modifiche del profilo utente solo al cambio password (disattiva il profilo esteso)]]></key>
@@ -1629,7 +1648,7 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="poll&amp;_POLL_FIRST_QUEST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Per prima]]></key>
         <key id="poll&amp;_POLL_LABEL_AFTER_QUEST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[e mettila dopo]]></key>
         <key id="poll&amp;_POLL_LAST_QUEST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Per ultima]]></key>
-        <key id="poll&amp;_POLL_PREV_PAGE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[<< Indietro]]></key>
+        <key id="poll&amp;_POLL_PREV_PAGE" attributes="" save_date="2017-10-20 11:25:02"><![CDATA[Indietro]]></key>
         <key id="poll&amp;_POLL_QUEST_ORDER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Ordine]]></key>
         <key id="poll&amp;_POLL_QUEST_TITLE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Titolo della domanda]]></key>
         <key id="poll&amp;_POLL_REMPOLL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Rimuovi la domanda]]></key>
@@ -1727,8 +1746,8 @@ L'immagine non deve avere contenuti offensivi e/o che violano il regolamento.]]>
         <key id="profile&amp;_OLDPASSWRONG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[La password inserita non corrisponde]]></key>
         <key id="profile&amp;_OLD_PWD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Vecchia password]]></key>
         <key id="profile&amp;_OTHER_POLICY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Altre opzioni]]></key>
-        <key id="profile&amp;_PFL_POLICY_NOONE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[nessuno]]></key>
-        <key id="profile&amp;_PFL_POLICY_TEACHER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[personale docente]]></key>
+        <key id="profile&amp;_PFL_POLICY_NOONE" attributes="" save_date="2017-09-15 14:51:55"><![CDATA[Nessuno]]></key>
+        <key id="profile&amp;_PFL_POLICY_TEACHER" attributes="" save_date="2017-09-15 14:51:12"><![CDATA[Personale docente]]></key>
         <key id="profile&amp;_POLICY_ASSIGNED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Regola assegnata al campo]]></key>
         <key id="profile&amp;_PRIVATE_MESSAGE_FROM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Accetta i messaggi privati da]]></key>
         <key id="profile&amp;_PROFILE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Profilo utente]]></key>
@@ -1915,7 +1934,7 @@ Ti è stata inviata una email con i tuoi dati di registrazione.]]></key>
         <key id="report&amp;_CREATION_DATE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Data di creazione]]></key>
         <key id="report&amp;_CRON_REPORT_MAIL_BODY" attributes="" save_date="2017-03-15 11:03:48"><![CDATA[Inserisci il testo della email per il report pianificato]]></key>
         <key id="report&amp;_CRON_REPORT_MAIL_SUBJECT" attributes="" save_date="2017-03-15 11:03:55"><![CDATA[Oggetto della email report pianificato]]></key>
-        <key id="report&amp;_CURRENT_SELECTION" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Corsi attualmente selezionati:]]></key>
+        <key id="report&amp;_CURRENT_SELECTION" attributes="" save_date="2017-10-18 10:35:31"><![CDATA[Corsi attualmente selezionati]]></key>
         <key id="report&amp;_CUSTOM_BELT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Periodo definito manualmente]]></key>
         <key id="report&amp;_DATE_COURSE_COMPLETED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Data completamento]]></key>
         <key id="report&amp;_DATE_INSCR" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Data iscrizione]]></key>
@@ -2052,7 +2071,7 @@ Ti è stata inviata una email con i tuoi dati di registrazione.]]></key>
         <key id="reservation&amp;_WRONG_TIME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Range di ore errato]]></key>
       </module>
       <module id="scorm">
-        <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[&lt;&lt; Indietro]]></key>
+        <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2017-10-20 11:25:41"><![CDATA[Indietro]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2017-04-14 12:05:25"><![CDATA[Selezionare un content package in formato ZIP o PIF]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Devi specificare il file da caricare]]></key>
         <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Importazione SCORM 1.2 e 2004]]></key>
@@ -2138,7 +2157,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_AUTO_SUBSCRIPTION" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Iscrizione automatica al corso]]></key>
         <key id="standard&amp;_AVATAR" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Avatar]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Media]]></key>
-        <key id="standard&amp;_BACK" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[&lt;&lt; Indietro]]></key>
+        <key id="standard&amp;_BACK" attributes="" save_date="2017-10-20 11:25:27"><![CDATA[Indietro]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Ricerca standard]]></key>
         <key id="standard&amp;_BBB" attributes="" save_date="2017-04-05 12:44:31"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[da]]></key>
@@ -2877,7 +2896,7 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="user_managment&amp;_INSERT_EMPTY" attributes="" save_date="2017-05-05 11:56:57"><![CDATA[Inserisci password se il campo è vuoto]]></key>
         <key id="user_managment&amp;_LOG_OPTION" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Operazioni di login/registrazione]]></key>
         <key id="user_managment&amp;_MANUAL_PASSWORD" attributes="" save_date="2017-05-05 11:57:19"><![CDATA[Password manuale]]></key>
-        <key id="user_managment&amp;_NEED_TO_ALERT" attributes="" save_date="2017-05-05 11:57:47"><![CDATA[E' necessario abilitare l'invio dell'avviso agli utenti se selezionato l'inserimento della password]]></key>
+        <key id="user_managment&amp;_NEED_TO_ALERT" attributes="" save_date="2017-07-14 15:46:29"><![CDATA[E' necessario abilitare l'invio dell'avviso agli utenti se è selezionato l'inserimento della password]]></key>
         <key id="user_managment&amp;_NO_FILE" attributes="" save_date="2017-05-05 11:58:09"><![CDATA[Nessun file caricato]]></key>
         <key id="user_managment&amp;_NO_VALUE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Nessuna selezione effettuata]]></key>
         <key id="user_managment&amp;_ONLY_CREATE" attributes="" save_date="2017-05-05 11:58:30"><![CDATA[Crea soltanto]]></key>

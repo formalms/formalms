@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170713</DATE>
+  <DATE>20171024</DATE>
   <LANG id="greek">
     <lang_code>greek</lang_code>
     <lang_description>Greek</lang_description>
@@ -1578,8 +1578,8 @@
         <key id="profile&amp;_OLDPASSWRONG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Το εισηχθέν συνθηματικό δεν είναι δικό σας]]></key>
         <key id="profile&amp;_OLD_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Παλαιό συνθηματικό]]></key>
         <key id="profile&amp;_OTHER_POLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Άλλες επιλογές]]></key>
-        <key id="profile&amp;_PFL_POLICY_NOONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[κανέναν]]></key>
-        <key id="profile&amp;_PFL_POLICY_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[δασκάλους]]></key>
+        <key id="profile&amp;_PFL_POLICY_NOONE" attributes="" save_date="2017-09-15 14:57:38"><![CDATA[Κανέναν]]></key>
+        <key id="profile&amp;_PFL_POLICY_TEACHER" attributes="" save_date="2017-09-15 14:57:56"><![CDATA[Δασκάλους]]></key>
         <key id="profile&amp;_POLICY_ASSIGNED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Κανόνας που έχει ανατεθεί στο πεδίο]]></key>
         <key id="profile&amp;_PRIVATE_MESSAGE_FROM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αποδοχή προσωπικών μηνυμάτων από]]></key>
         <key id="profile&amp;_PROFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Προφίλ χρήστη]]></key>
