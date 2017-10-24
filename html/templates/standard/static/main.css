@@ -11545,11 +11545,11 @@ h1, h2, h3, h4, h5, h6, p {
 
 @media (min-width: 768px) {
   .forma-quick-search-form .bootstrap-select {
-    width: 200px !important;
+    width: -webkit-calc(50% - 5px) !important;
+    width: calc(50% - 5px) !important;
     margin-top: 0;
     margin-left: 0;
     margin-bottom: 10px !important;
-    margin-right: 7px;
     float: left;
   }
 }
@@ -11557,6 +11557,13 @@ h1, h2, h3, h4, h5, h6, p {
 @media (min-width: 1024px) {
   .forma-quick-search-form .bootstrap-select {
     width: 235px !important;
+    margin-right: 7px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .forma-quick-search-form .bootstrap-select:nth-child(odd) {
+    margin-right: 10px;
   }
 }
 
@@ -11750,6 +11757,13 @@ h1, h2, h3, h4, h5, h6, p {
   .forma-quick-search-form .input-group {
     width: 234px;
     float: left;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .forma-quick-search-form .input-group {
+    width: -webkit-calc(50% - 5px);
+    width: calc(50% - 5px);
   }
 }
 

@@ -34,18 +34,25 @@
     };
 
     @include breakpoint($tablet) {
-      width: 200px!important;
+      //width: 200px!important;
+      width: calc(50% - 5px)!important;
       margin: {
         top: 0;
         left: 0;
         bottom: 10px!important;
-        right: 7px;
       };
       float: left;
     }
 
     @include breakpoint($ipad) {
       width: 235px!important;
+      margin-right: 7px;
+    }
+
+    &:nth-child(odd) {
+      @media (min-width: 768px) and (max-width: 1023px) {
+        margin-right: 10px;
+      }
     }
 
     button.btn.dropdown-toggle {
@@ -308,6 +315,10 @@
     @include breakpoint($tablet) {
       width: 234px;
       float: left;
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+      width: calc(50% - 5px);
     }
 
     @include breakpoint($ipad) {
