@@ -24,7 +24,7 @@ class CoursereportLmsController extends LmsController
 	{
 		require_once (_adm_ . '/lib/lib.field.php');
 		
-		
+		/** @var Services_JSON json */
 		$this->json = new Services_JSON();
 		$this->_mvc_name = "coursereport";
 		$this->permissions = array (
