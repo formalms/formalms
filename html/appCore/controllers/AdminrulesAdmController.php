@@ -198,29 +198,39 @@ class AdminrulesAdmController extends AdmController
 
 	public function menu()
 	{
-		require_once(_base_.'/lib/lib.platform.php');
+		require_once(_base_.'/lib/lib.menu.php');
 
-		if(isset($_POST['back']))
+		if(isset($_POST['back'])){
 			Util::jump_to('index.php?r=adm/adminrules/show');
+                }
 
 		$idst = Get::req('idst', DOTY_INT, 0);
-		$active_tab = Get::req('active_tab', DOTY_MIXED, 'menu_user');
+		$active_tab = Get::req('active_tab', DOTY_MIXED, 1);
 
-		$pm =& PlatformManager::createInstance();
-		$platform_list = $pm->getPlatformList();
-		
-		if(isset($platform_list['scs']))
-			unset($platform_list['scs']);
+    $current_platform=$_SESSION['current_action_platform'];
 
-		if(isset($platform_list['ecom']))
-			unset($platform_list['ecom']);
+//    $p_man 	=& MenuManager::createInstance($current_platform);
+//    $lang =& DoceboLanguage::createInstance('menu', 'framework');
+		$pm =& MenuManager::createInstance($current_platform);
+//		$platform_list = $pm->getPlatformList();
+//		
+//		if(isset($platform_list['scs'])){
+//			unset($platform_list['scs']);
+//                }
+//
+//		if(isset($platform_list['ecom'])){
+//			unset($platform_list['ecom']);
+//                }
+    //Level0
+    $menus 	= $pm->getLevel();
 
 		$result_message = "";
 		if(isset($_POST['save']))
 		{
 			$adm_perm = array();
-			if(isset($_POST['adm_perm']))
+			if(isset($_POST['adm_perm'])){
 				$adm_perm = array_keys($_POST['adm_perm']);
+                        }
 
 			$res = $this->model->saveAdminPerm($idst, $adm_perm);
 			$result_message = $res
@@ -232,7 +242,7 @@ class AdminrulesAdmController extends AdmController
 
 		$this->render('menu', array(
 				'idst' => $idst,
-				'platform_list' => $platform_list,
+				'platform_list' => $menus,
 				'active_tab' => $active_tab,
 				'model' => $this->model,
 				'save_res' => $result_message

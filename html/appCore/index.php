@@ -30,6 +30,7 @@ $db =& DbConn::getInstance();
 
 // some specific lib to load
 require_once(_base_.'/lib/lib.platform.php');
+require_once(_base_.'/lib/lib.menu.php');
 require_once(_adm_.'/lib/lib.permission.php');
 require_once(_adm_.'/lib/lib.istance.php');
 require_once(_adm_.'/class.module/class.definition.php');
