@@ -4244,6 +4244,95 @@ h1, h2, h3, h4, h5, h6, p {
   overflow: visible !important;
 }
 
+.tabnav {
+  overflow: hidden;
+  margin-top: 10px;
+  background-color: white;
+  padding: 10px;
+}
+
+@media (min-width: 768px) {
+  .tabnav {
+    padding: 0;
+    background-color: transparent;
+  }
+}
+
+.tabnav__label-wrapper {
+  margin-bottom: 40px;
+}
+
+.tabnav__label {
+  width: -webkit-calc(50% - 10px);
+  width: calc(50% - 10px);
+  margin-right: 20px;
+  line-height: 40px;
+  font-family: "Open-sans";
+  font-size: 12px;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 10px 10px 0 0;
+  opacity: 0.3;
+  float: left;
+  border-bottom: none;
+  text-transform: uppercase;
+  font-weight: bold;
+  position: relative;
+  cursor: pointer;
+  -webkit-transition: all 0.2s ease-in 0s;
+  transition: all 0.2s ease-in 0s;
+  z-index: 10;
+}
+
+.tabnav__label:hover {
+  color: #ff6c00;
+}
+
+.tabnav__label.selected {
+  opacity: 1;
+}
+
+.tabnav__label.selected:before {
+  content: '';
+  width: 100%;
+  height: 1px;
+  background-color: white;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.tabnav__label.selected:hover {
+  color: black;
+}
+
+.tabnav__label:last-child {
+  margin-right: 0;
+}
+
+.tabnav__content-wrapper {
+  position: relative;
+  min-height: 345px;
+}
+
+.tabnav__content {
+  width: 100%;
+  overflow: hidden;
+  border-top: 1px solid black;
+  -webkit-transition: all 0.2s ease-in 0s;
+  transition: all 0.2s ease-in 0s;
+  position: absolute;
+  left: 0;
+  top: 0;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.tabnav__content.is-visible {
+  visibility: visible;
+  opacity: 1;
+}
+
 * {
   outline: none !important;
   -webkit-box-sizing: border-box;
@@ -5647,7 +5736,7 @@ header.header nav {
 }
 
 .user-panel .container-fluid .row.comunication {
-  padding-bottom: 20px;
+  padding: 10px 0 20px;
   background-color: white;
 }
 
@@ -5667,6 +5756,7 @@ header.header nav {
 
 .user-panel .container-fluid .row.career {
   background-color: white;
+  padding: 0;
 }
 
 @media (min-width: 768px) {
@@ -5836,7 +5926,7 @@ header.header nav {
 }
 
 .user-panel .container-fluid .row.credits {
-  display: none;
+  border: none;
 }
 
 .user-panel .container-fluid .row.lang {
@@ -5908,6 +5998,67 @@ header.header nav {
 
 .user-panel .container-fluid .row .col-xs-6 {
   padding: 0;
+}
+
+.user-panel .table-credit-wrapper {
+  border-radius: 5px;
+  border: 1px solid #999999;
+  overflow: hidden;
+}
+
+.user-panel .table-credit {
+  width: 100%;
+  font-family: "Open-sans";
+}
+
+.user-panel .table-credit__row {
+  line-height: 40px;
+  border-top: 1px solid #ececec;
+}
+
+.user-panel .table-credit__row:first-child {
+  border-top: none;
+}
+
+.user-panel .table-credit__row td {
+  border-right: 1px solid #999999;
+}
+
+.user-panel .table-credit__row td:first-child {
+  padding-left: 10px;
+}
+
+.user-panel .table-credit__row td:last-child {
+  border-right: none;
+  text-align: center;
+}
+
+.user-panel .table-credit__row--head {
+  background-color: #f6a623;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.user-panel .table-credit__row--footer {
+  background-color: #ececec;
+  font-weight: bold;
+  color: #404040;
+  border-radius: 5px;
+}
+
+.user-panel .form_line_l {
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.user-panel .form_line_l p {
+  display: none;
+}
+
+.user-panel .form-control {
+  width: 100%;
 }
 
 .c-mask {

@@ -225,54 +225,65 @@ foreach ($menu['all'] as $row) {
                 </nav>
                
                 <div id="c-menu--slide-right" class="c-menu c-menu--slide-right user-panel">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-xs-6">
-                                            <a href="javascript:void(0)" class="c-menu__close"><span class="glyphicon glyphicon-remove">'.Lang::t('_HIDETREE', 'organization').'</span></a><!-- pulsante nascondi menu -->      
-                                        </div>
-                                        <div class="col-xs-6">
-                                            <a title="'.Lang::t('_LOGOUT', 'standard').'" href="'. Get::rel_path('base') . '/index.php?r=' . _logout_ . '">
-                                                <span class="glyphicon glyphicon-off">'.Lang::t('_LOGOUT', 'standard').'</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!--<div class="row"> -->
-                                        <!--<div class="col-xs-12">-->
-                                            '.$profile_box.' 
-                                        <!--</div>-->  <!-- end col xs-12 -->
-                                    <!-- </div> -->
-                                    <div class="row course-subscription">
-                                        <div class="col-xs-12">
-                                            '.$subscribe_course.'
-                                        </div> <!-- end col xs-12 -->
-                                    </div>
-                                    <div class="row news">
-                                        <div class="col-xs-12">
-                                            '.$news.'
-                                        </div> <!-- end col xs-12 -->
-                                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <a href="javascript:void(0)" class="c-menu__close"><span class="glyphicon glyphicon-remove">'.Lang::t('_HIDETREE', 'organization').'</span></a><!-- pulsante nascondi menu -->      
+                            </div>
+                            <div class="col-xs-6">
+                                <a title="'.Lang::t('_LOGOUT', 'standard').'" href="'. Get::rel_path('base') . '/index.php?r=' . _logout_ . '">
+                                    <span class="glyphicon glyphicon-off">'.Lang::t('_LOGOUT', 'standard').'</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="tabnav js-tabnav">
+                            <div class="tabnav__label-wrapper">
+                                <div class="tabnav__label selected" data-tab="profile">
+                                    '.Lang::t('_PROFILE', 'standard').'
+                                </div>
+                                <div class="tabnav__label" data-tab="credits">
+                                    '.Lang::t('_TIMEPERIODS', 'standard').'
+                                </div>
+                            </div>
+                            <div class="tabnav__content-wrapper">
+                                <div class="tabnav__content tabnav__content--profile is-visible">
+                                    '.$profile_box.'                                        
+                                </div>
+                                <div class="tabnav__content tabnav__content--credits">
                                     <div class="row credits">
                                         <div class="col-xs-12">
                                             '.$credits.'
                                         </div> <!-- end col xs-12 -->
-                                    </div>
-                                    <div class="row lang">
-                                        <div class="col-xs-6">
-                                            <p>' . Lang::t('_CHANGELANG', 'register') . '</p>
-                                        </div>
-                                        <div class="col-xs-6">
-                                            ' . Layout::buildLanguages() . '
-                                        </div>
-                                    </div>
-                                    <div class="row footer">
-                                        <div class="col-xs-12">
-                                          <p>Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</p>
-                                        </div>
-                                    </div>
-                                </div> <!-- /container-fluid -->
-                            </div><!-- /c-menu slide-right end profile right panel -->
-                
-                </header>','menu_over');
+                                    </div>                                        
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row course-subscription">
+                            <div class="col-xs-12">
+                                '.$subscribe_course.'
+                            </div> <!-- end col xs-12 -->
+                        </div>
+                        <div class="row news">
+                            <div class="col-xs-12">
+                                '.$news.'
+                            </div> <!-- end col xs-12 -->
+                        </div>
+                        <div class="row lang">
+                            <div class="col-xs-6">
+                                <p>' . Lang::t('_CHANGELANG', 'register') . '</p>
+                            </div>
+                            <div class="col-xs-6">
+                                ' . Layout::buildLanguages() . '
+                            </div>
+                        </div>
+                        <div class="row footer">
+                            <div class="col-xs-12">
+                              <p>Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</p>
+                            </div>
+                        </div>
+                    </div> <!-- /container-fluid -->
+                </div><!-- /c-menu slide-right end profile right panel -->
+            </header>','menu_over');
 
         $idst = getLogUserId();
         $acl_man = Docebo::user()->getAclManager();
