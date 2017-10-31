@@ -64,65 +64,72 @@ class MenuManager {
             return $GLOBALS['menu_manager'];
 	}
 
-	function MenuManager($platform) {
-            $this->platform = $platform;
-            $this->_setPrefix();
-            $lang =& DoceboLanguage::createInstance('menu', $this->platform);
-            $this->user =Docebo::user();//& $user;
+    function MenuManager($platform) {
+        $this->platform = $platform;
+        $this->_setPrefix();
+        $lang =& DoceboLanguage::createInstance('menu', $this->platform);
+        $this->user =Docebo::user();//& $user;
 
-            $this->menu = array();
+        $amenu = array();
+        $this->menu = array();
 
-            // load menus information
-            $query_menu = "SELECT m.idMenu, m.name, m.image, m.idParent"; //-- , m.sequence, m.is_active -- , mu.idUnder, mu.idMenu
-            $query_menu .= ", m.collapse, mu.idUnder, mu.module_name, mu.default_name, mu.default_op, mu.associated_token, mu.of_platform , mu.sequence";
-            $query_menu .= ", mu.class_file, mu.class_name, mu.mvc_path";
-            $query_menu .= " FROM ".$this->_getTableMenu()." m";
-            $query_menu .= " left outer join ".$this->_getTableMenuUnder()." mu on m.idMenu = mu.idMenu";
-            $query_menu .= " WHERE 1 and m.is_active=1";//-- idParent is null
-            $query_menu .= " ORDER BY m.sequence, mu.sequence";
-            $re_menu = $this->_executeQuery($query_menu);
-            while($menu = sql_fetch_assoc($re_menu)){
-                $id_main = $menu['idMenu'];
-                $name = $menu['name'];
-                $module_name = $menu['module_name'];
-                $mvc_path = $menu['mvc_path'];
-                $image = $menu['image'];
-                $collapse = $menu['collapse'];
-                $of_platform = $menu['of_platform'];
-                $id_under = $menu['idUnder'];
-                $op = $menu['default_op'];
-                if(!isset($menu[$idUnder]) && checkPerm($token, true, $module_name, ( $of_platform === NULL ? $this->platform : $of_platform ) )) {
-
-                    $menu['name'] = ( $name != '' ? $lang->def($name)  : '' );
-                    $menu['image'] = $image;//'area_title/'.
-                    $menu['collapse'] = ( $collapse == 'true' ? true : false );
-                    $menu['of_platform'] = ( $of_platform === NULL ? $this->platform : $of_platform );
-                    //$menu['link'] = 'index.php?op=change_main&new_main='.$id_main.'&of_platform='.( $of_platform === NULL ? $this->platform : $of_platform );
-                    if ($id_under){
-                        if($this->user->matchUserRole('/'.( $of_platform === NULL ? $this->platform : $of_platform ).'/admin/'.$module_name.'/'.$token)) {
-                            $menu['link'] = ( $mvc_path == ''
-                                                ? 'index.php?modname='.$module_name.'&op='.$op.'&of_platform='.( $of_platform === NULL ? $this->platform : $of_platform )
-                                                : 'index.php?r='.$mvc_path
-									);
-                            $menu['op'] = $op;
-                            $menu['modname'] = $module_name;
-//				 $this->menu[$idm][$id] = array('modname' => $module_name,
-//				 					'op' => $op,
-//									'link' => ( $mvc_path == ''
-//										? 'index.php?modname='.$module_name.'&op='.$op.'&of_platform='.( $of_platform === NULL ? $this->platform : $of_platform )
-//										: 'index.php?r='.$mvc_path
-//									),
-//									'name' => ( $name != '' ? $lang->def($name) : $lang->def('_'.strtoupper($module_name)) ),
-//									'of_platform' => ( $of_platform === NULL ? $this->platform : $of_platform ) 
-//									, 'idparent' => $idparent 
-//                                                                );
-			}
-                    }
-                        
+        // load menus information
+        $query_menu = "SELECT m.idMenu, m.name, m.image, m.idParent"; //-- , m.sequence, m.is_active -- , mu.idUnder, mu.idMenu
+        $query_menu .= ", m.collapse, mu.idUnder, mu.module_name, mu.default_name, mu.default_op, mu.associated_token, mu.of_platform , mu.sequence";
+        $query_menu .= ", mu.class_file, mu.class_name, mu.mvc_path";
+        $query_menu .= " FROM ".$this->_getTableMenu()." m";
+        $query_menu .= " left outer join ".$this->_getTableMenuUnder()." mu on m.idMenu = mu.idMenu";
+        $query_menu .= " WHERE 1 and m.is_active=1";//-- idParent is null
+        $query_menu .= " ORDER BY m.sequence, mu.sequence";
+        $re_menu = $this->_executeQuery($query_menu);
+        while($menu = sql_fetch_assoc($re_menu)){
+            $id_main = $menu['idMenu'];
+            $name = $menu['name'];
+            $module_name = $menu['module_name'];
+            $mvc_path = $menu['mvc_path'];
+            $image = $menu['image'];
+            $collapse = $menu['collapse'];
+            $of_platform = $menu['of_platform'];
+            $id_under = $menu['idUnder'];
+            $op = $menu['default_op'];
+            $token = $menu['associated_token'];
+            $menu['name'] = ( $name != '' ? $lang->def($name)  : '' );
+            $menu['image'] = $image;//'area_title/'.
+            $menu['collapse'] = ( $collapse == 'true' ? true : false );
+            $menu['of_platform'] = ( $of_platform === NULL ? $this->platform : $of_platform );
+            $addMenu=false;
+            if ($id_under){
+                $checkperm=checkPerm($token, true, $module_name, ( $of_platform === NULL ? $this->platform : $of_platform ) );
+                if($checkperm && $this->user->matchUserRole('/'.( $of_platform === NULL ? $this->platform : $of_platform ).'/admin/'.$module_name.'/'.$token)) {
+                    $addMenu=true;//add menu if has rights
+                    $menu['link'] = ( $mvc_path == ''
+                                        ? 'index.php?modname='.$module_name.'&op='.$op.'&of_platform='.( $of_platform === NULL ? $this->platform : $of_platform )
+                                        : 'index.php?r='.$mvc_path
+                                                                );
+                    $menu['op'] = $op;
+                    $menu['modname'] = $module_name;
                 }
-                $this->menu[$id_main] = $menu;
             }
-	}
+            else{
+                $addMenu=true;//add menu if no rights needed
+            }
+            if ($addMenu){
+                $amenu[$id_main] = $menu;
+            }
+        }
+        //we need to remove parent without children
+        $parents=array_flip(array_column($amenu, 'idParent'));
+        foreach($amenu as $idmenu=>$menu){
+            $addMenu=true;
+            if(!$menu['idUnder'] && !array_key_exists($idmenu, $parents)){
+                $addMenu=false;//remove menu parent without children
+            }
+            if ($addMenu){
+                $this->menu[$idmenu] = $menu;
+            }
+        }
+        
+    }
 
 	function isLoaded($menu) {
 
