@@ -34,6 +34,22 @@ switch ($step) {
 	//step 2 : set columns
 	case 2: {
 		echo getTitleArea(Lang::t('_ORG_CHART_IMPORT_USERS', 'organization_chart'), 'directory_group');
+		
+		
+		// Check if the user admin has reached the max number of users he can create
+		$reached_max_user_created = false;
+		if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+			$admin_pref = new AdminPreference();
+			$pref =$admin_pref->getAdminRules(Docebo::user()->getIdSt());
+			if ($pref['admin_rules.limit_user_insert'] == 'on') {
+				$user_pref =new UserPreferences(Docebo::user()->getIdSt());
+				if (($user_pref->getPreference('user_created_count') + $tot_row) > $pref['admin_rules.max_user_insert']) {
+					echo UIFeedback::perror(Lang::t('_USER_CREATED_MAX_REACHED', 'admin_directory'));
+					$reached_max_user_created = true;
+				}
+			}
+		}
+		
 		echo '<div class="std_block">';
 		echo Form::openForm('directory_importgroupuser', 'index.php?r='. $this->link.'/importusers', false, false, 'multipart/form-data');
 		echo Form::openElementSpace();
@@ -98,7 +114,7 @@ switch ($step) {
 
 		echo Form::closeElementSpace();
 		echo Form::openButtonSpace();
-		echo Form::getButton('next_importusers_3', 'next_importusers_3', Lang::t('_NEXT', 'standard'));
+		echo Form::getButton('next_importusers_3', 'next_importusers_3', Lang::t('_NEXT', 'standard'), FALSE, ($reached_max_user_created ? 'disabled' : ''));
 		echo Form::getButton('import_groupcancel', 'import_groupcancel', Lang::t('_UNDO', 'standard'));
 		echo Form::closeButtonSpace();
 
