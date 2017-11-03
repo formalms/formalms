@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170713</DATE>
+  <DATE>20171024</DATE>
   <LANG id="polish">
     <lang_code>polish</lang_code>
     <lang_description>Polish</lang_description>
@@ -1581,7 +1581,7 @@ Proszę nie przesyłać agresywnych obrazów.]]></key>
         <key id="profile&amp;_OLD_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Stare hasło]]></key>
         <key id="profile&amp;_OTHER_POLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inne opcje]]></key>
         <key id="profile&amp;_PFL_POLICY_NOONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Brak jednego]]></key>
-        <key id="profile&amp;_PFL_POLICY_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[nauczyciele]]></key>
+        <key id="profile&amp;_PFL_POLICY_TEACHER" attributes="" save_date="2017-09-15 14:59:54"><![CDATA[Nauczyciele]]></key>
         <key id="profile&amp;_POLICY_ASSIGNED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zasada przydzielona do pola]]></key>
         <key id="profile&amp;_PRIVATE_MESSAGE_FROM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Akceptuj prywatne wiadomości od]]></key>
         <key id="profile&amp;_PROFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Profil użytkownika]]></key>

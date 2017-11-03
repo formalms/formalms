@@ -523,6 +523,17 @@ class DoceboImport {
 		return $table->getTable();
 	}
 	
+	function getTotRow(){
+		$count = 0;
+		$row = $this->source->get_first_row();
+
+		while( $row !== FALSE) {
+			$row = $this->source->get_next_row();
+			$count++;
+		}
+		return $count;
+	}
+
 	function encode_array( &$row, $charset ) {
 		for($index = 0; $index < count($row); $index++ ) 
 			$row[$index] = htmlentities($row[$index],ENT_QUOTES,$charset);
@@ -585,6 +596,18 @@ class DoceboImport {
 				$i++;
 			}
 			$row = $this->source->get_next_row();
+
+			// Increment the counter for users created by this admin:
+			if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+				$admin_pref =new AdminPreference();
+				$pref =$admin_pref->getAdminRules(Docebo::user()->getIdSt());
+				if ($pref['admin_rules.limit_user_insert'] == 'on') {
+					$user_pref =new UserPreferences(Docebo::user()->getIdSt());
+					$user_created_count =(int)$user_pref->getPreference('user_created_count');
+					$user_created_count++;
+					$user_pref->setPreference('user_created_count', $user_created_count);
+				}
+			}
 		}
 		if($open_transaction) Docebo::db()->commit();
 		$out[0] = ( $this->source->first_row_header ? $this->source->get_row_index() - 1 : $this->source->get_row_index() );

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170713</DATE>
+  <DATE>20171024</DATE>
   <LANG id="swedish">
     <lang_code>swedish</lang_code>
     <lang_description>Swedish</lang_description>
@@ -53,7 +53,7 @@
         <key id="admin_directory&amp;_DIRECTORY_FILTER_templatename" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mallnamn]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FILTER_userid" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användarnamn]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FULLNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Helt namn]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_GROUPID" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[id]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_GROUPID" attributes="" save_date="2017-07-24 12:52:53"><![CDATA[ID]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Grupptyp]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_FREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Öppen grupp]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_INVISIBLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Osynlig grupp]]></key>
@@ -70,7 +70,7 @@
         <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPEUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användare medlem]]></key>
         <key id="admin_directory&amp;_DIRECTORY_ORGVIEWTITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Organisationskarta]]></key>
         <key id="admin_directory&amp;_FORCE_PASSWORD_CHANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kräv byte av lösenord vid nästa inloggning]]></key>
-        <key id="admin_directory&amp;_GROUP_FIELD_NORMAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jo]]></key>
+        <key id="admin_directory&amp;_GROUP_FIELD_NORMAL" attributes="" save_date="2017-07-21 10:38:08"><![CDATA[Ja]]></key>
         <key id="admin_directory&amp;_GROUP_USER_IMPORT_CHARSET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Filens teckenkod]]></key>
         <key id="admin_directory&amp;_GROUP_USER_IMPORT_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[CSV fil]]></key>
         <key id="admin_directory&amp;_GROUP_USER_IMPORT_HEADER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Behandla första raden som header]]></key>
@@ -79,7 +79,7 @@
         <key id="admin_directory&amp;_REFUSED_USER_TEXT_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användaren har inte godkännts]]></key>
         <key id="admin_directory&amp;_REFUSE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vägra]]></key>
         <key id="admin_directory&amp;_REFUSE_USER_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vägra användarens registreringsförfrågan]]></key>
-        <key id="admin_directory&amp;_SIMPLE_FILTER" attributes="" save_date="2017-04-10 15:37:37"><![CDATA[Leta i fälten användarID, Förnamn eller Efternamn]]></key>
+        <key id="admin_directory&amp;_SIMPLE_FILTER" attributes="" save_date="2017-07-19 14:55:03"><![CDATA[Leta i fälten användarnamn, Förnamn eller Efternamn]]></key>
         <key id="admin_directory&amp;_WAITING_USER_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användarlista med bekräftad registreringar som väntar på godkänning]]></key>
       </module>
       <module id="admin_lang">
@@ -87,7 +87,7 @@
         <key id="admin_lang&amp;_CLEAN_LANG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rensa språk]]></key>
         <key id="admin_lang&amp;_CLEAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rensa]]></key>
         <key id="admin_lang&amp;_DIRECTION_LTR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Från vänster till höger (ltr)]]></key>
-        <key id="admin_lang&amp;_DIRECTION_RTL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Från höger till vänster(rtl)]]></key>
+        <key id="admin_lang&amp;_DIRECTION_RTL" attributes="" save_date="2017-07-19 17:06:54"><![CDATA[Från höger till vänster (rtl)]]></key>
         <key id="admin_lang&amp;_DO_NOT_ADD_MISS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lägg inte till etiketter som fattas]]></key>
         <key id="admin_lang&amp;_EXPORTG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Exportera detta språk]]></key>
         <key id="admin_lang&amp;_EXPORT_DIFF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Exportera endast ord som inte redan har översatts (dessa nycklar kommer att visas på engelska)]]></key>
@@ -118,7 +118,7 @@
         <key id="admin_lang&amp;_TRANSLATELANG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Översätt]]></key>
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Översätt språk]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Översättning innehåller]]></key>
-        <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jo, importera]]></key>
+        <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2017-07-21 10:38:13"><![CDATA[Ja, importera]]></key>
       </module>
       <module id="admin_news">
         <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj användare som kan se nyheten.]]></key>
@@ -209,27 +209,56 @@
         <key id="calendar&amp;_WK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[vecka]]></key>
       </module>
       <module id="cart">
-        <key id="cart&amp;_CART" attributes="" save_date="2017-05-08 14:13:23"><![CDATA[Inköpskorg]]></key>
+        <key id="cart&amp;_CART" attributes="" save_date="2017-07-19 14:47:12"><![CDATA[Kundvagn]]></key>
+        <key id="cart&amp;_CLASSROOM_COURSE" attributes="" save_date="2017-07-19 14:50:06"><![CDATA[Kurs i klassrummet]]></key>
         <key id="cart&amp;_CODE" attributes="" save_date="2017-05-08 14:22:11"><![CDATA[Kod]]></key>
+        <key id="cart&amp;_COURSE_PRIZE" attributes="" save_date="2017-07-19 14:44:02"><![CDATA[Kurspris]]></key>
+        <key id="cart&amp;_COURSE_TYPE" attributes="" save_date="2017-07-19 14:44:08"><![CDATA[Kurstyp]]></key>
+        <key id="cart&amp;_DATE_BEGIN" attributes="" save_date="2017-07-19 16:21:56"><![CDATA[Startdatum]]></key>
+        <key id="cart&amp;_DATE_END" attributes="" save_date="2017-07-19 16:22:03"><![CDATA[Slutdatum]]></key>
+        <key id="cart&amp;_DEL_SELECTED_ELEMENT" attributes="" save_date="2017-07-19 14:52:30"><![CDATA[Radera det valda objektet]]></key>
+        <key id="cart&amp;_EMPTY_CART" attributes="" save_date="2017-07-19 14:47:42"><![CDATA[Töm din vagn]]></key>
+        <key id="cart&amp;_LEARNING_COURSE" attributes="" save_date="2017-07-19 17:07:47"><![CDATA[E-lärning kurs]]></key>
+        <key id="cart&amp;_NAME" attributes="" save_date="2017-07-19 17:17:23"><![CDATA[Namn]]></key>
+        <key id="cart&amp;_ORDER_NOW" attributes="" save_date="2017-07-19 17:18:17"><![CDATA[Beställ nu]]></key>
+        <key id="cart&amp;_ORDER_NUMBER" attributes="" save_date="2017-07-19 17:18:29"><![CDATA[Ordernummer]]></key>
+        <key id="cart&amp;_PAYMENT_SELECT" attributes="" save_date="2017-07-19 17:21:07"><![CDATA[Välj din föredragna betalning]]></key>
+        <key id="cart&amp;_PAY_WITH_PAYPAL" attributes="" save_date="2017-07-19 17:18:43"><![CDATA[Betala med PayPal]]></key>
+        <key id="cart&amp;_TOTAL" attributes="" save_date="2017-07-19 17:20:56"><![CDATA[Total]]></key>
+        <key id="cart&amp;_TRANS_CREATED" attributes="" save_date="2017-07-19 17:20:41"><![CDATA[Transaktion skapad]]></key>
+        <key id="cart&amp;_WIRE_INFO" attributes="" save_date="2017-07-19 17:20:23"><![CDATA[Betalningsinformation]]></key>
+        <key id="cart&amp;_WIRE_PAYMENT" attributes="" save_date="2017-07-19 14:43:12"><![CDATA[Bindande betalning]]></key>
+        <key id="cart&amp;_WIRE_PAYMENT_DETAILS" attributes="" save_date="2017-07-19 17:20:01"><![CDATA[Betalningdetaljer]]></key>
       </module>
       <module id="catalogue">
-        <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lägg till korgen]]></key>
+        <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2017-07-19 14:47:07"><![CDATA[Lägg till i kundvagn]]></key>
+        <key id="catalogue&amp;_ALL_EDITION_BUYED" attributes="" save_date="2017-07-24 11:40:58"><![CDATA[Du har köpt alla tillgängliga versioner]]></key>
+        <key id="catalogue&amp;_CALENDAR" attributes="" save_date="2017-07-19 17:22:44"><![CDATA[Katalog]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Karriär]]></key>
         <key id="catalogue&amp;_CATALOGUE_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj katalog]]></key>
         <key id="catalogue&amp;_CATALOGUE_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista alla tillgängliga kataloger]]></key>
         <key id="catalogue&amp;_CERT_RELESABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certifikat tillgängliga för nerladdning]]></key>
+        <key id="catalogue&amp;_CLASSROOM_IN_CART" attributes="" save_date="2017-07-19 14:49:11"><![CDATA[Kurs i klassrummet i kundvagn]]></key>
         <key id="catalogue&amp;_CLASSROOM_LOCATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Byggnad]]></key>
+        <key id="catalogue&amp;_CONFIRM_ADD_TO_CART" attributes="" save_date="2017-07-19 14:48:35"><![CDATA[Bekräfta: lägg i kundvagn?]]></key>
+        <key id="catalogue&amp;_CONFIRM_SUBSCRIPTION" attributes="" save_date="2017-07-21 17:31:45"><![CDATA[Bekräfta beställning]]></key>
         <key id="catalogue&amp;_COURSEPATH_INTRO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Denna läroplan har <b>[enrolled]</b> beställande användare]]></key>
         <key id="catalogue&amp;_COURSEPATH_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Din läroplan]]></key>
+        <key id="catalogue&amp;_COURSEPATH_SUBSCRIBE_WIN_TIT" attributes="" save_date="2017-07-19 17:28:31"><![CDATA[Beställ läroplan]]></key>
+        <key id="catalogue&amp;_COURSEPATH_SUBSCRIBE_WIN_TXT" attributes="" save_date="2017-07-21 17:31:55"><![CDATA[Bekräfta din beställning på denna läroplan:]]></key>
+        <key id="catalogue&amp;_COURSE_ADDED_IN_CART" attributes="" save_date="2017-07-19 14:44:38"><![CDATA[Kursen läggs till i kundvagnen]]></key>
         <key id="catalogue&amp;_COURSE_AS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurser där du är [level]]]></key>
         <key id="catalogue&amp;_COURSE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurser du beställer på]]></key>
-        <key id="catalogue&amp;_COURSE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurser du har avlagt]]></key>
+        <key id="catalogue&amp;_COURSE_END" attributes="" save_date="2017-07-21 10:29:10"><![CDATA[Kurser du har slutfört]]></key>
         <key id="catalogue&amp;_COURSE_EXPIRING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurser som föråldras inom en vecka]]></key>
+        <key id="catalogue&amp;_COURSE_IN_CART" attributes="" save_date="2017-07-19 14:47:25"><![CDATA[Kurs i kundvagn]]></key>
         <key id="catalogue&amp;_COURSE_LIST_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista av tillgängliga kurser]]></key>
         <key id="catalogue&amp;_COURSE_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kursbeställning]]></key>
         <key id="catalogue&amp;_COURSE_S_GODADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Endast en administrator kan beställa]]></key>
+        <key id="catalogue&amp;_COURSE_S_MODERATE" attributes="" save_date="2017-07-21 17:01:03"><![CDATA[Din beställning på kursen måste godkännas av administratören]]></key>
         <key id="catalogue&amp;_COURSE_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurstyp]]></key>
         <key id="catalogue&amp;_COURSE_YOU_CAN_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktiverade kurser]]></key>
+        <key id="catalogue&amp;_ELEARNING" attributes="" save_date="2017-07-19 17:07:31"><![CDATA[E-lärning]]></key>
         <key id="catalogue&amp;_ENTRY_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurser och läroplaner]]></key>
         <key id="catalogue&amp;_ENTRY_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurser och läroplaner tilldelade denna katalog]]></key>
         <key id="catalogue&amp;_FILTER_DATE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurser som startar från]]></key>
@@ -239,18 +268,22 @@
         <key id="catalogue&amp;_METHOD_MANUAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ManualManuell beställning]]></key>
         <key id="catalogue&amp;_MOD_ENTRY_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa element i katalogen]]></key>
         <key id="catalogue&amp;_NEW_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ny katalog]]></key>
+        <key id="catalogue&amp;_NO_AVAILABLE_EDITIONS" attributes="" save_date="2017-07-24 11:40:16"><![CDATA[Inga version tillgängliga]]></key>
         <key id="catalogue&amp;_NO_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inga kurser tillgängliga]]></key>
         <key id="catalogue&amp;_NO_COURSE_FOUND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kursen hittades inte]]></key>
         <key id="catalogue&amp;_NO_EDITIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[De finns inga versioner av denna kurs.]]></key>
         <key id="catalogue&amp;_PREASSESSMENT_SUGGESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rekommenderad läroplan]]></key>
         <key id="catalogue&amp;_REMOVE_ENTRY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ta bort från katalogen]]></key>
         <key id="catalogue&amp;_RESERVE_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reserv]]></key>
-        <key id="catalogue&amp;_SHOPPING_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inköpskorg]]></key>
+        <key id="catalogue&amp;_SHOPPING_CART" attributes="" save_date="2017-07-19 14:46:49"><![CDATA[Kundvagn]]></key>
+        <key id="catalogue&amp;_SHOW_EDITIONS" attributes="" save_date="2017-07-24 11:41:14"><![CDATA[Visa versioner]]></key>
         <key id="catalogue&amp;_SUBSCRIBE_COURSE_T" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beställ denna kurs]]></key>
         <key id="catalogue&amp;_TAB_VIEW_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Enligt kategori]]></key>
         <key id="catalogue&amp;_TAB_VIEW_MOSTPOPULAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mest populära]]></key>
         <key id="catalogue&amp;_TAB_VIEW_RECENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nyaste]]></key>
+        <key id="catalogue&amp;_TIT_SUBSCRIPTION_BY_CODE" attributes="" save_date="2017-07-21 17:05:30"><![CDATA[Lägg in beställningskod]]></key>
         <key id="catalogue&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Total mängd kurser du är anmäld till]]></key>
+        <key id="catalogue&amp;_TXT_SUBSCRIPTION_BY_CODE" attributes="" save_date="2017-07-21 17:08:08"><![CDATA[Om du har fått en beställningskod lägger du in den här för att automatiskt läggas till i kursen:]]></key>
         <key id="catalogue&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:54:56"><![CDATA[Gå in]]></key>
         <key id="catalogue&amp;_WAITING_APPROVAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Väntar på godkänning]]></key>
         <key id="catalogue&amp;_WORD_TO_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sök enligt ord]]></key>
@@ -260,6 +293,7 @@
         <key id="certificate&amp;_ALT_TAKE_A_COPY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Publicera en kopia på meta-certifikat]]></key>
         <key id="certificate&amp;_BACK_IMAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bakgrundsbild]]></key>
         <key id="certificate&amp;_BASE_LANGUAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certifikatspråk]]></key>
+        <key id="certificate&amp;_CERTIFICATES_GENERATION" attributes="" save_date="2017-07-24 12:54:28"><![CDATA[Certifikat generering]]></key>
         <key id="certificate&amp;_CERTIFICATE_ASSIGN" attributes="" save_date="2017-05-05 17:34:37"><![CDATA[Certifikat tilldelning]]></key>
         <key id="certificate&amp;_CERTIFICATE_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certifikatmall lista]]></key>
         <key id="certificate&amp;_CERTIFICATE_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certifikatlista]]></key>
@@ -288,7 +322,7 @@
         <key id="certificate&amp;_META_CERTIFICATE_DETAILS_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meta-certifikatens status har länkats till användarna]]></key>
         <key id="certificate&amp;_META_CERTIFICATE_NEW_ASSIGN_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Associationstabell]]></key>
         <key id="certificate&amp;_META_CERTIFICATE_NEW_ASSIGN_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tabell för att länka användare och kurser till meta-certifikatet]]></key>
-        <key id="certificate&amp;_META_CERTIFICATE_PROGRESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fullförda / Totalt]]></key>
+        <key id="certificate&amp;_META_CERTIFICATE_PROGRESS" attributes="" save_date="2017-07-21 10:28:48"><![CDATA[Fullfört / Totalt]]></key>
         <key id="certificate&amp;_META_CERTIFICATE_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meta-certifikat lista]]></key>
         <key id="certificate&amp;_MY_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mina certifikat]]></key>
         <key id="certificate&amp;_NEW_ASSING_META_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ny association]]></key>
@@ -305,7 +339,7 @@
         <key id="certificate&amp;_STOP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Stopp]]></key>
         <key id="certificate&amp;_STRUCTURE_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certifikatmall]]></key>
         <key id="certificate&amp;_STRUCTURE_META_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meta-certifikatets struktur]]></key>
-        <key id="certificate&amp;_TABLE_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tabell över avlagda kurser för meta-certifikatet]]></key>
+        <key id="certificate&amp;_TABLE_COURSE" attributes="" save_date="2017-07-21 10:28:29"><![CDATA[Tabell över fullfört kurser för meta-certifikatet]]></key>
         <key id="certificate&amp;_TAG_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tag koder]]></key>
         <key id="certificate&amp;_TAG_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beskrivnings tag]]></key>
         <key id="certificate&amp;_TAG_LIST_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Taggar tillgängliga för certifkatsmallars uppbyggning]]></key>
@@ -334,18 +368,25 @@
       <module id="chat">
         <key id="chat&amp;_CHAT_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Chatta med andra användare av kurser, klicka linken nedan för att öppna chattrummet i ett pop-up fönster]]></key>
         <key id="chat&amp;_OPENCHAT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Öppna chattrum (nytt fönster)]]></key>
-        <key id="chat&amp;_OPENCHAT_WA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Öppna chattrum (tillgänglighetsversion)(pop-up)]]></key>
+        <key id="chat&amp;_OPENCHAT_WA" attributes="" save_date="2017-07-24 13:44:02"><![CDATA[Öppna chattrum (tillgänglighetsversion) (pop-up)]]></key>
       </module>
       <module id="classroom">
         <key id="classroom&amp;_AVAILABLE_INSTRUMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tillgänglig maskinvara]]></key>
         <key id="classroom&amp;_BUILDING_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rum]]></key>
         <key id="classroom&amp;_CAPACITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kapacitet]]></key>
         <key id="classroom&amp;_CITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Stad]]></key>
+        <key id="classroom&amp;_CLASSROOM" attributes="" save_date="2017-07-19 14:50:21"><![CDATA[Klassrum]]></key>
+        <key id="classroom&amp;_CLASSROOM_CAPTION" attributes="" save_date="2017-07-24 13:43:43"><![CDATA[Klassrum rubrik]]></key>
+        <key id="classroom&amp;_DEL_CLASSROOM" attributes="" save_date="2017-07-19 14:51:56"><![CDATA[Ta bort klassrum]]></key>
         <key id="classroom&amp;_DISPOSITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Layout]]></key>
         <key id="classroom&amp;_FAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fax]]></key>
         <key id="classroom&amp;_INSTRUMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Klassrummets maskinvara]]></key>
+        <key id="classroom&amp;_LOCATION_INFO" attributes="" save_date="2017-07-24 13:41:21"><![CDATA[Platsinformation]]></key>
+        <key id="classroom&amp;_MOD_CLASSROOM" attributes="" save_date="2017-07-24 13:40:18"><![CDATA[Editera klassrum]]></key>
+        <key id="classroom&amp;_NEW_CLASSROOM" attributes="" save_date="2017-07-19 14:50:50"><![CDATA[Nytt klassrum]]></key>
         <key id="classroom&amp;_PHONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Telefonnummer]]></key>
         <key id="classroom&amp;_PHOTO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Foto]]></key>
+        <key id="classroom&amp;_RESERVATION_INFO_LOCATION" attributes="" save_date="2017-07-24 13:42:53"><![CDATA[Evenemangsplats information]]></key>
         <key id="classroom&amp;_RESPONSABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Syfta(r) till]]></key>
         <key id="classroom&amp;_STATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Län]]></key>
         <key id="classroom&amp;_STREET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gata]]></key>
@@ -369,6 +410,9 @@
         <key id="competences&amp;_DATE_OBTAINED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Erhållen på]]></key>
         <key id="competences&amp;_EXPIRATION_DAYS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Upphör om (dagar)]]></key>
         <key id="competences&amp;_TYPE_FLAG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Flagga]]></key>
+        <key id="competences&amp;_WITH_COURSE_ASSOCIATIONS" attributes="" save_date="2017-07-21 11:40:09"><![CDATA[Kompetens med associerade kurser]]></key>
+        <key id="competences&amp;_WITH_FNCROLE_ASSOCIATIONS" attributes="" save_date="2017-07-21 11:40:05"><![CDATA[Kompetens med associerade roller]]></key>
+        <key id="competences&amp;_WITH_USER_ASSOCIATIONS" attributes="" save_date="2017-07-21 11:39:13"><![CDATA[Kompetens med associerade användare]]></key>
       </module>
       <module id="conference">
         <key id="conference&amp;_AT_HOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Timme:]]></key>
@@ -385,24 +429,35 @@
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivera tillgänglighetsegenskaper]]></key>
         <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2017-05-05 17:53:27"><![CDATA[Konfigurera "allow_url_fopen"]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Konfigurera "allow_url_include"]]></key>
+        <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2017-07-24 13:26:56"><![CDATA[redan tilldelade]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
         <key id="configuration&amp;_API_SSO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Be om en kod skapad via kodmodulen]]></key>
-        <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Be om en trädkod vald av användaren från en lista]]></key>
+        <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2017-07-24 12:58:20"><![CDATA[Be om en trädkod vald av användaren från en rullgardinsmeny]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Be om en trädkod som måste inmatas manuellt av användaren]]></key>
         <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2017-04-10 16:38:41"><![CDATA[Be om en kombination av trädkod och kurskod som måste inmatas manuellt av användaren. Träd- och kurskoden måste bestå av 10 tecken var, för att erhålla en 20 teckens kod]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max Audio användare]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max användare per rum]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max rum]]></key>
+        <key id="configuration&amp;_BBB_PASSWORD_MODERATOR" attributes="" save_date="2017-07-19 15:07:48"><![CDATA[BigBlueButton Moderator lösenord]]></key>
+        <key id="configuration&amp;_BBB_PASSWORD_VIEWER" attributes="" save_date="2017-07-19 15:07:31"><![CDATA[BigBlueButton Viewer lösenord]]></key>
+        <key id="configuration&amp;_BBB_PORT" attributes="" save_date="2017-07-24 13:35:56"><![CDATA[BigBlueButton Port]]></key>
+        <key id="configuration&amp;_BBB_SALT" attributes="" save_date="2017-07-24 13:29:54"><![CDATA[Salt BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="2017-05-05 17:18:25"><![CDATA[BigBlueButton server address]]></key>
+        <key id="configuration&amp;_BBB_USER" attributes="" save_date="2017-07-19 14:55:42"><![CDATA[BigBlueButton användarnamn]]></key>
         <key id="configuration&amp;_CODE_TELESKILL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kundkod]]></key>
         <key id="configuration&amp;_COMMON_ADMIN_SESSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Förena administratör och allmänna sessioner]]></key>
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gräns för mängden konferenser som kan planeras av en enskild användare]]></key>
         <key id="configuration&amp;_CONFIGURATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Konfigurering]]></key>
+        <key id="configuration&amp;_CONFIRM_REGISTER_TYPE_SELF" attributes="" save_date="2017-07-24 10:27:08"><![CDATA[OBS: utan double opt-in användarens e-post kommer inte att kontrolleras. Du kan bli föremål för spamregistreringar.]]></key>
         <key id="configuration&amp;_CONF_GLOBAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gemensam]]></key>
         <key id="configuration&amp;_CONF_LMS" attributes="" save_date="2017-04-10 13:49:10"><![CDATA[E-lärning]]></key>
+        <key id="configuration&amp;_COURSE_BLOCK" attributes="" save_date="2017-07-19 17:23:00"><![CDATA[Visa katalog på hemsidan]]></key>
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gräns för maximala storleken av innehåll som laddas upp till kursen (MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valutasymbol (visas bredvid användaren)]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2017-07-24 10:26:53"><![CDATA[Helpdesk e-post]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PFX" attributes="" save_date="2017-07-24 10:30:19"><![CDATA[Helpdesk ämne]]></key>
+        <key id="configuration&amp;_CUSTOM_FIELDS_MANDATORY_FOR_ADMIN" attributes="" save_date="2017-07-24 12:52:07"><![CDATA[Obligatoriska skräddarsydda fält]]></key>
         <key id="configuration&amp;_DEBUG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Debug alernativ]]></key>
         <key id="configuration&amp;_DEFAULTTEMPLATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Standardmall]]></key>
         <key id="configuration&amp;_DIMDIM_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max Audio användare]]></key>
@@ -416,7 +471,9 @@
         <key id="configuration&amp;_DONT_SHOW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa inte]]></key>
         <key id="configuration&amp;_DO_DEBUG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Enablera debug information]]></key>
         <key id="configuration&amp;_ECOMMERCE" attributes="" save_date="2017-04-10 14:06:16"><![CDATA[E-handel]]></key>
+        <key id="configuration&amp;_FILE_UPLOAD_WHITELIST" attributes="" save_date="2017-07-24 13:35:39"><![CDATA[Vitlista tillåta filtillägg]]></key>
         <key id="configuration&amp;_FIRST_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa "kurskatalog" som användarens huvudsida]]></key>
+        <key id="configuration&amp;_FORUM_AS_TABLE" attributes="" save_date="2017-07-24 11:41:44"><![CDATA[Visa forumlista i en tabell]]></key>
         <key id="configuration&amp;_FTPERR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fel i FTP]]></key>
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[FTP OK]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kod given av Google]]></key>
@@ -426,6 +483,7 @@
         <key id="configuration&amp;_HTMLEDIT_IMAGE_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tillåt administrator media kontroll i editorn]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_GODADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tillåt super-administrator media kontroll i editorn]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tillåt användare media kontroll i editorn]]></key>
+        <key id="configuration&amp;_IMPORT_UCFIRST" attributes="" save_date="2017-07-24 13:31:32"><![CDATA[Importera användaren med funktion ucfirst()]]></key>
         <key id="configuration&amp;_KB_FILTER_BY_USER_ACCESS" attributes="" save_date="2017-04-10 16:32:16"><![CDATA[Visar, i resultatsdelen av innehållssökningen, också objekt som inte är direkt tillgängliga åt användaren]]></key>
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2017-04-10 16:32:12"><![CDATA[Visa, i resultatsdelen av innehållssökningen, också objekt som inte är full kategoriserade]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivera språkeditering editing (använd för debugging)]]></key>
@@ -435,8 +493,11 @@
         <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2017-05-05 17:18:02"><![CDATA[LDAP server address]]></key>
         <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivera LDAP autentisering]]></key>
         <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användarnamn för LDAP användare, använd $user för användarnamnet.<br />Ex. $user@domain2.domain1 (for: W2k3)]]></key>
+        <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2017-07-24 13:34:43"><![CDATA[DB SQL scripts log]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Konfigurera "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registreringar och förlorade lösenords e-postsändare]]></key>
+        <key id="configuration&amp;_MAINTENANCE" attributes="" save_date="2017-07-24 13:27:27"><![CDATA[Underhållsläge]]></key>
+        <key id="configuration&amp;_MAINTENANCE_PW" attributes="" save_date="2017-07-19 15:02:05"><![CDATA[Underhållslösenord]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Allmänna alternativ]]></key>
         <key id="configuration&amp;_MANDATORY_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Om ett av ovanstående registreringskodalternativ är valda, är användare tvungna att skriva in registreringskoden (kodfältet måste vara ifyllt)]]></key>
         <key id="configuration&amp;_MAX_EXECUTION_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Konfigurera "max_execution_time"]]></key>
@@ -444,6 +505,7 @@
         <key id="configuration&amp;_MYSQL_COLLATION" attributes="" save_date="2017-04-10 11:38:23"><![CDATA[MySQL Kollering]]></key>
         <key id="configuration&amp;_MYSQL_ENCODING" attributes="" save_date="2017-04-10 11:38:30"><![CDATA[MySQL Kodning]]></key>
         <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2017-04-10 11:38:36"><![CDATA[SQL mod]]></key>
+        <key id="configuration&amp;_MYSQL_TIMEZONE" attributes="" save_date="2017-07-24 13:28:00"><![CDATA[MySQL Tidszon]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL version]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Paus mellan block (sekunder)]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Skicka nyhetsbrevsmeddelande i blocker av]]></key>
@@ -451,7 +513,11 @@
         <key id="configuration&amp;_NO_ANSWER_IN_POLL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Använd "inget svar" alternativet i förfrågningar]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Använd "inget svar" alternativet i provfrågor]]></key>
         <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Om ingen kurskatalog är tilldelad åt användaren, visa alla kurser och läroplaner]]></key>
+        <key id="configuration&amp;_ON_USERCOURSE_EMPTY" attributes="" save_date="2017-07-19 16:12:21"><![CDATA[Omdirigera användaren till katalogen om du inte är inskrivna i någon kurs]]></key>
+        <key id="configuration&amp;_OPENSSL" attributes="" save_date="2017-07-24 13:31:01"><![CDATA[PHP förlängning php_openssl]]></key>
+        <key id="configuration&amp;_ORGCHART_SINGLENODE" attributes="" save_date="2017-07-21 16:46:52"><![CDATA[Begränsa användaren till endast en nod i organisationskarta]]></key>
         <key id="configuration&amp;_ORG_NAME_TELESKILL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Organisationsnamn för konferensen]]></key>
+        <key id="configuration&amp;_OWNED_BY" attributes="" save_date="2017-07-24 13:35:10"><![CDATA[Sidägare]]></key>
         <key id="configuration&amp;_PAGE_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sidrubrik (Syns i användarens webbläsare)]]></key>
         <key id="configuration&amp;_PASS_ALFANUMERIC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lösenord måste bestå av bokstäver och siffror]]></key>
         <key id="configuration&amp;_PASS_CHANGE_FIRST_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tvinga användare att ändra lösenord vid första inloggningen]]></key>
@@ -474,6 +540,26 @@
         <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2017-04-10 11:50:55"><![CDATA[Använd PayPal sandbox istället för verkliga omgivningen (detta är ett debugging och testnings alternativ)]]></key>
         <key id="configuration&amp;_PHPINFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Info om PHP]]></key>
         <key id="configuration&amp;_PHPVERSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[PHP version]]></key>
+        <key id="configuration&amp;_PHP_TIMEZONE" attributes="" save_date="2017-07-24 13:29:20"><![CDATA[Webbplats Tidszon]]></key>
+        <key id="configuration&amp;_PLUGIN_ACTIVATE" attributes="" save_date="2017-09-25 17:21:49"><![CDATA[Aktivera]]></key>
+        <key id="configuration&amp;_PLUGIN_AUTHOR" attributes="" save_date="2017-09-25 17:20:18"><![CDATA[Författare]]></key>
+        <key id="configuration&amp;_PLUGIN_CATEGORY" attributes="" save_date="2017-09-25 17:20:38"><![CDATA[Kategori]]></key>
+        <key id="configuration&amp;_PLUGIN_DEACTIVATE" attributes="" save_date="2017-09-25 17:22:22"><![CDATA[Avaktivera]]></key>
+        <key id="configuration&amp;_PLUGIN_DESCRIPTION" attributes="" save_date="2017-09-25 17:26:59"><![CDATA[Beskrivning]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_CORE_DEACTIVATE" attributes="" save_date="2017-09-25 17:25:16"><![CDATA[Plugin kan inte avaktiveras eftersom det hör till kärnan]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_CORE_UNINSTALL" attributes="" save_date="2017-09-25 17:25:01"><![CDATA[Plugin kan inte avinstalleras eftersom det hör till kärnan]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_DEACTIVATE_DEPENDENCE" attributes="" save_date="2017-09-25 17:25:55"><![CDATA[Plugin kan inte avaktiveras på grund av beroende plugins]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_NOT_ONLINE_UPDATE" attributes="" save_date="2017-09-25 17:23:34"><![CDATA[Plugin uppdatering online är inte tillgänglig]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_NO_DEPENDENCIES" attributes="" save_date="2017-09-25 17:24:40"><![CDATA[Plugin kan inte installeras på grund av saknade beroenden]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_OLD_VERSION" attributes="" save_date="2017-09-25 17:23:55"><![CDATA[Plugin-filer versionen matchar inte med forma.lms]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_UNINSTALL_DEPENDENCE" attributes="" save_date="2017-09-25 17:25:35"><![CDATA[Plugin kan inte avinstalleras på grund av beroende plugins]]></key>
+        <key id="configuration&amp;_PLUGIN_INSTALL" attributes="" save_date="2017-09-25 17:27:53"><![CDATA[Installera]]></key>
+        <key id="configuration&amp;_PLUGIN_NAME" attributes="" save_date="2017-09-25 17:20:51"><![CDATA[Namn]]></key>
+        <key id="configuration&amp;_PLUGIN_SETTINGS" attributes="" save_date="2017-09-25 17:28:35"><![CDATA[Inställningar]]></key>
+        <key id="configuration&amp;_PLUGIN_UNINSTALL" attributes="" save_date="2017-09-25 17:28:20"><![CDATA[Avinstallera]]></key>
+        <key id="configuration&amp;_PLUGIN_UNINSTALL_CONFIRMATION" attributes="" save_date="2017-09-25 17:23:13"><![CDATA[Bekräfta: avinstallation av plugin?]]></key>
+        <key id="configuration&amp;_PLUGIN_UPDATE" attributes="" save_date="2017-09-25 17:21:10"><![CDATA[Uppdatera]]></key>
+        <key id="configuration&amp;_PLUGIN_VERSION" attributes="" save_date="2017-09-25 17:27:11"><![CDATA[Version]]></key>
         <key id="configuration&amp;_POST_MAX_SIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Konfigurera "post_max_size"]]></key>
         <key id="configuration&amp;_PRIVACY_POLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sekretesspolicyn MÅSTE godkännas]]></key>
         <key id="configuration&amp;_PROFILE_ONLY_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Begränsa användaren till att endast ändra sitt lösenord (vaktivera den utvidgade profilen)]]></key>
@@ -483,16 +569,20 @@
         <key id="configuration&amp;_REGISTER_TYPE_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Endast av administrator]]></key>
         <key id="configuration&amp;_REGISTER_TYPE_MODERATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Modererad själv-registrering]]></key>
         <key id="configuration&amp;_REGISTER_TYPE_SELF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fri själv-registrering]]></key>
+        <key id="configuration&amp;_REGISTER_TYPE_SELF_OPTIN" attributes="" save_date="2017-07-21 09:50:43"><![CDATA[Fri själv-registrering med double opt-in]]></key>
         <key id="configuration&amp;_REGISTRATION_CODE_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användning av registreringskod]]></key>
         <key id="configuration&amp;_REQUEST_MANDATORY_FIELDS_COMPILATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vid inloggning uppmanas användaren fylla in de obligatoriska fälten i sin profil.]]></key>
+        <key id="configuration&amp;_REST_AUTH_API_KEY" attributes="" save_date="2017-07-24 13:38:37"><![CDATA[API Tillstånd Nyckel]]></key>
+        <key id="configuration&amp;_REST_AUTH_API_SECRET" attributes="" save_date="2017-07-24 13:38:50"><![CDATA[API Tillstånd Hemlig Nyckel]]></key>
         <key id="configuration&amp;_REST_AUTH_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[En kod per platform]]></key>
         <key id="configuration&amp;_REST_AUTH_LIFETIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Genererad token upphör om  (minuter)]]></key>
         <key id="configuration&amp;_REST_AUTH_METHOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Autentiseringsmetod:]]></key>
+        <key id="configuration&amp;_REST_AUTH_SECRET_KEY" attributes="" save_date="2017-07-24 13:38:57"><![CDATA[Tillstånd Hemlig Nyckel]]></key>
         <key id="configuration&amp;_REST_AUTH_TOKEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Token generering vid varje anslutning]]></key>
         <key id="configuration&amp;_REST_AUTH_UPDATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uppdatera token livstid vid varje API kallning]]></key>
         <key id="configuration&amp;_SAFEMODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA["safe_mode" konfigurering]]></key>
-        <key id="configuration&amp;_SAVE_LA_AFTER_MAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jo, endast om maximimängden nås]]></key>
-        <key id="configuration&amp;_SAVE_LA_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jo, för alla]]></key>
+        <key id="configuration&amp;_SAVE_LA_AFTER_MAX" attributes="" save_date="2017-07-21 10:38:27"><![CDATA[Ja, endast om maximimängden nås]]></key>
+        <key id="configuration&amp;_SAVE_LA_ALL" attributes="" save_date="2017-07-21 10:38:21"><![CDATA[Ja, för alla]]></key>
         <key id="configuration&amp;_SAVE_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Spara info om misslyckade inloggningsförsök]]></key>
         <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2017-04-10 10:44:59"><![CDATA[Tillåt användning av direkt länkar från yttre källor till SCORM kapitel (sco och asset)]]></key>
         <key id="configuration&amp;_SECURITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Säkerhetsrelaterat]]></key>
@@ -545,7 +635,9 @@
         <key id="configuration&amp;_TABLIST_MYCOURSES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Korsers sorteringsordning i "Mina Kurser"]]></key>
         <key id="configuration&amp;_TELESKILL_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max användare per rum]]></key>
         <key id="configuration&amp;_TELESKILL_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max rum]]></key>
-        <key id="configuration&amp;_TRACKING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tillåt spårning av användare (rekommendation: Jo)]]></key>
+        <key id="configuration&amp;_TEMPLATEDOMAIN" attributes="" save_date="2017-07-24 13:32:33"><![CDATA[Domänmall]]></key>
+        <key id="configuration&amp;_TEMPLATE_DOMAIN" attributes="" save_date="2017-07-24 13:33:46"><![CDATA[Domänmall tilldelning]]></key>
+        <key id="configuration&amp;_TRACKING" attributes="" save_date="2017-07-21 10:38:17"><![CDATA[Tillåt spårning av användare (rekommendation: Ja)]]></key>
         <key id="configuration&amp;_TTLSESSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sessions livstid]]></key>
         <key id="configuration&amp;_UPLOADFTP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[FTP anslutning]]></key>
         <key id="configuration&amp;_UPLOAD_MAX_FILESIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Konfigurera "upload_max_filesize"]]></key>
@@ -553,6 +645,7 @@
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[URL för check-in]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[URL för videokonferens]]></key>
         <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beakta danna parameter endast om du måste autentisera via LDAP]]></key>
+        <key id="configuration&amp;_USERS_ALREADY_ASSIGNED" attributes="" save_date="2017-07-19 14:54:22"><![CDATA[redan tilldelade användare]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Be användaren välja ett lösenord som skiljer sig från de förra X lösenorden]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Diskkvota (i MB) för varje användares Mina Filer område]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Använd avancerad registreringsblankett]]></key>
@@ -571,25 +664,30 @@
         <key id="course&amp;_ALLOW_OVERBOOKING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tillåt överbokning]]></key>
         <key id="course&amp;_ALL_OPEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alla öppna]]></key>
         <key id="course&amp;_ASSIGN_FOR_ALL_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilldeal till varje användares status]]></key>
+        <key id="course&amp;_ASSIGN_FOR_AT_LEAST_MINUTES" attributes="" save_date="2017-07-24 13:34:21"><![CDATA[Minsta uppdragstid för tilldelning (min.)]]></key>
         <key id="course&amp;_ASSIGN_FOR_STATUS_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilldela för användare som har fullgjort kursen]]></key>
         <key id="course&amp;_ASSIGN_FOR_STATUS_INCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilldela användare som deltar i kursen]]></key>
         <key id="course&amp;_ASSIGN_MENU" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilldela en ny meny för kursen]]></key>
         <key id="course&amp;_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registreringskod]]></key>
         <key id="course&amp;_BACK_TO_ADMINISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tillbaka till administratorområdet]]></key>
         <key id="course&amp;_BUY_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Är tillåtet att köpa denna kurs]]></key>
+        <key id="course&amp;_CALENDAR_CLASSROOM_EDITION" attributes="" save_date="2017-07-24 11:39:33"><![CDATA[Kalender klassrumsversion]]></key>
         <key id="course&amp;_CAN_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beställ]]></key>
         <key id="course&amp;_CASCADE_MOD_ON_EDITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kopiera ändringar också till versioner]]></key>
         <key id="course&amp;_CATEGORY_PATH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du är inne]]></key>
         <key id="course&amp;_CATEGORY_SELECTED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vald kategori]]></key>
-        <key id="course&amp;_CERTIFICATE_ASSIGN_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilldelning av certifikat]]></key>
+        <key id="course&amp;_CERTIFICATE_ASSIGN_STATUS" attributes="" save_date="2017-07-24 11:57:39"><![CDATA[Publicering av certifikat]]></key>
         <key id="course&amp;_CERTIFICATE_EX_ASSIGN_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilldelning av Excellens-certifikat]]></key>
         <key id="course&amp;_CERTIFICATE_LANGUAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certifikatspråk]]></key>
+        <key id="course&amp;_CERTIFICATE_NAME" attributes="" save_date="2017-07-24 13:25:06"><![CDATA[Certifikat]]></key>
+        <key id="course&amp;_CERTIFICATE_RELEASE" attributes="" save_date="2017-07-24 11:57:43"><![CDATA[Publicering  av certifikater]]></key>
         <key id="course&amp;_CERTIFICATE_RELEASED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mängd publicerade certifikat]]></key>
         <key id="course&amp;_CLASSROOMTOCOURSE_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Klassrum -> Kurs association]]></key>
         <key id="course&amp;_CLASSROOM_EDITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Klassrum/Versioner]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Varning: vissa klassrum är redan upptagna av andra kurser]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Klass upptagen]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Din data kommer att sparas.]]></key>
+        <key id="course&amp;_COPY_SUBSCRIPTION_TO_COURSE" attributes="" save_date="2017-07-21 17:32:37"><![CDATA[Kopiera beställningar till kurs]]></key>
         <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2017-06-19 11:40:17"><![CDATA[Förtidigad betalning]]></key>
         <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kod för automatisk beställning av kursen]]></key>
         <key id="course&amp;_COURSE_CONTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tillgängliga kurser]]></key>
@@ -638,6 +736,7 @@
         <key id="course&amp;_DOWNLOAD_MATERIALS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa material]]></key>
         <key id="course&amp;_EDTION_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[starta på <b>[date_begin]</b> och sluta på <b>[date_end]</b>]]></key>
         <key id="course&amp;_ENDOBJECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objekt markerat som slutgiltigt]]></key>
+        <key id="course&amp;_EXPIRED" attributes="" save_date="2017-07-24 13:26:24"><![CDATA[Tillgång till denna kurs har löpt ut]]></key>
         <key id="course&amp;_EXPIRING_IN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kursen upphör om <b>[expiring_in]</b> dagar]]></key>
         <key id="course&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inga filer har specifierats]]></key>
         <key id="course&amp;_FILTER_FLATVIEW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Platt vy]]></key>
@@ -682,15 +781,16 @@
         <key id="course&amp;_PROGRESS_BAR_TEXT" attributes="" save_date="2017-05-08 12:19:31"><![CDATA[Framsteg]]></key>
         <key id="course&amp;_PROGRESS_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fullfört]]></key>
         <key id="course&amp;_PROGRESS_FAILED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Underkännt]]></key>
-        <key id="course&amp;_PROGRESS_INCOMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inte färdigt]]></key>
-        <key id="course&amp;_PROGRESS_PASSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Godkänd]]></key>
-        <key id="course&amp;_PROGRESS_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objekt: [total], godkännt: [complete], underkännt: [failed]]]></key>
+        <key id="course&amp;_PROGRESS_INCOMPLETE" attributes="" save_date="2017-07-21 10:27:38"><![CDATA[Inte fullfört]]></key>
+        <key id="course&amp;_PROGRESS_PASSED" attributes="" save_date="2017-07-21 10:48:33"><![CDATA[Klarat]]></key>
+        <key id="course&amp;_PROGRESS_TITLE" attributes="" save_date="2017-07-21 10:48:28"><![CDATA[Objekt: [total], klarat: [complete], underkännt: [failed]]]></key>
         <key id="course&amp;_QUOTA_EXCEDED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du kan inte ladda upp flera filer eftersom kursens diskutrymme är fullt]]></key>
         <key id="course&amp;_RANDOM_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Skapa en slumpmässig kod för självregistrering]]></key>
         <key id="course&amp;_RESERVE_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reservera kurs]]></key>
         <key id="course&amp;_SC_EVERYWHERE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alla, och visa på hemsidan]]></key>
         <key id="course&amp;_SC_ONLYINSC_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Endast användare som beställer på kursen]]></key>
         <key id="course&amp;_SC_ONLY_IN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Endast för inloggade användare]]></key>
+        <key id="course&amp;_SELECT_DAYS_COURSE" attributes="" save_date="2017-07-24 11:02:40"><![CDATA[Välj kursdagar]]></key>
         <key id="course&amp;_SELF_UNSUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avbeställ kursen]]></key>
         <key id="course&amp;_SHOW_ADVANCED_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avancerad kursinfo]]></key>
         <key id="course&amp;_SHOW_COUNT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa bara mängden anslutna användare, men använd inte Instant Messenger]]></key>
@@ -699,7 +799,7 @@
         <key id="course&amp;_SHOW_PROGRESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa framsteg]]></key>
         <key id="course&amp;_SHOW_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa tid]]></key>
         <key id="course&amp;_SHOW_USER_OF_LEVEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj nivåer av användare som visas på kursens informationssida]]></key>
-        <key id="course&amp;_SHOW_WHOISONLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ANvändare online i denna kurs]]></key>
+        <key id="course&amp;_SHOW_WHOISONLINE" attributes="" save_date="2017-07-21 11:43:18"><![CDATA[Användare online i denna kurs]]></key>
         <key id="course&amp;_SPONSORED_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sponsorerad av]]></key>
         <key id="course&amp;_SPONSOR_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Länk till sponsor]]></key>
         <key id="course&amp;_SPONSOR_LOGO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Logo]]></key>
@@ -708,8 +808,11 @@
         <key id="course&amp;_SUBSCRIBE_METHOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beställningsmetod]]></key>
         <key id="course&amp;_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beställning]]></key>
         <key id="course&amp;_SUBSCRIPTION_CLOSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beställningar är stängda]]></key>
+        <key id="course&amp;_SUBSCRIPTION_CORRECT" attributes="" save_date="2017-07-21 17:06:21"><![CDATA[Beställning framgångsrik]]></key>
         <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Från]]></key>
+        <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN_FROM" attributes="" save_date="2017-07-21 09:49:33"><![CDATA[Registreringen är öppen från]]></key>
         <key id="course&amp;_SUBSCRIPTION_DATE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Till]]></key>
+        <key id="course&amp;_SUBSCRIPTION_ERROR" attributes="" save_date="2017-07-21 17:07:03"><![CDATA[Fel vid beställning]]></key>
         <key id="course&amp;_SUBSCRIPTION_IN_PERIOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beställningar är tillgängliga under följande period]]></key>
         <key id="course&amp;_SUBSCRIPTION_OPEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beställningar är öppna]]></key>
         <key id="course&amp;_THANKS_LOGIN_OR_REGISTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du har bett att få köpa kursen: <b>[name]</b><br />
@@ -726,6 +829,7 @@ Annars måste du registrera dig till vårt system, följ denna länk: <br />
         <key id="course&amp;_T_USER_STATUS_RESERVED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reserverad]]></key>
         <key id="course&amp;_T_USER_STATUS_SUBS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du har inte ännu börjat delta i denna kurs]]></key>
         <key id="course&amp;_UNLIMITED_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ingen diskutrymmesgräns]]></key>
+        <key id="course&amp;_UNSUBSCRIBE_DATE_LIMIT" attributes="" save_date="2017-07-19 17:29:27"><![CDATA[Avbeställ datumgräns]]></key>
         <key id="course&amp;_UNSUBSCRIBE_REQUESTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ansökningar om avbeställning]]></key>
         <key id="course&amp;_UNSUBSCRIBE_REQUEST_WAITING_FOR_MODERATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avbeställningsansökan väntar bekräftelse]]></key>
         <key id="course&amp;_USED_DISK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Diskutrymme som används av denna kurs]]></key>
@@ -772,9 +876,9 @@ Annars måste du registrera dig till vårt system, följ denna länk: <br />
         <key id="coursereport&amp;_MOVE_LEFT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Flytta till vänster]]></key>
         <key id="coursereport&amp;_MOVE_RIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Flytta till höger]]></key>
         <key id="coursereport&amp;_NOT_CHECKED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inte kontrollerad]]></key>
-        <key id="coursereport&amp;_NOT_PASSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inte godkänd]]></key>
+        <key id="coursereport&amp;_NOT_PASSED" attributes="" save_date="2017-07-21 10:48:39"><![CDATA[Inte klarat]]></key>
         <key id="coursereport&amp;_OF_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[användarens]]></key>
-        <key id="coursereport&amp;_PASSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Godkänd]]></key>
+        <key id="coursereport&amp;_PASSED" attributes="" save_date="2017-07-21 10:48:45"><![CDATA[Klarat]]></key>
         <key id="coursereport&amp;_PERCENTAGE_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Andel rätta svar]]></key>
         <key id="coursereport&amp;_QUESTION_ANSWERED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Svarade frågor]]></key>
         <key id="coursereport&amp;_REDO_FINAL_VOTE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Återberäkna]]></key>
@@ -796,6 +900,7 @@ Annars måste du registrera dig till vårt system, följ denna länk: <br />
         <key id="coursereport&amp;_TABLE_QUEST_CORRECT_TXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Procentandel av rätta svar efter insättning av text i frasen i "[title]"]]></key>
         <key id="coursereport&amp;_TABLE_QUEST_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sätt in lista för frågan "[title]"]]></key>
         <key id="coursereport&amp;_TEST_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Information om provet]]></key>
+        <key id="coursereport&amp;_TH_TEST_REPORT" attributes="" save_date="2017-07-21 16:50:15"><![CDATA[Provrapport]]></key>
         <key id="coursereport&amp;_TITLE_ACT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivitetstitel]]></key>
         <key id="coursereport&amp;_TOT_QUESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Frågor totalt]]></key>
         <key id="coursereport&amp;_TQ_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Statistik för provet "[test]"]]></key>
@@ -804,14 +909,15 @@ Annars måste du registrera dig till vårt system, följ denna länk: <br />
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lägg till ny kurs]]></key>
-        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2017-05-08 12:36:31"><![CDATA[&gt;&gt; Tilllbaka till "Mitt kursområde"]]></key>
+        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2017-07-19 17:13:02"><![CDATA[&gt;&gt; Tilllbaka till "Mitt kurs område"]]></key>
         <key id="course_autoregistration&amp;_CODE_ALREDY_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du har redan använt denna kod]]></key>
+        <key id="course_autoregistration&amp;_CODE_NOT_VALID" attributes="" save_date="2017-07-24 13:23:22"><![CDATA[Koden är inte korrekt]]></key>
         <key id="course_autoregistration&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kod]]></key>
       </module>
       <module id="course_charts">
         <key id="course_charts&amp;_ACTIVITY_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Denna karta låter dig kontrollera mängden kapitel som är synliga för användarna dagligen.]]></key>
-        <key id="course_charts&amp;_CHAPTER_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Denna karta ger dig en översyn av alla kapitel som är avlagda eller godkända per användaren.]]></key>
-        <key id="course_charts&amp;_COMPLETED_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Denna karta ger dig en översyn av alla kapitel användarna avlagt i denna kurs.]]></key>
+        <key id="course_charts&amp;_CHAPTER_CHART_DESCRIPTION" attributes="" save_date="2017-07-21 11:36:03"><![CDATA[Denna diagram ger dig en översyn av alla kapitel som är avslutade eller passerats per användaren.]]></key>
+        <key id="course_charts&amp;_COMPLETED_CHART_DESCRIPTION" attributes="" save_date="2017-07-21 10:31:19"><![CDATA[Denna diagram ger dig en översyn av alla kapitel som slutförts av användarna i denna kurs.]]></key>
         <key id="course_charts&amp;_NO_SCORM_IN_COURSE" attributes="" save_date="2017-04-10 10:45:25"><![CDATA[Det finns inga SCORM paket i denna kurs]]></key>
         <key id="course_charts&amp;_PASSED_CHART_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objektiv slutfört lyckat]]></key>
         <key id="course_charts&amp;_SCORE_CHART_DESCRIPTION" attributes="" save_date="2017-04-10 10:45:41"><![CDATA[Denna karta låter dig kontrollera anvöndarnas uppnådda resultat i varje SCORM kapitel.]]></key>
@@ -822,20 +928,23 @@ Annars måste du registrera dig till vårt system, följ denna länk: <br />
         <key id="course_selector&amp;_SEL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurser]]></key>
       </module>
       <module id="customer_help">
-        <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Help Desk]]></key>
+        <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2017-07-24 10:26:27"><![CDATA[Helpdesk]]></key>
         <key id="customer_help&amp;_README_HELP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<!-- here you can put some help text -->]]></key>
       </module>
       <module id="dashboard">
         <key id="dashboard&amp;_ACTIVE_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktiva kurser]]></key>
         <key id="dashboard&amp;_ACTIVE_SEVEN_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurser som aktiveras inom 7 dagar]]></key>
         <key id="dashboard&amp;_ADMIN_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Administrator användare]]></key>
+        <key id="dashboard&amp;_CHOOSE_EXPORT_FORMAT" attributes="" save_date="2017-07-24 11:02:58"><![CDATA[Välj exportformat]]></key>
         <key id="dashboard&amp;_CORE_VERSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Installerad version]]></key>
         <key id="dashboard&amp;_COURSES_PANEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Info om kurser]]></key>
         <key id="dashboard&amp;_DASHBOARD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välkomstsida]]></key>
+        <key id="dashboard&amp;_DB_UPGRADES" attributes="" save_date="2017-07-24 13:21:41"><![CDATA[SQL scripts log]]></key>
         <key id="dashboard&amp;_DEACTIVE_SEVEN_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurser som avaktiveras inom 7 dagar]]></key>
         <key id="dashboard&amp;_FOLLOW_US" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Följ oss]]></key>
         <key id="dashboard&amp;_INACTIVE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inaktiva användare (för minst en månad)]]></key>
         <key id="dashboard&amp;_LAST_RELEASED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Senast publicerad version]]></key>
+        <key id="dashboard&amp;_LIBRARY" attributes="" save_date="2017-07-24 13:22:01"><![CDATA[Bibliotek]]></key>
         <key id="dashboard&amp;_MONITOR_PRINT_CERTIFICATE_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ladda ner eller skapa certifikat]]></key>
         <key id="dashboard&amp;_NEW_RELEASE_AVAILABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[En ny version finns tillgänglig att laddas ner]]></key>
         <key id="dashboard&amp;_ONLINE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Online användare]]></key>
@@ -846,7 +955,7 @@ Annars måste du registrera dig till vårt system, följ denna länk: <br />
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användare som registrerats igår]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Super-admin användare]]></key>
         <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[forma.lms nätverk]]></key>
-        <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avbryt användare]]></key>
+        <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2017-07-19 15:57:30"><![CDATA[Avstängda användare]]></key>
         <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Konsulteringssida]]></key>
         <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:41:32"><![CDATA[forma.lms understödssida]]></key>
         <key id="dashboard&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Antal kurser]]></key>
@@ -874,6 +983,7 @@ Du kan läsa den i forma.lms på URL <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_DELETED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Ditt konto vid <a href="[url]">[url]</a> med användarnamnet [userid] har blivit raderat]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Beställningsförfrågan nekad]]></key>
         <key id="email&amp;_DENY_SUBSCRIBED_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Din beställningsförfågan till kursen [course] har blivit nekad av administratorn vid <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_EVENT_CLASS_UserCourseBuy" attributes="" save_date="2017-07-21 16:57:30"><![CDATA[En användare köpte en kurs]]></key>
         <key id="email&amp;_MODIFIED_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Användarkontot har modifierats]]></key>
         <key id="email&amp;_MODIFIED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Ditt konto på sidan <a href="[url]">[url]</a> har modifierats:
 
@@ -898,11 +1008,17 @@ Användarnamn: [userid]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Ny användare beställde kursen  '[course]' och väntar på att bli godkänd.
 
 <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_SUBJECT" attributes="" save_date="2017-07-21 17:58:07"><![CDATA[En användare väntar på godkännande av avbeställning från en kurs]]></key>
+        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_SUBJECT_SMS" attributes="" save_date="2017-07-21 17:58:01"><![CDATA[Avbeställningsförfrågan från en kurs]]></key>
+        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_TEXT" attributes="" save_date="2017-07-24 10:15:08"><![CDATA[Ny användare avbeställde från kursen "[kurs]" och väntar på att bli godkänd.
+
+<a href="[url]"> [url] </a>]]></key>
+        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_TEXT_SMS" attributes="" save_date="2017-07-21 18:02:37"><![CDATA[En användare har bett på att vara avbeställa från en kurs]]></key>
         <key id="email&amp;_PASSWORD_CHANGED" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[och ditt lösenord har ändrats till: [password]]]></key>
         <key id="email&amp;_REFUSED_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Användare inte godkänd]]></key>
-        <key id="email&amp;_REFUSED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Administratorn till [url] har inte godkänt din beställning]]></key>
+        <key id="email&amp;_REFUSED_USER_TEXT" attributes="email" save_date="2017-07-21 17:38:12"><![CDATA[Administratorn till [url] har inte godkänt din beställningsförfrågan]]></key>
         <key id="email&amp;_REGISTERED_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Du är nu registrerad i vårt system]]></key>
-        <key id="email&amp;_REGISTERED_USER_TEXT" attributes="email" save_date="2017-04-10 15:37:57"><![CDATA[DU är nu registrerad i vårt system vid <a href="[url]">[url]</a>
+        <key id="email&amp;_REGISTERED_USER_TEXT" attributes="email" save_date="2017-07-24 13:21:04"><![CDATA[Du är nu registrerad i vårt system vid <a href="[url]">[url]</a>
 med detta konto:
 
 Användarnamn: [userid]
@@ -911,8 +1027,14 @@ Lösenord: [password]]]></key>
         <key id="email&amp;_SUBJECT_NOTIFY_THREAD" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Varning: ny tråd]]></key>
         <key id="email&amp;_TO_APPROVE_GROUP_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Ny användares gruppbeställning väntar på godkänning]]></key>
         <key id="email&amp;_TO_APPROVE_GROUP_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Det finns en ny användares beställning till en modererad grupp som väntar på godkänning vid <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_TO_APPROVE_GROUP_USER_TEXT_SMS" attributes="sms" save_date="2017-07-21 16:58:49"><![CDATA[Det finns en ny användares beställning till en modererad grupp som väntar på godkänning]]></key>
         <key id="email&amp;_TO_APPROVE_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Ny användare väntar på godkänning]]></key>
         <key id="email&amp;_TO_APPROVE_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Ny användare är registrerad vid [url] och väntar ditt godkännande]]></key>
+        <key id="email&amp;_TO_NEW_USER_SBJ" attributes="email" save_date="2017-07-21 16:44:42"><![CDATA[Ny användare beställde]]></key>
+        <key id="email&amp;_TO_NEW_USER_TEXT" attributes="email" save_date="2017-07-21 16:44:47"><![CDATA[Ny användare beställde]]></key>
+        <key id="email&amp;_USER_END_COURSE_SBJ" attributes="" save_date="2017-07-21 16:56:03"><![CDATA[En användare har fullgjort kursen [course] på forma.lms]]></key>
+        <key id="email&amp;_USER_END_COURSE_TEXT" attributes="" save_date="2017-07-24 10:19:03"><![CDATA[Användaren [user] har fullgjort kursen [course] på forma.lms]]></key>
+        <key id="email&amp;_USER_END_COURSE_TEXT_SMS" attributes="" save_date="2017-07-21 16:56:29"><![CDATA[En användare har fullgjort kursen [course] på forma.lms]]></key>
         <key id="email&amp;_WAITING_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Användare är registrerad och väntar ditt godkännande]]></key>
         <key id="email&amp;_WAITING_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Det finns en ny användare vid <a href="[url]">[url]</a> som väntar på godkännande]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Du har fått ett nytt meddelande]]></key>
@@ -921,6 +1043,7 @@ Lösenord: [password]]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_BASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bas]]></key>
+        <key id="enrollrules&amp;_ENTITY" attributes="" save_date="2017-07-24 13:20:28"><![CDATA[Entitet]]></key>
         <key id="enrollrules&amp;_SHOW_LOGS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa loggar]]></key>
       </module>
       <module id="event_manager">
@@ -937,14 +1060,17 @@ Lösenord: [password]]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseInserted" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användare beställde en kurs]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseInsertModerate" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användare väntar att beställa en kurs]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseLevelChanged" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användarens nivå har ändrats i en kurs]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemoved" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användare avbeställde en kurs]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemoved" attributes="" save_date="2017-07-21 18:05:42"><![CDATA[Användare avbeställde från en kurs]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemovedModerate" attributes="" save_date="2017-07-21 18:02:10"><![CDATA[En användare väntar på att vara avbeställa från en kurs]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserDel" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användare har raderats]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserGroupInsert" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användare skrev in sig i en grupp]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserGroupModerated" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användare väntar på att skriva in sig i en grupp]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserGroupRemove" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användare har tagits bort från en grupp]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserMod" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användare har modifierats]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNew" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användare har skapats]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserNew2" attributes="" save_date="2017-07-21 09:56:31"><![CDATA[En ny användare är registrerad via "Fri automatisk registrering" eller "Fri automatisk registrering med double opt-in"]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNewModerated" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användare väntar pågodkännande av platformsbeställning]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserNewWaiting" attributes="" save_date="2017-07-21 16:58:06"><![CDATA[Ny användare väntar på att bli godkänd]]></key>
         <key id="event_manager&amp;_EVENT_MANAGER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Evenemangsadministrator]]></key>
         <key id="event_manager&amp;_EVENT_PERM_NOTUSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inte använd]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Platform]]></key>
@@ -969,9 +1095,11 @@ Lösenord: [password]]]></key>
         <key id="faq&amp;_TERM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ord]]></key>
       </module>
       <module id="field">
+        <key id="field&amp;_ADD_NEW_CUSTOMFIELD" attributes="" save_date="2017-07-24 12:48:37"><![CDATA[Lägg till ett nytt skräddarsytt fält]]></key>
         <key id="field&amp;_ADD_NEW_FIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lägg till nytt skräddarsytt fält]]></key>
         <key id="field&amp;_ALL_FIELD_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alla sorters fält]]></key>
         <key id="field&amp;_CODICEFISCALE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fiskalkod]]></key>
+        <key id="field&amp;_COPY" attributes="" save_date="2017-07-24 10:49:10"><![CDATA[Kopiera]]></key>
         <key id="field&amp;_COUNTRY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Land]]></key>
         <key id="field&amp;_DROPDOWN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nerfällt fält]]></key>
         <key id="field&amp;_DROPDOWN_ELEMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Elementnamn]]></key>
@@ -985,6 +1113,8 @@ Lösenord: [password]]]></key>
         <key id="field&amp;_FREETEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fritt textfält]]></key>
         <key id="field&amp;_GMAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gmail konto]]></key>
         <key id="field&amp;_ICQ" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ICQ konto]]></key>
+        <key id="field&amp;_LABEL_ALERT" attributes="" save_date="2017-07-21 10:22:27"><![CDATA[OBS:]]></key>
+        <key id="field&amp;_LABEL_ALERT_MESSAGE" attributes="" save_date="2017-07-24 13:13:43"><![CDATA[Det går inte att infoga citationstecken. För att infoga en länk, använd < href = site target = _blank>]]></key>
         <key id="field&amp;_MSN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MSN konto]]></key>
         <key id="field&amp;_NEW_DATEFIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nytt datumfält]]></key>
         <key id="field&amp;_NEW_DROPDOWN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nytt nerfällt fält]]></key>
@@ -995,15 +1125,15 @@ Lösenord: [password]]]></key>
         <key id="field&amp;_NEW_TEXTFIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nytt textfält]]></key>
         <key id="field&amp;_NEW_UPLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nytt filfält]]></key>
         <key id="field&amp;_NEW_YAHOO" attributes="" save_date="2017-05-12 12:16:03"><![CDATA[Nytt fält Yahoo konto]]></key>
-        <key id="field&amp;_NEW_YESNO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nytt fält jo / nej]]></key>
+        <key id="field&amp;_NEW_YESNO" attributes="" save_date="2017-07-21 10:38:39"><![CDATA[Nytt fält ja/nej]]></key>
         <key id="field&amp;_NOT_DO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ofärdigt]]></key>
         <key id="field&amp;_NO_FILE_UPLOADED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ingen fil laddad]]></key>
         <key id="field&amp;_SHOW_ON_PLATFORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa på platformer]]></key>
         <key id="field&amp;_SKYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Skype konto]]></key>
         <key id="field&amp;_TEXTFIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Textfält]]></key>
-        <key id="field&amp;_USE_MULTI_LANG_WHEN_AVAILABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[använd flerspråksfält om tillgängligt]]></key>
+        <key id="field&amp;_USE_MULTI_LANG_WHEN_AVAILABLE" attributes="" save_date="2017-07-24 13:18:14"><![CDATA[Använd flerspråksfält om tillgängligt]]></key>
         <key id="field&amp;_YAHOO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yahoo konto]]></key>
-        <key id="field&amp;_YESNO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fält jo/nej]]></key>
+        <key id="field&amp;_YESNO" attributes="" save_date="2017-07-21 10:38:34"><![CDATA[Fält ja/nej]]></key>
       </module>
       <module id="fncroles">
         <key id="fncroles&amp;_GAP_ANALYSIS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bristanalys]]></key>
@@ -1079,6 +1209,7 @@ Lösenord: [password]]]></key>
         <key id="glossary&amp;_ADDTERM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lägg till ord]]></key>
         <key id="glossary&amp;_GLOSSARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ordlista]]></key>
         <key id="glossary&amp;_GLOSSARY_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Termlista i ordlistan]]></key>
+        <key id="glossary&amp;_PRIVATE_THREAD" attributes="" save_date="2017-07-24 13:03:24"><![CDATA[Privat tråd]]></key>
         <key id="glossary&amp;_TERM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ord]]></key>
         <key id="glossary&amp;_TERMDESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ordbeskrivning]]></key>
         <key id="glossary&amp;_TERMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Termer]]></key>
@@ -1116,8 +1247,11 @@ Lösenord: [password]]]></key>
         <key id="htmlfront&amp;_HTMLFRONT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Introduktion]]></key>
       </module>
       <module id="htmlpage">
-        <key id="htmlpage&amp;_BACKTOTOP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[säkerhetskopia]]></key>
+        <key id="htmlpage&amp;_ATTACH_TITLE" attributes="" save_date="2017-07-24 13:02:38"><![CDATA[Bilaga]]></key>
+        <key id="htmlpage&amp;_BACKTOTOP" attributes="" save_date="2017-07-24 13:01:21"><![CDATA[Säkerhetskopia]]></key>
         <key id="htmlpage&amp;_SECT_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[HTML sida]]></key>
+        <key id="htmlpage&amp;_TYPE_VIDEO_HIGH" attributes="" save_date="2017-07-19 15:25:52"><![CDATA[Hög]]></key>
+        <key id="htmlpage&amp;_TYPE_VIDEO_LOW" attributes="" save_date="2017-07-19 15:26:04"><![CDATA[Låg]]></key>
       </module>
       <module id="iotask">
         <key id="iotask&amp;_ACCESSTYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Access]]></key>
@@ -1187,12 +1321,15 @@ Lösenord: [password]]]></key>
         <key id="item&amp;_SECTIONNAME_ITEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ladd upp filer]]></key>
       </module>
       <module id="kb">
+        <key id="kb&amp;_BY_INSTRUCTOR" attributes="" save_date="2017-07-24 13:45:06"><![CDATA[Av instruktör]]></key>
+        <key id="kb&amp;_BY_STUDENT" attributes="" save_date="2017-07-24 13:44:54"><![CDATA[Av student]]></key>
         <key id="kb&amp;_CATEGORIZED_AND_UNCATEGORIZED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa alla]]></key>
         <key id="kb&amp;_CATEGORIZED_ONLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Endast kategoriserade]]></key>
         <key id="kb&amp;_CATEGORIZE_OBJECT_ITEMS" attributes="" save_date="2017-04-10 10:45:49"><![CDATA[Byt från SCORM kategorisering till kapitel kategorisering]]></key>
         <key id="kb&amp;_CONTAINED_IN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Finns i]]></key>
         <key id="kb&amp;_IS_MOBILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Denna resurs är mobilkompatibel.]]></key>
         <key id="kb&amp;_RESOURCE_ORIGINAL_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Originalnamn sparat i platformen]]></key>
+        <key id="kb&amp;_SELECTED_DROP_DOWN" attributes="" save_date="2017-07-24 12:57:33"><![CDATA[Välj från rullgardinsmenyn]]></key>
         <key id="kb&amp;_SET_AS_NORMAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Endast relaterade användare kan se objektet]]></key>
         <key id="kb&amp;_SET_VISIBLE_TO_EVERYONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alla kan nå objektet]]></key>
         <key id="kb&amp;_UNCATEGORIZED_ONLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Endast okategoriserat]]></key>
@@ -1236,6 +1373,9 @@ Lösenord: [password]]]></key>
         <key id="link&amp;_TERM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ord]]></key>
       </module>
       <module id="login">
+        <key id="login&amp;_ACCESS_LOCK" attributes="" save_date="2017-07-24 12:55:56"><![CDATA[Låst tillgång]]></key>
+        <key id="login&amp;_CANCELSOCIALLOGIN" attributes="" save_date="2017-07-19 15:32:48"><![CDATA[Tillgångsförfrågan från socialt avbruten av användaren]]></key>
+        <key id="login&amp;_EMPTYSOCIALID" attributes="" save_date="2017-07-19 15:31:44"><![CDATA[Det gick inte att hitta ett socialt ID konto]]></key>
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hemsida]]></key>
         <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:22:57"><![CDATA[forma.lms är en öppen källkods e-lärnings platform (LMS och LCMS) som används i företags och högre utbildningsmarknaden.<br/>
 <br/>
@@ -1249,8 +1389,9 @@ För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, s�
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tillgänglig Login]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login med]]></key>
+        <key id="login&amp;_LOG_IN" attributes="" save_date="2017-07-19 15:27:19"><![CDATA[Login]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Förlorat lösenord]]></key>
-        <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fyll i detta fält med ditt användar ID och du kommer att få en e-post (till din registrerade address) med instruktioner för att skapa ett nytt lösenord.]]></key>
+        <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2017-07-19 14:56:01"><![CDATA[Fyll i detta fält med ditt användarnamn och du kommer att få en e-post (till din registrerade address) med instruktioner för att skapa ett nytt lösenord.]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fyll detta fält med e-posten som du gav i registreringsprocessen och du får en e-post som innehåller ditt användarnamn för denna sida.]]></key>
         <key id="login&amp;_LOST_TITLE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jag har förlorat mitt användarnamn]]></key>
         <key id="login&amp;_MAINTENANCE_TEXT" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[System in mainteinance mode.<br/><br/>To change these text please go to Admin/Language management, search for login and edit the key _MAINTENANCE_TEXT]]></key>
@@ -1258,9 +1399,16 @@ För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, s�
         <key id="login&amp;_PASSNOMATCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[De två lösenorden är inte lika eller lösenordsfältet är tomt.]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Var vänlig [login] eller [signin] för att köpa eller fortsätta med denna kurs]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE_NO_REG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Var vänlig [login] för att köpa eller fortsätta med denna kurs]]></key>
+        <key id="login&amp;_REGISTER_WITH_FACEBOOK" attributes="" save_date="2017-07-24 12:56:36"><![CDATA[Registrera dig med Facebook]]></key>
         <key id="login&amp;_REG_ELAPSEDREQUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Denna förfågan är föråldrad.]]></key>
         <key id="login&amp;_REG_PRIVACY_POLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sekretesspolicy]]></key>
+        <key id="login&amp;_SESSION_EXPIRED" attributes="" save_date="2017-07-24 12:55:36"><![CDATA[Sessionen löpte]]></key>
+        <key id="login&amp;_SIGN_IN" attributes="" save_date="2017-07-24 12:56:22"><![CDATA[Registrera]]></key>
+        <key id="login&amp;_SOCIALCONNECTKO" attributes="" save_date="2017-07-19 15:32:02"><![CDATA[Socialt ID anslutning misslyckades]]></key>
+        <key id="login&amp;_SOCIALCONNECTOK" attributes="" save_date="2017-07-19 15:31:55"><![CDATA[Framgångsrikt socialt ID anslutning]]></key>
         <key id="login&amp;_TWO_USERS_LOGGED_WITH_SAME_USERNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[En annan användare har loggat in med ditt användarnamn]]></key>
+        <key id="login&amp;_UNKNOWNGOOGLERROR" attributes="" save_date="2017-07-19 15:27:46"><![CDATA[Okänt fel under Google-inloggning]]></key>
+        <key id="login&amp;_UNKNOWNSOCIALERROR" attributes="" save_date="2017-07-19 15:33:30"><![CDATA[Okänt fel i socialt inloggning]]></key>
         <key id="login&amp;_UNLOGGED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du är utloggad]]></key>
       </module>
       <module id="manmenu">
@@ -1300,6 +1448,9 @@ För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, s�
         <key id="menu&amp;_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certifikat]]></key>
         <key id="menu&amp;_COMMUNICATION_MAN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kommunikationer]]></key>
         <key id="menu&amp;_CONFIGURATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inställningar]]></key>
+        <key id="menu&amp;_CONFIG_ELEARNING" attributes="" save_date="2017-07-19 17:09:00"><![CDATA[E-lärning konfigurering]]></key>
+        <key id="menu&amp;_CONFIG_SYS" attributes="" save_date="2017-07-19 17:10:11"><![CDATA[System konfigurering]]></key>
+        <key id="menu&amp;_CUSTOMFIELD_MANAGER" attributes="" save_date="2017-07-24 12:51:04"><![CDATA[Skräddarsytt fält hanterare]]></key>
         <key id="menu&amp;_DASHBOARD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välkomstsida]]></key>
         <key id="menu&amp;_EVENTMANAGER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Evenemangshantering]]></key>
         <key id="menu&amp;_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Evenemang]]></key>
@@ -1318,6 +1469,8 @@ För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, s�
         <key id="menu&amp;_MODULE_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Module name]]></key>
         <key id="menu&amp;_NEWS_INTERNAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hantera nyheter i användarområdet]]></key>
         <key id="menu&amp;_PLAYERTEMPLATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mall spelare]]></key>
+        <key id="menu&amp;_PLUGIN_MANAGER" attributes="" save_date="2017-07-24 12:46:29"><![CDATA[Pluginhanterare]]></key>
+        <key id="menu&amp;_PRIVACYPOLICIES" attributes="" save_date="2017-07-24 12:44:10"><![CDATA[Sekretesspolicyer]]></key>
         <key id="menu&amp;_PUBLIC_ADMIN_MANAGER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Allmän Administrators hantering]]></key>
         <key id="menu&amp;_PUBLIC_ADMIN_RULES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Allmän Administrator profil]]></key>
         <key id="menu&amp;_QUESTCATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Frågokategori]]></key>
@@ -1330,6 +1483,10 @@ För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, s�
         <key id="menu&amp;_WEBPAGES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Webbsidor]]></key>
       </module>
       <module id="menu_course">
+        <key id="menu_course&amp;Collaborative Area" attributes="" save_date="2017-07-19 17:12:13"><![CDATA[Samarbetsområde]]></key>
+        <key id="menu_course&amp;Stat Area" attributes="" save_date="2017-07-19 17:12:31"><![CDATA[Statistikområde]]></key>
+        <key id="menu_course&amp;Student Area" attributes="" save_date="2017-07-19 17:11:38"><![CDATA[Studentområde]]></key>
+        <key id="menu_course&amp;Teacher Area" attributes="" save_date="2017-07-19 17:11:50"><![CDATA[Lärareområde]]></key>
         <key id="menu_course&amp;_ADVICE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Anmälningar]]></key>
         <key id="menu_course&amp;_COURSECHART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurskartor]]></key>
         <key id="menu_course&amp;_COURSEREPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vitsordsbok]]></key>
@@ -1359,6 +1516,7 @@ För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, s�
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Community]]></key>
         <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivera kurs]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Admin område]]></key>
+        <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2017-07-24 12:43:31"><![CDATA[Publicering]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kampus]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Allmän meny]]></key>
         <key id="menu_over&amp;_MYCOMPETENCES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kompetenser]]></key>
@@ -1387,6 +1545,7 @@ För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, s�
         <key id="message&amp;_OUTBOX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sänd]]></key>
         <key id="message&amp;_PRIORITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Prioritet]]></key>
         <key id="message&amp;_REFRESH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uppdatera]]></key>
+        <key id="message&amp;_SEND_MESSAGE_COPY" attributes="" save_date="2017-07-24 12:43:17"><![CDATA[Skicka ett CC-meddelande]]></key>
         <key id="message&amp;_TITLE_READ" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meddelande läst]]></key>
         <key id="message&amp;_VERYHIGH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mycket hög]]></key>
         <key id="message&amp;_VERYLOW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mycket låg]]></key>
@@ -1396,7 +1555,8 @@ För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, s�
         <key id="middlearea&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj vem som kan se detta block]]></key>
         <key id="middlearea&amp;_COMPLETE_USER_PROFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fullständig användarprofil]]></key>
         <key id="middlearea&amp;_ENABLE_AREA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[]Gör blocket synligt]]></key>
-        <key id="middlearea&amp;_MIDDLE_AREA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[]]></key>
+        <key id="middlearea&amp;_HOME" attributes="" save_date="2017-07-24 12:37:20"><![CDATA[Hem]]></key>
+        <key id="middlearea&amp;_MIDDLE_AREA" attributes="" save_date="2017-07-19 17:12:44"><![CDATA[Internt område]]></key>
         <key id="middlearea&amp;_SIMPLE_USER_PROFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Förenklad användarprofil]]></key>
       </module>
       <module id="notes">
@@ -1414,6 +1574,7 @@ För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, s�
         <key id="organization&amp;_CONFIRM_EXIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dina framsteg kommer att sparas.]]></key>
         <key id="organization&amp;_HIDETREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Göm meny]]></key>
         <key id="organization&amp;_LOCKED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Blockerad]]></key>
+        <key id="organization&amp;_NO_TEST_STATS" attributes="" save_date="2017-07-24 12:36:06"><![CDATA[Statistik är inte tillgänglig]]></key>
         <key id="organization&amp;_OBJECTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objektiv]]></key>
         <key id="organization&amp;_ORGANIZATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Föreläsningar]]></key>
         <key id="organization&amp;_ORGISTERMINATOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Slutobjekt markör]]></key>
@@ -1540,7 +1701,9 @@ För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, s�
       <module id="preferences">
         <key id="preferences&amp;_TEMPLATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mall]]></key>
       </module>
-      <module id="privacypolicies"/>
+      <module id="privacypolicies">
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES" attributes="" save_date="2017-07-24 12:33:19"><![CDATA[Sekretesspolicyer]]></key>
+      </module>
       <module id="profile">
         <key id="profile&amp;_ACCESS_COUNT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Antal inloggningar]]></key>
         <key id="profile&amp;_ACCESS_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tid i kursen]]></key>
@@ -1548,15 +1711,19 @@ För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, s�
         <key id="profile&amp;_AVATAR_PHOTO_INSTRUCTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Endast png, gif och jpg bildformat är tillåtna att laddas upp. Om storleken överskrider [max_px] pixel blir den automatisk förminskad.<br />
 Var vänlig och ladda inte upp anstötliga bilder.]]></key>
         <key id="profile&amp;_CAREER" attributes="" save_date="2017-05-08 16:05:31"><![CDATA[Karriär]]></key>
+        <key id="profile&amp;_CERT_RELESABLE" attributes="" save_date="2017-07-24 12:32:35"><![CDATA[Tillgängliga certifikat]]></key>
         <key id="profile&amp;_CHANGEPASSWORD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Byt lösenord]]></key>
         <key id="profile&amp;_CHANGEPOLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fältets synlighet]]></key>
         <key id="profile&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Community]]></key>
         <key id="profile&amp;_COMPETENCE_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Förmågas namn]]></key>
         <key id="profile&amp;_COMPETENCE_SCORE_GOT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Skaffat resultat]]></key>
         <key id="profile&amp;_CONTACTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kontakter]]></key>
+        <key id="profile&amp;_COURSE_AS" attributes="" save_date="2017-07-24 10:10:45"><![CDATA[Kurser beställda]]></key>
         <key id="profile&amp;_COURSE_AS_MENTOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Anmäld till kurs som mentor]]></key>
         <key id="profile&amp;_COURSE_AS_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Anmäld till kurs som lärare]]></key>
         <key id="profile&amp;_COURSE_AS_TUTOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Anmäld till kurs som tutor]]></key>
+        <key id="profile&amp;_COURSE_END" attributes="" save_date="2017-07-21 10:25:17"><![CDATA[Fullfört kurser]]></key>
+        <key id="profile&amp;_COURSE_EXPIRING" attributes="" save_date="2017-07-24 10:17:36"><![CDATA[Förfallande kurser]]></key>
         <key id="profile&amp;_DELETED_USER_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista på borttagna användare]]></key>
         <key id="profile&amp;_DELETION_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ta bort datum]]></key>
         <key id="profile&amp;_FIELD_VALUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fältets innehåll]]></key>
@@ -1581,12 +1748,13 @@ Var vänlig och ladda inte upp anstötliga bilder.]]></key>
         <key id="profile&amp;_OLDPASSWRONG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Det inmatade lösenordet är inte ditt]]></key>
         <key id="profile&amp;_OLD_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gammalt lösenord]]></key>
         <key id="profile&amp;_OTHER_POLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Andra alternativ]]></key>
-        <key id="profile&amp;_PFL_POLICY_NOONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ingen]]></key>
-        <key id="profile&amp;_PFL_POLICY_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[lärare]]></key>
+        <key id="profile&amp;_PFL_POLICY_NOONE" attributes="" save_date="2017-09-15 15:03:27"><![CDATA[Ingen]]></key>
+        <key id="profile&amp;_PFL_POLICY_TEACHER" attributes="" save_date="2017-07-24 12:32:51"><![CDATA[Lärare]]></key>
         <key id="profile&amp;_POLICY_ASSIGNED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Regel tillämpad till fältet]]></key>
         <key id="profile&amp;_PRIVATE_MESSAGE_FROM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tillåt privata meddelanden från]]></key>
         <key id="profile&amp;_PROFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användarprofil]]></key>
         <key id="profile&amp;_REGISTER_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Medlem sedan]]></key>
+        <key id="profile&amp;_REG_PASS_MUST_DIFF" attributes="" save_date="2017-07-19 15:18:59"><![CDATA[Det nya lösenordet måste skilja sig från de använda]]></key>
         <key id="profile&amp;_SCORE_FINAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Slutligt provresultat]]></key>
         <key id="profile&amp;_SCORE_INIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Första provresultat]]></key>
         <key id="profile&amp;_SHARED_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Delade filer]]></key>
@@ -1595,11 +1763,12 @@ Var vänlig och ladda inte upp anstötliga bilder.]]></key>
         <key id="profile&amp;_TEACHER_PROFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lärarprofil]]></key>
         <key id="profile&amp;_TEACHER_PUBLICATIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Publiceringar]]></key>
         <key id="profile&amp;_TITLE_CHANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ditt lösenord har föråldrats]]></key>
+        <key id="profile&amp;_TOTAL_COURSE" attributes="" save_date="2017-07-21 10:24:09"><![CDATA[Totalt kurser]]></key>
         <key id="profile&amp;_UNLIMITED_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inga gränser konfigurerade]]></key>
         <key id="profile&amp;_UP_OFFLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användaren är offline]]></key>
         <key id="profile&amp;_USERCOMPETENCES_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Förmågor]]></key>
         <key id="profile&amp;_USERCOURSE_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användarens kurser]]></key>
-        <key id="profile&amp;_USERCOURSE_STATS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ANvändarens kurser]]></key>
+        <key id="profile&amp;_USERCOURSE_STATS_SUMMARY" attributes="" save_date="2017-07-21 10:23:51"><![CDATA[Användarens kurser]]></key>
         <key id="profile&amp;_USERCOURSE_STATS_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användarens statistik]]></key>
         <key id="profile&amp;_USERCOURSE_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användarens status]]></key>
         <key id="profile&amp;_USERFORUMPARAM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bild, avatar och signatur]]></key>
@@ -1631,7 +1800,7 @@ Var vänlig och ladda inte upp anstötliga bilder.]]></key>
         <key id="project&amp;_PRJPROGTOT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Totala framsteg]]></key>
         <key id="project&amp;_PRJTASKS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uppgifter]]></key>
         <key id="project&amp;_PRJTODO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Att göra]]></key>
-        <key id="project&amp;_PROJECT_MANAGER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Project hantering]]></key>
+        <key id="project&amp;_PROJECT_MANAGER" attributes="" save_date="2017-07-24 12:47:40"><![CDATA[Projectadministrator]]></key>
         <key id="project&amp;_PROJECT_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista på alla projekt du följer]]></key>
         <key id="project&amp;_PSFILES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vis filområdet]]></key>
         <key id="project&amp;_PSMSG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Enablera interna meddelanden]]></key>
@@ -1657,22 +1826,25 @@ Var vänlig och ladda inte upp anstötliga bilder.]]></key>
         <key id="register&amp;_CHANGELANG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ändra språk]]></key>
         <key id="register&amp;_CHOOSE_NEW_PASSWORD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj ett nytt lösenord]]></key>
         <key id="register&amp;_ERR_DUPLICATE_MAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Denna e-post används redan av en annan användare.]]></key>
-        <key id="register&amp;_ERR_DUPLICATE_USER" attributes="" save_date="2017-04-10 15:37:01"><![CDATA[Detta användarID är inte tillgängligt, välj ett annat]]></key>
+        <key id="register&amp;_ERR_DUPLICATE_USER" attributes="" save_date="2017-07-19 14:56:31"><![CDATA[Detta användarnamn är inte tillgängligt, välj ett annat]]></key>
         <key id="register&amp;_ERR_INVALID_MAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du måste ge en giltig e-postaddress]]></key>
-        <key id="register&amp;_ERR_INVALID_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ANvändarnamn är tomt eller ogiltigt]]></key>
-        <key id="register&amp;_ERR_PASSWORD_MUSTBE_ALPHA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lösenordet måste innehålla bokstäver och siffror]]></key>
+        <key id="register&amp;_ERR_INVALID_USER" attributes="" save_date="2017-07-19 14:56:43"><![CDATA[Användarnamn är tomt eller ogiltigt]]></key>
+        <key id="register&amp;_ERR_PASSWORD_MIN_LENGTH" attributes="" save_date="2017-07-19 15:03:17"><![CDATA[Lösenordet måste innehålla ett minimum antal tecken]]></key>
+        <key id="register&amp;_ERR_PASSWORD_MUSTBE_ALPHA" attributes="" save_date="2017-07-19 15:03:00"><![CDATA[Lösenordet måste innehålla siffror och tecken]]></key>
+        <key id="register&amp;_ERR_PASSWORD_MUSTBE_TEXT" attributes="" save_date="2017-07-19 15:02:38"><![CDATA[Lösenordet får bara innehålla tecken]]></key>
         <key id="register&amp;_ERR_PASSWORD_NO_MATCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lösenorden matchar inte]]></key>
         <key id="register&amp;_ERR_POLICY_NOT_CHECKED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du måste acceptera sekretesspolicyn för att registrera dig]]></key>
         <key id="register&amp;_ERR_PWD_OLD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Det gamla lösenordet är fel]]></key>
         <key id="register&amp;_FIRST_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Detta är viktigt första gången du loggar in till systemet. Var vänlig och byt ditt tillfälliga lösenord]]></key>
+        <key id="register&amp;_FORCE_CHANGE" attributes="" save_date="2017-07-19 15:03:34"><![CDATA[Vänligen välj ett nytt lösenord]]></key>
         <key id="register&amp;_GOTO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tillbaka till inloggningssidan]]></key>
         <key id="register&amp;_GROUPS_FIELDS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Detta fält associeras med den valda gruppen]]></key>
         <key id="register&amp;_IMGSECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registrering]]></key>
-        <key id="register&amp;_INEXISTENT_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[AnvändarID du matat in existerar inte. Kontrollera och försök pånytt]]></key>
+        <key id="register&amp;_INEXISTENT_USER" attributes="" save_date="2017-07-19 14:56:23"><![CDATA[Användarnamn du matat in existerar inte. Kontrollera och försök pånytt]]></key>
         <key id="register&amp;_INVALID_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktiveringskod inte giltig]]></key>
         <key id="register&amp;_INVALID_RANDOM_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Säkerhetskoden är ogiltig]]></key>
         <key id="register&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tillbaka till inloggningen]]></key>
-        <key id="register&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Om du har förlorat ditt lösenord skriv in ditt användarID i fältet nedan, du kommer att få en e-post med instruktioner]]></key>
+        <key id="register&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2017-07-19 14:58:07"><![CDATA[Om du har förlorat ditt lösenord skriv in ditt användarnamn i fältet nedan, du kommer att få en e-post med instruktioner]]></key>
         <key id="register&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Om du har förlorat ditt användarnamn skriv in din registrerade e-postaddress i fältet nedan , du kommer att få en e-post]]></key>
         <key id="register&amp;_LOST_PWD_MAILTEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Detta är en process för att skapa ett nytt lösenord för användaren associerad med denna e-postaddress. Klicka länken nedan för att skapa ett nytt lösenord.<br/>
 <br/>
@@ -1683,19 +1855,20 @@ Var vänlig och ladda inte upp anstötliga bilder.]]></key>
         <key id="register&amp;_LOST_USERID_MAILTEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ditt användarnamn till webbsidans [url] community är [userid]]]></key>
         <key id="register&amp;_LOST_USERID_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Återfå användarnamn]]></key>
         <key id="register&amp;_MAIL_OBJECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Var vänlig och godkänn din registreringsansökan]]></key>
+        <key id="register&amp;_MAIL_OBJECT_SELF" attributes="" save_date="2017-07-24 12:15:36"><![CDATA[Grattis! Du har precis registrerat dig]]></key>
         <key id="register&amp;_MAIL_SEND_SUCCESSFUL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tack! Vi har skickat dig en e-post med ditt användarnamn.]]></key>
         <key id="register&amp;_MAIL_SEND_SUCCESSFUL_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tack! Vi har skickat dig en e-post med en länk för att återställa ditt lösenord.]]></key>
         <key id="register&amp;_NEWPWDVALID" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ditt nya lösenord är giltigt i [valid_for_day] dagar.]]></key>
         <key id="register&amp;_NEW_PASSWORD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nytt lösenord]]></key>
-        <key id="register&amp;_NOTE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tomrum före och efter användarID är inte giltiga och raderas därför]]></key>
+        <key id="register&amp;_NOTE" attributes="" save_date="2017-07-19 14:56:12"><![CDATA[Tomrum före och efter användarnamn är inte giltiga och raderas därför]]></key>
         <key id="register&amp;_OLD_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ditt gamla lösenord]]></key>
         <key id="register&amp;_PASSWORD_TOO_SHORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lösenordet för kort]]></key>
         <key id="register&amp;_REG_CONFIRM_FAILED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bekräftelsen av ditt konto misslyckades]]></key>
         <key id="register&amp;_REG_ELAPSEDREQUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Förfrågan är inte giltig eftersom giltighetstiden utgått]]></key>
         <key id="register&amp;_REG_HOUR_REQUEST_LIMIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Denna förfrågan upphör om <b>[hour] timmar</b>]]></key>
-        <key id="register&amp;_REG_MAIL_TEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vi har mottagit din registreringsansökan med följande information: <br />
+        <key id="register&amp;_REG_MAIL_TEXT" attributes="" save_date="2017-07-19 14:56:55"><![CDATA[Vi har mottagit din registreringsansökan med följande information: <br />
 <br />
-AnvändarID : [userid]<br />
+Användarnamn : [userid]<br />
 Lösenord : [password]<br />
 <br />
 För att fullgöra registreringsprocessen, var vänlig och klicka länken nedan, (eller kopiera den till webbläsarens addressbalk)<br />
@@ -1703,11 +1876,17 @@ För att fullgöra registreringsprocessen, var vänlig och klicka länken nedan,
 <a href="[link]">[link]</a><br />
 <br />
 Denna ansökan kommer att vara giltig i följande [hour] timmar]]></key>
+        <key id="register&amp;_REG_MAIL_TEXT_SELF" attributes="" save_date="2017-07-19 14:57:42"><![CDATA[Vi har mottagit din registreringsansökan med följande information: <br />
+<br />
+Användarnamn : [userid]<br />
+Lösenord : [password]<br />
+]]></key>
         <key id="register&amp;_REG_MANDATORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du måste fylla de obligatoriska fälten, märkta med symbolen [mandatory]]]></key>
         <key id="register&amp;_REG_NOTE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Från denna sida kan du registrera dig till platformen; följ instruktionerna nedan och fyll i fälten korrekt.]]></key>
         <key id="register&amp;_REG_NOT_ACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registreringen är inte aktiv]]></key>
         <key id="register&amp;_REG_PASS_MIN_CHAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lösenordet måste innehålla minst <b>[min_char] tecken</b>]]></key>
         <key id="register&amp;_REG_PASS_MUST_BE_ALPNUM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lösenordet måste innehålla både <b>bokstäver</b> och <b>siffror</b>]]></key>
+        <key id="register&amp;_REG_PASS_MUST_DIFF" attributes="" save_date="2017-07-19 15:03:53"><![CDATA[Det nya lösenordet måste vara annorlunda]]></key>
         <key id="register&amp;_REG_PRESONAL_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivationskod]]></key>
         <key id="register&amp;_REG_PRIVACY_ACCEPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jag accepterar villkoren i sekretesspolicyn]]></key>
         <key id="register&amp;_REG_PRIVACY_POLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[All information samlad av oss i relation till en identifierbar person används endast enligt procedurer och till ändamål som påpekas här till subjektet och där denne såsom lagen kräver har gett sitt tillåtande. <br><br>&#xD;
@@ -1722,10 +1901,11 @@ I behandling av denna information skall noggrannhet och precision mötas för at
         <key id="register&amp;_REG_SUCCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tack för registreringsansökan till vår community.
 För att försäkra din sekretess kommer du att få en e-post med en bekräftelse-länk.
 Du måste bekräfta ditt konto förrän du använder det.]]></key>
+        <key id="register&amp;_REG_SUCCESS_SELF" attributes="" save_date="2017-07-24 12:11:58"><![CDATA[Tack för att du registrerade dig; Du kommer att få ett bekräftelsemail med dina uppgifter.]]></key>
         <key id="register&amp;_REG_USERID_DEF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ditt användarnamn]]></key>
         <key id="register&amp;_REG_WAIT_FOR_ADMIN_OK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Din registrering har blivit bekräftad, du kommer att få en e-post så snart som administratorn godkänner det]]></key>
         <key id="register&amp;_REG_YOUR_ABI_TO_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registrering bekräftad]]></key>
-        <key id="register&amp;_RETYPE_PASSWORD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SKriv lösenordet pånytt]]></key>
+        <key id="register&amp;_RETYPE_PASSWORD" attributes="" save_date="2017-07-19 15:19:47"><![CDATA[Skriv lösenordet pånytt]]></key>
         <key id="register&amp;_SELECT_GROUP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj grupp du vill skriva in dig i]]></key>
         <key id="register&amp;_SELECT_GROUP_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista av grupper]]></key>
         <key id="register&amp;_SOME_MANDATORY_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du har inte fyllt i några obligatoriska fält]]></key>
@@ -1756,6 +1936,8 @@ Du måste bekräfta ditt konto förrän du använder det.]]></key>
         <key id="report&amp;_COURSE_FIELDS_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa användarens information om kurser]]></key>
         <key id="report&amp;_COURSE_STARTED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användare som inte börjat kursen]]></key>
         <key id="report&amp;_CREATION_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Skapelsedatum]]></key>
+        <key id="report&amp;_CRON_REPORT_MAIL_BODY" attributes="" save_date="2017-07-24 10:31:29"><![CDATA[CRON rapport e-post kropp]]></key>
+        <key id="report&amp;_CRON_REPORT_MAIL_SUBJECT" attributes="" save_date="2017-07-24 10:30:59"><![CDATA[CRON rappost e-post ämne]]></key>
         <key id="report&amp;_CURRENT_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nuvarande val]]></key>
         <key id="report&amp;_CUSTOM_BELT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användardefinierad tidsperiod]]></key>
         <key id="report&amp;_DATE_COURSE_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Slutföringsdatum]]></key>
@@ -1779,6 +1961,7 @@ Du måste bekräfta ditt konto förrän du använder det.]]></key>
         <key id="report&amp;_MAIL_BODY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-post kropp]]></key>
         <key id="report&amp;_MUSTBEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Att börja]]></key>
         <key id="report&amp;_NOACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inte aktiverad]]></key>
+        <key id="report&amp;_NO_USER_FOUND" attributes="" save_date="2017-07-24 12:10:02"><![CDATA[Ingen användare hittades]]></key>
         <key id="report&amp;_NULL_COURSE_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inga kurser har valts]]></key>
         <key id="report&amp;_NULL_REPORT_RESULT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inga resultat hittades.]]></key>
         <key id="report&amp;_NULL_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inga värden har valts]]></key>
@@ -1811,6 +1994,7 @@ Du måste bekräfta ditt konto förrän du använder det.]]></key>
         <key id="report&amp;_RU_CAT_DELAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gör förseningsanalys]]></key>
         <key id="report&amp;_RU_CAT_GAMES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Relaterar användare till företagstävling]]></key>
         <key id="report&amp;_RU_CAT_LO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Relaterar användare till Lärnings Objekt]]></key>
+        <key id="report&amp;_RU_CAT_TESTSTAT" attributes="" save_date="2017-07-21 11:40:51"><![CDATA[Relaterar användare till prover]]></key>
         <key id="report&amp;_RU_LO_MILESTONES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj milstolpar]]></key>
         <key id="report&amp;_RU_LO_TYPES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lärnings Objekts typer]]></key>
         <key id="report&amp;_SAVE_AND_BACK_TO_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<< SPARA och gå tillbaka till rapportlista]]></key>
@@ -1828,6 +2012,7 @@ Du måste bekräfta ditt konto förrän du använder det.]]></key>
         <key id="report&amp;_STATS_FIELDS_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa statistik över kurser]]></key>
         <key id="report&amp;_TAB_REP_CREATOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Skapad av]]></key>
         <key id="report&amp;_TAB_REP_PUBLIC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Allmän]]></key>
+        <key id="report&amp;_TH_COURSELABEL" attributes="" save_date="2017-07-24 12:10:26"><![CDATA[Etikett]]></key>
         <key id="report&amp;_TH_COURSEPATH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sökväg]]></key>
         <key id="report&amp;_TH_ESTIMATED_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beräknad tid]]></key>
         <key id="report&amp;_TH_USER_COURSE_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kursresultat]]></key>
@@ -1839,20 +2024,24 @@ Du måste bekräfta ditt konto förrän du använder det.]]></key>
         <key id="report&amp;_TIME_PERIOD_FILTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Filter ör tidsperioder]]></key>
         <key id="report&amp;_TOTAL_SESSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tid]]></key>
         <key id="report&amp;_USER_CUSTOM_FIELDS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa användares skräddarsydda fält]]></key>
+        <key id="report&amp;_WARNING_REPORT" attributes="" save_date="2017-07-21 16:48:08"><![CDATA[Användarna kommer att se rapporten som den användare som genererade den]]></key>
       </module>
       <module id="reservation">
         <key id="reservation&amp;_ADD_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lägg till användare]]></key>
         <key id="reservation&amp;_ALT_ADD_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[tilldela]]></key>
-        <key id="reservation&amp;_AREYOUSURE_ADD_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Är du säker att du vill Registrera detta Evenemang?]]></key>
-        <key id="reservation&amp;_AREYOUSURE_DEL_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Är du säker att du vill avbryta Registreringen?]]></key>
+        <key id="reservation&amp;_AREYOUSURE_ADD_SUBSCRIPTION" attributes="" save_date="2017-07-24 12:08:10"><![CDATA[Är du säker att du vill registrera detta evenemang?]]></key>
+        <key id="reservation&amp;_AREYOUSURE_DEL_SUBSCRIPTION" attributes="" save_date="2017-07-24 12:08:04"><![CDATA[Är du säker att du vill avbryta registreringen?]]></key>
         <key id="reservation&amp;_AVAILABLE_PLACES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tillgänglig]]></key>
+        <key id="reservation&amp;_BODY_DELSUBSCRIPTION" attributes="" save_date="2017-07-24 12:09:03"><![CDATA[Evenemang registrering avbruten]]></key>
         <key id="reservation&amp;_CANCEL_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avbryt Registrering]]></key>
         <key id="reservation&amp;_CATEGORY_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kategorier]]></key>
         <key id="reservation&amp;_CATEGORY_GESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hantera Kategori]]></key>
         <key id="reservation&amp;_CATEGORY_MAX_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max Evenemang i Kategori]]></key>
         <key id="reservation&amp;_CHOOSE_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beställ användare]]></key>
+        <key id="reservation&amp;_CONFIRM_DATA" attributes="" save_date="2017-07-24 12:05:23"><![CDATA[Vänligen bekräfta dina uppgifter]]></key>
         <key id="reservation&amp;_DEADLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Deadline]]></key>
         <key id="reservation&amp;_DEL_EVENT_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registrera detta evenemang istället för]]></key>
+        <key id="reservation&amp;_DEL_SUBSCRIPTION_TITLE" attributes="" save_date="2017-07-24 12:04:42"><![CDATA[Avbryt Registrering]]></key>
         <key id="reservation&amp;_EVENT_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Evenemangslista]]></key>
         <key id="reservation&amp;_FROM_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Från tid]]></key>
         <key id="reservation&amp;_LOCATION_GESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laboratoriehantering]]></key>
@@ -1868,10 +2057,13 @@ Du måste bekräfta ditt konto förrän du använder det.]]></key>
         <key id="reservation&amp;_RESERVATION_MAIL_SEND" attributes="" save_date="2017-05-12 15:34:25"><![CDATA[Skicka e-post]]></key>
         <key id="reservation&amp;_RESERVATION_MY_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Min Registrering]]></key>
         <key id="reservation&amp;_RESERVATION_PAST_EVENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gångna Evenemang]]></key>
+        <key id="reservation&amp;_RESERVATION_PROFILE_MODIFY" attributes="" save_date="2017-07-24 12:04:54"><![CDATA[Reservering]]></key>
         <key id="reservation&amp;_RESERVATION_SUBSCRIBED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hantera Evenemang]]></key>
         <key id="reservation&amp;_RESERVATION_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista av nuvarande reserveringar]]></key>
         <key id="reservation&amp;_ROOM_FULL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[FULL]]></key>
+        <key id="reservation&amp;_SAVE" attributes="" save_date="2017-07-21 18:10:49"><![CDATA[Ändra evenemang]]></key>
         <key id="reservation&amp;_SET_ROOM_VIEW_PERM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vem kan reservera detta evenemang]]></key>
+        <key id="reservation&amp;_SUBJECT_DELSUBSCRIPTION" attributes="" save_date="2017-07-21 18:09:42"><![CDATA[Avregistrera från evenemang]]></key>
         <key id="reservation&amp;_SUBSCRIBE_EVENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beställ användare]]></key>
         <key id="reservation&amp;_SWITCH_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Byt (välj detta evenemang istället för ett annat)]]></key>
         <key id="reservation&amp;_TO_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sluttid]]></key>
@@ -1912,14 +2104,16 @@ Användarnamn: [userid]]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-lärning: i kursen '[course]', finns ett nytt meddelande i '[forum_title]' > '[thread_title]']]></key>
         <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-lärning: kurs '[course]' det finns en ny tråd i '[forum_title]': [thread_title]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[och ditt lösenord har ändrats till: [password]]]></key>
-        <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[DU är nu registrerad i vårt system med följande konto:
+        <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2017-07-19 14:57:10"><![CDATA[Du är nu registrerad i vårt system med följande konto:
 
 Användarnamn: [userid]
 Lösenord: [password]]]></key>
         <key id="sms&amp;_TO_APPROVE_GROUP_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Det finns en ny användarbeställning till en modererad grupp som väntar på godkänning]]></key>
         <key id="sms&amp;_TO_APPROVE_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Ny användare är registrerad och väntar på ditt godkännande]]></key>
+        <key id="sms&amp;_TO_NEW_USER_TEXT_SMS" attributes="sms" save_date="2017-07-24 12:04:03"><![CDATA[Ny användare är registrerad]]></key>
         <key id="sms&amp;_WAITING_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Det finns en ny användare som väntar på godkänning]]></key>
         <key id="sms&amp;_YOU_RECIVE_MSG_TEXT_SMS" attributes="sms" save_date="2017-04-10 13:05:21"><![CDATA[Du har fått ett nytt meddelande i e-lärningssystemet i kursen [course] från användaren  [from]]]></key>
+        <key id="sms&amp;_YOU_RECIVE_MSG_TEXT_SMS_COURSE" attributes="" save_date="2017-07-24 12:04:22"><![CDATA[Du har fått ett nytt meddelande i e-lärningssystemet i kursen [course] från användaren  [from]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Anslutna konton:]]></key>
@@ -1930,10 +2124,11 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;attempted" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Startat]]></key>
         <key id="standard&amp;completed" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fullfört]]></key>
         <key id="standard&amp;failed" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Underkänts]]></key>
-        <key id="standard&amp;incomplete" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inte färdigt]]></key>
+        <key id="standard&amp;incomplete" attributes="" save_date="2017-07-21 10:26:22"><![CDATA[Inte fullfört]]></key>
         <key id="standard&amp;not attempted" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inte försökt]]></key>
         <key id="standard&amp;not_attempted" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inte försökt]]></key>
-        <key id="standard&amp;passed" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Godkänt]]></key>
+        <key id="standard&amp;passed" attributes="" save_date="2017-07-21 10:48:47"><![CDATA[Klarat]]></key>
+        <key id="standard&amp;PREV_B_" attributes="" save_date="2017-07-24 11:44:12"><![CDATA[Föregående]]></key>
         <key id="standard&amp;_ACCESSES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tillgånget]]></key>
         <key id="standard&amp;_ACTIVATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivera]]></key>
         <key id="standard&amp;_ACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktiv]]></key>
@@ -1951,7 +2146,7 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_ALL_PAGES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alla sidor]]></key>
         <key id="standard&amp;_ALT_CHECK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj]]></key>
         <key id="standard&amp;_ALT_LESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[-]]></key>
-        <key id="standard&amp;_ALT_MORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[]]></key>
+        <key id="standard&amp;_ALT_MORE" attributes="" save_date="2017-07-19 16:59:09"><![CDATA[Alternative text]]></key>
         <key id="standard&amp;_ALT_ROOT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rot]]></key>
         <key id="standard&amp;_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Svar]]></key>
         <key id="standard&amp;_APPROVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Godkänn]]></key>
@@ -1965,6 +2160,7 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_ATTENDANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Närvaro]]></key>
         <key id="standard&amp;_AUTHOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Författare]]></key>
         <key id="standard&amp;_AUTODETECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Auto-upptäck]]></key>
+        <key id="standard&amp;_AUTO_SUBSCRIPTION" attributes="" save_date="2017-07-21 17:34:37"><![CDATA[Automatisk beställning]]></key>
         <key id="standard&amp;_AVATAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avatar]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Medeltal]]></key>
         <key id="standard&amp;_BACK" attributes="" save_date="2017-05-08 12:36:42"><![CDATA[&lt;&lt; Tillbaka]]></key>
@@ -1975,6 +2171,8 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avbryt]]></key>
         <key id="standard&amp;_CAREER" attributes="" save_date="2017-05-08 16:05:33"><![CDATA[Karriär]]></key>
         <key id="standard&amp;_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurskatalog]]></key>
+        <key id="standard&amp;_CATALOGUE2" attributes="" save_date="2017-07-19 16:59:56"><![CDATA[Kurskatalog]]></key>
+        <key id="standard&amp;_CATALOGUE_NEW" attributes="" save_date="2017-07-24 11:43:37"><![CDATA[Kalender]]></key>
         <key id="standard&amp;_CATEGORIZATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kategorisering]]></key>
         <key id="standard&amp;_CATEGORIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kategorisera]]></key>
         <key id="standard&amp;_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kategori]]></key>
@@ -1996,17 +2194,23 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_CONNECTION_ERROR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Anslutningsfel]]></key>
         <key id="standard&amp;_CONTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Innehåller]]></key>
         <key id="standard&amp;_CONTENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Innehåll]]></key>
+        <key id="standard&amp;_CONTENT_FILE_MANAGER" attributes="" save_date="2017-07-24 12:45:25"><![CDATA[Innehåll Filhanterare]]></key>
         <key id="standard&amp;_CONTENT_LIBRARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Innehållsbibliotek]]></key>
         <key id="standard&amp;_CONTEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tävling]]></key>
         <key id="standard&amp;_CONTINUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fortsätt]]></key>
+        <key id="standard&amp;_CORE_VERSION" attributes="" save_date="2017-07-19 16:59:49"><![CDATA[Kärnversion]]></key>
         <key id="standard&amp;_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurs]]></key>
+        <key id="standard&amp;_COURSECATEGORY" attributes="" save_date="2017-07-19 17:01:53"><![CDATA[Kurskategorier]]></key>
         <key id="standard&amp;_COURSEPATH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Läroplan]]></key>
         <key id="standard&amp;_COURSES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurser]]></key>
         <key id="standard&amp;_COURSE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurskod]]></key>
         <key id="standard&amp;_COURSE_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurslista]]></key>
         <key id="standard&amp;_COURSE_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kursnamn]]></key>
+        <key id="standard&amp;_COURSE_STATUS" attributes="" save_date="2017-07-24 12:02:56"><![CDATA[Kursen är stängd]]></key>
         <key id="standard&amp;_COURSE_S_FREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fri]]></key>
+        <key id="standard&amp;_COURSE_VALID_TIME" attributes="" save_date="2017-07-24 12:02:36"><![CDATA[Tidsgräns överskridits]]></key>
         <key id="standard&amp;_CREATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Skapa]]></key>
+        <key id="standard&amp;_CREATION_DATE" attributes="" save_date="2017-07-19 16:25:22"><![CDATA[Skapelsedatum]]></key>
         <key id="standard&amp;_CREDITS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Medverkare]]></key>
         <key id="standard&amp;_CURRENT_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nuvarande fil]]></key>
         <key id="standard&amp;_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Datum]]></key>
@@ -2014,7 +2218,7 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_DATE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Slutdatum]]></key>
         <key id="standard&amp;_DATE_FIRST_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Första tillgångsdatum]]></key>
         <key id="standard&amp;_DATE_FORMAT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Datumformat]]></key>
-        <key id="standard&amp;_DATE_LAST_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sista tillgpngsdatum]]></key>
+        <key id="standard&amp;_DATE_LAST_ACCESS" attributes="" save_date="2017-07-19 16:27:55"><![CDATA[Sista tillgångsdatum]]></key>
         <key id="standard&amp;_DAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dag]]></key>
         <key id="standard&amp;_DAYS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dag(ar)]]></key>
         <key id="standard&amp;_DEACTIVATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avaktivera]]></key>
@@ -2056,6 +2260,7 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_ERROR_NONAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du måste fylla i namnet]]></key>
         <key id="standard&amp;_ERROR_UPLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fel i objektets uppladdning, objektet laddades inte upp]]></key>
         <key id="standard&amp;_EVENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Evenemang]]></key>
+        <key id="standard&amp;_EXECUTION_DATE" attributes="" save_date="2017-07-19 16:28:03"><![CDATA[Sista körningsdatum]]></key>
         <key id="standard&amp;_EXPAND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utvidga]]></key>
         <key id="standard&amp;_EXPIRATION_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Föråldras den]]></key>
         <key id="standard&amp;_EXPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Exportera]]></key>
@@ -2067,6 +2272,7 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_FIELD_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fältnamn]]></key>
         <key id="standard&amp;_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fil]]></key>
         <key id="standard&amp;_FILENAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Filnamn]]></key>
+        <key id="standard&amp;_FILE_MANAGER" attributes="" save_date="2017-07-19 17:00:26"><![CDATA[Filhanterare]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Filtrera med]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alla villkor måste mötas]]></key>
         <key id="standard&amp;_FILTER_ONE_COND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Minst ett villkor måste mötas]]></key>
@@ -2079,10 +2285,14 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_FUNCTIONAL_ROLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Företagsroller]]></key>
         <key id="standard&amp;_GAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Brist]]></key>
         <key id="standard&amp;_GOOGLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Google]]></key>
+        <key id="standard&amp;_GRADIMENTO" attributes="" save_date="2017-07-24 11:48:21"><![CDATA[Tillfredsställelse]]></key>
         <key id="standard&amp;_GROUPS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Grupper]]></key>
         <key id="standard&amp;_HEIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Höjd]]></key>
+        <key id="standard&amp;_HELP" attributes="" save_date="2017-07-24 10:27:52"><![CDATA[Hjälp]]></key>
         <key id="standard&amp;_HIDDEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gömd]]></key>
         <key id="standard&amp;_HISTORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Historia]]></key>
+        <key id="standard&amp;_HOME" attributes="" save_date="2017-07-24 12:39:01"><![CDATA[Hemflik]]></key>
+        <key id="standard&amp;_HOME_TAB" attributes="" save_date="2017-07-24 12:38:49"><![CDATA[Hemskärm]]></key>
         <key id="standard&amp;_HOURS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Timmar]]></key>
         <key id="standard&amp;_IMAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bild]]></key>
         <key id="standard&amp;_IMAGES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bilder]]></key>
@@ -2099,8 +2309,11 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_LABELS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Etiketter]]></key>
         <key id="standard&amp;_LANGUAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Språlk]]></key>
         <key id="standard&amp;_LASTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Efternamn]]></key>
+        <key id="standard&amp;_LBL_CODE" attributes="" save_date="2017-07-24 11:46:48"><![CDATA[Sätt in din kod]]></key>
+        <key id="standard&amp;_LBL_SEND" attributes="" save_date="2017-07-24 10:05:33"><![CDATA[Beställ]]></key>
         <key id="standard&amp;_LEARNING_OBJECTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lärnings Objekt]]></key>
         <key id="standard&amp;_LEVEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nivå]]></key>
+        <key id="standard&amp;_LIBRARY" attributes="" save_date="2017-07-24 11:47:02"><![CDATA[Bibliotek]]></key>
         <key id="standard&amp;_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Länk]]></key>
         <key id="standard&amp;_LINKEDIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Linkedin]]></key>
         <key id="standard&amp;_LOADED_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uppladdade filer]]></key>
@@ -2179,6 +2392,7 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_OPEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Öppna]]></key>
         <key id="standard&amp;_OPERATION_FAILURE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fel vid behandlingen av den önskade operationen]]></key>
         <key id="standard&amp;_OPERATION_SUCCESSFUL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Operation slutfördes lyckat]]></key>
+        <key id="standard&amp;_OPERATION_SUCCESSFULPWD" attributes="" save_date="2017-07-19 15:15:57"><![CDATA[Framgångsrika lösenord ändras]]></key>
         <key id="standard&amp;_ORDER_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ordna enligt]]></key>
         <key id="standard&amp;_ORD_ASC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ordna stigande]]></key>
         <key id="standard&amp;_ORD_ASC_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Stigande ordning]]></key>
@@ -2193,10 +2407,13 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_PLANNED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Planerad]]></key>
         <key id="standard&amp;_PLAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Spela]]></key>
         <key id="standard&amp;_PLAY_CHANCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Antal gånger sett]]></key>
+        <key id="standard&amp;_PRECOMPILE" attributes="" save_date="2017-07-24 10:21:45"><![CDATA[Slutföra de saknade fält]]></key>
         <key id="standard&amp;_PREREQUISITES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Förutsättningar]]></key>
+        <key id="standard&amp;_PRESENCE" attributes="" save_date="2017-07-24 11:47:26"><![CDATA[Närvaro]]></key>
         <key id="standard&amp;_PREV" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Föregående]]></key>
         <key id="standard&amp;_PREVELEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Föregående element]]></key>
         <key id="standard&amp;_PREVIEW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Förhandsblick]]></key>
+        <key id="standard&amp;_PREV_B" attributes="" save_date="2017-07-24 11:44:14"><![CDATA[Föregående]]></key>
         <key id="standard&amp;_PREV_STEP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Föregående]]></key>
         <key id="standard&amp;_PROGRESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Framsteg]]></key>
         <key id="standard&amp;_PROPERTIES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Egenskaper]]></key>
@@ -2209,6 +2426,7 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_RECIPIENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mottagare]]></key>
         <key id="standard&amp;_REGISTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registrera]]></key>
         <key id="standard&amp;_REGISTER_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Medgångsdatum]]></key>
+        <key id="standard&amp;_REMEMBER_ME" attributes="" save_date="2017-07-24 10:24:55"><![CDATA[Kom ihåg mig]]></key>
         <key id="standard&amp;_REMOVE_FROM_NODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ta bort från nod]]></key>
         <key id="standard&amp;_REPLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Svara]]></key>
         <key id="standard&amp;_REPOPASTELO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Klistra in Lärnings Objekt]]></key>
@@ -2216,15 +2434,23 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_REQUIRED_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Krävt resultat]]></key>
         <key id="standard&amp;_RESET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Återställ]]></key>
         <key id="standard&amp;_ROLLBACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rulla tillbaka]]></key>
+        <key id="standard&amp;_ROOT" attributes="" save_date="2017-07-24 11:44:27"><![CDATA[rot]]></key>
         <key id="standard&amp;_ROW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rad]]></key>
         <key id="standard&amp;_SAVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Spara ändringar]]></key>
         <key id="standard&amp;_SCHEDULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tidtabell]]></key>
         <key id="standard&amp;_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Resultat]]></key>
+        <key id="standard&amp;_SCORE_LAST_TEST" attributes="" save_date="2017-07-21 16:53:11"><![CDATA[Resultat av det sista provet]]></key>
+        <key id="standard&amp;_SCRIPT_DESCRIPTION" attributes="" save_date="2017-07-24 11:49:34"><![CDATA[Script beskrivning]]></key>
+        <key id="standard&amp;_SCRIPT_ID" attributes="" save_date="2017-07-24 11:49:44"><![CDATA[Script ID]]></key>
+        <key id="standard&amp;_SCRIPT_NAME" attributes="" save_date="2017-07-24 11:49:53"><![CDATA[Script namn]]></key>
+        <key id="standard&amp;_SCRIPT_VERSION" attributes="" save_date="2017-07-24 11:50:01"><![CDATA[Script version]]></key>
         <key id="standard&amp;_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sök]]></key>
         <key id="standard&amp;_SECONDS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[sekunder]]></key>
         <key id="standard&amp;_SELECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj]]></key>
         <key id="standard&amp;_SELECTED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valda element]]></key>
         <key id="standard&amp;_SELECT_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj alla]]></key>
+        <key id="standard&amp;_SELECT_LIBRARY" attributes="" save_date="2017-07-24 10:59:23"><![CDATA[Välj ett bibliotek att visa]]></key>
+        <key id="standard&amp;_SELECT_VIDEO_TYPE" attributes="" save_date="2017-07-24 10:51:47"><![CDATA[Välj bandbredd]]></key>
         <key id="standard&amp;_SEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sänd]]></key>
         <key id="standard&amp;_SENDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sändare]]></key>
         <key id="standard&amp;_SEND_TO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sänd till]]></key>
@@ -2232,6 +2458,7 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_SHORTDESC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kort beskrivning]]></key>
         <key id="standard&amp;_SHOW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa]]></key>
         <key id="standard&amp;_SHOW_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Resultat]]></key>
+        <key id="standard&amp;_SHOW_STATISTICS" attributes="" save_date="2017-07-24 11:05:59"><![CDATA[Visa grafik]]></key>
         <key id="standard&amp;_SIGNATURE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Signatur]]></key>
         <key id="standard&amp;_SORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ordna enligt]]></key>
         <key id="standard&amp;_STANDINGS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ställningar]]></key>
@@ -2243,11 +2470,12 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_START_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Start]]></key>
         <key id="standard&amp;_STATISTICS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Statistik]]></key>
         <key id="standard&amp;_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Status]]></key>
-        <key id="standard&amp;_SUBJECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Subjekt]]></key>
+        <key id="standard&amp;_SUBJECT" attributes="" save_date="2017-07-24 10:29:21"><![CDATA[Ämne]]></key>
         <key id="standard&amp;_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beställ]]></key>
         <key id="standard&amp;_SUBSCRIBED_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beställd av]]></key>
+        <key id="standard&amp;_SUBSCRIBE_COURSE" attributes="" save_date="2017-07-21 17:30:45"><![CDATA[Kursbeställning]]></key>
         <key id="standard&amp;_SUSPEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avbryt]]></key>
-        <key id="standard&amp;_SUSPENDED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avbruten]]></key>
+        <key id="standard&amp;_SUSPENDED" attributes="" save_date="2017-07-19 15:51:58"><![CDATA[Avbrutits]]></key>
         <key id="standard&amp;_TABS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tabbar]]></key>
         <key id="standard&amp;_TAGS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Taggar]]></key>
         <key id="standard&amp;_TELESKILL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Telekunskap]]></key>
@@ -2267,13 +2495,15 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_UNPUBLISH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avpublicera]]></key>
         <key id="standard&amp;_UNREAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inte läst]]></key>
         <key id="standard&amp;_UNSELECT_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bortvälj alla]]></key>
-        <key id="standard&amp;_UNTIL_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tills inte fullgjord/godkänd]]></key>
+        <key id="standard&amp;_UNTIL_COMPLETED" attributes="" save_date="2017-07-21 10:49:04"><![CDATA[Tills inte fullfört/klarat]]></key>
         <key id="standard&amp;_UP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Upp]]></key>
         <key id="standard&amp;_UPLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ladda upp fil(er)]]></key>
         <key id="standard&amp;_URL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[URL]]></key>
         <key id="standard&amp;_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användare]]></key>
         <key id="standard&amp;_USERNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användarnamn]]></key>
         <key id="standard&amp;_USERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användare]]></key>
+        <key id="standard&amp;_USER_ALREADY_EXISTS" attributes="" save_date="2017-07-24 11:50:57"><![CDATA[Användaren existerar redan]]></key>
+        <key id="standard&amp;_USER_RELEASE" attributes="" save_date="2017-07-24 12:01:44"><![CDATA[Användarversion]]></key>
         <key id="standard&amp;_USER_STATUS_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pågår]]></key>
         <key id="standard&amp;_USER_STATUS_CANCELLED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Borttagen]]></key>
         <key id="standard&amp;_USER_STATUS_CONFIRMED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beställningar att bekräfta]]></key>
@@ -2281,17 +2511,18 @@ Lösenord: [password]]]></key>
         <key id="standard&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:54:52"><![CDATA[Gå in]]></key>
         <key id="standard&amp;_USER_STATUS_RESERVED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reserverat]]></key>
         <key id="standard&amp;_USER_STATUS_SUBS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beställt]]></key>
-        <key id="standard&amp;_USER_STATUS_SUSPEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avbrutet]]></key>
+        <key id="standard&amp;_USER_STATUS_SUSPEND" attributes="" save_date="2017-07-19 15:51:53"><![CDATA[Avbrutits]]></key>
         <key id="standard&amp;_VERSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Version]]></key>
         <key id="standard&amp;_VIDEOCONFERENCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Videokonferens]]></key>
         <key id="standard&amp;_VIEW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vy]]></key>
+        <key id="standard&amp;_VIEW_ALL" attributes="" save_date="2017-07-24 11:06:06"><![CDATA[Visa alla]]></key>
         <key id="standard&amp;_VIEW_PERMISSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Editera åskådningsrättigheter]]></key>
         <key id="standard&amp;_WAITING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Väntar]]></key>
         <key id="standard&amp;_WAITING_USERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Väntande användare]]></key>
         <key id="standard&amp;_WARNING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Varning]]></key>
         <key id="standard&amp;_WIDTH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bredd]]></key>
         <key id="standard&amp;_YEAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[År]]></key>
-        <key id="standard&amp;_YES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jo]]></key>
+        <key id="standard&amp;_YES" attributes="" save_date="2017-07-21 10:38:43"><![CDATA[Ja]]></key>
       </module>
       <module id="statistic">
         <key id="statistic&amp;_AT_HOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vid timme]]></key>
@@ -2330,10 +2561,13 @@ Lösenord: [password]]]></key>
         <key id="statistic&amp;_WEEK_DAY_6_SHORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lör]]></key>
       </module>
       <module id="stats">
+        <key id="stats&amp;_FILTEREDITIONSELECTONEOPTION" attributes="" save_date="2017-07-24 11:42:36"><![CDATA[Välj ett alternativ]]></key>
+        <key id="stats&amp;_FILTEREDITIONSELECTTITLE" attributes="" save_date="2017-07-24 11:38:25"><![CDATA[Filtrera efter version]]></key>
         <key id="stats&amp;_FILTEROBJECTFINISHED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa endast användare som har sett minst ett Lärnings Objekt]]></key>
         <key id="stats&amp;_FILTERSTATUSSELECTONEOPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alla status]]></key>
         <key id="stats&amp;_ORGPLAYTITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Statistik enligt objekt]]></key>
         <key id="stats&amp;_PROGRESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objekt]]></key>
+        <key id="stats&amp;_SHOW_STATISTICS" attributes="" save_date="2017-07-24 11:05:56"><![CDATA[Visa grafik]]></key>
         <key id="stats&amp;_STATFORUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användarstatistik]]></key>
         <key id="stats&amp;_STATISTIC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Statistik]]></key>
         <key id="stats&amp;_STATNOTRACKFORUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ingen data för användare/lektion]]></key>
@@ -2342,8 +2576,11 @@ Lösenord: [password]]]></key>
         <key id="stats&amp;_STATSUSERITEM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Statistik enligt Student/Objekt]]></key>
         <key id="stats&amp;_STATS_FULLNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Helt namn]]></key>
         <key id="stats&amp;_STATS_USERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användarstatistik]]></key>
+        <key id="stats&amp;_VIEW_OPEN_QUEST" attributes="" save_date="2017-07-24 11:06:53"><![CDATA[Visa svaren på de öppna frågorna]]></key>
       </module>
       <module id="storage">
+        <key id="storage&amp;_EXPORT_QUESTIONS" attributes="" save_date="2017-07-24 11:04:01"><![CDATA[Exportera frågor]]></key>
+        <key id="storage&amp;_HELP" attributes="" save_date="2017-07-24 10:27:57"><![CDATA[Hjälp]]></key>
         <key id="storage&amp;_HOMEREPOROOTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mina Objekt]]></key>
         <key id="storage&amp;_LOCKED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Låst]]></key>
         <key id="storage&amp;_LONAME_faq" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[FAQ]]></key>
@@ -2361,12 +2598,15 @@ Lösenord: [password]]]></key>
         <key id="storage&amp;_ORGPLAYTITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Spela objekt]]></key>
         <key id="storage&amp;_ORGROOTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kursobjekt]]></key>
         <key id="storage&amp;_PUBREPOROOTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Delade objekt]]></key>
+        <key id="storage&amp;_REMEMBER_ME" attributes="" save_date="2017-07-24 10:24:59"><![CDATA[Kom ihåg mig]]></key>
         <key id="storage&amp;_RENAMEFOLDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Byt namn]]></key>
         <key id="storage&amp;_REPOCOPYLO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kopiera Lärnings Objekt]]></key>
         <key id="storage&amp;_REPOCREATELO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nytt Lärnings Objekt]]></key>
         <key id="storage&amp;_REPOSELECTDESTINATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj mål för :]]></key>
         <key id="storage&amp;_RULES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Regler får åskådning]]></key>
         <key id="storage&amp;_SELECTLO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj Lärnings Objekt]]></key>
+        <key id="storage&amp;_SELECTTEST" attributes="" save_date="2017-07-24 10:51:22"><![CDATA[Välj prove:]]></key>
+        <key id="storage&amp;_SELECT_VIDEO_TYPE" attributes="" save_date="2017-07-24 10:51:43"><![CDATA[Välj bandbredd]]></key>
         <key id="storage&amp;_TARGETMOVEFOLDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj målmapp]]></key>
       </module>
       <module id="subscribe">
@@ -2374,8 +2614,11 @@ Lösenord: [password]]]></key>
         <key id="subscribe&amp;_BEFORE_THIS_APPROVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Användarens beställning på denna kurs bekröftas först efter administratorns godkännande]]></key>
         <key id="subscribe&amp;_CAPTION_SELECT_LEVELS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj nivå för den valda användaren]]></key>
         <key id="subscribe&amp;_CHOOSE_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj stundenter att beställa på denna kurs]]></key>
+        <key id="subscribe&amp;_COPY" attributes="" save_date="2017-07-24 10:49:18"><![CDATA[Kopiera]]></key>
+        <key id="subscribe&amp;_COPY_TO_COURSE" attributes="" save_date="2017-07-21 17:33:04"><![CDATA[Kopiera beställningar]]></key>
         <key id="subscribe&amp;_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Korrigera beställning]]></key>
         <key id="subscribe&amp;_DATE_BEGIN_VALIDITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivera från]]></key>
+        <key id="subscribe&amp;_DATE_COMPLETE" attributes="" save_date="2017-07-19 16:28:48"><![CDATA[Fullgörning datum]]></key>
         <key id="subscribe&amp;_DATE_EXPIRE_VALIDITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivera tills]]></key>
         <key id="subscribe&amp;_DATE_FIRST_COMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Datum för första fullgörning]]></key>
         <key id="subscribe&amp;_DATE_LAST_COMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Datum för sista fullgörning]]></key>
@@ -2388,11 +2631,13 @@ Lösenord: [password]]]></key>
         <key id="subscribe&amp;_INSERT_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Korrigera inlägg]]></key>
         <key id="subscribe&amp;_INSERT_NOT_NEEDED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inlägg är inte nödvändiga]]></key>
         <key id="subscribe&amp;_INSER_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inläggsstatus]]></key>
-        <key id="subscribe&amp;_JUSTIFIED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jo, motiverat]]></key>
+        <key id="subscribe&amp;_JUSTIFIED" attributes="" save_date="2017-07-21 10:38:47"><![CDATA[Ja, motiverat]]></key>
         <key id="subscribe&amp;_LEVEL_TO_IMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nivå för imprterade användare]]></key>
+        <key id="subscribe&amp;_MOVE" attributes="" save_date="2017-07-24 10:49:33"><![CDATA[Flytta]]></key>
+        <key id="subscribe&amp;_MOVE_TO_COURSE" attributes="" save_date="2017-07-21 17:33:34"><![CDATA[Flytta beställningar]]></key>
         <key id="subscribe&amp;_NOT_EXPIRED_WITHOUT_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utan föråldring]]></key>
         <key id="subscribe&amp;_NOT_EXPIRED_WITH_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inte föråldrad]]></key>
-        <key id="subscribe&amp;_NOT_JUSTIFIED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jo, inte motiverat]]></key>
+        <key id="subscribe&amp;_NOT_JUSTIFIED" attributes="" save_date="2017-07-21 10:38:51"><![CDATA[Ja, inte motiverat]]></key>
         <key id="subscribe&amp;_NOT_NEEDED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inte nödvändigt, redan beställd till denna kurs]]></key>
         <key id="subscribe&amp;_ONLY_EXPIRED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Endast föråldrade]]></key>
         <key id="subscribe&amp;_RESET_VALIDITY_DATES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ta bort giltighetsdatum]]></key>
@@ -2400,6 +2645,7 @@ Lösenord: [password]]]></key>
         <key id="subscribe&amp;_SEND_ALERT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sänd en varning till beställande användare]]></key>
         <key id="subscribe&amp;_SHOW_ONLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa endast]]></key>
         <key id="subscribe&amp;_STATUS_TO_IMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Status av användare som importeras]]></key>
+        <key id="subscribe&amp;_SUBSCRIBE" attributes="" save_date="2017-07-24 10:05:43"><![CDATA[Beställ]]></key>
         <key id="subscribe&amp;_SUBSCRIBE_ACCEPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bekräftelsetext (skickas åt användaren)]]></key>
         <key id="subscribe&amp;_SUBSCRIBE_REFUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inte accepterad text (skickas åt användaren)]]></key>
         <key id="subscribe&amp;_SUMMARY_SELECT_LEVEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista av valda användare, välj nivå]]></key>
@@ -2411,7 +2657,11 @@ Lösenord: [password]]]></key>
         <key id="subscribe&amp;_WAIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gör ingenting]]></key>
         <key id="subscribe&amp;_YOUCANSUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du kan beställa endast [user_subscribe_limit] förrän du når din beställningsgräns]]></key>
       </module>
-      <module id="subscription"/>
+      <module id="subscription">
+        <key id="subscription&amp;_CONFIRM_SUBSCRIPTION" attributes="" save_date="2017-07-21 17:31:35"><![CDATA[Bekräfta beställning]]></key>
+        <key id="subscription&amp;_IMPORT_FILE" attributes="" save_date="2017-07-24 10:46:35"><![CDATA[CSV-filimport]]></key>
+        <key id="subscription&amp;_IMPORT_HEADER" attributes="" save_date="2017-07-24 10:48:28"><![CDATA[Vill du inkludera headeren?]]></key>
+      </module>
       <module id="sysforum">
         <key id="sysforum&amp;_ADDMESSAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nytt meddelande]]></key>
         <key id="sysforum&amp;_LOCKEDMESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Detta meddelande är låst]]></key>
@@ -2426,19 +2676,23 @@ Lösenord: [password]]]></key>
         <key id="test&amp;_ALL_DIFFICULT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alla svårighetsgrader]]></key>
         <key id="test&amp;_ALL_QUEST_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vilken som helst kategori]]></key>
         <key id="test&amp;_ALL_QUEST_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alla typer]]></key>
+        <key id="test&amp;_ATTEMPTS_REMAINING_BEFORE_SUSPENSION" attributes="" save_date="2017-07-24 10:42:32"><![CDATA[Återstående försök före avstängning]]></key>
         <key id="test&amp;_BONUS_SCORE_FOR_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bonus tilldelas för detta prov (med rund eller manuell förändring)]]></key>
         <key id="test&amp;_CURRENT_SELECTION_COUNT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valt svar]]></key>
         <key id="test&amp;_DESELECT_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj bort sida]]></key>
         <key id="test&amp;_EMPTY_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tomt svar]]></key>
+        <key id="test&amp;_EXISTING_TEST" attributes="" save_date="2017-07-24 12:42:39"><![CDATA[Till ett befintligt prov]]></key>
         <key id="test&amp;_FEEDBACK_MANAGEMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Responshantering]]></key>
         <key id="test&amp;_FEEDBACK_TEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Textrespons]]></key>
         <key id="test&amp;_GIFT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[GÅVA]]></key>
         <key id="test&amp;_HARD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Svår]]></key>
         <key id="test&amp;_MANDATORY_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Be användaren svara på alla frågor]]></key>
         <key id="test&amp;_MAX_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximimängd svar på provet (sätt 0 för inga begränsningar)]]></key>
+        <key id="test&amp;_MAX_ATTEMPT_REACH" attributes="" save_date="2017-07-24 10:45:13"><![CDATA[Det maximala antalet försök har uppnåtts]]></key>
         <key id="test&amp;_NEED_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du måste svara på alla frågor för att fortsätta med provet.]]></key>
         <key id="test&amp;_NEW_SCORE_FOR_QUESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tilldela nytt resultat för denna fråga]]></key>
         <key id="test&amp;_NEW_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Som ett nytt prov]]></key>
+        <key id="test&amp;_NUMBER_OF_ATTEMPT" attributes="" save_date="2017-07-24 10:46:02"><![CDATA[Antal återstående försök <b> [remaining_attempt] </ b>]]></key>
         <key id="test&amp;_ORDER_TYPE_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Slumpmässigt val i varje kategori]]></key>
         <key id="test&amp;_ORDER_TYPE_RANDOM" attributes="" save_date="2017-04-19 12:49:59"><![CDATA[(Undergrupp av fråga)]]></key>
         <key id="test&amp;_QUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fråga]]></key>
@@ -2474,6 +2728,7 @@ Lösenord: [password]]]></key>
         <key id="test&amp;_QUEST_TM2_SETSCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Justera resultat]]></key>
         <key id="test&amp;_QUEST_TM2_SETTIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Justera tid:]]></key>
         <key id="test&amp;_QUEST_UPLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ladda upp fil]]></key>
+        <key id="test&amp;_RESTART_INFO" attributes="" save_date="2017-07-24 12:40:57"><![CDATA[Starta om provet från början]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj sida]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avbryt provet efter följande antal misslyckade försök]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avbryt provet efter följande antal timmar]]></key>
@@ -2497,7 +2752,7 @@ Lösenord: [password]]]></key>
         <key id="test&amp;_TEST_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rätt]]></key>
         <key id="test&amp;_TEST_END_BACKTOLESSON" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[OK]]></key>
         <key id="test&amp;_TEST_END_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Skicka (provet slutfört)]]></key>
-        <key id="test&amp;_TEST_FAILED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inte godkänt]]></key>
+        <key id="test&amp;_TEST_FAILED" attributes="" save_date="2017-07-21 10:48:53"><![CDATA[Inte klarat]]></key>
         <key id="test&amp;_TEST_FILE_NOT_ATTACH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du laddade inte upp en fil]]></key>
         <key id="test&amp;_TEST_FIRST_QUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[som först]]></key>
         <key id="test&amp;_TEST_IC_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj svar]]></key>
@@ -2579,13 +2834,15 @@ Lösenord: [password]]]></key>
         <key id="test&amp;_TEST_SCORES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Poäng]]></key>
         <key id="test&amp;_TEST_SECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Prov]]></key>
         <key id="test&amp;_TEST_SEL_LIBRARIES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj svar från biblioteket]]></key>
-        <key id="test&amp;_TEST_SHOW_REVIEW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa senaste resultat]]></key>
+        <key id="test&amp;_TEST_SHOW_REVIEW" attributes="" save_date="2017-07-21 16:53:57"><![CDATA[Visa sista resultat]]></key>
         <key id="test&amp;_TEST_SHOW_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Slutligt resultat visas efter att provet slutförts]]></key>
         <key id="test&amp;_TEST_SHOW_SCORE_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Slutligt resultat visas inte efter att provet slutförts]]></key>
         <key id="test&amp;_TEST_SHOW_SOLUTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lösningar visas efter att provet slutförts]]></key>
         <key id="test&amp;_TEST_SHOW_SOLUTION_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Du <span class="text_bold">kan inte</span> få det rätta svaret efter att provet har slutförts]]></key>
-        <key id="test&amp;_TEST_SUB_ONE_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ta bort senaste svaret]]></key>
+        <key id="test&amp;_TEST_SUB_ONE_ANSWER" attributes="" save_date="2017-07-21 16:54:25"><![CDATA[Ta bort sista svaret]]></key>
         <key id="test&amp;_TEST_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Provets frågelista]]></key>
+        <key id="test&amp;_TEST_SUSPENDED" attributes="" save_date="2017-07-19 15:47:24"><![CDATA[Provet har avbrutits]]></key>
+        <key id="test&amp;_TEST_SUSPENDED_UNTIL" attributes="" save_date="2017-07-19 15:37:17"><![CDATA[Provet har avbrutits tills]]></key>
         <key id="test&amp;_TEST_TEXT_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[svarstext]]></key>
         <key id="test&amp;_TEST_TE_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj rätt ord]]></key>
         <key id="test&amp;_TEST_TIME_ASSIGNED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Provets tidsgräns : <b>[time_assigned] minuter</b>]]></key>
@@ -2607,16 +2864,18 @@ Lösenord: [password]]]></key>
         <key id="test&amp;_TEST_TM2_SETTIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Applicera och Ställ in tid]]></key>
         <key id="test&amp;_TEST_TM2_SUBD_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Distribuerat av:]]></key>
         <key id="test&amp;_TEST_TM_FOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Justera tid tilldelad till frågorna]]></key>
-        <key id="test&amp;_TEST_TM_ONE" attributes="" save_date="2017-04-19 12:50:20"><![CDATA[1 - Justera Provtid]]></key>
+        <key id="test&amp;_TEST_TM_ONE" attributes="" save_date="2017-07-24 10:39:01"><![CDATA[1 - Justera provtid]]></key>
         <key id="test&amp;_TEST_TM_THREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Justera tid för varje fråga]]></key>
         <key id="test&amp;_TEST_TM_TWO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[2 - Justera total tid för försök]]></key>
         <key id="test&amp;_TEST_TOTAL_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Totalresultat:]]></key>
         <key id="test&amp;_TEST_YOUCANNOT_SAVEKEEP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Detta prov stöder inte den krävda aktionen]]></key>
         <key id="test&amp;_TIME_ELAPSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Förfluten tid]]></key>
         <key id="test&amp;_TIME_LEFT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tid kvar]]></key>
+        <key id="test&amp;_UNREACHED_PREREQUISITES" attributes="" save_date="2017-07-24 10:19:38"><![CDATA[Du uppfyllde inte förutsättningarna]]></key>
         <key id="test&amp;_USE_SUSPENSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Använd provavbrytning]]></key>
         <key id="test&amp;_VERY_HARD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mycket svår]]></key>
-        <key id="test&amp;_YES_IF_PASSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jo, om provet har godkänts]]></key>
+        <key id="test&amp;_YES_IF_PASSED" attributes="" save_date="2017-07-21 11:32:33"><![CDATA[Ja, om provet har passerats]]></key>
+        <key id="test&amp;_YOU_HAVE_PASS_THIS_TEST" attributes="" save_date="2017-07-21 11:08:47"><![CDATA[Du har klarat detta prov]]></key>
       </module>
       <module id="transaction">
         <key id="transaction&amp;_MARK_AS_PAID" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Markera som betald]]></key>
@@ -2626,17 +2885,37 @@ Lösenord: [password]]]></key>
       <module id="treeview">
         <key id="treeview&amp;_ALT_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tom]]></key>
       </module>
-      <module id="user_management"/>
+      <module id="user_management">
+        <key id="user_management&amp;_REG_BUTTON" attributes="" save_date="2017-07-24 10:23:21"><![CDATA[Som]]></key>
+      </module>
       <module id="user_managment">
+        <key id="user_managment&amp;_ACTION_ON_USERS" attributes="" save_date="2017-07-21 16:47:30"><![CDATA[Åtgärd på användarna]]></key>
+        <key id="user_managment&amp;_AUTOMATIC_PASSWORD" attributes="" save_date="2017-07-19 15:14:30"><![CDATA[Automatiskt lösenord]]></key>
+        <key id="user_managment&amp;_CREATE_ALL" attributes="" save_date="2017-07-24 10:23:49"><![CDATA[Skapar alla]]></key>
+        <key id="user_managment&amp;_CREATE_AND_UPDATE" attributes="" save_date="2017-07-19 17:05:41"><![CDATA[Skapa och uppdatera]]></key>
         <key id="user_managment&amp;_DONT_USE_TREE_REGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Använd inte självregistrering i organisationsträdet]]></key>
+        <key id="user_managment&amp;_FIELD_REPEATED" attributes="" save_date="2017-07-24 10:37:24"><![CDATA[Du kan inte importera flera gånger samma kolumn]]></key>
+        <key id="user_managment&amp;_FROM_FILE" attributes="" save_date="2017-07-19 15:17:20"><![CDATA[Ladda lösenord från fil]]></key>
+        <key id="user_managment&amp;_GENERATE_PASSWORD" attributes="" save_date="2017-07-19 15:05:12"><![CDATA[Skapa lösenord]]></key>
+        <key id="user_managment&amp;_INSERT_ALL" attributes="" save_date="2017-07-24 10:38:37"><![CDATA[Infoga för alla]]></key>
+        <key id="user_managment&amp;_INSERT_EMPTY" attributes="" save_date="2017-07-19 15:17:35"><![CDATA[Sätt in lösenord där fältet är tomt]]></key>
         <key id="user_managment&amp;_LOG_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login/registrerings alternativ]]></key>
+        <key id="user_managment&amp;_MANUAL_PASSWORD" attributes="" save_date="2017-07-19 15:14:17"><![CDATA[Manuellt lösenord]]></key>
+        <key id="user_managment&amp;_NEED_TO_ALERT" attributes="" save_date="2017-07-19 15:18:38"><![CDATA[Du måste aktivera sändningen av varningen till användare om lösenordsinmatningen är vald]]></key>
+        <key id="user_managment&amp;_NO_FILE" attributes="" save_date="2017-07-24 10:38:15"><![CDATA[Ingen fil laddad]]></key>
         <key id="user_managment&amp;_NO_VALUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inga val har gjorts]]></key>
-        <key id="user_managment&amp;_REACH_NUMBERS_OF_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[DU har misslyckats att logga in [attempt] gånger, för säkerhetsskäl vänta [time] minuter förrän du försöker pånytt]]></key>
+        <key id="user_managment&amp;_ONLY_CREATE" attributes="" save_date="2017-07-19 17:03:22"><![CDATA[Bara skapa]]></key>
+        <key id="user_managment&amp;_ONLY_UPDATE" attributes="" save_date="2017-07-19 17:05:10"><![CDATA[Bara uppdatera]]></key>
+        <key id="user_managment&amp;_PASSWORD_TO_INSERT" attributes="" save_date="2017-07-19 15:04:38"><![CDATA[Lösenord för att infoga]]></key>
+        <key id="user_managment&amp;_REACH_NUMBERS_OF_ATTEMPT" attributes="" save_date="2017-07-24 10:38:45"><![CDATA[Du har misslyckats att logga in [attempt] gånger, för säkerhetsskäl vänta [time] minuter förrän du försöker pånytt]]></key>
         <key id="user_managment&amp;_REGISTER_TYPE_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Endast av administrator]]></key>
         <key id="user_managment&amp;_REGISTER_TYPE_MODERATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Modererad självregistrering]]></key>
         <key id="user_managment&amp;_REGISTER_TYPE_SELF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fri självregistrering]]></key>
+        <key id="user_managment&amp;_SEND_NEW_CREDENTIALS_ALERT" attributes="" save_date="2017-07-19 15:28:19"><![CDATA[Skicka nya inloggningsuppgifter till användare]]></key>
+        <key id="user_managment&amp;_SET_PASSWORD" attributes="" save_date="2017-07-19 15:04:54"><![CDATA[Välj lösenord]]></key>
+        <key id="user_managment&amp;_USERID_NEEDED" attributes="" save_date="2017-07-19 14:59:18"><![CDATA[Användarnamn som krävs vid importen och väljas för jämförelse]]></key>
         <key id="user_managment&amp;_USE_WITH_MANUALEINSERT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beställningskod inmatad manuellt]]></key>
-        <key id="user_managment&amp;_USE_WITH_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beställningskod vald från meny]]></key>
+        <key id="user_managment&amp;_USE_WITH_SELECTION" attributes="" save_date="2017-07-24 12:58:11"><![CDATA[Beställningskod vald från rullgardinsmeny]]></key>
       </module>
       <module id="wiki">
         <key id="wiki&amp;_ADD_WIKI" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lägg till wiki]]></key>

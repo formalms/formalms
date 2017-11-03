@@ -191,7 +191,8 @@ class Lms_BlockWidget_menu extends Widget {
 	}
 
 	public function credits() {
-		$str = '<h2 class="heading">' . Lang::t ( '_CREDITS', 'catalogue' ) . '</h2>' . '<div class="content">';
+//		$str = '<h2 class="heading">' . Lang::t ( '_CREDITS', 'catalogue' ) . '</h2>' . '<div class="content">';
+		$str = '';
 		$period_start = '';
 		$period_end = '';
 		
@@ -242,7 +243,9 @@ class Lms_BlockWidget_menu extends Widget {
 		$form = new Form ();
 		
 		$str =  $str. $form->openForm ( 'credits_period_form', 'index.php?r=' . $this->link, false, 'GET' ) . $form->getDropdown ( Lang::t ( '_TIME_PERIODS', 'menu' ), 'credits_period', 'credits_period', $p_list, $p_selected, '', '', $onchange ) . $form->closeForm ();
-		
+
+        $select = $form->openForm ( 'credits_period_form', 'index.php?r=' . $this->link, false, 'GET' ) . $form->getDropdown ( Lang::t ( '_TIME_PERIODS', 'menu' ), 'credits_period', 'credits_period', $p_list, $p_selected, '', '', $onchange ) . $form->closeForm ();
+
 		// draw tables
 		$no_cdata = true;
 		foreach ( $course_data as $ctype => $cdata ) {
@@ -250,7 +253,15 @@ class Lms_BlockWidget_menu extends Widget {
 			if (count ( $cdata ) > 0) {
 				
 				$no_cdata = false;
-				$str = $str.'<div class="yui-dt">' . '<table class="table-view" summary="' . Lang::t ( '_CREDITS', 'catalogue' ) . '">' . '<caption>' . $course_type_trans [$ctype] . '</caption>' . '<thead><tr clas="yui-dt-odd">' . '<th class="course_name"><div class="yui-dt-liner"><span class="yui-dt-label">' . Lang::t ( '_COURSE', 'catalogue' ) . '</span></div></th>' . '<th class="image"><div class="yui-dt-liner"><span class="yui-dt-label">' . Lang::t ( '_CREDITS', 'catalogue' ) . '</span></div></th>' . '</tr></thead>' . '<tbody>';
+                $str = $str . '<div class="yui-dt">' .
+                                '<table class="table-view" summary="' . Lang::t('_CREDITS', 'catalogue') . '">'
+                                . '<caption>' . $course_type_trans [$ctype] . '</caption>'
+                                . '<thead><tr clas="yui-dt-odd">'
+                                . '<th class="course_name"><div class="yui-dt-liner"><span class="yui-dt-label">'
+                                . Lang::t('_COURSE', 'catalogue')
+                                . '</span></div></th>'
+                                . '<th class="image"><div class="yui-dt-liner"><span class="yui-dt-label">'
+                                . Lang::t('_CREDITS', 'catalogue') . '</span></div></th>' . '</tr></thead>' . '<tbody>';
 				
 				$total = 0;
 				$i = 0;
@@ -273,7 +284,46 @@ class Lms_BlockWidget_menu extends Widget {
 		
 		$str = $str.'</div>';    
         
-        return $str;
+//        return $str;
+
+        $table = '
+            <div class="table-credit-wrapper">
+                <table class="table-credit">
+                    <thead>
+                        <tr class="table-credit__row table-credit__row--head">
+                            <td>'. Lang::t('_COURSE', 'catalogue') .'</td>
+                            <td>'. Lang::t('_CREDITS', 'catalogue') .'</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="table-credit__row">
+                            <td>
+                                Corso lorem ipsum
+                            </td>
+                            <td>
+                                100
+                            </td>
+                        </tr>
+                        <tr class="table-credit__row">
+                            <td>
+                                Corso lorem ipsum
+                            </td>
+                            <td>
+                                100
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-credit__row table-credit__row--footer">
+                            <td>Totale</td>
+                            <td>200</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>   
+        ';
+
+        return $select . $table;
         
 	}
 	public function user_details_full($link) {

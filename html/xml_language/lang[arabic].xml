@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170713</DATE>
+  <DATE>20171024</DATE>
   <LANG id="arabic">
     <lang_code>arabic</lang_code>
     <lang_description>&#x627;&#x644;&#x639;&#x631;&#x628;&#x64A;&#x629;</lang_description>
@@ -1325,6 +1325,8 @@ Username: [userid]]]></key>
         <key id="menu&amp;_WEBPAGES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[صفحات ويب]]></key>
       </module>
       <module id="menu_course">
+        <key id="menu_course&amp;Collaborative Area" attributes="" save_date="2017-07-24 13:50:49"><![CDATA[المنطقة التعاونية]]></key>
+        <key id="menu_course&amp;Stat Area" attributes="" save_date="2017-07-24 13:51:12"><![CDATA[الاحصائيات منطقة]]></key>
         <key id="menu_course&amp;_ADVICE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[إعلانات]]></key>
         <key id="menu_course&amp;_COURSECHART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[خرائط الدورة]]></key>
         <key id="menu_course&amp;_COURSEREPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[كتاب الصف]]></key>

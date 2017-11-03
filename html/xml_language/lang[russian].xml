@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20170713</DATE>
+  <DATE>20171024</DATE>
   <LANG id="russian">
     <lang_code>russian</lang_code>
     <lang_description>Russian</lang_description>
@@ -1569,7 +1569,7 @@
         <key id="profile&amp;_MESSAGE_TEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Текст сообщения]]></key>
         <key id="profile&amp;_NEWPWDVALID" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Новый пароль действителен для]]></key>
         <key id="profile&amp;_NEW_VISIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[(Посещений в последние [days] дней)]]></key>
-        <key id="profile&amp;_NOAVATAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[нет аватара]]></key>
+        <key id="profile&amp;_NOAVATAR" attributes="" save_date="2017-09-15 15:00:52"><![CDATA[Нет аватара]]></key>
         <key id="profile&amp;_NO_AUDIO_FOUND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Нет аудио]]></key>
         <key id="profile&amp;_NO_IMAGE_FOUND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Нет графики]]></key>
         <key id="profile&amp;_NO_OTHER_FOUND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Нет файлов]]></key>
@@ -1579,7 +1579,7 @@
         <key id="profile&amp;_OLD_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Старый пароль]]></key>
         <key id="profile&amp;_OTHER_POLICY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Другие настройки]]></key>
         <key id="profile&amp;_PFL_POLICY_NOONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ни один]]></key>
-        <key id="profile&amp;_PFL_POLICY_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[учителя]]></key>
+        <key id="profile&amp;_PFL_POLICY_TEACHER" attributes="" save_date="2017-09-15 15:01:31"><![CDATA[Учителя]]></key>
         <key id="profile&amp;_POLICY_ASSIGNED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[правило, назначенное полю]]></key>
         <key id="profile&amp;_PRIVATE_MESSAGE_FROM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Разрешить частные сообщения от]]></key>
         <key id="profile&amp;_PROFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Профиль пользователя]]></key>

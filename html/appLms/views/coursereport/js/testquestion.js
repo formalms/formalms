@@ -68,9 +68,9 @@ window.TestQuestion = (function ($) {
       loadQuestionDetails(function (data) {
         buildQuestionDetails(data, $elem);
       }, {
-        idTest: $elem.prop('data-idtest'),
-        idQuest: $elem.prop('data-idquest'),
-        type: $elem.prop('data-type')
+          idTest: $elem.attr('data-idtest'),
+          idQuest: $elem.attr('data-idquest'),
+          type: $elem.attr('data-type')
       });
     }
 
