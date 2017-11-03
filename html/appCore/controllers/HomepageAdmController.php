@@ -70,6 +70,13 @@ class HomepageAdmController extends AdmController
 
         $params['lostPwdAction'] = Get::rel_path('base') . '/index.php?r=' . _lostpwd_;
         $params['register'] = Get::rel_path('base') . '/index.php?r=' . _register_;
+        
+        // translations
+        $params['intro_text_body'] = Lang::t("_INTRO_STD_TEXT", "login");
+        $params['intro_text_header']=Lang::t("_INTRO_STD_TEXT_TITLE", "login");
+        $params['read_all']=Lang::t("_READ_ALL", "login");
+        $params['close']=Lang::t("_CLOSE", "standard");
+        
 
         $this->render("show", $params);
     }
