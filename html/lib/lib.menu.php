@@ -318,7 +318,29 @@ $class_menu_name = $this->menu[$menu]['class_name_menu'] != '' ? $this->menu[$me
 
 // MenuManager::createInstance();
 
-
+if (! function_exists('array_column')) {
+    function array_column(array $input, $columnKey, $indexKey = null) {
+        $array = array();
+        foreach ($input as $value) {
+            if ( !array_key_exists($columnKey, $value)) {
+                return false;
+            }
+            if (is_null($indexKey)) {
+                $array[] = $value[$columnKey];
+            }
+            else {
+                if ( !array_key_exists($indexKey, $value)) {
+                    return false;
+                }
+                if ( ! is_scalar($value[$indexKey])) {
+                    return false;
+                }
+                $array[$value[$indexKey]] = $value[$columnKey];
+            }
+        }
+        return $array;
+    }
+}
 
 
 ?>
