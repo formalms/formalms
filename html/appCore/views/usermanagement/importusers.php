@@ -78,10 +78,9 @@ switch ($step) {
 			array(
 				Lang::t('_NO', 'standard') => 'false',
 				Lang::t('_YES', 'standard') => 'true',
-				Lang::t('_SERVERINFO', 'configuration') => 'by_setting',
-				Lang::t('_DO_NOTHING', 'preassessment') => 'do_nothing'
+				Lang::t('_SERVERINFO', 'configuration') => 'by_setting'
 			),
-			'do_nothing'
+			'false'
 		);
                 
                 echo Form::getRadioSet(Lang::t('_SET_PASSWORD', 'user_managment'),
