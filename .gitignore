@@ -15,6 +15,7 @@ html/files/**
 html/templates/**
 !html/templates/standard/**
 html/templates/standard/style/custom.css
+
 # Sezione Plugin
 html/plugins/**
 !html/plugins/.gitignore
