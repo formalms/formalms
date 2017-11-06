@@ -118,7 +118,7 @@ class MenuManager {
             }
         }
         //we need to remove parent without children
-        $parents=array_flip(array_column($amenu, 'idParent'));
+        $parents=array_flip(Util::array_column($amenu, 'idParent'));
         foreach($amenu as $idmenu=>$menu){
             $addMenu=true;
             if(!$menu['idUnder'] && !array_key_exists($idmenu, $parents)){
@@ -317,8 +317,5 @@ $class_menu_name = $this->menu[$menu]['class_name_menu'] != '' ? $this->menu[$me
 }
 
 // MenuManager::createInstance();
-
-
-
 
 ?>
