@@ -1065,7 +1065,7 @@ class CoursereportLmsController extends LmsController
 				case CoursereportLms::SOURCE_OF_ACTIVITY :
 					$other_source[ $info_report->getIdReport () ] = $info_report->getIdReport ();
 					break;
-				case "test" :
+				case CoursereportLms::SOURCE_OF_TEST :
 					$included_test[ $info_report->getIdSource () ] = $info_report->getIdSource ();
 					break;
 			}
@@ -1127,7 +1127,8 @@ class CoursereportLmsController extends LmsController
 			'details' => array (
 				'students' => $students_array ,
 				'redo-final' => array ( 'idReport' => $info_final[ 0 ]->getIdReport () ) ,
-				'round-report' => array ( 'idReport' => $info_final[ 0 ]->getIdReport () )
+				'round-report' => array ( 'idReport' => $info_final[ 0 ]->getIdReport () ),
+                'edit-final' => array ( 'idReport' => $info_final[ 0 ]->getIdReport (), 'link' => 'index.php?r=lms/coursereport/finalvote&type_filter=&id_report='.$info_final[ 0 ]->getIdReport () )
 			) ,
 			'pagination' => array (
 				'currentPage' => $currentPage ,

@@ -264,9 +264,12 @@ window.CourseReport = (function ($) {
         var _students = data.details['students'];
         var _redoFinal = data.details['redo-final'];
         var _roundReport = data.details['round-report'];
+        var _editFinal = data.details['edit-final'];
 
         $('.redo-final').attr('data-reportid', _redoFinal.idReport);
         $('.round-report').attr('data-reportid', _roundReport.idReport);
+        $('.edit-final').attr('data-reportid', _editFinal.idReport);
+        $('.edit-final').attr('href', _editFinal.link);
 
         $.each(_students, function (i, elem) {
             $table.append(buildStudentRow(elem));
