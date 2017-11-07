@@ -190,6 +190,7 @@ window.CourseReport = (function ($) {
     var fillUserInfoFilter = function (data) {
 
         var $filter = $('.js-user-detail-filter');
+        $filter.empty();
         var _option;
 
         $.each(data, function (i, elem) {
