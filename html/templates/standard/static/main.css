@@ -5111,11 +5111,23 @@ header.header {
 
 header.header .row-fluid .navbar-header .navbar-brand {
   padding: 15px 0 0 30px;
+  position: relative;
+}
+
+header.header .row-fluid .navbar-header .navbar-brand img {
+  height: 100%;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
 }
 
 @media (min-width: 768px) {
   header.header .row-fluid .navbar-header .navbar-brand {
-    padding: 10px 0 0 0;
+    height: 42px;
+    padding: 0;
   }
 }
 
