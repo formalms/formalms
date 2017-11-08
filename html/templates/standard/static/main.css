@@ -6283,6 +6283,12 @@ body.homepage {
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-color: white;
+  -ms-overflow-style: none;
+  overflow: auto;
+}
+
+body.homepage::-webkit-scrollbar {
+  display: none;
 }
 
 body.homepage .collapse-wrapper {
