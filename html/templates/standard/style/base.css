@@ -1799,3 +1799,9 @@ ul.tabs li.current{
     visibility: visible;
     opacity: 1;
 }
+
+/* FIX WIDTH POPUP CONTAINER SUBSCRIBE COURSE */
+
+#pop_up_container {
+    width: 100%!important;
+}
