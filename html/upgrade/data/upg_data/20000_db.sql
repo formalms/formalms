@@ -887,6 +887,8 @@ ALTER TABLE `learning_middlearea` ADD `is_home` TINYINT(4) NOT NULL DEFAULT '0' 
 
 UPDATE `learning_middlearea` SET `is_home` = '1' WHERE `learning_middlearea`.`obj_index` = 'tb_elearning';
 
+-- 14537: added max threads and private_thread in forum e public forum
+ALTER TABLE `learning_forum` ADD COLUMN `max_threads` int(11) NULL DEFAULT 0 AFTER `emoticons`, ADD COLUMN `threads_are_private` tinyint(1) NULL DEFAULT 0 AFTER `max_threads`;
 -- ------------------------------------------------------------------
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

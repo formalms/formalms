@@ -190,20 +190,63 @@ class HomepageAdmController extends AdmController
 
         $mand_symbol = '*';
 
+        $error = false;
+        $errorMessage = '';
+
+        switch ($action) {
+
+            case "lost_user":
+                $email = Get::req("email", DOTY_STRING);
+                if (preg_match("\r", $email) || preg_match("\n", $email)) {
+
+                    $error = true;
+                    $errorMessage = Lang::t("_INVALID_EMAIL", "register");
+                    break;
+                }
+                $res = $this->model->sendLostUserId($email);
+                break;
+            case "lost_pwd":
+                $userid = Get::req("userid", DOTY_STRING);
+                $res = $this->model->sendLostPwd($userid);
+                break;
+        }
+
+        switch ($res) {
+
+            case USER_NOT_FOUND:
+                $error = true;
+                $errorMessage = Lang::t("_INEXISTENT_USER", "register");
+                break;
+            case FAILURE_SEND_LOST_PWD:
+                $error = true;
+                $errorMessage = Lang::t("_OPERATION_FAILURE", "register");
+                break;
+            case SUCCESS_SEND_LOST_PWD:
+                $redirection['req'] = _homepage_;
+                $redirection['query'] = array(
+                    "done" => LOST_PWD
+                );
+                self::redirect($redirection);
+                break;
+        }
+
         $lostUsernameForm = '<div class="homepage__row homepage__row--gray homepage__row--form row-fluid">'
-        . Form::openForm("lost_user", Get::rel_path("base") . "/index.php?r=" . _lostpwd_)
+            . Form::openForm("lost_user", Get::rel_path("base") . "/index.php?r=" . _lostpwd_)
 
             . Form::getHidden("lost_user_action", "action", "lost_user")
             . '<div class="col-xs-12 col-sm-5">'
             . Form::getInputTextfield(
-                'form-control ',
+                'form-control ' . (($error && $action === 'lost_user') ? 'has-error' : ''),
                 'lost_user_email',
                 'email',
                 '',
                 strip_tags(Lang::t("_EMAIL", "register")),
                 255,
-                'placeholder="' . Lang::t("_EMAIL", "register") . ' ' . $mand_symbol . '"')
-            . '</div>'
+                'placeholder="' . Lang::t("_EMAIL", "register") . ' ' . $mand_symbol . '"');
+        if (($error && $action === 'lost_user')) {
+            $lostUsernameForm .= '<small class="form-text">* ' . $errorMessage . '</small>';
+        }
+        $lostUsernameForm .= '</div>'
             . '<div class="col-xs-12 col-sm-2">'
             . Form::getButton("lost_user_send", "send", Lang::t("_SEND", "register"), "forma-button forma-button--black thin")
             . '</div>'
@@ -214,14 +257,17 @@ class HomepageAdmController extends AdmController
             . Form::getHidden("lost_pwd_action", "action", "lost_pwd")
             . '<div class="col-xs-12 col-sm-5">'
             . Form::getInputTextfield(
-                'form-control ',
+                'form-control ' . (($error && $action === 'lost_pwd') ? 'has-error' : ''),
                 'lost_pwd_userid',
                 'userid',
                 '',
                 strip_tags(Lang::t("_USERNAME", "register")),
                 255,
-                'placeholder="' . Lang::t("_USERNAME", "register") . ' ' . $mand_symbol . '"')
-            . '</div>'
+                'placeholder="' . Lang::t("_USERNAME", "register") . ' ' . $mand_symbol . '"');
+        if (($error && $action === 'lost_pwd')) {
+            $lostPwdForm .= '<small class="form-text">* ' . $errorMessage . '</small>';
+        }
+        $lostPwdForm .= '</div>'
             . '<div class="col-xs-12 col-sm-2">'
             . Form::getButton("lost_pwd_send", "send", Lang::t("_SEND", "register"), "forma-button forma-button--black thin")
             . '</div>'
@@ -247,40 +293,6 @@ class HomepageAdmController extends AdmController
             'form' => $lostPwdForm
         ];
 
-        switch ($action) {
-
-            case "lost_user":
-                $email = Get::req("email", DOTY_STRING);
-                if (preg_match("\r", $email) || preg_match("\n", $email)) {
-
-                    $page = "lostpwd";
-                    $params['lost_user_msg'] = Lang::t("_INVALID_EMAIL", "register");
-                    break;
-                }
-                $res = $this->model->sendLostUserId($email);
-                break;
-            case "lost_pwd":
-                $userid = Get::req("userid", DOTY_STRING);
-                $res = $this->model->sendLostPwd($userid);
-                break;
-        }
-
-        switch ($res) {
-
-            case USER_NOT_FOUND:
-                $params[$action . '_msg'] = Lang::t("_INEXISTENT_USER", "register");
-                break;
-            case FAILURE_SEND_LOST_PWD:
-                $params[$action . '_msg'] = Lang::t("_OPERATION_FAILURE", "register");
-                break;
-            case SUCCESS_SEND_LOST_PWD:
-                $redirection['req'] = _homepage_;
-                $redirection['query'] = array(
-                    "done" => LOST_PWD
-                );
-                self::redirect($redirection);
-                break;
-        }
 
         $this->render("lostpwd", $params);
     }

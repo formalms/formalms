@@ -114,7 +114,7 @@ function subscribeToCoursePath(id_path) {
 		div_feedback = document.createElement('feedback');
 
 		div_feedback.id = 'feedback';
-		div_feedback.className = 'container-feedback';
+		div_feedback.className = 'container-feedback container-feedback--catalogue';
 
 		document.body.appendChild(div_feedback);
 	}
