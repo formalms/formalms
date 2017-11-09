@@ -19,12 +19,10 @@ function view_area() {
     $lang     =& DoceboLanguage::createInstance('middlearea', 'lms');
     $lc     =& DoceboLanguage::createInstance('menu_course', 'lms');
 
-    $query_menu = "SELECT mo.idModule, mo.default_name, under.my_name
-    FROM %lms_module AS mo
-        JOIN %lms_menucourse_under AS under
-    WHERE mo.idModule = under.idModule
-        AND mo.module_info IN ('all','user')
-    ORDER BY under.sequence";
+    $query_menu = "SELECT mo.idModule, mo.default_name, module_name
+    FROM %lms_module as mo WHERE mo.module_info IN ('all','user')
+    ORDER BY mo.idModule"; 
+    
     $re_menu_voice = sql_query($query_menu);
 
     $base_url = 'index.php?modname=middlearea&amp;op=select_permission&amp;load=1&amp;obj_index=';
@@ -33,23 +31,22 @@ function view_area() {
 
     $ma = new Man_MiddleArea();
     $disabled_list = $ma->getDisabledList();
+    $menu_on_slider = array('mo_7'=> Lang::t('_MY_CERTIFICATE', 'menu_over'), 
+                            'mo_34' => Lang::t('_MYCOMPETENCES', 'menu_over' ));
 
     // Main men
     $main_menu = '';
     while(list($id_m, $default_name, $my_name) = sql_fetch_row($re_menu_voice)) {
-
-        $main_menu .= '<li>'
-            .'<span>'.Lang::t($default_name, 'menu_over', false, false, $default_name).'</span>'
-            .' <a class="ico-sprite subs_users" href="'.$base_url.'mo_'.$id_m.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
-            .' <a class="ico-sprite subs_'.( isset($disabled_list['mo_'.$id_m]) ? 'noac' : 'actv' ).'" href="'.$second_url.'mo_'.$id_m.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
-            .'</li>';
+        
+        if (array_key_exists ('mo_'.$id_m, $menu_on_slider) == false ) {
+            $main_menu .= '<li>'
+                .'<span>'.Lang::t($default_name, 'menu_over', false, false, $default_name).'</span>'
+                .' <a class="ico-sprite subs_users" href="'.$base_url.'mo_'.$id_m.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
+                .' <a class="ico-sprite subs_'.( isset($disabled_list['mo_'.$id_m]) ? 'noac' : 'actv' ).'" href="'.$second_url.'mo_'.$id_m.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
+                .'</li>';
+        }        
 
     }
-    $main_menu .= '<li>'
-            .'<span>'.Lang::t('_MESSAGES', 'menu_over').'</span>'
-            .' <a class="ico-sprite subs_users" href="'.$base_url.'mo_message'.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
-            .' <a class="ico-sprite subs_'.( isset($disabled_list['mo_message']) ? 'noac' : 'actv' ).'" href="'.$second_url.'mo_message'.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
-            .'</li>';
     $main_menu .= '<li>'
             .'<span>'.Lang::t('_CUSTOMER_HELP', 'customer_help').'</span>'
             .' <a class="ico-sprite subs_users" href="'.$base_url.'mo_help'.'"><span>'.Lang::t('_VIEW_PERMISSION', 'standard').'</span></a>'
@@ -62,9 +59,6 @@ function view_area() {
         'tb_elearning' => Lang::t('_ELEARNING', 'middlearea'),
         'tb_home' => Lang::t('_HOME', 'middlearea'),
         'tb_label' => Lang::t('_LABELS', 'label'),
-        'tb_classroom' => Lang::t('_CLASSROOM', 'middlearea'),
-        'tb_catalog' => Lang::t('_CATALOGUE', 'middlearea'),
-        'tb_assessment' => Lang::t('_ASSESSMENT', 'middlearea'),
         'tb_coursepath' => Lang::t('_COURSEPATH', 'coursepath'),
         'tb_games' => Lang::t('_CONTEST', 'middlearea'),
         'tb_communication' => Lang::t('_COMMUNICATIONS', 'middlearea'),
@@ -108,9 +102,11 @@ function view_area() {
         'career' => Lang::t('_CAREER', 'middlearea'),
         //aggiunto box iscrizione corso
         'course' => Lang::t('_SUBSCRIBE_COURSE', 'middlearea'),
-        'news' => Lang::t('_NEWS', 'middlearea')
+        'news' => Lang::t('_NEWS', 'middlearea'),
+        'mo_message' =>  Lang::t('_MESSAGES', 'menu_over')
     );
-    while(list($id, $name) = each($block)) {
+    $slider_options = array_merge($block, $menu_on_slider);
+    while(list($id, $name) = each($slider_options)) {
 
         $block_list .= '<div class="direct_block">'
             .'<span>'.$name.'</span>'
@@ -118,6 +114,8 @@ function view_area() {
             .' <a class="ico-sprite subs_'.( isset($disabled_list[$id]) ? 'noac' : 'actv' ).'" href="'.$second_url.$id.'"><span>'.Lang::t('_ENABLE_AREA', 'middlearea').'</span></a>'
             .'</div><br/>';
     }
+
+    
 
     cout( getTitleArea($lang->def('_MIDDLE_AREA'), 'middlearea')
         .'<div class="std_block">');
