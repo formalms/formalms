@@ -585,9 +585,9 @@ class ElearningLmsController extends LmsController {
          
 
         // e-learning filter
-        if  ($filter_type === 'elearning' || $filter_type === 'all' ) {
+        if  ($filter_type === '' || $filter_type === 'elearning' || $filter_type === 'all' ) {
 		    $courselist = $model->findAll($conditions, $params);
-            $filter_type = empty($filter_type) ? 'elearning': $filter_type;
+            $filter_type = empty($filter_type) ? 'all' : $filter_type;
         }
         
         
