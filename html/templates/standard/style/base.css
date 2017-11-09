@@ -275,7 +275,7 @@ div.container-feedback{
 
     margin:0;
     position:absolute;
-    top:10%;
+    top:25%;
     width:30%;
     left:50%; 
     margin-right:-50%; 
@@ -1804,4 +1804,14 @@ ul.tabs li.current{
 
 #pop_up_container {
     width: 100%!important;
+}
+
+/* FIX POPUP USER AREA */
+
+.container-feedback .container-feedback {
+    position: initial;
+    width: 100%;
+    left: initial;
+    transform: none;
+    border: none;
 }
