@@ -276,12 +276,13 @@ div.container-feedback{
     margin:0;
     position:absolute;
     top:25%;
-    width:30%;
+    width:40%;
     left:50%; 
     margin-right:-50%; 
     transform: translate(-50%, -50%); 
-    padding:.9em 5em;
+    /*padding:.9em 5em;*/
     border-top:0;
+    padding: 10px;
     font-weight:bold;
     font-size:90%;
     text-align:center;
