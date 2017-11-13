@@ -209,7 +209,7 @@ class ElearningLms extends Model {
     
 
     // LR: list category of subscription
-    public function getListCategory($idUser){
+    public function getListCategory($idUser, $completePath = true){
         $db = DbConn::getInstance();
         $query = "select idCategory,path from %lms_category where idcategory in (
        select distinct idCategory from %lms_course as c,%lms_courseuser as cu where cu.idUser=".$idUser." and cu.idCourse=c.idCourse)";
@@ -218,7 +218,14 @@ class ElearningLms extends Model {
         if ($res && $db->num_rows($res) > 0) {
             $output[0] = Lang::t('_ALL_CATEGORIES', 'standard');
             while (list($idCategory, $path) = $db->fetch_row($res)) {
-                $output[$idCategory] = str_replace('/root/','',$path);
+
+                if($completePath){
+                    $category = str_replace('/root/','',$path);
+                }
+                else {
+                    $category = explode('/',$path);
+                }
+                $output[$idCategory] = $category[count($category)-1];
             }
         }
         return $output;

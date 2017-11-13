@@ -148,7 +148,7 @@ $str_menu_over = '<header class="header white-bg">
                     <div class="row-fluid" id="lms_menu_container" >
                       <div class="navbar-header" >
                         <a class="navbar-brand" href="?r=elearning/show&sop=unregistercourse">
-                          <img class="left_logo" width="120" src="'. Layout::path().'/images/company_logo.png" alt="logo di sinistra"/>
+                          <img class="left_logo" src="'. Layout::path().'/images/company_logo.png" alt="logo di sinistra"/>
                         </a> 
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                           <span  class="glyphicon glyphicon-align-justify"></span>
@@ -348,7 +348,7 @@ foreach ($menu['all'] as $row) {
                       <td><textarea id="msg" name="msg" class="txtarea" placeholder="'.Lang::t('_WRITE_ASK_A_FRIEND', 'profile').'"></textarea></td>
                 </tr>
                 <tr>
-                      <td><label for="copia">Invia una copia per conoscenza</label></td>
+                      <td><label for="copia">'.Lang::t('_SEND_CC', 'standard').'</label></td>
                       <td>   <input id="copia" name="copia" checked data-toggle="toggle" data-on="'.Lang::t('_GROUP_FIELD_NORMAL', 'admin_directory').'"  data-size="small" data-off="'.Lang::t('_NO', 'standard').'" data-onstyle="success" data-offstyle="danger" type="checkbox">
                    
                       </td>

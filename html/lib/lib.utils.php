@@ -438,7 +438,30 @@ class Util  {
      */
     public static function unserialize($string){
         return json_decode($string,true);
+	}
+	
+    public static function array_column(array $input, $columnKey, $indexKey = null) {
+        $array = array();
+        foreach ($input as $value) {
+            if ( !array_key_exists($columnKey, $value)) {
+                return false;
+            }
+            if (is_null($indexKey)) {
+                $array[] = $value[$columnKey];
+            }
+            else {
+                if ( !array_key_exists($indexKey, $value)) {
+                    return false;
+                }
+                if ( ! is_scalar($value[$indexKey])) {
+                    return false;
+                }
+                $array[$value[$indexKey]] = $value[$columnKey];
+            }
+        }
+        return $array;
     }
+
 }
 
 class UIFeedback {

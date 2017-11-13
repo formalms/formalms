@@ -4092,7 +4092,7 @@ h1, h2, h3, h4, h5, h6, p {
 .user-panel .carousel {
   position: relative;
   width: 100%;
-  height: 185px;
+  min-height: 100px;
   padding-bottom: 20px;
 }
 
@@ -4120,7 +4120,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 .user-panel .carousel .carousel-inner,
 .user-panel .carousel .item {
-  height: 100%;
+  height: auto !important;
 }
 
 .user-panel .carousel .item {
@@ -5111,11 +5111,23 @@ header.header {
 
 header.header .row-fluid .navbar-header .navbar-brand {
   padding: 15px 0 0 30px;
+  position: relative;
+}
+
+header.header .row-fluid .navbar-header .navbar-brand img {
+  height: 100%;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
 }
 
 @media (min-width: 768px) {
   header.header .row-fluid .navbar-header .navbar-brand {
-    padding: 10px 0 0 0;
+    height: 42px;
+    padding: 0;
   }
 }
 
@@ -5478,8 +5490,8 @@ header.header nav {
 
 .user-panel {
   width: 100%;
-  height: -webkit-calc(100% - 70px);
-  height: calc(100% - 70px);
+  height: -webkit-calc(100vh - 70px);
+  height: calc(100vh - 70px);
   top: 60px;
   overflow: scroll;
   background-color: #ececec;
@@ -5495,7 +5507,6 @@ header.header nav {
 @media (min-width: 768px) {
   .user-panel {
     width: 320px;
-    height: auto;
     background-color: white;
     border-radius: 5px;
     -webkit-box-shadow: #c2c2c2 0px 5px 20px 0px;
@@ -6283,6 +6294,12 @@ body.homepage {
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-color: white;
+  -ms-overflow-style: none;
+  overflow: auto;
+}
+
+body.homepage::-webkit-scrollbar {
+  display: none;
 }
 
 body.homepage .collapse-wrapper {
