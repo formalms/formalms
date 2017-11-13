@@ -1570,14 +1570,13 @@ class UserManagerRenderer
         }
         // now in array_folder we have the associated folder for the users
         if (!empty($array_folder)) {
-            /*
 			//let's find the oc and ocd
 			$oc_folders = $uma->getOcFolders($array_folder);
 			while(list($id, $ocs) = each($oc_folders)) {
 
 				$acl_man->addToGroup($ocs[0], $iduser);
 				$acl_man->addToGroup($ocs[1], $iduser);
-			}*/
+			}
             while (list($id, $folder) = each($array_folder)) {
                 $acl_man->addToGroup($folder, $iduser);
             }
@@ -2105,7 +2104,7 @@ class UserManagerRenderer
                 // we must show to the user a selection of code
                 $uma = new UsermanagementAdm();
                 $tree_names = ['-' => $lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_span : '')];
-                $tree_names = array_merge($tree_names, $uma->getAllFolderNames(true));
+                $tree_names = $tree_names + $uma->getAllFolderNames(true);
                 $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
                             <div class="col-xs-12 col-sm-6">'
                     . Form::getInputDropdown(
