@@ -62,7 +62,40 @@ class MenuManager {
             $GLOBALS['menu_manager'] = new MenuManager($platform);
             //}
             return $GLOBALS['menu_manager'];
-	}
+    }
+    
+    function addlevel($asrc = array(), $idparent = false, $level = 0) {
+        $adst = array();
+        if (is_array($asrc)) {
+            //get target level
+            foreach ($asrc as $key=>$value) {
+                if (is_array($value)) {
+                    $_idparent = $value['idParent'];
+                    $value['level'] = $level;
+                    if ($_idparent == $idparent){
+                        $adst[$key] = $value;
+                    }
+                }
+            }
+            //exclude elements got
+            foreach ($asrc as $k1=>$v1) {
+                if (array_key_exists($k1, $adst)) {
+                    unset($asrc[$k1]);
+                }
+            }
+            //inspect below levels
+            foreach ($adst as $k2=>$v2) {
+                $aunder = $this->addlevel($asrc, $k2, $level+1);
+                if (is_array($aunder) && ! empty($aunder)) {
+                    foreach ($aunder as $k=>$v){
+                        $adst[$k] = $v;
+                    }
+
+                }
+            }
+        }
+        return $adst;
+    }
 
     function MenuManager($platform) {
         $this->platform = $platform;
@@ -117,11 +150,27 @@ class MenuManager {
                 $amenu[$id_main] = $menu;
             }
         }
+
         //we need to remove parent without children
-        $parents=array_flip(Util::array_column($amenu, 'idParent'));
+        $amenu=$this->addlevel($amenu);
+        $amenu_column = Util::array_column($amenu, 'level');
+        $levels = array_flip($amenu_column);
+        $aparents=array();
+        foreach(array_reverse($levels, true) as $level=>$vv){
+            foreach($amenu as $idmenu=>$menu){
+                $mlevel=$menu['level'];
+                if ($level==$mlevel){
+                    if($menu['idUnder'] or array_key_exists($idmenu, $aparents)){
+                        $idParent=$menu['idParent'];
+                        $aparents[$idParent] += 1;
+                    }
+                }
+            }
+        }
+
         foreach($amenu as $idmenu=>$menu){
             $addMenu=true;
-            if(!$menu['idUnder'] && !array_key_exists($idmenu, $parents)){
+                if(!$menu['idUnder'] && !array_key_exists($idmenu, $aparents)){
                 $addMenu=false;//remove menu parent without children
             }
             if ($addMenu){
