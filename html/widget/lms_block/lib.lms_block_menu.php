@@ -7,10 +7,10 @@ defined ( "IN_FORMA" ) or die ( 'Direct access is forbidden.' );
  */
 class Lms_BlockWidget_menu extends Widget {
 	public $block_list = false;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param <string> $config
 	 *        	the properties of the table
 	 */
@@ -34,7 +34,7 @@ class Lms_BlockWidget_menu extends Widget {
 			$this->block_list ['career'] = true;
 		if ($ma->currentCanAccessObj ( 'course' ))
 			$this->block_list ['course'] = true;
-		
+
 		if (isset ( $this->block_list ['user_details_full'] )) {
 
 			$this->user_details_full ( $this->link );
@@ -45,38 +45,38 @@ class Lms_BlockWidget_menu extends Widget {
 			echo '</div>';
 		}
 		if (isset ( $this->block_list ['credits'] )) {
-			
+
 			echo '<div class="inline_block">';
 			$this->credits ( $this->link );
 			echo '</div>';
 		}
 		if (isset ( $this->block_list ['news'] )) {
-			
+
 			echo '<div class="inline_block">';
 			$this->news ( $this->link );
 			echo '</div>';
 		}
 		// modifica box carriera
 		if (isset ( $this->block_list ['career'] )) {
-			
+
 			echo '<div class="inline_block">';
 			$this->career ();
 			echo '</div>';
 		}
 		// modifica box iscrizione corso
 		if (isset ( $this->block_list ['course'] )) {
-			
+
 			echo '<div class="inline_block">';
 			$this->subscribe_course ();
 			echo '</div>';
 		}
 		// END
 	}
-	
+
 	public function career() {
 
 	}
-	
+
 	// box iscrizione corso
 	public function subscribe_course() {
         require_once (_base_ . '/lib/lib.form.php');
@@ -102,7 +102,7 @@ class Lms_BlockWidget_menu extends Widget {
                       </div>
             ';
         }
-            
+
         return $html;
 	}
 	// END
@@ -186,7 +186,7 @@ class Lms_BlockWidget_menu extends Widget {
 	public function label() {
 		require_once (_lms_ . '/admin/models/LabelAlms.php');
 		$label_model = new LabelAlms ();
-		
+
 		echo '<h2 class="heading">' . Lang::t ( '_LABEL', 'catalogue' ) . '</h2>' . '<div class="content">' . Form::openForm ( 'label_form', 'index.php?r=elearning/show' ) . Form::getDropdown ( Lang::t ( '_LABELS', 'catalogue' ), 'id_common_label_dd', 'id_common_label', $label_model->getDropdownLabelForUser ( Docebo::user ()->getId () ), ($_SESSION ['id_common_label'] == - 1 ? - 2 : $_SESSION ['id_common_label']) ) . Form::closeForm () . '<script type="text/javascript">' . 'var dd = YAHOO.util.Dom.get(\'id_common_label_dd\');' . 'YAHOO.util.Event.onDOMReady(YAHOO.util.Event.addListener(dd, "change", function(e){var form = YAHOO.util.Dom.get(\'label_form\');form.submit();}));' . '</script>' . '</div>';
 	}
 
@@ -195,7 +195,7 @@ class Lms_BlockWidget_menu extends Widget {
 		$str = '';
 		$period_start = '';
 		$period_end = '';
-		
+
 		// extract checking period
 		$year = date ( "Y" );
 		$p_list = array ();
@@ -212,19 +212,19 @@ class Lms_BlockWidget_menu extends Widget {
 				}
 			}
 		}
-		
+
 		if (count ( $p_list ) <= 0)
 			$p_list ['0'] = Lang::t ( '_NO_PERIODS', 'catalogue' );
 		if (! array_key_exists ( $p_selected, $p_list ))
 			$p_selected = 0;
 		if ($p_selected == 0)
 			$p_selected = false;
-			
+
 			// extract courses which have been completed in the considered period and the credits associated
 		$course_type_trans = getCourseTypes ();
 		$query = "SELECT c.idCourse, c.name, c.course_type, c.credits, cu.status " . " FROM " . $GLOBALS ['prefix_lms'] . "_course as c " . " JOIN " . $GLOBALS ['prefix_lms'] . "_courseuser as cu " . " ON (cu.idCourse = c.idCourse) WHERE cu.idUser=" . ( int ) getLogUserId () . " AND c.course_type IN ('" . implode ( "', '", array_keys ( $course_type_trans ) ) . "') " . " AND cu.status = '" . _CUS_END . "' " . ($period_start != '' ? " AND cu.date_complete > '" . $period_start . "' " : "") . ($period_end != '' ? " AND cu.date_complete < '" . $period_end . "' " : "") . " ORDER BY c.name";
 		$res = sql_query ( $query );
-		
+
 		$course_data = array ();
 		while ( $obj = sql_fetch_object ( $res ) ) {
 			switch ($obj->course_type) {
@@ -237,94 +237,72 @@ class Lms_BlockWidget_menu extends Widget {
 					break;
 			}
 		}
-		
+
 		// date dropdown
 		$onchange = ' onchange="javascript:this.form.submit();"';
 		$form = new Form ();
-		
-		$str =  $str. $form->openForm ( 'credits_period_form', 'index.php?r=' . $this->link, false, 'GET' ) . $form->getDropdown ( Lang::t ( '_TIME_PERIODS', 'menu' ), 'credits_period', 'credits_period', $p_list, $p_selected, '', '', $onchange ) . $form->closeForm ();
 
         $select = $form->openForm ( 'credits_period_form', 'index.php?r=' . $this->link, false, 'GET' ) . $form->getDropdown ( Lang::t ( '_TIME_PERIODS', 'menu' ), 'credits_period', 'credits_period', $p_list, $p_selected, '', '', $onchange ) . $form->closeForm ();
 
 		// draw tables
 		$no_cdata = true;
-		foreach ( $course_data as $ctype => $cdata ) {
-			
-			if (count ( $cdata ) > 0) {
-				
-				$no_cdata = false;
-                $str = $str . '<div class="yui-dt">' .
-                                '<table class="table-view" summary="' . Lang::t('_CREDITS', 'catalogue') . '">'
-                                . '<caption>' . $course_type_trans [$ctype] . '</caption>'
-                                . '<thead><tr clas="yui-dt-odd">'
-                                . '<th class="course_name"><div class="yui-dt-liner"><span class="yui-dt-label">'
-                                . Lang::t('_COURSE', 'catalogue')
-                                . '</span></div></th>'
-                                . '<th class="image"><div class="yui-dt-liner"><span class="yui-dt-label">'
-                                . Lang::t('_CREDITS', 'catalogue') . '</span></div></th>' . '</tr></thead>' . '<tbody>';
-				
-				$total = 0;
-				$i = 0;
-				foreach ( $cdata as $id_course => $data ) {
-					
-					if ($data->credits > 0) {
-						$str = $str.'<tr class="yui-dt-' . ($i % 2 ? 'odd' : 'even') . '">' . '<td class="course_name"><div class="yui-dt-liner">' . $data->name . '</div></td>' . '<td class="image"><div class="yui-dt-liner">' . $data->credits . '</div></td>' . '</tr>';
-						$total += $data->credits;
-						$i ++;
-					}
-				}
-				
-				$str = $str.'</tbody>' . '<tfoot><tr class="yui-dt-' . ($i % 2 ? 'odd' : 'even') . '">' . '<td><div class="yui-dt-liner"><b>' . Lang::t ( '_TOTAL', 'catalogue' ) . '<b></div></td>' . '<td class="image"><div class="yui-dt-liner"><span class="yui-dt-label"><b>' . $total . '</b></div></td>' . '</tr></tfoot></table>' . '</div>';
-			}
-		} // end foreach
-		
-		if ($no_cdata) {
-			$str = $str.'<p>' . Lang::t ( '_NO_CONTENT', 'catalogue' ) . '</p>';
-		}
-		
-		$str = $str.'</div>';    
-        
-//        return $str;
 
-        $table = '
-            <div class="table-credit-wrapper">
-                <table class="table-credit">
-                    <thead>
-                        <tr class="table-credit__row table-credit__row--head">
-                            <td>'. Lang::t('_COURSE', 'catalogue') .'</td>
-                            <td>'. Lang::t('_CREDITS', 'catalogue') .'</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="table-credit__row">
+        $table = '<div class="table-credit-wrapper">';
+
+        foreach ($course_data as $ctype => $cdata) {
+
+            if (count($cdata) > 0) {
+
+                $no_cdata = false;
+
+                $table .= '
+                <div class="">
+                    <table class="table-credit">
+                        <thead>
+                            <tr class="table-credit__row table-credit__row--head">
+                                <td>' . Lang::t('_COURSE', 'catalogue') . '</td>
+                                <td>' . Lang::t('_CREDITS', 'catalogue') . '</td>
+                            </tr>
+                        </thead>
+                        <tbody>';
+
+                $total = 0;
+                foreach ($cdata as $id_course => $data) {
+
+                    $table .= '<tr class="table-credit__row">
                             <td>
-                                Corso lorem ipsum
+                                ' . $data->name . '
                             </td>
                             <td>
-                                100
+                                ' . $data->credits . '
                             </td>
-                        </tr>
-                        <tr class="table-credit__row">
-                            <td>
-                                Corso lorem ipsum
-                            </td>
-                            <td>
-                                100
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr class="table-credit__row table-credit__row--footer">
-                            <td>Totale</td>
-                            <td>200</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>   
-        ';
+                        </tr>';
+
+                    $total += $data->credits;
+                }
+
+                $table .= '
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-credit__row table-credit__row--footer">
+                                <td>' . Lang::t('_TOTAL', 'catalogue') . '</td>
+                                <td>' . $total . '</td>
+                            </tr>
+                        </tfoot>    
+                    </table>
+                </div>';
+            }
+
+        }
+
+        if ($no_cdata) {
+            $table .= '<p>' . Lang::t ( '_NO_CONTENT', 'catalogue' ) . '</p>';
+        }
+
+        $table .= '</div>';
 
         return $select . $table;
-        
+
 	}
 	public function user_details_full($link) {
 		require_once (_lib_ . '/lib.user_profile.php');
