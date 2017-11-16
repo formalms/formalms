@@ -192,15 +192,8 @@ class ProfileLmsController extends LmsController {
         $no_cdata = true;
 
         $table = '<div class="table-credit-wrapper">';
-
-        foreach ($course_data as $ctype => $cdata) {
-
-            if (count($cdata) > 0) {
-
-                $no_cdata = false;
-
-                $table .= '
-                <div class="">
+        if (count($course_data) > 0) {
+            $table .= '
                     <table class="table-credit">
                         <thead>
                             <tr class="table-credit__row table-credit__row--head">
@@ -209,11 +202,16 @@ class ProfileLmsController extends LmsController {
                             </tr>
                         </thead>
                         <tbody>';
+            foreach ($course_data as $ctype => $cdata) {
 
-                $total = 0;
-                foreach ($cdata as $id_course => $data) {
+                if (count($cdata) > 0) {
 
-                    $table .= '<tr class="table-credit__row">
+                    $no_cdata = false;
+
+                    $total = 0;
+                    foreach ($cdata as $id_course => $data) {
+
+                        $table .= '<tr class="table-credit__row">
                             <td>
                                 ' . $data->name . '
                             </td>
@@ -222,10 +220,12 @@ class ProfileLmsController extends LmsController {
                             </td>
                         </tr>';
 
-                    $total += $data->credits;
+                        $total += $data->credits;
+                    }
                 }
+            }
 
-                $table .= '
+            $table .= '
                         </tbody>
                         <tfoot>
                             <tr class="table-credit__row table-credit__row--footer">
@@ -233,10 +233,7 @@ class ProfileLmsController extends LmsController {
                                 <td>' . $total . '</td>
                             </tr>
                         </tfoot>    
-                    </table>
-                </div>';
-            }
-
+                    </table>';
         }
 
         if ($no_cdata) {

@@ -242,23 +242,16 @@ class Lms_BlockWidget_menu extends Widget {
 
 		// date dropdown
 
-		$form = new Form ();
+        $form = new Form ();
 
-        $select = $form->openForm ( 'credits_period_form', '#', false, 'POST' ) . $form->getDropdown ( Lang::t ( '_TIME_PERIODS', 'menu' ), 'credits_period', 'credits_period', $p_list, $p_selected, '', '', '' ) . $form->closeForm ();
+        $select = $form->openForm('credits_period_form', '#', false, 'POST') . $form->getDropdown(Lang::t('_TIME_PERIODS', 'menu'), 'credits_period', 'credits_period', $p_list, $p_selected, '', '', '') . $form->closeForm();
 
-		// draw tables
-		$no_cdata = true;
+        // draw tables
+        $no_cdata = true;
 
         $table = '<div class="table-credit-wrapper">';
-
-        foreach ($course_data as $ctype => $cdata) {
-
-            if (count($cdata) > 0) {
-
-                $no_cdata = false;
-
-                $table .= '
-                <div class="">
+        if (count($course_data) > 0) {
+            $table .= '
                     <table class="table-credit">
                         <thead>
                             <tr class="table-credit__row table-credit__row--head">
@@ -267,11 +260,16 @@ class Lms_BlockWidget_menu extends Widget {
                             </tr>
                         </thead>
                         <tbody>';
+            foreach ($course_data as $ctype => $cdata) {
 
-                $total = 0;
-                foreach ($cdata as $id_course => $data) {
+                if (count($cdata) > 0) {
 
-                    $table .= '<tr class="table-credit__row">
+                    $no_cdata = false;
+
+                    $total = 0;
+                    foreach ($cdata as $id_course => $data) {
+
+                        $table .= '<tr class="table-credit__row">
                             <td>
                                 ' . $data->name . '
                             </td>
@@ -280,10 +278,12 @@ class Lms_BlockWidget_menu extends Widget {
                             </td>
                         </tr>';
 
-                    $total += $data->credits;
+                        $total += $data->credits;
+                    }
                 }
+            }
 
-                $table .= '
+            $table .= '
                         </tbody>
                         <tfoot>
                             <tr class="table-credit__row table-credit__row--footer">
@@ -291,10 +291,7 @@ class Lms_BlockWidget_menu extends Widget {
                                 <td>' . $total . '</td>
                             </tr>
                         </tfoot>    
-                    </table>
-                </div>';
-            }
-
+                    </table>';
         }
 
         if ($no_cdata) {
