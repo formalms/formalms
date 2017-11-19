@@ -1291,7 +1291,7 @@ class Form {
 		return '<input type="'.($is_submit ? 'submit' : 'button').'" '
 				// ."\n\t".'class="'.$css_button.'" '
 				//."\n\t".'class="'.$css_button.' btn btn-default" '
-                ."\n\t".'class="'.$css_button.' btn " '    // #10984
+                ."\n\t".'class="'.$css_button.' btn btn-default" '    // #10984
 				."\n\t".'id="'.$id.'" '
 				."\n\t".'name="'.$name.'" '
 				."\n\t".'value="'.$value.'"'.( $other_param != '' ? ' '.$other_param : '' ).' />';

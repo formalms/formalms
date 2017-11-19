@@ -5299,7 +5299,6 @@ header.header .row-fluid .navbar-collapse li a .glyphicon:before {
 
 @media (min-width: 1024px) {
   header.header .row-fluid .navbar-collapse li a .glyphicon:before {
-    top: -24px;
     right: 0;
   }
 }
@@ -5318,6 +5317,14 @@ header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-cog:hover:be
 
 header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-cog:before {
   background-image: url("images/icons/top-menu/icon--admin.svg");
+}
+
+header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-shopping-cart:hover:before {
+  background-image: url("images/icons/top-menu/icon--cart-hover.svg");
+}
+
+header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-shopping-cart:before {
+  background-image: url("images/icons/top-menu/icon--cart.svg");
 }
 
 header.header .row-fluid .navbar-collapse li.active a {
@@ -5524,8 +5531,14 @@ header.header nav {
 
 @media (min-width: 1024px) {
   .top-menu__label {
+    display: block;
     font-size: 0;
   }
+}
+
+.top-menu__label #cart_element {
+  font-size: 10px;
+  line-height: 13px;
 }
 
 .top-menu__disclaimer {
@@ -6014,7 +6027,20 @@ header.header nav {
   }
 }
 
+.user-panel .container-fluid .row.news .carousel {
+  padding-bottom: 36px;
+}
+
+.user-panel .container-fluid .row.news .carousel .item {
+  padding-top: 5px;
+  padding-bottom: 25px;
+}
+
 .user-panel .container-fluid .row.credits {
+  height: auto;
+  padding-right: 0;
+  margin-top: 0;
+  margin-bottom: 15px;
   border: none;
 }
 
