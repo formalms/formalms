@@ -1171,24 +1171,39 @@ class Form {
 		return $html_code;
 	}
 
-	public static function getInputTextarea($id ,$name , $value = '', $css_text = false, $rows = 5, $cols = 22, $other_param = '' ) {
+	public static function getInputTextarea($id ,$name , $value = '', $css_text = false, $rows = 5, $cols = 22, $maxlength, $other_param = '' ) {
 
 		if($css_text === false) $css_text = 'textarea';
 
-		return '<textarea class="form-control '.$css_text.'" id="'.$id.'" name="'.$name.'" rows="'.$rows.'" cols="'.$cols.'"'.$other_param.'>'.$value.'</textarea>';
+		return '<textarea class="form-control '.$css_text.'" id="'.$id.'" name="'.$name.'" rows="'.$rows.'" cols="'.$cols.'" maxlength="'.$maxlength.'" '.$other_param.'>'.$value.'</textarea>';
 	}
 
-	public static function getSimpleTextarea($label_name, $id ,$name , $value = '',
-											 $css_line = false, $css_label = false, $css_text = false, $rows = 5, $cols = 22, $afterlabel = '' ) {
+	public static function getSimpleTextarea($label_name, $id ,$name , $value = '', $css_line = false, $css_label = false, $css_text = false, $rows = 5, $cols = 22, $afterlabel = '', $maxlength = null ) {
 
 		if($css_line === false) $css_line = 'form_line_l';
 		if($css_label === false) $css_label = 'floating';
 		if($css_text === false) $css_text = 'textarea';
+        $maxlength_info = '';
+		if($maxlength)
+		{
+            $maxlength_info = "<small>(".Lang::t('_MAX_LENGTH_TEXT_AREA', 'course')." <em>".$maxlength."</em>)</small> <br/><small>".Lang::t('_TOTAL_CHARS', 'course').": <em class='charNum'> ".strlen($value)."</em></small> ";
+
+            $script = cout('<script type="text/javascript">
+			$("#'.$id.'").keyup(function(){
+				el = $(this);
+				$(el).prev("p").find(".charNum").text(el.val().length);
+				if(el.val().length > '.$maxlength.'){
+					$(el).prev("p").find(".charNum").css( "color", "red");
+				} else {
+				    $(el).prev("p").find(".charNum").css( "color", "#000000");
+				}
+			}); </script>', 'scripts');
+		}
 
 		return '<div class="'.$css_line.'">'
-		.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label></p>'
-		.Form::getInputTextarea($id ,$name , $value, $css_text, $rows, $cols)
-		.''.$afterlabel.'</div>';
+		.'<p><label class="'.$css_label.'" for="'.$id.'">'.$label_name.' '.$maxlength_info.'</label></p>'
+		.Form::getInputTextarea($id ,$name , $value, $css_text, $rows, $cols, $maxlength)
+		.''.$afterlabel.'</div>'.$script;
 	}
 
 
