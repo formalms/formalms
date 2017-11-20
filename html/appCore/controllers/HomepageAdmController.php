@@ -70,13 +70,13 @@ class HomepageAdmController extends AdmController
 
         $params['lostPwdAction'] = Get::rel_path('base') . '/index.php?r=' . _lostpwd_;
         $params['register'] = Get::rel_path('base') . '/index.php?r=' . _register_;
-        
+
         // translations
         $params['intro_text_body'] = Lang::t("_INTRO_STD_TEXT", "login");
-        $params['intro_text_header']=Lang::t("_INTRO_STD_TEXT_TITLE", "login");
-        $params['read_all']=Lang::t("_READ_ALL", "login");
-        $params['close']=Lang::t("_CLOSE", "standard");
-        
+        $params['intro_text_header'] = Lang::t("_INTRO_STD_TEXT_TITLE", "login");
+        $params['read_all'] = Lang::t("_READ_ALL", "login");
+        $params['close'] = Lang::t("_CLOSE", "standard");
+
 
         $this->render("show", $params);
     }
@@ -222,11 +222,21 @@ class HomepageAdmController extends AdmController
                 $errorMessage = Lang::t("_OPERATION_FAILURE", "register");
                 break;
             case SUCCESS_SEND_LOST_PWD:
-                $redirection['req'] = _homepage_;
-                $redirection['query'] = array(
-                    "done" => LOST_PWD
-                );
-                self::redirect($redirection);
+                $dataView['loginAction'] = Get::rel_path('base') . '/index.php?r=' . _login_;
+
+                switch ($action) {
+
+                    case "lost_user":
+
+                        $dataView['message'] = Lang::t('_MAIL_SEND_SUCCESSFUL', 'register');
+                        break;
+                    case "lost_pwd":
+                        $dataView['message'] = Lang::t('_MAIL_SEND_SUCCESSFUL_PWD', 'register');
+                        break;
+                }
+
+                $this->render("lostpwd-typ", $dataView);
+                return;
                 break;
         }
 
@@ -470,8 +480,8 @@ class HomepageAdmController extends AdmController
             );
             self::redirect($redirection);
         }
-        
-        if(Docebo::user()->isLoggedIn()) {
+
+        if (Docebo::user()->isLoggedIn()) {
             AuthenticationManager::logout();
             header("Location: " . $_SERVER['REQUEST_URI']);
             exit;
