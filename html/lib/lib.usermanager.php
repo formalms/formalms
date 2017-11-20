@@ -1401,12 +1401,12 @@ class UserManagerRenderer
 
                 }
 
-                $result = $this->_opt_in($options, $platform, $opt_link);
+                $out = $this->_opt_in($options, $platform, $opt_link);
                 if ($this->error) {
                     if ($options['use_advanced_form'] == 'on' || Get::sett('register_with_code') == 'on') {
-                        $out .= $this->_special_field($options, $platform, $opt_link, $errors);
+                        $out = $this->_special_field($options, $platform, $opt_link, $errors);
                     } else {
-                        $out .= $this->_first_of_all($options, $platform, $errors);
+                        $out = $this->_first_of_all($options, $platform, $errors);
                     }
                 }
             };
@@ -1430,14 +1430,14 @@ class UserManagerRenderer
 
 
                 if ($this->error) {
-                    $out .= $this->_first_of_all($options, $platform, $errors);
+                    $out = $this->_first_of_all($options, $platform, $errors);
                 } else {
-                    $out .= $this->_special_field($options, $platform, $opt_link, $errors);
+                    $out = $this->_special_field($options, $platform, $opt_link, $errors);
                 }
             };
                 break;
             case "first_of_all" : {
-                $out .= $this->_first_of_all($options, $platform, $errors);
+                $out = $this->_first_of_all($options, $platform, $errors);
             };
                 break;
         }
