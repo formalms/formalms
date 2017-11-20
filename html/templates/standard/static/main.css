@@ -3605,7 +3605,7 @@ h1, h2, h3, h4, h5, h6, p {
   text-transform: uppercase;
   line-height: 12px;
   color: white;
-  background-color: #c84000;
+  background: #c84000;
   font-family: "Open-sans";
   font-size: 11px;
   border: none;
@@ -3664,13 +3664,13 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .forma-button--orange-hover:hover {
-  background-color: #ff6c00;
+  background: #ff6c00;
   color: white;
 }
 
 .forma-button--disabled {
   pointer-events: none;
-  background-color: white;
+  background: white;
   border: 2px solid #c2c2c2;
   color: #c2c2c2;
 }
@@ -3691,16 +3691,16 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .forma-button--green {
-  background-color: #70d800;
+  background: #70d800;
 }
 
 .forma-button--gray {
   pointer-events: none;
-  background-color: #c2c2c2;
+  background: #c2c2c2;
 }
 
 .forma-button--black {
-  background-color: black;
+  background: black;
 }
 
 .forma-button--black .forma-button__label:after {
@@ -3713,7 +3713,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .forma-button--white {
-  background-color: white;
+  background: white;
   color: #c84000;
 }
 
@@ -3731,7 +3731,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 .forma-button--orange {
   border: solid 2px #ff6c00;
-  background-color: white;
+  background: white;
   color: #ff6c00;
 }
 
@@ -4037,7 +4037,7 @@ h1, h2, h3, h4, h5, h6, p {
   opacity: 0;
 }
 
-.forma-quick-search-form .bootstrap-select .dropdown-menu li > a.selected > * .glyphicon.glyphicon-ok.check-mark:before {
+.forma-quick-search-form .bootstrap-select .dropdown-menu li.selected > a .glyphicon.glyphicon-ok.check-mark:before {
   opacity: 1;
 }
 

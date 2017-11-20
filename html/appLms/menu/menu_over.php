@@ -252,7 +252,9 @@ foreach ($menu['all'] as $row) {
                                 <div class="tabnav__content tabnav__content--credits">
                                     <div class="row credits">
                                         <div class="col-xs-12">
-                                            '.$credits.'
+                                        	<div class="js-credits-ajax-container">
+                                          		'.$credits.'
+											</div>
                                         </div> <!-- end col xs-12 -->
                                     </div>                                        
                                 </div>

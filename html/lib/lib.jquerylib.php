@@ -66,10 +66,18 @@ class JQueryLib
         $bootstrap_core_css = "/addons/" . self::_path . "/bootstrap/css/bootstrap-theme-" . self::_bootstrap_version . $which_version . ".css";
         $local_link .= Util::get_css(Get::rel_path('base') . $bootstrap_core_css, true);
 
-
         return $local_link;
     }
 
+    public static function loadBootstrapAddons($which_version = '') {
+    	// bootstrap datepicker
+		$bootstrap_datepicker_css = "/addons/" . self::_path . "/bootstrap-datepicker/css/bootstrap-datepicker" . $which_version . ".css";
+		$local_link = Util::get_css(Get::rel_path('base') . $bootstrap_datepicker_css, true);
+		$bootstrap_datepicker_js = "/addons/" . self::_path . "/bootstrap-datepicker/js/bootstrap-datepicker" . $which_version . ".js";
+		$local_link .= Util::get_css(Get::rel_path('base') . $bootstrap_datepicker_js, true);
+
+		return $local_link;
+	}
 
     public static function loadJQueryAddons($which_version, $exclude_addons = null)
     {

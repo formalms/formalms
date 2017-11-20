@@ -3,11 +3,11 @@ window.LmsBlockMenu = (function ($) {
     'use strict';
 
     function clearTableCreditWrapper() {
-        $('.table-credit-wrapper').empty();
+        $('.js-credits-ajax-container').children('.table-credit-wrapper').remove();
     }
 
     function populateTableCreditWrapper(data) {
-        $('.table-credit-wrapper').append(data);
+        $('.js-credits-ajax-container').append(data);
     }
 
     /**

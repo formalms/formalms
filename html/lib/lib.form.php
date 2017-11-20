@@ -227,7 +227,6 @@ class Form {
 		return Form::getLineTextfield( 'form_line_l', 'floating', $label_name, 'textfield', $id, $name, $value, $alt_name, $maxlenght, '', $other_after, $other_before );
 	}
 
-
 	public static function loadDatefieldScript($date_format = false) {
 		if (defined("IS_AJAX")) return; //we can't print scripts in an ajax request
 		if (!isset($GLOBALS['jscal_loaded']) || $GLOBALS['jscal_loaded'] == false) {
@@ -376,7 +375,7 @@ class Form {
 		if ($css_field == false) $css_field = 'textfield';
 	
 		Form::loadDatefieldScript($date_format);
-	
+
 		$date = "";
 		$iso = Format::dateDb($value, 'datetime');
 		if ($value != '' && $value != '0000-00-00 00:00:00') {
@@ -384,11 +383,11 @@ class Form {
 			$timestamp = $datetime->format("U");//mktime(0, 0, 0, (int)substr($iso, 5, 2), (int)substr($iso, 8, 2), (int)substr($iso, 0, 4));
 			$date = date("m/d/Y h:m", $timestamp);
 		}
-	
+
 		$other_after_b = '<span id="calendar_button_'.$id.'" class="yui-button"><span class="first-child docebo_calendar">'
 				.'<button type="button"></button></span></span>'
 				.'<div id="calendar_menu_'.$id.'"><div id="calendar_container_'.$id.'"></div></div>';
-	
+
 				if (defined("IS_AJAX")) {
 					if (!isset($GLOBALS['date_inputs'])) $GLOBALS['date_inputs'] = array();
 					$GLOBALS['date_inputs'][] = array($id, $date, $date_format);
@@ -428,36 +427,42 @@ class Form {
 		$value =($value == '00-00-0000' ? '' : $value);
 
 		if ($date_format == false) {
-			$regset = Format::instance(); $date_format = $regset->date_token;
+			$regset = Format::instance();
+			$date_format = $regset->date_token;
+			$date_format = str_replace(['%d', '%m', '%Y', '-'], ['dd', 'mm', 'yyyy', '/'], $date_format);
 		}
-		if ($css_field == false) $css_field = 'textfield';
+		if ($css_field == false) $css_field = 'form-control datepicker';
 
-		Form::loadDatefieldScript($date_format);
-
-		$date = "";
 		$iso = Format::dateDb($value, 'date');
-		if ($value != '' && $value != '0000-00-00 00:00:00') {
-			$timestamp = mktime(0, 0, 0, (int)substr($iso, 5, 2), (int)substr($iso, 8, 2), (int)substr($iso, 0, 4));
-			$date = date("m/d/Y", $timestamp);
-		}
 
-		$other_after_b = '<span id="calendar_button_'.$id.'" class="yui-button"><span class="first-child docebo_calendar">'
-				.'<button type="button"></button></span></span>'
-				.'<div id="calendar_menu_'.$id.'"><div id="calendar_container_'.$id.'"></div></div>';
+//		Form::loadDatefieldScript($date_format);
+//
+//		$date = "";
+//		$iso = Format::dateDb($value, 'date');
+//		if ($value != '' && $value != '0000-00-00 00:00:00') {
+//			$timestamp = mktime(0, 0, 0, (int)substr($iso, 5, 2), (int)substr($iso, 8, 2), (int)substr($iso, 0, 4));
+//			$date = date("m/d/Y", $timestamp);
+//		}
+//
+//		$other_after_b = '<span id="calendar_button_'.$id.'" class="yui-button"><span class="first-child docebo_calendar">'
+//				.'<button type="button"></button></span></span>'
+//				.'<div id="calendar_menu_'.$id.'"><div id="calendar_container_'.$id.'"></div></div>';
+//
+//		if (defined("IS_AJAX")) {
+//			if (!isset($GLOBALS['date_inputs'])) $GLOBALS['date_inputs'] = array();
+//			$GLOBALS['date_inputs'][] = array($id, $date, $date_format);
+//		} else {
+//			$script = '<script type="text/javascript">'
+//					.'YAHOO.util.Event.onDOMReady(function() {'
+//					.'	YAHOO.dateInput.setCalendar("'.$id.'", "'.$date.'", "'.$date_format.'");'
+//					.'});</script>';
+//			cout($script, 'scripts'); //script in the scripts page section, this ensure to have it after the YAHOO.dateInput declaration
+//		}
 
-		if (defined("IS_AJAX")) {
-			if (!isset($GLOBALS['date_inputs'])) $GLOBALS['date_inputs'] = array();
-			$GLOBALS['date_inputs'][] = array($id, $date, $date_format);
-		} else {
-			$script = '<script type="text/javascript">'
-					.'YAHOO.util.Event.onDOMReady(function() {'
-					.'	YAHOO.dateInput.setCalendar("'.$id.'", "'.$date.'", "'.$date_format.'");'
-					.'});</script>';
-			cout($script, 'scripts'); //script in the scripts page section, this ensure to have it after the YAHOO.dateInput declaration
-		}
+		$script = '<script type="text/javascript">$("#' . $id . '").datepicker();</script>';
+		cout($script, 'scripts');
 
-		return  Form::getInputTextfield( $css_field, $id, $name, Format::date($iso, 'date'), $alt_name, '30', '')/*.$other_after_b*/;
-
+		return Form::getInputTextfield( $css_field, $id, $name, Format::date($iso, 'date'), $alt_name, '30', 'placeholder="' . $date_format . '"');
 	}
 
 
@@ -514,7 +519,6 @@ class Form {
 				$id, $name, $value, $date_format, $alt_name, $other_param, $other_after, $other_before);
 
 	}
-
 
 	/**
 	 * @param string $css_text 		the css class for the input element

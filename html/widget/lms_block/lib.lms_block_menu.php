@@ -251,8 +251,7 @@ class Lms_BlockWidget_menu extends Widget {
 
         $table = '<div class="table-credit-wrapper">';
         if (count($course_data) > 0) {
-            $table .= '
-                    <table class="table-credit">
+            $table .= '<table class="table-credit">
                         <thead>
                             <tr class="table-credit__row table-credit__row--head">
                                 <td>' . Lang::t('_COURSE', 'catalogue') . '</td>
@@ -295,7 +294,7 @@ class Lms_BlockWidget_menu extends Widget {
         }
 
         if ($no_cdata) {
-            $table .= '<p>' . Lang::t ( '_NO_CONTENT', 'catalogue' ) . '</p>';
+            $table .= '<tr class="table-credit__row"><td>' . Lang::t ( '_NO_CONTENT', 'catalogue' ) . '</td></tr>';
         }
 
         $table .= '</div>';

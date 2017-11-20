@@ -326,6 +326,7 @@ class Layout
         $retArray['layout_analytics'] = self::analytics();
         $retArray['jqueryLib'] = JQueryLib::loadJQuery($minimized);
         $retArray['boostrap'] = JQueryLib::loadBootstrap($minimized);
+		$retArray['boostrapAddons'] = JQueryLib::loadBootstrapAddons($minimized);
         $retArray['jqueryAddons'] = JQueryLib::loadJQueryAddons($minimized);
         $retArray['cssAddons'] = JQueryLib::loadCssAddons($minimized);
 

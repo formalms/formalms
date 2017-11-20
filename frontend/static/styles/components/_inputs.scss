@@ -230,15 +230,11 @@
 			opacity: 0;
 		  }
 		}
-
-        &.selected > * {
-		  .glyphicon.glyphicon-ok.check-mark {
-			&:before {
-			  opacity: 1;
-			}
-		  }
-        }
       }
+
+	  li.selected > a .glyphicon.glyphicon-ok.check-mark:before {
+		opacity: 1;
+	  }
     }
   }
 }
