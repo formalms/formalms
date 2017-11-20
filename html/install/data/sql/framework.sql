@@ -1269,7 +1269,7 @@ CREATE TABLE IF NOT EXISTS `core_menu` (
 --
 
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(1, '_USER_MANAGMENT', '<i class="fa fa-users fa-fw"></i>', 1, 'true', 'true', NULL, NULL);
-INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(2, '_FIRST_LINE_lms', '<span class="glyphicon glyphicon glyphicon-education" aria-hidden="true"></span>', 2, 'true', 'true', NULL, NULL);
+INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(2, '_FIRST_LINE_lms', ' <i class="fa fa-graduation-cap" aria-hidden="true"></i>', 2, 'true', 'true', NULL, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(3, '_CONTENTS', '<i class="fa fa-clipboard fa-fw"></i>', 3, 'true', 'true', NULL, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(4, '_REPORT', '<i class="fa fa-bar-chart-o fa-fw"></i>', 4, 'true', 'true', NULL, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(5, '_CONFIGURATION', '<i class="fa fa-cogs fa-fw"></i>', 5, 'true', 'true', NULL, NULL);

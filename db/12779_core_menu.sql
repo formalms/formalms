@@ -23,7 +23,7 @@ CREATE TABLE `core_menu` (
 insert into core_menu(idmenu, name, sequence, is_active, image) VALUES
 (1, '_USER_MANAGMENT', 1, 'true', '<i class="fa fa-users fa-fw"></i>');
 insert into core_menu(idmenu, name, sequence, is_active, image) VALUES
-(2, '_FIRST_LINE_lms', 2, 'true', '<span class="glyphicon glyphicon glyphicon-education" aria-hidden="true"></span>');
+(2, '_FIRST_LINE_lms', 2, 'true', ' <i class="fa fa-graduation-cap" aria-hidden="true"></i>');
 insert into core_menu(idmenu, name, sequence, is_active, image) VALUES
 (3, '_CONTENTS', 3, 'true', '<i class="fa fa-clipboard fa-fw"></i>');
 insert into core_menu(idmenu, name, sequence, is_active, image) VALUES
