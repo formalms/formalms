@@ -33,3 +33,24 @@ UPDATE `core_setting` SET `pack` = 'twig_cache' WHERE `core_setting`.`param_name
 INSERT INTO `core_lang_text` (`id_text`, `text_key`, `text_module`, `text_attributes`) VALUES (NULL, '_CLEAR_TWIG_CACHE', 'configuration', '');
 
 INSERT INTO `core_lang_translation` (`id_text`, `lang_code`, `translation_text`, `save_date`) VALUES ('2683', 'english', 'Clear twig cache', '2017-10-16 17:49:29'), ('2683', 'italian', 'Elimina twig cache', '2017-10-16 17:49:29');
+
+-- task #14745
+UPDATE `core_setting` SET `regroup` = '9' WHERE `core_setting`.`param_name` = 'ldap_server';
+UPDATE `core_setting` SET `regroup` = '9' WHERE `core_setting`.`param_name` = 'ldap_user_string';
+UPDATE `core_setting` SET `regroup` = '9' WHERE `core_setting`.`param_name` = 'ldap_used';
+UPDATE `core_setting` SET `regroup` = '9' WHERE `core_setting`.`param_name` = 'ldap_port';
+
+UPDATE `core_setting` SET `sequence` = '1' WHERE `core_setting`.`param_name` = 'ldap_port';
+UPDATE `core_setting` SET `sequence` = '2' WHERE `core_setting`.`param_name` = 'ldap_used';
+UPDATE `core_setting` SET `sequence` = '3' WHERE `core_setting`.`param_name` = 'ldap_server';
+UPDATE `core_setting` SET `sequence` = '5' WHERE `core_setting`.`param_name` = 'sso_token';
+UPDATE `core_setting` SET `sequence` = '6' WHERE `core_setting`.`param_name` = 'sso_secret';
+UPDATE `core_setting` SET `sequence` = '7' WHERE `core_setting`.`param_name` = 'use_rest_api';
+UPDATE `core_setting` SET `sequence` = '8' WHERE `core_setting`.`param_name` = 'rest_auth_code';
+UPDATE `core_setting` SET `sequence` = '9' WHERE `core_setting`.`param_name` = 'rest_auth_method';
+UPDATE `core_setting` SET `sequence` = '10' WHERE `core_setting`.`param_name` = 'rest_auth_update';
+UPDATE `core_setting` SET `sequence` = '11' WHERE `core_setting`.`param_name` = 'rest_auth_api_key';
+UPDATE `core_setting` SET `sequence` = '12' WHERE `core_setting`.`param_name` = 'rest_auth_lifetime';
+UPDATE `core_setting` SET `sequence` = '13' WHERE `core_setting`.`param_name` = 'rest_auth_api_secret';
+
+UPDATE `core_lang_translation` SET `translation_text` = 'API e Autenticazione' WHERE `core_lang_translation`.`id_text` = 389 AND `core_lang_translation`.`lang_code` = 'english'; UPDATE `core_lang_translation` SET `translation_text` = 'API and Authentication' WHERE `core_lang_translation`.`id_text` = 389 AND `core_lang_translation`.`lang_code` = 'italian';
