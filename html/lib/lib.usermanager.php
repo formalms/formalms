@@ -1402,7 +1402,6 @@ class UserManagerRenderer
                 }
 
                 $result = $this->_opt_in($options, $platform, $opt_link);
-                return $result;
                 if ($this->error) {
                     if ($options['use_advanced_form'] == 'on' || Get::sett('register_with_code') == 'on') {
                         $out .= $this->_special_field($options, $platform, $opt_link, $errors);
