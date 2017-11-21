@@ -31,7 +31,7 @@ class MycertificateLms extends Model {
         $myCertificates = $this->certificate->getAssignment($filter);
                 
         $data = array();
-        foreach ($myCertificates AS $cert) {        
+        foreach ($myCertificates AS $cert) {
             $preview    = '<a class="ico-wt-sprite subs_view" href="?r=mycertificate/'
                         . 'preview&id_certificate='.$cert['id_certificate'].'&id_course='.$cert['id_course'].'" '
                         .' title="'.Lang::t('_PREVIEW', 'certificate').'"><span>'.Lang::t('_PREVIEW', 'certificate').'</span></a>';
@@ -54,7 +54,7 @@ class MycertificateLms extends Model {
                 'code'              => $cert['code'], 
                 'course_name'       => $cert['course_name'], 
                 'cert_name'         => $cert['cert_name'], 
-                'date_complete'     => $cert['date_complete'], 
+                'date_complete'     => $cert['date_complete'],
                 'preview'           => isset($cert['on_date']) ? '' : $preview,
                 'download'          => isset($cert['on_date']) ? $download : $generate
             );
@@ -87,7 +87,7 @@ class MycertificateLms extends Model {
         $myMetaCertificates = $this->certificate->getMetaAssignment($filter);
                 
         $data = array();
-        foreach ($myMetaCertificates AS $meta) {        
+        foreach ($myMetaCertificates AS $meta) {
             $preview    = '<a class="ico-wt-sprite subs_view" href="?r=mycertificate/'
                         . 'preview&id_certificate='.$meta['id_certificate'].'&id_meta='.$meta['id_meta'].'" '
                         .' title="'.Lang::t('_PREVIEW', 'certificate').'"><span>'.Lang::t('_PREVIEW', 'certificate').'</span></a>';
@@ -101,7 +101,7 @@ class MycertificateLms extends Model {
             $row = array(
                 'cert_code'         => $meta['cert_code'], 
                 'cert_name'         => $meta['cert_name'], 
-                'courses'           => $meta['courses'], 
+                'courses'           => $meta['courses'],
                 'preview'           => isset($meta['on_date']) ? '' : $preview,
                 'download'          => isset($meta['on_date']) ? $download : $generate
             );
