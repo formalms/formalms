@@ -2171,15 +2171,24 @@ class UserManagerRenderer
 
             $error = (isset($errors) && $errors['privacy']);
             $errorMessage = $errors['privacy']['msg'];
-            $out .= '<div class="homepage__row">'
-                . Form::getInputCheckbox(
-                    'register_privacy',
-                    'register[privacy]',
-                    'ok',
-                    isset($_POST['register']['privacy']),
-                    '')
-                . '<label class="checkbox-inline">' . $lang->def('_REG_PRIVACY_ACCEPT') . '</label>'
-                . '</div>';
+            $out .= '<div class="homepage__row homepage__row--privacy">';
+            if($error) {
+                $out .= '<div class="has-error">';
+            }
+        
+            $out .= Form::getInputCheckbox(
+                'register_privacy',
+                'register[privacy]',
+                'ok',
+                isset($_POST['register']['privacy']),
+                '')
+            . '<label class="checkbox-inline">' . $lang->def('_REG_PRIVACY_ACCEPT') . '</label>'
+        . '</div>';
+        
+            if($error) {
+                $out .= '<small class="form-text">* ' . $errorMessage . '</small>
+                </div>';
+            }
         }
 
         $out .= '<div class="homepage__row row">'
