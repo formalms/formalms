@@ -2393,36 +2393,35 @@ class UserManagerRenderer
         }
 
         // control mail is correct
-        if ($source['register']['email'] == '') {
-            $error = ['error' => true,
-                'msg' => $lang->def('_ERR_INVALID_MAIL')];
-
-            $errors['email'] = $error;
-        }
-        if (!preg_match("/^([a-z0-9_\-]|\\.[a-z0-9_])+@(([a-z0-9_\-]|\\.-)+\\.)+[a-z]{2,8}$/", $source['register']['email'])) {
-            $error = ['error' => true,
-                'msg' => $lang->def('_ERR_INVALID_MAIL')];
-
-            $errors['email'] = $error;
-        }
-        if (preg_match("[\r\n]+", $source['register']['email'])) {
-            $error = ['error' => true,
-                'msg' => $lang->def('_ERR_INVALID_MAIL')];
-
-            $errors['email'] = $error;
-        }
-
         $acl_man =& Docebo::user()->getAclManager();
 
-        if ($acl_man->getUserByEmail($source['register']['email']) !== false) {
+
+        if ($source['register']['email'] === '') {
+            $error = ['error' => true,
+                'msg' => $lang->def('_ERR_INVALID_MAIL')];
+
+            $errors['email'] = $error;
+        }
+        else if (!preg_match("/^([a-z0-9_\-]|\\.[a-z0-9_])+@(([a-z0-9_\-]|\\.-)+\\.)+[a-z]{2,8}$/", $source['register']['email'])) {
+            $error = ['error' => true,
+                'msg' => $lang->def('_ERR_INVALID_MAIL')];
+
+            $errors['email'] = $error;
+        }
+        else if (preg_match("[\r\n]+", $source['register']['email'])) {
+            $error = ['error' => true,
+                'msg' => $lang->def('_ERR_INVALID_MAIL')];
+
+            $errors['email'] = $error;
+        }
+        else if ($acl_man->getUserByEmail($source['register']['email']) !== false) {
 
             $error = ['error' => true,
                 'msg' => $lang->def('_ERR_DUPLICATE_MAIL')];
 
             $errors['email'] = $error;
         }
-
-        if (($tuser = $acl_man->getTempUserByEmail($source['register']['email'])) !== false) {
+        else if (($tuser = $acl_man->getTempUserByEmail($source['register']['email'])) !== false) {
 
             $msg = $lang->def('_ERR_DUPLICATE_RESEND');
             $error = ['error' => true,
@@ -2431,8 +2430,13 @@ class UserManagerRenderer
             $errors['email'] = $error;
 
         }
+
         // check if userid has been inserted
-        if ($source['register']['userid'] == '' || $source['register']['userid'] == $lang->def('_REG_USERID_DEF')) {
+        $user = $acl_man->getUserST($source['register']['userid']);
+        $temp_user = $acl_man->getTempUserInfo($source['register']['userid']);
+
+
+        if ($source['register']['userid'] === '' || $source['register']['userid'] === $lang->def('_REG_USERID_DEF')) {
 
             $error = ['error' => true,
                 'msg' => $lang->def('_ERR_INVALID_USER')];
@@ -2441,9 +2445,7 @@ class UserManagerRenderer
         }
 
         // control if userid is duplicate
-        $user = $acl_man->getUserST($source['register']['userid']);
-        $temp_user = $acl_man->getTempUserInfo($source['register']['userid']);
-        if ($user !== false || $temp_user !== false) {
+        else if ($user !== false || $temp_user !== false) {
 
             $error = ['error' => true,
                 'msg' => $lang->def('_ERR_DUPLICATE_USER')];
@@ -2459,14 +2461,14 @@ class UserManagerRenderer
 
             $errors['pwd'] = $error;
         }
-        if ($_POST['register']['pwd'] != $source['register']['pwd_retype']) {
+        else if ($_POST['register']['pwd'] !== $source['register']['pwd_retype']) {
 
             $error = ['error' => true,
                 'msg' => $lang->def('_ERR_PASSWORD_NO_MATCH')];
 
             $errors['pwd'] = $error;
         }
-        if ($options['pass_alfanumeric'] == 'on') {
+        else if ($options['pass_alfanumeric'] === 'on') {
             if (!preg_match('/[a-z]/i', $source['register']['pwd']) || !preg_match('/[0-9]/', $source['register']['pwd'])) {
 
                 $error = ['error' => true,
