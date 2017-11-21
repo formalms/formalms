@@ -526,18 +526,64 @@ class PluginmanagerAdm extends Model {
         if(FALSE === $f){
             die("Couldn't write to file.");
         }
+        return $this->unpackPlugin("temp_update.zip", $name);
+    }
+
+    /**
+     * Unpack package zip and optionally rename given plugin folder adding ".old"
+     * @param $package_name
+     * @param $rename
+     * @return bool
+     */
+    function unpackPlugin($package_name, $rename = false){
         $zip = new ZipArchive;
-        $res = $zip->open(_base_."/plugins/"."temp_update.zip");
+        $res = $zip->open(_base_."/plugins/".$package_name);
         if ($res === TRUE) {
-            rename(_base_."/plugins/".$name,_base_."/plugins/".$name.".old");
+            if($rename){
+                $rename_file = _base_."/plugins/".$rename;
+                $rename_file_time = $rename_file;
+                if(file_exists( $rename_file_time )){
+                    $rename_file_time .= ".".time();
+                }
+                rename($rename_file, $rename_file_time);
+            }
             $zip->extractTo(_base_."/plugins/");
             $zip->close();
-            fclose(_base_."/plugins/"."temp_update.zip");
-            unlink(_base_."/plugins/"."temp_update.zip");
+            fclose(_base_."/plugins/".$package_name);
+            unlink(_base_."/plugins/".$package_name);
             return true;
         } else {
             return false;
         }
+    }
+    
+    /**
+     * Upload a plugin to forma
+     * @param $file_uploaded ($_FILES['plugin_file_upload'])
+     * @return bool
+     */
+    function uploadPlugin($file_uploaded) {
+        require_once(_base_.'/lib/lib.upload.php');
+		if($file_uploaded['name'] == '') {
+			return false;
+		} else {
+            $path = "/../plugins/";
+            $savefile = $file_uploaded['name'];
+			if(!file_exists( $GLOBALS['where_files_relative'].$path.$savefile )) {
+				sl_open_fileoperations();
+				if(!sl_upload($file_uploaded['tmp_name'], $path.$savefile)) {
+					sl_close_fileoperations();
+					return false;
+                }
+                $name = pathinfo($file_uploaded['name'], PATHINFO_FILENAME);
+                if($this->unpackPlugin($savefile, $name)){
+                    return true;
+                }
+				sl_close_fileoperations();
+			} else {
+				return false;
+			}
+		}
     }
 
     /**
