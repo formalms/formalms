@@ -1401,13 +1401,16 @@ class UserManagerRenderer
 
                 }
 
-                $out = $this->_opt_in($options, $platform, $opt_link);
+
                 if ($this->error) {
                     if ($options['use_advanced_form'] == 'on' || Get::sett('register_with_code') == 'on') {
                         $out = $this->_special_field($options, $platform, $opt_link, $errors);
                     } else {
                         $out = $this->_first_of_all($options, $platform, $errors);
                     }
+                }
+                else {
+                    $out = $this->_opt_in($options, $platform, $opt_link);
                 }
             };
                 break;
@@ -2374,7 +2377,7 @@ class UserManagerRenderer
         $errors = [];
 
         // control if the inserted data is valid
-        if ($options['privacy_policy'] == 'on') {
+        if ($options['privacy_policy'] === 'on') {
             if (!isset($source['register']['privacy'])) {
 
                 $error = ['error' => true,
