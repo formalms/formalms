@@ -18,8 +18,8 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- ------------------------------------------------------------------
 
 -- task #14746
-UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'google_stat_in_lms'
-UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'google_stat_code'
+UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'google_stat_in_lms';
+UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'google_stat_code';
 
 -- task #14734
 UPDATE `core_setting` SET `regroup` = '4' WHERE `core_setting`.`param_name` = 'paypal_mail';
@@ -40,7 +40,9 @@ UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'm
 UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'customer_help_email';
 UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx';
 
-UPDATE `core_setting` SET `sequence` = '9' WHERE `core_setting`.`param_name` = 'mail_sender'; UPDATE `core_setting` SET `sequence` = '10' WHERE `core_setting`.`param_name` = 'customer_help_email'; UPDATE `core_setting` SET `param_load` = '11' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx';
+UPDATE `core_setting` SET `sequence` = '9' WHERE `core_setting`.`param_name` = 'mail_sender'; 
+UPDATE `core_setting` SET `sequence` = '10' WHERE `core_setting`.`param_name` = 'customer_help_email'; 
+UPDATE `core_setting` SET `param_load` = '11' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx';
 
 -- task #14733
 UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'ttlSession';
@@ -51,7 +53,7 @@ UPDATE `core_setting` SET `sequence` = '27' WHERE `core_setting`.`param_name` = 
 UPDATE `core_setting` SET `pack` = 'twig_cache' WHERE `core_setting`.`param_name` = 'Clear_Twig_Cache';
 INSERT INTO `core_lang_text` (`id_text`, `text_key`, `text_module`, `text_attributes`) VALUES (NULL, '_CLEAR_TWIG_CACHE', 'configuration', '');
 
-INSERT INTO `core_lang_translation` (`id_text`, `lang_code`, `translation_text`, `save_date`) VALUES ('2683', 'english', 'Clear twig cache', '2017-10-16 17:49:29'), ('2683', 'italian', 'Elimina twig cache', '2017-10-16 17:49:29');
+INSERT IGNORE INTO `core_lang_translation` (`id_text`, `lang_code`, `translation_text`, `save_date`) VALUES ('2683', 'english', 'Clear twig cache', '2017-10-16 17:49:29'), ('2683', 'italian', 'Elimina twig cache', '2017-10-16 17:49:29');
 
 -- task #14745
 UPDATE `core_setting` SET `regroup` = '9' WHERE `core_setting`.`param_name` = 'ldap_server';
@@ -72,7 +74,8 @@ UPDATE `core_setting` SET `sequence` = '11' WHERE `core_setting`.`param_name` = 
 UPDATE `core_setting` SET `sequence` = '12' WHERE `core_setting`.`param_name` = 'rest_auth_lifetime';
 UPDATE `core_setting` SET `sequence` = '13' WHERE `core_setting`.`param_name` = 'rest_auth_api_secret';
 
-UPDATE `core_lang_translation` SET `translation_text` = 'API e Autenticazione' WHERE `core_lang_translation`.`id_text` = 389 AND `core_lang_translation`.`lang_code` = 'english'; UPDATE `core_lang_translation` SET `translation_text` = 'API and Authentication' WHERE `core_lang_translation`.`id_text` = 389 AND `core_lang_translation`.`lang_code` = 'italian';
+UPDATE `core_lang_translation` SET `translation_text` = 'API e Autenticazione' WHERE `core_lang_translation`.`id_text` = 389 AND `core_lang_translation`.`lang_code` = 'english'; 
+UPDATE `core_lang_translation` SET `translation_text` = 'API and Authentication' WHERE `core_lang_translation`.`id_text` = 389 AND `core_lang_translation`.`lang_code` = 'italian';
 
 -- 150605.view_all.sql 
 
@@ -704,19 +707,20 @@ DELETE from core_role WHERE roleid like "%coursecharts%";
 
 -- plugin-requests_tempname.sql
 CREATE TABLE IF NOT EXISTS `core_requests` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `app` varchar(10) NOT NULL,
   `name` varchar(255) NOT NULL,
   `controller` varchar(255) NOT NULL,
   `model` varchar(255) NOT NULL,
-  `plugin` varchar(255) NOT NULL
+  `plugin` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
 );
 
-ALTER TABLE `core_requests`
-  ADD PRIMARY KEY (`id`);
+-- ALTER TABLE `core_requests`
+--   ADD PRIMARY KEY (`id`);
 
-ALTER TABLE `core_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+-- ALTER TABLE `core_requests`
+--  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 -- dev-plugin-system.sql 
 
