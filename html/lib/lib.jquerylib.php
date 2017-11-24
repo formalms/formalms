@@ -95,6 +95,13 @@ class JQueryLib
                 }
             }  
         }
+
+		// malihu custom scrollbar
+		$jquery_custom_scrollbar_css = "/addons/" . self::_path . "/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar" . $which_version . ".css";
+		$local_link .= Util::get_css(Get::rel_path('base') . $jquery_custom_scrollbar_css, true);
+		$jquery_custom_scrollbar_js = "/addons/" . self::_path . "/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar" . $which_version . ".js";
+		$local_link .= Util::get_css(Get::rel_path('base') . $jquery_custom_scrollbar_js, true);
+
         return $local_link;
     }
 

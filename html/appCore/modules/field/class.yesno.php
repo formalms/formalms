@@ -397,7 +397,7 @@ class Field_YesNo extends Field {
         if ($registrationLayout) {
 
 
-            $formField = '<div class="homepage__row homepage__row--gray">'
+            $formField = '<div class="homepage__row homepage__row--gray homepage__row--text-left">'
                 . $translation . ($mandatory ? ' <span class="mandatory">*</span>' : '')
                 . '</div>'
                 . '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';

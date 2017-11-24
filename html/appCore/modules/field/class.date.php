@@ -369,7 +369,7 @@ class Field_Date extends Field {
             $formField = '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';
 
             $formField .= '<div class="col-xs-12 col-sm-6">';
-			$formField .= '<div class="input-group">';
+			$formField .= '<div class="input-group date">';
 			$formField .= '<div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>';
 
             $formField .= Form::getInputDatefield(

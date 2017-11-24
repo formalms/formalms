@@ -63,7 +63,9 @@
 			<div class="select-language">
 				<span class="hidden-xs">{{ evalPhp('Lang::t', ['_CHANGELANG', 'register']) }}: </span>{{ evalPhp('Layout::change_lang') }}
 			</div>
-            {{ evalPhp('Layout::get_catalogue')  }}
+			<div class="hidden-xs">
+				{{ evalPhp('Layout::get_catalogue')  }}
+			</div>
 		</div>
 	</div>
 	{{ evalPhp('Layout::zone', ['content']) }}

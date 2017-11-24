@@ -127,7 +127,7 @@ function TruncateText($the_text, $size)
 //                                </div> ';
 
             $html .= '
-                <div class="col-xs-offset-1 col-xs-12 col-md-offset-0 col-md-6">
+                <div class="col-xs-12 col-md-6">
                     <div class="course-box">
                         <div class="course-box__item">
                             <div class="course-box__title">' . $row['name'] . '</div>
