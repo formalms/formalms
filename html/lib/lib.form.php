@@ -459,7 +459,7 @@ class Form {
 //			cout($script, 'scripts'); //script in the scripts page section, this ensure to have it after the YAHOO.dateInput declaration
 //		}
 
-		$script = '<script type="text/javascript">$("#' . $id . '").datepicker();</script>';
+		$script = '<script type="text/javascript">$("#' . $id . '").datepicker({orientation: "top left"});</script>';
 		cout($script, 'scripts');
 
 		return Form::getInputTextfield( $css_field, $id, $name, Format::date($iso, 'date'), $alt_name, '30', 'placeholder="' . $date_format . '"');

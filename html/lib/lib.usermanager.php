@@ -2163,7 +2163,7 @@ class UserManagerRenderer
         }
 
         $out .= '<div class="homepage__row homepage__row--form-disclaimer"> '
-            . '<p>' . $lang->def('_REG_PRIVACY_POLICY') . '</p>'
+            . '<p class="mCustomScrollbar" data-mcs-theme="minimal-dark">' . $lang->def('_REG_PRIVACY_POLICY') . '</p>'
             . '</div>';
 
 

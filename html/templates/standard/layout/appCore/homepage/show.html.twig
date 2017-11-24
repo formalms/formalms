@@ -1,4 +1,9 @@
 <div class="homepage__row homepage__row--login homepage__row--gray no-padding">
+
+	<div class="visible-xs">
+		{{ evalPhp('Layout::get_catalogue')  }}
+	</div>
+
     {% if baseLogin is defined %}
         <div class="col-xs-12 col-sm-6{% if socialLogin is not defined %} col-sm-offset-3{% endif %}">
             {% if block_attempts == false %}
