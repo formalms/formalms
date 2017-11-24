@@ -1,86 +1,3 @@
-<?php
-//<style type=text/css>
-//
-//    .popover.primary {
-//    border-color: #337ab7;
-//    }
-//
-//    .popover.primary > .arrow {
-//    border-top-color: #337ab7;
-//    }
-//
-//    .popover.primary > .popover-title {
-//    color: #fff;
-//    background-color: #337ab7;
-//        border-color: #337ab7;
-//    }
-//
-//    .popover.success {
-//    border-color: #d6e9c6;
-//    }
-//
-//    .popover.success > .arrow {
-//    border-top-color: #d6e9c6;
-//    }
-//
-//    .popover.success > .popover-title {
-//    color: #3c763d;
-//    background-color: #dff0d8;
-//        border-color: #d6e9c6;
-//    }
-//
-//    .popover.info {
-//    border-color: #bce8f1;
-//    }
-//
-//    .popover.info > .arrow {
-//    border-top-color: #bce8f1;
-//    }
-//
-//    .popover.info > .popover-title {
-//    color: #31708f;
-//    background-color: #d9edf7;
-//        border-color: #bce8f1;
-//    }
-//
-//    .popover.warning {
-//    border-color: #faebcc;
-//    }
-//
-//    .popover.warning > .arrow {
-//    border-top-color: #faebcc;
-//    }
-//
-//    .popover.warning > .popover-title {
-//    color: #8a6d3b;
-//    background-color: #fcf8e3;
-//        border-color: #faebcc;
-//    }
-//
-//    .popover.danger {
-//    border-color: #ebccd1;
-//    }
-//
-//    .popover.danger > .arrow {
-//    border-top-color: #ebccd1;
-//    }
-//
-//    .popover.danger > .popover-title {
-//    color: #a94442;
-//    background-color: #f2dede;
-//        border-color: #ebccd1;
-//    }
-//
-//    .input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group {
-//    z-index: 4;
-//        margin-left: 4px !important;
-//    }
-//
-//
-//</style>
-?>
-
-
 <div class="quick_search_form navbar<?php echo isset($css_class) && $css_class != "" ? " " . $css_class : ""; ?> forma-quick-search-form">
     <?php if ($common_options): ?>
         <div class="common_options">
@@ -112,11 +29,33 @@
 
                     <script>
                         $('.selectpicker').selectpicker({
-                            selectAllText: '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>',
-                            deselectAllText: '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',
-                            noneSelectedText: '<?php echo Lang::t('_SELECTED', 'course'); ?>',
-                            countSelectedText: '{0} selezioni'
+                            countSelectedText: '{0} <?php echo Lang::t('_SELECTED', 'course'); ?>'
                         });
+                        
+                        var prev = ["0"];
+                        $('#course_search_filter_cat').on('changed.bs.select', function (e) {
+                            if ($(this).val() == null)  {
+                                // forcing all categories
+                                 prev = ["0"];
+                                $(this).selectpicker('val', ["0"]);                                
+                            } else {
+                                selected_value =$(this).val().indexOf("0");
+                                prev_0 = prev.indexOf("0");
+                                if (selected_value == 0 ) 
+                                    if (prev_0 == -1 ) {
+                                        //just clicked on  "All category", unselect all categories
+                                        prev = ["0"]
+                                        $(this).selectpicker('val', ["0"]);
+                                    } else {
+                                         // just selected a category different from "All category"
+                                         new_val = $(this).val();
+                                         new_val.shift();
+                                         prev = new_val;
+                                         $(this).selectpicker('val', new_val);
+                                    }
+                                }   
+                        });    
+                        
                     </script>
 
                     <div class="input-group">
@@ -144,19 +83,9 @@
                 </span>
             </button>
         </div>
-<!--            </div>-->
+
     </nav>
 
-
-
-
-
-        <?php /*
-		<a id="<?php echo $id; ?>_advanced_search" class="advanced_search" href="javascript:;"><?php echo Lang::t("_ADVANCED_SEARCH", 'standard'); ?></a>
-		<div id="advanced_search_options" class="advanced_search_options" style="display:<?php echo $advanced_filter_active ? 'block' : 'none'; ?>;">
-			 <?php echo $advanced_filter_content; ?>
-		</div>
-		*/ ?>
 
 </div>
 
@@ -194,53 +123,3 @@
         });
     </script>
 <?php endif; ?>
-
-
-<script type="text/javascript">
-
-    $(document).ready(function () {
-
-//minimum 8 characters
-        var bad = /(?=.{8,}).*/;
-//Alpha Numeric plus minimum 8
-        var good = /^(?=\S*?[a-z])(?=\S*?[0-9])\S{8,}$/;
-//Must contain at least one upper case letter, one lower case letter and (one number OR one special char).
-        var better = /^(?=\S*?[A-Z])(?=\S*?[a-z])((?=\S*?[0-9])|(?=\S*?[^\w\*]))\S{8,}$/;
-//Must contain at least one upper case letter, one lower case letter and (one number AND one special char).
-        var best = /^(?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9])(?=\S*?[^\w\*])\S{8,}$/;
-
-        $('#password').on('keyup', function () {
-            var password = $(this);
-            var pass = password.val();
-            var passLabel = $('[for="password"]');
-            var stength = 'Weak';
-            var pclass = 'danger';
-            if (best.test(pass) == true) {
-                stength = 'Very Strong';
-                pclass = 'success';
-            } else if (better.test(pass) == true) {
-                stength = 'Strong';
-                pclass = 'warning';
-            } else if (good.test(pass) == true) {
-                stength = 'Almost Strong';
-                pclass = 'warning';
-            } else if (bad.test(pass) == true) {
-                stength = 'Weak';
-            } else {
-                stength = 'Very Weak';
-            }
-
-            var popover = password.attr('data-content', stength).data('bs.popover');
-            popover.setContent();
-            popover.$tip.addClass(popover.options.placement).removeClass('danger success info warning primary').addClass(pclass);
-
-        });
-
-        $('input[data-toggle="popover"]').popover({
-            placement: 'top',
-            trigger: 'focus'
-        });
-
-    })
-
-</script>

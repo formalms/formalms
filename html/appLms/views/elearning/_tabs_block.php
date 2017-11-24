@@ -3,7 +3,6 @@
 	<div class="col-md-12">
 	
 
-<!--			<div class="middlearea_container" >-->
 
 
                 <?php
@@ -27,19 +26,12 @@
 
                     $html .= '<a class="icon--filter-' . $key . '" href="#" >' . $value . '</a>';
                     $html .= '</li>';
-
-            //                echo $html;
-
                     $count++;
                 }
 
                 $html .= '</ul>';
 
                 $inline_filters = $html;
-
-                ?>
-
-				<?php
 
 				$w = $this->widget('lms_tab', array(
 	     			'active' => 'elearning',
@@ -52,7 +44,7 @@
                 $_model = new ElearningLms();
 
                 // select year
-                $_auxiliary = $_auxiliary. Form::getInputDropdown('', 'course_search_filter_year', 'filter_year', $_model->getFilterYears(Docebo::user()->getIdst()), 0, '');
+                $_auxiliary = Form::getInputDropdown('', 'course_search_filter_year', 'filter_year', $_model->getFilterYears(Docebo::user()->getIdst()), 0, '');
                 $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width=""  data-actions-box="true"', $_auxiliary);
                                                        
                 $_list_category = Form::getInputDropdown('', 'course_search_filter_cat', 'filter_cat', $_model->getListCategory(Docebo::user()->getIdst(),false), 0, '');
@@ -62,7 +54,6 @@
                     'id' => 'course_search',
                     'filter_text' => "",
                     'list_category' => $_list_category,
-                    // 'auxiliary_filter' => Lang::t('_SEARCH', 'standard').":&nbsp;&nbsp;&nbsp;".$_auxiliary,
                     'auxiliary_filter' => $_auxiliary,
                     'inline_filters' => $inline_filters,
                     'js_callback_set' => 'course_search_callback_set',
@@ -71,24 +62,10 @@
                 ));
 				?>
 
-<!--			</div>-->
 
 	
 	</div>
     
-    <!--
-    <div class="col-md-4" >
-    
-        <?php
-        $this->widget('lms_block', array(
-            'zone' => 'right',
-            'link' => 'elearning/show',
-            'block_list' => $block_list
-        ));
-        ?>
-
-    </div>
-    -->
       
 	<div class="nofloat" ></div>
     
@@ -112,13 +89,7 @@
     define("IS_AJAX", true);
     ?>
 
-    var posting = $.get('ajax.server.php?r=elearning/all&rnd=<?php echo time(); ?>',
-        {}
-    );
-
-    posting.done(function(responseText){
-        $("#div_course").html(responseText);
-    });
+    var posting = course_search_callback_set()
 
     function getSelectedOptions(sel, fn) {
         var opts = [], opt;
@@ -160,7 +131,6 @@
         var json_year = $("#course_search_filter_year option:selected").val();
 
         
-//        var json_status = $("#course_search_filter_status option:selected").val();
         var json_status = $('.js-label-menu-filter.selected').attr('data-value');
 
         $("#div_course").html("<br><p align='center'><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p>");

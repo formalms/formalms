@@ -1,4 +1,4 @@
-<?php defined('IN_FORMA') or die('Direct access is forbidden.');
+<?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -26,21 +26,6 @@ class ElearningLmsController extends LmsController {
 
 	public $info = [];
 
-	public function isTabActive($tab_name) {
-
-		switch($tab_name) {
-			case 'new' : {
-				if(!isset($this->info['elearning'][0])) return false;
-			};break;
-			case 'inprogress' : {
-				if(!isset($this->info['elearning'][1])) return false;
-			};break;
-			case 'completed' : {
-				if(!isset($this->info['elearning'][2])) return false;
-			};break;
-		}
-		return true;
-	}
 
 	public function init() {
 
@@ -220,8 +205,7 @@ class ElearningLmsController extends LmsController {
 		foreach ($courselist as $key => $courseListItem ){
             $courselist[$key]['can_enter'] = Man_Course::canEnterCourse($courselist[$key]);
             $courselist[$key]['course_type'] = 'elearning';
-        }
-
+		}
 
 
   // CLASSROOM
@@ -285,14 +269,15 @@ class ElearningLmsController extends LmsController {
 			'keyword' => $filter_text  ,
             'display_info' => $this->_getClassDisplayInfo($keys),
             'courselistClassroom' => $courselistClassroom ,
-            'stato_corso' => 'new_task',
+            'course_state' => "new_task" ,
             'filter_type' => $filter_type
         ]);
 	}
 
 
 
-
+/*
+substituted with allTask(); should be removed
 	public function inprogress() {
 		$model = new ElearningLms();
 
@@ -338,8 +323,7 @@ class ElearningLmsController extends LmsController {
         foreach ($courselist as $key => $courseListItem ){
             $courselist[$key]['can_enter'] = Man_Course::canEnterCourse($courselist[$key]);
             $courselist[$key]['course_type'] = 'elearning';
-        }
-        
+		}
 
          // CLASSROOM
         $modelClassroom = new ClassroomLms();
@@ -401,14 +385,15 @@ class ElearningLmsController extends LmsController {
 			'keyword' => $filter_text ,
             'display_info' => $this->_getClassDisplayInfo($keys),
             'courselistClassroom' => $courselistClassroom ,
-            'stato_corso' => 'inprogress',
+            'course_state' => "inprogress",
             'filter_type' => $filter_type
         ]);
 	}
+*/
 
 
-
-
+/*
+substituted with allTask(); should be removed
 	public function completed() {
 		$model = new ElearningLms();
 
@@ -521,11 +506,11 @@ class ElearningLmsController extends LmsController {
 			'keyword' => $filter_text,
             'display_info' => $this->_getClassDisplayInfo($keys),
             'courselistClassroom' => $courselistClassroom   ,
-            'stato_corso' => 'completed',
-            'filter_type' => $filter_type
+            'course_state' => "completed",
+            'filter_type' => $filter_type            
         ]);
 	}
-
+*/
 
 
 
@@ -535,20 +520,11 @@ class ElearningLmsController extends LmsController {
         $model = new ElearningLms();
 
 		$filter_text = Get::req('filter_text', DOTY_STRING, '');
-		//$filter_year = Get::req('filter_year', DOTY_INT, 0);
         $filter_type = '' .Get::req('filter_type', DOTY_STRING, '');
         $filter_cat = Get::req('filter_cat', DOTY_STRING, '');
         $filter_year = Get::req('filter_year', DOTY_STRING, 0);
         $filter_status = Get::req('filter_status', DOTY_STRING, '');
         
-  
-        
-       // echo "filter_type = ".$filter_type;
-       // echo "<br>filter_cat = ".$filter_cat;
-       // echo "<br>filter_year = ".$filter_year;
-       // echo "<br>filter_status = ".$filter_status;
-
-        //$vett_year = str_split(",");
   
         $conditions = [
             'cu.iduser = :id_user'
@@ -570,100 +546,35 @@ class ElearningLmsController extends LmsController {
 			$params[':year'] = $filter_year;
 		}
 
-        if (!empty($filter_cat)) {
-            $conditions[] = '(c.idCategory in (' .$filter_cat. ') )';
-        }        
+        if (!empty($filter_cat) && $filter_cat != '0') {
+            $conditions[] = "(c.idCategory in (:filter_category) )";
+            $params[':filter_category'] = $filter_cat;
+        }                                                                     
         
-        
+        // course status : all status, new, completed, in progress
         if ( $filter_status !== '' && $filter_status !== 'all') {
             $conditions[] = '(cu.status in (' .$filter_status. ') )';
         } 
          
-        if ( $filter_status === 'all') {
-            $conditions[] = '(cu.status >=0 )';
-        }          
-         
-
-        // e-learning filter
-        if  ($filter_type === '' || $filter_type === 'elearning' || $filter_type === 'all' ) {
-		    $courselist = $model->findAll($conditions, $params);
-            $filter_type = empty($filter_type) ? 'all' : $filter_type;
-        }
-        
-        
-        
-        //check courses accessibility
-        foreach ($courselist as $key => $courseListItem ){
-            $courselist[$key]['can_enter'] = Man_Course::canEnterCourse($courselist[$key]);
-            $courselist[$key]['course_type'] = 'elearning';
-        }
-
-        // CLASSROOM
-        $modelClassroom = new ClassroomLms();
-
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
-        $filter_year = Get::req('filter_year', DOTY_INT, 0);
-
-        $conditions = [
-            'cu.iduser = :id_user',
-            'cu.status <> :status'
-        ];
-
-        $params = [
-            ':id_user' => (int)Docebo::user()->getId(),
-            ':status' => _CUS_END
-        ];
-
-        if (!empty($filter_text)) {
-            $conditions[] = "(c.code LIKE '%:keyword%' OR c.name LIKE '%:keyword%')";
-            $params[':keyword'] = $filter_text;
-        }
-
-        if (!empty($filter_year)) {
-            $clist = $modelClassroom->getUserCoursesByYear(Docebo::user()->getId(), $filter_year);
-            if ($clist !== false) {
-                $conditions[] = 'cu.idCourse IN ('.implode(',', $clist). ')';
-            }
-        }
-
-        
-       if (!empty($filter_cat)) {
-            $conditions[] = '(c.idCategory in (' .$filter_cat. ') )';
-        }             
-        
-        
-        // status search
-        if ( $filter_status !== '' && $filter_status !== 'all' ) {
-            $conditions[] = '(cu.status in (' .$filter_status. ') )';
+        // course type: elearning, all, classroom 
+        if ($filter_type != 'all') {
+           $conditions[] = "c.course_type = ':course_type'";
+           $params[':course_type'] = $filter_type;
         } 
-         
-        if ( $filter_status === 'all') {
-            $conditions[] = '(cu.status >=0 )';
-        }         
         
+        $courselist = $model->findAll($conditions, $params);           
         
-        
-        $cp_courses = $modelClassroom->getUserCoursePathCourses( Docebo::user()->getIdst() );
-        if (!empty($cp_courses)) {
-            $conditions[] = 'cu.idCourse NOT IN (' .implode(',', $cp_courses). ')';
-        }
 
-        // filtro per tipo corso classroom
-        if ($filter_type === 'classroom' || $filter_type === 'all' ) {
-            $courselistClassroom = $modelClassroom->findAll($conditions, $params);
-        }
-
+        
+        
+        
         //check courses accessibility
-        $keys = [];
-        foreach ($courselistClassroom as $key => $courselistClassroomItem ){
-            $courselistClassroomItem['can_enter'] = Man_Course::canEnterCourse($courselistClassroom[$key]);
-            $courselistClassroomItem['course_type'] = 'classroom';
-            $courselist[$key] = $courselistClassroomItem;
-            $keys[] = $key;
+        $keys = array_keys($courselist);
+        for ($i=0; $i<count($keys); $i++) {
+            $courselist[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($courselist[$keys[$i]]);
         }
 
-        sort($courselist);
-
+        
 		require_once(_lms_.'/lib/lib.middlearea.php');
 		$ma = new Man_MiddleArea();
 		$this->render('courselist', [

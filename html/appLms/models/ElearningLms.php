@@ -72,8 +72,8 @@ class ElearningLms extends Model {
 
 	public function findAll($conditions, $params) {
 
-		$conditions[] = ' c.course_type = ":course_type" ';
-		$params[':course_type'] = 'elearning';
+		//$conditions[] = ' c.course_type = ":course_type" ';
+		//$params[':course_type'] = 'elearning';
 
 		$db = DbConn::getInstance();
 
@@ -92,11 +92,11 @@ class ElearningLms extends Model {
             ." ORDER BY ".$this->_resolveOrder(array('cu', 'c'));
 
 
-		$query = $db->query($query);
+		$rs = $db->query($query);
 
 		$result = array();
 		$courses = array();
-		while($data = $db->fetch_assoc($query)) {
+		while($data = $db->fetch_assoc($rs)) {
 
 			$data['enrolled'] = 0;
 			$data['numof_waiting'] = 0;
@@ -218,7 +218,6 @@ class ElearningLms extends Model {
         if ($res && $db->num_rows($res) > 0) {
             $output[0] = Lang::t('_ALL_CATEGORIES', 'standard');
             while (list($idCategory, $path) = $db->fetch_row($res)) {
-
                 if($completePath){
                     $category = str_replace('/root/','',$path);
                 }
