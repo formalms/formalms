@@ -2,7 +2,11 @@
 -- task #14746
 UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'google_stat_in_lms';
 UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'google_stat_code';
-
+UPDATE `core_setting` SET `sequence` = '26' WHERE `core_setting`.`param_name` = 'maintenance_pw';
+UPDATE `core_setting` SET `sequence` = '27' WHERE `core_setting`.`param_name` = 'file_upload_whitelist';
+UPDATE `core_setting` SET `sequence` = '28' WHERE `core_setting`.`param_name` = 'google_stat_code';
+UPDATE `core_setting` SET `sequence` = '29' WHERE `core_setting`.`param_name` = 'google_stat_in_lms';
+UPDATE `core_setting` SET `sequence` = '30' WHERE `core_setting`.`param_name` = 'Clear_Twig_Cache';
 -- task #14734
 UPDATE `core_setting` SET `regroup` = '4' WHERE `core_setting`.`param_name` = 'paypal_mail';
 UPDATE `core_setting` SET `regroup` = '4' WHERE `core_setting`.`param_name` = 'paypal_currency';
@@ -13,7 +17,7 @@ UPDATE `core_setting` SET `sequence` = '14' WHERE `core_setting`.`param_name` = 
 UPDATE `core_setting` SET `sequence` = '15' WHERE `core_setting`.`param_name` = 'paypal_currency';
 UPDATE `core_setting` SET `sequence` = '16' WHERE `core_setting`.`param_name` = 'currency_symbol';
 UPDATE `core_setting` SET `sequence` = '17' WHERE `core_setting`.`param_name` = 'paypal_sandbox';
-
+UPDATE `core_setting` SET `pack` = 'ecommerce' WHERE `core_setting`.`param_name` = 'paypal_mail';
 -- task #14736
 DELETE FROM `core_lang_text` WHERE `core_lang_text`.`id_text` = (SELECT clt.`id_text` FROM (SELECT * FROM `core_lang_text`) AS clt WHERE clt.`text_key` = "_ASK_FOR_TREE_COURSE_CODE");
 
@@ -21,10 +25,13 @@ DELETE FROM `core_lang_text` WHERE `core_lang_text`.`id_text` = (SELECT clt.`id_
 UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'mail_sender';
 UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'customer_help_email';
 UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx';
+UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails';
+UPDATE `core_setting` SET `sequence` = '12' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails';
+UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'mail_sender';
 
 UPDATE `core_setting` SET `sequence` = '9' WHERE `core_setting`.`param_name` = 'mail_sender';
 UPDATE `core_setting` SET `sequence` = '10' WHERE `core_setting`.`param_name` = 'customer_help_email';
-UPDATE `core_setting` SET `param_load` = '11' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx';
+UPDATE `core_setting` SET `sequence` = '11' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx';
 
 -- task #14733
 UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'ttlSession';
