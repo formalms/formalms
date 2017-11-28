@@ -16,7 +16,12 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 -- ------------------------------------------------------------------
-
+-- task #15153
+DELETE FROM `core_setting` WHERE `core_setting`.`param_name` = 'import_ucfirst';
+UPDATE `core_setting` SET `pack` = '0' WHERE `core_setting`.`param_name` = 'custom_fields_mandatory_for_admin';
+UPDATE `core_setting` SET `sequence` = '9' WHERE `core_setting`.`param_name` = 'template_domain';
+DELETE FROM `core_lang_text` WHERE `core_lang_text`.`id_text` = (SELECT clt.`id_text` FROM (SELECT * FROM `core_lang_text`) AS clt WHERE clt.`text_key` = "IMPORT_UCFIRST");
+_
 -- task #14746
 UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'google_stat_in_lms';
 UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'google_stat_code';
@@ -635,25 +640,6 @@ INSERT IGNORE INTO core_role_members values(@v_idst, 3);
 
 -- edition.date_end DATETIME
 ALTER TABLE  `learning_course_editions` CHANGE  `date_end`  `date_end` DATETIME NOT NULL DEFAULT  '0000-00-00 00:00:00';
-
-
-
-
--- 9497_import_ucfirst.sql
-
-
--- setting
-INSERT IGNORE INTO `core_setting`
-(`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
-VALUES
-('import_ucfirst', 'on', 'enum', 3, '0', 3, 22, 1, 0, '');
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_IMPORT_UCFIRST', 'configuration', '');
-
-
 
 
 -- coursereport_mvc.sql

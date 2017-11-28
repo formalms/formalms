@@ -2655,7 +2655,6 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('htmledit_image_admin', '1', 'check', 255, '0', 8, 1, 1, 0, ''),
 ('htmledit_image_godadmin', '1', 'check', 255, '0', 8, 0, 1, 0, ''),
 ('htmledit_image_user', '1', 'check', 255, '0', 8, 2, 1, 0, ''),
-('import_ucfirst', 'on', 'enum', 3, '0', 3, 22, 1, 0, ''),
 ('kb_filter_by_user_access', 'on', 'enum', 3, 'main', 4, 10, 1, 0, ''),
 ('kb_show_uncategorized', 'on', 'enum', 3, 'main', 4, 11, 1, 0, ''),
 ('lang_check', 'off', 'enum', 3, 'debug', 8, 7, 1, 0, ''),

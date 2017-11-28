@@ -1,4 +1,7 @@
-
+-- task #15153
+DELETE FROM `core_setting` WHERE `core_setting`.`param_name` = "import_ucfirst";
+UPDATE `core_setting` SET `pack` = '0' WHERE `core_setting`.`param_name` = 'custom_fields_mandatory_for_admin';
+UPDATE `core_setting` SET `sequence` = '9' WHERE `core_setting`.`param_name` = 'template_domain';
 -- task #14746
 UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'google_stat_in_lms';
 UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'google_stat_code';
