@@ -116,7 +116,7 @@ function typeOfCourse ($t) {
                     <?php if (dataEndExists($course)) { // if exists end course, show it ?>
                     <div class="course-box__item course-box__item--half">
                         <div class="course-box__date-text">
-                            <span>_CLOSING_DATA</span><br>
+                            <span><?php echo Lang::t('_CLOSING_DATA', 'course') ?></span><br>
                             <?php echo GetCourseDay($course)?>&nbsp;<?php echo GetCourseMonth($course)?>&nbsp;<?php echo GetCourseYear($course);?>
                         </div>
                     </div>
@@ -130,7 +130,7 @@ function typeOfCourse ($t) {
                         <?php } else { ?>
                         <a class="forma-button forma-button--disabled" href="javascript:void(0);">
                             <span class="forma-button__label">
-                                _DISABLED
+                                <?php echo Lang::t('_DISABLED', 'course') ?>
                             </span>
                         </a>
                     <?php } ?>
