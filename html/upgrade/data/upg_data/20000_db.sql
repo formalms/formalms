@@ -889,6 +889,30 @@ UPDATE `learning_middlearea` SET `is_home` = '1' WHERE `learning_middlearea`.`ob
 
 -- 14537: added max threads and private_thread in forum e public forum
 ALTER TABLE `learning_forum` ADD COLUMN `max_threads` int(11) NULL DEFAULT 0 AFTER `emoticons`, ADD COLUMN `threads_are_private` tinyint(1) NULL DEFAULT 0 AFTER `max_threads`;
+
+-- # 14043: new e-learning configuration
+
+INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES
+('home_page_option', 'catalogue', 'home_page_option', 255, '0', 4, 1, 1, 0, '');
+
+INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES
+('hide_empty_category', 'on', 'enum', 3, '0', 4, 5, 1, 0, '');
+
+DELETE from core_setting where param_name = 'first_catalogue';
+
+update core_setting set sequence = 2 where param_name = 'on_usercourse_empty'; 
+update core_setting set sequence = 3 where param_name = 'tablist_mycourses'; 
+update core_setting set sequence = 4 where param_name = 'on_catalogue_empty'; 
+update core_setting set sequence = 6 where param_name = 'use_tag'; 
+update core_setting set sequence = 7 where param_name = 'course_quota';
+update core_setting set sequence = 8 where param_name = 'no_answer_in_test';
+update core_setting set sequence = 9 where param_name = 'no_answer_in_poll';
+update core_setting set sequence = 10 where param_name = 'tracking';
+update core_setting set sequence = 11 where param_name = 'kb_filter_by_user_access';
+update core_setting set sequence = 12 where param_name = 'kb_show_uncategorized';
+update core_setting set sequence = 13 where param_name = 'course_block';
+
+
 -- ------------------------------------------------------------------
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
