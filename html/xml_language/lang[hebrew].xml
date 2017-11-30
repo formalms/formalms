@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171024</DATE>
+  <DATE>20171130</DATE>
   <LANG id="hebrew">
     <lang_code>hebrew</lang_code>
     <lang_description>&#x5E2;&#x5D1;&#x5E8;&#x5D9;&#x5EA;</lang_description>
@@ -2360,7 +2360,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="statistic&amp;_FOR_day" attributes="" save_date="2016-12-16 18:24:15"><![CDATA[יום]]></key>
         <key id="statistic&amp;_FOR_month" attributes="" save_date="2016-12-16 18:24:51"><![CDATA[חודש]]></key>
         <key id="statistic&amp;_FOR_TITLE_day" attributes="accessibility" save_date="2016-12-16 18:27:23"><![CDATA[הצג צפיות דפים ב24 החודשים האחרונים]]></key>
-        <key id="statistic&amp;_FOR_TITLE_month" attributes="accessibility" save_date="2016-12-16 18:27:29"><![CDATA[הצג צפיות דפים ב30 החודשים האחרונים]]></key>
+        <key id="statistic&amp;_FOR_TITLE_month" attributes="accessibility" save_date="2017-11-24 10:15:45"><![CDATA[הצג צפיות דפים  ב 30 החודשים האחרונים]]></key>
         <key id="statistic&amp;_FOR_TITLE_week" attributes="accessibility" save_date="2016-12-16 18:27:34"><![CDATA[הצג צפיות דפים ב7 החודשים האחרונים]]></key>
         <key id="statistic&amp;_FOR_TITLE_year" attributes="accessibility" save_date="2016-12-16 18:27:18"><![CDATA[הצג צפיות דפים ב12 החודשים האחרונים]]></key>
         <key id="statistic&amp;_FOR_week" attributes="" save_date="2016-12-16 18:28:28"><![CDATA[שבוע]]></key>

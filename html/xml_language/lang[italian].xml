@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171024</DATE>
+  <DATE>20171130</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -269,6 +269,7 @@
         <key id="catalogue&amp;_MOD_ENTRY_CATALOGUE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mostra gli elementi del catalogo]]></key>
         <key id="catalogue&amp;_NEW_CATALOGUE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nuovo  catalogo]]></key>
         <key id="catalogue&amp;_NO_AVAILABLE_EDITIONS" attributes="" save_date="2017-03-15 16:34:36"><![CDATA[Nessuna edizione disponibile]]></key>
+        <key id="catalogue&amp;_NO_CATEGORY_TODISPLAY" attributes="" save_date="2017-11-09 18:08:00"><![CDATA[Nessuna categoria da mostrare]]></key>
         <key id="catalogue&amp;_NO_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nessun corso disponibile]]></key>
         <key id="catalogue&amp;_NO_COURSE_FOUND" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Corso non trovato]]></key>
         <key id="catalogue&amp;_NO_EDITIONS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Non ci sono edizioni in questo corso]]></key>
@@ -454,7 +455,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_CONFIRM_REGISTER_TYPE_SELF" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[ATTENZIONE: senza double opt-in non ci sarà controllo sulla veridicità degli utenti, e sarai esposto a registrazioni spam.]]></key>
         <key id="configuration&amp;_CONF_GLOBAL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Generale]]></key>
         <key id="configuration&amp;_CONF_LMS" attributes="" save_date="2017-04-10 13:01:57"><![CDATA[E-learning]]></key>
-        <key id="configuration&amp;_COURSE_BLOCK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Attiva elenco corsi in home page]]></key>
+        <key id="configuration&amp;_COURSE_BLOCK" attributes="" save_date="2017-11-09 18:11:31"><![CDATA[Attiva elenco corsi in pagina di login]]></key>
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Limite per il massimo di contenuti caricabili nel corso (in MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Simbolo valuta (sarà mostrato all'utente)]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2017-03-15 12:09:35"><![CDATA[Email Help Desk]]></key>
@@ -480,6 +481,8 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[FTP OK]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Codice fornito da Google]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_IN_LMS" attributes="" save_date="2017-04-07 16:22:55"><![CDATA[Usa le statistiche di Google Analytics]]></key>
+        <key id="configuration&amp;_HIDE_EMPTY_CATEGORY" attributes="" save_date="2017-11-09 18:09:03"><![CDATA[Nascondi categorie vuote]]></key>
+        <key id="configuration&amp;_HOME_PAGE" attributes="" save_date="2017-11-09 18:10:07"><![CDATA[Home page]]></key>
         <key id="configuration&amp;_HOUR_REQUEST_LIMIT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Limite di ore disponibili per confermare la richiesta di iscrizione]]></key>
         <key id="configuration&amp;_HTEDITOR" attributes="" save_date="2017-03-15 10:50:30"><![CDATA[Editor HTML WYSWYG]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_ADMIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Permetti agli amministratori la gestione delle immagini nell'editor]]></key>
@@ -509,6 +512,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2017-03-15 17:47:23"><![CDATA[SQL mode]]></key>
         <key id="configuration&amp;_MYSQL_TIMEZONE" attributes="" save_date="2017-03-15 14:58:39"><![CDATA[MySQL Timezone]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2017-03-15 17:50:41"><![CDATA[Versione di MySQL]]></key>
+        <key id="configuration&amp;_MY_COURSES" attributes="" save_date="2017-11-09 18:10:46"><![CDATA[I miei corsi]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Pausa tra un blocco e l'altro (secondi)]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Invia i messaggi a blocchi di (messaggi)]]></key>
         <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Con domxml ad OFF non funzionerà il modulo SCORM, la Videoconferenza e la gestione delle lingue]]></key>
@@ -689,6 +693,7 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="course&amp;_CLASSROOM_EDITION" attributes="" save_date="2017-03-15 17:52:19"><![CDATA[Classi/Edizioni]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Attenzione: alcune classi sono già occupate da altri corsi]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Classe occupata]]></key>
+        <key id="course&amp;_CLOSING_DATA" attributes="" save_date="2017-11-29 18:53:02"><![CDATA[Data di chiusura]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[I dati del tuo corso verranno salvati.]]></key>
         <key id="course&amp;_COPY_SUBSCRIPTION_TO_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Copia iscrizioni nel corso]]></key>
         <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2017-06-19 11:37:33"><![CDATA[Pagamento anticipato]]></key>
@@ -734,6 +739,7 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="course&amp;_DAY_OF_VALIDITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Giorni di validità]]></key>
         <key id="course&amp;_DEMO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Vedi demo]]></key>
         <key id="course&amp;_DIRECT_PLAY" attributes="" save_date="2017-07-05 13:01:58"><![CDATA[Esecuzione diretta del primo oggetto didattico nel player]]></key>
+        <key id="course&amp;_DISABLED" attributes="" save_date="2017-11-29 18:53:09"><![CDATA[Disabilitato]]></key>
         <key id="course&amp;_DOCUMENT_UPLOAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Carica documenti]]></key>
         <key id="course&amp;_DONT_SHOW" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Non mostrarle]]></key>
         <key id="course&amp;_DOWNLOAD_MATERIALS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Scarica materiale]]></key>
@@ -1027,9 +1033,9 @@ Titolo: [thread_title]]]></key>
         <key id="email&amp;_TO_APPROVE_USER_TEXT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Un nuovo utente si è registrato su [url] ed è in attesa di approvazione]]></key>
         <key id="email&amp;_TO_NEW_USER_SBJ" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Un nuovo utente si è registrato alla piattaforma.]]></key>
         <key id="email&amp;_TO_NEW_USER_TEXT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Un nuovo utente si è registrato alla piattaforma.]]></key>
-        <key id="email&amp;_USER_END_COURSE_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Un utente ha completato il corso [course] su forma.lms]]></key>
+        <key id="email&amp;_USER_END_COURSE_SBJ" attributes="" save_date="2017-11-07 11:02:57"><![CDATA[Un utente ha completato il corso su forma.lms]]></key>
         <key id="email&amp;_USER_END_COURSE_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[L'utente [user] ha completato il corso [course] su forma.lms]]></key>
-        <key id="email&amp;_USER_END_COURSE_TEXT_SMS" attributes="" save_date="2017-05-08 17:42:05"><![CDATA[Un utente ha completato il corso [course] su forma.lms]]></key>
+        <key id="email&amp;_USER_END_COURSE_TEXT_SMS" attributes="" save_date="2017-11-07 11:03:03"><![CDATA[Un utente ha completato il corso su forma.lms]]></key>
         <key id="email&amp;_WAITING_USER_SBJ" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Un utente si è registrato ed è in attesa di approvazione]]></key>
         <key id="email&amp;_WAITING_USER_TEXT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[All'indirizzo <a href="[url]">[url]</a> c'é un nuovo utente in attesa di approvazione]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Hai ricevuto un nuovo messaggio]]></key>
@@ -1372,9 +1378,8 @@ Titolo: [thread_title]]]></key>
         <key id="login&amp;_CANCELSOCIALLOGIN" attributes="" save_date="2017-04-10 14:27:44"><![CDATA[Richiesta di accesso da social annullata dall'utente]]></key>
         <key id="login&amp;_EMPTYSOCIALID" attributes="" save_date="2017-04-10 14:37:30"><![CDATA[Impossibile recuperare l'ID di accesso social]]></key>
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Home page]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:16:31"><![CDATA[forma.lms è un sistema open source per l'e-learning (LMS e LCMS) utilizzato nelle più grandi organizzazioni e università.<br />
-<br />
-Il sistema, rilasciato in 26 lingue è composto da 53 funzioni tra cui Wiki, Forum, Project Manager, supporta lo standard SCORM 1.2 e 2004 ed è configurabile per adattarsi al modello didattico desiderato (autoapprendimento, blended learning, didattica collaborativa, social e-learning).<b><br /><br />Per cambiare questa frase andare su Admin/Gestione lingue, cercare per LMS/login e modificare la chiave _INTRO_STD_TEXT</b><br /><br />]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-11-03 16:00:42"><![CDATA[Il sistema, rilasciato in 25 lingue è composto da 53 funzioni tra cui Wiki, Forum, Project Manager, supporta lo standard SCORM 1.2 e 2004 ed è configurabile per adattarsi al modello didattico desiderato (autoapprendimento, blended learning, didattica collaborativa, social e-learning). Il sistema, rilasciato in 25 lingue è composto da 53 funzioni tra cui Wiki, Forum, Project Manager, supporta lo standard SCORM 1.2 e 2004 ed è configurabile per adattarsi al modello didattico desiderato (autoapprendimento, blended learning, didattica collaborativa, social e-learning). Il sistema, rilasciato in 25 lingue è composto da 53 funzioni tra cui Wiki, Forum, Project Manager, supporta lo standard SCORM 1.2 e 2004 ed è configurabile per adattarsi al modello didattico desiderato (autoapprendimento, blended learning, didattica collaborativa, social e-learning). ]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-11-03 16:00:12"><![CDATA[forma.lms è un sistema open source per l'e-learning (LMS e LCMS) utilizzato nelle più grandi organizzazioni e università.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Salta alla form di login]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[LDAP attivo funzioni disattivate contatta il responsabile]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Login]]></key>
@@ -1389,6 +1394,7 @@ Il sistema, rilasciato in 26 lingue è composto da 53 funzioni tra cui Wiki, For
         <key id="login&amp;_MAINTENANCE_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sistema in manutenzione.<br/><br/>Per cambiare questa frase andare su Admin/Gestione lingue, cercare il modulo login e modificare la chiave _MAINTENANCE_TEXT]]></key>
         <key id="login&amp;_NOACCESS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Accesso negato, forse hai sbagliato a inserire la password]]></key>
         <key id="login&amp;_PASSNOMATCH" attributes="" save_date="2017-04-14 11:46:50"><![CDATA[Le due digitazioni della password non corrispondono oppure la password è bianca.]]></key>
+        <key id="login&amp;_READ_ALL" attributes="" save_date="2017-11-03 16:02:02"><![CDATA[Leggi tutto]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE" attributes="" save_date="2015-12-18 09:31:57"><![CDATA[Per procedere con l'iscrizione o l'acquisto effettua il [login] o [signin]]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE_NO_REG" attributes="" save_date="2015-12-18 09:31:51"><![CDATA[Per procedere con l'iscrizione o l'acquisto effettua il [login]]]></key>
         <key id="login&amp;_REGISTER_WITH_FACEBOOK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[registrati con Facebook]]></key>
@@ -2409,7 +2415,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_PREVIEW" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Anteprima]]></key>
         <key id="standard&amp;_PREV_B" attributes="" save_date="2017-04-11 18:47:42"><![CDATA[Precedente]]></key>
         <key id="standard&amp;_PREV_STEP" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Precedente]]></key>
-        <key id="standard&amp;_PROGRESS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Progress]]></key>
+        <key id="standard&amp;_PROGRESS" attributes="" save_date="2017-10-25 15:36:11"><![CDATA[Progresso]]></key>
         <key id="standard&amp;_PROPERTIES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Proprietà]]></key>
         <key id="standard&amp;_PUBLIC_ADMIN_USER" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Amministratore pubblico]]></key>
         <key id="standard&amp;_PUBLISH" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Pubblica]]></key>
