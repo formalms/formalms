@@ -21,7 +21,7 @@ DELETE FROM `core_setting` WHERE `core_setting`.`param_name` = 'import_ucfirst';
 UPDATE `core_setting` SET `pack` = '0' WHERE `core_setting`.`param_name` = 'custom_fields_mandatory_for_admin';
 UPDATE `core_setting` SET `sequence` = '9' WHERE `core_setting`.`param_name` = 'template_domain';
 DELETE FROM `core_lang_text` WHERE `core_lang_text`.`id_text` = (SELECT clt.`id_text` FROM (SELECT * FROM `core_lang_text`) AS clt WHERE clt.`text_key` = "IMPORT_UCFIRST");
-_
+
 -- task #14746
 UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'google_stat_in_lms';
 UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'google_stat_code';
