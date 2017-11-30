@@ -1287,7 +1287,6 @@ INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `co
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(27, '_ENROLLRULES', '', 7, 'true', 'true', 2, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(28, '_TRANSACTION', '', 8, 'true', 'true', 2, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(31, '_WEBPAGES', '', 1, 'true', 'true', 3, NULL);
-INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(32, '_NEWS', '', 2, 'true', 'true', 3, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(33, '_NEWS_INTERNAL', '', 3, 'true', 'true', 3, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(34, '_COMMUNICATION_MAN', '', 4, 'true', 'true', 3, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(35, '_NEWSLETTER', '', 5, 'true', 'true', 3, NULL);

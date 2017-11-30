@@ -913,6 +913,11 @@ update core_setting set sequence = 12 where param_name = 'kb_show_uncategorized'
 update core_setting set sequence = 13 where param_name = 'course_block';
 
 
+-- 13721: removing news function
+DROP TABLE IF EXISTS learning_news;
+DELETE FROM core_menu WHERE core_menu.idMenu = 32;
+
+
 -- ------------------------------------------------------------------
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -2094,27 +2094,6 @@ INSERT INTO `learning_module` (`idModule`, `module_name`, `default_op`, `default
 (45, 'presence', '', '_PRESENCE', 'view', '', '', '', 'presence/presence'),
 (46, 'course', '', '_CATALOGUE', 'view', '', '', 'all', 'lms/catalog/show');
 
--- --------------------------------------------------------
-
---
--- Struttura della tabella `learning_news`
---
-
-CREATE TABLE IF NOT EXISTS `learning_news` (
-  `idNews` int(11) NOT NULL AUTO_INCREMENT,
-  `publish_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `title` varchar(100) NOT NULL DEFAULT '',
-  `short_desc` text NOT NULL,
-  `long_desc` text NOT NULL,
-  `language` varchar(100) NOT NULL DEFAULT '',
-  `important` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`idNews`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
-
---
--- Dump dei dati per la tabella `learning_news`
---
-
 
 -- --------------------------------------------------------
 
