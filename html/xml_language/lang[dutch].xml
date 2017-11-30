@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171024</DATE>
+  <DATE>20171130</DATE>
   <LANG id="dutch">
     <lang_code>dutch</lang_code>
     <lang_description>Dutch</lang_description>
@@ -2532,7 +2532,7 @@ Wachtwoord: [password]]]></key>
         <key id="statistic&amp;_FOR_day" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[dag]]></key>
         <key id="statistic&amp;_FOR_month" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[maand]]></key>
         <key id="statistic&amp;_FOR_TITLE_day" attributes="accessibility" save_date="2017-07-14 11:13:21"><![CDATA[Laat pagina-uitzichts zien van de laatste 24 uur]]></key>
-        <key id="statistic&amp;_FOR_TITLE_month" attributes="accessibility" save_date="2017-07-14 11:13:32"><![CDATA[Laat paginauitzichts zien van de laatste 30 dagen]]></key>
+        <key id="statistic&amp;_FOR_TITLE_month" attributes="accessibility" save_date="2017-11-24 10:06:12"><![CDATA[Laat pagina-uitzichts zien van de laatste 30 dagen]]></key>
         <key id="statistic&amp;_FOR_TITLE_week" attributes="accessibility" save_date="2017-07-14 11:13:43"><![CDATA[Laat pagina-uitzichts zien van de laatste 7 dagen]]></key>
         <key id="statistic&amp;_FOR_TITLE_year" attributes="accessibility" save_date="2017-07-14 11:13:09"><![CDATA[Laat pagina-uitzichts zien van de laatste 12 maanden]]></key>
         <key id="statistic&amp;_FOR_week" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[week]]></key>
