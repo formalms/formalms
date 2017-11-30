@@ -700,6 +700,19 @@ class UsermanagementAdmController extends AdmController {
 				$output = array('success'=>true);
 				if (Get::sett('register_deleted_user', "off") == "on")
 					$output['total_deleted_users'] = $this->model->getDeletedUsersTotal();
+
+				// Increment the counter for users created by this admin:
+				if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+					$admin_pref =new AdminPreference();
+					$pref =$admin_pref->getAdminRules(Docebo::user()->getIdSt());
+					if ($pref['admin_rules.limit_user_insert'] == 'on') {
+						$user_pref =new UserPreferences(Docebo::user()->getIdSt());
+						$user_created_count =(int)$user_pref->getPreference('user_created_count');
+						$user_created_count = $user_created_count-1;
+						$user_pref->setPreference('user_created_count', $user_created_count);
+					}
+				}
+
 			} else {
 				$output = array('success'=>false, 'message'=>'Error: unable to delete user #'.$id_user.'.');
 			}
@@ -725,6 +738,7 @@ class UsermanagementAdmController extends AdmController {
 			$users = str_replace(Docebo::user()->getIdSt(), '', $users);
 			$users = str_replace(',,', ',', $users); //adjust commas
 			$users_arr = explode(',', $users);
+			$count_users = count($users_arr);
 			$res = $this->model->deleteUsers($users_arr);
 			if (is_array($res)) {
 				$output['success'] = true;
@@ -732,6 +746,19 @@ class UsermanagementAdmController extends AdmController {
 				$output['list'] = $res;
 				if (Get::sett('register_deleted_user', "off") == "on")
 					$output['total_deleted_users'] = $this->model->getDeletedUsersTotal();
+
+				// Increment the counter for users created by this admin:
+				if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+					$admin_pref =new AdminPreference();
+					$pref =$admin_pref->getAdminRules(Docebo::user()->getIdSt());
+					if ($pref['admin_rules.limit_user_insert'] == 'on') {
+						$user_pref =new UserPreferences(Docebo::user()->getIdSt());
+						$user_created_count =(int)$user_pref->getPreference('user_created_count');
+						$user_created_count = $user_created_count-$count_users;
+						$user_pref->setPreference('user_created_count', $user_created_count);
+					}
+				}
+
 			} else {
 				$output['success'] = false;
 				$output['message'] = 'error while deleting users';
@@ -1810,6 +1837,7 @@ class UsermanagementAdmController extends AdmController {
 				$importer->setDestination( $dst );
 
 				$params['UIMap'] = $importer->getUIMap();
+				$params['tot_row'] = $importer->getTotRow();
 				$params['filename'] = $GLOBALS['where_files_relative'].$path.$savefile;
 				$params['first_row_header'] = $first_row_header;
 				$params['separator'] = $separator;

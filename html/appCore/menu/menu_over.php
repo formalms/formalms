@@ -33,7 +33,6 @@ function GetAdminPanel(){
      
 }
 
-
 /**
  * @return string The default Company Logo
  */
@@ -44,7 +43,6 @@ function GetCompanyLogo(){
             </a>';
 }
 
-
 function BackToLms(){
     $lang     =& DoceboLanguage::createInstance('menu', 'framework');
     return '<li data-sm-reverse="true" style="float:right">
@@ -54,80 +52,60 @@ function BackToLms(){
             </li>';
 }
 
+function AdminBar()
+{
+    $amenu=array();
+    $current_platform = "framework";//$_SESSION['current_action_platform'];
 
-/**
- * @return array The menu label and its icon
- * @param  int The current menu header
- */
-function GetMenuHeader($pcode){
+    $p_man 	=& MenuManager::createInstance($current_platform);
     $lang =& DoceboLanguage::createInstance('menu', 'framework');
 
     $strLabel = '';
     $strIco='';
-    switch ($pcode) {
-        case 'menu_user':
-            $strLabel = $lang->def('_USER_MANAGMENT', 'menu', 'framework');
-            $strIco = '<i class="fa fa-users fa-fw"></i>';
-            break;
-        case 'menu_elearning':
-            $strLabel = $lang->def('_FIRST_LINE_lms', 'menu', 'framework');
-            $strIco = '<span class="glyphicon glyphicon glyphicon-education" aria-hidden="true"></span>';
-            break;
-        case 'menu_content':
-            $strLabel = $lang->def('_CONTENTS', 'standard', 'framework');
-            $strIco = '<i class="fa fa-clipboard fa-fw"></i>';
-            break;
-        case 'menu_report':
-            $strLabel = $lang->def('_REPORT', 'standard', 'framework');
-            $strIco = '<i class="fa fa-bar-chart-o fa-fw"></i>';
-            break;
-        case 'menu_config':
-            $strLabel = $lang->def('_CONFIGURATION', 'menu', 'framework');
-            $strIco = '<i class="fa fa-cogs fa-fw"></i>';
-            break;
-    }
-    return array("strLabel"=>$strLabel, "strIco"=>$strIco);
-}
 
-function AdminBar()
-{
-    $p_man 	=& PlatformManager::createInstance();
-    $platforms 	= $p_man->getPlatformList();
+    $menu_man=$p_man->getMenuInstanceFramework($current_platform);
+    //Level0
+    $menus 	= $p_man->getLevel();
+
     $admin_menu_bar = '<nav id="main-nav" role="navigation">
                         <ul id="main-menu" class="sm sm-forma">
                         <li>'.GetCompanyLogo().'</li>';
 
+    foreach ($menus as $p_code => $p_name) {
+//        $menu_man=$p_man->getPlatofmMenuInstanceFramework($p_code);
+        
+        $strLabel = $p_name['name'];//$lang->def($p_name['name'], 'menu', $current_platform);
+        $strIco = $p_name['image'];
+        $strLink = Util::str_replace_once('&', '&amp;', $p_name['link']);
 
-    foreach ($platforms as $p_code => $p_name) {
-        $menu_man = $p_code == 'lms' ? $p_man->getPlatofmMenuInstance($p_code) : $p_man->getPlatofmMenuInstanceFramework($p_code);
-        $header = GetMenuHeader($p_code);
-
-
-        if ($menu_man !== false) {
-            $main_voice = $menu_man->getLevelOne();
-            if (!empty($main_voice)) {
-                $admin_menu_bar .= '<li><a href="#">' . $header["strIco"] . '&nbsp;' . $header["strLabel"] . '</a><ul>' . PHP_EOL;
-                foreach ($main_voice as $id_m => $v_main) {
-                    $under_voice = $menu_man->getLevelTwo($id_m);
-                    if ($v_main['collapse'] == true) {
-                        foreach ($under_voice as $id_m => $voice) {
-                            $admin_menu_bar .= '<li><a href="' . Util::str_replace_once('&', '&amp;', $voice['link']) . '" >' . $voice['name'] . '</a></li>' . PHP_EOL;
-                        }
-                    }
-
-                    if (!isset($v_main['collapse']) || $v_main['collapse'] === false) {
-                        $admin_menu_bar .= '<li><a href="#">' . $v_main["name"] . '</a>' . PHP_EOL;
-                        $admin_menu_bar .= '<ul>' . PHP_EOL;
-                        foreach ($under_voice as $id_m => $voice) {
-                            $admin_menu_bar .= '<li><a href="' . Util::str_replace_once('&', '&amp;', $voice['link']) . '" ><span class="desc">' . $voice['name'] . '</span></a></li>' . PHP_EOL;
-                        }
-                        $admin_menu_bar .= '</ul>' . PHP_EOL;
+        $idmenu=$p_man->menu[$p_code]['idMenu'];
+        //Level1
+        $main_voice = $p_man->getLevel($idmenu);
+        if (!empty($main_voice)) {
+            $admin_menu_bar .= '<li><a href="'. ($strLink != '' ? $strLink : '#' ) . '">' . $strIco . '&nbsp;' . $strLabel . '</a>' . PHP_EOL;
+            $admin_menu_bar .= '<ul>' . PHP_EOL;
+            foreach ($main_voice as $id_m => $v_main) {
+                $admin_menu_bar .= '<li>';
+                $admin_menu_bar .= '<a href="' . Util::str_replace_once('&', '&amp;', $v_main['link']) . '" >' . $v_main['name'] . '</a>';
+                //Level2
+                $under_voice = $p_man->getLevel($id_m);
+                if (!empty($under_voice)) {
+                    $admin_menu_bar .= '<ul>' . PHP_EOL;
+                    foreach ($under_voice as $id_m => $voice) {
+                        $admin_menu_bar .= '<li>';
+                        $admin_menu_bar .= '<a href="' . Util::str_replace_once('&', '&amp;', $voice['link']) . '" >' . $voice['name'] . '</a>';
+                        $admin_menu_bar .= '</li>';
                         $admin_menu_bar .= '</li>' . PHP_EOL;
                     }
-
+                    $admin_menu_bar .= '</ul>' . PHP_EOL;
                 }
-                $admin_menu_bar .= '</ul></li>' . PHP_EOL;
             }
+            $admin_menu_bar .= '</ul></li>' . PHP_EOL;
+        }
+        else{
+            $admin_menu_bar .= '<li>';
+            $admin_menu_bar .= '<a href="'. ($strLink != '' ? $strLink : '#' ) . '">' . $strIco . '&nbsp;' . $strLabel . '</a>';
+            $admin_menu_bar .= '</li>';
         }
     }
 

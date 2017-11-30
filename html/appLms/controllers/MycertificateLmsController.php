@@ -29,8 +29,9 @@ class MycertificateLmsController extends LmsController {
     
     public function show() {
         checkPerm('view', false, self::mod_name);
-        
-        $this->render('show');
+        $totalMetaCertificates = $this->model->countMyMetaCertificates();
+
+        $this->render('show', ['totalMetaCertificates' => $totalMetaCertificates]);
     }
     
     public function getMyCertificates(){ 

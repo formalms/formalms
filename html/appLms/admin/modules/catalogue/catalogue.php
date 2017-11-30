@@ -676,7 +676,7 @@ function modcatalogueassoc() {
 	$user_select->show_user_selector = FALSE;
 	$user_select->show_group_selector = TRUE;
 	$user_select->show_orgchart_selector = TRUE;
-	$user_select->show_orgchart_simple_selector = TRUE;
+	$user_select->show_orgchart_simple_selector = FALSE;
 	$user_select->multi_choice = TRUE;
 
 	if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN)

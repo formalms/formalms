@@ -52,7 +52,7 @@ class SettingAdm extends Model
 		$names = array(
             1 => 'Main_options',
             3 => 'User',
-            4 => 'ELearning',
+            4 => 'conf_lms',
             6 => 'Videoconference',
             7 => 'Ldap',
             8 => 'Advanced',

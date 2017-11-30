@@ -224,9 +224,9 @@ class UsermanagementAdm extends Model {
 			$queryUserFilter_3 .= " AND u.idst IN (".implode(',', $admin_info['users']).") ";//" AND gm.idst IN (".implode(',', $admin_tree).") ";
 		} elseif (!$is_subadmin && $is_dynfiltered) {
 			if (count($usersList) <= 0) return array(); //return a 0-length array, because at this point the selection is void and no more query is necessary
-			$queryUserFilter_1 .= " AND gm.idstMember IN (".implode(',', $usersList).") ) ";
-			$queryUserFilter_2 .= " AND gm.idstMember IN (".implode(',', $usersList).") ) ";
-			$queryUserFilter_3 .= " AND gm.idstMember IN (".implode(',', $usersList).") ";
+			$queryUserFilter_1 .= " AND u.idst IN (".implode(',', $usersList).") ) ";
+			$queryUserFilter_2 .= " AND u.idst IN (".implode(',', $usersList).") ) ";
+			$queryUserFilter_3 .= " AND u.idst IN (".implode(',', $usersList).") ";
 		} else { //no filter to apply
 			$queryUserFilter_1 .= ")";
 			$queryUserFilter_2 .= ")";

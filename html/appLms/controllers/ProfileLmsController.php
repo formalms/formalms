@@ -138,6 +138,113 @@ class ProfileLmsController extends LmsController {
 		echo $_title.'<div class="std_block">'.$_error_message.$_content.'</div>';
 	}
 
+    public function credits() {
+        require_once(_lms_.'/lib/lib.course.php');
+//		$str = '<h2 class="heading">' . Lang::t ( '_CREDITS', 'catalogue' ) . '</h2>' . '<div class="content">';
+        $str = '';
+        $period_start = '';
+        $period_end = '';
+
+        // extract checking period
+        $year = date ( "Y" );
+        $p_list = array ();
+        $p_selected = Get::pReq(  'credits_period', DOTY_INT, 0 );
+        $p_res = sql_query ( "SELECT * FROM " . $GLOBALS ['prefix_lms'] . "_time_period ORDER BY end_date DESC, start_date DESC" );
+        if (sql_num_rows ( $p_res ) > 0) {
+            while ( $obj = sql_fetch_object ( $p_res ) ) {
+                if ($p_selected == 0)
+                    $p_selected = $obj->id_period;
+                $p_list [$obj->id_period] = Format::date ( $obj->start_date, 'date' ) . ' - ' . Format::date ( $obj->end_date, 'date' );
+                if ($p_selected == $obj->id_period) {
+                    $period_start = $obj->start_date;
+                    $period_end = $obj->end_date;
+                }
+            }
+        }
+
+        if (count ( $p_list ) <= 0)
+            $p_list ['0'] = Lang::t ( '_NO_PERIODS', 'catalogue' );
+        if (! array_key_exists ( $p_selected, $p_list ))
+            $p_selected = 0;
+        if ($p_selected == 0)
+            $p_selected = false;
+
+        // extract courses which have been completed in the considered period and the credits associated
+        $course_type_trans = getCourseTypes ();
+        $query = "SELECT c.idCourse, c.name, c.course_type, c.credits, cu.status " . " FROM " . $GLOBALS ['prefix_lms'] . "_course as c " . " JOIN " . $GLOBALS ['prefix_lms'] . "_courseuser as cu " . " ON (cu.idCourse = c.idCourse) WHERE cu.idUser=" . ( int ) getLogUserId () . " AND c.course_type IN ('" . implode ( "', '", array_keys ( $course_type_trans ) ) . "') " . " AND cu.status = '" . _CUS_END . "' " . ($period_start != '' ? " AND cu.date_complete > '" . $period_start . "' " : "") . ($period_end != '' ? " AND cu.date_complete < '" . $period_end . "' " : "") . " ORDER BY c.name";
+        $res = sql_query ( $query );
+
+        $course_data = array ();
+        while ( $obj = sql_fetch_object ( $res ) ) {
+            switch ($obj->course_type) {
+                case 'elearning' :
+                    $course_data ['elearning'] [$obj->idCourse] = $obj;
+                    break;
+                case 'classroom' :
+                case 'blended' :
+                    $course_data ['classroom'] [$obj->idCourse] = $obj;
+                    break;
+            }
+        }
+
+
+        // draw tables
+        $no_cdata = true;
+
+        $table = '<div class="table-credit-wrapper">';
+        if (count($course_data) > 0) {
+            $table .= '
+                    <table class="table-credit">
+                        <thead>
+                            <tr class="table-credit__row table-credit__row--head">
+                                <td>' . Lang::t('_COURSE', 'catalogue') . '</td>
+                                <td>' . Lang::t('_CREDITS', 'catalogue') . '</td>
+                            </tr>
+                        </thead>
+                        <tbody>';
+            foreach ($course_data as $ctype => $cdata) {
+
+                if (count($cdata) > 0) {
+
+                    $no_cdata = false;
+
+                    $total = 0;
+                    foreach ($cdata as $id_course => $data) {
+
+                        $table .= '<tr class="table-credit__row">
+                            <td>
+                                ' . $data->name . '
+                            </td>
+                            <td>
+                                ' . $data->credits . '
+                            </td>
+                        </tr>';
+
+                        $total += $data->credits;
+                    }
+                }
+            }
+
+            $table .= '
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-credit__row table-credit__row--footer">
+                                <td>' . Lang::t('_TOTAL', 'catalogue') . '</td>
+                                <td>' . $total . '</td>
+                            </tr>
+                        </tfoot>    
+                    </table>';
+        }
+
+        if ($no_cdata) {
+            $table .= '<p>' . Lang::t ( '_NO_CONTENT', 'catalogue' ) . '</p>';
+        }
+
+        $table .= '</div>';
+
+        echo $table;
+    }
+
 }
 
 

@@ -35,7 +35,7 @@ function loadHeaderHTMLEditor() {
 	switch($ht) {
 		//using tiny_mce
 		case 'tinymce':
-			Util::get_js(Get::rel_path('base').'/addons/tiny_mce/tinymce.gzip.js', true, true);
+			Util::get_js(Get::rel_path('base').'/addons/tiny_mce/tinymce.min.js', true, true);
 			Util::get_js(Get::rel_path('base').'/addons/tiny_mce/forma.js', true, true); 
 		break;
 

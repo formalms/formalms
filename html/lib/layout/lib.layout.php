@@ -267,7 +267,7 @@ class Layout
         $html = '';
         if (HomepageAdm::staticIsCatalogToShow()) {
             //$html = '<a href="index.php?r=homecatalogue/show">'.Lang::t('_CATALOGUE', 'standard').'</a>';
-            $html = '<a class="forma-button forma-button--orange hidden-xs" href="index.php?r='._homecatalog_.'">' . Lang::t('_CATALOGUE', 'standard') . '</a>';
+            $html = '<a class="forma-button forma-button--orange" href="index.php?r='._homecatalog_.'">' . Lang::t('_CATALOGUE', 'standard') . '</a>';
         }
 
         return $html;
@@ -326,6 +326,7 @@ class Layout
         $retArray['layout_analytics'] = self::analytics();
         $retArray['jqueryLib'] = JQueryLib::loadJQuery($minimized);
         $retArray['boostrap'] = JQueryLib::loadBootstrap($minimized);
+		$retArray['boostrapAddons'] = JQueryLib::loadBootstrapAddons($minimized);
         $retArray['jqueryAddons'] = JQueryLib::loadJQueryAddons($minimized);
         $retArray['cssAddons'] = JQueryLib::loadCssAddons($minimized);
 

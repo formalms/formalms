@@ -369,9 +369,11 @@ class Field_Date extends Field {
             $formField = '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';
 
             $formField .= '<div class="col-xs-12 col-sm-6">';
+			$formField .= '<div class="input-group date">';
+			$formField .= '<div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>';
 
             $formField .= Form::getInputDatefield(
-                'form-control '.($error ? 'has-error' : ''),
+                'form-control datepicker '.($error ? 'has-error' : ''),
                     'field_' . $this->getFieldType() . '_' . $this->id_common,
                     'field_' . $this->getFieldType() . '[' . $this->id_common . ']', $value, false, false, $translation);
 
@@ -379,6 +381,7 @@ class Field_Date extends Field {
                 $formField .= '<small class="form-text">* ' . $errorMessage . '</small>';
             }
 
+			$formField .= '</div>';
             $formField .= '</div>';
             $formField .= '</div>';
 

@@ -1,5 +1,7 @@
 <?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
+ini_set('display_errors',1);
+
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
 |                                                                           |
@@ -14,9 +16,9 @@
 
 class HelpdeskLmsController extends LmsController {
 
-
-	public function show() {
-
+                    
+	public function show() {                 
+                                                           
             $sendto   = $_POST['sendto'];
             $usermail = $_POST['email'];
             $content  = nl2br($_POST['msg']);
@@ -63,12 +65,15 @@ class HelpdeskLmsController extends LmsController {
             $msg .= "FLASH: ".$help_req_flash_installed . $br_char;
 
             $msg .= "</body></html>";
-
-
+               
             if(@mail($sendto, $oggetto, $msg, $headers)) {
                 echo "true";
             } else {
-                echo "false";
+                echo Lang::t('_NO_EMAIL_CONFIG', 'standard');
             }
-	}
-    
+            die();
+            
+	}  
+}
+
+?>

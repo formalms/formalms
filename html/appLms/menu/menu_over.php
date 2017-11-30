@@ -148,7 +148,7 @@ $str_menu_over = '<header class="header white-bg">
                     <div class="row-fluid" id="lms_menu_container" >
                       <div class="navbar-header" >
                         <a class="navbar-brand" href="?r=elearning/show&sop=unregistercourse">
-                          <img class="left_logo" width="120" src="'. Layout::path().'/images/company_logo.png" alt="logo di sinistra"/>
+                          <img class="left_logo" src="'. Layout::path().'/images/company_logo.png" alt="logo di sinistra"/>
                         </a> 
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                           <span  class="glyphicon glyphicon-align-justify"></span>
@@ -195,7 +195,7 @@ foreach ($menu['all'] as $row) {
               Learning_Cart::init();
               $num_item = Learning_Cart::cartItemCount();
               if($num_item>0){
-                cout('<li><a href="index.php?r=cart/show" id="cart_action" title="'.Lang::t("_CART", "cart").'"><span  class="glyphicon glyphicon-shopping-cart"><sub id="cart_element" class="num_notify_bar">'.Learning_Cart::cartItemCount().'</sub></span></a></li>' ,'menu_over')  ;
+                cout('<li><a href="index.php?r=cart/show" id="cart_action" title="'.Lang::t("_CART", "cart").'"><span  class="glyphicon glyphicon-shopping-cart top-menu__label"><sub id="cart_element" class="num_notify_bar">'.Learning_Cart::cartItemCount().'</sub></span></a></li>' ,'menu_over')  ;
               }
 
                cout('
@@ -225,54 +225,67 @@ foreach ($menu['all'] as $row) {
                 </nav>
                
                 <div id="c-menu--slide-right" class="c-menu c-menu--slide-right user-panel">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-xs-6">
-                                            <a href="javascript:void(0)" class="c-menu__close"><span class="glyphicon glyphicon-remove">'.Lang::t('_HIDETREE', 'organization').'</span></a><!-- pulsante nascondi menu -->      
-                                        </div>
-                                        <div class="col-xs-6">
-                                            <a title="'.Lang::t('_LOGOUT', 'standard').'" href="'. Get::rel_path('base') . '/index.php?r=' . _logout_ . '">
-                                                <span class="glyphicon glyphicon-off">'.Lang::t('_LOGOUT', 'standard').'</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!--<div class="row"> -->
-                                        <!--<div class="col-xs-12">-->
-                                            '.$profile_box.' 
-                                        <!--</div>-->  <!-- end col xs-12 -->
-                                    <!-- </div> -->
-                                    <div class="row course-subscription">
-                                        <div class="col-xs-12">
-                                            '.$subscribe_course.'
-                                        </div> <!-- end col xs-12 -->
-                                    </div>
-                                    <div class="row news">
-                                        <div class="col-xs-12">
-                                            '.$news.'
-                                        </div> <!-- end col xs-12 -->
-                                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <a href="javascript:void(0)" class="c-menu__close"><span class="glyphicon glyphicon-remove">'.Lang::t('_HIDETREE', 'organization').'</span></a><!-- pulsante nascondi menu -->      
+                            </div>
+                            <div class="col-xs-6">
+                                <a title="'.Lang::t('_LOGOUT', 'standard').'" href="'. Get::rel_path('base') . '/index.php?r=' . _logout_ . '">
+                                    <span class="glyphicon glyphicon-off">'.Lang::t('_LOGOUT', 'standard').'</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="tabnav js-tabnav">
+                            <div class="tabnav__label-wrapper">
+                                <div class="tabnav__label selected" data-tab="profile">
+                                    '.Lang::t('_PROFILE', 'standard').'
+                                </div>
+                                <div class="tabnav__label" data-tab="credits">
+                                    '.Lang::t('_TIMEPERIODS', 'standard').'
+                                </div>
+                            </div>
+                            <div class="tabnav__content-wrapper">
+                                <div class="tabnav__content tabnav__content--profile is-visible">
+                                    '.$profile_box.'                                        
+                                </div>
+                                <div class="tabnav__content tabnav__content--credits">
                                     <div class="row credits">
                                         <div class="col-xs-12">
-                                            '.$credits.'
+                                        	<div class="js-credits-ajax-container">
+                                          		'.$credits.'
+											</div>
                                         </div> <!-- end col xs-12 -->
-                                    </div>
-                                    <div class="row lang">
-                                        <div class="col-xs-6">
-                                            <p>' . Lang::t('_CHANGELANG', 'register') . '</p>
-                                        </div>
-                                        <div class="col-xs-6">
-                                            ' . Layout::buildLanguages() . '
-                                        </div>
-                                    </div>
-                                    <div class="row footer">
-                                        <div class="col-xs-12">
-                                          <p>Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</p>
-                                        </div>
-                                    </div>
-                                </div> <!-- /container-fluid -->
-                            </div><!-- /c-menu slide-right end profile right panel -->
-                
-                </header>','menu_over');
+                                    </div>                                        
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row course-subscription">
+                            <div class="col-xs-12">
+                                '.$subscribe_course.'
+                            </div> <!-- end col xs-12 -->
+                        </div>
+                        <div class="row news">
+                            <div class="col-xs-12">
+                                '.$news.'
+                            </div> <!-- end col xs-12 -->
+                        </div>
+                        <div class="row lang">
+                            <div class="col-xs-6">
+                                <p>' . Lang::t('_CHANGELANG', 'register') . '</p>
+                            </div>
+                            <div class="col-xs-6">
+                                ' . Layout::buildLanguages() . '
+                            </div>
+                        </div>
+                        <div class="row footer">
+                            <div class="col-xs-12">
+                              <p>Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</p>
+                            </div>
+                        </div>
+                    </div> <!-- /container-fluid -->
+                </div><!-- /c-menu slide-right end profile right panel -->
+            </header>','menu_over');
 
         $idst = getLogUserId();
         $acl_man = Docebo::user()->getAclManager();
@@ -337,7 +350,7 @@ foreach ($menu['all'] as $row) {
                       <td><textarea id="msg" name="msg" class="txtarea" placeholder="'.Lang::t('_WRITE_ASK_A_FRIEND', 'profile').'"></textarea></td>
                 </tr>
                 <tr>
-                      <td><label for="copia">Invia una copia per conoscenza</label></td>
+                      <td><label for="copia">'.Lang::t('_SEND_CC', 'standard').'</label></td>
                       <td>   <input id="copia" name="copia" checked data-toggle="toggle" data-on="'.Lang::t('_GROUP_FIELD_NORMAL', 'admin_directory').'"  data-size="small" data-off="'.Lang::t('_NO', 'standard').'" data-onstyle="success" data-offstyle="danger" type="checkbox">
                    
                       </td>

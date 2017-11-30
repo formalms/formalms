@@ -1401,14 +1401,16 @@ class UserManagerRenderer
 
                 }
 
-                $result = $this->_opt_in($options, $platform, $opt_link);
-                return $result;
+
                 if ($this->error) {
                     if ($options['use_advanced_form'] == 'on' || Get::sett('register_with_code') == 'on') {
-                        $out .= $this->_special_field($options, $platform, $opt_link, $errors);
+                        $out = $this->_special_field($options, $platform, $opt_link, $errors);
                     } else {
-                        $out .= $this->_first_of_all($options, $platform, $errors);
+                        $out = $this->_first_of_all($options, $platform, $errors);
                     }
+                }
+                else {
+                    $out = $this->_opt_in($options, $platform, $opt_link);
                 }
             };
                 break;
@@ -1431,14 +1433,14 @@ class UserManagerRenderer
 
 
                 if ($this->error) {
-                    $out .= $this->_first_of_all($options, $platform, $errors);
+                    $out = $this->_first_of_all($options, $platform, $errors);
                 } else {
-                    $out .= $this->_special_field($options, $platform, $opt_link, $errors);
+                    $out = $this->_special_field($options, $platform, $opt_link, $errors);
                 }
             };
                 break;
             case "first_of_all" : {
-                $out .= $this->_first_of_all($options, $platform, $errors);
+                $out = $this->_first_of_all($options, $platform, $errors);
             };
                 break;
         }
@@ -1570,14 +1572,13 @@ class UserManagerRenderer
         }
         // now in array_folder we have the associated folder for the users
         if (!empty($array_folder)) {
-            /*
 			//let's find the oc and ocd
 			$oc_folders = $uma->getOcFolders($array_folder);
 			while(list($id, $ocs) = each($oc_folders)) {
 
 				$acl_man->addToGroup($ocs[0], $iduser);
 				$acl_man->addToGroup($ocs[1], $iduser);
-			}*/
+			}
             while (list($id, $folder) = each($array_folder)) {
                 $acl_man->addToGroup($folder, $iduser);
             }
@@ -1693,7 +1694,8 @@ class UserManagerRenderer
 
         // FIX BUG 399
         //$link = str_replace('&amp;', '&', $opt_link.( strpos($opt_link, '?') === false ? '?' : '&' ).'random_code='.$random_code);
-        $link = Get::sett('url', '') . 'index.php?modname=login&op=register_opt&random_code=' . $random_code;
+        //$link = Get::sett('url', '') . 'index.php?modname=login&op=register_opt&random_code=' . $random_code;
+        $link = Get::sett('url', '') . 'index.php?r=adm/homepage/signup&random_code=' . $random_code;
         // END FIX BUG 399
 
         $text = $lang->def('_REG_MAIL_TEXT');
@@ -2105,7 +2107,7 @@ class UserManagerRenderer
                 // we must show to the user a selection of code
                 $uma = new UsermanagementAdm();
                 $tree_names = ['-' => $lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_span : '')];
-                $tree_names = array_merge($tree_names, $uma->getAllFolderNames(true));
+                $tree_names = $tree_names + $uma->getAllFolderNames(true);
                 $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
                             <div class="col-xs-12 col-sm-6">'
                     . Form::getInputDropdown(
@@ -2161,7 +2163,7 @@ class UserManagerRenderer
         }
 
         $out .= '<div class="homepage__row homepage__row--form-disclaimer"> '
-            . '<p>' . $lang->def('_REG_PRIVACY_POLICY') . '</p>'
+            . '<p class="mCustomScrollbar" data-mcs-theme="minimal-dark">' . $lang->def('_REG_PRIVACY_POLICY') . '</p>'
             . '</div>';
 
 
@@ -2169,15 +2171,24 @@ class UserManagerRenderer
 
             $error = (isset($errors) && $errors['privacy']);
             $errorMessage = $errors['privacy']['msg'];
-            $out .= '<div class="homepage__row">'
-                . Form::getInputCheckbox(
-                    'register_privacy',
-                    'register[privacy]',
-                    'ok',
-                    isset($_POST['register']['privacy']),
-                    '')
-                . '<label class="checkbox-inline">' . $lang->def('_REG_PRIVACY_ACCEPT') . '</label>'
-                . '</div>';
+            $out .= '<div class="homepage__row homepage__row--privacy">';
+            if($error) {
+                $out .= '<div class="has-error">';
+            }
+        
+            $out .= Form::getInputCheckbox(
+                'register_privacy',
+                'register[privacy]',
+                'ok',
+                isset($_POST['register']['privacy']),
+                '')
+            . '<label class="checkbox-inline">' . $lang->def('_REG_PRIVACY_ACCEPT') . '</label>'
+        . '</div>';
+        
+            if($error) {
+                $out .= '<small class="form-text">* ' . $errorMessage . '</small>
+                </div>';
+            }
         }
 
         $out .= '<div class="homepage__row row">'
@@ -2375,7 +2386,7 @@ class UserManagerRenderer
         $errors = [];
 
         // control if the inserted data is valid
-        if ($options['privacy_policy'] == 'on') {
+        if ($options['privacy_policy'] === 'on') {
             if (!isset($source['register']['privacy'])) {
 
                 $error = ['error' => true,
@@ -2394,36 +2405,35 @@ class UserManagerRenderer
         }
 
         // control mail is correct
-        if ($source['register']['email'] == '') {
-            $error = ['error' => true,
-                'msg' => $lang->def('_ERR_INVALID_MAIL')];
-
-            $errors['email'] = $error;
-        }
-        if (!preg_match("/^([a-z0-9_\-]|\\.[a-z0-9_])+@(([a-z0-9_\-]|\\.-)+\\.)+[a-z]{2,8}$/", $source['register']['email'])) {
-            $error = ['error' => true,
-                'msg' => $lang->def('_ERR_INVALID_MAIL')];
-
-            $errors['email'] = $error;
-        }
-        if (preg_match("[\r\n]+", $source['register']['email'])) {
-            $error = ['error' => true,
-                'msg' => $lang->def('_ERR_INVALID_MAIL')];
-
-            $errors['email'] = $error;
-        }
-
         $acl_man =& Docebo::user()->getAclManager();
 
-        if ($acl_man->getUserByEmail($source['register']['email']) !== false) {
+
+        if ($source['register']['email'] === '') {
+            $error = ['error' => true,
+                'msg' => $lang->def('_ERR_INVALID_MAIL')];
+
+            $errors['email'] = $error;
+        }
+        else if (!preg_match("/^([a-z0-9_\-]|\\.[a-z0-9_])+@(([a-z0-9_\-]|\\.-)+\\.)+[a-z]{2,8}$/", $source['register']['email'])) {
+            $error = ['error' => true,
+                'msg' => $lang->def('_ERR_INVALID_MAIL')];
+
+            $errors['email'] = $error;
+        }
+        else if (preg_match("[\r\n]+", $source['register']['email'])) {
+            $error = ['error' => true,
+                'msg' => $lang->def('_ERR_INVALID_MAIL')];
+
+            $errors['email'] = $error;
+        }
+        else if ($acl_man->getUserByEmail($source['register']['email']) !== false) {
 
             $error = ['error' => true,
                 'msg' => $lang->def('_ERR_DUPLICATE_MAIL')];
 
             $errors['email'] = $error;
         }
-
-        if (($tuser = $acl_man->getTempUserByEmail($source['register']['email'])) !== false) {
+        else if (($tuser = $acl_man->getTempUserByEmail($source['register']['email'])) !== false) {
 
             $msg = $lang->def('_ERR_DUPLICATE_RESEND');
             $error = ['error' => true,
@@ -2432,8 +2442,13 @@ class UserManagerRenderer
             $errors['email'] = $error;
 
         }
+
         // check if userid has been inserted
-        if ($source['register']['userid'] == '' || $source['register']['userid'] == $lang->def('_REG_USERID_DEF')) {
+        $user = $acl_man->getUserST($source['register']['userid']);
+        $temp_user = $acl_man->getTempUserInfo($source['register']['userid']);
+
+
+        if ($source['register']['userid'] === '' || $source['register']['userid'] === $lang->def('_REG_USERID_DEF')) {
 
             $error = ['error' => true,
                 'msg' => $lang->def('_ERR_INVALID_USER')];
@@ -2442,9 +2457,7 @@ class UserManagerRenderer
         }
 
         // control if userid is duplicate
-        $user = $acl_man->getUserST($source['register']['userid']);
-        $temp_user = $acl_man->getTempUserInfo($source['register']['userid']);
-        if ($user !== false || $temp_user !== false) {
+        else if ($user !== false || $temp_user !== false) {
 
             $error = ['error' => true,
                 'msg' => $lang->def('_ERR_DUPLICATE_USER')];
@@ -2460,14 +2473,14 @@ class UserManagerRenderer
 
             $errors['pwd'] = $error;
         }
-        if ($_POST['register']['pwd'] != $source['register']['pwd_retype']) {
+        else if ($_POST['register']['pwd'] !== $source['register']['pwd_retype']) {
 
             $error = ['error' => true,
                 'msg' => $lang->def('_ERR_PASSWORD_NO_MATCH')];
 
             $errors['pwd'] = $error;
         }
-        if ($options['pass_alfanumeric'] == 'on') {
+        else if ($options['pass_alfanumeric'] === 'on') {
             if (!preg_match('/[a-z]/i', $source['register']['pwd']) || !preg_match('/[0-9]/', $source['register']['pwd'])) {
 
                 $error = ['error' => true,

@@ -967,6 +967,9 @@ class DoceboACLManager
             $idst = false;
         }
         $this->_removeAllFromRole($idst);
+        $query = "DELETE FROM " . $this->prefix."_rules_entity"
+        . " WHERE id_entity = '" . $idst . "'";
+        $this->_executeQuery($query);
         $query = "DELETE FROM " . $this->_getTableGroupMembers()
             . " WHERE idst = '" . $idst . "'"
             . "    OR idstMember = '" . $idst . "'";

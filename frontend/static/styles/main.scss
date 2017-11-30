@@ -1,7 +1,7 @@
 @import '../../node_modules/breakpoint-sass/stylesheets/breakpoint';
 
-@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap-sprockets.scss';
-@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap.scss';
+//@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap-sprockets.scss';
+//@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap.scss';
 
 @import 'config/config';
 @import 'font-awesome/font-awesome';
@@ -19,6 +19,7 @@
 @import 'components/inputs';
 @import 'components/carousel';
 @import 'components/forma-tooltip';
+@import 'components/tabnav';
 
 //MODULES
 @import 'modules/layout';

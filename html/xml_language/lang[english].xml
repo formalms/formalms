@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171024</DATE>
+  <DATE>20171130</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -69,7 +69,7 @@
         <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPETREE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Node]]></key>
         <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPEUSER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[User member]]></key>
         <key id="admin_directory&amp;_DIRECTORY_ORGVIEWTITLE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Organization chart]]></key>
-        <key id="admin_directory&amp;_FORCE_PASSWORD_CHANGE" attributes="" save_date="2017-06-23 15:09:33"><![CDATA[Require a change of password upon the next login]]></key>
+        <key id="admin_directory&amp;_FORCE_PASSWORD_CHANGE" attributes="" save_date="2017-11-24 11:48:13"><![CDATA[Require password change upon next login]]></key>
         <key id="admin_directory&amp;_GROUP_FIELD_NORMAL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Yes]]></key>
         <key id="admin_directory&amp;_GROUP_USER_IMPORT_CHARSET" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[File charset]]></key>
         <key id="admin_directory&amp;_GROUP_USER_IMPORT_FILE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[CSV file]]></key>
@@ -269,6 +269,7 @@
         <key id="catalogue&amp;_MOD_ENTRY_CATALOGUE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show elements of the catalog]]></key>
         <key id="catalogue&amp;_NEW_CATALOGUE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[New catalog]]></key>
         <key id="catalogue&amp;_NO_AVAILABLE_EDITIONS" attributes="" save_date="2017-07-10 12:07:09"><![CDATA[No editions available ]]></key>
+        <key id="catalogue&amp;_NO_CATEGORY_TODISPLAY" attributes="" save_date="2017-11-09 18:08:23"><![CDATA[No category to display]]></key>
         <key id="catalogue&amp;_NO_COURSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[No courses available]]></key>
         <key id="catalogue&amp;_NO_COURSE_FOUND" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Course not found]]></key>
         <key id="catalogue&amp;_NO_EDITIONS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[There are no editions in this course.]]></key>
@@ -452,7 +453,7 @@
         <key id="configuration&amp;_CONFIRM_REGISTER_TYPE_SELF" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[ATTENTION: without double opt-in user's email won't be checked. You may be subject to spam registrations.]]></key>
         <key id="configuration&amp;_CONF_GLOBAL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Common]]></key>
         <key id="configuration&amp;_CONF_LMS" attributes="" save_date="2017-04-10 13:01:52"><![CDATA[E-learning]]></key>
-        <key id="configuration&amp;_COURSE_BLOCK" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show catalogue in home page]]></key>
+        <key id="configuration&amp;_COURSE_BLOCK" attributes="" save_date="2017-11-09 18:11:39"><![CDATA[Show catalogue in login page]]></key>
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Limit for the maximum total size of contents uploaded into the course (MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Currency symbol (will be displayed at user side)]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2017-04-10 14:55:02"><![CDATA[Help Desk email]]></key>
@@ -478,6 +479,8 @@
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[FTP OK]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Code provided by Google]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_IN_LMS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Enable Google Analytics]]></key>
+        <key id="configuration&amp;_HIDE_EMPTY_CATEGORY" attributes="" save_date="2017-11-09 18:09:26"><![CDATA[Hide empty category]]></key>
+        <key id="configuration&amp;_HOME_PAGE" attributes="" save_date="2017-11-09 18:10:23"><![CDATA[Home page]]></key>
         <key id="configuration&amp;_HOUR_REQUEST_LIMIT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Limit, in hours, for the expiration of the subscription request]]></key>
         <key id="configuration&amp;_HTEDITOR" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Visual HTML text editor]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_ADMIN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Allow administrator media management in the editor]]></key>
@@ -507,6 +510,7 @@
         <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[SQL mode]]></key>
         <key id="configuration&amp;_MYSQL_TIMEZONE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[MySQL Timezone]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[MySQL version]]></key>
+        <key id="configuration&amp;_MY_COURSES" attributes="" save_date="2017-11-09 18:10:58"><![CDATA[My courses]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Pause between blocks (seconds)]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Send newsletter messages in blocks of]]></key>
         <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2017-05-05 16:14:20"><![CDATA[With domxml OFF, the SCORM module, language management and videoconferencing will not work]]></key>
@@ -686,6 +690,7 @@
         <key id="course&amp;_CLASSROOM_EDITION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Classrooms/Editions]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Warning: some classrooms are already occupied by other courses]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Class occupied]]></key>
+        <key id="course&amp;_CLOSING_DATA" attributes="" save_date="2017-11-29 18:53:14"><![CDATA[Closing data]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Your data will be saved.]]></key>
         <key id="course&amp;_COPY_SUBSCRIPTION_TO_COURSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Copy subscriptions to course]]></key>
         <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2017-06-19 11:38:20"><![CDATA[Advance payment]]></key>
@@ -731,6 +736,7 @@
         <key id="course&amp;_DAY_OF_VALIDITY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Days of validity]]></key>
         <key id="course&amp;_DEMO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show demo]]></key>
         <key id="course&amp;_DIRECT_PLAY" attributes="" save_date="2017-03-15 17:59:58"><![CDATA[Directly play the first Learning Object in the player]]></key>
+        <key id="course&amp;_DISABLED" attributes="" save_date="2017-11-29 18:53:19"><![CDATA[Disabled]]></key>
         <key id="course&amp;_DOCUMENT_UPLOAD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Documents upload]]></key>
         <key id="course&amp;_DONT_SHOW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Don't show]]></key>
         <key id="course&amp;_DOWNLOAD_MATERIALS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show material]]></key>
@@ -1029,9 +1035,9 @@ Password: [password]]]></key>
         <key id="email&amp;_TO_APPROVE_USER_TEXT" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[New user is registered at [url] and awaiting your approval]]></key>
         <key id="email&amp;_TO_NEW_USER_SBJ" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[New user subscribed]]></key>
         <key id="email&amp;_TO_NEW_USER_TEXT" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[New user subscribed]]></key>
-        <key id="email&amp;_USER_END_COURSE_SBJ" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[A user has completed the [course] course on forma.lms]]></key>
-        <key id="email&amp;_USER_END_COURSE_TEXT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[The user [user] completed the [course] course on forma.lms]]></key>
-        <key id="email&amp;_USER_END_COURSE_TEXT_SMS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[A user has completed the [course] course on forma.lms]]></key>
+        <key id="email&amp;_USER_END_COURSE_SBJ" attributes="" save_date="2017-11-07 11:03:49"><![CDATA[A user has completed the course on forma.lms]]></key>
+        <key id="email&amp;_USER_END_COURSE_TEXT" attributes="" save_date="2017-11-07 11:04:02"><![CDATA[The user [user] completed the course on forma.lms]]></key>
+        <key id="email&amp;_USER_END_COURSE_TEXT_SMS" attributes="" save_date="2017-11-07 11:03:55"><![CDATA[A user has completed the course on forma.lms]]></key>
         <key id="email&amp;_WAITING_USER_SBJ" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[User is registered and waiting for your approval]]></key>
         <key id="email&amp;_WAITING_USER_TEXT" attributes="email" save_date="2017-03-14 16:22:47"><![CDATA[There is a new user at <a href="[url]">[url]</a> waiting for the approval]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2017-03-14 16:10:41"><![CDATA[You have received a new message]]></key>
@@ -1374,12 +1380,11 @@ Password: [password]]]></key>
         <key id="login&amp;_CANCELSOCIALLOGIN" attributes="" save_date="2017-05-17 18:27:17"><![CDATA[Access request from social canceled by the user]]></key>
         <key id="login&amp;_EMPTYSOCIALID" attributes="" save_date="2017-05-10 18:24:22"><![CDATA[Unable to find social ID account]]></key>
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Home page]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:18:06"><![CDATA[forma.lms is an Open Source e-learning platform (LMS and LCMS) used in corporate and higher education markets.<br/>
-<br/>
-The Platform supports 26 languages, it's compliant with the SCORM 1.2 and 2004 standards, and supports different didactic models, including: Blended, Self-Directed, Collaborative and even Social Learning through Chat, Wiki, Forums and other different functions.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-11-03 16:01:18"><![CDATA[The Platform supports 26 languages, it's compliant with the SCORM 1.2 and 2004 standards, and supports different didactic models, including: Blended, Self-Directed, Collaborative and even Social Learning through Chat, Wiki, Forums and other different functions.<br/>
 <br/>
 <br/>
 To change these words please go to Admin/Language management, search for <b>login</b> and edit the key <b>_INTRO_STD_TEXT</b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-11-03 16:01:33"><![CDATA[forma.lms is an Open Source e-learning platform (LMS and LCMS) used in corporate and higher education markets]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Jump to login form]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[LDAP authentication is active, functionality unavailable please call your administrator]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Login]]></key>
@@ -1394,6 +1399,7 @@ To change these words please go to Admin/Language management, search for <b>logi
         <key id="login&amp;_MAINTENANCE_TEXT" attributes="" save_date="2017-04-10 18:32:44"><![CDATA[System in maintenance mode.<br/><br/>To change this text please go to Admin/Language management, search for login and edit the key _MAINTENANCE_TEXT]]></key>
         <key id="login&amp;_NOACCESS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Access denied, please check your password]]></key>
         <key id="login&amp;_PASSNOMATCH" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[The two provided passwords are not equal or password field is empty.]]></key>
+        <key id="login&amp;_READ_ALL" attributes="" save_date="2017-11-03 16:02:14"><![CDATA[Read All]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Please [login] or [signin] to buy or proceed with this course]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE_NO_REG" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Please [login] to buy or proceed with this course]]></key>
         <key id="login&amp;_REGISTER_WITH_FACEBOOK" attributes="" save_date="2017-07-17 12:36:10"><![CDATA[register with Facebook]]></key>
@@ -2904,7 +2910,7 @@ Password: [password]]]></key>
         <key id="user_managment&amp;_NO_VALUE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[No selections have been made]]></key>
         <key id="user_managment&amp;_ONLY_CREATE" attributes="" save_date="2017-05-05 11:58:39"><![CDATA[Create only]]></key>
         <key id="user_managment&amp;_ONLY_UPDATE" attributes="" save_date="2017-05-05 11:59:04"><![CDATA[Update only]]></key>
-        <key id="user_managment&amp;_PASSWORD_TO_INSERT" attributes="" save_date="2017-05-05 11:59:27"><![CDATA[Password to insert]]></key>
+        <key id="user_managment&amp;_PASSWORD_TO_INSERT" attributes="" save_date="2017-11-24 12:23:59"><![CDATA[Password create]]></key>
         <key id="user_managment&amp;_REACH_NUMBERS_OF_ATTEMPT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[You have failed to log in for [attempt] times, for security reasons wait [time] minutes before trying again]]></key>
         <key id="user_managment&amp;_REGISTER_TYPE_ADMIN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Only by administrator]]></key>
         <key id="user_managment&amp;_REGISTER_TYPE_MODERATE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Moderated self registration]]></key>

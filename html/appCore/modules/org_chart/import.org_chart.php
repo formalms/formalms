@@ -206,7 +206,8 @@ class ImportUser extends DoceboImport_Destination {
 		if(isset($tocompare['pass']))       $tocompare['pass']      = addslashes($this->_convert_char($tocompare['pass']));
 		if(isset($tocompare['email']))      $tocompare['email']     = addslashes($this->_convert_char($tocompare['email']));
                 
-                if($pass == '') $pass = FALSE;
+				if($pass == '') $pass = FALSE;
+				$force_send_alert = FALSE;
                 
                 switch ($this->set_password){
                     case 'insert_empty':
@@ -226,6 +227,17 @@ class ImportUser extends DoceboImport_Destination {
                             $newpass = $acl_manager->random_password();
                         }
                         $pass = $newpass;
+						break;
+					case 'from_file':
+                        if (!$pass) {
+                            if ($this->manual_password != NULL) {
+                                $newpass = $this->manual_password;
+                            } else {
+                                $newpass = $acl_manager->random_password();
+                            }
+							$pass = $newpass;
+							$force_send_alert = TRUE;
+                        }
                         break;
                 }
 
@@ -513,7 +525,7 @@ class ImportUser extends DoceboImport_Destination {
 				'[password]' => $pass
 			);
 			//send email alert
-			if($this->send_alert && (!$is_an_update || $pass)) {
+			if(($this->send_alert && (!$is_an_update || $pass)) || $force_send_alert) {
 				$e_msg = new EventMessageComposer();
 
 				$e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
