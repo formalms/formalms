@@ -431,7 +431,7 @@
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Configuration of "allow_url_include"]]></key>
         <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[already assigned]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[<abbr title="Application Programming Interface">API</abbr> and <abbr title="Authentication">Authentication</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a code created through the code module]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a tree code chosen by the user from a list in a dropdown menu]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a tree code that must be entered manually by the user]]></key>
@@ -445,6 +445,7 @@
         <key id="configuration&amp;_BBB_SALT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Salt BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="2017-05-05 17:03:26"><![CDATA[BigBlueButton server address ]]></key>
         <key id="configuration&amp;_BBB_USER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Username BigBlueButton]]></key>
+        <key id="configuration&amp;_CLEAR_TWIG_CACHE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Clear twig cache]]></key>
         <key id="configuration&amp;_CODE_TELESKILL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Customer code]]></key>
         <key id="configuration&amp;_COMMON_ADMIN_SESSION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Unify admin and public sessions]]></key>
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Limit for the number of conferences that can be planned by a single user]]></key>

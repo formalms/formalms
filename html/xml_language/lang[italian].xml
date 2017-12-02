@@ -433,7 +433,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "allow_url_include"]]></key>
         <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2017-03-15 16:37:18"><![CDATA[già assegnato]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[<abbr title="Application Programming Interface">API</abbr> e <abbr title="Autenticazione">Autenticazione</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Richiedi codice creato attraverso il modulo codici]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Chiedi un codice di accesso all'organigramma, il codice sarà scelto da un menu a tendina]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Chiedi un codice di accesso all'organigramma che deve essere inserito manualmente dall'utente]]></key>
@@ -447,6 +447,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_BBB_SALT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Salt BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Indirizzo server BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_USER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nome Utente BigBlueButton]]></key>
+        <key id="configuration&amp;_CLEAR_TWIG_CACHE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Elimina twig cache]]></key>
         <key id="configuration&amp;_CODE_TELESKILL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Codice cliente]]></key>
         <key id="configuration&amp;_COMMON_ADMIN_SESSION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Condividi la sessione pubblica con quella di amministrazione]]></key>
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Limita il numero di conferenze che possono essere pianificate da un singolo utente]]></key>
