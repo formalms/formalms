@@ -15,7 +15,24 @@
 				'active' => 'kb',
 				'close' => false
 			));
+            
 	?>
+
+<div class="quick_search_form navbar forma-quick-search-form"> 
+        <div class="simple_search_box" id="usermanagement_simple_filter_options" style="display: block;">
+            <?php
+            echo Form::openForm('quick_search', '');
+            echo Form::getInputDropdown('dropdown', 'course_filter', 'course_filter', $course_filter_arr, false, 'style="width: 50%;"') . "&nbsp;\n";
+            echo Form::getInputTextfield("search_t", "filter_text", "filter_text", $filter_text, '', 255, '');
+            echo Form::getButton("filter_set", "filter_set", Lang::t('_SEARCH', 'standard'), "search_b");
+            echo Form::getButton("filter_reset", "filter_reset", Lang::t('_RESET', 'standard'), "reset_b");
+            echo Form::closeForm();
+            ?>
+        </div>
+
+</div>    
+    
+    
 	<div class="row">
 		<div id="yui-main" class="col-md-12">
 			<div class="">
@@ -40,18 +57,7 @@
 							<!-- search form -->
 							
                             
-                            <div class="quick_search_form">
-								<div class="simple_search_box" id="usermanagement_simple_filter_options" style="display: block;">
-									<?php
-									echo Form::openForm('quick_search', '');
-									echo Form::getInputDropdown('dropdown', 'course_filter', 'course_filter', $course_filter_arr, false, 'style="width: 50%;"') . "&nbsp;\n";
-									echo Form::getInputTextfield("search_t", "filter_text", "filter_text", $filter_text, '', 255, '');
-									echo Form::getButton("filter_set", "filter_set", Lang::t('_SEARCH', 'standard'), "search_b");
-									echo Form::getButton("filter_reset", "filter_reset", Lang::t('_RESET', 'standard'), "reset_b");
-									echo Form::closeForm();
-									?>
-								</div>
-							</div>
+
 							
                             <!-- categories navigation -->
 							<!-- Hiding Horizontal Cat navigation
@@ -128,6 +134,6 @@
 			<div class="nofloat"></div>
 <?php
 									$this->widget('yuilog');
-									$lmstab->endWidget();
-	?>
+									$lmstab->endWidget(); 
+?>
 </div>

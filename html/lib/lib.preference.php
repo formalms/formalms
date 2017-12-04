@@ -475,6 +475,7 @@ class UserPreferences {
 		$this->base_name 	= 'user_preference';
 		// Load startup
 		$this->_preferences = $this->_up_db->getFilteredUserValue($id_user, false, true, false);
+        $this->_preferences['ui.lang_code'] = $this->getLanguageCode();
 
 		$this->_admin_preference = new AdminPreference();
 	}
@@ -572,6 +573,31 @@ class UserPreferences {
 		$this->setPreference('ui.language', $new_language);
 		return true;
 	}
+    function getLanguageCode(){
+        $locale_language_array = [
+                    'arabic'  => 'ar',
+                    'croatian' => 'hr',
+                    'czech' => 'cs',
+                    'dutch' => 'nl',
+                    'english' => 'en',
+                    'finnish'  => 'fi',                            
+                    'french'  => 'fr',
+                    'german' => 'de',
+                    'greek' => 'el',
+                    'italian' => 'it',
+                    'spanish' => 'es',
+                    'swedish' =>  'sv',
+                    'norwegian' => 'nb'
+                    ];
+         if (array_key_exists($this->_preferences['ui.language'],$locale_language_array)) {          
+            return $locale_language_array[$this->_preferences['ui.language']];             
+         } else {
+             if ($this->is_anonymous) {
+                 $browser_locale = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+             }   return $browser_locale[0];
+             return 'en';
+         }         
+    }
 
 
 	/**
