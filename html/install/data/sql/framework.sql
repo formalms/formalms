@@ -3288,9 +3288,6 @@ UPDATE `core_setting` SET `sequence` = '11' WHERE `core_setting`.`param_name` = 
 UPDATE `core_setting` SET `sequence` = '12' WHERE `core_setting`.`param_name` = 'rest_auth_lifetime';
 UPDATE `core_setting` SET `sequence` = '13' WHERE `core_setting`.`param_name` = 'rest_auth_api_secret';
 
-
-
-
 -- --------------------------------------------------------
 
 
