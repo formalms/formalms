@@ -315,7 +315,7 @@ div.container-feedback{
 /* lightbox */
 #overlay_lightbox_c.yui-panel-container.shadow .underlay{position:absolute;background:transparent;}
 #overlay_lightbox_c {z-index: -1000 !important;}
-.masked #overlay_lightbox_c {z-index: 11000 !important;}
+.masked #overlay_lightbox_c {z-index: 11000 !important; top: 60px !important;}
 #overlay_lightbox.yui-panel{border:none;overflow:visible;background:transparent;}
 #overlay_lightbox.yui-panel .hd{padding:0;border:none;color:#ffffff;height:24px;margin:0;overflow:visible;position:relative;background:#000000;}
 #overlay_lightbox.yui-panel .hd h1{color:#ffffff;margin:0;padding:2px 2px 2px 8px;font-size:115%;background:transparent;display:inline;}
