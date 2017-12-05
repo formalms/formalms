@@ -244,7 +244,7 @@ class SettingAdm extends Model
 		FROM " . $this->table . "
 		WHERE regroup = '" . $regroup . "' AND
 			hide_in_modify = '0'
-		ORDER BY pack, sequence");
+		ORDER BY sequence, pack");
 
 		$prev_pack = '';
         while (list($pack, $var_name, $var_value, $value_type, $max_size) = sql_fetch_row($reSetting)) {
@@ -257,8 +257,7 @@ class SettingAdm extends Model
 			//$i_after = ' <span class="ico-tooltip" id="tt_target_'.$var_name.'" title="'.$lang->def('_CONF_DESCR_'.strtoupper($var_name)).'">info</span>';
             switch ($value_type) {
 				case "register_type" : {
-					//on off
-                    echo Form::getOpenCombo($lang->def('_' . strtoupper($var_name)))
+                   /* echo Form::getOpenCombo($lang->def('_' . strtoupper($var_name)))
                         . Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_SELF'), $var_name . '_self', 'option[' . $var_name . ']',
 								'self', ($var_value == 'self'))
                         . Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_SELF_OPTIN'), $var_name . '_self_optin', 'option[' . $var_name . ']',
@@ -268,13 +267,26 @@ class SettingAdm extends Model
                         . Form::getLineRadio('', 'label_bold', $lang->def('_REGISTER_TYPE_ADMIN'), $var_name . '_admin', 'option[' . $var_name . ']',
 								'admin', ($var_value == 'admin'))
 
-                        . Form::getCloseCombo($i_after);
+                        . Form::getCloseCombo($i_after);*/
+
+                    //drop down
+                    $layout = array(
+                        "self" => Lang::t('_REGISTER_TYPE_SELF'),
+						"self_optin" => Lang::t('_REGISTER_TYPE_SELF_OPTIN'),
+						"moderate" => Lang::t('_REGISTER_TYPE_MODERATE'),
+                        "admin" => Lang::t('_REGISTER_TYPE_ADMIN'),
+                    );
+                    echo Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
+                        $var_name,
+                        'option['.$var_name.']',
+                        $layout,
+                        $var_value);
                 };
                     break;
 				case "registration_code_type" : {
 					//on off
 
-                    echo Form::getOpenCombo($lang->def('_' . strtoupper($var_name)))
+                    /*echo Form::getOpenCombo($lang->def('_' . strtoupper($var_name)))
 
                         . Form::getLineRadio('', 'label_bold', $lang->def('_NONE'), $var_name . '_0', 'option[' . $var_name . ']',
 								'0', ($var_value == '0'))
@@ -290,7 +302,20 @@ class SettingAdm extends Model
 							//.Form::getLineRadio('', 'label_bold', $lang->def('_CUSTOM_CODE'), $var_name.'_custom', 'option['.$var_name.']',
 							//	'custom', ($var_value == 'custom'))
 
-                        . Form::getCloseCombo($i_after);
+                        . Form::getCloseCombo($i_after);*/
+
+                    $layout = array(
+                        "0" => Lang::t('_NONE'),
+                        "tree_man" => Lang::t('_ASK_FOR_MANUAL_TREE_CODE'),
+                        "tree_drop" => Lang::t('_ASK_FOR_DROPDOWN_TREE_CODE'),
+                        // "tree_course" => Lang::t('_ASK_FOR_TREE_COURSE_CODE'),
+                        "code_module" => Lang::t('_ASK_FOR_CODE_MODULE'),
+                    );
+                    echo Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
+                        $var_name,
+                        'option['.$var_name.']',
+                        $layout,
+                        $var_value);
                 };
                     break;
 				/*
