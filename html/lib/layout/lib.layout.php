@@ -326,8 +326,8 @@ class Layout
         $retArray['layout_analytics'] = self::analytics();
         $retArray['jqueryLib'] = JQueryLib::loadJQuery($minimized);
         $retArray['boostrap'] = JQueryLib::loadBootstrap($minimized);
-		$retArray['boostrapAddons'] = JQueryLib::loadBootstrapAddons($minimized);
-        $retArray['jqueryAddons'] = JQueryLib::loadJQueryAddons($minimized);
+        $retArray['locale_calendar'] = JQueryLib::loadCalenderLocal();        
+        $retArray['jsAddons'] = JQueryLib::loadJsAddons($minimized);
         $retArray['cssAddons'] = JQueryLib::loadCssAddons($minimized);
 
         if (file_exists(_base_ . '/templates/' . getTemplate() . '/style/custom.css')) {
@@ -336,8 +336,8 @@ class Layout
         }
         switch ($whichLayout) {
             case 'home':
-                $retArray['jqueryAddons'] = '';
-                $retArray['cssAddons'] = '';
+                $retArray['jsAddons'] = JQueryLib::loadJsAddons($minimized, null,'datepicker');
+                $retArray['cssAddons'] = JQueryLib::loadCssAddons($minimized, null,'datepicker');
 
                 $retArray['copyright'] = self::copyright();
                 $retArray['external_page'] = LoginLayout::external_page();
@@ -372,7 +372,7 @@ class Layout
                 break;
             case 'adm':
                 $exclude_widget[] = 'swipe';   // do not need swipe on admin menu
-                $retArray['jqueryAddons'] = JQueryLib::loadJQueryAddons($minimized, $exclude_widget);
+                $retArray['jsAddons'] = JQueryLib::loadJsAddons($minimized, $exclude_widget);
                 $retArray['cssAddons'] = JQueryLib::loadCssAddons($minimized, $exclude_widget);
                 break;
             case 'lms':

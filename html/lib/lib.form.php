@@ -429,40 +429,17 @@ class Form {
 		if ($date_format == false) {
 			$regset = Format::instance();
 			$date_format = $regset->date_token;
-			$date_format = str_replace(['%d', '%m', '%Y', '-'], ['dd', 'mm', 'yyyy', '/'], $date_format);
 		}
-		if ($css_field == false) $css_field = 'form-control datepicker';
+		
+    $_lang = Docebo::user()->getPreference('ui.lang_code'); 
+    $date_format = str_replace(['%d', '%m', '%Y', '-'], ['dd', 'mm', 'yyyy', '-'], $date_format);
+    $other_param = ' data-provide="datepicker" 
+    								 data-date-autoclose=true data-date-language="'.$_lang.
+    								 '" data-date-format="'.$date_format.'"';
 
 		$iso = Format::dateDb($value, 'date');
 
-//		Form::loadDatefieldScript($date_format);
-//
-//		$date = "";
-//		$iso = Format::dateDb($value, 'date');
-//		if ($value != '' && $value != '0000-00-00 00:00:00') {
-//			$timestamp = mktime(0, 0, 0, (int)substr($iso, 5, 2), (int)substr($iso, 8, 2), (int)substr($iso, 0, 4));
-//			$date = date("m/d/Y", $timestamp);
-//		}
-//
-//		$other_after_b = '<span id="calendar_button_'.$id.'" class="yui-button"><span class="first-child docebo_calendar">'
-//				.'<button type="button"></button></span></span>'
-//				.'<div id="calendar_menu_'.$id.'"><div id="calendar_container_'.$id.'"></div></div>';
-//
-//		if (defined("IS_AJAX")) {
-//			if (!isset($GLOBALS['date_inputs'])) $GLOBALS['date_inputs'] = array();
-//			$GLOBALS['date_inputs'][] = array($id, $date, $date_format);
-//		} else {
-//			$script = '<script type="text/javascript">'
-//					.'YAHOO.util.Event.onDOMReady(function() {'
-//					.'	YAHOO.dateInput.setCalendar("'.$id.'", "'.$date.'", "'.$date_format.'");'
-//					.'});</script>';
-//			cout($script, 'scripts'); //script in the scripts page section, this ensure to have it after the YAHOO.dateInput declaration
-//		}
-
-		$script = '<script type="text/javascript">$("#' . $id . '").datepicker({orientation: "top left"});</script>';
-		cout($script, 'scripts');
-
-		return Form::getInputTextfield( $css_field, $id, $name, Format::date($iso, 'date'), $alt_name, '30', 'placeholder="' . $date_format . '"');
+		return Form::getInputTextfield( $css_field, $id, $name, Format::date($iso, 'date'), $alt_name, '30', $other_param);
 	}
 
 

@@ -22,7 +22,7 @@ version: 2.8.0r4
 .yui-override-padding{padding:0!important;}
 .yui-panel-container .container-close{overflow:hidden;text-indent:-10000em;text-decoration:none;}
 .yui-overlay.yui-force-redraw, .yui-panel-container.yui-force-redraw{margin-bottom:1px;}
-.yui-skin-sam .mask{background-color:#000;-khtml-opacity:.80; -moz-opacity:.80; -ms-filter:"alpha(opacity=80)"; filter:alpha(opacity=80); opacity:.80}
+.yui-skin-sam .mask{background-color:#000;-khtml-opacity:.80; -moz-opacity:.80; -ms-filter:"alpha(opacity=80)"; filter:alpha(opacity=80); opacity:.80; z-index: 999999;}
 .yui-skin-sam .yui-panel-container{padding:0 1px;*padding:2px;}
 .yui-skin-sam .yui-panel{position:relative;left:0;top:0;border-style:solid;border-width:2px;border-color:#003d6b;z-index:1;*border-width:1px;*zoom:1;_zoom:normal;background:#ffffff;}
 .yui-skin-sam .yui-panel .hd, .yui-skin-sam .yui-panel .bd, .yui-skin-sam .yui-panel .ft{border-style:solid;border-width:0;border-color:#808080;margin:0;*margin:0;*border:0;}

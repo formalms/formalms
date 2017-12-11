@@ -33,19 +33,21 @@
 		{{ boostrap|raw }}
 	{% endblock %}
 
-	{% block bootstrap_addons %}
-		{{ boostrapAddons|raw }}
-	{% endblock %}
-
 	{% block jquery_addons %}
 		<!-- addons: js -->
-		{{ jqueryAddons|raw }}
+		{{ jsAddons|raw }}
 	{% endblock %}
 
 	{% block css_addons %}
 		<!-- addons: css -->
 		{{ cssAddons|raw }}
 	{% endblock %}
+    
+    {% block locale_calendar %}
+    <!-- locale data format -->        
+    {{ locale_calendar|raw }}
+    {% endblock %}
+    
 
 	<!-- Restyling -->
 	<link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}static/main.css" />

@@ -22,18 +22,22 @@ class JQueryLib
     const _jquery_ui_version = '1.11.4';
     const _bootstrap_version = '3.3.6';
     const _path = 'jquery';
-    const _core = 'core';
+
     static $array_js_addons = ['html5support',  //  HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
         'helpdesk',
         'fancybox',
         'swipe',
-        'select'];
+        'select',
+         'datepicker',
+         'malihu-custom-scrollbar-plugin']; // malihu custom scrollbar
 
     static $array_css_addons = ['table',    //  media query for table formatting
         'helpdesk',
         'fancybox',
         'swipe',
-        'select'];
+        'select',
+        'datepicker',
+        'malihu-custom-scrollbar-plugin' ]; // malihu custom scrollbar
         
 
 
@@ -69,19 +73,15 @@ class JQueryLib
         return $local_link;
     }
 
-    public static function loadBootstrapAddons($which_version = '') {
-    	// bootstrap datepicker
-		$bootstrap_datepicker_css = "/addons/" . self::_path . "/bootstrap-datepicker/css/bootstrap-datepicker" . $which_version . ".css";
-		$local_link = Util::get_css(Get::rel_path('base') . $bootstrap_datepicker_css, true);
-		$bootstrap_datepicker_js = "/addons/" . self::_path . "/bootstrap-datepicker/js/bootstrap-datepicker" . $which_version . ".js";
-		$local_link .= Util::get_css(Get::rel_path('base') . $bootstrap_datepicker_js, true);
 
-		return $local_link;
-	}
-
-    public static function loadJQueryAddons($which_version, $exclude_addons = null)
+    public static function loadJsAddons($which_version, $exclude_addons = null, $single_addon = null)
     {
 
+        if (!is_null($single_addon)) {
+             self::$array_js_addons =  [$single_addon];
+        }
+            
+        
         $local_link = "\n\t\t";
         foreach (self::$array_js_addons as $a_addon_path) {
             if (!in_array($a_addon_path, $exclude_addons)) {
@@ -96,17 +96,14 @@ class JQueryLib
             }  
         }
 
-		// malihu custom scrollbar
-		$jquery_custom_scrollbar_css = "/addons/" . self::_path . "/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar" . $which_version . ".css";
-		$local_link .= Util::get_css(Get::rel_path('base') . $jquery_custom_scrollbar_css, true);
-		$jquery_custom_scrollbar_js = "/addons/" . self::_path . "/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar" . $which_version . ".js";
-		$local_link .= Util::get_css(Get::rel_path('base') . $jquery_custom_scrollbar_js, true);
-
         return $local_link;
     }
 
-    public static function loadCssAddons($which_version, $exclude_addons = null)
+    public static function loadCssAddons($which_version, $exclude_addons = null, $single_addon = null)
     {
+        if (!is_null($single_addon)){ 
+            self::$array_css_addons =  [$single_addon];
+        }            
         
         $local_link = "\n\t\t";
         foreach (self::$array_css_addons as $a_addon_path) {
@@ -123,6 +120,23 @@ class JQueryLib
             }    
         }
         return $local_link;
+    }
+    
+    // init locale for calendar widget
+    // if locale does not exist or http header fails, default to en-us
+    public static function loadCalenderLocal(){
+        
+        
+        $_lang = Docebo::user()->getPreference('ui.lang_code'); 
+        $locale_calender_path = "/addons/" . self::_path . "/datepicker/locales/";
+        if (!is_null($_lang)){
+                    $local_js = $locale_calender_path."bootstrap-datepicker.".$_lang.".min.js";
+                    $complete_js_path = Get::rel_path('base').$local_js; 
+                    if (file_exists($complete_js_path)) {
+                            return Util::get_js($local_js);   
+                    }        
+        }
+        return '';
     }
 
 

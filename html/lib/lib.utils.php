@@ -70,8 +70,6 @@ class Util  {
 	public static function get_js($js, $is_abspath = false, $print = false) {
 
 		if(!$is_abspath) $js = Get::rel_path('base').$js;
-		if(isset(self::$_js_loaded[$js])) return '';
-		else self::$_js_loaded[$js] = 1;
 		if($print && function_exists('cout')) cout('<script type="text/javascript" src="'.$js.'"></script>', 'page_head');
 		else return "\n\t\t".'<script type="text/javascript" src="'.$js.'"></script> ';
 	}

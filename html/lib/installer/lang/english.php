@@ -143,3 +143,4 @@ define("_DATABASE", "Database");
 define("_MIME_CONTENT_TYPE", "mime_content_type() support");
 
 define("_ASSESSMENT_FUNCTION_REMOVED", "Assessment function has been removed");
+define("_LEARNING_NEWS_REMOVED", "Login News function and its data has been removed");
