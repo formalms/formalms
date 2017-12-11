@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="japanese">
     <lang_code>japanese</lang_code>
     <lang_description>Japanese</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[翻訳言語]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[翻訳内容]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[はい、インポートします。]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ニュースを見られるユーザを選んでください。]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[拡張説明]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ホームページに表示されるニュースの数]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LMSのメインページで見られる全てのニュースのリスト]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[このニュースは重要指定されています]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[全ての言語]]></key>
@@ -1245,6 +1238,7 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[アクセシブルログイン]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ログイン]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ログイン with]]></key>
+        <key id="login&amp;_LOG_IN" attributes="" save_date="2017-12-01 17:12:52"><![CDATA[ログイン]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[パスワード紛失]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[このフィールドにあなたのユーザIDを入力すると、あなたに新パスワード発行手順の書かれたemailが届きます(登録したアドレスへ)。]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[このフィールドに登録したemailアドレスを入力すると、あなたにあなたのユーザ名が書かれたemailが届きます。]]></key>

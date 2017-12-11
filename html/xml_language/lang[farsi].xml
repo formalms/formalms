@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="farsi">
     <lang_code>farsi</lang_code>
     <lang_description>Farsi</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ترجمه زبان]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ترجمه حاوی]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[بله، درونبری کن]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[انتخاب کاربران مجاز به مشاهده اخبار.]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[شرح گسترده]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[شمار آیتم های خبری نمایش داده شده در صفحه خانه]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[فهرست همه خبرهای قابل رؤیت در صفحه اصلی LMS]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[این خبر به عنوان مهم نشانگذاری شده]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[همه زبان ها]]></key>
@@ -1222,6 +1215,7 @@
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ورود افراد کم توان]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ورود]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ورود با]]></key>
+        <key id="login&amp;_LOG_IN" attributes="" save_date="2017-12-01 17:10:57"><![CDATA[ورود]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[گذرواژه فراموش شده]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[شناسه کاربری خود را دراین مکانه وارد کنید، رایانامه ای (به نشانی ثبتی) حاوی دستورعمل تولید گذرواژه جدید دریافت می کنید.]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[رایانامه ثبتی خود را در این مکانه وارد کنید، رایانامه ای حاوی نام کاربری خود برای این سایت دریافت می کنید.]]></key>

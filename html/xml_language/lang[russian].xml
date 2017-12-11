@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="russian">
     <lang_code>russian</lang_code>
     <lang_description>Russian</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Язык перевода]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Перевод включает]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Да, импортировать]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Выбрать пользователей, которые могут видеть новости.]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Расширенное описание]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Число новостей, отображаемое на исходной старнице]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Список всех новостей, которые Вы можете найти на главной странице LMS]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Эти новости помечены как важные]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[каждый язык]]></key>
@@ -1234,18 +1227,18 @@
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Домашняя страница]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:22:16"><![CDATA[forma.lms это платформа электронного обучения с открытым кодом (LMS и LCMS) используемая на рынке высшего и корпоративного образования.<br/>
-<br/>
-Платформа поддерживает 26 языков, совместима со стандартами SCORM 1.2 и 2004, и поддерживает различные модели обучения, включающие: Смешанное, Самообучение, Объединенное и даже социальное, посредством Чатов, Вики, форумов и другие различные функции.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-01 17:08:08"><![CDATA[Платформа поддерживает 26 языков, совместима со стандартами SCORM 1.2 и 2004, и поддерживает различные модели обучения, включающие: Смешанное, Самообучение, Объединенное и даже социальное, посредством Чатов, Вики, форумов и другие различные функции.<br/>
 <br/>
 <br/>
 Чтобы изменить эти слова, обратитесь к управлению языками, найдите <b>login</b> и редактируйте ключ <b>_INTRO_STD_TEXT</b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-01 17:08:15"><![CDATA[forma.lms это платформа электронного обучения с открытым кодом (LMS и LCMS) используемая на рынке высшего и корпоративного образования.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Перейти к форме входа]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Активна аутентификация LDAP, функции недоступны, пожалуйста обратитесь к своему администратору]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Регистрация]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Доступная регистрация]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Регистрация]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Регистрация с]]></key>
+        <key id="login&amp;_LOG_IN" attributes="" save_date="2017-12-01 17:14:33"><![CDATA[Регистрация]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Утерянный пароль]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Введите свой идентификатор пользователя в этом поле и Вы получите письмо (на адрес указанный при регистрации) с инструкциями по созданию нового пароля.]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[введите в это поле адрес, указанный при регистрации, и Вы получите письмо, содержащее имя Вашей учетной записи на этом сайте.]]></key>

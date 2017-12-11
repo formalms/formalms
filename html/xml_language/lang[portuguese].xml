@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="portuguese">
     <lang_code>portuguese</lang_code>
     <lang_description>Portuguese</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Traduzir idioma]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tradução contém]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sim, importar]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Escolher utilizadores que podem ver as notícias.]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Descrição prolongada]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Número de items novos exibidas na home page]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista de todos as notícias que possa encontrar na página principal do LMS]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Esta notícia está marcada como importante]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Todos idiomas]]></key>
@@ -1377,12 +1370,11 @@ Senha: [password]]]></key>
         <key id="login&amp;_CANCELSOCIALLOGIN" attributes="" save_date="2017-07-19 13:46:42"><![CDATA[Pedido de acesso social cancelado pelo usuário]]></key>
         <key id="login&amp;_EMPTYSOCIALID" attributes="" save_date="2017-07-19 13:46:15"><![CDATA[Não foi possível encontrar uma conta de ID social]]></key>
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Home page]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:21:43"><![CDATA[forma.lms é uma plataforma e-learning Open Source (LMS and LCMS) utilizada nos mercados de educação corporativa e superior.<br/>
-<br/>
-A plataforma suporta 26 línguas, é compatível com os padrões SCORM 1.2 e 2004, e suporta diferentes modelos didácticos, incluindo: Misturado, Auto-Directo, Colaborativo e ainda Ensino Social através de Chat, Wiki, Forums e outras funções diferentes.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-01 16:40:07"><![CDATA[A plataforma suporta 26 línguas, é compatível com os padrões SCORM 1.2 e 2004, e suporta diferentes modelos didácticos, incluindo: Misturado, Auto-Directo, Colaborativo e ainda Ensino Social através de Chat, Wiki, Forums e outras funções diferentes.<br/>
 <br/>
 <br/>
-Para alterar estas palavras por favor vá a  gestão Admin/Idioma, pesquise por <b>login</b> e edite a chave <b>_INTRO_STD_TEXT</b>]]></key>
+Para alterar estas palavras por favor vá a  gestão Admin/Idioma, pesquise por <b>login</b> e edite as chaves <b>_INTRO_STD_TEXT_TITLE</b> e <b>_INTRO_STD_TEXT</b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-01 16:39:18"><![CDATA[forma.lms é uma plataforma e-learning Open Source (LMS and LCMS) utilizada nos mercados de educação corporativa e superior.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vá para formulário login]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Autenticação LDAP está activa, funcionalidade indisponível por favor informe o seu administrador]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Entrar]]></key>

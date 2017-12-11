@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Traduci linguaggio]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[La traduzione contiene]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Si, importa]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Seleziona gli utenti che possono visualizzare la news.]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Descrizione completa]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Quante news vuoi visualizzare nella home page?]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Lista delle news attualmente presenti nella piattaforma]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Questa news è marcata come importante]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[tutte le lingue]]></key>
@@ -434,7 +427,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "allow_url_include"]]></key>
         <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2017-03-15 16:37:18"><![CDATA[già assegnato]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[<abbr title="Application Programming Interface">API</abbr> e <abbr title="Autenticazione">Autenticazione</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Richiedi codice creato attraverso il modulo codici]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Chiedi un codice di accesso all'organigramma, il codice sarà scelto da un menu a tendina]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Chiedi un codice di accesso all'organigramma che deve essere inserito manualmente dall'utente]]></key>
@@ -448,7 +441,6 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_BBB_SALT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Salt BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Indirizzo server BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_USER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nome Utente BigBlueButton]]></key>
-        <key id="configuration&amp;_CLEAR_TWIG_CACHE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Elimina twig cache]]></key>
         <key id="configuration&amp;_CODE_TELESKILL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Codice cliente]]></key>
         <key id="configuration&amp;_COMMON_ADMIN_SESSION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Condividi la sessione pubblica con quella di amministrazione]]></key>
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Limita il numero di conferenze che possono essere pianificate da un singolo utente]]></key>
@@ -1379,8 +1371,9 @@ Titolo: [thread_title]]]></key>
         <key id="login&amp;_CANCELSOCIALLOGIN" attributes="" save_date="2017-04-10 14:27:44"><![CDATA[Richiesta di accesso da social annullata dall'utente]]></key>
         <key id="login&amp;_EMPTYSOCIALID" attributes="" save_date="2017-04-10 14:37:30"><![CDATA[Impossibile recuperare l'ID di accesso social]]></key>
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Home page]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-11-03 16:00:42"><![CDATA[Il sistema, rilasciato in 25 lingue è composto da 53 funzioni tra cui Wiki, Forum, Project Manager, supporta lo standard SCORM 1.2 e 2004 ed è configurabile per adattarsi al modello didattico desiderato (autoapprendimento, blended learning, didattica collaborativa, social e-learning). Il sistema, rilasciato in 25 lingue è composto da 53 funzioni tra cui Wiki, Forum, Project Manager, supporta lo standard SCORM 1.2 e 2004 ed è configurabile per adattarsi al modello didattico desiderato (autoapprendimento, blended learning, didattica collaborativa, social e-learning). Il sistema, rilasciato in 25 lingue è composto da 53 funzioni tra cui Wiki, Forum, Project Manager, supporta lo standard SCORM 1.2 e 2004 ed è configurabile per adattarsi al modello didattico desiderato (autoapprendimento, blended learning, didattica collaborativa, social e-learning). ]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-11-03 16:00:12"><![CDATA[forma.lms è un sistema open source per l'e-learning (LMS e LCMS) utilizzato nelle più grandi organizzazioni e università.]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-11 09:53:18"><![CDATA[
+Il sistema, rilasciato nelle principali lingue supporta gli standard SCORM 1.2 e 2004, E' configurabile per adattarsi al modello didattico desiderato (autoapprendimento, blended learning, didattica collaborativa, social e-learning, gestione didattica in aula) attraverso molteplici oggetti didattici: SCORM, pagine HTML, download, test e  diverse funzionalità tra cui Wiki, Forum e Project Manager, <br /><br />Per cambiare questa frase andare su Admin/Gestione lingue, cercare <b>login</b> e modificare le chiavi  <b>_INTRO_STD_TEXT_TITLE</b> e <b>_INTRO_STD_TEXT</b><br /><br />]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-11 09:52:43"><![CDATA[forma.lms è un sistema open source per l'e-learning (LMS e LCMS) utilizzato nelle più grandi organizzazioni e università]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Salta alla form di login]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[LDAP attivo funzioni disattivate contatta il responsabile]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Login]]></key>
@@ -1394,7 +1387,7 @@ Titolo: [thread_title]]]></key>
         <key id="login&amp;_LOST_TITLE_USER" attributes="" save_date="2017-04-05 13:59:34"><![CDATA[Ho perso lo username]]></key>
         <key id="login&amp;_MAINTENANCE_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sistema in manutenzione.<br/><br/>Per cambiare questa frase andare su Admin/Gestione lingue, cercare il modulo login e modificare la chiave _MAINTENANCE_TEXT]]></key>
         <key id="login&amp;_NOACCESS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Accesso negato, forse hai sbagliato a inserire la password]]></key>
-        <key id="login&amp;_PASSNOMATCH" attributes="" save_date="2017-04-14 11:46:50"><![CDATA[Le due digitazioni della password non corrispondono oppure la password è bianca.]]></key>
+        <key id="login&amp;_PASSNOMATCH" attributes="" save_date="2017-12-01 11:11:29"><![CDATA[Le due digitazioni della password non corrispondono oppure la password è vuota.]]></key>
         <key id="login&amp;_READ_ALL" attributes="" save_date="2017-11-03 16:02:02"><![CDATA[Leggi tutto]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE" attributes="" save_date="2015-12-18 09:31:57"><![CDATA[Per procedere con l'iscrizione o l'acquisto effettua il [login] o [signin]]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE_NO_REG" attributes="" save_date="2015-12-18 09:31:51"><![CDATA[Per procedere con l'iscrizione o l'acquisto effettua il [login]]]></key>

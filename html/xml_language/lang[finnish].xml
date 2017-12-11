@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="finnish">
     <lang_code>finnish</lang_code>
     <lang_description>Finnish</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käännä kieli]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Käännös sisältää]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kyllä, tuo]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valitse käyttäjät jotka voivat nähdä uutisen.]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laajennettu kuvaus]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kotisivulla näytettävien uutisten määrä]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista kaikista uutisista jotka voit löytää LMS:n pääsivulta]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tämä uutinen on merkitty tärkeäksi]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[joka kieli]]></key>
@@ -1334,12 +1327,11 @@ Salasana: [password]]]></key>
       <module id="login">
         <key id="login&amp;_ACCESS_LOCK" attributes="" save_date="2017-05-18 14:30:16"><![CDATA[Pääsy estetty]]></key>
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kotisivu]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:18:35"><![CDATA[forma.lms on avoimen lähdekoodin verkko-oppimisalusta (LMS ja LCMS) jota käytetään yritys- ja korkeakoulutusmarkkinoilla.<br/>
-<br/>
-Alusta tukee 26 kieltä, ja on yhteensopiva SCORM 1.2 ja 2004 standardien kanssa, ja tukee eri oppimismalleja, kuten: sekaoppiminen, itseohjaava oppiminen, yhteistyöoppiminen ja sosiaalinen oppiminen chatin, wikin foorumien ja muiden toimintojen kautta.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-01 17:03:21"><![CDATA[Alusta tukee 26 kieltä, ja on yhteensopiva SCORM 1.2 ja 2004 standardien kanssa, ja tukee eri oppimismalleja, kuten: sekaoppiminen, itseohjaava oppiminen, yhteistyöoppiminen ja sosiaalinen oppiminen chatin, wikin foorumien ja muiden toimintojen kautta.<br/>
 <br/>
 <br/>
 Muuttaaksesi näitä sanoja mene Ylläpito/kielihallintaan, etsi <b>login</b> ja muuta avainta <b>_INTRO_STD_TEXT</b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-01 17:03:31"><![CDATA[forma.lms on avoimen lähdekoodin verkko-oppimisalusta (LMS ja LCMS) jota käytetään yritys- ja korkeakoulutusmarkkinoilla.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Siirry sisäänkirjautumislomakkeeseen]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP varmennus on aktiivinen, toiminnallisuus ei ole saatavilla, ota yhteyttä ylläpitoosi]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kirjaudu sisään]]></key>

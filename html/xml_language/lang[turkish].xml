@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="turkish">
     <lang_code>turkish</lang_code>
     <lang_description>Turkish</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dili çevir]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Çeviri içeriği]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Evet, içeri aktarım yap]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Haberleri görebilecek kullanıcıları seç.]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Genişletilmiş tanım]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ana sayfada görüntülenecek haber öğesi sayısı]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LMS ana sayfasında bulabileceğiniz tüm haberlerin listesi]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu haber önemli olarak işaretli]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[tüm diller]]></key>
@@ -1248,18 +1241,18 @@ Kullanıcı Adı: [userid]
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ana sayfa]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:23:10"><![CDATA[forma.lms, ticari ve yüksek öğretim pazarında kullanılan Açık Kaynaklı e-Öğrenme platformudur (LMS ve LCMS).<br/>
-<br/>
-Platform 26 farklı dili destekliyor, SCORM 1.2 ve 2004 standardları ile uyumlu, ve farklı öğretici modelleri destekliyor, örneğin: Harmanlanmış, Kendi-Yönlendirilmiş, Ortaklaşa ve hatta Chat, Wiki, Forums üzerinden Sosyal Öğrenme ve diğer çeşitli fonksiyonlar.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-01 17:07:34"><![CDATA[Platform 26 farklı dili destekliyor, SCORM 1.2 ve 2004 standardları ile uyumlu, ve farklı öğretici modelleri destekliyor, örneğin: Harmanlanmış, Kendi-Yönlendirilmiş, Ortaklaşa ve hatta Chat, Wiki, Forums üzerinden Sosyal Öğrenme ve diğer çeşitli fonksiyonlar.<br/>
 <br/>
 <br/>
 Bu kelimeleri değiştirmek için lütfen Admin/Language yönetimine gidin, <b>login</b> arayın ve <b>_INTRO_STD_TEXT</b> anahtarını değiştirin]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-01 17:07:41"><![CDATA[forma.lms, ticari ve yüksek öğretim pazarında kullanılan Açık Kaynaklı e-Öğrenme platformudur (LMS ve LCMS).]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oturum açma formuna atla]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP kimlik doğrulama etkin, fonksiyonelite etkin değil lütfen yöneticinizi arayın]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oturum aç]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Erişilebilir Oturum Açma]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oturum aç]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ile oturum aç]]></key>
+        <key id="login&amp;_LOG_IN" attributes="" save_date="2017-12-01 17:13:48"><![CDATA[Oturum aç]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kayıp şifre]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu alana kullanıcı ID'nizi yazınız ve yeni şifre yaratmak için talimatların olduğu bir e-posta (kayıtlı adresinize) alacaksınız.]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu alana kayıt işlemi sırasında verdiğiniz e-posta adresini yazınız ve bu site için kullanıcı adınızın olduğu bir e-posta alacaksınız.]]></key>

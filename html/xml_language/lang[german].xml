@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="german">
     <lang_code>german</lang_code>
     <lang_description>German</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&Uuml;bersetze Sprache]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[&Uuml;bersetzung enth&auml;lt]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ja, importieren]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[W&auml;hle Benutzer, die diese Nachricht sehen k&ouml;nnen.]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Erweiterte Beschreibung]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Anzahl von Nachrichten, die auf der Hauptseite angezeigt werden]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Liste alle Nachrichten auf, die auf der Hauptseite von LMS gefunden werden k&ouml;nnen]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Diese Nachricht ist als wichtig markiert]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[jede Sprache]]></key>
@@ -1378,12 +1371,11 @@ Passwort: [password]]]></key>
         <key id="login&amp;_CANCELSOCIALLOGIN" attributes="" save_date="2017-05-17 18:40:40"><![CDATA[Eine sozial Netzwerk Zugriffsanfrage wurde vom Benutzer abgelehnt]]></key>
         <key id="login&amp;_EMPTYSOCIALID" attributes="" save_date="2017-05-17 18:25:20"><![CDATA[Keines sozial Netzwerk Konto gefunden]]></key>
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Startseite]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-05-08 12:43:35"><![CDATA[forma.lms ist eine Open Source e-Learning Plattform (LMS und LCMS), die in Firmen und bei h&ouml;heren Bildungsinstituten eingesetzt wird.<br/>
-<br/>
-Die Plattform unterst&uuml;tzt 26 Sprachen, sie ist kompatibel mit den SCORM 1.2 und 2004 Standards, und unterst&uuml;tzt verschiedene didaktische Modelle, darunter: Gemischtes, selbstkontrolliertes, kollaboratives und sogar gemeinschaftliches Lernen durch Chat, Wiki, Foren und verschiedene andere Funktionen.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-01 16:38:01"><![CDATA[Die Plattform unterst&uuml;tzt 26 Sprachen, sie ist kompatibel mit den SCORM 1.2 und 2004 Standards, und unterst&uuml;tzt verschiedene didaktische Modelle, darunter: Gemischtes, selbstkontrolliertes, kollaboratives und sogar gemeinschaftliches Lernen durch Chat, Wiki, Foren und verschiedene andere Funktionen.<br/>
 <br/>
 <br/>
-Um diese Worte zu &auml;ndern, gehen Sie bitte auf Admin/Sprachverwaltung, suchen Sie nach <b>Login</b> und ver&auml;ndern Sie den Schl&uuml;ssel <b>_INTRO_STD_TEXT</b>]]></key>
+Um diese Worte zu &auml;ndern, gehen Sie bitte auf Admin/Sprachverwaltung, suchen Sie nach <b>Login</b> und ver&auml;ndern Sie die Schl&uuml;ssel <b>_INTRO_STD_TEXT_TITLE</b> und <b>_INTRO_STD_TEXT</b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-01 16:36:45"><![CDATA[forma.lms ist eine Open Source e-Learning Plattform (LMS und LCMS), die in Firmen und bei h&ouml;heren Bildungsinstituten eingesetzt wird.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Springe zu Login-Formular]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP Authentifizierung ist aktiv, die Funktionalit&auml;t nicht verf&uuml;gbar. Bitte rufen Sie Ihren Administrator]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login]]></key>

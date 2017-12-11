@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="indonesian">
     <lang_code>indonesian</lang_code>
     <lang_description>Indonesian</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Terjemah Bahasa]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Terjemahan berisi]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Iya, impor]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pilih user yang boleh melihat berita.]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Deskripsi tambahan]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jumlah item berita yang ditampilkan di halaman utama]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Daftar semua berita yang bisa anda cari di halaman utama dari LMS]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Berita ini ditandai Penting]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Setiap Bahasa]]></key>
@@ -1234,18 +1227,18 @@ Password: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Halaman Utama]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:20:50"><![CDATA[forma.lms ialah platform e-learning open source (LMS and LCMS) yang telah digunakan dalam korporasi dan pasar yang cerdas.<br/>
-<br/>
-Platform ini mendukung 26 bahasa, sesuai dengan standar SCORM 1.2 dan 2004, dan mendukung berbagai macam model pengajaran, antara lain: secara bersama, otodidak, gabungan dan bahkan Pembelajaran sosial melalui Chat, Wiki, Forum dan fungsi-fungsi berbeda lainnya.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-01 17:05:33"><![CDATA[Platform ini mendukung 26 bahasa, sesuai dengan standar SCORM 1.2 dan 2004, dan mendukung berbagai macam model pengajaran, antara lain: secara bersama, otodidak, gabungan dan bahkan Pembelajaran sosial melalui Chat, Wiki, Forum dan fungsi-fungsi berbeda lainnya.<br/>
 <br/>
 <br/>
 Untuk mengubah kata-kata ini, silahkan menuju ke pengaturan Admin/Bahasa, cari <b>login</b> dan rubah kuncinya <b>_INTRO_STD_TEXT</b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-01 17:05:41"><![CDATA[forma.lms ialah platform e-learning open source (LMS and LCMS) yang telah digunakan dalam korporasi dan pasar yang cerdas.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lompat ke form login]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Otentikasi LDAP sudah aktif, namun belum berfungsi, silahkan hubungi administrator anda]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login yang bisa diakses]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login dengan]]></key>
+        <key id="login&amp;_LOG_IN" attributes="" save_date="2017-12-01 17:12:34"><![CDATA[Login]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Password hilang]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Isi field ini dengan user ID anda dan anda akan menerima sebuah email (pada alamat registrasi anda) dengan instruksi untuk menghasilkan password baru.]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Isi field ini dengan email yang anda masukkan saat registrasi dan anda akan menerima email berisi username anda.]]></key>

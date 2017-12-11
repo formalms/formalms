@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="greek">
     <lang_code>greek</lang_code>
     <lang_description>Greek</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Μετάφραση γλώσσας]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Η μετάφραση περιέχει]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ναι, να γίνει εισαγωγή]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Επιλογή χρηστών που μπροούν να δουν τα νέα.]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Επεκτεταμένη περιγραφή]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Πλήθος νεων που θα φαίνονται στην κεντρική σελίδα]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Λίστα όλων των νέων που βρίσκονται στην κεντρική σελίδα του ΠΔΜ (Προγάμματος Διαχείρισης Μάθησης)]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αυτό το νέο είναι σημειωμένο ως σημαντικό]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[κάθε γλώσσα]]></key>
@@ -1234,18 +1227,18 @@
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Αρχική σελίδα]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:20:18"><![CDATA[Το forma.lms είναι μια πλατφόρμα Ανοιχτού Κώδικα, για Ηλεκτρονική Μάθηση (LMS και LCMS) που χρησιμοποιείται σε εμπορικές αγορές και αγορές ανώτατης εκπαίδευσης.<br/>
-<br/>
-Η πλατφόρμα υποστηρίζει 26 γλώσσες, είναι συμβατή με τα πρότυπα SCORM 1.2 και 2004, και υποστηρίζει ποικίλα διδακτικά μοντέλα, που περιλαμβάνουν : Μικτός, Αυτο-διαχειριζόμενο, Συνεργατικό και ακόμα και Κοινωνικής Μάθησης μέσω ηλεκτρονικής συνομιλίας, Wiki, Forum, και άλλες λειτουργίες.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-01 16:52:10"><![CDATA[Η πλατφόρμα υποστηρίζει 26 γλώσσες, είναι συμβατή με τα πρότυπα SCORM 1.2 και 2004, και υποστηρίζει ποικίλα διδακτικά μοντέλα, που περιλαμβάνουν : Μικτός, Αυτο-διαχειριζόμενο, Συνεργατικό και ακόμα και Κοινωνικής Μάθησης μέσω ηλεκτρονικής συνομιλίας, Wiki, Forum, και άλλες λειτουργίες.<br/>
 <br/>
 <br/>
-Για να αλλάξετε αυτό το κείμενο παρακαλώ πηγαίνετε Διαχειριστής/Διαχείριση γλωσσών, αναζητήσεις <b>login</b> και επεξεργαστείτε το κλειδί <b>_INTRO_STD_TEXT</b>]]></key>
+Για να αλλάξετε αυτό το κείμενο παρακαλώ πηγαίνετε Διαχειριστής/Διαχείριση γλωσσών, αναζητήσεις <b>login</b> και επεξεργαστείτε τα κλειδια <b>_INTRO_STD_TEXT_TITLE</b> και <b>_INTRO_STD_TEXT</b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-01 16:50:49"><![CDATA[Το forma.lms είναι μια πλατφόρμα Ανοιχτού Κώδικα, για Ηλεκτρονική Μάθηση (LMS και LCMS) που χρησιμοποιείται σε εμπορικές αγορές και αγορές ανώτατης εκπαίδευσης.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Μετάβαση στη φόρμα εισαγωγής]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Η ταυτοποίηση LDAP είναι ενεργή, αλλά η λειτουργία δεν είναι διαθέσιμη, παρακαλώ επικοινωνήστε με το διαχειριστή]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Εισαγωγή]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Προσβάσιμη είσοδος]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Είσοδος]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Είσοδος με]]></key>
+        <key id="login&amp;_LOG_IN" attributes="" save_date="2017-12-01 17:11:55"><![CDATA[Είσοδος]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Έχασα το συνθηματικό μου]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Συμπληρώστε αυτό το πεδίο με το αναγνωριστικό χρήστη σας και θα λάβετε ένα email (στη διεύθυνση εγγραφής σας) με οδηγίες για να παραγάγετε νέο συνθηματικό.]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Συμπληρώστε αυτό το πεδίο με το email που δώσατε κατά την εγγραφή σας και θα λάβετε ένα email που θα περιέχει το όνομα χρήστη για αυτό τον ιστότοπο.]]></key>
