@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="dutch">
     <lang_code>dutch</lang_code>
     <lang_description>Dutch</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vertaal taal]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vertaling bevat]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ja, importeer]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kies gebruikers die het nieuws kunnen zien.]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uitgebreidde omcshrijving]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2017-07-10 10:19:52"><![CDATA[Aantal nieuws item die zichtbaar zijn op de startpagina]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Laat al het nieuws zien wat je op de homepage kan zien van het LMS]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dit nieuws is gemarkeerd al belangrijk]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Elke taal]]></key>
@@ -1378,12 +1371,11 @@ Wachtwoord: [password]]]></key>
         <key id="login&amp;_CANCELSOCIALLOGIN" attributes="" save_date="2017-07-12 12:36:30"><![CDATA[Verzoek tot toegang van de sociale geannulleerde door de gebruiker]]></key>
         <key id="login&amp;_EMPTYSOCIALID" attributes="" save_date="2017-07-14 15:19:21"><![CDATA[Sociaal ID account onmogelijk om te vinden]]></key>
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2017-07-10 10:19:32"><![CDATA[Startpagina]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:17:55"><![CDATA[forma.lms is een Open Source e-learning platform (LMS en LCMS) gebruikt in de bedrijfswereld en hogere opleidingen.<br/>
-<br/>
-Het Platform ondersteund 26 talen, uitwisselbaar met SCORM 1.2 en 2004 standaard, en ondersteund didactische modellen, waaronder: gemengt, zelf georienteerd, samenwerkend en zelfs sociaal leren dmv Chat, Wiki, Forums en andere verschillende functies.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-01 16:45:56"><![CDATA[Het Platform ondersteund 26 talen, uitwisselbaar met SCORM 1.2 en 2004 standaard, en ondersteund didactische modellen, waaronder: gemengt, zelf georienteerd, samenwerkend en zelfs sociaal leren dmv Chat, Wiki, Forums en andere verschillende functies.<br/>
 <br/>
 <br/>
-Om deze woorden te veranderenga naar Admin/talen management, zoek naar <b>login</b> en wijzig sleutel <b>_INTRO_STD_TEXT</b>]]></key>
+Om deze woorden te veranderenga naar Admin/talen management, zoek naar <b>login</b> en wijzig de sleutels <b>_INTRO_STD_TEXT_TITLE</b> en <b>_INTRO_STD_TEXT</b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-01 16:44:21"><![CDATA[forma.lms is een Open Source e-learning platform (LMS en LCMS) gebruikt in de bedrijfswereld en hogere opleidingen.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ga naar login form]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP authenticatie is actief, functionaliteit niet beschikbaar. Roep een admin!]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login]]></key>

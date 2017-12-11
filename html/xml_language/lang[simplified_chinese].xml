@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="simplified_chinese">
     <lang_code>simplified_chinese</lang_code>
     <lang_description>&#x7B80;&#x4F53;&#x4E2D;&#x6587;</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[翻译语言]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[翻译内容]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[是的，导入]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[选择可以看新闻的用户。]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[更多描述]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[显示在首页的新闻数目]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[您在LMS主页可以找到的所有新闻列表]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[这条新闻被标记为重要新闻。]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[每种语言]]></key>
@@ -1244,6 +1237,7 @@
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[无障碍登录]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[登录]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[登录，使用]]></key>
+        <key id="login&amp;_LOG_IN" attributes="" save_date="2017-12-01 17:14:23"><![CDATA[登录]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[忘记密码]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[在此字段填写您的用户代码，您将收到一封电子邮件（在您的注册邮件地址）告诉您如何生成新密码。]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[在此字段填写您注册时的电子邮件，您将收到包含您在本站的用户名的电子邮件。]]></key>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="bosnian">
     <lang_code>bosnian</lang_code>
     <lang_description>Bosnian</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Prevedi jezik]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Prevod sadrži]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Da, importuj]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Izaberi korisnike koji mogu čitati vijesti.]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Prošireni opis]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Broj vijesti prikazanih na početnoj stranici]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista svih vijesti koje možete naći na glavnoj stranici LMS-a]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ova vijest je označena kao važna]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[svaki jezik]]></key>
@@ -1235,18 +1228,18 @@ Korisničko ime: [userid]
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Početna stranica]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:17:06"><![CDATA[forma.lms je Open Source e-learning platforma (LMS and LCMS) koja se koristi u korporativnim i visokoškolskim tržištima.<br/>
-<br/>
-Platforma podržava 26 jezika, usklađena je sa SCORM 1.2 i 2004 standardima, te podržava razne didaktičke metode, uključno: Miješano, samo-usmjereno, zajedničko i čak društveno učenje koristeći ćaskanje, Wiki, forume i razne druge metode.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-01 17:00:25"><![CDATA[Platforma podržava 26 jezika, usklađena je sa SCORM 1.2 i 2004 standardima, te podržava razne didaktičke metode, uključno: Miješano, samo-usmjereno, zajedničko i čak društveno učenje koristeći ćaskanje, Wiki, forume i razne druge metode.<br/>
 <br/>
 <br/>
-Da promijenite ove riječi molimo idite na Admin/Jezik upravljanje, tražite <b>prijava</b> i promijenite ključ <b>_INTRO_STD_TEXT</b>]]></key>
+Da promijenite ove riječi molimo idite na Admin/Jezik upravljanje, tražite <b>login</b> i promijenite ključ <b>_INTRO_STD_TEXT</b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-01 17:00:32"><![CDATA[forma.lms je Open Source e-learning platforma (LMS and LCMS) koja se koristi u korporativnim i visokoškolskim tržištima.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Skoči na prijavni formular]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP autentifikacija je aktivna, funkcionalnost nedostupna, molimo zovite svog administratora]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Prijava]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pristupna prijava]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Prijava]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Prijava sa]]></key>
+        <key id="login&amp;_LOG_IN" attributes="" save_date="2017-12-01 17:09:44"><![CDATA[Prijava]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Izgubljena šifra]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Popunite ovo polje sa Vašim korisničkim identifikatorom i primićete email (na adresu naznačenu pri registraciji) sa objašnjenjima kako napraviti novu šifru.]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Popunite ovo polje sa emailom koje ste dali tokom registracionog procesa i dobićete poruku koja će sadržati korisničko ime za ovaj sajt.]]></key>

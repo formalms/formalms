@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="czech">
     <lang_code>czech</lang_code>
     <lang_description>Czech</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Přeložit jazyk]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Překlad obsahuje]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ano, importovat]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vybrat uživatele kteří mohou vidět novinky.]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rozšířený popis]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Počet novinek zobrazených na domovské stránce]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seznam všech novinek které jsou na hlavní stránce LMS]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tato novinka je označena jako důležitá]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Každý jazyk]]></key>
@@ -1235,18 +1228,18 @@ Password: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Domovská stráka]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:17:43"><![CDATA[forma.lms je Open Source e-studijní platforma (LMS a LCMS) používaná v korporačních a univerzitních trzích.<br/>
-<br/>
-Platforma podporuje 26 jazykům, je v souladu se SCORM 1.2 a 2004 standarty, a odlišné výučné modely, vč.: Smíšené, ve vlastní režii, spolupráce a dokonce sociální studium pomocí Chatu, Wikipedie, Fóra a dalších funkcí.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-01 17:02:26"><![CDATA[Platforma podporuje 26 jazykům, je v souladu se SCORM 1.2 a 2004 standarty, a odlišné výučné modely, vč.: Smíšené, ve vlastní režii, spolupráce a dokonce sociální studium pomocí Chatu, Wikipedie, Fóra a dalších funkcí.<br/>
 <br/>
 <br/>
-Pro změnu těchto slov jděte do Správy Administrace/Jazyků, vyhledejte <b>příhlášení</b> a upravte  klíč <b>_INTRO_STD_TEXT</b>]]></key>
+Pro změnu těchto slov jděte do Správy Administrace/Jazyků, vyhledejte <b>login</b> a upravte  klíč <b>_INTRO_STD_TEXT</b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-01 17:02:35"><![CDATA[forma.lms je Open Source e-studijní platforma (LMS a LCMS) používaná v korporačních a univerzitních trzích.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Přejít na přihlašovací formulář]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP autorizace je aktivní, funkčnost nedostupná obraťte na správce]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Přihlášení]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Přístupné přihlášení]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Přihlášení]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Přihlásit se s]]></key>
+        <key id="login&amp;_LOG_IN" attributes="" save_date="2017-12-01 17:10:37"><![CDATA[Přihlášení]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ztracené heslo]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vyplňte toto pole s Vaším uživatelským jménem a obdržíte email s návodem k vygenerování nového hesla.]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vyplňte toto pole s Vaším emailem, které jste zadali při registraci a obdržíte emails s Vaším uživatelským jménem.]]></key>
