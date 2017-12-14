@@ -586,6 +586,29 @@ class PluginmanagerAdm extends Model {
 		}
     }
 
+    static function removeDirectory($path) {
+        $files = glob($path . '/*');
+        foreach ($files as $file) {
+            is_dir($file) ? self::removeDirectory($file) : unlink($file);
+        }
+        rmdir($path);
+        return true;
+    }    
+
+    /**
+     * Delete all plugins files
+     * @param $name
+     * @return bool
+     */
+    function delete_files($name){
+        $path = _base_."/plugins/".$name;
+        if(file_exists( $path )){
+            return self::removeDirectory($path);
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Update specified plugin locally
      * @param $plugin_id

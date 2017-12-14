@@ -68,6 +68,7 @@ foreach ($plugins as $info){
     } else {
         if (!$info['dependencies_unsatisfied']){
             $install.='<a style="color: #C84000;" href="index.php?r=adm/pluginmanager/install&plugin='.$info['name'].'">'.Lang::t('_PLUGIN_INSTALL', 'configuration').'</a>';
+            $install.=' <a style="color: red;" href="javascript:askPurge(\'index.php?r=adm/pluginmanager/purge'.'&plugin='.$info['name'].'\');">'.Lang::t('_PLUGIN_PURGE', 'configuration').'</a>';
         } else {
             $dependencies = "";
             foreach ($info['dependencies_unsatisfied'] as $k => $v){
@@ -100,6 +101,11 @@ echo '
 <script>
 function askUninstall(link){
     if (confirm("'.Lang::t('_PLUGIN_UNINSTALL_CONFIRMATION', 'configuration').'")) {
+        location.href=link;
+    }
+}
+function askPurge(link){
+    if (confirm("'.Lang::t('_PLUGIN_PURGE_CONFIRMATION', 'configuration').'")) {
         location.href=link;
     }
 }
