@@ -951,6 +951,9 @@ DELETE FROM `learning_middlearea` WHERE `obj_index` = "tb_catalog";
 
 DELETE FROM `learning_middlearea` WHERE `obj_index` = "tb_assessment";
 
+-- 14627
+DELETE FROM `learning_middlearea` WHERE `learning_middlearea`.`obj_index` = 'tb_classroom'
+
 -- 7996_custom_fields_mandatory_for_admin
 INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES ('custom_fields_mandatory_for_admin', 'off', 'enum', '3', 'register', '3', '22', '1', '0', '');
 
