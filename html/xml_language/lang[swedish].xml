@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="swedish">
     <lang_code>swedish</lang_code>
     <lang_description>Swedish</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Översätt språk]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Översättning innehåller]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2017-07-21 10:38:13"><![CDATA[Ja, importera]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Välj användare som kan se nyheten.]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utvidgad beskrivning]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mängd nyheter som visas på hemsidan]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista alla nyheter som hittas på LMS huvudsida]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Denna nyhet är markerad som viktig]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[varje språk]]></key>
@@ -1377,12 +1370,11 @@ Lösenord: [password]]]></key>
         <key id="login&amp;_CANCELSOCIALLOGIN" attributes="" save_date="2017-07-19 15:32:48"><![CDATA[Tillgångsförfrågan från socialt avbruten av användaren]]></key>
         <key id="login&amp;_EMPTYSOCIALID" attributes="" save_date="2017-07-19 15:31:44"><![CDATA[Det gick inte att hitta ett socialt ID konto]]></key>
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hemsida]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:22:57"><![CDATA[forma.lms är en öppen källkods e-lärnings platform (LMS och LCMS) som används i företags och högre utbildningsmarknaden.<br/>
-<br/>
-Platformen stöder 26 språl, den är kompatibel med SCORM 1.2 och 2004 standarderna, och stöder olika didaktiska modeller, inklusive: blandad, själv-styrd, samarbetande och till och med social lärning via Chat Wiki, Forums och andra funktioner.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-01 16:42:31"><![CDATA[Platformen stöder 26 språl, den är kompatibel med SCORM 1.2 och 2004 standarderna, och stöder olika didaktiska modeller, inklusive: blandad, själv-styrd, samarbetande och till och med social lärning via Chat Wiki, Forums och andra funktioner.<br/>
 <br/>
 <br/>
-För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, sök efter  <b>login</b> och editera nyckeln <b>_INTRO_STD_TEXT</b>]]></key>
+För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, sök efter  <b>login</b> och editera nycklarna <b>_INTRO_STD_TEXT_TITLE</b> och <b>_INTRO_STD_TEXT</b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-01 16:40:54"><![CDATA[forma.lms är en öppen källkods e-lärnings platform (LMS och LCMS) som används i företags och högre utbildningsmarknaden.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hoppa till inloggningsblanketten]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP autentisering är aktiv, funktionalitet otillgänglig var vänlig och kontakta din administrator]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login]]></key>

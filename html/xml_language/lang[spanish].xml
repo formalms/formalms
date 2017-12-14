@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="spanish">
     <lang_code>spanish</lang_code>
     <lang_description>Spanish</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Traducir lenguaje]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Traducción contiene]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Si, importar]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Seleccionar usuarios que pueden ver las noticias]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Extender descripción]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Número de noticias mostradas en la página de inicio]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Lista de todas las noticias que Ud. puede buscar en la página principal del LMS]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Esta noticia está marcada como importante]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2017-05-24 17:42:08"><![CDATA[todos los lenguajes]]></key>

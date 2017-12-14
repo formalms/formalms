@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="romanian">
     <lang_code>romanian</lang_code>
     <lang_description>Romanian</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tradu limba]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Traducerea contine]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Da, importa]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alege utilizatorii care pot vedea noutatile.]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Descriere extinsa]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Numarul de noutati afisat in pagina principala]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista noutatilor pe care le poti gasi in pagina principala a LMS]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aceasta stire este marcata ca importanta]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[fiecare limba]]></key>
@@ -1235,18 +1228,18 @@ Parola: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pagina acasa]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:22:00"><![CDATA[forma.lms este o platformade e-learning Open Source (LMS si LCMS) folosita in corporatie si magazine inalte de educatie.<br/>
-<br/>
-Platforma suporta 26 limbi, este compatibila cu  standardele SCORM 1.2 si 2004, si suporta diferite modele didactice , inclusiv: Sters, Auto-Orientat, Colaborativ si chiar invatare sociala prin Chat, Wiki, Forumuri si alte functii diferite.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-01 17:08:44"><![CDATA[Platforma suporta 26 limbi, este compatibila cu  standardele SCORM 1.2 si 2004, si suporta diferite modele didactice , inclusiv: Sters, Auto-Orientat, Colaborativ si chiar invatare sociala prin Chat, Wiki, Forumuri si alte functii diferite.
 <br/>
 <br/>
-Pentru a schimba aceste cuvinte du-te la Admin/Language management, cauta pentru  <b>login</b> si editeaza cheia <b>_INTRO_STD_TEXT</b>]]></key>
+Pentru a schimba aceste cuvinte du-te la Admin/Language management, cauta pentru  <b>login</b> si editeaza cheile <b>_INTRO_STD_TEXT_TITLE</b> si <b>_INTRO_STD_TEXT</b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-01 16:53:25"><![CDATA[forma.lms este o platformade e-learning Open Source (LMS si LCMS) folosita in corporatie si magazine inalte de educatie.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sari la login forum]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Autentificarea LDAP este activa, functionalitate nedisponibila, te rog suna administratorul]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Accesibil Login]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Login cu]]></key>
+        <key id="login&amp;_LOG_IN" attributes="" save_date="2017-12-01 17:13:26"><![CDATA[Login]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pierdut parola]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Completeaza acest camp cu user ID si vei primi un email (la adresa de inregistrare) cu instructiuni pentru a genera o noua parola.]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Completeaza acest camp cu emailul de la inregistrare si vei primi un email cu usernameul pentru acest site.]]></key>

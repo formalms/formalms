@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="hungarian">
     <lang_code>hungarian</lang_code>
     <lang_description>Hungarian</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fordítás nyelv]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fordítás tartalmazza]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Igen, importálás]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Felhasználók kiválasztása, akik láthatják a híreket.]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kibővített leírás]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[A honlapon megjelenő hírek száma]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Az LMS főoldalán található összes hír listázása]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ez a hír fontosként van megjelölve]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[minden nyelv]]></key>
@@ -1234,18 +1227,18 @@ Jelszó: [password]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Főoldal]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:20:38"><![CDATA[forma.lms egy nyílt forrású e-tanulási rendszer (LMS: Learning Managment System - Képzés menedzsment rendszer és LCMS: Learning Content Management System - Tartalom (tananyag) menedzsment rendszer) melyet vállalati piacon és felsőoktatásban használnak.<br/>
-<br/>
-A rendszer 26 nyelvet támogat, kompatibilis a SCORM 1.2 és 2004 szabvánnyal, különböző oktatói modelleket támogat, beleértve a kevertet, önállót, együttműködésest és még a közösségi tanulást is, csevegési, Wiki, fórum és más különböző funkciókkal.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-01 17:04:49"><![CDATA[A rendszer 26 nyelvet támogat, kompatibilis a SCORM 1.2 és 2004 szabvánnyal, különböző oktatói modelleket támogat, beleértve a kevertet, önállót, együttműködésest és még a közösségi tanulást is, csevegési, Wiki, fórum és más különböző funkciókkal.<br/>
 <br/>
 <br/>
-A fenti szöveg módosításához lépj be az Adminisztrátor/Nyelv kezeléshez, keresd a <b>bejelentkezést</b>, és szerkesztsd ezt a kulcsot: <b>_INTRO_STD_TEXT</b>]]></key>
+A fenti szöveg módosításához lépj be az Adminisztrátor/Nyelv kezeléshez, keresd a <b>login</b>, és szerkesztsd ezt a kulcsot: <b>_INTRO_STD_TEXT</b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-01 17:04:58"><![CDATA[forma.lms egy nyílt forrású e-tanulási rendszer (LMS: Learning Managment System - Képzés menedzsment rendszer és LCMS: Learning Content Management System - Tartalom (tananyag) menedzsment rendszer) melyet vállalati piacon és felsőoktatásban használnak.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ugrás a belépő oldalhoz]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP authentikáció aktív, funkció nem érhető el, szólj az adminisztrátornak]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Belépés]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Elérhető bejelentkezés]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Belépés]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Belépés (-val)]]></key>
+        <key id="login&amp;_LOG_IN" attributes="" save_date="2017-12-01 17:12:23"><![CDATA[Belépés]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Elfelejtett jelszó]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Add meg a felhasználói azonosítódat, és kapni fogsz egy emailt (a beregisztrált email címre), mely tartalmazza az új jelszó generálásához szükséges információkat.]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Írd be a regisztrálásnál megadott email címedet, és kapni fogsz egy emailt, benne az oldalhoz tartozó felhasználói neveddel.]]></key>

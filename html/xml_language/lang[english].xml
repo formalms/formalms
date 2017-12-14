@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Translate language]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Translation contains]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Yes, import]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Choose users who can see the news.]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Extended description]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Number of news items displayed on home page]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[List of all the news that you can find in the main page of the LMS]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[This news is marked as important]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[every language]]></key>
@@ -432,7 +425,7 @@
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Configuration of "allow_url_include"]]></key>
         <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[already assigned]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[<abbr title="Application Programming Interface">API</abbr> and <abbr title="Authentication">Authentication</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a code created through the code module]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a tree code chosen by the user from a list in a dropdown menu]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a tree code that must be entered manually by the user]]></key>
@@ -446,7 +439,6 @@
         <key id="configuration&amp;_BBB_SALT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Salt BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="2017-05-05 17:03:26"><![CDATA[BigBlueButton server address ]]></key>
         <key id="configuration&amp;_BBB_USER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Username BigBlueButton]]></key>
-        <key id="configuration&amp;_CLEAR_TWIG_CACHE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Clear twig cache]]></key>
         <key id="configuration&amp;_CODE_TELESKILL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Customer code]]></key>
         <key id="configuration&amp;_COMMON_ADMIN_SESSION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Unify admin and public sessions]]></key>
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Limit for the number of conferences that can be planned by a single user]]></key>
@@ -1381,11 +1373,11 @@ Password: [password]]]></key>
         <key id="login&amp;_CANCELSOCIALLOGIN" attributes="" save_date="2017-05-17 18:27:17"><![CDATA[Access request from social canceled by the user]]></key>
         <key id="login&amp;_EMPTYSOCIALID" attributes="" save_date="2017-05-10 18:24:22"><![CDATA[Unable to find social ID account]]></key>
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Home page]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-11-03 16:01:18"><![CDATA[The Platform supports 26 languages, it's compliant with the SCORM 1.2 and 2004 standards, and supports different didactic models, including: Blended, Self-Directed, Collaborative and even Social Learning through Chat, Wiki, Forums and other different functions.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-01 16:31:16"><![CDATA[The Platform supports 26 languages, it's compliant with the SCORM 1.2 and 2004 standards, and supports different didactic models, including: Blended, Self-Directed, Collaborative and even Social Learning through Chat, Wiki, Forums and other different functions.<br/>
 <br/>
 <br/>
-To change these words please go to Admin/Language management, search for <b>login</b> and edit the key <b>_INTRO_STD_TEXT</b>]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-11-03 16:01:33"><![CDATA[forma.lms is an Open Source e-learning platform (LMS and LCMS) used in corporate and higher education markets]]></key>
+To change these words please go to Admin/Language management, search for <b>login</b>, and edit the keys <b>_INTRO_STD_TEXT_TITLE</b> and <b>_INTRO_STD_TEXT</b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-01 16:30:13"><![CDATA[forma.lms is an open source e-learning platform (LMS and LCMS) used in corporate and higher education markets]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Jump to login form]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[LDAP authentication is active, functionality unavailable please call your administrator]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Login]]></key>

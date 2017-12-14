@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171130</DATE>
+  <DATE>20171211</DATE>
   <LANG id="arabic">
     <lang_code>arabic</lang_code>
     <lang_description>&#x627;&#x644;&#x639;&#x631;&#x628;&#x64A;&#x629;</lang_description>
@@ -119,13 +119,6 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ترجمة لغة]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[الترجمة تحتوي]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[استورد نعم ،]]></key>
-      </module>
-      <module id="admin_news">
-        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[المستخدمين الذين يمكن أن يروا  اختيار الانباء]]></key>
-        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[الوصف الممتد]]></key>
-        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[عدد العناوين المعروضة على الصفحة الرئيسية]]></key>
-        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[قائمة الأخبار كل ما يمكنك أن تجد في الصفحة الرئيسية لنظام إدارة التعلم]]></key>
-        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[تتميز هذه الانباء بأنها مهمة]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[كل لغة]]></key>
@@ -1232,18 +1225,18 @@ Username: [userid]]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[الصفحة الرئيسية]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:16:52"><![CDATA[دوكوبو هو المصدر المفتوح منصة التعلم الإلكتروني   تستخدم في الشركات والتعليم العالي forma.lms (LMS and LCMS).<br/>
-<br/>
-البرنامج يدعم 26 لغة ، انها متوافقة مع معايير اس كورم 1.2 و 2004 ، ويدعم نماذج تعليمية مختلفة ، بما في ذلك : مختلط ، ادارة ذاتية ، والتعلم التعاوني حتى الاجتماعي من خلال المحادثة ، ويكي ، منتديات وغيرها من وظائف مختلفة.<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-01 16:59:49"><![CDATA[البرنامج يدعم 26 لغة ، انها متوافقة مع معايير اس كورم 1.2 و 2004 ، ويدعم نماذج تعليمية مختلفة ، بما في ذلك : مختلط ، ادارة ذاتية ، والتعلم التعاوني حتى الاجتماعي من خلال المحادثة ، ويكي ، منتديات وغيرها من وظائف مختلفة.<br/>
 <br/>
 <br/>
 لتغيير هذه الكلمات الرجاء الذهاب إلى ادارة المراقبة / اللغة ، ابحث عن <b>login</b> and edit the key <b>_INTRO_STD_TEXT</b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-01 16:59:58"><![CDATA[دوكوبو هو المصدر المفتوح منصة التعلم الإلكتروني   تستخدم في الشركات والتعليم العالي forma.lms (LMS and LCMS).]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[الانتقال إلى نموذج تسجيل الدخول]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[مصادقة نشطة ، وظائف غير متاحة ، يرجى الاتصال بمسؤولLDAP]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[تسجيل الدخول]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[الدخول يمكن الوصول اليه]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[تسجيل الدخول]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[تسجيل الدخول مع]]></key>
+        <key id="login&amp;_LOG_IN" attributes="" save_date="2017-12-01 17:09:56"><![CDATA[تسجيل الدخول]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[فقدت كلمة السر]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ملء هذا الحقل مع معرف المستخدم الخاص بك وسوف تتلقى البريد الالكتروني (على العنوان تسجيلك) مع تعليمات لإنشاء كلمة مرور جديدة.]]></key>
         <key id="login&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ملء هذا الحقل مع البريد الإلكتروني الواردة في عملية التسجيل الخاصة بك وسوف تتلقى البريد الإلكتروني الذي يحتوي على اسم المستخدم لهذا الموقع.]]></key>
