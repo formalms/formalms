@@ -1,0 +1,77 @@
+{% block stylesheet %}
+
+{% endblock %}
+
+    {% block javascript %}
+
+
+    {% endblock %}
+
+ {% block content %}
+
+     <!-- container -->
+     <div id="container">
+         <div class="row">
+             <div class="div-course-header col-lg-12">
+                 <div class="row">
+                     <div class="col-sm-3 text-center">
+                         <div class="row">
+                             <img src="{{ course_img }}" class="img-responsive">
+                         </div>
+                     </div>
+                     <div class="col-sm-9">
+                         <h1>{{ course_name }}</h1>
+                         <div class="progress-cotainer">
+                             <div class="progress progress-course">
+                                 <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                     60%
+                                 </div>
+                                 <span class="glyphicon glyphicon-signal pull-right" aria-hidden="true"></span>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+             </div>
+             <div class="clearfix"></div>
+             <div class="div-course-menu">
+                 <div class="col-sm-3 text-center">
+                     <div class="row">
+                         <div class="col-xs-12">
+                             <select class="form-control">
+
+                                 {% for menu in menu_module %}
+                                     <option value="{{ menu.id_menu }}"><b>{{ menu.name }}</b></option>
+                                 {% endfor %}
+                                 {#<option value="area-docenti" data-content="<i class='glyphicon glyphicon-road'></i>"><b>Area Docenti</b></option>#}
+                             </select>
+                         </div>
+                     </div>
+                 </div>
+
+                 <div class='col-md-9 div-course-menu-horizontal'>
+                     <div class="row">
+                         <div class="prv pull-left col-xs-1 text-center"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></div>
+                         <ul class="menu-slider col-xs-10">
+
+                             {% for menu in menu_horizontal %}
+                                 <li><a href="{{ menu.link }}">{{ menu.name }}</a></li>
+                             {% endfor %}
+                             {#<li><a href="index.php?modname=storage&op=display&id_module_sel=12&id_main_sel=2" class="active">Gestione oggetti didattici</a></li>#}
+                         </ul>
+                         <div class="nxt pull-right col-xs-1 text-center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></div>
+                    </div>
+                 </div>
+             </div>
+             <div class="nofloat"></div>
+         </div>
+     </div>
+
+ {% endblock %}
+
+<script type="text/javascript">
+    $('body').on('click', '.prv, .nxt', function() {
+        $(this).siblings(".menu-slider").stop().animate({
+            scrollLeft: (this.className.match('nxt')?'+=':'-=')+200
+        },1000);
+    });
+</script>
