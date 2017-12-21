@@ -250,6 +250,7 @@
                                 }
                                 ?>
                             </li>
+                            <li><a href="../../changelog.txt" target="_blank">Changelog</a></li>
                             <li>
                                 <a href="index.php?r=adm/dbupgrades/show"><?php echo Lang::t('_DB_UPGRADES', 'dashboard'); ?></a>
                             </li>
