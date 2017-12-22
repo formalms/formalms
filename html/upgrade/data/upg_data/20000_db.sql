@@ -995,6 +995,8 @@ update core_setting set sequence = 13 where param_name = 'course_block';
 DROP TABLE IF EXISTS learning_news;
 DELETE FROM core_menu WHERE core_menu.idMenu = 32;
 
+-- 13997: plugin translations
+ALTER TABLE `core_lang_text` ADD `plugin_id` INT NULL, DROP INDEX `text_key`, ADD UNIQUE `text_key` (`text_key`, `text_module`, `plugin_id`);
 
 -- ------------------------------------------------------------------
 
