@@ -60,8 +60,9 @@ class CourseLmsController extends LmsController
                 );
                 $id_list[] = '"menu_lat_'.$main->id.'"';
             }
-            $main_menu_id = Get::req('course_id', DOTY_INT, "") ? Get::req('course_id', DOTY_INT, "") : $menu_module[0]['id_menu'];
+            $main_menu_id = Get::req('main_menu_id', DOTY_INT, "") ? Get::req('main_menu_id', DOTY_INT, "") : $menu_module[0]['id_menu'];
             // horizontal menu
+
             $menu_horizontal = array();
             $query_menu = "
 	SELECT mo.idModule AS id, mo.module_name, mo.default_op, mo.default_name, mo.token_associated AS token, mo.mvc_path, under.idMain AS id_main, under.my_name
