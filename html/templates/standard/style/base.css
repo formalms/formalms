@@ -66,24 +66,37 @@ div#container {
         width: 98%;
     }
 }*/
-.div-course-header{
+.section-coourse__header{
     margin: 30px 0;
     display: inline-block;
 }
-.div-course-header img{
+.section-coourse__img{
     display: inline-block;
 }
-.div-course-header h1{
+.section-coourse__title {
     color: #333;
     font-weight: bold;
 }
-.div-course-menu{
+.section-coourse__menu{
     overflow: auto;
     padding-bottom: 10px;
-    border-bottom: 1px solid #ececec;
+    border-bottom: 1px solid rgba(194, 194, 194, 1);
     margin-bottom: 10px;
 }
-ul.menu-slider{
+.section-coourse__menu ul li a:hover{
+    color: #C84000;
+}
+.section-coourse__menu .prv, .section-coourse__menu .nxt{
+    position:relative;
+    cursor:pointer;
+    display: inline-block;
+    padding:5px;
+}
+.section-coourse__menu ul li a.active{
+    color: #C84000;
+}
+
+.section-coourse__menu-slider {
     float:left;
     position:relative;
     overflow:hidden;
@@ -91,48 +104,36 @@ ul.menu-slider{
     white-space:nowrap;
     padding: 0;
 }
-ul.menu-slider li{
+.section-coourse__menu-slider li{
     vertical-align:top;
     margin: 0 5px;
     display:inline-block;
     *display: inline;/*IE7*/
     zoom:1;
 }
-ul.menu-slider li a{
+.section-coourse__menu-slider li a{
     float:left;
     font-size: 14px;
     line-height: 26px;
 }
 
-.div-course-menu ul li a:hover{
-    color: #C84000;
-}
-.div-course-menu .prv, .div-course-menu .nxt{
-    position:relative;
-    cursor:pointer;
-    display: inline-block;
-    padding:5px;
-}
-.div-course-menu ul li a.active{
-    color: #C84000;
-}
-.progress-cotainer{
+.section-coourse__progress-cotainer{
     padding: 4px;
     border: 1px solid #eee;
     max-width: 250px;
     margin-top: 40px;
 }
-.progress-course {
+.section-coourse__progress {
     margin-bottom: 0;
     height: 25px;
 }
-.progress-course  .progress-bar{
+.section-coourse__progress  .progress-bar{
     font-weight: bold;
     font-size: 14px;
     line-height: 25px;
 }
 
-.progress-course .glyphicon{
+.section-coourse__progress .glyphicon{
     margin: 5px 8px 0 0;
 }
 .layout_header {	padding:5px 0;}

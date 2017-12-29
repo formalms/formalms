@@ -10,18 +10,18 @@
  {% block content %}
 
      <!-- container -->
-         <div class="row">
-             <div class="div-course-header col-lg-12">
+         <div class="row section-coourse">
+             <div class="section-coourse__header col-lg-12">
                  <div class="row">
                      <div class="col-sm-3 text-center">
                          <div class="row">
-                             <img src="{{ course_img }}" class="img-responsive">
+                             <img src="{{ course_img }}" class="img-responsive section-coourse__img">
                          </div>
                      </div>
                      <div class="col-sm-9">
-                         <h1>{{ course_name }}</h1>
-                         <div class="progress-cotainer">
-                             <div class="progress progress-course">
+                         <h1 class="section-coourse__title">{{ course_name }}</h1>
+                         <div class="section-coourse__progress-cotainer">
+                             <div class="progress section-coourse__progress">
                                  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
                                      60%
                                  </div>
@@ -32,7 +32,7 @@
                 </div>
              </div>
              <div class="clearfix"></div>
-             <div class="div-course-menu">
+             <div class="section-coourse__menu">
                  <div class="col-sm-3 text-center">
                      <div class="row">
                          <div class="col-xs-12">
@@ -47,10 +47,10 @@
                      </div>
                  </div>
 
-                 <div class='col-md-9 div-course-menu-horizontal'>
+                 <div class='col-md-9 section-coourse__menu-horizontal'>
                      <div class="row">
                          <div class="prv pull-left col-xs-1 text-center"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></div>
-                         <ul class="menu-slider col-xs-10">
+                         <ul class="section-coourse__menu-slider col-xs-10">
 
                              {% for menu in menu_horizontal %}
                                  <li><a href="{{ menu.link }}">{{ menu.name }}</a></li>
@@ -73,7 +73,7 @@
 
 <script type="text/javascript">
     $('body').on('click', '.prv, .nxt', function() {
-        $(this).siblings(".menu-slider").stop().animate({
+        $(this).siblings(".section-coourse__menu-slider").stop().animate({
             scrollLeft: (this.className.match('nxt')?'+=':'-=')+200
         },1000);
     });
