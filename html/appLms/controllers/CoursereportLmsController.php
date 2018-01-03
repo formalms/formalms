@@ -378,12 +378,12 @@ class CoursereportLmsController extends LmsController
 					$trashLinkVisible = true;
 
 					$passed = '-';
-					$notPassed = "-";
-					$notChecked = "-";
-					$average = "-";
-					$maxScore = "-";
-					$minScore = "-";
-					$varianza = "-";
+					$notPassed = '-';
+					$notChecked = '-';
+					$average = '-';
+					$maxScore = '-';
+					$minScore = '-';
+					$varianza = '-';
 
 
 					switch ($info_report->getSourceOf ()) {
@@ -396,7 +396,7 @@ class CoursereportLmsController extends LmsController
 							$type = ucfirst ($testObj->getObjectType ());
 							$id = $info_report->getIdSource ();
 							$name = $testObj->getTitle ();
-							$showInDetail = $tests_info[ $info_report->getIdSource () ][ 'show_in_coursereport' ] == "0" ? false : true;
+							$showInDetail = $tests_info[ $info_report->getIdSource () ][ 'show_in_coursereport' ] === '1' ? true : false;
 
 							$results_activity[] = array ( 'id' => $testObj->getObjectType () . "_" . $info_report->getIdSource () , "name" => $name );
 
