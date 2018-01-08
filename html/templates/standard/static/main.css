@@ -4471,7 +4471,7 @@ body.appIsReady {
 }
 
 #middlearea.yui-navset {
-  margin-top: 20px;
+  margin-top: 80px;
 }
 
 .middlearea_container {
@@ -6402,7 +6402,7 @@ header.header nav {
   color: black !important;
 }
 
-body.homepage {
+.homepage {
   height: 100%;
   overflow: auto;
   position: relative;
@@ -6764,7 +6764,7 @@ body.homepage {
   height: auto;
 }
 
-.homepage .icon--close {
+.homepage__collapsed-text + .collapse-wrapper .icon--close {
   padding-left: 40px;
   cursor: pointer;
   width: 95px;
@@ -6786,11 +6786,11 @@ body.homepage {
   background-image: url("images/icons/user-panel/icon--up-close.png");
 }
 
-.homepage .collapse-wrapper {
+.homepage__collapsed-text + .collapse-wrapper {
   height: 80px;
 }
 
-.homepage .collapse-wrapper .icon {
+.homepage__collapsed-text + .collapse-wrapper .icon {
   display: none;
   position: relative;
   left: 50%;
@@ -6800,10 +6800,10 @@ body.homepage {
           transform: translate(-50%, -50%);
 }
 
-.homepage .in + .collapse-wrapper .icon {
+.homepage__collapsed-text.in + .collapse-wrapper .icon {
   display: block;
 }
 
-.homepage .in + .collapse-wrapper .forma-button {
+.homepage__collapsed-text.in + .collapse-wrapper .forma-button {
   display: none;
 }

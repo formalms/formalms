@@ -91,6 +91,25 @@ class PluginmanagerAdmController extends AdmController {
             )
         );
     }
+
+    public function upload(){
+        $pg_adm=new PluginmanagerAdm();
+        if($pg_adm->uploadPlugin($_FILES['plugin_file_upload'])){
+            Util::jump_to('index.php?r=adm/pluginmanager/show&result=ok');
+        } else {
+            Util::jump_to('index.php?r=adm/pluginmanager/show&result=err');
+        }        
+    }
+
+    public function purge(){
+        $plugin = Get::req('plugin');
+        $pg_adm=new PluginmanagerAdm();
+        if($pg_adm->delete_files($plugin)){
+            Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=ok');
+        } else {
+            Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab='.$plugin.'&result=err');
+        }
+    }
 }
 
 ?>

@@ -337,15 +337,22 @@ class LangAdm extends Model {
 		if(!$lang_code) $lang_code = getLanguage();
 
 		$qtxt = "
-		SELECT lt.text_key, ta.translation_text
+		SELECT lt.text_key, ta.translation_text, p.priority
 		FROM  %adm_lang_text AS lt
 		LEFT JOIN %adm_lang_translation AS ta ON ( lt.id_text = ta.id_text AND ta.lang_code = '".$lang_code."')
-		WHERE lt.text_module = '".$module."' ";
+		LEFT JOIN %adm_plugin AS p ON lt.plugin_id = p.plugin_id
+		WHERE lt.text_module = '".$module."'
+		AND ( lt.plugin_id IS NULL OR p.active = 1 )
+		ORDER BY p.priority DESC";
 
 		$data = array();
 		$result = $this->db->query($qtxt);
 		while($obj = $this->db->fetch_obj($result)) {
-
+			if(key_exists($obj->text_key, $data)){
+				if($obj->priority==null){
+					continue;
+				}
+			}
 			$data[$obj->text_key] = $obj->translation_text;
 		}
 		return $data;
@@ -383,11 +390,11 @@ class LangAdm extends Model {
 	 * @param strign $text_attributes the attributes for this key (mail, sms)
 	 * @return bool
 	 */
-	public function insertKey($text_key, $text_module, $text_attributes) {
+	public function insertKey($text_key, $text_module, $text_attributes, $idPlugin="NULL") {
 
 		$query = "INSERT INTO %adm_lang_text "
-			." ( id_text, text_key, text_module, text_attributes ) VALUES ( "
-			." NULL, '".$text_key."', '".$text_module."', '".$text_attributes."' "
+			." ( id_text, text_key, text_module, text_attributes, plugin_id ) VALUES ( "
+			." NULL, '".$text_key."', '".$text_module."', '".$text_attributes."', $idPlugin "
 			.") ";
 		if( !$this->db->query($query) ) return false;
 		return $this->db->insert_id();
@@ -547,7 +554,7 @@ class LangAdm extends Model {
 		exit();
 	}
 
-	public function importTranslation($lang_file, $overwrite, $noadd_miss) {
+	public function importTranslation($lang_file, $overwrite, $noadd_miss, $plugin=null) {
 		$modules = 0;
 		$definitions = 0;
 
@@ -598,7 +605,10 @@ class LangAdm extends Model {
 				if(isset($current_translation[$text_module][$text_key])) {
 					//the key exists
 					$id_text = $current_translation[$text_module][$text_key][0];
-					if($current_translation[$text_module][$text_key][1] == NULL) {
+					if(isset($plugin)){
+						$id_text = $this->insertKey($text_key, $text_module, $text_attributes, $plugin);
+					}
+					if($current_translation[$text_module][$text_key][1] == NULL|| isset($plugin)) {
 						// no translation loaded
 						$re = $this->insertTranslation($id_text, $lang_code, $translation, $text_savedt);
 					} elseif($overwrite) {
@@ -608,7 +618,12 @@ class LangAdm extends Model {
 				} elseif(!$noadd_miss) {
 					// we must also create the key, and we are required to create if
 					$text_attributes = $key->getAttribute('attributes');
-					$id_text = $this->insertKey($text_key, $text_module, $text_attributes);
+					
+					if(!isset($plugin)){
+						$id_text = $this->insertKey($text_key, $text_module, $text_attributes);
+					} else {
+						$id_text = $this->insertKey($text_key, $text_module, $text_attributes, $plugin);
+					}
 					//now we can insert the translation
 					if($id_text) $re = $this->insertTranslation($id_text, $lang_code, $translation, $text_savedt);
 				}
