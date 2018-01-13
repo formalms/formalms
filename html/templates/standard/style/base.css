@@ -77,8 +77,7 @@ div#container {
     color: #333;
     font-weight: bold;
 }
-.section-coourse__menu{
-    overflow: auto;
+.section-coourse__menu {
     padding-bottom: 10px;
     border-bottom: 1px solid rgba(194, 194, 194, 1);
     margin-bottom: 10px;
@@ -136,6 +135,17 @@ div#container {
 .section-coourse__progress .glyphicon{
     margin: 5px 8px 0 0;
 }
+.section-coourse__menu  .btn-flex {
+    display: flex;
+    align-items: stretch;
+    align-content: stretch;
+}
+
+.section-coourse__menu  .btn-flex .btn:first-child {
+    flex-grow: 1;
+    text-align: left;
+}
+
 .layout_header {	padding:5px 0;}
 
 .layout_header .left_logo {margin:0;}

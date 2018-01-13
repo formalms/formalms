@@ -36,13 +36,18 @@
                  <div class="col-sm-3 text-center">
                      <div class="row">
                          <div class="col-xs-12">
-                             <select class="form-control">
-
-                                 {% for menu in menu_module %}
-                                     <option value="{{ menu.id_menu }}"><b>{{ menu.name }}</b></option>
-                                 {% endfor %}
-                                 {#<option value="area-docenti" data-content="<i class='glyphicon glyphicon-road'></i>"><b>Area Docenti</b></option>#}
-                             </select>
+                             <div class="btn-group btn-flex">
+                                 <button type="button" class="btn btn-default">Menu</button>
+                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                     <span class="caret"></span>
+                                     <span class="sr-only">Toggle Dropdown</span>
+                                 </button>
+                                 <ul class="dropdown-menu">
+                                     {% for menu in menu_module %}
+                                         <li><a href="#" data-id="{{ menu.id_menu }}"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span> <b>{{ menu.name }}</b></a></li>
+                                     {% endfor %}
+                                 </ul>
+                             </div>
                          </div>
                      </div>
                  </div>
@@ -60,8 +65,8 @@
                          <div class="nxt pull-right col-xs-1 text-center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></div>
                     </div>
                  </div>
+                 <div class="clearfix"></div>
              </div>
-             <div class="nofloat"></div>
          </div>
          <div class="col-lg-12">
              <div class="row">
