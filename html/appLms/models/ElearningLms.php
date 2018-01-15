@@ -145,27 +145,23 @@ class ElearningLms extends Model {
 
 
 	public function getFilterYears($id_user) {
-		$output = array(0 => Lang::t('_ALL', 'standard'));
+		$output = array(0 => Lang::t("_ALL_YEARS", 'course'));
 		$db = DbConn::getInstance();
-		$query = "SELECT DISTINCT YEAR(cu.date_inscr) AS inscr_year "
-			." FROM %lms_courseuser AS cu JOIN %lms_course AS c "
-			." ON (cu.idCourse = c.idCourse) "
-			." WHERE cu.idUser = ".(int)$id_user." AND c.course_type = 'elearning' "
-			." ORDER BY inscr_year ASC";
-
-
 
         $query = "SELECT DISTINCT YEAR(cu.date_inscr) AS inscr_year "
-            ." FROM %lms_courseuser AS cu JOIN %lms_course AS c "
-            ." ON (cu.idCourse = c.idCourse) "
-           // ." WHERE cu.idUser = ".(int)$id_user." AND c.course_type = 'elearning' "
+            ." FROM %lms_courseuser AS cu "
+            ." WHERE cu.idUser = ".(int)$id_user
             ." ORDER BY inscr_year ASC";
-           // die($query);
+
 
 		$res = $db->query($query);
 		if ($res && $db->num_rows($res) > 0) {
 			while (list($inscr_year) = $db->fetch_row($res)) {
-				$output[$inscr_year] = $inscr_year;
+                if ($inscr_year== 0) {
+                    $output['no-data'] = Lang::t('_NO_COURSE_DATA', 'course');
+                } else {    
+				    $output[$inscr_year] = $inscr_year;
+                }    
 			}
 		}
 		return $output;

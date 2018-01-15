@@ -41,27 +41,24 @@ class CatalogLmsController extends LmsController {
 		$this->acl_man =& Docebo::user()->getAclManager();
 	}
 
-	public function show()
+	// displays header and catalogue tree
+    public function show()
 	{
-		$this->allCourse();
-	}
-
-	public function allCourse()
-	{
-		$id_cat = Get::req('id_cata', DOTY_INT, 0);
+        $id_catalogue = Get::req('id_catalogue', DOTY_INT, 0);
         $typeCourse = Get::req('type_course', DOTY_STRING, '');
         $catalogue_exist = $this->model->CatalogueExist();
-		$user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
-		echo '<div class="middlearea_container">';
+        $user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
+        echo '<div class="middlearea_container">';
 
         $this->render('catalog_header', array("user_catalogue" => $user_catalogue, 'catalogue_exist'=>$catalogue_exist));
-        $this->render('catalog_tree', array('model' => $this->model, 'user_catalogue' => $user_catalogue, 'id_catalogue' => $id_cat, 'catalogue_exist'=>$catalogue_exist));
+        $this->render('catalog_tree', array('model' => $this->model, 'user_catalogue' => $user_catalogue, 'id_catalogue' => $id_catalogue, 'catalogue_exist'=>$catalogue_exist));
                       
-		echo '</div>';
+        echo '</div>';
 	}
 
+
     
-    // AJAX 
+    // AJAX: display courses from selected catalogue, category, courses
     public function allCourseForma()
     {
   

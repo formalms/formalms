@@ -71,19 +71,19 @@
 
       <?php if ($catalogue_todisplay) { ?>
         <script type="text/javascript">
-            function callAjaxCatalog(id_category) {
+            function callAjaxCatalog() {
+
                 <?php echo $no_course ?>
                 str_loading = "<?php echo Layout::path() ?>images/standard/loadbar.gif";
                 $("#div_course").html("<br><p align='center'><img src='" + str_loading + "'></p>");
-                scriviCookie('id_current_cat', id_category, 60);
-                var type_course = leggiCookie('type_course');
+                var type_course = getCurrentTypeCourse();
                 var posting = $.get(
                     'ajax.server.php',
                     {
                         r: 'catalog/allCourseForma',
-                        id_category: id_category,
+                        id_category: 0,
                         type_course: type_course,
-                        id_catalogue: <?php echo $starting_catalogue;   ?> 
+                        id_catalogue: current_catalogue 
                     }
                 );
                 posting.done(function (responseText) {
@@ -95,8 +95,7 @@
             }
 
             $(function () {
-                scriviCookie('type_course', 0, 60);
-                callAjaxCatalog(0);
+                callAjaxCatalog();
                 var category_tree = [
                     {
                         text: "&nbsp;&nbsp;<?php echo Lang::t('_ALL_COURSES') ?>",
@@ -123,7 +122,7 @@
 
                     onNodeSelected: function (event, node) {
                         id_category = node.id_cat;
-                        callAjaxCatalog(id_category);
+                        callAjaxCatalog();
                     },
                     onNodeUnselected: function (event, node) {
                     }

@@ -56,28 +56,7 @@
         <ul class="nav nav-tabs hidden-xs">
             <?php echo $tablist_items; ?>
         </ul>
-
-        <ul class="nav nav-tabs visible-xs">
-            <script type="text/javascript">
-                (function($) {
-                    $(window).load(function() {
-                        var dropdown_title = $('.tabs-dropdown').find('.active').text();
-                        $('.dropdown-title').html(dropdown_title);
-                    })
-                })(jQuery);
-            </script>
-            <li class="dropdown">
-              <a href="javascript:void(0)" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="dropdown-title"></span> &nbsp;<span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-left tabs-dropdown">
-                <?php echo $tablist_items; ?>
-              </ul>
-            </li>
-        </ul>
-    </div>
-    <div class="yui-content">
-        <div id="tab_content" class="nested_tab">   
+    </div>    
         
         
         

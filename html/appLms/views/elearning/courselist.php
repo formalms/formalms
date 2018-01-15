@@ -63,7 +63,7 @@ function typeOfCourse ($t) {
        case "classroom":
             return Lang::t('_CLASSROOM_COURSE', 'cart');       
        case "all":
-            return Lang::t('_ALL_COURSES');       
+            return Lang::t('_ALL_COURSES', 'standard');       
     }
     return '';
 }

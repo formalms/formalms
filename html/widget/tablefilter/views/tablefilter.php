@@ -15,49 +15,7 @@
                 <?php $str_all = Lang::t("_ALL", 'standard'); ?>
 
                 <div class="navbar-form form-group">
-
-                    <?php echo $list_category ? $list_category : ""; ?>
-
-                    <select id="course_search_filter_type" name="filter_type" class="selectpicker" data-width=""
-                            data-selected-text-format="count > 1" data-actions-box="true">
-                        <option value="all"><?php echo $str_all; ?></option>
-                        <option value="elearning" selected="selected"><?php echo $str_elearning; ?></option>
-                        <option value="classroom"><?php echo $str_classroom; ?></option>
-                    </select>
-
                     <?php echo $auxiliary_filter ? $auxiliary_filter : ""; ?>
-
-                    <script>
-                        $('.selectpicker').selectpicker({
-                            countSelectedText: '{0} <?php echo Lang::t('_SELECTED', 'course'); ?>'
-                        });
-                        
-                        var prev = ["0"];
-                        $('#course_search_filter_cat').on('changed.bs.select', function (e) {
-                            if ($(this).val() == null)  {
-                                // forcing all categories
-                                 prev = ["0"];
-                                $(this).selectpicker('val', ["0"]);                                
-                            } else {
-                                selected_value =$(this).val().indexOf("0");
-                                prev_0 = prev.indexOf("0");
-                                if (selected_value == 0 ) 
-                                    if (prev_0 == -1 ) {
-                                        //just clicked on  "All category", unselect all categories
-                                        prev = ["0"]
-                                        $(this).selectpicker('val', ["0"]);
-                                    } else {
-                                         // just selected a category different from "All category"
-                                         new_val = $(this).val();
-                                         new_val.shift();
-                                         prev = new_val;
-                                         $(this).selectpicker('val', new_val);
-                                    }
-                                }   
-                        });    
-                        
-                    </script>
-
                     <div class="input-group">
                         <?php echo Form::getInputTextfield("form-control", $id . "_filter_text", "filter_text", $filter_text, '', 255, 'equired data-toggle="popover" data-content="' . Lang::t('_INSERT', 'standard') . " " . strtolower(Lang::t('_COURSE_NAME', 'standard')) . '" placeholder=' . $str_search); ?>
                         <div class="input-group-btn">
@@ -71,8 +29,7 @@
             </div>
         </div>
 
-        <?php echo $inline_filters ? $inline_filters : ''; ?>
-
+ 
         <div class="navbar-header">
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#filter-container">
                 <span class="filter-label filter-open">

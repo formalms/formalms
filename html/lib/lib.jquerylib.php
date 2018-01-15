@@ -29,7 +29,8 @@ class JQueryLib
         'swipe',
         'select',
          'datepicker',
-         'malihu-custom-scrollbar-plugin']; // malihu custom scrollbar
+         'malihu-custom-scrollbar-plugin',
+         'cookie']; // malihu custom scrollbar
 
     static $array_css_addons = ['table',    //  media query for table formatting
         'helpdesk',
