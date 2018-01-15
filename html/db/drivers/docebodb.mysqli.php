@@ -29,7 +29,6 @@ class mysqli_DbConn extends DbConn {
 	public function connect($host, $user, $pwd, $dbname = false) {
 
 		if(is_resource($this->conn)) return $this->conn;
-
 		if($dbname != false) {
 
             if(!$this->conn = @mysqli_connect($host, $user, $pwd, $dbname)) {
