@@ -2871,6 +2871,9 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="test&amp;_VERY_HARD" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Molto difficile]]></key>
         <key id="test&amp;_YES_IF_PASSED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Si, se il test è stato superato]]></key>
         <key id="test&amp;_YOU_HAVE_PASS_THIS_TEST" attributes="" save_date="2017-05-19 12:20:37"><![CDATA[Hai passato questo test]]></key>
+        <key id="test&amp;_COURSEREPORT_MANAGEMENT" attributes="" save_date="2017-05-19 12:20:37"><![CDATA[Gestione Registro Valutazioni]]></key>
+        <key id="test&amp;_SHOW_IN_COURSEREPORT" attributes="" save_date="2017-05-19 12:20:37"><![CDATA[Mostra in Registro Valutazioni]]></key>
+        <key id="test&amp;_TEST_MM_FIVE" attributes="" save_date="2017-05-19 12:20:37"><![CDATA[Gestione test in Registro Valutazioni]]></key>
       </module>
       <module id="transaction">
         <key id="transaction&amp;_MARK_AS_PAID" attributes="" save_date="2017-06-30 15:39:04"><![CDATA[Imposta come pagato]]></key>

@@ -118,32 +118,45 @@ class PluginmanagerAdm extends Model {
     }
 
     private function check_dependencies($manifest, $dependence = false){
-        if ($manifest) {
-            $dependencies=@$manifest['dependencies'];
+        $forma_version = Get::sett("core_version");
+        $check = array();
+        if (key_exists('forma_version',$manifest)) {
+            if(key_exists('min',$manifest['forma_version'])){
+                if (version_compare($forma_version, $manifest['forma_version']['min']) < 0) {
+                    $check = array("forma.lms"=> $manifest['forma_version']['min']);
+                }
+            }
+            if(key_exists('max',$manifest['forma_version'])){
+                if (version_compare($manifest['forma_version']['max'], $forma_version) < 0) {
+                    $check = array("name"=> "forma.lms", "version" => $manifest['forma_version']['max']);
+                }
+            }
+        }
+        if (key_exists('dependecies',$manifest)) {
+            $dependencies=$manifest['dependencies'];
             $plugin_list = self::getActivePlugins();
             if ($dependence){
                 unset($plugin_list[$dependence]);
             }
-            $check = true;
             if (isset($dependencies)) {
                 foreach ($dependencies as $name => $version) {
                     if (key_exists($name, $plugin_list)) {
                         $dependant_manifest=$this->readPluginManifest($name);
                         if (version_compare($version, $dependant_manifest['version']) > 0) {
-                            $check = $manifest['dependencies'];
+                            $check = array_merge($dependencies,$check);
                             break;
                         }
                     } else {
-                        $check = $manifest['dependencies'];
+                        $check = array_merge($dependencies,$check);
                         if ($dependence){
-                            $check = array("name"=> $manifest['name'], "version" => $manifest['version']);
+                            $check = $check = array_merge(array("name"=> $manifest['name'], "version" => $manifest['version']),$check);
                         }
                         break;
                     }
                 }
             }
-            return $check;
         }
+        return ( count($check) > 0) ? $check : false;
     }
 
     private function is_dependence($name){
@@ -393,6 +406,32 @@ class PluginmanagerAdm extends Model {
         return false;
     }
 
+    function installTranslations($plugin_name){
+        $plugin_info = $this->getPluginFromDB($plugin_name,'name');
+        $check = true;
+        $path = _base_."/plugins/".$plugin_name."/translations/";
+        $dp=opendir($path);
+        while ($file = readdir($dp)){
+            if(!preg_match("/^\./",$file)) {
+                $lang_file	= $path.$file;
+                $model = new LangAdm();
+                $check = $model->importTranslation($lang_file, true, false, $plugin_info['plugin_id']);
+                if(!$check){
+                    break;
+                }
+            }
+        }
+        return $check;
+    }
+
+    function removeTranslations($plugin_name){
+        $plugin_info = $this->getPluginFromDB($plugin_name,'name');
+        $idPlugin = $plugin_info['plugin_id'];
+        $plugin_name = strtoupper($plugin_name);
+        $queryKey = " DELETE FROM %adm_lang_text WHERE plugin_id = $idPlugin ";
+        return sql_query($queryKey) ? true : false;
+    }
+
     /**
      * Insert specified plugin in forma
      * @param $plugin_name
@@ -416,6 +455,7 @@ class PluginmanagerAdm extends Model {
             if ($result){
                 if (!$update){
                     $this->callPluginMethod($plugin_name, 'install');
+                    $this->installTranslations($plugin_name);
                 }
                 return $plugin_info;
             } else {
@@ -439,6 +479,7 @@ class PluginmanagerAdm extends Model {
             $this->callPluginMethod($plugin_id, 'uninstall');
             $this->removeSettings($plugin_id);
             $this->removeRequests($plugin_id);
+            $this->removeTranslations($plugin_id);
             $this->removeMenu($plugin_id);
         }
 
@@ -485,15 +526,84 @@ class PluginmanagerAdm extends Model {
         if(FALSE === $f){
             die("Couldn't write to file.");
         }
+        return $this->unpackPlugin("temp_update.zip", $name);
+    }
+
+    /**
+     * Unpack package zip and optionally rename given plugin folder adding ".old"
+     * @param $package_name
+     * @param $rename
+     * @return bool
+     */
+    function unpackPlugin($package_name, $rename = false){
         $zip = new ZipArchive;
-        $res = $zip->open(_base_."/plugins/"."temp_update.zip");
+        $res = $zip->open(_base_."/plugins/".$package_name);
         if ($res === TRUE) {
-            rename(_base_."/plugins/".$name,_base_."/plugins/".$name.".old");
+            if($rename){
+                $rename_file = _base_."/plugins/".$rename;
+                $rename_file_time = $rename_file;
+                if(file_exists( $rename_file_time )){
+                    $rename_file_time .= ".".time();
+                }
+                rename($rename_file, $rename_file_time);
+            }
             $zip->extractTo(_base_."/plugins/");
             $zip->close();
-            fclose(_base_."/plugins/"."temp_update.zip");
-            unlink(_base_."/plugins/"."temp_update.zip");
+            fclose(_base_."/plugins/".$package_name);
+            unlink(_base_."/plugins/".$package_name);
             return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * Upload a plugin to forma
+     * @param $file_uploaded ($_FILES['plugin_file_upload'])
+     * @return bool
+     */
+    function uploadPlugin($file_uploaded) {
+        require_once(_base_.'/lib/lib.upload.php');
+		if($file_uploaded['name'] == '') {
+			return false;
+		} else {
+            $path = "/../plugins/";
+            $savefile = $file_uploaded['name'];
+			if(!file_exists( $GLOBALS['where_files_relative'].$path.$savefile )) {
+				sl_open_fileoperations();
+				if(!sl_upload($file_uploaded['tmp_name'], $path.$savefile)) {
+					sl_close_fileoperations();
+					return false;
+                }
+                $name = pathinfo($file_uploaded['name'], PATHINFO_FILENAME);
+                if($this->unpackPlugin($savefile, $name)){
+                    return true;
+                }
+				sl_close_fileoperations();
+			} else {
+				return false;
+			}
+		}
+    }
+
+    static function removeDirectory($path) {
+        $files = glob($path . '/*');
+        foreach ($files as $file) {
+            is_dir($file) ? self::removeDirectory($file) : unlink($file);
+        }
+        rmdir($path);
+        return true;
+    }    
+
+    /**
+     * Delete all plugins files
+     * @param $name
+     * @return bool
+     */
+    function delete_files($name){
+        $path = _base_."/plugins/".$name;
+        if(file_exists( $path )){
+            return self::removeDirectory($path);
         } else {
             return false;
         }

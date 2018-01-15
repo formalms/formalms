@@ -29,8 +29,7 @@ class mysqli_DbConn extends DbConn {
 	public function connect($host, $user, $pwd, $dbname = false) {
 
 		if(is_resource($this->conn)) return $this->conn;
-
-		if($dbname !== false) {
+		if($dbname != false) {
 
             if(!$this->conn = @mysqli_connect($host, $user, $pwd, $dbname)) {
 
@@ -53,7 +52,9 @@ class mysqli_DbConn extends DbConn {
         }
 
 		$this->set_timezone();	// set connection tz
-        if($dbname !== false) return $this->select_db($dbname);
+        if($dbname != false){
+			return $this->select_db($dbname);
+		}
 		return $this;
 	}
 

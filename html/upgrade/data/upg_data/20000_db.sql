@@ -835,7 +835,6 @@ INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `co
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(27, '_ENROLLRULES', '', 7, 'true', 'true', 2, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(28, '_TRANSACTION', '', 8, 'true', 'true', 2, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(31, '_WEBPAGES', '', 1, 'true', 'true', 3, NULL);
-INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(32, '_NEWS', '', 2, 'true', 'true', 3, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(33, '_NEWS_INTERNAL', '', 3, 'true', 'true', 3, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(34, '_COMMUNICATION_MAN', '', 4, 'true', 'true', 3, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(35, '_NEWSLETTER', '', 5, 'true', 'true', 3, NULL);
@@ -843,6 +842,7 @@ INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `co
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(50, '_FIELD_MANAGER', '', 4, 'true', 'true', 5, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(51, '_DASHBOARD', '', 1, 'true', 'true', 5, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(52, '_CONFIG_SYS', '', 2, 'true', 'true', 5, NULL);
+INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(54, '_PLUGIN_MANAGER', '', 4, 'true', 'true', 5, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(55, '_LANG', '', 5, 'true', 'true', 5, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(59, '_CONFIG_ELEARNING', '', 3, 'true', 'true', 5, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(151, '_ADMIN_RULES', '', 1, 'true', 'true', 15, NULL);
@@ -861,7 +861,6 @@ INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `co
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(523, '_EVENTMANAGER', '', 3, 'true', 'true', 52, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(524, '_IOTASK', '', 4, 'true', 'true', 52, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(526, '_PRIVACYPOLICIES', '', 6, 'true', 'true', 52, NULL);
-INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(527, '_PLUGIN_MANAGER', '', 7, 'true', 'true', 52, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(528, '_CODE', '', 8, 'true', 'true', 52, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(591, '_MAN_MENU', '', 1, 'true', 'true', 59, NULL);
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`) VALUES(592, '_MIDDLE_AREA', '', 2, 'true', 'true', 59, NULL);
@@ -911,6 +910,7 @@ INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(35, 35, 'newsletter', '_NEWSLETTER', 'newsletter', 'view', 'framework', 1, 'class.newsletter.php', 'Module_Newsletter', '');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(40, 40, 'report', '_REPORT', 'reportlist', 'view', 'lms', 1, 'class.report.php', 'Module_Report', '');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(51, 51, 'dashboard', '_DASHBOARD', '', 'view', NULL, 1, '', '', 'adm/dashboard/show');
+INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(54, 54, 'pluginmanager', '_PLUGIN_MANAGER', '', 'view', NULL, 4, '', '', 'adm/pluginmanager/show');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(55, 55, 'lang', '_LANG', '', 'view', NULL, 5, '', '', 'adm/lang/show');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(151, 151, 'adminrules', '_ADMIN_RULES', '', 'view', NULL, 1, '', '', 'adm/adminrules/show');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(152, 152, 'adminmanager', '_ADMIN_MANAGER', '', 'view', NULL, 1, '', '', 'adm/adminmanager/show');
@@ -928,7 +928,6 @@ INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(523, 523, 'event_manager', '_EVENTMANAGER', 'display', 'view_event_manager', 'framework', 3, 'class.event_manager.php', 'Module_Event_Manager', '');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(524, 524, 'iotask', '_IOTASK', 'iotask', 'view', 'framework', 4, 'class.iotask.php', 'Module_IOTask', '');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(526, 526, 'privacypolicy', '_PRIVACYPOLICIES', '', 'view', NULL, 6, '', '', 'adm/privacypolicy/show');
-INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(527, 527, 'pluginmanager', '_PLUGIN_MANAGER', '', 'view', NULL, 7, '', '', 'adm/pluginmanager/show');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(528, 528, 'code', '_CODE', 'list', 'view', 'framework', 8, 'class.code.php', 'Module_Code', '');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(591, 591, 'amanmenu', '_MAN_MENU', 'mancustom', 'view', 'lms', 1, 'class.amanmenu.php', 'Module_AManmenu', '');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(592, 592, 'middlearea', '_MIDDLE_AREA', 'view_area', 'view', 'lms', 2, 'class.middlearea.php', 'Module_MiddleArea', '');
@@ -952,7 +951,7 @@ DELETE FROM `learning_middlearea` WHERE `obj_index` = "tb_catalog";
 DELETE FROM `learning_middlearea` WHERE `obj_index` = "tb_assessment";
 
 -- 14627
-DELETE FROM `learning_middlearea` WHERE `learning_middlearea`.`obj_index` = 'tb_classroom'
+DELETE FROM `learning_middlearea` WHERE `learning_middlearea`.`obj_index` = 'tb_classroom';
 
 -- 7996_custom_fields_mandatory_for_admin
 INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES ('custom_fields_mandatory_for_admin', 'off', 'enum', '3', 'register', '3', '22', '1', '0', '');
@@ -996,6 +995,8 @@ update core_setting set sequence = 13 where param_name = 'course_block';
 DROP TABLE IF EXISTS learning_news;
 DELETE FROM core_menu WHERE core_menu.idMenu = 32;
 
+-- 13997: plugin translations
+ALTER TABLE `core_lang_text` ADD `plugin_id` INT NULL, DROP INDEX `text_key`, ADD UNIQUE `text_key` (`text_key`, `text_module`, `plugin_id`);
 
 -- ------------------------------------------------------------------
 

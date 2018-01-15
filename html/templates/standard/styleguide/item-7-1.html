@@ -81,6 +81,16 @@
           <span class="kss-nav__ref">10</span><span class="kss-nav__name">Icons</span>
         </a>
       </li>
+      <li class="kss-nav__menu-item">
+        <a class="kss-nav__menu-link" href="section-11.html">
+          <span class="kss-nav__ref">11</span><span class="kss-nav__name">Tooltip</span>
+        </a>
+      </li>
+      <li class="kss-nav__menu-item">
+        <a class="kss-nav__menu-link" href="section-12.html">
+          <span class="kss-nav__ref">12</span><span class="kss-nav__name">Homepage</span>
+        </a>
+      </li>
     </ul>
   </nav>
 </div>
@@ -146,129 +156,165 @@
 
 
           <div class="kss-modifier__example">
-            <div style="max-width: 450px; border-top: 1px outset black; position: relative; min-width: 320px; height: 900px;">
-  <p style="width: 100%; line-height: 70px; text-align: center;">TOP MENU</p>
-  <div id="c-menu--slide-right" class="c-menu c-menu--slide-right user-panel is-active" style="position: absolute;">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-xs-6">
-          <a href="javascript:void(0)" class="c-menu__close">
-            <span class="glyphicon glyphicon-remove">Nascondi menu</span>
-          </a><!-- pulsante nascondi menu -->
-        </div>
-        <div class="col-xs-6">
-          <a title="Esci" href=".././index.php?r=adm/homepage/logout">
-            <span class="glyphicon glyphicon-off">Esci</span>
-          </a>
-        </div>
-      </div>
-      <div class="row profile">
-        <div class="col-xs-5">
-          <div class="boxed" style="background-image: url(../../../templates/standard/static/images/icons/user-panel/icon--up-photo-placeholder.png)"></div>
-        </div>
-        <div class="col-xs-7">
-          <a href="index.php?r=lms/profile/show" title="Profilo utente">
-            <span class="glyphicon glyphicon-pencil">Profilo utente</span>
-          </a>
-          <a href="index.php?r=lms/profile/show">Amministratore Super</a>
-          <a href="mailto:admin@joint-tech.it">admin@joint-tech.it</a>
-        </div>
-      </div>
-      <div class="row comunication">
-        <div class="col-xs-4">
-          <a class="btn btn-default" href="index.php?r=lms/mycertificate/show">Certificati</a>
-        </div>
-        <div class="col-xs-4">
-          <a class="btn btn-default" href="index.php?r=message/show&amp;sop=unregistercourse">Messaggi</a>
-        </div>
-      </div>
-      <div class="row career">
-        <div class="col-xs-12">
-          <h2 class="heading">Carriera</h2>
-          <ul class="list-group">
-            <li class="list-group-item">
-              Corsi totali: <span class="badge">6</span>
-            </li>
-            <li class="list-group-item">
-              Corsi in cui sei studende: <span class="badge">2</span>
-            </li>
-            <li class="list-group-item">
-              Corsi in cui sei amministratore: <span class="badge">4</span>
-            </li>
-            <li class="list-group-item">
-              Certificati Disponibili: <span class="badge"><a href="index.php?r=lms/mycertificate/show">3</a></span>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="row course-subscription">
-        <div class="col-xs-12">
-          <div class="input-group">
-            <form class="std_form" id="course_autoregistration" method="post" action="index.php?modname=course_autoregistration&op=subscribe">
-              <input type="hidden" id="authentic_request_course_autoregistration" name="authentic_request" value="4faedccece387d29f8b440ef08b44dfa">
-              <input type="text" class="form-control" id="course_autoregistration_code" name="course_autoregistration_code" value="" maxlength="30" alt="" size="30" placeholder="Iscrizione con codice">
-              <div class="input-group-btn">
-                <input type="submit" class="btn btn-default" id="subscribe_info" name="subscribe_info" value="Iscriviti">
-              </div>
-            </form>
-          </div>
-        </div> <!-- end col xs-12 -->
-      </div>
-      <div class="row news"> <!-- news carousel -->
-        <div class="col-xs-12">
-          <h2 class="heading">News</h2>
-          <div id="user-panel-carousel" class="carousel slide carousel-fade" data-ride="carousel">
-            <ol class="carousel-indicators">
-              <li data-target="#user-panel-carousel" data-slide-to="0" class="active"></li>
-              <li data-target="#user-panel-carousel" data-slide-to="1"></li>
-            </ol>
-            <div class="carousel-inner" role="listbox">
-              <div class="item active">
-                <h3>notizia 1</h3>
-                <p>Lorem ipsum testo notizia 1</p>
-                <span>12-11-2016</span>
-              </div>
-              <div class="item">
-                <h3>notizia 2</h3>
-                <p>Lorem ipsum dolor sit amet per il testo più lungo di notizia 2</p>
-                <span>11-03-2013</span>
-              </div>
-            </div>
-          </div>
-        </div> <!-- end col xs-12 -->
-      </div>
-      <div class="row credits"> <!-- periodi temporali -->
-         <div class="col-xs-12">
-        </div> <!-- end col xs-12 -->
-      </div>
-      <div class="row lang"> <!-- lang select -->
-        <div class="col-xs-6">
-          <p>Lingua</p>
-        </div>
-        <div class="col-xs-6">
-          <ul class="list-inline" id="language_selection">
-            <li>
-              <a class="lang-sprite lang_english" href="index.php?special=changelang&amp;new_lang=english" title="English"></a>
-             </li>
-            <li>
-              <a class="lang-sprite lang_finnish" href="index.php?special=changelang&amp;new_lang=finnish" title="Finnish"></a>
-            </li>
-            <li>
-              <a class="lang-sprite lang_italian current" href="index.php?special=changelang&amp;new_lang=italian" title="Italiano"></a>
-             </li>
-            <li>
-              <a class="lang-sprite lang_spanish" href="index.php?special=changelang&amp;new_lang=spanish" title="Spanish"></a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="row footer"
-        <div class="col-xs-12">
-          <p>Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</p>
-        </div>
-      </div>
-    </div> <!-- /container-fluid -->
-  </div> <!-- /c-menu -->
+            <div class="c-menu user-panel is-active" style="max-height:inherit;position:relative;top:auto;right:auto;bottom:auto;left:auto;">
+ 	<div class="container-fluid">
+	<div class="row">
+		<div class="col-xs-6">
+		  	<a href="javascript:void(0)" class="c-menu__close"><span class="glyphicon glyphicon-remove">Hide menu</span></a>
+		</div>
+		<div class="col-xs-6">
+			<a title="Logout" href="#">
+				<span class="glyphicon glyphicon-off">Logout</span>
+			</a>
+		</div>
+	</div>
+	<div class="tabnav js-tabnav">
+		<div class="tabnav__label-wrapper">
+			<div class="tabnav__label selected" data-tab="profile">profile</div>
+			<div class="tabnav__label" data-tab="credits">timeperiods</div>
+		</div>
+		<div class="tabnav__content-wrapper" style="height: 371px;">
+			<div class="tabnav__content tabnav__content--profile is-visible">
+				<div class="row profile">
+					<div class="col-xs-5">
+						<div class="boxed" style="background-image: url(../templates/standard/static/)images/icons/user-panel/icon--up-photo-placeholder.png"></div>
+					</div>
+					<div class="col-xs-7">
+						<a href="#" title="User profile">
+							<span class="glyphicon glyphicon-pencil">User profile</span>
+						</a>
+						<a href="#">Name</a>
+						<a href="#">name@domain.com</a>
+					</div>
+				</div>
+				<div class="row comunication">
+					<div class="col-xs-4">
+						<a class="btn btn-default" href="#">Certifications</a>
+					</div>
+					<div class="col-xs-4">
+						<a class="btn btn-default" href="#">Skills</a>
+					</div>
+					<div class="col-xs-4">
+						<a class="btn btn-default" href="#">Messages</a>
+					</div>
+				</div>
+				<div class="row career">
+					<div class="col-xs-12">
+						<h2>Career</h2>
+						<ul class="list-group">
+							<li class="list-group-item">Total courses<span class="badge">8</span></li>
+							<li class="list-group-item">Completed courses<span class="badge">8</span></li>
+							<li class="list-group-item">Ending courses<span class="badge">4</span></li>
+							<li class="list-group-item">Your courses as Student<span class="badge">4</span></li>
+							<li class="list-group-item">Your courses as Administrator<span class="badge">12</span></li>
+							<li class="list-group-item">Available Certifications<span class="badge"><a href="#">8</a></span></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="tabnav__content tabnav__content--credits">
+				<div class="row credits">
+					<div class="col-xs-12">
+						<div class="js-credits-ajax-container">
+							<div class="table-credit-wrapper">
+								<table class="table-credit">
+									<thead>
+										<tr class="table-credit__row table-credit__row--head">
+											<td>Course</td>
+											<td>Credits</td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr class="table-credit__row">
+											<td>Course 1 name</td>
+											<td>10</td>
+										</tr>
+										<tr class="table-credit__row">
+											<td>Course 2 name</td>
+											<td>5</td>
+										</tr>
+										<tr class="table-credit__row">
+											<td>Course 3 name</td>
+											<td>15</td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr class="table-credit__row table-credit__row--footer">
+											<td>Total</td>
+											<td>30</td>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row course-subscription">
+	  <div class="col-xs-12">
+		<div class="input-group">
+			<form class="std_form" id="course_autoregistration" method="post" action="#">
+				<div class="">
+					<input type="hidden" id="authentic_request_course_autoregistration" name="authentic_request" value="">
+					<input type="text" class="form-control" id="course_autoregistration_code" name="course_autoregistration_code" value="" maxlength="30" alt="" size="30" placeholder="Subscribtion code">
+					<div class="input-group-btn">
+						<input type="submit" class="button btn btn-default btn btn-default" id="subscribe_info" name="subscribe_info" value="Subscribe">
+					</div>
+				</div>
+			</form>
+		</div>
+	  </div>
+	</div>
+	<div class="row news">
+		<div class="col-xs-12">
+			<h2 class="heading">News</h2>
+			<div id="user-panel-carousel" class="carousel slide carousel-fade" data-ride="carousel">
+				<ol class="carousel-indicators">
+					<li class="" data-target="#user-panel-carousel" data-slide-to="0"></li>
+					<li class="active" data-target="#user-panel-carousel" data-slide-to="1"></li>
+					<li class="" data-target="#user-panel-carousel" data-slide-to="2"></li>
+				</ol>
+				<div class="carousel-inner" role="listbox">
+					<div class="item active left">
+						<h3>News title</h3>
+						<p>News description</p>
+						<span>gg-mm-yyyy</span>
+					</div>
+					<div class="item next left">
+						<h3>News title</h3>
+						<p>News description</p>
+						<span>gg-mm-yyyy</span>
+					</div>
+					<div class="item">
+						<h3>News title</h3>
+						<p>News description</p>
+						<span>gg-mm-yyyy</span>
+					</div>
+				</div>
+			</div>
+		</div>
+  	</div>
+	<div class="row lang">
+		<div class="col-xs-6">
+			<p>Cambia lingua</p>
+		</div>
+		<div class="col-xs-6">
+			<ul class="list-inline" id="language_selection">
+				<li><a class="lang-sprite lang_english" href="#" title="English"></a></li>
+				<li><a class="lang-sprite lang_finnish" href="#" title="Finnish"></a></li>
+				<li><a class="lang-sprite lang_italian current" href="#" title="Italiano"></a></li>
+				<li><a class="lang-sprite lang_spanish" href="#" title="Spanish"></a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="row footer">
+		<div class="col-xs-12">
+			<p>Testing forma.lms - Copyright © forma.lms<br>Powered by forma.lms CE</p>
+		</div>
+	</div>
+</div>
 </div>
             <div class="kss-modifier__example-footer"></div>
           </div>
@@ -279,129 +325,165 @@
             <summary>
                 Markup
             </summary>
-            <pre class="prettyprint linenums lang-html"><code data-language="html">&lt;div style&#x3D;&quot;max-width: 450px; border-top: 1px outset black; position: relative; min-width: 320px; height: 900px;&quot;&gt;
-  &lt;p style&#x3D;&quot;width: 100%; line-height: 70px; text-align: center;&quot;&gt;TOP MENU&lt;/p&gt;
-  &lt;div id&#x3D;&quot;c-menu--slide-right&quot; class&#x3D;&quot;c-menu c-menu--slide-right user-panel is-active&quot; style&#x3D;&quot;position: absolute;&quot;&gt;
-    &lt;div class&#x3D;&quot;container-fluid&quot;&gt;
-      &lt;div class&#x3D;&quot;row&quot;&gt;
-        &lt;div class&#x3D;&quot;col-xs-6&quot;&gt;
-          &lt;a href&#x3D;&quot;javascript:void(0)&quot; class&#x3D;&quot;c-menu__close&quot;&gt;
-            &lt;span class&#x3D;&quot;glyphicon glyphicon-remove&quot;&gt;Nascondi menu&lt;/span&gt;
-          &lt;/a&gt;&lt;!-- pulsante nascondi menu --&gt;
-        &lt;/div&gt;
-        &lt;div class&#x3D;&quot;col-xs-6&quot;&gt;
-          &lt;a title&#x3D;&quot;Esci&quot; href&#x3D;&quot;.././index.php?r&#x3D;adm/homepage/logout&quot;&gt;
-            &lt;span class&#x3D;&quot;glyphicon glyphicon-off&quot;&gt;Esci&lt;/span&gt;
-          &lt;/a&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class&#x3D;&quot;row profile&quot;&gt;
-        &lt;div class&#x3D;&quot;col-xs-5&quot;&gt;
-          &lt;div class&#x3D;&quot;boxed&quot; style&#x3D;&quot;background-image: url(../../../templates/standard/static/images/icons/user-panel/icon--up-photo-placeholder.png)&quot;&gt;&lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div class&#x3D;&quot;col-xs-7&quot;&gt;
-          &lt;a href&#x3D;&quot;index.php?r&#x3D;lms/profile/show&quot; title&#x3D;&quot;Profilo utente&quot;&gt;
-            &lt;span class&#x3D;&quot;glyphicon glyphicon-pencil&quot;&gt;Profilo utente&lt;/span&gt;
-          &lt;/a&gt;
-          &lt;a href&#x3D;&quot;index.php?r&#x3D;lms/profile/show&quot;&gt;Amministratore Super&lt;/a&gt;
-          &lt;a href&#x3D;&quot;mailto:admin@joint-tech.it&quot;&gt;admin@joint-tech.it&lt;/a&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class&#x3D;&quot;row comunication&quot;&gt;
-        &lt;div class&#x3D;&quot;col-xs-4&quot;&gt;
-          &lt;a class&#x3D;&quot;btn btn-default&quot; href&#x3D;&quot;index.php?r&#x3D;lms/mycertificate/show&quot;&gt;Certificati&lt;/a&gt;
-        &lt;/div&gt;
-        &lt;div class&#x3D;&quot;col-xs-4&quot;&gt;
-          &lt;a class&#x3D;&quot;btn btn-default&quot; href&#x3D;&quot;index.php?r&#x3D;message/show&amp;amp;sop&#x3D;unregistercourse&quot;&gt;Messaggi&lt;/a&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class&#x3D;&quot;row career&quot;&gt;
-        &lt;div class&#x3D;&quot;col-xs-12&quot;&gt;
-          &lt;h2 class&#x3D;&quot;heading&quot;&gt;Carriera&lt;/h2&gt;
-          &lt;ul class&#x3D;&quot;list-group&quot;&gt;
-            &lt;li class&#x3D;&quot;list-group-item&quot;&gt;
-              Corsi totali: &lt;span class&#x3D;&quot;badge&quot;&gt;6&lt;/span&gt;
-            &lt;/li&gt;
-            &lt;li class&#x3D;&quot;list-group-item&quot;&gt;
-              Corsi in cui sei studende: &lt;span class&#x3D;&quot;badge&quot;&gt;2&lt;/span&gt;
-            &lt;/li&gt;
-            &lt;li class&#x3D;&quot;list-group-item&quot;&gt;
-              Corsi in cui sei amministratore: &lt;span class&#x3D;&quot;badge&quot;&gt;4&lt;/span&gt;
-            &lt;/li&gt;
-            &lt;li class&#x3D;&quot;list-group-item&quot;&gt;
-              Certificati Disponibili: &lt;span class&#x3D;&quot;badge&quot;&gt;&lt;a href&#x3D;&quot;index.php?r&#x3D;lms/mycertificate/show&quot;&gt;3&lt;/a&gt;&lt;/span&gt;
-            &lt;/li&gt;
-          &lt;/ul&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class&#x3D;&quot;row course-subscription&quot;&gt;
-        &lt;div class&#x3D;&quot;col-xs-12&quot;&gt;
-          &lt;div class&#x3D;&quot;input-group&quot;&gt;
-            &lt;form class&#x3D;&quot;std_form&quot; id&#x3D;&quot;course_autoregistration&quot; method&#x3D;&quot;post&quot; action&#x3D;&quot;index.php?modname&#x3D;course_autoregistration&amp;op&#x3D;subscribe&quot;&gt;
-              &lt;input type&#x3D;&quot;hidden&quot; id&#x3D;&quot;authentic_request_course_autoregistration&quot; name&#x3D;&quot;authentic_request&quot; value&#x3D;&quot;4faedccece387d29f8b440ef08b44dfa&quot;&gt;
-              &lt;input type&#x3D;&quot;text&quot; class&#x3D;&quot;form-control&quot; id&#x3D;&quot;course_autoregistration_code&quot; name&#x3D;&quot;course_autoregistration_code&quot; value&#x3D;&quot;&quot; maxlength&#x3D;&quot;30&quot; alt&#x3D;&quot;&quot; size&#x3D;&quot;30&quot; placeholder&#x3D;&quot;Iscrizione con codice&quot;&gt;
-              &lt;div class&#x3D;&quot;input-group-btn&quot;&gt;
-                &lt;input type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn btn-default&quot; id&#x3D;&quot;subscribe_info&quot; name&#x3D;&quot;subscribe_info&quot; value&#x3D;&quot;Iscriviti&quot;&gt;
-              &lt;/div&gt;
-            &lt;/form&gt;
-          &lt;/div&gt;
-        &lt;/div&gt; &lt;!-- end col xs-12 --&gt;
-      &lt;/div&gt;
-      &lt;div class&#x3D;&quot;row news&quot;&gt; &lt;!-- news carousel --&gt;
-        &lt;div class&#x3D;&quot;col-xs-12&quot;&gt;
-          &lt;h2 class&#x3D;&quot;heading&quot;&gt;News&lt;/h2&gt;
-          &lt;div id&#x3D;&quot;user-panel-carousel&quot; class&#x3D;&quot;carousel slide carousel-fade&quot; data-ride&#x3D;&quot;carousel&quot;&gt;
-            &lt;ol class&#x3D;&quot;carousel-indicators&quot;&gt;
-              &lt;li data-target&#x3D;&quot;#user-panel-carousel&quot; data-slide-to&#x3D;&quot;0&quot; class&#x3D;&quot;active&quot;&gt;&lt;/li&gt;
-              &lt;li data-target&#x3D;&quot;#user-panel-carousel&quot; data-slide-to&#x3D;&quot;1&quot;&gt;&lt;/li&gt;
-            &lt;/ol&gt;
-            &lt;div class&#x3D;&quot;carousel-inner&quot; role&#x3D;&quot;listbox&quot;&gt;
-              &lt;div class&#x3D;&quot;item active&quot;&gt;
-                &lt;h3&gt;notizia 1&lt;/h3&gt;
-                &lt;p&gt;Lorem ipsum testo notizia 1&lt;/p&gt;
-                &lt;span&gt;12-11-2016&lt;/span&gt;
-              &lt;/div&gt;
-              &lt;div class&#x3D;&quot;item&quot;&gt;
-                &lt;h3&gt;notizia 2&lt;/h3&gt;
-                &lt;p&gt;Lorem ipsum dolor sit amet per il testo più lungo di notizia 2&lt;/p&gt;
-                &lt;span&gt;11-03-2013&lt;/span&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-        &lt;/div&gt; &lt;!-- end col xs-12 --&gt;
-      &lt;/div&gt;
-      &lt;div class&#x3D;&quot;row credits&quot;&gt; &lt;!-- periodi temporali --&gt;
-         &lt;div class&#x3D;&quot;col-xs-12&quot;&gt;
-        &lt;/div&gt; &lt;!-- end col xs-12 --&gt;
-      &lt;/div&gt;
-      &lt;div class&#x3D;&quot;row lang&quot;&gt; &lt;!-- lang select --&gt;
-        &lt;div class&#x3D;&quot;col-xs-6&quot;&gt;
-          &lt;p&gt;Lingua&lt;/p&gt;
-        &lt;/div&gt;
-        &lt;div class&#x3D;&quot;col-xs-6&quot;&gt;
-          &lt;ul class&#x3D;&quot;list-inline&quot; id&#x3D;&quot;language_selection&quot;&gt;
-            &lt;li&gt;
-              &lt;a class&#x3D;&quot;lang-sprite lang_english&quot; href&#x3D;&quot;index.php?special&#x3D;changelang&amp;amp;new_lang&#x3D;english&quot; title&#x3D;&quot;English&quot;&gt;&lt;/a&gt;
-             &lt;/li&gt;
-            &lt;li&gt;
-              &lt;a class&#x3D;&quot;lang-sprite lang_finnish&quot; href&#x3D;&quot;index.php?special&#x3D;changelang&amp;amp;new_lang&#x3D;finnish&quot; title&#x3D;&quot;Finnish&quot;&gt;&lt;/a&gt;
-            &lt;/li&gt;
-            &lt;li&gt;
-              &lt;a class&#x3D;&quot;lang-sprite lang_italian current&quot; href&#x3D;&quot;index.php?special&#x3D;changelang&amp;amp;new_lang&#x3D;italian&quot; title&#x3D;&quot;Italiano&quot;&gt;&lt;/a&gt;
-             &lt;/li&gt;
-            &lt;li&gt;
-              &lt;a class&#x3D;&quot;lang-sprite lang_spanish&quot; href&#x3D;&quot;index.php?special&#x3D;changelang&amp;amp;new_lang&#x3D;spanish&quot; title&#x3D;&quot;Spanish&quot;&gt;&lt;/a&gt;
-            &lt;/li&gt;
-          &lt;/ul&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class&#x3D;&quot;row footer&quot;
-        &lt;div class&#x3D;&quot;col-xs-12&quot;&gt;
-          &lt;p&gt;Testing forma.lms - Copyright © forma.lms&lt;br /&gt;Powered by forma.lms CE&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt; &lt;!-- /container-fluid --&gt;
-  &lt;/div&gt; &lt;!-- /c-menu --&gt;
+            <pre class="prettyprint linenums lang-html"><code data-language="html">&lt;div class&#x3D;&quot;c-menu user-panel is-active&quot; style&#x3D;&quot;max-height:inherit;position:relative;top:auto;right:auto;bottom:auto;left:auto;&quot;&gt;
+ 	&lt;div class&#x3D;&quot;container-fluid&quot;&gt;
+	&lt;div class&#x3D;&quot;row&quot;&gt;
+		&lt;div class&#x3D;&quot;col-xs-6&quot;&gt;
+		  	&lt;a href&#x3D;&quot;javascript:void(0)&quot; class&#x3D;&quot;c-menu__close&quot;&gt;&lt;span class&#x3D;&quot;glyphicon glyphicon-remove&quot;&gt;Hide menu&lt;/span&gt;&lt;/a&gt;
+		&lt;/div&gt;
+		&lt;div class&#x3D;&quot;col-xs-6&quot;&gt;
+			&lt;a title&#x3D;&quot;Logout&quot; href&#x3D;&quot;#&quot;&gt;
+				&lt;span class&#x3D;&quot;glyphicon glyphicon-off&quot;&gt;Logout&lt;/span&gt;
+			&lt;/a&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class&#x3D;&quot;tabnav js-tabnav&quot;&gt;
+		&lt;div class&#x3D;&quot;tabnav__label-wrapper&quot;&gt;
+			&lt;div class&#x3D;&quot;tabnav__label selected&quot; data-tab&#x3D;&quot;profile&quot;&gt;profile&lt;/div&gt;
+			&lt;div class&#x3D;&quot;tabnav__label&quot; data-tab&#x3D;&quot;credits&quot;&gt;timeperiods&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;div class&#x3D;&quot;tabnav__content-wrapper&quot; style&#x3D;&quot;height: 371px;&quot;&gt;
+			&lt;div class&#x3D;&quot;tabnav__content tabnav__content--profile is-visible&quot;&gt;
+				&lt;div class&#x3D;&quot;row profile&quot;&gt;
+					&lt;div class&#x3D;&quot;col-xs-5&quot;&gt;
+						&lt;div class&#x3D;&quot;boxed&quot; style&#x3D;&quot;background-image: url(../templates/standard/static/)images/icons/user-panel/icon--up-photo-placeholder.png&quot;&gt;&lt;/div&gt;
+					&lt;/div&gt;
+					&lt;div class&#x3D;&quot;col-xs-7&quot;&gt;
+						&lt;a href&#x3D;&quot;#&quot; title&#x3D;&quot;User profile&quot;&gt;
+							&lt;span class&#x3D;&quot;glyphicon glyphicon-pencil&quot;&gt;User profile&lt;/span&gt;
+						&lt;/a&gt;
+						&lt;a href&#x3D;&quot;#&quot;&gt;Name&lt;/a&gt;
+						&lt;a href&#x3D;&quot;#&quot;&gt;name@domain.com&lt;/a&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+				&lt;div class&#x3D;&quot;row comunication&quot;&gt;
+					&lt;div class&#x3D;&quot;col-xs-4&quot;&gt;
+						&lt;a class&#x3D;&quot;btn btn-default&quot; href&#x3D;&quot;#&quot;&gt;Certifications&lt;/a&gt;
+					&lt;/div&gt;
+					&lt;div class&#x3D;&quot;col-xs-4&quot;&gt;
+						&lt;a class&#x3D;&quot;btn btn-default&quot; href&#x3D;&quot;#&quot;&gt;Skills&lt;/a&gt;
+					&lt;/div&gt;
+					&lt;div class&#x3D;&quot;col-xs-4&quot;&gt;
+						&lt;a class&#x3D;&quot;btn btn-default&quot; href&#x3D;&quot;#&quot;&gt;Messages&lt;/a&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+				&lt;div class&#x3D;&quot;row career&quot;&gt;
+					&lt;div class&#x3D;&quot;col-xs-12&quot;&gt;
+						&lt;h2&gt;Career&lt;/h2&gt;
+						&lt;ul class&#x3D;&quot;list-group&quot;&gt;
+							&lt;li class&#x3D;&quot;list-group-item&quot;&gt;Total courses&lt;span class&#x3D;&quot;badge&quot;&gt;8&lt;/span&gt;&lt;/li&gt;
+							&lt;li class&#x3D;&quot;list-group-item&quot;&gt;Completed courses&lt;span class&#x3D;&quot;badge&quot;&gt;8&lt;/span&gt;&lt;/li&gt;
+							&lt;li class&#x3D;&quot;list-group-item&quot;&gt;Ending courses&lt;span class&#x3D;&quot;badge&quot;&gt;4&lt;/span&gt;&lt;/li&gt;
+							&lt;li class&#x3D;&quot;list-group-item&quot;&gt;Your courses as Student&lt;span class&#x3D;&quot;badge&quot;&gt;4&lt;/span&gt;&lt;/li&gt;
+							&lt;li class&#x3D;&quot;list-group-item&quot;&gt;Your courses as Administrator&lt;span class&#x3D;&quot;badge&quot;&gt;12&lt;/span&gt;&lt;/li&gt;
+							&lt;li class&#x3D;&quot;list-group-item&quot;&gt;Available Certifications&lt;span class&#x3D;&quot;badge&quot;&gt;&lt;a href&#x3D;&quot;#&quot;&gt;8&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;
+						&lt;/ul&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+			&lt;div class&#x3D;&quot;tabnav__content tabnav__content--credits&quot;&gt;
+				&lt;div class&#x3D;&quot;row credits&quot;&gt;
+					&lt;div class&#x3D;&quot;col-xs-12&quot;&gt;
+						&lt;div class&#x3D;&quot;js-credits-ajax-container&quot;&gt;
+							&lt;div class&#x3D;&quot;table-credit-wrapper&quot;&gt;
+								&lt;table class&#x3D;&quot;table-credit&quot;&gt;
+									&lt;thead&gt;
+										&lt;tr class&#x3D;&quot;table-credit__row table-credit__row--head&quot;&gt;
+											&lt;td&gt;Course&lt;/td&gt;
+											&lt;td&gt;Credits&lt;/td&gt;
+										&lt;/tr&gt;
+									&lt;/thead&gt;
+									&lt;tbody&gt;
+										&lt;tr class&#x3D;&quot;table-credit__row&quot;&gt;
+											&lt;td&gt;Course 1 name&lt;/td&gt;
+											&lt;td&gt;10&lt;/td&gt;
+										&lt;/tr&gt;
+										&lt;tr class&#x3D;&quot;table-credit__row&quot;&gt;
+											&lt;td&gt;Course 2 name&lt;/td&gt;
+											&lt;td&gt;5&lt;/td&gt;
+										&lt;/tr&gt;
+										&lt;tr class&#x3D;&quot;table-credit__row&quot;&gt;
+											&lt;td&gt;Course 3 name&lt;/td&gt;
+											&lt;td&gt;15&lt;/td&gt;
+										&lt;/tr&gt;
+									&lt;/tbody&gt;
+									&lt;tfoot&gt;
+										&lt;tr class&#x3D;&quot;table-credit__row table-credit__row--footer&quot;&gt;
+											&lt;td&gt;Total&lt;/td&gt;
+											&lt;td&gt;30&lt;/td&gt;
+										&lt;/tr&gt;
+									&lt;/tfoot&gt;
+								&lt;/table&gt;
+							&lt;/div&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class&#x3D;&quot;row course-subscription&quot;&gt;
+	  &lt;div class&#x3D;&quot;col-xs-12&quot;&gt;
+		&lt;div class&#x3D;&quot;input-group&quot;&gt;
+			&lt;form class&#x3D;&quot;std_form&quot; id&#x3D;&quot;course_autoregistration&quot; method&#x3D;&quot;post&quot; action&#x3D;&quot;#&quot;&gt;
+				&lt;div class&#x3D;&quot;&quot;&gt;
+					&lt;input type&#x3D;&quot;hidden&quot; id&#x3D;&quot;authentic_request_course_autoregistration&quot; name&#x3D;&quot;authentic_request&quot; value&#x3D;&quot;&quot;&gt;
+					&lt;input type&#x3D;&quot;text&quot; class&#x3D;&quot;form-control&quot; id&#x3D;&quot;course_autoregistration_code&quot; name&#x3D;&quot;course_autoregistration_code&quot; value&#x3D;&quot;&quot; maxlength&#x3D;&quot;30&quot; alt&#x3D;&quot;&quot; size&#x3D;&quot;30&quot; placeholder&#x3D;&quot;Subscribtion code&quot;&gt;
+					&lt;div class&#x3D;&quot;input-group-btn&quot;&gt;
+						&lt;input type&#x3D;&quot;submit&quot; class&#x3D;&quot;button btn btn-default btn btn-default&quot; id&#x3D;&quot;subscribe_info&quot; name&#x3D;&quot;subscribe_info&quot; value&#x3D;&quot;Subscribe&quot;&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/form&gt;
+		&lt;/div&gt;
+	  &lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class&#x3D;&quot;row news&quot;&gt;
+		&lt;div class&#x3D;&quot;col-xs-12&quot;&gt;
+			&lt;h2 class&#x3D;&quot;heading&quot;&gt;News&lt;/h2&gt;
+			&lt;div id&#x3D;&quot;user-panel-carousel&quot; class&#x3D;&quot;carousel slide carousel-fade&quot; data-ride&#x3D;&quot;carousel&quot;&gt;
+				&lt;ol class&#x3D;&quot;carousel-indicators&quot;&gt;
+					&lt;li class&#x3D;&quot;&quot; data-target&#x3D;&quot;#user-panel-carousel&quot; data-slide-to&#x3D;&quot;0&quot;&gt;&lt;/li&gt;
+					&lt;li class&#x3D;&quot;active&quot; data-target&#x3D;&quot;#user-panel-carousel&quot; data-slide-to&#x3D;&quot;1&quot;&gt;&lt;/li&gt;
+					&lt;li class&#x3D;&quot;&quot; data-target&#x3D;&quot;#user-panel-carousel&quot; data-slide-to&#x3D;&quot;2&quot;&gt;&lt;/li&gt;
+				&lt;/ol&gt;
+				&lt;div class&#x3D;&quot;carousel-inner&quot; role&#x3D;&quot;listbox&quot;&gt;
+					&lt;div class&#x3D;&quot;item active left&quot;&gt;
+						&lt;h3&gt;News title&lt;/h3&gt;
+						&lt;p&gt;News description&lt;/p&gt;
+						&lt;span&gt;gg-mm-yyyy&lt;/span&gt;
+					&lt;/div&gt;
+					&lt;div class&#x3D;&quot;item next left&quot;&gt;
+						&lt;h3&gt;News title&lt;/h3&gt;
+						&lt;p&gt;News description&lt;/p&gt;
+						&lt;span&gt;gg-mm-yyyy&lt;/span&gt;
+					&lt;/div&gt;
+					&lt;div class&#x3D;&quot;item&quot;&gt;
+						&lt;h3&gt;News title&lt;/h3&gt;
+						&lt;p&gt;News description&lt;/p&gt;
+						&lt;span&gt;gg-mm-yyyy&lt;/span&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+  	&lt;/div&gt;
+	&lt;div class&#x3D;&quot;row lang&quot;&gt;
+		&lt;div class&#x3D;&quot;col-xs-6&quot;&gt;
+			&lt;p&gt;Cambia lingua&lt;/p&gt;
+		&lt;/div&gt;
+		&lt;div class&#x3D;&quot;col-xs-6&quot;&gt;
+			&lt;ul class&#x3D;&quot;list-inline&quot; id&#x3D;&quot;language_selection&quot;&gt;
+				&lt;li&gt;&lt;a class&#x3D;&quot;lang-sprite lang_english&quot; href&#x3D;&quot;#&quot; title&#x3D;&quot;English&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+				&lt;li&gt;&lt;a class&#x3D;&quot;lang-sprite lang_finnish&quot; href&#x3D;&quot;#&quot; title&#x3D;&quot;Finnish&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+				&lt;li&gt;&lt;a class&#x3D;&quot;lang-sprite lang_italian current&quot; href&#x3D;&quot;#&quot; title&#x3D;&quot;Italiano&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+				&lt;li&gt;&lt;a class&#x3D;&quot;lang-sprite lang_spanish&quot; href&#x3D;&quot;#&quot; title&#x3D;&quot;Spanish&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+			&lt;/ul&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class&#x3D;&quot;row footer&quot;&gt;
+		&lt;div class&#x3D;&quot;col-xs-12&quot;&gt;
+			&lt;p&gt;Testing forma.lms - Copyright © forma.lms&lt;br&gt;Powered by forma.lms CE&lt;/p&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</code></pre>
           </details>
 

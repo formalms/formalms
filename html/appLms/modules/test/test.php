@@ -2226,7 +2226,7 @@ function coursereportMan ()
     $GLOBALS[ 'page' ]->add (
         getTitleArea ($lang->def ('_TEST_SECTION') , 'test')
         . '<div class="std_block">'
-        . '<div class="title_big">' . $lang->def ('_TEST_COURSEREPORT_MANAGEMENT') . '</div>'
+        . '<div class="title_big">' . $lang->def ('_COURSEREPORT_MANAGEMENT') . '</div>'
         . getBackUi ('index.php?modname=test&amp;op=modtestgui&amp;idTest=' . $idTest . '&amp;back_url=' . $url_coded , $lang->def ('_BACK'))
 
         . Form::openForm ('coursereportman' , 'index.php?modname=test&amp;op=updatecoursereport')

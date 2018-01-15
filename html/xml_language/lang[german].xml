@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171211</DATE>
+  <DATE>20171222</DATE>
   <LANG id="german">
     <lang_code>german</lang_code>
     <lang_description>German</lang_description>
@@ -262,6 +262,7 @@
         <key id="catalogue&amp;_MOD_ENTRY_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zeige Elemente des Katalogs]]></key>
         <key id="catalogue&amp;_NEW_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Neuer Katalog]]></key>
         <key id="catalogue&amp;_NO_AVAILABLE_EDITIONS" attributes="" save_date="2017-05-08 14:36:49"><![CDATA[Keine Edition verf&uuml;gbar]]></key>
+        <key id="catalogue&amp;_NO_CATEGORY_TODISPLAY" attributes="" save_date="2017-12-18 15:20:14"><![CDATA[Keine darstellbare Kategorie ]]></key>
         <key id="catalogue&amp;_NO_COURSE" attributes="" save_date="2017-05-19 12:09:01"><![CDATA[Kein Kurs verf&uuml;gbar]]></key>
         <key id="catalogue&amp;_NO_COURSE_FOUND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurs nicht gefunden]]></key>
         <key id="catalogue&amp;_NO_EDITIONS" attributes="" save_date="2017-05-08 16:13:01"><![CDATA[Keine Edition in diesem Kurs]]></key>
@@ -429,7 +430,6 @@ Einf&uuml;ge den hier und Sie werden automatisch in den Kurs eingeschrieben ]]><
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Frage nach Code, der durch das Code Modul erstellt wurde]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Frage nach Baum-Code, der durch einen Benutzer aus einer Liste in einem Drop-Down Men&uuml; ausgew&auml;hlt wurde]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Frage nach einem Baum-Code, der vom Benutzer manuell eingegeben werden muss]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Frage nach einer Kombination von Baum- und Kurscode, der manuell eingegeben werden muss. Baum- und Kurscode m&uuml;ssen aus jeweils 10 Zeichen bestehen, um einen 20-Zeichen Code zu erhalten.]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max. Audio-Nutzer]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max. Nutzer pro Raum]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max. R&auml;ume]]></key>
@@ -439,6 +439,7 @@ Einf&uuml;ge den hier und Sie werden automatisch in den Kurs eingeschrieben ]]><
         <key id="configuration&amp;_BBB_SALT" attributes="" save_date="2017-05-15 15:29:31"><![CDATA[BigBlueButton Salt]]></key>
         <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="2017-05-05 17:07:27"><![CDATA[BigBlueButton Serveradresse]]></key>
         <key id="configuration&amp;_BBB_USER" attributes="" save_date="2017-05-08 14:48:22"><![CDATA[BigBlueButton Benutzername]]></key>
+        <key id="configuration&amp;_CLEAR_TWIG_CACHE" attributes="" save_date="2017-12-18 15:20:32"><![CDATA[Twig cache leeren]]></key>
         <key id="configuration&amp;_CODE_TELESKILL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kunden-Code]]></key>
         <key id="configuration&amp;_COMMON_ADMIN_SESSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vereine &ouml;ffentliche und Admin-Sitzungen]]></key>
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Begrenze die Anzahl der Konferenzen, die von einem einzelnen Nutzer geplant werden k&ouml;nnen]]></key>
@@ -472,6 +473,8 @@ Einf&uuml;ge den hier und Sie werden automatisch in den Kurs eingeschrieben ]]><
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[FTP OK]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Code von Google zur Verf&uuml;gung gestellt]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_IN_LMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktiviere Google Analytics]]></key>
+        <key id="configuration&amp;_HIDE_EMPTY_CATEGORY" attributes="" save_date="2017-12-18 15:20:57"><![CDATA[Verstecke leere Kategorie]]></key>
+        <key id="configuration&amp;_HOME_PAGE" attributes="" save_date="2017-12-18 15:21:09"><![CDATA[Startseite]]></key>
         <key id="configuration&amp;_HOUR_REQUEST_LIMIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Limit, in Stunden, bis zum Ablauf von Anfragen]]></key>
         <key id="configuration&amp;_HTEDITOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visueller HTML Texteditor]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Erlaube Administrator Medienverwaltung im Editor]]></key>
@@ -501,6 +504,7 @@ Einf&uuml;ge den hier und Sie werden automatisch in den Kurs eingeschrieben ]]><
         <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SQL Modus]]></key>
         <key id="configuration&amp;_MYSQL_TIMEZONE" attributes="" save_date="2017-05-08 14:46:09"><![CDATA[MySQL Zeitzone]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[MySQL Version]]></key>
+        <key id="configuration&amp;_MY_COURSES" attributes="" save_date="2017-12-18 15:21:16"><![CDATA[Meine Kurse]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Warte zwischen Bl&ouml;cken (Sekunden)]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sende Newsletter-Nachrichten in Bl&ouml;cken zu je]]></key>
         <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2017-04-10 10:36:51"><![CDATA[Wenn domxml AUS ist, werden das SCORM Modul, die Sprachverwaltung und Videokonferenzen nicht funktionieren]]></key>
@@ -726,6 +730,7 @@ Organisationsdiagramms]]></key>
         <key id="course&amp;_DAY_OF_VALIDITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[G&uuml;tigkeit in Tagen]]></key>
         <key id="course&amp;_DEMO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zeige Demo]]></key>
         <key id="course&amp;_DIRECT_PLAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Spiele direkt das erste Lernobjekt im Betrachter]]></key>
+        <key id="course&amp;_DISABLED" attributes="" save_date="2017-12-18 15:21:38"><![CDATA[Untauglich]]></key>
         <key id="course&amp;_DOCUMENT_UPLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dokumentenupload]]></key>
         <key id="course&amp;_DONT_SHOW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nicht zeigen]]></key>
         <key id="course&amp;_DOWNLOAD_MATERIALS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zeige Material]]></key>
@@ -1390,6 +1395,7 @@ Um diese Worte zu &auml;ndern, gehen Sie bitte auf Admin/Sprachverwaltung, suche
         <key id="login&amp;_MAINTENANCE_TEXT" attributes="" save_date="2015-03-31 00:00:00"><![CDATA[System in mainteinance mode.<br/><br/>To change these text please go to Admin/Language management, search for login and edit the key _MAINTENANCE_TEXT]]></key>
         <key id="login&amp;_NOACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zugriff verweigert, bitte &uuml;berpr&uuml;fen Sie Ihr Passwort]]></key>
         <key id="login&amp;_PASSNOMATCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Die zwei eingegebenen Passw&ouml;rter sind nicht gleich oder das Passwortfeld ist leer.]]></key>
+        <key id="login&amp;_READ_ALL" attributes="" save_date="2017-12-18 15:21:51"><![CDATA[Weiter lesen]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bitte [login] oder [signin] zu kaufen oder gehen Sie weiter mit diesem Kurs]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE_NO_REG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bitte [login] zum Kauf oder gehen Sie weiter mit diesem Kurs]]></key>
         <key id="login&amp;_REGISTER_WITH_FACEBOOK" attributes="" save_date="2017-05-15 12:45:44"><![CDATA[Registrierung mit Facebook]]></key>
