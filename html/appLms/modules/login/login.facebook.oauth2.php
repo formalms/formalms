@@ -16,8 +16,8 @@ use OAuth\Common\Consumer\Credentials;
 $social =new Social();
 $social->includeFacebookLib();
 
-$client_id = Get::sett('164397634197817');
-$client_secret = Get::sett('16329b89c3aad5b8b0232e718b7c27f8');
+$client_id = Get::sett('social_fb_api');
+$client_secret = Get::sett('social_fb_secret');
 $redirect_uri = Get::sett('url').'index.php?modname=login&op=facebook_login';
 
 
