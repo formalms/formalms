@@ -653,3 +653,7 @@ div.colored_row{height:16px;text-align:center;background:#E1EBF4;border:1px soli
 .answer-item .text_answer {
     width: 90%;
 }
+
+.panel.panel-default.panel-treeview td {
+    position: relative;
+}
