@@ -618,13 +618,13 @@ class ChoiceMultiple_Question extends Question {
 			// 	.'<label class="text_answer" for="quest_'.$id_quest.'_'.$id_answer.'">'.$answer.'</label><br />';
 
 			// wrapping checkbox: mod by Andrea Fiadone - 10/03/2016
-			$content .= '<div class="input-wrapper input-wrapper-checkbox">'
+			$content .= '<div class="answer-item"><div class="input-wrapper input-wrapper-checkbox">'
 				.'<input type="checkbox" id="quest_'.$id_quest.'_'.$id_answer.'" '
 				.'name="quest['.$id_quest.']['.$id_answer.']" value="1"'
 				.( ($find_prev && isset($answer_do[$id_answer])) ? ' checked="checked"' : '' )
 				.( $find_prev && $freeze ? ' disabled="disabled"' : '' ).' /> '
 				.'</div>'
-				.'<label class="text_answer" for="quest_'.$id_quest.'_'.$id_answer.'">'.$answer.'</label><br />';
+				.'<label class="text_answer" for="quest_'.$id_quest.'_'.$id_answer.'">'.$answer.'</label><br /></div>';
 
 		}
 		$content .= '</div>'
