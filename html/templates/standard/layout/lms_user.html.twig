@@ -48,17 +48,16 @@
             
             <div class="nofloat"></div>
         </div>
-            
-        <!-- footer  -->
-        <div id="footer" class="layout_footer">
-            {{ evalPhp('Layout::zone', ['footer']) }}
-                {{ evalPhp('Layout::copyright') }}
-        </div>
-        
-        
-        
-        
     </div>
+    <!-- footer  -->
+    <div id="footer" class="layout_footer">
+        {{ evalPhp('Layout::zone', ['footer']) }}
+            {{ evalPhp('Layout::copyright') }}
+    </div>
+        
+        
+    
+    
     <!-- scripts -->
     {{ evalPhp('Layout::zone', ['scripts']) }}
     <!-- debug -->

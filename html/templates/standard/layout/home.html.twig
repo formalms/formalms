@@ -62,9 +62,11 @@
 			<img class="left_logo" src="{{ evalPhp('Layout::path') }}images/company_logo.png" alt="Left logo" />
 		</a>
 		<div class="pull-right">
+            {% if lang_number > 1 %}        
 			<div class="select-language">
 				<span class="hidden-xs">{{ evalPhp('Lang::t', ['_CHANGELANG', 'register']) }}: </span>{{ evalPhp('Layout::change_lang') }}
 			</div>
+            {% endif %}
 			<div class="hidden-xs">
 				{{ evalPhp('Layout::get_catalogue')  }}
 			</div>
