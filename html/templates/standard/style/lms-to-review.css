@@ -257,8 +257,8 @@ ul.wiki_history li:hover{background:#efefef;}
 ul.wiki_history li div{color:#000;font-size:108%;font-weight:bold;display:inline;padding:0.1em;padding-left:0.4em;padding-right:0.4em;}
 ul.wiki_nav_box{margin:0;padding:0em;padding-left:0.2em;height:100%;vertical-align:middle;list-style:none;clear:left;}
 ul.wiki_nav_box li{display:inline;margin:1px;line-height:1.3em;font-size:90%;
-/* border:1px solid #9aafe5; */
-padding:0em;font-family:arial,helvetica,verdana;}
+    /* border:1px solid #9aafe5; */
+    padding:0em;font-family:arial,helvetica,verdana;}
 ul.wiki_nav_box li a{color:#226;padding:0.2em;padding-left:0.4em;padding-right:0.4em;}
 ul.wiki_nav_box li div{color:#888;display:inline;padding:0.1em;padding-left:0.4em;padding-right:0.4em;}
 ul.wiki_nav_box li a span img,ul.wiki_nav_box li div span img{padding:0px;margin:0px;padding-right:4px;padding-left:4px;}
@@ -442,14 +442,15 @@ div.colored_row{height:16px;text-align:center;background:#E1EBF4;border:1px soli
 }
 
 .test_answer_space .answer_question .input-wrapper {
-	display: inline-block;
-	position: relative;
-	margin: 10px;
+    display: inline-block;
+    position: relative;
+    margin: 10px 0;
 }
 
-.test_answer_space .answer_question .input-wrapper input[type="radio"], .test_answer_space .answer_question .input-wrapper input[type="checkbox"] {
-		width: 81px;
-		height: 14px;
+.test_answer_space .answer_question .input-wrapper input[type="radio"],
+.test_answer_space .answer_question .input-wrapper input[type="checkbox"] {
+    width: 81px;
+    height: 14px;
     margin: 0;
     position: relative;
     z-index: 999;
@@ -457,63 +458,63 @@ div.colored_row{height:16px;text-align:center;background:#E1EBF4;border:1px soli
 }
 
 .test_answer_space .answer_question .input-wrapper::before {
-	content: '';
-	display: block;
-	width: 20px;
-	height: 20px;
-	border: solid 1px #ccc;
-	background-color: #fff;
-	position: absolute;
-	top: -3px;
-	left: 30px;
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    border: solid 1px #ccc;
+    background-color: #fff;
+    position: absolute;
+    top: -3px;
+    left: 30px;
 }
 
 .test_answer_space .answer_question .input-wrapper.checked::before {
-	background-color: #3B99FC;
+    background-color: #3B99FC;
 }
 
 .test_answer_space .answer_question .input-wrapper-radio.checked::after {
-	display: block;
-	content: '';
-	width: 8px;
-	height: 8px;
-	position: absolute;
-	top: 3px;
-	left: 3px;
-	background-color: #fff;
+    display: block;
+    content: '';
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    background-color: #fff;
 }
 
 .test_answer_space .answer_question .input-wrapper-checkbox.checked::after {
-	display: block;
-	content: '\e013';
-	width: 12px;
-	height: 12px;
-	position: absolute;
-	top: 1px;
-	left: 1px;
-	font-family: 'Glyphicons Halflings';
-	font-size: 11px;
-	line-height: 12px;
-	color: #fff;
+    display: block;
+    content: '\e013';
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    font-family: 'Glyphicons Halflings';
+    font-size: 11px;
+    line-height: 12px;
+    color: #fff;
 }
 
 .test_answer_space .answer_question .input-wrapper-radio::before, .test_answer_space .answer_question .input-wrapper-radio::after {
-	-webkit-border-radius: 50%;
-	-moz-border-radius: 50%;
-	-ms-border-radius: 50%;
-	-o-border-radius: 50%;
-	border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
 }
 
 .test_answer_space .answer_question label, .test_answer_space .answer_question label {
-
-     margin: 0;
-    margin-bottom: 2px;
-    margin-top: -32px;
-    margin-left: -31px;
+    margin: 0;
+    /*margin-bottom: 2px;*/
+    /*margin-top: -32px;*/
+    /*margin-left: -31px;*/
     padding-left: 0px;
-    padding-top: 0px;
-    padding-inline-end: 281px;
+    padding-top: 8px;
+    /*padding-inline-end: 281px;*/
+    font-weight: 100;
 }
 
 #test_intro .pcontainer-feedback {
@@ -633,4 +634,26 @@ div.colored_row{height:16px;text-align:center;background:#E1EBF4;border:1px soli
         border-right: none;
         border-bottom:1px dotted #ccc;
     }
+}
+
+.answer-item {
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.answer-item .input-wrapper,
+.answer-item .text_answer {
+    float: left;
+}
+
+.answer-item .input-wrapper {
+    width: 10%;
+}
+
+.answer-item .text_answer {
+    width: 90%;
+}
+
+.panel.panel-default.panel-treeview td {
+    position: relative;
 }
