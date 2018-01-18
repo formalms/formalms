@@ -20,10 +20,12 @@ $client_id = Get::sett('social_fb_api');
 $client_secret = Get::sett('social_fb_secret');
 $redirect_uri = Get::sett('url').'index.php?modname=login&op=facebook_login';
 
+
+
 try{
 	$serviceFactory = new \OAuth\ServiceFactory();
 	$storage = new Session(false);
-	$credentials = new Credentials(
+    $credentials = new Credentials(
 			$client_id,
 			$client_secret,
 			$redirect_uri

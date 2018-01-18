@@ -1,3 +1,54 @@
+ <?php
+     
+     
+     
+    function ShowCatalogue($user_catalogue){
+        if (Get::sett('on_catalogue_empty')=='on' ) {
+            if (count($user_catalogue)==0) {
+                showGeneralCatalogueTab();
+            } else {
+                showUserCatalogueTab($user_catalogue);   
+            }    
+         } else {
+            if (!$catalogue_exist) {
+                showGeneralCatalogueTab();
+            } else {
+                if (count($user_catalogue) > 0) {
+                    showUserCatalogueTab($user_catalogue);
+                }
+            }
+        }
+    }
+    // display assigned catalogues
+    function showUserCatalogueTab($user_catalogue){
+            $i = 0;
+            foreach ($user_catalogue as $id_catalogue => $cat_info){
+                if ((is_null($_GET['id_catalogue']) && $i ==0 ) || (intval($_GET['id_catalogue'])==$id_catalogue) ){
+                    $active = "class='active'";
+                    $i = 1;
+                    $current_catalogue_id =  $id_catalogue;
+                    echo PHP_EOL.'<script>current_catalogue='.$id_catalogue.';</script>'.PHP_EOL;
+                }
+                echo '<li '.$active.'>'
+                . '<a href="index.php?r=catalog/show&amp;id_catalogue=' . $id_catalogue . '">'
+                . '' . $cat_info['name'] . ''
+                . '</a>'
+                . '</li>';
+                $active = '';
+            }
+            return;  
+    }
+    
+    // display general catalogue                
+    function showGeneralCatalogueTab(){
+        echo '<li class="active"><a href="index.php?r=catalog/show&amp;id_catalogue=0">'.Lang::t('_CATALOGUE').'</a></li>'.
+            PHP_EOL.'<script>current_catalogue=0;</script>'.PHP_EOL; 
+         
+     }
+                    
+?>
+
+
 <style >
 
 .material-switch > input[type="checkbox"] {
@@ -63,49 +114,14 @@
 
 
 <script language="javascript">
-        
-        function scriviCookie(nomeCookie,valoreCookie,durataCookie)
-        {
-          var scadenza = new Date();
-          var adesso = new Date();
-          scadenza.setTime(adesso.getTime() + (parseInt(durataCookie) * 60000));
-          document.cookie = nomeCookie + '=' + escape(valoreCookie) + '; expires=' + scadenza.toGMTString() + '; path=/';
-        }          
-             
-             
-             
-        function leggiCookie(nomeCookie)
-        {
-          if (document.cookie.length > 0)
-          {
-            var inizio = document.cookie.indexOf(nomeCookie + "=");
-            if (inizio != -1)
-            {
-              inizio = inizio + nomeCookie.length + 1;
-              var fine = document.cookie.indexOf(";",inizio);
-              if (fine == -1) fine = document.cookie.length;
-              return unescape(document.cookie.substring(inizio,fine));
-            }else{
-               return "";
-            }
-          }
-          return "";
-        }
-
  
-   
-     // select by course type
-    function loadCourseType(){
-         type_course  = document.getElementById("typeCourse").selectedIndex;
-         if(type_course==0) get_type_curse = "";
-         if(type_course==1) get_type_curse = "elearning";
-         if(type_course==2) get_type_curse = "classroom";
-         scriviCookie('type_course',get_type_curse,60);
-         callAjaxCatalog(leggiCookie('id_current_cat'))
+     
+    function getCurrentTypeCourse() {
+       c = getCookie('catalog['+current_catalogue+'].type_course'); 
+       return (c =='' ? '': c ) 
     }
 
-    $("select#typeCourse").val(leggiCookie('type_course'))
- 
+    
     $(document).ready(function(){
           $('body').append('<div id="toTop" class="btn btn-info"><span class="glyphicon glyphicon-chevron-up"></span><?php echo Lang::t('_BACKTOTOP','faq') ?></div>');
             $(window).scroll(function () {
@@ -119,63 +135,38 @@
             $("html, body").animate({ scrollTop: 0 }, 1000);
             return false;
         });
-    });
+
+        
+        
+        $("select#typeCourse").val(getCurrentTypeCourse())
+        
+        $('#typeCourse').change(function(){
+            setCookie('catalog['+current_catalogue+'].type_course',this.value, 60);
+            callAjaxCatalog(getCookie('id_current_category'))
+        })
+
+        
+    });                                                                                                                                       
   
  </script>  
 
 
 <div class="tabs-wrapper">
-                <ul class="nav nav-tabs hidden-xs">
-                    <?php
-                    
-                    
-                    if (Get::sett('on_catalogue_empty')=='on' ) {
-                        if (count($user_catalogue)==0) {
-                            echo '<li class="active" ><a href="index.php?r=catalog/show&amp;id_cata=0">'.Lang::t('_CATALOGUE').'</a></li>';
-                        } else {
-                            GetMyFirstCatalogue($user_catalogue);   
-                        }    
-                     } else {
-                        if (!$catalogue_exist) {
-                            echo '<li class="active" ><a href="index.php?r=catalog/show&amp;id_cata=0">'.Lang::t('_CATALOGUE').'</a></li>';
-                        } else {
-                            if (count($user_catalogue) > 0) {
-                                GetMyFirstCatalogue($user_catalogue);
-                            }
-                        }
-                    }
-                    
-                    
-                    function GetMyFirstCatalogue($user_catalogue){
-                            $i = 0;
-                            foreach ($user_catalogue as $id_catalogue => $cat_info){
-                                if ((is_null($_GET['id_cata']) && $i ==0 ) || (intval($_GET['id_cata'])==$id_catalogue) ){
-                                    $active = "class='active'";
-                                    $i = 1;
-                                }
-                                echo '<li '.$active.' >'
-                                . '<a href="index.php?r=catalog/show&amp;id_cata=' . $id_catalogue . '">'
-                                . '' . $cat_info['name'] . ''
-                                . '</a>'
-                                . '</li>';
-                                $active = '';
-                            }
-                            return;  
-                    }
-                    
-                    ?>
-
+                <ul id="catalog_nav" class="nav nav-tabs hidden-xs">
+                      <?php 
+                            ShowCatalogue($user_catalogue); 
+                      ?>
                 </ul>            
                 
 </div>
-    <div class="tab_subnav">
+<div class="tab_subnav">
             <ul class="nav nav-pills" >
                 <li>
-                          <select class='form-control' id="typeCourse" onchange="javascript:loadCourseType();">
+                          <select class='form-control' id="typeCourse">
                               <option value=''><?php echo Lang::t('_ALL') ?></option>
-                              <option value='elearning'><?php echo Lang::t('_ELEARNING') ?></option>
-                              <option value='classroom'><?php echo Lang::t('_CLASSROOM','classroom') ?></option>
+                              <option value='elearning'><?php echo Lang::t('_ELEARNING', 'catalogue') ?></option>
+                              <option value='classroom'><?php echo Lang::t('_CLASSROOM_COURSE','cart') ?></option>
                           </select>
                  </li>                       
             </ul>
-    </div>
+</div>

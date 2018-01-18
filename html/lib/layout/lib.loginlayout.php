@@ -209,5 +209,21 @@ class LoginLayout {
 		$res.='</div>';
 		return $res;
 	}
+    
+        /**
+    * Return the number of the installed languages in the platform
+    * @return <int>
+    * 
+    */
+    public static function lang_number(){
+        $lang_sel = Lang::get();
+
+        $lang_model = new LangAdm();
+        $lang_list = $lang_model->getLangListNoStat(false, false, 'lang_description', 'ASC');
+        return count($lang_list);
+    }
+
+    
+    
 
 }

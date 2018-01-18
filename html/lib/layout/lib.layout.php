@@ -200,6 +200,7 @@ class Layout
 
         return $html;
     }
+    
 
     /**
      * Return the complete code for change lang dropdown
@@ -343,6 +344,7 @@ class Layout
                 $retArray['external_page'] = LoginLayout::external_page();
                 $retArray['homepage_text'] = Lang::t('_HOMEPAGE', 'login');
                 $retArray['intro_text'] = Lang::t('_INTRO_STD_TEXT', 'login');
+                $retArray['lang_number'] = LoginLayout::lang_number();
 
                 if ($GLOBALS['maintenance'] != "on") {
                     $retArray['changeLanguage_text'] = Lang::t('_CHANGELANG', 'register');
