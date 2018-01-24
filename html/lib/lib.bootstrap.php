@@ -285,6 +285,10 @@ class Boot {
 
 		self::log( " Load settings from database." );
 		Util::load_setting(Get::cfg('prefix_fw').'_setting', 'framework');
+
+		if (Get::sett('do_debug') == 'on'){
+            @error_reporting(E_ALL);
+        }
 	}
 
 	/**
