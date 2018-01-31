@@ -77,7 +77,8 @@ var Users = {
 
 
 	setFilter: function() {
-		Users.filterText = this.value;
+		Users.filterText =  $("#group_users_filter_text").val();
+        alert(Users.filterText)
 		DataTable_group_users_table.refresh();
 	},
 

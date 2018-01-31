@@ -82,7 +82,7 @@ var ClassLocations = {
 	},
 
 	setFilter: function() {
-		ClassLocations.filterText = this.value;
+		ClassLocations.filterText = $("input[id$='_filter_text']").val();
 		DataTable_classlocations_table.refresh();
 	},
 

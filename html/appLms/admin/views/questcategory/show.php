@@ -66,7 +66,7 @@ var QuestCategories = {
 	filterText: "",
 
 	setFilter: function() {
-		QuestCategories.filterText = this.value;
+		QuestCategories.filterText = $("input[id$='_filter_text']").val();
 		DataTable_questcategory_table.refresh();
 	},
 

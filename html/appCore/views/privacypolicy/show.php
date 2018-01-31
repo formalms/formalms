@@ -125,7 +125,8 @@ var PrivacyPolicies = {
 	},
 
 	setFilter: function() {
-		PrivacyPolicies.filterText = this.value;
+		PrivacyPolicies.filterText = $("input[id$='_filter_text']").val();
+        alert(PrivacyPolicies.filterText)
 		DataTable_policies_table.refresh();
 	},
 

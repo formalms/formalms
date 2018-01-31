@@ -101,7 +101,7 @@ var AdminManagement = {
 	},
 
 	setFilter: function() {
-		AdminManagement.filterText = this.value;
+		AdminManagement.filterText = $("input[id$='_filter_text']").val();
 		DataTable_admin_manager_table.refresh();
 	},
 

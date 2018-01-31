@@ -177,12 +177,8 @@ class ElearningLms extends Model {
         $db = DbConn::getInstance();
 
 
-        $query = "SELECT DISTINCT cu.status AS status_course "
-            ." FROM %lms_courseuser AS cu JOIN %lms_course AS c "
-            ." ON (cu.idCourse = c.idCourse) "
-            ." WHERE cu.idUser = ".(int)$id_user."  "
-            ." ORDER BY cu.status ASC";
-
+        $query =  "SELECT DISTINCT status AS status_course  FROM learning_courseuser WHERE learning_courseuser.idUser = ".(int)$id_user;
+        
             
  
             
@@ -190,9 +186,9 @@ class ElearningLms extends Model {
         if ($res && $db->num_rows($res) > 0) {
             while (list($status_course) = $db->fetch_row($res)) {
                 
-                if($status_course==0) $str_status_course =  Lang::t('_NEW', 'course');
-                if($status_course==1) $str_status_course =  Lang::t('_USER_STATUS_BEGIN', 'course');
-                if($status_course==2) $str_status_course =  Lang::t('_COMPLETED', 'course');;
+                if($status_course==0) $str_status_course =  Lang::t('_NEW', 'standard');
+                if($status_course==1) $str_status_course =  Lang::t('_USER_STATUS_BEGIN', 'standard');
+                if($status_course==2) $str_status_course =  Lang::t('_COMPLETED', 'standard');;
                 
                 if($status_course>=0) $output[$status_course] = $str_status_course;
             }

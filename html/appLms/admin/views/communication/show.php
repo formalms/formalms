@@ -166,7 +166,7 @@ var Communications = {
 	},
 
 	setFilter: function() {
-		Communications.filterText = this.value;
+		Communications.filterText = $("input[id$='_filter_text']").val();
 		DataTable_communications_table.refresh();
 	},
 

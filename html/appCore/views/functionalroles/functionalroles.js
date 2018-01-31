@@ -23,7 +23,7 @@ var FunctionalRoles = {
 	},
 
 	setFilter: function() {
-		FunctionalRoles.filterText = this.value;
+		FunctionalRoles.filterText = $("#functionalroles_filter_text").val();
 		DataTable_fncroles_table.refresh();
 	},
 
