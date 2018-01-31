@@ -1,6 +1,28 @@
 <?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 
+function LanguageBox() {
+        $lang_model = new LangAdm();
+        $lang_list = $lang_model->getLangListNoStat(false, false, 'lang_description', 'ASC');
+        $out = '';
+        if ( count($lang_list) > 1) {
+            $out = '<div class="row lang">
+                            <div class="col-xs-6">
+                                <p>' . Lang::t('_CHANGELANG', 'register') . '</p>
+                            </div>
+                            <div class="col-xs-6">
+                                ' . Layout::buildLanguages() . '
+                            </div>
+                    </div>';
+        }
+        return $out;
+}        
+
+
+
+
+
+
 
 /* ======================================================================== \
 |   FORMA - The E-Learning Suite                                            |
@@ -165,11 +187,11 @@ foreach ($menu['all'] as $row) {
     if( isset($_GET['id_cat']) && strpos($row[0], "catalog")>0)  $active = " class='active'";
     // ADMIN
     if(strrpos($row[0], 'appCore')>0 ){
-       cout( '<li><a class="no-border-right no-before" href="'.$row[0].'" title="'.$row[1].'" title="'.Lang::t('_GO_TO_FRAMEWORK', 'menu_over').'"><span class="glyphicon glyphicon-cog top-menu__label">'.Lang::t('_GO_TO_FRAMEWORK', 'menu_over').'</span></a></li> ','menu_over');
+       cout( '<li class="green_menu"><a class="no-border-right no-before" href="'.$row[0].'" title="'.$row[1].'" title="'.Lang::t('_GO_TO_FRAMEWORK', 'menu_over').'"><span class="glyphicon glyphicon-cog top-menu__label">'.Lang::t('_GO_TO_FRAMEWORK', 'menu_over').'</span></a></li> ','menu_over');
     } else{
          // HELP DESK
         if(strrpos($row[1], 'sign')>0 ){
-           cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.Lang::t('_CUSTOMER_HELP', 'customer_help').'">'.$row[1].'</a></li>','menu_over');
+           cout( '<li class="green_menu" '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.Lang::t('_CUSTOMER_HELP', 'customer_help').'">'.$row[1].'</a></li>','menu_over');
         }else if ($row[2] === false){
            cout( '<li '.$active.'   ><a href="'.$row[0].'" class="'.$row[2].'" title="'.$row[1].'"  >'.$row[1].'</a></li>','menu_over');
         }
@@ -199,7 +221,7 @@ foreach ($menu['all'] as $row) {
               }
 
                cout('
-                        <li>                                
+                        <li class="green_menu">                                
                             <div id="o-wrapper" class="o-wrapper">
                                 <button id="c-button--slide-right" class="c-button" >
                                     <a data-toggle="dropdown"  href="#" title="'.Lang::t('_PROFILE', 'menu_course').'">
@@ -260,25 +282,13 @@ foreach ($menu['all'] as $row) {
                                 </div>
                             </div>
                         </div>
-                        <div class="row course-subscription">
-                            <div class="col-xs-12">
-                                '.$subscribe_course.'
-                            </div> <!-- end col xs-12 -->
-                        </div>
                         <div class="row news">
                             <div class="col-xs-12">
                                 '.$news.'
                             </div> <!-- end col xs-12 -->
-                        </div>
-                        <div class="row lang">
-                            <div class="col-xs-6">
-                                <p>' . Lang::t('_CHANGELANG', 'register') . '</p>
-                            </div>
-                            <div class="col-xs-6">
-                                ' . Layout::buildLanguages() . '
-                            </div>
-                        </div>
-                        <div class="row footer">
+                        </div>', 'menu_over');
+cout(LanguageBox(), 'menu_over');
+cout('<div class="row footer">
                             <div class="col-xs-12">
                               <p>Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</p>
                             </div>
@@ -292,13 +302,14 @@ foreach ($menu['all'] as $row) {
         $user_info = $acl_man->getUser($idst, false);
         $user_email = $user_info[ACL_INFO_EMAIL];
 
-
+        
     cout('<!-- hidden inline form -->
             <div id="inline" >
                 <form id="contact" name="contact" action="#" method="post"  style="width: 470px;" role="form" style="display: block;"> 
+				<legend>'.Lang::t('_CUSTOMER_HELP', 'customer_help').'</legend> 
                     <fieldset>
                               <!-- Form Name -->
-                              <legend>'.Lang::t('_CUSTOMER_HELP', 'customer_help').'</legend>                
+                                             
                 
                       <input type="hidden" id="sendto" name="sendto" class="txt" value="'.Get::sett('customer_help_email').'" readonly>
                       <input type="hidden" id="authentic_request_newsletter" name="authentic_request" value="'.Util::getSignature().'" />
