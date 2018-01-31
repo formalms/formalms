@@ -80,13 +80,13 @@ class Track_Poll extends Track_Object {
 		else return false;
 	}
         
-        function getIdTrack( $idReference, $idUser, $idResource, $createOnFail = FALSE ) {
+        function getIdTrack( $id_reference, $idUser, $idResource, $createOnFail = FALSE ) {
                 
                 $rsTrack = $this->getTrack($id_reference,$idResource,$idUser);
                 if( $rsTrack !== FALSE ) {
                     return array( TRUE, $rsTrack );
                 } else if ($createOnFail) {
-                        $rsTrack = $this->createNewTrack( $idUser, $idResource, $idReference );
+                        $rsTrack = $this->createNewTrack( $idUser, $idResource, $id_reference );
                         return array( FALSE, $rsTrack );
                 }
 		return FALSE;

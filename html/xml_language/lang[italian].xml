@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171211</DATE>
+  <DATE>20180118</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -294,7 +294,7 @@
         <key id="certificate&amp;_CERTIFICATE_REPORT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Certificati rilasciati]]></key>
         <key id="certificate&amp;_CERTIFICATE_SUMMARY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Lista template certificati]]></key>
         <key id="certificate&amp;_CERTIFICATE_VIEW_CAPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Certificati rilasciati]]></key>
-        <key id="certificate&amp;_CERTIFICATE_WARNING" attributes="" save_date="2017-03-15 14:45:24"><![CDATA[NOTA IMPORTANTE: Per un limite della classe PDF che verrà sistemato nelle versioni future si consiglia di usare SOLO immagini di sfondo e di non usare immagini nel codice HTML all'interno di tag quali < p > < div > < center > ecc, questo potrebbe causare pagine di errore.]]></key>
+        <key id="certificate&amp;_CERTIFICATE_WARNING" attributes="" save_date="2018-01-03 16:53:45"><![CDATA[NOTA IMPORTANTE: Per un limite della classe PDF che verrà sistemato nelle versioni future si consiglia di usare SOLO immagini di sfondo e di non usare immagini nel codice HTML all'interno di tag quali < p > < div > < center > ecc., questo potrebbe causare pagine di errore.]]></key>
         <key id="certificate&amp;_CHOOSE_CERTIFICATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Scegli un certificato]]></key>
         <key id="certificate&amp;_CHOOSE_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Scegli un corso]]></key>
         <key id="certificate&amp;_COURSE_BEGIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Data inizio corso]]></key>
@@ -427,11 +427,10 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "allow_url_include"]]></key>
         <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2017-03-15 16:37:18"><![CDATA[già assegnato]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[API and Authentication]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Richiedi codice creato attraverso il modulo codici]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Chiedi un codice di accesso all'organigramma, il codice sarà scelto da un menu a tendina]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Chiedi un codice di accesso all'organigramma che deve essere inserito manualmente dall'utente]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Chiedi un codice di accesso che è una combinazione tra codice organigramma e codice corso. Ogni porzione di codice deve essere formata da 10 caratteri per un totale di 20]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Massimo utenti Audio]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Massimo utenti per stanza]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Numero massimo di stanze]]></key>
@@ -441,6 +440,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_BBB_SALT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Salt BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Indirizzo server BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_USER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nome Utente BigBlueButton]]></key>
+        <key id="configuration&amp;_CLEAR_TWIG_CACHE" attributes="" save_date="2017-10-16 17:49:29"><![CDATA[Elimina twig cache]]></key>
         <key id="configuration&amp;_CODE_TELESKILL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Codice cliente]]></key>
         <key id="configuration&amp;_COMMON_ADMIN_SESSION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Condividi la sessione pubblica con quella di amministrazione]]></key>
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Limita il numero di conferenze che possono essere pianificate da un singolo utente]]></key>
@@ -662,7 +662,9 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="course&amp;_ADVERT_FORUM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Ci sono [forum] nuovi messaggi nei forum]]></key>
         <key id="course&amp;_ADVERT_LOBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Ci sono [lobj] nuovi oggetti didattici]]></key>
         <key id="course&amp;_ALLOW_OVERBOOKING" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Consenti l'overbooking]]></key>
+        <key id="course&amp;_ALL_COURSE_TYPE" attributes="" save_date="2018-01-15 17:02:21"><![CDATA[Tutti i tipi di corso]]></key>
         <key id="course&amp;_ALL_OPEN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Tutti i corsi aperti]]></key>
+        <key id="course&amp;_ALL_YEARS" attributes="" save_date="2018-01-15 17:03:22"><![CDATA[Tutti gli anni]]></key>
         <key id="course&amp;_ASSIGN_FOR_ALL_STATUS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Assegna per qualsiasi stato utente]]></key>
         <key id="course&amp;_ASSIGN_FOR_AT_LEAST_MINUTES" attributes="" save_date="2017-03-15 16:38:04"><![CDATA[Tempo minimo di fruizione (min.)]]></key>
         <key id="course&amp;_ASSIGN_FOR_STATUS_COMPLETED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Assegna agli utenti che hanno completato il corso]]></key>
@@ -772,6 +774,7 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="course&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="accessibility" save_date="2015-09-30 15:32:39"><![CDATA[Un utente è in attesa su [url]]]></key>
         <key id="course&amp;_NOACTIVE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[In attesa di attivazione]]></key>
         <key id="course&amp;_NOENTER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Non puoi entrare]]></key>
+        <key id="course&amp;_NO_COURSE_DATA" attributes="" save_date="2018-01-15 17:04:00"><![CDATA[Corso senza data di inizio]]></key>
         <key id="course&amp;_NO_COURSE_FOUND" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nessun corso trovato per la selezione corrente]]></key>
         <key id="course&amp;_OTHER_OPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Altre opzioni]]></key>
         <key id="course&amp;_OTHER_USER_MATERIAL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Materiale per gli altri ruoli]]></key>
@@ -2672,6 +2675,7 @@ Password: [password]]]></key>
         <key id="test&amp;_ALL_QUEST_TYPE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Qualunque tipo]]></key>
         <key id="test&amp;_ATTEMPTS_REMAINING_BEFORE_SUSPENSION" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Tentativi rimasti prima della sospensione]]></key>
         <key id="test&amp;_BONUS_SCORE_FOR_TEST" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Bonus assegnato a questo test (con arrotondamenti o modifiche manuali)]]></key>
+        <key id="test&amp;_COURSEREPORT_MANAGEMENT" attributes="" save_date="2018-01-12 15:45:49"><![CDATA[Impostazioni Registro Valutazioni]]></key>
         <key id="test&amp;_CURRENT_SELECTION_COUNT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Domande selezionate]]></key>
         <key id="test&amp;_DESELECT_PAGE" attributes="" save_date="2017-04-05 12:35:03"><![CDATA[Deseleziona pagina]]></key>
         <key id="test&amp;_EMPTY_ANSWER" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Risposta vuota]]></key>
@@ -2724,6 +2728,7 @@ Password: [password]]]></key>
         <key id="test&amp;_QUEST_UPLOAD" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Carica un file]]></key>
         <key id="test&amp;_RESTART_INFO" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Riesecuzione test dall'inizio]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Seleziona pagina]]></key>
+        <key id="test&amp;_SHOW_IN_COURSEREPORT" attributes="" save_date="2018-01-12 15:47:19"><![CDATA[Mostra in Registro Valutazioni]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Sospendi il test dopo il seguente numero di tentativi sbagliati]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Sospendi la possibilità di compilare il test per il numero di ore seguenti]]></key>
         <key id="test&amp;_SUSPENSION_PREREQUISITES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Dopo la sospensione del test richiedi un nuovo completamento dei prerequisiti del test per effettuare una nuova compilazione]]></key>
@@ -2778,6 +2783,7 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="test&amp;_TEST_MM4_SHOWDOANSWER" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Permetti di rivedere le risposte per ogni domanda]]></key>
         <key id="test&amp;_TEST_MM4_SHOWSOL" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Mostra le risposte corrette]]></key>
         <key id="test&amp;_TEST_MM4_SHOWTOT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Mostra il punteggio finale (se calcolabile subito)]]></key>
+        <key id="test&amp;_TEST_MM_FIVE" attributes="" save_date="2018-01-12 15:45:12"><![CDATA[Gestione test in registro valutazioni]]></key>
         <key id="test&amp;_TEST_MM_FOUR" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[3 - Dati da mostrare a termine compilazione]]></key>
         <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2017-04-19 10:47:00"><![CDATA[1 - Imposta la presentazione delle domande]]></key>
         <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2017-04-19 10:47:12"><![CDATA[2 - Imposta modalità di fruizione]]></key>
@@ -2871,9 +2877,6 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="test&amp;_VERY_HARD" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Molto difficile]]></key>
         <key id="test&amp;_YES_IF_PASSED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Si, se il test è stato superato]]></key>
         <key id="test&amp;_YOU_HAVE_PASS_THIS_TEST" attributes="" save_date="2017-05-19 12:20:37"><![CDATA[Hai passato questo test]]></key>
-        <key id="test&amp;_COURSEREPORT_MANAGEMENT" attributes="" save_date="2017-05-19 12:20:37"><![CDATA[Gestione Registro Valutazioni]]></key>
-        <key id="test&amp;_SHOW_IN_COURSEREPORT" attributes="" save_date="2017-05-19 12:20:37"><![CDATA[Mostra in Registro Valutazioni]]></key>
-        <key id="test&amp;_TEST_MM_FIVE" attributes="" save_date="2017-05-19 12:20:37"><![CDATA[Gestione test in Registro Valutazioni]]></key>
       </module>
       <module id="transaction">
         <key id="transaction&amp;_MARK_AS_PAID" attributes="" save_date="2017-06-30 15:39:04"><![CDATA[Imposta come pagato]]></key>

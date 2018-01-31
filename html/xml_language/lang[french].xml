@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171222</DATE>
+  <DATE>20180118</DATE>
   <LANG id="french">
     <lang_code>french</lang_code>
     <lang_description>French</lang_description>
@@ -701,7 +701,7 @@
         <key id="course&amp;_COURSE_LANG_METHOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Langue du cours]]></key>
         <key id="course&amp;_COURSE_LIST_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voici la liste avec tous les cours auxquels l'utilisateur s'est inscrit ainsi que d'autres informations utiles]]></key>
         <key id="course&amp;_COURSE_LOGO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Logo du cours]]></key>
-        <key id="course&amp;_COURSE_MENU_TO_ASSIGN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Attribueer le menu]]></key>
+        <key id="course&amp;_COURSE_MENU_TO_ASSIGN" attributes="" save_date="2017-12-28 21:45:38"><![CDATA[Attribuer le menu]]></key>
         <key id="course&amp;_COURSE_PRIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Prix]]></key>
         <key id="course&amp;_COURSE_QUOTA" attributes="" save_date="2017-05-05 15:49:45"><![CDATA[Fixe la limite d'espace disque pour ce cours (Mo)]]></key>
         <key id="course&amp;_COURSE_SELECTION" attributes="" save_date="2017-06-19 13:04:36"><![CDATA[Sélectionner un cours]]></key>

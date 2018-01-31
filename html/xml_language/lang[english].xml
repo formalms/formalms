@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171211</DATE>
+  <DATE>20180118</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -425,11 +425,10 @@
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Configuration of "allow_url_include"]]></key>
         <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[already assigned]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr> and <abbr title="Single Sign On">SSO</abbr>]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[API e Autenticazione]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a code created through the code module]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a tree code chosen by the user from a list in a dropdown menu]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a tree code that must be entered manually by the user]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2017-04-10 16:37:45"><![CDATA[Ask for a combination of tree code and course code that must be entered manually by the user. Tree and course code must be composed of 10 characters each, in order to obtain a 20 characters code]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Max Audio users]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Max users per room]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Max rooms]]></key>
@@ -439,6 +438,7 @@
         <key id="configuration&amp;_BBB_SALT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Salt BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="2017-05-05 17:03:26"><![CDATA[BigBlueButton server address ]]></key>
         <key id="configuration&amp;_BBB_USER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Username BigBlueButton]]></key>
+        <key id="configuration&amp;_CLEAR_TWIG_CACHE" attributes="" save_date="2017-10-16 17:49:29"><![CDATA[Clear twig cache]]></key>
         <key id="configuration&amp;_CODE_TELESKILL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Customer code]]></key>
         <key id="configuration&amp;_COMMON_ADMIN_SESSION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Unify admin and public sessions]]></key>
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Limit for the number of conferences that can be planned by a single user]]></key>
@@ -1840,8 +1840,8 @@ Please don't upload offensive images.]]></key>
         <key id="register&amp;_INVALID_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Activation code not valid]]></key>
         <key id="register&amp;_INVALID_RANDOM_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[The security code is invalid]]></key>
         <key id="register&amp;_LOGIN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Back to login]]></key>
-        <key id="register&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2017-07-07 13:00:04"><![CDATA[If you have lost your password insert your username in the field below, you will receive a email with some instruction]]></key>
-        <key id="register&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2017-04-10 14:53:55"><![CDATA[If you have lost your username insert your registration email address in the field below, you will receive an email]]></key>
+        <key id="register&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2018-01-03 16:52:37"><![CDATA[If you have lost your password, insert your username in the field below, you will receive an email with instructions]]></key>
+        <key id="register&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2018-01-03 16:52:44"><![CDATA[If you have lost your username insert your registration email address in the field below, you will receive an email]]></key>
         <key id="register&amp;_LOST_PWD_MAILTEXT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[This is the process to generate a new password for the user associated to this email address. Click the link below to generate a new password.<br/>
 <br/>
 <a href="[link]">[link]</a>]]></key>
@@ -2675,6 +2675,7 @@ Password: [password]]]></key>
         <key id="test&amp;_ALL_QUEST_TYPE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Any type]]></key>
         <key id="test&amp;_ATTEMPTS_REMAINING_BEFORE_SUSPENSION" attributes="" save_date="2017-05-04 23:09:52"><![CDATA[Attempts remaining before suspension]]></key>
         <key id="test&amp;_BONUS_SCORE_FOR_TEST" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Bonus assigned for this test (with round or manual modification)]]></key>
+        <key id="test&amp;_COURSEREPORT_MANAGEMENT" attributes="" save_date="2018-01-12 15:45:57"><![CDATA[Gradebook management settings]]></key>
         <key id="test&amp;_CURRENT_SELECTION_COUNT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Selected answer]]></key>
         <key id="test&amp;_DESELECT_PAGE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Deselect page]]></key>
         <key id="test&amp;_EMPTY_ANSWER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Empty answer]]></key>
@@ -2727,6 +2728,7 @@ Password: [password]]]></key>
         <key id="test&amp;_QUEST_UPLOAD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Upload file]]></key>
         <key id="test&amp;_RESTART_INFO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Restart test execution from beginning]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Select page]]></key>
+        <key id="test&amp;_SHOW_IN_COURSEREPORT" attributes="" save_date="2018-01-12 15:47:30"><![CDATA[Show in Gradebook Management]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Suspend the test after the following number of failed attempts]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Suspend the test for the following number of hours]]></key>
         <key id="test&amp;_SUSPENSION_PREREQUISITES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[After the test suspension, require a new completion of all the test prerequisites]]></key>
@@ -2780,6 +2782,7 @@ Password: [password]]]></key>
         <key id="test&amp;_TEST_MM4_SHOWDOANSWER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show all the answers inserted by user]]></key>
         <key id="test&amp;_TEST_MM4_SHOWSOL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show correct answers]]></key>
         <key id="test&amp;_TEST_MM4_SHOWTOT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show final score (if it's calculable)]]></key>
+        <key id="test&amp;_TEST_MM_FIVE" attributes="" save_date="2018-01-12 15:44:29"><![CDATA[Manage your test in Gradebook Management]]></key>
         <key id="test&amp;_TEST_MM_FOUR" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[3 - Details shown at the end of attempt]]></key>
         <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2017-04-19 10:47:22"><![CDATA[1 - Set questions visualization]]></key>
         <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2017-04-19 12:38:06"><![CDATA[2 - Set attempts options]]></key>

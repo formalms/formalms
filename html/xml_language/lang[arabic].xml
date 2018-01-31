@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171211</DATE>
+  <DATE>20180118</DATE>
   <LANG id="arabic">
     <lang_code>arabic</lang_code>
     <lang_description>&#x627;&#x644;&#x639;&#x631;&#x628;&#x64A;&#x629;</lang_description>
@@ -381,7 +381,6 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[رمز وحدة طلب رمز تم إنشاؤها من خلال]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[طلب رمز الشجرة التي اختارها المستخدم من قائمة في القائمة المنسدلة]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[طلب رمز الشجرة التي يجب إدخالها يدويا من قبل المستخدم]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[من 10 حرفا لكل منهما ، من أجل الحصول على رمز 20 حرفا الدورة  يجب أن تتكون شجرة ورمز ، التي يجب إدخالها يدويا من قبل المستخدم. الدورة ورمز اسأل عن مزيج من رمز شجرة]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[الحد الأقصى للمستخدمين الصوت]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[الحد الأقصى للمستخدمين في الغرفة الواحدة]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[غرف الحد الأقصى]]></key>
@@ -2517,6 +2516,7 @@ Username: [userid]]]></key>
         <key id="test&amp;_TEST_MM4_SHOWDOANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[إظهار جميع الأجوبة المجابة من قبل المستخدم]]></key>
         <key id="test&amp;_TEST_MM4_SHOWSOL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[عرض الإجابات الصحيحة]]></key>
         <key id="test&amp;_TEST_MM4_SHOWTOT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[اظهار النتيجة النهائية (ان كانت محسوبة]]></key>
+        <key id="test&amp;_TEST_MM_FIVE" attributes="" save_date="2018-01-12 15:44:29"><![CDATA[Gestione test in registro valutazioni]]></key>
         <key id="test&amp;_TEST_MM_FOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[3 - التفاصيل المعروضة في نهاية المحاولة]]></key>
         <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[1 - مجموعة أسئلة التصور]]></key>
         <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2017-04-19 12:38:43"><![CDATA[2 - مجموعة محاولات الخيار]]></key>
