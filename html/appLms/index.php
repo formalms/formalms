@@ -81,9 +81,11 @@ if($module_cfg !== false && $module_cfg->hideLateralMenu()) {
 	if(!Docebo::user()->isAnonymous()) {
 
 		require(_lms_.'/menu/menu_over.php');
-		if(isset($_SESSION['idCourse'])) {
+		/*if(isset($_SESSION['idCourse'])) {
+
+
 			require(_lms_.'/menu/menu_lat.php');
-		}
+		}*/
 	} else {
 
 		require(_lms_.'/menu/menu_login.php');

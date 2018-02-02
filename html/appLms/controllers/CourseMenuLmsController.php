@@ -11,17 +11,22 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-class CourseLmsController extends LmsController
+class CourseMenuLmsController extends LmsController
 {
-	public $name = 'course';
 
 	protected $model;
+
+	protected $idCourse;
 
 	public function isTabActive($tab_name) {
 		return true;
 	}
 
 	public function init() {
+
+        $this->_mvc_name = "coursemenu";
+	    $this->idCourse = $_SESSION['idCourse'];
+
 		YuiLib::load('base,tabview');
 
 		require_once(_lms_.'/lib/lib.course.php');
@@ -33,11 +38,10 @@ class CourseLmsController extends LmsController
 	{
 	    // url accesso al corso http://forma/appLms/index.php?r=course/show&course_id=1
 
-        $course_id	= Get::req('course_id', DOTY_INT, "");
-        if(!Docebo::user()->isAnonymous() && $course_id) {
+        if(!Docebo::user()->isAnonymous() && $this->idCourse) {
             $db = DbConn::getInstance();
 
-            $query_course = "SELECT name, img_course FROM %lms_course WHERE idCourse = ".$course_id." ";
+            $query_course = "SELECT name, img_course FROM %lms_course WHERE idCourse = ".$this->idCourse." ";
             $course_data = $db->query($query_course);
             $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse') . '/';
             while($course = $db->fetch_obj($course_data)) {
@@ -48,7 +52,7 @@ class CourseLmsController extends LmsController
             // get select menu
             $id_list = array();
             $menu_module = array();
-            $query = "SELECT idMain AS id, name FROM %lms_menucourse_main WHERE idCourse = ".$course_id." ORDER BY sequence";
+            $query = "SELECT idMain AS id, name FROM %lms_menucourse_main WHERE idCourse = ".$this->idCourse." ORDER BY sequence";
             $re_main = $db->query($query);
             while($main = $db->fetch_obj($re_main)) {
 
@@ -64,12 +68,9 @@ class CourseLmsController extends LmsController
             // horizontal menu
 
             $menu_horizontal = array();
-            $query_menu = "
-	SELECT mo.idModule AS id, mo.module_name, mo.default_op, mo.default_name, mo.token_associated AS token, mo.mvc_path, under.idMain AS id_main, under.my_name
-	FROM %lms_module AS mo JOIN %lms_menucourse_under AS under ON (mo.idModule = under.idModule)
-	WHERE under.idCourse = ".$course_id."
-	AND under.idMain = ".$main_menu_id."
-	ORDER BY under.idMain, under.sequence";
+            $query_menu = 'SELECT mo.idModule AS id, mo.module_name, mo.default_op, mo.default_name, mo.token_associated AS token, mo.mvc_path, under.idMain AS id_main, under.my_name
+                            FROM %lms_module AS mo JOIN %lms_menucourse_under AS under ON (mo.idModule = under.idModule) WHERE under.idCourse = '.$this->idCourse.'
+                            AND under.idMain = '.$main_menu_id.' ORDER BY under.idMain, under.sequence';
             $re_menu_voice = $db->query($query_menu);
 
             while($obj = $db->fetch_obj($re_menu_voice)) {
@@ -81,17 +82,17 @@ class CourseLmsController extends LmsController
                         'id_submenu' => $obj->id,
                         'name' => $GLOBALS['module_assigned_name'][$obj->module_name],
                         'link' => ( $obj->mvc_path != ''
-                            ? 'index.php?r='.$obj->mvc_path.'&amp;id_module_sel='.$obj->id.'&amp;id_main_sel='.$obj->id_main
-                            : 'index.php?modname='.$obj->module_name.'&amp;op='.$obj->default_op.'&amp;id_module_sel='.$obj->id.'&amp;id_main_sel='.$obj->id_main
+                            ? 'index.php?r='.$obj->mvc_path.'&id_module_sel='.$obj->id.'&id_main_sel='.$obj->id_main
+                            : 'index.php?modname='.$obj->module_name.'&op='.$obj->default_op.'&id_module_sel='.$obj->id.'&id_main_sel='.$obj->id_main
                         )
                     );
                 } // end if checkPerm
 
             } // end while
 
-            $this->render('show', array(
-                'menu_module' => $menu_module,
-                'menu_horizontal' => $menu_horizontal,
+            $this->render('coursemenu_lat', array(
+                'dropdown' => $menu_module,
+                'slider' => $menu_horizontal,
                 'course_name' => $course_name,
                 'course_img' => $course_img));
         }
@@ -100,12 +101,12 @@ class CourseLmsController extends LmsController
 	public function all()
 	{
 		$filter_text = Get::req('filter_text', DOTY_STRING, "");
-		
+
 		$conditions = '';
 		if (!empty($filter_text)) {
 			$conditions = "AND cp.path_name LIKE '%".addslashes($filter_text)."%'";
 		}
-		
+
 		$user_coursepath = $this->model->getAllCoursepath(Docebo::user()->getIdSt(), $conditions);
 		$coursepath_courses = $this->model->getCoursepathCourseDetails(array_keys($user_coursepath));
 

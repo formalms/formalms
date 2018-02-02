@@ -63,6 +63,11 @@ class TwigManager
         return self::$instance;
     }
 
+    public function addPathInLoader($view_path){
+
+        $this->twig->getLoader()->addPath($view_path);
+    }
+
     public function render($view_name, $data_for_view, $view_path = null)
     {
         if ($view_path == null) {
