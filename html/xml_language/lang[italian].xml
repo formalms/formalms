@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180118</DATE>
+  <DATE>20180205</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -1515,7 +1515,7 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2015-09-30 15:32:39"><![CDATA[Salta alla lista dei moduli]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2015-09-30 15:32:39"><![CDATA[Salta alle tue informazioni per questo corso]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Comunità]]></key>
-        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aggiungi Corso]]></key>
+        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2018-02-05 15:12:13"><![CDATA[Aggiungi corso]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Amministrazione]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Authoring]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Campus]]></key>
