@@ -25,7 +25,7 @@ class TestConfigurationMethodOfUseRenderEvent extends Event
         $this->object_test = $object_test;
         $this->lang = $lang;
         
-        $this->formElementsSections[ SELF::EVENT_SECTION_BASE ] = [];
+        $this->formElementsSections[ self::EVENT_SECTION_BASE ] = [];
         
     }
     
