@@ -282,6 +282,11 @@ foreach ($menu['all'] as $row) {
                                 </div>
                             </div>
                         </div>
+                        <div class="row course-subscription">
+                            <div class="col-xs-12">
+                                '.$subscribe_course.'
+                            </div> <!-- end col xs-12 -->
+                        </div>
                         <div class="row news">
                             <div class="col-xs-12">
                                 '.$news.'
