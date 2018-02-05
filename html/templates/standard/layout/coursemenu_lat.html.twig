@@ -35,7 +35,7 @@
                         </button>
                         <ul class="dropdown-menu">
                             {% for dropdown_menu in dropdown %}
-                                <li><a href="#" data-id="{{ dropdown_menu.id_menu }}"><span
+                                <li><a href="{{ dropdown_menu.link }}" data-id="{{ dropdown_menu.id_menu }}"><span
                                                 class="glyphicon glyphicon-signal" aria-hidden="true"></span>
                                         <b>{{ dropdown_menu.name }}</b></a></li>
                             {% endfor %}
@@ -54,7 +54,7 @@
                     {% for dropdown_menu in dropdown %}
                         {% if dropdown_menu.selected  %}
                             {% for slider_menu in dropdown_menu.slider_menu %}
-                                <li><a href="{{ slider_menu.link }}">{{ slider_menu.name }}</a></li>
+                                <li><a href="{{ slider_menu.link }}" class="{% if slider_menu.selected  %} selected {% endif %}">{{ slider_menu.name }}</a></li>
                             {% endfor %}
                         {% endif %}
                     {% endfor %}

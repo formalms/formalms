@@ -411,6 +411,7 @@ class Layout
             $re_main = $db->query($query);
 
             $main_menu_id = Get::req('id_main_sel', DOTY_INT, 0);
+            $module_menu_id = Get::req('id_module_sel', DOTY_INT, 0);
 
             while ($main = $db->fetch_obj($re_main)) {
 
@@ -428,6 +429,7 @@ class Layout
                         $slider_menu[] = array(
                             'id_submenu' => $obj->id,
                             'name' => $GLOBALS['module_assigned_name'][$obj->module_name],
+                            'selected' => ($obj->id === ''.$module_menu_id ? true : false),
                             'link' => ($obj->mvc_path != ''
                                 ? 'index.php?r=' . $obj->mvc_path . '&id_module_sel=' . $obj->id . '&id_main_sel=' . $obj->id_main
                                 : 'index.php?modname=' . $obj->module_name . '&op=' . $obj->default_op . '&id_module_sel=' . $obj->id . '&id_main_sel=' . $obj->id_main
@@ -441,7 +443,7 @@ class Layout
                     // 'submenu'=> array(),
                     'id_menu' => $main->id,
                     'name' => Lang::t($main->name, 'menu_course', false, false, $main->name),
-                    'link' => 'id_main_sel=' . $main->id,
+                    'link' => $slider_menu[0]['link'],
                     'selected' => ($main->id === '' . $main_menu_id ? true : false),
                     'slider_menu' => $slider_menu
                 );
