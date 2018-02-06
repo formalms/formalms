@@ -413,23 +413,36 @@ class Layout
             $main_menu_id = Get::req('id_main_sel', DOTY_INT, 0);
             $module_menu_id = Get::req('id_module_sel', DOTY_INT, 0);
 
+            if($main_menu_id > 0) 	{
+                $_SESSION['current_main_menu'] = $main_menu_id;
+            }
+
+            if($module_menu_id > 0) {
+                $_SESSION['sel_module_id'] = $module_menu_id;
+            }
+
             while ($main = $db->fetch_obj($re_main)) {
+
 
                 $slider_menu = array();
                 $query_menu = 'SELECT mo.idModule AS id, mo.module_name, mo.default_op, mo.default_name, mo.token_associated AS token, mo.mvc_path, under.idMain AS id_main, under.my_name
                             FROM %lms_module AS mo JOIN %lms_menucourse_under AS under ON (mo.idModule = under.idModule) WHERE under.idCourse = ' . $_SESSION['idCourse'] . '
                             AND under.idMain = ' . $main->id . ' ORDER BY under.idMain, under.sequence';
+
+
                 $re_menu_voice = $db->query($query_menu);
+
 
                 while ($obj = $db->fetch_obj($re_menu_voice)) {
                     // checkmodule module
                     if (checkPerm($obj->token, true, $obj->module_name)) {
-                        $GLOBALS['module_assigned_name'][$obj->module_name] = ($obj->my_name != '' ? $obj->my_name : Lang::t($obj->default_name, 'menu_course'));
+
+                        $GLOBALS['module_assigned_name'][$obj->module_name] = ( $obj->my_name != '' ? $obj->my_name : Lang::t($obj->default_name, 'menu_course') );
 
                         $slider_menu[] = array(
                             'id_submenu' => $obj->id,
                             'name' => $GLOBALS['module_assigned_name'][$obj->module_name],
-                            'selected' => ($obj->id === ''.$module_menu_id ? true : false),
+                            'selected' => ($obj->id === ''.$_SESSION['sel_module_id'] ? true : false),
                             'link' => ($obj->mvc_path != ''
                                 ? 'index.php?r=' . $obj->mvc_path . '&id_module_sel=' . $obj->id . '&id_main_sel=' . $obj->id_main
                                 : 'index.php?modname=' . $obj->module_name . '&op=' . $obj->default_op . '&id_module_sel=' . $obj->id . '&id_main_sel=' . $obj->id_main
@@ -444,14 +457,14 @@ class Layout
                     'id_menu' => $main->id,
                     'name' => Lang::t($main->name, 'menu_course', false, false, $main->name),
                     'link' => $slider_menu[0]['link'],
-                    'selected' => ($main->id === '' . $main_menu_id ? true : false),
+                    'selected' => ($main->id === '' . $_SESSION['current_main_menu'] ? true : false),
                     'slider_menu' => $slider_menu
                 );
 
                 $id_list[] = '"menu_lat_' . $main->id . '"';
             }
 
-            if ($main_menu_id === 0) {
+            if ($_SESSION['current_main_menu'] === 0) {
                 $dropdown_menu[0]['selected'] = true;
             }
             // horizontal menu
