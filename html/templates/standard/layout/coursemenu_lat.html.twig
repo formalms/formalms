@@ -1,7 +1,7 @@
 <!-- container -->
 <div class="row section-coourse">
-    <div class="section-coourse__header col-lg-12">
-        <div class="row">
+    <div class="section-coourse__header col-xs-12">
+		<div class="row-fluid">
             <div class="col-sm-3 text-center">
                 <div class="row">
                     <img src="{{ course_img }}" class="img-responsive section-coourse__img">
@@ -13,7 +13,7 @@
                     <div class="progress section-coourse__progress">
                         <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{ stats.perc_completed }}"
                              aria-valuemin="0" aria-valuemax="100" style="width: {{ stats.perc_completed }}%;">
-                            {{ stats.perc_completed }}%
+                            <span>{{ stats.perc_completed }}%</span>
                         </div>
                         <span class="glyphicon glyphicon-signal pull-right" aria-hidden="true" data-toggle="modal" data-target="#myModal"></span>
                     </div>
@@ -22,53 +22,55 @@
         </div>
     </div>
     <div class="clearfix"></div>
-    <div class="section-coourse__menu">
-        <div class="col-sm-3 text-center">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default">Menu</button>
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            {% for dropdown_menu in dropdown %}
-                                <li><a href="{{ dropdown_menu.link }}" data-id="{{ dropdown_menu.id_menu }}"><span
-                                                class="glyphicon glyphicon-signal" aria-hidden="true"></span>
-                                        <b>{{ dropdown_menu.name }}</b></a></li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="section-coourse__menu col-xs-12">
+		<div class="row-fluid">
+			<div class="section-coourse__dropdown col-sm-3 text-center">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="btn-group forma-dropdown">
+							<button type="button" class="btn forma-button dropdown-toggle" data-toggle="dropdown">Menu</button>
+							<button type="button" class="btn forma-button dropdown-toggle" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false">
+								<span class="caret"></span>
+								<span class="sr-only">Toggle Dropdown</span>
+							</button>
+							<ul class="dropdown-menu">
+								{% for dropdown_menu in dropdown %}
+									<li>
+										<a href="{{ dropdown_menu.link }}" data-id="{{ dropdown_menu.id_menu }}">
+											<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
+											<strong>{{ dropdown_menu.name }}</strong>
+										</a>
+									</li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
 
-        <div class='col-md-9 section-coourse__menu-horizontal'>
-            <div class="row">
-                <div class="prv pull-left col-xs-1 text-center"><span class="glyphicon glyphicon-chevron-left"
-                                                                      aria-hidden="true"></span></div>
-                <ul class="section-coourse__menu-slider col-xs-10">
+			<div class="col-sm-9 section-coourse__menu-horizontal">
+				<div class="row-fluid">
+					<div class="prv pull-left col-xs-1 text-center">
+						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					</div>
+					<ul class="section-coourse__menu-slider col-xs-10">
 
-                    {% for dropdown_menu in dropdown %}
-                        {% if dropdown_menu.selected  %}
-                            {% for slider_menu in dropdown_menu.slider_menu %}
-                                <li><a href="{{ slider_menu.link }}" class="{% if slider_menu.selected  %} selected {% endif %}">{{ slider_menu.name }}</a></li>
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-                <div class="nxt pull-right col-xs-1 text-center"><span class="glyphicon glyphicon-chevron-right"
-                                                                       aria-hidden="true"></span></div>
-            </div>
-        </div>
+						{% for dropdown_menu in dropdown %}
+							{% if dropdown_menu.selected  %}
+								{% for slider_menu in dropdown_menu.slider_menu %}
+									<li><a href="{{ slider_menu.link }}" class="{% if slider_menu.selected  %} selected {% endif %}">{{ slider_menu.name }}</a></li>
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+					</ul>
+					<div class="nxt pull-right col-xs-1 text-center">
+						<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+					</div>
+				</div>
+			</div>
+		</div>
         <div class="clearfix"></div>
-    </div>
-</div>
-<div class="col-lg-12">
-    <div class="row">
-
     </div>
 </div>
 

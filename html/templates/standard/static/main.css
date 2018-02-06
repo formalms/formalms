@@ -4210,6 +4210,35 @@ h1, h2, h3, h4, h5, h6, p {
   z-index: 10;
 }
 
+.forma-dropdown .forma-button {
+  background: white;
+  border: 2px solid #c2c2c2;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+  -webkit-border-radius: 0;
+          border-radius: 0;
+  color: #333;
+}
+
+.forma-dropdown .forma-button:hover {
+  background-color: #c2c2c2;
+  color: white;
+}
+
+.forma-dropdown .forma-button:first-of-type {
+  -webkit-border-radius: 5px 0 0 5px;
+          border-radius: 5px 0 0 5px;
+}
+
+.forma-dropdown .forma-button:last-of-type {
+  -webkit-border-radius: 0 5px 5px 0;
+          border-radius: 0 5px 5px 0;
+}
+
+.forma-dropdown .forma-button:not(:last-of-type) {
+  border-right: none;
+}
+
 .user-panel .carousel {
   position: relative;
   width: 100%;
@@ -5039,9 +5068,26 @@ i + .course-box__date-box {
   display: none;
 }
 
+.section-coourse__header,
+.section-coourse__menu {
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  .section-coourse__header,
+  .section-coourse__menu {
+    padding: 0 15px;
+  }
+}
+
 .section-coourse__header {
-  margin: 30px 0;
   display: inline-block;
+}
+
+@media (min-width: 768px) {
+  .section-coourse__header {
+    margin-top: 67px;
+  }
 }
 
 .section-coourse__img {
@@ -5049,14 +5095,21 @@ i + .course-box__date-box {
 }
 
 .section-coourse__title {
-  color: black;
+  padding-top: 30px;
+  color: #333;
   font-weight: bold;
+}
+
+@media (min-width: 768px) {
+  .section-coourse__title {
+    padding-top: 0;
+  }
 }
 
 .section-coourse__menu {
   overflow: visible;
   padding-bottom: 10px;
-  border-bottom: 1px solid #c2c2c2;
+  border-bottom: none;
   margin-bottom: 10px;
 }
 
@@ -5075,9 +5128,21 @@ i + .course-box__date-box {
   color: #c84000;
 }
 
+.section-coourse__dropdown {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+@media (min-width: 768px) {
+  .section-coourse__dropdown {
+    background-color: #ececec;
+  }
+}
+
 .section-coourse__menu-slider {
   float: left;
   position: relative;
+  margin: 0;
   overflow: hidden;
   list-style: none;
   white-space: nowrap;
@@ -5101,24 +5166,54 @@ i + .course-box__date-box {
 
 .section-coourse__progress-cotainer {
   padding: 4px;
-  border: 1px solid #eee;
-  max-width: 250px;
-  margin-top: 40px;
+  border: 2px solid #c2c2c2;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+  margin-top: 30px;
+}
+
+@media (min-width: 768px) {
+  .section-coourse__progress-cotainer {
+    max-width: 250px;
+  }
 }
 
 .section-coourse__progress {
   margin-bottom: 0;
   height: 25px;
+  background: transparent;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 .section-coourse__progress .progress-bar {
   font-weight: bold;
   font-size: 14px;
   line-height: 25px;
+  text-align: left;
+  color: inherit;
+}
+
+.section-coourse__progress .progress-bar span {
+  padding-left: 10px;
+  color: white;
+}
+
+.section-coourse__progress .progress-bar[aria-valuenow="0"] span {
+  color: inherit;
 }
 
 .section-coourse__progress .glyphicon {
   margin: 5px 8px 0 0;
+}
+
+.section-coourse__menu-horizontal {
+  margin: 23px 0;
+}
+
+.section-coourse__menu-horizontal > .row-fluid {
+  overflow: hidden;
+  border-bottom: solid 1px #ececec;
 }
 
 .section-coourse__menu .btn-group {
@@ -6848,9 +6943,26 @@ header.header nav {
   color: black !important;
 }
 
+.section-coourse__header,
+.section-coourse__menu {
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  .section-coourse__header,
+  .section-coourse__menu {
+    padding: 0 15px;
+  }
+}
+
 .section-coourse__header {
-  margin: 30px 0;
   display: inline-block;
+}
+
+@media (min-width: 768px) {
+  .section-coourse__header {
+    margin-top: 67px;
+  }
 }
 
 .section-coourse__img {
@@ -6858,14 +6970,21 @@ header.header nav {
 }
 
 .section-coourse__title {
-  color: black;
+  padding-top: 30px;
+  color: #333;
   font-weight: bold;
+}
+
+@media (min-width: 768px) {
+  .section-coourse__title {
+    padding-top: 0;
+  }
 }
 
 .section-coourse__menu {
   overflow: visible;
   padding-bottom: 10px;
-  border-bottom: 1px solid #c2c2c2;
+  border-bottom: none;
   margin-bottom: 10px;
 }
 
@@ -6884,9 +7003,21 @@ header.header nav {
   color: #c84000;
 }
 
+.section-coourse__dropdown {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+@media (min-width: 768px) {
+  .section-coourse__dropdown {
+    background-color: #ececec;
+  }
+}
+
 .section-coourse__menu-slider {
   float: left;
   position: relative;
+  margin: 0;
   overflow: hidden;
   list-style: none;
   white-space: nowrap;
@@ -6910,24 +7041,54 @@ header.header nav {
 
 .section-coourse__progress-cotainer {
   padding: 4px;
-  border: 1px solid #eee;
-  max-width: 250px;
-  margin-top: 40px;
+  border: 2px solid #c2c2c2;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+  margin-top: 30px;
+}
+
+@media (min-width: 768px) {
+  .section-coourse__progress-cotainer {
+    max-width: 250px;
+  }
 }
 
 .section-coourse__progress {
   margin-bottom: 0;
   height: 25px;
+  background: transparent;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 .section-coourse__progress .progress-bar {
   font-weight: bold;
   font-size: 14px;
   line-height: 25px;
+  text-align: left;
+  color: inherit;
+}
+
+.section-coourse__progress .progress-bar span {
+  padding-left: 10px;
+  color: white;
+}
+
+.section-coourse__progress .progress-bar[aria-valuenow="0"] span {
+  color: inherit;
 }
 
 .section-coourse__progress .glyphicon {
   margin: 5px 8px 0 0;
+}
+
+.section-coourse__menu-horizontal {
+  margin: 23px 0;
+}
+
+.section-coourse__menu-horizontal > .row-fluid {
+  overflow: hidden;
+  border-bottom: solid 1px #ececec;
 }
 
 .section-coourse__menu .btn-group {
