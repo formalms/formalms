@@ -135,16 +135,16 @@ div#container {
 .section-coourse__progress .glyphicon{
     margin: 5px 8px 0 0;
 }
-.section-coourse__menu  .btn-flex {
-    display: flex;
-    align-items: stretch;
-    align-content: stretch;
-}
+/*.section-coourse__menu  .btn-flex {*/
+    /*display: flex;*/
+    /*align-items: stretch;*/
+    /*align-content: stretch;*/
+/*}*/
 
-.section-coourse__menu  .btn-flex .btn:first-child {
-    flex-grow: 1;
-    text-align: left;
-}
+/*.section-coourse__menu  .btn-flex .btn:first-child {*/
+    /*flex-grow: 1;*/
+    /*text-align: left;*/
+/*}*/
 
 .layout_header {	padding:5px 0;}
 

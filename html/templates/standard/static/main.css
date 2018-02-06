@@ -5039,6 +5039,105 @@ i + .course-box__date-box {
   display: none;
 }
 
+.section-coourse__header {
+  margin: 30px 0;
+  display: inline-block;
+}
+
+.section-coourse__img {
+  display: inline-block;
+}
+
+.section-coourse__title {
+  color: black;
+  font-weight: bold;
+}
+
+.section-coourse__menu {
+  overflow: visible;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #c2c2c2;
+  margin-bottom: 10px;
+}
+
+.section-coourse__menu ul li a:hover {
+  color: #c84000;
+}
+
+.section-coourse__menu .prv, .section-coourse__menu .nxt {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  padding: 5px;
+}
+
+.section-coourse__menu ul li a.active {
+  color: #c84000;
+}
+
+.section-coourse__menu-slider {
+  float: left;
+  position: relative;
+  overflow: hidden;
+  list-style: none;
+  white-space: nowrap;
+  padding: 0;
+}
+
+.section-coourse__menu-slider li {
+  vertical-align: top;
+  margin: 0 5px;
+  display: inline-block;
+  *display: inline;
+  /*IE7*/
+  zoom: 1;
+}
+
+.section-coourse__menu-slider li a {
+  float: left;
+  font-size: 14px;
+  line-height: 26px;
+}
+
+.section-coourse__progress-cotainer {
+  padding: 4px;
+  border: 1px solid #eee;
+  max-width: 250px;
+  margin-top: 40px;
+}
+
+.section-coourse__progress {
+  margin-bottom: 0;
+  height: 25px;
+}
+
+.section-coourse__progress .progress-bar {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 25px;
+}
+
+.section-coourse__progress .glyphicon {
+  margin: 5px 8px 0 0;
+}
+
+.section-coourse__menu .btn-group {
+  width: 100%;
+}
+
+.section-coourse__menu .btn-group > .btn:first-of-type {
+  width: -webkit-calc(100% - 26px);
+  width: calc(100% - 26px);
+}
+
+.section-coourse__menu .btn-group > .btn:last-of-type {
+  width: 26px;
+}
+
+.section-coourse__menu .btn-group > .dropdown-menu {
+  width: 100%;
+}
+
 .FAKE-GRID {
   position: fixed;
   height: 100%;
@@ -6747,6 +6846,105 @@ header.header nav {
 .aside .node-checked {
   background-color: white !important;
   color: black !important;
+}
+
+.section-coourse__header {
+  margin: 30px 0;
+  display: inline-block;
+}
+
+.section-coourse__img {
+  display: inline-block;
+}
+
+.section-coourse__title {
+  color: black;
+  font-weight: bold;
+}
+
+.section-coourse__menu {
+  overflow: visible;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #c2c2c2;
+  margin-bottom: 10px;
+}
+
+.section-coourse__menu ul li a:hover {
+  color: #c84000;
+}
+
+.section-coourse__menu .prv, .section-coourse__menu .nxt {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  padding: 5px;
+}
+
+.section-coourse__menu ul li a.active {
+  color: #c84000;
+}
+
+.section-coourse__menu-slider {
+  float: left;
+  position: relative;
+  overflow: hidden;
+  list-style: none;
+  white-space: nowrap;
+  padding: 0;
+}
+
+.section-coourse__menu-slider li {
+  vertical-align: top;
+  margin: 0 5px;
+  display: inline-block;
+  *display: inline;
+  /*IE7*/
+  zoom: 1;
+}
+
+.section-coourse__menu-slider li a {
+  float: left;
+  font-size: 14px;
+  line-height: 26px;
+}
+
+.section-coourse__progress-cotainer {
+  padding: 4px;
+  border: 1px solid #eee;
+  max-width: 250px;
+  margin-top: 40px;
+}
+
+.section-coourse__progress {
+  margin-bottom: 0;
+  height: 25px;
+}
+
+.section-coourse__progress .progress-bar {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 25px;
+}
+
+.section-coourse__progress .glyphicon {
+  margin: 5px 8px 0 0;
+}
+
+.section-coourse__menu .btn-group {
+  width: 100%;
+}
+
+.section-coourse__menu .btn-group > .btn:first-of-type {
+  width: -webkit-calc(100% - 26px);
+  width: calc(100% - 26px);
+}
+
+.section-coourse__menu .btn-group > .btn:last-of-type {
+  width: 26px;
+}
+
+.section-coourse__menu .btn-group > .dropdown-menu {
+  width: 100%;
 }
 
 .homepage {
