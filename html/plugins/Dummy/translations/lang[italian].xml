@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<LANGUAGES>
+    <DATE>20170713</DATE>
+    <LANG id="italian">
+        <lang_code>italian</lang_code>
+        <lang_description>Italiano</lang_description>
+        <lang_charset>utf-8</lang_charset>
+        <lang_browsercode>it</lang_browsercode>
+        <lang_direction>ltr</lang_direction>
+        <platform id="all">
+            <!-- This will create new keys with a new module -->
+            <module id="test">
+                <key id="test&amp;_TEST_A" attributes="" save_date="2015-09-30 15:32:39">
+                    <![CDATA[Prova 1]]>
+                </key>
+                <key id="test&amp;_TEST_B" attributes="" save_date="2015-09-30 15:32:39">
+                    <![CDATA[Prova 2]]>
+                </key>
+            </module>
+            <!-- This will override the standard translation (not in the database, only in visualization) -->
+            <module id="standard">
+                <key id="standard&amp;_USERNAME" attributes="" save_date="2017-03-14 16:10:41">
+                    <![CDATA[BBB]]>
+                </key>
+            </module>
+        </platform>
+    </LANG>
+</LANGUAGES>
