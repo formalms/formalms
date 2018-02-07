@@ -116,7 +116,7 @@
 			.' <label class="label_normal" for="waiting">'.Lang::t('_ONLY_EMPTY', 'admin_lang').'</label>'
 			.'</div>'
 			.'<div class="plugin_id-filter col-xs-12 col-sm-2">'
-			.'<label for="plugin_id">'.Lang::t('_PLUGINS', 'plugin').'</label> : '
+			.'<label for="plugin_id">'.Lang::t('_PLUGIN', 'admin_lang').'</label> : '
 			.Form::getInputDropdown( "search_d", "plugin_id", "plugin_id", $plugins_ids, '', ' onchange=" DataTable_lang_table.refresh(); "' )
 			.'</div>'
 			.'<div class="search col-xs-12 col-sm-3">'
@@ -145,7 +145,7 @@
 			//array('key' => 'id_translation',	'label' => 'id_translation', 'className' => 'img-cell'),
 			array('key' => 'text_module', 		'label' => Lang::t('_LANG_MODULE', 'admin_lang'), 'className' => 'min-cell', 'sortable' => true),
 			array('key' => 'text_key',			'label' => Lang::t('_LANG_KEY', 'admin_lang'), 'className' => 'min-cell', 'sortable' => true),
-			array('key' => 'plugin_name',		'label' => Lang::t('_PLUGIN_NAME', 'plugin'), 'className' => 'min-cell', 'sortable' => false),
+			array('key' => 'plugin_name',		'label' => Lang::t('_PLUGIN_NAME', 'admin_lang'), 'className' => 'min-cell', 'sortable' => false),
 			array('key' => 'translation_text',	'label' => Lang::t('_LANG_TRANSLATION', 'admin_lang'), 'formatter' => 'TranslationFormatter','editor' => 'new YAHOO.widget.TextareaCellEditor({asyncSubmitter: saveTranslation})', 'sortable' => true ),
 			array('key' => 'translation_text_diff',	'label' => Lang::t('_LANG_COMPARE', 'admin_lang'), 'editor' => 'new YAHOO.widget.TextareaCellEditor({asyncSubmitter: saveComparisonTranslation})', 'sortable' => true ),
 			array('key' => 'save_date',			'label' => Lang::t('_DATE', 'admin_lang'), 'className' => 'min-cell', 'sortable' => true ),
