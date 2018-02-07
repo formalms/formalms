@@ -1,4 +1,5 @@
 @import '../../node_modules/breakpoint-sass/stylesheets/breakpoint';
+@import '../../node_modules/slick-carousel/slick/slick.scss';
 
 //@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap-sprockets.scss';
 //@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap.scss';
@@ -20,6 +21,7 @@
 @import 'components/carousel';
 @import 'components/forma-tooltip';
 @import 'components/tabnav';
+@import 'components/accordion';
 
 //MODULES
 @import 'modules/layout';
@@ -33,6 +35,10 @@
 @import 'modules/social-login';
 @import 'modules/select-language';
 @import 'modules/aside';
+@import 'modules/folder-view';
+@import 'modules/course-objects';
+@import 'modules/section-course';
+@import 'modules/slider-menu';
 
 //PAGES
 @import 'pages/homepage';

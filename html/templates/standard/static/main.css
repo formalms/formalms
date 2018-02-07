@@ -1,4 +1,107 @@
 @charset "UTF-8";
+/* Slider */
+.slick-slider {
+  position: relative;
+  display: block;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -ms-touch-action: pan-y;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.slick-list {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.slick-list:focus {
+  outline: none;
+}
+
+.slick-list.dragging {
+  cursor: pointer;
+  cursor: hand;
+}
+
+.slick-slider .slick-track,
+.slick-slider .slick-list {
+  -webkit-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.slick-track {
+  position: relative;
+  left: 0;
+  top: 0;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.slick-track:before, .slick-track:after {
+  content: "";
+  display: table;
+}
+
+.slick-track:after {
+  clear: both;
+}
+
+.slick-loading .slick-track {
+  visibility: hidden;
+}
+
+.slick-slide {
+  float: left;
+  height: 100%;
+  min-height: 1px;
+  display: none;
+}
+
+[dir="rtl"] .slick-slide {
+  float: right;
+}
+
+.slick-slide img {
+  display: block;
+}
+
+.slick-slide.slick-loading img {
+  display: none;
+}
+
+.slick-slide.dragging img {
+  pointer-events: none;
+}
+
+.slick-initialized .slick-slide {
+  display: block;
+}
+
+.slick-loading .slick-slide {
+  visibility: hidden;
+}
+
+.slick-vertical .slick-slide {
+  display: block;
+  height: auto;
+  border: 1px solid transparent;
+}
+
+.slick-arrow.slick-hidden {
+  display: none;
+}
+
 /*!
  *  Font Awesome 4.6.3 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
@@ -4210,9 +4313,19 @@ h1, h2, h3, h4, h5, h6, p {
   z-index: 10;
 }
 
-.forma-dropdown .forma-button {
+.forma-dropdown {
+  height: 42px;
+  position: relative;
+  font-size: 0;
+}
+
+.forma-dropdown__selected,
+.forma-dropdown__toggle {
+  display: block;
+  height: 100%;
+  float: left;
   background: white;
-  border: 2px solid #c2c2c2;
+  border: 1px solid #c2c2c2;
   -webkit-box-shadow: none !important;
           box-shadow: none !important;
   -webkit-border-radius: 0;
@@ -4220,23 +4333,36 @@ h1, h2, h3, h4, h5, h6, p {
   color: #333;
 }
 
-.forma-dropdown .forma-button:hover {
+.forma-dropdown__selected:hover,
+.forma-dropdown__toggle:hover {
   background-color: #c2c2c2;
   color: white;
 }
 
-.forma-dropdown .forma-button:first-of-type {
+.forma-dropdown__selected {
+  width: -webkit-calc(100% - 42px);
+  width: calc(100% - 42px);
   -webkit-border-radius: 5px 0 0 5px;
           border-radius: 5px 0 0 5px;
+  border-right: none;
+  text-align: left;
 }
 
-.forma-dropdown .forma-button:last-of-type {
+.forma-dropdown__toggle {
+  width: 42px;
+  padding: 0 0 0 1px;
   -webkit-border-radius: 0 5px 5px 0;
           border-radius: 0 5px 5px 0;
+  text-align: center;
 }
 
-.forma-dropdown .forma-button:not(:last-of-type) {
-  border-right: none;
+.forma-dropdown .dropdown-menu {
+  width: 100%;
+}
+
+.forma-dropdown .dropdown-menu > li > a {
+  padding: 5px 20px;
+  background: transparent;
 }
 
 .user-panel .carousel {
@@ -4483,6 +4609,24 @@ h1, h2, h3, h4, h5, h6, p {
 .tabnav__content.is-visible {
   visibility: visible;
   opacity: 1;
+}
+
+.accordion {
+  position: relative;
+  overflow: hidden;
+}
+
+.accordion__item {
+  overflow: hidden;
+  position: relative;
+}
+
+.accordion__subset {
+  height: 0;
+  overflow: hidden;
+  position: relative;
+  margin: 0 auto;
+  white-space: normal;
 }
 
 * {
@@ -5108,9 +5252,7 @@ i + .course-box__date-box {
 
 .section-coourse__menu {
   overflow: visible;
-  padding-bottom: 10px;
   border-bottom: none;
-  margin-bottom: 10px;
 }
 
 .section-coourse__menu ul li a:hover {
@@ -5129,13 +5271,13 @@ i + .course-box__date-box {
 }
 
 .section-coourse__dropdown {
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 @media (min-width: 768px) {
   .section-coourse__dropdown {
-    background-color: #ececec;
+    background-color: #f6f6f6;
   }
 }
 
@@ -5166,7 +5308,7 @@ i + .course-box__date-box {
 
 .section-coourse__progress-cotainer {
   padding: 4px;
-  border: 2px solid #c2c2c2;
+  border: 1px solid #c2c2c2;
   -webkit-border-radius: 5px;
           border-radius: 5px;
   margin-top: 30px;
@@ -5208,29 +5350,29 @@ i + .course-box__date-box {
 }
 
 .section-coourse__menu-horizontal {
-  margin: 23px 0;
+  margin: 28px 0;
 }
 
-.section-coourse__menu-horizontal > .row-fluid {
-  overflow: hidden;
+.section-coourse__aside {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  position: relative;
+  background-color: #f6f6f6;
+}
+
+.section-coourse__aside:before {
+  width: -webkit-calc(100% - 60px);
+  width: calc(100% - 60px);
+  height: 2px;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 30px;
+  background-color: #ececec;
+}
+
+.section-coourse__menu-horizontal .slider-menu {
   border-bottom: solid 1px #ececec;
-}
-
-.section-coourse__menu .btn-group {
-  width: 100%;
-}
-
-.section-coourse__menu .btn-group > .btn:first-of-type {
-  width: -webkit-calc(100% - 26px);
-  width: calc(100% - 26px);
-}
-
-.section-coourse__menu .btn-group > .btn:last-of-type {
-  width: 26px;
-}
-
-.section-coourse__menu .btn-group > .dropdown-menu {
-  width: 100%;
 }
 
 .FAKE-GRID {
@@ -5251,7 +5393,7 @@ i + .course-box__date-box {
   border: 1px solid magenta;
 }
 
-.nav.nav-tabs.hidden-xs {
+.nav.nav-tabs {
   border: none;
   overflow-x: auto;
   overflow-y: hidden;
@@ -5259,7 +5401,7 @@ i + .course-box__date-box {
   width: 100%;
 }
 
-.nav.nav-tabs.hidden-xs li {
+.nav.nav-tabs li {
   height: 40px;
   margin-right: 9px;
   margin-bottom: 0;
@@ -5275,18 +5417,18 @@ i + .course-box__date-box {
   display: inline-block;
 }
 
-.nav.nav-tabs.hidden-xs li:last-child {
+.nav.nav-tabs li:last-child {
   margin-right: 0;
 }
 
-.nav.nav-tabs.hidden-xs li:active {
+.nav.nav-tabs li:active {
   -webkit-border-top-left-radius: 5px;
           border-top-left-radius: 5px;
   -webkit-border-top-right-radius: 5px;
           border-top-right-radius: 5px;
 }
 
-.nav.nav-tabs.hidden-xs li a {
+.nav.nav-tabs li a {
   width: 100%;
   height: 40px;
   padding: 12px 35px;
@@ -5302,17 +5444,17 @@ i + .course-box__date-box {
   text-transform: uppercase;
 }
 
-.nav.nav-tabs.hidden-xs li a:hover {
+.nav.nav-tabs li a:hover {
   color: #c84000;
   background-color: #ececec;
   border: none;
 }
 
-.nav.nav-tabs.hidden-xs li a:focus {
+.nav.nav-tabs li a:focus {
   color: #999999;
 }
 
-.nav.nav-tabs.hidden-xs li.active > a {
+.nav.nav-tabs li.active > a {
   width: 100%;
   background-color: #c84000 !important;
   border: none !important;
@@ -6943,6 +7085,70 @@ header.header nav {
   color: black !important;
 }
 
+.folder-view__title {
+  padding: 15px 0;
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #ff6c00;
+}
+
+.folder-view__filters {
+  border-bottom: solid 4px #c84000;
+}
+
+.folder-view__table {
+  width: 100%;
+}
+
+.course-objects__item {
+  height: 82px;
+  vertical-align: middle !important;
+  border: none !important;
+  font-size: 18px;
+  text-align: left;
+  color: #333;
+}
+
+.course-objects__item:first-of-type {
+  -webkit-border-radius: 5px 0 0 5px;
+          border-radius: 5px 0 0 5px;
+}
+
+.course-objects__item:last-of-type {
+  -webkit-border-radius: 0 5px 5px 0;
+          border-radius: 0 5px 5px 0;
+}
+
+tr:nth-child(odd) .course-objects__item {
+  background-color: #f6f6f6;
+}
+
+.course-objects__item--icon {
+  width: 82px;
+  padding: 20px 0 !important;
+  text-align: center;
+}
+
+tr:nth-child(odd) .course-objects__item--icon {
+  background-color: #ececec !important;
+}
+
+.course-objects__item--name {
+  padding: 20px !important;
+}
+
+.course-objects__item--action {
+  width: 40px;
+  padding: 20px 5px !important;
+  text-align: center;
+}
+
+.course-objects__item--dropdown {
+  width: 160px;
+  padding: 20px 20px 20px 0 !important;
+}
+
 .section-coourse__header,
 .section-coourse__menu {
   padding: 0;
@@ -6983,9 +7189,7 @@ header.header nav {
 
 .section-coourse__menu {
   overflow: visible;
-  padding-bottom: 10px;
   border-bottom: none;
-  margin-bottom: 10px;
 }
 
 .section-coourse__menu ul li a:hover {
@@ -7004,13 +7208,13 @@ header.header nav {
 }
 
 .section-coourse__dropdown {
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 @media (min-width: 768px) {
   .section-coourse__dropdown {
-    background-color: #ececec;
+    background-color: #f6f6f6;
   }
 }
 
@@ -7041,7 +7245,7 @@ header.header nav {
 
 .section-coourse__progress-cotainer {
   padding: 4px;
-  border: 2px solid #c2c2c2;
+  border: 1px solid #c2c2c2;
   -webkit-border-radius: 5px;
           border-radius: 5px;
   margin-top: 30px;
@@ -7083,29 +7287,80 @@ header.header nav {
 }
 
 .section-coourse__menu-horizontal {
-  margin: 23px 0;
+  margin: 28px 0;
 }
 
-.section-coourse__menu-horizontal > .row-fluid {
-  overflow: hidden;
+.section-coourse__aside {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  position: relative;
+  background-color: #f6f6f6;
+}
+
+.section-coourse__aside:before {
+  width: -webkit-calc(100% - 60px);
+  width: calc(100% - 60px);
+  height: 2px;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 30px;
+  background-color: #ececec;
+}
+
+.section-coourse__menu-horizontal .slider-menu {
   border-bottom: solid 1px #ececec;
 }
 
-.section-coourse__menu .btn-group {
-  width: 100%;
+.slider-menu {
+  padding: 0 30px;
+  margin: 0;
 }
 
-.section-coourse__menu .btn-group > .btn:first-of-type {
-  width: -webkit-calc(100% - 26px);
-  width: calc(100% - 26px);
+.slider-menu__item {
+  height: 30px;
+  padding: 5px 10px;
+  position: relative;
+  font-size: 15px;
+  line-height: 19px;
 }
 
-.section-coourse__menu .btn-group > .btn:last-of-type {
-  width: 26px;
+.slick-slide:nth-child(n+2) .slider-menu__item {
+  padding-left: 13px;
 }
 
-.section-coourse__menu .btn-group > .dropdown-menu {
-  width: 100%;
+.slick-slide:nth-child(n+2) .slider-menu__item:before {
+  width: 3px;
+  height: 3px;
+  content: '';
+  position: absolute;
+  top: -webkit-calc(50% - 1px);
+  top: calc(50% - 1px);
+  left: 0;
+  background-color: currentColor;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
+}
+
+.slider-menu__arrow {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  text-align: center;
+}
+
+.slider-menu__arrow.slick-prev {
+  left: 0;
+}
+
+.slider-menu__arrow.slick-next {
+  right: 0;
+}
+
+.slider-menu__arrow.slick-disabled {
+  visibility: hidden;
 }
 
 .homepage {
