@@ -9,18 +9,24 @@
         <lang_direction>ltr</lang_direction>
         <platform id="all">
             <!-- This will create new keys with a new module -->
-            <module id="test">
-                <key id="test&amp;_TEST_A" attributes="" save_date="2015-09-30 15:32:39">
-                    <![CDATA[Prova 1]]>
+            <module id="menu">
+                <key id="test&amp;_DUMMY_MENU_BUTTON" attributes="" save_date="2015-09-30 15:32:39">
+                    <![CDATA[Bottone Dummy]]>
                 </key>
-                <key id="test&amp;_TEST_B" attributes="" save_date="2015-09-30 15:32:39">
-                    <![CDATA[Prova 2]]>
+                <key id="test&amp;_DUMMY_MENU_ARROW" attributes="" save_date="2015-09-30 15:32:39">
+                    <![CDATA[Bottone Dummy freccia]]>
+                </key>
+                <key id="test&amp;_DUMMY_MENU_UNDER" attributes="" save_date="2015-09-30 15:32:39">
+                    <![CDATA[Bottone Dummy sotto]]>
+                </key>
+                <key id="test&amp;_DUMMY_MENU_RENDER_CALL" attributes="" save_date="2015-09-30 15:32:39">
+                    <![CDATA[Dummy esempio evento]]>
                 </key>
             </module>
             <!-- This will override the standard translation (not in the database, only in visualization) -->
             <module id="standard">
                 <key id="standard&amp;_USERNAME" attributes="" save_date="2017-03-14 16:10:41">
-                    <![CDATA[BBB]]>
+                    <![CDATA[Dummy username]]>
                 </key>
             </module>
         </platform>
