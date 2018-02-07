@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180205</DATE>
+  <DATE>20180207</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -113,6 +113,8 @@
         <key id="admin_lang&amp;_ORIENTATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Orientamento lettura]]></key>
         <key id="admin_lang&amp;_OVERWRITE_EXISTENT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sovrascrivi termini esistenti]]></key>
         <key id="admin_lang&amp;_PERC_TRAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[% Tradotta]]></key>
+        <key id="admin_lang&amp;_PLUGIN" attributes="" save_date="2018-02-07 12:13:20"><![CDATA[Plugin]]></key>
+        <key id="admin_lang&amp;_PLUGIN_NAME" attributes="" save_date="2018-02-07 12:13:25"><![CDATA[Plugin]]></key>
         <key id="admin_lang&amp;_TOTAL_LANGUAGE_UPDATED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Definizioni aggiornate]]></key>
         <key id="admin_lang&amp;_TRANSALTIONTABLEFOR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Tabella delle traduzioni per %module%]]></key>
         <key id="admin_lang&amp;_TRANSLATELANG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Traduci]]></key>

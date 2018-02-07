@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180118</DATE>
+  <DATE>20180207</DATE>
   <LANG id="french">
     <lang_code>french</lang_code>
     <lang_description>French</lang_description>
@@ -113,6 +113,8 @@
         <key id="admin_lang&amp;_ORIENTATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sens de la lecture]]></key>
         <key id="admin_lang&amp;_OVERWRITE_EXISTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ecraser les mots existants]]></key>
         <key id="admin_lang&amp;_PERC_TRAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Traduire %s]]></key>
+        <key id="admin_lang&amp;_PLUGIN" attributes="" save_date="2018-02-07 12:15:54"><![CDATA[Plugin]]></key>
+        <key id="admin_lang&amp;_PLUGIN_NAME" attributes="" save_date="2018-02-07 12:16:18"><![CDATA[Nom des plugin]]></key>
         <key id="admin_lang&amp;_TOTAL_LANGUAGE_UPDATED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Définition de la langue actualisée]]></key>
         <key id="admin_lang&amp;_TRANSALTIONTABLEFOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tableau de traduction pour %module%]]></key>
         <key id="admin_lang&amp;_TRANSLATELANG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Traduire]]></key>
@@ -1513,7 +1515,6 @@ Pour modifier ces mots veuillez vous rendre dans Admin/Gestion des langues, rech
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Passer au menu principal]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Passer à vos informations liée à ce cours]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Communauté]]></key>
-        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Activer le cours]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Section Admin]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2017-06-21 14:05:02"><![CDATA[Rédiger]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Campus]]></key>

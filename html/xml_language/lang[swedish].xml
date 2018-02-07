@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171211</DATE>
+  <DATE>20180207</DATE>
   <LANG id="swedish">
     <lang_code>swedish</lang_code>
     <lang_description>Swedish</lang_description>
@@ -113,6 +113,8 @@
         <key id="admin_lang&amp;_ORIENTATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Läsriktning]]></key>
         <key id="admin_lang&amp;_OVERWRITE_EXISTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Skriv över existerande ord]]></key>
         <key id="admin_lang&amp;_PERC_TRAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Översätt %]]></key>
+        <key id="admin_lang&amp;_PLUGIN" attributes="" save_date="2018-02-07 12:18:22"><![CDATA[Plugin]]></key>
+        <key id="admin_lang&amp;_PLUGIN_NAME" attributes="" save_date="2018-02-07 12:18:07"><![CDATA[Plugin namn]]></key>
         <key id="admin_lang&amp;_TOTAL_LANGUAGE_UPDATED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Språkdefinition uppdaterad]]></key>
         <key id="admin_lang&amp;_TRANSALTIONTABLEFOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Översättningstabell för %module%]]></key>
         <key id="admin_lang&amp;_TRANSLATELANG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Översätt]]></key>
@@ -428,7 +430,6 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Be om en kod skapad via kodmodulen]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2017-07-24 12:58:20"><![CDATA[Be om en trädkod vald av användaren från en rullgardinsmeny]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Be om en trädkod som måste inmatas manuellt av användaren]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2017-04-10 16:38:41"><![CDATA[Be om en kombination av trädkod och kurskod som måste inmatas manuellt av användaren. Träd- och kurskoden måste bestå av 10 tecken var, för att erhålla en 20 teckens kod]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max Audio användare]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max användare per rum]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max rum]]></key>
@@ -1506,7 +1507,6 @@ För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, s�
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Hoppa till huvudmenyn]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Hoppa till din information relevant till denna kurs]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Community]]></key>
-        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivera kurs]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Admin område]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2017-07-24 12:43:31"><![CDATA[Publicering]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kampus]]></key>
