@@ -21,7 +21,8 @@ define("BOOT_INPUT", 	6);
 define("BOOT_LANGUAGE", 7);
 define("BOOT_DATETIME", 8);
 define("BOOT_TEMPLATE", 9);
-define("BOOT_PAGE_WR", 	10);
+define("BOOT_PLUGINS",  10);
+define("BOOT_PAGE_WR", 	11);
 define("BOOT_INPUT_ALT", 99);
 
 /**
@@ -44,6 +45,7 @@ class Boot {
 		BOOT_LANGUAGE 	=> 'language',
 		BOOT_DATETIME 	=> 'dateTime',
 		BOOT_TEMPLATE 	=> 'template',
+        BOOT_PLUGINS 	=> 'plugins',
 		BOOT_PAGE_WR 	=> 'loadPageWriter'
 	);
 
@@ -252,10 +254,17 @@ class Boot {
 
 		require_once(_lib_.'/lib.acl.php');
 
-		self::log( "Prepare plugin's listeners." );
+	}
+
+    /**
+     * - step to load the plugins
+     */
+    private static function plugins() {
+
+        self::log( "Prepare plugin's listeners." );
         PluginManager::hook();
 
-	}
+    }
 
 	/**
 	 * - load the appropiate database driver
