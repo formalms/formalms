@@ -84,7 +84,9 @@
 			var searched = YAHOO.util.Dom.get('la_text').value;
 			if(searched) {
 				var regexp = new RegExp(searched, 'gi');
-				elLiner.innerHTML = oData.replace(regexp, '<span class="highlight">'+searched+'</span>');
+				var string_to_replace = regexp.exec(oData)
+				elLiner.innerHTML = oData.replace(regexp, '<span class="highlight">'+string_to_replace+'</span>');
+
 			} else elLiner.innerHTML = oData;
 		}
 		YAHOO.util.Event.addListener("lang_filters", "submit", function(e) {
@@ -144,7 +146,7 @@
 			//array('key' => 'id',				'label' => 'id_text', 'className' => 'img-cell'),
 			//array('key' => 'id_translation',	'label' => 'id_translation', 'className' => 'img-cell'),
 			array('key' => 'text_module', 		'label' => Lang::t('_LANG_MODULE', 'admin_lang'), 'className' => 'min-cell', 'sortable' => true),
-			array('key' => 'text_key',			'label' => Lang::t('_LANG_KEY', 'admin_lang'), 'className' => 'min-cell', 'sortable' => true),
+			array('key' => 'text_key',			'label' => Lang::t('_LANG_KEY', 'admin_lang'), 'formatter' => 'TranslationFormatter', 'className' => 'min-cell', 'sortable' => true),
 			array('key' => 'plugin_name',		'label' => Lang::t('_PLUGIN_NAME', 'admin_lang'), 'className' => 'min-cell', 'sortable' => false),
 			array('key' => 'translation_text',	'label' => Lang::t('_LANG_TRANSLATION', 'admin_lang'), 'formatter' => 'TranslationFormatter','editor' => 'new YAHOO.widget.TextareaCellEditor({asyncSubmitter: saveTranslation})', 'sortable' => true ),
 			array('key' => 'translation_text_diff',	'label' => Lang::t('_LANG_COMPARE', 'admin_lang'), 'editor' => 'new YAHOO.widget.TextareaCellEditor({asyncSubmitter: saveComparisonTranslation})', 'sortable' => true ),

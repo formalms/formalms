@@ -279,7 +279,7 @@ class LangAdm extends Model {
 		}
 
 		if($module != false) $qtxt .= " AND lt.text_module LIKE  '".$module."' ";
-		if($text != false && $only_empty == false) $qtxt .= " AND ta.translation_text LIKE  '%".$text."%' ";
+		if($text != false && $only_empty == false) $qtxt .= " AND ( ta.translation_text LIKE  '%".$text."%' OR lt.text_key LIKE  '%".$text."%' ) ";
 		if($only_empty != false) $qtxt .= " AND ta.translation_text IS NULL";
 		if($plugin_id != false) $qtxt .= " AND lt.plugin_id = ". (int)$plugin_id;
 
