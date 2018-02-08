@@ -32,10 +32,6 @@ html/plugins/**
 !html/plugins/ConferenceTeleSkill
 !html/plugins/Dummy/**
 
-
-# Sezione ??? a cosa serve?
-!*/
-
 # Sezione generica
 .idea/
 html/config.php
