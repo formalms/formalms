@@ -939,7 +939,7 @@ class Choice_Question extends Question {
 				
                 /* if($is_correct && $show_solution) {	*/
                 
-                if(($status_test=='passed' && $show_solution==2) || ($show_solution==1)) {
+                if(($status_test=='passed' && $show_solution==2 && $is_correct) || ($show_solution==1 && $is_correct)) {
                     $com_is_correct .= '<span class="text_bold">'.$lang->def('_TEST_NOT_THECORRECT').' : </span>'.$answer.'<br />';
                 }
                 
