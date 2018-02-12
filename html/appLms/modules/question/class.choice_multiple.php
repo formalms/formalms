@@ -806,7 +806,9 @@ class ChoiceMultiple_Question extends Question {
 			idTrack = ".(int)$id_track." AND ( user_answer = 1 OR user_answer = NULL ) ";
         if ($number_time != null){
             $recover_answer .= " AND number_time = ".$number_time;
-        }
+        } else {
+			$recover_answer .= " AND number_time = ( SELECT MAX(number_time) FROM learning_testtrack_answer WHERE idQuest = ".(int)$this->id." AND idTrack = ".(int)$id_track." )";
+		}
 
         
         //**  recorver status test ** #11961 - Errata visualizzazione risposte corrette nei test
@@ -861,6 +863,24 @@ class ChoiceMultiple_Question extends Question {
 						'comment'	=> $com_is_correct.$comment );
 	}
 	
+	function userScore( $id_track, $number_time = null ) {
+
+		$score = 0;
+		$query = "SELECT SUM(score_assigned)
+		FROM ".$GLOBALS['prefix_lms']."_testtrack_answer
+		WHERE idQuest = '".(int)$this->id."'
+		AND idTrack = '".(int)$id_track."'";
+		if ($number_time != null){
+			$query .= " AND number_time = ".$number_time;
+		}
+		$query .= " GROUP BY number_time ORDER BY number_time DESC LIMIT 1";
+		$re_answer = sql_query($query);
+		if(!sql_num_rows($re_answer)) return $score;
+		while(list($score_assigned) = sql_fetch_row($re_answer)) {
+			$score = round($score + $score_assigned, 2);
+		}
+		return $score;
+	}
 	
 }
 
