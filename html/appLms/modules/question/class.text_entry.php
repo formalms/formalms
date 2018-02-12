@@ -600,7 +600,9 @@ class TextEntry_Question extends Question {
 			idTrack = '".(int)$id_track."'";
         if ($number_time != null){
             $recover_answer .= " AND number_time = ".$number_time;
-        }
+        } else {
+			$recover_answer .= " ORDER BY number_time DESC LIMIT 1";
+		}
 
 		list($answer_do) = sql_fetch_row(sql_query($recover_answer));
 		
