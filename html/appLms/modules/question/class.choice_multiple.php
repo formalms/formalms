@@ -836,6 +836,7 @@ class ChoiceMultiple_Question extends Question {
 					.$answer.'&nbsp;';
 				if($is_correct) {
 					$quest .= '<span class="test_answer_correct">'.$lang->def('_TEST_CORRECT').'</span>';
+					$comment .= '<br />'.$comm.'<br />';
 				} else {
 					$quest .= '<span class="test_answer_incorrect">'.$lang->def('_TEST_INCORRECT').'</span>';
 					$comment .= '<br />'.$answer.' <span class="text_bold">'.$lang->def('_TEST_NOT_MC_THECORRECT').' : </span>'

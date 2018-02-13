@@ -612,6 +612,7 @@ class TextEntry_Question extends Question {
 		$text = '<span class="text_bold">'.( trim($answer_do) != '' ? $answer_do : $lang->def('_EMPTY_ANSWER') ).'</span>';
 		if(strtolower($answer_do) == strtolower($answer)) {
 			$text .= ' <strong class="test_answer_correct">'.$lang->def('_TEST_CORRECT').'</strong>';
+			$comment = $com;
 		} else {
 			$text .= ' <strong class="test_answer_incorrect">'.$lang->def('_TEST_INCORRECT').'</strong>';
 			if($show_solution) $com_is_correct = '<strong>'.$lang->def('_TEST_ISNOT_THECORRECT').' : </strong>'.$answer;

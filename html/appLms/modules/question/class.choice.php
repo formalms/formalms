@@ -932,6 +932,7 @@ class Choice_Question extends Question {
 					.$answer.'&nbsp;';
 				if($is_correct) {
 					$quest .= '<span class="test_answer_correct">'.$lang->def('_TEST_CORRECT').'</span>';
+					$comment = $comm;
 				} else {
 					$quest .= '<span class="test_answer_incorrect">'.$lang->def('_TEST_INCORRECT').'</span>';
 					$comment = $comm;
