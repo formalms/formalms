@@ -320,3 +320,24 @@ tfoot.empty td {
 .final-buttons-container {
     display: inline-block;
 }
+
+.pagination {
+    text-align: center;
+    line-height:  30px;
+    border-bottom:  1px solid black;
+    max-width: 75%;
+    margin: 0 auto;
+    border-radius:  0;
+    display:  block;
+}
+
+.pagination a {
+    margin: 0 10px;
+    font-size: 16px;
+    text-decoration: underline;
+}
+
+.pagination a.is-active {
+    font-size: 20px;
+    color: #C84000;
+}

@@ -19,12 +19,14 @@ window.CourseReport = (function ($) {
      * @param   {int}   maxColumns   -   number of columns in the detail table - FOR FUTURE IMPLEMENTATIONS
      * @param   {int}   filter   -   filter code
      */
-    var loadUserData = function (callback, tests, filter, round_redo) {
+    var loadUserData = function (callback, tests, filter, round_redo, pagination) {
 
         var _data = {
             'courseId': 'id',
             'selected_tests': [],
-            'type_filter': filter || false
+            'type_filter': filter || false,
+            'pagination': (pagination ? pagination.page : 0),
+            'currentPage': (pagination ? pagination.current : 0)
         };
 
 //        var _maxCol = maxColumns;
@@ -65,6 +67,11 @@ window.CourseReport = (function ($) {
                 $('.js-user-detail-filter').removeAttr('disabled');
                 $('.js-user-detail-filter').removeClass('is-disabled');
                 var parsedData = JSON.parse(data);
+
+                if (!$('.js-pagination').hasClass('is-loaded')) {
+                    $(this).empty();
+                    buildPagination(parsedData.pagination);
+                }
 
                 callback(parsedData);
 
@@ -138,6 +145,46 @@ window.CourseReport = (function ($) {
 
         return _activitiesResults;
 
+    };
+
+    /**
+     * function use to build the pagination
+     */
+    var buildPagination = function (pagination) {
+        var _pages = pagination.countPages;
+        var _currentPage = pagination.currentPage;
+        var $container = $('.js-pagination');
+        var _html= '';
+
+        for (var i = 0; i < _pages; i++) {
+            if (i === _currentPage) {
+                _html += '<a class="js-pagination-goto is-active" href="javascript:void(0);" data-page="' + i + '">' + (i + 1) + '</a>';
+            } else {
+                _html += '<a class="js-pagination-goto" href="javascript:void(0);" data-page="' + i + '">' + (i + 1) + '</a>';
+            }
+        }
+
+        $container.append(_html);
+        $container.addClass('is-loaded');
+    };
+
+    /**
+     * function used to navigate the pages
+     */
+    var navigatePage = function (page, current) {
+        var _userData;
+        var _filter = $('.js-user-level-filter').val();
+        var _pagination = {
+          page: page,
+          currentPage: current
+        };
+
+        clearDetailTable();
+
+        loadUserData(function (data) {
+            _userData = data;
+            fillTable(_userData);
+        }, testData, _filter, '', _pagination);
     };
 
     /**
@@ -310,6 +357,7 @@ window.CourseReport = (function ($) {
     var filterUsersByLevel = function (filter) {
         var userData;
 
+        clearPagination();
         clearDetailTable();
 
         loadUserData(function (data) {
@@ -325,6 +373,7 @@ window.CourseReport = (function ($) {
     var recountTable = function (filter) {
         var userData;
 
+        clearPagination
         clearDetailTable();
 
         loadUserData(function (data) {
@@ -333,6 +382,13 @@ window.CourseReport = (function ($) {
         }, testData, false, filter);
     };
 
+    /**
+     * function used to clear the pagination
+     */
+    var clearPagination = function () {
+        $('.js-pagination').removeClass('is-loaded');
+        $('.js-pagination').empty();
+    };
 
     /**
      * function used to clear the detail table
@@ -427,6 +483,17 @@ window.CourseReport = (function ($) {
 
         $('.button--add').on('click', function () {
             $(this).toggleClass('active');
+        });
+
+        $('body').on('click', '.js-pagination-goto', function () {
+            var $elem = $(this);
+            var _page = $elem.attr('data-page');
+            var _current = $elem.siblings('.is-active').attr('data-page');
+
+            $elem.siblings().removeClass('is-active');
+            $elem.addClass('is-active');
+
+            navigatePage(_page, _current);
         });
 
 
