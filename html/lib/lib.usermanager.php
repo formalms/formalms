@@ -1610,7 +1610,6 @@ class UserManagerRenderer
         // Check for error
         $errors = [];
 
-
         // Insert temporary
         $random_code = md5($_POST['register']['userid'] . mt_rand() . mt_rand() . mt_rand());
         // register as temporary user and send mail
@@ -1677,7 +1676,9 @@ class UserManagerRenderer
         if ($reg_code_res['success'] == false) {
             $acl_man->deleteTempUser($iduser);
             $this->error = true;
-            return '<div class="reg_err_data">' . $reg_code_res['msg'] . '</div>';
+
+            $errors = ['registration' => false, 'error' => $this->error, 'msg' => $reg_code_res['msg']];
+            return $errors;
         }
         // save language selected
         require_once(_base_ . '/lib/lib.preference.php');
@@ -2502,9 +2503,27 @@ class UserManagerRenderer
             }
         }
 
+
         if ($control_extra_field) {
+
+            $arr_idst = (isset($_POST['group_sel_implode']) ? explode(',', $_POST['group_sel_implode']) :  false);
+
+            if ($options['use_advanced_form'] == 'on' || Get::sett('register_with_code') == 'on') {
+                $reg_code = Get::req('reg_code', DOTY_MIXED, '');
+                $uma = new UsermanagementAdm();
+                $array_folder = $uma->getFolderGroups($reg_code);
+
+                if ($arr_idst){
+                    $arr_idst = array_merge($arr_idst,$array_folder);
+                }
+                else {
+                    $arr_idst = $array_folder;
+                }
+            }
+
+
             $extra_field = new FieldList();
-            $re_filled = $extra_field->isFilledFieldsForUserInRegistration(0, (isset($_POST['group_sel_implode']) ? explode(',', $_POST['group_sel_implode']) : false));
+            $re_filled = $extra_field->isFilledFieldsForUserInRegistration(0, $arr_idst);
             if ($re_filled !== true) {
 
                 foreach ($re_filled as $key => $value) {
