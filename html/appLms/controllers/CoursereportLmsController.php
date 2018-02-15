@@ -581,9 +581,9 @@ class CoursereportLmsController extends LmsController
 
 		$currentPage = Get::pReq ('pagination' , DOTY_INT , 0);
 		/**
-		 * Set default students limit pagination at 200
+		 * Set default students limit pagination at 50
 		 **/
-		$paginationLimit = Get::pReq ('limit' , DOTY_INT , 200);
+		$paginationLimit = Get::pReq ('limit' , DOTY_INT , 50);
 
 		if ($paginationLimit == 0) {
 			$currentPage = 0;
@@ -644,7 +644,10 @@ class CoursereportLmsController extends LmsController
 
 		if ($paginationLimit > 0) {
 
-			$students = array_slice ($students , $currentPage * $paginationLimit , $currentPage * $paginationLimit + $paginationLimit , true);
+		    $offset = $currentPage * $paginationLimit;
+		    $length = $paginationLimit;
+
+			$students = array_slice ($students , $offset , $length , true);
 		}
 
 
