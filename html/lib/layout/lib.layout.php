@@ -455,6 +455,7 @@ class Layout
                 $dropdown_menu[] = array(
                     // 'submenu'=> array(),
                     'id_menu' => $main->id,
+                    'slug' => strtolower(str_replace(' ','-',$main->name)),
                     'name' => Lang::t($main->name, 'menu_course', false, false, $main->name),
                     'link' => $slider_menu[0]['link'],
                     'selected' => ($main->id === '' . $_SESSION['current_main_menu'] ? true : false),
