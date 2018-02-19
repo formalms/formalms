@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180118</DATE>
+  <DATE>20180219</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -113,6 +113,8 @@
         <key id="admin_lang&amp;_ORIENTATION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Reading orientation]]></key>
         <key id="admin_lang&amp;_OVERWRITE_EXISTENT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Overwrite existing words]]></key>
         <key id="admin_lang&amp;_PERC_TRAD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Translate %]]></key>
+        <key id="admin_lang&amp;_PLUGIN" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Plugin]]></key>
+        <key id="admin_lang&amp;_PLUGIN_NAME" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Plugin name]]></key>
         <key id="admin_lang&amp;_TOTAL_LANGUAGE_UPDATED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Language definition updated]]></key>
         <key id="admin_lang&amp;_TRANSALTIONTABLEFOR" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Translation table for %module%]]></key>
         <key id="admin_lang&amp;_TRANSLATELANG" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Translate]]></key>
@@ -659,7 +661,9 @@
         <key id="course&amp;_ADVERT_FORUM" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[There are [forum] new messages in the forum]]></key>
         <key id="course&amp;_ADVERT_LOBJ" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[There are [lobj] new learning objects]]></key>
         <key id="course&amp;_ALLOW_OVERBOOKING" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Allow overbooking]]></key>
+        <key id="course&amp;_ALL_COURSE_TYPE" attributes="" save_date="2018-02-19 12:06:57"><![CDATA[All types of course]]></key>
         <key id="course&amp;_ALL_OPEN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[All open]]></key>
+        <key id="course&amp;_ALL_YEARS" attributes="" save_date="2018-02-19 12:07:05"><![CDATA[All years]]></key>
         <key id="course&amp;_ASSIGN_FOR_ALL_STATUS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Assign for any user's status]]></key>
         <key id="course&amp;_ASSIGN_FOR_AT_LEAST_MINUTES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Minimum time of fruition for the assignment (min.)]]></key>
         <key id="course&amp;_ASSIGN_FOR_STATUS_COMPLETED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Assign for users that have  completed the course]]></key>
@@ -769,6 +773,7 @@
         <key id="course&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="accessibility" save_date="2017-03-14 16:10:41"><![CDATA[User is waiting at [url]]]></key>
         <key id="course&amp;_NOACTIVE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Waiting for activation]]></key>
         <key id="course&amp;_NOENTER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Access denied]]></key>
+        <key id="course&amp;_NO_COURSE_DATA" attributes="" save_date="2018-02-19 12:07:20"><![CDATA[Course with no start date]]></key>
         <key id="course&amp;_NO_COURSE_FOUND" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[No course found]]></key>
         <key id="course&amp;_OTHER_OPTION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Other options]]></key>
         <key id="course&amp;_OTHER_USER_MATERIAL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Material for other roles]]></key>
@@ -1510,7 +1515,7 @@ To change these words please go to Admin/Language management, search for <b>logi
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2017-03-14 16:10:41"><![CDATA[Jump to the main menu]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2017-03-14 16:10:41"><![CDATA[Jump to your information related to this course]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Community]]></key>
-        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Activate course]]></key>
+        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2018-02-19 12:07:32"><![CDATA[Add course]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Admin area]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Authoring]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Campus]]></key>
