@@ -7439,7 +7439,7 @@ tr:nth-child(odd) .course-objects__item--icon {
 
 @media (min-width: 1024px) {
   .slider-menu.hidden-arrows .slider-menu__arrow {
-    display: none;
+    display: none !important;
   }
 }
 
