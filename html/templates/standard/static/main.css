@@ -4646,7 +4646,6 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .has-icon {
-  padding-left: 50px !important;
   position: relative;
   -webkit-transition: all 0.2s ease-in 0s;
   transition: all 0.2s ease-in 0s;
@@ -4659,64 +4658,136 @@ h1, h2, h3, h4, h5, h6, p {
   background-repeat: no-repeat;
 }
 
+.icon--coourse-menu-area-studenti {
+  padding-left: 30px !important;
+}
+
+@media (min-width: 1024px) {
+  .icon--coourse-menu-area-studenti {
+    padding-left: 50px !important;
+  }
+}
+
 .icon--coourse-menu-area-studenti:before {
   background-image: url(images/icons/course-menu/icon--course-menu-area-studenti.png);
   background-size: contain;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   top: 50%;
-  left: 15px;
+  left: 5px;
   -webkit-transform: translateY(-50%);
       -ms-transform: translateY(-50%);
           transform: translateY(-50%);
+}
+
+@media (min-width: 1024px) {
+  .icon--coourse-menu-area-studenti:before {
+    width: 22px;
+    height: 22px;
+    left: 15px;
+  }
 }
 
 .icon--coourse-menu-area-studenti:hover:before {
   background-image: url(images/icons/course-menu/icon--course-menu-area-studenti--hover.png);
 }
 
+.icon--coourse-menu-area-social {
+  padding-left: 30px !important;
+}
+
+@media (min-width: 1024px) {
+  .icon--coourse-menu-area-social {
+    padding-left: 50px !important;
+  }
+}
+
 .icon--coourse-menu-area-social:before {
   background-image: url(images/icons/course-menu/icon--course-menu-area-social.png);
   background-size: contain;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   top: 50%;
-  left: 15px;
+  left: 5px;
   -webkit-transform: translateY(-50%);
       -ms-transform: translateY(-50%);
           transform: translateY(-50%);
+}
+
+@media (min-width: 1024px) {
+  .icon--coourse-menu-area-social:before {
+    width: 22px;
+    height: 22px;
+    left: 15px;
+  }
 }
 
 .icon--coourse-menu-area-social:hover:before {
   background-image: url(images/icons/course-menu/icon--course-menu-area-social--hover.png);
 }
 
+.icon--coourse-menu-gestione {
+  padding-left: 30px !important;
+}
+
+@media (min-width: 1024px) {
+  .icon--coourse-menu-gestione {
+    padding-left: 50px !important;
+  }
+}
+
 .icon--coourse-menu-gestione:before {
   background-image: url(images/icons/course-menu/icon--course-menu-gestione.png);
   background-size: contain;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   top: 50%;
-  left: 15px;
+  left: 5px;
   -webkit-transform: translateY(-50%);
       -ms-transform: translateY(-50%);
           transform: translateY(-50%);
+}
+
+@media (min-width: 1024px) {
+  .icon--coourse-menu-gestione:before {
+    width: 22px;
+    height: 22px;
+    left: 15px;
+  }
 }
 
 .icon--coourse-menu-gestione:hover:before {
   background-image: url(images/icons/course-menu/icon--course-menu-gestione--hover.png);
 }
 
+.icon--coourse-menu-statistiche {
+  padding-left: 30px !important;
+}
+
+@media (min-width: 1024px) {
+  .icon--coourse-menu-statistiche {
+    padding-left: 50px !important;
+  }
+}
+
 .icon--coourse-menu-statistiche:before {
   background-image: url(images/icons/course-menu/icon--course-menu-statistiche.png);
   background-size: contain;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   top: 50%;
-  left: 15px;
+  left: 5px;
   -webkit-transform: translateY(-50%);
       -ms-transform: translateY(-50%);
           transform: translateY(-50%);
+}
+
+@media (min-width: 1024px) {
+  .icon--coourse-menu-statistiche:before {
+    width: 22px;
+    height: 22px;
+    left: 15px;
+  }
 }
 
 .icon--coourse-menu-statistiche:hover:before {
@@ -7451,14 +7522,15 @@ tr:nth-child(odd) .course-objects__item--icon {
   line-height: 19px;
 }
 
-.slick-slide:nth-child(n+3) .slider-menu__item {
+.slick-slide:nth-child(n+2) .slider-menu__item {
   padding-left: 13px;
 }
 
-.slick-slide:nth-child(n+3) .slider-menu__item:before {
+.slick-slide:nth-child(n+2) .slider-menu__item:before {
   width: 3px;
   height: 3px;
   content: '';
+  font-family: "FontAwesome";
   position: absolute;
   top: -webkit-calc(50% - 1px);
   top: calc(50% - 1px);

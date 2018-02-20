@@ -65,9 +65,9 @@
 
 			<div class="col-sm-9 section-coourse__menu-horizontal">
 				<ul class="slider-menu">
-					<li class="slider-menu__item slider-menu__item--selected-area">
-                        {{ selectedArea }}
-					</li>
+					{#<li class="slider-menu__item slider-menu__item--selected-area">#}
+                        {#{{ selectedArea }}#}
+					{#</li>#}
 					{% for dropdown_menu in dropdown %}
 						{% if dropdown_menu.selected  %}
 							{% for slider_menu in dropdown_menu.slider_menu %}
