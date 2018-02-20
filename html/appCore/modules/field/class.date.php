@@ -375,7 +375,8 @@ class Field_Date extends Field {
             $formField .= Form::getInputDatefield(
                 'form-control datepicker '.($error ? 'has-error' : ''),
                     'field_' . $this->getFieldType() . '_' . $this->id_common,
-                    'field_' . $this->getFieldType() . '[' . $this->id_common . ']', $value, false, false, $translation);
+                    'field_' . $this->getFieldType() . '[' . $this->id_common . ']', $value, false, false, $translation,
+                'placeholder="' . $translation . ($mandatory ? ' *' : '') . '"');
 
             if ($error) {
                 $formField .= '<small class="form-text">* ' . $errorMessage . '</small>';

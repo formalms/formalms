@@ -433,13 +433,13 @@ class Form {
 		
     $_lang = Docebo::user()->getPreference('ui.lang_code'); 
     $date_format = str_replace(['%d', '%m', '%Y', '-'], ['dd', 'mm', 'yyyy', '-'], $date_format);
-    $other_param = ' data-provide="datepicker" 
+    $date_picker_other_param = ' data-provide="datepicker" 
     								 data-date-autoclose=true data-date-language="'.$_lang.
-    								 '" data-date-format="'.$date_format.'"';
+    								 '" data-date-format="'.$date_format.'" '.$other_param;
 
 		$iso = Format::dateDb($value, 'date');
 
-		return Form::getInputTextfield( $css_field, $id, $name, Format::date($iso, 'date'), $alt_name, '30', $other_param);
+		return Form::getInputTextfield( $css_field, $id, $name, Format::date($iso, 'date'), $alt_name, '30', $date_picker_other_param);
 	}
 
 
