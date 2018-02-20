@@ -59,7 +59,7 @@
                 ?>
          </div>
 
-    </div>
+    <div class="nofloat" ></div>
 
 
  <!-- DIV CONTENT COURSE-LIST  -->       
