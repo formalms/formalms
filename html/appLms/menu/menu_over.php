@@ -266,7 +266,7 @@ if (!Docebo::user()->isAnonymous()) {
     }
     if ($credits) {
         $right_box .= '<div class="tabnav__label ' . (!$profile ? 'selected' : '') . '" data-tab="credits">
-                            ' . Lang::t('_TIMEPERIODS', 'standard') . '
+                            ' . Lang::t('_TIME_PERIODS', 'standard') . '
                        </div>';
     }
 
