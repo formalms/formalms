@@ -43,7 +43,7 @@ function GetCourseImage($the_course, $path_image)
 {
 
     if ($the_course['img_course']) {
-        return $path_image . $the_course['img_course'];
+        return $path_image . rawurlencode($the_course['img_course']);
     } else {
         return Get::tmpl_path() . 'images/course/course_nologo.png';
     }
@@ -95,7 +95,9 @@ function typeOfCourse ($t) {
                         <div class="course-box__title icon--filter-<?php echo $course['user_status']; ?>"><?php echo TruncateText($course['name'], 100); ?></div>
                     </div>
                     <div class="course-box__item course-box__item--no-padding">
+                    
                         <?php if ($course['use_logo_in_courselist']) { ?>
+                
                         <div class="course-box__img" style="background-image: url(<?php echo GetCourseImage($course, $path_course) ?>)">
                         <?php } else { ?>
                         <div class="course-box__img">

@@ -276,7 +276,7 @@ function TruncateText($the_text, $size)
                             <div class="course-box__item course-box__item--no-padding">';
 
                     if ($row['use_logo_in_courselist'] && $row['img_course']) { //check per img
-                        $html .= '<div class="course-box__img" style="background-image: url(' . $path_course . $row['img_course'] . ');">';
+                        $html .= '<div class="course-box__img" style="background-image: url(' . $path_course . rawurlencode($row['img_course']) . ');">';
                     } else {
                         $html .= '<div class="course-box__img">';
                     }
