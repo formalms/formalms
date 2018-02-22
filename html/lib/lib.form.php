@@ -715,7 +715,7 @@ class Form {
 	 *
 	 * @return string with the html code for the select element
 	 */
-	public static function getInputDropdown( $css_dropdown, $id, $name, $all_value, $selected, $other_param, $withPlaceholder = false ) {
+	public static function getInputDropdown( $css_dropdown, $id, $name, $all_value, $selected, $other_param = '', $withPlaceholder = false ) {
 
 		$html_code = '<select class="form-control '.$css_dropdown.'" '
 				."\n\t".'id="'.$id.'" '
