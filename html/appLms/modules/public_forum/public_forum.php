@@ -1944,7 +1944,7 @@ function delthread ()
             
             if ($file != '') delete_file ($file);
         }
-        $post_deleted = mysql_num_rows ($re_mess);
+        $post_deleted = sql_num_rows ($re_mess);
         if (! sql_query ("
 		DELETE FROM " . $GLOBALS[ 'prefix_lms' ] . "_forummessage
 		WHERE idThread = '" . $id_thread . "'")
@@ -3524,7 +3524,7 @@ function forumsearchmessage ()
 	WHERE idThread = '" . $id_thread . "'
 	ORDER BY posted
 	LIMIT $ini, " . Get::sett ('visuItem'));
-    while ($record = mysql_fetch_assoc ($re_message)) {
+    while ($record = sql_fetch_assoc ($re_message)) {
         
         $messages[ $record[ 'idMessage' ] ] = $record;
         $authors[ $record[ 'author' ] ] = $record[ 'author' ];
@@ -4039,7 +4039,7 @@ function export ()
         
         $result = sql_query ($query);
         
-        if (mysql_num_rows ($result)) ;
+        if (sql_num_rows ($result)) ;
         {
             $tmp = array ();
             $id_list = array ();
