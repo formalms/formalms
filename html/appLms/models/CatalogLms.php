@@ -704,7 +704,7 @@ class CatalogLms extends Model
     
 
         
-    public function getMajorCategory($std_link, $only_son = false)
+    public function getMajorCategory($std_link = false, $only_son = false)
     {
         $query =    "SELECT idCategory, path, lev"
                     ." FROM %lms_category"

@@ -506,7 +506,7 @@ class Form {
 	 * @param string $other_param 	other element for the tag
 	 * @return string 	with the html code for the input type="password" element
 	 */
-	public static function getInputPassword( $css_text, $id, $name, $alt_name, $maxlenght, $other_param, $value ) {
+	public static function getInputPassword( $css_text, $id, $name, $alt_name, $maxlenght, $other_param, $value = "" ) {
 		return '<input type="password" '
 		."\n\t".'class="form-control '.$css_text.'" '
 		."\n\t".'id="'.$id.'" '

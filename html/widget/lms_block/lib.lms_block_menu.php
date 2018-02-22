@@ -108,7 +108,7 @@ class Lms_BlockWidget_menu extends Widget {
 	// END
 
     // news section
-	public function news($link) {
+	public function news($link = "") {
         $html = "";
         $ma = new Man_MiddleArea ();
         $count = 0;
