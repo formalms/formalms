@@ -2813,7 +2813,6 @@ class UserManagerOption
         $reSetting = sql_query("
 		SELECT param_name, param_value, value_type, max_size
 		FROM " . $this->_table . "
-		WHERE regroup = '" . _LOG_OPT_GROUP . "'
 		ORDER BY sequence");
         while (list($var_name, $var_value, $value_type) = sql_fetch_row($reSetting)) {
 
