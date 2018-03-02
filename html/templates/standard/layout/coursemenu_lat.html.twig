@@ -23,7 +23,7 @@
             </div>
             <div class="col-sm-9">
                 <h1 class="section-coourse__title">{{ course_name }}</h1>
-                <div class="section-coourse__progress-cotainer">
+                <div class="section-coourse__progress-container">
                     <div class="progress section-coourse__progress">
                         <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{ stats.perc_completed }}"
                              aria-valuemin="0" aria-valuemax="100" style="width: {{ stats.perc_completed }}%;">
@@ -42,7 +42,7 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<div class="forma-dropdown">
-							<button type="button" class="forma-dropdown__selected forma-button dropdown-toggle has-icon icon--coourse-menu-{{ selectedAreaSlug }}" data-toggle="dropdown">{{ selectedArea }}</button>
+							<button type="button" class="forma-dropdown__selected forma-button dropdown-toggle has-icon icon--coourse-menu icon--coourse-menu-{{ selectedAreaSlug }}" data-toggle="dropdown">{{ selectedArea }}</button>
 							<button type="button" class="forma-dropdown__toggle forma-button dropdown-toggle" data-toggle="dropdown"
 									aria-haspopup="true" aria-expanded="false">
 								<span class="glyphicon glyphicon-chevron-down"></span>
@@ -51,7 +51,7 @@
 							<ul class="dropdown-menu">
 								{% for dropdown_menu in dropdown %}
 									<li>
-										<a href="{{ dropdown_menu.link }}" data-id="{{ dropdown_menu.id_menu }}" class="has-icon icon--coourse-menu-{{ dropdown_menu.slug }}">
+										<a href="{{ dropdown_menu.link }}" data-id="{{ dropdown_menu.id_menu }}" class="has-icon icon--coourse-menu icon--coourse-menu-{{ dropdown_menu.slug }}">
 											<span class="" aria-hidden="true"></span>
 											{{ dropdown_menu.name }}
 										</a>

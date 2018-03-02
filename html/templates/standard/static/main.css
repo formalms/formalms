@@ -4366,19 +4366,46 @@ h1, h2, h3, h4, h5, h6, p {
   background: transparent;
 }
 
-.section-coourse__dropdown .dropdown-menu .dropdown-menu:hover {
+.section-coourse__dropdown .forma-dropdown {
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+  border: 1px solid #c2c2c2;
+  -webkit-transition: all 0.2s ease-in 0s;
+  transition: all 0.2s ease-in 0s;
+}
+
+.section-coourse__dropdown .forma-dropdown:hover {
   border-color: #ff6c00;
 }
 
-.section-coourse__dropdown .dropdown-menu li > a {
+.section-coourse__dropdown .forma-dropdown li > a {
   font-size: 14px;
   text-transform: uppercase;
   -webkit-transition: all 0.2s ease-in 0s;
   transition: all 0.2s ease-in 0s;
 }
 
-.section-coourse__dropdown .dropdown-menu li > a:hover {
+.section-coourse__dropdown .forma-dropdown li > a:hover {
   color: #ff6c00;
+}
+
+.section-coourse__dropdown .forma-dropdown .forma-dropdown__selected {
+  -webkit-transition: all 0.2s ease-in 0s;
+  transition: all 0.2s ease-in 0s;
+  white-space: nowrap;
+  border-top: none;
+  border-left: none;
+  border-bottom: none;
+  border-right: 1px solid #c2c2c2;
+}
+
+.section-coourse__dropdown .forma-dropdown .forma-dropdown__toggle {
+  border: none;
+}
+
+.section-coourse__dropdown .forma-dropdown .forma-dropdown__toggle:hover {
+  background-color: transparent;
+  color: initial;
 }
 
 .user-panel .carousel {
@@ -4647,8 +4674,6 @@ h1, h2, h3, h4, h5, h6, p {
 
 .has-icon {
   position: relative;
-  -webkit-transition: all 0.2s ease-in 0s;
-  transition: all 0.2s ease-in 0s;
 }
 
 .has-icon:before {
@@ -4656,6 +4681,42 @@ h1, h2, h3, h4, h5, h6, p {
   position: absolute;
   background-position: center;
   background-repeat: no-repeat;
+  -webkit-transition: all 0.2s ease-in 0s;
+  transition: all 0.2s ease-in 0s;
+}
+
+.icon--coourse-menu {
+  padding-left: 30px !important;
+}
+
+@media (min-width: 1024px) {
+  .icon--coourse-menu {
+    padding-left: 50px !important;
+  }
+}
+
+.icon--coourse-menu:before {
+  background-image: url(images/icons/course-menu/icon--course-menu-default.svg);
+  background-size: contain;
+  width: 18px;
+  height: 18px;
+  top: 50%;
+  left: 5px;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+@media (min-width: 1024px) {
+  .icon--coourse-menu:before {
+    width: 22px;
+    height: 22px;
+    left: 15px;
+  }
+}
+
+.icon--coourse-menu:hover:before {
+  background-image: url(images/icons/course-menu/icon--course-menu-default--hover.svg);
 }
 
 .icon--coourse-menu-area-studenti {
@@ -5412,6 +5473,7 @@ i + .course-box__date-box {
 @media (min-width: 768px) {
   .section-coourse__title {
     padding-top: 0;
+    margin-left: 30px;
   }
 }
 
@@ -5471,7 +5533,7 @@ i + .course-box__date-box {
   line-height: 26px;
 }
 
-.section-coourse__progress-cotainer {
+.section-coourse__progress-container {
   padding: 4px;
   border: 1px solid #c2c2c2;
   -webkit-border-radius: 5px;
@@ -5480,8 +5542,9 @@ i + .course-box__date-box {
 }
 
 @media (min-width: 768px) {
-  .section-coourse__progress-cotainer {
+  .section-coourse__progress-container {
     max-width: 250px;
+    margin-left: 30px;
   }
 }
 
@@ -5551,6 +5614,40 @@ i + .course-box__date-box {
   font-weight: bold;
   font-size: 18px;
   text-transform: uppercase;
+}
+
+.section-coourse .icon--coourse-menu-gestione {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .section-coourse .icon--coourse-menu-gestione {
+    display: block;
+  }
+}
+
+/**
+ FIX PROVVISORIO COME RICHIESTO NEL TASK #16149
+ */
+#course-info-boot + #yui-main-boot {
+  font-family: "Open-sans";
+}
+
+@media (min-width: 1024px) {
+  #course-info-boot + #yui-main-boot {
+    padding: 0 30px;
+  }
+}
+
+#course-info-boot + #yui-main-boot .page-header {
+  margin-bottom: 0;
+  display: none;
+}
+
+@media (min-width: 768px) {
+  #course-info-boot + #yui-main-boot .page-header {
+    display: block;
+  }
 }
 
 .FAKE-GRID {
@@ -7362,6 +7459,7 @@ tr:nth-child(odd) .course-objects__item--icon {
 @media (min-width: 768px) {
   .section-coourse__title {
     padding-top: 0;
+    margin-left: 30px;
   }
 }
 
@@ -7421,7 +7519,7 @@ tr:nth-child(odd) .course-objects__item--icon {
   line-height: 26px;
 }
 
-.section-coourse__progress-cotainer {
+.section-coourse__progress-container {
   padding: 4px;
   border: 1px solid #c2c2c2;
   -webkit-border-radius: 5px;
@@ -7430,8 +7528,9 @@ tr:nth-child(odd) .course-objects__item--icon {
 }
 
 @media (min-width: 768px) {
-  .section-coourse__progress-cotainer {
+  .section-coourse__progress-container {
     max-width: 250px;
+    margin-left: 30px;
   }
 }
 
@@ -7503,8 +7602,42 @@ tr:nth-child(odd) .course-objects__item--icon {
   text-transform: uppercase;
 }
 
+.section-coourse .icon--coourse-menu-gestione {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .section-coourse .icon--coourse-menu-gestione {
+    display: block;
+  }
+}
+
+/**
+ FIX PROVVISORIO COME RICHIESTO NEL TASK #16149
+ */
+#course-info-boot + #yui-main-boot {
+  font-family: "Open-sans";
+}
+
+@media (min-width: 1024px) {
+  #course-info-boot + #yui-main-boot {
+    padding: 0 30px;
+  }
+}
+
+#course-info-boot + #yui-main-boot .page-header {
+  margin-bottom: 0;
+  display: none;
+}
+
+@media (min-width: 768px) {
+  #course-info-boot + #yui-main-boot .page-header {
+    display: block;
+  }
+}
+
 .slider-menu {
-  padding: 0 30px;
+  padding: 0 22px;
   margin: 0;
 }
 
@@ -7529,15 +7662,12 @@ tr:nth-child(odd) .course-objects__item--icon {
 .slick-slide:nth-child(n+2) .slider-menu__item:before {
   width: 3px;
   height: 3px;
-  content: '';
+  content: '\f0da';
   font-family: "FontAwesome";
+  font-size: 9px;
   position: absolute;
-  top: -webkit-calc(50% - 1px);
-  top: calc(50% - 1px);
   left: 0;
-  background-color: currentColor;
-  -webkit-border-radius: 50%;
-          border-radius: 50%;
+  background-color: transparent;
 }
 
 .slider-menu__item a {
@@ -7557,17 +7687,10 @@ tr:nth-child(odd) .course-objects__item--icon {
 
 .slider-menu__item--selected-area {
   color: #ff6c00;
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .slider-menu__item--selected-area {
-    display: block;
-  }
 }
 
 .slider-menu__arrow {
-  width: 30px;
+  width: 18px;
   height: 30px;
   position: absolute;
   top: 0;
@@ -7590,16 +7713,6 @@ tr:nth-child(odd) .course-objects__item--icon {
 
 .slider-menu__arrow span:last-child {
   margin-left: -8px;
-}
-
-.slick-slide:first-child {
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .slick-slide:first-child {
-    display: block;
-  }
 }
 
 .homepage {
