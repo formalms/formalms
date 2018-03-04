@@ -80,3 +80,9 @@ header.header .row-fluid .navbar-collapse li .o-wrapper .c-button.open .username
 
 .course-box:hover {border:;}
 
+
+/* CATALOG */
+/* Aside Categories */
+.aside .list-group-item.node-treeview1:hover {background-color: !important}
+.node-treeview1.node-selected { background-color: !important;}
+
