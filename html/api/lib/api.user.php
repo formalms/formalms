@@ -18,7 +18,7 @@ class User_API extends API {
 	protected function _getBranch($like, $parent = false, $lang_code = false) {
 		if (!$like) return false;
 		$query = "SELECT oct.idOrg FROM %adm_org_chart as oc JOIN %adm_org_chart_tree as oct "
-			." ON (oct.idOrg = oc.id_dir) WHERE oc.translation LIKE '".$like."'";
+			." ON (oct.idOrg = oc.id_dir) WHERE oc.translation LIKE '".addslashes($like)."'";
 		if ($lang_code !== false) { //TO DO: check if lang_code is valid
 			$query .= " AND oc.lang_code = '".$lang_code."'";
 		}
