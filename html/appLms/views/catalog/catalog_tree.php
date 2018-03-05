@@ -71,7 +71,7 @@
 
       <?php if ($catalogue_todisplay) { ?>
         <script type="text/javascript">
-            function callAjaxCatalog() {
+            function callAjaxCatalog(id_cat) {
 
                 <?php echo $no_course ?>
                 str_loading = "<?php echo Layout::path() ?>images/standard/loadbar.gif";
@@ -81,7 +81,7 @@
                     'ajax.server.php',
                     {
                         r: 'catalog/allCourseForma',
-                        id_category: 0,
+                        id_category: id_cat,
                         type_course: type_course,
                         id_catalogue: current_catalogue 
                     }
@@ -95,7 +95,7 @@
             }
 
             $(function () {
-                callAjaxCatalog();
+                callAjaxCatalog(0);
                 var category_tree = [
                     {
                         text: "&nbsp;&nbsp;<?php echo Lang::t('_ALL_COURSES') ?>",
@@ -121,8 +121,7 @@
                     selectedBackColor: "#C84000",
 
                     onNodeSelected: function (event, node) {
-                        id_category = node.id_cat;
-                        callAjaxCatalog();
+                        callAjaxCatalog(node.id_cat);
                     },
                     onNodeUnselected: function (event, node) {
                     }
