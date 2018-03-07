@@ -25,7 +25,7 @@
                 <h1 class="section-coourse__title">{{ course_name }}</h1>
                 <div class="section-coourse__progress-container">
                     <div class="progress section-coourse__progress">
-                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{ stats.perc_completed }}"
+                        <div class="progress-bar progress-bar-warning{% if stats.perc_completed < 25 %} progress-bar-warning--black{% endif %}" role="progressbar" aria-valuenow="{{ stats.perc_completed }}"
                              aria-valuemin="0" aria-valuemax="100" style="width: {{ stats.perc_completed }}%;">
                             <span>{{ stats.perc_completed }}%</span>
                         </div>
@@ -81,6 +81,30 @@
         <div class="clearfix"></div>
     </div>
 	<div class="clearfix"></div>
+
+	<div id="myModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">'.Lang::t('_STATFORUSER', 'stats').'</h4>
+				</div>
+				<div class="modal-body">
+					<p>
+						'.$link_arg.'
+						<br>'.$info_panel.'</p>
+					<br>
+					<div id="tag_cloud" class="yui-navset"></div>
+				</div>
+				<div class="modal-footer">
+					<span type="button" class="btn btn-default" data-dismiss="modal">'.Lang::t('_CLOSE', 'standard').'</span>
+				</div>
+			</div>
+
+		</div>
+	</div>
 
 	{# FOLLOWING CODE IS A STATIC TEMPLATE OF NEW FOLDER-VIEW FOR STUFF HANDLING #}
 	{#<div class="section-coourse__content col-xs-12">#}

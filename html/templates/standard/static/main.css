@@ -5577,6 +5577,10 @@ i + .course-box__date-box {
   margin: 5px 8px 0 0;
 }
 
+.progress-bar-warning--black span {
+  color: black !important;
+}
+
 .section-coourse__menu-horizontal {
   margin: 28px 0;
 }
@@ -7561,6 +7565,10 @@ tr:nth-child(odd) .course-objects__item--icon {
 
 .section-coourse__progress .glyphicon {
   margin: 5px 8px 0 0;
+}
+
+.progress-bar-warning--black span {
+  color: black !important;
 }
 
 .section-coourse__menu-horizontal {
