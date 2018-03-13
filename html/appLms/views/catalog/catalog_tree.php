@@ -71,6 +71,8 @@
 
       <?php if ($catalogue_todisplay) { ?>
         <script type="text/javascript">
+			var $treeview = $("#treeview1");
+
             function callAjaxCatalog(id_cat) {
 
                 <?php echo $no_course ?>
@@ -94,8 +96,16 @@
                 })
             }
 
+            function checkSticky() {
+				if (window.innerWidth >= 768 && $('#div_course').offset().top - $(window).scrollTop() <= 60) {
+					$treeview.css({width: $treeview.parent().width(), position: 'fixed', top: '60px'});
+				} else {
+					$treeview.attr('style', '');
+				}
+			}
+
             $(function () {
-                callAjaxCatalog(0);
+                callAjaxCatalog();
                 var category_tree = [
                     {
                         text: "&nbsp;&nbsp;<?php echo Lang::t('_ALL_COURSES') ?>",
@@ -109,7 +119,7 @@
                         nodes:<?php echo $a_node ?>
                     }
                 ];
-                $("#treeview1").treeview({
+				$treeview.treeview({
                     data: category_tree,
                     enableLinks: false,
                     backColor: "#ffffff",
@@ -121,11 +131,17 @@
                     selectedBackColor: "#C84000",
 
                     onNodeSelected: function (event, node) {
+                        id_category = node.id_cat;
                         callAjaxCatalog(node.id_cat);
                     },
                     onNodeUnselected: function (event, node) {
                     }
                 });
+
+				// sticky feature
+				checkSticky();
+				window.addEventListener('scroll', checkSticky, true);
+				window.addEventListener('resize', checkSticky, true);
             });
         </script>
         <?php } else { ?> 

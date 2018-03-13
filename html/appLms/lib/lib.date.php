@@ -334,6 +334,20 @@ class DateManager
 		return $num_day;
 	}
 
+    
+    public function getClassromByID($id_classroom)
+    {
+        $query =    "SELECT name, location "
+                    ." FROM ".$this->classroom_table .", ".$this->location_table
+                    ." WHERE idClassroom = ".$id_classroom ." and ".$this->location_table.".location_id=".$this->classroom_table.".location_id";
+                    
+        list($name,$location) = sql_fetch_row(sql_query($query));
+
+        return $location." - ".$name;
+    }    
+    
+    
+    
 	public function getDateInfo($id_date)
 	{
 		$query =	"SELECT dt.*, MIN(dy.date_begin) AS date_begin, MAX(dy.date_end) AS date_end, COUNT(dy.id_day) as num_day, COUNT(DISTINCT du.id_user) as user_subscribed"
@@ -536,9 +550,9 @@ class DateManager
 		return $res;
 	}
 
-	private function getDateDayDateDetails($id_date)
+	public function getDateDayDateDetails($id_date)
 	{
-		$query =	"SELECT date_begin, date_end"
+		$query =	"SELECT date_begin, date_end, classroom"
 					." FROM ".$this->day_date_table
 					." WHERE id_date = ".$id_date;
 
@@ -551,6 +565,7 @@ class DateManager
 		{
 			$res[$i]['date_begin'] = $row['date_begin'];
 			$res[$i]['date_end'] = $row['date_end'];
+            $res[$i]['classroom'] = $this->getClassromByID($row['classroom']);
 			$i++;
 		}
 
@@ -859,7 +874,7 @@ class DateManager
 
 		return $test_type;
 	}
-
+          
 	public function getUserPresenceForDate($id_date)
 	{
 		$query =	"SELECT *"
