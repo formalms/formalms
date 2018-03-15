@@ -5464,6 +5464,13 @@ i + .course-box__date-box {
   display: inline-block;
 }
 
+@media (min-width: 1024px) {
+  .section-coourse__img {
+    max-width: 70%;
+    margin: 15%;
+  }
+}
+
 .section-coourse__title {
   padding-top: 30px;
   color: #333;
@@ -7452,6 +7459,13 @@ tr:nth-child(odd) .course-objects__item--icon {
 
 .section-coourse__img {
   display: inline-block;
+}
+
+@media (min-width: 1024px) {
+  .section-coourse__img {
+    max-width: 70%;
+    margin: 15%;
+  }
 }
 
 .section-coourse__title {
