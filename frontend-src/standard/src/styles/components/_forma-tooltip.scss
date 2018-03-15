@@ -1,0 +1,58 @@
+// Tooltip
+//
+// Markup:
+// <div class="has-forma-tooltip">
+//	Hover here
+//	<div class="forma-tooltip">Example message</div>
+// </div>
+//
+// Style guide: 11
+.forma-tooltip {
+  display: block;
+  width: 155px;
+  padding: 17px 12px;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -100%) translateY(-45px);
+  transform: translate3d(-50%, -100%, 0) translateY(-45px);
+  border-radius: 5px;
+  background-color: $orange;
+  font-size: 12px;
+  text-align: center;
+  color: $white;
+  opacity: 0;
+  visibility: hidden;
+  transition: {
+    property: transform, opacity, visibility;
+    duration: 0.4s;
+    timing-function: ease;
+    delay: 0s;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 1px;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    border: {
+      top: solid 12px $orange;
+      right: solid 6px transparent;
+      bottom: none;
+      left: solid 6px transparent;
+    }
+  }
+
+  .has-forma-tooltip:hover & {
+    transform: translate(-50%, -100%) translateY(-15px);
+    transform: translate3d(-50%, -100%, 0) translateY(-15px);
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.has-forma-tooltip {
+  overflow: visible !important;
+}

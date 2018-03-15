@@ -37,6 +37,3 @@ html/plugins/**
 html/config.php
 test/behat/behat_config.yml
 courselist.php.bkp
-
-# frontend
-frontend
