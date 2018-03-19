@@ -3514,6 +3514,15 @@ p {
   .icon--coourse-menu-statistiche:hover:before {
     background-image: url(images/icons/course-menu/icon--course-menu-statistiche--hover.png); }
 
+.modal {
+  font-family: "Open-sans"; }
+
+.section-coourse-modal .modal-dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important; }
+
 * {
   outline: none !important;
   box-sizing: border-box; }
@@ -4039,7 +4048,8 @@ i + .course-box__date-box {
     .section-coourse__progress .progress-bar[aria-valuenow='0'] span {
       color: inherit; }
   .section-coourse__progress .glyphicon {
-    margin: 5px 8px 0 0; }
+    margin: 5px 8px 0 0;
+    cursor: pointer; }
 
 .progress-bar-warning--black span {
   color: black !important; }
@@ -5359,7 +5369,8 @@ header.header {
     .section-coourse__progress .progress-bar[aria-valuenow='0'] span {
       color: inherit; }
   .section-coourse__progress .glyphicon {
-    margin: 5px 8px 0 0; }
+    margin: 5px 8px 0 0;
+    cursor: pointer; }
 
 .progress-bar-warning--black span {
   color: black !important; }
