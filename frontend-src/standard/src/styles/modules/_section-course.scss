@@ -84,7 +84,8 @@
 
 .section-coourse__img {
   display: inline-block;
-  border: 1px solid $gray-3;
+  padding: 2px;
+  border: 1px solid $gray-204;
 
   @include breakpoint($ipad) {
     max-width: 70%;
