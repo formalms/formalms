@@ -84,10 +84,11 @@
 
 .section-coourse__img {
   display: inline-block;
+  border: 1px solid $gray-3;
 
   @include breakpoint($ipad) {
     max-width: 70%;
-    margin: 15%;
+    margin: 25px 15%;
   }
 }
 
@@ -98,7 +99,6 @@
 
   @include breakpoint($tablet) {
     padding-top: 0;
-    margin-left: 30px;
   }
 }
 
@@ -168,7 +168,6 @@
 
   @include breakpoint($tablet) {
     max-width: 250px;
-    margin-left: 30px;
   }
 }
 
