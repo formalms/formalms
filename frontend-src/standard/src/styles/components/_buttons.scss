@@ -15,24 +15,24 @@
 .forma-button {
   display: inline-block;
   width: 100%;
-  padding: 14px 20px;
-  //padding: 14px;
-  min-height: 40px;
+  //padding: 14px 20px;
+  padding: 0;
+  //height: 40px;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
   text-shadow: none;
-  line-height: 12px;
+  line-height: 40px;
   color: $white;
   background: $dark-orange;
+  border: 2px solid $dark-orange;
   font-family: $font;
   font-size: 11px;
-  border: none;
   border-radius: 5px;
   outline: none;
   box-shadow: none;
   cursor: pointer;
-  transition: background-color 0.4s ease 0s;
+  transition: all 0.4s ease 0s;
 
   @include breakpoint($tablet) {
     font-size: 11px;
@@ -73,7 +73,7 @@
   }
 
   .course-box & {
-    padding: 14px 0;
+    //padding: 14px 0;
     max-height: 40px;
   }
 }
@@ -90,6 +90,7 @@
   &:hover {
     background: $orange;
     color: $white;
+    border-color: $orange;
   }
 }
 
@@ -121,7 +122,7 @@
   }
 
   .course-box & {
-    padding: 10px 0;
+    //padding: 10px 0;
   }
 }
 
@@ -135,6 +136,7 @@
 // Style guide: 2.3
 .forma-button--green {
   background: $green;
+  border: 2px solid $green;
 }
 
 // Green Bordered Button

@@ -1,9 +1,9 @@
 var Config = {
   projectName: 'formalms',
-  baseUrl: 'http://localhost',
+  baseUrl: 'http://formalms.local',
   apiUrl: 'http://formalms.local/',
-  shareUrl: 'http://localhost',
-  assetsUrl: '/static'
+  shareUrl: 'http://formalms.local/',
+  assetsUrl: 'http://formalms.local/static/'
 };
 
 module.exports = Config;

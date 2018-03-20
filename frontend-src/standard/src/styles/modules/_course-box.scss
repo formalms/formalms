@@ -196,6 +196,7 @@
     left: 30px;
     right: 30px;
   }
+  overflow: hidden;
 
   &:first-child {
     height: 70px;
@@ -631,7 +632,7 @@ i + .course-box__date-box {
 }
 
 .box_edizioni {
-  & .course-box {
+  .course-box & {
     display: none;
   }
 }
