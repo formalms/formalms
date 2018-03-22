@@ -65,8 +65,11 @@ class HelpdeskLmsController extends LmsController {
             $msg .= "FLASH: ".$help_req_flash_installed . $br_char;
 
             $msg .= "</body></html>";
-               
-            if(@mail($sendto, $oggetto, $msg, $headers)) {
+
+            require_once(Forma::inc(_base_.'/lib/lib.mailer.php'));
+            $mailer = DoceboMailer::getInstance();
+
+            if($mailer->SendMail($usermail, $sendto, $oggetto, $msg, false, $headers)) {
                 echo "true";
             } else {
                 echo Lang::t('_NO_EMAIL_CONFIG', 'standard');
