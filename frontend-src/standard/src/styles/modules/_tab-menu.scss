@@ -85,13 +85,16 @@
 //
 // Style guide: 4.2
 .nav.nav-tabs {
-  border: none;
+  &:not(.bordered) {
+    border: none;
 
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-  //width: 104%;
-  width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    //width: 104%;
+    width: 100%;
+  }
+
   li {
     height: 40px;
     margin-right: 9px;
@@ -144,6 +147,41 @@
       color: $white !important;
     }
   }
+
+  &.bordered {
+    width: 200px;
+
+    .dropdown-menu {
+      border: 0;
+    }
+
+    .dropdown-toggle {
+      text-align: center;
+      padding-left: 0;
+    }
+
+    .dropdown,
+    a,
+    li {
+      width: 100%;
+      margin: 0;
+      border-radius: 0;
+      padding: {
+        left: 0;
+        right: 0;
+      };
+      text-align: left;
+
+      &.active {
+        background-color: $gray-204;
+      }
+    }
+
+    a {
+      padding-left: 10px;
+    }
+  }
+
 }
 
 .nav.nav-tabs.visible-xs {

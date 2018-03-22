@@ -415,43 +415,45 @@
 }
 
 .section-coourse__dropdown {
-  .forma-dropdown {
-    border-radius: 5px;
-    border: 1px solid $gray-3;
+
+}
+
+.forma-dropdown {
+  border-radius: 5px;
+  border: 1px solid $gray-3;
+  transition: $transition-base;
+
+  &:hover {
+    border-color: $orange;
+  }
+
+  li > a {
+    font-size: 14px;
+    text-transform: uppercase;
     transition: $transition-base;
 
     &:hover {
-      border-color: $orange;
+      color: $orange;
     }
+  }
 
-    li > a {
-      font-size: 14px;
-      text-transform: uppercase;
-      transition: $transition-base;
-
-      &:hover {
-        color: $orange;
-      }
+  .forma-dropdown__selected {
+    transition: $transition-base;
+    white-space: nowrap;
+    border: {
+      top: none;
+      left: none;
+      bottom: none;
+      right: 1px solid $gray-3;
     }
+  }
 
-    .forma-dropdown__selected {
-      transition: $transition-base;
-      white-space: nowrap;
-      border: {
-        top: none;
-        left: none;
-        bottom: none;
-        right: 1px solid $gray-3;
-      }
-    }
+  .forma-dropdown__toggle {
+    border: none;
 
-    .forma-dropdown__toggle {
-      border: none;
-
-      &:hover {
-        background-color: $white;
-        color: initial;
-      }
+    &:hover {
+      background-color: $white;
+      color: initial;
     }
   }
 }
