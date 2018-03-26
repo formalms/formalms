@@ -170,6 +170,7 @@
 .forma-button--gray {
   pointer-events: none;
   background: $gray-3;
+  border: 2px solid $gray-3;
 }
 
 // Black Button
@@ -182,6 +183,7 @@
 // Style guide: 2.6
 .forma-button--black {
   background: $black;
+  border: 2px solid $black;
 
   .forma-button__label {
     &:after {
@@ -206,6 +208,7 @@
 .forma-button--white {
   background: $white;
   color: $dark-orange;
+  border: 2px solid $white;
 
   &:hover {
     color: $dark-orange;
