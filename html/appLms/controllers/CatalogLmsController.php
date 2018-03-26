@@ -68,9 +68,10 @@ class CatalogLmsController extends LmsController {
        $val_enroll_not = Get::req('val_enroll_not', DOTY_STRING, '');
        
        $id_catalogue = Get::req('id_catalogue', DOTY_INT, 0);          
+       $model = new CatalogLms();       
               
        $result = $this->model->getCourseList($typeCourse,1,$id_catalogue, $id_category);
-       $this->render('courselist', array( "result" => $result));
+       $this->render('courselist', array( "result" => $result, "smodel"=>$model));
 
     }    
     

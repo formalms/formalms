@@ -325,7 +325,7 @@ function classroomActionButton($is_enrolled, $unsubscribe_date_limit, &$row){
                                 </div>
                             </div>';
 					
-                    if (count($editions)> 0) {
+                    if (count($editions)> 0 && false) {
 						$html .= '
 							<div class="course-box__item course-box__item--half">
 								<p class="course-box__show-dates js-course-box-open-dates-modal">
