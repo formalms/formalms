@@ -423,6 +423,7 @@ class Layout
 
             while ($main = $db->fetch_obj($re_main)) {
 
+                $checkperm_under = false; //permesso di visualizzazione del menu principale
 
                 $slider_menu = array();
                 $query_menu = 'SELECT mo.idModule AS id, mo.module_name, mo.default_op, mo.default_name, mo.token_associated AS token, mo.mvc_path, under.idMain AS id_main, under.my_name
@@ -448,21 +449,29 @@ class Layout
                                 : 'index.php?modname=' . $obj->module_name . '&op=' . $obj->default_op . '&id_module_sel=' . $obj->id . '&id_main_sel=' . $obj->id_main
                             )
                         );
+
+                        $checkperm_under = true; // Posso visualizzare il menu principale
+
                     } // end if checkPerm
 
                 } // end while
 
-                $dropdown_menu[] = array(
-                    // 'submenu'=> array(),
-                    'id_menu' => $main->id,
-                    'slug' => strtolower(str_replace(' ','-',$main->name)),
-                    'name' => Lang::t($main->name, 'menu_course', false, false, $main->name),
-                    'link' => $slider_menu[0]['link'],
-                    'selected' => ($main->id === '' . $_SESSION['current_main_menu'] ? true : false),
-                    'slider_menu' => $slider_menu
-                );
+                if ($checkperm_under == true) { // Se ho almeno un permesso sul menu under, visualizzo il menu principale
 
-                $id_list[] = '"menu_lat_' . $main->id . '"';
+                    $dropdown_menu[] = array(
+                        // 'submenu'=> array(),
+                        'id_menu' => $main->id,
+                        'slug' => strtolower(str_replace(' ','-',$main->name)),
+                        'name' => Lang::t($main->name, 'menu_course', false, false, $main->name),
+                        'link' => $slider_menu[0]['link'],
+                        'selected' => ($main->id === '' . $_SESSION['current_main_menu'] ? true : false),
+                        'slider_menu' => $slider_menu
+                    );
+
+                    $id_list[] = '"menu_lat_' . $main->id . '"';
+                }
+
+
             }
 
             if ($_SESSION['current_main_menu'] === 0) {
