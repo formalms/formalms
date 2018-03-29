@@ -1152,7 +1152,7 @@ class Form {
 		return $html_code;
 	}
 
-	public static function getInputTextarea($id ,$name , $value = '', $css_text = false, $rows = 5, $cols = 22, $maxlength, $other_param = '' ) {
+	public static function getInputTextarea($id ,$name , $value = '', $css_text = false, $rows = 5, $cols = 22, $maxlength = '', $other_param = '' ) {
 
 		if($css_text === false) $css_text = 'textarea';
 
