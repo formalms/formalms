@@ -534,13 +534,13 @@ class CatalogLms extends Model
 					$action = '<p class="subscribed">'.Lang::t('_CLASSROOM_IN_CART', 'catalogue').'</p>';
 				elseif(isset($classroom_full[$classroom_info['id_date']])) {
 					if (isset($overbooking_classroom[$classroom_info['id_date']])) {
-						$action = '<a href="javascript:;" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');"><span class="can_subscribe">'.Lang::t('_SUBSCRIBE_WITH_OVERBOOKING', 'catalogue').'</span></a>';
+						$action = '<a href="javascript:;" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');">'.Lang::t('_SUBSCRIBE_WITH_OVERBOOKING', 'catalogue').'</a>';
 					} else {
 						$action = '<p class="subscribed">'.Lang::t('_CLASSROOM_FULL', 'catalogue').'</p>';
 					}
 				} else
-					$action = ($selling == 1	? '<a href="javascript:;" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');"><span class="can_subscribe">'.Lang::t('_ADD_TO_CART', 'catalogue').' ('.$classroom_info['price'].' '.Get::sett('currency_symbol', '&euro;').')'.'</span></a>'
-												: '<a href="javascript:;" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');"><span class="can_subscribe">'.Lang::t('_SUBSCRIBE', 'catalogue').'</span></a>');
+					$action = ($selling == 1	? '<a href="javascript:;" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');">'.Lang::t('_ADD_TO_CART', 'catalogue').' ('.$classroom_info['price'].' '.Get::sett('currency_symbol', '&euro;').')'.'</a>'
+												: '<a href="javascript:;" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');">'.Lang::t('_SUBSCRIBE', 'catalogue').'</a>');
 
 				$res['body'] .=	'<div class="edition_container">'
 								.'<b>'.Lang::t('_NAME', 'catalogue').'</b>: '.$classroom_info['name'].'<br/>'
@@ -704,7 +704,7 @@ class CatalogLms extends Model
     
 
         
-    public function getMajorCategory($std_link, $only_son = false)
+    public function getMajorCategory($std_link = false, $only_son = false)
     {
         $query =    "SELECT idCategory, path, lev"
                     ." FROM %lms_category"

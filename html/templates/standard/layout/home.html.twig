@@ -50,7 +50,11 @@
     
 
 	<!-- Restyling -->
-	<link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}static/main.css" />
+	<link rel="stylesheet" type="text/css" href="{{ layout_path }}static/main.min.css">
+	<!--
+    To use or edit the not minified css uncomment this portion of code
+    <link rel="stylesheet" type="text/css" href="{{ layout_path }}static/main.css">
+    -->
 	<script type="text/js" src="{{ evalPhp('Layout::path') }}static/main.js"></script>
 </head>
 <body class="homepage js-router--homepage">

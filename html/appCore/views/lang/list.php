@@ -23,7 +23,8 @@
 					"&la_text=" + YAHOO.util.Dom.get('la_text').value +
 					"&lang_code=" + YAHOO.util.Dom.get('lang_code').value +
 					"&lang_code_diff=" + YAHOO.util.Dom.get('lang_code_diff').value +
-					"&only_empty=" + YAHOO.util.Dom.get('only_empty').checked;
+					"&only_empty=" + YAHOO.util.Dom.get('only_empty').checked +
+					"&plugin_id=" + YAHOO.util.Dom.get('plugin_id').value;
 		}
 		var saveTranslation = function(callback, newData) {
 			var new_value = newData;
@@ -83,7 +84,9 @@
 			var searched = YAHOO.util.Dom.get('la_text').value;
 			if(searched) {
 				var regexp = new RegExp(searched, 'gi');
-				elLiner.innerHTML = oData.replace(regexp, '<span class="highlight">'+searched+'</span>');
+				var string_to_replace = regexp.exec(oData)
+				elLiner.innerHTML = oData.replace(regexp, '<span class="highlight">'+string_to_replace+'</span>');
+
 			} else elLiner.innerHTML = oData;
 		}
 		YAHOO.util.Event.addListener("lang_filters", "submit", function(e) {
@@ -100,11 +103,11 @@
 	<div class="quick_search_form">
 		<?php
 		echo Form::openForm('lang_filters', 'index.php?r=adm/lang/list', false, false, '', '', 'row')
-			.'<div class="module-filter col-xs-12 col-sm-3">'
+			.'<div class="module-filter col-xs-12 col-sm-2">'
 			.'<label for="la_module">'.Lang::t('_LANG_MODULE', 'admin_lang').'</label> : '
 			.Form::getInputDropdown( "search_d", "la_module", "la_module", $module_list, '', ' onchange=" DataTable_lang_table.refresh(); "' )
 			.'</div>'
-			.'<div class="lang-filter col-xs-12 col-sm-3">'
+			.'<div class="lang-filter col-xs-12 col-sm-2">'
 			.'<label for="lang_code">'.Lang::t('_LANGUAGE', 'admin_lang').'</label>: '
 			.Form::getInputDropdown( "search_d", "lang_code", "lang_code", $language_list, array_search( $lang_code, $language_list ), ' onchange=" DataTable_lang_table.refresh(); "' )
 			.'</div>'
@@ -113,6 +116,10 @@
 			.Form::getInputDropdown( "search_d", "lang_code_diff", "lang_code_diff", $language_list_diff, '', ' onchange=" DataTable_lang_table.refresh(); "' )
 			.Form::getInputCheckbox('only_empty', 'only_empty', '1', false, '')
 			.' <label class="label_normal" for="waiting">'.Lang::t('_ONLY_EMPTY', 'admin_lang').'</label>'
+			.'</div>'
+			.'<div class="plugin_id-filter col-xs-12 col-sm-2">'
+			.'<label for="plugin_id">'.Lang::t('_PLUGIN', 'admin_lang').'</label> : '
+			.Form::getInputDropdown( "search_d", "plugin_id", "plugin_id", $plugins_ids, '', ' onchange=" DataTable_lang_table.refresh(); "' )
 			.'</div>'
 			.'<div class="search col-xs-12 col-sm-3">'
 			.'<label for="la_text">'.Lang::t('_SEARCH', 'admin_lang').'</label> : '
@@ -139,13 +146,14 @@
 			//array('key' => 'id',				'label' => 'id_text', 'className' => 'img-cell'),
 			//array('key' => 'id_translation',	'label' => 'id_translation', 'className' => 'img-cell'),
 			array('key' => 'text_module', 		'label' => Lang::t('_LANG_MODULE', 'admin_lang'), 'className' => 'min-cell', 'sortable' => true),
-			array('key' => 'text_key',			'label' => Lang::t('_LANG_KEY', 'admin_lang'), 'className' => 'min-cell', 'sortable' => true),
+			array('key' => 'text_key',			'label' => Lang::t('_LANG_KEY', 'admin_lang'), 'formatter' => 'TranslationFormatter', 'className' => 'min-cell', 'sortable' => true),
+			array('key' => 'plugin_name',		'label' => Lang::t('_PLUGIN_NAME', 'admin_lang'), 'className' => 'min-cell', 'sortable' => false),
 			array('key' => 'translation_text',	'label' => Lang::t('_LANG_TRANSLATION', 'admin_lang'), 'formatter' => 'TranslationFormatter','editor' => 'new YAHOO.widget.TextareaCellEditor({asyncSubmitter: saveTranslation})', 'sortable' => true ),
 			array('key' => 'translation_text_diff',	'label' => Lang::t('_LANG_COMPARE', 'admin_lang'), 'editor' => 'new YAHOO.widget.TextareaCellEditor({asyncSubmitter: saveComparisonTranslation})', 'sortable' => true ),
 			array('key' => 'save_date',			'label' => Lang::t('_DATE', 'admin_lang'), 'className' => 'min-cell', 'sortable' => true ),
 			array('key' => 'delete',			'label' => '<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>', 'formatter' => 'stdDelete', 'className' => 'img-cell')
 		),
-		'fields'		=> array('id','text_module', 'text_key', 'translation_text', 'translation_text_diff', 'save_date', 'delete'),
+		'fields'		=> array('id','text_module', 'text_key', 'plugin_name', 'translation_text', 'translation_text_diff', 'save_date', 'delete'),
 		'stdSelection' => false,
 		'delDisplayField' => 'text_key',
 		'rel_actions'	=> array(

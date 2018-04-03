@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180118</DATE>
+  <DATE>20180219</DATE>
   <LANG id="french">
     <lang_code>french</lang_code>
     <lang_description>French</lang_description>
@@ -113,6 +113,8 @@
         <key id="admin_lang&amp;_ORIENTATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sens de la lecture]]></key>
         <key id="admin_lang&amp;_OVERWRITE_EXISTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ecraser les mots existants]]></key>
         <key id="admin_lang&amp;_PERC_TRAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Traduire %s]]></key>
+        <key id="admin_lang&amp;_PLUGIN" attributes="" save_date="2018-02-07 12:15:54"><![CDATA[Plugin]]></key>
+        <key id="admin_lang&amp;_PLUGIN_NAME" attributes="" save_date="2018-02-07 12:16:18"><![CDATA[Nom des plugin]]></key>
         <key id="admin_lang&amp;_TOTAL_LANGUAGE_UPDATED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Définition de la langue actualisée]]></key>
         <key id="admin_lang&amp;_TRANSALTIONTABLEFOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tableau de traduction pour %module%]]></key>
         <key id="admin_lang&amp;_TRANSLATELANG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Traduire]]></key>
@@ -659,7 +661,9 @@
         <key id="course&amp;_ADVERT_FORUM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Il y a [Forum] nouveaux messages dans le Forum]]></key>
         <key id="course&amp;_ADVERT_LOBJ" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Il y a [lobj] nouveau objets d'apprentissage]]></key>
         <key id="course&amp;_ALLOW_OVERBOOKING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Autoriser le surbooking]]></key>
+        <key id="course&amp;_ALL_COURSE_TYPE" attributes="" save_date="2018-02-19 11:55:38"><![CDATA[Tous les types de formations]]></key>
         <key id="course&amp;_ALL_OPEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tout ouvert]]></key>
+        <key id="course&amp;_ALL_YEARS" attributes="" save_date="2018-02-19 11:55:50"><![CDATA[Toutes les années]]></key>
         <key id="course&amp;_ASSIGN_FOR_ALL_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Assigner à chaque état d'utilisateur]]></key>
         <key id="course&amp;_ASSIGN_FOR_AT_LEAST_MINUTES" attributes="" save_date="2017-06-19 18:03:00"><![CDATA[Temps minimum d'utilisation (min.)]]></key>
         <key id="course&amp;_ASSIGN_FOR_STATUS_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Assigner aux utilisateurs qui ont terminé le cours]]></key>
@@ -769,6 +773,7 @@
         <key id="course&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="accessibility" save_date="2017-06-19 13:18:31"><![CDATA[Un utilisateur attent à [url]]]></key>
         <key id="course&amp;_NOACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[En attente de l'activation]]></key>
         <key id="course&amp;_NOENTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Accès refusé]]></key>
+        <key id="course&amp;_NO_COURSE_DATA" attributes="" save_date="2018-02-19 11:57:12"><![CDATA[Formation sans une date de commencement]]></key>
         <key id="course&amp;_NO_COURSE_FOUND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aucun cours trouvé]]></key>
         <key id="course&amp;_OTHER_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Autres options]]></key>
         <key id="course&amp;_OTHER_USER_MATERIAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Matériel pour d'autres rôle]]></key>
@@ -1513,7 +1518,7 @@ Pour modifier ces mots veuillez vous rendre dans Admin/Gestion des langues, rech
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Passer au menu principal]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Passer à vos informations liée à ce cours]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Communauté]]></key>
-        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Activer le cours]]></key>
+        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2018-02-19 11:56:57"><![CDATA[Ajouter formation]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Section Admin]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2017-06-21 14:05:02"><![CDATA[Rédiger]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Campus]]></key>
@@ -2679,6 +2684,7 @@ Mot de passe: [password]]]></key>
         <key id="test&amp;_ALL_QUEST_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tous types]]></key>
         <key id="test&amp;_ATTEMPTS_REMAINING_BEFORE_SUSPENSION" attributes="" save_date="2017-06-14 15:11:41"><![CDATA[Tentatives restantes avant la suspension]]></key>
         <key id="test&amp;_BONUS_SCORE_FOR_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bonus assigné à ce test (avec une modification manuelle ou approximative)]]></key>
+        <key id="test&amp;_COURSEREPORT_MANAGEMENT" attributes="" save_date="2018-02-19 12:02:31"><![CDATA[Paramètres du Carnet de note]]></key>
         <key id="test&amp;_CURRENT_SELECTION_COUNT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Réponse sélectionnée]]></key>
         <key id="test&amp;_DESELECT_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Désélectionner la page]]></key>
         <key id="test&amp;_EMPTY_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Réponse vide]]></key>
@@ -2731,6 +2737,7 @@ Mot de passe: [password]]]></key>
         <key id="test&amp;_QUEST_UPLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Télécharger le fichier]]></key>
         <key id="test&amp;_RESTART_INFO" attributes="" save_date="2017-03-28 19:28:17"><![CDATA[Recommence le test du début]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sélectionner la page]]></key>
+        <key id="test&amp;_SHOW_IN_COURSEREPORT" attributes="" save_date="2018-02-19 12:02:24"><![CDATA[Afficher dans le Carnet de note]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Suspendre le test après le nombre suivant de tentatives ayant échouées]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Suspendre le test pour le nombre d'heures suivantes]]></key>
         <key id="test&amp;_SUSPENSION_PREREQUISITES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Après le test de suspension, nécessite de repasser à nouveau tous les tests des prérequis]]></key>
@@ -2784,6 +2791,7 @@ Mot de passe: [password]]]></key>
         <key id="test&amp;_TEST_MM4_SHOWDOANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Afficher toutes les réponses insérées par utilisateur]]></key>
         <key id="test&amp;_TEST_MM4_SHOWSOL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Afficher les bonnes réponses]]></key>
         <key id="test&amp;_TEST_MM4_SHOWTOT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Afficher le score final (si c'est calculable)]]></key>
+        <key id="test&amp;_TEST_MM_FIVE" attributes="" save_date="2018-02-19 12:02:37"><![CDATA[Gestion de tests dans le Carnet de note]]></key>
         <key id="test&amp;_TEST_MM_FOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[3 - Détails affichés à la fin de cet tentative]]></key>
         <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2017-04-19 12:29:54"><![CDATA[1 - Régler l'affichage des questions]]></key>
         <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2017-04-19 12:30:00"><![CDATA[2 -  Régler les options de tentatives]]></key>

@@ -1,0 +1,16 @@
+.modal {
+  font-family: $font;
+
+  &.section-coourse-modal {
+
+  }
+}
+
+.modal-dialog {
+  .section-coourse-modal & {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)!important;
+  }
+}

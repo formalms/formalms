@@ -285,3 +285,6 @@ function showIframe() {
 
   YAHOO.util.Dom.setStyle(_iframe, 'display', 'inline');
 }
+
+
+

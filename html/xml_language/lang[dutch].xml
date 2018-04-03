@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171211</DATE>
+  <DATE>20180207</DATE>
   <LANG id="dutch">
     <lang_code>dutch</lang_code>
     <lang_description>Dutch</lang_description>
@@ -50,7 +50,7 @@
         <key id="admin_directory&amp;_DIRECTORY_FILTER_lastname" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Achternaam]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FILTER_pass" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Wachtwoord]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FILTER_register_date" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registratie datum]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_FILTER_templatename" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Template Naam]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_FILTER_templatename" attributes="" save_date="2018-02-07 12:17:41"><![CDATA[Template naam]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FILTER_userid" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gebruikersnaam]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FULLNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Volledige naam]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUPID" attributes="" save_date="2017-04-10 15:21:40"><![CDATA[ID]]></key>
@@ -113,6 +113,8 @@
         <key id="admin_lang&amp;_ORIENTATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lees richting]]></key>
         <key id="admin_lang&amp;_OVERWRITE_EXISTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Overschrijf bestaande woorden]]></key>
         <key id="admin_lang&amp;_PERC_TRAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vertaal %]]></key>
+        <key id="admin_lang&amp;_PLUGIN" attributes="" save_date="2018-02-07 12:17:06"><![CDATA[Plugin]]></key>
+        <key id="admin_lang&amp;_PLUGIN_NAME" attributes="" save_date="2018-02-07 12:17:27"><![CDATA[Plugin naam]]></key>
         <key id="admin_lang&amp;_TOTAL_LANGUAGE_UPDATED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Taal defenitie ge-update]]></key>
         <key id="admin_lang&amp;_TRANSALTIONTABLEFOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vertaal tabel voor %module%]]></key>
         <key id="admin_lang&amp;_TRANSLATELANG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vertaal]]></key>
@@ -428,7 +430,6 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vraag naar code die de code module genereerd]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vraag naar een tree-code gekozen door de gebruiker uit een lijst in een dropdown menu]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vraag naar een tree-code die handmatig moet worden ingevoerd door de gebruiker]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2017-04-10 16:40:20"><![CDATA[Vraag naar ee ncombinatie van een tree-code en een cursus code die handmatig moet worden ingevoerd door de gebruiker. Tree-code en cursus code moet samegesteld zijn uit 10 karakters elk, om vervolgens een code met 20 karakters te bemachtigen]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max Audio gebruikers]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2017-07-10 17:37:17"><![CDATA[Maximum gebruikers per kamer]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2017-07-10 17:36:54"><![CDATA[Max kamers]]></key>
@@ -1510,7 +1511,6 @@ ingelogd met uw account]]></key>
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Ga naar hoofdmenu]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Ga naar informatie gerelateerd aan deze cursus]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Community]]></key>
-        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Activeer cursus]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2017-07-10 10:56:55"><![CDATA[Administrator gebied]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2017-07-14 12:43:58"><![CDATA[Authoring]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Campus]]></key>

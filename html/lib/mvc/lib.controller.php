@@ -141,6 +141,7 @@ class Controller {
 				include( Docebo::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension));
 				break;
 			case "twig":
+			    \appCore\Template\TwigManager::getInstance()->addPathInLoader($this->templatePath());
 				echo \appCore\Template\TwigManager::getInstance()->render($view_name.$extension, $data_for_view, $path. '/' . $this->_mvc_name);
 				break;
 			default:

@@ -234,9 +234,15 @@ class ImportUser extends DoceboImport_Destination {
                                 $newpass = $this->manual_password;
                             } else {
                                 $newpass = $acl_manager->random_password();
-                            }
-							$pass = $newpass;
-							$force_send_alert = TRUE;
+							}
+							
+							if ( $this->action_on_users == 'only_update' && $row['pass'] == '' )  {
+								$pass = FALSE;
+							} else {
+								$pass = $newpass;
+								$force_send_alert = TRUE;
+							}
+
                         }
                         break;
                 }

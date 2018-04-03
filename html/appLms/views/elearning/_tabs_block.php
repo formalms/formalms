@@ -129,6 +129,7 @@
         $("#course_search_filter_type").selectpicker('val', 'all');
         $("#course_search_filter_cat").selectpicker('val', [0]);
         $("#course_search_filter_text").val("")
+        course_search_callback_set()
 	}
 </script>
 

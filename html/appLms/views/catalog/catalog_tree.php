@@ -71,7 +71,9 @@
 
       <?php if ($catalogue_todisplay) { ?>
         <script type="text/javascript">
-            function callAjaxCatalog() {
+			var $treeview = $("#treeview1");
+
+            function callAjaxCatalog(id_cat) {
 
                 <?php echo $no_course ?>
                 str_loading = "<?php echo Layout::path() ?>images/standard/loadbar.gif";
@@ -81,7 +83,7 @@
                     'ajax.server.php',
                     {
                         r: 'catalog/allCourseForma',
-                        id_category: 0,
+                        id_category: id_cat,
                         type_course: type_course,
                         id_catalogue: current_catalogue 
                     }
@@ -93,6 +95,14 @@
                     $("#div_course").html('course catalogue load failed')
                 })
             }
+
+            function checkSticky() {
+				if (window.innerWidth >= 768 && $('#div_course').offset().top - $(window).scrollTop() <= 60) {
+					$treeview.css({width: $treeview.parent().width(), position: 'fixed', top: '60px'});
+				} else {
+					$treeview.attr('style', '');
+				}
+			}
 
             $(function () {
                 callAjaxCatalog();
@@ -109,7 +119,7 @@
                         nodes:<?php echo $a_node ?>
                     }
                 ];
-                $("#treeview1").treeview({
+				$treeview.treeview({
                     data: category_tree,
                     enableLinks: false,
                     backColor: "#ffffff",
@@ -122,11 +132,16 @@
 
                     onNodeSelected: function (event, node) {
                         id_category = node.id_cat;
-                        callAjaxCatalog();
+                        callAjaxCatalog(node.id_cat);
                     },
                     onNodeUnselected: function (event, node) {
                     }
                 });
+
+				// sticky feature
+				checkSticky();
+				window.addEventListener('scroll', checkSticky, true);
+				window.addEventListener('resize', checkSticky, true);
             });
         </script>
         <?php } else { ?> 

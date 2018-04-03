@@ -72,11 +72,24 @@ class ElearningLms extends Model {
 
 	public function findAll($conditions, $params) {
 
-		//$conditions[] = ' c.course_type = ":course_type" ';
-		//$params[':course_type'] = 'elearning';
 
 		$db = DbConn::getInstance();
 
+          // exclude course belonging to pathcourse in which the user is enrolled as a student  
+       $learning_path_enroll = $this->getUserCoursePathCourses($params[':id_user'] );
+       $exclude_pathcourse = '';
+       if (count($learning_path_enroll) > 1) {
+           $exclude_path_course = "select idCourse from learning_courseuser where idUser=".$params[':id_user']." and level <= 3 and idCourse in (".implode(',',$learning_path_enroll).")";
+           $rs =$db->query($exclude_path_course);
+           while($d = $db->fetch_assoc($rs)){
+               $excl[] = $d['idCourse'];
+           } 
+           $exclude_pathcourse = " and c.idCourse not in (".implode(',', $excl)." )";
+       } 
+       
+        
+        
+        
         $query =             "SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.box_description, c.difficult, c.status AS course_status, c.level_show_user, c.course_edition, "
             ."    c.max_num_subscribe, c.create_date, "
             ."    c.direct_play, c.img_othermaterial, c.course_demo, c.use_logo_in_courselist, c.img_course, c.lang_code, "
@@ -89,6 +102,7 @@ class ElearningLms extends Model {
             ." JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse)  "
             ." WHERE ".$this->compileWhere($conditions, $params)
             .($_SESSION['id_common_label'] > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '".$_SESSION['id_common_label']."')" : "")
+            .$exclude_pathcourse 
             ." ORDER BY ".$this->_resolveOrder(array('cu', 'c'));
 
 
@@ -110,7 +124,8 @@ class ElearningLms extends Model {
 			$result[$data['idCourse']] = $data;
 		}
 
-		if (!empty($courses)) {
+       
+        if (!empty($courses)) {
 			// find subscriptions
 			$re_enrolled = $db->query(
 				"SELECT c.idCourse, COUNT(*) as numof_associated, SUM(waiting) as numof_waiting"
@@ -177,12 +192,8 @@ class ElearningLms extends Model {
         $db = DbConn::getInstance();
 
 
-        $query = "SELECT DISTINCT cu.status AS status_course "
-            ." FROM %lms_courseuser AS cu JOIN %lms_course AS c "
-            ." ON (cu.idCourse = c.idCourse) "
-            ." WHERE cu.idUser = ".(int)$id_user."  "
-            ." ORDER BY cu.status ASC";
-
+        $query =  "SELECT DISTINCT status AS status_course  FROM learning_courseuser WHERE learning_courseuser.idUser = ".(int)$id_user;
+        
             
  
             
@@ -190,9 +201,9 @@ class ElearningLms extends Model {
         if ($res && $db->num_rows($res) > 0) {
             while (list($status_course) = $db->fetch_row($res)) {
                 
-                if($status_course==0) $str_status_course =  Lang::t('_NEW', 'course');
-                if($status_course==1) $str_status_course =  Lang::t('_USER_STATUS_BEGIN', 'course');
-                if($status_course==2) $str_status_course =  Lang::t('_COMPLETED', 'course');;
+                if($status_course==0) $str_status_course =  Lang::t('_NEW', 'standard');
+                if($status_course==1) $str_status_course =  Lang::t('_USER_STATUS_BEGIN', 'standard');
+                if($status_course==2) $str_status_course =  Lang::t('_COMPLETED', 'standard');;
                 
                 if($status_course>=0) $output[$status_course] = $str_status_course;
             }

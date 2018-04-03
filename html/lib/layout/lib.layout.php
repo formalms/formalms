@@ -214,7 +214,6 @@ class Layout
         $lang_list = $lang_model->getLangListNoStat(false, false, 'lang_description', 'ASC');
 
 
-
         $server_query_string = $_SERVER['QUERY_STRING'];
         $pos = strpos($server_query_string, 'special=changelang&new_lang=');
 
@@ -245,7 +244,7 @@ class Layout
             }
         }
 
-        foreach ($options as $option){
+        foreach ($options as $option) {
 
             $html .= $option;
         }
@@ -268,7 +267,7 @@ class Layout
         $html = '';
         if (HomepageAdm::staticIsCatalogToShow()) {
             //$html = '<a href="index.php?r=homecatalogue/show">'.Lang::t('_CATALOGUE', 'standard').'</a>';
-            $html = '<a class="forma-button forma-button--orange" href="index.php?r='._homecatalog_.'">' . Lang::t('_CATALOGUE', 'standard') . '</a>';
+            $html = '<a class="forma-button forma-button--orange" href="index.php?r=' . _homecatalog_ . '">' . Lang::t('_CATALOGUE', 'standard') . '</a>';
         }
 
         return $html;
@@ -327,7 +326,7 @@ class Layout
         $retArray['layout_analytics'] = self::analytics();
         $retArray['jqueryLib'] = JQueryLib::loadJQuery($minimized);
         $retArray['boostrap'] = JQueryLib::loadBootstrap($minimized);
-        $retArray['locale_calendar'] = JQueryLib::loadCalenderLocal();        
+        $retArray['locale_calendar'] = JQueryLib::loadCalenderLocal();
         $retArray['jsAddons'] = JQueryLib::loadJsAddons($minimized);
         $retArray['cssAddons'] = JQueryLib::loadCssAddons($minimized);
 
@@ -337,8 +336,8 @@ class Layout
         }
         switch ($whichLayout) {
             case 'home':
-                $retArray['jsAddons'] = JQueryLib::loadJsAddons($minimized, null,'datepicker');
-                $retArray['cssAddons'] = JQueryLib::loadCssAddons($minimized, null,'datepicker');
+                $retArray['jsAddons'] = JQueryLib::loadJsAddons($minimized, null, 'datepicker');
+                $retArray['cssAddons'] = JQueryLib::loadCssAddons($minimized, null, 'datepicker');
 
                 $retArray['copyright'] = self::copyright();
                 $retArray['external_page'] = LoginLayout::external_page();
@@ -378,6 +377,9 @@ class Layout
                 $retArray['cssAddons'] = JQueryLib::loadCssAddons($minimized, $exclude_widget);
                 break;
             case 'lms':
+                $courseMenu = Layout::courseMenu();
+                $retArray = array_merge($courseMenu, $retArray);
+
                 if (!isset($_SESSION['direct_play'])) {
                     $retArray['direct_play'] = '<div class="yui-b">' . Layout::zone('content') . '</div>';
                 } else {
@@ -387,6 +389,123 @@ class Layout
 
         }
         return $retArray;
+    }
+
+    public static function courseMenu()
+    {
+        if (!Docebo::user()->isAnonymous() && $_SESSION['idCourse']) {
+            $db = DbConn::getInstance();
+
+            $query_course = "SELECT name, img_course FROM %lms_course WHERE idCourse = " . $_SESSION['idCourse'] . " ";
+            $course_data = $db->query($query_course);
+            $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse') . '/';
+            while ($course = $db->fetch_obj($course_data)) {
+                $course_name = $course->name;
+                $course_img = (empty($course->img_course) || is_null($course->img_course)) ? Get::tmpl_path() . 'images/course/course_nologo.png' : $path_course . $course->img_course;
+            }
+
+            // get select menu
+            $id_list = array();
+            $dropdown_menu = array();
+            $query = "SELECT idMain AS id, name FROM %lms_menucourse_main WHERE idCourse = " . $_SESSION['idCourse'] . " ORDER BY sequence";
+            $re_main = $db->query($query);
+
+            $main_menu_id = Get::req('id_main_sel', DOTY_INT, 0);
+            $module_menu_id = Get::req('id_module_sel', DOTY_INT, 0);
+
+            if($main_menu_id > 0) 	{
+                $_SESSION['current_main_menu'] = $main_menu_id;
+            }
+
+            if($module_menu_id > 0) {
+                $_SESSION['sel_module_id'] = $module_menu_id;
+            }
+
+            while ($main = $db->fetch_obj($re_main)) {
+
+                $checkperm_under = false; //permesso di visualizzazione del menu principale
+
+                $slider_menu = array();
+                $query_menu = 'SELECT mo.idModule AS id, mo.module_name, mo.default_op, mo.default_name, mo.token_associated AS token, mo.mvc_path, under.idMain AS id_main, under.my_name
+                            FROM %lms_module AS mo JOIN %lms_menucourse_under AS under ON (mo.idModule = under.idModule) WHERE under.idCourse = ' . $_SESSION['idCourse'] . '
+                            AND under.idMain = ' . $main->id . ' ORDER BY under.idMain, under.sequence';
+
+
+                $re_menu_voice = $db->query($query_menu);
+
+
+                while ($obj = $db->fetch_obj($re_menu_voice)) {
+                    // checkmodule module
+                    if (checkPerm($obj->token, true, $obj->module_name)) {
+
+                        $GLOBALS['module_assigned_name'][$obj->module_name] = ( $obj->my_name != '' ? $obj->my_name : Lang::t($obj->default_name, 'menu_course') );
+
+                        $slider_menu[] = array(
+                            'id_submenu' => $obj->id,
+                            'name' => $GLOBALS['module_assigned_name'][$obj->module_name],
+                            'selected' => ($obj->id === ''.$_SESSION['sel_module_id'] ? true : false),
+                            'link' => ($obj->mvc_path != ''
+                                ? 'index.php?r=' . $obj->mvc_path . '&id_module_sel=' . $obj->id . '&id_main_sel=' . $obj->id_main
+                                : 'index.php?modname=' . $obj->module_name . '&op=' . $obj->default_op . '&id_module_sel=' . $obj->id . '&id_main_sel=' . $obj->id_main
+                            )
+                        );
+
+                        $checkperm_under = true; // Posso visualizzare il menu principale
+
+                    } // end if checkPerm
+
+                } // end while
+
+                if ($checkperm_under == true) { // Se ho almeno un permesso sul menu under, visualizzo il menu principale
+
+                    $dropdown_menu[] = array(
+                        // 'submenu'=> array(),
+                        'id_menu' => $main->id,
+                        'slug' => strtolower(str_replace(' ','-',$main->name)),
+                        'name' => Lang::t($main->name, 'menu_course', false, false, $main->name),
+                        'link' => $slider_menu[0]['link'],
+                        'selected' => ($main->id === '' . $_SESSION['current_main_menu'] ? true : false),
+                        'slider_menu' => $slider_menu
+                    );
+
+                    $id_list[] = '"menu_lat_' . $main->id . '"';
+                }
+
+
+            }
+
+            if ($_SESSION['current_main_menu'] === 0) {
+                $dropdown_menu[0]['selected'] = true;
+            }
+            // horizontal menu
+            require_once( $GLOBALS['where_lms'].'/lib/lib.stats.php' );
+            $total = getNumCourseItems( $_SESSION['idCourse'],
+                FALSE,
+                getLogUserId(),
+                FALSE );
+            $tot_complete = getStatStatusCount(	getLogUserId(),
+                $_SESSION['idCourse'],
+                array( 'completed', 'passed' ) );
+            $tot_failed = getStatStatusCount(	getLogUserId(),
+                $_SESSION['idCourse'],
+                array( 'failed' ) );
+
+            $perc_complete 	= round(($tot_complete / $total) * 100, 2);
+            $perc_failed 	= round(($tot_failed / $total) * 100, 2);
+
+            return [
+                'dropdown' => $dropdown_menu,
+                'course_name' => $course_name,
+                'course_img' => $course_img,
+                'stats' => [
+                    'total' => $total,
+                    'total_complete' => $tot_complete,
+                    'total_failed' => $tot_failed,
+                    'perc_completed' => $perc_complete,
+                    'perc_failed' => $perc_failed
+                ]
+            ];
+        }
     }
 
 

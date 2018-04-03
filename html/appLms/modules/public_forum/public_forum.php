@@ -32,7 +32,7 @@ function loadUnreaded ()
         $reLast = sql_query ("SELECT UNIX_TIMESTAMP(lastenter)" .
             " FROM core_user" .
             " WHERE idst = '" . getLogUserId () . "'");
-        if (mysql_num_rows ($reLast)) {
+        if (sql_num_rows ($reLast)) {
             list($last_forum_access_time) = sql_fetch_row ($reLast);
         } else {
             $last_forum_access_time = 0;
@@ -339,7 +339,7 @@ function forum ()
                     '<table class="forum_table" cellspacing="0" summary="' . $lang->def ('_FORUM_INFORMATION') . '">'
                     . '<tr class="forum_header">'
                     . '<th class="forum_title">' . $status . '&nbsp;'
-                    . '<img src="' . getPathImage ('fw') . 'emoticons/' . $emoticons . '" title="' . $lang->def ('_EMOTICONS') . '" alt="' . $lang->def ('_EMOTICONS') . '" />'
+                    . '<img src="' . getPathImage ('fw') . 'emoticons/' . $emoticons . '.gif" title="' . $lang->def ('_EMOTICONS') . '" alt="' . $lang->def ('_EMOTICONS') . '" />'
                     . '&nbsp;'
                     . '<a' . $c_css . ' href="index.php?modname=public_forum&amp;op=thread&amp;idForum=' . $idF . '">' . $title . '</a>'
                     . '</th>'
@@ -1944,7 +1944,7 @@ function delthread ()
             
             if ($file != '') delete_file ($file);
         }
-        $post_deleted = mysql_num_rows ($re_mess);
+        $post_deleted = sql_num_rows ($re_mess);
         if (! sql_query ("
 		DELETE FROM " . $GLOBALS[ 'prefix_lms' ] . "_forummessage
 		WHERE idThread = '" . $id_thread . "'")
@@ -2159,7 +2159,7 @@ function message ()
 	WHERE idThread = '" . $id_thread . "'
 	ORDER BY posted
 	LIMIT $ini, " . Get::sett ('visuItem'));
-    while ($record = mysql_fetch_assoc ($re_message)) {
+    while ($record = sql_fetch_assoc ($re_message)) {
         
         $messages[ $record[ 'idMessage' ] ] = $record;
         $authors[ $record[ 'author' ] ] = $record[ 'author' ];
@@ -2522,7 +2522,7 @@ function showMessageForAdd ($id_thread , $how_much)
 	WHERE idThread = '" . $id_thread . "'
 	ORDER BY posted DESC
 	LIMIT 0, " . $how_much);
-    while ($record = mysql_fetch_assoc ($re_message)) {
+    while ($record = sql_fetch_assoc ($re_message)) {
         
         $messages[ $record[ 'idMessage' ] ] = $record;
         $authors[ $record[ 'author' ] ] = $record[ 'author' ];
@@ -3524,7 +3524,7 @@ function forumsearchmessage ()
 	WHERE idThread = '" . $id_thread . "'
 	ORDER BY posted
 	LIMIT $ini, " . Get::sett ('visuItem'));
-    while ($record = mysql_fetch_assoc ($re_message)) {
+    while ($record = sql_fetch_assoc ($re_message)) {
         
         $messages[ $record[ 'idMessage' ] ] = $record;
         $authors[ $record[ 'author' ] ] = $record[ 'author' ];
@@ -3800,7 +3800,7 @@ function issetNotify ($notify_is_a , $id_notify , $id_user)
 		id_user = '" . $id_user . "' AND
 		notify_is_a = '" . ($notify_is_a == 'forum' ? 'forum' : 'thread') . "'";
     $re = sql_query ($query_notify);
-    return (mysql_num_rows ($re) == 0 ? false : true);
+    return (sql_num_rows ($re) == 0 ? false : true);
 }
 
 /**
@@ -4039,7 +4039,7 @@ function export ()
         
         $result = sql_query ($query);
         
-        if (mysql_num_rows ($result)) ;
+        if (sql_num_rows ($result)) ;
         {
             $tmp = array ();
             $id_list = array ();

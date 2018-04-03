@@ -806,7 +806,9 @@ class ChoiceMultiple_Question extends Question {
 			idTrack = ".(int)$id_track." AND ( user_answer = 1 OR user_answer = NULL ) ";
         if ($number_time != null){
             $recover_answer .= " AND number_time = ".$number_time;
-        }
+        } else {
+			$recover_answer .= " AND number_time = ( SELECT MAX(number_time) FROM learning_testtrack_answer WHERE idQuest = ".(int)$this->id." AND idTrack = ".(int)$id_track." )";
+		}
 
         
         //**  recorver status test ** #11961 - Errata visualizzazione risposte corrette nei test
@@ -834,6 +836,7 @@ class ChoiceMultiple_Question extends Question {
 					.$answer.'&nbsp;';
 				if($is_correct) {
 					$quest .= '<span class="test_answer_correct">'.$lang->def('_TEST_CORRECT').'</span>';
+					$comment .= '<br />'.$comm.'<br />';
 				} else {
 					$quest .= '<span class="test_answer_incorrect">'.$lang->def('_TEST_INCORRECT').'</span>';
 					$comment .= '<br />'.$answer.' <span class="text_bold">'.$lang->def('_TEST_NOT_MC_THECORRECT').' : </span>'
@@ -845,7 +848,7 @@ class ChoiceMultiple_Question extends Question {
 			} else{
 				
 				//if($is_correct && $show_solution) {
-                 if(($status_test=='passed' && $show_solution==2) || ($show_solution==1)) {
+                 if(($status_test=='passed' && $show_solution==2 && $is_correct) || ($show_solution==1 && $is_correct)) {
 					$com_is_correct .= '<span class="text_bold">'.$lang->def('_TEST_NOT_THECORRECT').' : </span>'.$answer.'<br />';
 				}
 				$quest .= '<img src="'.getPathImage().'standard/dot_uns.png" title="'.$lang->def('_TEST_ANSWER_NOTCHECK').'" '
@@ -861,6 +864,24 @@ class ChoiceMultiple_Question extends Question {
 						'comment'	=> $com_is_correct.$comment );
 	}
 	
+	function userScore( $id_track, $number_time = null ) {
+
+		$score = 0;
+		$query = "SELECT SUM(score_assigned)
+		FROM ".$GLOBALS['prefix_lms']."_testtrack_answer
+		WHERE idQuest = '".(int)$this->id."'
+		AND idTrack = '".(int)$id_track."'";
+		if ($number_time != null){
+			$query .= " AND number_time = ".$number_time;
+		}
+		$query .= " GROUP BY number_time ORDER BY number_time DESC LIMIT 1";
+		$re_answer = sql_query($query);
+		if(!sql_num_rows($re_answer)) return $score;
+		while(list($score_assigned) = sql_fetch_row($re_answer)) {
+			$score = round($score + $score_assigned, 2);
+		}
+		return $score;
+	}
 	
 }
 

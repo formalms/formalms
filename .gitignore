@@ -32,15 +32,8 @@ html/plugins/**
 !html/plugins/ConferenceTeleSkill
 !html/plugins/Dummy/**
 
-
-# Sezione ??? a cosa serve?
-!*/
-
 # Sezione generica
 .idea/
 html/config.php
 test/behat/behat_config.yml
 courselist.php.bkp
-
-# frontend
-frontend

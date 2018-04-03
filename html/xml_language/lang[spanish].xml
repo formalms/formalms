@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171211</DATE>
+  <DATE>20180207</DATE>
   <LANG id="spanish">
     <lang_code>spanish</lang_code>
     <lang_description>Spanish</lang_description>
@@ -113,6 +113,8 @@
         <key id="admin_lang&amp;_ORIENTATION" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Orientación de lectura]]></key>
         <key id="admin_lang&amp;_OVERWRITE_EXISTENT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Sobreescribir palabras existentes]]></key>
         <key id="admin_lang&amp;_PERC_TRAD" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Traducir %]]></key>
+        <key id="admin_lang&amp;_PLUGIN" attributes="" save_date="2018-02-07 12:18:50"><![CDATA[Plugin]]></key>
+        <key id="admin_lang&amp;_PLUGIN_NAME" attributes="" save_date="2018-02-07 12:19:08"><![CDATA[Nombre del plugin]]></key>
         <key id="admin_lang&amp;_TOTAL_LANGUAGE_UPDATED" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Definición del lenguaje actualizada]]></key>
         <key id="admin_lang&amp;_TRANSALTIONTABLEFOR" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Tabla de traducción para %module%]]></key>
         <key id="admin_lang&amp;_TRANSLATELANG" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Traducir]]></key>
@@ -428,7 +430,6 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Pedir un código creado a través de el módulo de código]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Pedir un código de árbol seleccionado por el usuario de una lista en un menú desplegable]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Pedir un código de árbol que debe ser escrito manualmente por el usuario]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Pedir una combinación de un código de arbol y un código de curso que debe ser escrito manualmente por el usuario. Los códigos de árbol y del curso deben estar compuestos por 10 caracteres cada uno, en vistas de obtener un código de 20 caracteres]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Máx. de usuarios Audio]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Máximo número de usuarios por habitación]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Máximo número de habitaciones]]></key>
@@ -1498,7 +1499,6 @@ La plataforma cuenta con cursos interactivos, así como herramientas web que lle
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2016-11-23 08:36:15"><![CDATA[Ir al menú principal]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2016-11-23 08:36:15"><![CDATA[Ir a su información relacionada con este curso]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Comunidad]]></key>
-        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Activar curso]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Area de administrador]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2016-12-01 08:21:46"><![CDATA[Creación]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Campus]]></key>

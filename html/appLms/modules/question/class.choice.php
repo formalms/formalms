@@ -899,6 +899,8 @@ class Choice_Question extends Question {
 			idTrack = '".(int)$id_track."' AND ( user_answer = 1 OR user_answer IS NULL )";
 		if ($number_time != null){
 			$recover_answer .= " AND number_time = ".$number_time;
+		} else {
+			$recover_answer .= " ORDER BY number_time DESC LIMIT 1";
 		}
 
 		list($id_answer_do) = sql_fetch_row(sql_query($recover_answer));
@@ -930,6 +932,7 @@ class Choice_Question extends Question {
 					.$answer.'&nbsp;';
 				if($is_correct) {
 					$quest .= '<span class="test_answer_correct">'.$lang->def('_TEST_CORRECT').'</span>';
+					$comment = $comm;
 				} else {
 					$quest .= '<span class="test_answer_incorrect">'.$lang->def('_TEST_INCORRECT').'</span>';
 					$comment = $comm;
@@ -939,7 +942,7 @@ class Choice_Question extends Question {
 				
                 /* if($is_correct && $show_solution) {	*/
                 
-                if(($status_test=='passed' && $show_solution==2) || ($show_solution==1)) {
+                if(($status_test=='passed' && $show_solution==2 && $is_correct) || ($show_solution==1 && $is_correct)) {
                     $com_is_correct .= '<span class="text_bold">'.$lang->def('_TEST_NOT_THECORRECT').' : </span>'.$answer.'<br />';
                 }
                 

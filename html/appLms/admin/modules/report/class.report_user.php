@@ -4354,7 +4354,7 @@ class Report_User extends Report {
 			."ORDER BY t4.date_end ASC");
 		$res = sql_query($query);
 		$color_id=0;
-		while ($row=mysql_fetch_assoc($res)) {
+		while ($row=sql_fetch_assoc($res)) {
 			$color="#efefef";
 			if($color_id%2==0){
 				$color="#FFF";
@@ -4373,7 +4373,7 @@ class Report_User extends Report {
 			.(!$all_users ? " AND t2.idUser IN (".implode(',', $users).") " : "" )
 			.(count($tempmilestones)>0 ? " AND t1.milestone IN (".implode(',', $tempmilestones).") " : "" );
 		$res = sql_query($query);
-		while ($row=mysql_fetch_assoc($res)) {
+		while ($row=sql_fetch_assoc($res)) {
 			$score_arr['scorm'][ $row['idOrg'] ][ $row['idUser'] ]=$row['score_raw'];
 		}
 
@@ -4422,7 +4422,7 @@ class Report_User extends Report {
 			." ORDER BY ".$query_order_by;
                         
 		$res = sql_query($query);
-		while ($row = mysql_fetch_assoc($res)) {
+		while ($row = sql_fetch_assoc($res)) {
 
 			$temp=array();
 			foreach ($this->TESTSTAT_columns as $val){

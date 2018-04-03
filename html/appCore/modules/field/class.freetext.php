@@ -370,7 +370,7 @@ class Field_Freetext extends Field {
                 'form-control '.($error ? 'has-error' : ''),
                     5,
                     22,
-                    'placeholder="' . $translation . ($mandatory ? ' *' : '') . '"'
+                    false,'placeholder="' . $translation . ($mandatory ? ' *' : '') . '"'
                 );
 
             if ($error) {

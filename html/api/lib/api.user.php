@@ -18,7 +18,7 @@ class User_API extends API {
 	protected function _getBranch($like, $parent = false, $lang_code = false) {
 		if (!$like) return false;
 		$query = "SELECT oct.idOrg FROM %adm_org_chart as oc JOIN %adm_org_chart_tree as oct "
-			." ON (oct.idOrg = oc.id_dir) WHERE oc.translation LIKE '".$like."'";
+			." ON (oct.idOrg = oc.id_dir) WHERE oc.translation LIKE '".addslashes($like)."'";
 		if ($lang_code !== false) { //TO DO: check if lang_code is valid
 			$query .= " AND oc.lang_code = '".$lang_code."'";
 		}
@@ -627,6 +627,198 @@ class User_API extends API {
 		
 		return $output;
 	}
+    
+    /**
+    * Get the ID related to a profile name
+    * @param string $profile_name
+    * @return int
+    */
+    private function getProfilebyName($profile_name){
+        $out = 0;
+        $q = "SELECT idst from core_group where groupid = '/framework/adminrules/".$profile_name."'";
+        $res =$this->db->query($q);
+        if ($res) {
+            list($out)=$this->db->fetch_row($res);
+        }
+        return $out;    
+    }
+    
+    
+    private function hasAdminProfile($userid){
+        $out = false;
+        $m = new AdminmanagerAdm();
+        $out = $m->getProfileAssociatedToAdmin($userid);
+        return $out;
+        
+    }
+    
+    private function isAdmin($idst){
+        $out = 0;
+        $q = "SELECT count(*) as t from core_group_members where idst = 4 and idstMember =".$idst;
+        $res =$this->db->query($q);
+        if ($res) {
+            list($out)=$this->db->fetch_row($res);
+        }
+        return $out;    
+
+    }
+    
+   
+    /**
+       Assign an Admin Profile for a given username or email.
+       @param $params
+              - profile name
+              - username  or user email
+       @return boolean
+    */
+    public function assignProfile($params){
+        
+      $idst = $this->checkUsername($params);
+      if (!array_key_exists("idst",$idst)) {
+        $output = array('success'=>false, 'message'=>'Id user not found'); 
+      } else {
+          if (!$this->isAdmin($idst['idst'])) {
+               $output = array('success'=>false, 'message'=>'User is not admin');  
+          } else {
+              $profile_id = $this->getProfilebyName($params['profile_name']);
+              if(!$profile_id) {
+                  $output = array('success'=>false, 'message'=>'Input profile does not exist'); 
+              } else {
+                  $m = new AdminmanagerAdm();
+                  $r = $m->saveSingleAdminAssociation($profile_id, $idst['idst']);
+                  $output = ($r) ? array('success'=>true, 'message'=>'Profile assigned') : array('success'=>false, 'message'=>'Profile not assigned');
+              }
+          }    
+      }
+      return  $output; 
+    }
+    
+    
+    /**
+    * Assign or revoke user to an admin profile
+    * @param $params
+    *          username: or  user email
+    *          gorup_name: string the name of a group
+    *          orgchart_name: string the name of an org_chart
+    *          orgchart_code: the code of an org_chart 
+    */
+    public function admin_assignUsers($params, $op){
+        
+        $output = array('success'=>false, 'message'=> $op.' user failed'); 
+        $selected_group = 0;
+        // select group ID
+        if (array_key_exists('group_name', $params)){
+            $q = "select idst from core_group where core_group.groupid = '/".$params['group_name']. "'";
+                  $rs =$this->db->query($q);
+                  if ($rs){
+                        list($selected_group) = $this->db->fetch_row($rs);
+                  }
+        }
+
+        // select users in org chart by code
+        if (array_key_exists('orgchart_code', $params)){
+            $q = "select idst_ocd from core_org_chart_tree where code = '".$params['orgchart_code']."'";
+            $rs =$this->db->query($q);
+            if ($rs){
+                list($selected_group) = $this->db->fetch_row($rs);
+            }
+        }
+        
+        // select users in org chart by name
+        if (array_key_exists('orgchart_name', $params)){
+            $q = "select id_dir from core_org_chart where translation = '".$params['orgchart_name']."' LIMIT 1";
+            $rs =$this->db->query($q);
+            if ($rs){
+                list($id_org) = $this->db->fetch_row($rs);
+                $q = "select idst_ocd from core_org_chart_tree where idOrg = ".intval($id_org);
+                $rs =$this->db->query($q);
+                if ($rs) {
+                    list($selected_group) = $this->db->fetch_row($rs);
+                }
+            }
+        }
+        
+        
+        // associates users to admin
+        if(array_key_exists('userid', $params) && $selected_group > 0 ){
+            $idst = $this->checkUsername($params);            
+            if ($this->isAdmin($idst['idst'])) {   // check admin
+                $id_admin = intval($idst['idst']);
+                if ($this -> hasAdminProfile($id_admin)) {
+                    if ($op == 'assign') {
+                        $q = "INSERT INTO core_admin_tree (idst, idstAdmin) VALUES (".$selected_group.",".$id_admin.")";
+                    } else {
+                        $q = "DELETE FROM core_admin_tree WHERE idst=".$selected_group. " and idstAdmin=".$id_admin;
+                    }    
+                    $r = $this->db->query($q);
+                    if ($r) {
+                        $output = array('success'=>true, 'message'=>$op.' user success'); 
+                    }
+                } else {
+                    $output = array('success'=>fails, 'message'=>$op.' user has not an admin profile'); 
+                }        
+            } else {
+                $output = array('success'=>fails, 'message'=>$op.' user is not an admin'); 
+            }
+        }
+        return $output;
+        
+    }
+    
+    private function getCatalogueID($catalogue_name){
+        $cat_str = implode("','",$catalogue_name);
+        $q = "select idCatalogue from learning_catalogue where name in ('".$cat_str."')";
+        $r = $this->db->query($q);
+        if ($r){
+            while ($row = $this->db->fetch_array($r)){
+                $selected_cat[] = $row[0];    
+            }
+            return $selected_cat;
+        }
+        return '';   
+    }
+    
+    
+    private function getCoursePathID($coursepath_name){
+        $cat_str = implode("','",$coursepath_name);
+        $q = "select id_path from learning_coursepath where path_name in ('".$cat_str."')";
+        $r = $this->db->query($q);
+        if ($r){
+            while ($row = $this->db->fetch_array($r)){
+                $selected_course_path[] = $row[0];    
+            }
+            return $selected_course_path;
+        }
+        return '';   
+    }    
+    
+    /**
+    *  Assign catalogues or coursepath to an admin
+    * @param $params
+    *          userid: string
+    *          also_check_as_email: user's email 
+    *          coursepath_names: course paths name array
+    *          catalogue_names: catalogues name array    
+    */
+    public function admin_assignCourses($params){
+        $idst = $this->checkUsername($params);
+        $admin = intval($idst['idst']);
+        if ($this->isAdmin($admin) && $this->hasAdminProfile($admin)){
+            $coursepath =  isset($params['coursepath_names'])? $this->getCoursePathID($params['coursepath_names']):'';
+            $catalogue =  isset($params['catalogue_names'])? $this->getCatalogueID($params['catalogue_names']):'';
+            $m = new AdminmanagerAdm();
+            $r = $m->saveCoursesAssociation($admin,"",$coursepath,$catalogue);
+            if ($r) {
+                $output = array('success'=>true, 'message'=>$op.' courses associated to admin');         
+            } else {
+                $output = array('success'=>fails, 'message'=>$op.' courses not associated to admin');         
+            }
+        } else {
+            $output = array('success'=>fails, 'message'=>$op.' user is not an admin or has not ad admin profile');         
+        }
+        return $output;
+        
+    }
 
 	
 	
@@ -634,6 +826,8 @@ class User_API extends API {
 	
 	
 	public function call($name, $params) {
+        // WS DEBUGGING
+        //DebugBreak('session@localhost');        
 		$output = false;
 
 		// Loads user information according to the external user data provided:
@@ -793,6 +987,28 @@ class User_API extends API {
 			case 'checkusername': {
 				$output = $this->checkUsername($_POST);
 			} break;
+            
+            case 'assignprofile':
+            case 'assignProfile':{
+                $output = $this->assignProfile($_POST);
+            } break;
+            
+            case 'admin_assignUsers':
+            case 'admin_assignusers':{
+                $output = $this->admin_assignUsers($_POST, 'assign');
+            } break;
+            
+            case 'admin_revokeUsers':
+            case 'admin_revokeusers':{
+                $output = $this->admin_assignUsers($_POST, 'revoke');
+            } break;
+            
+            case 'admin_assignCourses':
+            case 'admin_assigncourses':{
+                $output = $this->admin_assignCourses($_POST);
+            } break;
+            
+
 		
 
 			default: $output = parent::call($name, $_POST);

@@ -219,6 +219,25 @@ class LangAdm extends Model {
 	}
 
 	/**
+	 * Return all the list of plugins
+	 * @return array an array of module names
+	 */
+	public function getPluginsList() {
+		$qtxt = "SELECT DISTINCT p.plugin_id, p.name "
+		."FROM %adm_lang_text AS lt "
+		."LEFT JOIN %adm_plugin AS p ON ( lt.plugin_id = p.plugin_id ) "
+		."WHERE p.plugin_id IS NOT NULL AND p.active = 1";
+		$re = $this->db->query($qtxt);
+		$plugin_id_list = array();
+		while(list($plugin_id, $name) = $this->db->fetch_row($re)) {
+
+			$plugin_id_list[$plugin_id] = $name;
+		}
+		
+		return $plugin_id_list;
+	}
+
+	/**
 	 * Return all the translation according to the passed filters
 	 * @param int $ini extract all the records starting from this one
 	 * @param int $rows numbers of record that must be extracted
@@ -229,7 +248,7 @@ class LangAdm extends Model {
 	 * @param bool $only_empty return only untranslated words for the selected language
 	 * @return array
 	 */
-	public function getAll($ini, $rows, $module = false, $text = false, $lang_code = false, $lang_code_diff = false, $only_empty = false, $sort = false, $dir = false) {
+	public function getAll($ini, $rows, $module = false, $text = false, $lang_code = false, $lang_code_diff = false, $only_empty = false, $sort = false, $dir = false, $plugin_id = false) {
 
 		if(!$lang_code) $lang_code = getLanguage();
 		/*
@@ -241,25 +260,28 @@ class LangAdm extends Model {
 		if($lang_code_diff == false) {
 
 			$qtxt = "
-			SELECT lt.id_text as id, lt.text_key, lt.text_module, ta.translation_text, '' as translation_text_diff, ta.save_date
+			SELECT lt.id_text as id, lt.text_key, lt.text_module, ta.translation_text, '' as translation_text_diff, ta.save_date, p.name plugin_name
 			FROM  %adm_lang_text AS lt
 			LEFT JOIN %adm_lang_translation AS ta ON ( lt.id_text = ta.id_text AND ta.lang_code = '".$lang_code."')
+			LEFT JOIN %adm_plugin AS p ON ( lt.plugin_id = p.plugin_id )
 			WHERE 1 ";
 		} else {
 
 			$qtxt = "
-			SELECT lt.id_text as id, lt.text_key, lt.text_module, ta.translation_text, tad.translation_text as translation_text_diff, ta.save_date
+			SELECT lt.id_text as id, lt.text_key, lt.text_module, ta.translation_text, tad.translation_text as translation_text_diff, ta.save_date, p.name plugin_name
 			FROM  (
 				%adm_lang_text AS lt
 				LEFT JOIN %adm_lang_translation AS ta ON ( lt.id_text = ta.id_text AND ta.lang_code = '".$lang_code."')
 			)
 			LEFT JOIN %adm_lang_translation AS tad ON (lt.id_text = tad.id_text AND tad.lang_code = '".$lang_code_diff."' )
+			LEFT JOIN %adm_plugin AS p ON ( lt.plugin_id = p.plugin_id )
 			WHERE 1 ";
 		}
 
 		if($module != false) $qtxt .= " AND lt.text_module LIKE  '".$module."' ";
-		if($text != false && $only_empty == false) $qtxt .= " AND ta.translation_text LIKE  '%".$text."%' ";
+		if($text != false && $only_empty == false) $qtxt .= " AND ( ta.translation_text LIKE  '%".$text."%' OR lt.text_key LIKE  '%".$text."%' ) ";
 		if($only_empty != false) $qtxt .= " AND ta.translation_text IS NULL";
+		if($plugin_id != false) $qtxt .= " AND lt.plugin_id = ". (int)$plugin_id;
 
 		$dir = $this->clean_dir($dir);
 		switch($sort) {

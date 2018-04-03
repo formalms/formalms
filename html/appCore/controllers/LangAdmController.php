@@ -215,6 +215,10 @@ class LangAdmController extends AdmController {
 		$module_list = $this->model->getModuleList();
 		array_unshift($module_list, Lang::t('_ALL'));
 
+		$plugins_ids = $this->model->getPluginsList();
+		$plugins_ids[0] = Lang::t('_NONE');
+		ksort($plugins_ids);
+
 		$language_list_diff = $language_list = $this->model->getLangCodeList();
 		array_unshift($language_list_diff, Lang::t('_NONE'));
 
@@ -222,7 +226,8 @@ class LangAdmController extends AdmController {
 			'lang_code' => $lang_code,
 			'module_list' => $module_list,
 			'language_list' => $language_list,
-			'language_list_diff' => $language_list_diff
+			'language_list_diff' => $language_list_diff,
+			'plugins_ids' => $plugins_ids
 		));
 	}
 
@@ -237,11 +242,12 @@ class LangAdmController extends AdmController {
 		$lang_code		= Get::req('lang_code', DOTY_ALPHANUM, false);
 		$lang_code_diff = Get::req('lang_code_diff', DOTY_ALPHANUM, false);
 		$only_empty		= Get::req('only_empty', DOTY_MIXED, 0);
+		$plugin_id		= Get::req('plugin_id', DOTY_INT, false);
 		if($only_empty == 'true') $only_empty = true;
 		else $only_empty = false;
 
 		$model = new LangAdm();
-		$lang_list = $model->getAll($start_index, $results, $la_module, $la_text, $lang_code, $lang_code_diff, $only_empty, $sort, $dir);
+		$lang_list = $model->getAll($start_index, $results, $la_module, $la_text, $lang_code, $lang_code_diff, $only_empty, $sort, $dir, $plugin_id);
 
 		$total_lang = $model->getCount($la_module, $la_text, $lang_code, $only_empty);
 

@@ -142,7 +142,7 @@ var Users = {
 	},
 
 	setFilter: function() {
-		Users.filterText = this.value;
+		Users.filterText = $("input[id$='_filter_text']").val();
 		DataTable_users_table.refresh();
 	},
 

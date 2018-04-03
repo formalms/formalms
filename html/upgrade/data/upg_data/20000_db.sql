@@ -998,6 +998,18 @@ DELETE FROM core_menu WHERE core_menu.idMenu = 32;
 -- 13997: plugin translations
 ALTER TABLE `core_lang_text` ADD `plugin_id` INT NULL, DROP INDEX `text_key`, ADD UNIQUE `text_key` (`text_key`, `text_module`, `plugin_id`);
 
+
+-- 15376 removing ACTIVATE COURSE MENU
+delete from learning_module where default_name = '_COURSE_AUTOREGISTRATION';
+delete from core_lang_translation where id_text = (select id_text from core_lang_text where text_key='_COURSE_AUTOREGISTRATION');
+delete from core_lang_text where text_key='_COURSE_AUTOREGISTRATION'; 
+
+
+-- forma connector auto increment
+ALTER TABLE `core_task` DROP PRIMARY KEY, ADD PRIMARY KEY( `sequence`);
+
+ALTER TABLE `core_task` CHANGE `sequence` `sequence` INT(3) NOT NULL AUTO_INCREMENT;
+
 -- ------------------------------------------------------------------
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

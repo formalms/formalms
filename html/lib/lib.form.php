@@ -433,13 +433,13 @@ class Form {
 		
     $_lang = Docebo::user()->getPreference('ui.lang_code'); 
     $date_format = str_replace(['%d', '%m', '%Y', '-'], ['dd', 'mm', 'yyyy', '-'], $date_format);
-    $other_param = ' data-provide="datepicker" 
+    $date_picker_other_param = ' data-provide="datepicker" 
     								 data-date-autoclose=true data-date-language="'.$_lang.
-    								 '" data-date-format="'.$date_format.'"';
+    								 '" data-date-format="'.$date_format.'" '.$other_param;
 
 		$iso = Format::dateDb($value, 'date');
 
-		return Form::getInputTextfield( $css_field, $id, $name, Format::date($iso, 'date'), $alt_name, '30', $other_param);
+		return Form::getInputTextfield( $css_field, $id, $name, Format::date($iso, 'date'), $alt_name, '30', $date_picker_other_param);
 	}
 
 
@@ -506,7 +506,7 @@ class Form {
 	 * @param string $other_param 	other element for the tag
 	 * @return string 	with the html code for the input type="password" element
 	 */
-	public static function getInputPassword( $css_text, $id, $name, $alt_name, $maxlenght, $other_param, $value ) {
+	public static function getInputPassword( $css_text, $id, $name, $alt_name, $maxlenght, $other_param, $value = "" ) {
 		return '<input type="password" '
 		."\n\t".'class="form-control '.$css_text.'" '
 		."\n\t".'id="'.$id.'" '
@@ -715,7 +715,7 @@ class Form {
 	 *
 	 * @return string with the html code for the select element
 	 */
-	public static function getInputDropdown( $css_dropdown, $id, $name, $all_value, $selected, $other_param, $withPlaceholder = false ) {
+	public static function getInputDropdown( $css_dropdown, $id, $name, $all_value, $selected, $other_param = '', $withPlaceholder = false ) {
 
 		$html_code = '<select class="form-control '.$css_dropdown.'" '
 				."\n\t".'id="'.$id.'" '
@@ -1152,7 +1152,7 @@ class Form {
 		return $html_code;
 	}
 
-	public static function getInputTextarea($id ,$name , $value = '', $css_text = false, $rows = 5, $cols = 22, $maxlength, $other_param = '' ) {
+	public static function getInputTextarea($id ,$name , $value = '', $css_text = false, $rows = 5, $cols = 22, $maxlength = '', $other_param = '' ) {
 
 		if($css_text === false) $css_text = 'textarea';
 

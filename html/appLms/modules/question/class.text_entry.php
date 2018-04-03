@@ -600,7 +600,9 @@ class TextEntry_Question extends Question {
 			idTrack = '".(int)$id_track."'";
         if ($number_time != null){
             $recover_answer .= " AND number_time = ".$number_time;
-        }
+        } else {
+			$recover_answer .= " ORDER BY number_time DESC LIMIT 1";
+		}
 
 		list($answer_do) = sql_fetch_row(sql_query($recover_answer));
 		
@@ -610,6 +612,7 @@ class TextEntry_Question extends Question {
 		$text = '<span class="text_bold">'.( trim($answer_do) != '' ? $answer_do : $lang->def('_EMPTY_ANSWER') ).'</span>';
 		if(strtolower($answer_do) == strtolower($answer)) {
 			$text .= ' <strong class="test_answer_correct">'.$lang->def('_TEST_CORRECT').'</strong>';
+			$comment = $com;
 		} else {
 			$text .= ' <strong class="test_answer_incorrect">'.$lang->def('_TEST_INCORRECT').'</strong>';
 			if($show_solution) $com_is_correct = '<strong>'.$lang->def('_TEST_ISNOT_THECORRECT').' : </strong>'.$answer;

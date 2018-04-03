@@ -136,7 +136,7 @@ class Module_IOTask extends Module {
 		$dimport = new DoceboImport();
 		while( $taskParams !== FALSE ) {
 			if( $connMgr->is_task_todo($taskParams)) {
-				$report = $dimport->execute_task($taskParams[CONNMGR_TASK_NAME]);
+				$report = $dimport->execute_task($taskParams[CONNMGR_TASK_SEQUENCE]);
 				if( !is_array($report) ) {
 					$out .= '<iotask name="'.$taskParams[CONNMGR_TASK_NAME].'" inserted="0" removed="0" >';
 					$out .= '<result>'.$report.'</result>';

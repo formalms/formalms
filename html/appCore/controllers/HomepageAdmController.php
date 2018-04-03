@@ -107,6 +107,9 @@ class HomepageAdmController extends AdmController
             case INVALID_CODE:
                 $msg_output = Lang::t("_INVALID_RANDOM_CODE", "register");
                 break;
+            case USER_NOT_FOUND:
+                $msg_output = Lang::t('_USER_NOT_FOUND','login');
+                break;
             default:
                 $msg_output = false;
                 break;

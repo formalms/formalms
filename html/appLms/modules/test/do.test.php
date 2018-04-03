@@ -1428,27 +1428,37 @@ function showResult ($object_test , $id_param)
 		
 		$re_category = sql_query ($sql_test);
 		
+		$array_question_number = array();
+		list($random_question) = sql_fetch_row(sql_query("SELECT order_info FROM ".$GLOBALS['prefix_lms']."_test WHERE idTest='".$id_test."'"));
+		$json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+		$json_random = $json->decode($random_question);
+		if (is_array($json_random)) {
+		   foreach ($json_random as $value) {
+			  $array_question_number[] = $value['selected'];
+		   }
+		}
 		
-		if (sql_num_rows ($re_category)) {
-			
-			$GLOBALS[ 'page' ]->add ('<br />'
-				. '<table summary="' . $lang->def ('_TEST_CATEGORY_SCORE') . '" class="category_score">'
-				. '<caption>' . $lang->def ('_TEST_CATEGORY_SCORE' , 'test') . '</caption>'
-				. '<thead>'
-				. '<tr>'
-				. '<th>' . $lang->def ('_TEST_QUEST_CATEGORY') . '</th>'
-				. '<th class="number">' . $lang->def ('_TEST_QUEST_NUMBER') . '</th'
-				. '<th class="number">' . $lang->def ('_TEST_TOTAL_SCORE') . '</th>'
-				. '</tr>'
-				. '</thead>'
-				. '<tbody>' , 'content');
-			while (list($id_cat , $name_cat , $quest_number) = sql_fetch_row ($re_category)) {
-				
-				$GLOBALS[ 'page' ]->add ('<tr><td>' . $name_cat . '</td>'
-					. '<td class="number">' . $quest_number . '</td>'
-					. '<td class="number">' . (isset($point_do_cat[ $id_cat ]) ? $point_do_cat[ $id_cat ] : 0) . '</td></tr>'
-					, 'content');
-			}
+		if(sql_num_rows($re_category)) {
+		   
+		   $GLOBALS['page']->add('<br />'
+			  .'<table summary="'.$lang->def('_TEST_CATEGORY_SCORE').'" class="category_score">'
+			  .'<caption>'.$lang->def('_TEST_CATEGORY_SCORE').'</caption>'
+			  .'<thead>'
+				 .'<tr>'
+					.'<th>'.$lang->def('_TEST_QUEST_CATEGORY').'</th>'
+					.'<th class="number">'.$lang->def('_TEST_QUEST_NUMBER').'</th'
+					.'<th class="number">'.$lang->def('_TEST_TOTAL_SCORE').'</th>'
+				 .'</tr>'
+			  .'</thead>'
+			  .'<tbody>', 'content');
+		   $i=0;   
+		   while(list($id_cat, $name_cat, $quest_number) = sql_fetch_row($re_category)) {
+			  $GLOBALS['page']->add('<tr><td>'.$name_cat.'</td>'
+				 .'<td class="number">'.$array_question_number[$i].'</td>'
+				 .'<td class="number">'.( isset($point_do_cat[$id_cat]) ? $point_do_cat[$id_cat] : 0 ).'</td></tr>'
+			  , 'content');
+			  $i++;
+		   }
 			/*
 			$GLOBALS['page']->add('<br />'
 				.'<span class="test_score_note">'.$lang->def('_TEST_CATEGORY_SCORE').'</span><br />', 'content');

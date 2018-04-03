@@ -416,7 +416,7 @@ class TestManagement {
 			if (is_array($arr)) foreach ($arr as $value) $total += $value['selected'];
 			return $total;
 		}
-		if($this->test_info['order_type'] == 4 && $this->test_info['cf_info']) {
+		if($this->test_info['order_type'] >= 4 && $this->test_info['cf_info']) {
 			require_once(_base_.'/lib/lib.json.php');
 			$json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 			$arr = $json->decode($this->test_info['cf_info']);
