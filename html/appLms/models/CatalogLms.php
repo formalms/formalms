@@ -87,7 +87,7 @@ class CatalogLms extends Model
         require_once(_lms_.'/lib/lib.catalogue.php');
 		$cat_man = new Catalogue_Manager();
 
-		//$user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+		$user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
         $category_filter = ($id_category==0 || $id_category==null? '':' and idCategory='.$id_category);
         $cat_list_filter = "";
         if ($id_catalog > 0 ) {
@@ -114,6 +114,8 @@ class CatalogLms extends Model
 
 						$courses = array_merge($courses, $catalogue_course);
 					}
+					
+					$filter .= " AND idCourse IN (".implode(',', $courses).")";
 				}
 			break;
 			case 'classroom':
@@ -129,6 +131,8 @@ class CatalogLms extends Model
 
 						$courses = array_merge($courses, $catalogue_course);
 					}
+
+					$filter .= " AND idCourse IN (".implode(',', $courses).")";
 				}
 			break;
 			case 'new':
@@ -145,7 +149,7 @@ class CatalogLms extends Model
 						$courses = array_merge($courses, $catalogue_course);
 					}
 
-				//	$filter .= " AND idCourse IN (".implode(',', $courses).")";
+					$filter .= " AND idCourse IN (".implode(',', $courses).")";
 				}
 			break;
 			case 'catalogue':
@@ -172,7 +176,7 @@ class CatalogLms extends Model
 						$courses = array_merge($courses, $catalogue_course);
 					}
 
-				//	$filter .= " AND idCourse IN (".implode(',', $courses).")";
+					$filter .= " AND idCourse IN (".implode(',', $courses).")";
 				}
 			break;
 		}
