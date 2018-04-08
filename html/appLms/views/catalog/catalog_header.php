@@ -10,13 +10,12 @@
                  showUserCatalogueTab($user_catalogue);   
              }    
           } else {
-             if (!$catalogue_exist) {
-                 showGeneralCatalogueTab();
-             } else {
-                 if (count($user_catalogue) > 0) {
-                     showUserCatalogueTab($user_catalogue);
-                 }
-             }
+            if (count($user_catalogue) > 0) {
+                 showUserCatalogueTab($user_catalogue);
+            } else {
+                showEmptyCatalogueTab();
+            }
+             
          }
      }
      // display assigned catalogues
@@ -44,6 +43,14 @@
          echo '<li class="active"><a href="index.php?r=catalog/show&amp;id_catalogue=0">'.Lang::t('_CATALOGUE').'</a></li>'.
              PHP_EOL.'<script>current_catalogue=0;</script>'.PHP_EOL; 
           
+      }
+      
+      function showEmptyCatalogueTab(){
+            echo '<li class="active">'
+                 . '<a href="#">'
+                 . Lang::t('_CATALOGUE')
+                 . '</a>'
+                 . '</li>';  
       }
                      
  ?>

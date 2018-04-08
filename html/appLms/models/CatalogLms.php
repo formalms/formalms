@@ -683,12 +683,6 @@ class CatalogLms extends Model
 	}
 
 
-    public function CatalogueExist(){
-        $r = sql_query("select count('s') from learning_catalogue");
-        list($t) = sql_fetch_row($r);
-        return $t > 0;
-    }
-
     public function GetGlobalJsonTree($id_catalogue){
             $this->current_catalogue = $id_catalogue;
             $top_category = $this->getMajorCategory();

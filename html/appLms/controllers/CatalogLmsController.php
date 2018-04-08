@@ -46,7 +46,6 @@ class CatalogLmsController extends LmsController {
 	{
         $id_catalogue = Get::req('id_catalogue', DOTY_INT, 0);
         $typeCourse = Get::req('type_course', DOTY_STRING, '');
-        $catalogue_exist = $this->model->CatalogueExist();
         $user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
         echo '<div class="middlearea_container">';
 
