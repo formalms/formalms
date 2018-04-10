@@ -415,7 +415,7 @@ class PluginmanagerAdm extends Model {
             if(!preg_match("/^\./",$file)) {
                 $lang_file	= $path.$file;
                 $model = new LangAdm();
-                $check = $model->importTranslation($lang_file, true, false, $plugin_info['plugin_id']);
+                $check = $model->importTranslation($lang_file, true, false, (int)$plugin_info['plugin_id']);
                 if(!$check){
                     break;
                 }
@@ -619,13 +619,23 @@ class PluginmanagerAdm extends Model {
         if ($online){
             $this->downloadPlugin($plugin_id);
         }
-        $this->callPluginMethod($plugin_id,'update');
-        $res0=$this->uninstallPlugin($plugin_id, true);
-        if ($res0){
-            $res1=$this->installPlugin($plugin_id, 0, true);
-            if ($res1){
-                return true;
-            }
+        $plugin_db = $this->getPluginFromDB($plugin_id, 'name');
+        $plugin_info = $this->readPluginManifest($plugin_id);
+        $query = "UPDATE ".$this->table."
+                SET 
+                    title = '".addslashes($plugin_info['title'])."',
+                    category = '".addslashes($plugin_info['category'])."',
+                    version = '".addslashes($plugin_info['version'])."',
+                    author = '".addslashes($plugin_info['author'])."',
+                    link = '".addslashes($plugin_info['link'])."',
+                    description = '".addslashes($plugin_info['description'])."'
+                WHERE
+                    plugin_id = " . $plugin_db['plugin_id'];
+        $result = sql_query($query);
+        if($result){  
+            $this->callPluginMethod($plugin_id,'update');
+            $this->installTranslations($plugin_id);
+            return true;
         }
         return false;
     }
