@@ -996,7 +996,7 @@ DROP TABLE IF EXISTS learning_news;
 DELETE FROM core_menu WHERE core_menu.idMenu = 32;
 
 -- 13997: plugin translations
-ALTER TABLE `core_lang_text` ADD `plugin_id` INT NULL, DROP INDEX `text_key`, ADD UNIQUE `text_key` (`text_key`, `text_module`, `plugin_id`);
+ALTER TABLE core_lang_text ADD plugin_id INT NOT NULL DEFAULT 0, DROP INDEX text_key, ADD UNIQUE text_key (text_key, text_module, plugin_id);
 
 
 -- 15376 removing ACTIVATE COURSE MENU
