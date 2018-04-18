@@ -662,15 +662,31 @@ class CompetencesAdm extends Model {
 	public function updateCategory($id_category, $langs) {
 		$output = false;
 
+		$prev_lang = array();
+		$re = $this->db->query("SELECT lang_code FROM ".$this->_getCategoriesLangTable()." WHERE id_category = ".(int)$id_category);
+		while(list($lang_code) = $this->db->fetch_row($re)) {
+			$prev_lang[$lang_code] = $lang_code;
+		}
+
 		if ($id_category > 0) {
 				//insert languages in database
 				foreach ($langs as $lang_code => $translation) { //TO DO: check if lang_code exists ...
 					$name = $translation['name'];
 					$description = $translation['description'];
-					$query = "UPDATE ".$this->_getCategoriesLangTable()." "
-						." SET name = '".$name."', description = '".$description."' "
-						." WHERE id_category = ".(int)$id_category." AND lang_code = '".$lang_code."'";
-					$res = $this->db->query($query);
+
+					if(isset($prev_lang[$lang_code])) {
+						
+						$query = "UPDATE ".$this->_getCategoriesLangTable()." "
+							." SET name = '".$name."', description = '".$description."' "
+							." WHERE id_category = ".(int)$id_category." AND lang_code = '".$lang_code."'";
+						$res = $this->db->query($query);
+					} else {
+						
+						$query = "INSERT INTO ".$this->_getCategoriesLangTable()." "
+							." (id_category, lang_code, name) VALUES "
+							." (".(int)$id_category.", '".$lang_code."', '".$name."')";
+						$res = $this->db->query($query);
+					}					
 				}
 				$output = true; //TO DO: improve error detection in queries ...
 		}
