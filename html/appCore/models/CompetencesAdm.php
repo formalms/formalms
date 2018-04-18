@@ -835,14 +835,30 @@ class CompetencesAdm extends Model {
 					);
 				}
 
+				$prev_lang = array();
+				$re = $this->db->query("SELECT lang_code FROM ".$this->_getCompetencesLangTable()." WHERE id_competence = ".(int)$id_competence);
+				while(list($lang_code) = $this->db->fetch_row($re)) {
+					$prev_lang[$lang_code] = $lang_code;
+				}
+
 				$conditions = array();
 				foreach ($arr_langs as $lang_code => $translation) { //TO DO: check if lang_code exists ...
 					$name = $translation['name'];
 					$description = $translation['description'];
-					$query = "UPDATE ".$this->_getCompetencesLangTable()." "
-						." SET name = '".$name."', description = '".$description."' "
-						." WHERE id_competence = ".(int)$id_competence." AND lang_code = '".$lang_code."'";
-					$res = $this->db->query($query);
+
+					if(isset($prev_lang[$lang_code])) {
+						
+						$query = "UPDATE ".$this->_getCompetencesLangTable()." "
+							." SET name = '".$name."', description = '".$description."' "
+							." WHERE id_competence = ".(int)$id_competence." AND lang_code = '".$lang_code."'";
+						$res = $this->db->query($query);
+					} else {
+						
+						$query = "INSERT INTO ".$this->_getCompetencesLangTable()." "
+							." (id_competence, lang_code, name, description) VALUES "
+							." (".(int)$id_competence.", '".$lang_code."', '".$name."', '".$description."')";
+						$res = $this->db->query($query);
+					}
 				}
 			}
 		}
