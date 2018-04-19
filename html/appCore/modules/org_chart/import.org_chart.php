@@ -306,7 +306,7 @@ class ImportUser extends DoceboImport_Destination {
                                 $this->last_error = 'Error on insert user';
                                 $err = true;
                             }
-                        } else if ($sameuserid == TRUE) {	//  	if ($idst !== FALSE)	
+                        } else if ($idst !== FALSE) {	//   if ($sameuserid == TRUE) {
                             $result = $acl_manager->updateUser(
                                     $acl_manager->getUserST( $tocompare['userid']),
                                     $userid,
@@ -461,7 +461,7 @@ class ImportUser extends DoceboImport_Destination {
 		}
                         break;
                     case 'only_update':
-			if($sameuserid !== false) {
+			if($idst !== FALSE ){   //if($sameuserid !== false) {
 				$result = $acl_manager->updateUser(
                                     $acl_manager->getUserST( $tocompare['userid']),
                                     $userid,
