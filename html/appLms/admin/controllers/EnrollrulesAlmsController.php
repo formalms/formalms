@@ -544,4 +544,101 @@ class EnrollrulesAlmsController extends AlmsController {
 		Util::jump_to('index.php?r=alms/enrollrules/show&amp;result='.($re ? 'true' : 'false'));
 	}
 
+	protected function applyrule() {
+		checkPerm('view', true, 'enrollrules', 'lms');
+		$id_rule = Get::req('id_rule', DOTY_INT, 0);
+		// Get rule info
+		$rule = $this->model->getRule($id_rule);
+		$types = $this->model->ruleTypes();
+		$rule->rule_type_text = $types[$rule->rule_type];
+
+		// Get user for rule
+		if ($rule->rule_type == 'base') {
+			// ----------- Applicazione politiche di iscrizione disabilitate regole di tipo BASE -----------
+			//require_once(_adm_.'/models/UsermanagementAdm.php');
+			//$usermanagement = new UsermanagementAdm();
+			//$listUsersBase = $usermanagement->getUsersList(0,  false, array('startIndex' => 0,'results' => 9999999,'sort' => 'u.userid','dir' => 'ASC') );
+			//$listUsers = array_keys($listUsersBase);
+			//$this->model->newRules('_NEW_USER', $listUsers);
+			// ----------- Applicazione politiche di iscrizione disabilitate regole di tipo BASE -----------
+		} elseif ($rule->rule_type == 'group') {
+			require_once(_adm_.'/models/GroupmanagementAdm.php');
+			$groupmanagement = new GroupmanagementAdm();
+			// Get list group for rule
+			$entities = $this->model->getEntityRule($id_rule);
+			$id_entities = array_keys($entities);
+			$entities_name = $this->model->convertEntity($id_entities, $rule->rule_type);
+			// For any group
+			while(list(, $entity) = each($entities)) {
+				$listUsers = array();
+				$listUsersGroup = array();
+				// Get users in group
+				$listUsersGroup = $groupmanagement->getGroupUsersList($entity->id_entity, 
+							array('startIndex' => 0,'results' => 99999999999999999,'sort' => 'userid','dir' => 'ASC'), 
+							false);
+				while(list(, $userGroup) = each($listUsersGroup)) {
+					$listUsers[] = $userGroup->idst;
+				}
+				// Apply enroll rule
+				$this->model->applyRulesMultiLang('_LOG_USERS_TO_GROUP', $listUsers, false, $entity->id_entity, false, $id_rule);
+			} 
+		} elseif ($rule->rule_type == 'orgchart') {
+			require_once(_adm_.'/models/UsermanagementAdm.php');
+			$usermanagement = new UsermanagementAdm();
+			// Get list orgchart for rule
+			$entities = $this->model->getEntityRule($id_rule);
+			$id_entities = array_keys($entities);
+			// For any orgchart
+			while(list(, $entity) = each($entities)) {
+				$listUsers = array();
+				$listUsersOrgchart = array();
+				$descendants = false;
+				$folders = $usermanagement->getInfoFolders(array($entity->id_entity));
+				$idOrg = key($folders['id_org']);
+				
+				// Controllo se ho selezionato discendenti
+				$aIndex=0;
+				foreach ($folders['idst'] as $kFolders => $vFolders) {
+					if ($aIndex == 1){
+						if ($kFolders==$entity->id_entity) { $descendants = true; }
+					}
+					$aIndex++;
+				}
+				
+				// Get users in orgchart
+				$listUsersOrgchart = $usermanagement->getUsersList($idOrg, 
+							$descendants,
+							array('startIndex' => 0,'results' => 9999999,'sort' => 'u.userid','dir' => 'ASC') );
+				$listUsers = array_keys($listUsersOrgchart);
+				// Apply enroll rule
+				$this->model->applyRulesMultiLang('_LOG_USERS_TO_ORGCHART', $listUsers, false, $entity->id_entity, false, $id_rule);
+			}
+		} elseif ($rule->rule_type == 'fncrole') {
+			require_once(_adm_.'/models/FunctionalrolesAdm.php');
+			$functionalroles = new FunctionalrolesAdm();
+			// Get list fncrole for rule
+			$entities = $this->model->getEntityRule($id_rule);
+			$id_entities = array_keys($entities);
+			$entities_name = $this->model->convertEntity($id_entities, $rule->rule_type);
+			// For any fncrole
+			while(list(, $entity) = each($entities)) {
+				$listUsers = array();
+				$listUsersFncrole = array();
+				// Get users in fncrole
+				$listUsersFncrole = $functionalroles->getManageUsersList($entity->id_entity, 
+							array('startIndex' => 0,'results' => 99999999,'sort' => 'userid','dir' => 'ASC'), 
+							false);
+				while(list(, $userFncrole) = each($listUsersFncrole)) {
+					$listUsers[] = $userFncrole->idst;
+				}
+				// Apply enroll rule
+				$this->model->applyRulesMultiLang('_LOG_USERS_TO_FNCROLE', $listUsers, false, $entity->id_entity, false, $id_rule);
+			} 
+		}
+		$result = array(
+				'success' => true
+#				, 'message' => Lang::t('_OPERATION_FAILURE', 'enrollrules')
+		);
+		echo $this->json->encode($result);
+	}
 }
