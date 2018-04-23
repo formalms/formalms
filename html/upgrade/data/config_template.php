@@ -79,7 +79,7 @@ $cfg['smtp_pwd'] ='';
  * -------------------------------------------------------------------------
  * timezone     = default site timezone , if not specified get default from php.ini date.timezone
  *                for valid timezone see http://www.php.net/manual/en/timezones.php
- * set_sql_tz = set mysql timezone same as php timezone ,  valid value
+ * set_mysql_tz = set mysql timezone same as php timezone ,  valid value
  *                true = set ,  false = (default) not set
  * keepalive    = set TMO for keepalive scorm tracking. must be < session lifetime, 0 to disable keepalive
  *                default session lifetime - 15 sec
@@ -89,7 +89,7 @@ $cfg['smtp_pwd'] ='';
  */
 
 //$cfg['timezone'] = 'Europe/Rome';		// define if different from php.ini setting
-//$cfg['set_sql_tz'] = false;			// set mysql timezone same as php timezone , default false
+//$cfg['set_mysql_tz'] = false;			// set mysql timezone same as php timezone , default false
 
 //$cfg['keepalivetmo'] = '';			// timeout for keepalive, must be < session lifetime, 0 to disable keepalive
 
@@ -103,9 +103,10 @@ $cfg['smtp_pwd'] ='';
  * parameter :  array value=file extension
  * template_engine available: twig
  *
- * If not defined (default) no alternate template engine
+ * If not defined no alternate template engine. Twig is enabled on default
  */
-//$cfg['template_engine']['twig'] = array('ext' => '.twig');
+$cfg['template_engine']['twig'] = array('ext' => '.html.twig');
+$cfg['twig_debug'] = false;
 
 
 /**
@@ -118,6 +119,8 @@ $cfg['smtp_pwd'] ='';
 $cfg['do_debug'] 			= false;
 $cfg['session_lenght'] 		= (120 * 60);
 $cfg['session_save_path'] 	= false;
+//$cfg['session_save_handler']  = 'memcached';
+//$cfg['session_save_path']  = 'localhost:11211';
 $cfg['demo_mode']			= false;
 
 /**
@@ -128,3 +131,20 @@ $cfg['demo_mode']			= false;
  */
 $cfg['filter_tool'] = 'htmlpurifier';
 $cfg['mail_br'] 	= "\r\n";
+
+/**
+ * Certificate Encryption
+ * -------------------------------------------------------------------------
+ * certificate_encryption: boolean to set whether to enable or not the pdf encryption of certificates (default is TRUE)
+ * certificate_password: password to use when encryption is enabled. It must be exactly 32 chars! (default is a random generated one)
+ */
+//$cfg['certificate_encryption'] = true;
+//$cfg['certificate_password']  = "12345678901234567890123456789012";
+
+
+/**
+ * Social Google Options
+ * -------------------------------------------------------------------------
+ * use_google_login_oauth2: boolean to set whether to enable or not the oauth2 login in google connection instead of openid (default is TRUE)
+ */
+//$cfg['use_google_login_oauth2'] = false;
