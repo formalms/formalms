@@ -452,6 +452,7 @@ class User_API extends API {
 				'course_name'=>str_replace('&', '&amp;', $course_info['name']),
 				'course_description'=>str_replace('&', '&amp;', $course_info['description']),
 				'course_link'=>Get::sett('url')._folder_lms_.'/index.php?modname=course&amp;op=aula&amp;idCourse='.$course_info['idCourse'],
+				'user_status'=>$course_info['user_status'],
 			);
 		}
 
