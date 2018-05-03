@@ -228,7 +228,6 @@ if (!Docebo::user()->isAnonymous()) {
                             
                         </li>
                    </ul>
-                   <div class="top-menu__disclaimer">Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</div>
                </div>
                <div id="c-mask" class="c-mask"></div><!-- /c-mask overlay -->', 'menu_over');
 
