@@ -403,8 +403,18 @@ switch ($op) {
 		$results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
 
 		if ($filter != "") {
+			$query_filter = "";
+			$userlevelid = Docebo::user()->getUserLevelId();
+			if ($userlevelid != ADMIN_GROUP_GODADMIN) {
+				require_once(_base_ . '/lib/lib.preference.php');
+				$adminManager = new AdminPreference();
+				$acl_man =& Docebo::user()->getAclManager();
+				$admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+				$query_filter .= " AND idCourse IN (" . implode(',', $admin_courses['course']) . ") ";
+			}
+
 			$query = "SELECT idCourse, code, name, course_type, course_edition FROM %lms_course "
-				." WHERE code LIKE '%".$filter."%' OR name LIKE '%".$filter."%' ORDER BY code, name "
+				." WHERE 1 ".$query_filter." AND  ( code LIKE '%".$filter."%' OR name LIKE '%".$filter."%' ) ORDER BY code, name "
 				.($results > 0 ? " LIMIT 0, ".(int)$results : "");
 			$res = sql_query($query);
 			if ($res) {
