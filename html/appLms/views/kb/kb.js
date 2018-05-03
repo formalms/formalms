@@ -82,8 +82,8 @@ function selectKbFolder(folder_id) {
 	var callback = {
 		success: function(o) {
 			var data =YAHOO.lang.JSON.parse(o.responseText);
-			YAHOO.util.Dom.get("kb_folder_nav").innerHTML = data['breadcrumbs'];
-			YAHOO.util.Dom.get("kb_folder_box_ul").innerHTML = data['folder_box'];
+			//YAHOO.util.Dom.get("kb_folder_nav").innerHTML = data['breadcrumbs'];
+			//YAHOO.util.Dom.get("kb_folder_box_ul").innerHTML = data['folder_box'];
 			var disp = (data['folder_box'] == '' ? 'hidden' : 'visible');
 			YAHOO.util.Dom.setStyle("folder_box", 'visibility', disp);
 			KbManagement.selected_node = o.argument.folder_id;
