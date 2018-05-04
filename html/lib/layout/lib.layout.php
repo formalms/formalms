@@ -330,8 +330,8 @@ class Layout
         $retArray['jsAddons'] = JQueryLib::loadJsAddons($minimized);
         $retArray['cssAddons'] = JQueryLib::loadCssAddons($minimized);
 
-        if (file_exists(_base_ . '/templates/' . getTemplate() . '/style/custom.css')) {
-            $customCssPath = Get::rel_path('base') . '/templates/' . getTemplate() . '/style/custom.css';
+        if (file_exists(_base_ . '/templates/' . getTemplate() . '/style/custom.dist.css')) {
+            $customCssPath = Get::rel_path('base') . '/templates/' . getTemplate() . '/style/custom.dist.css';
             $retArray['custom_css_path'] = str_replace('/./', '/', $customCssPath);
         }
         switch ($whichLayout) {
