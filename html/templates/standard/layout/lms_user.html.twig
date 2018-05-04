@@ -43,10 +43,12 @@
         
         <!-- content  -->   
         {#{{ <div class="layout_colum_container"> }}#}
-        <div class="container-fluid">
-            {{ evalPhp('Layout::zone', ['content']) }}
-            
-            <div class="nofloat"></div>
+        <div class="row">
+            <div class="container-fluid">
+                {{ evalPhp('Layout::zone', ['content']) }}
+                
+                <div class="nofloat"></div>
+            </div>
         </div>
     </div>
     <!-- footer  -->

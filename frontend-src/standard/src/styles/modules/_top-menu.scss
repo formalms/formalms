@@ -73,10 +73,6 @@ header.header {
     padding: 8px 15px;
   }
 
-  @include breakpoint($desktop) {
-    padding: 8px 58px 8px 38px;
-  }
-
   .row-fluid {
     .navbar-header {
       @media (min-width: 768px) and (max-width: 1023px) {
