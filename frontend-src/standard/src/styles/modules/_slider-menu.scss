@@ -18,6 +18,11 @@
   font-size: 15px;
   line-height: 19px;
 
+  .slider-menu & {
+    list-style-type: none;
+    display: inline-block;
+  }
+
   .slick-slide:nth-child(n + 2) & {
     padding-left: 13px;
 
