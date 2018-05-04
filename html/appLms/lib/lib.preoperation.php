@@ -54,7 +54,7 @@ if(isset($_SESSION['must_renew_pwd']) && $_SESSION['must_renew_pwd'] == 1
     $GLOBALS['op']      = '';
     $GLOBALS['req'] = 'lms/profile/renewalpwd';
 } elseif(isset($_SESSION['request_mandatory_fields_compilation']) && $_SESSION['request_mandatory_fields_compilation'] == 1
-        && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN && $GLOBALS['req'] != 'precompile/set') {
     
     // handling required mandatory fields compilation
     
