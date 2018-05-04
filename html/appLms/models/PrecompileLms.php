@@ -24,7 +24,16 @@ class PrecompileLms extends Model {
 	}
 
 	public function compileRequired() {
-		if(Get::sett('request_mandatory_fields_compilation', 'off') == 'off') return false;
+
+		// get privacy_policy --> con questo non funziona -->setting Get::sett('privacy_policy', 'off')
+		$query  = " SELECT param_value FROM %adm_setting"
+		. " WHERE param_name = 'privacy_policy'"
+		. " ORDER BY pack, sequence";
+		$privacy_policy = $this->db->fetch_row($this->db->query($query))[0];
+
+		if(Get::sett('request_mandatory_fields_compilation', 'off') == 'off' && $privacy_policy == 'off'){
+			return false;
+		}
 
 		$id_user = Docebo::user()->getIdSt();
 		$policy_checked = $this->getAcceptingPolicy($id_user);
@@ -57,6 +66,9 @@ class PrecompileLms extends Model {
 			$pinfo = $pmodel->getPolicyInfo($id_policy);
 			if (isset($pinfo->translations[Lang::get()]))
 				$output = $pinfo->translations[Lang::get()];
+		} else {
+			// default policy text
+			$output = Lang::t('_REG_PRIVACY_POLICY', 'login');
 		}
 
 		return $output;

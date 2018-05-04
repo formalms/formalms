@@ -29,7 +29,7 @@ echo '</div>';
 
 echo Form::openButtonSpace();
 echo Form::getButton('save', 'save', Lang::t('_SAVE', 'standard'));
-echo Form::getButton('undo', 'undo', Lang::t('_UNDO', 'standard'));
+//echo Form::getButton('undo', 'undo', Lang::t('_UNDO', 'standard'));
 echo Form::closeButtonSpace();
 
 echo Form::closeForm();
