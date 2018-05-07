@@ -268,10 +268,6 @@ class DoceboUser {
 		unset($_SESSION[$prefix."_idst"]);
 		$du = new DoceboUser( $login, $prefix );
 
-		$_SESSION['last_enter'] = $user_info[ACL_INFO_LASTENTER];
-		$du->setLastEnter(date("Y-m-d H:i:s"));
-		$_SESSION['user_enter_mark'] = time();
-
 		// language policy
 		if(!$new_lang && isset($_SESSION['forced_lang'])) $new_lang = Lang::get();
 		if($new_lang != false) {
