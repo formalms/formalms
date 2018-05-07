@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180207</DATE>
+  <DATE>20180423</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -1041,6 +1041,7 @@ Titolo: [thread_title]]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Hai ricevuto un nuovo messaggio sul sistema di e-learning all'indirizzo <a href="[url]">[url]</a> nel corso<b> [course] </b>dall'utente [from]]]></key>
       </module>
       <module id="enrollrules">
+        <key id="enrollrules&amp;_APPLY_RULE" attributes="" save_date="2018-04-23 12:26:20"><![CDATA[Applica politica di iscrizione]]></key>
         <key id="enrollrules&amp;_BASE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Base]]></key>
         <key id="enrollrules&amp;_ENTITY" attributes="" save_date="2017-03-15 16:39:14"><![CDATA[Entità]]></key>
         <key id="enrollrules&amp;_SHOW_LOGS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mostra log]]></key>

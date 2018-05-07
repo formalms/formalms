@@ -228,7 +228,6 @@ if (!Docebo::user()->isAnonymous()) {
                             
                         </li>
                    </ul>
-                   <div class="top-menu__disclaimer">Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</div>
                </div>
                <div id="c-mask" class="c-mask"></div><!-- /c-mask overlay -->', 'menu_over');
 
@@ -308,9 +307,6 @@ if (!Docebo::user()->isAnonymous()) {
     cout($right_box, 'menu_over');
     cout(LanguageBox(), 'menu_over');
     cout('<div class="row footer">
-                            <div class="col-xs-12">
-                              <p>Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</p>
-                            </div>
                         </div>
                     </div> <!-- /container-fluid -->
                 </div><!-- /c-menu slide-right end profile right panel -->

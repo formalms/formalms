@@ -3,17 +3,20 @@ var answer_count = [];
 function controlTotQuestion()
 {
 	var info = YAHOO.util.Dom.get('answer_info');
+
 	if(tot_question == 0)
 	{
-		if(YAHOO.buttonObjects.show_result)
-			YAHOO.buttonObjects.show_result.set('disabled', false);
+		$("#show_result").attr('disabled', false);
+		/*if(YAHOO.buttonObjects.show_result)
+			YAHOO.buttonObjects.show_result.set('disabled', false);*/
 		if(info)
 			info.style.display = 'none';
 	}
 	else
 	{
-		if(YAHOO.buttonObjects.show_result)
-			YAHOO.buttonObjects.show_result.set('disabled', true);
+		$("#show_result").attr('disabled', true);
+		/*if(YAHOO.buttonObjects.show_result)
+			YAHOO.buttonObjects.show_result.set('disabled', true);*/
 		if(info)
 			info.style.display = 'block';
 	}

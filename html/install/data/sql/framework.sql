@@ -1217,7 +1217,7 @@ CREATE TABLE IF NOT EXISTS `core_lang_text` (
   `text_key` varchar(50) NOT NULL DEFAULT '',
   `text_module` varchar(50) NOT NULL DEFAULT '',
   `text_attributes` set('accessibility','sms','email') NOT NULL DEFAULT '',
-  `plugin_id` INT NULL,
+  `plugin_id` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_text`),
   UNIQUE KEY `text_key` (`text_key`,`text_module`, `plugin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;

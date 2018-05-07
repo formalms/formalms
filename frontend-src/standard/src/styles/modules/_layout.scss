@@ -92,12 +92,13 @@ body {
   overflow: hidden;
 }
 
-#middlearea.yui-navset {
-  margin-top: 20px;
-}
-
 .middlearea_container {
   margin-top: 80px;
+}
+
+#middlearea.yui-navset,
+.middlearea_container--margintop-small {
+  margin-top: 20px;
 }
 
 .header--external-catalogue {
