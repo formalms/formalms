@@ -26,6 +26,10 @@ class AlmsController extends Controller {
 #		return _lms_.'/customscripts/admin/views';
 	}
 
+    public function templatePath(){
+        return _base_."/templates/".getTemplate()."/layout";
+    }
+
 	public function init() {
 		parent::init();
 		checkPerm('view', false, $this->_mvc_name, 'lms');
