@@ -3138,7 +3138,7 @@ function viewprofile ()
 {
     //checkPerm('view');
     
-    require_once (_base_ . '/lib/lib.usermanager.php');
+    require_once(Forma::inc(_base_ . '/lib/lib.usermanager.php'));
     $lang =& DoceboLanguage::createInstance ('forum');
     
     $id_message = importVar ('idMessage');

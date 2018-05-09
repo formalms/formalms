@@ -129,7 +129,7 @@ public function getCourseList($type, $page = 1 )
         $login_link = '<a href="index.php">'.Lang::t('_LOG_IN', 'login').'</a>';
         $signin_link = '<a href="index.php?modname=login&op=register">'.Lang::t('_SIGN_IN', 'login').'</a>';
 
-        require_once(_lib_.'/lib.usermanager.php');
+        require_once(\Forma::inc(_base_ . '/lib/lib.usermanager.php'));
         $option = new UserManagerOption();
         $register_type = $option->getOption('register_type');
 
@@ -202,7 +202,7 @@ public function getCourseList($type, $page = 1 )
 		$login_link = '<a href="index.php">'.Lang::t('_LOG_IN', 'login').'</a>';
 		$signin_link = '<a href="' . Get::rel_path("base") . "/index.php?r=" . _register_ . '">'.Lang::t('_SIGN_IN', 'login').'</a>';
 
-		require_once(_lib_.'/lib.usermanager.php');
+        require_once(\Forma::inc(_base_ . '/lib/lib.usermanager.php'));
 		$option = new UserManagerOption();
 		$register_type = $option->getOption('register_type');
 
@@ -326,7 +326,7 @@ public function getCourseList($type, $page = 1 )
 		$login_link = '<a href="index.php">'.Lang::t('_LOG_IN', 'login').'</a>';
 		$signin_link = '<a href="' . Get::rel_path("base") . "/index.php?r=" . _register_ . '">'.Lang::t('_SIGN_IN', 'login').'</a>';
 
-		require_once(_lib_.'/lib.usermanager.php');
+        require_once(\Forma::inc(_base_ . '/lib/lib.usermanager.php'));
 		$option = new UserManagerOption();
 		$register_type = $option->getOption('register_type');
 

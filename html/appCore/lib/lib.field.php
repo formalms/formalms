@@ -88,7 +88,7 @@ class FieldList {
 
 			$id_common = $id_field;
 		}
-		require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+        require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 		$quest_obj = new $type_class( $id_common );
 
 		return $quest_obj;
@@ -127,7 +127,7 @@ class FieldList {
 		}
 
 		list( $id_common, $type_file, $type_class ) = sql_fetch_row( $rs );
-		require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+        require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 		$quest_obj =  new $type_class( $id_common );
 
 		return $quest_obj;
@@ -314,7 +314,7 @@ class FieldList {
 		$result = array();
 		while(list($id_common, $type_field, $type_file, $type_class, $translation, $mandatory, $useraccess) = sql_fetch_row($rs)) {
 
-			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+            require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 			$quest_obj = new $type_class( $id_common );
 			if( $this->field_entry_table !== FALSE )
 				$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -550,7 +550,7 @@ class FieldList {
 		if( sql_num_rows($rs) < 1 )
 			return 'NULL';
 		list( $type_file, $type_class ) = sql_fetch_row( $rs );
-		require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+        require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 		$quest_obj = eval("return new $type_class( $id_field );");
 		if( $this->field_entry_table !== FALSE )
 			$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -601,7 +601,7 @@ class FieldList {
 
 		while(list($id_common, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
 
-			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+            require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 			$quest_obj = eval("return new $type_class( $id_common );");
 			if( $this->field_entry_table !== FALSE )
 				$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -635,7 +635,7 @@ class FieldList {
 			return $res;
 		}
 		list( $id_common, $type_file, $type_class ) = sql_fetch_row( $rs );
-			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+        require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 			$quest_obj = eval("return new $type_class( $id_common );");
 			if( $this->field_entry_table !== FALSE )
 				$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -672,7 +672,7 @@ class FieldList {
 			return 'NULL';
 
 		while(list( $id_common, $type_file, $type_class ) = sql_fetch_row( $rs )) {
-			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+            require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 			$quest_obj = eval("return new $type_class( $id_common );");
 			if( $this->field_entry_table !== FALSE )
 				$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -720,7 +720,7 @@ class FieldList {
 
 		list( $id_common, $type_file, $type_class ) = sql_fetch_row( $rs );
 
-			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+        require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 		$quest_obj = new $type_class( $id_common );
 		if( $this->field_entry_table !== FALSE )
 			$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -762,7 +762,7 @@ class FieldList {
 		if( sql_num_rows($rs) < 1 )
 			return 'NULL';
 		list( $type_file, $type_class ) = sql_fetch_row( $rs );
-		require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+        require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 		$quest_obj = eval("return new $type_class( $id_field );");
 		if( $this->field_entry_table !== FALSE )
 			$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -833,7 +833,7 @@ class FieldList {
 
         while (list($id_common, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
 
-            require_once($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+            require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
             $field_obj = eval("return new $type_class( $id_common );");
             if ($this->field_entry_table !== FALSE)
                 $field_obj->setFieldEntryTable($this->field_entry_table);
@@ -901,7 +901,7 @@ class FieldList {
 
 		while(list($id_common, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
 
-			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+            require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 			$quest_obj = eval("return new $type_class( $id_common );");
 			if( $this->field_entry_table !== FALSE )
 				$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -955,7 +955,7 @@ class FieldList {
 		$re_fields 			= sql_query($query);
 		while(list($id_common, $type_field, $type_file, $type_class, $is_mandatory) = sql_fetch_row($re_fields)) {
 
-			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+            require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 			$quest_obj = new $type_class( $id_common );
 
 			if( $this->field_entry_table !== FALSE )
@@ -1017,7 +1017,7 @@ class FieldList {
         $re_fields 			= sql_query($query);
         while(list($id_common, $type_field, $type_file, $type_class, $is_mandatory) = sql_fetch_row($re_fields)) {
 
-            require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+            require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
             $quest_obj = new $type_class( $id_common );
 
             if( $this->field_entry_table !== FALSE )
@@ -1094,7 +1094,7 @@ class FieldList {
 		$re_fields = sql_query($query);
 		while(list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
 
-			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+            require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 			$quest_obj = eval("return new $type_class( $id_common );");
 			if( $this->field_entry_table !== FALSE )
 				$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -1138,7 +1138,7 @@ class FieldList {
 		}
 		while(list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
 
-			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+            require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 			$quest_obj = eval("return new $type_class( $id_common );");
 			if( $this->field_entry_table !== FALSE )
 				$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -1185,7 +1185,7 @@ class FieldList {
 		}
 		while(list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
 
-			require_once(_adm_.'/modules/field/'.$type_file);
+            require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 			$quest_obj = new $type_class( $id_common );
 			if( $this->field_entry_table !== FALSE ) {
 				$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -1240,7 +1240,7 @@ class FieldList {
 				$mandatory=false;
 
 
-			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+            require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 			$quest_obj = eval("return new $type_class( $id_common );");
 			if( $this->field_entry_table !== FALSE )
 				$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -1278,7 +1278,7 @@ class FieldList {
 		$re_fields = sql_query($query);
 		while(list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
 
-			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+            require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 			$quest_obj = eval("return new $type_class( $id_common );");
 			if( $this->field_entry_table !== FALSE )
 				$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -1311,7 +1311,7 @@ class FieldList {
 		$re_fields = sql_query($query);
 		while(list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
 
-			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+            require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 			$quest_obj = eval("return new $type_class( $id_common );");
 			if( $this->field_entry_table !== FALSE )
 				$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -1347,7 +1347,7 @@ class FieldList {
 		$re_fields = sql_query($query);
 		while(list($id_common, $translation, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
 
-			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+            require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 			$quest_obj = eval("return new $type_class( $id_common );");
 			if( $this->field_entry_table !== FALSE )
 				$quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -1501,7 +1501,7 @@ class FieldList {
 		$re_fields = sql_query($query);
 		while(list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
 
-			require_once($GLOBALS['where_framework'].'/modules/field/'.$type_file);
+            require_once(Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file));
 			$quest_obj = eval("return new $type_class( $id_common );");
 			if( $this->field_entry_table !== FALSE )
 				$quest_obj->setFieldEntryTable($this->field_entry_table);

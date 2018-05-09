@@ -94,7 +94,7 @@ class ProfileLmsController extends LmsController {
 	}
 
 	function renewalpwd() {
-		require_once(_base_.'/lib/lib.usermanager.php');
+		require_once(Forma::inc(_base_ . '/lib/lib.usermanager.php'));
 		$user_manager = new UserManager();
 
 		$_title = "";
