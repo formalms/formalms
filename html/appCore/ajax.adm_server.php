@@ -57,7 +57,7 @@ if (!empty($GLOBALS['req'])){
                 }
 	}
 
-	include($aj_file);
+	include(Forma::inc($aj_file));
 }
 
 // finalize

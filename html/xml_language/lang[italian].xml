@@ -1548,6 +1548,8 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="message&amp;_NORMAL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Normale]]></key>
         <key id="message&amp;_OUTBOX" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Inviati]]></key>
         <key id="message&amp;_PRIORITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Priorità]]></key>
+        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Your pesonal informations required to provide support will be sent to system administrators]]></key>
+        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Your pesonal informations required to provide support will be sent to system administrators]]></key>
         <key id="message&amp;_REFRESH" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aggiorna]]></key>
         <key id="message&amp;_SEND_MESSAGE_COPY" attributes="" save_date="2017-05-29 18:52:10"><![CDATA[Invia una copia per conoscenza]]></key>
         <key id="message&amp;_TITLE_READ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Messaggio già letto]]></key>

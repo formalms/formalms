@@ -18,20 +18,12 @@
  * @author   Fabio Pirovano <fabio@docebo.com>
  */
 
-require_once(dirname(__FILE__).'/class.field.php');
+require_once(Forma::inc(_adm_.'/modules/field/class.field.php'));
 
 class Field_Dropdown extends Field {
 
 	var $back;
 	var $back_coded;
-
-	/**
-	 * class constructor
-	 */
-	function Field_Dropdown($id_common) {
-
-		parent::Field($id_common);
-	}
 
 	/**
 	 * this function is useful for field recognize
@@ -307,7 +299,8 @@ class Field_Dropdown extends Field {
 		WHERE idField = '".(int)$this->id_common."' AND lang_code = '".getLanguage()."'
 		ORDER BY sequence");
 		$option = array();
-		$option[0] = Lang::t('_DROPDOWN_NOVALUE', 'field', 'framework');
+		//$option[0] = Lang::t('_DROPDOWN_NOVALUE', 'field', 'framework');
+        $option[] =  $translation.($mandatory ? ' *' : '');
 		while(list($id_common_son, $element) = sql_fetch_row($re_field_element)) {
 			$option[$id_common_son] = $element;
 		}

@@ -11,29 +11,38 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-class AlmsController extends Controller {
+/**
+ * @package  DoceboCore
+ * @version  $Id: class.cf.php 601 2006-09-01 10:50:52Z giovanni $
+ * @category Field
+ * @author   Claudio Cherubino <claudio.cherubino@docebo.com>
+ */
 
-	protected $_mvc_name = 'almscontroller';
+require_once(Forma::inc(_adm_.'/modules/field/class.field.php'));
 
-	public function viewPath() {
+/**
+* class for IM fields
+*/
+class Field_Contact extends Field {
 
-		return _lms_.'/admin/views';
-	}
+/**
+* this function is useful for field recognize
+*
+* @return string	return the identifier of the field
+*
+* @access public
+*/
+function getFieldType() {
+return 'contact_field';
+}
 
-	public function viewCustomscriptsPath() {
+function getIMBrowserHref($id_user, $field_value) {
 
-		return _base_.'/customscripts'.'/'._folder_lms_.'/admin/views';
-#		return _lms_.'/customscripts/admin/views';
-	}
+return '';
+}
 
-    public function templatePath(){
-        return _base_."/templates/".getTemplate()."/layout";
-    }
+function getIMBrowserImageSrc($id_user, $field_value) {
 
-	public function init() {
-		parent::init();
-		checkPerm('view', false, $this->_mvc_name, 'lms');
-	}
-
-
+return '';
+}
 }

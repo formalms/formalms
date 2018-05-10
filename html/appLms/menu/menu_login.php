@@ -55,7 +55,7 @@ function loadMenu() {
 // XXX: loadLogin
 function loadLogin() {
 	
-	require_once(_base_.'/lib/lib.usermanager.php');
+	require_once(Forma::inc(_base_ . '/lib/lib.usermanager.php'));
 	require_once(_base_.'/lib/lib.form.php');
 	
 	$user_manager = new UserManager();

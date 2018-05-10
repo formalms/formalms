@@ -19,17 +19,9 @@
  * @author   Fabio Pirovano <fabio@docebo.com>
  */
 
-require_once(dirname(__FILE__).'/class.field.php');
+require_once(Forma::inc(_adm_.'/modules/field/class.field.php'));
 
-class CField_Icq extends ContactField {
-
-	/**
-	 * class constructor
-	 */
-	function CField_Icq($id_common) {
-
-		parent::Field($id_common);
-	}
+class CField_Icq extends Field_Contact {
 
 	/**
 	 * this function is useful for field recognize
