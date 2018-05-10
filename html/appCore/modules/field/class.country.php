@@ -18,7 +18,7 @@
  * @author   Fabio Pirovano <fabio@docebo.com>
  */
 
-require_once(dirname(__FILE__).'/class.field.php');
+require_once(Forma::inc(_adm_.'/modules/field/class.field.php'));
 
 class Field_Country extends Field {
 
@@ -30,9 +30,9 @@ class Field_Country extends Field {
 	/**
 	 * class constructor
 	 */
-	function Field_Country($id_common) {
+	function __construct($id_common) {
 
-		parent::Field($id_common);
+		parent::__construct($id_common);
 		
 		$query_tax_country = "
 		SELECT id_country, name_country
