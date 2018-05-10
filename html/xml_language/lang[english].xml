@@ -1546,6 +1546,8 @@ To change these words please go to Admin/Language management, search for <b>logi
         <key id="message&amp;_NORMAL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Normal]]></key>
         <key id="message&amp;_OUTBOX" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Sent]]></key>
         <key id="message&amp;_PRIORITY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Priority]]></key>
+        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Your pesonal informations required to provide support will be sent to system administrators]]></key>
+        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Your pesonal informations required to provide support will be sent to system administrators]]></key>
         <key id="message&amp;_REFRESH" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Refresh]]></key>
         <key id="message&amp;_SEND_MESSAGE_COPY" attributes="" save_date="2017-05-29 18:58:12"><![CDATA[Send a CC message]]></key>
         <key id="message&amp;_TITLE_READ" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Message read]]></key>
