@@ -8,9 +8,68 @@
 
 .modal-dialog {
   .section-coourse-modal & {
+    width: 90%;
+    max-width: 768px;
+    max-height: calc(100% - 150px);
+    margin: 0;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%)!important;
+
+    @include breakpoint($ipad) {
+      width: 75%;
+    }
+  }
+}
+
+.title {
+  .modal__item & {
+    .section-coourse-modal & {
+      text-transform: uppercase;
+      line-height: 40px;
+      display: block;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      border: 1px solid $gray-204;
+      color: $dark-orange;
+      font-weight: bold;
+      font-size: 18px;
+      background-color: $gray-5;
+
+      @include breakpoint($tablet) {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-right: none;
+      }
+    }
+  }
+}
+
+.text {
+  .modal__item & {
+    .section-coourse-modal & {
+      line-height: 60px;
+      display: block;
+      border: 1px solid $gray-204;
+      border-top: none;
+      font-size: 16px;
+
+      @include breakpoint($tablet) {
+        border-right: none;
+      }
+    }
+  }
+}
+
+.modal__item {
+  .section-coourse-modal & {
+    text-align: center;
+    margin-bottom: 15px;
+    -webkit-font-smoothing: antialiased;
+
+    @include breakpoint($ipad) {
+      padding: 0;
+    }
   }
 }

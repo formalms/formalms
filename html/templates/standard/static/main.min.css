@@ -3519,10 +3519,52 @@ p {
   font-family: "Open-sans"; }
 
 .section-coourse-modal .modal-dialog {
+  width: 90%;
+  max-width: 768px;
+  max-height: calc(100% - 150px);
+  margin: 0;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) !important; }
+  @media (min-width: 1024px) {
+    .section-coourse-modal .modal-dialog {
+      width: 75%; } }
+
+.section-coourse-modal .modal__item .title {
+  text-transform: uppercase;
+  line-height: 40px;
+  display: block;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: 1px solid #cccccc;
+  color: #c84000;
+  font-weight: bold;
+  font-size: 18px;
+  background-color: #f6f6f6; }
+  @media (min-width: 768px) {
+    .section-coourse-modal .modal__item .title {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      border-right: none; } }
+
+.section-coourse-modal .modal__item .text {
+  line-height: 60px;
+  display: block;
+  border: 1px solid #cccccc;
+  border-top: none;
+  font-size: 16px; }
+  @media (min-width: 768px) {
+    .section-coourse-modal .modal__item .text {
+      border-right: none; } }
+
+.section-coourse-modal .modal__item {
+  text-align: center;
+  margin-bottom: 15px;
+  -webkit-font-smoothing: antialiased; }
+  @media (min-width: 1024px) {
+    .section-coourse-modal .modal__item {
+      padding: 0; } }
 
 * {
   outline: none !important;
