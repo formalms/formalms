@@ -12,7 +12,7 @@
   "license": "MIT",
   "homepage": "https://github.com/ciffi/ciffi-js-webpack",
   "devDependencies": {
-    "@ciffi-js/builder": "^1.0.3",
+    "@ciffi-js/builder": "^2.0.0",
     "@ciffi-js/jsonize-path": "^1.0.4",
     "autoprefixer": "^7.2.1",
     "babel-core": "^6.26.0",
@@ -35,8 +35,8 @@
     "open-browser-webpack-plugin": "0.0.5",
     "postcss-cli": "^4.1.1",
     "prettier": "^1.11.1",
-    "sassdoc": "^2.5.0",
     "sass-loader": "^6.0.6",
+    "sassdoc": "^2.5.0",
     "style-loader": "^0.20.2",
     "twig": "^1.10.5",
     "twig-loader": "^0.3.1",
