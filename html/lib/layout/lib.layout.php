@@ -493,6 +493,71 @@ class Layout
             $perc_complete 	= round(($tot_complete / $total) * 100, 2);
             $perc_failed 	= round(($tot_failed / $total) * 100, 2);
 
+            $stats = [];
+            if (!isset($_SESSION['is_ghost']) || $_SESSION['is_ghost'] !== true) {
+
+                if (Docebo::course()->getValue('show_time') == 1) {
+
+                    $tot_time_sec = TrackUser::getUserPreviousSessionCourseTime(getLogUserId(), $_SESSION['idCourse']);
+                    $partial_time_sec = TrackUser::getUserCurrentSessionCourseTime($_SESSION['idCourse']);
+                    $tot_time_sec += $partial_time_sec;
+
+                    $hours = (int)($partial_time_sec / 3600);
+                    $minutes = (int)(($partial_time_sec % 3600) / 60);
+                    $seconds = (int)($partial_time_sec % 60);
+                    if ($minutes < 10) $minutes = '0' . $minutes;
+                    if ($seconds < 10) $seconds = '0' . $seconds;
+                    $partial_time = ($hours != 0 ? $hours . 'h ' : '') . $minutes . 'm ';//.$seconds.'s ';
+
+                    $hours = (int)($tot_time_sec / 3600);
+                    $minutes = (int)(($tot_time_sec % 3600) / 60);
+                    $seconds = (int)($tot_time_sec % 60);
+                    if ($minutes < 10) $minutes = '0' . $minutes;
+                    if ($seconds < 10) $seconds = '0' . $seconds;
+                    $tot_time = ($hours != 0 ? $hours . 'h ' : '') . $minutes . 'm ';//.$seconds.'s ';
+
+                    $stats['user_stats']['show_time']['partial_time'] = $partial_time;
+
+                    $stats['user_stats']['show_time']['total_time'] = $tot_time;
+                }
+
+            }
+
+            // who is online ---------------------------------------------------------
+            $stats['user_stats']['who_is_online']['type'] = Docebo::course()->getValue('show_who_online');
+            $stats['user_stats']['who_is_online']['user_online'] = TrackUser::getWhoIsOnline($_SESSION['idCourse']);
+
+            // print first pannel
+
+
+            // print progress bar -------------------------------------------------
+            if (Docebo::course()->getValue('show_progress') == 1) {
+
+                require_once($GLOBALS['where_lms'] . '/lib/lib.stats.php');
+                $total = getNumCourseItems($_SESSION['idCourse'],
+                    FALSE,
+                    getLogUserId(),
+                    FALSE);
+                $tot_complete = getStatStatusCount(getLogUserId(),
+                    $_SESSION['idCourse'],
+                    array('completed', 'passed'));
+
+                $tot_incomplete = $total - $tot_complete;
+
+                $tot_passed = getStatStatusCount(	getLogUserId(),
+                    $_SESSION['idCourse'],
+                    array( 'passed' ) );
+                $tot_failed = getStatStatusCount(	getLogUserId(),
+                    $_SESSION['idCourse'],
+                    array( 'failed' ) );
+
+                $stats['course_stats']['materials'] = $total;
+                $stats['course_stats']['materials_complete'] = $tot_complete;
+                $stats['course_stats']['materials_incomplete'] = $tot_incomplete;
+                $stats['course_stats']['materials_passed'] = $tot_passed;
+                $stats['course_stats']['materials_failed'] = $tot_failed;
+            }
+
             return [
                 'dropdown' => $dropdown_menu,
                 'course_name' => $course_name,
@@ -503,7 +568,8 @@ class Layout
                     'total_failed' => $tot_failed,
                     'perc_completed' => $perc_complete,
                     'perc_failed' => $perc_failed
-                ]
+                ],
+                'modal_stats' => $stats
             ];
         }
     }
