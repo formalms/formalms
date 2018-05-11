@@ -90,6 +90,150 @@ class CourseMenuLmsController extends LmsController
 
             } // end while
 
+            $user_stats = [];
+            if(!isset($_SESSION['is_ghost']) || $_SESSION['is_ghost'] !== true) {
+
+                if(Docebo::course()->getValue('show_time') == 1) {
+
+                    $tot_time_sec 		= TrackUser::getUserPreviousSessionCourseTime(getLogUserId(), $_SESSION['idCourse']);
+                    $partial_time_sec 	= TrackUser::getUserCurrentSessionCourseTime($_SESSION['idCourse']);
+                    $tot_time_sec  		+= $partial_time_sec;
+
+                    $hours 		= (int)($partial_time_sec / 3600);
+                    $minutes 	= (int)(($partial_time_sec % 3600) / 60);
+                    $seconds 	= (int)($partial_time_sec % 60);
+                    if($minutes < 10) $minutes = '0'.$minutes;
+                    if($seconds < 10) $seconds = '0'.$seconds;
+                    $partial_time = ( $hours != 0 ? $hours.'h ' : '' ).$minutes.'m ';//.$seconds.'s ';
+
+                    $hours 		= (int)($tot_time_sec/3600);
+                    $minutes 	= (int)(($tot_time_sec%3600)/60);
+                    $seconds 	= (int)($tot_time_sec%60);
+                    if($minutes < 10) $minutes = '0'.$minutes;
+                    if($seconds < 10) $seconds = '0'.$seconds;
+                    $tot_time = ( $hours != 0 ? $hours.'h ' : '' ).$minutes.'m ';//.$seconds.'s ';
+
+                    $user_stats['show_time']['partial_time'] = $partial_time;
+
+                    $user_stats['show_time']['total_time'] = $tot_time;
+                }
+
+            }
+
+            // who is online ---------------------------------------------------------
+            $user_stats['who_is_online']['type']=Docebo::course()->getValue('show_who_online');
+            $user_stats['who_is_online']['user_online_n'] = TrackUser::getWhoIsOnline($_SESSION['idCourse']);
+            
+            // print first pannel
+            if(!empty($user_stats['head'])) {
+
+                $tempo_parziale = Lang::t("_PARTIAL_TIME", "course");
+                $tempo_totale =  Lang::t("_TOTAL_TIME", "standard");
+                $user_online =  Lang::t("_WHOIS_ONLINE", "course");
+                //** LR responsive tabella statistiche **
+                $info_panel .='<style>
+                            @media
+                            only screen and (max-width: 870px),
+                            (min-device-width: 870px) and (max-device-width: 1024px)  {            
+                                        #user_stats td:nth-of-type(1):before { content: "'.$tempo_parziale.'"; }
+                                        #user_stats td:nth-of-type(2):before { content: "'.$tempo_totale.'"; }
+                                        #user_stats td:nth-of-type(3):before { content: "'.$user_online.'"; }    
+                                        }        
+                                        </style>
+                                    ';
+
+                $info_panel .= '<table id="user_stats" class="quick_table">'
+                    .'<thead><tr>'
+                    .( isset($user_stats['head'][0]) ? '<th scope="col">'.$user_stats['head'][0].'</th>' : '' )
+                    .( isset($user_stats['head'][1]) ? '<th scope="col">'.$user_stats['head'][1].'</th>' : '' )
+                    .( isset($user_stats['head'][2]) ? '<th scope="col">'.$user_stats['head'][2].'</th>' : '' )
+                    .'</tr></thead><tbody><tr>'
+                    .( isset($user_stats['body'][0]) ? '<td>'.$user_stats['body'][0].'</td>' : '' )
+                    .( isset($user_stats['body'][1]) ? '<td>'.$user_stats['body'][1].'</td>' : '' )
+                    .( isset($user_stats['body'][2]) ? '<td>'.$user_stats['body'][2].'</td>' : '' )
+                    .'</tr></tbody>'
+                    .'</table>';
+
+
+
+
+
+            }
+
+            // print progress bar -------------------------------------------------
+            if(Docebo::course()->getValue('show_progress') == 1) {
+
+                require_once( $GLOBALS['where_lms'].'/lib/lib.stats.php' );
+                $total = getNumCourseItems( $_SESSION['idCourse'],
+                    FALSE,
+                    getLogUserId(),
+                    FALSE );
+                $tot_complete = getStatStatusCount(	getLogUserId(),
+                    $_SESSION['idCourse'],
+                    array( 'completed', 'passed' ) );
+                $tot_failed = getStatStatusCount(	getLogUserId(),
+                    $_SESSION['idCourse'],
+                    array( 'failed' ) );
+
+
+                $materiali = Lang::t("_PROGRESS_ALL", "course");
+                $completato =  Lang::t("_COMPLETED", "standard");
+                $sbagliati =  Lang::t("_PROGRESS_FAILED", "course");
+                //** LR responsive stats tab **
+                $info_panel .='<style>
+                            @media
+                            only screen and (max-width: 870px),
+                            (min-device-width: 870px) and (max-device-width: 1024px)  {            
+                                        #course_stats td:nth-of-type(1):before { content: "'.$materiali.'"; }
+                                        #course_stats td:nth-of-type(2):before { content: "'.$completato.'"; }
+                                        #course_stats td:nth-of-type(3):before { content: "'.$sbagliati.'"; }    
+                                        }        
+                                        </style>
+                                    ';
+
+
+                $info_panel .= '<table id="course_stats" class="quick_table">'
+                    .'<thead><tr>'
+                    .'<th scope="col">'.Lang::t('_PROGRESS_ALL', 'course').'</th>'
+                    .'<th scope="col">'.Lang::t('_COMPLETED', 'course').'</th>'
+                    .'<th scope="col">'.Lang::t('_PROGRESS_FAILED', 'course').'</th>'
+                    .'</tr></thead><tbody><tr>'
+                    .'<td>'.$total.'</td>'
+                    .'<td>'.$tot_complete.'</td>'
+                    .'<td>'.$tot_failed.'</td>'
+                    .'</tr></tbody>'
+                    .'</table>';
+
+                $info_panel_progress = '<p class="course_progress">'
+                    .'<span>'.Lang::t('_PROGRESS', 'course').' </span>'
+                    .'</p>'
+                    .'<div class="nofloat"></div>'
+                    .renderProgress($tot_complete, $tot_failed, $total, false)."\n";
+
+                // MENU OVER
+                cout('<div class="row" style="padding-top:80px;">','menu_over');
+                cout('<div class="col-sm-3">'.$logo_panel.'</div>','menu_over');
+
+                cout('<div class="col-sm-9" >','menu_over');
+                cout('<div class="col-md-7"><div><h1>'.Docebo::course()->getValue('name').'</h1></div></div>
+                        <div class="col-md-4"><div>'.$info_panel_progress.'</div></div>
+                        <div class="col-md-1"><div><br> <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-stats"></span></button></div></div>
+                        ' ,'menu_over');
+                cout('</div></div>&nbsp;','menu_over');
+
+            } else {
+                // MENU OVER
+                cout('<div class="row" style="padding-top:80px;">','menu_over');
+                cout('<div class="col-sm-3">'.$logo_panel.'</div>','menu_over');
+
+                cout('<div class="col-sm-9" >','menu_over');
+                cout('<div class="col-md-7"><div><h1>'.Docebo::course()->getValue('name').'</h1></div></div>' ,'menu_over');
+
+                cout('</div></div><br><br>&nbsp;','menu_over');
+            }
+
+            $info_panel .= '</div>'."\n";
+
             $this->render('coursemenu_lat', array(
                 'dropdown' => $menu_module,
                 'slider' => $menu_horizontal,
