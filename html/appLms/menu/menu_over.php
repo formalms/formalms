@@ -387,13 +387,12 @@ if (!Docebo::user()->isAnonymous()) {
                        <input id="priorita" name="priorita" data-size="small" checked data-toggle="toggle" data-on="' . Lang::t('_NORMAL', 'message') . '" data-off="' . Lang::t('_HIGH', 'message') . '" data-onstyle="success" data-offstyle="danger" type="checkbox">
 
                     </td>
-                 </tr>              
+                 </tr>           
                  <tr>
                       <td><label for="disclaimer">' . Lang::t('_CUSTOMER_HELP_DISCLAIMER_TITLE', 'message') . '</label></td>
                       <td>
-                       <input id="disclaimer" name="disclaimer" data-size="small" checked data-toggle="toggle" data-on="' . Lang::t('_NORMAL', 'message') . '" data-off="' . Lang::t('_HIGH', 'message') . '" data-onstyle="success" data-offstyle="danger" type="checkbox">
-                      <p>' . Lang::t('_CUSTOMER_HELP_DISCLAIMER', 'message') . '</p>
-
+                      <p>' . Lang::t('_CUSTOMER_HELP_DISCLAIMER', 'message') . '</p><br>
+                       <input id="disclaimer" name="disclaimer" data-size="small" data-toggle="toggle" data-on="' . Lang::t('_NORMAL', 'message') . '" data-off="' . Lang::t('_HIGH', 'message') . '" data-onstyle="success" data-offstyle="danger" type="checkbox">
                     </td>
                  </tr>                  
                 </table>
@@ -402,7 +401,7 @@ if (!Docebo::user()->isAnonymous()) {
                       <table width=88% border=0 bgcolor="#ffcc99"> <tr><td align=center>
                         <button id="close">' . Lang::t('_CANCEL') . '</button>
                     </td><td align=center>
-                       <button id="send">' . Lang::t('_CONFIRM') . '</button>
+                       <button id="send" disabled="true">' . Lang::t('_CONFIRM') . '</button>
                     </td></tr>
                       </table>
 
