@@ -28,7 +28,7 @@ function field_create($type_field, $back) {
 	if( !sql_num_rows($re_quest) ) return;
 	list($type_file, $type_class) = sql_fetch_row($re_quest);
 	
-	require_once($GLOBALS['where_framework'].'/modules/customfield/'.$type_file);
+	require_once(Forma::inc($GLOBALS['where_framework'].'/modules/customfield/'.$type_file));
 	
 	$quest_obj = new $type_class( 0 );
 	$quest_obj->setUrl('index.php?modname=customfield&amp;op=manage&amp;fo=create');
@@ -44,8 +44,8 @@ function field_edit($type_field, $id_field, $back) {
 	WHERE type_field = '".$type_field."'");
 	if( !sql_num_rows($re_quest) ) return;
 	list($type_file, $type_class) = sql_fetch_row($re_quest);
-	
-	require_once($GLOBALS['where_framework'].'/modules/customfield/'.$type_file);
+
+    require_once(Forma::inc($GLOBALS['where_framework'].'/modules/customfield/'.$type_file));
 	
 	$quest_obj = new $type_class( $id_field );
 	$quest_obj->setUrl('index.php?modname=customfield&amp;op=manage&amp;fo=edit');
@@ -63,7 +63,7 @@ function field_del($type_field, $id_field, $back) {
 	if( !sql_num_rows($re_quest) ) return;
 	list($type_file, $type_class) = sql_fetch_row($re_quest);
 	
-	require_once($GLOBALS['where_framework'].'/modules/customfield/'.$type_file);
+	require_once(Forma::inc($GLOBALS['where_framework'].'/modules/customfield/'.$type_file));
 	
 	$quest_obj = new $type_class( $id_field );
 	$quest_obj->setUrl('index.php?modname=customfield&amp;op=manage&amp;fo=del');
@@ -78,8 +78,8 @@ function field_specialop($type_field, $id_field, $back) {
 	WHERE type_field = '".$type_field."'");
 	if( !sql_num_rows($re_quest) ) return;
 	list($type_file, $type_class) = sql_fetch_row($re_quest);
-	
-	require_once($GLOBALS['where_framework'].'/modules/customfield/'.$type_file);
+
+    require_once(Forma::inc($GLOBALS['where_framework'].'/modules/customfield/'.$type_file));
 	
 	$quest_obj = new $type_class( $id_field );
 	$quest_obj->setUrl('index.php?modname=customfield&amp;op=manage&amp;fo=special');

@@ -53,7 +53,7 @@ if (!empty($GLOBALS['req'])){
 		else $aj_file = $GLOBALS['where_'.$plf].'/admin/modules/'.$mn.'/ajax.'.$mn.'.php';
 	}
 }
-include($aj_file);
+include(Forma::inc($aj_file));
 
 // finalize
 Boot::finalize();

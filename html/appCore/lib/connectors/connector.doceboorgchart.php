@@ -257,7 +257,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector {
 		
 		if( $arr_folder === FALSE ) {
                         //VECCHIO SISTEMA vedi Update  $id = $this->tree_view->tdb->addFolderByIdTranslation( $parent_id, $folderName );
-                        require_once(_base_.'/lib/lib.usermanager.php');
+                        require_once(Forma::inc(_base_ . '/lib/lib.usermanager.php'));
                         $umodel = new UsermanagementAdm();
                         $id = $umodel->addFolder($parent_id, $folderName, $row['code']);
 

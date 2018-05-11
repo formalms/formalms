@@ -1821,7 +1821,7 @@ class Module_Directory extends Module {
 		require_once(_base_.'/lib/lib.form.php');
 		require_once($GLOBALS['where_framework'].'/lib/lib.field.php');
 		require_once(_base_.'/lib/lib.table.php');
-		require_once(_base_.'/lib/lib.usermanager.php');
+		require_once(Forma::inc(_base_ . '/lib/lib.usermanager.php'));
 
 		if( isset($_POST['ok_waiting']) ) {
 

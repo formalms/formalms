@@ -54,7 +54,7 @@ class Field {
 	/**
 	 * class constructor
 	 */
-	function Field($id_common) {
+	function __construct($id_common) {
 		$this->field_entry_table = $GLOBALS['prefix_fw'].'_field_userentry';
 		$this->id_common = $id_common;
 
@@ -762,42 +762,6 @@ class Field {
 		}
 	}
 
-}
-
-/**
- * class for IM fields
- */
-
-class ContactField extends Field {
-
-	/**
-	 * class constructor
-	 */
-	function ContactField($id_common) {
-
-		parent::Field($id_common);
-	}
-
-	/**
-	 * this function is useful for field recognize
-	 *
-	 * @return string	return the identifier of the field
-	 *
-	 * @access public
-	 */
-	function getFieldType() {
-		return 'contact_field';
-	}
-
-	function getIMBrowserHref($id_user, $field_value) {
-
-		return '';
-	}
-
-	function getIMBrowserImageSrc($id_user, $field_value) {
-
-		return '';
-	}
 }
 
 ?>

@@ -15,7 +15,7 @@ function login() {
 	die();
 	
 	require_once(_base_.'/lib/lib.form.php');
-	require_once(_base_.'/lib/lib.usermanager.php');
+	require_once(Forma::inc(_base_ . '/lib/lib.usermanager.php'));
 	
 	$lang 	=& DoceboLanguage::CreateInstance('login', 'framework');
 	$out 	=& $GLOBALS['page'];

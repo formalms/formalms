@@ -2,8 +2,8 @@
 //
 // Style guide: 12
 .homepage {
-  height: 100%;
-  overflow: auto;
+  height: auto; /* Importante per posizione corretta bootstrap datepicker */
+  max-height: initial; /* Importante per posizione corretta bootstrap datepicker */
   position: relative;
   background: {
     image: url('#{$assets}images/login/bg.jpg');
@@ -12,11 +12,16 @@
     repeat: no-repeat;
     color: $white;
   }
+
+  @include breakpoint($tablet) {
+    padding-top: 30px;
+  }
 }
 
 .homepage__footer {
   padding: 0;
-  margin: 30px auto;
+  margin: 30px auto 0 auto;
+  padding-bottom: 30px;
   text-align: center;
   color: $white;
 
@@ -35,7 +40,7 @@
   overflow: visible;
 
   @include breakpoint($tablet) {
-    margin: 30px auto 0;
+    margin: 0 auto;
     border-radius: 5px;
   }
 }

@@ -1,16 +1,8 @@
 <?php
-require_once(dirname(__FILE__).'/class.field.php');
+require_once(Forma::inc(_adm_.'/modules/field/class.field.php'));
 
 
 class Field_Textlabel extends Field {
-    
-    /**
-    * class constructor
-    */
-    function Field_Textlabel($id_common) {
-
-            parent::Field($id_common);
-    }
     
     /**
     * this function is useful for field recognize
