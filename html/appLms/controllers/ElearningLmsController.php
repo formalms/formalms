@@ -580,7 +580,8 @@ class ElearningLmsController extends LmsController
             'display_info' => $this->_getClassDisplayInfo($keys),
             //'courselistClassroom' => $courselistClassroom ,
             'stato_corso' => 'all_task',
-            'filter_type' => $filter_type
+            'filter_type' => $filter_type,
+            'current_user' => $params[':id_user']
         ]);
     }
 
@@ -641,7 +642,7 @@ class ElearningLmsController extends LmsController
         }
 
         $date_ok = TRUE;
-        if ($cinfo['unsubscribe_date_limit'] !== '' && $cinfo['unsubscribe_date_limit'] !== '0000-00-00 00:00:00') {
+        if ($cinfo['unsubscribe_date_limit'] !== '' && $cinfo['unsubscribe_date_limit'] !== '0000-00-00 00:00:00' && $cinfo['unsubscribe_date_limit'] !== NULL) {
             if ($cinfo['unsubscribe_date_limit'] < date('Y-m-d H:i:s')) {
                 //self unsubscribing is no more allowed, go back to courselist page
                 Util::jump_to($jump_url . '&res=err_unsub');
