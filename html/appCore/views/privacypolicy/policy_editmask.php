@@ -16,10 +16,10 @@ echo Form::getTextfield(Lang::t('_NAME', 'standard'), 'policy_name', 'name', 255
 if (isset($id_policy)) echo Form::getHidden('id_policy', 'id_policy', $id_policy);
 
 //edit name and description in all languages (in a TabView widget)
-echo '<div id="policy_langs_tab" class="yui-navset">';
+echo '<div id="policy_langs_tab">';
 
-$_tabview_titles = '<ul class="yui-nav">';
-$_tabview_contents = '<div class="yui-content">';
+$_tabview_titles = '<ul class="nav nav-tabs">';
+$_tabview_contents = '<div class="tab-content">';
 
 //edit policy content in all languages
 $_langs = Docebo::langManager()->getAllLanguages(true);
@@ -27,12 +27,12 @@ foreach ($_langs as $_lang_code => $_lang_data) {
 
 	$_translation = isset($id_policy) && isset($translations[$_lang_code]) ? $translations[$_lang_code] : "";
 
-	$_tabview_titles .= '<li'.($_lang_code == Lang::get() ? ' class="selected"' : '').'>'
-		.'<a href="#langs_tab_'.$_lang_code.'"><em>'.$_lang_code //$_lang_data['description']
+	$_tabview_titles .= '<li'.($_lang_code == Lang::get() ? ' class="active"' : '').'>'
+		.'<a data-toggle="tab" href="#langs_tab_'.$_lang_code.'"><em>'.$_lang_code //$_lang_data['description']
 		.($_translation == '' && isset($id_policy) ? ' (*)' : '')
 		.'</em></a></li>';
 
-	$_tabview_contents .= '<div id="langs_tab_'.$_lang_code.'">';
+	$_tabview_contents .= '<div class="tab-pane' . ($_lang_code == Lang::get() ? ' active' : '') . '" id="langs_tab_'.$_lang_code.'">';
 
 	$_tabview_contents .= Form::getSimpleTextarea(
 		Lang::t('_CONTENT', 'standard'),

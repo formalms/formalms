@@ -60,7 +60,7 @@ if(isset($_GET['no_redirect']) || isset($_POST['no_redirect'])) {
 }
 
 if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/lib/lib.preoperation.php') && Get::cfg('enable_customscripts', false) == true ){
-        require_once(_base_.'/customscripts'.'/'._folder_lms_.'/lib/lib.preoperation.php');
+        require_once(_base_ . '/customscripts' . '/' . _folder_lms_ . '/lib/lib.preoperation.php');
 } else {
         require_once(_lms_.'/lib/lib.preoperation.php');
 }

@@ -1,5 +1,6 @@
 <?php echo getTitleArea(Lang::t('_PRIVACYPOLICIES', 'privacypolicies')); ?>
 <div class="std_block">
+
 <?php
 
 if (isset($result_message)) echo $result_message;
@@ -35,7 +36,6 @@ $params = array(
 	'columns' => $columns,
 	'fields' => array('id', 'name', 'is_assigned', 'mod', 'del'),
 	'generateRequest' => 'PrivacyPolicies.requestBuilder',
-	'stdModifyRenderEvent' => 'PrivacyPolicies.dialogRenderEvent',
 	'delDisplayField' => 'name',
 	'events' => array(
 		'beforeRenderEvent' => 'PrivacyPolicies.beforeRenderEvent',
@@ -53,7 +53,6 @@ if ($permissions['add']) {
 		'id' => 'add_policy_dialog',
 		'dynamicContent' => true,
 		'ajaxUrl' => 'ajax.adm_server.php?r=adm/privacypolicy/add',
-		'renderEvent' => 'PrivacyPolicies.dialogRenderEvent',
 		'callback' => 'function() { this.destroy(); DataTable_policies_table.refresh(); }',
 		'callEvents' => array(
 			array('caller' => 'add_policy_link_1', 'event' => 'click'),
@@ -134,10 +133,6 @@ var PrivacyPolicies = {
 		this.value = "";
 		PrivacyPolicies.filterText = "";
 		DataTable_policies_table.refresh();
-	},
-
-	dialogRenderEvent: function() {
-		var tabView = new YAHOO.widget.TabView("policy_langs_tab");
 	},
 
 	assignformatter: function(elLiner, oRecord, oColumn, oData) {

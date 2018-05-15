@@ -1203,7 +1203,7 @@ Class CourseAlms extends Model
 
 
         //--- clear certificates assignments ---------------------------------------
-        require_once(_lms_ . '/lib/lib.certificate.php');
+        require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
         $cman = new Certificate();
         $cman->deleteCourseCertificateAssignments($id_course);
         //--- end certificates assignments -----------------------------------------

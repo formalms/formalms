@@ -16,6 +16,10 @@
 	<!-- common stylesheet -->
 	<link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/base.css" />
 	<link rel="stylesheet" type="text/css" href="{{ evalPhp('Layout::path') }}style/lms-home.css" />
+
+    {% if custom_css_path is defined %}
+		<link rel="stylesheet" type="text/css" href="{{ custom_css_path }}" />
+    {% endif %}
 	{{ evalPhp('Layout::rtl') }}
 	<!-- specific stylesheet -->
 	{{ evalPhp('YuiLib::load', ['base']) }}
@@ -47,7 +51,6 @@
     <!-- locale data format -->        
     {{ locale_calendar|raw }}
     {% endblock %}
-    
 
 	<!-- Restyling -->
 	<link rel="stylesheet" type="text/css" href="{{ layout_path }}static/main.min.css">

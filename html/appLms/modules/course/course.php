@@ -429,7 +429,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 
 	}
 	
-	require_once($GLOBALS['where_lms'].'/lib/lib.certificate.php');
+	require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
 	$cert = new Certificate();
 	
 	$released = $cert->certificateReleased(getLogUserId());

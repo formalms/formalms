@@ -13,7 +13,7 @@
 
 if(!defined('IN_FORMA')) die('You cannot access this file directly');
 
-require_once(_lms_.'/lib/lib.certificate.php');
+require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
 
 $json = new Services_JSON();
 $op = importVar('op', false, '');
