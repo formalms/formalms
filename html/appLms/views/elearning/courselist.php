@@ -83,12 +83,12 @@ function typeOfCourse ($t) {
 
 
 <script language="javascript">
-    function confirmDialog(id_course, id_date ){
+    function confirmDialog(title, id_course, id_date ){
                 $('<div></div>').appendTo('body')
                     .html("<div><h6><?php echo Lang::t('_CANCEL_SUBSCRIPTION', 'course')?></h6></div>")
                     .dialog({
                         modal: true, 
-                        title: '<?php echo Lang::t('_COURSE_SUBSCRIPTION', 'course')?>', 
+                        title: title, 
                         autoOpen: true,
                         width: '200',
                         height: '150', 
@@ -189,7 +189,7 @@ function typeOfCourse ($t) {
 								      
                                      <?php if($course['auto_unsubscribe']==2 || $course['auto_unsubscribe']==1 ): ?>
 								        <li>
-                                            <a href='javascript:confirmDialog(<?php echo $course['idCourse'].",".key($display_info[$course['idCourse']]) ?>)'><?php echo Lang::t('_UNSUBSCRIBE', 'course') ?></a>    
+                                            <a href='javascript:confirmDialog(<?php echo "\"".$course['name']."\",".$course['idCourse'].",".key($display_info[$course['idCourse']]) ?>)'><?php echo Lang::t('_UNSUBSCRIBE', 'course') ?></a>    
                                         </li>
                                     <?php endif; ?>
                                     
