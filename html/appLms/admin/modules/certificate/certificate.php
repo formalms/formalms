@@ -447,7 +447,7 @@ function delcertificate() {
 
 function report_certificate() {
     require_once(_base_.'/lib/lib.form.php');
-    require_once($GLOBALS['where_lms'].'/lib/lib.certificate.php');
+    require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
     require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
     require_once(_base_.'/lib/lib.table.php');
 
@@ -572,7 +572,7 @@ function report_certificate() {
 function view_report_certificate() {
     checkPerm('view');
 
-    require_once(_lms_.'/lib/lib.certificate.php');
+    require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
     require_once(_lms_.'/lib/lib.course.php');
     require_once($GLOBALS['where_lms'].'/lib/lib.track_user.php');
 
@@ -993,7 +993,7 @@ function del_report_certificate()
     checkPerm('view');
 
     require_once(_base_.'/lib/lib.form.php');
-    require_once($GLOBALS['where_lms'].'/lib/lib.certificate.php');
+    require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
 
     $certificate = new Certificate();
     $form = new Form();
@@ -1055,7 +1055,7 @@ function del_report_certificate()
 
 function send_zip_certificates() {
     require_once(_base_.'/addons/pclzip/pclzip.lib.php');
-    require_once(_base_.'/'._folder_lms_.'/lib/lib.certificate.php');
+    require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
     require_once(_base_.'/lib/lib.download.php');
 
     $files = array();
@@ -1093,7 +1093,7 @@ function send_zip_certificates() {
 
 function send_certificate() {
 
-    require_once(_lms_.'/lib/lib.certificate.php');
+    require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
     require_once(_base_.'/lib/lib.download.php');
 
     $id_certificate = importVar('certificate_id', true, 0);
@@ -1119,7 +1119,7 @@ function send_certificate() {
 
 function print_certificate() {
 
-    require_once(_lms_.'/lib/lib.certificate.php');
+    require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
     require_once(_base_.'/lib/lib.download.php' );
 
     $id_certificate = importVar('certificate_id', true, 0);
@@ -1135,7 +1135,7 @@ function print_certificate() {
 function preview() {
     checkPerm('view');
 
-    require_once($GLOBALS['where_lms'].'/lib/lib.certificate.php');
+    require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
 
     $id_certificate = importVar('id_certificate', true, 0);
 

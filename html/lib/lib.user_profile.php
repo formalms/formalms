@@ -2002,7 +2002,7 @@ class UserProfileViewer {
 
             }
 
-            require_once($GLOBALS['where_lms'] . '/lib/lib.certificate.php');
+            require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
             $cert = new Certificate();
 
             $filter['id_user'] = $this->_id_user;

@@ -171,6 +171,12 @@ function uptest (Learning_Test $obj_test = null)
         Track_Object::updateObjectTitle ($id_test , $obj_test->getObjectType () , $_POST[ 'title' ]);
     }
 
+    $test = Learning_Test::load($id_test);
+
+    $event = new \appLms\Events\Lms\TestUpdateEvent($test, $lang);
+
+    \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestUpdateEvent::EVENT_NAME, $event);
+
 
     Util::jump_to ('index.php?modname=test&op=modtestgui&idTest=' . $id_test . '&back_url=' . $url_encode);
 }

@@ -239,7 +239,7 @@ class Track_Test extends Track_Object
      **/
     function loadReport($idUser = false, $mvc = false)
     {
-        require_once($GLOBALS['where_lms'] . '/modules/test/do.test.php');
+        require_once(Forma::inc(_lms_.'/modules/test/do.test.php'));
         if ($idUser) {
             $output = user_report($idUser, $this->idResource, $this->idParams, false, $mvc);
             if ($mvc) return $output;

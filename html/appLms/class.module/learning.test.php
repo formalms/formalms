@@ -88,7 +88,7 @@ class Learning_Test extends Learning_Object {
 
 		unset($_SESSION['last_error']);
 
-		require_once( $GLOBALS['where_lms'].'/modules/test/test.php' );
+		require_once(Forma::inc(_lms_.'/modules/test/test.php'));
 		addtest( $this );
 	}
 
@@ -105,7 +105,7 @@ class Learning_Test extends Learning_Object {
 
 		unset($_SESSION['last_error']);
 
-		require_once( _lms_.'/modules/test/test.php' );
+        require_once(Forma::inc(_lms_.'/modules/test/test.php'));
 		modtestgui( $this );
 	}
 
@@ -269,7 +269,7 @@ class Learning_Test extends Learning_Object {
 	 * @return nothing return
 	 **/
 	function play( $id, $id_param, $back_url ) {
-		require_once( $GLOBALS['where_lms'].'/modules/test/do.test.php' );
+		require_once(Forma::inc(_lms_.'/modules/test/do.test.php'));
 
 		$this->id = $id;
 		$this->back_url = $back_url;
