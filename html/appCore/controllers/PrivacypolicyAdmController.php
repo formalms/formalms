@@ -236,9 +236,10 @@ class PrivacypolicyAdmController extends AdmController {
 		$output = array();
 		$id_policy = Get::req('id_policy', DOTY_INT, -1);
 		$name = Get::req('name', DOTY_STRING, "");
+		$reset_policy = Get::req('reset_policy', DOTY_INT, 0);
 		$translations = Get::req('translation', DOTY_MIXED, FALSE);
 
-		$res = $this->model->updatePolicy($id_policy, $name, $translations);
+		$res = $this->model->updatePolicy($id_policy, $name, $reset_policy, $translations);
 		$output = array('success' => $res ? TRUE : FALSE);
 
 		echo $this->json->encode($output);

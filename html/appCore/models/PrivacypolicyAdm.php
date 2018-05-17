@@ -169,7 +169,7 @@ class PrivacypolicyAdm extends Model {
 	}
 
 
-	public function updatePolicy($id_policy, $name, $translations) {
+	public function updatePolicy($id_policy, $name, $reset_policy, $translations) {
 		//validate params
 		if ((int)$id_policy <= 0 || !$name || !is_array($translations) || empty($translations)) {
 			return FALSE;
@@ -179,7 +179,12 @@ class PrivacypolicyAdm extends Model {
 		$output = false;
 		$lang_codes = Docebo::langManager()->getAllLangCode();
 
-		$query = "UPDATE %adm_privacypolicy SET name = '".$name."' WHERE id_policy = ".(int)$id_policy;
+		if ($reset_policy == 1){
+			$query = "UPDATE %adm_privacypolicy SET name = '".$name."', lastedit_date = '".date("Y-m-d H:i:s")."', validity_date = '".date("Y-m-d H:i:s")."' WHERE id_policy = ".(int)$id_policy;
+		} else {
+			$query = "UPDATE %adm_privacypolicy SET name = '".$name."', lastedit_date = '".date("Y-m-d H:i:s")."' WHERE id_policy = ".(int)$id_policy;
+		}
+
 		$res = $this->db->query($query);
 		if ($res) {
 			//remove old translations and insert new ones
