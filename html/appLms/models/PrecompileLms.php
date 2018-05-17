@@ -68,7 +68,13 @@ class PrecompileLms extends Model {
 				$output = $pinfo->translations[Lang::get()];
 		} else {
 			// default policy text
-			$output = Lang::t('_REG_PRIVACY_POLICY', 'login');
+			$pinfo = $pmodel->getPolicyInfo(0);
+			if (isset($pinfo->translations[Lang::get()])){
+				$output = $pinfo->translations[Lang::get()];
+			} else {
+				$output = Lang::t('_REG_PRIVACY_POLICY', 'login');
+			}
+				
 		}
 
 		return $output;
