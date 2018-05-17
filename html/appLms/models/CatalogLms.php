@@ -527,10 +527,12 @@ class CatalogLms extends Model
 			$user_classroom = $this->classroom_man->getUserDates(Docebo::user()->getIdSt());
 			$classroom_full = $this->classroom_man->getFullDateForCourse($id_course);
 			$classroom_not_confirmed = $this->classroom_man->getNotConfirmetDateForCourse($id_course);
-
 			$overbooking_classroom = $this->classroom_man->getOverbookingDateForCourse($id_course);
+            
+            // cutting not confirmed classrooms
+            $available_classrooms = array_diff_key($classrooms, $classroom_not_confirmed);            
 
-			foreach($classrooms as $classroom_info)
+			foreach($available_classrooms as $classroom_info)
 			{
 				if(isset($user_classroom[$classroom_info['id_date']]))
 					$action = '<p class="subscribed">'.Lang::t('_USER_STATUS_SUBS', 'catalogue').'</p>';

@@ -33,49 +33,21 @@ function TruncateText($the_text, $size)
 
 
 function classroomCourse(&$row, &$smodel){
-    // get all edition of a course
-    $classrooms = $smodel->classroom_man->getCourseDate($row['idCourse'], false);
-    if (count($classrooms) == 0) {
-        $action .= '<a class="forma-button forma-button--disabled">
-                        <span class="forma-button__label">' . Lang::t('_NO_EDITIONS', 'catalogue') . '</span>
-                    </a>';
-    } else { 
-        //  get data/edition for which the user is already enrolled
-        $user_classroom = $smodel->classroom_man->getUserDateForCourse(Docebo::user()->getIdSt(), $row['idCourse']);
-        // get data/editio non valid: cancelled, finished, in preparation
-        $classroom_not_confirmed = $smodel->classroom_man->getNotConfirmetDateForCourse($row['idCourse']);
-        // get overbooked data/editio
-        $overbooking_classroom = $smodel->classroom_man->getOverbookingDateForCourse($row['idCourse']);
-        
-        $date_id = array();
-        // all the available data/edition for a course
-        foreach ($classrooms as $classroom_info)
-            $date_id[] = $classroom_info['id_date'];
-            
-        reset($classrooms);
-        // remove the data in which the user is subscribed or the classroom not confirmed
-        $control = array_diff($date_id, $user_classroom, $classroom_not_confirmed);
-
-        if (count($control) == 0) {
-            if (!empty($overbooking_classroom)) {
-                $_text = ($row['selling'] == 0 ? Lang::t('_SUBSCRIBE', 'catalogue') : Lang::t('_ADD_TO_CART', 'catalogue'));
-                $action .= '<a class="forma-button forma-button--green forma-button--orange-hover" href="javascript:void(0);" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'' . ($row['selling'] == 0 ? '0' : '1') . '\')" '
-                    . ' title="' . $_text . '"><span class="forma-button__label">' . $_text . '<br />'
-                    . '(' . Lang::t('_SUBSCRIBE_WITH_OVERBOOKING', 'catalogue') . ': ' . count($overbooking_classroom) . ')</span>'
-                    . '</a>';
-            } else {
-                if (count($user_classroom) > 0) {
-                    $action .= '<a class="forma-button forma-button--orange-hover" href="index.php?modname=course&op=aula&idCourse=' . $row['idCourse'] . ' "'
+    
+    $user_classroom = $smodel->classroom_man->getUserDateForCourse(Docebo::user()->getIdSt(), $row['idCourse']);
+    if (count($user_classroom)>0){  // user already enrolled.
+        $action .= '<a class="forma-button forma-button--orange-hover" href="index.php?modname=course&op=aula&idCourse=' . $row['idCourse'] . ' "'
                         . ' title="' . $_text . '"><span class="forma-button__label">'
                         . Lang::t('_USER_STATUS_ENTER', 'catalogue') . '</span>'
                         . '</a>';
-                } else {
-                    $action .= '<a class="forma-button forma-button--disabled">
-                                    <span class="forma-button__label">' . Lang::t('_NO_AVAILABLE_EDITIONS', 'catalogue') . '</span>
-                                </a>';
-                }
-            }
-        } else {
+    }  else {
+        // get all editions of a course with status available
+        $classrooms = $smodel->classroom_man->getAvailableDate($row['idCourse'], false);
+        if (count($classrooms) == 0) {
+            $action .= '<a class="forma-button forma-button--disabled">
+                        <span class="forma-button__label">' . Lang::t('_NO_EDITIONS', 'catalogue') . '</span>
+                    </a>';
+        }  else {
             if ($row['selling'] == 0) {
                 switch ($row['subscribe_method']) {
                     case 2:
@@ -92,21 +64,18 @@ function classroomCourse(&$row, &$smodel){
                                         <span class="forma-button__label">' . Lang::t('_COURSE_S_GODADMIN', 'catalogue') . '</span>
                                     </a>';
                         break;
-                }        
+                }                    
             } else {
-                $classroom_in_chart = array();
-                if (isset($_SESSION['lms_cart'][$row['idCourse']]['classroom']))
-                    $classroom_in_chart = $_SESSION['lms_cart'][$row['idCourse']]['classroom'];
-                $control = array_diff($control, $classroom_in_chart);
-                if (count($control) == 0)
-                    $action .= '<p class="subscribed">' . Lang::t('_ALL_EDITION_BUYED', 'catalogue') . '</p>';
-                else
-                    $action .= '<a href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'1\')" title="' . Lang::t('_ADD_TO_CART', 'catalogue') . '"><p class="can_subscribe">' . Lang::t('_ADD_TO_CART', 'catalogue') . '</p></a>';
-            }
+                    if (isset($_SESSION['lms_cart'][$row['idCourse']]['classroom'])) {
+                        $action .= '<p class="subscribed">' . Lang::t('_ALL_EDITION_BUYED', 'catalogue') . '</p>';
+                    }  else {
+                        $action .= '<a href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'1\')" title="' . Lang::t('_ADD_TO_CART', 'catalogue') . '"><p class="can_subscribe">' . Lang::t('_ADD_TO_CART', 'catalogue') . '</p></a>';
+                    }
+            }    
         }
     }
-    return $action;    
-
+    return $action;
+ 
 }
 
 
@@ -255,10 +224,22 @@ function classroomActionButton($is_enrolled, $unsubscribe_date_limit, &$row){
 
 }
 
+
+function InsertOption(&$row){
+         $html .= '<div class="course-box__options dropdown pull-right">
+                <div class="dropdown-toggle" id="courseBoxOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <i class="glyphicon glyphicon-option-horizontal"></i> 
+                </div>   
+                <ul class="dropdown-menu" aria-labelledby="courseBoxOptions">';
+                    $html .= "<li>option1</li>";
+                    $html .= '<li>option2</li>';
+          $html .= '</ul></div>';
+
+      return $html;
+    
+}
+
 ?>
-
-
-
 
         <div id="cbp-vm" class="" style="margin-top: 15px;">
             <div class="row">
@@ -303,7 +284,7 @@ function classroomActionButton($is_enrolled, $unsubscribe_date_limit, &$row){
                     $data_end_format = Format::date($data_end, 'date');
 
                     //here begins the course box
-
+                    
                     $html .= '
                     <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-6">
                         <div class="course-box">
@@ -311,19 +292,21 @@ function classroomActionButton($is_enrolled, $unsubscribe_date_limit, &$row){
                                 <div class="course-box__title">' . $row['name'] . '</div>
                             </div>
                             <div class="course-box__item course-box__item--no-padding">';
+
                     if ($row['use_logo_in_courselist'] && $row['img_course']) { //check per img
                         $html .= '<div class="course-box__img" style="background-image: url(' . $path_course . $row['img_course'] . ');">';
                     } else {
                         $html .= '<div class="course-box__img">';
                     }
                     $html .= '<div class="course-box__img-title">' . $img_type . '</div>
-                                </div>    
+                             </div>    
                             </div>
                             <div class="course-box__item">
                                 <div class="course-box__desc">
-                                    ' . TruncateText($row['box_description'], 120) . '
-                                </div>
-                            </div>';
+                                    ' . TruncateText($row['box_description'], 120).' 
+                                </div>'.InsertOption().'                            
+                            </div';
+
 					
                     if (count($editions)> 0 && false) {
 						$html .= '
@@ -417,14 +400,15 @@ function classroomActionButton($is_enrolled, $unsubscribe_date_limit, &$row){
 							</div>';
 					}
 
-                    if ($row["course_demo"]) {
+
+                  /*  if ($row["course_demo"]) {
                         $html .= '
                         <div class="course-box__item course-box__item--half">
                             <a class="course-box__dl-course-supply" href="index.php?r=catalog/downloadDemoMaterial&amp;course_id=' . $row['idCourse'] . '" class="course-box__show-dates">
                                 <i class="glyphicon glyphicon-download-alt"></i>&nbsp;' . Lang::t('_COURSE_DEMO', 'course') . '
                             </a>
                         </div>';
-                    }
+                    } */
 
 
                     if ($str_can_enter == true && $row['status'] != CST_CONCLUDED) {
@@ -438,6 +422,7 @@ function classroomActionButton($is_enrolled, $unsubscribe_date_limit, &$row){
                     $html .= '   
                         </div> <!-- //closes the pn_grid__item -->
                     </div>'; //closes course-box__item
+                     
 
                 } //end  while
 

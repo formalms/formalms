@@ -50,4 +50,15 @@ class TestCousereportEvent extends Event
         return $this->object_test;
     }
 
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'object_test' => $this->object_test,
+            'overViewTestQuestionLink' => $this->overViewTestQuestionLink,
+        ];
+    }
+
 }

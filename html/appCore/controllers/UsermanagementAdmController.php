@@ -671,6 +671,15 @@ class UsermanagementAdmController extends AdmController {
 			$output['message'] = $res;
 		}
 
+		$model = new UsermanagementAdm();
+		$oldUserdata = $model->getProfileData($idst);
+
+		// SET EDIT USER SINGLE EVENT
+		$event = new \appCore\Events\Core\UsersManagementEditSingleEvent();
+		$event->setUser($userdata);
+		$event->setOldUser($oldUserdata);
+		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementEditSingleEvent::EVENT_NAME, $event);
+
 		echo $this->json->encode($output);
 	}
 

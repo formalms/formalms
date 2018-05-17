@@ -225,7 +225,18 @@ class DateManager
 		return $res;
 	}
 
-	public function getCourseDate($id_course, $all = true, $ini = 0, $num_element = 0)
+	
+    
+    public function getAvailableDate($id_course){
+        $res =  $this->getCourseDate($id_course, false);
+        foreach ($res as $k => $v) {
+            if ($v['status'] != 0) 
+                unset($res[$k]);
+        }
+        return $res; 
+    }
+    
+    public function getCourseDate($id_course, $all = true, $ini = 0, $num_element = 0)
 	{
 		$res = array();
 

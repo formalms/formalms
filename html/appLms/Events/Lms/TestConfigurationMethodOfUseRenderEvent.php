@@ -97,5 +97,17 @@ class TestConfigurationMethodOfUseRenderEvent extends Event
         
         return $formString;
     }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'formElementsSections' => $this->formElementsSections,
+            'object_test' => $this->object_test,
+            'lang' => $this->lang,
+        ];
+    }
     
 }

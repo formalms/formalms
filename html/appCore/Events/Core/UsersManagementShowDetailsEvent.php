@@ -39,4 +39,12 @@ class UsersManagementShowDetailsEvent extends Event
         return $this->profile;
     }
 
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->profile;
+    }
+
 }

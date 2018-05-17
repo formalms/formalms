@@ -76,4 +76,16 @@ class TestUpdateModalityEvent extends Event
         $this->queryString = $queryString;
     }
 
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'queryString' => $this->queryString,
+            'postVars' => $this->postVars,
+            'idTest' => $this->idTest,
+        ];
+    }
+
 }

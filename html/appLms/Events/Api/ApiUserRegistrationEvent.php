@@ -38,4 +38,14 @@ class ApiUserRegistrationEvent extends Event
         return $this->id;
     }
 
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'id' => $this->id,
+        ];
+    }
+
 }
