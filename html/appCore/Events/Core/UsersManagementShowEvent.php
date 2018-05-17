@@ -39,4 +39,12 @@ class UsersManagementShowEvent extends Event
         return $this->users;
     }
 
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->users;
+    }
+
 }

@@ -55,4 +55,15 @@ class TransactionPaidEvent extends Event {
         
         return $this->res;
     }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'res' => $this->res,
+            'trans' => $this->trans,
+        ];
+    }
 }

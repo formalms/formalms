@@ -46,4 +46,15 @@ class UnlinkEvent extends Event
     {
         $this->result = $result;
     }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'path' => $this->path,
+            'result' => $this->result,
+        ];
+    }
 }

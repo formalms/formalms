@@ -135,4 +135,19 @@ class UserListEvent extends Event
     {
         return $this->out;
     }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'lang' => $this->lang,
+            'out' => $this->out,
+            'defaultExportEndpoint' => $this->defaultExportEndpoint,
+            'exportLink' => $this->exportLink,
+            'exportEndpoint' => $this->exportEndpoint,
+            'idEvent' => $this->idEvent,
+        ];
+    }
 }

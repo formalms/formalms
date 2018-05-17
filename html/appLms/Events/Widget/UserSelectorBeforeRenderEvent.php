@@ -82,4 +82,17 @@ class UserSelectorBeforeRenderEvent extends Event
         return $this->idOrg;
     }
 
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'idOrg' => $this->idOrg,
+            'userSelectorId' => $this->userSelectorId,
+            'columns' => $this->columns,
+            'fields' => $this->fields,
+        ];
+    }
+
 }

@@ -24,4 +24,12 @@ class UserSelectorRenderJSScriptEvent extends Event
         return $this->prependScript;
     }
 
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->prependScript;
+    }
+
 }

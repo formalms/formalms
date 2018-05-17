@@ -112,4 +112,19 @@ class TestPlayTestDispatchEvent extends Event
         
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'objectTest' => $this->objectTest,
+            'idParam' => $this->idParam,
+            'user' => $this->user,
+            'idTest' => $this->idTest,
+            'idTrack' => $this->idTrack,
+            'dispatchAction' => $this->dispatchAction,
+        ];
+    }
 }
