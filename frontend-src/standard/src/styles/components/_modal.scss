@@ -1,3 +1,79 @@
+// Course Statistic
+//
+//  Markup:
+//  <div class="section-coourse-modal">
+//  <div class="modal-body">
+//    <div class="row">                      
+//        <div class="modal__item col-sm-12 col-md-4">
+//          <h3 class="title">
+//              Tempo parziale
+//          </h3>
+//          <p class="text">
+//            00m 
+//          </p>
+//        </div>
+//        <div class="modal__item col-sm-12 col-md-4">
+//          <h3 class="title">
+//              Tempo totale
+//          </h3>
+//          <p class="text">
+//              19h 49m 
+//          </p>
+//        </div>           
+//      <div class="modal__item col-sm-12 col-md-4">
+//        <h3 class="title">
+//            Utenti on line
+//        </h3>
+//        <p class="text">
+//            1
+//        </p>
+//      </div>
+//      <div class="modal__item col-sm-12 col-md-4">
+//        <h3 class="title">
+//            Materiali
+//        </h3>
+//        <p class="text">
+//            3
+//        </p>
+//      </div>
+//      <div class="modal__item col-sm-12 col-md-4">
+//        <h3 class="title">
+//            Completato
+//        </h3>
+//        <p class="text">
+//            1
+//        </p>
+//      </div>
+//      <div class="modal__item col-sm-12 col-md-4">
+//        <h3 class="title">
+//            progress failed
+//        </h3>
+//        <p class="text">
+//            2
+//        </p>
+//      </div>
+//      <div class="modal__item col-sm-12 col-md-6">
+//        <h3 class="title">
+//            passed
+//        </h3>
+//        <p class="text">
+//            1
+//        </p>
+//      </div>
+//      <div class="modal__item col-sm-12 col-md-6">
+//        <h3 class="title">
+//            failed
+//        </h3>
+//        <p class="text">
+//            0
+//        </p>
+//      </div>
+//    </div>
+//  </div>
+//  </div>
+//
+// Style guide: 3.4
+
 .modal {
   font-family: $font;
 
