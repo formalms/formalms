@@ -140,9 +140,11 @@ var PrivacyPolicies = {
 		var url = 'ajax.adm_server.php?r=adm/privacypolicy/assign&id=' + id;
 		var str = PrivacyPolicies.oLangs.get('_ASSIGN');
 		var style = !oRecord.getData("is_assigned") ? 'subs_notice' : 'subs_elem';
+		if (oRecord.getData("is_assigned") != 'default'){
 		elLiner.innerHTML = '<a href="' + url + '" title="' + str
 			+ '" class="ico-sprite ' + style + '" id="assign_orgchart_' + id + '">'
 			+ '<span>'+str+'</span></a>';
+		}
 	},
 
 	beforeRenderEvent: function() {

@@ -95,13 +95,26 @@ class PrivacypolicyAdmController extends AdmController {
 		$records = array();
 		if (is_array($list)) {
 			foreach ($list as $record) {
-				$records[] = array(
-					'id' => (int)$record->id_policy,
-					'name' => highlightText($record->name, $filter),
-					'is_assigned' => $record->is_assigned,
-					'mod' => 'ajax.adm_server.php?r=adm/privacypolicy/mod&id='.(int)$record->id_policy,
-					'del' => 'ajax.adm_server.php?r=adm/privacypolicy/del&id='.(int)$record->id_policy
-				);
+				if ($record->id_policy == 0){
+					$records[] = array(
+						'id' => (int)$record->id_policy,
+						'name' => highlightText($record->name, $filter),
+						'is_assigned' => 'default',
+						'mod' => 'ajax.adm_server.php?r=adm/privacypolicy/mod&id='.(int)$record->id_policy,
+						'del' => ''
+					);
+				} else {
+					$records[] = array(
+						'id' => (int)$record->id_policy,
+						'name' => highlightText($record->name, $filter),
+						'is_assigned' => $record->is_assigned,
+						'mod' => 'ajax.adm_server.php?r=adm/privacypolicy/mod&id='.(int)$record->id_policy,
+						'del' => 'ajax.adm_server.php?r=adm/privacypolicy/del&id='.(int)$record->id_policy
+					);
+				}
+
+
+
 			}
 		}
 
@@ -194,7 +207,7 @@ class PrivacypolicyAdmController extends AdmController {
 		}
 
 		$id_policy = Get::req('id', DOTY_INT, -1);
-		if ($id_policy <= 0) {
+		if ($id_policy <= -1) {
 			$output = array(
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getErrorMessage("failure"))

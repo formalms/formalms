@@ -171,7 +171,7 @@ class PrivacypolicyAdm extends Model {
 
 	public function updatePolicy($id_policy, $name, $reset_policy, $translations) {
 		//validate params
-		if ((int)$id_policy <= 0 || !$name || !is_array($translations) || empty($translations)) {
+		if ((int)$id_policy <= -1 || !$name || !is_array($translations) || empty($translations)) {
 			return FALSE;
 		}
 
