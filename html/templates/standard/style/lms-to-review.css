@@ -469,6 +469,12 @@ div.colored_row{height:16px;text-align:center;background:#E1EBF4;border:1px soli
     left: 30px;
 }
 
+@media screen and (max-width: 600px) {
+    .test_answer_space .answer_question .input-wrapper::before {
+    	left: 0;
+    }
+}
+
 .test_answer_space .answer_question .input-wrapper.checked::before {
     background-color: #3B99FC;
 }
@@ -480,7 +486,7 @@ div.colored_row{height:16px;text-align:center;background:#E1EBF4;border:1px soli
     height: 8px;
     position: absolute;
     top: 3px;
-    left: 3px;
+    left: 36px;
     background-color: #fff;
 }
 
@@ -491,11 +497,20 @@ div.colored_row{height:16px;text-align:center;background:#E1EBF4;border:1px soli
     height: 12px;
     position: absolute;
     top: 1px;
-    left: 1px;
+    left: 34px;
     font-family: 'Glyphicons Halflings';
     font-size: 11px;
     line-height: 12px;
     color: #fff;
+}
+
+@media screen and (max-width: 600px) {
+	.test_answer_space .answer_question .input-wrapper-radio.checked::after {
+		left: 6px;
+	}
+	.test_answer_space .answer_question .input-wrapper-checkbox.checked::after {
+		left: 3px;
+	}	
 }
 
 .test_answer_space .answer_question .input-wrapper-radio::before, .test_answer_space .answer_question .input-wrapper-radio::after {
