@@ -76,6 +76,14 @@
   }
 }
 
+.slider-menu--tabs {
+
+  .slick-slide {
+    margin-right: 9px;
+  }
+
+}
+
 .slider-menu__item {
   height: 30px;
   padding: 5px 10px;
@@ -152,5 +160,9 @@
     &:last-child {
       margin-left: -8px;
     }
+  }
+
+  .slider-menu--tabs & {
+    top: 5px;
   }
 }
