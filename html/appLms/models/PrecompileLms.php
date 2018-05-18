@@ -113,9 +113,9 @@ class PrecompileLms extends Model {
 		if ((int)$id_user <= 0) return FALSE;
 
 		//set value in DB - old method
-		$query = "UPDATE %adm_user SET privacy_policy = ".($accepted ? "1" : "0")
-			." WHERE idst = ".(int)$id_user;
-		$res = $this->db->query($query);
+		//$query = "UPDATE %adm_user SET privacy_policy = ".($accepted ? "1" : "0")
+		//	." WHERE idst = ".(int)$id_user;
+		//$res = $this->db->query($query);
 
 		if ($accepted) {
 			// set value in DB - new method
@@ -135,9 +135,27 @@ class PrecompileLms extends Model {
 		//check input values
 		if ((int)$id_user <= 0) return FALSE;
 
+		//retrieve id_policy from DB
+		$pmodel = new PrivacypolicyAdm();
+		$policies = $pmodel->getUserPolicy($id_user);
+		if (!empty($policies)) {
+			$id_policy = $policies[0]; //the user may have more than one policy, get the first one
+		} else {
+			$pinfo = $pmodel->getDefaultPolicyInfo();
+			$id_policy = $pinfo->id_policy;
+		}
+
+
 		//read value in DB
 		$output = FALSE;
-		$query = "SELECT privacy_policy FROM %adm_user WHERE idst = ".(int)$id_user;
+		//$query = "SELECT privacy_policy FROM %adm_user WHERE idst = ".(int)$id_user; // Old Method
+		$query = "SELECT ppu.id_policy, ppu.accept_date, pp.validity_date
+				FROM core_privacypolicy_user AS ppu, core_privacypolicy AS pp
+				WHERE ppu.id_policy = pp.id_policy
+				AND ppu.accept_date > pp.validity_date
+				AND ppu.idst = ".(int)$id_user."
+				AND ppu.id_policy= ".(int)$id_policy;
+
 		$res = $this->db->query($query);
 		if ($res && $this->db->num_rows($res) > 0) {
 			list($value) = $this->db->fetch_row($res);
