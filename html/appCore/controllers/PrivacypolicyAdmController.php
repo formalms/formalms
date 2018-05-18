@@ -95,7 +95,7 @@ class PrivacypolicyAdmController extends AdmController {
 		$records = array();
 		if (is_array($list)) {
 			foreach ($list as $record) {
-				if ($record->id_policy == 0){
+				if ($record->is_default == 1){
 					$records[] = array(
 						'id' => (int)$record->id_policy,
 						'name' => highlightText($record->name, $filter),
@@ -207,7 +207,7 @@ class PrivacypolicyAdmController extends AdmController {
 		}
 
 		$id_policy = Get::req('id', DOTY_INT, -1);
-		if ($id_policy <= -1) {
+		if ($id_policy <= 0) {
 			$output = array(
 				'success' => false,
 				'message' => UIFeedback::perror($this->_getErrorMessage("failure"))
@@ -249,10 +249,11 @@ class PrivacypolicyAdmController extends AdmController {
 		$output = array();
 		$id_policy = Get::req('id_policy', DOTY_INT, -1);
 		$name = Get::req('name', DOTY_STRING, "");
+		$is_default = Get::req('is_default', DOTY_INT, 0);
 		$reset_policy = Get::req('reset_policy', DOTY_INT, 0);
 		$translations = Get::req('translation', DOTY_MIXED, FALSE);
 
-		$res = $this->model->updatePolicy($id_policy, $name, $reset_policy, $translations);
+		$res = $this->model->updatePolicy($id_policy, $name, $is_default, $reset_policy, $translations);
 		$output = array('success' => $res ? TRUE : FALSE);
 
 		echo $this->json->encode($output);

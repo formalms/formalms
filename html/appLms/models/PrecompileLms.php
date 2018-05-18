@@ -68,7 +68,7 @@ class PrecompileLms extends Model {
 				$output = $pinfo->translations[Lang::get()];
 		} else {
 			// default policy text
-			$pinfo = $pmodel->getPolicyInfo(0);
+			$pinfo = $pmodel->getDefaultPolicyInfo();
 			if (isset($pinfo->translations[Lang::get()])){
 				$output = $pinfo->translations[Lang::get()];
 			} else {
@@ -95,7 +95,8 @@ class PrecompileLms extends Model {
 		if (!empty($policies)) {
 			$output = $policies[0]; //the user may have more than one policy, get the first one
 		} else {
-			$output = 0;
+			$pinfo = $pmodel->getDefaultPolicyInfo();
+			$output = $pinfo->id_policy;
 		}
 
 		return $output;

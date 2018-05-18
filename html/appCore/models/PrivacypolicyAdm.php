@@ -57,7 +57,7 @@ class PrivacypolicyAdm extends Model {
 			}
 		}
 		
-		$query = "SELECT id_policy, name "
+		$query = "SELECT id_policy, name, is_default "
 			." FROM %adm_privacypolicy ".$filter;
 		if ($filter) {
 			$query .= " WHERE name LIKE '%".$filter."%' ";
@@ -169,9 +169,9 @@ class PrivacypolicyAdm extends Model {
 	}
 
 
-	public function updatePolicy($id_policy, $name, $reset_policy, $translations) {
+	public function updatePolicy($id_policy, $name, $is_default, $reset_policy, $translations) {
 		//validate params
-		if ((int)$id_policy <= -1 || !$name || !is_array($translations) || empty($translations)) {
+		if ((int)$id_policy <= 0 || !$name || !is_array($translations) || empty($translations)) {
 			return FALSE;
 		}
 
@@ -179,13 +179,20 @@ class PrivacypolicyAdm extends Model {
 		$output = false;
 		$lang_codes = Docebo::langManager()->getAllLangCode();
 
+		$query = "UPDATE %adm_privacypolicy SET name = '".$name."', lastedit_date = '".date("Y-m-d H:i:s")."' WHERE id_policy = ".(int)$id_policy;
+		$res = $this->db->query($query);
+
 		if ($reset_policy == 1){
-			$query = "UPDATE %adm_privacypolicy SET name = '".$name."', lastedit_date = '".date("Y-m-d H:i:s")."', validity_date = '".date("Y-m-d H:i:s")."' WHERE id_policy = ".(int)$id_policy;
-		} else {
-			$query = "UPDATE %adm_privacypolicy SET name = '".$name."', lastedit_date = '".date("Y-m-d H:i:s")."' WHERE id_policy = ".(int)$id_policy;
+			$query = "UPDATE %adm_privacypolicy SET validity_date = '".date("Y-m-d H:i:s")."' WHERE id_policy = ".(int)$id_policy;
+			$res = $this->db->query($query);
 		}
 
-		$res = $this->db->query($query);
+		if ($is_default == 1){
+			$query = "UPDATE %adm_privacypolicy SET is_default = 1 WHERE id_policy = ".(int)$id_policy;
+			$res = $this->db->query($query);
+		}
+
+		
 		if ($res) {
 			//remove old translations and insert new ones
 			$query = "DELETE FROM %adm_privacypolicy_lang WHERE id_policy = ".(int)$id_policy;
@@ -248,12 +255,26 @@ class PrivacypolicyAdm extends Model {
 
 	public function getPolicyInfo($id_policy) {
 		$output = new stdClass();
+		$output->id_policy = $id_policy;
 		$output->name = $this->getPolicyName($id_policy);
 		$output->translations = $this->getPolicyTranslations($id_policy);
 		return $output;
 	}
 
 
+	public function getDefaultPolicyInfo() {
+
+		$query = "SELECT id_policy FROM %adm_privacypolicy "
+		." WHERE is_default = 1";
+		$res = $this->db->query($query);
+		list($id_policy) = $this->db->fetch_row($res);
+		
+		$output = new stdClass();
+		$output->id_policy = $id_policy;
+		$output->name = $this->getPolicyName($id_policy);
+		$output->translations = $this->getPolicyTranslations($id_policy);
+		return $output;
+	}
 
 
 	public function getSelectedOrgchart($id_policy) {
