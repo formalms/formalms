@@ -81,20 +81,46 @@ class PrecompileLms extends Model {
 	}
 
 	/**
+	 * Retrieve the privacy policy text for the current user, given a specific language code
+	 * @param string $language the language code to use, current language by default
+	 * @return integer 
+	 */
+	public function getPrivacyPolicyId() {
+		//initialize output
+		$output = -1;
+		$id_user = Docebo::user()->getIdSt();
+
+		$pmodel = new PrivacypolicyAdm();
+		$policies = $pmodel->getUserPolicy($id_user);
+		if (!empty($policies)) {
+			$output = $policies[0]; //the user may have more than one policy, get the first one
+		} else {
+			$output = 0;
+		}
+
+		return $output;
+	}
+
+	/**
 	 * Set if the user has accepted the privacy policy or not
 	 * @param integer $id_user the idst of the user who is accepting/refusing privacy policy
 	 * @param boolean $accepted true if the policy has been accepted by the user, false otherwise
 	 * @return boolean
 	 */
-	public function setAcceptingPolicy($id_user, $accepted = TRUE) {
+	public function setAcceptingPolicy($id_user, $id_policy, $accepted = TRUE) {
 		//check input values
 		if ((int)$id_user <= 0) return FALSE;
 
-		//set value in DB
+		//set value in DB - old method
 		$query = "UPDATE %adm_user SET privacy_policy = ".($accepted ? "1" : "0")
 			." WHERE idst = ".(int)$id_user;
 		$res = $this->db->query($query);
 
+		if ($accepted) {
+			// set value in DB - new method
+			$query = "INSERT INTO %adm_privacypolicy_user (id_policy, idst, accept_date) VALUES (".(int)$id_policy.", ".(int)$id_user.", '".date("Y-m-d H:i:s")."' ) ";
+			$res = $this->db->query($query);
+		}
 		return $res ? TRUE : FALSE;
 	}
 
