@@ -19,6 +19,7 @@ th.yui-dt-resizeable .yui-dt-resizerliner{position:relative;}
 .yui-dt-resizerproxy{visibility:hidden;position:absolute;z-index:9000;background-color:#CCC;opacity:0;filter:alpha(opacity=0);}
 th.yui-dt-hidden .yui-dt-liner, td.yui-dt-hidden .yui-dt-liner, th.yui-dt-hidden .yui-dt-resizer{display:none;}
 .yui-dt-editor{position:absolute;z-index:9000;}
+.yui-skin-sam .yui-dt {overflow-x: auto;}
 .yui-skin-sam .yui-dt table{margin:0;padding:0;font-family:arial;font-size:inherit;border-collapse:collapse;*border-collapse:collapse;border-spacing:0;border:1px solid #aaaaaa;border-width:0px 0px 1px 0;}
 .yui-skin-sam .yui-dt thead{border-spacing:0;}
 .yui-skin-sam .yui-dt caption{color:#000;font-size:85%;font-weight:normal;font-style:italic;line-height:1;padding:1em 0;text-align:center;}
