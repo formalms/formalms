@@ -42,7 +42,7 @@ function classroomCourse(&$row, &$smodel){
                         . '</a>';
     }  else {
         // get all editions of a course with status available
-        $classrooms = $smodel->classroom_man->getAvailableDate($row['idCourse'], false);
+        $classrooms = $smodel->classroom_man->getCourseDate($row['idCourse'], false);
         if (count($classrooms) == 0) {
             $action .= '<a class="forma-button forma-button--disabled">
                         <span class="forma-button__label">' . Lang::t('_NO_EDITIONS', 'catalogue') . '</span>
@@ -306,7 +306,7 @@ function InsertOption(&$row){
                                     ' . TruncateText($row['box_description'], 120).' 
                                 </div>'.InsertOption().'                            
                             </div';
-
+                    $html .= $action;
 					
                     if (count($editions)> 0 && false) {
 						$html .= '
@@ -400,8 +400,8 @@ function InsertOption(&$row){
 							</div>';
 					}
 
-
-                  /*  if ($row["course_demo"]) {
+                  /*    need checking
+                    if ($row["course_demo"]) {
                         $html .= '
                         <div class="course-box__item course-box__item--half">
                             <a class="course-box__dl-course-supply" href="index.php?r=catalog/downloadDemoMaterial&amp;course_id=' . $row['idCourse'] . '" class="course-box__show-dates">
@@ -411,6 +411,8 @@ function InsertOption(&$row){
                     } */
 
 
+                                            
+                    /*    need checking
                     if ($str_can_enter == true && $row['status'] != CST_CONCLUDED) {
                         $html .= $action;
                     }
@@ -419,6 +421,8 @@ function InsertOption(&$row){
                     if (($row['subscribe_method'] == 2 || $row['subscribe_method'] == 1) && $str_can_enter == false && strrpos($action, "subscribed") == false) {
                         $html .= $action;
                     }
+                    */
+
                     $html .= '   
                         </div> <!-- //closes the pn_grid__item -->
                     </div>'; //closes course-box__item
