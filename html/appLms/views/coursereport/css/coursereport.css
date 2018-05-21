@@ -341,3 +341,7 @@ tfoot.empty td {
     font-size: 20px;
     color: #C84000;
 }
+
+.navbar--coursereport {
+    margin-top: 20px;
+}
