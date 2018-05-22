@@ -1010,6 +1010,21 @@ ALTER TABLE `core_task` DROP PRIMARY KEY, ADD PRIMARY KEY( `sequence`);
 
 ALTER TABLE `core_task` CHANGE `sequence` `sequence` INT(3) NOT NULL AUTO_INCREMENT;
 
+-- Add lastedit and validity
+ALTER TABLE `core_privacypolicy` ADD `lastedit_date` DATETIME NOT NULL AFTER `name`, ADD `validity_date` DATETIME NOT NULL AFTER `lastedit_date`;
+
+-- Add is_default
+ALTER TABLE `core_privacypolicy` ADD `is_default` INT(1) NOT NULL DEFAULT '0' AFTER `name`;
+
+-- Add policy default
+INSERT INTO `core_privacypolicy` (`name`, `is_default`, `lastedit_date`, `validity_date`) VALUES( 'Default Privacy Policy', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
+-- Create table accept policy
+CREATE TABLE `core_privacypolicy_user` (
+  `id_policy` int(11) NOT NULL,
+  `idst` int(11)  NOT NULL,
+  `accept_date` datetime NOT NULL
+);
 -- ------------------------------------------------------------------
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

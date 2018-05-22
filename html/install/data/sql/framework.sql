@@ -1650,13 +1650,16 @@ INSERT IGNORE INTO `core_plugin` (`name`, `title`, `category`, `version`, `autho
 CREATE TABLE IF NOT EXISTS `core_privacypolicy` (
   `id_policy` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
+  `is_default` int(1) NOT NULL DEFAULT '0',
+  `lastedit_date` datetime NOT NULL,
+  `validity_date` datetime NOT NULL,
   PRIMARY KEY (`id_policy`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 --
 -- Dump dei dati per la tabella `core_privacypolicy`
 --
-
+INSERT INTO `core_privacypolicy` (`name`, `is_default`, `lastedit_date`, `validity_date`) VALUES( 'Default Privacy Policy', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1673,6 +1676,23 @@ CREATE TABLE IF NOT EXISTS `core_privacypolicy_lang` (
 
 --
 -- Dump dei dati per la tabella `core_privacypolicy_lang`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_privacypolicy_user`
+--
+
+CREATE TABLE IF NOT EXISTS `core_privacypolicy_user` (
+  `id_policy` int(11) NOT NULL,
+  `idst` int(11)  NOT NULL,
+  `accept_date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_privacypolicy_user`
 --
 
 
