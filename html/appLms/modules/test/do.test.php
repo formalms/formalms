@@ -1998,7 +1998,7 @@ function editUserReport ($id_user , $id_test , $id_track , $number_time = null ,
  */
 function deleteUserReport ($id_user , $id_test , $id_track , $number_time = null)
 {
-	require_once ($GLOBALS[ 'where_lms' ] . '/lib/lib.test.php');
+	require_once (Forma::inc(_lms_ . '/lib/lib.test.php'));
 	
 	list($idTrack , $idUser , $idReference , $idTest , $number_of_save) = $res = sql_fetch_row (sql_query ('SELECT `idTrack`,`idUser`,`idReference`,`idTest`,`number_of_save` FROM ' . $GLOBALS[ 'prefix_lms' ] . '_testtrack
     WHERE `idTrack`=' . $id_track . ' AND `idUser`=' . $id_user . ' AND `idTest`=' . $id_test));
@@ -2011,7 +2011,7 @@ function deleteUserReport ($id_user , $id_test , $id_track , $number_time = null
 			$number_time = $number_of_attempt;
 		}
 		
-		sql_affected_rows (sql_query ('DELETE FROM ' . $GLOBALS[ 'prefix_lms' ] . '_testtrack_times WHERE `idTrack`=' . $idTrack . ' AND `idReference`=' . $idReference . ' AND `idTest`=' . $idTest . ' AND `number_time`=' . $number_time));
+		sql_query ('DELETE FROM ' . $GLOBALS[ 'prefix_lms' ] . '_testtrack_times WHERE `idTrack`=' . $idTrack . ' AND `idReference`=' . $idReference . ' AND `idTest`=' . $idTest . ' AND `number_time`=' . $number_time);
 		
 		
 		$response = sql_query ('SELECT `idQuest`,`idAnswer` FROM ' . $GLOBALS[ 'prefix_lms' ] . '_testtrack_answer WHERE `idTrack`=' . $idTrack . ' AND `number_time`=' . $number_time);
@@ -2025,11 +2025,11 @@ function deleteUserReport ($id_user , $id_test , $id_track , $number_time = null
 		
 		$deleteQuery = 'DELETE FROM ' . $GLOBALS[ 'prefix_lms' ] . '_testtrack_quest WHERE idTrack=' . $idTrack . ' AND idQuest IN(' . implode ("," , $quests) . ')';
 		
-		sql_affected_rows (sql_query ($deleteQuery));
+		sql_query ($deleteQuery);
 		
 		$deleteQuery = 'DELETE FROM ' . $GLOBALS[ 'prefix_lms' ] . '_testtrack_answer WHERE `idTrack`=' . $idTrack . ' AND `number_time`=' . $number_time;
 		
-		sql_affected_rows (sql_query ($deleteQuery));
+		sql_query ($deleteQuery);
 		
 		sql_query ('UPDATE `learning_testtrack` SET `number_of_save`=' . ($number_of_save - 1) . ',`number_of_attempt`=($number_of_attempt-1) WHERE `idTrack`=' . $id_track . ' AND `idUser`=' . $id_user . ' AND `idTest`=' . $id_test);
 		
