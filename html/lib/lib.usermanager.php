@@ -1690,6 +1690,11 @@ class UserManagerRenderer
         $extra_field->setFieldEntryTable($GLOBALS['prefix_fw'] . '_field_userentry');
         $extra_field->storeFieldsForUser($iduser);
 
+        // Save Privacy
+        $precompileLms = new PrecompileLms();
+        $policy_id = $precompileLms->getPrivacyPolicyId();
+        $precompileLms->setAcceptingPolicy($iduser, $policy_id, TRUE);
+
         // Send mail
         $admin_mail = $options['mail_sender'];
 
