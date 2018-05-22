@@ -1168,6 +1168,8 @@ CREATE TABLE IF NOT EXISTS `learning_forum` (
   `locked` tinyint(1) NOT NULL DEFAULT '0',
   `sequence` int(5) NOT NULL DEFAULT '0',
   `emoticons` varchar(255) NOT NULL DEFAULT '',
+  `max_threads` int(11) NULL DEFAULT 0,
+  `threads_are_private` tinyint(1) NULL DEFAULT 0,
   PRIMARY KEY (`idForum`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
