@@ -911,6 +911,8 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="coursereport&amp;_TQ_LINK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Statistiche per il test "[test]"]]></key>
         <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Considera per voto finale]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Peso]]></key>
+        <key id="coursereport&amp;_OVERVIEW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Overview]]></key>
+        <key id="coursereport&amp;_DETAILS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Dettaglio]]></key>
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aggiungi nuovo corso]]></key>
