@@ -1029,6 +1029,7 @@ CREATE TABLE `core_privacypolicy_user` (
 -- 17570 - GDPR
 UPDATE `core_setting` SET `param_value` = '8' WHERE `core_setting`.`param_name` = 'pass_min_char';
 UPDATE `core_setting` SET `param_value` = 'on' WHERE `core_setting`.`param_name` = 'pass_change_first_login';
+UPDATE `core_setting` SET `param_value` = 'on' WHERE `core_setting`.`param_name` = 'request_mandatory_fields_compilation';
 
 -- ------------------------------------------------------------------
 

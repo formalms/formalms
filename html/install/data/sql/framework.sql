@@ -2564,7 +2564,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('register_deleted_user', 'off', 'enum', 3, '0', 3, 3, 1, 0, ''),
 ('register_type', 'admin', 'register_type', 10, 'register', 3, 11, 0, 0, ''),
 ('registration_code_type', '0', 'registration_code_type', 3, 'register', 3, 17, 1, 0, ''),
-('request_mandatory_fields_compilation', 'off', 'enum', 3, '0', 3, 2, 1, 0, ''),
+('request_mandatory_fields_compilation', 'on', 'enum', 3, '0', 3, 2, 1, 0, ''),
 ('rest_auth_api_key', '', 'string', 255, 'api', 9, 7, 1, 0, ''),
 ('rest_auth_api_secret', '', 'string', 255, 'api', 9, 8, 1, 0, ''),
 ('rest_auth_code', '', 'string', 255, 'api', 9, 4, 1, 0, ''),
