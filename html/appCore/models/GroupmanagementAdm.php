@@ -63,6 +63,15 @@ class GroupmanagementAdm extends Model {
 		$query = "SELECT g.idst, g.groupid, g.description, COUNT(*) as usercount "
 			." FROM %adm_group as g LEFT JOIN (%adm_group_members AS gm ) ON (gm.idst = g.idst) "
 			." WHERE g.hidden = 'false' ".($learning_filter === 'none' ? "AND g.type <> 'course' " : '');
+			
+		$ulevel = Docebo::user()->getUserLevelId();
+		if ($ulevel != ADMIN_GROUP_GODADMIN) {
+				require_once(_base_.'/lib/lib.preference.php');
+				$adminManager = new AdminPreference();
+				$admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+				$query .= " AND g.idst IN (".implode(",", $admin_tree).") ";
+		}
+
 		if ($filter) {
 			$query .= " AND (g.groupid LIKE '%".$filter."%' OR g.description LIKE '%".$filter."%') ";
 		}
