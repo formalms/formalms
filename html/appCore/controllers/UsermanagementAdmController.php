@@ -2013,6 +2013,14 @@ class UsermanagementAdmController extends AdmController {
 				$users = $dst->getNewImportedIdst();
 				//apply enroll rules
 				if(!empty($users)) {
+					$model = new UsermanagementAdm();
+					$arr_users = [];
+					foreach ($users as $idst) {
+						$arr_users[] = $model->getProfileData($idst);
+					}
+					$event = new \appCore\Events\Core\UsersManagementCSVimportEvent();
+					$event->setUsers($arr_users);
+					\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementCSVimportEvent::EVENT_NAME, $event);
 
 					$enrollrules = new EnrollrulesAlms();
 					$enrollrules->newRules('_NEW_IMPORTED_USER', $users, 'all', $idOrg);
