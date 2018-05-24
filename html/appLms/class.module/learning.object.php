@@ -233,5 +233,11 @@ class Learning_Object {
 
 	}
 
+    /**
+     * @param $visible
+     */
+	public function setVisibileInCoursereportDetail($visible){
+    }
+
 }
 

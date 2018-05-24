@@ -874,6 +874,7 @@ CREATE TABLE IF NOT EXISTS `learning_coursereport` (
   `sequence` int(3) NOT NULL DEFAULT '0',
   `source_of` enum('test','activity','scorm','final_vote','scoitem') NOT NULL DEFAULT 'test',
   `id_source` varchar(255) NOT NULL DEFAULT '0',
+  `show_in_coursereport` tinyint(1) NULL DEFAULT 1,
   PRIMARY KEY (`id_report`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
@@ -2808,6 +2809,7 @@ CREATE TABLE IF NOT EXISTS `learning_scorm_organizations` (
   `title` varchar(100) DEFAULT NULL,
   `nChild` int(11) NOT NULL DEFAULT '0',
   `nDescendant` int(11) NOT NULL DEFAULT '0',
+  `show_in_coursereport` tinyint(1) NULL DEFAULT 1,
   PRIMARY KEY (`idscorm_organization`),
   UNIQUE KEY `idsco_package_unique` (`org_identifier`,`idscorm_package`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
@@ -3029,7 +3031,7 @@ CREATE TABLE IF NOT EXISTS `learning_test` (
   `score_max` int(11) NOT NULL DEFAULT '0',
   `obj_type` varchar(45) DEFAULT 'test',
   `retain_answers_history` tinyint(1) NOT NULL DEFAULT '0',
-  `show_in_coursereport` tinyint(4) DEFAULT '0',
+  `show_in_coursereport` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`idTest`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 

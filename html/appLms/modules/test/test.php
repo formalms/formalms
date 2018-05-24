@@ -2222,7 +2222,6 @@ function coursereportMan ()
     require_once (_base_ . '/lib/lib.json.php');
 
     $idTest = importVar ('idTest' , true , 0);
-    $db = DbConn::getInstance ();
 
     $back_url = urldecode (importVar ('back_url'));
     $url_coded = htmlentities (urlencode ($back_url));

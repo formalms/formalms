@@ -15,13 +15,14 @@
             <col style="width: 75px">
             <col style="width: 75px">
             <col style="width: 75px">
+            <col style="width: 100px">
             <col style="width: 85px">
         </colgroup>
         <thead>
         <tr>
             <th colspan="2" class="transparent"></th>
             <th colspan="6">{{ translate('_INFO','coursereport') }}</th>
-            <th colspan="6">{{ translate('_DETAILS','standard') }}</th>
+            <th colspan="7">{{ translate('_DETAILS','standard') }}</th>
             <th class="transparent"></th>
         </tr>
         <tr>
@@ -38,62 +39,64 @@
             <td>{{ translate('_AVERANGE','standard') }}</td>
             <td>{{ translate('_MAX_SCORE','standard') }}</td>
             <td>{{ translate('_MIN_SCORE','standard') }}</td>
+            <td>{{ translate('_SHOW_IN_COURSEREPORT','test') }}</td>
             <td></td>
         </tr>
         </thead>
         <tbody class="course-sortable">
         {% for test in overview['tests'] %}
-            {% if test.showInDetail %}
-                <tr>
-                    <td class="handle"><i class="fa fa-sort"></i></td>
-                    <td class="name">{{ test.name }}</td>
-                    <td class="table-cell">{{ test.type }}</td>
-                    <td class="table-cell">{{ test.max }}</td>
-                    <td class="table-cell">{{ test.required }}</td>
-                    <td class="table-cell">{{ test.weight }}</td>
-                    {% if test.show %}
-                        <td class="text-center table-cell"><i class="fa fa-check"></i></td>
+            <tr>
+                <td class="handle"><i class="fa fa-sort"></i></td>
+                <td class="name">{{ test.name }}</td>
+                <td class="table-cell">{{ test.typeString }}</td>
+                <td class="table-cell">{{ test.max }}</td>
+                <td class="table-cell">{{ test.required }}</td>
+                <td class="table-cell">{{ test.weight }}</td>
+                {% if test.show %}
+                    <td class="text-center table-cell"><i class="fa fa-check"></i></td>
+                {% else %}
+                    <td class="text-center table-cell"><i class="fa fa-close"></i></td>
+                {% endif %}
+                {% if test.final %}
+                    <td class="text-center table-cell"><i class="fa fa-check"></i></td>
+                {% else %}
+                    <td class="text-center table-cell"><i class="fa fa-close"></i></td>
+                {% endif %}
+                <td class="table-cell">
+                    {% if test.passed.active %}
+                        <a href="{{ test.passed.link }}">{{ test.passed.value }}</a>
                     {% else %}
-                        <td class="text-center table-cell"><i class="fa fa-close"></i></td>
+                        {{ test.passed.value }}
                     {% endif %}
-                    {% if test.final %}
-                        <td class="text-center table-cell"><i class="fa fa-check"></i></td>
+                </td>
+                <td class="table-cell">
+                    {% if test.not_passed.active %}
+                        <a href="{{ test.not_passed.link }}">{{ test.not_passed.value }}</a>
                     {% else %}
-                        <td class="text-center table-cell"><i class="fa fa-close"></i></td>
+                        {{ test.not_passed.value }}
                     {% endif %}
-                    <td class="table-cell">
-                        {% if test.passed.active %}
-                            <a href="{{ test.passed.link }}">{{ test.passed.value }}</a>
-                        {% else %}
-                            {{ test.passed.value }}
+                </td>
+                <td class="table-cell">
+                    {% if test.not_checked.active %}
+                        <a href="{{ test.not_checked.link }}">{{ test.not_checked.value }}</a>
+                    {% else %}
+                        {{ test.not_checked.value }}
+                    {% endif %}
+                </td>
+                <td class="table-cell">{{ test.average }}</td>
+                <td class="table-cell">{{ test.max_score }}</td>
+                <td class="table-cell">{{ test.min_score }}</td>
+                <td class="table-cell">
+                    <input type="checkbox" data-value="{{ test.id }}" data-type="{{ test.type }}" {% if test.showInDetail %}checked{% endif %}>
+                </td>
+                <td class="actions">
+                    {% for action in test.actions %}
+                        {% if action.visible %}
+                            <a href="{{ action.link }}"><i class="fa fa-{{ action.icon }}"></i></a>
                         {% endif %}
-                    </td>
-                    <td class="table-cell">
-                        {% if test.not_passed.active %}
-                            <a href="{{ test.not_passed.link }}">{{ test.not_passed.value }}</a>
-                        {% else %}
-                            {{ test.not_passed.value }}
-                        {% endif %}
-                    </td>
-                    <td class="table-cell">
-                        {% if test.not_checked.active %}
-                            <a href="{{ test.not_checked.link }}">{{ test.not_checked.value }}</a>
-                        {% else %}
-                            {{ test.not_checked.value }}
-                        {% endif %}
-                    </td>
-                    <td class="table-cell">{{ test.average }}</td>
-                    <td class="table-cell">{{ test.max_score }}</td>
-                    <td class="table-cell">{{ test.min_score }}</td>
-                    <td class="actions">
-                        {% for action in test.actions %}
-                            {% if action.visible %}
-                                <a href="{{ action.link }}"><i class="fa fa-{{ action.icon }}"></i></a>
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                </tr>
-            {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
         {% endfor %}
         </tbody>
         <tfoot class="empty">

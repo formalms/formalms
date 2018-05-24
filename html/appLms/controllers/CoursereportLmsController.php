@@ -393,7 +393,7 @@ class CoursereportLmsController extends LmsController
 
 							$event = new \appLms\Events\Lms\TestCousereportEvent($testObj);
 
-							$type = ucfirst ($testObj->getObjectType ());
+							$type = $testObj->getObjectType ();
 							$id = $info_report->getIdSource ();
 							$name = $testObj->getTitle ();
 							$showInDetail = $tests_info[ $info_report->getIdSource () ][ 'show_in_coursereport' ] === '1' ? true : false;
@@ -441,8 +441,9 @@ class CoursereportLmsController extends LmsController
 							break;
 						case CoursereportLms::SOURCE_OF_SCOITEM: {
 
+                            $id = $info_report->getIdReport ();
 							$name = strip_tags ($info_report->getTitle ());
-							$type = ucfirst ($info_report->getSourceOf ());
+							$type = $info_report->getSourceOf ();
 
 							if ($mod_perm) {
 								//$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
@@ -470,7 +471,7 @@ class CoursereportLmsController extends LmsController
 
 							$id = $info_report->getIdReport ();
 							$name = strip_tags ($info_report->getTitle ());
-							$type = ucfirst ($info_report->getSourceOf ());
+							$type = $info_report->getSourceOf ();
 
 							$results_activity[] = array ( 'id' => $info_report->getSourceOf () . "_" . $info_report->getIdSource () , "name" => $name );
 
@@ -500,8 +501,9 @@ class CoursereportLmsController extends LmsController
 					$test = array (
 						'id' => $id ,
 						'name' => $name ,
-						'type' => $type ,
-						'max' => $info_report->getMaxScore () ,
+						'typeString' => ucfirst ($type) ,
+                        'type' => $type ,
+                        'max' => $info_report->getMaxScore () ,
 						'required' => $info_report->getRequiredScore () ,
 						'weight' => $info_report->getWeight () ,
 						'show' => $info_report->isShowToUser () ,
@@ -1151,6 +1153,55 @@ class CoursereportLmsController extends LmsController
 	{
 		echo $this->json->encode ($this->completeFieldListArray);
 	}
+
+    public function setVisibleInDetail(){
+
+        $idObj = Get::pReq ('idObj');
+        $typeObj = Get::pReq ('typeObj');
+        $show_in_coursereport = Get::pReq ('show_in_coursereport' , DOTY_INT , 0);
+
+        switch ($typeObj){
+            case CoursereportLms::SOURCE_OF_ACTIVITY:{
+
+            }
+            break;
+            case CoursereportLms::SOURCE_OF_SCOITEM:{
+
+                $scormObj = Learning_ScormOrg::load ($idObj);
+
+                $res = $scormObj->setVisibileInCoursereportDetail($show_in_coursereport);
+
+
+            }
+            break;
+            case CoursereportLms::SOURCE_OF_TEST:{
+
+                $testObj = Learning_Test::load ($idObj);
+
+                $res = $testObj->setVisibileInCoursereportDetail($show_in_coursereport);
+            }
+            break;
+            default:{
+
+            }
+            break;
+        }
+
+        if (! $res) {
+            $response = [
+                'status' => 500,
+                'error' => sql_error()
+            ];
+        }
+        else {
+
+            $response = [
+                'status' => 200
+            ];
+        }
+
+        echo $this->json->encode ($response);
+    }
 
 
 	public function testreport ()
