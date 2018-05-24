@@ -910,25 +910,31 @@ class UsermanagementAdm extends Model {
 
 	public function suspendUsers($users) {
 		$query = "UPDATE %adm_user SET valid=0 WHERE ";
-		if (is_array($users))
+		if (is_array($users)) {
 			if (count($users) > 0)
 				$query .= " idst IN (".implode(",", $users).")";
 			else
 				return true;
-		else
+		}
+		else {
 			$query .= " idst = ".(int)$users;
+		}
+
 		return $this->db->query($query) ? true : false;
 	}
 
 	public function unsuspendUsers($users) {
 		$query = "UPDATE %adm_user SET valid=1 WHERE ";
-		if (is_array($users))
+		if (is_array($users)) {
 			if (count($users) > 0)
 				$query .= " idst IN (".implode(",", $users).")";
 			else
 				return true;
-		else
+		}
+		else {
 			$query .= " idst = ".(int)$users;
+		}
+
 		return $this->db->query($query) ? true : false;
 	}
 

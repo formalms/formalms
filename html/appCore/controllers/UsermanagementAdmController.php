@@ -61,6 +61,34 @@ class UsermanagementAdmController extends AdmController {
 				}
 			}
 		}
+
+		$sql = "SELECT * FROM `audittrail_logs_events` WHERE track = 1 ORDER BY id ASC";
+		if ($query = sql_query($sql)) {
+			while($eventItem = sql_fetch_object($query)) {
+				\appCore\Events\DispatcherManager::addListener($eventItem->identifier, function($event) use ($eventItem) {
+					// Not register if exists
+					$sql = "SELECT COUNT(id) AS count FROM `audittrail_logs` WHERE created_at = NOW() LIMIT 1";
+					$query = sql_query($sql);
+					$test = sql_fetch_object($query);
+					if (!$test->count) {
+						// Not register if exists
+						$sql = "SELECT COUNT(id) AS count FROM `audittrail_logs` WHERE created_at = NOW() LIMIT 1";
+						$query = sql_query($sql);
+						$test = sql_fetch_object($query);
+						if (!$test->count) {
+							$data = json_encode($event->getData());
+							if ($user_id = (int)$_SESSION['public_area_idst']) {
+							    $sql = "
+							    	INSERT INTO `audittrail_logs` (`event_id`, `user_id`, `data`) 
+							    	VALUES ({$eventItem->id}, {$user_id}, '{$data}')
+								";
+							    $query = sql_query($sql);
+						    }
+					    }
+				    }
+				});
+			}
+		}
 	}
 
 	protected function _setSessionValue($index, $value) {
@@ -705,6 +733,11 @@ class UsermanagementAdmController extends AdmController {
 			}
 
 			$output = array();
+
+
+			$model = new UsermanagementAdm();
+			$user = $model->getProfileData($id_user);
+
 			if ($acl_man->deleteUser($id_user)) {
 				$output = array('success'=>true);
 				if (Get::sett('register_deleted_user', "off") == "on")
@@ -722,6 +755,10 @@ class UsermanagementAdmController extends AdmController {
 					}
 				}
 
+				// SET DELETE USER EVENT
+				$event = new \appCore\Events\Core\UsersManagementDeleteEvent();
+				$event->setUser($user);
+				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementDeleteEvent::EVENT_NAME, $event);
 			} else {
 				$output = array('success'=>false, 'message'=>'Error: unable to delete user #'.$id_user.'.');
 			}
@@ -748,7 +785,22 @@ class UsermanagementAdmController extends AdmController {
 			$users = str_replace(',,', ',', $users); //adjust commas
 			$users_arr = explode(',', $users);
 			$count_users = count($users_arr);
+
+			$model = new UsermanagementAdm();
+			$users = [];
+			foreach ($users_arr as $idst) {
+				if ($model->getProfileData($idst)) {
+					$users[] = $model->getProfileData($idst);
+				}
+			}
+
 			$res = $this->model->deleteUsers($users_arr);
+
+			// SET DELETE USER MULTIPLE EVENT
+			$event = new \appCore\Events\Core\UsersManagementDeleteEvent();
+			$event->setUsers($users);
+			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementDeleteEvent::EVENT_NAME, $event);
+
 			if (is_array($res)) {
 				$output['success'] = true;
 				$output['deleted'] = count($res);
@@ -791,13 +843,26 @@ class UsermanagementAdmController extends AdmController {
 		$output = array();
 		$action = Get::req('action', DOTY_INT, -1);
 		if ($idst>0 && ($action==0 || $action==1)) {
+			$model = new UsermanagementAdm();
+			$user = $model->getProfileData($idst);
+
 			if ($action==0) {
 				$output['success'] = $this->model->suspendUsers($idst);
 				$output['message'] = UIFeedback::pinfo(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
+
+				// SET SUSPAND USER EVENT
+				$event = new \appCore\Events\Core\UsersManagementSuspendEvent();
+				$event->setUser($user);
+				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementSuspendEvent::EVENT_NAME, $event);
 			}
 			else {
 				$output['success'] = $this->model->unsuspendUsers($idst);
 				$output['message'] = UIFeedback::pinfo(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
+
+				// SET UNSUSPAND USER EVENT
+				$event = new \appCore\Events\Core\UsersManagementUnsuspendEvent();
+				$event->setUser($user);
+				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementUnsuspendEvent::EVENT_NAME, $event);
 			}
 		} else {
 			$output['success'] = false;
@@ -819,10 +884,29 @@ class UsermanagementAdmController extends AdmController {
 		$action = Get::req('action', DOTY_INT, -1);
 		if ($users!="" && ($action==0 || $action==1)) {
 			$arr_users = explode(',', $users);
-			if ($action==0)
+
+			$model = new UsermanagementAdm();
+			$users = [];
+			foreach ($arr_users as $idst) {
+				$users[] = $model->getProfileData($idst);
+			}
+
+			if ($action==0) {
 				$output['success'] = $this->model->suspendUsers($arr_users);
-			else
+
+				// SET SUSPAND USERS MULTIPLE EVENT
+				$event = new \appCore\Events\Core\UsersManagementSuspendEvent();
+				$event->setUsers($users);
+				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementSuspendEvent::EVENT_NAME, $event);
+			}
+			else {
 				$output['success'] = $this->model->unsuspendUsers($arr_users);
+
+				// SET UNSUSPAND USERS MULTIPLE EVENT
+				$event = new \appCore\Events\Core\UsersManagementUnsuspendEvent();
+				$event->setUsers($users);
+				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementUnsuspendEvent::EVENT_NAME, $event);
+			}
 		} else {
 			$output['success'] = false;
 			$output['message'] = Lang::t('_EMPTY_SELECTION', 'admin_directory');
@@ -1336,6 +1420,15 @@ class UsermanagementAdmController extends AdmController {
 
 				$res = $this->model->assignUsers($id, $selection);
 
+				$model = new UsermanagementAdm();
+				$users = [];
+				foreach ($selection as $idst) {
+					$users[] = $model->getProfileData($idst);
+				}
+				$event = new \appCore\Events\Core\UsersManagementOrgChartAddEvent();			
+				$event->setUsers($users);
+				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementOrgChartAddEvent::EVENT_NAME, $event);
+
 				if($res) {
 					$enrollrules = new EnrollrulesAlms();
 					$enrollrules->applyRulesMultiLang('_LOG_USERS_TO_ORGCHART', $selection, $id);
@@ -1574,6 +1667,12 @@ class UsermanagementAdmController extends AdmController {
 			$acl_man->removeFromGroup($idst_org, $id_user);
 			$acl_man->removeFromGroup($idst_orgd, $id_user);
 			$success = true;
+
+			$event = new \appCore\Events\Core\UsersManagementOrgChartRemoveEvent();
+			$model = new UsermanagementAdm();
+			$user = $model->getProfileData($id_user);
+			$event->setUser($user);
+			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementOrgChartRemoveEvent::EVENT_NAME, $event);
 		}
 		$output = array('success' => $success);
 		echo $this->json->encode($output);
@@ -1595,7 +1694,7 @@ class UsermanagementAdmController extends AdmController {
 			$output['count'] = 0;
 			$output['list'] = array();
 		}
-		if ($users != "" && $id_org > 0) {
+		if ($users != "" && $id_org >= 0) {
 			$acl_man = Docebo::user()->getAclManager();
 			$idst_org = $acl_man->getGroupST('oc_'.$id_org);
 			$idst_orgd = $acl_man->getGroupST('ocd_'.$id_org);
@@ -1610,6 +1709,15 @@ class UsermanagementAdmController extends AdmController {
 			$output['success'] = true;
 			$output['count'] = count($arr_removed);
 			$output['list'] = $arr_removed;
+
+			$model = new UsermanagementAdm();
+			$users = [];
+			foreach ($arr_users as $idst) {
+				$users[] = $model->getProfileData($idst);
+			}
+			$event = new \appCore\Events\Core\UsersManagementOrgChartRemoveEvent();			
+			$event->setUsers($users);
+			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementOrgChartRemoveEvent::EVENT_NAME, $event);
 		}
 		echo $this->json->encode($output);
 	}
