@@ -2735,7 +2735,7 @@ Password: [password]]]></key>
         <key id="test&amp;_QUEST_UPLOAD" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Carica un file]]></key>
         <key id="test&amp;_RESTART_INFO" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Riesecuzione test dall'inizio]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Seleziona pagina]]></key>
-        <key id="test&amp;_SHOW_IN_COURSEREPORT" attributes="" save_date="2018-01-12 15:47:19"><![CDATA[Mostra in Dettaglio Registro Valutazioni]]></key>
+        <key id="test&amp;_SHOW_IN_DETAIL" attributes="" save_date="2018-01-12 15:47:19"><![CDATA[Mostra in Dettaglio Registro Valutazioni]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Sospendi il test dopo il seguente numero di tentativi sbagliati]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Sospendi la possibilità di compilare il test per il numero di ore seguenti]]></key>
         <key id="test&amp;_SUSPENSION_PREREQUISITES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Dopo la sospensione del test richiedi un nuovo completamento dei prerequisiti del test per effettuare una nuova compilazione]]></key>

@@ -245,16 +245,6 @@ class Learning_ScormOrg extends Learning_Object {
 		}
 		return $output;
 	}
-
-    public function setVisibileInCoursereportDetail($visible){
-
-        $queryString = "UPDATE %lms_scorm_organizations SET show_in_coursereport = '" . ($visible ? 1 : 0) . "' WHERE idTest = '$this->id'";
-
-        $queryResponse = sql_query ($queryString);
-
-        return $queryResponse;
-    }
-
 }
 
 ?>

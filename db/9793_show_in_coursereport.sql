@@ -1,1 +1,0 @@
-ALTER TABLE `learning_test` ADD `show_in_coursereport` TINYINT NULL DEFAULT '0' AFTER `retain_answers_history`

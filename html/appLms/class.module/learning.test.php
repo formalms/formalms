@@ -447,16 +447,6 @@ class Learning_Test extends Learning_Object {
 	{
 		$this->idOrg = $idOrg;
 	}
-
-    public function setVisibileInCoursereportDetail($visible){
-
-        $queryString = "UPDATE %lms_test SET show_in_coursereport = '" . ($visible ? 1 : 0) . "' WHERE idTest = '$this->id'";
-
-        $queryResponse = sql_query ($queryString);
-
-        return $queryResponse;
-	}
-
 }
 
 ?>

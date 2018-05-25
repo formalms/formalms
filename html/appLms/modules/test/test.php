@@ -2226,8 +2226,6 @@ function coursereportMan ()
     $back_url = urldecode (importVar ('back_url'));
     $url_coded = htmlentities (urlencode ($back_url));
 
-    list($show_in_coursereport) = sql_fetch_row (sql_query ("SELECT show_in_coursereport FROM %lms_test WHERE idTest = '" . $idTest . "'"));
-
     $GLOBALS[ 'page' ]->add (
         getTitleArea ($lang->def ('_TEST_SECTION') , 'test')
         . '<div class="std_block">'
@@ -2236,14 +2234,13 @@ function coursereportMan ()
 
         . Form::openForm ('coursereportman' , 'index.php?modname=test&amp;op=updatecoursereport')
 
-
         . Form::getOpenFieldset ($lang->def ('_TEST_MM_FIVE'))
-        . Form::getCheckBox ($lang->def ('_SHOW_IN_COURSEREPORT') , 'show_in_coursereport' , 'show_in_coursereport' , 1 , $show_in_coursereport)
         . Form::getHidden ('idTest' , 'idTest' , $idTest)
         . Form::getHidden ('back_url' , 'back_url' , $url_coded)
         . Form::getCloseFieldset ()
 
         . '<br />' , 'content');
+    
     $GLOBALS[ 'page' ]->add (
         '<div class="align_right">'
         . '<input class="button" type="submit" value="' . $lang->def ('_SAVE') . '" />'
@@ -2263,17 +2260,12 @@ function updatecoursereport ()
     $back_url = urldecode (importVar ('back_url'));
     $url_coded = htmlentities (urlencode ($back_url));
 
-    $show_in_coursereport = Get::pReq ('show_in_coursereport' , DOTY_INT , 0);
 
-    $queryString = "UPDATE %lms_test SET show_in_coursereport = '" . ($show_in_coursereport ? 1 : 0) . "' WHERE idTest = '$idTest'";
-
-    $queryResponse = sql_query ($queryString);
-
-    if (! $queryResponse) {
+    /*if (! $queryResponse) {
         errorCommunication ($lang->def ('_OPERATION_FAILURE')
             . getBackUi ('index.php?modname=test&amp;op=deftime&amp;idTest=' . $idTest . '&amp;back_url=' . $url_coded , $lang->def ('_BACK')));
         return;
-    }
+    }*/
 
     Util::jump_to ('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded);
 }

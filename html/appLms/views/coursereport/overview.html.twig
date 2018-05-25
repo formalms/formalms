@@ -39,7 +39,7 @@
             <td>{{ translate('_AVERANGE','standard') }}</td>
             <td>{{ translate('_MAX_SCORE','standard') }}</td>
             <td>{{ translate('_MIN_SCORE','standard') }}</td>
-            <td>{{ translate('_SHOW_IN_COURSEREPORT','test') }}</td>
+            <td>{{ translate('_SHOW_IN_DETAIL','test') }}</td>
             <td></td>
         </tr>
         </thead>
@@ -87,7 +87,7 @@
                 <td class="table-cell">{{ test.max_score }}</td>
                 <td class="table-cell">{{ test.min_score }}</td>
                 <td class="table-cell">
-                    <input type="checkbox" data-value="{{ test.id }}" data-type="{{ test.type }}" {% if test.showInDetail %}checked{% endif %}>
+                    <input type="checkbox" data-value="{{ test.idReport }}" {% if test.showInDetail %}checked{% endif %}>
                 </td>
                 <td class="actions">
                     {% for action in test.actions %}
