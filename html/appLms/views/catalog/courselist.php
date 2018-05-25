@@ -231,8 +231,8 @@ function InsertOption(&$row){
                     <i class="glyphicon glyphicon-option-horizontal"></i> 
                 </div>   
                 <ul class="dropdown-menu" aria-labelledby="courseBoxOptions">';
-                    $html .= "<li>option1</li>";
-                    $html .= '<li>option2</li>';
+                    $html .= "<li><a href='javascript:void(0);'>option1</a></li>";
+                    $html .= '<li><a href=\'javascript:void(0);\'>option2</a></li>';
           $html .= '</ul></div>';
 
       return $html;

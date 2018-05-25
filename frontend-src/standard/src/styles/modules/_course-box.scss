@@ -197,6 +197,7 @@
     right: 15px;
   }
   overflow: hidden;
+  position: relative;
 
   &:first-child {
     height: 70px;
@@ -332,6 +333,15 @@
 }
 
 .course-box__options {
+  position: absolute;
+  top: 10px;
+  right: 30px;
+
+  @include breakpoint($ipad) {
+    top: 20px;
+    right: 30px;
+  }
+
   .dropdown-toggle {
     width: 30px;
     height: 30px;
