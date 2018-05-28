@@ -49,6 +49,22 @@ class SubscriptionAlmsController extends AlmsController {
 		$this->link_edition		= 'alms/edition';
 		$this->link_classroom	= 'alms/classroom';
 
+		// Event listeners
+		$sql = "SELECT * FROM `audittrail_logs_events` WHERE track = 1 ORDER BY id ASC";
+		$query = sql_query($sql);
+		while($eventItem = sql_fetch_object($query)) {
+			\appCore\Events\DispatcherManager::addListener($eventItem->identifier, function($event) use ($eventItem) {
+				$data = json_encode($event->getData());
+				if ($user_id = (int)$_SESSION['public_area_idst']) {
+				    $sql = "
+				    	INSERT INTO `audittrail_logs` (`event_id`, `user_id`, `data`) 
+				    	VALUES ({$eventItem->id}, {$user_id}, '{$data}')
+					";
+				    $query = sql_query($sql);
+			    }
+			});
+		}
+
 		$this->checkAdminLimit();
 	}
 
@@ -505,14 +521,29 @@ class SubscriptionAlmsController extends AlmsController {
                         }
                         
 			$this->db->start_transaction();
+
+			// To track event data
+			$userModel = new UsermanagementAdm();
+			$users = [];
+
 			while (list($id_user, $lv_sel) = each($user_selected)) {
 				if (!$limited_subscribe || $max_subscribe) {
 					if ($lv_sel != 0) {
 						//$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
 						$this->_addToCourseGroup($level_idst[$lv_sel], $id_user);
 
-						if ($model->subscribeUser($id_user, $lv_sel, $waiting, $date_begin_validity, $date_expire_validity))
+						if ($model->subscribeUser($id_user, $lv_sel, $waiting, $date_begin_validity, $date_expire_validity)) {
 							$max_subscribe--;
+
+							$data[] = [
+								'user' => $userModel->getProfileData($id_user),
+								'level' => $lv_sel,
+								'waiting' => $waiting,
+								'course_info' => $course_info,
+								'date_begin_validity' => $date_begin_validity,
+								'date_expire_validity' => $date_expire_validity,
+							];
+						}
 						else
 							$this->acl_man->removeFromGroup($level_idst[$lv_sel], $id_user);
 					}
@@ -520,6 +551,12 @@ class SubscriptionAlmsController extends AlmsController {
 			} //End While
 			$this->db->commit();
 
+			// SET ADD STANDARD (multiple) SUBSCRIPTION EVENT
+			if ($data) {
+				$event = new \appCore\Events\Core\Courses\CourseSubscriptionAddStandardEvent();
+				$event->setData($data);
+				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionAddStandardEvent::EVENT_NAME, $event);
+			}
 
 			// Save limit preference for admin
 			if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
@@ -677,6 +714,15 @@ class SubscriptionAlmsController extends AlmsController {
 			if ($this->id_edition == 0 && $this->id_date == 0)
 				$this->acl_man->removeFromGroup($level_idst[$level], $id_user);
 			$res = array('success' => true);
+
+			// SET REMOVE SUBSCRIPTION EVENT
+			$event = new \appCore\Events\Core\Courses\CourseSubscriptionRemoveEvent();
+			$userModel = new UsermanagementAdm();
+  			$user = $userModel->getProfileData($id_user);
+			$event->setUser($user);
+			$event->setLevel($level);
+			$event->setCourse($docebo_course->course_info);
+			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionRemoveEvent::EVENT_NAME, $event);
 		} else {
 			$res = array('success' => false);
 		}
@@ -745,12 +791,16 @@ class SubscriptionAlmsController extends AlmsController {
 		if ($new_value === $old_value) {
 			echo $this->json->encode(array('succes' => true));
 		} else {
+			$userModel = new UsermanagementAdm();
+  			$user = $userModel->getProfileData($id_user);
+
+			require_once(_lms_.'/lib/lib.course.php');
+			$docebo_course = new DoceboCourse($this->id_course);
 
 			switch ($col) {
 				case 'level': {
 						require_once(_lms_ . '/lib/lib.course.php');
 
-						$docebo_course = new DoceboCourse($this->id_course);
 						$level_idst = & $docebo_course->getCourseLevel($this->id_course);
 						if (count($level_idst) == 0 || $level_idst[1] == '')
 							$level_idst = & $docebo_course->createCourseLevel($this->id_course);
@@ -768,8 +818,16 @@ class SubscriptionAlmsController extends AlmsController {
 						}
 						$this->acl_man->addToGroup($level_idst[$new_value], $id_user);
 
-						if ($this->model->updateUserLevel($id_user, $new_value))
+						if ($this->model->updateUserLevel($id_user, $new_value)) {
 							echo $this->json->encode(array('succes' => true));
+
+							// SET EDIT LEVEL SUBSCRIPTION EVENT
+							$event = new \appCore\Events\Core\Courses\CourseSubscriptionEditLevelEvent();
+							$event->setUser($user);
+							$event->setLevel($level);
+							$event->setCourse($docebo_course->course_info);
+							\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionEditLevelEvent::EVENT_NAME, $event);
+						}
 						else
 							echo $this->json->encode(array('succes' => false));
 					} break;
@@ -782,8 +840,16 @@ class SubscriptionAlmsController extends AlmsController {
 							break;
 						}
 
-						if ($this->model->updateUserStatus($id_user, $new_value))
+						if ($this->model->updateUserStatus($id_user, $new_value)) {
 							echo $this->json->encode(array('succes' => true));
+
+							// SET EDIT STATUS SUBSCRIPTION EVENT
+							$event = new \appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent();
+							$event->setUser($user);
+							$event->setStatus(['id' => $new_value, 'name' => $status[$new_value]]);
+							$event->setCourse($docebo_course->course_info);
+							\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent::EVENT_NAME, $event);
+						}
 						else
 							echo $this->json->encode(array('succes' => false));
 					} break;
@@ -909,6 +975,15 @@ class SubscriptionAlmsController extends AlmsController {
 
 				//check if we have selected send alert checkbox
 				$send_alert = Get::req('send_alert', DOTY_INT, 0) > 0;
+
+				// SET ADD FAST SUBSCRIPTION EVENT
+				$event = new \appCore\Events\Core\Courses\CourseSubscriptionAddFastEvent();
+				$userModel = new UsermanagementAdm();
+	  			$user = $userModel->getProfileData($id_user);
+				$event->setUser($user);
+				$event->setLevel($level);
+				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionAddFastEvent::EVENT_NAME, $event);
+
 				if ($send_alert) {
 					require_once(_base_.'/lib/lib.eventmanager.php');
 
@@ -1106,13 +1181,32 @@ class SubscriptionAlmsController extends AlmsController {
 					$message = "";
 					if (!$res1)
 						$message .= 'Unable to change level;'; //TO DO: make translation
- if (!$res2)
+ 					if (!$res2)
 						$message .= 'Unable to change status;'; //TO DO: make translation
- if (!$res3)
+					if (!$res3)
 						$message .= 'Unable to change date begin;'; //TO DO: make translation
- if (!$res4)
+					if (!$res4)
 						$message .= 'Unable to change date expire;'; //TO DO: make translation
- $output['message'] = $message;
+ 					$output['message'] = $message;
+				} else {
+					// SET EDIT MULTI SUBSCRIPTION EVENT
+					$event = new \appCore\Events\Core\Courses\CourseSubscriptionEditMultiEvent();
+
+					$users = [];
+					foreach ($users_list as $idst) {
+						$query = "SELECT * FROM core_user as u WHERE u.idst=".(int)$idst;
+						$res = $this->db->query($query);
+						$users[] = $this->db->fetch_obj($res);
+					}
+					$event->setUsers($users);
+					if ($set_level > 0) {
+						$event->setLevel($new_level);
+					}
+					if ($set_status > 0 && $new_status) {
+						$status_list = $this->model->getUserStatusList();
+						$event->setStatus(['id' => $new_status, 'name' => $status_list[$new_status]]);
+					}
+					\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionEditMultiEvent::EVENT_NAME, $event);
 				}
 			}
 		}
