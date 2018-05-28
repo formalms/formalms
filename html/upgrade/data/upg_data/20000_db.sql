@@ -764,9 +764,6 @@ CREATE TABLE IF NOT EXISTS `core_requests` (
 
 UPDATE `core_lang_text` SET `text_key` = 'course_report' WHERE `core_lang_text`.`text_key` = 'courses_report';
 
--- 9793_show_in_coursereport.sql 
-ALTER TABLE `learning_test` ADD `show_in_coursereport` TINYINT NULL DEFAULT '0' AFTER `retain_answers_history`;
-
 -- reset-twig-cache.sql 
 INSERT IGNORE INTO core_setting (param_name, param_value, value_type, max_size, pack, regroup, sequence, param_load, hide_in_modify, extra_info)
 											VALUES ('Clear_Twig_Cache','index.php?r=adm/setting/clearTwigCache','button',2,'Twig Cache',8,30,0,0,'');
@@ -1009,6 +1006,20 @@ delete from core_lang_text where text_key='_COURSE_AUTOREGISTRATION';
 ALTER TABLE `core_task` DROP PRIMARY KEY, ADD PRIMARY KEY( `sequence`);
 
 ALTER TABLE `core_task` CHANGE `sequence` `sequence` INT(3) NOT NULL AUTO_INCREMENT;
+
+-- 17303 test activities and scorm show in coursereport
+ALTER TABLE `learning_coursereport` ADD COLUMN `show_in_detail` tinyint(1) NULL DEFAULT 1;
+ALTER TABLE `learning_test` DROP COLUMN `show_in_coursereport`;
+
+INSERT INTO `core_lang_text` (`id_text` ,`text_key` ,`text_module` ,`text_attributes`) VALUES (NULL , '_SHOW_IN_DETAIL', 'test', '');
+INSERT INTO `core_lang_translation` ( `id_text`, `lang_code`,  `translation_text`, `save_date` )
+  SELECT lt.id_text, l.lang_code, t1.translation_text as translation_text, now() AS save_date
+  FROM core_lang_text lt , core_lang_language l ,
+    ( SELECT lt.id_text, t.lang_code, t.translation_text
+      FROM   core_lang_text lt, core_lang_translation t
+      WHERE t.id_text = lt.id_text AND lt.text_key ='_SHOW_IN_DETAIL'  AND lt.text_module = 'test'  ) t1
+  WHERE lt.text_key = '_SHOW_IN_DETAIL' AND lt.text_module = 'test' AND t1.lang_code = l.lang_code
+;
 
 -- ------------------------------------------------------------------
 
