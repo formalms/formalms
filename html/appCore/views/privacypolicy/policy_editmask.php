@@ -11,7 +11,7 @@ if (isset($id_policy)) {
 echo Form::openForm($_form_id, $_form_action);
 
 echo Form::getTextfield(Lang::t('_NAME', 'standard'), 'policy_name', 'name', 255, (isset($id_policy) && isset($name) ? $name : ""));
-echo Form::getCheckBox(Lang::t('_SET_AS_DEFAULT', 'standard'), 'is_default', 'is_default', 1, false);
+echo Form::getCheckBox(Lang::t('_SET_AS_DEFAULT', 'standard'), 'is_default', 'is_default', 1, ($is_default == 1 ? true : false) );
 echo Form::getCheckBox(Lang::t('_RESET_POLICY', 'standard'), 'reset_policy', 'reset_policy', 1, false);
 
 //if we are editing an existent policy, print its id

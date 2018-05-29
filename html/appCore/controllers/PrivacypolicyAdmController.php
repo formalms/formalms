@@ -222,6 +222,7 @@ class PrivacypolicyAdmController extends AdmController {
 		$this->render('policy_editmask', array(
 			'id_policy' => $id_policy,
 			'name' => $info->name,
+			'is_default' => $info->is_default,
 			'translations' => $info->translations
 		));
 

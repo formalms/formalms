@@ -188,6 +188,8 @@ class PrivacypolicyAdm extends Model {
 		}
 
 		if ($is_default == 1){
+			$query = "UPDATE %adm_privacypolicy SET is_default = 0";
+			$res = $this->db->query($query);
 			$query = "UPDATE %adm_privacypolicy SET is_default = 1 WHERE id_policy = ".(int)$id_policy;
 			$res = $this->db->query($query);
 		}
@@ -230,6 +232,15 @@ class PrivacypolicyAdm extends Model {
 		return $output;
 	}
 
+	public function getPolicyIsDefault($id_policy) {
+		$output = false;
+		$query = "SELECT is_default FROM %adm_privacypolicy WHERE id_policy=".(int)$id_policy;
+		$res = $this->db->query($query);
+		if ($res && $this->db->num_rows($res)>0) {
+			list($output) = $this->db->fetch_row($res);
+		}
+		return $output;
+	}
 
 	public function getPolicyTranslations($id_policy) {
 		$output = false;
@@ -257,6 +268,7 @@ class PrivacypolicyAdm extends Model {
 		$output = new stdClass();
 		$output->id_policy = $id_policy;
 		$output->name = $this->getPolicyName($id_policy);
+		$output->is_default = $this->getPolicyIsDefault($id_policy);
 		$output->translations = $this->getPolicyTranslations($id_policy);
 		return $output;
 	}

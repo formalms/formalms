@@ -211,4 +211,14 @@ PrivacyPolicies.init({
 	}
 });
 
+$(document).on("click", "#reset_policy", function(event){
+	if($("#reset_policy")[0].checked){
+		if(!$("#reset_policy").attr("checked")){
+			if(!confirm("<?php echo Lang::t('_AREYOUSURE','standard'); ?>")){
+				event.preventDefault()
+			}
+		}
+	}
+})
+
 </script>
