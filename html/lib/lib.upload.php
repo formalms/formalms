@@ -346,7 +346,7 @@ function sl_upload_cgi( $srcFile, $dstFile ) {
  function sl_unlink( $path ) {
      $uploadType = Get::cfg('uploadType', null);
 
-     if( $uploadType == "fs" || $uploadType == null ) {
+     if( $uploadType == "fs" || $uploadType == "ftp" || $uploadType == null ) {
          if( !file_exists($GLOBALS['where_files_relative'].$path) ) return true;
          return @unlink($GLOBALS['where_files_relative'].$path);
      } else {
