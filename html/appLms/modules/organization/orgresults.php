@@ -27,134 +27,159 @@ function decodeSessionTime($stime) {
 
 function getCompilationTable($id_user, $id_test)
 {
-	require_once(_base_.'/lib/lib.table.php');
+    require_once(_base_.'/lib/lib.table.php');
+    require_once($GLOBALS['where_lms'].'/lib/lib.param.php' );
+    require_once($GLOBALS['where_lms'].'/class.module/track.test.php');
+    require_once($GLOBALS['where_lms'].'/lib/lib.test.php' );
 
-	if(isset($_GET['back']) && $_GET['back'])
-		$back = getBackUi( 'index.php?modname=course&amp;op=mycourses&amp;sop=unregistercourse' , Lang::t('_BACK', 'standard', 'framework') );
-	else
-		$back = getBackUi( 'index.php?modname=organization' , Lang::t('_BACK', 'standard', 'framework') );
-	
-	// Parch per link in reportcard
-	if(isset($_GET['back']) && $_GET['back'] && $_GET['back'] == "gradebook" )
-		$back = getBackUi( 'index.php?modname=gradebook&op=showgrade' , Lang::t('_BACK', 'standard', 'framework') );
-	
-	$query =	"SELECT *"
-				." FROM %lms_testtrack"
-				." WHERE idTest = ".(int)$id_test
-				." AND idUser = ".(int)$id_user;
+    	$test_man       = new TestManagement($id_test);
 
-	$result = sql_query($query);
 
-	cout(	getTitleArea('')
-			.'<div class="std_block">'
-			.$back, 'content');
+    if(isset($_GET['back']) && $_GET['back'])
+        $back = getBackUi( 'index.php?modname=course&amp;op=mycourses&amp;sop=unregistercourse' , Lang::t('_BACK', 'standard', 'framework') );
+    else
+        $back = getBackUi( 'index.php?modname=organization' , Lang::t('_BACK', 'standard', 'framework') );
 
-	if(sql_num_rows($result) > 0)
-	{
-		$track_info = sql_fetch_assoc($result);
+    // Parch per link in reportcard
+    if(isset($_GET['back']) && $_GET['back'] && $_GET['back'] == "gradebook" )
+        $back = getBackUi( 'index.php?modname=gradebook&op=showgrade' , Lang::t('_BACK', 'standard', 'framework') );
 
-		$query =	"SELECT *"
-					." FROM %lms_test"
-					." WHERE idTest = ".(int)$id_test;
+    $query =    "SELECT *"
+                ." FROM %lms_testtrack"
+                ." WHERE idTest = ".(int)$id_test
+                ." AND idUser = ".(int)$id_user;
 
-		$test_info = sql_fetch_assoc(sql_query($query));
+    $result = sql_query($query);
 
-		cout(	'<b>'.Lang::t('_DATE', 'organization').':</b> '.Format::date($track_info['date_end_attempt'], 'datetime').'<br/>'
-				.'<b>'.Lang::t('_SCORE', 'organization').':</b> '.($track_info['score'] == '' ? '0' : $track_info['score']).'<br/>', 'content');
+    cout(   getTitleArea('')
+            .'<div class="std_block">'
+            .$back, 'content');
 
-		$query =	"SELECT date_attempt, score"
-					." FROM %lms_testtrack_times"
-					." WHERE idTrack = ".(int)$track_info['idTrack'];
+    if(sql_num_rows($result) > 0)
+    {
+      $track_info = sql_fetch_assoc($result);
+      $play_man       = new PlayTestManagement($id_test, Docebo::user()->getIdst(), $track_info['idTrack'], $test_man);
+      $test_info      = $test_man->getTestAllInfo();
+      $score_status   = $play_man->getScoreStatus();
 
-		$result = sql_query($query);
+        if ($score_status == 'passed') $incomplete = FALSE;
+        elseif ($score_status == 'valid') {
 
-		if(sql_num_rows($result) > 1)
-		{
-			cout('<div id="hystoric">', 'content');
 
-			$tb = new Table(0, Lang::t('_HYSTORIC_TABLE', 'organization'), Lang::t('_HYSTORIC_TABLE', 'organization'));
+            if ($track_info['score'] >= $test_info['point_required'])
+                $incomplete = FALSE;
+            else
+                $incomplete = TRUE;
+        } else {
+            $incomplete = TRUE;
+        }
+        $show_solution = false;
+        if( $test_info['show_solution'] == 1 )
+            $show_solution = true;
+        elseif($test_info['show_solution'] == 2 && !$incomplete )
+            $show_solution = true;
+        cout(   '<b>'.Lang::t('_DATE', 'organization').':</b> '.Format::date($track_info['date_end_attempt'], 'datetime').'<br/>'
+                .'<b>'.Lang::t('_SCORE', 'organization').':</b> '.($track_info['score'] == '' ? '0' : $track_info['score']).'<br/>', 'content');
 
-			$tb_h = array(Lang::t('_DATE', 'organization'), Lang::t('_SCORE', 'organization'));
-			$tb_s = array('align-center', 'align-center');
+        $query =    "SELECT date_attempt, score"
+                    ." FROM %lms_testtrack_times"
+                    ." WHERE idTrack = ".(int)$track_info['idTrack'];
 
-			$tb->setColsStyle($tb_s);
-			$tb->addHead($tb_h);
+        $result = sql_query($query);
 
-			while($row = sql_fetch_assoc($result))
-				$tb->addBody(array(Format::date($row['date_attempt'], 'datetime'), $row['score']));
+        if(sql_num_rows($result) > 1)
+        {
+            cout('<div id="hystoric">', 'content');
 
-			cout(	$tb->getTable()
-					.'</div>', 'content');
-		}
+            $tb = new Table(0, Lang::t('_HYSTORIC_TABLE', 'organization'), Lang::t('_HYSTORIC_TABLE', 'organization'));
 
-		if($test_info['show_doanswer'] == 1)
-		{
-			cout('<br/><br/>', 'content');
+            $tb_h = array(Lang::t('_DATE', 'organization'), Lang::t('_SCORE', 'organization'));
+            $tb_s = array('align-center', 'align-center');
 
-			$re_visu_quest = sql_query("SELECT idQuest
-			FROM %lms_testtrack_quest
-			WHERE idTrack = '".(int)$track_info['idTrack']."' ");
+            $tb->setColsStyle($tb_s);
+            $tb->addHead($tb_h);
 
-			$quest_see = array();
-			while(list($id_q) = sql_fetch_row($re_visu_quest))
-				$quest_see[] = $id_q;
+            while($row = sql_fetch_assoc($result))
+                $tb->addBody(array(Format::date($row['date_attempt'], 'datetime'), $row['score']));
 
-			$query_question = "
-			SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
-			FROM %lms_testquest AS q JOIN %lms_quest_type AS t
-			WHERE q.idTest = '".$id_test."' AND q.type_quest = t.type_quest AND q.idQuest IN (".implode($quest_see, ',').")
-				 AND q.type_quest <> 'break_page' AND q.type_quest <> 'title'
-			ORDER BY q.sequence";
+            cout(   $tb->getTable()
+                    .'</div>', 'content');
+        }
+        $query_passed = "SELECT status FROM %lms_commontrack WHERE idTrack = ".(int)$track_info['idTrack']." AND objectType = 'test' AND idUser = ".(int)$id_user;
+        $result_passed = sql_query($query_passed);
+        $test_passed = false;
+        if(sql_num_rows($result_passed)>0)
+            {
+                list($test_status) = sql_fetch_row($result_passed);
+                if ($test_status == "passed")
+                    $test_passed = true;
+            }
+        if($test_info['show_doanswer'] == 1 || ($test_info['show_doanswer'] == 2 && $test_passed ))
+        {
+            $re_visu_quest = sql_query("SELECT idQuest
+            FROM %lms_testtrack_quest
+            WHERE idTrack = '".(int)$track_info['idTrack']."' ");
 
-			$reQuest = sql_query($query_question);
+            $quest_see = array();
+            while(list($id_q) = sql_fetch_row($re_visu_quest))
+                $quest_see[] = $id_q;
 
-			cout('<div class="test_answer_space">', 'content');
+            $query_question = "
+            SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
+            FROM %lms_testquest AS q JOIN %lms_quest_type AS t
+            WHERE q.idTest = '".$id_test."' AND q.type_quest = t.type_quest AND q.idQuest IN (".implode($quest_see, ',').")
+                 AND q.type_quest <> 'break_page' AND q.type_quest <> 'title'
+            ORDER BY q.sequence";
 
-			$quest_sequence_number = 1;
+            $reQuest = sql_query($query_question);
 
-			while(list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest))
-			{
+            cout('<div class="test_answer_space">', 'content');
+
+            $quest_sequence_number = 1;
+
+            while(list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest))
+            {
 				require_once(Docebo::inc(_folder_lms_.'/modules/question/'.$type_file));
-				$quest_obj = eval("return new $type_class( $idQuest );");
+                $quest_obj = eval("return new $type_class( $idQuest );");
 
-				$review = $quest_obj->displayUserResult( 	$track_info['idTrack'],
-															($type_quest != 'title' ? $quest_sequence_number++ : $quest_sequence_number),
-															$test_info['show_solution'] );
+                $review = $quest_obj->displayUserResult(    $track_info['idTrack'],
+                                                            ($type_quest != 'title' ? $quest_sequence_number++ : $quest_sequence_number),
+                                                            $show_solution );
 
-				cout(	'<div class="test_quest_review_container">'
-						.$review['quest'], 'content');
+                cout(   '<div class="test_quest_review_container">'
+                        .$review['quest'], 'content');
 
-				if($review['score'] !== false)
-				{
-					cout(	'<div class="test_answer_comment">'
-							.'<div class="test_score_note">'.Lang::t('_SCORE', 'test').' : ', 'content');
+                if($review['score'] !== false)
+                {
+                    cout(   '<div class="test_answer_comment">'
+                            .'<div class="test_score_note">'.Lang::t('_SCORE', 'test').' : ', 'content');
 
-					if($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned'] )
-						cout(Lang::t('_NOT_ASSIGNED', 'test'), 'content');
-					else
-					{
-						if($review['score'] > 0)
-							cout('<span class="test_score_positive">'.$review['score'].'</span>', 'content');
-						else
-							cout('<span class="test_score_negative">'.$review['score'].'</span>', 'content');
-					}
+                    if($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned'] )
+                        cout(Lang::t('_NOT_ASSIGNED', 'test'), 'content');
+                    else
+                    {
+                        if($review['score'] > 0)
+                            cout('<span class="test_score_positive">'.$review['score'].'</span>', 'content');
+                        else
+                            cout('<span class="test_score_negative">'.$review['score'].'</span>', 'content');
+                    }
 
-					cout(	'</div>'
-							.( $review['comment'] != '' ? $review['comment'] : '' )
-							.'</div>', 'content');
-				}
+                    cout(   '</div>'
+                            .( $review['comment'] != '' ? $review['comment'] : '' )
+                            .'</div>', 'content');
+                }
 
-				cout('</div>', 'content');
-			}
+                cout('</div>', 'content');
+            }
 
-			cout('</div>', 'content');
-		}
-	}
-	else
-		cout(Lang::t('_NO_TEST_STATS', 'organization'), 'content');
+            cout('</div>', 'content');
+        }
+    }
+    else
+        cout(Lang::t('_NO_TEST_STATS', 'organization'), 'content');
 
-	cout(	$back
-			.'</div>', 'content');
+    cout(   $back
+            .'</div>', 'content');
 }
 
 function getTrackingTable($id_user, $id_org) {
