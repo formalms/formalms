@@ -33,19 +33,19 @@ class UsersManagementEditEvent extends Event
     }
 
     /**
-     * @return array
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
      * @param $users
      */
     public function setOldUser($old_user)
     {
         $this->old_user = $old_user;
+    }
+
+    /**
+     * @return array
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 
     /**

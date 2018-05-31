@@ -29,8 +29,7 @@ class UsersManagementUnsuspendEvent extends Event
      */
     public function setUser($user)
     {
-        $this->user = null;
-        $this->users = array();
+        $this->user = $user;
     }
 
     /**

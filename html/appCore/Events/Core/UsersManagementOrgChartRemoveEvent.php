@@ -16,10 +16,11 @@ class UsersManagementOrgChartRemoveEvent extends Event
     protected $users;
 
     /**
-     * UsersManagementOrgChartRemoveEvent constructor.
+     * UsersManagementOrgChartAssignEditEvent constructor.
      */
     public function __construct()
     {
+        
         $this->user = null;
         $this->users = array();
     }

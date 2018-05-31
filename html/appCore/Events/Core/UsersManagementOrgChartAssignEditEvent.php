@@ -4,24 +4,26 @@ namespace appCore\Events\Core;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class UsersManagementOrgChartAddEvent
+ * Class UsersManagementOrgChartAssignEditEvent
  * @package appLms\Events\Core
  */
-class UsersManagementOrgChartAddEvent extends Event
+class UsersManagementOrgChartAssignEditEvent extends Event
 {
     const EVENT_NAME = 'core.usersmanagementorgchartadd.event';
     
     /** @var array */
     protected $user;
     protected $users;
+    protected $node;
 
     /**
-     * UsersManagementOrgChartAddEvent constructor.
+     * UsersManagementOrgChartAssignEditEvent constructor.
      */
     public function __construct()
     {
         $this->user = null;
         $this->users = array();
+        $this->node = null;
     }
 
     /**
@@ -57,11 +59,30 @@ class UsersManagementOrgChartAddEvent extends Event
     }
 
     /**
+     * @param $node
+     */
+    public function setNode($node)
+    {
+        $this->node = $node;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNode()
+    {
+        return $this->node;
+    }
+
+    /**
      * @return array
      */
     public function getData()
     {
-        return $this->user ?: $this->users;
+        return [
+            'users' => $this->user ?: $this->users,
+            'node' => $this->node,
+        ];
     }
 
 }

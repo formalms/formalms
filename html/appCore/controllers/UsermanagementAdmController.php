@@ -71,19 +71,13 @@ class UsermanagementAdmController extends AdmController {
 					$query = sql_query($sql);
 					$test = sql_fetch_object($query);
 					if (!$test->count) {
-						// Not register if exists
-						$sql = "SELECT COUNT(id) AS count FROM `audittrail_logs` WHERE created_at = NOW() LIMIT 1";
-						$query = sql_query($sql);
-						$test = sql_fetch_object($query);
-						if (!$test->count) {
-							$data = json_encode($event->getData());
-							if ($user_id = (int)$_SESSION['public_area_idst']) {
-							    $sql = "
-							    	INSERT INTO `audittrail_logs` (`event_id`, `user_id`, `data`) 
-							    	VALUES ({$eventItem->id}, {$user_id}, '{$data}')
-								";
-							    $query = sql_query($sql);
-						    }
+						$data = json_encode($event->getData());
+						if ($user_id = (int)$_SESSION['public_area_idst']) {
+						    $sql = "
+						    	INSERT INTO `audittrail_logs` (`event_id`, `user_id`, `data`) 
+						    	VALUES ({$eventItem->id}, {$user_id}, '{$data}')
+							";
+						    $query = sql_query($sql);
 					    }
 				    }
 				});
@@ -734,7 +728,6 @@ class UsermanagementAdmController extends AdmController {
 
 			$output = array();
 
-
 			$model = new UsermanagementAdm();
 			$user = $model->getProfileData($id_user);
 
@@ -842,6 +835,7 @@ class UsermanagementAdmController extends AdmController {
 		$idst = Get::req('id', DOTY_INT, -1);
 		$output = array();
 		$action = Get::req('action', DOTY_INT, -1);
+
 		if ($idst>0 && ($action==0 || $action==1)) {
 			$model = new UsermanagementAdm();
 			$user = $model->getProfileData($idst);
@@ -1056,7 +1050,7 @@ class UsermanagementAdmController extends AdmController {
 							.Form::getTextfield(Lang::t('_ROOT_RENAME', 'organization_chart'), 'modfolder_root', 'modfolder_root', 50, $root_name)
 							.Form::closeForm();
 					} else {
-						$folder_info =$this->model->getFolderById($id);
+						$folder_info = $this->model->getFolderById($id);
 						$languages = Docebo::langManager()->getAllLanguages(true);//getAllLangCode();
 						$std_lang = getLanguage();
 
@@ -1295,6 +1289,11 @@ class UsermanagementAdmController extends AdmController {
 				$nodedata['options'] = $this->_getNodeActions($nodedata);
 				$output['node'] = $nodedata;
 				$output['id_parent'] = $id_parent;
+
+				$event = new \appCore\Events\Core\UsersManagementOrgChartCreateNodeEvent();			
+				$event->setNode($nodedata);
+				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementOrgChartCreateNodeEvent::EVENT_NAME, $event);
+
 			} else {
 				$output['success'] = false;
 				$output['message'] = Lang::t('_CONNECTION_ERROR');
@@ -1314,7 +1313,14 @@ class UsermanagementAdmController extends AdmController {
 
 		$output = array('success' => false);
 		$id = Get::req('node_id', DOTY_INT, -1);
-		if ($id > 0) $output['success'] = $this->model->deleteFolder($id, true);
+
+		if ($id > 0) {
+			$event = new \appCore\Events\Core\UsersManagementOrgChartDeleteNodeEvent();			
+			$event->setNode($this->model->getFolderById($id));
+			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementOrgChartDeleteNodeEvent::EVENT_NAME, $event);
+
+			$output['success'] = $this->model->deleteFolder($id, true);
+		}
 		echo $this->json->encode($output);
 	}
 
@@ -1337,12 +1343,18 @@ class UsermanagementAdmController extends AdmController {
 		$template_id = Get::req('associated_template', DOTY_INT, '');
 		$template_arr =getTemplateList();
 		$langs = Get::req('modfolder', DOTY_MIXED, false);
+		$old_node = $this->model->getFolderById($id);
 		$res = $this->model->modFolderCodeAndTemplate($id, $code, $template_arr[$template_id]);
 		$res = $this->model->renameFolder($id, $langs);
 		if ($res) {
 			$output['success'] = true;
 			//$output['new_name'] = ($code != "" ? '['.$code.'] ' : '').$langs[getLanguage()];
 			$output['new_name'] = $this->_formatFolderCode($id, $code).$langs[getLanguage()];
+
+			$event = new \appCore\Events\Core\UsersManagementOrgChartEditNodeEvent();			
+			$event->setOldNode($old_node);
+			$event->setNode($this->model->getFolderById($id));
+			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementOrgChartEditNodeEvent::EVENT_NAME, $event);
 		} else {
 			$output['success'] = false;
 			$output['message'] = Lang::t('_CONNECTION_ERROR');
@@ -1425,9 +1437,11 @@ class UsermanagementAdmController extends AdmController {
 				foreach ($selection as $idst) {
 					$users[] = $model->getProfileData($idst);
 				}
-				$event = new \appCore\Events\Core\UsersManagementOrgChartAddEvent();			
+				$event = new \appCore\Events\Core\UsersManagementOrgChartAssignEditEvent();
+				$nodedata = $this->model->getFolderById($id);
 				$event->setUsers($users);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementOrgChartAddEvent::EVENT_NAME, $event);
+				$event->setNode($nodedata);
+				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementOrgChartAssignEditEvent::EVENT_NAME, $event);
 
 				if($res) {
 					$enrollrules = new EnrollrulesAlms();
@@ -1571,11 +1585,14 @@ class UsermanagementAdmController extends AdmController {
 		$fields_invisible = Get::req('fields_invisible', DOTY_MIXED, array());
 		$fields_userinherit = Get::req('fields_userinherit', DOTY_MIXED, array());
 
+		$nodedata = $this->model->getFolderById($id_org);
+
 		$fl = new FieldList();
 		$acl_man = Docebo::user()->getAclManager();
 
 		$count = 0;
 		$all_fields = $fl->getAllFields();
+		$new_fields = [];
 
 		foreach ($all_fields as $field) {
 			$id_field = $field[FIELD_INFO_ID];
@@ -1610,6 +1627,14 @@ class UsermanagementAdmController extends AdmController {
 				if ($res) $count++;
 			}
 		}
+		foreach ($arr_idgroups as $idst) {
+			$new_fields[] = $this->getFieldGroupById($idst);
+		}
+
+		$event = new \appCore\Events\Core\UsersManagementOrgChartEditNodeFieldsEvent();
+		$event->setNode($nodedata);
+		$event->setFields($new_fields);
+		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementOrgChartEditNodeFieldsEvent::EVENT_NAME, $event);
 
 		$output = array('success' => true, 'total' => count($fields_use), 'done' => $count);
 		echo $this->json->encode($output);
@@ -1645,6 +1670,14 @@ class UsermanagementAdmController extends AdmController {
 		}
 		$output = array('success' => $success);
 		echo $this->json->encode($output);
+	}
+
+	private function getFieldGroupById($idst)
+	{
+		$sql = "SELECT * FROM core_group_fields WHERE idst = {$idst}";
+		$query = sql_query($sql);
+
+		return sql_fetch_object($query);
 	}
 
 	public function unassoc() {
