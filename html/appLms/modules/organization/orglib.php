@@ -1001,7 +1001,6 @@ class Org_TreeView extends RepoTreeView {
 	function _getCreateLabel() { return $this->lang->def('_NEW_FOLDER'); }
 	function _getCreateAlt() { return $this->lang->def('_NEW_FOLDER'); }
 	function _getCreateImage() { return getPathImage().'standard/folder_new.png'; }
-	function _getWaitAlarmImage() { return getPathImage().'standard/wait_alarm.png'; }
 	
 	function _getOpUpTitle() { return $this->lang->def('_MOVE_UP'); }
 	function _getOpDownTitle() { return $this->lang->def('_MOVE_DOWN'); }
@@ -1419,16 +1418,6 @@ class Org_TreeView extends RepoTreeView {
 									'href="index.php?modname=organization&amp;op=custom_playitem&amp;edit=1&amp;id_item='.$stack[$level]['folder']->id.'" ' .
 									'title="'.$this->getFolderPrintName( $stack[$level]['folder']).'">' 
 										.'<img src="'.$this->_getOpPlayItemImg().'"'
-										.' alt="'.$this->_getOpPlayTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />' .
-									'</a>';
-
-								// Wait Alert Notification Plugin
-								$out .= '<a '.( $arrData[1] == 'scormorg' ? ' rel="lightbox'.$lb_param.'"' : '' ).' class="tree_view_image" ' .
-									'id="'.$this->id.'_'.$this->_getOpPlayItemId().'_'.$stack[$level]['folder']->id.'" ' .
-									'name="'.$this->id.'['.$this->_getOpPlayItemId().']['.$stack[$level]['folder']->id.']" ' .
-									'href="index.php?r=lonotification/edit&amp;objectType=htmlpage&amp;lo_id='.$stack[$level]['folder']->id.'" ' .
-									'title="Alarm: '.$this->getFolderPrintName( $stack[$level]['folder']).'">' 
-										.'<img src="'.$this->_getWaitAlarmImage().'"'
 										.' alt="'.$this->_getOpPlayTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />' .
 									'</a>';
 									
