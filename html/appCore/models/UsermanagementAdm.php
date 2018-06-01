@@ -2210,7 +2210,7 @@ class UsermanagementAdm extends Model {
                             '[userid]' => $userid,
                             '[password]' => $new_password
                     );
-                    require_once(_base_.'\lib\lib.eventmanager.php');
+                    require_once(_base_.'/lib/lib.eventmanager.php');
                     $e_msg = new EventMessageComposer();
 
                     $e_msg->setSubjectLangText('email', '_MODIFIED_USER_SBJ', false);
