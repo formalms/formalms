@@ -94,6 +94,10 @@
     transform: translate(-50%, -50%)!important;
 
     @include breakpoint($ipad) {
+      width: 60%;
+    }
+
+    @include breakpoint($desktop) {
       width: 45%;
     }
   }
