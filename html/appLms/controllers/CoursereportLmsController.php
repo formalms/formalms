@@ -713,7 +713,7 @@ class CoursereportLmsController extends LmsController
 		}
 		$reports_score =& $report_man->getReportsScores ((isset($included_test_report_id) && is_array ($included_test_report_id) ? array_diff ($reports_id , $included_test_report_id) : $reports_id) , $id_students);
 
-		$results_test = array ();
+		$results_names = array ();
 		$results_activity = array ();
 		$results_scorm_test = array ();
 		$students_array = array ();
@@ -783,6 +783,10 @@ class CoursereportLmsController extends LmsController
 						switch ($info_report->getSourceOf ()) {
 
 							case CoursereportLms::SOURCE_OF_TEST : {
+
+							    if (!in_array($testObj->getTitle (),$results_names)){
+							        $results_names[] = $testObj->getTitle ();
+                                }
 
 								$values = array ();
 
@@ -934,6 +938,10 @@ class CoursereportLmsController extends LmsController
 
 								$scormItem = new ScormLms($info_report->getIdSource () , $idst_user);
 
+                                if (!in_array($info_report->getTitle(),$results_names)){
+                                    $results_names[] = $info_report->getTitle();
+                                }
+
 								$value = array (
 									'icon' => 'cr_not_check' ,
 									'showIcon' => false ,
@@ -962,6 +970,10 @@ class CoursereportLmsController extends LmsController
 							}
 								break;
 							case CoursereportLms::SOURCE_OF_ACTIVITY    : {
+
+                                if (!in_array($info_report->getTitle(),$results_names)){
+                                    $results_names[] = $info_report->getTitle();
+                                }
 
 								if (isset($reports_score[ $info_report->getIdReport () ][ $idst_user ])) {
 									switch ($reports_score[ $info_report->getIdReport () ][ $idst_user ][ 'score_status' ]) {
@@ -1126,6 +1138,7 @@ class CoursereportLmsController extends LmsController
 		}
 
 		$resposeArray = array (
+		    'names' => $results_names,
 			'details' => array (
 				'students' => $students_array ,
 				'redo-final' => array ( 'idReport' => $info_final[ 0 ]->getIdReport () ) ,
