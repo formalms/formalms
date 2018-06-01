@@ -87,7 +87,7 @@
                 <td class="table-cell">{{ test.max_score }}</td>
                 <td class="table-cell">{{ test.min_score }}</td>
                 <td class="table-cell">
-                    <input type="checkbox" data-value="{{ test.idReport }}" {% if test.showInDetail %}checked{% endif %}>
+                    <input class="js-set-detail-visibility" type="checkbox" data-value="{{ test.idReport }}" {% if test.showInDetail %}checked{% endif %}>
                 </td>
                 <td class="actions">
                     {% for action in test.actions %}

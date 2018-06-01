@@ -315,6 +315,7 @@ tfoot.empty td {
 
 .is-disabled {
     opacity: .4;
+    pointer-events: none;
 }
 
 .final-buttons-container {
