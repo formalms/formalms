@@ -283,7 +283,6 @@ window.CourseReport = (function ($) {
 		_student += '<td class="student__name">' + student.name + '</td>';
 		_student += '<td class="student__info">' + student.email + '</td>';
 
-
 		for (var i = 0; i < student.activities_results.length; i++) {
 			_student += '<td class="student__test-result student__test-result--' + i + '">' + parseResult(student.activities_results[i]) + '</td>';
 		}
@@ -427,7 +426,7 @@ window.CourseReport = (function ($) {
 		var el = $('.js-final-score');
 
 		$.each(activities, function (i, elem) {
-			html = '<th class="js-activity-name">' + elem.name + '</th>';
+			html = '<th class="js-activity-name">' + elem + '</th>';
 			$(html).insertBefore(el);
 		});
 	};
@@ -473,10 +472,9 @@ window.CourseReport = (function ($) {
 
 			testData = loadActivitiesData();
 
-			buildActivitiesRow(testData);
-
 			loadUserData(function (data) {
 				userData = data;
+				buildActivitiesRow(data.names);
 				fillTable(userData);
 			}, testData);
 
