@@ -94,14 +94,24 @@
     transform: translate(-50%, -50%)!important;
 
     @include breakpoint($ipad) {
-      width: 60%;
+      width: 45%;
     }
 
     @include breakpoint($desktop) {
-      width: 45%;
+      width: 40%;
     }
   }
 }
+
+.modal-body {
+  .section-coourse-modal & {
+
+    @include breakpoint($ipad) {
+      padding: 0 15px;
+    }
+  }
+}
+
 
 .title {
   .modal__item & {
@@ -121,6 +131,8 @@
         border-top-left-radius: 0;
         border-top-right-radius: 0;
         border-right: none;
+        font-size: 12px;
+        line-height: 30px;
       }
     }
   }
@@ -137,6 +149,8 @@
 
       @include breakpoint($tablet) {
         border-right: none;
+        font-size: 12px;
+        line-height: 45px;
       }
     }
   }
