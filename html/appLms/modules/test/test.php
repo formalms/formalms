@@ -249,10 +249,13 @@ function modtestgui ($object_test)
     $event->addTab ('_FEEDBACK_MANAGEMENT' , '<li>' . '<a href="index.php?modname=test&amp;op=feedbackman&amp;idTest='
         . $object_test->getId () . '&amp;back_url=' . $url_encode . '" title="' . $lang->def ('_FEEDBACK_MANAGEMENT') . '">'
         . $lang->def ('_FEEDBACK_MANAGEMENT') . '</a>' . '</li>');
-    $event->addTab ('_COURSEREPORT_MANAGEMENT' , '<li>' . '<a href="index.php?modname=test&amp;op=coursereportman&amp;idTest='
+
+    /** REMOVED COURSE REPORT MANAGEMENT TAB */
+    /*$event->addTab ('_COURSEREPORT_MANAGEMENT' , '<li>' . '<a href="index.php?modname=test&amp;op=coursereportman&amp;idTest='
         . $object_test->getId () . '&amp;back_url=' . $url_encode . '" title="' . $lang->def ('_COURSEREPORT_MANAGEMENT') . '">'
         . $lang->def ('_COURSEREPORT_MANAGEMENT') . '</a>' . '</li>');
 
+    */
     \appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\TestConfigurationTabsRenderEvent::EVENT_NAME , $event);
 
     $GLOBALS[ 'page' ]->add ('<ul class="link_list_inline">' , 'content');
