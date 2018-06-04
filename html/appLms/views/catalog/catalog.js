@@ -163,6 +163,7 @@ function subscribeToCourse(id_course, id_date, id_edition, selling) {
           success: function (o) {
             var res = YAHOO.lang.JSON.parse(o.responseText);
             if (res.success) {
+               dialog.hide();  
               if (res.new_status != '' && res.new_status_code == 'subscribed')
                 div_course.innerHTML = '<a href="index.php?modname=course&op=aula&idCourse=' + id_course + '">' + res.new_status + '</a>';
               else if (res.new_status != '')
