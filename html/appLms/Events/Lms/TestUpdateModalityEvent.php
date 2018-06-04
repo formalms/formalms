@@ -5,7 +5,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class TestUpdateModalityEvent extends Event
 {
-    const EVENT_NAME = 'lms.test.update';
+    const EVENT_NAME = 'lms.test.modality.update';
 
     /**
      * @var $queryString
