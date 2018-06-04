@@ -426,7 +426,7 @@ window.CourseReport = (function ($) {
 		var el = $('.js-final-score');
 
 		$.each(activities, function (i, elem) {
-			html = '<th class="js-activity-name">' + elem + '</th>';
+			html = '<th class="js-activity-name acivity-name">' + elem + '</th>';
 			$(html).insertBefore(el);
 		});
 	};

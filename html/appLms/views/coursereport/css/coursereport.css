@@ -346,3 +346,16 @@ tfoot.empty td {
 .navbar--coursereport {
     margin-top: 20px;
 }
+
+
+#details .student__test-result,
+#details .activity-name {
+
+    min-width: 75px!important;
+}
+
+#details .table {
+    min-width: 100%;
+    width: auto;
+    max-width: none;
+}
