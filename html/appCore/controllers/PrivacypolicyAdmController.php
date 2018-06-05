@@ -95,11 +95,12 @@ class PrivacypolicyAdmController extends AdmController {
 		$records = array();
 		if (is_array($list)) {
 			foreach ($list as $record) {
-				if ($record->is_default == 1){
+				if ($record->is_default == 1 || $record->is_accepted){
 					$records[] = array(
 						'id' => (int)$record->id_policy,
 						'name' => highlightText($record->name, $filter),
-						'is_assigned' => 'default',
+						'is_assigned' => ($record->is_default == 1 ? 'default' : $record->is_assigned),
+						'is_accepted' => $record->is_accepted,
 						'mod' => 'ajax.adm_server.php?r=adm/privacypolicy/mod&id='.(int)$record->id_policy,
 						'del' => ''
 					);
@@ -108,6 +109,7 @@ class PrivacypolicyAdmController extends AdmController {
 						'id' => (int)$record->id_policy,
 						'name' => highlightText($record->name, $filter),
 						'is_assigned' => $record->is_assigned,
+						'is_accepted' => $record->is_accepted,
 						'mod' => 'ajax.adm_server.php?r=adm/privacypolicy/mod&id='.(int)$record->id_policy,
 						'del' => 'ajax.adm_server.php?r=adm/privacypolicy/del&id='.(int)$record->id_policy
 					);

@@ -76,6 +76,7 @@ class PrivacypolicyAdm extends Model {
 			$glist = array();
 			while ($obj = $this->db->fetch_obj($res)) {
 				$obj->is_assigned = FALSE;  //questa
+				$obj->is_accepted = FALSE;  //questa
 				$output[$obj->id_policy] = $obj;
 			}
 
@@ -88,6 +89,15 @@ class PrivacypolicyAdm extends Model {
 				while (list($id_policy, $count) = $this->db->fetch_row($res)) {
 					if ($count > 0 && isset($output[$id_policy])) {
 						$output[$id_policy]->is_assigned = TRUE;
+					}
+				}
+				$query = "SELECT id_policy, COUNT(*) FROM %adm_privacypolicy_user "
+					." WHERE id_policy IN (".implode(",", array_keys($output)).") "
+					." GROUP BY id_policy";
+				$res = $this->db->query($query);
+				while (list($id_policy, $count) = $this->db->fetch_row($res)) {
+					if ($count > 0 && isset($output[$id_policy])) {
+						$output[$id_policy]->is_accepted = TRUE;
 					}
 				}
 			}
