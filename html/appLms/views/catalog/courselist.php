@@ -358,7 +358,7 @@ function InsertOption(&$row, $smodel){
                                 <div class="course-box__desc">
                                     ' . TruncateText($row['box_description'], 120).' 
                                 </div>'.InsertOption($row, $smodel).'                            
-                            </div';
+                            </div>';
                     $html .= $action;
                     $html .= '</div>';
 					
