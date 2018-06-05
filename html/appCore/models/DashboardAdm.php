@@ -195,9 +195,14 @@ class DashboardAdm extends Model
 
             require_once(_base_ . '/lib/lib.fsock_wrapper.php');
             $fp = new Fsock();
-            $_online_version = $fp->send_request('http://www.formalms.org/versions/release.txt');
-
-            $version['online_version'] = $_online_version;
+            $versions_raw = $fp->send_request('http://www.formalms.org/versions/list');
+            if( $versions_raw 
+                && ($versions = json_decode($versions_raw, true))
+                && isset($versions[0])
+                && isset($versions[0]['version'])
+            ) {
+                $version['online_version'] = $versions[0]['version'];
+            }
 
         }
 
