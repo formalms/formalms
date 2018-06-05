@@ -4,12 +4,12 @@ namespace appCore\Events\Core\Courses;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class CourseSubscriptionEditMultiEvent
+ * Class CourseSubscriptionEditEvent
  * @package appLms\Events\Core
  */
-class CourseSubscriptionEditMultiEvent extends Event
+class CourseSubscriptionEditEvent extends Event
 {
-    const EVENT_NAME = 'core.coursesubscriptioneditmulti.event';
+    const EVENT_NAME = 'core.coursesubscriptionedit.event';
     
     /** @var array */
     protected $users;
@@ -17,7 +17,7 @@ class CourseSubscriptionEditMultiEvent extends Event
     protected $status;
 
     /**
-     * CourseSubscriptionEditMultiEvent constructor.
+     * CourseSubscriptionEditEvent constructor.
      */
     public function __construct()
     {

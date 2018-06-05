@@ -1,5 +1,5 @@
 <?php
-namespace appCore\Events\Core;
+namespace appCore\Events\Core\User;
 
 use Symfony\Component\EventDispatcher\Event;
 
