@@ -1,5 +1,5 @@
 <?php
-namespace appCore\Events\Core;
+namespace appCore\Events\Core\User;
 
 use Symfony\Component\EventDispatcher\Event;
 
@@ -7,22 +7,20 @@ use Symfony\Component\EventDispatcher\Event;
  * Class UsersManagementShowEvent
  * @package appLms\Events\Core
  */
-class UsersManagementDeleteEvent extends Event
+class UsersManagementChangePasswordEvent extends Event
 {
-    const EVENT_NAME = 'core.usersmanagementdelete.event';
+    const EVENT_NAME = 'core.usersmanagementchangepassword.event';
     
     /** @var array */
     protected $user;
-    protected $users;
+    protected $filledPwd;
 
     /**
      * UsersManagementShowEvent constructor.
      */
     public function __construct()
-    {
-        
-        $this->user = null;
-        $this->users = array();
+    {   
+        $this->user = array();
     }
 
     /**
@@ -34,11 +32,11 @@ class UsersManagementDeleteEvent extends Event
     }
 
     /**
-     * @param $users
+     * @return void
      */
-    public function setUsers($users)
+    public function setFilledPwd($filledPwd)
     {
-        $this->users = $users;
+        $this->filledPwd = $filledPwd;
     }
 
     /**
@@ -50,19 +48,19 @@ class UsersManagementDeleteEvent extends Event
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getUsers()
+    public function getFilledPwd()
     {
-        return $this->users;
+        return $this->filledPwd;
     }
 
-    /**
-     * @return array
-     */
     public function getData()
     {
-        return $this->user ?: $this->users;
+        return [
+            'user' => $this->user,
+            'filledPwd' => $this->filledPwd,
+        ];
     }
 
 }

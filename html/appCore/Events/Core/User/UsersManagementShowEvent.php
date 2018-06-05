@@ -1,5 +1,5 @@
 <?php
-namespace appCore\Events\Core;
+namespace appCore\Events\Core\User;
 
 use Symfony\Component\EventDispatcher\Event;
 
@@ -7,9 +7,9 @@ use Symfony\Component\EventDispatcher\Event;
  * Class UsersManagementShowEvent
  * @package appLms\Events\Core
  */
-class UsersManagementEditMultipleEvent extends Event
+class UsersManagementShowEvent extends Event
 {
-    const EVENT_NAME = 'core.usersmanagementeditmultiple.event';
+    const EVENT_NAME = 'core.usersmanagement.event';
     
     /** @var array */
     protected $users;
@@ -39,6 +39,9 @@ class UsersManagementEditMultipleEvent extends Event
         return $this->users;
     }
 
+    /**
+     * @return array
+     */
     public function getData()
     {
         return $this->users;
