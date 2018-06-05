@@ -554,8 +554,8 @@ class Layout
                 $stats['course_stats']['materials'] = $total;
                 $stats['course_stats']['materials_complete'] = $tot_complete;
                 $stats['course_stats']['materials_incomplete'] = $tot_incomplete;
-                $stats['course_stats']['materials_passed'] = $tot_passed;
-                $stats['course_stats']['materials_failed'] = $tot_failed;
+                //$stats['course_stats']['materials_passed'] = $tot_passed;
+                //$stats['course_stats']['materials_failed'] = $tot_failed;
             }
 
             return [

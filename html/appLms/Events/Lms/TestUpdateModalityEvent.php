@@ -5,7 +5,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class TestUpdateModalityEvent extends Event
 {
-    const EVENT_NAME = 'lms.test.update';
+    const EVENT_NAME = 'lms.test.modality.update';
 
     /**
      * @var $queryString
@@ -74,6 +74,18 @@ class TestUpdateModalityEvent extends Event
     public function setQueryString($queryString)
     {
         $this->queryString = $queryString;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'queryString' => $this->queryString,
+            'postVars' => $this->postVars,
+            'idTest' => $this->idTest,
+        ];
     }
 
 }

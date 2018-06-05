@@ -910,6 +910,8 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="coursereport&amp;_TQ_LINK" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Stats for test "[test]"]]></key>
         <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Use for final score]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Weight]]></key>
+        <key id="coursereport&amp;_OVERVIEW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Overview]]></key>
+        <key id="coursereport&amp;_DETAILS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Detail]]></key>
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Add new course]]></key>
@@ -2736,7 +2738,7 @@ Password: [password]]]></key>
         <key id="test&amp;_QUEST_UPLOAD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Upload file]]></key>
         <key id="test&amp;_RESTART_INFO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Restart test execution from beginning]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Select page]]></key>
-        <key id="test&amp;_SHOW_IN_COURSEREPORT" attributes="" save_date="2018-01-12 15:47:30"><![CDATA[Show in Gradebook Management]]></key>
+        <key id="test&amp;_SHOW_IN_DETAIL" attributes="" save_date="2018-01-12 15:47:30"><![CDATA[Show in Gradebook Management]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Suspend the test after the following number of failed attempts]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Suspend the test for the following number of hours]]></key>
         <key id="test&amp;_SUSPENSION_PREREQUISITES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[After the test suspension, require a new completion of all the test prerequisites]]></key>

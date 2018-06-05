@@ -249,10 +249,13 @@ function modtestgui ($object_test)
     $event->addTab ('_FEEDBACK_MANAGEMENT' , '<li>' . '<a href="index.php?modname=test&amp;op=feedbackman&amp;idTest='
         . $object_test->getId () . '&amp;back_url=' . $url_encode . '" title="' . $lang->def ('_FEEDBACK_MANAGEMENT') . '">'
         . $lang->def ('_FEEDBACK_MANAGEMENT') . '</a>' . '</li>');
-    $event->addTab ('_COURSEREPORT_MANAGEMENT' , '<li>' . '<a href="index.php?modname=test&amp;op=coursereportman&amp;idTest='
+
+    /** REMOVED COURSE REPORT MANAGEMENT TAB */
+    /*$event->addTab ('_COURSEREPORT_MANAGEMENT' , '<li>' . '<a href="index.php?modname=test&amp;op=coursereportman&amp;idTest='
         . $object_test->getId () . '&amp;back_url=' . $url_encode . '" title="' . $lang->def ('_COURSEREPORT_MANAGEMENT') . '">'
         . $lang->def ('_COURSEREPORT_MANAGEMENT') . '</a>' . '</li>');
 
+    */
     \appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\TestConfigurationTabsRenderEvent::EVENT_NAME , $event);
 
     $GLOBALS[ 'page' ]->add ('<ul class="link_list_inline">' , 'content');
@@ -2222,12 +2225,9 @@ function coursereportMan ()
     require_once (_base_ . '/lib/lib.json.php');
 
     $idTest = importVar ('idTest' , true , 0);
-    $db = DbConn::getInstance ();
 
     $back_url = urldecode (importVar ('back_url'));
     $url_coded = htmlentities (urlencode ($back_url));
-
-    list($show_in_coursereport) = sql_fetch_row (sql_query ("SELECT show_in_coursereport FROM %lms_test WHERE idTest = '" . $idTest . "'"));
 
     $GLOBALS[ 'page' ]->add (
         getTitleArea ($lang->def ('_TEST_SECTION') , 'test')
@@ -2237,14 +2237,13 @@ function coursereportMan ()
 
         . Form::openForm ('coursereportman' , 'index.php?modname=test&amp;op=updatecoursereport')
 
-
         . Form::getOpenFieldset ($lang->def ('_TEST_MM_FIVE'))
-        . Form::getCheckBox ($lang->def ('_SHOW_IN_COURSEREPORT') , 'show_in_coursereport' , 'show_in_coursereport' , 1 , $show_in_coursereport)
         . Form::getHidden ('idTest' , 'idTest' , $idTest)
         . Form::getHidden ('back_url' , 'back_url' , $url_coded)
         . Form::getCloseFieldset ()
 
         . '<br />' , 'content');
+    
     $GLOBALS[ 'page' ]->add (
         '<div class="align_right">'
         . '<input class="button" type="submit" value="' . $lang->def ('_SAVE') . '" />'
@@ -2264,17 +2263,12 @@ function updatecoursereport ()
     $back_url = urldecode (importVar ('back_url'));
     $url_coded = htmlentities (urlencode ($back_url));
 
-    $show_in_coursereport = Get::pReq ('show_in_coursereport' , DOTY_INT , 0);
 
-    $queryString = "UPDATE %lms_test SET show_in_coursereport = '" . ($show_in_coursereport ? 1 : 0) . "' WHERE idTest = '$idTest'";
-
-    $queryResponse = sql_query ($queryString);
-
-    if (! $queryResponse) {
+    /*if (! $queryResponse) {
         errorCommunication ($lang->def ('_OPERATION_FAILURE')
             . getBackUi ('index.php?modname=test&amp;op=deftime&amp;idTest=' . $idTest . '&amp;back_url=' . $url_coded , $lang->def ('_BACK')));
         return;
-    }
+    }*/
 
     Util::jump_to ('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded);
 }

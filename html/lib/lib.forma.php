@@ -10,6 +10,11 @@
 |   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
+
+if (!class_exists('Model')) {
+    require_once(_lib_.'/mvc/lib.model.php');
+}
+
 require_once _adm_ . '/models/PluginmanagerAdm.php';
 
 class Forma {

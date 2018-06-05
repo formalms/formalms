@@ -189,7 +189,7 @@ function list_element_certificate() {
 
     $out->add('<div class="std_block">'	);
 
-    $out->add( getInfoUi($lang->def('_CERTIFICATE_WARNING')) );
+    // $out->add( getInfoUi($lang->def('_CERTIFICATE_WARNING')) );
 
     $out->add($form->openForm('structure_certificate', 'index.php?modname=certificate&amp;op=savecertificate', false, false, 'multipart/form-data'));
     $out->add($form->openElementSpace()

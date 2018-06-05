@@ -39,4 +39,9 @@ class UsersManagementEditMultipleEvent extends Event
         return $this->users;
     }
 
+    public function getData()
+    {
+        return $this->users;
+    }
+
 }

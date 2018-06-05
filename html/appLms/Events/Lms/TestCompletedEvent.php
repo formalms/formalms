@@ -175,4 +175,19 @@ class TestCompletedEvent extends Event
     {
         return $this->testDate;
     }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'test' => $this->test,
+            'userId' => $this->userId,
+            'userPhoneNumber' => $this->userPhoneNumber,
+            'lang' => $this->lang,
+            'acl_man' => $this->acl_man,
+            'testScore' => $this->testScore,
+        ];
+    }
 }

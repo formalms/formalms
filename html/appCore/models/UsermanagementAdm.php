@@ -910,25 +910,31 @@ class UsermanagementAdm extends Model {
 
 	public function suspendUsers($users) {
 		$query = "UPDATE %adm_user SET valid=0 WHERE ";
-		if (is_array($users))
+		if (is_array($users)) {
 			if (count($users) > 0)
 				$query .= " idst IN (".implode(",", $users).")";
 			else
 				return true;
-		else
+		}
+		else {
 			$query .= " idst = ".(int)$users;
+		}
+
 		return $this->db->query($query) ? true : false;
 	}
 
 	public function unsuspendUsers($users) {
 		$query = "UPDATE %adm_user SET valid=1 WHERE ";
-		if (is_array($users))
+		if (is_array($users)) {
 			if (count($users) > 0)
 				$query .= " idst IN (".implode(",", $users).")";
 			else
 				return true;
-		else
+		}
+		else {
 			$query .= " idst = ".(int)$users;
+		}
+
 		return $this->db->query($query) ? true : false;
 	}
 
@@ -2195,18 +2201,20 @@ class UsermanagementAdm extends Model {
 
 
         public function randomPassword($idst) {
-                $new_password = $this->aclManager->random_password();
+				$acl_manager =& Docebo::user()->getAclManager();
+				$new_password = $this->aclManager->random_password();
+				$userid = $acl_manager->getUserid($idst, false);
                 if($this->changePassword($idst, $new_password)){
                     $array_subst = array(
                             '[url]' => Get::sett('url'),
                             '[userid]' => $userid,
-                            '[password]' => $pass
+                            '[password]' => $new_password
                     );
-                    require_once(_base_.'\lib\lib.eventmanager.php');
+                    require_once(_base_.'/lib/lib.eventmanager.php');
                     $e_msg = new EventMessageComposer();
 
                     $e_msg->setSubjectLangText('email', '_MODIFIED_USER_SBJ', false);
-                    $e_msg->setBodyLangText('email', '_MODIFIED_USER_TEXT', $array_subst );
+					$e_msg->setBodyLangText('email', '_MODIFIED_USER_TEXT', $array_subst );
                     $e_msg->setBodyLangText('email', '_PASSWORD_CHANGED', $array_subst );
 
                     $recipients = array($idst);

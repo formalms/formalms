@@ -403,6 +403,9 @@ class UserProfile {
 					return getErrorUi($this->_last_error)
 						.$this->getModUser();
 				}
+				$model = new UsermanagementAdm();
+				$oldUserdata = $model->getProfileData($this->_id_user);
+
 				if($this->saveUserInfo()) {
 					// all ok --------------------------------------
 					$this->_up_viewer->unloadUserData();
@@ -416,8 +419,15 @@ class UserProfile {
 						$result = $man_res->addSubscription(getLogUserId(), $id_event);
 						Util::jump_to('index.php?modname=reservation&op=reservation');
 					}
-					else
+					else {
+						// SET EDIT USER EVENT
+						$event = new \appCore\Events\Core\UsersManagementEditEvent();
+						$event->setUser($model->getProfileData($this->_id_user));
+						$event->setOldUser($oldUserdata);
+						\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementEditEvent::EVENT_NAME, $event);
+
 						return getResultUi($this->_lang->def('_OPERATION_SUCCESSFULPROFILE')).$this->getProfile();
+					}
 				} else {
 					// some error saving ---------------------------
 					return getErrorUi($this->_lang->def('_OPERATION_FAILURE'))
@@ -433,9 +443,16 @@ class UserProfile {
 					return getErrorUi($re)
 						.$this->_up_viewer->getUserPwdModUi();
 				}
-				if($this->saveUserPwd()) {
+				if($this->saveUserPwd()) {					
 					// all ok ----------------------------------------
 					$this->_up_viewer->unloadUserData();
+
+					// SET EDIT CHANGE PASSWORD EVENT
+					$event = new \appCore\Events\Core\UsersManagementChangePasswordEvent();
+					$model = new UsermanagementAdm();
+					$event->setUser($model->getProfileData($this->_id_user));
+					$event->setFilledPwd($this->_up_viewer->getFilledPwd());
+					\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementChangePasswordEvent::EVENT_NAME, $event);
 
 					if($this->_end_url !== false) Util::jump_to($this->_end_url);
 

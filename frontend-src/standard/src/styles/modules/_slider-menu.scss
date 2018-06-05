@@ -1,3 +1,68 @@
+// Course Slider Menu
+//
+// Internal menu of courses
+//
+// Markup:
+// <div class="section-coourse__menu col-xs-12">
+//    <div class="row-fluid">
+//      <div class="section-coourse__dropdown col-sm-5 text-center">
+//        <div class="row">
+//          <div class="col-xs-12">
+//            <div class="forma-dropdown">
+//              <button type="button" class="forma-dropdown__selected forma-button dropdown-toggle has-icon icon--coourse-menu icon--coourse-menu-area-corso" data-toggle="dropdown">Area corso</button>
+//              <button type="button" class="forma-dropdown__toggle forma-button dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+//                <span class="glyphicon glyphicon-chevron-down"></span>
+//                <span class="sr-only">Toggle Dropdown</span>
+//              </button>
+//              <ul class="dropdown-menu">
+//                  <li>
+//                    <a href="" data-id="" class="has-icon icon--coourse-menu icon--coourse-menu-area-corso">
+//                      <span class="" aria-hidden="true"></span>
+//                      Area corso
+//                    </a>
+//                  </li>
+//                  <li>
+//                    <a href="" data-id="" class="has-icon icon--coourse-menu icon--coourse-menu-statistiche">
+//                      <span class="" aria-hidden="true"></span>
+//                      Statistiche
+//                    </a>
+//                  </li>
+//                  <li>
+//                    <a href="" data-id="" class="has-icon icon--coourse-menu icon--coourse-menu-area-social">
+//                      <span class="" aria-hidden="true"></span>
+//                      Area social
+//                    </a>
+//                  </li>
+//                  <li>
+//                    <a href="" data-id="" class="has-icon icon--coourse-menu icon--coourse-menu-gestione">
+//                      <span class="" aria-hidden="true"></span>
+//                      Gestione
+//                    </a>
+//                  </li>
+//             </ul>
+//            </div>
+//          </div>
+//        </div>
+//      </div>
+//        <div class="col-sm-7 section-coourse__menu-horizontal">
+//          <ul class="slider-menu">
+//            <li class="slider-menu__item is-selected">
+//              <a href="">Materiali</a>
+//            </li>
+//            <li class="slider-menu__item">
+//              <a href="">Valutazioni</a>
+//            </li>
+//            <li class="slider-menu__item">
+//              <a href="">Scheda corso</a>
+//            </li>
+//          </ul>
+//        </div>
+//      </div>
+//      <div class="clearfix"></div>
+//    </div>
+//
+// Style guide: 3.3
+
 .slider-menu {
   padding: 0 22px;
   margin: 0;
@@ -9,6 +74,14 @@
       }
     }
   }
+}
+
+.slider-menu--tabs {
+
+  .slick-slide {
+    margin-right: 9px;
+  }
+
 }
 
 .slider-menu__item {
@@ -87,5 +160,9 @@
     &:last-child {
       margin-left: -8px;
     }
+  }
+
+  .slider-menu--tabs & {
+    top: 5px;
   }
 }

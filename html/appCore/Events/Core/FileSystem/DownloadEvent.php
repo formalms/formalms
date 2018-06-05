@@ -63,4 +63,17 @@ class DownloadEvent extends Event
         return $this->sendname;
     }
 
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'path' => $this->path,
+            'filename' => $this->filename,
+            'ext' => $this->ext,
+            'sendname' => $this->sendname,
+        ];
+    }
+
 }

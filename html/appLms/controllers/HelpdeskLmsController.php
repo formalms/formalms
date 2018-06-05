@@ -55,7 +55,7 @@ class HelpdeskLmsController extends LmsController {
             $msg .= "<p><strong>".Lang::t('_TEXTOF', 'menu').":</strong> ".$content."</p>\r\n";
 
             $msg .= $br_char . "---------- CLIENT INFO -----------" . $br_char;
-            $msg .= "IP: " . $_SERVER['REMOTE_ADDR'] . $br_char;
+            // $msg .= "IP: " . $_SERVER['REMOTE_ADDR'] . $br_char;
             $msg .= "USER AGENT: " . $_SERVER['HTTP_USER_AGENT'] . $br_char;
         
            // $msg .= "OS: " . $result['platform'] . $br_char;

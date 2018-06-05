@@ -85,7 +85,7 @@ function typeOfCourse ($t) {
 <script language="javascript">
     function confirmDialog(title, id_course, id_date ){
                 $('<div></div>').appendTo('body')
-                    .html("<div><h6><?php echo Lang::t('_CANCEL_SUBSCRIPTION', 'course')?></h6></div>")
+                    .html("<div><h6><?php echo Lang::t('_SELF_UNSUBSCRIBE', 'course')?></h6></div>")
                     .dialog({
                         modal: true, 
                         title: title, 
@@ -100,7 +100,8 @@ function typeOfCourse ($t) {
                                             {
                                                 r: 'elearning/self_unsubscribe',
                                                 id_course: id_course,
-                                                id_date: id_date                                           }
+                                                id_date: id_date 
+                                            }
                                         );
                                         posting.done(function (responseText) {
                                             var ft = $("#course_search_filter_text").val();
@@ -189,7 +190,7 @@ function typeOfCourse ($t) {
 								      
                                      <?php if($course['auto_unsubscribe']==2 || $course['auto_unsubscribe']==1 ): ?>
 								        <li>
-                                            <a href='javascript:confirmDialog(<?php echo "\"".$course['name']."\",".$course['idCourse'].",".key($display_info[$course['idCourse']]) ?>)'><?php echo Lang::t('_UNSUBSCRIBE', 'course') ?></a>    
+                                            <a href='javascript:confirmDialog(<?php echo "\"".$course['name']."\",".$course['idCourse'].",".key($display_info[$course['idCourse']]) ?>)'><?php echo Lang::t('_SELF_UNSUBSCRIBE', 'course') ?></a>    
                                         </li>
                                     <?php endif; ?>
                                     
