@@ -119,6 +119,15 @@ class ProfileLmsController extends LmsController {
 			} else {
 				unset($_SESSION['must_renew_pwd']);
 				//Util::jump_to('index.php?r=lms/profile/show');
+				$user = new DoceboUser(Docebo::user()->getUserId(), 'public_area');
+				$homepageAdm = new HomepageAdm();
+				switch ($homepageAdm->saveUser($user)) {
+					case MANDATORY_FIELDS:
+						$_SESSION['request_mandatory_fields_compilation'] = 1;
+						break;
+					case USER_SAVED:
+						break;
+				}
 				Util::jump_to('index.php');
 			}
 
