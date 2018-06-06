@@ -57,4 +57,16 @@ class CopyEvent extends Event
     {
         $this->result = $result;
     }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'srcFile' => $this->srcFile,
+            'dstFile' => $this->dstFile,
+            'result' => $this->result,
+        ];
+    }
 }

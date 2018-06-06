@@ -360,8 +360,6 @@ class CoursereportLmsController extends LmsController
 
 				if ($info_report->getSourceOf () != CoursereportLms::SOURCE_OF_FINAL_VOTE) {
 
-					$showInDetail = false;
-
 					$passedLink = 'javascript:void(0)';
 					$passedLinkActive = false;
 					$notPassedLink = 'javascript:void(0)';
@@ -393,10 +391,9 @@ class CoursereportLmsController extends LmsController
 
 							$event = new \appLms\Events\Lms\TestCousereportEvent($testObj);
 
-							$type = ucfirst ($testObj->getObjectType ());
+							$type = $testObj->getObjectType ();
 							$id = $info_report->getIdSource ();
 							$name = $testObj->getTitle ();
-							$showInDetail = $tests_info[ $info_report->getIdSource () ][ 'show_in_coursereport' ] === '1' ? true : false;
 
 							$results_activity[] = array ( 'id' => $testObj->getObjectType () . "_" . $info_report->getIdSource () , "name" => $name );
 
@@ -441,8 +438,9 @@ class CoursereportLmsController extends LmsController
 							break;
 						case CoursereportLms::SOURCE_OF_SCOITEM: {
 
+                            $id = $info_report->getIdReport ();
 							$name = strip_tags ($info_report->getTitle ());
-							$type = ucfirst ($info_report->getSourceOf ());
+							$type = $info_report->getSourceOf ();
 
 							if ($mod_perm) {
 								//$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
@@ -470,7 +468,7 @@ class CoursereportLmsController extends LmsController
 
 							$id = $info_report->getIdReport ();
 							$name = strip_tags ($info_report->getTitle ());
-							$type = ucfirst ($info_report->getSourceOf ());
+							$type = $info_report->getSourceOf ();
 
 							$results_activity[] = array ( 'id' => $info_report->getSourceOf () . "_" . $info_report->getIdSource () , "name" => $name );
 
@@ -499,14 +497,16 @@ class CoursereportLmsController extends LmsController
 
 					$test = array (
 						'id' => $id ,
+						'idReport' => $info_report->getIdReport(),
 						'name' => $name ,
-						'type' => $type ,
-						'max' => $info_report->getMaxScore () ,
+						'typeString' => ucfirst ($type) ,
+                        'type' => $type ,
+                        'max' => $info_report->getMaxScore () ,
 						'required' => $info_report->getRequiredScore () ,
 						'weight' => $info_report->getWeight () ,
 						'show' => $info_report->isShowToUser () ,
 						'final' => $info_report->isUseForFinal () ,
-						'showInDetail' => $showInDetail ,
+						'showInDetail' => $info_report->isShowInDetail(),
 						'passed' => array (
 							'value' => $passed ,
 							'link' => $passedLink ,
@@ -609,7 +609,6 @@ class CoursereportLmsController extends LmsController
 
 		$view_all_perm = checkPerm ('view_all' , true , $this->_mvc_name);
 		$type_filter = Get::pReq ('type_filter' , DOTY_MIXED , false);
-		$tests_filter = Get::pReq ('selected_tests' , DOTY_MIXED , false);
 
 		$org_tests =& $report_man->getTest ();
 		$tests_info = $test_man->getTestInfo ($org_tests);
@@ -618,7 +617,7 @@ class CoursereportLmsController extends LmsController
 			$type_filter = false;
 		}
 
-		$reportsArray = $this->model->getCourseReportsFilteredByIdSources ($tests_filter);
+		$reportsArray = $this->model->getCourseReportsVisibleInDetail();
 
 		$students = getSubscribedInfo ((int) $_SESSION[ 'idCourse' ] , FALSE , $type_filter , TRUE , false , false , true);
 
@@ -714,7 +713,7 @@ class CoursereportLmsController extends LmsController
 		}
 		$reports_score =& $report_man->getReportsScores ((isset($included_test_report_id) && is_array ($included_test_report_id) ? array_diff ($reports_id , $included_test_report_id) : $reports_id) , $id_students);
 
-		$results_test = array ();
+		$results_names = array ();
 		$results_activity = array ();
 		$results_scorm_test = array ();
 		$students_array = array ();
@@ -784,6 +783,10 @@ class CoursereportLmsController extends LmsController
 						switch ($info_report->getSourceOf ()) {
 
 							case CoursereportLms::SOURCE_OF_TEST : {
+
+							    if (!in_array($testObj->getTitle (),$results_names)){
+							        $results_names[] = $testObj->getTitle ();
+                                }
 
 								$values = array ();
 
@@ -935,6 +938,10 @@ class CoursereportLmsController extends LmsController
 
 								$scormItem = new ScormLms($info_report->getIdSource () , $idst_user);
 
+                                if (!in_array($info_report->getTitle(),$results_names)){
+                                    $results_names[] = $info_report->getTitle();
+                                }
+
 								$value = array (
 									'icon' => 'cr_not_check' ,
 									'showIcon' => false ,
@@ -963,6 +970,10 @@ class CoursereportLmsController extends LmsController
 							}
 								break;
 							case CoursereportLms::SOURCE_OF_ACTIVITY    : {
+
+                                if (!in_array($info_report->getTitle(),$results_names)){
+                                    $results_names[] = $info_report->getTitle();
+                                }
 
 								if (isset($reports_score[ $info_report->getIdReport () ][ $idst_user ])) {
 									switch ($reports_score[ $info_report->getIdReport () ][ $idst_user ][ 'score_status' ]) {
@@ -1127,6 +1138,7 @@ class CoursereportLmsController extends LmsController
 		}
 
 		$resposeArray = array (
+		    'names' => $results_names,
 			'details' => array (
 				'students' => $students_array ,
 				'redo-final' => array ( 'idReport' => $info_final[ 0 ]->getIdReport () ) ,
@@ -1151,6 +1163,31 @@ class CoursereportLmsController extends LmsController
 	{
 		echo $this->json->encode ($this->completeFieldListArray);
 	}
+
+    public function setVisibleInDetail(){
+
+        $idReport = Get::pReq ('idReport');
+        $show_in_detail = Get::pReq ('showInDetail' , DOTY_INT , 0);
+
+        $report = new ReportLms($idReport);
+        $report->setShowInDetail(($show_in_detail === 1 ? true : false));
+
+        $result = $report->updateShowInDetail();
+
+        if (!$result) {
+            $response = [
+                'status' => 500,
+                'error' => sql_error()
+            ];
+        }
+        else {
+            $response = [
+                'status' => 200
+            ];
+        }
+
+        echo $this->json->encode ($response);
+    }
 
 
 	public function testreport ()
@@ -2199,7 +2236,7 @@ class CoursereportLmsController extends LmsController
 		// XXX: Retrive all colums (test and so), and set it
 		if ($id_report == 0) {
 
-			$info_report = new ReportLms(importVar ('id_report' , true , 0) , importVar ('title') , importVar ('max_score' , true) , importVar ('required_score' , true) , importVar ('weight' , true) , importVar ('show_to_user' , true , true) , importVar ('use_for_final' , true , true) , '' , 0);
+			$info_report = new ReportLms(importVar ('id_report' , true , null) , importVar ('title') , importVar ('max_score' , true) , importVar ('required_score' , true) , importVar ('weight' , true) , importVar ('show_to_user' , true , true) , importVar ('use_for_final' , true , true) , '' , 0);
 
 
 		} elseif (! isset($_POST[ 'save' ])) {
@@ -2410,7 +2447,7 @@ class CoursereportLmsController extends LmsController
 
 		if ($id_report == 0) {
 
-			$info_report = new ReportLms(importVar ('id_report' , true , 0) , importVar ('title') , importVar ('max_score' , true) , importVar ('required_score' , true) , importVar ('weight' , true) , importVar ('show_to_user' , true , true) , importVar ('use_for_final' , true , true) , '' , 0);
+			$info_report = new ReportLms(importVar ('id_report' , true , null) , importVar ('title') , importVar ('max_score' , true) , importVar ('required_score' , true) , importVar ('weight' , true) , importVar ('show_to_user' , true , true) , importVar ('use_for_final' , true , true) , '' , 0);
 
 
 		} elseif (! isset($_POST[ 'save' ])) {
@@ -2529,7 +2566,7 @@ class CoursereportLmsController extends LmsController
 
 		if (isset($_POST[ 'save' ])) {
 
-			$info_report = new ReportLms(importVar ('id_report' , true , 0) , importVar ('title') , importVar ('max_score' , true) , importVar ('required_score' , true) , importVar ('weight' , true) , importVar ('show_to_user' , true , true) , importVar ('use_for_final' , true , true) , '' , 0);
+			$info_report = new ReportLms(importVar ('id_report' , true , null) , importVar ('title') , importVar ('max_score' , true) , importVar ('required_score' , true) , importVar ('weight' , true) , importVar ('show_to_user' , true , true) , importVar ('use_for_final' , true , true) , '' , 0);
 
 		} else {
 

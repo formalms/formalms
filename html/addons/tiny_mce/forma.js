@@ -12,6 +12,7 @@ tinymce.init({
 	// General options
 	mode : "textareas",
 	theme : "modern",
+  branding: false,
 	/*skin : "o2k7",
 	skin_variant : "silver",*/
 	editor_selector : "tinymce_complex",

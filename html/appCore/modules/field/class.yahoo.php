@@ -19,17 +19,9 @@
  * @author   Fabio Pirovano <fabio@docebo.com>
  */
 
-require_once(dirname(__FILE__).'/class.field.php');
+require_once(Forma::inc(_adm_.'/modules/field/class.field.php'));
 
-class CField_Yahoo extends ContactField {
-
-	/**
-	 * class constructor
-	 */
-	function CField_Yahoo($id_common) {
-
-		parent::Field($id_common);
-	}
+class CField_Yahoo extends Field_Contact {
 
 	/**
 	 * this function is useful for field recognize

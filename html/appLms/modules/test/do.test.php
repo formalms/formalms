@@ -1508,14 +1508,23 @@ function showResult ($object_test , $id_param)
 			. Form::getButton ('review' , 'review' , $lang->def ('_TEST_REVIEW_ANSWER'))
 			. Form::closeForm () , 'content');
 	} elseif ($test_info[ 'show_doanswer' ] == 2 && $points >= $test_info[ 'point_required' ]) {
-		$GLOBALS[ 'page' ]->add (Form::openForm ('test_show' , 'index.php?modname=test&amp;op=play')
-			. Form::getHidden ('next_step' , 'next_step' , 'test_review')
-			. Form::getHidden ('id_test' , 'id_test' , $id_test)
-			. Form::getHidden ('id_param' , 'id_param' , $id_param)
-			. Form::getHidden ('back_url' , 'back_url' , $url_coded)
-			. Form::getHidden ('idTrack' , 'idTrack' , $id_track)
-			. Form::getButton ('review' , 'review' , $lang->def ('_TEST_REVIEW_ANSWER'))
-			. Form::closeForm () , 'content');
+		$GLOBALS['page']->add(Form::openForm('test_show', 'index.php?modname=test&amp;op=play')
+			.Form::getHidden('next_step', 'next_step', 'test_review')
+			.Form::getHidden('id_test', 'id_test', $id_test)
+			.Form::getHidden('id_param', 'id_param', $id_param)
+			.Form::getHidden('back_url', 'back_url', $url_coded)
+			.Form::getHidden('idTrack', 'idTrack', $id_track)
+			.Form::getButton('review', 'review', $lang->def('_TEST_REVIEW_ANSWER'))
+			.Form::closeForm(), 'content');
+	} elseif ($test_info[ 'show_doanswer' ] == 1) {
+			$GLOBALS['page']->add(Form::openForm('test_show', 'index.php?modname=test&amp;op=play')
+				.Form::getHidden('next_step', 'next_step', 'test_review')
+				.Form::getHidden('id_test', 'id_test', $id_test)
+				.Form::getHidden('id_param', 'id_param', $id_param)
+				.Form::getHidden('back_url', 'back_url', $url_coded)
+				.Form::getHidden('idTrack', 'idTrack', $id_track)
+				.Form::getButton('review', 'review', $lang->def('_TEST_REVIEW_ANSWER'))
+				.Form::closeForm(), 'content');
 	} elseif ($test_info[ 'show_solution' ] != 2 && $test_info[ 'show_doanswer' ] != 2)
 		if ($test_info[ 'show_solution' ] || $test_info[ 'show_doanswer' ]) {
 			$GLOBALS[ 'page' ]->add (Form::openForm ('test_show' , 'index.php?modname=test&amp;op=play')
@@ -1537,99 +1546,110 @@ function showResult ($object_test , $id_param)
 	$GLOBALS[ 'page' ]->add ('</div>' , 'content');
 }
 
-function review ($object_test , $id_param)
+function review ($object_test , $id_param) 
 {
 	$lang =& DoceboLanguage::createInstance ('test');
-	
-	require_once ($GLOBALS[ 'where_lms' ] . '/lib/lib.param.php');
-	require_once ($GLOBALS[ 'where_lms' ] . '/class.module/track.test.php');
-	
-	$idTest = $object_test->getId ();
-	$idTrack = importVar ('idTrack' , true , 0);
-	$idReference = getLOParam ($id_param , 'idReference');
-	
-	//test info---------------------------------------------------------
-	list($title , $show_solution , $question_random_number , $order_type) = sql_fetch_row (sql_query ("
-	SELECT  title, show_solution, question_random_number, order_type
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_test
-	WHERE idTest = '" . (int) $idTest . "'"));
-	
-	list($score , $bonus_score , $date_attempt , $date_attempt_mod) = sql_fetch_row (sql_query ("
-	SELECT score, bonus_score, date_attempt, date_attempt_mod 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testtrack
-	WHERE idTrack = '" . (int) $idTrack . "'"));
-	
+
+	require_once($GLOBALS['where_lms'].'/lib/lib.param.php' );
+	require_once($GLOBALS['where_lms'].'/class.module/track.test.php');
+    require_once($GLOBALS['where_lms'].'/lib/lib.test.php' );
+    
+	$idTest 		= $object_test->getId();
+	$idTrack 		= importVar('idTrack', true, 0);
+	$idReference 	= getLOParam( $id_param, 'idReference' );
+    
+    $test_man       = new TestManagement($idTest);
+    $play_man       = new PlayTestManagement($idTest, Docebo::user()->getIdst(), $idTrack, $test_man);
+    $test_info      = $test_man->getTestAllInfo();
+    $score_status   = $play_man->getScoreStatus();
+    
+    if ($score_status == 'passed') $incomplete = FALSE;
+    elseif ($score_status == 'valid') {
+        $track_info = $play_man->getTrackAllInfo();
+        
+        if ($track_info['score'] >= $test_info['point_required'])
+            $incomplete = FALSE;
+        else
+            $incomplete = TRUE;
+    } else {
+        $incomplete = TRUE;
+    }
+    $show_solution = false;
+    if( $test_info['show_solution'] == 1 )
+        $show_solution = true;
+    elseif($test_info['show_solution'] == 2 && !$incomplete )
+        $show_solution = true;
+
 	//questions------------------------------------------------------
-	if ($order_type >= 2) {
-		$re_visu_quest = sql_query ("SELECT idQuest
-		FROM " . $GLOBALS[ 'prefix_lms' ] . "_testtrack_quest
-		WHERE idTrack = '" . (int) $idTrack . "' ");
-		
-		while (list($id_q) = sql_fetch_row ($re_visu_quest)) $quest_see[] = $id_q;
-		
+	if($test_info['order_type'] >= 2) {
+		$re_visu_quest = sql_query("SELECT idQuest
+		FROM ".$GLOBALS['prefix_lms']."_testtrack_quest
+		WHERE idTrack = '".(int)$idTrack."' ");
+
+		while(list($id_q) = sql_fetch_row($re_visu_quest)) $quest_see[] = $id_q;
+
 		$query_question = "
-		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class  
-		FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest AS q JOIN " . $GLOBALS[ 'prefix_lms' ] . "_quest_type AS t
-		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND q.idQuest IN (" . implode ($quest_see , ',') . ")
-			 AND q.type_quest <> 'break_page' AND q.type_quest <> 'title' 
+		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
+		FROM ".$GLOBALS['prefix_lms']."_testquest AS q JOIN ".$GLOBALS['prefix_lms']."_quest_type AS t
+		WHERE q.idTest = '".$idTest."' AND q.type_quest = t.type_quest AND q.idQuest IN (".implode($quest_see, ',').")
+			 AND q.type_quest <> 'break_page' AND q.type_quest <> 'title'
 		ORDER BY q.sequence";
 	} else {
 		$query_question = "
-		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class 
-		FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest AS q JOIN " . $GLOBALS[ 'prefix_lms' ] . "_quest_type AS t
-		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest 
-			 AND q.type_quest <> 'break_page' 
+		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
+		FROM ".$GLOBALS['prefix_lms']."_testquest AS q JOIN ".$GLOBALS['prefix_lms']."_quest_type AS t
+		WHERE q.idTest = '".$idTest."' AND q.type_quest = t.type_quest
+			 AND q.type_quest <> 'break_page'
 		ORDER BY q.sequence";
 	}
-	$reQuest = sql_query ($query_question);
-	
+	$reQuest = sql_query($query_question);
+
 	//display-----------------------------------------------------------
-	$GLOBALS[ 'page' ]->add ('<div class="std_block">'
-		. '<div class="test_title_play">' . $lang->def ('_TITLE') . ' : ' . $title . '</div>'
-		. getBackUi (Util::str_replace_once ('&' , '&amp;' , $object_test->back_url) , $lang->def ('_BACK'))
-		. '<br />' , 'content');
-	
+	$GLOBALS['page']->add('<div class="std_block">'
+		.'<div class="test_title_play">'.$lang->def('_TITLE').' : '.$test_info['title'].'</div>'
+		.getBackUi(Util::str_replace_once('&', '&amp;', $object_test->back_url), $lang->def('_BACK'))
+		.'<br />', 'content');
+
 	//page display---------------------------------------------------
-	$GLOBALS[ 'page' ]->add ('<div class="test_answer_space">' , 'content');
+	$GLOBALS['page']->add('<div class="test_answer_space">', 'content');
 	$quest_sequence_number = 1;
-	while (list($idQuest , $type_quest , $type_file , $type_class) = sql_fetch_row ($reQuest)) {
-		
-		require_once (Docebo::inc (_folder_lms_ . '/modules/question/' . $type_file));
+	while(list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
+
+		require_once($GLOBALS['where_lms'].'/modules/question/'.$type_file);
 		$quest_obj = eval("return new $type_class( $idQuest );");
-		
-		$review = $quest_obj->displayUserResult ($idTrack ,
-			($type_quest != 'title' ? $quest_sequence_number++ : $quest_sequence_number) ,
-			$show_solution);
-		
-		$GLOBALS[ 'page' ]->add ('<div class="test_quest_review_container">'
-			. $review[ 'quest' ] , 'content');
-		
-		if ($review[ 'score' ] !== false) {
-			$GLOBALS[ 'page' ]->add (
+        
+		$review = $quest_obj->displayUserResult( 	$idTrack,
+													( $type_quest != 'title' ? $quest_sequence_number++ : $quest_sequence_number ),
+													 $show_solution );
+
+		$GLOBALS['page']->add('<div class="test_quest_review_container">'
+			.$review['quest'], 'content');
+
+		if($review['score'] !== false) {
+			$GLOBALS['page']->add(
 				'<div class="test_answer_comment">'
-				. '<div class="test_score_note">' . $lang->def ('_SCORE') . ' : ' , 'content');
-			if ($quest_obj->getScoreSetType () == 'manual' && ! $review[ 'manual_assigned' ]) {
-				$GLOBALS[ 'page' ]->add ($lang->def ('_NOT_ASSIGNED') , 'content');
+				.'<div class="test_score_note">'.$lang->def('_SCORE').' : ', 'content');
+			if($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned'] ) {
+				$GLOBALS['page']->add($lang->def('_NOT_ASSIGNED'), 'content');
 			} else {
-				if ($review[ 'score' ] > 0) {
-					$GLOBALS[ 'page' ]->add ('<span class="test_score_positive">' . $review[ 'score' ] . '</span>' , 'content');
+				if($review['score'] > 0) {
+					$GLOBALS['page']->add('<span class="test_score_positive">'.$review['score'].'</span>', 'content');
 				} else {
-					$GLOBALS[ 'page' ]->add ('<span class="test_score_negative">' . $review[ 'score' ] . '</span>' , 'content');
+					$GLOBALS['page']->add('<span class="test_score_negative">'.$review['score'].'</span>', 'content');
 				}
 			}
-			$GLOBALS[ 'page' ]->add (
+			$GLOBALS['page']->add(
 				'</div>'
-				. ($review[ 'comment' ] != '' ? $review[ 'comment' ] : '')
-				. '</div>' , 'content');
+				.( $review['comment'] != '' ? $review['comment'] : '' )
+				.'</div>', 'content');
 		}
-		$GLOBALS[ 'page' ]->add (
-			'</div>' , 'content');
+		$GLOBALS['page']->add(
+			'</div>', 'content');
 	}
-	$GLOBALS[ 'page' ]->add ('</div>' , 'content');
-	$GLOBALS[ 'page' ]->add (getBackUi (Util::str_replace_once ('&' , '&amp;' , $object_test->back_url) , $lang->def ('_BACK'))
-		. '</div>' , 'content');
+	$GLOBALS['page']->add('</div>', 'content');
+	$GLOBALS['page']->add(getBackUi(Util::str_replace_once('&', '&amp;', $object_test->back_url), $lang->def('_BACK'))
+		.'</div>', 'content');
 }
-
 
 function user_report ($idUser , $idTest , $id_param = false , $id_track = false , $mvc = false)
 {
@@ -1998,7 +2018,7 @@ function editUserReport ($id_user , $id_test , $id_track , $number_time = null ,
  */
 function deleteUserReport ($id_user , $id_test , $id_track , $number_time = null)
 {
-	require_once ($GLOBALS[ 'where_lms' ] . '/lib/lib.test.php');
+	require_once (Forma::inc(_lms_ . '/lib/lib.test.php'));
 	
 	list($idTrack , $idUser , $idReference , $idTest , $number_of_save) = $res = sql_fetch_row (sql_query ('SELECT `idTrack`,`idUser`,`idReference`,`idTest`,`number_of_save` FROM ' . $GLOBALS[ 'prefix_lms' ] . '_testtrack
     WHERE `idTrack`=' . $id_track . ' AND `idUser`=' . $id_user . ' AND `idTest`=' . $id_test));
@@ -2011,7 +2031,7 @@ function deleteUserReport ($id_user , $id_test , $id_track , $number_time = null
 			$number_time = $number_of_attempt;
 		}
 		
-		sql_affected_rows (sql_query ('DELETE FROM ' . $GLOBALS[ 'prefix_lms' ] . '_testtrack_times WHERE `idTrack`=' . $idTrack . ' AND `idReference`=' . $idReference . ' AND `idTest`=' . $idTest . ' AND `number_time`=' . $number_time));
+		sql_query ('DELETE FROM ' . $GLOBALS[ 'prefix_lms' ] . '_testtrack_times WHERE `idTrack`=' . $idTrack . ' AND `idReference`=' . $idReference . ' AND `idTest`=' . $idTest . ' AND `number_time`=' . $number_time);
 		
 		
 		$response = sql_query ('SELECT `idQuest`,`idAnswer` FROM ' . $GLOBALS[ 'prefix_lms' ] . '_testtrack_answer WHERE `idTrack`=' . $idTrack . ' AND `number_time`=' . $number_time);
@@ -2025,11 +2045,11 @@ function deleteUserReport ($id_user , $id_test , $id_track , $number_time = null
 		
 		$deleteQuery = 'DELETE FROM ' . $GLOBALS[ 'prefix_lms' ] . '_testtrack_quest WHERE idTrack=' . $idTrack . ' AND idQuest IN(' . implode ("," , $quests) . ')';
 		
-		sql_affected_rows (sql_query ($deleteQuery));
+		sql_query ($deleteQuery);
 		
 		$deleteQuery = 'DELETE FROM ' . $GLOBALS[ 'prefix_lms' ] . '_testtrack_answer WHERE `idTrack`=' . $idTrack . ' AND `number_time`=' . $number_time;
 		
-		sql_affected_rows (sql_query ($deleteQuery));
+		sql_query ($deleteQuery);
 		
 		sql_query ('UPDATE `learning_testtrack` SET `number_of_save`=' . ($number_of_save - 1) . ',`number_of_attempt`=($number_of_attempt-1) WHERE `idTrack`=' . $id_track . ' AND `idUser`=' . $id_user . ' AND `idTest`=' . $id_test);
 		

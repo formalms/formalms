@@ -79,4 +79,16 @@ class TestCreateEvent extends Event
         return $formString;
     }
 
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'formElements' => $this->formElements,
+            'object_test' => $this->object_test,
+            'lang' => $this->lang,
+        ];
+    }
+
 }

@@ -98,7 +98,7 @@ class UserProfile {
 	/**
 	 * class constructor
 	 */
-	function UserProfile($id_user, $edit_mode = false) {
+	function __construct($id_user, $edit_mode = false) {
 
 		$this->_id_user = $id_user;
 
@@ -403,6 +403,9 @@ class UserProfile {
 					return getErrorUi($this->_last_error)
 						.$this->getModUser();
 				}
+				$model = new UsermanagementAdm();
+				$oldUserdata = $model->getProfileData($this->_id_user);
+
 				if($this->saveUserInfo()) {
 					// all ok --------------------------------------
 					$this->_up_viewer->unloadUserData();
@@ -416,8 +419,16 @@ class UserProfile {
 						$result = $man_res->addSubscription(getLogUserId(), $id_event);
 						Util::jump_to('index.php?modname=reservation&op=reservation');
 					}
-					else
+					else {
+						// SET EDIT USER EVENT
+						$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
+						$event->setType('single');
+						$event->setUser($model->getProfileData($this->_id_user));
+						$event->setOldUser($oldUserdata);
+						\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
+
 						return getResultUi($this->_lang->def('_OPERATION_SUCCESSFULPROFILE')).$this->getProfile();
+					}
 				} else {
 					// some error saving ---------------------------
 					return getErrorUi($this->_lang->def('_OPERATION_FAILURE'))
@@ -433,9 +444,16 @@ class UserProfile {
 					return getErrorUi($re)
 						.$this->_up_viewer->getUserPwdModUi();
 				}
-				if($this->saveUserPwd()) {
+				if($this->saveUserPwd()) {					
 					// all ok ----------------------------------------
 					$this->_up_viewer->unloadUserData();
+
+					// SET EDIT CHANGE PASSWORD EVENT
+					$event = new \appCore\Events\Core\User\UsersManagementChangePasswordEvent();
+					$model = new UsermanagementAdm();
+					$event->setUser($model->getProfileData($this->_id_user));
+					$event->setFilledPwd($this->_up_viewer->getFilledPwd());
+					\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementChangePasswordEvent::EVENT_NAME, $event);
 
 					if($this->_end_url !== false) Util::jump_to($this->_end_url);
 
@@ -853,7 +871,7 @@ class UserProfileViewer {
 	/**
 	 * class constructor
 	 */
-	function UserProfileViewer(&$user_profile, $varname_action = 'ap') {
+	function __construct(&$user_profile, $varname_action = 'ap') {
 
 		$this->_user_profile =& $user_profile;
 		$this->acl_man = Docebo::user()->getAclManager();
@@ -1943,7 +1961,7 @@ class UserProfileViewer {
         $html .= '<div class="row comunication">'; //pulsanti certificati-messaggi
 
         if ($perm_certificate) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=lms/mycertificate/show&sop=unregistercourse">' . Lang::t('_MY_CERTIFICATE', 'menu_over') . '</a></div>';
-        if ($perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&op=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
+        if (isset($perm_competence) && $perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&op=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
 
 
         if ($unread_num > 0 && $perm_message) {
@@ -3319,7 +3337,7 @@ class UserProfileData {
 	/**
 	 * class constructor
 	 */
-	function UserProfileData($db_conn = NULL) {
+	function __construct($db_conn = NULL) {
 
 		require_once(_base_.'/lib/lib.user.php');
 		require_once(_base_.'/lib/lib.preference.php');

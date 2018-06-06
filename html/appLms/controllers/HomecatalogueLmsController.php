@@ -30,6 +30,10 @@ class HomecatalogueLmsController extends LmsController
 
 	public function init()
 	{
+        if(!HomepageAdm::staticIsCatalogToShow()) {
+            Util::jump_to('');
+        }
+
 		YuiLib::load('base,tabview');
 		Lang::init('course');
 		$this->path_course = $GLOBALS['where_files_relative'].'/appLms/'.Get::sett('pathcourse').'/';

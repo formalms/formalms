@@ -1,3 +1,79 @@
+// Course Statistic
+//
+//  Markup:
+//  <div class="section-coourse-modal">
+//  <div class="modal-body">
+//    <div class="row">                      
+//        <div class="modal__item col-sm-12 col-md-4">
+//          <h3 class="title">
+//              Tempo parziale
+//          </h3>
+//          <p class="text">
+//            00m 
+//          </p>
+//        </div>
+//        <div class="modal__item col-sm-12 col-md-4">
+//          <h3 class="title">
+//              Tempo totale
+//          </h3>
+//          <p class="text">
+//              19h 49m 
+//          </p>
+//        </div>           
+//      <div class="modal__item col-sm-12 col-md-4">
+//        <h3 class="title">
+//            Utenti on line
+//        </h3>
+//        <p class="text">
+//            1
+//        </p>
+//      </div>
+//      <div class="modal__item col-sm-12 col-md-4">
+//        <h3 class="title">
+//            Materiali
+//        </h3>
+//        <p class="text">
+//            3
+//        </p>
+//      </div>
+//      <div class="modal__item col-sm-12 col-md-4">
+//        <h3 class="title">
+//            Completato
+//        </h3>
+//        <p class="text">
+//            1
+//        </p>
+//      </div>
+//      <div class="modal__item col-sm-12 col-md-4">
+//        <h3 class="title">
+//            progress failed
+//        </h3>
+//        <p class="text">
+//            2
+//        </p>
+//      </div>
+//      <div class="modal__item col-sm-12 col-md-6">
+//        <h3 class="title">
+//            passed
+//        </h3>
+//        <p class="text">
+//            1
+//        </p>
+//      </div>
+//      <div class="modal__item col-sm-12 col-md-6">
+//        <h3 class="title">
+//            failed
+//        </h3>
+//        <p class="text">
+//            0
+//        </p>
+//      </div>
+//    </div>
+//  </div>
+//  </div>
+//
+// Style guide: 3.4
+
 .modal {
   font-family: $font;
 
@@ -8,9 +84,86 @@
 
 .modal-dialog {
   .section-coourse-modal & {
+    width: 90%;
+    max-width: 768px;
+    max-height: calc(100% - 150px);
+    margin: 0;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%)!important;
+
+    @include breakpoint($ipad) {
+      width: 45%;
+    }
+
+    @include breakpoint($desktop) {
+      width: 40%;
+    }
+  }
+}
+
+.modal-body {
+  .section-coourse-modal & {
+
+    @include breakpoint($ipad) {
+      padding: 0 15px;
+    }
+  }
+}
+
+
+.title {
+  .modal__item & {
+    .section-coourse-modal & {
+      text-transform: uppercase;
+      line-height: 40px;
+      display: block;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      border: 1px solid $gray-204;
+      color: $dark-orange;
+      font-weight: bold;
+      font-size: 18px;
+      background-color: $gray-5;
+
+      @include breakpoint($tablet) {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-right: none;
+        font-size: 12px;
+        line-height: 30px;
+      }
+    }
+  }
+}
+
+.text {
+  .modal__item & {
+    .section-coourse-modal & {
+      line-height: 60px;
+      display: block;
+      border: 1px solid $gray-204;
+      border-top: none;
+      font-size: 16px;
+
+      @include breakpoint($tablet) {
+        border-right: none;
+        font-size: 12px;
+        line-height: 45px;
+      }
+    }
+  }
+}
+
+.modal__item {
+  .section-coourse-modal & {
+    text-align: center;
+    margin-bottom: 15px;
+    -webkit-font-smoothing: antialiased;
+
+    @include breakpoint($ipad) {
+      padding: 0;
+    }
   }
 }

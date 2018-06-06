@@ -32,7 +32,11 @@ require_once(_adm_.'/lib/lib.permission.php');
 require_once(_base_.'/lib/lib.pagewriter.php');
 
 //--- here the specific code ---------------------------------------------------
-
+//#17598 - REPORT - CRON REPORT RICHIEDE UTENTE LOGGATO (patch)
+$roleid='/admin/view';
+$GLOBALS['user_roles'][$roleid] = true;
+$roleid='/admin/view_all';
+$GLOBALS['user_roles'][$roleid] = true;
 
 setLanguage('english');
 

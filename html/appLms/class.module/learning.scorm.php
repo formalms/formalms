@@ -245,7 +245,6 @@ class Learning_ScormOrg extends Learning_Object {
 		}
 		return $output;
 	}
-
 }
 
 ?>

@@ -72,4 +72,17 @@ class TestConfigurationTabsRenderEvent extends Event
         return $this->lang;
     }
 
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'configTabs' => $this->configTabs,
+            'object_test' => $this->object_test,
+            'url_encode' => $this->url_encode,
+            'lang' => $this->lang,
+        ];
+    }
+
 }

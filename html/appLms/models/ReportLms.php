@@ -8,6 +8,11 @@ class ReportLms extends Model
     protected $idReport;
 
     /**
+     * @var integer
+     */
+    protected $idCourse;
+
+    /**
      * @var string
      */
     protected $title;
@@ -52,18 +57,50 @@ class ReportLms extends Model
      */
     protected $idSource;
 
-    public function __construct($id_report = 0, $title = '', $max_score = true, $required_score = true, $weight = true, $show_to_user = false, $use_for_final = false, $source_of = '', $id_source = 0)
-    {
-        $this->idReport = $id_report;
-        $this->title = $title;
-        $this->maxScore = $max_score;
-        $this->requiredScore = $required_score;
-        $this->weight = $weight;
-        $this->showToUser = $show_to_user === 'true'? true : false;
-        $this->useForFinal = $use_for_final === 'true'? true : false;
-        $this->sourceOf = $source_of;
-        $this->idSource = $id_source;
+    /**
+     * @var bool
+     */
+    protected $showInDetail;
 
+    public function __construct($id_report = null, $title = '', $max_score = true, $required_score = true, $weight = true, $show_to_user = false, $use_for_final = false, $source_of = '', $id_source = 0, $show_in_detail = true)
+    {
+        if ($id_report !== NULL) {
+            $query_report = "SELECT id_report,id_course, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, show_in_detail
+                        FROM " . $GLOBALS['prefix_lms'] . "_coursereport
+	                    WHERE id_report = '" . $id_report . "'";
+
+            $res = sql_query($query_report);
+            if ($res) {
+                list(
+                    $this->idReport,
+                    $this->idCourse,
+                    $this->title,
+                    $this->maxScore,
+                    $this->requiredScore,
+                    $this->weight,
+                    $showToUser,
+                    $useForFinal,
+                    $this->sourceOf,
+                    $this->idSource,
+                    $showInDetail
+                    ) = sql_fetch_row($res);
+
+                $this->showToUser = $showToUser === 'true' ? true : false;
+                $this->useForFinal = $useForFinal === 'true' ? true : false;
+                $this->showInDetail = $showInDetail === '1' ? true : false;
+            }
+        } else {
+            $this->idReport = $id_report;
+            $this->title = $title;
+            $this->maxScore = $max_score;
+            $this->requiredScore = $required_score;
+            $this->weight = $weight;
+            $this->showToUser = ($show_to_user === 'true' ? true : false);
+            $this->useForFinal = ($use_for_final === 'true' ? true : false);
+            $this->sourceOf = $source_of;
+            $this->idSource = $id_source;
+            $this->showInDetail = $show_in_detail;
+        }
     }
 
     /**
@@ -80,6 +117,24 @@ class ReportLms extends Model
     public function getIdReport()
     {
         return $this->idReport;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIdCourse()
+    {
+        return $this->idCourse;
+    }
+
+    /**
+     * @param int $idCourse
+     * @return ReportLms
+     */
+    public function setIdCourse($idCourse)
+    {
+        $this->idCourse = $idCourse;
+        return $this;
     }
 
     /**
@@ -165,7 +220,8 @@ class ReportLms extends Model
     /**
      * @return string
      */
-    public function isShowToUserToString() {
+    public function isShowToUserToString()
+    {
         return ($this->useForFinal ? 'true' : 'false');
     }
 
@@ -188,7 +244,8 @@ class ReportLms extends Model
     /**
      * @return string
      */
-    public function isUseForFinalToString() {
+    public function isUseForFinalToString()
+    {
         return ($this->useForFinal ? 'true' : 'false');
     }
 
@@ -240,7 +297,33 @@ class ReportLms extends Model
         return $this->idSource;
     }
 
-    public function save() {
-        
+    /**
+     * @return bool
+     */
+    public function isShowInDetail()
+    {
+        return $this->showInDetail;
+    }
+
+    /**
+     * @param bool $showInDetail
+     * @return ReportLms
+     */
+    public function setShowInDetail($showInDetail)
+    {
+        $this->showInDetail = $showInDetail;
+        return $this;
+    }
+
+    public function updateShowInDetail()
+    {
+        $query_report = 'UPDATE `%lms_coursereport` SET  `show_in_detail` = ' . ($this->showInDetail ? 1 : 0) . ' WHERE `id_report` = ' . $this->idReport;
+
+        $res = sql_query($query_report);
+
+        if ($res){
+            return true;
+        }
+        return false;
     }
 }

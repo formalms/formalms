@@ -57,6 +57,11 @@
     font-size: 12px;
   }
 
+  .homepage & {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
   &.is-hidden {
     opacity: 0;
     visibility: hidden;
@@ -193,6 +198,10 @@
 
   .user-panel & {
     padding: 7px 9px;
+    border: 0;
+  }
+
+  .homepage & {
     border: 0;
   }
 }

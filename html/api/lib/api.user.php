@@ -90,7 +90,7 @@ class User_API extends API {
                 
 		// registration code:
 		if ($id_user && !empty($userdata['reg_code']) && !empty($userdata['reg_code_type'])) {
-			require_once(_base_.'/lib/lib.usermanager.php');
+			require_once(Forma::inc(_base_ . '/lib/lib.usermanager.php'));
 			$user_manager = new UserManager();
 			$uma = new UsermanagementAdm();
 			$reg_code_res =$user_manager->_render->processRegistrationCode(
@@ -574,7 +574,7 @@ class User_API extends API {
 			$output['success']=false;
 		}
 		else {
-			require_once(_base_.'/lib/lib.usermanager.php');
+			require_once(Forma::inc(_base_ . '/lib/lib.usermanager.php'));
 			$user_manager = new UserManager();
 			
 			$res =$user_manager->checkRegistrationCode($code, $registration_code_type);

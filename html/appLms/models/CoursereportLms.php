@@ -197,7 +197,7 @@ class CoursereportLms extends Model
         $report_man->updateTestReport($org_tests);
 
 
-        $query_report = "SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
+        $query_report = "SELECT id_report
                         FROM " . $GLOBALS['prefix_lms'] . "_coursereport
 	                    WHERE id_course = '" . $this->idCourse . "'";
 
@@ -225,7 +225,7 @@ class CoursereportLms extends Model
 
         while ($info_report = sql_fetch_assoc($re_report)) {
 
-            $report = new ReportLms($info_report['id_report'], $info_report['title'], $info_report['max_score'], $info_report['required_score'], $info_report['weight'], $info_report['show_to_user'], $info_report['use_for_final'], $info_report['source_of'], $info_report['id_source']);
+            $report = new ReportLms($info_report['id_report']);
 
             $this->courseReports[] = $report;
         }
@@ -256,14 +256,9 @@ class CoursereportLms extends Model
     /**
      * @param array $id_sources
      */
-    public function getCourseReportsFilteredByIdSources($id_sources)
+    public function getCourseReportsVisibleInDetail()
     {
-
         $result = array();
-
-        if ($id_sources === null || count($id_sources) == 0) {
-            return $result;
-        }
 
         if (count($this->courseReports) == 0) {
             $this->grabCourseReports();
@@ -271,45 +266,8 @@ class CoursereportLms extends Model
 
         foreach ($this->courseReports as $info_report) {
 
-            switch ($info_report->getSourceOf()) {
-                case CoursereportLms::SOURCE_OF_TEST : {
-
-                    $testObj = Learning_Test::load($info_report->getIdSource());
-
-                    if (in_array($testObj->getObjectType() . "_" . $info_report->getIdSource(), $id_sources)) {
-                        $result[] = $info_report;
-                        if (count($result) == count($id_sources)) {
-                            return $result;
-                        }
-                    }
-                }
-                    break;
-                case CoursereportLms::SOURCE_OF_SCOITEM: {
-
-                    $scormItem = new ScormLms($info_report->getIdSource());
-
-                    if (in_array($info_report->getSourceOf() . "_" . $scormItem->getIdSource(), $id_sources)) {
-
-                        $result[] = $info_report;
-                        if (count($result) == count($id_sources)) {
-                            return $result;
-                        }
-                    }
-                }
-                    break;
-                case CoursereportLms::SOURCE_OF_ACTIVITY: {
-
-                    if (in_array($info_report->getSourceOf() . "_" . $info_report->getIdSource(), $id_sources)) {
-                        $result[] = $info_report;
-                        if (count($result) == count($id_sources)) {
-                            return $result;
-                        }
-                    }
-                }
-                    break;
-                default: {
-
-                }
+            if ($info_report->isShowInDetail()) {
+                $result[] = $info_report;
             }
         }
 

@@ -96,6 +96,9 @@ copy and rename `/test/behat/behat_config.yml.dist` and change `base_url` to you
 * TestCreateEvent
   * Dispatched when a new Learning_Test object is created.
   * Event object contains the brand new Learning_Test object.
+* TestUpdateEvent
+  * Dispatched when a Learning_Test object is updated.
+  * Event object contains the brand new Learning_Test object.
 * UserProfileShowEvent
   * Dispatched when the user profile is showed up.
   * Event object contains the LmsUserProfile instance. Useful to modify some user's profile property before the rendering.

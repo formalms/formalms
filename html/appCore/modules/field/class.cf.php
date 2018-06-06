@@ -18,17 +18,11 @@
  * @author   Claudio Cherubino <claudio.cherubino@docebo.com>
  */
 
-require_once(dirname(__FILE__).'/class.field.php');
+require_once(Forma::inc(_adm_.'/modules/field/class.field.php'));
 
 class Field_Cf extends Field {
 
-	/**
-	 * class constructor
-	 */
-	function Field_Cf($id_common) {
-
-		parent::Field($id_common);
-	}
+    const REGEX_CODICEFISCALE = '/^[a-z]{6}[0-9]{2}[a-z][0-9]{2}[a-z][0-9]{3}[a-z]$/i';
 
 	/**
 	 * this function is useful for field recognize
@@ -585,8 +579,8 @@ class Field_Cf extends Field {
 		if($cf == '') return false;
 		if(strlen($cf) != 16) return false;
 
-		$cf = strtoupper($cf);
-		if(!ereg("^[A-Z0-9]+$", $cf)) return false;
+        $cf = strtoupper($cf);
+        if( !preg_match(self::REGEX_CODICEFISCALE, $cf) )  return false;
 
 		$s = 0;
 		for($i = 1; $i <= 13; $i += 2)

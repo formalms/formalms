@@ -1078,7 +1078,7 @@ Class CourseAlmsController extends AlmsController
 		if(isset($_POST['undo']))
 			Util::jump_to('index.php?r='.$this->base_link_course.'/show');
 
-		require_once(_lms_.'/lib/lib.certificate.php');
+		require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
 		$cert = new Certificate();
 
 		$id_course = Get::req('id_course', DOTY_INT, 0);

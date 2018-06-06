@@ -36,4 +36,9 @@ class ConfigGetRegroupUnitsEvent extends Event
     {
         $this->groupUnits = $groupUnits;
     }
+
+    public function getData()
+    {
+        return $this->groupUnits;
+    }
 }

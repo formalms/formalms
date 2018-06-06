@@ -168,9 +168,6 @@ $this->widget('dialog', array(
 	'id' => 'translation_add',
 	'dynamicContent' => true,
 	'ajaxUrl' => 'ajax.adm_server.php?r=adm/lang/translatemask',
-	'renderEvent' => 'function() {
-		new YAHOO.widget.TabView("translation_tab");
-	}',
 	'callback' => 'function() { this.destroy(); DataTable_lang_table.refresh(); }',
 	'callEvents' => array(
 		array('caller' => 'add_translation_top', 'event' => 'click'),

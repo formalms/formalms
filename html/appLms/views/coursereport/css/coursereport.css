@@ -315,6 +315,7 @@ tfoot.empty td {
 
 .is-disabled {
     opacity: .4;
+    pointer-events: none;
 }
 
 .final-buttons-container {
@@ -340,4 +341,21 @@ tfoot.empty td {
 .pagination a.is-active {
     font-size: 20px;
     color: #C84000;
+}
+
+.navbar--coursereport {
+    margin-top: 20px;
+}
+
+
+#details .student__test-result,
+#details .activity-name {
+
+    min-width: 75px!important;
+}
+
+#details .table {
+    min-width: 100%;
+    width: auto;
+    max-width: none;
 }

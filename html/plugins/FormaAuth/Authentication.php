@@ -117,7 +117,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
 
     private static function _getLoginData() {
 
-        require_once(_lib_ . '/lib.usermanager.php');
+        require_once(\Forma::inc(_base_ . '/lib/lib.usermanager.php'));
 
         $user_manager = new UserManager();
         $login_data = $user_manager->getLoginInfo();

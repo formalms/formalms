@@ -22,7 +22,7 @@ class GroupTestManagement {
 		$tests = array();
 		if(empty($id_tests)) return array();
 		$query_test = "
-		SELECT idTest, title, point_required, show_only_status, show_score, point_type,	order_type, retain_answers_history, show_in_coursereport
+		SELECT idTest, title, point_required, show_only_status, show_score, point_type,	order_type, retain_answers_history
 		FROM ".$GLOBALS['prefix_lms']."_test 
 		WHERE idTest IN  ( ".implode(',', $id_tests)." )";
 		$re_test = sql_query($query_test);
@@ -307,7 +307,7 @@ class GroupTestManagement {
 
 	function editReview($id_test, $id_user, $number_time = null, $edit_new_score = true) {
 
-		require_once($GLOBALS['where_lms'].'/modules/test/do.test.php');
+        require_once(Forma::inc(_lms_.'/modules/test/do.test.php'));
 
 		$query = "
 		SELECT idTrack 
@@ -321,7 +321,7 @@ class GroupTestManagement {
 
 	function saveReview($id_test, $id_user) {
 
-		require_once($GLOBALS['where_lms'].'/modules/test/do.test.php');
+        require_once(Forma::inc(_lms_.'/modules/test/do.test.php'));
 
 		$query = "
 		SELECT idTrack 
@@ -335,7 +335,7 @@ class GroupTestManagement {
 
 	function deleteReview($id_test, $id_user, $id_track, $number_time) {
 
-        require_once($GLOBALS['where_lms'].'/modules/test/do.test.php');
+        require_once(Forma::inc(_lms_.'/modules/test/do.test.php'));
 
         return deleteUserReport($id_user, $id_test, $id_track, $number_time);
     }

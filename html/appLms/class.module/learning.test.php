@@ -88,7 +88,7 @@ class Learning_Test extends Learning_Object {
 
 		unset($_SESSION['last_error']);
 
-		require_once( $GLOBALS['where_lms'].'/modules/test/test.php' );
+		require_once(Forma::inc(_lms_.'/modules/test/test.php'));
 		addtest( $this );
 	}
 
@@ -105,7 +105,7 @@ class Learning_Test extends Learning_Object {
 
 		unset($_SESSION['last_error']);
 
-		require_once( _lms_.'/modules/test/test.php' );
+        require_once(Forma::inc(_lms_.'/modules/test/test.php'));
 		modtestgui( $this );
 	}
 
@@ -258,6 +258,24 @@ class Learning_Test extends Learning_Object {
 				return false;
 			}
 		}
+
+		//finding assessment_rule
+		$reAssRule = sql_query("SELECT test_id, category_id, from_score, to_score, competences_list, courses_list, feedback_txt 
+		                        FROM %lms_assessment_rule WHERE test_id='".$id."'");
+		while( list($test_id, $category_id, $from_score, $to_score, $competences_list, $courses_list, $feedback_txt) = sql_fetch_row($reAssRule) ) {
+			//insert new assessment_rule
+			$ins_query = "
+			INSERT INTO ".$GLOBALS['prefix_lms']."_assessment_rule
+			SET test_id = '".(int)$id_new_test."',
+			category_id = '".(int)$category_id."',
+			from_score = '".(int)$from_score."',
+			to_score = '".(int)$to_score."',
+			competences_list = '".sql_escape_string($competences_list)."',
+			courses_list = '".sql_escape_string($courses_list)."',
+			feedback_txt = '".sql_escape_string($feedback_txt)."'";
+			if(!sql_query($ins_query)) return false;
+		}
+
 		return $id_new_test;
 	}
 
@@ -269,7 +287,7 @@ class Learning_Test extends Learning_Object {
 	 * @return nothing return
 	 **/
 	function play( $id, $id_param, $back_url ) {
-		require_once( $GLOBALS['where_lms'].'/modules/test/do.test.php' );
+		require_once(Forma::inc(_lms_.'/modules/test/do.test.php'));
 
 		$this->id = $id;
 		$this->back_url = $back_url;
@@ -429,8 +447,6 @@ class Learning_Test extends Learning_Object {
 	{
 		$this->idOrg = $idOrg;
 	}
-
-
 }
 
 ?>

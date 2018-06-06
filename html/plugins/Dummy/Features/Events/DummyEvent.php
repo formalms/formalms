@@ -29,4 +29,12 @@ class DummyEvent extends Event
         $this->foo = $foo;
     }
 
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->foo;
+    }
+
 }

@@ -22,7 +22,7 @@ ob_start();
 
 // initialize
 require(_base_.'/lib/lib.bootstrap.php');
-Boot::init(BOOT_DATETIME);
+Boot::init(BOOT_PLUGINS);
 
 // not a pagewriter but something similar
 $GLOBALS['operation_result'] = '';
@@ -57,7 +57,7 @@ if (!empty($GLOBALS['req'])){
                 }
 	}
 
-	include($aj_file);
+	include(Forma::inc($aj_file));
 }
 
 // finalize

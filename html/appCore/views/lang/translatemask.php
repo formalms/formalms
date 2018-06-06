@@ -16,22 +16,22 @@ echo Form::openForm('add_lang', 'ajax.adm_server.php?r=adm/lang/insertkey')
 		''
 	);
 ?>
-<div id="translation_tab" class="yui-navset">
-	<ul class="yui-nav">
+<div id="translation_tab">
+	<ul class="nav nav-tabs">
 <?php
 $_langs = Docebo::langManager()->getAllLanguages(true);
 foreach ($_langs as $_lang_code => $_lang_data) {
 
-	echo '<li'.($_lang_code==getLanguage() ? ' class="selected"' : '').'>'
-		.'<a href="#langs_tab_'.$_lang_code.'"><em>'.$_lang_code.'</em></a>'
+	echo '<li'.($_lang_code==getLanguage() ? ' class="active"' : '').'>'
+		.'<a data-toggle="tab" href="#langs_tab_'.$_lang_code.'"><em>'.$_lang_code.'</em></a>'
 		.'</li>';
 }
 ?>
 	</ul>
-	<div class="yui-content">
+	<div class="tab-content">
 <?php
 foreach ($_langs as $_lang_code => $_lang_data) {
-	echo '<div id="langs_tab_'.$_lang_code.'">'
+	echo '<div class="tab-pane'.($_lang_code==getLanguage() ? ' active' : '').'" id="langs_tab_'.$_lang_code.'">'
 
 		.Form::getSimpleTextarea( Lang::t('_DESCRIPTION', 'standard'),
 									'translation_'.$_lang_code,

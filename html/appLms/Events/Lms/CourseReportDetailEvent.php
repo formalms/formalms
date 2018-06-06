@@ -211,5 +211,21 @@ class CourseReportDetailEvent extends Event
         
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'testObj' => $this->testObj,
+            'userId' => $this->userId,
+            'testsScore' => $this->testsScore,
+            'info_report' => $this->info_report,
+            'values' => $this->values,
+            'aclMan' => $this->aclMan,
+            'userInfo' => $this->userInfo,
+        ];
+    }
     
 }

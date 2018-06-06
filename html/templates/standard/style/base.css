@@ -1790,16 +1790,18 @@ ul.tabs li.current{
     position: relative;
 }
 
+.user-tab-container + .nav-pills {
+    display: none;
+}
+
 .user-tab {
-    position: absolute;
     width: 100%;
-    visibility: hidden;
-    opacity: 0;
+    padding: 10px;
+    display: none;
 }
 
 .user-tab.is-visible {
-    visibility: visible;
-    opacity: 1;
+    display: block;
 }
 
 /* FIX WIDTH POPUP CONTAINER SUBSCRIBE COURSE */

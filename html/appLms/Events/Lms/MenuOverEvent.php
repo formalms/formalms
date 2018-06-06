@@ -55,4 +55,15 @@ class MenuOverEvent extends Event {
         
         return $this->menu_i;
     }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'menu' => $this->menu,
+            'menu_i' => $this->menu_i,
+        ];
+    }
 }

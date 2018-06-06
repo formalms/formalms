@@ -194,7 +194,7 @@ Class DashboardAdmController extends AdmController {
 			return;
 		}
 		
-		require_once(_lms_.'/lib/lib.certificate.php');
+		require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
 		$cert = new Certificate();
 		$released = $cert->certificateStatus($id_user, $id_course);
 		$print = array();

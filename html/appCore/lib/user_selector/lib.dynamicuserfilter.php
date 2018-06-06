@@ -98,7 +98,7 @@ class DynamicUserFilter {
 
         $temp = array();
         foreach ($types as $key=>$val) {
-            require_once(_adm_.'/modules/field/'.$val['type_file']);
+            require_once(Forma::inc(_adm_.'/modules/field/'.$val['type_file']));
             $quest_obj = eval("return new ".$val['type_class']."( NULL );");
             $temp[] = $quest_obj->getClientClassObject();
         }

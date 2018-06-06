@@ -44,8 +44,8 @@ class Boot {
 		BOOT_INPUT_ALT	=> 'anonFilteringInput',
 		BOOT_LANGUAGE 	=> 'language',
 		BOOT_DATETIME 	=> 'dateTime',
-		BOOT_TEMPLATE 	=> 'template',
         BOOT_PLUGINS 	=> 'plugins',
+		BOOT_TEMPLATE 	=> 'template',
 		BOOT_PAGE_WR 	=> 'loadPageWriter'
 	);
 

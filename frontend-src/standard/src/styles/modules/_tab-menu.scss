@@ -128,6 +128,7 @@
       border-top-right-radius: 5px;
       transition: color 0.2s ease 0s;
       text-transform: uppercase;
+      display: block;
 
       &:hover {
         color: $dark-orange;

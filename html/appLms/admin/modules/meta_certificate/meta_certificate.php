@@ -412,7 +412,7 @@ function list_element_meta_certificate()
 
 	$out->add('<div class="std_block">'	);
 
-	$out->add( getInfoUi($lang->def('_CERTIFICATE_WARNING')) );
+	// $out->add( getInfoUi($lang->def('_CERTIFICATE_WARNING')) );
 
 	$out->add($form->openForm('structure_certificate_form', 'index.php?modname=meta_certificate&amp;op=savemetacertificate', false, false, 'multipart/form-data'));
 	$out->add($form->openElementSpace()
@@ -1527,7 +1527,7 @@ function preview()
 {
 	checkPerm('view');
 
-	require_once($GLOBALS['where_lms'].'/lib/lib.certificate.php');
+	require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
 
 	$id_certificate = importVar('id_certificate', true, 0);
 
@@ -1841,7 +1841,7 @@ function preview_cert()
 {
 	checkPerm('view');
 
-	require_once($GLOBALS['where_lms'].'/lib/lib.certificate.php');
+	require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
 
 	$id_certificate = importVar('id_certificate', true, 0);
 	$id_course = importVar('id_course', true, 0);
@@ -1857,7 +1857,7 @@ function release_cert()
 {
 	checkPerm('view');
 
-	require_once($GLOBALS['where_lms'].'/lib/lib.certificate.php');
+	require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
 
 	$id_certificate = importVar('id_certificate', true, 0);
 	$id_course = importVar('id_course', true, 0);

@@ -18,17 +18,9 @@
  * @author   Fabio Pirovano <fabio@docebo.com>
  */
 
-require_once(dirname(__FILE__).'/class.field.php');
+require_once(Forma::inc(_adm_.'/modules/field/class.field.php'));
 
 class Field_YesNo extends Field {
-
-	/**
-	 * class constructor
-	 */
-	function Field_YesNo($id_common) {
-
-		parent::Field($id_common);
-	}
 
 	/**
 	 * this function is useful for field recognize

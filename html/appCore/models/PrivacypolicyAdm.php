@@ -57,7 +57,7 @@ class PrivacypolicyAdm extends Model {
 			}
 		}
 		
-		$query = "SELECT id_policy, name "
+		$query = "SELECT id_policy, name, is_default "
 			." FROM %adm_privacypolicy ".$filter;
 		if ($filter) {
 			$query .= " WHERE name LIKE '%".$filter."%' ";
@@ -76,6 +76,7 @@ class PrivacypolicyAdm extends Model {
 			$glist = array();
 			while ($obj = $this->db->fetch_obj($res)) {
 				$obj->is_assigned = FALSE;  //questa
+				$obj->is_accepted = FALSE;  //questa
 				$output[$obj->id_policy] = $obj;
 			}
 
@@ -88,6 +89,15 @@ class PrivacypolicyAdm extends Model {
 				while (list($id_policy, $count) = $this->db->fetch_row($res)) {
 					if ($count > 0 && isset($output[$id_policy])) {
 						$output[$id_policy]->is_assigned = TRUE;
+					}
+				}
+				$query = "SELECT id_policy, COUNT(*) FROM %adm_privacypolicy_user "
+					." WHERE id_policy IN (".implode(",", array_keys($output)).") "
+					." GROUP BY id_policy";
+				$res = $this->db->query($query);
+				while (list($id_policy, $count) = $this->db->fetch_row($res)) {
+					if ($count > 0 && isset($output[$id_policy])) {
+						$output[$id_policy]->is_accepted = TRUE;
 					}
 				}
 			}
@@ -122,7 +132,7 @@ class PrivacypolicyAdm extends Model {
 
 		if ($res) {
 			$query_lang = "DELETE FROM %adm_privacypolicy_lang WHERE id_policy=".(int)$id_policy;
-			$res_lang = $this->db->query($query);
+			$res_lang = $this->db->query($query_lang);
 
 			$output = true;
 			//delete associations ...
@@ -169,7 +179,7 @@ class PrivacypolicyAdm extends Model {
 	}
 
 
-	public function updatePolicy($id_policy, $name, $translations) {
+	public function updatePolicy($id_policy, $name, $is_default, $reset_policy, $translations) {
 		//validate params
 		if ((int)$id_policy <= 0 || !$name || !is_array($translations) || empty($translations)) {
 			return FALSE;
@@ -179,8 +189,22 @@ class PrivacypolicyAdm extends Model {
 		$output = false;
 		$lang_codes = Docebo::langManager()->getAllLangCode();
 
-		$query = "UPDATE %adm_privacypolicy SET name = '".$name."' WHERE id_policy = ".(int)$id_policy;
+		$query = "UPDATE %adm_privacypolicy SET name = '".$name."', lastedit_date = '".date("Y-m-d H:i:s")."' WHERE id_policy = ".(int)$id_policy;
 		$res = $this->db->query($query);
+
+		if ($reset_policy == 1){
+			$query = "UPDATE %adm_privacypolicy SET validity_date = '".date("Y-m-d H:i:s")."' WHERE id_policy = ".(int)$id_policy;
+			$res = $this->db->query($query);
+		}
+
+		if ($is_default == 1){
+			$query = "UPDATE %adm_privacypolicy SET is_default = 0";
+			$res = $this->db->query($query);
+			$query = "UPDATE %adm_privacypolicy SET is_default = 1 WHERE id_policy = ".(int)$id_policy;
+			$res = $this->db->query($query);
+		}
+
+		
 		if ($res) {
 			//remove old translations and insert new ones
 			$query = "DELETE FROM %adm_privacypolicy_lang WHERE id_policy = ".(int)$id_policy;
@@ -218,6 +242,15 @@ class PrivacypolicyAdm extends Model {
 		return $output;
 	}
 
+	public function getPolicyIsDefault($id_policy) {
+		$output = false;
+		$query = "SELECT is_default FROM %adm_privacypolicy WHERE id_policy=".(int)$id_policy;
+		$res = $this->db->query($query);
+		if ($res && $this->db->num_rows($res)>0) {
+			list($output) = $this->db->fetch_row($res);
+		}
+		return $output;
+	}
 
 	public function getPolicyTranslations($id_policy) {
 		$output = false;
@@ -243,12 +276,27 @@ class PrivacypolicyAdm extends Model {
 
 	public function getPolicyInfo($id_policy) {
 		$output = new stdClass();
+		$output->id_policy = $id_policy;
 		$output->name = $this->getPolicyName($id_policy);
+		$output->is_default = $this->getPolicyIsDefault($id_policy);
 		$output->translations = $this->getPolicyTranslations($id_policy);
 		return $output;
 	}
 
 
+	public function getDefaultPolicyInfo() {
+
+		$query = "SELECT id_policy FROM %adm_privacypolicy "
+		." WHERE is_default = 1";
+		$res = $this->db->query($query);
+		list($id_policy) = $this->db->fetch_row($res);
+		
+		$output = new stdClass();
+		$output->id_policy = $id_policy;
+		$output->name = $this->getPolicyName($id_policy);
+		$output->translations = $this->getPolicyTranslations($id_policy);
+		return $output;
+	}
 
 
 	public function getSelectedOrgchart($id_policy) {

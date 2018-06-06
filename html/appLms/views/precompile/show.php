@@ -22,6 +22,7 @@ echo $policy_text;
 echo '</p>';
 echo Form::getBreakRow();
 echo '<div class="align-center">';
+echo Form::getHidden('policy_id', 'policy_id', $policy_id);
 echo Form::getCheckbox(Lang::t('_ACCEPT', 'register'), 'accept_policy', 'accept_policy', 1, FALSE);
 echo '</div>';
 echo '</div>';
@@ -29,7 +30,7 @@ echo '</div>';
 
 echo Form::openButtonSpace();
 echo Form::getButton('save', 'save', Lang::t('_SAVE', 'standard'));
-echo Form::getButton('undo', 'undo', Lang::t('_UNDO', 'standard'));
+//echo Form::getButton('undo', 'undo', Lang::t('_UNDO', 'standard'));
 echo Form::closeButtonSpace();
 
 echo Form::closeForm();

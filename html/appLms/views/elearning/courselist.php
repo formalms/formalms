@@ -1,8 +1,5 @@
 <?php
 
-
-//var_dump(json_encode($display_info))       ;
-
 function GetCategory($the_course)
 {
     $ret_val = str_replace("/", " - ", substr($the_course['nameCategory'], 1));
@@ -80,71 +77,50 @@ function typeOfCourse ($t) {
     }
     return '';
 }
-     
+
+   
 ?>
 
+
 <script language="javascript">
-
-    // remove enroll on current course - LRZ    
-    function confirmUnsuscribe(message, id_course){
-                    
-                str_loading = "<?php echo Layout::path() ?>images/standard/loadbar.gif";    
-        
-        
+    function confirmDialog(title, id_course, id_date ){
                 $('<div></div>').appendTo('body')
-                    .html("<div><h6>" + message + "?</h6></div>")
+                    .html("<div><h6><?php echo Lang::t('_SELF_UNSUBSCRIBE', 'course')?></h6></div>")
                     .dialog({
-                        modal: true, title: 'Annulla iscrizione ', zIndex: 10000, autoOpen: true,
-                        width: 'auto', resizable: false,
+                        modal: true, 
+                        title: title, 
+                        autoOpen: true,
+                        width: '200',
+                        height: '150', 
+                        resizable: false,
                         buttons: {
-                            Yes: function () {
-                                // call ajax for unscribe user on course
-                                
-                                
-                                   
-                                var posting = $.get(
-                                    'ajax.server.php',
-                                    {
-                                        r: 'elearning/deletenroll',
-                                        id_course: id_course,
-                                        id_user: 12605 
-                                    }
-                                );
-                                posting.done(function (responseText) {
-                                
-                                      var ft = $("#course_search_filter_text").val();
-
-                                        var ctype = $("#course_search_filter_type").selectpicker().val();
-                                        var category = $('#course_search_filter_cat').selectpicker().val();
-                                        var cyear = $("#course_search_filter_year").selectpicker().val();
-                                        var json_status = $('.js-label-menu-filter.selected').attr('data-value');
-
-                                        $("#div_course").html("<br><p align='center'><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p>");
-                                        var posting = $.get( 'ajax.server.php?r=elearning/all&rnd=<?php echo time(); ?>&filter_text=' + ft + '&filter_type=' + ctype + '&filter_cat=' + category + '&filter_status=' + json_status + '&filter_year=' + cyear, {}
-
+                            <?php echo Lang::t('_CONFIRM', 'standard')?>: function () {
+                                        var posting = $.get(
+                                            'ajax.server.php',
+                                            {
+                                                r: 'elearning/self_unsubscribe',
+                                                id_course: id_course,
+                                                id_date: id_date 
+                                            }
                                         );
-                                                  
-                                        posting.done(function(responseText){
-                                            $("#div_course").html(responseText);
-                                        });                                    
-                                    
-                                    
-                                    
-                                });
-                                posting.fail(function () {
-                                    alert('unsubscribe failed')
-                                })                                
-
-                                 
-                       
-                       
-  
-                
-                                
-                                $(this).dialog("close");
-                            },
-                            No: function () {                                                                 
-              
+                                        posting.done(function (responseText) {
+                                            var ft = $("#course_search_filter_text").val();
+                                            var ctype = $("#course_search_filter_type").selectpicker().val();
+                                            var category = $('#course_search_filter_cat').selectpicker().val();
+                                            var cyear = $("#course_search_filter_year").selectpicker().val();
+                                            var json_status = $('.js-label-menu-filter.selected').attr('data-value');
+                                            $("#div_course").html("<br><p align='center'><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p>");
+                                            var posting = $.get( 'ajax.server.php?r=elearning/all&rnd=<?php echo time(); ?>&filter_text=' + ft + '&filter_type=' + ctype + '&filter_cat=' + category + '&filter_status=' + json_status + '&filter_year=' + cyear, {});
+                                            posting.done(function(responseText){
+                                                    $("#div_course").html(responseText);
+                                            });                                    
+                                        });
+                                        posting.fail(function () {
+                                            alert('unsubscribe failed')
+                                        })                                
+                                        $(this).dialog("close");
+                                    },
+                            <?php echo Lang::t('_UNDO', 'standard')?>: function () {                                                                 
                                 $(this).dialog("close");
                             }
                         },
@@ -156,9 +132,6 @@ function typeOfCourse ($t) {
 
 
 </script>
-
-
-
 
 
 <link rel="shortcut icon" href="../favicon.ico">
@@ -182,6 +155,9 @@ function typeOfCourse ($t) {
             <p><?php echo Lang::t('_NO_CONTENT', 'standard'); ?></p>
 		</div>
         <?php endif; ?>
+
+
+
         <?php foreach ($courselist as $course){  ?>
         <div class="col-xs-12 col-md-4 col-lg-3 mycourses-list">
             <div class="course-box"> <!-- NEW BLOCK -->
@@ -204,30 +180,31 @@ function typeOfCourse ($t) {
                             <?php echo $this->levels[$course['level']]; ?>
                         </div>
 
-						<?php // TO-DO: Check where the following options dropdown has to be shown (according to course specs) and make cta link to correct service url ?>
-                        
-						<div class="course-box__options dropdown pull-right">
-							
-<!--     DISABLING OPTIONS AT THE MOMENT. WE WILL GET BACK LATER                       
-                            <div class="dropdown-toggle" id="courseBoxOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-								<i class="glyphicon glyphicon-option-horizontal"></i> 
-							</div>   
--->
-                            <ul class="dropdown-menu" aria-labelledby="courseBoxOptions">
-								  
-                                 <?php //if($course['auto_unsubscribe']==2): ?>
-								    <li>
-                                        <a href='javascript:javascript:confirmUnsuscribe("Sei sicuro di voler annullare  ", <?php //echo $course['idCourse']; ?> )'><?php //echo Lang::t('_UNSUBSCRIBE', 'course') ?></a>    
-                                    </li>
-                                <?php //endif; ?>
-                                
-								<li><a href="javascript:void(0)">option 2</a></li>
-								<li><a href="javascript:void(0)">option 3</a></li>
-							</ul> 
-						</div> 
+                        <?php if($course['auto_unsubscribe']==2 || $course['auto_unsubscribe']==1 || $course["course_demo"] ): ?>						
+                            <div class="course-box__options dropdown pull-right">
+                                <div class="dropdown-toggle" id="courseBoxOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+								    <i class="glyphicon glyphicon-option-horizontal"></i> 
+							    </div>   
+
+                                <ul class="dropdown-menu" aria-labelledby="courseBoxOptions">
+								      
+                                     <?php if($course['auto_unsubscribe']==2 || $course['auto_unsubscribe']==1 ): ?>
+								        <li>
+                                            <a href='javascript:confirmDialog(<?php echo "\"".$course['name']."\",".$course['idCourse'].",".key($display_info[$course['idCourse']]) ?>)'><?php echo Lang::t('_SELF_UNSUBSCRIBE', 'course') ?></a>    
+                                        </li>
+                                    <?php endif; ?>
+                                    
+                                    <?php if ($course["course_demo"]) :?>
+								        <li>
+                                            <a href="index.php?r=catalog/downloadDemoMaterial&amp;course_id=<?php echo $course['idCourse'] ?>"><?php echo Lang::t('_COURSE_DEMO', 'course') ?></a>
+                                        </li>
+                                    <?php endif; ?>                                    
+							    </ul> 
+						    </div>
+                        <?php endif; ?>
                         
                         <div class="course-box__desc">
-                            <?php //echo TruncateText($course['box_description'], 120); ?>
+                            <?php echo TruncateText($course['box_description'], 120); ?>
                         </div>
                     </div> 
                     

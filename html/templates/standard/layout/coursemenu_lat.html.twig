@@ -5,6 +5,7 @@
 
 {% set selectedArea = '' %}
 {% set selectedAreaSlug = '' %}
+{% set columnWidth = '' %}
 
 {% for dropdown_menu in dropdown %}
 	{% if dropdown_menu.selected %}
@@ -79,25 +80,109 @@
     </div>
 	<div class="clearfix"></div>
 
+	{#<pre>#}
+		{#{{ dump(modal_stats.course_stats) }}#}
+	{#</pre>#}
+
 	<div id="myModal" class="modal fade section-coourse-modal" role="dialog">
 		<div class="modal-dialog">
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">'.Lang::t('_STATFORUSER', 'stats').'</h4>
+					<h4 class="modal-title">
+                        {{ translate('_overview','coursereport') }}
+					</h4>
 				</div>
 				<div class="modal-body">
-					<p>
-						'.$link_arg.'
-						<br>'.$info_panel.'</p>
-					<br>
-					<div id="tag_cloud" class="yui-navset"></div>
+					<div class="row">
+                        {% if (modal_stats.user_stats.show_time != null) %}
+							{% set columnWidth = '4' %}
+
+							<div class="modal__item col-sm-12 col-md-4">
+								<h3 class="title">
+                                    {{ translate('_PARTIAL_TIME', 'course') }}
+								</h3>
+								<p class="text">
+									{{ modal_stats.user_stats.show_time.partial_time }}
+								</p>
+							</div>
+							<div class="modal__item col-sm-12 col-md-4">
+								<h3 class="title">
+                                    {{ translate('_TOTAL_TIME', 'standard') }}
+								</h3>
+								<p class="text">
+                                    {{ modal_stats.user_stats.show_time.total_time }}
+								</p>
+							</div>
+                        {% else %}
+							{% set columnWidth = '6' %}
+						{% endif %}
+
+						<div class="modal__item col-sm-12 col-md-{{ columnWidth }}">
+							<h3 class="title">
+                                {{ translate('_WHOIS_ONLINE', 'course') }}
+							</h3>
+							<p class="text">
+                                {{ modal_stats.user_stats.who_is_online.user_online }}
+							</p>
+						</div>
+
+						{# COURSE STATS #}
+
+						<div class="modal__item col-sm-12 col-md-{{ columnWidth }}">
+							<h3 class="title">
+                                {{ translate('_PROGRESS_ALL', 'course') }}
+							</h3>
+							<p class="text">
+                                {{ modal_stats.course_stats.materials }}
+							</p>
+						</div>
+
+						<div class="modal__item col-sm-12 col-md-{{ columnWidth }}">
+							<h3 class="title">
+                                {{ translate('_COMPLETED', 'standard') }}
+							</h3>
+							<p class="text">
+                                {{ modal_stats.course_stats.materials_complete }}
+							</p>
+						</div>
+
+						<div class="modal__item col-sm-12 col-md-{{ columnWidth }}">
+							<h3 class="title">
+                                {{ translate('_PROGRESS_FAILED', 'standard') }}
+							</h3>
+							<p class="text">
+                                {{ modal_stats.course_stats.materials_incomplete }}
+							</p>
+						</div>
+
+						{#
+						<div class="modal__item col-sm-12 col-md-6">
+							<h3 class="title">
+                                {{ translate('_PASSED', 'standard') }}
+							</h3>
+							<p class="text">
+                                {{ modal_stats.course_stats.materials_passed }}
+							</p>
+						</div>
+
+						<div class="modal__item col-sm-12 col-md-6">
+							<h3 class="title">
+                                {{ translate('_FAILED', 'standard') }}
+							</h3>
+							<p class="text">
+                                {{ modal_stats.course_stats.materials_failed }}
+							</p>
+						</div>
+						#}
+
+					</div>
 				</div>
 				<div class="modal-footer">
 					<div class="col-xs-6"></div>
 					<div class="col-xs-6">
-						<a href="javascript:void(0);" class="forma-button forma-button--orange-hover" data-dismiss="modal">'.Lang::t('_CLOSE', 'standard').'</a>
+						<a href="javascript:void(0);" class="forma-button forma-button--orange-hover" data-dismiss="modal">{{ translate('_CLOSE', 'standard') }}</a>
 					</div>
 				</div>
 			</div>

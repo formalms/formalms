@@ -2737,7 +2737,7 @@ Mot de passe: [password]]]></key>
         <key id="test&amp;_QUEST_UPLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Télécharger le fichier]]></key>
         <key id="test&amp;_RESTART_INFO" attributes="" save_date="2017-03-28 19:28:17"><![CDATA[Recommence le test du début]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sélectionner la page]]></key>
-        <key id="test&amp;_SHOW_IN_COURSEREPORT" attributes="" save_date="2018-02-19 12:02:24"><![CDATA[Afficher dans le Carnet de note]]></key>
+        <key id="test&amp;_SHOW_IN_DETAIL" attributes="" save_date="2018-02-19 12:02:24"><![CDATA[Afficher dans le Carnet de note]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Suspendre le test après le nombre suivant de tentatives ayant échouées]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Suspendre le test pour le nombre d'heures suivantes]]></key>
         <key id="test&amp;_SUSPENSION_PREREQUISITES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Après le test de suspension, nécessite de repasser à nouveau tous les tests des prérequis]]></key>

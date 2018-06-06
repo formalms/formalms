@@ -30,4 +30,12 @@ class TestGetTypesEvent extends Event
         return $this->testTypes;
     }
 
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->testTypes;
+    }
+
 }

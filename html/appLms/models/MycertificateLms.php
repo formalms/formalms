@@ -8,7 +8,7 @@
 |   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
 \ ======================================================================== */
 
-require_once(_lms_.'/lib/lib.certificate.php');
+require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
 
 class MycertificateLms extends Model {
 
@@ -32,34 +32,43 @@ class MycertificateLms extends Model {
                 
         $data = array();
         foreach ($myCertificates AS $cert) {
-            $preview    = '<a class="ico-wt-sprite subs_view" href="?r=mycertificate/'
-                        . 'preview&id_certificate='.$cert['id_certificate'].'&id_course='.$cert['id_course'].'" '
-                        .' title="'.Lang::t('_PREVIEW', 'certificate').'"><span>'.Lang::t('_PREVIEW', 'certificate').'</span></a>';
-            $download    = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
-                        . 'download&id_certificate='.$cert['id_certificate'].'&id_course='.$cert['id_course'].'" '
-                        .' title="'.Lang::t('_DOWNLOAD', 'certificate').'"><span>'.Lang::t('_DOWNLOAD', 'certificate').'</span></a>';
-            $generate    = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
-                        . 'download&id_certificate='.$cert['id_certificate'].'&id_course='.$cert['id_course'].'" '
-                        .' title="'.Lang::t('_GENERATE', 'certificate').'"><span>'.Lang::t('_GENERATE', 'certificate').'</span></a>';
-            
-            switch ($cert['available_for_status']) {
-                case 3: $year = substr($cert['date_end'], 0, 4); break;
-                case 2: $year = substr($cert['date_begin'], 0, 4); break;
-                case 1: $year = substr($cert['date_inscr'], 0, 4); break;
-                default: $year = '-';
+            if($this->certificate->certificateAvailableForUser($cert['id_certificate'], $cert['id_course'], $this->id_user) ) {
+                $preview = '<a class="ico-wt-sprite subs_view" href="?r=mycertificate/'
+                    . 'preview&id_certificate=' . $cert['id_certificate'] . '&id_course=' . $cert['id_course'] . '" '
+                    . ' title="' . Lang::t('_PREVIEW', 'certificate') . '"><span>' . Lang::t('_PREVIEW', 'certificate') . '</span></a>';
+                $download = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
+                    . 'download&id_certificate=' . $cert['id_certificate'] . '&id_course=' . $cert['id_course'] . '" '
+                    . ' title="' . Lang::t('_DOWNLOAD', 'certificate') . '"><span>' . Lang::t('_DOWNLOAD', 'certificate') . '</span></a>';
+                $generate = '<a class="ico-wt-sprite subs_pdf" href="?r=mycertificate/'
+                    . 'download&id_certificate=' . $cert['id_certificate'] . '&id_course=' . $cert['id_course'] . '" '
+                    . ' title="' . Lang::t('_GENERATE', 'certificate') . '"><span>' . Lang::t('_GENERATE', 'certificate') . '</span></a>';
+
+                switch ($cert['available_for_status']) {
+                    case 3:
+                        $year = substr($cert['date_end'], 0, 4);
+                        break;
+                    case 2:
+                        $year = substr($cert['date_begin'], 0, 4);
+                        break;
+                    case 1:
+                        $year = substr($cert['date_inscr'], 0, 4);
+                        break;
+                    default:
+                        $year = '-';
+                }
+
+                $row = array(
+                    'year' => $year,
+                    'code' => $cert['code'],
+                    'course_name' => $cert['course_name'],
+                    'cert_name' => $cert['cert_name'],
+                    'date_complete' => $cert['date_complete'],
+                    'preview' => isset($cert['on_date']) ? '' : $preview,
+                    'download' => isset($cert['on_date']) ? $download : $generate
+                );
+
+                $data[] = $row;
             }
-					
-            $row = array(
-                'year'              => $year, 
-                'code'              => $cert['code'], 
-                'course_name'       => $cert['course_name'], 
-                'cert_name'         => $cert['cert_name'], 
-                'date_complete'     => $cert['date_complete'],
-                'preview'           => isset($cert['on_date']) ? '' : $preview,
-                'download'          => isset($cert['on_date']) ? $download : $generate
-            );
-            
-            $data[] = $row;
         }
         
         usort($data, function($a, $b) use ($sort, $dir) {

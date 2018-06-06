@@ -614,13 +614,19 @@ class Form {
 	 * @param string $other_before 	optional html code added before the label element
 	 * @return string with the html code for the input type="text" element
 	 */
-	public static function getFilefield( $label_name, $id, $name, $value = '', $alt_name = '', $other_after = '', $other_before = '', $other_afterbefore = '' ) {
+	public static function getFilefield( $label_name, $id, $name, $value = '', $alt_name = '', $other_after = '', $other_before = '', $other_afterbefore = '', $max_size = null ) {
 
 		if( $alt_name == '' ) $alt_name = strip_tags($label_name);
 
 		$p_size = intval(ini_get('post_max_size'));
-		$u_size = intval(ini_get('upload_max_filesize'));
-		$max_kb = ( $p_size < $u_size ? $p_size : $u_size );
+        $u_size = intval(ini_get('upload_max_filesize'));
+        
+        $comparison = array($p_size, $u_size);
+        if(!is_null($max_size)) {
+            $comparison[] = (int)$max_size;
+        }
+        $max_kb = min($comparison);
+        
 		$other_after = ' (Max. '.$max_kb.' Mb) '.$other_after;
 		return Form::getLineFilefield( 'form_line_l', 'floating', $label_name, 'fileupload', $id, $name, $value, $alt_name, '', $other_after, $other_before, $other_afterbefore );
 	}
@@ -641,13 +647,13 @@ class Form {
 	 * @param string $other_after
 	 * @param string $other_before
 	 */
-	public static function getExtendedFileField($label_name, $id, $name, $value=FALSE, $filename=FALSE, $show_current=TRUE, $show_del_checkbox=TRUE, $add_old_info=TRUE, $old_prefix=FALSE, $del_arr_name=FALSE, $alt_name = '', $other_after = '', $other_before = '') {
+	public static function getExtendedFileField($label_name, $id, $name, $value=FALSE, $filename=FALSE, $show_current=TRUE, $show_del_checkbox=TRUE, $add_old_info=TRUE, $old_prefix=FALSE, $del_arr_name=FALSE, $alt_name = '', $other_after = '', $other_before = '', $max_size = null) {
 		$res="";
 
 		$res.='<div class="form_extended_file_field">';
 
 
-		$res.=Form::getFilefield($label_name, $id, $name, $value, $alt_name, $other_after, $other_before);
+		$res.=Form::getFilefield($label_name, $id, $name, $value, $alt_name, $other_after, $other_before, '', $max_size);
 
 		if ($show_current) {
 
