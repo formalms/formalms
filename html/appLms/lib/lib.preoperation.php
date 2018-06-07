@@ -45,8 +45,7 @@ if(Get::sett('stop_concurrent_user') == 'on' && isset($_SESSION['idCourse'])) {
     }
 }
 
-if(isset($_SESSION['must_renew_pwd']) && $_SESSION['must_renew_pwd'] == 1
-        && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+if(isset($_SESSION['must_renew_pwd']) && $_SESSION['must_renew_pwd'] == 1 ) {
     
     // handling required password renewal
     
