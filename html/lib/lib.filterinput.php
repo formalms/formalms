@@ -72,7 +72,6 @@ class FilterInput {
 				//his major drawback is that it requires a lot of resource to operate, so is better
 				//to use it only if really needed
 
-				require_once _base_.'/addons/htmlpurifier/HTMLPurifier.auto.php';
 				$config = HTMLPurifier_Config::createDefault();
 
 				if (count($this->getWhitelist('tag')) > 0) {
