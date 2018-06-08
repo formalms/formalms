@@ -54,6 +54,8 @@ class FilterInput {
 			//$_FILES = $this->clean_input_data($_FILES, true);
 		}
 
+		$_SERVER["REQUEST_URI"] = html_entity_decode($this->clean_input_data(urldecode($_SERVER["REQUEST_URI"])));
+		$_SERVER["QUERY_STRING"] = html_entity_decode($this->clean_input_data(urldecode($_SERVER["QUERY_STRING"])));
 	}
 
 
@@ -70,7 +72,7 @@ class FilterInput {
 				//his major drawback is that it requires a lot of resource to operate, so is better
 				//to use it only if really needed
 
-				require_once _base_.'/addons/htmlpurifier/HTMLPurifier.standalone.php';
+				require_once _base_.'/addons/htmlpurifier/HTMLPurifier.auto.php';
 				$config = HTMLPurifier_Config::createDefault();
 
 				if (count($this->getWhitelist('tag')) > 0) {
