@@ -18,15 +18,22 @@ DirectoryIndex index.php index.html index.htm
         #RewriteRule ^ http://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </IfModule>
 
-
 <FilesMatch "\.(htpasswd|ini|php|fla|psd|log|sh)$">
         Order Allow,Deny
         Deny from all
 </FilesMatch>
 
-# TODO:  review permitted files
-<FilesMatch "(index\.php|ajax\.adm_server\.php|ajax\.server\.php|paypal\.php|tasks\.php|tiny_mce_gzip\.php|index_tiny\.php|scormXmlTree\.php|soaplms\.php
-|scorm_page_body\.php|text\.php|users\.php|write\.php|check\.php)$">
+<FilesMatch "(composer\.(json|lock))$">
+        Order Allow,Deny
+        Deny from all
+</FilesMatch>
+
+<FilesMatch "((?i:readme)\.(?i:txt|md)|(?i:README))$">
+        Order Allow,Deny
+        Deny from all
+</FilesMatch>
+
+<FilesMatch "(index\.php|ajax\..*\.php|paypal\.php|cron\.php|tasks\.php|tinymce\.gzip\.php|index_tiny\.php|scormXmlTree\.php|soaplms\.php|scorm_page_body\.php|keep_alive\.php|text\.php|users\.php|write\.php|check\.php)$">
         Order Allow,Deny
         Allow from all
 </FilesMatch>
