@@ -553,9 +553,10 @@ class SubscriptionAlmsController extends AlmsController {
 
 			// SET ADD STANDARD (multiple) SUBSCRIPTION EVENT
 			if ($data) {
-				$event = new \appCore\Events\Core\Courses\CourseSubscriptionAddStandardEvent();
+				$event = new \appCore\Events\Core\Courses\CourseSubscriptionAddEvent();
 				$event->setData($data);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionAddStandardEvent::EVENT_NAME, $event);
+				$event->setType('standard');
+				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionAddEvent::EVENT_NAME, $event);
 			}
 
 			// Save limit preference for admin
@@ -977,12 +978,13 @@ class SubscriptionAlmsController extends AlmsController {
 				$send_alert = Get::req('send_alert', DOTY_INT, 0) > 0;
 
 				// SET ADD FAST SUBSCRIPTION EVENT
-				$event = new \appCore\Events\Core\Courses\CourseSubscriptionAddFastEvent();
+				$event = new \appCore\Events\Core\Courses\CourseSubscriptionAddEvent();
 				$userModel = new UsermanagementAdm();
 	  			$user = $userModel->getProfileData($id_user);
 				$event->setUser($user);
+				$event->setType('fast');
 				$event->setLevel($level);
-				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionAddFastEvent::EVENT_NAME, $event);
+				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionAddEvent::EVENT_NAME, $event);
 
 				if ($send_alert) {
 					require_once(_base_.'/lib/lib.eventmanager.php');
@@ -1190,7 +1192,7 @@ class SubscriptionAlmsController extends AlmsController {
  					$output['message'] = $message;
 				} else {
 					// SET EDIT MULTI SUBSCRIPTION EVENT
-					$event = new \appCore\Events\Core\Courses\CourseSubscriptionEditMultiEvent();
+					$event = new \appCore\Events\Core\Courses\CourseSubscriptionEditEvent();
 
 					$users = [];
 					foreach ($users_list as $idst) {
@@ -1206,7 +1208,7 @@ class SubscriptionAlmsController extends AlmsController {
 						$status_list = $this->model->getUserStatusList();
 						$event->setStatus(['id' => $new_status, 'name' => $status_list[$new_status]]);
 					}
-					\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionEditMultiEvent::EVENT_NAME, $event);
+					\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionEditEvent::EVENT_NAME, $event);
 				}
 			}
 		}

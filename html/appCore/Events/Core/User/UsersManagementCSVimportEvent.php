@@ -1,35 +1,25 @@
 <?php
-namespace appCore\Events\Core;
+namespace appCore\Events\Core\User;
 
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class UsersManagementUnsuspendEvent
+ * Class UsersManagementCSVimportEvent
  * @package appLms\Events\Core
  */
-class UsersManagementUnsuspendEvent extends Event
+class UsersManagementCSVimportEvent extends Event
 {
-    const EVENT_NAME = 'core.usersmanagementunsuspend.event';
+    const EVENT_NAME = 'core.usersmanagementcsvimport.event';
     
     /** @var array */
-    protected $user;
     protected $users;
 
     /**
-     * UsersManagementUnsuspendEvent constructor.
+     * UsersManagementCSVimportEvent constructor.
      */
     public function __construct()
     {
-        $this->user = null;
         $this->users = array();
-    }
-
-    /**
-     * @param $user
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
     }
 
     /**
@@ -38,14 +28,6 @@ class UsersManagementUnsuspendEvent extends Event
     public function setUsers($users)
     {
         $this->users = $users;
-    }
-
-    /**
-     * @return array
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 
     /**
@@ -61,7 +43,7 @@ class UsersManagementUnsuspendEvent extends Event
      */
     public function getData()
     {
-        return $this->user ?: $this->users;
+        return $this->users;
     }
 
 }

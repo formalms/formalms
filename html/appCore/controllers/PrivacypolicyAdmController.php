@@ -95,13 +95,28 @@ class PrivacypolicyAdmController extends AdmController {
 		$records = array();
 		if (is_array($list)) {
 			foreach ($list as $record) {
-				$records[] = array(
-					'id' => (int)$record->id_policy,
-					'name' => highlightText($record->name, $filter),
-					'is_assigned' => $record->is_assigned,
-					'mod' => 'ajax.adm_server.php?r=adm/privacypolicy/mod&id='.(int)$record->id_policy,
-					'del' => 'ajax.adm_server.php?r=adm/privacypolicy/del&id='.(int)$record->id_policy
-				);
+				if ($record->is_default == 1 || $record->is_accepted){
+					$records[] = array(
+						'id' => (int)$record->id_policy,
+						'name' => highlightText($record->name, $filter),
+						'is_assigned' => ($record->is_default == 1 ? 'default' : $record->is_assigned),
+						'is_accepted' => $record->is_accepted,
+						'mod' => 'ajax.adm_server.php?r=adm/privacypolicy/mod&id='.(int)$record->id_policy,
+						'del' => ''
+					);
+				} else {
+					$records[] = array(
+						'id' => (int)$record->id_policy,
+						'name' => highlightText($record->name, $filter),
+						'is_assigned' => $record->is_assigned,
+						'is_accepted' => $record->is_accepted,
+						'mod' => 'ajax.adm_server.php?r=adm/privacypolicy/mod&id='.(int)$record->id_policy,
+						'del' => 'ajax.adm_server.php?r=adm/privacypolicy/del&id='.(int)$record->id_policy
+					);
+				}
+
+
+
 			}
 		}
 
@@ -209,6 +224,7 @@ class PrivacypolicyAdmController extends AdmController {
 		$this->render('policy_editmask', array(
 			'id_policy' => $id_policy,
 			'name' => $info->name,
+			'is_default' => $info->is_default,
 			'translations' => $info->translations
 		));
 
@@ -236,9 +252,11 @@ class PrivacypolicyAdmController extends AdmController {
 		$output = array();
 		$id_policy = Get::req('id_policy', DOTY_INT, -1);
 		$name = Get::req('name', DOTY_STRING, "");
+		$is_default = Get::req('is_default', DOTY_INT, 0);
+		$reset_policy = Get::req('reset_policy', DOTY_INT, 0);
 		$translations = Get::req('translation', DOTY_MIXED, FALSE);
 
-		$res = $this->model->updatePolicy($id_policy, $name, $translations);
+		$res = $this->model->updatePolicy($id_policy, $name, $is_default, $reset_policy, $translations);
 		$output = array('success' => $res ? TRUE : FALSE);
 
 		echo $this->json->encode($output);

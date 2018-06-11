@@ -782,64 +782,67 @@ function play ($object_test , $id_param)
 	}
 	
 	$checkState = "<script type=\"text/javascript\">
-									(function($) {
-										$(document).on('change', '.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]', function() {
-                                            if (tot_question == 0 ) {
-                                                $('#next_page').prop('disabled', false);
-                                                if($('#answer_info'))
-                                                    $('#answer_info').hide();
-											    if($('#show_result'))
-												    $('#show_result').prop('disabled', false);
-                                            }        
-											$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
-											$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
-											$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
-										});
-									})(jQuery);   
-                                    (function($) {
-										$(document).on('ready', function() {
-                                        
-                                            //LRZ
-                                            if(mandatory==true){
-                                                num_answer_radio = $('.answer_question input[type=\"radio\"]:checked').length ;     
-                                                num_answer_chk = $('.answer_question input[type=\"checkbox\"]:checked').length ;     
-                            
-                                                if((num_answer_radio +  num_answer_chk) >0){
-                                                
-                                                    $('#next_page').prop('disabled', false);
-                                                        if($('#answer_info'))
-                                                            $('#answer_info').hide();
-                                                        if($('#show_result'))
-                                                            $('#show_result').prop('disabled', false);
-                                                } else {
-                                              
-                                                    $('#next_page').prop('disabled', true);
-                                                        if($('#answer_info'))
-                                                            $('#answer_info').show();
-                                                        if($('#show_result'))
-                                                            $('#show_result').prop('disabled', true);                                                
-                                                
-                                                
-                                                }
-                                             }
-                                             
-                                             
-                                             if(mandatory==false){
-                                             
-                                                        $('#next_page').prop('disabled', false);
-                                                        if($('#answer_info'))
-                                                            $('#answer_info').hide();
-                                                        if($('#show_result'))
-                                                            $('#show_result').prop('disabled', false);
-                                             }
-                                             
-                                             
-											$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
-											$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
-											$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
-										});
-									})(jQuery); 
-								</script>";
+						function toggleNext(enable) {
+							if (enable) {
+								$('#next_page').prop('disabled', false);
+                                if($('#answer_info'))
+                                    $('#answer_info').hide();
+							    if($('#show_result'))
+								    $('#show_result').prop('disabled', false);
+							} else {
+                            	$('#next_page').prop('disabled', true);
+                                if($('#answer_info'))
+                                    $('#answer_info').show();
+							    if($('#show_result'))
+								    $('#show_result').prop('disabled', true);
+							}
+						}
+
+                        (function($) {
+							$(document).on('ready', function() {
+                                //LRZ
+                                if(mandatory == true) {
+                                    num_answer_radio = $('.answer_question input[type=\"radio\"]:checked').length;     
+                                    num_answer_chk = $('.answer_question input[type=\"checkbox\"]:checked').length;
+                
+                                    if((num_answer_radio + num_answer_chk) > 0 || $('.answer_question select').length > 0) {
+                                    	toggleNext(true);
+                                    } else {
+                                        toggleNext(false);
+                                    }
+                                } else {
+                                    toggleNext(true);
+                                }
+                                 
+								$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
+								$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
+								$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
+							});
+						})(jQuery);
+
+						(function($) {
+							$(document).on('change', '.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]', function() {
+								tot_question = $('.answer_question input:checked').length;
+
+                                if (tot_question > 0 ) {
+                                    toggleNext(true);
+                                } else {
+                                    toggleNext(false);
+                                }
+								$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
+								$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
+								$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
+							});
+
+							$(document).on('keyup', '.answer_question textarea', function() {
+								if ($('.answer_question textarea').val().length > 0) {
+									toggleNext(true);
+								} else {
+                                	toggleNext(false);
+                                }
+							});
+						})(jQuery);
+					</script>";
 	
 	$GLOBALS[ 'page' ]->add (
 		getTitleArea ($test_info[ 'title' ] , 'test' , $lang->def ('_TEST_INFO'))

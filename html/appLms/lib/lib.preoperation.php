@@ -45,16 +45,14 @@ if(Get::sett('stop_concurrent_user') == 'on' && isset($_SESSION['idCourse'])) {
     }
 }
 
-if(isset($_SESSION['must_renew_pwd']) && $_SESSION['must_renew_pwd'] == 1
-        && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+if(isset($_SESSION['must_renew_pwd']) && $_SESSION['must_renew_pwd'] == 1 ) {
     
     // handling required password renewal
     
     $GLOBALS['modname'] = '';
     $GLOBALS['op']      = '';
     $GLOBALS['req'] = 'lms/profile/renewalpwd';
-} elseif(isset($_SESSION['request_mandatory_fields_compilation']) && $_SESSION['request_mandatory_fields_compilation'] == 1
-        && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+} elseif(isset($_SESSION['request_mandatory_fields_compilation']) && $_SESSION['request_mandatory_fields_compilation'] == 1 && $GLOBALS['req'] != 'precompile/set') {
     
     // handling required mandatory fields compilation
     

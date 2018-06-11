@@ -1,21 +1,21 @@
 <?php
-namespace appCore\Events\Core;
+namespace appCore\Events\Core\User;
 
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class UsersManagementOrgChartDeleteNodeEvent
+ * Class UsersManagementOrgChartCreateNodeEvent
  * @package appLms\Events\Core
  */
-class UsersManagementOrgChartDeleteNodeEvent extends Event
+class UsersManagementOrgChartCreateNodeEvent extends Event
 {
-    const EVENT_NAME = 'core.usersmanagementorgchartdeletenode.event';
+    const EVENT_NAME = 'core.usersmanagementorgchartcreatenode.event';
     
     /** @var array */
     protected $node;
 
     /**
-     * UsersManagementOrgChartDeleteNodeEvent constructor.
+     * UsersManagementOrgChartCreateNodeEvent constructor.
      */
     public function __construct()
     {        

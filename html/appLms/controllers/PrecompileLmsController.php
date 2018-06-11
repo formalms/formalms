@@ -51,6 +51,7 @@ class PrecompileLmsController extends LmsController {
 				'result_message' => $result_message,
 				//'policy_checked' => $policy_checked,
 				'fields_checked' => $fields_checked,
+				'policy_id' => $this->model->getPrivacyPolicyId(),
 				'policy_text' => $this->model->getPrivacyPolicyText(),
 				'id_user' => Docebo::user()->getIdSt(),
 				'fieldlist' => $fieldlist
@@ -72,7 +73,8 @@ class PrecompileLmsController extends LmsController {
 		$fl->storeFieldsForUser($id_user);
 
 		$accept_policy = Get::req('accept_policy', DOTY_INT, 0) > 0;
-		$this->model->setAcceptingPolicy($id_user, $accept_policy);
+		$policy_id = Get::req('policy_id', DOTY_INT, -1);
+		$this->model->setAcceptingPolicy($id_user, $policy_id, $accept_policy);
 
 		$policy_checked = $this->model->getAcceptingPolicy($id_user);
 		$fields_checked = $fl->checkUserMandatoryFields($id_user);

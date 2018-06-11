@@ -591,5 +591,56 @@ class CatalogLmsController extends LmsController {
 		}
 		die();
 	}
+    
+        public function self_unsubscribe()
+    {
+        $id_user = Docebo::user()->idst;
+        $id_course = Get::req('id_course', DOTY_INT, 0);
+        $id_edition = Get::req('id_edition', DOTY_INT, 0);
+        $id_date = Get::req('id_date', DOTY_INT, 0);
+
+        $cmodel = new CourseAlms();
+        $cinfo = $cmodel->getCourseModDetails($id_course);
+
+
+        if ($cinfo['auto_unsubscribe'] == 0) {
+            //no self unsubscribe possible for this course
+            return '_NO_SELF_UNSUBSCRIBE_POSSIBLE';
+            
+        }
+
+        $date_ok = TRUE;
+        if ($cinfo['unsubscribe_date_limit'] !== '' && $cinfo['unsubscribe_date_limit'] !== '0000-00-00 00:00:00' && $cinfo['unsubscribe_date_limit'] !== NULL) {
+            if ($cinfo['unsubscribe_date_limit'] < date('Y-m-d H:i:s')) {
+                //self unsubscribing is no more allowed, go back to courselist page
+                return '_SELF_UNSUBSCRIBE_NO_MORE_ALLOWED';
+                
+            }
+        }
+
+        $smodel = new SubscriptionAlms();
+        $param = '';
+
+        if ($cinfo['auto_unsubscribe'] == 1) {
+            //moderated self unsubscribe
+            $res = $smodel->setUnsubscribeRequest($id_user, $id_course, $id_edition, $id_date);
+
+        }
+
+        if ($cinfo['auto_unsubscribe'] == 2) {
+            //directly unsubscribe user
+            $res = $smodel->unsubscribeUser($id_user, $id_course, $id_edition, $id_date);
+
+        }
+        
+        if ($res) {
+            $this->allCourseForma();
+        } else {
+            return 'error';
+        }
+
+
+    }
+    
 
 }

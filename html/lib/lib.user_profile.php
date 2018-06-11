@@ -421,10 +421,11 @@ class UserProfile {
 					}
 					else {
 						// SET EDIT USER EVENT
-						$event = new \appCore\Events\Core\UsersManagementEditEvent();
+						$event = new \appCore\Events\Core\User\UsersManagementEditEvent();
+						$event->setType('single');
 						$event->setUser($model->getProfileData($this->_id_user));
 						$event->setOldUser($oldUserdata);
-						\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementEditEvent::EVENT_NAME, $event);
+						\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
 
 						return getResultUi($this->_lang->def('_OPERATION_SUCCESSFULPROFILE')).$this->getProfile();
 					}
@@ -448,11 +449,11 @@ class UserProfile {
 					$this->_up_viewer->unloadUserData();
 
 					// SET EDIT CHANGE PASSWORD EVENT
-					$event = new \appCore\Events\Core\UsersManagementChangePasswordEvent();
+					$event = new \appCore\Events\Core\User\UsersManagementChangePasswordEvent();
 					$model = new UsermanagementAdm();
 					$event->setUser($model->getProfileData($this->_id_user));
 					$event->setFilledPwd($this->_up_viewer->getFilledPwd());
-					\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\UsersManagementChangePasswordEvent::EVENT_NAME, $event);
+					\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementChangePasswordEvent::EVENT_NAME, $event);
 
 					if($this->_end_url !== false) Util::jump_to($this->_end_url);
 
@@ -1960,7 +1961,7 @@ class UserProfileViewer {
         $html .= '<div class="row comunication">'; //pulsanti certificati-messaggi
 
         if ($perm_certificate) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=lms/mycertificate/show&sop=unregistercourse">' . Lang::t('_MY_CERTIFICATE', 'menu_over') . '</a></div>';
-        if ($perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&op=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
+        if (isset($perm_competence) && $perm_competence) $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?modname=mycompetences&op=mycompetences&op=unregistercourse">' . Lang::t('_COMPETENCES', 'standard') . '</a></div>';
 
 
         if ($unread_num > 0 && $perm_message) {
@@ -2019,7 +2020,7 @@ class UserProfileViewer {
 
             }
 
-            require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
+            require_once($GLOBALS['where_lms'] . '/lib/lib.certificate.php');
             $cert = new Certificate();
 
             $filter['id_user'] = $this->_id_user;
@@ -3336,7 +3337,7 @@ class UserProfileData {
 	/**
 	 * class constructor
 	 */
-	function UserProfileData($db_conn = NULL) {
+	function __construct($db_conn = NULL) {
 
 		require_once(_base_.'/lib/lib.user.php');
 		require_once(_base_.'/lib/lib.preference.php');

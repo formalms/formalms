@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180423</DATE>
+  <DATE>20180607</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -910,8 +910,6 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="coursereport&amp;_TQ_LINK" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Stats for test "[test]"]]></key>
         <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Use for final score]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Weight]]></key>
-        <key id="coursereport&amp;_OVERVIEW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Overview]]></key>
-        <key id="coursereport&amp;_DETAILS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Detail]]></key>
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Add new course]]></key>
@@ -1548,8 +1546,6 @@ To change these words please go to Admin/Language management, search for <b>logi
         <key id="message&amp;_NORMAL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Normal]]></key>
         <key id="message&amp;_OUTBOX" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Sent]]></key>
         <key id="message&amp;_PRIORITY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Priority]]></key>
-        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Your personal informations required to provide support will be sent to system administrators]]></key>
-        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Your personal informations required to provide support will be sent to system administrators]]></key>
         <key id="message&amp;_REFRESH" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Refresh]]></key>
         <key id="message&amp;_SEND_MESSAGE_COPY" attributes="" save_date="2017-05-29 18:58:12"><![CDATA[Send a CC message]]></key>
         <key id="message&amp;_TITLE_READ" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Message read]]></key>
@@ -2440,6 +2436,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_REPORT" attributes="" save_date="2017-04-21 10:07:56"><![CDATA[Reports]]></key>
         <key id="standard&amp;_REQUIRED_SCORE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Required score]]></key>
         <key id="standard&amp;_RESET" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Reset]]></key>
+        <key id="standard&amp;_RESET_POLICY" attributes="" save_date="2018-06-07 15:16:59"><![CDATA[Reset Policy]]></key>
         <key id="standard&amp;_ROLLBACK" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Rollback]]></key>
         <key id="standard&amp;_ROOT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[root]]></key>
         <key id="standard&amp;_ROW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Row]]></key>
@@ -2462,6 +2459,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_SENDER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Sender]]></key>
         <key id="standard&amp;_SEND_TO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Send to]]></key>
         <key id="standard&amp;_SET" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Set]]></key>
+        <key id="standard&amp;_SET_AS_DEFAULT" attributes="" save_date="2018-06-07 15:16:59"><![CDATA[Set as Default]]></key>
         <key id="standard&amp;_SHORTDESC" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Short description]]></key>
         <key id="standard&amp;_SHOW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show]]></key>
         <key id="standard&amp;_SHOW_RESULTS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Results]]></key>
@@ -2738,7 +2736,7 @@ Password: [password]]]></key>
         <key id="test&amp;_QUEST_UPLOAD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Upload file]]></key>
         <key id="test&amp;_RESTART_INFO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Restart test execution from beginning]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Select page]]></key>
-        <key id="test&amp;_SHOW_IN_DETAIL" attributes="" save_date="2018-01-12 15:47:30"><![CDATA[Show in Gradebook Management]]></key>
+        <key id="test&amp;_SHOW_IN_COURSEREPORT" attributes="" save_date="2018-01-12 15:47:30"><![CDATA[Show in Gradebook Management]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Suspend the test after the following number of failed attempts]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Suspend the test for the following number of hours]]></key>
         <key id="test&amp;_SUSPENSION_PREREQUISITES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[After the test suspension, require a new completion of all the test prerequisites]]></key>

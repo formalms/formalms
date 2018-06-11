@@ -34,7 +34,7 @@ $params = array(
 	'dir' => 'asc',
 	//'checkableRows' => true,
 	'columns' => $columns,
-	'fields' => array('id', 'name', 'is_assigned', 'mod', 'del'),
+	'fields' => array('id', 'name', 'is_assigned', 'is_accepted', 'mod', 'del'),
 	'generateRequest' => 'PrivacyPolicies.requestBuilder',
 	'delDisplayField' => 'name',
 	'events' => array(
@@ -140,9 +140,11 @@ var PrivacyPolicies = {
 		var url = 'ajax.adm_server.php?r=adm/privacypolicy/assign&id=' + id;
 		var str = PrivacyPolicies.oLangs.get('_ASSIGN');
 		var style = !oRecord.getData("is_assigned") ? 'subs_notice' : 'subs_elem';
+		if (oRecord.getData("is_assigned") != 'default'){
 		elLiner.innerHTML = '<a href="' + url + '" title="' + str
 			+ '" class="ico-sprite ' + style + '" id="assign_orgchart_' + id + '">'
 			+ '<span>'+str+'</span></a>';
+		}
 	},
 
 	beforeRenderEvent: function() {
@@ -208,5 +210,15 @@ PrivacyPolicies.init({
 		_ASSIGN: "<?php echo Lang::t('_ASSIGN_POLICY','privacypolicy'); ?>"
 	}
 });
+
+$(document).on("click", "#reset_policy", function(event){
+	if($("#reset_policy")[0].checked){
+		if(!$("#reset_policy").attr("checked")){
+			if(!confirm("<?php echo Lang::t('_AREYOUSURE','standard'); ?>")){
+				event.preventDefault()
+			}
+		}
+	}
+})
 
 </script>

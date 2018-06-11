@@ -1690,6 +1690,11 @@ class UserManagerRenderer
         $extra_field->setFieldEntryTable($GLOBALS['prefix_fw'] . '_field_userentry');
         $extra_field->storeFieldsForUser($iduser);
 
+        // Save Privacy
+        $precompileLms = new PrecompileLms();
+        $policy_id = $precompileLms->getPrivacyPolicyId();
+        $precompileLms->setAcceptingPolicy($iduser, $policy_id, TRUE);
+
         // Send mail
         $admin_mail = $options['mail_sender'];
 
@@ -1911,6 +1916,7 @@ class UserManagerRenderer
     {
 
         $social = new Social();
+        $precompileLms = new PrecompileLms();
         $lang =& DoceboLanguage::createInstance('register', $platform);
 
         $out = '';
@@ -2164,7 +2170,7 @@ class UserManagerRenderer
         }
 
         $out .= '<div class="homepage__row homepage__row--form-disclaimer"> '
-            . '<p class="mCustomScrollbar" data-mcs-theme="minimal-dark">' . $lang->def('_REG_PRIVACY_POLICY') . '</p>'
+            . '<p class="mCustomScrollbar" data-mcs-theme="minimal-dark">' . $precompileLms->getPrivacyPolicyText() . '</p>'
             . '</div>';
 
 

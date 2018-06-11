@@ -942,6 +942,8 @@ ALTER TABLE `learning_certificate_course` ADD `minutes_required` INT( 11 ) NOT N
 -- 10116_add_box_course_description
 ALTER TABLE `learning_course` ADD `box_description` TEXT NOT NULL AFTER `name`;
 
+-- 18269_change_config_label
+UPDATE core_event_manager SET recipients = '_EVENT_RECIPIENTS_MODERATORS_GOD', show_level = 'godadmin,admin' WHERE idEventMgr = 9;
 
 DELETE FROM `learning_middlearea` WHERE `obj_index` = "tb_catalog";
 
@@ -1040,6 +1042,27 @@ INSERT IGNORE INTO `core_lang_translation` ( `id_text`, `lang_code`,  `translati
       WHERE t.id_text = lt.id_text AND lt.text_key ='_DETAILS'  AND lt.text_module = 'coursereport'  ) t1
   WHERE lt.text_key = '_DETAILS' AND lt.text_module = 'coursereport' AND t1.lang_code = l.lang_code
 ;
+
+-- Add lastedit and validity
+ALTER TABLE `core_privacypolicy` ADD `lastedit_date` DATETIME NOT NULL AFTER `name`, ADD `validity_date` DATETIME NOT NULL AFTER `lastedit_date`;
+
+-- Add is_default
+ALTER TABLE `core_privacypolicy` ADD `is_default` INT(1) NOT NULL DEFAULT '0' AFTER `name`;
+
+-- Add policy default
+INSERT INTO `core_privacypolicy` (`name`, `is_default`, `lastedit_date`, `validity_date`) VALUES( 'Default Privacy Policy', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
+-- Create table accept policy
+CREATE TABLE `core_privacypolicy_user` (
+  `id_policy` int(11) NOT NULL,
+  `idst` int(11)  NOT NULL,
+  `accept_date` datetime NOT NULL
+);
+
+-- 17570 - GDPR
+UPDATE `core_setting` SET `param_value` = '8' WHERE `core_setting`.`param_name` = 'pass_min_char';
+UPDATE `core_setting` SET `param_value` = 'on' WHERE `core_setting`.`param_name` = 'pass_change_first_login';
+UPDATE `core_setting` SET `param_value` = 'on' WHERE `core_setting`.`param_name` = 'request_mandatory_fields_compilation';
 
 -- ------------------------------------------------------------------
 

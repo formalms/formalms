@@ -21,7 +21,7 @@ $ma = new Man_MiddleArea();
 //   $category = $this->model->getMinorCategory($std_link, true);
 $html = '';
 $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse') . '/';
-$smodel = new CatalogLms();
+$current_catalogue = $smodel->current_catalogue;
 
 
 function TruncateText($the_text, $size)
@@ -225,25 +225,78 @@ function classroomActionButton($is_enrolled, $unsubscribe_date_limit, &$row){
 }
 
 
-function InsertOption(&$row){
-         $html .= '<div class="course-box__options dropdown pull-right">
-                <div class="dropdown-toggle" id="courseBoxOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <i class="glyphicon glyphicon-option-horizontal"></i> 
-                </div>   
-                <ul class="dropdown-menu" aria-labelledby="courseBoxOptions">';
-                    $html .= "<li><a href='javascript:void(0);'>option1</a></li>";
-                    $html .= '<li><a href=\'javascript:void(0);\'>option2</a></li>';
-          $html .= '</ul></div>';
+function InsertOption(&$row, $smodel){
 
-      return $html;
+    
+    $result_control = $smodel->getInfoEnroll($row['idCourse'], Docebo::user()->getIdSt());
+    $not_enrolled = sql_num_rows($result_control) > 0;
+    $html = '';
+    if( $not_enrolled && $row['selling'] == 0 && ($row['auto_unsubscribe']==2 || $row['auto_unsubscribe']==1 || $row["course_demo"] ) ){
+    
+        $html .= '<div class="course-box__options dropdown pull-right">
+                    <div class="dropdown-toggle" id="courseBoxOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <i class="glyphicon glyphicon-option-horizontal"></i> 
+                    </div>   
+                    <ul class="dropdown-menu" aria-labelledby="courseBoxOptions">';
+                        if(($row['auto_unsubscribe']==2 || $row['auto_unsubscribe']==1)  && $not_enrolled) {
+                            $html .= '<li><a href="javascript:confirmDialog(\''.$row['name'].'\','.$row['idCourse'].')">'.Lang::t('_SELF_UNSUBSCRIBE', 'course').'</a></li>';    
+                            //$html .= "<li><a href='javascript:void(0);'>option1</a></li>";
+                        }    
+                        if ($row["course_demo"]) {
+                            $html .= '<li><a href="index.php?r=catalog/downloadDemoMaterial&amp;course_id='.$row['idCourse'].'">'.Lang::t('_COURSE_DEMO', 'course').'</a></li>';
+                        }                                
+         $html .= '</ul></div>';
+    }     
+    return $html;
     
 }
 
 ?>
 
-        <div id="cbp-vm" class="" style="margin-top: 15px;">
-            <div class="row">
+        <script type="text/javascript">
+                function confirmDialog(title, id_course, id_date ){
+                        $('<div></div>').appendTo('body')                    
+                        .html("<div><h6><?php echo Lang::t('_SELF_UNSUBSCRIBE', 'course')?></h6></div>")
+                        .dialog({
+                                modal: true, 
+                                title: title, 
+                                autoOpen: true,
+                                width: '200',
+                                height: '150', 
+                                resizable: false,
+                                buttons: {
+                                     <?php echo Lang::t('_CONFIRM', 'standard')?>: function () {
+                                        var posting = $.get(
+                                            'ajax.server.php',
+                                                {
+                                                    r: 'catalog/self_unsubscribe',
+                                                    id_course: id_course,
+                                                    id_date: id_date,
+                                                    type_course: $( "#typeCourse" ).val(),
+                                                    id_catalogue: <?php echo $current_catalogue ?>,
+                                                    id_category: $('#treeview1').treeview('getSelected')[0].id_cat
+                                                }
+                                            );
+                                            posting.done(function (responseText) {
+                                                $("#div_course").html(responseText);
+                                            });
+                                            posting.fail(function () {
+                                                alert('unsubscribe failed')
+                                            })                                
+                                        $(this).dialog("close");
+                                     },
+                                     <?php echo Lang::t('_UNDO', 'standard')?>: function () { $(this).dialog("close");}
+                                    
+                                },
+                            close: function (event, ui) {
+                                $(this).remove();
+                            }
+                        });                                
+                }
 
+
+        </script>        
+        <div id="cbp-vm" class="" style="margin-top: 15px;">
                 <?php
                 while ($row = sql_fetch_assoc($result)) {
                     $action = '';
@@ -304,9 +357,10 @@ function InsertOption(&$row){
                             <div class="course-box__item">
                                 <div class="course-box__desc">
                                     ' . TruncateText($row['box_description'], 120).' 
-                                </div>'.InsertOption().'                            
-                            </div';
+                                </div>'.InsertOption($row, $smodel).'                            
+                            </div>';
                     $html .= $action;
+                    $html .= '</div>';
 					
                     if (count($editions)> 0 && false) {
 						$html .= '
@@ -423,9 +477,7 @@ function InsertOption(&$row){
                     }
                     */
 
-                    $html .= '   
-                        </div> <!-- //closes the pn_grid__item -->
-                    </div>'; //closes course-box__item
+                    $html .= '</div>'; //closes course-box__item
                      
 
                 } //end  while

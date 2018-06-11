@@ -1650,13 +1650,16 @@ INSERT IGNORE INTO `core_plugin` (`name`, `title`, `category`, `version`, `autho
 CREATE TABLE IF NOT EXISTS `core_privacypolicy` (
   `id_policy` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
+  `is_default` int(1) NOT NULL DEFAULT '0',
+  `lastedit_date` datetime NOT NULL,
+  `validity_date` datetime NOT NULL,
   PRIMARY KEY (`id_policy`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 --
 -- Dump dei dati per la tabella `core_privacypolicy`
 --
-
+INSERT INTO `core_privacypolicy` (`name`, `is_default`, `lastedit_date`, `validity_date`) VALUES( 'Default Privacy Policy', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1673,6 +1676,23 @@ CREATE TABLE IF NOT EXISTS `core_privacypolicy_lang` (
 
 --
 -- Dump dei dati per la tabella `core_privacypolicy_lang`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_privacypolicy_user`
+--
+
+CREATE TABLE IF NOT EXISTS `core_privacypolicy_user` (
+  `id_policy` int(11) NOT NULL,
+  `idst` int(11)  NOT NULL,
+  `accept_date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_privacypolicy_user`
 --
 
 
@@ -2522,9 +2542,9 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('page_title', 'Forma E-learning', 'string', 255, '0', 1, 1, 1, 0, ''),
 ('pass_alfanumeric', 'off', 'enum', 3, 'password', 3, 6, 1, 0, ''),
 ('pass_algorithm', '1', 'password_algorithms', 255, 'password', 3, 5, 1, 0, ''),
-('pass_change_first_login', 'off', 'enum', 3, 'password', 3, 8, 1, 0, ''),
+('pass_change_first_login', 'on', 'enum', 3, 'password', 3, 8, 1, 0, ''),
 ('pass_max_time_valid', '0', 'int', 4, 'password', 3, 9, 1, 0, ''),
-('pass_min_char', '5', 'int', 2, 'password', 3, 7, 0, 0, ''),
+('pass_min_char', '8', 'int', 2, 'password', 3, 7, 0, 0, ''),
 ('pathchat', 'chat/', 'string', 255, 'path', 8, 21, 1, 0, ''),
 ('pathcourse', 'course/', 'string', 255, 'path', 8, 11, 1, 0, ''),
 ('pathfield', 'field/', 'string', 255, 'path', 8, 12, 1, 0, ''),
@@ -2544,7 +2564,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('register_deleted_user', 'off', 'enum', 3, '0', 3, 3, 1, 0, ''),
 ('register_type', 'admin', 'register_type', 10, 'register', 3, 11, 0, 0, ''),
 ('registration_code_type', '0', 'registration_code_type', 3, 'register', 3, 17, 1, 0, ''),
-('request_mandatory_fields_compilation', 'off', 'enum', 3, '0', 3, 2, 1, 0, ''),
+('request_mandatory_fields_compilation', 'on', 'enum', 3, '0', 3, 2, 1, 0, ''),
 ('rest_auth_api_key', '', 'string', 255, 'api', 9, 7, 1, 0, ''),
 ('rest_auth_api_secret', '', 'string', 255, 'api', 9, 8, 1, 0, ''),
 ('rest_auth_code', '', 'string', 255, 'api', 9, 4, 1, 0, ''),
