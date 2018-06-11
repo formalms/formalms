@@ -98,7 +98,7 @@ class UserProfile {
 	/**
 	 * class constructor
 	 */
-	function __construct($id_user, $edit_mode = false) {
+	function UserProfile($id_user, $edit_mode = false) {
 
 		$this->_id_user = $id_user;
 
