@@ -1,0 +1,1 @@
+UPDATE core_event_manager SET recipients = '_EVENT_RECIPIENTS_MODERATORS_GOD', show_level = 'godadmin,admin' WHERE idEventMgr = 9;

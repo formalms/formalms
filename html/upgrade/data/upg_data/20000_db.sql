@@ -942,6 +942,8 @@ ALTER TABLE `learning_certificate_course` ADD `minutes_required` INT( 11 ) NOT N
 -- 10116_add_box_course_description
 ALTER TABLE `learning_course` ADD `box_description` TEXT NOT NULL AFTER `name`;
 
+-- 18269_change_config_label
+UPDATE core_event_manager SET recipients = '_EVENT_RECIPIENTS_MODERATORS_GOD', show_level = 'godadmin,admin' WHERE idEventMgr = 9;
 
 DELETE FROM `learning_middlearea` WHERE `obj_index` = "tb_catalog";
 
