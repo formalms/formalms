@@ -124,6 +124,9 @@ function typeOfCourse ($t) {
                                 $(this).dialog("close");
                             }
                         },
+                        open: function(event, ui) {
+                            $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+                        },                         
                         close: function (event, ui) {
                             $(this).remove();
                         }
