@@ -545,8 +545,8 @@ class CatalogLms extends Model
 						$action = '<p class="subscribed">'.Lang::t('_CLASSROOM_FULL', 'catalogue').'</p>';
 					}
 				} else
-					$action = ($selling == 1	? '<a href="javascript:;" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');">'.Lang::t('_ADD_TO_CART', 'catalogue').' ('.$classroom_info['price'].' '.Get::sett('currency_symbol', '&euro;').')'.'</a>'
-												: '<a href="javascript:;" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');">'.Lang::t('_SUBSCRIBE', 'catalogue').'</a>');
+					$action = ($selling == 1	? '<a href="javascript:;" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');"><span class="can_subscribe">'.Lang::t('_ADD_TO_CART', 'catalogue').' ('.$classroom_info['price'].' '.Get::sett('currency_symbol', '&euro;').')'.'</span></a>'
+												: '<a href="javascript:;" onclick="subscriptionPopUp(\''.$id_course.'\', \''.$classroom_info['id_date'].'\', \'0\', \''.$selling.'\');"><span class="can_subscribe">'.Lang::t('_SUBSCRIBE', 'catalogue').'</span></a>');
 
 				$res['body'] .=	'<div class="edition_container">'
 								.'<b>'.Lang::t('_NAME', 'catalogue').'</b>: '.$classroom_info['name'].'<br/>'
