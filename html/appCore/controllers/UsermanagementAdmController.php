@@ -509,6 +509,13 @@ class UsermanagementAdmController extends AdmController {
 			return;
 		}
 
+		if ($password == "") {
+			$output['success'] = false;
+			$output['message'] = Lang::t('_ERR_PASSWORD_MIN_LENGTH', 'register');
+			echo $this->echoResult($output);
+			return;
+		}
+
 		if ($password != $password_confirm) {
 			$output['success'] = false;
 			$output['message'] = Lang::t('_ERR_PASSWORD_NO_MATCH', 'register');
