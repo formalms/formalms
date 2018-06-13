@@ -274,7 +274,8 @@ function InsertOption(&$row, $smodel){
                                                     id_date: id_date,
                                                     type_course: $( "#typeCourse" ).val(),
                                                     id_catalogue: <?php echo $current_catalogue ?>,
-                                                    id_category: $('#treeview1').treeview('getSelected')[0].id_cat
+                                                    id_category: $('#treeview1').treeview('getSelected')[0] ? 
+                                                        $('#treeview1').treeview('getSelected')[0].id_cat : null
                                                 }
                                             );
                                             posting.done(function (responseText) {
