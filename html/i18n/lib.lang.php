@@ -218,6 +218,13 @@ class Lang {
 		self::load_module($module, $lang_code);
 
 		$translation = '';
+		if (Get::cfg('log_missing_translation_level', (int)0) > 0 ) {
+			// LOG MISSING TRANSLATIONS -->
+			$missing = false;
+			$missing_in_module = false;
+			$found_in_standard = 0;
+			// <-- LOG MISSING TRANSLATIONS
+		}
 		if( isset(self::$translations[$lang_code][$module][$key]) ) {
 			// translation found
 			$translation = self::$translations[$lang_code][$module][$key];
@@ -227,10 +234,47 @@ class Lang {
 		} elseif( isset(self::$translations[$lang_code]['standard'][$key]) ) {
 			//translation found in the standard module
 			$translation = self::$translations[$lang_code]['standard'][$key];
+			if (Get::cfg('log_missing_translation_level', (int)0) > 1 ) {
+				// LOG MISSING TRANSLATIONS -->
+				if($module !== 'standard') { 
+					$missing_in_module = true;
+					$found_in_standard = 1;
+				}
+				// <-- LOG MISSING TRANSLATIONS
+			}
+
 		} elseif($default == false) {
 			//translation not found
 			self::undefinedKey($key, $module, $lang_code);
+			if (Get::cfg('log_missing_translation_level', (int)0) > 0 ) {
+				// LOG MISSING TRANSLATIONS -->
+				$missing = true;
+				// <-- LOG MISSING TRANSLATIONS
+			}
 		}
+
+        if (Get::cfg('log_missing_translation_level', (int)0) == 1 ) {
+			// LOG MISSING TRANSLATIONS -->
+			if($missing) {
+				$_substitutions =  json_encode($substitution ? $substitution : array());
+				$log = "KEY: '$key'\t- MODULE: '$module'\t- SUBTITUTIONS: $_substitutions\t \n";
+				$date = date('Y_m_d');
+				mkdir(_files_ . "/log/missing_translations/$lang_code/");
+				file_put_contents(_files_ . "/log/missing_translations/$lang_code/$date.log", $log, FILE_APPEND);
+			}
+			// <-- LOG MISSING TRANSLATIONS
+		} elseif (Get::cfg('log_missing_translation_level', (int)0) == 2 ) {
+			// LOG MISSING TRANSLATIONS -->
+			if($missing_in_module) {
+				$_substitutions =  json_encode($substitution ? $substitution : array());
+				$log = "KEY: '$key'\t- MODULE: '$module'\t- SUBTITUTIONS: $_substitutions\t- FOUND IN STANDARD: $found_in_standard\n";
+				$date = date('Y_m_d');
+				mkdir(_files_ . "/log/missing_translations/$lang_code/");
+				file_put_contents(_files_ . "/log/missing_translations/$lang_code/$date.log", $log, FILE_APPEND);
+			}
+			// <-- LOG MISSING TRANSLATIONS
+		}
+
 
 		if(trim($translation) == '') {
 			if($default != false) $translation = $default;
