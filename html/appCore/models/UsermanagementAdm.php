@@ -2842,4 +2842,87 @@ class UsermanagementAdm extends Model {
 			return false;
 		return true;
 	}
+    //LRZ ************
+    // return vett of custom field for ORGCHAR
+    public function getCustomFieldOrg($nodeid){
+            $query = 'select core_customfield_lang.id_field, translation, type_field 
+                from core_customfield_lang, core_customfield 
+                where core_customfield_lang.id_field = core_customfield.id_field
+                 and area_code="ORG_CHART"';
+            $rs = sql_query($query) or 
+                    errorCommunication( 'getCustomFieldOrg' );
+            $result = array();
+            while( list( $id_field, $translation, $type_field) = sql_fetch_row($rs) ){
+                $arr = array(
+                            'id_field' => $id_field,
+                            'translation' => $translation,
+                            'type_field' =>  $type_field
+                                )   ;
+                $result[$id_field] = $arr ;
+            }    
+            return $result;        
+    }
+public function getLO_Custom_Value_Array($id_field){
+     $query = "select core_customfield_son_lang.id_field_son ,  translation from
+        core_customfield_son_lang  , core_customfield_son
+        where core_customfield_son_lang.id_field_son=core_customfield_son.id_field_son and id_field=".$id_field. " order by sequence ";
+    $rs = sql_query($query) or 
+                errorCommunication( 'getLO_Custom_Value_Array' );    
+    $result = array();
+        while( list( $id_field_son, $translation) = sql_fetch_row($rs) ){
+            $result[$id_field_son] = $translation;
+        }    
+        return $result;       
+}  
+private function countCustomForItem($idOrg, $id_field){
+    $query = "select * from core_customfield_entry where id_obj=".$idOrg." and id_field=".$id_field;
+    $rs = sql_query($query) or 
+            errorCommunication( 'countCustomForItem' );
+    if( sql_num_rows( $rs ) > 0 ) {
+        return TRUE;
+    } else 
+        return FALSE;
+}
+// UPDATE CUSTOM FIELD
+// add value custom field for learning object
+public  function addCustomFieldValue($idOrg, $id_field, $value){
+     // controlla se esiste il record, se esiste aggiorna altrimenti aggiungi
+     $res = $this->countCustomForItem($idOrg, $id_field);
+    if($res){
+        //aggiornamento
+        $query = "UPDATE core_customfield_entry set obj_entry='".$value."' where id_obj=".$idOrg." and id_field='".$id_field."'";                
+        sql_query( $query );
+    }else{
+        //inserimento
+        $query = "INSERT INTO core_customfield_entry "
+                ."( id_field, id_obj, obj_entry)"
+                ." VALUES "
+                ."( '".($id_field) ."' ,".intval($idOrg)." , '".$value."')";
+        sql_query( $query );
+    }
+     return $res;    
+} 
+  // get custom for lo_org
+  public function getCustomOrg(){
+      $query = "select id_field from core_customfield where area_code = 'ORG_CHART'";
+          $rs = sql_query($query) or 
+                errorCommunication( 'getCustomOrg' );    
+    $result = array();
+        while( list( $id_field, $translation) = sql_fetch_row($rs) ){
+            $result[$id_field] = $id_field;
+        }    
+        return $result;   
+  }
+public function getValueCustom($idOrg, $idField){
+        $query = "SELECT obj_entry FROM core_customfield_entry "
+            ."WHERE id_field = '".$idField."'"
+            ."  AND id_obj = ".$idOrg;
+    $rs = sql_query($query) or 
+            errorCommunication( 'getValueCustom' );
+    if( sql_num_rows( $rs ) == 1 ) {
+        list( $obj_entry ) = sql_fetch_row( $rs );
+        return $obj_entry;
+    } else 
+        return '';
+}
 }
