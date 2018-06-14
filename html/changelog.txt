@@ -1,535 +1,72 @@
+/* ======================================================================== \
+|   forma.lms - The E-Learning Suite                                        |
+|                                                                           |
+|   Copyright (c) 2013 (Forma)                                              |
+|   http://www.formalms.org                                                 |
+|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
+|                                                                           |
+|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
+|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
+\ ======================================================================== */
+
+-----------------------------------------------------------------------------
+CHANGELOG
+
+forma.lms 2.0
+Relase date: 2018/06/15
+-----------------------------------------------------------------------------
+
+
+CORE ENANCHEMENTS
+
+- PHP 7 compatibility
+- MVC modules refactored: my courses, catalog, mycertificates, gradebook, and more
+- New Customfields for core objects customization (course, test LO)
+- New - log sql script feature
+- New password chryptography method (BCRYPT)
+- Improved Privacy management for GDPR compliance
+- Removed Flash Graphs (introduced new jquery graph engine)
+- Refactored authentication (plugin)
+- Updated PLUGIN management system
+- New languages (HE) and Language updates (IT, EN, FR, IT, FI)
+- Performance improvements on user management
+- API and Connectors improvements
+- Vulnerability Fixes
+- Dozens of bug fixes and minor changes
+
+
+LAYOUT & UX
+
+- New Responsive Layout
+- Global stylesheet refactoring, introducing SASS (take a look at the included KSS styleguide under /templates/standard/styleguide/section-3.html)
+- Simplified general user navigation and usability improvements
+- Introduced Bootstrap/jQuery framework
+- Refactored and redesigned courselist and course catalog pages
+- Refactored and redesigned gradebook
+- Refactored and redesigned course menu
+- New user panel
+- Forum restyling
+- LMS home page management (options in main config)
+- Redesigned administration menu
+- Re-arranged system configuration options
+
+
+GENERAL LMS FUNCTIONALITIES
+
+- New - administrator permissions in course teacher area 
+- New - Retain answers of all test sessions
+- Updated TinyMCE text editor
+- Improved - Import Users: mantain csv names case, enanched password control
+- New detailed export in User data grid
+- New - Edit course completion date for users
+- Improved - Access details added in Users-Object Grid
+- Improved Certificate Management (Massive download, advanced search)
+- Double Opt-In - New users listed as waiting users until they click on confirmation link
+
+
+REMOVED FEATURES
+
+- Public administrators
+- Course graphs
+- Assessment (admin/elearning/assessment)
 
-FORMA LMS
-
-RELEASE CHANGELOG
-
----------------------------------------------------------------------------------------
-FORMA 1.4.2
----------------------------------------------------------------------------------------
-Released: 2016-05-12
-
-4577 | Bug | SECURITY - Security Vulnerability in ZIP upload
-4825 | Bug | SECURITY - Cross-Site Scripting (XSS) vulnerability in avatar upload
-4222 | Bug | BBB Videoconference Blank pages when creating or deleting conference
-4223 | Bug | Fix some error in admin dashboard
-
----------------------------------------------------------------------------------------
-FORMA 1.4.1
----------------------------------------------------------------------------------------
-Released: 2015-06-25
-
-4158 | Bug | Can't assign users to roles
-4160 | Bug | lib.aclmanager - group and user selections functions
-4210 | Bug | Registration confirmation not working
-4164 | Bug | Update multi users password
-4169 | Bug | Additional fields in report generation
-4206 | Bug | Install stuck on step 6
-4168 | Change Request | User attributes in report generation
-
----------------------------------------------------------------------------------------
-FORMA 1.4
----------------------------------------------------------------------------------------
-Released: 2015-04-21
-
-3809 | Bug | Blank page on certificate creation
-3811 | Bug | Helpdesk popup not working on php 5.2
-4024 | Bug | Social account linked to forma account not displayd in personal info box
-1455 | Bug | Wrong message when blocking registration requests to waiting users [1.1]
-1780 | Bug | Certificates - Empty values in classroom course variables
-2095 | Bug | Test - Impossible change suspension option
-2735 | Bug | OrgChart - User level and language not shown in dynamic columns
-3574 | Bug | Gradebook - Exclude unsubscribed users from gneral Statistics table
-3596 | Bug | Block subscription by code if course is closed
-3635 | Bug | Missing image in forum
-3636 | Bug | Force password change is not blocking
-3687 | Bug | User Profile - Wrong language order in language selector
-3725 | Bug | Root node not listed on user import
-3758 | Bug | IO task - Error on parameters send
-3761 | Bug | EVENTS - wrong description for event recipients in event manager
-3765 | Bug | Added Customscript for modules
-3801 | Bug | Certificate - ed_date_begin tag not working
-3810 | Bug | Course Copy - Scorm version not copied but set to 1.2 by default
-3893 | Bug | Maintenance password lenght limited to 3 char
-3901 | Bug | Scorm - maxtimeallowed  parameter is not initialized
-3908 | Bug | Customscripts not included in \lib\lib.eventmanager.php
-3919 | Bug | Installer - Admin user must be configured
-3924 | Bug | Fix footer credits display on login page
-3970 | Bug | Some links not working on latest mobile browsers (IOS and Android)
-4014 | Bug | Errore nel Web Service Checkusername
-4015 | Bug | Gradebook - Exclude unsubscribed users from answer stats
-4033 | Bug | Course Copy - All objects are copied even if unselected
-4036 | Bug | Facebook Login non funzionante
-4083 | Bug | Teleskill plugin - 500 internal server error
-4084 | Bug | Plugin - fixed query on getPluginsInfo function
-4094 | Bug | SECURITY - Blind Time-Based SQL Injection in appCore/lib/lib.message.php
-4095 | Bug | SECURITY - SQL Injection in title param in file appLms/modules/coursereport/coursereport.php
-4096 | Bug | SECURITY - SQL Injection in id_source param in appLms/modules/coursereport/coursereport.php
-4120 | Bug | Advanced search in course stats not working
-3743 | Bug | Deleted competences are not removed from associated courses
-4101 | Change Request | LANG -Missing Restart info text string when repeating a test
-0522 | Change Request | Catalog link on login page
-3690 | Change Request | Maintenance mode - Global refactoring
-3737 | Change Request | Gradebook - Remove filter in final score edit
-3762 | Change Request | Added Customscript for IO task
-3763 | Change Request | LANG - added 5 missing keys in the TEST module
-3774 | Change Request | LANG - event "course completed" - message translations have been corrected
-3902 | Change Request | Certificates - enable/define pdf protection password in config
-3926 | Change Request | Glossary - Split alphabetical selector (Robykirk)
-3972 | Change Request | Disable simultaneous access with the same username - set by default
-3988 | Change Request | Switch Google authetication to use oauth service
-3998 | Change Request | Show external content on login page
-3756 | Change Request | Gradebook - Apply user level filter to answer stats
-
-
----------------------------------------------------------------------------------------
-FORMA 1.3
----------------------------------------------------------------------------------------
-Released: 2014-11-14
-
-
-3210 | Bug | Subscription from code list broken in v.1.2
-1995 | Bug | Automatic play of first LO not working from catalog
-2472 | Bug | Gradebook - apply user level filter in edit page
-2511 | Bug | Gradebook - Double title in scorm activities
-2748 | Bug | Gradebook: final score only for active users
-3059 | Bug | Wrong links in installer/upgrader step 7
-3085 | Bug | Sponsor logo in course menu
-3116 | Bug | Scorm Tracking: Keep alive error in IE11
-3211 | Bug | Fixed change psw after first login
-3213 | Bug | Sending mail with GMAIL
-3228 | Bug | Missing icon in course stats panel
-3231 | Bug | Database - added index on certificates table
-3256 | Bug | Using apex in course menu items
-3332 | Bug | Admin and publicadmin not visualizing data in user reports
-3396 | Bug | Gradebook: modify activity
-3446 | Bug | XSS Vulnerabilities by  high-tech bridge
-3472 | Bug | Gradebook - Activity title reset
-3473 | Bug | Gradebook - grade value wrong
-3474 | Bug | Gradebook - Wrong display final score
-3487 | Bug | Pagination not working in sent messages
-3500 | Bug | Fixed utf8_unicode_ci collation for some tables
-3501 | Bug | Disallowed Key Characters in global data
-3502 | Bug | CSS file not found in install procedure
-3523 | Bug | Error in GIFT export of MC questions
-3536 | Bug | Bug in tracking competenza. Solo in assegnazione manuale
-3538 | Bug | Bug fix in Importing/Exporting Test in GIFT Format
-3557 | Bug | Gradebook - tag [course_score_final]  in certificates
-3562 | Bug | Fixed automatic play of first LO from mycourses
-3597 | Bug | Gradebook - Scorm module title with ' cause error
-3599 | Bug | My courses - call to a non object . PHP Error
-3604 | Bug | Reference to jquery CDN
-3643 | Bug | Upgrade step 6 - did not retrieve installed language
-2962 | Change Request | Added new plugin management system
-2963 | Change Request | Added REST Library for user roles
-3595 | Change Request | Scorm player - TOC not scrollable
-3605 | Change Request | API keys administration forn new auth method
-3618 | Change Request | Added new cc/bcc function in common mail libraries
-3620 | Change Request | Customizable footer credits
-3628 | Change Request | Custom scripts
-3629 | Change Request | New alternate template engine: TWIG
-3632 | Change Request | Plugin Manager
-3633 | Change Request | Conference module (BBB and Teleskill)  as a Plugin
-3642 | Change Request | PHP 5.5 and 5.6 experimental status
-3056 | Change Request | Added client info to helpdesk email
-3507 | Change Request | Translation keys fixes and upgrades
-489 | Change Request | Frontend Tabs - New html tab
-
-
-
----------------------------------------------------------------------------------------
-FORMA 1.2
----------------------------------------------------------------------------------------
-Released: 2014-05-30
-
-
-1102 | Bug | Subscribing by code ignores course subscr dates and state
-1141 | Bug | Missing coursepath type info in catalog elements list
-1579 | Bug | "Hiding ""show result"" option in course config (unused and not working since Docebo 4)"
-1681 | Bug | Date selection calendar starting from 1970
-1770 | Bug | Edition courses available before/after the configured start-end dates
-1771 | Bug | Question Bank - Fixed fatal error on GIFT import
-1773 | Bug | Scorm - XML error with selectSingleNode
-1788 | Bug | Report - schedule activation button not working
-1994 | Bug | Missing scorm stats for copied objects in stats area
-2151 | Bug | Course listed in catalog even if supscriptions are closed or expired
-2269 | Bug | Question Bank - error in question category display
-2323 | Bug | Temporized test with % scores marked complete when time is elapsed
-2408 | Bug | Template - trunked logo in user registration page
-2464 | Bug | Can't edit course subcategories if main category has apostrophe
-2466 | Bug | Autenicazione con token variabile mediante protocollo SOAP
-2469 | Bug | Administrators can see all user waiting for approval (not only his own)
-2480 | Bug | Added and fixed tranlation keys
-2481 | Bug | Fixed maximum number of login attempts
-2510 | Bug | Enrollment rules by groups not working with advanced registration
-2550 | Bug | Catalog - Course categories appearing twice  when moved inside another category
-2555 | Bug | Missing content library in new 1.1 installations
-2563 | Bug | Error in WSDL generation
-2565 | Bug | Catalog - wrong popup on edition courses subscribe
-2566 | Bug | Error in createUser SOAP
-2568 | Bug | SOAP protocol with PHP > 5.2
-2587 | Bug | LO Properties - error saving publish date
-2646 | Bug | TEST - Preselected answers when browsing back in multipage tests
-2671 | Bug | Group enrollment policy not working with advanced registration
-2696 | Bug | Error sending a notification via SMTP
-2736 | Bug | Gradebook - History of scorm scores not shown
-2786 | Bug | Fixed PHP 5.4 issues (Call-time pass-by-reference)
-2828 | Bug | Template - fixed size and overflow for course duplication popup
-2847 | Bug | Enrollment rules - Base policy now working for user self-registering in orgchart root
-2868 | Bug | API - Fixed user and course REST api library
-2901 | Bug | Errors running the lms under HTTPS and proxy
-2948 | Bug | Timezone - removed from bootstrap/added to config file
-2958 | Bug | User permissions not working for middlearea modules
-2961 | Bug | Session Time and Total time not correct (mysql timezone problem)
-2965 | Bug | Multiple Subscription - Fixed role and added organization/groups select
-2966 | Bug | PayPal - price not sent if apostrophe in course title
-484 | Change Request | Auto-subscribe option for course creator
-491 | Change Request | New Event - user course unsubscribe
-493 | Change Request | Curricula - hide moderated subscribe in config
-811 | Change Request | New edition filter in classroom courses stats
-1011 | Change Request | Removed unused and duplicate columns in list of curricula
-1056 | Change Request | Content Library - Display object type icons
-1075 | Change Request | Free self-subscription option (no double opt-in)
-1104 | Change Request | Improved course stats panel (added failed items count)
-2203 | Change Request | GradeBook - Link to test stats available with view permission
-2390 | Change Request | Export test questions to question bank
-2693 | Change Request | Added m4a mime-type
-2845 | Change Request | Export list of subscription codes
-3057 | Change Request | BigBlueButton integration
-
----------------------------------------------------------------------------------------
-FORMA 1.1
----------------------------------------------------------------------------------------
-Released: 2014-02-18
-
-498 | Bug | Improved PHP5.4 compatibility
-1456 | Bug | Removed empty tabs from middlearea (authoring, biblioteca, calendar)
-1517 | Bug | Bug with SNAP scorm lo tracking
-1518 | Bug | Italic text shown as normal
-1548 | Bug | Inverted column titles in session details table
-1736 | Bug | Menu manager: Question Bank "Edit" Option not working
-1932 | Bug | Missing grouptype img in advanced user registration
-1965 | Bug | Subscription to entire catalog not setting user group
-1976 | Bug | Editions don't inherit subscription mode setting
-2037 | Bug | Advanced Registration - user non added to selected groups
-2084 | Bug | Can't edit default enrollment policy
-1101 | Bug | Missing translation key in Privacypolicies
-1440 | Bug | Fixed course "Days of validity" feature
-971 | Bug | Admins can see all the orgchart nodes during user import from csv (not only the assigned ones)
-1139 | Bug | Date not displayed on catalog subscribe to course editions (00/00/0000)
-1059 | Bug | Allow edit of scorm objects info in gradebook
-1499 | Bug | Missing images in catalog pagination
-1737 | Bug | Question Bank - "Select All" option ignores filters on export
-1738 | Bug | Back button in report card now takes user to the right page
-1323 | Bug | Communications were saved even with non-allowed files attached
-2210 | Bug | Template - Login box breaks is social functions are active
-2211 | Bug | Catalog - Wrong div class and inline styling for labels view
-2242 | Bug | My courses - Elearning Tab - Courses assigned to a curricula were hidden under "All open courses" filter
-2209 | Bug | Page footer position error in html page edit
-1188 | Bug | Question Bank - Added page autorefresh on question delete
-2182 | Bug | Wrong/missing label for course status in infocourse module
-1405 | Change Request | Shared objects - Edit/delete actions only for owners
-1407 | Change Request | Show teacher name in course list
-1408 | Change Request | Added course category permissions for administrator profiles
-1428 | Change Request | Close button on organization js alerts
-1790 | Change Request | Forum - Threads answers inherit discussion title
-1909 | Change Request | Performance and code optimization for user orgchart
-1974 | Change Request | "My courses" pointing to elearning/class tab if default page set to catalog
-2005 | Change Request | Added orgchart nodes create/edit permission for admins
-2045 | Change Request | Updated Htmlpurifier to v. 4.6 (Major Security fixes)
-2046 | Change Request | Updated phpmailer addon (v 5.2.7)
-2047 | Change Request | Updated tcpdf addon (v. 6.0)
-2085 | Change Request | Roles - Added dynamic column in gap analysis
-2168 | Change Request | Roles - Added XLS export in gap analysis
-1432 | Change Request | Added percentage progress bar in gradebook stats
-1406 | Change Request | Added link to test results in gradebook
-474 | Change Request | User Profile - better visualization for uploaded files
-476 | Change Request | New Copy/Move subscription function for courses
-488 | Change Request | Added drag'n'drop ordering for frontend tabs in middlearea configuration
-492 | Change Request | Curricula - Added filter and search in curricula tab
-485 | Change Request | Forum - Relevant Threads dropdown select changed into checkbox
-809 | Change Request | Catalog buttons autorefresh after subscribing
-810 | Change Request | Added alt text description for locked courses
-1429 | Change Request | Template - Added styles for title and attach box in html pages
-
-
----------------------------------------------------------------------------------------
-FORMA 1.0
----------------------------------------------------------------------------------------
-Released: 2013-10-30
-
-Bug #391: Force IE9 compatibility
-Bug #392: Deleted users remain in course subscription count
-Bug #393: Javascript Errors on report publishing
-Bug #394: Missing or wrong dates in " My Certificates" Area
-Bug #395: Report publicadmin con filtro sui corsi (405)
-Bug #396: Advanced search in course subscription
-Bug #397: Content library tags
-Bug #398: Export report in admin welcome page
-Bug #399: Broken subscription confirmation link
-Bug #400: Error 500 for administrators and publicadmin
-Bug #401: Missing mime types
-Bug #402: Bugs in course report
-Bug #403: Password non salvata in login
-Bug #404: Bugs e mod in catalogo corsi
-Bug #405: Fix communications admin page
-Bug #406: End Course date not working
-Bug #407: Installer/Upgrader
-Bug #408: Question Bank - Missing question edit/delete icons
-Bug #409: Missing subscribe button for curricula in catalog
-Bug #412: Text Label fields hidden in usertable dropdown
-Bug #413: course subscription - notification event not working
-Bug #414: Announcements - email notification sent only to admin
-Bug #415: Wrong question timing using randomization in temporized tests
-Bug #416: File upload error in communications
-Bug #511: fixed IM not working
-Bug #516: Upgrader - Missing db inserts upgrading from docebo 3.6
-Bug #523: Charset error in report export
-Bug #525: Editing existing csv connection
-Bug #537: Rebranding - Logo e favicon
-Bug #538: Rebranding - Set e controllo versione Forma
-Bug #539: Verifiche controllo versione PHP
-Bug #803: JSON Error when closing subscribe dialog
-Bug #806: Blank page on course stats filtering with editions
-Bug #808: Enrollment Rules - user folder assignement bug
-Bug #967: wrong xls icon in gradebook
-Bug #1010: Code error on course copy (generates problems on IE)
-Bug #1033: Updated mime types list
-Bug #1083: Course projects - missing download icon for files
-Bug #1088: 404 error in chat window
-Bug #1106: New styles for install/upgrade wizard
-Bug #1143: Announcements - missing title and description in sent email
-Bug #1235: Commenti purple da levare
-Bug #1253: Communications - error on downloaded files extensions
-Change Request #470: Course Copy - single LO selection
-Change Request #471: Reservation Management - delete and email single registered users
-Change Request #472: Reservation Management - Simplifieduser registration
-Change Request #473: Reservation Management - Email notification on user un-subscription
-Change Request #475: Custom Fields - Html Label
-Change Request #477: Course Catalogue - Vertical category list & various fixes
-Change Request #478: Added new maintenance mode feature
-Change Request #480: Dynamic dropdown list in gradebook user table
-Change Request #481: Attendance list - xls export function
-Change Request #483: Reintroduced missing career box module
-Change Request #490: New horizontal menu in courses
-Change Request #494: New code subscription module (side)
-Change Request #495: Scorm stats for admins
-Change Request #502: TinyMCE - Updated to ver. 3.5.8
-Change Request #503: Code Rebranding
-Change Request #504: File System: doceboLms/doceboCore folders renamed
-Change Request #505: New Forma Credits
-Change Request #507: Removed hidden call to old docebo servers
-Change Request #513: Added and fixed many translation keys (IT & EN)
-Change Request #518: Updated platform upgrade wizard
-Change Request #521: Updated YUI library (2.9)
-Change Request #524: Set autocomplete=off for fill-in (TE) questions in tests
-Change Request #526: error in event translation
-Change Request #527: Message priority (completed missing features)
-Change Request #575: Restyling Template
-Change Request #805: New paypal procedures
-Change Request #1032: Updated file extension whitelist
-Change Request #1076: New links to Forma sites in admin dashboard
-
-
----------------------------------------------------------------------------------------
-Docebo 4.0.5
----------------------------------------------------------------------------------------
-
-
-Security fix:
-	Fixed sql injection with iotask connectors; thanks to mr_me (net-ninja.net) for reporting this.
-	Fixed script injection vulnerability in tags module by Bicocca
-	Fixed Cross-Site Scripting vulnerability reported by Brendan Coles
-	Added whitelist parameter for file uploads; this can be set in Admin > Main > Settings > Advanced
-
-Third party modules:
-	Updated the TCPDF Library
-	Updated TinyMCE and configured in order to improve the performance
-
-Improvement
-	Import users trough csv function
-	Some reports improvements and fixings (report search filter, ...)
-	Added the visualization of course description and the possibility to download demo material from the home catalogue
-
-Bug id
-	467, 464, 465, 456, 453, 451, 450, 447, 444, 441, 438, 436, 434, 433, 431, 430, 429, 428, 425, 426,424, 423,421,
-	420,419, 418, 417, 412, 410, 407, 399, 389, 396, 394, 393, 392, 390, 387, 385, 384, 382, 381, 380, 379, 359, 342
-
-Generic Fixes
-	Fix: Label image update
-	Fix: Optimization for admin user filter query
-	Fix: Register extra fields showed in advanced form
-	Fix: Direct store error for text field with '
-	Fix: Calendar with ie7
-	Fix: an issue related to the scorm interactions not showing properly
-	Fix: Wiki export bug
-	Fix: Yui button doesn't work with ie9
-	Fix: Fixed a possibile issue with scorm player and proxy caching
-	Now, when you import a users list with a csv you can specify a column as the folder name in which the users will be placed
-	And others
-
-
-Docebo 4.0.4
-
-- New course module api
-
-- Various api improvement and fixes
-
-- Improved course catalogue cart
-
-- Updated addon htmlpurifier to 4.2.0 version
-
-- interface clarification for a new course menu assignment
-
-- Errors with labels display and image upload
-
-- Fixed fatal error on certificate release with some tag
-
-- Fixed import of multiple choice question
-
-- Fixed newsletter send from inside the course
-
-- Fixed: firefox generate an error on scorm player close
-
-- Fixed: Public forum cannot answer to a thread
-
-- Fixed: get/set last_enter of the user according to setupUser
-
-- Fixed: Fatal error: Call to undefined function def() in /appCore/modules/field/class.cf.php on line 447
-
-- Fixed bugs: 371, 370, 369, 367, 366, 365, 364, 363, 361, 360, 356, 355, 354, 352, 350 and others
-
-Docebo 4.0.3
-
-- template problem after course subscription
-
-- mail in more than one language or with language different from the current weren't translated
-
-- the download of a field type upload in admin wasn't working
-
-- Multiple subscription doesn't work with classroom and edition courses
-
-- when a popup use a ' in the translation the js break in some point
-
-- import and export csv user list with dropdown fields
-
-- removed mysql_close() calls with no parameter.
-
-- forum display glitch
-
-- added the getDialog(dialog_name) method that returns the dialog object
-
-- fixed an incorrect evaluation of the waiting list
-
-- arabic translation fixed
-
-- SSO fix
-
-- Various fixings to the reports:
-	- user-courses and courses-users reports now filter sub-admins users and courses.
-	- fixed a bug in XLS export.
-	- fixed incorrect public admin export links.
-	- fixed exported report files names.
-	- some minor fixings to reports code.
-
-- Function "getUsersFieldEntryData" has been fixed and extended. Calls to the function have been adjusted too.
-
-- CC platform mail configuration
-
-- Impoved performance of the user count in user management
-
-- When deleting a dropdown son in special field all user entry of the id_common = id_common_son will be deleted instead of son selection
-
-- Normal user see only himself into public attendance
-
-- rest api fixes
-
-- misspelled name function in code lib
-
-- Poll answer visualization
-
-- Correct admin rules reading
-
-- scorm player and reset scorm tracking fix
-
-
-New feature
-
-- Added time visualization for test compilation into user answer showing
-
-- Reports "user-courses" and "courses-users" have been improved and now can show informations related to classrooms.
-
-
-Docebo 4.0.2
-
-- yui security fix included
-
-- revision of the diagnostic and version check in the dashboard
-
-- mail alert with ' in mail body wasn't working
-
-- enroll rules weren't working
-
-- the attendance module was not shown in the admin man menu module
-
-- wrong query in the upgrade
-
-- access to the platform via authentication token (generated by REST API) now works.
-
-- with register_globals = On the externas modules weren't working
-
-- user self register confirmation
-
-- print certificate from the admin area now show the correct value for userfield_*
-
-
-Docebo 4.0.1
-
-- added a new bootstrap system
-
-- improved get post and so on data check
-
-- added new feature for the utf8 management
-
-- Improved yui integration
-
-- Rebuilded the cms
-
-- template unification
-
-- layout manager introduced
-
-- css stylesheet rationalized
-
-- Removed the internal firewall feature (unused) TODO: remove the db param
-
-- MVC Pattern implemented
-
-- $GLOBALS['user']- converted into Docebo::user()->
-
-- $GLOBALS['regset']- converted into Format::date() and Format::dateDB()
-
-- Introduced Lang::t()
-
-- Introduced widget system
-
-- Added Gett::sett() instead of reading the setting $GLOBALS[*][*]
-
-- Rebuilded the user management module
-
-- New: Introduced the communication module
-
-- Rebuilded the my course area
-
-- Rebuilded the course management area
-
-- New: Introduced the classroom course management
-
-- New: Introduced the role management
-
-- Added profiles for administrator and public administrator
-
-- New: Introduced the Competitions area
-
-- New: Introduced the public videconference sections
-
-- Rebuilded the installer and the upgrader functions
