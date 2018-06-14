@@ -265,7 +265,7 @@ class Lang {
 			// <-- LOG MISSING TRANSLATIONS
 		} elseif (Get::cfg('log_missing_translation_level', (int)0) == 2 ) {
 			// LOG MISSING TRANSLATIONS -->
-			if($missing_in_module) {
+			if($missing or $missing_in_module) {
 				$_substitutions =  json_encode($substitution ? $substitution : array());
 				$log = "KEY: '$key'\t- MODULE: '$module'\t- SUBTITUTIONS: $_substitutions\t- FOUND IN STANDARD: $found_in_standard\n";
 				$date = date('Y_m_d');
