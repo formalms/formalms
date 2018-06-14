@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180607</DATE>
+  <DATE>20180614</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -2436,7 +2436,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_REPORT" attributes="" save_date="2017-04-21 10:07:56"><![CDATA[Reports]]></key>
         <key id="standard&amp;_REQUIRED_SCORE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Required score]]></key>
         <key id="standard&amp;_RESET" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Reset]]></key>
-        <key id="standard&amp;_RESET_POLICY" attributes="" save_date="2018-06-07 15:16:59"><![CDATA[Reset Policy]]></key>
+        <key id="standard&amp;_RESET_POLICY" attributes="" save_date="2018-06-14 16:20:58"><![CDATA[Reset Policy]]></key>
         <key id="standard&amp;_ROLLBACK" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Rollback]]></key>
         <key id="standard&amp;_ROOT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[root]]></key>
         <key id="standard&amp;_ROW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Row]]></key>
