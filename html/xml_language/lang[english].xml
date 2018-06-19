@@ -875,6 +875,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="coursereport&amp;_ANSWER_CORRECT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Right answer]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_CAPTION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Test for this course]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_SUMMARY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[This is the list of all the tests for this course and the results for the students]]></key>
+        <key id="coursereport&amp;_DETAILS" attributes="" save_date="2018-06-19 23:11:04"><![CDATA[Detail]]></key>
         <key id="coursereport&amp;_EXPORT_STATS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Save stats]]></key>
         <key id="coursereport&amp;_LEFT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Left]]></key>
         <key id="coursereport&amp;_MOVE_LEFT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Move left]]></key>
@@ -882,6 +883,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="coursereport&amp;_NOT_CHECKED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Not checked]]></key>
         <key id="coursereport&amp;_NOT_PASSED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Not passed]]></key>
         <key id="coursereport&amp;_OF_USER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[of the user]]></key>
+        <key id="coursereport&amp;_OVERVIEW" attributes="" save_date="2018-06-19 23:07:03"><![CDATA[Overview]]></key>
         <key id="coursereport&amp;_PASSED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Passed]]></key>
         <key id="coursereport&amp;_PERCENTAGE_CORRECT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Percentage of correct answers]]></key>
         <key id="coursereport&amp;_QUESTION_ANSWERED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Answered questions]]></key>

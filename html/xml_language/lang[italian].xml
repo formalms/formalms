@@ -876,6 +876,7 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="coursereport&amp;_ANSWER_CORRECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Risposta corretta]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_CAPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Test di questo corso]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_SUMMARY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Questa è la lista di tutti i test di questo corso con i risultati conseguiti dagli studenti]]></key>
+        <key id="coursereport&amp;_DETAILS" attributes="" save_date="2018-06-19 23:11:04"><![CDATA[Dettaglio]]></key>
         <key id="coursereport&amp;_EXPORT_STATS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Salva statistiche]]></key>
         <key id="coursereport&amp;_LEFT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sinistra]]></key>
         <key id="coursereport&amp;_MOVE_LEFT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Muovi a sinistra]]></key>
@@ -883,6 +884,7 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="coursereport&amp;_NOT_CHECKED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Da correggere]]></key>
         <key id="coursereport&amp;_NOT_PASSED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Non superato]]></key>
         <key id="coursereport&amp;_OF_USER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[dell'utente]]></key>
+        <key id="coursereport&amp;_OVERVIEW" attributes="" save_date="2018-06-19 23:07:03"><![CDATA[Overview]]></key>
         <key id="coursereport&amp;_PASSED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Superato]]></key>
         <key id="coursereport&amp;_PERCENTAGE_CORRECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Percentuale di risposte corrette]]></key>
         <key id="coursereport&amp;_QUESTION_ANSWERED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Domande compilate]]></key>
