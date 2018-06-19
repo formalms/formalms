@@ -2014,7 +2014,11 @@ INSERT INTO `core_role` (`idst`, `roleid`, `description`) VALUES
 (236, '/framework/admin/customfield_manager/add', NULL),
 (237, '/framework/admin/customfield_manager/mod', NULL),
 (238, '/framework/admin/customfield_manager/del', NULL),
-(280, '/framework/admin/pluginmanager/view', ''),
+(280, '/framework/admin/pluginmanager/view', NULL),
+(295,'/lms/course/private/statistic/view_all', NULL),
+(296,'/lms/course/private/stats/view_all_statuser', NULL),
+(297,'/lms/course/private/stats/view_all_statcourse', NULL),
+(298,'/lms/course/private/coursestats/view_all', NULL),
 (11553, '/framework/admin/usermanagement/associate_user', NULL),
 (11757, '/lms/course/private/coursestats/view', ''),
 (11835, '/lms/course/private/presence/view', '');
@@ -3153,7 +3157,6 @@ UPDATE `core_setting` SET `sequence` = '10' WHERE `core_setting`.`param_name` = 
 UPDATE `core_setting` SET `sequence` = '11' WHERE `core_setting`.`param_name` = 'rest_auth_api_key';
 UPDATE `core_setting` SET `sequence` = '12' WHERE `core_setting`.`param_name` = 'rest_auth_lifetime';
 UPDATE `core_setting` SET `sequence` = '13' WHERE `core_setting`.`param_name` = 'rest_auth_api_secret';
-
 
 
 -- --------------------------------------------------------
