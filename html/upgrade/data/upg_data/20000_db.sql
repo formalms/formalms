@@ -1013,8 +1013,8 @@ ALTER TABLE `core_task` CHANGE `sequence` `sequence` INT(3) NOT NULL AUTO_INCREM
 ALTER TABLE `learning_coursereport` ADD COLUMN `show_in_detail` tinyint(1) NULL DEFAULT 1;
 ALTER TABLE `learning_test` DROP COLUMN `show_in_coursereport`;
 
-INSERT INTO `core_lang_text` (`id_text` ,`text_key` ,`text_module` ,`text_attributes`) VALUES (NULL , '_SHOW_IN_DETAIL', 'test', '');
-INSERT INTO `core_lang_translation` ( `id_text`, `lang_code`,  `translation_text`, `save_date` )
+INSERT ignore INTO `core_lang_text` (`id_text` ,`text_key` ,`text_module` ,`text_attributes`) VALUES (NULL , '_SHOW_IN_DETAIL', 'test', '');
+INSERT ignore INTO `core_lang_translation` ( `id_text`, `lang_code`,  `translation_text`, `save_date` )
   SELECT lt.id_text, l.lang_code, t1.translation_text as translation_text, now() AS save_date
   FROM core_lang_text lt , core_lang_language l ,
     ( SELECT lt.id_text, t.lang_code, t.translation_text
@@ -1053,7 +1053,7 @@ ALTER TABLE `core_privacypolicy` ADD `is_default` INT(1) NOT NULL DEFAULT '0' AF
 INSERT INTO `core_privacypolicy` (`name`, `is_default`, `lastedit_date`, `validity_date`) VALUES( 'Default Privacy Policy', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- Create table accept policy
-CREATE TABLE `core_privacypolicy_user` (
+CREATE TABLE IF NOT EXISTS `core_privacypolicy_user` (
   `id_policy` int(11) NOT NULL,
   `idst` int(11)  NOT NULL,
   `accept_date` datetime NOT NULL
@@ -1064,6 +1064,98 @@ UPDATE `core_setting` SET `param_value` = '8' WHERE `core_setting`.`param_name` 
 UPDATE `core_setting` SET `param_value` = 'on' WHERE `core_setting`.`param_name` = 'pass_change_first_login';
 UPDATE `core_setting` SET `param_value` = 'on' WHERE `core_setting`.`param_name` = 'request_mandatory_fields_compilation';
 
+-- Creazione permesso view_all per modulo repository
+
+-- statistic/view_all
+INSERT ignore INTO core_role_members  (idst, idstMember)
+select ra.idst, g.idst
+from learning_menucustom m
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/custom/', m.idcustom, '/', lvl)
+join core_role r on r.roleid like concat('/lms/course/private/statistic/view')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/statistic/view_all');
+
+
+-- statistic/view_all_statuser
+INSERT ignore INTO core_role_members  (idst, idstMember)
+select ra.idst, g.idst idstmember
+from learning_menucustom m
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/custom/', m.idcustom, '/', lvl)
+join core_role r on r.roleid like concat('/lms/course/private/stats/view_user')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/stats/view_all_statuser');
+
+
+-- statistic/view_all_statcourse
+INSERT ignore INTO core_role_members  (idst, idstMember)
+select ra.idst, g.idst idstmember
+from learning_menucustom m
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/custom/', m.idcustom, '/', lvl)
+join core_role r on r.roleid like concat('/lms/course/private/stats/view_course')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/stats/view_all_statcourse');
+
+
+-- coursestats/view_all
+INSERT ignore INTO core_role_members  (idst, idstMember)
+select ra.idst, g.idst idstmember
+from learning_menucustom m
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/custom/', m.idcustom, '/', lvl)
+join core_role r on r.roleid like concat('/lms/course/private/coursestats/view')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/coursestats/view_all');
+
+
+INSERT IGNORE INTO core_role(idst, roleid, description) VALUES
+(295,'/lms/course/private/statistic/view_all', NULL),
+(296,'/lms/course/private/stats/view_all_statuser', NULL),
+(297,'/lms/course/private/stats/view_all_statcourse', NULL),
+(298,'/lms/course/private/coursestats/view_all', NULL);
+
+-- ForEach course add a view_all role (if view exists)
+INSERT ignore INTO core_role_members
+select ra.idst, g.idst idstmember
+from 
+learning_course c
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/course/',idcourse,'/subscribed/',lvl)
+join core_role r on r.roleid like concat('/lms/course/private/',idcourse,'/statistic/view')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/',idcourse,'/statistic/view_all');
+
+INSERT ignore INTO core_role_members
+select ra.idst, g.idst idstmember
+from 
+learning_course c
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/course/',idcourse,'/subscribed/',lvl)
+join core_role r on r.roleid like concat('/lms/course/private/',idcourse,'/stats/view_user')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/',idcourse,'/stats/view_all_statuser');
+
+INSERT ignore INTO core_role_members
+select ra.idst, g.idst idstmember
+from 
+learning_course c
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/course/',idcourse,'/subscribed/',lvl)
+join core_role r on r.roleid like concat('/lms/course/private/',idcourse,'/stats/view_course')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/',idcourse,'/stats/view_all_statcourse');
+
+INSERT ignore INTO core_role_members
+select ra.idst, g.idst idstmember
+from 
+learning_course c
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/course/',idcourse,'/subscribed/',lvl)
+join core_role r on r.roleid like concat('/lms/course/private/',idcourse,'/coursestats/view')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/',idcourse,'/coursestats/view_all');
 -- ------------------------------------------------------------------
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
