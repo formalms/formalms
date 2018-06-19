@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180614</DATE>
+  <DATE>20180619</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -427,7 +427,7 @@
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Configuration of "allow_url_include"]]></key>
         <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[already assigned]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[API e Autenticazione]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2018-06-19 21:37:58"><![CDATA[API and Authentication]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a code created through the code module]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a tree code chosen by the user from a list in a dropdown menu]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a tree code that must be entered manually by the user]]></key>
@@ -1403,7 +1403,13 @@ To change these words please go to Admin/Language management, search for <b>logi
         <key id="login&amp;_REGISTER_FOR_COURSE_NO_REG" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Please [login] to buy or proceed with this course]]></key>
         <key id="login&amp;_REGISTER_WITH_FACEBOOK" attributes="" save_date="2017-07-17 12:36:10"><![CDATA[register with Facebook]]></key>
         <key id="login&amp;_REG_ELAPSEDREQUEST" attributes="" save_date="2017-04-10 18:33:04"><![CDATA[This request has expired.]]></key>
-        <key id="login&amp;_REG_PRIVACY_POLICY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Privacy policy]]></key>
+        <key id="login&amp;_REG_PRIVACY_POLICY" attributes="" save_date="2018-06-19 09:12:59"><![CDATA[Any information collected by us, relating to an identifiable person, shall be used only in accordance with the procedures and for the purposes that are here acknowledged to the data subject and where the latter, as required by law, has expressely consented. <br><br>
+
+- User login and private area<br>
+- User newsletter<br>
+- User custom content purpose<br><br>
+
+In handling this information, accuracy and precision shall be met to ensure the integrity and quality of the processed personal data, if you have any question please contact us.]]></key>
         <key id="login&amp;_SESSION_EXPIRED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Session expired]]></key>
         <key id="login&amp;_SIGN_IN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Register]]></key>
         <key id="login&amp;_SOCIALCONNECTKO" attributes="" save_date="2017-04-10 14:36:41"><![CDATA[Social ID connection failed]]></key>
@@ -2737,6 +2743,7 @@ Password: [password]]]></key>
         <key id="test&amp;_RESTART_INFO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Restart test execution from beginning]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Select page]]></key>
         <key id="test&amp;_SHOW_IN_COURSEREPORT" attributes="" save_date="2018-01-12 15:47:30"><![CDATA[Show in Gradebook Management]]></key>
+        <key id="test&amp;_SHOW_IN_DETAIL" attributes="" save_date="2018-06-19 22:51:57"><![CDATA[Show details in Gradebook Management]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Suspend the test after the following number of failed attempts]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Suspend the test for the following number of hours]]></key>
         <key id="test&amp;_SUSPENSION_PREREQUISITES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[After the test suspension, require a new completion of all the test prerequisites]]></key>

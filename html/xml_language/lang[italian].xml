@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180607</DATE>
+  <DATE>20180619</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -429,7 +429,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "allow_url_include"]]></key>
         <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2017-03-15 16:37:18"><![CDATA[già assegnato]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[API and Authentication]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2018-06-19 21:37:44"><![CDATA[API e Autenticazione]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Richiedi codice creato attraverso il modulo codici]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Chiedi un codice di accesso all'organigramma, il codice sarà scelto da un menu a tendina]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Chiedi un codice di accesso all'organigramma che deve essere inserito manualmente dall'utente]]></key>
@@ -2734,6 +2734,7 @@ Password: [password]]]></key>
         <key id="test&amp;_RESTART_INFO" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Riesecuzione test dall'inizio]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Seleziona pagina]]></key>
         <key id="test&amp;_SHOW_IN_COURSEREPORT" attributes="" save_date="2018-01-12 15:47:19"><![CDATA[Mostra in Registro Valutazioni]]></key>
+        <key id="test&amp;_SHOW_IN_DETAIL" attributes="" save_date="2018-06-19 22:51:57"><![CDATA[Mostra in Dettaglio Registro Valutazioni]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Sospendi il test dopo il seguente numero di tentativi sbagliati]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Sospendi la possibilità di compilare il test per il numero di ore seguenti]]></key>
         <key id="test&amp;_SUSPENSION_PREREQUISITES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Dopo la sospensione del test richiedi un nuovo completamento dei prerequisiti del test per effettuare una nuova compilazione]]></key>
