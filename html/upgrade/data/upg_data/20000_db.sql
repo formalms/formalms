@@ -975,6 +975,10 @@ INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `m
 INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES
 ('hide_empty_category', 'on', 'enum', 3, '0', 4, 5, 1, 0, '');
 
+UPDATE core_setting SET param_value = (select case when cs.param_value='on' then 'catalogue' else 'my_courses' end AS param_value
+from (SELECT * FROM core_setting) as cs where cs.param_name='first_catalogue')
+WHERE param_name = 'home_page_option';
+
 DELETE from core_setting where param_name = 'first_catalogue';
 
 update core_setting set sequence = 2 where param_name = 'on_usercourse_empty'; 
