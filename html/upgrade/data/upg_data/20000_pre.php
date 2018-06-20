@@ -72,6 +72,8 @@ function setRoles()
         $roleids[]='/lms/course/private/'.$id_course.'/stats/view_all_statuser';
         $roleids[]='/lms/course/private/'.$id_course.'/stats/view_all_statcourse';
         $roleids[]='/lms/course/private/'.$id_course.'/coursestats/view_all';
+        $roleids[]='/lms/course/private/'.$id_course.'/coursereport/view_all';
+        $roleids[]='/lms/course/private/'.$id_course.'/light_repo/view_all';
     }
     if (!empty($roleids)){
         addRoles($roleids);
