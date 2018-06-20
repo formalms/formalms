@@ -2564,7 +2564,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('paypal_mail', '', 'string', 255, '0', 5, 0, 1, 0, ''),
 ('paypal_sandbox', 'on', 'enum', 3, '0', 5, 3, 1, 0, ''),
 ('privacy_policy', 'on', 'enum', 3, 'register', 3, 15, 0, 0, ''),
-('profile_only_pwd', 'on', 'enum', 3, '0', 3, 1, 1, 0, ''),
+('profile_only_pwd', 'off', 'enum', 3, '0', 3, 1, 1, 0, ''),
 ('register_deleted_user', 'off', 'enum', 3, '0', 3, 3, 1, 0, ''),
 ('register_type', 'admin', 'register_type', 10, 'register', 3, 11, 0, 0, ''),
 ('registration_code_type', '0', 'registration_code_type', 3, 'register', 3, 17, 1, 0, ''),
@@ -2609,7 +2609,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('visuNewsHomePage', '3', 'int', 5, '0', 1, 0, 1, 1, ''),
 ('welcome_use_feed', 'on', 'enum', 3, '0', 1, 0, 1, 1, ''),
 ('hide_empty_category', 'on', 'enum', 3, '0', 4, 5, 1, 0, ''),
-('home_page_option', 'catalogue', 'home_page_option', 255, '0', 4, 1, 1, 0, '');
+('home_page_option', 'my_courses', 'home_page_option', 255, '0', 4, 1, 1, 0, '');
 
 -- --------------------------------------------------------
 
