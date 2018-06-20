@@ -57,8 +57,7 @@ class LangAdm {
 
 	public function getAllTranslation($lang_code) {
 
-		$qtxt = "
-		SELECT lt.id_text as id, lt.text_key, lt.text_module, ta.translation_text
+		$qtxt = "SELECT lt.id_text as id, lt.text_key, lt.text_module, ta.translation_text
 		FROM  core_lang_text AS lt
 		LEFT JOIN core_lang_translation AS ta ON ( lt.id_text = ta.id_text AND ta.lang_code = '".$lang_code."')
 		WHERE 1 ";
@@ -79,11 +78,11 @@ class LangAdm {
 	 * @param strign $text_attributes the attributes for this key (mail, sms)
 	 * @return bool
 	 */
-	public function insertKey($text_key, $text_module, $text_attributes) {
+	public function insertKey($text_key, $text_module, $text_attributes, $idPlugin = 0) {
 
 		$query = "INSERT INTO core_lang_text "
-			." ( id_text, text_key, text_module, text_attributes ) VALUES ( "
-			." NULL, '".$text_key."', '".$text_module."', '".$text_attributes."' "
+			." ( id_text, text_key, text_module, text_attributes, plugin_id ) VALUES ( "
+			." NULL, '".$text_key."', '".$text_module."', '".$text_attributes."', $idPlugin "
 			.") ";
 		if( !sql_query($query) ) return false;
 		return sql_insert_id();

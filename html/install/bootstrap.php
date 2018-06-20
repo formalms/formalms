@@ -19,6 +19,7 @@ define('IN_FORMA', true);
 define('INSTALL_ENV', 'install');
 define("_deeppath_", "../");
 require(dirname(__FILE__).'/../base.php');
+if (file_exists(_base_.'/config.php')) { require(_base_.'/config.php'); } // FOR upgrade import_lang
 define('_installer_', _base_.'/install');
 
 include(_lib_.'/lib.forma.php');
