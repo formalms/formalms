@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171211</DATE>
+  <DATE>20180620</DATE>
   <LANG id="farsi">
     <lang_code>farsi</lang_code>
     <lang_description>Farsi</lang_description>
@@ -381,7 +381,6 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[درخواست برای کد ایجادشده با مدول کد]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[درخواست برای کد درختی انتخاب شده توسط کاربر از فهرست منوی پایین افت]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[درخواست برای کد درختی که کاربر باید دستی وارد کند.]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[درخواست برای ترکیب کد درختی و کد دوره که کاربر باید دستی وارد کند. کد درختی و کد دوره هریک باید از 10 نویسه تشکیل شود تا یک کد 20 نویسه ای به دست آید.]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[حداکثر کاربران شنیداری]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[حداکثر کاربران در هر سرا]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[حداکثر سراها]]></key>
@@ -1208,7 +1207,8 @@
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[صفحه خانه]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:18:21"><![CDATA[دوکبو یک تریبون متن باز یادگیری الکترونیک (LMS و LCMS) است که در شرکت ها و آموزش عالی استفاده می شود. <br.> <br/> این تریبون از 26 زبان پشتیبانی می کند، با استانداردهای اسکورم 1.2 و 2004 سازگار است، و از مدل های آموزشی مختلف پشتیبانی می کند، از جمله: تلفیقی، خودگردان، همکارانه و حتی یادگیری اجتماعی از طریق گپ، ویکی، تالارهای گفتگو و کارکردهای دیگر. <br/> <br/> <br/> برای تغییر این واژه ها لطفا بروید به مدیر/ تنظیم زبان، <b>login</b> را جستجو کنید و کلید <b>_INTRO_STD_TEXT</b> را ویرایش کنید]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2018-06-19 00:00:00"><![CDATA[ این تریبون از 26 زبان پشتیبانی می کند، با استانداردهای اسکورم 1.2 و 2004 سازگار است، و از مدل های آموزشی مختلف پشتیبانی می کند، از جمله: تلفیقی، خودگردان، همکارانه و حتی یادگیری اجتماعی از طریق گپ، ویکی، تالارهای گفتگو و کارکردهای دیگر. <br/> <br/> <br/> برای تغییر این واژه ها لطفا بروید به مدیر/ تنظیم زبان، <b>login</b> را جستجو کنید و کلید <b>_INTRO_STD_TEXT</b> را ویرایش کنید]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2018-06-19 00:00:00"><![CDATA[دوکبو یک تریبون متن باز یادگیری الکترونیک (LMS و LCMS) است که در شرکت ها و آموزش عالی استفاده می شود.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[پرش به فرم ورود]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[تایید LDAP فعال است، اگر کارکرد موجود نیست، لطفا با مدیر خود تماس بگیرید]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ورود]]></key>
@@ -1324,7 +1324,6 @@
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[پرش به منوی اصلی]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[پرش به اطلاعات شما درباره این دوره]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[انجمن]]></key>
-        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[فعال سازی دوره]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[بخش مدیر]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[پردیس]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[منوی عمومی]]></key>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171211</DATE>
+  <DATE>20180620</DATE>
   <LANG id="japanese">
     <lang_code>japanese</lang_code>
     <lang_description>Japanese</lang_description>
@@ -381,7 +381,6 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[コードモジュールによる生成コードの要求]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ドロップダウンメニューのリストのユーザの選んだツリーコードの要求]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ユーザにマニュアル入力されたらしきツリーコードの要求]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ユーザにマニュアル入力されたらしきツリーコードとコースコードの組み合わせの要求。20文字のコードを得るためには、ツリーとコースのコードは10文字で構成されてなければいけません。]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[最大オーディオユーザ]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[部屋毎の最大ユーザ数]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[最大部屋数]]></key>
@@ -1226,12 +1225,13 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
       </module>
       <module id="login">
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ホームページ]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 12:21:03"><![CDATA[forma.lms はオープンソースのe-ラーニングプラットフォームです(LMS and LCMS)。企業や高等教育の場で利用されます。<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-04-19 00:00:00"><![CDATA[forma.lms はオープンソースのe-ラーニングプラットフォームです(LMS and LCMS)。企業や高等教育の場で利用されます。<br/>
 <br/>
 このプラットフォームは 26 の言語をサポートし、SCORM 1.2, 2004 スタンダードに準拠し、ブレンド、セルフトレーニング、コラボレート等、複数の教育法をサポートし、チャット、ウィキ、フォーラム等を用いたソーシャルラーニングといった機能を持ちます。<br/>
 <br/>
 <br/>
 これらの語を変える場合、管理者/言語の管理を参照し、<b>ログイン</b>を探し、<b>_INTRO_STD_TEXT</b>キーを変更してください]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2018-06-18 00:00:00"><![CDATA[forma.lmsは、企業および高等教育市場で使用されているオープンソースのeラーニングプラットフォーム（LMSおよびLCMS）です。]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ログインフォームへジャンプ]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[LDAP認証実効中、機能は利用不能です。管理者に連絡してください]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ログイン]]></key>
@@ -1347,7 +1347,6 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[メインメニューにジャンプ]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[このコースに関連したあなたの情報にジャンプ]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[コミュニティ]]></key>
-        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[コース実効化]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[管理者エリア]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[キャパス]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[全般メニュー]]></key>

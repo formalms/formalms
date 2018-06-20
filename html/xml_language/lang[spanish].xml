@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180207</DATE>
+  <DATE>20180620</DATE>
   <LANG id="spanish">
     <lang_code>spanish</lang_code>
     <lang_description>Spanish</lang_description>
@@ -1365,9 +1365,14 @@ Contraseña: [password]]]></key>
         <key id="login&amp;_CANCELSOCIALLOGIN" attributes="" save_date="2016-12-01 09:54:55"><![CDATA[Solicitud de acceso desde red social, cancelada por el usuario]]></key>
         <key id="login&amp;_EMPTYSOCIALID" attributes="" save_date="2016-12-01 09:51:51"><![CDATA[Imposible encontrar el identificador de la cuenta de red social]]></key>
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Página de inicio]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2016-11-30 08:21:50"><![CDATA[Bienvenidos al aula virtual<br/>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2018-06-19 00:00:00"><![CDATA[Bienvenidos al aula virtual<br/>
 <br/>
-La plataforma cuenta con cursos interactivos, así como herramientas web que llevarán el aprendizaje a una nueva etapa<br/>]]></key>
+La plataforma cuenta con cursos interactivos, así como herramientas web que llevarán el aprendizaje a una nueva etapa<br/>
+La plataforma admite 26 idiomas, cumple con los estándares SCORM 1.2 y 2004, y admite diferentes modelos didácticos, que incluyen: Blended, Self-Directed, Collaborative e incluso Social Learning a través de chat, Wiki, foros y otras funciones diferentes. <br/>
+<br/>
+<br/>
+Para cambiar estas palabras, vaya a Administración / Gestión de idiomas, busque <b> inicio de sesión </b> y edite las claves <b>_INTRO_STD_TEXT_TITLE</b> y <b>_INTRO_STD_TEXT</b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2018-06-19 00:00:00"><![CDATA[forma.lms es una plataforma de e-learning de código abierto (LMS y LCMS) utilizada en los mercados corporativos y de educación superior]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Ir al formulario de inicio de sesión]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[La autenticación por LDAP está activa, funcionalidad no disponible por favor llame a su administrador]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Usuario]]></key>

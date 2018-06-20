@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180619</DATE>
+  <DATE>20180620</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -2519,7 +2519,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_VERSION" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Versione]]></key>
         <key id="standard&amp;_VIDEOCONFERENCE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Videoconferenza]]></key>
         <key id="standard&amp;_VIEW" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Visualizza]]></key>
-        <key id="standard&amp;_VIEW_ALL" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Visualizza tutti]]></key>
+        <key id="standard&amp;_VIEW_ALL" attributes="" save_date="2018-06-19 00:00:00"><![CDATA[Visualizza tutti]]></key>
         <key id="standard&amp;_VIEW_PERMISSION" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Modifica permessi di visualizzazione]]></key>
         <key id="standard&amp;_WAITING" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[In attesa]]></key>
         <key id="standard&amp;_WAITING_USERS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Utenti in attesa]]></key>
