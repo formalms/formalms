@@ -98,7 +98,7 @@ class UserProfile {
 	/**
 	 * class constructor
 	 */
-	function __construct($id_user, $edit_mode = false) {
+	function UserProfile($id_user, $edit_mode = false) {
 
 		$this->_id_user = $id_user;
 
@@ -871,7 +871,7 @@ class UserProfileViewer {
 	/**
 	 * class constructor
 	 */
-	function __construct(&$user_profile, $varname_action = 'ap') {
+	function UserProfileViewer(&$user_profile, $varname_action = 'ap') {
 
 		$this->_user_profile =& $user_profile;
 		$this->acl_man = Docebo::user()->getAclManager();

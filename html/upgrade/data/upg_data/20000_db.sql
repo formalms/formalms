@@ -80,13 +80,13 @@ UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 't
 UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'Clear_Twig_Cache';
 UPDATE `core_setting` SET `sequence` = '27' WHERE `core_setting`.`param_name` = 'Clear_Twig_Cache';
 UPDATE `core_setting` SET `pack` = 'twig_cache' WHERE `core_setting`.`param_name` = 'Clear_Twig_Cache';
-INSERT IGNORE INTO `core_lang_text` (`id_text`, `text_key`, `text_module`, `text_attributes`) VALUES (NULL, '_CLEAR_TWIG_CACHE', 'configuration', '');
+-- INSERT IGNORE INTO `core_lang_text` (`id_text`, `text_key`, `text_module`, `text_attributes`) VALUES (NULL, '_CLEAR_TWIG_CACHE', 'configuration', '');
 
 UPDATE `core_setting` SET `sequence` = '6' WHERE `core_setting`.`param_name` = 'pass_algorithm';
 UPDATE `core_setting` SET `pack` = 'register' WHERE `core_setting`.`param_name` = 'orgchart_singlenode';
 UPDATE `core_setting` SET `pack` = 'register' WHERE `core_setting`.`param_name` = 'custom_fields_mandatory_for_admin';
 
-INSERT IGNORE INTO `core_lang_translation` (`id_text`, `lang_code`, `translation_text`, `save_date`) VALUES ((SELECT `core_lang_text`.`id_text` FROM `core_lang_text` WHERE `core_lang_text`.`text_key` = "_CLEAR_TWIG_CACHE" ), 'english', 'Clear twig cache', '2017-10-16 17:49:29'), ((SELECT `core_lang_text`.`id_text` FROM `core_lang_text` WHERE `core_lang_text`.`text_key` = "_CLEAR_TWIG_CACHE" ), 'italian', 'Elimina twig cache', '2017-10-16 17:49:29');
+-- INSERT IGNORE INTO `core_lang_translation` (`id_text`, `lang_code`, `translation_text`, `save_date`) VALUES ((SELECT `core_lang_text`.`id_text` FROM `core_lang_text` WHERE `core_lang_text`.`text_key` = "_CLEAR_TWIG_CACHE" ), 'english', 'Clear twig cache', '2017-10-16 17:49:29'), ((SELECT `core_lang_text`.`id_text` FROM `core_lang_text` WHERE `core_lang_text`.`text_key` = "_CLEAR_TWIG_CACHE" ), 'italian', 'Elimina twig cache', '2017-10-16 17:49:29');
 
 -- task #14745
 UPDATE `core_setting` SET `regroup` = '9' WHERE `core_setting`.`param_name` = 'ldap_server';
@@ -107,14 +107,14 @@ UPDATE `core_setting` SET `sequence` = '11' WHERE `core_setting`.`param_name` = 
 UPDATE `core_setting` SET `sequence` = '12' WHERE `core_setting`.`param_name` = 'rest_auth_lifetime';
 UPDATE `core_setting` SET `sequence` = '13' WHERE `core_setting`.`param_name` = 'rest_auth_api_secret';
 
-UPDATE `core_lang_translation` SET `translation_text` = 'API e Autenticazione' WHERE `core_lang_translation`.`id_text` IN (SELECT `core_lang_text`.`id_text` FROM `core_lang_text` WHERE `core_lang_text`.`text_key` = "_API_SSO") AND `core_lang_translation`.`lang_code` = 'english';
-UPDATE `core_lang_translation` SET `translation_text` = 'API and Authentication' WHERE `core_lang_translation`.`id_text` IN (SELECT `core_lang_text`.`id_text` FROM `core_lang_text` WHERE `core_lang_text`.`text_key` = "_API_SSO") AND `core_lang_translation`.`lang_code` = 'italian';
+-- UPDATE `core_lang_translation` SET `translation_text` = 'API e Autenticazione' WHERE `core_lang_translation`.`id_text` IN (SELECT `core_lang_text`.`id_text` FROM `core_lang_text` WHERE `core_lang_text`.`text_key` = "_API_SSO") AND `core_lang_translation`.`lang_code` = 'english';
+-- UPDATE `core_lang_translation` SET `translation_text` = 'API and Authentication' WHERE `core_lang_translation`.`id_text` IN (SELECT `core_lang_text`.`id_text` FROM `core_lang_text` WHERE `core_lang_text`.`text_key` = "_API_SSO") AND `core_lang_translation`.`lang_code` = 'italian';
 
 -- 150605.view_all.sql 
 
 
 -- label
-INSERT IGNORE INTO core_lang_text(text_key, text_module, text_attributes) VALUES ('_VIEW_ALL', 'standard', '');
+-- INSERT IGNORE INTO core_lang_text(text_key, text_module, text_attributes) VALUES ('_VIEW_ALL', 'standard', '');
 
 -- 338.txt 
 ALTER TABLE  `core_user_temp` ADD  `avatar` VARCHAR( 255 ) NOT NULL;
@@ -221,56 +221,56 @@ execution_date=now();
 
 
 -- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_DB_UPGRADES', 'dashboard', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_DB_UPGRADES', 'dashboard', '');
 
 
 
 
 -- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_LIST_DB_UPGRADES', 'configuration', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_LIST_DB_UPGRADES', 'configuration', '');
 
 
 
 -- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SCRIPT_ID', 'standard', '');
-
-
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SCRIPT_NAME', 'standard', '');
-
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SCRIPT_DESCRIPTION', 'standard', '');
-
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SCRIPT_VERSION', 'standard', '');
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CORE_VERSION', 'standard', '');
-
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CREATION_DATE', 'standard', '');
-
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SCRIPT_ID', 'standard', '');
 
 
 
 
 
 -- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_EXECUTION_DATE', 'standard', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SCRIPT_NAME', 'standard', '');
+
+
+
+
+-- label
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SCRIPT_DESCRIPTION', 'standard', '');
+
+
+
+
+-- label
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SCRIPT_VERSION', 'standard', '');
+
+
+
+-- label
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CORE_VERSION', 'standard', '');
+
+
+
+
+-- label
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CREATION_DATE', 'standard', '');
+
+
+
+
+
+
+-- label
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_EXECUTION_DATE', 'standard', '');
 
 
 
@@ -389,7 +389,7 @@ INSERT IGNORE INTO `core_customfield_type` (`type_field`, `type_file`, `type_cla
 -- ------------------
 
 -- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CUSTOMFIELD_MANAGER', 'menu', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CUSTOMFIELD_MANAGER', 'menu', '');
 
 
 INSERT IGNORE INTO core_st(idst) values(null);
@@ -445,32 +445,32 @@ INSERT IGNORE INTO core_role_members values(@v_idst, 3);
 
 
 -- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_ADD_NEW_CUSTOMFIELD', 'field', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_ADD_NEW_CUSTOMFIELD', 'field', '');
 
 
 
 -- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_RU_CAT_TESTSTAT', 'report', '');
-
-
-
-
-
--- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_EXISTING_TEST', 'test', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_RU_CAT_TESTSTAT', 'report', '');
 
 
 
 
 
 -- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SELECTTEST', 'storage', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_EXISTING_TEST', 'test', '');
+
 
 
 
 
 -- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_EXPORT_QUESTIONS', 'storage', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SELECTTEST', 'storage', '');
+
+
+
+
+-- label
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_EXPORT_QUESTIONS', 'storage', '');
 
 
 
@@ -492,32 +492,32 @@ ALTER TABLE  `learning_test` ADD  `cf_info` TEXT NOT NULL AFTER  `order_info`;
 
 -- label _ACTION_ON_USERS
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_ACTION_ON_USERS', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_ACTION_ON_USERS', 'user_managment', '');
 
 
 
 
 -- label _CREATE_AND_UPDATE
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CREATE_AND_UPDATE', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CREATE_AND_UPDATE', 'user_managment', '');
 
 
 
 
 -- label _CREATE_ALL
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CREATE_ALL', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CREATE_ALL', 'user_managment', '');
 
 
 
 -- label _ONLY_CREATE
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_ONLY_CREATE', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_ONLY_CREATE', 'user_managment', '');
 
 
 -- label _ONLY_UPDATE
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_ONLY_UPDATE', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_ONLY_UPDATE', 'user_managment', '');
 
 
 
@@ -527,7 +527,7 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 -- label _SET_PASSWORD
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SET_PASSWORD', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SET_PASSWORD', 'user_managment', '');
 
 
 
@@ -535,27 +535,27 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 -- label _FROM_FILE
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_FROM_FILE', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_FROM_FILE', 'user_managment', '');
 
 
 
 
 -- label _INSERT_EMPTY
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_INSERT_EMPTY', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_INSERT_EMPTY', 'user_managment', '');
 
 
 
 -- label _INSERT_ALL
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_INSERT_ALL', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_INSERT_ALL', 'user_managment', '');
 
 
 
 
 -- label _PASSWORD_TO_INSERT
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_PASSWORD_TO_INSERT', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_PASSWORD_TO_INSERT', 'user_managment', '');
 
 
 
@@ -564,21 +564,21 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 -- label _MANUAL_PASSWORD
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_MANUAL_PASSWORD', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_MANUAL_PASSWORD', 'user_managment', '');
 
 
 
 
 -- label _AUTOMATIC_PASSWORD
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_AUTOMATIC_PASSWORD', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_AUTOMATIC_PASSWORD', 'user_managment', '');
 
 
 
 
 -- label _SEND_NEW_CREDENTIALS_ALERT
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SEND_NEW_CREDENTIALS_ALERT', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_SEND_NEW_CREDENTIALS_ALERT', 'user_managment', '');
 
 
 
@@ -588,7 +588,7 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 -- label _NEED_TO_ALERT
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_NEED_TO_ALERT', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_NEED_TO_ALERT', 'user_managment', '');
 
 
 
@@ -596,21 +596,21 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 -- label _NO_FILE
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_NO_FILE', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_NO_FILE', 'user_managment', '');
 
 
 
 
 -- label _USERID_NEEDED
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_USERID_NEEDED', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_USERID_NEEDED', 'user_managment', '');
 
 
 
 
 -- label _FIELD_REPEATED
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_FIELD_REPEATED', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_FIELD_REPEATED', 'user_managment', '');
 
 
 
@@ -619,7 +619,7 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 -- label _GENERATE_PASSWORD
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_GENERATE_PASSWORD', 'user_managment', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_GENERATE_PASSWORD', 'user_managment', '');
 
 
 
@@ -629,7 +629,7 @@ INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUE
 
 -- label _USER_ALREADY_EXISTS
 
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_USER_ALREADY_EXISTS', 'standard', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_USER_ALREADY_EXISTS', 'standard', '');
 
 
 
@@ -762,7 +762,7 @@ CREATE TABLE IF NOT EXISTS `core_requests` (
 -- GENERAL
   
 
-UPDATE `core_lang_text` SET `text_key` = 'course_report' WHERE `core_lang_text`.`text_key` = 'courses_report';
+UPDATE core_lang_text SET text_key = 'course_report' WHERE text_key = 'courses_report';
 
 -- reset-twig-cache.sql 
 INSERT IGNORE INTO core_setting (param_name, param_value, value_type, max_size, pack, regroup, sequence, param_load, hide_in_modify, extra_info)
@@ -773,12 +773,12 @@ INSERT IGNORE INTO core_setting (param_name, param_value, value_type, max_size, 
 
 
 -- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CONFIG_SYS', 'menu', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CONFIG_SYS', 'menu', '');
 
 
 
 -- label
-INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CONFIG_ELEARNING', 'menu', '');
+-- INSERT IGNORE INTO core_lang_text (text_key, text_module, text_attributes) VALUES ('_CONFIG_ELEARNING', 'menu', '');
 
 
 -- DROPPING
@@ -942,6 +942,8 @@ ALTER TABLE `learning_certificate_course` ADD `minutes_required` INT( 11 ) NOT N
 -- 10116_add_box_course_description
 ALTER TABLE `learning_course` ADD `box_description` TEXT NOT NULL AFTER `name`;
 
+-- 18269_change_config_label
+UPDATE core_event_manager SET recipients = '_EVENT_RECIPIENTS_MODERATORS_GOD', show_level = 'godadmin,admin' WHERE idEventMgr = 9;
 
 DELETE FROM `learning_middlearea` WHERE `obj_index` = "tb_catalog";
 
@@ -953,9 +955,9 @@ DELETE FROM `learning_middlearea` WHERE `learning_middlearea`.`obj_index` = 'tb_
 -- 7996_custom_fields_mandatory_for_admin
 INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES ('custom_fields_mandatory_for_admin', 'off', 'enum', '3', 'register', '3', '22', '1', '0', '');
 
-INSERT IGNORE INTO `core_lang_text` (`text_key`, `text_module`, `text_attributes`) VALUES ('_CUSTOM_FIELDS_MANDATORY_FOR_ADMIN', 'configuration', '');
+-- INSERT IGNORE INTO `core_lang_text` (`text_key`, `text_module`, `text_attributes`) VALUES ('_CUSTOM_FIELDS_MANDATORY_FOR_ADMIN', 'configuration', '');
 
-INSERT IGNORE INTO `core_lang_translation` (`id_text`, `lang_code`, `translation_text`, `save_date`) VALUES ((SELECT `id_text` FROM `core_lang_text` ORDER BY `id_text` desc LIMIT 1), 'italian', 'Campi supplementari obbligatori anche per gli admin', '2017-01-13 13:50:05');
+-- INSERT IGNORE INTO `core_lang_translation` (`id_text`, `lang_code`, `translation_text`, `save_date`) VALUES ((SELECT `id_text` FROM `core_lang_text` ORDER BY `id_text` desc LIMIT 1), 'italian', 'Campi supplementari obbligatori anche per gli admin', '2017-01-13 13:50:05');
 
 -- 13719: added "tab" home feature
 ALTER TABLE `learning_middlearea` ADD `is_home` TINYINT(4) NOT NULL DEFAULT '0' AFTER `sequence`;
@@ -972,6 +974,10 @@ INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `m
 
 INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES
 ('hide_empty_category', 'on', 'enum', 3, '0', 4, 5, 1, 0, '');
+
+UPDATE core_setting SET param_value = (select case when cs.param_value='on' then 'catalogue' else 'my_courses' end AS param_value
+from (SELECT * FROM core_setting) as cs where cs.param_name='first_catalogue')
+WHERE param_name = 'home_page_option';
 
 DELETE from core_setting where param_name = 'first_catalogue';
 
@@ -1011,36 +1017,6 @@ ALTER TABLE `core_task` CHANGE `sequence` `sequence` INT(3) NOT NULL AUTO_INCREM
 ALTER TABLE `learning_coursereport` ADD COLUMN `show_in_detail` tinyint(1) NULL DEFAULT 1;
 ALTER TABLE `learning_test` DROP COLUMN `show_in_coursereport`;
 
-INSERT INTO `core_lang_text` (`id_text` ,`text_key` ,`text_module` ,`text_attributes`) VALUES (NULL , '_SHOW_IN_DETAIL', 'test', '');
-INSERT INTO `core_lang_translation` ( `id_text`, `lang_code`,  `translation_text`, `save_date` )
-  SELECT lt.id_text, l.lang_code, t1.translation_text as translation_text, now() AS save_date
-  FROM core_lang_text lt , core_lang_language l ,
-    ( SELECT lt.id_text, t.lang_code, t.translation_text
-      FROM   core_lang_text lt, core_lang_translation t
-      WHERE t.id_text = lt.id_text AND lt.text_key ='_SHOW_IN_DETAIL'  AND lt.text_module = 'test'  ) t1
-  WHERE lt.text_key = '_SHOW_IN_DETAIL' AND lt.text_module = 'test' AND t1.lang_code = l.lang_code
-;
-
-INSERT IGNORE INTO `core_lang_text` (`id_text` ,`text_key` ,`text_module` ,`text_attributes`) VALUES (NULL , '_OVERVIEW', 'coursereport', '');
-INSERT IGNORE INTO `core_lang_translation` ( `id_text`, `lang_code`,  `translation_text`, `save_date` )
-  SELECT lt.id_text, l.lang_code, t1.translation_text as translation_text, now() AS save_date
-  FROM core_lang_text lt , core_lang_language l ,
-    ( SELECT lt.id_text, t.lang_code, t.translation_text
-      FROM   core_lang_text lt, core_lang_translation t
-      WHERE t.id_text = lt.id_text AND lt.text_key ='_OVERVIEW'  AND lt.text_module = 'coursereport'  ) t1
-  WHERE lt.text_key = '_OVERVIEW' AND lt.text_module = 'coursereport' AND t1.lang_code = l.lang_code
-;
-
-INSERT IGNORE INTO `core_lang_text` (`id_text` ,`text_key` ,`text_module` ,`text_attributes`) VALUES (NULL , '_DETAILS', 'coursereport', '');
-INSERT IGNORE INTO `core_lang_translation` ( `id_text`, `lang_code`,  `translation_text`, `save_date` )
-  SELECT lt.id_text, l.lang_code, t1.translation_text as translation_text, now() AS save_date
-  FROM core_lang_text lt , core_lang_language l ,
-    ( SELECT lt.id_text, t.lang_code, t.translation_text
-      FROM   core_lang_text lt, core_lang_translation t
-      WHERE t.id_text = lt.id_text AND lt.text_key ='_DETAILS'  AND lt.text_module = 'coursereport'  ) t1
-  WHERE lt.text_key = '_DETAILS' AND lt.text_module = 'coursereport' AND t1.lang_code = l.lang_code
-;
-
 -- Add lastedit and validity
 ALTER TABLE `core_privacypolicy` ADD `lastedit_date` DATETIME NOT NULL AFTER `name`, ADD `validity_date` DATETIME NOT NULL AFTER `lastedit_date`;
 
@@ -1051,16 +1027,147 @@ ALTER TABLE `core_privacypolicy` ADD `is_default` INT(1) NOT NULL DEFAULT '0' AF
 INSERT INTO `core_privacypolicy` (`name`, `is_default`, `lastedit_date`, `validity_date`) VALUES( 'Default Privacy Policy', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- Create table accept policy
-CREATE TABLE `core_privacypolicy_user` (
+CREATE TABLE IF NOT EXISTS `core_privacypolicy_user` (
   `id_policy` int(11) NOT NULL,
   `idst` int(11)  NOT NULL,
   `accept_date` datetime NOT NULL
 );
 
 -- 17570 - GDPR
-UPDATE `core_setting` SET `param_value` = '8' WHERE `core_setting`.`param_name` = 'pass_min_char';
-UPDATE `core_setting` SET `param_value` = 'on' WHERE `core_setting`.`param_name` = 'pass_change_first_login';
-UPDATE `core_setting` SET `param_value` = 'on' WHERE `core_setting`.`param_name` = 'request_mandatory_fields_compilation';
+UPDATE core_setting SET param_value = '8'  WHERE param_name = 'pass_min_char' and param_value < '8';
+UPDATE core_setting SET param_value = 'on' WHERE param_name = 'pass_change_first_login';
+UPDATE core_setting SET param_value = 'on' WHERE param_name = 'request_mandatory_fields_compilation';
+
+-- Creazione permesso view_all
+INSERT IGNORE INTO core_role(idst, roleid, description) VALUES
+(295,'/lms/course/private/statistic/view_all', NULL),
+(296,'/lms/course/private/stats/view_all_statuser', NULL),
+(297,'/lms/course/private/stats/view_all_statcourse', NULL),
+(298,'/lms/course/private/coursestats/view_all', NULL),
+(299,'/lms/course/private/coursereport/view_all', NULL),
+(234,'/lms/course/private/light_repo/view_all', NULL);
+
+-- statistic/view_all
+INSERT ignore INTO core_role_members  (idst, idstMember)
+select ra.idst, g.idst
+from learning_menucustom m
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/custom/', m.idcustom, '/', lvl)
+join core_role r on r.roleid like concat('/lms/course/private/statistic/view')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/statistic/view_all');
+
+-- statistic/view_all_statuser
+INSERT ignore INTO core_role_members  (idst, idstMember)
+select ra.idst, g.idst idstmember
+from learning_menucustom m
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/custom/', m.idcustom, '/', lvl)
+join core_role r on r.roleid like concat('/lms/course/private/stats/view_user')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/stats/view_all_statuser');
+
+-- statistic/view_all_statcourse
+INSERT ignore INTO core_role_members  (idst, idstMember)
+select ra.idst, g.idst idstmember
+from learning_menucustom m
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/custom/', m.idcustom, '/', lvl)
+join core_role r on r.roleid like concat('/lms/course/private/stats/view_course')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/stats/view_all_statcourse');
+
+-- coursestats/view_all
+INSERT ignore INTO core_role_members  (idst, idstMember)
+select ra.idst, g.idst idstmember
+from learning_menucustom m
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/custom/', m.idcustom, '/', lvl)
+join core_role r on r.roleid like concat('/lms/course/private/coursestats/view')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/coursestats/view_all');
+
+-- coursestats/view_all
+INSERT ignore INTO core_role_members  (idst, idstMember)
+select ra.idst, g.idst idstmember
+from learning_menucustom m
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/custom/', m.idcustom, '/', lvl)
+join core_role r on r.roleid like concat('/lms/course/private/light_repo/view')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/light_repo/view_all');
+
+-- coursestats/view_all
+INSERT ignore INTO core_role_members  (idst, idstMember)
+select ra.idst, g.idst idstmember
+from learning_menucustom m
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/custom/', m.idcustom, '/', lvl)
+join core_role r on r.roleid like concat('/lms/course/private/coursestats/view')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/coursestats/view_all');
+
+
+-- ForEach course add a view_all role (if view exists)
+INSERT ignore INTO core_role_members
+select ra.idst, g.idst idstmember
+from 
+learning_course c
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/course/',idcourse,'/subscribed/',lvl)
+join core_role r on r.roleid like concat('/lms/course/private/',idcourse,'/statistic/view')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/',idcourse,'/statistic/view_all');
+
+INSERT ignore INTO core_role_members
+select ra.idst, g.idst idstmember
+from 
+learning_course c
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/course/',idcourse,'/subscribed/',lvl)
+join core_role r on r.roleid like concat('/lms/course/private/',idcourse,'/stats/view_user')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/',idcourse,'/stats/view_all_statuser');
+
+INSERT ignore INTO core_role_members
+select ra.idst, g.idst idstmember
+from 
+learning_course c
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/course/',idcourse,'/subscribed/',lvl)
+join core_role r on r.roleid like concat('/lms/course/private/',idcourse,'/stats/view_course')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/',idcourse,'/stats/view_all_statcourse');
+
+INSERT ignore INTO core_role_members
+select ra.idst, g.idst idstmember
+from 
+learning_course c
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/course/',idcourse,'/subscribed/',lvl)
+join core_role r on r.roleid like concat('/lms/course/private/',idcourse,'/coursestats/view')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/',idcourse,'/coursestats/view_all');
+
+INSERT ignore INTO core_role_members
+select ra.idst, g.idst idstmember
+from 
+learning_course c
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/course/',idcourse,'/subscribed/',lvl)
+join core_role r on r.roleid like concat('/lms/course/private/',idcourse,'/coursereport/view')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/',idcourse,'/coursereport/view_all');
+
+INSERT ignore INTO core_role_members
+select ra.idst, g.idst idstmember
+from 
+learning_course c
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/course/',idcourse,'/subscribed/',lvl)
+join core_role r on r.roleid like concat('/lms/course/private/',idcourse,'/light_repo/view')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/',idcourse,'/light_repo/view_all');
 
 -- ------------------------------------------------------------------
 

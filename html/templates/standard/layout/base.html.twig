@@ -15,8 +15,6 @@
     {{ layout_meta | raw }}
     <link rel="shortcut icon" href="{{layout_path}}images/favicon.png" type="image/png"/>
     <link rel="shortcut icon" href="{{layout_path}}images/favicon.ico"/>
-    
-
 
     <!-- reset and font stylesheet -->
     {{ resetter|raw }}
@@ -28,6 +26,8 @@
 
     {% block bootstrap %}
     {{ boostrap|raw }}
+    
+    <script>$.fn.bootstrapBtn = $.fn.button.noConflict();</script>
     {% endblock %}
     
     

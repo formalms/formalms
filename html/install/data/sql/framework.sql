@@ -2014,7 +2014,12 @@ INSERT INTO `core_role` (`idst`, `roleid`, `description`) VALUES
 (236, '/framework/admin/customfield_manager/add', NULL),
 (237, '/framework/admin/customfield_manager/mod', NULL),
 (238, '/framework/admin/customfield_manager/del', NULL),
-(280, '/framework/admin/pluginmanager/view', ''),
+(280, '/framework/admin/pluginmanager/view', NULL),
+(295,'/lms/course/private/statistic/view_all', NULL),
+(296,'/lms/course/private/stats/view_all_statuser', NULL),
+(297,'/lms/course/private/stats/view_all_statcourse', NULL),
+(298,'/lms/course/private/coursestats/view_all', NULL),
+(299,'/lms/course/private/coursereport/view_all', NULL),
 (11553, '/framework/admin/usermanagement/associate_user', NULL),
 (11757, '/lms/course/private/coursestats/view', ''),
 (11835, '/lms/course/private/presence/view', '');
@@ -2560,7 +2565,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('paypal_mail', '', 'string', 255, '0', 5, 0, 1, 0, ''),
 ('paypal_sandbox', 'on', 'enum', 3, '0', 5, 3, 1, 0, ''),
 ('privacy_policy', 'on', 'enum', 3, 'register', 3, 15, 0, 0, ''),
-('profile_only_pwd', 'on', 'enum', 3, '0', 3, 1, 1, 0, ''),
+('profile_only_pwd', 'off', 'enum', 3, '0', 3, 1, 1, 0, ''),
 ('register_deleted_user', 'off', 'enum', 3, '0', 3, 3, 1, 0, ''),
 ('register_type', 'admin', 'register_type', 10, 'register', 3, 11, 0, 0, ''),
 ('registration_code_type', '0', 'registration_code_type', 3, 'register', 3, 17, 1, 0, ''),
@@ -2605,7 +2610,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('visuNewsHomePage', '3', 'int', 5, '0', 1, 0, 1, 1, ''),
 ('welcome_use_feed', 'on', 'enum', 3, '0', 1, 0, 1, 1, ''),
 ('hide_empty_category', 'on', 'enum', 3, '0', 4, 5, 1, 0, ''),
-('home_page_option', 'catalogue', 'home_page_option', 255, '0', 4, 1, 1, 0, '');
+('home_page_option', 'my_courses', 'home_page_option', 255, '0', 4, 1, 1, 0, '');
 
 -- --------------------------------------------------------
 
@@ -3153,7 +3158,6 @@ UPDATE `core_setting` SET `sequence` = '10' WHERE `core_setting`.`param_name` = 
 UPDATE `core_setting` SET `sequence` = '11' WHERE `core_setting`.`param_name` = 'rest_auth_api_key';
 UPDATE `core_setting` SET `sequence` = '12' WHERE `core_setting`.`param_name` = 'rest_auth_lifetime';
 UPDATE `core_setting` SET `sequence` = '13' WHERE `core_setting`.`param_name` = 'rest_auth_api_secret';
-
 
 
 -- --------------------------------------------------------

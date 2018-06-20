@@ -88,7 +88,7 @@ function editionElearning(&$row, &$smodel){
                     </a>';
     } else {
         if ($row['selling'] == 0) {
-            $action .= '<a href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'0\')" title="' . Lang::t('_SUBSCRIBE', 'catalogue') . '"><p class="can_subscribe">' . Lang::t('_SUBSCRIBE', 'catalogue') . '</p></a>';
+            $action .= '<a class="forma-button forma-button--green forma-button--orange-hover" href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'0\')" title="' . Lang::t('_SUBSCRIBE', 'catalogue') . '"><span class="forma-button__label">' . Lang::t('_SUBSCRIBE', 'catalogue') . '</span></a>';
         } else {
             $edition_in_chart = array();
             if (isset($_SESSION['lms_cart'][$row['idCourse']]['editions']))
@@ -274,7 +274,8 @@ function InsertOption(&$row, $smodel){
                                                     id_date: id_date,
                                                     type_course: $( "#typeCourse" ).val(),
                                                     id_catalogue: <?php echo $current_catalogue ?>,
-                                                    id_category: $('#treeview1').treeview('getSelected')[0].id_cat
+                                                    id_category: $('#treeview1').treeview('getSelected')[0] ? 
+                                                        $('#treeview1').treeview('getSelected')[0].id_cat : null
                                                 }
                                             );
                                             posting.done(function (responseText) {
@@ -291,7 +292,7 @@ function InsertOption(&$row, $smodel){
                             close: function (event, ui) {
                                 $(this).remove();
                             }
-                        });                                
+                        });                      
                 }
 
 

@@ -2036,7 +2036,7 @@ INSERT INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequen
 ('tb_games', 1, 'a:0:{}',0,0),
 ('tb_label', 1, 'a:0:{}',0,0),
 ('tb_videoconference', 1, 'a:0:{}',0,0),
-('tb_kb', 0, 'a:0:{}', 0,0),
+('tb_kb', 1, 'a:0:{}', 0,0),
 ('tb_home', '1', 'a:0:{}', '0',0),
 ('mo_46', '0', 'a:0:{}', '0',0);
 
@@ -3392,6 +3392,69 @@ CREATE TABLE IF NOT EXISTS `learning_wiki_course` (
 --
 -- Dump dei dati per la tabella `learning_wiki_course`
 --
+
+-- statistic/view_all
+INSERT INTO core_role_members  (idst, idstMember)
+select ra.idst, g.idst
+from learning_menucustom m
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/custom/', m.idcustom, '/', lvl)
+join core_role r on r.roleid like concat('/lms/course/private/statistic/view')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/statistic/view_all');
+
+
+-- statistic/view_all_statuser
+INSERT INTO core_role_members  (idst, idstMember)
+select ra.idst, g.idst idstmember
+from learning_menucustom m
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/custom/', m.idcustom, '/', lvl)
+join core_role r on r.roleid like concat('/lms/course/private/stats/view_user')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/stats/view_all_statuser');
+
+
+-- statistic/view_all_statcourse
+INSERT INTO core_role_members  (idst, idstMember)
+select ra.idst, g.idst idstmember
+from learning_menucustom m
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/custom/', m.idcustom, '/', lvl)
+join core_role r on r.roleid like concat('/lms/course/private/stats/view_course')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/stats/view_all_statcourse');
+
+
+-- coursestats/view_all
+INSERT INTO core_role_members  (idst, idstMember)
+select ra.idst, g.idst idstmember
+from learning_menucustom m
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/custom/', m.idcustom, '/', lvl)
+join core_role r on r.roleid like concat('/lms/course/private/coursestats/view')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/coursestats/view_all');
+
+-- coursereport/view_all
+INSERT INTO core_role_members  (idst, idstMember)
+select ra.idst, g.idst idstmember
+from learning_menucustom m
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/custom/', m.idcustom, '/', lvl)
+join core_role r on r.roleid like concat('/lms/course/private/coursereport/view')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/coursereport/view_all');
+
+-- light_repo/view_all
+INSERT INTO core_role_members  (idst, idstMember)
+select ra.idst, g.idst idstmember
+from learning_menucustom m
+join (select 1 lvl union select 2 lvl union select 3 lvl union select 4 lvl union select 5 lvl union select 6 lvl union select 7 lvl) core_lvl
+join core_group g on g.groupid like concat('/lms/custom/', m.idcustom, '/', lvl)
+join core_role r on r.roleid like concat('/lms/course/private/light_repo/view')
+join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
+join core_role ra on ra.roleid like concat('/lms/course/private/light_repo/view_all');
 
 
 -- --------------------------------------------------------

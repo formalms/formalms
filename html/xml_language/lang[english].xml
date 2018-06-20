@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180423</DATE>
+  <DATE>20180620</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -113,8 +113,8 @@
         <key id="admin_lang&amp;_ORIENTATION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Reading orientation]]></key>
         <key id="admin_lang&amp;_OVERWRITE_EXISTENT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Overwrite existing words]]></key>
         <key id="admin_lang&amp;_PERC_TRAD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Translate %]]></key>
-        <key id="admin_lang&amp;_PLUGIN" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Plugin]]></key>
-        <key id="admin_lang&amp;_PLUGIN_NAME" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Plugin name]]></key>
+        <key id="admin_lang&amp;_PLUGIN" attributes="" save_date="2018-06-19 00:00:00"><![CDATA[Plugin]]></key>
+        <key id="admin_lang&amp;_PLUGIN_NAME" attributes="" save_date="2018-06-19 00:00:00"><![CDATA[Plugin name]]></key>
         <key id="admin_lang&amp;_TOTAL_LANGUAGE_UPDATED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Language definition updated]]></key>
         <key id="admin_lang&amp;_TRANSALTIONTABLEFOR" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Translation table for %module%]]></key>
         <key id="admin_lang&amp;_TRANSLATELANG" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Translate]]></key>
@@ -427,7 +427,7 @@
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Configuration of "allow_url_include"]]></key>
         <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[already assigned]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[API e Autenticazione]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2018-06-19 21:37:58"><![CDATA[API and Authentication]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a code created through the code module]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a tree code chosen by the user from a list in a dropdown menu]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a tree code that must be entered manually by the user]]></key>
@@ -875,6 +875,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="coursereport&amp;_ANSWER_CORRECT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Right answer]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_CAPTION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Test for this course]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_SUMMARY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[This is the list of all the tests for this course and the results for the students]]></key>
+        <key id="coursereport&amp;_DETAILS" attributes="" save_date="2018-06-19 23:11:04"><![CDATA[Detail]]></key>
         <key id="coursereport&amp;_EXPORT_STATS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Save stats]]></key>
         <key id="coursereport&amp;_LEFT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Left]]></key>
         <key id="coursereport&amp;_MOVE_LEFT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Move left]]></key>
@@ -882,6 +883,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="coursereport&amp;_NOT_CHECKED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Not checked]]></key>
         <key id="coursereport&amp;_NOT_PASSED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Not passed]]></key>
         <key id="coursereport&amp;_OF_USER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[of the user]]></key>
+        <key id="coursereport&amp;_OVERVIEW" attributes="" save_date="2018-06-19 23:07:03"><![CDATA[Overview]]></key>
         <key id="coursereport&amp;_PASSED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Passed]]></key>
         <key id="coursereport&amp;_PERCENTAGE_CORRECT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Percentage of correct answers]]></key>
         <key id="coursereport&amp;_QUESTION_ANSWERED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Answered questions]]></key>
@@ -910,8 +912,6 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="coursereport&amp;_TQ_LINK" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Stats for test "[test]"]]></key>
         <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Use for final score]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Weight]]></key>
-        <key id="coursereport&amp;_OVERVIEW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Overview]]></key>
-        <key id="coursereport&amp;_DETAILS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Detail]]></key>
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Add new course]]></key>
@@ -1405,7 +1405,13 @@ To change these words please go to Admin/Language management, search for <b>logi
         <key id="login&amp;_REGISTER_FOR_COURSE_NO_REG" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Please [login] to buy or proceed with this course]]></key>
         <key id="login&amp;_REGISTER_WITH_FACEBOOK" attributes="" save_date="2017-07-17 12:36:10"><![CDATA[register with Facebook]]></key>
         <key id="login&amp;_REG_ELAPSEDREQUEST" attributes="" save_date="2017-04-10 18:33:04"><![CDATA[This request has expired.]]></key>
-        <key id="login&amp;_REG_PRIVACY_POLICY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Privacy policy]]></key>
+        <key id="login&amp;_REG_PRIVACY_POLICY" attributes="" save_date="2018-06-19 09:12:59"><![CDATA[Any information collected by us, relating to an identifiable person, shall be used only in accordance with the procedures and for the purposes that are here acknowledged to the data subject and where the latter, as required by law, has expressely consented. <br><br>
+
+- User login and private area<br>
+- User newsletter<br>
+- User custom content purpose<br><br>
+
+In handling this information, accuracy and precision shall be met to ensure the integrity and quality of the processed personal data, if you have any question please contact us.]]></key>
         <key id="login&amp;_SESSION_EXPIRED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Session expired]]></key>
         <key id="login&amp;_SIGN_IN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Register]]></key>
         <key id="login&amp;_SOCIALCONNECTKO" attributes="" save_date="2017-04-10 14:36:41"><![CDATA[Social ID connection failed]]></key>
@@ -1548,8 +1554,6 @@ To change these words please go to Admin/Language management, search for <b>logi
         <key id="message&amp;_NORMAL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Normal]]></key>
         <key id="message&amp;_OUTBOX" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Sent]]></key>
         <key id="message&amp;_PRIORITY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Priority]]></key>
-        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Your personal informations required to provide support will be sent to system administrators]]></key>
-        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Your personal informations required to provide support will be sent to system administrators]]></key>
         <key id="message&amp;_REFRESH" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Refresh]]></key>
         <key id="message&amp;_SEND_MESSAGE_COPY" attributes="" save_date="2017-05-29 18:58:12"><![CDATA[Send a CC message]]></key>
         <key id="message&amp;_TITLE_READ" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Message read]]></key>
@@ -2440,6 +2444,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_REPORT" attributes="" save_date="2017-04-21 10:07:56"><![CDATA[Reports]]></key>
         <key id="standard&amp;_REQUIRED_SCORE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Required score]]></key>
         <key id="standard&amp;_RESET" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Reset]]></key>
+        <key id="standard&amp;_RESET_POLICY" attributes="" save_date="2018-06-14 16:20:58"><![CDATA[Reset Policy]]></key>
         <key id="standard&amp;_ROLLBACK" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Rollback]]></key>
         <key id="standard&amp;_ROOT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[root]]></key>
         <key id="standard&amp;_ROW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Row]]></key>
@@ -2462,6 +2467,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_SENDER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Sender]]></key>
         <key id="standard&amp;_SEND_TO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Send to]]></key>
         <key id="standard&amp;_SET" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Set]]></key>
+        <key id="standard&amp;_SET_AS_DEFAULT" attributes="" save_date="2018-06-07 15:16:59"><![CDATA[Set as Default]]></key>
         <key id="standard&amp;_SHORTDESC" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Short description]]></key>
         <key id="standard&amp;_SHOW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show]]></key>
         <key id="standard&amp;_SHOW_RESULTS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Results]]></key>
@@ -2738,7 +2744,8 @@ Password: [password]]]></key>
         <key id="test&amp;_QUEST_UPLOAD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Upload file]]></key>
         <key id="test&amp;_RESTART_INFO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Restart test execution from beginning]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Select page]]></key>
-        <key id="test&amp;_SHOW_IN_DETAIL" attributes="" save_date="2018-01-12 15:47:30"><![CDATA[Show in Gradebook Management]]></key>
+        <key id="test&amp;_SHOW_IN_COURSEREPORT" attributes="" save_date="2018-01-12 15:47:30"><![CDATA[Show in Gradebook Management]]></key>
+        <key id="test&amp;_SHOW_IN_DETAIL" attributes="" save_date="2018-06-19 22:51:57"><![CDATA[Show details in Gradebook Management]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Suspend the test after the following number of failed attempts]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Suspend the test for the following number of hours]]></key>
         <key id="test&amp;_SUSPENSION_PREREQUISITES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[After the test suspension, require a new completion of all the test prerequisites]]></key>

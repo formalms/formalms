@@ -412,7 +412,7 @@ class LangAdm extends Model {
 	 * @param strign $text_attributes the attributes for this key (mail, sms)
 	 * @return bool
 	 */
-	public function insertKey($text_key, $text_module, $text_attributes, $idPlugin="NULL") {
+	public function insertKey($text_key, $text_module, $text_attributes, $idPlugin = 0) {
 
 		$query = "INSERT INTO %adm_lang_text "
 			." ( id_text, text_key, text_module, text_attributes, plugin_id ) VALUES ( "

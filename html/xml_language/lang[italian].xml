@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180423</DATE>
+  <DATE>20180620</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -429,7 +429,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "allow_url_include"]]></key>
         <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2017-03-15 16:37:18"><![CDATA[già assegnato]]></key>
         <key id="configuration&amp;_API" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[forma.lms <abbr title="Application Programming Interface">API</abbr>]]></key>
-        <key id="configuration&amp;_API_SSO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[API and Authentication]]></key>
+        <key id="configuration&amp;_API_SSO" attributes="" save_date="2018-06-19 21:37:44"><![CDATA[API e Autenticazione]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Richiedi codice creato attraverso il modulo codici]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Chiedi un codice di accesso all'organigramma, il codice sarà scelto da un menu a tendina]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Chiedi un codice di accesso all'organigramma che deve essere inserito manualmente dall'utente]]></key>
@@ -876,6 +876,7 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="coursereport&amp;_ANSWER_CORRECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Risposta corretta]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_CAPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Test di questo corso]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_SUMMARY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Questa è la lista di tutti i test di questo corso con i risultati conseguiti dagli studenti]]></key>
+        <key id="coursereport&amp;_DETAILS" attributes="" save_date="2018-06-19 23:11:04"><![CDATA[Dettaglio]]></key>
         <key id="coursereport&amp;_EXPORT_STATS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Salva statistiche]]></key>
         <key id="coursereport&amp;_LEFT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sinistra]]></key>
         <key id="coursereport&amp;_MOVE_LEFT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Muovi a sinistra]]></key>
@@ -883,6 +884,7 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="coursereport&amp;_NOT_CHECKED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Da correggere]]></key>
         <key id="coursereport&amp;_NOT_PASSED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Non superato]]></key>
         <key id="coursereport&amp;_OF_USER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[dell'utente]]></key>
+        <key id="coursereport&amp;_OVERVIEW" attributes="" save_date="2018-06-19 23:07:03"><![CDATA[Overview]]></key>
         <key id="coursereport&amp;_PASSED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Superato]]></key>
         <key id="coursereport&amp;_PERCENTAGE_CORRECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Percentuale di risposte corrette]]></key>
         <key id="coursereport&amp;_QUESTION_ANSWERED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Domande compilate]]></key>
@@ -911,8 +913,6 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="coursereport&amp;_TQ_LINK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Statistiche per il test "[test]"]]></key>
         <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Considera per voto finale]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Peso]]></key>
-        <key id="coursereport&amp;_OVERVIEW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Overview]]></key>
-        <key id="coursereport&amp;_DETAILS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Dettaglio]]></key>
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aggiungi nuovo corso]]></key>
@@ -1550,8 +1550,6 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="message&amp;_NORMAL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Normale]]></key>
         <key id="message&amp;_OUTBOX" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Inviati]]></key>
         <key id="message&amp;_PRIORITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Priorità]]></key>
-        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Your personal informations required to provide support will be sent to system administrators]]></key>
-        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Your personal informations required to provide support will be sent to system administrators]]></key>
         <key id="message&amp;_REFRESH" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aggiorna]]></key>
         <key id="message&amp;_SEND_MESSAGE_COPY" attributes="" save_date="2017-05-29 18:52:10"><![CDATA[Invia una copia per conoscenza]]></key>
         <key id="message&amp;_TITLE_READ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Messaggio già letto]]></key>
@@ -2437,6 +2435,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_REPORT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Report]]></key>
         <key id="standard&amp;_REQUIRED_SCORE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Punteggio richiesto]]></key>
         <key id="standard&amp;_RESET" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Rimuovi tutto]]></key>
+        <key id="standard&amp;_RESET_POLICY" attributes="" save_date="2018-06-07 15:16:59"><![CDATA[Invalida le policy precedentemente accettate]]></key>
         <key id="standard&amp;_ROLLBACK" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Annulla le modifiche e ripristina]]></key>
         <key id="standard&amp;_ROOT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[root]]></key>
         <key id="standard&amp;_ROW" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Righe]]></key>
@@ -2459,6 +2458,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_SENDER" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Mittente]]></key>
         <key id="standard&amp;_SEND_TO" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Invia a]]></key>
         <key id="standard&amp;_SET" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Imposta]]></key>
+        <key id="standard&amp;_SET_AS_DEFAULT" attributes="" save_date="2018-06-07 15:16:59"><![CDATA[Setta come predefinito]]></key>
         <key id="standard&amp;_SHORTDESC" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Descrizione breve]]></key>
         <key id="standard&amp;_SHOW" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Mostra]]></key>
         <key id="standard&amp;_SHOW_RESULTS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Risultati]]></key>
@@ -2519,7 +2519,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_VERSION" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Versione]]></key>
         <key id="standard&amp;_VIDEOCONFERENCE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Videoconferenza]]></key>
         <key id="standard&amp;_VIEW" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Visualizza]]></key>
-        <key id="standard&amp;_VIEW_ALL" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Visualizza tutti]]></key>
+        <key id="standard&amp;_VIEW_ALL" attributes="" save_date="2018-06-19 00:00:00"><![CDATA[Visualizza tutti]]></key>
         <key id="standard&amp;_VIEW_PERMISSION" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Modifica permessi di visualizzazione]]></key>
         <key id="standard&amp;_WAITING" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[In attesa]]></key>
         <key id="standard&amp;_WAITING_USERS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Utenti in attesa]]></key>
@@ -2735,7 +2735,8 @@ Password: [password]]]></key>
         <key id="test&amp;_QUEST_UPLOAD" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Carica un file]]></key>
         <key id="test&amp;_RESTART_INFO" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Riesecuzione test dall'inizio]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Seleziona pagina]]></key>
-        <key id="test&amp;_SHOW_IN_DETAIL" attributes="" save_date="2018-01-12 15:47:19"><![CDATA[Mostra in Dettaglio Registro Valutazioni]]></key>
+        <key id="test&amp;_SHOW_IN_COURSEREPORT" attributes="" save_date="2018-01-12 15:47:19"><![CDATA[Mostra in Registro Valutazioni]]></key>
+        <key id="test&amp;_SHOW_IN_DETAIL" attributes="" save_date="2018-06-19 22:51:57"><![CDATA[Mostra in Dettaglio Registro Valutazioni]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Sospendi il test dopo il seguente numero di tentativi sbagliati]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Sospendi la possibilità di compilare il test per il numero di ore seguenti]]></key>
         <key id="test&amp;_SUSPENSION_PREREQUISITES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Dopo la sospensione del test richiedi un nuovo completamento dei prerequisiti del test per effettuare una nuova compilazione]]></key>

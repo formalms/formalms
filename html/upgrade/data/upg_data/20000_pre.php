@@ -23,41 +23,16 @@
 require_once('bootstrap.php');
 require_once('../config.php');
 
-function preUpgrade10000() {
+function preUpgrade20000() {
 
-	$sts = upgrade_folders();
-	if ( $sts ) {
-		$sts = create_folders();
+	$sts = create_folders();
+	if ($sts){
+		$sts = setRoles();
 	}
 
 	return $sts;
 }
 
-
-function upgrade_folders() {
-
-	$dirs_to_move=array();
-
-	// common dir to check
-	$dirs_to_move = array(
-//		array(	'old' => 'files/doceboLms',
-//				'new' => 'files/appLms'),
-		);
-
-	foreach($dirs_to_move as $move_dir) {
-		   $GLOBALS['debug'] .=  "<br/>" . "Check Old folder '". $move_dir['old'] ."'";
-
-		if ( is_dir(_base_.'/'.$move_dir['old'].'/') &&
-		     ! is_dir(_base_.'/'.$move_dir['new'].'/')	) {
-		   $GLOBALS['debug'] .=  "<br/>" . "Move folder from: '". _base_.'/'.$move_dir['old']
-		                                 . "' to '" . _base_.'/'.$move_dir['new'] ."'";
-		    @rename(_base_.'/'.$move_dir['old'],_base_.'/'.$move_dir['new']);
-		}
-	}
-
-	return true;
-
-}
 
 function create_folders() {
 
@@ -78,4 +53,31 @@ function create_folders() {
 
 	return true;
 
+}
+
+
+function setRoles()
+{
+    $query = "SELECT DISTINCT idCourse"
+        . " FROM %lms_course";
+    //$query .= " where idcourse in (4,5)";
+
+    $result = sql_query($query);
+    $res = array();
+
+    require_once(_lib_.'/installer/lib.role.php');
+    $roleids = array();
+    while (list($id_course) = sql_fetch_row($result)){
+        $roleids[]='/lms/course/private/'.$id_course.'/statistic/view_all';
+        $roleids[]='/lms/course/private/'.$id_course.'/stats/view_all_statuser';
+        $roleids[]='/lms/course/private/'.$id_course.'/stats/view_all_statcourse';
+        $roleids[]='/lms/course/private/'.$id_course.'/coursestats/view_all';
+        $roleids[]='/lms/course/private/'.$id_course.'/coursereport/view_all';
+        $roleids[]='/lms/course/private/'.$id_course.'/light_repo/view_all';
+    }
+    if (!empty($roleids)){
+        addRoles($roleids);
+    }
+
+    return true;
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171211</DATE>
+  <DATE>20180620</DATE>
   <LANG id="hebrew">
     <lang_code>hebrew</lang_code>
     <lang_description>&#x5E2;&#x5D1;&#x5E8;&#x5D9;&#x5EA;</lang_description>
@@ -389,7 +389,6 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2016-12-12 21:03:34"><![CDATA[בקש קוד שנוצר באמצעות מודול קוד]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2016-12-12 21:04:04"><![CDATA[בקש קוד עץ שנבחר על ידי המשתמש מתוך תפריט הרשימה]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2016-12-12 21:04:12"><![CDATA[בקש קוד עץ אותו יש להזין באופן ידני על-ידי המשתמש]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2016-12-12 21:03:45"><![CDATA[בקש שילוב קוד עץ וקוד קורס שאותם יש להזין באופן ידני על-ידי המשתמש. על קודי עץ וקורס להיות מורכבים מ 10 תווים כל אחד, על מנת לקבל קוד באורך 20 תווים]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2016-12-14 20:47:57"><![CDATA[מקסימום משתמשי שמע]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2016-12-14 20:48:20"><![CDATA[מקסימום משתמשים לכל חדר]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2016-12-14 20:48:08"><![CDATA[מקסימום חדרים]]></key>
@@ -1254,7 +1253,11 @@ Otherwise, you must register in our system, following this link: <br />
       <module id="login">
         <key id="login&amp;_ACCESS_LOCK" attributes="" save_date="2016-12-16 15:33:36"><![CDATA[גישה נעולה]]></key>
         <key id="login&amp;_HOMEPAGE" attributes="" save_date="2016-12-16 15:35:40"><![CDATA[דף הבית]]></key>
-        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2016-12-16 15:36:33"><![CDATA[עזרה? צרו קשר]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2016-12-16 15:36:33"><![CDATA[הפלטפורמה תומכת ב -26 שפות, היא תואמת את תקני SCORM 1.2 ו -2004 ותומכת במודלים דידקטיים שונים, כולל: Blended, Self-Directed, Collaborative ואפילו Social Learning באמצעות Chat, Wiki, פורומים ופונקציות שונות אחרות. <br/>
+<br/>
+<br/>
+כדי לשנות את המילים, עבור אל ניהול / ניהול שפה, חפש <b> כניסה </ b> וערוך את המקשים <b> _INTRO_STD_TEXT_TITLE </ b> ו- <b> _INTRO_STD_TEXT </ b>]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2018-06-18 00:00:00"><![CDATA[forma.lms היא פלטפורמת קוד פתוח e-learning (LMS ו- LCMS) המשמשים בשוקי חברות להשכלה גבוהה]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2016-12-16 15:33:20"><![CDATA[עבור לטופס ההתחברות]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2016-12-16 15:33:28"><![CDATA[אימות LDAP פעיל, פונקציונליות לא זמינה, אנא פנה למנהלן]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2016-12-16 15:35:29"><![CDATA[התחברות]]></key>
@@ -1377,7 +1380,6 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2016-12-16 16:53:48"><![CDATA[עבור לתפריט כללי]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2016-12-16 16:54:01"><![CDATA[עבור למידע שלך הקשור לקורס זה]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2016-08-02 13:56:09"><![CDATA[קהילה]]></key>
-        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2016-12-16 16:51:55"><![CDATA[הפעל קורס]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2016-12-16 16:05:00"><![CDATA[מנהלן אזור]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2016-12-16 16:52:17"><![CDATA[עריכה]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2016-12-16 16:52:29"><![CDATA[קמפוס]]></key>
