@@ -1034,7 +1034,12 @@ UPDATE core_setting SET param_value = '8'  WHERE param_name = 'pass_min_char' an
 UPDATE core_setting SET param_value = 'on' WHERE param_name = 'pass_change_first_login';
 UPDATE core_setting SET param_value = 'on' WHERE param_name = 'request_mandatory_fields_compilation';
 
--- Creazione permesso view_all per modulo repository
+-- Creazione permesso view_all
+INSERT IGNORE INTO core_role(idst, roleid, description) VALUES
+(295,'/lms/course/private/statistic/view_all', NULL),
+(296,'/lms/course/private/stats/view_all_statuser', NULL),
+(297,'/lms/course/private/stats/view_all_statcourse', NULL),
+(298,'/lms/course/private/coursestats/view_all', NULL);
 
 -- statistic/view_all
 INSERT ignore INTO core_role_members  (idst, idstMember)
@@ -1079,12 +1084,6 @@ join core_role r on r.roleid like concat('/lms/course/private/coursestats/view')
 join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
 join core_role ra on ra.roleid like concat('/lms/course/private/coursestats/view_all');
 
-
-INSERT IGNORE INTO core_role(idst, roleid, description) VALUES
-(295,'/lms/course/private/statistic/view_all', NULL),
-(296,'/lms/course/private/stats/view_all_statuser', NULL),
-(297,'/lms/course/private/stats/view_all_statcourse', NULL),
-(298,'/lms/course/private/coursestats/view_all', NULL);
 
 -- ForEach course add a view_all role (if view exists)
 INSERT ignore INTO core_role_members
