@@ -1038,6 +1038,10 @@ UPDATE core_setting SET param_value = '8'  WHERE param_name = 'pass_min_char' an
 UPDATE core_setting SET param_value = 'on' WHERE param_name = 'pass_change_first_login';
 UPDATE core_setting SET param_value = 'on' WHERE param_name = 'request_mandatory_fields_compilation';
 
+-- custom-orgchart-fields.sql 
+INSERT INTO `core_customfield_area` (`area_code`, `area_name`, `area_table`, `area_field`) VALUES
+('ORG_CHART', 'Org Chart Tree', 'core_org_chart_tree', 'idOrg');
+
 -- Creazione permesso view_all
 INSERT IGNORE INTO core_role(idst, roleid, description) VALUES
 (295,'/lms/course/private/statistic/view_all', NULL),
