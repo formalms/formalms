@@ -2842,13 +2842,14 @@ class UsermanagementAdm extends Model {
 			return false;
 		return true;
 	}
+    
     //LRZ ************
-    // return vett of custom field for ORGCHAR
+    // return vett of custom field for ORG-CHART
     public function getCustomFieldOrg($nodeid){
             $query = 'select core_customfield_lang.id_field, translation, type_field 
                 from core_customfield_lang, core_customfield 
-                where core_customfield_lang.id_field = core_customfield.id_field
-                 and area_code="ORG_CHART"';
+                where core_customfield_lang.id_field = core_customfield.id_field  and
+                 core_customfield_lang.lang_code = \''.getLanguage().'\' and area_code="ORG_CHART"';
             $rs = sql_query($query) or 
                     errorCommunication( 'getCustomFieldOrg' );
             $result = array();
