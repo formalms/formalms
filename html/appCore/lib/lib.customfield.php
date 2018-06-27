@@ -25,7 +25,7 @@ define("CUSTOMFIELDAREATABLE", 		"_customfield_area");
 
 define("FIELD_INFO_ID", 			0);
 define("FIELD_INFO_TYPE", 			1);
-define("FIELD_INFO_TRANSLATION", 	2);
+define("FIELD_INFO_TRANSLATION", 	3);
 define("FIELD_INFO_GROUPIDST", 		3);
 define("FIELD_INFO_GROUPID", 		4);
 define("FIELD_INFO_MANDATORY", 		5);
@@ -211,6 +211,25 @@ class CustomFieldList {
 			$result[$arr[FIELD_INFO_ID]] = $arr[FIELD_INFO_TRANSLATION];
 		return $result;
 	}
+
+    function getCustomFields($area) {
+        $db = DbConn::getInstance();
+
+        if( $lang_code === false )
+            $lang_code = getLanguage();
+        $query = "SELECT core_customfield.id_field, type_field, code, translation "
+                ." FROM core_customfield, core_customfield_lang"
+                ." WHERE area_code = '".$area."' and core_customfield_lang.id_field=core_customfield.id_field and lang_code='".getLanguage()."' ORDER BY sequence";
+        $rs = $db->query( $query );
+        $result = array();
+
+        while( $arr = $db->fetch_row($rs) ){
+            $result[$arr[FIELD_INFO_ID]] = $arr[FIELD_INFO_TRANSLATION];
+        }     
+            
+        return $result;
+    }    
+    
 
 
 
@@ -1801,6 +1820,76 @@ class CustomFieldList {
 
 		return $output;
 	}
+    
+    // get value of custom field type ORG_CHART 
+    function getValueCustomOrg($field_name, $node_name){
+        
+       $node_name_array = explode('/',$node_name);
+       $node_name = end($node_name_array);
+       $query = "select core_customfield_entry.obj_entry, core_customfield.type_field, core_customfield_lang.id_field
+                  from core_customfield_entry, core_customfield_lang, core_org_chart, core_customfield 
+                  where
+                  core_customfield_lang.lang_code = '".getLanguage()."' and core_customfield_lang.translation = '".$field_name."' and
+                  core_customfield_lang.id_field = core_customfield_entry.id_field and
+                  core_org_chart.lang_code = 'italian' and core_org_chart.translation = '".$node_name."' and                   
+                  core_customfield_entry.id_obj= core_org_chart.id_dir and
+                  core_customfield.id_field = core_customfield_lang.id_field";
+       
+        if(!$rs = sql_query( $query )) return false;
+
+        list($obj_entry, $type_field, $id_field) = sql_fetch_row($rs);
+        if($type_field=='textfield'){
+            return $obj_entry;       
+        }
+        if($type_field=='dropdown'){
+            return $this->getCheckValueCustom( $id_field, $obj_entry);       
+        }
+        
+        return '';
+        
+    }
+    
+    
+   function getValueCustomCourse($id_corso, $id_field){
+        
+         $query = 'select 
+                    obj_entry, type_field, core_customfield_entry.id_field from 
+                        core_customfield_entry, core_customfield
+                    where core_customfield.id_field = core_customfield_entry.id_field and  core_customfield_entry.id_field='.$id_field.' and 
+                    id_obj='.$id_corso; 
+   
+   
+      if(!$rs = sql_query( $query )) return false;
+   
+      list($obj_entry, $type_field, $id_field) = sql_fetch_row($rs);
+        if($type_field=='textfield'){
+            return $obj_entry;       
+        }
+        if($type_field=='dropdown'){
+            return $this->getCheckValueCustom( $id_field, $obj_entry);       
+        }    
+   
+                 
+    }
+
+    
+    
+    private function getCheckValueCustom($id_field, $valueOption){
+           $query = "Select  translation from core_customfield_son_lang, core_customfield_son
+                where 
+                lang_code='".getLanguage()."' 
+                and core_customfield_son_lang.id_field_son=core_customfield_son.id_field_son
+                and core_customfield_son.id_field=".$id_field." and core_customfield_son_lang.id_field_son=".$valueOption;
+                
+           if(!$rs = sql_query( $query )) return false;
+
+        list($translation) = sql_fetch_row($rs);
+        
+        return  $translation; 
+        
+    }
+
+    
 
 }
 ?>

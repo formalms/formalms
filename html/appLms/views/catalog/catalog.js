@@ -9,7 +9,7 @@
  |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
  \ ======================================================================== */
 var glob_serverUrl = "ajax.server.php?r=catalog/";
-var dialog;
+var dialog; 
 
 function initialize(undo_name) {
   dialog = new YAHOO.widget.Dialog('pop_up_container',
@@ -41,7 +41,7 @@ function subscriptionCoursePathPopUp(id_path) {
         success: function (o) {
           var res = YAHOO.lang.JSON.parse(o.responseText);
           if (res.success) {
-            dialog.setHeader(res.title);
+            dialog.setHeader(res.title); 
             dialog.setBody(res.body);
             if (res.footer) dialog.setFooter('<div class="align-right">' + res.footer + '</div>');
             else dialog.setFooter('');
