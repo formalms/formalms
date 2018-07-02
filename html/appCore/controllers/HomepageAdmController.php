@@ -150,7 +150,7 @@ class HomepageAdmController extends AdmController
         $registerResultForm = $this->model->getRegisterForm();
 
 
-        $registerForm = Form::openForm('register', Get::rel_path('base') . '/index.php?r=' . _register_, ' homepage__form ')
+        $registerForm = Form::openForm('register', Get::rel_path('base') . '/index.php?r=' . _register_, ' homepage__form ', null, 'multipart/form-data')
             . $registerResultForm
             . Form::closeForm();
 
