@@ -637,7 +637,7 @@ class RepoTreeView extends TreeView {
 					$idResource = (int)$_GET['id_lo'];
 					$lo = createLO( $this->creatingObjectType, $idResource );
 					$this->tdb->addItem( $this->getSelectedFolderId(), 
-										$lo->getTitle(), $this->creatingObjectType, 
+										$lo->getTitle(), $lo->getObjectType(), 
 										$idResource, 
 										0, /* idCategory */
 										0, /* idUser */ 
@@ -657,7 +657,7 @@ class RepoTreeView extends TreeView {
 					foreach( $arrIdResources as $idResource ) {
 						$lo = createLO( $this->creatingObjectType, $idResource );
 						$this->tdb->addItem( $this->getSelectedFolderId(), 
-											$lo->getTitle(), $this->creatingObjectType, 
+											$lo->getTitle(), $lo->getObjectType(), 
 											$idResource, 
 											0, /* idCategory */
 											0, /* idUser */ 
