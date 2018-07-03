@@ -26,13 +26,13 @@ abstract class FormaPlugin {
         //code executed after deactivation
     }
 
-    static function getName(){
+    public static function getName(){
         $reflector = new ReflectionClass( get_called_class() );
         $fn = $reflector->getFileName();
         $name=basename(dirname($fn));
         return $name;
     }
-    public function addSetting($name, $type, $size, $value="", $sequence=0){
+    public static function addSetting($name, $type, $size, $value="", $sequence=0){
         $pg_adm=new PluginmanagerAdm();
         $plugin_info=$pg_adm->getPluginFromDB(self::getName(),'name');
         $query_insert_string="INSERT %adm_setting (param_name,param_value,value_type,max_size,pack,regroup,sequence) VALUES ";
@@ -51,7 +51,7 @@ abstract class FormaPlugin {
      *
      * @return bool
      */
-    public function addRequest($app, $name, $controller, $model){
+    public static function addRequest($app, $name, $controller, $model){
         $pg_adm=new PluginmanagerAdm();
         $plugin_info=$pg_adm->getPluginFromDB(self::getName(),'name');
         $query_insert_string="INSERT %adm_requests (app, name, controller, model, plugin) VALUES ";
@@ -60,7 +60,7 @@ abstract class FormaPlugin {
         return true;
     }
 
-    function addCoreMenu($name, $mvcPath, $parent=false, $icon='', $is_active=false){
+    public static function addCoreMenu($name, $mvcPath, $parent=false, $icon='', $is_active=false){
         $pg_adm=new PluginmanagerAdm();
         $plugin_info=$pg_adm->getPluginFromDB(self::getName(),'name');
         include_once _lib_.'/lib.menu.php';
