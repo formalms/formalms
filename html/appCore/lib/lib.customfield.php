@@ -215,8 +215,6 @@ class CustomFieldList {
     function getCustomFields($area) {
         $db = DbConn::getInstance();
 
-        if( $lang_code === false )
-            $lang_code = getLanguage();
         $query = "SELECT core_customfield.id_field, type_field, code, translation "
                 ." FROM core_customfield, core_customfield_lang"
                 ." WHERE area_code = '".$area."' and core_customfield_lang.id_field=core_customfield.id_field and lang_code='".getLanguage()."' ORDER BY sequence";
@@ -224,7 +222,7 @@ class CustomFieldList {
         $result = array();
 
         while( $arr = $db->fetch_row($rs) ){
-            $result[$arr[FIELD_INFO_ID]] = $arr[FIELD_INFO_TRANSLATION];
+            $result[$arr[FIELD_INFO_ID]] = $arr[3];
         }     
             
         return $result;

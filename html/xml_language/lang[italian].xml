@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180620</DATE>
+  <DATE>20180702</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -1729,7 +1729,7 @@ L'immagine non deve avere contenuti offensivi e/o che violano il regolamento.]]>
         <key id="profile&amp;_COURSE_AS_TEACHER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Corsi gestiti come docente]]></key>
         <key id="profile&amp;_COURSE_AS_TUTOR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Corsi gestiti come tutor]]></key>
         <key id="profile&amp;_COURSE_END" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Corsi completati]]></key>
-        <key id="profile&amp;_COURSE_EXPIRING" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Corsi in chiusura]]></key>
+        <key id="profile&amp;_COURSE_EXPIRING" attributes="" save_date="2018-07-02 16:37:02"><![CDATA[Corsi chiusi]]></key>
         <key id="profile&amp;_DELETED_USER_LIST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Storico utenti eliminati]]></key>
         <key id="profile&amp;_DELETION_DATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Data eliminazione]]></key>
         <key id="profile&amp;_FIELD_VALUE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Contenuto del campo]]></key>
@@ -1769,7 +1769,7 @@ L'immagine non deve avere contenuti offensivi e/o che violano il regolamento.]]>
         <key id="profile&amp;_TEACHER_PROFILE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Profilo docente]]></key>
         <key id="profile&amp;_TEACHER_PUBLICATIONS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Pubblicazioni]]></key>
         <key id="profile&amp;_TITLE_CHANGE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[La tua password è scaduta]]></key>
-        <key id="profile&amp;_TOTAL_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Corsi totali]]></key>
+        <key id="profile&amp;_TOTAL_COURSE" attributes="" save_date="2018-07-02 16:33:34"><![CDATA[Corsi non completati]]></key>
         <key id="profile&amp;_UNLIMITED_QUOTA" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nessun limite massimo stabilito]]></key>
         <key id="profile&amp;_UP_OFFLINE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[l'utente è off line]]></key>
         <key id="profile&amp;_USERCOMPETENCES_CAPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Competenze dell'utente]]></key>

@@ -333,8 +333,8 @@ class Report_User extends Report {
 		}
         
         // user custom fields
-		require_once($GLOBALS['where_framework'].'/lib/lib.customfield.php');
-		$fman = new CustomFieldList();
+		require_once($GLOBALS['where_framework'].'/lib/lib.field.php');
+		$fman = new FieldList();
 		$fields = $fman->getFlatAllFields();
 		$custom = array();
 		foreach ($fields as $key=>$val) {
@@ -342,6 +342,8 @@ class Report_User extends Report {
 		}
 
         // organization custom fields
+        require_once($GLOBALS['where_framework'].'/lib/lib.customfield.php');
+        $fman = new CustomFieldList();
         $fieldsOrg = $fman->getCustomFields('ORG_CHART');
         $customOrg = array();
         foreach ($fieldsOrg as $keyOrg=>$valOrg) {
@@ -701,9 +703,9 @@ class Report_User extends Report {
 		$box->body .= Form::getCheckBox(Lang::t('_SUSPENDED', 'standard'), 'col_sel_suspended', 'cols[]', '_TH_SUSPENDED', is_showed('_TH_SUSPENDED'));
 		$box->body .= Form::getCheckBox(Lang::t('_ORGCHART', 'standard').'', 'col_sel_organization_chart', 'cols[]', '_TH_ORGANIZATION_CHART', is_showed('_TH_ORGANIZATION_CHART'));
 		if (count($custom) > 0) {
-		foreach ($custom as $key=>$val) {
-			$box->body .= Form::getCheckBox($val['label'], 'col_custom_'.$val['id'], 'custom['.$val['id'].']', $val['id'], $ref['custom_fields'][$key]['selected']);
-		}
+		    foreach ($custom as $key=>$val) {
+			    $box->body .= Form::getCheckBox($val['label'], 'col_custom_'.$val['id'], 'custom['.$val['id'].']', $val['id'], $ref['custom_fields'][$key]['selected']);
+		    }
 		}
 		$box->body .= Form::getCloseFieldset();
 
@@ -1514,19 +1516,12 @@ class Report_User extends Report {
 		if (in_array('_TH_EMAIL', $cols)) { $th2[] = Lang::t('_EMAIL', 'standard'); $colspanuser++; }
 		if (in_array('_TH_REGISTER_DATE', $cols)) { $th2[] = Lang::t('_REGISTER_DATE', 'standard'); $colspanuser++; }
 		if (in_array('_TH_SUSPENDED', $cols)) { $th2[] = Lang::t('_SUSPENDED', 'standard'); $colspanuser++; }
-		if (in_array('_TH_ORGANIZATION_CHART', $cols)) { $th2[] = Lang::t('_ORGCHART', 'standard'); $colspanuser++; }
 
 
 		$aclManager = new DoceboACLManager();
 		$aclManager->include_suspended = TRUE;
 		$_users = $aclManager->getAllUsersFromSelection($filter_rows);
-        $field_values_org = array();
-        $customcols_org =& $filter_columns['custom_fields_org'];
-        foreach ($customcols_org as $val) {
-            if ($val['selected']) {
-                 $th2[] = $val['label']; $colspanuser++; 
-            }
-        }
+
         // custom field for user
 		$field_values = array();
 		$customcols =& $filter_columns['custom_fields'];
@@ -1538,9 +1533,22 @@ class Report_User extends Report {
 				$custom_list[] = $val['id'];
 			}
 		}
-        require_once($GLOBALS['where_framework'].'/lib/lib.customfield.php');
-        $fman = new CustomFieldList();        
+        require_once($GLOBALS['where_framework'].'/lib/lib.field.php');
+        $fman = new FieldList();        
 		$field_values = (!empty($custom_list)) ? $fman->getUsersFieldEntryData($_users, $custom_list) : array();
+        
+        if (in_array('_TH_ORGANIZATION_CHART', $cols)) { $th2[] = Lang::t('_ORGCHART', 'standard'); $colspanuser++; }
+        
+        // org-chart custom fields
+        $field_values_org = array();
+        $customcols_org =& $filter_columns['custom_fields_org'];
+        foreach ($customcols_org as $val) {
+            if ($val['selected']) {
+                 $th2[] = $val['label']; $colspanuser++; 
+            }
+        }
+
+        
 
 		$colspan1 = 0;
 		$colspan2 = 0;
@@ -1728,22 +1736,7 @@ class Report_User extends Report {
 				if (in_array('_TH_EMAIL', $cols)) $row[] = $email;
 				if (in_array('_TH_REGISTER_DATE', $cols)) $row[] = Format::date($register_date, 'datetime');
 				if (in_array('_TH_SUSPENDED', $cols)) $row[] = $valid ? Lang::t('_NO', 'standard') : Lang::t('_YES', 'standard');
-
                 
-		        require_once(_adm_."/models/UsermanagementAdm.php");
-                $umodel = new UsermanagementAdm();
-                $folders = $umodel->getUserFolders($id_user);
-                $folder_name =  reset($folders);
-                
-                if (in_array('_TH_ORGANIZATION_CHART', $cols)) $row[] = $folder_name;
-
-                
-                $str_temp = '';
-                foreach ($customcols_org as $val) {
-                    if ($val['selected']) {
-                        $row[] = $fman->getValueCustomOrg($val['label'],$folder_name );
-                    }
-                }                
 				foreach ($customcols as $val) {
 					if ($val['selected']) {
 						if (isset($field_values[$id_user][ $val['id'] ]))
@@ -1752,6 +1745,24 @@ class Report_User extends Report {
 						$row[] = '';
 					}
 				}
+                
+                if (in_array('_TH_ORGANIZATION_CHART', $cols)) {
+                    require_once(_adm_."/models/UsermanagementAdm.php");
+                    $umodel = new UsermanagementAdm();
+                    $folders = $umodel->getUserFolders($id_user);
+                    $folder_name =  reset($folders);
+                    $row[] = $folder_name;
+                }
+                
+                
+                require_once($GLOBALS['where_framework'].'/lib/lib.customfield.php');
+                $fman = new CustomFieldList();        
+                foreach ($customcols_org as $val) {
+                    if ($val['selected']) {
+                        $row[] = $fman->getValueCustomOrg($val['label'],$folder_name );
+                    }
+                }                
+                
 
 				if (in_array('_TH_CAT', $cols)) $row[] = $category_list[$id_category];
 				if (in_array('_TH_CODE', $cols)) $row[] = $code;
@@ -3117,7 +3128,7 @@ class Report_User extends Report {
 			'userid' => Lang::t('_USERID', 'standard'),
 			'firstname' => Lang::t('_FIRSTNAME', 'standard'),
 			'lastname' => Lang::t('_LASTNAME', 'standard'),
-			'email' => Lang::t('_EMAIL', 'standard'),
+            'email' => Lang::t('_EMAIL', 'standard'),
 			'course_code' => Lang::t('_COURSE_CODE', 'standard'),
 			'course_name' => Lang::t('_COURSE_NAME', 'standard'),
 			'object_title' => Lang::t('_LEARNING_OBJECTS', 'standard'),

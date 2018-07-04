@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180620</DATE>
+  <DATE>20180702</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -1733,7 +1733,7 @@ Please don't upload offensive images.]]></key>
         <key id="profile&amp;_COURSE_AS_TEACHER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Course enrolled as instructor]]></key>
         <key id="profile&amp;_COURSE_AS_TUTOR" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Course enrolled as tutor]]></key>
         <key id="profile&amp;_COURSE_END" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Completed Courses]]></key>
-        <key id="profile&amp;_COURSE_EXPIRING" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Expiring Courses]]></key>
+        <key id="profile&amp;_COURSE_EXPIRING" attributes="" save_date="2018-07-02 16:37:12"><![CDATA[Closed Courses]]></key>
         <key id="profile&amp;_DELETED_USER_LIST" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Deleted users list]]></key>
         <key id="profile&amp;_DELETION_DATE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Delete date]]></key>
         <key id="profile&amp;_FIELD_VALUE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Field content]]></key>
@@ -1773,7 +1773,7 @@ Please don't upload offensive images.]]></key>
         <key id="profile&amp;_TEACHER_PROFILE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Teacher profile]]></key>
         <key id="profile&amp;_TEACHER_PUBLICATIONS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Publications]]></key>
         <key id="profile&amp;_TITLE_CHANGE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Your password is expired]]></key>
-        <key id="profile&amp;_TOTAL_COURSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Total Courses]]></key>
+        <key id="profile&amp;_TOTAL_COURSE" attributes="" save_date="2018-07-02 16:35:49"><![CDATA[Courses not completed]]></key>
         <key id="profile&amp;_UNLIMITED_QUOTA" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[No limits configured]]></key>
         <key id="profile&amp;_UP_OFFLINE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[The user is offline]]></key>
         <key id="profile&amp;_USERCOMPETENCES_CAPTION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Skills]]></key>
