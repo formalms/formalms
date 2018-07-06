@@ -26,6 +26,16 @@ abstract class FormaPlugin {
         //code executed after deactivation
     }
 
+    public static function getPath($file) {
+
+        return _plugins_ . '/' . static::getName() . '/' . $file;
+    }
+
+    public static function getURL($file) {
+
+        return \Get::site_url() . \Get::rel_path('plugins') . '/' . static::getName() . '/' . $file;
+    }
+
     public static function getName(){
         $reflector = new ReflectionClass( get_called_class() );
         $fn = $reflector->getFileName();
