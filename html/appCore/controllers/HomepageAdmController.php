@@ -169,10 +169,11 @@ class HomepageAdmController extends AdmController
             }
         }
 
-        if (is_array($registerResultForm) && (isset($registerResultForm['registration']) && $registerResultForm['registration'] === true)) {
+        if (is_array($registerResultForm) && (isset($registerResultForm['registration']))) {
 
             $dataView['message'] = $registerResultForm['msg'];
-
+            $dataView['registration'] = $registerResultForm['registration'];
+            
             return $this->render('register-typ', $dataView);
 
         }
