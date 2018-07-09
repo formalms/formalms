@@ -134,8 +134,11 @@ class PrivacypolicyAdm extends Model {
 			$query_lang = "DELETE FROM %adm_privacypolicy_lang WHERE id_policy=".(int)$id_policy;
 			$res_lang = $this->db->query($query_lang);
 
-			$output = true;
 			//delete associations ...
+			$query_associated = "UPDATE %adm_org_chart_tree SET associated_policy = NULL WHERE associated_policy=".(int)$id_policy;
+			$res_associated = $this->db->query($query_associated);
+
+			$output = true;
 		}
 
 		return $output;
