@@ -164,6 +164,46 @@ class PrecompileLms extends Model {
 
 		return $output;
 	}
-
+    
+     public function getHomeUrl(){
+        $array_tab['tb_classroom']  = 'classroom/show';
+        $array_tab['tb_communication']  = 'communication/show';
+        $array_tab['tb_coursepath']  = 'coursepath/show';
+        $array_tab['tb_elearning']  = 'elearning/show';
+        $array_tab['tb_games']  = 'games/show';
+        $array_tab['tb_home']  = 'home/show';
+        $array_tab['tb_kb']  = 'kb/show';
+        $array_tab['tb_label']  = 'label/show';
+        $array_tab['tb_videoconference']  = 'videoconference/show';
+        $query = " SELECT obj_index from %lms_middlearea where is_home=1";
+        list($tb_home) = sql_fetch_row(sql_query($query));
+       if (Get::sett('home_page_option') == 'catalogue') {
+           $url = 'lms/catalog/show';
+       } else{
+           if (Get::sett('on_usercourse_empty')=='off'){
+                $url = $array_tab[$tb_home]; 
+           } else {
+                $a= Docebo::user()->getIdSt();
+                $q = 'Select count(\'x\') from learning_courseuser where idUser ='.$a;
+                list($n) = sql_fetch_row(sql_query($q));
+                if ($n == 0) { //showing catalogue if no enrollment
+                    $url = 'lms/catalog/show'; 
+                }  else { 
+                    $url =  $array_tab[$tb_home];
+                }
+           }
+          
+       }
+       return $url; 
+    }
+    
+    public function getForceChangeUser(){
+        $a= Docebo::user()->getIdSt();
+                $q = 'Select force_change from core_user where idst='.$a;
+                list($n) = sql_fetch_row(sql_query($q));
+                return $n;
+        
+    }    
+    
 
 }

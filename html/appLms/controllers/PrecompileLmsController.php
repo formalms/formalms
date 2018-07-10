@@ -25,7 +25,7 @@ class PrecompileLmsController extends LmsController {
 		require_once(_base_.'/lib/lib.json.php');
 		$this->json = new Services_JSON();
 
-		$this->jump_url = 'index.php?r=lms/catalog/show';//'index.php?r=elearning/show';
+		$this->jump_url = 'index.php?r='.$this->model->getHomeUrl();
 	}
 
 
@@ -82,12 +82,24 @@ class PrecompileLmsController extends LmsController {
 		if ($fields_checked && $policy_checked) {
 			//send alert
 			unset($_SESSION['request_mandatory_fields_compilation']);
-			Util::jump_to($this->jump_url);
+            $this->login_post_privacy();
 		} else {
 			//send alert
 			Util::jump_to('index.php?r=precompile/show&res=err');
 		}
 	}
+    
+  // LRZ: checking if users need to change password
+     public function login_post_privacy()
+        {
+            if($this->model->getForceChangeUser()==1){
+               $this->jump_url = "index.php?r=lms/profile/renewalpwd"; 
+            }
+            Util::jump_to($this->jump_url);
+            
+        }
+
+    
 
 }
 
