@@ -38,6 +38,10 @@ class PrecompileLms extends Model {
 		$id_user = Docebo::user()->getIdSt();
 		$policy_checked = $this->getAcceptingPolicy($id_user);
 
+		if($privacy_policy == 'off'){
+			$policy_checked = true;
+		}
+		
 		require_once(_adm_.'/lib/lib.field.php');
 		$fieldlist = new FieldList();
 
