@@ -1,5 +1,26 @@
+
 <?php echo getTitleArea(Lang::t('_PRIVACYPOLICIES', 'privacypolicies')); ?>
 <div class="std_block">
+
+ <?php 
+ if(isset ($_GET['res']) && intVal($_GET['res']) >0 ){  ?>
+<div class="alert alert-success alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong> <?php echo Lang::t('_OPERATION_SUCCESSFUL', 'standard'); ?>  </strong>
+</div>
+<?php
+ }
+ 
+if(isset ($_GET['res']) && intVal($_GET['res']) == 0 ){  ?>                         
+<div class="alert alert-danger alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong><?php echo Lang::t('_LABEL_ALERT', 'field'); ?></strong> <?php echo Lang::t('_OPERATION_FAILURE', 'standard'); ?>
+</div>
+
+
+<?php
+ }
+?>
 
 <?php
 
@@ -21,7 +42,10 @@ $columns = array(
 	array('key' => 'name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true)
 );
 if ($permissions['mod']) $columns[] = array('key' => 'assign', 'label' => Get::sprite('subs_elem', Lang::t('_ASSIGN', 'standard')), 'formatter' => 'PrivacyPolicies.assignformatter', 'className' => 'img-cell');
-if ($permissions['mod']) $columns[] = array('key' => 'mod', 'label' => Get::sprite('subs_mod', Lang::t('_MOD', 'standard')), 'formatter' => 'doceboModify', 'className' => 'img-cell');
+
+
+//if ($permissions['mod']) $columns[] = array('key' => 'mod', 'label' => Get::sprite('subs_mod', Lang::t('_MOD', 'standard')), 'formatter' => 'doceboModify', 'className' => 'img-cell');
+if ($permissions['mod']) $columns[] = array('key' => 'mod', 'label' => Get::sprite('subs_mod', Lang::t('_MOD', 'standard')), 'className' => 'img-cell');
 if ($permissions['del']) $columns[] = array('key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'standard')), 'formatter' => 'doceboDelete', 'className' => 'img-cell');
 
 $params = array(
@@ -34,8 +58,9 @@ $params = array(
 	'dir' => 'asc',
 	//'checkableRows' => true,
 	'columns' => $columns,
-	'fields' => array('id', 'name', 'is_assigned', 'is_accepted', 'mod', 'del'),
+	'fields' => array('id', 'name', 'is_assigned', 'mod', 'del'),
 	'generateRequest' => 'PrivacyPolicies.requestBuilder',
+	'stdModifyRenderEvent' => 'PrivacyPolicies.dialogRenderEvent',
 	'delDisplayField' => 'name',
 	'events' => array(
 		'beforeRenderEvent' => 'PrivacyPolicies.beforeRenderEvent',
@@ -45,20 +70,26 @@ $params = array(
 
 if ($permissions['add']) {
 	$add_link_title = Lang::t('_ADD', 'standard');
-	$add_link_1 = '<a id="add_policy_link_1" class="ico-wt-sprite subs_add" href="ajax.adm_server.php?r=adm/privacypolicy/add" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
-	$add_link_2 = '<a id="add_policy_link_2" class="ico-wt-sprite subs_add" href="ajax.adm_server.php?r=adm/privacypolicy/add" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
+	//$add_link_1 = '<a id="add_policy_link_1" class="ico-wt-sprite subs_add" href="ajax.adm_server.php?r=adm/privacypolicy/add" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
+    $add_link_1 = '<a id="add_policy_link_1" class="ico-wt-sprite subs_add" href="index.php?r=adm/privacypolicy/add" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
+	//$add_link_2 = '<a id="add_policy_link_2" class="ico-wt-sprite subs_add" href="ajax.adm_server.php?r=adm/privacypolicy/add" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
+    $add_link_2 = '<a id="add_policy_link_2" class="ico-wt-sprite subs_add" href="index.php?r=adm/privacypolicy/add" title="'.$add_link_title.'"><span>'.$add_link_title.'</span></a>';
 	$params['rel_actions'] = array($add_link_1, $add_link_2);
-
+                      
 	$this->widget('dialog', array(
-		'id' => 'add_policy_dialog',
-		'dynamicContent' => true,
-		'ajaxUrl' => 'ajax.adm_server.php?r=adm/privacypolicy/add',
-		'callback' => 'function() { this.destroy(); DataTable_policies_table.refresh(); }',
+		//'id' => 'add_policy_dialog',
+		//'dynamicContent' => true,
+		//'ajaxUrl' => 'ajax.adm_server.php?r=adm/privacypolicy/add',
+		//'renderEvent' => 'PrivacyPolicies.dialogRenderEvent',
+		//'callback' => 'function() { this.destroy(); DataTable_policies_table.refresh(); }',
 		'callEvents' => array(
 			array('caller' => 'add_policy_link_1', 'event' => 'click'),
 			array('caller' => 'add_policy_link_2', 'event' => 'click')
 		)
 	));
+    
+    
+     
 }
 
 $this->widget('table', $params);
@@ -82,7 +113,26 @@ $this->widget('tree', array(
 ));
 
 
-?>
+    /*
+echo  Form::getTextarea(
+        Lang::t('_CONTENT', 'standard'),
+        'translation_'.$_lang_code,
+        'translation['.$_lang_code.']',
+        $_translation   ,
+        true, '', 'form_line_l', 'floating',  'textarea',true
+    )  
+  */   
+?>      
+
+<script src="//assimoco/addons/tiny_mce/tinymce.min.js"></script> 
+    <!-- Just be careful that you give correct path to your tinymce.min.js file, above is the default example -->
+    <script>
+        tinymce.init({selector:'textarea'});
+    </script>
+
+
+
+
 </div>
 <script type="text/javascript">
 
@@ -135,16 +185,18 @@ var PrivacyPolicies = {
 		DataTable_policies_table.refresh();
 	},
 
+	dialogRenderEvent: function() {
+		var tabView = new YAHOO.widget.TabView("policy_langs_tab");
+	},
+
 	assignformatter: function(elLiner, oRecord, oColumn, oData) {
 		var id = oRecord.getData("id");
 		var url = 'ajax.adm_server.php?r=adm/privacypolicy/assign&id=' + id;
 		var str = PrivacyPolicies.oLangs.get('_ASSIGN');
 		var style = !oRecord.getData("is_assigned") ? 'subs_notice' : 'subs_elem';
-		if (oRecord.getData("is_assigned") != 'default'){
 		elLiner.innerHTML = '<a href="' + url + '" title="' + str
 			+ '" class="ico-sprite ' + style + '" id="assign_orgchart_' + id + '">'
 			+ '<span>'+str+'</span></a>';
-		}
 	},
 
 	beforeRenderEvent: function() {
@@ -211,14 +263,6 @@ PrivacyPolicies.init({
 	}
 });
 
-$(document).on("click", "#reset_policy", function(event){
-	if($("#reset_policy")[0].checked){
-		if(!$("#reset_policy").attr("checked")){
-			if(!confirm("<?php echo Lang::t('_AREYOUSURE','standard'); ?>")){
-				event.preventDefault()
-			}
-		}
-	}
-})
-
 </script>
+
+

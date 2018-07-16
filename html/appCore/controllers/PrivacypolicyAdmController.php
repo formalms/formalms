@@ -95,28 +95,14 @@ class PrivacypolicyAdmController extends AdmController {
 		$records = array();
 		if (is_array($list)) {
 			foreach ($list as $record) {
-				if ($record->is_default == 1 || $record->is_accepted){
-					$records[] = array(
-						'id' => (int)$record->id_policy,
-						'name' => highlightText($record->name, $filter),
-						'is_assigned' => ($record->is_default == 1 ? 'default' : $record->is_assigned),
-						'is_accepted' => $record->is_accepted,
-						'mod' => 'ajax.adm_server.php?r=adm/privacypolicy/mod&id='.(int)$record->id_policy,
-						'del' => ''
-					);
-				} else {
-					$records[] = array(
-						'id' => (int)$record->id_policy,
-						'name' => highlightText($record->name, $filter),
-						'is_assigned' => $record->is_assigned,
-						'is_accepted' => $record->is_accepted,
-						'mod' => 'ajax.adm_server.php?r=adm/privacypolicy/mod&id='.(int)$record->id_policy,
-						'del' => 'ajax.adm_server.php?r=adm/privacypolicy/del&id='.(int)$record->id_policy
-					);
-				}
-
-
-
+				$records[] = array(
+					'id' => (int)$record->id_policy,
+					'name' => highlightText($record->name, $filter),
+					'is_assigned' => $record->is_assigned,
+					//'mod' => 'ajax.adm_server.php?r=adm/privacypolicy/mod&id='.(int)$record->id_policy,
+                    'mod' => '<a href="index.php?r=adm/privacypolicy/mod&id='.(int)$record->id_policy.'">'.Get::sprite('subs_mod', Lang::t('_MOD', 'standard')).'</a>',
+					'del' => 'ajax.adm_server.php?r=adm/privacypolicy/del&id='.(int)$record->id_policy
+				);         
 			}
 		}
 
@@ -161,17 +147,20 @@ class PrivacypolicyAdmController extends AdmController {
 			echo $this->json->encode($output);
 			return;
 		}
-
+                 
 		$this->render('policy_editmask', array());
-
+        
+        /*  
 		$params = array(
 			'success' => true,
 			'header' => Lang::t('_ADD', 'standard'),
 			'body' =>  ob_get_clean()
 		);
-		@ob_start();
-		echo $this->json->encode($params);
-	}
+		
+        @ob_start();
+		echo $this->json->encode($params);    
+	      */
+    }
 
 
 	/**
@@ -193,6 +182,12 @@ class PrivacypolicyAdmController extends AdmController {
 		$output = array('success' => $res ? TRUE : FALSE);
 
 		echo $this->json->encode($output);
+        
+        
+     //   $this->render('show', $output);
+        
+        
+        Util::jump_to("index.php?r=adm/privacypolicy/show&res=".$res);
 	}
 
 
@@ -218,30 +213,36 @@ class PrivacypolicyAdmController extends AdmController {
 			return;
 		}
 
+
+        
 		//retrieve category info (name and translations
 		$info = $this->model->getPolicyInfo($id_policy);
-
+        
+        
 		$this->render('policy_editmask', array(
 			'id_policy' => $id_policy,
 			'name' => $info->name,
-			'is_default' => $info->is_default,
+            'is_default' => $info->is_default,
 			'translations' => $info->translations
 		));
 
+
+          /*         
 		$params = array(
 			'success' => true,
 			'header' => Lang::t('_MOD', 'standard'),
 			'body' =>  ob_get_clean()
 		);
 		@ob_start();
-		echo $this->json->encode($params);
+		echo $this->json->encode($params);  
+        */
+        
 	}
-
 
 	/**
 	 * modify the data submitted from modify dialog
 	 */
-	public function mod_actionTask() {
+	public function mod_action() {
 		//check permissions: we should have add privileges to create groups
 		if (!$this->permissions['mod']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -252,14 +253,21 @@ class PrivacypolicyAdmController extends AdmController {
 		$output = array();
 		$id_policy = Get::req('id_policy', DOTY_INT, -1);
 		$name = Get::req('name', DOTY_STRING, "");
-		$is_default = Get::req('is_default', DOTY_INT, 0);
-		$reset_policy = Get::req('reset_policy', DOTY_INT, 0);
-		$translations = Get::req('translation', DOTY_MIXED, FALSE);
-
-		$res = $this->model->updatePolicy($id_policy, $name, $is_default, $reset_policy, $translations);
+        $is_default = Get::req('is_default', DOTY_INT, 0);
+        $reset_policy = Get::req('reset_policy', DOTY_INT, 0);        
+		$translations = Get::req('translation', DOTY_MIXED, FALSE);  
+        
+//        var_dump(Get::req('translation', DOTY_MIXED, FALSE));
+      //  die();        
+        
+        
+ 
+		$res = $this->model->updatePolicy($id_policy,  $name,$is_default, $reset_policy,  $translations);
 		$output = array('success' => $res ? TRUE : FALSE);
 
 		echo $this->json->encode($output);
+        
+        Util::jump_to("index.php?r=adm/privacypolicy/show&res=".$res );
 	}
 
 
@@ -320,3 +328,4 @@ class PrivacypolicyAdmController extends AdmController {
 
 
 }
+
