@@ -13,6 +13,7 @@ Class Step4Controller extends StepController {
 		// ---
 		$site_url =Get::pReq('site_url', DOTY_STRING);
 		// ---
+		$db_type =Get::pReq('db_type', DOTY_STRING);
         $db_host =Get::pReq('db_host', DOTY_STRING);
 		$db_name =Get::pReq('db_name', DOTY_STRING);
 		$db_user =Get::pReq('db_user', DOTY_STRING);
@@ -39,16 +40,16 @@ Class Step4Controller extends StepController {
 
 		if (!empty($db_user)) {
 			$err++;
-			switch ($this->checkConnection($db_host, $db_name, $db_user, $db_pass)) {
+			switch ($this->checkConnection($db_type, $db_host, $db_name, $db_user, $db_pass)) {
                 case 'create_db': {
                     if ($this->checkStrictMode()) {
                         $err--;
-                        array_push($res['ok'], 'db_host', 'db_name', 'db_user', 'db_pass');
+                        array_push($res['ok'], 'db_host', 'db_name', 'db_user', 'db_pass', 'db_type');
                         $res['msg']=Lang::t('_DB_WILL_BE_CREATED');
                     }
                     else {
                         array_push($res['err'], 'db_host');
-                        array_push($res['ok'], 'db_name', 'db_user', 'db_pass');
+                        array_push($res['ok'], 'db_name', 'db_user', 'db_pass', 'db_type');
                         $res['msg']=Lang::t('_SQL_STRICT_MODE_WARN')." ".Lang::t('_DB_WILL_BE_CREATED');
                     }
                 } break;
@@ -57,31 +58,31 @@ Class Step4Controller extends StepController {
 				        if ($this->checkDBCharset()){
                             if ($this->checkStrictMode()) {
                                 $err--;
-                                array_push($res['ok'], 'db_host', 'db_name', 'db_user', 'db_pass');
+                                array_push($res['ok'], 'db_host', 'db_name', 'db_user', 'db_pass', 'db_type');
                             } else {
                                 array_push($res['err'], 'db_host');
-                                array_push($res['ok'], 'db_name', 'db_user', 'db_pass');
+                                array_push($res['ok'], 'db_name', 'db_user', 'db_pass', 'db_type');
                                 $res['msg'] = Lang::t('_SQL_STRICT_MODE_WARN');
                             }
                         } else {
                             array_push($res['err'], 'db_name');
-                            array_push($res['ok'], 'db_host', 'db_user', 'db_pass');
+                            array_push($res['ok'], 'db_host', 'db_user', 'db_pass', 'db_type');
                             $res['msg']=Lang::t('_DB_NOT_UTF8');
                         }
                     } else {
                         array_push($res['err'], 'db_name');
-                        array_push($res['ok'], 'db_host', 'db_user', 'db_pass');
+                        array_push($res['ok'], 'db_host', 'db_user', 'db_pass', 'db_type');
                         $res['msg']=Lang::t('_DB_NOT_EMPTY');
                     }
 				} break;
 				case "err_connect": {
-					array_push($res['err'], 'db_host', 'db_user', 'db_pass');
+					array_push($res['err'], 'db_host', 'db_user', 'db_pass', 'db_type');
 					array_push($res['ok'], 'db_name');
 					$res['msg']=Lang::t('_CANT_CONNECT_WITH_DB');
 				} break;
 				case "err_db_sel": {
 					array_push($res['err'], 'db_name');
-					array_push($res['ok'], 'db_host', 'db_user', 'db_pass');
+					array_push($res['ok'], 'db_host', 'db_user', 'db_pass', 'db_type');
 					$res['msg']=Lang::t('_CANT_SELECT_DB');
 				} break;
 			}
@@ -119,7 +120,7 @@ Class Step4Controller extends StepController {
 		switch ($op) {
 			case 'final_check': {
 				if (empty($db_user)) {
-					array_push($res['err'], 'db_host', 'db_user', 'db_pass');
+					array_push($res['err'], 'db_host', 'db_user', 'db_pass', 'db_type');
 					array_push($res['ok'], 'db_name');
 					$res['msg']=Lang::t('_CANT_CONNECT_WITH_DB');
 					$err++;
@@ -139,16 +140,21 @@ Class Step4Controller extends StepController {
 	}
 
 
-	private function checkConnection($db_host, $db_name, $db_user, $db_pass) {
+	private function checkConnection($db_type, $db_host, $db_name, $db_user, $db_pass) {
 		$res ='err_connect';
         include _lib_.'/loggers/lib.logger.php';
-        include _base_.'/db/lib.docebodb.php';
-		$GLOBALS['db_link']=sql_connect($db_host, $db_user, $db_pass);
-		if ($GLOBALS['db_link']) {
+		include _base_.'/db/lib.docebodb.php';
+		$GLOBALS['db_link'] = DbConn::getInstance(false, array(
+			"db_type" => $db_type, 
+			"db_host" => $db_host, 
+			"db_user" => $db_user, 
+			"db_pass" => $db_pass
+		));
+		if ($GLOBALS['db_link']::$connected) {
 		    if ($db_name==""){
 		        return 'err_db_sel';
             }
-            $res =sql_select_db($db_name);
+            $res =sql_select_db($db_name, $GLOBALS['db_link']);
             if (!$res){
                 return 'create_db';
             } else {
@@ -159,13 +165,13 @@ Class Step4Controller extends StepController {
 	}
 
 	function checkDBEmpty($db_name) {
-        $row=sql_query("SELECT COUNT(DISTINCT `table_name`) FROM `information_schema`.`columns` WHERE `table_schema` = '".$db_name."'");
+        $row=sql_query("SELECT COUNT(DISTINCT `table_name`) FROM `information_schema`.`columns` WHERE `table_schema` = '".$db_name."'", $GLOBALS['db_link']);
         list($count)=sql_fetch_row($row);
         return $count==0?true:false;
     }
 
     function checkDBCharset() {
-        $row=sql_query("show variables like 'character_set_database'");
+        $row=sql_query("show variables like 'character_set_database'", $GLOBALS['db_link']);
         list(,$charset)=sql_fetch_row($row);
         return $charset=="utf8"?true:false;
     }

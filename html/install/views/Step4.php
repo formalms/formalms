@@ -8,14 +8,14 @@
 	YAHOO.util.Event.onDOMReady(function() {
 		disableBtnNext(true);
 
-		var check_fields =['site_url', 'db_host', 'db_name', 'db_user', 'db_pass', 'upload_method', 'ftp_host', 'ftp_port', 'ftp_user', 'ftp_pass'];
+		var check_fields =['site_url', 'db_type', 'db_host', 'db_name', 'db_user', 'db_pass', 'upload_method', 'ftp_host', 'ftp_port', 'ftp_user', 'ftp_pass'];
         validateInput(check_fields,'final_check');
 		YAHOO.util.Event.addListener("my_button", "mouseenter", function(e) {
 			validateInput(check_fields, 'final_check');
 		});
 
 
-		YAHOO.util.Event.addListener(['site_url', 'db_user', 'db_pass', 'db_name', 'ftp_pass'], "blur", function(e) {
+		YAHOO.util.Event.addListener(['site_url', 'db_type', 'db_user', 'db_pass', 'db_name', 'ftp_pass'], "blur", function(e) {
 			validateInput(check_fields);
 		});
 
@@ -68,7 +68,7 @@ $driver=array_filter(array(
 ));
 
 
-echo '<p><label class="floating" for="db_type">'.Lang::t('_DB_TYPE').'</label></p>'.Form::getInputDropdown('',"db_type","db_info[db_type]", $driver,$cfg['db_type']);
+echo '<div class="form_line_l"><p><label class="floating" for="db_type">'.Lang::t('_DB_TYPE').'</label></p>'.Form::getInputDropdown('',"db_type","db_info[db_type]", $driver,$cfg['db_type']) . '</div>';
 ?>
 </div>
 <?php echo Form::getTextfield(Lang::t('_DB_HOST'), "db_host", "db_info[db_host]", 255, $cfg['db_host']); ?>
