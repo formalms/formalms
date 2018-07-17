@@ -59,7 +59,8 @@ $cfg=array(
 );
 if (file_exists(_base_.'/config.php')){
     define('IN_FORMA',true);
-    include_once _base_.'/config.php';
+	include _base_.'/config.php';
+	$cfg['db_pass'] = "_fromconfig";
 }
 $driver=array_filter(array(
     'mysqli'=>extension_loaded("mysqli")?'mysqli':false,

@@ -17,6 +17,13 @@ Class Step4Controller extends StepController {
 		$db_name =Get::pReq('db_name', DOTY_STRING);
 		$db_user =Get::pReq('db_user', DOTY_STRING);
 		$db_pass =Get::pReq('db_pass', DOTY_STRING);
+		if($db_pass==="_fromconfig"){
+			if (file_exists(_base_.'/config.php')){
+				define('IN_FORMA',true);
+				include _base_.'/config.php';
+				$db_pass = $cfg['db_pass'];
+			}
+		}
 		// ---
 		$upload_method =Get::pReq('upload_method', DOTY_STRING);
 		// ---
@@ -198,6 +205,13 @@ Class Step4Controller extends StepController {
 	public function validate() {
 		$_SESSION['site_url'] =Get::pReq('site_url', DOTY_STRING);
 		$_SESSION['db_info'] =Get::pReq('db_info');
+		if($_SESSION['db_info']['db_pass']==="_fromconfig"){
+			if (file_exists(_base_.'/config.php')){
+				define('IN_FORMA',true);
+				include _base_.'/config.php';
+				$_SESSION['db_info']['db_pass'] = $cfg['db_pass'];
+			}
+		}
 		$_SESSION['upload_method'] =Get::pReq('upload_method');
 		$_SESSION['ul_info'] =Get::pReq('ul_info');
 
