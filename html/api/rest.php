@@ -20,6 +20,11 @@ require(dirname(__FILE__).'/../base.php');
 // start buffer
 ob_start();
 
+// ********************************************
+// TEMPORARY SOLUTION TO AUTHENTICATION PROBLEM
+// ********************************************
+$GLOBALS['UNFILTERED_POST'] = $_POST;
+
 // initialize
 require(_base_.'/lib/lib.bootstrap.php');
 Boot::init(BOOT_DATETIME);
