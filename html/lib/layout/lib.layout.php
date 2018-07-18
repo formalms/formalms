@@ -13,6 +13,11 @@
 
 class Layout
 {
+    const LAYOUT_LMS = 'lms';
+    const LAYOUT_HOME = 'home';
+    const LAYOUT_ADM = 'adm';
+    const LAYOUT_LMS_USER = 'lms_user';
+
 
     static protected $_lang = false;
 
@@ -335,7 +340,7 @@ class Layout
             $retArray['custom_css_path'] = str_replace('/./', '/', $customCssPath);
         }
         switch ($whichLayout) {
-            case 'home':
+            case self::LAYOUT_HOME:
                 $retArray['jsAddons'] = JQueryLib::loadJsAddons($minimized, null, 'datepicker');
                 $retArray['cssAddons'] = JQueryLib::loadCssAddons($minimized, null, 'datepicker');
 
@@ -368,15 +373,15 @@ class Layout
                     $retArray['catalogue'] = self::get_catalogue();
                 }
                 break;
-            case 'lms_user':
+            case self::LAYOUT_LMS_USER:
                 $retArray['resetter'] = self::GetResetter();
                 break;
-            case 'adm':
+            case self::LAYOUT_ADM:
                 $exclude_widget[] = 'swipe';   // do not need swipe on admin menu
                 $retArray['jsAddons'] = JQueryLib::loadJsAddons($minimized, $exclude_widget);
                 $retArray['cssAddons'] = JQueryLib::loadCssAddons($minimized, $exclude_widget);
                 break;
-            case 'lms':
+            case self::LAYOUT_LMS:
                 $courseMenu = Layout::courseMenu();
                 $retArray = array_merge($courseMenu, $retArray);
 
