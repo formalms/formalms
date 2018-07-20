@@ -100,10 +100,10 @@ class Report extends \ReportPlugin{
 
         $this->status_c = array(
             CST_PREPARATION => Lang::t('_CST_PREPARATION', 'course'),
-            CST_AVAILABLE 	=> Lang::t('_CST_AVAILABLE', 'course'),
-            CST_EFFECTIVE 	=> Lang::t('_CST_CONFIRMED', 'course'),
-            CST_CONCLUDED 	=> Lang::t('_CST_CONCLUDED', 'course'),
-            CST_CANCELLED 	=> Lang::t('_CST_CANCELLED', 'course')
+            CST_AVAILABLE   => Lang::t('_CST_AVAILABLE', 'course'),
+            CST_EFFECTIVE   => Lang::t('_CST_CONFIRMED', 'course'),
+            CST_CONCLUDED   => Lang::t('_CST_CONCLUDED', 'course'),
+            CST_CANCELLED   => Lang::t('_CST_CANCELLED', 'course')
         );
 
         $csub = new CourseSubscribe_Manager();
@@ -136,8 +136,8 @@ class Report extends \ReportPlugin{
             array('key'=>'firstAttempt',    'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_LO_COL_FIRSTATT')),
             array('key'=>'lastAttempt',     'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_LO_COL_LASTATT')),
             array('key'=>'lo_status',       'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_STATUS')),
-			array('key'=>'lo_score',        'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_SCORE')),
-			array('key'=>'lo_total_time',   'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_TOTAL_TIME'))
+            array('key'=>'lo_score',        'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_SCORE')),
+            array('key'=>'lo_total_time',   'select'=>true,  'group'=>'lo',     'label'=>$this->lang->def('_TOTAL_TIME'))
         );
 
         $this->TESTSTAT_columns = array(
@@ -156,16 +156,16 @@ class Report extends \ReportPlugin{
         );
 
         $this->delay_columns = array(
-            array('key' => 'userid',						'label' => Lang::t('_USERNAME', 'standard'),							'select' => false),
-            array('key' => 'lastname',					'label' => Lang::t('_LASTNAME', 'standard'),							'select' => true),
-            array('key' => 'firstname',					'label' => Lang::t('_FIRSTNAME', 'standard'),							'select' => true),
-            array('key' => 'email',							'label' => Lang::t('_EMAIL', 'standard'),									'select' => true),
-            array('key' => 'level',							'label' => Lang::t('_LEVEL', 'standard'),									'select' => true),
-            array('key' => 'status',						'label' => Lang::t('_STATUS', 'standard'),								'select' => true),
-            array('key' => 'date_subscription',	'label' => Lang::t('_DATE_INSCR', 'report'),						'select' => true),
-            array('key' => 'date_first_access',	'label' => Lang::t('_DATE_FIRST_ACCESS', 'standard'),			'select' => true),
-            array('key' => 'date_last_access',	'label' => Lang::t('_DATE_LAST_ACCESS', 'standard'),			'select' => true),
-            array('key' => 'date_complete',			'label' => Lang::t('_DATE_END', 'standard'),	'select' => true)
+            array('key' => 'userid',                        'label' => Lang::t('_USERNAME', 'standard'),                            'select' => false),
+            array('key' => 'lastname',                  'label' => Lang::t('_LASTNAME', 'standard'),                            'select' => true),
+            array('key' => 'firstname',                 'label' => Lang::t('_FIRSTNAME', 'standard'),                           'select' => true),
+            array('key' => 'email',                         'label' => Lang::t('_EMAIL', 'standard'),                                   'select' => true),
+            array('key' => 'level',                         'label' => Lang::t('_LEVEL', 'standard'),                                   'select' => true),
+            array('key' => 'status',                        'label' => Lang::t('_STATUS', 'standard'),                              'select' => true),
+            array('key' => 'date_subscription', 'label' => Lang::t('_DATE_INSCR', 'report'),                        'select' => true),
+            array('key' => 'date_first_access', 'label' => Lang::t('_DATE_FIRST_ACCESS', 'standard'),           'select' => true),
+            array('key' => 'date_last_access',  'label' => Lang::t('_DATE_LAST_ACCESS', 'standard'),            'select' => true),
+            array('key' => 'date_complete',         'label' => Lang::t('_DATE_END', 'standard'),    'select' => true)
         );
 
     }
@@ -192,27 +192,27 @@ class Report extends \ReportPlugin{
     function _loadEmailActions() {
         YuiLib::load('selector');
         cout('<script type="text/javascript">
-				function _getAllCheckBoxes() {
-					return YAHOO.util.Selector.query("input[id^=mail_]");
-				}
+                function _getAllCheckBoxes() {
+                    return YAHOO.util.Selector.query("input[id^=mail_]");
+                }
 
-				function selectAll() {
-					var sel = _getAllCheckBoxes();
-					for (var i=0; i<sel.length; i++) {
-						sel[i].checked=true;
-					}
-				}
+                function selectAll() {
+                    var sel = _getAllCheckBoxes();
+                    for (var i=0; i<sel.length; i++) {
+                        sel[i].checked=true;
+                    }
+                }
 
-				function unselectAll() {
-					var sel = _getAllCheckBoxes();
-					for (var i=0; i<sel.length; i++) {
-						sel[i].checked=false;
-					}
-				}
+                function unselectAll() {
+                    var sel = _getAllCheckBoxes();
+                    for (var i=0; i<sel.length; i++) {
+                        sel[i].checked=false;
+                    }
+                }
 
-				YAHOO.util.Event.addListener("select_all-button", "click", selectAll);
-				YAHOO.util.Event.addListener("unselect_all-button", "click", unselectAll);
-			</script>', 'scripts');
+                YAHOO.util.Event.addListener("select_all-button", "click", selectAll);
+                YAHOO.util.Event.addListener("unselect_all-button", "click", unselectAll);
+            </script>', 'scripts');
 
         cout(
             Form::openButtonSpace()
@@ -244,7 +244,7 @@ class Report extends \ReportPlugin{
         require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
 
         $lang =& DoceboLanguage::createInstance('report', 'framework');
-        $org_chart_subdivision 	= importVar('org_chart_subdivision', true, 0);
+        $org_chart_subdivision  = importVar('org_chart_subdivision', true, 0);
 
         $aclManager = new DoceboACLManager();
         $user_select = new UserSelector();
@@ -338,12 +338,12 @@ class Report extends \ReportPlugin{
         Form::loadDatefieldScript();
 
         $time_belt = array(
-            0 		=> $lang->def('_CUSTOM_BELT'),
-            7 		=> $lang->def('_LAST_WEEK'),
-            31		=> $lang->def('_LAST_MONTH'),
-            93 		=> $lang->def('_LAST_THREE_MONTH'),
-            186 	=> $lang->def('_LAST_SIX_MONTH'),
-            365 	=> $lang->def('_LAST_YEAR'),
+            0       => $lang->def('_CUSTOM_BELT'),
+            7       => $lang->def('_LAST_WEEK'),
+            31      => $lang->def('_LAST_MONTH'),
+            93      => $lang->def('_LAST_THREE_MONTH'),
+            186     => $lang->def('_LAST_SIX_MONTH'),
+            365     => $lang->def('_LAST_YEAR'),
         );
 
 
@@ -365,17 +365,17 @@ class Report extends \ReportPlugin{
         //set $_POST data in $_SESSION['report_tempdata']
         if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
             $_SESSION['report_tempdata']['columns_filter'] = array(
-                'org_chart_subdivision'			=> 0,
-                'all_courses'								=> true,
-                'selected_courses'					=> array(),
-                'sub_filters'								=> array(),
-                'filter_exclusive'					=> 1,
-                'showed_columns'						=> array(),
-                'order_by'									=> 'userid',
-                'order_dir'									=> 'asc',
-                'show_suspended'						=> false,
-                'custom_fields'							=> $custom,
-                'show_classrooms_editions'	=> false
+                'org_chart_subdivision'         => 0,
+                'all_courses'                               => true,
+                'selected_courses'                  => array(),
+                'sub_filters'                               => array(),
+                'filter_exclusive'                  => 1,
+                'showed_columns'                        => array(),
+                'order_by'                                  => 'userid',
+                'order_dir'                                 => 'asc',
+                'show_suspended'                        => false,
+                'custom_fields'                         => $custom,
+                'show_classrooms_editions'  => false
             );
         }
         $ref =& $_SESSION['report_tempdata']['columns_filter']; //echo print_r($ref,true);
@@ -402,17 +402,17 @@ class Report extends \ReportPlugin{
             }
 
             $temp=array(
-                'org_chart_subdivision'			=> (isset($_POST['org_chart_subdivision']) ? 1 : 0),
-                'all_courses'								=> ($_POST['all_courses']==1 ? true : false),
-                'selected_courses'					=> $selector->getSelection(),
-                'sub_filters'								=> (isset($_POST['courses_filter']) ? $_POST['courses_filter'] : array()),
-                'filter_exclusive'					=> ( isset($_POST['filter_exclusive']) ? $_POST['filter_exclusive'] : false ),
-                'showed_columns'						=> (isset($_POST['cols']) ? $_POST['cols'] : array()),
-                'order_by'									=> (isset($_POST['order_by']) ? $_POST['order_by'] : 'userid'),
-                'order_dir'									=> (isset($_POST['order_dir']) ? $_POST['order_dir'] : 'asc'),
-                'show_suspended'						=> (isset($_POST['show_suspended']) ? $_POST['show_suspended'] > 0 : false),
-                'custom_fields'							=> array(),
-                'show_classrooms_editions'	=> (isset($_POST['show_classrooms_editions']) && $_POST['show_classrooms_editions'] > 0 ? true : false)
+                'org_chart_subdivision'         => (isset($_POST['org_chart_subdivision']) ? 1 : 0),
+                'all_courses'                               => ($_POST['all_courses']==1 ? true : false),
+                'selected_courses'                  => $selector->getSelection(),
+                'sub_filters'                               => (isset($_POST['courses_filter']) ? $_POST['courses_filter'] : array()),
+                'filter_exclusive'                  => ( isset($_POST['filter_exclusive']) ? $_POST['filter_exclusive'] : false ),
+                'showed_columns'                        => (isset($_POST['cols']) ? $_POST['cols'] : array()),
+                'order_by'                                  => (isset($_POST['order_by']) ? $_POST['order_by'] : 'userid'),
+                'order_dir'                                 => (isset($_POST['order_dir']) ? $_POST['order_dir'] : 'asc'),
+                'show_suspended'                        => (isset($_POST['show_suspended']) ? $_POST['show_suspended'] > 0 : false),
+                'custom_fields'                         => array(),
+                'show_classrooms_editions'  => (isset($_POST['show_classrooms_editions']) && $_POST['show_classrooms_editions'] > 0 ? true : false)
             );
 
             foreach ($custom as $val) {
@@ -558,7 +558,7 @@ class Report extends \ReportPlugin{
 
                 $already.='<input class="align_right" type="text" style="width: '.
                     ($type==_FILTER_DATE ? '7' : '9').'em;" '.
-					'name="courses_filter['.$key.'][value]" value="'.($type==_FILTER_DATE ? \Format::date($value['value'], 'date') : $value['value']).'"'.
+                    'name="courses_filter['.$key.'][value]" value="'.($type==_FILTER_DATE ? \Format::date($value['value'], 'date') : $value['value']).'"'.
                     ' id="courses_filter_'.$index.'_value" />';
 
                 if ($type==_FILTER_DATE) {
@@ -600,23 +600,23 @@ class Report extends \ReportPlugin{
 
             .'<div class="fc_filter_line filter_corr">'
             .'<input type="radio" id="filter_exclusive_and" name="filter_exclusive" value="1" '.($temp>0 ? $selected : '').' />
-				<label for="filter_exclusive_and">'.$lang->def('_FILTER_ALL_CONDS').'</label>&nbsp;'
+                <label for="filter_exclusive_and">'.$lang->def('_FILTER_ALL_CONDS').'</label>&nbsp;'
 
             .'<input type="radio" id="filter_exclusive_or" name="filter_exclusive" value="0" '.($temp==0 ? $selected : '').' />
-				<label for="filter_exclusive_or">'.$lang->def('_FILTER_ONE_COND').'</label>'
+                <label for="filter_exclusive_or">'.$lang->def('_FILTER_ONE_COND').'</label>'
             .'</div>'
 
             .'<div class="fc_filter_line">'
             .'<span class="yui-button yui-link-button" id="fc_addfilter">
-					<span class="first-child">
-						<a href="#" onclick="courses_addfilter();return false;">'.$lang->def('_NEW_FILTER').'</a>
-					</span>
-				</span>'
+                    <span class="first-child">
+                        <a href="#" onclick="courses_addfilter();return false;">'.$lang->def('_NEW_FILTER').'</a>
+                    </span>
+                </span>'
             .'<span class="yui-button yui-link-button" id="fc_cancfilter">
-					<span class="first-child">
-						<a href="#" onclick="courses_resetfilters();return false;">'.$lang->def('_FILTER_RESET').'</a>
-					</span>
-				</span>'
+                    <span class="first-child">
+                        <a href="#" onclick="courses_resetfilters();return false;">'.$lang->def('_FILTER_RESET').'</a>
+                    </span>
+                </span>'
             .'</div>'
 
 
@@ -636,7 +636,7 @@ class Report extends \ReportPlugin{
         $box->title = $lang->def('_SELECT_THE_DATA_COL_NEEDED');
         $box->description = false;
         //Form::openElementSpace()
-		if (count($custom) > 0) {
+        if (count($custom) > 0) {
             $box->body .= Form::getOpenFieldset($lang->def('_USER_CUSTOM_FIELDS'), 'fieldset_course_fields');
             $box->body .= Form::getCheckBox(Lang::t('_LASTNAME', 'standard'), 'col_sel_lastname', 'cols[]', '_TH_LASTNAME', is_showed('_TH_LASTNAME'));
             $box->body .= Form::getCheckBox(Lang::t('_FIRSTNAME', 'standard'), 'col_sel_firstname', 'cols[]', '_TH_FIRSTNAME', is_showed('_TH_FIRSTNAME'));
@@ -649,26 +649,26 @@ class Report extends \ReportPlugin{
                 $box->body .= Form::getCheckBox($val['label'], 'col_custom_'.$val['id'], 'custom['.$val['id'].']', $val['id'], $ref['custom_fields'][$key]['selected']);
             }
             $box->body .= Form::getCloseFieldset();
-		}
+        }
 
 
         $out->add('<script type="text/javascript">
-				function activateClassrooms() {
-					var Y = YAHOO.util.Dom;
-					var b1 = Y.get("not_classrooms"), b2 = Y.get("use_classrooms");
-					var action = b1.style.display == "none" ? "hide" : "show";
-					switch (action) {
-						case "hide": {
-							b1.style.display = "block";
-							b2.style.display = "none";
-						} break;
-						case "show": {
-							b1.style.display = "none";
-							b2.style.display = "block";
-						} break;
-					}
-				}
-			</script>', 'page_head');
+                function activateClassrooms() {
+                    var Y = YAHOO.util.Dom;
+                    var b1 = Y.get("not_classrooms"), b2 = Y.get("use_classrooms");
+                    var action = b1.style.display == "none" ? "hide" : "show";
+                    switch (action) {
+                        case "hide": {
+                            b1.style.display = "block";
+                            b2.style.display = "none";
+                        } break;
+                        case "show": {
+                            b1.style.display = "none";
+                            b2.style.display = "block";
+                        } break;
+                    }
+                }
+            </script>', 'page_head');
 
         $box->body.=
             Form::getOpenFieldset($lang->def('_COURSE_FIELDS'), 'fieldset_course_fields')
@@ -840,23 +840,23 @@ class Report extends \ReportPlugin{
 
             .'<div class="fc_filter_line filter_corr">'
             .'<input type="radio" id="rc_filter_exclusive_and" name="rc_filter_exclusive" value="1" '.($sel>0 ? $selected : '').' />
-				<label for="rc_filter_exclusive_and">'.$clang->def('_FILTER_ALL_CONDS').'</label>&nbsp;'
+                <label for="rc_filter_exclusive_and">'.$clang->def('_FILTER_ALL_CONDS').'</label>&nbsp;'
 
             .'<input type="radio" id="rc_filter_exclusive_or" name="rc_filter_exclusive" value="0" '.($sel==0 ? $selected : '').' />
-				<label for="rc_filter_exclusive_or">'.$clang->def('_FILTER_ONE_COND').'</label>'
+                <label for="rc_filter_exclusive_or">'.$clang->def('_FILTER_ONE_COND').'</label>'
             .'</div>'
 
             .'<div class="fc_filter_line">'
             .'<span class="yui-button yui-link-button" id="fc_addfilter">
-					<span class="first-child">
-						<a href="#" onclick="rc_addfilter();return false;">'.$clang->def('_NEW_FILTER').'</a>
-					</span>
-				</span>'
+                    <span class="first-child">
+                        <a href="#" onclick="rc_addfilter();return false;">'.$clang->def('_NEW_FILTER').'</a>
+                    </span>
+                </span>'
             .'<span class="yui-button yui-link-button" id="fc_cancfilter">
-					<span class="first-child">
-						<a href="#" onclick="rc_resetfilters();return false;">'.$clang->def('_FILTER_RESET').'</a>
-					</span>
-				</span>'
+                    <span class="first-child">
+                        <a href="#" onclick="rc_resetfilters();return false;">'.$clang->def('_FILTER_RESET').'</a>
+                    </span>
+                </span>'
             .'</div>';
 
         cout($box->get());
@@ -961,15 +961,15 @@ class Report extends \ReportPlugin{
         $elem_selected = array();
 
         $lang =& DoceboLanguage::createInstance('report', 'framework');
-        $acl_man 		= new DoceboACLManager();
+        $acl_man        = new DoceboACLManager();
         $acl_man->include_suspended = TRUE;
-        $course_man 	= new Man_Course();
+        $course_man     = new Man_Course();
 
         // read form _SESSION (XXX: change this) the report setting
-        $filter_userselection	= ( !$report_data && isset($_SESSION['report_tempdata']['rows_filter']['users'])
+        $filter_userselection   = ( !$report_data && isset($_SESSION['report_tempdata']['rows_filter']['users'])
             ? $_SESSION['report_tempdata']['rows_filter']['users'] : $report_data['rows_filter']['users'] );
 
-        $filter_columns			= ( !$report_data && $_SESSION['report_tempdata']['columns_filter']
+        $filter_columns         = ( !$report_data && $_SESSION['report_tempdata']['columns_filter']
             ? $_SESSION['report_tempdata']['columns_filter'] : $report_data['columns_filter'] );
 
         if(!$report_data && isset($_SESSION['report_tempdata']['rows_filter']['all_users'])) {
@@ -978,7 +978,7 @@ class Report extends \ReportPlugin{
             $alluser =  ( $report_data['rows_filter']['all_users'] ? 1 : 0);
         }
         // break filters into a more usable format
-        $filter_allcourses		= $filter_columns['all_courses'];
+        $filter_allcourses      = $filter_columns['all_courses'];
         $filter_courseselection =& $filter_columns['selected_courses'];
 
         $order_by = isset($filter_columns['order_by']) ? $filter_columns['order_by'] : "userid";
@@ -992,10 +992,10 @@ class Report extends \ReportPlugin{
         // retrive the user selected
         if($alluser > 0) {
             // all the user selected (we can avoid this ? no we need to hide the suspended users)
-            $user_selected 	=& $acl_man->getAllUsersIdst();
+            $user_selected  =& $acl_man->getAllUsersIdst();
         } else {
             // resolve the user selection
-            $user_selected 	=& $acl_man->getAllUsersFromSelection($filter_userselection);
+            $user_selected  =& $acl_man->getAllUsersFromSelection($filter_userselection);
         }
 
         //apply sub admin filters, if needed
@@ -1129,7 +1129,7 @@ class Report extends \ReportPlugin{
         if($org_chart_subdivision == 1) {
 
             require_once($GLOBALS['where_framework'].'/lib/lib.orgchart.php');
-            $org_man 	= new OrgChartManager();
+            $org_man    = new OrgChartManager();
             if($alluser == 1) $elem_selected = $org_man->getAllGroupIdFolder();
             else $elem_selected = $user_selected;
 
@@ -1161,8 +1161,8 @@ class Report extends \ReportPlugin{
         }
 
         $re_category = sql_query("
-		SELECT idCategory, path
-		FROM ".$GLOBALS['prefix_lms']."_category");
+        SELECT idCategory, path
+        FROM ".$GLOBALS['prefix_lms']."_category");
         $category_list = array(0 => $lang->def('_NONE'));
         $category_path_list = array(0 => '/');
         while(list($id_cat, $name_cat) = sql_fetch_row($re_category)) {
@@ -1175,9 +1175,9 @@ class Report extends \ReportPlugin{
         $lastaccess_list = array();
 
         $query = "
-		SELECT idUser, idCourse, COUNT(*), SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)), MAX(lastTime)
-		FROM ".$GLOBALS['prefix_lms']."_tracksession
-		WHERE 1 ".
+        SELECT idUser, idCourse, COUNT(*), SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)), MAX(lastTime)
+        FROM ".$GLOBALS['prefix_lms']."_tracksession
+        WHERE 1 ".
             ( $alluser > 0 ? "" : "AND idUser IN ( ".implode(',', $user_selected)." ) ").
             ( $filter_allcourses ? "" : "AND idCourse IN (".implode(',', $filter_courseselection).") ");
         //if($start_time != '') $query .= " AND enterTime >= '".$start_time."' ";
@@ -1186,9 +1186,9 @@ class Report extends \ReportPlugin{
         $re_time = sql_query($query);
         while(list($id_u, $id_c, $session_num, $time_num, $last_num) = sql_fetch_row($re_time)) {
 
-            $session_list[$id_u.'_'.$id_c] 		= $session_num;
-            $time_list[$id_u.'_'.$id_c] 		= $time_num;
-            $lastaccess_list[$id_u.'_'.$id_c] 	= $last_num;
+            $session_list[$id_u.'_'.$id_c]      = $session_num;
+            $time_list[$id_u.'_'.$id_c]         = $time_num;
+            $lastaccess_list[$id_u.'_'.$id_c]   = $last_num;
         }
         //recover start and final score
         require_once($GLOBALS['where_lms'].'/lib/lib.orgchart.php');
@@ -1372,7 +1372,7 @@ class Report extends \ReportPlugin{
         //make comparison
         switch ($sign) {
             case '<'  : $output = $cmp1 <  $cmp2; break;
-            case '<=' :	$output = $cmp1 <= $cmp2; break;
+            case '<=' : $output = $cmp1 <= $cmp2; break;
             case '='  : $output = $cmp1 ==  $cmp2; break;
             case '>=' : $output = $cmp1 >= $cmp2; break;
             case '>'  : $output = $cmp1 >  $cmp2; break;
@@ -1464,7 +1464,7 @@ class Report extends \ReportPlugin{
         $colspan2 = 0;
         $colspan3 = 1;
 
-        if (in_array('_TH_CAT', $cols))	{ $th2[] = $lang->def('_CATEGORY'); $colspan1++; }
+        if (in_array('_TH_CAT', $cols)) { $th2[] = $lang->def('_CATEGORY'); $colspan1++; }
         if (in_array('_TH_CODE', $cols)) { $th2[] = $lang->def('_CODE'); $colspan1++; }
         $th2[] = $lang->def('_COURSE_NAME'); $colspan1++;
         if (in_array('_TH_COURSETYPE', $cols)) { $th2[] = Lang::t('_COURSE_TYPE', 'course'); $colspan1++; }
@@ -1713,27 +1713,27 @@ class Report extends \ReportPlugin{
 
         if ($this->use_mail) {
             cout('<script type="text/javascript">
-					function _getAllCheckBoxes() {
-						return YAHOO.util.Selector.query("input[id^=mail_]");
-					}
+                    function _getAllCheckBoxes() {
+                        return YAHOO.util.Selector.query("input[id^=mail_]");
+                    }
 
-					function selectAll() {
-						var sel = _getAllCheckBoxes();
-						for (var i=0; i<sel.length; i++) {
-							sel[i].checked=true;
-						}
-					}
+                    function selectAll() {
+                        var sel = _getAllCheckBoxes();
+                        for (var i=0; i<sel.length; i++) {
+                            sel[i].checked=true;
+                        }
+                    }
 
-					function unselectAll() {
-						var sel = _getAllCheckBoxes();
-						for (var i=0; i<sel.length; i++) {
-							sel[i].checked=false;
-						}
-					}
+                    function unselectAll() {
+                        var sel = _getAllCheckBoxes();
+                        for (var i=0; i<sel.length; i++) {
+                            sel[i].checked=false;
+                        }
+                    }
 
-					YAHOO.util.Event.addListener("select_all-button", "click", selectAll);
-					YAHOO.util.Event.addListener("unselect_all-button", "click", unselectAll);
-				</script>', 'scripts');
+                    YAHOO.util.Event.addListener("select_all-button", "click", selectAll);
+                    YAHOO.util.Event.addListener("unselect_all-button", "click", unselectAll);
+                </script>', 'scripts');
         }
 
         //if ($this->use_mail) { $this->_loadEmailActions(); }
@@ -2075,15 +2075,15 @@ class Report extends \ReportPlugin{
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
             $temp=array(
-                'report_type_completed'	=> ($_POST['report_type']=="course_completed" || $_POST['report_type']=="both" ? true : false),//( isset($_POST['report_type_completed']) ? true : false ),
-                'report_type_started'	=> ($_POST['report_type']=="course_started" || $_POST['report_type']=="both" ? true : false),//( isset($_POST['report_type_started']) ? true : false ),
+                'report_type_completed' => ($_POST['report_type']=="course_completed" || $_POST['report_type']=="both" ? true : false),//( isset($_POST['report_type_completed']) ? true : false ),
+                'report_type_started'   => ($_POST['report_type']=="course_started" || $_POST['report_type']=="both" ? true : false),//( isset($_POST['report_type_started']) ? true : false ),
                 'day_from_subscription' => $_POST['day_from_subscription'],
-                'day_until_course_end'	=> $_POST['day_until_course_end'],
+                'day_until_course_end'  => $_POST['day_until_course_end'],
                 'date_until_course_end' => Format::dateDb($_POST['date_until_course_end'], 'date'),
                 'org_chart_subdivision' => (isset($_POST['org_chart_subdivision']) ? 1 : 0),
-                'all_courses'			=> ($_POST['all_courses']==1 ? true : false),
-                'selected_courses' 		=> $selector->getSelection(),
-                'showed_columns' 		=> (isset($_POST['cols']) ? $_POST['cols'] : array()),
+                'all_courses'           => ($_POST['all_courses']==1 ? true : false),
+                'selected_courses'      => $selector->getSelection(),
+                'showed_columns'        => (isset($_POST['cols']) ? $_POST['cols'] : array()),
                 'order_by' => Get::req('order_by', DOTY_STRING, 'userid'),
                 'order_dir' => Get::req('order_dir', DOTY_STRING, 'asc'),
                 'show_suspended' => Get::req('show_suspended', DOTY_INT, 0) > 0,
@@ -2147,7 +2147,7 @@ class Report extends \ReportPlugin{
             .Form::getTextfield($lang->def('_DAY_UNTIL_COURSE_END'), 'day_until_course_end', 'day_until_course_end', 20, $ref['day_until_course_end'])
             .Form::getDatefield($lang->def('_DATE_UNTIL_COURSE_END'), 'date_until_course_end', 'date_until_course_end', Format::date($ref['date_until_course_end'], 'date') )
             //.Form::getCloseFieldset()
-            /*.Form::getCheckbox(	$lang->def('ORG_CHART_SUBDIVISION'), 'org_chart_subdivision_'.$id_report,	'org_chart_subdivision', $ref['org_chart_subdivision'] )*/
+            /*.Form::getCheckbox(   $lang->def('ORG_CHART_SUBDIVISION'), 'org_chart_subdivision_'.$id_report,   'org_chart_subdivision', $ref['org_chart_subdivision'] )*/
             .Form::getBreakRow();
 
         cout($box->get());
@@ -2334,9 +2334,9 @@ class Report extends \ReportPlugin{
         $rdata =& $report_data['rows_filter'];
         $cdata =& $report_data['columns_filter'];
 
-        $acl_man 		= new DoceboACLManager();
+        $acl_man        = new DoceboACLManager();
         $acl_man->include_suspended = TRUE;
-        $course_man 	= new Man_Course();
+        $course_man     = new Man_Course();
 
         $alluser = $rdata['all_users'];
         $jump_url = '';
@@ -2417,12 +2417,12 @@ class Report extends \ReportPlugin{
             }
 
             $query_course_user = "
-				SELECT cu.idUser, cu.idCourse, cu.edition_id, cu.date_inscr, cu.date_first_access,
-				cu.date_complete, cu.status, cu.level,
-				u.userid, u.firstname, u.lastname, u.email, u.valid
-				FROM ".$GLOBALS['prefix_lms']."_courseuser AS cu " .
+                SELECT cu.idUser, cu.idCourse, cu.edition_id, cu.date_inscr, cu.date_first_access,
+                cu.date_complete, cu.status, cu.level,
+                u.userid, u.firstname, u.lastname, u.email, u.valid
+                FROM ".$GLOBALS['prefix_lms']."_courseuser AS cu " .
                 " JOIN ".$GLOBALS['prefix_fw']."_user as u ON cu.idUser = u.idst
-				WHERE cu.idCourse > 0 ".$query_show_suspended.
+                WHERE cu.idCourse > 0 ".$query_show_suspended.
                 ($alluser ? "" : " AND cu.idUser IN ( ".implode(',', $user_selected)." ) ").
                 ($all_courses ? '' : " AND cu.idCourse IN (".implode(',', $course_selected).")" )
                 ." ORDER BY ".$query_order_by;
@@ -2445,31 +2445,31 @@ class Report extends \ReportPlugin{
                     if ($report_type_completed && !$report_type_started) $status_condition = $status_condition && ($status == _CUS_BEGIN);
                     if ($report_type_started && !$report_type_completed) $status_condition = $status_condition && ($status != _CUS_BEGIN);
 
-                    if ( $day_from_subscription )	{
+                    if ( $day_from_subscription )   {
 
                         if ($status_condition) {
                             $user_timestamp = mktime('0', '0', '0', $date_inscr{5}.$date_inscr{6}, ($date_inscr{8}.$date_inscr{9}) + $day_from_subscription, $date_inscr{0}.$date_inscr{1}.$date_inscr{2}.$date_inscr{3});
-                            if ($user_timestamp < $now_timestamp)	$user_check = true;
+                            if ($user_timestamp < $now_timestamp)   $user_check = true;
                         }
                     }
 
 
                     if ( $day_until_course_end ) {
 
-                        if ($status_condition)	{
+                        if ($status_condition)  {
 
                             if ($id_e>0) {
 
-                                $query = 	"SELECT date_end"
+                                $query =    "SELECT date_end"
                                     ." FROM ".$GLOBALS['prefix_lms']."_course_edition"
                                     ." WHERE idCourseEdition = '".$id_e."'";
                                 list ($date_end) = sql_fetch_row(sql_query($query));
                                 $user_timestamp = mktime('0', '0', '0', $date_end{5}.$date_end{6}, ($date_end{8}.$date_end{9}) - $day_until_course_end, $date_end{0}.$date_end{1}.$date_end{2}.$date_end{3});
-                                if ($user_timestamp < $now_timestamp)	$user_check = true;
+                                if ($user_timestamp < $now_timestamp)   $user_check = true;
 
-                            }	else {
+                            }   else {
 
-                                $query = 	"SELECT date_end"
+                                $query =    "SELECT date_end"
                                     ." FROM ".$GLOBALS['prefix_lms']."_course"
                                     ." WHERE idCourse = '".$id_c."'";
                                 list ($date_end) = sql_fetch_row(sql_query($query));
@@ -2483,21 +2483,21 @@ class Report extends \ReportPlugin{
                     }
 
 
-                    if ($date_until_course_end)	{
+                    if ($date_until_course_end) {
 
-                        if ($status_condition)	{
+                        if ($status_condition)  {
 
                             if ($id_e>0) {
 
-                                $query = 	"SELECT COUNT(*)"
+                                $query =    "SELECT COUNT(*)"
                                     ." FROM ".$GLOBALS['prefix_lms']."_course_edition"
                                     ." WHERE idCourseEdition = '".$id_e."'"
                                     ." AND date_end < '".Format::dateDb($date_until_course_end, 'date')."'";
                                 list ($control) = sql_fetch_row(sql_query($query));
-                                if ($control)	$user_check = true;
+                                if ($control)   $user_check = true;
 
                             } else {
-                                $query = 	"SELECT COUNT(*)"
+                                $query =    "SELECT COUNT(*)"
                                     ." FROM ".$GLOBALS['prefix_lms']."_course"
                                     ." WHERE idCourse = '".$id_c."'"
                                     ." AND date_end < '".Format::dateDb($date_until_course_end, 'date')."'";
@@ -2701,7 +2701,7 @@ class Report extends \ReportPlugin{
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
             $temp=array(
-                //'org_chart_subdivision' 	=> (isset($_POST['org_chart_subdivision']) ? 1 : 0),
+                //'org_chart_subdivision'   => (isset($_POST['org_chart_subdivision']) ? 1 : 0),
                 'all_courses' => ($_POST['all_courses']==1 ? true : false),
                 'selected_courses' => $selector->getSelection(),
                 'lo_types' => (isset($_POST['lo_types']) ? $_POST['lo_types'] : array()),
@@ -2736,12 +2736,12 @@ class Report extends \ReportPlugin{
 
             if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
                 $_SESSION['report_tempdata']['columns_filter'] = array(
-                    //'org_chart_subdivision' 	=> (isset($_POST['org_chart_subdivision']) ? 1 : 0),
+                    //'org_chart_subdivision'   => (isset($_POST['org_chart_subdivision']) ? 1 : 0),
                     'all_courses'        => false,
-                    'selected_courses' 			=> $selector->getSelection(),
-                    'lo_types' 				=> array(),
-                    'lo_milestones' 			=> array(),
-                    'showed_columns' 			=> array(),
+                    'selected_courses'          => $selector->getSelection(),
+                    'lo_types'              => array(),
+                    'lo_milestones'             => array(),
+                    'showed_columns'            => array(),
                     'custom_fields'     => $custom,
                     'order_by' => 'userid',
                     'order_dir' => 'asc',
@@ -2801,7 +2801,7 @@ class Report extends \ReportPlugin{
         $lo_trans = $this->getLOTypesTranslations();
         $box->body .= Form::getOpenFieldset(Lang::t('_RU_LO_TYPES', 'report'), 'lotypes_fieldset');
         $res = sql_query("SELECT * FROM %lms_lo_types");
-		while ($row = sql_fetch_assoc($res)) {
+        while ($row = sql_fetch_assoc($res)) {
             $trans = isset($lo_trans[$row['objectType']]) ? $lo_trans[$row['objectType']] : "";
             $box->body .= Form::getCheckBox($trans , 'lo_type_'.$row['objectType'], 'lo_types['.$row['objectType'].']', $row['objectType'], (in_array($row['objectType'], $ref['lo_types']) ? true : false) );
         }
@@ -2824,9 +2824,9 @@ class Report extends \ReportPlugin{
 
         //box for columns selection
         $arr_fieldset = array(
-            'user'		=> '',
-            'course'	=> '',
-            'lo'			=> ''
+            'user'      => '',
+            'course'    => '',
+            'lo'            => ''
         );
 
         $box = new ReportBox('columns_selection');
@@ -3033,7 +3033,7 @@ class Report extends \ReportPlugin{
         }
 
         //apply sub admin filters, if needed
-        if( !$view_all_perm ) {
+        if( !$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin' ) {
             //filter users
             $all_users = false;
             require_once(_base_.'/lib/lib.preference.php');
@@ -3140,9 +3140,9 @@ class Report extends \ReportPlugin{
             'scorm' => array()
         );
 
-		$total_time_arr=array(
-			'scorm' => array()
-		);
+        $total_time_arr=array(
+            'scorm' => array()
+        );
 
         //retrieve test score
         $query = "SELECT t1.idOrg, t2.idUser, t1.idCourse, t2.score, t2.bonus_score, t2.score_status "
@@ -3154,29 +3154,29 @@ class Report extends \ReportPlugin{
             .(!$all_users ? " AND t2.idUser IN (".implode(',', $users).") " : "" )
             .(count($tempmilestones)>0 ? " AND t1.milestone IN (".implode(',', $tempmilestones).") " : "" );
         $res = sql_query($query);
-		while ($row=sql_fetch_assoc($res)) {
+        while ($row=sql_fetch_assoc($res)) {
             $score_arr['test'][ $row['idOrg'] ][ $row['idUser'] ]=$row['score']+$row['bonus_score'];
         }
 
         //retrievescorm score
-		$query = "SELECT t1.idOrg, t2.idUser, t1.idCourse, t2.score_raw, t2.score_min, t2.score_max, "
+        $query = "SELECT t1.idOrg, t2.idUser, t1.idCourse, t2.score_raw, t2.score_min, t2.score_max, "
                         ." SEC_TO_TIME(SUM(TIME_TO_SEC(th.session_time))) AS total_time "
             ." FROM %lms_organization AS t1 "
             ." JOIN %lms_scorm_tracking AS t2 ON ( t1.objectType = 'scormorg' "
-			." AND t1.idOrg = t2.idReference )"
+            ." AND t1.idOrg = t2.idReference )"
                         ." JOIN %adm_user as t3 "
                         ."     ON t3.idst=t2.idUser ".($suspended ? "" : "AND t3.valid=1 ")
                         ." LEFT JOIN %lms_scorm_tracking_history AS th "
                         ."     ON th.idscorm_tracking = t2.idscorm_tracking "
-			."WHERE 1 "
+            ."WHERE 1 "
             .(!$all_courses ? " AND t1.idCourse IN (".implode(',', $courses).") " : "" )
             .(!$all_users ? " AND t2.idUser IN (".implode(',', $users).") " : "" )
-			.(count($tempmilestones)>0 ? " AND t1.milestone IN (".implode(',', $tempmilestones).") " : "" )
+            .(count($tempmilestones)>0 ? " AND t1.milestone IN (".implode(',', $tempmilestones).") " : "" )
                         ." GROUP BY t1.idOrg, t2.idUser, t1.idCourse, t2.score_raw, t2.score_min, t2.score_max, t2.total_time";
         $res = sql_query($query);
-		while ($row=sql_fetch_assoc($res)) {
+        while ($row=sql_fetch_assoc($res)) {
             $score_arr['scorm'][ $row['idOrg'] ][ $row['idUser'] ]=$row['score_raw'];
-			$total_time_arr['scorm'][ $row['idOrg'] ][ $row['idUser'] ]=$row['total_time'];
+            $total_time_arr['scorm'][ $row['idOrg'] ][ $row['idUser'] ]=$row['total_time'];
         }
 
         $buffer->openBody();
@@ -3219,7 +3219,7 @@ class Report extends \ReportPlugin{
             .( count($tempmilestones)>0 ? "AND t1.milestone IN (".implode(',', $tempmilestones).")" : "" )
             ." ORDER BY ".$query_order_by;
         $res = sql_query($query);
-		while ($row = sql_fetch_assoc($res)) {
+        while ($row = sql_fetch_assoc($res)) {
 
             $temp=array();
             foreach ($this->LO_columns as $val)
@@ -3276,8 +3276,8 @@ class Report extends \ReportPlugin{
                                 default: { $temp[] = ''; } break;
                             }
                         }
-				} break;
-				case 'lo_total_time': {
+                } break;
+                case 'lo_total_time': {
                                     $temp[] = $total_time_arr['scorm'][$row['idOrg']][$row['user_st']];
                     } break;
                     default: { if (in_array($val['key'], $showed)) $temp[]=''; } break;
@@ -3832,7 +3832,7 @@ class Report extends \ReportPlugin{
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
             $temp=array(
-                //'org_chart_subdivision' 	=> (isset($_POST['org_chart_subdivision']) ? 1 : 0),
+                //'org_chart_subdivision'   => (isset($_POST['org_chart_subdivision']) ? 1 : 0),
                 'all_courses' => ($_POST['all_courses']==1 ? true : false),
                 'selected_courses' => $selector->getSelection(),
                 'showed_columns' => (isset($_POST['cols']) ? $_POST['cols'] : array()),
@@ -3865,10 +3865,10 @@ class Report extends \ReportPlugin{
 
             if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
                 $_SESSION['report_tempdata']['columns_filter'] = array(
-                    //'org_chart_subdivision' 	=> (isset($_POST['org_chart_subdivision']) ? 1 : 0),
+                    //'org_chart_subdivision'   => (isset($_POST['org_chart_subdivision']) ? 1 : 0),
                     'all_courses'        => false,
-                    'selected_courses' 			=> $selector->getSelection(),
-                    'showed_columns' 			=> array(),
+                    'selected_courses'          => $selector->getSelection(),
+                    'showed_columns'            => array(),
                     'custom_fields'     => $custom,
                     'order_by' => 'userid',
                     'order_dir' => 'asc',
@@ -3932,9 +3932,9 @@ class Report extends \ReportPlugin{
 
         //box for columns selection
         $arr_fieldset = array(
-            'user'		=> '',
-            'course'	=> '',
-            'lo'			=> ''
+            'user'      => '',
+            'course'    => '',
+            'lo'            => ''
         );
 
         $box = new ReportBox('columns_selection');

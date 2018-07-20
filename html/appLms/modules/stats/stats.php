@@ -439,7 +439,7 @@ function statuserfilter() {
 	list($total_user) = sql_fetch_row(sql_query($query));
 
 	//apply sub admin filters, if needed
-	if( !$view_all_perm ) {
+    if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
 		//filter users
 		require_once(_base_.'/lib/lib.preference.php');
 		$ctrlManager = new ControllerPreference();
@@ -470,7 +470,7 @@ function statuserfilter() {
 	$acl =& Docebo::user()->getACL();
 
 	//apply sub admin filters, if needed
-	if( !$view_all_perm ) {
+    if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
 		//filter users
 		require_once(_base_.'/lib/lib.preference.php');
 		$ctrlManager = new ControllerPreference();
@@ -764,7 +764,7 @@ function statitem() {
 	list($total_user) = sql_fetch_row(sql_query($query));
 
 	//apply sub admin filters, if needed
-	if( !$view_all_perm ) {
+    if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
 		//filter users
 		require_once(_base_.'/lib/lib.preference.php');
 		$ctrlManager = new ControllerPreference();
