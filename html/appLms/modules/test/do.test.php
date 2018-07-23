@@ -783,7 +783,22 @@ function play ($object_test , $id_param)
 	
 	$checkState = "<script type=\"text/javascript\">
 						function toggleNext(enable) {
-							if (enable) {
+							num_answer_tot = $('.test_answer_space .play_question').length;
+							num_answer_chk = 0;
+
+							$('.answer_question').each(function(index, item) {
+								if ($(item).find('input[type=\"checkbox\"]').is(':checked')) {
+									num_answer_chk++;
+								}
+							});
+
+                            num_answer_radio = $('.answer_question input[type=\"radio\"]:checked').length;
+                            num_answer_tot_chk = num_answer_radio + num_answer_chk;
+
+							console.log('TOT: ' + num_answer_tot);
+							console.log('CHECKED: ' + num_answer_tot_chk);
+
+							if (enable && num_answer_tot_chk >= num_answer_tot) {
 								$('#next_page').prop('disabled', false);
                                 if($('#answer_info'))
                                     $('#answer_info').hide();
