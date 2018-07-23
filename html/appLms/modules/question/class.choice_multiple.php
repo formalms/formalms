@@ -888,15 +888,17 @@ class ChoiceMultiple_Question extends Question {
 	
 	function userZeroScore( $id_track, $number_time = null ) {
 		$res = 0;
-		$query = "SELECT COUNT(score_assigned)
-		FROM ".$GLOBALS['prefix_lms']."_testtrack_answer
-		WHERE idQuest = '".(int)$this->id."'
-		AND idTrack = '".(int)$id_track."'
-		AND score_assigned = 0";
+		$query = "SELECT COUNT(tta.idAnswer)
+		FROM ".$GLOBALS['prefix_lms']."_testtrack_answer AS tta
+		INNER JOIN ".$GLOBALS['prefix_lms']."_testquestanswer tqa ON tqa.idAnswer = tta.idAnswer
+		WHERE tta.idQuest = '".(int)$this->id."'
+		AND tta.idTrack = '".(int)$id_track."'
+		AND tqa.is_correct = 0";
 		if ($number_time != null){
-			$query .= " AND number_time = ".$number_time;
+			$query .= " AND tta.number_time = ".$number_time;
 		}
-		$query .= " GROUP BY number_time ORDER BY number_time DESC LIMIT 1";
+		$query .= " GROUP BY tta.number_time ORDER BY tta.number_time DESC LIMIT 1";
+
 		$re_answer = sql_query($query);
 		if(!sql_num_rows($re_answer)) return $res;
 		while(list($score_assigned) = sql_fetch_row($re_answer)) {
