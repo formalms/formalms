@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171211</DATE>
+  <DATE>20180720</DATE>
   <LANG id="romanian">
     <lang_code>romanian</lang_code>
     <lang_description>Romanian</lang_description>
@@ -382,7 +382,6 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cere un cod creat prin modulul de cod]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cere un arbore de cod ales de utilizator dintr-o lista meniu in jos]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cere un arbore de cod care trebuie introdus manual de utilizator]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2017-04-10 16:39:00"><![CDATA[Cere o combinatie de arbore cod si cod curs care trebuie introdus manual de utilizator. Codul arbore si curs trebuie sa fie compus din 10 caractere fiecare pentru a obtine un cod de 20 de caractere]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizatori Audio maxim]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Numar maxim de utilizatori per camera]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maxim de camere]]></key>
@@ -813,7 +812,9 @@ Altfel, trebuie sa te inregistrezi in sistem, urmarind linkul: <br />
         <key id="course_selector&amp;_SEL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Coursuri]]></key>
       </module>
       <module id="customer_help">
+        <key id="customer_help&amp; &#9; _CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2018-07-20 10:31:26"><![CDATA[Disclaimer - assistenza utenti]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ajutor]]></key>
+        <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:29:58"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
         <key id="customer_help&amp;_README_HELP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<!-- here you can put some help text -->]]></key>
       </module>
       <module id="dashboard">
@@ -1348,7 +1349,6 @@ Pentru a schimba aceste cuvinte du-te la Admin/Language management, cauta pentru
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Sari la meniul principal]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Sari la informatiile din curs]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Comunitate]]></key>
-        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Activeaza curs]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aria admin]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Campus]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[meniu general]]></key>
@@ -1368,6 +1368,7 @@ Pentru a schimba aceste cuvinte du-te la Admin/Language management, cauta pentru
       </module>
       <module id="message">
         <key id="message&amp;_ATTACH_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mesajul are atasamente]]></key>
+        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:28:32"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
         <key id="message&amp;_FILTER_MESSAGE_FOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Arata doar mesajele de la acest curs:]]></key>
         <key id="message&amp;_HIGH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ridicat]]></key>
         <key id="message&amp;_INBOX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Primit]]></key>
@@ -2218,6 +2219,7 @@ Parola: [password]]]></key>
         <key id="standard&amp;_SELECT_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Selecteaza tot]]></key>
         <key id="standard&amp;_SEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Trimite]]></key>
         <key id="standard&amp;_SENDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Expeditor]]></key>
+        <key id="standard&amp;_SEND_CC" attributes="" save_date="2018-07-20 10:34:04"><![CDATA[Metti in cc]]></key>
         <key id="standard&amp;_SEND_TO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Trimite la]]></key>
         <key id="standard&amp;_SET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Set]]></key>
         <key id="standard&amp;_SHORTDESC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Scurta descriere]]></key>

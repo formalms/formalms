@@ -6,7 +6,7 @@ echo getTitleArea(Lang::t('_PRECOMPILE', 'standard'));
 
 echo $result_message;
 
-echo Form::openForm('precompile_form', 'index.php?r=precompile/set');
+echo Form::openForm('precompile_form', 'index.php?r=precompile/set', null, null, 'multipart/form-data');
 
 if (!$fields_checked) {
 	foreach ($fieldlist->getUserMandatoryFields(Docebo::user()->getIdSt()) as $id_field => $m_field) {

@@ -37,7 +37,7 @@ class Mysql_DbConn extends DbConn {
 
 		$this->set_timezone();	// set connection tz
 
-		if($dbname !== false) return $this->select_db($dbname);
+		if($dbname != false) return $this->select_db($dbname);
 		return $this;
 	}
 

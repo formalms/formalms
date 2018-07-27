@@ -192,11 +192,11 @@ class CoursestatsLmsController extends LmsController {
 			'descendants' => $filter_descendants
 		);
                 
-                // se amministratore nessuna paginazione
-                if( !$view_all_perm ) {
-                    $results = 9999999999;
-                    $rowsPerPage = 9999999999;
-                }
+        // se amministratore nessuna paginazione
+        if( !$view_all_perm ) {
+            $results = 9999999999;
+            $rowsPerPage = 9999999999;
+        }
                 
 		//get total from database and validate the results count
 		$total = $this->model->getCourseStatsTotal($id_course, $filter);
@@ -227,22 +227,22 @@ class CoursestatsLmsController extends LmsController {
 		$records = array();
 		$acl_man = Docebo::user()->getAclManager();
                 
-                //apply sub admin filters, if needed
-                if( !$view_all_perm ) {
-                        //filter users
-                        require_once(_base_.'/lib/lib.preference.php');
-                        $ctrlManager = new ControllerPreference();
-                        $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
-                        $idx = 0;
-                        foreach ($list as $record) {
-                            if ( !in_array ($record->idst, $ctrl_users) ) {
-                                // Elimino gli studenti non amministrati
-                                unset ($list[$idx]);
-                            }
-                            $idx ++;
-                        }
-                        $total = count($list);
+        //apply sub admin filters, if needed
+        if( !$view_all_perm ) {
+                //filter users
+                require_once(_base_.'/lib/lib.preference.php');
+                $ctrlManager = new ControllerPreference();
+                $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+                $idx = 0;
+                foreach ($list as $record) {
+                    if ( !in_array ($record->idst, $ctrl_users) ) {
+                        // Elimino gli studenti non amministrati
+                        unset ($list[$idx]);
+                    }
+                    $idx ++;
                 }
+                $total = count($list);
+        }
                 
 		if (is_array($list)) {
 			$lo_list = $this->model->getCourseLOs($id_course);

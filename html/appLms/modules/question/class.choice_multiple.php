@@ -865,7 +865,6 @@ class ChoiceMultiple_Question extends Question {
 	}
 	
 	function userScore( $id_track, $number_time = null ) {
-
 		$score = 0;
 		$query = "SELECT SUM(score_assigned)
 		FROM ".$GLOBALS['prefix_lms']."_testtrack_answer
@@ -880,7 +879,32 @@ class ChoiceMultiple_Question extends Question {
 		while(list($score_assigned) = sql_fetch_row($re_answer)) {
 			$score = round($score + $score_assigned, 2);
 		}
+		if ($res = $this->userZeroScore($id_track, $number_time)) {
+			$score = 0;
+		}
+
 		return $score;
+	}
+	
+	function userZeroScore( $id_track, $number_time = null ) {
+		$res = 0;
+		$query = "SELECT COUNT(tta.idAnswer)
+		FROM ".$GLOBALS['prefix_lms']."_testtrack_answer AS tta
+		INNER JOIN ".$GLOBALS['prefix_lms']."_testquestanswer tqa ON tqa.idAnswer = tta.idAnswer
+		WHERE tta.idQuest = '".(int)$this->id."'
+		AND tta.idTrack = '".(int)$id_track."'
+		AND tqa.is_correct = 0";
+		if ($number_time != null){
+			$query .= " AND tta.number_time = ".$number_time;
+		}
+		$query .= " GROUP BY tta.number_time ORDER BY tta.number_time DESC LIMIT 1";
+
+		$re_answer = sql_query($query);
+		if(!sql_num_rows($re_answer)) return $res;
+		while(list($score_assigned) = sql_fetch_row($re_answer)) {
+			$res = round($score + $score_assigned, 2);
+		}
+		return $res;
 	}
 	
 }

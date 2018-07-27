@@ -509,13 +509,6 @@ class UsermanagementAdmController extends AdmController {
 			return;
 		}
 
-		if ($password == "") {
-			$output['success'] = false;
-			$output['message'] = Lang::t('_ERR_PASSWORD_MIN_LENGTH', 'register');
-			echo $this->echoResult($output);
-			return;
-		}
-
 		if ($password != $password_confirm) {
 			$output['success'] = false;
 			$output['message'] = Lang::t('_ERR_PASSWORD_NO_MATCH', 'register');
@@ -1080,6 +1073,22 @@ class UsermanagementAdmController extends AdmController {
 							$translation = (isset($translations[$lang_code]) ? $translations[$lang_code] : "");
 							$form_content .= Form::getTextfield($lang_name, 'modfolder_'.$lang_code, 'modfolder['.$lang_code.']', 255, $translation);
 						}
+                        // LRZ
+                        // Add custom fiels for org chart tree
+                        $form_content .= Form::getLineBox();
+                        $form_content .= '<hr>';
+                        $vett_custom_org = $this->model->getCustomFieldOrg($id);
+                        foreach ($vett_custom_org as $key => $value) {
+                            $valueField = $this->model->getValueCustom($id ,$value['id_field']);  
+                            if($value['type_field']=='dropdown'){
+                                // recover field son of id_field
+                                $vett_value_custom = $this->model->getLO_Custom_Value_Array($value['id_field']);
+                                $form_content .= Form::getDropdown($value['translation'], 'custom_'.$value['id_field'], 'custom_'.$value['id_field'], $vett_value_custom,$valueField);                             
+                            }
+                            if($value['type_field']=='textfield'){
+                                $form_content .= Form::getTextfield($value['translation'], 'custom_'.$value['id_field'], 'custom_'.$value['id_field'], 50,$valueField);                                    
+                            }    
+                        }    
 						$body = Form::openForm('modfolder_form', "ajax.adm_server.php?r=".$this->link."/modfolder")
 							.'<p id="addfolder_error_message"></p>'
 							.$form_content
@@ -1354,6 +1363,15 @@ class UsermanagementAdmController extends AdmController {
 		$old_node = $this->model->getFolderById($id);
 		$res = $this->model->modFolderCodeAndTemplate($id, $code, $template_arr[$template_id]);
 		$res = $this->model->renameFolder($id, $langs);
+        // update custom field for org LRZ
+        // cicle for each custom for ORG_CHARRT
+        $vett_custom_org = $this->model->getCustomOrg();
+        foreach($vett_custom_org as $key => $value){
+            $name_custom_field = "custom_".$key;
+            $org_chart = Get::req($name_custom_field, DOTY_STRING, -1);         
+            $id_field = $key ;
+            $res =$this->model->addCustomFieldValue($id,$id_field, $org_chart);   
+        } 
 		if ($res) {
 			$output['success'] = true;
 			//$output['new_name'] = ($code != "" ? '['.$code.'] ' : '').$langs[getLanguage()];

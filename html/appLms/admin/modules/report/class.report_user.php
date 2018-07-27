@@ -331,7 +331,8 @@ class Report_User extends Report {
 			Util::jump_to($back_url);
 			//...
 		}
-
+        
+        // user custom fields
 		require_once($GLOBALS['where_framework'].'/lib/lib.field.php');
 		$fman = new FieldList();
 		$fields = $fman->getFlatAllFields();
@@ -339,6 +340,21 @@ class Report_User extends Report {
 		foreach ($fields as $key=>$val) {
 			$custom[] = array('id'=>$key, 'label'=>$val, 'selected'=>false);
 		}
+
+        // organization custom fields
+        require_once($GLOBALS['where_framework'].'/lib/lib.customfield.php');
+        $fman = new CustomFieldList();
+        $fieldsOrg = $fman->getCustomFields('ORG_CHART');
+        $customOrg = array();
+        foreach ($fieldsOrg as $keyOrg=>$valOrg) {
+	            $customOrg[] = array('id'=>$keyOrg, 'label'=>$valOrg, 'selected'=>false);
+	        }        
+	    // course custom fielfs
+	    $fieldsCourse = $fman->getCustomFields('COURSE');
+	    $customCourse = array();
+	    foreach ($fieldsCourse as $keyCourse => $valCourse) {
+	        $customCourse[] = array('id'=>$keyCourse, 'label'=>$valCourse, 'selected'=>false);
+	    }  
 
 		//set $_POST data in $_SESSION['report_tempdata']
 		if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
@@ -353,6 +369,8 @@ class Report_User extends Report {
 					'order_dir'									=> 'asc',
 					'show_suspended'						=> false,
 					'custom_fields'							=> $custom,
+                    'custom_fields_org'                     => $customOrg,
+	                'custom_fields_course'                  => $customCourse,
 					'show_classrooms_editions'	=> false
 				);
 		}
@@ -390,6 +408,7 @@ class Report_User extends Report {
 				'order_dir'									=> (isset($_POST['order_dir']) ? $_POST['order_dir'] : 'asc'),
 				'show_suspended'						=> (isset($_POST['show_suspended']) ? $_POST['show_suspended'] > 0 : false),
 				'custom_fields'							=> array(),
+               	'custom_fields_org'                            => array(),
 				'show_classrooms_editions'	=> (isset($_POST['show_classrooms_editions']) && $_POST['show_classrooms_editions'] > 0 ? true : false)
 			);
 
@@ -401,6 +420,21 @@ class Report_User extends Report {
 				);
 			}
 
+            foreach ($customOrg as $val) {
+                $temp['custom_fields_org'][]=array(
+                    'id'=>$val['id'],
+                    'label'=>$val['label'],
+                    'selected'=>(isset($_POST['customorg'][ $val['id'] ]) ? true : false)                    
+                );
+            }               
+
+            foreach ($customCourse as $val) {
+                $temp['custom_fields_course'][]=array(
+                    'id'=>$val['id'],
+                    'label'=>$val['label'],
+                    'selected'=>(isset($_POST['customcourse'][ $val['id'] ]) ? true : false)                    
+                );
+            }                   
 			$ref = $temp;
 		} else {
 			$selector->resetSelection($selection);
@@ -426,6 +460,52 @@ class Report_User extends Report {
 				}
 				$ref['custom_fields'] = $t_arr;
 			}
+
+            if (!isset($ref['custom_fields_org'])) {
+                $ref['custom_fields_org'] = $customOrg;
+            } else {
+                $t_arr = array();
+                foreach ($customOrg as $val) {
+                    $is_selected = FALSE;
+                    foreach ($ref['custom_fields_org'] as $fieldrow) {
+                        if ($fieldrow['id'] == $val['id']) {
+                            $is_selected = $fieldrow['selected'];
+                            break;
+                        }
+                    }
+                    $t_arr[] = array(
+                            'id'=>$val['id'],
+                            'label'=>$val['label'],
+                            'selected'=> $is_selected   ,
+                            'translation' => $val['translation'],
+                            'type_field' => $val['type_field']
+                    );
+                }
+                $ref['custom_fields_org'] = $t_arr;
+            }            
+
+            if (!isset($ref['custom_fields_course'])) {
+                $ref['custom_fields_course'] = $customCourse;
+            } else {
+                $t_arr = array();
+                foreach ($customCourse as $val) {
+                    $is_selected = FALSE;
+                    foreach ($ref['custom_fields_course'] as $fieldrow) {
+                        if ($fieldrow['id'] == $val['id']) {
+                            $is_selected = $fieldrow['selected'];
+                            break;
+                        }
+                    }
+                    $t_arr[] = array(
+                            'id'=>$val['id'],
+                            'label'=>$val['label'],
+                            'selected'=> $is_selected   ,
+                            'translation' => $val['translation'],
+                            'type_field' => $val['type_field']
+                    );
+                }
+                $ref['custom_fields_course'] = $t_arr;
+            } 
 		}
 
 		//filter setting done, go to next step
@@ -621,14 +701,21 @@ class Report_User extends Report {
 		$box->body .= Form::getCheckBox(Lang::t('_EMAIL', 'standard'), 'col_sel_email', 'cols[]', '_TH_EMAIL', is_showed('_TH_EMAIL'));
 		$box->body .= Form::getCheckBox(Lang::t('_REGISTER_DATE', 'standard'), 'col_sel_register_date', 'cols[]', '_TH_REGISTER_DATE', is_showed('_TH_REGISTER_DATE'));
 		$box->body .= Form::getCheckBox(Lang::t('_SUSPENDED', 'standard'), 'col_sel_suspended', 'cols[]', '_TH_SUSPENDED', is_showed('_TH_SUSPENDED'));
-		$box->body .= Form::getCheckBox(Lang::t('_ORGCHART', 'standard'), 'col_sel_organization_chart', 'cols[]', '_TH_ORGANIZATION_CHART', is_showed('_TH_ORGANIZATION_CHART'));
+		$box->body .= Form::getCheckBox(Lang::t('_ORGCHART', 'standard').'', 'col_sel_organization_chart', 'cols[]', '_TH_ORGANIZATION_CHART', is_showed('_TH_ORGANIZATION_CHART'));
 		if (count($custom) > 0) {
-		foreach ($custom as $key=>$val) {
-			$box->body .= Form::getCheckBox($val['label'], 'col_custom_'.$val['id'], 'custom['.$val['id'].']', $val['id'], $ref['custom_fields'][$key]['selected']);
-		}
+		    foreach ($custom as $key=>$val) {
+			    $box->body .= Form::getCheckBox($val['label'], 'col_custom_'.$val['id'], 'custom['.$val['id'].']', $val['id'], $ref['custom_fields'][$key]['selected']);
+		    }
 		}
 		$box->body .= Form::getCloseFieldset();
 
+
+
+        $box->body .= Form::getOpenFieldset($lang->def('_CUSTOM_ORG'), 'report');
+        foreach ($customOrg as $keyOrg=>$valOrg) {
+            $box->body .= Form::getCheckBox( $valOrg['label'] , 'col_customorg_'.$valOrg['id'], 'customorg['.$valOrg['id'].']', $valOrg['id'], $ref['custom_fields_org'][$keyOrg]['selected']);        
+        }
+        $box->body .= Form::getCloseFieldset();
 
 
 		$out->add('<script type="text/javascript">
@@ -658,9 +745,16 @@ class Report_User extends Report {
 		.Form::getCheckBox($lang->def('_STATUS'), 'col_sel_status', 'cols[]', '_TH_COURSESTATUS', is_showed('_TH_COURSESTATUS'))
 		.Form::getCheckBox(Lang::t('_CREDITS', 'standard'), 'col_sel_credits', 'cols[]', '_TH_COURSECREDITS', is_showed('_TH_COURSECREDITS'))
                 .Form::getCheckBox(Lang::t('_LABEL', 'standard'), 'col_sel_label', 'cols[]', '_TH_COURSELABEL', is_showed('_TH_COURSELABEL'))
-		.Form::getCloseFieldset()
+		.Form::getCloseFieldset();
 
-		.Form::getOpenFieldset(
+
+        $box->body .= Form::getOpenFieldset("campi aggiuntivi per corsi", 'report');
+        foreach ($customCourse as $keyCourse =>$valCourse) {
+            $box->body .= Form::getCheckBox( addslashes( $valCourse['label']) , 'col_customcourse_'.$valCourse['id'], 'customcourse['.$valCourse['id'].']', $valCourse['id'], $ref['custom_fields_course'][$keyCourse]['selected']);        
+        }
+        $box->body .= Form::getCloseFieldset();
+
+		$box->body .= Form::getOpenFieldset(
 				Form::getInputCheckbox('show_classrooms_editions', 'show_classrooms_editions', 1, $show_classrooms_editions, "onclick=activateClassrooms();")
 				."&nbsp;&nbsp;".Lang::t('_CLASSROOM_FIELDS', 'report')
 			, 'fieldset_classroom_fields')
@@ -1422,13 +1516,13 @@ class Report_User extends Report {
 		if (in_array('_TH_EMAIL', $cols)) { $th2[] = Lang::t('_EMAIL', 'standard'); $colspanuser++; }
 		if (in_array('_TH_REGISTER_DATE', $cols)) { $th2[] = Lang::t('_REGISTER_DATE', 'standard'); $colspanuser++; }
 		if (in_array('_TH_SUSPENDED', $cols)) { $th2[] = Lang::t('_SUSPENDED', 'standard'); $colspanuser++; }
-		if (in_array('_TH_ORGANIZATION_CHART', $cols)) { $th2[] = Lang::t('_ORGCHART', 'standard'); $colspanuser++; }
 
-		require_once($GLOBALS['where_framework'].'/lib/lib.field.php');
+
 		$aclManager = new DoceboACLManager();
 		$aclManager->include_suspended = TRUE;
 		$_users = $aclManager->getAllUsersFromSelection($filter_rows);
-		$fman = new FieldList();
+
+        // custom field for user
 		$field_values = array();
 		$customcols =& $filter_columns['custom_fields'];
 		$custom_list = array();
@@ -1439,7 +1533,23 @@ class Report_User extends Report {
 				$custom_list[] = $val['id'];
 			}
 		}
+        require_once($GLOBALS['where_framework'].'/lib/lib.field.php');
+        $fman = new FieldList();        
 		$field_values = (!empty($custom_list)) ? $fman->getUsersFieldEntryData($_users, $custom_list) : array();
+        
+        if (in_array('_TH_ORGANIZATION_CHART', $cols)) { 
+            $th2[] = Lang::t('_ORGCHART', 'standard'); $colspanuser++; 
+            // org-chart custom fields
+            $field_values_org = array();
+            $customcols_org =& $filter_columns['custom_fields_org'];
+            foreach ($customcols_org as $val) {
+                if ($val['selected']) {
+                     $th2[] = $val['label']; $colspanuser++; 
+                }
+            }
+        }
+
+        
 
 		$colspan1 = 0;
 		$colspan2 = 0;
@@ -1453,7 +1563,17 @@ class Report_User extends Report {
 		if (in_array('_TH_COURSEPATH', $cols)) { $th2[] = $lang->def('_TH_COURSEPATH'); $colspan1++; }
 		if (in_array('_TH_COURSESTATUS', $cols)) { $th2[] = $lang->def('_STATUS'); $colspan1++; }
 		if (in_array('_TH_COURSECREDITS', $cols)) { $th2[] = Lang::t('_CREDITS', 'standard'); $colspan1++; }
+        //LRZ: custom field for course
+        $field_values_course = array();
+        $customcols_course =& $filter_columns['custom_fields_course'];
+        $custom_list_course = array();
 
+        foreach ($customcols_course as $val) {
+            if ($val['selected']) {
+                 $th2[] =  $val['label'];
+                  $colspan1++ ; 
+            }
+        }        
 		$colspan_classrooms_editions = 0;
 		if ($show_classrooms_editions) {
 			if (in_array('_TH_CLASSROOM_CODE', $cols)) { $th2[] = Lang::t('_NAME', 'standard'); $colspan_classrooms_editions++; }
@@ -1462,18 +1582,18 @@ class Report_User extends Report {
 			if (in_array('_TH_CLASSROOM_MAX_DATE', $cols)) { $th2[] = Lang::t('_DATE_END', 'standard'); $colspan_classrooms_editions++; }
 		}
 
-		if (in_array('_TH_USER_INSCRIPTION_DATE', $cols)) { $th2[] = $lang->def('_TH_USER_INSCRIPTION_DATE'); $colspan2++; }
-		if (in_array('_TH_USER_START_DATE', $cols)) { $th2[] = $lang->def('_DATE_FIRST_ACCESS'); $colspan2++; }
-		if (in_array('_TH_USER_END_DATE', $cols)) { $th2[] = $lang->def('_COMPLETED'); $colspan2++; }
-		if (in_array('_TH_LAST_ACCESS_DATE', $cols)) { $th2[] = $lang->def('_DATE_LAST_ACCESS'); $colspan2++; }
-		if (in_array('_TH_USER_LEVEL', $cols)) { $th2[] = $lang->def('_LEVEL'); $colspan2++; }
-		if (in_array('_TH_USER_STATUS', $cols)) { $th2[] = $lang->def('_STATUS'); $colspan2++; }
-		if (in_array('_TH_USER_START_SCORE', $cols)) { $th2[] = $lang->def('_TH_USER_START_SCORE'); $colspan2++; }
-		if (in_array('_TH_USER_FINAL_SCORE', $cols)) { $th2[] = $lang->def('_FINAL_SCORE'); $colspan2++; }
-		if (in_array('_TH_USER_COURSE_SCORE', $cols)) { $th2[] = $lang->def('_TH_USER_COURSE_SCORE'); $colspan2++; }
-		if (in_array('_TH_USER_NUMBER_SESSION', $cols)) { $th2[] = $lang->def('_TH_USER_NUMBER_SESSION'); $colspan2++; }
-		if (in_array('_TH_USER_ELAPSED_TIME', $cols)) { $th2[] = $lang->def('_TOTAL_TIME'); $colspan2++; }
-		if (in_array('_TH_ESTIMATED_TIME', $cols)) { $th2[] = $lang->def('_TH_ESTIMATED_TIME'); $colspan2++; }
+		if (in_array('_TH_USER_INSCRIPTION_DATE', $cols)) { $th2[] = $lang->def('_TH_USER_INSCRIPTION_DATE'); $colspan1++; }
+		if (in_array('_TH_USER_START_DATE', $cols)) { $th2[] = $lang->def('_DATE_FIRST_ACCESS'); $colspan1++; }
+		if (in_array('_TH_USER_END_DATE', $cols)) { $th2[] = $lang->def('_COMPLETED'); $colspan1++; }
+		if (in_array('_TH_LAST_ACCESS_DATE', $cols)) { $th2[] = $lang->def('_DATE_LAST_ACCESS'); $colspan1++; }
+		if (in_array('_TH_USER_LEVEL', $cols)) { $th2[] = $lang->def('_LEVEL'); $colspan1++; }
+		if (in_array('_TH_USER_STATUS', $cols)) { $th2[] = $lang->def('_STATUS'); $colspan1++; }
+		if (in_array('_TH_USER_START_SCORE', $cols)) { $th2[] = $lang->def('_TH_USER_START_SCORE'); $colspan1++; }
+		if (in_array('_TH_USER_FINAL_SCORE', $cols)) { $th2[] = $lang->def('_FINAL_SCORE'); $colspan1++; }
+		if (in_array('_TH_USER_COURSE_SCORE', $cols)) { $th2[] = $lang->def('_TH_USER_COURSE_SCORE'); $colspan1++; }
+		if (in_array('_TH_USER_NUMBER_SESSION', $cols)) { $th2[] = $lang->def('_TH_USER_NUMBER_SESSION'); $colspan1++; }
+		if (in_array('_TH_USER_ELAPSED_TIME', $cols)) { $th2[] = $lang->def('_TOTAL_TIME'); $colspan1++; }
+		if (in_array('_TH_ESTIMATED_TIME', $cols)) { $th2[] = $lang->def('_TH_ESTIMATED_TIME'); $colspan1++; }
 		
         
                                               
@@ -1500,8 +1620,8 @@ class Report_User extends Report {
 		$th1[] = array('colspan'=>$colspanuser,  'value'=>$lang->def('_USERS'));
 		$th1[] = array('colspan'=>$colspan1, 'value'=>$lang->def('_COURSES'));
 		if ($show_classrooms_editions) $th1[] = array('colspan' => $colspan_classrooms_editions, 'value' => Lang::t('_CLASSROOM', 'standard'));
-		$th1[] = array('colspan'=>$colspan2, 'value'=>$lang->def('_STATUS'));
-		//$th1[] = '';
+
+
 
         // Luca
         $th1[] = array('colspan'=>$colspanLO, 'value'=> $lang->def('_PROGRESS') );        
@@ -1617,24 +1737,7 @@ class Report_User extends Report {
 				if (in_array('_TH_EMAIL', $cols)) $row[] = $email;
 				if (in_array('_TH_REGISTER_DATE', $cols)) $row[] = Format::date($register_date, 'datetime');
 				if (in_array('_TH_SUSPENDED', $cols)) $row[] = $valid ? Lang::t('_NO', 'standard') : Lang::t('_YES', 'standard');
-
-                require_once(_adm_."/models/UsermanagementAdm.php");
-                $umodel = new UsermanagementAdm();
-                $folders = $umodel->getUserFolders($id_user);
-                $organization_chart = "";
                 
-                $first = true;
-                foreach ($folders as $keyFolder => $valueFolder) {
-                        if($first) {
-                                $organization_chart = ''.$valueFolder;
-                                $first = false;
-                        } else {
-                                $organization_chart .= '</br>'.$valueFolder;
-                        }
-                }
-                
-                if (in_array('_TH_ORGANIZATION_CHART', $cols)) $row[] = $organization_chart;
-
 				foreach ($customcols as $val) {
 					if ($val['selected']) {
 						if (isset($field_values[$id_user][ $val['id'] ]))
@@ -1643,6 +1746,41 @@ class Report_User extends Report {
 						$row[] = '';
 					}
 				}
+                
+                if (in_array('_TH_ORGANIZATION_CHART', $cols)) {
+                    require_once(_adm_."/models/UsermanagementAdm.php");
+                    $umodel = new UsermanagementAdm();
+                    $folders = $umodel->getUserFolders($id_user);
+                    if (count($folders)>1) {
+                        $folder_name = implode('<hr>',$folders);
+                    } else {
+                        $folder_name = reset($folders); 
+                    }
+                    $row[] = $folder_name;
+                
+                
+                    require_once($GLOBALS['where_framework'].'/lib/lib.customfield.php');
+                    $fman = new CustomFieldList();
+
+                    if (count($folders)>1) {
+                        foreach ($customcols_org as $val) {
+                            $v = '';
+                            if ($val['selected']) {
+                                foreach ($folders as $folder_name) { 
+                                    $v[] = $fman->getValueCustomOrg($val['label'],$folder_name );
+                                }
+                            }   
+                            $row[] = implode('<hr>', $v);
+                        }
+                    } else {
+                        foreach ($customcols_org as $val) {
+                            if ($val['selected']) {
+                                $row[] = $fman->getValueCustomOrg($val['label'],$folder_name );
+                            }
+                        }
+                    }
+                }               
+                
 
 				if (in_array('_TH_CAT', $cols)) $row[] = $category_list[$id_category];
 				if (in_array('_TH_CODE', $cols)) $row[] = $code;
@@ -1663,6 +1801,11 @@ class Report_User extends Report {
 				if (in_array('_TH_COURSESTATUS', $cols)) $row[] = $this->_convertStatusCourse($status);
 				if (in_array('_TH_COURSECREDITS', $cols)) $row[] = $credits;
 
+                foreach ($customcols_course as $val) {
+                    if ($val['selected']) {
+                        $row[] = "<i></i>".$fman->getValueCustomCourse($id_course,$val['id'] );        
+                    }
+                }                
 				if ($show_classrooms_editions) {
 
 					$e_code = $e_name = $date_1 = $date_2 = '';
@@ -1975,7 +2118,7 @@ class Report_User extends Report {
 
 		$rc_filters =& $ref['columns_filter']['filters_list'];
 		$rc_exclusive = $ref['columns_filter']['exclusive'];
-//die('<pre>'.print_r($rc_filters, true).'</pre>');
+
 		$final_arr=array();
 
 
@@ -2946,7 +3089,7 @@ class Report_User extends Report {
 			'lo'			=> ''
 		);
 
-		$box = new ReportBox('columns_selection');
+        $box = new ReportBox('columns_selection');
 		$box->title = $lang->def('_SELECT_THE_DATA_COL_NEEDED');
 		$box->description = false;
 
@@ -2964,7 +3107,7 @@ class Report_User extends Report {
 				if ($val['key'] == '_CUSTOM_FIELDS_') {
 					//custom fields
 					if (count($ref['custom_fields']) > 0) {
-						foreach ($ref['custom_fields'] as $key=>$val) {
+                        foreach ($ref['custom_fields'] as $key=>$val) {
 							$arr_fieldset['user'] .= Form::getCheckBox($val['label'], 'col_custom_'.$val['id'], 'custom['.$val['id'].']', $val['id'], $val['selected']);
 						}
 					}
@@ -2988,7 +3131,7 @@ class Report_User extends Report {
 			}
 			$box->body .= Form::getOpenFieldset($ftitle, 'fieldset_'.$fid.'_fields');
 			$box->body .= $fieldset;
-			$box->body .= Form::getCloseFieldset();
+            $box->body .= Form::getCloseFieldset();
 		}
 
 		cout($box->get(), 'content');
@@ -3003,7 +3146,7 @@ class Report_User extends Report {
 			'userid' => Lang::t('_USERID', 'standard'),
 			'firstname' => Lang::t('_FIRSTNAME', 'standard'),
 			'lastname' => Lang::t('_LASTNAME', 'standard'),
-			'email' => Lang::t('_EMAIL', 'standard'),
+            'email' => Lang::t('_EMAIL', 'standard'),
 			'course_code' => Lang::t('_COURSE_CODE', 'standard'),
 			'course_name' => Lang::t('_COURSE_NAME', 'standard'),
 			'object_title' => Lang::t('_LEARNING_OBJECTS', 'standard'),

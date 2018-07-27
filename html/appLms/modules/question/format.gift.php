@@ -151,7 +151,7 @@ class qformat_gift {
         $comment = NULL;
         
         // define replaced by simple assignment, stop redefine notices
-        $gift_answerweight_regex = "^%\-*([0-9]{1,2})\.?([0-9]*)%";        
+        $gift_answerweight_regex = "/^%\-*([0-9]{1,2})\.?([0-9]*)%/";
 
         // REMOVED COMMENTED LINES and IMPLODE
         foreach ($lines as $key => $line) {

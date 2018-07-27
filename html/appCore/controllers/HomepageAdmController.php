@@ -150,7 +150,7 @@ class HomepageAdmController extends AdmController
         $registerResultForm = $this->model->getRegisterForm();
 
 
-        $registerForm = Form::openForm('register', Get::rel_path('base') . '/index.php?r=' . _register_, ' homepage__form ')
+        $registerForm = Form::openForm('register', Get::rel_path('base') . '/index.php?r=' . _register_, ' homepage__form ', null, 'multipart/form-data')
             . $registerResultForm
             . Form::closeForm();
 
@@ -169,10 +169,11 @@ class HomepageAdmController extends AdmController
             }
         }
 
-        if (is_array($registerResultForm) && (isset($registerResultForm['registration']) && $registerResultForm['registration'] === true)) {
+        if (is_array($registerResultForm) && (isset($registerResultForm['registration']))) {
 
             $dataView['message'] = $registerResultForm['msg'];
-
+            $dataView['registration'] = $registerResultForm['registration'];
+            
             return $this->render('register-typ', $dataView);
 
         }

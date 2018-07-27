@@ -137,10 +137,6 @@ if (!Docebo::user()->isAnonymous()) {
         }
     }
 
-
-    $pg = new PluginManager('MenuOverEvent');
-    $pg->run('hook');
-
     $event = new \appLms\Events\Lms\MenuOverEvent($menu, $menu_i);
     \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
 

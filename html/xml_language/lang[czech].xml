@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171211</DATE>
+  <DATE>20180720</DATE>
   <LANG id="czech">
     <lang_code>czech</lang_code>
     <lang_description>Czech</lang_description>
@@ -381,7 +381,6 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Požadovat kód vytvořený pomocí kódového modulu]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Požadovat kmenový kód vybraný uživatelem ze seznamu v rozbalovacím menu]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Požadovat kmenový kód který musí uživatel manuálně vložit]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2017-04-10 16:40:27"><![CDATA[Požadovat kombinaci kmenového kódu a kódu kurzu které musí uživatel vložit manuálné. Jak kmen tak kód kurzu musí obsahovat 10 znaků]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximum audio uživatelů]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximální počet uživatelů v místnosti]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximální počet místností]]></key>
@@ -813,7 +812,9 @@ V opačném případě se musíte zaregistrovat do našeho systému, na tomto od
         <key id="course_selector&amp;_SEL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurzy]]></key>
       </module>
       <module id="customer_help">
+        <key id="customer_help&amp; &#9; _CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2018-07-20 10:31:26"><![CDATA[Disclaimer - assistenza utenti]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Help Desk]]></key>
+        <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:29:58"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
         <key id="customer_help&amp;_README_HELP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<!-- here you can put some help text -->]]></key>
       </module>
       <module id="dashboard">
@@ -1348,7 +1349,6 @@ Pro změnu těchto slov jděte do Správy Administrace/Jazyků, vyhledejte <b>lo
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Přeskočit do hlavího menu]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Přeskočit na Vaše informace souvisejcí s tímto kurzem]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Komunita]]></key>
-        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktivovat kurz]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Administrátorský prostor]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kampus]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Obecné menu]]></key>
@@ -1368,6 +1368,7 @@ Pro změnu těchto slov jděte do Správy Administrace/Jazyků, vyhledejte <b>lo
       </module>
       <module id="message">
         <key id="message&amp;_ATTACH_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zpráva má přílohu]]></key>
+        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:28:32"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
         <key id="message&amp;_FILTER_MESSAGE_FOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Zobrazit pouze zprávy z kurzu:]]></key>
         <key id="message&amp;_HIGH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vysoký]]></key>
         <key id="message&amp;_INBOX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Přijatý]]></key>
@@ -2218,6 +2219,7 @@ Heslo: [password]]]></key>
         <key id="standard&amp;_SELECT_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vybrat vše]]></key>
         <key id="standard&amp;_SEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Poslat]]></key>
         <key id="standard&amp;_SENDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Odesílatel]]></key>
+        <key id="standard&amp;_SEND_CC" attributes="" save_date="2018-07-20 10:34:04"><![CDATA[Metti in cc]]></key>
         <key id="standard&amp;_SEND_TO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Poslat]]></key>
         <key id="standard&amp;_SET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nastavit]]></key>
         <key id="standard&amp;_SHORTDESC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Krátký popis]]></key>

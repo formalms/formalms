@@ -155,7 +155,7 @@ class UsermanagementAdm extends Model {
 			} else {
 
 				switch ($pagination['sort']) {
-					//%adm_user fields
+					//core_user fields
 					case 'firstname': $sort = 'u.firstname'; break;
 					case 'lastname': $sort = 'u.lastname'; break;
 					case 'fullname': $sort = "u.lastname, u.firstname"; break;
@@ -296,7 +296,7 @@ class UsermanagementAdm extends Model {
 
 		$query = "";
 		switch ($query_type) {
-			//query with sorting on standard %adm_user field
+			//query with sorting on standard core_user field
 			case 'standard': {
 				$query = "SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid "
 					." FROM %adm_user as u ";
@@ -1259,7 +1259,7 @@ class UsermanagementAdm extends Model {
 
 		$lang_code = ($language == false ? getLanguage() : $language);
 		$search_query = "SELECT	t1.idOrg, t1.path, t2.translation, t1.iLeft, t1.iRight, t1.code
-			FROM %adm_org_chart_tree AS t1 LEFT JOIN %adm_org_chart AS t2
+			FROM core_org_chart_tree AS t1 LEFT JOIN core_org_chart AS t2
 				ON (t1.idOrg = t2.id_dir AND t2.lang_code = '".$lang_code."' )
 			WHERE t1.idParent = '".(int)$id_node."' ORDER BY t2.translation";
 		$re = $this->db->query($search_query);
@@ -1602,7 +1602,7 @@ class UsermanagementAdm extends Model {
 
 		$lang_code = ($language == false ? getLanguage() : $language);
 		$search_query = "SELECT	t1.idOrg, t1.idParent, t1.path, t1.lev, t1.iLeft, t1.iRight, t2.translation, t1.code
-			FROM %adm_org_chart_tree AS t1 LEFT JOIN	%adm_org_chart AS t2
+			FROM core_org_chart_tree AS t1 LEFT JOIN	core_org_chart AS t2
 			ON (t1.idOrg = t2.id_dir AND t2.lang_code = '".$lang_code."' )
 			WHERE t1.idParent = '".(int)$idOrg."' ".$query_filter." ORDER BY t2.translation";
 		$re = $this->db->query($search_query);
@@ -2842,14 +2842,24 @@ class UsermanagementAdm extends Model {
 			return false;
 		return true;
 	}
+<<<<<<< HEAD
+    //LRZ ************
+    // return vett of custom field for ORGCHAR
+    public function getCustomFieldOrg($nodeid){
+            $query = 'select core_customfield_lang.id_field, translation, type_field 
+                from core_customfield_lang, core_customfield 
+                where core_customfield_lang.id_field = core_customfield.id_field
+                 and area_code="ORG_CHART"';
+=======
     
     //LRZ ************
     // return vett of custom field for ORG-CHART
     public function getCustomFieldOrg($nodeid){
-            $query = 'select %adm_customfield_lang.id_field, translation, type_field 
-                from %adm_customfield_lang, %adm_customfield 
-                where %adm_customfield_lang.id_field = %adm_customfield.id_field  and
-                 %adm_customfield_lang.lang_code = \''.getLanguage().'\' and area_code="ORG_CHART"';
+            $query = 'select core_customfield_lang.id_field, translation, type_field 
+                from core_customfield_lang, core_customfield 
+                where core_customfield_lang.id_field = core_customfield.id_field  and
+                 core_customfield_lang.lang_code = \''.getLanguage().'\' and area_code="ORG_CHART"';
+>>>>>>> org-chart-customfield
             $rs = sql_query($query) or 
                     errorCommunication( 'getCustomFieldOrg' );
             $result = array();
@@ -2864,9 +2874,9 @@ class UsermanagementAdm extends Model {
             return $result;        
     }
 public function getLO_Custom_Value_Array($id_field){
-     $query = "select %adm_customfield_son_lang.id_field_son ,  translation from
-        %adm_customfield_son_lang  , %adm_customfield_son
-        where %adm_customfield_son_lang.id_field_son=%adm_customfield_son.id_field_son and id_field=".$id_field. " order by sequence ";
+     $query = "select core_customfield_son_lang.id_field_son ,  translation from
+        core_customfield_son_lang  , core_customfield_son
+        where core_customfield_son_lang.id_field_son=core_customfield_son.id_field_son and id_field=".$id_field. " order by sequence ";
     $rs = sql_query($query) or 
                 errorCommunication( 'getLO_Custom_Value_Array' );    
     $result = array();
@@ -2876,7 +2886,7 @@ public function getLO_Custom_Value_Array($id_field){
         return $result;       
 }  
 private function countCustomForItem($idOrg, $id_field){
-    $query = "select * from %adm_customfield_entry where id_obj=".$idOrg." and id_field=".$id_field;
+    $query = "select * from core_customfield_entry where id_obj=".$idOrg." and id_field=".$id_field;
     $rs = sql_query($query) or 
             errorCommunication( 'countCustomForItem' );
     if( sql_num_rows( $rs ) > 0 ) {
@@ -2884,17 +2894,18 @@ private function countCustomForItem($idOrg, $id_field){
     } else 
         return FALSE;
 }
-// UPDATE or ADD a ORG-CHART CUSTOM FIELD VALUE
+// UPDATE CUSTOM FIELD
+// add value custom field for learning object
 public  function addCustomFieldValue($idOrg, $id_field, $value){
      // controlla se esiste il record, se esiste aggiorna altrimenti aggiungi
      $res = $this->countCustomForItem($idOrg, $id_field);
     if($res){
         //aggiornamento
-        $query = "UPDATE %adm_customfield_entry set obj_entry='".$value."' where id_obj=".$idOrg." and id_field='".$id_field."'";                
+        $query = "UPDATE core_customfield_entry set obj_entry='".$value."' where id_obj=".$idOrg." and id_field='".$id_field."'";                
         sql_query( $query );
     }else{
         //inserimento
-        $query = "INSERT INTO %adm_customfield_entry "
+        $query = "INSERT INTO core_customfield_entry "
                 ."( id_field, id_obj, obj_entry)"
                 ." VALUES "
                 ."( '".($id_field) ."' ,".intval($idOrg)." , '".$value."')";
@@ -2904,7 +2915,7 @@ public  function addCustomFieldValue($idOrg, $id_field, $value){
 } 
   // get custom for lo_org
   public function getCustomOrg(){
-      $query = "select id_field from %adm_customfield where area_code = 'ORG_CHART'";
+      $query = "select id_field from core_customfield where area_code = 'ORG_CHART'";
           $rs = sql_query($query) or 
                 errorCommunication( 'getCustomOrg' );    
     $result = array();
@@ -2914,7 +2925,7 @@ public  function addCustomFieldValue($idOrg, $id_field, $value){
         return $result;   
   }
 public function getValueCustom($idOrg, $idField){
-        $query = "SELECT obj_entry FROM %adm_customfield_entry "
+        $query = "SELECT obj_entry FROM core_customfield_entry "
             ."WHERE id_field = '".$idField."'"
             ."  AND id_obj = ".$idOrg;
     $rs = sql_query($query) or 

@@ -289,6 +289,9 @@ function InsertOption(&$row, $smodel){
                                      <?php echo Lang::t('_UNDO', 'standard')?>: function () { $(this).dialog("close");}
                                     
                                 },
+                            open: function(event, ui) {
+                                $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+                            }, 
                             close: function (event, ui) {
                                 $(this).remove();
                             }

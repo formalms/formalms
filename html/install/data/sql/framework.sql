@@ -513,6 +513,7 @@ CREATE TABLE IF NOT EXISTS `core_customfield_area` (
 INSERT INTO `core_customfield_area` (`area_code`, `area_name`, `area_table`, `area_field`) VALUES('LO_TEST', 'Learning Object Test', '%lms_testquest', 'idQuest');
 INSERT INTO `core_customfield_area` (`area_code`, `area_name`, `area_table`, `area_field`) VALUES('COURSE', 'Course', '%lms_course', 'idCourse');
 INSERT INTO `core_customfield_area` (`area_code`, `area_name`, `area_table`, `area_field`) VALUES('COURSE_EDITION', 'Course Edition', '%lms_course_editions', 'id_edition');
+INSERT INTO `core_customfield_area` (`area_code`, `area_name`, `area_table`, `area_field`) VALUES('ORG_CHART', 'Org Chart Tree', 'core_org_chart_tree', 'idOrg');
 
 -- --------------------------------------------------------
 
@@ -628,7 +629,7 @@ CREATE TABLE IF NOT EXISTS `core_db_upgrades` (
 -- Dump dei dati per la tabella `core_db_upgrades`
 --
 
-INSERT INTO `core_db_upgrades` (`script_id`, `script_name`, `script_description`, `script_version`, `core_version`, `creation_date`, `execution_date`) VALUES(1, 'add_log_db_upgrades.sql', 'Creazione tabella di log per script update db', '1.0', '3.0.6', '2016-10-06 08:47:53', '2016-10-06 08:47:53');
+INSERT INTO `core_db_upgrades` (`script_id`, `script_name`, `script_description`, `script_version`, `core_version`, `creation_date`, `execution_date`) VALUES(1, 'add_log_db_upgrades.sql', 'Creazione tabella di log per script update db', '1.0', '2.0', '2016-10-06 08:47:53', '2016-10-06 08:47:53');
 
 
 -- --------------------------------------------------------
@@ -2505,7 +2506,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('Clear_Twig_Cache', 'index.php?r=adm/setting/clearTwigCache', 'button', 2, 'Twig Cache', 13, 0, 0, 0, ''),
 ('common_admin_session', 'on', 'enum', 3, 'security', 8, 24, 1, 0, ''),
 ('conference_creation_limit_per_user', '99999999999', 'string', 255, '0', 6, 0, 1, 0, ''),
-('core_version', '2.0', 'string', 255, '0', 1, 0, 1, 1, ''),
+('core_version', '2.1', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('course_block', 'off', 'enum', 3, '0', 4, 13, 1, 0, ''),
 ('course_quota', '500', 'string', 255, '0', 4, 7, 1, 0, ''),
 ('currency_symbol', '&euro;', 'string', 10, '0', 5, 2, 1, 0, ''),
@@ -2531,7 +2532,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('ldap_server', '192.168.0.1', 'string', 255, '0', 7, 2, 1, 0, ''),
 ('ldap_used', 'off', 'enum', 3, '0', 7, 1, 1, 0, ''),
 ('ldap_user_string', '$user@domain2.domain1', 'string', 255, '0', 7, 4, 1, 0, ''),
-('mail_sender', 'sample@localhost', 'string', 255, 'register', 3, 12, 0, 0, ''),
+('mail_sender', 'sample@localhost.net', 'string', 255, 'register', 3, 12, 0, 0, ''),
 ('maintenance', 'off', 'enum', 3, 'security', 8, 25, 0, 0, ''),
 ('maintenance_pw', 'manutenzione', 'string', 16, 'security', 8, 25, 0, 0, ''),
 ('mandatory_code', 'off', 'enum', 3, 'register', 3, 18, 1, 0, ''),
@@ -2578,7 +2579,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('rest_auth_update', 'off', 'enum', 3, 'api', 9, 6, 1, 0, ''),
 ('save_log_attempt', 'no', 'save_log_attempt', 255, '0', 3, 5, 0, 0, ''),
 ('sco_direct_play', 'on', 'enum', 3, '0', 8, 3, 1, 0, ''),
-('sender_event', 'sample@localhost', 'string', 255, '0', 1, 5, 1, 0, ''),
+('sender_event', 'sample@localhost.net', 'string', 255, '0', 1, 5, 1, 0, ''),
 ('send_cc_for_system_emails', '', 'string', 255, '0', 8, 4, 1, 0, ''),
 ('session_ip_control', 'off', 'enum', 3, 'security', 8, 22, 1, 0, ''),
 ('sms_cell_num_field', '1', 'field_select', 5, '0', 11, 6, 1, 0, ''),

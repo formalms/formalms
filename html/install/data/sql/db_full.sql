@@ -2610,7 +2610,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('code_teleskill', '', 'string', 255, 'teleskill', 6, 3, 1, 0, ''),
 ('common_admin_session', 'on', 'enum', 3, 'security', 8, 24, 1, 0, ''),
 ('conference_creation_limit_per_user', '99999999999', 'string', 255, '0', 6, 0, 1, 0, ''),
-('core_version', '2.0', 'string', 255, '0', 1, 0, 1, 1, ''),
+('core_version', '2.1', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('currency_symbol', '&euro;', 'string', 10, '0', 5, 2, 1, 0, ''),
 ('customer_help_email', '', 'string', 255, '0', 3, 19, 1, 0, ''),
 ('customer_help_subj_pfx', '', 'string', 255, '0', 3, 20, 1, 0, ''),

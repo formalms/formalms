@@ -100,8 +100,8 @@ class AuthenticationManager {
         
         if(isset($_SESSION['social'])) $this->plugin_manager->run_plugin($_SESSION['social']['plugin'], "setSocial", array("id" => $_SESSION['social']['data']['id']));
         
-        if(self::_checkPwdElapsed())        return PWD_ELAPSED;
         if(self::_checkMandatoryFields())   return MANDATORY_FIELDS;
+        if(self::_checkPwdElapsed())        return PWD_ELAPSED;        
         
         return USER_SAVED;
     }

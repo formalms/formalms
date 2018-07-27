@@ -152,9 +152,9 @@ DELETE FROM core_setting WHERE param_name = 'forum_as_table';
 
 
 -- nuovi_tipi_di_test.sql
-ALTER TABLE `learning_organization_access` ADD COLUMN `params` VARCHAR(255) NULL COMMENT '' AFTER `value`;
+ALTER TABLE `learning_organization_access` ADD COLUMN `params` VARCHAR(255) NULL  AFTER `value`;
 
-ALTER TABLE `learning_test` ADD COLUMN `obj_type` VARCHAR(45) NULL DEFAULT 'test' COMMENT '' AFTER `score_max`;
+ALTER TABLE `learning_test` ADD COLUMN `obj_type` VARCHAR(45) NULL DEFAULT 'test'  AFTER `score_max`;
 
 
 -- 4303.sql
@@ -277,14 +277,14 @@ execution_date=now();
 
 
 -- retain_answers_history.sql
-ALTER TABLE learning_testtrack_answer ADD COLUMN number_time TINYINT(4) NULL DEFAULT '1' COMMENT '' AFTER user_answer;
+ALTER TABLE learning_testtrack_answer ADD COLUMN number_time TINYINT(4) NULL DEFAULT '1'  AFTER user_answer;
 
-ALTER TABLE learning_test ADD COLUMN retain_answers_history TINYINT(1) NOT NULL DEFAULT '0' COMMENT '' AFTER obj_type;
+ALTER TABLE learning_test ADD COLUMN retain_answers_history TINYINT(1) NOT NULL DEFAULT '0'  AFTER obj_type;
 
 ALTER TABLE learning_testtrack_answer
-CHANGE COLUMN number_time number_time TINYINT(4) NOT NULL DEFAULT '1' COMMENT '' ,
+CHANGE COLUMN number_time number_time TINYINT(4) NOT NULL DEFAULT '1'  ,
 DROP PRIMARY KEY,
-ADD PRIMARY KEY (idTrack, idQuest, idAnswer, number_time)  COMMENT '';
+ADD PRIMARY KEY (idTrack, idQuest, idAnswer, number_time)  ;
 
 -- password_algorithms.sql
 ALTER TABLE `core_user` CHANGE `pass` `pass` VARCHAR(255) NOT NULL;
@@ -1037,6 +1037,10 @@ CREATE TABLE IF NOT EXISTS `core_privacypolicy_user` (
 UPDATE core_setting SET param_value = '8'  WHERE param_name = 'pass_min_char' and param_value < '8';
 UPDATE core_setting SET param_value = 'on' WHERE param_name = 'pass_change_first_login';
 UPDATE core_setting SET param_value = 'on' WHERE param_name = 'request_mandatory_fields_compilation';
+
+-- custom-orgchart-fields.sql 
+INSERT INTO `core_customfield_area` (`area_code`, `area_name`, `area_table`, `area_field`) VALUES
+('ORG_CHART', 'Org Chart Tree', 'core_org_chart_tree', 'idOrg');
 
 -- Creazione permesso view_all
 INSERT IGNORE INTO core_role(idst, roleid, description) VALUES

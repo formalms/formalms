@@ -338,20 +338,20 @@ Class CourseAlms extends Model
             );
         else {
             $query_course = "
-			SELECT idCourse,idCategory, code, name, description, box_description, lang_code, status, level_show_user, subscribe_method,
-				linkSponsor, mediumTime, permCloseLO, userStatusOp, difficult,
-				show_progress, show_time,
+            SELECT idCourse,idCategory, code, name, description, box_description, lang_code, status, level_show_user, subscribe_method,
+                linkSponsor, mediumTime, permCloseLO, userStatusOp, difficult,
+                show_progress, show_time,
 
-				show_who_online,
+                show_who_online,
 
-				show_extra_info, show_rules, date_begin, date_end, hour_begin, hour_end, sub_start_date, sub_end_date, valid_time,
-				min_num_subscribe, max_num_subscribe, max_sms_budget,selling,prize,course_type,policy_point,point_to_all,course_edition,
-				imgSponsor, img_course, img_material, img_othermaterial, course_demo, course_quota, allow_overbooking,
-				can_subscribe, advance, autoregistration_code, direct_play, show_result, credits,
+                show_extra_info, show_rules, date_begin, date_end, hour_begin, hour_end, sub_start_date, sub_end_date, valid_time,
+                min_num_subscribe, max_num_subscribe, max_sms_budget,selling,prize,course_type,policy_point,point_to_all,course_edition,
+                imgSponsor, img_course, img_material, img_othermaterial, course_demo, course_quota, allow_overbooking,
+                can_subscribe, advance, autoregistration_code, direct_play, show_result, credits,
 
-				use_logo_in_courselist, auto_unsubscribe, unsubscribe_date_limit
-			FROM %lms_course
-			WHERE idCourse = '" . (int)$id_course . "'";
+                use_logo_in_courselist, auto_unsubscribe, unsubscribe_date_limit
+            FROM %lms_course
+            WHERE idCourse = '" . (int)$id_course . "'";
 
             $course = sql_fetch_assoc(sql_query($query_course));
             if ($course) {
@@ -516,72 +516,72 @@ Class CourseAlms extends Model
         }
 
         $query_course = "
-		INSERT INTO %lms_course
-		SET idCategory 			= '" . (isset($_POST['idCategory']) ? $_POST['idCategory'] : 0) . "',
-			CODE 				= '" . $_POST['course_code'] . "',
-			NAME 				= '" . $_POST['course_name'] . "',
-			description 		= '" . $_POST['course_descr'] . "',
-			box_description 		= '" . $_POST['course_box_descr'] . "',
-			lang_code 			= '" . $array_lang[$_POST['course_lang']] . "',
-			STATUS 				= '" . (int)$_POST['course_status'] . "',
-			level_show_user 	= '" . $show_level . "',
-			subscribe_method 	= '" . (int)$_POST['course_subs'] . "',
-			credits			 	= '" . (int)$_POST['credits'] . "',
+        INSERT INTO %lms_course
+        SET idCategory          = '" . (isset($_POST['idCategory']) ? $_POST['idCategory'] : 0) . "',
+            CODE                = '" . $_POST['course_code'] . "',
+            NAME                = '" . $_POST['course_name'] . "',
+            description         = '" . $_POST['course_descr'] . "',
+            box_description         = '" . $_POST['course_box_descr'] . "',
+            lang_code           = '" . $array_lang[$_POST['course_lang']] . "',
+            STATUS              = '" . (int)$_POST['course_status'] . "',
+            level_show_user     = '" . $show_level . "',
+            subscribe_method    = '" . (int)$_POST['course_subs'] . "',
+            credits             = '" . (int)$_POST['credits'] . "',
 
-			create_date			= '" . date("Y-m-d H:i:s") . "',
+            create_date         = '" . date("Y-m-d H:i:s") . "',
 
-			linkSponsor 		= '" . $_POST['course_sponsor_link'] . "',
-			imgSponsor 			= '" . $file_sponsor . "',
-			img_course 			= '" . $file_logo . "',
-			img_material 		= '" . $file_material . "',
-			img_othermaterial 	= '" . $file_othermaterial . "',
-			course_demo 		= '" . $file_demo . "',
+            linkSponsor         = '" . $_POST['course_sponsor_link'] . "',
+            imgSponsor          = '" . $file_sponsor . "',
+            img_course          = '" . $file_logo . "',
+            img_material        = '" . $file_material . "',
+            img_othermaterial   = '" . $file_othermaterial . "',
+            course_demo         = '" . $file_demo . "',
 
-			mediumTime 			= '" . $_POST['course_medium_time'] . "',
-			permCloseLO 		= '" . $_POST['course_em'] . "',
-			userStatusOp 		= '" . $user_status . "',
-			difficult 			= '" . $_POST['course_difficult'] . "',
+            mediumTime          = '" . $_POST['course_medium_time'] . "',
+            permCloseLO         = '" . $_POST['course_em'] . "',
+            userStatusOp        = '" . $user_status . "',
+            difficult           = '" . $_POST['course_difficult'] . "',
 
-			show_progress 		= '" . (isset($_POST['course_progress']) ? 1 : 0) . "',
-			show_time 			= '" . (isset($_POST['course_time']) ? 1 : 0) . "',
+            show_progress       = '" . (isset($_POST['course_progress']) ? 1 : 0) . "',
+            show_time           = '" . (isset($_POST['course_time']) ? 1 : 0) . "',
 
-			show_who_online		= '" . $_POST['show_who_online'] . "',
+            show_who_online     = '" . $_POST['show_who_online'] . "',
 
-			show_extra_info 	= '" . (isset($_POST['course_advanced']) ? 1 : 0) . "',
-			show_rules 			= '" . (int)$_POST['course_show_rules'] . "',
+            show_extra_info     = '" . (isset($_POST['course_advanced']) ? 1 : 0) . "',
+            show_rules          = '" . (int)$_POST['course_show_rules'] . "',
 
-			direct_play 		= '" . (isset($_POST['direct_play']) ? 1 : 0) . "',
+            direct_play         = '" . (isset($_POST['direct_play']) ? 1 : 0) . "',
 
-			date_begin 			= '" . $date_begin . "',
-			date_end 			= '" . $date_end . "',
-			hour_begin 			= '" . $hour_begin . "',
-			hour_end 			= '" . $hour_end . "',
+            date_begin          = '" . $date_begin . "',
+            date_end            = '" . $date_end . "',
+            hour_begin          = '" . $hour_begin . "',
+            hour_end            = '" . $hour_end . "',
 
-			valid_time 			= '" . (int)$_POST['course_day_of'] . "',
+            valid_time          = '" . (int)$_POST['course_day_of'] . "',
 
-			min_num_subscribe 	= '" . (int)$_POST['min_num_subscribe'] . "',
-			max_num_subscribe 	= '" . (int)$_POST['max_num_subscribe'] . "',
-			selling 			= '" . (isset($_POST['course_sell']) ? '1' : '0') . "',
-			prize 				= '" . $_POST['course_prize'] . "',
+            min_num_subscribe   = '" . (int)$_POST['min_num_subscribe'] . "',
+            max_num_subscribe   = '" . (int)$_POST['max_num_subscribe'] . "',
+            selling             = '" . (isset($_POST['course_sell']) ? '1' : '0') . "',
+            prize               = '" . $_POST['course_prize'] . "',
 
-			course_type 		= '" . $_POST['course_type'] . "',
+            course_type         = '" . $_POST['course_type'] . "',
 
-			course_edition 		= '" . (isset($_POST['course_edition']) && $_POST['course_edition'] == 1 ? 1 : 0) . "',
+            course_edition      = '" . (isset($_POST['course_edition']) && $_POST['course_edition'] == 1 ? 1 : 0) . "',
 
-			course_quota 		= '" . $_POST['course_quota'] . "',
-			used_space			= '" . $total_file_size . "',
-			allow_overbooking 	= '" . (isset($_POST["allow_overbooking"]) ? 1 : 0) . "',
-			can_subscribe 		= '" . (int)$_POST["can_subscribe"] . "',
-			sub_start_date 		= " . ($_POST["can_subscribe"] == '2' ? "'" . $sub_start_date . "'" : 'NULL') . ",
-			sub_end_date 		= " . ($_POST["can_subscribe"] == '2' ? "'" . $sub_end_date . "'" : 'NULL') . ",
+            course_quota        = '" . $_POST['course_quota'] . "',
+            used_space          = '" . $total_file_size . "',
+            allow_overbooking   = '" . (isset($_POST["allow_overbooking"]) ? 1 : 0) . "',
+            can_subscribe       = '" . (int)$_POST["can_subscribe"] . "',
+            sub_start_date      = " . ($_POST["can_subscribe"] == '2' ? "'" . $sub_start_date . "'" : 'NULL') . ",
+            sub_end_date        = " . ($_POST["can_subscribe"] == '2' ? "'" . $sub_end_date . "'" : 'NULL') . ",
 
-			advance 			= '" . $_POST['advance'] . "',
-			show_result 		= '" . (isset($_POST["show_result"]) ? 1 : 0) . "',
+            advance             = '" . $_POST['advance'] . "',
+            show_result         = '" . (isset($_POST["show_result"]) ? 1 : 0) . "',
 
-			use_logo_in_courselist = '" . (isset($_POST['use_logo_in_courselist']) ? '1' : '0') . "',
+            use_logo_in_courselist = '" . (isset($_POST['use_logo_in_courselist']) ? '1' : '0') . "',
 
-			auto_unsubscribe = '" . (int)$_POST['auto_unsubscribe'] . "',
-			unsubscribe_date_limit = " . (isset($_POST['use_unsubscribe_date_limit']) && $_POST['use_unsubscribe_date_limit'] > 0 ? "'" . Format::dateDb($_POST['unsubscribe_date_limit'], 'date') . "'" : 'NULL') . "";
+            auto_unsubscribe = '" . (int)$_POST['auto_unsubscribe'] . "',
+            unsubscribe_date_limit = " . (isset($_POST['use_unsubscribe_date_limit']) && $_POST['use_unsubscribe_date_limit'] > 0 ? "'" . Format::dateDb($_POST['unsubscribe_date_limit'], 'date') . "'" : 'NULL') . "";
 
         if (isset($_POST['random_course_autoregistration_code'])) {
             $control = 1;
@@ -842,74 +842,74 @@ Class CourseAlms extends Model
 
         // update database ----------------------------------------------------
         $query_course = "
-		UPDATE " . $GLOBALS['prefix_lms'] . "_course
-		SET code 				= '" . $_POST['course_code'] . "',
-			name 				= '" . $_POST['course_name'] . "',
-			idCategory 			= '" . (int)$_POST['idCategory'] . "',
-			description 		= '" . $_POST['course_descr'] . "',
-			box_description 		= '" . $_POST['course_box_descr'] . "',
-			lang_code 			= '" . $array_lang[$_POST['course_lang']] . "',
-			status 				= '" . (int)$_POST['course_status'] . "',
-			level_show_user 	= '" . $show_level . "',
-			subscribe_method 	= '" . (int)$_POST['course_subs'] . "',
-			idCategory			= '" . (int)$_POST['idCategory'] . "',
-			credits				= '" . (int)$_POST['credits'] . "',
+        UPDATE " . $GLOBALS['prefix_lms'] . "_course
+        SET code                = '" . $_POST['course_code'] . "',
+            name                = '" . $_POST['course_name'] . "',
+            idCategory          = '" . (int)$_POST['idCategory'] . "',
+            description         = '" . $_POST['course_descr'] . "',
+            box_description         = '" . $_POST['course_box_descr'] . "',
+            lang_code           = '" . $array_lang[$_POST['course_lang']] . "',
+            status              = '" . (int)$_POST['course_status'] . "',
+            level_show_user     = '" . $show_level . "',
+            subscribe_method    = '" . (int)$_POST['course_subs'] . "',
+            idCategory          = '" . (int)$_POST['idCategory'] . "',
+            credits             = '" . (int)$_POST['credits'] . "',
 
-			linkSponsor 		= '" . $_POST['course_sponsor_link'] . "',
+            linkSponsor         = '" . $_POST['course_sponsor_link'] . "',
 
-			imgSponsor 			= '" . $file_sponsor . "',
-			img_course 			= '" . $file_logo . "',
-			img_material 		= '" . $file_material . "',
-			img_othermaterial 	= '" . $file_othermaterial . "',
-			course_demo 		= '" . $file_demo . "',
+            imgSponsor          = '" . $file_sponsor . "',
+            img_course          = '" . $file_logo . "',
+            img_material        = '" . $file_material . "',
+            img_othermaterial   = '" . $file_othermaterial . "',
+            course_demo         = '" . $file_demo . "',
 
-			mediumTime 			= '" . $_POST['course_medium_time'] . "',
-			permCloseLO 		= '" . $_POST['course_em'] . "',
-			userStatusOp 		= '" . $user_status . "',
-			difficult 			= '" . $_POST['course_difficult'] . "',
+            mediumTime          = '" . $_POST['course_medium_time'] . "',
+            permCloseLO         = '" . $_POST['course_em'] . "',
+            userStatusOp        = '" . $user_status . "',
+            difficult           = '" . $_POST['course_difficult'] . "',
 
-			show_progress 		= '" . (isset($_POST['course_progress']) ? 1 : 0) . "',
-			show_time 			= '" . (isset($_POST['course_time']) ? 1 : 0) . "',
+            show_progress       = '" . (isset($_POST['course_progress']) ? 1 : 0) . "',
+            show_time           = '" . (isset($_POST['course_time']) ? 1 : 0) . "',
 
-			show_who_online		= '" . $_POST['show_who_online'] . "',
+            show_who_online     = '" . $_POST['show_who_online'] . "',
 
-			show_extra_info 	= '" . (isset($_POST['course_advanced']) ? 1 : 0) . "',
-			show_rules 			= '" . (int)$_POST['course_show_rules'] . "',
+            show_extra_info     = '" . (isset($_POST['course_advanced']) ? 1 : 0) . "',
+            show_rules          = '" . (int)$_POST['course_show_rules'] . "',
 
-			direct_play 		= '" . (isset($_POST['direct_play']) ? 1 : 0) . "',
+            direct_play         = '" . (isset($_POST['direct_play']) ? 1 : 0) . "',
 
-			date_begin 			= '" . $date_begin . "',
-			date_end 			= '" . $date_end . "',
-			hour_begin 			= '" . $hour_begin . "',
-			hour_end 			= '" . $hour_end . "',
+            date_begin          = '" . $date_begin . "',
+            date_end            = '" . $date_end . "',
+            hour_begin          = '" . $hour_begin . "',
+            hour_end            = '" . $hour_end . "',
 
-			valid_time 			= '" . (int)$_POST['course_day_of'] . "',
+            valid_time          = '" . (int)$_POST['course_day_of'] . "',
 
-			min_num_subscribe 	= '" . (int)$_POST['min_num_subscribe'] . "',
-			max_num_subscribe 	= '" . (int)$_POST['max_num_subscribe'] . "',
+            min_num_subscribe   = '" . (int)$_POST['min_num_subscribe'] . "',
+            max_num_subscribe   = '" . (int)$_POST['max_num_subscribe'] . "',
 
-			course_type 		= '" . $_POST['course_type'] . "',
-			point_to_all 		= '" . (isset($_POST['point_to_all']) ? $_POST['point_to_all'] : 0) . "',
-			course_edition 		= '" . (isset($_POST['course_edition']) ? $_POST['course_edition'] : 0) . "',
-			selling 			= '" . (isset($_POST['course_sell']) ? 1 : 0) . "',
-			prize 				= '" . (isset($_POST['course_prize']) ? $_POST['course_prize'] : 0) . "',
-			policy_point 		= '" . $_POST['policy_point'] . "',
+            course_type         = '" . $_POST['course_type'] . "',
+            point_to_all        = '" . (isset($_POST['point_to_all']) ? $_POST['point_to_all'] : 0) . "',
+            course_edition      = '" . (isset($_POST['course_edition']) ? $_POST['course_edition'] : 0) . "',
+            selling             = '" . (isset($_POST['course_sell']) ? 1 : 0) . "',
+            prize               = '" . (isset($_POST['course_prize']) ? $_POST['course_prize'] : 0) . "',
+            policy_point        = '" . $_POST['policy_point'] . "',
 
-			course_quota 		= '" . $_POST['course_quota'] . "',
+            course_quota        = '" . $_POST['course_quota'] . "',
 
-			allow_overbooking 	= '" . (isset($_POST["allow_overbooking"]) ? 1 : 0) . "',
-			can_subscribe 		= '" . (int)$_POST["can_subscribe"] . "',
-			sub_start_date 		= " . ($_POST["can_subscribe"] == "2" ? "'" . $sub_start_date . "'" : 'NULL') . ",
-			sub_end_date 		= " . ($_POST["can_subscribe"] == "2" ? "'" . $sub_end_date . "'" : 'NULL') . ",
+            allow_overbooking   = '" . (isset($_POST["allow_overbooking"]) ? 1 : 0) . "',
+            can_subscribe       = '" . (int)$_POST["can_subscribe"] . "',
+            sub_start_date      = " . ($_POST["can_subscribe"] == "2" ? "'" . $sub_start_date . "'" : 'NULL') . ",
+            sub_end_date        = " . ($_POST["can_subscribe"] == "2" ? "'" . $sub_end_date . "'" : 'NULL') . ",
 
-			advance 			= '" . $_POST['advance'] . "',
-			show_result 		= '" . (isset($_POST['show_result']) ? 1 : 0) . "',
+            advance             = '" . $_POST['advance'] . "',
+            show_result         = '" . (isset($_POST['show_result']) ? 1 : 0) . "',
 
 
-			use_logo_in_courselist = '" . (isset($_POST['use_logo_in_courselist']) ? '1' : '0') . "',
+            use_logo_in_courselist = '" . (isset($_POST['use_logo_in_courselist']) ? '1' : '0') . "',
 
-			auto_unsubscribe = '" . (int)$_POST['auto_unsubscribe'] . "',
-			unsubscribe_date_limit = " . (isset($_POST['use_unsubscribe_date_limit']) && $_POST['use_unsubscribe_date_limit'] > 0 ? "'" . Format::dateDb($_POST['unsubscribe_date_limit'], 'date') . "'" : 'NULL') . "";
+            auto_unsubscribe = '" . (int)$_POST['auto_unsubscribe'] . "',
+            unsubscribe_date_limit = " . (isset($_POST['use_unsubscribe_date_limit']) && $_POST['use_unsubscribe_date_limit'] > 0 ? "'" . Format::dateDb($_POST['unsubscribe_date_limit'], 'date') . "'" : 'NULL') . "";
 
         if (isset($_POST['random_course_autoregistration_code'])) {
             $control = 1;
@@ -1097,8 +1097,8 @@ Class CourseAlms extends Model
         //--- remove course data ---------------------------------------------------
 
         $query_course = "SELECT imgSponsor, img_course, img_material, img_othermaterial, course_demo, course_type, has_editions
-			FROM %lms_course
-			WHERE idCourse = '" . (int)$id_course . "'";
+            FROM %lms_course
+            WHERE idCourse = '" . (int)$id_course . "'";
         $qres = sql_query($query_course);
         list($file_sponsor, $file_logo, $file_material, $file_othermaterial, $file_demo, $course_type, $course_edition) = sql_fetch_row($qres);
 
@@ -1182,14 +1182,14 @@ Class CourseAlms extends Model
         //delete org accesses
         if (!empty($arr_org_access)) {
             $query = "DELETE FROM %lms_organization_access
-				WHERE idOrgAccess IN (" . implode(",", $arr_org_access) . ")";
+                WHERE idOrgAccess IN (" . implode(",", $arr_org_access) . ")";
             $res = sql_query($query);
         }
 
         //delete lo params
         if (!empty($arr_lo_param)) {
             $query = "DELETE FROM %lms_lo_param
-				WHERE idParam IN (" . implode(",", $arr_lo_param) . ")";
+                WHERE idParam IN (" . implode(",", $arr_lo_param) . ")";
         }
 
         //--- end LOs --------------------------------------------------------------

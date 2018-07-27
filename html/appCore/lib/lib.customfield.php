@@ -212,6 +212,23 @@ class CustomFieldList {
 		return $result;
 	}
 
+    function getCustomFields($area) {
+        $db = DbConn::getInstance();
+
+        $query = "SELECT %adm_customfield.id_field, type_field, code, translation "
+                ." FROM %adm_customfield, %adm_customfield_lang"
+                ." WHERE area_code = '".$area."' and %adm_customfield_lang.id_field=%adm_customfield.id_field and lang_code='".getLanguage()."' ORDER BY sequence";
+        $rs = $db->query( $query );
+        $result = array();
+
+        while( $arr = $db->fetch_row($rs) ){
+            $result[$arr[FIELD_INFO_ID]] = $arr[3];
+        }     
+            
+        return $result;
+    }    
+    
+
 
 
   function getAllFieldsInfo($lang_code = false) {
@@ -419,7 +436,7 @@ class CustomFieldList {
 		SELECT COUNT(*)
 		FROM ".$this->getFieldEntryTable() ."
 		WHERE id_field = ".(int)$id_field." AND obj_entry = ".(int)$obj_entry."
-                AND id_field IN (SELECT id_field FROM core_customfield WHERE area_code='".$this->getFieldArea()."')";
+                AND id_field IN (SELECT id_field FROM %adm_customfield WHERE area_code='".$this->getFieldArea()."')";
                 if (is_array($sub_obj)){
                     $query = $query." AND id_obj IN (".implode(",",$sub_obj).")";
                 }
@@ -1801,6 +1818,76 @@ class CustomFieldList {
 
 		return $output;
 	}
+    
+    // get value of custom field type ORG_CHART 
+    function getValueCustomOrg($field_name, $node_name){
+        
+       $node_name_array = explode('/',$node_name);
+       $node_name = end($node_name_array);
+       $query = "select %adm_customfield_entry.obj_entry, %adm_customfield.type_field, %adm_customfield_lang.id_field
+                  from %adm_customfield_entry, %adm_customfield_lang, %adm_org_chart, %adm_customfield 
+                  where
+                  %adm_customfield_lang.lang_code = '".getLanguage()."' and %adm_customfield_lang.translation = '".$field_name."' and
+                  %adm_customfield_lang.id_field = %adm_customfield_entry.id_field and
+                  %adm_org_chart.lang_code = 'italian' and %adm_org_chart.translation = '".$node_name."' and                   
+                  %adm_customfield_entry.id_obj= %adm_org_chart.id_dir and
+                  %adm_customfield.id_field = %adm_customfield_lang.id_field";
+       
+        if(!$rs = sql_query( $query )) return false;
+
+        list($obj_entry, $type_field, $id_field) = sql_fetch_row($rs);
+        if($type_field=='textfield'){
+            return $obj_entry;       
+        }
+        if($type_field=='dropdown'){
+            return $this->getCheckValueCustom( $id_field, $obj_entry);       
+        }
+        
+        return '';
+        
+    }
+    
+    
+   function getValueCustomCourse($id_corso, $id_field){
+        
+         $query = 'select 
+                    obj_entry, type_field, %adm_customfield_entry.id_field from 
+                        %adm_customfield_entry, %adm_customfield
+                    where %adm_customfield.id_field = %adm_customfield_entry.id_field and  %adm_customfield_entry.id_field='.$id_field.' and 
+                    id_obj='.$id_corso; 
+   
+   
+      if(!$rs = sql_query( $query )) return false;
+   
+      list($obj_entry, $type_field, $id_field) = sql_fetch_row($rs);
+        if($type_field=='textfield'){
+            return $obj_entry;       
+        }
+        if($type_field=='dropdown'){
+            return $this->getCheckValueCustom( $id_field, $obj_entry);       
+        }    
+   
+                 
+    }
+
+    
+    
+    private function getCheckValueCustom($id_field, $valueOption){
+           $query = "Select  translation from %adm_customfield_son_lang, %adm_customfield_son
+                where 
+                lang_code='".getLanguage()."' 
+                and %adm_customfield_son_lang.id_field_son=%adm_customfield_son.id_field_son
+                and %adm_customfield_son.id_field=".$id_field." and %adm_customfield_son_lang.id_field_son=".$valueOption;
+                
+           if(!$rs = sql_query( $query )) return false;
+
+        list($translation) = sql_fetch_row($rs);
+        
+        return  $translation; 
+        
+    }
+
+    
 
 }
 ?>

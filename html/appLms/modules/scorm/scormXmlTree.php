@@ -57,11 +57,24 @@ $cpm = new CPManagerDb();
 
 $filepath = dirname(__FILE__) . '/../../' . $filepath;
 //die("->Open( $idReference, $idscorm_package, {$GLOBALS['dbConn']}, {$GLOBALS['prefix_lms']} ");
-if( !$cpm->Open( $idReference, $idscorm_package, $GLOBALS['dbConn'], $GLOBALS['prefix_lms'] ) ) {
-	echo 'Error: '. $cpm->errText . ' [' . $cpm->errCode .']';
+
+$bError = false;
+if( $bError == FALSE && !$cpm->Open( $idReference, $idscorm_package, $GLOBALS['dbConn'], $GLOBALS['prefix_lms'] ) ) {
+  $sError = 'Error: '. $cpm->errText . ' [' . $cpm->errCode .']';
+	$bError = true;
 }
-if( !$cpm->ParseManifest() ) {
-    echo 'Error: '. $cpm->errText . ' [' . $cpm->errCode .']';
+if( $bError == FALSE && !$cpm->ParseManifest() ) {
+  	if($cpm->errCode == SPSCORM_E_DB_ERROR){
+  	  $sError = 'Error: Generic db error';
+  	}
+  	else{
+      $sError = 'Error: '. $cpm->errText . ' [' . $cpm->errCode .']';
+  	}
+	  $bError = true;
+}
+if($bError){
+  echo $sError;
+  die();
 }
 
 $idUser = (int)getLogUserId();

@@ -159,6 +159,17 @@ class Report_Courses extends Report {
 		require_once(_adm_.'/class.module/class.directory.php');
 		require_once(_lms_.'/lib/lib.course.php');
 
+        //**** LRZ
+        require_once($GLOBALS['where_framework'].'/lib/lib.customfield.php');
+        $fman = new CustomFieldList();
+         
+        $fieldsCourse = $fman->getCustomFields('COURSE');
+        $customCourse = array();
+        foreach ($fieldsCourse as $keyCourse => $valCourse) {
+            $customCourse[] = array('id'=>$keyCourse, 'label'=>$valCourse, 'selected'=>false);
+        }
+        //****
+        
 		$lang =& DoceboLanguage::createInstance('report', 'framework');
 		$org_chart_subdivision 	= importVar('org_chart_subdivision', true, 0);
 
@@ -179,7 +190,8 @@ class Report_Courses extends Report {
 				'show_percent'=> true,
 				'show_suspended' => false,
 				'only_students' => false,
-				'show_assessment' => false
+				'show_assessment' => false  ,
+                'custom_fields_course' => array()
 			);
 		$ref = &$_SESSION['report_tempdata']['columns_filter'];
 
@@ -297,10 +309,19 @@ class Report_Courses extends Report {
 				.Form::getCheckBox($glang->def('_STATUS'), 'col_sel_status', 'cols[]', '_COURSESTATUS', is_showed('_COURSESTATUS', $ref))
 				.Form::getCheckBox($glang->def('_CATALOGUE'), 'col_sel_catalogue', 'cols[]', '_COURSECATALOGUE', is_showed('_COURSECATALOGUE', $ref))
 				.Form::getCheckBox($glang->def('_CREATION_DATE'), 'col_sel_publication', 'cols[]', '_PUBLICATION_DATE', is_showed('_PUBLICATION_DATE', $ref))
-                                .Form::getCheckBox($glang->def('_LABEL'), 'col_sel_label', 'cols[]', '_COURSELABEL', is_showed('_COURSELABEL', $ref))
-				.Form::getCloseFieldset()
-
-				.Form::getOpenFieldset(
+                .Form::getCheckBox($glang->def('_LABEL'), 'col_sel_label', 'cols[]', '_COURSELABEL', is_showed('_COURSELABEL', $ref))
+				.Form::getCloseFieldset() ;
+                
+                // LRZ: manage custom fields for COURSE
+                $box->body .= Form::getOpenFieldset("campi aggiuntivi per corsi", 'report');
+                foreach ($customCourse as $keyCourse =>$valCourse) {  
+                    $box->body .= Form::getCheckBox($glang->def($valCourse['label']), 'col_sel_'.$valCourse['label'], 'cols[]', '_'.$valCourse['label'], is_showed('_'.$valCourse['label'], $ref))        ;
+                }
+                $box->body .= Form::getCloseFieldset();
+                
+                
+                           
+				$box->body .= Form::getOpenFieldset(
 						Form::getInputCheckbox('show_classrooms_editions', 'show_classrooms_editions', 1, $show_classrooms_editions, "onclick=activateClassrooms();")
 						."&nbsp;&nbsp;".Lang::t('_CLASSROOM_FIELDS', 'report')
 					, 'fieldset_classroom_fields')
@@ -1403,8 +1424,22 @@ class Report_Courses extends Report {
 					&$classrooms_editions_info) {
 		require_once(_lms_.'/admin/modules/report/report_tableprinter.php');
 		$buffer = new ReportTablePrinter($type);
+        
+        //**** LRZ
+        require_once($GLOBALS['where_framework'].'/lib/lib.customfield.php');
+        $fman = new CustomFieldList();
+         
+        $fieldsCourse = $fman->getCustomFields('COURSE');
+        $customCourse = array();
+        foreach ($fieldsCourse as $keyCourse => $valCourse) {
+            $customCourse[] = array('id'=>$keyCourse, 'label'=>$valCourse);
+        }
+        //****
+        
+        
+        
                 
-                require_once(_lms_.'/admin/models/LabelAlms.php');
+        require_once(_lms_.'/admin/models/LabelAlms.php');
 		$label_model = new LabelAlms();
                 
 		$output = '';
@@ -1439,6 +1474,12 @@ class Report_Courses extends Report {
 		if(in_array('_COURSE_TYPE', $filter_cols)) $colspan_course++;
 		if(in_array('_AUTOREGISTRATION_CODE', $filter_cols)) $colspan_course++;
 
+        // LRZ - custom course field
+        foreach ($customCourse as $keyCourse =>$valCourse) {  
+              if (in_array('_'.$valCourse['label'], $filter_cols)) $colspan_course++;
+        }          
+        
+        
 		$colspan_classrooms_editions = 0;
 		if ($show_classrooms_editions) {
 			if (in_array('_TH_CLASSROOM_CODE', $filter_cols)) $colspan_classrooms_editions++;
@@ -1448,7 +1489,7 @@ class Report_Courses extends Report {
 		}
 
 		$colspan_stats = 0;
-		if(in_array('_INSCR', $filter_cols)) $colspan_stats++;
+		if(in_array('_INSCR', $filter_cols)) $colspan_stats += ($show_percent ? 2 : 1);
 		if(in_array('_MUSTBEGIN', $filter_cols)) $colspan_stats += ($show_percent ? 2 : 1);
 		if(in_array('_USER_STATUS_BEGIN', $filter_cols)) $colspan_stats += ($show_percent ? 2 : 1);
 		if(in_array('_COMPLETECOURSE', $filter_cols)) $colspan_stats += ($show_percent ? 2 : 1);
@@ -1463,10 +1504,10 @@ class Report_Courses extends Report {
 		$th2 = array();
 		$th2[] = array('colspan'=>$colspan_course, 'value'=>'');
 		if ($show_classrooms_editions) $th2[] = array('colspan'=> $colspan_classrooms_editions, 'style'=>'align-center', 'value' => Lang::t('_CLASSROOM', 'classroom'));
-		if (in_array('_INSCR', $filter_cols)) $th2[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_USER_STATUS_SUBS'));
-		if (in_array('_MUSTBEGIN', $filter_cols)) $th2[] = array('colspan'=>($show_percent ? 2 : 1), 'style'=>'align-center', 'value'=>$rg_lang->def('_MUSTBEGIN'));
-		if (in_array('_USER_STATUS_BEGIN', $filter_cols)) $th2[] = array('colspan'=>($show_percent ? 2 : 1), 'style'=>'align-center', 'value'=>$rg_lang->def('_USER_STATUS_BEGIN'));
-		if (in_array('_COMPLETECOURSE', $filter_cols)) $th2[] = array('colspan'=>($show_percent ? 2 : 1), 'style'=>'align-center', 'value'=>$rg_lang->def('_COMPLETED'));
+		if (in_array('_INSCR', $filter_cols)) $th2[] = array('colspan'=>($show_percent ? 2 : 1),'style'=>'align-center', 'value'=> "<b>".$rg_lang->def('_USER_STATUS_SUBS')."</b>");
+		if (in_array('_MUSTBEGIN', $filter_cols)) $th2[] = array('colspan'=>($show_percent ? 2 : 1), 'style'=>'align-center', 'value'=> "<b>".$rg_lang->def('_MUSTBEGIN')."</b>");
+		if (in_array('_USER_STATUS_BEGIN', $filter_cols)) $th2[] = array('colspan'=>($show_percent ? 2 : 1), 'style'=>'align-center', 'value'=>"<b>".$rg_lang->def('_USER_STATUS_BEGIN')."</b>");
+		if (in_array('_COMPLETECOURSE', $filter_cols)) $th2[] = array('colspan'=>($show_percent ? 2 : 1), 'style'=>'align-center', 'value'=> "<b>".$rg_lang->def('_COMPLETED')."</b>");
 
 		$th3 = array();
 
@@ -1493,6 +1534,11 @@ class Report_Courses extends Report {
 		if (in_array('_ADVANCE', $filter_cols)) $th3[] = $lang->def('_COURSE_ADVANCE');
 		if (in_array('_COURSE_TYPE', $filter_cols)) $th3[] = array('style'=>'align-center', 'value'=>$lang->def('_COURSE_TYPE'));
 		if (in_array('_AUTOREGISTRATION_CODE', $filter_cols)) $th3[] = $lang->def('_AUTOREGISTRATION_CODE');
+        // LRZ - custom field for courses
+        foreach ($customCourse as $keyCourse =>$valCourse) {  
+              if (in_array('_'.$valCourse['label'], $filter_cols)) $th3[] = $valCourse['label'];
+        }        
+                
 
 
 		if ($show_classrooms_editions) {
@@ -1503,7 +1549,8 @@ class Report_Courses extends Report {
 		}
 
 
-		if (in_array('_INSCR', $filter_cols)) $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_NUM'));
+		if (in_array('_INSCR', $filter_cols)){ $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_NUM','report'));
+        if ($show_percent) $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_PERC')); }
 		if (in_array('_MUSTBEGIN', $filter_cols)) { $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_NUM','report')); if ($show_percent) $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_PERC')); }
 		if (in_array('_USER_STATUS_BEGIN', $filter_cols)) { $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_NUM','report')); if ($show_percent) $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_PERC')); }
 		if (in_array('_COMPLETECOURSE', $filter_cols)) { $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_NUM','report')); if ($show_percent) $th3[] = array('style'=>'align-center', 'value'=>$rg_lang->def('_PERC')); }
@@ -1646,6 +1693,13 @@ class Report_Courses extends Report {
 			if (in_array('_AUTOREGISTRATION_CODE', $filter_cols)) $trow[] = $info_course['autoregistration_code'];
 
 
+           // LRZ 
+            foreach ($customCourse as $keyCourse =>$valCourse) {  
+                    if (in_array('_'.$valCourse['label'], $filter_cols)) $trow[] = "<i></i>".$fman->getValueCustomCourse($info_course['idCourse'],$valCourse['id'] );   ;
+            }        
+                    
+            
+            
 			if ($show_classrooms_editions) {
 				$e_code = $e_name = $date_1 = $date_2 = '';
 				if ($id_date > 0 && isset($classrooms_editions_info['classrooms'][$id_date])) {
@@ -1666,6 +1720,8 @@ class Report_Courses extends Report {
 				if(in_array('_INSCR', $filter_cols))
 				{
 					$trow[] = array('style'=>'img-cell', 'value'=>$num_iscr[$index]);
+                    if ($show_percent) $trow[] = array('style'=>'img-cell', 'value'=>'-');
+                    
 				}
 				$tot_iscr += $num_iscr[$index];
 
@@ -1783,7 +1839,11 @@ class Report_Courses extends Report {
 
 		$tfoot = array( array('colspan'=>($colspan_course + $colspan_classrooms_editions), 'value'=>$lang->def('_TOTAL')) );
 
-		if (in_array('_INSCR', $filter_cols)) $tfoot[] = $tot_iscr;
+		if (in_array('_INSCR', $filter_cols)) {
+            $tfoot[] = $tot_iscr;
+            if ($show_percent) $tfoot[] = '-';
+        }    
+            
 		if (in_array('_MUSTBEGIN', $filter_cols)) {
 			$tfoot[] = $tot_nobegin;
 			if ($show_percent) $tfoot[] = ( $tot_nobegin ? number_format(( ($tot_nobegin/$tot_iscr)*100 ), 2 , '.', '').'%' : 'n.d.' );
