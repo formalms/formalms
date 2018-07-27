@@ -5,16 +5,40 @@
 |   http://www.formalms.org                                                 |
 |   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
 |                                                                           |
-|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
-|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
------------------------------------------------------------------------------
-CHANGELOG
+FORMA LMS
+RELEASE CHANGELOG
 
+---------------------------------------------------------------------------------------
+forma.lms 2.1
+---------------------------------------------------------------------------------------
+Release date: 2018 july 28
+
+#multi | Bug | SECUIRTY: Vulnerability fixes
+#multi | Bug | SECUIRTY: added robots.txt
+#18816 | Bug | Import File Test Questions . regular expression not detect correct
+#18775 | Bug | Privacy - OrgChart dependencies not deleted
+#18681 | Bug | Privacy acceptance on login always takes to catalog 
+#18737 | Bug | Privacy is always mandatory even if config unchecked
+#6949  | Bug | File upload customfield not working on user registration
+#18684 | Bug | UI Fixes
+#18985 | Bug | Test: MC question passed even with wrong answers
+#19016 | Bug | Test:  mandatory answers option not working properly
+#18830 | Bug | Fixed connection method during installation
+#18925 | Bug | API error with apex parameters and double key
+#18909 | Bug | The database informations are correctly gathered
+#18817 | Bug | Fix template path inside LmsController
+#18808 | Bug | Error on moderated registration by admins
+#multi | Bug | Languages: several missing translation keys added
+#multi | Change Request | OrgChart custom fields
+#multi | Change Request | Added editor in privacy policy management 
+#multi | Change Request | View all permission now applies only to admins
+
+---------------------------------------------------------------------------------------
 forma.lms 2.0
-Relase date: 2018/06/15
------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+Release date: 2018 june 19
 
 
 CORE ENANCHEMENTS
@@ -38,7 +62,8 @@ CORE ENANCHEMENTS
 LAYOUT & UX
 
 - New Responsive Layout
-- Global stylesheet refactoring, introducing SASS (take a look at the included KSS styleguide under /templates/standard/styleguide/section-3.html)
+- Global stylesheet refactoring, introducing SASS (take a look at the included KSS 
+  styleguide under /templates/standard/styleguide/section-3.html)
 - Simplified general user navigation and usability improvements
 - Introduced Bootstrap/jQuery framework
 - Refactored and redesigned courselist and course catalog pages
