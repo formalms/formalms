@@ -790,6 +790,9 @@ function play ($object_test , $id_param)
 								if ($(item).find('input[type=\"checkbox\"]').is(':checked')) {
 									num_answer_chk++;
 								}
+								else if ($(item).find('textarea').val()) {
+									num_answer_chk++;
+								}
 							});
 
                             num_answer_radio = $('.answer_question input[type=\"radio\"]:checked').length;
@@ -797,19 +800,29 @@ function play ($object_test , $id_param)
 
 							console.log('TOT: ' + num_answer_tot);
 							console.log('CHECKED: ' + num_answer_tot_chk);
+							console.log('ENABLE: ' + enable);
+							console.log('MANDATORY: ' + mandatory);
 
-							if (enable && num_answer_tot_chk >= num_answer_tot) {
+							if (mandatory) {
+								if (num_answer_tot_chk >= num_answer_tot) {
+									$('#next_page').prop('disabled', false);
+	                                if($('#answer_info'))
+	                                    $('#answer_info').hide();
+								    if($('#show_result'))
+									    $('#show_result').prop('disabled', false);
+								} else {
+	                            	$('#next_page').prop('disabled', true);
+	                                if($('#answer_info'))
+	                                    $('#answer_info').show();
+								    if($('#show_result'))
+									    $('#show_result').prop('disabled', true);
+								}
+							} else {
 								$('#next_page').prop('disabled', false);
                                 if($('#answer_info'))
                                     $('#answer_info').hide();
 							    if($('#show_result'))
 								    $('#show_result').prop('disabled', false);
-							} else {
-                            	$('#next_page').prop('disabled', true);
-                                if($('#answer_info'))
-                                    $('#answer_info').show();
-							    if($('#show_result'))
-								    $('#show_result').prop('disabled', true);
 							}
 						}
 
@@ -833,9 +846,7 @@ function play ($object_test , $id_param)
 								$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
 								$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
 							});
-						})(jQuery);
 
-						(function($) {
 							$(document).on('change', '.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]', function() {
 								tot_question = $('.answer_question input:checked').length;
 
