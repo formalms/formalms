@@ -429,8 +429,8 @@ class TextEntry_Question extends Question {
 		list($id_answer, $answer) = sql_fetch_row($re_answer);
 		$num_char = strlen($answer);
 		$text = '<input class="test_te_input" type="text" id="quest_'.$id_quest.'" name="quest['.$id_quest.']" '
-				.'maxlength="'.strlen($answer).'" '.'autocomplete="off" '
-				.'value="'.( $find_prev ? $answer_do : str_repeat($lang->def('_QUEST_TE_ANSWERHERE'), $num_char) ).'"'
+				.'maxlength="'.strlen($answer).'" autocomplete="off" placeholder="'.str_repeat($lang->def('_QUEST_TE_ANSWERHERE'), $num_char).'" '
+				.'value="'.( $find_prev ? $answer_do : '' ).'"'
 				.( $find_prev && $freeze ? ' disabled="disabled"' : '' )
 				.' />';
 		

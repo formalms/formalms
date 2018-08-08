@@ -783,7 +783,7 @@ function play ($object_test , $id_param)
 	
 	$checkState = "<script type=\"text/javascript\">
 						function toggleNext(enable) {
-							num_answer_tot = $('.test_answer_space .play_question').length;
+							num_answer_tot = $('.test_answer_space .answer_question').length;
 							num_answer_chk = 0;
 
 							$('.answer_question').each(function(index, item) {
@@ -793,15 +793,18 @@ function play ($object_test , $id_param)
 								else if ($(item).find('textarea').val()) {
 									num_answer_chk++;
 								}
+								else if ($(item).find('select').val() != undefined && $(item).find('select').val() != 0) {
+									num_answer_chk++;
+								}
+								else if ($(item).find('input[type=\"text\"]').val()) {
+									num_answer_chk++;
+								}
 							});
 
                             num_answer_radio = $('.answer_question input[type=\"radio\"]:checked').length;
                             num_answer_tot_chk = num_answer_radio + num_answer_chk;
 
-							console.log('TOT: ' + num_answer_tot);
-							console.log('CHECKED: ' + num_answer_tot_chk);
-							console.log('ENABLE: ' + enable);
-							console.log('MANDATORY: ' + mandatory);
+							console.log('TOT: ' + num_answer_tot + ' CHECKED: ' + num_answer_tot_chk);
 
 							if (mandatory) {
 								if (num_answer_tot_chk >= num_answer_tot) {
@@ -862,6 +865,22 @@ function play ($object_test , $id_param)
 
 							$(document).on('keyup', '.answer_question textarea', function() {
 								if ($('.answer_question textarea').val().length > 0) {
+									toggleNext(true);
+								} else {
+                                	toggleNext(false);
+                                }
+							});
+
+							$(document).on('keyup', '.answer_question input', function() {
+								if ($('.answer_question input').val().length > 0) {
+									toggleNext(true);
+								} else {
+                                	toggleNext(false);
+                                }
+							});
+
+							$(document).on('change', '.answer_question select', function() {
+								if ($('.answer_question select').val().length > 0) {
 									toggleNext(true);
 								} else {
                                 	toggleNext(false);
