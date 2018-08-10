@@ -13,7 +13,7 @@ RELEASE CHANGELOG
 ---------------------------------------------------------------------------------------
 forma.lms 2.1
 ---------------------------------------------------------------------------------------
-Release date: 2018 july 28
+Release date: 2018 august 28
 
 #multi | Bug | SECUIRTY: Vulnerability fixes
 #multi | Bug | SECUIRTY: added robots.txt
