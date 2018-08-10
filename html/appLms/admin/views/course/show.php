@@ -38,18 +38,18 @@ $languages = array(
         only screen and (max-width: 870px),
         (min-device-width: 870px) and (max-device-width: 1024px)  {            
 
-                    #yuievtautoid-0 td:nth-of-type(1):before { content: "Id"; }
-                    #yuievtautoid-0 td:nth-of-type(1):before { content: "Codice"; }
+                    #yuievtautoid-0 td:nth-of-type(1):before { content: "'.Lang::t('_DIRECTORY_GROUPID', 'admin_directory').'"; }
+                    #yuievtautoid-0 td:nth-of-type(1):before { content: "'.Lang::t('_CODE', 'cart').'"; }
                     #yuievtautoid-0 td:nth-of-type(2):before { content: "'.$nome.'"; }
-                    #yuievtautoid-0 td:nth-of-type(3):before { content: "Tipo"; }
-                    #yuievtautoid-0 td:nth-of-type(4):before { content: "Studenti"; }
-                    #yuievtautoid-0 td:nth-of-type(5):before { content: "In attesa"; }
-                    #yuievtautoid-0 td:nth-of-type(6):before { content: "Iscritto"; }
-                    #yuievtautoid-0 td:nth-of-type(7):before { content: "Classe/Edizione"; }
-                    #yuievtautoid-0 td:nth-of-type(8):before { content: "Assegnazione Certificati"; }
-                    #yuievtautoid-0 td:nth-of-type(9):before { content: "Competenze"; }
-                    #yuievtautoid-0 td:nth-of-type(10):before { content: "Assegna un nuovo menu al corso"; } 
-                    #yuievtautoid-0 td:nth-of-type(11):before { content: "Crea una copia"; } 
+                    #yuievtautoid-0 td:nth-of-type(3):before { content: "'.Lang::t('_TYPE', 'standard').'"; }
+                    #yuievtautoid-0 td:nth-of-type(4):before { content: "'.Lang::t('_STUDENTS', 'coursereport').'"; }
+                    #yuievtautoid-0 td:nth-of-type(5):before { content: "'.Lang::t('_WAITING', 'standard').'"; }
+                    #yuievtautoid-0 td:nth-of-type(6):before { content: "'.Lang::t('_INSCR', 'report').'"; }
+                    #yuievtautoid-0 td:nth-of-type(7):before { content: "'.Lang::t('_CLASSROOM_EDITION', 'course').'"; }
+                    #yuievtautoid-0 td:nth-of-type(8):before { content: "'.Lang::t('_CERTIFICATE_ASSIGN', 'certificate').'"; }
+                    #yuievtautoid-0 td:nth-of-type(9):before { content: "'.Lang::t('_MYCOMPETENCES', 'menu_over').'"; }
+                    #yuievtautoid-0 td:nth-of-type(10):before { content: "'.Lang::t('_ASSIGN_MENU', 'course').'"; } 
+                    #yuievtautoid-0 td:nth-of-type(11):before { content: "'.Lang::t('_MAKE_A_COPY', 'standard').'"; } 
                     #yuievtautoid-0 td:nth-of-type(12):before { content: "'.$modifica.'"; } 
                     #yuievtautoid-0 td:nth-of-type(13):before { content: "'.$cancella.'"; } 
                     }        
