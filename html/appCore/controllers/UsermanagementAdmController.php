@@ -1436,9 +1436,7 @@ class UsermanagementAdmController extends AdmController {
 			} elseif ($save) {
 				$selection = $selector->getSelection($_POST);
 
-				$singlenode = Get::sett('orgchart_singlenode', '');
-				if ($singlenode){ // se in configuazione è impostata l'univocita della posizione nell'organigramma per l'utente
-					// eseguo il controllo ed eventualmente do l'errore
+				if ( Get::sett('orgchart_singlenode', 'off') == 'on' ){
 					require_once(_lib_.'/lib.user_profile.php');
 					require_once(_adm_.'/modules/org_chart/tree.org_chart.php');
 
