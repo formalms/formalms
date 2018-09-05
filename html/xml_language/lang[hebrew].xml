@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180620</DATE>
+  <DATE>20180720</DATE>
   <LANG id="hebrew">
     <lang_code>hebrew</lang_code>
     <lang_description>&#x5E2;&#x5D1;&#x5E8;&#x5D9;&#x5EA;</lang_description>
@@ -837,7 +837,9 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="course_selector&amp;_SEL_COURSE" attributes="" save_date="2016-08-02 14:02:56"><![CDATA[קורסים]]></key>
       </module>
       <module id="customer_help">
+        <key id="customer_help&amp; &#9; _CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2018-07-20 10:31:26"><![CDATA[Disclaimer - assistenza utenti]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2016-08-02 13:56:30"><![CDATA[תמיכה]]></key>
+        <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:29:58"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
         <key id="customer_help&amp;_README_HELP" attributes="" save_date="2015-09-08 18:15:37"><![CDATA[<!-- here you can put some help text -->]]></key>
       </module>
       <module id="dashboard">
@@ -1400,6 +1402,7 @@ Otherwise, you must register in our system, following this link: <br />
       </module>
       <module id="message">
         <key id="message&amp;_ATTACH_TITLE" attributes="" save_date="2016-12-16 16:58:07"><![CDATA[ההודעה כוללת קבצים מצורפים]]></key>
+        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:28:32"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
         <key id="message&amp;_FILTER_MESSAGE_FOR" attributes="" save_date="2016-12-16 16:57:40"><![CDATA[שלח הודעה למשתמשים של הקורס:]]></key>
         <key id="message&amp;_HIGH" attributes="" save_date="2016-12-16 16:55:38"><![CDATA[גבוה]]></key>
         <key id="message&amp;_INBOX" attributes="" save_date="2016-12-16 16:57:13"><![CDATA[התקבל]]></key>
@@ -2282,6 +2285,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="standard&amp;_SELECT_VIDEO_TYPE" attributes="" save_date="2016-12-16 17:49:21"><![CDATA[בחר את רוחב הפס]]></key>
         <key id="standard&amp;_SEND" attributes="" save_date="2016-12-16 17:49:43"><![CDATA[שלח]]></key>
         <key id="standard&amp;_SENDER" attributes="" save_date="2016-08-02 14:19:19"><![CDATA[שולח]]></key>
+        <key id="standard&amp;_SEND_CC" attributes="" save_date="2018-07-20 10:34:04"><![CDATA[Metti in cc]]></key>
         <key id="standard&amp;_SEND_TO" attributes="" save_date="2016-12-16 17:49:48"><![CDATA[שלח אל]]></key>
         <key id="standard&amp;_SET" attributes="" save_date="2016-12-16 17:50:09"><![CDATA[סט]]></key>
         <key id="standard&amp;_SHORTDESC" attributes="" save_date="2016-12-16 17:50:14"><![CDATA[תיאור קצר]]></key>

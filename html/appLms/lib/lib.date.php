@@ -853,15 +853,20 @@ class DateManager
 			$adminManager = new AdminPreference();
 			$is_admin = true;
 		}
+        
+		$view_all_perm = checkPerm('view_all', true, 'presence');
 
-		$query =	"SELECT u.idst, u.userid, u.firstname, u.lastname"
-					." FROM ".$this->user_date_table.' AS d'
-					." JOIN ".$this->courseuser_table.' AS c ON c.idUser = d.id_user'
-					." JOIN ".$this->user_table.' AS u ON u.idst = d.id_user'
-					." WHERE d.id_date = ".$id_date
-					." AND c.level = 3"
-					.($is_admin ?" AND ".$adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'd.id_user') : '')
-					." ORDER BY u.lastname, u.firstname, u.userid";
+		$query = "SELECT u.idst, u.userid, u.firstname, u.lastname"
+				." FROM ".$this->user_date_table.' AS d'
+				." JOIN ".$this->courseuser_table.' AS c ON c.idUser = d.id_user'
+				." JOIN ".$this->user_table.' AS u ON u.idst = d.id_user'
+				." WHERE d.id_date = ".$id_date
+				." AND c.level = 3";
+
+		if ( !$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin' ) {
+			$query.= ($is_admin ?" AND ".$adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'd.id_user') : '');	
+		}
+		$query.= " ORDER BY u.lastname, u.firstname, u.userid";
 
 		$result = sql_query($query);
 		$res = array();

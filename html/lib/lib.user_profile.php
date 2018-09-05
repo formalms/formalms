@@ -2342,14 +2342,16 @@ class UserProfileViewer {
 				return $this->_lang->def('_OLDPASSWRONG');
 			}
 			// control password
-			if(strlen($_POST['up_new_pwd']) < Get::sett('pass_min_char')) {
-
-				return $this->_lang->def('_PASSWORD_TOO_SHORT');
+			require_once(\Forma::inc(_base_ . '/lib/lib.usermanager.php'));
+			$options = new UserManagerOption();
+			$l_pass_min_char     = $options->getOption('pass_min_char');
+			if(strlen($_POST['up_new_pwd']) < $l_pass_min_char) {
+				return $this->_lang->def('_PASSWORD_TOO_SHORT', 'register');
 			}
 			if( Get::sett('pass_alfanumeric') == 'on' ) {
 				if( !preg_match('/[a-z]/i', $_POST['up_new_pwd']) || !preg_match('/[0-9]/', $_POST['up_new_pwd']) ) {
 
-					return $this->_lang->def('_ERR_PASSWORD_MUSTBE_ALPHA');
+					return $this->_lang->def('_ERR_PASSWORD_MUSTBE_ALPHA', 'register');
 				}
 			}
 			//check password history

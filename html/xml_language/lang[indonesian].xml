@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171211</DATE>
+  <DATE>20180720</DATE>
   <LANG id="indonesian">
     <lang_code>indonesian</lang_code>
     <lang_description>Indonesian</lang_description>
@@ -381,7 +381,6 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meminta kode melalui modul kode]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meminta kode tree yang dipilih user dari daftar dalam menu dropdown]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meminta kode tree yang harus dimasukkan secara manual oleh user]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2017-04-10 16:39:26"><![CDATA[Meminta kombinasi tree code dan kode kursus yang harus dimasukkan secara manual oleh user. Kode tree dan kode kursus, masing-masing harus terdiri atas 10 karakter, sehingga didapatkan kode 20 karakter]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[user-user Max Audio]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max user per kamar]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jumlah kamar maksimal]]></key>
@@ -812,7 +811,9 @@ Jika tidak, anda harus mendaftar dahulu di sistem kami, dengan mengikuti link be
         <key id="course_selector&amp;_SEL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kursus]]></key>
       </module>
       <module id="customer_help">
+        <key id="customer_help&amp; &#9; _CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2018-07-20 10:31:26"><![CDATA[Disclaimer - assistenza utenti]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pusat Informasi]]></key>
+        <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:29:58"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
         <key id="customer_help&amp;_README_HELP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<!-- here you can put some help text -->]]></key>
       </module>
       <module id="dashboard">
@@ -1347,7 +1348,6 @@ Untuk mengubah kata-kata ini, silahkan menuju ke pengaturan Admin/Bahasa, cari <
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Lompat ke menu utama]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Lompat ke informasi yang berhubungan dengan kursus ini]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Komunitas]]></key>
-        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aktifkan kursus]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Area admin]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kampus]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Menu umum]]></key>
@@ -1367,6 +1367,7 @@ Untuk mengubah kata-kata ini, silahkan menuju ke pengaturan Admin/Bahasa, cari <
       </module>
       <module id="message">
         <key id="message&amp;_ATTACH_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pesan mempunyai lampiran]]></key>
+        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:28:32"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
         <key id="message&amp;_FILTER_MESSAGE_FOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tunjukkan pesan yang berkaitan dengan kursus:]]></key>
         <key id="message&amp;_HIGH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tinggi]]></key>
         <key id="message&amp;_INBOX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Diterima]]></key>
@@ -2217,6 +2218,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_SELECT_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pilih semua]]></key>
         <key id="standard&amp;_SEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kirim]]></key>
         <key id="standard&amp;_SENDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pengirim]]></key>
+        <key id="standard&amp;_SEND_CC" attributes="" save_date="2018-07-20 10:34:04"><![CDATA[Metti in cc]]></key>
         <key id="standard&amp;_SEND_TO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kirim kepada]]></key>
         <key id="standard&amp;_SET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Set]]></key>
         <key id="standard&amp;_SHORTDESC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Deskripsi singkat]]></key>

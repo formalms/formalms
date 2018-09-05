@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171211</DATE>
+  <DATE>20180720</DATE>
   <LANG id="hungarian">
     <lang_code>hungarian</lang_code>
     <lang_description>Hungarian</lang_description>
@@ -381,7 +381,6 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[A kód modul által létrehozott kód kérése]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Legördülő menüből felhasználó által kiválasztott fa-kód kérése]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Felhasználó által beírt fa-kód kérése]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2017-04-10 16:39:35"><![CDATA[Felhasználó által beírt fa-kód és tanfolyam kód kombináció kérése. A fa-kódok és a tanfolyam kódok 10-10 karakterből állnak, így összesen 20 karakteres kód]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximális hallgató felhasználó]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Szobánkénti maximális felhasználó]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maximális szobák]]></key>
@@ -812,7 +811,9 @@ Egyébként regisztrálni kell a rendszerünkbe az alábbi linken: <br />
         <key id="course_selector&amp;_SEL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tanfolyamok]]></key>
       </module>
       <module id="customer_help">
+        <key id="customer_help&amp; &#9; _CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2018-07-20 10:31:26"><![CDATA[Disclaimer - assistenza utenti]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Segítség (Help Desk)]]></key>
+        <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:29:58"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
         <key id="customer_help&amp;_README_HELP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<!-- here you can put some help text -->]]></key>
       </module>
       <module id="dashboard">
@@ -1347,7 +1348,6 @@ A fenti szöveg módosításához lépj be az Adminisztrátor/Nyelv kezeléshez,
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Ugrás a fő menühöz]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Ugrás a tanfolyammal összefüggő információidhoz]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Közösség]]></key>
-        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tanfolyam aktiválása]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Admin felület]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Egyetem]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Általános menü]]></key>
@@ -1367,6 +1367,7 @@ A fenti szöveg módosításához lépj be az Adminisztrátor/Nyelv kezeléshez,
       </module>
       <module id="message">
         <key id="message&amp;_ATTACH_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Az üzenetnek csatolmánya van]]></key>
+        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:28:32"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
         <key id="message&amp;_FILTER_MESSAGE_FOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Csak a tanfolyam üzeneteit mutassa:]]></key>
         <key id="message&amp;_HIGH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Magas]]></key>
         <key id="message&amp;_INBOX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Érkezett]]></key>
@@ -2217,6 +2218,7 @@ Jelszó: [password]]]></key>
         <key id="standard&amp;_SELECT_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Összes kiválasztása]]></key>
         <key id="standard&amp;_SEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Küld]]></key>
         <key id="standard&amp;_SENDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Feladó]]></key>
+        <key id="standard&amp;_SEND_CC" attributes="" save_date="2018-07-20 10:34:04"><![CDATA[Metti in cc]]></key>
         <key id="standard&amp;_SEND_TO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Küldés]]></key>
         <key id="standard&amp;_SET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Beállít]]></key>
         <key id="standard&amp;_SHORTDESC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rövid leírás]]></key>

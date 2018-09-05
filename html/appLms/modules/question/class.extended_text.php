@@ -287,9 +287,9 @@ class ExtendedText_Question extends Question {
 			.'<div class="title_question"><label for="quest_'.$id_quest.'">'.$num_quest.') '
 			.$title_quest.'</label></div>'
 			.'<div class="answer_question">'
-			.'<textarea cols="50" rows="7" id="quest_'.$id_quest.'" name="quest['.$id_quest.']"'
+			.'<textarea cols="50" rows="7" id="quest_'.$id_quest.'" name="quest['.$id_quest.']" placeholder="'.$lang->def('_QUEST_FREEANSWER').'"'
 			.( $find_prev && $freeze ? ' disabled="disabled"' : '' ).'>'
-			.( $find_prev ? $answer_do : $lang->def('_QUEST_FREEANSWER') ).'</textarea>'
+			.( $find_prev ? $answer_do : '' ).'</textarea>'
 			.'</div>'
 			.'</div>';
 	}

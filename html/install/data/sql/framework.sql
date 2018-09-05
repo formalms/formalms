@@ -629,7 +629,7 @@ CREATE TABLE IF NOT EXISTS `core_db_upgrades` (
 -- Dump dei dati per la tabella `core_db_upgrades`
 --
 
-INSERT INTO `core_db_upgrades` (`script_id`, `script_name`, `script_description`, `script_version`, `core_version`, `creation_date`, `execution_date`) VALUES(1, 'add_log_db_upgrades.sql', 'Creazione tabella di log per script update db', '1.0', '3.0.6', '2016-10-06 08:47:53', '2016-10-06 08:47:53');
+INSERT INTO `core_db_upgrades` (`script_id`, `script_name`, `script_description`, `script_version`, `core_version`, `creation_date`, `execution_date`) VALUES(1, 'add_log_db_upgrades.sql', 'Creazione tabella di log per script update db', '1.0', '2.0', '2016-10-06 08:47:53', '2016-10-06 08:47:53');
 
 
 -- --------------------------------------------------------
@@ -2506,7 +2506,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('Clear_Twig_Cache', 'index.php?r=adm/setting/clearTwigCache', 'button', 2, 'Twig Cache', 13, 0, 0, 0, ''),
 ('common_admin_session', 'on', 'enum', 3, 'security', 8, 24, 1, 0, ''),
 ('conference_creation_limit_per_user', '99999999999', 'string', 255, '0', 6, 0, 1, 0, ''),
-('core_version', '2.0', 'string', 255, '0', 1, 0, 1, 1, ''),
+('core_version', '2.1', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('course_block', 'off', 'enum', 3, '0', 4, 13, 1, 0, ''),
 ('course_quota', '500', 'string', 255, '0', 4, 7, 1, 0, ''),
 ('currency_symbol', '&euro;', 'string', 10, '0', 5, 2, 1, 0, ''),

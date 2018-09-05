@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180702</DATE>
+  <DATE>20180720</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -934,7 +934,9 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="course_selector&amp;_SEL_COURSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Courses]]></key>
       </module>
       <module id="customer_help">
+        <key id="customer_help&amp; &#9; _CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2018-07-20 10:31:26"><![CDATA[Disclaimer - assistenza utenti]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Help Desk]]></key>
+        <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:29:58"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
         <key id="customer_help&amp;_README_HELP" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[<!-- here you can put some help text -->]]></key>
       </module>
       <module id="dashboard">
@@ -1545,6 +1547,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
       </module>
       <module id="message">
         <key id="message&amp;_ATTACH_TITLE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[The message has attachments]]></key>
+        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:28:32"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
         <key id="message&amp;_FILTER_MESSAGE_FOR" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Send a message to users of the course:]]></key>
         <key id="message&amp;_HIGH" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[High]]></key>
         <key id="message&amp;_INBOX" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Received]]></key>
@@ -2465,6 +2468,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_SELECT_VIDEO_TYPE" attributes="" save_date="2017-04-11 18:41:28"><![CDATA[Select the bandwidth]]></key>
         <key id="standard&amp;_SEND" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Send]]></key>
         <key id="standard&amp;_SENDER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Sender]]></key>
+        <key id="standard&amp;_SEND_CC" attributes="" save_date="2018-07-20 10:34:04"><![CDATA[Metti in cc]]></key>
         <key id="standard&amp;_SEND_TO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Send to]]></key>
         <key id="standard&amp;_SET" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Set]]></key>
         <key id="standard&amp;_SET_AS_DEFAULT" attributes="" save_date="2018-06-07 15:16:59"><![CDATA[Set as Default]]></key>

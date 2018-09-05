@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20171211</DATE>
+  <DATE>20180720</DATE>
   <LANG id="turkish">
     <lang_code>turkish</lang_code>
     <lang_description>Turkish</lang_description>
@@ -395,7 +395,6 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kod modülü ile yaratılmış bir kod isteminde bulun]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcının açılan menü listesinden seçtiği bir ağaç kod isteminde bulun]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcı tarafından elle girilmesi gereken bir ağaç kod isteminde bulun]]></key>
-        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2017-04-10 16:38:34"><![CDATA[Kullanıcı tarafından elle girilmesi gereken ağaç kod ve ders kodu bileşimi isteminde bulun. Ağaç ve ders kodlarının her biri 10 karakterden oluşmalı ki 20 karakterlik bir kod elde edilsin]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimum İşitsel kullanıcılar]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oda başına maksimum kullanıcı]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimum odalar]]></key>
@@ -826,7 +825,9 @@ Ya da bu bağlantı üzerinden sistemimize kayıt olabilirsiniz: <br />
         <key id="course_selector&amp;_SEL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dersler]]></key>
       </module>
       <module id="customer_help">
+        <key id="customer_help&amp; &#9; _CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2018-07-20 10:31:26"><![CDATA[Disclaimer - assistenza utenti]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yardım Masası]]></key>
+        <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:29:58"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
         <key id="customer_help&amp;_README_HELP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<!-- here you can put some help text -->]]></key>
       </module>
       <module id="dashboard">
@@ -1361,7 +1362,6 @@ Bu kelimeleri değiştirmek için lütfen Admin/Language yönetimine gidin, <b>l
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Ana menüye atla]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Bu ders ile ilgili bilgiye atla]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Topluluk]]></key>
-        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dersi etkinleştir]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yönetim Alanı]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kampüs]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Genel menü]]></key>
@@ -1381,6 +1381,7 @@ Bu kelimeleri değiştirmek için lütfen Admin/Language yönetimine gidin, <b>l
       </module>
       <module id="message">
         <key id="message&amp;_ATTACH_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mesajda eklentiler var]]></key>
+        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:28:32"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
         <key id="message&amp;_FILTER_MESSAGE_FOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mesajları gösterilecek ders:]]></key>
         <key id="message&amp;_HIGH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yüksek]]></key>
         <key id="message&amp;_INBOX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alındı]]></key>
@@ -2231,6 +2232,7 @@ Kullanıcı adı: [userid]
         <key id="standard&amp;_SELECT_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hepsini seç]]></key>
         <key id="standard&amp;_SEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gönder]]></key>
         <key id="standard&amp;_SENDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gönderen]]></key>
+        <key id="standard&amp;_SEND_CC" attributes="" save_date="2018-07-20 10:34:04"><![CDATA[Metti in cc]]></key>
         <key id="standard&amp;_SEND_TO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gönderilen]]></key>
         <key id="standard&amp;_SET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ayarla]]></key>
         <key id="standard&amp;_SHORTDESC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kısa açıklama]]></key>
