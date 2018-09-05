@@ -21,7 +21,7 @@
  * db name
  * charset to use in the db connection
  */
-$cfg['db_type'] = 'mysql';
+$cfg['db_type'] = 'mysqli';
 $cfg['db_host'] = 'localhost';
 $cfg['db_user'] = 'root';
 $cfg['db_pass'] = '';

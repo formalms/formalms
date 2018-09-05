@@ -43,10 +43,8 @@ function checkPerm($mode, $return_value = false, $use_mod_name = false, $is_publ
 	}
 	
 	if(Docebo::user()->matchUserRole($role)) {
-		
 		return true;
 	} else {
-		
 		if($return_value) { return false; }
 		else { die("You can't access".$role); }
 	}

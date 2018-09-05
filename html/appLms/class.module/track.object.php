@@ -262,7 +262,7 @@ class Track_Object {
 		} else {
 			$query = "SELECT idReference, status "
 					." FROM ".self::getEnvironmentTable($environment).""
-					." WHERE ((idReference IN ( ".implode( ',', $idList)." ))"
+					." WHERE ((idReference IN ( ".rtrim(implode( ',', $idList), ',')." ))"
 					."   AND (idUser = '".(int)$idUser."'))";
 		}
 				// ."   AND ((status = 'completed') OR (status = 'passed')))";

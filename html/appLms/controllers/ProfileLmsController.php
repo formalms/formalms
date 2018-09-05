@@ -48,11 +48,15 @@ class ProfileLmsController extends LmsController {
 	}
 
 	public function show() {
+
 		if (!defined("LMS")) {
 			checkRole('/lms/course/public/profile/view', false);
 		} else {
 			checkPerm('view', false, 'profile', 'lms');
 		}
+
+		/** Force show lms_user template */
+        $_SESSION['layoutToRender'] = Layout::LAYOUT_LMS_USER;
 
 		require_once(_lms_.'/lib/lib.lms_user_profile.php');
 

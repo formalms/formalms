@@ -146,7 +146,10 @@ class LmsModule {
 		return array( 
 			'view' => array( 	'code' => 'view',
 								'name' => '_VIEW',
-								'image' => 'standard/view.png')
+								'image' => 'standard/view.png'),
+			'view_all' => array( 	'code' => 'view_all',
+						'name' => '_VIEW_ALL',
+						'image' => 'standard/moduser.png'),
 		);
 	}
 	

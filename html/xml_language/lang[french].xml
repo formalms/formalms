@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180219</DATE>
+  <DATE>20180720</DATE>
   <LANG id="french">
     <lang_code>french</lang_code>
     <lang_description>French</lang_description>
@@ -932,7 +932,9 @@ Autrement, vous devez vous enregistré dans notre système, en suivant ce lien: 
         <key id="course_selector&amp;_SEL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cours]]></key>
       </module>
       <module id="customer_help">
+        <key id="customer_help&amp; &#9; _CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2018-07-20 10:31:26"><![CDATA[Disclaimer - assistenza utenti]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Service d'assistance]]></key>
+        <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:29:58"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
         <key id="customer_help&amp;_README_HELP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<!-- here you can put some help text -->]]></key>
       </module>
       <module id="dashboard">
@@ -1539,6 +1541,7 @@ Pour modifier ces mots veuillez vous rendre dans Admin/Gestion des langues, rech
       </module>
       <module id="message">
         <key id="message&amp;_ATTACH_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Le message a des pièces jointes]]></key>
+        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:28:32"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
         <key id="message&amp;_FILTER_MESSAGE_FOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Afficher uniquement les messages du cours:]]></key>
         <key id="message&amp;_HIGH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Elevé]]></key>
         <key id="message&amp;_INBOX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reçu]]></key>
@@ -2459,6 +2462,7 @@ Mot de passe: [password]]]></key>
         <key id="standard&amp;_SELECT_VIDEO_TYPE" attributes="" save_date="2017-05-31 12:46:50"><![CDATA[Sélectionner la bande passante]]></key>
         <key id="standard&amp;_SEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Envoyer]]></key>
         <key id="standard&amp;_SENDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Expéditeur]]></key>
+        <key id="standard&amp;_SEND_CC" attributes="" save_date="2018-07-20 10:34:04"><![CDATA[Metti in cc]]></key>
         <key id="standard&amp;_SEND_TO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Envoyer à]]></key>
         <key id="standard&amp;_SET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configurer]]></key>
         <key id="standard&amp;_SHORTDESC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Brève description]]></key>
@@ -2737,7 +2741,7 @@ Mot de passe: [password]]]></key>
         <key id="test&amp;_QUEST_UPLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Télécharger le fichier]]></key>
         <key id="test&amp;_RESTART_INFO" attributes="" save_date="2017-03-28 19:28:17"><![CDATA[Recommence le test du début]]></key>
         <key id="test&amp;_SELECT_PAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sélectionner la page]]></key>
-        <key id="test&amp;_SHOW_IN_DETAIL" attributes="" save_date="2018-02-19 12:02:24"><![CDATA[Afficher dans le Carnet de note]]></key>
+        <key id="test&amp;_SHOW_IN_COURSEREPORT" attributes="" save_date="2018-02-19 12:02:24"><![CDATA[Afficher dans le Carnet de note]]></key>
         <key id="test&amp;_SUSPENSION_NUM_ATTEMPTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Suspendre le test après le nombre suivant de tentatives ayant échouées]]></key>
         <key id="test&amp;_SUSPENSION_NUM_HOURS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Suspendre le test pour le nombre d'heures suivantes]]></key>
         <key id="test&amp;_SUSPENSION_PREREQUISITES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Après le test de suspension, nécessite de repasser à nouveau tous les tests des prérequis]]></key>

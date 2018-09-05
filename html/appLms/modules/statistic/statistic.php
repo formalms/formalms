@@ -107,7 +107,7 @@ function outPageView($link)
     $course_user = $course_man->getIdUserOfLevel($_SESSION['idCourse']);
 
     //apply sub admin filters, if needed
-    if (!$view_all_perm) {
+    if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
         //filter users
         require_once(_base_ . '/lib/lib.preference.php');
         $ctrlManager = new ControllerPreference();
@@ -121,7 +121,7 @@ function outPageView($link)
 	SELECT " . $select . ", COUNT(*) 
 	FROM " . $GLOBALS['prefix_lms'] . "_trackingeneral 
 	WHERE idCourse='" . $_SESSION['idCourse'] . "' ";
-    if (!$view_all_perm) {
+    if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
         $query_stat .= " AND idUser IN (" . implode($course_user, ',') . ") ";
     }
     $query_stat .= " AND timeof >= '$dateinit' AND timeof <= '$dateend' 
@@ -223,7 +223,7 @@ function statistic()
     $course_user = $course_man->getIdUserOfLevel($_SESSION['idCourse']);
 
     //apply sub admin filters, if needed
-    if (!$view_all_perm) {
+    if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
         //filter users
         require_once(_base_ . '/lib/lib.preference.php');
         $ctrlManager = new ControllerPreference();

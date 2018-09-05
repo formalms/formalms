@@ -1537,14 +1537,15 @@ class Report_User extends Report {
         $fman = new FieldList();        
 		$field_values = (!empty($custom_list)) ? $fman->getUsersFieldEntryData($_users, $custom_list) : array();
         
-        if (in_array('_TH_ORGANIZATION_CHART', $cols)) { $th2[] = Lang::t('_ORGCHART', 'standard'); $colspanuser++; }
-        
-        // org-chart custom fields
-        $field_values_org = array();
-        $customcols_org =& $filter_columns['custom_fields_org'];
-        foreach ($customcols_org as $val) {
-            if ($val['selected']) {
-                 $th2[] = $val['label']; $colspanuser++; 
+        if (in_array('_TH_ORGANIZATION_CHART', $cols)) { 
+            $th2[] = Lang::t('_ORGCHART', 'standard'); $colspanuser++; 
+            // org-chart custom fields
+            $field_values_org = array();
+            $customcols_org =& $filter_columns['custom_fields_org'];
+            foreach ($customcols_org as $val) {
+                if ($val['selected']) {
+                     $th2[] = $val['label']; $colspanuser++; 
+                }
             }
         }
 
@@ -1750,18 +1751,35 @@ class Report_User extends Report {
                     require_once(_adm_."/models/UsermanagementAdm.php");
                     $umodel = new UsermanagementAdm();
                     $folders = $umodel->getUserFolders($id_user);
-                    $folder_name =  reset($folders);
-                    $row[] = $folder_name;
-                }
-                
-                
-                require_once($GLOBALS['where_framework'].'/lib/lib.customfield.php');
-                $fman = new CustomFieldList();        
-                foreach ($customcols_org as $val) {
-                    if ($val['selected']) {
-                        $row[] = $fman->getValueCustomOrg($val['label'],$folder_name );
+                    if (count($folders)>1) {
+                        $folder_name = implode('<hr>',$folders);
+                    } else {
+                        $folder_name = reset($folders); 
                     }
-                }                
+                    $row[] = $folder_name;
+                
+                
+                    require_once($GLOBALS['where_framework'].'/lib/lib.customfield.php');
+                    $fman = new CustomFieldList();
+
+                    if (count($folders)>1) {
+                        foreach ($customcols_org as $val) {
+                            $v = '';
+                            if ($val['selected']) {
+                                foreach ($folders as $folder_name) { 
+                                    $v[] = $fman->getValueCustomOrg($val['label'],$folder_name );
+                                }
+                            }   
+                            $row[] = implode('<hr>', $v);
+                        }
+                    } else {
+                        foreach ($customcols_org as $val) {
+                            if ($val['selected']) {
+                                $row[] = $fman->getValueCustomOrg($val['label'],$folder_name );
+                            }
+                        }
+                    }
+                }               
                 
 
 				if (in_array('_TH_CAT', $cols)) $row[] = $category_list[$id_category];
@@ -3113,7 +3131,7 @@ class Report_User extends Report {
 			}
 			$box->body .= Form::getOpenFieldset($ftitle, 'fieldset_'.$fid.'_fields');
 			$box->body .= $fieldset;
-			$box->body .= Form::getCloseFieldset();
+            $box->body .= Form::getCloseFieldset();
 		}
 
 		cout($box->get(), 'content');

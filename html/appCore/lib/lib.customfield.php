@@ -25,7 +25,7 @@ define("CUSTOMFIELDAREATABLE", 		"_customfield_area");
 
 define("FIELD_INFO_ID", 			0);
 define("FIELD_INFO_TYPE", 			1);
-define("FIELD_INFO_TRANSLATION", 	3);
+define("FIELD_INFO_TRANSLATION", 	2);
 define("FIELD_INFO_GROUPIDST", 		3);
 define("FIELD_INFO_GROUPID", 		4);
 define("FIELD_INFO_MANDATORY", 		5);
@@ -215,9 +215,9 @@ class CustomFieldList {
     function getCustomFields($area) {
         $db = DbConn::getInstance();
 
-        $query = "SELECT core_customfield.id_field, type_field, code, translation "
-                ." FROM core_customfield, core_customfield_lang"
-                ." WHERE area_code = '".$area."' and core_customfield_lang.id_field=core_customfield.id_field and lang_code='".getLanguage()."' ORDER BY sequence";
+        $query = "SELECT %adm_customfield.id_field, type_field, code, translation "
+                ." FROM %adm_customfield, %adm_customfield_lang"
+                ." WHERE area_code = '".$area."' and %adm_customfield_lang.id_field=%adm_customfield.id_field and lang_code='".getLanguage()."' ORDER BY sequence";
         $rs = $db->query( $query );
         $result = array();
 
@@ -436,7 +436,7 @@ class CustomFieldList {
 		SELECT COUNT(*)
 		FROM ".$this->getFieldEntryTable() ."
 		WHERE id_field = ".(int)$id_field." AND obj_entry = ".(int)$obj_entry."
-                AND id_field IN (SELECT id_field FROM core_customfield WHERE area_code='".$this->getFieldArea()."')";
+                AND id_field IN (SELECT id_field FROM %adm_customfield WHERE area_code='".$this->getFieldArea()."')";
                 if (is_array($sub_obj)){
                     $query = $query." AND id_obj IN (".implode(",",$sub_obj).")";
                 }
@@ -1824,14 +1824,14 @@ class CustomFieldList {
         
        $node_name_array = explode('/',$node_name);
        $node_name = end($node_name_array);
-       $query = "select core_customfield_entry.obj_entry, core_customfield.type_field, core_customfield_lang.id_field
-                  from core_customfield_entry, core_customfield_lang, core_org_chart, core_customfield 
+       $query = "select %adm_customfield_entry.obj_entry, %adm_customfield.type_field, %adm_customfield_lang.id_field
+                  from %adm_customfield_entry, %adm_customfield_lang, %adm_org_chart, %adm_customfield 
                   where
-                  core_customfield_lang.lang_code = '".getLanguage()."' and core_customfield_lang.translation = '".$field_name."' and
-                  core_customfield_lang.id_field = core_customfield_entry.id_field and
-                  core_org_chart.lang_code = 'italian' and core_org_chart.translation = '".$node_name."' and                   
-                  core_customfield_entry.id_obj= core_org_chart.id_dir and
-                  core_customfield.id_field = core_customfield_lang.id_field";
+                  %adm_customfield_lang.lang_code = '".getLanguage()."' and %adm_customfield_lang.translation = '".$field_name."' and
+                  %adm_customfield_lang.id_field = %adm_customfield_entry.id_field and
+                  %adm_org_chart.lang_code = 'italian' and %adm_org_chart.translation = '".$node_name."' and                   
+                  %adm_customfield_entry.id_obj= %adm_org_chart.id_dir and
+                  %adm_customfield.id_field = %adm_customfield_lang.id_field";
        
         if(!$rs = sql_query( $query )) return false;
 
@@ -1851,9 +1851,9 @@ class CustomFieldList {
    function getValueCustomCourse($id_corso, $id_field){
         
          $query = 'select 
-                    obj_entry, type_field, core_customfield_entry.id_field from 
-                        core_customfield_entry, core_customfield
-                    where core_customfield.id_field = core_customfield_entry.id_field and  core_customfield_entry.id_field='.$id_field.' and 
+                    obj_entry, type_field, %adm_customfield_entry.id_field from 
+                        %adm_customfield_entry, %adm_customfield
+                    where %adm_customfield.id_field = %adm_customfield_entry.id_field and  %adm_customfield_entry.id_field='.$id_field.' and 
                     id_obj='.$id_corso; 
    
    
@@ -1873,11 +1873,11 @@ class CustomFieldList {
     
     
     private function getCheckValueCustom($id_field, $valueOption){
-           $query = "Select  translation from core_customfield_son_lang, core_customfield_son
+           $query = "Select  translation from %adm_customfield_son_lang, %adm_customfield_son
                 where 
                 lang_code='".getLanguage()."' 
-                and core_customfield_son_lang.id_field_son=core_customfield_son.id_field_son
-                and core_customfield_son.id_field=".$id_field." and core_customfield_son_lang.id_field_son=".$valueOption;
+                and %adm_customfield_son_lang.id_field_son=%adm_customfield_son.id_field_son
+                and %adm_customfield_son.id_field=".$id_field." and %adm_customfield_son_lang.id_field_son=".$valueOption;
                 
            if(!$rs = sql_query( $query )) return false;
 

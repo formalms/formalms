@@ -547,8 +547,8 @@ function sql_connect($db_host, $db_user, $db_pass, $db_name=false){
     return $re;
 }
 
-function sql_select_db($db_name){
-    $db = DbConn::getInstance();
+function sql_select_db($db_name, $link = false){
+    $db = DbConn::getInstance($link);
     $re = $db->select_db($db_name);
     return $re;
 }

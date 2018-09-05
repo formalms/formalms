@@ -14,6 +14,7 @@
 //  3xxx : docebo ce versions series 3.x.x
 //  4xxx : docebo ce versions series 4.x.x
 // 1xxxx : forma     versions series 1.x  (formely 1.xx.xx )
+// 2xxxx : forma     versions series 2.x  (formely 2.xx.xx )
 
 
 $GLOBALS['cfg']['versions'] = array(
@@ -35,6 +36,7 @@ $GLOBALS['cfg']['versions'] = array(
    '10402' => '1.4.2',
    '10403' => '1.4.3',
    '20000' => '2.0',
+   '20100' => '2.1',
 );
 
 // for reference old docebo ce versions
@@ -50,6 +52,6 @@ $GLOBALS['cfg']['docebo_versions'] = array(
 	'4050' => '4.0.5',
 );
 
-$GLOBALS['cfg']['endversion'] = '20000';
+$GLOBALS['cfg']['endversion'] = '20100';
 
 ?>

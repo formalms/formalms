@@ -127,7 +127,7 @@ class API {
 			} break;
 
 			case _AUTH_SECRET_KEY: { // ---- new auth method (alpha) 20110610 ---- [
-				$result = $this->checkKeys($_POST);
+				$result = $this->checkKeys($GLOBALS['UNFILTERED_POST']);
 			} break; // ]----
 
 

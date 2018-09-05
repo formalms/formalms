@@ -26,6 +26,9 @@ Boot::init(BOOT_PAGE_WR);
 // connect to the database
 $db =& DbConn::getInstance();
 
+//Remvoe session param layoutToRender
+unset($_SESSION['layoutToRender']);
+
 
 // some specific lib to load
 require_once(_lms_.'/lib/lib.istance.php');
@@ -115,7 +118,17 @@ $GLOBALS['page']->add(ob_get_contents(), 'debug');
 ob_clean();
 
 // layout
-Layout::render( ( isset($_SESSION['idCourse']) ? 'lms' : 'lms_user' ) );
+$layoutToRender = 'lms_user';
+
+if (isset($_SESSION['layoutToRender']) && $_SESSION['layoutToRender']){
+    $layoutToRender = $_SESSION['layoutToRender'];
+}
+elseif (isset($_SESSION['idCourse'])){
+    $layoutToRender = 'lms';
+}
+Layout::render( $layoutToRender );
+
+//Layout::render( ( isset($_SESSION['idCourse']) ?  'lms' : 'lms_user' ) );
 
 //\appCore\Events\DispatcherManager::addListener('prova.evento.appLms', array(new \appLms\Events\DumpAndDieLmsListener(), 'printOnlyADot'));
 

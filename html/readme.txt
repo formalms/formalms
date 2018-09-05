@@ -5,13 +5,11 @@
 |   http://www.formalms.org                                                 |
 |   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
 |                                                                           |
-|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
-|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
 -----------------------------------------------------------------------------
-forma.lms 2.0
-Release date: 2018 June 19
+forma.lms 2.1
+Release date: 2018 august 28
 -----------------------------------------------------------------------------
 
 
@@ -31,7 +29,14 @@ Index
 
 ------------------------------------------------------------------------------
 
-0   RELEASE NOTES (2.0)
+0    RELEASE NOTES (2.1)
+
+For all bugfix and new features included in this release, please read changelog.txt
+Here are some notes from base release
+
+0.1  RELEASE NOTES (2.0)
+
+Release date: 2018 june 19
 
 This is a new major release  with new features, redesign of the UI , many improvements
 
@@ -43,13 +48,14 @@ a) PHP support
    Full support for PHP from 5.4.x to 7.0.x 
    Know issues for PHP 7.1.x and 7.2.x  will be addressed in next releases
    Dropped support for PHP < 5.4
+   improved wrapper for mysqli - switch automatically to mysqli driver if mysql is missing
    
 b) Template System
    Refactored front-end (users) UI with native responsive system based on bootstrap,
    Enhanced administrator templates .
    forma.lms 1.x.x  templates are NOT supported 
    During upgrade and running a 2.x version forma.lms check the template defined and if not
-   supported  switch to the standard template. A template labeled “standard” must always be exists.
+   supported  switch to the standard template. A template labeled "standard" must always be exists.
    A compliant 2.0 template must have a manifest file declaring the supported version 
    (for now 2.0)
    
@@ -184,11 +190,14 @@ a) Database
    Made a backup before upgrade 
 b) Template
    Template 1.xx are not compatible with 2.xx 
+   During the upgrade the site template is updated to "standard"
 c) Dropped feature
 d) Customscripts
    All customization made through customscripts/ must be reviewed and ported to the 2.0 current 
    version. forma.lms does not check base version file with your customized version in customscripts 
    folder. There is no version check support for customscripts files
+
+e) The update detects the use of the mysql / mysqli driver and changes the configuration appropriately
 
 At the end of the upgrade process, check all the system configuration settings to validate your 
 needs. The update procedure tries to keep the settings, but new options have been added and others 

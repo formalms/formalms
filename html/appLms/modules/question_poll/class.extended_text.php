@@ -247,9 +247,9 @@ class ExtendedText_QuestionPoll extends QuestionPoll {
 			.'<div class="title_question"><label for="quest_'.$id_poll.'">'.$num_quest.') '
 			.$title_quest.'</label></div>'
 			.'<div class="answer_question">'
-			.'<textarea cols="50" rows="7" id="quest_'.$id_poll.'" name="quest['.$id_poll.']"'
+			.'<textarea cols="50" rows="7" id="quest_'.$id_poll.'" name="quest['.$id_poll.']" placeholder="'.$lang->def('_QUEST_FREEANSWER').'"'
 			.( $find_prev && $freeze ? ' disabled="disabled"' : '' ).'>'
-			.( $find_prev ? $answer_do : $lang->def('_QUEST_FREEANSWER') ).'</textarea>'
+			.( $find_prev ? $answer_do : '' ).'</textarea>'
 			.'</div>'
 			.'</div>';
 	}
