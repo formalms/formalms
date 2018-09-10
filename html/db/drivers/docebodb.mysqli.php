@@ -62,7 +62,7 @@ class mysqli_DbConn extends DbConn {
 
 		if(!@mysqli_select_db($this->conn, $dbname)) {
 
-			$this->log( 'mysql select db error' );
+			Log::add( 'mysql select db error' );
 			//Util::fatal('Cannot connect to the database server.');
 			return false;
 		}
