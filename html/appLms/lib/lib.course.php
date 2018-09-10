@@ -2463,6 +2463,8 @@ function logIntoCourse($id_course, $gotofirst_page = true) {
 	$_SESSION['sel_module_id']		= $first_page['idModule'];
 	$jumpurl = 'index.php?modname='.$first_page['modulename'].'&op='.$first_page['op'].'&id_module_sel='.$first_page['idModule'];
 
+
+
 	// course in direct play or assessment
 	if($course_info['direct_play'] == 1 || $course_info['course_type'] == 'assessment') {
 
@@ -2497,27 +2499,29 @@ function logIntoCourse($id_course, $gotofirst_page = true) {
 			require_once(_lms_.'/lib/lib.orgchart.php');
 			$orgman = new OrganizationManagement($_SESSION['idCourse']);
 			$first_lo =& $orgman->getInfoWhereType(false, $_SESSION['idCourse']);
-
+            $jumpurl = 'index.php?modname=organization&op='.$first_page['op'].'&id_module_sel='.$first_page['idModule'].'&id_main_sel=1';
 
 			if(count($first_lo) == 1) {
-
 				$_SESSION['direct_play'] = 1;
 				$obj = array_shift($first_lo);
-				Util::jump_to('index.php?modname=organization&op=custom_playitem&id_item='.$obj['id_org'].'');
+                Util::jump_to('index.php?modname=organization&op=organization&id_module_sel='.$first_page['idModule'].'&id_main_sel=1&id_item='.$obj['id_org'].'');
 			} elseif(count($first_lo) >= 2) {
-
 				$obj = array_shift($first_lo);
 				// if we have more than an object we need to play the first one until it's completed
 				$query = "SELECT status FROM %lms_commontrack WHERE idReference = ".(int)$obj['id_org']." AND idUser = ".(int)Docebo::user()->getId();
 				list($status) = sql_fetch_row(sql_query($query));
-				if(($status == 'completed' || $status == 'passed') && $gotofirst_page) Util::jump_to($jumpurl);
+
+				if(($status == 'completed' || $status == 'passed') && $gotofirst_page) {
+				    Util::jump_to($jumpurl);
+                }
 				else {
 					$_SESSION['direct_play'] = 1;
-					Util::jump_to('index.php?modname=organization&op=custom_playitem&id_item='.$obj['id_org'].'');
+                    Util::jump_to('index.php?modname=organization&op=organization&id_module_sel='.$first_page['idModule'].'&id_main_sel=1&id_item='.$obj['id_org'].'');
 				}
 			}
 		}
 	}
+
 	// if everyhings fail
 	if($gotofirst_page) Util::jump_to($jumpurl);
 	else return true;
