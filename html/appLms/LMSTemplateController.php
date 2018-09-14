@@ -12,17 +12,55 @@ use \appCore\Template\TwigManager;
 
 class LMSTemplateController {
 
-    private $model;
+    public static function getInstance() {
 
-    public function __construct() {
+        static $instance;
+
+        if(!isset($instance)) {
+            $instance = new static();
+        }
+
+        return $instance;
+    }
+
+    public static function init() {
+        
+        ob_start();
+    }
+    
+    public static function flush() {
+
+        ob_end_flush();
+    }
+
+    private $model;
+    private $layout;
+
+    private function __construct() {
 
         require_once 'LMSTemplateModel.php';
         $this->model = new LMSTemplateModel();
+
+        if(!empty($_SESSION['layoutToRender'])) {
+            $this->setLayout($_SESSION['layoutToRender']);
+        } elseif(isset($_SESSION['idCourse'])) {
+            $this->setLayout('lms');
+        } else {
+            $this->setLayout('lms_user');
+        }
+    }
+
+    public function setLayout($layout) {
+
+        $this->layout = $layout;
     }
 
     public function show() {
 
         $this->showMenuOver();
+        $GLOBALS['page']->add(ob_get_contents(), 'debug');
+        ob_clean();
+        Layout::render($this->layout);
     }
 
     private function showMenuOver() {
