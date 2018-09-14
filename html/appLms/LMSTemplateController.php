@@ -27,6 +27,8 @@ class LMSTemplateController {
 
     private function showMenuOver() {
 
+        // TODO: manca helpdesk.
+
         $this->render('menu_over', 'menu_over', array(
             'user'              => $this->model->getUser()
           , 'menu'              => $this->model->getMenu()

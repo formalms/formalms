@@ -12,12 +12,30 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     {% for item in menu %}
-                    <li class="{{ item.li_class }}"><a href="{{ item.href }}" class="{{ item.a_class }}">{{ item.title|raw }}</a></li>
+                    {% if evalPhp('count', [item.subMenu]) %}
+                    <li class="dropdown" >
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ item.title|raw }}<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {% for subitem in item.subMenu %}
+                            <li{% if subitem.active %} class="active"{% endif %}><a href="{{ subitem.href }}" title="{{ subitem.title }}">{{ subitem.html|raw }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li{% if item.active %} class="active"{% endif %}><a href="{{ item.href }}" title="{{ item.title }}">{{ item.html|raw }}</a></li>
+                    {% endif %}
                     {% endfor %}
+                    {% if evalPhp('in_array', [user.getUserLevelId(), [evalPhp('constant', ['ADMIN_GROUP_GODADMIN']), evalPhp('constant', ['ADMIN_GROUP_ADMIN'])]]) %}
+                    <li class="green_menu">
+                        <a href="{{ evalPhp('Get::rel_path', ['adm']) }}" class="no-border-right no-before" title="{{ translate('_GO_TO_FRAMEWORK', 'menu_over') }}">
+                            <span class="glyphicon glyphicon-cog top-menu__label">{{ translate('_GO_TO_FRAMEWORK', 'menu_over') }}</span>
+                        </a>
+                    </li>
+                    {% endif %}
                     {% if cart %}
                     <li>
                         <a href="index.php?r=cart/show" id="cart_action" title="{{ translate('_CART', 'cart') }}">
-                            <span  class="glyphicon glyphicon-shopping-cart top-menu__label">
+                            <span class="glyphicon glyphicon-shopping-cart top-menu__label">
                                 <sub id="cart_element" class="num_notify_bar">{{ cart }}</sub>
                             </span>
                         </a>
@@ -69,7 +87,7 @@
                 <div class="tabnav__content tabnav__content--profile{% if not profile %} is-visible{% endif %}">
                     <div class="row credits">
                         <div class="col-xs-12">
-                            <div class="js-credits-ajax-container">{{ credits }}</div>
+                            <div class="js-credits-ajax-container">{{ credits|raw }}</div>
                         </div>
                     </div>
                 </div>
@@ -77,12 +95,12 @@
             </div>
             <div class="row course-subscription">
                 <div class="col-xs-12">
-                    {{ subscribe_course }}
+                    {{ subscribe_course|raw }}
                 </div>
             </div>
             <div class="row news">
                 <div class="col-xs-12">
-                    {{ news }}
+                    {{ news|raw }}
                 </div>
             </div>
             {% if evalPhp('count', [languages]) > 1 %}
