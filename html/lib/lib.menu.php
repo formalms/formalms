@@ -112,7 +112,7 @@ class MenuManager {
         $query_menu .= ", mu.class_file, mu.class_name, mu.mvc_path";
         $query_menu .= " FROM ".$this->_getTableMenu()." m";
         $query_menu .= " left outer join ".$this->_getTableMenuUnder()." mu on m.idMenu = mu.idMenu";
-        $query_menu .= " WHERE 1 and m.is_active=1";//-- idParent is null
+        $query_menu .= " WHERE 1 and m.is_active=1 AND m.of_platform IN ('framework', 'alms')";//-- idParent is null
         $query_menu .= " ORDER BY m.sequence, mu.sequence";
         $re_menu = $this->_executeQuery($query_menu);
         while($menu = sql_fetch_assoc($re_menu)){
