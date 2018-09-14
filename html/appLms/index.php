@@ -75,26 +75,6 @@ if(!empty($GLOBALS['modname'])) {
 	if(method_exists($module_cfg, 'beforeLoad')) $module_cfg->beforeLoad();
 }
 
-// header
-if($module_cfg !== false && $module_cfg->hideLateralMenu()) {
-
-	require(_lms_.'/menu/menu_over.php');
-} else {
-
-	if(!Docebo::user()->isAnonymous()) {
-
-		require(_lms_.'/menu/menu_over.php');
-		/*if(isset($_SESSION['idCourse'])) {
-
-
-			require(_lms_.'/menu/menu_lat.php');
-		}*/
-	} else {
-
-		require(_lms_.'/menu/menu_login.php');
-	}
-}
-
 // New MVC structure
 if (!empty($GLOBALS['req'])){
 
@@ -107,6 +87,11 @@ if (!empty($GLOBALS['req'])){
         $module_cfg->loadBody();
     }
 }
+
+require_once 'LMSTemplateController.php';
+$lmsTemplateController = new LMSTemplateController();
+$lmsTemplateController->show();
+
 
 // -----------------------------------------------------------------------------
 
