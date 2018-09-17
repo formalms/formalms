@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180720</DATE>
+  <DATE>20180917</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -512,6 +512,7 @@
         <key id="configuration&amp;_NO_ANSWER_IN_POLL" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Use "no answer" option in poll questions]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_TEST" attributes="" save_date="2015-09-30 15:32:22"><![CDATA[Use "no answer" option in test questions]]></key>
         <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[If not a single course catalog is assigned to a user, show all the courses and curricula]]></key>
+        <key id="configuration&amp;_ON_PATH_IN_MYCOURSES" attributes="" save_date="2018-09-17 10:55:48"><![CDATA[Show learning courses belonging to learning path in "My courses tab"]]></key>
         <key id="configuration&amp;_ON_USERCOURSE_EMPTY" attributes="" save_date="2017-05-17 13:17:20"><![CDATA[Send user to catalog if not enrolled in any course]]></key>
         <key id="configuration&amp;_OPENSSL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[PHP extension php_openssl]]></key>
         <key id="configuration&amp;_ORGCHART_SINGLENODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Limit the user to only one node of the organization chart]]></key>

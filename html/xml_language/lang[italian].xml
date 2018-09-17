@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180720</DATE>
+  <DATE>20180917</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -514,6 +514,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_POLL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utilizza l'opzione "nessuna risposta" nelle domande del sondaggio]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_TEST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utilizza l'opzione "nessuna risposta" nelle domande del test]]></key>
         <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Se all'utente non è assegnato almeno un catalogo corsi mostra tutti i corsi e i curricula]]></key>
+        <key id="configuration&amp;_ON_PATH_IN_MYCOURSES" attributes="" save_date="2018-09-17 10:56:09"><![CDATA[Mostra i corsi appartenenti al percorso anche nel tab "I miei corsi"]]></key>
         <key id="configuration&amp;_ON_USERCOURSE_EMPTY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Reindirizza l'utente al catalogo se non è iscritto a nessun corso]]></key>
         <key id="configuration&amp;_OPENSSL" attributes="" save_date="2017-03-15 11:47:27"><![CDATA[Estensione php_openssl di PHP]]></key>
         <key id="configuration&amp;_ORGCHART_SINGLENODE" attributes="" save_date="2017-03-15 16:37:41"><![CDATA[Limita l'utente ad un solo nodo dell'organigramma]]></key>
