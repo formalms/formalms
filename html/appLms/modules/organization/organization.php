@@ -138,8 +138,8 @@ function organization_display( &$treeView ) {
 	$GLOBALS['page']->add( '</form>' );
 	// print form for import action
 	$GLOBALS['page']->add( '</div>' );
-	
-	
+
+
 	YuiLib::load(array(), array());
 	/*
 	addCss('shadowbox');
@@ -162,13 +162,25 @@ function organization_display( &$treeView ) {
 		});
 	</script>' );
 	*/
-	$GLOBALS['page']->add( '<script type="text/javascript">'
-	."
+    $GLOBALS['page']->add( '<script type="text/javascript">'
+        ."
 				var lb = new LightBox();
         var Config = {};
         Config.langs = {_CLOSE: '".Lang::t('_CLOSE', 'standard')."'};
         lb.init(Config);"
-	.'</script>' );
+        .'</script>' );
+
+    // Play directly the SCORM course, Close button included
+	if(isset($_GET['id_item']) && isset($_SESSION['direct_play'])) {
+        $elem_id='organization_treeview_opplayitem_organization_'.$_GET['id_item'];
+
+        $GLOBALS['page']->setWorkingZone( 'page_head' );
+
+        $GLOBALS['page']->add( '<script type="text/javascript">'
+            ."YAHOO.util.Event.onDOMReady(function() { "
+            ."document.getElementById('".$elem_id."').click();"
+            .'});</script>' );
+	}
 }
 
 function organization_opfolder(&$treeView, $op) {

@@ -12,11 +12,11 @@ function generateConfig($tpl_fn) {
 			$config = fread($handle, filesize($tpl_fn));
 			fclose($handle);
 		}
-        $config=str_replace("[%-DB_TYPE-%]", $_SESSION['db_info']["db_type"], $config);
-		$config=str_replace("[%-DB_HOST-%]", $_SESSION['db_info']["db_host"], $config);
-		$config=str_replace("[%-DB_USER-%]", $_SESSION['db_info']["db_user"], $config);
-		$config=str_replace("[%-DB_PASS-%]", $_SESSION['db_info']["db_pass"], $config);
-		$config=str_replace("[%-DB_NAME-%]", $_SESSION['db_info']["db_name"], $config);
+        $config=str_replace("[%-DB_TYPE-%]", addslashes($_SESSION['db_info']["db_type"]), $config);
+		$config=str_replace("[%-DB_HOST-%]", addslashes($_SESSION['db_info']["db_host"]), $config);
+		$config=str_replace("[%-DB_USER-%]", addslashes($_SESSION['db_info']["db_user"]), $config);
+		$config=str_replace("[%-DB_PASS-%]", addslashes($_SESSION['db_info']["db_pass"]), $config);
+		$config=str_replace("[%-DB_NAME-%]", addslashes($_SESSION['db_info']["db_name"]), $config);
 
 		if ($_SESSION['upload_method'] == "http") {
 			$upload_method="fs";
@@ -30,11 +30,11 @@ function generateConfig($tpl_fn) {
 		else if ($_SESSION["upload_method"] == "ftp") {
 			$upload_method="ftp";
 
-			$config=str_replace("[%-FTP_HOST-%]", $_SESSION['ul_info']["ftp_host"], $config);
-			$config=str_replace("[%-FTP_PORT-%]", $_SESSION['ul_info']["ftp_port"], $config);
-			$config=str_replace("[%-FTP_USER-%]", $_SESSION['ul_info']["ftp_user"], $config);
-			$config=str_replace("[%-FTP_PASS-%]", $_SESSION['ul_info']["ftp_pass"], $config);
-			$config=str_replace("[%-FTP_PATH-%]", $_SESSION['ul_info']["ftp_path"], $config);
+			$config=str_replace("[%-FTP_HOST-%]", addslashes($_SESSION['ul_info']["ftp_host"]), $config);
+			$config=str_replace("[%-FTP_PORT-%]", addslashes($_SESSION['ul_info']["ftp_port"]), $config);
+			$config=str_replace("[%-FTP_USER-%]", addslashes($_SESSION['ul_info']["ftp_user"]), $config);
+			$config=str_replace("[%-FTP_PASS-%]", addslashes($_SESSION['ul_info']["ftp_pass"]), $config);
+			$config=str_replace("[%-FTP_PATH-%]", addslashes($_SESSION['ul_info']["ftp_path"]), $config);
 		}
 
 		$config=str_replace("[%-UPLOAD_METHOD-%]", $upload_method, $config);
