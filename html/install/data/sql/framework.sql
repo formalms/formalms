@@ -2542,6 +2542,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('no_answer_in_poll', 'off', 'enum', 3, '0', 4, 9, 1, 0, ''),
 ('no_answer_in_test', 'off', 'enum', 3, '0', 4, 8, 1, 0, ''),
 ('on_catalogue_empty', 'on', 'enum', 3, '0', 4, 4, 1, 0, ''),
+('on_path_in_mycourses', 'off', 'enum',	3, 	0, 	4, 	2, 	1, 	0, 	'' ),
 ('on_usercourse_empty', 'off', 'on_usercourse_empty', 3, '0', 4, 2, 1, 0, ''),
 ('orgchart_singlenode', 'off', 'enum', 3, '0', 3, 21, 1, 0, ''),
 ('owned_by', 'Copyright (c) forma.lms', 'html', 255, '0', 1, 7, 1, 0, ''),
