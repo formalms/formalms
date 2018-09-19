@@ -77,6 +77,16 @@ class HomepageAdmController extends AdmController
         $params['read_all'] = Lang::t("_READ_ALL", "login");
         $params['close'] = Lang::t("_CLOSE", "standard");
 
+        // force_standard mode
+        if(isset($_REQUEST["notuse_plugin"])){
+            $params['notuse_plugin'] = true;
+        }
+        if(isset($_REQUEST["notuse_customscript"])){
+            $params['notuse_customscript'] = true;
+        }
+        if(isset($_REQUEST["notuse_template"])){
+            $params['notuse_template'] = true;
+        }
 
         $this->render("show", $params);
     }

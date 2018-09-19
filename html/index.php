@@ -20,6 +20,18 @@ ob_start();
 
 // initialize
 require(_lib_ . '/lib.bootstrap.php');
+
+// force_standard mode
+if(isset($_REQUEST["notuse_plugin"])){
+    $GLOBALS['notuse_plugin'] = true;
+}
+if(isset($_REQUEST["notuse_customscript"])){
+    $GLOBALS['notuse_customscript'] = true;
+}
+if(isset($_REQUEST["notuse_template"])){
+    $GLOBALS['notuse_template'] = true;
+}
+
 Boot::init(BOOT_PAGE_WR);
 
 // connect to the database
