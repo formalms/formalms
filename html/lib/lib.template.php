@@ -27,6 +27,13 @@ function getTemplate() {
 	if(isset($_SESSION['template']) && $_SESSION['template'] != false) {
 		return $_SESSION['template'];
 	}
+
+	// force_standard mode
+	if(isset($_REQUEST["notuse_template"]) || $GLOBALS['notuse_template'] == true){
+		$_SESSION['template'] = "standard";
+		return $_SESSION['template'];
+	}
+
 	//search for a template associated to the current host
 	$plat_templ = parseTemplateDomain($_SERVER['HTTP_HOST']);
 	if($plat_templ != false) {
