@@ -723,7 +723,7 @@ class CatalogLms extends Model
 
    	return $output;
    }
-}
+
    
    
 
