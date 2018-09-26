@@ -169,11 +169,11 @@ class mysqli_DbConn extends DbConn {
 		if(!$result) return false;
 		if ($params){
 			//mysql and mysqli returns different value if empty result
-			return $this->false_if_null(mysqli_fetch_object($result));
+			return $this->false_if_null(mysqli_fetch_object($result, $class_name, $params));
 		}
 		if ($class_name){
 			//mysql and mysqli returns different value if empty result
-			return $this->false_if_null(mysqli_fetch_object($result));
+			return $this->false_if_null(mysqli_fetch_object($result, $class_name));
 		}
 		//mysql and mysqli returns different value if empty result
 		return $this->false_if_null(mysqli_fetch_object($result));
