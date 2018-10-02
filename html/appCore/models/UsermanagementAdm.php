@@ -1885,9 +1885,10 @@ class UsermanagementAdm extends Model {
 		$res = $this->db->query( $query );
 		//handle error ....
 		//...
+        
+        // deleting custom fields
+        $this->deleteInfoCustomOrg($idOrg);
 
-		/*$query = "DELETE FROM %adm_org_chart_tree WHERE idOrg=".(int)$idOrg." LIMIT 1";
-		$res = $this->db->query($query);*/
 		$query = "DELETE FROM %adm_org_chart WHERE id_dir IN (".implode(",", $nodes).")";
 		$res = $this->db->query($query);
 		if ($res) {
@@ -1900,6 +1901,12 @@ class UsermanagementAdm extends Model {
 		} else
 			return false;
 	}
+
+    // deleting custom fields
+    private function deleteInfoCustomOrg($idOrg){
+        $query = "delete from %adm_customfield_entry where id_obj=".$idOrg;
+        sql_query($query);
+    }
 
 	public function moveFolder($src_folder, $dest_folder) {
 		if ($src_folder <= 0) return false;
