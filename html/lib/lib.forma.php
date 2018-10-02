@@ -25,15 +25,13 @@ class Forma {
      */
     public static function inc($file) {
         $file = str_replace(_base_.'/', '', $file);
-        if(Get::cfg('enable_plugins', false)){
-            $pg_adm=new PluginmanagerAdm();
+        $pg_adm=new PluginmanagerAdm();
 
-            $plugins = $pg_adm->getPlugins(true);
+        $plugins = $pg_adm->getPlugins(true);
 
-            foreach ($plugins as $plugin){
-                if (file_exists(_base_.'/plugins/'.$plugin['name'].'/Features/'.$file)){
-                    return _base_.'/plugins/'.$plugin['name'].'/Features/'.$file;
-                }
+        foreach ($plugins as $plugin){
+            if (file_exists(_base_.'/plugins/'.$plugin['name'].'/Features/'.$file)){
+                return _base_.'/plugins/'.$plugin['name'].'/Features/'.$file;
             }
         }
 
