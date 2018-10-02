@@ -57,20 +57,43 @@ class LMSTemplateController {
 
     public function show() {
 
-        $this->showMenuOver();
-        $GLOBALS['page']->add(ob_get_contents(), 'debug');
+        $this->showLogo();
+        $this->showMenu();
+        $this->showCart();
+        $this->showProfile();
+        cout(ob_get_contents(), 'debug');
         ob_clean();
         Layout::render($this->layout);
     }
 
-    private function showMenuOver() {
+    private function showLogo() {
+        
+        $this->render('logo', 'logo', array(
+            'user' => $this->model->getUser()
+          , 'logo' => $this->model->getLogo()
+        ));
+    }
 
-        // TODO: manca helpdesk.
+    private function showMenu() {
+        
+        $this->render('menu', 'menu', array(
+            'user' => $this->model->getUser()
+          , 'menu' => $this->model->getMenu()
+        ));
+    }
 
-        $this->render('menu_over', 'menu_over', array(
+    private function showCart() {
+        
+        $this->render('cart', 'cart', array(
+            'user' => $this->model->getUser()
+          , 'cart' => $this->model->getCart()
+        ));
+    }
+
+    private function showProfile() {
+        
+        $this->render('profile', 'profile', array(
             'user'              => $this->model->getUser()
-          , 'menu'              => $this->model->getMenu()
-          , 'cart'              => $this->model->getCart()
           , 'profile'           => $this->model->getProfile()
           , 'credits'           => $this->model->getCredits()
           , 'career'            => $this->model->getCareer()
@@ -82,6 +105,7 @@ class LMSTemplateController {
 
     private function render($view, $zone, $data = array()) {
         
-        cout(TwigManager::getInstance()->render("$view.html.twig", $data, _base_ . "/templates/" . getTemplate() . "/layout/"), $zone);
+        $GLOBALS['page']->addZone($zone);
+        cout(TwigManager::getInstance()->render("$view.html.twig", $data, _base_ . "/templates/" . getTemplate() . "/layout/" . _folder_lms_), $zone);
     }
 }

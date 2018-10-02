@@ -44,6 +44,11 @@ class LMSTemplateModel {
         return $_menu;
     }
 
+    public function getLogo() {
+
+        return Layout::path() . "/images/company_logo.png";
+    }
+
     public function getMenu() {
 
         // TODO: usare libreria
