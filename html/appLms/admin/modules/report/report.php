@@ -72,11 +72,7 @@ function openreport($idrep=false) {
 	list($class_name, $file_name, $report_name) = sql_fetch_row($re_report);
     //when file name set use old style
     if ($file_name){
-	if (file_exists(_base_ . '/customscripts/'._folder_lms_.'/admin/modules/report/'.$file_name) && Get::cfg('enable_customscripts', false) == true ){
-	    require_once(_base_ . '/customscripts/'._folder_lms_.'/admin/modules/report/'.$file_name);
-	} else {
-		require_once(_lms_.'/admin/modules/report/'.$file_name);
-	}
+	require_once(Forma::inc(_lms_.'/admin/modules/report/'.$file_name));
 	
 	$obj_report = new $class_name( $id_report );
     }else{
@@ -650,11 +646,7 @@ function report_show_results($idrep = false) {
 		if ($res && (sql_num_rows($res)>0)) {
 			list($class_name, $file_name) = sql_fetch_row($res);
             if ($file_name) {
-                if (file_exists(_base_ . '/customscripts/' . _folder_lms_ . '/admin/modules/report/' . $file_name) && Get::cfg('enable_customscripts', false) == true) {
-                    require_once(_base_ . '/customscripts/' . _folder_lms_ . '/admin/modules/report/' . $file_name);
-                } else {
-                    require_once(_lms_ . '/admin/modules/report/' . $file_name);
-                }
+                require_once(Forma::inc(_lms_ . '/admin/modules/report/' . $file_name));
                 $obj_report = new $class_name($idrep);
             } else {
                 $pg = new PluginManager('Report');
@@ -684,11 +676,7 @@ function report_show_results($idrep = false) {
 		list($class_name, $file_name, $report_name, $filter_name, $filter_data, $author) = sql_fetch_row($re_report);
             //when file name set use old style
         if ($file_name) {
-            if (file_exists(_base_ . '/customscripts/' . _folder_lms_ . '/admin/modules/report/' . $file_name) && Get::cfg('enable_customscripts', false) == true) {
-                require_once(_base_ . '/customscripts/' . _folder_lms_ . '/admin/modules/report/' . $file_name);
-            } else {
-                require_once(_lms_ . '/admin/modules/report/' . $file_name);
-            }
+            require_once(Forma::inc(_lms_ . '/admin/modules/report/' . $file_name));
             $obj_report = new $class_name($idrep);
         } else {
             $pg = new PluginManager('Report');

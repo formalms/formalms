@@ -66,11 +66,6 @@ class Controller {
 		return _base_.'/views';
 	}
 
-	public function viewCustomscriptsPath() {
-
-		return _base_.'/customscripts/views';
-	}
-
 	/**
 	 * This method will render a specific view for this mvc
 	 * @param string $view_name the name of the view, must be equal to a php file inside the view folder for this mvc without the .php extension
@@ -89,9 +84,6 @@ class Controller {
 
 		$paths=array();
 		$extensions=array();
-		if (Get::cfg('enable_customscripts', false) == true) {
-			$paths[]=$this->viewCustomscriptsPath();
-		}
         if (method_exists($this,"templatePath")){
             $paths[]=$this->templatePath();
         }
@@ -138,14 +130,14 @@ class Controller {
 
 		switch($tplkey){
 			case "php":
-				include( Docebo::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension));
+				include( Forma::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension));
 				break;
 			case "twig":
 				echo \appCore\Template\TwigManager::getInstance()->render($view_name.$extension, $data_for_view, $path. '/' . $this->_mvc_name);
 				break;
 			default:
 				//die( 'FILENOTFOUND');
-				include( Docebo::inc($this->viewPath() . '/' . $this->_mvc_name . '/' . $view_name . $extension) );
+				include( Forma::inc($this->viewPath() . '/' . $this->_mvc_name . '/' . $view_name . $extension) );
 				break;
 		}
 

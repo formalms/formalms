@@ -25,6 +25,7 @@ class Forma {
      */
     public static function inc($file) {
         $file = str_replace(_base_.'/', '', $file);
+        $file = str_replace(_base_.'\\', '', $file);
         if(Get::cfg('enable_plugins', false)){
             $pg_adm=new PluginmanagerAdm();
 

@@ -238,12 +238,8 @@ class AdminrulesAdm extends Model
 								}
 								$perm_path = $perm_base.strtolower($mvc_name).'/';
 
-								if (file_exists(_base_.'/customscripts'.'/'.$folder_name.'/models/'.$mvc_name.$suffix.'.php') && Get::cfg('enable_customscripts', false) == true ){
-										require_once(_base_.'/customscripts'.'/'.$folder_name.'/models/'.$mvc_name.$suffix.'.php');
-								} else {
-									$p=$folder_abspath.'/models/'.$mvc_name.'Adm.php';
-										require_once($folder_abspath.'/models/'.$mvc_name.$suffix.'.php');
-								}
+								$p=$folder_abspath.'/models/'.$mvc_name.'Adm.php';
+								require_once(Forma::inc($folder_abspath.'/models/'.$mvc_name.$suffix.'.php'));
 
 								$class_name = $mvc_name.$suffix;
 								$tmp_class = new $class_name();
@@ -285,17 +281,13 @@ class AdminrulesAdm extends Model
 											break;
 									}
 
-									if (file_exists(_base_.'/customscripts'.'/'.$folder_name.'/class.module/'.$class_file) && Get::cfg('enable_customscripts', false) == true ){
-											require_once(_base_.'/customscripts'.'/'.$folder_name.'/class.module/'.$class_file);
-									} else {
-										if (file_exists($folder_abspath.'/class.module/'.$class_file)){
-											require_once($folder_abspath.'/class.module/'.$class_file);
-										}
-										else{
-											$a=$a;
-											$a=$class_file;
-											$p=$folder_abspath.'/class.module/'.$class_file;
-										}
+									if (file_exists($folder_abspath.'/class.module/'.$class_file)){
+										require_once(Forma::inc($folder_abspath.'/class.module/'.$class_file));
+									}
+									else{
+										$a=$a;
+										$a=$class_file;
+										$p=$folder_abspath.'/class.module/'.$class_file;
 									}
 
 								$tmp_class = new $class_name();

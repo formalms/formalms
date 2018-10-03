@@ -102,12 +102,7 @@ class LmsModule {
 	function loadBody() {
 		//EFFECTS: include module language and module main file
 		
-		//include($GLOBALS['where_lms'].'/modules/'.$this->module_name.'/'.$this->module_name.'.php');
-		if (file_exists(_base_ . '/customscripts/'._folder_lms_.'/modules/'.$this->module_name.'/'.$this->module_name.'.php') && Get::cfg('enable_customscripts', false) == true ){
-			include( Docebo::inc( _base_ . '/customscripts/'._folder_lms_.'/modules/'.$this->module_name.'/'.$this->module_name.'.php' ) );
-		} else {
-			include( Docebo::inc( _lms_.'/modules/'.$this->module_name.'/'.$this->module_name.'.php' ) );
-		}
+		include(Forma::inc(_lms_.'/modules/'.$this->module_name.'/'.$this->module_name.'.php' ) );
 	}
 	
 	function loadFooter() {

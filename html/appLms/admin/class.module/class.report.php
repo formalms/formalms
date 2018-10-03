@@ -24,11 +24,7 @@ class Module_Report extends LmsAdminModule {
 	
 	function loadBody() {
 		
-		if (file_exists(_base_ . '/customscripts/'._folder_lms_.'/admin/modules/'.$this->module_name.'/'.$this->module_name.'.php') && Get::cfg('enable_customscripts', false) == true ){
-			require_once(_base_ . '/customscripts/'._folder_lms_.'/admin/modules/'.$this->module_name.'/'.$this->module_name.'.php');
-		} else {
-			require_once(_base_ . '/'._folder_lms_.'/admin/modules/'.$this->module_name.'/'.$this->module_name.'.php');
-		}
+		require_once(Forma::inc(_base_ . '/'._folder_lms_.'/admin/modules/'.$this->module_name.'/'.$this->module_name.'.php'));
 
 		reportDispatch($GLOBALS['op']);
 	}

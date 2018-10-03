@@ -105,57 +105,20 @@ function docebo_autoload($classname) {
 			_lms_.'/controllers'
 		)
 	);
-
-
-	//possibile path for autoloading classes custom
-	$pathCustomscripts = array(
-		'adm' => array(
-			_base_.'/customscripts'.'/'._folder_adm_.'/models',
-			_base_.'/customscripts'.'/'._folder_adm_.'/controllers'
-#			_adm_.'/customscripts/models',
-#			_adm_.'/customscripts/controllers'
-		),
-		'alms' => array(
-			_base_.'/customscripts'.'/'._folder_lms_.'/admin/models',
-			_base_.'/customscripts'.'/'._folder_lms_.'/admin/controllers'
-#			_lms_.'/customscripts/admin/models',
-#			_lms_.'/customscripts/admin/controllers'
-		),
-		'lms' => array(
-			_base_.'/customscripts'.'/'._folder_lms_.'/models',
-			_base_.'/customscripts'.'/'._folder_lms_.'/controllers'
-#			_lms_.'/customscripts/models',
-#			_lms_.'/customscripts/controllers'
-		),
-		'lobj' => array(
-			_base_.'/customscripts'.'/'._folder_lms_.'/models',
-			_base_.'/customscripts'.'/'._folder_lms_.'/controllers'
-#			_lms_.'/customscripts/models',
-#			_lms_.'/customscripts/controllers'
-		)
-	);
         
 	//parse classname for info and path
 	$location = array();
 	if(preg_match('/(Mobile|Adm|Alms|Lms|Acms|Cms|Lobj)Controller$/', $classname, $location)) {
 		// include controller file
 		$loc = ( isset($location[1]) ? strtolower($location[1]) : 'adm' );
-                if (file_exists($pathCustomscripts[$loc][1].'/'.$classname.'.php') && Get::cfg('enable_customscripts', false) == true ){
-                    $c_file = $pathCustomscripts[$loc][1].'/'.$classname.'.php';
-                } else {
-                    $c_file = $path[$loc][1].'/'.$classname.'.php';
-                }
+                $c_file = $path[$loc][1].'/'.$classname.'.php';
 		//if(file_exists($c_file))
 			include_once(Forma::inc($c_file));
 		return;
 	} else if(preg_match('/(Mobile|Adm|Alms|Lms|Acms|Cms|Lobj)$/', $classname, $location)) {
 		// include model file
 		$loc = ( isset($location[1]) ? strtolower($location[1]) : 'adm' );
-                if (file_exists($pathCustomscripts[$loc][0].'/'.$classname.'.php') && Get::cfg('enable_customscripts', false) == true ){
-                    $c_file = $pathCustomscripts[$loc][0].'/'.$classname.'.php';
-                } else {
-                    $c_file = $path[$loc][0].'/'.$classname.'.php';
-                }
+                $c_file = $path[$loc][0].'/'.$classname.'.php';
 		//if(file_exists($c_file))
 			include_once(Forma::inc($c_file));
 		return;
