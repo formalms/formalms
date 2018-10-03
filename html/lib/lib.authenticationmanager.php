@@ -99,13 +99,13 @@ class AuthenticationManager {
         //////////////////////////////////       
 
         // force_standard mode
-        if(isset($_REQUEST["notuse_plugin"])){
+        if(isset($_REQUEST["notuse_plugin"]) || $GLOBALS['notuse_customscript'] == true){
             $_SESSION['notuse_plugin'] = true;
         }
-        if(isset($_REQUEST["notuse_customscript"])){
+        if(isset($_REQUEST["notuse_customscript"]) || $GLOBALS['notuse_customscript'] == true){
             $_SESSION['notuse_customscript'] = true;
         }
-        if(isset($_REQUEST["notuse_template"])){
+        if(isset($_REQUEST["notuse_template"]) || $GLOBALS['notuse_customscript'] == true){
             $_SESSION['notuse_template'] = true;
         } 
         
