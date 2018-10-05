@@ -29,6 +29,8 @@ class Learning_Object {
 	var $isPhysicalObject = false;
 	var $no_restrictions = false;
 	
+	var $plugin_manager;
+	
 	/**
 	 * function learning_Object()
 	 * class constructor
@@ -43,6 +45,8 @@ class Learning_Object {
 		$this->db = DbConn::getInstance();
 		$this->aclManager = Docebo::user()->getAclManager();
 		$this->table = '';
+        
+        $this->plugin_manager = new PluginManager("LearningObject");
 	}
 	
 	function getIdParam($env = false) {
@@ -158,7 +162,17 @@ class Learning_Object {
 	 * ) ...
 	 */
 	function getParamInfo() {
-		return FALSE;
+        
+        $params = array();
+        $this->plugin_manager->run('getParamInfo', array($this, &$params));
+        return $params;
+    }
+    
+    function renderCustomSettings($arrParams, $form, $lang) {
+        
+        $out = '';		
+        $this->plugin_manager->run('renderCustomSettings', array($this, $arrParams, &$out));
+		return $out;
 	}
 	
 	/**

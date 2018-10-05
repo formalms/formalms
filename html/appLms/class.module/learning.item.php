@@ -27,6 +27,18 @@ class Learning_Item extends Learning_Object {
 		if($res && $this->db->num_rows($res)>0) {
 			list($this->idAuthor, $this->title) = $this->db->fetch_row($res);
 		}
+    }
+    
+	function getParamInfo() {
+
+        $params = parent::getParamInfo();        
+        return $params;
+	}
+	
+	function renderCustomSettings( $arrParams, $form, $lang ) {
+
+        $out = parent::renderCustomSettings($arrParams, $form, $lang);
+		return $out;
 	}
 		
 	/**

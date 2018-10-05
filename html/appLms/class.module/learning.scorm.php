@@ -52,28 +52,26 @@ class Learning_ScormOrg extends Learning_Object {
 		return $this->back_url;
 	}
 	
-	/**
-	include il linguaggio
-	 * return array of mustent param
-	 [0]
-	 	['label'] = _DEFINITION;
-		['param_name'] = parameter name;
-	 [1]
-	 	 ['label'] = _DEFINITION;
-		['param_name'] = parameter name;
-	 **/
 	function getParamInfo() {
-		return array(	array('label' => 'Autoplay','param_name' => 'autoplay'),
-						array('label' => 'Template','param_name' => 'playertemplate'));
-		//return FALSE;
+
+        $params = parent::getParamInfo();
+
+        $params = array_merge($params, array(
+            array('label' => 'Autoplay','param_name' => 'autoplay')
+          , array('label' => 'Template','param_name' => 'playertemplate')
+        ));
+        
+        return $params;
 	}
 	
 	function renderCustomSettings( $arrParams, $form, $lang ) {
+
+        $out = parent::renderCustomSettings($arrParams, $form, $lang);
 		
 		$autoplay = isset($arrParams['autoplay'])?$arrParams['autoplay']:'1';
 		if($arrParams['autoplay'] == '') $autoplay = '1';
 		
-		$out = $form->getRadioSet( $lang->def( '_AUTOPLAY' ), 
+		$out .= $form->getRadioSet( $lang->def( '_AUTOPLAY' ), 
 									'autoplay', 
 									'autoplay', 
 									array( 	$lang->def( '_NO' ) => "0",
