@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin_manifest>
+	<name>LOExtender</name>
+	<title>LOExtender</title>
+	<author>Joint Technologies</author>
+	<version>1.0</version>
+	<description>LOExtender test plug-in added LO params</description>
+	<link>http://www.joint-tech.it/</link>
+	<license>GNU General Public License version 2</license>
+</plugin_manifest>
