@@ -11,7 +11,7 @@ function reg_with_fb() {
   
   $client_id = Get::sett('social_fb_api');
   $client_secret = Get::sett('social_fb_secret');
-  $redirect_uri = Get::sett('url').'index.php?modname=login&op=facebook_login';
+  $redirect_uri = Get::site_url().'index.php?modname=login&op=facebook_login';
   
 	$serviceFactory = new \OAuth\ServiceFactory();
 	$storage = new Session(false);

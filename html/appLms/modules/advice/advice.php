@@ -362,12 +362,12 @@ function insadvice() {
 	$msg_composer = new EventMessageComposer();
 	$_POST['description'] = str_replace(array('\r', '\n'), '', $_POST['description']);
 	$msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT', false);
-	$msg_composer->setBodyLangText('email', '_ALERT_TEXT', array(	'[url]' => Get::sett('url'),
+	$msg_composer->setBodyLangText('email', '_ALERT_TEXT', array(	'[url]' => Get::site_url(),
 																	'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
 																	'[title]' => stripslashes($_POST['title']),
 																	'[text]' => stripslashes($_POST['description']) ) );
 
-	$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', array(	'[url]' => Get::sett('url'),
+	$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', array(	'[url]' => Get::site_url(),
 																	'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
 																	'[title]' => stripslashes($_POST['title']),
 																	'[text]' => stripslashes($_POST['description']) ) );
@@ -568,12 +568,12 @@ function updreader() {
 		$msg_composer = new EventMessageComposer();
 
 		$msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT', false);
-		$msg_composer->setBodyLangText('email', '_ALERT_TEXT', array(	'[url]' => Get::sett('url'),
+		$msg_composer->setBodyLangText('email', '_ALERT_TEXT', array(	'[url]' => Get::site_url(),
 																		'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
 																		'[title]' => stripslashes($title),
 																		'[text]' => stripslashes($description) ) );
 
-		$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', array(	'[url]' => Get::sett('url'),
+		$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', array(	'[url]' => Get::site_url(),
 																		'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
 																		'[title]' => stripslashes($title),
 																		'[text]' => stripslashes($description) ) );

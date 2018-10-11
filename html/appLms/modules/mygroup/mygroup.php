@@ -183,9 +183,9 @@ function savesel() {
 				$msg_composer = new EventMessageComposer();
 				
 				$msg_composer->setSubjectLangText('email', '_TO_APPROVE_GROUP_USER_SBJ', false);
-				$msg_composer->setBodyLangText('email', '_TO_APPROVE_GROUP_USER_TEXT', array(	'[url]' => Get::sett('url')) );
+				$msg_composer->setBodyLangText('email', '_TO_APPROVE_GROUP_USER_TEXT', array(	'[url]' => Get::site_url()) );
 				
-				$msg_composer->setBodyLangText('sms', '_TO_APPROVE_GROUP_USER_TEXT_SMS', array(	'[url]' => Get::sett('url')) );
+				$msg_composer->setBodyLangText('sms', '_TO_APPROVE_GROUP_USER_TEXT_SMS', array(	'[url]' => Get::site_url()) );
 				$idst_approve = $acl->getRoleST('/framework/admin/directory/editgroup');
 				$recipients = $acl_man->getAllRoleMembers($idst_approve);
 				

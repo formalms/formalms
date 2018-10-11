@@ -222,7 +222,7 @@ class Social {
 		$consumer = new OAuthConsumer($linkedin_key, $linkedin_secret, NULL);
 		$signature = new OAuthSignatureMethod_HMAC_SHA1();
 		$random = md5(rand());
-		$callback = Get::sett('url').'index.php?modname=login&op=linkedin_login&back=1';
+		$callback = Get::site_url().'index.php?modname=login&op=linkedin_login&back=1';
 		$url = $base_url . "/requestToken";
 
 		$request = OAuthRequest::from_consumer_and_token($consumer, NULL, 'POST', $url);

@@ -446,11 +446,11 @@ function upcourseinfo() {
 	$msg_composer = new EventMessageComposer();
 	
 	$msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT_MODCOURSE_INFO', false);
-	$msg_composer->setBodyLangText('email', '_ALERT_TEXT_MODCOURSE_INFO', array(	'[url]' => Get::sett('url'), 
+	$msg_composer->setBodyLangText('email', '_ALERT_TEXT_MODCOURSE_INFO', array(	'[url]' => Get::site_url(), 
 																		'[course_code]' => $_POST['course_code'], 
 																		'[course]' => $_POST['course_name'] ) );
 	
-	$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_MODCOURSE_INFO_SMS', array(	'[url]' => Get::sett('url'), 
+	$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_MODCOURSE_INFO_SMS', array(	'[url]' => Get::site_url(), 
 																		'[course_code]' => $_POST['course_code'], 
 																		'[course]' => $_POST['course_name'] ) );
 	

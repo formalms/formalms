@@ -2213,7 +2213,7 @@ class UsermanagementAdm extends Model {
 				$userid = $acl_manager->getUserid($idst, false);
                 if($this->changePassword($idst, $new_password)){
                     $array_subst = array(
-                            '[url]' => Get::sett('url'),
+                            '[url]' => Get::site_url(),
                             '[userid]' => $userid,
                             '[password]' => $new_password
                     );
@@ -2295,7 +2295,7 @@ class UsermanagementAdm extends Model {
 
 		if (!empty($approved)) {
 			$pl_man =& PlatformManager::createInstance();
-			$array_subst = array('[url]' => Get::sett('url', ""));//$GLOBALS[$pl_man->getHomePlatform()]['url']);
+			$array_subst = array('[url]' => Get::site_url());//$GLOBALS[$pl_man->getHomePlatform()]['url']);
 			$msg_composer2 = new EventMessageComposer();
 			$msg_composer2->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
 			$msg_composer2->setBodyLangText('email', '_APPROVED_USER_TEXT', $array_subst);

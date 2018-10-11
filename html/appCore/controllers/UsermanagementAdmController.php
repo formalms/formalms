@@ -570,7 +570,7 @@ class UsermanagementAdmController extends AdmController {
 			$acl_man = Docebo::user()->getAclManager();
 
 			$array_subst = array(
-				'[url]' => Get::sett('url'),
+				'[url]' => Get::site_url(),
 				'[userid]' => $userid,
 				'[password]' => $password
 			);

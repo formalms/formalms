@@ -44,7 +44,7 @@ class Course_API extends API {
 				'sub_end_date'=>$course_info['sub_end_date'],
 				'date_begin'=>$course_info['date_begin'],
 				'date_end'=>$course_info['date_end'],
-				'course_link'=>Get::sett('url')._folder_lms_.'/index.php?modname=course&amp;op=aula&amp;idCourse='.$course_info['idCourse'],
+				'course_link'=>Get::site_url()._folder_lms_.'/index.php?modname=course&amp;op=aula&amp;idCourse='.$course_info['idCourse'],
 			);
 		}
 
@@ -105,7 +105,7 @@ class Course_API extends API {
 				'sub_end_date'=>$course_info['sub_date_end'],
 				'date_begin'=>$course_info['date_begin'],
 				'date_end'=>$course_info['date_end'],
-				'course_link'=>Get::sett('url')._folder_lms_.'/index.php?modname=course&amp;op=aula&amp;idCourse='.$course['idCourse'],
+				'course_link'=>Get::site_url()._folder_lms_.'/index.php?modname=course&amp;op=aula&amp;idCourse='.$course['idCourse'],
 			);
 		}
 
@@ -168,7 +168,7 @@ class Course_API extends API {
 				'date_end'=>$course_info['date_end'],
 				'num_day'=>$course_info['num_day'],
 				'classroom'=>$course_info['classroom'],
-				'course_link'=>Get::sett('url')._folder_lms_.'/index.php?modname=course&amp;op=aula&amp;idCourse='.$course['idCourse'],
+				'course_link'=>Get::site_url()._folder_lms_.'/index.php?modname=course&amp;op=aula&amp;idCourse='.$course['idCourse'],
 			);
 		}
 
@@ -393,7 +393,7 @@ class Course_API extends API {
                     // Send Message
                     require_once(_base_.'/lib/lib.eventmanager.php');
 
-                    $array_subst = array(	'[url]' => Get::sett('url'),
+                    $array_subst = array(	'[url]' => Get::site_url(),
                                             '[course]' => $course_info['name'] );
 
                     $msg_composer = new EventMessageComposer();

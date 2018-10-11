@@ -393,7 +393,7 @@ class CartLmsController extends LmsController {
 								'message' => UIFeedback::info(Lang::t('_TRANS_CREATED', 'catalogue'), true),
 								'id_transaction' => $id_trans,
 								'total_price' => $total_price,
-								'link' => Get::sett('url')._folder_lms_.'/index.php?r=cart/show&id_transaction='.$id_trans.'&cart='.$_SESSION['cart_id'],
+								'link' => Get::site_url()._folder_lms_.'/index.php?r=cart/show&id_transaction='.$id_trans.'&cart='.$_SESSION['cart_id'],
 			);
 		}
 

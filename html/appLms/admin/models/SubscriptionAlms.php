@@ -897,7 +897,7 @@ Class SubscriptionAlms extends Model
 		if ( ($res) && (int)$cinfo['auto_unsubscribe'] == 1 ) {
 			//moderated self unsubscribe
 			$userinfo = $this->acl_man->getUser($id_user);
-			$array_subst = array('[url]' => Get::sett('url'),
+			$array_subst = array('[url]' => Get::site_url(),
 				'[course]' => $cinfo['name'],
 				'[firstname]' => $userinfo[ACL_INFO_FIRSTNAME],
 				'[lastname]' => $userinfo[ACL_INFO_LASTNAME],
