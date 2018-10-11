@@ -136,7 +136,7 @@ class Util  {
 		//sending creation time
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		//content type
-		if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+		if(Get::scheme() === 'https://') {
 			header('Pragma: private');
 		}
 		header('Content-Disposition: attachment; filename="'.$sendname.'"');
