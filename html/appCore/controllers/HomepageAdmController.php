@@ -471,7 +471,7 @@ class HomepageAdmController extends AdmController
     public function sso()
     { // index.php?login_user=staff&time=200812101752&token=5D93BCEDF500E9759E4870492AF32E7A
 
-        $login_user = Get::req('login_user', DOTY_MIXED, false);
+        $login_user = stripslashes(Get::req('login_user', DOTY_MIXED, false));
         $login_idst = Get::req('use_user_idst', DOTY_MIXED, false);
 
         $redirection = array();
@@ -485,7 +485,7 @@ class HomepageAdmController extends AdmController
             self::redirect($redirection);
         }
 
-        if (Docebo::user()->isLoggedIn()) {
+        if (Docebo::user()->isLoggedIn() && $login_user != Docebo::user()->getACLManager()->relativeId(Docebo::user()->userid)) {
             AuthenticationManager::logout();
             header("Location: " . $_SERVER['REQUEST_URI']);
             exit;
@@ -494,7 +494,7 @@ class HomepageAdmController extends AdmController
         $time = Get::req('time', DOTY_MIXED, '');
         $secret = Get::sett('sso_secret', "8ca0f69afeacc7022d1e589221072d6bcf87e39c"); // XXX: <- orribile questo default
         $token = strtoupper(Get::req('token', DOTY_MIXED, ''));
-        $recalc_token = strtoupper(md5(strtolower(stripslashes($login_user)) . ',' . $time . ',' . $secret));
+        $recalc_token = strtoupper(md5($login_user . ',' . $time . ',' . $secret));
 
         $lifetime = Get::sett('rest_auth_lifetime', 1);
 
