@@ -33,7 +33,7 @@ class Forma {
             $use_plugin = true;
         }
 
-        if(Get::cfg('enable_plugins', false) || $use_plugin == true){
+        if(Get::cfg('enable_plugins', false) && $use_plugin == true){
             $pg_adm=new PluginmanagerAdm();
 
             $plugins = $pg_adm->getPlugins(true);
