@@ -87,9 +87,9 @@ class AuthenticationManager {
         $user->loadUserSectionST();
         $user->SaveInSession();
         
-        resetTemplate();
-        
         $GLOBALS['current_user'] = $user;
+        
+        resetTemplate();
 
         $_SESSION['logged_in'] = true;
         $_SESSION['last_enter'] = $user->getLastEnter();

@@ -685,7 +685,7 @@ class TreeView_OrgView extends TreeView {
 						require_once(_base_.'/lib/lib.eventmanager.php'); 
 						$pl_man = PlatformManager::createInstance();
 				
-						$array_subst = array(	'[url]' => Get::sett('url', ''),
+						$array_subst = array(	'[url]' => Get::site_url(),
 												'[userid]' => $userid, 
 												'[password]' => $pass );
 						
@@ -753,7 +753,7 @@ class TreeView_OrgView extends TreeView {
 									require_once(_base_."/lib/lib.eventmanager.php");
 									$pl_man =& PlatformManager::createInstance();
 				
-									$array_subst = array(	'[url]' => Get::sett('url', ''),
+									$array_subst = array(	'[url]' => Get::site_url(),
 															'[userid]' => $userid,
 															'[password]' => $pass );
 									// message to user that is inserted
@@ -777,7 +777,7 @@ class TreeView_OrgView extends TreeView {
 									require_once(_base_."/lib/lib.eventmanager.php");
 									$pl_man =& PlatformManager::createInstance();
 				
-									$array_subst = array(	'[url]' => Get::sett('url', ''),
+									$array_subst = array(	'[url]' => Get::site_url(),
 															'[userid]' => $userid,
 															'[password]' => $pass );
 									
@@ -797,9 +797,9 @@ class TreeView_OrgView extends TreeView {
 									$msg_c_approve = new EventMessageComposer();
 									
 									$msg_c_approve->setSubjectLangText('email', '_TO_APPROVE_USER_SBJ', false);
-									$msg_c_approve->setBodyLangText('email', '_TO_APPROVE_USER_TEXT', array(	'[url]' => Get::sett('url')) );
+									$msg_c_approve->setBodyLangText('email', '_TO_APPROVE_USER_TEXT', array(	'[url]' => Get::site_url()) );
 									
-									$msg_c_approve->setBodyLangText('sms', '_TO_APPROVE_USER_TEXT_SMS', array(	'[url]' => Get::sett('url')) );
+									$msg_c_approve->setBodyLangText('sms', '_TO_APPROVE_USER_TEXT_SMS', array(	'[url]' => Get::site_url()) );
 									$idst_approve = $acl->getRoleST('/framework/admin/directory/approve_waiting_user');
 									$recipients = $this->aclManager->getAllRoleMembers($idst_approve);
 									
@@ -824,7 +824,7 @@ class TreeView_OrgView extends TreeView {
 							require_once(_base_."/lib/lib.eventmanager.php");
 							$pl_man =& PlatformManager::createInstance();
 				
-							$array_subst = array(	'[url]' => Get::sett('url', ''),
+							$array_subst = array(	'[url]' => Get::site_url(),
 													'[userid]' => $userid,
 													'[password]' => $pass );
 							// message to user that is inserted
@@ -870,7 +870,7 @@ class TreeView_OrgView extends TreeView {
 				$pl_man =& PlatformManager::createInstance();
 				$acl_man =& Docebo::user()->getAclManager();
 				
-				$array_subst = array(	'[url]' => Get::sett('url', ''),
+				$array_subst = array(	'[url]' => Get::site_url(),
 										'[userid]' => $acl_man->relativeId($userid) );
 				// message to user that is inserted
 				$msg_composer = new EventMessageComposer();

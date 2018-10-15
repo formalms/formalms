@@ -37,8 +37,8 @@ $this->widget('table', array(
 ?>
 
 <?php
-	$paypal_return_url =Get::sett('url')._folder_lms_.'/paypal.php?op=ok';
-	$paypal_notify_url =Get::sett('url')._folder_lms_.'/paypal.php';
+	$paypal_return_url =Get::site_url()._folder_lms_.'/paypal.php?op=ok';
+	$paypal_notify_url =Get::site_url()._folder_lms_.'/paypal.php';
 ?>
 
 <div class="total_container">

@@ -227,7 +227,7 @@ class Get {
 			}
 		}
 		$folder = str_replace(array('//', '\\/', '/./'), '/', $folder);
-		$path = Get::sett('url').$folder;
+		$path = Get::site_url().$folder;
 		return $path;
 	}
 
@@ -317,16 +317,43 @@ class Get {
 	 */
 	public static function site_url() {
 		
-		return 'http' . ( ((isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' ) 
-		                or (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https') 
-		                or (isset($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) == 'on') ) ? 's' : '' ).'://'
-		    .( (isset($_SERVER['HTTP_X_FORWARDED_HOST']) ) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : $_SERVER['HTTP_HOST'] )
-	    	.( strlen(dirname($_SERVER['SCRIPT_NAME'])) != 1 ? dirname($_SERVER['SCRIPT_NAME']) : '' ).'/';
+        $url = "";
+        if(self::cfg('url_from_db', true)) {
+            $url .= self::sett('url');
+        } else {
+            $url .= self::scheme();
+            $url .= self::server_name();
+            $url .= trim(self::sett('url', ''), '/')
+                 . (strlen(trim(self::sett('url', ''), '/')) ? '/' : '');
+        }
+        return $url;
+	}
 
-//		return 'http'.( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 's' : '' ).'://'
-//			.$_SERVER['HTTP_HOST']
-//	    	.( strlen(dirname($_SERVER['SCRIPT_NAME'])) != 1 ? dirname($_SERVER['SCRIPT_NAME']) : '' )
-//			.'/';
+    /**
+     * Return the scheme to use
+     * @return string scheme
+     */    
+    public static function scheme() {
+        if( (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') ||
+            (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https') ||
+            (isset($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) == 'on')
+        ) {
+            return 'https://';
+        } else {
+            return 'http://';
+        }
+    }
+
+    /**
+     * Return the server name
+     * @return string server_name
+     */    
+    public static function server_name() {
+        if(isset($_SERVER['HTTP_X_FORWARDED_SERVER'])) {
+            return $_SERVER['HTTP_X_FORWARDED_SERVER'] . '/';
+        } else {
+            return $_SERVER['SERVER_NAME'] . '/';
+        }
 	}
 
 	/**

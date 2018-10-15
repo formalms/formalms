@@ -90,7 +90,7 @@ foreach ($plugins as $info){
 }
 echo "<h2>".Lang::t('_PLUGIN_UPLOAD', 'configuration')."</h2><br/><br/>";
 echo Form::openForm( "plugin_upload" , "index.php?r=adm/pluginmanager/upload", false, false, "multipart/form-data");
-echo Form::getInputFilefield("", "plugin_file_upload", "plugin_file_upload");
+echo Form::getInputFilefield("", "plugin_file_upload", "plugin_file_upload", "", "",  "");
 echo "<br/>";
 echo Form::getButton("", "submit_upload", "Upload", "btn btn-primary");
 echo Form::closeForm();

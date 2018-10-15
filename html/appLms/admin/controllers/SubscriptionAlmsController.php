@@ -366,7 +366,7 @@ class SubscriptionAlmsController extends AlmsController {
 							require_once(_base_.'/lib/lib.eventmanager.php');
 
 							$array_subst = array(
-								'[url]' => Get::sett('url'),
+								'[url]' => Get::site_url(),
 								'[course]' => $course_info['name'],
 								'[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'))
 								'[course_name]' => $course_info['name'],
@@ -579,7 +579,7 @@ class SubscriptionAlmsController extends AlmsController {
 			if(!empty($user_selected) && $send_alert) {
 
 				$array_subst = array(
-					'[url]' => Get::sett('url'),
+					'[url]' => Get::site_url(),
 					'[course]' => $course_info['name'],
 					'[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'))
 					'[course_name]' => $course_info['name'],
@@ -992,7 +992,7 @@ class SubscriptionAlmsController extends AlmsController {
 					$uinfo = Docebo::aclm()->getUser($id_user, false);
 					$course_info = $docebo_course->getAllInfo();
 					$array_subst = array(
-						'[url]' => Get::sett('url'),
+						'[url]' => Get::site_url(),
 						'[course]' => $course_info['name'],
 						'[medium_time]' => $course_info['mediumTime'],//Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'),
 						'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
@@ -3456,7 +3456,7 @@ class SubscriptionAlmsController extends AlmsController {
 			}
 		}
 		require_once(_base_.'/lib/lib.eventmanager.php');
-		$array_subst = array(	'[url]' => Get::sett('url'),
+		$array_subst = array(	'[url]' => Get::site_url(),
 								'[course]' => $course_info['name'] );
 		if(!empty($approve_user)) {
 

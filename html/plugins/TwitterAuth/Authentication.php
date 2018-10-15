@@ -111,10 +111,6 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
     }
     
     private static function _getService() {
-
-        $httpsActive = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == "on")
-                || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == "https") 
-                || (isset($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) == "on");
         
         $serviceFactory = new \OAuth\ServiceFactory();
         
@@ -123,7 +119,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $credentials = new Credentials(
             Get::sett("twitter.oauth_key"),
             Get::sett("twitter.oauth_secret"),
-            $httpsActive ? "https" : "http" . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'] . "?r=" . _login_ . "&plugin=".Plugin::getName()
+            Get::abs_path() . "/index.php?r=" . _login_ . "&plugin=".Plugin::getName()
         );
         
         return $serviceFactory->createService("twitter", $credentials, $storage);

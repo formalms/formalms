@@ -570,7 +570,7 @@ class UsermanagementAdmController extends AdmController {
 			$acl_man = Docebo::user()->getAclManager();
 
 			$array_subst = array(
-				'[url]' => Get::sett('url'),
+				'[url]' => Get::site_url(),
 				'[userid]' => $userid,
 				'[password]' => $password
 			);
@@ -1310,6 +1310,15 @@ class UsermanagementAdmController extends AdmController {
 				$event = new \appCore\Events\Core\User\UsersManagementOrgChartCreateNodeEvent();			
 				$event->setNode($nodedata);
 				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartCreateNodeEvent::EVENT_NAME, $event);
+
+                // adding custom fields (if any)
+                $vett_custom_org = $this->model->getCustomOrg();
+                foreach($vett_custom_org as $key => $value){
+                    $name_custom_field = "custom_".$key;
+                    $org_chart = Get::req($name_custom_field, DOTY_STRING, -1);         
+                    $id_field = $key ;
+                    $res =$this->model->addCustomFieldValue($id,$id_field, $org_chart);   
+                } 
 
 			} else {
 				$output['success'] = false;

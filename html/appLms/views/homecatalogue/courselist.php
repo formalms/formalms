@@ -119,8 +119,8 @@ function TruncateText($the_text, $size)
 //                                                </p>
 //                                             </div>
 //                                            <div class=""image_cat>'
-//                                . ($row['use_logo_in_courselist'] && $row['img_course'] ? '<img class="group list-group-image" src="' . Get::sett('url') . $path_course . $row['img_course'] . '" alt="' . Util::purge($row['name']) . '" />' : '')
-//                                . ($row['use_logo_in_courselist'] && !$row['img_course'] ? '<img class="group list-group-image" src="' . Get::sett('url') . '/templates/' . Get::sett('defaultTemplate') . '/images/course/course_nologo.png' . '" alt="' . Util::purge($row['name']) . '" />' : '')
+//                                . ($row['use_logo_in_courselist'] && $row['img_course'] ? '<img class="group list-group-image" src="' . Get::site_url() . $path_course . $row['img_course'] . '" alt="' . Util::purge($row['name']) . '" />' : '')
+//                                . ($row['use_logo_in_courselist'] && !$row['img_course'] ? '<img class="group list-group-image" src="' . Get::site_url() . '/templates/' . Get::sett('defaultTemplate') . '/images/course/course_nologo.png' . '" alt="' . Util::purge($row['name']) . '" />' : '')
 //                                . '</div>
 //                                        </a>
 //                                    </div>

@@ -1883,7 +1883,7 @@ class UserProfileViewer {
 
                     $client_id = Get::sett('social_fb_api');
                     $client_secret = Get::sett('social_fb_secret');
-                    $redirect_uri = Get::sett('url') . 'index.php?modname=login&op=facebook_login';
+                    $redirect_uri = Get::site_url() . 'index.php?modname=login&op=facebook_login';
 
                     $serviceFactory = new \OAuth\ServiceFactory();
                     $storage = new Session(false);
@@ -1903,21 +1903,21 @@ class UserProfileViewer {
                 }
                 if ($social->isActive('twitter') && !$social->connectedToUser('twitter')) {
                     $html .= '<li>
-                                  <a class="titter" href="' . Get::sett('url') . 'index.php?modname=login&amp;op=twitter_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_TWITTER', 'social') . '">
+                                  <a class="titter" href="' . Get::site_url() . 'index.php?modname=login&amp;op=twitter_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_TWITTER', 'social') . '">
                                       <i class="fa fa-twitter"></i>
                                   </a>
                               </li>';
                 }
                 if ($social->isActive('linkedin') && !$social->connectedToUser('linkedin')) {
                     $html .= '<li>
-                                  <a class="linkedin" href="' . Get::sett('url') . 'index.php?modname=login&amp;op=linkedin_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_LINKEDIN', 'social') . '">
+                                  <a class="linkedin" href="' . Get::site_url() . 'index.php?modname=login&amp;op=linkedin_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_LINKEDIN', 'social') . '">
                                       <i class="fa fa-linkedin"></i>
                                   </a>
                               </li>';
                 }
                 if ($social->isActive('google') && !$social->connectedToUser('google')) {
                     $html .= '<li>
-                                  <a class="google-plus" href="' . Get::sett('url') . 'index.php?modname=login&amp;op=google_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '">
+                                  <a class="google-plus" href="' . Get::site_url() . 'index.php?modname=login&amp;op=google_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '">
                                       <i class="fa fa-google-plus"></i>
                                   </a>
                               </li>';

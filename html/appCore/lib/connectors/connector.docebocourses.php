@@ -372,11 +372,11 @@ class DoceboConnectorDoceboCourses extends DoceboConnector {
 					$msg_composer = new EventMessageComposer();
 					
 					$msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT', false);
-					$msg_composer->setBodyLangText('email', '_ALERT_TEXT', array(	'[url]' => Get::sett('url'), 
+					$msg_composer->setBodyLangText('email', '_ALERT_TEXT', array(	'[url]' => Get::site_url(), 
 																					'[course_code]' => $row['code'], 
 																					'[course]' => $row['name'] ) );
 																						
-					$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', array(	'[url]' => Get::sett('url'), 
+					$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', array(	'[url]' => Get::site_url(), 
 																					'[course_code]' => $row['code'], 
 																					'[course]' => $row['name'] ) );
 					

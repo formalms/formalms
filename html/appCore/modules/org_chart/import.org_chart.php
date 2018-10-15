@@ -526,7 +526,7 @@ class ImportUser extends DoceboImport_Destination {
 			}
 			
 			$array_subst = array(
-				'[url]' => Get::sett('url'),
+				'[url]' => Get::site_url(),
 				'[userid]' => $userid,
 				'[password]' => $pass
 			);
