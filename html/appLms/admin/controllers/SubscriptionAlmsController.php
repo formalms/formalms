@@ -3386,6 +3386,40 @@ class SubscriptionAlmsController extends AlmsController {
 		$GLOBALS['page']->add('</div>', 'content');
 	}
 
+
+	function removeSubscription($id_course, $id_user, $lv_group, $edition_id=0, $start_date=FALSE, $end_date=FALSE) {
+
+		require_once($GLOBALS["where_framework"]."/lib/resources/lib.timetable.php");
+		$tt=new TimeTable();
+		// ----------------------------------------
+		$resource="user";
+		$resource_id=$id_user;
+		if ($edition_id > 0) {
+			$consumer="course_edition";
+			$consumer_id=$edition_id;
+		}
+		else {
+			$consumer="course";
+			$consumer_id=$id_course;
+		}
+		// ----------------------------------------
+		$tt->deleteEvent(FALSE, $resource, $resource_id, $consumer, $consumer_id, $start_date, $end_date);
+
+		$acl_man =& Docebo::user()->getAclManager();
+		$acl_man->removeFromGroup($lv_group, $id_user);
+
+		if ($edition_id > 0) {
+			$group ='/lms/course_edition/'.$edition_id.'/subscribed';
+			$group_idst =$acl_man->getGroupST($group);
+			$acl_man->removeFromGroup($group_idst, $id_user);
+		}
+
+		return sql_query("
+		DELETE FROM ".$GLOBALS['prefix_lms']."_courseuser
+		WHERE idUser = '".$id_user."' AND idCourse = '".$id_course."'
+		AND edition_id='".(int)$edition_id."'");
+	}
+
 	function approveusers() {
 		if(!$this->permissions['moderate']) die("You can't access");
 
@@ -3435,7 +3469,7 @@ class SubscriptionAlmsController extends AlmsController {
 
 					$level 		= $waiting_users['users_info'][$id_user]['level'];
 					$sub_by 	= $waiting_users['users_info'][$id_user]['subscribed_by'];
-					$result 	= removeSubscription($id_course, $id_user, $group_levels[$level], $edition_id);
+					$result 	= $this->removeSubscription($id_course, $id_user, $group_levels[$level], $edition_id);
 					if($sub_by != 0 && ($id_user != $sub_by)) {
 
 						if(isset($tot_deny[$sub_by])) $tot_deny[$sub_by]++;
@@ -3456,7 +3490,7 @@ class SubscriptionAlmsController extends AlmsController {
 			}
 		}
 		require_once(_base_.'/lib/lib.eventmanager.php');
-		$array_subst = array(	'[url]' => Get::site_url(),
+		$array_subst = array(	'[url]' => Get::sett('url'),
 								'[course]' => $course_info['name'] );
 		if(!empty($approve_user)) {
 
@@ -3491,8 +3525,6 @@ class SubscriptionAlmsController extends AlmsController {
 		Util::jump_to('index.php?r='.$this->link_course.'/show&res='.($re ? 'ok': 'err') );
 
 	}
-
-
 
 	public function unsubscriberequestsTask() {
 		Util::get_js(Get::rel_path('base').'/lib/js_utils.js', true, true);
