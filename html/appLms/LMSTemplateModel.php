@@ -60,7 +60,7 @@ SELECT m.idMenu, m.idParent, m.name, m.image, m.sequence, mu.idUnder, mu.module_
 FROM %adm_menu AS m
     LEFT JOIN %adm_menu_under AS mu ON (m.idMenu = mu.idMenu)
 WHERE 1 = 1
-    AND m.of_platform IN ('lms')
+    AND mu.of_platform IN ('lms')
     AND m.is_active = true
 ORDER BY m.sequence
 SQL;
@@ -116,11 +116,13 @@ SQL;
     public function getCredits() {
 
         require_once _lms_ . '/lib/lib.middlearea.php';
+        require_once '../widget/lms_block/lib.lms_block_menu.php';            
+        $widget = new Lms_BlockWidget_menu();        
 
         $ma = new Man_MiddleArea();
-
         $credits = null;
         if($ma->currentCanAccessObj('credits')) {
+
             $credits = $widget->credits();
         }
 
