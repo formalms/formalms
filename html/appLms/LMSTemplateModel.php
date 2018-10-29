@@ -60,7 +60,7 @@ SELECT m.idMenu, m.idParent, m.name, m.image, m.sequence, mu.idUnder, mu.module_
 FROM %adm_menu AS m
     LEFT JOIN %adm_menu_under AS mu ON (m.idMenu = mu.idMenu)
 WHERE 1 = 1
-    AND mu.of_platform IN ('lms')
+    AND m.of_platform IN ('lms')
     AND m.is_active = true
 ORDER BY m.sequence
 SQL;
