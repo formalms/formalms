@@ -42,7 +42,7 @@ function createLO( $objectType, $id_resource = false, $environment = false ) {
 		}
 		Util::jump_to('index.php');
 	}*/
-	require_once(Forma::inc(_lms_.'/class.module/learning.object.php' );
+	require_once(Forma::inc(_lms_.'/class.module/learning.object.php' ));
 	require_once(Forma::inc(_lms_.'/class.module/'.$file_name));
 
 	$lo = new $class_name($id_resource, $environment);
