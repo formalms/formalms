@@ -353,6 +353,26 @@ module.exports = Pages;
 Now whenever js-router--exampletwo is loaded into the DOM the router loads the js too.
 
 
+### Build
+
+In order to prepare assets to be used/included in the project, a build process is required.
+It provides code compilation and optimizations like concatenation, minification, autoprefixing and more.
+
+Run the following command whenever a source code modification is introduced:
+
+```
+npm run build {env}
+```
+
+where {env} is the target environment (stage or prod).
+
+After execution, a "static" folder will be created in html/templates/{template}/ and will contain all
+compiled frontend files for {template}.
+
+NB: the compiled files should never be edited manually as they will be overwritten each time a build process
+is executed.
+
+
 ### Note on styleguide creation
 
 This is the command to execute:
