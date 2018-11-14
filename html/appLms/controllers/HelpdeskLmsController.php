@@ -32,7 +32,7 @@ class HelpdeskLmsController extends LmsController {
             $help_req_flash_installed = $_POST['help_req_flash_installed'];
             
             $subject  = $_POST['oggetto'];
-            $headers  = "From: " . strip_tags($usermail) . "\r\n";
+            $headers  = "From: " . strip_tags($sendto) . "\r\n";
             $headers .= "Reply-To: ". strip_tags($usermail) . "\r\n";
             $headers .= "MIME-Version: 1.0\r\n";
             $headers .= "Content-Type: text/html;charset=utf-8 \r\n";
@@ -69,7 +69,7 @@ class HelpdeskLmsController extends LmsController {
             require_once(Forma::inc(_base_.'/lib/lib.mailer.php'));
             $mailer = DoceboMailer::getInstance();
 
-            if($mailer->SendMail($usermail, $sendto, $oggetto, $msg, false, $headers)) {
+            if($mailer->SendMail(Get::sett('sender_event'), $sendto, $oggetto, $msg, false, $headers)) {
                 echo "true";
             } else {
                 echo Lang::t('_NO_EMAIL_CONFIG', 'standard');
