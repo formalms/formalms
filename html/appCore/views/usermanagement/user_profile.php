@@ -41,7 +41,7 @@ if ($active_tab != 'profile_tab1' && $active_tab != 'profile_tab2' && $active_ta
 
 }
 $tabs = '<div id="tab_message">'
-    . '<ul class="nav nav-tabs">'
+    . '<ul class="nav nav-tabs slider-menu slider-menu--tabs">'
     . '<li' . ($active_tab == 'profile_tab1' ? ' class="active"' : '') . '><a data-toggle="tab" href="#profile_tab1"><em>' . Lang::t('_PROFILE', 'profile') . '</em></a></li>'
     . '<li' . ($active_tab == 'profile_tab2' ? ' class="active"' : '') . '><a data-toggle="tab" href="#profile_tab2"><em>' . Lang::t('_USERCOURSE_STATS_TITLE', 'profile') . '</em></a></li>'
     . '<li' . ($active_tab == 'profile_tab3' ? ' class="active"' : '') . '><a data-toggle="tab" href="#profile_tab3"><em>' . Lang::t('_USERCOMPETENCES_CAPTION', 'profile') . '</em></a></li>'
