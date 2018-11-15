@@ -970,11 +970,7 @@ class Report_User extends Report {
 				$subject = importVar('mail_object', false, '['.$lang->def('_SUBJECT').']' );//'[No subject]');
 				$body = importVar('mail_body', false, '');
 				$acl_man = new DoceboACLManager();
-				$user_info = $acl_man->getUser(getLogUserId(), false);
-				if ($user_info)
-				{
-					$sender = $user_info[ACL_INFO_EMAIL];
-				}
+                $sender = Get::sett('sender_event');
 				$mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
 
 				// prepare intestation for email
@@ -2053,11 +2049,7 @@ class Report_User extends Report {
 				$subject = importVar('mail_object', false, '['.$lang->def('_SUBJECT').']' );//'[No subject]');
 				$body = importVar('mail_body', false, '');
 				$acl_man = new DoceboACLManager();
-				$user_info = $acl_man->getUser(getLogUserId(), false);
-				if ($user_info)
-				{
-					$sender = $user_info[ACL_INFO_EMAIL];
-				}
+                $sender = Get::sett('sender_event');
 				$mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
 
 				// prepare intestation for email
@@ -2528,11 +2520,7 @@ class Report_User extends Report {
 				$subject = importVar('mail_object', false, '['.$lang->def('_SUBJECT').']' );//'[No subject]');
 				$body = importVar('mail_body', false, '');
 				$acl_man = new DoceboACLManager();
-				$user_info = $acl_man->getUser(getLogUserId(), false);
-				if ($user_info)
-				{
-					$sender = $user_info[ACL_INFO_EMAIL];
-				}
+                $sender = Get::sett('sender_event');
 				$mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
 
 				// prepare intestation for email
@@ -3193,11 +3181,7 @@ class Report_User extends Report {
 				$subject = importVar('mail_object', false, '['.$lang->def('_SUBJECT').']' );//'[No subject]');
 				$body = importVar('mail_body', false, '');
 				$acl_man = new DoceboACLManager();
-				$user_info = $acl_man->getUser(getLogUserId(), false);
-				if ($user_info)
-				{
-					$sender = $user_info[ACL_INFO_EMAIL];
-				}
+                $sender = Get::sett('sender_event');
 				$mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
 
 				// prepare intestation for email
@@ -4300,11 +4284,7 @@ class Report_User extends Report {
 				$subject = importVar('mail_object', false, '['.$lang->def('_SUBJECT').']' );//'[No subject]');
 				$body = importVar('mail_body', false, '');
 				$acl_man = new DoceboACLManager();
-				$user_info = $acl_man->getUser(getLogUserId(), false);
-				if ($user_info)
-				{
-					$sender = $user_info[ACL_INFO_EMAIL];
-				}
+                $sender = Get::sett('sender_event');
 				$mail_recipients = unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
 
 				// prepare intestation for email

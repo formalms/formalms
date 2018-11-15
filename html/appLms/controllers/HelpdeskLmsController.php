@@ -18,7 +18,8 @@ class HelpdeskLmsController extends LmsController {
 
                     
 	public function show() {                 
-                                                           
+
+	        $sender = Get::sett('customer_help_email', '');
             $sendto   = $_POST['sendto'];
             $usermail = $_POST['email'];
             $content  = nl2br($_POST['msg']);
@@ -69,7 +70,7 @@ class HelpdeskLmsController extends LmsController {
             require_once(Forma::inc(_base_.'/lib/lib.mailer.php'));
             $mailer = DoceboMailer::getInstance();
 
-            if($mailer->SendMail(Get::sett('sender_event'), $sendto, $oggetto, $msg, false, $headers)) {
+            if($mailer->SendMail($sender, $sendto, $oggetto, $msg, false, $headers)) {
                 echo "true";
             } else {
                 echo Lang::t('_NO_EMAIL_CONFIG', 'standard');

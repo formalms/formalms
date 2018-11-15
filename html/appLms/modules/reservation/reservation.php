@@ -732,9 +732,8 @@ function viewUserEvent()
 	
 			$subject = importVar('mail_object', false, '[Nessun Oggetto]');
 			$body = importVar('mail_body', false, '');
-	
-			$info_user = $acl_man->getUser(getLogUserId());
-			$sender = $info_user[ACL_INFO_EMAIL];
+
+            $sender = Get::sett('sender_event');
 	
 			//sendMail($recipients, $subject, $body, $sender);
 			require_once(_base_.'/lib/lib.mailer.php');
@@ -1029,8 +1028,7 @@ function viewUserEvent()
 										
 				$acl_man =& Docebo::user()->getAclManager();
 
-				$info_user = $acl_man->getUser(getLogUserId());
-				$sender = $info_user[ACL_INFO_EMAIL];
+                $sender = Get::sett('sender_event');
 
 				require_once(_base_.'/lib/lib.mailer.php');
 				$mailer = DoceboMailer::getInstance();
@@ -2146,8 +2144,7 @@ function reservationSendMail()
 		$subject = importVar('mail_object', false, '[Nessun Oggetto]');
 		$body = importVar('mail_body', false, '');
 
-		$info_user = $acl_man->getUser(getLogUserId());
-		$sender = $info_user[ACL_INFO_EMAIL];
+        $sender = Get::sett('sender_event');
 
 		//sendMail($recipients, $subject, $body, $sender);
 		require_once(_base_.'/lib/lib.mailer.php');
