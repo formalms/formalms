@@ -461,14 +461,17 @@ class CatalogLmsController extends LmsController {
 
 				list($control_catalogue) = sql_fetch_row(sql_query($query));
 
-				if($control_user && ($control_course || $control_coursepath || $control_catalogue))
+				if($control_user && ($control_course || $control_coursepath || $control_catalogue)) {
 					$recipients[] = $id_user;
+				}
 			}
 
 			$recipients = array_unique($recipients);
 
-			createNewAlert(	'UserCourseInsertModerate', 'subscribe', 'insert', '1', 'User subscribed with moderation',
+			if ($waiting == 1) {
+				createNewAlert(	'UserCourseInsertModerate', 'subscribe', 'insert', '1', 'User subscribed with moderation',
 						$recipients, $msg_composer  );
+			}
 
 			$res['message'] = UIFeedback::info(Lang::t('_SUBSCRIPTION_CORRECT', 'catalogue'), true);
 		}
