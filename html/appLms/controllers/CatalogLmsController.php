@@ -469,8 +469,28 @@ class CatalogLmsController extends LmsController {
 			$recipients = array_unique($recipients);
 
 			if ($waiting == 1) {
-				createNewAlert(	'UserCourseInsertModerate', 'subscribe', 'insert', '1', 'User subscribed with moderation',
-						$recipients, $msg_composer  );
+				createNewAlert(	'UserCourseInsertModerate', 'subscribe', 'insert', '1', 'User subscribed with moderation', $recipients, $msg_composer  );
+			} else {
+				$className = 'UserCourseInserted';
+				$query = "SELECT em.channel, em.permission"
+					." FROM ".$GLOBALS['prefix_fw']."_event_manager as em"
+					." JOIN ".$GLOBALS['prefix_fw']."_event_class as ec"
+					." WHERE ec.idClass = em.idClass "
+					." AND ec.class='".$className."'";
+
+				if ($rs_manager = sql_query( $query )) {
+					list($channel, $permission) = sql_fetch_row( $rs_manager );
+					if ($permission == 'mandatory') {
+						// send message to the user subscribed and teachers
+						$msg_composer = new EventMessageComposer();
+						$msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT', false);
+						$msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT', $array_subst);
+						$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
+
+						createNewAlert(	$className, 'subscribe', 'insert', '1', 'User subscribed', $recipients, $msg_composer );
+					}
+				}
+
 			}
 
 			$res['message'] = UIFeedback::info(Lang::t('_SUBSCRIPTION_CORRECT', 'catalogue'), true);
