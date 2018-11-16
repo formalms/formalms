@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180917</DATE>
+  <DATE>20181116</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -121,6 +121,13 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Traduci linguaggio]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[La traduzione contiene]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Si, importa]]></key>
+      </module>
+      <module id="admin_news">
+        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2018-11-16 15:07:47"><![CDATA[Scegli chi può vedere]]></key>
+        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2018-11-16 16:09:53"><![CDATA[Descrizione lunga]]></key>
+        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2018-11-16 15:08:01"><![CDATA[News in home page]]></key>
+        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2018-11-16 15:08:12"><![CDATA[Indice delle news]]></key>
+        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2018-11-16 15:08:20"><![CDATA[Titolo  - Importante]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[tutte le lingue]]></key>
@@ -433,6 +440,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Richiedi codice creato attraverso il modulo codici]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Chiedi un codice di accesso all'organigramma, il codice sarà scelto da un menu a tendina]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Chiedi un codice di accesso all'organigramma che deve essere inserito manualmente dall'utente]]></key>
+        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2018-11-16 15:08:51"><![CDATA[Chiedi di usare un codice preso dall'albero dei corsi]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Massimo utenti Audio]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Massimo utenti per stanza]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Numero massimo di stanze]]></key>
@@ -1921,6 +1929,7 @@ Ti è stata inviata una email con i tuoi dati di registrazione.]]></key>
       </module>
       <module id="report">
         <key id="report&amp;aggregate_report" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Aggregazione dei dati per utenti e per corsi]]></key>
+        <key id="report&amp;courses_report" attributes="" save_date="2018-11-16 15:08:58"><![CDATA[Report corsi]]></key>
         <key id="report&amp;course_report" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Corsi]]></key>
         <key id="report&amp;ORG_CHART_SUBDIVISION" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Suddividi i dati per rami dell'organigramma]]></key>
         <key id="report&amp;REPORT_SHOW_RESULTS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Visualizza risultati del report]]></key>

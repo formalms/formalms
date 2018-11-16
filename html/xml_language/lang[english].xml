@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180917</DATE>
+  <DATE>20181116</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -121,6 +121,13 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Translate language]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Translation contains]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Yes, import]]></key>
+      </module>
+      <module id="admin_news">
+        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2018-11-16 16:09:40"><![CDATA[Choose who can see this]]></key>
+        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2018-11-16 16:09:47"><![CDATA[Long description]]></key>
+        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2018-11-16 16:10:01"><![CDATA[News in home page]]></key>
+        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2018-11-16 16:10:08"><![CDATA[News summary]]></key>
+        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2018-11-16 16:10:15"><![CDATA[Important Title]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[every language]]></key>
@@ -431,6 +438,7 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a code created through the code module]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a tree code chosen by the user from a list in a dropdown menu]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Ask for a tree code that must be entered manually by the user]]></key>
+        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2018-11-16 16:10:28"><![CDATA[Ask for a code from the course tree]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Max Audio users]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Max users per room]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Max rooms]]></key>
@@ -1927,6 +1935,7 @@ You have to confirm your account before using it.]]></key>
       </module>
       <module id="report">
         <key id="report&amp;aggregate_report" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Data aggregation on users and course]]></key>
+        <key id="report&amp;courses_report" attributes="" save_date="2018-11-16 16:10:35"><![CDATA[Courses report]]></key>
         <key id="report&amp;course_report" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Courses]]></key>
         <key id="report&amp;ORG_CHART_SUBDIVISION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Subdivide data according to the organization chart]]></key>
         <key id="report&amp;REPORT_SHOW_RESULTS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show results]]></key>
