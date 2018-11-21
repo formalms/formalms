@@ -593,24 +593,8 @@ class SubscriptionAlmsController extends AlmsController {
 				$msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT', $array_subst);
 				$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
 
-				$className = 'UserCourseInserted';
-
-				$query = "SELECT em.channel, em.permission"
-					." FROM ".$GLOBALS['prefix_fw']."_event_manager as em"
-					." JOIN ".$GLOBALS['prefix_fw']."_event_class as ec"
-					." WHERE ec.idClass = em.idClass "
-					."   AND ec.class='".$className."'";
-
-				$users = array_keys($user_selected);
-				if ($rs_manager = sql_query( $query )) {
-					list($channel, $permission) = sql_fetch_row( $rs_manager );
-					if ($permission == 'mandatory') {
-						// send message to the user subscribed and teachers
-						$users = array_merge($users, Man_Course::getIdUserOfLevel($this->id_course, '6')); // Get Teachers Ids
-					}
-				}
 				// send message to the user subscribed
-				createNewAlert(	$className, 'subscribe', 'insert', '1', 'User subscribed', $users, $msg_composer, $send_alert, true );
+				createNewAlert(	'UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', array_keys($user_selected), $msg_composer, $send_alert, true );
 			}
 
 		}
@@ -1021,27 +1005,10 @@ class SubscriptionAlmsController extends AlmsController {
 					$msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT', false);
 					$msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT', $array_subst);
 					$msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
-					$className = 'UserCourseInserted';
-
-					$query = "SELECT em.channel, em.permission"
-						." FROM ".$GLOBALS['prefix_fw']."_event_manager as em"
-						." JOIN ".$GLOBALS['prefix_fw']."_event_class as ec"
-						." WHERE ec.idClass = em.idClass "
-						."   AND ec.class='".$className."'";
-
-					$users = [];
-					if ($rs_manager = sql_query( $query )) {
-						list($channel, $permission) = sql_fetch_row( $rs_manager );
-						if ($permission == 'mandatory') {
-							// send message to the user subscribed
-							$users = Man_Course::getIdUserOfLevel($this->id_course, '6'); // Get Teachers Ids
-						}
-					}
 
 					// send message to the user subscribed
-					$users[] = $id_user;
-
-					createNewAlert(	$className, 'subscribe', 'insert', '1', 'User subscribed', $users, $msg_composer, $send_alert, true );
+					$users = array($id_user);
+					createNewAlert(	'UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', $users, $msg_composer, $send_alert, true );
 				}
 			}
 

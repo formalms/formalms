@@ -43,6 +43,7 @@
 		disableBtnNext(true);
 		YAHOO.util.Connect.asyncRequest('GET', sUrl, callback_db);
 	});
+
 	function importLanguages() {
 
 		var language =new Array('<?php echo implode("','", array_keys($_SESSION["lang_install"])); ?>');

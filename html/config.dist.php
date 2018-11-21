@@ -67,7 +67,8 @@ $cfg['ftppath']  = '/';
  * External smtp config
  * -------------------------------------------------------------------------
  */
-$cfg['use_smtp'] = 'off';
+$cfg['use_smtp_database'] = 'on';   // Options: on,off
+$cfg['use_smtp'] = 'on';            // Options: on,off
 $cfg['smtp_host'] ='';				// Options: hostname;hostname:port;...
 //$cfg['smtp_port'] ='';			// Options: '' (default port) , port number
 //$cfg['smtp_secure'] = '';			// Options: "", "ssl", "tls"

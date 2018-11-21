@@ -87,7 +87,18 @@ define("_DATABASE", "База данных");
 define("_DB_IMPORTING", "БД для импорта");
 define("_LANGUAGES", "Языки");
 // -----------------------------------------
-define("_TITLE_STEP7", "Шаг 7: Завершение установки");
+define("_TITLE_STEP7", "Step 7: Configurazione SMTP");
+define("_SMTP_INFO", "Sarà possibile impostare la configurazione dell'SMTP da backoffice o da config.");
+define("_USE_SMTP_DATABASE", "Impostazioni SMTP su Database");
+define("_USE_SMTP", "Usa SMTP");
+define("_SMTP_HOST", "Host SMTP");
+define("_SMTP_PORT", "Porta SMTP");
+define("_SMTP_SECURE", "Tipo di sicurezza");
+define("_SMTP_USER", "User SMTP");
+define("_SMTP_PWD", "Password SMTP");
+define("_CANT_CONNECT_SMTP", "impossibile connettersi al server SMTP selezionato");
+// -----------------------------------------
+define("_TITLE_STEP8", "Шаг 8: Завершение установки");
 define("_INSTALLATION_COMPLETED", "Инсталляция только-что была завершена");
 define("_INSTALLATION_DETAILS", "Детали");
 define("_SITE_HOMEPAGE", "В начало");

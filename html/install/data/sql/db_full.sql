@@ -2742,6 +2742,28 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
 VALUES ('file_upload_whitelist', 'zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv', 'string', 65535, 'security', 8, 25, 1, 0, '');
 
+--
+-- Impostazioni Smtp
+--
+INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('use_smtp', '', 'on_off', 255, 'Use Smtp', 14, 1, 1, 0, '');
+
+INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('smtp_host', '', 'string', 255, 'Smtp Host', 14, 2, 1, 0, '');
+
+INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('smtp_port', '', 'string', 255, 'Smtp Port', 14, 3, 1, 0, '');
+
+
+INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('smtp_secure', '', 'string', 255, 'Smtp Secure', 14, 4, 1, 0, '');
+
+INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('smtp_user', '', 'string', 255, 'Smtp User', 14, 5, 1, 0, '');
+
+INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('smtp_pwd', '', 'string', 255, 'Smtp Password', 14, 6, 1, 0, '');
+
 -- --------------------------------------------------------
 
 --
@@ -5277,7 +5299,7 @@ CREATE TABLE IF NOT EXISTS `learning_middlearea` (
   `disabled` tinyint(1) NOT NULL DEFAULT '0',
   `idst_list` text NOT NULL,
   `sequence` INT( 5 ) NOT NULL,
-  `is_home` tinyint(4) NOT NULL DEFAULT '0',  
+  `is_home` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`obj_index`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

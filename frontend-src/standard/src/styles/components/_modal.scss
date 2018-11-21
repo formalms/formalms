@@ -105,6 +105,10 @@
 
 .modal-body {
   .section-coourse-modal & {
+
+    @include breakpoint($ipad) {
+      padding: 0 15px;
+    }
   }
 }
 
@@ -129,10 +133,6 @@
         border-right: none;
         font-size: 12px;
         line-height: 30px;
-
-        &:nth-child(3n) {
-          border-right: 1px solid $gray-204;
-        }
       }
     }
   }
@@ -151,10 +151,6 @@
         border-right: none;
         font-size: 12px;
         line-height: 45px;
-
-        &:nth-child(3n) {
-          border-right: 1px solid $gray-204;
-        }
       }
     }
   }

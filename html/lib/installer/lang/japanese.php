@@ -92,7 +92,18 @@ define("_DATABASE", "データベース");
 define("_DB_IMPORTING", "データベースのインポート");
 define("_LANGUAGES", "言語");
 // -----------------------------------------
-define("_TITLE_STEP7", "ステップ7: インストール完了");
+define("_TITLE_STEP7", "Step 7: Configurazione SMTP");
+define("_SMTP_INFO", "Sarà possibile impostare la configurazione dell'SMTP da backoffice o da config.");
+define("_USE_SMTP_DATABASE", "Impostazioni SMTP su Database");
+define("_USE_SMTP", "Usa SMTP");
+define("_SMTP_HOST", "Host SMTP");
+define("_SMTP_PORT", "Porta SMTP");
+define("_SMTP_SECURE", "Tipo di sicurezza");
+define("_SMTP_USER", "User SMTP");
+define("_SMTP_PWD", "Password SMTP");
+define("_CANT_CONNECT_SMTP", "impossibile connettersi al server SMTP selezionato");
+// -----------------------------------------
+define("_TITLE_STEP8", "ステップ7: インストール完了");
 define("_INSTALLATION_COMPLETED", "インストールは完了しました");
 define("_INSTALLATION_DETAILS", "詳細");
 define("_SITE_HOMEPAGE", "ホーム");

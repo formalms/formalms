@@ -252,66 +252,100 @@ class CoursestatsLms extends Model {
 		return $count;
 	}
 
+	public function countTotalCourseUsersStats($id_course, $id_user, $search = null) {
+		$query = "SELECT COUNT(o.idOrg) AS count"
+			." FROM ".$this->tables['organization']." as o "
+			." LEFT JOIN ".$this->tables['commontrack']." as c "
+			." ON (c.idReference = o.idOrg AND c.idUser=".(int)$id_user.") "
+			." WHERE o.idCourse=".(int)$id_course." ";
+
+		if ($search) {
+			$query.= " AND title LIKE '%".$search."%'";
+		}
+
+		$query = $this->db->query($query);
+		$res = $this->db->fetch_obj($query);
+
+		return $res->count;
+	}
+
 
 	public function getCourseUserStatsList($pagination, $id_course, $id_user) {
 		if (is_array($pagination)) {
 			$startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
 			$results = (isset($pagination['results']) ? $pagination['results'] : Get::sett('visuItem', 25));
 
+			// Default order
+			$sort = 'o.path';
 			$dir = 'ASC';
-			if (isset($pagination['dir'])) {
-				switch (strtolower($pagination['dir'])) {
-					case 'yui-dt-asc': $dir = 'ASC'; break;
-					case 'yui-dt-desc': $dir = 'DESC'; break;
-					case 'asc': $dir = 'ASC'; break;
-					case 'desc': $dir = 'DESC'; break;
-					default: $dir = 'ASC';
+			if (isset($pagination['order_column'])) {
+				switch ($pagination['order_column']) {
+					case 0: $sort = 'o.path'; break;
+					case 1: $sort = 'o.title'; break;
+					case 2: $sort = 'o.objectType'; break;
+					case 3: $sort = 'c.status'; break;
+				}
+				if (isset($pagination['order_dir']) && $pagination['order_column'] < 3) {
+					switch ($pagination['order_dir']) {
+						case 'asc': $dir = 'ASC'; break;
+						case 'desc': $dir = 'DESC'; break;
+						default: $dir = 'ASC';
+					}
 				}
 			}
 
-			$sort = 'o.title';
-			if (isset($pagination['sort'])) {
-				switch ($pagination['sort']) {
-					case 'LO_name': $sort = 'o.title'; break;
-					case 'LO_type': $sort = 'o.objectType '.$dir.', o.title'; break;
-					case 'LO_status': $sort = 'c.status '.$dir.', o.title'; break;
-				}
+			$where = '';
+			if (isset($pagination['search'])) {
+				$where.= " AND title LIKE '%".$pagination['search']."%'";
 			}
 		}
 
-
-		$query = "SELECT o.idOrg, o.title, o.objectType, o.idResource, c.status, "
+		$query = "SELECT o.path, o.idOrg, o.title, o.objectType, o.idResource, c.status, "
 			." c.dateAttempt as last_access, c.firstAttempt as first_access, c.first_complete, c.last_complete "
 			." FROM ".$this->tables['organization']." as o "
 			." LEFT JOIN ".$this->tables['commontrack']." as c "
 			." ON (c.idReference = o.idOrg AND c.idUser=".(int)$id_user.") "
-			." WHERE o.idCourse=".(int)$id_course." ";
+			." WHERE o.idCourse=".(int)$id_course.$where;
 
 		if (is_array($pagination)) {
 			$query .= " ORDER BY ".$sort." ".$dir." ";
-			$query .= "LIMIT ".$startIndex.", ".$results;
 		}
-
+		$query .= "LIMIT ".$startIndex.", ".$results;
 		$output = array();
 		$res = $this->db->query($query);
-		$history_table_html = '<table style="margin-left:auto; margin-right:auto;width:50%">';
+
 		if ($res) {
 			$scores = $this->getLOScores($id_course, $id_user); //actually only tests can be scored
 			
 			while ($obj = $this->db->fetch_obj($res)) {
-				
 				$history = $this->getUserScormHistoryTrackInfo($id_user, $obj->idOrg);
-				$history_table_html = '<table style="width:400px;">';
+				$history_table_html = '<table class="timesDetail">';
 				
-				if (is_array($history)) $history_table_html.='<tr><td></td><td>Data</td><td>durata (hh:mm:ss)</td><td>Esito</td></tr>';
-				foreach ($history as $key=>$history_rec) { 
-				$history_table_html.= '<tr><td>Tentativo '.($key+1).'</td><td>'.Format::date($history_rec[0],'datetime').'</td><td>'.$history_rec[3].'</td><td>'.$history_rec[4].'</td></tr>';
+				if (is_array($history)) $history_table_html.='
+					<tr>
+						<td>&nbsp;</td>
+						<td><b>Data inizio</b></td>
+						<td><b>Data fine</b></td>
+						<td><b>Durata (hh:mm:ss)</b></td>
+						<td><b>Esito</b></td>
+					</tr>';
+				foreach ($history as $key => $history_rec) { 
+					$seconds_diff = strtotime("1970-01-01 ".$history_rec[3]." UTC");
+					$date_end = date('Y-m-d H:i:s', strtotime($history_rec[0]) + $seconds_diff);
+					$history_table_html.= '
+						<tr>
+							<td><b>Tentativo '.($key+1).'</b></td>
+							<td>'.Format::date($history_rec[0],'datetime').'</td>
+							<td>'.Format::date($date_end,'datetime').'</td>
+							<td>'.$history_rec[3].'</td>
+							<td>'.$history_rec[4].'</td>
+						</tr>';
 				}
-                // $history_table_html.= $history.'</table>';
 				$history_table_html.= '</table>';
 				$obj->score = isset($scores[$obj->idOrg]) ? $scores[$obj->idOrg] : "";
 				$obj->history = isset($history) ? $history_table_html : ""; // by marco array sessioni
 				$obj->totaltime = $this->getUserScormHistoryTrackTotaltime($id_user, $obj->idOrg);
+
 				$output[] = $obj;
 			}
 		} else {
@@ -442,8 +476,8 @@ class CoursestatsLms extends Model {
 		$output = false;
 		$query = "SELECT idTrack, objectType, status, firstAttempt as first_access, "
 			." dateAttempt as last_access, first_complete, last_complete "
-			." FROM ".$this->tables['commontrack']." "
-			."WHERE idUser=".(int)$id_user." AND idReference=".(int)$id_lo;
+			." FROM ".$this->tables['commontrack']
+			." WHERE idUser=".(int)$id_user." AND idReference=".(int)$id_lo;
 		$res = $this->db->query($query);
 		if ($res) {
 			if ($this->db->num_rows($res) > 0) {
@@ -463,22 +497,16 @@ class CoursestatsLms extends Model {
 		if ($res) {
 			if ($this->db->num_rows($res) > 0) {
 				while ( $row = $this->db->fetch_row($res) ) {
-				$output[] = $row;
+					$output[] = $row;
 				}
-				
 			}
 		}
-		
-		//$output = $query;
 		return $output;
 	}
 
-
-
-public function getUserScormHistoryTrackTotaltime($id_user, $id_lo) {
+	public function getUserScormHistoryTrackTotaltime($id_user, $id_lo) {
 		if ($id_lo <= 0 || $id_user <= 0) return false;
 		$output = false;
-	
 		
 		$query = "SELECT SEC_TO_TIME( SUM( TIME_TO_SEC( t1.session_time ) ) ) AS total_time FROM %lms_organization AS t3 JOIN %lms_scorm_tracking AS t2 ON ( t3.objectType = 'scormorg' AND t3.idOrg = t2.idReference ) JOIN  ".$this->tables['scorm_tracking_history']." as t1 ON (t1.idscorm_tracking=t2.idscorm_tracking) WHERE t3.idOrg =".$id_lo." AND t2.idUser=".$id_user.
 		" ORDER BY t1.date_action ASC ";
@@ -490,12 +518,9 @@ public function getUserScormHistoryTrackTotaltime($id_user, $id_lo) {
 				
 				return $total_time;
 			}
-		}
-		
+		}		
 		return $output;
 	}
-
-
 
 	/*
 	 * retrieve a list of alla existent types of LO (and cache it for future retrievements)
@@ -513,7 +538,6 @@ public function getUserScormHistoryTrackTotaltime($id_user, $id_lo) {
 		}
 		return $this->cache['lo_types'];
 	}
-
 
 	/*
 	 * get an instance of LO object given ad id organization and/or an objectType
@@ -534,7 +558,6 @@ public function getUserScormHistoryTrackTotaltime($id_user, $id_lo) {
 		}
 		return $output;
 	}
-
 
 	/*
 	 * get an instance of LO track object given ad idTrack and/or an objectType
@@ -558,7 +581,6 @@ public function getUserScormHistoryTrackTotaltime($id_user, $id_lo) {
 		return $output;
 	}
 
-
 	/*
 	 * change the status of a user for a given LO
 	 */
@@ -581,15 +603,11 @@ public function getUserScormHistoryTrackTotaltime($id_user, $id_lo) {
 					$old_status = $obj->status;
 					if ($old_status == $new_status) return true;
 					$output = $track_obj->updateTrackInfo(array('status' => $new_status));
-				} else {
-					//$track_obj->setUserStatus(); ?!?
 				}
 			}
 		}
-
 		return $output;
 	}
-
 
 	public function changeLOUserFirstAccess($id_lo, $id_user, $new_status) {
 		if ($id_lo <= 0 || $id_user <= 0) return false;
@@ -601,7 +619,6 @@ public function getUserScormHistoryTrackTotaltime($id_user, $id_lo) {
 		if ($res && $this->db->affected_rows($res)>0) {
 			$output = true;
 		}
-
 		return $output;
 	}
 
@@ -615,7 +632,6 @@ public function getUserScormHistoryTrackTotaltime($id_user, $id_lo) {
 		if ($res && $this->db->affected_rows($res)>0) {
 			$output = true;
 		}
-
 		return $output;
 	}
 
@@ -629,7 +645,6 @@ public function getUserScormHistoryTrackTotaltime($id_user, $id_lo) {
 		if ($res && $this->db->affected_rows($res)>0) {
 			$output = true;
 		}
-
 		return $output;
 	}
 
@@ -643,10 +658,8 @@ public function getUserScormHistoryTrackTotaltime($id_user, $id_lo) {
 		if ($res && $this->db->affected_rows($res)>0) {
 			$output = true;
 		}
-
 		return $output;
 	}
-
 
 	/*
 	 * for every LO of a course with id $id_course, count how many users have completed it
@@ -670,7 +683,6 @@ public function getUserScormHistoryTrackTotaltime($id_user, $id_lo) {
 		return $output;
 	}
 
-
 	/*
 	 * delete all tracking info for a LO
 	 */
@@ -681,7 +693,5 @@ public function getUserScormHistoryTrackTotaltime($id_user, $id_lo) {
 		$res = $object_lo->deleteTrackInfo($id_lo, $id_user);
 		return $res;
 	}
-
 }
-
 ?>

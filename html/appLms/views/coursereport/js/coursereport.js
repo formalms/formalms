@@ -158,8 +158,7 @@ window.CourseReport = (function ($) {
 	 */
 	var navigatePage = function (page, current) {
 		var _userData;
-		var _filterLevel = $('.js-user-level-filter').val();
-    var _filterData = $('.js-user-detail-filter').val();
+		var _filter = $('.js-user-level-filter').val();
 		var _pagination = {
 			page: page,
 			currentPage: current
@@ -170,8 +169,7 @@ window.CourseReport = (function ($) {
 		loadUserData(function (data) {
 			_userData = data;
 			fillTable(_userData);
-      updateUsersInfo(_userData, _filterData);
-		}, testData, _filterLevel, '', _pagination);
+		}, testData, _filter, '', _pagination);
 	};
 
 	/**

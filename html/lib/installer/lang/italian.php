@@ -28,7 +28,7 @@ define("_TITLE_STEP3", "Step 3: Licenza");
 define("_TITLE_STEP4", "Step 4: Configurazione");
 define("_TITLE_STEP5", "Step 5: Personalizzazione dell'installazione");
 define("_TITLE_STEP6", "Step 6: Importazione database");
-define("_TITLE_STEP7", "Step 7: Importazione linguaggi");
+define("_TITLE_STEP7", "Step 7: Configurazione SMTP");
 define("_TITLE_STEP8", "Step 8: Installazione completata");
 define("_INTRODUCTION", "Introduzione");
 define("_INSTALLATION_COMPLETED", "Installazione completata");
@@ -254,4 +254,14 @@ define("_MIME_CONTENT_TYPE", "Supporto mime_content_type()");
 
 define("_ASSESSMENT_FUNCTION_REMOVED", "La funzione assessment è stata rimossa");
 define("_LEARNING_NEWS_REMOVED", "La funzione news di login e relativa tabella è stata rimossa");
+
+define("_SMTP_INFO", "Informazioni sul database");
+define("_USE_SMTP_DATABASE", "Impostazioni SMTP su Database");
+define("_USE_SMTP", "Usa SMTP");
+define("_SMTP_HOST", "Host SMTP");
+define("_SMTP_PORT", "Porta SMTP");
+define("_SMTP_SECURE", "Tipo di sicurezza");
+define("_SMTP_USER", "User SMTP");
+define("_SMTP_PWD", "Password SMTP");
+define("_CANT_CONNECT_SMTP", "impossibile connettersi al server SMTP selezionato");
 

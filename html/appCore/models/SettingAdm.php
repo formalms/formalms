@@ -16,15 +16,20 @@ define("TWIG_GROUP", 13);
 
 class SettingAdm extends Model
 {
-
 	protected $db;
 
 	protected $table;
+
+    /**
+     * @var SmtpAdm
+     */
+	protected $smtpAdm;
 
     public function __construct()
     {
 		$this->db = DbConn::getInstance();
         $this->table = $GLOBALS['prefix_fw'] . '_setting';
+        $this->smtpAdm = SmtpAdm::getInstance();
 	}
 
 	public function getPerm()
@@ -526,7 +531,7 @@ class SettingAdm extends Model
                     echo Form::getRadioSet($lang->def('_REST_AUTH_METHOD'), $var_name, 'option[' . $var_name . ']', $value_set, $var_value, $i_after);
                 }
                     break;
-                    
+
                 case "home_page_option": {
                   $tab_list = array();
                   $tab_list['my_courses'] = Lang::t('_MY_COURSES');
@@ -537,8 +542,8 @@ class SettingAdm extends Model
                         Lang::t('_HOME_PAGE').'</b></p>';
                     echo Form::getInputDropdown('dropdown', $var_name, $var_name, $tab_list, $var_value, '')
                     . '</div><p>&nbsp;</p>';
-                    
-                }    
+
+                }
                     break;
 				// Common types
 				case "password" : {
@@ -564,16 +569,16 @@ class SettingAdm extends Model
 
                 }
                     break;
-				
+
                 case "on_usercourse_empty": {
                     if ($which_home == 'my_courses') {
                         echo Form::getCheckbox($lang->def('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
                     } else {
                         echo Form::getCheckbox($lang->def('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', false, 'disabled', '', ' ' . $i_after);
-                    }                           
+                    }
                 }
                     break;
-                
+
                 case "menuvoice" :
 				case "menuvoice_course_public" :
 
@@ -602,6 +607,19 @@ class SettingAdm extends Model
                         $var_value);
                 };
                     break;
+				case 'on_off':{
+                    $layout = array(
+                        'on' => Lang::t('ON'),
+                        'off' => Lang::t('OFF')
+                    );
+                    echo Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
+                        $var_name,
+                        'option['.$var_name.']',
+                        $layout,
+                        $var_value);
+				}
+				break;
+
 				default : {
 					//string or int
                     echo Form::getTextfield($lang->def('_' . strtoupper($var_name)),
@@ -684,7 +702,7 @@ class SettingAdm extends Model
 					$new_value = urlencode(Util::serialize($tab_selected));
 				};break;
 
-				case "tablist_mycourses" : {                    
+				case "tablist_mycourses" : {
                     $temp_arr = array();
                     for ($i = 0; $i < 3; $i++) {
                         $temp_var = $_POST['mycourses'][$i];
@@ -699,12 +717,12 @@ class SettingAdm extends Model
                     $new_value = $_POST['home_page_option'];
                     switch($new_value) {
                         case 'my_courses':
-                            CoreMenu::set(CoreMenu::getByMVC('elearning/show')->idMenu, ['is_active' => true]);
+                       CoreMenu::set(CoreMenu::getByMVC('elearning/show')->idMenu, ['is_active' => true]);
                             break;
                         case 'catalogue':
                             CoreMenu::set(CoreMenu::getByMVC('lms/catalog/show')->idMenu, ['is_active' => true]);
                             break;
-                    }                    
+}
                 };
                 break;
 
@@ -727,9 +745,9 @@ class SettingAdm extends Model
 				case "on_usercourse_empty":
                 case "enum" : {
                     if (isset($_POST['option'][$var_name])) {
-                        $new_value = 'on';   
+                        $new_value = 'on';
                     } else {
-                        $new_value = 'off';   
+                        $new_value = 'off';
                     }
                 };
                     break;
