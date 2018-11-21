@@ -349,9 +349,9 @@ class Get {
      */    
     public static function server_name() {
         if(isset($_SERVER['HTTP_X_FORWARDED_SERVER'])) {
-            return $_SERVER['HTTP_X_FORWARDED_SERVER'] . '/';
+            return $_SERVER['HTTP_X_FORWARDED_SERVER'];
         } else {
-            return $_SERVER['SERVER_NAME'] . '/';
+            return $_SERVER['SERVER_NAME'];
         }
 	}
 
