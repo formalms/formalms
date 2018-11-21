@@ -549,12 +549,12 @@ function insforum ()
         $msg_composer = new EventMessageComposer();
         
         $msg_composer->setSubjectLangText ('email' , '_NEW_FORUM' , false);
-        $msg_composer->setBodyLangText ('email' , '_NEW_FORUM_BODY' , array ( '[url]' => Get::sett ('url') ,
+        $msg_composer->setBodyLangText ('email' , '_NEW_FORUM_BODY' , array ( '[url]' => Get::site_url() ,
             '[course]' => $GLOBALS[ 'course_descriptor' ]->getValue ('name') ,
             '[title]' => $_POST[ 'title' ] ,
             '[text]' => $_POST[ 'description' ] ));
         
-        $msg_composer->setBodyLangText ('sms' , '_NEW_FORUM_BODY_SMS' , array ( '[url]' => Get::sett ('url') ,
+        $msg_composer->setBodyLangText ('sms' , '_NEW_FORUM_BODY_SMS' , array ( '[url]' => Get::site_url() ,
             '[course]' => $GLOBALS[ 'course_descriptor' ]->getValue ('name') ,
             '[title]' => $_POST[ 'title' ] ,
             '[text]' => $_POST[ 'description' ] ));
@@ -1509,12 +1509,12 @@ function insthread ()
     $msg_composer = new EventMessageComposer();
     
     $msg_composer->setSubjectLangText ('email' , '_SUBJECT_NOTIFY_THREAD' , false);
-    $msg_composer->setBodyLangText ('email' , '_NEW_THREAD_INSERT_IN_FORUM' , array ( '[url]' => Get::sett ('url') ,
+    $msg_composer->setBodyLangText ('email' , '_NEW_THREAD_INSERT_IN_FORUM' , array ( '[url]' => Get::site_url() ,
         '[course]' => $GLOBALS[ 'course_descriptor' ]->getValue ('name') ,
         '[forum_title]' => $forum_title ,
         '[thread_title]' => $_POST[ 'title' ] ));
     
-    $msg_composer->setBodyLangText ('sms' , '_NEW_THREAD_INSERT_IN_FORUM_SMS' , array ( '[url]' => Get::sett ('url') ,
+    $msg_composer->setBodyLangText ('sms' , '_NEW_THREAD_INSERT_IN_FORUM_SMS' , array ( '[url]' => Get::site_url() ,
         '[course]' => $GLOBALS[ 'course_descriptor' ]->getValue ('name') ,
         '[forum_title]' => $forum_title ,
         '[thread_title]' => $_POST[ 'title' ] ));
@@ -2597,12 +2597,12 @@ function insmessage ()
     $msg_composer = new EventMessageComposer();
     
     $msg_composer->setSubjectLangText ('email' , '_SUBJECT_NOTIFY_MESSAGE' , false);
-    $msg_composer->setBodyLangText ('email' , '_NEW_MESSAGE_INSERT_IN_THREAD' , array ( '[url]' => Get::sett ('url') ,
+    $msg_composer->setBodyLangText ('email' , '_NEW_MESSAGE_INSERT_IN_THREAD' , array ( '[url]' => Get::site_url() ,
         '[course]' => $GLOBALS[ 'course_descriptor' ]->getValue ('name') ,
         '[forum_title]' => $forum_title ,
         '[thread_title]' => $_POST[ 'title' ] ));
     
-    $msg_composer->setBodyLangText ('sms' , '_NEW_MESSAGE_INSERT_IN_THREAD_SMS' , array ( '[url]' => Get::sett ('url') ,
+    $msg_composer->setBodyLangText ('sms' , '_NEW_MESSAGE_INSERT_IN_THREAD_SMS' , array ( '[url]' => Get::site_url() ,
         '[course]' => $GLOBALS[ 'course_descriptor' ]->getValue ('name') ,
         '[forum_title]' => $forum_title ,
         '[thread_title]' => $_POST[ 'title' ] ));

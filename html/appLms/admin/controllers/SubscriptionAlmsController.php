@@ -3523,7 +3523,7 @@ class SubscriptionAlmsController extends AlmsController {
 			}
 		}
 		require_once(_base_.'/lib/lib.eventmanager.php');
-		$array_subst = array(	'[url]' => Get::sett('url'),
+		$array_subst = array(	'[url]' => Get::site_url(),
 								'[course]' => $course_info['name'] );
 		if(!empty($approve_user)) {
 
