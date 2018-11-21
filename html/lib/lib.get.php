@@ -318,15 +318,15 @@ class Get {
 	public static function site_url() {
 		
         $url = "";
-        if(self::cfg('url_from_db', true)) {
+        if(self::cfg('url_from_db', false)) {
             $url .= self::sett('url');
         } else {
             $url .= self::scheme() . '://'
                   . self::server_name() . '/'
-                  . self::sett('url', '');
+                  . self::subdirectory();
         }
         return rtrim($url, '/') . '/';
-	}
+    }
 
     /**
      * Return the scheme to use
@@ -353,7 +353,24 @@ class Get {
         } else {
             return $_SERVER['SERVER_NAME'];
         }
-	}
+    }
+    
+    /**
+     * Return installation subdirectory
+     * @return string subdirectory
+     */    
+    public static function subdirectory() {
+        $script_arr = explode('/', ltrim(dirname($_SERVER['SCRIPT_NAME']), '/'));
+        $deeppath_arr = explode('/', trim(_deeppath_, '/'));
+        foreach($deeppath_arr as $value) {
+            switch($value) {
+                case '..': array_pop($script_arr); break;
+                case '.': break;
+                default: $script_arr[] = $value; break;
+            }
+        }
+        return implode('/', $script_arr);
+    }
 
 	/**
 	 * Draw the page title of a mvc or module
