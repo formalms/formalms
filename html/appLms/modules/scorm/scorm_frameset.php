@@ -98,7 +98,7 @@ if(!empty($GLOBALS['chapter'])) {
 }
 
 
-$lms_base_url = Get::abs_path().'/';
+$lms_base_url = Get::abs_path();
 
 $lms_url = $lms_base_url.$scormws;
 $xmlTreeUrl = $lms_base_url.$scormxmltree.'?idscorm_organization='.$idscorm_organization.'&idReference='.$idReference.'&environment='.$environment;

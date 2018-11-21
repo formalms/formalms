@@ -228,7 +228,7 @@ class Get {
 		}
 		$folder = str_replace(array('//', '\\/', '/./'), '/', $folder);
 		$path = Get::site_url().$folder;
-		return $path;
+		return rtrim($path, '/') . '/';
 	}
 
 	/**
@@ -321,12 +321,11 @@ class Get {
         if(self::cfg('url_from_db', true)) {
             $url .= self::sett('url');
         } else {
-            $url .= self::scheme();
-            $url .= self::server_name();
-            $url .= trim(self::sett('url', ''), '/')
-                 . (strlen(trim(self::sett('url', ''), '/')) ? '/' : '');
+            $url .= self::scheme() . '://'
+                  . self::server_name() . '/'
+                  . self::sett('url', '');
         }
-        return $url;
+        return rtrim($url, '/') . '/';
 	}
 
     /**
@@ -338,9 +337,9 @@ class Get {
             (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https') ||
             (isset($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) == 'on')
         ) {
-            return 'https://';
+            return 'https';
         } else {
-            return 'http://';
+            return 'http';
         }
     }
 

@@ -19,7 +19,7 @@ $social->includeGoogleLib();
 $client_id = Get::sett('social_google_client_id');
 $client_secret = Get::sett('social_google_secret');
 
-$redirect_uri = Get::abs_path().'/index.php?modname=login&op=google_login';
+$redirect_uri = Get::abs_path().'index.php?modname=login&op=google_login';
 
 try{
 	$serviceFactory = new \OAuth\ServiceFactory();

@@ -109,7 +109,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $credentials = new Credentials(
             Get::sett("facebook.oauth_key"),
             Get::sett("facebook.oauth_secret"),
-            Get::abs_path() . "/index.php?r=" . urlencode(_login_) . "&plugin=".Plugin::getName()
+            Get::abs_path() . "index.php?r=" . urlencode(_login_) . "&plugin=".Plugin::getName()
         );
         
         return $serviceFactory->createService("facebook", $credentials, $storage, array());

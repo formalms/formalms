@@ -80,7 +80,7 @@ class Util  {
 
 		session_write_close();
 		
-        $url = Get::abs_path() . '/' . $relative_url . $anchor;
+        $url = Get::abs_path() . $relative_url . $anchor;
         Header("Location: $url");
         
 		ob_clean();
@@ -134,7 +134,7 @@ class Util  {
 		//sending creation time
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		//content type
-		if(Get::scheme() === 'https://') {
+		if(Get::scheme() === 'https') {
 			header('Pragma: private');
 		}
 		header('Content-Disposition: attachment; filename="'.$sendname.'"');

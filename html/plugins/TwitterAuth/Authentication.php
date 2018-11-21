@@ -119,7 +119,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $credentials = new Credentials(
             Get::sett("twitter.oauth_key"),
             Get::sett("twitter.oauth_secret"),
-            Get::abs_path() . "/index.php?r=" . _login_ . "&plugin=".Plugin::getName()
+            Get::abs_path() . "index.php?r=" . _login_ . "&plugin=".Plugin::getName()
         );
         
         return $serviceFactory->createService("twitter", $credentials, $storage);

@@ -110,7 +110,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $credentials = new Credentials(
             Get::sett("google.oauth_key"),
             Get::sett("google.oauth_secret"),
-            Get::abs_path() . "/index.php?r=" . _login_ . "&plugin=".Plugin::getName()
+            Get::abs_path() . "index.php?r=" . _login_ . "&plugin=".Plugin::getName()
         );
         
         return $serviceFactory->createService("google", $credentials, $storage, array("userinfo_email"));

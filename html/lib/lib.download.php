@@ -85,7 +85,7 @@ function sendFileFromFS(\appCore\Events\Core\FileSystem\DownloadEvent $event){
 		//sending creation time
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		//content type
-		if (Get::scheme() === 'https://') {
+		if (Get::scheme() === 'https') {
 			header('Pragma: private');
 		}
 		header('Content-Disposition: attachment; filename="' . $sendname . '"');
@@ -142,7 +142,7 @@ function sendStrAsFile($string, $filename, $charset=false) {
 	//sending creation time
 	header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 	//content type
-	if(Get::scheme() === 'https://') {
+	if(Get::scheme() === 'https') {
 		header('Pragma: private');
 	}
 	header('Content-Encoding: UTF-8');

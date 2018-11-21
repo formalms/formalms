@@ -112,7 +112,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $credentials = new Credentials(
             Get::sett("linkedin.oauth_key"),
             Get::sett("linkedin.oauth_secret"),
-            Get::abs_path() . "/index.php?r=" . urlencode(_login_) . "&plugin=".Plugin::getName()
+            Get::abs_path() . "index.php?r=" . urlencode(_login_) . "&plugin=".Plugin::getName()
         );
         
         return $serviceFactory->createService("linkedin", $credentials, $storage, array("r_basicprofile"));
