@@ -60,7 +60,9 @@ class LMSTemplateController {
         $this->showLogo();
         $this->showMenu();
         $this->showCart();
+        $this->showHelpDesk();
         $this->showProfile();
+        $this->showHelpDeskmodal(); // Temporary solution before helpdesk refactoring.
         cout(ob_get_contents(), 'debug');
         ob_clean();
         Layout::render($this->layout);
@@ -90,6 +92,14 @@ class LMSTemplateController {
         ));
     }
 
+    private function showHelpDesk() {
+        
+        $this->render('helpdesk', 'helpdesk', array(
+            'user'  => $this->model->getUser()
+          , 'email' => $this->model->getHelpDeskEmail()
+        ));
+    }
+
     private function showProfile() {
         
         $this->render('profile', 'profile', array(
@@ -100,6 +110,15 @@ class LMSTemplateController {
           , 'subscribeCourse'   => $this->model->getSubscribeCourse()
           , 'news'              => $this->model->getNews()
           , 'languages'         => $this->model->getLanguages()
+        ));
+    }
+
+    private function showHelpDeskModal() {
+
+        // Temporary solution before helpdesk refactoring.        
+        $this->render('helpdesk_modal', 'helpdesk_modal', array(
+            'user'          => $this->model->getUser()
+          , 'userDetails'   => $this->model->getUserDetails()
         ));
     }
 

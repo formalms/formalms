@@ -49,13 +49,18 @@
                             <ul class="nav navbar-nav">
                                 {{ evalPhp('Layout::zone', ['menu']) }}
                                 {{ evalPhp('Layout::zone', ['cart']) }} <!-- ????? -->
+                                {{ evalPhp('Layout::zone', ['helpdesk']) }}
                                 {{ evalPhp('Layout::zone', ['profile']) }}
                             </ul>
                         </div>
                         <div id="c-mask" class="c-mask"></div>
                     </div>
-                </nav>                
+                </nav>
             </header>
+
+            {# Temporary solution before helpdesk refactoring. #}
+            {{ evalPhp('Layout::zone', ['helpdesk_modal']) }}
+            {# ############################################### #}
                     
         </div>
         

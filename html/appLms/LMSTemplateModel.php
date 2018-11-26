@@ -82,6 +82,11 @@ SQL;
         return $this->user;
     }
 
+    public function getUserDetails() {
+
+        return $this->user->getAclManager()->getUser($this->user->getIdst(), false);
+    }
+
     public function getLogoutUrl() {
 
         return Get::rel_path('base') . '/index.php?r=' . _logout_;
@@ -165,5 +170,10 @@ SQL;
         $languages = $lm->getLangListNoStat(false, false, 'lang_description', 'ASC');
 
         return $languages;
+    }
+
+    public function getHelpDeskEmail() {
+
+        return trim(Get::sett('customer_help_email', ''));
     }
 }
