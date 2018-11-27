@@ -418,7 +418,7 @@ Class CourseAlms extends Model
 
         $boxDescription = Get::pReq('course_box_descr', DOTY_STRING, "");
 
-        if(strlen($boxDescription) > self::boxDescrMaxLimit){
+        if (strlen($boxDescription) > self::boxDescrMaxLimit) {
             $res['err'] = '_err_course_box_descr_max_limit';
 
             return $res;
@@ -719,7 +719,7 @@ Class CourseAlms extends Model
 
         $boxDescription = Get::pReq('course_box_descr', DOTY_STRING, "");
 
-        if(strlen($boxDescription) > self::boxDescrMaxLimit){
+        if (strlen($boxDescription) > self::boxDescrMaxLimit) {
             $res['err'] = '_err_course_box_descr_max_limit';
 
             return $res;
@@ -784,6 +784,7 @@ Class CourseAlms extends Model
         $file_demo = $arr_file['filename'];
         $used = $used + ($arr_file['new_size'] - $arr_file['old_size']);
         $old_file_size += $arr_file['old_size'];
+
         // course sponsor---------------------------------------------------------------------------------
         $arr_file = $this->manageCourseFile('course_sponsor_logo',
             $_POST["old_course_sponsor_logo"],
@@ -796,6 +797,7 @@ Class CourseAlms extends Model
         $file_sponsor = $arr_file['filename'];
         $used = $used + ($arr_file['new_size'] - $arr_file['old_size']);
         $old_file_size += $arr_file['old_size'];
+
         // course logo-----------------------------------------------------------------------------------
         $arr_file = $this->manageCourseFile('course_logo',
             $_POST["old_course_logo"],
@@ -1019,14 +1021,16 @@ Class CourseAlms extends Model
         if (($delete_old || $arr_new_file !== false) && $old_file != '') {
             // the flag for file delete is checked or a new file was uploaded ---------------------
             $return['old_size'] = Get::file_size($GLOBALS['where_files_relative'] . $path . $old_file);
-            $quota_available -= $return['old_size'];
+            if ($quota_available !== false) {
+                $quota_available -= $return['old_size'];
+            }
             sl_unlink($path . $old_file);
             $return['filename'] = '';
         }
 
         if (!empty($arr_new_file)) {
             // if present load the new file --------------------------------------------------------
-            $filename = $new_file_id . '_' . mt_rand(0, 100) . '_' . time() . '_' . $arr_new_file['name'];
+            $filename = $new_file_id . '_' . mt_rand(0, 100) . '_' . time() . '_' . str_replace(' ', '_', $arr_new_file['name']);
             if ($is_image) {
 
                 $re = createImageFromTmp($arr_new_file['tmp_name'],
@@ -1203,7 +1207,7 @@ Class CourseAlms extends Model
 
 
         //--- clear certificates assignments ---------------------------------------
-        require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
+        require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
         $cman = new Certificate();
         $cman->deleteCourseCertificateAssignments($id_course);
         //--- end certificates assignments -----------------------------------------
