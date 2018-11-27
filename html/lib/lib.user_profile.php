@@ -2029,7 +2029,7 @@ class UserProfileViewer {
             $html .= ''
 
                 . (isset($course_stats['cert_relesable']) /*&& $tot_cert != 0*/
-                    ? '<li class="list-group-item">' . $this->_lang->def('_CERT_RELESABLE') . '<span class="badge"><a href="index.php?r=lms/mycertificate/show">' . $tot_cert . '</a></span></li>'
+                    ? '<li class="list-group-item">' . $this->_lang->def('_CERT_RELESABLE') . '<span class="badge"><a href="index.php?r=lms/mycertificate/show&sop=unregistercourse">' . $tot_cert . '</a></span></li>'
                     : '')
 
                 . ($pendent != 0
