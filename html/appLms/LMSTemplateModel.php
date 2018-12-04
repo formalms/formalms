@@ -25,7 +25,7 @@ class LMSTemplateModel {
         foreach($menu as &$item) {
             if((int)$item->idParent === $parent) {
                 $subMenu = $this->buildMenuArray($menu, (int)$item->idMenu);
-                if(!is_null($item->idUnder) && checkPerm($item->token_associated, true, $item->module_name, true)) {
+                if(!is_null($item->idUnder) && checkPerm($item->associated_token, true, $item->module_name, true)) {
                     $href = "index.php?" . ($item->mvc_path ? "r=$item->mvc_path" : "modname=$item->module_name&op=$item->default_op") . "&sop=unregistercourse";
                 } else {
                     $href = null;
