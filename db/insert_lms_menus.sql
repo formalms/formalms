@@ -1,8 +1,8 @@
 INSERT INTO core_menu (name, image, sequence, is_active, collapse, idParent, idPlugin, of_platform)
-VALUES ('_MY_COURSES', '', 1, 'true', 'true', NULL, NULL, 'lms');
+VALUES ('_MYCOURSES', '', 1, 'true', 'true', NULL, NULL, 'lms');
 
 INSERT INTO core_menu_under (idMenu, module_name, default_name, default_op, associated_token, of_platform, sequence, class_file, class_name, mvc_path)
-VALUES (LAST_INSERT_ID(), 'course', '_MY_COURSES', NULL, 'view', 'lms', 1, NULL, NULL, 'elearning/show');
+VALUES (LAST_INSERT_ID(), 'course', '_MYCOURSES', NULL, 'view', 'lms', 1, NULL, NULL, 'elearning/show');
 
 
 INSERT INTO core_menu (name, image, sequence, is_active, collapse, idParent, idPlugin, of_platform)
