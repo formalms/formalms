@@ -308,9 +308,19 @@ function select_menu_permission() {
     //$user_select->multi_choice = TRUE;
     
     $menu = CoreMenu::get($id);
-    
+    switch($menu->of_platform){
+		case 'lms':
+			$of_platform='/lms/course/public/';
+			break;
+		case 'adm':
+			$of_platform='/framework/admin/';
+			break;
+		default:
+			$of_platform='';
+			break;
+	}
     $am = Docebo::user()->getACLManager();
-    $role = $am->getRole(false, "/lms/course/public/$menu->module_name/$menu->associated_token")[0];
+    $role = $am->getRole(false, $of_platform."$menu->module_name/$menu->associated_token")[0];
     
     $members = $am->getRoleMembers($role);
 
