@@ -71,32 +71,36 @@ class LMSTemplateController {
     private function showLogo() {
         
         $this->render('logo', 'logo', array(
-            'user' => $this->model->getUser()
-          , 'logo' => $this->model->getLogo()
+            'user'          => $this->model->getUser()
+          , 'logo'          => $this->model->getLogo()
+          , 'currentPage'   => $this->model->getCurrentPage()
         ));
     }
 
     private function showMenu() {
         
-        $this->render('menu', 'menu', array(
-            'user' => $this->model->getUser()
-          , 'menu' => $this->model->getMenu()
+        $this->render('menu', 'main-menu', array(
+            'user'          => $this->model->getUser()
+          , 'menu'          => $this->model->getMenu()
+          , 'currentPage'   => $this->model->getCurrentPage()
         ));
     }
 
     private function showCart() {
         
         $this->render('cart', 'cart', array(
-            'user' => $this->model->getUser()
-          , 'cart' => $this->model->getCart()
+            'user'          => $this->model->getUser()
+          , 'cart'          => $this->model->getCart()
+          , 'currentPage'   => $this->model->getCurrentPage()
         ));
     }
 
     private function showHelpDesk() {
         
         $this->render('helpdesk', 'helpdesk', array(
-            'user'  => $this->model->getUser()
-          , 'email' => $this->model->getHelpDeskEmail()
+            'user'          => $this->model->getUser()
+          , 'email'         => $this->model->getHelpDeskEmail()
+          , 'currentPage'   => $this->model->getCurrentPage()
         ));
     }
 
@@ -110,6 +114,7 @@ class LMSTemplateController {
           , 'subscribeCourse'   => $this->model->getSubscribeCourse()
           , 'news'              => $this->model->getNews()
           , 'languages'         => $this->model->getLanguages()
+          , 'currentPage'       => $this->model->getCurrentPage()
         ));
     }
 
@@ -119,6 +124,7 @@ class LMSTemplateController {
         $this->render('helpdesk_modal', 'helpdesk_modal', array(
             'user'          => $this->model->getUser()
           , 'userDetails'   => $this->model->getUserDetails()
+          , 'currentPage'   => $this->model->getCurrentPage()
         ));
     }
 

@@ -19,31 +19,6 @@ class LMSTemplateModel {
         $this->user = Docebo::user();
     }
 
-    private function buildMenuArray($menu, $parent = 0) {
-
-        $_menu = array();
-        foreach($menu as &$item) {
-            if((int)$item->idParent === $parent) {
-                $subMenu = $this->buildMenuArray($menu, (int)$item->idMenu);
-                if(!is_null($item->idUnder) && checkPerm($item->associated_token, true, $item->module_name, true)) {
-                    $href = "index.php?" . ($item->mvc_path ? "r=$item->mvc_path" : "modname=$item->module_name&op=$item->default_op") . "&sop=unregistercourse";
-                } else {
-                    $href = null;
-                }
-                if(count($subMenu) || $href) {
-                    $_item = new stdClass();
-                    $_item->title   = Lang::t($item->name, 'menu_over');
-                    $_item->html    = $item->image ? $item->image : Lang::t($item->name, 'menu_over');
-                    $_item->href    = $href;
-                    $_item->subMenu = $subMenu;
-                    $_item->active  = ($_GET['r'] === $item->mvc_path || $_GET['modname'] === $item->module_name); // TODO: migliorare
-                    $_menu[$item->sequence] = $_item;
-                }
-            }
-        }
-        return $_menu;
-    }
-
     public function getLogo() {
 
         return Layout::path() . "/images/company_logo.png";
@@ -51,29 +26,7 @@ class LMSTemplateModel {
 
     public function getMenu() {
 
-        // TODO: usare libreria
-
-        $query =
-<<<SQL
-SELECT m.idMenu, m.idParent, m.name, m.image, m.sequence, mu.idUnder, mu.module_name,
-    mu.default_name, mu.default_op, mu.associated_token, mu.class_file, mu.class_name, mu.mvc_path
-FROM %adm_menu AS m
-    LEFT JOIN %adm_menu_under AS mu ON (m.idMenu = mu.idMenu)
-WHERE 1 = 1
-    AND m.of_platform IN ('lms')
-    AND m.is_active = true
-ORDER BY m.sequence
-SQL;
-
-        $res = sql_query($query);
-
-        $menu = array();
-        while($row = sql_fetch_object($res)) {
-            $menu[] = $row;
-        }
-
-        $menu = $this->buildMenuArray($menu);
-
+        $menu = CoreMenu::getList('lms');
         return $menu;
     }
 
@@ -175,5 +128,19 @@ SQL;
     public function getHelpDeskEmail() {
 
         return trim(Get::sett('customer_help_email', ''));
+    }
+
+    public function getCurrentPage() {
+
+        $current_page = new stdClass();
+        if(!empty($GLOBALS['req'])) {
+            $current_page->isMVC    = true;
+            $current_page->MVC      = $GLOBALS['req'];
+        } else {
+            $current_page->isMVC    = false;
+            $current_page->modname  = $GLOBALS['modname'];
+            $current_page->op       = $GLOBALS['op'];
+        }
+        return $current_page;
     }
 }

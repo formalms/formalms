@@ -56,11 +56,40 @@
     <div id="container">
         <!-- header -->
 
-
         <!-- menu_over -->
-        {{ evalPhp('Layout::zone', ['menu_over']) }}
+        <div id="menu_over" class="layout_menu_over">
         <!-- feedback -->
-        {{ evalPhp('Layout::zone', ['feedback']) }}
+            {{ evalPhp('Layout::zone', ['feedback']) }}
+            {{ evalPhp('Layout::cart') }} <!-- ????? -->
+
+            <!-- header -->
+            <header class="header white-bg">
+                <nav>
+                    <div class="row-fluid" id="lms_menu_container" >
+                        <div class="navbar-header">
+                            {{ evalPhp('Layout::zone', ['logo']) }}
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span class="glyphicon glyphicon-align-justify"></span>
+                            </button>
+                        </div>
+                        <div id="navbar" class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                {{ evalPhp('Layout::zone', ['main-menu']) }}
+                                {{ evalPhp('Layout::zone', ['cart']) }} <!-- ????? -->
+                                {{ evalPhp('Layout::zone', ['helpdesk']) }}
+                                {{ evalPhp('Layout::zone', ['profile']) }}
+                            </ul>
+                        </div>
+                        <div id="c-mask" class="c-mask"></div>
+                    </div>
+                </nav>
+            </header>
+
+            {# Temporary solution before helpdesk refactoring. #}
+            {{ evalPhp('Layout::zone', ['helpdesk_modal']) }}
+            {# ############################################### #}
+                    
+        </div>
 
 
         <!-- content -->

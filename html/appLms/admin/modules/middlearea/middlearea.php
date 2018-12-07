@@ -43,11 +43,12 @@ function view_area() {
     $ea = Lang::t('_ENABLE_AREA', 'standard');
     
     $main_menu = '';
-    foreach($menu as $sequence => $item) {
+    foreach($menu as $item) {
         // TODO: submenus handling
         $title = Lang::t($item->name, 'menu_over');
         $activation_icon = $item->is_active === 'true' ? $active_icon : $noactive_icon;
-        $main_menu .= 
+        if($item->of_platform === 'lms') {
+            $main_menu .= 
 <<<HTML
 <li>
     <span>$title</span>
@@ -55,6 +56,7 @@ function view_area() {
     <a class="ico-sprite $activation_icon" href="index.php?modname=middlearea&op=switch_menu_active&id=$item->idMenu"><span>$ea</span></a>
 </li>
 HTML;
+        }
     }
     /* NEW MENU */
 
@@ -308,21 +310,10 @@ function select_menu_permission() {
     //$user_select->multi_choice = TRUE;
     
     $menu = CoreMenu::get($id);
-    switch($menu->of_platform){
-		case 'lms':
-			$of_platform='/lms/course/public/';
-			break;
-		case 'adm':
-			$of_platform='/framework/admin/';
-			break;
-		default:
-			$of_platform='';
-			break;
-	}
     $am = Docebo::user()->getACLManager();
-    $role = $am->getRole(false, $of_platform."$menu->module_name/$menu->associated_token")[0];
+    $role_idst = $am->getRole(false, $menu->role)[0];
     
-    $members = $am->getRoleMembers($role);
+    $members = $am->getRoleMembers($role_idst);
 
     // try to load previous saved
     if(isset($_GET['load'])) {
@@ -336,7 +327,7 @@ function select_menu_permission() {
     }
     if(isset($_POST['okselector'])) {
         foreach($members as $member) {
-            $am->removeFromRole($role, $member);
+            $am->removeFromRole($role_idst, $member);
         }
         $all = Get::req('all', DOTY_BOOL);
         if($all) {
@@ -345,7 +336,7 @@ function select_menu_permission() {
             $selected = $user_select->getSelection($_POST);
         }
         foreach($selected as $member) {
-            $am->addToRole($role, $member);
+            $am->addToRole($role_idst, $member);
         }
         Util::jump_to('index.php?modname=middlearea&amp;op=view_area&amp;result='.($re ? 'ok' : 'err' ));
     }
