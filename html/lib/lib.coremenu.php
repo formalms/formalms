@@ -68,7 +68,10 @@ SQL;
             case 'lms':
                 $role = '/lms/course/public';
                 break;
-            case 'adm':
+            case 'alms':
+                $role = '/lms/admin';
+                break;
+            case 'framework':
                 $role = '/framework/admin';
                 break;
             default:
@@ -89,6 +92,27 @@ SQL;
 
     private static function url($menu_item) {
 
+        switch($menu_item->of_platform){
+            case 'lms':
+                $to = 'lms';
+                $of_platform = 'lms';
+                break;
+            case 'alms':
+                $to = 'adm';
+                $of_platform = 'lms';
+                break;
+            case 'framework':
+                $to = 'adm';
+                $of_platform = 'adm';
+                break;
+            default:
+                $to = false;
+                $of_platform = null;
+                break;
+        }
+
+        $url = Get::abs_path($to);
+
         $query_url = array();
         if($menu_item->mvc_path) {
             $query_url['r'] = $menu_item->mvc_path;
@@ -96,13 +120,16 @@ SQL;
             $query_url['modname'] = $menu_item->module_name;
             $query_url['op'] = $menu_item->default_op;
         }
-        if($menu_item->of_platform === 'lms') {
+        if($to === 'lms') {
             $query_url['sop'] = "unregistercourse";
         }
+        if(!$menu_item->mvc_path) {
+            $query_url['of_platform'] = $of_platform;
+        }
         $query_url = urldecode(http_build_query($query_url, '', '&'));
-        if($query_url) $query_url = "?$query_url";
+        if($query_url) $url .= "/index.php?$query_url";
 
-        return Get::abs_path($menu_item->of_platform) . $query_url;
+        return $url;
     }
 
     public static function get($id) {
@@ -140,5 +167,117 @@ WHERE idMenu = $id
 SQL;
 
         return (bool)sql_query($query);
+    }
+
+    public static function addMenuChild($name, $mvcPath, $parent=false, $icon='', $is_active=true, $idPlugin=null){
+
+        // Check if $name contains only alphanumeric characters or undescores.
+        if(preg_match('/[^a-z_\-0-9]/i', $name)){
+            return false;
+        }
+
+        $idPlugin = (int)$idPlugin;
+
+        $idParent = 'NULL';
+        
+        $is_active = ($is_active) ? 'true' : 'false';
+
+        // Get idMenu
+        if($parent){
+            $idParentQuery = " SELECT idMenu FROM core_menu WHERE name = '$parent' ";
+            $idParentResult = sql_query($idParentQuery);
+            if($idParentResult){
+                if($idParentRow = sql_fetch_row($idParentResult)){
+                    $idParent = $idParentRow[0];
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        // Get sequence
+        $where = ' idParent ';
+        if($idParent!='NULL'){
+            $where .= "= $idParent ";
+        } else{
+            $where .= "IS NULL ";
+        }
+        $sequence = null;
+        $sequenceQuery = " SELECT max(sequence)+1, count(sequence) as count FROM core_menu WHERE $where ";
+        $sequenceResult = sql_query($sequenceQuery);
+        if($sequenceResult){
+            if($sequenceRow = sql_fetch_row($sequenceResult)){
+                if($sequenceRow[1]>0){
+                    $sequence = $sequenceRow[0];
+                } else {
+                    $sequence = 1;
+                }
+                
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        // Insert into core_menu
+        $queryMenu = "INSERT INTO 
+            %adm_menu(
+                idparent,
+                name,
+                sequence,
+                is_active,
+                image,
+                idPlugin
+            )
+        VALUES
+            (
+                $idParent,
+                '$name',
+                $sequence,
+                '$is_active',
+                '$icon',
+                $idPlugin
+            )
+        ";
+        
+        // Insert into core_menu_under
+        if(sql_query($queryMenu)){
+            $idMenu = sql_insert_id();
+            $queryMenuUnder = "INSERT INTO 
+                %adm_menu_under(
+                    idMenu,
+                    default_name,
+                    default_op,
+                    associated_token,
+                    of_platform,
+                    sequence,
+                    class_file,
+                    class_name,
+                    mvc_path
+                ) 
+            VALUES
+                (
+                    $idMenu,
+                    '$name',
+                    '',
+                    'view',
+                    NULL,
+                    1,
+                    '',
+                    '',
+                    '$mvcPath'
+                )
+            ";
+            if(sql_query($queryMenuUnder)){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }
