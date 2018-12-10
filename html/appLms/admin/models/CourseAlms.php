@@ -624,6 +624,14 @@ Class CourseAlms extends Model
         // recover the id of the course inserted --------------------------------------------
         list($id_course) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
 
+        $event = new \appLms\Events\Lms\CourseCreateAndUpdateEvent($id_course);
+
+        $postData = $_POST;
+
+        $event->setCourseArrayData($postData);
+
+        \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseCreateAndUpdateEvent::EVENT_NAME_INS, $event);
+
         require_once(_lms_ . '/admin/models/LabelAlms.php');
         $label_model = new LabelAlms();
 
@@ -1004,6 +1012,15 @@ Class CourseAlms extends Model
                 }
             }
         }
+
+        $event = new \appLms\Events\Lms\CourseCreateAndUpdateEvent($id_course);
+
+        $postData = $_POST;
+
+        $event->setCourseArrayData($postData);
+
+        \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseCreateAndUpdateEvent::EVENT_NAME_MOD, $event);
+
         $res['res'] = '_ok_course';
 
         return $res;

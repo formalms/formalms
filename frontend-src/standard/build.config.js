@@ -1,15 +1,14 @@
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const ConfigFile = require(__dirname + '/.ciffisettings');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');		
 const path = require('path');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = {
   entry: {
-    main: './' + ConfigFile.srcPathName + '/scripts/main.js'
+    main: './src/scripts/main.js'
   },
   output: {
-    path: __dirname + '/' + ConfigFile.assetsPath,
-    publicPath: ConfigFile.publicPath,
+    path: __dirname + '/../../html/templates/standard/static',
+    publicPath: './static/',
     filename: '[name].js',
     chunkFilename: '[name].js'
   },
@@ -61,7 +60,7 @@ module.exports = {
     alias: {
       Config: path.resolve(
         __dirname,
-        ConfigFile.srcPathName + '/scripts/config/config.js'
+        'src/scripts/config/config.js'
       )
     }
   },

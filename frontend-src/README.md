@@ -361,10 +361,8 @@ It provides code compilation and optimizations like concatenation, minification,
 Run the following command whenever a source code modification is introduced:
 
 ```
-npm run build {env}
+npm run build
 ```
-
-where {env} is the target environment (stage or prod).
 
 After execution, a "static" folder will be created in html/templates/{template}/ and will contain all
 compiled frontend files for {template}.
