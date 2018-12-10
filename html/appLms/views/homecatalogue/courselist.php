@@ -1,7 +1,11 @@
 <?php
 require_once(_lms_ . '/lib/lib.middlearea.php');
 $ma = new Man_MiddleArea();
-$path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse') . '/';
+// $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse') . '/';
+
+$files_dir = str_replace('../', '', $GLOBALS['where_files_relative']);
+
+$path_course =  Get::site_url() . $files_dir . '/appLms/' . Get::sett('pathcourse');
 $smodel = new CatalogLms();
 $html = '';
 
