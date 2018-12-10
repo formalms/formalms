@@ -215,7 +215,25 @@ function switch_active() {
 function switch_menu_active() {
 
     $id = Get::req('id', DOTY_INT);
-    $res = CoreMenu::set($id, array('is_active' => CoreMenu::get($id)->is_active === 'true' ? 'false' : true));
+
+    $menu = CoreMenu::get($id);
+    switch(Get::sett('home_page_option')) {
+        case 'my_courses':
+            $is_homepage = $menu->mvc_path == 'elearning/show';
+            break;
+        case 'catalogue':
+            $is_homepage = $menu->mvc_path == 'lms/catalog/show';
+            break;
+        default:
+            $is_homepage = false;
+            break;
+    }
+
+    if(!$is_homepage) {
+        $res = CoreMenu::set($id, array('is_active' => $menu->is_active === 'true' ? 'false' : true));
+    } else {
+        $res = false;
+    }
 
     Util::jump_to('index.php?modname=middlearea&amp;op=view_area&amp;result='.($res ? 'ok' : 'err' ));
 }

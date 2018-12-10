@@ -142,7 +142,24 @@ FROM %adm_menu AS m
     LEFT JOIN %adm_menu_under AS mu ON (m.idMenu = mu.idMenu)
 WHERE 1 = 1
     AND m.idMenu = $id
-ORDER BY m.sequence
+SQL;
+
+        $menu = sql_fetch_object(sql_query($query));
+        $menu->role = "/lms/course/public/$menu->module_name/$menu->associated_token";
+        $item->url  = self::url($item);
+        return $menu;
+    }
+
+    public static function getByMVC($mvc_path) {
+
+        $query =
+<<<SQL
+SELECT  m.idMenu, m.idParent, m.sequence, m.name, m.image, m.is_active, mu.idUnder
+      , mu.module_name, mu.default_op, mu.mvc_path, mu.associated_token, mu.of_platform
+FROM %adm_menu AS m
+    LEFT JOIN %adm_menu_under AS mu ON (m.idMenu = mu.idMenu)
+WHERE 1 = 1
+    AND mu.mvc_path = '$mvc_path'
 SQL;
 
         $menu = sql_fetch_object(sql_query($query));
