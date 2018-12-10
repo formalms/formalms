@@ -103,7 +103,7 @@ SQL;
                 break;
             case 'framework':
                 $to = 'adm';
-                $of_platform = 'adm';
+                $of_platform = 'framework';
                 break;
             default:
                 $to = false;
