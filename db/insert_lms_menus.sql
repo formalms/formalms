@@ -24,3 +24,14 @@ VALUES ('_HELPDESK', '<span class="glyphicon glyphicon-question-sign top-menu__l
 
 INSERT INTO core_menu_under (idMenu, module_name, default_name, default_op, associated_token, of_platform, sequence, class_file, class_name, mvc_path)
 VALUES (LAST_INSERT_ID(), 'helpdesk', '_HELPDESK', 'popup', 'view', 'lms', 1000, NULL, NULL, NULL);
+
+
+insert into core_st (idst) values (null);
+
+insert into core_role
+(idst, roleid, description) VALUES
+(LAST_INSERT_ID(), '/lms/course/public/helpdesk/view', NULL);
+
+insert into core_role_members
+(idst, idstMember) VALUES
+(LAST_INSERT_ID(), 1);
