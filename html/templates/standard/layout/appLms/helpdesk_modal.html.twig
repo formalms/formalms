@@ -1,5 +1,3 @@
-<script src="{{ evalPhp('Get::rel_path', ['base']) }}/lib/js_utils.js"></script>
-<script src="{{ evalPhp('Get::rel_path', ['lms']) }}/modules/customer_help/customer_help.js"></script>
 <div id="inline">
     <form id="contact" name="contact" action="#" method="post" style="width: 470px;" role="form" style="display: block;">
         <legend>{{ translate('_CUSTOMER_HELP', 'customer_help') }}</legend>
@@ -101,6 +99,7 @@
 </style>
 
 <script>
+$('#navbar a[href*="modname=helpdesk&op=popup"]').fancybox({href: '#{% if email %}inline{% else %}inline_no_help{% endif %}'});
 $("#disclaimer").change(function() {
     $("#send").attr("disabled", !$("#disclaimer").is(":checked"));
 });

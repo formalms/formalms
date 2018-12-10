@@ -49,7 +49,6 @@
                             <ul class="nav navbar-nav">
                                 {{ evalPhp('Layout::zone', ['main-menu']) }}
                                 {{ evalPhp('Layout::zone', ['cart']) }} <!-- ????? -->
-                                {{ evalPhp('Layout::zone', ['helpdesk']) }}
                                 {{ evalPhp('Layout::zone', ['profile']) }}
                             </ul>
                         </div>
@@ -59,7 +58,7 @@
             </header>
 
             {# Temporary solution before helpdesk refactoring. #}
-            {{ evalPhp('Layout::zone', ['helpdesk_modal']) }}
+            {{ evalPhp('Layout::zone', ['helpdesk']) }}
             {# ############################################### #}
                     
         </div>
