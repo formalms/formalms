@@ -3,14 +3,14 @@ namespace appLms\Events\Lms;
 
 use Symfony\Component\EventDispatcher\Event;
 
-class CourceCompletedEvent extends Event
+class CourseCompletedEvent extends Event
 {
     const EVENT_NAME = 'lms.course.complete';
 
     /**
      * @var
      */
-    protected $courseId;
+    protected $idCourse;
 
     /**
      * @var
@@ -22,9 +22,9 @@ class CourceCompletedEvent extends Event
      */
     protected $acl_man;
 
-    public function __construct($course_id,$user_id,$acl_man)
+    public function __construct($idCourse,$user_id,$acl_man)
     {
-        $this->courseId = $course_id;
+        $this->idCourse = $idCourse;
         $this->userId = $user_id;
         $this->acl_man = $acl_man;
     }
@@ -32,18 +32,18 @@ class CourceCompletedEvent extends Event
     /**
      * @return mixed
      */
-    public function getCourseId()
+    public function getIdCourse()
     {
-        return $this->courseId;
+        return $this->idCourse;
     }
 
     /**
-     * @param mixed $courseId
-     * @return CourceCompletedEvent
+     * @param mixed $idCourse
+     * @return CourseCompletedEvent
      */
-    public function setCourseId($courseId)
+    public function setIdCourse($idCourse)
     {
-        $this->courseId = $courseId;
+        $this->idCourse = $idCourse;
         return $this;
     }
 
@@ -57,7 +57,7 @@ class CourceCompletedEvent extends Event
 
     /**
      * @param mixed $userId
-     * @return CourceCompletedEvent
+     * @return CourseCompletedEvent
      */
     public function setUserId($userId)
     {
@@ -75,7 +75,7 @@ class CourceCompletedEvent extends Event
 
     /**
      * @param mixed $acl_man
-     * @return CourceCompletedEvent
+     * @return CourseCompletedEvent
      */
     public function setAclMan($acl_man)
     {

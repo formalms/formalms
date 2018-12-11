@@ -19,17 +19,18 @@ class CourseCreateAndUpdateEvent extends Event
     /**
      * @var
      */
-    protected $courseArrayData;
+    protected $postData;
 
-    protected $maskData;
+    /** @var string $htmlData */
+    protected $htmlData;
 
     /**
      * CourseCreateAndUpdateEvent constructor.
      * @param $idCourse
      */
-    public function __construct ($idCourse = false)
+    public function __construct($idCourse = false)
     {
-        $this->maskData = '';
+        $this->htmlData = '';
         $this->idCourse = $idCourse;
     }
 
@@ -54,36 +55,36 @@ class CourseCreateAndUpdateEvent extends Event
     /**
      * @return mixed
      */
-    public function getCourseArrayData()
+    public function getPostData()
     {
-        return $this->courseArrayData;
+        return $this->postData;
     }
 
     /**
-     * @param mixed $courseArrayData
+     * @param mixed $postData
      * @return CourseCreateAndUpdateEvent
      */
-    public function setCourseArrayData($courseArrayData)
+    public function setPostData($postData)
     {
-        $this->courseArrayData = $courseArrayData;
+        $this->postData = $postData;
         return $this;
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getMaskData()
+    public function getHtmlData()
     {
-        return $this->maskData;
+        return $this->htmlData;
     }
 
     /**
-     * @param $maskData
+     * @param string $htmlData
      * @return CourseCreateAndUpdateEvent
      */
-    public function setMaskData($maskData)
+    public function setHtmlData($htmlData)
     {
-        $this->maskData = $maskData;
+        $this->htmlData = $htmlData;
         return $this;
     }
 
@@ -91,10 +92,10 @@ class CourseCreateAndUpdateEvent extends Event
      * @param $data
      * @return string
      */
-    public function appendData($data){
+    public function appendHtmlData($htmlData)
+    {
+        $this->htmlData .= $htmlData;
 
-        $this->maskData .=$data;
-
-        return $this->maskData;
+        return $this->htmlData;
     }
 }

@@ -628,7 +628,7 @@ Class CourseAlms extends Model
 
         $postData = $_POST;
 
-        $event->setCourseArrayData($postData);
+        $event->setPostData($postData);
 
         \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseCreateAndUpdateEvent::EVENT_NAME_INS, $event);
 
@@ -1017,7 +1017,7 @@ Class CourseAlms extends Model
 
         $postData = $_POST;
 
-        $event->setCourseArrayData($postData);
+        $event->setPostData($postData);
 
         \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseCreateAndUpdateEvent::EVENT_NAME_MOD, $event);
 
