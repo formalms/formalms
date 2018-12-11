@@ -94,7 +94,10 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
                 </div>
             </div>
         </div>
-        <?php echo $inline_filters ? $inline_filters : ''; ?>
+
+        <?php if ($inline_filters) : ?>
+          <div class="navbar-extra"><?php echo $inline_filters; ?></div>
+        <?php endif ?>
 
         <div class="navbar-header">
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#filter-container">
