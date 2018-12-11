@@ -194,7 +194,7 @@ $event->setPostData($course);
 
     $event->appendHtmlData(Form::closeForm());
 
-    echo $event->getData();
+    echo $event->getHtmlData();
     ?>
 </div>
 <script type="text/javascript">
