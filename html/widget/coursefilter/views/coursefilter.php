@@ -4,6 +4,9 @@ $str_elearning = Lang::t("_COURSE_TYPE_ELEARNING", 'course');
 $str_classroom = Lang::t("_CLASSROOM_COURSE", 'cart');
 $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
 
+
+
+
 ?>
 
 <div class="quick_search_form navbar<?php echo isset($css_class) && $css_class != "" ? " " . $css_class : ""; ?> forma-quick-search-form">
@@ -27,6 +30,7 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
                     </select>
 
                     <?php echo $auxiliary_filter ? $auxiliary_filter : ""; ?>
+                    <?php echo $_label_list ? $_label_list : ""; ?>
                     
                     <script>
                         var this_user = '<?php echo Docebo::user()->idst ?>';
@@ -90,7 +94,6 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
                 </div>
             </div>
         </div>
-
         <?php echo $inline_filters ? $inline_filters : ''; ?>
 
         <div class="navbar-header">
@@ -103,8 +106,8 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
                 </span>
             </button>
         </div>
-
     </nav>
+
 
 
 </div>

@@ -2612,7 +2612,8 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('visuNewsHomePage', '3', 'int', 5, '0', 1, 0, 1, 1, ''),
 ('welcome_use_feed', 'on', 'enum', 3, '0', 1, 0, 1, 1, ''),
 ('hide_empty_category', 'on', 'enum', 3, '0', 4, 5, 1, 0, ''),
-('home_page_option', 'my_courses', 'home_page_option', 255, '0', 4, 1, 1, 0, '');
+('home_page_option', 'my_courses', 'home_page_option', 255, '0', 4, 1, 1, 0, '')
+('use_course_label', 'off', 'enum', '3', 'main', '4', '14', '1', '0', '');
 
 -- --------------------------------------------------------
 

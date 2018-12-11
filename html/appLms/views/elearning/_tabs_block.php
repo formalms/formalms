@@ -6,6 +6,8 @@
 
 
                 <?php
+                
+                
                 $_model = new ElearningLms();
                 $count = 0;
                 $statusFilters = $_model->getFilterStatusCourse(Docebo::user()->getIdst());
@@ -13,10 +15,6 @@
                 $html = '<ul class="nav nav-pills">';
 
                 while( list($key, $value) = each($statusFilters) ) {
-
-                    $html_code .= '	<option value="'.$key.'"'
-                        .((string)$key == (string)$selected ? ' selected="selected"' : '' )
-                        .'>'.$value.'</option>'."\n";
 
                     if ($count === 0) {
                         $html .= '<li class="selected js-label-menu-filter" data-value="' . $key . '">';
@@ -28,8 +26,15 @@
                     $html .= '</li>';
                     $count++;
                 }
+                $html .= '</ul>';                        
 
-                $html .= '</ul>';
+                
+                if ($use_label) {
+                     $html .= '<span style="float:right">'.Form::getInputLabelDropdown('course_search_label', 'filter_label', $label, $current_label).'</span>';                    
+                    
+                }
+
+
 
                 $inline_filters = $html;
 
@@ -60,6 +65,9 @@
                     'css_class' => 'nav'
                 ));
 				?>
+                
+
+                
 
 
 	
@@ -77,7 +85,16 @@
 
 <script type="text/javascript">
 
-
+    <?php if ($use_label): ?>
+    $('#course_search_label').on('changed.bs.select', function (e) {
+            var id_common_label =  $("#course_search_label").selectpicker().val();
+            $("#div_course").html("<br><p align='center'><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p>");
+            var posting = $.get( 'ajax.server.php?r=elearning/show&id_common_label='+id_common_label, {})
+            posting.done(function(responseText){
+                $("#div_course").html(responseText);
+            });
+    })
+    <?php endif;?>    
     
     $('.js-label-menu-filter').on('click', function () {
         $(this).addClass('selected').siblings().removeClass('selected');
@@ -106,6 +123,18 @@
     
     
 	function course_search_callback_set() {
+        
+        <?php if ($use_label): ?>
+        var id_common_label =  $("#course_search_label").selectpicker().val();
+        if(id_common_label == 0 ) {
+            $("#div_course").html("<br><p align='center'><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p>");
+            var posting = $.get( 'ajax.server.php?r=elearning/allLabel', {})
+            posting.done(function(responseText){
+                $("#div_course").html(responseText);
+            }); 
+            return   
+        }
+        <?php endif;?>
         var ft = $("#course_search_filter_text").val();
 
         var ctype = $("#course_search_filter_type").selectpicker().val();

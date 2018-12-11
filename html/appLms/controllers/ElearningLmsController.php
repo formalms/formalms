@@ -103,38 +103,29 @@ class ElearningLmsController extends LmsController
                 Util::jump_to('index.php?r=lms/catalog/show&op=unregistercourse');
         }
 
-        require_once(_lms_ . '/lib/lib.middlearea.php');
-        $ma = new Man_MiddleArea();
-        $block_list = [];
-        //if($ma->currentCanAccessObj('user_details_short')) $block_list['user_details_short'] = true;
-        //if($ma->currentCanAccessObj('user_details_full')) $block_list['user_details_full'] = true;
-        //if($ma->currentCanAccessObj('credits')) $block_list['credits'] = true;
-        //if($ma->currentCanAccessObj('news')) $block_list['news'] = true;
-        $tb_label = $ma->currentCanAccessObj('tb_label');
+        $block_list = [];        
+        $tb_label = (Get::sett('use_course_label', false) == 'off'? false: true);
         if (!$tb_label) {
             $_SESSION['id_common_label'] = 0;
         } else {
             $id_common_label = Get::req('id_common_label', DOTY_INT, -1);
-
             if ($id_common_label >= 0)
                 $_SESSION['id_common_label'] = $id_common_label;
-            elseif ($id_common_label == -2)
+            elseif ($id_common_label <= -1)
                 $_SESSION['id_common_label'] = -1;
 
             $block_list['labels'] = true;
         }
+        
 
-        if ($tb_label && $_SESSION['id_common_label'] == -1) {
+
+        if ($tb_label) {
             require_once(_lms_ . '/admin/models/LabelAlms.php');
             $label_model = new LabelAlms();
-
             $user_label = $label_model->getLabelForUser(Docebo::user()->getId());
-
-            $this->render('_labels', ['block_list' => $block_list,
-                'label' => $user_label]);
+            $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label, 'label' => $user_label, 'current_label' => $id_common_label]);                
         } else {
-            $this->render('_tabs_block', ['block_list' => $block_list]);
-
+            $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label]);
         }
 
         // add feedback:
@@ -271,242 +262,8 @@ class ElearningLmsController extends LmsController
     }
 
 
-
-    /*
-    substituted with allTask(); should be removed
-        public function inprogress() {
-            $model = new ElearningLms();
-
-            $filter_text = Get::req('filter_text', DOTY_STRING, '');
-            $filter_year = Get::req('filter_year', DOTY_INT, 0);
-            $filter_type = Get::req('filter_type', DOTY_STRING, '');
-
-            $filter_cat = Get::req('filter_cat', DOTY_STRING, '');
-
-            $conditions = [
-                'cu.iduser = :id_user',
-                'cu.status = :status'
-            ];
-
-            $params = [
-                ':id_user' => (int)Docebo::user()->getId(),
-                ':status' => _CUS_BEGIN
-            ];
-
-            if (!empty($filter_text)) {
-                $conditions[] = "(c.code LIKE '%:keyword%' OR c.name LIKE '%:keyword%')";
-                $params[':keyword'] = $filter_year;
-            }
-
-            if (!empty($filter_year)) {
-                $conditions[] = "(cu.date_inscr >= ':year-00-00 00:00:00' AND cu.date_inscr <= ':year-12-31 23:59:59')";
-                $params[':year'] = $filter_text;
-            }
-
-           if (!empty($filter_cat)) {
-                $conditions[] = '(c.idCategory in (' .$filter_cat. ') )';
-            }
-
-            if (empty($filter_type) || $filter_type === 'elearning' || $filter_type === 'all') {
-                    $courselist = $model->findAll($conditions, $params);
-                    $filter_type = empty($filter_type) ? 'elearning': $filter_type;
-            }
-
-
-
-
-            //check courses accessibility
-            foreach ($courselist as $key => $courseListItem ){
-                $courselist[$key]['can_enter'] = Man_Course::canEnterCourse($courselist[$key]);
-                $courselist[$key]['course_type'] = 'elearning';
-            }
-
-             // CLASSROOM
-            $modelClassroom = new ClassroomLms();
-
-            $filter_text = Get::req('filter_text', DOTY_STRING, '');
-            $filter_year = Get::req('filter_year', DOTY_INT, 0);
-
-            $conditions = [
-                'cu.iduser = :id_user',
-                'cu.status = :status'
-            ];
-
-            $params = [
-                ':id_user' => (int)Docebo::user()->getId(),
-                ':status' => _CUS_BEGIN
-            ];
-
-            if (!empty($filter_text)) {
-                $conditions[] = "(c.code LIKE '%:keyword%' OR c.name LIKE '%:keyword%')";
-                $params[':keyword'] = $filter_text;
-            }
-
-            if (!empty($filter_year)) {
-                $clist = $modelClassroom->getUserCoursesByYear(Docebo::user()->getId(), $filter_year);
-                if ($clist !== false) {
-                    $conditions[] = 'cu.idCourse IN (' .implode(',', $clist). ')';
-                }
-            }
-
-            $cp_courses = $modelClassroom->getUserCoursePathCourses( Docebo::user()->getIdst() );
-            if (!empty($cp_courses)) {
-                $conditions[] = 'cu.idCourse NOT IN (' .implode(',', $cp_courses). ')';
-            }
-
-            if ($filter_type === 'classroom' || $filter_type === 'all') {
-                $courselistClassroom = $modelClassroom->findAll($conditions, $params);
-            }
-
-           if (!empty($filter_cat)) {
-                $conditions[] = '(c.idCategory in (' .$filter_cat. ') )';
-            }
-
-
-            //check courses accessibility
-            $keys = [];
-            foreach ($courselistClassroom as $key => $courselistClassroomItem ){
-                $courselistClassroom[$key]['can_enter'] = Man_Course::canEnterCourse($courselistClassroom[$key]);
-                $keys[] = $key;
-            }
-            // fine classroom
-
-
-            require_once(_lms_.'/lib/lib.middlearea.php');
-            $ma = new Man_MiddleArea();
-            $this->render('courselist', [
-                'path_course' => $this->path_course,
-                'courselist' => $courselist,
-                'use_label' => $ma->currentCanAccessObj('tb_label'),
-                'keyword' => $filter_text ,
-                'display_info' => $this->_getClassDisplayInfo($keys),
-                'courselistClassroom' => $courselistClassroom ,
-                'course_state' => "inprogress",
-                'filter_type' => $filter_type
-            ]);
-        }
-    */
-
-
-    /*
-    substituted with allTask(); should be removed
-        public function completed() {
-            $model = new ElearningLms();
-
-            $filter_text = Get::req('filter_text', DOTY_STRING, '');
-            $filter_year = Get::req('filter_year', DOTY_INT, 0);
-            $filter_type = Get::req('filter_type', DOTY_STRING, '');
-            $filter_cat = Get::req('filter_cat', DOTY_STRING, '');
-
-            $conditions = [
-                'cu.iduser = :id_user',
-                'cu.status = :status'
-            ];
-
-            $params = [
-                ':id_user' => (int)Docebo::user()->getId(),
-                ':status' => _CUS_END
-            ];
-
-            if (!empty($filter_text)) {
-                $conditions[] = "(c.code LIKE '%:keyword%' OR c.name LIKE '%:keyword%')";
-                $params[':keyword'] = $filter_text;
-            }
-
-            if (!empty($filter_year)) {
-                $conditions[] = "((cu.date_inscr >= ':year-00-00 00:00:00' AND cu.date_inscr <= ':year-12-31 23:59:59') OR (cu.date_inscr='0000-00-00 00:00:00.000000'))";
-                $params[':year'] = $filter_year;
-            }
-
-
-           if (!empty($filter_cat)) {
-                $conditions[] = '(c.idCategory in (' .$filter_cat. ') )';
-            }
-
-
-            if (empty($filter_type) || $filter_type === 'elearning' || $filter_type === 'all') {
-                    $courselist = $model->findAll($conditions, $params);
-                    $filter_type = empty($filter_type) ? 'elearning': $filter_type;
-            }
-
-
-            //check courses accessibility
-            foreach ($courselist as $key => $courseListItem ){
-                $courselist[$key]['can_enter'] = Man_Course::canEnterCourse($courselist[$key]);
-                $courselist[$key]['course_type'] = 'elearning';
-            }
-
-
-            // CLASSROOM
-            $modelClassroom = new ClassroomLms();
-
-            $filter_text = Get::req('filter_text', DOTY_STRING, '');
-            $filter_year = Get::req('filter_year', DOTY_INT, 0);
-
-            $conditions = [
-                'cu.iduser = :id_user',
-                'cu.status = :status'
-            ];
-
-            $params = [
-                ':id_user' => (int)Docebo::user()->getId(),
-                ':status' => _CUS_END
-            ];
-
-            if (!empty($filter_text)) {
-                $conditions[] = "(c.code LIKE '%:keyword%' OR c.name LIKE '%:keyword%')";
-                $params[':keyword'] = $filter_text;
-            }
-
-            if (!empty($filter_year)) {
-                $clist = $modelClassroom->getUserCoursesByYear(Docebo::user()->getId(), $filter_year);
-                if ($clist !== false) {
-                    $conditions[] = 'cu.idCourse IN (' .implode(',', $clist). ')';
-                }
-            }
-
-           if (!empty($filter_cat)) {
-                $conditions[] = '(c.idCategory in (' .$filter_cat. ') )';
-            }
-
-
-            $cp_courses = $modelClassroom->getUserCoursePathCourses( Docebo::user()->getIdst() );
-            if (!empty($cp_courses)) {
-                $conditions[] = 'cu.idCourse NOT IN (' .implode(',', $cp_courses). ')';
-            }
-
-
-            if ($filter_type === 'classroom' || $filter_type === 'all') {
-                $courselistClassroom = $modelClassroom->findAll($conditions, $params);
-            }
-
-
-
-            //check courses accessibility
-            $keys = [];
-            foreach ($courselistClassroom as $key => $courselistClassroomItem ){
-                $courselistClassroom[$key]['can_enter'] = Man_Course::canEnterCourse($courselistClassroom[$key]);
-                $keys[] = $key;
-            }
-            // fine classroom
-
-
-
-
-            require_once(_lms_.'/lib/lib.middlearea.php');
-            $ma = new Man_MiddleArea();
-            $this->render('courselist', [
-                'path_course' => $this->path_course,
-                'courselist' => $courselist,
-                'use_label' => $ma->currentCanAccessObj('tb_label'),
-                'keyword' => $filter_text,
-                'display_info' => $this->_getClassDisplayInfo($keys),
-                'courselistClassroom' => $courselistClassroom   ,
-                'course_state' => "completed",
-                'filter_type' => $filter_type
-            ]);
-        }
-    */
+                
+    
 
 
     public function allTask()
@@ -573,16 +330,36 @@ class ElearningLmsController extends LmsController
         $this->render('courselist', [
             'path_course' => $this->path_course,
             'courselist' => $courselist,
-            'use_label' => $ma->currentCanAccessObj('tb_label'),
             'keyword' => $filter_text,
             'ustatus' => $this->ustatus,
             'levels' => $this->levels,
             'display_info' => $this->_getClassDisplayInfo($keys),
-            //'courselistClassroom' => $courselistClassroom ,
             'stato_corso' => 'all_task',
             'filter_type' => $filter_type,
             'current_user' => $params[':id_user']
         ]);
+    }
+    
+    public function allLabelTask(){
+        require_once(_lms_ . '/admin/models/LabelAlms.php');
+        $label_model = new LabelAlms();
+        $user_label = $label_model->getLabelForUser(Docebo::user()->getId());
+        unset($user_label[0]);
+        $ret ="";
+        foreach($user_label as $id_common_label => $label_info) {
+            $ret .=    '<div class="label_container">'
+                        .'<a class="no_decoration" href="index.php?r=elearning/show&amp;id_common_label='.$id_common_label.'">'
+                            .'<span class="label_image_cont">'
+                                .'<img class="label_image" src="'.($label_info['image'] !== '' ? $GLOBALS['where_files_relative'].'/appLms/label/'.$label_info['image'] : Get::tmpl_path('base').'images/course/label_image.png').'" />'
+                            .'</span>'
+                            .'<span class="label_info_con">'
+                                .'<span class="label_title">'.$label_info['title'].'</span>'
+                                .($label_info['description'] !== '' ? '<br /><span id="label_description_'.$id_common_label.'" class="label_description" title="'.html_entity_decode($label_info['description']).'">'.$label_info['description'].'</span>' : '')
+                            .'</span>'
+                        .'</a>'
+                    .'</div>';
+        }
+        echo $ret;                
     }
 
     /**

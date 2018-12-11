@@ -746,6 +746,31 @@ class Form {
 		$html_code .= '</select>';
 		return $html_code;
 	}
+    
+    
+    public static function getInputLabelDropdown($id, $name, $all_value, $selected ) {
+        $html_code = '<select class="selectpicker " id="'.$id.'" '
+                ."\n\t".'name="'.$name.'" >'."\n";
+        $i = 0;
+        if ($selected == -1) {
+            $selected = 0;
+        }
+        if( is_array($all_value) ) {
+            foreach ($all_value as $key => $value) {
+                    $img = ($value['image'] !== '' ? $GLOBALS['where_files_relative'].'/appLms/label/'.$value['image'] : Get::tmpl_path('base').'images/course/label_image.png');
+                    $data_content = ' data-content="<img src='.$img.' height=25 width=25>&nbsp;'.$value['title'].'"'; 
+                    $s = ($selected == $key) ? ' selected ': '';
+                    $html_code .= '<option'.$data_content.' value='.$key.$s.'></option>'."\n";
+
+            }
+        }
+        $html_code .= '</select>';
+        return $html_code;
+    }
+
+    
+    
+    
 
 	/**
 	 * public static function getLineDropdown( $css_line, $css_label, $label_name, $css_dropdown, $id, $name, $all_value, $selected, $other_param, $other_after, $other_before )

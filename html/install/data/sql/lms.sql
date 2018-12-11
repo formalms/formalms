@@ -2034,7 +2034,6 @@ INSERT INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequen
 ('tb_communication', 1, 'a:0:{}',0,0),
 ('tb_coursepath', 1, 'a:0:{}',0,0),
 ('tb_games', 1, 'a:0:{}',0,0),
-('tb_label', 1, 'a:0:{}',0,0),
 ('tb_videoconference', 1, 'a:0:{}',0,0),
 ('tb_kb', 1, 'a:0:{}', 0,0),
 ('tb_home', '1', 'a:0:{}', '0',0),
