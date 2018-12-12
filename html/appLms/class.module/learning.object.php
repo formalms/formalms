@@ -172,7 +172,15 @@ class Learning_Object {
         
         $out = '';		
         $this->plugin_manager->run('renderCustomSettings', array($this, $arrParams, &$out));
-		return $out;
+
+		require_once(_adm_.'/lib/lib.customfield.php');
+		$fman = new CustomFieldList();
+		$fman->setFieldArea( "LO_OBJECT" );
+		$id_obj=$arrParams['idReference'];
+		$fields_mask = $fman->playFields($id_obj);
+		$out .= $fields_mask;
+
+	return $out;
 	}
 	
 	/**
