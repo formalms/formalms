@@ -8,8 +8,6 @@
 |   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
 \ ======================================================================== */
 
-use \appCore\Template\TwigManager;
-
 class LMSTemplateModel {
 
     private $user;
@@ -17,6 +15,17 @@ class LMSTemplateModel {
     public function __construct() {
 
         $this->user = Docebo::user();
+    }
+
+    public function selectLayout() {
+
+        if(!empty($_SESSION['layoutToRender'])) {
+            return $_SESSION['layoutToRender'];
+        } elseif(isset($_SESSION['idCourse'])) {
+            return 'lms';
+        } else {
+            return 'lms_user';
+        }
     }
 
     public function getLogo() {

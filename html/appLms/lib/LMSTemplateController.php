@@ -8,51 +8,21 @@
 |   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
 \ ======================================================================== */
 
-use \appCore\Template\TwigManager;
+require_once _lib_ . '/TemplateController.php';
+require_once _lms_ . '/lib/LMSTemplateModel.php';
 
-class LMSTemplateController {
-
-    public static function getInstance() {
-
-        static $instance;
-
-        if(!isset($instance)) {
-            $instance = new static();
-        }
-
-        return $instance;
-    }
-
-    public static function init() {
-        
-        ob_start();
-    }
-    
-    public static function flush() {
-
-        ob_end_flush();
-    }
+final class LMSTemplateController extends TemplateController {
 
     private $model;
-    private $layout;
 
-    private function __construct() {
-
-        require_once 'LMSTemplateModel.php';
+    protected function __construct() {
+        
         $this->model = new LMSTemplateModel();
 
-        if(!empty($_SESSION['layoutToRender'])) {
-            $this->setLayout($_SESSION['layoutToRender']);
-        } elseif(isset($_SESSION['idCourse'])) {
-            $this->setLayout('lms');
-        } else {
-            $this->setLayout('lms_user');
-        }
-    }
+        $this->setLayout($this->model->selectLayout());
+        $this->templateFolder = _folder_lms_;
 
-    public function setLayout($layout) {
-
-        $this->layout = $layout;
+        parent::__construct();
     }
 
     public function show() {
@@ -62,9 +32,8 @@ class LMSTemplateController {
         $this->showCart();
         $this->showProfile();
         $this->showHelpDesk(); // Temporary solution before helpdesk refactoring.
-        cout(ob_get_contents(), 'debug');
-        ob_clean();
-        Layout::render($this->layout);
+        
+        parent::show();
     }
 
     private function showLogo() {
@@ -117,11 +86,5 @@ class LMSTemplateController {
           , 'email'         => $this->model->getHelpDeskEmail()
           , 'currentPage'   => $this->model->getCurrentPage()
         ));
-    }
-
-    private function render($view, $zone, $data = array()) {
-        
-        $GLOBALS['page']->addZone($zone);
-        cout(TwigManager::getInstance()->render("$view.html.twig", $data, _base_ . "/templates/" . getTemplate() . "/layout/" . _folder_lms_), $zone);
     }
 }

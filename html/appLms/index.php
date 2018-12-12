@@ -15,7 +15,7 @@ define("LMS", true);
 define("IN_FORMA", true);
 define("_deeppath_", '../');
 require(dirname(__FILE__).'/../base.php');
-require_once 'LMSTemplateController.php';
+require_once _lms_ . '/lib/LMSTemplateController.php';
 
 LMSTemplateController::init();
 
