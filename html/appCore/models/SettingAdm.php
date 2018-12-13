@@ -696,12 +696,15 @@ class SettingAdm extends Model
                 break;
                 case "home_page_option" :{
                         // setting enabled in middle_area options
-                       $new_value =  $_POST['home_page_option'];
-                       require_once(_lms_.'/lib/lib.middlearea.php');
-                       $ma = new Man_MiddleArea();                       
-                       $which_home = ($new_value == 'catalogue'? 'mo_46': 'mo_1');
-                       $ma->setHomePageMenu($which_home);
-                      
+                    $new_value = $_POST['home_page_option'];
+                    switch($new_value) {
+                        case 'my_courses':
+                            CoreMenu::set(CoreMenu::getByMVC('elearning/show')->idMenu, ['is_active' => true]);
+                            break;
+                        case 'catalogue':
+                            CoreMenu::set(CoreMenu::getByMVC('lms/catalog/show')->idMenu, ['is_active' => true]);
+                            break;
+                    }                    
                 };
                 break;
 

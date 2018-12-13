@@ -54,63 +54,38 @@ function BackToLms(){
 
 function AdminBar()
 {
-    $amenu=array();
-    $current_platform = "framework";//$_SESSION['current_action_platform'];
-
-    $p_man 	=& MenuManager::createInstance($current_platform);
-    $lang =& DoceboLanguage::createInstance('menu', 'framework');
-
-    $strLabel = '';
-    $strIco='';
-
-    $menu_man=$p_man->getMenuInstanceFramework($current_platform);
-    //Level0
-    $menus 	= $p_man->getLevel();
-
     $admin_menu_bar = '<nav id="main-nav" role="navigation">
                         <ul id="main-menu" class="sm sm-forma">
                         <li>'.GetCompanyLogo().'</li>';
 
-    foreach ($menus as $p_code => $p_name) {
-//        $menu_man=$p_man->getPlatofmMenuInstanceFramework($p_code);
-        
-        $strLabel = $p_name['name'];//$lang->def($p_name['name'], 'menu', $current_platform);
-        $strIco = $p_name['image'];
-        $strLink = Util::str_replace_once('&', '&amp;', $p_name['link']);
+    $menu = CoreMenu::getList(array('framework', 'alms'));
 
-        $idmenu=$p_man->menu[$p_code]['idMenu'];
-        //Level1
-        $main_voice = $p_man->getLevel($idmenu);
-        if (!empty($main_voice)) {
-            $admin_menu_bar .= '<li><a href="'. ($strLink != '' ? $strLink : '#' ) . '">' . $strIco . '&nbsp;' . $strLabel . '</a>' . PHP_EOL;
-            $admin_menu_bar .= '<ul>' . PHP_EOL;
-            foreach ($main_voice as $id_m => $v_main) {
-                $admin_menu_bar .= '<li>';
-                $admin_menu_bar .= '<a href="' . Util::str_replace_once('&', '&amp;', $v_main['link']) . '" >' . $v_main['name'] . '</a>';
-                //Level2
-                $under_voice = $p_man->getLevel($id_m);
-                if (!empty($under_voice)) {
-                    $admin_menu_bar .= '<ul>' . PHP_EOL;
-                    foreach ($under_voice as $id_m => $voice) {
-                        $admin_menu_bar .= '<li>';
-                        $admin_menu_bar .= '<a href="' . Util::str_replace_once('&', '&amp;', $voice['link']) . '" >' . $voice['name'] . '</a>';
-                        $admin_menu_bar .= '</li>';
-                        $admin_menu_bar .= '</li>' . PHP_EOL;
-                    }
-                    $admin_menu_bar .= '</ul>' . PHP_EOL;
+    $menu_html = "";
+    foreach($menu as $menu_0) {
+        $menu_1_html = "";
+        foreach($menu_0->submenu as $menu_1) {
+            $menu_2_html = "";
+            foreach($menu_1->submenu as $menu_2) {
+                if(checkRole($menu_2->role)) {
+                    $menu_2_html .= "<li><a href='$menu_2->url'>" . Lang::t($menu_2->name, 'menu') . '</a></li>';
                 }
             }
-            $admin_menu_bar .= '</ul></li>' . PHP_EOL;
+            if($menu_2_html) {
+                $menu_1_html .= "<li><a href='#'>" . Lang::t($menu_1->name, 'menu') . "</a><ul>$menu_2_html</ul></li>";
+            } else if(checkRole($menu_1->role)) {
+                $menu_1_html .= "<li><a href='$menu_1->url'>" . Lang::t($menu_1->name, 'menu') . '</a></li>';
+            }
         }
-        else{
-            $admin_menu_bar .= '<li>';
-            $admin_menu_bar .= '<a href="'. ($strLink != '' ? $strLink : '#' ) . '">' . $strIco . '&nbsp;' . $strLabel . '</a>';
-            $admin_menu_bar .= '</li>';
+        if($menu_1_html) {
+            $menu_html .= "<li><a href='#'>$menu_0->image&nbsp;" . Lang::t($menu_0->name, 'menu') . "</a><ul>$menu_1_html</ul></li>";
+        } else if(checkRole($menu_0->role)) {
+            $menu_html .= "<li><a href='$menu_0->url'>$menu_0->image&nbsp;" . Lang::t($menu_0->name, 'menu') . '</a></li>';
         }
     }
 
+    $admin_menu_bar .= $menu_html;
     $admin_menu_bar .=  GetAdminPanel();
-    $admin_menu_bar .= '</ul>'.PHP_EOL;
+    $admin_menu_bar .= '</ul>';
     return $admin_menu_bar;
 }
 

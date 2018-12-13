@@ -198,33 +198,16 @@ class AdminrulesAdmController extends AdmController
 
 	public function menu()
 	{
-		require_once(_base_.'/lib/lib.menu.php');
-
 		if(isset($_POST['back'])){
 			Util::jump_to('index.php?r=adm/adminrules/show');
                 }
 
 		$idst = Get::req('idst', DOTY_INT, 0);
-		$active_tab = Get::req('active_tab', DOTY_MIXED, 1);
-
-    $current_platform=$_SESSION['current_action_platform'];
-
-//    $p_man 	=& MenuManager::createInstance($current_platform);
-//    $lang =& DoceboLanguage::createInstance('menu', 'framework');
-		$pm =& MenuManager::createInstance($current_platform);
-//		$platform_list = $pm->getPlatformList();
-//		
-//		if(isset($platform_list['scs'])){
-//			unset($platform_list['scs']);
-//                }
-//
-//		if(isset($platform_list['ecom'])){
-//			unset($platform_list['ecom']);
-//                }
-    //Level0
-    $menus 	= $pm->getLevel();
-
-		$result_message = "";
+        $active_tab = Get::req('active_tab', DOTY_INT, 0);
+        
+        $menu = CoreMenu::getList(array('framework', 'alms'));
+        
+        $result_message = "";
 		if(isset($_POST['save']))
 		{
 			$adm_perm = array();
@@ -242,7 +225,7 @@ class AdminrulesAdmController extends AdmController
 
 		$this->render('menu', array(
 				'idst' => $idst,
-				'platform_list' => $menus,
+				'menu' => $menu,
 				'active_tab' => $active_tab,
 				'model' => $this->model,
 				'save_res' => $result_message

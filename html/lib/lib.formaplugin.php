@@ -73,8 +73,7 @@ abstract class FormaPlugin {
     public static function addCoreMenu($name, $mvcPath, $parent=false, $icon='', $is_active=false){
         $pg_adm=new PluginmanagerAdm();
         $plugin_info=$pg_adm->getPluginFromDB(self::getName(),'name');
-        include_once _lib_.'/lib.menu.php';
-        MenuManager::addMenuChild($name, $mvcPath, $parent, $icon, $is_active, $plugin_info['plugin_id']);
+        CoreMenu::addMenuChild($name, $mvcPath, $parent, $icon, $is_active, $plugin_info['plugin_id']);
     }
 
 }

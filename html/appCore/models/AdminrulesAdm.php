@@ -267,10 +267,16 @@ class AdminrulesAdm extends Model
 							elseif ($module_name)
 							{
 									switch($of_platform){
+                                        case 'alms':
+                                            $folder_abspath=_lms_.'/admin';
+                                            $folder_name=_folder_lms_;
+                                            $perm_base ='/lms/admin/';
+                                            $suffix = 'Lms';
+                                            break;
 										case 'lms':
-											$folder_abspath=_lms_.'/admin';
+											$folder_abspath=_lms_;
 											$folder_name=_folder_lms_;
-											$perm_base ='/lms/admin/';
+											$perm_base ='/lms/course/public/';
 											$suffix = 'Lms';
 											break;
 										case 'framework':
