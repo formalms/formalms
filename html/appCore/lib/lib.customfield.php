@@ -1107,9 +1107,9 @@ class CustomFieldList {
 
 			require_once($GLOBALS['where_framework'].'/modules/customfield/'.$type_file);
 			$quest_obj = eval("return new $type_class( $id_field );");
-			if( $this->field_entry_table !== FALSE )
+			if( $this->field_entry_table !== FALSE ){
 				$quest_obj->setFieldEntryTable($this->field_entry_table);
-
+			}
 				$quest_obj->setMainTable($this->getFieldTable());
                                 
                                 $error_message = array();

@@ -631,8 +631,9 @@ class OrgDirDb extends RepoDirDb {
 			if( $arrParamsInfo !== FALSE ) {
 				require_once($GLOBALS['where_lms'].'/lib/lib.param.php');
 				while( $param = current($arrParamsInfo) ) {
-					if( isset( $arrData[$param['param_name']] ) )
+					if( isset( $arrData[$param['param_name']] ) ){
 						setLOParam( $this->org_idParam, $param['param_name'], $arrData[$param['param_name']] );
+					}
 					next( $arrParamsInfo );
 				}
 			}
@@ -1148,8 +1149,16 @@ class Org_TreeView extends RepoTreeView {
 			$this->op = 'display';
 		if( isset( $arrayState['org_properties_ok'] ) ) {
 			$arrayState['prerequisites'] = implode( ',', $this->itemSelectedMulti );
-			if( $arrayState['prerequisites'] != '' && $arrayState['prerequisites']{0} == ',' )
+			if( $arrayState['prerequisites'] != '' && $arrayState['prerequisites']{0} == ',' ){
 				$arrayState['prerequisites'] = substr($arrayState['prerequisites'],1);
+			}
+			//LRZ: mem info for custom field of LO
+            require_once(_adm_ . '/lib/lib.customfield.php');  
+            $extra_field = new CustomFieldList();
+            $extra_field->setFieldArea("LO_OBJECT");
+            $extra_field->storeFieldsForObj($arrayState['idItem']);
+			// end manage custom field for lo_object
+			
 			$this->tdb->modifyItem( $arrayState, false, true );
 			$this->op = 'display';
 		}

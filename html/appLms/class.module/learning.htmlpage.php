@@ -41,6 +41,18 @@ class Learning_Htmlpage extends Learning_Object {
 	
 	function getObjectType() {
 		return 'htmlpage';
+    }
+    
+    function getParamInfo() {
+
+        $params = parent::getParamInfo();        
+        return $params;
+	}
+	
+	function renderCustomSettings( $arrParams, $form, $lang ) {
+
+        $out = parent::renderCustomSettings($arrParams, $form, $lang);
+		return $out;
 	}
 	
 	/**
