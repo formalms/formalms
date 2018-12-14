@@ -35,6 +35,10 @@ INSERT IGNORE INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `defau
 
 INSERT IGNORE INTO `core_role` (`idst`, `roleid`, `description`) VALUES(300, '/lms/course/public/helpdesk/view', NULL);
 
+-- Task #19101: custom field in Learning Object
+
+INSERT IGNORE INTO `core_customfield_area` (`area_code`, `area_name`, `area_table`, `area_field`) VALUES('LO_OBJECT', 'Learning Object', 'learning_organization', 'idOrg');
+
 -- ------------------------------------------------------------------
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
