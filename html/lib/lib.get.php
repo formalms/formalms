@@ -360,7 +360,7 @@ class Get {
      * @return string subdirectory
      */    
     public static function subdirectory() {
-        $script_arr = explode('/', ltrim(dirname($_SERVER['SCRIPT_NAME']), '/'));
+        $script_arr = explode('/', ltrim(dirname($_SERVER['SCRIPT_NAME']), '\/'));
         $deeppath_arr = explode('/', trim(_deeppath_, '/'));
         foreach($deeppath_arr as $value) {
             switch($value) {
