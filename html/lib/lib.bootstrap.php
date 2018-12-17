@@ -138,7 +138,7 @@ class Boot {
                 .str_replace(_base_, '.', constant('_base_'));
             Header("Location: ". str_replace(array('//', '\\/', '/./'), '/', $path) ."/install/");
         }
-		require_once dirname(__FILE__).'/../config.php';
+		require dirname(__FILE__).'/../config.php';
 		$GLOBALS['cfg'] = $cfg;
 
 		$GLOBALS['prefix_fw']	= $cfg['prefix_fw'];
