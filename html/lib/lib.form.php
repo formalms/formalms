@@ -752,9 +752,6 @@ class Form {
         $html_code = '<select class="selectpicker " id="'.$id.'" '
                 ."\n\t".'name="'.$name.'" >'."\n";
         $i = 0;
-        if ($selected == -1) {
-            $selected = 0;
-        }
         if( is_array($all_value) ) {
             foreach ($all_value as $key => $value) {
                     $img = ($value['image'] !== '' ? $GLOBALS['where_files_relative'].'/appLms/label/'.$value['image'] : Get::tmpl_path('base').'images/course/label_image.png');

@@ -109,11 +109,7 @@ class ElearningLmsController extends LmsController
             $_SESSION['id_common_label'] = 0;
         } else {
             $id_common_label = Get::req('id_common_label', DOTY_INT, -1);
-            if ($id_common_label >= 0)
-                $_SESSION['id_common_label'] = $id_common_label;
-            elseif ($id_common_label <= -1)
-                $_SESSION['id_common_label'] = -1;
-
+            $_SESSION['id_common_label'] = $id_common_label;
             $block_list['labels'] = true;
         }
         
@@ -344,11 +340,11 @@ class ElearningLmsController extends LmsController
         require_once(_lms_ . '/admin/models/LabelAlms.php');
         $label_model = new LabelAlms();
         $user_label = $label_model->getLabelForUser(Docebo::user()->getId());
-        unset($user_label[0]);
         $ret ="";
         foreach($user_label as $id_common_label => $label_info) {
-            $ret .=    '<div class="label_container">'
-                        .'<a class="no_decoration" href="index.php?r=elearning/show&amp;id_common_label='.$id_common_label.'">'
+           $url = "index.php?r=elearning/show&amp;id_common_label=".$id_common_label;
+           $ret .=    '<div class="label_container">'
+                        .'<a class="no_decoration" href="'.$url.'">'
                             .'<span class="label_image_cont">'
                                 .'<img class="label_image" src="'.($label_info['image'] !== '' ? $GLOBALS['where_files_relative'].'/appLms/label/'.$label_info['image'] : Get::tmpl_path('base').'images/course/label_image.png').'" />'
                             .'</span>'

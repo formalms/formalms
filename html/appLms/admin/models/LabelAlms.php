@@ -281,8 +281,15 @@ class LabelAlms extends Model
 		$result = sql_query($query);
 		$res = array();
 
-		$res['0']['title'] = Lang::t('_ALL', 'label');
-		$res['0']['description'] = Lang::t('_ALL_DESCRIPTION', 'label');
+        // all my courses
+        $res['-1']['title'] = Lang::t('_ALL_COURSES', 'standard');
+        $res['-1']['description'] = Lang::t('_ALL_DESCRIPTION', 'label');
+        $res['-1']['image'] = '';
+
+
+		// all my labels
+        $res['0']['title'] = Lang::t('_TABS', 'standard');
+		$res['0']['description'] = '';
 		$res['0']['image'] = '';
 
 		while(list($id_common_label, $title, $description, $file_name) = sql_fetch_row($result))

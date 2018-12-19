@@ -89,7 +89,8 @@
     $('#course_search_label').on('changed.bs.select', function (e) {
             var id_common_label =  $("#course_search_label").selectpicker().val();
             $("#div_course").html("<br><p align='center'><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p>");
-            var posting = $.get( 'ajax.server.php?r=elearning/show&id_common_label='+id_common_label, {})
+            urlCall = 'ajax.server.php?r=elearning/show&id_common_label='+id_common_label 
+            var posting = $.get( urlCall, {})
             posting.done(function(responseText){
                 $("#div_course").html(responseText);
             });
