@@ -69,10 +69,10 @@ foreach ($localCfg as $key => $value) {
     switch ($key) {
         case 'use_smtp_database':
         case 'use_smtp':
-            echo '<div class="form_line_l"><p><label class="floating" for="smtp_info">' . Lang::t('_' . strtoupper($key)) . '</label></p>' . Form::getInputDropdown('', $key, "smtp_info[$key]", $select, $cfg[$key]) . '</div>';
+            echo '<div class="form_line_l"><p><label class="floating" for="smtp_info">' . Lang::t('_' . strtoupper($key)) . '</label></p>' . Form::getInputDropdown('', $key, "smtp_info[$key]", $select, $localCfg[$key]) . '</div>';
             break;
         case 'smtp_secure':
-            echo '<div class="form_line_l"><p><label class="floating" for="smtp_info">' . Lang::t('_' . strtoupper($key)) . '</label></p>' . Form::getInputDropdown('', $key, "smtp_info[$key]", $secureSelect, $cfg[$key]) . '</div>';
+            echo '<div class="form_line_l"><p><label class="floating" for="smtp_info">' . Lang::t('_' . strtoupper($key)) . '</label></p>' . Form::getInputDropdown('', $key, "smtp_info[$key]", $secureSelect, $localCfg[$key]) . '</div>';
             break;
         case 'smtp_pwd':
             echo Form::getPassword(Lang::t('_' . strtoupper($key)), $key, "smtp_info[$key]", 255, '', '', '', $value);
