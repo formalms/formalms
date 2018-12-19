@@ -38,6 +38,18 @@ class Learning_Faq extends Learning_Object {
 	
 	function getObjectType() {
 		return 'faq';
+    }
+    
+    function getParamInfo() {
+
+        $params = parent::getParamInfo();        
+        return $params;
+	}
+	
+	function renderCustomSettings( $arrParams, $form, $lang ) {
+
+        $out = parent::renderCustomSettings($arrParams, $form, $lang);
+		return $out;
 	}
 	
 	/**

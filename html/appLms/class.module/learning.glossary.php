@@ -39,6 +39,18 @@ class Learning_Glossary extends Learning_Object {
 	
 	function getObjectType() {
 		return 'glossary';
+    }
+    
+    function getParamInfo() {
+
+        $params = parent::getParamInfo();        
+        return $params;
+	}
+	
+	function renderCustomSettings( $arrParams, $form, $lang ) {
+
+        $out = parent::renderCustomSettings($arrParams, $form, $lang);
+		return $out;
 	}
 	
 	/**

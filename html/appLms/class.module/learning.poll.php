@@ -45,7 +45,14 @@ class Learning_Poll extends Learning_Object {
 	
 	function getParamInfo() {
 		
-		return false;
+        $params = parent::getParamInfo();        
+        return $params;
+	}
+	
+	function renderCustomSettings( $arrParams, $form, $lang ) {
+
+        $out = parent::renderCustomSettings($arrParams, $form, $lang);
+		return $out;
 	}
 	
 	/**
