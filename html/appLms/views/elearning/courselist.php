@@ -156,7 +156,7 @@ function typeOfCourse ($t) {
             <div class="course-box"> <!-- NEW BLOCK -->
                     <div class="course-box__item">
                         <div class="course-box__title icon--filter-<?php echo $course['user_status']; ?>">
-                          <?php echo TruncateText($course['name'], 50); ?>
+                          <?php echo TruncateText($course['name'], 40); ?>
                         </div>
                     </div>
                     <div class="course-box__item course-box__item--no-padding">
