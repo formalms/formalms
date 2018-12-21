@@ -970,11 +970,7 @@ class Report_User extends Report {
 				$subject = importVar('mail_object', false, '['.$lang->def('_SUBJECT').']' );//'[No subject]');
 				$body = importVar('mail_body', false, '');
 				$acl_man = new DoceboACLManager();
-				$user_info = $acl_man->getUser(getLogUserId(), false);
-				if ($user_info)
-				{
-					$sender = $user_info[ACL_INFO_EMAIL];
-				}
+                $sender = Get::sett('sender_event');
 				$mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
 
 				// prepare intestation for email
@@ -982,7 +978,7 @@ class Report_User extends Report {
 				$header  = "MIME-Version: 1.0".$GLOBALS['mail_br']
 				."Content-type: text/html; charset=".getUnicode().$GLOBALS['mail_br'];
 				$header .= "Return-Path: ".Get::sett('sender_event').$GLOBALS['mail_br'];
-				$header .= "Reply-To: ".Get::sett('sender_event').$GLOBALS['mail_br'];
+				//$header .= "Reply-To: ".Get::sett('sender_event').$GLOBALS['mail_br'];
 				$header .= "X-Sender: ".Get::sett('sender_event').$GLOBALS['mail_br'];
 				$header .= "X-Mailer: PHP/". phpversion().$GLOBALS['mail_br'];
 
@@ -994,6 +990,7 @@ class Report_User extends Report {
 					$arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
 				}
 				$mailer = DoceboMailer::getInstance();
+                $mailer->addReplyTo(Get::sett('sender_event').$GLOBALS['mail_br']);
 				$mailer->SendMail($sender, $arr_recipients, stripslashes($subject), stripslashes(nl2br($body)));
 
 				$result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
@@ -2053,11 +2050,7 @@ class Report_User extends Report {
 				$subject = importVar('mail_object', false, '['.$lang->def('_SUBJECT').']' );//'[No subject]');
 				$body = importVar('mail_body', false, '');
 				$acl_man = new DoceboACLManager();
-				$user_info = $acl_man->getUser(getLogUserId(), false);
-				if ($user_info)
-				{
-					$sender = $user_info[ACL_INFO_EMAIL];
-				}
+                $sender = Get::sett('sender_event');
 				$mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
 
 				// prepare intestation for email
@@ -2065,7 +2058,7 @@ class Report_User extends Report {
 				$header  = "MIME-Version: 1.0".$GLOBALS['mail_br']
 				."Content-type: text/html; charset=".getUnicode().$GLOBALS['mail_br'];
 				$header .= "Return-Path: ".Get::sett('sender_event').$GLOBALS['mail_br'];
-				$header .= "Reply-To: ".Get::sett('sender_event').$GLOBALS['mail_br'];
+				//$header .= "Reply-To: ".Get::sett('sender_event').$GLOBALS['mail_br'];
 				$header .= "X-Sender: ".Get::sett('sender_event').$GLOBALS['mail_br'];
 				$header .= "X-Mailer: PHP/". phpversion().$GLOBALS['mail_br'];
 
@@ -2077,6 +2070,7 @@ class Report_User extends Report {
 					$arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
 				}
 				$mailer = DoceboMailer::getInstance();
+                $mailer->addReplyTo(Get::sett('sender_event').$GLOBALS['mail_br']);
 				$mailer->SendMail($sender, $arr_recipients, stripslashes($subject), stripslashes(nl2br($body)));
 
 				$result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
@@ -2528,11 +2522,7 @@ class Report_User extends Report {
 				$subject = importVar('mail_object', false, '['.$lang->def('_SUBJECT').']' );//'[No subject]');
 				$body = importVar('mail_body', false, '');
 				$acl_man = new DoceboACLManager();
-				$user_info = $acl_man->getUser(getLogUserId(), false);
-				if ($user_info)
-				{
-					$sender = $user_info[ACL_INFO_EMAIL];
-				}
+                $sender = Get::sett('sender_event');
 				$mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
 
 				// prepare intestation for email
@@ -2540,7 +2530,7 @@ class Report_User extends Report {
 				$header  = "MIME-Version: 1.0".$GLOBALS['mail_br']
 				."Content-type: text/html; charset=".getUnicode().$GLOBALS['mail_br'];
 				$header .= "Return-Path: ".Get::sett('sender_event').$GLOBALS['mail_br'];
-				$header .= "Reply-To: ".Get::sett('sender_event').$GLOBALS['mail_br'];
+				//$header .= "Reply-To: ".Get::sett('sender_event').$GLOBALS['mail_br'];
 				$header .= "X-Sender: ".Get::sett('sender_event').$GLOBALS['mail_br'];
 				$header .= "X-Mailer: PHP/". phpversion().$GLOBALS['mail_br'];
 
@@ -2552,6 +2542,7 @@ class Report_User extends Report {
 					$arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
 				}
 				$mailer = DoceboMailer::getInstance();
+                $mailer->addReplyTo(Get::sett('sender_event').$GLOBALS['mail_br']);
 				$mailer->SendMail($sender, $arr_recipients, stripslashes($subject), stripslashes(nl2br($body)));
 
 				$result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
@@ -3193,11 +3184,7 @@ class Report_User extends Report {
 				$subject = importVar('mail_object', false, '['.$lang->def('_SUBJECT').']' );//'[No subject]');
 				$body = importVar('mail_body', false, '');
 				$acl_man = new DoceboACLManager();
-				$user_info = $acl_man->getUser(getLogUserId(), false);
-				if ($user_info)
-				{
-					$sender = $user_info[ACL_INFO_EMAIL];
-				}
+                $sender = Get::sett('sender_event');
 				$mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
 
 				// prepare intestation for email
@@ -3205,7 +3192,7 @@ class Report_User extends Report {
 				$header  = "MIME-Version: 1.0".$GLOBALS['mail_br']
 				."Content-type: text/html; charset=".getUnicode().$GLOBALS['mail_br'];
 				$header .= "Return-Path: ".Get::sett('sender_event').$GLOBALS['mail_br'];
-				$header .= "Reply-To: ".Get::sett('sender_event').$GLOBALS['mail_br'];
+				//$header .= "Reply-To: ".Get::sett('sender_event').$GLOBALS['mail_br'];
 				$header .= "X-Sender: ".Get::sett('sender_event').$GLOBALS['mail_br'];
 				$header .= "X-Mailer: PHP/". phpversion().$GLOBALS['mail_br'];
 
@@ -3217,6 +3204,7 @@ class Report_User extends Report {
 					$arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
 				}
 				$mailer = DoceboMailer::getInstance();
+                $mailer->addReplyTo(Get::sett('sender_event').$GLOBALS['mail_br']);
 				$mailer->SendMail($sender, $arr_recipients, stripslashes($subject), stripslashes(nl2br($body)));
 
 				$result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
@@ -4300,11 +4288,7 @@ class Report_User extends Report {
 				$subject = importVar('mail_object', false, '['.$lang->def('_SUBJECT').']' );//'[No subject]');
 				$body = importVar('mail_body', false, '');
 				$acl_man = new DoceboACLManager();
-				$user_info = $acl_man->getUser(getLogUserId(), false);
-				if ($user_info)
-				{
-					$sender = $user_info[ACL_INFO_EMAIL];
-				}
+                $sender = Get::sett('sender_event');
 				$mail_recipients = unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
 
 				// prepare intestation for email
@@ -4312,7 +4296,7 @@ class Report_User extends Report {
 				$header  = "MIME-Version: 1.0".$GLOBALS['mail_br']
 				."Content-type: text/html; charset=".getUnicode().$GLOBALS['mail_br'];
 				$header .= "Return-Path: ".Get::sett('sender_event').$GLOBALS['mail_br'];
-				$header .= "Reply-To: ".Get::sett('sender_event').$GLOBALS['mail_br'];
+				//$header .= "Reply-To: ".Get::sett('sender_event').$GLOBALS['mail_br'];
 				$header .= "X-Sender: ".Get::sett('sender_event').$GLOBALS['mail_br'];
 				$header .= "X-Mailer: PHP/". phpversion().$GLOBALS['mail_br'];
 
@@ -4324,6 +4308,7 @@ class Report_User extends Report {
 					$arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
 				}
 				$mailer = DoceboMailer::getInstance();
+                $mailer->addReplyTo(Get::sett('sender_event').$GLOBALS['mail_br']);
 				$mailer->SendMail($sender, $arr_recipients, stripslashes($subject), stripslashes(nl2br($body)));
 
 				$result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));

@@ -1913,9 +1913,7 @@ CREATE TABLE IF NOT EXISTS `learning_menucustom` (
 --
 
 INSERT INTO `learning_menucustom` (`idCustom`, `title`, `description`) VALUES
-(11, 'Collaboration','Menu with standard collaboration features'),
-(21, 'Self - Training', 'Training based on multimedia content');
-
+(1, 'Standard menu','Menu with standard collaboration features');
 -- --------------------------------------------------------
 
 --
@@ -1936,12 +1934,10 @@ CREATE TABLE IF NOT EXISTS `learning_menucustom_main` (
 --
 
 INSERT INTO `learning_menucustom_main` (`idMain`, `idCustom`, `sequence`, `name`, `image`) VALUES
-(25, 11, 1, 'Student Area', ''),
-(26, 11, 3, 'Teacher Area', ''),
-(27, 11, 4, 'Stat Area', ''),
-(41, 11, 2, 'Collaborative Area', ''),
-(42, 21, 1, 'Student Area', ''),
-(43, 21, 2, 'Teacher', '');
+(1, 1, 1, 'Student Area', ''),
+(2, 1, 2, 'Stat Area', ''),
+(3, 1, 3, 'Collaborative Area', ''),
+(4, 1, 4, 'Teacher area', '');
 
 -- --------------------------------------------------------
 
@@ -1974,36 +1970,24 @@ INSERT INTO `learning_menucustom_under` (`idCustom`, `idModule`, `idMain`, `sequ
 (0, 9, 0, 9, ''),
 (0, 32, 0, 10, ''),
 (0, 33, 0, 11, ''),
-(11, 11, 25, 2, ''),
-(11, 12, 26, 1, ''),
-(11, 13, 25, 4, ''),
-(11, 14, 25, 5, ''),
-(11, 15, 25, 8, ''),
-(11, 17, 41, 6, ''),
-(11, 19, 41, 1, ''),
-(11, 20, 41, 2, ''),
-(11, 21, 41, 5, ''),
-(11, 22, 41, 4, ''),
-(11, 23, 41, 3, ''),
-(11, 24, 26, 2, ''),
-(11, 25, 25, 3, ''),
-(11, 26, 26, 5, ''),
-(11, 27, 26, 3, ''),
-(11, 29, 27, 1, ''),
-(11, 30, 27, 2, ''),
-(11, 31, 27, 3, ''),
-(11, 41, 27, 17, ''),
-(11, 42, 27, 18, ''),
-(11, 43, 26, 16, ''),
-(21, 12, 43, 1, ''),
-(21, 14, 42, 2, ''),
-(21, 25, 42, 1, ''),
-(21, 26, 43, 2, ''),
-(21, 29, 43, 6, ''),
-(21, 30, 43, 7, ''),
-(21, 31, 43, 5, ''),
-(21, 41, 43, 3, ''),
-(21, 42, 43, 4, '');
+(1, 25, 1, 1, ''),
+(1, 18, 1, 2, ''),
+(1, 11, 1, 3, ''),
+(1, 13, 1, 4, ''),
+(1, 14, 1, 5, ''),
+(1, 29, 2, 1, ''),
+(1, 30, 2, 2, ''),
+(1, 31, 2, 3, ''),
+(1, 42, 2, 4, ''),
+(1, 17, 3, 1, ''),
+(1, 19, 3, 2, ''),
+(1, 21, 3, 3, ''),
+(1, 22, 3, 4, ''),
+(1, 12, 4, 1, ''),
+(1, 26, 4, 2, ''),
+(1, 27, 4, 3, ''),
+(1, 24, 4, 4, ''),
+(1, 28, 4, 5, '');
 
 -- --------------------------------------------------------
 
@@ -2034,7 +2018,6 @@ INSERT INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, `sequen
 ('tb_communication', 1, 'a:0:{}',0,0),
 ('tb_coursepath', 1, 'a:0:{}',0,0),
 ('tb_games', 1, 'a:0:{}',0,0),
-('tb_label', 1, 'a:0:{}',0,0),
 ('tb_videoconference', 1, 'a:0:{}',0,0),
 ('tb_kb', 1, 'a:0:{}', 0,0),
 ('tb_home', '1', 'a:0:{}', '0',0),

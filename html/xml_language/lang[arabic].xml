@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180720</DATE>
+  <DATE>20180917</DATE>
   <LANG id="arabic">
     <lang_code>arabic</lang_code>
     <lang_description>&#x627;&#x644;&#x639;&#x631;&#x628;&#x64A;&#x629;</lang_description>
@@ -440,6 +440,7 @@
         <key id="configuration&amp;_NO_ANSWER_IN_POLL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[استطلاعات الرأي أسئلة  في "لا جواب" الخيار استخدام]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[في أسئلة الاختبارات "لا جواب"  الخيار استخدام]]></key>
         <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[للمستخدم ، وتظهر جميع المقررات والمناهج الدراسية دورة واحد كتالوج إذا لم يتم تعيين]]></key>
+        <key id="configuration&amp;_ON_PATH_IN_MYCOURSES" attributes="" save_date="2018-09-17 10:54:46"><![CDATA[]]></key>
         <key id="configuration&amp;_ORG_NAME_TELESKILL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[اسم المنظمة للمؤتمر]]></key>
         <key id="configuration&amp;_PAGE_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[(وسوف تظهر في متصفح المستخدم) الصفحة عنوان]]></key>
         <key id="configuration&amp;_PASS_ALFANUMERIC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[يجب أن تتكون كلمة السر من حروف وأرقام]]></key>

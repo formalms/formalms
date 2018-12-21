@@ -1,48 +1,85 @@
 <h2><?php echo Lang::t('_TITLE_STEP7'); ?></h2>
+<?php $php_conf = ini_get_all();
 
-<?php echo Lang::t('_INSTALLATION_COMPLETED'); ?>
-
-<?php if (!$_SESSION['config_saved']): ?>
-<h3 style="color: red;"><?php echo Lang::t('_CONFIG_FILE_NOT_SAVED'); ?></h3>
-<ul class="info">
-	<li><a href="download_conf.php"><?php echo Lang::t('_DOWNLOAD_CONFIG'); ?></a></li>
-</ul>
-<?php endif; ?>
-
-
-<h3><?php echo Lang::t('REMOVE_INSTALL_FOLDER'); ?></h3><br>
-
-
-<h3><?php echo Lang::t('_INSTALLATION_DETAILS'); ?>:</h3>
-<ul class="info">
-	<li><?php echo Lang::t('_SITE_HOMEPAGE'); ?>: <a href="<?php echo $_SESSION['site_url']; ?>" target="_blank"><?php echo $_SESSION['site_url']; ?></a></li>
-	<li><?php echo Lang::t('_ADMIN_USERNAME'); ?>: <?php echo $_SESSION['adm_info']['userid']; ?></li>
-	<li>
-		<?php echo Lang::t('_ADMIN_PASS'); ?>: <span id="pwd">*******</span>
-		[ <a href="#" onclick="YAHOO.util.Dom.get('pwd').innerHTML ='<?php echo $_SESSION['adm_info']['pass']; ?>'; return false;"><?php echo Lang::t('_REVEAL_PASSWORD'); ?></a> ]
-	</li>
-</ul>
-<h3><?php echo Lang::t('_USEFUL_LINKS'); ?>:</h3>
-
-<ul class="info">
-<li><a href="http://www.formalms.org" target="_blank">Official Website</a></li>
-</ul>
-<br />
-<h3><?php echo Lang::t('_COMMUNITY'); ?>:</h3>
-<ul class="info">
-<li><a href="http://www.formalms.org/community" target="_blank">Community</a></li>
-<br />
-<li><a href="http://sourceforge.net/projects/forma/" target="_blank">SourceForge Project</a></li>
-<li><a href="https://www.linkedin.com/company/formalms" target="_blank">Linkedin Project Page</a></li>
-</ul>
-<br />
-<h3><?php echo Lang::t('_COMMERCIAL_SERVICES'); ?>:</h3>
-<ul class="info">
-<li><a href="http://www.formalms.org/about/partners.html" target="_blank">Partners</a></li>
-</ul>
+$localCfg = array(
+    'use_smtp_database' => '',
+    'use_smtp' => '',
+    'smtp_host' => '',
+    'smtp_port' => '',
+    'smtp_secure' => '',
+    'smtp_user' => '',
+    'smtp_pwd' => ''
+);
+?>
 
 <script type="text/javascript">
-YAHOO.util.Event.onDOMReady(function() {
-	YAHOO.util.Dom.get('my_button').style.visibility ='hidden';
-});
+
+
+    YAHOO.util.Event.onDOMReady(function () {
+        disableBtnNext(true);
+
+        var check_fields = <?php echo json_encode(array_keys($localCfg)); ?>;
+
+        validateInput(check_fields, 'final_check');
+        YAHOO.util.Event.addListener("my_button", "mouseenter", function (e) {
+            for (i = 0; i < check_fields.length; i++) {
+                setInputError(check_fields[i], false);
+            }
+            validateInput(check_fields, 'final_check');
+        });
+
+
+        YAHOO.util.Event.addListener(check_fields, "blur", function (e) {
+            for (i = 0; i < check_fields.length; i++) {
+
+                setInputError(check_fields[i], false);
+            }
+            validateInput(check_fields);
+        });
+    });
 </script>
+
+<h3><?php echo Lang::t('_SMTP_INFO'); ?></h3>
+<div class="form_line_l">
+    <?php
+
+    if (file_exists(_base_ . '/config.php')) {
+        define('IN_FORMA', true);
+        include _base_ . '/config.php';
+
+        foreach ($localCfg as $key => $value) {
+            $localCfg[$key] = $cfg[$key];
+        }
+    }
+
+    $smtptoDB = $cfg['use_smtp_database'];
+
+    $select = [
+        'on' => 'Si',
+        'off' => 'No'
+    ];
+
+    $secureSelect = ['ssl' => 'SSL', 'tls' => 'TLS'];
+
+    ?>
+</div>
+<?php
+foreach ($localCfg as $key => $value) {
+
+    switch ($key) {
+        case 'use_smtp_database':
+        case 'use_smtp':
+            echo '<div class="form_line_l"><p><label class="floating" for="smtp_info">' . Lang::t('_' . strtoupper($key)) . '</label></p>' . Form::getInputDropdown('', $key, "smtp_info[$key]", $select, $localCfg[$key]) . '</div>';
+            break;
+        case 'smtp_secure':
+            echo '<div class="form_line_l"><p><label class="floating" for="smtp_info">' . Lang::t('_' . strtoupper($key)) . '</label></p>' . Form::getInputDropdown('', $key, "smtp_info[$key]", $secureSelect, $localCfg[$key]) . '</div>';
+            break;
+        case 'smtp_pwd':
+            echo Form::getPassword(Lang::t('_' . strtoupper($key)), $key, "smtp_info[$key]", 255, '', '', '', $value);
+            break;
+        default:
+            echo Form::getTextfield(Lang::t('_' . strtoupper($key)), $key, "smtp_info[$key]", 255, $value);
+            break;
+    }
+}
+?>

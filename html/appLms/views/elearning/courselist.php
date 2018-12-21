@@ -139,16 +139,6 @@ function typeOfCourse ($t) {
 
 <link rel="shortcut icon" href="../favicon.ico">
 
-<?php if ($use_label) : ?>
-    <div class="container-back">
-        <a href="index.php?r=elearning/show&id_common_label=-2">
-            <span>&lsaquo;&lsaquo; <?php echo Lang::t('_BACK_TO_LABEL', 'course') ?></span>
-        </a>
-    </div>
-<?php endif; ?>
-             
-             
-             
              
 <div id='container1_<?php echo $course_state; ?>'>
     <h1 class="page-header col-xs-12"><strong><?php echo typeOfCourse($filter_type); ?></strong></h1>
@@ -165,7 +155,9 @@ function typeOfCourse ($t) {
         <div class="col-xs-12 col-md-4 col-lg-3 mycourses-list">
             <div class="course-box"> <!-- NEW BLOCK -->
                     <div class="course-box__item">
-                        <div class="course-box__title icon--filter-<?php echo $course['user_status']; ?>"><?php echo TruncateText($course['name'], 100); ?></div>
+                        <div class="course-box__title icon--filter-<?php echo $course['user_status']; ?>">
+                          <?php echo TruncateText($course['name'], 50); ?>
+                        </div>
                     </div>
                     <div class="course-box__item course-box__item--no-padding">
                         <?php if ($course['use_logo_in_courselist']) { ?>

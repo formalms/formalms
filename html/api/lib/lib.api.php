@@ -179,8 +179,12 @@ class API {
 
 	static public function Execute($auth_code, $module, $function, $params) {
 
+		if(!(new self())->checkAuthentication($auth_code)) {
+            return false;
+        }
+        
 		$class_name = $module.'_API';
-        $file_name = Docebo::inc(_base_.'/api/lib/api.'.$module.'.php');
+        $file_name = Forma::inc(_base_.'/api/lib/api.'.$module.'.php');
         
         if(!file_exists($file_name)) {
             return false;
@@ -193,11 +197,7 @@ class API {
         }
 
 		$api_obj = new $class_name();
-
-		$result = false;
-		if ($api_obj->checkAuthentication($auth_code)) {
-			$result = $api_obj->call($function, $params);
-		}
+        $result = $api_obj->call($function, $params);
 
 		return $result;
 	}

@@ -1,0 +1,9 @@
+{% if cart %}
+<li>
+    <a href="index.php?r=cart/show" id="cart_action" title="{{ translate('_CART', 'cart') }}">
+        <span class="glyphicon glyphicon-shopping-cart top-menu__label">
+            <sub id="cart_element" class="num_notify_bar">{{ cart }}</sub>
+        </span>
+    </a>
+</li>
+{% endif %}

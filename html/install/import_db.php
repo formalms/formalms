@@ -1,6 +1,7 @@
 <?php
 
 include('bootstrap.php');
+include_once(_lib_.'/loggers/lib.logger.php');
 require_once _base_.'/db/lib.docebodb.php';
 set_time_limit(0);
 

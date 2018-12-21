@@ -26,6 +26,16 @@ abstract class FormaPlugin {
         //code executed after deactivation
     }
 
+    public static function getPath($file = '') {
+
+        return _plugins_ . '/' . static::getName() . '/' . $file;
+    }
+
+    public static function getURL($file = '') {
+
+        return \Get::site_url() . _folder_plugins_ . '/' . static::getName() . '/' . $file;
+    }
+
     public static function getName(){
         $reflector = new ReflectionClass( get_called_class() );
         $fn = $reflector->getFileName();
@@ -63,8 +73,7 @@ abstract class FormaPlugin {
     public static function addCoreMenu($name, $mvcPath, $parent=false, $icon='', $is_active=false){
         $pg_adm=new PluginmanagerAdm();
         $plugin_info=$pg_adm->getPluginFromDB(self::getName(),'name');
-        include_once _lib_.'/lib.menu.php';
-        MenuManager::addMenuChild($name, $mvcPath, $parent, $icon, $is_active, $plugin_info['plugin_id']);
+        CoreMenu::addMenuChild($name, $mvcPath, $parent, $icon, $is_active, $plugin_info['plugin_id']);
     }
 
 }

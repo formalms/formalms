@@ -1889,7 +1889,7 @@ class Module_Directory extends Module {
 			/*
 			if(!empty($refused)) {
 
-				$array_subst = array('[url]' => Get::sett('url'));
+				$array_subst = array('[url]' => Get::site_url());
 
 				$msg_composer = new EventMessageComposer('admin_directory', 'framework');
 
@@ -1903,7 +1903,7 @@ class Module_Directory extends Module {
 			}*/
 			if(!empty($approved)) {
 				$pl_man =& PlatformManager::createInstance();
-				$array_subst = array('[url]' => Get::sett('url', ''));
+				$array_subst = array('[url]' => Get::site_url());
 
 				$msg_composer2 = new EventMessageComposer('admin_directory', 'framework');
 

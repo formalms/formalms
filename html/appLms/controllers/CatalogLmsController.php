@@ -380,7 +380,7 @@ class CatalogLmsController extends LmsController {
 			}
 			
 			
-			$array_subst = array(	'[url]' => Get::sett('url'),
+			$array_subst = array(	'[url]' => Get::site_url(),
 				'[course]' => $course_info['name'],
 				'[firstname]' => $userinfo[ACL_INFO_FIRSTNAME] ,
 				'[lastname]' => $userinfo[ACL_INFO_LASTNAME]  );			

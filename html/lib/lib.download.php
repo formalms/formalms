@@ -85,11 +85,7 @@ function sendFileFromFS(\appCore\Events\Core\FileSystem\DownloadEvent $event){
 		//sending creation time
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		//content type
-		//if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
-		if ((isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on')
-			or (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https')
-			or (isset($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) == 'on')
-		) {
+		if (Get::scheme() === 'https') {
 			header('Pragma: private');
 		}
 		header('Content-Disposition: attachment; filename="' . $sendname . '"');
@@ -146,7 +142,7 @@ function sendStrAsFile($string, $filename, $charset=false) {
 	//sending creation time
 	header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 	//content type
-	if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+	if(Get::scheme() === 'https') {
 		header('Pragma: private');
 	}
 	header('Content-Encoding: UTF-8');

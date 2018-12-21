@@ -25,7 +25,15 @@ class Forma {
      */
     public static function inc($file) {
         $file = str_replace(_base_.'/', '', $file);
-        if(Get::cfg('enable_plugins', false)){
+        $file = str_replace(_base_.'\\', '', $file);
+
+        if ($GLOBALS['notuse_plugin'] == true || $_SESSION['notuse_plugin'] == true){
+            $use_plugin = false;
+        } else {
+            $use_plugin = true;
+        }
+
+        if(Get::cfg('enable_plugins', false) && $use_plugin == true){
             $pg_adm=new PluginmanagerAdm();
 
             $plugins = $pg_adm->getPlugins(true);
@@ -37,7 +45,13 @@ class Forma {
             }
         }
 
-        if (file_exists(_base_.'/customscripts'.'/'.$file) && Get::cfg('enable_customscripts', false) == true ){
+        if ($GLOBALS['notuse_customscript'] == true || $_SESSION['notuse_customscript'] == true){
+            $use_customscript = false;
+        } else {
+            $use_customscript = true;
+        }
+
+        if (file_exists(_base_.'/customscripts'.'/'.$file) && Get::cfg('enable_customscripts', false) == true && $use_customscript == true) {
             return _base_.'/customscripts'.'/'.$file;
         } else {
             return _base_.'/'.$file;

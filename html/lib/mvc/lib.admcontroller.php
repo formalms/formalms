@@ -20,12 +20,6 @@ class AdmController extends Controller {
 		return _adm_.'/views';
 	}
 
-	public function viewCustomscriptsPath() {
-
-		return _base_.'/customscripts'.'/'._folder_adm_.'/views';
-#		return _adm_.'/customscripts/views';
-	}
-
 	public function init() {
 		parent::init();
 		if (!defined("CORE")) {

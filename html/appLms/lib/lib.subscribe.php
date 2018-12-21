@@ -670,6 +670,10 @@ class CourseSubscribe_Manager
 			$competences_man->AssignCourseCompetencesToUser($idCourse, $idUser);
 			*/
 
+			$event = new \appLms\Events\Lms\CourseCompletedEvent($idCourse,$idUser,$acl_man);
+
+            \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseCompletedEvent::EVENT_NAME, $event);
+
 			//increment coursecompleted if this course is in a coursepath
 			require_once(_lms_.'/lib/lib.coursepath.php');
 			$cpmodel = new CoursePath_Manager();

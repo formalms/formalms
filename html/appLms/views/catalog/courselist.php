@@ -107,6 +107,7 @@ function editionElearning(&$row, &$smodel){
 
 
 function elearningCourse(&$row, &$smodel){
+   
     $result_control = $smodel->getInfoEnroll($row['idCourse'], Docebo::user()->getIdSt());
     if (sql_num_rows($result_control) > 0) {
         // the user is enrolled in some way
@@ -121,10 +122,23 @@ function elearningCourse(&$row, &$smodel){
             list($id_org, $id_course, $obj_type) = sql_fetch_row($result_lo);
             $str_rel = "";
             if ($obj_type == "scormorg" && $level <= 3 && $row['direct_play'] == 1) $str_rel = " rel='lightbox'";
-            $action .= '<a class="forma-button forma-button--orange-hover" href="index.php?modname=course&op=aula&idCourse=' . $row['idCourse'] . ' "'
-                . ' title="' . $row['name'] . '"   ' . $str_rel . '><span class="forma-button__label">'
-                . Lang::t('_USER_STATUS_ENTER', 'catalogue') . '</span>'
-                . '</a>';
+
+
+            $canEnter = $smodel->canEnterCoursecatalog($row['idCourse'] );
+
+            if($canEnter==1){
+                $action .= '<a class="forma-button forma-button--orange-hover" href="index.php?modname=course&op=aula&idCourse=' . $row['idCourse'] . ' "'
+                    . ' title="' . $row['name'] . '"   ' . $str_rel . '><span class="forma-button__label">'
+                    . Lang::t('_USER_STATUS_ENTER', 'catalogue') . '</span>'
+                    . '</a>';
+            }else{
+
+               $action .= '<a class="forma-button forma-button--disabled" href="javascript:void(0);">
+                            <span class="forma-button__label">
+                            '. Lang::t('_DISABLED', 'course') .'
+                            </span>
+                        </a>';
+            }
         }
 
     } else {
@@ -162,8 +176,6 @@ function elearningCourse(&$row, &$smodel){
                                     </a>';
                         break;
                 }
-
-
             } else {
                 $date_in_chart = array();
 
@@ -177,8 +189,8 @@ function elearningCourse(&$row, &$smodel){
         }
     }
     return $action;
-    
 }
+
 
 
 function getEditionInfo(&$row, &$smodel){

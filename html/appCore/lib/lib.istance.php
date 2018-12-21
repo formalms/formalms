@@ -37,22 +37,14 @@ function &createModule($module_name, $class_name = NULL) {
 	switch($_SESSION['current_action_platform']) {
 		case "framework" : {
 			$where = _adm_;
-			$whereCustomscripts = _base_.'/customscripts'.'/'._folder_adm_;
-#			$whereCustomscripts = _adm_.'/customscripts';
 			$def_class_name = 'Module';
 		};break;
 		case "lms" : {
 			$where = _lms_.'/admin';
-			$whereCustomscripts = _base_.'/customscripts'.'/'._folder_lms_.'/admin';
-#			$whereCustomscripts = _lms_.'/customscripts/admin';
 			$def_class_name = 'Module';
 		};break;
-        
-        
 		case "scs" : {
 			$where = _scs_.'/admin';
-			$whereCustomscripts = _base_.'/customscripts'.'/'._folder_scs_.'/admin';
-#			$whereCustomscripts = _scs_.'/customscripts/admin';
 			$def_class_name = 'Module';
 		};break;
 	}
@@ -61,39 +53,21 @@ function &createModule($module_name, $class_name = NULL) {
 		
 		$def_class_name = 'Module';
 		$where = _lms_;
-			$whereCustomscripts = _base_.'/customscripts'.'/'._folder_lms_;
-#			$whereCustomscripts = _lms_.'/customscripts';
-			if(file_exists($whereCustomscripts.'/class.module/class.definition.php') && Get::cfg('enable_customscripts', false) == true ) {
-				require_once($whereCustomscripts.'/class.module/class.definition.php');
-			} else {
-				require_once($where.'/class.module/class.definition.php');
-			}
+		require_once(Forma::inc($where.'/class.module/class.definition.php'));
 	}
 	
-	if(file_exists($whereCustomscripts.'/class.module/class.'.$module_name.'.php') && Get::cfg('enable_customscripts', false) == true ) {
+	if(file_exists($where.'/class.module/class.'.$module_name.'.php')) {
 
-		require_once($whereCustomscripts.'/class.module/class.'.$module_name.'.php');
-		if( $class_name === NULL ) $class_name = $def_class_name.'_'.ucfirst($module_name);
-	}
-	elseif(file_exists(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/class.'.$module_name.'.php') && Get::cfg('enable_customscripts', false) == true ) {
-#	elseif(file_exists(_adm_.'/customscripts/class.module/class.'.$module_name.'.php') && Get::cfg('enable_customscripts', false) == true ) {
-
-		require_once(_base_.'/customscripts'.'/'._folder_adm_.'/class.module/class.'.$module_name.'.php');
-#		require_once(_adm_.'/customscripts/class.module/class.'.$module_name.'.php');
-		if( $class_name === NULL ) $class_name = $def_class_name.'_'.ucfirst($module_name);
-	}
-	elseif(file_exists($where.'/class.module/class.'.$module_name.'.php')) {
-
-		require_once($where.'/class.module/class.'.$module_name.'.php');
+		require_once(Forma::inc($where.'/class.module/class.'.$module_name.'.php'));
 		if( $class_name === NULL ) $class_name = $def_class_name.'_'.ucfirst($module_name);
 	}
 	elseif(file_exists(_adm_.'/class.module/class.'.$module_name.'.php')) {
 
-		require_once(_adm_.'/class.module/class.'.$module_name.'.php');
+		require_once(Forma::inc(_adm_.'/class.module/class.'.$module_name.'.php'));
 		if( $class_name === NULL ) $class_name = $def_class_name.'_'.ucfirst($module_name);
 	} else {
 
-		require_once($where.'/class.module/class.definition.php');
+		require_once(Forma::inc($where.'/class.module/class.definition.php'));
 		$class_name = $def_class_name;
 	}
 

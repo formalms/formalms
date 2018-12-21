@@ -91,7 +91,18 @@ define("_DATABASE", "Adatbázis");
 define("_DB_IMPORTING", "Adatbázis importálás");
 define("_LANGUAGES", "Nyelvek");
 // -----------------------------------------
-define("_TITLE_STEP7", "7. lépés: Telepítés befejezés");
+define("_TITLE_STEP7", "Step 7: Configurazione SMTP");
+define("_SMTP_INFO", "Sarà possibile impostare la configurazione dell'SMTP da backoffice o da config.");
+define("_USE_SMTP_DATABASE", "Impostazioni SMTP su Database");
+define("_USE_SMTP", "Usa SMTP");
+define("_SMTP_HOST", "Host SMTP");
+define("_SMTP_PORT", "Porta SMTP");
+define("_SMTP_SECURE", "Tipo di sicurezza");
+define("_SMTP_USER", "User SMTP");
+define("_SMTP_PWD", "Password SMTP");
+define("_CANT_CONNECT_SMTP", "impossibile connettersi al server SMTP selezionato");
+// -----------------------------------------
+define("_TITLE_STEP8", "8. lépés: Telepítés befejezés");
 define("_INSTALLATION_COMPLETED", "A telepítés befejeződött");
 define("_INSTALLATION_DETAILS", "Részletek");
 define("_SITE_HOMEPAGE", "Főoldal");

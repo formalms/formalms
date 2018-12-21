@@ -55,35 +55,29 @@ class PluginsLmsController extends LmsController {
 		if($ma->currentCanAccessObj('user_details_full')) $block_list['user_details_full'] = true;
 		if($ma->currentCanAccessObj('credits')) $block_list['credits'] = true;
 		if($ma->currentCanAccessObj('news')) $block_list['news'] = true;
-		$tb_label = $ma->currentCanAccessObj('tb_label');
+        $tb_label = (Get::sett('use_course_label', false) == 'off'? false: true);
 		if(!$tb_label)
 			$_SESSION['id_common_label'] = 0;
 		else
 		{
-			$id_common_label = Get::req('id_common_label', DOTY_INT, -1);
-
-			if($id_common_label >= 0)
-				$_SESSION['id_common_label'] = $id_common_label;
-			elseif($id_common_label == -2)
-				$_SESSION['id_common_label'] = -1;
-
-			$block_list['labels'] = true;
+            $id_common_label = Get::req('id_common_label', DOTY_INT, -1);
+            if ($id_common_label >= 0)
+                $_SESSION['id_common_label'] = $id_common_label;
+            elseif ($id_common_label <= -1)
+                $_SESSION['id_common_label'] = -1;
+            $block_list['labels'] = true;
 		}
 
-		if($tb_label && $_SESSION['id_common_label'] == -1)
-		{
-			require_once(_lms_.'/admin/models/LabelAlms.php');
-			$label_model = new LabelAlms();
-
-			$user_label = $label_model->getLabelForUser(Docebo::user()->getId());
-
-			$this->render('_labels',array(	'block_list' => $block_list,
-											'label' => $user_label));
+        if ($tb_label) {
+            require_once(_lms_ . '/admin/models/LabelAlms.php');
+            $label_model = new LabelAlms();
+            $user_label = $label_model->getLabelForUser(Docebo::user()->getId());
+            $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label, 'label' => $user_label, 'current_label' => $id_common_label]);                
 		}
 		else
 		{
 			if(!empty($block_list))
-				$this->render('_tabs_block', array('block_list' => $block_list));
+                $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label]);
 			else
 				$this->render('_tabs', array());
 		}

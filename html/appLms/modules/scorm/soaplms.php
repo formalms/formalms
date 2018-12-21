@@ -346,6 +346,12 @@ function err_handler($errno, $errstr, $errfile, $errline) {
 	return;
 }
 
+
+function sanitize_xml($data){
+  $data = str_replace("\0", " ", $data);  
+  return $data;
+}
+
 $soaplms = new SOAPLMS;
 // Switch off notices to all GET
 
@@ -360,6 +366,7 @@ if( (isset($_GET['op']) && $_GET['op'] == 'Finish') ) {
 	$xmlRequest = new DDomDocument();
 	if(isset($GLOBALS['HTTP_RAW_POST_DATA'])) $postdata = $GLOBALS['HTTP_RAW_POST_DATA'];
 	else $postdata = file_get_contents("php://input");
+	$postdata = sanitize_xml($postdata);
 	$xmlRequest->loadXML($postdata);
 
 	$rootRequest = $xmlRequest->getDocumentElement();
@@ -397,6 +404,7 @@ if( (isset($_GET['op']) && $_GET['op'] == 'Finish') ) {
 	$xmlRequest = new DDomDocument();
 	if(isset($GLOBALS['HTTP_RAW_POST_DATA'])) $postdata = $GLOBALS['HTTP_RAW_POST_DATA'];
 	else $postdata = file_get_contents("php://input");
+	$postdata = sanitize_xml($postdata);
 	$xmlRequest->loadXML($postdata);
 	$rootRequest = $xmlRequest->getDocumentElement();
 	
@@ -427,6 +435,7 @@ if( (isset($_GET['op']) && $_GET['op'] == 'Finish') ) {
 	$xmlRequest = new DDomDocument();
 	if(isset($GLOBALS['HTTP_RAW_POST_DATA'])) $postdata = $GLOBALS['HTTP_RAW_POST_DATA'];
 	else $postdata = file_get_contents("php://input");
+	$postdata = sanitize_xml($postdata);
 	$xmlRequest->loadXML($postdata);
 	$rootRequest = $xmlRequest->getDocumentElement();
 	

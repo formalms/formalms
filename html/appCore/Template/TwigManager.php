@@ -31,10 +31,10 @@ class TwigManager
             'debug' => $debug
         ));
 
-        $this->twig->addFunction('translate', new \Twig_Function_Function(function ($key, $module = false, $substitution = array(), $lang_code = false, $default = false) {
+        $this->twig->addFunction(new \Twig_SimpleFunction('translate', function ($key, $module = false, $substitution = array(), $lang_code = false, $default = false) {
             return \Lang::t($key, $module, $substitution, $lang_code, $default);
         }));
-        $this->twig->addFunction('evalPhp', new \Twig_Function_Function(function ($phpCode, $args = array()) {
+        $this->twig->addFunction(new \Twig_SimpleFunction('evalPhp', function ($phpCode, $args = array()) {
             return call_user_func_array($phpCode, $args);
         }, array(
             'is_safe' => array('html')

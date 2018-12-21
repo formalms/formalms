@@ -31,7 +31,10 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
 				//  . Form::getTextfield(Lang::t("_USERNAME", "login"), "login_userid", "login_userid", 255)
 				. Form::getInputTextfield('', 'login_userid', 'login_userid', '', '', 255, 'placeholder="' . Lang::t("_USERNAME", "login") . '"')
 				//  . Form::getPassword(Lang::t("_PASSWORD", "login"), "login_pwd", "login_pwd", 255)
-				. Form::getInputPassword('', 'login_pwd', 'login_pwd', '', 255, 'placeholder="' . Lang::t("_PASSWORD", "login") . '"')
+                . Form::getInputPassword('', 'login_pwd', 'login_pwd', '', 255, 'placeholder="' . Lang::t("_PASSWORD", "login") . '"')
+                . (isset($_REQUEST["notuse_plugin"]) ? Form::getHidden("notuse_plugin", "notuse_plugin", "true") : "" )
+                . (isset($_REQUEST["notuse_customscript"]) ? Form::getHidden("notuse_customscript", "notuse_customscript", "true") : "" )
+                . (isset($_REQUEST["notuse_template"]) ? Form::getHidden("notuse_template", "notuse_template", "true") : "" )
                 . Form::getButton("login", "login", Lang::t("_LOGIN", "login"), 'forma-button forma-button--black')
                 . Form::closeForm()
         ];

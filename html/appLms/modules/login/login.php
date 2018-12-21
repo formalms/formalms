@@ -137,7 +137,7 @@ function readnews() {
 // XXX: lostpwd
 function lostpwd() {
 
-	require_once(_base_.'/lib/lib.usermanager.php');
+	require_once(Forma::inc(_base_ . '/lib/lib.usermanager.php'));
 
 	$lang = DoceboLanguage::createInstance('login');
 	$user_manager = new UserManager();
@@ -163,8 +163,8 @@ function lostpwd() {
 
 function register() {
 
-	require_once(_base_.'/lib/lib.usermanager.php');
-	require_once(_base_.'/lib/lib.form.php');
+	require_once(Forma::inc(_base_ . '/lib/lib.usermanager.php'));
+	require_once(Forma::inc(_base_ . '/lib/lib.form.php'));
 
 	$user_manager = new UserManager();
 
@@ -184,8 +184,8 @@ function register() {
 
 function register_confirm() {
 
-	require_once(_base_.'/lib/lib.usermanager.php');
-	require_once(_base_.'/lib/lib.form.php');
+	require_once(Forma::inc(_base_ . '/lib/lib.usermanager.php'));
+	require_once(Forma::inc(_base_ . '/lib/lib.form.php'));
 
 	$user_manager = new UserManager();
 
@@ -406,7 +406,7 @@ function showprofile() {
 
 
 function socialConnectLogin($uid=false, $network_code=false) {
-	require_once(_base_.'/lib/lib.usermanager.php');
+	require_once(Forma::inc(_base_ . '/lib/lib.usermanager.php'));
 
 	$res ='';
 	$lang = DoceboLanguage::createInstance('login');

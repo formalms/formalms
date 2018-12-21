@@ -2,7 +2,7 @@
 -- Update database formalms
 --
 --
--- Update db script from formalms 1.4 to formalms 2.0
+-- Update db script from formalms 2.0 to formalms 2.1
 --
 
 -- ------------------------------------------------------------------
@@ -165,3 +165,36 @@ WHERE idst IN (
 		join core_role ra on ra.roleid like concat('/lms/course/private/coursereport/view')
 	) x
 );
+
+
+INSERT INTO CORE_SETTING
+(param_name,param_value, value_type, max_size, pack, regroup, sequence, param_load, hide_in_modify, extra_info)
+VALUES ('on_path_in_mycourses', 'off', 'enum',	3, 	0, 	4, 	2, 	1, 	0, 	'' );
+
+--
+-- Impostazioni Smtp
+--
+INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('use_smtp', '', 'on_off', 255, 'Use Smtp', 14, 1, 1, 0, '');
+
+INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('smtp_host', '', 'string', 255, 'Smtp Host', 14, 2, 1, 0, '');
+
+INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('smtp_port', '', 'string', 255, 'Smtp Port', 14, 3, 1, 0, '');
+
+
+INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('smtp_secure', '', 'string', 255, 'Smtp Secure', 14, 4, 1, 0, '');
+
+INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('smtp_user', '', 'string', 255, 'Smtp User', 14, 5, 1, 0, '');
+
+INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('smtp_pwd', '', 'string', 255, 'Smtp Password', 14, 6, 1, 0, '');
+
+
+DELETE FROM `learning_middlearea` WHERE `learning_middlearea`.`obj_index` = 'tb_label';
+
+INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('use_course_label', 'off', 'enum', '3', 'main', '4', '14', '1', '0', '');

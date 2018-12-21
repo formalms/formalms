@@ -1885,9 +1885,10 @@ class UsermanagementAdm extends Model {
 		$res = $this->db->query( $query );
 		//handle error ....
 		//...
+        
+        // deleting custom fields
+        $this->deleteInfoCustomOrg($idOrg);
 
-		/*$query = "DELETE FROM %adm_org_chart_tree WHERE idOrg=".(int)$idOrg." LIMIT 1";
-		$res = $this->db->query($query);*/
 		$query = "DELETE FROM %adm_org_chart WHERE id_dir IN (".implode(",", $nodes).")";
 		$res = $this->db->query($query);
 		if ($res) {
@@ -1900,6 +1901,12 @@ class UsermanagementAdm extends Model {
 		} else
 			return false;
 	}
+
+    // deleting custom fields
+    private function deleteInfoCustomOrg($idOrg){
+        $query = "delete from %adm_customfield_entry where id_obj=".$idOrg;
+        sql_query($query);
+    }
 
 	public function moveFolder($src_folder, $dest_folder) {
 		if ($src_folder <= 0) return false;
@@ -2206,7 +2213,7 @@ class UsermanagementAdm extends Model {
 				$userid = $acl_manager->getUserid($idst, false);
                 if($this->changePassword($idst, $new_password)){
                     $array_subst = array(
-                            '[url]' => Get::sett('url'),
+                            '[url]' => Get::site_url(),
                             '[userid]' => $userid,
                             '[password]' => $new_password
                     );
@@ -2288,7 +2295,7 @@ class UsermanagementAdm extends Model {
 
 		if (!empty($approved)) {
 			$pl_man =& PlatformManager::createInstance();
-			$array_subst = array('[url]' => Get::sett('url', ""));//$GLOBALS[$pl_man->getHomePlatform()]['url']);
+			$array_subst = array('[url]' => Get::site_url());//$GLOBALS[$pl_man->getHomePlatform()]['url']);
 			$msg_composer2 = new EventMessageComposer();
 			$msg_composer2->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
 			$msg_composer2->setBodyLangText('email', '_APPROVED_USER_TEXT', $array_subst);

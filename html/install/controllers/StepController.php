@@ -1,5 +1,8 @@
 <?php
 
+require_once _lib_.'/loggers/lib.logger.php';
+require_once _base_.'/db/lib.docebodb.php';
+
 Class StepController {
 
 	var $step=0;
@@ -7,8 +10,7 @@ Class StepController {
 	
 
 	public function render() {
-        include _lib_.'/loggers/lib.logger.php';
-	    include _base_.'/db/lib.docebodb.php';
+
 		include_once(_installer_.'/views/Step'.(int)$this->step.'.php');
 	}
 

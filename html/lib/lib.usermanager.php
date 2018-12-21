@@ -659,7 +659,7 @@ class UserManager
 
                 $mail_text = $lang->def('_LOST_USERID_MAILTEXT');
                 $mail_text = str_replace('[date_request]', date("d-m-Y"), $mail_text);
-                $mail_text = str_replace('[url]', Get::sett('url', ''), $mail_text);
+                $mail_text = str_replace('[url]', Get::site_url(), $mail_text);
                 $mail_text = str_replace('[userid]', $acl_man->relativeId($user_info[ACL_INFO_USERID]), $mail_text);
 
                 //if(!@mail($user_info[ACL_INFO_EMAIL], $lang->def('_LOST_USERID_TITLE'), $mail_text, $from.$intestazione)) {
@@ -714,7 +714,7 @@ class UserManager
                     if (!$this->savePwdRandomCode($user_info[ACL_INFO_IDST], $code)) return $lang->def('_OPERATION_FAILURE');
                 }
 
-                $link = Get::sett('url', '') . $mail_url . '&amp;pwd=retrpwd&amp;code=' . $code;
+                $link = Get::site_url() . $mail_url . '&amp;pwd=retrpwd&amp;code=' . $code;
                 $mail_text = str_replace('[link]', $link, $lang->def('_LOST_PWD_MAILTEXT'));
 
                 require_once(_base_ . '/lib/lib.mailer.php');
@@ -1700,8 +1700,8 @@ class UserManagerRenderer
 
         // FIX BUG 399
         //$link = str_replace('&amp;', '&', $opt_link.( strpos($opt_link, '?') === false ? '?' : '&' ).'random_code='.$random_code);
-        //$link = Get::sett('url', '') . 'index.php?modname=login&op=register_opt&random_code=' . $random_code;
-        $link = Get::sett('url', '') . 'index.php?r=adm/homepage/signup&random_code=' . $random_code;
+        //$link = Get::site_url() . 'index.php?modname=login&op=register_opt&random_code=' . $random_code;
+        $link = Get::site_url() . 'index.php?r=adm/homepage/signup&random_code=' . $random_code;
         // END FIX BUG 399
 
         $text = $lang->def('_REG_MAIL_TEXT');
@@ -2292,9 +2292,9 @@ class UserManagerRenderer
                 $msg_c_new = new EventMessageComposer();
 
                 $msg_c_new->setSubjectLangText('email', '_TO_NEW_USER_SBJ', false);
-                $msg_c_new->setBodyLangText('email', '_TO_NEW_USER_TEXT', array('[url]' => Get::sett('url')));
+                $msg_c_new->setBodyLangText('email', '_TO_NEW_USER_TEXT', array('[url]' => Get::site_url()));
 
-                $msg_c_new->setBodyLangText('sms', '_TO_NEW_USER_TEXT_SMS', array('[url]' => Get::sett('url')));
+                $msg_c_new->setBodyLangText('sms', '_TO_NEW_USER_TEXT_SMS', array('[url]' => Get::site_url()));
                 $idst_approve = $acl->getRoleST('/framework/admin/directory/approve_waiting_user');
 
                 $recipients = $acl_man->getAllRoleMembers($idst_approve);
@@ -2358,9 +2358,9 @@ class UserManagerRenderer
                 $msg_c_approve = new EventMessageComposer();
 
                 $msg_c_approve->setSubjectLangText('email', '_TO_APPROVE_USER_SBJ', false);
-                $msg_c_approve->setBodyLangText('email', '_TO_APPROVE_USER_TEXT', array('[url]' => Get::sett('url')));
+                $msg_c_approve->setBodyLangText('email', '_TO_APPROVE_USER_TEXT', array('[url]' => Get::site_url()));
 
-                $msg_c_approve->setBodyLangText('sms', '_TO_APPROVE_USER_TEXT_SMS', array('[url]' => Get::sett('url')));
+                $msg_c_approve->setBodyLangText('sms', '_TO_APPROVE_USER_TEXT_SMS', array('[url]' => Get::site_url()));
                 $idst_approve = $acl->getRoleST('/framework/admin/directory/approve_waiting_user');
 
                 $recipients = $acl_man->getAllRoleMembers($idst_approve);
@@ -2632,7 +2632,7 @@ class UserManagerRenderer
         require_once(_base_ . '/lib/lib.form.php');
         $lang =& DoceboLanguage::createInstance('profile', 'framework');
 
-        $path = Get::sett('url') . $GLOBALS['where_files_relative'] . '/appCore/' . Get::sett('pathphoto');
+        $path = Get::site_url() . $GLOBALS['where_files_relative'] . '/appCore/' . Get::sett('pathphoto');
 
         $txt = '<div>'
             . '<div class="boxinfo_title">' . $lang->def('_USERPARAM') . '</div>'

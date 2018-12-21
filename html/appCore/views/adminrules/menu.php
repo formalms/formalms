@@ -17,35 +17,27 @@
 	
 		<?php
 
-			foreach($platform_list as $id => $translate)  {
-                            
-//			    if($translate == 'menu_user') $strHeader = Lang::t('_USER_MANAGMENT', 'menu', 'framework');
-//			    if($translate == 'menu_elearning') $strHeader = Lang::t('_FIRST_LINE_lms', 'menu', 'framework');
-//			    if($translate == 'menu_content') $strHeader = Lang::t('_CONTENTS', 'standard', 'framework');
-//			    if($translate == 'menu_report') $strHeader = Lang::t('_REPORT', 'standard', 'framework');
-//			    if($translate == 'menu_config') $strHeader = Lang::t('_CONFIGURATION', 'menu', 'framework');
-                            $strHeader = $translate['name'];
+			foreach($menu as $id => $menu_item)  {
 
 				echo '<li'.($id == $active_tab?' class="active"':'').'>'
 					.'<a href="#tab_g_'.$id.'" data-toggle="tab">'
-					.'<em>'.$strHeader.'</em>'
+					.'<em>'.Lang::t($menu_item->name, 'menu').'</em>'
 					.'</a>'
 					.'</li>';
             }
-                    
-			reset($platform_list);
+
 		?>
 
 		</ul>
 		<div class="tab-content">
 			<?php
-				while(list($id, $translate) = each($platform_list))
-				{
+				foreach($menu as $id => $menu_item)  {
+
 					// print the tab content
 					echo '<div class="tab-pane'.($id == $active_tab?' active':'').'" id="tab_g_'.$id.'">'
 						.Form::openElementSpace();
 
-					$model->printPageWithElement($id, $idst);
+					$model->printPageWithElement($menu_item->idMenu, $idst);
 
 					echo	Form::closeElementSpace()
 							.'</div>';

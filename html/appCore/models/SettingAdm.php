@@ -16,15 +16,20 @@ define("TWIG_GROUP", 13);
 
 class SettingAdm extends Model
 {
-
 	protected $db;
 
 	protected $table;
+
+    /**
+     * @var SmtpAdm
+     */
+	protected $smtpAdm;
 
     public function __construct()
     {
 		$this->db = DbConn::getInstance();
         $this->table = $GLOBALS['prefix_fw'] . '_setting';
+        $this->smtpAdm = SmtpAdm::getInstance();
 	}
 
 	public function getPerm()
@@ -237,8 +242,6 @@ class SettingAdm extends Model
 
         if ($regroup == 'suite_man') return $this->_maskSuiteManager();
 
-		$lang =& DoceboLanguage::createInstance('configuration', 'framework');
-
 		$reSetting = sql_query("
 		SELECT pack, param_name, param_value, value_type, max_size
 		FROM " . $this->table . "
@@ -276,7 +279,7 @@ class SettingAdm extends Model
 						"moderate" => Lang::t('_REGISTER_TYPE_MODERATE'),
                         "admin" => Lang::t('_REGISTER_TYPE_ADMIN'),
                     );
-                    echo Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
+                    echo Form::getDropdown( Lang::t('_'.strtoupper($var_name)),
                         $var_name,
                         'option['.$var_name.']',
                         $layout,
@@ -311,7 +314,7 @@ class SettingAdm extends Model
                         // "tree_course" => Lang::t('_ASK_FOR_TREE_COURSE_CODE'),
                         "code_module" => Lang::t('_ASK_FOR_CODE_MODULE'),
                     );
-                    echo Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
+                    echo Form::getDropdown( Lang::t('_'.strtoupper($var_name)),
                         $var_name,
                         'option['.$var_name.']',
                         $layout,
@@ -354,12 +357,12 @@ class SettingAdm extends Model
 				case "save_log_attempt" : {
 					//on off
 
-                    echo Form::getOpenCombo($lang->def('_' . strtoupper($var_name)))
-                        . Form::getLineRadio('', 'label_bold', $lang->def('_SAVE_LA_ALL'), $var_name . '_all', 'option[' . $var_name . ']',
+                    echo Form::getOpenCombo(Lang::t('_' . strtoupper($var_name)))
+                        . Form::getLineRadio('', 'label_bold', Lang::t('_SAVE_LA_ALL'), $var_name . '_all', 'option[' . $var_name . ']',
 								'all', ($var_value == 'all'))
-                        . Form::getLineRadio('', 'label_bold', $lang->def('_SAVE_LA_AFTER_MAX'), $var_name . '_after_max', 'option[' . $var_name . ']',
+                        . Form::getLineRadio('', 'label_bold', Lang::t('_SAVE_LA_AFTER_MAX'), $var_name . '_after_max', 'option[' . $var_name . ']',
 								'after_max', ($var_value == 'after_max'))
-                        . Form::getLineRadio('', 'label_bold', $lang->def('_NO'), $var_name . '_no', 'option[' . $var_name . ']',
+                        . Form::getLineRadio('', 'label_bold', Lang::t('_NO'), $var_name . '_no', 'option[' . $var_name . ']',
 								'no', ($var_value == 'no'))
                         . Form::getCloseCombo($i_after);
                 };
@@ -367,7 +370,7 @@ class SettingAdm extends Model
 				case "language" : {
 					//drop down language
 					$langs = Docebo::langManager()->getAllLangCode();
-                    echo Form::getDropdown($lang->def('_' . strtoupper($var_name)),
+                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name)),
 												$var_name,
                         'option[' . $var_name . ']',
 												$langs,
@@ -379,7 +382,7 @@ class SettingAdm extends Model
 				case "template" : {
 					//drop down template
 					$templ = getTemplateList();
-                    echo Form::getDropdown($lang->def('_' . strtoupper($var_name)),
+                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name)),
 												$var_name,
                         'option[' . $var_name . ']',
 												$templ,
@@ -390,7 +393,7 @@ class SettingAdm extends Model
 				case "hteditor" : {
 					//drop down hteditor
 					$ht_edit = getHTMLEditorList();
-                    echo Form::getDropdown($lang->def('_' . strtoupper($var_name)),
+                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name)),
 												$var_name,
                         'option[' . $var_name . ']',
 												$ht_edit,
@@ -404,7 +407,7 @@ class SettingAdm extends Model
 						'left' => Lang::t('_LAYOUT_LEFT'),
 						'over' => Lang::t('_LAYOUT_OVER'),
 						'right' => Lang::t('_LAYOUT_RIGHT'));
-                    echo Form::getDropdown($lang->def('_' . strtoupper($var_name)),
+                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name)),
 												$var_name,
                         'option[' . $var_name . ']',
 												$layout,
@@ -418,7 +421,7 @@ class SettingAdm extends Model
 						'onestate' => Lang::t('_PUBFLOW_ONESTATE'),
 						'twostate' => Lang::t('_PUBFLOW_TWOSTATE'),
 						'advanced' => Lang::t('_PUBFLOW_ADVANCED'));
-                    echo Form::getDropdown($lang->def('_' . strtoupper($var_name)),
+                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name)),
 												$var_name,
                         'option[' . $var_name . ']',
 												$options,
@@ -435,7 +438,7 @@ class SettingAdm extends Model
                     foreach ($all_fields as $key => $val) {
                         $fields[$val[FIELD_INFO_ID]] = $val[FIELD_INFO_TRANSLATION];
 					}
-                    echo Form::getDropdown($lang->def('_' . strtoupper($var_name)),
+                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name)),
 												$var_name,
                         'option[' . $var_name . ']',
 												$fields,
@@ -450,7 +453,7 @@ class SettingAdm extends Model
 						'2' => Lang::t('_SMS_GATEWAY_2'),
 						'3' => Lang::t('_SMS_GATEWAY_3'),
 						'4' => Lang::t('_SMS_GATEWAY_4'));
-                    echo Form::getDropdown($lang->def('_' . strtoupper($var_name)),
+                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name)),
 												$var_name,
                         'option[' . $var_name . ']',
 												$options,
@@ -464,7 +467,7 @@ class SettingAdm extends Model
 						'left' => Lang::t('_LAYOUT_LEFT'),
 						'over' => Lang::t('_LAYOUT_OVER'),
 						'right' => Lang::t('_LAYOUT_RIGHT'));
-                    echo Form::getDropdown($lang->def('_' . strtoupper($var_name)),
+                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name)),
 												$var_name,
                         'option[' . $var_name . ']',
 												$layout,
@@ -474,9 +477,9 @@ class SettingAdm extends Model
                     break;
 				case "grpsel_chooser" : {
 					$layout = array(
-						'group' => $lang->def('_GROUPS'),
-						'orgchart' => $lang->def('_ORGCHART'));
-                    echo Form::getDropdown($lang->def('_' . strtoupper($var_name)),
+						'group' => Lang::t('_GROUPS'),
+						'orgchart' => Lang::t('_ORGCHART'));
+                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name)),
 												$var_name,
                         'option[' . $var_name . ']',
 												$layout,
@@ -487,12 +490,12 @@ class SettingAdm extends Model
 				case "tablist_mycourses" : {
                     $arr_value = explode(',', $var_value);
                     $tab_list = array();
-                  $tab_list['status'] = $lang->def('_STATUS');
-                  $tab_list['name'] = $lang->def('_NAME');
-                  $tab_list['code'] = $lang->def('_CODE');
+                  $tab_list['status'] = Lang::t('_STATUS');
+                  $tab_list['name'] = Lang::t('_NAME');
+                  $tab_list['code'] = Lang::t('_CODE');
 
                   echo '<div class="form_line_l"><p>' .
-                       '<label class="floating">' . $lang->def('_' . strtoupper($var_name)) . '</label></p>';
+                       '<label class="floating">' . Lang::t('_' . strtoupper($var_name)) . '</label></p>';
                   for ($i = 0; $i < 3; $i++) {
                         echo Form::getInputDropdown('dropdown', $var_name . '_' . $i,
                                                     "mycourses[$i]", $tab_list,
@@ -505,11 +508,11 @@ class SettingAdm extends Model
                     require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
                     $fl = new FieldList();
                     $all_fields = $fl->getAllFields();
-                    $fields[0] = $lang->def('_NO_VALUE');
+                    $fields[0] = Lang::t('_NO_VALUE');
                     foreach ($all_fields as $key => $val) {
                         $fields[$val[FIELD_INFO_ID]] = $val[FIELD_INFO_TRANSLATION];
 					}
-                    echo Form::getDropdown($lang->def('_' . strtoupper($var_name)),
+                    echo Form::getDropdown(Lang::t('_' . strtoupper($var_name)),
 												$var_name,
                         'option[' . $var_name . ']',
 												$fields,
@@ -519,14 +522,14 @@ class SettingAdm extends Model
                     break;
 				case "rest_auth_sel_method": {
 					$value_set = array(
-                        $lang->def('_REST_AUTH_CODE') => 0,
-                        $lang->def('_REST_AUTH_TOKEN') => 1,
-                        $lang->def('_REST_AUTH_SECRET_KEY') => 2
+                        Lang::t('_REST_AUTH_CODE') => 0,
+                        Lang::t('_REST_AUTH_TOKEN') => 1,
+                        Lang::t('_REST_AUTH_SECRET_KEY') => 2
 					);
-                    echo Form::getRadioSet($lang->def('_REST_AUTH_METHOD'), $var_name, 'option[' . $var_name . ']', $value_set, $var_value, $i_after);
+                    echo Form::getRadioSet(Lang::t('_REST_AUTH_METHOD'), $var_name, 'option[' . $var_name . ']', $value_set, $var_value, $i_after);
                 }
                     break;
-                    
+
                 case "home_page_option": {
                   $tab_list = array();
                   $tab_list['my_courses'] = Lang::t('_MY_COURSES');
@@ -537,12 +540,12 @@ class SettingAdm extends Model
                         Lang::t('_HOME_PAGE').'</b></p>';
                     echo Form::getInputDropdown('dropdown', $var_name, $var_name, $tab_list, $var_value, '')
                     . '</div><p>&nbsp;</p>';
-                    
-                }    
+
+                }
                     break;
 				// Common types
 				case "password" : {
-                    echo Form::getPassword($lang->def('_' . strtoupper($var_name)),
+                    echo Form::getPassword(Lang::t('_' . strtoupper($var_name)),
 												$var_name,
                         'option[' . $var_name . ']',
 												$max_size,
@@ -551,7 +554,7 @@ class SettingAdm extends Model
                 }
                     break;
 				case "textarea" : {
-                    echo Form::getSimpletextarea($lang->def('_' . strtoupper($var_name)),
+                    echo Form::getSimpletextarea(Lang::t('_' . strtoupper($var_name)),
 												$var_name,
                         'option[' . $var_name . ']',
 												$var_value,
@@ -564,29 +567,29 @@ class SettingAdm extends Model
 
                 }
                     break;
-				
+
                 case "on_usercourse_empty": {
                     if ($which_home == 'my_courses') {
-                        echo Form::getCheckbox($lang->def('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
+                        echo Form::getCheckbox(Lang::t('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
                     } else {
-                        echo Form::getCheckbox($lang->def('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', false, 'disabled', '', ' ' . $i_after);
+                        echo Form::getCheckbox(Lang::t('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', false, 'disabled', '', ' ' . $i_after);
                     }                           
                 }
                     break;
-                
+
                 case "menuvoice" :
 				case "menuvoice_course_public" :
 
 				case "check" : {
-                    echo Form::getCheckbox($lang->def('_' . strtoupper($var_name)), $var_name, 'option[' . $var_name . ']', 1, ($var_value == 1), '', ' ' . $i_after);
+                    echo Form::getCheckbox(Lang::t('_' . strtoupper($var_name)), $var_name, 'option[' . $var_name . ']', 1, ($var_value == 1), '', ' ' . $i_after);
                 };
                     break;
 				case "enum" : {
-                    echo Form::getCheckbox($lang->def('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
+                    echo Form::getCheckbox(Lang::t('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
                 };
                     break;
                 case "button" : {
-                    echo '<br/><a class="btn btn-default" role="button" href="'.$var_value.'">'.$lang->def('_' . strtoupper($var_name)).'</a>';//($var_name,$lang->def('_' . strtoupper($var_name)),$lang->def('_' . strtoupper($var_name)));//$lang->def('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
+                    echo '<br/><a class="btn btn-default" role="button" href="'.$var_value.'">'.Lang::t('_' . strtoupper($var_name)).'</a>';//($var_name,Lang::t('_' . strtoupper($var_name)),Lang::t('_' . strtoupper($var_name)));//Lang::t('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
                 };
                     break;
                 case "password_algorithms" : {
@@ -595,16 +598,29 @@ class SettingAdm extends Model
                         1 => Lang::t('PASSWORD_BCRYPT'),
                         0 => Lang::t('PASSWORD_MD5')
                     );
-                    echo Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
+                    echo Form::getDropdown( Lang::t('_'.strtoupper($var_name)),
                         $var_name,
                         'option['.$var_name.']',
                         $layout,
                         $var_value);
                 };
                     break;
+				case 'on_off':{
+                    $layout = array(
+                        'on' => Lang::t('ON'),
+                        'off' => Lang::t('OFF')
+                    );
+                    echo Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
+                        $var_name,
+                        'option['.$var_name.']',
+                        $layout,
+                        $var_value);
+				}
+				break;
+
 				default : {
 					//string or int
-                    echo Form::getTextfield($lang->def('_' . strtoupper($var_name)),
+                    echo Form::getTextfield(Lang::t('_' . strtoupper($var_name)),
 												$var_name,
                         'option[' . $var_name . ']',
 												$max_size,
@@ -684,7 +700,7 @@ class SettingAdm extends Model
 					$new_value = urlencode(Util::serialize($tab_selected));
 				};break;
 
-				case "tablist_mycourses" : {                    
+				case "tablist_mycourses" : {
                     $temp_arr = array();
                     for ($i = 0; $i < 3; $i++) {
                         $temp_var = $_POST['mycourses'][$i];
@@ -696,12 +712,15 @@ class SettingAdm extends Model
                 break;
                 case "home_page_option" :{
                         // setting enabled in middle_area options
-                       $new_value =  $_POST['home_page_option'];
-                       require_once(_lms_.'/lib/lib.middlearea.php');
-                       $ma = new Man_MiddleArea();                       
-                       $which_home = ($new_value == 'catalogue'? 'mo_46': 'mo_1');
-                       $ma->setHomePageMenu($which_home);
-                      
+                    $new_value = $_POST['home_page_option'];
+                    switch($new_value) {
+                        case 'my_courses':
+                       CoreMenu::set(CoreMenu::getByMVC('elearning/show')->idMenu, ['is_active' => true]);
+                            break;
+                        case 'catalogue':
+                            CoreMenu::set(CoreMenu::getByMVC('lms/catalog/show')->idMenu, ['is_active' => true]);
+                            break;
+}
                 };
                 break;
 
@@ -724,9 +743,9 @@ class SettingAdm extends Model
 				case "on_usercourse_empty":
                 case "enum" : {
                     if (isset($_POST['option'][$var_name])) {
-                        $new_value = 'on';   
+                        $new_value = 'on';
                     } else {
-                        $new_value = 'off';   
+                        $new_value = 'off';
                     }
                 };
                     break;

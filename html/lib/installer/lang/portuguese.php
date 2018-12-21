@@ -91,7 +91,18 @@ define("_DATABASE", "Base Dados");
 define("_DB_IMPORTING", "Importar Base Dados");
 define("_LANGUAGES", "Idiomas");
 // -----------------------------------------
-define("_TITLE_STEP7", "Step 7: Instalação completa");
+define("_TITLE_STEP7", "Step 7: Configurazione SMTP");
+define("_SMTP_INFO", "Sarà possibile impostare la configurazione dell'SMTP da backoffice o da config.");
+define("_USE_SMTP_DATABASE", "Impostazioni SMTP su Database");
+define("_USE_SMTP", "Usa SMTP");
+define("_SMTP_HOST", "Host SMTP");
+define("_SMTP_PORT", "Porta SMTP");
+define("_SMTP_SECURE", "Tipo di sicurezza");
+define("_SMTP_USER", "User SMTP");
+define("_SMTP_PWD", "Password SMTP");
+define("_CANT_CONNECT_SMTP", "impossibile connettersi al server SMTP selezionato");
+// -----------------------------------------
+define("_TITLE_STEP8", "Step 8: Instalação completa");
 define("_INSTALLATION_COMPLETED", "Instalação foi concluída");
 define("_INSTALLATION_DETAILS", "Detalhes");
 define("_SITE_HOMEPAGE", "Home");

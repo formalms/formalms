@@ -11,3 +11,4 @@
 /lms/course/public/public_forum/view
 /lms/course/public/public_forum/write
 /lms/course/public/public_forum/upload
+/lms/course/public/helpdesk/view

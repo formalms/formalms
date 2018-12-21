@@ -104,12 +104,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
     }
     
     private static function _getService() {
-        
-        // TODO: da qualche parte funzione httpsActive... ma serve davvero? O basta recuperare il protocollo utilizzato??
-        $httpsActive = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == "on")
-                || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == "https") 
-                || (isset($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) == "on");
-        
+                
         $serviceFactory = new \OAuth\ServiceFactory();
         
         $storage = new Session(false);
@@ -117,7 +112,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $credentials = new Credentials(
             Get::sett("linkedin.oauth_key"),
             Get::sett("linkedin.oauth_secret"),
-            $httpsActive ? "https" : "http" . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'] . "?r=" . urlencode(_login_) . "&plugin=".Plugin::getName()
+            Get::abs_path() . "index.php?r=" . urlencode(_login_) . "&plugin=".Plugin::getName()
         );
         
         return $serviceFactory->createService("linkedin", $credentials, $storage, array("r_basicprofile"));

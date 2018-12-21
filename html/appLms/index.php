@@ -15,9 +15,9 @@ define("LMS", true);
 define("IN_FORMA", true);
 define("_deeppath_", '../');
 require(dirname(__FILE__).'/../base.php');
+require_once _lms_ . '/lib/LMSTemplateController.php';
 
-// start buffer
-ob_start();
+LMSTemplateController::init();
 
 // initialize
 require(_base_.'/lib/lib.bootstrap.php');
@@ -62,37 +62,14 @@ if(isset($_GET['no_redirect']) || isset($_POST['no_redirect'])) {
 	LmsPageWriter::createInstance();
 }
 
-if (file_exists(_base_.'/customscripts'.'/'._folder_lms_.'/lib/lib.preoperation.php') && Get::cfg('enable_customscripts', false) == true ){
-        require_once(_base_ . '/customscripts' . '/' . _folder_lms_ . '/lib/lib.preoperation.php');
-} else {
-        require_once(_lms_.'/lib/lib.preoperation.php');
-}
+require_once(Forma::inc(_lms_.'/lib/lib.preoperation.php'));
+
 require_once(_lms_.'/lib/lib.module.php');
 
 // create the class for management the called module
 if(!empty($GLOBALS['modname'])) {
 	$module_cfg =& createModule($GLOBALS['modname']);
 	if(method_exists($module_cfg, 'beforeLoad')) $module_cfg->beforeLoad();
-}
-
-// header
-if($module_cfg !== false && $module_cfg->hideLateralMenu()) {
-
-	require(_lms_.'/menu/menu_over.php');
-} else {
-
-	if(!Docebo::user()->isAnonymous()) {
-
-		require(_lms_.'/menu/menu_over.php');
-		/*if(isset($_SESSION['idCourse'])) {
-
-
-			require(_lms_.'/menu/menu_lat.php');
-		}*/
-	} else {
-
-		require(_lms_.'/menu/menu_login.php');
-	}
 }
 
 // New MVC structure
@@ -108,36 +85,13 @@ if (!empty($GLOBALS['req'])){
     }
 }
 
+LMSTemplateController::getInstance()->show();
+
 // -----------------------------------------------------------------------------
-
-#// finalize TEST_COMPATIBILITA_PHP54
-//Boot::finalize();
-
-// remove all the echo and put them in the debug zone
-$GLOBALS['page']->add(ob_get_contents(), 'debug');
-ob_clean();
-
-// layout
-$layoutToRender = 'lms_user';
-
-if (isset($_SESSION['layoutToRender']) && $_SESSION['layoutToRender']){
-    $layoutToRender = $_SESSION['layoutToRender'];
-}
-elseif (isset($_SESSION['idCourse'])){
-    $layoutToRender = 'lms';
-}
-Layout::render( $layoutToRender );
-
-//Layout::render( ( isset($_SESSION['idCourse']) ?  'lms' : 'lms_user' ) );
-
-//\appCore\Events\DispatcherManager::addListener('prova.evento.appLms', array(new \appLms\Events\DumpAndDieLmsListener(), 'printOnlyADot'));
-
-//\appCore\Events\DispatcherManager::dispatch('prova.evento.appLms');
 
 #// finalize TEST_COMPATIBILITA_PHP54
 Boot::finalize();
 
-// flush buffer
-ob_end_flush();
+LMSTemplateController::flush();
 
 ?>

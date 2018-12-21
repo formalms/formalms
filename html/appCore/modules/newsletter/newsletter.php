@@ -122,6 +122,7 @@ function send_newsletter($send_id) {
 	$msg =str_replace("{site_base_url}", getSiteBaseUrl(), $msg);
 	
 	$fromemail=$info["fromemail"];
+    $sender = Get::sett('sender_event');
 	$file_array = $json->decode($info['file']);
 	
 	$attach = array();
@@ -173,10 +174,10 @@ function send_newsletter($send_id) {
 			require_once(_base_.'/lib/lib.mailer.php');
 					$mailer = DoceboMailer::getInstance();
 					if(count($attach))
-						$mailer->SendMail($fromemail, $tempemail, $sub, $msg, $attach, 
+						$mailer->SendMail($sender, $tempemail, $sub, $msg, $attach,
 						array(MAIL_REPLYTO => $fromemail, MAIL_SENDER_ACLNAME => false));
 					else
-						$mailer->SendMail($fromemail, $tempemail, $sub, $msg, false, 
+						$mailer->SendMail($sender, $tempemail, $sub, $msg, false,
 						array(MAIL_REPLYTO => $fromemail, MAIL_SENDER_ACLNAME => false));
 		} break;
 

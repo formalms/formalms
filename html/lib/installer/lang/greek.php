@@ -91,7 +91,18 @@ define("_DATABASE", "Βάση δεδομένων");
 define("_DB_IMPORTING", "Εισαγωγή βάσης δεδομένων");
 define("_LANGUAGES", "Γλώσσες");
 // -----------------------------------------
-define("_TITLE_STEP7", "Βήμα 7: Η εγκατάσταση ολοκληρώθηκε");
+define("_TITLE_STEP7", "Step 7: Configurazione SMTP");
+define("_SMTP_INFO", "Sarà possibile impostare la configurazione dell'SMTP da backoffice o da config.");
+define("_USE_SMTP_DATABASE", "Impostazioni SMTP su Database");
+define("_USE_SMTP", "Usa SMTP");
+define("_SMTP_HOST", "Host SMTP");
+define("_SMTP_PORT", "Porta SMTP");
+define("_SMTP_SECURE", "Tipo di sicurezza");
+define("_SMTP_USER", "User SMTP");
+define("_SMTP_PWD", "Password SMTP");
+define("_CANT_CONNECT_SMTP", "impossibile connettersi al server SMTP selezionato");
+// -----------------------------------------
+define("_TITLE_STEP8", "Βήμα 8: Η εγκατάσταση ολοκληρώθηκε");
 define("_INSTALLATION_COMPLETED", "Η εγκατάσταση έχει ολοκληρωθεί");
 define("_INSTALLATION_DETAILS", "Λεπτομέρειες");
 define("_SITE_HOMEPAGE", "Αρχική");

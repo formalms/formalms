@@ -69,7 +69,7 @@ class DoceboCal_lms extends DoceboCal_core{
 	
 			/* the following should be set according to the type of event class*/		
 			$calevents[$i]->id=$row["id"];
-            preg_match("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["start_date"],$parts);
+            preg_match("/^(.+)-(.+)-(.+) (.+):(.+):(.+)$/",$row["start_date"],$parts);
 			$calevents[$i]->start_year=$parts[1];
 			$calevents[$i]->start_month=$parts[2];
 			$calevents[$i]->start_day=$parts[3];
@@ -77,7 +77,7 @@ class DoceboCal_lms extends DoceboCal_core{
 			$calevents[$i]->start_min=$parts[5];
 			$calevents[$i]->start_sec=$parts[6];
 
-            preg_match("^(.+)-(.+)-(.+) (.+):(.+):(.+)$",$row["end_date"],$parts);
+            preg_match("/^(.+)-(.+)-(.+) (.+):(.+):(.+)$/",$row["end_date"],$parts);
 			$calevents[$i]->end_year=$parts[1];
 			$calevents[$i]->end_month=$parts[2];
 			$calevents[$i]->end_day=$parts[3];

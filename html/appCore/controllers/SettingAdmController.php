@@ -18,6 +18,7 @@ class SettingAdmController extends AdmController {
 		$model = new SettingAdm();
 		$regroup = $model->getRegroupUnit();
 
+
 		$active_tab = Get::req('active_tab', DOTY_MIXED, 1);
 		$this->render('show', array(
 			'model' => $model,

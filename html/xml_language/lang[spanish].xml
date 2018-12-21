@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180720</DATE>
+  <DATE>20181012</DATE>
   <LANG id="spanish">
     <lang_code>spanish</lang_code>
     <lang_description>Spanish</lang_description>
@@ -472,6 +472,8 @@
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[FTP OK]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Código facilitado por Google]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_IN_LMS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Habilitar Google Analytics]]></key>
+        <key id="configuration&amp;_HIDE_EMPTY_CATEGORY" attributes="" save_date="2018-10-12 15:54:46"><![CDATA[Ocultar las categorías ocultas]]></key>
+        <key id="configuration&amp;_HOME_PAGE" attributes="" save_date="2018-10-12 15:55:44"><![CDATA[Página de inicio]]></key>
         <key id="configuration&amp;_HOUR_REQUEST_LIMIT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Límite, en horas, de expiración de una petición de suscripción]]></key>
         <key id="configuration&amp;_HTEDITOR" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Editor de HTML visual]]></key>
         <key id="configuration&amp;_HTMLEDIT_IMAGE_ADMIN" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Permitir gestión de medios (imágenes, etc) de administrador en el editor]]></key>
@@ -501,6 +503,7 @@
         <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2017-04-10 11:39:16"><![CDATA[Modo SQL]]></key>
         <key id="configuration&amp;_MYSQL_TIMEZONE" attributes="" save_date="2017-04-10 11:39:10"><![CDATA[Zona horaria de MySQL]]></key>
         <key id="configuration&amp;_MYSQL_VERS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Version de MySQL]]></key>
+        <key id="configuration&amp;_MY_COURSES" attributes="" save_date="2018-10-12 15:55:55"><![CDATA[Mis Cursos]]></key>
         <key id="configuration&amp;_NL_SENDPAUSE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Pausa entre bloques (segundos)]]></key>
         <key id="configuration&amp;_NL_SENDPERCYCLE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Enviar boletines de noticias en bloques de]]></key>
         <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2017-05-24 17:42:38"><![CDATA[Con domxml OFF, el módulo SCORM, el gestor de lenguajes y videoconferencia no funcionarán]]></key>
@@ -657,6 +660,7 @@
         <key id="course&amp;_ADVERT_LOBJ" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Hay [lobj] nuevos objetos de estudio]]></key>
         <key id="course&amp;_ALLOW_OVERBOOKING" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Permitir exceso de reservas]]></key>
         <key id="course&amp;_ALL_OPEN" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Todos abiertos]]></key>
+        <key id="course&amp;_ALL_YEARS" attributes="" save_date="2018-10-12 15:57:42"><![CDATA[Todos los años]]></key>
         <key id="course&amp;_ASSIGN_FOR_ALL_STATUS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Asignar para cada estado de usuario]]></key>
         <key id="course&amp;_ASSIGN_FOR_AT_LEAST_MINUTES" attributes="" save_date="2017-05-29 16:17:11"><![CDATA[Tiempo mínimo para la prueba (min.)]]></key>
         <key id="course&amp;_ASSIGN_FOR_STATUS_COMPLETED" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Asignar a usuarios que han completado el curso]]></key>
@@ -725,6 +729,7 @@
         <key id="course&amp;_DAY_OF_VALIDITY" attributes="" save_date="2017-05-26 10:17:34"><![CDATA[Días de validez]]></key>
         <key id="course&amp;_DEMO" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Mostrar demo]]></key>
         <key id="course&amp;_DIRECT_PLAY" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Reproducir directamente el primer objeto de aprendizaje en el reproductor]]></key>
+        <key id="course&amp;_DISABLED" attributes="" save_date="2018-10-12 15:57:59"><![CDATA[Deshabilitado]]></key>
         <key id="course&amp;_DOCUMENT_UPLOAD" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Documentos subidos]]></key>
         <key id="course&amp;_DONT_SHOW" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[No mostrar]]></key>
         <key id="course&amp;_DOWNLOAD_MATERIALS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Mostrar material]]></key>
@@ -865,6 +870,7 @@ En otro caso, Ud. debe registrarse en nuestro sistema, dando click en el siguien
         <key id="coursereport&amp;_ANSWER_CORRECT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Respuesta correcta]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_CAPTION" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Prueba para este curso]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_SUMMARY" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Esta es la lista de todas las pruebas para este curso y los resultados de los estudiantes]]></key>
+        <key id="coursereport&amp;_DETAILS" attributes="" save_date="2018-10-12 15:58:46"><![CDATA[Detalles]]></key>
         <key id="coursereport&amp;_EXPORT_STATS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Salvar estadísticas]]></key>
         <key id="coursereport&amp;_LEFT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Izquierda]]></key>
         <key id="coursereport&amp;_MOVE_LEFT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Mover a la izquierda]]></key>
@@ -872,6 +878,7 @@ En otro caso, Ud. debe registrarse en nuestro sistema, dando click en el siguien
         <key id="coursereport&amp;_NOT_CHECKED" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Sin marcar]]></key>
         <key id="coursereport&amp;_NOT_PASSED" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[No aprobado]]></key>
         <key id="coursereport&amp;_OF_USER" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[del usuario]]></key>
+        <key id="coursereport&amp;_OVERVIEW" attributes="" save_date="2018-10-12 15:59:20"><![CDATA[Visión global]]></key>
         <key id="coursereport&amp;_PASSED" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Aprobado]]></key>
         <key id="coursereport&amp;_PERCENTAGE_CORRECT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Porciento de respuestas correctas]]></key>
         <key id="coursereport&amp;_QUESTION_ANSWERED" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Preguntas respondidas]]></key>
@@ -1032,6 +1039,7 @@ Contraseña: [password]]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2016-12-01 10:32:52"><![CDATA[Has recibido un nuevo mensaje sobre el sistema de e-learning a la dirección<a href="[url]">[url]</a> en el curso<b> [course] </b>del usuario [from]]]></key>
       </module>
       <module id="enrollrules">
+        <key id="enrollrules&amp;_APPLY_RULE" attributes="" save_date="2018-10-12 15:58:35"><![CDATA[Aplicar regla]]></key>
         <key id="enrollrules&amp;_BASE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Base]]></key>
         <key id="enrollrules&amp;_ENTITY" attributes="" save_date="2017-05-29 14:42:23"><![CDATA[Entidad]]></key>
         <key id="enrollrules&amp;_SHOW_LOGS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Mostrar logs]]></key>
@@ -1389,6 +1397,7 @@ Para cambiar estas palabras, vaya a Administración / Gestión de idiomas, busqu
         <key id="login&amp;_MAINTENANCE_TEXT" attributes="" save_date="2016-12-01 09:52:36"><![CDATA[Sistema en modo de mantenimiento<br/><br/>To change these text please go to Admin/Language management, search for login and edit the key _MAINTENANCE_TEXT]]></key>
         <key id="login&amp;_NOACCESS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Acceso denegado, por favor, revise su contraseña]]></key>
         <key id="login&amp;_PASSNOMATCH" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Las dos contraseñas no son iguales o la contraseña es vacía]]></key>
+        <key id="login&amp;_READ_ALL" attributes="" save_date="2018-10-12 15:59:55"><![CDATA[Leer todo]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Para proceder con la inscripcion o la compra, tienes que hacer el [login] o [signin] si tu no eres ya registrado]]></key>
         <key id="login&amp;_REGISTER_FOR_COURSE_NO_REG" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Para proceder con la inscripcion o la compra tienes que hacer el [login]]]></key>
         <key id="login&amp;_REGISTER_WITH_FACEBOOK" attributes="" save_date="2016-12-01 08:12:41"><![CDATA[Registro con Facebook]]></key>
@@ -1506,6 +1515,7 @@ Para cambiar estas palabras, vaya a Administración / Gestión de idiomas, busqu
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2016-11-23 08:36:15"><![CDATA[Ir al menú principal]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2016-11-23 08:36:15"><![CDATA[Ir a su información relacionada con este curso]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Comunidad]]></key>
+        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2018-10-12 16:00:27"><![CDATA[Auto registro en el curso]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Area de administrador]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2016-12-01 08:21:46"><![CDATA[Creación]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Campus]]></key>
@@ -2425,6 +2435,7 @@ Contraseña: [password]]]></key>
         <key id="standard&amp;_REPORT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Reporte]]></key>
         <key id="standard&amp;_REQUIRED_SCORE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Puntuación requerida]]></key>
         <key id="standard&amp;_RESET" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Reestablecer]]></key>
+        <key id="standard&amp;_RESET_POLICY" attributes="" save_date="2018-10-12 16:01:22"><![CDATA[Resetear la política]]></key>
         <key id="standard&amp;_ROLLBACK" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Retroceso]]></key>
         <key id="standard&amp;_ROOT" attributes="" save_date="2016-12-01 08:00:35"><![CDATA[root]]></key>
         <key id="standard&amp;_ROW" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Fila]]></key>
@@ -2448,6 +2459,7 @@ Contraseña: [password]]]></key>
         <key id="standard&amp;_SEND_CC" attributes="" save_date="2018-07-20 10:34:04"><![CDATA[Metti in cc]]></key>
         <key id="standard&amp;_SEND_TO" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Enviar a]]></key>
         <key id="standard&amp;_SET" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Establecer]]></key>
+        <key id="standard&amp;_SET_AS_DEFAULT" attributes="" save_date="2018-10-12 16:01:44"><![CDATA[Marcar como predefinida]]></key>
         <key id="standard&amp;_SHORTDESC" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[descripción corta]]></key>
         <key id="standard&amp;_SHOW" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Mostrar]]></key>
         <key id="standard&amp;_SHOW_RESULTS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Resultados]]></key>

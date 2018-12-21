@@ -11,8 +11,8 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-define('_INSTALL_TOTAL_STEP', 7);
-define('_UPDATE_TOTAL_STEP', 7);
+define('_INSTALL_TOTAL_STEP', 8);
+define('_UPDATE_TOTAL_STEP', 8);
 
 class StepManager {
 

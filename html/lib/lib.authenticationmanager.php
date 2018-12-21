@@ -87,16 +87,27 @@ class AuthenticationManager {
         $user->loadUserSectionST();
         $user->SaveInSession();
         
-        resetTemplate();
-        
         $GLOBALS['current_user'] = $user;
+        
+        resetTemplate();
 
         $_SESSION['logged_in'] = true;
         $_SESSION['last_enter'] = $user->getLastEnter();
         $_SESSION['user_enter_mark'] = time();
 
         $user->setLastEnter(date("Y-m-d H:i:s"));
-        //////////////////////////////////        
+        //////////////////////////////////       
+
+        // force_standard mode
+        if(isset($_REQUEST["notuse_plugin"])){
+            $_SESSION['notuse_plugin'] = true;
+        }
+        if(isset($_REQUEST["notuse_customscript"])){
+            $_SESSION['notuse_customscript'] = true;
+        }
+        if(isset($_REQUEST["notuse_template"])){
+            $_SESSION['notuse_template'] = true;
+        } 
         
         if(isset($_SESSION['social'])) $this->plugin_manager->run_plugin($_SESSION['social']['plugin'], "setSocial", array("id" => $_SESSION['social']['data']['id']));
         
