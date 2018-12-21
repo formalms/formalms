@@ -151,7 +151,7 @@ function TruncateText($the_text, $size)
                         </div>
                         <div class="course-box__item">
                             <div class="course-box__desc">
-                                ' . TruncateText($row['box_description'], 72) . '
+                                ' . TruncateText($row['box_description'], 120) . '
                             </div>
                         </div>';
 

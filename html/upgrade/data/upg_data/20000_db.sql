@@ -1173,6 +1173,29 @@ join core_role r on r.roleid like concat('/lms/course/private/',idcourse,'/light
 join core_role_members rm on r.idst = rm.idst and g.idst = rm.idstMember
 join core_role ra on ra.roleid like concat('/lms/course/private/',idcourse,'/light_repo/view_all');
 
+
+--
+-- Impostazioni Smtp
+--
+INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('use_smtp', '', 'on_off', 255, 'Use Smtp', 14, 1, 1, 0, '');
+
+INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('smtp_host', '', 'string', 255, 'Smtp Host', 14, 2, 1, 0, '');
+
+INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('smtp_port', '', 'string', 255, 'Smtp Port', 14, 3, 1, 0, '');
+
+
+INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('smtp_secure', '', 'string', 255, 'Smtp Secure', 14, 4, 1, 0, '');
+
+INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('smtp_user', '', 'string', 255, 'Smtp User', 14, 5, 1, 0, '');
+
+INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`)
+VALUES ('smtp_pwd', '', 'string', 255, 'Smtp Password', 14, 6, 1, 0, '');
+
 -- ------------------------------------------------------------------
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

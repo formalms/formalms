@@ -87,7 +87,18 @@ define("_DATABASE", "数据库");
 define("_DB_IMPORTING", "导入数据库");
 define("_LANGUAGES", "语言");
 // -----------------------------------------
-define("_TITLE_STEP7", "第七步：安装完成");
+define("_TITLE_STEP7", "Step 7: Configurazione SMTP");
+define("_SMTP_INFO", "Sarà possibile impostare la configurazione dell'SMTP da backoffice o da config.");
+define("_USE_SMTP_DATABASE", "Impostazioni SMTP su Database");
+define("_USE_SMTP", "Usa SMTP");
+define("_SMTP_HOST", "Host SMTP");
+define("_SMTP_PORT", "Porta SMTP");
+define("_SMTP_SECURE", "Tipo di sicurezza");
+define("_SMTP_USER", "User SMTP");
+define("_SMTP_PWD", "Password SMTP");
+define("_CANT_CONNECT_SMTP", "impossibile connettersi al server SMTP selezionato");
+// -----------------------------------------
+define("_TITLE_STEP8", "第七步：安装完成");
 define("_INSTALLATION_COMPLETED", "已完成安装");
 define("_INSTALLATION_DETAILS", "详情");
 define("_SITE_HOMEPAGE", "首页");

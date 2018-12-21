@@ -142,8 +142,7 @@ Class Step4Controller extends StepController {
 
 	private function checkConnection($db_type, $db_host, $db_name, $db_user, $db_pass) {
 		$res ='err_connect';
-        include _lib_.'/loggers/lib.logger.php';
-		include _base_.'/db/lib.docebodb.php';
+
 		$GLOBALS['db_link'] = DbConn::getInstance(false, array(
 			"db_type" => $db_type, 
 			"db_host" => $db_host, 
