@@ -265,7 +265,7 @@
   font-size: 18px;
   line-height: 1.45;
 
-  &[class~="icon--"] {
+  &[class^="course-box__title icon--"] {
     padding: {
       right: 30px;
       bottom: 15px;
