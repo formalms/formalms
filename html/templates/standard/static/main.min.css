@@ -3740,7 +3740,7 @@ body {
   font-weight: 600;
   font-size: 18px;
   line-height: 1.45; }
-  .course-box__title[class~="icon--"] {
+  .course-box__title[class^="course-box__title icon--"] {
     padding-right: 30px;
     padding-bottom: 15px; }
   .course-box__title:before {
