@@ -155,7 +155,9 @@ function typeOfCourse ($t) {
         <div class="col-xs-12 col-md-4 col-lg-3 mycourses-list">
             <div class="course-box"> <!-- NEW BLOCK -->
                     <div class="course-box__item">
-                        <div class="course-box__title icon--filter-<?php echo $course['user_status']; ?>"><?php echo TruncateText($course['name'], 100); ?></div>
+                        <div class="course-box__title icon--filter-<?php echo $course['user_status']; ?>">
+                          <?php echo TruncateText($course['name'], 50); ?>
+                        </div>
                     </div>
                     <div class="course-box__item course-box__item--no-padding">
                         <?php if ($course['use_logo_in_courselist']) { ?>
