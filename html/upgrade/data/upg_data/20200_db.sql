@@ -45,4 +45,14 @@ INSERT IGNORE INTO `core_customfield_area` (`area_code`, `area_name`, `area_tabl
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
+-- Task #19101: custom field in Learning Object
+
+DELETE FROM `learning_middlearea` WHERE `learning_middlearea`.`obj_index` = 'tb_label';
+
+
+INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) 
+VALUES ('use_course_label', 'off', 'enum', '3', 'main', '4', '7', '1', '0', '');
+
+
+
 -- ------------------------------------------------------------------
