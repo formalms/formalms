@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180917</DATE>
+  <DATE>20181224</DATE>
   <LANG id="arabic">
     <lang_code>arabic</lang_code>
     <lang_description>&#x627;&#x644;&#x639;&#x631;&#x628;&#x64A;&#x629;</lang_description>
@@ -120,6 +120,7 @@
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[الترجمة تحتوي]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[استورد نعم ،]]></key>
       </module>
+      <module id="admin_news"/>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[كل لغة]]></key>
         <key id="admin_newsletter&amp;_NEWSLETTER_WILL_BE_SENT_TO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[سوف تصل النشرة [طفل] المستخدمين.]]></key>
@@ -546,6 +547,7 @@
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[الماضية المستخدمة  كلمات السر اسأل المستخدم من اختيار كلمة مرور مختلفة عن]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ملفاتي للمنطقة لكل مستخدم ( الحصة النسبية للقرص (في ميغابايت]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[استخدام استمارة التسجيل المتقدمة]]></key>
+        <key id="configuration&amp;_USE_COURSE_LABEL" attributes="" save_date="2018-12-14 11:43:01"><![CDATA[Utilizza etichette nei corsi]]></key>
         <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[بدلا من عنوان التواصل DimDim API استخدام]]></key>
         <key id="configuration&amp;_USE_REST_API" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[API تمكين وظيفة]]></key>
         <key id="configuration&amp;_USE_TAG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[داخل المنتديات tags خاصية  تمكين]]></key>
