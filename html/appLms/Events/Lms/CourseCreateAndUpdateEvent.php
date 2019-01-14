@@ -2,7 +2,6 @@
 
 namespace appLms\Events\Lms;
 
-use Behat\Mink\Exception\Exception;
 use Symfony\Component\EventDispatcher\Event;
 
 class CourseCreateAndUpdateEvent extends Event
