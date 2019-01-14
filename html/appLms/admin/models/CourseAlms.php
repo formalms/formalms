@@ -364,8 +364,13 @@ Class CourseAlms extends Model
         }
     }
 
-    public function insCourse()
+    public function insCourse($data_params = null)
     {
+        if(is_null($data_params)) {
+            // Backward compatibility.
+            $data_params = $_POST;
+        }
+
         require_once(_base_ . '/lib/lib.upload.php');
         require_once(_base_ . '/lib/lib.multimedia.php');
         require_once(_lms_ . '/lib/lib.course.php');
@@ -376,13 +381,13 @@ Class CourseAlms extends Model
 
         $acl_man =& Docebo::user()->getAclManager();
 
-        $id_custom = Get::req('selected_menu', DOTY_INT, 0);
+        $id_custom = $data_params['selected_menu'];
 
         // calc quota limit
-        $quota = $_POST['course_quota'];
-        if (isset($_POST['inherit_quota'])) {
+        $quota = $data_params['course_quota'];
+        if (isset($data_params['inherit_quota'])) {
             $quota = Get::sett('course_quota');
-            $_POST['course_quota'] = COURSE_QUOTA_INHERIT;
+            $data_params['course_quota'] = COURSE_QUOTA_INHERIT;
         }
 
         $quota = $quota * 1024 * 1024;
@@ -390,19 +395,19 @@ Class CourseAlms extends Model
         $path = Get::sett('pathcourse');
         $path = '/appLms/' . Get::sett('pathcourse') . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
-        if ($_POST['course_name'] == '')
-            $_POST['course_name'] = Lang::t('_NO_NAME', 'course');
+        if ($data_params['course_name'] == '')
+            $data_params['course_name'] = Lang::t('_NO_NAME', 'course');
 
         // restriction on course status ------------------------------------------
         $user_status = 0;
-        if (isset($_POST['user_status']))
-            while (list($status) = each($_POST['user_status']))
+        if (isset($data_params['user_status']))
+            while (list($status) = each($data_params['user_status']))
                 $user_status |= (1 << $status);
 
         // level that will be showed in the course --------------------------------
         $show_level = 0;
-        if (isset($_POST['course_show_level']))
-            while (list($lv) = each($_POST['course_show_level']))
+        if (isset($data_params['course_show_level']))
+            while (list($lv) = each($data_params['course_show_level']))
                 $show_level |= (1 << $lv);
 
         // save the file uploaded -------------------------------------------------
@@ -416,7 +421,7 @@ Class CourseAlms extends Model
         $quota_exceeded = false;
         $total_file_size = 0;
 
-        $boxDescription = Get::pReq('course_box_descr', DOTY_STRING, "");
+        $boxDescription = $data_params['course_box_descr'];
 
         if (strlen($boxDescription) > self::boxDescrMaxLimit) {
             $res['err'] = '_err_course_box_descr_max_limit';
@@ -488,102 +493,102 @@ Class CourseAlms extends Model
         sl_close_fileoperations();
 
 
-        if ($_POST["can_subscribe"] == "2") {
-            $sub_start_date = Format::dateDb($_POST["sub_start_date"], "date");
-            $sub_end_date = Format::dateDb($_POST["sub_end_date"], "date");
+        if ($data_params["can_subscribe"] == "2") {
+            $sub_start_date = Format::dateDb($data_params["sub_start_date"], "date");
+            $sub_end_date = Format::dateDb($data_params["sub_end_date"], "date");
         }
 
-        $date_begin = Format::dateDb($_POST['course_date_begin'], "date");
-        $date_end = Format::dateDb($_POST['course_date_end'], "date");
+        $date_begin = Format::dateDb($data_params['course_date_begin'], "date");
+        $date_end = Format::dateDb($data_params['course_date_end'], "date");
 
         // insert the course in database -----------------------------------------------------------
         $hour_begin = '-1';
         $hour_end = '-1';
-        if ($_POST['hour_begin']['hour'] != '-1') {
-            $hour_begin = (strlen($_POST['hour_begin']['hour']) == 1 ? '0' . $_POST['hour_begin']['hour'] : $_POST['hour_begin']['hour']);
-            if ($_POST['hour_begin']['quarter'] == '-1')
+        if ($data_params['hour_begin']['hour'] != '-1') {
+            $hour_begin = (strlen($data_params['hour_begin']['hour']) == 1 ? '0' . $data_params['hour_begin']['hour'] : $data_params['hour_begin']['hour']);
+            if ($data_params['hour_begin']['quarter'] == '-1')
                 $hour_begin .= ':00';
             else
-                $hour_begin .= ':' . $_POST['hour_begin']['quarter'];
+                $hour_begin .= ':' . $data_params['hour_begin']['quarter'];
         }
 
-        if ($_POST['hour_end']['hour'] != '-1') {
-            $hour_end = (strlen($_POST['hour_end']['hour']) == 1 ? '0' . $_POST['hour_end']['hour'] : $_POST['hour_end']['hour']);
-            if ($_POST['hour_end']['quarter'] == '-1')
+        if ($data_params['hour_end']['hour'] != '-1') {
+            $hour_end = (strlen($data_params['hour_end']['hour']) == 1 ? '0' . $data_params['hour_end']['hour'] : $data_params['hour_end']['hour']);
+            if ($data_params['hour_end']['quarter'] == '-1')
                 $hour_end .= ':00';
             else
-                $hour_end .= ':' . $_POST['hour_end']['quarter'];
+                $hour_end .= ':' . $data_params['hour_end']['quarter'];
         }
 
         $query_course = "
         INSERT INTO %lms_course
-        SET idCategory          = '" . (isset($_POST['idCategory']) ? $_POST['idCategory'] : 0) . "',
-            CODE                = '" . $_POST['course_code'] . "',
-            NAME                = '" . $_POST['course_name'] . "',
-            description         = '" . $_POST['course_descr'] . "',
-            box_description         = '" . $_POST['course_box_descr'] . "',
-            lang_code           = '" . $array_lang[$_POST['course_lang']] . "',
-            STATUS              = '" . (int)$_POST['course_status'] . "',
+        SET idCategory          = '" . (isset($data_params['idCategory']) ? $data_params['idCategory'] : 0) . "',
+            CODE                = '" . $data_params['course_code'] . "',
+            NAME                = '" . $data_params['course_name'] . "',
+            description         = '" . $data_params['course_descr'] . "',
+            box_description         = '" . $data_params['course_box_descr'] . "',
+            lang_code           = '" . $array_lang[$data_params['course_lang']] . "',
+            STATUS              = '" . (int)$data_params['course_status'] . "',
             level_show_user     = '" . $show_level . "',
-            subscribe_method    = '" . (int)$_POST['course_subs'] . "',
-            credits             = '" . (int)$_POST['credits'] . "',
+            subscribe_method    = '" . (int)$data_params['course_subs'] . "',
+            credits             = '" . (int)$data_params['credits'] . "',
 
             create_date         = '" . date("Y-m-d H:i:s") . "',
 
-            linkSponsor         = '" . $_POST['course_sponsor_link'] . "',
+            linkSponsor         = '" . $data_params['course_sponsor_link'] . "',
             imgSponsor          = '" . $file_sponsor . "',
             img_course          = '" . $file_logo . "',
             img_material        = '" . $file_material . "',
             img_othermaterial   = '" . $file_othermaterial . "',
             course_demo         = '" . $file_demo . "',
 
-            mediumTime          = '" . $_POST['course_medium_time'] . "',
-            permCloseLO         = '" . $_POST['course_em'] . "',
+            mediumTime          = '" . $data_params['course_medium_time'] . "',
+            permCloseLO         = '" . $data_params['course_em'] . "',
             userStatusOp        = '" . $user_status . "',
-            difficult           = '" . $_POST['course_difficult'] . "',
+            difficult           = '" . $data_params['course_difficult'] . "',
 
-            show_progress       = '" . (isset($_POST['course_progress']) ? 1 : 0) . "',
-            show_time           = '" . (isset($_POST['course_time']) ? 1 : 0) . "',
+            show_progress       = '" . (isset($data_params['course_progress']) ? 1 : 0) . "',
+            show_time           = '" . (isset($data_params['course_time']) ? 1 : 0) . "',
 
-            show_who_online     = '" . $_POST['show_who_online'] . "',
+            show_who_online     = '" . $data_params['show_who_online'] . "',
 
-            show_extra_info     = '" . (isset($_POST['course_advanced']) ? 1 : 0) . "',
-            show_rules          = '" . (int)$_POST['course_show_rules'] . "',
+            show_extra_info     = '" . (isset($data_params['course_advanced']) ? 1 : 0) . "',
+            show_rules          = '" . (int)$data_params['course_show_rules'] . "',
 
-            direct_play         = '" . (isset($_POST['direct_play']) ? 1 : 0) . "',
+            direct_play         = '" . (isset($data_params['direct_play']) ? 1 : 0) . "',
 
             date_begin          = '" . $date_begin . "',
             date_end            = '" . $date_end . "',
             hour_begin          = '" . $hour_begin . "',
             hour_end            = '" . $hour_end . "',
 
-            valid_time          = '" . (int)$_POST['course_day_of'] . "',
+            valid_time          = '" . (int)$data_params['course_day_of'] . "',
 
-            min_num_subscribe   = '" . (int)$_POST['min_num_subscribe'] . "',
-            max_num_subscribe   = '" . (int)$_POST['max_num_subscribe'] . "',
-            selling             = '" . (isset($_POST['course_sell']) ? '1' : '0') . "',
-            prize               = '" . $_POST['course_prize'] . "',
+            min_num_subscribe   = '" . (int)$data_params['min_num_subscribe'] . "',
+            max_num_subscribe   = '" . (int)$data_params['max_num_subscribe'] . "',
+            selling             = '" . (isset($data_params['course_sell']) ? '1' : '0') . "',
+            prize               = '" . $data_params['course_prize'] . "',
 
-            course_type         = '" . $_POST['course_type'] . "',
+            course_type         = '" . $data_params['course_type'] . "',
 
-            course_edition      = '" . (isset($_POST['course_edition']) && $_POST['course_edition'] == 1 ? 1 : 0) . "',
+            course_edition      = '" . (isset($data_params['course_edition']) && $data_params['course_edition'] == 1 ? 1 : 0) . "',
 
-            course_quota        = '" . $_POST['course_quota'] . "',
+            course_quota        = '" . $data_params['course_quota'] . "',
             used_space          = '" . $total_file_size . "',
-            allow_overbooking   = '" . (isset($_POST["allow_overbooking"]) ? 1 : 0) . "',
-            can_subscribe       = '" . (int)$_POST["can_subscribe"] . "',
-            sub_start_date      = " . ($_POST["can_subscribe"] == '2' ? "'" . $sub_start_date . "'" : 'NULL') . ",
-            sub_end_date        = " . ($_POST["can_subscribe"] == '2' ? "'" . $sub_end_date . "'" : 'NULL') . ",
+            allow_overbooking   = '" . (isset($data_params["allow_overbooking"]) ? 1 : 0) . "',
+            can_subscribe       = '" . (int)$data_params["can_subscribe"] . "',
+            sub_start_date      = " . ($data_params["can_subscribe"] == '2' ? "'" . $sub_start_date . "'" : 'NULL') . ",
+            sub_end_date        = " . ($data_params["can_subscribe"] == '2' ? "'" . $sub_end_date . "'" : 'NULL') . ",
 
-            advance             = '" . $_POST['advance'] . "',
-            show_result         = '" . (isset($_POST["show_result"]) ? 1 : 0) . "',
+            advance             = '" . $data_params['advance'] . "',
+            show_result         = '" . (isset($data_params["show_result"]) ? 1 : 0) . "',
 
-            use_logo_in_courselist = '" . (isset($_POST['use_logo_in_courselist']) ? '1' : '0') . "',
+            use_logo_in_courselist = '" . (isset($data_params['use_logo_in_courselist']) ? '1' : '0') . "',
 
-            auto_unsubscribe = '" . (int)$_POST['auto_unsubscribe'] . "',
-            unsubscribe_date_limit = " . (isset($_POST['use_unsubscribe_date_limit']) && $_POST['use_unsubscribe_date_limit'] > 0 ? "'" . Format::dateDb($_POST['unsubscribe_date_limit'], 'date') . "'" : 'NULL') . "";
+            auto_unsubscribe = '" . (int)$data_params['auto_unsubscribe'] . "',
+            unsubscribe_date_limit = " . (isset($data_params['use_unsubscribe_date_limit']) && $data_params['use_unsubscribe_date_limit'] > 0 ? "'" . Format::dateDb($data_params['unsubscribe_date_limit'], 'date') . "'" : 'NULL') . "";
 
-        if (isset($_POST['random_course_autoregistration_code'])) {
+        if (isset($data_params['random_course_autoregistration_code'])) {
             $control = 1;
             $str = '';
 
@@ -607,8 +612,9 @@ Class CourseAlms extends Model
             }
 
             $query_course .= ", autoregistration_code = '" . $str . "'";
-        } else
-            $query_course .= ", autoregistration_code = '" . $_POST['course_autoregistration_code'] . "'";
+        } else {
+            $query_course .= ", autoregistration_code = '" . $data_params['course_autoregistration_code'] . "'";
+        }
 
         if (!sql_query($query_course)) {
             // course save failed, delete uploaded file
@@ -626,16 +632,14 @@ Class CourseAlms extends Model
 
         $event = new \appLms\Events\Lms\CourseCreateAndUpdateEvent($id_course);
 
-        $postData = $_POST;
-
-        $event->setPostData($postData);
+        $event->setPostData($data_params);
 
         \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseCreateAndUpdateEvent::EVENT_NAME_INS, $event);
 
         require_once(_lms_ . '/admin/models/LabelAlms.php');
         $label_model = new LabelAlms();
 
-        $label = Get::req('label', DOTY_INT, 0);
+        $label = $data_params['label'];
 
         $label_model->associateLabelToCourse($label, $id_course);
 
@@ -651,7 +655,7 @@ Class CourseAlms extends Model
             require_once($GLOBALS['where_scs'] . '/lib/lib.room.php');
 
             $rules = array(
-                'room_name' => $_POST['course_name'],
+                'room_name' => $data_params['course_name'],
                 'room_type' => 'course',
                 'id_source' => $id_course);
             $re = insertRoom($rules);
@@ -678,7 +682,7 @@ Class CourseAlms extends Model
             $extra_field->storeFieldsForObj($id_course);
 
             //AUTO SUBSCRIPTION
-            if (isset($_POST['auto_subscription']) && $_POST['auto_subscription'] == 1) {
+            if (isset($data_params['auto_subscription']) && $data_params['auto_subscription'] == 1) {
                 $userId = Docebo::user()->getIdSt();
 
                 if (!$this->autoUserRegister($userId, $id_course)) {
@@ -691,8 +695,18 @@ Class CourseAlms extends Model
         return $res;
     }
 
-    public function upCourse()
-    {
+    public function upCourse($id_course = null, $data_params = null)
+    {        
+        if(is_null($data_params)) {
+            // Backward compatibility.
+            $data_params = $_POST;
+        }
+
+        if(is_null($id_course)) {
+            // Backward compatibility.
+            $id_course = Get::req('id_course', DOTY_INT, 0);
+        }
+
         require_once(_base_ . '/lib/lib.upload.php');
         require_once(_base_ . '/lib/lib.multimedia.php');
         require_once(_lms_ . '/lib/lib.course.php');
@@ -703,29 +717,27 @@ Class CourseAlms extends Model
 
         $acl_man =& Docebo::user()->getAclManager();
 
-        $id_course = Get::req('id_course', DOTY_INT, 0);
-
         require_once(_lms_ . '/admin/models/LabelAlms.php');
         $label_model = new LabelAlms();
 
-        $label = Get::req('label', DOTY_INT, 0);
-
+        $label = $data_params['label'];
+        
         $label_model->associateLabelToCourse($label, $id_course);
 
         // calc quota limit
-        $quota = $_POST['course_quota'];
-        if (isset($_POST['inherit_quota'])) {
+        $quota = $data_params['course_quota'];
+        if (isset($data_params['inherit_quota'])) {
             $quota = Get::sett('course_quota');
-            $_POST['course_quota'] = COURSE_QUOTA_INHERIT;
+            $data_params['course_quota'] = COURSE_QUOTA_INHERIT;
         }
         $quota = $quota * 1024 * 1024;
 
         $course_man = new DoceboCourse($id_course);
         $used = $course_man->getUsedSpace();
 
-        if ($_POST['course_name'] == '') $_POST['course_name'] = Lang::t('_NO_NAME', 'course', 'lms');
+        if($data_params['course_name'] == '') $data_params['course_name'] = Lang::t('_NO_NAME', 'course', 'lms');
 
-        $boxDescription = Get::pReq('course_box_descr', DOTY_STRING, "");
+        $boxDescription = $data_params['course_box_descr'];
 
         if (strlen($boxDescription) > self::boxDescrMaxLimit) {
             $res['err'] = '_err_course_box_descr_max_limit';
@@ -735,14 +747,14 @@ Class CourseAlms extends Model
 
         // restriction on course status ------------------------------------------
         $user_status = 0;
-        if (isset($_POST['user_status']))
-            while (list($status) = each($_POST['user_status']))
+        if(isset($data_params['user_status']))
+            while(list($status) = each($data_params['user_status']))
                 $user_status |= (1 << $status);
 
         // level that will be showed in the course --------------------------------
         $show_level = 0;
-        if (isset($_POST['course_show_level']))
-            while (list($lv) = each($_POST['course_show_level']))
+        if(isset($data_params['course_show_level']))
+            while(list($lv) = each($data_params['course_show_level']))
                 $show_level |= (1 << $lv);
 
         // save the file uploaded -------------------------------------------------
@@ -754,15 +766,15 @@ Class CourseAlms extends Model
         $path = '/appLms/' . Get::sett('pathcourse') . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
         $old_file_size = 0;
-        if ((is_array($_FILES) && !empty($_FILES)) || (is_array($_POST["file_to_del"])))
+        if ((is_array($_FILES) && !empty($_FILES)) || (is_array($data_params["file_to_del"])))
             sl_open_fileoperations();
 
         // load user material ---------------------------------------------------------------------------
         $arr_file = $this->manageCourseFile('course_user_material',
-            $_POST["old_course_user_material"],
+            $data_params["old_course_user_material"],
             $path,
             ($quota != 0 ? $quota - $used : false),
-            isset($_POST['file_to_del']['course_user_material']));
+            isset($data_params['file_to_del']['course_user_material']));
         $error |= $arr_file['error'];
         $quota_exceeded |= $arr_file['quota_exceeded'];
         $file_material = $arr_file['filename'];
@@ -771,10 +783,10 @@ Class CourseAlms extends Model
 
         // course otheruser material -------------------------------------------------------------------
         $arr_file = $this->manageCourseFile('course_otheruser_material',
-            $_POST["old_course_otheruser_material"],
+            $data_params["old_course_otheruser_material"],
             $path,
             ($quota != 0 ? $quota - $used : false),
-            isset($_POST['file_to_del']['course_otheruser_material']));
+            isset($data_params['file_to_del']['course_otheruser_material']));
         $error |= $arr_file['error'];
         $quota_exceeded |= $arr_file['quota_exceeded'];
         $file_othermaterial = $arr_file['filename'];
@@ -783,10 +795,10 @@ Class CourseAlms extends Model
 
         // course demo-----------------------------------------------------------------------------------
         $arr_file = $this->manageCourseFile('course_demo',
-            $_POST["old_course_demo"],
+            $data_params["old_course_demo"],
             $path,
             ($quota != 0 ? $quota - $used : false),
-            isset($_POST['file_to_del']['course_demo']));
+            isset($data_params['file_to_del']['course_demo']) );
         $error |= $arr_file['error'];
         $quota_exceeded |= $arr_file['quota_exceeded'];
         $file_demo = $arr_file['filename'];
@@ -795,10 +807,10 @@ Class CourseAlms extends Model
 
         // course sponsor---------------------------------------------------------------------------------
         $arr_file = $this->manageCourseFile('course_sponsor_logo',
-            $_POST["old_course_sponsor_logo"],
+            $data_params["old_course_sponsor_logo"],
             $path,
             ($quota != 0 ? $quota - $used : false),
-            isset($_POST['file_to_del']['course_sponsor_logo']),
+            isset($data_params['file_to_del']['course_sponsor_logo']),
             true);
         $error |= $arr_file['error'];
         $quota_exceeded |= $arr_file['quota_exceeded'];
@@ -808,10 +820,10 @@ Class CourseAlms extends Model
 
         // course logo-----------------------------------------------------------------------------------
         $arr_file = $this->manageCourseFile('course_logo',
-            $_POST["old_course_logo"],
+            $data_params["old_course_logo"],
             $path,
             ($quota != 0 ? $quota - $used : false),
-            isset($_POST['file_to_del']['course_logo']),
+            isset($data_params['file_to_del']['course_logo']),
             true,
             640,
             170);
@@ -824,48 +836,48 @@ Class CourseAlms extends Model
         // ----------------------------------------------------------------------------------------------
         sl_close_fileoperations();
 
-        $date_begin = Format::dateDb($_POST['course_date_begin'], "date");
-        $date_end = Format::dateDb($_POST['course_date_end'], "date");
+        $date_begin = Format::dateDb($data_params['course_date_begin'], "date");
+        $date_end = Format::dateDb($data_params['course_date_end'], "date");
 
-        if ($_POST["can_subscribe"] == "2") {
-            $sub_start_date = Format::dateDb($_POST["sub_start_date"], "date");
-            $sub_end_date = Format::dateDb($_POST["sub_end_date"], "date");
+        if ($data_params["can_subscribe"] == "2") {
+            $sub_start_date = Format::dateDb($data_params["sub_start_date"], "date");
+            $sub_end_date = Format::dateDb($data_params["sub_end_date"], "date");
         }
 
         $hour_begin = '-1';
         $hour_end = '-1';
-        if ($_POST['hour_begin']['hour'] != '-1') {
-            $hour_begin = (strlen($_POST['hour_begin']['hour']) == 1 ? '0' . $_POST['hour_begin']['hour'] : $_POST['hour_begin']['hour']);
-            if ($_POST['hour_begin']['quarter'] == '-1')
+        if ($data_params['hour_begin']['hour'] != '-1') {
+            $hour_begin = ( strlen($data_params['hour_begin']['hour']) == 1 ? '0' . $data_params['hour_begin']['hour'] : $data_params['hour_begin']['hour'] );
+            if ($data_params['hour_begin']['quarter'] == '-1')
                 $hour_begin .= ':00';
             else
-                $hour_begin .= ':' . $_POST['hour_begin']['quarter'];
+                $hour_begin .= ':' . $data_params['hour_begin']['quarter'];
         }
 
-        if ($_POST['hour_end']['hour'] != '-1') {
-            $hour_end = (strlen($_POST['hour_end']['hour']) == 1 ? '0' . $_POST['hour_end']['hour'] : $_POST['hour_end']['hour']);
-            if ($_POST['hour_end']['quarter'] == '-1')
+        if ($data_params['hour_end']['hour'] != '-1') {
+            $hour_end = (strlen($data_params['hour_end']['hour']) == 1 ? '0' . $data_params['hour_end']['hour'] : $data_params['hour_end']['hour'] );
+            if ($data_params['hour_end']['quarter'] == '-1')
                 $hour_end .= ':00';
             else
-                $hour_end .= ':' . $_POST['hour_end']['quarter'];
+                $hour_end .= ':' . $data_params['hour_end']['quarter'];
         }
 
         // update database ----------------------------------------------------
         $query_course = "
         UPDATE " . $GLOBALS['prefix_lms'] . "_course
-        SET code                = '" . $_POST['course_code'] . "',
-            name                = '" . $_POST['course_name'] . "',
-            idCategory          = '" . (int)$_POST['idCategory'] . "',
-            description         = '" . $_POST['course_descr'] . "',
-            box_description         = '" . $_POST['course_box_descr'] . "',
-            lang_code           = '" . $array_lang[$_POST['course_lang']] . "',
-            status              = '" . (int)$_POST['course_status'] . "',
+        SET code                = '" . $data_params['course_code'] . "',
+            name                = '" . $data_params['course_name'] . "',
+            idCategory          = '" . (int)$data_params['idCategory'] . "',
+            description         = '" . $data_params['course_descr'] . "',
+            box_description         = '" . $data_params['course_box_descr'] . "',
+            lang_code           = '" . $array_lang[$data_params['course_lang']] . "',
+            status              = '" . (int)$data_params['course_status'] . "',
             level_show_user     = '" . $show_level . "',
-            subscribe_method    = '" . (int)$_POST['course_subs'] . "',
-            idCategory          = '" . (int)$_POST['idCategory'] . "',
-            credits             = '" . (int)$_POST['credits'] . "',
+            subscribe_method    = '" . (int)$data_params['course_subs'] . "',
+            idCategory          = '" . (int)$data_params['idCategory'] . "',
+            credits             = '" . (int)$data_params['credits'] . "',
 
-            linkSponsor         = '" . $_POST['course_sponsor_link'] . "',
+            linkSponsor         = '" . $data_params['course_sponsor_link'] . "',
 
             imgSponsor          = '" . $file_sponsor . "',
             img_course          = '" . $file_logo . "',
@@ -873,55 +885,55 @@ Class CourseAlms extends Model
             img_othermaterial   = '" . $file_othermaterial . "',
             course_demo         = '" . $file_demo . "',
 
-            mediumTime          = '" . $_POST['course_medium_time'] . "',
-            permCloseLO         = '" . $_POST['course_em'] . "',
+            mediumTime          = '" . $data_params['course_medium_time'] . "',
+            permCloseLO         = '" . $data_params['course_em'] . "',
             userStatusOp        = '" . $user_status . "',
-            difficult           = '" . $_POST['course_difficult'] . "',
+            difficult           = '" . $data_params['course_difficult'] . "',
 
-            show_progress       = '" . (isset($_POST['course_progress']) ? 1 : 0) . "',
-            show_time           = '" . (isset($_POST['course_time']) ? 1 : 0) . "',
+            show_progress       = '" . (isset($data_params['course_progress']) ? 1 : 0) . "',
+            show_time           = '" . (isset($data_params['course_time']) ? 1 : 0) . "',
 
-            show_who_online     = '" . $_POST['show_who_online'] . "',
+            show_who_online     = '" . $data_params['show_who_online'] . "',
 
-            show_extra_info     = '" . (isset($_POST['course_advanced']) ? 1 : 0) . "',
-            show_rules          = '" . (int)$_POST['course_show_rules'] . "',
+            show_extra_info     = '" . (isset($data_params['course_advanced']) ? 1 : 0) . "',
+            show_rules          = '" . (int)$data_params['course_show_rules'] . "',
 
-            direct_play         = '" . (isset($_POST['direct_play']) ? 1 : 0) . "',
+            direct_play         = '" . (isset($data_params['direct_play']) ? 1 : 0) . "',
 
             date_begin          = '" . $date_begin . "',
             date_end            = '" . $date_end . "',
             hour_begin          = '" . $hour_begin . "',
             hour_end            = '" . $hour_end . "',
 
-            valid_time          = '" . (int)$_POST['course_day_of'] . "',
+            valid_time          = '" . (int)$data_params['course_day_of'] . "',
 
-            min_num_subscribe   = '" . (int)$_POST['min_num_subscribe'] . "',
-            max_num_subscribe   = '" . (int)$_POST['max_num_subscribe'] . "',
+            min_num_subscribe   = '" . (int)$data_params['min_num_subscribe'] . "',
+            max_num_subscribe   = '" . (int)$data_params['max_num_subscribe'] . "',
 
-            course_type         = '" . $_POST['course_type'] . "',
-            point_to_all        = '" . (isset($_POST['point_to_all']) ? $_POST['point_to_all'] : 0) . "',
-            course_edition      = '" . (isset($_POST['course_edition']) ? $_POST['course_edition'] : 0) . "',
-            selling             = '" . (isset($_POST['course_sell']) ? 1 : 0) . "',
-            prize               = '" . (isset($_POST['course_prize']) ? $_POST['course_prize'] : 0) . "',
-            policy_point        = '" . $_POST['policy_point'] . "',
+            course_type         = '" . $data_params['course_type'] . "',
+            point_to_all        = '" . (isset($data_params['point_to_all']) ? $data_params['point_to_all'] : 0) . "',
+            course_edition      = '" . (isset($data_params['course_edition']) ? $data_params['course_edition'] : 0) . "',
+            selling             = '" . (isset($data_params['course_sell']) ? 1 : 0) . "',
+            prize               = '" . (isset($data_params['course_prize']) ? $data_params['course_prize'] : 0) . "',
+            policy_point        = '" . $data_params['policy_point'] . "',
 
-            course_quota        = '" . $_POST['course_quota'] . "',
+            course_quota        = '" . $data_params['course_quota'] . "',
 
-            allow_overbooking   = '" . (isset($_POST["allow_overbooking"]) ? 1 : 0) . "',
-            can_subscribe       = '" . (int)$_POST["can_subscribe"] . "',
-            sub_start_date      = " . ($_POST["can_subscribe"] == "2" ? "'" . $sub_start_date . "'" : 'NULL') . ",
-            sub_end_date        = " . ($_POST["can_subscribe"] == "2" ? "'" . $sub_end_date . "'" : 'NULL') . ",
+            allow_overbooking   = '" . (isset($data_params["allow_overbooking"]) ? 1 : 0) . "',
+            can_subscribe       = '" . (int)$data_params["can_subscribe"] . "',
+            sub_start_date      = " . ($data_params["can_subscribe"] == "2" ? "'" . $sub_start_date . "'" : 'NULL') . ",
+            sub_end_date        = " . ($data_params["can_subscribe"] == "2" ? "'" . $sub_end_date . "'" : 'NULL') . ",
 
-            advance             = '" . $_POST['advance'] . "',
-            show_result         = '" . (isset($_POST['show_result']) ? 1 : 0) . "',
+            advance             = '" . $data_params['advance'] . "',
+            show_result         = '" . (isset($data_params['show_result']) ? 1 : 0) . "',
 
 
-            use_logo_in_courselist = '" . (isset($_POST['use_logo_in_courselist']) ? '1' : '0') . "',
+            use_logo_in_courselist = '" . (isset($data_params['use_logo_in_courselist']) ? '1' : '0') . "',
 
-            auto_unsubscribe = '" . (int)$_POST['auto_unsubscribe'] . "',
-            unsubscribe_date_limit = " . (isset($_POST['use_unsubscribe_date_limit']) && $_POST['use_unsubscribe_date_limit'] > 0 ? "'" . Format::dateDb($_POST['unsubscribe_date_limit'], 'date') . "'" : 'NULL') . "";
+            auto_unsubscribe = '" . (int)$data_params['auto_unsubscribe'] . "',
+            unsubscribe_date_limit = " . (isset($data_params['use_unsubscribe_date_limit']) && $data_params['use_unsubscribe_date_limit'] > 0 ? "'" . Format::dateDb($data_params['unsubscribe_date_limit'], 'date') . "'" : 'NULL') . "";
 
-        if (isset($_POST['random_course_autoregistration_code'])) {
+        if (isset($data_params['random_course_autoregistration_code'])) {
             $control = 1;
             $str = '';
 
@@ -945,8 +957,9 @@ Class CourseAlms extends Model
             }
 
             $query_course .= ", autoregistration_code = '" . $str . "'";
-        } else
-            $query_course .= ", autoregistration_code = '" . $_POST['course_autoregistration_code'] . "'";
+        } else {
+            $query_course .= ", autoregistration_code = '" . $data_params['course_autoregistration_code'] . "'";
+        }
 
         $query_course .= " WHERE idCourse = '" . $id_course . "'";
 
@@ -963,7 +976,7 @@ Class CourseAlms extends Model
         }
 
         // cascade modify on all the edition of the course
-        if (isset($_POST['cascade_on_ed']) && $id_course > 0) {
+        if (isset($data_params['cascade_on_ed']) && $id_course > 0) {
 
             $cinfo = $this->getInfo($id_course);
             $has_editions = $cinfo['course_edition'] > 0;
@@ -971,18 +984,18 @@ Class CourseAlms extends Model
 
             if ($has_editions) {
                 $query_editon = "UPDATE %lms_course_editions "
-                    . " SET code = '" . $_POST['course_code'] . "', "
-                    . " name = '" . $_POST['course_name'] . "', "
-                    . " description  = '" . $_POST['course_descr'] . "' "
+                    . " SET code = '" . $data_params['course_code'] . "', "
+                    . " name = '" . $data_params['course_name'] . "', "
+                    . " description  = '" . $data_params['course_descr'] . "' "
                     . " WHERE id_course = '" . $id_course . "' ";
                 sql_query($query_editon);
             }
 
             if ($has_classrooms) {
                 $query_editon = "UPDATE %lms_course_date "
-                    . " SET code = '" . $_POST['course_code'] . "', "
-                    . " name = '" . $_POST['course_name'] . "', "
-                    . " description  = '" . $_POST['course_descr'] . "' "
+                    . " SET code = '" . $data_params['course_code'] . "', "
+                    . " name = '" . $data_params['course_name'] . "', "
+                    . " description  = '" . $data_params['course_descr'] . "' "
                     . " WHERE id_course = '" . $id_course . "' ";
                 sql_query($query_editon);
             }
@@ -1004,7 +1017,7 @@ Class CourseAlms extends Model
         $userId = Docebo::user()->getIdSt();
         $userSubscribed = $this->isUserSubscribedInCourse($userId, $id_course);
         if (intval($userSubscribed[0]) <= 0) {
-            if (isset($_POST['auto_subscription']) && $_POST['auto_subscription'] == 1) {
+            if (isset($data_params['auto_subscription']) && $data_params['auto_subscription'] == 1) {
 
 
                 if (!$this->autoUserRegister($userId, $id_course)) {
@@ -1015,9 +1028,7 @@ Class CourseAlms extends Model
 
         $event = new \appLms\Events\Lms\CourseCreateAndUpdateEvent($id_course);
 
-        $postData = $_POST;
-
-        $event->setPostData($postData);
+        $event->setPostData($data_params);
 
         \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseCreateAndUpdateEvent::EVENT_NAME_MOD, $event);
 
