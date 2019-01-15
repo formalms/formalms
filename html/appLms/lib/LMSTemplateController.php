@@ -46,11 +46,13 @@ final class LMSTemplateController extends TemplateController {
     }
 
     private function showMenu() {
-        
+        $ma = new Man_MiddleArea();
+
         $this->render('menu', 'main-menu', array(
             'user'          => $this->model->getUser()
           , 'menu'          => $this->model->getMenu()
           , 'currentPage'   => $this->model->getCurrentPage()
+          , 'perm_certificate'   => $ma->currentCanAccessObj('mo_7')
         ));
     }
 
