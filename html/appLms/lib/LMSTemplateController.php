@@ -10,6 +10,7 @@
 
 require_once _lib_ . '/TemplateController.php';
 require_once _lms_ . '/lib/LMSTemplateModel.php';
+require_once(_lms_.'/lib/lib.middlearea.php');
 
 final class LMSTemplateController extends TemplateController {
 
@@ -45,6 +46,32 @@ final class LMSTemplateController extends TemplateController {
         ));
     }
 
+    private function notGeneratedCertificates() {
+      $sql_availables = 'SELECT COUNT(ca.id_certificate) AS count
+        FROM learning_certificate_assign AS ca 
+        INNER JOIN learning_certificate AS ce ON ca.id_certificate = ce.id_certificate 
+        INNER JOIN learning_course AS co ON ca.id_course = co.idCourse 
+        INNER JOIN learning_courseuser AS cu ON ca.id_user = cu.idUser AND ca.id_course = cu.idCourse 
+        INNER JOIN learning_certificate_course AS cc ON ca.id_certificate = cc.id_certificate AND ca.id_course = cc.id_course 
+        WHERE ca.id_user = '.Docebo::user()->getIdSt();
+
+      $availables = sql_query($sql_availables);
+      $availables = (int)sql_fetch_object($availables)->count;
+
+      $sql_generated = 'SELECT COUNT(ca.id_certificate) AS count
+        FROM learning_certificate_assign AS ca 
+        INNER JOIN learning_certificate AS ce ON ca.id_certificate = ce.id_certificate 
+        INNER JOIN learning_course AS co ON ca.id_course = co.idCourse 
+        INNER JOIN learning_courseuser AS cu ON ca.id_user = cu.idUser AND ca.id_course = cu.idCourse 
+        INNER JOIN learning_certificate_course AS cc ON ca.id_certificate = cc.id_certificate AND ca.id_course = cc.id_course 
+        WHERE ca.id_user = '.Docebo::user()->getIdSt();
+
+      $generated = sql_query($sql_generated);
+      $generated = (int)sql_fetch_object($generated)->count;
+
+      return $generated - $availables;
+    }
+
     private function showMenu() {
         $ma = new Man_MiddleArea();
 
@@ -53,6 +80,7 @@ final class LMSTemplateController extends TemplateController {
           , 'menu'          => $this->model->getMenu()
           , 'currentPage'   => $this->model->getCurrentPage()
           , 'perm_certificate'   => $ma->currentCanAccessObj('mo_7')
+          , 'notGeneratedCertificates'   => $this->notGeneratedCertificates()
         ));
     }
 

@@ -24,10 +24,11 @@
     {% endif %}
 {% endfor %}
 
-{% if perm_certificate == true %}
+{% if perm_certificate == true and notGeneratedCertificates > 0 %}
     <li class="green_menu">
-        <a href="index.php?r=lms/mycertificate/show&sop=unregistercourse" class="no-border-right no-before" title="{{ translate('_GO_TO_CERTIFICATES', 'menu_over') }}">
-            <span class="glyphicon glyphicon-certificates top-menu__label">{{ translate('_GO_TO_CERTIFICATES', 'menu_over') }}</span>
+        <span class="badge badge-danger">{{ notGeneratedCertificates }}</span>
+        <a href="index.php?r=lms/mycertificate/show&sop=unregistercourse" class="no-border-right no-before" title="{{ translate('_MY_CERTIFICATE', 'menu_over') }}">
+            <span class="glyphicon glyphicon-certificate top-menu__label">{{ translate('_MY_CERTIFICATE', 'menu_over') }}</span>
         </a>
     </li>
 {% endif %}
