@@ -69,6 +69,8 @@ class AuthenticationManager {
         
         // TODO: controllo isAnonymous prima del richiamo della funzione
         // TODO: lingua
+
+        $user = Docebo::user();
         
         require_once(_lms_ . '/lib/lib.track_user.php');
         TrackUser::logoutSessionCourseTrack();
@@ -78,6 +80,9 @@ class AuthenticationManager {
 
         // recreate Anonymous user
         $GLOBALS['current_user'] =& DoceboUser::createDoceboUserFromSession('public_area');
+        
+        $event = new \appCore\Events\Core\User\LoggedOutEvent($user);
+        \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
     }
     
     public function saveUser($user) {

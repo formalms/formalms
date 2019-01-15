@@ -1110,6 +1110,11 @@ Class CourseAlms extends Model
 
         $course_man = new Man_Course();
 
+        $course = new DoceboCourse($id_course);
+        if(!$course->getAllInfo()) {
+            return false;
+        }
+
         //remove course subscribed------------------------------------------
 
         $levels =& $course_man->getCourseIdstGroupLevel($id_course);
@@ -1273,6 +1278,10 @@ Class CourseAlms extends Model
         //--- finally delete course from courses table -----------------------------
         if (!sql_query("DELETE FROM %lms_course WHERE idCourse = '" . $id_course . "'"))
             return false;
+
+        $event = new \appLms\Events\Lms\CourseDeletedEvent($course);
+        \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
+
         return true;
     }
 
