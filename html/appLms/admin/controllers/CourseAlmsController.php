@@ -1291,7 +1291,7 @@ Class CourseAlmsController extends AlmsController
 				$_POST['course_edition'] = 0;
 			}
 
-			$result = $this->model->insCourse();
+			$result = $this->model->insCourse($_POST);
 			$url = 'index.php?r='.$this->base_link_course.'/show';
 			foreach($result as $key => $value)
 				$url .= '&'.$key.'='.$value;
@@ -1328,7 +1328,7 @@ Class CourseAlmsController extends AlmsController
 				$_POST['course_edition'] = 0;
 			}
 			
-			$result = $this->model->upCourse();
+			$result = $this->model->upCourse($id_course, $_POST);
 			$url = 'index.php?r='.$this->base_link_course.'/show';
 			foreach($result as $key => $value)
 				$url .= '&'.$key.'='.$value;

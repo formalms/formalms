@@ -610,7 +610,7 @@ class SettingAdm extends Model
                         'on' => Lang::t('ON'),
                         'off' => Lang::t('OFF')
                     );
-                    echo Form::getDropdown( $lang->def('_'.strtoupper($var_name)),
+                    echo Form::getDropdown( Lang::t('_'.strtoupper($var_name)),
                         $var_name,
                         'option['.$var_name.']',
                         $layout,

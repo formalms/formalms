@@ -304,6 +304,9 @@ class ElearningLmsController extends LmsController
         if ($filter_status !== '' && $filter_status !== 'all') {
             $conditions[] = '(cu.status in (' . $filter_status . ') )';
         }
+        else if ($filter_status == 'all') {
+            $conditions[] = '(c.status <> 3 )';
+        }
 
         // course type: elearning, all, classroom 
         if ($filter_type != 'all') {
