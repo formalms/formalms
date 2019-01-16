@@ -1,51 +1,7 @@
 <?php
 echo getTitleArea(Lang::t('_COURSESTATS', 'menu_course'));
 ?>
-<div class="std_block">
-
-<div class="quick_search_form">
-	<div>
-		<div class="simple_search_box" id="usermanagement_simple_filter_options" style="display: block;">
-			<?php
-				echo '<label for="">'.Lang::t('_FILTER', 'standard').'</label>'
-					.Form::getInputDropdown(
-					'dropdown',
-					'filter_selection',
-					'filter_selection',
-					array(
-						0 => Lang::t('_ALL', 'standard'),
-						1 => Lang::t('_USER_STATUS_SUBS', 'standard'),
-						2 => Lang::t('_USER_STATUS_BEGIN', 'standard'),
-						3 => Lang::t('_USER_STATUS_END', 'standard')
-					),
-					(int)$filter_selection,
-					''
-				);
-				echo '&nbsp;&nbsp;'; //some space between status filter and text filter
-				echo Form::getInputTextfield("search_t", "filter_text", "filter_text", $filter_text, '', 255, '' );
-				echo Form::getButton("filter_set", "filter_set", Lang::t('_SEARCH', 'standard'), "search_b");
-				echo Form::getButton("filter_reset", "filter_reset", Lang::t('_RESET', 'standard'), "reset_b");
-			?>
-		</div>
-		<a id="advanced_search" class="advanced_search" href="javascript:;"><?php echo Lang::t("_ADVANCED_SEARCH", 'standard'); ?></a>
-		<div id="advanced_search_options" class="advanced_search_options" style="display: <?php echo $is_active_advanced_filter ? 'block' : 'none'; ?>">
-			<?php
-				//filter inputs
-
-				$orgchart_after = '<br />'.Form::getInputCheckbox('filter_descendants', 'filter_descendants', 1, $filter_descendants ? true : false, "")
-					.'&nbsp;<label for="filter_descendants">'.Lang::t('_ORG_CHART_INHERIT', 'organization_chart').'</label>';
-				echo Form::getDropdown(Lang::t('_DIRECTORY_MEMBERTYPETREE', 'admin_directory'), 'filter_orgchart', 'filter_orgchart', $orgchart_list, (int)$filter_orgchart, $orgchart_after);
-				echo Form::getDropdown(Lang::t('_GROUPS', 'standard'), 'filter_groups', 'filter_groups', $groups_list, (int)$filter_groups);
-
-				//buttons
-				echo Form::openButtonSpace();
-				echo Form::getButton('set_advanced_filter', false, Lang::t('_SEARCH', 'standard'));
-				echo Form::getButton('reset_advanced_filter', false, Lang::t('_UNDO', 'standard'));
-				echo Form::closeButtonSpace();
-			?>
-		</div>
-	</div>
-</div>
+<div class="std_block" style="    overflow-x: auto;">
 <?php
 
 $columns = array(
@@ -56,7 +12,7 @@ $columns = array(
 );
 
 foreach ($lo_list as $lo) {
-	$icon = '('.$lo->type.')';//'<img alt="'.$lo->type.'" title="'.$lo->type.'" src="'.getPathImage().'lobject/'.$lo->type.'.gif" />';
+	$icon = '('.$lo->type.')';
 	$link = '';
 	switch ($lo->type) {
 		case "poll": $link = '<a title="" href="index.php?r=coursestats/show_object&id_lo='.(int)$lo->id.'">'.$lo->title.'</a>'; break;
@@ -72,75 +28,60 @@ foreach ($lo_list as $lo) {
 	$fields[] = 'lo_'.$lo->id;
 }
 
-$rel_actions = '<a href="index.php?r=coursestats/export_csv" class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'">'
-				.'<span>'.Lang::t('_EXPORT_CSV', 'report').'</span></a>';
-$rel_actions .= '<a href="index.php?r=coursestats/export_csv3" class="ico-wt-sprite subs_csv" title="Esporta report  dettagliato come CSV "><span>Esporta report  dettagliato come CSV</span></a>';
-$rel_actions .= '<a href="index.php?r=coursestats/export_Xls"  class="ico-wt-sprite subs_xls" title="Esporta report  dettagliato come XLS "><span>Esporta report  dettagliato come XLS</span></a>';
+$rel_actions = '
+	<a href="index.php?r=coursestats/export_csv" class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'">
+		<span>'.Lang::t('_EXPORT_CSV', 'report').'</span>
+	</a>
+	<a href="index.php?r=coursestats/export_csv3" class="ico-wt-sprite subs_csv" title="Esporta report dettagliato come CSV ">
+		<span>Esporta report  dettagliato come CSV</span>
+	</a>
+	<a href="index.php?r=coursestats/export_Xls" class="ico-wt-sprite subs_xls" title="Esporta report dettagliato come XLS">
+		<span>Esporta report dettagliato come XLS</span>
+	</a>';?>
 
+  <br><?
+  echo $rel_actions;?>
+  <br><br>
 
-if( checkPerm('view_all', true, 'coursestats') == false ) {
-    // se amministratore non metto paginazione
-    $params = array(
-	'id' => 'coursestats_table',
-	'ajaxUrl' => 'ajax.server.php?r=coursestats/gettabledata',
-	'sort' => 'userid',
-	'columns' => $columns,
-	'fields' => $fields,
-	'use_paginator' => false,
-	'generateRequest' => 'CourseStats.requestBuilder',
-	'rel_actions' => $rel_actions,
-	'events' => array(
-		'initEvent' => 'CourseStats.initEvent'
-	),
-	'scroll_x' => "100%"
-    );
-    
-    $view_all_perm = 0;
-    
-} else {
-    $params = array(
-	'id' => 'coursestats_table',
-	'ajaxUrl' => 'ajax.server.php?r=coursestats/gettabledata',
-	'sort' => 'userid',
-	'columns' => $columns,
-	'fields' => $fields,
-	'generateRequest' => 'CourseStats.requestBuilder',
-	'rel_actions' => $rel_actions,
-	'events' => array(
-		'initEvent' => 'CourseStats.initEvent'
-	),
-	'scroll_x' => "100%"
-    );
-    
-    $view_all_perm = 1;
-    
-}
-
-$this->widget('table', $params);
-
-?>
+	<table style="width:100%" class="display" id="coursestats">
+    <thead>
+      <tr><?php
+        foreach ($columns as $column) {?>
+          <th scope="col"><b><?php echo $column['label'];?></b></th><?php
+        }?>
+      </tr>
+    </thead>
+  </table>
 </div>
 
-<script src="<?php echo Get::rel_path('lms').'/views/coursestats/coursestats.js'; ?>"></script>
+<script>
+$(function() {
+	var tableId = '#coursestats';
 
-<script type="text/javascript">
-    YAHOO.util.Event.onDOMReady(function() {
-        CourseStats.init({
-            langs: {
-                _LO_NOT_STARTED: "<?php echo Lang::t('_NOT_STARTED', 'standard'); ?>",
-                _COMPLETED: "<?php echo Lang::t('_COMPLETED', 'standard'); ?>",
-                _PERCENTAGE: "<?php echo Lang::t('_PERCENTAGE', 'standard'); ?>"
-            },
-            idCourse: <?php echo (int)$id_course; ?>,
-            filterText: "<?php echo $filter_text; ?>",
-            filterSelection: <?php echo (int)$filter_selection; ?>,
-            filterOrgChart: <?php echo (int)$filter_orgchart; ?>,
-            filterGroups: <?php echo (int)$filter_groups; ?>,
-            filterDescendants: <?php echo $filter_descendants ? 'true' : 'false'; ?>,
-            countLOs: <?php echo count($lo_list); ?>,
-            footerData: [<?php echo $lo_totals_js; ?>],
-            statusList: <?php echo $status_list; ?>,
-            view_all: <?php echo $view_all_perm; ?>
+	var tableFields =	[
+		{ name: 'status', field: 'LO_status', date: false, position: 5 },
+    { name: 'first_access', field: 'first_access', date: true, position: 6 },
+    { name: 'last_access', field: 'last_access', date: true, position: 7 },
+  ];
+
+  $(tableId).FormaTable({
+    processing: true,
+    serverSide: true,
+    order: [[ 1, "desc" ]],
+    ajax: {
+      url: 'ajax.server.php?r=coursestats/gettabledata',
+      type: "GET",
+      complete: function(json) {
+        var tr = $(tableId).find('> tbody > tr');
+
+        $.each(tableFields, function(i, item) {
+          $(tr).find('> td:nth-child(' + item.position + ')').attr('data-field', item.name);
         });
-    });
-</script>
+      },
+    },
+  });
+});
+</script><?php
+
+Util::get_js(Get::rel_path('lib') . '/lib.formatable.js', true, true);
+Util::get_js(Get::rel_path('lms') . '/views/coursestats/coursestats.js', true, true);?>

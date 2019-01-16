@@ -24,7 +24,7 @@ class CoursestatsLmsController extends LmsController {
 		$this->model = new CoursestatsLms();
 		$this->json = new Services_JSON();
 		$this->permissions = array(
-			'view' => true,//checkPerm('view', true, 'coursestats')
+			'view' => true,
 			'mod' => true
 		);
 	}
@@ -188,12 +188,6 @@ class CoursestatsLmsController extends LmsController {
 			'descendants' => $filter_descendants
 		);
                 
-        // se amministratore nessuna paginazione
-        if( !$view_all_perm ) {
-            $results = 9999999999;
-            $rowsPerPage = 9999999999;
-        }
-                
 		//get total from database and validate the results count
 		$total = $this->model->getCourseStatsTotal($id_course, $filter);
 		if ($startIndex >= $total) {
@@ -211,7 +205,13 @@ class CoursestatsLmsController extends LmsController {
 			'dir' => $dir
 		);
 
-		$list = $this->model->getCourseStatsList($pagination, $id_course, $filter);
+		if ($search = $_REQUEST['search']) {
+			$pagination['search'] = $search['value'];
+		} else {
+			$pagination['search'] = null;
+		}
+
+		$list = $this->model->getCourseStatsList($pagination, $id_course);
 
 		require_once(_lms_.'/lib/lib.subscribe.php');
 		$cman = new CourseSubscribe_Manager();
@@ -244,17 +244,15 @@ class CoursestatsLmsController extends LmsController {
 			foreach ($list as $record) {
 				$_userid = $acl_man->relativeId($record->userid);
 				$row = array(
-					'id' => (int)$record->idst,
-					'userid' => Layout::highlight($_userid, $filter_text),
-					'firstname' => Layout::highlight($record->firstname, $filter_text),
-					'lastname' => Layout::highlight($record->lastname, $filter_text),
+					// 'id' => (int)$record->idst,
+					'userid' => '<a href="./index.php?r=coursestats/show_user&id_user='.(int)$record->idst.'">'.Layout::highlight($_userid, $filter_text).'</a>',
+					'firstname' => Layout::highlight($record->lastname, $filter_text).' '.Layout::highlight($record->firstname, $filter_text),
+					'level' => isset($arr_level[$record->level]) ? $arr_level[$record->level] : "",
 					'status' => isset($arr_status[$record->status]) ? $arr_status[$record->status] : "",
-					'status_id' => $record->status,
-					'level' => isset($arr_level[$record->level]) ? $arr_level[$record->level] : ""
 				);
 
 				//get LO data
-				$completed = 0;
+				$completed = 'Non iniziato';
 				foreach ($lo_list as $idOrg => $lo) {
 					if (isset($record->lo_status[$idOrg])) {
 						if ($record->lo_status[$idOrg] === 'completed') {
@@ -268,26 +266,21 @@ class CoursestatsLmsController extends LmsController {
 						}
 						if ($record->lo_status[$idOrg] == 'completed' || $record->lo_status[$idOrg] == 'passed') $completed++;
 					} else {
-						$row['lo_'.$idOrg] = "";
+						$row['lo_'.$idOrg] = "Non iniziato";
 					}
 				}
 				$row['completed'] = $completed;
 
-				$records[] = $row;
+				$records[] = array_values($row);
 			}
 		}
 
-		$output = array(
-			'startIndex' => $startIndex,
-			'recordsReturned' => count($records),
-			'sort' => $sort,
-			'dir' => $dir,
-			'totalRecords' => $total,
-			'pageSize' => $rowsPerPage,
-			'records' => $records
-		);
-
-		echo $this->json->encode($output);
+		echo $this->json->encode([
+			'data' => $records,
+			'recordsTotal' => count($records),
+			'recordsFiltered' => $total,
+		]);
+		exit;
 	}
 
 	public function show_userTask() {
@@ -358,16 +351,25 @@ class CoursestatsLmsController extends LmsController {
 		if (is_array($list)) {
 			$lo_list = $this->model->getCourseLOs($id_course);
 			foreach ($list as $record) {
+				$path = str_replace('/root/', '', $record->path);
+				$pathArray = explode('/', $path);
+				foreach ($pathArray as &$p) {
+					$p *= 1;
+				}
+				$path = implode('/', $pathArray);
+
 				$row = array(
-					$record->objectType ? '' : '<b>+</b>', // $record->path,
-					$record->title,
-					$record->objectType,
-					$record->status != "" ? $record->status : 'not attempted',
-					Format::date($record->first_access, 'datetime'),
-					Format::date($record->last_access, 'datetime'),
-					$record->history,
-					$record->totaltime,
-					$record->score
+					'id' => $record->idOrg,
+					'path' => $path,
+					'LO_name' => $record->title,
+					'LO_type' => $record->objectType ?: 'folder',
+					'LO_status' => $record->status,
+					'first_access' => date("d-m-Y", strtotime($record->first_access)),
+					'last_access' => date("d-m-Y", strtotime($record->last_access)),
+					'history' => $record->history,
+					'totaltime' => $record->totaltime,
+					'score' => $record->score,
+					'edit' => $record->edit,
 				);
 
 				$records[] = $row;
@@ -375,7 +377,7 @@ class CoursestatsLmsController extends LmsController {
 		}
 
 		echo $this->json->encode([
-			'data' => array_values($records),
+			'data' => ($records),
 			'recordsTotal' => count($records),
 			'recordsFiltered' => $count,
 		]);
@@ -419,7 +421,8 @@ class CoursestatsLmsController extends LmsController {
 					'last_access' => Format::date($record->last_access, 'datetime'),
 					'history' => $record->history,
 					'totaltime' => $record->totaltime,
-					'score'=>$record->score
+					'score' => $record->score,
+					'edit' => $record->edit,
 				);
 
 				foreach ($row as $row_data) {
@@ -484,7 +487,7 @@ class CoursestatsLmsController extends LmsController {
 		$info->LO_name = $lo_info->title;
 		$info->LO_type = $lo_info->objectType;
 		$info->status = $tracked ? Lang::t($track_info->status, "standard") : "not attempted";
-		$info->score = '-';//$track_info->score.' / '.$track_info->max_score;
+		$info->score = '-';
 
 		$info->first_access = $tracked ? Format::date($track_info->first_access, 'datetime') : $never;
 		$info->last_access = $tracked ? Format::date($track_info->last_access, 'datetime') : $never;
@@ -529,8 +532,8 @@ class CoursestatsLmsController extends LmsController {
 
 		$info->LO_name = $lo_info->title;
 		$info->LO_type = $lo_info->objectType;
-		$info->status = '';//$track_info->status;
-		$info->score = '';//$track_info->score.' / '.$track_info->max_score;
+		$info->status = '';
+		$info->score = '';
 
 		$info->first_access = '';
 		$info->last_access = '';
@@ -621,6 +624,112 @@ class CoursestatsLmsController extends LmsController {
 				$output['success'] = false;
 				$output['message'] = $this->_getErrorMessage("invalid column");
 			}
+		}
+		echo $this->json->encode($output);
+	}
+
+	public function user_unique_inline_editorTask() {
+		if (!$this->permissions['mod']) {
+			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
+			echo $this->json->encode($output);
+			return;
+		}
+
+		$id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse']>0 ? $_SESSION['idCourse'] : false;
+		if ((int)$id_course <= 0) {
+			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid course'));
+			echo $this->json->encode($output);
+			return;
+		}
+
+		$id_user = Get::req('id_user', DOTY_INT, -1);
+		if ($id_user <= 0) {
+			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid user'));
+			echo $this->json->encode($output);
+			return;
+		}
+
+		$id_lo = Get::req('id_lo', DOTY_INT, -1);
+		if ($id_lo <= 0) {
+			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid lo'));
+			echo $this->json->encode($output);
+			return;
+		}
+
+		$LO_status = Get::req('LO_status', DOTY_MIXED, false);
+		$first_access = Get::req('first_access', DOTY_MIXED, false);
+		$last_access = Get::req('last_access', DOTY_MIXED, false);
+
+        require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
+        require_once(_lms_.'/lib/lib.param.php');
+        
+        $repoDb = new OrgDirDb($id_course);
+        $folder = $repoDb->getFolderById( $id_lo );
+        $id_resource = $folder->otherValues[REPOFIELDIDRESOURCE];
+        $id_param = $folder->otherValues[ORGFIELDIDPARAM];
+        $idReference = getLOParam($id_param, 'idReference');
+        
+        require_once(_lms_.'/class.module/track.object.php');
+        $lo_info = $this->model->getLOInfo($id_lo);
+        
+        switch($lo_info->objectType){
+            case 'faq':
+                require_once(_lms_.'/class.module/track.faq.php');
+                $itemtrack = new Track_Faq(null);
+                break;
+            case 'glossary': 
+                require_once(_lms_.'/class.module/track.glossary.php');
+                $itemtrack = new Track_Glossary(null);
+                break;
+            case 'htmlpage': 
+                require_once(_lms_.'/class.module/track.htmlpage.php');
+                $itemtrack = new Track_Htmlpage(null);
+                break;
+            case 'item': 
+                require_once(_lms_.'/class.module/track.item.php');
+                $itemtrack = new Track_Item(null, $id_user);
+                break;
+            case 'link': 
+                require_once(_lms_.'/class.module/track.link.php');
+                $itemtrack = new Track_Link(null);
+                break;
+            case 'poll': 
+                require_once(_lms_.'/class.module/track.poll.php');
+                $itemtrack = new Track_Poll(null);
+                break;
+            case 'scormorg':
+                require_once(_lms_.'/modules/scorm/scorm_items_track.php');
+                $itemtrack = new Scorm_ItemsTrack(null, $GLOBALS['prefix_lms']);
+                break;
+            case 'test': 
+                require_once(_lms_.'/class.module/track.test.php');
+                $itemtrack = new Track_Test(null);
+                break;
+        }
+        
+        list( $exist, $idTrack ) = $itemtrack->getIdTrack( $idReference, $id_user, $id_resource, TRUE );
+        
+        if( !$exist ){
+            require_once( _lms_ . '/class.module/track.object.php' );
+            $track_lo = new Track_Object( $idTrack );
+            $track_lo->createTrack( $idReference, $idTrack, $id_user, date("Y-m-d H:i:s"), 'not attempted', $lo_info->objectType);
+        }
+
+		$output = array();
+
+		if ($LO_status) {
+			$output['success'] = $this->model->changeLOUserStatus($id_lo, $id_user, $LO_status);
+			$output['LO_status'] = $LO_status;
+		}
+		if ($first_access) {
+			$first_access = date("Y-m-d H:i:s", $first_access);
+			$output['success'] = $this->model->changeLOUserFirstAccess($id_lo, $id_user, $first_access);
+			$output['first_access'] = $first_access;
+		}
+		if ($last_access) {
+			$last_access = date("Y-m-d H:i:s", $last_access);
+			$output['success'] = $this->model->changeLOUserLastAccess($id_lo, $id_user, $last_access);
+			$output['last_access'] = $last_access;
 		}
 		echo $this->json->encode($output);
 	}

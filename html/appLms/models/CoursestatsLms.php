@@ -80,87 +80,46 @@ class CoursestatsLms extends Model {
 	}
 
 
-	public function getCourseStatsList($pagination, $id_course, $filter = false) {
+	public function getCourseStatsList($pagination, $id_course) {
 		if (is_array($pagination)) {
 			$startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
 			$results = (isset($pagination['results']) ? $pagination['results'] : Get::sett('visuItem', 25));
-		}
 
-		$dir = 'ASC';
-		if (is_array($pagination) && isset($pagination['dir'])) {
-			switch (strtolower($pagination['dir'])) {
-				case 'yui-dt-asc': $dir = 'ASC'; break;
-				case 'yui-dt-desc': $dir = 'DESC'; break;
-				case 'asc': $dir = 'ASC'; break;
-				case 'desc': $dir = 'DESC'; break;
-				default: $dir = 'ASC';
+			// Default order
+			$sort = 'u.userid';
+			$dir = 'ASC';
+			if (isset($pagination['order_column'])) {
+				switch ($pagination['order_column']) {
+					case 0: $sort = 'u.userid'; break;
+					case 1: $sort = 'lastname'; break;
+					case 2: $sort = 'level'; break;
+					case 3: $sort = 'status'; break;
+				}
+				if (isset($pagination['order_dir']) && $pagination['order_column'] < 3) {
+					switch ($pagination['order_dir']) {
+						case 'asc': $dir = 'ASC'; break;
+						case 'desc': $dir = 'DESC'; break;
+						default: $dir = 'ASC';
+					}
+				}
 			}
-		}
 
-		$sort = 'u.userid';
-		if (is_array($pagination) && isset($pagination['sort'])) {
-			switch ($pagination['sort']) {
-				case 'fullname': $sort = 'u.lastname '.$dir.', u.firstname'; break;
-				//case 'level': $sort = '?!?'; break;
-				case 'level': $sort = 'cu.level'; break;
-				case 'status': $sort = 'cu.status'; break;
+			$where = '';
+			if (isset($pagination['search']) && $pagination['search'] != "") {
+				$where = " AND (u.userid LIKE '%".$pagination['search']."%' OR u.firstname LIKE '%".$pagination['search']."%' OR u.lastname LIKE '%".$pagination['search']."%') ";
 			}
 		}
 
 		$query = "SELECT u.idst, u.userid, u.firstname, u.lastname, cu.status, cu.level "
 			." FROM ".$this->tables['courseuser']." as cu "
 			." JOIN ".$this->tables['user']." as u "
-			." ON (cu.idUser = u.idst AND cu.idCourse=".(int)$id_course.") ";
-		if (is_array($filter)) {
-			$condition = array();
-
-			if (isset($filter['text']) && $filter['text'] != "") {
-				$conditions[] = " (u.userid LIKE '%".$filter['text']."%' OR u.firstname LIKE '%".$filter['text']."%' OR u.lastname LIKE '%".$filter['text']."%') ";
-			}
-			if (isset($filter['selection']) && $filter['selection']>0) {
-				switch ($filter['selection']) {
-					//begin only
-					case 1: {
-						$conditions[] = " cu.status = 0 ";
-					} break;
-					//itinere only
-					case 2: {
-						$conditions[] = " cu.status = 1 ";
-					} break;
-					//complete only
-					case 3: {
-						$conditions[] = " cu.status = 2 ";
-					} break;
-				}
-			}
-
-			$arr_idst = array();
-			if (isset($filter['orgchart']) && $filter['orgchart']>0) {
-				$umodel = new UsermanagementAdm();
-				$use_desc = (isset($filter['descendants']) && $filter['descendants']);
-				$ulist = $umodel->getFolderUsers($filter['orgchart'], $use_desc);
-				if (!empty($ulist)) $arr_idst = $ulist;
-				unset($ulist);
-			}
-			if (isset($filter['groups']) && $filter['groups']>0) {
-				$gmodel = new GroupmanagementAdm();
-				$ulist = $gmodel->getGroupAllUsers($filter['groups']);
-				if (!empty($ulist))
-					if (!empty($arr_idst)) {
-						$arr_idst = array_merge($arr_idst, $ulist);
-					} else {
-						$arr_idst = $ulist;
-					}
-			}
-			if (!empty($arr_idst)) $conditions[] = " u.idst IN (".implode(",", $arr_idst).") ";
-
-			if (!empty($conditions)) $query .= " WHERE ".implode(" AND ", $conditions)." ";
-		}
-
-		$query .= " ORDER BY ".$sort." ".$dir." ";
+			." ON (cu.idUser = u.idst AND cu.idCourse=".(int)$id_course.") "
+			." WHERE 1=1".$where;
+		
 		if (is_array($pagination)) {
-			$query .= "LIMIT ".$startIndex.", ".$results;
+			$query .= " ORDER BY ".$sort." ".$dir." ";
 		}
+		$query .= "LIMIT ".$startIndex.", ".$results;
 
 		$res = $this->db->query($query);
 
@@ -616,7 +575,8 @@ class CoursestatsLms extends Model {
 		$query = "UPDATE ".$this->tables['commontrack']." SET firstAttempt='".$new_status."' "
 			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
 		$res = $this->db->query($query);
-		if ($res && $this->db->affected_rows($res)>0) {
+
+		if ($res) {
 			$output = true;
 		}
 		return $output;
@@ -629,7 +589,8 @@ class CoursestatsLms extends Model {
 		$query = "UPDATE ".$this->tables['commontrack']." SET dateAttempt='".$new_status."' "
 			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
 		$res = $this->db->query($query);
-		if ($res && $this->db->affected_rows($res)>0) {
+
+		if ($res) {
 			$output = true;
 		}
 		return $output;
