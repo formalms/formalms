@@ -1,4 +1,7 @@
 <style type="text/css">
+  table.dataTable {
+    overflow-x: scroll;
+  }
   #coursestats td:nth-child(1), #coursestats th:nth-child(1) {
     display: none;
   }
@@ -42,7 +45,11 @@
   echo $rel_actions;?>
   <br><br>
 
-  <table style="width:100%" class="display" id="coursestats"></table>
+  <table class="table table-striped table-bordered display" style="width:100%" id="coursestats"></table>
+
+  <br><?
+  echo $rel_actions;?>
+  <br><br>
 <?php
   echo getBackUi($base_url, Lang::t('_BACK', 'standard'));
 ?>
@@ -56,9 +63,9 @@ function editTableInit(tableId) {
     processing: true,
     serverSide: true,
     columns: [
-    <?php foreach($columns as $column) { ?>
-        { data: "<?php echo $column['key'];?>", title: "<?php echo $column['label'];?>" },
-    <?php } ?>
+      <?php foreach($columns as $column) { ?>
+        { data: "<?php echo $column['key'];?>", title: "<?php echo $column['label'];?>", orderable: "<?php echo $column['sortable'];?>" },
+      <?php } ?>
     ],
     edit: {
       ajax: {
@@ -107,6 +114,7 @@ function editTableInit(tableId) {
 
 $(function() {
   editTableInit('#coursestats');
+
 });
 </script><?php
 

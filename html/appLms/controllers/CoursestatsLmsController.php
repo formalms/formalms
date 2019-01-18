@@ -167,48 +167,43 @@ class CoursestatsLmsController extends LmsController {
 	public function gettabledataTask() {
 		$view_all_perm = checkPerm('view_all', true, 'coursestats');
 
-		$startIndex = Get::req('startIndex', DOTY_INT, 0);
+		$startIndex = Get::req('start', DOTY_INT, 0);
 		$results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
-		$rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
-		$sort = Get::req('sort', DOTY_STRING, "");
+		$rowsPerPage = Get::req('length', DOTY_INT, $results);
+
 		$dir = Get::req('dir', DOTY_STRING, "asc");
 
 		$id_course = Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
-		$filter_text = Get::req('filter_text', DOTY_STRING, "");
-		$filter_selection = Get::req('filter_selection', DOTY_INT, 0);
-		$filter_orgchart = Get::req('filter_orgchart', DOTY_INT, 0);
-		$filter_groups = Get::req('filter_groups', DOTY_INT, 0);
-		$filter_descendants = Get::req('filter_descendants', DOTY_INT, 0) > 0;
 
-		$filter = array(
-			'text' => $filter_text,
-			'selection' => $filter_selection,
-			'orgchart' => $filter_orgchart,
-			'groups' => $filter_groups,
-			'descendants' => $filter_descendants
+		$pagination = array(
+			'startIndex' => $startIndex,
+			'rowsPerPage' => $rowsPerPage,
+			'results' => $results,
+			'sort' => $sort,
+			'dir' => $dir
 		);
+
+		if ($order = $_REQUEST['order']) {
+			$pagination['order_column'] = $order[0]['column'];
+			$pagination['order_dir'] = $order[0]['dir'];
+		}
+
+		if ($search = $_REQUEST['search']) {
+			$pagination['search'] = $search['value'];
+		} else {
+			$pagination['search'] = null;
+		}
                 
 		//get total from database and validate the results count
-		$total = $this->model->getCourseStatsTotal($id_course, $filter);
+		$total = $this->model->getCourseStatsTotal($id_course, $pagination, false);
+		$total_filtered = $this->model->getCourseStatsTotal($id_course, $pagination, true);
+
 		if ($startIndex >= $total) {
 			if ($total<$results) {
 				$startIndex = 0;
 			} else {
 				$startIndex = $total - $results;
 			}
-		}
-
-		$pagination = array(
-			'startIndex' => $startIndex,
-			'results' => $results,
-			'sort' => $sort,
-			'dir' => $dir
-		);
-
-		if ($search = $_REQUEST['search']) {
-			$pagination['search'] = $search['value'];
-		} else {
-			$pagination['search'] = null;
 		}
 
 		$list = $this->model->getCourseStatsList($pagination, $id_course);
@@ -277,8 +272,8 @@ class CoursestatsLmsController extends LmsController {
 
 		echo $this->json->encode([
 			'data' => $records,
-			'recordsTotal' => count($records),
-			'recordsFiltered' => $total,
+			'recordsFiltered' => $total_filtered,
+			'recordsTotal' => $total,
 		]);
 		exit;
 	}
@@ -330,7 +325,7 @@ class CoursestatsLmsController extends LmsController {
 
 		$pagination = [];
 		$pagination['startIndex'] = Get::req('start', DOTY_INT, 0);
-		$pagination['results'] = Get::req('length', DOTY_INT, 0);
+		$pagination['rowsPerPage'] = Get::req('length', DOTY_INT, 0);
 		if ($search = $_REQUEST['search']) {
 			$pagination['search'] = $search['value'];
 		} else {
@@ -343,7 +338,8 @@ class CoursestatsLmsController extends LmsController {
 		}
 
 		$list = $this->model->getCourseUserStatsList($pagination, $id_course, $id_user);
-		$count = $this->model->countTotalCourseUsersStats($id_course, $id_user, $pagination['search']);
+		$total = $this->model->countTotalCourseUsersStats($id_course, $id_user, $pagination['search'], false);
+		$total_filtered = $this->model->countTotalCourseUsersStats($id_course, $id_user, $pagination['search'], true);
 
 		//format models' data
 		$records = array();
@@ -378,8 +374,8 @@ class CoursestatsLmsController extends LmsController {
 
 		echo $this->json->encode([
 			'data' => ($records),
-			'recordsTotal' => count($records),
-			'recordsFiltered' => $count,
+			'recordsTotal' => $total,
+			'recordsFiltered' => $total_filtered,
 		]);
 		exit;
 	}

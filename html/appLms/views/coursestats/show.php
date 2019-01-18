@@ -1,8 +1,7 @@
 <?php
 echo getTitleArea(Lang::t('_COURSESTATS', 'menu_course'));
 ?>
-<div class="std_block" style="    overflow-x: auto;">
-<?php
+<div class="std_block"><?php
 
 $columns = array(
 	array('key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true, 'formatter' => 'CourseStats.useridFormatter', 'className' => 'min-cell'),
@@ -43,15 +42,19 @@ $rel_actions = '
   echo $rel_actions;?>
   <br><br>
 
-	<table style="width:100%" class="display" id="coursestats">
-    <thead>
-      <tr><?php
-        foreach ($columns as $column) {?>
-          <th scope="col"><b><?php echo $column['label'];?></b></th><?php
-        }?>
-      </tr>
-    </thead>
-  </table>
+<table class="table table-striped table-bordered display" style="width:100%" id="coursestats">
+  <thead>
+    <tr><?php
+      foreach ($columns as $column) {?>
+        <th scope="col"><b><?php echo $column['label'];?></b></th><?php
+      }?>
+    </tr>
+  </thead>
+</table>
+
+  <br><?
+  echo $rel_actions;?>
+  <br><br>
 </div>
 
 <script>
@@ -67,6 +70,12 @@ $(function() {
   $(tableId).FormaTable({
     processing: true,
     serverSide: true,
+    /*columns: [
+      <?php foreach($columns as $column) { ?>
+        { data: "<?php echo $column['key'];?>", title: "<?php echo $column['label'];?>", orderable: "<?php echo $column['sortable'];?>" },
+      <?php } ?>
+    ],*/
+    scrollX: true,
     order: [[ 1, "desc" ]],
     ajax: {
       url: 'ajax.server.php?r=coursestats/gettabledata',

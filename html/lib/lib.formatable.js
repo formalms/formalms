@@ -23,11 +23,7 @@ function formaTable(dom, options) {
       , rows: []
     };
 
-
-
-    this._edits = { };
-
-    
+    this._edits = { };    
 
     /**
      * Options.
@@ -100,6 +96,9 @@ function formaTable(dom, options) {
     }    
     if(options.info !== undefined) {
         _options.info = options.info;
+    }    
+    if(options.scrollX !== undefined) {
+        _options.scrollX = options.scrollX;
     }
     
     /**
@@ -160,13 +159,18 @@ function formaTable(dom, options) {
         /**
          * Automatic selection for paginated table.
          */
-        _options.drawCallback = function(settings) {            
+        _options.drawCallback = function(settings) {    
             this.api().rows().every(function(rowIdx, tableLoop, rowLoop) {
                 var _inrows = $.inArray(this.id(), _thisObj._selection.rows) > -1;
                 if((!_thisObj._selection.all && _inrows) || (_thisObj._selection.all && !_inrows)) {
                     this.select();
                 }
             });
+        }
+    } else {
+        _options.drawCallback = function(oSettings) {
+            oSettings._iDisplayLength > (oSettings.fnRecordsDisplay() + oSettings._iDisplayStart) ? $(oSettings.nTableWrapper).find('.dataTables_paginate').hide() : 
+                                                                        $(oSettings.nTableWrapper).find('.dataTables_paginate').show();
         }
     }
 
