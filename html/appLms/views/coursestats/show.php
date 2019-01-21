@@ -26,7 +26,7 @@ $fields = array('id', 'userid', 'firstname', 'lastname', 'level', 'status', 'sta
 foreach ($lo_list as $lo) {
 	$fields[] = 'lo_'.$lo->id;
 }
-
+$a=$a;
 $rel_actions = '
 	<a href="index.php?r=coursestats/export_csv" class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'">
 		<span>'.Lang::t('_EXPORT_CSV', 'report').'</span>
@@ -38,7 +38,7 @@ $rel_actions = '
 		<span>Esporta report dettagliato come XLS</span>
 	</a>';?>
 
-  <br><?
+  <br><?php
   echo $rel_actions;?>
   <br><br>
 
@@ -52,7 +52,7 @@ $rel_actions = '
   </thead>
 </table>
 
-  <br><?
+  <br><?php
   echo $rel_actions;?>
   <br><br>
 </div>
