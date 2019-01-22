@@ -108,7 +108,7 @@ function editTableInit(tableId) {
       type: "GET",
       complete: function(json) {},
     },
-    order: [[ 1, "desc" ]],
+    order: [[ 1, "asc" ]],
   });
 }
 

@@ -76,7 +76,7 @@ $(function() {
       <?php } ?>
     ],*/
     scrollX: true,
-    order: [[ 1, "desc" ]],
+    order: [[ 0, "asc" ]],
     ajax: {
       url: 'ajax.server.php?r=coursestats/gettabledata',
       type: "GET",
