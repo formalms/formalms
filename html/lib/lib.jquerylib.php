@@ -29,6 +29,9 @@ class JQueryLib
         'swipe',
         'select',
          'datepicker',
+         'datatables',
+         'moment',
+         'table-edits',
          'malihu-custom-scrollbar-plugin',
          'cookie']; // malihu custom scrollbar
 
@@ -38,6 +41,7 @@ class JQueryLib
         'swipe',
         'select',
         'datepicker',
+        'datatables',
         'malihu-custom-scrollbar-plugin' ]; // malihu custom scrollbar
         
 

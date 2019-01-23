@@ -25,7 +25,7 @@ class Module_Certificate extends LmsAdminModule {
 
 	function loadBody() {
 
-		require_once(dirname(__FILE__).'/../modules/'.$this->module_name.'/'.$this->module_name.'.php');
+		require_once(Forma::inc(_lms_.'/admin/modules/'.$this->module_name.'/'.$this->module_name.'.php'));
 		certificateDispatch($GLOBALS['op']);
 	}
 
