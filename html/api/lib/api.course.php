@@ -30,7 +30,7 @@ class Course_API extends API {
 
 		foreach($course_list as $key=>$course_info) {
 			 if($category = $course_info['idCategory']) {
-				$category = $mc->getCategory($category)['path'];
+				$category = $course_man->getCategory($category)['path'];
 			} else {
 				$category = null;
 			 }
