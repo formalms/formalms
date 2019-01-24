@@ -29,6 +29,11 @@ class Course_API extends API {
 
 
 		foreach($course_list as $key=>$course_info) {
+			 if($category = $course_info['idCategory']) {
+				$category = $mc->getCategory($category)['path'];
+			} else {
+				$category = null;
+			 }
 			$output['course_info'][]=array(
 				'course_id'=>$course_info['idCourse'],
 				'code'=>str_replace('&', '&amp;', $course_info['code']),
@@ -44,7 +49,10 @@ class Course_API extends API {
 				'sub_end_date'=>$course_info['sub_end_date'],
 				'date_begin'=>$course_info['date_begin'],
 				'date_end'=>$course_info['date_end'],
-				'course_link'=>Get::site_url()._folder_lms_.'/index.php?modname=course&amp;op=aula&amp;idCourse='.$course_info['idCourse'],
+				'course_link'=>Get::site_url() . _folder_lms_ . "/index.php?modname=course&amp;op=aula&amp;idCourse={$row['idCourse']}",
+				'img_course'=>Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . Get::sett('pathcourse') . $row['img_course'],
+				'category_id'=>$course_info['idCategory'],
+				'category'=>$category
 			);
 		}
 
