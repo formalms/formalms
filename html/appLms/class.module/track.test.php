@@ -428,7 +428,7 @@ class Track_Test extends Track_Object
     static function getTestTrackAnswersFromTrack($idTrack){
         $query_track_answer = "SELECT idQuest, idAnswer, more_info"
             . " FROM " . $GLOBALS['prefix_lms'] . "_testtrack_answer"
-            . " WHERE idTrack = '" . $idTrack . "'";
+            . " WHERE idTrack = '" . $idTrack . "' AND user_answer = 1";
 
         $result_track_answer = sql_query($query_track_answer);
 
