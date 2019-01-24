@@ -61,28 +61,6 @@ class UsermanagementAdmController extends AdmController {
 				}
 			}
 		}
-
-		$sql = "SELECT * FROM `audittrail_logs_events` WHERE track = 1 ORDER BY id ASC";
-		if ($query = sql_query($sql)) {
-			while($eventItem = sql_fetch_object($query)) {
-				\appCore\Events\DispatcherManager::addListener($eventItem->identifier, function($event) use ($eventItem) {
-					// Not register if exists
-					$sql = "SELECT COUNT(id) AS count FROM `audittrail_logs` WHERE created_at = NOW() LIMIT 1";
-					$query = sql_query($sql);
-					$test = sql_fetch_object($query);
-					if (!$test->count) {
-						$data = json_encode($event->getData());
-						if ($user_id = (int)$_SESSION['public_area_idst']) {
-						    $sql = "
-						    	INSERT INTO `audittrail_logs` (`event_id`, `user_id`, `data`) 
-						    	VALUES ({$eventItem->id}, {$user_id}, '{$data}')
-							";
-						    $query = sql_query($sql);
-					    }
-				    }
-				});
-			}
-		}
 	}
 
 	protected function _setSessionValue($index, $value) {

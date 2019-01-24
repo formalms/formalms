@@ -49,22 +49,6 @@ class SubscriptionAlmsController extends AlmsController {
 		$this->link_edition		= 'alms/edition';
 		$this->link_classroom	= 'alms/classroom';
 
-		// Event listeners
-		$sql = "SELECT * FROM `audittrail_logs_events` WHERE track = 1 ORDER BY id ASC";
-		$query = sql_query($sql);
-		while($eventItem = sql_fetch_object($query)) {
-			\appCore\Events\DispatcherManager::addListener($eventItem->identifier, function($event) use ($eventItem) {
-				$data = json_encode($event->getData());
-				if ($user_id = (int)$_SESSION['public_area_idst']) {
-				    $sql = "
-				    	INSERT INTO `audittrail_logs` (`event_id`, `user_id`, `data`) 
-				    	VALUES ({$eventItem->id}, {$user_id}, '{$data}')
-					";
-				    $query = sql_query($sql);
-			    }
-			});
-		}
-
 		$this->checkAdminLimit();
 	}
 
