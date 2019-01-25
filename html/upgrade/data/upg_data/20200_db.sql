@@ -34,6 +34,7 @@ INSERT IGNORE INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `defau
 INSERT IGNORE INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(599, 599, 'helpdesk', '_HELPDESK', 'popup', 'view', 'lms', 1000, NULL, NULL, NULL);
 
 INSERT IGNORE INTO `core_role` (`idst`, `roleid`, `description`) VALUES(300, '/lms/course/public/helpdesk/view', NULL);
+INSERT IGNORE INTO `core_role_members` (`idst`, `idstMember`) VALUES(300, 1);
 
 -- Task #19101: custom field in Learning Object
 
