@@ -70,10 +70,16 @@ abstract class FormaPlugin {
         return true;
     }
 
-    public static function addCoreMenu($name, $mvcPath, $parent=false, $icon='', $is_active=false){
+    public static function addCoreMenu($name, $mvcPath, $parent=false, $icon='', $is_active=false, $of_platform = 'framework'){
         $pg_adm=new PluginmanagerAdm();
         $plugin_info=$pg_adm->getPluginFromDB(self::getName(),'name');
-        CoreMenu::addMenuChild($name, $mvcPath, $parent, $icon, $is_active, $plugin_info['plugin_id']);
+        CoreMenu::addMenuChild($name, $mvcPath, 'framework', $of_platform, $parent, $icon, $is_active, $plugin_info['plugin_id']);
+    }
+
+    public static function addLmsMenu($name, $mvcPath, $parent=false, $icon='', $is_active=false, $of_platform = 'lms'){
+        $pg_adm=new PluginmanagerAdm();
+        $plugin_info=$pg_adm->getPluginFromDB(self::getName(),'name');
+        CoreMenu::addMenuChild($name, $mvcPath, 'lms', $of_platform, $parent, $icon, $is_active, $plugin_info['plugin_id']);
     }
 
 }
