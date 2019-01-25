@@ -45,6 +45,7 @@ class Course_API extends API {
 				'subscribe_method'=>$course_info['subscribe_method'],
 				'course_edition'=>$course_info['course_edition'],
 				'course_type'=>$course_info['course_type'],
+				'can_subscribe'=>$course_info['can_subscribe'],
 				'sub_start_date'=>$course_info['sub_start_date'],
 				'sub_end_date'=>$course_info['sub_end_date'],
 				'date_begin'=>$course_info['date_begin'],

@@ -468,7 +468,7 @@ class Man_Course {
 		$query_course = "
 		SELECT idCourse, idCategory, code, name, description, box_description, lang_code, status,
 			subscribe_method, mediumTime, show_rules, selling, prize, course_demo, create_date, course_edition,
-			sub_start_date, sub_end_date, date_begin, date_end, img_course
+			can_subscribe, sub_start_date, sub_end_date, date_begin, date_end, img_course
 		FROM ".$GLOBALS['prefix_lms']."_course ";
 		if($id_category !== false) $query_course .= " WHERE idCategory = '".$id_category."' ";
 		$query_course .= " ORDER BY name";
