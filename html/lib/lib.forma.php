@@ -40,6 +40,7 @@ class Forma {
 
             foreach ($plugins as $plugin){
                 if (file_exists(_base_.'/plugins/'.$plugin['name'].'/Features/'.$file)){
+                    include_once(_base_.'/plugins/'.$plugin['name'].'/Plugin.php');
                     return _base_.'/plugins/'.$plugin['name'].'/Features/'.$file;
                 }
             }
