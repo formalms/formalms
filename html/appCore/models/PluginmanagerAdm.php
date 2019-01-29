@@ -608,9 +608,7 @@ class PluginmanagerAdm extends Model
                     return false;
                 }
                 $name = pathinfo($file_uploaded['name'], PATHINFO_FILENAME);
-                if ($this->unpackPlugin($savefile, $name)) {
-                    return true;
-                }
+                return $this->unpackPlugin($savefile, $name);
                 sl_close_fileoperations();
             } else {
                 return false;
@@ -620,12 +618,15 @@ class PluginmanagerAdm extends Model
 
     static function removeDirectory($path)
     {
-        $files = glob($path . '/*');
+        $files = scandir($path . '/');
         foreach ($files as $file) {
-            is_dir($file) ? self::removeDirectory($file) : unlink($file);
+            if ($file != "." && $file != "..") {
+                if (! (is_dir($path . "/" . $file) ? self::removeDirectory($path . "/" . $file) : unlink($path . "/" . $file)) ) {
+                    return false;
+                }
+            }
         }
-        rmdir($path);
-        return true;
+        return rmdir($path);
     }
 
     /**
