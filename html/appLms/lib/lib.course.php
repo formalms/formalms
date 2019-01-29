@@ -1751,7 +1751,23 @@ class Man_CourseUser {
 			$courses[$course['idCourse']] = $course;
 		}
 		return $courses;
-	}
+    }
+    
+    /**
+	 * Return the number of courses in which a user is subscribed.
+	 *
+	 * @access  public
+	 *
+	 * @param   int $id_user    the idst of the user
+	 * @return  int The number of courses in which a user is subscribed.
+	 */
+    function countUserCourses($id_user) {
+
+        $query = "SELECT COUNT(*) FROM %lms_courseuser WHERE idUser = $id_user";
+        list($count) = sql_fetch_row(sql_query($query));
+
+        return (int)$count;
+    }
 
 	/**
 	 * Return the complete id list in which a user is subscribe, you can filter the result with
