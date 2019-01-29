@@ -33,13 +33,14 @@ class Forma {
             $use_plugin = true;
         }
 
-        if(Get::cfg('enable_plugins', false) && $use_plugin == true){
+        if($use_plugin == true){
             $pg_adm=new PluginmanagerAdm();
 
             $plugins = $pg_adm->getPlugins(true);
 
             foreach ($plugins as $plugin){
                 if (file_exists(_base_.'/plugins/'.$plugin['name'].'/Features/'.$file)){
+                    include_once(_base_.'/plugins/'.$plugin['name'].'/Plugin.php');
                     return _base_.'/plugins/'.$plugin['name'].'/Features/'.$file;
                 }
             }

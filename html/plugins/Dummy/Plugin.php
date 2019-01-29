@@ -15,7 +15,7 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 
 
 class Plugin extends \FormaPlugin {
-    public function install() {
+    public function activate() {
         
         self::addCoreMenu("_DUMMY_MENU_BUTTON", "alms/dummy/show", false, '', true, 'alms');
         self::addCoreMenu("_DUMMY_MENU_ARROW", "", "_DUMMY_MENU_BUTTON", '', true, 'alms');
@@ -26,6 +26,7 @@ class Plugin extends \FormaPlugin {
         self::addRequest("alms", "dummy", "DummyAlmsController", "DummyAlms");
 
         self::addLmsMenu("_DUMMY_LMS_BUTTON", "lms/dummy/show", false, '', true, 'lms');
+        self::addRequest("lms", "dummy", "DummyLmsController", "DummyLms");
 
 
         // addSetting is used to add a new setting in forma.lms
