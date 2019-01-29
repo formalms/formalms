@@ -2074,6 +2074,7 @@ Kullanıcı adı: [userid]
         <key id="standard&amp;_FILENAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dosya adı]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[göre filtrele]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tüm koşullar sağlanmalı]]></key>
+        <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Filtreleri uygulai]]></key>
         <key id="standard&amp;_FILTER_ONE_COND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[En az bir koşul sağlanmalı]]></key>
         <key id="standard&amp;_FINAL_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Final notu]]></key>
         <key id="standard&amp;_FIRSTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İsim]]></key>
@@ -2084,6 +2085,7 @@ Kullanıcı adı: [userid]
         <key id="standard&amp;_FUNCTIONAL_ROLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Şirket rolleri]]></key>
         <key id="standard&amp;_GAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Açık]]></key>
         <key id="standard&amp;_GOOGLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Google]]></key>
+        <key id="standard&amp;_GO_TO_HOME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Ana sayfaya git]]></key>
         <key id="standard&amp;_GROUPS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gruplar]]></key>
         <key id="standard&amp;_HEIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ağırlık]]></key>
         <key id="standard&amp;_HIDDEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gizli]]></key>

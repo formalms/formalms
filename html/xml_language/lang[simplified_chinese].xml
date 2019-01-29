@@ -2056,6 +2056,7 @@
         <key id="standard&amp;_FILENAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[文件名]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[过滤方式]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[必须符合所有条件]]></key>
+        <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[应用过滤器]]></key>
         <key id="standard&amp;_FILTER_ONE_COND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[至少一个条件必须得到满足]]></key>
         <key id="standard&amp;_FINAL_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[最后成绩]]></key>
         <key id="standard&amp;_FIRSTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[名字]]></key>
@@ -2066,6 +2067,7 @@
         <key id="standard&amp;_FUNCTIONAL_ROLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[公司业务]]></key>
         <key id="standard&amp;_GAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[差距]]></key>
         <key id="standard&amp;_GOOGLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[谷歌]]></key>
+        <key id="standard&amp;_GO_TO_HOME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[转到主页]]></key>
         <key id="standard&amp;_GROUPS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[分组]]></key>
         <key id="standard&amp;_HEIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[高度]]></key>
         <key id="standard&amp;_HIDDEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[隐藏]]></key>

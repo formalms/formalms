@@ -2060,6 +2060,7 @@
         <key id="standard&amp;_FILENAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Όνομα αρχείου]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Φίλτραρε βάσει]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Όλες οι συνθήκες πρέπει να ικανοποιούνται]]></key>
+        <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Εφαρμογή φίλτρων]]></key>
         <key id="standard&amp;_FILTER_ONE_COND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Τουλάχιστον μία συνθήκη πρέπει να ικανοποιείται]]></key>
         <key id="standard&amp;_FINAL_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Τελικός βαθμός]]></key>
         <key id="standard&amp;_FIRSTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Όνομα]]></key>
@@ -2070,6 +2071,7 @@
         <key id="standard&amp;_FUNCTIONAL_ROLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ρόλοι στην εταιρεία]]></key>
         <key id="standard&amp;_GAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Κενό]]></key>
         <key id="standard&amp;_GOOGLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Google]]></key>
+        <key id="standard&amp;_GO_TO_HOME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Πηγαίνετε στην αρχική σελίδα]]></key>
         <key id="standard&amp;_GROUPS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ομάδες]]></key>
         <key id="standard&amp;_HEIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ύψος]]></key>
         <key id="standard&amp;_HIDDEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Κρυφό]]></key>

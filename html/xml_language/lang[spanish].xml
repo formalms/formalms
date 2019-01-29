@@ -2277,6 +2277,7 @@ Contraseña: [password]]]></key>
         <key id="standard&amp;_FILE_MANAGER" attributes="" save_date="2017-05-24 17:46:10"><![CDATA[Gestor de archivos]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Filtrar por]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Todas las condiciones debes ser satisfechas]]></key>
+        <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Aplicar filtros]]></key>
         <key id="standard&amp;_FILTER_ONE_COND" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Al menos una condición debe ser satisfecha]]></key>
         <key id="standard&amp;_FINAL_SCORE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Puntuación final]]></key>
         <key id="standard&amp;_FIRSTNAME" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Primer nombre]]></key>
@@ -2287,6 +2288,7 @@ Contraseña: [password]]]></key>
         <key id="standard&amp;_FUNCTIONAL_ROLE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Roles de la compañía]]></key>
         <key id="standard&amp;_GAP" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Gap]]></key>
         <key id="standard&amp;_GOOGLE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Google]]></key>
+        <key id="standard&amp;_GO_TO_HOME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Ir a la página de inicio]]></key>
         <key id="standard&amp;_GRADIMENTO" attributes="" save_date="2017-07-14 10:26:26"><![CDATA[Satisfacción]]></key>
         <key id="standard&amp;_GROUPS" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Grupos]]></key>
         <key id="standard&amp;_HEIGHT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Altura]]></key>

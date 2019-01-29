@@ -2273,6 +2273,7 @@ Wachtwoord: [password]]]></key>
         <key id="standard&amp;_FILE_MANAGER" attributes="" save_date="2017-07-05 15:02:06"><![CDATA[Bestandsbeheer]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Filter volgens]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alle voorwaarden moeten worden voldaan]]></key>
+        <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Filters toepassen]]></key>
         <key id="standard&amp;_FILTER_ONE_COND" attributes="" save_date="2017-07-05 15:42:09"><![CDATA[Minstens een voorwaarde moet worden voldaan]]></key>
         <key id="standard&amp;_FINAL_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uiteindelijke score]]></key>
         <key id="standard&amp;_FIRSTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voornaam]]></key>
@@ -2283,6 +2284,7 @@ Wachtwoord: [password]]]></key>
         <key id="standard&amp;_FUNCTIONAL_ROLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bedrijfs rol]]></key>
         <key id="standard&amp;_GAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Achterstand]]></key>
         <key id="standard&amp;_GOOGLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Google]]></key>
+        <key id="standard&amp;_GO_TO_HOME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Ga naar de startpagina]]></key>
         <key id="standard&amp;_GRADIMENTO" attributes="" save_date="2017-07-14 10:27:43"><![CDATA[Tevredenheid]]></key>
         <key id="standard&amp;_GROUPS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Groepen]]></key>
         <key id="standard&amp;_HEIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hoogte]]></key>
