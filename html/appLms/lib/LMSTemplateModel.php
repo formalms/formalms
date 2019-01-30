@@ -74,7 +74,7 @@ class LMSTemplateModel {
         if($ma->currentCanAccessObj('user_details_full')) {
             require_once(_lib_ . '/lib.user_profile.php');
             $profile = new UserProfile(getLogUserId());
-            $profile->init('profile', 'framework', 'index.php?r=' . _lms_home_, 'ap');
+            $profile->init('profile', 'framework', 'index.php?' . Get::home_page_query(), 'ap');
         }
 
         return $profile;
@@ -151,5 +151,10 @@ class LMSTemplateModel {
             $current_page->op       = $GLOBALS['op'];
         }
         return $current_page;
+    }
+
+    public function getHomePage() {
+
+        return Get::home_page_abs_path();
     }
 }

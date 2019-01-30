@@ -21,7 +21,7 @@ class MycoursesLmsController extends LmsController {
 
     public function show() {
 
-        if(!$tab = Get::req('tab', DOTY_STRING, null)) {
+        if(!$tab = Get::req('mycourses_tab', DOTY_STRING, null)) {
             $tab = $this->model->getDefaultTab();
         }
 

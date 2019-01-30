@@ -42,7 +42,7 @@ final class LMSTemplateController extends TemplateController {
             'user'          => $this->model->getUser()
           , 'logo'          => $this->model->getLogo()
           , 'currentPage'   => $this->model->getCurrentPage()
-          , 'homePage'   => Get::home_page()
+          , 'homePage'      => $this->model->getHomePage()
         ));
     }
 

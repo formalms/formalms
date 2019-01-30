@@ -329,8 +329,7 @@ class Get {
     }
 
 	public static function home_page_req() {
-		
-		$home_page=null;
+        
 		$home_page = Get::sett('home_page');
 		if (!$home_page){
 			$home_page_option = Get::sett('home_page_option');
@@ -341,14 +340,27 @@ class Get {
 				case 'catalogue':
 					$home_page = 'lms/catalog/show'; 
 				break;
-					//$home_page_option = 'home/show';
 			}
 		}
 		return $home_page;
+    }
+
+    public static function home_page_query() {
+
+        $req = self::home_page_req();
+        $query = "r=$req&sop=unregistercourse";
+        return $query;
+    }
+    
+	public static function home_page_abs_path() {
+
+		$home_page = self::abs_path('lms') . '?' . self::home_page_query();
+		return $home_page;
 	}
-	public static function home_page() {
-		$percorso=self::abs_path('lms');
-		$home_page=$percorso.'?r='.Get::home_page_req()."&sop=unregistercourse";
+    
+	public static function home_page_rel_path() {
+
+		$home_page = self::rel_path('lms') . '?' . self::home_page_query();
 		return $home_page;
 	}
 

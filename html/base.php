@@ -60,8 +60,6 @@ define( '_files_com_',	_base_.'/'._folder_files_com_ );
 define( '_plugins_', 	_base_.'/'._folder_plugins_ );
 
 /** other nice setting */
-define( '_lms_home_',           'lms/elearning/show' );
-
 define( '_homepage_base_',      'adm/homepage' );
 define( '_homecatalog_base_',   'lms/homecatalogue' );
 

@@ -72,7 +72,7 @@ function subscribe()
 		{
 			$out->add(str_replace('[course_added]', $course_registration_result, Lang::t('_OPERATION_SUCCESSFUL', 'course_autoregistration')));
 
-			$out->add('<br/><a href="index.php?r='._lms_home_.'">'.Lang::t('_BACK_TO_COURSE', 'course_autoregistration').'</a>');
+			$out->add('<br/><a href="'.Get::home_page_abs_path().'">'.Lang::t('_BACK_TO_COURSE', 'course_autoregistration').'</a>');
 		}
 		else
 		{
@@ -153,7 +153,7 @@ function subscribe()
 						else
 							$out->add(str_replace('[course_added]', $courses, Lang::t('_REGISTRATION_SUCCESSFUL_TO', 'course_autoregistration')));
 
-						$out->add('<br/><a href="index.php?r='._lms_home_.'">'.Lang::t('_BACK_TO_COURSE', 'course_autoregistration').'</a>');
+						$out->add('<br/><a href="'.Get::home_page_abs_path().'">'.Lang::t('_BACK_TO_COURSE', 'course_autoregistration').'</a>');
 					}
 					else
 					{
