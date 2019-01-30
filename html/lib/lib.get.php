@@ -328,6 +328,30 @@ class Get {
         return rtrim($url, '/') . '/';
     }
 
+	public static function home_page_req() {
+		
+		$home_page=null;
+		$home_page = Get::sett('home_page');
+		if (!$home_page){
+			$home_page_option = Get::sett('home_page_option');
+			switch($home_page_option){
+				case 'my_courses':
+					$home_page = 'lms/mycourses/home'; 
+				break;
+				case 'catalogue':
+					$home_page = 'lms/catalog/show'; 
+				break;
+					//$home_page_option = 'home/show';
+			}
+		}
+		return $home_page;
+	}
+	public static function home_page() {
+		$percorso=self::abs_path('lms');
+		$home_page=$percorso.'?r='.Get::home_page_req()."&sop=unregistercourse";
+		return $home_page;
+	}
+
     /**
      * Return the scheme to use
      * @return string scheme
