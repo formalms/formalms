@@ -35,9 +35,10 @@ class MycoursesLmsController extends LmsController {
 
         if($this->model->shouldRedirectToCatalogue()) {
             $url = $this->model->getCatalogueURL();
-            Util::jump_to($url);
+        } else {
+            $url = $this->model->getMyCoursesURL();
         }
 
-        $this->show();
+        Util::jump_to($url);
     }
 }

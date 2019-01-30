@@ -56,4 +56,9 @@ class MycoursesLms extends Model {
 
         return Get::rel_path('lms') . '/index.php?r=lms/catalog/show';
     }
+
+    public function getMyCoursesURL() {
+
+        return Get::rel_path('lms') . '/index.php?r=lms/mycourses/show';
+    }
 }
