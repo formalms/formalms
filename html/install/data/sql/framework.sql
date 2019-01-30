@@ -2493,7 +2493,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('core_version', '2.1', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('course_block', 'off', 'enum', 3, '0', 4, 15, 1, 0, ''),
 ('course_quota', '500', 'string', 255, '0', 4, 9, 1, 0, ''),
-('currency_symbol', '�', 'string', 10, 'ecommerce', 4, 18, 1, 0, ''),
+('currency_symbol', '€', 'string', 10, 'ecommerce', 4, 18, 1, 0, ''),
 ('customer_help_email', '', 'string', 255, 'email_settings', 1, 9, 1, 0, ''),
 ('customer_help_subj_pfx', '', 'string', 255, 'email_settings', 1, 10, 1, 0, ''),
 ('custom_fields_mandatory_for_admin', 'off', 'enum', 3, 'register', 3, 21, 1, 0, ''),
