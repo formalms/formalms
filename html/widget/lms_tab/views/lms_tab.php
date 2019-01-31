@@ -42,7 +42,7 @@
         if ($this->isActive($cid)) {
             $tablist_items .= '<li '.$this->selected($cid).'>';
             if (!strpos($_GET['r'], 'catalog')  && !isset($_GET['id_cat'])) {
-                $tablist_items .= '<a href="index.php?r=lms/'.$cid.'/show&sop=unregistercourse">';
+                $tablist_items .= '<a href="index.php?r=lms/mycourses/show&mycourses_tab=' . $obj_index . '&sop=unregistercourse">';
                     $tablist_items .= '<em>'.$name.'</em>';
                     // $tablist_items .= ( isset(${$name}) ? '<b>'.${$name}.'</b>' : '' );
                 $tablist_items .= '</a>';

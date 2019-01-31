@@ -28,12 +28,13 @@ INSERT IGNORE INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_activ
 INSERT IGNORE INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(598, '_PUBLIC_FORUM', '', 3, 'true', 'true', NULL, NULL, 'lms');
 INSERT IGNORE INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(599, '_HELPDESK', '<span class="glyphicon glyphicon-question-sign top-menu__label"></span>', 1000, 'false', 'true', NULL, NULL, 'lms');
 
-INSERT IGNORE INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(596, 596, 'course', '_MYCOURSES', NULL, 'view', 'lms', 1, NULL, NULL, 'elearning/show');
+INSERT IGNORE INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(596, 596, 'course', '_MYCOURSES', NULL, 'view', 'lms', 1, NULL, NULL, 'lms/mycourses/show');
 INSERT IGNORE INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(597, 597, 'coursecatalogue', '_CATALOGUE', NULL, 'view', 'lms', 2, NULL, NULL, 'lms/catalog/show');
 INSERT IGNORE INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(598, 598, 'public_forum', '_PUBLIC_FORUM', 'forum', 'view', 'lms', 3, NULL, NULL, NULL);
 INSERT IGNORE INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(599, 599, 'helpdesk', '_HELPDESK', 'popup', 'view', 'lms', 1000, NULL, NULL, NULL);
 
 INSERT IGNORE INTO `core_role` (`idst`, `roleid`, `description`) VALUES(300, '/lms/course/public/helpdesk/view', NULL);
+INSERT IGNORE INTO `core_role_members` (`idst`, `idstMember`) VALUES(300, 1);
 
 -- Task #19101: custom field in Learning Object
 

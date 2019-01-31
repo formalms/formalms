@@ -80,87 +80,46 @@ class CoursestatsLms extends Model {
 	}
 
 
-	public function getCourseStatsList($pagination, $id_course, $filter = false) {
+	public function getCourseStatsList($pagination, $id_course) {
 		if (is_array($pagination)) {
 			$startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
-			$results = (isset($pagination['results']) ? $pagination['results'] : Get::sett('visuItem', 25));
-		}
+			$results = (isset($pagination['rowsPerPage']) ? $pagination['rowsPerPage'] : Get::sett('visuItem', 25));
 
-		$dir = 'ASC';
-		if (is_array($pagination) && isset($pagination['dir'])) {
-			switch (strtolower($pagination['dir'])) {
-				case 'yui-dt-asc': $dir = 'ASC'; break;
-				case 'yui-dt-desc': $dir = 'DESC'; break;
-				case 'asc': $dir = 'ASC'; break;
-				case 'desc': $dir = 'DESC'; break;
-				default: $dir = 'ASC';
+			// Default order
+			$sort = 'u.userid';
+			$dir = 'ASC';
+			if (isset($pagination['order_column'])) {
+				switch ($pagination['order_column']) {
+					case 0: $sort = 'u.userid'; break;
+					case 1: $sort = 'lastname'; break;
+					case 2: $sort = 'level'; break;
+					case 3: $sort = 'status'; break;
+				}
+				if (isset($pagination['order_dir'])) {
+					switch ($pagination['order_dir']) {
+						case 'asc': $dir = 'ASC'; break;
+						case 'desc': $dir = 'DESC'; break;
+						default: $dir = 'ASC';
+					}
+				}
 			}
-		}
 
-		$sort = 'u.userid';
-		if (is_array($pagination) && isset($pagination['sort'])) {
-			switch ($pagination['sort']) {
-				case 'fullname': $sort = 'u.lastname '.$dir.', u.firstname'; break;
-				//case 'level': $sort = '?!?'; break;
-				case 'level': $sort = 'cu.level'; break;
-				case 'status': $sort = 'cu.status'; break;
+			$where = '';
+			if (isset($pagination['search']) && $pagination['search'] != "") {
+				$where = " AND (u.userid LIKE '%".$pagination['search']."%' OR u.firstname LIKE '%".$pagination['search']."%' OR u.lastname LIKE '%".$pagination['search']."%') ";
 			}
 		}
 
 		$query = "SELECT u.idst, u.userid, u.firstname, u.lastname, cu.status, cu.level "
 			." FROM ".$this->tables['courseuser']." as cu "
 			." JOIN ".$this->tables['user']." as u "
-			." ON (cu.idUser = u.idst AND cu.idCourse=".(int)$id_course.") ";
-		if (is_array($filter)) {
-			$condition = array();
-
-			if (isset($filter['text']) && $filter['text'] != "") {
-				$conditions[] = " (u.userid LIKE '%".$filter['text']."%' OR u.firstname LIKE '%".$filter['text']."%' OR u.lastname LIKE '%".$filter['text']."%') ";
-			}
-			if (isset($filter['selection']) && $filter['selection']>0) {
-				switch ($filter['selection']) {
-					//begin only
-					case 1: {
-						$conditions[] = " cu.status = 0 ";
-					} break;
-					//itinere only
-					case 2: {
-						$conditions[] = " cu.status = 1 ";
-					} break;
-					//complete only
-					case 3: {
-						$conditions[] = " cu.status = 2 ";
-					} break;
-				}
-			}
-
-			$arr_idst = array();
-			if (isset($filter['orgchart']) && $filter['orgchart']>0) {
-				$umodel = new UsermanagementAdm();
-				$use_desc = (isset($filter['descendants']) && $filter['descendants']);
-				$ulist = $umodel->getFolderUsers($filter['orgchart'], $use_desc);
-				if (!empty($ulist)) $arr_idst = $ulist;
-				unset($ulist);
-			}
-			if (isset($filter['groups']) && $filter['groups']>0) {
-				$gmodel = new GroupmanagementAdm();
-				$ulist = $gmodel->getGroupAllUsers($filter['groups']);
-				if (!empty($ulist))
-					if (!empty($arr_idst)) {
-						$arr_idst = array_merge($arr_idst, $ulist);
-					} else {
-						$arr_idst = $ulist;
-					}
-			}
-			if (!empty($arr_idst)) $conditions[] = " u.idst IN (".implode(",", $arr_idst).") ";
-
-			if (!empty($conditions)) $query .= " WHERE ".implode(" AND ", $conditions)." ";
-		}
-
-		$query .= " ORDER BY ".$sort." ".$dir." ";
+			." ON (cu.idUser = u.idst AND cu.idCourse=".(int)$id_course.") "
+			." WHERE 1=1".$where;
+		
 		if (is_array($pagination)) {
-			$query .= "LIMIT ".$startIndex.", ".$results;
+			$query .= " ORDER BY ".$sort." ".$dir." ";
 		}
+		$query .= "LIMIT ".$startIndex.", ".$results;
 
 		$res = $this->db->query($query);
 
@@ -191,55 +150,19 @@ class CoursestatsLms extends Model {
 		return array_values($output);
 	}
 
-	public function getCourseStatsTotal($id_course, $filter) {
+	public function getCourseStatsTotal($id_course, $filter, $filtered = false) {
 		$query = "SELECT COUNT(*) "
 			." FROM ".$this->tables['courseuser']." as cu "
 			." JOIN ".$this->tables['user']." as u "
 			." ON (cu.idUser = u.idst AND cu.idCourse=".(int)$id_course.") ";
-		if (is_array($filter)) {
-			$condition = array();
+		
 
-			if (isset($filter['text']) && $filter['text'] != "") {
-				$conditions[] = " (u.userid LIKE '%".$filter['text']."%' OR u.firstname LIKE '%".$filter['text']."%' OR u.lastname LIKE '%".$filter['text']."%') ";
+		if ($filtered) {
+			$where = 'WHERE 1=1';
+			if (isset($filter['search']) && $filter['search'] != "") {
+				$where = " AND (u.userid LIKE '%".$filter['search']."%' OR u.firstname LIKE '%".$filter['search']."%' OR u.lastname LIKE '%".$filter['search']."%') ";
 			}
-			if (isset($filter['selection']) && $filter['selection']>0) {
-				switch ($filter['selection']) {
-					//begin only
-					case 1: {
-						$conditions[] = " cu.status = 0 ";
-					} break;
-					//itinere only
-					case 2: {
-						$conditions[] = " cu.status = 1 ";
-					} break;
-					//complete only
-					case 3: {
-						$conditions[] = " cu.status = 2 ";
-					} break;
-				}
-			}
-
-			$arr_idst = array();
-			if (isset($filter['orgchart']) && $filter['orgchart']>0) {
-				$umodel = new UsermanagementAdm();
-				$use_desc = (isset($filter['descendants']) && $filter['descendants']);
-				$ulist = $umodel->getFolderUsers($filter['orgchart'], $use_desc);
-				if (!empty($ulist)) $arr_idst = $ulist;
-				unset($ulist);
-			}
-			if (isset($filter['groups']) && $filter['groups']>0) {
-				$gmodel = new GroupmanagementAdm();
-				$ulist = $gmodel->getGroupAllUsers($filter['groups']);
-				if (!empty($ulist))
-					if (!empty($arr_idst)) {
-						$arr_idst = array_merge($arr_idst, $ulist);
-					} else {
-						$arr_idst = $ulist;
-					}
-			}
-			if (!empty($arr_idst)) $conditions[] = " u.idst IN (".implode(",", $arr_idst).") ";
-
-			if (!empty($conditions)) $query .= " WHERE ".implode(" AND ", $conditions)." ";
+			$query.= $where;
 		}
 
 		$res = $this->db->query($query);
@@ -252,14 +175,14 @@ class CoursestatsLms extends Model {
 		return $count;
 	}
 
-	public function countTotalCourseUsersStats($id_course, $id_user, $search = null) {
+	public function countTotalCourseUsersStats($id_course, $id_user, $search = null, $filtered = false) {
 		$query = "SELECT COUNT(o.idOrg) AS count"
 			." FROM ".$this->tables['organization']." as o "
 			." LEFT JOIN ".$this->tables['commontrack']." as c "
 			." ON (c.idReference = o.idOrg AND c.idUser=".(int)$id_user.") "
 			." WHERE o.idCourse=".(int)$id_course." ";
 
-		if ($search) {
+		if ($search && $filtered) {
 			$query.= " AND title LIKE '%".$search."%'";
 		}
 
@@ -273,19 +196,21 @@ class CoursestatsLms extends Model {
 	public function getCourseUserStatsList($pagination, $id_course, $id_user) {
 		if (is_array($pagination)) {
 			$startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
-			$results = (isset($pagination['results']) ? $pagination['results'] : Get::sett('visuItem', 25));
+			$rowsPerPage = (isset($pagination['rowsPerPage']) ? $pagination['rowsPerPage'] : Get::sett('visuItem', 10));
 
 			// Default order
 			$sort = 'o.path';
 			$dir = 'ASC';
 			if (isset($pagination['order_column'])) {
 				switch ($pagination['order_column']) {
-					case 0: $sort = 'o.path'; break;
-					case 1: $sort = 'o.title'; break;
-					case 2: $sort = 'o.objectType'; break;
-					case 3: $sort = 'c.status'; break;
+					case 1: $sort = 'o.path'; break;
+					case 2: $sort = 'o.title'; break;
+					case 3: $sort = 'o.objectType'; break;
+					case 4: $sort = 'c.status'; break;
+					case 5: $sort = 'c.firstAttempt'; break;
+					case 6: $sort = 'c.dateAttempt'; break;
 				}
-				if (isset($pagination['order_dir']) && $pagination['order_column'] < 3) {
+				if (isset($pagination['order_dir'])) {
 					switch ($pagination['order_dir']) {
 						case 'asc': $dir = 'ASC'; break;
 						case 'desc': $dir = 'DESC'; break;
@@ -310,7 +235,8 @@ class CoursestatsLms extends Model {
 		if (is_array($pagination)) {
 			$query .= " ORDER BY ".$sort." ".$dir." ";
 		}
-		$query .= "LIMIT ".$startIndex.", ".$results;
+		$query .= "LIMIT ".$startIndex.", ".$rowsPerPage;
+		//echo $query."\n";
 		$output = array();
 		$res = $this->db->query($query);
 
@@ -319,7 +245,7 @@ class CoursestatsLms extends Model {
 			
 			while ($obj = $this->db->fetch_obj($res)) {
 				$history = $this->getUserScormHistoryTrackInfo($id_user, $obj->idOrg);
-				$history_table_html = '<table class="timesDetail">';
+				$history_table_html = '<table class="timesDetail table table-striped table-bordered">';
 				
 				if (is_array($history)) $history_table_html.='
 					<tr>
@@ -358,7 +284,7 @@ class CoursestatsLms extends Model {
 	public function getCourseUserStatsList2csv($pagination, $id_course, $id_user) {
 		if (is_array($pagination)) {
 			$startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
-			$results = (isset($pagination['results']) ? $pagination['results'] : Get::sett('visuItem', 25));
+			$results = (isset($pagination['results']) ? $pagination['results'] : Get::sett('visuItem', 10));
 
 			$dir = 'ASC';
 			if (isset($pagination['dir'])) {
@@ -616,7 +542,8 @@ class CoursestatsLms extends Model {
 		$query = "UPDATE ".$this->tables['commontrack']." SET firstAttempt='".$new_status."' "
 			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
 		$res = $this->db->query($query);
-		if ($res && $this->db->affected_rows($res)>0) {
+
+		if ($res) {
 			$output = true;
 		}
 		return $output;
@@ -629,7 +556,8 @@ class CoursestatsLms extends Model {
 		$query = "UPDATE ".$this->tables['commontrack']." SET dateAttempt='".$new_status."' "
 			." WHERE idReference=".(int)$id_lo." AND idUser=".(int)$id_user;
 		$res = $this->db->query($query);
-		if ($res && $this->db->affected_rows($res)>0) {
+
+		if ($res) {
 			$output = true;
 		}
 		return $output;

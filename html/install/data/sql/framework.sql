@@ -1387,7 +1387,7 @@ INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(594, 594, 'timeperiods', '_TIME_PERIODS', '', 'view', 'alms', 4, '', '', 'alms/timeperiods/show');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(595, 595, 'label', '_LABEL', '', 'view', 'alms', 5, '', '', 'alms/label/show');
 
-INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(596, 596, 'course', '_MYCOURSES', NULL, 'view', 'lms', 1, NULL, NULL, 'elearning/show');
+INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(596, 596, 'course', '_MYCOURSES', NULL, 'view', 'lms', 1, NULL, NULL, 'lms/mycourses/show');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(597, 597, 'coursecatalogue', '_CATALOGUE', NULL, 'view', 'lms', 2, NULL, NULL, 'lms/catalog/show');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(598, 598, 'public_forum', '_PUBLIC_FORUM', 'forum', 'view', 'lms', 3, NULL, NULL, NULL);
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(599, 599, 'helpdesk', '_HELPDESK', 'popup', 'view', 'lms', 1000, NULL, NULL, NULL);
@@ -2493,7 +2493,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('core_version', '2.1', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('course_block', 'off', 'enum', 3, '0', 4, 15, 1, 0, ''),
 ('course_quota', '500', 'string', 255, '0', 4, 9, 1, 0, ''),
-('currency_symbol', '€', 'string', 10, 'ecommerce', 4, 18, 1, 0, ''),
+('currency_symbol', 'â‚¬', 'string', 10, 'ecommerce', 4, 18, 1, 0, ''),
 ('customer_help_email', '', 'string', 255, 'email_settings', 1, 9, 1, 0, ''),
 ('customer_help_subj_pfx', '', 'string', 255, 'email_settings', 1, 10, 1, 0, ''),
 ('custom_fields_mandatory_for_admin', 'off', 'enum', 3, 'register', 3, 21, 1, 0, ''),

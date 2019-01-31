@@ -77,8 +77,8 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
                     </script>
                     
                     <div class="input-group">
-                        <a href='#' id='<?php echo $id; ?>_filter_set1'><?php echo Lang::t('_FILTER_APPLY'); ?></a><br><br>
-                        <a href='#' id='<?php echo $id; ?>_filter_reset'><?php echo Lang::t('_FILTER_RESET'); ?></a>
+                        <a href='#' id='<?php echo $id; ?>_filter_set1'><?php echo Lang::t('_FILTER_APPLY', 'standard'); ?></a><br><br>
+                        <a href='#' id='<?php echo $id; ?>_filter_reset'><?php echo Lang::t('_FILTER_RESET', 'report'); ?></a>
                     </div>
 
 

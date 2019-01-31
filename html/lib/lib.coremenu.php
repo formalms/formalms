@@ -186,7 +186,7 @@ SQL;
         return (bool)sql_query($query);
     }
 
-    public static function addMenuChild($name, $mvcPath, $parent=false, $icon='', $is_active=true, $idPlugin=null){
+    public static function addMenuChild($name, $mvcPath, $of_platform, $under_of_platform, $parent=false, $icon='', $is_active=true, $idPlugin=null){
 
         // Check if $name contains only alphanumeric characters or undescores.
         if(preg_match('/[^a-z_\-0-9]/i', $name)){
@@ -245,6 +245,7 @@ SQL;
                 idparent,
                 name,
                 sequence,
+                of_platform,
                 is_active,
                 image,
                 idPlugin
@@ -254,6 +255,7 @@ SQL;
                 $idParent,
                 '$name',
                 $sequence,
+                '$of_platform',
                 '$is_active',
                 '$icon',
                 $idPlugin
@@ -281,7 +283,7 @@ SQL;
                     '$name',
                     '',
                     'view',
-                    NULL,
+                    '$under_of_platform',
                     1,
                     '',
                     '',

@@ -50,20 +50,20 @@ function mycourses(&$url) {
 	if($access_user_details_short) {
 
 		$profile = new UserProfile(getLogUserId());
-		$profile->init('profile', 'framework', 'index.php?r='._lms_home_, 'ap');
+		$profile->init('profile', 'framework', 'index.php?' . Get::home_page_query(), 'ap');
 		$GLOBALS['page']->addStart($profile->userIdMailProfile('normal', false, false), 'content');
 	}
 	// user_details_full ------------------------------------------------------------------------
 	if($access_user_details_full) {
 
 		$profile = new UserProfile(getLogUserId());
-		$profile->init('profile', 'framework', 'index.php?r='._lms_home_, 'ap');
+		$profile->init('profile', 'framework', 'index.php?' . Get::home_page_query(), 'ap');
 		$GLOBALS['page']->addStart($profile->homeUserProfile('normal', false, false), 'content');
 	}
 	// career ------------------------------------------------------------------------
 	if($access_career) {
 
-		$base_url = 'index.php?r='._lms_home_.'&amp;filter=';
+		$base_url = 'index.php?'.Get::home_page_query().'&amp;filter=';
 		$end = 0;
 		if(isset($course_stats['with_ustatus'][_CUS_END]) && $course_stats['with_ustatus'][_CUS_END] != 0) {
 			$end = $course_stats['with_ustatus'][_CUS_END];
@@ -1453,7 +1453,7 @@ function dashAcourse($id_course, $h_number) {
 	
 	require_once(_base_.'/lib/lib.urlmanager.php');
 	$url =& UrlManager::getInstance('catalogue');
-	$url->setStdQuery('r='._lms_home_);
+	$url->setStdQuery(Get::home_page_query());
 	if($normal_subs == 0) $cinfo['can_subscribe'] = 0;
 	$html = dashcourse($url, $lang, $cinfo, ( isset($usercourses[$cinfo['idCourse']]) ? $usercourses[$cinfo['idCourse']] : false ), 0, $h_number);
 	

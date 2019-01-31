@@ -111,3 +111,5 @@ function askPurge(link){
 }
 </script>
 ';
+
+echo $feedback;

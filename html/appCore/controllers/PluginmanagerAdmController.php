@@ -16,9 +16,17 @@ class PluginmanagerAdmController extends AdmController {
     public function showTask() {
         $model = new PluginmanagerAdm();
         $plugins = $model->getPlugins();
+        $feedback = "";
+        switch (Get::req('result', DOTY_ALPHANUM, "")) {
+			case 'ok': $feedback = UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'standard')); break;
+			case 'err': $feedback = UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'standard')); break;
+            default:
+
+		}
         $this->render('show', array(
                 'model' => $model,
-                'plugins' => $plugins
+                'plugins' => $plugins,
+                'feedback' => $feedback
             )
         );
     }

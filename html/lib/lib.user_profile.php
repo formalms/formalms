@@ -1989,7 +1989,7 @@ class UserProfileViewer {
             $url = $this->_url_man;
             $course_stats = userCourseList($url, false, false);        //TODO:  review this call . use course list to compute carreer
 
-            $base_url = 'index.php?r=' . _lms_home_ . '&amp;filter=';
+            $base_url = 'index.php?' . Get::home_page_query() . '&amp;filter=';
             $end = 0;
             if (isset($course_stats['with_ustatus'][_CUS_END]) && $course_stats['with_ustatus'][_CUS_END] != 0) {
                 $end = $course_stats['with_ustatus'][_CUS_END];

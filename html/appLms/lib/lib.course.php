@@ -466,9 +466,9 @@ class Man_Course {
 
 		$courses = array();
 		$query_course = "
-		SELECT idCourse, idCategory, code, name, description, lang_code, status,
+		SELECT idCourse, idCategory, code, name, description, box_description, lang_code, status,
 			subscribe_method, mediumTime, show_rules, selling, prize, course_demo, create_date, course_edition,
-			sub_start_date, sub_end_date, date_begin, date_end
+			can_subscribe, sub_start_date, sub_end_date, date_begin, date_end, img_course
 		FROM ".$GLOBALS['prefix_lms']."_course ";
 		if($id_category !== false) $query_course .= " WHERE idCategory = '".$id_category."' ";
 		$query_course .= " ORDER BY name";
@@ -1751,7 +1751,23 @@ class Man_CourseUser {
 			$courses[$course['idCourse']] = $course;
 		}
 		return $courses;
-	}
+    }
+    
+    /**
+	 * Return the number of courses in which a user is subscribed.
+	 *
+	 * @access  public
+	 *
+	 * @param   int $id_user    the idst of the user
+	 * @return  int The number of courses in which a user is subscribed.
+	 */
+    function countUserCourses($id_user) {
+
+        $query = "SELECT COUNT(*) FROM %lms_courseuser WHERE idUser = $id_user";
+        list($count) = sql_fetch_row(sql_query($query));
+
+        return (int)$count;
+    }
 
 	/**
 	 * Return the complete id list in which a user is subscribe, you can filter the result with
