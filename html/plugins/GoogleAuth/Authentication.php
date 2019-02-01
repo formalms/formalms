@@ -70,7 +70,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         try {
             
             $google_service->requestAccessToken($code);        
-            $user_info = json_decode($google_service->request("https://www.googleapis.com/oauth2/v1/userinfo"), true);
+            $user_info = json_decode($google_service->request("https://www.googleapis.com/oauth2/v2/userinfo"), true);
         } catch(Exception $e){
             
             return UNKNOWN_SOCIAL_ERROR;
