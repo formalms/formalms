@@ -740,6 +740,8 @@
         <key id="course&amp;_CST_CONCLUDED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Concluded]]></key>
         <key id="course&amp;_CST_CONFIRMED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Confirmed]]></key>
         <key id="course&amp;_CST_PREPARATION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Under construction]]></key>
+        <key id="course&amp;_DATE_START" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Date start]]></key>
+        <key id="course&amp;_DATE_END" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Date end]]></key>
         <key id="course&amp;_DAY_OF_VALIDITY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Days of validity]]></key>
         <key id="course&amp;_DEMO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show demo]]></key>
         <key id="course&amp;_DIRECT_PLAY" attributes="" save_date="2017-03-15 17:59:58"><![CDATA[Directly play the first Learning Object in the player]]></key>
@@ -747,6 +749,7 @@
         <key id="course&amp;_DOCUMENT_UPLOAD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Documents upload]]></key>
         <key id="course&amp;_DONT_SHOW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Don't show]]></key>
         <key id="course&amp;_DOWNLOAD_MATERIALS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show material]]></key>
+        <key id="course&amp;_DURATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Duration]]></key>
         <key id="course&amp;_EDTION_TIME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[start on <b>[date_begin]</b> and end on <b>[date_end]</b>]]></key>
         <key id="course&amp;_ENDOBJECT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Object marked as final]]></key>
         <key id="course&amp;_EXPIRED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Access to this course has expired]]></key>
@@ -801,6 +804,7 @@
         <key id="course&amp;_QUOTA_EXCEDED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[You can't upload any further files because the disk space for this course is full]]></key>
         <key id="course&amp;_RANDOM_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Generate random code for self-registration]]></key>
         <key id="course&amp;_RESERVE_COURSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Reserve course]]></key>
+        <key id="course&amp;_RESULT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Result]]></key>
         <key id="course&amp;_SC_EVERYWHERE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Everyone, and show on home page]]></key>
         <key id="course&amp;_SC_ONLYINSC_USER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Only users subscribed to the course]]></key>
         <key id="course&amp;_SC_ONLY_IN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Only for logged in users]]></key>

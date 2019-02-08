@@ -743,6 +743,8 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="course&amp;_CST_CONCLUDED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Concluso]]></key>
         <key id="course&amp;_CST_CONFIRMED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Confermato]]></key>
         <key id="course&amp;_CST_PREPARATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[In costruzione]]></key>
+        <key id="course&amp;_DATE_START" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Data inizio]]></key>
+        <key id="course&amp;_DATE_END" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Data fine]]></key>
         <key id="course&amp;_DAY_OF_VALIDITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Giorni di validità]]></key>
         <key id="course&amp;_DEMO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Vedi demo]]></key>
         <key id="course&amp;_DIRECT_PLAY" attributes="" save_date="2017-07-05 13:01:58"><![CDATA[Esecuzione diretta del primo oggetto didattico nel player]]></key>
@@ -750,6 +752,7 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="course&amp;_DOCUMENT_UPLOAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Carica documenti]]></key>
         <key id="course&amp;_DONT_SHOW" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Non mostrarle]]></key>
         <key id="course&amp;_DOWNLOAD_MATERIALS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Scarica materiale]]></key>
+        <key id="course&amp;_DURATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Durata]]></key>
         <key id="course&amp;_EDTION_TIME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[dal <b>[date_begin]</b> al <b>[date_end]</b>]]></key>
         <key id="course&amp;_ENDOBJECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[oggetto marcatore di fine corso]]></key>
         <key id="course&amp;_EXPIRED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[L'accesso al corso è terminato]]></key>
@@ -804,6 +807,7 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="course&amp;_QUOTA_EXCEDED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Non è possibile caricare il file: lo spazio su disco rimanente per questo corso non è sufficente.]]></key>
         <key id="course&amp;_RANDOM_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Genera codici random per l'autoregistrazione]]></key>
         <key id="course&amp;_RESERVE_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Prenota corso]]></key>
+        <key id="course&amp;_RESULT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Esito]]></key>
         <key id="course&amp;_SC_EVERYWHERE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Chiunque, e mostra in home page]]></key>
         <key id="course&amp;_SC_ONLYINSC_USER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Solo agli utenti iscritti al corso]]></key>
         <key id="course&amp;_SC_ONLY_IN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Disponibile solo per utenti che hanno effettuato l'accesso]]></key>
