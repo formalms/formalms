@@ -1239,6 +1239,22 @@ class Org_TreeView extends RepoTreeView {
 	
 	function printElement(&$stack, $level) {
 
+		include_once (_base_.'/appLms/Events/Lms/OrgPropertiesPrintEvent.php');
+		$event = new \appLms\Events\Lms\OrgPropertiesPrintEvent();
+
+        $event->setElement($stack[$level]['folder']);
+
+        $event->setDisplayable(true);
+        $event->setAccessible(true);
+
+        $event->setId($this->id);
+
+		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\OrgPropertiesPrintEvent::EVENT_NAME, $event);
+		
+		if (!$event->getDisplayable()) {
+			return '';
+		}
+
 		require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
 		
 		// $out = '<div class="TreeViewRowBase">';
@@ -1316,7 +1332,7 @@ class Org_TreeView extends RepoTreeView {
 							'name="'.$this->id.'['.$this->_getOpPlayItemId().']['.$stack[$level]['folder']->id.']">'
 								.$this->getFolderPrintName( $stack[$level]['folder']).
 							'</span>';
-			} else if($isPrerequisitesSatisfied) {
+			} else if($isPrerequisitesSatisfied && $event->getAccessible()) {
 
 				$out .= ' <a '.( $arrData[1] == 'scormorg' ? ' rel="lightbox'.$lb_param.'"' : '' ).' class="'.$classStyle.'" ' .
 							'id="'.$this->id.'_'.$this->_getOpPlayItemId().'_'.$stack[$level]['folder']->id.'" ' .
@@ -1456,7 +1472,7 @@ class Org_TreeView extends RepoTreeView {
 									.' title="'.$this->_getOpLockedTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" '
 									.' alt="'.$this->_getOpLockedTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
 
-							} else if( $isPrerequisitesSatisfied ) {
+							} else if( $isPrerequisitesSatisfied && $event->getAccessible()) {
 								
 								if ($arrData[1] == 'scormorg') {
 									$out .= '<a class="tree_view_image" '
@@ -1504,6 +1520,9 @@ class Org_TreeView extends RepoTreeView {
 							$out .= '<img src="'.getPathImage().'lobject/'.$img
 								.'" class="OrgStatus" alt="'. Lang::t($status, 'standard', 'framework').'" title="'. Lang::t($status, 'standard', 'framework').': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
 							
+							foreach ($event->getAction() as $action){
+								$out .= $action;
+							}
 						}
 					break;
 				}
