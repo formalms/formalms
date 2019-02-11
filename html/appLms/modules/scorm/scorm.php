@@ -71,10 +71,10 @@ function additem($object_item) {
 function insitem() {
 	//checkPerm( 'view', FALSE, 'storage' );
 	
-	require_once(_base_.'/lib/lib.upload.php');
-	require_once(_base_.'/addons/pclzip/pclzip.lib.php');
-	require_once(dirname(__FILE__).'/RendererDb.php');
-	require_once(dirname(__FILE__).'/CPManager.php');
+	require_once Forma::inc(_lib_ . '/lib.upload.php');
+	require_once Forma::inc(_addons_ . '/pclzip/pclzip.lib.php');
+	require_once Forma::inc(_lms_ . '/modules/scorm/RendererDb.php');
+	require_once Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
 	
 	$back_url = urldecode($_POST['back_url']);
 	
@@ -269,7 +269,7 @@ function play($aidResource, $aidReference, $aback_url, $aautoplay, $aplayertempl
 	$GLOBALS['autoplay'] = $aautoplay;
 	$GLOBALS['playertemplate'] = $aplayertemplate;
 	$GLOBALS['environment'] = $environment;
-	require( dirname(__FILE__) . '/scorm_frameset.php' );
+	require Forma::inc(_lms_ . '/modules/scorm/scorm_frameset.php');
 }
 
 function _scorm_deleteitem( $idscorm_package, $idscorm_organization, $erasetrackcontent = FALSE ) {
@@ -464,16 +464,16 @@ if( isset( $GLOBALS['op'] ) ) {
 			play();
 		};break;
 		case "tree": {
-			require( dirname(__FILE__) . '/scorm_page_tree.php');
+			require_once Forma::inc(_lms_ . '/modules/scorm/scorm_page_tree.php');
 		};break;
 		case "head": {
-			require( dirname(__FILE__) . '/scorm_page_head.php');
+			require_once Forma::inc(_lms_ . '/modules/scorm/scorm_page_head.php');
 		};break;
 		case "body": {
-			require( dirname(__FILE__) . '/scorm_page_body.php');
+			require_once Forma::inc(_lms_ . '/modules/scorm/scorm_page_body.php');
 		};break;
 		case "scoload": {
-			require( dirname(__FILE__) . '/soaplms.php');
+			require_once Forma::inc(_lms_ . '/modules/scorm/soaplms.php');
 		};break;
 	}
 }

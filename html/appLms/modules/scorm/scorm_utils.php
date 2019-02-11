@@ -20,7 +20,7 @@
  **/
 
 //include_once( $GLOBALS['where_lms'] . '/config.php' );
-require_once( dirname(__FILE__) . '/config.scorm.php');
+require_once Forma::inc(_lms_. '/modules/scorm/config.scorm.php');
  
 /*
  * Cerca tra gli elementi del nodo il primo elemento che ha tag $name

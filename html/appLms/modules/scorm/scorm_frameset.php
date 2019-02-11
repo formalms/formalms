@@ -26,9 +26,9 @@ Boot::init(BOOT_TEMPLATE);
 */
 if(Docebo::user()->isLoggedIn()) {
 
-require_once(dirname(__FILE__) . '/config.scorm.php');
-require_once(dirname(__FILE__) . '/scorm_utils.php');
-require_once(dirname(__FILE__) . '/scorm_items_track.php');
+require_once Forma::inc(_lms_. '/modules/scorm/config.scorm.php');
+require_once Forma::inc(_lms_. '/modules/scorm/scorm_utils.php');
+require_once Forma::inc(_lms_. '/modules/scorm/scorm_items_track.php');
 
 $idReference 	= $GLOBALS['idReference'];
 $idResource 	= $GLOBALS['idResource'];
@@ -79,8 +79,8 @@ if( $rsItemTrack === FALSE ) {
 
 $arrItemTrack = sql_fetch_assoc( $rsItemTrack );
 // with id_item_track of organization|user|reference create an entry in commontrack table
-require_once( _lms_ . '/class.module/track.object.php' );
-require_once( _lms_ . '/class.module/track.scorm.php' );
+require_once Forma::inc(_lms_ . '/class.module/track.object.php');
+require_once Forma::inc(_lms_ . '/class.module/track.scorm.php');
 $track_so = new Track_ScormOrg( $arrItemTrack['idscorm_item_track'], false, false, NULL, $environment );
 if( $track_so->idReference === NULL ){
 	$track_so->createTrack( $idReference, $arrItemTrack['idscorm_item_track'], $idUser, date("Y-m-d H:i:s"), 'ab-initio', 'scormorg' );

@@ -21,7 +21,7 @@
  * @copyright 2004
  **/
 
-include_once( dirname(__FILE__).'/scorm_utils.php');
+include_once Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php');
 
 
 /**
@@ -57,7 +57,7 @@ class CPManager {
 		if(strpos($filename, 'http') === 0) {
 			
 			// Remote manifest
-			require_once(_lib_.'/lib.fsock_wrapper.php');
+            require_once Forma::inc(_lib_ . '/lib.fsock_wrapper.php');
 			$fsock = new FSock();
 			$contents = $fsock->send_request($filename, '80', '');
 			if(!$contents) {

@@ -11,7 +11,7 @@
 |   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
 \ ======================================================================== */
 
-require_once( dirname( __FILE__ ).'/learning.object.php' );
+require_once Forma::inc(_lms_ . '/class.module/learning.object.php');
 
 define('_scorm_basepath',$GLOBALS['where_lms'].'/modules/scorm/');
 
@@ -118,7 +118,7 @@ class Learning_ScormOrg extends Learning_Object {
 		
 		unset($_SESSION['last_error']);
 		
-		require_once( Docebo::inc(_lms_.'/modules/scorm/scorm.php') );
+		require_once Forma::inc(_lms_.'/modules/scorm/scorm.php');
 		additem( $this );
 	}	
 	
@@ -136,7 +136,7 @@ class Learning_ScormOrg extends Learning_Object {
 		
 		unset($_SESSION['last_error']);
 		
-		require_once( Docebo::inc(_lms_.'/modules/scorm/scorm.php') );
+		require_once Forma::inc(_lms_.'/modules/scorm/scorm.php');
 		moditem( $this );
 	}
 	
@@ -148,8 +148,8 @@ class Learning_ScormOrg extends Learning_Object {
 	 * @return nothing return
 	 **/
 	function play( $id, $id_param, $back_url ) {
-		require_once( $GLOBALS['where_lms'].'/lib/lib.param.php' );
-		require_once( Docebo::inc(_lms_.'/modules/scorm/scorm.php') );
+		require_once Forma::inc(_lms_ . '/lib/lib.param.php');
+		require_once Forma::inc(_lms_ . '/modules/scorm/scorm.php');
 		$idReference = getLOParam($id_param, 'idReference');
 		$autoplay = getLOParam($id_param, 'autoplay');
 		$playertemplate = getLOParam($id_param, 'playertemplate');
@@ -159,7 +159,7 @@ class Learning_ScormOrg extends Learning_Object {
 	}
 
 	function env_play($id_reference, $back_url, $options = array()) {
-		require_once( Docebo::inc(_lms_.'/modules/scorm/scorm.php') );
+		require_once Forma::inc(_lms_.'/modules/scorm/scorm.php');
 		$this->id_reference = $id_reference;
 		$this->back_url = $back_url;
 		play($this->id, $id_reference, $back_url, true, 'default', $this->environment);
@@ -173,7 +173,7 @@ class Learning_ScormOrg extends Learning_Object {
 	 * @return false if fail, else return the id lo
 	 **/
 	function del( $id, $back_url = NULL ) {
-		require_once( Docebo::inc(_lms_.'/modules/scorm/scorm.php') );
+		require_once Forma::inc(_lms_.'/modules/scorm/scorm.php');
 		
 		list($idscorm_package) = sql_fetch_row(sql_query("
 		SELECT idscorm_package 
@@ -191,7 +191,7 @@ class Learning_ScormOrg extends Learning_Object {
 	 * @return int $id if success FALSE if fail
 	 **/
 	function copy( $id, $back_url = NULL ) {
-		require_once( Docebo::inc(_lms_.'/modules/scorm/scorm.php') );
+		require_once Forma::inc(_lms_.'/modules/scorm/scorm.php');
 		
 		list($idscorm_package) = sql_fetch_row(sql_query("
 		SELECT idscorm_package 

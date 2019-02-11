@@ -32,10 +32,10 @@ if(!defined("LMS")) {
 }
 $prefix = $GLOBALS['prefix_lms'];
 
-require_once(dirname(__FILE__) . '/scorm_tracking.php');
-require_once(dirname(__FILE__) . '/scorm_items.php');
-require_once(dirname(__FILE__) . '/config.scorm.php');
-require_once(dirname(__FILE__) . '/scorm_items_track.php');
+require_once Forma::inc(_lms_ . '/modules/scorm/scorm_tracking.php');
+require_once Forma::inc(_lms_ . '/modules/scorm/scorm_items.php');
+require_once Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
+require_once Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.php');
 
 /**
  * SOAPLMS
@@ -151,7 +151,7 @@ class SOAPLMS {
 		$lesson_status = "";
 		
 		$scormVersion = getScormVersion('idscorm_item', $idscorm_item);
-		require_once(dirname(__FILE__) . '/scorm-'.$scormVersion.'.php');	
+		require_once Forma::inc(_lms_ . '/modules/scorm/scorm-'.$scormVersion.'.php');	
 		
 		$dbconn = $GLOBALS['dbConn'];
 		
@@ -212,7 +212,7 @@ class SOAPLMS {
 
 		}
 		if($environment == 'games' && $arr['score_raw'] !== false && $arr['score_raw'] !== NULL) {
-			require_once(_lms_.'/class.module/track.scorm.php');
+			require_once Forma::inc(_lms_ . '/class.module/track.scorm.php');
 			Track_ScormOrg::setEnvGamesData($idUser, $idReference, $arr['score_raw'], 'scormorg');
 		}
 		//end update	
@@ -515,7 +515,7 @@ if( (isset($_GET['op']) && $_GET['op'] == 'Finish') ) {
 				or die( "Error on load sco: ". sql_error() . "[ $query ]");
 	list($path, $href, $scormtype, $scormVersion) = sql_fetch_array($result);
 	
-	require_once(dirname(__FILE__) . '/scorm-'.$scormVersion.'.php');
+	require_once Forma::inc(_lms_ . '/modules/scorm/scorm-'.$scormVersion.'.php');
 	
 	// get item_track
 	$itemtrack = new Scorm_ItemsTrack($dbconn, $GLOBALS['prefix_lms']);

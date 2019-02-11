@@ -34,13 +34,13 @@ class Module_Organization extends LmsModule {
 	 *
 	**/
 	function initialize() {
-		require_once($GLOBALS['where_lms'].'/modules/'.$this->module_name.'/'.$this->module_name.'.php');
+		require_once Forma::inc(_lms_ . "/modules/$this->module_name/$this->module_name.php");
 		$ready = FALSE;
 		$this->lang =& DoceboLanguage::createInstance('organization', 'lms');
 
 		if( isset($_GET['sor']) && FALSE ) {
 			// reload from previously saved session
-			require_once($GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
+			require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php' );
 			$saveObj = new Session_Save();
 			$saveName = $_GET['sor'];
 			if( $saveObj->nameExists($saveName) ) {
@@ -68,7 +68,7 @@ class Module_Organization extends LmsModule {
 			$this->treeView->mod_name = 'organization';
 			$this->treeView->setLanguage( $this->lang );
 
-			require_once($GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
+			require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php' );
 			$saveObj = new Session_Save();
 			$saveName = 'organization'.$id_course;
 			if( $saveObj->nameExists($saveName) ) {
@@ -140,7 +140,7 @@ class Module_Organization extends LmsModule {
 	function getExtraTop() {
 		global $modname;
 		if( $this->isFindingDestination() ) {
-			require_once($GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
+			require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php' );
 			$saveObj = new Session_Save();
 			$saveName = $_GET['crepo'];
 			if( $saveObj->nameExists($saveName) ) {
@@ -199,7 +199,7 @@ class Module_Organization extends LmsModule {
 		// tree indipendent play lo -----------------------------------------------
 
 		if($GLOBALS['op'] == 'scorm_track') {
-			require_once($GLOBALS['where_lms'].'/modules/organization/orgresults.php');
+			require_once Forma::inc(_lms_ . '/modules/organization/orgresults.php');
 			$user = Get::req('id_user', DOTY_INT, false);
 			$org  = Get::req('id_org', DOTY_INT, false);
 			getTrackingTable($user, $org);
@@ -208,7 +208,7 @@ class Module_Organization extends LmsModule {
 
 
 		if($GLOBALS['op'] == 'scorm_history') {
-			require_once(_lms_.'/modules/organization/orgresults.php');
+			require_once Forma::inc(_lms_.'/modules/organization/orgresults.php');
 			$user = Get::req('id_user', DOTY_INT, false);
 			$obj  = Get::req('id_obj', DOTY_INT, false);
 			getHistoryTable($user, $obj);
@@ -216,7 +216,7 @@ class Module_Organization extends LmsModule {
 		}
 
 		if($GLOBALS['op'] == 'scorm_interactions') {
-			require_once(_lms_.'/modules/organization/orgresults.php');//__FILE__.'/appLms/modules/organization/orgresults.php');
+			require_once Forma::inc(_lms_.'/modules/organization/orgresults.php');//__FILE__.'/appLms/modules/organization/orgresults.php');
 			$user  = Get::req('id_user', DOTY_INT, false);
 			$track = Get::req('id_track', DOTY_INT, false);
 			getInteractionsTable($user, $track);
@@ -225,7 +225,7 @@ class Module_Organization extends LmsModule {
 
 		if($GLOBALS['op'] === 'test_track')
 		{
-			require_once(_lms_.'/modules/organization/orgresults.php');
+			require_once Forma::inc(_lms_.'/modules/organization/orgresults.php');
 			$user = Get::req('id_user', DOTY_INT, false);
 			$org  = Get::req('id_org', DOTY_INT, false);
 			getCompilationTable($user, $org);
@@ -236,7 +236,7 @@ class Module_Organization extends LmsModule {
    
 		if($GLOBALS['op'] == 'custom_playitem') {
 
-			require_once($GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
+			require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php' );
 			$saveObj = new Session_Save();
 			$saveName = $saveObj->getName('organization'.$_SESSION['idCourse'], true);
 			$saveObj->save( $saveName, $this->treeView->getState() );
@@ -256,7 +256,7 @@ class Module_Organization extends LmsModule {
 						.'&op=custom_enditem&id_item='
 						.$id_item;
 			}
-			require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
+			require_once Forma::inc(_lms_ . '/class.module/track.object.php');
 	
     		 //#11944 ,  can view LO by teacher
             if( Track_Object::isPrerequisitesSatisfied(
@@ -278,8 +278,8 @@ class Module_Organization extends LmsModule {
 
 			$lang =& DoceboLanguage::createInstance('organization', 'lms');
 
-			require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
-			require_once($GLOBALS['where_lms'].'/lib/lib.stats.php');
+			require_once Forma::inc(_lms_ . '/class.module/track.object.php');
+			require_once Forma::inc(_lms_ . '/lib/lib.stats.php');
 
 			$id_item = importVar('id_item');
 
@@ -295,7 +295,7 @@ class Module_Organization extends LmsModule {
 
 			if ( $isTerminator ) {
 
-				require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
+				require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 				$idTrack = Track_Object::getIdTrackFromCommon( $id_item, getLogUserId() );
 				$track = createLOTrack( $idTrack, $objectType, $idResource, $idParams, "" );
 				if( $track->getStatus() == 'completed' || $track->getStatus() == 'passed' ) {
@@ -319,7 +319,7 @@ class Module_Organization extends LmsModule {
 				// autoplay with more than an object and the first one is completed
 
 
-				require_once(_lms_.'/lib/lib.orgchart.php');
+				require_once Forma::inc(_lms_.'/lib/lib.orgchart.php');
 				$orgman = new OrganizationManagement($_SESSION['idCourse']);
 				$first_lo =& $orgman->getInfoWhereType(false, $_SESSION['idCourse']);
 
@@ -367,7 +367,7 @@ class Module_Organization extends LmsModule {
 				global $modname;
 				// save state
 
-				require_once($GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
+				require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php' );
 				$saveObj = new Session_Save();
 				$saveName = $saveObj->getName('organization'.$_SESSION['idCourse'], true);
 				$saveObj->save( $saveName, $this->treeView->getState() );
@@ -379,7 +379,7 @@ class Module_Organization extends LmsModule {
 			case 'createLOSel':
 				global $modname;
 				// save state
-				require_once($GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
+				require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php' );
 				$saveObj = new Session_Save();
 				$saveName = $saveObj->getName('organization'.$_SESSION['idCourse'], true);
 				$saveObj->save( $saveName, $this->treeView->getState() );
@@ -409,7 +409,7 @@ class Module_Organization extends LmsModule {
 			case 'editLO':
 				global $modname;
 				// save state
-				require_once($GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
+				require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php' );
 				$saveObj = new Session_Save();
 				$saveName = $saveObj->getName('organization'.$_SESSION['idCourse'], true);
 				$saveObj->save( $saveName, $this->treeView->getState() );
@@ -423,7 +423,7 @@ class Module_Organization extends LmsModule {
 			case 'playitem':
 				global $modname;
 				// save state
-				require_once($GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
+				require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php' );
 				$saveObj = new Session_Save();
 				$saveName = $saveObj->getName('organization'.$_SESSION['idCourse'], true);
 				$saveObj->save( $saveName, $this->treeView->getState() );
@@ -449,7 +449,7 @@ class Module_Organization extends LmsModule {
 			case 'copyLOEndOk':
 			case 'copyLOEndCancel':
 				global $modname;
-				require_once($GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
+				require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php' );
 				$saveObj = new Session_Save();
 				$saveName = $_GET['crepo'];
 				if( $saveObj->nameExists($saveName) ) {
@@ -464,7 +464,7 @@ class Module_Organization extends LmsModule {
 			case 'copyLO':
 				global $modname;
 				// save state
-				require_once($GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
+				require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php' );
 				$saveObj = new Session_Save();
 				$saveName = $saveObj->getName('crepo', true);
 				$folder = $this->treeView->tdb->getFolderById( $this->treeView->selectedFolder );

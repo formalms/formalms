@@ -50,8 +50,8 @@
  */ 
  
  
-require_once(dirname(__FILE__) . '/config.scorm.php');
-require_once(dirname(__FILE__) . '/scorm_utils.php');
+require_once Forma::inc(_lms_. '/modules/scorm/config.scorm.php');
+require_once Forma::inc(_lms_. '/modules/scorm/scorm_utils.php');
 
 Class Scorm_ItemsTrack {
 	var $dbconn;
@@ -566,8 +566,8 @@ Class Scorm_ItemsTrack {
 			//print_r($record);
 			if( strcmp($status,'completed') == 0 || strcmp($status, 'passed') == 0 ) {
 				soap__dbgOut( "update commontrack" );
-				require_once( _lms_ ."/class.module/track.object.php" );
-				require_once( _lms_ ."/class.module/track.scorm.php" );
+				require_once Forma::inc(_lms_ . "/class.module/track.object.php");
+				require_once Forma::inc(_lms_ . "/class.module/track.scorm.php");
 				soap__dbgOut( "create Track_ScormOrg object" );		
 				$track_so = new Track_ScormOrg( $record['idscorm_item_track'], false, false, NULL, $environment );
 				soap__dbgOut( "idscorm_item_track" .$record['idscorm_item_track'] );

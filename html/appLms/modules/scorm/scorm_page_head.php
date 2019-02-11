@@ -25,13 +25,13 @@ ob_start();
 if(!Docebo::user()->isLoggedIn() || !isset($_SESSION['idCourse'])) 
 	die( "Malformed request" ); 
 
-require_once(dirname(__FILE__) . '/config.scorm.php');
+require_once Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
 
 
 @sql_query("SET NAMES '".$GLOBALS['db_conn_names']."'", $dbconn);
 @sql_query("SET CHARACTER SET '".$GLOBALS['db_conn_char_set']."'", $dbconn);
 
-require_once(dirname(__FILE__) . '/scorm_items_track.php');
+require_once Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.php');
 
 $idscorm_organization = (int)$_GET['idscorm_organization'];
 $idReference = (int)$_GET['idReference'];

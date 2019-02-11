@@ -18,8 +18,8 @@
  * @copyright 2004
  */
  
-require_once(dirname(__FILE__) . '/config.scorm.php');
-require_once(dirname(__FILE__) . '/scorm_utils.php');
+require_once Forma::inc(_lms_. '/modules/scorm/config.scorm.php');
+require_once Forma::inc(_lms_. '/modules/scorm/scorm_utils.php');
 
 $direct_access_params['cmi.core.student_id'] 		= 'student_id';
 $direct_access_params['cmi.core.student_name'] 		= 'student_name';
@@ -221,7 +221,7 @@ class Scorm_Tracking {
 	}*/
 	
 	function precompileXmlDoc() {
-		require_once(dirname(__FILE__) . '/scorm-'.$this->scormVersion.'.php');
+		require_once Forma::inc(_lms_ . '/modules/scorm/scorm-'.$this->scormVersion.'.php');
 		$root = $this->xmldoc->createElement('trackobj');
 		$this->xmldoc->appendChild($root);
 		$root->setAttribute('iduser', $this->idUser);
@@ -505,7 +505,7 @@ class Scorm_Tracking {
 	} 
 	
 	function setParamXML( $xmldoc ) {
-		require_once(dirname(__FILE__) . '/scorm-'.$this->scormVersion.'.php');
+		require_once Forma::inc(_lms_ . '/modules/scorm/scorm-'.$this->scormVersion.'.php');
 		$arrFields = array();
 		$xpath = new DDomXPath($xmldoc);
 		foreach( $GLOBALS['xpathwritedb'] as $fieldName => $xpathquery ) {
