@@ -25,7 +25,7 @@ function additem($object_item) {
 	//checkPerm( 'view', FALSE, 'storage' );
 	
 	$lang =& DoceboLanguage::createInstance('scorm', 'lms');
-	require_once Forma::inc(_lib_ . '/lib/lib.form.php');
+	require_once Forma::inc(_lib_ . '/lib.form.php');
 	$form = new Form();
 	
 	//area title
