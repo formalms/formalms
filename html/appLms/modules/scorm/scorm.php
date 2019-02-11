@@ -25,7 +25,7 @@ function additem($object_item) {
 	//checkPerm( 'view', FALSE, 'storage' );
 	
 	$lang =& DoceboLanguage::createInstance('scorm', 'lms');
-	require_once(_base_.'/lib/lib.form.php');
+	require_once Forma::inc(_lib_ . '/lib/lib.form.php');
 	$form = new Form();
 	
 	//area title
@@ -226,7 +226,7 @@ function moditem($object_item) {
 		" WHERE idResource = ".(int)$object_item->id." AND objectType = 'scormorg' ";
 	list($id_reference) = sql_fetch_row(sql_query($query));
 
-	require_once(_lib_.'/lib.table.php');
+	require_once Forma::inc(_lib_ . '/lib.table.php');
 	$tb = new Table();
 	$h_type = array('', '');
 	$h_content = array(
@@ -309,7 +309,7 @@ function _scorm_deleteitem( $idscorm_package, $idscorm_organization, $erasetrack
 				
 				$size = Get::dir_size($scopath.$path);
 			
-				require_once( dirname(__FILE__). '/scorm_utils.php'); // for del tree
+				require_once Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php'); // for del tree
 				delDirTree($scopath.$path);
 
 				if(isset($_SESSION['idCourse']) && defined("LMS")) {
@@ -331,9 +331,9 @@ function _scorm_deleteitem( $idscorm_package, $idscorm_organization, $erasetrack
 function _scorm_copyitem( $idscorm_package, $idscorm_organization ) {
 	funAccess( 'additem','NEW', false, 'scorm' );
 	
-	require_once(_base_.'/lib/lib.upload.php');
-	require_once(dirname(__FILE__) .'/RendererDb.php');
-	require_once(dirname(__FILE__) .'/CPManager.php');
+	require_once Forma::inc(_lib_ . '/lib.upload.php');
+	require_once Forma::inc(_lms_ . '/modules/scorm/RendererDb.php');
+	require_once Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
 	
 	if( ($rs = sql_query("SELECT path FROM ".$GLOBALS['prefix_lms']."_scorm_package "
 							."WHERE idscorm_package='"
