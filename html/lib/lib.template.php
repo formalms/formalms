@@ -25,6 +25,9 @@ function getTemplate() {
  
 	// If saved in session use this one
 	if(isset($_SESSION['template']) && $_SESSION['template'] != false) {
+		if (!checkTemplateVersion($_SESSION['template'])){
+			return 'standard';
+		}
 		return $_SESSION['template'];
 	}
 
@@ -38,6 +41,9 @@ function getTemplate() {
 	$plat_templ = parseTemplateDomain($_SERVER['HTTP_HOST']);
 	if($plat_templ != false) {
 		$_SESSION['template'] = $plat_templ;
+		if (!checkTemplateVersion($_SESSION['template'])){
+			return 'standard';
+		}
 		return $plat_templ;
 	}
 
@@ -56,12 +62,18 @@ function getTemplate() {
 			list($template_code) = sql_fetch_row($re);
 
 			setTemplate($template_code);
+			if (!checkTemplateVersion($_SESSION['template'])){
+				return 'standard';
+			}
 			return $_SESSION['template'];
 		}
 	}
 
 	// search for the default template
 	$_SESSION['template'] = getDefaultTemplate();
+	if (!checkTemplateVersion($_SESSION['template'])){
+		return 'standard';
+	}
 	return $_SESSION['template'];
 }
 
@@ -110,6 +122,47 @@ function resetTemplate() {
 	setTemplate(getTemplate());
 }
 
+    /**
+     * Read specified template manifest
+     * @param $template_name
+     * @param bool $key
+     * @return bool|array
+     */
+	 function readTemplateManifest($template_name, $key = false)
+	 {
+		 $template_file = _base_ . "/templates/" . $template_name . "/manifest.xml";
+		 if (!file_exists($template_file)) {
+			 return false;
+		 }
+		 if ($xml = simplexml_load_file($template_file)) {
+			 $man_json = json_encode($xml);
+			 $man_array = json_decode($man_json, TRUE);
+			if (key_exists($key, $man_array)) {
+				return $man_array[$key];
+			}
+			return $man_array;
+		 } else {
+			 return false;
+		 }
+	 }
+
+/**
+ * Check the template version
+ * @return bool false if template is not compatible, true if it is compatible
+ */
+function checkTemplateVersion($template_name) {
+	require_once(Forma::inc(_adm_ . "/versions.php"));
+	$template_forma_version = readTemplateManifest($template_name, 'forma_version');
+	$check = array();
+	if ($template_forma_version) {
+
+		if (version_compare(_template_min_version_, $template_forma_version) <= 0) {
+			return true;
+		}
+	}
+	return false;
+}
+
 /**
  * Retrive a list of template
  * @return array an array with the existent templates
@@ -119,7 +172,7 @@ function getTemplateList($set_keys = FALSE, $platform = FALSE) {
 	$templ = dir(_base_.'/templates/');
 	while($elem = $templ->read()) {
 
-		if((is_dir(_base_.'/templates/'.$elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem{0} != '_' && file_exists(_base_.'/templates/'.$elem."/manifest.xml")) {
+		if((is_dir(_base_.'/templates/'.$elem)) && ($elem != ".") && ($elem != "..") && ($elem != ".svn") && $elem{0} != '_' && checkTemplateVersion($elem)) {
 
 			if (!$set_keys) $templArray[] = $elem;
 			else $templArray[$elem] = $elem;
