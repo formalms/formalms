@@ -116,10 +116,11 @@ class Track_Object {
 		include_once (_base_.'/appLms/Events/Lms/LoStatusUpdate.php');
 		$event = new \appLms\Events\Lms\LoStatusUpdate();
 		$event->setUser($idUser);
-		$event->setType((($objectType==FALSE)?($this->objectType):($objectType))); // TODO: $objectTYpe vuoto
+		$event->setObjectType((($objectType==FALSE)?($this->objectType):($objectType))); // TODO: $objectTYpe vuoto
 		$event->setReference($idReference);
 		$event->setStatus($status);
 		$event->setDate($dateAttempt);
+		$event->setTrackType(\appLms\Events\Lms\LoStatusUpdate::CREATE_TRACK);
 		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\LoStatusUpdate::EVENT_NAME, $event);
 		
 		if(isset($this)) {
@@ -166,10 +167,11 @@ class Track_Object {
 		include_once (_base_.'/appLms/Events/Lms/LoStatusUpdate.php');
 		$event = new \appLms\Events\Lms\LoStatusUpdate();
 		$event->setUser($this->idUser);
-		$event->setType($this->objectType?$this->objectType:$this->_table); // TODO: $objectTYpe vuoto
+		$event->setObjectType($this->objectType?$this->objectType:$this->_table); // TODO: $objectTYpe vuoto
 		$event->setReference($this->idReference);
 		$event->setStatus($this->status);
 		$event->setDate($this->dateAttempt);
+		$event->setTrackType(\appLms\Events\Lms\LoStatusUpdate::UPDATE_TRACK);
 		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\LoStatusUpdate::EVENT_NAME, $event);
 		$this->_setCourseCompleted();
 		return true;

@@ -7,16 +7,19 @@ use Symfony\Component\EventDispatcher\Event;
 class LoStatusUpdate extends Event {
     
     const EVENT_NAME = 'lms.lo.status.update';
+    const CREATE_TRACK = 'create';
+    const UPDATE_TRACK = 'update';
 
     /**
      * @var
      */
 
     protected $user;
-    protected $type;
+    protected $objectType;
     protected $status;
     protected $date;
     protected $reference;
+    protected $trackType;
 
     /**
      * @return mixed
@@ -37,17 +40,17 @@ class LoStatusUpdate extends Event {
         /**
      * @return mixed
      */
-     public function getType()
+     public function getObjectType()
      {
-         return $this->type;
+         return $this->objectType;
      }
  
      /**
       * @param mixed $user
       */
-     public function setType($user)
+     public function setObjectType($objectType)
      {
-         $this->type = $type;
+         $this->objectType = $objectType;
      }
 
          /**
@@ -97,5 +100,21 @@ class LoStatusUpdate extends Event {
      public function setReference($reference)
      {
          $this->reference = $reference;
+     }
+
+    /**
+     * @return mixed
+     */
+     public function getTrackType()
+     {
+         return $this->trackType;
+     }
+ 
+     /**
+      * @param mixed $UpdateType
+      */
+     public function setTrackType($trackType)
+     {
+         $this->trackType = $trackType;
      }
 }
