@@ -71,9 +71,6 @@ function getTemplate() {
 
 	// search for the default template
 	$_SESSION['template'] = getDefaultTemplate();
-	if (!checkTemplateVersion($_SESSION['template'])){
-		return 'standard';
-	}
 	return $_SESSION['template'];
 }
 
