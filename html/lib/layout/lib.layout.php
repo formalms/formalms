@@ -301,7 +301,15 @@ class Layout
     public static function render($layout)
     {
         if ($_SESSION['template'] != getTemplate()) {
-            UIFeedback::notice('tema "' . $_SESSION['template'] . '" non utilizzato perchè non compatibile, sto usando template standard');
+            $msgChangeTemplate='tema "' . $_SESSION['template'] . '" non utilizzato perchè non compatibile, sto usando template standard';
+            // NOTE DA RIMUOVERE
+            $msgChangeTemplate .= '<br/><hr/>';
+            $msgChangeTemplate .= '<br/>NOTA: <b>'. 'aggiornare manifest.xml in cartella templates aggiornando forma_version a "2.2"'.'</b>';
+            $msgChangeTemplate .= '<br/><hr/>';
+            $msgChangeTemplate .= '<br/>NOTA: (todo)'. 'Tradurre messaggio, aggiungere traduzione in lang';
+            $msgChangeTemplate .= '<br/>NOTA: (todo)'. 'Visualizzare messaggio solo per admin?';
+            $msgChangeTemplate .= '<br/>NOTA: (todo)'. 'Visualizzare messaggio solo per admin e/o in amministrazione?';
+            UIFeedback::notice($msgChangeTemplate);
         }
         $browser = Get::user_agent();
         header("Content-Type: text/html; charset=" . self::charset() . "");
