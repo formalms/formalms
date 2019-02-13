@@ -300,7 +300,9 @@ class Layout
 
     public static function render($layout)
     {
-
+        if ($_SESSION['template'] != getTemplate()) {
+            UIFeedback::notice('tema "' . $_SESSION['template'] . '" non utilizzato perchè non compatibile, sto usando template standard');
+        }
         $browser = Get::user_agent();
         header("Content-Type: text/html; charset=" . self::charset() . "");
         if ($browser["browser"] !== 'msie') {
