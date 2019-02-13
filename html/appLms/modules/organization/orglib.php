@@ -1287,6 +1287,8 @@ class Org_TreeView extends RepoTreeView {
 		} else {
 			$isFolder = true;
 		}
+        
+        $lo_class = createLO($arrData[REPOFIELDOBJECTTYPE]);
 
 
 		//check for void selection
@@ -1334,7 +1336,7 @@ class Org_TreeView extends RepoTreeView {
 							'</span>';
 			} else if($isPrerequisitesSatisfied && $event->getAccessible()) {
 
-				$out .= ' <a '.( $arrData[1] == 'scormorg' ? ' rel="lightbox'.$lb_param.'"' : '' ).' class="'.$classStyle.'" ' .
+				$out .= ' <a '.( $lo_class->showInLightbox() ? ' rel="lightbox'.$lb_param.'"' : '' ).' class="'.$classStyle.'" ' .
 							'id="'.$this->id.'_'.$this->_getOpPlayItemId().'_'.$stack[$level]['folder']->id.'" ' .
 							'name="'.$this->id.'['.$this->_getOpPlayItemId().']['.$stack[$level]['folder']->id.']" ' .
 							'href="index.php?modname=organization&amp;op=custom_playitem&amp;id_item='.$stack[$level]['folder']->id.'" ' .
@@ -1400,7 +1402,7 @@ class Org_TreeView extends RepoTreeView {
 						if( checkPerm('lesson', true, 'storage') && !$this->playOnly ) {
 							if( $this->withActions == FALSE ) 
 								return $out;
-							if ($arrData[REPOFIELDOBJECTTYPE] != 'poll' && $arrData[REPOFIELDOBJECTTYPE] != 'test' && $arrData[REPOFIELDOBJECTTYPE] != 'test360') {
+							if ($lo_class->canBeCategorized()) {
 								$out .= '<input type="image" class="tree_view_image" '
 									.' src="'.$this->_getCategorizeImg().'"'
 									.' id="'.$this->id.'_'.$this->_getCategorizeId().'_'.$stack[$level]['folder']->id.'" '
@@ -1437,7 +1439,7 @@ class Org_TreeView extends RepoTreeView {
 									$out .='<div class="TVActionEmpty">&nbsp;</div>';
 								}*/
 								
-								$out .= '<a '.( $arrData[1] == 'scormorg' ? ' rel="lightbox'.$lb_param.'"' : '' ).' class="tree_view_image" ' .
+								$out .= '<a '.( $lo_class->showInLightbox() ? ' rel="lightbox'.$lb_param.'"' : '' ).' class="tree_view_image" ' .
 									'id="'.$this->id.'_'.$this->_getOpPlayItemId().'_'.$stack[$level]['folder']->id.'" ' .
 									'name="'.$this->id.'['.$this->_getOpPlayItemId().']['.$stack[$level]['folder']->id.']" ' .
 									'href="index.php?modname=organization&amp;op=custom_playitem&amp;edit=1&amp;id_item='.$stack[$level]['folder']->id.'" ' .
@@ -1473,23 +1475,12 @@ class Org_TreeView extends RepoTreeView {
 									.' alt="'.$this->_getOpLockedTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
 
 							} else if( $isPrerequisitesSatisfied && $event->getAccessible()) {
-								
-								if ($arrData[1] == 'scormorg') {
+
+                                if(method_exists($lo_class, 'trackDetails')) {
 									$out .= '<a class="tree_view_image" '
 										.'id="'.$this->id.'_'.$this->_getShowResultsId().'_'.$stack[$level]['folder']->id.'" '
 										.'name="'.$this->id.'['.$this->_getShowResultsId().']['.$stack[$level]['folder']->id.']" '
-										.'href="index.php?modname=organization&amp;op=scorm_track&amp;id_user='.getLogUserId().'&amp;id_org='.$arrData[2].'" '//$stack[$level]['folder']->id.'" '//id_item='.$stack[$level]['folder']->id.'" '
-										.'title="'.$this->_getShowResultsTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'">'
-											.'<img src="'.$this->_getShowResultsImg().'"'
-											.' alt="'.$this->_getShowResultsTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />'
-										.'</a>';
-								}
-								elseif($arrData[1] == 'test')
-								{
-									$out .= '<a class="tree_view_image" '
-										.'id="'.$this->id.'_'.$this->_getShowResultsId().'_'.$stack[$level]['folder']->id.'" '
-										.'name="'.$this->id.'['.$this->_getShowResultsId().']['.$stack[$level]['folder']->id.']" '
-										.'href="index.php?modname=organization&amp;op=test_track&amp;id_user='.getLogUserId().'&amp;id_org='.$arrData[2].'" '
+										.'href="index.php?modname=organization&amp;op=track_details&amp;type=' . $arrData[REPOFIELDOBJECTTYPE] . '&amp;id_user='.getLogUserId().'&amp;id_org='.$arrData[REPOFIELDIDRESOURCE].'" '
 										.'title="'.$this->_getShowResultsTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'">'
 											.'<img src="'.$this->_getShowResultsImg().'"'
 											.' alt="'.$this->_getShowResultsTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />'
