@@ -2639,7 +2639,7 @@ class UsermanagementAdmController extends AdmController {
 				return;
 			}
 		}
-		if (isset($sel_properties['force_change'])) $info->force_change = Get::req('force_change', DOTY_INT, 0) > 0;
+		if (isset($sel_properties['force_change'])) $info->force_change = $sel_properties['force_change'] > 0;
 
 		if (isset($sel_properties['level'])) $info->level = Get::req('level', DOTY_STRING, "");
 
@@ -2682,6 +2682,34 @@ class UsermanagementAdmController extends AdmController {
 		$event->setUsers($users);
 		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
 		$users = $event->getUsers();
+
+		//send email alert
+		if(isset($sel_properties['send_alert']) && isset($sel_properties['password']) &&  $info->password != "" ) {
+
+			for ($i=0; $i<count($users); $i++) {
+
+				$acl_man =& Docebo::user()->getAclManager();
+				
+				$array_subst = array(
+					'[url]' => Get::site_url(),
+					'[userid]' => $acl_man->getUserid($users[$i]),
+					'[password]' => $info->password
+				);
+
+				require_once(_base_.'/lib/lib.eventmanager.php');
+				$e_msg = new EventMessageComposer();
+
+				$e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
+				$e_msg->setBodyLangText('email', '_REGISTERED_USER_TEXT', $array_subst );
+
+				$e_msg->setBodyLangText('sms', '_REGISTERED_USER_TEXT_SMS', $array_subst );
+
+				$recipients = array($users[$i]);
+				createNewAlert(	'UserNew', 'directory', 'edit', '1', 'New user created', $recipients, $e_msg, true );
+
+			}
+
+		}
 
 		$res = $this->model->updateMultipleUsers($users, $info);
 

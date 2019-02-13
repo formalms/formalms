@@ -53,11 +53,17 @@ $mask .= $_close_cell.$_open_cell;
 $mask .= Form::getPassword(Lang::t('_RETYPE_PASSWORD', 'register'), 'new_password_confirm', 'new_password_confirm', 50, "");
 $mask .= $_close_cell.$_close_row;
 
-//$mask .= $_open_row;
-//$mask .= Form::getCheckBox(Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory'), 'force_changepwd', 'force_changepwd', 1, $force_change);
-//$mask .= $_close_cell.$_open_cell;
-//$mask .= Form::getDropdown(Lang::t('_LEVEL', 'admin_directory'), 'level', 'level', $levels, $info['level']);
-//$mask .= $_close_row;
+$mask .= $_open_row.$_open_cell;
+$mask .= Form::getInputCheckbox('multimod_sel_send_alert', 'multimod_sel[send_alert]', 1, false, "");
+$mask .= $_close_cell.$_open_cell;
+$mask .= "&nbsp;"."<b>".Lang::t('_SEND_NEW_CREDENTIALS_ALERT', 'user_managment')."</b>";
+$mask .= $_close_cell.$_close_row;
+
+$mask .= $_open_row.$_open_cell;
+$mask .= Form::getInputCheckbox('multimod_sel_force_change', 'multimod_sel[force_change]', 1, false, "");
+$mask .= $_close_cell.$_open_cell;
+$mask .= "&nbsp;"."<b>".Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory')."</b>";
+$mask .= $_close_cell.$_close_row;
 
 $mask .= $_open_row.$_open_cell;
 $mask .= Form::getInputCheckbox('multimod_sel_level', 'multimod_sel[level]', 1, false, "");
