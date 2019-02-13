@@ -300,15 +300,11 @@ class Layout
 
     public static function render($layout)
     {
-        if ($_SESSION['template'] != getTemplate()) {
-            $msgChangeTemplate='tema "' . $_SESSION['template'] . '" non utilizzato perchè non compatibile, sto usando template standard';
-            // NOTE DA RIMUOVERE
-            $msgChangeTemplate .= '<br/><hr/>';
-            $msgChangeTemplate .= '<br/>NOTA: <b>'. 'aggiornare manifest.xml in cartella templates aggiornando forma_version a "2.2"'.'</b>';
-            $msgChangeTemplate .= '<br/><hr/>';
-            $msgChangeTemplate .= '<br/>NOTA: (todo)'. 'Tradurre messaggio, aggiungere traduzione in lang';
-            $msgChangeTemplate .= '<br/>NOTA: (todo)'. 'Visualizzare messaggio solo per admin?';
-            $msgChangeTemplate .= '<br/>NOTA: (todo)'. 'Visualizzare messaggio solo per admin e/o in amministrazione?';
+        if ($_SESSION['template'] != getTemplate() && Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && CORE === true) {
+            $msgChangeTemplate = Lang::t('_MSG_CHANGE_TEMPLATE', 'standard');
+            $msgChangeTemplate = str_replace('[template_name]', $_SESSION['template'], $msgChangeTemplate);
+            $msgChangeTemplate = str_replace('[template_min_version]', _template_min_version_, $msgChangeTemplate);
+
             UIFeedback::notice($msgChangeTemplate);
         }
         $browser = Get::user_agent();
