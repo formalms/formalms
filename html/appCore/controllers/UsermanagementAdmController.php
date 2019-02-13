@@ -2641,6 +2641,8 @@ class UsermanagementAdmController extends AdmController {
 		}
 		if (isset($sel_properties['force_change'])) $info->force_change = $sel_properties['force_change'] > 0;
 
+		if (isset($sel_properties['link_reset_password'])) $info->force_change = $sel_properties['link_reset_password'] > 0;
+
 		if (isset($sel_properties['level'])) $info->level = Get::req('level', DOTY_STRING, "");
 
 		/*
@@ -2683,12 +2685,12 @@ class UsermanagementAdmController extends AdmController {
 		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
 		$users = $event->getUsers();
 
+		$acl_man =& Docebo::user()->getAclManager();
+
 		//send email alert
 		if(isset($sel_properties['send_alert']) && isset($sel_properties['password']) &&  $info->password != "" ) {
 
 			for ($i=0; $i<count($users); $i++) {
-
-				$acl_man =& Docebo::user()->getAclManager();
 				
 				$array_subst = array(
 					'[url]' => Get::site_url(),
@@ -2709,6 +2711,15 @@ class UsermanagementAdmController extends AdmController {
 
 			}
 
+		}
+
+		//send email link change password
+		if(isset($sel_properties['link_reset_password'])) {
+			require_once(_base_.'/appCore/models/HomepageAdm.php');
+			$homepageAdmModel = new HomepageAdm();
+			for ($i=0; $i<count($users); $i++) {
+				$res = $homepageAdmModel->sendLostPwd($acl_man->getUserid($users[$i]));
+			}
 		}
 
 		$res = $this->model->updateMultipleUsers($users, $info);

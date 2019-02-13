@@ -66,6 +66,12 @@ $mask .= "&nbsp;"."<b>".Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory')."</
 $mask .= $_close_cell.$_close_row;
 
 $mask .= $_open_row.$_open_cell;
+$mask .= Form::getInputCheckbox('multimod_sel_link_reset_password', 'multimod_sel[link_reset_password]', 1, false, "");
+$mask .= $_close_cell.$_open_cell;
+$mask .= "&nbsp;"."<b>".Lang::t('_SEND_LINK_RESET_PASSWORD', 'register')."</b>";
+$mask .= $_close_cell.$_close_row;
+
+$mask .= $_open_row.$_open_cell;
 $mask .= Form::getInputCheckbox('multimod_sel_level', 'multimod_sel[level]', 1, false, "");
 $mask .= $_close_cell.$_open_cell;
 $mask .= Form::getDropdown(Lang::t('_LEVEL', 'admin_directory'), 'level', 'level', $levels, $info['level']);
