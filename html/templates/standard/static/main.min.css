@@ -5236,7 +5236,7 @@ header.header {
 
 .social-login__list {
   margin: 16px 0 24px;
-  font-size: 0;
+  font-size: 12px;
   text-align: center; }
   .social-login__list > a {
     display: inline-block;
@@ -5246,6 +5246,7 @@ header.header {
     display: block;
     width: 40px;
     height: 40px;
+    margin: 0 auto 10px;
     font-size: 24px;
     line-height: 40px;
     text-align: center;
@@ -5254,10 +5255,15 @@ header.header {
     background-color: #3b5998; }
   .social-login__list .fa-twitter {
     background-color: #1da1f2; }
-  .social-login__list .fa-google {
-    background-color: #db4437; }
+  .social-login__list .fa-google-plus {
+    background-color: #d62d20; }
   .social-login__list .fa-linkedin {
     background-color: #0077b5; }
+  .social-login__list .form_elem_button {
+    text-align: center;
+    padding-right: 0; }
+    .social-login__list .form_elem_button input {
+      margin: 0 auto; }
 
 .select-language {
   font-size: 16px;
