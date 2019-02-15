@@ -250,10 +250,10 @@ class CoursestatsLms extends Model {
 				if (is_array($history)) $history_table_html.='
 					<tr>
 						<td>&nbsp;</td>
-						<td><b>Data inizio</b></td>
-						<td><b>Data fine</b></td>
-						<td><b>Durata (hh:mm:ss)</b></td>
-						<td><b>Esito</b></td>
+						<td><b>'.Lang::t('_DATE_START', 'course').'</b></td>
+						<td><b>'.Lang::t('_DATE_END', 'course').'</b></td>
+						<td><b>'.Lang::t('_DURATION', 'course').' (hh:mm:ss)</b></td>
+						<td><b>'.Lang::t('_RESULT', 'course').'</b></td>
 					</tr>';
 				foreach ($history as $key => $history_rec) { 
 					$seconds_diff = strtotime("1970-01-01 ".$history_rec[3]." UTC");

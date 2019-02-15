@@ -27,6 +27,7 @@ class PDF extends TCPDF
     var $enc_obj_id;         //encryption object id
     var $last_rc4_key;       //last RC4 key encrypted (cached for optimisation)
     var $last_rc4_key_c;     //last RC4 computed key
+    var $page_delimiter;
 
     function PDF($orientation = 'P', $unit = 'mm', $format = 'A4', $unicode = true, $encoding = "UTF-8")
     {
@@ -148,12 +149,6 @@ class PDF extends TCPDF
         // set JPEG quality
         $this->setJPEGQuality(80);
 
-        if ($img != '') {
-            $this->setXY(0, 0);
-            $this->Image($GLOBALS['where_files_relative'] . '/appLms/certificate/' . $img, 0, 0, ($this->CurOrientation == 'P' ? 210 : 298), 0, '', '', '', true);
-            $this->setXY(0, 0);
-        }
-
         if ($facs_simile) {
             //Put watermark  Author: Ivan
             $this->SetFont('dejavusans', '', 40);
@@ -163,8 +158,25 @@ class PDF extends TCPDF
             $this->SetTextColor(0, 0, 0);
         }
         $this->setXY(0, 0);
-        //$this->UseCSS(true);
-        $this->WriteHTML($html);
+        
+        // managing page break
+        $this->page_delimiter = '<!-- pagebreak -->';
+        $pages    = explode($this->page_delimiter, $html);
+        $cnt       = count($pages);
+        for ($i = 0; $i < $cnt; $i++) {
+            if ($img != '') {
+                $this->setXY(0, 0);
+                $this->Image($GLOBALS['where_files_relative'] . '/appLms/certificate/' . $img, 0, 0, ($this->CurOrientation == 'P' ? 210 : 298), 0, '', '', '', true);
+                $this->setXY(0, 0);
+            }            
+            
+            $this->writeHTML($this->page_delimiter . $pages[$i], true, 0, true, 0);
+
+            if ($i < $cnt - 1) {
+                 $this->AddPage();
+            }
+        }
+        $this->lastPage();
 
 
         $name = str_replace(

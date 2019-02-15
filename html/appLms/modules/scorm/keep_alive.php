@@ -38,7 +38,7 @@ if(!function_exists("aout")) {
 
 // here all the specific code ==========================================================
 
-require_once($GLOBALS['where_lms'].'/lib/lib.track_user.php');
+require_once Forma::inc(_lms_ . '/lib/lib.track_user.php');
 TrackUser::setActionTrack(getLogUserId(), $_SESSION['idCourse'], 'scorm', 'close');
 
 // update the tracking

@@ -19,7 +19,7 @@
  * @copyright 2004 
  **/
 
-include_once( dirname(__FILE__).'/scorm_utils.php');
+include_once Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php');
 
 /**
  * @class CPManagerDb

@@ -1239,6 +1239,22 @@ class Org_TreeView extends RepoTreeView {
 	
 	function printElement(&$stack, $level) {
 
+		include_once (_base_.'/appLms/Events/Lms/OrgPropertiesPrintEvent.php');
+		$event = new \appLms\Events\Lms\OrgPropertiesPrintEvent();
+
+        $event->setElement($stack[$level]['folder']);
+
+        $event->setDisplayable(true);
+        $event->setAccessible(true);
+
+        $event->setId($this->id);
+
+		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\OrgPropertiesPrintEvent::EVENT_NAME, $event);
+		
+		if (!$event->getDisplayable()) {
+			return '';
+		}
+
 		require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
 		
 		// $out = '<div class="TreeViewRowBase">';
@@ -1271,6 +1287,9 @@ class Org_TreeView extends RepoTreeView {
 		} else {
 			$isFolder = true;
 		}
+		
+		$lo_type = $arrData[REPOFIELDOBJECTTYPE];
+        $lo_class = createLO($lo_type);
 
 
 		//check for void selection
@@ -1316,9 +1335,9 @@ class Org_TreeView extends RepoTreeView {
 							'name="'.$this->id.'['.$this->_getOpPlayItemId().']['.$stack[$level]['folder']->id.']">'
 								.$this->getFolderPrintName( $stack[$level]['folder']).
 							'</span>';
-			} else if($isPrerequisitesSatisfied) {
+			} else if($isPrerequisitesSatisfied && $event->getAccessible()) {
 
-				$out .= ' <a '.( $arrData[1] == 'scormorg' ? ' rel="lightbox'.$lb_param.'"' : '' ).' class="'.$classStyle.'" ' .
+				$out .= ' <a '.( $lo_class->showInLightbox() ? ' rel="lightbox'.$lb_param.'"' : '' ).' class="'.$classStyle.'" ' .
 							'id="'.$this->id.'_'.$this->_getOpPlayItemId().'_'.$stack[$level]['folder']->id.'" ' .
 							'name="'.$this->id.'['.$this->_getOpPlayItemId().']['.$stack[$level]['folder']->id.']" ' .
 							'href="index.php?modname=organization&amp;op=custom_playitem&amp;id_item='.$stack[$level]['folder']->id.'" ' .
@@ -1382,9 +1401,15 @@ class Org_TreeView extends RepoTreeView {
 					break;
 					default:
 						if( checkPerm('lesson', true, 'storage') && !$this->playOnly ) {
-							if( $this->withActions == FALSE ) 
+							if( $this->withActions == FALSE ){
 								return $out;
-							if ($arrData[REPOFIELDOBJECTTYPE] != 'poll' && $arrData[REPOFIELDOBJECTTYPE] != 'test' && $arrData[REPOFIELDOBJECTTYPE] != 'test360') {
+							}
+							$canBeCategorized = false;
+							if (is_object($lo_class)){
+								$canBeCategorized = $lo_class->canBeCategorized();
+							}
+							
+							if ($canBeCategorized) {
 								$out .= '<input type="image" class="tree_view_image" '
 									.' src="'.$this->_getCategorizeImg().'"'
 									.' id="'.$this->id.'_'.$this->_getCategorizeId().'_'.$stack[$level]['folder']->id.'" '
@@ -1421,7 +1446,7 @@ class Org_TreeView extends RepoTreeView {
 									$out .='<div class="TVActionEmpty">&nbsp;</div>';
 								}*/
 								
-								$out .= '<a '.( $arrData[1] == 'scormorg' ? ' rel="lightbox'.$lb_param.'"' : '' ).' class="tree_view_image" ' .
+								$out .= '<a '.( $lo_class->showInLightbox() ? ' rel="lightbox'.$lb_param.'"' : '' ).' class="tree_view_image" ' .
 									'id="'.$this->id.'_'.$this->_getOpPlayItemId().'_'.$stack[$level]['folder']->id.'" ' .
 									'name="'.$this->id.'['.$this->_getOpPlayItemId().']['.$stack[$level]['folder']->id.']" ' .
 									'href="index.php?modname=organization&amp;op=custom_playitem&amp;edit=1&amp;id_item='.$stack[$level]['folder']->id.'" ' .
@@ -1456,24 +1481,13 @@ class Org_TreeView extends RepoTreeView {
 									.' title="'.$this->_getOpLockedTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" '
 									.' alt="'.$this->_getOpLockedTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
 
-							} else if( $isPrerequisitesSatisfied ) {
-								
-								if ($arrData[1] == 'scormorg') {
+							} else if( $isPrerequisitesSatisfied && $event->getAccessible()) {
+
+                                if(method_exists($lo_class, 'trackDetails')) {
 									$out .= '<a class="tree_view_image" '
 										.'id="'.$this->id.'_'.$this->_getShowResultsId().'_'.$stack[$level]['folder']->id.'" '
 										.'name="'.$this->id.'['.$this->_getShowResultsId().']['.$stack[$level]['folder']->id.']" '
-										.'href="index.php?modname=organization&amp;op=scorm_track&amp;id_user='.getLogUserId().'&amp;id_org='.$arrData[2].'" '//$stack[$level]['folder']->id.'" '//id_item='.$stack[$level]['folder']->id.'" '
-										.'title="'.$this->_getShowResultsTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'">'
-											.'<img src="'.$this->_getShowResultsImg().'"'
-											.' alt="'.$this->_getShowResultsTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />'
-										.'</a>';
-								}
-								elseif($arrData[1] == 'test')
-								{
-									$out .= '<a class="tree_view_image" '
-										.'id="'.$this->id.'_'.$this->_getShowResultsId().'_'.$stack[$level]['folder']->id.'" '
-										.'name="'.$this->id.'['.$this->_getShowResultsId().']['.$stack[$level]['folder']->id.']" '
-										.'href="index.php?modname=organization&amp;op=test_track&amp;id_user='.getLogUserId().'&amp;id_org='.$arrData[2].'" '
+										.'href="index.php?modname=organization&amp;op=track_details&amp;type=' . $arrData[REPOFIELDOBJECTTYPE] . '&amp;id_user='.getLogUserId().'&amp;id_org='.$arrData[REPOFIELDIDRESOURCE].'" '
 										.'title="'.$this->_getShowResultsTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'">'
 											.'<img src="'.$this->_getShowResultsImg().'"'
 											.' alt="'.$this->_getShowResultsTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />'
@@ -1504,6 +1518,9 @@ class Org_TreeView extends RepoTreeView {
 							$out .= '<img src="'.getPathImage().'lobject/'.$img
 								.'" class="OrgStatus" alt="'. Lang::t($status, 'standard', 'framework').'" title="'. Lang::t($status, 'standard', 'framework').': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';
 							
+							foreach ($event->getAction() as $action){
+								$out .= $action;
+							}
 						}
 					break;
 				}

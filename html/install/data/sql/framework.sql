@@ -1844,8 +1844,10 @@ CREATE TABLE IF NOT EXISTS `core_role` (
   `idst` int(11) NOT NULL DEFAULT '0',
   `roleid` varchar(255) NOT NULL DEFAULT '',
   `description` varchar(255) DEFAULT NULL,
+  `idPlugin` INT(10) NULL,
   PRIMARY KEY (`idst`),
-  KEY `roleid` (`roleid`)
+  KEY `roleid` (`roleid`),
+  CONSTRAINT FOREIGN KEY (idPlugin) REFERENCES core_plugin(plugin_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 PACK_KEYS=0;
 
 --
@@ -2037,7 +2039,8 @@ INSERT INTO `core_role` (`idst`, `roleid`, `description`) VALUES
 CREATE TABLE IF NOT EXISTS `core_role_members` (
   `idst` int(11) NOT NULL DEFAULT '0',
   `idstMember` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`idst`,`idstMember`)
+  PRIMARY KEY (`idst`,`idstMember`),
+  CONSTRAINT FOREIGN KEY (idst) REFERENCES core_role(idst) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

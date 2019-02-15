@@ -28,11 +28,11 @@ if(!Docebo::user()->isLoggedIn())
 	die( "Malformed request" );
 
 $prefix = $GLOBALS['prefix_lms'];
-require_once(dirname(__FILE__) . '/config.scorm.php');
-require_once(dirname(__FILE__) . '/scorm_utils.php'); 
-require_once(dirname(__FILE__) . '/scorm_items_track.php');
-require_once(dirname(__FILE__) . '/CPManagerDb.php'); 
-require_once(dirname(__FILE__) . '/RendererXML.php'); 
+require_once Forma::inc(_lms_. '/modules/scorm/config.scorm.php');
+require_once Forma::inc(_lms_. '/modules/scorm/scorm_utils.php'); 
+require_once Forma::inc(_lms_. '/modules/scorm/scorm_items_track.php');
+require_once Forma::inc(_lms_. '/modules/scorm/CPManagerDb.php'); 
+require_once Forma::inc(_lms_. '/modules/scorm/RendererXML.php'); 
  
 $idscorm_organization = (int)$_GET['idscorm_organization'];
 $idReference = (int)$_GET['idReference'];

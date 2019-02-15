@@ -24,9 +24,9 @@
  *	@return string to output
  **/
 function scorm_userstat( $idscorm_organization, $idUser, $idReference = NULL, $mvc = false ) {
-	require_once(dirname(__FILE__) . '/scorm_items_track.php');
-	require_once(dirname(__FILE__) . '/CPManagerDb.php');
-	require_once(dirname(__FILE__) . '/RendererBase.php');
+	require_once Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.php');
+	require_once Forma::inc(_lms_ . '/modules/scorm/CPManagerDb.php');
+	require_once Forma::inc(_lms_ . '/modules/scorm/RendererBase.php');
 
 	// get idscorm_package
 	$query = "SELECT idscorm_package, org_identifier "
@@ -90,7 +90,7 @@ function decodeSessionTime($stime) {
 // TODO: sourced from appLms/modules/organization/orgresults.php -- to be reviewed
 function getTrackingTable($id_user, $id_org, $idscorm_item, $idReference) {
 
-	require_once(_base_.'/lib/lib.table.php');
+	require_once Forma::inc(_lib_ . '/lib.table.php');
 	$tb = new Table(Get::sett('visu_course'));
 
 	$lang = DoceboLanguage::CreateInstance('organization', 'lms');
@@ -160,7 +160,7 @@ function getTrackingTable($id_user, $id_org, $idscorm_item, $idReference) {
 // TODO: sourced from appLms/modules/organization/orgresults.php -- to be reviewed
 function getHistoryTable($id_user, $id_org, $idscorm_item, $idReference) {
 
-	require_once(_base_.'/lib/lib.table.php');
+	require_once Forma::inc(_lib_ . '/lib.table.php');
 	$tb = new Table(Get::sett('visu_course'));
 
 	$lang = DoceboLanguage::CreateInstance('organization', 'lms');
@@ -323,7 +323,7 @@ function render_half_row( $deep, $stack, $label, $isLast = FALSE ) {
 
 function scorm_stat_getImage( $deep, $deepPos, $isLast, $isEnd ) {
     $imgLabel = '';
-	require_once(dirname(__FILE__) . '/RendererBase.php');
+	require_once Forma::inc(_lms_ . '/modules/scorm/RendererBase.php');
 	if( $deep == $deepPos ) {
 		// handle REND_TITLE
 		$imgLabel = SCORMREND_TITLE;

@@ -19,10 +19,10 @@
  * @copyright 2004
  **/
 
-require_once(dirname(__FILE__) . '/config.scorm.php');
-require_once(dirname(__FILE__) . '/RendererBase.php');
-require_once(dirname(__FILE__) . '/scorm_organizations.php');
-require_once(dirname(__FILE__) . '/scorm_items.php');
+require_once Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
+require_once Forma::inc(_lms_ . '/modules/scorm/RendererBase.php');
+require_once Forma::inc(_lms_ . '/modules/scorm/scorm_organizations.php');
+require_once Forma::inc(_lms_ . '/modules/scorm/scorm_items.php');
 
 class RendererDb extends RendererAbstract {
 

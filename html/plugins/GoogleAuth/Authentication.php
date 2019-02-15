@@ -30,7 +30,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             
             if($_SESSION['social']['plugin'] == Plugin::getName()) {
 
-                $form = Get::img("social/google-24.png") . " "
+                $form =   '<i class="fa fa-google"></i>' . " "
                         . Lang::t("_YOU_ARE_CONNECTING_SOCIAL_ACCOUNT", "social")
                         . " <b>" . ($_SESSION['social']['data']['name'] != "" ? $_SESSION['social']['data']['name'] : $_SESSION['social']['data']['email']) . "</b>"
                         . Form::openForm("cancel_social", Get::rel_path("base"))
@@ -46,8 +46,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             $url = $google_service->getAuthorizationUri();
 
             $form =  "<a href='" . $url . "'>"
-				 // . Get::img("social/google-24.png")
-					. '<i class="fa fa-google-plus"></i>'
+				    . '<i class="fa fa-google"></i>'
 					. "</a>";
         }
 
@@ -70,7 +69,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         try {
             
             $google_service->requestAccessToken($code);        
-            $user_info = json_decode($google_service->request("https://www.googleapis.com/oauth2/v1/userinfo"), true);
+            $user_info = json_decode($google_service->request("https://www.googleapis.com/oauth2/v2/userinfo"), true);
         } catch(Exception $e){
             
             return UNKNOWN_SOCIAL_ERROR;

@@ -320,7 +320,7 @@ class UsermanagementAdmController extends AdmController {
 			'records' => $output_results
 		);
 
-		$event = new appCore\Events\Core\User\UsersManagementShowEvent;
+		$event = new appCore\Events\Core\User\UsersManagementShowEvent();
 		$event->setUsers($output['records']);
 		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementShowEvent::EVENT_NAME, $event);
 		$output['records'] = $event->getUsers();

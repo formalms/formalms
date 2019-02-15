@@ -21,7 +21,7 @@ class Module_Scorm extends LmsModule {
 	
 	function loadBody() {
 		
-		include( Docebo::inc(_lms_.'/modules/scorm/scorm.php') );
+		include Forma::inc(_lms_ . '/modules/scorm/scorm.php');
 	}
 	
 }

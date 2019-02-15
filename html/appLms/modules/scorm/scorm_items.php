@@ -19,8 +19,8 @@
  * @author Emanuele Sandri
  **/
 
-require_once(dirname(__FILE__) . '/config.scorm.php');
-require_once(dirname(__FILE__) . '/CPManager.php');
+require_once Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
+require_once Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
 
 class Scorm_Item {
 

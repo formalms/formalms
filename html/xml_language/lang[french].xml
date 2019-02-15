@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180720</DATE>
+  <DATE>20190215</DATE>
   <LANG id="french">
     <lang_code>french</lang_code>
     <lang_description>French</lang_description>
@@ -122,6 +122,7 @@
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[La traduction contient]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oui, importer]]></key>
       </module>
+      <module id="admin_news"/>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[toutes les langues]]></key>
         <key id="admin_newsletter&amp;_NEWSLETTER_WILL_BE_SENT_TO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[La newsletter touchera [tot] utilisateurs]]></key>
@@ -807,7 +808,7 @@
         <key id="course&amp;_SPONSORED_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sponsorisé par]]></key>
         <key id="course&amp;_SPONSOR_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lien vers le sponsor]]></key>
         <key id="course&amp;_SPONSOR_LOGO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Logo]]></key>
-        <key id="course&amp;_STATCANNOTENTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Statut non autorisé pour entré dans le cours]]></key>
+        <key id="course&amp;_STATCANNOTENTER" attributes="" save_date="2018-12-26 21:18:36"><![CDATA[Statut non autorisé pour entrer dans le cours]]></key>
         <key id="course&amp;_SUBSCRIBED_T" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Déjà inscrit au cours]]></key>
         <key id="course&amp;_SUBSCRIBE_METHOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Méthode d'inscription]]></key>
         <key id="course&amp;_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inscription]]></key>
@@ -875,6 +876,7 @@ Autrement, vous devez vous enregistré dans notre système, en suivant ce lien: 
         <key id="coursereport&amp;_ANSWER_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bonne réponse]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Test pour ce cours]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ceci est la liste de tous les tests pour ce cours et les résultats des étudiants]]></key>
+        <key id="coursereport&amp;_DETAILS" attributes="" save_date="2018-12-26 22:19:58"><![CDATA[Détails]]></key>
         <key id="coursereport&amp;_EXPORT_STATS" attributes="" save_date="2017-03-28 19:36:50"><![CDATA[Sauvegarder les statistiques]]></key>
         <key id="coursereport&amp;_LEFT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gauche]]></key>
         <key id="coursereport&amp;_MOVE_LEFT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Déplacer à gauche]]></key>
@@ -882,6 +884,7 @@ Autrement, vous devez vous enregistré dans notre système, en suivant ce lien: 
         <key id="coursereport&amp;_NOT_CHECKED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pas vérifié]]></key>
         <key id="coursereport&amp;_NOT_PASSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pas réussi]]></key>
         <key id="coursereport&amp;_OF_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[de l'utilisateur]]></key>
+        <key id="coursereport&amp;_OVERVIEW" attributes="" save_date="2018-12-26 22:19:44"><![CDATA[Vue générale]]></key>
         <key id="coursereport&amp;_PASSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Réussi]]></key>
         <key id="coursereport&amp;_PERCENTAGE_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pourcentage de bonnes réponses]]></key>
         <key id="coursereport&amp;_QUESTION_ANSWERED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Questions répondus]]></key>

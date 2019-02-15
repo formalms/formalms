@@ -20,7 +20,7 @@
  **/
 
 //include_once( $GLOBALS['where_lms'] . '/config.php' );
-require_once( dirname(__FILE__) . '/config.scorm.php');
+require_once Forma::inc(_lms_. '/modules/scorm/config.scorm.php');
  
 /*
  * Cerca tra gli elementi del nodo il primo elemento che ha tag $name
@@ -109,7 +109,7 @@ function getXmlDocTrackingTemplate($scormVersion) {
 	//$pathToFile = stripslashes(substr($pathToFile, 0, strrpos($pathToFile, '\\')+1));
 	//$pathToFile = 'trackingdatamodel-1.2.xml';
 	//$pathToFile = 'modules/scorm/trackingdatamodel-1.2.xml';
-    $pathToFile = dirname(__FILE__). '/trackingdatamodel-'.$scormVersion.'.xml';
+    $pathToFile = Forma::inc(_lms_ . '/modules/scorm/trackingdatamodel-'.$scormVersion.'.xml');
 	$xmldoc = new DDOMDocument();
 	$xmldoc->loadXML(file_get_contents( $pathToFile ));
 		/*or die("Error opening template file: $pathToFile<br/>"
