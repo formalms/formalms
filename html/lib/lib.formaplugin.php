@@ -103,10 +103,10 @@ abstract class FormaPlugin {
      *    int|null $idParent
      *    string|null $ofPlatform
      * @param array|null $menuUnder
-     *    string $moduleName
      *    string $defaultName
+     *    string $moduleName
+     *    string $associatedToken
      *    string|null $defaultOp
-     *    string|null $associatedToken
      *    string|null $ofPlatform
      *    int|null $sequence
      *    string|null $classFile
