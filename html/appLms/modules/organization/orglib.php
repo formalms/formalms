@@ -1404,11 +1404,9 @@ class Org_TreeView extends RepoTreeView {
 							if( $this->withActions == FALSE ){
 								return $out;
 							}
+							$canBeCategorized = false;
 							if (is_object($lo_class)){
 								$canBeCategorized = $lo_class->canBeCategorized();
-							}
-							else{
-								$canBeCategorized = $isFolder;
 							}
 							
 							if ($canBeCategorized) {
