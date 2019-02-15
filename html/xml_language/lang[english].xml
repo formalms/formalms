@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20181224</DATE>
+  <DATE>20190215</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -740,8 +740,8 @@
         <key id="course&amp;_CST_CONCLUDED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Concluded]]></key>
         <key id="course&amp;_CST_CONFIRMED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Confirmed]]></key>
         <key id="course&amp;_CST_PREPARATION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Under construction]]></key>
-        <key id="course&amp;_DATE_START" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Date start]]></key>
         <key id="course&amp;_DATE_END" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Date end]]></key>
+        <key id="course&amp;_DATE_START" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Date start]]></key>
         <key id="course&amp;_DAY_OF_VALIDITY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Days of validity]]></key>
         <key id="course&amp;_DEMO" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show demo]]></key>
         <key id="course&amp;_DIRECT_PLAY" attributes="" save_date="2017-03-15 17:59:58"><![CDATA[Directly play the first Learning Object in the player]]></key>
@@ -2192,6 +2192,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_AVATAR" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Avatar]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Average]]></key>
         <key id="standard&amp;_BACK" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[&lt;&lt; Back]]></key>
+        <key id="standard&amp;_BACK_TO_LABEL" attributes="" save_date="2019-01-11 19:49:57"><![CDATA[Back to label]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Basic search]]></key>
         <key id="standard&amp;_BBB" attributes="" save_date="2017-04-05 12:44:41"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[by]]></key>
@@ -2248,6 +2249,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_DATE_FIRST_ACCESS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[First access date]]></key>
         <key id="standard&amp;_DATE_FORMAT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Date format]]></key>
         <key id="standard&amp;_DATE_LAST_ACCESS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Last access date]]></key>
+        <key id="standard&amp;_DATE_LAST_TEST" attributes="" save_date="2019-01-11 12:17:36"><![CDATA[Date last test]]></key>
         <key id="standard&amp;_DAY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Day]]></key>
         <key id="standard&amp;_DAYS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Day(s)]]></key>
         <key id="standard&amp;_DEACTIVATE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Deactivate]]></key>
@@ -2304,8 +2306,11 @@ Password: [password]]]></key>
         <key id="standard&amp;_FILE_MANAGER" attributes="" save_date="2017-04-11 18:38:45"><![CDATA[File manager]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Filter by]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[All conditions must be satisfied]]></key>
-        <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Apply filters]]></key>
+        <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2019-01-11 10:59:12"><![CDATA[Apply filter]]></key>
         <key id="standard&amp;_FILTER_ONE_COND" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[At least one condition must be satisfied]]></key>
+        <key id="standard&amp;_FILTER_RESET" attributes="" save_date="2019-01-11 11:00:10"><![CDATA[Filter reset]]></key>
+        <key id="standard&amp;_FILTER_TAB_CLOSE" attributes="" save_date="2019-01-11 19:50:08"><![CDATA[Filter tab close]]></key>
+        <key id="standard&amp;_FILTER_TAB_OPEN" attributes="" save_date="2019-01-11 19:50:19"><![CDATA[Filter tab open]]></key>
         <key id="standard&amp;_FINAL_SCORE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Final score]]></key>
         <key id="standard&amp;_FIRSTNAME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[First name]]></key>
         <key id="standard&amp;_FIX_SEQUENCE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Fix sequence error]]></key>
@@ -2388,6 +2393,9 @@ Password: [password]]]></key>
         <key id="standard&amp;_MOVE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Move]]></key>
         <key id="standard&amp;_MOVE_DOWN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Move down]]></key>
         <key id="standard&amp;_MOVE_UP" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Move up]]></key>
+        <key id="standard&amp;_MSG_CHANGE_TEMPLATE" attributes="" save_date="2019-02-13 17:27:22"><![CDATA[Template "[template_name]" not used because not compatible, I'm using standard templates
+<br/><hr/>
+<br/>NOTE: <b> update the "manifest.xml" file in the templates folder by updating the form_version to "[template_min_version]"</b>]]></key>
         <key id="standard&amp;_NAME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Name]]></key>
         <key id="standard&amp;_NEVER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Never]]></key>
         <key id="standard&amp;_NEW" attributes="" save_date="2017-03-15 13:20:54"><![CDATA[New]]></key>

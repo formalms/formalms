@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20181224</DATE>
+  <DATE>20190215</DATE>
   <LANG id="italian">
     <lang_code>italian</lang_code>
     <lang_description>Italiano</lang_description>
@@ -743,8 +743,8 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="course&amp;_CST_CONCLUDED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Concluso]]></key>
         <key id="course&amp;_CST_CONFIRMED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Confermato]]></key>
         <key id="course&amp;_CST_PREPARATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[In costruzione]]></key>
-        <key id="course&amp;_DATE_START" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Data inizio]]></key>
         <key id="course&amp;_DATE_END" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Data fine]]></key>
+        <key id="course&amp;_DATE_START" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Data inizio]]></key>
         <key id="course&amp;_DAY_OF_VALIDITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Giorni di validità]]></key>
         <key id="course&amp;_DEMO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Vedi demo]]></key>
         <key id="course&amp;_DIRECT_PLAY" attributes="" save_date="2017-07-05 13:01:58"><![CDATA[Esecuzione diretta del primo oggetto didattico nel player]]></key>
@@ -2295,8 +2295,9 @@ Password: [password]]]></key>
         <key id="standard&amp;_FILE_MANAGER" attributes="" save_date="2017-04-11 18:47:04"><![CDATA[Gestore file]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Filtra per]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Tutte le condizioni devono essere soddisfatte]]></key>
-        <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Applica filtri]]></key>
+        <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2019-01-11 11:18:06"><![CDATA[Applica filtro]]></key>
         <key id="standard&amp;_FILTER_ONE_COND" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Almeno una condizione deve essere soddisfatta]]></key>
+        <key id="standard&amp;_FILTER_RESET" attributes="" save_date="2019-01-11 11:18:18"><![CDATA[Azzera filtro]]></key>
         <key id="standard&amp;_FINAL_SCORE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Punteggio finale]]></key>
         <key id="standard&amp;_FIRSTNAME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Nome]]></key>
         <key id="standard&amp;_FIX_SEQUENCE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Correggi errori di sequenza]]></key>
@@ -2379,6 +2380,9 @@ Password: [password]]]></key>
         <key id="standard&amp;_MOVE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Muovi]]></key>
         <key id="standard&amp;_MOVE_DOWN" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Muovi giù]]></key>
         <key id="standard&amp;_MOVE_UP" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Sposta su]]></key>
+        <key id="standard&amp;_MSG_CHANGE_TEMPLATE" attributes="" save_date="2019-02-13 17:20:56"><![CDATA[Template "[template_name]" non utilizzato perchè non compatibile, sto usando template standard
+<br/><hr/>
+<br/>NOTA: <b>aggiornare il file "manifest.xml" in cartella templates aggiornando forma_version a "[template_min_version]"</b>]]></key>
         <key id="standard&amp;_NAME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Nome]]></key>
         <key id="standard&amp;_NEVER" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Mai]]></key>
         <key id="standard&amp;_NEW" attributes="" save_date="2017-03-15 13:20:48"><![CDATA[Nuovo]]></key>

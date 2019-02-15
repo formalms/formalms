@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180720</DATE>
+  <DATE>20190215</DATE>
   <LANG id="swedish">
     <lang_code>swedish</lang_code>
     <lang_description>Swedish</lang_description>
@@ -121,6 +121,13 @@
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Översätt språk]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Översättning innehåller]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2017-07-21 10:38:13"><![CDATA[Ja, importera]]></key>
+      </module>
+      <module id="admin_news">
+        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2010-11-02 11:10:55"><![CDATA[Välj användare som kan se nyheten.]]></key>
+        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2010-11-02 11:10:55"><![CDATA[Utvidgad beskrivning]]></key>
+        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2010-11-02 11:10:55"><![CDATA[Mängd nyheter som visas på hemsidan]]></key>
+        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2010-11-02 11:10:55"><![CDATA[Lista alla nyheter som hittas på LMS huvudsida]]></key>
+        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2010-11-02 11:10:55"><![CDATA[Denna nyhet är markerad som viktig]]></key>
       </module>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[varje språk]]></key>
@@ -430,6 +437,7 @@
         <key id="configuration&amp;_ASK_FOR_CODE_MODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Be om en kod skapad via kodmodulen]]></key>
         <key id="configuration&amp;_ASK_FOR_DROPDOWN_TREE_CODE" attributes="" save_date="2017-07-24 12:58:20"><![CDATA[Be om en trädkod vald av användaren från en rullgardinsmeny]]></key>
         <key id="configuration&amp;_ASK_FOR_MANUAL_TREE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Be om en trädkod som måste inmatas manuellt av användaren]]></key>
+        <key id="configuration&amp;_ASK_FOR_TREE_COURSE_CODE" attributes="" save_date="2010-11-02 11:10:55"><![CDATA[Be om en kombination av trädkod och kurskod som måste inmatas manuellt av användaren. Träd- och kurskoden måste bestå av 10 tecken var, för att erhålla en 20 teckens kod.]]></key>
         <key id="configuration&amp;_BBB_MAX_MIKES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max Audio användare]]></key>
         <key id="configuration&amp;_BBB_MAX_PARTICIPANT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max användare per rum]]></key>
         <key id="configuration&amp;_BBB_MAX_ROOM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Max rum]]></key>
@@ -1509,6 +1517,7 @@ För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, s�
         <key id="menu_over&amp;_BLIND_MENU_LAT" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Hoppa till huvudmenyn]]></key>
         <key id="menu_over&amp;_BLIND_YOUR_INFO" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Hoppa till din information relevant till denna kurs]]></key>
         <key id="menu_over&amp;_COMMUNITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Community]]></key>
+        <key id="menu_over&amp;_COURSE_AUTOREGISTRATION" attributes="" save_date="2010-11-02 11:10:55"><![CDATA[Aktivera kurs]]></key>
         <key id="menu_over&amp;_GO_TO_FRAMEWORK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Admin område]]></key>
         <key id="menu_over&amp;_LIBRARY" attributes="" save_date="2017-07-24 12:43:31"><![CDATA[Publicering]]></key>
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kampus]]></key>
@@ -1908,6 +1917,7 @@ Du måste bekräfta ditt konto förrän du använder det.]]></key>
       </module>
       <module id="report">
         <key id="report&amp;aggregate_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Data aggregering av användare och kurser]]></key>
+        <key id="report&amp;courses_report" attributes="" save_date="2010-11-02 11:10:55"><![CDATA[Kurser]]></key>
         <key id="report&amp;course_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kurser]]></key>
         <key id="report&amp;ORG_CHART_SUBDIVISION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Finfördela data enligt organisationskarta]]></key>
         <key id="report&amp;REPORT_SHOW_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Visa resultat]]></key>
