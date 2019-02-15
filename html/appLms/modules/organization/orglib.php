@@ -1287,8 +1287,9 @@ class Org_TreeView extends RepoTreeView {
 		} else {
 			$isFolder = true;
 		}
-        
-        $lo_class = createLO($arrData[REPOFIELDOBJECTTYPE]);
+		
+		$lo_type = $arrData[REPOFIELDOBJECTTYPE];
+        $lo_class = createLO($lo_type);
 
 
 		//check for void selection
@@ -1400,9 +1401,17 @@ class Org_TreeView extends RepoTreeView {
 					break;
 					default:
 						if( checkPerm('lesson', true, 'storage') && !$this->playOnly ) {
-							if( $this->withActions == FALSE ) 
+							if( $this->withActions == FALSE ){
 								return $out;
-							if ($lo_class->canBeCategorized()) {
+							}
+							if (is_object($lo_class)){
+								$canBeCategorized = $lo_class->canBeCategorized();
+							}
+							else{
+								$canBeCategorized = $isFolder;
+							}
+							
+							if ($canBeCategorized) {
 								$out .= '<input type="image" class="tree_view_image" '
 									.' src="'.$this->_getCategorizeImg().'"'
 									.' id="'.$this->id.'_'.$this->_getCategorizeId().'_'.$stack[$level]['folder']->id.'" '
