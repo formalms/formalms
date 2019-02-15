@@ -416,6 +416,10 @@ class Boot {
 		$_SERVER 	= utf8::clean($_SERVER);
 		if(isset($_FILES)) 	$_FILES = utf8::clean($_FILES);
 
+		// Variable to skip checkSignature control if saml response
+		// https://en.wikipedia.org/wiki/SAML_2.0
+		$IS_SAML_RESPONSE = (isset($_REQUEST["SAMLResponse"]) && !empty($_REQUEST["SAMLResponse"]));
+
 		// Convert ' and " (quote or unquote)
 		self::log( "Sanitize the input." );
 
@@ -446,7 +450,7 @@ class Boot {
 			$_POST['passIns'] = utf8::clean(stripslashes($password_login));
 		}
 
-		if(!defined("IS_API") && !defined("IS_PAYPAL") && ( strtoupper($_SERVER['REQUEST_METHOD']) == 'POST' || defined("IS_AJAX"))) {
+		if(!defined("IS_API") && !defined("IS_PAYPAL") && !$IS_SAML_RESPONSE && ( strtoupper($_SERVER['REQUEST_METHOD']) == 'POST' || defined("IS_AJAX"))) {
 			// If this is a post or a ajax request then we must have a signature attached
 			Util::checkSignature();
 		}
