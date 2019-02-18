@@ -218,12 +218,27 @@ SQL;
         $values = array();
         $values['name'] = "'{$menu['name']}'";
         $values['image'] = isset($menu['image']) ? "'{$menu['image']}'" : "''";
-        if(isset($menu['sequence'])) $values['sequence'] = $menu['sequence'];
         if(isset($menu['isActive'])) $values['is_active'] = $menu['isActive'] ? "'true'" : "'false'";
         if(isset($menu['collapse'])) $values['collapse'] = $menu['collapse'] ? "'true'" : "'false'";
         if(isset($menu['idParent'])) $values['idParent'] = $menu['idParent'];
         if(isset($menu['ofPlatform'])) $values['of_platform'] = "'{$menu['ofPlatform']}'";
         if(!is_null($idPlugin)) $values['idPlugin'] = $idPlugin;
+        if(isset($menu['sequence'])) {
+            $values['sequence'] = $menu['sequence'];
+        } else {
+            $of_platform = $values['of_platform'];
+            $querySequence = "SELECT  max(sequence) max_sequence, of_platform FROM %adm_menu WHERE  of_platform = $of_platform GROUP BY of_platform";
+            if(! ($resSequence = sql_query($querySequence))) {
+                return false;
+            } else {
+                $rowSequence = sql_fetch_assoc($resSequence);
+                if($rowSequence['max_sequence'] >= 100) {
+                    $values['sequence'] = $rowSequence['max_sequence'] + 1;
+                } else {
+                    $values['sequence'] = 100;
+                }
+            }
+        }
 
         $query = "INSERT INTO %adm_menu (" . implode(', ', array_keys($values)) . ") VALUE (" . implode(', ', array_values($values)) . ")";
 
