@@ -29,9 +29,11 @@ class CoreMenu {
 SELECT  m.idMenu, m.idParent, m.sequence, m.name, m.image, m.is_active, mu.idUnder
       , mu.module_name, mu.default_op, mu.mvc_path, mu.associated_token, mu.of_platform
 FROM %adm_menu AS m
+    LEFT JOIN %adm_plugin AS p ON (m.idPlugin = p.plugin_id)
     LEFT JOIN %adm_menu_under AS mu ON (m.idMenu = mu.idMenu)
 WHERE 1 = 1
     AND m.of_platform IN ($platform)
+    AND ( m.idPlugin IS NULL OR p.active = 1 )
     $only_active
 ORDER BY m.sequence
 SQL;

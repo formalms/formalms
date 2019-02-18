@@ -386,32 +386,6 @@ class PluginmanagerAdm extends Model
         }
     }
 
-
-    /**
-     * Activate plugin's menu
-     * @param $plugin_name
-     * @return reouce_id
-     */
-    private function activateMenu($plugin_name)
-    {
-        $plugin_info = $this->getPluginFromDB($plugin_name, 'name');
-        $plugin_id = $plugin_info['plugin_id'];
-        return (bool)sql_query("UPDATE %adm_menu SET is_active = 'true' WHERE idPlugin = $plugin_id ");
-    }
-
-    /**
-     * Deactivate plugin's menu
-     * @param $plugin_name
-     * @return reouce_id
-     */
-    private function deactivateMenu($plugin_name)
-    {
-        $plugin_info = $this->getPluginFromDB($plugin_name, 'name');
-        $plugin_id = $plugin_info['plugin_id'];
-        return (bool)sql_query("UPDATE %adm_menu SET is_active = 'false' WHERE idPlugin = $plugin_id ");
-    }
-
-
     /**
      * Remove plugin's menu
      * @param $plugin_name
@@ -529,10 +503,8 @@ class PluginmanagerAdm extends Model
     {
         if ($active == 1) {
             $this->callPluginMethod($plugin_id, 'activate');
-            $this->activateMenu($plugin_id);
         } else {
             $this->callPluginMethod($plugin_id, 'deactivate');
-            $this->deactivateMenu($plugin_id);
         }
 
         $reSetting = sql_query("
