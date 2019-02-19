@@ -16,7 +16,7 @@
                     $( this ).fadeOut( 500 );
                 });
             });
-        </script>    
+        </script>
 {% endblock %}
 
 {% block content %}
@@ -24,11 +24,11 @@
     {{ evalPhp('Layout::zone', ['blind_navigation']) }}
     <!-- container -->
     <div id="container">
-        
-        
-        
-        
-        
+
+
+
+
+
         <!-- menu_over -->
         <div id="menu_over" class="layout_menu_over">
         <!-- feedback -->
@@ -60,18 +60,18 @@
             {# Temporary solution before helpdesk refactoring. #}
             {{ evalPhp('Layout::zone', ['helpdesk']) }}
             {# ############################################### #}
-                    
+
         </div>
-        
-        
-    
-        
-        <!-- content  -->   
+
+
+
+
+        <!-- content  -->
         {#{{ <div class="layout_colum_container"> }}#}
-        <div class="row">
+        <div class="row lms-user-content-wrapper">
             <div class="container-fluid">
                 {{ evalPhp('Layout::zone', ['content']) }}
-                
+
                 <div class="nofloat"></div>
             </div>
         </div>
@@ -81,10 +81,10 @@
         {{ evalPhp('Layout::zone', ['footer']) }}
             {{ evalPhp('Layout::copyright') }}
     </div>
-        
-        
-    
-    
+
+
+
+
     <!-- scripts -->
     {{ evalPhp('Layout::zone', ['scripts']) }}
     <!-- debug -->

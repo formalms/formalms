@@ -104,3 +104,29 @@ body {
 .header--external-catalogue {
   top: 0;
 }
+
+.lms-user-content-wrapper {
+  @media (max-width: 1024px) {
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+  }
+  > .container-fluid {
+    @media (max-width: 1024px) {
+      padding: 0;
+    }
+
+    > .row {
+      @media (max-width: 1024px) {
+        margin: 0;
+      }
+
+      > .col-md-12 {
+        @media (max-width: 1024px) {
+          margin: 0;
+          padding: 0;
+        }
+      }
+    }
+  }
+}
