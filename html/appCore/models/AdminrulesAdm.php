@@ -242,25 +242,27 @@ class AdminrulesAdm extends Model
 								require_once(Forma::inc($folder_abspath.'/models/'.$mvc_name.$suffix.'.php'));
 
 								$class_name = $mvc_name.$suffix;
-								$tmp_class = new $class_name();
+								if(method_exists($class_name, 'getPerm')) {
+									$tmp_class = new $class_name();
 
-								$perm = $tmp_class->getPerm();
+									$perm = $tmp_class->getPerm();
 
-								if(!empty($perm))
-								{
-									foreach($perm as $perm_name => $img)
+									if(!empty($perm))
 									{
-										if(array_search($perm_name, array_keys($total_perm)) == false)
+										foreach($perm as $perm_name => $img)
 										{
-											$total_perm[$perm_name] = $img;
+											if(array_search($perm_name, array_keys($total_perm)) == false)
+											{
+												$total_perm[$perm_name] = $img;
 
-											if($collapse === 'true')
-												$th = array('');//array(Lang::t($default_name, 'menu'));
+												if($collapse === 'true')
+													$th = array('');//array(Lang::t($default_name, 'menu'));
+											}
+
+											list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
+
+											$module_perm[$mvc_name][$perm_name] = $perm_idst;
 										}
-
-										list($perm_idst) = sql_fetch_row(sql_query("SELECT idst FROM %adm_role WHERE roleid = '".$perm_path.$perm_name."'"));
-
-										$module_perm[$mvc_name][$perm_name] = $perm_idst;
 									}
 								}
 							}
