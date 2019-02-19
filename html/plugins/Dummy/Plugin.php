@@ -16,29 +16,34 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
 
 class Plugin extends \FormaPlugin {
     public function install() {
+
+        $acl_manager = \Docebo::user()->getAclManager();
+
+        $permission_godadmin = array($acl_manager->getGroupST(ADMIN_GROUP_GODADMIN));
+        $permission_org_chart_root = array($acl_manager->getGroupST('/oc_0'));
         
         // CORE MENU
-        $menu = array ('name' => "_DUMMY_MENU_BUTTON", 'ofPlatform' => 'framework');
-        $idMenu=self::addMenu($menu, null, array(1));
+        $menu = array ('name' => "_DUMMY_MENU_BUTTON", 'ofPlatform' => 'alms');
+        $idMenu=self::addMenu($menu, null, $permission_godadmin);
 
-        $menu = array ('name' => "_DUMMY_MENU_ARROW", 'idParent'=>$idMenu, 'ofPlatform' => 'framework');
-        $idMenuArrow=self::addMenu($menu, null, array(1));
+        $menu = array ('name' => "_DUMMY_MENU_ARROW", 'idParent'=>$idMenu, 'ofPlatform' => 'alms');
+        $idMenuArrow=self::addMenu($menu, null, $permission_godadmin);
 
-        $menu = array ('name' => "_DUMMY_MENU_UNDER", 'idParent'=>$idMenuArrow, 'ofPlatform' => 'framework');
+        $menu = array ('name' => "_DUMMY_MENU_UNDER", 'idParent'=>$idMenuArrow, 'ofPlatform' => 'alms');
         $menu_under = array ('moduleName' => "dummy"
         , 'defaultName' => "_DUMMY_MENU_UNDER"
         , 'associatedToken'=>'view'
         , 'mvcPath'=>'alms/dummy/show'
         , 'ofPlatform' => 'alms');
-        $idMenuUnder=self::addMenu($menu, $menu_under, array(1));
+        $idMenuUnder=self::addMenu($menu, $menu_under, $permission_godadmin);
 
-        $menu = array ('name' => "_DUMMY_MENU_RENDER_CALL", 'idParent'=>$idMenu, 'ofPlatform' => 'framework');
+        $menu = array ('name' => "_DUMMY_MENU_RENDER_CALL", 'idParent'=>$idMenu, 'ofPlatform' => 'alms');
         $menu_under = array ('moduleName' => "dummy"
         , 'defaultName' => "_DUMMY_MENU_RENDER_CALL"
         , 'associatedToken'=>'view'
         , 'mvcPath'=>'alms/dummy/render_call'
         , 'ofPlatform' => 'alms');
-        $idMenu=self::addMenu($menu, $menu_under, array(1));
+        $idMenu=self::addMenu($menu, $menu_under, $permission_godadmin);
 
         self::addRequest("alms", "dummy", "DummyAlmsController", "DummyAlms");
 
@@ -49,7 +54,7 @@ class Plugin extends \FormaPlugin {
         , 'associatedToken'=>'view'
         , 'mvcPath'=>'lms/dummy/show'
         , 'ofPlatform' => 'lms');
-        self::addMenu($menu, $menu_under, array(1));
+        self::addMenu($menu, $menu_under, $permission_org_chart_root);
 
         self::addRequest("lms", "dummy", "DummyLmsController", "DummyLms");
 

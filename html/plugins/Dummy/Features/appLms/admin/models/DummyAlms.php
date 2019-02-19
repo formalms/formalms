@@ -13,4 +13,7 @@
 
 class DummyAlms extends Model {
 
+    public function getPerm() {
+        return array('view' => 'standard/view.png');
+    }
 }
