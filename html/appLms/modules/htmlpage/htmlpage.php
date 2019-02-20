@@ -182,9 +182,9 @@ function uppage() {
 	
 	$insert_query = "
 	UPDATE ".$GLOBALS['prefix_lms']."_htmlpage
-	SET title = '".( (trim($_POST['title']) == '') ? Lang::t('_NOTITLE', 'htmlpage', 'lms') : $_POST['title'] )."',
-		textof = '".$_POST['textof']."'
-	WHERE idPage = '".(int)$_POST['idPage']."'";
+	SET title = '".( (trim($_REQUEST['title']) == '') ? Lang::t('_NOTITLE', 'htmlpage', 'lms') : $_REQUEST['title'] )."',
+		textof = '".$_REQUEST['textof']."'
+	WHERE idPage = '".(int)$_REQUEST['idPage']."'";
 	if(!sql_query($insert_query)) {
 		
 		$_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE', 'htmlpage', 'lms');
