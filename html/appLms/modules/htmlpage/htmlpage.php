@@ -69,8 +69,8 @@ function inspage() {
 		
 	$insert_query = "
 	INSERT INTO ".$GLOBALS['prefix_lms']."_htmlpage
-	SET title = '".( (trim($_POST['title']) == '') ? Lang::t('_NOTITLE', 'htmlpage', 'lms') : $_POST['title'] )."',
-		textof = '".$_POST['textof']."',
+	SET title = '".( (trim($_REQUEST['title']) == '') ? Lang::t('_NOTITLE', 'htmlpage', 'lms') : $_REQUEST['title'] )."',
+		textof = '".$_REQUEST['textof']."',
 		author = '".(int)getLogUserId()."'";
 	if(!sql_query($insert_query)) {
 		
