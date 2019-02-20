@@ -167,7 +167,7 @@ WHERE idst IN (
 );
 
 
-INSERT INTO CORE_SETTING
+INSERT ignore INTO core_setting
 (param_name,param_value, value_type, max_size, pack, regroup, sequence, param_load, hide_in_modify, extra_info)
 VALUES ('on_path_in_mycourses', 'off', 'enum',	3, 	0, 	4, 	2, 	1, 	0, 	'' );
 
