@@ -495,8 +495,14 @@ function report_certificate() {
             $course_info = $man_course->getCourseInfo($course_id);
             $cont = array(
                 $course_info['code'],
-                '<a href="index.php?modname=certificate&amp;op=view_report_certificate&amp;id_certificate='.$id_certificate.'&amp;id_course='.$course_id.'">'
-                .$course_info['name'].'</a>',
+                
+//                '<a href="index.php?modname=certificate&amp;op=view_report_certificate&amp;id_certificate='.$id_certificate.'&amp;id_course='.$course_id.'">'
+//                .$course_info['name'].'</a> - '.
+                
+                '<a href="index.php?r=alms/course/list_certificate&id_certificate='.$id_certificate.'&id_course='.$course_id.'&from=manage">'
+                .$course_info['name'].'</a>'                
+                
+                ,
                 $certificate->getNumberOfCertificateForCourse($id_certificate, $course_info['idCourse'])
             );
             $tb->addBody($cont);
@@ -1192,5 +1198,10 @@ function certificateDispatch($op)
         case "preview":
             preview();
             break;
+            
+        case "report_certificate_from_new":
+            report_certificate();
+            break;            
+            
     }
 }
