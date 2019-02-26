@@ -1,4 +1,4 @@
-* ======================================================================== \
+/* ======================================================================== \
 |   forma.lms- The E-Learning Suite                                         |
 |                                                                           |
 |   Copyright (c) 2013 (forma.lms)                                          |
@@ -139,6 +139,7 @@ If you need to test on your personal computer we suggest a prepackaged web serve
 easyphp, wamp/mamp or xampp.
 
 2.1 Platform internal requirements
+
 Minimum template version: 2.2
 
 3. INSTALL PROCEDURE
