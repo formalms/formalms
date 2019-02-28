@@ -350,11 +350,6 @@ class UsermanagementAdmController extends AdmController {
 			$info_lastname = $user_info[ACL_INFO_LASTNAME];
 			$info_email = $user_info[ACL_INFO_EMAIL];
 
-			$info_facebook_id = $user_info[ACL_INFO_FACEBOOK_ID];
-			$info_twitter_id = $user_info[ACL_INFO_TWITTER_ID];
-			$info_linkedin_id = $user_info[ACL_INFO_LINKEDIN_ID];
-			$info_google_id = $user_info[ACL_INFO_GOOGLE_ID];
-
 			$force_change = $user_info[ACL_INFO_FORCE_CHANGE];
 
 			$level = $acl_man->getUserLevelId($idst);
@@ -363,7 +358,6 @@ class UsermanagementAdmController extends AdmController {
 			$form_id = 'create_user_form';
 			$form_url = 'ajax.adm_server.php?r='.$this->link.'/createuser_action';
 			$info_userid = $info_firstname = $info_lastname = $info_email = "";
-			$info_facebook_id = $info_twitter_id = $info_linkedin_id = $info_google_id = "";
 		}
 
 		$arr_levels = $acl_man->getAdminLevels();//index = idst; value = groupid;
@@ -402,10 +396,6 @@ class UsermanagementAdmController extends AdmController {
 		$info->firstname = trim($info_firstname);
 		$info->lastname = trim($info_lastname);
 		$info->email = trim($info_email);
-		$info->facebook_id = trim($info_facebook_id);
-		$info->twitter_id = trim($info_twitter_id);
-		$info->linkedin_id = trim($info_linkedin_id);
-		$info->google_id = trim($info_google_id);
 		$info->force_change = isset($force_change) ? $force_change : false;
 		$info->level = $level;
 
@@ -501,10 +491,6 @@ class UsermanagementAdmController extends AdmController {
 		$userdata->email = trim(Get::req('email', DOTY_STRING, ''));
 		$userdata->password = $password;
 		$userdata->force_change = trim(Get::Req('force_changepwd', DOTY_INT, 0));
-		/* $userdata->facebook_id = Get::pReq('facebook_id', DOTY_STRING, '');
-		$userdata->twitter_id = Get::pReq('twitter_id', DOTY_STRING, '');
-		$userdata->linkedin_id = Get::pReq('linkedin_id', DOTY_STRING, '');
-		$userdata->google_id = Get::pReq('google_id', DOTY_STRING, ''); */
 		if (Docebo::user()->user_level == ADMIN_GROUP_GODADMIN) {
 			$userdata->level = Get::req('level', DOTY_STRING, ADMIN_GROUP_USER);
 		}
@@ -2549,11 +2535,7 @@ class UsermanagementAdmController extends AdmController {
 			'firstname' => '',
 			'lastname' => '',
 			'email' => '',
-			'level' => '',
-			'facebook_id' => '',
-			'twitter_id' => '',
-			'linkedin_id' => '',
-			'google_id' => ''
+			'level' => ''
 		);
 
 		$language = getDefaultLanguage();
@@ -2642,13 +2624,6 @@ class UsermanagementAdmController extends AdmController {
 		if (isset($sel_properties['force_change'])) $info->force_change = Get::req('force_change', DOTY_INT, 0) > 0;
 
 		if (isset($sel_properties['level'])) $info->level = Get::req('level', DOTY_STRING, "");
-
-		/*
-		if (isset($sel_properties['facebook_id'])) $info->facebook_id = Get::req('facebook_id', DOTY_STRING, "");
-		if (isset($sel_properties['twitter_id'])) $info->twitter_id = Get::req('twitter_id', DOTY_STRING, "");
-		if (isset($sel_properties['linkedin_id'])) $info->linkedin_id = Get::req('linkedin_id', DOTY_STRING, "");
-		if (isset($sel_properties['google_id'])) $info->google_id = Get::req('google_id', DOTY_STRING, "");
-		*/
 
 		if (!empty($field_properties)) {
 			require_once(_adm_.'/lib/lib.field.php');

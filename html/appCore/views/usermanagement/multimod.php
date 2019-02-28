@@ -83,39 +83,6 @@ foreach ($fields_mask as $id_item => $item) {
 	}
 }
 
-/* $social =new Social();
-if ($social->isActive('facebook')) {
-	$mask .= $_open_row.$_open_cell;
-	$mask .= Form::getInputCheckbox('multimod_sel_facebook_id', 'multimod_sel[facebook_id]', 1, false, "");
-	$mask .= $_close_cell.$_open_cell;
-	$mask .= Form::getTextField(Lang::t('_FACEBOOK_ID', 'standard'), 'facebook_id', 'facebook_id', 255, $info['facebook_id']);
-	$mask .= $_close_cell.$_close_row;
-}
-
-if ($social->isActive('twitter')) {
-	$mask .= $_open_row.$_open_cell;
-	$mask .= Form::getInputCheckbox('multimod_sel_twitter_id', 'multimod_sel[twitter_id]', 1, false, "");
-	$mask .= $_close_cell.$_open_cell;
-	$mask .= Form::getTextField(Lang::t('_TWITTER_ID', 'standard'), 'twitter_id', 'twitter_id', 255, $info['twitter_id']);
-	$mask .= $_close_cell.$_close_row;
-}
-
-if ($social->isActive('linkedin')) {
-	$mask .= $_open_row.$_open_cell;
-	$mask .= Form::getInputCheckbox('multimod_sel_linkedin_id', 'multimod_sel[linkedin_id]', 1, false, "");
-	$mask .= $_close_cell.$_open_cell;
-	$mask .= Form::getTextField(Lang::t('_LINKEDIN_ID', 'standard'), 'linkedin_id', 'linkedin_id', 255, $info['linkedin_id']);
-	$mask .= $_close_cell.$_close_row;
-}
-
-if ($social->isActive('google')) {
-	$mask .= $_open_row.$_open_cell;
-	$mask .= Form::getInputCheckbox('multimod_sel_google_id', 'multimod_sel[google_id]', 1, false, "");
-	$mask .= $_close_cell.$_open_cell;
-	$mask .= Form::getTextField(Lang::t('_GOOGLE_ID', 'standard'), 'google_id', 'google_id', 255, $info['google_id']);
-	$mask .= $_close_cell.$_close_row;
-} */
-
 $mask .= $_close_table;
 
 $mask .= Form::closeForm();

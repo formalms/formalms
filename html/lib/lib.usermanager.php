@@ -1604,7 +1604,6 @@ class UserManagerRenderer
     function _opt_in($options, $platform, $opt_link)
     {
 
-        $social = new Social();
         $lang =& DoceboLanguage::createInstance('register', $platform);
 
         // Check for error
@@ -1634,14 +1633,6 @@ class UserManagerRenderer
             return $errors;
         }
 
-        // facebook register:
-        if ($social->isActive('facebook')) {
-            if (isset($_SESSION['fb_info']) && is_array($_SESSION['fb_info'])) {
-                $social = new Social();
-                $social->connectAccount('facebook', $_SESSION['fb_info']['id'], $iduser, true);
-                unset($_SESSION['fb_info']);
-            }
-        }
         // ----
 
         // add base inscription policy
@@ -1915,7 +1906,6 @@ class UserManagerRenderer
     private function _first_of_all($options, $platform, $errors = [])
     {
 
-        $social = new Social();
         $precompileLms = new PrecompileLms();
         $lang =& DoceboLanguage::createInstance('register', $platform);
 
