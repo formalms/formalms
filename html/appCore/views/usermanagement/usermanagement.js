@@ -139,6 +139,70 @@ var UserManagement = {
 				upload: createUserCallback
 			}));
 
+			E.onAvailable("multimod_sel_password", function() {
+				E.addListener(this, "change", function() {
+					if (this.checked == true) {
+						// var el = D.get("multimod_sel_send_alert");
+						// if (el) el.checked = true;
+						var m = D.get("multimod_sel_send_alert");
+						if (m) m.disabled = false;
+					} else {
+						var el = D.get("multimod_sel_send_alert");
+						if (el) el.checked = false;
+						var m = D.get("multimod_sel_send_alert");
+						if (m) m.disabled = true;
+					}
+				});
+			});
+
+			E.onAvailable("multimod_sel_link_reset_password", function() {
+				E.addListener(this, "change", function() {
+					if (this.checked == true) {
+						var m = D.get("multimod_sel_password");
+						if (m) m.disabled = true;
+						var m = D.get("multimod_sel_send_alert");
+						if (m) m.disabled = true;
+						var m = D.get("multimod_sel_force_change");
+						if (m) m.disabled = true;
+						var el = D.get("multimod_sel_password");
+						if (el) el.checked = false;
+						var el = D.get("multimod_sel_send_alert");
+						if (el) el.checked = false;
+						var el = D.get("multimod_sel_force_change");
+						if (el) el.checked = false;
+					} else {
+						var m = D.get("multimod_sel_password");
+						if (m) m.disabled = false;
+						// var m = D.get("multimod_sel_send_alert");
+						// if (m) m.disabled = false;
+						var m = D.get("multimod_sel_force_change");
+						if (m) m.disabled = false;
+						var el = D.get("multimod_sel_password");
+						if (el) el.checked = false;
+						var el = D.get("multimod_sel_send_alert");
+						if (el) el.checked = false;
+						var el = D.get("multimod_sel_force_change");
+						if (el) el.checked = false;
+					}
+				});
+			});
+
+			E.onAvailable("multimod_sel_force_change", function() {
+				E.addListener(this, "change", function() {
+					if (this.checked == true) {
+						var el = D.get("multimod_sel_send_alert");
+						if (el) el.checked = false;
+						var m = D.get("multimod_sel_link_reset_password");
+						if (m) m.disabled = true;
+					} else {
+						// var el = D.get("multimod_sel_link_reset_password");
+						// if (el) el.checked = true;
+						var m = D.get("multimod_sel_link_reset_password");
+						if (m) m.disabled = false;
+					}
+				});
+			});
+
 			//multi delete confirm dialog
 			var multiDeleteEvent = function(s, e, u) {
 				var body, count_sel = DataTableSelector_usertable.num_selected;

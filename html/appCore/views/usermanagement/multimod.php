@@ -54,7 +54,7 @@ $mask .= Form::getPassword(Lang::t('_RETYPE_PASSWORD', 'register'), 'new_passwor
 $mask .= $_close_cell.$_close_row;
 
 $mask .= $_open_row.$_open_cell;
-$mask .= Form::getInputCheckbox('multimod_sel_send_alert', 'multimod_sel[send_alert]', 1, false, "");
+$mask .= Form::getInputCheckbox('multimod_sel_send_alert', 'multimod_sel[send_alert]', 1, false, "disabled=true");
 $mask .= $_close_cell.$_open_cell;
 $mask .= "&nbsp;"."<b>".Lang::t('_SEND_NEW_CREDENTIALS_ALERT', 'user_managment')."</b>";
 $mask .= $_close_cell.$_close_row;
