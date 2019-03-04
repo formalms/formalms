@@ -1260,8 +1260,9 @@ class CoursereportLmsController extends LmsController
 
 	}
 
-	public function scormreport ($idTest)
+	public function scormreport ()
 	{
+		$idTest = Get::gReq ('idTest');
 		checkPerm ('view' , true , $this->_mvc_name);
 		require_once ($GLOBALS[ 'where_lms' ] . '/lib/lib.coursereport.php');
 		require_once ($GLOBALS[ 'where_lms' ] . '/lib/lib.test.php');
