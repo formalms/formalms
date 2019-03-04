@@ -190,8 +190,8 @@ var UserManagement = {
 			E.onAvailable("multimod_sel_force_change", function() {
 				E.addListener(this, "change", function() {
 					if (this.checked == true) {
-						var el = D.get("multimod_sel_send_alert");
-						if (el) el.checked = false;
+						// var el = D.get("multimod_sel_send_alert");
+						// if (el) el.checked = false;
 						var m = D.get("multimod_sel_link_reset_password");
 						if (m) m.disabled = true;
 					} else {
