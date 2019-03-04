@@ -69,8 +69,8 @@ class Boot {
 			// custom boot sequence given, use this one
 			$last_step = $load_option;
 			$step_list = self::$_boot_seq;
-		}
-		while(list($step_num, $step_method) = each($step_list)) {
+        }
+        foreach($step_list as $step_num => $step_method) {
 
 			// custom boot sequence given, must retrive the correct method to call
 			if(is_array($load_option)) $step_method  = self::$_boot_seq[$step_method];
@@ -124,8 +124,8 @@ class Boot {
 
 		// detect globals overwrite (old php bug)
 		self::log( "Detect globals overwrite attempts." );
-		$list = array('GLOBALS', '_GET', '_POST', '_COOKIE', '_FILES', '_SESSION');
-		while(list(, $elem) = each($list)) {
+        $list = array('GLOBALS', '_GET', '_POST', '_COOKIE', '_FILES', '_SESSION');
+        foreach($list as $elem) {
 			if(isset($_REQUEST[$elem])) die('Request overwrite attempt detected');
 		}
 
