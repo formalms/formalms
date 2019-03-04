@@ -36,9 +36,7 @@ class Forma {
 
         if($use_plugin == true){
 
-	        $pl = new PluginManager();
-
-	        $plugins = $pl->get_all_plugins();
+	        $plugins = PluginManager::get_all_plugins();
 
             foreach ($plugins as $plugin){
                 if (file_exists(_base_.'/plugins/'.$plugin['name'].'/Features/'.$file)){
