@@ -565,7 +565,7 @@ class Form {
 	 * @param string $other_param 	other element for the tag
 	 * @return string 	with the html code for the input type="text" element
 	 */
-	public static function getInputFilefield( $css_text, $id, $name, $value, $alt_name,  $other_param ) {
+	public static function getInputFilefield( $css_text, $id, $name, $value, $alt_name = '',  $other_param = '' ) {
 		return '<input type="file" '
 		."\n\t".'class="'.$css_text.'" '
 		."\n\t".'id="'.$id.'" '
