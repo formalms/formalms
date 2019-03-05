@@ -234,8 +234,8 @@ class CoursestatsLms extends Model {
 
 		if (is_array($pagination)) {
 			$query .= " ORDER BY ".$sort." ".$dir." ";
+			$query .= "LIMIT ".$startIndex.", ".$rowsPerPage;
 		}
-		$query .= "LIMIT ".$startIndex.", ".$rowsPerPage;
 		//echo $query."\n";
 		$output = array();
 		$res = $this->db->query($query);
