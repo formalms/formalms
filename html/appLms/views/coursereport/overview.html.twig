@@ -1,6 +1,24 @@
 <div class="table-responsive">
     <table id="table-overview" class="table table-bordered">
-
+        <colgroup>
+            <col style="width: 30px">
+            <col style="width: 30px">
+            <col style="width: 330px">
+            <col style="width: 55px">
+            <col style="width: 55px">
+            <col style="width: 55px">
+            <col style="width: 55px">
+            <col style="width: 55px">
+            <col style="width: 55px">
+            <col style="width: 55px">
+            <col style="width: 55px">
+            <col style="width: 55px">
+            <col style="width: 55px">
+            <col style="width: 55px">
+            <col style="width: 55px">
+            <col style="width: 100px">
+            <col style="width: 55px">
+        </colgroup>
         <thead>
         <tr>
             <th colspan="2" class="transparent"></th>
@@ -116,7 +134,7 @@
 
     $(document).ready(function() {
         var table = $('#table-overview').DataTable({
-            paging: false,
+            paging: true,
             "columns": [
                 { "orderable": false, "searchable": false },
                 {
