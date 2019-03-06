@@ -24,6 +24,7 @@ class KbLmsController extends LmsController {
 
 	public function show() {
 
+		Yuilib::load('tabview');
 		Util::get_js(Get::rel_path('lms') . '/views/kb/kb.js', true, true);
 		Util::get_js(Get::rel_path('base') . '/addons/yui/stylesheet/stylesheet-min.js', true, true);
 
