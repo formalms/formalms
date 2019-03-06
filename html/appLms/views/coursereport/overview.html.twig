@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="table table-bordered">
+    <table id="table-overview" class="table table-bordered">
         <colgroup>
             <col style="width: 30px">
             <col style="width: 200px">
@@ -26,7 +26,8 @@
             <th class="transparent"></th>
         </tr>
         <tr>
-            <td colspan="2"></td>
+            <td></td>
+            <td></td>
             <td>{{ translate('_TYPE','standard') }}</td>
             <td>{{ translate('_TEST_QUEST_MAXTESTSCORE','test') }}</td>
             <td>{{ translate('_REQUIRED_SCORE','standard') }}</td>
@@ -127,5 +128,32 @@
 <script type="text/javascript">
 
     activities = {{ details|json_encode(constant('JSON_HEX_APOS')) | raw }};
+
+    $(document).ready(function() {
+        $('#table-overview').DataTable({
+            paging: false,
+            "columns": [
+                { "orderable": false, "searchable": false },
+                null,
+                null,
+                null,
+                null,
+                null,
+                { "orderable": false, "searchable": false },
+                { "orderable": false, "searchable": false },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                { "orderable": false, "searchable": false },
+                { "orderable": false, "searchable": false }
+            ],
+            "language": {
+                "info": "",
+            }
+        });
+    });
 
 </script>
