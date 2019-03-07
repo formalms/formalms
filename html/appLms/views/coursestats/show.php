@@ -79,7 +79,7 @@ $(function() {
     order: [[ 0, "asc" ]],
     ajax: {
       url: 'ajax.server.php?r=coursestats/gettabledata',
-      type: "GET",
+      type: "POST",
       complete: function(json) {
         var tr = $(tableId).find('> tbody > tr');
 
