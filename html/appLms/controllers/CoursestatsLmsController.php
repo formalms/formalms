@@ -360,8 +360,8 @@ class CoursestatsLmsController extends LmsController {
 					'LO_name' => $record->title,
 					'LO_type' => $record->objectType ?: 'folder',
 					'LO_status' => $record->status,
-					'first_access' => $record->first_access ? date("d-m-Y", strtotime($record->first_access)) : '',
-					'last_access' => $record->last_access ? date("d-m-Y", strtotime($record->last_access)) : '',
+					'first_access' => $record->first_access,
+					'last_access' => $record->last_access,
 					'history' => $record->history,
 					'totaltime' => $record->totaltime,
 					'score' => $record->score,
@@ -622,114 +622,8 @@ class CoursestatsLmsController extends LmsController {
 			}
 		}
 		echo $this->json->encode($output);
-	}
-
-	public function user_unique_inline_editorTask() {
-		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
-			echo $this->json->encode($output);
-			return;
-		}
-
-		$id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse']>0 ? $_SESSION['idCourse'] : false;
-		if ((int)$id_course <= 0) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid course'));
-			echo $this->json->encode($output);
-			return;
-		}
-
-		$id_user = Get::req('id_user', DOTY_INT, -1);
-		if ($id_user <= 0) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid user'));
-			echo $this->json->encode($output);
-			return;
-		}
-
-		$id_lo = Get::req('id_lo', DOTY_INT, -1);
-		if ($id_lo <= 0) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid lo'));
-			echo $this->json->encode($output);
-			return;
-		}
-
-		$LO_status = Get::req('LO_status', DOTY_MIXED, false);
-		$first_access = Get::req('first_access', DOTY_MIXED, false);
-		$last_access = Get::req('last_access', DOTY_MIXED, false);
-
-        require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
-        require_once(_lms_.'/lib/lib.param.php');
-        
-        $repoDb = new OrgDirDb($id_course);
-        $folder = $repoDb->getFolderById( $id_lo );
-        $id_resource = $folder->otherValues[REPOFIELDIDRESOURCE];
-        $id_param = $folder->otherValues[ORGFIELDIDPARAM];
-        $idReference = getLOParam($id_param, 'idReference');
-        
-        require_once(_lms_.'/class.module/track.object.php');
-        $lo_info = $this->model->getLOInfo($id_lo);
-        
-        switch($lo_info->objectType){
-            case 'faq':
-                require_once(_lms_.'/class.module/track.faq.php');
-                $itemtrack = new Track_Faq(null);
-                break;
-            case 'glossary': 
-                require_once(_lms_.'/class.module/track.glossary.php');
-                $itemtrack = new Track_Glossary(null);
-                break;
-            case 'htmlpage': 
-                require_once(_lms_.'/class.module/track.htmlpage.php');
-                $itemtrack = new Track_Htmlpage(null);
-                break;
-            case 'item': 
-                require_once(_lms_.'/class.module/track.item.php');
-                $itemtrack = new Track_Item(null, $id_user);
-                break;
-            case 'link': 
-                require_once(_lms_.'/class.module/track.link.php');
-                $itemtrack = new Track_Link(null);
-                break;
-            case 'poll': 
-                require_once(_lms_.'/class.module/track.poll.php');
-                $itemtrack = new Track_Poll(null);
-                break;
-            case 'scormorg':
-                require_once(_lms_.'/modules/scorm/scorm_items_track.php');
-                $itemtrack = new Scorm_ItemsTrack(null, $GLOBALS['prefix_lms']);
-                break;
-            case 'test': 
-                require_once(_lms_.'/class.module/track.test.php');
-                $itemtrack = new Track_Test(null);
-                break;
-        }
-        
-        list( $exist, $idTrack ) = $itemtrack->getIdTrack( $idReference, $id_user, $id_resource, TRUE );
-        
-        if( !$exist ){
-            require_once( _lms_ . '/class.module/track.object.php' );
-            $track_lo = new Track_Object( $idTrack );
-            $track_lo->createTrack( $idReference, $idTrack, $id_user, date("Y-m-d H:i:s"), 'not attempted', $lo_info->objectType);
-        }
-
-		$output = array();
-
-		if ($LO_status) {
-			$output['success'] = $this->model->changeLOUserStatus($id_lo, $id_user, $LO_status);
-			$output['LO_status'] = $LO_status;
-		}
-		if ($first_access) {
-			$first_access = date("Y-m-d H:i:s", $first_access);
-			$output['success'] = $this->model->changeLOUserFirstAccess($id_lo, $id_user, $first_access);
-			$output['first_access'] = $first_access;
-		}
-		if ($last_access) {
-			$last_access = date("Y-m-d H:i:s", $last_access);
-			$output['success'] = $this->model->changeLOUserLastAccess($id_lo, $id_user, $last_access);
-			$output['last_access'] = $last_access;
-		}
-		echo $this->json->encode($output);
-	}
-
+    }
+    
 	public function user_inline_editorTask() {
 		if (!$this->permissions['mod']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -833,30 +727,26 @@ class CoursestatsLmsController extends LmsController {
 
 
 			case "first_access": {
-				$new_date = date("Y-m-d H:i:s", $new_value);
-				$res = $this->model->changeLOUserFirstAccess($id_lo, $id_user, $new_date);
-				$output['new_value'] = Format::date($new_date);
+				$res = $this->model->changeLOUserFirstAccess($id_lo, $id_user, $new_value);
+				$output['new_value'] = $new_value;
 			} break;
 
 			case "last_access": {
-				$new_date = date("Y-m-d H:i:s", $new_value);
-				$res = $this->model->changeLOUserLastAccess($id_lo, $id_user, $new_date);
+				$res = $this->model->changeLOUserLastAccess($id_lo, $id_user, $new_value);
 				$output['success'] = $res ? true : false;
-				$output['new_value'] = Format::date($new_date);
+				$output['new_value'] = $new_value;
 			} break;
 
 			case "first_complete": {
-				$new_date = date("Y-m-d H:i:s", $new_value);
-				$res = $this->model->changeLOUserFirstComplete($id_lo, $id_user, $new_date);
+				$res = $this->model->changeLOUserFirstComplete($id_lo, $id_user, $new_value);
 				$output['success'] = $res ? true : false;
-				$output['new_value'] = Format::date($new_date);
+				$output['new_value'] = $new_value;
 			} break;
 
 			case "last_complete": {
-				$new_date = date("Y-m-d H:i:s", $new_value);
-				$res = $this->model->changeLOUserLastComplete($id_lo, $id_user, $new_date);
+				$res = $this->model->changeLOUserLastComplete($id_lo, $id_user, $new_value);
 				$output['success'] = $res ? true : false;
-				$output['new_value'] = Format::date($new_date);
+				$output['new_value'] = $new_value;
 			} break;
 
 			default: {
