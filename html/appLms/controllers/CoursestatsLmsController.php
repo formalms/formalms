@@ -247,7 +247,7 @@ class CoursestatsLmsController extends LmsController {
 				);
 
 				//get LO data
-				$completed = 'Non iniziato';
+				$completed = 0;
 				foreach ($lo_list as $idOrg => $lo) {
 					if (isset($record->lo_status[$idOrg])) {
 						if ($record->lo_status[$idOrg] === 'completed') {
@@ -264,7 +264,7 @@ class CoursestatsLmsController extends LmsController {
 						$row['lo_'.$idOrg] = "Non iniziato";
 					}
 				}
-				$row['completed'] = $completed;
+				$row['completed'] = $completed.' / '.count($lo_list);
 
 				$records[] = array_values($row);
 			}
