@@ -312,6 +312,8 @@ function ins_personal_media() {
 	$qtxt .= " ('".$user_id."', 'image', '".$fname."', '".addslashes($real_fname)."', '".$media_url."', '".$size."', NOW())";
 	$q = sql_query($qtxt);
 
+	$url = 'addons/mod_media/'.getPopupBaseUrl();
+
 	Util::jump_to($url.'&result='.( $q ? 'upload_ok' : 'upload_err' ));
 }
 
@@ -345,7 +347,9 @@ function del_personal_media(& $out, & $lang) {
 			$q=sql_query($qtxt);
 		}
 
-		Util::jump_to(getPopupBaseUrl()."&amp;op=personal");
+		$url = 'addons/mod_media/'.getPopupBaseUrl();
+
+		Util::jump_to($url."&amp;op=personal");
 	}
 	else {
 
