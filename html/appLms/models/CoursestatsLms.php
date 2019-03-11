@@ -423,11 +423,18 @@ class CoursestatsLms extends Model {
 		if ($res) {
 			if ($this->db->num_rows($res) > 0) {
 				while ( $row = $this->db->fetch_row($res) ) {
+					$row[3] = $this->roundTime($row[3]);
 					$output[] = $row;
 				}
 			}
 		}
 		return $output;
+	}
+
+	public function roundTime($time)
+	{
+		$t = explode('.', $time);
+		return $t[0];
 	}
 
 	public function getUserScormHistoryTrackTotaltime($id_user, $id_lo) {
