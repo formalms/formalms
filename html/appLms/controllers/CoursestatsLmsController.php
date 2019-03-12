@@ -416,7 +416,7 @@ class CoursestatsLmsController extends LmsController {
 					'first_access' => Format::date($record->first_access, 'datetime'),
 					'last_access' => Format::date($record->last_access, 'datetime'),
 					'history' => $record->history,
-					'totaltime' => $record->totaltime,
+					'totaltime' => $this->model->roundTime($record->totaltime),
 					'score' => $record->score,
 					'edit' => $record->edit,
 				);
