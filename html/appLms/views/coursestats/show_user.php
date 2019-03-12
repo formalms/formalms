@@ -14,10 +14,10 @@
     array('key' => 'LO_name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true, 'formatter' => 'CourseUserStats.LOnameFormatter'),
     array('key' => 'LO_type', 'label' => Lang::t('_TYPE', 'standard'), 'sortable' => true),
     array('key' => 'LO_status', 'label' => Lang::t('_STATUS', 'standard'), 'sortable' => true, 'editor' => 'CourseUserStats.statusEditor'),
-    array('key' => 'first_access', 'label' => Lang::t('_DATE_FIRST_ACCESS', ''), 'sortable' => true, 'editor' => 'CourseUserStats.firstAccessEditor'),
-    array('key' => 'last_access', 'label' => Lang::t('_DATE_LAST_ACCESS', ''), 'sortable' => true, 'editor' => 'CourseUserStats.lastAccessEditor'),
-    array('key' => 'history', 'label' => 'Accessi in dettaglio ', 'sortable' => false),
-    array('key' => 'totaltime', 'label' => 'Tempo totale accessi', 'sortable' => true),
+    array('key' => 'first_access', 'label' => Lang::t('_DATE_FIRST_ACCESS', 'standard'), 'sortable' => true, 'editor' => 'CourseUserStats.firstAccessEditor'),
+    array('key' => 'last_access', 'label' => Lang::t('_DATE_LAST_ACCESS', 'standard'), 'sortable' => true, 'editor' => 'CourseUserStats.lastAccessEditor'),
+    array('key' => 'history', 'label' => Lang::t('_ACCESS_DETAIL', 'standard'), 'sortable' => false),
+    array('key' => 'totaltime', 'label' => Lang::t('_ACCESS_TOTAL_TIME', 'standard'), 'sortable' => true),
     array('key' => 'score', 'label' => Lang::t('_SCORE', 'standard'), 'sortable' => true),
   );
 
