@@ -767,7 +767,7 @@ class MessageModule {
 		if(!isset($_POST['message']['recipients'])) {
 
 			if(isset($_GET['reply_recipients'])) {
-				$user_selected = unserialize(stripslashes(urldecode($_GET['reply_recipients'])));
+				$user_selected = json_decode(stripslashes(urldecode($_GET['reply_recipients'])),true);
 				$recipients = urlencode(Util::serialize($user_selected));
 			} else {
 				$user_select 	= new UserSelector();
@@ -931,6 +931,7 @@ class MessageModule {
 				.Form::getButton('back_recipients', 'back_recipients', Lang::t('_BACK'))
 				.Form::closeButtonSpace()
 				.Form::closeForm();
+			cout($output, 'content');
 			return;
 		}
 

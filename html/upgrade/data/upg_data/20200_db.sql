@@ -21,7 +21,8 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 ALTER TABLE `core_menu` ADD COLUMN `of_platform` VARCHAR(255) NOT NULL DEFAULT 'framework';
 
 UPDATE `core_menu_under` SET `of_platform` = 'framework' WHERE `of_platform` IS NULL;
-UPDATE `core_menu_under` SET `of_platform` = 'alms' WHERE `of_platform` = 'lms';
+SET @alms_exists = (SELECT COUNT(*) > 0 FROM `core_menu_under` WHERE `of_platform` = 'alms');
+UPDATE `core_menu_under` SET `of_platform` = 'alms' WHERE `of_platform` = 'lms' AND NOT @alms_exists;
 
 INSERT IGNORE INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(596, '_MYCOURSES', '', 1, 'true', 'true', NULL, NULL, 'lms');
 INSERT IGNORE INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(597, '_CATALOGUE', '', 2, 'false', 'true', NULL, NULL, 'lms');
@@ -55,5 +56,21 @@ INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `m
 VALUES ('use_course_label', 'off', 'enum', '3', 'main', '4', '7', '1', '0', '');
 
 
+
+-- ------------------------------------------------------------------
+
+-- Task #10896 - #14000: role plug-in reference
+
+DELETE rm
+FROM core_role_members rm
+LEFT JOIN core_role r ON rm.idst = r.idst
+WHERE r.idst IS NULL;
+
+ALTER TABLE core_role
+ADD COLUMN idPlugin INT(10) NULL,
+ADD CONSTRAINT FOREIGN KEY (idPlugin) REFERENCES core_plugin(plugin_id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE core_role_members
+ADD CONSTRAINT FOREIGN KEY (idst) REFERENCES core_role(idst) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ------------------------------------------------------------------

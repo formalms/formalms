@@ -42,6 +42,13 @@ abstract class FormaPlugin {
         $name=basename(dirname($fn));
         return $name;
     }
+
+    public static function getID() {        
+        $pg_adm=new PluginmanagerAdm();
+        $plugin_info=$pg_adm->getPluginFromDB(self::getName(),'name');
+        return (int)$plugin_info['plugin_id'];
+    }
+
     public static function addSetting($name, $type, $size, $value="", $sequence=0){
         $pg_adm=new PluginmanagerAdm();
         $plugin_info=$pg_adm->getPluginFromDB(self::getName(),'name');
@@ -62,24 +69,88 @@ abstract class FormaPlugin {
      * @return bool
      */
     public static function addRequest($app, $name, $controller, $model){
-        $pg_adm=new PluginmanagerAdm();
-        $plugin_info=$pg_adm->getPluginFromDB(self::getName(),'name');
         $query_insert_string="INSERT %adm_requests (app, name, controller, model, plugin) VALUES ";
-        $query_insert_string.="('".$app."','".$name."','".$controller."','".$model."',".$plugin_info['plugin_id'].")";
+        $query_insert_string.="('".$app."','".$name."','".$controller."','".$model."',".self::getID().")";
         sql_query($query_insert_string);
         return true;
     }
 
-    public static function addCoreMenu($name, $mvcPath, $parent=false, $icon='', $is_active=false, $of_platform = 'framework'){
-        $pg_adm=new PluginmanagerAdm();
-        $plugin_info=$pg_adm->getPluginFromDB(self::getName(),'name');
-        CoreMenu::addMenuChild($name, $mvcPath, 'framework', $of_platform, $parent, $icon, $is_active, $plugin_info['plugin_id']);
+    /**
+     * Add a role.
+     *
+     * @param string $role
+     * @return void
+     */
+    public static function addRole($role) {
+        $am = Docebo::user()->getACLManager();
+        if($role_info = $am->getRole($role)) {
+            $idst = $role_info[ACL_INFO_IDST];
+        } else {
+            $idst = $am->registerRole($role, '', self::getID());
+        }
+        return $idst;
     }
 
+    /**
+     * Add new menu item and create the required role using the plug-in ID reference.
+     *
+     * @param array $menu
+     *    string $name
+     *    string|null $image
+     *    int|null $sequence
+     *    bool|null $isActive
+     *    bool|null $collapse
+     *    int|null $idParent
+     *    string|null $ofPlatform
+     * @param array|null $menuUnder
+     *    string $defaultName
+     *    string $moduleName
+     *    string $associatedToken
+     *    string|null $defaultOp
+     *    string|null $ofPlatform
+     *    int|null $sequence
+     *    string|null $classFile
+     *    string|null $className
+     *    string|null $mvcPath
+     * @param array $roleMembers
+     * @return int|false
+     */
+    public static function addMenu($menu, $menuUnder = null, $roleMembers = array()) {
+        return CoreMenu::addMenu($menu, $menuUnder, $roleMembers, self::getID());
+    }
+
+    /**
+     * Add menu item in admin area using plug-in ID reference.
+     * 
+     * @deprecated
+     *
+     * @param string $name
+     * @param string $mvcPath
+     * @param boolean $parent
+     * @param string $icon
+     * @param boolean $is_active
+     * @param string $of_platform
+     * @return void
+     */
+    public static function addCoreMenu($name, $mvcPath, $parent=false, $icon='', $is_active=false, $of_platform = 'framework'){
+        CoreMenu::addMenuChild($name, $mvcPath, 'framework', $of_platform, $parent, $icon, $is_active, self::getID());
+    }
+
+    /**
+     * Add menu item in LMS area using plug-in ID reference.
+     * 
+     * @deprecated
+     *
+     * @param string $name
+     * @param string $mvcPath
+     * @param boolean $parent
+     * @param string $icon
+     * @param boolean $is_active
+     * @param string $of_platform
+     * @return void
+     */
     public static function addLmsMenu($name, $mvcPath, $parent=false, $icon='', $is_active=false, $of_platform = 'lms'){
-        $pg_adm=new PluginmanagerAdm();
-        $plugin_info=$pg_adm->getPluginFromDB(self::getName(),'name');
-        CoreMenu::addMenuChild($name, $mvcPath, 'lms', $of_platform, $parent, $icon, $is_active, $plugin_info['plugin_id']);
+        CoreMenu::addMenuChild($name, $mvcPath, 'lms', $of_platform, $parent, $icon, $is_active, self::getID());
     }
 
 }

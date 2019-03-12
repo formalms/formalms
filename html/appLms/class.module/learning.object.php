@@ -180,7 +180,7 @@ class Learning_Object {
 		$fields_mask = $fman->playFields($id_obj);
 		$out .= $fields_mask;
 
-	return $out;
+	    return $out;
 	}
 	
 	/**
@@ -259,6 +259,14 @@ class Learning_Object {
      * @param $visible
      */
 	public function setVisibileInCoursereportDetail($visible){
+    }
+
+    public function showInLightbox() {
+        return false;
+    }
+
+    public function canBeCategorized() {
+        return true;
     }
 
 }

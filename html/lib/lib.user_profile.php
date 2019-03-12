@@ -1917,8 +1917,8 @@ class UserProfileViewer {
                 }
                 if ($social->isActive('google') && !$social->connectedToUser('google')) {
                     $html .= '<li>
-                                  <a class="google-plus" href="' . Get::site_url() . 'index.php?modname=login&amp;op=google_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '">
-                                      <i class="fa fa-google-plus"></i>
+                                  <a class="google" href="' . Get::site_url() . 'index.php?modname=login&amp;op=google_login&amp;connect=1" ' . 'title="' . Lang::t('_CONNECT', 'social') . ': ' . Lang::t('_GOOGLE', 'social') . '">
+                                      <i class="fa fa-google"></i>
                                   </a>
                               </li>';
                 }

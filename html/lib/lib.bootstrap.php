@@ -69,8 +69,8 @@ class Boot {
 			// custom boot sequence given, use this one
 			$last_step = $load_option;
 			$step_list = self::$_boot_seq;
-		}
-		while(list($step_num, $step_method) = each($step_list)) {
+        }
+        foreach($step_list as $step_num => $step_method) {
 
 			// custom boot sequence given, must retrive the correct method to call
 			if(is_array($load_option)) $step_method  = self::$_boot_seq[$step_method];
@@ -124,8 +124,8 @@ class Boot {
 
 		// detect globals overwrite (old php bug)
 		self::log( "Detect globals overwrite attempts." );
-		$list = array('GLOBALS', '_GET', '_POST', '_COOKIE', '_FILES', '_SESSION');
-		while(list(, $elem) = each($list)) {
+        $list = array('GLOBALS', '_GET', '_POST', '_COOKIE', '_FILES', '_SESSION');
+        foreach($list as $elem) {
 			if(isset($_REQUEST[$elem])) die('Request overwrite attempt detected');
 		}
 
@@ -416,6 +416,10 @@ class Boot {
 		$_SERVER 	= utf8::clean($_SERVER);
 		if(isset($_FILES)) 	$_FILES = utf8::clean($_FILES);
 
+		// Variable to skip checkSignature control if saml response
+		// https://en.wikipedia.org/wiki/SAML_2.0
+		$IS_SAML_RESPONSE = (isset($_REQUEST["SAMLResponse"]) && !empty($_REQUEST["SAMLResponse"]));
+
 		// Convert ' and " (quote or unquote)
 		self::log( "Sanitize the input." );
 
@@ -446,7 +450,7 @@ class Boot {
 			$_POST['passIns'] = utf8::clean(stripslashes($password_login));
 		}
 
-		if(!defined("IS_API") && !defined("IS_PAYPAL") && ( strtoupper($_SERVER['REQUEST_METHOD']) == 'POST' || defined("IS_AJAX"))) {
+		if(!defined("IS_API") && !defined("IS_PAYPAL") && !$IS_SAML_RESPONSE && ( strtoupper($_SERVER['REQUEST_METHOD']) == 'POST' || defined("IS_AJAX"))) {
 			// If this is a post or a ajax request then we must have a signature attached
 			Util::checkSignature();
 		}

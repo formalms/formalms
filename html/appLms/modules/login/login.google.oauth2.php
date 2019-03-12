@@ -48,7 +48,7 @@ try{
 		case (isset($_REQUEST['code'])):
 			$token = $googleService->requestAccessToken($_GET['code']);
 
-			$objUserInfo = json_decode($googleService->request('https://www.googleapis.com/oauth2/v1/userinfo'), true);
+			$objUserInfo = json_decode($googleService->request('https://www.googleapis.com/oauth2/v2/userinfo'), true);
 
 			if (!empty($objUserInfo["email"])) {
 				if (Docebo::user()->isAnonymous()) { // sign in the user

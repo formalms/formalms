@@ -60,7 +60,7 @@ function TruncateText($the_text, $size)
 function getStringPresence($presence){
     $strPresence = Lang::t('_NO', 'standard');
     if($presence==1) $strPresence = Lang::t('_YES', 'standard') ;
-    
+
     return $strPresence;
 }
 
@@ -69,16 +69,16 @@ function getStringPresence($presence){
 function typeOfCourse ($t) {
     switch ($t) {
        case "elearning":
-         return Lang::t('_ELEARNING', 'catalogue');       
+         return Lang::t('_ELEARNING', 'catalogue');
        case "classroom":
-            return Lang::t('_CLASSROOM_COURSE', 'cart');       
+            return Lang::t('_CLASSROOM_COURSE', 'cart');
        case "all":
-            return Lang::t('_ALL_COURSES', 'standard');       
+            return Lang::t('_ALL_COURSES', 'standard');
     }
     return '';
 }
 
-   
+
 ?>
 
 
@@ -87,11 +87,11 @@ function typeOfCourse ($t) {
                 $('<div></div>').appendTo('body')
                     .html("<div><h6><?php echo Lang::t('_SELF_UNSUBSCRIBE', 'course')?></h6></div>")
                     .dialog({
-                        modal: true, 
-                        title: title, 
+                        modal: true,
+                        title: title,
                         autoOpen: true,
                         width: '200',
-                        height: '150', 
+                        height: '150',
                         resizable: false,
                         buttons: {
                             <?php echo Lang::t('_CONFIRM', 'standard')?>: function () {
@@ -100,7 +100,7 @@ function typeOfCourse ($t) {
                                             {
                                                 r: 'elearning/self_unsubscribe',
                                                 id_course: id_course,
-                                                id_date: id_date 
+                                                id_date: id_date
                                             }
                                         );
                                         posting.done(function (responseText) {
@@ -113,20 +113,20 @@ function typeOfCourse ($t) {
                                             var posting = $.get( 'ajax.server.php?r=elearning/all&rnd=<?php echo time(); ?>&filter_text=' + ft + '&filter_type=' + ctype + '&filter_cat=' + category + '&filter_status=' + json_status + '&filter_year=' + cyear, {});
                                             posting.done(function(responseText){
                                                     $("#div_course").html(responseText);
-                                            });                                    
+                                            });
                                         });
                                         posting.fail(function () {
                                             alert('unsubscribe failed')
-                                        })                                
+                                        })
                                         $(this).dialog("close");
                                     },
-                            <?php echo Lang::t('_UNDO', 'standard')?>: function () {                                                                 
+                            <?php echo Lang::t('_UNDO', 'standard')?>: function () {
                                 $(this).dialog("close");
                             }
                         },
                         open: function(event, ui) {
                             $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
-                        },                         
+                        },
                         close: function (event, ui) {
                             $(this).remove();
                         }
@@ -139,7 +139,7 @@ function typeOfCourse ($t) {
 
 <link rel="shortcut icon" href="../favicon.ico">
 
-             
+
 <div id='container1_<?php echo $course_state; ?>'>
     <h1 class="page-header col-xs-12"><strong><?php echo typeOfCourse($filter_type); ?></strong></h1>
     <div class="clearfix row" id='mia_area_<?php echo $stato_corso; ?>'>
@@ -151,13 +151,29 @@ function typeOfCourse ($t) {
 
 
 
-        <?php foreach ($courselist as $course){  ?>
+        <?php foreach ($courselist as $course){
+          $tooltipClass = '';
+          $tooltipElement = '';
+          if (strlen($course['name']) >= 50) {
+            $tooltipClass = 'has-forma-tooltip';
+            $tooltipElement = '
+              <div class="forma-tooltip">' . $course['name'] . '</div>
+            ';
+          }
+
+
+          ?>
         <div class="col-xs-12 col-md-4 col-lg-3 mycourses-list">
-            <div class="course-box"> <!-- NEW BLOCK -->
-                    <div class="course-box__item">
+            <div class="course-box" <?php if ($tooltipClass !== '') echo 'style="overflow:visible";' ?>> <!-- NEW BLOCK -->
+                    <div class="course-box__item <?php echo $tooltipClass; ?>">
                         <div class="course-box__title icon--filter-<?php echo $course['user_status']; ?>">
                           <?php echo TruncateText($course['name'], 50); ?>
                         </div>
+                        <?php
+                          if ($tooltipElement !== '') {
+                            echo $tooltipElement;
+                          }
+                        ?>
                     </div>
                     <div class="course-box__item course-box__item--no-padding">
                         <?php if ($course['use_logo_in_courselist']) { ?>
@@ -175,34 +191,34 @@ function typeOfCourse ($t) {
                             <?php echo $this->levels[$course['level']]; ?>
                         </div>
 
-                        <?php if($course['auto_unsubscribe']==2 || $course['auto_unsubscribe']==1 || $course["course_demo"] ): ?>						
+                        <?php if($course['auto_unsubscribe']==2 || $course['auto_unsubscribe']==1 || $course["course_demo"] ): ?>
                             <div class="course-box__options dropdown pull-right">
                                 <div class="dropdown-toggle" id="courseBoxOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-								    <i class="glyphicon glyphicon-option-horizontal"></i> 
-							    </div>   
+								    <i class="glyphicon glyphicon-option-horizontal"></i>
+							    </div>
 
                                 <ul class="dropdown-menu" aria-labelledby="courseBoxOptions">
-								      
+
                                      <?php if($course['auto_unsubscribe']==2 || $course['auto_unsubscribe']==1 ): ?>
 								        <li>
-                                            <a href='javascript:confirmDialog(<?php echo "\"".$course['name']."\",".$course['idCourse'].",".key($display_info[$course['idCourse']]) ?>)'><?php echo Lang::t('_SELF_UNSUBSCRIBE', 'course') ?></a>    
+                                            <a href='javascript:confirmDialog(<?php echo "\"".$course['name']."\",".$course['idCourse'].",".key($display_info[$course['idCourse']]) ?>)'><?php echo Lang::t('_SELF_UNSUBSCRIBE', 'course') ?></a>
                                         </li>
                                     <?php endif; ?>
-                                    
+
                                     <?php if ($course["course_demo"]) :?>
 								        <li>
                                             <a href="index.php?r=catalog/downloadDemoMaterial&amp;course_id=<?php echo $course['idCourse'] ?>"><?php echo Lang::t('_COURSE_DEMO', 'course') ?></a>
                                         </li>
-                                    <?php endif; ?>                                    
-							    </ul> 
+                                    <?php endif; ?>
+							    </ul>
 						    </div>
                         <?php endif; ?>
-                        
+
                         <div class="course-box__desc">
                             <?php echo TruncateText($course['box_description'], 120); ?>
                         </div>
-                    </div> 
-                    
+                    </div>
+
                     <!-- DATA CLOSING ONLY IF SET -->
                     <?php
                         $dataClosing = (int)GetCourseYear($course);
@@ -218,46 +234,46 @@ function typeOfCourse ($t) {
                         }
                     ?>
 
-                    <?php 
-                        
-                        if ($course['course_type']=='classroom') { 
+                    <?php
+
+                        if ($course['course_type']=='classroom') {
                         // if exists end course, show it ?>
                     <div class="course-box__item course-box__item--half">
-     
+
 						<?php
-						     
+
                              $vett_course = array();
                              $day_lessons = array();
                              $next_lesson = array();
                              $vett_course = $display_info[$course['idCourse']];
-                             
+
                              foreach($vett_course as $date){
-                                   
+
                                    foreach($date->date_info_day as $key => $value ){
-                                       
+
                                        $day = array(
                                                        "name" => $date->name,
                                                        "code" => $date->code,
-                                                       "startDate" => $value['date_begin'], 
+                                                       "startDate" => $value['date_begin'],
                                                        "endDate" => $value['date_end'],
                                                        "location" => $value['location'] ,
                                                        "teacher" => $value['teacher'] ,
                                                        "presence" => $value['presence']
                                                        );
-                                       
+
                                        if($value['nextMeet']==0){
-                                           $day_lessons[] = $day;                                                       
+                                           $day_lessons[] = $day;
                                        } else{
-                                           $next_lesson[] = $day;      
-                                       }    
+                                           $next_lesson[] = $day;
+                                       }
                                    }
                              }
-                             
-           
+
+
 						?>
 						<?php if ($day_lessons && !empty($day_lessons) || $next_lesson && !empty($next_lesson)) : ?>
 						<p class="course-box__show-dates js-course-box-open-dates-modal">
-                        <i class="glyphicon glyphicon-play"></i> 
+                        <i class="glyphicon glyphicon-play"></i>
                              &nbsp; <?php echo Lang::t('_MEETING_LESSON', 'standard') ?></p>
 						<div class="course-box__modal">
 							<div class="course-box__modal__header">
@@ -267,18 +283,18 @@ function typeOfCourse ($t) {
 									<span class="close-button__label"><?php echo Lang::t('_CLOSE', 'standard') ?></span>
 								</button>
 							</div>
-                            
-                            
-                           
+
+
+
 							<div class="course-box__modal__content">
-						
+
                                 <?php if (count($next_lesson) > 0) : ?>
-                                
-                                <!-- NEXT MEETING -->    
+
+                                <!-- NEXT MEETING -->
                         		<div class="course-box__modal__entry">
-									
+
                                     <p class="course-box__modal__title"><?php echo Lang::t('_NEXTMEETING', 'standard') ?></p>
-									 
+
                                     <table class="course-box__modal__lesson">
 										<tr>
 											<td><?php echo Lang::t('_NAME', 'standard') ?>:</td>
@@ -300,13 +316,13 @@ function typeOfCourse ($t) {
 											<td><?php echo Lang::t('_CLASSROOM', 'standard') ?>:</td>
 											<td><?php echo $next_lesson[0]['location']; ?></td>
 										</tr>
-                                        
+
 									</table>
-								    
-                                    
+
+
                                 </div>
                                 <?php endif; ?>
-                                
+
                                 <!-- TEACHER -->
                                 <?php if (count($day_lessons[0]['teacher']) > 0) : ?>
                                 <div class="course-box__modal__entry">
@@ -323,14 +339,14 @@ function typeOfCourse ($t) {
                                          
                                                     </tr>";
                                              }
-                           
-                                        ?>                                
+
+                                        ?>
                                     </table>
-                                
+
                                 </div>
                                 <?php endif; ?>
-                                
-                                
+
+
                                  <!-- LESSONS PREV -->
 								<?php if (count($day_lessons) > 1) : ?>
 								<div class="course-box__modal__entry">
@@ -357,28 +373,28 @@ function typeOfCourse ($t) {
 												<td><?php echo Lang::t('_CLASSROOM', 'standard') ?>:</td>
 												<td><?php echo $day_lessons[$i]['location']; ?></td>
 											</tr>
-                                            
+
                                             <?php if ($day_lessons[$i]['presence'] > 0) : ?>
                                             <tr>
                                                 <td><?php echo Lang::t('_IS_PRESENCE', 'standard') ?>:</td>
                                                 <td><?php echo getStringPresence($day_lessons[$i]['presence']); ?></td>
-                                            </tr>                                            
+                                            </tr>
                                             <?php endif; ?>
-       
+
 										</table>
 									<?php endfor; ?>
 								</div>
 								<?php endif; ?>
 							</div>
-			
-            
-            
+
+
+
                             <div class="close-button js-course-box-close-dates-modal course-box__modal__footer">
                                 <button type="button" class="forma-button"><?php echo Lang::t('_CLOSE', 'standard') ?></button>
                             </div>
 
-            
-            
+
+
 						</div>
 						<?php endif; ?>
                     </div>
@@ -402,4 +418,4 @@ function typeOfCourse ($t) {
             <?php } // end foreach ?>
         </div>
     </div>
-</div>   
+</div>

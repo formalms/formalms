@@ -31,11 +31,11 @@ $rel_actions = '
 	<a href="index.php?r=coursestats/export_csv" class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_CSV', 'report').'">
 		<span>'.Lang::t('_EXPORT_CSV', 'report').'</span>
 	</a>
-	<a href="index.php?r=coursestats/export_csv3" class="ico-wt-sprite subs_csv" title="Esporta report dettagliato come CSV ">
-		<span>Esporta report  dettagliato come CSV</span>
+	<a href="index.php?r=coursestats/export_csv3" class="ico-wt-sprite subs_csv" title="'.Lang::t('_EXPORT_REPORT_DETAIL_CSV', 'report').'">
+		<span>'.Lang::t('_EXPORT_REPORT_DETAIL_CSV', 'report').'</span>
 	</a>
-	<a href="index.php?r=coursestats/export_Xls" class="ico-wt-sprite subs_xls" title="Esporta report dettagliato come XLS">
-		<span>Esporta report dettagliato come XLS</span>
+	<a href="index.php?r=coursestats/export_Xls" class="ico-wt-sprite subs_xls" title="'.Lang::t('_EXPORT_REPORT_DETAIL_XLS', 'report').'">
+		<span>'.Lang::t('_EXPORT_REPORT_DETAIL_XLS', 'report').'</span>
 	</a>';?>
 
   <br><?php
@@ -79,7 +79,7 @@ $(function() {
     order: [[ 0, "asc" ]],
     ajax: {
       url: 'ajax.server.php?r=coursestats/gettabledata',
-      type: "GET",
+      type: "POST",
       complete: function(json) {
         var tr = $(tableId).find('> tbody > tr');
 

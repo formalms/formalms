@@ -1844,8 +1844,10 @@ CREATE TABLE IF NOT EXISTS `core_role` (
   `idst` int(11) NOT NULL DEFAULT '0',
   `roleid` varchar(255) NOT NULL DEFAULT '',
   `description` varchar(255) DEFAULT NULL,
+  `idPlugin` INT(10) NULL,
   PRIMARY KEY (`idst`),
-  KEY `roleid` (`roleid`)
+  KEY `roleid` (`roleid`),
+  CONSTRAINT FOREIGN KEY (`idPlugin`) REFERENCES `core_plugin`(`plugin_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 PACK_KEYS=0;
 
 --
@@ -2037,7 +2039,8 @@ INSERT INTO `core_role` (`idst`, `roleid`, `description`) VALUES
 CREATE TABLE IF NOT EXISTS `core_role_members` (
   `idst` int(11) NOT NULL DEFAULT '0',
   `idstMember` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`idst`,`idstMember`)
+  PRIMARY KEY (`idst`,`idstMember`),
+  CONSTRAINT FOREIGN KEY (idst) REFERENCES core_role(idst) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2067,8 +2070,6 @@ INSERT INTO `core_role_members` (`idst`, `idstMember`) VALUES
 (26,3),
 (27,3),
 (28,3),
-(29,3),
-(30,3),
 (31,3),
 (32,3),
 (33,3),
@@ -2144,7 +2145,6 @@ INSERT INTO `core_role_members` (`idst`, `idstMember`) VALUES
 (114,3),
 (115,3),
 (116,3),
-(117,3),
 (118,3),
 (119,3),
 (120,3),
@@ -2200,14 +2200,8 @@ INSERT INTO `core_role_members` (`idst`, `idstMember`) VALUES
 (228,3),
 (229,3),
 (230,3),
-(272,10893),
-(272,10894),
-(272,10895),
-(272,10896),
 (280,3),
 (11553,3),
-(11612,3),
-(11613,3),
 (11757,10893),
 (11757,10894),
 (11757,10895),
@@ -2396,8 +2390,7 @@ INSERT INTO `core_role_members` (`idst`, `idstMember`) VALUES
 (11835, 301),
 (11835, 302),
 (11835, 303),
-(11835, 304),
-(11889, 301);
+(11835, 304);
 
 -- --------------------------------------------------------
 
@@ -2490,7 +2483,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('Clear_Twig_Cache', 'index.php?r=adm/setting/clearTwigCache', 'button', 2, 'twig_cache', 8, 27, 0, 0, ''),
 ('common_admin_session', 'on', 'enum', 3, 'security', 8, 24, 1, 0, ''),
 ('conference_creation_limit_per_user', '99999999999', 'string', 255, '0', 6, 0, 1, 0, ''),
-('core_version', '2.1', 'string', 255, '0', 1, 0, 1, 1, ''),
+('core_version', '2.2', 'string', 255, '0', 1, 0, 1, 1, ''),
 ('course_block', 'off', 'enum', 3, '0', 4, 15, 1, 0, ''),
 ('course_quota', '500', 'string', 255, '0', 4, 9, 1, 0, ''),
 ('currency_symbol', '€', 'string', 10, 'ecommerce', 4, 18, 1, 0, ''),

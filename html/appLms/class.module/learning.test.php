@@ -455,6 +455,15 @@ class Learning_Test extends Learning_Object {
 	{
 		$this->idOrg = $idOrg;
 	}
+
+    public function canBeCategorized() {
+        return false;
+    }
+
+    public function trackDetails($user, $org) {
+        require_once Forma::inc(_lms_ . '/modules/organization/orgresults.php');
+        getCompilationTable($user, $org);
+    }
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20181224</DATE>
+  <DATE>20190215</DATE>
   <LANG id="portuguese">
     <lang_code>portuguese</lang_code>
     <lang_description>Portuguese</lang_description>
@@ -256,7 +256,7 @@
         <key id="catalogue&amp;_COURSE_IN_CART" attributes="" save_date="2017-07-17 16:46:07"><![CDATA[Curso no carrinho]]></key>
         <key id="catalogue&amp;_COURSE_LIST_SUMMARY" attributes="" save_date="2018-12-22 19:47:07"><![CDATA[Lista dos cursos disponíveis]]></key>
         <key id="catalogue&amp;_COURSE_SUBSCRIPTION" attributes="" save_date="2018-12-22 19:58:03"><![CDATA[Inscrição no curso]]></key>
-        <key id="catalogue&amp;_COURSE_S_GODADMIN" attributes="" save_date="2018-12-22 19:55:28"><![CDATA[Só os administradores podem inscrever-se.]]></key>
+        <key id="catalogue&amp;_COURSE_S_GODADMIN" attributes="" save_date="2019-01-13 19:29:12"><![CDATA[Inscrição reservada aos administradores.]]></key>
         <key id="catalogue&amp;_COURSE_S_MODERATE" attributes="" save_date="2018-12-22 19:59:02"><![CDATA[A sua inscrição deste curso precisa de ser aprovada pelo administrador.]]></key>
         <key id="catalogue&amp;_COURSE_TYPE" attributes="" save_date="2018-12-22 20:00:16"><![CDATA[Tipo de curso]]></key>
         <key id="catalogue&amp;_COURSE_YOU_CAN_ACCESS" attributes="" save_date="2018-12-22 19:40:23"><![CDATA[Cursos ativos]]></key>
@@ -501,7 +501,7 @@
         <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2018-12-22 23:26:54"><![CDATA[Nome de utilizador para utilizadores LDAP, usar $user para nome de utilizador.<br />Ex. $user@domain2.domain1 (para: W2k3)]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2017-07-17 15:28:22"><![CDATA[Log de roteiro DB SQL]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configuração de "magic_quotes_gpc"]]></key>
-        <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Envio de email para registos e senhas esquecidas]]></key>
+        <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2019-01-13 17:13:04"><![CDATA[Remetente de email para registos e senhas esquecidas]]></key>
         <key id="configuration&amp;_MAINTENANCE" attributes="" save_date="2017-07-17 12:34:02"><![CDATA[Modo de manutenção]]></key>
         <key id="configuration&amp;_MAINTENANCE_PW" attributes="" save_date="2017-07-17 12:34:14"><![CDATA[Senha de manutenção]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Opções principais]]></key>
@@ -519,7 +519,7 @@
         <key id="configuration&amp;_NOTSCORM" attributes="" save_date="2018-12-22 23:02:13"><![CDATA[Com domxml OFF, o módulo SCORM, gestão de idiomas e videoconferência não funcionarão.]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_POLL" attributes="" save_date="2018-12-22 23:53:20"><![CDATA[Usar a opção "Sem resposta" nos questionários/sondagens]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_TEST" attributes="" save_date="2018-12-22 23:54:19"><![CDATA[Usar a opção "Sem resposta" em questões de testes]]></key>
-        <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2018-12-22 23:40:54"><![CDATA[Se nenhum catálogo de cursos não for atribuído a um utilizador, mostrar todos os cursos e programas]]></key>
+        <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2019-01-13 16:37:46"><![CDATA[Se nenhum catálogo de cursos for atribuído a um utilizador, mostrar todos os cursos e programas.]]></key>
         <key id="configuration&amp;_ON_PATH_IN_MYCOURSES" attributes="" save_date="2018-12-17 21:04:18"><![CDATA[Endereço para os meus cursos]]></key>
         <key id="configuration&amp;_ON_USERCOURSE_EMPTY" attributes="" save_date="2017-07-19 11:29:23"><![CDATA[Enviar utilizador para o catálogo se não estiver inscrito em qualquer curso]]></key>
         <key id="configuration&amp;_OPENSSL" attributes="" save_date="2017-07-19 11:30:20"><![CDATA[Extensão de PHP php_openssl]]></key>
@@ -535,7 +535,7 @@
         <key id="configuration&amp;_PATHCHAT" attributes="" save_date="2018-12-22 23:15:26"><![CDATA[Nome da pasta para os ficheiros enviados com ficheiros partilhados de chat]]></key>
         <key id="configuration&amp;_PATHCOURSE" attributes="" save_date="2018-12-22 23:14:09"><![CDATA[Nome da pasta para os ficheiros enviados na informação de curso]]></key>
         <key id="configuration&amp;_PATHFIELD" attributes="" save_date="2018-12-22 23:13:03"><![CDATA[Nome da pasta para campos adicionais]]></key>
-        <key id="configuration&amp;_PATHFORUM" attributes="" save_date="2018-12-22 23:13:12"><![CDATA[Nome da pasta para os ficheiros enviados como anexo de fórum]]></key>
+        <key id="configuration&amp;_PATHFORUM" attributes="" save_date="2019-01-11 16:38:26"><![CDATA[Nome da pasta para os ficheiros enviados como anexo de fórum.]]></key>
         <key id="configuration&amp;_PATHLESSON" attributes="" save_date="2018-12-22 23:15:02"><![CDATA[Nome da pasta para os ficheiros enviados como objetos de aprendizagem]]></key>
         <key id="configuration&amp;_PATHMESSAGE" attributes="" save_date="2018-12-22 23:13:32"><![CDATA[Nome da pasta para os ficheiros enviados como mensagens de anexo]]></key>
         <key id="configuration&amp;_PATHPHOTO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fotos de utilizadores e avatars]]></key>
@@ -594,7 +594,7 @@
         <key id="configuration&amp;_SAVE_LOG_ATTEMPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Guardar informação sobre tentativas falhadas de login]]></key>
         <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2018-12-22 23:34:58"><![CDATA[Permitir uso de links diretos de fontes externas para capítulos SCORM (sco e ativos)]]></key>
         <key id="configuration&amp;_SECURITY" attributes="" save_date="2018-12-22 23:46:41"><![CDATA[Configuração de segurança]]></key>
-        <key id="configuration&amp;_SENDER_EVENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Enviar endereço email para mensagens de alerta]]></key>
+        <key id="configuration&amp;_SENDER_EVENT" attributes="" save_date="2019-01-13 17:11:09"><![CDATA[Endereço de email do remetente para mensagens de alerta (notificações)]]></key>
         <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2017-04-10 12:16:54"><![CDATA[Adicionar o endereço seguinte como CC para todos os emails enviados pela plataforma]]></key>
         <key id="configuration&amp;_SERVERINFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configuração de servidor]]></key>
         <key id="configuration&amp;_SERVER_ADDR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Endereço de servidor]]></key>
@@ -667,28 +667,28 @@
         <key id="course&amp;_ADDFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Adicionar ficheiro]]></key>
         <key id="course&amp;_ADDFILES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Adicionar novo ficheiro]]></key>
         <key id="course&amp;_ADD_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registar utilizadores neste curso]]></key>
-        <key id="course&amp;_ADVERT_ADVICE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Existe [advice] novo dispositivo]]></key>
-        <key id="course&amp;_ADVERT_FORUM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Existem [forum] novas mensagens no forum]]></key>
-        <key id="course&amp;_ADVERT_LOBJ" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Existem [lobj] novos objectos de aprendizagem]]></key>
-        <key id="course&amp;_ALLOW_OVERBOOKING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Permitir excesso de reservas]]></key>
-        <key id="course&amp;_ALL_COURSE_TYPE" attributes="" save_date="2018-12-17 22:04:21"><![CDATA[Todo o tipo de cursos]]></key>
-        <key id="course&amp;_ALL_OPEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tudo aberto]]></key>
+        <key id="course&amp;_ADVERT_ADVICE" attributes="" save_date="2018-12-26 20:06:39"><![CDATA[Existem [advice] novos avisos]]></key>
+        <key id="course&amp;_ADVERT_FORUM" attributes="" save_date="2019-01-11 16:38:17"><![CDATA[Existem [forum] novas mensagens no fórum.]]></key>
+        <key id="course&amp;_ADVERT_LOBJ" attributes="" save_date="2018-12-26 20:06:58"><![CDATA[Existem [lobj] novos objetos de aprendizagem]]></key>
+        <key id="course&amp;_ALLOW_OVERBOOKING" attributes="" save_date="2018-12-26 20:07:32"><![CDATA[Permitir excesso de reservas (overbooking)]]></key>
+        <key id="course&amp;_ALL_COURSE_TYPE" attributes="" save_date="2018-12-26 21:26:48"><![CDATA[Todos os tipos de cursos]]></key>
+        <key id="course&amp;_ALL_OPEN" attributes="" save_date="2018-12-26 20:08:11"><![CDATA[Todos os cursos abertos]]></key>
         <key id="course&amp;_ALL_YEARS" attributes="" save_date="2018-12-17 22:04:36"><![CDATA[Todos os anos]]></key>
-        <key id="course&amp;_ASSIGN_FOR_ALL_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Atribuir para cada estado dos utilizadores]]></key>
+        <key id="course&amp;_ASSIGN_FOR_ALL_STATUS" attributes="" save_date="2018-12-26 19:46:38"><![CDATA[Atribuir a qualquer estado de utilizador]]></key>
         <key id="course&amp;_ASSIGN_FOR_AT_LEAST_MINUTES" attributes="" save_date="2017-07-19 11:39:05"><![CDATA[Tempo mínimo de execução (min.)]]></key>
-        <key id="course&amp;_ASSIGN_FOR_STATUS_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Atribuir para utilizadores que tenham completado o curso]]></key>
-        <key id="course&amp;_ASSIGN_FOR_STATUS_INCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Atribuir a utilizadores que estão assistir o curso]]></key>
-        <key id="course&amp;_ASSIGN_MENU" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Atribuir um novo menu no curso]]></key>
-        <key id="course&amp;_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Código registo]]></key>
-        <key id="course&amp;_BACK_TO_ADMINISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voltar á área de admin]]></key>
-        <key id="course&amp;_BUY_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Permitido a comprar este curso]]></key>
-        <key id="course&amp;_CALENDAR_CLASSROOM_EDITION" attributes="" save_date="2017-07-19 11:36:02"><![CDATA[Calendário de edições do salas de aula]]></key>
-        <key id="course&amp;_CAN_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Subscrever]]></key>
-        <key id="course&amp;_CASCADE_MOD_ON_EDITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Copiar modificações também para edições]]></key>
+        <key id="course&amp;_ASSIGN_FOR_STATUS_COMPLETED" attributes="" save_date="2018-12-26 19:48:19"><![CDATA[Atribuir aos utilizadores que tenham completado o curso]]></key>
+        <key id="course&amp;_ASSIGN_FOR_STATUS_INCOURSE" attributes="" save_date="2018-12-26 20:09:07"><![CDATA[Atribuir a utilizadores que estejam a frequentar o curso]]></key>
+        <key id="course&amp;_ASSIGN_MENU" attributes="" save_date="2018-12-26 19:48:34"><![CDATA[Atribuir um novo menu ao curso]]></key>
+        <key id="course&amp;_AUTOREGISTRATION_CODE" attributes="" save_date="2018-12-26 19:54:58"><![CDATA[Código de registo]]></key>
+        <key id="course&amp;_BACK_TO_ADMINISTRATION" attributes="" save_date="2018-12-26 20:09:46"><![CDATA[Voltar à área de administração]]></key>
+        <key id="course&amp;_BUY_COURSE" attributes="" save_date="2018-12-26 20:10:32"><![CDATA[Autorizado a comprar este curso]]></key>
+        <key id="course&amp;_CALENDAR_CLASSROOM_EDITION" attributes="" save_date="2018-12-26 19:52:20"><![CDATA[Edição do calendário do curso presencial]]></key>
+        <key id="course&amp;_CAN_SUBSCRIBE" attributes="" save_date="2018-12-26 20:12:17"><![CDATA[Pode inscrever-se]]></key>
+        <key id="course&amp;_CASCADE_MOD_ON_EDITION" attributes="" save_date="2018-12-26 20:12:36"><![CDATA[Copiar as modificações também para as edições]]></key>
         <key id="course&amp;_CATEGORY_PATH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Está dentro]]></key>
-        <key id="course&amp;_CATEGORY_SELECTED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Categoria seleccionada]]></key>
+        <key id="course&amp;_CATEGORY_SELECTED" attributes="" save_date="2018-12-26 19:52:57"><![CDATA[Categoria selecionada]]></key>
         <key id="course&amp;_CERTIFICATE_ASSIGN_STATUS" attributes="" save_date="2018-12-23 21:44:31"><![CDATA[Atribuição de certificados]]></key>
-        <key id="course&amp;_CERTIFICATE_EX_ASSIGN_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificado atribuído por Excelência]]></key>
+        <key id="course&amp;_CERTIFICATE_EX_ASSIGN_STATUS" attributes="" save_date="2018-12-26 19:53:48"><![CDATA[Atribuição de certificado de Excelência]]></key>
         <key id="course&amp;_CERTIFICATE_LANGUAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Idioma do certificado]]></key>
         <key id="course&amp;_CERTIFICATE_NAME" attributes="" save_date="2017-07-17 09:32:42"><![CDATA[Certificado]]></key>
         <key id="course&amp;_CERTIFICATE_RELEASE" attributes="" save_date="2017-07-19 11:32:17"><![CDATA[Atribuição de certificados]]></key>
@@ -698,39 +698,39 @@
         <key id="course&amp;_CLASSROOM_OCCUPATED" attributes="" save_date="2018-12-23 21:44:14"><![CDATA[Atenção! Algumas salas de aula já estão ocupadas por outros utilizadores.]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sala ocupada]]></key>
         <key id="course&amp;_CLOSING_DATA" attributes="" save_date="2018-12-17 22:05:03"><![CDATA[Data de encerramento]]></key>
-        <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Teus dados serão guardados.]]></key>
-        <key id="course&amp;_COPY_SUBSCRIPTION_TO_COURSE" attributes="" save_date="2017-07-17 13:01:50"><![CDATA[Copiar inscrições para o curso]]></key>
-        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2017-06-19 11:39:52"><![CDATA[Pagamento avançado]]></key>
-        <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Código para a subscrição automática para o curso]]></key>
+        <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2018-12-26 20:14:47"><![CDATA[Os teus dados serão guardados.]]></key>
+        <key id="course&amp;_COPY_SUBSCRIPTION_TO_COURSE" attributes="" save_date="2018-12-26 20:16:09"><![CDATA[Copiar as inscrições no curso]]></key>
+        <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2018-12-26 20:16:40"><![CDATA[Pagamento adiantado]]></key>
+        <key id="course&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2018-12-26 19:54:47"><![CDATA[Código para a inscrição automática num curso]]></key>
         <key id="course&amp;_COURSE_CONTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cursos disponíveis]]></key>
-        <key id="course&amp;_COURSE_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Duração de cursos: desde <b>[date_begin]</b> para <b>[date_end]</b>.]]></key>
+        <key id="course&amp;_COURSE_DATE" attributes="" save_date="2018-12-26 20:03:43"><![CDATA[Duração do curso: de <b>[date_begin]</b> a <b>[date_end]</b>.]]></key>
         <key id="course&amp;_COURSE_DEMO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Material demo]]></key>
-        <key id="course&amp;_COURSE_DISPLAY_MODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostrar modo opções]]></key>
+        <key id="course&amp;_COURSE_DISPLAY_MODE" attributes="" save_date="2018-12-26 20:17:40"><![CDATA[Opções do modo de exibição]]></key>
         <key id="course&amp;_COURSE_EDITION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[O curso contém edições?]]></key>
         <key id="course&amp;_COURSE_EM_LO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Automático após completar o fim do curso LO]]></key>
-        <key id="course&amp;_COURSE_EM_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Manual acção professor]]></key>
-        <key id="course&amp;_COURSE_END_MODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Modo conclusão]]></key>
-        <key id="course&amp;_COURSE_INTRO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Curso é: <b>[course_type]</b> com: <b>[enrolled]</b> utilizadores inscritos]]></key>
-        <key id="course&amp;_COURSE_INTRO_WITH_MAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Curso é: <b>[course_type]</b> com: <b>[enrolled]</b> um máximo de: <b>[max_subscribe]</b> utilizadores inscritos. Curso é: <b>[course_status]</b>]]></key>
-        <key id="course&amp;_COURSE_LANG_METHOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Idioma curso]]></key>
-        <key id="course&amp;_COURSE_LIST_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Isto é a lista com todos os cursos que o utilizador inscreveu e outras informações relevantes]]></key>
-        <key id="course&amp;_COURSE_LOGO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Logotipo do curso]]></key>
+        <key id="course&amp;_COURSE_EM_TEACHER" attributes="" save_date="2018-12-26 20:19:01"><![CDATA[Manual de ação do professor]]></key>
+        <key id="course&amp;_COURSE_END_MODE" attributes="" save_date="2018-12-26 20:19:09"><![CDATA[Modo de conclusão]]></key>
+        <key id="course&amp;_COURSE_INTRO" attributes="" save_date="2018-12-26 20:01:56"><![CDATA[O curso é do tipo: <b>[course_type]</b> com: <b>[enrolled]</b> utilizadores inscritos.]]></key>
+        <key id="course&amp;_COURSE_INTRO_WITH_MAX" attributes="" save_date="2018-12-26 20:19:44"><![CDATA[O curso é do tipo: <b>[course_type]</b> com: <b>[enrolled]</b> num máximo de: <b>[max_subscribe]</b> utilizadores inscritos. Estado atual: <b>[course_status]</b>]]></key>
+        <key id="course&amp;_COURSE_LANG_METHOD" attributes="" save_date="2018-12-26 20:19:52"><![CDATA[Idioma do curso]]></key>
+        <key id="course&amp;_COURSE_LIST_SUMMARY" attributes="" save_date="2018-12-26 20:21:42"><![CDATA[Lista com todos os cursos nos quais o utilizador se inscreveu e outras informações relevantes]]></key>
+        <key id="course&amp;_COURSE_LOGO" attributes="" save_date="2018-12-26 20:21:55"><![CDATA[Logótipo do curso]]></key>
         <key id="course&amp;_COURSE_MENU_TO_ASSIGN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Atribuir o menu]]></key>
-        <key id="course&amp;_COURSE_PRIZE" attributes="" save_date="2018-12-22 23:57:41"><![CDATA[Preço]]></key>
-        <key id="course&amp;_COURSE_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Atribuir limite espaço disco a este curso (MB)]]></key>
-        <key id="course&amp;_COURSE_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seleccionar curso]]></key>
-        <key id="course&amp;_COURSE_SELL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vender curso]]></key>
+        <key id="course&amp;_COURSE_PRIZE" attributes="" save_date="2018-12-26 20:22:04"><![CDATA[Preço]]></key>
+        <key id="course&amp;_COURSE_QUOTA" attributes="" save_date="2018-12-26 19:43:58"><![CDATA[Atribuir limite de espaço no disco para este curso (MB)]]></key>
+        <key id="course&amp;_COURSE_SELECTION" attributes="" save_date="2018-12-26 20:22:23"><![CDATA[Selecionar um curso]]></key>
+        <key id="course&amp;_COURSE_SELL" attributes="" save_date="2018-12-26 20:22:41"><![CDATA[Vender este curso]]></key>
         <key id="course&amp;_COURSE_SPECIAL_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Opções especiais]]></key>
-        <key id="course&amp;_COURSE_STATUS_CANNOT_ENTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Negar acesso a este curso se o estado do utilizador é]]></key>
-        <key id="course&amp;_COURSE_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Subscrição do curso]]></key>
-        <key id="course&amp;_COURSE_SUBSRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Política de registo]]></key>
+        <key id="course&amp;_COURSE_STATUS_CANNOT_ENTER" attributes="" save_date="2018-12-26 20:23:44"><![CDATA[Bloquear o acesso a este curso, se o estado do utilizador for]]></key>
+        <key id="course&amp;_COURSE_SUBSCRIPTION" attributes="" save_date="2018-12-26 20:24:02"><![CDATA[Inscrição no curso]]></key>
+        <key id="course&amp;_COURSE_SUBSRIBE" attributes="" save_date="2018-12-26 20:24:18"><![CDATA[Política de registo/inscrição]]></key>
         <key id="course&amp;_COURSE_S_GODADMIN" attributes="" save_date="2018-12-23 21:42:46"><![CDATA[Apenas administradores]]></key>
         <key id="course&amp;_COURSE_S_MODERATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Em aprovação]]></key>
-        <key id="course&amp;_COURSE_S_SECURITY_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Subscrição através do código secreto]]></key>
-        <key id="course&amp;_COURSE_TEACHERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Instrutores do curso]]></key>
-        <key id="course&amp;_COURSE_TIME_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Opções de tempo]]></key>
-        <key id="course&amp;_COURSE_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tipo Curso]]></key>
-        <key id="course&amp;_COURSE_TYPE_BLENDED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Misturado]]></key>
+        <key id="course&amp;_COURSE_S_SECURITY_CODE" attributes="" save_date="2018-12-26 20:24:55"><![CDATA[Inscrição através de código secreto]]></key>
+        <key id="course&amp;_COURSE_TEACHERS" attributes="" save_date="2018-12-26 20:25:36"><![CDATA[Professores do curso]]></key>
+        <key id="course&amp;_COURSE_TIME_OPTION" attributes="" save_date="2018-12-26 20:25:53"><![CDATA[Opções de tempo/horário]]></key>
+        <key id="course&amp;_COURSE_TYPE" attributes="" save_date="2018-12-26 20:26:01"><![CDATA[Tipo de curso]]></key>
+        <key id="course&amp;_COURSE_TYPE_BLENDED" attributes="" save_date="2018-12-26 20:35:33"><![CDATA[Curso online/presencial (b-learning)]]></key>
         <key id="course&amp;_COURSE_TYPE_EDITION" attributes="" save_date="2017-04-10 13:57:20"><![CDATA[E-learning com edições]]></key>
         <key id="course&amp;_COURSE_TYPE_ELEARNING" attributes="" save_date="2017-04-10 13:57:14"><![CDATA[E-learning]]></key>
         <key id="course&amp;_COURSE_USERISCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizadores inscritos]]></key>
@@ -742,104 +742,104 @@
         <key id="course&amp;_CST_PREPARATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Em construção]]></key>
         <key id="course&amp;_DAY_OF_VALIDITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dias de validade]]></key>
         <key id="course&amp;_DEMO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostrar demo]]></key>
-        <key id="course&amp;_DIRECT_PLAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostrar directamente o primeiro objecto de aprendizagem no jogador]]></key>
+        <key id="course&amp;_DIRECT_PLAY" attributes="" save_date="2018-12-26 20:36:48"><![CDATA[Mostrar diretamente o primeiro objeto de aprendizagem]]></key>
         <key id="course&amp;_DISABLED" attributes="" save_date="2018-12-17 22:05:30"><![CDATA[Desativado]]></key>
         <key id="course&amp;_DOCUMENT_UPLOAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Envio de documentos]]></key>
         <key id="course&amp;_DONT_SHOW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Não mostrar]]></key>
         <key id="course&amp;_DOWNLOAD_MATERIALS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostrar material]]></key>
-        <key id="course&amp;_EDTION_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Começar em <b>[date_begin]</b> e terminar em <b>[date_end]</b>]]></key>
-        <key id="course&amp;_ENDOBJECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objectos marcados como final]]></key>
+        <key id="course&amp;_EDTION_TIME" attributes="" save_date="2018-12-26 19:55:40"><![CDATA[Começa a <b>[date_begin]</b> e termina a <b>[date_end]</b>]]></key>
+        <key id="course&amp;_ENDOBJECT" attributes="" save_date="2018-12-26 20:37:51"><![CDATA[Objeto que marca o fim do curso]]></key>
         <key id="course&amp;_EXPIRED" attributes="" save_date="2017-07-19 11:32:47"><![CDATA[O acesso a este curso expirou]]></key>
         <key id="course&amp;_EXPIRING_IN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Este curso expirará em <b>[expiring_in]</b> dias]]></key>
-        <key id="course&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nenhuns ficheiros foram especificados]]></key>
+        <key id="course&amp;_FILEUNSPECIFIED" attributes="" save_date="2018-12-26 20:39:00"><![CDATA[Não foi especificado nenhum ficheiro]]></key>
         <key id="course&amp;_FILTER_FLATVIEW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vista plana]]></key>
-        <key id="course&amp;_FIRSTACOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Escolher curso]]></key>
+        <key id="course&amp;_FIRSTACOURSE" attributes="" save_date="2018-12-26 20:40:15"><![CDATA[Escolher um curso]]></key>
         <key id="course&amp;_GENERATE_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gerar novos códigos]]></key>
-        <key id="course&amp;_GOTO_COURSE_T" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Subscrição OK]]></key>
+        <key id="course&amp;_GOTO_COURSE_T" attributes="" save_date="2018-12-26 20:40:33"><![CDATA[Inscrição OK]]></key>
         <key id="course&amp;_HOUR_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hora de começo]]></key>
         <key id="course&amp;_HOUR_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hora de fim]]></key>
         <key id="course&amp;_IF_NEW_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Se espcificar um novo ficheiro, o anterior será substituído]]></key>
-        <key id="course&amp;_IMPORT_FROM_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Importar subscrições de um curso]]></key>
-        <key id="course&amp;_IMPORT_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Subscrever utilizadores importados do ficheiro]]></key>
+        <key id="course&amp;_IMPORT_FROM_COURSE" attributes="" save_date="2018-12-26 20:41:01"><![CDATA[Importar inscrições de um curso]]></key>
+        <key id="course&amp;_IMPORT_SUBSCRIBE" attributes="" save_date="2018-12-26 20:41:29"><![CDATA[Inscrever utilizadores importados de um ficheiro]]></key>
         <key id="course&amp;_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Curso]]></key>
         <key id="course&amp;_INHERIT_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Herdar cota de disco de definições padrão]]></key>
         <key id="course&amp;_IN_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Estás dentro]]></key>
         <key id="course&amp;_IN_THE_CLASSROOM" attributes="" save_date="2017-07-17 15:17:03"><![CDATA[na sala de aula <b>[classrooms_name]</b> no edifício <b>[classrooms_location]</b>.]]></key>
-        <key id="course&amp;_LESS_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Esconder informação]]></key>
+        <key id="course&amp;_LESS_INFO" attributes="" save_date="2018-12-26 20:42:08"><![CDATA[Esconder a informação]]></key>
         <key id="course&amp;_MAIN_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Categoria principal]]></key>
-        <key id="course&amp;_MANUALACTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seleccionado pelo instrutor]]></key>
-        <key id="course&amp;_MATERIALS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Material de curso]]></key>
-        <key id="course&amp;_MATERIALS_TABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ficheiro de curso]]></key>
-        <key id="course&amp;_MAX_NUM_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Número máximo de subscrições]]></key>
+        <key id="course&amp;_MANUALACTION" attributes="" save_date="2018-12-26 20:42:28"><![CDATA[Selecionado pelo professor]]></key>
+        <key id="course&amp;_MATERIALS" attributes="" save_date="2018-12-26 20:42:39"><![CDATA[Material do curso]]></key>
+        <key id="course&amp;_MATERIALS_TABLE" attributes="" save_date="2018-12-26 20:42:47"><![CDATA[Ficheiro do curso]]></key>
+        <key id="course&amp;_MAX_NUM_SUBSCRIBE" attributes="" save_date="2018-12-26 20:42:58"><![CDATA[Número máximo de inscrições]]></key>
         <key id="course&amp;_MAX_SMS_BUDGET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Orçamento máximo para SMS]]></key>
         <key id="course&amp;_MEDIUM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Média]]></key>
         <key id="course&amp;_MEDIUMTIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tempo médio de conclusão]]></key>
-        <key id="course&amp;_MEDIUM_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tempo médio para o curso]]></key>
-        <key id="course&amp;_MIN_NUM_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Número mínimo de subscrições (0 = ilimitados)]]></key>
-        <key id="course&amp;_MIN_SCORE_NOT_SET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Por favor insira um resultado mínimo válido]]></key>
-        <key id="course&amp;_MIN_SUBSCRIBE_FOR_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Número mínimo de estudantes inscritos permitidos é <b>[min_subscribe]</b>]]></key>
-        <key id="course&amp;_MULTIPLE_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Subscrições múltiplas]]></key>
-        <key id="course&amp;_MY_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meus certificados]]></key>
-        <key id="course&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="accessibility" save_date="2014-11-14 00:00:00"><![CDATA[Utilizador está á espera ás [url]]]></key>
-        <key id="course&amp;_NOACTIVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Espera por activação]]></key>
+        <key id="course&amp;_MEDIUM_TIME" attributes="" save_date="2018-12-26 20:43:31"><![CDATA[Tempo médio do curso]]></key>
+        <key id="course&amp;_MIN_NUM_SUBSCRIBE" attributes="" save_date="2018-12-26 20:43:57"><![CDATA[Número mínimo de inscrições (0 = ilimitadas)]]></key>
+        <key id="course&amp;_MIN_SCORE_NOT_SET" attributes="" save_date="2018-12-26 20:44:17"><![CDATA[Por favor, insira um resultado mínimo válido.]]></key>
+        <key id="course&amp;_MIN_SUBSCRIBE_FOR_COURSE" attributes="" save_date="2018-12-26 20:44:59"><![CDATA[O número mínimo de estudantes inscritos permitido é de <b>[min_subscribe]</b>]]></key>
+        <key id="course&amp;_MULTIPLE_SUBSCRIPTION" attributes="" save_date="2018-12-26 20:45:10"><![CDATA[Inscrições múltiplas]]></key>
+        <key id="course&amp;_MY_CERTIFICATE" attributes="" save_date="2018-12-26 20:45:18"><![CDATA[Os meus certificados]]></key>
+        <key id="course&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="accessibility" save_date="2018-12-26 20:47:01"><![CDATA[Um utilizador está à espera em [url]]]></key>
+        <key id="course&amp;_NOACTIVE" attributes="" save_date="2018-12-26 20:47:26"><![CDATA[À espera de ativação]]></key>
         <key id="course&amp;_NOENTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Acesso negado]]></key>
         <key id="course&amp;_NO_COURSE_DATA" attributes="" save_date="2018-12-17 22:05:52"><![CDATA[Curso sem data de início]]></key>
         <key id="course&amp;_NO_COURSE_FOUND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nenhum curso encontrado]]></key>
         <key id="course&amp;_OTHER_OPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Outras opções]]></key>
         <key id="course&amp;_OTHER_USER_MATERIAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Material para outras funções]]></key>
-        <key id="course&amp;_PARTIAL_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tempo sessão]]></key>
-        <key id="course&amp;_PAUSE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Começo pausa]]></key>
-        <key id="course&amp;_PAUSE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fim pausa]]></key>
-        <key id="course&amp;_PERMCLOSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Método curso completo]]></key>
-        <key id="course&amp;_PROGRESS_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objectos]]></key>
+        <key id="course&amp;_PARTIAL_TIME" attributes="" save_date="2018-12-26 20:47:57"><![CDATA[Tempo da sessão]]></key>
+        <key id="course&amp;_PAUSE_BEGIN" attributes="" save_date="2018-12-26 19:55:53"><![CDATA[Começo da pausa]]></key>
+        <key id="course&amp;_PAUSE_END" attributes="" save_date="2018-12-26 20:48:29"><![CDATA[Fim da pausa]]></key>
+        <key id="course&amp;_PERMCLOSE" attributes="" save_date="2018-12-26 20:48:22"><![CDATA[Método do curso completado]]></key>
+        <key id="course&amp;_PROGRESS_ALL" attributes="" save_date="2018-12-26 20:48:42"><![CDATA[Objetos]]></key>
         <key id="course&amp;_PROGRESS_BAR_TEXT" attributes="" save_date="2017-05-08 12:18:39"><![CDATA[Progresso]]></key>
         <key id="course&amp;_PROGRESS_COMPLETED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Completo]]></key>
         <key id="course&amp;_PROGRESS_FAILED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Falhados]]></key>
         <key id="course&amp;_PROGRESS_INCOMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Não completo]]></key>
         <key id="course&amp;_PROGRESS_PASSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Passou]]></key>
-        <key id="course&amp;_PROGRESS_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objectos: [total], passados: [complete], falhados: [failed]]]></key>
+        <key id="course&amp;_PROGRESS_TITLE" attributes="" save_date="2018-12-26 20:50:30"><![CDATA[Objetos: [total], passados: [complete], falhados: [failed]]]></key>
         <key id="course&amp;_QUOTA_EXCEDED" attributes="" save_date="2017-07-17 14:05:22"><![CDATA[Não pode carregar mais ficheiros porque o espaço de disco para este curso está cheio]]></key>
         <key id="course&amp;_RANDOM_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gerar código aleatório para auto-registo]]></key>
         <key id="course&amp;_RESERVE_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reservar curso]]></key>
-        <key id="course&amp;_SC_EVERYWHERE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Todos, e mostrar na home page]]></key>
+        <key id="course&amp;_SC_EVERYWHERE" attributes="" save_date="2018-12-26 20:57:12"><![CDATA[Todos, e mostrar na <i>home page</i>]]></key>
         <key id="course&amp;_SC_ONLYINSC_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Apenas utilizadores inscritos no curso]]></key>
         <key id="course&amp;_SC_ONLY_IN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Apenas para utilizadores conectados]]></key>
-        <key id="course&amp;_SELECT_DAYS_COURSE" attributes="" save_date="2017-07-17 11:08:07"><![CDATA[Seleccionar os dias do curso]]></key>
-        <key id="course&amp;_SELF_UNSUBSCRIBE" attributes="" save_date="2017-07-17 16:54:52"><![CDATA[Cancelar a inscrição do curso]]></key>
-        <key id="course&amp;_SHOW_ADVANCED_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Informação avançado do curso]]></key>
-        <key id="course&amp;_SHOW_COUNT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostrar apenas utilizadores conectados, mas não utilizar Instant Messenger]]></key>
+        <key id="course&amp;_SELECT_DAYS_COURSE" attributes="" save_date="2018-12-26 21:00:32"><![CDATA[Selecionar os dias do curso]]></key>
+        <key id="course&amp;_SELF_UNSUBSCRIBE" attributes="" save_date="2018-12-26 19:52:40"><![CDATA[Cancelar a inscrição no curso]]></key>
+        <key id="course&amp;_SHOW_ADVANCED_INFO" attributes="" save_date="2018-12-26 21:04:52"><![CDATA[Mostrar informações avançadas sobre o curso]]></key>
+        <key id="course&amp;_SHOW_COUNT" attributes="" save_date="2018-12-26 21:07:15"><![CDATA[Mostrar apenas o número de utilizadores conectados, mas não mostrar o <i>Instant Messenger</i>]]></key>
         <key id="course&amp;_SHOW_DEMO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Demo]]></key>
-        <key id="course&amp;_SHOW_INSTMSG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostrar Instant Messenger]]></key>
-        <key id="course&amp;_SHOW_PROGRESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostrar progresso]]></key>
-        <key id="course&amp;_SHOW_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostrar tempo]]></key>
-        <key id="course&amp;_SHOW_USER_OF_LEVEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seleccionar níveis de utilizadores mostrados na página de informação do curso]]></key>
-        <key id="course&amp;_SHOW_WHOISONLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizadores online neste curso]]></key>
+        <key id="course&amp;_SHOW_INSTMSG" attributes="" save_date="2018-12-26 21:07:35"><![CDATA[Mostrar o <i>Instant Messenger</i>]]></key>
+        <key id="course&amp;_SHOW_PROGRESS" attributes="" save_date="2018-12-26 21:07:51"><![CDATA[Mostrar o progresso]]></key>
+        <key id="course&amp;_SHOW_TIME" attributes="" save_date="2018-12-26 21:09:31"><![CDATA[Mostrar o tempo (hora)]]></key>
+        <key id="course&amp;_SHOW_USER_OF_LEVEL" attributes="" save_date="2018-12-26 21:11:06"><![CDATA[Selecionar os níveis de utilizadores na página de informação do curso]]></key>
+        <key id="course&amp;_SHOW_WHOISONLINE" attributes="" save_date="2018-12-26 21:28:01"><![CDATA[Utilizadores <i>online</i> neste curso]]></key>
         <key id="course&amp;_SPONSORED_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Patrocinados por]]></key>
-        <key id="course&amp;_SPONSOR_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Link para os patrocinadores]]></key>
-        <key id="course&amp;_SPONSOR_LOGO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Logotipo]]></key>
+        <key id="course&amp;_SPONSOR_LINK" attributes="" save_date="2018-12-26 21:19:21"><![CDATA[<i>Link</i> para os patrocinadores]]></key>
+        <key id="course&amp;_SPONSOR_LOGO" attributes="" save_date="2018-12-26 21:12:16"><![CDATA[Logótipo]]></key>
         <key id="course&amp;_STATCANNOTENTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Estado não permitido para entrar no curso]]></key>
         <key id="course&amp;_SUBSCRIBED_T" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Já inscrito no curso]]></key>
-        <key id="course&amp;_SUBSCRIBE_METHOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Método subscrição]]></key>
-        <key id="course&amp;_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Subscrição]]></key>
-        <key id="course&amp;_SUBSCRIPTION_CLOSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Subscrições estão fechadas]]></key>
-        <key id="course&amp;_SUBSCRIPTION_CORRECT" attributes="" save_date="2017-07-17 12:56:16"><![CDATA[Subscrição sucedida]]></key>
+        <key id="course&amp;_SUBSCRIBE_METHOD" attributes="" save_date="2018-12-26 21:18:12"><![CDATA[Método de inscrição]]></key>
+        <key id="course&amp;_SUBSCRIPTION" attributes="" save_date="2018-12-26 21:18:02"><![CDATA[Inscrição]]></key>
+        <key id="course&amp;_SUBSCRIPTION_CLOSED" attributes="" save_date="2018-12-26 21:17:53"><![CDATA[As inscrições estão fechadas]]></key>
+        <key id="course&amp;_SUBSCRIPTION_CORRECT" attributes="" save_date="2018-12-26 21:17:23"><![CDATA[Inscrição bem sucedida]]></key>
         <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[De]]></key>
-        <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN_FROM" attributes="" save_date="2017-07-19 11:37:26"><![CDATA[Registo está aberto a partir de]]></key>
+        <key id="course&amp;_SUBSCRIPTION_DATE_BEGIN_FROM" attributes="" save_date="2018-12-26 21:16:57"><![CDATA[Inscrições abertas a partir de]]></key>
         <key id="course&amp;_SUBSCRIPTION_DATE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Para]]></key>
-        <key id="course&amp;_SUBSCRIPTION_ERROR" attributes="" save_date="2017-07-17 15:44:42"><![CDATA[Erro durante subscrição]]></key>
-        <key id="course&amp;_SUBSCRIPTION_IN_PERIOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Subscrição está disponível durante o seguinte período]]></key>
-        <key id="course&amp;_SUBSCRIPTION_OPEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Subscrições estão abertas]]></key>
-        <key id="course&amp;_THANKS_LOGIN_OR_REGISTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Você pediu para comprar o curso: <b>[name]</b><br />
-Em ordem para proseguir, deve aceder á plataforma se já está registado.<br />
-Caso contrário, deve registar-se no nosso sistema, seguindo este link: <br />
+        <key id="course&amp;_SUBSCRIPTION_ERROR" attributes="" save_date="2018-12-26 20:04:19"><![CDATA[Erro durante a inscrição]]></key>
+        <key id="course&amp;_SUBSCRIPTION_IN_PERIOD" attributes="" save_date="2018-12-26 21:19:50"><![CDATA[A inscrição está disponível durante o seguinte período]]></key>
+        <key id="course&amp;_SUBSCRIPTION_OPEN" attributes="" save_date="2018-12-26 21:20:07"><![CDATA[As inscrições estão abertas]]></key>
+        <key id="course&amp;_THANKS_LOGIN_OR_REGISTER" attributes="" save_date="2018-12-26 21:25:56"><![CDATA[Solicitou a aquisição do curso: <b>[name]</b><br />
+Para prosseguir, deve aceder à plataforma (se já estiver registado).<br />
+Se não estiver registado, deve registar-se no nosso sistema, seguindo este <i>link</i>: <br />
 <br />
-<a href="[link_register]">Registar me</a>]]></key>
+<a href="[link_register]">Registar-me</a>]]></key>
         <key id="course&amp;_THEACER_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Professores:]]></key>
         <key id="course&amp;_TITLE_CATEGORY_JUMP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ir para o conteúdo]]></key>
         <key id="course&amp;_TITLE_CERTIFICATE_TO_COURSE" attributes="" save_date="2018-12-23 21:43:34"><![CDATA[Associação de certificados aos cursos]]></key>
-        <key id="course&amp;_T_USER_STATUS_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Você está a assistir a este curso]]></key>
+        <key id="course&amp;_T_USER_STATUS_BEGIN" attributes="" save_date="2018-12-26 21:28:46"><![CDATA[Está a frequentar  este curso]]></key>
         <key id="course&amp;_T_USER_STATUS_CONFIRMED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Confirmado]]></key>
-        <key id="course&amp;_T_USER_STATUS_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Você completou este curso]]></key>
+        <key id="course&amp;_T_USER_STATUS_END" attributes="" save_date="2018-12-26 21:28:18"><![CDATA[Completou este curso]]></key>
         <key id="course&amp;_T_USER_STATUS_RESERVED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reservado]]></key>
         <key id="course&amp;_T_USER_STATUS_SUBS" attributes="" save_date="2018-12-23 21:42:25"><![CDATA[Ainda não começou a frequentar este curso]]></key>
         <key id="course&amp;_UNLIMITED_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sem limite espaço disco]]></key>
@@ -847,10 +847,10 @@ Caso contrário, deve registar-se no nosso sistema, seguindo este link: <br />
         <key id="course&amp;_UNSUBSCRIBE_REQUESTS" attributes="" save_date="2017-07-17 16:59:08"><![CDATA[Pedidos de cancelamento de inscrição]]></key>
         <key id="course&amp;_UNSUBSCRIBE_REQUEST_WAITING_FOR_MODERATION" attributes="" save_date="2017-07-17 16:58:49"><![CDATA[Pedido de cancelamento de inscrição em espera de aprovação]]></key>
         <key id="course&amp;_USED_DISK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Espaço disco usado para este curso]]></key>
-        <key id="course&amp;_USERWAITING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizador á espera de aprovação]]></key>
+        <key id="course&amp;_USERWAITING" attributes="" save_date="2018-12-26 21:27:19"><![CDATA[Utilizador à espera de aprovação]]></key>
         <key id="course&amp;_USER_CAN_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pode o utilizador inscrever-se?]]></key>
-        <key id="course&amp;_USER_CAN_UNSUBSCRIBE" attributes="" save_date="2017-07-17 16:56:10"><![CDATA[Auto-cancelar subscrição]]></key>
-        <key id="course&amp;_USER_EDITION_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Não existem <b>[user_count]</b> utilizadores inscritos <b>[waiting_count]</b> á espera.]]></key>
+        <key id="course&amp;_USER_CAN_UNSUBSCRIBE" attributes="" save_date="2018-12-26 19:50:20"><![CDATA[Auto-cancelar inscrição]]></key>
+        <key id="course&amp;_USER_EDITION_SUBSCRIBE" attributes="" save_date="2018-12-27 13:43:26"><![CDATA[Não existem <b>[user_count]</b> utilizadores inscritos <b>[waiting_count]</b> à espera.]]></key>
         <key id="course&amp;_USER_LVL" attributes="" save_date="2018-12-23 21:41:10"><![CDATA[, o seu nível é <b>[level]</b>]]></key>
         <key id="course&amp;_USER_MATERIAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Material para utilizadores]]></key>
         <key id="course&amp;_USETHIS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seleccionar]]></key>
@@ -863,28 +863,28 @@ Caso contrário, deve registar-se no nosso sistema, seguindo este link: <br />
         <key id="course&amp;_WELCOME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bem-vindo]]></key>
         <key id="course&amp;_WHAT_SHOW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostrar interface curso]]></key>
         <key id="course&amp;_WHERE_SHOW_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostar curso para:]]></key>
-        <key id="course&amp;_WHOIS_ONLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[utilizadores online]]></key>
+        <key id="course&amp;_WHOIS_ONLINE" attributes="" save_date="2018-12-26 21:27:43"><![CDATA[Utilizadores <i>online</i>]]></key>
       </module>
       <module id="coursepath">
-        <key id="coursepath&amp;_ALT_REM_SUB" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Apag. inscr.]]></key>
-        <key id="coursepath&amp;_AREE_YOU_SURE_TO_REMOVE_COURSE_FROM_PATH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Deseja mesmo remover o curso deste currículo?]]></key>
-        <key id="coursepath&amp;_COURSE_PATH_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Currículo disponível]]></key>
-        <key id="coursepath&amp;_COURSE_PATH_COURSES_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cursos incluídos neste currículo]]></key>
-        <key id="coursepath&amp;_COURSE_PATH_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Método de subscrição]]></key>
-        <key id="coursepath&amp;_COURSE_S_GODADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Apenas admin]]></key>
-        <key id="coursepath&amp;_COURSE_S_MODERATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Moderar]]></key>
-        <key id="coursepath&amp;_CURRENT_ACTIVITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Actividade actual]]></key>
-        <key id="coursepath&amp;_IMPORT_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Importar cursos nos currículos]]></key>
-        <key id="coursepath&amp;_SUBSCRIBED_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizador actualmente inscrito]]></key>
+        <key id="coursepath&amp;_ALT_REM_SUB" attributes="" save_date="2018-12-26 21:35:42"><![CDATA[Apagar inscritos]]></key>
+        <key id="coursepath&amp;_AREE_YOU_SURE_TO_REMOVE_COURSE_FROM_PATH" attributes="" save_date="2018-12-26 21:32:32"><![CDATA[Deseja mesmo remover o curso deste programa?]]></key>
+        <key id="coursepath&amp;_COURSE_PATH_CAPTION" attributes="" save_date="2018-12-26 21:34:34"><![CDATA[Lista de programas disponíveis]]></key>
+        <key id="coursepath&amp;_COURSE_PATH_COURSES_CAPTION" attributes="" save_date="2018-12-26 21:31:53"><![CDATA[Cursos incluídos nestes programas]]></key>
+        <key id="coursepath&amp;_COURSE_PATH_SUBSCRIBE" attributes="" save_date="2018-12-26 21:33:10"><![CDATA[Método de inscrição]]></key>
+        <key id="coursepath&amp;_COURSE_S_GODADMIN" attributes="" save_date="2018-12-26 21:35:01"><![CDATA[Apenas administração]]></key>
+        <key id="coursepath&amp;_COURSE_S_MODERATE" attributes="" save_date="2018-12-26 21:33:21"><![CDATA[Moderado]]></key>
+        <key id="coursepath&amp;_CURRENT_ACTIVITY" attributes="" save_date="2018-12-26 21:30:54"><![CDATA[Atividade atual]]></key>
+        <key id="coursepath&amp;_IMPORT_COURSE" attributes="" save_date="2018-12-26 21:32:58"><![CDATA[Importar cursos para os programas]]></key>
+        <key id="coursepath&amp;_SUBSCRIBED_CAPTION" attributes="" save_date="2018-12-26 21:35:26"><![CDATA[Utilizadores atualmente inscritos]]></key>
       </module>
       <module id="coursereport">
-        <key id="coursereport&amp;_ACTIVITY_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Informação sobre as actividades seleccionadas]]></key>
-        <key id="coursereport&amp;_ADD_ACTIVITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nova actividade]]></key>
-        <key id="coursereport&amp;_ADD_ACTIVITY_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Adicionar nova actividade]]></key>
+        <key id="coursereport&amp;_ACTIVITY_INFO" attributes="" save_date="2018-12-26 22:16:42"><![CDATA[Informação sobre as atividades selecionadas]]></key>
+        <key id="coursereport&amp;_ADD_ACTIVITY" attributes="" save_date="2018-12-26 22:16:49"><![CDATA[Nova atividade]]></key>
+        <key id="coursereport&amp;_ADD_ACTIVITY_TITLE" attributes="" save_date="2018-12-26 22:16:58"><![CDATA[Adicionar nova atividade]]></key>
         <key id="coursereport&amp;_ADD_SCORM_RESULTS" attributes="" save_date="2017-04-10 10:39:31"><![CDATA[Adicionar resuldados SCORM]]></key>
-        <key id="coursereport&amp;_ANSWER_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Resposta correcta]]></key>
+        <key id="coursereport&amp;_ANSWER_CORRECT" attributes="" save_date="2018-12-26 22:17:14"><![CDATA[Resposta correta]]></key>
         <key id="coursereport&amp;_COURSE_REPORT_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Teste para este curso]]></key>
-        <key id="coursereport&amp;_COURSE_REPORT_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Isto é a lista para todos os testes para este curso e os resultadoas para os estudantes]]></key>
+        <key id="coursereport&amp;_COURSE_REPORT_SUMMARY" attributes="" save_date="2018-12-26 22:18:22"><![CDATA[Eis a lista de todos os testes para este curso e os resultados dos estudantes]]></key>
         <key id="coursereport&amp;_DETAILS" attributes="" save_date="2018-12-17 22:06:06"><![CDATA[Detalhes]]></key>
         <key id="coursereport&amp;_EXPORT_STATS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Guardar estatísticas]]></key>
         <key id="coursereport&amp;_LEFT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Esquerda]]></key>
@@ -895,10 +895,10 @@ Caso contrário, deve registar-se no nosso sistema, seguindo este link: <br />
         <key id="coursereport&amp;_OF_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[do utilizador]]></key>
         <key id="coursereport&amp;_OVERVIEW" attributes="" save_date="2018-12-17 22:06:16"><![CDATA[Vista geral]]></key>
         <key id="coursereport&amp;_PASSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Passou]]></key>
-        <key id="coursereport&amp;_PERCENTAGE_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Percentagem de respostas correctas]]></key>
+        <key id="coursereport&amp;_PERCENTAGE_CORRECT" attributes="" save_date="2018-12-26 22:22:27"><![CDATA[Percentagem de respostas corretas]]></key>
         <key id="coursereport&amp;_QUESTION_ANSWERED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Questões respondidas]]></key>
-        <key id="coursereport&amp;_REDO_FINAL_VOTE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Re-calcular]]></key>
-        <key id="coursereport&amp;_REDO_FINAL_VOTE_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Re-calcular pontuação]]></key>
+        <key id="coursereport&amp;_REDO_FINAL_VOTE" attributes="" save_date="2018-12-26 22:22:56"><![CDATA[Recalcular]]></key>
+        <key id="coursereport&amp;_REDO_FINAL_VOTE_TITLE" attributes="" save_date="2018-12-26 22:23:07"><![CDATA[Recalcular a pontuação]]></key>
         <key id="coursereport&amp;_REQUIRED_MUST_BE_LESS_THEN_MAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[A pontuação necessária deve ser menor que a pontuação máxima]]></key>
         <key id="coursereport&amp;_RESET_TRACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Apagar pista de teste]]></key>
         <key id="coursereport&amp;_RIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Direita]]></key>
@@ -912,140 +912,140 @@ Caso contrário, deve registar-se no nosso sistema, seguindo este link: <br />
         <key id="coursereport&amp;_STUDENTS_VOTE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pontuações dos estudantes]]></key>
         <key id="coursereport&amp;_SUMMARY_VOTE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sumário da avaliação]]></key>
         <key id="coursereport&amp;_TABLE_QUEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Estatísticas para a questão "[title]"]]></key>
-        <key id="coursereport&amp;_TABLE_QUEST_CORRECT_ASS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Percentagem de respostas correctas para o link "[title]"]]></key>
-        <key id="coursereport&amp;_TABLE_QUEST_CORRECT_TXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Percentagem de respostas correctas após inserir texto nas frases "[title]"]]></key>
+        <key id="coursereport&amp;_TABLE_QUEST_CORRECT_ASS" attributes="" save_date="2018-12-26 22:28:34"><![CDATA[Percentagem de respostas corretas para o <i>link</i> "[title]"]]></key>
+        <key id="coursereport&amp;_TABLE_QUEST_CORRECT_TXT" attributes="" save_date="2018-12-26 22:29:09"><![CDATA[Percentagem de respostas corretas após inserir texto nas frases "[title]"]]></key>
         <key id="coursereport&amp;_TABLE_QUEST_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inserir lista para a questão "[title]"]]></key>
         <key id="coursereport&amp;_TEST_INFO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Informação sobre o teste]]></key>
-        <key id="coursereport&amp;_TH_TEST_REPORT" attributes="" save_date="2017-07-17 10:36:23"><![CDATA[Relatório teste]]></key>
-        <key id="coursereport&amp;_TITLE_ACT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Teste de actividade]]></key>
+        <key id="coursereport&amp;_TH_TEST_REPORT" attributes="" save_date="2018-12-26 22:29:31"><![CDATA[Relatório do teste]]></key>
+        <key id="coursereport&amp;_TITLE_ACT" attributes="" save_date="2018-12-26 22:30:10"><![CDATA[Título da atividade]]></key>
         <key id="coursereport&amp;_TOT_QUESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Total de questões]]></key>
-        <key id="coursereport&amp;_TQ_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Estatísticas para o teste "[test]"]]></key>
-        <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizar para a pontuação final]]></key>
+        <key id="coursereport&amp;_TQ_LINK" attributes="" save_date="2018-12-26 22:30:33"><![CDATA[Estatísticas do teste "[test]"]]></key>
+        <key id="coursereport&amp;_USE_FOR_FINAL" attributes="" save_date="2018-12-26 22:31:57"><![CDATA[Considerar como pontuação final]]></key>
         <key id="coursereport&amp;_WEIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Peso]]></key>
       </module>
       <module id="course_autoregistration">
         <key id="course_autoregistration&amp;_AUTOREGISTRATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Adicionar novo curso]]></key>
-        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2017-05-08 12:32:22"><![CDATA[&gt;&gt; Voltar a "Minha área curso"]]></key>
-        <key id="course_autoregistration&amp;_CODE_ALREDY_USED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Você já utilizou este código]]></key>
-        <key id="course_autoregistration&amp;_CODE_NOT_VALID" attributes="" save_date="2017-07-19 11:11:30"><![CDATA[Código não correto]]></key>
+        <key id="course_autoregistration&amp;_BACK_TO_COURSE" attributes="" save_date="2018-12-26 22:33:43"><![CDATA[&gt;&gt; Voltar a "Os meus cursos"]]></key>
+        <key id="course_autoregistration&amp;_CODE_ALREDY_USED" attributes="" save_date="2018-12-26 22:34:01"><![CDATA[Já utilizou este código]]></key>
+        <key id="course_autoregistration&amp;_CODE_NOT_VALID" attributes="" save_date="2018-12-26 22:34:16"><![CDATA[Código inválido]]></key>
         <key id="course_autoregistration&amp;_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Código]]></key>
       </module>
       <module id="course_charts">
-        <key id="course_charts&amp;_ACTIVITY_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Este gráfico permite-lhe verificar o número de capítulos vistos pelos utilizadores através dos dias.]]></key>
-        <key id="course_charts&amp;_CHAPTER_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Este gráfico dá-lhe uma vista de todos os capítulos completos ou passos pelo utilizador.]]></key>
-        <key id="course_charts&amp;_COMPLETED_CHART_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Este gráfico dá-lhes uma vista de todos os capítulos completos pelo utilizadores neste curso.]]></key>
-        <key id="course_charts&amp;_NO_SCORM_IN_COURSE" attributes="" save_date="2017-04-10 10:39:38"><![CDATA[Não existem pacotes SCORM neste curso]]></key>
-        <key id="course_charts&amp;_PASSED_CHART_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objecto concluído com êxito]]></key>
-        <key id="course_charts&amp;_SCORE_CHART_DESCRIPTION" attributes="" save_date="2017-04-10 10:39:54"><![CDATA[Este gráfico permite-lhe verificar a pontuação obtido pelos utilizadores em cada capítulo SCORM.]]></key>
+        <key id="course_charts&amp;_ACTIVITY_CHART_DESCRIPTION" attributes="" save_date="2018-12-26 22:35:16"><![CDATA[Este gráfico permite-lhe verificar o número de capítulos vistos pelos utilizadores ao longo dos dias.]]></key>
+        <key id="course_charts&amp;_CHAPTER_CHART_DESCRIPTION" attributes="" save_date="2018-12-26 22:37:02"><![CDATA[Este gráfico dá-lhe uma panorâmica de todos os capítulos completados ou passados pelo utilizador.]]></key>
+        <key id="course_charts&amp;_COMPLETED_CHART_DESCRIPTION" attributes="" save_date="2018-12-26 22:38:09"><![CDATA[Este gráfico dá-lhe uma perspetiva de todos os capítulos completados pelos utilizadores neste curso.]]></key>
+        <key id="course_charts&amp;_NO_SCORM_IN_COURSE" attributes="" save_date="2018-12-26 22:38:18"><![CDATA[Não existem pacotes SCORM neste curso.]]></key>
+        <key id="course_charts&amp;_PASSED_CHART_TITLE" attributes="" save_date="2018-12-26 22:38:30"><![CDATA[Objeto concluído com êxito.]]></key>
+        <key id="course_charts&amp;_SCORE_CHART_DESCRIPTION" attributes="" save_date="2018-12-26 22:38:47"><![CDATA[Este gráfico permite-lhe verificar a pontuação obtida pelos utilizadores em cada capítulo SCORM.]]></key>
         <key id="course_charts&amp;_TIME_CHART_DESCRIPTION" attributes="" save_date="2017-04-10 10:39:47"><![CDATA[Este gráfico permite-lhe verificar o tempo gasto pelos utilizadores dentro de cada capítulo SCORM.]]></key>
-        <key id="course_charts&amp;_TIME_CHART_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tempo]]></key>
+        <key id="course_charts&amp;_TIME_CHART_TITLE" attributes="" save_date="2018-12-26 22:39:26"><![CDATA[Gráfico sobre o tempo de permanência.]]></key>
       </module>
       <module id="course_selector">
         <key id="course_selector&amp;_SEL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cursos]]></key>
       </module>
       <module id="customer_help">
-        <key id="customer_help&amp; &#9; _CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2018-07-20 10:31:26"><![CDATA[Disclaimer - assistenza utenti]]></key>
-        <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2017-07-17 15:12:47"><![CDATA[Central de Ajuda]]></key>
-        <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:29:58"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
-        <key id="customer_help&amp;_README_HELP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<!-- here you can put some help text -->]]></key>
+        <key id="customer_help&amp; &#9; _CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2018-12-26 22:49:22"><![CDATA[Aviso legal - assistência técnica]]></key>
+        <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2018-12-26 22:47:46"><![CDATA[Central de ajuda (help desk)]]></key>
+        <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-12-26 22:46:56"><![CDATA[Autorizo o envio de informações técnicas para a assistência para resolver o meu pedido.]]></key>
+        <key id="customer_help&amp;_README_HELP" attributes="" save_date="2018-12-26 22:45:37"><![CDATA[Leia-me]]></key>
       </module>
       <module id="dashboard">
-        <key id="dashboard&amp;_ACTIVE_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cursos Activos]]></key>
-        <key id="dashboard&amp;_ACTIVE_SEVEN_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cursos que serão activados dentro de 7 dias]]></key>
-        <key id="dashboard&amp;_ADMIN_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizadores Administrador]]></key>
-        <key id="dashboard&amp;_CHOOSE_EXPORT_FORMAT" attributes="" save_date="2017-07-19 12:30:21"><![CDATA[Seleccionar o formato de exportação]]></key>
+        <key id="dashboard&amp;_ACTIVE_COURSE" attributes="" save_date="2018-12-26 23:13:33"><![CDATA[Cursos ativos]]></key>
+        <key id="dashboard&amp;_ACTIVE_SEVEN_COURSE" attributes="" save_date="2018-12-26 23:13:42"><![CDATA[Cursos que serão ativados dentro de 7 dias]]></key>
+        <key id="dashboard&amp;_ADMIN_USER" attributes="" save_date="2018-12-26 23:14:12"><![CDATA[Utilizadores administradores]]></key>
+        <key id="dashboard&amp;_CHOOSE_EXPORT_FORMAT" attributes="" save_date="2018-12-26 23:14:27"><![CDATA[Selecionar o formato de exportação]]></key>
         <key id="dashboard&amp;_CORE_VERSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Versão instalada]]></key>
         <key id="dashboard&amp;_COURSES_PANEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Informação sobre os cursos]]></key>
         <key id="dashboard&amp;_DASHBOARD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Página de boas-vindas]]></key>
         <key id="dashboard&amp;_DB_UPGRADES" attributes="" save_date="2017-07-17 15:28:11"><![CDATA[Log de roteiro SQL]]></key>
-        <key id="dashboard&amp;_DEACTIVE_SEVEN_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cursos que serão desactivos dentro de 7 dias]]></key>
+        <key id="dashboard&amp;_DEACTIVE_SEVEN_COURSE" attributes="" save_date="2018-12-26 23:13:50"><![CDATA[Cursos que serão desativos dentro de 7 dias]]></key>
         <key id="dashboard&amp;_FOLLOW_US" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Siga-nos]]></key>
-        <key id="dashboard&amp;_INACTIVE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizadores inactivos (pelos menos um mês)]]></key>
+        <key id="dashboard&amp;_INACTIVE_USER" attributes="" save_date="2018-12-26 23:16:01"><![CDATA[Utilizadores inativos (pelo menos um mês)]]></key>
         <key id="dashboard&amp;_LAST_RELEASED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Última versão lançada]]></key>
         <key id="dashboard&amp;_LIBRARY" attributes="" save_date="2017-07-17 14:40:05"><![CDATA[Biblioteca]]></key>
-        <key id="dashboard&amp;_MONITOR_PRINT_CERTIFICATE_STATUS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Download ou gerar certificado]]></key>
-        <key id="dashboard&amp;_NEW_RELEASE_AVAILABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uma nova versão está disponível para download]]></key>
-        <key id="dashboard&amp;_ONLINE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizadores Online]]></key>
+        <key id="dashboard&amp;_MONITOR_PRINT_CERTIFICATE_STATUS" attributes="" save_date="2018-12-26 23:16:34"><![CDATA[Transferir ou gerar um certificado]]></key>
+        <key id="dashboard&amp;_NEW_RELEASE_AVAILABLE" attributes="" save_date="2018-12-26 23:17:27"><![CDATA[Está disponível uma nova versão para transferir]]></key>
+        <key id="dashboard&amp;_ONLINE_USER" attributes="" save_date="2018-12-26 23:17:45"><![CDATA[Utilizadores <i>online</i>]]></key>
         <key id="dashboard&amp;_OPEN_IN_NEW_WINDOW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[(Nova janela)]]></key>
         <key id="dashboard&amp;_QUICK_LINKS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Links <span>rápidos</span>]]></key>
         <key id="dashboard&amp;_REG_LASTSEVENDAYS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizadores registados nos últimos 7 dias]]></key>
-        <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2017-07-17 12:35:17"><![CDATA[Utilizadores resgistrados hoje]]></key>
+        <key id="dashboard&amp;_REG_TODAY" attributes="" save_date="2018-12-26 23:18:06"><![CDATA[Utilizadores resgistados hoje]]></key>
         <key id="dashboard&amp;_REG_YESTERDAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizadores registados ontem]]></key>
         <key id="dashboard&amp;_SUPERADMIN_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizadores super-admin]]></key>
-        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rede forma.lms]]></key>
+        <key id="dashboard&amp;_SUPPORT_SITE" attributes="" save_date="2018-12-26 23:19:57"><![CDATA[Rede <b>forma.lms</b>]]></key>
         <key id="dashboard&amp;_SUSPENDED_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizadores suspensos]]></key>
-        <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Consultar site]]></key>
-        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:47:15"><![CDATA[Site de suporte forma.lms]]></key>
+        <key id="dashboard&amp;_TITLE_URL_COMPANY" attributes="" save_date="2018-12-26 23:13:24"><![CDATA[Consultar o <i>site</i>]]></key>
+        <key id="dashboard&amp;_TITLE_URL_SUPPORTLMS" attributes="" save_date="2018-12-26 23:19:49"><![CDATA[Site de suporte <b>forma.lms</b>]]></key>
         <key id="dashboard&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Número de cursos]]></key>
-        <key id="dashboard&amp;_TOTAL_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Número de subscrições]]></key>
+        <key id="dashboard&amp;_TOTAL_SUBSCRIPTION" attributes="" save_date="2018-12-26 23:18:43"><![CDATA[Número de inscrições]]></key>
         <key id="dashboard&amp;_TOTAL_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizadores registados]]></key>
         <key id="dashboard&amp;_UNKNOWN_RELEASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Erro, ao recuperar a última versão disponível]]></key>
-        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2017-04-10 12:46:56"><![CDATA[forma.lms serviços comerciais]]></key>
-        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2017-04-10 12:47:06"><![CDATA[forma.lms comunidade open source]]></key>
-        <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Informação de utilizadores]]></key>
-        <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aguardando subscrição]]></key>
+        <key id="dashboard&amp;_URL_COMPANY" attributes="" save_date="2018-12-26 23:19:41"><![CDATA[Serviços comerciais <b>forma.lms</b>]]></key>
+        <key id="dashboard&amp;_URL_SUPPORTLMS" attributes="" save_date="2018-12-26 23:20:40"><![CDATA[Comunidade <i>open source</i> <b>forma.lms</b>]]></key>
+        <key id="dashboard&amp;_USERS_PANEL" attributes="" save_date="2018-12-26 23:21:28"><![CDATA[Informação sobre utilizadores]]></key>
+        <key id="dashboard&amp;_WAITING_SUBSCRIPTION" attributes="" save_date="2018-12-26 23:13:03"><![CDATA[Aguardando a inscrição]]></key>
       </module>
       <module id="email">
-        <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Novo anúncio]]></key>
-        <key id="email&amp;_ALERT_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Novo anúncio foi anunciado no curso "[course]"
+        <key id="email&amp;_ALERT_SUBJECT" attributes="email" save_date="2018-12-27 14:01:34"><![CDATA[Novo aviso/informação]]></key>
+        <key id="email&amp;_ALERT_TEXT" attributes="email" save_date="2018-12-27 14:02:34"><![CDATA[Novo aviso/informação no curso "[course]"
 
 Título: '[title]'
 
 [text]
 
-Você pode ler forma.lms no URL <a href="[url]">[url]</a>]]></key>
-        <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Pedido de subscrição aprovado]]></key>
-        <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[O seu pedido de subscrição do curso [course] foi aprovado pelo administrador. Você pode entrar no curso clicando no URL localizado em <a href="[url]">[url]</a>]]></key>
-        <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[O administrador confirmou o seu pedido de subscrição para <a href="[url]">[url]</a>]]></key>
+Pode ler em forma.lms no URL <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_APPROVED_SUBSCRIBED_SUBJECT" attributes="email" save_date="2018-12-27 14:06:10"><![CDATA[Pedido de inscrição aprovado]]></key>
+        <key id="email&amp;_APPROVED_SUBSCRIBED_TEXT" attributes="email" save_date="2018-12-27 14:05:06"><![CDATA[O seu pedido de inscrição no curso [course] foi aprovado pelo administrador. Pode entrar no curso clicando no URL localizado em <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_APPROVED_USER_TEXT" attributes="email" save_date="2018-12-27 14:04:23"><![CDATA[O administrador confirmou o seu pedido de inscrição para <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_DELETED_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[A sua conta foi apagada]]></key>
         <key id="email&amp;_DELETED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[A sua conta <a href="[url]">[url]</a> com o nome de utilizador [userid] foi apagada]]></key>
-        <key id="email&amp;_DENY_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Pedido de subscrição recusado]]></key>
-        <key id="email&amp;_DENY_SUBSCRIBED_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[O seu pedido de subscrição do curso [course] foi recusado pelo administrador <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_DENY_SUBSCRIBED_SUBJECT" attributes="email" save_date="2018-12-27 14:06:17"><![CDATA[Pedido de inscrição recusado]]></key>
+        <key id="email&amp;_DENY_SUBSCRIBED_TEXT" attributes="email" save_date="2018-12-27 14:05:23"><![CDATA[O seu pedido de inscrição no curso [course] foi recusado pelo administrador <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_EVENT_CLASS_UserCourseBuy" attributes="" save_date="2017-07-19 14:04:53"><![CDATA[Utilizador comprou um curso]]></key>
         <key id="email&amp;_MODIFIED_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[A conta de utilizador foi modificada]]></key>
-        <key id="email&amp;_MODIFIED_USER_TEXT" attributes="email" save_date="2017-07-17 10:59:56"><![CDATA[A sua conta no site <a href="[url]">[url]</a>  foi modificada:
+        <key id="email&amp;_MODIFIED_USER_TEXT" attributes="email" save_date="2018-12-27 13:54:47"><![CDATA[A sua conta no site <a href="[url]">[url]</a>  foi modificada.
 
 Nome de utilizador: [userid]]]></key>
-        <key id="email&amp;_MOD_USER_SUBSCRIPTION_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[A sua subscrição foi alterada]]></key>
-        <key id="email&amp;_MOD_USER_SUBSCRIPTION_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[A sua subscrição no curso [course] no endereço <a href="[url]">[url]</a> foi alterada]]></key>
-        <key id="email&amp;_NEW_FORUM" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Novo forum]]></key>
-        <key id="email&amp;_NEW_FORUM_BODY" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Novo forum adicionado ao curso '[course]' no endereço <a href="[url]">[url]</a>
+        <key id="email&amp;_MOD_USER_SUBSCRIPTION_SUBJECT" attributes="email" save_date="2018-12-27 13:53:59"><![CDATA[A sua inscrição foi alterada]]></key>
+        <key id="email&amp;_MOD_USER_SUBSCRIPTION_TEXT" attributes="email" save_date="2018-12-27 13:54:21"><![CDATA[A sua inscrição no curso [course] no endereço <a href="[url]">[url]</a> foi alterada]]></key>
+        <key id="email&amp;_NEW_FORUM" attributes="email" save_date="2018-12-27 14:01:16"><![CDATA[Novo fórum]]></key>
+        <key id="email&amp;_NEW_FORUM_BODY" attributes="email" save_date="2018-12-27 14:02:53"><![CDATA[Novo fórum adicionado ao curso '[course]' no endereço <a href="[url]">[url]</a>
 
  Title: [title]
  [text]]]></key>
-        <key id="email&amp;_NEW_MESSAGE_INSERT_IN_THREAD" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Existe uma nova mensagem na thread que está a seguir
+        <key id="email&amp;_NEW_MESSAGE_INSERT_IN_THREAD" attributes="email" save_date="2019-01-11 16:38:48"><![CDATA[Existe uma nova mensagem no tópico que está a seguir
  [url] > [course] > [forum_title] > [thread_title]]]></key>
-        <key id="email&amp;_NEW_THREAD_INSERT_IN_FORUM" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Existe uma nova thread em
+        <key id="email&amp;_NEW_THREAD_INSERT_IN_FORUM" attributes="email" save_date="2019-01-11 16:39:19"><![CDATA[Existe um novo tópico em
 
 <a href="[url]">[url]</a> > [course] > [forum_title]
 
  Title: [thread_title]]]></key>
-        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Novo utilizador foi inscrito para um curso]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2018-12-27 14:03:40"><![CDATA[Novo utilizador foi inscrito num curso]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2017-05-05 17:16:32"><![CDATA[No URL: <a href="[url]">[url]</a> um novo utilizador foi inscrito para o curso: [course]]]></key>
-        <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Utilizador está a aguardar pela aprovação de subscrição do curso]]></key>
-        <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Novo utilizador inscrito para o curso '[course]' e está a aguardar que seja aprovado.
+        <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2018-12-27 14:07:45"><![CDATA[Utilizador está a aguardar pela aprovação de inscrição do curso]]></key>
+        <key id="email&amp;_NEW_USER_SUBS_WAITING_TEXT" attributes="email" save_date="2018-12-27 14:04:06"><![CDATA[Novo utilizador inscrito no curso '[course]' e está a aguardar aprovação.
 
 <a href="[url]">[url]</a>]]></key>
-        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_SUBJECT" attributes="" save_date="2017-07-17 15:42:33"><![CDATA[Utilizador está a aguardar pela aprovação de cancelamento de subscrição do curso]]></key>
-        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_SUBJECT_SMS" attributes="" save_date="2017-07-17 15:43:24"><![CDATA[Pedido de cancelamento de inscrição de um curso]]></key>
-        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_TEXT" attributes="" save_date="2017-07-19 11:42:09"><![CDATA[Novo utilizador cancelou a inscrição do curso '[course]' e aguarda ser aprovado.
+        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_SUBJECT" attributes="" save_date="2018-12-27 14:07:33"><![CDATA[Utilizador está a aguardar pela aprovação de cancelamento de inscrição no curso]]></key>
+        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_SUBJECT_SMS" attributes="" save_date="2018-12-27 14:05:51"><![CDATA[Pedido de cancelamento de inscrição num curso]]></key>
+        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_TEXT" attributes="" save_date="2018-12-27 14:03:19"><![CDATA[Novo utilizador cancelou a inscrição no curso '[course]' e aguarda aprovação.
 
 <a href="[url]"> [url] </a>]]></key>
-        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_TEXT_SMS" attributes="" save_date="2017-07-17 17:10:38"><![CDATA[Um utilizador pediu para ser cancelado de um curso]]></key>
+        <key id="email&amp;_NEW_USER_UNSUBS_WAITING_TEXT_SMS" attributes="" save_date="2018-12-27 14:07:10"><![CDATA[Um utilizador pediu para ser cancelada a inscrição num curso]]></key>
         <key id="email&amp;_PASSWORD_CHANGED" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[e a sua senha foi alterada para: [password]]]></key>
         <key id="email&amp;_REFUSED_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Utilizador não aprovado]]></key>
-        <key id="email&amp;_REFUSED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[O administrador do [url] não aprovou o seu pedido de subscrição]]></key>
-        <key id="email&amp;_REGISTERED_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Você não está registado no nosso sistema]]></key>
-        <key id="email&amp;_REGISTERED_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Você não está registado no nosso sistema em <a href="[url]">[url]</a>
+        <key id="email&amp;_REFUSED_USER_TEXT" attributes="email" save_date="2018-12-27 14:04:39"><![CDATA[O administrador do [url] não aprovou o seu pedido de inscrição]]></key>
+        <key id="email&amp;_REGISTERED_USER_SBJ" attributes="email" save_date="2018-12-27 14:09:15"><![CDATA[Neste momento, está registado no nosso sistema.]]></key>
+        <key id="email&amp;_REGISTERED_USER_TEXT" attributes="email" save_date="2018-12-27 14:08:39"><![CDATA[Você está agora registado no nosso sistema em <a href="[url]">[url]</a>
 com esta conta:
 
 Nome utilizador: [userid]
 Senha: [password]]]></key>
-        <key id="email&amp;_SUBJECT_NOTIFY_MESSAGE" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Alerta: Nova mensagem numa thread]]></key>
-        <key id="email&amp;_SUBJECT_NOTIFY_THREAD" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Alerta: nova thread]]></key>
-        <key id="email&amp;_TO_APPROVE_GROUP_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Nova subscrição de grupo de utilizadores aguarda por aprovação]]></key>
-        <key id="email&amp;_TO_APPROVE_GROUP_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Existe uma subscrição de novo utilizador para um grupo moderado aguarda por aprovação em <a href="[url]">[url]</a>]]></key>
-        <key id="email&amp;_TO_APPROVE_GROUP_USER_TEXT_SMS" attributes="sms" save_date="2017-07-17 12:23:45"><![CDATA[Existe uma subscrição de novo utilizador para um grupo moderado aguarda por aprovação]]></key>
+        <key id="email&amp;_SUBJECT_NOTIFY_MESSAGE" attributes="email" save_date="2019-01-11 21:14:54"><![CDATA[Alerta! Nova mensagem numa linha de mensagens (tópico/thread)]]></key>
+        <key id="email&amp;_SUBJECT_NOTIFY_THREAD" attributes="email" save_date="2019-01-11 21:14:41"><![CDATA[Alerta! Nova linha de mensagens (tópico/thread)]]></key>
+        <key id="email&amp;_TO_APPROVE_GROUP_USER_SBJ" attributes="email" save_date="2018-12-27 14:00:26"><![CDATA[Nova inscrição de grupo de utilizadores aguarda por aprovação]]></key>
+        <key id="email&amp;_TO_APPROVE_GROUP_USER_TEXT" attributes="email" save_date="2018-12-27 14:00:02"><![CDATA[Existe uma inscrição de novo utilizador para um grupo moderado que aguarda por aprovação em <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_TO_APPROVE_GROUP_USER_TEXT_SMS" attributes="sms" save_date="2018-12-27 13:59:24"><![CDATA[Existe uma inscrição de novo utilizador para um grupo moderado que aguarda por aprovação.]]></key>
         <key id="email&amp;_TO_APPROVE_USER_SBJ" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Novo utilizador aguarda por aprovação]]></key>
         <key id="email&amp;_TO_APPROVE_USER_TEXT" attributes="email" save_date="2014-11-14 00:00:00"><![CDATA[Novo utilizador está registadao em [url] e aguarda por aprovação]]></key>
         <key id="email&amp;_TO_NEW_USER_SBJ" attributes="email" save_date="2017-07-17 17:19:35"><![CDATA[Novo utilizador inscrito]]></key>
@@ -1067,28 +1067,28 @@ Senha: [password]]]></key>
       </module>
       <module id="event_manager">
         <key id="event_manager&amp;_EVENT_CHANNEL_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SMS]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_AdviceNew" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Novo Anúncio]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_AdviceNew" attributes="" save_date="2018-12-27 18:03:40"><![CDATA[Novo aviso/informação]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_CoursePorpModified" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Propriedades do curso foram alteradas]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_ForumNewCategory" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nova categoria]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_ForumNewResponse" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nova resposta]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_ForumNewThread" attributes="" save_date="2017-07-17 12:27:55"><![CDATA[Nova thread]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_MsgNewReceived" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nova mensagem recebido]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_ForumNewThread" attributes="" save_date="2019-01-11 21:15:16"><![CDATA[Novo tópico (thread)]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_MsgNewReceived" attributes="" save_date="2018-12-27 14:50:02"><![CDATA[Nova mensagem recebida]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserApproved" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aprovação de utilizador]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_UserCourseBuy" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizador adquiriu um curso]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_UserCourseEnded" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Estudante completou um curso]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_UserCourseInserted" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizador inscrito num curso]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_UserCourseInsertModerate" attributes="" save_date="2018-12-17 23:18:03"><![CDATA[Utilizador aguarda para ser inscrito num curso]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_UserCourseLevelChanged" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nível de utilizador foi alterado num curso]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemoved" attributes="" save_date="2017-07-17 17:00:00"><![CDATA[Utilizador cancelado de um curso]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemovedModerate" attributes="" save_date="2017-07-17 17:12:53"><![CDATA[Utilizador à espera para ser cancelado de um curso]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserCourseBuy" attributes="" save_date="2018-12-27 14:51:16"><![CDATA[O utilizador adquiriu um curso.]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserCourseEnded" attributes="" save_date="2018-12-27 14:51:19"><![CDATA[O estudante completou um curso.]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserCourseInserted" attributes="" save_date="2018-12-27 14:51:22"><![CDATA[O utilizador inscreveu-se num curso.]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserCourseInsertModerate" attributes="" save_date="2018-12-27 14:51:34"><![CDATA[O utilizador aguarda para ser inscrito num curso.]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserCourseLevelChanged" attributes="" save_date="2018-12-27 14:51:58"><![CDATA[O nível de utilizador foi alterado num curso.]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemoved" attributes="" save_date="2018-12-27 14:52:53"><![CDATA[O utilizador desistiu de um curso.]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemovedModerate" attributes="" save_date="2018-12-27 14:53:40"><![CDATA[O utilizador aguarda o cancelamento da inscrição num curso.]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserDel" attributes="" save_date="2018-12-17 23:12:51"><![CDATA[Utilizador apagado]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserGroupInsert" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizador inscrito num grupo]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_UserGroupModerated" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[utilizador a aguardar para ser inscrito num grupo]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserGroupModerated" attributes="" save_date="2018-12-27 14:54:16"><![CDATA[O utilizador aguarda para ser inscrito num grupo.]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserGroupRemove" attributes="" save_date="2018-12-17 23:13:26"><![CDATA[Utilizador removido do grupo]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserMod" attributes="" save_date="2018-12-17 23:13:14"><![CDATA[Utilizador modificado]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNew" attributes="" save_date="2018-12-17 23:13:04"><![CDATA[Utilizador criado]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_UserNew2" attributes="" save_date="2017-07-19 14:05:52"><![CDATA[Um novo utilizador é registrado através de "registro automático gratuito" ou "registro automático automático com double opt-in"]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_UserNewModerated" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizador a aguardar para ser aprovado na plataforma de subscrição]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserNew2" attributes="" save_date="2018-12-27 14:56:12"><![CDATA[Um novo utilizador foi registado através de "registo automático gratuito" ou "registo automático livre com verificação/confirmação (double opt-in)".]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserNewModerated" attributes="" save_date="2018-12-27 14:56:36"><![CDATA[Utilizador a aguardar para ser aprovado na plataforma de inscrição.]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNewWaiting" attributes="" save_date="2017-07-19 13:54:49"><![CDATA[Novo utilizador aguardando a aprovação]]></key>
         <key id="event_manager&amp;_EVENT_MANAGER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gestor de eventos]]></key>
         <key id="event_manager&amp;_EVENT_PERM_NOTUSED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Não usado]]></key>
@@ -1096,9 +1096,9 @@ Senha: [password]]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_framework" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appCore]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms-a" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[appLMS-A]]></key>
-        <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Moderadores e Super Admins]]></key>
-        <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Instructores]]></key>
-        <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Instructores e Super Admins]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2018-12-27 14:57:30"><![CDATA[Moderadores e Super-administradores]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER" attributes="" save_date="2018-12-27 14:57:43"><![CDATA[Professores]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2018-12-27 14:58:15"><![CDATA[Professores e Super-administradores]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizador]]></key>
         <key id="event_manager&amp;_EVENT_SETTINGS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Configurações de evento]]></key>
       </module>
@@ -1116,18 +1116,18 @@ Senha: [password]]]></key>
       <module id="field">
         <key id="field&amp;_ADD_NEW_CUSTOMFIELD" attributes="" save_date="2017-07-17 12:22:00"><![CDATA[Adicionar um novo campo personalizado]]></key>
         <key id="field&amp;_ADD_NEW_FIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Adicionar novo campo personalizado]]></key>
-        <key id="field&amp;_ALL_FIELD_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Todos tipos de campos]]></key>
-        <key id="field&amp;_CODICEFISCALE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Código Fiscal]]></key>
+        <key id="field&amp;_ALL_FIELD_TYPE" attributes="" save_date="2018-12-27 15:03:04"><![CDATA[Todos os tipos de campos]]></key>
+        <key id="field&amp;_CODICEFISCALE" attributes="" save_date="2018-12-27 15:09:47"><![CDATA[Código fiscal]]></key>
         <key id="field&amp;_COPY" attributes="" save_date="2017-07-17 12:59:29"><![CDATA[Copiar]]></key>
         <key id="field&amp;_COUNTRY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[País]]></key>
-        <key id="field&amp;_DROPDOWN" attributes="" save_date="2017-07-19 13:50:19"><![CDATA[Campo drop-down]]></key>
-        <key id="field&amp;_DROPDOWN_ELEMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nome elemento]]></key>
+        <key id="field&amp;_DROPDOWN" attributes="" save_date="2018-12-27 15:10:44"><![CDATA[Campo de lista pendente (drop-down)]]></key>
+        <key id="field&amp;_DROPDOWN_ELEMENT" attributes="" save_date="2018-12-27 15:03:25"><![CDATA[Nome do elemento]]></key>
         <key id="field&amp;_DROPDOWN_NOVALUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[- Sem valor -]]></key>
         <key id="field&amp;_DROPDOWN_SON_ADD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Novo elemento]]></key>
         <key id="field&amp;_DROPDOWN_SON_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Valor atribuído]]></key>
         <key id="field&amp;_DROPDOWN_SON_NEW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Inserir novo elemento]]></key>
         <key id="field&amp;_FIELD_MANAGER" attributes="" save_date="2017-07-17 13:46:14"><![CDATA[Gestor de campos]]></key>
-        <key id="field&amp;_FIELD_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Campo categoria]]></key>
+        <key id="field&amp;_FIELD_TYPE" attributes="" save_date="2018-12-27 15:11:31"><![CDATA[Categoria ou tipo de campo]]></key>
         <key id="field&amp;_FILTER_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Palavra-chave]]></key>
         <key id="field&amp;_FREETEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Campo texto livre]]></key>
         <key id="field&amp;_GMAIL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Conta Gmail]]></key>
@@ -1161,14 +1161,14 @@ Senha: [password]]]></key>
       </module>
       <module id="forum">
         <key id="forum&amp;_ADDFORUM" attributes="" save_date="2018-12-17 23:25:20"><![CDATA[Adicionar novo fórum]]></key>
-        <key id="forum&amp;_ADDTHREAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Começar nova discussão]]></key>
-        <key id="forum&amp;_ALL_THREAD_READ" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Marcar todas as threads como lidas]]></key>
-        <key id="forum&amp;_AREYOUSURE_MOVE_THREAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tem a certeza que deseja mover a thread?]]></key>
+        <key id="forum&amp;_ADDTHREAD" attributes="" save_date="2019-01-11 11:09:02"><![CDATA[Começar novo tópico]]></key>
+        <key id="forum&amp;_ALL_THREAD_READ" attributes="" save_date="2019-01-11 11:11:15"><![CDATA[Marcar todos os tópicos como lidos]]></key>
+        <key id="forum&amp;_AREYOUSURE_MOVE_THREAD" attributes="" save_date="2019-01-11 11:16:00"><![CDATA[Tem a certeza que deseja mover o tópico?]]></key>
         <key id="forum&amp;_CANNOTENTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Não pode aceder a esta discussão]]></key>
-        <key id="forum&amp;_CAPTION_FORUM_MESSAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Messagens para esta thread]]></key>
-        <key id="forum&amp;_CAPTION_FORUM_MESSAGE_ADD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Últimas mensagens nesta thread]]></key>
+        <key id="forum&amp;_CAPTION_FORUM_MESSAGE" attributes="" save_date="2019-01-11 11:11:43"><![CDATA[Mensagens para este tópico]]></key>
+        <key id="forum&amp;_CAPTION_FORUM_MESSAGE_ADD" attributes="" save_date="2019-01-11 11:16:30"><![CDATA[Últimas mensagens neste tópico]]></key>
         <key id="forum&amp;_CHOOSE_FORUM_ACCESS" attributes="" save_date="2018-12-17 23:22:21"><![CDATA[Escolher quem pode ver este fórum (se ninguém for seleccionado, o fórum será visto por todos)]]></key>
-        <key id="forum&amp;_DELETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Moderar]]></key>
+        <key id="forum&amp;_DELETE" attributes="" save_date="2018-12-27 17:53:17"><![CDATA[Moderado]]></key>
         <key id="forum&amp;_ELEFORUM" attributes="" save_date="2018-12-17 23:20:49"><![CDATA[Lista de fóruns]]></key>
         <key id="forum&amp;_EMOTICONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Emoticons]]></key>
         <key id="forum&amp;_FORUMCLOSED" attributes="" save_date="2018-12-17 23:22:34"><![CDATA[Fórum fechado]]></key>
@@ -1179,46 +1179,46 @@ Senha: [password]]]></key>
         <key id="forum&amp;_FREET" attributes="" save_date="2018-12-17 23:21:11"><![CDATA[Gerir moderação de fórum]]></key>
         <key id="forum&amp;_FREETHREAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reabrir respostas]]></key>
         <key id="forum&amp;_FROM_FORUM" attributes="" save_date="2018-12-17 23:21:35"><![CDATA[Do fórum]]></key>
-        <key id="forum&amp;_IMPORTANT_THREAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Marcar thread como importante]]></key>
+        <key id="forum&amp;_IMPORTANT_THREAD" attributes="" save_date="2019-01-11 11:10:37"><![CDATA[Marcar tópico como importante]]></key>
         <key id="forum&amp;_LASTPOST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Última mensagem.]]></key>
         <key id="forum&amp;_LOCKED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bloqueado]]></key>
-        <key id="forum&amp;_LOCKEDMESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Messagem bloqueada pelo moderador]]></key>
+        <key id="forum&amp;_LOCKEDMESS" attributes="" save_date="2019-01-11 11:12:12"><![CDATA[Mensagem bloqueada pelo moderador]]></key>
         <key id="forum&amp;_LOCKFORUM" attributes="" save_date="2018-12-17 23:21:44"><![CDATA[Bloquear fórum]]></key>
         <key id="forum&amp;_LOCKFORUMALT" attributes="" save_date="2018-12-17 23:21:55"><![CDATA[Bloquear fórum]]></key>
         <key id="forum&amp;_LOCKTHREAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bloquear respostas]]></key>
-        <key id="forum&amp;_MODIFY_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Messagem modificada por]]></key>
-        <key id="forum&amp;_MOD_MESSAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mod. messagem]]></key>
+        <key id="forum&amp;_MODIFY_BY" attributes="" save_date="2019-01-11 11:12:21"><![CDATA[Mensagem modificada por]]></key>
+        <key id="forum&amp;_MOD_MESSAGE" attributes="" save_date="2019-01-11 11:12:06"><![CDATA[Mod. mensagem]]></key>
         <key id="forum&amp;_MOVE_TO_FORUM" attributes="" save_date="2018-12-17 23:47:24"><![CDATA[Mover para fórum:]]></key>
         <key id="forum&amp;_NEW_MESSAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nova mensagem]]></key>
-        <key id="forum&amp;_NEW_THREAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nova thread]]></key>
+        <key id="forum&amp;_NEW_THREAD" attributes="" save_date="2019-01-11 11:13:15"><![CDATA[Novo tópico]]></key>
         <key id="forum&amp;_NOACCESS" attributes="" save_date="2018-12-17 23:47:32"><![CDATA[Não está autorizado a ver este fórum]]></key>
         <key id="forum&amp;_NOTIFY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Notificar]]></key>
         <key id="forum&amp;_NOTIFY_CHANGE_STATUS_CORRECT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Notificar pedido registado]]></key>
         <key id="forum&amp;_NOTIFY_ME_FORUM" attributes="" save_date="2018-12-17 23:48:56"><![CDATA[Seguir este fórum]]></key>
-        <key id="forum&amp;_NOTIFY_ME_FORUM_TITLE" attributes="" save_date="2018-12-17 23:47:45"><![CDATA[Notificar-me sobre novas threads neste fórum]]></key>
-        <key id="forum&amp;_NOTIFY_ME_THREAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seguir esta thread]]></key>
-        <key id="forum&amp;_NOTIFY_ME_THREAD_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seguir esta (notificar-me de novas messagens)]]></key>
+        <key id="forum&amp;_NOTIFY_ME_FORUM_TITLE" attributes="" save_date="2019-01-11 11:12:57"><![CDATA[Notificar-me sobre novos tópicos neste fórum]]></key>
+        <key id="forum&amp;_NOTIFY_ME_THREAD" attributes="" save_date="2019-01-11 11:15:46"><![CDATA[Seguir este tópico ou linha de mensagens]]></key>
+        <key id="forum&amp;_NOTIFY_ME_THREAD_TITLE" attributes="" save_date="2019-01-11 11:15:20"><![CDATA[Seguir este tópico (notificar-me de novas messagens)]]></key>
         <key id="forum&amp;_NUMPOST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Posts]]></key>
         <key id="forum&amp;_NUMREPLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Respostas]]></key>
-        <key id="forum&amp;_NUMTHREAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Threads]]></key>
+        <key id="forum&amp;_NUMTHREAD" attributes="" save_date="2019-01-11 11:16:16"><![CDATA[Tópicos]]></key>
         <key id="forum&amp;_NUMVIEW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seguidores]]></key>
         <key id="forum&amp;_QUOTE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Citação]]></key>
-        <key id="forum&amp;_RESTOREINSERT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reabrir thread]]></key>
+        <key id="forum&amp;_RESTOREINSERT" attributes="" save_date="2019-01-11 11:14:56"><![CDATA[Reabrir tópico ou linha de mensagens]]></key>
         <key id="forum&amp;_SEARCH_LABEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Encontrar tópico]]></key>
         <key id="forum&amp;_SEARCH_RESULT_FOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pesquisar resultado por]]></key>
-        <key id="forum&amp;_SET_NOT_IMPORTANT_THREAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Remover flags importantes da thread]]></key>
-        <key id="forum&amp;_THRAD_SUMMARY" attributes="" save_date="2018-12-17 23:29:43"><![CDATA[Listar com a presente thread para o fórum seleccionado]]></key>
+        <key id="forum&amp;_SET_NOT_IMPORTANT_THREAD" attributes="" save_date="2019-01-11 21:15:37"><![CDATA[Remover flags importantes do tópico (thread)]]></key>
+        <key id="forum&amp;_THRAD_SUMMARY" attributes="" save_date="2019-01-11 11:10:26"><![CDATA[Listar com o tópico atual para o fórum selecionado]]></key>
         <key id="forum&amp;_THREAD" attributes="" save_date="2018-12-17 23:22:05"><![CDATA[Discussões disponíveis no fórum]]></key>
-        <key id="forum&amp;_THREAD_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Lista de threads]]></key>
+        <key id="forum&amp;_THREAD_CAPTION" attributes="" save_date="2019-01-11 11:09:31"><![CDATA[Lista de tópicos]]></key>
         <key id="forum&amp;_TO_FORUM" attributes="" save_date="2018-12-17 23:47:54"><![CDATA[Para fórum]]></key>
         <key id="forum&amp;_UNERASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tornar acessível]]></key>
         <key id="forum&amp;_UNLOCKFORUM" attributes="" save_date="2018-12-17 23:48:46"><![CDATA[Reabrir fórum]]></key>
         <key id="forum&amp;_UNLOCKFORUMALT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aberto]]></key>
         <key id="forum&amp;_UNNOTIFY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Terminar]]></key>
         <key id="forum&amp;_UNNOTIFY_ME_FORUM" attributes="" save_date="2018-12-17 23:49:03"><![CDATA[Terminar notificações para este fórum]]></key>
-        <key id="forum&amp;_UNNOTIFY_ME_FORUM_TITLE" attributes="" save_date="2018-12-17 23:48:40"><![CDATA[Parar de me alertar quando forem criadas threads  neste fórum]]></key>
+        <key id="forum&amp;_UNNOTIFY_ME_FORUM_TITLE" attributes="" save_date="2019-01-11 11:14:07"><![CDATA[Deixar de me alertar quando forem criados tópicos neste fórum]]></key>
         <key id="forum&amp;_UNNOTIFY_ME_THREAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alternar notificações]]></key>
-        <key id="forum&amp;_UNNOTIFY_ME_THREAD_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alternar notificações (parar de aborrecer-me)]]></key>
+        <key id="forum&amp;_UNNOTIFY_ME_THREAD_TITLE" attributes="" save_date="2018-12-27 18:01:26"><![CDATA[Anular notificações (não incomodar)]]></key>
         <key id="forum&amp;_USERFORUMPARAM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Foto, avatar e assinatura]]></key>
         <key id="forum&amp;_USERPARAM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Informação de utilizador]]></key>
         <key id="forum&amp;_VIEW_PROFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostrar perfil]]></key>
@@ -1364,7 +1364,7 @@ Senha: [password]]]></key>
         <key id="levels&amp;_LEVEL_3" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Estudante]]></key>
         <key id="levels&amp;_LEVEL_4" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tutor]]></key>
         <key id="levels&amp;_LEVEL_5" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mentor]]></key>
-        <key id="levels&amp;_LEVEL_6" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Instructor]]></key>
+        <key id="levels&amp;_LEVEL_6" attributes="" save_date="2019-01-11 11:27:51"><![CDATA[Professor]]></key>
         <key id="levels&amp;_LEVEL_7" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Administrador]]></key>
       </module>
       <module id="light_repo">
@@ -1506,7 +1506,7 @@ Para alterar estas palavras por favor vá a  gestão Admin/Idioma, pesquise por 
         <key id="menu_course&amp;Stat Area" attributes="" save_date="2017-07-19 13:13:35"><![CDATA[Área de Estatística]]></key>
         <key id="menu_course&amp;Student Area" attributes="" save_date="2017-07-19 13:12:56"><![CDATA[Área de Estudantes]]></key>
         <key id="menu_course&amp;Teacher Area" attributes="" save_date="2017-07-19 13:13:12"><![CDATA[Área do Professor]]></key>
-        <key id="menu_course&amp;_ADVICE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Anúncios]]></key>
+        <key id="menu_course&amp;_ADVICE" attributes="" save_date="2018-12-27 18:02:57"><![CDATA[Avisos/informações]]></key>
         <key id="menu_course&amp;_COURSECHART" attributes="" save_date="2018-12-17 23:10:20"><![CDATA[Gráficos de curso]]></key>
         <key id="menu_course&amp;_COURSEREPORT" attributes="" save_date="2018-12-17 23:11:21"><![CDATA[Livro de notas]]></key>
         <key id="menu_course&amp;_COURSESTATS" attributes="" save_date="2018-12-17 23:10:30"><![CDATA[Grelha utilizador/objetos]]></key>
@@ -1516,7 +1516,7 @@ Para alterar estas palavras por favor vá a  gestão Admin/Idioma, pesquise por 
         <key id="menu_course&amp;_HTMLFRONT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Introducção]]></key>
         <key id="menu_course&amp;_INFCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Informação Curso]]></key>
         <key id="menu_course&amp;_LIGHT_REPO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Repositório]]></key>
-        <key id="menu_course&amp;_ORGANIZATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Documentos Curso]]></key>
+        <key id="menu_course&amp;_ORGANIZATION" attributes="" save_date="2019-01-13 23:26:36"><![CDATA[Materiais]]></key>
         <key id="menu_course&amp;_PROFILE" attributes="" save_date="2018-12-17 23:11:04"><![CDATA[O meu perfil]]></key>
         <key id="menu_course&amp;_PROJECT" attributes="" save_date="2018-12-17 23:10:08"><![CDATA[Gestão de projetos]]></key>
         <key id="menu_course&amp;_QUEST_BANK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Banco de Requisição]]></key>
@@ -1539,7 +1539,7 @@ Para alterar estas palavras por favor vá a  gestão Admin/Idioma, pesquise por 
         <key id="menu_over&amp;_MENUCOURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Campus]]></key>
         <key id="menu_over&amp;_MENUGEN" attributes="" save_date="2017-05-05 16:47:25"><![CDATA[Menu geral]]></key>
         <key id="menu_over&amp;_MYCOMPETENCES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Competências]]></key>
-        <key id="menu_over&amp;_MYCOURSES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meus Cursos]]></key>
+        <key id="menu_over&amp;_MYCOURSES" attributes="" save_date="2019-01-11 10:51:46"><![CDATA[Os meus cursos]]></key>
         <key id="menu_over&amp;_MY_AREA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Minha área]]></key>
         <key id="menu_over&amp;_MY_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Certificados]]></key>
         <key id="menu_over&amp;_PUBLIC_ADMIN_AREA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gerir]]></key>
@@ -1596,14 +1596,14 @@ Para alterar estas palavras por favor vá a  gestão Admin/Idioma, pesquise por 
         <key id="organization&amp;_LOCKED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bloqueado]]></key>
         <key id="organization&amp;_NO_TEST_STATS" attributes="" save_date="2017-07-17 11:04:51"><![CDATA[Estatísticas não disponíveis]]></key>
         <key id="organization&amp;_OBJECTIVE" attributes="" save_date="2018-12-18 00:17:48"><![CDATA[Objetivo]]></key>
-        <key id="organization&amp;_ORGANIZATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Disciplinas]]></key>
+        <key id="organization&amp;_ORGANIZATION" attributes="" save_date="2019-01-11 12:25:18"><![CDATA[Materiais]]></key>
         <key id="organization&amp;_ORGISTERMINATOR" attributes="" save_date="2018-12-18 00:19:26"><![CDATA[Marcador de fim de curso]]></key>
         <key id="organization&amp;_ORGLOCKEDTITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pré-requisitos não satisfeitos]]></key>
         <key id="organization&amp;_ORGMILESTONE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bookmark]]></key>
         <key id="organization&amp;_ORGMILESTONE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Final]]></key>
         <key id="organization&amp;_ORGMILESTONE_START" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Início]]></key>
         <key id="organization&amp;_ORGPLAYTITLE" attributes="" save_date="2018-12-18 00:18:01"><![CDATA[Objeto de execução]]></key>
-        <key id="organization&amp;_ORGROOTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Disciplinas]]></key>
+        <key id="organization&amp;_ORGROOTNAME" attributes="" save_date="2019-01-24 19:53:54"><![CDATA[Itens]]></key>
         <key id="organization&amp;_ORG_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Acesso]]></key>
         <key id="organization&amp;_PUBLISH_FROM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Publicar desde]]></key>
         <key id="organization&amp;_PUBLISH_TO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Publicar até]]></key>
@@ -1740,7 +1740,7 @@ Please don't upload offensive images.]]></key>
         <key id="profile&amp;_CONTACTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Contactos]]></key>
         <key id="profile&amp;_COURSE_AS" attributes="" save_date="2017-07-17 17:18:51"><![CDATA[Cursos você está inscrito]]></key>
         <key id="profile&amp;_COURSE_AS_MENTOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Curso inscrito como mentor]]></key>
-        <key id="profile&amp;_COURSE_AS_TEACHER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Curso inscrito como instructor]]></key>
+        <key id="profile&amp;_COURSE_AS_TEACHER" attributes="" save_date="2019-01-11 11:29:35"><![CDATA[Cursos geridos como professor]]></key>
         <key id="profile&amp;_COURSE_AS_TUTOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Curso inscrito como tutor]]></key>
         <key id="profile&amp;_COURSE_END" attributes="" save_date="2017-07-17 12:11:54"><![CDATA[Cursos completos]]></key>
         <key id="profile&amp;_COURSE_EXPIRING" attributes="" save_date="2017-07-19 13:10:06"><![CDATA[Fechamento cursos]]></key>
@@ -1749,7 +1749,7 @@ Please don't upload offensive images.]]></key>
         <key id="profile&amp;_FIELD_VALUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Campo de conteúdo]]></key>
         <key id="profile&amp;_FIRSTNAME_DELETER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Primeiro nome operador]]></key>
         <key id="profile&amp;_FIRST_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bem-vindo à plataforma de e-learning]]></key>
-        <key id="profile&amp;_FORUM_MESSAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Forum]]></key>
+        <key id="profile&amp;_FORUM_MESSAGE" attributes="" save_date="2019-01-11 16:39:42"><![CDATA[Fórum]]></key>
         <key id="profile&amp;_GOTO_BLOG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ir para blog [firstname]]]></key>
         <key id="profile&amp;_GOTO_BLOG_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ir para blog utilizador]]></key>
         <key id="profile&amp;_GO_TO_PROFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ir para perfil [firstname]]]></key>
@@ -1780,7 +1780,7 @@ Please don't upload offensive images.]]></key>
         <key id="profile&amp;_SHARED_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ficheiros partilhados]]></key>
         <key id="profile&amp;_SHOWME_ONLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostrar meu status online (professor pode ver-lo de qualquer maneira)]]></key>
         <key id="profile&amp;_TEACHER_CURRICULUM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Currículo]]></key>
-        <key id="profile&amp;_TEACHER_PROFILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Perfil Professor]]></key>
+        <key id="profile&amp;_TEACHER_PROFILE" attributes="" save_date="2019-01-11 11:30:15"><![CDATA[Perfil do professor]]></key>
         <key id="profile&amp;_TEACHER_PUBLICATIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Publicações]]></key>
         <key id="profile&amp;_TITLE_CHANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[A sua senha expirou]]></key>
         <key id="profile&amp;_TOTAL_COURSE" attributes="" save_date="2017-07-19 13:06:49"><![CDATA[Cursos totais]]></key>
@@ -1857,7 +1857,7 @@ Please don't upload offensive images.]]></key>
         <key id="register&amp;_ERR_PWD_OLD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[A senha antiga é errada]]></key>
         <key id="register&amp;_FIRST_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Esta é a primeira vez que acede ao sistema. Por favor altere a sua senha temporária]]></key>
         <key id="register&amp;_FORCE_CHANGE" attributes="" save_date="2017-07-17 10:52:00"><![CDATA[Selecione uma nova senha]]></key>
-        <key id="register&amp;_GOTO_LOGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voltar á página login]]></key>
+        <key id="register&amp;_GOTO_LOGIN" attributes="" save_date="2019-01-11 17:17:49"><![CDATA[Voltar à página de login]]></key>
         <key id="register&amp;_GROUPS_FIELDS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Este é o campo associado com o grupo seleccionado]]></key>
         <key id="register&amp;_IMGSECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registo]]></key>
         <key id="register&amp;_INEXISTENT_USER" attributes="" save_date="2017-07-17 10:58:30"><![CDATA[O nome de utilizador que inseriu não existe. Por favor verifique e volte a tentar]]></key>
@@ -1939,7 +1939,7 @@ Você tem que confirmar a sua conta antes de a usar.]]></key>
         <key id="report&amp;REPORT_SHOW_RESULTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostrar resultados]]></key>
         <key id="report&amp;user_report" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizadores]]></key>
         <key id="report&amp;_AGGREGATE_ON" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Agregar dados em]]></key>
-        <key id="report&amp;_BACK_TO_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<< Voltar á lista relatórios]]></key>
+        <key id="report&amp;_BACK_TO_LIST" attributes="" save_date="2019-01-11 17:19:35"><![CDATA[<< Voltar à lista de relatórios]]></key>
         <key id="report&amp;_CHOOSE_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Escolha o intervalo de tempo para mostrar]]></key>
         <key id="report&amp;_CHOOSE_USER_FOR_REPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Escolha os utilizadores que deseja analisar]]></key>
         <key id="report&amp;_COMPETENCESFILTER_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Definições de filtros de competência]]></key>
@@ -2014,16 +2014,16 @@ Você tem que confirmar a sua conta antes de a usar.]]></key>
         <key id="report&amp;_RU_CAT_COURSES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Relaciona utilizadores a cursos]]></key>
         <key id="report&amp;_RU_CAT_DELAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fazer atrasos de análises]]></key>
         <key id="report&amp;_RU_CAT_GAMES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Relaciona utilizadores a concursos de empresa]]></key>
-        <key id="report&amp;_RU_CAT_LO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Relaciona utilizadores a Objectos de Aprendizagem]]></key>
+        <key id="report&amp;_RU_CAT_LO" attributes="" save_date="2019-01-24 19:56:51"><![CDATA[Relaciona os utilizadores aos objetos de aprendizagem]]></key>
         <key id="report&amp;_RU_CAT_TESTSTAT" attributes="" save_date="2017-07-17 10:20:31"><![CDATA[Relaciona utilizadores a testes]]></key>
         <key id="report&amp;_RU_LO_MILESTONES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seleccionar marcos]]></key>
-        <key id="report&amp;_RU_LO_TYPES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tipos de Objectos de Aprendizagem]]></key>
-        <key id="report&amp;_SAVE_AND_BACK_TO_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[<< GUARDAR e voltar á lista de relatórios]]></key>
-        <key id="report&amp;_SAVE_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Guardar e voltar á lista]]></key>
+        <key id="report&amp;_RU_LO_TYPES" attributes="" save_date="2019-01-24 19:57:22"><![CDATA[Tipos de objetos de aprendizagem]]></key>
+        <key id="report&amp;_SAVE_AND_BACK_TO_LIST" attributes="" save_date="2019-01-11 17:19:49"><![CDATA[<< GUARDAR e voltar à lista de relatórios]]></key>
+        <key id="report&amp;_SAVE_BACK" attributes="" save_date="2019-01-11 17:18:57"><![CDATA[Guardar e voltar à lista]]></key>
         <key id="report&amp;_SAVE_SCHED_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Descrição:]]></key>
         <key id="report&amp;_SAVE_SHOW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Guardar e mostrar]]></key>
         <key id="report&amp;_SCHED_TEXT_WEEK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Todas semanas,]]></key>
-        <key id="report&amp;_SELECT_LO_OPTIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Opções de Objectos de Aprendizagem]]></key>
+        <key id="report&amp;_SELECT_LO_OPTIONS" attributes="" save_date="2019-01-24 19:55:57"><![CDATA[Opções dos objetos de aprendizagem]]></key>
         <key id="report&amp;_SELECT_REPORT_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seleccione categoria de relatório:]]></key>
         <key id="report&amp;_SELECT_THE_DATA_COL_NEEDED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Marque as colunas que deseja exibir na tabela do relatório]]></key>
         <key id="report&amp;_SEL_COURSES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cursos de selecção manual]]></key>
@@ -2096,11 +2096,11 @@ Você tem que confirmar a sua conta antes de a usar.]]></key>
         <key id="reservation&amp;_WRONG_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Intervalo de tempo errado]]></key>
       </module>
       <module id="scorm">
-        <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Voltar á lista]]></key>
+        <key id="scorm&amp;_BACK_TOLIST" attributes="" save_date="2019-01-11 17:17:29"><![CDATA[Voltar à lista]]></key>
         <key id="scorm&amp;_CONTENTPACKAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seleccione um pacote de conteúdo com extensão .zip ou .pif]]></key>
         <key id="scorm&amp;_FILEUNSPECIFIED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Você deve especificar o arquivo para upload]]></key>
         <key id="scorm&amp;_SCORMIMGSECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Importador SCORM 1.2 e 2004]]></key>
-        <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Criar uma lista completa de objectos]]></key>
+        <key id="scorm&amp;_SCORMIMPORTRESOURCES" attributes="" save_date="2019-01-24 19:57:42"><![CDATA[Criar uma lista completa de objetos de aprendizagem]]></key>
         <key id="scorm&amp;_SCORMLOAD" attributes="" save_date="2017-07-17 14:05:45"><![CDATA[Carregar pacote SCORM]]></key>
         <key id="scorm&amp;_SCORMSECTIONNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SCORM]]></key>
         <key id="scorm&amp;_SCORM_ADD_FORM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Carregar pacote SCORM]]></key>
@@ -2113,26 +2113,26 @@ Você tem que confirmar a sua conta antes de a usar.]]></key>
         <key id="simplesel&amp;_SIMPLESEL_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Selecção simplificada]]></key>
       </module>
       <module id="sms">
-        <key id="sms&amp;_ALERT_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-learning: curso '[course]', novo anúncio: [title]]]></key>
+        <key id="sms&amp;_ALERT_TEXT_SMS" attributes="sms" save_date="2018-12-27 18:03:18"><![CDATA[E-learning: curso '[course]', novo aviso/informação: [title]]]></key>
         <key id="sms&amp;_APPROVED_SUBSCRIBED_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[O seu pedido de inscrição para curso [course] foi aprovada pelo administrador]]></key>
         <key id="sms&amp;_APPROVED_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Sua solicitação de inscrição foi aprovada]]></key>
         <key id="sms&amp;_DELETED_USER_TEXT_SMS" attributes="sms" save_date="2017-04-10 13:57:46"><![CDATA[E-learning: A sua conta con o nome de utilizador [userid] foi apagada]]></key>
         <key id="sms&amp;_MODIFIED_USER_TEXT_SMS" attributes="sms" save_date="2017-07-17 11:02:56"><![CDATA[A sua conta no site <a href="[url]">[url]</a>  foi modificada:
 
 Nome de utilizador: [userid]]]></key>
-        <key id="sms&amp;_NEW_FORUM_BODY_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-learning: curso '[course]' novo forum '[title]']]></key>
-        <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Novo forum]]></key>
+        <key id="sms&amp;_NEW_FORUM_BODY_SMS" attributes="sms" save_date="2019-01-11 16:39:54"><![CDATA[E-learning: curso '[course]' novo fórum '[title]']]></key>
+        <key id="sms&amp;_NEW_FORUM_SMS" attributes="sms" save_date="2019-01-11 16:40:09"><![CDATA[Novo fórum]]></key>
         <key id="sms&amp;_NEW_MESSAGE_INSERT_IN_THREAD_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-learning: no curso '[course]', existe uma nova mensagem '[forum_title]' > '[thread_title]']]></key>
-        <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[E-learning: curso '[course]' existe uma nova thread em '[forum_title]': [thread_title]]]></key>
+        <key id="sms&amp;_NEW_THREAD_INSERT_IN_FORUM_SMS" attributes="sms" save_date="2019-01-11 21:15:59"><![CDATA[E-learning: curso '[course]' existe um novo tópico (thread) em '[forum_title]': [thread_title]]]></key>
         <key id="sms&amp;_PASSWORD_CHANGED_SMS" attributes="sms" save_date="2017-07-17 10:53:23"><![CDATA[e a sua senha foi alterada para: [password]]]></key>
         <key id="sms&amp;_REGISTERED_USER_TEXT_SMS" attributes="sms" save_date="2017-07-17 11:03:00"><![CDATA[Você agora está registado no nosso sistema com a conta:
 
 Nome de utilizador: [userid]
 Senha: [password]]]></key>
-        <key id="sms&amp;_TO_APPROVE_GROUP_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Existe uma nova subscrição de utilizador para um grupo moderado á espera de aprovação]]></key>
-        <key id="sms&amp;_TO_APPROVE_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Novo utilizador está registado e á espera de aprovação]]></key>
+        <key id="sms&amp;_TO_APPROVE_GROUP_USER_TEXT_SMS" attributes="sms" save_date="2018-12-27 13:44:02"><![CDATA[Existe uma nova inscrição de utilizador para um grupo moderado à espera de aprovação]]></key>
+        <key id="sms&amp;_TO_APPROVE_USER_TEXT_SMS" attributes="sms" save_date="2018-12-27 13:43:40"><![CDATA[Novo utilizador está registado e à espera de aprovação]]></key>
         <key id="sms&amp;_TO_NEW_USER_TEXT_SMS" attributes="sms" save_date="2017-07-19 12:38:34"><![CDATA[Novo utilizador registado]]></key>
-        <key id="sms&amp;_WAITING_USER_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Existe um novo utilizar á espera de aprovação]]></key>
+        <key id="sms&amp;_WAITING_USER_TEXT_SMS" attributes="sms" save_date="2018-12-27 13:42:55"><![CDATA[Existe um novo utilizador à espera de aprovação]]></key>
         <key id="sms&amp;_YOU_RECIVE_MSG_TEXT_SMS" attributes="sms" save_date="2014-11-14 00:00:00"><![CDATA[Você recebeu uma nova mensagem no sistema de e-learning no curso [course] do utilizador [from]]]></key>
         <key id="sms&amp;_YOU_RECIVE_MSG_TEXT_SMS_COURSE" attributes="" save_date="2017-07-17 12:25:36"><![CDATA[Você recebeu uma nova mensagem no sistema de e-learning no curso [course] do utilizador [from]]]></key>
       </module>
@@ -2162,16 +2162,16 @@ Senha: [password]]]></key>
         <key id="standard&amp;_ADVANCED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avançado]]></key>
         <key id="standard&amp;_ADVANCED_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pesquisa avançada]]></key>
         <key id="standard&amp;_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tudo]]></key>
-        <key id="standard&amp;_ALL_CATEGORIES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Todas categorias]]></key>
+        <key id="standard&amp;_ALL_CATEGORIES" attributes="" save_date="2019-01-11 16:42:25"><![CDATA[Todas as categorias]]></key>
         <key id="standard&amp;_ALL_COURSES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Todos cursos]]></key>
         <key id="standard&amp;_ALL_PAGES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Todas páginas]]></key>
         <key id="standard&amp;_ALT_CHECK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Verificar]]></key>
         <key id="standard&amp;_ALT_LESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[-]]></key>
         <key id="standard&amp;_ALT_MORE" attributes="" save_date="2017-07-17 15:08:26"><![CDATA[Texto alternativo]]></key>
-        <key id="standard&amp;_ALT_ROOT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Raíz]]></key>
+        <key id="standard&amp;_ALT_ROOT" attributes="" save_date="2019-01-24 19:54:14"><![CDATA[Raiz]]></key>
         <key id="standard&amp;_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Resposta]]></key>
         <key id="standard&amp;_APPROVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aprovar]]></key>
-        <key id="standard&amp;_APPROVE_WAITING_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Á espera provação de utilizador]]></key>
+        <key id="standard&amp;_APPROVE_WAITING_USER" attributes="" save_date="2018-12-27 13:44:44"><![CDATA[À espera de aprovação]]></key>
         <key id="standard&amp;_AREYOUSURE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tem a certeza?]]></key>
         <key id="standard&amp;_ASSESSMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avaliação]]></key>
         <key id="standard&amp;_ASSIGN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Atribuir]]></key>
@@ -2185,14 +2185,15 @@ Senha: [password]]]></key>
         <key id="standard&amp;_AVATAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Avatar]]></key>
         <key id="standard&amp;_AVERANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Média]]></key>
         <key id="standard&amp;_BACK" attributes="" save_date="2017-05-08 12:32:32"><![CDATA[&lt;&lt; Voltar]]></key>
+        <key id="standard&amp;_BACK_TO_LABEL" attributes="" save_date="2019-01-11 17:22:39"><![CDATA[Voltar]]></key>
         <key id="standard&amp;_BASIC_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pesquisa básica]]></key>
         <key id="standard&amp;_BBB" attributes="" save_date="2017-04-10 12:36:35"><![CDATA[BigBlueButton]]></key>
         <key id="standard&amp;_BY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[por]]></key>
         <key id="standard&amp;_CALENDAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Calendário]]></key>
         <key id="standard&amp;_CANCEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cancelar]]></key>
         <key id="standard&amp;_CAREER" attributes="" save_date="2017-05-08 16:05:09"><![CDATA[Carreira]]></key>
-        <key id="standard&amp;_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Catálogo curso]]></key>
-        <key id="standard&amp;_CATALOGUE2" attributes="" save_date="2017-07-17 14:45:56"><![CDATA[Catálogo curso]]></key>
+        <key id="standard&amp;_CATALOGUE" attributes="" save_date="2019-01-11 16:41:31"><![CDATA[Catálogo de cursos]]></key>
+        <key id="standard&amp;_CATALOGUE2" attributes="" save_date="2019-01-11 16:41:41"><![CDATA[Catálogo de cursos]]></key>
         <key id="standard&amp;_CATALOGUE_NEW" attributes="" save_date="2017-07-17 15:07:58"><![CDATA[Calendário]]></key>
         <key id="standard&amp;_CATEGORIZATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Categorização]]></key>
         <key id="standard&amp;_CATEGORIZE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Categorizar]]></key>
@@ -2240,10 +2241,11 @@ Senha: [password]]]></key>
         <key id="standard&amp;_DATE_FIRST_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Data primeiro acesso]]></key>
         <key id="standard&amp;_DATE_FORMAT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Formato data]]></key>
         <key id="standard&amp;_DATE_LAST_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Data último acesso]]></key>
+        <key id="standard&amp;_DATE_LAST_TEST" attributes="" save_date="2019-01-11 12:17:16"><![CDATA[Data do último teste]]></key>
         <key id="standard&amp;_DAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dia]]></key>
         <key id="standard&amp;_DAYS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dia(s)]]></key>
         <key id="standard&amp;_DEACTIVATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Desactivar]]></key>
-        <key id="standard&amp;_DEFAULT_LANGUAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Idioma defeito]]></key>
+        <key id="standard&amp;_DEFAULT_LANGUAGE" attributes="" save_date="2019-01-13 17:06:22"><![CDATA[Idioma por defeito]]></key>
         <key id="standard&amp;_DEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Apagar]]></key>
         <key id="standard&amp;_DELETE_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Apagar ficheiro]]></key>
         <key id="standard&amp;_DEL_SELECTED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Apagar selecção]]></key>
@@ -2296,12 +2298,15 @@ Senha: [password]]]></key>
         <key id="standard&amp;_FILE_MANAGER" attributes="" save_date="2017-07-17 13:51:51"><![CDATA[Gerenciador de arquivos]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Filtrar por]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Todas as condições devem ser satisfeitas]]></key>
-        <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Aplicar filtros]]></key>
+        <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2019-01-11 10:57:22"><![CDATA[Aplicar filtro]]></key>
         <key id="standard&amp;_FILTER_ONE_COND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pelo menos uma condição deve ser satisfeita]]></key>
+        <key id="standard&amp;_FILTER_RESET" attributes="" save_date="2019-01-11 11:00:15"><![CDATA[Cancelar]]></key>
+        <key id="standard&amp;_FILTER_TAB_CLOSE" attributes="" save_date="2019-01-11 19:48:55"><![CDATA[Fechar]]></key>
+        <key id="standard&amp;_FILTER_TAB_OPEN" attributes="" save_date="2019-01-11 19:48:47"><![CDATA[Abrir]]></key>
         <key id="standard&amp;_FINAL_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pontuação final]]></key>
         <key id="standard&amp;_FIRSTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Primeiro nome]]></key>
         <key id="standard&amp;_FIX_SEQUENCE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Corrigir erros sequência]]></key>
-        <key id="standard&amp;_FORUM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Forum]]></key>
+        <key id="standard&amp;_FORUM" attributes="" save_date="2019-01-11 16:40:19"><![CDATA[Fórum]]></key>
         <key id="standard&amp;_FROM" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[De]]></key>
         <key id="standard&amp;_FULLNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nome completo]]></key>
         <key id="standard&amp;_FUNCTIONAL_ROLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Funções da empresa]]></key>
@@ -2313,7 +2318,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_HEIGHT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Altura]]></key>
         <key id="standard&amp;_HELP" attributes="" save_date="2017-07-17 15:12:15"><![CDATA[Ajuda]]></key>
         <key id="standard&amp;_HIDDEN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Escondido]]></key>
-        <key id="standard&amp;_HISTORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[História]]></key>
+        <key id="standard&amp;_HISTORY" attributes="" save_date="2018-12-27 18:45:18"><![CDATA[Histórico]]></key>
         <key id="standard&amp;_HOME" attributes="" save_date="2017-07-17 15:10:44"><![CDATA[Página inicial tab]]></key>
         <key id="standard&amp;_HOME_TAB" attributes="" save_date="2017-07-17 15:09:45"><![CDATA[Página inicial]]></key>
         <key id="standard&amp;_HOURS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Horas]]></key>
@@ -2334,7 +2339,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_LASTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Último nome]]></key>
         <key id="standard&amp;_LBL_CODE" attributes="" save_date="2017-07-17 15:11:37"><![CDATA[Insira seu código]]></key>
         <key id="standard&amp;_LBL_SEND" attributes="" save_date="2017-07-17 15:23:54"><![CDATA[Inscrever-se]]></key>
-        <key id="standard&amp;_LEARNING_OBJECTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objectos de Aprendizagem]]></key>
+        <key id="standard&amp;_LEARNING_OBJECTS" attributes="" save_date="2019-01-24 19:58:22"><![CDATA[Objetos de aprendizagem]]></key>
         <key id="standard&amp;_LEVEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nível]]></key>
         <key id="standard&amp;_LIBRARY" attributes="" save_date="2017-07-17 15:23:19"><![CDATA[Biblioteca]]></key>
         <key id="standard&amp;_LINK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Link]]></key>
@@ -2390,7 +2395,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_NEW_EVENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Novo evento]]></key>
         <key id="standard&amp;_NEW_FILTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Novo filtro]]></key>
         <key id="standard&amp;_NEW_FOLDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nova pasta]]></key>
-        <key id="standard&amp;_NEW_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nova utilizador]]></key>
+        <key id="standard&amp;_NEW_USER" attributes="" save_date="2019-01-13 19:39:29"><![CDATA[Novo utilizador]]></key>
         <key id="standard&amp;_NEXT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seguinte]]></key>
         <key id="standard&amp;_NEXT_B" attributes="" save_date="2017-05-12 18:09:27"><![CDATA[Seguinte >>]]></key>
         <key id="standard&amp;_NO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Não]]></key>
@@ -2405,7 +2410,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_NOT_TRANSLATED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Idiomas não-traduziveis, clique para expandir]]></key>
         <key id="standard&amp;_NO_ANSWER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sem respostas]]></key>
         <key id="standard&amp;_NO_BACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Não, por favor voltar atrás]]></key>
-        <key id="standard&amp;_NO_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sem categorias]]></key>
+        <key id="standard&amp;_NO_CATEGORY" attributes="" save_date="2019-01-13 22:30:57"><![CDATA[Categoria]]></key>
         <key id="standard&amp;_NO_CONTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sem conteúdo disponível]]></key>
         <key id="standard&amp;_OF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[De]]></key>
         <key id="standard&amp;_OFF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Desligado]]></key>
@@ -2446,19 +2451,19 @@ Senha: [password]]]></key>
         <key id="standard&amp;_RE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Elementos:]]></key>
         <key id="standard&amp;_REACTIVATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reactivar]]></key>
         <key id="standard&amp;_READ" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Leitura]]></key>
-        <key id="standard&amp;_RECIPIENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Recipientes]]></key>
+        <key id="standard&amp;_RECIPIENTS" attributes="" save_date="2018-12-27 18:43:14"><![CDATA[Destinatários]]></key>
         <key id="standard&amp;_REGISTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Registar]]></key>
         <key id="standard&amp;_REGISTER_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Data ingresso]]></key>
         <key id="standard&amp;_REMEMBER_ME" attributes="" save_date="2017-07-14 10:56:14"><![CDATA[Lembro-me]]></key>
         <key id="standard&amp;_REMOVE_FROM_NODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Remover do nó]]></key>
         <key id="standard&amp;_REPLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Responder]]></key>
-        <key id="standard&amp;_REPOPASTELO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Colar Objectos de Aprendizagem]]></key>
+        <key id="standard&amp;_REPOPASTELO" attributes="" save_date="2019-01-24 19:58:05"><![CDATA[Colar objetos de aprendizagem]]></key>
         <key id="standard&amp;_REPORT" attributes="" save_date="2017-07-17 10:35:15"><![CDATA[Relatórios]]></key>
         <key id="standard&amp;_REQUIRED_SCORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Pontuação necessária]]></key>
         <key id="standard&amp;_RESET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reset]]></key>
         <key id="standard&amp;_RESET_POLICY" attributes="" save_date="2018-12-17 22:10:57"><![CDATA[Desfazer políticas previamente definidas]]></key>
         <key id="standard&amp;_ROLLBACK" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Repor]]></key>
-        <key id="standard&amp;_ROOT" attributes="" save_date="2017-07-14 10:58:43"><![CDATA[Raíz]]></key>
+        <key id="standard&amp;_ROOT" attributes="" save_date="2019-01-24 19:54:21"><![CDATA[Raiz]]></key>
         <key id="standard&amp;_ROW" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Linha]]></key>
         <key id="standard&amp;_SAVE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Guardar alterações]]></key>
         <key id="standard&amp;_SCHEDULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Agenda]]></key>
@@ -2544,7 +2549,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_VIEW_ALL" attributes="" save_date="2017-07-17 14:21:25"><![CDATA[Ver todos]]></key>
         <key id="standard&amp;_VIEW_PERMISSION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Editar direitos de vista]]></key>
         <key id="standard&amp;_WAITING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Espera]]></key>
-        <key id="standard&amp;_WAITING_USERS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Utilizadores á espera]]></key>
+        <key id="standard&amp;_WAITING_USERS" attributes="" save_date="2018-12-27 13:42:35"><![CDATA[Utilizadores à espera]]></key>
         <key id="standard&amp;_WARNING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aviso]]></key>
         <key id="standard&amp;_WIDTH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[largura]]></key>
         <key id="standard&amp;_YEAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ano]]></key>
@@ -2589,10 +2594,10 @@ Senha: [password]]]></key>
       <module id="stats">
         <key id="stats&amp;_FILTEREDITIONSELECTONEOPTION" attributes="" save_date="2017-07-19 12:31:22"><![CDATA[Escolha uma opção]]></key>
         <key id="stats&amp;_FILTEREDITIONSELECTTITLE" attributes="" save_date="2017-07-19 12:32:57"><![CDATA[Filtrar por edição]]></key>
-        <key id="stats&amp;_FILTEROBJECTFINISHED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Mostrar utilizadores que apenas tenham visto pelo menos uma vez os Objectos de Aprendizagem]]></key>
-        <key id="stats&amp;_FILTERSTATUSSELECTONEOPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Todos objectos]]></key>
+        <key id="stats&amp;_FILTEROBJECTFINISHED" attributes="" save_date="2019-01-24 19:59:14"><![CDATA[Mostrar apenas utilizadores que tenham visto pelo menos uma vez os objetos de aprendizagem]]></key>
+        <key id="stats&amp;_FILTERSTATUSSELECTONEOPTION" attributes="" save_date="2019-01-24 19:59:31"><![CDATA[Todos os objetos]]></key>
         <key id="stats&amp;_ORGPLAYTITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Estatísticas por objecto]]></key>
-        <key id="stats&amp;_PROGRESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objectos]]></key>
+        <key id="stats&amp;_PROGRESS" attributes="" save_date="2019-01-24 19:59:21"><![CDATA[Objetos]]></key>
         <key id="stats&amp;_SHOW_STATISTICS" attributes="" save_date="2017-07-17 14:22:38"><![CDATA[Ver gráficos]]></key>
         <key id="stats&amp;_STATFORUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Estatísticas de utilizador]]></key>
         <key id="stats&amp;_STATISTIC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Estatísticas]]></key>
@@ -2607,7 +2612,7 @@ Senha: [password]]]></key>
       <module id="storage">
         <key id="storage&amp;_EXPORT_QUESTIONS" attributes="" save_date="2017-07-19 12:29:55"><![CDATA[Exportar perguntas]]></key>
         <key id="storage&amp;_HELP" attributes="" save_date="2017-07-17 15:12:19"><![CDATA[Ajuda]]></key>
-        <key id="storage&amp;_HOMEREPOROOTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meus Objectos]]></key>
+        <key id="storage&amp;_HOMEREPOROOTNAME" attributes="" save_date="2019-01-24 19:59:45"><![CDATA[Os meus objetos]]></key>
         <key id="storage&amp;_LOCKED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fechado]]></key>
         <key id="storage&amp;_LONAME_faq" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[FAQ]]></key>
         <key id="storage&amp;_LONAME_glossary" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Glossário]]></key>
@@ -2622,8 +2627,8 @@ Senha: [password]]]></key>
         <key id="storage&amp;_ORGISTERMINATOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Terminar marcador curso]]></key>
         <key id="storage&amp;_ORGLOCKEDTITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Requisitos não satisfeitos]]></key>
         <key id="storage&amp;_ORGPLAYTITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tocar objecto]]></key>
-        <key id="storage&amp;_ORGROOTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Objectos Curso]]></key>
-        <key id="storage&amp;_PUBREPOROOTNAME" attributes="" save_date="2017-07-19 12:28:48"><![CDATA[Objectos partilhados]]></key>
+        <key id="storage&amp;_ORGROOTNAME" attributes="" save_date="2019-01-24 20:00:20"><![CDATA[Objetos do curso]]></key>
+        <key id="storage&amp;_PUBREPOROOTNAME" attributes="" save_date="2019-01-24 20:00:32"><![CDATA[Objetos partilhados]]></key>
         <key id="storage&amp;_REMEMBER_ME" attributes="" save_date="2017-07-14 13:00:16"><![CDATA[Lembro-me]]></key>
         <key id="storage&amp;_RENAMEFOLDER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Renomear]]></key>
         <key id="storage&amp;_REPOCOPYLO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Copiar Objecto de Aprendizagem]]></key>

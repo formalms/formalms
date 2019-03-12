@@ -230,6 +230,10 @@ class Learning_Poll extends Learning_Object {
 		return $output;
 	}
 
+    public function canBeCategorized() {
+        return false;
+    }
+
 }
 
 ?>

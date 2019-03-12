@@ -686,18 +686,23 @@ class DoceboACLManager
      * register a new role
      * @param string $roleid the roleid, complete or relative to actual context
      * @param string $description
+     * @param int $idPlugin
      * @return int the security token
      */
-    function registerRole($roleid, $description)
+    function registerRole($roleid, $description, $idPlugin = null)
     {
+        if(is_null($idPlugin)) {
+            $idPlugin = 'NULL';
+        }
+
         $idst = $this->_createST();
         if ($idst === FALSE) {
             echo sql_error();
         }
         $roleid = $this->absoluteId($roleid);
         $query = "INSERT INTO " . $this->_getTableRole()
-            . " (idst, roleid, description ) "
-            . "VALUES ( '" . $idst . "', '" . $roleid . "', '" . $description . "' )";
+            . " (idst, roleid, description, idPlugin ) "
+            . " VALUES ( '$idst', '$roleid', '$description', $idPlugin )";
         $rs = $this->_executeQuery($query);
         if ($rs === FALSE) {
             echo sql_error();

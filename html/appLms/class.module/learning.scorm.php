@@ -243,6 +243,19 @@ class Learning_ScormOrg extends Learning_Object {
 		}
 		return $output;
 	}
+
+    public function showInLightbox() {
+        return true;
+    }
+
+    public function hasDetailedTrackings() {
+        return true;
+    }
+
+    public function trackDetails($user, $org) {
+        require_once Forma::inc(_lms_ . '/modules/organization/orgresults.php');
+        getTrackingTable($user, $org);
+    }
 }
 
 ?>

@@ -48,7 +48,7 @@
 
 .social-login__list {
   margin: 16px 0 24px;
-  font-size: 0;
+  font-size: 12px;
   text-align: center;
 
   & > a {
@@ -61,6 +61,7 @@
     display: block;
     width: 40px;
     height: 40px;
+    margin: 0 auto 10px;
     font-size: 24px;
     line-height: 40px;
     text-align: center;
@@ -75,11 +76,21 @@
     background-color: #1da1f2;
   }
 
+  .fa-google,
   .fa-google-plus {
     background-color: #d62d20;
   }
 
   .fa-linkedin {
     background-color: #0077b5;
+  }
+
+  .form_elem_button {
+    text-align: center;
+    padding-right: 0;
+
+    input {
+      margin: 0 auto;
+    }
   }
 }

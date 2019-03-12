@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180720</DATE>
+  <DATE>20190215</DATE>
   <LANG id="dutch">
     <lang_code>dutch</lang_code>
     <lang_description>Dutch</lang_description>
@@ -122,6 +122,7 @@
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Vertaling bevat]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ja, importeer]]></key>
       </module>
+      <module id="admin_news"/>
       <module id="admin_newsletter">
         <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Elke taal]]></key>
         <key id="admin_newsletter&amp;_NEWSLETTER_WILL_BE_SENT_TO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nieuwsbrief bereikt [tot] gebruikeres.]]></key>

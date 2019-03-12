@@ -232,6 +232,18 @@ class Module_Organization extends LmsModule {
 			return;
 		}
 
+		if($GLOBALS['op'] === 'track_details')
+		{
+            $type = Get::req('type', DOTY_STRING);
+			$user = Get::req('id_user', DOTY_INT, false);
+            $org  = Get::req('id_org', DOTY_INT, false);
+            
+            if($lo_class = createLO($type)) {
+                $lo_class->trackDetails($user, $org);
+            }
+			return;
+		}
+
         
    
 		if($GLOBALS['op'] == 'custom_playitem') {

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20180720</DATE>
+  <DATE>20190215</DATE>
   <LANG id="turkish">
     <lang_code>turkish</lang_code>
     <lang_description>Turkish</lang_description>
@@ -10,15 +10,15 @@
     <platform id="all">
       <module id="adminrules">
         <key id="adminrules&amp;_ADMIN_ASSIGNTREEDESCR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yönetici kullanıcı görünürlüğü için klasörleri seçiniz]]></key>
-        <key id="adminrules&amp;_ADMIN_MANAGMENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yöneticilerin yönetmeni]]></key>
+        <key id="adminrules&amp;_ADMIN_MANAGMENT" attributes="" save_date="2019-01-22 14:36:58"><![CDATA[Yöneticilerin yönetimi]]></key>
         <key id="adminrules&amp;_ADMIN_MANAGMENT_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yönetici kullanıcı]]></key>
         <key id="adminrules&amp;_ADMIN_MANAGMENT_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tüm platform yöneticilerinin listesi]]></key>
-        <key id="adminrules&amp;_ADMIN_MENU" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Menü]]></key>
+        <key id="adminrules&amp;_ADMIN_MENU" attributes="" save_date="2019-01-22 14:36:27"><![CDATA[Mönü]]></key>
         <key id="adminrules&amp;_ADMIN_PREFERENCES_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Özel ayarlar]]></key>
-        <key id="adminrules&amp;_ADMIN_RULES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yönetici profili]]></key>
+        <key id="adminrules&amp;_ADMIN_RULES" attributes="" save_date="2019-01-22 14:36:50"><![CDATA[Yönetici Kimlik Bilgileri]]></key>
         <key id="adminrules&amp;_ADMIN_SPECIAL_SETTING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Özel ayarları yapılan:]]></key>
-        <key id="adminrules&amp;_DIRECT_COURSE_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu yönetici tarafından yapılan kayıtları direkt aktive et]]></key>
-        <key id="adminrules&amp;_DIRECT_USER_INSERT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu yönetici tarafından yaratılan kullanıcıları direkt aktive et]]></key>
+        <key id="adminrules&amp;_DIRECT_COURSE_SUBSCRIBE" attributes="" save_date="2019-01-22 14:35:49"><![CDATA[Bu yönetici tarafından yapılan kayıtları doğrudan etkinleştir]]></key>
+        <key id="adminrules&amp;_DIRECT_USER_INSERT" attributes="" save_date="2019-01-22 14:36:10"><![CDATA[Bu yönetici tarafından oluşturulan kullanıcıları doğrudan etkinleştir]]></key>
         <key id="adminrules&amp;_LANG_SETTING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dil seçenekleri]]></key>
         <key id="adminrules&amp;_LIMIT_COURSE_SUBSCRIBE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu yöneticinin yapabileceği maksimum kayıt sayısını sınırla]]></key>
         <key id="adminrules&amp;_LIMIT_USER_INSERT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu yöneticinin yaratabileceği maksimum kullanıcı sayısını sınırla]]></key>
@@ -29,73 +29,73 @@
         <key id="adminrules&amp;_SPECIAL_SETTING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Özel ayarlar]]></key>
       </module>
       <module id="admin_date">
-        <key id="admin_date&amp;_PAPER_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yazılı Test]]></key>
-        <key id="admin_date&amp;_WEB_TEST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Web Test]]></key>
+        <key id="admin_date&amp;_PAPER_TEST" attributes="" save_date="2019-01-22 14:37:21"><![CDATA[Kağıt Üzerinde Test]]></key>
+        <key id="admin_date&amp;_WEB_TEST" attributes="" save_date="2019-01-22 14:37:12"><![CDATA[İnternet Üzerinden Test]]></key>
       </module>
       <module id="admin_directory">
         <key id="admin_directory&amp;_ACCEPT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Onayla]]></key>
         <key id="admin_directory&amp;_APPROVED_USER_SBJ" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcı onaylandı]]></key>
-        <key id="admin_directory&amp;_ASSIGNED_EXTRAFIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İlave alanlar atandı]]></key>
-        <key id="admin_directory&amp;_DECLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reddedildi]]></key>
+        <key id="admin_directory&amp;_ASSIGNED_EXTRAFIELD" attributes="" save_date="2019-01-22 14:39:32"><![CDATA[Ek alanlar atandı]]></key>
+        <key id="admin_directory&amp;_DECLINE" attributes="" save_date="2019-01-22 14:42:51"><![CDATA[Geri çevir]]></key>
         <key id="admin_directory&amp;_DIRECOTRY_SELFREGISTERED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kendi kendine kayıt]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/admin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yönetici]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_/framework/level/godadmin" attributes="" save_date="2017-04-19 13:00:39"><![CDATA[Süper-yönetici]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_/framework/level/godadmin" attributes="" save_date="2019-01-22 14:43:13"><![CDATA[Süper Yönetici]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/publicadmin" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Açık yönetici]]></key>
         <key id="admin_directory&amp;_DIRECTORY_/framework/level/user" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcı]]></key>
         <key id="admin_directory&amp;_DIRECTORY_ASSIGNFIELDGROUP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alan ata]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_FILTER_email" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[E-posta]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_FILTER_firstname" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İsim]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_FILTER_FLATMODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alt nod içeriğini de göster]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_FILTER_email" attributes="" save_date="2019-01-22 14:38:54"><![CDATA[Eposta]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_FILTER_firstname" attributes="" save_date="2019-01-22 14:39:44"><![CDATA[Ad]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_FILTER_FLATMODE" attributes="" save_date="2019-01-22 14:38:31"><![CDATA[Alt çizge içeriğini de göster]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FILTER_language" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dil]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_FILTER_lastname" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Soyisim]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_FILTER_lastname" attributes="" save_date="2019-01-22 14:42:59"><![CDATA[Soyadı]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FILTER_pass" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Şifre]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FILTER_register_date" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kayıt tarihi]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FILTER_templatename" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Şablon Adı]]></key>
         <key id="admin_directory&amp;_DIRECTORY_FILTER_userid" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcı adı]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_FULLNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İsim ve soyisim]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_GROUPID" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[id]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Grup tipi]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_FULLNAME" attributes="" save_date="2019-01-22 14:39:53"><![CDATA[Ad ve Soyadı]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_GROUPID" attributes="" save_date="2019-01-22 14:39:22"><![CDATA[ID]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE" attributes="" save_date="2019-01-22 14:39:18"><![CDATA[Grup türü]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_FREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Açık grup]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_INVISIBLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gizli grup]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_INVISIBLE_ALT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Gizli]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_INVISIBLE" attributes="" save_date="2019-01-22 14:39:12"><![CDATA[Görünmez grup]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_INVISIBLE_ALT" attributes="" save_date="2019-01-22 14:39:01"><![CDATA[Görünmez]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_MODERATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Başkanlık edilen grup]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_MODERATE_ALT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Başkanlık edilmiş]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_PRIVATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Özel grup]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUPTYPE_PRIVATE_ALT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yönetici]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_GROUPWAIT_ACCORDECLINE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Abonelik teyidi için bekleyen kullanıcılar]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_GROUPWAIT_ACCORDECLINE" attributes="" save_date="2019-01-22 14:37:31"><![CDATA[Abonelik onayı için bekleyen kullanıcılar]]></key>
         <key id="admin_directory&amp;_DIRECTORY_GROUP_FIELD_WRITE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcı alanı]]></key>
         <key id="admin_directory&amp;_DIRECTORY_ITEMID" attributes="" save_date="2017-04-10 14:49:56"><![CDATA[Üye ID]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Üye tipi]]></key>
-        <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPETREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nod]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPE" attributes="" save_date="2019-01-22 14:43:30"><![CDATA[Üye türü]]></key>
+        <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPETREE" attributes="" save_date="2019-01-22 14:41:45"><![CDATA[Çizge]]></key>
         <key id="admin_directory&amp;_DIRECTORY_MEMBERTYPEUSER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Üye kullanıcı]]></key>
         <key id="admin_directory&amp;_DIRECTORY_ORGVIEWTITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Organizasyon şeması]]></key>
         <key id="admin_directory&amp;_FORCE_PASSWORD_CHANGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bir sonraki oturum açmada şifre değişikliğini zorunlu tut]]></key>
         <key id="admin_directory&amp;_GROUP_FIELD_NORMAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Evet]]></key>
         <key id="admin_directory&amp;_GROUP_USER_IMPORT_CHARSET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dosya karakter seti]]></key>
-        <key id="admin_directory&amp;_GROUP_USER_IMPORT_FILE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[CSV dosyası]]></key>
+        <key id="admin_directory&amp;_GROUP_USER_IMPORT_FILE" attributes="" save_date="2019-01-22 14:38:46"><![CDATA[CSV dosya]]></key>
         <key id="admin_directory&amp;_GROUP_USER_IMPORT_HEADER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İlk satırı başlık olarak varsay]]></key>
         <key id="admin_directory&amp;_GROUP_USER_IMPORT_SEPARATOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alan ayracı]]></key>
-        <key id="admin_directory&amp;_LASTNAME_FIRSTNAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Soyisim İsim]]></key>
+        <key id="admin_directory&amp;_LASTNAME_FIRSTNAME" attributes="" save_date="2019-01-22 14:43:06"><![CDATA[Soyadı Ad]]></key>
         <key id="admin_directory&amp;_REFUSED_USER_TEXT_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcı onaylanmadı]]></key>
         <key id="admin_directory&amp;_REFUSE_USER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Reddet]]></key>
         <key id="admin_directory&amp;_REFUSE_USER_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcı kayıt isteğini reddet]]></key>
-        <key id="admin_directory&amp;_SIMPLE_FILTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[kullanıcıID, İsim ve Soyisim alanlarında ara]]></key>
-        <key id="admin_directory&amp;_WAITING_USER_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kayıt istekleri teyit edilmiş ve onay bekleyen kullanıcıların listesi]]></key>
+        <key id="admin_directory&amp;_SIMPLE_FILTER" attributes="" save_date="2019-01-22 14:40:53"><![CDATA[Aranacak alanlar: kullanıcı adı, Ad ya da Soyadı]]></key>
+        <key id="admin_directory&amp;_WAITING_USER_SUMMARY" attributes="" save_date="2019-01-22 14:40:08"><![CDATA[Kayıt istekleri onaylanmış ve onay bekleyen kullanıcıların listesi]]></key>
       </module>
       <module id="admin_lang">
         <key id="admin_lang&amp;_BLANKLANG_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dil kodu belirtilmedi]]></key>
-        <key id="admin_lang&amp;_CLEAN_LANG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dilleri temizle]]></key>
+        <key id="admin_lang&amp;_CLEAN_LANG" attributes="" save_date="2019-01-22 14:45:06"><![CDATA[Dilleri kaldır]]></key>
         <key id="admin_lang&amp;_CLEAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Temizle]]></key>
         <key id="admin_lang&amp;_DIRECTION_LTR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Soldan sağa (ltr)]]></key>
         <key id="admin_lang&amp;_DIRECTION_RTL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sağdan sola (rtl)]]></key>
-        <key id="admin_lang&amp;_DO_NOT_ADD_MISS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[boş etiketleri ekleme]]></key>
+        <key id="admin_lang&amp;_DO_NOT_ADD_MISS" attributes="" save_date="2019-01-22 14:43:57"><![CDATA[Eksik etiketleri ekleme]]></key>
         <key id="admin_lang&amp;_EXPORTG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu dili dışarıya aktar]]></key>
-        <key id="admin_lang&amp;_EXPORT_DIFF" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Daha çevirisi yapılmamış kelimeleri dışarıya aktar (bu anahtarlar İngilizce olarak gözükecek)]]></key>
+        <key id="admin_lang&amp;_EXPORT_DIFF" attributes="" save_date="2019-01-22 14:44:49"><![CDATA[Yalnızca henüz çevirisi yapılmamış sözcükleri dışarıya aktar (bu anahtarlar İngilizce olarak gözükecek)]]></key>
         <key id="admin_lang&amp;_LANG_ACCESSIBILITY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Erişilebilirlik]]></key>
         <key id="admin_lang&amp;_LANG_ADDKEY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Anahtar ekle]]></key>
         <key id="admin_lang&amp;_LANG_ALL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tüm diller]]></key>
         <key id="admin_lang&amp;_LANG_ALLMODULES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tüm modüller]]></key>
-        <key id="admin_lang&amp;_LANG_ATTRIBUTES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nitelikler]]></key>
+        <key id="admin_lang&amp;_LANG_ATTRIBUTES" attributes="" save_date="2019-01-22 14:45:49"><![CDATA[Özellikler]]></key>
         <key id="admin_lang&amp;_LANG_BROWSERCODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Web Tarayıcı dil kodu]]></key>
         <key id="admin_lang&amp;_LANG_CHARSET" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Karakter seti]]></key>
         <key id="admin_lang&amp;_LANG_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dil kodu]]></key>
@@ -106,30 +106,39 @@
         <key id="admin_lang&amp;_LANG_NEWMODULE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yeni modül]]></key>
         <key id="admin_lang&amp;_LANG_TRANSLATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Çeviri]]></key>
         <key id="admin_lang&amp;_LANG_TRAN_COMPARE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Karşılaştırma]]></key>
-        <key id="admin_lang&amp;_MODULES_UPDATED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Güncellenen modüller]]></key>
-        <key id="admin_lang&amp;_NOIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hayır, içeri aktarım yapma]]></key>
+        <key id="admin_lang&amp;_MODULES_UPDATED" attributes="" save_date="2019-01-22 14:45:22"><![CDATA[Güncellenmiş modüller]]></key>
+        <key id="admin_lang&amp;_NOIMPORT" attributes="" save_date="2019-01-22 14:45:34"><![CDATA[Hayır, içeri aktarımı iptal et]]></key>
         <key id="admin_lang&amp;_NUM_TRAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İbareler]]></key>
-        <key id="admin_lang&amp;_ONLY_EMPTY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sadece çevrilmemiş ibareler]]></key>
+        <key id="admin_lang&amp;_ONLY_EMPTY" attributes="" save_date="2019-01-22 14:45:56"><![CDATA[Yalnızca çevrilmemiş ibareler]]></key>
         <key id="admin_lang&amp;_ORIENTATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Okuma yönü]]></key>
-        <key id="admin_lang&amp;_OVERWRITE_EXISTENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Varolan kelimelerin üzerine yaz]]></key>
+        <key id="admin_lang&amp;_OVERWRITE_EXISTENT" attributes="" save_date="2019-01-22 14:46:13"><![CDATA[Varolan sözcüklerin üzerine yaz]]></key>
         <key id="admin_lang&amp;_PERC_TRAD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Çevir %]]></key>
+        <key id="admin_lang&amp;_PLUGIN" attributes="" save_date="2019-01-22 14:43:37"><![CDATA[Eklenti]]></key>
+        <key id="admin_lang&amp;_PLUGIN_NAME" attributes="" save_date="2019-01-22 14:43:42"><![CDATA[Eklenti adı]]></key>
         <key id="admin_lang&amp;_TOTAL_LANGUAGE_UPDATED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dil tanımı güncellendi]]></key>
         <key id="admin_lang&amp;_TRANSALTIONTABLEFOR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[%module% için çeviri tablosu]]></key>
         <key id="admin_lang&amp;_TRANSLATELANG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Çevir]]></key>
         <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dili çevir]]></key>
-        <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Çeviri içeriği]]></key>
-        <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Evet, içeri aktarım yap]]></key>
+        <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2019-01-22 14:44:23"><![CDATA[Çeviri içinde mevcut -]]></key>
+        <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2019-01-22 14:45:15"><![CDATA[Evet, içeri aktar]]></key>
+      </module>
+      <module id="admin_news">
+        <key id="admin_news&amp;_CHOOSE_WHO_CAN_SEE" attributes="" save_date="2019-01-22 14:46:26"><![CDATA[Bunu kimlerin görebileceğini seç]]></key>
+        <key id="admin_news&amp;_LONG_DESCR" attributes="" save_date="2019-01-22 14:46:34"><![CDATA[Ayrıntılı açıklama]]></key>
+        <key id="admin_news&amp;_NEWSINHOMEPAGE" attributes="" save_date="2019-01-22 14:46:41"><![CDATA[Anasayfada haber]]></key>
+        <key id="admin_news&amp;_NEWS_SUMMARY" attributes="" save_date="2019-01-22 14:46:47"><![CDATA[Haber özeti]]></key>
+        <key id="admin_news&amp;_TITLE_IMPORTANT" attributes="" save_date="2019-01-22 14:46:53"><![CDATA[Önemli Başlık]]></key>
       </module>
       <module id="admin_newsletter">
-        <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[tüm diller]]></key>
-        <key id="admin_newsletter&amp;_NEWSLETTER_WILL_BE_SENT_TO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Haber grubu [tot] kullanıcıya ulaşacak.]]></key>
+        <key id="admin_newsletter&amp;_ANY" attributes="" save_date="2019-01-22 14:47:20"><![CDATA[her bir dil]]></key>
+        <key id="admin_newsletter&amp;_NEWSLETTER_WILL_BE_SENT_TO" attributes="" save_date="2019-01-22 14:47:08"><![CDATA[Bülten [tot] kullanıcıya ulaşacak.]]></key>
         <key id="admin_newsletter&amp;_SEC_OF_PAUSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[20 saniye için duraklat]]></key>
         <key id="admin_newsletter&amp;_SEND_SMS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[SMS]]></key>
       </module>
       <module id="admin_webpages">
         <key id="admin_webpages&amp;_ADD_WEBPAGES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yeni web sayfası]]></key>
-        <key id="admin_webpages&amp;_ALT_HOME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ana sayfa]]></key>
-        <key id="admin_webpages&amp;_TITLE_HOME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu varsayılan sayfadır]]></key>
+        <key id="admin_webpages&amp;_ALT_HOME" attributes="" save_date="2019-01-22 14:47:25"><![CDATA[Anasayfa]]></key>
+        <key id="admin_webpages&amp;_TITLE_HOME" attributes="" save_date="2019-01-22 14:47:32"><![CDATA[Bu varsayılan sayfa]]></key>
         <key id="admin_webpages&amp;_TITLE_WEBPAGES" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Web sayfaları]]></key>
         <key id="admin_webpages&amp;_WEBPAGES_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Web sayfalarının listesi]]></key>
       </module>
@@ -140,7 +149,7 @@
         <key id="advice&amp;_ARCHIVE_THIS_ADVICE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Okunmuş duyurulara taşı]]></key>
         <key id="advice&amp;_CHOOSE_READER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu duyuruyu kimlerin okuyabileceğini seç]]></key>
         <key id="advice&amp;_MANUAL_USER_SEL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcıları seç]]></key>
-        <key id="advice&amp;_YOUONLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sadece ben]]></key>
+        <key id="advice&amp;_YOUONLY" attributes="" save_date="2019-01-22 14:47:57"><![CDATA[Yalnızca ben]]></key>
       </module>
       <module id="calendar">
         <key id="calendar&amp;_APR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nis]]></key>
@@ -148,7 +157,7 @@
         <key id="calendar&amp;_AUG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ağu]]></key>
         <key id="calendar&amp;_AUGUST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ağustos]]></key>
         <key id="calendar&amp;_CAL_TITLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Etkinlik takvimi]]></key>
-        <key id="calendar&amp;_DAY_FIRST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[%s öncesini göster]]></key>
+        <key id="calendar&amp;_DAY_FIRST" attributes="" save_date="2019-01-22 14:48:08"><![CDATA[%s öncesinde göster]]></key>
         <key id="calendar&amp;_DEC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ara]]></key>
         <key id="calendar&amp;_DECEMBER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Aralık]]></key>
         <key id="calendar&amp;_DEF_DATE_FORMAT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[%d-%m-%Y]]></key>
@@ -156,7 +165,7 @@
         <key id="calendar&amp;_FEBRUARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Şubat]]></key>
         <key id="calendar&amp;_FRI" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cum]]></key>
         <key id="calendar&amp;_FRIDAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cuma]]></key>
-        <key id="calendar&amp;_GENERIC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Jenerik]]></key>
+        <key id="calendar&amp;_GENERIC" attributes="" save_date="2019-01-22 14:48:44"><![CDATA[Genel]]></key>
         <key id="calendar&amp;_GO_TODAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bugün]]></key>
         <key id="calendar&amp;_JAN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Oca]]></key>
         <key id="calendar&amp;_JANUARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ocak]]></key>
@@ -176,13 +185,13 @@
         <key id="calendar&amp;_NOVEMBER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kasım]]></key>
         <key id="calendar&amp;_OCT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Eki]]></key>
         <key id="calendar&amp;_OCTOBER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ekim]]></key>
-        <key id="calendar&amp;_PART_TODAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[(today)]]></key>
+        <key id="calendar&amp;_PART_TODAY" attributes="" save_date="2019-01-22 14:48:13"><![CDATA[(bugün)]]></key>
         <key id="calendar&amp;_PLS_WAIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[lütfen bekleyin...]]></key>
         <key id="calendar&amp;_PREV_MONTH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Önceki ay]]></key>
         <key id="calendar&amp;_PREV_YEAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Önceki yıl]]></key>
         <key id="calendar&amp;_PRIVATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Özel]]></key>
-        <key id="calendar&amp;_PUBLIC" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Açık]]></key>
-        <key id="calendar&amp;_PUBLISHING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yayınlıyor]]></key>
+        <key id="calendar&amp;_PUBLIC" attributes="" save_date="2019-01-22 14:48:20"><![CDATA[Herkese Açık]]></key>
+        <key id="calendar&amp;_PUBLISHING" attributes="" save_date="2019-01-22 14:49:13"><![CDATA[Yayınlanıyor]]></key>
         <key id="calendar&amp;_SAT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cmt]]></key>
         <key id="calendar&amp;_SATURDAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cumartesi]]></key>
         <key id="calendar&amp;_SEP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Eyl]]></key>
@@ -203,136 +212,159 @@
       </module>
       <module id="cart">
         <key id="cart&amp;_CART" attributes="" save_date="2017-04-10 15:58:50"><![CDATA[Sepetim]]></key>
+        <key id="cart&amp;_CLASSROOM_COURSE" attributes="" save_date="2019-01-22 14:49:20"><![CDATA[Derslik kursu]]></key>
         <key id="cart&amp;_CODE" attributes="" save_date="2017-05-08 14:28:01"><![CDATA[Kod]]></key>
-        <key id="cart&amp;_COURSE_PRIZE" attributes="" save_date="2017-04-10 16:05:56"><![CDATA[Fiyat]]></key>
+        <key id="cart&amp;_COURSE_PRIZE" attributes="" save_date="2019-01-22 14:50:07"><![CDATA[Kurs ücreti]]></key>
+        <key id="cart&amp;_COURSE_TYPE" attributes="" save_date="2019-01-22 14:49:26"><![CDATA[Kurs türü]]></key>
+        <key id="cart&amp;_DATE_BEGIN" attributes="" save_date="2019-01-22 14:49:31"><![CDATA[Başlama tarihi]]></key>
+        <key id="cart&amp;_DATE_END" attributes="" save_date="2019-01-22 14:49:38"><![CDATA[Bitiş tarihi]]></key>
         <key id="cart&amp;_DEL_SELECTED_ELEMENT" attributes="" save_date="2017-04-10 16:00:07"><![CDATA[Seçili öğeyi sil]]></key>
-        <key id="cart&amp;_EMPTY_CART" attributes="" save_date="2017-04-10 15:59:13"><![CDATA[Sepeti Boşalt]]></key>
+        <key id="cart&amp;_EMPTY_CART" attributes="" save_date="2019-01-22 14:50:33"><![CDATA[Sepeti boşalt]]></key>
+        <key id="cart&amp;_LEARNING_COURSE" attributes="" save_date="2019-01-22 14:49:46"><![CDATA[E-öğrenme kursu]]></key>
+        <key id="cart&amp;_NAME" attributes="" save_date="2019-01-22 14:49:50"><![CDATA[Ad]]></key>
         <key id="cart&amp;_ORDER_NOW" attributes="" save_date="2017-04-10 16:00:34"><![CDATA[Şimdi sipariş et]]></key>
         <key id="cart&amp;_ORDER_NUMBER" attributes="" save_date="2017-04-10 16:04:58"><![CDATA[Sipariş no:]]></key>
         <key id="cart&amp;_PAYMENT_SELECT" attributes="" save_date="2017-04-10 16:00:59"><![CDATA[Tercih ettiğiniz ödeme seçeneğini belirleyin]]></key>
         <key id="cart&amp;_PAY_WITH_PAYPAL" attributes="" save_date="2017-04-10 16:01:24"><![CDATA[Paypal ile öde]]></key>
+        <key id="cart&amp;_TOTAL" attributes="" save_date="2019-01-22 14:49:55"><![CDATA[Toplam]]></key>
         <key id="cart&amp;_TRANS_CREATED" attributes="" save_date="2017-04-10 16:03:15"><![CDATA[İşlem oluşturuldu]]></key>
         <key id="cart&amp;_WIRE_INFO" attributes="" save_date="2017-04-10 16:03:39"><![CDATA[Ödeme bilgileri]]></key>
-        <key id="cart&amp;_WIRE_PAYMENT_DETAILS" attributes="" save_date="2017-04-10 16:04:14"><![CDATA[Ödeme detayları]]></key>
+        <key id="cart&amp;_WIRE_PAYMENT" attributes="" save_date="2019-01-22 14:50:01"><![CDATA[Wire Payment]]></key>
+        <key id="cart&amp;_WIRE_PAYMENT_DETAILS" attributes="" save_date="2019-01-22 14:50:23"><![CDATA[Ödeme ayrıntıları]]></key>
       </module>
       <module id="catalogue">
         <key id="catalogue&amp;_ADD_TO_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sepete ekle]]></key>
+        <key id="catalogue&amp;_ALL_EDITION_BUYED" attributes="" save_date="2019-01-22 14:53:17"><![CDATA[Mevcut sürümlerin tümünü satın aldınız]]></key>
+        <key id="catalogue&amp;_CALENDAR" attributes="" save_date="2019-01-22 14:53:22"><![CDATA[Katalog]]></key>
         <key id="catalogue&amp;_CAREER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kariyer]]></key>
         <key id="catalogue&amp;_CATALOGUE_SELECTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Katalogları seç]]></key>
-        <key id="catalogue&amp;_CATALOGUE_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tüm kullanılabilir katalogların listesi]]></key>
-        <key id="catalogue&amp;_CERT_RELESABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Karşıdan yükleme için mevcut sertifikalar]]></key>
-        <key id="catalogue&amp;_CLASSROOM_LOCATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İnşa ediliyor]]></key>
-        <key id="catalogue&amp;_CONFIRM_ADD_TO_CART" attributes="" save_date="2017-04-10 15:57:14"><![CDATA[Onay: Sepete Eklensin mi?]]></key>
-        <key id="catalogue&amp;_COURSEPATH_INTRO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu müfredata <b>[enrolled]</b> tane kayıtlı kullanıcı mevcut]]></key>
-        <key id="catalogue&amp;_COURSEPATH_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Senin müfredatın]]></key>
-        <key id="catalogue&amp;_COURSE_ADDED_IN_CART" attributes="" save_date="2017-04-10 15:57:45"><![CDATA[Ders sepetinize eklendi]]></key>
-        <key id="catalogue&amp;_COURSE_AS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[[level] seviyede olduğunuz dersler]]></key>
+        <key id="catalogue&amp;_CATALOGUE_SUMMARY" attributes="" save_date="2019-01-22 15:01:08"><![CDATA[Tüm mevcut katalogların listesi]]></key>
+        <key id="catalogue&amp;_CERT_RELESABLE" attributes="" save_date="2019-01-22 14:58:55"><![CDATA[İndirme için mevcut sertifikalar]]></key>
+        <key id="catalogue&amp;_CLASSROOM_IN_CART" attributes="" save_date="2019-01-22 14:53:30"><![CDATA[Derslik sepette]]></key>
+        <key id="catalogue&amp;_CLASSROOM_LOCATION" attributes="" save_date="2019-01-22 14:58:43"><![CDATA[Bina]]></key>
+        <key id="catalogue&amp;_CONFIRM_ADD_TO_CART" attributes="" save_date="2019-01-22 14:59:37"><![CDATA[Onay: sepete eklensin mi?]]></key>
+        <key id="catalogue&amp;_CONFIRM_SUBSCRIPTION" attributes="" save_date="2019-01-22 14:53:39"><![CDATA[Aboneliği Onayla]]></key>
+        <key id="catalogue&amp;_COURSEPATH_INTRO" attributes="" save_date="2019-01-22 14:56:55"><![CDATA[Bu izlencede <b>[enrolled]</b> kayıtlı kullanıcı var]]></key>
+        <key id="catalogue&amp;_COURSEPATH_LIST" attributes="" save_date="2019-01-22 15:00:40"><![CDATA[İzlencem]]></key>
+        <key id="catalogue&amp;_COURSEPATH_SUBSCRIBE_WIN_TIT" attributes="" save_date="2019-01-22 14:54:05"><![CDATA[İzlenceye Abonelik]]></key>
+        <key id="catalogue&amp;_COURSEPATH_SUBSCRIBE_WIN_TXT" attributes="" save_date="2019-01-22 14:54:22"><![CDATA[Bu Kurs Yoluna aboneliğinizi onaylayın:]]></key>
+        <key id="catalogue&amp;_COURSE_ADDED_IN_CART" attributes="" save_date="2019-01-22 14:58:14"><![CDATA[Kurs sepetinize eklendi]]></key>
+        <key id="catalogue&amp;_COURSE_AS" attributes="" save_date="2019-01-22 15:01:28"><![CDATA[[level] düzeyinde olduğunuz kurslar]]></key>
         <key id="catalogue&amp;_COURSE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kayıtlı olduğun dersler]]></key>
-        <key id="catalogue&amp;_COURSE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tamamladığın dersler]]></key>
-        <key id="catalogue&amp;_COURSE_EXPIRING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bir hafta içinde süresi dolacak dersler]]></key>
-        <key id="catalogue&amp;_COURSE_IN_CART" attributes="" save_date="2017-04-10 15:58:19"><![CDATA[Ders Sepetinizde]]></key>
-        <key id="catalogue&amp;_COURSE_LIST_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seçilebilir derslerin listesi]]></key>
-        <key id="catalogue&amp;_COURSE_SUBSCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ders kaydı]]></key>
-        <key id="catalogue&amp;_COURSE_S_GODADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sadece yönetici kayıt yapabilir]]></key>
-        <key id="catalogue&amp;_COURSE_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ders tipi]]></key>
-        <key id="catalogue&amp;_COURSE_YOU_CAN_ACCESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Etkinleştirilmiş dersler]]></key>
-        <key id="catalogue&amp;_ENTRY_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dersler ve müfredatlar]]></key>
-        <key id="catalogue&amp;_ENTRY_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu kataloga atanmış dersler ve müfredatlar]]></key>
-        <key id="catalogue&amp;_FILTER_DATE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Derslerin başlayışı]]></key>
-        <key id="catalogue&amp;_FILTER_FOR_COURSE_TYPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sadece dersleri göster]]></key>
-        <key id="catalogue&amp;_FILTER_FOR_SALE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[satılıyor]]></key>
+        <key id="catalogue&amp;_COURSE_END" attributes="" save_date="2019-01-22 15:00:51"><![CDATA[Tamamladığım kurslar]]></key>
+        <key id="catalogue&amp;_COURSE_EXPIRING" attributes="" save_date="2019-01-22 14:55:57"><![CDATA[Bir hafta içinde süresi dolacak kurslar]]></key>
+        <key id="catalogue&amp;_COURSE_IN_CART" attributes="" save_date="2019-01-22 14:58:28"><![CDATA[Kurs sepette]]></key>
+        <key id="catalogue&amp;_COURSE_LIST_SUMMARY" attributes="" save_date="2019-01-22 15:00:35"><![CDATA[Mevcut kursların listesi]]></key>
+        <key id="catalogue&amp;_COURSE_SUBSCRIPTION" attributes="" save_date="2019-01-22 14:57:10"><![CDATA[Kursa kayıt]]></key>
+        <key id="catalogue&amp;_COURSE_S_GODADMIN" attributes="" save_date="2019-01-22 15:00:04"><![CDATA[Yalnızca yönetici kayıt yapabilir]]></key>
+        <key id="catalogue&amp;_COURSE_S_MODERATE" attributes="" save_date="2019-01-22 14:54:42"><![CDATA[Bu kursa aboneliğiniz yönetici tarafından onaylanması gerekiyor]]></key>
+        <key id="catalogue&amp;_COURSE_TYPE" attributes="" save_date="2019-01-22 14:58:06"><![CDATA[Kurs türü]]></key>
+        <key id="catalogue&amp;_COURSE_YOU_CAN_ACCESS" attributes="" save_date="2019-01-22 14:57:36"><![CDATA[Etkinleştirilmiş kurslar]]></key>
+        <key id="catalogue&amp;_ELEARNING" attributes="" save_date="2019-01-22 14:54:52"><![CDATA[E-öğrenme]]></key>
+        <key id="catalogue&amp;_ENTRY_CAPTION" attributes="" save_date="2019-01-22 14:58:02"><![CDATA[Kurslar ve izlenceler]]></key>
+        <key id="catalogue&amp;_ENTRY_SUMMARY" attributes="" save_date="2019-01-22 14:56:34"><![CDATA[Bu kataloğa atanmış kurslar ve izlenceler]]></key>
+        <key id="catalogue&amp;_FILTER_DATE_BEGIN" attributes="" save_date="2019-01-22 14:57:52"><![CDATA[Bu tarihte başlayan kurslar:]]></key>
+        <key id="catalogue&amp;_FILTER_FOR_COURSE_TYPE" attributes="" save_date="2019-01-22 14:59:54"><![CDATA[Yalnızca kursları göster]]></key>
+        <key id="catalogue&amp;_FILTER_FOR_SALE" attributes="" save_date="2019-01-22 15:00:14"><![CDATA[satılık]]></key>
         <key id="catalogue&amp;_IMPORT_NEW_ENTRY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yenileri içeri aktar]]></key>
         <key id="catalogue&amp;_METHOD_MANUAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Elle kayıt]]></key>
-        <key id="catalogue&amp;_MOD_ENTRY_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Katalogun elemanlarını göster]]></key>
+        <key id="catalogue&amp;_MOD_ENTRY_CATALOGUE" attributes="" save_date="2019-01-22 14:59:08"><![CDATA[Kataloğun unsurlarını göster]]></key>
         <key id="catalogue&amp;_NEW_CATALOGUE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yeni katalog]]></key>
-        <key id="catalogue&amp;_NO_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seçilebilir ders yok]]></key>
-        <key id="catalogue&amp;_NO_COURSE_FOUND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ders bulunamadı]]></key>
-        <key id="catalogue&amp;_NO_EDITIONS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu derse yapılan bir değişiklik yok.]]></key>
-        <key id="catalogue&amp;_PREASSESSMENT_SUGGESTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tavsiye edilen müfredat]]></key>
+        <key id="catalogue&amp;_NO_AVAILABLE_EDITIONS" attributes="" save_date="2019-01-22 14:54:58"><![CDATA[Hiç sürüm yok]]></key>
+        <key id="catalogue&amp;_NO_CATEGORY_TODISPLAY" attributes="" save_date="2019-01-22 14:55:06"><![CDATA[Gösterilecek katalog yok]]></key>
+        <key id="catalogue&amp;_NO_COURSE" attributes="" save_date="2019-01-22 15:00:25"><![CDATA[Mevcut kurs yok]]></key>
+        <key id="catalogue&amp;_NO_COURSE_FOUND" attributes="" save_date="2019-01-22 14:57:01"><![CDATA[Kurs bulunamadı]]></key>
+        <key id="catalogue&amp;_NO_EDITIONS" attributes="" save_date="2019-01-22 14:56:20"><![CDATA[Bu kursun sürümü yok.]]></key>
+        <key id="catalogue&amp;_PREASSESSMENT_SUGGESTION" attributes="" save_date="2019-01-22 15:00:57"><![CDATA[Önerilen izlence]]></key>
         <key id="catalogue&amp;_REMOVE_ENTRY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Katalogtan çıkar]]></key>
-        <key id="catalogue&amp;_RESERVE_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rezerve et]]></key>
+        <key id="catalogue&amp;_RESERVE_COURSE" attributes="" save_date="2019-01-22 14:59:45"><![CDATA[Ayırt]]></key>
         <key id="catalogue&amp;_SHOPPING_CART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alışveriş sepeti]]></key>
-        <key id="catalogue&amp;_SUBSCRIBE_COURSE_T" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu derse kaydol]]></key>
+        <key id="catalogue&amp;_SHOW_EDITIONS" attributes="" save_date="2019-01-22 14:55:11"><![CDATA[Sürümleri Göster]]></key>
+        <key id="catalogue&amp;_SUBSCRIBE_COURSE_T" attributes="" save_date="2019-01-22 14:56:06"><![CDATA[Bu kursa abone ol]]></key>
         <key id="catalogue&amp;_TAB_VIEW_CATEGORY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kategoriye göre]]></key>
         <key id="catalogue&amp;_TAB_VIEW_MOSTPOPULAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[En gözde]]></key>
         <key id="catalogue&amp;_TAB_VIEW_RECENT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[En güncel]]></key>
-        <key id="catalogue&amp;_TOTAL_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kayıt olduğunuz toplam ders sayısı]]></key>
+        <key id="catalogue&amp;_TIT_SUBSCRIPTION_BY_CODE" attributes="" save_date="2019-01-22 14:55:20"><![CDATA[Abonelik Kodunu Yaz]]></key>
+        <key id="catalogue&amp;_TOTAL_COURSE" attributes="" save_date="2019-01-22 14:59:17"><![CDATA[Kayıt olduğunuz toplam kurs sayısı]]></key>
+        <key id="catalogue&amp;_TXT_SUBSCRIPTION_BY_CODE" attributes="" save_date="2019-01-22 14:55:47"><![CDATA[Bir abonelik kodunuz varsa kursa kendiliğinden eklenmek için bu formu kullanın:]]></key>
         <key id="catalogue&amp;_USER_STATUS_ENTER" attributes="" save_date="2017-05-12 15:55:09"><![CDATA[Gir]]></key>
         <key id="catalogue&amp;_WAITING_APPROVAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Onay için bekleniyor]]></key>
-        <key id="catalogue&amp;_WORD_TO_SEARCH" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kelimeye göre ara]]></key>
+        <key id="catalogue&amp;_WORD_TO_SEARCH" attributes="" save_date="2019-01-22 14:59:24"><![CDATA[Sözcüğe göre ara]]></key>
       </module>
       <module id="certificate">
-        <key id="certificate&amp;_ALT_REM_META_CERT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Önceden yayınlamış meta-sertifikayı sil]]></key>
-        <key id="certificate&amp;_ALT_TAKE_A_COPY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bir meta-sertifika kopyası yayınla]]></key>
+        <key id="certificate&amp;_ALT_REM_META_CERT" attributes="" save_date="2019-01-22 15:33:01"><![CDATA[Önceden yayınlamış üst sertifikayı sil]]></key>
+        <key id="certificate&amp;_ALT_TAKE_A_COPY" attributes="" save_date="2019-01-22 15:02:21"><![CDATA[Bir üst sertifika kopyası yayınla]]></key>
         <key id="certificate&amp;_BACK_IMAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Arka plan resmi]]></key>
         <key id="certificate&amp;_BASE_LANGUAGE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifika dili]]></key>
+        <key id="certificate&amp;_CERTIFICATES_GENERATION" attributes="" save_date="2019-01-22 15:01:37"><![CDATA[Sertifika oluşturma]]></key>
+        <key id="certificate&amp;_CERTIFICATE_ASSIGN" attributes="" save_date="2019-01-22 15:01:47"><![CDATA[Sertifika atama]]></key>
         <key id="certificate&amp;_CERTIFICATE_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifika şablon listesi]]></key>
         <key id="certificate&amp;_CERTIFICATE_LIST" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifikaların listesi]]></key>
         <key id="certificate&amp;_CERTIFICATE_REPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İbra edilmiş sertifika]]></key>
         <key id="certificate&amp;_CERTIFICATE_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifika şablon listesi]]></key>
         <key id="certificate&amp;_CERTIFICATE_VIEW_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İbra edilmiş sertifikalar]]></key>
-        <key id="certificate&amp;_CERTIFICATE_WARNING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[ÖNEMLİ: Bir sonraki sürümlerde düzeltilecek bir PDF sınıfı sınırlaması nedeniyle, SADECE arka plan resimi kullanmanızı ve HTML kodu içerisindeki < p >, < div >, < center > gibi benzer etiketlerin içine resim gömmemenizi tavsiye ederiz çünkü bu sayfalarda hatalara neden oluyor.]]></key>
+        <key id="certificate&amp;_CERTIFICATE_WARNING" attributes="" save_date="2019-01-22 15:33:34"><![CDATA[ÖNEMLİ: Bir sonraki sürümlerde düzeltilecek bir PDF sınıfı sınırlaması nedeniyle, SADECE arka plan resmi kullanmanızı ve HTML kodu içerisindeki < p >, < div >, < center > gibi benzer etiketlerin içine resim gömmemenizi tavsiye ederiz çünkü bu sayfalarda hatalara neden oluyor.]]></key>
         <key id="certificate&amp;_CHOOSE_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifikayı seç]]></key>
-        <key id="certificate&amp;_CHOOSE_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dersi seç]]></key>
-        <key id="certificate&amp;_COURSE_BEGIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ders başlangıç tarihi]]></key>
-        <key id="certificate&amp;_COURSE_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ders tanımı]]></key>
-        <key id="certificate&amp;_COURSE_END" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ders bitiş tarihi]]></key>
+        <key id="certificate&amp;_CHOOSE_COURSE" attributes="" save_date="2019-01-22 15:02:57"><![CDATA[Kursu seç]]></key>
+        <key id="certificate&amp;_COURSE_BEGIN" attributes="" save_date="2019-01-22 15:02:39"><![CDATA[Kurs başlangıç tarihi]]></key>
+        <key id="certificate&amp;_COURSE_DESCRIPTION" attributes="" save_date="2019-01-22 15:03:07"><![CDATA[Kurs tanımı]]></key>
+        <key id="certificate&amp;_COURSE_END" attributes="" save_date="2019-01-22 15:02:44"><![CDATA[Kurs bitiş tarihi]]></key>
         <key id="certificate&amp;_COURSE_SCORE_FINAL_MAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimum final notu]]></key>
         <key id="certificate&amp;_COURSE_TODAY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifika tarihi]]></key>
         <key id="certificate&amp;_COURSE_YEAR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifika yılı]]></key>
-        <key id="certificate&amp;_DATE_COMPLETE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dersin tamamlandığı tarih]]></key>
-        <key id="certificate&amp;_DATE_ENROLL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Ders kayıt tarihi]]></key>
-        <key id="certificate&amp;_DISPLAY_NAME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[eğer mevcut değilse, kullanıcı adı, isim ve soyisim yazın, kullanıcı adı gözükecek]]></key>
+        <key id="certificate&amp;_DATE_COMPLETE" attributes="" save_date="2019-01-22 15:03:40"><![CDATA[Kursu tamamlama tarihi]]></key>
+        <key id="certificate&amp;_DATE_ENROLL" attributes="" save_date="2019-01-22 15:03:02"><![CDATA[Kurs kayıt tarihi]]></key>
+        <key id="certificate&amp;_DISPLAY_NAME" attributes="" save_date="2019-01-22 15:04:48"><![CDATA[eğer Ad ve Soyadı yoksa kullanıcı adı gösterilir]]></key>
         <key id="certificate&amp;_EX_CERT_POINT_REQUIRED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Uzmanlık sertifikası için not gerekli]]></key>
-        <key id="certificate&amp;_GENERATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Hazırla]]></key>
+        <key id="certificate&amp;_GENERATE" attributes="" save_date="2019-01-22 15:30:31"><![CDATA[Oluştur]]></key>
         <key id="certificate&amp;_GENERATE_ALL_SELECTED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tüm seçili sertifikaları hazırla]]></key>
         <key id="certificate&amp;_LANDSCAPE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yatay]]></key>
         <key id="certificate&amp;_META_CERTIFICATE_ASSIGN_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İlişki listesi]]></key>
-        <key id="certificate&amp;_META_CERTIFICATE_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meta-sertifika listesi]]></key>
+        <key id="certificate&amp;_META_CERTIFICATE_CAPTION" attributes="" save_date="2019-01-22 15:32:13"><![CDATA[Üst sertifika listesi]]></key>
         <key id="certificate&amp;_META_CERTIFICATE_CREATE_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yaratılmaya hazır meta-sertifikalar]]></key>
-        <key id="certificate&amp;_META_CERTIFICATE_DETAILS_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcılara bağlantılı meta-sertifikaların durumu]]></key>
+        <key id="certificate&amp;_META_CERTIFICATE_DETAILS_CAPTION" attributes="" save_date="2019-01-22 15:31:06"><![CDATA[Kullanıcılara bağlantılı üst sertifikaların durumu]]></key>
         <key id="certificate&amp;_META_CERTIFICATE_NEW_ASSIGN_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İlişkiler tablosu]]></key>
-        <key id="certificate&amp;_META_CERTIFICATE_NEW_ASSIGN_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcıları ve dersleri meta-sertifikaya bağlamanın tablosu]]></key>
+        <key id="certificate&amp;_META_CERTIFICATE_NEW_ASSIGN_SUMMARY" attributes="" save_date="2019-01-22 15:31:35"><![CDATA[Kullanıcıları ve kursları üst sertifikaya bağlama tablosu]]></key>
         <key id="certificate&amp;_META_CERTIFICATE_PROGRESS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tamamlanan / Toplam]]></key>
-        <key id="certificate&amp;_META_CERTIFICATE_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meta-sertifika listesi]]></key>
-        <key id="certificate&amp;_MY_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Benim sertifikalarım]]></key>
+        <key id="certificate&amp;_META_CERTIFICATE_SUMMARY" attributes="" save_date="2019-01-22 15:32:19"><![CDATA[Üst sertifika listesi]]></key>
+        <key id="certificate&amp;_MY_CERTIFICATE" attributes="" save_date="2019-01-22 15:02:08"><![CDATA[Sertifikalarım]]></key>
         <key id="certificate&amp;_NEW_ASSING_META_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yeni ilişki]]></key>
         <key id="certificate&amp;_NEW_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yeni sertifika]]></key>
         <key id="certificate&amp;_NOT_ENDED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bitmemiş]]></key>
-        <key id="certificate&amp;_NO_CERT_AVAILABLE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Seçilebilir sertifika yok]]></key>
-        <key id="certificate&amp;_NO_USER_FOR_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Bu sertifikaya henüz kimse erişmemiş]]></key>
+        <key id="certificate&amp;_NO_CERT_AVAILABLE" attributes="" save_date="2019-01-22 15:33:52"><![CDATA[Mevcut sertifika yok]]></key>
+        <key id="certificate&amp;_NO_USER_FOR_CERTIFICATE" attributes="" save_date="2019-01-22 15:02:34"><![CDATA[Bu sertifikaya henüz kimse erişmedi]]></key>
         <key id="certificate&amp;_NO_USER_FOUND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yayınlanmaya hazır meta-certifika yok]]></key>
         <key id="certificate&amp;_NUMBER_OF_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifikalar:]]></key>
-        <key id="certificate&amp;_ORIENTATION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sayfa düzeni]]></key>
+        <key id="certificate&amp;_ORIENTATION" attributes="" save_date="2019-01-22 15:33:43"><![CDATA[Sayfa yönü]]></key>
         <key id="certificate&amp;_PORTRAIT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Düşey]]></key>
         <key id="certificate&amp;_RELASE_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İbra edildiği tarih]]></key>
         <key id="certificate&amp;_RELEASED" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İbra edilmiş]]></key>
         <key id="certificate&amp;_STOP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Dur]]></key>
         <key id="certificate&amp;_STRUCTURE_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifika şablonu]]></key>
-        <key id="certificate&amp;_STRUCTURE_META_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meta-sertifika yapısı]]></key>
-        <key id="certificate&amp;_TABLE_COURSE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meta-sertifikaya doğru tamamlanmış derslerin tablosu]]></key>
-        <key id="certificate&amp;_TAG_CODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Etiket kodu]]></key>
+        <key id="certificate&amp;_STRUCTURE_META_CERTIFICATE" attributes="" save_date="2019-01-22 15:32:24"><![CDATA[Üst sertifika yapısı]]></key>
+        <key id="certificate&amp;_TABLE_COURSE" attributes="" save_date="2019-01-22 15:32:51"><![CDATA[Üst sertifikaya doğru tamamlanmış kursların tablosu]]></key>
+        <key id="certificate&amp;_TAG_CODE" attributes="" save_date="2019-01-22 15:30:17"><![CDATA[Etiket kodları]]></key>
         <key id="certificate&amp;_TAG_DESCRIPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Tanım etiketi]]></key>
-        <key id="certificate&amp;_TAG_LIST_CAPTION" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifika şablon inşa edimi için seçilebilir etiketler]]></key>
-        <key id="certificate&amp;_TAG_LIST_SUMMARY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifika şablon inşa edimi için seçilebilir etiketler]]></key>
+        <key id="certificate&amp;_TAG_LIST_CAPTION" attributes="" save_date="2019-01-22 15:34:16"><![CDATA[Sertifika şablonu oluşturma için mevcut etiketler]]></key>
+        <key id="certificate&amp;_TAG_LIST_SUMMARY" attributes="" save_date="2019-01-22 15:34:24"><![CDATA[Sertifika şablonu oluşturma için mevcut etiketler]]></key>
         <key id="certificate&amp;_TAKE_A_COPY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifikanın kopyasını karşıdan yükle]]></key>
         <key id="certificate&amp;_TEMPLATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Şablon]]></key>
         <key id="certificate&amp;_TEST_SCORE_FINAL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Final Öğrenme Hedef notu]]></key>
         <key id="certificate&amp;_TEST_SCORE_FINAL_MAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimum final Öğrenme Hedef notu]]></key>
-        <key id="certificate&amp;_TEST_SCORE_START" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Başlangıç Öğrenme Hedef notu]]></key>
+        <key id="certificate&amp;_TEST_SCORE_START" attributes="" save_date="2019-01-22 15:02:02"><![CDATA[Başlangıç Öğrenme Hedefi notu]]></key>
         <key id="certificate&amp;_TEST_SCORE_START_MAX" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Maksimum başlangıç Öğrenme Hedef notu]]></key>
-        <key id="certificate&amp;_TITLE_ASSIGN_META_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meta-sertifika ata]]></key>
+        <key id="certificate&amp;_TITLE_ASSIGN_META_CERTIFICATE" attributes="" save_date="2019-01-22 15:31:59"><![CDATA[Üst sertifika ata]]></key>
         <key id="certificate&amp;_TITLE_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Sertifika yönetimi]]></key>
         <key id="certificate&amp;_TITLE_CREATE_META_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Yayınlanmaya hazır meta-certifikalar]]></key>
-        <key id="certificate&amp;_TITLE_META_CERTIFICATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meta-sertifika]]></key>
-        <key id="certificate&amp;_TITLE_META_CERTIFICATE_ASSIGN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meta-sertifika ataması]]></key>
-        <key id="certificate&amp;_TITLE_META_CERTIFICATE_CREATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meta-sertifikaları çıkartma]]></key>
+        <key id="certificate&amp;_TITLE_META_CERTIFICATE" attributes="" save_date="2019-01-22 15:31:53"><![CDATA[Üst sertifika]]></key>
+        <key id="certificate&amp;_TITLE_META_CERTIFICATE_ASSIGN" attributes="" save_date="2019-01-22 15:32:06"><![CDATA[Üst sertifika ataması]]></key>
+        <key id="certificate&amp;_TITLE_META_CERTIFICATE_CREATE" attributes="" save_date="2019-01-22 15:32:34"><![CDATA[Üst sertifikaları çıkartma]]></key>
         <key id="certificate&amp;_TITLE_META_CERTIFICATE_DELETING" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İlişki siliniyor]]></key>
-        <key id="certificate&amp;_TITLE_VIEW_CERT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kopyayı görüntüle]]></key>
-        <key id="certificate&amp;_TOTAL_TIME" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Derste toplam harcanan zaman]]></key>
-        <key id="certificate&amp;_TOTAL_TIME_HOUR" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Derste toplam harcanan zaman (sadece saat)]]></key>
-        <key id="certificate&amp;_TOTAL_TIME_MINUTE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Derste toplam harcanan zaman (sadece dakika)]]></key>
-        <key id="certificate&amp;_TOTAL_TIME_SECOND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Derste toplam harcanan zaman (sadece saniye)]]></key>
+        <key id="certificate&amp;_TITLE_VIEW_CERT" attributes="" save_date="2019-01-22 15:30:51"><![CDATA[Kopyaya bak]]></key>
+        <key id="certificate&amp;_TOTAL_TIME" attributes="" save_date="2019-01-22 15:03:18"><![CDATA[Kursta toplam harcanan zaman]]></key>
+        <key id="certificate&amp;_TOTAL_TIME_HOUR" attributes="" save_date="2019-01-22 15:04:04"><![CDATA[Kursta toplam harcanan zaman (yalnızca saat)]]></key>
+        <key id="certificate&amp;_TOTAL_TIME_MINUTE" attributes="" save_date="2019-01-22 15:03:52"><![CDATA[Kursta toplam harcanan zaman (yalnızca dakika)]]></key>
+        <key id="certificate&amp;_TOTAL_TIME_SECOND" attributes="" save_date="2019-01-22 15:04:18"><![CDATA[Kursta toplam harcanan zaman (yalnızca saniye)]]></key>
         <key id="certificate&amp;_TO_RELEASE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İbra edilecek]]></key>
         <key id="certificate&amp;_USER_FOR_META_CERTIFICATE_ASSIGN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Meta-sertifikaya bağlanacak kullanıcıları seç]]></key>
       </module>
@@ -1438,12 +1470,12 @@ Bu kelimeleri değiştirmek için lütfen Admin/Language yönetimine gidin, <b>l
         <key id="organization&amp;_VIEWTREE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Menüyü göster]]></key>
       </module>
       <module id="organization_chart">
-        <key id="organization_chart&amp;_ASSIGNED_EXTRAFIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nod Alanları]]></key>
+        <key id="organization_chart&amp;_ASSIGNED_EXTRAFIELD" attributes="" save_date="2019-01-22 14:41:53"><![CDATA[Çizge Alanları]]></key>
         <key id="organization_chart&amp;_GROUPUSER_groupid" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Grup ismi]]></key>
         <key id="organization_chart&amp;_IMPORT_IGNORE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İçeri aktarma]]></key>
         <key id="organization_chart&amp;_IMPORT_MAP" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[İçeri aktarma şeması]]></key>
         <key id="organization_chart&amp;_INSERTED_WAIT_FOR_ADMIN" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kullanıcı eklendi, Yönetici onayı için bekle]]></key>
-        <key id="organization_chart&amp;_ORGCHART_FOLDER_FIELD_ALT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Nod alanları ata]]></key>
+        <key id="organization_chart&amp;_ORGCHART_FOLDER_FIELD_ALT" attributes="" save_date="2019-01-22 14:42:09"><![CDATA[Çizge ekle]]></key>
         <key id="organization_chart&amp;_ORGCHART_USER_FIELD" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Fazla alanları kullanıcıya ilişkilendir]]></key>
         <key id="organization_chart&amp;_ORG_CHART" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Organizasyon şeması]]></key>
         <key id="organization_chart&amp;_ORG_CHART_FIELD_DESCEND" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Basamakla]]></key>
@@ -2216,7 +2248,7 @@ Kullanıcı adı: [userid]
         <key id="standard&amp;_RECIPIENTS" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Alıcılar]]></key>
         <key id="standard&amp;_REGISTER" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Kaydet]]></key>
         <key id="standard&amp;_REGISTER_DATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Katılma tarihi]]></key>
-        <key id="standard&amp;_REMOVE_FROM_NODE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Noddan çıkar]]></key>
+        <key id="standard&amp;_REMOVE_FROM_NODE" attributes="" save_date="2019-01-22 14:42:20"><![CDATA[Çizgeden kaldır]]></key>
         <key id="standard&amp;_REPLY" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Cevapla]]></key>
         <key id="standard&amp;_REPOPASTELO" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Öğrenme Hedefi yapıştır]]></key>
         <key id="standard&amp;_REPORT" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Rapor]]></key>

@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/lms-menu.css"/>
     <link rel="stylesheet" type="text/css" href="{{ layout_path }}style/table-responsive.css"/>
 
-{% endblock %}    
+{% endblock %}
 
 {% block javascript %}
 
@@ -87,7 +87,7 @@
             {# Temporary solution before helpdesk refactoring. #}
             {{ evalPhp('Layout::zone', ['helpdesk']) }}
             {# ############################################### #}
-                    
+
         </div>
 
 
@@ -104,7 +104,6 @@
             <div id="yui-main-boot" class='col-md-12'>
 
                 {{ direct_play|raw }}
-
 
             </div>
 
@@ -128,4 +127,4 @@
     {{ evalPhp('Layout::zone', ['def_lang']) }}
 
 {% endblock %}
-        
+

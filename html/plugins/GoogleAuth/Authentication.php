@@ -30,7 +30,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             
             if($_SESSION['social']['plugin'] == Plugin::getName()) {
 
-                $form = Get::img("social/google-24.png") . " "
+                $form =   '<i class="fa fa-google"></i>' . " "
                         . Lang::t("_YOU_ARE_CONNECTING_SOCIAL_ACCOUNT", "social")
                         . " <b>" . ($_SESSION['social']['data']['name'] != "" ? $_SESSION['social']['data']['name'] : $_SESSION['social']['data']['email']) . "</b>"
                         . Form::openForm("cancel_social", Get::rel_path("base"))
@@ -46,8 +46,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             $url = $google_service->getAuthorizationUri();
 
             $form =  "<a href='" . $url . "'>"
-				 // . Get::img("social/google-24.png")
-					. '<i class="fa fa-google-plus"></i>'
+				    . '<i class="fa fa-google"></i>'
 					. "</a>";
         }
 
