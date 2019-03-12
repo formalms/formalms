@@ -41,13 +41,13 @@
     </tr>
   </table>
 
-  <br><?
+  <br><?php
   echo $rel_actions;?>
   <br><br>
 
   <table class="table table-striped table-bordered display" style="width:100%" id="coursestats"></table>
 
-  <br><?
+  <br><?php
   echo $rel_actions;?>
   <br><br>
 <?php
