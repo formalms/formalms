@@ -175,7 +175,7 @@ final class SmtpAdm extends Model
             $this->port = Get::cfg('smtp_port');
             $this->secure = Get::cfg('smtp_secure');
             $this->user = Get::cfg('smtp_user');
-            $this->password = Get::cfg('smtp_pwd');
+            $this->pwd = Get::cfg('smtp_pwd');
 
         }
     }
