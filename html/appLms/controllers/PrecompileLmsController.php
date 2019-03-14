@@ -42,21 +42,21 @@ class PrecompileLmsController extends LmsController {
 		switch ($res) {
 			case "err": $result_message .= UIFeedback::notice(Lang::t('_SOME_MANDATORY_EMPTY', 'register'), true);
 		}
-
-		//$policy_checked = $this->model->getAcceptingPolicy($id_user);
+		$id_user = Docebo::user()->getIdst();
+		$policy_checked = $this->model->getAcceptingPolicy($id_user);
 		$fields_checked = $fieldlist->checkUserMandatoryFields(false);
 
 		if ($this->model->compileRequired()) {
 			$this->render('show', array(
 				'result_message' => $result_message,
-				//'policy_checked' => $policy_checked,
+				'policy_checked' => $policy_checked,
 				'fields_checked' => $fields_checked,
 				'policy_id' => $this->model->getPrivacyPolicyId(),
 				'policy_text' => $this->model->getPrivacyPolicyText(),
 				'id_user' => Docebo::user()->getIdSt(),
 				'fieldlist' => $fieldlist
 			));
-		} else {
+		} else if ($_REQUEST['r'] == 'precompile/show') {
 			Util::jump_to($this->jump_url);
 		}
 	}
