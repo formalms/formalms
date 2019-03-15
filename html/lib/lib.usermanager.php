@@ -1529,7 +1529,6 @@ class UserManagerRenderer
                 } //procced with tree_man
                 case "tree_man" : {
                     // resolving the tree_man
-                    $reg_code = $this->getRegCodeFromNode($reg_code);
                     $array_course = $this->getCodeCourses($reg_code);
                     $array_folder = $uma->getFoldersFromCode($reg_code);
 
