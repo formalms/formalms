@@ -1530,7 +1530,7 @@ class UserManagerRenderer
                 case "tree_man" : {
                     // resolving the tree_man
                     $array_course = $this->getCodeCourses($reg_code);
-                    $array_folder = $uma->getFoldersFromCode($reg_code);
+                    $array_folder = array($reg_code => $reg_code);
 
                     if (empty($array_folder) && $code_is_mandatory) {
 
