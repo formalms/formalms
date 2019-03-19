@@ -259,7 +259,10 @@ class CoursestatsLmsController extends LmsController {
 						} else {
 							$row['lo_'.$idOrg] = Lang::t($record->lo_status[$idOrg], 'standard');
 						}
-						if ($record->lo_status[$idOrg] == 'completed' || $record->lo_status[$idOrg] == 'passed') $completed++;
+						if ($record->lo_status[$idOrg] == 'completed' || $record->lo_status[$idOrg] == 'passed') {
+							$completed++;
+							$row['lo_'.$idOrg] = '<a href="./index.php?r=coursestats/show_user_object&id_user='.(int)$record->idst.'&id_lo='.$idOrg.'">'.$row['lo_'.$idOrg].'</a>';
+						}
 					} else {
 						$row['lo_'.$idOrg] = Lang::t('_NOT_STARTED', 'standard');
 					}
