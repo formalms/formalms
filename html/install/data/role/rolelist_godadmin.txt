@@ -12,6 +12,10 @@
 /framework/admin/field_manager/del
 /framework/admin/field_manager/mod
 /framework/admin/field_manager/view
+/framework/admin/customfield_manager/add
+/framework/admin/customfield_manager/del
+/framework/admin/customfield_manager/mod
+/framework/admin/customfield_manager/view
 /framework/admin/functionalroles/associate_user
 /framework/admin/functionalroles/mod
 /framework/admin/functionalroles/view
