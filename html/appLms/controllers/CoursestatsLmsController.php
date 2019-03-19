@@ -76,13 +76,13 @@ class CoursestatsLmsController extends LmsController {
 		$first = true;
 		$output = '[';
 		$list = array(
-			'failed' => 'failed',
-			'incomplete' => 'incomplete',
-			'not attempted' => 'not attempted',
-			'attempted' => 'attempted',
-			'ab-initio' => 'ab-initio',
-			'completed' => 'completed',
-			'passed' => 'passed'
+			'failed' => Lang::t('failed', 'standard'),
+			'incomplete' => Lang::t('incomplete', 'standard'),
+			'not attempted' => Lang::t('not_attempted', 'standard'),
+			'attempted' => Lang::t('attempted', 'standard'),
+			'ab-initio' => Lang::t('ab-initio', 'standard'),
+			'completed' => Lang::t('completed', 'standard'),
+			'passed' => Lang::t('passed', 'standard'),
 		);
 		foreach($list as $id_status => $status_translation) {
 			if ($first) $first = false; else $output .= ', ';
@@ -362,7 +362,7 @@ class CoursestatsLmsController extends LmsController {
 					'path' => $path,
 					'LO_name' => $record->title,
 					'LO_type' => $record->objectType ?: 'folder',
-					'LO_status' => $record->status,
+					'LO_status' => $record->status ? Lang::t($record->status, 'standard') : Lang::t('not_attempted', 'standard'),
 					'first_access' => $record->first_access ? date("d-m-Y", strtotime($record->first_access)) : '',
 					'last_access' => $record->last_access ? date("d-m-Y", strtotime($record->last_access)) : '',
 					'history' => $record->history,
