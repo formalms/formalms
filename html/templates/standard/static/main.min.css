@@ -4661,6 +4661,10 @@ header.header {
             background-image: url("images/icons/top-menu/icon--certificate-hover.svg"); }
           header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-certificate:before {
             background-image: url("images/icons/top-menu/icon--certificate.svg"); }
+          header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-bell:hover:before {
+            background-image: url("images/icons/top-menu/icon--bell-hover.svg"); }
+          header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-bell:before {
+            background-image: url("images/icons/top-menu/icon--bell.svg"); }
           header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-shopping-cart:hover:before {
             background-image: url("images/icons/top-menu/icon--cart-hover.svg"); }
           header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-shopping-cart:before {
