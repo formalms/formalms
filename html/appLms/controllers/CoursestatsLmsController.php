@@ -261,7 +261,7 @@ class CoursestatsLmsController extends LmsController {
 						}
 						if ($record->lo_status[$idOrg] == 'completed' || $record->lo_status[$idOrg] == 'passed') $completed++;
 					} else {
-						$row['lo_'.$idOrg] = "Non iniziato";
+						$row['lo_'.$idOrg] = Lang::t('_NOT_STARTED', 'standard');
 					}
 				}
 				$row['completed'] = $completed.' / '.count($lo_list);
