@@ -27,8 +27,11 @@
 {% if perm_certificate == true and notGeneratedCertificates > 0 %}
     <li class="green_menu">
         <span class="badge badge-danger">{{ notGeneratedCertificates }}</span>
-        <a href="index.php?r=lms/mycertificate/show&sop=unregistercourse" class="no-border-right no-before" title="{{ translate('_CERTIFICATE_DOWNLOAD', 'menu_over') }}">
-            <span class="glyphicon glyphicon-bell top-menu__label">{{ translate('_MY_CERTIFICATE', 'menu_over') }}</span>
+        <a href="index.php?r=lms/mycertificate/show&sop=unregistercourse" class="no-border-right no-before">
+            <div class="has-forma-tooltip">
+                <div class="forma-tooltip down">{{ translate('_CERTIFICATE_DOWNLOAD', 'menu_over') }}</div>
+                <span class="glyphicon glyphicon-bell top-menu__label">{{ translate('_MY_CERTIFICATE', 'menu_over') }}</span>
+            </div>
         </a>
     </li>
 {% endif %}

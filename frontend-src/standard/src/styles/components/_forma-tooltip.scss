@@ -45,11 +45,23 @@
     }
   }
 
+  &.down:after {
+    transform: translate(-50%, -555%);
+    border-top: none;
+    border-right: solid 6px transparent;
+    border-bottom: solid 12px $orange;
+    border-left: solid 6px transparent; }
+
   .has-forma-tooltip:hover & {
     transform: translate(-50%, -100%) translateY(-15px);
     transform: translate3d(-50%, -100%, 0) translateY(-15px);
     opacity: 1;
     visibility: visible;
+  }
+
+  .has-forma-tooltip:hover .forma-tooltip.down {
+    transform: translate(-50%, -100%) translateY(100px);
+    transform: translate3d(-50%, -100%, 0) translateY(100px);
   }
 }
 
