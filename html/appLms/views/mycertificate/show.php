@@ -27,20 +27,17 @@ $cert_columns = array(
     array('key' => 'cert_name', 'label' => Lang::t('_CERTIFICATE_NAME', 'course')),
     array('key' => 'date_complete', 'label' => Lang::t('_DATE_COMPLETE', 'certificate')),
     array('key' => 'download', 'label' => $icon_download, 'className' => 'img-cell')
-);
+);?>
 
-$this->widget('table', array(
-    'id'                => 'cert_table',
-    'ajaxUrl'		=> 'ajax.server.php?r=mycertificate/getMyCertificates',
-    'columns'		=> $cert_columns,
-    'rowsPerPage'	=> Get::sett('visuItem', 25),
-    'startIndex'	=> 0,
-    'results'		=> Get::sett('visuItem', 25),
-    'sort'              => 'year',
-    'dir'		=> 'desc',
-    'fields'		=> array('year', 'code', 'course_name', 'cert_name', 'date_complete', 'download'),
-    'show'		=> 'table'
-));
+<table class="table table-striped table-bordered display" style="width:100%" id="mycertificates">
+  <thead>
+    <tr><?php
+      foreach ($cert_columns as $column) {?>
+        <th scope="col"><b><?php echo $column['label'];?></b></th><?php
+      }?>
+    </tr>
+  </thead>
+</table><?php
 
 echo '</div>'; // close certificate tab 
 
@@ -53,7 +50,7 @@ $meta_columns = array(
     array('key' => 'courses', 'label' => Lang::t('_COURSE_LIST')),
     array('key' => 'download', 'label' => $icon_download, 'className' => 'img-cell')
 );
-
+/*
 $this->widget('table', array(
     'id'                => 'meta_table',
     'ajaxUrl'		=> 'ajax.server.php?r=mycertificate/getMyMetaCertificates',
@@ -63,7 +60,7 @@ $this->widget('table', array(
     'results'		=> Get::sett('visuItem', 25),
     'fields'		=> array('cert_code', 'cert_name', 'courses', 'preview', 'download'),
     'show'		=> 'table'
-));
+));*/
 
 echo '</div>'; // close metacertificate tab
 echo '</div>'; // close tabs
@@ -76,3 +73,42 @@ $("body").on("click", ".subs_pdf", function () {
     });
 </script>', 'scripts');
 ?>
+
+
+
+<script>
+$(function() {
+    var tableId = '#mycertificates';
+
+    /*var tableFields =   [
+        { name: 'status', field: 'LO_status', date: false, position: 5 },
+    { name: 'first_access', field: 'first_access', date: true, position: 6 },
+    { name: 'last_access', field: 'last_access', date: true, position: 7 },
+  ];*/
+
+  $(tableId).FormaTable({
+    processing: true,
+    serverSide: true,
+    /*columns: [
+      <?php foreach($columns as $column) { ?>
+        { data: "<?php echo $column['key'];?>", title: "<?php echo $column['label'];?>", orderable: "<?php echo $column['sortable'];?>" },
+      <?php } ?>
+    ],*/
+    scrollX: true,
+    order: [[ 0, "asc" ]],
+    ajax: {
+      url: 'ajax.server.php?r=mycertificate/getMyCertificates',
+      type: "POST",
+      complete: function(json) {
+        var tr = $(tableId).find('> tbody > tr');
+
+        /*$.each(tableFields, function(i, item) {
+          $(tr).find('> td:nth-child(' + item.position + ')').attr('data-field', item.name);
+        });*/
+      },
+    },
+  });
+});
+</script><?php
+
+Util::get_js(Get::rel_path('lib') . '/lib.formatable.js', true, true);

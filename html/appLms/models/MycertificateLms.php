@@ -21,14 +21,18 @@ class MycertificateLms extends Model {
         $this->id_user = $id_user;
     }
     
-    public function loadMyCertificates() {
+    public function loadMyCertificates($pagination = false, $count = false) {
         $startIndex = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'year');
         $dir = Get::req('dir', DOTY_MIXED, 'desc');
         
         $filter = array('id_user' => $this->id_user);
-        $myCertificates = $this->certificate->getAssignment($filter);
+        $myCertificates = $this->certificate->getAssignment($filter, $pagination, $count);
+
+        if ($count) {
+            return $myCertificates;
+        }
                 
         $data = array();
         foreach ($myCertificates AS $cert) {
@@ -70,14 +74,31 @@ class MycertificateLms extends Model {
                 $data[] = $row;
             }
         }
-        
+
+        if ($order = $_REQUEST['order']) {
+            $sort_index = $order[0]['column'];
+
+            $fields = array(
+                'year',
+                'code',
+                'course_name',
+                'cert_name',
+                'date_complete',
+                'preview',
+                'download',
+            );
+
+            $sort = $fields[$sort_index];
+            $dir = $order[0]['dir'];
+        }
+
         usort($data, function($a, $b) use ($sort, $dir) {
-            return $dir == 'desc' ? $b[$sort] - $a[$sort] : $a[$sort] - $b[$sort];
+            return $dir == 'desc' ? strcmp($b[$sort], $a[$sort]) : strcmp($a[$sort], $b[$sort]);
         });
         
         $data_to_display = array();
         for ($i = $startIndex; $i < ($startIndex + $results) && $i < count($data); $i++){
-            $data_to_display[] = $data[$i];
+            $data_to_display[] = array_values($data[$i]);
         }
         
         return $data_to_display;

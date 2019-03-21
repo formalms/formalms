@@ -130,36 +130,43 @@ class Certificate {
     }
 
         function countAssignment($filter){
-                return count($this->getAssignment($filter));
+            return count($this->getAssignment($filter));
         }
 
-        function getAssignment($filter, $pagination = false){
-                $assigned = $this->getAssigned($filter);
-                $assignable = $this->getAssignable($filter);
+        function getAssignment($filter, $pagination = false, $count = null) {
+            if ($pagination && isset($pagination['search'])) {
+                $filter['search'] = $pagination['search'];
+            }
+            $assigned = $this->getAssigned($filter);
+            $assignable = $this->getAssignable($filter);
 
-                $assignment = array();
-                foreach ($assigned AS $as){
-                    $assignment[] = $as;
-                }
-                foreach ($assignable AS $as){
-                    $assignment[] = $as;
-                }
+            $assignment = array();
+            foreach ($assigned AS $as){
+                $assignment[] = $as;
+            }
+            foreach ($assignable AS $as){
+                $assignment[] = $as;
+            }
 
-                $paginated_assignment = array();
-                if($pagination) {
-                    $offset = $pagination["offset"];
-                    $limit = $offset + $pagination["num_rows"];
-                    $limit = ($limit <= count($assignment) ? $limit : count($assignment));
-                    for($i = $offset; $i < $limit; $i++) {
-                        $paginated_assignment[] = $assignment[$i];
-                    }
+            $paginated_assignment = array();
+            if($pagination) {
+                $offset = $pagination["startIndex"];
+                $limit = $offset + $pagination["rowsPerPage"];
+                $limit = ($limit <= count($assignment) ? $limit : count($assignment));
+                for($i = $offset; $i < $limit; $i++) {
+                    $paginated_assignment[] = $assignment[$i];
                 }
+            }
 
-                return $pagination ? $paginated_assignment : $assignment;
+            if ($count) {
+                return count($assignable) + count($assigned);
+            }
+
+            return $pagination ? $paginated_assignment : $assignment;
         }
 
-        function getAssigned($filter){
-                $query = "      SELECT ca.id_certificate, ca.id_course,"
+        function getAssigned($filter) {
+                $query = "SELECT ca.id_certificate, ca.id_course,"
                             ."	ca.id_user, SUBSTRING(u.userid, 2) AS username,"
                             ."	u.lastname, u.firstname, co.code, cc.available_for_status,"
                             ."  co.name AS course_name, ce.name AS cert_name,"
@@ -180,13 +187,13 @@ class Certificate {
                             ."      ON ca.id_user = u.idst"
                             ."	WHERE 1 = 1";
                 if (isset($filter['id_certificate'])) {
-                        $query .= " AND ca.id_certificate = ".$filter['id_certificate'];
+                    $query .= " AND ca.id_certificate = ".$filter['id_certificate'];
                 }
                 if (isset($filter['id_course'])) {
-                        $query .= " AND ca.id_course = ".$filter['id_course'];
+                    $query .= " AND ca.id_course = ".$filter['id_course'];
                 }
                 if (isset($filter['id_user'])) {
-                        $query .= " AND ca.id_user = ".$filter['id_user'];
+                    $query .= " AND ca.id_user = ".$filter['id_user'];
                 }
             if (isset($filter['search'])) {
                     $query .= " AND (1 = 0";
@@ -233,7 +240,7 @@ class Certificate {
                 return $assigned;
         }
 
-        function getAssignable($filter){
+        function getAssignable($filter) {
                 $query = "	SELECT ce.id_certificate, co.idCourse AS id_course,"
                             ."	u.idst AS id_user, SUBSTRING(u.userid, 2) AS username,"
                             ."	u.lastname, u.firstname, co.code, cc.available_for_status,"
