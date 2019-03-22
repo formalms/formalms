@@ -326,22 +326,14 @@ class Certificate {
         return count($this->getMetaAssignment($filter));
     }
     
-    function getMetaAssignment($filter){
+    function getMetaAssignment($filter) {
         $metaAssigned = $this->getMetaAssigned($filter);
         $metaAssignable = $this->getMetaAssignable($filter);
 
-        $metaAssignment = array();
-        foreach ($metaAssigned AS $mas) {
-            $metaAssignment[] = $mas;
-        }
-        foreach ($metaAssignable AS $mas) {
-            $metaAssignment[] = $mas;
-        }
-
-        return $metaAssignment;        
+        return array_merge($metaAssigned, $metaAssignable);        
     }
     
-    function getMetaAssigned($filter){
+    function getMetaAssigned($filter) {
         $query = "  SELECT cma.idCertificate AS id_certificate, cma.idMetaCertificate AS id_meta, cmc.idUser AS id_user,"
                . "      ce.code AS cert_code, ce.name AS cert_name, cma.on_date,"
                . "      GROUP_CONCAT(DISTINCT CONCAT('(', co.code, ') - ', co.name) SEPARATOR '<br>') AS courses"
@@ -379,7 +371,7 @@ class Certificate {
         return $metaAssigned;
     }
     
-    function getMetaAssignable($filter){
+    function getMetaAssignable($filter) {
         $query = "  SELECT cm.idCertificate AS id_certificate, cm.idMetaCertificate AS id_meta, cmc.idUser AS id_user,"
                . "      ce.code AS cert_code, ce.name AS cert_name, NULL AS on_date,"
                . "      GROUP_CONCAT(DISTINCT CONCAT('(', co.code, ') - ', co.name) SEPARATOR '<br>') AS courses"
@@ -402,7 +394,7 @@ class Certificate {
                . "      WHERE mc.idUser = cmc.idUser"
                . "          AND mc.idMetaCertificate = cmc.idMetaCertificate"
                . "  )" ;
-        
+
         if (isset($filter['id_certificate'])) {
             $query .= " AND cm.idCertificate = " . $filter['id_certificate'];
         }
@@ -428,36 +420,37 @@ class Certificate {
         return $metaAssignable;
     }
 
-        function canRelExceptional($perm_close_lo, $id_user, $id_course){
-            require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
-            require_once($GLOBALS['where_lms'] . '/lib/lib.orgchart.php');
+    function canRelExceptional($perm_close_lo, $id_user, $id_course){
+        require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
+        require_once($GLOBALS['where_lms'] . '/lib/lib.orgchart.php');
 
-            $course_score_final = false;
-            $org_man = new OrganizationManagement(false);
-            $rep_man = new CourseReportManager();
+        $course_score_final = false;
+        $org_man = new OrganizationManagement(false);
+        $rep_man = new CourseReportManager();
 
-            if ($perm_close_lo == 0) {
-                $score_final = $org_man->getFinalObjectScore(array($id_user), array($id_course));
+        if ($perm_close_lo == 0) {
+            $score_final = $org_man->getFinalObjectScore(array($id_user), array($id_course));
 
-                if (isset($score_final[$id_course][$id_user]) && $score_final[$id_course][$id_user]['max_score']) {
-                    $course_score_final = $score_final[$id_course][$id_user()]['score'];
-                    $course_score_final_max = $score_final[$id_course][$id_user()]['max_score'];
-                }
-            } else {
-                $score_course = $rep_man->getUserFinalScore(array($id_user), array($id_course));
-
-                if (!empty($score_course)) {
-                    $course_score_final = (isset($score_course[$id_user][$id_course]) ? $score_course[$id_user][$id_course]['score'] : false);
-                    $course_score_final_max = (isset($score_course[$id_user][$id_course]) ? $score_course[$id_user][$id_course]['max_score'] : false);
-                }
+            if (isset($score_final[$id_course][$id_user]) && $score_final[$id_course][$id_user]['max_score']) {
+                $course_score_final = $score_final[$id_course][$id_user()]['score'];
+                $course_score_final_max = $score_final[$id_course][$id_user()]['max_score'];
             }
+        } else {
+            $score_course = $rep_man->getUserFinalScore(array($id_user), array($id_course));
 
-            if ($course_score_final >= $certificate[CERT_AV_POINT_REQUIRED]){
-                return true;
-            } else {
-                return false;
+            if (!empty($score_course)) {
+                $course_score_final = (isset($score_course[$id_user][$id_course]) ? $score_course[$id_user][$id_course]['score'] : false);
+                $course_score_final_max = (isset($score_course[$id_user][$id_course]) ? $score_course[$id_user][$id_course]['max_score'] : false);
             }
-		}
+        }
+
+        if ($course_score_final >= $certificate[CERT_AV_POINT_REQUIRED]){
+            return true;
+        } else {
+            return false;
+        }
+	}
+
 	function getCertificateList($name_filter = false, $code_filter = false) {
 
 		$cert = array();

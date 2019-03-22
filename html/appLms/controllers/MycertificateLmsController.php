@@ -81,18 +81,30 @@ class MycertificateLmsController extends LmsController
     {
         checkPerm('view', false, self::mod_name);
 
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
+        $startIndex = Get::req('start', DOTY_INT, 0);
+        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 10));
+        $rowsPerPage = Get::req('length', DOTY_INT, $results);
 
+        $pagination = array(
+            'startIndex' => $startIndex,
+            'rowsPerPage' => $rowsPerPage,
+            'results' => $results,
+        );
+
+        if ($search = $_REQUEST['search']) {
+            $pagination['search'] = $search['value'];
+        } else {
+            $pagination['search'] = null;
+        }
         $totalMetaCertificates = $this->model->countMyMetaCertificates();
         $metaCertificates = $this->model->loadMyMetaCertificates();
 
         $result = array(
-            'totalRecords' => $totalMetaCertificates,
+            'recordsTotal' => $totalMetaCertificates,
             'startIndex' => $startIndex,
-            'rowsPerPage' => $results,
-            'results' => count($metaCertificates),
-            'records' => $metaCertificates
+            'rowsPerPage' => $rowsPerPage,
+            'recordsFiltered' => $totalMetaCertificates,
+            'data' => $metaCertificates,
         );
 
         echo $this->json->encode($result);
