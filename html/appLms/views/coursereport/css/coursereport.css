@@ -91,7 +91,6 @@ tfoot.empty td {
 }
 
 #overview .table {
-    table-layout: fixed;
     margin: 0;
 }
 
@@ -325,7 +324,6 @@ tfoot.empty td {
 .pagination {
     text-align: center;
     line-height:  30px;
-    border-bottom:  1px solid black;
     max-width: 75%;
     margin: 0 auto;
     border-radius:  0;
@@ -360,10 +358,6 @@ tfoot.empty td {
     max-width: none;
 }
 
-.pagination {
-    display: none;
-}
-
 #table-overview tbody td.details-control {
     background: url('../images/details_open.png') no-repeat center center;
     cursor: pointer;
@@ -375,4 +369,12 @@ tfoot.empty td {
 
 #table-overview table.extra-info {
     padding-left: 50px;
+}
+
+table.table-bordered.dataTable tbody td {
+    word-break: break-all;
+}
+
+.pagination__initial {
+    display: none;
 }
