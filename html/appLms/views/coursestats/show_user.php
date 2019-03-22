@@ -106,7 +106,18 @@ function editTableInit(tableId) {
     ajax: {
       url: 'ajax.server.php?r=coursestats/getusertabledata&id_user=<?php echo $id_user;?>',
       type: "GET",
-      complete: function(json) {},
+      complete: function(json) {
+        var content = '';
+        var newContent = '';
+        var id_lo = null;
+
+        $.each($(tableId).find('tr'), function(i, item) {
+          id_lo = $(item).attr('id');
+          content = $(item).find('td:nth-child(3)').html();
+          newContent = '<a href="index.php?r=coursestats/show_user_object&id_user='+ <?php echo (int)$id_user; ?> +'&id_lo=' + id_lo + '&from_user=1">' + content + '</a>';
+          $(item).find('td:nth-child(3)').html(newContent);
+        });
+      },
     },
     order: [[ 1, "asc" ]],
   });
