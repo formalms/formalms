@@ -317,7 +317,7 @@ window.CourseReport = (function ($) {
         let table = $('#table-details').DataTable();
         table.destroy();
         table = $('#table-details').DataTable( {
-            paging: false,
+            paging: true,
             "language": {
                 "info": "",
             }

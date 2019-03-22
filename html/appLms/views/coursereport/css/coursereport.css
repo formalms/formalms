@@ -359,3 +359,7 @@ tfoot.empty td {
     width: auto;
     max-width: none;
 }
+
+.pagination {
+    display: none;
+}
