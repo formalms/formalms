@@ -330,7 +330,7 @@ class UsermanagementAdmController extends AdmController {
 
 	protected function _getUserEditMask($idst = false) {
 		require_once(_adm_.'/lib/lib.field.php');
-		require_once(_base_.'/lib/lib.platform.php');
+		require_once(Forma::inc(_base_ . '/lib/lib.platform.php'));
 
 		$mask = "";
 		$model = new UsermanagementAdm();
@@ -1424,7 +1424,7 @@ class UsermanagementAdmController extends AdmController {
 				$selection = $selector->getSelection($_POST);
 
 				if ( Get::sett('orgchart_singlenode', 'off') == 'on' ){
-					require_once(_lib_.'/lib.user_profile.php');
+					require_once(Forma::inc(_base_ . '/lib/lib.user_profile.php'));
 					require_once(_adm_.'/modules/org_chart/tree.org_chart.php');
 
 					$treedborgdb = new TreeDb_OrgDb();
@@ -1933,7 +1933,7 @@ class UsermanagementAdmController extends AdmController {
 			case 2: {
 				$params['orgchart_list'] = $this->model->getOrgChartDropdownList(Docebo::user()->getIdSt());
 
-				require_once(_base_.'/lib/lib.upload.php');
+				require_once(Forma::inc(_base_ . '/lib/lib.upload.php'));
 
 				// ----------- file upload -----------------------------------------
 				if($_FILES['file_import']['name'] == '') {
@@ -2105,7 +2105,7 @@ class UsermanagementAdmController extends AdmController {
 				$params['table'] = $buffer;
 
 				// remove uploaded file:
-				require_once(_base_.'/lib/lib.upload.php');
+				require_once(Forma::inc(_base_ . '/lib/lib.upload.php'));
 				sl_open_fileoperations();
 				unlink($filename);
 				sl_close_fileoperations();
@@ -2192,7 +2192,7 @@ class UsermanagementAdmController extends AdmController {
 			return;
 		}
 
-		require_once(_base_.'/lib/lib.user_profile.php');
+		require_once(Forma::inc(_base_ . '/lib/lib.user_profile.php'));
 
 		$id_user = Get::req('id', DOTY_INT, -1);
 		if ($id_user <= 0) {
@@ -2243,7 +2243,7 @@ class UsermanagementAdmController extends AdmController {
 			return;
 		}
 
-		require_once(_base_.'/lib/lib.user_profile.php');
+		require_once(Forma::inc(_base_ . '/lib/lib.user_profile.php'));
 
 		$id_user = Get::req('id_user', DOTY_INT, -1);
 		if ($id_user > 0) {
@@ -2559,7 +2559,7 @@ class UsermanagementAdmController extends AdmController {
 		$language = getDefaultLanguage();
 		$languages = Docebo::langManager()->getAllLanguages();
 
-		require_once(_base_.'/lib/lib.platform.php');
+		require_once(Forma::inc(_base_ . '/lib/lib.platform.php'));
 		$pman =& PlatformManager::createInstance();// = new PlatformManager();
 		$platforms = $pman->getPlatformList();
 
@@ -2639,7 +2639,9 @@ class UsermanagementAdmController extends AdmController {
 				return;
 			}
 		}
-		if (isset($sel_properties['force_change'])) $info->force_change = Get::req('force_change', DOTY_INT, 0) > 0;
+		if (isset($sel_properties['force_change'])) $info->force_change = $sel_properties['force_change'] > 0;
+
+		if (isset($sel_properties['link_reset_password'])) $info->force_change = $sel_properties['link_reset_password'] > 0;
 
 		if (isset($sel_properties['level'])) $info->level = Get::req('level', DOTY_STRING, "");
 
@@ -2682,6 +2684,43 @@ class UsermanagementAdmController extends AdmController {
 		$event->setUsers($users);
 		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
 		$users = $event->getUsers();
+
+		$acl_man =& Docebo::user()->getAclManager();
+
+		//send email alert
+		if(isset($sel_properties['send_alert']) && isset($sel_properties['password']) &&  $info->password != "" ) {
+
+			for ($i=0; $i<count($users); $i++) {
+				
+				$array_subst = array(
+					'[url]' => Get::site_url(),
+					'[userid]' => $acl_man->getUserid($users[$i]),
+					'[password]' => $info->password
+				);
+
+				require_once(_base_.'/lib/lib.eventmanager.php');
+				$e_msg = new EventMessageComposer();
+
+				$e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
+				$e_msg->setBodyLangText('email', '_REGISTERED_USER_TEXT', $array_subst );
+
+				$e_msg->setBodyLangText('sms', '_REGISTERED_USER_TEXT_SMS', $array_subst );
+
+				$recipients = array($users[$i]);
+				createNewAlert(	'UserNew', 'directory', 'edit', '1', 'New user created', $recipients, $e_msg, true );
+
+			}
+
+		}
+
+		//send email link change password
+		if(isset($sel_properties['link_reset_password'])) {
+			require_once(_base_.'/appCore/models/HomepageAdm.php');
+			$homepageAdmModel = new HomepageAdm();
+			for ($i=0; $i<count($users); $i++) {
+				$res = $homepageAdmModel->sendLostPwd($acl_man->getUserid($users[$i]));
+			}
+		}
 
 		$res = $this->model->updateMultipleUsers($users, $info);
 

@@ -42,10 +42,13 @@ class PrecompileLms extends Model {
 			$policy_checked = true;
 		}
 		
-		require_once(_adm_.'/lib/lib.field.php');
-		$fieldlist = new FieldList();
+		$fields_checked = true;
+		if(Get::sett('request_mandatory_fields_compilation', 'on') == 'on') {
+			require_once(_adm_.'/lib/lib.field.php');
+			$fieldlist = new FieldList();
 
-		$fields_checked = $fieldlist->checkUserMandatoryFields($id_user);
+			$fields_checked = $fieldlist->checkUserMandatoryFields($id_user);
+		}
 		
 		return (!$policy_checked || !$fields_checked);
 	}
@@ -137,7 +140,9 @@ class PrecompileLms extends Model {
 	 */
 	public function getAcceptingPolicy($id_user) {
 		//check input values
-		if ((int)$id_user <= 0) return FALSE;
+		if ((int)$id_user <= 0) {
+			return FALSE;
+		}
 
 		//retrieve id_policy from DB
 		$pmodel = new PrivacypolicyAdm();

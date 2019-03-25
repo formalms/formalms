@@ -1448,6 +1448,39 @@ class UserManagerRenderer
         return $out;
     }
 
+    // TODO: move this function in UserManager ?
+
+    /**
+     * getCodeCourses
+     * @param int $reg_code
+     * @param boolean $byName
+     * @return array
+     */
+    private function getCodeCourses($reg_code)
+    {
+        $query = "SELECT re.course_list
+            FROM %adm_rules_entity AS re 
+            INNER JOIN %adm_rules r ON r.id_rule = re.id_rule
+            LEFT JOIN %adm_org_chart_tree AS oct
+            ON (oct.idst_oc = re.id_entity) 
+            WHERE r.rule_type = 'orgchart' AND oct.idOrg = ".$reg_code;
+        $result = sql_query($query);
+        $entity = sql_fetch_array($result);
+
+        return $entity ? json_decode($entity['course_list']) : [];
+    }
+
+    private function getRegCodeFromNode($nodeName)
+    {
+        $query = "SELECT oct.idOrg
+            FROM %adm_org_chart_tree AS oct
+            WHERE oct.code = '".$nodeName."'";
+
+        $result = sql_query($query);
+        $entity = sql_fetch_array($result);
+
+        return $entity['idOrg'];
+    }
 
     // TODO: move this function in UserManager ?
 
@@ -1496,7 +1529,9 @@ class UserManagerRenderer
                 } //procced with tree_man
                 case "tree_man" : {
                     // resolving the tree_man
-                    $array_folder = $uma->getFoldersFromCode($reg_code);
+                    $array_course = $this->getCodeCourses($reg_code);
+                    $array_folder = array($reg_code => $reg_code);
+
                     if (empty($array_folder) && $code_is_mandatory) {
 
                         //invalid code
@@ -1532,10 +1567,8 @@ class UserManagerRenderer
                 };
                     break;
                 case "tree_drop" : {
-
-                    // from the dropdown we will recive the id of the folder
+                    $array_course = $this->getCodeCourses($reg_code);
                     $array_folder = array($reg_code => $reg_code);
-                    //is a valid id ?
                 };
                     break;
                 case "custom": {
@@ -1570,6 +1603,7 @@ class UserManagerRenderer
             $res['msg'] = $lang->def('_INVALID_CODE');
             return $res;
         }
+
         // now in array_folder we have the associated folder for the users
         if (!empty($array_folder)) {
 			//let's find the oc and ocd
@@ -1588,10 +1622,9 @@ class UserManagerRenderer
         }
         // and in array_course the courses
         if (!empty($array_course)) {
+            require_once(_lms_ . '/lib/lib.subscribe.php');
 
             foreach ($array_course as $id_course) {
-
-                require_once(_lms_ . '/lib/lib.subscribe.php');
                 $subscriber = new CourseSubscribe_Management();
                 $subscriber->subscribeUser($iduser, $id_course, '3');
             }
@@ -1802,7 +1835,8 @@ class UserManagerRenderer
                 case "tree_man" : {
                     // resolving the tree_man
                     $uma = new UsermanagementAdm();
-                    $array_folder = $uma->getFoldersFromCode($reg_code);
+                    $reg_code = $this->getRegCodeFromNode($reg_code);
+                    $array_folder = $uma->getFolderGroups($reg_code);
                 };
                     break;
                 case "code_module" : {
@@ -1851,6 +1885,7 @@ class UserManagerRenderer
 
         // find all the related extra field
         $extra_field = new FieldList();
+
         $play_field = $extra_field->playFieldsForUser(0,
             (isset($_POST['group_sel'])
                 ? $_POST['group_sel']

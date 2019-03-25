@@ -355,6 +355,14 @@ class GroupmanagementAdm extends Model {
 				$query = "INSERT INTO %adm_group (".implode(",", $fields).") VALUES (".implode(",", $values).")";
 				$output = $this->db->query($query);
 			}
+
+			$ulevel = Docebo::user()->getUserLevelId();
+			if ($ulevel == ADMIN_GROUP_ADMIN) {
+				require_once(_base_.'/lib/lib.preference.php');
+				$preference = new AdminPreference();
+				$user_id = (int)$_SESSION['public_area_idst'];
+				$preference->addAdminTree($idst, $user_id);
+			}
 		}
 
 		return $output;

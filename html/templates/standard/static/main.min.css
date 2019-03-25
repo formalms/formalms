@@ -3677,6 +3677,25 @@ body {
 .header--external-catalogue {
   top: 0; }
 
+@media (max-width: 1024px) {
+  .lms-user-content-wrapper {
+    padding: 0;
+    margin: 0;
+    width: 100vw; } }
+
+@media (max-width: 1024px) {
+  .lms-user-content-wrapper > .container-fluid {
+    padding: 0; } }
+
+@media (max-width: 1024px) {
+  .lms-user-content-wrapper > .container-fluid > .row {
+    margin: 0; } }
+
+@media (max-width: 1024px) {
+  .lms-user-content-wrapper > .container-fluid > .row > .col-md-12 {
+    margin: 0;
+    padding: 0; } }
+
 .course-box {
   width: 100%;
   min-height: 460px;

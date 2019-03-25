@@ -740,9 +740,11 @@ function manmodule() {
 	$query_free_module = "
 	SELECT idModule, default_name 
 	FROM ".$GLOBALS['prefix_lms']."_module AS module 
-	WHERE module_info = '' or module_info = 'plugin' ";
+	WHERE 1=1 ";
 
 	if($used_module != '') $query_free_module .= " AND idModule NOT IN ( ".substr($used_module, 0 , -1)." )";
+    $query_free_module .= " AND (module_info = '' or module_info = 'plugin')"; 
+    
 	$re_free_module = sql_query($query_free_module);
 	
 	$tb = new Table(0, $lang->def('_TB_MANMODULE_CAPTION'), $lang->def('_TB_MANMODULE_SUMMARY'));
@@ -1065,7 +1067,7 @@ function upmodule() {
 		if($_POST['my_name'] == $lang->def('_DEFAULT_MY_NAME')) $my_name = '';
 		else $my_name = $_POST['my_name'];
 		
-		// Insert module in the list of this menu custom
+		// Insert module in the list of this menu custom 
 		$re = sql_query("
 		INSERT INTO ".$GLOBALS['prefix_lms']."_menucustom_under 
 		( idCustom, idMain, idModule, sequence, my_name ) VALUES 

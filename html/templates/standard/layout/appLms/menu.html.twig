@@ -7,8 +7,8 @@
         <ul class="dropdown-menu">
         {% for subitem in item.submenu %}
             <li{% if subitem.active %} class="active"{% endif %}>
-                <a href="{{ item.url }}" title="{{ translate(item.name, 'menu_over') }}">
-                    {% if item.image %}{{ item.image|raw }}{% else %}{{ translate(item.name, 'menu_over') }}{% endif %}
+                <a href="{{ subitem.url }}" title="{{ translate(subitem.name, 'menu_over') }}">
+                    {% if subitem.image %}{{ subitem.image|raw }}{% else %}{{ translate(subitem.name, 'menu_over') }}{% endif %}
                 </a>
             </li>
         {% endfor %}
