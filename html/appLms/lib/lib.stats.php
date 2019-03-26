@@ -288,6 +288,10 @@ function saveTrackStatusChange( $idUser, $idCourse, $status ) {
 						'User end course',
 						$teachers, 
 						$msg_composer );
+
+		$event = new \appLms\Events\Lms\CourseCompletedEvent($idCourse,$idUser,$acl_man);
+
+		\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseCompletedEvent::EVENT_NAME, $event);
 		
 		//add course's competences scores to user
 		$cmodel = new CompetencesAdm();
