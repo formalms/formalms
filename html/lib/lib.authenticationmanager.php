@@ -61,11 +61,16 @@ class AuthenticationManager {
         $user = $this->plugin_manager->run_plugin($plugin, "getUserFromLogin");
         
         if(!($user instanceof DoceboUser)) return $user;
-            
-        return $this->saveUser($user);
+        
+        $saveUser = $this->saveUser($user);
+        
+        $event = new \appCore\Events\Core\User\LoggedInEvent($user);
+        \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
+        
+        return $saveUser;
     }
     
-    public static function logout() {
+    public static function logout($session = null) {
         
         // TODO: controllo isAnonymous prima del richiamo della funzione
         // TODO: lingua
@@ -80,6 +85,11 @@ class AuthenticationManager {
 
         // recreate Anonymous user
         $GLOBALS['current_user'] =& DoceboUser::createDoceboUserFromSession('public_area');
+        
+        if($session != null){
+        	$_SESSION = array_merge($_SESSION,  $session);
+        	$_COOKIE = array_merge($_COOKIE,  $session);
+        }
         
         $event = new \appCore\Events\Core\User\LoggedOutEvent($user);
         \appCore\Events\DispatcherManager::dispatch($event::EVENT_NAME, $event);
