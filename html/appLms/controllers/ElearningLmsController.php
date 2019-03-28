@@ -67,7 +67,7 @@ class ElearningLmsController extends LmsController
     public function fieldsTask()
     {
         $level = Docebo::user()->getUserLevelId();
-        if (Get::sett('request_mandatory_fields_compilation', 'off') === 'on' && $level !== ADMIN_GROUP_GODADMIN) {
+        if (Get::sett('request_mandatory_fields_compilation', 'on') === 'on' && $level !== ADMIN_GROUP_GODADMIN) {
             require_once(_adm_ . '/lib/lib.field.php');
             $fl = new FieldList();
             $idst_user = Docebo::user()->getIdSt();

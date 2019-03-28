@@ -135,14 +135,23 @@ function registerAdminUser() {
 }
 
 function storeSettings() {
-	$url = $_SESSION["site_url"];
+	require_once(_adm_.'/versions.php');
 
+	$url = $_SESSION["site_url"];
 	$qtxt = "UPDATE core_setting SET param_value='" . $url . "' ";
 	$qtxt.="WHERE param_name='url'";
-
-	$q = sql_query($qtxt);$qtxt = "UPDATE core_setting SET param_value='" . $_SESSION['sel_lang'] . "' ";
+	$q = sql_query($qtxt);
+	
+	$qtxt = "UPDATE core_setting SET param_value='" . $_SESSION['sel_lang'] . "' ";
 	$qtxt.="WHERE param_name='default_language'";
 	$q = sql_query($qtxt);
+
+	$qtxt = "INSERT INTO `core_setting` ";
+	$qtxt.=" (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) ";
+	$qtxt.=" VALUES ";
+	$qtxt.=" ('core_version', '" . _file_version_ . "', 'string', 255, '0', 1, 0, 1, 1, '') ";
+	$q = sql_query($qtxt);
+	
 }
 
 
