@@ -1,31 +1,15 @@
 <div class="table-responsive">
     <table id="table-overview" class="table table-bordered">
-        <colgroup>
-            <col style="width: 30px">
-            <col style="width: 200px">
-            <col style="width: 75px">
-            <col style="width: 75px">
-            <col style="width: 75px">
-            <col style="width: 75px">
-            <col style="width: 75px">
-            <col style="width: 75px">
-            <col style="width: 85px">
-            <col style="width: 85px">
-            <col style="width: 75px">
-            <col style="width: 75px">
-            <col style="width: 75px">
-            <col style="width: 75px">
-            <col style="width: 100px">
-            <col style="width: 85px">
-        </colgroup>
+
         <thead>
         <tr>
             <th colspan="2" class="transparent"></th>
-            <th colspan="6">{{ translate('_INFO','coursereport') }}</th>
+            <th colspan="7">{{ translate('_INFO','coursereport') }}</th>
             <th colspan="7">{{ translate('_DETAILS','standard') }}</th>
             <th class="transparent"></th>
         </tr>
         <tr>
+            <td></td>
             <td></td>
             <td></td>
             <td>{{ translate('_TYPE','standard') }}</td>
@@ -48,6 +32,7 @@
         {% for test in overview['tests'] %}
             <tr>
                 <td class="handle"><i class="fa fa-sort"></i></td>
+                <td></td>
                 <td class="name">{{ test.name }}</td>
                 <td class="table-cell">{{ test.typeString }}</td>
                 <td class="table-cell">{{ test.max }}</td>
@@ -101,7 +86,7 @@
         {% endfor %}
         </tbody>
         <tfoot class="empty">
-        <th colspan="15"></th>
+        <th colspan="17"></th>
         </tfoot>
     </table>
 
@@ -130,10 +115,16 @@
     activities = {{ details|json_encode(constant('JSON_HEX_APOS')) | raw }};
 
     $(document).ready(function() {
-        $('#table-overview').DataTable({
+        var table = $('#table-overview').DataTable({
             paging: false,
             "columns": [
                 { "orderable": false, "searchable": false },
+                {
+                    "className":      'details-control',
+                    "orderable":      false,
+                    "data":           null,
+                    "defaultContent": ''
+                },
                 null,
                 null,
                 null,
@@ -150,10 +141,63 @@
                 { "orderable": false, "searchable": false },
                 { "orderable": false, "searchable": false }
             ],
+            "columnDefs": [
+                {
+                    "targets": [ 4 ],
+                    "visible": false,
+                },
+                {
+                    "targets": [ 5 ],
+                    "visible": false
+                },
+                {
+                    "targets": [ 6 ],
+                    "visible": false
+                }
+            ],
             "language": {
                 "info": "",
             }
         });
+
+        function format ( d ) {
+            const label4 = '{{ translate('_TEST_QUEST_MAXTESTSCORE','test') }}';
+            const label5 = '{{ translate('_REQUIRED_SCORE','standard') }}';
+            const label6 = '{{ translate('_WEIGHT','coursereport') }}';
+
+            // `d` is the original data object for the row
+            return '<table cellpadding="5" cellspacing="0" border="0" class="extra-info">'+
+                    '<tr>'+
+                        '<td style="text-align: left; width: 200px">'+label4+'</td>'+
+                        '<td style="text-align: center; width: 30px">'+d[4]+'</td>'+
+                    '</tr>'+
+                    '<tr>'+
+                        '<td style="text-align: left; width: 200px">'+label5+'</td>'+
+                        '<td style="text-align: center; width: 30px">'+d[5]+'</td>'+
+                    '</tr>'+
+                    '<tr>'+
+                        '<td style="text-align: left; width: 200px">'+label6+'</td>'+
+                        '<td style="text-align: center; width: 30px">'+d[6]+'</td>'+
+                    '</tr>'+
+                '</table>';
+        }
+
+        // Add event listener for opening and closing details
+        $('#table-overview tbody').on('click', 'td.details-control', function () {
+            const tr = $(this).closest('tr');
+            const row = table.row( tr );
+
+            if ( row.child.isShown() ) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                row.child( format(row.data()) ).show();
+                tr.addClass('shown');
+            }
+        } );
     });
 
 </script>

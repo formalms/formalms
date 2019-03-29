@@ -363,3 +363,16 @@ tfoot.empty td {
 .pagination {
     display: none;
 }
+
+#table-overview tbody td.details-control {
+    background: url('../images/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+
+#table-overview tbody tr.shown td.details-control {
+    background: url('../images/details_close.png') no-repeat center center;
+}
+
+#table-overview table.extra-info {
+    padding-left: 50px;
+}
