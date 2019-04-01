@@ -1,4 +1,8 @@
 <?php
+
+include Forma::inc(_lib_ . '/formatable/include.php');
+Util::get_js(Get::rel_path('lms') . '/views/coursestats/coursestats.js', true, true);
+
 echo getTitleArea(Lang::t('_COURSESTATS', 'menu_course'));
 ?>
 <div class="std_block"><?php
@@ -90,7 +94,4 @@ $(function() {
     },
   });
 });
-</script><?php
-
-Util::get_js(Get::rel_path('lib') . '/lib.formatable.js', true, true);
-Util::get_js(Get::rel_path('lms') . '/views/coursestats/coursestats.js', true, true);?>
+</script>
