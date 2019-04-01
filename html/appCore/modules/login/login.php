@@ -27,11 +27,7 @@ function login() {
 	$extra = false;
 	if(isset($GLOBALS['logout'])) {
 		$extra = array( 'style' => 'logout_action', 'content' => $lang->def('_UNLOGGED') );
-	}
-	if(isset($GLOBALS['access_fail'])) {
-		$extra = array( 'style' => 'noaccess', 'content' => $lang->def('_NOACCESS') );
-	}
-	
+    }
 	$out->add(
 		Form::openForm('admin_box_login', 'index.php?modname=login&amp;op=confirm')
 		.$user_manager->getLoginMask('index.php?modname=login&amp;op=login', $extra)

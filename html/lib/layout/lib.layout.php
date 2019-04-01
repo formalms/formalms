@@ -359,7 +359,6 @@ class Layout
                 if ($GLOBALS['maintenance'] != "on") {
                     $retArray['changeLanguage_text'] = Lang::t('_CHANGELANG', 'register');
                     $retArray['changeLanguageBox'] = self::change_lang();
-                    $retArray['social_login'] = LoginLayout:: social_login();
                     $retArray['login_form'] = LoginLayout:: login_form();
                     $retArray['service_msg'] = LoginLayout:: service_msg();
                     $retArray['layout_zone_footer'] = self::zone('footer');
@@ -369,11 +368,7 @@ class Layout
                     $retArray['login_maintenance_text'] = Lang::t('_MAINTENANCE', 'login');
                 }
 
-                if (LoginLayout::isSocialActive()) {
-                    $retArray['login_box_css'] = 'login-box-social';
-                } else {
-                    $retArray['login_box_css'] = 'login-box';
-                }
+                $retArray['login_box_css'] = 'login-box';
 
                 if ($GLOBALS['framework']['course_block'] == "on" and $GLOBALS['maintenance'] != "on") {
                     $retArray['catalogue'] = self::get_catalogue();
