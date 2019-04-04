@@ -21,6 +21,10 @@ class Course_API extends API {
 		$output =array();
 
 		$output['success']=true;
+        
+        
+
+        
 
 		$id_category =(isset($params['category']) ? (int)$params['category'] : false);
 
@@ -627,16 +631,155 @@ class Course_API extends API {
 
 
 
+    
+    /**
+       dev: LRZ 
+       Get certificate by username
+       @param $params
+              - username
+              - course_id (optional)
+       @return array
+    */    
+    public function getCertificateByUser($params){
+		require_once(_lms_.'/lib/lib.subscribe.php');
+		require_once(_lms_.'/lib/lib.course.php');
+		$output =array();
+
+		$output['success']=true;
+        
+		if (empty($params['username'])) {
+			return false;
+		}
+		else {
+			$username =$params['username'];
+		}    
+    
+    
+		if (!empty($params['course_id']))  $id_course = (int)$params['course_id'];
+	   
+    
+    
+        // user info 
+        $db = DbConn::getInstance();
+		$qtxt ="SELECT idst, firstname, lastname  FROM  %adm_user 
+				WHERE userid='/".$username."' ";
+		$q =$db->query($qtxt);
+		$user_info =$db->fetch_assoc($q);        
+
+        $output['idst'] = (int)$user_info['idst'];
+        $output['firstname'] = $user_info['firstname'];
+        $output['lastname'] = $user_info['lastname'];
+        $output['userid'] = $username;
+        if($output['idst']==0)  $output['message']="User not found";
+    
+        // gets certificate information
+        // course title, certification link, issued data, course IDo
+        $qcert = "select id_course, name, code, on_date, cert_file from  %lms_certificate_assign, %lms_course  where id_user=".$output['idst']." and idCourse=id_course";
+        if($id_course>0) $qcert = $qcert." and id_course=".$id_course; 
+        $qcert = $qcert." order by on_date desc";
+    
+        
+			$output['certificate_list'] = array();
+		
+            $qc =$db->query($qcert);
+        	while($row = $db->fetch_assoc($qc)) {
+            
+                	$output['certificate_list'][] = array('course_id' => $row['id_course'],
+                                                          'course_code' => $row['code'],
+                                                          'course_name' => $row['name']   ,
+                                                          'date_generate' =>  $row['on_date'],
+                                                          'cert_file' => Get::site_url()."files/appLms/certificate/".$row['cert_file']
+                                                          
+                                                          );
+
+			}
+		
+    
+        return $output;
+    
+    }
+
+
+    /**
+       dev: LRZ 
+       Get certificate by id_course
+       @param $params
+              - username  (optional)
+              - course_id 
+       @return array
+    */   
+    public function getCertificateByCourse($params){
+    	require_once(_lms_.'/lib/lib.subscribe.php');
+		require_once(_lms_.'/lib/lib.course.php');
+		$output =array();
+
+		$output['success']=true;
+        
+		if (empty($params['course_id'])) {
+			return false;
+		}
+		else {
+			$id_course =$params['course_id'];
+		}    
+    
+    
+		if (!empty($params['username']))  $username = $params['username'];
+    
+         
+        $db = DbConn::getInstance();
+		$qtxt ="SELECT idCourse, code, name, box_description  FROM %lms_course 
+				WHERE idCourse=".(int)$id_course;
+		$q =$db->query($qtxt);
+		$course_info =$db->fetch_assoc($q);        
+
+        $output['course_id'] = (int)$id_course;
+        $output['course_code'] = $course_info['code'];
+        $output['course_name'] = $course_info['name'];
+        $output['box_description'] = $course_info['box_description'];
+        if((int)$course_info['idCourse']==0)  $output['message']="Course not found";    
+    
+    
+    
+    
+        // get certificate and user information
+        $qcert = "select id_course, firstname, lastname, userid, idst, on_date, cert_file from  %lms_certificate_assign, %adm_user   where id_course=".$output['course_id']." and id_user=idst";
+        if($username !='' ) $qcert = $qcert." and userid = '/".$username."'"; 
+        $qcert = $qcert." order by on_date desc";
+    
+        
+			$output['certificate_list'] = array();
+        
+            $qc =$db->query($qcert);
+        	while($row = $db->fetch_assoc($qc)) {
+            
+                	$output['certificate_list'][] = array(
+                                                          'idst' => $row['idst'],
+                                                          'firstname' => $row['firstname'],
+                                                          'lastname' => $row['lastname']   ,
+                                                          'userid' =>  $row['userid'],
+                                                          'date_generate' =>  $row['on_date'],
+                                                          
+                                                          'cert_file' => Get::site_url()."files/appLms/certificate/".$row['cert_file']
+                                                          
+                                                          );
+
+			}    
+    
+        return $output;
+    
+    }
+
+
 
 	// ---------------------------------------------------------------------------
 
 	public function call($name, $params) {
 		$output = false;
 
-
 		// Loads user information according to the external user data provided:
 		$params =$this->fillParamsFrom($params, $_POST);
 		$params =$this->checkExternalUser($params, $_POST);
+
 
 		if (!empty($params[0]) && !isset($params['idst'])) {
 			$params['idst']=$params[0]; //params[0] should contain user idst
@@ -684,10 +827,29 @@ class Course_API extends API {
 
 			case 'subscribeUserWithCode':
 			case 'subscribeuserwithcode': {
-				if (!isset($params['ext_not_found'])) {
+				if (!isset($params['ext_not_found'])) {                
 					$output = $this->subscribeUserWithCode($params);
 				}
 			} break;
+
+
+            case 'getCertificateByUser':
+            case 'getcertificatebyuser': {
+				if (!isset($params['ext_not_found'])) {     
+               
+					$output = $this->getCertificateByUser($params);
+				}
+			} break;
+
+            case 'getCertificateByCourse':
+            case 'getcertificatebycourse': {
+				if (!isset($params['ext_not_found'])) {     
+               
+					$output = $this->getCertificateByCourse($params);
+				}
+			} break;
+
+
 
 
 			default: $output = parent::call($name, $params);
@@ -696,3 +858,4 @@ class Course_API extends API {
 	}
 
 }
+
