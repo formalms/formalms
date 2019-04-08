@@ -421,7 +421,7 @@ class Certificate {
         return $metaAssignable;
     }
 
-        function canRelExceptional($perm_close_lo, $id_user, $id_course){
+        function canRelExceptional($perm_close_lo, $id_user, $id_course = null){
             require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
             require_once($GLOBALS['where_lms'] . '/lib/lib.orgchart.php');
 
