@@ -130,36 +130,43 @@ class Certificate {
     }
 
         function countAssignment($filter){
-                return count($this->getAssignment($filter));
+            return count($this->getAssignment($filter));
         }
 
-        function getAssignment($filter, $pagination = false){
-                $assigned = $this->getAssigned($filter);
-                $assignable = $this->getAssignable($filter);
+        function getAssignment($filter, $pagination = false, $count = null) {
+            if ($pagination && isset($pagination['search'])) {
+                $filter['search'] = $pagination['search'];
+            }
+            $assigned = $this->getAssigned($filter);
+            $assignable = $this->getAssignable($filter);
 
-                $assignment = array();
-                foreach ($assigned AS $as){
-                    $assignment[] = $as;
-                }
-                foreach ($assignable AS $as){
-                    $assignment[] = $as;
-                }
+            $assignment = array();
+            foreach ($assigned AS $as){
+                $assignment[] = $as;
+            }
+            foreach ($assignable AS $as){
+                $assignment[] = $as;
+            }
 
-                $paginated_assignment = array();
-                if($pagination) {
-                    $offset = $pagination["offset"];
-                    $limit = $offset + $pagination["num_rows"];
-                    $limit = ($limit <= count($assignment) ? $limit : count($assignment));
-                    for($i = $offset; $i < $limit; $i++) {
-                        $paginated_assignment[] = $assignment[$i];
-                    }
+            $paginated_assignment = array();
+            if($pagination) {
+                $offset = $pagination["startIndex"];
+                $limit = $offset + $pagination["rowsPerPage"];
+                $limit = ($limit <= count($assignment) ? $limit : count($assignment));
+                for($i = $offset; $i < $limit; $i++) {
+                    $paginated_assignment[] = $assignment[$i];
                 }
+            }
 
-                return $pagination ? $paginated_assignment : $assignment;
+            if ($count) {
+                return count($assignable) + count($assigned);
+            }
+
+            return $pagination ? $paginated_assignment : $assignment;
         }
 
-        function getAssigned($filter){
-                $query = "      SELECT ca.id_certificate, ca.id_course,"
+        function getAssigned($filter) {
+                $query = "SELECT ca.id_certificate, ca.id_course,"
                             ."	ca.id_user, SUBSTRING(u.userid, 2) AS username,"
                             ."	u.lastname, u.firstname, co.code, cc.available_for_status,"
                             ."  co.name AS course_name, ce.name AS cert_name,"
@@ -180,13 +187,13 @@ class Certificate {
                             ."      ON ca.id_user = u.idst"
                             ."	WHERE 1 = 1";
                 if (isset($filter['id_certificate'])) {
-                        $query .= " AND ca.id_certificate = ".$filter['id_certificate'];
+                    $query .= " AND ca.id_certificate = ".$filter['id_certificate'];
                 }
                 if (isset($filter['id_course'])) {
-                        $query .= " AND ca.id_course = ".$filter['id_course'];
+                    $query .= " AND ca.id_course = ".$filter['id_course'];
                 }
                 if (isset($filter['id_user'])) {
-                        $query .= " AND ca.id_user = ".$filter['id_user'];
+                    $query .= " AND ca.id_user = ".$filter['id_user'];
                 }
             if (isset($filter['search'])) {
                     $query .= " AND (1 = 0";
@@ -233,7 +240,7 @@ class Certificate {
                 return $assigned;
         }
 
-        function getAssignable($filter){
+        function getAssignable($filter) {
                 $query = "	SELECT ce.id_certificate, co.idCourse AS id_course,"
                             ."	u.idst AS id_user, SUBSTRING(u.userid, 2) AS username,"
                             ."	u.lastname, u.firstname, co.code, cc.available_for_status,"
@@ -319,22 +326,14 @@ class Certificate {
         return count($this->getMetaAssignment($filter));
     }
     
-    function getMetaAssignment($filter){
+    function getMetaAssignment($filter) {
         $metaAssigned = $this->getMetaAssigned($filter);
         $metaAssignable = $this->getMetaAssignable($filter);
 
-        $metaAssignment = array();
-        foreach ($metaAssigned AS $mas) {
-            $metaAssignment[] = $mas;
-        }
-        foreach ($metaAssignable AS $mas) {
-            $metaAssignment[] = $mas;
-        }
-
-        return $metaAssignment;        
+        return array_merge($metaAssigned, $metaAssignable);        
     }
     
-    function getMetaAssigned($filter){
+    function getMetaAssigned($filter) {
         $query = "  SELECT cma.idCertificate AS id_certificate, cma.idMetaCertificate AS id_meta, cmc.idUser AS id_user,"
                . "      ce.code AS cert_code, ce.name AS cert_name, cma.on_date,"
                . "      GROUP_CONCAT(DISTINCT CONCAT('(', co.code, ') - ', co.name) SEPARATOR '<br>') AS courses"
@@ -372,7 +371,7 @@ class Certificate {
         return $metaAssigned;
     }
     
-    function getMetaAssignable($filter){
+    function getMetaAssignable($filter) {
         $query = "  SELECT cm.idCertificate AS id_certificate, cm.idMetaCertificate AS id_meta, cmc.idUser AS id_user,"
                . "      ce.code AS cert_code, ce.name AS cert_name, NULL AS on_date,"
                . "      GROUP_CONCAT(DISTINCT CONCAT('(', co.code, ') - ', co.name) SEPARATOR '<br>') AS courses"
@@ -395,7 +394,7 @@ class Certificate {
                . "      WHERE mc.idUser = cmc.idUser"
                . "          AND mc.idMetaCertificate = cmc.idMetaCertificate"
                . "  )" ;
-        
+
         if (isset($filter['id_certificate'])) {
             $query .= " AND cm.idCertificate = " . $filter['id_certificate'];
         }
@@ -421,36 +420,37 @@ class Certificate {
         return $metaAssignable;
     }
 
-        function canRelExceptional($perm_close_lo, $id_user, $id_course = null){
-            require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
-            require_once($GLOBALS['where_lms'] . '/lib/lib.orgchart.php');
+    function canRelExceptional($perm_close_lo, $id_user, $id_course){
+        require_once($GLOBALS['where_lms'] . '/lib/lib.coursereport.php');
+        require_once($GLOBALS['where_lms'] . '/lib/lib.orgchart.php');
 
-            $course_score_final = false;
-            $org_man = new OrganizationManagement(false);
-            $rep_man = new CourseReportManager();
+        $course_score_final = false;
+        $org_man = new OrganizationManagement(false);
+        $rep_man = new CourseReportManager();
 
-            if ($perm_close_lo == 0) {
-                $score_final = $org_man->getFinalObjectScore(array($id_user), array($id_course));
+        if ($perm_close_lo == 0) {
+            $score_final = $org_man->getFinalObjectScore(array($id_user), array($id_course));
 
-                if (isset($score_final[$id_course][$id_user]) && $score_final[$id_course][$id_user]['max_score']) {
-                    $course_score_final = $score_final[$id_course][$id_user()]['score'];
-                    $course_score_final_max = $score_final[$id_course][$id_user()]['max_score'];
-                }
-            } else {
-                $score_course = $rep_man->getUserFinalScore(array($id_user), array($id_course));
-
-                if (!empty($score_course)) {
-                    $course_score_final = (isset($score_course[$id_user][$id_course]) ? $score_course[$id_user][$id_course]['score'] : false);
-                    $course_score_final_max = (isset($score_course[$id_user][$id_course]) ? $score_course[$id_user][$id_course]['max_score'] : false);
-                }
+            if (isset($score_final[$id_course][$id_user]) && $score_final[$id_course][$id_user]['max_score']) {
+                $course_score_final = $score_final[$id_course][$id_user()]['score'];
+                $course_score_final_max = $score_final[$id_course][$id_user()]['max_score'];
             }
+        } else {
+            $score_course = $rep_man->getUserFinalScore(array($id_user), array($id_course));
 
-            if ($course_score_final >= $certificate[CERT_AV_POINT_REQUIRED]){
-                return true;
-            } else {
-                return false;
+            if (!empty($score_course)) {
+                $course_score_final = (isset($score_course[$id_user][$id_course]) ? $score_course[$id_user][$id_course]['score'] : false);
+                $course_score_final_max = (isset($score_course[$id_user][$id_course]) ? $score_course[$id_user][$id_course]['max_score'] : false);
             }
-		}
+        }
+
+        if ($course_score_final >= $certificate[CERT_AV_POINT_REQUIRED]){
+            return true;
+        } else {
+            return false;
+        }
+	}
+
 	function getCertificateList($name_filter = false, $code_filter = false) {
 
 		$cert = array();
