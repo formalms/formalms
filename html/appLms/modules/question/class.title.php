@@ -51,13 +51,13 @@ class Title_Question extends Question {
 		require_once(_base_.'/lib/lib.form.php');
 		$url_encode = htmlentities(urlencode($back_test));
 		
-		if(isset($_POST['add_question'])) {
+		if(isset($_REQUEST['add_question'])) {
 			if(!sql_query("
 			INSERT INTO ".$GLOBALS['prefix_lms']."_testquest 
 			( idTest, type_quest, title_quest, sequence, page, difficult ) VALUES 
 			( 	'".$idTest."', 
 				'".$this->getQuestionType()."', 
-				'".$_POST['title_quest']."',
+				'".$_REQUEST['title_quest']."',
 				'".$this->_getNextSequence($idTest)."', 
 				'".$this->_getPageNumber($idTest)."', 
 				'0' ) ")) {
@@ -100,10 +100,10 @@ class Title_Question extends Question {
 		require_once(_base_.'/lib/lib.form.php');
 		$url_encode = htmlentities(urlencode($back_test));
 		
-		if(isset($_POST['add_question'])) {
+		if(isset($_REQUEST['add_question'])) {
 			if(!sql_query("
 			UPDATE ".$GLOBALS['prefix_lms']."_testquest 
-			SET title_quest = '".$_POST['title_quest']."' 
+			SET title_quest = '".$_REQUEST['title_quest']."' 
 			WHERE idQuest = '".$this->id."'")) {
 				errorCommunication($lang->def('_ERR_INS_QUEST')
 					.getBackUi('index.php?modname=question&amp;op=edit&amp;type_quest='

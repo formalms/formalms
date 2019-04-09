@@ -80,10 +80,10 @@ function instest ()
     if (trim ($_REQUEST[ 'title' ]) == '') $_REQUEST[ 'title' ] = $lang->def ('_NOTITLE');
 
     $ins_query = "
-	INSERT INTO " . $GLOBALS[ 'prefix_lms' ] . "_test
-	( author, title, description, obj_type)
-		VALUES 
-	( '" . (int) getLogUserId () . "', '" . $_REQUEST[ 'title' ] . "', '" . $_REQUEST[ 'textof' ] . "', '" . $_REQUEST[ 'obj_type' ] . "' )";
+    INSERT INTO " . $GLOBALS[ 'prefix_lms' ] . "_test
+    ( author, title, description, obj_type)
+        VALUES 
+    ( '" . (int) getLogUserId () . "', '" . $_REQUEST[ 'title' ] . "', '" . $_REQUEST[ 'textof' ] . "', '" . $_REQUEST[ 'obj_type' ] . "' )";
 
 
     if (! sql_query ($ins_query)) {
@@ -116,9 +116,9 @@ function modtest ()
     $url_encode = htmlentities (urlencode ($back_url));
 
     list($test_title , $textof) = sql_fetch_row (sql_query ("
-	SELECT title, description
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_test
-	WHERE idTest = '" . $id_test . "'"));
+    SELECT title, description
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_test
+    WHERE idTest = '" . $id_test . "'"));
 
     $GLOBALS[ 'page' ]->add (
         getTitleArea ($lang->def ('_TEST_SECTION') , 'test')
@@ -156,10 +156,10 @@ function uptest (Learning_Test $obj_test = null)
         $id_test = $obj_test->getId ();
 
         $mod_query = "
-			UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_test
-			SET title = '" . $_REQUEST[ 'title' ] . "',
-				description = '" . $_REQUEST[ 'textof' ] . "'
-			WHERE idTest = '" . $id_test . "'";
+            UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_test
+            SET title = '" . $_REQUEST[ 'title' ] . "',
+                description = '" . $_REQUEST[ 'textof' ] . "'
+            WHERE idTest = '" . $id_test . "'";
 
         if (! sql_query ($mod_query)) {
 
@@ -202,21 +202,21 @@ function modtestgui ($object_test)
     $url_encode = htmlentities (urlencode ($object_test->back_url));
 
     list($test_title) = sql_fetch_row (sql_query ("
-	SELECT title 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_test
-	WHERE idTest = '" . $object_test->getId () . "'"));
+    SELECT title 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_test
+    WHERE idTest = '" . $object_test->getId () . "'"));
 
     $re_quest = sql_query ("
-	SELECT idQuest, type_quest, title_quest, sequence, page 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-	WHERE idTest = '" . $object_test->getId () . "'
-	ORDER BY sequence");
+    SELECT idQuest, type_quest, title_quest, sequence, page 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+    WHERE idTest = '" . $object_test->getId () . "'
+    ORDER BY sequence");
 
     $num_quest = sql_num_rows ($re_quest);
     list($num_page) = sql_fetch_row (sql_query ("
-	SELECT MAX(page) 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-	WHERE idTest = '" . $object_test->getId () . "'"));
+    SELECT MAX(page) 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+    WHERE idTest = '" . $object_test->getId () . "'"));
     $num_page = (int) $num_page;
 
     $GLOBALS[ 'page' ]->add (
@@ -367,31 +367,31 @@ function modtestgui ($object_test)
         //$tab->addActionAdd( $move_quest );
     }
     //------------------------------------------------------------------
-    /*	$re_type = sql_query("
-	SELECT type_quest
-	FROM ".$GLOBALS['prefix_lms']."_quest_type
-	ORDER BY sequence");
-	$add_quest = '<form method="post" action="index.php?modname=test&amp;op=addquest">'
-		.'<div>'
-		.'<input type="hidden" id="authentic_request_test" name="authentic_request" value="'.Util::getSignature().'" />'
-		.'<input type="hidden" name="back_url" value="'.$url_encode.'" />'
-		.'<input type="hidden" name="idTest" value="'.$object_test->getId().'" />';
-	$add_quest .= '<label class="text_bold" for="add_test_quest">'.$lang->def('_TEST_ADDQUEST').'</label>&nbsp;'
-		.'<select id="add_test_quest" name="add_test_quest">';
-	while(list($type_quest) = sql_fetch_row($re_type)) {
-		$add_quest .= '<option value="'.$type_quest.'"'
-		.( $last_type == $type_quest ? ' selected="selected"' : '' ).'>'
-		.$lang->def('_QUEST_ACRN_'.strtoupper($type_quest)).' - '.$lang->def('_QUEST_'.strtoupper($type_quest)).'</option>';
-	}
-	$add_quest .= '</select>';
-	$add_quest .= '&nbsp;<input class="button_nowh" type="submit" name="add_quest" value="'.$lang->def('_ADD').'" />'
-		.'</div>'
-		.'</form>';*/
+    /*  $re_type = sql_query("
+    SELECT type_quest
+    FROM ".$GLOBALS['prefix_lms']."_quest_type
+    ORDER BY sequence");
+    $add_quest = '<form method="post" action="index.php?modname=test&amp;op=addquest">'
+        .'<div>'
+        .'<input type="hidden" id="authentic_request_test" name="authentic_request" value="'.Util::getSignature().'" />'
+        .'<input type="hidden" name="back_url" value="'.$url_encode.'" />'
+        .'<input type="hidden" name="idTest" value="'.$object_test->getId().'" />';
+    $add_quest .= '<label class="text_bold" for="add_test_quest">'.$lang->def('_TEST_ADDQUEST').'</label>&nbsp;'
+        .'<select id="add_test_quest" name="add_test_quest">';
+    while(list($type_quest) = sql_fetch_row($re_type)) {
+        $add_quest .= '<option value="'.$type_quest.'"'
+        .( $last_type == $type_quest ? ' selected="selected"' : '' ).'>'
+        .$lang->def('_QUEST_ACRN_'.strtoupper($type_quest)).' - '.$lang->def('_QUEST_'.strtoupper($type_quest)).'</option>';
+    }
+    $add_quest .= '</select>';
+    $add_quest .= '&nbsp;<input class="button_nowh" type="submit" name="add_quest" value="'.$lang->def('_ADD').'" />'
+        .'</div>'
+        .'</form>';*/
 
     $re_type = sql_query ("
-	SELECT type_quest 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_quest_type
-	ORDER BY sequence");
+    SELECT type_quest 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_quest_type
+    ORDER BY sequence");
 
     $add_quest = '<form method="post" action="index.php?modname=test&amp;op=addquest">'
         . '<input type="hidden" id="authentic_request_test" name="authentic_request" value="' . Util::getSignature () . '" />'
@@ -399,7 +399,7 @@ function modtestgui ($object_test)
         . '<input type="hidden" name="idTest" value="' . $object_test->getId () . '" />'
 
         . '<input type="submit" id="add_quest" name="add_quest" value="' . $lang->def ('_TEST_ADDQUEST') . '">
-		<select id="add_test_quest" name="add_test_quest">';
+        <select id="add_test_quest" name="add_test_quest">';
     while (list($type_quest) = sql_fetch_row ($re_type)) {
 
         $add_quest .= '<option value="' . $type_quest . '">'
@@ -419,24 +419,24 @@ function modtestgui ($object_test)
 
 
     /*
-	$GLOBALS['page']->add(
-		Form::openForm('add_question', 'index.php?modname=test&amp;op=importquest', false, false, 'multipart/form-data')
+    $GLOBALS['page']->add(
+        Form::openForm('add_question', 'index.php?modname=test&amp;op=importquest', false, false, 'multipart/form-data')
 
-		.Form::openElementSpace()
-		.Form::getOpenFieldset($lang->def('_IMPORT_FROM_XML'))
-		.Form::getHidden('back_url', 'back_url', $url_encode)
-		.Form::getHidden('idTest', 'idTest', $object_test->getId())
-		.Form::getFilefield($lang->def('_FILE'), 'xml_file', 'xml_file')
-		.Form::getCloseFieldset()
-		.Form::closeElementSpace()
+        .Form::openElementSpace()
+        .Form::getOpenFieldset($lang->def('_IMPORT_FROM_XML'))
+        .Form::getHidden('back_url', 'back_url', $url_encode)
+        .Form::getHidden('idTest', 'idTest', $object_test->getId())
+        .Form::getFilefield($lang->def('_FILE'), 'xml_file', 'xml_file')
+        .Form::getCloseFieldset()
+        .Form::closeElementSpace()
 
-		.Form::openButtonSpace()
-		.form::getButton('import', 'import', $lang->def('_IMPORT'))
-		.Form::closeButtonSpace()
+        .Form::openButtonSpace()
+        .form::getButton('import', 'import', $lang->def('_IMPORT'))
+        .Form::closeButtonSpace()
 
-		.Form::closeForm()
-	, 'content');
-	*/
+        .Form::closeForm()
+    , 'content');
+    */
 
 
     if ($seq_error_detected) {
@@ -458,8 +458,8 @@ function modtestgui ($object_test)
         . '<input type="hidden" name="idTest" value="' . $object_test->getId () . '" />'
 
         . '<div class="align_right">
-			<input type="submit" id="export_quest" name="export_quest" value="' . $lang->def ('_EXPORT') . '">
-			<select id="export_quest_select" name="export_quest_select">' , 'content');
+            <input type="submit" id="export_quest" name="export_quest" value="' . $lang->def ('_EXPORT') . '">
+            <select id="export_quest_select" name="export_quest_select">' , 'content');
     foreach ($supported_format as $id_exp => $def) {
 
         cout ('<option value="' . $id_exp . '">' . $def . '</option>' , 'content');
@@ -475,14 +475,14 @@ function modtestgui ($object_test)
         , 'content');
 
     $GLOBALS[ 'page' ]->add ('
-	<script type="text/javascript">
-	YAHOO.util.Event.addListener(window, "load", function() {
-		var oSplitExport = new YAHOO.widget.Button("export_quest", { type: "menu", menu: "export_quest_select" });
-		//var oPushImport = new YAHOO.widget.Button("import_quest");
-		var oMoveQuest = new YAHOO.widget.Button("move_quest");
-		var oSplitAddQuest = new YAHOO.widget.Button("add_quest", { type: "menu", menu: "add_test_quest" });
-	});
-	</script>' , 'content');
+    <script type="text/javascript">
+    YAHOO.util.Event.addListener(window, "load", function() {
+        var oSplitExport = new YAHOO.widget.Button("export_quest", { type: "menu", menu: "export_quest_select" });
+        //var oPushImport = new YAHOO.widget.Button("import_quest");
+        var oMoveQuest = new YAHOO.widget.Button("move_quest");
+        var oSplitAddQuest = new YAHOO.widget.Button("add_quest", { type: "menu", menu: "add_test_quest" });
+    });
+    </script>' , 'content');
 
     $GLOBALS[ 'page' ]->add ('</div>' , 'content');
     //fixPageSequence($object_test->getId());
@@ -500,30 +500,30 @@ function movequestion ($direction)
     $back_coded = htmlentities (urlencode ($back_url));
 
     list($seq , $idTest) = sql_fetch_row (sql_query ("
-	SELECT sequence, idTest 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-	WHERE idQuest = '$idQuest'"));
+    SELECT sequence, idTest 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+    WHERE idQuest = '$idQuest'"));
 
     if ($direction == 'up') {
         sql_query ("
-		UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-		SET sequence = '$seq' 
-		WHERE idTest = '$idTest' AND sequence = '" . ($seq - 1) . "'");
+        UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+        SET sequence = '$seq' 
+        WHERE idTest = '$idTest' AND sequence = '" . ($seq - 1) . "'");
         sql_query ("
-		UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-		SET sequence = sequence - 1 
-		WHERE idTest = '$idTest' AND idQuest = '$idQuest'");
+        UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+        SET sequence = sequence - 1 
+        WHERE idTest = '$idTest' AND idQuest = '$idQuest'");
 
     }
     if ($direction == 'down') {
         sql_query ("
-		UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-		SET sequence = '$seq' 
-		WHERE idTest = '$idTest' AND sequence = '" . ($seq + 1) . "'");
+        UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+        SET sequence = '$seq' 
+        WHERE idTest = '$idTest' AND sequence = '" . ($seq + 1) . "'");
         sql_query ("
-		UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-		SET sequence = '" . ($seq + 1) . "' 
-		WHERE idTest = '$idTest' AND idQuest = '$idQuest'");
+        UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+        SET sequence = '" . ($seq + 1) . "' 
+        WHERE idTest = '$idTest' AND idQuest = '$idQuest'");
     }
     fixPageSequence ($idTest);
     Util::jump_to ('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $back_coded);
@@ -543,31 +543,31 @@ function movequest ()
     $dest_seq = importVar ('dest_quest' , true , 0);
 
     list($idQuest) = sql_fetch_row (sql_query ("
-	SELECT idQuest 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-	WHERE idTest = '$idTest' AND sequence = '$source_seq'"));
+    SELECT idQuest 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+    WHERE idTest = '$idTest' AND sequence = '$source_seq'"));
 
     if ($source_seq < $dest_seq) {
 
         sql_query ("
-		UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-		SET sequence = sequence - 1 
-		WHERE idTest = '$idTest' AND sequence > '" . ($source_seq) . "'  AND sequence < '" . ($dest_seq) . "'");
+        UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+        SET sequence = sequence - 1 
+        WHERE idTest = '$idTest' AND sequence > '" . ($source_seq) . "'  AND sequence < '" . ($dest_seq) . "'");
         sql_query ("
-		UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-		SET sequence = '" . ($dest_seq - 1) . "' 
-		WHERE idQuest = '$idQuest'");
+        UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+        SET sequence = '" . ($dest_seq - 1) . "' 
+        WHERE idQuest = '$idQuest'");
     } else {
 
         sql_query ("
-		UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-		SET sequence = sequence + 1 
-		WHERE idTest = '$idTest' AND sequence >= '" . ($dest_seq) . "'  AND sequence < '" . ($source_seq) . "'");
+        UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+        SET sequence = sequence + 1 
+        WHERE idTest = '$idTest' AND sequence >= '" . ($dest_seq) . "'  AND sequence < '" . ($source_seq) . "'");
 
         sql_query ("
-		UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-		SET sequence = '$dest_seq' 
-		WHERE idQuest = '$idQuest'");
+        UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+        SET sequence = '$dest_seq' 
+        WHERE idQuest = '$idQuest'");
     }
     fixPageSequence ($idTest);
     Util::jump_to ('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $back_coded);
@@ -582,17 +582,17 @@ function fixQuestSequence ()
     $back_coded = htmlentities (urlencode ($back_url));
 
     $re_quest = sql_query ("
-	SELECT idQuest, sequence 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-	WHERE idTest = '$idTest' 
-	ORDER BY page, sequence");
+    SELECT idQuest, sequence 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+    WHERE idTest = '$idTest' 
+    ORDER BY page, sequence");
     $seq = 1;
     while (list($id_quest) = sql_fetch_row ($re_quest)) {
 
         sql_query ("
-		UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-		SET sequence = '$seq' 
-		WHERE idQuest = '$id_quest'");
+        UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+        SET sequence = '$seq' 
+        WHERE idQuest = '$id_quest'");
         $seq++;
     }
     fixPageSequence ($idTest);
@@ -606,15 +606,15 @@ function fixPageSequence ($id_test)
     $lang =& DoceboLanguage::createInstance ('test');
 
     list($tot_quest) = sql_fetch_row (sql_query ("
-	SELECT COUNT(*) 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-	WHERE idTest = '" . $id_test . "'"));
+    SELECT COUNT(*) 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+    WHERE idTest = '" . $id_test . "'"));
 
     $re_break_page = sql_query ("
-	SELECT sequence 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-	WHERE idTest = '" . $id_test . "' AND type_quest = 'break_page'
-	ORDER BY sequence");
+    SELECT sequence 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+    WHERE idTest = '" . $id_test . "' AND type_quest = 'break_page'
+    ORDER BY sequence");
 
     $page_num = 1;
     //first page
@@ -622,18 +622,18 @@ function fixPageSequence ($id_test)
     while (list($break_sequence) = sql_fetch_row ($re_break_page)) {
 
         sql_query ("
-		UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-		SET page = '" . (int) $page_num . "'
-		WHERE idTest = '" . (int) $id_test . "' AND
-			sequence > '" . (int) $ini_seq . "' AND sequence <= '" . (int) $break_sequence . "'");
+        UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+        SET page = '" . (int) $page_num . "'
+        WHERE idTest = '" . (int) $id_test . "' AND
+            sequence > '" . (int) $ini_seq . "' AND sequence <= '" . (int) $break_sequence . "'");
         $ini_seq = $break_sequence;
         ++$page_num;
     }
     sql_query ("
-	UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-	SET page = '" . (int) $page_num . "'
-	WHERE idTest = '" . (int) $id_test . "' AND
-		sequence > '" . (int) $ini_seq . "' AND sequence <= '" . (int) $tot_quest . "'");
+    UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+    SET page = '" . (int) $page_num . "'
+    WHERE idTest = '" . (int) $id_test . "' AND
+        sequence > '" . (int) $ini_seq . "' AND sequence <= '" . (int) $tot_quest . "'");
 }
 
 function &istanceQuest ($type_of_quest , $id)
@@ -643,9 +643,9 @@ function &istanceQuest ($type_of_quest , $id)
 
 
     $re_quest = sql_query ("
-	SELECT type_file, type_class 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_quest_type
-	WHERE type_quest = '" . $type_of_quest . "'");
+    SELECT type_file, type_class 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_quest_type
+    WHERE type_quest = '" . $type_of_quest . "'");
     if (! sql_num_rows ($re_quest)) return;
     list($type_file , $type_class) = sql_fetch_row ($re_quest);
 
@@ -671,7 +671,7 @@ function addquest ()
             $res = sql_query ($query);
         }
     }
-    if (isset($_POST[ 'add_test_quest' ])) {
+    if (isset($_REQUEST[ 'add_test_quest' ])) {
         //first enter
         $type_quest = importVar ('add_test_quest');
         $var_to_safe = array (
@@ -705,9 +705,9 @@ function modquest ()
     $idQuest = importVar ('idQuest' , true , 0);
 
     list($idTest , $type_quest) = sql_fetch_row (sql_query ("
-	SELECT idTest, type_quest 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-	WHERE idQuest = '" . $idQuest . "'"));
+    SELECT idTest, type_quest 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+    WHERE idQuest = '" . $idQuest . "'"));
 
     if ($idTest) {
         $max_score = _getTestMaxScore ($idTest);
@@ -717,7 +717,7 @@ function modquest ()
         }
     }
 
-    if (! isset($_POST[ 'back_url' ])) {
+    if (! isset($_REQUEST[ 'back_url' ])) {
         //first enter
         $var_to_safe = array (
             'idQuest' => $idQuest ,
@@ -752,9 +752,9 @@ function delquest ()
     $url_coded = htmlentities (urlencode ($back_url));
 
     list($idTest , $title_quest , $type_quest , $seq) = sql_fetch_row (sql_query ("
-	SELECT idTest, title_quest, type_quest, sequence 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-	WHERE idQuest = '" . $idQuest . "'"));
+    SELECT idTest, title_quest, type_quest, sequence 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+    WHERE idQuest = '" . $idQuest . "'"));
 
     if (isset($_GET[ 'confirm' ])) {
 
@@ -766,9 +766,9 @@ function delquest ()
             return;
         }
         sql_query ("
-		UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-		SET sequence = sequence -1 
-		WHERE sequence > '$seq'");
+        UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+        SET sequence = sequence -1 
+        WHERE sequence > '$seq'");
         fixPageSequence ($idTest);
 
         $max_score = _getTestMaxScore ($idTest);
@@ -820,23 +820,23 @@ function defmodality ()
         $max_attempt , $hide_info ,
         $order_info , $cf_info , $use_suspension , $suspension_num_attempts , $suspension_num_hours , $suspension_prerequisites , $mandatory_answer , $retain_answers_history
         ) = sql_fetch_row (sql_query ("
-	SELECT title, description, display_type, order_type, shuffle_answer, question_random_number, 
-		save_keep, mod_doanswer, can_travel, 
-		show_score, show_score_cat, show_doanswer, show_solution, 
-		max_attempt, hide_info,
-		order_info, cf_info, use_suspension, suspension_num_attempts, suspension_num_hours, suspension_prerequisites, mandatory_answer, retain_answers_history
-	FROM %lms_test
-	WHERE idTest = '" . $idTest . "'"));
+    SELECT title, description, display_type, order_type, shuffle_answer, question_random_number, 
+        save_keep, mod_doanswer, can_travel, 
+        show_score, show_score_cat, show_doanswer, show_solution, 
+        max_attempt, hide_info,
+        order_info, cf_info, use_suspension, suspension_num_attempts, suspension_num_hours, suspension_prerequisites, mandatory_answer, retain_answers_history
+    FROM %lms_test
+    WHERE idTest = '" . $idTest . "'"));
 
     list($tot_quest) = sql_fetch_row (sql_query ("
-	SELECT COUNT(*) 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-	WHERE idTest = '" . (int) $idTest . "' AND type_quest <> 'title' AND type_quest <> 'break_page'"));
+    SELECT COUNT(*) 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+    WHERE idTest = '" . (int) $idTest . "' AND type_quest <> 'title' AND type_quest <> 'break_page'"));
 
     $re_quest = sql_query ("
-	SELECT idQuest
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-	WHERE idTest = '" . (int) $idTest . "' AND type_quest <> 'title' AND type_quest <> 'break_page'");
+    SELECT idQuest
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+    WHERE idTest = '" . (int) $idTest . "' AND type_quest <> 'title' AND type_quest <> 'break_page'");
     while (list($idQuest) = sql_fetch_row ($re_quest)) {
         $arr_id_quest[] = $idQuest;
     }
@@ -888,13 +888,13 @@ function defmodality ()
     $script = "";
     if ($has_categories) {
         $GLOBALS[ 'page' ]->add ('<script type="text/javascript">
-				function toggleCategoryList(o) {
-					var ul = document.getElementById(\'category_list\'), radio = document.getElementById(\'order_type_random_category\');
-					if (ul && radio) {
-						if (radio.checked) ul.style.display = "block"; else ul.style.display = "none";
-					}
-				}
-			</script>' , 'page_head');
+                function toggleCategoryList(o) {
+                    var ul = document.getElementById(\'category_list\'), radio = document.getElementById(\'order_type_random_category\');
+                    if (ul && radio) {
+                        if (radio.checked) ul.style.display = "block"; else ul.style.display = "none";
+                    }
+                }
+            </script>' , 'page_head');
         $script = 'onclick="toggleCategoryList();"';
     }
 
@@ -982,30 +982,30 @@ function defmodality ()
 
     //------------------------------------------------------------------------------
     /*
-	$chart_options_decoded = new stdClass();
-	if ($chart_options!="") {
-		$json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-		$decoded = $json->decode($chart_options);
-	}
-	$chart_options_decoded->use_charts = (isset($decoded['use_charts']) ? (bool)$decoded['use_charts'] : false);
-	$chart_options_decoded->selected_chart = (isset($decoded['selected_chart']) ? (string)$decoded['selected_chart'] : 'column');
-	$chart_options_decoded->show_mode = (isset($decoded['show_mode']) ? $decoded['show_mode'] : 'teacher');
+    $chart_options_decoded = new stdClass();
+    if ($chart_options!="") {
+        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+        $decoded = $json->decode($chart_options);
+    }
+    $chart_options_decoded->use_charts = (isset($decoded['use_charts']) ? (bool)$decoded['use_charts'] : false);
+    $chart_options_decoded->selected_chart = (isset($decoded['selected_chart']) ? (string)$decoded['selected_chart'] : 'column');
+    $chart_options_decoded->show_mode = (isset($decoded['show_mode']) ? $decoded['show_mode'] : 'teacher');
 
-	$chart_list = array(
-			'stacked' => $lang->def('_STACKED_CHART'),
-			'bar' => $lang->def('_BAR_CHART'),
-			//'radar' => $lang->def('_RADAR_CHART'),
-			'column' => $lang->def('_COLUMN_CHART')
-		);
+    $chart_list = array(
+            'stacked' => $lang->def('_STACKED_CHART'),
+            'bar' => $lang->def('_BAR_CHART'),
+            //'radar' => $lang->def('_RADAR_CHART'),
+            'column' => $lang->def('_COLUMN_CHART')
+        );
 
-	$chart_show = array(
-			'teacher' => $lang->def('_SHOWMODE_TEACHER'),
-			'course' => $lang->def('_SHOWMODE_COURSE')
-		);
+    $chart_show = array(
+            'teacher' => $lang->def('_SHOWMODE_TEACHER'),
+            'course' => $lang->def('_SHOWMODE_COURSE')
+        );
 
-	$chart_list = array_flip($chart_list);
-	$chart_show = array_flip($chart_show);
-	*/
+    $chart_list = array_flip($chart_list);
+    $chart_show = array_flip($chart_show);
+    */
     //-order-answer----------------------------------------------
     $GLOBALS[ 'page' ]->add (
         '<div class="text_bold">' . $lang->def ('_TEST_MM1_ANSWER_ORDER') . '</div>'
@@ -1054,48 +1054,48 @@ function defmodality ()
 
     $event = new \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent($object_test , $lang);
 
-	$event->addFormElementForSection (Form::getTextfield ($lang->def ('_MAX_ATTEMPT') , 'max_attempt' , 'max_attempt' , 3 , $max_attempt) , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection (Form::getCheckBox ($lang->def ('_RETAIN_ANSWERS_HISTORY') , 'retain_answers_history' , 'retain_answers_history' , 1 , $retain_answers_history) , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection (Form::getCheckbox ($lang->def ('_USE_SUSPENSION') , 'use_suspension' , 'use_suspension' , 1 , $use_suspension , 'onclick="setSuspension();"') , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection (Form::getTextfield ($lang->def ('_SUSPENSION_NUM_ATTEMPTS') , 'suspension_num_attempts' , 'suspension_num_attempts' , 5 , $suspension_num_attempts) , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection (Form::getTextfield ($lang->def ('_SUSPENSION_NUM_HOURS') , 'suspension_num_hours' , 'suspension_num_hours' , 5 , $suspension_num_hours) , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection (Form::getCheckBox ($lang->def ('_SUSPENSION_PREREQUISITES') , 'suspension_prerequisites' , 'suspension_prerequisites' , 1 , $suspension_prerequisites) , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<br /><br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection (Form::getCloseFieldset () , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection (Form::getTextfield ($lang->def ('_MAX_ATTEMPT') , 'max_attempt' , 'max_attempt' , 3 , $max_attempt) , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection (Form::getCheckBox ($lang->def ('_RETAIN_ANSWERS_HISTORY') , 'retain_answers_history' , 'retain_answers_history' , 1 , $retain_answers_history) , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection (Form::getCheckbox ($lang->def ('_USE_SUSPENSION') , 'use_suspension' , 'use_suspension' , 1 , $use_suspension , 'onclick="setSuspension();"') , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection (Form::getTextfield ($lang->def ('_SUSPENSION_NUM_ATTEMPTS') , 'suspension_num_attempts' , 'suspension_num_attempts' , 5 , $suspension_num_attempts) , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection (Form::getTextfield ($lang->def ('_SUSPENSION_NUM_HOURS') , 'suspension_num_hours' , 'suspension_num_hours' , 5 , $suspension_num_hours) , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection (Form::getCheckBox ($lang->def ('_SUSPENSION_PREREQUISITES') , 'suspension_prerequisites' , 'suspension_prerequisites' , 1 , $suspension_prerequisites) , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<br /><br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection (Form::getCloseFieldset () , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
 
-	$event->addFormElementForSection (Form::getOpenFieldset ($lang->def ('_TEST_MM_FOUR')) , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ($lang->def ('_TEST_MM4_SHOWTOT') . '<br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_tot_no" name="show_tot" value="0"' . (! $show_score ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<label for="show_tot_no">' . $lang->def ('_NO') . '</label>&nbsp;&nbsp;' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_tot_yes" name="show_tot" value="1"' . ($show_score ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<label for="show_tot_yes">' . $lang->def ('_YES') . '</label>' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<br /><br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection (Form::getOpenFieldset ($lang->def ('_TEST_MM_FOUR')) , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ($lang->def ('_TEST_MM4_SHOWTOT') . '<br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_tot_no" name="show_tot" value="0"' . (! $show_score ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<label for="show_tot_no">' . $lang->def ('_NO') . '</label>&nbsp;&nbsp;' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_tot_yes" name="show_tot" value="1"' . ($show_score ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<label for="show_tot_yes">' . $lang->def ('_YES') . '</label>' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<br /><br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
 
-	$event->addFormElementForSection ($lang->def ('_TEST_MM4_SHOWCAT') . '<br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_cat_no" name="show_cat" value="0"' . (! $show_score_cat ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<label for="show_cat_no">' . $lang->def ('_NO') . '</label>&nbsp;&nbsp;' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_cat_yes" name="show_cat" value="1"' . ($show_score_cat ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<label for="show_cat_yes">' . $lang->def ('_YES') . '</label>' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<br /><br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ($lang->def ('_TEST_MM4_SHOWCAT') . '<br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_cat_no" name="show_cat" value="0"' . (! $show_score_cat ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<label for="show_cat_no">' . $lang->def ('_NO') . '</label>&nbsp;&nbsp;' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_cat_yes" name="show_cat" value="1"' . ($show_score_cat ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<label for="show_cat_yes">' . $lang->def ('_YES') . '</label>' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<br /><br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
 
-	$event->addFormElementForSection ($lang->def ('_TEST_MM4_SHOWDOANSWER') . '<br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_doanswer_no" name="show_doanswer" value="0"' . ($show_doanswer == 0 ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<label for="show_doanswer_no">' . $lang->def ('_NO') . '</label>&nbsp;&nbsp;' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_doanswer_yes" name="show_doanswer" value="1"' . ($show_doanswer == 1 ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<label for="show_doanswer_yes">' . $lang->def ('_YES') . '</label>&nbsp;&nbsp;' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_doanswer_yes_if_passed" name="show_doanswer" value="2"' . ($show_doanswer == 2 ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<label for="show_doanswer_yes_if_passed">' . $lang->def ('_YES_IF_PASSED') . '</label>' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<br /><br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ($lang->def ('_TEST_MM4_SHOWDOANSWER') . '<br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_doanswer_no" name="show_doanswer" value="0"' . ($show_doanswer == 0 ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<label for="show_doanswer_no">' . $lang->def ('_NO') . '</label>&nbsp;&nbsp;' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_doanswer_yes" name="show_doanswer" value="1"' . ($show_doanswer == 1 ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<label for="show_doanswer_yes">' . $lang->def ('_YES') . '</label>&nbsp;&nbsp;' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_doanswer_yes_if_passed" name="show_doanswer" value="2"' . ($show_doanswer == 2 ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<label for="show_doanswer_yes_if_passed">' . $lang->def ('_YES_IF_PASSED') . '</label>' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<br /><br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
 
-	$event->addFormElementForSection ($lang->def ('_TEST_MM4_SHOWSOL') . '<br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_solution_no" name="show_solution" value="0"' . ($show_solution == 0 ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<label for="show_solution_no">' . $lang->def ('_NO') . '</label>&nbsp;&nbsp;' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_solution_yes" name="show_solution" value="1"' . ($show_solution == 1 ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<label for="show_solution_yes">' . $lang->def ('_YES') . '</label>&nbsp;&nbsp;' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_solution_yes_if_passed" name="show_solution" value="2"' . ($show_solution == 2 ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<label for="show_solution_yes_if_passed">' . $lang->def ('_YES_IF_PASSED') . '</label>' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection ('<br /><br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-	$event->addFormElementForSection (Form::getCloseFieldset () , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ($lang->def ('_TEST_MM4_SHOWSOL') . '<br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_solution_no" name="show_solution" value="0"' . ($show_solution == 0 ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<label for="show_solution_no">' . $lang->def ('_NO') . '</label>&nbsp;&nbsp;' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_solution_yes" name="show_solution" value="1"' . ($show_solution == 1 ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<label for="show_solution_yes">' . $lang->def ('_YES') . '</label>&nbsp;&nbsp;' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<input class="valign_middle" type="radio" id="show_solution_yes_if_passed" name="show_solution" value="2"' . ($show_solution == 2 ? '  checked="checked"' : '') . ' /> ' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<label for="show_solution_yes_if_passed">' . $lang->def ('_YES_IF_PASSED') . '</label>' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection ('<br /><br />' , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
+    $event->addFormElementForSection (Form::getCloseFieldset () , \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
 
 
     \appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_NAME , $event);
@@ -1117,18 +1117,18 @@ function defmodality ()
 
     //----------------------------------------------------------------------------
     $script = '<script type="text/javascript">
-			function setSuspension() {/*
-				if (document.getElementById("use_suspension").checked) {
-					document.getElementById("suspension_num_attempts").disabled = false;
-					document.getElementById("suspension_num_hours").disabled = false;
-					document.getElementById("suspension_prerequisites").disabled = false;
-				} else {
-					document.getElementById("suspension_num_attempts").disabled = true;
-					document.getElementById("suspension_num_hours").disabled = true;
-					document.getElementById("suspension_prerequisites").disabled = true;
-				}
-			*/}
-		</script>';
+            function setSuspension() {/*
+                if (document.getElementById("use_suspension").checked) {
+                    document.getElementById("suspension_num_attempts").disabled = false;
+                    document.getElementById("suspension_num_hours").disabled = false;
+                    document.getElementById("suspension_prerequisites").disabled = false;
+                } else {
+                    document.getElementById("suspension_num_attempts").disabled = true;
+                    document.getElementById("suspension_num_hours").disabled = true;
+                    document.getElementById("suspension_prerequisites").disabled = true;
+                }
+            */}
+        </script>';
     cout ($script , 'content');
 }
 
@@ -1146,15 +1146,15 @@ function updatemodality ()
     $url_coded = htmlentities (urlencode ($back_url));
 
     list($time_dependent) = sql_fetch_row (sql_query ("
-	SELECT time_dependent 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_test
-	WHERE idTest = '" . $idTest . "'"));
+    SELECT time_dependent 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_test
+    WHERE idTest = '" . $idTest . "'"));
 
     $order_info = "";
-    if ($_POST[ 'order_type' ] == 3) {
+    if ($_REQUEST[ 'order_type' ] == 3) {
         $arr = array ();
-        if (isset($_POST[ 'question_random_category' ]) && is_array ($_POST[ 'question_random_category' ])) {
-            foreach ($_POST[ 'question_random_category' ] as $key => $value) {
+        if (isset($_REQUEST[ 'question_random_category' ]) && is_array ($_REQUEST[ 'question_random_category' ])) {
+            foreach ($_REQUEST[ 'question_random_category' ] as $key => $value) {
                 if ((int) $value > 0) $arr[] = array ( 'id_category' => $key , 'selected' => (int) $value );
             }
         }
@@ -1162,10 +1162,10 @@ function updatemodality ()
     }
 
     $cf_info = "";
-    if ($_POST[ 'order_type' ] > 4) {
+    if ($_REQUEST[ 'order_type' ] > 4) {
         $arr = array ();
-        if (isset($_POST[ 'question_random_customfield' ]) && is_array ($_POST[ 'question_random_customfield' ])) {
-            foreach ($_POST[ 'question_random_customfield' ] as $key => $value) {
+        if (isset($_REQUEST[ 'question_random_customfield' ]) && is_array ($_REQUEST[ 'question_random_customfield' ])) {
+            foreach ($_REQUEST[ 'question_random_customfield' ] as $key => $value) {
                 if ((int) $value > 0) $arr[] = array ( 'id_cf_son' => $key , 'selected' => (int) $value );
             }
         }
@@ -1173,24 +1173,24 @@ function updatemodality ()
     }
 
     $queryString = "
-	UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_test
-	SET display_type = '" . ($_POST[ 'display_type' ] ? 1 : 0) . "',
-		order_type = '" . $_POST[ 'order_type' ] . "',
-		shuffle_answer = '" . ($_POST[ 'shuffle_answer' ] ? 1 : 0) . "',
-		question_random_number = '" . ($_POST[ 'order_type' ] == 2 ? $_POST[ 'question_random_number' ] : 0) . "',
-		save_keep = '" . ($_POST[ 'save_keep' ] ? 1 : 0) . "',
-		hide_info = '" . ($_POST[ 'mod_hide_info' ] ? 1 : 0) . "',
-		order_info = '" . $order_info . "',
-		cf_info = '" . $cf_info . "',
-		mod_doanswer = '" . ($_POST[ 'mod_doanswer' ] ? 1 : 0) . "',
-		can_travel = '" . ($_POST[ 'can_travel' ] ? 1 : 0) . "',
-		show_score = '" . ($_POST[ 'show_tot' ] ? 1 : 0) . "',
-		show_score_cat = '" . ($_POST[ 'show_cat' ] ? 1 : 0) . "',
-		show_doanswer = '" . $_POST[ 'show_doanswer' ] . "',
-		show_solution = '" . $_POST[ 'show_solution' ] . "',
-		retain_answers_history = '" . $_POST[ 'retain_answers_history' ] . "',
-		max_attempt = '" . (int) $_POST[ 'max_attempt' ] . "'"
-        . ($time_dependent == 2 && $_POST[ 'display_type' ] == 0 ? " ,time_dependent = 0 " : "")
+    UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_test
+    SET display_type = '" . ($_REQUEST[ 'display_type' ] ? 1 : 0) . "',
+        order_type = '" . $_REQUEST[ 'order_type' ] . "',
+        shuffle_answer = '" . ($_REQUEST[ 'shuffle_answer' ] ? 1 : 0) . "',
+        question_random_number = '" . ($_REQUEST[ 'order_type' ] == 2 ? $_REQUEST[ 'question_random_number' ] : 0) . "',
+        save_keep = '" . ($_REQUEST[ 'save_keep' ] ? 1 : 0) . "',
+        hide_info = '" . ($_REQUEST[ 'mod_hide_info' ] ? 1 : 0) . "',
+        order_info = '" . $order_info . "',
+        cf_info = '" . $cf_info . "',
+        mod_doanswer = '" . ($_REQUEST[ 'mod_doanswer' ] ? 1 : 0) . "',
+        can_travel = '" . ($_REQUEST[ 'can_travel' ] ? 1 : 0) . "',
+        show_score = '" . ($_REQUEST[ 'show_tot' ] ? 1 : 0) . "',
+        show_score_cat = '" . ($_REQUEST[ 'show_cat' ] ? 1 : 0) . "',
+        show_doanswer = '" . $_REQUEST[ 'show_doanswer' ] . "',
+        show_solution = '" . $_REQUEST[ 'show_solution' ] . "',
+        retain_answers_history = '" . $_REQUEST[ 'retain_answers_history' ] . "',
+        max_attempt = '" . (int) $_REQUEST[ 'max_attempt' ] . "'"
+        . ($time_dependent == 2 && $_REQUEST[ 'display_type' ] == 0 ? " ,time_dependent = 0 " : "")
         . " ,use_suspension = " . Get::req ('use_suspension' , DOTY_INT , 0) .
         " ,suspension_num_attempts = '" . Get::req ('suspension_num_attempts' , DOTY_INT , 0) . "' " .
         " ,suspension_num_hours = '" . Get::req ('suspension_num_hours' , DOTY_INT , 0) . "' " .
@@ -1201,7 +1201,7 @@ function updatemodality ()
 
     $event = new \appLms\Events\Lms\TestUpdateModalityEvent($idTest , $queryString);
 
-    $event->setPostVars ($_POST);
+    $event->setPostVars ($_REQUEST);
 
     \appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\TestUpdateModalityEvent::EVENT_NAME , $event);
 
@@ -1230,27 +1230,27 @@ function deftime ()
 
     list($time_dependent , $time_assigned ,
         $penality_test , $penality_time_test , $penality_quest , $penality_time_quest) = sql_fetch_row (sql_query ("
-	SELECT time_dependent, time_assigned, 
-		penality_test, penality_time_test, penality_quest, penality_time_quest 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_test
-	WHERE idTest = '$idTest'"));
+    SELECT time_dependent, time_assigned, 
+        penality_test, penality_time_test, penality_quest, penality_time_quest 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_test
+    WHERE idTest = '$idTest'"));
 
 
-    if (isset($_POST[ 'undo' ])) {
+    if (isset($_REQUEST[ 'undo' ])) {
 
         Util::jump_to ('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded);
     }
-    if (isset($_POST[ 'settime_button' ])) {
+    if (isset($_REQUEST[ 'settime_button' ])) {
 
         // second step, ask for time
-        switch ($_POST[ 'time_limit' ]) {
+        switch ($_REQUEST[ 'time_limit' ]) {
             case 0 : {
 
                 $update_query = "
-				UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_test
-				SET time_dependent = 0, 
-					time_assigned = '" . $_POST[ 'time_assigned' ] . "'
-				WHERE idTest = '$idTest'";
+                UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_test
+                SET time_dependent = 0, 
+                    time_assigned = '" . $_REQUEST[ 'time_assigned' ] . "'
+                WHERE idTest = '$idTest'";
                 if (! sql_query ($update_query)) {
                     errorCommunication ($lang->def ('_OPERATION_FAILURE')
                         . getBackUi ('index.php?modname=test&amp;op=deftime&amp;idTest=' . $idTest . '&amp;back_url=' . $url_coded , $lang->def ('_BACK')));
@@ -1271,7 +1271,7 @@ function deftime ()
 
                     . Form::getHidden ('idTest' , 'idTest' , $idTest)
                     . Form::getHidden ('back_url' , 'back_url' , $url_coded)
-                    . Form::getHidden ('time_limit' , 'time_limit' , $_POST[ 'time_limit' ])
+                    . Form::getHidden ('time_limit' , 'time_limit' , $_REQUEST[ 'time_limit' ])
 
                     . Form::getOpenFieldset ($lang->def ('_TEST_TM_TWO'))
                     . Form::getLineBox ($lang->def ('_TOTAL_TIME') , $time_assigned . ' ' . $lang->def ('_SECONDS'))
@@ -1297,9 +1297,9 @@ function deftime ()
             case 2 : {
 
                 list($actual_tot_time) = sql_fetch_row (sql_query ("
-				SELECT SUM(time_assigned) 
-				FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-				WHERE idTest = '$idTest'"));
+                SELECT SUM(time_assigned) 
+                FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+                WHERE idTest = '$idTest'"));
 
                 $GLOBALS[ 'page' ]->add (
                     getTitleArea ($lang->def ('_TEST_SECTION') , 'test')
@@ -1311,7 +1311,7 @@ function deftime ()
 
                     . Form::getHidden ('idTest' , 'idTest' , $idTest)
                     . Form::getHidden ('back_url' , 'back_url' , $url_coded)
-                    . Form::getHidden ('time_limit' , 'time_limit' , $_POST[ 'time_limit' ])
+                    . Form::getHidden ('time_limit' , 'time_limit' , $_REQUEST[ 'time_limit' ])
 
                     . Form::getOpenFieldset ($lang->def ('_TEST_TM_THREE'))
                     . Form::getLineBox ($lang->def ('_TOTAL_TIME') , $actual_tot_time . ' ' . $lang->def ('_SECONDS'))
@@ -1377,13 +1377,13 @@ function updatetime ()
     $back_url = urldecode (importVar ('back_url'));
     $url_coded = htmlentities (urlencode ($back_url));
 
-    if (isset($_POST[ 'undo' ])) Util::jump_to ('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded);
+    if (isset($_REQUEST[ 'undo' ])) Util::jump_to ('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded);
 
     $update_query = "
-	UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_test
-	SET time_dependent = '" . $_POST[ 'time_limit' ] . "',
-		time_assigned = '" . $_POST[ 'time_assigned' ] . "' "
-        . ($_POST[ 'time_limit' ] == 2 ? " ,display_type = 1 " : "")
+    UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_test
+    SET time_dependent = '" . $_REQUEST[ 'time_limit' ] . "',
+        time_assigned = '" . $_REQUEST[ 'time_assigned' ] . "' "
+        . ($_REQUEST[ 'time_limit' ] == 2 ? " ,display_type = 1 " : "")
         . " WHERE idTest = '$idTest'";
 
     if (! sql_query ($update_query)) {
@@ -1392,10 +1392,10 @@ function updatetime ()
         return;
     }
 
-    if ($_POST[ 'time_limit' ] == 2) {
+    if ($_REQUEST[ 'time_limit' ] == 2) {
 
         Util::jump_to ('index.php?modname=test&op=modassigntime&idTest=' . $idTest . '&back_url=' . $url_coded
-            . '&point_assignement=' . $_POST[ 'point_assignement' ] . '&new_time=' . $_POST[ 'new_time' ]);
+            . '&point_assignement=' . $_REQUEST[ 'point_assignement' ] . '&new_time=' . $_REQUEST[ 'new_time' ]);
     }
     Util::jump_to ('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded . '&mod_operation=1');
 }
@@ -1415,39 +1415,39 @@ function modassigntime ()
     $url_coded = htmlentities (urlencode ($back_url));
 
     //save new time -------------------------------------------------
-    if (isset($_POST[ 'saveandexit' ])) {
+    if (isset($_REQUEST[ 'saveandexit' ])) {
 
         $re = sql_query ("
-		UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_test
-		SET display_type = '1'
-		WHERE idTest = '$idTest'");
+        UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_test
+        SET display_type = '1'
+        WHERE idTest = '$idTest'");
         if ($re) {
-            while (list($idQuest , $difficult) = each ($_POST[ 'new_difficult_quest' ])) {
+            while (list($idQuest , $difficult) = each ($_REQUEST[ 'new_difficult_quest' ])) {
                 $re &= sql_query ("
-				UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-				SET difficult = '" . $difficult . "', 
-					time_assigned = '" . $_POST[ 'new_time_quest' ][ $idQuest ] . "'
-				WHERE idTest = '$idTest' AND idQuest = '" . (int) $idQuest . "'");
+                UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+                SET difficult = '" . $difficult . "', 
+                    time_assigned = '" . $_REQUEST[ 'new_time_quest' ][ $idQuest ] . "'
+                WHERE idTest = '$idTest' AND idQuest = '" . (int) $idQuest . "'");
             }
         }
         Util::jump_to ('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded . '&mod_operation=' . ($re ? 1 : 0));
     }
 
     list($test_title) = sql_fetch_row (sql_query ("
-	SELECT title 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_test
-	WHERE idTest = '" . $idTest . "'"));
+    SELECT title 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_test
+    WHERE idTest = '" . $idTest . "'"));
 
     list($tot_quest , $tot_difficult , $actual_tot_time) = sql_fetch_row (sql_query ("
-	SELECT COUNT(*), SUM(difficult), SUM(time_assigned) 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-	WHERE idTest = '$idTest' AND type_quest <> 'break_page' AND type_quest <> 'title'"));
+    SELECT COUNT(*), SUM(difficult), SUM(time_assigned) 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+    WHERE idTest = '$idTest' AND type_quest <> 'break_page' AND type_quest <> 'title'"));
 
     $re_quest = sql_query ("
-	SELECT idQuest, type_quest, title_quest, difficult, time_assigned 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-	WHERE idTest = '" . $idTest . "' 
-	ORDER BY sequence");
+    SELECT idQuest, type_quest, title_quest, difficult, time_assigned 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+    WHERE idTest = '" . $idTest . "' 
+    ORDER BY sequence");
 
     $GLOBALS[ 'page' ]->add (
         getTitleArea ($lang->def ('_TEST_SECTION') , 'test')
@@ -1474,11 +1474,11 @@ function modassigntime ()
     //tabel body--------------------------------------------------------
     while (list($idQuest , $type_quest , $title_quest , $difficult , $time_assigned) = sql_fetch_row ($re_quest)) {
 
-        if (isset($_POST[ 'new_difficult_quest' ][ $idQuest ])) {
+        if (isset($_REQUEST[ 'new_difficult_quest' ][ $idQuest ])) {
 
             //loading new time form previous page
-            $difficult = $_POST[ 'new_difficult_quest' ][ $idQuest ];
-            $new_time = $_POST[ 'new_time_quest' ][ $idQuest ];
+            $difficult = $_REQUEST[ 'new_difficult_quest' ][ $idQuest ];
+            $new_time = $_REQUEST[ 'new_time_quest' ][ $idQuest ];
         } elseif (isset($_GET[ 'point_assignement' ])) {
 
             //calculate new time from deftime page
@@ -1531,7 +1531,7 @@ function modassigntime ()
     $GLOBALS[ 'page' ]->add ($tab_quest->getTable () , 'content');
     //command for this page---------------------------------------------
     if (isset($_GET[ 'new_time' ])) $previous_time = $_GET[ 'new_time' ];
-    else $previous_time = $previous_time = $_POST[ 'previous_time' ];
+    else $previous_time = $previous_time = $_REQUEST[ 'previous_time' ];
     $time_difference = $effective_time - $previous_time;
     echo $effective_time;
     $GLOBALS[ 'page' ]->add ('</fieldset>'
@@ -1562,9 +1562,9 @@ function defpoint ()
     $url_coded = htmlentities (urlencode ($back_url));
 
     list($title , $description , $point_type , $point_required) = sql_fetch_row (sql_query ("
-	SELECT title, description, point_type, point_required 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_test
-	WHERE idTest = '" . $idTest . "'"));
+    SELECT title, description, point_type, point_required 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_test
+    WHERE idTest = '" . $idTest . "'"));
 
     $GLOBALS[ 'page' ]->add (
         getTitleArea ($lang->def ('_TEST_SECTION') , 'test')
@@ -1597,9 +1597,9 @@ function defpoint ()
         . Form::getHidden ('back_url_assign' , 'back_url' , $url_coded) , 'content');
 
     $query_question = "
-	SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.title_quest, q.difficult 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest AS q JOIN " . $GLOBALS[ 'prefix_lms' ] . "_quest_type AS t
-	WHERE q.idTest = '" . (int) $idTest . "' AND q.type_quest = t.type_quest";
+    SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.title_quest, q.difficult 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest AS q JOIN " . $GLOBALS[ 'prefix_lms' ] . "_quest_type AS t
+    WHERE q.idTest = '" . (int) $idTest . "' AND q.type_quest = t.type_quest";
     $query_question .= " ORDER BY q.sequence";
     $re_quest = sql_query ($query_question);
 
@@ -1649,11 +1649,11 @@ function updatepoint ()
     $max_score = _getTestMaxScore ($idTest);
 
     if (! sql_query ("
-	UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_test
-	SET point_required = '" . $_POST[ 'point_required' ] . "',
-		point_type = '" . ($_POST[ 'point_type' ] ? $_POST[ 'point_type' ] : 0) . "' ,
-		score_max = " . (int) $max_score . "
-	WHERE idTest = '$idTest'")
+    UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_test
+    SET point_required = '" . $_REQUEST[ 'point_required' ] . "',
+        point_type = '" . ($_REQUEST[ 'point_type' ] ? $_REQUEST[ 'point_type' ] : 0) . "' ,
+        score_max = " . (int) $max_score . "
+    WHERE idTest = '$idTest'")
     ) {
         UIFeedback::error ($lang->def ('_OPERATION_FAILURE'));
         defpoint ();
@@ -1679,17 +1679,17 @@ function modassignpoint ()
     $url_coded = htmlentities (urlencode ($back_url));
 
     //jump back
-    if (isset($_POST[ 'back_to_home' ])) {
+    if (isset($_REQUEST[ 'back_to_home' ])) {
         Util::jump_to ('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded);
     }
 
     //save new score ------------------------------------------------
-    if (isset($_POST[ 'saveandexit' ])) {
+    if (isset($_REQUEST[ 'saveandexit' ])) {
 
         $query_question = "
-		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class 
-		FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest AS q JOIN " . $GLOBALS[ 'prefix_lms' ] . "_quest_type AS t
-		WHERE q.idTest = '" . (int) $idTest . "' AND q.type_quest = t.type_quest";
+        SELECT q.idQuest, q.type_quest, t.type_file, t.type_class 
+        FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest AS q JOIN " . $GLOBALS[ 'prefix_lms' ] . "_quest_type AS t
+        WHERE q.idTest = '" . (int) $idTest . "' AND q.type_quest = t.type_quest";
         $query_question .= " ORDER BY q.sequence";
         $re_quest = sql_query ($query_question);
 
@@ -1698,30 +1698,30 @@ function modassignpoint ()
 
 
             sql_query ("
-			UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-			SET difficult = '" . (int) $_POST[ 'new_difficult_quest' ][ $idQuest ] . "'
-			WHERE idTest = '" . $idTest . "' AND idQuest = '" . (int) $idQuest . "'");
+            UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+            SET difficult = '" . (int) $_REQUEST[ 'new_difficult_quest' ][ $idQuest ] . "'
+            WHERE idTest = '" . $idTest . "' AND idQuest = '" . (int) $idQuest . "'");
 
             require_once (Docebo::inc (_folder_lms_ . '/modules/question/' . $type_file));
             $quest_obj = eval("return new $type_class( $idQuest );");
-            $score_assign[ $idQuest ] = $quest_obj->setMaxScore ($_POST[ 'new_score_quest' ][ $idQuest ]);
+            $score_assign[ $idQuest ] = $quest_obj->setMaxScore ($_REQUEST[ 'new_score_quest' ][ $idQuest ]);
         }
     }
 
     list($test_title) = sql_fetch_row (sql_query ("
-	SELECT title 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_test
-	WHERE idTest = '" . $idTest . "'"));
+    SELECT title 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_test
+    WHERE idTest = '" . $idTest . "'"));
 
     list($tot_quest , $tot_difficult) = sql_fetch_row (sql_query ("
-	SELECT COUNT(*), SUM(difficult) 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-	WHERE idTest = '$idTest' AND type_quest <> 'break_page' AND type_quest <> 'title'"));
+    SELECT COUNT(*), SUM(difficult) 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+    WHERE idTest = '$idTest' AND type_quest <> 'break_page' AND type_quest <> 'title'"));
 
     $query_question = "
-	SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.title_quest, q.difficult 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest AS q JOIN " . $GLOBALS[ 'prefix_lms' ] . "_quest_type AS t
-	WHERE q.idTest = '" . (int) $idTest . "' AND q.type_quest = t.type_quest";
+    SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.title_quest, q.difficult 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest AS q JOIN " . $GLOBALS[ 'prefix_lms' ] . "_quest_type AS t
+    WHERE q.idTest = '" . (int) $idTest . "' AND q.type_quest = t.type_quest";
     $query_question .= " ORDER BY q.sequence";
     $re_quest = sql_query ($query_question);
 
@@ -1752,25 +1752,25 @@ function modassignpoint ()
         require_once (Docebo::inc (_folder_lms_ . '/modules/question/' . $type_file));
         $quest_obj = eval("return new $type_class( $idQuest );");
 
-        if (isset($_POST[ 'new_score_quest' ][ $idQuest ])) {
+        if (isset($_REQUEST[ 'new_score_quest' ][ $idQuest ])) {
 
             //loading new time form previous page
-            $difficult = $_POST[ 'new_difficult_quest' ][ $idQuest ];
-            $quest_score = $quest_obj->getRealMaxScore ($_POST[ 'new_score_quest' ][ $idQuest ] , true);
+            $difficult = $_REQUEST[ 'new_difficult_quest' ][ $idQuest ];
+            $quest_score = $quest_obj->getRealMaxScore ($_REQUEST[ 'new_score_quest' ][ $idQuest ] , true);
 
-        } elseif (isset($_POST[ 'point_assignement' ])) {
+        } elseif (isset($_REQUEST[ 'point_assignement' ])) {
 
             //calculate new time from deftime page
-            switch ($_POST[ 'point_assignement' ]) {
+            switch ($_REQUEST[ 'point_assignement' ]) {
                 case "0" : {
 
-                    $quest_score = $quest_obj->getRealMaxScore (round (round ($_POST[ 'new_assigned_score' ] / $tot_difficult , 2) * $difficult) , 2);
-                    //$quest_score = (( $_POST['new_assigned_score'] / $tot_difficult ) * $difficult ), 2;
+                    $quest_score = $quest_obj->getRealMaxScore (round (round ($_REQUEST[ 'new_assigned_score' ] / $tot_difficult , 2) * $difficult) , 2);
+                    //$quest_score = (( $_REQUEST['new_assigned_score'] / $tot_difficult ) * $difficult ), 2;
                 };
                     break;
                 case "1" : {
-                    $quest_score = $quest_obj->getRealMaxScore (round ($_POST[ 'new_assigned_score' ] / $tot_quest , 2));
-                    //$quest_score = round(( $_POST['new_assigned_score'] / $tot_quest ), 2);
+                    $quest_score = $quest_obj->getRealMaxScore (round ($_REQUEST[ 'new_assigned_score' ] / $tot_quest , 2));
+                    //$quest_score = round(( $_REQUEST['new_assigned_score'] / $tot_quest ), 2);
                 };
                     break;
                 case "2" : {
@@ -1789,7 +1789,7 @@ function modassignpoint ()
             $content[] = ($difficult ? $difficult : '&nbsp;');
 
             if ($difficult) {
-                $content[] = ($score_assign[ $idQuest ] != $_POST[ 'new_score_quest' ][ $idQuest ] ? $score_assign[ $idQuest ] . '&nbsp;<span class="font_red">*</span>' : $score_assign[ $idQuest ]);
+                $content[] = ($score_assign[ $idQuest ] != $_REQUEST[ 'new_score_quest' ][ $idQuest ] ? $score_assign[ $idQuest ] . '&nbsp;<span class="font_red">*</span>' : $score_assign[ $idQuest ]);
             } else {
                 $content[] = '&nbsp;';
             }
@@ -1825,8 +1825,8 @@ function modassignpoint ()
     $GLOBALS[ 'page' ]->add ($tab_quest->getTable () , 'content');
 
     //command for this page---------------------------------------------
-    if (isset($_POST[ 'new_assigned_score' ])) $previous_score = $_POST[ 'new_assigned_score' ];
-    else $previous_score = $_POST[ 'previous_score' ];
+    if (isset($_REQUEST[ 'new_assigned_score' ])) $previous_score = $_REQUEST[ 'new_assigned_score' ];
+    else $previous_score = $_REQUEST[ 'previous_score' ];
     $score_difference = round ($effective_tot_score - $previous_score , 2);
 
     if ($score_difference < 0) $score_difference = '<strong class="font_red">' . $score_difference . '<strong>';
@@ -1971,10 +1971,10 @@ function exportquest ()
     $quests = array ();
 
     $re_quest = sql_query ("
-	SELECT idQuest, type_quest 
-	FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
-	WHERE idTest = '$idTest' 
-	ORDER BY page, sequence");
+    SELECT idQuest, type_quest 
+    FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest
+    WHERE idTest = '$idTest' 
+    ORDER BY page, sequence");
     while (list($id_quest , $type_quest) = sql_fetch_row ($re_quest)) {
 
         $quests[ $id_quest ] = $type_quest;
@@ -2055,7 +2055,7 @@ function doexportquestqb ()
     $quest_category = Get::req ('quest_category' , DOTY_INT , 0);
     $id_test = Get::pReq ('idTest' , DOTY_INT);
 
-    if (isset($_POST[ 'undo' ])) Util::jump_to ('index.php?modname=test&op=modtestgui&idTest=' . $id_test . '&back_url=' . $back_coded);
+    if (isset($_REQUEST[ 'undo' ])) Util::jump_to ('index.php?modname=test&op=modtestgui&idTest=' . $id_test . '&back_url=' . $back_coded);
 
     // Get quest from id test
     $reQuest = sql_query (" SELECT q.idQuest FROM " . $GLOBALS[ 'prefix_lms' ] . "_testquest AS q WHERE q.idTest = " . $id_test);
@@ -2403,9 +2403,9 @@ function delfbkrule ()
 
 // XXX: switch
 
-if (isset($_POST[ 'import_quest' ])) $GLOBALS[ 'op' ] = 'importquest';
-if (isset($_POST[ 'export_quest' ])) $GLOBALS[ 'op' ] = 'exportquest';
-if ($_POST[ 'export_quest_select' ] == 5) $GLOBALS[ 'op' ] = 'exportquestqb';
+if (isset($_REQUEST[ 'import_quest' ])) $GLOBALS[ 'op' ] = 'importquest';
+if (isset($_REQUEST[ 'export_quest' ])) $GLOBALS[ 'op' ] = 'exportquest';
+if ($_REQUEST[ 'export_quest_select' ] == 5) $GLOBALS[ 'op' ] = 'exportquestqb';
 
 switch ($GLOBALS[ 'op' ]) {
     case "instest" : {
@@ -2429,7 +2429,7 @@ switch ($GLOBALS[ 'op' ]) {
 
     case "modtestgui" : {
         Util::get_js (Get::rel_path ('base') . '/lib/lib.elem_selector.js' , true , true);
-        if (isset($_GET[ 'test_saved' ]) || isset($_POST[ 'test_saved' ])) {
+        if (isset($_GET[ 'test_saved' ]) || isset($_REQUEST[ 'test_saved' ])) {
 
             //other enter
             $var_save = importVar ('test_saved');
