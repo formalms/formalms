@@ -77,19 +77,19 @@ function instest ()
 
     $lang =& DoceboLanguage::createInstance ('test');
 
-    if (trim ($_POST[ 'title' ]) == '') $_POST[ 'title' ] = $lang->def ('_NOTITLE');
+    if (trim ($_REQUEST[ 'title' ]) == '') $_REQUEST[ 'title' ] = $lang->def ('_NOTITLE');
 
     $ins_query = "
 	INSERT INTO " . $GLOBALS[ 'prefix_lms' ] . "_test
 	( author, title, description, obj_type)
 		VALUES 
-	( '" . (int) getLogUserId () . "', '" . $_POST[ 'title' ] . "', '" . $_POST[ 'textof' ] . "', '" . $_POST[ 'obj_type' ] . "' )";
+	( '" . (int) getLogUserId () . "', '" . $_REQUEST[ 'title' ] . "', '" . $_REQUEST[ 'textof' ] . "', '" . $_REQUEST[ 'obj_type' ] . "' )";
 
 
     if (! sql_query ($ins_query)) {
 
         $_SESSION[ 'last_error' ] = $lang->def ('_OPERATION_FAILURE');
-        Util::jump_to ('' . urldecode ($_POST[ 'back_url' ]) . '&create_result=0');
+        Util::jump_to ('' . urldecode ($_REQUEST[ 'back_url' ]) . '&create_result=0');
     }
 
     list($id_test) = sql_fetch_row (sql_query ("SELECT LAST_INSERT_ID()"));
@@ -100,8 +100,8 @@ function instest ()
 
     \appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\TestCreateEvent::EVENT_NAME , $event);
 
-    if ($id_test > 0) Util::jump_to ('' . urldecode ($_POST[ 'back_url' ]) . '&id_lo=' . $id_test . '&create_result=1');
-    else Util::jump_to ('' . urldecode ($_POST[ 'back_url' ]) . '&create_result=0');
+    if ($id_test > 0) Util::jump_to ('' . urldecode ($_REQUEST[ 'back_url' ]) . '&id_lo=' . $id_test . '&create_result=1');
+    else Util::jump_to ('' . urldecode ($_REQUEST[ 'back_url' ]) . '&create_result=0');
 }
 
 // XXX: modtest
@@ -150,15 +150,15 @@ function uptest (Learning_Test $obj_test = null)
     $back_url = urldecode (importVar ('back_url'));
     $url_encode = htmlentities (urlencode ($back_url));
 
-    if (trim ($_POST[ 'title' ]) == '') $_POST[ 'title' ] = $lang->def ('_NOTITLE');
+    if (trim ($_REQUEST[ 'title' ]) == '') $_REQUEST[ 'title' ] = $lang->def ('_NOTITLE');
 
     if (isset($obj_test)) {
         $id_test = $obj_test->getId ();
 
         $mod_query = "
 			UPDATE " . $GLOBALS[ 'prefix_lms' ] . "_test
-			SET title = '" . $_POST[ 'title' ] . "',
-				description = '" . $_POST[ 'textof' ] . "'
+			SET title = '" . $_REQUEST[ 'title' ] . "',
+				description = '" . $_REQUEST[ 'textof' ] . "'
 			WHERE idTest = '" . $id_test . "'";
 
         if (! sql_query ($mod_query)) {
@@ -168,7 +168,7 @@ function uptest (Learning_Test $obj_test = null)
             return;
         }
         require_once ($GLOBALS[ 'where_lms' ] . '/class.module/track.object.php');
-        Track_Object::updateObjectTitle ($id_test , $obj_test->getObjectType () , $_POST[ 'title' ]);
+        Track_Object::updateObjectTitle ($id_test , $obj_test->getObjectType () , $_REQUEST[ 'title' ]);
     }
 
     $test = Learning_Test::load($id_test);

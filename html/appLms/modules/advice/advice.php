@@ -306,8 +306,8 @@ function addadvice() {
 function insadvice() {
 	checkPerm('mod');
 
-	if( $_POST['title'] == "" ) $_POST['title'] = Lang::t('_NOTITLE');
-	if(isset($_POST['impo'])) $impo = 1;
+	if( $_REQUEST['title'] == "" ) $_REQUEST['title'] = Lang::t('_NOTITLE');
+	if(isset($_REQUEST['impo'])) $impo = 1;
 	else $impo = '0';
 
 	$queryIns = "
@@ -315,8 +315,8 @@ function insadvice() {
 		( idCourse, author, title, description, posted, important ) VALUES
 		( 	'".(int)$_SESSION['idCourse']."',
 			'".getLogUserId()."',
-			'".$_POST['title']."',
-			'".$_POST['description']."',
+			'".$_REQUEST['title']."',
+			'".$_REQUEST['description']."',
 			'".date("Y-m-d H:i:s")."',
 			'".(int)$impo."' )";
 
@@ -325,7 +325,7 @@ function insadvice() {
 
 	$acl_man =& Docebo::user()->getAclManager();
 
-	switch($_POST['idGroup']) {
+	switch($_REQUEST['idGroup']) {
 		case "sel_user" : {
 
 			Util::jump_to('index.php?modname=advice&op=modreader&id_advice='.$id_advice.'&load=1');
@@ -350,27 +350,27 @@ function insadvice() {
 			$query_insert = "
 				INSERT INTO ".$GLOBALS['prefix_lms']."_adviceuser
 				( idUser, idAdvice ) VALUES
-				( '".$_POST['idGroup']."', '".$id_advice."' )";
+				( '".$_REQUEST['idGroup']."', '".$id_advice."' )";
 			if(!sql_query($query_insert)) Util::jump_to('index.php?modname=advice&op=advice&result=err_user');
 
-			$members = $acl_man->getGroupAllUser($_POST['idGroup']);
+			$members = $acl_man->getGroupAllUser($_REQUEST['idGroup']);
 		};break;
 	}
 	$members[] = getLogUserId();
 	require_once(_base_.'/lib/lib.eventmanager.php');
 
 	$msg_composer = new EventMessageComposer();
-	$_POST['description'] = str_replace(array('\r', '\n'), '', $_POST['description']);
+	$_REQUEST['description'] = str_replace(array('\r', '\n'), '', $_REQUEST['description']);
 	$msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT', false);
 	$msg_composer->setBodyLangText('email', '_ALERT_TEXT', array(	'[url]' => Get::site_url(),
 																	'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-																	'[title]' => stripslashes($_POST['title']),
-																	'[text]' => stripslashes($_POST['description']) ) );
+																	'[title]' => stripslashes($_REQUEST['title']),
+																	'[text]' => stripslashes($_REQUEST['description']) ) );
 
 	$msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', array(	'[url]' => Get::site_url(),
 																	'[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-																	'[title]' => stripslashes($_POST['title']),
-																	'[text]' => stripslashes($_POST['description']) ) );
+																	'[title]' => stripslashes($_REQUEST['title']),
+																	'[text]' => stripslashes($_REQUEST['description']) ) );
 
 	createNewAlert(	'AdviceNew',
 					'advice',
@@ -422,16 +422,16 @@ function modadvice() {
 function upadvice() {
 	checkPerm('mod');
 
-	if ($_POST['title'] == "") $_POST['title'] = Lang::t('_NOTITLE');
-	if($_POST['impo'] != '1') $impo = '0';
+	if ($_REQUEST['title'] == "") $_REQUEST['title'] = Lang::t('_NOTITLE');
+	if($_REQUEST['impo'] != '1') $impo = '0';
 	else $impo = '1';
 
 	$query_advice = "
 		UPDATE ".$GLOBALS['prefix_lms']."_advice
-		SET title='".$_POST['title']."',
-			description='".$_POST['description']."',
-			important='".( isset($_POST['impo']) ? 1 : 0 )."'
-		WHERE idAdvice='".(int)$_POST['idAdvice']."'";
+		SET title='".$_REQUEST['title']."',
+			description='".$_REQUEST['description']."',
+			important='".( isset($_REQUEST['impo']) ? 1 : 0 )."'
+		WHERE idAdvice='".(int)$_REQUEST['idAdvice']."'";
 	if(!sql_query($query_advice)) Util::jump_to('index.php?modname=advice&op=advice&result=err');
 
 	Util::jump_to('index.php?modname=advice&op=advice&result=ok');
