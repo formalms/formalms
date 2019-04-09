@@ -717,7 +717,7 @@ function modquest ()
         }
     }
 
-    if (! isset($_REQUEST[ 'back_url' ])) {
+    if (! isset($_POST[ 'back_url' ])) {
         //first enter
         $var_to_safe = array (
             'idQuest' => $idQuest ,
