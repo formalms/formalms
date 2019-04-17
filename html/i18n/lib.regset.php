@@ -212,6 +212,9 @@ class RegionalSettings {
 		if ( (($type == "time") || ($type == "datetime")) && (!$seconds)) {
 			$time_token=preg_replace("/%M.*%S/", "%M", $time_token);
 			$full_token=preg_replace("/%M.*%S/", "%M", $full_token);
+		} else if($seconds) {
+			$time_token=preg_replace("/%M/", "%M:%S", $time_token);
+			$full_token=preg_replace("/%M/", "%M:%S", $full_token);
 		}
 
 		//--NO-MKTIME--// $this->ddate->setTimeStamp($internal_date);
