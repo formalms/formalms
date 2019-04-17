@@ -806,6 +806,41 @@ class UsermanagementAdmController extends AdmController {
 				$output['success'] = $this->model->suspendUsers($idst);
 				$output['message'] = UIFeedback::pinfo(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
 
+
+				require_once(Forma::inc(_base_.'/lib/lib.eventmanager.php'));
+
+
+				$uinfo = Docebo::aclm()->getUser($idst, false);
+
+				$userid = Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
+
+				$array_subst = array(
+					'[url]' => Get::site_url(),
+					'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+					'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+					'[username]' => $userid
+				);
+
+				// message to user that is odified
+				$msg_composer = new EventMessageComposer();
+
+				$msg_composer->setSubjectLangText('email', '_SUSPENDED_USER_SBJ', false);
+				$msg_composer->setBodyLangText('email', '_SUSPENDED_USER_TEXT', $array_subst);
+
+				$msg_composer->setBodyLangText('sms', '_SUSPENDED_USER_TEXT_SMS', $array_subst);
+
+				$acl_manager = \Docebo::user()->getAclManager();
+
+				$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+				$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+				$users = $acl_manager->getGroupAllUser($permission_godadmin);
+				$users = array_merge($users,$acl_manager->getGroupAllUser($permission_admin));
+
+				createNewAlert(	'UserSuspendedSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was suspended',
+					$users, $msg_composer );
+
+
 				// SET SUSPAND USER EVENT
 				$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();
 				$event->setUser($user);
@@ -849,6 +884,40 @@ class UsermanagementAdmController extends AdmController {
 
 			if ($action==0) {
 				$output['success'] = $this->model->suspendUsers($arr_users);
+
+				$acl_manager = \Docebo::user()->getAclManager();
+
+				$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+				$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+				$users = $acl_manager->getGroupAllUser($permission_godadmin);
+				$users = array_merge($users,$acl_manager->getGroupAllUser($permission_admin));
+
+				foreach ($arr_users as $idst){
+					require_once(Forma::inc(_base_.'/lib/lib.eventmanager.php'));
+
+					$uinfo = Docebo::aclm()->getUser($idst, false);
+
+					$userid = Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
+
+					$array_subst = array(
+						'[url]' => Get::site_url(),
+						'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+						'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+						'[username]' => $userid
+					);
+
+					// message to user that is odified
+					$msg_composer = new EventMessageComposer();
+
+					$msg_composer->setSubjectLangText('email', '_SUSPENDED_USER_SBJ', false);
+					$msg_composer->setBodyLangText('email', '_SUSPENDED_USER_TEXT', $array_subst);
+
+					$msg_composer->setBodyLangText('sms', '_SUSPENDED_USER_TEXT_SMS', $array_subst);
+
+					createNewAlert(	'UserSuspendedSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was suspended',
+						$users, $msg_composer );
+				}
 
 				// SET SUSPAND USERS MULTIPLE EVENT
 				$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();

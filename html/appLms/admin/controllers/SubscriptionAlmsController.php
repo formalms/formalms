@@ -354,7 +354,7 @@ class SubscriptionAlmsController extends AlmsController {
 								'[course]' => $course_info['name'],
 								'[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'))
 								'[course_name]' => $course_info['name'],
-								'[course_code]' => $course['code']
+								'[course_code]' => $course_info['code']
 							);
 
 							// message to user that is waiting
@@ -567,7 +567,7 @@ class SubscriptionAlmsController extends AlmsController {
 					'[course]' => $course_info['name'],
 					'[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'))
 					'[course_name]' => $course_info['name'],
-					'[course_code]' => $course['code']
+					'[course_code]' => $course_info['code']
 				);
 
 				// message to user that is waiting
@@ -828,6 +828,50 @@ class SubscriptionAlmsController extends AlmsController {
 						if ($this->model->updateUserStatus($id_user, $new_value)) {
 							echo $this->json->encode(array('succes' => true));
 
+
+							switch ((int)$new_value){
+								case _CUS_SUSPEND:
+
+									require_once(Forma::inc(_base_.'/lib/lib.eventmanager.php'));
+
+
+									$uinfo = Docebo::aclm()->getUser($id_user, false);
+
+									$userid = Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
+
+									$array_subst = array(
+										'[url]' => Get::site_url(),
+										'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+										'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+										'[username]' => $userid,
+										'[course]' => $docebo_course->course_info['name']
+									);
+
+									// message to user that is odified
+									$msg_composer = new EventMessageComposer();
+
+									$msg_composer->setSubjectLangText('email', '_COURSE_SUSPENDED_USER_SBJ', false);
+									$msg_composer->setBodyLangText('email', '_COURSE_SUSPENDED_USER_TEXT', $array_subst);
+
+									$msg_composer->setBodyLangText('sms', '_COURSE_SUSPENDED_USER_TEXT_SMS', $array_subst);
+
+									$acl_manager = \Docebo::user()->getAclManager();
+
+									$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+									$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+									$course_man = new Man_Course();
+									$recipients = $course_man->getIdUserOfLevel($this->id_course);
+
+									$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_godadmin));
+									$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
+
+									createNewAlert(	'UserSuspendedSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was suspended',
+										$recipients, $msg_composer );
+
+									break;
+								default:
+							}
 							// SET EDIT STATUS SUBSCRIPTION EVENT
 							$event = new \appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent();
 							$event->setUser($user);
