@@ -1506,6 +1506,40 @@ class UsermanagementAdmController extends AdmController {
 				$event->setNode($nodedata);
 				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartAssignEditEvent::EVENT_NAME, $event);
 
+
+				$acl_manager = \Docebo::user()->getAclManager();
+
+				$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+				$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+				$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
+				$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
+
+				foreach ($selection as $idst){
+
+					require_once(_base_ . '/lib/lib.eventmanager.php');
+
+					$uinfo = Docebo::aclm()->getUser($idst, false);
+
+					$array_subst = array(
+						'[url]' => Get::site_url(),
+						'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+						'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+						'[username]' => $uinfo[ACL_INFO_USERID]
+					);
+
+					// message to user that is odified
+					$msg_composer = new EventMessageComposer();
+
+					$msg_composer->setSubjectLangText('email', '_CHANGE_NODE_USER_SBJ', false);
+					$msg_composer->setBodyLangText('email', '_CHANGE_NODE_USER_TEXT', $array_subst);
+
+					$msg_composer->setBodyLangText('sms', '_CHANGE_NODE_USER_TEXT_SMS', $array_subst);
+
+					createNewAlert('UserModNodeSuperAdmin', 'directory', 'edit', '1', 'User ' . $idst . ' was modified',
+						$recipients, $msg_composer);
+				}
+
 				if($res) {
 					$enrollrules = new EnrollrulesAlms();
 					$enrollrules->applyRulesMultiLang('_LOG_USERS_TO_ORGCHART', $selection, $id);
@@ -1794,11 +1828,11 @@ class UsermanagementAdmController extends AdmController {
 			$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
 			$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
-			$users = $acl_manager->getGroupAllUser($permission_godadmin);
-			$users = array_merge($users, $acl_manager->getGroupAllUser($permission_admin));
+			$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
+			$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
 
 			createNewAlert('UserModNodeSuperAdmin', 'directory', 'edit', '1', 'User ' . $id_user . ' was modified',
-				$users, $msg_composer);
+				$recipients, $msg_composer);
 		}
 		$output = array('success' => $success);
 		echo $this->json->encode($output);
@@ -1872,7 +1906,7 @@ class UsermanagementAdmController extends AdmController {
 				$msg_composer->setBodyLangText('email', '_CHANGE_NODE_USER_TEXT', $array_subst);
 
 				$msg_composer->setBodyLangText('sms', '_CHANGE_NODE_USER_TEXT_SMS', $array_subst);
-				
+
 				createNewAlert('UserModNodeSuperAdmin', 'directory', 'edit', '1', 'User ' . $idst . ' was modified',
 					$recipients, $msg_composer);
 			}

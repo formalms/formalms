@@ -757,11 +757,11 @@ class TreeView_OrgView extends TreeView {
 						$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
 						$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
-						$users = $acl_manager->getGroupAllUser($permission_godadmin);
-						$users = array_merge($users,$acl_manager->getGroupAllUser($permission_admin));
+						$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
+						$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
 
 						createNewAlert(	'UserModNodeSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' change node',
-							$users, $msg_composer );
+							$recipients, $msg_composer );
 
 					}
 

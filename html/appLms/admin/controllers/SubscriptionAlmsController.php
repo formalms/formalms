@@ -881,7 +881,7 @@ class SubscriptionAlmsController extends AlmsController
 									$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
 									$course_man = new Man_Course();
-									$recipients = $course_man->getIdUserOfLevel($this->id_course);
+									$recipients = $course_man->getIdUserOfLevel($this->id_course, '6');
 
 									$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_godadmin));
 									$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
@@ -1250,7 +1250,7 @@ class SubscriptionAlmsController extends AlmsController
 								$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
 								$course_man = new Man_Course();
-								$recipients = $course_man->getIdUserOfLevel($this->id_course);
+								$recipients = $course_man->getIdUserOfLevel($this->id_course, '6');
 
 								$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_godadmin));
 								$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
