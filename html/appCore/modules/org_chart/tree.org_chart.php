@@ -726,7 +726,7 @@ class TreeView_OrgView extends TreeView {
 						$users = $acl_manager->getGroupAllUser($permission_godadmin);
 						$users = array_merge($users,$acl_manager->getGroupAllUser($permission_admin));
 
-						createNewAlert(	'UserModNodeSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was modified',
+						createNewAlert(	'UserModSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was modified',
 							$users, $msg_composer );
 
 					}

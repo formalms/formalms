@@ -424,6 +424,37 @@ class UserProfile {
 						$event->setOldUser($oldUserdata);
 						\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
 
+
+						require_once(Forma::inc(_base_ . '/lib/lib.eventmanager.php'));
+
+						$uinfo = Docebo::aclm()->getUser($this->_id_user, false);
+
+						$array_subst = array(
+							'[url]' => Get::site_url(),
+							'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+							'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+							'[username]' => $uinfo[ACL_INFO_USERID]
+						);
+
+						// message to user that is odified
+						$msg_composer = new EventMessageComposer();
+
+						$msg_composer->setSubjectLangText('email', '_MOD_USER_SBJ', false);
+						$msg_composer->setBodyLangText('email', '_MOD_USER_TEXT', $array_subst);
+
+						$msg_composer->setBodyLangText('sms', '_MOD_USER_TEXT_SMS', $array_subst);
+
+						$acl_manager = \Docebo::user()->getAclManager();
+
+						$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+						$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+						$users = $acl_manager->getGroupAllUser($permission_godadmin);
+						$users = array_merge($users,$acl_manager->getGroupAllUser($permission_admin));
+
+						createNewAlert(	'UserModSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was modified',
+							$users, $msg_composer );
+
 						return getResultUi($this->_lang->def('_OPERATION_SUCCESSFULPROFILE')).$this->getProfile();
 					}
 				} else {

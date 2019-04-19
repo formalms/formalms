@@ -121,8 +121,8 @@ INSERT INTO core_event_manager (idEventMgr, idClass, permission, channel, recipi
 INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_EVENT_CLASS_UserCourseSuspendedSuperAdmin', 'event_manager', '');
 SET @lastID = LAST_INSERT_ID();
 
-INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User has been suspended', now());
-INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'italian','User has been suspended', now());
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'english','User has been suspended from a course', now());
+INSERT INTO core_lang_translation ( id_text,lang_code,  translation_text, save_date ) VALUES  (@lastID, 'italian','User has been suspended from a courseexit', now());
 
 INSERT INTO core_lang_text (id_text, text_key, text_module, text_attributes) VALUES (NULL, '_COURSE_SUSPENDED_USER_SBJ', 'event_manager', '');
 SET @lastID = LAST_INSERT_ID();
