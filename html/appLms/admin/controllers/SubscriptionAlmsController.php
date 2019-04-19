@@ -870,10 +870,10 @@ class SubscriptionAlmsController extends AlmsController
 									// message to user that is odified
 									$msg_composer = new EventMessageComposer();
 
-									$msg_composer->setSubjectLangText('email', '_COURSE_SUSPENDED_USER_SBJ', false);
-									$msg_composer->setBodyLangText('email', '_COURSE_SUSPENDED_USER_TEXT', $array_subst);
+									$msg_composer->setSubjectLangText('email', '_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ', false);
+									$msg_composer->setBodyLangText('email', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT', $array_subst);
 
-									$msg_composer->setBodyLangText('sms', '_COURSE_SUSPENDED_USER_TEXT_SMS', $array_subst);
+									$msg_composer->setBodyLangText('sms', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
 
 									$acl_manager = \Docebo::user()->getAclManager();
 
@@ -1239,10 +1239,10 @@ class SubscriptionAlmsController extends AlmsController
 								// message to user that is odified
 								$msg_composer = new EventMessageComposer();
 
-								$msg_composer->setSubjectLangText('email', '_COURSE_SUSPENDED_USER_SBJ', false);
-								$msg_composer->setBodyLangText('email', '_COURSE_SUSPENDED_USER_TEXT', $array_subst);
+								$msg_composer->setSubjectLangText('email', '_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ', false);
+								$msg_composer->setBodyLangText('email', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT', $array_subst);
 
-								$msg_composer->setBodyLangText('sms', '_COURSE_SUSPENDED_USER_TEXT_SMS', $array_subst);
+								$msg_composer->setBodyLangText('sms', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
 
 								$acl_manager = \Docebo::user()->getAclManager();
 

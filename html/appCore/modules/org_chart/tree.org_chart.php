@@ -713,21 +713,21 @@ class TreeView_OrgView extends TreeView {
 						// message to user that is odified
 						$msg_composer = new EventMessageComposer();
 
-						$msg_composer->setSubjectLangText('email', '_MOD_USER_SBJ', false);
-						$msg_composer->setBodyLangText('email', '_MOD_USER_TEXT', $array_subst);
+						$msg_composer->setSubjectLangText('email', '_EVENT_MOD_USER_SBJ', false);
+						$msg_composer->setBodyLangText('email', '_EVENT_MOD_USER_TEXT', $array_subst);
 
-						$msg_composer->setBodyLangText('sms', '_MOD_USER_TEXT_SMS', $array_subst);
+						$msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);
 
 						$acl_manager = \Docebo::user()->getAclManager();
 
 						$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
 						$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
-						$users = $acl_manager->getGroupAllUser($permission_godadmin);
-						$users = array_merge($users,$acl_manager->getGroupAllUser($permission_admin));
+						$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
+						$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
 
 						createNewAlert(	'UserModSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was modified',
-							$users, $msg_composer );
+							$recipients, $msg_composer );
 
 					}
 
@@ -747,10 +747,10 @@ class TreeView_OrgView extends TreeView {
 						// message to user that is odified
 						$msg_composer = new EventMessageComposer();
 
-						$msg_composer->setSubjectLangText('email', '_CHANGE_NODE_USER_SBJ', false);
-						$msg_composer->setBodyLangText('email', '_CHANGE_NODE_USER_TEXT', $array_subst);
+						$msg_composer->setSubjectLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', false);
+						$msg_composer->setBodyLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', $array_subst);
 
-						$msg_composer->setBodyLangText('sms', '_CHANGE_NODE_USER_TEXT_SMS', $array_subst);
+						$msg_composer->setBodyLangText('sms', '_EVENT_CHANGE_NODE_USER_SBJ_SMS', $array_subst);
 
 						$acl_manager = \Docebo::user()->getAclManager();
 

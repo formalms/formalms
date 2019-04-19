@@ -678,10 +678,10 @@ class UsermanagementAdmController extends AdmController {
 		// message to user that is odified
 		$msg_composer = new EventMessageComposer();
 
-		$msg_composer->setSubjectLangText('email', '_MOD_USER_SBJ', false);
-		$msg_composer->setBodyLangText('email', '_MOD_USER_TEXT', $array_subst);
+		$msg_composer->setSubjectLangText('email', '_EVENT_MOD_USER_SBJ', false);
+		$msg_composer->setBodyLangText('email', '_EVENT_MOD_USER_TEXT', $array_subst);
 
-		$msg_composer->setBodyLangText('sms', '_MOD_USER_TEXT_SMS', $array_subst);
+		$msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);
 
 		$acl_manager = \Docebo::user()->getAclManager();
 
@@ -854,21 +854,21 @@ class UsermanagementAdmController extends AdmController {
 				// message to user that is odified
 				$msg_composer = new EventMessageComposer();
 
-				$msg_composer->setSubjectLangText('email', '_SUSPENDED_USER_SBJ', false);
-				$msg_composer->setBodyLangText('email', '_SUSPENDED_USER_TEXT', $array_subst);
+				$msg_composer->setSubjectLangText('email', '_EVENT_SUSPENDED_USER_SBJ', false);
+				$msg_composer->setBodyLangText('email', '_EVENT_SUSPENDED_USER_TEXT', $array_subst);
 
-				$msg_composer->setBodyLangText('sms', '_SUSPENDED_USER_TEXT_SMS', $array_subst);
+				$msg_composer->setBodyLangText('sms', '_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
 
 				$acl_manager = \Docebo::user()->getAclManager();
 
 				$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
 				$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
-				$users = $acl_manager->getGroupAllUser($permission_godadmin);
-				$users = array_merge($users,$acl_manager->getGroupAllUser($permission_admin));
+				$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
+				$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
 
 				createNewAlert(	'UserSuspendedSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was suspended',
-					$users, $msg_composer );
+					$recipients, $msg_composer );
 
 
 				// SET SUSPAND USER EVENT
@@ -920,8 +920,8 @@ class UsermanagementAdmController extends AdmController {
 				$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
 				$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
-				$users = $acl_manager->getGroupAllUser($permission_godadmin);
-				$users = array_merge($users,$acl_manager->getGroupAllUser($permission_admin));
+				$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
+				$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
 
 				foreach ($arr_users as $idst){
 					require_once(Forma::inc(_base_.'/lib/lib.eventmanager.php'));
@@ -940,13 +940,13 @@ class UsermanagementAdmController extends AdmController {
 					// message to user that is odified
 					$msg_composer = new EventMessageComposer();
 
-					$msg_composer->setSubjectLangText('email', '_SUSPENDED_USER_SBJ', false);
-					$msg_composer->setBodyLangText('email', '_SUSPENDED_USER_TEXT', $array_subst);
+					$msg_composer->setSubjectLangText('email', '_EVENT_SUSPENDED_USER_SBJ', false);
+					$msg_composer->setBodyLangText('email', '_EVENT_SUSPENDED_USER_TEXT', $array_subst);
 
-					$msg_composer->setBodyLangText('sms', '_SUSPENDED_USER_TEXT_SMS', $array_subst);
+					$msg_composer->setBodyLangText('sms', '_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
 
 					createNewAlert(	'UserSuspendedSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was suspended',
-						$users, $msg_composer );
+						$recipients, $msg_composer );
 				}
 
 				// SET SUSPAND USERS MULTIPLE EVENT
@@ -1561,10 +1561,10 @@ class UsermanagementAdmController extends AdmController {
 					// message to user that is odified
 					$msg_composer = new EventMessageComposer();
 
-					$msg_composer->setSubjectLangText('email', '_CHANGE_NODE_USER_SBJ', false);
-					$msg_composer->setBodyLangText('email', '_CHANGE_NODE_USER_TEXT', $array_subst);
+					$msg_composer->setSubjectLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', false);
+					$msg_composer->setBodyLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', $array_subst);
 
-					$msg_composer->setBodyLangText('sms', '_CHANGE_NODE_USER_TEXT_SMS', $array_subst);
+					$msg_composer->setBodyLangText('sms', '_EVENT_CHANGE_NODE_USER_SBJ_SMS', $array_subst);
 
 					createNewAlert('UserModNodeSuperAdmin', 'directory', 'edit', '1', 'User ' . $idst . ' was modified',
 						$recipients, $msg_composer);
@@ -1848,10 +1848,10 @@ class UsermanagementAdmController extends AdmController {
 			// message to user that is odified
 			$msg_composer = new EventMessageComposer();
 
-			$msg_composer->setSubjectLangText('email', '_CHANGE_NODE_USER_SBJ', false);
-			$msg_composer->setBodyLangText('email', '_CHANGE_NODE_USER_TEXT', $array_subst);
+			$msg_composer->setSubjectLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', false);
+			$msg_composer->setBodyLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', $array_subst);
 
-			$msg_composer->setBodyLangText('sms', '_CHANGE_NODE_USER_TEXT_SMS', $array_subst);
+			$msg_composer->setBodyLangText('sms', '_EVENT_CHANGE_NODE_USER_SBJ_SMS', $array_subst);
 
 			$acl_manager = \Docebo::user()->getAclManager();
 
@@ -1932,10 +1932,10 @@ class UsermanagementAdmController extends AdmController {
 				// message to user that is odified
 				$msg_composer = new EventMessageComposer();
 
-				$msg_composer->setSubjectLangText('email', '_CHANGE_NODE_USER_SBJ', false);
-				$msg_composer->setBodyLangText('email', '_CHANGE_NODE_USER_TEXT', $array_subst);
+				$msg_composer->setSubjectLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', false);
+				$msg_composer->setBodyLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', $array_subst);
 
-				$msg_composer->setBodyLangText('sms', '_CHANGE_NODE_USER_TEXT_SMS', $array_subst);
+				$msg_composer->setBodyLangText('sms', '_EVENT_CHANGE_NODE_USER_SBJ_SMS', $array_subst);
 
 				createNewAlert('UserModNodeSuperAdmin', 'directory', 'edit', '1', 'User ' . $idst . ' was modified',
 					$recipients, $msg_composer);

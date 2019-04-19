@@ -1067,12 +1067,12 @@ Titolo: [thread_title]]]></key>
         <key id="enrollrules&amp;_SHOW_LOGS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mostra log]]></key>
       </module>
       <module id="event_manager">
-        <key id="event_manager&amp;_CHANGE_NODE_USER_SBJ" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User has been change node]]></key>
-        <key id="event_manager&amp;_CHANGE_NODE_USER_TEXT" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been change node in platform : [url]]]></key>
-        <key id="event_manager&amp;_CHANGE_NODE_USER_TEXT_SMS" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been change node in platform : [url]]]></key>
-        <key id="event_manager&amp;_COURSE_SUSPENDED_USER_SBJ" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User has been suspended]]></key>
-        <key id="event_manager&amp;_COURSE_SUSPENDED_USER_TEXT" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended from course : [course] in platform : [url]]]></key>
-        <key id="event_manager&amp;_COURSE_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended from course : [course] in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_CHANGE_NODE_USER_SBJ" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User has been change node]]></key>
+        <key id="event_manager&amp;_EVENT_CHANGE_NODE_USER_SBJ" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been change node in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_CHANGE_NODE_USER_SBJ_SMS" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been change node in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User has been suspended]]></key>
+        <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended from course : [course] in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended from course : [course] in platform : [url]]]></key>
         <key id="event_manager&amp;_EVENT_CHANNEL_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[SMS]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_AdviceNew" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nuovo avviso creato]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_CoursePorpModified" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Proprietà del corso modificate]]></key>
@@ -1113,12 +1113,12 @@ Titolo: [thread_title]]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2017-03-15 18:06:48"><![CDATA[Docenti e super-amministratori]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_USER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente]]></key>
         <key id="event_manager&amp;_EVENT_SETTINGS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impostazioni eventi]]></key>
-        <key id="event_manager&amp;_MOD_USER_SBJ" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User has been modified]]></key>
-        <key id="event_manager&amp;_MOD_USER_TEXT" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been modified in platform : [url]]]></key>
-        <key id="event_manager&amp;_MOD_USER_TEXT_SMS" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been modified in platform : [url]]]></key>
-        <key id="event_manager&amp;_SUSPENDED_USER_SBJ" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User has been suspended]]></key>
-        <key id="event_manager&amp;_SUSPENDED_USER_TEXT" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended in platform : [url]]]></key>
-        <key id="event_manager&amp;_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_MOD_USER_SBJ" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User has been modified]]></key>
+        <key id="event_manager&amp;_EVENT_MOD_USER_TEXT" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been modified in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_MOD_USER_TEXT_SMS" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been modified in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User has been suspended]]></key>
+        <key id="event_manager&amp;_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2019-04-17 15:25:20"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended in platform : [url]]]></key>
       </module>
       <module id="faq">
         <key id="faq&amp;_ADDFAQ" attributes="" save_date="2017-03-15 18:07:20"><![CDATA[Aggiungi una FAQ]]></key>
