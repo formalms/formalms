@@ -17,7 +17,7 @@ thead input {
 require_once(Forma::inc(_lms_.'/lib/lib.subscribe.php'));
 
 
-Util::get_js(Get::rel_path('appLms') . '/appLms/admin/views/course/certificate_tab.js', true, true);
+//Util::get_js(Get::rel_path('appLms') . '/appLms/admin/views/course/certificate_tab.js', true, true);
 Util::get_js('../addons/jquery/datatables/Buttons-1.5.4/js/buttons.colVis.min.js',true, true);
 
       
@@ -29,13 +29,16 @@ Util::get_js('../addons/jquery/datatables/Buttons-1.5.4/js/buttons.colVis.min.js
         _CUS_SUSPEND           => "Sospeso"//, 'subscribe', 'lms')
     );
 
+    
+$back_label =  Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course');   
+    
 echo getTitleArea(array(
-	'index.php?r='.$base_link_course.'/show' => Lang::t('_COURSE', 'course'),
-	Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course').' : '.$info_course['name']
+	'index.php?r=alms/course/show' => $back_label,
+	$info_course['name']
 ));
 
 
-  $print_button_1 = '<div>'
+  $print_button = '<div>'
         .'<a id="print_selected_button_1" href="javascript:generate_all_certificate();">'
         .Get::img('course/certificate.png', Lang::t('_GENERATE_ALL_SELECTED', 'certificate'))
         .Lang::t('_GENERATE_ALL_SELECTED', 'certificate')
@@ -47,35 +50,27 @@ echo getTitleArea(array(
         .'</div>';
 
 
- echo $print_button_1.'<br />';
+  echo $print_button.'<br />';
  
  
-    echo "<div  align='center' id='loading'>";
-    echo "<img  src='".Get::tmpl_path() ."images/standard/loadbar.gif'  >";
-    echo "</div>";
-         
          
     if($from=="course"){
         echo "<div class='container-back'>";
-        echo "<a href='index.php?r=alms/course/certificate&amp;id_course=".$id_course."'>Indietro</a>";
+        echo "<a href='index.php?r=alms/course/certificate&amp;id_course=".$id_course."'>".Lang::t('_BACK', 'standard')."</a>";
         echo "</div>";
-         } 
+    } 
           
             
-    if($from=="courselist"){
+    if($from=="courselist"){ 
         echo "<div class='container-back'>";
-        echo "<a href='index.php?r=alms/course/show'>Indietro</a>";
+        echo "<a href='index.php?r=alms/course/show'>".Lang::t('_BACK', 'standard')."</a>";
         echo "</div>";
     }
     
     if($from=="manage"){
-                       
         echo "<div class='container-back'>";
-        echo "<a href='index.php?modname=certificate&op=report_certificate_from_new&of_platform=lms&id_certificate=".$id_certificate."'>Indietro</a>";
+        echo "<a href='index.php?modname=certificate&op=report_certificate&of_platform=lms&id_certificate=".$id_certificate."'>".Lang::t('_BACK', 'standard')."</a>";
         echo "</div>";        
-        
-        
-        
     }
     
 echo "
@@ -83,19 +78,19 @@ echo "
 <input type='hidden' id='sel_all' value='false'>
 
 <div class='std_block'>";
-            echo "<table id='table_certificate' data-tipocorso='".$course_info['course_type']."' data-id_course='".$id_course."' data-id_certificate='".$id_certificate."' class='table table-striped table-bordered display' style='width:100%'>";
+            echo "<table id='table_certificate' data-tipocorso='".$course_info['course_type']."' data-id_course='".$id_course."' data-id_certificate='".$id_certificate."' class='table table-striped table-bordered display' style='width:100%'>";            
                     echo "<thead>";
                         echo "<tr>";
                             echo "<th></th>";
                             echo "<th></th>";
-                            echo "<th>Username</th>";
-                            echo "<th>Cognome</th>";
-                            echo "<th>Nome</th>";
-                            echo "<th>Stato</th>"; 
-                            echo "<th>Template</th>";
-                            echo "<th>Edizione</th>";
-                            echo "<th>Data Completamento</th>";
-                            echo "<th>Data rilascio</th>";
+                            echo "<th>".Lang::t('_USERNAME', 'standard')."</th>";
+                            echo "<th>".Lang::t('_LASTNAME', 'standard')."</th>";
+                            echo "<th>".Lang::t('_NAME', 'standard')."</th>";
+                            echo "<th>".Lang::t('_STATE', 'classroom')."</th>"; 
+                            echo "<th>".Lang::t('_TEMPLATE', 'certificate')."</th>";
+                            echo "<th>".Lang::t('_EDITION', 'standard')."</th>";
+                            echo "<th>".Lang::t('_DATE_COMPLETE', 'certificate')."</th>";
+                            echo "<th>".Lang::t('_CERTIFICATE_RELEASE', 'course')."</th>";
                             echo "<th>".Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate'))."</th>";
                             echo "<th>". Get::sprite('subs_del', Lang::t('_DEL', 'certificate'))."</th>";
                             echo "<th></th>";
@@ -139,53 +134,26 @@ echo "
                
         echo "</tbody>";
         
-        
-        /*
-        echo "<tfoot>";
-            echo "<tr>";
-                echo "<th>id_user</th>";
-                echo "<th>Username</th>";
-                echo "<th>Cognome</th>";
-                echo "<th>Nome</th>";
-                echo "<th>Stato</th>"; 
-                echo "<th>Template</th>";
-                echo "<th>Data Completamento</th>";
-                echo "<th>Data rilascio</th>";
-                echo "<th>Download-Gen cert</th>";
-                echo "<th>Elimina</th>";
-                echo "<th>Edizione</th>";
-     
-            echo "</tr>";
-        echo "</tfoot>";
-        */
-        
+       
     echo "</table>";
 
 
     
     require_once(_base_.'/lib/lib.dialog.php');
-    setupHrefDialogBox('a[href*=del_report_certificate]','Sei sicuro di voler eliminare il certifcato?',"SI","NO");    
+    setupHrefDialogBox('a[href*=del_report_certificate]',Lang::t('_CONFIRM_DELETION', 'iotask'),Lang::t('_YES', 'standard'),Lang::t('_NO', 'standard'));    
 
 
-    /*
-    if($from=="courselist" && $_GET['op']=="del_report_certificate"){
-        // refresh page no id_certificate
-        echo "
-        <script language='javascript'>
-                    url = window.location.href
-                    url = url.replace('id_certificate=','');
-                    url = url.replace('del_report_certificate','');
-                    document.location.href = url ;
-         </script>
-        ";   
-        
-    }
-    */
 
-    echo $print_button_1.'<br />';    
-    
-    Util::get_js(Get::rel_path('lib') . '/lib.formatable.js', true, true);
+    echo $print_button.'<br />';    
 
     echo "</div>";
+    
+    $this->widget('forma_tablefilter', array(
+    'id' => 'classlocations_filter',
+    'filter_text' => isset($filter_text) ? $filter_text : "",
+    'js_callback_set' => 'ClassLocations.setFilter',
+    'js_callback_reset' => 'ClassLocations.resetFilter'
+    ));
+    
     
 ?>

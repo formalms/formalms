@@ -487,7 +487,6 @@ Class CourseAlmsController extends AlmsController
 				'certificate' => '<a href="index.php?r='.$this->base_link_course.'/certificate&amp;id_course='.$row['idCourse'].'">'.Get::sprite('subs_pdf'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')).'</a>',
                 
                 
-                //'certreleased' => '<a href="index.php?modname=certificate&op=view_report_certificate&amp;id_course='.$row['idCourse'].'&from=courselist&of_platform=lms">'.Get::sprite('subs_print'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')).'</a>',
                 'certreleased' => '<a href="index.php?r=alms/course/list_certificate&amp;id_course='.$row['idCourse'].'&amp;from=courselist">'.Get::sprite('subs_print'.(!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')).'</a>',
 				
                 
@@ -1172,10 +1171,6 @@ Class CourseAlmsController extends AlmsController
 													$possible_status,
 													( isset($course_ex_cert[$id_cert]) ? $course_ex_cert[$id_cert] : 0 ),
 													'' );
-				$cont[] = (isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0 && $view_cert ? '<a href="index.php?modname=certificate&amp;op=view_report_certificate&amp;id_certificate='.$id_cert.'&amp;id_course='.$id_course.'&amp;from=course&amp;of_platform=lms"><b><u>' : '').( isset($released[$id_cert]) ? $released[$id_cert] : '0' ).(isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0  ? '</b></u></a>' : '');
-                
-                
-                // CHIAMO PAGINA MVC PER LISTA CERTIFICATI CON DATATABLE
                 $cont[] = (isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0 && $view_cert ? '<a href="index.php?r=alms/course/list_certificate&amp;id_certificate='.$id_cert.'&amp;id_course='.$id_course.'&amp;from=course&amp;of_platform=lms"><b><u>' : '').( isset($released[$id_cert]) ? $released[$id_cert] : '0' ).(isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0  ? '</b></u></a>' : '');
 
 				$tb->addBody($cont);
@@ -1195,64 +1190,6 @@ Class CourseAlmsController extends AlmsController
 		}
 	}
 
-    
-    // new MCV for list certificate
-    public function list_certificate(){
-        $id_course = Get::req('id_course', DOTY_INT, 0);
-        $id_certificate = Get::req('id_certificate', DOTY_INT, 0);
-        $from = Get::req('from');
-        $op = Get::req('op');
-        
-       if($op=="del_report_certificate"){
-            $id_user = Get::req('id_user', DOTY_INT, 0);
-            $this->model->deleteCertificateUser($id_user,$id_course, $id_certificate) ;
-            if($from=="courselist") $id_certificate=0;
-        } 
- 
-        $vett_course = $this->model->getInfoCourse($id_course);
-        $data_certificate = $this->model->getListTototalUserCertificate($id_course, $id_certificate);
-        
-        $this->render(
-                    'list_certificate', array(
-                    'id_course' => $id_course,
-                    'id_certificate' => $id_certificate,
-                    'info_course' => $vett_course,
-                    'from' => $from ,
-                    'data_certificate' => $data_certificate  ,
-                    'course_info' => $this->model->getInfoCourse($id_course),
-                    'custom_field' => $this->model->getCustomField()  ,
-                    'op' => $op
-                    
-        ));        
-        
-        
-        
-    }
-    
-    
-    
-    public function gettabledata_certificate(){
-        
-        $id_course = Get::req('id_course', DOTY_INT, 0);
-        $id_certificate = Get::req('id_certificate', DOTY_INT, 0);        
-      
-        $pagination = [];
-        $pagination['startIndex'] = Get::req('start', DOTY_INT, 0);
-        $pagination['rowsPerPage'] = Get::req('length', DOTY_INT, 0);      
-      
-        if ($order = $_REQUEST['order']) {
-                $pagination['order_column'] = $order[0]['column'];
-                $pagination['order_dir'] = $order[0]['dir'];
-            }      
-      
-        
-        $data_certificate = $this->model->getListUserCertificate($id_course, $id_certificate, $pagination);
-      
-        
-        
-    }
-    
-    
     
 	public function menu()
 	{
@@ -1545,108 +1482,34 @@ Class CourseAlmsController extends AlmsController
 		$this->render('maskcourse', $params);
 	}
     
-    function send_certificate() {
-
-        require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
-        require_once(_base_.'/lib/lib.download.php');
-
-        $id_certificate = importVar('certificate_id', true, 0);
-        $id_course         = importVar('course_id', true, 0);
-        $id_user         = importVar('user_id', true, 0);
-
-        $certificate = new Certificate();
-                   
-        $report_info = array();
-        $report_info = $certificate->getInfoForCourseCertificate($id_course, $id_certificate, $id_user);
-        $info_report = current($report_info);
-
-        $file = $info_report[ASSIGN_CERT_FILE];
-        $sendname = $info_report[ASSIGN_CERT_SENDNAME];
-
-        //recognize mime type
-        $expFileName = explode('.', $file);
-        $totPart = count($expFileName) - 1;
-
-        //send file
-        sendFile('/appLms/certificate/', $file, $expFileName[$totPart], $sendname);
-    }
     
-    
-    function print_certificate() {
-
-        require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
-        require_once(_base_.'/lib/lib.download.php' );
-
-        $id_certificate = importVar('certificate_id', true, 0);
-        $id_course         = importVar('course_id', true, 0);
-        $id_user         = importVar('user_id', true, 0);
-
-        $cert = new Certificate();
+    //  MCV for certificates NEED ITS OWN MVC
+    public function list_certificate(){
         
-        $subs = $cert->getSubstitutionArray($id_user, $id_course);
-        $cert->send_certificate($id_certificate, $id_user, $id_course, $subs, true);
+        $id_course = Get::req('id_course', DOTY_INT, 0);
+        $id_certificate = Get::req('id_certificate', DOTY_INT, 0);
+        $from = Get::req('from');
+        $op = Get::req('op');
+        
+        
+        require_once(Forma::inc(_adm_.'/lib/lib.field.php'));
+        $fman = new FieldList();        
+ 
+        $data_certificate = $this->model->getListTototalUserCertificate($id_course, $id_certificate);
+        $this->render(
+                    'list_certificate', array(
+                    'id_course' => $id_course,
+                    'id_certificate' => $id_certificate,
+                    'info_course' => $this->model->getCourseModDetails($id_course),
+                    'from' => $from ,
+                    'data_certificate' => $data_certificate  ,
+                    'custom_field' =>$fman->getFlatAllFields(),
+                    'op' => $op
+                    
+        ));        
         
     }
-    
-    
 
-    public function gen_zip_cert(){
-        require_once(_base_.'/addons/pclzip/pclzip.lib.php');
-        require_once(_base_.'/'._folder_lms_.'/lib/lib.certificate.php');
-        require_once(_base_.'/lib/lib.download.php');        
-        
-        
-        $str_rows = importVar('str_rows');
-        
-        $files = array();
-        $zipName = date("YmdHis").'_certs.zip';
-       
-       
-       //die("step-0: ".$str_rows);
-       
-       
-        $zip = new PclZip('/tmp/'.$zipName);
-        
-        $list_cert = explode(",",$str_rows);
-        
-        foreach ($list_cert as $key => $vett_users) {
-                                              
-            
-            list($id_user,$id_certificate,$id_course) = explode("-",$vett_users);
-          
-           
-          
-            $certificate = new Certificate();
-
-            $report_info = $certificate->getInfoForCourseCertificate($id_course, $id_certificate, $id_user);
-           
-            $info_report = current($report_info);
-
-            
-            $file = $info_report[ASSIGN_CERT_FILE];
-            if ($file == null) continue;
-
-            $sendname = $info_report[ASSIGN_CERT_SENDNAME];
-            copy(_files_.'/appLms/certificate/'.$file, _files_.'/tmp/'.$sendname);
-            $files[] = '/tmp/'.$sendname;
-            
-        }
-
-        
-        $zip->create($files, '', '/tmp/');
-
-        foreach ($files as $fileToRemove) {
-            unlink(_files_.$fileToRemove);
-        }
-
-      
-        sendFile('/tmp/', $zipName);        
-        
-        die($id_user."-".$id_certificate."-".$id_course."  -   ".count($files));         
-   
-        
-    }      
-    
     
 }
 ?>

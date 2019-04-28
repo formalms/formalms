@@ -3,14 +3,13 @@
  
  $(document).ready(function() {
 
-    $("#loading").css("display", "none");
     
     $('#table_certificate thead tr').clone(true).appendTo( '#table_certificate thead' );
     $('#table_certificate thead tr:eq(1) th').each( function (i) {
             var title = $(this).text();
             
             if(((i>1 && i<=7) || i>=12  )) {
-                $(this).html( '<select id="sel_' + i + '" name="sel_' + i + '"><option value="0">Inizia</option><option selected value="1">Contiente</option><option value="2">Uguale</option></select>  <input id="input_' + i + '" name="input_' + i + '" type="text" size=38 placeholder=""  />' );
+                $(this).html( '<select id="sel_' + i + '" name="sel_' + i + '"><option value="0">Inizia</option><option selected value="1">Contiene</option><option value="2">Uguale</option></select>  <input id="input_' + i + '" name="input_' + i + '" type="text" size=38 placeholder=""  />' );
             }  else{
                 $(this).html( '' );            
             } 
@@ -44,31 +43,6 @@
             
             } );
             
-         
-            /*
-            $( 'select', this ).change(function() {
-              
-               var cond =  $('select[name=sel_' + i + ']').val()  
-               var input = $('input[name=input_' + i + ']').val()  ;
-                
-                
-                if(cond==0) str_search = "^" + this.value;
-                if(cond==1) str_search =  this.value;
-                if(cond==2) str_search = "^" + this.value + "^";
-                                               
-                //alert( i + " - " + this.value )                                     
-                //alert(table.column(i).search( str_search ,true, false) )               
-                               
-                if ( table.column(i).search( str_search ,true, false) !== this.value  ) {
-                    table
-                        .column(i)
-                        .search( str_search)
-                        .draw();
-                }                
- 
-            });                
-            */      
-            
             
     } );
  
@@ -79,7 +53,6 @@
     var $table_n = $('#table_certificate');
     tipoCorso = $table_n.data( "tipocorso");
     id_course = $table_n.data( "id_course");
-    id_certificate = $table_n.data( "id_certificate");
  
     visEdizione = false
     if(tipoCorso=="classroom") visEdizione = true  
@@ -106,19 +79,8 @@
                                    'sNext':    'Successivo',
                                    'sLast' :    'Fine'
                                    
-                                  },
-                               
-                            'select': {      
-                                  rows: {
-                                   // _: "Selezionati <b>%d</b> certificati",
-                                    0: "",
-                                    //1: "Selezionato <b>1</b> certificato"
-                                }    
-                            }                                  
-                                                             
-                            
-                        }     ,        
-        
+                                  }
+                        } ,        
         
         "columnDefs": [
             {
@@ -148,7 +110,7 @@
                ,
             {
                 "targets": [ 11 ],
-                "orderable": true
+                "orderable": false
             }             
                ,
                
@@ -341,31 +303,8 @@
     
   });
   
-  function print_certificate(id_certificate, id_course, id_user, refresh){
-    
-      var posting = $.get(
-                    'ajax.adm_server.php',
-                    {
-                        r: 'alms/course/print_certificate',
-                        certificate_id: id_certificate,
-                        course_id: id_course,
-                        user_id: id_user
-                    }
-                );
-                posting.done(function (responseText) {
-                   // alert(responseText);
-                    //location.reload();    
-                    if(refresh){
-                        url = window.location.href
-                        url = url.replace("del_report_certificate","");
-                        document.location.href = url ;
-                    }
-                });
-                posting.fail(function () {
-                    //alert("ko " + id_user);
-                })      
-
-  }
+  
+  
   
    // select rows selected
   function getRowsSelected(){
@@ -383,18 +322,39 @@
         return sData;      
       
   }  
+  
+  
+  
+  function print_certificate(id_user, id_course, id_certificate){
+      var posting = $.get(
+                    'index.php',
+                    {
+                        modname:'certificate',
+                        of_platform:'lms',
+                        op:'print_certificate',
+                        certificate_id: id_certificate,
+                        course_id: id_course,
+                        user_id: id_user
+                    }
+                );
+                posting.done(function (responseText) { 
+                    location.reload();    
+                });
+                posting.fail(function () {
+                    alert("Error generating certificate");
+                })      
+
+  }
 
   
-  // generate certificate selected
+  // generate  selected certificates
   function generate_all_certificate(){
-
+  
     strRows =   getRowsSelected();
     if(strRows=="") return 
 
     var x = document.getElementById("loading");
     x.style.display = "block";
-
-    //alert("step-0: " + strRows);
     
     var arr_users = strRows.split(',');
                        
@@ -405,37 +365,19 @@
         var id_certificate = arr_user[1];
         var id_course = arr_user[2];
         
-        //alert(id_user + "#" + id_certificate + "#" + id_course) ;
-        
-        print_certificate(id_certificate, id_course,id_user, false ) ;
+        print_certificate(id_user, id_course, id_certificate) ;
         
     });
     
-    setTimeout(function(){ 
-           url = window.location.href
-           url = url.replace("del_report_certificate","");
-           document.location.href = url ;         
-           x.style.display = "none";    
-    }, 3000);
-  
-    
-  
-    
   }
   
   
-  // download cert selected
+  // download  selected  certificates
   function download_all_certificate(){
       
     strRows =   getRowsSelected();
-     
     if(strRows=="") return 
-         
     var arr_users = strRows.split(',');
-     
-    document.location.href = "index.php?r=alms/course/gen_zip_cert&str_rows=" + strRows;
-        
+    document.location.href = "index.php?modname=certificate&of_platform=lms&op=download_all&str_rows=" + strRows;
       
   }
-
-  
