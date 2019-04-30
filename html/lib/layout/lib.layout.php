@@ -300,7 +300,7 @@ class Layout
 
     public static function render($layout)
     {
-        if ($_SESSION['template'] != getTemplate() && Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && CORE === true) {
+        if ($_SESSION['template'] != NULL && $_SESSION['template'] != getTemplate() && Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && CORE === true) {
             $msgChangeTemplate = Lang::t('_MSG_CHANGE_TEMPLATE', 'standard');
             $msgChangeTemplate = str_replace('[template_name]', $_SESSION['template'], $msgChangeTemplate);
             $msgChangeTemplate = str_replace('[template_min_version]', _template_min_version_, $msgChangeTemplate);

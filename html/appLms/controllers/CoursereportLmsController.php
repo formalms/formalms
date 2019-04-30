@@ -3198,6 +3198,8 @@ class CoursereportLmsController extends LmsController
 										$csv .= ';"-"';
 									}
 								}
+							} else {
+								$csv .= ';"-"';
 							}
 						}
 							break;
