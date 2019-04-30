@@ -24,8 +24,8 @@
 $cfg['db_type'] = 'mysqli';
 $cfg['db_host'] = 'localhost';
 $cfg['db_user'] = 'root';
-$cfg['db_pass'] = '';
-$cfg['db_name'] = 'forma';
+$cfg['db_pass'] = 'root';
+$cfg['db_name'] = 'formalms_smtp_tls';
 $cfg['db_charset'] = 'utf8';
 
 /**
@@ -38,12 +38,12 @@ $cfg['db_charset'] = 'utf8';
  * prefix for the ecom tables
  * prefix for the ecom tables
  */
-$cfg['prefix_fw'] = 'core';
-$cfg['prefix_lms'] = 'learning';
+$cfg['prefix_fw']	= 'core';
+$cfg['prefix_lms']	= 'learning';
 $cfg['prefix_cms']  = 'cms';
-$cfg['prefix_scs'] = 'conference';
-$cfg['prefix_ecom'] = 'ecom';
-$cfg['prefix_crm'] = 'crm';
+$cfg['prefix_scs']	= 'conference';
+$cfg['prefix_ecom']	= 'ecom';
+$cfg['prefix_crm']	= 'crm';
 
 /**
  * File upload
@@ -57,25 +57,25 @@ $cfg['prefix_crm'] = 'crm';
  */
 $cfg['uploadType'] = 'fs';
 
-$cfg['ftphost']  = 'localhost';
-$cfg['ftpport']  = '21';
-$cfg['ftpuser']  = '';
-$cfg['ftppass']  = '';
-$cfg['ftppath']  = '/';
+$cfg['ftphost'] 	= 'localhost';
+$cfg['ftpport'] 	= '21';
+$cfg['ftpuser'] 	= '';
+$cfg['ftppass'] 	= '';
+$cfg['ftppath'] 	= '/';
 
 /**
  * External smtp config
  * -------------------------------------------------------------------------
  */
-$cfg['use_smtp_database'] = 'on';   // Options: on,off
-$cfg['use_smtp'] = 'on';            // Options: on,off
-$cfg['smtp_host'] ='';				// Options: hostname;hostname:port;...
-//$cfg['smtp_port'] ='';			// Options: '' (default port) , port number
-//$cfg['smtp_secure'] = '';			// Options: "", "ssl", "tls"
-$cfg['smtp_auto_tls'] = true;		// Options: true, false
-$cfg['smtp_user'] ='';
-$cfg['smtp_pwd'] ='';
-$cfg['smtp_debug'] = 0;             // Options: debug level 0,1,2,3,...
+$cfg['use_smtp_database']   = 'on';                                 // Options: "on", "off"
+$cfg['use_smtp']            = 'on';                                 // Options: "on", "off"
+$cfg['smtp_host']           = 'smtp.eu.mailgun.org';				// Options: hostname;hostname:port;...
+$cfg['smtp_port']           = '465';			                    // Options: '' (default port) , port number
+$cfg['smtp_secure']         = 'ssl';			                    // Options: "", "ssl", "tls"
+$cfg['smtp_auto_tls']       = 'on';			                        // Options: "on", "off"
+$cfg['smtp_user']           = 'test@giuseppenucifora.com';
+$cfg['smtp_pwd']            = 'asdasdasd';
+$cfg['smtp_debug']          = 0;                                    // Options: debug level 0,1,2,3,...
 
 /**
  * Other params
@@ -96,8 +96,8 @@ $cfg['smtp_debug'] = 0;             // Options: debug level 0,1,2,3,...
 
 //$cfg['keepalivetmo'] = '';			// timeout for keepalive, must be < session lifetime, 0 to disable keepalive
 
-//$cfg['enable_customscripts'] = false;	// enable custom scripts processing;  accepted value: true , false ; default false
-//$cfg['enable_plugins']       = false; // enable plugins processing;  accepted value: true , false ; default false
+$cfg['enable_customscripts'] = true;	// enable custom scripts processing;  accepted value: true , false ; default false
+$cfg['enable_plugins']       = true; // enable plugins processing;  accepted value: true , false ; default false
 
 /**
  * Template engine custom param
@@ -109,7 +109,7 @@ $cfg['smtp_debug'] = 0;             // Options: debug level 0,1,2,3,...
  * If not defined no alternate template engine. Twig is enabled on default
  */
 $cfg['template_engine']['twig'] = array('ext' => '.html.twig');
-$cfg['twig_debug'] = false;
+$cfg['twig_debug'] = true;
 
 
 /**
@@ -119,12 +119,12 @@ $cfg['twig_debug'] = false;
  * session must survive at least X seconds
  * session save_path if specified will be used instead of the defaul one
  */
-$cfg['do_debug']    = false;
-$cfg['session_lenght']   = (120 * 60);
-$cfg['session_save_path']  = false;
+$cfg['do_debug'] 			= false;
+$cfg['session_lenght'] 		= (120 * 60);
+$cfg['session_save_path'] 	= false;
 //$cfg['session_save_handler']  = 'memcached';
 //$cfg['session_save_path']  = 'localhost:11211';
-$cfg['demo_mode']   = false;
+$cfg['demo_mode']			= false;
 
 /**
  * Technical preferences
@@ -133,7 +133,7 @@ $cfg['demo_mode']   = false;
  * mail_br: used in mail composition (no longer needed?)
  */
 $cfg['filter_tool'] = 'htmlpurifier';
-$cfg['mail_br']  = "\r\n";
+$cfg['mail_br'] 	= "\r\n";
 
 /**
  * Certificate Encryption
@@ -143,3 +143,11 @@ $cfg['mail_br']  = "\r\n";
  */
 //$cfg['certificate_encryption'] = true;
 //$cfg['certificate_password']  = "12345678901234567890123456789012";
+
+
+/**
+ * Social Google Options
+ * -------------------------------------------------------------------------
+ * use_google_login_oauth2: boolean to set whether to enable or not the oauth2 login in google connection instead of openid (default is TRUE)
+ */
+//$cfg['use_google_login_oauth2'] = false;

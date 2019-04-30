@@ -43,8 +43,10 @@ function generateConfig($tpl_fn)
         $config = str_replace("[%-SMTP_HOST-%]", addslashes($_SESSION['smtp_info']["smtp_host"]), $config);
         $config = str_replace("[%-SMTP_PORT-%]", addslashes($_SESSION['smtp_info']["smtp_port"]), $config);
         $config = str_replace("[%-SMTP_SECURE-%]", addslashes($_SESSION['smtp_info']["smtp_secure"]), $config);
+	    $config = str_replace("[%-SMTP_AUTO_TLS-%]", addslashes($_SESSION['smtp_info']["smtp_auto_tls"]), $config);
         $config = str_replace("[%-SMTP_USER-%]", addslashes($_SESSION['smtp_info']["smtp_user"]), $config);
         $config = str_replace("[%-SMTP_PWD-%]", addslashes($_SESSION['smtp_info']["smtp_pwd"]), $config);
+	    $config = str_replace("[%-SMTP_DEBUG-%]", addslashes('0'), $config);
     }
     else {
         $config = str_replace("[%-SMTP_USE_DATABASE-%]", addslashes('off'), $config);
@@ -52,8 +54,10 @@ function generateConfig($tpl_fn)
         $config = str_replace("[%-SMTP_HOST-%]", addslashes(''), $config);
         $config = str_replace("[%-SMTP_PORT-%]", addslashes(''), $config);
         $config = str_replace("[%-SMTP_SECURE-%]", addslashes(''), $config);
+	    $config = str_replace("[%-SMTP_AUTO_TLS-%]", addslashes(''), $config);
         $config = str_replace("[%-SMTP_USER-%]", addslashes(''), $config);
         $config = str_replace("[%-SMTP_PWD-%]", addslashes(''), $config);
+	    $config = str_replace("[%-SMTP_DEBUG-%]", addslashes('0'), $config);
     }
 
     $config = str_replace("[%-UPLOAD_METHOD-%]", $upload_method, $config);
