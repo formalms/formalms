@@ -1,14 +1,21 @@
 <?php
-    $a = a;
+
 ?>
 <script type="text/javascript">;
 
     $('#table_certificate thead tr').clone(true).appendTo( '#table_certificate thead' );
     $('#table_certificate thead tr:eq(1) th').each( function (i) {
-
-            var title = $(this).text();
             
-            if(((i>1 && i<=7) || i>=12  )) {
+            if ($(this).data('column_type')=='string') {
+                $(this).html( '<select id="sel_' + i + '" name="sel_' + i + '">' +
+                               '<option value="0"><?php echo Lang::t('_STARTS_WITH', 'standard'); ?></option>'+
+                                '<option selected value="1"><?php echo Lang::t('_CONTAINS','standard'); ?></option>'+
+                                '<option value="2"><?php  echo Lang::t('_EQUAL','standard'); ?></option>'+
+                            '</select>'+
+                            '<input id="input_' + i + '" name="input_' + i + '" type="text" size=38 placeholder="" />');
+            }
+            
+          /*  if(((i>1 && i<=7) || i>=12  )) {
                 $(this).html( '<select id="sel_' + i + '" name="sel_' + i + '">' +
                                '<option value="0"><?php echo Lang::t('_STARTS_WITH', 'standard'); ?></option>'+
                                 '<option selected value="1"><?php echo Lang::t('_CONTAINS','standard'); ?></option>'+
@@ -18,7 +25,7 @@
             }  else{
                 $(this).html( '' );            
             } 
-      
+                  */
 
             if((i>=8 && i<=10)) {
                 $(this).html( '<input id="input_' + i + '" name="input_' + i + '" type="text" size=38 placeholder="" />' );
@@ -34,7 +41,6 @@
                 if(cond==1) str_search =  this.value;
                 if(cond==2) str_search = "^" + this.value + "^";
                      
-                    // alert( i + " - " + str_search )     
                                
                 if ( table.column(i).search( str_search ,true, false) !== this.value ) {
                     table
@@ -57,31 +63,13 @@
     visEdizione = false
     if(tipoCorso=="classroom") visEdizione = true
     
-    
+    // livio
 var table = $table_n.DataTable( {
         orderCellsTop: true,
 
         stateSave: false, 
         
-        'language': {
-                            'lengthMenu': 'Visualizza _MENU_ certificati per pagina',
-                            'zeroRecords': 'Nessun certificato ',
-                            'print':'Stampa',
-                            'info': 'Numero pagina _PAGE_ di _PAGES_',
-                            'infoEmpty': 'Nessun certificato disponibile',
-                            'infoFiltered': '(filtrato da _MAX_ certificati totale)'     ,
-                            'sEmptyTable' :   'Nessun certificato nella tabella',
-                            'sInfo'  :  'Vista da _START_ a _END_ di _TOTAL_ certificati',
-                            'sSearch'  :  'Cerca:',
-                            'pagingType': 'full_numbers',
-                            'oPaginate': {
-                                   'sFirst':'Inizio',
-                                   'sPrevious' :   'Precedente',
-                                   'sNext':    'Successivo',
-                                   'sLast' :    'Fine'
-                                   
-                                  }
-                        } ,        
+        'language': <?php echo $language ?> ,        
         
         "columnDefs": [
             {

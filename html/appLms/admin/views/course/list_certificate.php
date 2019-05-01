@@ -1,4 +1,4 @@
-  <style>
+<style>
   
 thead input {
         width: 100%;
@@ -13,9 +13,10 @@ thead input {
 
 
 <?php
+$a  = json_encode($data_certificate);
            
 require_once(Forma::inc(_lms_.'/lib/lib.subscribe.php'));
-
+require_once(Forma::inc(_lib_ . '/formatable/include.php'));
 
 //Util::get_js(Get::rel_path('appLms') . '/appLms/admin/views/course/certificate_tab.js', true, true);
 Util::get_js('../addons/jquery/datatables/Buttons-1.5.4/js/buttons.colVis.min.js',true, true);
@@ -72,73 +73,39 @@ echo getTitleArea(array(
         echo "<a href='index.php?modname=certificate&op=report_certificate&of_platform=lms&id_certificate=".$id_certificate."'>".Lang::t('_BACK', 'standard')."</a>";
         echo "</div>";        
     }
+?>
     
-echo "
 <input type='hidden' id='show_search' value='false'>
 <input type='hidden' id='sel_all' value='false'>
 
-<div class='std_block'>";
-            echo "<table id='table_certificate' data-tipocorso='".$course_info['course_type']."' data-id_course='".$id_course."' data-id_certificate='".$id_certificate."' class='table table-striped table-bordered display' style='width:100%'>";            
-                    echo "<thead>";
-                        echo "<tr>";
-                            echo "<th></th>";
-                            echo "<th></th>";
-                            echo "<th>".Lang::t('_USERNAME', 'standard')."</th>";
-                            echo "<th>".Lang::t('_LASTNAME', 'standard')."</th>";
-                            echo "<th>".Lang::t('_NAME', 'standard')."</th>";
-                            echo "<th>".Lang::t('_STATE', 'classroom')."</th>"; 
-                            echo "<th>".Lang::t('_TEMPLATE', 'certificate')."</th>";
-                            echo "<th>".Lang::t('_EDITION', 'standard')."</th>";
-                            echo "<th>".Lang::t('_DATE_COMPLETE', 'certificate')."</th>";
-                            echo "<th>".Lang::t('_CERTIFICATE_RELEASE', 'course')."</th>";
-                            echo "<th>".Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate'))."</th>";
-                            echo "<th>". Get::sprite('subs_del', Lang::t('_DEL', 'certificate'))."</th>";
-                            echo "<th></th>";
-                            
-                            foreach($custom_field as $key=>$value)
-                            {
-                          
-                                echo "<th class='custom'>".$value."</th>";
-                            }                             
-                            
-                            
-                            
-                        echo "</tr>";
-                    echo "</thead>";
-                    echo "<tbody>";        
-                    
-             foreach($data_certificate['data'] as $key => $user){
+<div class='std_block'>
+           <table id='table_certificate' data-tipocorso='<?php echo $course_info['course_type']?>' data-id_course=''<?php echo $id_course ?>' data-id_certificate=''<?php echo $id_certificate ?>' class='table table-striped table-bordered display' style='width:100%'></table>            
+<script type="text/javascript">           
+var table = 
+        var table = $('#coursestats').FormaTable({
+            rowId: 'id_user'
+            data: 
+            columns:[
+             { data: 'id_user', title: '<?php echo Lang::t('_USERNAME', 'standard'); ?>', sortable: true },
+             { data: 'username', title: '<?php echo Lang::t('_USERNAME', 'standard'); ?>', sortable: true },
+             { data: 'lastname', title: '<?php echo Lang::t('_LASTNAME', 'standard'); ?>', sortable: true },
+             { data: 'name', title: '<?php echo Lang::t('_NAME', 'standard'); ?>', sortable: true },
+             { data: 'state', title: '<?php echo Lang::t('_STATE', 'standard'); ?>', sortable: true },
+             { data: 'template', title: '<?php echo Lang::t('_TEMPLATE', 'standard'); ?>', sortable: true },
+             { data: 'edition', title: '<?php echo Lang::t('_EDITION', 'standard'); ?>', sortable: true },
+             { data: 'date_complete', title: '<?php echo Lang::t('_DATE_COMPLETE', 'standard'); ?>', sortable: true },             
+             { data: 'certificate_release', title: '<?php echo Lang::t('_CERTIFICATE_RELEASE', 'standard'); ?>', sortable: true },
+             { data: 'view_cert', title: '<?php echo Lang::t('_TITLE_VIEW_CERT', 'standard'); ?>', sortable: true },
+             { data: 'delete', title: '<?php echo Lang::t('_DEL', 'standard'); ?>', sortable: true }
+             
+            ]
+            
+        }
+        )
+</script>
 
-                          echo "<tr>";
-                          echo "<td>".$user['id_user']."</td>";
-                          echo "<td></td>";
-                          echo "<td>".$user['username']."</td>";
-                          echo "<td>".$user['lastname']."</td>";
-                          echo "<td>".$user['firstname']."</td>";
-                          echo "<td>".$arr_status[$user['status']]."</td>";
-                          echo "<td>".$user['template']."</td>";
-                          echo "<td>".$user['edizione'][0]."<br>".$user['edizione'][1]."</td>";
-                          echo "<td>".$user['date_complete']."</td>";
-                          echo "<td>".$user['date_generate']."</td>";
-                          echo "<td>".$user['gen_certificate']."</td>";
-                          echo "<td>".$user['action_delete']."</td>";
-                          echo "<td>".$user['id_certificate']."</td>";
-                          
-                          foreach($custom_field as $key=>$value){
-                                echo "<td>".$user['custom_field_user'][(int)$key]."</td>"        ;
-                          }                             
-                          
-                          echo "</tr>";
+<?php
 
-             }
-               
-        echo "</tbody>";
-        
-       
-    echo "</table>";
-
-
-    
     require_once(_base_.'/lib/lib.dialog.php');
     setupHrefDialogBox('a[href*=del_report_certificate]',Lang::t('_CONFIRM_DELETION', 'iotask'),Lang::t('_YES', 'standard'),Lang::t('_NO', 'standard'));    
 
@@ -148,8 +115,16 @@ echo "
 
     echo "</div>";
     
+
+    
+    $language->zeroRecords = Lang::t('_NO_CERT_AVAILABLE', 'certificate');
+    $language->info = Lang::t('_TEST_PAGES', 'test').' _PAGE_ di _PAGES_';
+    $language->infoEmpty = Lang::t('_NO_CERT_AVAILABLE', 'certificate');
+    $language->sInfo = '_START_ a _END_ di _TOTAL_ certificati';
+    
     $this->widget('forma_tablefilter', array(
     'id' => 'classlocations_filter',
+    'language' => $language,
     'filter_text' => isset($filter_text) ? $filter_text : "",
     'js_callback_set' => 'ClassLocations.setFilter',
     'js_callback_reset' => 'ClassLocations.resetFilter'

@@ -1528,20 +1528,6 @@ Class CourseAlms extends Model
         $users = array();   
   
 
-        $query_rf = "SELECT count(u.userid) as c"
-            ." FROM ( ".$tu." JOIN ".$tcu." ON (u.idst = cu.idUser) ) "
-            ." JOIN ".$tcc." ON cc.id_course = cu.idCourse "
-            ." JOIN ".$tc." ON c.id_certificate = cc.id_certificate"
-            ." LEFT JOIN ".$tca." ON ( ca.id_course = cu.idCourse AND ca.id_user=cu.idUser AND ca.id_certificate = cc.id_certificate ) "
-            ." LEFT JOIN (SELECT iduser, idcourse, SUM( (UNIX_TIMESTAMP( lastTime ) - UNIX_TIMESTAMP( enterTime ) ) ) elapsed from learning_tracksession group by iduser, idcourse) t_elapsed on t_elapsed.idcourse=cu.idCourse and cu.idUser = t_elapsed.idUser "
-            ." WHERE 1 "
-            ." AND ".$aval_status." "
-            . ($id_certificate != 0 ? " AND cc.id_certificate = ".$id_certificate : "")
-            ." AND coalesce(elapsed,0) >= coalesce(cc.minutes_required,0)*60 "
-            ." AND cu.idCourse='".(int)$id_course."' ".$where . "";
-            
-       $rf = $this->getValueQuery($query_rf);    
-  
   
   
        while (list($userid, $firstname, $lastname, $date_complete, $on_date, $id_user, $status,  $id_course, $id_certificate, $name_certificate ) = sql_fetch_row ($res)) {
@@ -1557,32 +1543,14 @@ Class CourseAlms extends Model
               $cell_down_gen = "<a href='".$generate."' class='ico-wt-sprite subs_pdf'>".Lang::t('_GENERATE', 'certificate')."</a>";
               $cell_del_cert = '';
           }     
-             
-                                  
                     
-           array_push($users, [
-                    "id_user" => $id_user,    
-                    //"username" => $userid .json_encode($pagination) . " - ".$_POST['search']['value'],
-                    "username" => substr( $userid,1) ,
-                    "lastname" => $lastname,
-                    "firstname" =>$firstname,
-                    "status" => $status,
-                    "template" => $name_certificate,
-                    "date_complete" => $date_complete,
-                    "date_generate" => $on_date,
-                    "gen_certificate" => $cell_down_gen,
-                    "action_delete" => $cell_del_cert ,
-                    "edizione" => $this->getInfoClassroom($id_user, $id_course)  ,
-                    "id_certificate" => $id_certificate ,
-                    "custom_field_user" => $this->getFieldUser($id_user)
-              
-                ]);             
-             
+           $users[] = [$id_user, substr( $userid,1) , $lastname, $firstname, $status,
+                        $name_certificate, $date_complete, $on_date, $cell_down_gen, $cell_del_cert ,
+                        $this->getInfoClassroom($id_user, $id_course), $id_certificate , $this->getFieldUser($id_user) ] ;
         }            
    
-       $response = ["data" => $users,"recordsTotal" => count($users),"recordsFiltered" => $rf[0]];
                                         
-       return $response;         
+       return $users;         
         
         
   
@@ -1613,23 +1581,13 @@ Class CourseAlms extends Model
                          WHERE id_course = '".$id_course."' and %lms_course_date_user.id_date=%lms_course_date.id_date and id_user=".$id_user;
            
            
-           //die($query);
            
             $date = sql_fetch_row(sql_query($query));        
-        
+            if ($date==false) $date = '';
+
             return $date;
         
     }
-    
-   
-   private function getValueQuery($query){
-            
-       $res = sql_query($query);
-
-       $c = sql_fetch_row($res);        
-       return $c;
-       
-   }
    
    
    

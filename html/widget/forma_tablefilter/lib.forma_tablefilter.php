@@ -14,6 +14,7 @@
 class forma_TablefilterWidget extends Widget {
 
 	public $id = '';
+    public $language = '';
 	public $filter_text = "";
 	public $auxiliary_filter = "";
     public $list_category = "";
@@ -36,7 +37,16 @@ class forma_TablefilterWidget extends Widget {
 	}
 
 	public function init() {
-		//Util::get_js(Get::rel_path('base').'/lib/js_utils.js', true, true);
+        // default value
+        $this->language->sSearch = Lang::t('_SEARCH', 'standard');
+        $this->language->pagingType = 'full_numbers';
+        $j->sFirst =  Lang::t('_START','standard');
+        $j->sPrevious = Lang::t('_PREV_B','standard');
+        $j->sNext  = Lang::t('_NEXT','standard');
+        $j->sLast  = Lang::t('_LAST','standard');
+        $this->language->oPaginate = $j;
+
+        
 	}
 
 	public function run() {
@@ -44,10 +54,10 @@ class forma_TablefilterWidget extends Widget {
 			//..
 			return false;
 		}
-
 		//render view
 		$this->render('forma_tablefilter', array(
 			'id' => $this->id,
+            'language' => json_encode($this->language),
 			'filter_text' => (string)$this->filter_text,
             'list_category' => $this->list_category,
 			'auxiliary_filter' => $this->auxiliary_filter,
