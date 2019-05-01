@@ -1655,15 +1655,16 @@ Class CoreWikiPublic {
 	
 	function parseWikiLinks($txt, $pdf = false, $page_code = array()) {
 		$this->page_code = $page_code;
-		
-		if($pdf)
-			$res=preg_replace("/\\[\\[(.*?)\\]\\]/ei",
-		                  "\$this->replaceWikiLinkPdf('\\1'".',true'.")",
-		                  $txt);
-		else
-		$res=preg_replace("/\\[\\[(.*?)\\]\\]/ei",
-		                  "\$this->replaceWikiLink('\\1')",
-		                  $txt);
+
+		preg_match_all("/\[\[(.*?)\]\]/e", $txt, $matches);
+		$res = $txt;
+		for ($i=0; $i < count($matches[0]); $i++) {
+			if($pdf)
+				$res = str_replace($matches[0][$i], $this->replaceWikiLinkPdf($matches[1][$i]), $res);
+			else
+				$res = str_replace($matches[0][$i], $this->replaceWikiLink($matches[1][$i]), $res);
+			
+		}
 
 		return $res;
 	}
@@ -1694,7 +1695,6 @@ Class CoreWikiPublic {
 	}
 	
 	function replaceWikiLink($found) {
-
 		$um=& UrlManager::getInstance();
 		$wiki_id=$this->getWikiId();
 		$wiki_lang=$this->getWikiLanguage();

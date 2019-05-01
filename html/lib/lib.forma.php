@@ -15,7 +15,7 @@ if (!class_exists('Model')) {
     require_once(_lib_.'/mvc/lib.model.php');
 }
 
-require_once _adm_ . '/models/PluginmanagerAdm.php';
+require_once _lib_.'/lib.pluginmanager.php';
 
 class Forma {
 
@@ -24,6 +24,7 @@ class Forma {
      * @return string
      */
     public static function inc($file) {
+
         $file = str_replace(_base_.'/', '', $file);
         $file = str_replace(_base_.'\\', '', $file);
 
@@ -34,9 +35,8 @@ class Forma {
         }
 
         if($use_plugin == true){
-            $pg_adm=new PluginmanagerAdm();
 
-            $plugins = $pg_adm->getPlugins(true);
+	        $plugins = PluginManager::get_all_plugins();
 
             foreach ($plugins as $plugin){
                 if (file_exists(_base_.'/plugins/'.$plugin['name'].'/Features/'.$file)){

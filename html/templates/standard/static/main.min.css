@@ -3332,6 +3332,16 @@ p {
     opacity: 1;
     visibility: visible; }
 
+.forma-tooltip.down:after {
+    transform: translate(-50%, -555%);
+    border-top: none;
+    border-right: solid 6px transparent;
+    border-bottom: solid 12px #ff6c00;
+    border-left: solid 6px transparent; }
+.has-forma-tooltip:hover .forma-tooltip.down {
+  transform: translate(-50%, -100%) translateY(100px);
+  transform: translate3d(-50%, -100%, 0) translateY(100px);}
+
 .has-forma-tooltip {
   overflow: visible !important; }
 
@@ -4619,7 +4629,7 @@ header.header {
       header.header .row-fluid .navbar-collapse {
         margin-top: 1px !important; } }
     header.header .row-fluid .navbar-collapse li {
-      padding: 14px 10px;
+      padding: 14px 10px 10px 6px;
       font-family: "Open-sans", Arial;
       font-size: 14px; }
       @media (min-width: 768px) {
@@ -4676,6 +4686,14 @@ header.header {
             background-image: url("images/icons/top-menu/icon--admin-hover.svg"); }
           header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-cog:before {
             background-image: url("images/icons/top-menu/icon--admin.svg"); }
+          header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-certificate:hover:before {
+            background-image: url("images/icons/top-menu/icon--certificate-hover.svg"); }
+          header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-certificate:before {
+            background-image: url("images/icons/top-menu/icon--certificate.svg"); }
+          header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-bell:hover:before {
+            background-image: url("images/icons/top-menu/icon--bell-hover.svg"); }
+          header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-bell:before {
+            background-image: url("images/icons/top-menu/icon--bell.svg"); }
           header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-shopping-cart:hover:before {
             background-image: url("images/icons/top-menu/icon--cart-hover.svg"); }
           header.header .row-fluid .navbar-collapse li a .glyphicon.glyphicon-shopping-cart:before {

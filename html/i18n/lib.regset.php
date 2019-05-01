@@ -253,7 +253,7 @@ class RegionalSettings {
 		if ($type === FALSE)
 			$type="datetime";
 
-		$token="";
+        $token=array();
 
 		switch ($dbtype) {
 
@@ -265,7 +265,7 @@ class RegionalSettings {
 
 		}
 
-		return $token[$type];
+		return isset($token[$type]) ? $token[$type] : '';
 	}
 
 

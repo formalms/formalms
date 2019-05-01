@@ -76,13 +76,13 @@ class CoursestatsLmsController extends LmsController {
 		$first = true;
 		$output = '[';
 		$list = array(
-			'failed' => 'failed',
-			'incomplete' => 'incomplete',
-			'not attempted' => 'not attempted',
-			'attempted' => 'attempted',
-			'ab-initio' => 'ab-initio',
-			'completed' => 'completed',
-			'passed' => 'passed'
+			'failed' => Lang::t('failed', 'standard'),
+			'incomplete' => Lang::t('incomplete', 'standard'),
+			'not attempted' => Lang::t('not_attempted', 'standard'),
+			'attempted' => Lang::t('attempted', 'standard'),
+			'ab-initio' => Lang::t('ab-initio', 'standard'),
+			'completed' => Lang::t('completed', 'standard'),
+			'passed' => Lang::t('passed', 'standard'),
 		);
 		foreach($list as $id_status => $status_translation) {
 			if ($first) $first = false; else $output .= ', ';
@@ -247,7 +247,7 @@ class CoursestatsLmsController extends LmsController {
 				);
 
 				//get LO data
-				$completed = 'Non iniziato';
+				$completed = 0;
 				foreach ($lo_list as $idOrg => $lo) {
 					if (isset($record->lo_status[$idOrg])) {
 						if ($record->lo_status[$idOrg] === 'completed') {
@@ -259,12 +259,15 @@ class CoursestatsLmsController extends LmsController {
 						} else {
 							$row['lo_'.$idOrg] = Lang::t($record->lo_status[$idOrg], 'standard');
 						}
-						if ($record->lo_status[$idOrg] == 'completed' || $record->lo_status[$idOrg] == 'passed') $completed++;
+						if ($record->lo_status[$idOrg] == 'completed' || $record->lo_status[$idOrg] == 'passed') {
+							$completed++;
+							$row['lo_'.$idOrg] = '<a href="./index.php?r=coursestats/show_user_object&id_user='.(int)$record->idst.'&id_lo='.$idOrg.'">'.$row['lo_'.$idOrg].'</a>';
+						}
 					} else {
-						$row['lo_'.$idOrg] = "Non iniziato";
+						$row['lo_'.$idOrg] = Lang::t('_NOT_STARTED', 'standard');
 					}
 				}
-				$row['completed'] = $completed;
+				$row['completed'] = $completed.' / '.count($lo_list);
 
 				$records[] = array_values($row);
 			}
@@ -359,11 +362,11 @@ class CoursestatsLmsController extends LmsController {
 					'path' => $path,
 					'LO_name' => $record->title,
 					'LO_type' => $record->objectType ?: 'folder',
-					'LO_status' => $record->status,
-					'first_access' => $record->first_access ? date("d-m-Y", strtotime($record->first_access)) : '',
-					'last_access' => $record->last_access ? date("d-m-Y", strtotime($record->last_access)) : '',
+					'LO_status' => $record->status ?: 'not attempted',
+					'first_access' => $record->first_access,
+					'last_access' => $record->last_access,
 					'history' => $record->history,
-					'totaltime' => $record->totaltime,
+					'totaltime' => $this->model->roundTime($record->totaltime),
 					'score' => $record->score,
 					'edit' => $record->edit,
 				);
@@ -416,7 +419,7 @@ class CoursestatsLmsController extends LmsController {
 					'first_access' => Format::date($record->first_access, 'datetime'),
 					'last_access' => Format::date($record->last_access, 'datetime'),
 					'history' => $record->history,
-					'totaltime' => $record->totaltime,
+					'totaltime' => $this->model->roundTime($record->totaltime),
 					'score' => $record->score,
 					'edit' => $record->edit,
 				);
@@ -623,113 +626,7 @@ class CoursestatsLmsController extends LmsController {
 		}
 		echo $this->json->encode($output);
 	}
-
-	public function user_unique_inline_editorTask() {
-		if (!$this->permissions['mod']) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
-			echo $this->json->encode($output);
-			return;
-		}
-
-		$id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse']>0 ? $_SESSION['idCourse'] : false;
-		if ((int)$id_course <= 0) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid course'));
-			echo $this->json->encode($output);
-			return;
-		}
-
-		$id_user = Get::req('id_user', DOTY_INT, -1);
-		if ($id_user <= 0) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid user'));
-			echo $this->json->encode($output);
-			return;
-		}
-
-		$id_lo = Get::req('id_lo', DOTY_INT, -1);
-		if ($id_lo <= 0) {
-			$output = array('success' => false, 'message' => $this->_getErrorMessage('invalid lo'));
-			echo $this->json->encode($output);
-			return;
-		}
-
-		$LO_status = Get::req('LO_status', DOTY_MIXED, false);
-		$first_access = Get::req('first_access', DOTY_MIXED, false);
-		$last_access = Get::req('last_access', DOTY_MIXED, false);
-
-        require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
-        require_once(_lms_.'/lib/lib.param.php');
         
-        $repoDb = new OrgDirDb($id_course);
-        $folder = $repoDb->getFolderById( $id_lo );
-        $id_resource = $folder->otherValues[REPOFIELDIDRESOURCE];
-        $id_param = $folder->otherValues[ORGFIELDIDPARAM];
-        $idReference = getLOParam($id_param, 'idReference');
-        
-        require_once(_lms_.'/class.module/track.object.php');
-        $lo_info = $this->model->getLOInfo($id_lo);
-        
-        switch($lo_info->objectType){
-            case 'faq':
-                require_once(_lms_.'/class.module/track.faq.php');
-                $itemtrack = new Track_Faq(null);
-                break;
-            case 'glossary': 
-                require_once(_lms_.'/class.module/track.glossary.php');
-                $itemtrack = new Track_Glossary(null);
-                break;
-            case 'htmlpage': 
-                require_once(_lms_.'/class.module/track.htmlpage.php');
-                $itemtrack = new Track_Htmlpage(null);
-                break;
-            case 'item': 
-                require_once(_lms_.'/class.module/track.item.php');
-                $itemtrack = new Track_Item(null, $id_user);
-                break;
-            case 'link': 
-                require_once(_lms_.'/class.module/track.link.php');
-                $itemtrack = new Track_Link(null);
-                break;
-            case 'poll': 
-                require_once(_lms_.'/class.module/track.poll.php');
-                $itemtrack = new Track_Poll(null);
-                break;
-            case 'scormorg':
-                require_once(_lms_.'/modules/scorm/scorm_items_track.php');
-                $itemtrack = new Scorm_ItemsTrack(null, $GLOBALS['prefix_lms']);
-                break;
-            case 'test': 
-                require_once(_lms_.'/class.module/track.test.php');
-                $itemtrack = new Track_Test(null);
-                break;
-        }
-        
-        list( $exist, $idTrack ) = $itemtrack->getIdTrack( $idReference, $id_user, $id_resource, TRUE );
-        
-        if( !$exist ){
-            require_once( _lms_ . '/class.module/track.object.php' );
-            $track_lo = new Track_Object( $idTrack );
-            $track_lo->createTrack( $idReference, $idTrack, $id_user, date("Y-m-d H:i:s"), 'not attempted', $lo_info->objectType);
-        }
-
-		$output = array();
-
-		if ($LO_status) {
-			$output['success'] = $this->model->changeLOUserStatus($id_lo, $id_user, $LO_status);
-			$output['LO_status'] = $LO_status;
-		}
-		if ($first_access) {
-			$first_access = date("Y-m-d H:i:s", $first_access);
-			$output['success'] = $this->model->changeLOUserFirstAccess($id_lo, $id_user, $first_access);
-			$output['first_access'] = $first_access;
-		}
-		if ($last_access) {
-			$last_access = date("Y-m-d H:i:s", $last_access);
-			$output['success'] = $this->model->changeLOUserLastAccess($id_lo, $id_user, $last_access);
-			$output['last_access'] = $last_access;
-		}
-		echo $this->json->encode($output);
-	}
-
 	public function user_inline_editorTask() {
 		if (!$this->permissions['mod']) {
 			$output = array('success' => false, 'message' => $this->_getErrorMessage('no permission'));
@@ -833,30 +730,26 @@ class CoursestatsLmsController extends LmsController {
 
 
 			case "first_access": {
-				$new_date = date("Y-m-d H:i:s", $new_value);
-				$res = $this->model->changeLOUserFirstAccess($id_lo, $id_user, $new_date);
-				$output['new_value'] = Format::date($new_date);
+				$res = $this->model->changeLOUserFirstAccess($id_lo, $id_user, $new_value);
+				$output['new_value'] = $new_value;
 			} break;
 
 			case "last_access": {
-				$new_date = date("Y-m-d H:i:s", $new_value);
-				$res = $this->model->changeLOUserLastAccess($id_lo, $id_user, $new_date);
+				$res = $this->model->changeLOUserLastAccess($id_lo, $id_user, $new_value);
 				$output['success'] = $res ? true : false;
-				$output['new_value'] = Format::date($new_date);
+				$output['new_value'] = $new_value;
 			} break;
 
 			case "first_complete": {
-				$new_date = date("Y-m-d H:i:s", $new_value);
-				$res = $this->model->changeLOUserFirstComplete($id_lo, $id_user, $new_date);
+				$res = $this->model->changeLOUserFirstComplete($id_lo, $id_user, $new_value);
 				$output['success'] = $res ? true : false;
-				$output['new_value'] = Format::date($new_date);
+				$output['new_value'] = $new_value;
 			} break;
 
 			case "last_complete": {
-				$new_date = date("Y-m-d H:i:s", $new_value);
-				$res = $this->model->changeLOUserLastComplete($id_lo, $id_user, $new_date);
+				$res = $this->model->changeLOUserLastComplete($id_lo, $id_user, $new_value);
 				$output['success'] = $res ? true : false;
-				$output['new_value'] = Format::date($new_date);
+				$output['new_value'] = $new_value;
 			} break;
 
 			default: {
@@ -1022,19 +915,18 @@ class CoursestatsLmsController extends LmsController {
 					$output .= implode($separator, $csv_row).$line_end;
 					//Intestazione  LO
 					$head = array();
-					$head[] = $this->_formatCsvValue('Nome oggetto', $delimiter);
-					$head[] = $this->_formatCsvValue('Tipo', $delimiter);
-					$head[] = $this->_formatCsvValue('Stato', $delimiter);
-					$head[] = $this->_formatCsvValue('Primo Accesso', $delimiter);
-					$head[] = $this->_formatCsvValue('Data Ultimo Accesso', $delimiter);
-					$head[] = $this->_formatCsvValue('Accessi in dettaglio', $delimiter);
-					$head[] = $this->_formatCsvValue('Data', $delimiter);
-					$head[] = $this->_formatCsvValue('Durata', $delimiter);
-					$head[] = $this->_formatCsvValue('Esito', $delimiter);
-					$head[] = $this->_formatCsvValue('Tempo totale accessi', $delimiter);
-					$head[] = $this->_formatCsvValue('Punteggio', $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_NAME', 'standard'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_TYPE', 'standard'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_STATUS', 'standard'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_DATE_FIRST_ACCESS', 'standard'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_DATE_LAST_ACCESS', 'standard'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_ACCESS_DETAIL', 'standard'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_DATE', 'standard'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_DURATION', 'course'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_RESULT', 'course'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_ACCESS_TOTAL_TIME', 'standard'), $delimiter);
+					$head[] = $this->_formatCsvValue(Lang::t('_FINAL_SCORE', 'standard'), $delimiter);
 		
-
 					$output .= implode($separator, $head).$line_end;
 					// dettaglio LO
 					$list = $this->model->getCourseUserStatsList2csv($pagination, $id_course, $record->idst);
@@ -1166,14 +1058,14 @@ class CoursestatsLmsController extends LmsController {
 					//Intestazione  LO
 					$output .= '<tr>';
 					$head = array();
-					$head[] = 'Nome oggetto';
-					$head[] = 'Tipo';
-					$head[] = 'Stato';
-					$head[] = 'Primo Accesso';
-					$head[] = 'Data Ultimo Accesso';
-					$head[] = 'Accessi in dettaglio';
-					$head[] = 'Tempo totale accessi';
-					$head[] ='Punteggio';
+					$head[] = Lang::t('_NAME', 'standard');
+					$head[] = Lang::t('_TYPE', 'standard');
+					$head[] = Lang::t('_STATUS', 'standard');
+					$head[] = Lang::t('_DATE_FIRST_ACCESS', 'standard');
+					$head[] = Lang::t('_DATE_LAST_ACCESS', 'standard');
+					$head[] = Lang::t('_ACCESS_DETAIL', 'standard');
+					$head[] = Lang::t('_ACCESS_TOTAL_TIME', 'standard');
+					$head[] = Lang::t('_FINAL_SCORE', 'standard');
 					foreach ($head as $row_data) {
 						$output .= '<th>'.$row_data.'</th>';
 					}
@@ -1230,8 +1122,8 @@ class CoursestatsLmsController extends LmsController {
 		$rowa[] = Lang::t('_FULLNAME', 'standard')." : ".$info->firstname.' '.$info->lastname;
 		$rowa[] = "";
 		$rowa[] = "";
-		$rowa[] = "Primo accesso : ".$info->first_access;
-		$rowa[] = "Stato : ".$info->course_status;
+		$rowa[] = Lang::t('_DATE_FIRST_ACCESS', 'standard')." : ".$info->first_access;
+		$rowa[] = Lang::t('_STATUS', 'standard')." : ".$info->course_status;
 		$rowa[] =  "";
 		
 		$num_completed = 0;
@@ -1243,14 +1135,14 @@ class CoursestatsLmsController extends LmsController {
 		//Intestazione  LO
 		$output .= '<tr>';
 		$head = array();
-		$head[] = 'Nome oggetto';
-		$head[] = 'Tipo';
-		$head[] = 'Stato';
-		$head[] = 'Primo Accesso';
-		$head[] = 'Data Ultimo Accesso';
-		$head[] = 'Accessi in dettaglio';
-		$head[] = 'Tempo totale accessi';
-		$head[] ='Punteggio';
+		$head[] = Lang::t('_NAME', 'standard');
+		$head[] = Lang::t('_TYPE', 'standard');
+		$head[] = Lang::t('_STATUS', 'standard');
+		$head[] = Lang::t('_DATE_FIRST_ACCESS', 'standard');
+		$head[] = Lang::t('_DATE_LAST_ACCESS', 'standard');
+		$head[] = Lang::t('_ACCESS_DETAIL', 'standard');
+		$head[] = Lang::t('_ACCESS_TOTAL_TIME', 'standard');
+		$head[] = Lang::t('_FINAL_SCORE', 'standard');
 		foreach ($head as $row_data) {
 			$output .= '<th>'.$row_data.'</th>';
 		}
@@ -1324,17 +1216,17 @@ class CoursestatsLmsController extends LmsController {
 					$output .= implode($separator, $csv_row).$line_end;
 					//Intestazione  LO
 					$head = array();
-					$head[] = 'Nome oggetto';
-					$head[] = 'Tipo';
-					$head[] = 'Stato';
-					$head[] = 'Primo Accesso';
-					$head[] = 'Data Ultimo Accesso';
-					$head[] = 'Accessi in dettaglio';
-					$head[] = 'Data';
-					$head[] = 'Durata';
-					$head[] = 'Esito';
-					$head[] = 'Tempo totale accessi';
-					$head[] = 'Punteggio';
+					$head[] = Lang::t('_NAME', 'standard');
+					$head[] = Lang::t('_TYPE', 'standard');
+					$head[] = Lang::t('_STATUS', 'standard');
+					$head[] = Lang::t('_DATE_FIRST_ACCESS', 'standard');
+					$head[] = Lang::t('_DATE_LAST_ACCESS', 'standard');
+					$head[] = Lang::t('_ACCESS_DETAIL', 'standard');
+					$head[] = Lang::t('_DATE', 'standard');
+					$head[] = Lang::t('_DURATION', 'course');
+					$head[] = Lang::t('_RESULT', 'course');
+					$head[] = Lang::t('_ACCESS_TOTAL_TIME', 'standard');
+					$head[] = Lang::t('_FINAL_SCORE', 'standard');
 
 					$output .= implode($separator, $head).$line_end;
 					// dettaglio LO
@@ -1439,17 +1331,17 @@ class CoursestatsLmsController extends LmsController {
 		$output = "";
 		
 		$head = array();
-		$head[] = $this->_formatCsvValue('Nome', $delimiter);
-		$head[] = $this->_formatCsvValue('Tipo', $delimiter);
-		$head[] = $this->_formatCsvValue('Stato', $delimiter);
-		$head[] = $this->_formatCsvValue('Primo Accesso', $delimiter);
-		$head[] = $this->_formatCsvValue('Data Ultimo Accesso', $delimiter);
-		$head[] = $this->_formatCsvValue('Accessi in dettaglio', $delimiter);
-		$head[] = $this->_formatCsvValue('Data', $delimiter);
-		$head[] = $this->_formatCsvValue('Durata', $delimiter);
-		$head[] = $this->_formatCsvValue('Esito', $delimiter);
-		$head[] = $this->_formatCsvValue('Tempo totale accessi', $delimiter);
-		$head[] = $this->_formatCsvValue('Punteggio', $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_NAME', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_TYPE', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_STATUS', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_DATE_FIRST_ACCESS', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_DATE_LAST_ACCESS', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_ACCESS_DETAIL', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_DATE', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_DURATION', 'course'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_RESULT', 'course'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_ACCESS_TOTAL_TIME', 'standard'), $delimiter);
+		$head[] = $this->_formatCsvValue(Lang::t('_FINAL_SCORE', 'standard'), $delimiter);
 		
 		$output .= implode($separator, $head).$line_end;
 

@@ -118,28 +118,11 @@ class LoginLayout {
 	public static function service_msg() {
 
 		$html = '';
-		if(isset($_GET['access_fail']) || isset($_GET['logout']) || isset($_GET['msg'])) {
+		if(isset($_GET['logout']) || isset($_GET['msg'])) {
 
 			$html .= '<div id="service_msg">';
 			if(isset($_GET['logout'])) {
 				$html .= '<b class="logout">'.Lang::t('_UNLOGGED', 'login').'</b>';
-			}
-			if(isset($_GET['access_fail'])) {
-				switch((int)$_GET['access_fail']) {
-					case 4: //
-						$html .= '<b class="login_failed">'.Lang::t('_EMPTYSOCIALID', 'login').'</b>';
-					  break;
-					case 5: //
-						$html .= '<b class="login_failed">'.Lang::t('_UNKNOWNSOCIALERROR', 'login').'</b>';
-					  break;
-					case 6: //
-						$html .= '<b class="login_failed">'.Lang::t('_CANCELSOCIALLOGIN', 'login').'</b>';
-					  break;
-					default:
-						$html .= '<b class="login_failed">'.Lang::t('_NOACCESS', 'login').'</b>';
-					  break;
-				}
-
 			}
 			if(isset($_GET['msg'])) {
 				$class ="login_failed";
@@ -163,53 +146,7 @@ class LoginLayout {
 		}
 		return $html;
 	}
-
-	public function isSocialActive() {
-		$res ='';
-
-		$social =new Social();
-		if($social->enabled()) {
-			return true;
-		}
-		return false;
-	}
-
-	public function social_login() {
-		$res ='';
-
-		$social =new Social();
-		if (!$social->enabled()) {
-			// we don't show the box if there is nothing enabled..
-			return $res;
-		}
-
-		$res.='<div id="social_login">';
-
-		$res.= Form::openForm('social_form', Get::rel_path('lms').'/index.php?modname=login&amp;op=social')
-			.'<span>'.Lang::t('_LOGIN_WITH', 'login').' </span>';
-
-		if ($social->isActive('facebook')) {
-			$res.='<a href="index.php?modname=login&amp;op=facebook_login">'.Get::img('social/facebook-24.png').'</a>';
-		}
-
-		if ($social->isActive('twitter')) {
-			$res.='<a href="index.php?modname=login&amp;op=twitter_login">'.Get::img('social/twitter-24.png').'</a>';
-		}
-
-		if ($social->isActive('linkedin')) {
-			$res.='<a href="index.php?modname=login&amp;op=linkedin_login">'.Get::img('social/linkedin-24.png').'</a>';
-		}
-
-		if ($social->isActive('google')) {
-			$res.='<a href="index.php?modname=login&amp;op=google_login">'.Get::img('social/google-24.png').'</a>';
-		}
-
-		$res.=Form::closeForm();
-
-		$res.='</div>';
-		return $res;
-	}
-    
+   
         /**
     * Return the number of the installed languages in the platform
     * @return <int>

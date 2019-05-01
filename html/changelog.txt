@@ -11,12 +11,39 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 2.2
+---------------------------------------------------------------------------------------
+Release date: 2019 february 26   
+
+#multi | CR NEW      | custom fields feature for learning objects
+#19093 | CR NEW      | smtp configuration upon install and system configuration (available setting in database)
+#19100 | CR NEW      | selective debug modes for testing and developement
+#19177 | CR NEW      | multi page certificates
+#multi | CR IMPROVED | user/object grid module
+#multi | CR IMPROVED | extended userCourses API parameters
+#multi | CR IMPROVED | plugin system (feedback after upload)
+#multi | CR IMPROVED | course menu: new default menu template for courses, removed Self Training menu template for new installations
+#19267 | CR IMPROVED | Gooogle API v.2 support, remove use of G+ profile
+#multi | CR IMPROVED | Core enhancement: template control version
+#multi | CR IMPROVED | Core enhancement: improved event system 
+#multi | CR IMPROVED | Core enhancement: refactored frontend menu
+#multi | CR IMPROVED | Core enhancement: new datatables library to display responsive tables
+#18711 | BUG         | Fixed course labels functionality and mycourses view
+#multi | BUG         | Fixed curricula view on mycourses
+#multi | BUG         | Fixed course logo view on external catalogue
+#multi | BUG         | Gradebook - Fixed error on answer stats percentages
+#multi | BUG         | Template: several layout fixes and improvements
+#multi | LANGUAGE    | updated Portuguese translation
+
+Plus many other minor improvements and bugfixes
+
+---------------------------------------------------------------------------------------
 forma.lms 2.1
 ---------------------------------------------------------------------------------------
 Release date: 2018 august 28
 
-#multi | Bug | SECUIRTY: Vulnerability fixes
-#multi | Bug | SECUIRTY: added robots.txt
+#multi | Bug | SECURITY: Vulnerability fixes
+#multi | Bug | SECURITY: added robots.txt
 #18816 | Bug | Import File Test Questions . regular expression not detect correct
 #18775 | Bug | Privacy - OrgChart dependencies not deleted
 #18681 | Bug | Privacy acceptance on login always takes to catalog 
