@@ -40,6 +40,11 @@ function formaTable(dom, options) {
     if(options.rowId !== undefined) {
         _options.rowId = options.rowId;
     }
+
+    if (options.data !== undefined){
+        _options.data = options.data
+    }
+    
     if(options.serverSide !== undefined) {
         _options.serverSide = options.serverSide;
     }

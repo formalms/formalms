@@ -1496,11 +1496,12 @@ Class CourseAlmsController extends AlmsController
         $fman = new FieldList();        
  
         $data_certificate = $this->model->getListTototalUserCertificate($id_course, $id_certificate);
+        $course_info = $this->model->getCourseModDetails($id_course);
         $this->render(
                     'list_certificate', array(
                     'id_course' => $id_course,
                     'id_certificate' => $id_certificate,
-                    'info_course' => $this->model->getCourseModDetails($id_course),
+                    'course_type' => $course_info['course_type'],
                     'from' => $from ,
                     'data_certificate' => $data_certificate  ,
                     'custom_field' =>$fman->getFlatAllFields(),

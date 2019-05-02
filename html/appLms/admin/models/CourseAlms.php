@@ -1544,9 +1544,9 @@ Class CourseAlms extends Model
               $cell_del_cert = '';
           }     
                     
-           $users[] = [$id_user, substr( $userid,1) , $lastname, $firstname, $status,
+           $users[] = [$id_user, $id_certificate , substr( $userid,1) , $lastname, $firstname, $status,
                         $name_certificate, $date_complete, $on_date, $cell_down_gen, $cell_del_cert ,
-                        $this->getInfoClassroom($id_user, $id_course), $id_certificate , $this->getFieldUser($id_user) ] ;
+                        $this->getInfoClassroom($id_user, $id_course), $this->getFieldUser($id_user) ] ;
         }            
    
                                         

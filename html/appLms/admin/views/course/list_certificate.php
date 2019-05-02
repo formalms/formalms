@@ -13,8 +13,9 @@ thead input {
 
 
 <?php
-$a  = json_encode($data_certificate);
-           
+
+
+
 require_once(Forma::inc(_lms_.'/lib/lib.subscribe.php'));
 require_once(Forma::inc(_lib_ . '/formatable/include.php'));
 
@@ -73,35 +74,34 @@ echo getTitleArea(array(
         echo "<a href='index.php?modname=certificate&op=report_certificate&of_platform=lms&id_certificate=".$id_certificate."'>".Lang::t('_BACK', 'standard')."</a>";
         echo "</div>";        
     }
+
 ?>
     
 <input type='hidden' id='show_search' value='false'>
 <input type='hidden' id='sel_all' value='false'>
 
 <div class='std_block'>
-           <table id='table_certificate' data-tipocorso='<?php echo $course_info['course_type']?>' data-id_course=''<?php echo $id_course ?>' data-id_certificate=''<?php echo $id_certificate ?>' class='table table-striped table-bordered display' style='width:100%'></table>            
+           <table id='table_certificate'  data-id_course='<?php echo $id_course ?>' data-id_certificate='<?php echo $id_certificate ?>' class='table table-striped table-bordered display' style='width:100%'></table>            
 <script type="text/javascript">           
-var table = 
-        var table = $('#coursestats').FormaTable({
-            rowId: 'id_user'
-            data: 
+        var table = $('#table_certificate').FormaTable({
+            rowId: 'id_user',
+            data:  <?php echo json_encode($data_certificate) ?>,
             columns:[
-             { data: 'id_user', title: '<?php echo Lang::t('_USERNAME', 'standard'); ?>', sortable: true },
-             { data: 'username', title: '<?php echo Lang::t('_USERNAME', 'standard'); ?>', sortable: true },
-             { data: 'lastname', title: '<?php echo Lang::t('_LASTNAME', 'standard'); ?>', sortable: true },
-             { data: 'name', title: '<?php echo Lang::t('_NAME', 'standard'); ?>', sortable: true },
-             { data: 'state', title: '<?php echo Lang::t('_STATE', 'standard'); ?>', sortable: true },
-             { data: 'template', title: '<?php echo Lang::t('_TEMPLATE', 'standard'); ?>', sortable: true },
-             { data: 'edition', title: '<?php echo Lang::t('_EDITION', 'standard'); ?>', sortable: true },
-             { data: 'date_complete', title: '<?php echo Lang::t('_DATE_COMPLETE', 'standard'); ?>', sortable: true },             
-             { data: 'certificate_release', title: '<?php echo Lang::t('_CERTIFICATE_RELEASE', 'standard'); ?>', sortable: true },
-             { data: 'view_cert', title: '<?php echo Lang::t('_TITLE_VIEW_CERT', 'standard'); ?>', sortable: true },
-             { data: 'delete', title: '<?php echo Lang::t('_DEL', 'standard'); ?>', sortable: true }
-             
+             { title: 'id_user', sortable: false, visible: false },
+             { title: 'id_certificate', sortable: false, visible: false },             
+             { title: '<?php echo Lang::t('_USERNAME', 'standard'); ?>', sortable: true },
+             { title: '<?php echo Lang::t('_LASTNAME', 'standard'); ?>', sortable: true },
+             { title: '<?php echo Lang::t('_NAME', 'standard'); ?>', sortable: true },
+             { title: '<?php echo Lang::t('_STATE', 'standard'); ?>', sortable: true },
+             { title: '<?php echo Lang::t('_TEMPLATE', 'standard'); ?>', sortable: true },
+             { title: '<?php echo Lang::t('_EDITION', 'standard'); ?>', sortable: true, visible: ('classroom' == '<?php echo $course_type ?>')  },
+             { title: '<?php echo Lang::t('_DATE_COMPLETE', 'standard'); ?>', sortable: true },             
+             { title: '<?php echo Lang::t('_CERTIFICATE_RELEASE', 'standard'); ?>', sortable: true },
+             { title: '<?php echo Lang::t('_TITLE_VIEW_CERT', 'standard'); ?>', sortable: true },
+             { title: '<?php echo Lang::t('_DEL', 'standard'); ?>', sortable: true }
             ]
             
-        }
-        )
+        })
 </script>
 
 <?php
