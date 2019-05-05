@@ -86,9 +86,10 @@ echo getTitleArea(array(
         var table = $('#table_certificate').FormaTable({
             rowId: 'id_user',
             data:  <?php echo json_encode($data_certificate) ?>,
+            select: true,            
             columns:[
              { title: 'id_user', sortable: false, visible: false },
-             { title: 'id_certificate', sortable: false, visible: false },             
+             { title: 'id_certificate', sortable: false, visible: false },
              { title: '<?php echo Lang::t('_USERNAME', 'standard'); ?>', sortable: true },
              { title: '<?php echo Lang::t('_LASTNAME', 'standard'); ?>', sortable: true },
              { title: '<?php echo Lang::t('_NAME', 'standard'); ?>', sortable: true },
@@ -99,8 +100,13 @@ echo getTitleArea(array(
              { title: '<?php echo Lang::t('_CERTIFICATE_RELEASE', 'standard'); ?>', sortable: true },
              { title: '<?php echo Lang::t('_TITLE_VIEW_CERT', 'standard'); ?>', sortable: true },
              { title: '<?php echo Lang::t('_DEL', 'standard'); ?>', sortable: true }
-            ]
-            
+            ],
+            pagingType: 'full_numbers',
+            language : {
+                 'sInfo'  : '<?php echo Lang::t('_FROM', 'standard'); ?>  _START_  <?php echo Lang::t('_TO', 'standard'); ?> _END_ <?php echo Lang::t('_OF', 'standard'); ?>   _TOTAL_ <?php echo Lang::t('_CERTIFICATE', 'menu'); ?> <?php echo Lang::t('_TOTAL', 'standard'); ?> ',
+                 'infoEmpty': '',
+                 'sEmptyTable' : '<?php echo Lang::t('_NO_CERTIFICATE_AVAILABLE', 'certificate'); ?> '
+            }
         })
 </script>
 
@@ -114,21 +120,7 @@ echo getTitleArea(array(
     echo $print_button.'<br />';    
 
     echo "</div>";
-    
 
-    
-    $language->zeroRecords = Lang::t('_NO_CERT_AVAILABLE', 'certificate');
-    $language->info = Lang::t('_TEST_PAGES', 'test').' _PAGE_ di _PAGES_';
-    $language->infoEmpty = Lang::t('_NO_CERT_AVAILABLE', 'certificate');
-    $language->sInfo = '_START_ a _END_ di _TOTAL_ certificati';
-    
-    $this->widget('forma_tablefilter', array(
-    'id' => 'classlocations_filter',
-    'language' => $language,
-    'filter_text' => isset($filter_text) ? $filter_text : "",
-    'js_callback_set' => 'ClassLocations.setFilter',
-    'js_callback_reset' => 'ClassLocations.resetFilter'
-    ));
     
     
 ?>

@@ -1496,6 +1496,13 @@ Class CourseAlmsController extends AlmsController
         $fman = new FieldList();        
  
         $data_certificate = $this->model->getListTototalUserCertificate($id_course, $id_certificate);
+        // pushing empty element at the top of array        
+        foreach ($data_certificate as $key => $value) {
+            array_unshift($data_certificate[$key], '');
+        }
+
+        
+        
         $course_info = $this->model->getCourseModDetails($id_course);
         $this->render(
                     'list_certificate', array(
