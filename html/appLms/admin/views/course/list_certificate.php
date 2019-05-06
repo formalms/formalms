@@ -93,11 +93,27 @@ echo getTitleArea(array(
              { title: '<?php echo Lang::t('_USERNAME', 'standard'); ?>', sortable: true },
              { title: '<?php echo Lang::t('_LASTNAME', 'standard'); ?>', sortable: true },
              { title: '<?php echo Lang::t('_NAME', 'standard'); ?>', sortable: true },
-             { title: '<?php echo Lang::t('_STATE', 'standard'); ?>', sortable: true },
-             { title: '<?php echo Lang::t('_TEMPLATE', 'standard'); ?>', sortable: true },
+             { title: '<?php echo Lang::t('_STATUS', 'standard'); ?>', sortable: true,  
+                render: function ( data, type, row ) { 
+                    
+                    switch (data){
+                        case '0':
+                        return '<?php echo Lang::t('_NOT_STARTED', 'standard'); ?>'
+                        case '1':
+                        return '<?php echo Lang::t('_STARTED', 'standard'); ?>'
+                        case '2':
+                        return '<?php echo Lang::t('_USER_STATUS_END', 'standard'); ?>'
+                        default:
+                        return ''
+                    }
+                
+                
+                }
+             },
+             { title: '<?php echo Lang::t('_CERTIFICATE_REPORT', 'certificate'); ?>', sortable: true },
              { title: '<?php echo Lang::t('_EDITION', 'standard'); ?>', sortable: true, visible: ('classroom' == '<?php echo $course_type ?>')  },
-             { title: '<?php echo Lang::t('_DATE_COMPLETE', 'standard'); ?>', sortable: true },             
-             { title: '<?php echo Lang::t('_CERTIFICATE_RELEASE', 'standard'); ?>', sortable: true },
+             { title: '<?php echo Lang::t('_DATE_END', 'standard'); ?>', sortable: true },             
+             { title: '<?php echo Lang::t('_RELASE_DATE', 'certificate'); ?>', sortable: true },
              { title: '<?php echo Lang::t('_TITLE_VIEW_CERT', 'standard'); ?>', sortable: true },
              { title: '<?php echo Lang::t('_DEL', 'standard'); ?>', sortable: true }
             ],
