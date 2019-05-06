@@ -128,12 +128,12 @@ function addfaqcat( $object_faq ) {
 function insfaqcat() {
 	checkPerm('view', false, 'storage');
 	
-	$back_url = urldecode($_POST['back_url']);
+	$back_url = urldecode($_REQUEST['back_url']);
 	
 	$query_ins = "
 	INSERT INTO ".$GLOBALS['prefix_lms']."_faq_cat
-	SET title = '".( (trim($_POST['title']) == '') ? Lang::t('_NOTITLE', 'faq', 'lms') : $_POST['title'])."',
-		description = '".$_POST['description']."',
+	SET title = '".( (trim($_REQUEST['title']) == '') ? Lang::t('_NOTITLE', 'faq', 'lms') : $_REQUEST['title'])."',
+		description = '".$_REQUEST['description']."',
 		author = '".(int)getLogUserId()."'";
 	if(!sql_query($query_ins)) {
 		
@@ -190,20 +190,20 @@ function upfaqcat() {
 	
 	$query_ins = "
 	UPDATE ".$GLOBALS['prefix_lms']."_faq_cat
-	SET title = '".( (trim($_POST['title']) == '') ? Lang::t('_NOTITLE', 'faq') : $_POST['title'])."',
-		description = '".$_POST['description']."' 
-	WHERE idCategory = '".(int)$_POST['idCategory']."'";
+	SET title = '".( (trim($_REQUEST['title']) == '') ? Lang::t('_NOTITLE', 'faq') : $_REQUEST['title'])."',
+		description = '".$_REQUEST['description']."' 
+	WHERE idCategory = '".(int)$_REQUEST['idCategory']."'";
 	if(!sql_query($query_ins)) {
 		
 		$GLOBALS['page']->add(getBackUi(def('_OPERATION_FAILURECAT', 'faq', 'lms').getBackUi('index.php?modname=faq&op=modfaqgui&idCategory='
-					.(int)$_POST['idCategory'].'&back_url='.$back_coded, Lang::t('_BACK', 'faq', 'lms'))), 'content');
+					.(int)$_REQUEST['idCategory'].'&back_url='.$back_coded, Lang::t('_BACK', 'faq', 'lms'))), 'content');
 		return;
 	}
 	
 	require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
-	Track_Object::updateObjectTitle($_POST['idCategory'], 'faq', ( (trim($_POST['title']) == '') ? Lang::t('_NOTITLE', 'faq') : $_POST['title']));
+	Track_Object::updateObjectTitle($_REQUEST['idCategory'], 'faq', ( (trim($_REQUEST['title']) == '') ? Lang::t('_NOTITLE', 'faq') : $_REQUEST['title']));
 	
-	Util::jump_to('index.php?modname=faq&op=modfaqgui&idCategory='.(int)$_POST['idCategory'].'&back_url='.$back_coded);
+	Util::jump_to('index.php?modname=faq&op=modfaqgui&idCategory='.(int)$_REQUEST['idCategory'].'&back_url='.$back_coded);
 }
 
 // XXX: movefaq
@@ -320,10 +320,10 @@ function insfaq() {
 	$query_ins = "
 	INSERT INTO ".$GLOBALS['prefix_lms']."_faq
 	SET idCategory = '".$idCategory."',
-		question = '".$_POST['question']."',
-		title = '".$_POST['title']."',
-		keyword = '".$_POST['keyword']."',
-		answer = '".$_POST['answer']."',
+		question = '".$_REQUEST['question']."',
+		title = '".$_REQUEST['title']."',
+		keyword = '".$_REQUEST['keyword']."',
+		answer = '".$_REQUEST['answer']."',
 		sequence = '".($seq + 1)."'";
 	if(!sql_query($query_ins)) {
 		$GLOBALS['page']->add(getErrorUi(def('_OPERATION_FAILURE', 'faq').getBackUi('index.php?modname=faq&op=modfaqgui&idCategory='

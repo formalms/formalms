@@ -257,12 +257,13 @@ class CoursestatsLms extends Model {
 					</tr>';
 				foreach ($history as $key => $history_rec) { 
 					$seconds_diff = strtotime("1970-01-01 ".$history_rec[3]." UTC");
-					$date_end = date('Y-m-d H:i:s', strtotime($history_rec[0]) + $seconds_diff);
+					$date_start = date('Y-m-d H:i:s', strtotime($history_rec[0]) - $seconds_diff);
+					$date_end = date('Y-m-d H:i:s', strtotime($history_rec[0]));
 					$history_table_html.= '
 						<tr>
 							<td><b>Tentativo '.($key+1).'</b></td>
-							<td>'.Format::date($history_rec[0],'datetime').'</td>
-							<td>'.Format::date($date_end,'datetime').'</td>
+							<td>'.Format::date($date_start,'datetime', true).'</td>
+							<td>'.Format::date($date_end,'datetime', true).'</td>
 							<td>'.$history_rec[3].'</td>
 							<td>'.$history_rec[4].'</td>
 						</tr>';

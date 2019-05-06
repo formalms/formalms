@@ -36,7 +36,6 @@ window.CourseReport = (function ($) {
 			}
 		}
 
-
 		$.ajax({
 
 			type: 'post',
@@ -61,6 +60,8 @@ window.CourseReport = (function ($) {
 				callback(parsedData);
 
 				return parsedData;
+			},
+			complete: function () {
 			},
 			error: function (e) {
 				$('.loading').html('errore: ' + e.message);
@@ -308,6 +309,19 @@ window.CourseReport = (function ($) {
 			$table.append(buildStudentRow(elem));
 		});
 
+        initDataTables();
+
+	};
+
+	var initDataTables = function() {
+        let table = $('#table-details').DataTable();
+        table.destroy();
+        table = $('#table-details').DataTable( {
+            paging: true,
+            "language": {
+                "info": "",
+            }
+        } );
 	};
 
 	/**

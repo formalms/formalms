@@ -91,7 +91,6 @@ tfoot.empty td {
 }
 
 #overview .table {
-    table-layout: fixed;
     margin: 0;
 }
 
@@ -325,7 +324,6 @@ tfoot.empty td {
 .pagination {
     text-align: center;
     line-height:  30px;
-    border-bottom:  1px solid black;
     max-width: 75%;
     margin: 0 auto;
     border-radius:  0;
@@ -358,4 +356,38 @@ tfoot.empty td {
     min-width: 100%;
     width: auto;
     max-width: none;
+}
+
+#table-overview tbody td.details-control {
+    background: url('../images/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+
+#table-overview tbody tr.shown td.details-control {
+    background: url('../images/details_close.png') no-repeat center center;
+}
+
+#table-overview table.extra-info {
+    padding-left: 50px;
+}
+
+table.table-bordered.dataTable tbody td {
+    word-break: break-all;
+}
+
+.pagination__initial {
+    display: none;
+}
+
+#table-overview tbody td.details-control {
+    background: url('../images/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+
+#table-overview tbody tr.shown td.details-control {
+    background: url('../images/details_close.png') no-repeat center center;
+}
+
+#table-overview table.extra-info {
+    padding-left: 50px;
 }

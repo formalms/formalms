@@ -11,6 +11,26 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 2.2.1
+---------------------------------------------------------------------------------------
+Release date: 2019 April 16
+
+#19340 | BUG | Platform not sending emails - Fixed typo in smtp config
+#19293 | BUG | fixedy query for checking the unused modules inside a menu
+#19353 | BUG | Self-enrollment option does not add enrollment data on course creation
+#19347 | BUG | Locations not shown to admins
+#19343 | BUG | ADMIN not viewing his groups
+#19342 | BUG | WIKI NOT WORKING WITH PHP7
+#19345 | BUG | SCORM Tracking score and history not shown in gradebook
+#19335 | BUG | new custom fields missing on clean installations - Add permission
+#19332 | BUG | Blank page on test options edit with php 7+
+#multi | BUG | User self registration fixes
+#multi | BUG | User/Objects grid fixes and improvements
+#19296 | CR IMPROVED  | Improved Forma::inc() to improve load speed
+#multi | CR IMPROVED  | Improved password and credentials management in mass user edit and csv update
+#multi | CR IMPROVED  | New events added
+
+---------------------------------------------------------------------------------------
 forma.lms 2.2
 ---------------------------------------------------------------------------------------
 Release date: 2019 february 26   
