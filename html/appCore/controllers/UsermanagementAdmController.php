@@ -267,13 +267,10 @@ class UsermanagementAdmController extends AdmController {
 		$fman = new FieldList();
 		$date_fields = $fman->getFieldsByType("date");
 
-		$users = $this->model->getAllUsers($idOrg, $descendants, $searchFilter, true);
-
-		$user_entry_data = $fman->getUsersFieldEntryData($users);
-
 		$output_results = array();
 		if (is_array($list) && count($list)>0) {
 			$current_user = Docebo::user()->getIdSt();
+            $user_entry_data = $fman->getUsersFieldEntryData(array_keys($list));
 			foreach ($list as $idst=>$record) {
 				$record_row = array(
 					'id'		=> (int)$record['idst'],
@@ -1043,16 +1040,16 @@ class UsermanagementAdmController extends AdmController {
                         $form_content .= '<hr>';
                         $vett_custom_org = $this->model->getCustomFieldOrg($id);
                         foreach ($vett_custom_org as $key => $value) {
-                            $valueField = $this->model->getValueCustom($id ,$value['id_field']);  
+                            $valueField = $this->model->getValueCustom($id ,$value['id_field']);
                             if($value['type_field']=='dropdown'){
                                 // recover field son of id_field
                                 $vett_value_custom = $this->model->getLO_Custom_Value_Array($value['id_field']);
-                                $form_content .= Form::getDropdown($value['translation'], 'custom_'.$value['id_field'], 'custom_'.$value['id_field'], $vett_value_custom,$valueField);                             
+                                $form_content .= Form::getDropdown($value['translation'], 'custom_'.$value['id_field'], 'custom_'.$value['id_field'], $vett_value_custom,$valueField);
                             }
                             if($value['type_field']=='textfield'){
-                                $form_content .= Form::getTextfield($value['translation'], 'custom_'.$value['id_field'], 'custom_'.$value['id_field'], 50,$valueField);                                    
-                            }    
-                        }    
+                                $form_content .= Form::getTextfield($value['translation'], 'custom_'.$value['id_field'], 'custom_'.$value['id_field'], 50,$valueField);
+                            }
+                        }
 						$body = Form::openForm('modfolder_form', "ajax.adm_server.php?r=".$this->link."/modfolder")
 							.'<p id="addfolder_error_message"></p>'
 							.$form_content
@@ -1271,7 +1268,7 @@ class UsermanagementAdmController extends AdmController {
 				$output['node'] = $nodedata;
 				$output['id_parent'] = $id_parent;
 
-				$event = new \appCore\Events\Core\User\UsersManagementOrgChartCreateNodeEvent();			
+				$event = new \appCore\Events\Core\User\UsersManagementOrgChartCreateNodeEvent();
 				$event->setNode($nodedata);
 				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartCreateNodeEvent::EVENT_NAME, $event);
 
@@ -1279,10 +1276,10 @@ class UsermanagementAdmController extends AdmController {
                 $vett_custom_org = $this->model->getCustomOrg();
                 foreach($vett_custom_org as $key => $value){
                     $name_custom_field = "custom_".$key;
-                    $org_chart = Get::req($name_custom_field, DOTY_STRING, -1);         
+                    $org_chart = Get::req($name_custom_field, DOTY_STRING, -1);
                     $id_field = $key ;
-                    $res =$this->model->addCustomFieldValue($id,$id_field, $org_chart);   
-                } 
+                    $res =$this->model->addCustomFieldValue($id,$id_field, $org_chart);
+                }
 
 			} else {
 				$output['success'] = false;
@@ -1305,7 +1302,7 @@ class UsermanagementAdmController extends AdmController {
 		$id = Get::req('node_id', DOTY_INT, -1);
 
 		if ($id > 0) {
-			$event = new \appCore\Events\Core\User\UsersManagementOrgChartDeleteNodeEvent();			
+			$event = new \appCore\Events\Core\User\UsersManagementOrgChartDeleteNodeEvent();
 			$event->setNode($this->model->getFolderById($id));
 			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartDeleteNodeEvent::EVENT_NAME, $event);
 
@@ -1341,16 +1338,16 @@ class UsermanagementAdmController extends AdmController {
         $vett_custom_org = $this->model->getCustomOrg();
         foreach($vett_custom_org as $key => $value){
             $name_custom_field = "custom_".$key;
-            $org_chart = Get::req($name_custom_field, DOTY_STRING, -1);         
+            $org_chart = Get::req($name_custom_field, DOTY_STRING, -1);
             $id_field = $key ;
-            $res =$this->model->addCustomFieldValue($id,$id_field, $org_chart);   
-        } 
+            $res =$this->model->addCustomFieldValue($id,$id_field, $org_chart);
+        }
 		if ($res) {
 			$output['success'] = true;
 			//$output['new_name'] = ($code != "" ? '['.$code.'] ' : '').$langs[getLanguage()];
 			$output['new_name'] = $this->_formatFolderCode($id, $code).$langs[getLanguage()];
 
-			$event = new \appCore\Events\Core\User\UsersManagementOrgChartEditNodeEvent();			
+			$event = new \appCore\Events\Core\User\UsersManagementOrgChartEditNodeEvent();
 			$event->setOldNode($old_node);
 			$event->setNode($this->model->getFolderById($id));
 			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartEditNodeEvent::EVENT_NAME, $event);
@@ -1745,7 +1742,7 @@ class UsermanagementAdmController extends AdmController {
 			foreach ($arr_users as $idst) {
 				$users[] = $model->getProfileData($idst);
 			}
-			$event = new \appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent();			
+			$event = new \appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent();
 			$event->setUsers($users);
 			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent::EVENT_NAME, $event);
 		}
@@ -2666,7 +2663,7 @@ class UsermanagementAdmController extends AdmController {
 		if(isset($sel_properties['send_alert']) && isset($sel_properties['password']) &&  $info->password != "" ) {
 
 			for ($i=0; $i<count($users); $i++) {
-				
+
 				$array_subst = array(
 					'[url]' => Get::site_url(),
 					'[userid]' => $acl_man->getUserid($users[$i]),

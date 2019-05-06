@@ -39,10 +39,10 @@ class Format {
 	 * @param <string> $type 'date' or 'datetime'
 	 * @return <string> the date in the current format
 	 */
-	public static function date($date, $type = FALSE) {
+	public static function date($date, $type = FALSE, $seconds = FALSE) {
 
 		if(!self::$_regset) self::istance();
-		return self::$_regset->databaseToRegional($date, $type);
+		return self::$_regset->databaseToRegional($date, $type, $seconds);
 	}
 
 	/**
