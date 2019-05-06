@@ -1,10 +1,12 @@
+<script type="text/javascript">
+                                   
 $.fn.dataTable.ext.errMode = 'none';
 $.fn.datepicker.noConflict();
 
 /**
  * forma.lms DataTable wrapper.
  */
-function formaTable(dom, options) {        
+function formaTable(dom, options) {
 
     /**
      * Self variable for scope problems.
@@ -33,6 +35,7 @@ function formaTable(dom, options) {
      * DataTable events listeners.
      */
     this.eventsListeners = [];
+    
 
     /**
      * Options.
@@ -40,6 +43,11 @@ function formaTable(dom, options) {
     if(options.rowId !== undefined) {
         _options.rowId = options.rowId;
     }
+
+    if (options.data !== undefined){
+        _options.data = options.data
+    }
+    
     if(options.serverSide !== undefined) {
         _options.serverSide = options.serverSide;
     }
@@ -293,6 +301,27 @@ function formaTable(dom, options) {
             });
         }
     }
+    
+    
+    /**
+    * Language translation
+    */
+   _options.language = {
+                        'sSearch'  :  '<?php echo Lang::t('_SEARCH', 'standard') ?>',
+                        'oPaginate': {
+                               'sFirst': '<?php echo Lang::t('_START', 'standard') ?>',
+                               'sPrevious' : '<?php echo Lang::t('_PREV_B', 'standard') ?>',
+                               'sNext': '<?php echo Lang::t('_NEXT', 'standard') ?>',
+                               'sLast' : '<?php echo Lang::t('_END', 'standard') ?>'
+                              }
+                    }    
+    
+   if (options.language !== undefined) {
+        _options.language = $.extend( _options.language, options.language )
+   }    
+
+    
+    
 
     /**
      * Instance DataTable with the given options.
@@ -380,3 +409,5 @@ formaTable.prototype.reload = function() {
 $.fn.FormaTable = function(options) {
     return new formaTable(this, options);
 };
+
+</script>
