@@ -14,6 +14,7 @@ thead input {
 
 <?php
 
+$a =json_encode($data_certificate);
 
 
 require_once(Forma::inc(_lms_.'/lib/lib.subscribe.php'));
@@ -21,22 +22,12 @@ require_once(Forma::inc(_lib_ . '/formatable/include.php'));
 
 //Util::get_js(Get::rel_path('appLms') . '/appLms/admin/views/course/certificate_tab.js', true, true);
 Util::get_js('../addons/jquery/datatables/Buttons-1.5.4/js/buttons.colVis.min.js',true, true);
-
-      
-    $arr_status = array(
-        _CUS_CONFIRMED         => "Confermato",//, 'subscribe', 'lms'),
-        _CUS_SUBSCRIBED        => "Iscritto",//, 'subscribe', 'lms'),//_USER_STATUS_SUBS(?)
-        _CUS_BEGIN             => "Iniziato",//, 'subscribe', 'lms'),
-        _CUS_END               => "Finito",//, 'subscribe', 'lms'),
-        _CUS_SUSPEND           => "Sospeso"//, 'subscribe', 'lms')
-    );
-
     
 $back_label =  Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course');   
     
 echo getTitleArea(array(
 	'index.php?r=alms/course/show' => $back_label,
-	$info_course['name']
+	$course_name
 ));
 
 
@@ -111,11 +102,11 @@ echo getTitleArea(array(
                 }
              },
              { title: '<?php echo Lang::t('_CERTIFICATE_REPORT', 'certificate'); ?>', sortable: true },
-             { title: '<?php echo Lang::t('_EDITION', 'standard'); ?>', sortable: true, visible: ('classroom' == '<?php echo $course_type ?>')  },
-             { title: '<?php echo Lang::t('_DATE_END', 'standard'); ?>', sortable: true },             
-             { title: '<?php echo Lang::t('_RELASE_DATE', 'certificate'); ?>', sortable: true },
-             { title: '<?php echo Lang::t('_TITLE_VIEW_CERT', 'standard'); ?>', sortable: true },
-             { title: '<?php echo Lang::t('_DEL', 'standard'); ?>', sortable: true }
+             { title: '<?php echo Lang::t('_DATE_END', 'standard'); ?>', sortable: true },  // TBD converting to local time                      
+             { title: '<?php echo Lang::t('_RELASE_DATE', 'certificate'); ?>', sortable: true }, // TBD converting to local time
+             { title: '<?php echo Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate')) ?>', sortable: true },
+             { title: '<?php echo Get::sprite('subs_del', Lang::t('_DEL', 'certificate')); ?>', sortable: true },
+             { title: '<?php echo Lang::t('_EDITION', 'standard'); ?>', sortable: true, visible: ('classroom' == '<?php echo $course_type ?>')  }             
             ],
             pagingType: 'full_numbers',
             language : {
@@ -124,6 +115,28 @@ echo getTitleArea(array(
                  'sEmptyTable' : '<?php echo Lang::t('_NO_CERTIFICATE_AVAILABLE', 'certificate'); ?> '
             }
         })
+        
+        
+          function print_certificate(id_user, id_course, id_certificate){
+          var posting = $.get(
+                    'index.php',
+                    {
+                        modname:'certificate',
+                        of_platform:'lms',
+                        op:'print_certificate',
+                        certificate_id: id_certificate,
+                        course_id: id_course,
+                        user_id: id_user
+                    }
+                );
+                posting.done(function (responseText) { 
+                    location.reload();    
+                });
+                posting.fail(function () {
+                    alert("Error generating certificate");
+                })      
+
+          }
 </script>
 
 <?php

@@ -1502,7 +1502,6 @@ Class CourseAlmsController extends AlmsController
             array_unshift($data_certificate[$key], '');
         } 
 
-         $a = json_encode($data_certificate);
         
         $course_info = $this->model->getCourseModDetails($id_course);
         $this->render(
@@ -1510,6 +1509,7 @@ Class CourseAlmsController extends AlmsController
                     'id_course' => $id_course,
                     'id_certificate' => $id_certificate,
                     'course_type' => $course_info['course_type'],
+                    'course_name' => $course_info['name'],
                     'from' => $from ,
                     'data_certificate' => $data_certificate  ,
                     'custom_field' =>$fman->getFlatAllFields(),
