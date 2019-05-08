@@ -1497,11 +1497,15 @@ Class CourseAlmsController extends AlmsController
  
         $data_certificate = $this->model->getListTototalUserCertificate($id_course, $id_certificate);
         // pushing empty element at the top of array  
-
         foreach ($data_certificate as $key => $value) {
             array_unshift($data_certificate[$key], '');
         } 
 
+        
+        /*
+        *  GESTIRE MEGLIO I CAMPI AGGIUNTIVI E LA FORMATTAZIONE
+        *
+        */
         
         $course_info = $this->model->getCourseModDetails($id_course);
         $this->render(
@@ -1512,7 +1516,7 @@ Class CourseAlmsController extends AlmsController
                     'course_name' => $course_info['name'],
                     'from' => $from ,
                     'data_certificate' => $data_certificate  ,
-                    'custom_field' =>$fman->getFlatAllFields(),
+                    'custom_fields' =>$fman->getFlatAllFields(),
                     'op' => $op
                     
         ));        

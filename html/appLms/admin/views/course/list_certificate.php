@@ -15,6 +15,7 @@ thead input {
 <?php
 
 $a =json_encode($data_certificate);
+$b = $custom_fields;
 
 
 require_once(Forma::inc(_lms_.'/lib/lib.subscribe.php'));
@@ -72,28 +73,39 @@ echo getTitleArea(array(
 <input type='hidden' id='sel_all' value='false'>
 
 <div class='std_block'>
-           <table id='table_certificate'  data-id_course='<?php echo $id_course ?>' data-id_certificate='<?php echo $id_certificate ?>' class='table table-striped table-bordered display' style='width:100%'></table>            
+           <table id='table_certificate'  data-id_course='<?php echo $id_course ?>' data-id_certificate='<?php echo $id_certificate ?>' class='table table-striped table-bordered' style='width:100%'></table>            
 <script type="text/javascript">           
         var table = $('#table_certificate').FormaTable({
+            scrollX: true,
             rowId: 'id_user',
             data:  <?php echo json_encode($data_certificate) ?>,
             select: true,            
             columns:[
              { title: 'id_user', sortable: false, visible: false },
              { title: 'id_certificate', sortable: false, visible: false },
+             { title: '<?php echo Lang::t('_EDITION', 'standard'); ?>', sortable: true, visible: ('classroom' == '<?php echo $course_type ?>')  },              
              { title: '<?php echo Lang::t('_USERNAME', 'standard'); ?>', sortable: true },
              { title: '<?php echo Lang::t('_LASTNAME', 'standard'); ?>', sortable: true },
              { title: '<?php echo Lang::t('_NAME', 'standard'); ?>', sortable: true },
+
              { title: '<?php echo Lang::t('_STATUS', 'standard'); ?>', sortable: true,  
                 render: function ( data, type, row ) { 
                     
                     switch (data){
+                        case '-2':
+                        return '<?php echo Lang::t('_WAITING', 'standard'); ?>'
+                        case '-1':
+                        return '<?php echo Lang::t('_USER_STATUS_CONFIRMED', 'standard'); ?>'
                         case '0':
                         return '<?php echo Lang::t('_NOT_STARTED', 'standard'); ?>'
                         case '1':
-                        return '<?php echo Lang::t('_STARTED', 'standard'); ?>'
+                        return '<?php echo Lang::t('_USER_STATUS_BEGIN', 'standard'); ?>'
                         case '2':
                         return '<?php echo Lang::t('_USER_STATUS_END', 'standard'); ?>'
+                        case '3':
+                        return '<?php echo Lang::t('_USER_STATUS_SUSPEND', 'standard'); ?>'
+                        case '4':
+                        return '<?php echo Lang::t('_USER_STATUS_OVERBOOKING', 'standard'); ?>'
                         default:
                         return ''
                     }
@@ -105,8 +117,12 @@ echo getTitleArea(array(
              { title: '<?php echo Lang::t('_DATE_END', 'standard'); ?>', sortable: true },  // TBD converting to local time                      
              { title: '<?php echo Lang::t('_RELASE_DATE', 'certificate'); ?>', sortable: true }, // TBD converting to local time
              { title: '<?php echo Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate')) ?>', sortable: true },
-             { title: '<?php echo Get::sprite('subs_del', Lang::t('_DEL', 'certificate')); ?>', sortable: true },
-             { title: '<?php echo Lang::t('_EDITION', 'standard'); ?>', sortable: true, visible: ('classroom' == '<?php echo $course_type ?>')  }             
+             { title: '<?php echo Get::sprite('subs_del', Lang::t('_DEL', 'certificate')); ?>', sortable: false },
+             <?php
+               foreach($custom_fields as $key=>$value) {
+                   echo "{title:'".$value."', sortable:true},".PHP_EOL;
+               }
+             ?>            
             ],
             pagingType: 'full_numbers',
             language : {
@@ -116,7 +132,7 @@ echo getTitleArea(array(
             }
         })
         
-        
+
           function print_certificate(id_user, id_course, id_certificate){
           var posting = $.get(
                     'index.php',

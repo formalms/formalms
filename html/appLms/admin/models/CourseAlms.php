@@ -1446,7 +1446,7 @@ Class CourseAlms extends Model
     }
 
    // controllare con function view_report_certificate contenuto in modules/certificate/certificate.php
-  public function getListTototalUserCertificate($id_course, $id_certificate, $pagination){
+  public function getListTototalUserCertificate($id_course, $id_certificate){
         require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
    
 
@@ -1456,58 +1456,8 @@ Class CourseAlms extends Model
         $tcu = $GLOBALS['prefix_lms']."_courseuser as cu";
         $tu = $GLOBALS['prefix_fw']."_user as u";
 
-        list($aval_status, $minutes_required) = sql_fetch_row(sql_query("SELECT available_for_status, minutes_required FROM ".$tcc." "
-            ." WHERE id_course='".(int)$id_course."'".($id_certificate != 0 ? " AND id_certificate = ".$id_certificate : "") ));
-              
-        if ($minutes_required>0) $where .= " AND ( ca.on_date IS NOT NULL OR ((SELECT SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)))"
-        ." FROM ".$GLOBALS['prefix_lms']."_tracksession WHERE idCourse = cu.idCourse AND idUser = cu.idUser )/60) >= ".$minutes_required.") ";
 
-
-
-
-        switch($aval_status)
-        {
-            case AVS_ASSIGN_FOR_ALL_STATUS         : { $aval_status = " 1 "; };break;
-            case AVS_ASSIGN_FOR_STATUS_INCOURSE : { $aval_status = " cu.status = "._CUS_BEGIN." "; };break;
-            case AVS_ASSIGN_FOR_STATUS_COMPLETED : { $aval_status = " cu.status = "._CUS_END." "; };break;
-        }
-
-
-        
-        
-        if (isset($pagination['order_column'])) {
-                        switch ($pagination['order_column']) {
-                            case 1: $sort = 'u.userid'; break;
-                            case 2: $sort = 'u.lastname'; break;
-                            case 3: $sort = 'u.firstname'; break;
-                            case 4: $sort = 'cu.status'; break;
-                            case 5: $sort = 'name_certificate'; break;
-                            case 6: $sort = 'date_complete'; break;
-                            case 7: $sort = 'on_date'; break;
-                            case 8: $sort = 'on_date'; break;
-                        }
-                        if (isset($pagination['order_dir'])) {
-                            switch ($pagination['order_dir']) {
-                                case 'asc': $dir = 'ASC'; break;
-                                case 'desc': $dir = 'DESC'; break;
-                                default: $dir = 'ASC';
-                            }
-                        }    
-        }
-
-
-        if ($search = $_REQUEST['search']) {
-            $pagination['search'] = $search['value'];
-        } else {
-            $pagination['search'] = null;
-        }
-
-        if (isset($pagination['search'])) {
-            $where.= " AND (userid LIKE '%".$pagination['search']."%' OR  firstname LIKE '%".$pagination['search']."%' OR lastname LIKE '%".$pagination['search']."%' ) ";
-        }        
-
-
-        $query = "SELECT u.userid, u.firstname, u.lastname,
+        $query = "SELECT u.idst, u.userid, u.firstname, u.lastname,
                          cu.date_complete, ca.on_date, cu.idUser as id_user,
                          cu.status , cu.idCourse, cc.id_certificate,
                          c.name as name_certificate"
@@ -1517,20 +1467,17 @@ Class CourseAlms extends Model
             ." LEFT JOIN ".$tca." ON ( ca.id_course = cu.idCourse AND ca.id_user=cu.idUser AND ca.id_certificate = cc.id_certificate ) "
             ." LEFT JOIN (SELECT iduser, idcourse, SUM( (UNIX_TIMESTAMP( lastTime ) - UNIX_TIMESTAMP( enterTime ) ) ) elapsed from learning_tracksession group by iduser, idcourse) t_elapsed on t_elapsed.idcourse=cu.idCourse and cu.idUser = t_elapsed.idUser "
             ." WHERE 1 "
-            ." AND ".$aval_status." "
             . ($id_certificate != 0 ? " AND cc.id_certificate = ".$id_certificate : "")
             ." AND coalesce(elapsed,0) >= coalesce(cc.minutes_required,0)*60 "
-            ." AND cu.idCourse='".(int)$id_course."' ".$where." ";       
+            ." AND cu.idCourse='".(int)$id_course."'";       
            
         $res = sql_query($query);   
            
            
-        $users = array();   
-  
+       $users = array();   
+       $umodel = new UsermanagementAdm();
 
-  
-  
-       while (list($userid, $firstname, $lastname, $date_complete, $on_date, $id_user, $status,  $id_course, $id_certificate, $name_certificate ) = sql_fetch_row ($res)) {
+       while (list($idst, $userid, $firstname, $lastname, $date_complete, $on_date, $id_user, $status,  $id_course, $id_certificate, $name_certificate ) = sql_fetch_row ($res)) {
                
           $url = 'index.php?modname=certificate&amp;certificate_id='.$id_certificate.'&amp;course_id='.$id_course.'&amp;user_id='.$id_user.'&amp;of_platform=lms';
           if($on_date!= null) {
@@ -1543,35 +1490,23 @@ Class CourseAlms extends Model
               $cell_down_gen = "<a href='".$generate."' class='ico-wt-sprite subs_pdf'>".Lang::t('_GENERATE', 'certificate')."</a>";
               $cell_del_cert = '';
           }     
-                    
-           $users[] = [$id_user, $id_certificate , substr( $userid,1) , $lastname, $firstname, $status,
-                        $name_certificate, $date_complete, $on_date, $cell_down_gen, $cell_del_cert ,
-                        $this->getInfoClassroom($id_user, $id_course), $this->getFieldUser($id_user) ] ;
-        }            
-   
+          // getting custom fields value
+          $cf = $umodel->getCustomFieldUserValues(intval($id_user));
+
+          $user1 = [$id_user, $id_certificate , $this->getInfoClassroom($id_user, $id_course), substr( $userid,1) ,
+                    $lastname, $firstname, $status, $name_certificate, $date_complete, $on_date, $cell_down_gen, $cell_del_cert] ;
+          $users[] = array_merge($user1, $cf);
+                        
+          
+        }
+        
                                         
        return $users;         
         
         
   
     }
-    
-    
-    private function getFieldUser($id_user){
-       $query = "select idField, translation , user_entry, id_user from 
-                    core_field, core_field_userentry
-                    where  core_field_userentry.id_common=core_field.id_common and id_user=".$id_user." and lang_code='".getLanguage()."'";
-        $res = sql_query($query);
-                
-    
-        $custom_field = array();        
-        while (list($id_field, $translation, $user_entry, $id_user_c ) = sql_fetch_row ($res)) {
-            $custom_field[$id_field] = $user_entry;                                          
-        }    
-  
-       return $custom_field;       
-        
-    }
+
     
     
     private function getInfoClassroom($id_user, $id_course){
