@@ -1483,7 +1483,7 @@ Class CourseAlmsController extends AlmsController
 	}
     
     
-    //  MCV for certificates NEED ITS OWN MVC
+
     public function list_certificate(){
         
         $id_course = Get::req('id_course', DOTY_INT, 0);

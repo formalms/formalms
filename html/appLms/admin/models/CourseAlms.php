@@ -1475,7 +1475,6 @@ Class CourseAlms extends Model
            
            
        $users = array();   
-       $umodel = new UsermanagementAdm();
 
        while (list($idst, $userid, $firstname, $lastname, $date_complete, $on_date, $id_user, $status,  $id_course, $id_certificate, $name_certificate ) = sql_fetch_row ($res)) {
                
@@ -1490,12 +1489,13 @@ Class CourseAlms extends Model
               $cell_down_gen = "<a href='".$generate."' class='ico-wt-sprite subs_pdf'>".Lang::t('_GENERATE', 'certificate')."</a>";
               $cell_del_cert = '';
           }     
-          // getting custom fields value
-          $cf = $umodel->getCustomFieldUserValues(intval($id_user));
+          // getting custom fields values
+          // $umodel = new UsermanagementAdm();          
+         // $cf = $umodel->getCustomFieldUserValues(intval($id_user));
 
           $user1 = [$id_user, $id_certificate , $this->getInfoClassroom($id_user, $id_course), substr( $userid,1) ,
                     $lastname, $firstname, $status, $name_certificate, $date_complete, $on_date, $cell_down_gen, $cell_del_cert] ;
-          $users[] = array_merge($user1, $cf);
+          $users[] = $user1; //array_merge($user1, $cf);
                         
           
         }

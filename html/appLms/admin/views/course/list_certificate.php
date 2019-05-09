@@ -45,27 +45,21 @@ echo getTitleArea(array(
 
 
   echo $print_button.'<br />';
- 
- 
-         
-    if($from=="course"){
-        echo "<div class='container-back'>";
-        echo "<a href='index.php?r=alms/course/certificate&amp;id_course=".$id_course."'>".Lang::t('_BACK', 'standard')."</a>";
-        echo "</div>";
-    } 
-          
-            
-    if($from=="courselist"){ 
-        echo "<div class='container-back'>";
-        echo "<a href='index.php?r=alms/course/show'>".Lang::t('_BACK', 'standard')."</a>";
-        echo "</div>";
-    }
-    
-    if($from=="manage"){
-        echo "<div class='container-back'>";
+  echo "<div class='container-back'>";
+  switch  ($from) {
+      case "course":
+        echo "<a href='index.php?r=alms/course/certificate&amp;id_course=".$id_course."'>".Lang::t('_BACK', 'standard')."</a>";      
+        break;
+      case "manage":
         echo "<a href='index.php?modname=certificate&op=report_certificate&of_platform=lms&id_certificate=".$id_certificate."'>".Lang::t('_BACK', 'standard')."</a>";
-        echo "</div>";        
-    }
+        break;
+      default:
+        echo "<a href='index.php?r=alms/course/show'>".Lang::t('_BACK', 'standard')."</a>";
+  }
+  
+  echo "</div>"; 
+ 
+ 
 
 ?>
     
@@ -120,7 +114,7 @@ echo getTitleArea(array(
              { title: '<?php echo Get::sprite('subs_del', Lang::t('_DEL', 'certificate')); ?>', sortable: false },
              <?php
                foreach($custom_fields as $key=>$value) {
-                   echo "{title:'".$value."', sortable:true},".PHP_EOL;
+                   echo "{title:'".$value."', sortable:true, visible: false},".PHP_EOL;
                }
              ?>            
             ],
@@ -129,7 +123,9 @@ echo getTitleArea(array(
                  'sInfo'  : '<?php echo Lang::t('_FROM', 'standard'); ?>  _START_  <?php echo Lang::t('_TO', 'standard'); ?> _END_ <?php echo Lang::t('_OF', 'standard'); ?>   _TOTAL_ <?php echo Lang::t('_CERTIFICATE', 'menu'); ?> <?php echo Lang::t('_TOTAL', 'standard'); ?> ',
                  'infoEmpty': '',
                  'sEmptyTable' : '<?php echo Lang::t('_NO_CERTIFICATE_AVAILABLE', 'certificate'); ?> '
-            }
+            },
+            dom: 'Bfrtip',
+            buttons:[ 'colvis']
         })
         
 
