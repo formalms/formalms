@@ -125,9 +125,9 @@ final class SmtpAdm extends Model
     /**
      * @return bool
      */
-    public function isAutoTLS()
+    public function isAutoTls()
     {
-        return $this->autoTLS === 'on';
+        return $this->autoTls === 'on';
     }
 
     /**
