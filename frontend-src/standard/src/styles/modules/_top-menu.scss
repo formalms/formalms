@@ -63,14 +63,14 @@
 //
 // Style guide: 6.1
 header.header {
-  height: 60px;
+  height: 87px;
   //padding: 0 36px 0 30px;
   padding: 0;
   border-bottom: 2px solid $dark-orange;
   position: fixed;
 
   @include breakpoint($tablet) {
-    padding: 8px 15px;
+    padding: 18px 15px;
   }
 
   .row-fluid {

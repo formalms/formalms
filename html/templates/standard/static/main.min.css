@@ -4575,13 +4575,13 @@ i + .course-box__date-box {
       text-decoration: none; }
 
 header.header {
-  height: 60px;
+  height: 87px;
   padding: 0;
   border-bottom: 2px solid #c84000;
   position: fixed; }
   @media (min-width: 768px) {
     header.header {
-      padding: 8px 15px; } }
+      padding: 18px 15px; } }
   @media (min-width: 768px) and (max-width: 1023px) {
     header.header .row-fluid .navbar-header {
       width: 100%; } }
