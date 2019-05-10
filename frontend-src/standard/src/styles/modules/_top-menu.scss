@@ -63,7 +63,7 @@
 //
 // Style guide: 6.1
 header.header {
-  height: 87px;
+  height: 73px;
   //padding: 0 36px 0 30px;
   padding: 0;
   border-bottom: 2px solid $dark-orange;
@@ -71,6 +71,7 @@ header.header {
 
   @include breakpoint($tablet) {
     padding: 18px 15px;
+    height: 87px;
   }
 
   .row-fluid {
@@ -80,8 +81,12 @@ header.header {
       }
 
       .navbar-brand {
-        padding: 15px 0 0 30px;
+        padding: 15px 0 0 15px;
         position: relative;
+
+        @include breakpoint($tablet) {
+          padding-left: 30px;
+        }
 
         img {
           height: 100%;
@@ -99,6 +104,8 @@ header.header {
 
       .navbar-toggle {
         position: relative;
+        margin-top: 15px;
+        margin-right: 5px;
         transition: $transition-base;
 
         @media (min-width: 768px) and (max-width: 1023px) {
@@ -369,7 +376,7 @@ header.header {
       &.collapse.in {
         width: 100%;
         float: left;
-        margin-top: 5px;
+        margin-top: 10px;
         padding: 20px;
         background-color: $gray-4;
 
