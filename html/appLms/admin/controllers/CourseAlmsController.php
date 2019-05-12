@@ -1493,9 +1493,10 @@ Class CourseAlmsController extends AlmsController
         
         
         require_once(Forma::inc(_adm_.'/lib/lib.field.php'));
-        $fman = new FieldList();        
+        $fman = new FieldList();
+        $custom_field_array = $fman->getFlatAllFields();        
  
-        $data_certificate = $this->model->getListTototalUserCertificate($id_course, $id_certificate);
+        $data_certificate = $this->model->getListTototalUserCertificate($id_course, $id_certificate, $custom_field_array);
         // pushing empty element at the top of array  
         foreach ($data_certificate as $key => $value) {
             array_unshift($data_certificate[$key], '');
@@ -1516,7 +1517,7 @@ Class CourseAlmsController extends AlmsController
                     'course_name' => $course_info['name'],
                     'from' => $from ,
                     'data_certificate' => $data_certificate  ,
-                    'custom_fields' =>$fman->getFlatAllFields(),
+                    'custom_fields' =>$custom_field_array,
                     'op' => $op
                     
         ));        

@@ -1446,7 +1446,9 @@ Class CourseAlms extends Model
     }
 
    // controllare con function view_report_certificate contenuto in modules/certificate/certificate.php
-  public function getListTototalUserCertificate($id_course, $id_certificate){
+  public function getListTototalUserCertificate($id_course, $id_certificate, $cf){
+        
+        
         require_once(Forma::inc(_lms_.'/lib/lib.certificate.php'));
    
 
@@ -1472,10 +1474,17 @@ Class CourseAlms extends Model
             ." AND cu.idCourse='".(int)$id_course."'";       
            
         $res = sql_query($query);   
+
+
            
            
+       foreach ($cf as $i => $value) {
+            $cf[$i] = '';
+        }      
        $users = array();   
 
+       
+       
        while (list($idst, $userid, $firstname, $lastname, $date_complete, $on_date, $id_user, $status,  $id_course, $id_certificate, $name_certificate ) = sql_fetch_row ($res)) {
                
           $url = 'index.php?modname=certificate&amp;certificate_id='.$id_certificate.'&amp;course_id='.$id_course.'&amp;user_id='.$id_user.'&amp;of_platform=lms';
@@ -1490,12 +1499,16 @@ Class CourseAlms extends Model
               $cell_del_cert = '';
           }     
           // getting custom fields values
-          // $umodel = new UsermanagementAdm();          
-         // $cf = $umodel->getCustomFieldUserValues(intval($id_user));
+          $umodel = new UsermanagementAdm();          
+          $cf_values = $umodel->getCustomFieldUserValues(intval($id_user));
+          
+          $user2 = array_replace($cf, $cf_values);
+          
+          
 
           $user1 = [$id_user, $id_certificate , $this->getInfoClassroom($id_user, $id_course), substr( $userid,1) ,
                     $lastname, $firstname, $status, $name_certificate, $date_complete, $on_date, $cell_down_gen, $cell_del_cert] ;
-          $users[] = $user1; //array_merge($user1, $cf);
+          $users[] = array_merge($user1, $user2);
                         
           
         }

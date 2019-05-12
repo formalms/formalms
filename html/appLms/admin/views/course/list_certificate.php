@@ -125,7 +125,15 @@ echo getTitleArea(array(
                  'sEmptyTable' : '<?php echo Lang::t('_NO_CERTIFICATE_AVAILABLE', 'certificate'); ?> '
             },
             dom: 'Bfrtip',
-            buttons:[ 'colvis']
+            buttons:[ {
+                        extend: 'colvis',
+                        text: '<?php echo Lang::t('_CHANGEPOLICY', 'profile'); ?>',
+                        columns:':gt(12)'
+                      }
+                      
+            
+            
+            ]
         })
         
 

@@ -318,7 +318,9 @@ function formaTable(dom, options) {
     
    if (options.language !== undefined) {
         _options.language = $.extend( _options.language, options.language )
-   }    
+   } 
+   
+
 
     
     

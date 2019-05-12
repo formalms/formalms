@@ -2944,7 +2944,7 @@ class UsermanagementAdm extends Model {
 
         if (is_null($user)) return $output;
          $query = "select idField, user_entry from 
-                    %adm_field LEFT JOIN %adm_field_userentry ON core_field.id_common = core_field_userentry.id_common where
+                    %adm_field JOIN %adm_field_userentry ON core_field.id_common = core_field_userentry.id_common where
                     id_user =".$user." and lang_code='".getLanguage()."' order by idField";
                     
         $res = sql_query($query);
