@@ -273,7 +273,7 @@ function formaTable(dom, options) {
          */
         if(options.selectionActions !== undefined) {
             var _selectionButtons = [];
-            $(options.selectionActions).each(function() {
+            $(options.selectionActions.buttons).each(function() {
                 _selectionAction_ajax = this.ajax || null;
                 _selectionAction_text = this.title || '';
                 _selectionButtons.push({
@@ -288,14 +288,14 @@ function formaTable(dom, options) {
                 });
             });
             var _selectionActions;
-            if(_selectionButtons.length === 1) {
-                _selectionActions = _selectionButtons;
-            } else {
+            if(options.selectionActions.group) {
                 _selectionActions = [{
                     extend: 'collection'
-                  , text: 'selection-action'
+                  , text: options.selectionActions.group
                   , buttons: _selectionButtons
                 }];
+            } else {
+                _selectionActions = _selectionButtons;
             }
             _options.buttons = $.merge(_options.buttons, _selectionActions);
         }
@@ -317,19 +317,28 @@ function formaTable(dom, options) {
      * Table action buttons.
      */
     if(options.tableActions !== undefined) {
-        $(options.tableActions).each(function() {
-
-            _selectionAction_link = this.link || null;
-            _selectionAction_text = this.title || '';
-            _options.buttons.push({
-                text: _selectionAction_text
+        var _tableButtons = [];
+        $(options.tableActions.buttons).each(function() {
+            _tableAction_link = this.link || null;
+            _tableAction_text = this.title || '';
+            _tableButtons.push({
+                text: _tableAction_text
               , action: function(e, dt, node, config) {
-                    if(_selectionAction_link) {
-                        window.location.href = _selectionAction_link.url;
-                    }
+                    window.location.href = _tableAction_link;
                 }
             });
         });
+        var _tableActions;
+        if(options.tableActions.group) {
+            _tableActions = [{
+                extend: 'collection'
+              , text: options.tableActions.group
+              , buttons: _tableButtons
+            }];
+        } else {
+            _tableActions = _tableButtons;
+        }
+        _options.buttons = $.merge(_options.buttons, _tableActions);
     }
 
     /**
