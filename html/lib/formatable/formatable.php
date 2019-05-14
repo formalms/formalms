@@ -162,6 +162,8 @@ function formaTable(dom, options) {
     }
     if(options.columnsDefs !== undefined) {
         _options.columnsDefs = options.columnsDefs;
+    } else {
+        _options.columnsDefs = [];
     }
     if(options.rowGroup !== undefined) {
         _options.rowGroup = options.rowGroup;
@@ -192,9 +194,13 @@ function formaTable(dom, options) {
     }
     if(options.dom !== undefined) {
         _options.dom = options.dom;
+    } else {
+        _options.dom = 'Bfrtip';
     }
     if(options.buttons !== undefined) {
         _options.buttons = options.buttons;
+    } else {
+        _options.buttons = [];
     }    
     if(options.searching !== undefined) {
         _options.searching = options.searching;
@@ -216,10 +222,8 @@ function formaTable(dom, options) {
         /**
          * Use a checkbox for selection.
          */
-        _options.select = {
-            style:    'multi'
-          , selector: 'td:first-child'
-        };
+        _options.select = options.select;
+        _options.select.selector = 'td:first-child';
         if(options.columns !== undefined) {
             _options.columns = $.merge([{ 
                 data: null
@@ -242,7 +246,7 @@ function formaTable(dom, options) {
         /**
          * Custom select/deselect all buttons for correct paginated selection/deselection handling.
          */
-        if(options.selectAll !== undefined) {
+        if(options.select.all === true) {
             _options.buttons = $.merge(_options.buttons, [{
                 extend: 'selectAll'
               , action: function(e, dt, node, config) {
@@ -265,10 +269,42 @@ function formaTable(dom, options) {
         }
 
         /**
+         * Addictional table buttons for selection actions.
+         */
+        if(options.selectionActions !== undefined) {
+            var _selectionButtons = [];
+            $(options.selectionActions).each(function() {
+                _selectionAction_ajax = this.ajax || null;
+                _selectionAction_text = this.title || '';
+                _selectionButtons.push({
+                    text: _selectionAction_text
+                  , action: function(e, dt, node, config) {
+                        if(_selectionAction_ajax) {
+                            _selectionAction_ajax.data = _selectionAction_ajax.data || { }
+                            _selectionAction_ajax.data.selection = _thisObj._selection;
+                            callAjax(_selectionAction_ajax.url, _selectionAction_ajax.data);
+                        }
+                    }
+                });
+            });
+            var _selectionActions;
+            if(_selectionButtons.length === 1) {
+                _selectionActions = _selectionButtons;
+            } else {
+                _selectionActions = [{
+                    extend: 'collection'
+                  , text: 'selection-action'
+                  , buttons: _selectionButtons
+                }];
+            }
+            _options.buttons = $.merge(_options.buttons, _selectionActions);
+        }
+
+        /**
          * Automatic selection for paginated table.
          */
-        this.drawCallbacks.push(function(settings) {
-            this.api().rows().every(function(rowIdx, tableLoop, rowLoop) {
+        this.drawCallbacks.push(function(settings, dt) {
+            dt.api().rows().every(function(rowIdx, tableLoop, rowLoop) {
                 var _inrows = $.inArray(this.id(), _thisObj._selection.rows) > -1;
                 if((!_thisObj._selection.all && _inrows) || (_thisObj._selection.all && !_inrows)) {
                     this.select();
@@ -277,7 +313,78 @@ function formaTable(dom, options) {
         });
     }
 
-    this.drawCallbacks.push(function(oSettings) {
+    /**
+     * Table action buttons.
+     */
+    if(options.tableActions !== undefined) {
+        $(options.tableActions).each(function() {
+
+            _selectionAction_link = this.link || null;
+            _selectionAction_text = this.title || '';
+            _options.buttons.push({
+                text: _selectionAction_text
+              , action: function(e, dt, node, config) {
+                    if(_selectionAction_link) {
+                        window.location.href = _selectionAction_link.url;
+                    }
+                }
+            });
+        });
+    }
+
+    /**
+     * Per row action buttons.
+     */
+    if(options.rowActions !== undefined) {
+        $(options.rowActions).each(function() {
+            var _rowAction_data = this.data || null;
+            var _rowAction_ajax = this.ajax || null;
+            var _rowAction_link = this.link || null;
+            var _rowAction_title = this.title || '';
+            if(_rowAction_link && _rowAction_link.params) {
+                if(_rowAction_link.href.indexOf('?') === -1) {
+                    _rowAction_link.href += '?';
+                }
+            }
+            _options.columns.push({
+                data: _rowAction_data
+              , title: _rowAction_title
+              , orderable: false
+              , searchable: false
+              , className: "text-center"
+              , width: 1
+              , render: function(data, type, row, meta) {
+                    if(type === 'display') {
+                        if(_rowAction_ajax) {
+                            _rowAction_ajaxUrl = _rowAction_ajax.url;
+                            _rowAction_ajaxData = _rowAction_ajax.data || { };
+                            if(_rowAction_ajax.params) {
+                                $.each(_rowAction_ajax.params, function(param, data) {
+                                    _rowAction_ajaxData[param] = row[data];
+                                });
+                            }
+                            var _rowAction_button = $('<a href="' + _rowAction_ajaxUrl + '" class="formatable-action">' + _rowAction_title + '</a>');
+                            _rowAction_button.attr('data-ajaxdata', JSON.stringify(_rowAction_ajaxData));
+                            return _rowAction_button[0].outerHTML;
+                        } else if(_rowAction_link) {
+                            var _rowAction_linkHref = _rowAction_link.href;
+                            if(_rowAction_link.params) {
+                                $.each(_rowAction_link.params, function(param, data) {
+                                    _rowAction_linkHref += '&' + param + '=' + row[data];
+                                });
+                            }
+                            var _rowAction_button = $('<a href="' + _rowAction_linkHref + '">' + _rowAction_title + '</a>');
+                            return _rowAction_button[0].outerHTML;
+                        }
+                    } else {
+                        return data;
+                    }
+                }
+            });
+        });
+    }
+
+    this.drawCallbacks.push(function(oSettings, dt) {
         if(oSettings._iDisplayLength > (oSettings.fnRecordsDisplay() + oSettings._iDisplayStart)) {
             $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
         } else {
@@ -286,8 +393,9 @@ function formaTable(dom, options) {
     });
 
     _options.drawCallback = function(settings) {
+        var dt = this;
         $(_thisObj.drawCallbacks).each(function() {
-            this(settings);
+            this(settings, dt);
         });
     }
 
@@ -327,6 +435,21 @@ function formaTable(dom, options) {
      * Instance DataTable with the given options.
      */
     var datatable = this._datatable = dom.DataTable(_options);
+
+    datatable.on('click', '.formatable-action', function(e) {        
+        e.preventDefault();
+        callAjax($(this).attr('href'), $(this).data('ajaxdata'));
+    });
+
+    var callAjax = function(ajaxUrl, ajaxData) {
+        $.ajax({ 
+            url: ajaxUrl
+          , method: 'POST'
+          , data: ajaxData
+        }).done(function(response) {
+            datatable.ajax.reload();
+        });
+    }
 
     /**
      * Handle paginated selection.
@@ -371,7 +494,6 @@ function formaTable(dom, options) {
             method: $(this).attr('method'),
             data: $(this).serialize()
         }).done(function(response) {
-            console.log(response);
             _thisObj.reload();
         });
         $(this).closest('td').removeClass('ft-edit-open');
