@@ -70,7 +70,7 @@ function inspage() {
 	$insert_query = "
 	INSERT INTO ".$GLOBALS['prefix_lms']."_htmlpage
 	SET title = '".( (trim($_REQUEST['title']) == '') ? Lang::t('_NOTITLE', 'htmlpage', 'lms') : $_REQUEST['title'] )."',
-		textof = '".$_REQUEST['textof']."',
+		textof = '".addslashes($_REQUEST['textof'])."',
 		author = '".(int)getLogUserId()."'";
 	if(!sql_query($insert_query)) {
 		
@@ -177,13 +177,13 @@ function modpage( $object_page ) {
 // XXX:uppage
 function uppage() {
 	checkPerm('view', false, 'storage');
-	
+
 	$back_url = urldecode($_POST['back_url']);
 	
 	$insert_query = "
 	UPDATE ".$GLOBALS['prefix_lms']."_htmlpage
 	SET title = '".( (trim($_REQUEST['title']) == '') ? Lang::t('_NOTITLE', 'htmlpage', 'lms') : $_REQUEST['title'] )."',
-		textof = '".$_REQUEST['textof']."'
+		textof = '".addslashes($_REQUEST['textof'])."'
 	WHERE idPage = '".(int)$_REQUEST['idPage']."'";
 	if(!sql_query($insert_query)) {
 		
