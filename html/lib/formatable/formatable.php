@@ -274,16 +274,14 @@ function formaTable(dom, options) {
         if(options.selectionActions !== undefined) {
             var _selectionButtons = [];
             $(options.selectionActions.buttons).each(function() {
-                _selectionAction_ajax = this.ajax || null;
-                _selectionAction_text = this.title || '';
+                var _selectionAction_ajax = this.ajax || null;
+                var _selectionAction_text = this.title || '';
                 _selectionButtons.push({
                     text: _selectionAction_text
                   , action: function(e, dt, node, config) {
-                        if(_selectionAction_ajax) {
-                            _selectionAction_ajax.data = _selectionAction_ajax.data || { }
-                            _selectionAction_ajax.data.selection = _thisObj._selection;
-                            callAjax(_selectionAction_ajax.url, _selectionAction_ajax.data);
-                        }
+                        _selectionAction_ajax.data = _selectionAction_ajax.data || { }
+                        _selectionAction_ajax.data.selection = _thisObj._selection;
+                        callAjax(_selectionAction_ajax.url, _selectionAction_ajax.data);
                     }
                 });
             });
@@ -319,8 +317,8 @@ function formaTable(dom, options) {
     if(options.tableActions !== undefined) {
         var _tableButtons = [];
         $(options.tableActions.buttons).each(function() {
-            _tableAction_link = this.link || null;
-            _tableAction_text = this.title || '';
+            var _tableAction_link = this.link || null;
+            var _tableAction_text = this.title || '';
             _tableButtons.push({
                 text: _tableAction_text
               , action: function(e, dt, node, config) {
