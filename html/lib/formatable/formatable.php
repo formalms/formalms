@@ -268,7 +268,7 @@ function formaTable(dom, options) {
          * Automatic selection for paginated table.
          */
         this.drawCallbacks.push(function(settings) {
-            this.api().rows().every(function(rowIdx, tableLoop, rowLoop) {
+           _thisObj.api().rows().every(function(rowIdx, tableLoop, rowLoop) {
                 var _inrows = $.inArray(this.id(), _thisObj._selection.rows) > -1;
                 if((!_thisObj._selection.all && _inrows) || (_thisObj._selection.all && !_inrows)) {
                     this.select();
