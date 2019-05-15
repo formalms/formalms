@@ -38,8 +38,8 @@ function GetAdminPanel(){
  */
 function GetCompanyLogo(){
     
-    return  '<a href="index.php?r=adm/dashboard/show">
-            <img width=100px src="'.Layout::path().'images/company_logo.png" alt="Left logo" />
+    return  '<a href="index.php?r=adm/dashboard/show" class="forma-admin-logo">
+                <img src="'.Layout::path().'images/company_logo_admin.png" alt="Left logo" />
             </a>';
 }
 

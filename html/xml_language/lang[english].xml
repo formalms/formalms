@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20190215</DATE>
+  <DATE>20190417</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -270,7 +270,7 @@
         <key id="catalogue&amp;_METHOD_MANUAL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Manual subscription]]></key>
         <key id="catalogue&amp;_MOD_ENTRY_CATALOGUE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show elements of the catalog]]></key>
         <key id="catalogue&amp;_NEW_CATALOGUE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[New catalog]]></key>
-        <key id="catalogue&amp;_NO_AVAILABLE_EDITIONS" attributes="" save_date="2017-07-10 12:07:09"><![CDATA[No editions available ]]></key>
+        <key id="catalogue&amp;_NO_AVAILABLE_EDITIONS" attributes="" save_date="2017-07-10 12:07:09"><![CDATA[No editions available]]></key>
         <key id="catalogue&amp;_NO_CATEGORY_TODISPLAY" attributes="" save_date="2017-11-09 18:08:23"><![CDATA[No category to display]]></key>
         <key id="catalogue&amp;_NO_COURSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[No courses available]]></key>
         <key id="catalogue&amp;_NO_COURSE_FOUND" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Course not found]]></key>
@@ -446,7 +446,7 @@
         <key id="configuration&amp;_BBB_PASSWORD_VIEWER" attributes="" save_date="2017-07-17 14:30:45"><![CDATA[BigBlueButton Viewer Password]]></key>
         <key id="configuration&amp;_BBB_PORT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[BigBlueButton Port]]></key>
         <key id="configuration&amp;_BBB_SALT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Salt BigBlueButton]]></key>
-        <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="2017-05-05 17:03:26"><![CDATA[BigBlueButton server address ]]></key>
+        <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="2017-05-05 17:03:26"><![CDATA[BigBlueButton server address]]></key>
         <key id="configuration&amp;_BBB_USER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Username BigBlueButton]]></key>
         <key id="configuration&amp;_CLEAR_TWIG_CACHE" attributes="" save_date="2017-10-16 17:49:29"><![CDATA[Clear twig cache]]></key>
         <key id="configuration&amp;_CODE_TELESKILL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Customer code]]></key>
@@ -740,6 +740,7 @@
         <key id="course&amp;_CST_CONCLUDED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Concluded]]></key>
         <key id="course&amp;_CST_CONFIRMED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Confirmed]]></key>
         <key id="course&amp;_CST_PREPARATION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Under construction]]></key>
+        <key id="course&amp;_CUSTOM_OPTIONS" attributes="" save_date="0000-00-00 00:00:00"><![CDATA[Custom Options]]></key>
         <key id="course&amp;_DATE_END" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Date end]]></key>
         <key id="course&amp;_DATE_START" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Date start]]></key>
         <key id="course&amp;_DAY_OF_VALIDITY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Days of validity]]></key>
@@ -951,6 +952,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="customer_help&amp; &#9; _CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2018-07-20 10:31:26"><![CDATA[Disclaimer - assistenza utenti]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Help Desk]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:29:58"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
+        <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2018-05-10 15:45:41"><![CDATA[Privacy]]></key>
         <key id="customer_help&amp;_README_HELP" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[<!-- here you can put some help text -->]]></key>
       </module>
       <module id="dashboard">
@@ -1067,6 +1069,12 @@ Password: [password]]]></key>
         <key id="enrollrules&amp;_SHOW_LOGS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Show logs]]></key>
       </module>
       <module id="event_manager">
+        <key id="event_manager&amp;_EVENT_CHANGE_NODE_USER_SBJ" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User has been change node]]></key>
+        <key id="event_manager&amp;_EVENT_CHANGE_NODE_USER_SBJ" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User with [firstname] [lastname] and userId : [username] has been change node in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_CHANGE_NODE_USER_SBJ_SMS" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User with [firstname] [lastname] and userId : [username] has been change node in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User has been suspended]]></key>
+        <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended from course : [course] in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended from course : [course] in platform : [url]]]></key>
         <key id="event_manager&amp;_EVENT_CHANNEL_SMS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[SMS]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_AdviceNew" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[New Announcement]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_CoursePorpModified" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Course properties have been changed]]></key>
@@ -1082,26 +1090,37 @@ Password: [password]]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseLevelChanged" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[User level has been changed in a course]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemoved" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[User unsubscribed from a course]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemovedModerate" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[User waiting to be unsubscribed from a course]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserCourseSuspendedSuperAdmin" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User has been suspended]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserDel" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[User has been deleted]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserGroupInsert" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[User subscribed to a group]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserGroupModerated" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[User waiting to be subscribed in a group]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserGroupRemove" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[User has been removed from a group]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserMod" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[User has been modified]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserModNodeSuperAdmin" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User Node is changes]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserModSuperAdmin" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User status is change in modified]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNew" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[User has been created]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNew2" attributes="" save_date="2017-04-11 18:34:28"><![CDATA[A new user is registered via "free automatic registration" or "free automatic registration with double opt-in "]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNewModerated" attributes="" save_date="2017-04-10 18:29:59"><![CDATA[User subscription waiting to be approved in platform]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNewWaiting" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[New user waiting to be approved]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserSuspendedSuperAdmin" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User has been suspended]]></key>
         <key id="event_manager&amp;_EVENT_MANAGER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Event manager]]></key>
         <key id="event_manager&amp;_EVENT_PERM_NOTUSED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Not used]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Platform]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_framework" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[appCore]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[appLMS]]></key>
         <key id="event_manager&amp;_EVENT_PLATFORM_lms-a" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[appLMS-A]]></key>
+        <key id="event_manager&amp;_EVENT_RECIPIENTS_GOD" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[Super-Administrators]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_MODERATORS_GOD" attributes="" save_date="2017-07-17 11:19:25"><![CDATA[Moderators and Super-Administrators]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Instructors]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_TEACHER_GOD" attributes="" save_date="2017-07-17 11:19:32"><![CDATA[Instructors and Super-Administrators]]></key>
         <key id="event_manager&amp;_EVENT_RECIPIENTS_USER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[User]]></key>
         <key id="event_manager&amp;_EVENT_SETTINGS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Event settings]]></key>
+        <key id="event_manager&amp;_EVENT_MOD_USER_SBJ" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User has been modified]]></key>
+        <key id="event_manager&amp;_EVENT_MOD_USER_TEXT" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User with [firstname] [lastname] and userId : [username] has been modified in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_MOD_USER_TEXT_SMS" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User with [firstname] [lastname] and userId : [username] has been modified in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User has been suspended]]></key>
+        <key id="event_manager&amp;_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended in platform : [url]]]></key>
+        <key id="event_manager&amp;_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2019-04-17 12:10:37"><![CDATA[User with [firstname] [lastname] and userId : [username] has been suspended in platform : [url]]]></key>
       </module>
       <module id="faq">
         <key id="faq&amp;_ADDFAQ" attributes="" save_date="2018-11-17 22:23:12"><![CDATA[Add FAQ]]></key>
@@ -1203,6 +1222,7 @@ Password: [password]]]></key>
         <key id="forum&amp;_NUMREPLY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Replies]]></key>
         <key id="forum&amp;_NUMTHREAD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Threads]]></key>
         <key id="forum&amp;_NUMVIEW" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Watchers]]></key>
+        <key id="forum&amp;_OPERATIONS" attributes="" save_date="2017-06-19 19:52:32"><![CDATA[Operations]]></key>
         <key id="forum&amp;_QUOTE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Quote]]></key>
         <key id="forum&amp;_RESTOREINSERT" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Re-Open thread]]></key>
         <key id="forum&amp;_SEARCH_LABEL" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Find topic]]></key>
@@ -1474,7 +1494,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="menu&amp;_CERTIFICATE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Certificates]]></key>
         <key id="menu&amp;_COMMUNICATION_MAN" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Communications]]></key>
         <key id="menu&amp;_CONFIGURATION" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Settings]]></key>
-        <key id="menu&amp;_CONFIG_ELEARNING" attributes="" save_date="2017-05-05 11:39:59"><![CDATA[E-learning configuration ]]></key>
+        <key id="menu&amp;_CONFIG_ELEARNING" attributes="" save_date="2017-05-05 11:39:59"><![CDATA[E-learning configuration]]></key>
         <key id="menu&amp;_CONFIG_SYS" attributes="" save_date="2017-05-05 11:41:31"><![CDATA[System configuration]]></key>
         <key id="menu&amp;_CUSTOMFIELD_MANAGER" attributes="" save_date="2017-03-15 12:18:08"><![CDATA[Customfield manager]]></key>
         <key id="menu&amp;_DASHBOARD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Welcome Page]]></key>
@@ -1509,8 +1529,12 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="menu&amp;_WEBPAGES" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Web pages]]></key>
       </module>
       <module id="menu_course">
+        <key id="menu_course&amp;Area social" attributes="" save_date="2017-03-17 17:48:06"><![CDATA[Social area]]></key>
+        <key id="menu_course&amp;Area studenti" attributes="" save_date="2017-03-17 17:45:44"><![CDATA[Student area]]></key>
         <key id="menu_course&amp;Collaborative Area" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Collaborative Area]]></key>
+        <key id="menu_course&amp;Gestione" attributes="" save_date="2017-03-17 17:48:35"><![CDATA[Management]]></key>
         <key id="menu_course&amp;Stat Area" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Stat Area]]></key>
+        <key id="menu_course&amp;Statistiche" attributes="" save_date="2017-03-17 17:47:31"><![CDATA[Statistics]]></key>
         <key id="menu_course&amp;Student Area" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Student Area]]></key>
         <key id="menu_course&amp;Teacher Area" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Teacher Area]]></key>
         <key id="menu_course&amp;_ADVICE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Announcements]]></key>
@@ -1562,6 +1586,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
       <module id="message">
         <key id="message&amp;_ATTACH_TITLE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[The message has attachments]]></key>
         <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:28:32"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
+        <key id="message&amp;_CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Your personal informations required to provide support will be sent to system administrators]]></key>
         <key id="message&amp;_FILTER_MESSAGE_FOR" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Send a message to users of the course:]]></key>
         <key id="message&amp;_HIGH" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[High]]></key>
         <key id="message&amp;_INBOX" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Received]]></key>
@@ -1935,6 +1960,7 @@ You have to confirm your account before using it.]]></key>
         <key id="register&amp;_RETYPE_PASSWORD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Retype the password]]></key>
         <key id="register&amp;_SELECT_GROUP" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Select the group you want to subscribe]]></key>
         <key id="register&amp;_SELECT_GROUP_SUMMARY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[List of groups available for subscription]]></key>
+        <key id="register&amp;_SEND_LINK_RESET_PASSWORD" attributes="" save_date="2019-03-12 16:17:45"><![CDATA[Send an email with the link to reset password]]></key>
         <key id="register&amp;_SOME_MANDATORY_EMPTY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[You haven't filled in some mandatory fields]]></key>
         <key id="register&amp;_WHYCHANGEPWD" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[This procedure is required for security or legal reason by the website administrator and consists in changing password periodically.]]></key>
       </module>
@@ -2227,8 +2253,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_CONTENT_LIBRARY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Content library]]></key>
         <key id="standard&amp;_CONTEST" attributes="" save_date="2017-04-21 10:11:53"><![CDATA[Contests]]></key>
         <key id="standard&amp;_CONTINUE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Continue]]></key>
-        <key id="standard&amp;_CORE_VERSION" attributes="" save_date="2017-03-15 16:45:43"><![CDATA[Core version
-]]></key>
+        <key id="standard&amp;_CORE_VERSION" attributes="" save_date="2017-03-15 16:45:43"><![CDATA[Core version]]></key>
         <key id="standard&amp;_COURSE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Course]]></key>
         <key id="standard&amp;_COURSECATEGORY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Course categories]]></key>
         <key id="standard&amp;_COURSEPATH" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Curricula]]></key>
@@ -2306,7 +2331,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_FILE_MANAGER" attributes="" save_date="2017-04-11 18:38:45"><![CDATA[File manager]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Filter by]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[All conditions must be satisfied]]></key>
-        <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2019-01-11 10:59:12"><![CDATA[Apply filter]]></key>
+        <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Apply filters]]></key>
         <key id="standard&amp;_FILTER_ONE_COND" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[At least one condition must be satisfied]]></key>
         <key id="standard&amp;_FILTER_RESET" attributes="" save_date="2019-01-11 11:00:10"><![CDATA[Filter reset]]></key>
         <key id="standard&amp;_FILTER_TAB_CLOSE" attributes="" save_date="2019-01-11 19:50:08"><![CDATA[Filter tab close]]></key>
@@ -2614,7 +2639,7 @@ Password: [password]]]></key>
         <key id="stats&amp;_STATISTIC" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Statistics]]></key>
         <key id="stats&amp;_STATNOTRACKFORUSER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[No data for user/lesson]]></key>
         <key id="stats&amp;_STATSFORITEM" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[for lesson]]></key>
-        <key id="stats&amp;_STATSITEM" attributes="" save_date="2017-07-07 15:55:36"><![CDATA[Stats by object: ]]></key>
+        <key id="stats&amp;_STATSITEM" attributes="" save_date="2017-07-07 15:55:36"><![CDATA[Stats by object:]]></key>
         <key id="stats&amp;_STATSUSERITEM" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Stats by Student/Object]]></key>
         <key id="stats&amp;_STATS_FULLNAME" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Fullname]]></key>
         <key id="stats&amp;_STATS_USERS" attributes="" save_date="2017-04-10 18:41:00"><![CDATA[User Stats]]></key>
@@ -2888,7 +2913,7 @@ Password: [password]]]></key>
         <key id="test&amp;_TEST_SUB_ONE_ANSWER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Remove last answer]]></key>
         <key id="test&amp;_TEST_SUMMARY" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Test question list]]></key>
         <key id="test&amp;_TEST_SUSPENDED" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Test has been suspended]]></key>
-        <key id="test&amp;_TEST_SUSPENDED_UNTIL" attributes="" save_date="2017-06-14 15:00:52"><![CDATA[The test has been suspended until ]]></key>
+        <key id="test&amp;_TEST_SUSPENDED_UNTIL" attributes="" save_date="2017-06-14 15:00:52"><![CDATA[The test has been suspended until]]></key>
         <key id="test&amp;_TEST_TEXT_ANSWER" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[answer text]]></key>
         <key id="test&amp;_TEST_TE_TITLE" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[Choose the right word]]></key>
         <key id="test&amp;_TEST_TIME_ASSIGNED" attributes="" save_date="2017-05-04 23:08:10"><![CDATA[Test time limit: <b>[time_assigned] minutes</b>]]></key>

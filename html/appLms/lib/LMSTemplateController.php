@@ -48,33 +48,17 @@ final class LMSTemplateController extends TemplateController {
     }
 
     private function notGeneratedCertificates() {
+      $id_user = Docebo::user()->getIdSt();
+      $model = new MycertificateLms($id_user);
 
-      $sql_generated = 'SELECT DISTINCT(ca.id_certificate)
-        FROM learning_certificate_assign AS ca 
-        INNER JOIN learning_courseuser AS cu ON ca.id_user = cu.idUser AND ca.id_course = cu.idCourse 
-        INNER JOIN learning_certificate_course AS cc ON ca.id_certificate = cc.id_certificate AND ca.id_course = cc.id_course
-        WHERE cu.idUser = '.Docebo::user()->getIdSt();
+      $certificates = $model->loadMyCertificates(false, false);
 
-      $generated = sql_query($sql_generated);
-      
-      $not_in = '';
-      while($row = sql_fetch_array($generated)) {
-        $not_in.= $row['id_certificate'].',';
+      $availables = 0;
+      foreach ($certificates as $cert) {
+        if (!$cert[6]) { // $cert['on_date']
+          $availables++;
+        }
       }
-      $not_in = rtrim($not_in, ",");
-
-      $sql_availables = 'SELECT COUNT(cc.id_certificate) AS count
-        FROM learning_certificate_course AS cc
-        INNER JOIN learning_courseuser AS cu ON cc.id_course = cu.idCourse
-        WHERE cu.idUser = '.Docebo::user()->getIdSt().'
-        AND cc.available_for_status = cu.status';
-
-      if ($not_in) {
-        $sql_availables.= ' AND cc.id_certificate NOT IN ('.$not_in.')';
-      }
-
-      $availables = sql_query($sql_availables);
-      $availables = (int)sql_fetch_object($availables)->count;
 
       return $availables;
     }

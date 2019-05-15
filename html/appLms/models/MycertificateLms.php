@@ -68,7 +68,8 @@ class MycertificateLms extends Model {
                     'cert_name' => $cert['cert_name'],
                     'date_complete' => $cert['date_complete'],
                     // 'preview' => isset($cert['on_date']) ? '' : $preview,
-                    'download' => isset($cert['on_date']) ? $download : $generate
+                    'download' => isset($cert['on_date']) ? $download : $generate,
+                    'on_date' => $cert['on_date'],
                 );
 
                 $data[] = $row;

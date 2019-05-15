@@ -1725,8 +1725,9 @@ class Report_User extends Report {
 
 			//cout('<div>'.($condition ? 'true' : 'false').'</div>');
 			if ($condition) {
-
-
+                
+                require_once($GLOBALS['where_framework'].'/lib/lib.customfield.php');
+                $fman = new CustomFieldList();
 				$row = array();
 				$row[] =  Docebo::aclm()->relativeId($userid);
 				if (in_array('_TH_LASTNAME', $cols)) $row[] =  $lastname;
@@ -1755,9 +1756,6 @@ class Report_User extends Report {
                     }
                     $row[] = $folder_name;
                 
-                
-                    require_once($GLOBALS['where_framework'].'/lib/lib.customfield.php');
-                    $fman = new CustomFieldList();
 
                     if (count($folders)>1) {
                         foreach ($customcols_org as $val) {
@@ -3096,7 +3094,7 @@ class Report_User extends Report {
 				}
 			} else {
 				if ($val['key'] == '_CUSTOM_FIELDS_') {
-					//custom fields
+                    //custom fields
 					if (count($ref['custom_fields']) > 0) {
                         foreach ($ref['custom_fields'] as $key=>$val) {
 							$arr_fieldset['user'] .= Form::getCheckBox($val['label'], 'col_custom_'.$val['id'], 'custom['.$val['id'].']', $val['id'], $val['selected']);

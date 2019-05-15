@@ -664,6 +664,36 @@ class UsermanagementAdmController extends AdmController {
 		$event->setOldUser($oldUserdata);
 		\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
 
+		require_once(Forma::inc(_base_ . '/lib/lib.eventmanager.php'));
+
+		$uinfo = Docebo::aclm()->getUser($idst, false);
+
+		$array_subst = array(
+			'[url]' => Get::site_url(),
+			'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+			'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+			'[username]' => $uinfo[ACL_INFO_USERID]
+		);
+
+		// message to user that is odified
+		$msg_composer = new EventMessageComposer();
+
+		$msg_composer->setSubjectLangText('email', '_EVENT_MOD_USER_SBJ', false);
+		$msg_composer->setBodyLangText('email', '_EVENT_MOD_USER_TEXT', $array_subst);
+
+		$msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);
+
+		$acl_manager = \Docebo::user()->getAclManager();
+
+		$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+		$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+		$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
+		$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
+
+		createNewAlert(	'UserModSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was modified',
+			$recipients, $msg_composer );
+
 		echo $this->json->encode($output);
 	}
 
@@ -806,6 +836,41 @@ class UsermanagementAdmController extends AdmController {
 				$output['success'] = $this->model->suspendUsers($idst);
 				$output['message'] = UIFeedback::pinfo(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
 
+
+				require_once(Forma::inc(_base_.'/lib/lib.eventmanager.php'));
+
+
+				$uinfo = Docebo::aclm()->getUser($idst, false);
+
+				$userid = Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
+
+				$array_subst = array(
+					'[url]' => Get::site_url(),
+					'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+					'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+					'[username]' => $userid
+				);
+
+				// message to user that is odified
+				$msg_composer = new EventMessageComposer();
+
+				$msg_composer->setSubjectLangText('email', '_EVENT_SUSPENDED_USER_SBJ', false);
+				$msg_composer->setBodyLangText('email', '_EVENT_SUSPENDED_USER_TEXT', $array_subst);
+
+				$msg_composer->setBodyLangText('sms', '_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
+
+				$acl_manager = \Docebo::user()->getAclManager();
+
+				$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+				$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+				$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
+				$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
+
+				createNewAlert(	'UserSuspendedSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was suspended',
+					$recipients, $msg_composer );
+
+
 				// SET SUSPAND USER EVENT
 				$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();
 				$event->setUser($user);
@@ -849,6 +914,40 @@ class UsermanagementAdmController extends AdmController {
 
 			if ($action==0) {
 				$output['success'] = $this->model->suspendUsers($arr_users);
+
+				$acl_manager = \Docebo::user()->getAclManager();
+
+				$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+				$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+				$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
+				$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
+
+				foreach ($arr_users as $idst){
+					require_once(Forma::inc(_base_.'/lib/lib.eventmanager.php'));
+
+					$uinfo = Docebo::aclm()->getUser($idst, false);
+
+					$userid = Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
+
+					$array_subst = array(
+						'[url]' => Get::site_url(),
+						'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+						'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+						'[username]' => $userid
+					);
+
+					// message to user that is odified
+					$msg_composer = new EventMessageComposer();
+
+					$msg_composer->setSubjectLangText('email', '_EVENT_SUSPENDED_USER_SBJ', false);
+					$msg_composer->setBodyLangText('email', '_EVENT_SUSPENDED_USER_TEXT', $array_subst);
+
+					$msg_composer->setBodyLangText('sms', '_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
+
+					createNewAlert(	'UserSuspendedSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was suspended',
+						$recipients, $msg_composer );
+				}
 
 				// SET SUSPAND USERS MULTIPLE EVENT
 				$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();
@@ -1437,6 +1536,40 @@ class UsermanagementAdmController extends AdmController {
 				$event->setNode($nodedata);
 				\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartAssignEditEvent::EVENT_NAME, $event);
 
+
+				$acl_manager = \Docebo::user()->getAclManager();
+
+				$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+				$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+				$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
+				$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
+
+				foreach ($selection as $idst){
+
+					require_once(_base_ . '/lib/lib.eventmanager.php');
+
+					$uinfo = Docebo::aclm()->getUser($idst, false);
+
+					$array_subst = array(
+						'[url]' => Get::site_url(),
+						'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+						'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+						'[username]' => $uinfo[ACL_INFO_USERID]
+					);
+
+					// message to user that is odified
+					$msg_composer = new EventMessageComposer();
+
+					$msg_composer->setSubjectLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', false);
+					$msg_composer->setBodyLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', $array_subst);
+
+					$msg_composer->setBodyLangText('sms', '_EVENT_CHANGE_NODE_USER_SBJ_SMS', $array_subst);
+
+					createNewAlert('UserModNodeSuperAdmin', 'directory', 'edit', '1', 'User ' . $idst . ' was modified',
+						$recipients, $msg_composer);
+				}
+
 				if($res) {
 					$enrollrules = new EnrollrulesAlms();
 					$enrollrules->applyRulesMultiLang('_LOG_USERS_TO_ORGCHART', $selection, $id);
@@ -1700,6 +1833,36 @@ class UsermanagementAdmController extends AdmController {
 			$user = $model->getProfileData($id_user);
 			$event->setUser($user);
 			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent::EVENT_NAME, $event);
+
+			require_once(_base_ . '/lib/lib.eventmanager.php');
+
+			$uinfo = Docebo::aclm()->getUser($id_user, false);
+
+			$array_subst = array(
+				'[url]' => Get::site_url(),
+				'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+				'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+				'[username]' => $uinfo[ACL_INFO_USERID]
+			);
+
+			// message to user that is odified
+			$msg_composer = new EventMessageComposer();
+
+			$msg_composer->setSubjectLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', false);
+			$msg_composer->setBodyLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', $array_subst);
+
+			$msg_composer->setBodyLangText('sms', '_EVENT_CHANGE_NODE_USER_SBJ_SMS', $array_subst);
+
+			$acl_manager = \Docebo::user()->getAclManager();
+
+			$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+			$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+			$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
+			$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
+
+			createNewAlert('UserModNodeSuperAdmin', 'directory', 'edit', '1', 'User ' . $id_user . ' was modified',
+				$recipients, $msg_composer);
 		}
 		$output = array('success' => $success);
 		echo $this->json->encode($output);
@@ -1745,6 +1908,38 @@ class UsermanagementAdmController extends AdmController {
 			$event = new \appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent();
 			$event->setUsers($users);
 			\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent::EVENT_NAME, $event);
+
+			$acl_manager = \Docebo::user()->getAclManager();
+			$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+			$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+			$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
+			$recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
+
+			foreach ($arr_users as $idst){
+
+				require_once(_base_ . '/lib/lib.eventmanager.php');
+
+				$uinfo = Docebo::aclm()->getUser($idst, false);
+
+				$array_subst = array(
+					'[url]' => Get::site_url(),
+					'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+					'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+					'[username]' => $uinfo[ACL_INFO_USERID]
+				);
+
+				// message to user that is odified
+				$msg_composer = new EventMessageComposer();
+
+				$msg_composer->setSubjectLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', false);
+				$msg_composer->setBodyLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', $array_subst);
+
+				$msg_composer->setBodyLangText('sms', '_EVENT_CHANGE_NODE_USER_SBJ_SMS', $array_subst);
+
+				createNewAlert('UserModNodeSuperAdmin', 'directory', 'edit', '1', 'User ' . $idst . ' was modified',
+					$recipients, $msg_composer);
+			}
 		}
 		echo $this->json->encode($output);
 	}

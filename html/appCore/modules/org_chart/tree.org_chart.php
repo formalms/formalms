@@ -683,8 +683,7 @@ class TreeView_OrgView extends TreeView {
 					if(($this->aclManager->absoluteId($userid) != $info[ACL_INFO_USERID]) || ($this->aclManager->password_verify_update($pass, $info[ACL_INFO_PASS]))) {
 						
 						require_once(_base_.'/lib/lib.eventmanager.php'); 
-						$pl_man = PlatformManager::createInstance();
-				
+
 						$array_subst = array(	'[url]' => Get::site_url(),
 												'[userid]' => $userid, 
 												'[password]' => $pass );
@@ -701,7 +700,71 @@ class TreeView_OrgView extends TreeView {
 						
 						createNewAlert(	'UserMod', 'directory', 'edit', '1', 'User '.$userid.' was modified',
 									array($userid), $msg_composer );
+
+						$uinfo = Docebo::aclm()->getUser($idst, false);
+
+						$array_subst = array(
+							'[url]' => Get::site_url(),
+							'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+							'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+							'[username]' => $userid
+						);
+
+						// message to user that is odified
+						$msg_composer = new EventMessageComposer();
+
+						$msg_composer->setSubjectLangText('email', '_EVENT_MOD_USER_SBJ', false);
+						$msg_composer->setBodyLangText('email', '_EVENT_MOD_USER_TEXT', $array_subst);
+
+						$msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);
+
+						$acl_manager = \Docebo::user()->getAclManager();
+
+						$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+						$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+						$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
+						$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
+
+						createNewAlert(	'UserModSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' was modified',
+							$recipients, $msg_composer );
+
 					}
+
+					if ($userlevel !== $olduserlevel){
+
+						require_once(Forma::inc(_base_.'/lib/lib.eventmanager.php'));
+
+						$uinfo = Docebo::aclm()->getUser($idst, false);
+
+						$array_subst = array(
+							'[url]' => Get::site_url(),
+							'[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+							'[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+							'[username]' => $userid
+						);
+
+						// message to user that is odified
+						$msg_composer = new EventMessageComposer();
+
+						$msg_composer->setSubjectLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', false);
+						$msg_composer->setBodyLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', $array_subst);
+
+						$msg_composer->setBodyLangText('sms', '_EVENT_CHANGE_NODE_USER_SBJ_SMS', $array_subst);
+
+						$acl_manager = \Docebo::user()->getAclManager();
+
+						$permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+						$permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+						$recipients = $acl_manager->getGroupAllUser($permission_godadmin);
+						$recipients = array_merge($recipients,$acl_manager->getGroupAllUser($permission_admin));
+
+						createNewAlert(	'UserModNodeSuperAdmin', 'directory', 'edit', '1', 'User '.$userid.' change node',
+							$recipients, $msg_composer );
+
+					}
+
 					$GLOBALS['page']->add(getResultUi($this->lang->def('_OPERATION_SUCCESSFUL') ));
 								
 				} else {
