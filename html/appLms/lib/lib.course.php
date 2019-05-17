@@ -941,7 +941,7 @@ class Man_Course {
 
 			if($now > ( $time_first_access + ($course['valid_time'] * 24 * 3600 ) )) return array('can' => true, 'reason' => 'course_valid_time', 'expiring_in' => $expiring);
 		}
-		if( $course['userStatusOp'] & (1 << $course['user_status']) ) return array('can' => false, 'reason' => 'user_status', 'expiring_in' => $expiring);
+		if($course['user_status'] >= 0 $course['userStatusOp'] & (1 << $course['user_status']) ) return array('can' => false, 'reason' => 'user_status', 'expiring_in' => $expiring);
 
 		//Control user coursepath prerequisite
 		$query =	"SELECT cc.prerequisites "

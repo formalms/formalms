@@ -250,7 +250,8 @@ Class TransactionAlms extends Model {
 					$waiting_users	= $man_course->getWaitingSubscribed($id_course);
 
 					$level 		= $waiting_users['users_info'][$id_user]['level'];
-					$result 	= removeSubscription($id_course, $id_user, $group_levels[$level], $edition_id);
+					$s = new SubscriptionAlmsController;
+					$result 	= $s->removeSubscription($id_course, $id_user, $group_levels[$level], $edition_id);
 				}
 			}
 		}
