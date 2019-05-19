@@ -73,12 +73,15 @@ echo getTitleArea(array(
             scrollX: true,
             rowId: 'id_user',
             data:  <?php echo json_encode($data_certificate) ?>,
-            select: true,            
+            select: {
+                style: 'multi',
+                all: true   
+            },            
             columns:[
-             { title: 'id_user', sortable: false, visible: false },
-             { title: 'id_certificate', sortable: false, visible: false },
+             { title: 'id_user', sortable: false, visible: false, searchable: false },
+             { title: 'id_certificate', sortable: false, visible: false, searchable: false },
              { title: '<?php echo Lang::t('_EDITION', 'standard'); ?>', sortable: true, visible: ('classroom' == '<?php echo $course_type ?>')  },              
-             { title: '<?php echo Lang::t('_USERNAME', 'standard'); ?>', sortable: true },
+             { title: '<?php echo Lang::t('_USERNAME', 'standard'); ?>', sortable: true, type:'num' },
              { title: '<?php echo Lang::t('_LASTNAME', 'standard'); ?>', sortable: true },
              { title: '<?php echo Lang::t('_NAME', 'standard'); ?>', sortable: true },
 
@@ -110,8 +113,8 @@ echo getTitleArea(array(
              { title: '<?php echo Lang::t('_CERTIFICATE_REPORT', 'certificate'); ?>', sortable: true },
              { title: '<?php echo Lang::t('_DATE_END', 'standard'); ?>', sortable: true },  // TBD converting to local time                      
              { title: '<?php echo Lang::t('_RELASE_DATE', 'certificate'); ?>', sortable: true }, // TBD converting to local time
-             { title: '<?php echo Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate')) ?>', sortable: true },
-             { title: '<?php echo Get::sprite('subs_del', Lang::t('_DEL', 'certificate')); ?>', sortable: false },
+             { title: '<?php echo Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate')) ?>', sortable: true, searchable: false },
+             { title: '<?php echo Get::sprite('subs_del', Lang::t('_DEL', 'certificate')); ?>', sortable: false, searchable: false },
              <?php
                foreach($custom_fields as $key=>$value) {
                    echo "{title:'".$value."', sortable:true, visible: false},".PHP_EOL;
@@ -129,12 +132,22 @@ echo getTitleArea(array(
                         extend: 'colvis',
                         text: '<?php echo Lang::t('_CHANGEPOLICY', 'profile'); ?>',
                         columns:':gt(12)'
+                      },
+                      {
+                        text: 'add search',
+                        action: function(e, dt, node, config){
+                              this.addSearch('table_certificate')
+
+           
+                           
+                           } 
                       }
-                      
             
             
             ]
         })
+        
+      //  table.addSearch('table_certificate');
         
 
           function print_certificate(id_user, id_course, id_certificate){
@@ -157,6 +170,7 @@ echo getTitleArea(array(
                 })      
 
           }
+          
 </script>
 
 <?php
