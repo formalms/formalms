@@ -106,11 +106,15 @@ class DoceboUser {
 	public function SaveInSession() {
 		require_once(_base_.'/lib/lib.json.php');
 	    $json = new Services_JSON();
+		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
+		if (strpos($ip, ',') !== false) {
+			$ip = substr($ip, 0, strpos($ip, ','));
+		}
 
 		$_SESSION[$this->sprefix.'_idst'] = $this->idst;
 		$_SESSION[$this->sprefix.'_username'] = $this->userid;
 		$_SESSION[$this->sprefix.'_stlist'] = $json->encode($this->arrst);
-		$_SESSION[$this->sprefix.'_log_ip'] = $_SERVER['REMOTE_ADDR'];
+		$_SESSION[$this->sprefix.'_log_ip'] = $ip;
 	}
 
 	public function isAnonymous()	{ return (strcmp($this->userid,'/Anonymous') == 0); }
@@ -165,7 +169,7 @@ class DoceboUser {
 						if($id_user) {
 							$user_manager = new DoceboACLManager();
 							$user_info 	= $user_manager->getUser($id_user, false);
-							
+
 							if($user_info != false) {
 								$username 	= $user_info[ACL_INFO_USERID];
 								$du = new DoceboUser( $username, $prefix );
@@ -302,10 +306,10 @@ class DoceboUser {
 
 
 	public static function setupUser(&$user) {
-		
+
             $user->loadUserSectionST();
             $user->SaveInSession();
-            
+
             resetTemplate();
 
             $GLOBALS['current_user'] = $user;
