@@ -244,6 +244,17 @@ header.header {
               }
             }
 
+            &.glyphicon-bell {
+              &:hover {
+                &:before {
+                  background-image: url("images/icons/top-menu/icon--bell-hover.svg");
+                }
+              }
+              &:before {
+                background-image: url("images/icons/top-menu/icon--bell.svg");
+              }
+            }
+
             &.glyphicon-shopping-cart {
               &:hover {
                 &:before {
