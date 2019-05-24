@@ -346,7 +346,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true) {
 		addJs($GLOBALS['where_lms_relative'].'/modules/coursecatalogue/', 'ajax.coursecatalogue.js');
 	
 	require_once(_base_.'/lib/lib.form.php');
-	require_once(_base_.'/lib/lib.user_profile.php');
+    require_once(Forma::inc(_lib_ . '/lib.user_profile.php'));
 	require_once(_base_.'/lib/lib.navbar.php');
 	require_once($GLOBALS['where_lms'].'/lib/lib.preassessment.php');
 	require_once($GLOBALS['where_lms'].'/lib/lib.catalogue.php');
