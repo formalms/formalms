@@ -3337,9 +3337,12 @@ p {
     transform: translate3d(-50%, -100%, 0) translateY(-15px);
     opacity: 1;
     visibility: visible; }
+  .forma-tooltip .has-forma-tooltip .forma-tooltip.down {
+    transform: translate(-50%, -100%) translateY(115px);
+    transform: translate3d(-50%, -100%, 0) translateY(115px); }
   .forma-tooltip .has-forma-tooltip:hover .forma-tooltip.down {
-    transform: translate(-50%, -100%) translateY(100px);
-    transform: translate3d(-50%, -100%, 0) translateY(100px); }
+    transform: translate(-50%, -100%) translateY(115px);
+    transform: translate3d(-50%, -100%, 0) translateY(115px); }
 
 .has-forma-tooltip {
   overflow: visible !important; }
@@ -5033,6 +5036,8 @@ header.header {
             background-color: transparent; } }
         .user-panel .container-fluid .row.comunication .col-xs-4 {
           padding: 0 9px 0 9px; }
+          .user-panel .container-fluid .row.comunication .col-xs-4 a.btn.btn-default {
+            margin-bottom: 9px; }
           .user-panel .container-fluid .row.comunication .col-xs-4 a {
             padding: 0; }
       .user-panel .container-fluid .row.career {
