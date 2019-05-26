@@ -1484,7 +1484,7 @@ Class CourseAlms extends Model
        $users = array();   
 
        
-       
+       $umodel = new UsermanagementAdm();          
        while (list($idst, $userid, $firstname, $lastname, $date_complete, $on_date, $id_user, $status,  $id_course, $id_certificate, $name_certificate ) = sql_fetch_row ($res)) {
                
           $url = 'index.php?modname=certificate&amp;certificate_id='.$id_certificate.'&amp;course_id='.$id_course.'&amp;user_id='.$id_user.'&amp;of_platform=lms';
@@ -1498,17 +1498,16 @@ Class CourseAlms extends Model
               $cell_down_gen = "<a href='".$generate."' class='ico-wt-sprite subs_pdf'>".Lang::t('_GENERATE', 'certificate')."</a>";
               $cell_del_cert = '';
           }     
-          // getting custom fields values
-          $umodel = new UsermanagementAdm();          
-          $cf_values = $umodel->getCustomFieldUserValues(intval($id_user));
-          
-          $user2 = array_replace($cf, $cf_values);
-          
-          
 
           $user1 = [$id_user, $id_certificate , $this->getInfoClassroom($id_user, $id_course), substr( $userid,1) ,
-                    $lastname, $firstname, $status, $name_certificate, $date_complete, $on_date, $cell_down_gen, $cell_del_cert] ;
-          $users[] = array_merge($user1, $user2);
+                    $lastname, $firstname]  ;
+          // getting custom fields values
+          $cf_values = $umodel->getCustomFieldUserValues(intval($id_user));
+          $user2 = array_replace($cf, $cf_values);
+          $user3 =  [$status, $name_certificate, $date_complete, $on_date, $cell_down_gen, $cell_del_cert];
+          
+                    
+          $users[] = array_merge($user1, $user2, $user3);
                         
           
         }

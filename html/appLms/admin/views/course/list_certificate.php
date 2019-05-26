@@ -14,9 +14,6 @@ thead input {
 
 <?php
 
-$a =json_encode($data_certificate);
-$b = $custom_fields;
-
 
 require_once(Forma::inc(_lms_.'/lib/lib.subscribe.php'));
 require_once(Forma::inc(_lib_ . '/formatable/include.php'));
@@ -68,10 +65,14 @@ echo getTitleArea(array(
 
 <div class='std_block'>
            <table id='table_certificate'  data-id_course='<?php echo $id_course ?>' data-id_certificate='<?php echo $id_certificate ?>' class='table table-striped table-bordered' style='width:100%'></table>            
-<script type="text/javascript">           
-        var table = $('#table_certificate').FormaTable({
+<script type="text/javascript">
+
+        
+        var cert_table = $('#table_certificate').FormaTable({
+            margin: '0 auto',
             scrollX: true,
             rowId: 'id_user',
+            deferRender: true,
             data:  <?php echo json_encode($data_certificate) ?>,
             select: {
                 style: 'multi',
@@ -80,11 +81,18 @@ echo getTitleArea(array(
             columns:[
              { title: 'id_user', sortable: false, visible: false, searchable: false },
              { title: 'id_certificate', sortable: false, visible: false, searchable: false },
-             { title: '<?php echo Lang::t('_EDITION', 'standard'); ?>', sortable: true, visible: ('classroom' == '<?php echo $course_type ?>')  },              
-             { title: '<?php echo Lang::t('_USERNAME', 'standard'); ?>', sortable: true, type:'num' },
+             { title: '<?php echo Lang::t('_EDITION', 'standard'); ?>', sortable: true, visible: <?php echo (($course_type == 'classroom') ? 'true' :'false') ?>  },              
+             { title: '<?php echo Lang::t('_USERNAME', 'standard'); ?>', sortable: true },
              { title: '<?php echo Lang::t('_LASTNAME', 'standard'); ?>', sortable: true },
              { title: '<?php echo Lang::t('_NAME', 'standard'); ?>', sortable: true },
-
+             <?php
+               $hidden_fields_n = 6;
+               foreach($custom_fields as $key=>$value) {
+                   $hidden_fields_n++;
+                   $hidden_fields_array[] = $hidden_fields_n;
+                   echo "{title:'".$value."', sortable:true, visible: false},".PHP_EOL;
+               }
+             ?>               
              { title: '<?php echo Lang::t('_STATUS', 'standard'); ?>', sortable: true,  
                 render: function ( data, type, row ) { 
                     
@@ -114,12 +122,7 @@ echo getTitleArea(array(
              { title: '<?php echo Lang::t('_DATE_END', 'standard'); ?>', sortable: true },  // TBD converting to local time                      
              { title: '<?php echo Lang::t('_RELASE_DATE', 'certificate'); ?>', sortable: true }, // TBD converting to local time
              { title: '<?php echo Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate')) ?>', sortable: true, searchable: false },
-             { title: '<?php echo Get::sprite('subs_del', Lang::t('_DEL', 'certificate')); ?>', sortable: false, searchable: false },
-             <?php
-               foreach($custom_fields as $key=>$value) {
-                   echo "{title:'".$value."', sortable:true, visible: false},".PHP_EOL;
-               }
-             ?>            
+             { title: '<?php echo Get::sprite('subs_del', Lang::t('_DEL', 'certificate')); ?>', sortable: false, searchable: false }
             ],
             pagingType: 'full_numbers',
             language : {
@@ -131,24 +134,26 @@ echo getTitleArea(array(
             buttons:[ {
                         extend: 'colvis',
                         text: '<?php echo Lang::t('_CHANGEPOLICY', 'profile'); ?>',
-                        columns:':gt(12)'
+                        columns: '<?php echo implode(",",$hidden_fields_array) ?>',
                       },
                       {
                         text: 'add search',
                         action: function(e, dt, node, config){
-                              this.addSearch('table_certificate')
-
-           
-                           
-                           } 
+                            cert_table.search.show()
+                        } 
                       }
             
             
             ]
         })
-        
-      //  table.addSearch('table_certificate');
-        
+        cert_table.search.init('#table_certificate');
+        $('#table_certificate').on( 'column-visibility.dt', function ( e, settings, column, state ) {
+            // if search bar is visible force redraw
+           if (cert_table.search.isvisible())
+                cert_table.search.redraw() 
+        });
+
+
 
           function print_certificate(id_user, id_course, id_certificate){
           var posting = $.get(

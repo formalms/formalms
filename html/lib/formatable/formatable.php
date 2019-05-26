@@ -21,6 +21,11 @@ $.fn.dataTable.Api.register( 'column().searchable()', function () {
 } );
 
 
+$.fn.dataTable.Api.register( 'selectable_row()', function () {
+    return this.column('.select-checkbox')[0].length == 1
+} );
+
+
                  
 
 
@@ -555,34 +560,64 @@ formaTable.prototype.reload = function() {
     return this._datatable.ajax.reload();
 };
 
-formaTable.prototype.addSearch = function(tablename){
+
+formaTable.prototype.search = {
+
+    init: function(dt){
+        this.visible = false
+        this.instance = $(dt).DataTable();
+    },
     
-    try {
-        out_ref = this._datatable      
-        $('#'+ tablename +' thead tr').clone(true).appendTo( '#' + tablename+' thead' );        
-        $('#'+ tablename+' tr:eq(0) th').each( function (ix) {
-             s_name = out_ref.column(ix).title();
-             s_visible = out_ref.column(ix).visible();
-             s_type = out_ref.column(ix).type();
-             s_searchable = out_ref.column(ix).searchable();
-             if (s_visible && s_searchable) {
-                   $(this).html( '<input type="text" placeholder='+s_name+' />' );
-             }  else {
-                 $(this).html( '---' );
-             }
-            
-        } );        
-            
-            
-            
-            
-    } catch (e) {
-       alert(e.message) 
+    isvisible: function(){
+        return this.visible        
+    },
+    
+    redraw: function(){
+        $('.dataTables_scrollHeadInner tr:eq(1)').remove()
+        this.visible = false
+        this.show()
+    },
+    show: function() {
+       try {
+            table = this.instance.table()
+            if (this.visible) {
+                 $('.dataTables_scrollHeadInner tr:eq(1)').remove()
+                 this.visible = false
+            }  else {
+                $('.dataTables_scrollHeadInner thead tr').clone().appendTo( '.dataTables_scrollHeadInner thead' );
+                c = ((table.selectable_row()) ? 0 : 1)
+                table.columns().every(function() {
+                    s_searchable = this.searchable();
+                    s_type = this.type();
+                    s_name = this.title(); 
+                    s_visible = this.visible()
+
+                    console.log('s_name='+s_name)                
+                    console.log('s_visible='+s_visible)                            
+                    console.log('s_searchable='+s_searchable)
+                    console.log('s_type='+s_type) 
+                    console.log('----------')                                  
+                    if (s_visible) {
+                        $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').removeClass() 
+                        if (s_searchable) {
+                           $('.dataTables_scrollHeadInner tr:eq(1) th:eq('+c+')').html('<input id="input_' + c + '" name="input_' + c + '" type="text"  placeholder="" /><label>'+s_name +'</label>')  
+                        }
+                        c++
+                    }
+                })
+                $('.dataTables_scrollHeadInner tr:eq(1)').show()                 
+                this.visible = true;
+            }   
+            table.draw('page');                     
+        } catch (e) {
+           console.log(e.message) 
+        }             
+        
     }
-
-    return 0;
+    
 }
-
+   
+ 
 /**
  * Add FormaTable to jQuery.
  */
