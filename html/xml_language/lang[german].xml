@@ -454,7 +454,7 @@ Einf&uuml;ge den hier und Sie werden automatisch in den Kurs eingeschrieben ]]><
         <key id="configuration&amp;_COURSE_QUOTA" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Begrenze die maximale Gr&ouml;&szlig;e des Inhalts, der f&uuml;r diesen Kurs hochgeladen werden darf (MB)]]></key>
         <key id="configuration&amp;_CURRENCY_SYMBOL" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[W&auml;hrungssymbol (wird auf der Benutzerseite angezeigt)]]></key>
         <key id="configuration&amp;_CUSTOMER_HELP_EMAIL" attributes="" save_date="2017-05-08 14:42:49"><![CDATA[Hilfe eMail]]></key>
-        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PFX" attributes="" save_date="2017-05-15 10:45:14"><![CDATA[Hilfe eMail Betreffzeile]]></key>
+        <key id="configuration&amp;_CUSTOMER_HELP_SUBJ_PLACEHOLDER" attributes="" save_date="2017-05-15 10:45:14"><![CDATA[Hilfe eMail Betreffzeile]]></key>
         <key id="configuration&amp;_CUSTOM_FIELDS_MANDATORY_FOR_ADMIN" attributes="" save_date="2017-05-15 10:55:00"><![CDATA[Verpflichtende benutzerdefinierte Felder]]></key>
         <key id="configuration&amp;_DEBUG" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Debug Optionen]]></key>
         <key id="configuration&amp;_DEFAULTTEMPLATE" attributes="" save_date="2014-11-14 00:00:00"><![CDATA[Standard Template]]></key>

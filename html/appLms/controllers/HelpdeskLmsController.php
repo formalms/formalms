@@ -20,6 +20,7 @@ class HelpdeskLmsController extends LmsController {
 	public function show() {                 
 
 	        $sender = Get::sett('customer_help_email', '');
+            $prefix_subj = Get::sett('customer_help_subj_pfx');
             $sendto   = $_POST['sendto'];
             $usermail = $_POST['email'];
             $content  = nl2br($_POST['msg']);
@@ -32,7 +33,8 @@ class HelpdeskLmsController extends LmsController {
             $help_req_resolution = $_POST['help_req_resolution'];
             $help_req_flash_installed = $_POST['help_req_flash_installed'];
             
-            $subject  = $_POST['oggetto'];
+            $subject  = $prefix_subj ? '['.$prefix_subj.'] '.$oggetto : $oggetto;
+
             $headers  = "From: " . strip_tags($sendto) . "\r\n";
             $headers .= "MIME-Version: 1.0\r\n";
             $headers .= "Content-Type: text/html;charset=utf-8 \r\n";
@@ -70,7 +72,7 @@ class HelpdeskLmsController extends LmsController {
             $mailer = DoceboMailer::getInstance();
             $mailer->addReplyTo(strip_tags($usermail));
 
-            if($mailer->SendMail($sender, $sendto, $oggetto, $msg, false, $headers)) {
+            if($mailer->SendMail($sender, $sendto, $subject, $msg, false, $headers)) {
                 echo "true";
             } else {
                 echo Lang::t('_NO_EMAIL_CONFIG', 'standard');
