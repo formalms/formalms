@@ -3303,6 +3303,7 @@ p {
   position: absolute;
   top: 0;
   left: 50%;
+  z-index: 99;
   transform: translate(-50%, -100%) translateY(-45px);
   transform: translate3d(-50%, -100%, 0) translateY(-45px);
   border-radius: 5px;
@@ -3327,25 +3328,25 @@ p {
     border-bottom: none;
     border-left: solid 6px transparent; }
   .forma-tooltip.down:after {
-    transform: translate(-50%, -555%);
-    border-top: none;
-    border-right: solid 6px transparent;
-    border-bottom: solid 12px #ff6c00;
-    border-left: solid 6px transparent; }
+    transform: translate(-50%, 100%) translateY(-285px);
+    transform: translate3d(-50%, -100%) translateY(-285px); }
   .has-forma-tooltip:hover .forma-tooltip {
     transform: translate(-50%, -100%) translateY(-15px);
     transform: translate3d(-50%, -100%, 0) translateY(-15px);
     opacity: 1;
     visibility: visible; }
-  .forma-tooltip .has-forma-tooltip .forma-tooltip.down {
-    transform: translate(-50%, -100%) translateY(115px);
-    transform: translate3d(-50%, -100%, 0) translateY(115px); }
-  .forma-tooltip .has-forma-tooltip:hover .forma-tooltip.down {
-    transform: translate(-50%, -100%) translateY(115px);
-    transform: translate3d(-50%, -100%, 0) translateY(115px); }
 
 .has-forma-tooltip {
   overflow: visible !important; }
+  .has-forma-tooltip:hover .forma-tooltip.down {
+    transform: translate(-50%, -100%) translateY(105px);
+    transform: translate3d(-50%, -100%, 0) translateY(105px); }
+    .has-forma-tooltip:hover .forma-tooltip.down:after {
+      transform: translate(-50%, -100%) translateY(-115px);
+      transform: translate3d(-50%, -100%, 0) translateY(-115px);
+      border-top: none;
+      border-right: solid 6px transparent;
+      border-left: solid 6px transparent; }
 
 .tabnav {
   overflow: hidden;
